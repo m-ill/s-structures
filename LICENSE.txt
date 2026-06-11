@@ -1,0 +1,8 @@
+S-Structures Proprietary License
+
+Copyright (c) 2026 Dankook University, Dr. Seok-Jae Heo
+(mill@dankook.ac.kr). All rights reserved.
+
+본 소프트웨어와 소스 코드의 무단 복제, 수정, 재배포를 금지합니다.
+저장소 공개 또는 웹 배포는 열람 가능 상태를 의미할 뿐, 사용, 복제,
+수정, 재배포에 대한 권한을 부여하지 않습니다.
