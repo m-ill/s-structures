@@ -106,6 +106,8 @@ function summarizeResult(result) {
     memberResultCount: result.memberResults ? Object.keys(result.memberResults).length : 0,
     reactionCount: result.reactions ? Object.keys(result.reactions).length : 0,
     maxDisplacement: result.dmax ?? result.envelope?.dmax ?? null,
+    compatible: result.legacyShape?.compatible ?? null,
+    legacyShape: result.legacyShape || null,
   };
 }
 
