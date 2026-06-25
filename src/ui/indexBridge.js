@@ -16,6 +16,7 @@ import {
 } from './indexResultVisuals.js';
 import { installIndexResultOverlay } from './indexResultOverlay.js';
 import { getNativeUiState, installIndexNativeRibbon } from './indexNativeRibbon.js';
+import { installIndexRuntimeAdapter } from './indexRuntimeAdapter.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
   executeModelingAction,
@@ -109,6 +110,9 @@ export function installIndexEngineBridge(target = globalThis) {
         controls: target.document ? listAgentControls(target.document) : [],
       });
     },
+    getRuntimeDiagnostics() {
+      return target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null;
+    },
     getCurrentModel() {
       return typeof target.model === 'function' ? target.model() : null;
     },
@@ -129,6 +133,7 @@ export function installIndexEngineBridge(target = globalThis) {
   bridge.experimentalUi = isExperimentalIndexUiEnabled(target);
 
   if (target.document) {
+    bridge.runtimeAdapter = installIndexRuntimeAdapter(target, { bridge });
     bridge.nativeRibbon = installIndexNativeRibbon(target, { bridge });
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
@@ -194,6 +199,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         panels: summarizePanels(target),
         pushover: summarizePushover(target),
         nativeUi: getNativeUiState(target),
+        runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         agent: model ? summarizeAgentModelState(model, agentState) : { selection: { type: null, id: null, exists: false } },
         controls: target.document ? listAgentControls(target.document) : [],
         availableActions: availableAgentActions(),
@@ -208,6 +214,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         },
         panels: summarizePanels(target),
         nativeUi: getNativeUiState(target),
+        runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         controls: target.document ? listAgentControls(target.document) : [],
       });
     },
@@ -238,6 +245,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         bridge?.getLastResult?.() || analyzeForIndex(model),
         options,
       ));
+    },
+    getRuntimeDiagnostics() {
+      return cloneJson(target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null);
     },
     runPushover(options = {}) {
       const model = getCurrentModel(target);

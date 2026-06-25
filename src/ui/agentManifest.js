@@ -5,6 +5,7 @@ import { INDEX_RESULT_OVERLAY_VERSION } from './indexResultOverlay.js';
 import { INDEX_RESULT_VISUALS_VERSION } from './indexResultVisuals.js';
 import { INDEX_RESULTS_PANEL_VERSION } from './indexResultsPanel.js';
 import { NATIVE_RIBBON_VERSION } from './indexNativeRibbon.js';
+import { INDEX_RUNTIME_ADAPTER_VERSION } from './indexRuntimeAdapter.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 
@@ -21,6 +22,7 @@ export function buildAgentManifest(options = {}) {
       pushoverPanel: INDEX_PUSHOVER_PANEL_VERSION,
       designWorkflow: INDEX_DESIGN_WORKFLOW_VERSION,
       nativeRibbon: NATIVE_RIBBON_VERSION,
+      runtimeAdapter: INDEX_RUNTIME_ADAPTER_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -31,6 +33,7 @@ export function buildAgentManifest(options = {}) {
       'getScreenState',
       'getReport',
       'runPushover',
+      'getRuntimeDiagnostics',
       'getCapabilities',
     ],
     executeActions: options.availableActions || [],
@@ -51,6 +54,7 @@ export function buildAgentManifest(options = {}) {
       'pushoverPanel',
       'designWorkflow',
       'nativeRibbonState',
+      'originalIndexRuntimeDiagnostics',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -65,6 +69,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M20', status: 'available', feature: 'pushover panel and capacity curve UI' },
       { id: 'M21', status: 'available', feature: 'design workflow status and next actions' },
       { id: 'M22', status: 'available', feature: 'native index mode tabs and ribbon contract' },
+      { id: 'M23', status: 'available', feature: 'original index runtime adapter and diagnostics' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

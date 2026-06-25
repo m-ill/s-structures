@@ -33,14 +33,17 @@ const agent = createIndexAgentApi(target, {
 const manifest = agent.getCapabilities();
 assert.equal(manifest.version, AGENT_MANIFEST_VERSION);
 assert.equal(manifest.modules.nativeRibbon, 'm22-native-index-ribbon');
+assert.equal(manifest.modules.runtimeAdapter, 'm23-original-index-runtime-adapter');
 assert.ok(manifest.executeActions.includes('createGridFrame'));
 assert.ok(manifest.executeActions.includes('runPushover'));
 assert.ok(manifest.executeActions.includes('setNativeMode'));
 assert.ok(manifest.readApis.includes('getCapabilities'));
+assert.ok(manifest.readApis.includes('getRuntimeDiagnostics'));
 assert.equal(manifest.uiContract.controlCount, 0);
 
 const snapshot = agent.getSnapshot();
 assert.deepEqual(snapshot.availableActions, manifest.executeActions);
+assert.ok(manifest.milestones.some((item) => item.id === 'M23'));
 
 console.log(JSON.stringify({
   ok: true,
