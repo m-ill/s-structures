@@ -125,14 +125,21 @@ export function installIndexEngineBridge(target = globalThis) {
   target.SStructuresEngine = bridge;
   target.SStructuresAgent = createIndexAgentApi(target, bridge);
   target.__SStructuresIndexBridgeInstalled = true;
+  bridge.experimentalUi = isExperimentalIndexUiEnabled(target);
 
   if (target.document) {
     decorateAgentControls(target.document);
-    bridge.resultsPanel = installIndexResultsPanel(target, bridge);
-    bridge.resultOverlay = installIndexResultOverlay(target, bridge);
-    bridge.pushoverPanel = installIndexPushoverPanel(target, bridge, {
-      runPushover: (model, options) => runCorePushover(model, options),
-    });
+    if (bridge.experimentalUi) {
+      bridge.resultsPanel = installIndexResultsPanel(target, bridge);
+      bridge.resultOverlay = installIndexResultOverlay(target, bridge);
+      bridge.pushoverPanel = installIndexPushoverPanel(target, bridge, {
+        runPushover: (model, options) => runCorePushover(model, options),
+      });
+    } else {
+      bridge.resultsPanel = null;
+      bridge.resultOverlay = null;
+      bridge.pushoverPanel = null;
+    }
     queueMicrotask(() => {
       try {
         if (typeof target.reanalyze === 'function') target.reanalyze(true);
@@ -143,6 +150,17 @@ export function installIndexEngineBridge(target = globalThis) {
   }
 
   return bridge;
+}
+
+export function isExperimentalIndexUiEnabled(target = globalThis) {
+  const search = String(target?.location?.search || '');
+  const params = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
+  return (
+    target?.S_STRUCTURES_EXPERIMENTAL_UI === true ||
+    params.get('engine_ui') === '1' ||
+    params.get('experimental_ui') === '1' ||
+    params.get('legacy_engine_panels') === '1'
+  );
 }
 
 export function createIndexAgentApi(target = globalThis, bridge = target?.SStructuresEngine) {

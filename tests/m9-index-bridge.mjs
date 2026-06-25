@@ -5,6 +5,7 @@ import {
   decorateAgentControls,
   INDEX_BRIDGE_VERSION,
   installIndexEngineBridge,
+  isExperimentalIndexUiEnabled,
   listAgentControls,
   validateForIndex,
 } from '../src/ui/indexBridge.js';
@@ -73,6 +74,19 @@ assert.equal(listAgentControls(fakeDocument).length, 3);
 
 const agent = createIndexAgentApi(target, bridge);
 assert.equal(agent.getSnapshot().model.available, true);
+
+const defaultUiTarget = {
+  document: createFakeDocument(),
+  location: { search: '' },
+  model: () => createPortalFrameSample(),
+};
+const defaultUiBridge = installIndexEngineBridge(defaultUiTarget);
+assert.equal(defaultUiBridge.experimentalUi, false);
+assert.equal(defaultUiTarget.SStructuresResultsPanel, undefined);
+assert.equal(defaultUiTarget.SStructuresPushoverPanel, undefined);
+assert.equal(defaultUiTarget.SStructuresResultVisuals, undefined);
+assert.equal(isExperimentalIndexUiEnabled({ location: { search: '?engine_ui=1' } }), true);
+assert.equal(isExperimentalIndexUiEnabled({ location: { search: '?panel_toggle=123' } }), false);
 
 console.log(JSON.stringify({
   ok: true,
