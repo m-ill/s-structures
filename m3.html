@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>S-Structures M3</title>
+  <link rel="stylesheet" href="./src/ui/m3.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>S-Structures M3</h1>
+        <p id="modelMeta">Linear 3D frame modeler</p>
+      </div>
+      <div class="topbar-actions">
+        <button id="sampleBtn" type="button">Sample</button>
+        <button id="analyzeBtn" type="button" class="primary">Analyze</button>
+        <button id="exportBtn" type="button">Export</button>
+        <label class="file-button">
+          Import
+          <input id="importInput" type="file" accept="application/json,.json">
+        </label>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="left-panel">
+        <section>
+          <h2>Frame Builder</h2>
+          <div class="form-grid">
+            <label>X Bays<input id="baysX" type="number" min="1" max="8" value="1"></label>
+            <label>Y Bays<input id="baysY" type="number" min="1" max="8" value="1"></label>
+            <label>Stories<input id="stories" type="number" min="1" max="12" value="1"></label>
+            <label>Bay X m<input id="bayX" type="number" min="0.5" step="0.5" value="6"></label>
+            <label>Bay Y m<input id="bayY" type="number" min="0.5" step="0.5" value="4"></label>
+            <label>Story m<input id="storyH" type="number" min="0.5" step="0.5" value="3"></label>
+          </div>
+          <button id="buildFrameBtn" type="button" class="wide">Build Frame</button>
+        </section>
+
+        <section>
+          <h2>Selection</h2>
+          <div id="selectionPanel" class="selection-panel"></div>
+        </section>
+
+        <section>
+          <h2>Load</h2>
+          <div class="form-grid">
+            <label>Case
+              <select id="loadCaseSelect"></select>
+            </label>
+            <label>Direction
+              <select id="loadDir">
+                <option value="-z">-Z</option>
+                <option value="-y">-Y</option>
+                <option value="+x">+X</option>
+                <option value="-x">-X</option>
+              </select>
+            </label>
+            <label>UDL kN/m<input id="loadValue" type="number" step="0.5" value="8"></label>
+          </div>
+          <button id="applyLoadBtn" type="button" class="wide">Apply To Selected Members</button>
+        </section>
+
+        <section>
+          <h2>Combinations</h2>
+          <div class="form-grid">
+            <label>Combo
+              <select id="comboSelect"></select>
+            </label>
+            <label>Type
+              <select id="comboType">
+                <option value="strength">Strength</option>
+                <option value="service">Service</option>
+                <option value="user">User</option>
+              </select>
+            </label>
+            <label class="span-2">Name<input id="comboName" type="text" value=""></label>
+            <label class="span-2">Factors<input id="comboFactors" type="text" value="" placeholder="D=1.2, L=1.6"></label>
+          </div>
+          <div class="button-row">
+            <button id="saveComboBtn" type="button">Save</button>
+            <button id="addComboBtn" type="button">Add</button>
+            <button id="deleteComboBtn" type="button">Delete</button>
+          </div>
+        </section>
+
+        <section>
+          <h2>Analysis</h2>
+          <label class="toggle"><input id="enablePDelta" type="checkbox"> P-Delta</label>
+        </section>
+      </aside>
+
+      <section class="canvas-panel">
+        <div class="view-toolbar">
+          <div class="segmented" role="tablist" aria-label="View mode">
+            <button id="viewPlanBtn" type="button" class="active">Plan</button>
+            <button id="viewElevBtn" type="button">Elevation</button>
+          </div>
+          <label class="toggle"><input id="showDeformed" type="checkbox" checked> Deformed</label>
+          <label class="toggle"><input id="showUtilization" type="checkbox" checked> Utilization</label>
+        </div>
+        <svg id="modelView" viewBox="0 0 900 620" role="img" aria-label="Model view"></svg>
+      </section>
+
+      <aside class="right-panel">
+        <section>
+          <h2>Result Mode</h2>
+          <select id="resultSelect"></select>
+        </section>
+        <section>
+          <h2>Results</h2>
+          <div id="summary" class="summary-grid"></div>
+        </section>
+        <section>
+          <h2>P-Delta</h2>
+          <div id="pDeltaSummary" class="summary-grid"></div>
+          <svg id="pDeltaChart" class="chart" viewBox="0 0 320 180" role="img" aria-label="P-Delta amplification graph"></svg>
+        </section>
+        <section>
+          <h2>Dynamics</h2>
+          <div id="dynamicsSummary" class="summary-grid"></div>
+          <svg id="modalChart" class="chart" viewBox="0 0 320 180" role="img" aria-label="Modal period graph"></svg>
+          <div class="table-wrap design-table-wrap">
+            <table>
+              <thead>
+                <tr><th>Mode</th><th>T sec</th><th>Hz</th><th>Mass X</th><th>Mass Y</th></tr>
+              </thead>
+              <tbody id="modalTable"></tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h2>Members</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>ID</th><th>Len</th><th>Util.</th><th>Combo</th><th>Load</th></tr>
+              </thead>
+              <tbody id="memberTable"></tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h2>Steel Design</h2>
+          <div id="designSummary" class="summary-grid"></div>
+          <div class="table-wrap design-table-wrap">
+            <table>
+              <thead>
+                <tr><th>ID</th><th>Role</th><th>Util.</th><th>Check</th><th>Status</th></tr>
+              </thead>
+              <tbody id="designTable"></tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h2>RC Design</h2>
+          <div id="rcDesignSummary" class="summary-grid"></div>
+          <div class="table-wrap design-table-wrap">
+            <table>
+              <thead>
+                <tr><th>ID</th><th>Role</th><th>Util.</th><th>Req. As</th><th>Status</th></tr>
+              </thead>
+              <tbody id="rcDesignTable"></tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h2>Messages</h2>
+          <div id="messages" class="messages"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script type="module" src="./src/ui/m3App.js"></script>
+</body>
+</html>

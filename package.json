@@ -1,0 +1,32 @@
+{
+  "name": "s-structures",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "test": "npm.cmd run test:m0 && npm.cmd run test:m1 && npm.cmd run test:m2 && npm.cmd run test:m3 && npm.cmd run test:m4 && npm.cmd run test:m5 && npm.cmd run test:m6 && npm.cmd run test:m7 && npm.cmd run test:m8 && npm.cmd run test:m9 && npm.cmd run test:m10 && npm.cmd run test:m11 && npm.cmd run test:m12 && npm.cmd run test:m13 && npm.cmd run test:m14 && npm.cmd run test:m15 && npm.cmd run test:m16 && npm.cmd run test:m17 && npm.cmd run test:m18 && npm.cmd run test:m19 && npm.cmd run test:m20 && npm.cmd run test:m21",
+    "test:m0": "node tests/m0-smoke.mjs",
+    "test:m1": "node tests/m1-schema.mjs",
+    "test:m2": "node tests/m2-linear3d.mjs",
+    "test:m3": "node tests/m3-ui-state.mjs",
+    "test:m4": "node tests/m4-combinations.mjs",
+    "test:m5": "node tests/m5-steel-design.mjs",
+    "test:m6": "node tests/m6-rc-design.mjs",
+    "test:m7": "node tests/m7-pdelta.mjs",
+    "test:m8": "node tests/m8-modal-rsa.mjs",
+    "test:m9": "node tests/m9-index-bridge.mjs",
+    "test:m10": "node tests/m10-index-results-panel.mjs",
+    "test:m11": "node tests/m11-agent-modeling.mjs",
+    "test:m12": "node tests/m12-modeling-productivity.mjs",
+    "test:m13": "node tests/m13-index-result-visuals.mjs",
+    "test:m14": "node tests/m14-report-export.mjs",
+    "test:m15": "node tests/m15-pushover.mjs",
+    "test:m16": "node tests/m16-agent-capabilities.mjs",
+    "test:m17": "node tests/m17-e2e-entrypoint.mjs",
+    "test:m18": "node tests/m18-result-overlay.mjs",
+    "test:m19": "node tests/m19-agent-screen-control.mjs",
+    "test:m20": "node tests/m20-pushover-panel.mjs",
+    "test:m21": "node tests/m21-design-workflow.mjs"
+  }
+}

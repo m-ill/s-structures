@@ -1,0 +1,48 @@
+import assert from 'node:assert/strict';
+import {
+  AGENT_MANIFEST_VERSION,
+  buildAgentManifest,
+  createPortalFrameSample,
+} from '../src/index.js';
+import { createIndexAgentApi, INDEX_BRIDGE_VERSION } from '../src/ui/indexBridge.js';
+
+const direct = buildAgentManifest({
+  bridgeVersion: INDEX_BRIDGE_VERSION,
+  availableActions: ['runAnalysis', 'runPushover'],
+  controls: [{ id: 'engine-results-dock', label: 'Engine Results' }],
+});
+assert.equal(direct.version, AGENT_MANIFEST_VERSION);
+assert.equal(direct.bridgeVersion, INDEX_BRIDGE_VERSION);
+assert.ok(direct.readApis.includes('getResultVisuals'));
+assert.ok(direct.readApis.includes('getReport'));
+assert.ok(direct.readApis.includes('runPushover'));
+assert.ok(direct.executeActions.includes('runPushover'));
+assert.equal(direct.uiContract.stableAttribute, 'data-agent-id');
+assert.equal(direct.uiContract.controlCount, 1);
+assert.ok(direct.milestones.some((item) => item.id === 'M15' && item.status === 'preliminary'));
+assert.ok(direct.limitations.some((item) => item.includes('preliminary')));
+
+const model = createPortalFrameSample();
+const target = {
+  model: () => model,
+  reanalyze: () => {},
+};
+const agent = createIndexAgentApi(target, {
+  getLastResult: () => null,
+});
+const manifest = agent.getCapabilities();
+assert.equal(manifest.version, AGENT_MANIFEST_VERSION);
+assert.ok(manifest.executeActions.includes('createGridFrame'));
+assert.ok(manifest.executeActions.includes('runPushover'));
+assert.ok(manifest.readApis.includes('getCapabilities'));
+assert.equal(manifest.uiContract.controlCount, 0);
+
+const snapshot = agent.getSnapshot();
+assert.deepEqual(snapshot.availableActions, manifest.executeActions);
+
+console.log(JSON.stringify({
+  ok: true,
+  manifestVersion: manifest.version,
+  actionCount: manifest.executeActions.length,
+  readApiCount: manifest.readApis.length,
+}, null, 2));
