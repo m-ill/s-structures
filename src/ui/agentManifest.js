@@ -9,6 +9,7 @@ import { INDEX_NATIVE_RESULT_CONTROLS_VERSION } from './indexNativeResultControl
 import { INDEX_NATIVE_MODELER_VERSION } from './indexNativeModeler.js';
 import { INDEX_NATIVE_PERSISTENCE_VERSION } from './indexNativePersistence.js';
 import { INDEX_NATIVE_AGENT_CONTROLS_VERSION } from './indexNativeAgentControls.js';
+import { INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION } from './indexNativeAdvancedAnalysis.js';
 import { INDEX_RUNTIME_ADAPTER_VERSION } from './indexRuntimeAdapter.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
@@ -31,6 +32,7 @@ export function buildAgentManifest(options = {}) {
       nativeModeler: INDEX_NATIVE_MODELER_VERSION,
       nativePersistence: INDEX_NATIVE_PERSISTENCE_VERSION,
       nativeAgentControls: INDEX_NATIVE_AGENT_CONTROLS_VERSION,
+      nativeAdvancedAnalysis: INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION,
       runtimeAdapter: INDEX_RUNTIME_ADAPTER_VERSION,
       legacyResultShape: MANIFEST_LEGACY_RESULT_SHAPE_VERSION,
     },
@@ -68,6 +70,7 @@ export function buildAgentManifest(options = {}) {
       'nativeModelerWorkflow',
       'nativePersistenceBook',
       'nativeAgentScreenControls',
+      'nativeAdvancedAnalysisReport',
       'originalIndexRuntimeDiagnostics',
       'legacyResultShapeCompatibility',
     ],
@@ -90,6 +93,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M26', status: 'available', feature: 'existing modeler workflow E2E contract' },
       { id: 'M27', status: 'available', feature: 'index example save import and autosave unification' },
       { id: 'M28', status: 'available', feature: 'agent control on native UI contracts' },
+      { id: 'M29', status: 'available', feature: 'advanced analysis native report UX' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

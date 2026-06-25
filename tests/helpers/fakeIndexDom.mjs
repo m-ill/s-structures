@@ -104,7 +104,9 @@ export function buildNativeIndexShell(document) {
   document.body.appendChild(byId(document, 'statusChip', '-'));
   document.body.appendChild(byId(document, 'pageInfo', '1 / 1'));
   document.body.appendChild(byId(document, 'lcModal'));
-  document.body.appendChild(byId(document, 'reportModal'));
+  const reportModal = byId(document, 'reportModal');
+  reportModal.appendChild(byId(document, 'reportBody'));
+  document.body.appendChild(reportModal);
 
   const setExag = document.createElement('select');
   setExag.id = 'setExag';
