@@ -16,6 +16,7 @@ import {
 } from './indexResultVisuals.js';
 import { installIndexResultOverlay } from './indexResultOverlay.js';
 import { getNativeUiState, installIndexNativeRibbon } from './indexNativeRibbon.js';
+import { installIndexNativeResultControls } from './indexNativeResultControls.js';
 import { installIndexRuntimeAdapter } from './indexRuntimeAdapter.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
@@ -137,6 +138,7 @@ export function installIndexEngineBridge(target = globalThis) {
   if (target.document) {
     bridge.runtimeAdapter = installIndexRuntimeAdapter(target, { bridge });
     bridge.nativeRibbon = installIndexNativeRibbon(target, { bridge });
+    bridge.nativeResultControls = installIndexNativeResultControls(target, { bridge });
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
@@ -201,6 +203,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         panels: summarizePanels(target),
         pushover: summarizePushover(target),
         nativeUi: getNativeUiState(target),
+        nativeResultControls: target.SStructuresNativeResultControls?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         agent: model ? summarizeAgentModelState(model, agentState) : { selection: { type: null, id: null, exists: false } },
         controls: target.document ? listAgentControls(target.document) : [],
@@ -216,6 +219,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         },
         panels: summarizePanels(target),
         nativeUi: getNativeUiState(target),
+        nativeResultControls: target.SStructuresNativeResultControls?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         controls: target.document ? listAgentControls(target.document) : [],
       });
@@ -287,6 +291,14 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         }
         case 'setNativeMode':
           return setNativeMode(target, payload.mode || payload.value || payload, api);
+        case 'setNativePDeltaEnabled':
+          return setNativePDeltaEnabled(target, payload.enabled ?? payload.value ?? true, api);
+        case 'setNativePDeltaStep':
+          return setNativePDeltaStep(target, payload.step, api);
+        case 'setNativeResultScale':
+          return setNativeResultScale(target, payload.scale ?? payload.value, api);
+        case 'showNativeMemberResult':
+          return showNativeMemberResult(target, payload.memberId || payload.id, api);
         case 'setResultTab':
           return setResultTab(target, payload.tab, api);
         case 'setPDeltaStep':
@@ -332,6 +344,10 @@ function availableAgentActions() {
     'setPushoverPanelOpen',
     'runPushover',
     'setNativeMode',
+    'setNativePDeltaEnabled',
+    'setNativePDeltaStep',
+    'setNativeResultScale',
+    'showNativeMemberResult',
     ...MODELING_ACTIONS,
   ];
 }
@@ -734,7 +750,32 @@ function setResultTab(target, tab, api) {
 }
 
 function setPDeltaStep(target, step, api) {
+  target.SStructuresNativeResultControls?.setPDeltaStep?.(step);
   target.SStructuresResultsPanel?.setPDeltaStep?.(step);
+  return api.getSnapshot();
+}
+
+function setNativePDeltaEnabled(target, enabled, api) {
+  if (!target.SStructuresNativeResultControls?.setPDeltaEnabled) throw new Error('Native result controls are not available.');
+  target.SStructuresNativeResultControls.setPDeltaEnabled(enabled);
+  return api.getSnapshot();
+}
+
+function setNativePDeltaStep(target, step, api) {
+  if (!target.SStructuresNativeResultControls?.setPDeltaStep) throw new Error('Native result controls are not available.');
+  target.SStructuresNativeResultControls.setPDeltaStep(step);
+  return api.getSnapshot();
+}
+
+function setNativeResultScale(target, scale, api) {
+  if (!target.SStructuresNativeResultControls?.setResultScale) throw new Error('Native result controls are not available.');
+  target.SStructuresNativeResultControls.setResultScale(scale);
+  return api.getSnapshot();
+}
+
+function showNativeMemberResult(target, memberId, api) {
+  if (!target.SStructuresNativeResultControls?.showMemberResult) throw new Error('Native result controls are not available.');
+  target.SStructuresNativeResultControls.showMemberResult(memberId);
   return api.getSnapshot();
 }
 
@@ -773,6 +814,7 @@ function focusEntity(target, payload, api) {
   const state = ensureAgentState(target);
   state.selection = { type, id };
   target.SStructuresResultVisuals?.focusEntity?.(type, id);
+  if (type === 'member') target.SStructuresNativeResultControls?.showMemberResult?.(id);
   return api.getSnapshot();
 }
 

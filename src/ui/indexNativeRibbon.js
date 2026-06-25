@@ -301,6 +301,39 @@ function populateElasticRibbon(target) {
     for (const action of group.actions || []) items.appendChild(createActionProxyButton(target, action));
     if (items.childNodes?.length || items.children?.length) panel.appendChild(ribbonGroup);
   }
+  populateNativeElasticResultControls(target, panel);
+}
+
+function populateNativeElasticResultControls(target, panel) {
+  const doc = target?.document;
+  if (!doc || panel.querySelector?.('[data-ss-native-result-ribbon="1"]')) return;
+  const marker = doc.createElement('span');
+  marker.setAttribute('data-ss-native-result-ribbon', '1');
+  marker.style.display = 'none';
+  panel.appendChild(marker);
+
+  const group = createRibbonGroup(doc, 'elastic-native-results', 'Advanced');
+  const items = group.querySelector('[data-ss-ribbon-items]');
+
+  const pdelta = doc.createElement('button');
+  pdelta.type = 'button';
+  pdelta.id = 'ssNativePDeltaToggle';
+  pdelta.className = 'ss-ribbon-command';
+  pdelta.setAttribute('data-ss-ribbon-item', 'native-pdelta-toggle');
+  pdelta.setAttribute('data-agent-id', 'native-pdelta-toggle');
+  pdelta.setAttribute('aria-pressed', 'false');
+  pdelta.innerHTML = '<span class="ss-ribbon-icon">P</span><span>P-Delta</span>';
+  items.appendChild(pdelta);
+
+  const scale = createSelectControl(doc, {
+    id: 'ssNativeResultScale',
+    label: 'Scale',
+    values: ['auto', '10', '50', '100', '500'],
+  });
+  scale.setAttribute('data-agent-id', 'native-result-scale');
+  items.appendChild(scale);
+
+  panel.appendChild(group);
 }
 
 function moveExistingElements(doc, selectors, target) {
