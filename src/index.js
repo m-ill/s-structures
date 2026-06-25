@@ -59,6 +59,10 @@ export {
 } from './ui/agentManifest.js';
 export { createPortalFrameSample } from './examples/sampleFrame.js';
 export {
+  INDEX_STARTUP_SAMPLE_VERSION,
+  createIndexStartupSampleModel,
+} from './examples/indexStartupSample.js';
+export {
   BENCH_INTERNAL,
   BENCH_MATERIAL,
   BENCH_SECTION,

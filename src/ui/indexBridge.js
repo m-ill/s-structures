@@ -18,6 +18,7 @@ import { installIndexResultOverlay } from './indexResultOverlay.js';
 import { getNativeUiState, installIndexNativeRibbon } from './indexNativeRibbon.js';
 import { installIndexNativeResultControls } from './indexNativeResultControls.js';
 import { installIndexNativeModeler, NATIVE_MODELER_ACTIONS } from './indexNativeModeler.js';
+import { installIndexNativePersistence } from './indexNativePersistence.js';
 import { installIndexRuntimeAdapter } from './indexRuntimeAdapter.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
@@ -141,6 +142,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.nativeRibbon = installIndexNativeRibbon(target, { bridge });
     bridge.nativeResultControls = installIndexNativeResultControls(target, { bridge });
     bridge.nativeModeler = installIndexNativeModeler(target, { bridge });
+    bridge.nativePersistence = installIndexNativePersistence(target, { bridge });
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
@@ -207,6 +209,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         nativeUi: getNativeUiState(target),
         nativeResultControls: target.SStructuresNativeResultControls?.getState?.() || null,
         nativeModeler: target.SStructuresNativeModeler?.getState?.() || null,
+        nativePersistence: target.SStructuresNativePersistence?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         agent: model ? summarizeAgentModelState(model, agentState) : { selection: { type: null, id: null, exists: false } },
         controls: target.document ? listAgentControls(target.document) : [],
@@ -224,6 +227,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         nativeUi: getNativeUiState(target),
         nativeResultControls: target.SStructuresNativeResultControls?.getState?.() || null,
         nativeModeler: target.SStructuresNativeModeler?.getState?.() || null,
+        nativePersistence: target.SStructuresNativePersistence?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         controls: target.document ? listAgentControls(target.document) : [],
       });
@@ -314,6 +318,16 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         case 'nativeSelectMember':
         case 'nativeDeleteElement':
           return executeNativeModelerAction(target, action, payload, api);
+        case 'loadNativeExample':
+          return loadNativeExample(target, api);
+        case 'exportNativeBook':
+          return exportNativeBook(target, payload, api);
+        case 'importNativeBook':
+          return importNativeBook(target, payload.book || payload.model || payload, api);
+        case 'saveNativeAutosave':
+          return saveNativeAutosave(target, payload, api);
+        case 'restoreNativeAutosave':
+          return restoreNativeAutosave(target, api);
         case 'setResultTab':
           return setResultTab(target, payload.tab, api);
         case 'setPDeltaStep':
@@ -364,6 +378,11 @@ function availableAgentActions() {
     'setNativeResultScale',
     'showNativeMemberResult',
     ...NATIVE_MODELER_ACTIONS,
+    'loadNativeExample',
+    'exportNativeBook',
+    'importNativeBook',
+    'saveNativeAutosave',
+    'restoreNativeAutosave',
     ...MODELING_ACTIONS,
   ];
 }
@@ -801,6 +820,51 @@ function executeNativeModelerAction(target, action, payload, api) {
   return {
     ...api.getSnapshot(),
     nativeActionResult: nativeResult.actionResult,
+  };
+}
+
+function loadNativeExample(target, api) {
+  if (!target.SStructuresNativePersistence?.loadExample) throw new Error('Native persistence is not available.');
+  const persistence = target.SStructuresNativePersistence.loadExample();
+  return {
+    ...api.getSnapshot(),
+    persistence,
+  };
+}
+
+function exportNativeBook(target, payload, api) {
+  if (!target.SStructuresNativePersistence?.exportBook) throw new Error('Native persistence is not available.');
+  const productBook = target.SStructuresNativePersistence.exportBook(payload);
+  return {
+    ...api.getSnapshot(),
+    productBook,
+  };
+}
+
+function importNativeBook(target, payload, api) {
+  if (!target.SStructuresNativePersistence?.importBook) throw new Error('Native persistence is not available.');
+  const persistence = target.SStructuresNativePersistence.importBook(payload);
+  return {
+    ...api.getSnapshot(),
+    persistence,
+  };
+}
+
+function saveNativeAutosave(target, payload, api) {
+  if (!target.SStructuresNativePersistence?.saveAutosave) throw new Error('Native persistence is not available.');
+  const persistence = target.SStructuresNativePersistence.saveAutosave(payload);
+  return {
+    ...api.getSnapshot(),
+    persistence,
+  };
+}
+
+function restoreNativeAutosave(target, api) {
+  if (!target.SStructuresNativePersistence?.restoreAutosave) throw new Error('Native persistence is not available.');
+  const persistence = target.SStructuresNativePersistence.restoreAutosave();
+  return {
+    ...api.getSnapshot(),
+    persistence,
   };
 }
 

@@ -7,6 +7,7 @@ import { INDEX_RESULTS_PANEL_VERSION } from './indexResultsPanel.js';
 import { NATIVE_RIBBON_VERSION } from './indexNativeRibbon.js';
 import { INDEX_NATIVE_RESULT_CONTROLS_VERSION } from './indexNativeResultControls.js';
 import { INDEX_NATIVE_MODELER_VERSION } from './indexNativeModeler.js';
+import { INDEX_NATIVE_PERSISTENCE_VERSION } from './indexNativePersistence.js';
 import { INDEX_RUNTIME_ADAPTER_VERSION } from './indexRuntimeAdapter.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
@@ -27,6 +28,7 @@ export function buildAgentManifest(options = {}) {
       nativeRibbon: NATIVE_RIBBON_VERSION,
       nativeResultControls: INDEX_NATIVE_RESULT_CONTROLS_VERSION,
       nativeModeler: INDEX_NATIVE_MODELER_VERSION,
+      nativePersistence: INDEX_NATIVE_PERSISTENCE_VERSION,
       runtimeAdapter: INDEX_RUNTIME_ADAPTER_VERSION,
       legacyResultShape: MANIFEST_LEGACY_RESULT_SHAPE_VERSION,
     },
@@ -62,6 +64,7 @@ export function buildAgentManifest(options = {}) {
       'nativeRibbonState',
       'nativeResultControls',
       'nativeModelerWorkflow',
+      'nativePersistenceBook',
       'originalIndexRuntimeDiagnostics',
       'legacyResultShapeCompatibility',
     ],
@@ -82,6 +85,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M24', status: 'available', feature: 'legacy result shape compatibility for original result UI' },
       { id: 'M25', status: 'available', feature: 'native result controls through original toolbar and property panel' },
       { id: 'M26', status: 'available', feature: 'existing modeler workflow E2E contract' },
+      { id: 'M27', status: 'available', feature: 'index example save import and autosave unification' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',
