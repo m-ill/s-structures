@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {
   getNativeUiState,
   installIndexNativeRibbon,
+  MODELING_RIBBON_GROUPS,
   NATIVE_MAIN_MODES,
   normalizeNativeMode,
 } from '../src/ui/indexNativeRibbon.js';
@@ -10,6 +11,7 @@ function createFakeTarget() {
   const storage = new Map();
   const document = new FakeDocument();
   const legacyClicks = { structure: 0, select: 0, draw: 0 };
+  const toolClicks = {};
   const target = {
     document,
     localStorage: {
@@ -50,7 +52,26 @@ function createFakeTarget() {
   viewButton.setAttribute('data-view', 'iso');
   subbar.appendChild(viewButton);
 
-  return { target, document, legacyClicks, storage };
+  const palette = document.createElement('div');
+  palette.id = 'palette';
+  document.body.appendChild(palette);
+  const toolButtons = [];
+  for (const tool of MODELING_RIBBON_GROUPS.flatMap((group) => group.tools)) {
+    const button = document.createElement('button');
+    button.className = 'tool-btn';
+    button.setAttribute('data-tool', tool.tool);
+    toolClicks[tool.tool] = 0;
+    button.addEventListener('click', () => {
+      toolButtons.forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
+      toolClicks[tool.tool] += 1;
+    });
+    toolButtons.push(button);
+    palette.appendChild(button);
+  }
+  toolButtons[0].classList.add('active');
+
+  return { target, document, legacyClicks, toolClicks, storage };
 }
 
 class FakeDocument {
@@ -92,6 +113,7 @@ class FakeElement {
     this.textContent = '';
     this.id = '';
     this.type = '';
+    this.style = {};
     this._classes = new Set();
     this.classList = {
       add: (...items) => items.forEach((item) => this._classes.add(item)),
@@ -197,7 +219,7 @@ function toDatasetKey(name) {
   return name.replace(/-([a-z])/g, (_match, char) => char.toUpperCase());
 }
 
-const { target, document, legacyClicks, storage } = createFakeTarget();
+const { target, document, legacyClicks, toolClicks, storage } = createFakeTarget();
 const api = installIndexNativeRibbon(target);
 
 assert.equal(api.version, 'm22-native-index-ribbon');
@@ -206,10 +228,15 @@ assert.equal(document.body.dataset.ssActiveMode, 'modeling');
 assert.equal(document.body.classList.contains('ss-native-ui'), true);
 assert.equal(document.getElementById('ssModeTabs').querySelectorAll('[data-ss-mode]').length, 4);
 assert.equal(document.getElementById('ssNativeRibbon').querySelectorAll('[data-ss-ribbon-panel]').length, 5);
+assert.equal(document.querySelectorAll('[data-ss-tool-proxy]').length, 12);
 assert.equal(document.querySelector('[data-ss-ribbon-panel="common"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-ribbon-panel="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-mode="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('#ssNativeRibbonStyle') != null, true);
+
+document.querySelector('[data-ss-tool-proxy="member"]').click();
+assert.equal(toolClicks.member, 1);
+assert.equal(document.querySelector('[data-ss-tool-proxy="member"]').classList.contains('active'), true);
 
 api.setMode('elastic');
 assert.equal(document.body.dataset.ssActiveMode, 'elastic');

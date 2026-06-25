@@ -32,6 +32,45 @@ export const NATIVE_RIBBON_PANELS = [
   { id: 'memo', label: '태블릿메모', mode: 'memo' },
 ];
 
+export const MODELING_RIBBON_GROUPS = [
+  {
+    id: 'model-select',
+    label: '선택',
+    tools: [
+      { tool: 'smove', icon: '✥', label: '선택' },
+      { tool: 'boxsel', icon: '▭', label: '다중' },
+      { tool: 'sdelete', icon: '✕', label: '삭제' },
+    ],
+  },
+  {
+    id: 'model-geometry',
+    label: '형상',
+    tools: [
+      { tool: 'member', icon: '╱', label: '부재' },
+      { tool: 'column', icon: '┃', label: '기둥' },
+      { tool: 'addnode', icon: '⊕', label: '절점' },
+    ],
+  },
+  {
+    id: 'model-supports',
+    label: '지점',
+    tools: [
+      { tool: 'pin', icon: '▲', label: '핀' },
+      { tool: 'roller', icon: '◬', label: '롤러' },
+      { tool: 'fixed', icon: '▮', label: '고정' },
+    ],
+  },
+  {
+    id: 'model-loads',
+    label: '하중',
+    tools: [
+      { tool: 'pload', icon: '↓', label: '집중' },
+      { tool: 'udl', icon: '⇊', label: '분포' },
+      { tool: 'mload', icon: '↻', label: '모멘트' },
+    ],
+  },
+];
+
 export function installIndexNativeRibbon(target = globalThis, options = {}) {
   const doc = target?.document;
   if (!doc?.querySelector || !doc?.createElement) return null;
@@ -49,7 +88,7 @@ export function installIndexNativeRibbon(target = globalThis, options = {}) {
   };
 
   const tabs = ensureModeTabs(doc, topbar);
-  const ribbonRoot = ensureRibbonRoot(doc);
+  const ribbonRoot = ensureRibbonRoot(target);
   const api = {
     version: NATIVE_RIBBON_VERSION,
     modes: NATIVE_MAIN_MODES.map((mode) => ({ ...mode })),
@@ -72,6 +111,10 @@ export function installIndexNativeRibbon(target = globalThis, options = {}) {
   };
 
   target.SStructuresNativeUI = api;
+  syncModelingToolButtons(doc);
+  doc.addEventListener?.('click', (event) => {
+    if (event.target?.closest?.('[data-tool]')) queueMicrotask(() => syncModelingToolButtons(doc));
+  });
   api.setMode(initialMode, { persist: false, clickLegacy: false, emit: false });
   return api;
 }
@@ -151,7 +194,8 @@ function ensureModeTabs(doc, topbar) {
   return tabs;
 }
 
-function ensureRibbonRoot(doc) {
+function ensureRibbonRoot(target) {
+  const doc = target?.document;
   const subbar = doc.querySelector('#subbar');
   if (!subbar?.appendChild) return null;
   const existing = doc.getElementById?.('ssNativeRibbon');
@@ -178,7 +222,46 @@ function ensureRibbonRoot(doc) {
   }
 
   subbar.appendChild(root);
+  populateModelingRibbon(target);
   return root;
+}
+
+function populateModelingRibbon(target) {
+  const doc = target?.document;
+  const panel = doc?.querySelector?.('[data-ss-ribbon-panel="modeling"]');
+  if (!panel || panel.querySelector?.('[data-ss-modeling-ribbon="1"]')) return;
+
+  const marker = doc.createElement('span');
+  marker.setAttribute('data-ss-modeling-ribbon', '1');
+  marker.style.display = 'none';
+  panel.appendChild(marker);
+
+  for (const group of MODELING_RIBBON_GROUPS) {
+    const ribbonGroup = createRibbonGroup(doc, group.id, group.label);
+    const items = ribbonGroup.querySelector('[data-ss-ribbon-items]');
+    for (const tool of group.tools) items.appendChild(createToolProxyButton(target, tool));
+    panel.appendChild(ribbonGroup);
+  }
+}
+
+function createToolProxyButton(target, tool) {
+  const doc = target.document;
+  const button = doc.createElement('button');
+  button.type = 'button';
+  button.className = 'ss-ribbon-command';
+  button.setAttribute('data-ss-tool-proxy', tool.tool);
+  button.setAttribute('data-ss-ribbon-item', `tool-${tool.tool}`);
+  button.setAttribute('data-agent-id', `native-tool-${tool.tool}`);
+  button.setAttribute('aria-label', tool.label);
+  button.innerHTML = `<span class="ss-ribbon-icon">${tool.icon}</span><span>${tool.label}</span>`;
+  if (!findLegacyTool(doc, tool.tool)) button.disabled = true;
+  button.addEventListener?.('click', () => {
+    const legacy = findLegacyTool(doc, tool.tool);
+    if (!legacy) return;
+    legacy.click?.();
+    syncModelingToolButtons(doc);
+  });
+  return button;
 }
 
 function createRibbonPanel(doc, panel) {
@@ -240,6 +323,20 @@ function activateLegacyMode(target, activeMode) {
   button.click?.();
 }
 
+function syncModelingToolButtons(doc) {
+  if (!doc?.querySelectorAll) return;
+  for (const proxy of doc.querySelectorAll('[data-ss-tool-proxy]')) {
+    const tool = proxy.getAttribute('data-ss-tool-proxy');
+    const legacy = findLegacyTool(doc, tool);
+    proxy.disabled = !!legacy?.disabled || !legacy;
+    proxy.classList?.toggle('active', !!legacy?.classList?.contains?.('active'));
+  }
+}
+
+function findLegacyTool(doc, tool) {
+  return doc?.querySelector?.(`[data-tool="${tool}"]`) || null;
+}
+
 function emitNativeModeChange(target) {
   const EventCtor = target?.CustomEvent || globalThis.CustomEvent;
   if (typeof target?.dispatchEvent !== 'function' || typeof EventCtor !== 'function') return;
@@ -282,6 +379,11 @@ function injectNativeRibbonStyle(doc) {
 .ss-ribbon-group{display:flex;align-items:center;gap:6px;padding:4px 8px;border-right:1px solid var(--line);min-height:42px;}
 .ss-ribbon-title{font-size:11px;color:#5b7c9c;font-weight:700;white-space:nowrap;}
 .ss-ribbon-items{display:flex;align-items:center;gap:4px;white-space:nowrap;}
+.ss-ribbon-command{height:30px;border:1px solid var(--line);background:#fff;border-radius:6px;padding:0 8px;color:#345;font-size:12px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.ss-ribbon-command:hover{background:#e9f1f8;}
+.ss-ribbon-command.active{background:var(--dku);border-color:var(--dku);color:#fff;}
+.ss-ribbon-command:disabled{opacity:.45;cursor:not-allowed;}
+.ss-ribbon-icon{font-size:13px;line-height:1;}
 @media (max-width:720px){
   .ss-mode-tab{height:36px;padding:0 10px;font-size:13px;}
   .ss-native-ui #subbar{padding:4px 8px;}
