@@ -3,6 +3,7 @@ import {
   getNativeUiState,
   installIndexNativeRibbon,
   ELASTIC_RIBBON_GROUPS,
+  MEMO_RIBBON_MODES,
   MODELING_RIBBON_GROUPS,
   NATIVE_MAIN_MODES,
   normalizeNativeMode,
@@ -11,7 +12,7 @@ import {
 function createFakeTarget() {
   const storage = new Map();
   const document = new FakeDocument();
-  const legacyClicks = { structure: 0, select: 0, draw: 0 };
+  const legacyClicks = { structure: 0, select: 0, draw: 0, erase: 0, image: 0 };
   const toolClicks = {};
   const actionClicks = {};
   const pushoverCalls = [];
@@ -51,13 +52,17 @@ function createFakeTarget() {
   logo.className = 'logo';
   topbar.appendChild(logo);
 
-  for (const mode of ['structure', 'select', 'draw']) {
+  const modeButtons = [];
+  for (const mode of ['structure', 'select', 'draw', 'erase', 'image']) {
     const button = document.createElement('button');
     button.className = 'tb-btn mode';
     button.setAttribute('data-mode', mode);
     button.addEventListener('click', () => {
+      modeButtons.forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
       legacyClicks[mode] += 1;
     });
+    modeButtons.push(button);
     topbar.appendChild(button);
   }
 
@@ -92,6 +97,10 @@ function createFakeTarget() {
   const status = document.createElement('div');
   status.id = 'statusTxt';
   subbar.appendChild(status);
+
+  const penOpts = document.createElement('span');
+  penOpts.id = 'penOpts';
+  subbar.appendChild(penOpts);
 
   const palette = document.createElement('div');
   palette.id = 'palette';
@@ -290,6 +299,8 @@ assert.equal(document.querySelector('[data-ss-ribbon-items="elastic-results"]').
 assert.equal(document.querySelectorAll('[data-ss-action-proxy]').length, 3);
 assert.equal(document.querySelector('#ssRunPushover') != null, true);
 assert.equal(document.querySelector('#ssPushoverCurve') != null, true);
+assert.equal(document.querySelectorAll('[data-ss-mode-proxy]').length, MEMO_RIBBON_MODES.length);
+assert.equal(document.querySelector('[data-ss-ribbon-items="memo-pen"]').querySelector('#penOpts') != null, true);
 assert.equal(document.querySelector('[data-ss-ribbon-panel="common"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-ribbon-panel="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-mode="modeling"]').classList.contains('active'), true);
@@ -309,6 +320,10 @@ assert.equal(pushoverCalls[0].steps, 8);
 assert.equal(document.querySelector('#ssPushoverStatus').textContent.includes('OK'), true);
 assert.equal(document.querySelector('#ssPushoverCurve').innerHTML.includes('polyline'), true);
 assert.equal(getNativeUiState(target).nonlinear.available, true);
+
+document.querySelector('[data-ss-mode-proxy="erase"]').click();
+assert.equal(legacyClicks.erase, 1);
+assert.equal(document.querySelector('[data-ss-mode-proxy="erase"]').classList.contains('active'), true);
 
 api.setMode('elastic');
 assert.equal(document.body.dataset.ssActiveMode, 'elastic');

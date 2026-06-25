@@ -101,6 +101,13 @@ export const ELASTIC_RIBBON_GROUPS = [
 export const PUSHOVER_DIRECTIONS = ['+x', '-x', '+y', '-y'];
 export const PUSHOVER_PATTERNS = ['triangular', 'uniform', 'mass'];
 
+export const MEMO_RIBBON_MODES = [
+  { mode: 'draw', icon: '✎', label: '펜' },
+  { mode: 'erase', icon: '⌫', label: '지우개' },
+  { mode: 'image', icon: '▣', label: '이미지' },
+  { mode: 'select', icon: '⬚', label: '선택' },
+];
+
 export function installIndexNativeRibbon(target = globalThis, options = {}) {
   const doc = target?.document;
   if (!doc?.querySelector || !doc?.createElement) return null;
@@ -142,8 +149,10 @@ export function installIndexNativeRibbon(target = globalThis, options = {}) {
 
   target.SStructuresNativeUI = api;
   syncModelingToolButtons(doc);
+  syncMemoModeButtons(doc);
   doc.addEventListener?.('click', (event) => {
     if (event.target?.closest?.('[data-tool]')) queueMicrotask(() => syncModelingToolButtons(doc));
+    if (event.target?.closest?.('[data-mode]')) queueMicrotask(() => syncMemoModeButtons(doc));
   });
   api.setMode(initialMode, { persist: false, clickLegacy: false, emit: false });
   return api;
@@ -256,6 +265,7 @@ function ensureRibbonRoot(target) {
   populateModelingRibbon(target);
   populateElasticRibbon(target);
   populateNonlinearRibbon(target);
+  populateMemoRibbon(target);
   return root;
 }
 
@@ -342,6 +352,47 @@ function createActionProxyButton(target, action) {
   if (!doc.getElementById?.(action.id)) button.disabled = true;
   button.addEventListener?.('click', () => {
     doc.getElementById?.(action.id)?.click?.();
+  });
+  return button;
+}
+
+function populateMemoRibbon(target) {
+  const doc = target?.document;
+  const panel = doc?.querySelector?.('[data-ss-ribbon-panel="memo"]');
+  if (!panel || panel.querySelector?.('[data-ss-memo-ribbon="1"]')) return;
+
+  const marker = doc.createElement('span');
+  marker.setAttribute('data-ss-memo-ribbon', '1');
+  marker.style.display = 'none';
+  panel.appendChild(marker);
+
+  const modeGroup = createRibbonGroup(doc, 'memo-mode', '도구');
+  const modeItems = modeGroup.querySelector('[data-ss-ribbon-items]');
+  for (const mode of MEMO_RIBBON_MODES) modeItems.appendChild(createModeProxyButton(target, mode));
+  panel.appendChild(modeGroup);
+
+  const penGroup = createRibbonGroup(doc, 'memo-pen', '펜 옵션');
+  const penItems = penGroup.querySelector('[data-ss-ribbon-items]');
+  moveExistingElements(doc, ['#penOpts'], penItems);
+  panel.appendChild(penGroup);
+}
+
+function createModeProxyButton(target, mode) {
+  const doc = target.document;
+  const button = doc.createElement('button');
+  button.type = 'button';
+  button.className = 'ss-ribbon-command';
+  button.setAttribute('data-ss-mode-proxy', mode.mode);
+  button.setAttribute('data-ss-ribbon-item', `mode-${mode.mode}`);
+  button.setAttribute('data-agent-id', `native-mode-command-${mode.mode}`);
+  button.setAttribute('aria-label', mode.label);
+  button.innerHTML = `<span class="ss-ribbon-icon">${mode.icon}</span><span>${mode.label}</span>`;
+  if (!findLegacyMode(doc, mode.mode)) button.disabled = true;
+  button.addEventListener?.('click', () => {
+    const legacy = findLegacyMode(doc, mode.mode);
+    if (!legacy) return;
+    legacy.click?.();
+    syncMemoModeButtons(doc);
   });
   return button;
 }
@@ -614,6 +665,20 @@ function findLegacyTool(doc, tool) {
   return doc?.querySelector?.(`[data-tool="${tool}"]`) || null;
 }
 
+function syncMemoModeButtons(doc) {
+  if (!doc?.querySelectorAll) return;
+  for (const proxy of doc.querySelectorAll('[data-ss-mode-proxy]')) {
+    const mode = proxy.getAttribute('data-ss-mode-proxy');
+    const legacy = findLegacyMode(doc, mode);
+    proxy.disabled = !!legacy?.disabled || !legacy;
+    proxy.classList?.toggle('active', !!legacy?.classList?.contains?.('active'));
+  }
+}
+
+function findLegacyMode(doc, mode) {
+  return doc?.querySelector?.(`[data-mode="${mode}"]`) || null;
+}
+
 function emitNativeModeChange(target) {
   const EventCtor = target?.CustomEvent || globalThis.CustomEvent;
   if (typeof target?.dispatchEvent !== 'function' || typeof EventCtor !== 'function') return;
@@ -664,6 +729,7 @@ function injectNativeRibbonStyle(doc) {
 .ss-ribbon-items #comboSel{max-width:150px;}
 .ss-ribbon-items #reactMode{max-width:150px;}
 .ss-ribbon-items #statusTxt{margin-left:0;max-width:260px;overflow:hidden;text-overflow:ellipsis;}
+.ss-ribbon-items #penOpts{display:flex;align-items:center;gap:5px;}
 .ss-ribbon-field{height:30px;display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:6px;background:#fff;padding:0 7px;font-size:11px;color:#5b7c9c;font-weight:700;white-space:nowrap;}
 .ss-ribbon-field select,.ss-ribbon-field input{height:22px;border:1px solid var(--line);border-radius:5px;background:#fff;font-size:12px;color:#345;max-width:92px;padding:0 4px;}
 .ss-ribbon-field input{width:54px;}
