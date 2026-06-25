@@ -14,11 +14,31 @@ function createFakeTarget() {
   const legacyClicks = { structure: 0, select: 0, draw: 0 };
   const toolClicks = {};
   const actionClicks = {};
+  const pushoverCalls = [];
   const target = {
     document,
     localStorage: {
       getItem: (key) => storage.get(key) || null,
       setItem: (key, value) => storage.set(key, String(value)),
+    },
+    SStructuresEngine: {
+      runPushover(options) {
+        pushoverCalls.push({ ...options });
+        return {
+          ok: true,
+          summary: {
+            stepCount: options.steps + 1,
+            maxBaseShear: 80,
+            maxControlDisplacement: 0.12,
+            plasticMemberCount: 1,
+          },
+          curve: [
+            { controlDisplacement: 0, baseShear: 0 },
+            { controlDisplacement: 0.06, baseShear: 40 },
+            { controlDisplacement: 0.12, baseShear: 80 },
+          ],
+        };
+      },
     },
   };
   document.defaultView = target;
@@ -105,7 +125,7 @@ function createFakeTarget() {
     menu.appendChild(button);
   }
 
-  return { target, document, legacyClicks, toolClicks, actionClicks, storage };
+  return { target, document, legacyClicks, toolClicks, actionClicks, pushoverCalls, storage };
 }
 
 class FakeDocument {
@@ -145,8 +165,10 @@ class FakeElement {
     this.dataset = {};
     this.eventHandlers = {};
     this.textContent = '';
+    this.innerHTML = '';
     this.id = '';
     this.type = '';
+    this.value = '';
     this.style = {};
     this._classes = new Set();
     this.classList = {
@@ -253,7 +275,7 @@ function toDatasetKey(name) {
   return name.replace(/-([a-z])/g, (_match, char) => char.toUpperCase());
 }
 
-const { target, document, legacyClicks, toolClicks, actionClicks, storage } = createFakeTarget();
+const { target, document, legacyClicks, toolClicks, actionClicks, pushoverCalls, storage } = createFakeTarget();
 const api = installIndexNativeRibbon(target);
 
 assert.equal(api.version, 'm22-native-index-ribbon');
@@ -266,6 +288,8 @@ assert.equal(document.querySelectorAll('[data-ss-tool-proxy]').length, 12);
 assert.equal(document.querySelector('[data-ss-ribbon-items="elastic-combo"]').querySelector('#comboSel') != null, true);
 assert.equal(document.querySelector('[data-ss-ribbon-items="elastic-results"]').querySelectorAll('[data-res]').length, 4);
 assert.equal(document.querySelectorAll('[data-ss-action-proxy]').length, 3);
+assert.equal(document.querySelector('#ssRunPushover') != null, true);
+assert.equal(document.querySelector('#ssPushoverCurve') != null, true);
 assert.equal(document.querySelector('[data-ss-ribbon-panel="common"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-ribbon-panel="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-mode="modeling"]').classList.contains('active'), true);
@@ -277,6 +301,14 @@ assert.equal(document.querySelector('[data-ss-tool-proxy="member"]').classList.c
 
 document.querySelector('[data-ss-action-proxy="mValidate"]').click();
 assert.equal(actionClicks.mValidate, 1);
+
+document.querySelector('#ssRunPushover').click();
+assert.equal(pushoverCalls.length, 1);
+assert.equal(pushoverCalls[0].direction, '+x');
+assert.equal(pushoverCalls[0].steps, 8);
+assert.equal(document.querySelector('#ssPushoverStatus').textContent.includes('OK'), true);
+assert.equal(document.querySelector('#ssPushoverCurve').innerHTML.includes('polyline'), true);
+assert.equal(getNativeUiState(target).nonlinear.available, true);
 
 api.setMode('elastic');
 assert.equal(document.body.dataset.ssActiveMode, 'elastic');
