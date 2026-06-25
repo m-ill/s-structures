@@ -289,7 +289,9 @@ assert.equal(api.state.activeMode, 'modeling');
 assert.equal(document.body.dataset.ssActiveMode, 'modeling');
 assert.equal(document.body.classList.contains('ss-native-ui'), true);
 assert.equal(document.getElementById('ssModeTabs').querySelectorAll('[data-ss-mode]').length, 4);
-assert.equal(document.getElementById('ssNativeRibbon').querySelectorAll('[data-ss-ribbon-panel]').length, 5);
+assert.equal(document.getElementById('ssNativeRibbon').querySelectorAll('[data-ss-ribbon-panel]').length, 4);
+assert.equal(document.getElementById('topbar').querySelector('[data-ss-ribbon-panel="common"]') != null, true);
+assert.equal(document.querySelectorAll('[data-ss-ribbon-panel]').length, 5);
 assert.equal(document.querySelectorAll('[data-ss-tool-proxy]').length, 0);
 assert.equal(document.querySelectorAll('[data-ss-palette-toggle]').length, 1);
 assert.equal(document.querySelector('[data-ss-palette-toggle]').classList.contains('active'), true);
@@ -306,6 +308,7 @@ assert.equal(document.querySelector('[data-ss-ribbon-panel="modeling"]').classLi
 assert.equal(document.querySelector('[data-ss-mode="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('#ssNativeRibbonStyle') != null, true);
 assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-native-ribbon\{[^}]*flex-wrap:wrap/);
+assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-topbar-common\.ss-ribbon-panel\{[^}]*justify-content:flex-end/);
 assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /#subbar\{[^}]*overflow-x:visible/);
 assert.doesNotMatch(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-native-ribbon\{[^}]*min-width:max-content/);
 

@@ -210,6 +210,7 @@ function ensureModeTabs(doc, topbar) {
 function ensureRibbonRoot(target) {
   const doc = target?.document;
   const subbar = doc.querySelector('#subbar');
+  const topbar = doc.querySelector('#topbar');
   if (!subbar?.appendChild) return null;
   const existing = doc.getElementById?.('ssNativeRibbon');
   if (existing) return existing;
@@ -228,7 +229,8 @@ function ensureRibbonRoot(target) {
     commonItems.appendChild(node);
   }
   commonPanel.appendChild(commonGroup);
-  root.appendChild(commonPanel);
+  commonPanel.classList?.add('ss-topbar-common');
+  topbar?.appendChild?.(commonPanel);
 
   for (const panel of NATIVE_RIBBON_PANELS.slice(1)) {
     root.appendChild(createRibbonPanel(doc, panel));
@@ -707,6 +709,16 @@ function injectNativeRibbonStyle(doc) {
 .ss-mode-tab:hover{background:var(--dku2);}
 .ss-mode-tab.active{background:var(--gold);border-color:var(--gold);color:#1d2b3a;}
 .ss-mode-sep{flex:none;}
+.ss-topbar-common.ss-ribbon-panel{flex:0 1 auto;max-width:54vw;min-width:0;margin-left:6px;align-items:center;justify-content:flex-end;overflow:hidden;color:#d7e5f2;}
+.ss-topbar-common .ss-ribbon-group{border-right:0;min-height:32px;padding:0;gap:4px;flex:0 1 auto;overflow:hidden;justify-content:flex-end;}
+.ss-topbar-common .ss-ribbon-title{color:#b7cbe0;}
+.ss-topbar-common .ss-ribbon-items{flex-wrap:nowrap;justify-content:flex-end;overflow:hidden;color:#d7e5f2;}
+.ss-topbar-common .view-btn,.ss-topbar-common .res-toggle,.ss-topbar-common .pen-m{height:28px;border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#d7e5f2;padding:0 8px;}
+.ss-topbar-common .view-btn.active,.ss-topbar-common .res-toggle.on,.ss-topbar-common .pen-m.sel{background:var(--gold);border-color:var(--gold);color:#1d2b3a;}
+.ss-topbar-common .res-toggle.on[data-res="chk"]{background:var(--gold);border-color:var(--gold);color:#1d2b3a;}
+.ss-topbar-common select{height:28px;border:1px solid rgba(255,255,255,.22)!important;background:rgba(255,255,255,.08);color:#fff;border-radius:6px;}
+.ss-topbar-common #statusTxt{margin-left:0;max-width:170px;color:#d7e5f2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ss-topbar-common span[style]{color:#b7cbe0!important;margin-left:4px!important;}
 .ss-native-ribbon{display:flex;align-items:stretch;gap:6px;width:100%;min-width:0;flex-wrap:wrap;}
 .ss-ribbon-panel{display:none;align-items:center;gap:6px;min-height:42px;min-width:0;flex:1 1 100%;flex-wrap:wrap;}
 .ss-ribbon-panel.active{display:flex;}
