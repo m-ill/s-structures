@@ -63,6 +63,13 @@ const target = {
       return { open: this.panelState.open };
     },
   },
+  SStructuresNativeUI: {
+    version: 'm22-native-index-ribbon',
+    state: { activeMode: 'modeling' },
+    setMode(mode) {
+      this.state.activeMode = mode;
+    },
+  },
 };
 
 const agent = createIndexAgentApi(target, {
@@ -78,6 +85,8 @@ assert.ok(initial.availableActions.includes('setOverlayOption'));
 assert.ok(initial.availableActions.includes('focusEntity'));
 assert.ok(initial.availableActions.includes('setResultsPanelOpen'));
 assert.ok(initial.availableActions.includes('setPushoverPanelOpen'));
+assert.ok(initial.availableActions.includes('setNativeMode'));
+assert.equal(initial.nativeUi.activeMode, 'modeling');
 
 const hiddenLoads = agent.execute('setOverlayOption', { key: 'showLoads', value: true });
 assert.equal(hiddenLoads.overlay.state.showLoads, true);
@@ -97,12 +106,15 @@ const panels = agent.execute('setResultsPanelOpen', { open: true });
 assert.equal(panels.panels.resultsOpen, true);
 const pushPanel = agent.execute('setPushoverPanelOpen', { open: true });
 assert.equal(pushPanel.panels.pushoverOpen, true);
+const nativeMode = agent.execute('setNativeMode', { mode: 'elastic' });
+assert.equal(nativeMode.nativeUi.activeMode, 'elastic');
 
 const screen = agent.getScreenState();
 assert.equal(screen.overlay.state.focus.type, 'member');
 assert.equal(screen.overlay.scene.baseMembers.length, model.members.length);
 assert.equal(screen.panels.resultsOpen, true);
 assert.equal(screen.panels.pushoverOpen, true);
+assert.equal(screen.nativeUi.activeMode, 'elastic');
 
 const manifest = buildAgentManifest({
   bridgeVersion: INDEX_BRIDGE_VERSION,

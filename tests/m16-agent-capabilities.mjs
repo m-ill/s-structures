@@ -32,8 +32,10 @@ const agent = createIndexAgentApi(target, {
 });
 const manifest = agent.getCapabilities();
 assert.equal(manifest.version, AGENT_MANIFEST_VERSION);
+assert.equal(manifest.modules.nativeRibbon, 'm22-native-index-ribbon');
 assert.ok(manifest.executeActions.includes('createGridFrame'));
 assert.ok(manifest.executeActions.includes('runPushover'));
+assert.ok(manifest.executeActions.includes('setNativeMode'));
 assert.ok(manifest.readApis.includes('getCapabilities'));
 assert.equal(manifest.uiContract.controlCount, 0);
 

@@ -15,7 +15,7 @@ import {
   summarizeIndexResultVisuals,
 } from './indexResultVisuals.js';
 import { installIndexResultOverlay } from './indexResultOverlay.js';
-import { installIndexNativeRibbon } from './indexNativeRibbon.js';
+import { getNativeUiState, installIndexNativeRibbon } from './indexNativeRibbon.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
   executeModelingAction,
@@ -193,6 +193,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         overlay: summarizeOverlay(target),
         panels: summarizePanels(target),
         pushover: summarizePushover(target),
+        nativeUi: getNativeUiState(target),
         agent: model ? summarizeAgentModelState(model, agentState) : { selection: { type: null, id: null, exists: false } },
         controls: target.document ? listAgentControls(target.document) : [],
         availableActions: availableAgentActions(),
@@ -206,6 +207,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
           scene: target.SStructuresOverlayScene || null,
         },
         panels: summarizePanels(target),
+        nativeUi: getNativeUiState(target),
         controls: target.document ? listAgentControls(target.document) : [],
       });
     },
@@ -271,6 +273,8 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
             pushover,
           };
         }
+        case 'setNativeMode':
+          return setNativeMode(target, payload.mode || payload.value || payload, api);
         case 'setResultTab':
           return setResultTab(target, payload.tab, api);
         case 'setPDeltaStep':
@@ -315,6 +319,7 @@ function availableAgentActions() {
     'setPushoverOption',
     'setPushoverPanelOpen',
     'runPushover',
+    'setNativeMode',
     ...MODELING_ACTIONS,
   ];
 }
@@ -571,6 +576,12 @@ function setPushoverOption(target, key, value, api) {
 function setPushoverPanelOpen(target, open, api) {
   if (!target.SStructuresPushoverPanel?.setOpen) throw new Error('Pushover panel is not available.');
   target.SStructuresPushoverPanel.setOpen(open);
+  return api.getSnapshot();
+}
+
+function setNativeMode(target, mode, api) {
+  if (!target.SStructuresNativeUI?.setMode) throw new Error('Native index UI is not available.');
+  target.SStructuresNativeUI.setMode(mode);
   return api.getSnapshot();
 }
 
