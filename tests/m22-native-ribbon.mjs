@@ -1,0 +1,217 @@
+import assert from 'node:assert/strict';
+import {
+  getNativeUiState,
+  installIndexNativeRibbon,
+  NATIVE_MAIN_MODES,
+  normalizeNativeMode,
+} from '../src/ui/indexNativeRibbon.js';
+
+function createFakeTarget() {
+  const storage = new Map();
+  const document = new FakeDocument();
+  const legacyClicks = { structure: 0, select: 0, draw: 0 };
+  const target = {
+    document,
+    localStorage: {
+      getItem: (key) => storage.get(key) || null,
+      setItem: (key, value) => storage.set(key, String(value)),
+    },
+  };
+  document.defaultView = target;
+
+  const topbar = document.createElement('div');
+  topbar.id = 'topbar';
+  document.body.appendChild(topbar);
+
+  const logo = document.createElement('div');
+  logo.className = 'logo';
+  topbar.appendChild(logo);
+
+  for (const mode of ['structure', 'select', 'draw']) {
+    const button = document.createElement('button');
+    button.className = 'tb-btn mode';
+    button.setAttribute('data-mode', mode);
+    button.addEventListener('click', () => {
+      legacyClicks[mode] += 1;
+    });
+    topbar.appendChild(button);
+  }
+
+  const spacer = document.createElement('div');
+  spacer.className = 'spacer';
+  topbar.appendChild(spacer);
+
+  return { target, document, legacyClicks, storage };
+}
+
+class FakeDocument {
+  constructor() {
+    this.documentElement = new FakeElement('html', this);
+    this.head = new FakeElement('head', this);
+    this.body = new FakeElement('body', this);
+    this.documentElement.appendChild(this.head);
+    this.documentElement.appendChild(this.body);
+    this.defaultView = null;
+  }
+
+  createElement(tagName) {
+    return new FakeElement(tagName, this);
+  }
+
+  getElementById(id) {
+    return this.querySelector(`#${id}`);
+  }
+
+  querySelector(selector) {
+    return this.documentElement.querySelector(selector);
+  }
+
+  querySelectorAll(selector) {
+    return this.documentElement.querySelectorAll(selector);
+  }
+}
+
+class FakeElement {
+  constructor(tagName, ownerDocument) {
+    this.tagName = tagName.toUpperCase();
+    this.ownerDocument = ownerDocument;
+    this.children = [];
+    this.parentNode = null;
+    this.attributes = {};
+    this.dataset = {};
+    this.eventHandlers = {};
+    this.textContent = '';
+    this.id = '';
+    this.type = '';
+    this._classes = new Set();
+    this.classList = {
+      add: (...items) => items.forEach((item) => this._classes.add(item)),
+      remove: (...items) => items.forEach((item) => this._classes.delete(item)),
+      contains: (item) => this._classes.has(item),
+      toggle: (item, force) => {
+        const enabled = force === undefined ? !this._classes.has(item) : !!force;
+        if (enabled) this._classes.add(item);
+        else this._classes.delete(item);
+        return enabled;
+      },
+    };
+  }
+
+  get className() {
+    return [...this._classes].join(' ');
+  }
+
+  set className(value) {
+    this._classes = new Set(String(value || '').split(/\s+/).filter(Boolean));
+  }
+
+  appendChild(child) {
+    if (child.parentNode) child.parentNode.removeChild(child);
+    child.parentNode = this;
+    this.children.push(child);
+    return child;
+  }
+
+  insertBefore(child, before) {
+    if (!before) return this.appendChild(child);
+    if (child.parentNode) child.parentNode.removeChild(child);
+    const index = this.children.indexOf(before);
+    if (index < 0) return this.appendChild(child);
+    child.parentNode = this;
+    this.children.splice(index, 0, child);
+    return child;
+  }
+
+  removeChild(child) {
+    const index = this.children.indexOf(child);
+    if (index >= 0) this.children.splice(index, 1);
+    child.parentNode = null;
+    return child;
+  }
+
+  setAttribute(name, value) {
+    const text = String(value);
+    this.attributes[name] = text;
+    if (name === 'id') this.id = text;
+    if (name.startsWith('data-')) this.dataset[toDatasetKey(name.slice(5))] = text;
+  }
+
+  getAttribute(name) {
+    if (name === 'id') return this.id || null;
+    if (name === 'class') return this.className;
+    if (name.startsWith('data-')) return this.dataset[toDatasetKey(name.slice(5))] || null;
+    return this.attributes[name] || null;
+  }
+
+  addEventListener(type, handler) {
+    this.eventHandlers[type] = this.eventHandlers[type] || [];
+    this.eventHandlers[type].push(handler);
+  }
+
+  click() {
+    for (const handler of this.eventHandlers.click || []) handler.call(this, { target: this });
+  }
+
+  querySelector(selector) {
+    return this.querySelectorAll(selector)[0] || null;
+  }
+
+  querySelectorAll(selector) {
+    const results = [];
+    walk(this, (element) => {
+      if (matchesSelector(element, selector)) results.push(element);
+    });
+    return results;
+  }
+}
+
+function walk(element, visit) {
+  visit(element);
+  for (const child of element.children) walk(child, visit);
+}
+
+function matchesSelector(element, selector) {
+  if (selector.startsWith('#')) return element.id === selector.slice(1);
+  if (selector.startsWith('.')) return element.classList.contains(selector.slice(1));
+  const attrMatch = selector.match(/^\[([^=\]]+)(?:="([^"]*)")?\]$/);
+  if (!attrMatch) return false;
+  const [, name, expected] = attrMatch;
+  const value = element.getAttribute(name);
+  return expected === undefined ? value != null : value === expected;
+}
+
+function toDatasetKey(name) {
+  return name.replace(/-([a-z])/g, (_match, char) => char.toUpperCase());
+}
+
+const { target, document, legacyClicks, storage } = createFakeTarget();
+const api = installIndexNativeRibbon(target);
+
+assert.equal(api.version, 'm22-native-index-ribbon');
+assert.equal(api.state.activeMode, 'modeling');
+assert.equal(document.body.dataset.ssActiveMode, 'modeling');
+assert.equal(document.body.classList.contains('ss-native-ui'), true);
+assert.equal(document.getElementById('ssModeTabs').querySelectorAll('[data-ss-mode]').length, 4);
+assert.equal(document.querySelector('[data-ss-mode="modeling"]').classList.contains('active'), true);
+assert.equal(document.querySelector('#ssNativeRibbonStyle') != null, true);
+
+api.setMode('elastic');
+assert.equal(document.body.dataset.ssActiveMode, 'elastic');
+assert.equal(document.querySelector('[data-ss-mode="elastic"]').classList.contains('active'), true);
+assert.equal(legacyClicks.select, 1);
+assert.equal(storage.get('s-structures:index-native-mode'), 'elastic');
+
+api.setMode('memo');
+assert.equal(document.body.dataset.ssActiveMode, 'memo');
+assert.equal(legacyClicks.draw, 1);
+
+assert.equal(normalizeNativeMode('missing'), 'modeling');
+assert.equal(getNativeUiState(target).modes.length, NATIVE_MAIN_MODES.length);
+
+console.log(JSON.stringify({
+  ok: true,
+  modes: NATIVE_MAIN_MODES.length,
+  activeMode: getNativeUiState(target).activeMode,
+  selectClicks: legacyClicks.select,
+  drawClicks: legacyClicks.draw,
+}, null, 2));

@@ -15,6 +15,7 @@ import {
   summarizeIndexResultVisuals,
 } from './indexResultVisuals.js';
 import { installIndexResultOverlay } from './indexResultOverlay.js';
+import { installIndexNativeRibbon } from './indexNativeRibbon.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
   executeModelingAction,
@@ -128,6 +129,7 @@ export function installIndexEngineBridge(target = globalThis) {
   bridge.experimentalUi = isExperimentalIndexUiEnabled(target);
 
   if (target.document) {
+    bridge.nativeRibbon = installIndexNativeRibbon(target, { bridge });
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
