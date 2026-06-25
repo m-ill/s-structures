@@ -17,6 +17,7 @@ import {
 import { installIndexResultOverlay } from './indexResultOverlay.js';
 import { getNativeUiState, installIndexNativeRibbon } from './indexNativeRibbon.js';
 import { installIndexNativeResultControls } from './indexNativeResultControls.js';
+import { installIndexNativeModeler, NATIVE_MODELER_ACTIONS } from './indexNativeModeler.js';
 import { installIndexRuntimeAdapter } from './indexRuntimeAdapter.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
@@ -139,6 +140,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.runtimeAdapter = installIndexRuntimeAdapter(target, { bridge });
     bridge.nativeRibbon = installIndexNativeRibbon(target, { bridge });
     bridge.nativeResultControls = installIndexNativeResultControls(target, { bridge });
+    bridge.nativeModeler = installIndexNativeModeler(target, { bridge });
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
@@ -204,6 +206,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         pushover: summarizePushover(target),
         nativeUi: getNativeUiState(target),
         nativeResultControls: target.SStructuresNativeResultControls?.getState?.() || null,
+        nativeModeler: target.SStructuresNativeModeler?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         agent: model ? summarizeAgentModelState(model, agentState) : { selection: { type: null, id: null, exists: false } },
         controls: target.document ? listAgentControls(target.document) : [],
@@ -220,6 +223,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         panels: summarizePanels(target),
         nativeUi: getNativeUiState(target),
         nativeResultControls: target.SStructuresNativeResultControls?.getState?.() || null,
+        nativeModeler: target.SStructuresNativeModeler?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         controls: target.document ? listAgentControls(target.document) : [],
       });
@@ -299,6 +303,17 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
           return setNativeResultScale(target, payload.scale ?? payload.value, api);
         case 'showNativeMemberResult':
           return showNativeMemberResult(target, payload.memberId || payload.id, api);
+        case 'nativeClearPage':
+        case 'nativeSelectTool':
+        case 'nativeDrawMember':
+        case 'nativeAddColumn':
+        case 'nativeSetSupport':
+        case 'nativeAddUdl':
+        case 'nativeAddNodalLoad':
+        case 'nativeMoveNode':
+        case 'nativeSelectMember':
+        case 'nativeDeleteElement':
+          return executeNativeModelerAction(target, action, payload, api);
         case 'setResultTab':
           return setResultTab(target, payload.tab, api);
         case 'setPDeltaStep':
@@ -348,6 +363,7 @@ function availableAgentActions() {
     'setNativePDeltaStep',
     'setNativeResultScale',
     'showNativeMemberResult',
+    ...NATIVE_MODELER_ACTIONS,
     ...MODELING_ACTIONS,
   ];
 }
@@ -777,6 +793,15 @@ function showNativeMemberResult(target, memberId, api) {
   if (!target.SStructuresNativeResultControls?.showMemberResult) throw new Error('Native result controls are not available.');
   target.SStructuresNativeResultControls.showMemberResult(memberId);
   return api.getSnapshot();
+}
+
+function executeNativeModelerAction(target, action, payload, api) {
+  if (!target.SStructuresNativeModeler?.execute) throw new Error('Native modeler is not available.');
+  const nativeResult = target.SStructuresNativeModeler.execute(action, payload);
+  return {
+    ...api.getSnapshot(),
+    nativeActionResult: nativeResult.actionResult,
+  };
 }
 
 function setResultsPanelOpen(target, open, api) {
