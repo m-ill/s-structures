@@ -41,6 +41,15 @@ function createFakeTarget() {
   spacer.className = 'spacer';
   topbar.appendChild(spacer);
 
+  const subbar = document.createElement('div');
+  subbar.id = 'subbar';
+  document.body.appendChild(subbar);
+
+  const viewButton = document.createElement('button');
+  viewButton.className = 'view-btn';
+  viewButton.setAttribute('data-view', 'iso');
+  subbar.appendChild(viewButton);
+
   return { target, document, legacyClicks, storage };
 }
 
@@ -99,6 +108,10 @@ class FakeElement {
 
   get className() {
     return [...this._classes].join(' ');
+  }
+
+  get childNodes() {
+    return this.children;
   }
 
   set className(value) {
@@ -174,7 +187,7 @@ function matchesSelector(element, selector) {
   if (selector.startsWith('#')) return element.id === selector.slice(1);
   if (selector.startsWith('.')) return element.classList.contains(selector.slice(1));
   const attrMatch = selector.match(/^\[([^=\]]+)(?:="([^"]*)")?\]$/);
-  if (!attrMatch) return false;
+  if (!attrMatch) return element.tagName.toLowerCase() === selector.toLowerCase();
   const [, name, expected] = attrMatch;
   const value = element.getAttribute(name);
   return expected === undefined ? value != null : value === expected;
@@ -192,12 +205,17 @@ assert.equal(api.state.activeMode, 'modeling');
 assert.equal(document.body.dataset.ssActiveMode, 'modeling');
 assert.equal(document.body.classList.contains('ss-native-ui'), true);
 assert.equal(document.getElementById('ssModeTabs').querySelectorAll('[data-ss-mode]').length, 4);
+assert.equal(document.getElementById('ssNativeRibbon').querySelectorAll('[data-ss-ribbon-panel]').length, 5);
+assert.equal(document.querySelector('[data-ss-ribbon-panel="common"]').classList.contains('active'), true);
+assert.equal(document.querySelector('[data-ss-ribbon-panel="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-mode="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('#ssNativeRibbonStyle') != null, true);
 
 api.setMode('elastic');
 assert.equal(document.body.dataset.ssActiveMode, 'elastic');
 assert.equal(document.querySelector('[data-ss-mode="elastic"]').classList.contains('active'), true);
+assert.equal(document.querySelector('[data-ss-ribbon-panel="elastic"]').classList.contains('active'), true);
+assert.equal(document.querySelector('[data-ss-ribbon-panel="modeling"]').classList.contains('active'), false);
 assert.equal(legacyClicks.select, 1);
 assert.equal(storage.get('s-structures:index-native-mode'), 'elastic');
 
@@ -207,6 +225,7 @@ assert.equal(legacyClicks.draw, 1);
 
 assert.equal(normalizeNativeMode('missing'), 'modeling');
 assert.equal(getNativeUiState(target).modes.length, NATIVE_MAIN_MODES.length);
+assert.equal(getNativeUiState(target).ribbon.available, true);
 
 console.log(JSON.stringify({
   ok: true,

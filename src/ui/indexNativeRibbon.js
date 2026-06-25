@@ -24,6 +24,14 @@ export const NATIVE_MAIN_MODES = [
   },
 ];
 
+export const NATIVE_RIBBON_PANELS = [
+  { id: 'common', label: '공통', mode: 'common' },
+  { id: 'modeling', label: '모델링', mode: 'modeling' },
+  { id: 'elastic', label: '탄성해석', mode: 'elastic' },
+  { id: 'nonlinear', label: '비선형해석', mode: 'nonlinear' },
+  { id: 'memo', label: '태블릿메모', mode: 'memo' },
+];
+
 export function installIndexNativeRibbon(target = globalThis, options = {}) {
   const doc = target?.document;
   if (!doc?.querySelector || !doc?.createElement) return null;
@@ -41,9 +49,12 @@ export function installIndexNativeRibbon(target = globalThis, options = {}) {
   };
 
   const tabs = ensureModeTabs(doc, topbar);
+  const ribbonRoot = ensureRibbonRoot(doc);
   const api = {
     version: NATIVE_RIBBON_VERSION,
     modes: NATIVE_MAIN_MODES.map((mode) => ({ ...mode })),
+    ribbonPanels: NATIVE_RIBBON_PANELS.map((panel) => ({ ...panel })),
+    ribbonRoot,
     state,
     setMode(modeId, setOptions = {}) {
       const nextMode = normalizeNativeMode(modeId);
@@ -73,6 +84,11 @@ export function normalizeNativeMode(modeId) {
 export function getNativeUiState(target = globalThis) {
   const api = target?.SStructuresNativeUI;
   const activeMode = normalizeNativeMode(api?.state?.activeMode || target?.document?.body?.dataset?.ssActiveMode);
+  const panels = [...target?.document?.querySelectorAll?.('[data-ss-ribbon-panel]') || []].map((panel) => ({
+    id: panel.getAttribute('data-ss-ribbon-panel'),
+    active: panel.classList?.contains('active') || false,
+    itemCount: countRibbonItems(panel),
+  }));
   return {
     version: api?.version || NATIVE_RIBBON_VERSION,
     activeMode,
@@ -81,7 +97,20 @@ export function getNativeUiState(target = globalThis) {
       label: mode.label,
       active: mode.id === activeMode,
     })),
+    ribbon: {
+      available: !!api?.ribbonRoot,
+      panels,
+    },
   };
+}
+
+function countRibbonItems(panel) {
+  if (!panel?.querySelectorAll) return 0;
+  const items = new Set();
+  for (const selector of ['[data-ss-ribbon-item]', 'button', 'select', 'input']) {
+    for (const item of panel.querySelectorAll(selector)) items.add(item);
+  }
+  return items.size;
 }
 
 function ensureModeTabs(doc, topbar) {
@@ -122,6 +151,64 @@ function ensureModeTabs(doc, topbar) {
   return tabs;
 }
 
+function ensureRibbonRoot(doc) {
+  const subbar = doc.querySelector('#subbar');
+  if (!subbar?.appendChild) return null;
+  const existing = doc.getElementById?.('ssNativeRibbon');
+  if (existing) return existing;
+
+  const originalNodes = Array.from(subbar.childNodes || subbar.children || []);
+  const root = doc.createElement('div');
+  root.id = 'ssNativeRibbon';
+  root.className = 'ss-native-ribbon';
+  root.setAttribute('data-agent-id', 'native-ribbon');
+
+  const commonPanel = createRibbonPanel(doc, NATIVE_RIBBON_PANELS[0]);
+  const commonGroup = createRibbonGroup(doc, 'common-existing', '기본');
+  const commonItems = commonGroup.querySelector('[data-ss-ribbon-items]');
+  for (const node of originalNodes) {
+    if (node === root) continue;
+    commonItems.appendChild(node);
+  }
+  commonPanel.appendChild(commonGroup);
+  root.appendChild(commonPanel);
+
+  for (const panel of NATIVE_RIBBON_PANELS.slice(1)) {
+    root.appendChild(createRibbonPanel(doc, panel));
+  }
+
+  subbar.appendChild(root);
+  return root;
+}
+
+function createRibbonPanel(doc, panel) {
+  const element = doc.createElement('div');
+  element.className = 'ss-ribbon-panel';
+  element.setAttribute('data-ss-ribbon-panel', panel.id);
+  element.setAttribute('data-ss-mode-owner', panel.mode);
+  element.setAttribute('data-agent-id', `native-ribbon-${panel.id}`);
+  return element;
+}
+
+function createRibbonGroup(doc, id, label) {
+  const group = doc.createElement('div');
+  group.className = 'ss-ribbon-group';
+  group.setAttribute('data-ss-ribbon-group', id);
+  group.setAttribute('data-agent-id', `native-ribbon-group-${id}`);
+
+  const title = doc.createElement('span');
+  title.className = 'ss-ribbon-title';
+  title.textContent = label;
+  group.appendChild(title);
+
+  const items = doc.createElement('div');
+  items.className = 'ss-ribbon-items';
+  items.setAttribute('data-ss-ribbon-items', id);
+  group.appendChild(items);
+
+  return group;
+}
+
 function applyModeState(target, tabs, state, options = {}) {
   const doc = target?.document;
   const activeMode = normalizeNativeMode(state.activeMode);
@@ -132,6 +219,11 @@ function applyModeState(target, tabs, state, options = {}) {
     tab.classList?.toggle('active', isActive);
     tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
     tab.setAttribute('tabindex', isActive ? '0' : '-1');
+  }
+
+  for (const panel of doc?.querySelectorAll?.('[data-ss-ribbon-panel]') || []) {
+    const owner = panel.getAttribute('data-ss-mode-owner');
+    panel.classList?.toggle('active', owner === 'common' || owner === activeMode);
   }
 
   if (options.persist !== false) writeStoredMode(target, activeMode);
@@ -178,13 +270,23 @@ function injectNativeRibbonStyle(doc) {
   style.id = 'ssNativeRibbonStyle';
   style.textContent = `
 .ss-native-ui #topbar > .mode{display:none!important;}
+.ss-native-ui #subbar{align-items:stretch;gap:0;padding:0 8px;min-height:44px;}
 .ss-mode-tabs{display:flex;align-items:center;gap:4px;flex:none;min-width:max-content;}
 .ss-mode-tab{height:32px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#d7e5f2;border-radius:6px;padding:0 12px;font-size:13px;font-weight:600;white-space:nowrap;}
 .ss-mode-tab:hover{background:var(--dku2);}
 .ss-mode-tab.active{background:var(--gold);border-color:var(--gold);color:#1d2b3a;}
 .ss-mode-sep{flex:none;}
+.ss-native-ribbon{display:flex;align-items:stretch;gap:8px;width:100%;min-width:max-content;}
+.ss-ribbon-panel{display:none;align-items:center;gap:8px;min-height:42px;}
+.ss-ribbon-panel.active{display:flex;}
+.ss-ribbon-group{display:flex;align-items:center;gap:6px;padding:4px 8px;border-right:1px solid var(--line);min-height:42px;}
+.ss-ribbon-title{font-size:11px;color:#5b7c9c;font-weight:700;white-space:nowrap;}
+.ss-ribbon-items{display:flex;align-items:center;gap:4px;white-space:nowrap;}
 @media (max-width:720px){
   .ss-mode-tab{height:36px;padding:0 10px;font-size:13px;}
+  .ss-native-ui #subbar{padding:4px 8px;}
+  .ss-native-ribbon{gap:4px;}
+  .ss-ribbon-group{padding:3px 6px;}
 }
 `;
   (doc.head || doc.documentElement || doc.body)?.appendChild?.(style);
