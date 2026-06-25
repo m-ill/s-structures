@@ -71,6 +71,33 @@ export const MODELING_RIBBON_GROUPS = [
   },
 ];
 
+export const ELASTIC_RIBBON_GROUPS = [
+  {
+    id: 'elastic-combo',
+    label: '조합',
+    selectors: ['#comboSel'],
+  },
+  {
+    id: 'elastic-results',
+    label: '결과',
+    selectors: ['[data-res]', '#reactMode'],
+  },
+  {
+    id: 'elastic-reports',
+    label: '보고',
+    actions: [
+      { id: 'mLoadCombos', icon: '☷', label: '하중조합' },
+      { id: 'mDesignReport', icon: '▤', label: '설계요약' },
+      { id: 'mValidate', icon: '✓', label: '검증' },
+    ],
+  },
+  {
+    id: 'elastic-status',
+    label: '상태',
+    selectors: ['#statusTxt'],
+  },
+];
+
 export function installIndexNativeRibbon(target = globalThis, options = {}) {
   const doc = target?.document;
   if (!doc?.querySelector || !doc?.createElement) return null;
@@ -223,6 +250,7 @@ function ensureRibbonRoot(target) {
 
   subbar.appendChild(root);
   populateModelingRibbon(target);
+  populateElasticRibbon(target);
   return root;
 }
 
@@ -260,6 +288,55 @@ function createToolProxyButton(target, tool) {
     if (!legacy) return;
     legacy.click?.();
     syncModelingToolButtons(doc);
+  });
+  return button;
+}
+
+function populateElasticRibbon(target) {
+  const doc = target?.document;
+  const panel = doc?.querySelector?.('[data-ss-ribbon-panel="elastic"]');
+  if (!panel || panel.querySelector?.('[data-ss-elastic-ribbon="1"]')) return;
+
+  const marker = doc.createElement('span');
+  marker.setAttribute('data-ss-elastic-ribbon', '1');
+  marker.style.display = 'none';
+  panel.appendChild(marker);
+
+  for (const group of ELASTIC_RIBBON_GROUPS) {
+    const ribbonGroup = createRibbonGroup(doc, group.id, group.label);
+    const items = ribbonGroup.querySelector('[data-ss-ribbon-items]');
+    moveExistingElements(doc, group.selectors || [], items);
+    for (const action of group.actions || []) items.appendChild(createActionProxyButton(target, action));
+    if (items.childNodes?.length || items.children?.length) panel.appendChild(ribbonGroup);
+  }
+}
+
+function moveExistingElements(doc, selectors, target) {
+  if (!target) return;
+  const moved = new Set();
+  for (const selector of selectors) {
+    for (const element of doc.querySelectorAll?.(selector) || []) {
+      if (!element || element.id === 'ssNativeRibbon' || moved.has(element)) continue;
+      element.setAttribute?.('data-ss-ribbon-item', element.id || element.getAttribute?.('data-res') || selector);
+      target.appendChild(element);
+      moved.add(element);
+    }
+  }
+}
+
+function createActionProxyButton(target, action) {
+  const doc = target.document;
+  const button = doc.createElement('button');
+  button.type = 'button';
+  button.className = 'ss-ribbon-command';
+  button.setAttribute('data-ss-action-proxy', action.id);
+  button.setAttribute('data-ss-ribbon-item', `action-${action.id}`);
+  button.setAttribute('data-agent-id', `native-action-${action.id}`);
+  button.setAttribute('aria-label', action.label);
+  button.innerHTML = `<span class="ss-ribbon-icon">${action.icon}</span><span>${action.label}</span>`;
+  if (!doc.getElementById?.(action.id)) button.disabled = true;
+  button.addEventListener?.('click', () => {
+    doc.getElementById?.(action.id)?.click?.();
   });
   return button;
 }
@@ -384,6 +461,9 @@ function injectNativeRibbonStyle(doc) {
 .ss-ribbon-command.active{background:var(--dku);border-color:var(--dku);color:#fff;}
 .ss-ribbon-command:disabled{opacity:.45;cursor:not-allowed;}
 .ss-ribbon-icon{font-size:13px;line-height:1;}
+.ss-ribbon-items #comboSel{max-width:150px;}
+.ss-ribbon-items #reactMode{max-width:150px;}
+.ss-ribbon-items #statusTxt{margin-left:0;max-width:260px;overflow:hidden;text-overflow:ellipsis;}
 @media (max-width:720px){
   .ss-mode-tab{height:36px;padding:0 10px;font-size:13px;}
   .ss-native-ui #subbar{padding:4px 8px;}

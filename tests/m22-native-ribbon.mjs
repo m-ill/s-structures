@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {
   getNativeUiState,
   installIndexNativeRibbon,
+  ELASTIC_RIBBON_GROUPS,
   MODELING_RIBBON_GROUPS,
   NATIVE_MAIN_MODES,
   normalizeNativeMode,
@@ -12,6 +13,7 @@ function createFakeTarget() {
   const document = new FakeDocument();
   const legacyClicks = { structure: 0, select: 0, draw: 0 };
   const toolClicks = {};
+  const actionClicks = {};
   const target = {
     document,
     localStorage: {
@@ -52,6 +54,25 @@ function createFakeTarget() {
   viewButton.setAttribute('data-view', 'iso');
   subbar.appendChild(viewButton);
 
+  const combo = document.createElement('select');
+  combo.id = 'comboSel';
+  subbar.appendChild(combo);
+
+  for (const result of ['def', 'M', 'Q', 'N']) {
+    const button = document.createElement('button');
+    button.className = 'res-toggle';
+    button.setAttribute('data-res', result);
+    subbar.appendChild(button);
+  }
+
+  const reactMode = document.createElement('select');
+  reactMode.id = 'reactMode';
+  subbar.appendChild(reactMode);
+
+  const status = document.createElement('div');
+  status.id = 'statusTxt';
+  subbar.appendChild(status);
+
   const palette = document.createElement('div');
   palette.id = 'palette';
   document.body.appendChild(palette);
@@ -71,7 +92,20 @@ function createFakeTarget() {
   }
   toolButtons[0].classList.add('active');
 
-  return { target, document, legacyClicks, toolClicks, storage };
+  const menu = document.createElement('div');
+  menu.id = 'menuDrop';
+  document.body.appendChild(menu);
+  for (const action of ELASTIC_RIBBON_GROUPS.flatMap((group) => group.actions || [])) {
+    const button = document.createElement('button');
+    button.id = action.id;
+    actionClicks[action.id] = 0;
+    button.addEventListener('click', () => {
+      actionClicks[action.id] += 1;
+    });
+    menu.appendChild(button);
+  }
+
+  return { target, document, legacyClicks, toolClicks, actionClicks, storage };
 }
 
 class FakeDocument {
@@ -219,7 +253,7 @@ function toDatasetKey(name) {
   return name.replace(/-([a-z])/g, (_match, char) => char.toUpperCase());
 }
 
-const { target, document, legacyClicks, toolClicks, storage } = createFakeTarget();
+const { target, document, legacyClicks, toolClicks, actionClicks, storage } = createFakeTarget();
 const api = installIndexNativeRibbon(target);
 
 assert.equal(api.version, 'm22-native-index-ribbon');
@@ -229,6 +263,9 @@ assert.equal(document.body.classList.contains('ss-native-ui'), true);
 assert.equal(document.getElementById('ssModeTabs').querySelectorAll('[data-ss-mode]').length, 4);
 assert.equal(document.getElementById('ssNativeRibbon').querySelectorAll('[data-ss-ribbon-panel]').length, 5);
 assert.equal(document.querySelectorAll('[data-ss-tool-proxy]').length, 12);
+assert.equal(document.querySelector('[data-ss-ribbon-items="elastic-combo"]').querySelector('#comboSel') != null, true);
+assert.equal(document.querySelector('[data-ss-ribbon-items="elastic-results"]').querySelectorAll('[data-res]').length, 4);
+assert.equal(document.querySelectorAll('[data-ss-action-proxy]').length, 3);
 assert.equal(document.querySelector('[data-ss-ribbon-panel="common"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-ribbon-panel="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-mode="modeling"]').classList.contains('active'), true);
@@ -237,6 +274,9 @@ assert.equal(document.querySelector('#ssNativeRibbonStyle') != null, true);
 document.querySelector('[data-ss-tool-proxy="member"]').click();
 assert.equal(toolClicks.member, 1);
 assert.equal(document.querySelector('[data-ss-tool-proxy="member"]').classList.contains('active'), true);
+
+document.querySelector('[data-ss-action-proxy="mValidate"]').click();
+assert.equal(actionClicks.mValidate, 1);
 
 api.setMode('elastic');
 assert.equal(document.body.dataset.ssActiveMode, 'elastic');
