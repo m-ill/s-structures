@@ -34,39 +34,10 @@ export const NATIVE_RIBBON_PANELS = [
 
 export const MODELING_RIBBON_GROUPS = [
   {
-    id: 'model-select',
-    label: '선택',
-    tools: [
-      { tool: 'smove', icon: '✥', label: '선택' },
-      { tool: 'boxsel', icon: '▭', label: '다중' },
-      { tool: 'sdelete', icon: '✕', label: '삭제' },
-    ],
-  },
-  {
-    id: 'model-geometry',
-    label: '형상',
-    tools: [
-      { tool: 'member', icon: '╱', label: '부재' },
-      { tool: 'column', icon: '┃', label: '기둥' },
-      { tool: 'addnode', icon: '⊕', label: '절점' },
-    ],
-  },
-  {
-    id: 'model-supports',
-    label: '지점',
-    tools: [
-      { tool: 'pin', icon: '▲', label: '핀' },
-      { tool: 'roller', icon: '◬', label: '롤러' },
-      { tool: 'fixed', icon: '▮', label: '고정' },
-    ],
-  },
-  {
-    id: 'model-loads',
-    label: '하중',
-    tools: [
-      { tool: 'pload', icon: '↓', label: '집중' },
-      { tool: 'udl', icon: '⇊', label: '분포' },
-      { tool: 'mload', icon: '↻', label: '모멘트' },
+    id: 'model-panel',
+    label: '도구',
+    actions: [
+      { id: 'togglePalette', icon: '▦', label: '도구' },
     ],
   },
 ];
@@ -148,10 +119,12 @@ export function installIndexNativeRibbon(target = globalThis, options = {}) {
   };
 
   target.SStructuresNativeUI = api;
-  syncModelingToolButtons(doc);
+  syncPaletteToggleButtons(doc);
   syncMemoModeButtons(doc);
   doc.addEventListener?.('click', (event) => {
-    if (event.target?.closest?.('[data-tool]')) queueMicrotask(() => syncModelingToolButtons(doc));
+    if (event.target?.closest?.('#paletteToggle,[data-ss-palette-toggle]')) {
+      queueMicrotask(() => syncPaletteToggleButtons(doc));
+    }
     if (event.target?.closest?.('[data-mode]')) queueMicrotask(() => syncMemoModeButtons(doc));
   });
   api.setMode(initialMode, { persist: false, clickLegacy: false, emit: false });
@@ -282,27 +255,29 @@ function populateModelingRibbon(target) {
   for (const group of MODELING_RIBBON_GROUPS) {
     const ribbonGroup = createRibbonGroup(doc, group.id, group.label);
     const items = ribbonGroup.querySelector('[data-ss-ribbon-items]');
-    for (const tool of group.tools) items.appendChild(createToolProxyButton(target, tool));
-    panel.appendChild(ribbonGroup);
+    for (const action of group.actions || []) {
+      if (action.id === 'togglePalette') items.appendChild(createPaletteToggleButton(target, action));
+    }
+    if (items.childNodes?.length || items.children?.length) panel.appendChild(ribbonGroup);
   }
+  syncPaletteToggleButtons(doc);
 }
 
-function createToolProxyButton(target, tool) {
+function createPaletteToggleButton(target, action = {}) {
   const doc = target.document;
   const button = doc.createElement('button');
+  const icon = action.icon || '▦';
+  const label = action.label || '도구';
   button.type = 'button';
   button.className = 'ss-ribbon-command';
-  button.setAttribute('data-ss-tool-proxy', tool.tool);
-  button.setAttribute('data-ss-ribbon-item', `tool-${tool.tool}`);
-  button.setAttribute('data-agent-id', `native-tool-${tool.tool}`);
-  button.setAttribute('aria-label', tool.label);
-  button.innerHTML = `<span class="ss-ribbon-icon">${tool.icon}</span><span>${tool.label}</span>`;
-  if (!findLegacyTool(doc, tool.tool)) button.disabled = true;
+  button.setAttribute('data-ss-palette-toggle', '1');
+  button.setAttribute('data-ss-ribbon-item', 'toggle-palette');
+  button.setAttribute('data-agent-id', 'native-toggle-palette');
+  button.setAttribute('aria-label', `${label} 패널`);
+  button.innerHTML = `<span class="ss-ribbon-icon">${icon}</span><span>${label}</span>`;
+  if (!doc.getElementById?.('palette')) button.disabled = true;
   button.addEventListener?.('click', () => {
-    const legacy = findLegacyTool(doc, tool.tool);
-    if (!legacy) return;
-    legacy.click?.();
-    syncModelingToolButtons(doc);
+    togglePalettePanel(doc);
   });
   return button;
 }
@@ -639,6 +614,7 @@ function applyModeState(target, tabs, state, options = {}) {
 
   if (options.persist !== false) writeStoredMode(target, activeMode);
   if (options.clickLegacy !== false) activateLegacyMode(target, activeMode);
+  syncPaletteToggleButtons(doc);
   if (options.emit !== false) emitNativeModeChange(target);
 }
 
@@ -651,18 +627,34 @@ function activateLegacyMode(target, activeMode) {
   button.click?.();
 }
 
-function syncModelingToolButtons(doc) {
+function syncPaletteToggleButtons(doc) {
   if (!doc?.querySelectorAll) return;
-  for (const proxy of doc.querySelectorAll('[data-ss-tool-proxy]')) {
-    const tool = proxy.getAttribute('data-ss-tool-proxy');
-    const legacy = findLegacyTool(doc, tool);
-    proxy.disabled = !!legacy?.disabled || !legacy;
-    proxy.classList?.toggle('active', !!legacy?.classList?.contains?.('active'));
+  const palette = doc.getElementById?.('palette');
+  const open = isPaletteOpen(doc);
+  for (const button of doc.querySelectorAll('[data-ss-palette-toggle]')) {
+    button.disabled = !palette;
+    button.classList?.toggle('active', open);
+    button.setAttribute?.('aria-pressed', open ? 'true' : 'false');
+    button.setAttribute?.('title', open ? '도구 패널 닫기' : '도구 패널 열기');
   }
 }
 
-function findLegacyTool(doc, tool) {
-  return doc?.querySelector?.(`[data-tool="${tool}"]`) || null;
+function isPaletteOpen(doc) {
+  const palette = doc?.getElementById?.('palette');
+  return !!palette?.classList?.contains?.('show') && !palette.classList.contains('collapsed');
+}
+
+function setPaletteOpen(doc, open) {
+  const palette = doc?.getElementById?.('palette');
+  if (!palette?.classList) return false;
+  palette.classList.toggle('show', !!open);
+  palette.classList.toggle('collapsed', !open);
+  syncPaletteToggleButtons(doc);
+  return true;
+}
+
+function togglePalettePanel(doc) {
+  return setPaletteOpen(doc, !isPaletteOpen(doc));
 }
 
 function syncMemoModeButtons(doc) {

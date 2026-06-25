@@ -4,7 +4,6 @@ import {
   installIndexNativeRibbon,
   ELASTIC_RIBBON_GROUPS,
   MEMO_RIBBON_MODES,
-  MODELING_RIBBON_GROUPS,
   NATIVE_MAIN_MODES,
   normalizeNativeMode,
 } from '../src/ui/indexNativeRibbon.js';
@@ -13,7 +12,6 @@ function createFakeTarget() {
   const storage = new Map();
   const document = new FakeDocument();
   const legacyClicks = { structure: 0, select: 0, draw: 0, erase: 0, image: 0 };
-  const toolClicks = {};
   const actionClicks = {};
   const pushoverCalls = [];
   const target = {
@@ -104,17 +102,16 @@ function createFakeTarget() {
 
   const palette = document.createElement('div');
   palette.id = 'palette';
+  palette.classList.add('show');
   document.body.appendChild(palette);
   const toolButtons = [];
-  for (const tool of MODELING_RIBBON_GROUPS.flatMap((group) => group.tools)) {
+  for (const tool of ['smove', 'member', 'pin', 'pload']) {
     const button = document.createElement('button');
     button.className = 'tool-btn';
-    button.setAttribute('data-tool', tool.tool);
-    toolClicks[tool.tool] = 0;
+    button.setAttribute('data-tool', tool);
     button.addEventListener('click', () => {
       toolButtons.forEach((item) => item.classList.remove('active'));
       button.classList.add('active');
-      toolClicks[tool.tool] += 1;
     });
     toolButtons.push(button);
     palette.appendChild(button);
@@ -134,7 +131,7 @@ function createFakeTarget() {
     menu.appendChild(button);
   }
 
-  return { target, document, legacyClicks, toolClicks, actionClicks, pushoverCalls, storage };
+  return { target, document, legacyClicks, actionClicks, pushoverCalls, storage };
 }
 
 class FakeDocument {
@@ -284,7 +281,7 @@ function toDatasetKey(name) {
   return name.replace(/-([a-z])/g, (_match, char) => char.toUpperCase());
 }
 
-const { target, document, legacyClicks, toolClicks, actionClicks, pushoverCalls, storage } = createFakeTarget();
+const { target, document, legacyClicks, actionClicks, pushoverCalls, storage } = createFakeTarget();
 const api = installIndexNativeRibbon(target);
 
 assert.equal(api.version, 'm22-native-index-ribbon');
@@ -293,7 +290,10 @@ assert.equal(document.body.dataset.ssActiveMode, 'modeling');
 assert.equal(document.body.classList.contains('ss-native-ui'), true);
 assert.equal(document.getElementById('ssModeTabs').querySelectorAll('[data-ss-mode]').length, 4);
 assert.equal(document.getElementById('ssNativeRibbon').querySelectorAll('[data-ss-ribbon-panel]').length, 5);
-assert.equal(document.querySelectorAll('[data-ss-tool-proxy]').length, 12);
+assert.equal(document.querySelectorAll('[data-ss-tool-proxy]').length, 0);
+assert.equal(document.querySelectorAll('[data-ss-palette-toggle]').length, 1);
+assert.equal(document.querySelector('[data-ss-palette-toggle]').classList.contains('active'), true);
+assert.equal(document.querySelector('[data-ss-palette-toggle]').getAttribute('aria-pressed'), 'true');
 assert.equal(document.querySelector('[data-ss-ribbon-items="elastic-combo"]').querySelector('#comboSel') != null, true);
 assert.equal(document.querySelector('[data-ss-ribbon-items="elastic-results"]').querySelectorAll('[data-res]').length, 4);
 assert.equal(document.querySelectorAll('[data-ss-action-proxy]').length, 3);
@@ -309,9 +309,16 @@ assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-n
 assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /#subbar\{[^}]*overflow-x:visible/);
 assert.doesNotMatch(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-native-ribbon\{[^}]*min-width:max-content/);
 
-document.querySelector('[data-ss-tool-proxy="member"]').click();
-assert.equal(toolClicks.member, 1);
-assert.equal(document.querySelector('[data-ss-tool-proxy="member"]').classList.contains('active'), true);
+document.querySelector('[data-ss-palette-toggle]').click();
+assert.equal(document.querySelector('#palette').classList.contains('collapsed'), true);
+assert.equal(document.querySelector('#palette').classList.contains('show'), false);
+assert.equal(document.querySelector('[data-ss-palette-toggle]').classList.contains('active'), false);
+assert.equal(document.querySelector('[data-ss-palette-toggle]').getAttribute('aria-pressed'), 'false');
+
+document.querySelector('[data-ss-palette-toggle]').click();
+assert.equal(document.querySelector('#palette').classList.contains('collapsed'), false);
+assert.equal(document.querySelector('#palette').classList.contains('show'), true);
+assert.equal(document.querySelector('[data-ss-palette-toggle]').classList.contains('active'), true);
 
 document.querySelector('[data-ss-action-proxy="mValidate"]').click();
 assert.equal(actionClicks.mValidate, 1);
