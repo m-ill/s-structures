@@ -21,6 +21,7 @@ import { installIndexNativeModeler, NATIVE_MODELER_ACTIONS } from './indexNative
 import { installIndexNativePersistence } from './indexNativePersistence.js';
 import { installIndexNativeAgentControls, NATIVE_AGENT_CONTROL_ACTIONS } from './indexNativeAgentControls.js';
 import { installIndexNativeAdvancedAnalysis, NATIVE_ADVANCED_ACTIONS } from './indexNativeAdvancedAnalysis.js';
+import { installIndexProductHardening } from './indexProductHardening.js';
 import { installIndexRuntimeAdapter } from './indexRuntimeAdapter.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
@@ -147,6 +148,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.nativePersistence = installIndexNativePersistence(target, { bridge });
     bridge.nativeAgentControls = installIndexNativeAgentControls(target, { bridge });
     bridge.nativeAdvancedAnalysis = installIndexNativeAdvancedAnalysis(target, { bridge });
+    bridge.productHardening = installIndexProductHardening(target, { bridge });
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
@@ -216,6 +218,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         nativePersistence: target.SStructuresNativePersistence?.getState?.() || null,
         nativeAgentControls: target.SStructuresNativeAgentControls?.getState?.() || null,
         nativeAdvancedAnalysis: target.SStructuresNativeAdvancedAnalysis?.getState?.() || null,
+        productHardening: target.SStructuresProductHardening?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         agent: model ? summarizeAgentModelState(model, agentState) : { selection: { type: null, id: null, exists: false } },
         controls: target.document ? listAgentControls(target.document) : [],
@@ -236,6 +239,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         nativePersistence: target.SStructuresNativePersistence?.getState?.() || null,
         nativeAgentControls: target.SStructuresNativeAgentControls?.getState?.() || null,
         nativeAdvancedAnalysis: target.SStructuresNativeAdvancedAnalysis?.getState?.() || null,
+        productHardening: target.SStructuresProductHardening?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         controls: target.document ? listAgentControls(target.document) : [],
       });
@@ -346,6 +350,8 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         case 'runNativePushoverReport':
         case 'showNativeModalReport':
           return executeNativeAdvancedAnalysis(target, action, payload, api);
+        case 'runNativeProductAudit':
+          return runNativeProductAudit(target, api);
         case 'setResultTab':
           return setResultTab(target, payload.tab, api);
         case 'setPDeltaStep':
@@ -403,6 +409,7 @@ function availableAgentActions() {
     'restoreNativeAutosave',
     ...NATIVE_AGENT_CONTROL_ACTIONS,
     ...NATIVE_ADVANCED_ACTIONS,
+    'runNativeProductAudit',
     ...MODELING_ACTIONS,
   ];
 }
@@ -905,6 +912,15 @@ function executeNativeAdvancedAnalysis(target, action, payload, api) {
   return {
     ...api.getSnapshot(),
     advanced,
+  };
+}
+
+function runNativeProductAudit(target, api) {
+  if (!target.SStructuresProductHardening?.runAudit) throw new Error('Product hardening audit is not available.');
+  const audit = target.SStructuresProductHardening.runAudit();
+  return {
+    ...api.getSnapshot(),
+    audit,
   };
 }
 
