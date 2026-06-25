@@ -305,6 +305,9 @@ assert.equal(document.querySelector('[data-ss-ribbon-panel="common"]').classList
 assert.equal(document.querySelector('[data-ss-ribbon-panel="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('[data-ss-mode="modeling"]').classList.contains('active'), true);
 assert.equal(document.querySelector('#ssNativeRibbonStyle') != null, true);
+assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-native-ribbon\{[^}]*flex-wrap:wrap/);
+assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /#subbar\{[^}]*overflow-x:visible/);
+assert.doesNotMatch(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-native-ribbon\{[^}]*min-width:max-content/);
 
 document.querySelector('[data-ss-tool-proxy="member"]').click();
 assert.equal(toolClicks.member, 1);
