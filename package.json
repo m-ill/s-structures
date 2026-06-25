@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node tools/serve.mjs",
-    "test": "npm.cmd run test:m0 && npm.cmd run test:m1 && npm.cmd run test:m2 && npm.cmd run test:m3 && npm.cmd run test:m4 && npm.cmd run test:m5 && npm.cmd run test:m6 && npm.cmd run test:m7 && npm.cmd run test:m8 && npm.cmd run test:m9 && npm.cmd run test:m10 && npm.cmd run test:m11 && npm.cmd run test:m12 && npm.cmd run test:m13 && npm.cmd run test:m14 && npm.cmd run test:m15 && npm.cmd run test:m16 && npm.cmd run test:m17 && npm.cmd run test:m18 && npm.cmd run test:m19 && npm.cmd run test:m20 && npm.cmd run test:m21 && npm.cmd run test:m22 && npm.cmd run test:m23 && npm.cmd run test:m24 && npm.cmd run test:m25 && npm.cmd run test:m26 && npm.cmd run test:m27",
+    "test": "npm.cmd run test:m0 && npm.cmd run test:m1 && npm.cmd run test:m2 && npm.cmd run test:m3 && npm.cmd run test:m4 && npm.cmd run test:m5 && npm.cmd run test:m6 && npm.cmd run test:m7 && npm.cmd run test:m8 && npm.cmd run test:m9 && npm.cmd run test:m10 && npm.cmd run test:m11 && npm.cmd run test:m12 && npm.cmd run test:m13 && npm.cmd run test:m14 && npm.cmd run test:m15 && npm.cmd run test:m16 && npm.cmd run test:m17 && npm.cmd run test:m18 && npm.cmd run test:m19 && npm.cmd run test:m20 && npm.cmd run test:m21 && npm.cmd run test:m22 && npm.cmd run test:m23 && npm.cmd run test:m24 && npm.cmd run test:m25 && npm.cmd run test:m26 && npm.cmd run test:m27 && npm.cmd run test:m28",
     "test:m0": "node tests/m0-smoke.mjs",
     "test:m1": "node tests/m1-schema.mjs",
     "test:m2": "node tests/m2-linear3d.mjs",
@@ -33,6 +33,7 @@
     "test:m24": "node tests/m24-legacy-result-shape.mjs",
     "test:m25": "node tests/m25-native-result-controls.mjs",
     "test:m26": "node tests/m26-native-modeler-e2e.mjs",
-    "test:m27": "node tests/m27-native-persistence.mjs"
+    "test:m27": "node tests/m27-native-persistence.mjs",
+    "test:m28": "node tests/m28-native-agent-controls.mjs"
   }
 }

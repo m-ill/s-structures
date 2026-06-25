@@ -103,6 +103,7 @@ export function buildNativeIndexShell(document) {
   document.body.appendChild(propPanel);
   document.body.appendChild(byId(document, 'statusChip', '-'));
   document.body.appendChild(byId(document, 'pageInfo', '1 / 1'));
+  document.body.appendChild(byId(document, 'lcModal'));
   document.body.appendChild(byId(document, 'reportModal'));
 
   const setExag = document.createElement('select');

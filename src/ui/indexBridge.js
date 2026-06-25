@@ -19,6 +19,7 @@ import { getNativeUiState, installIndexNativeRibbon } from './indexNativeRibbon.
 import { installIndexNativeResultControls } from './indexNativeResultControls.js';
 import { installIndexNativeModeler, NATIVE_MODELER_ACTIONS } from './indexNativeModeler.js';
 import { installIndexNativePersistence } from './indexNativePersistence.js';
+import { installIndexNativeAgentControls, NATIVE_AGENT_CONTROL_ACTIONS } from './indexNativeAgentControls.js';
 import { installIndexRuntimeAdapter } from './indexRuntimeAdapter.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
@@ -143,6 +144,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.nativeResultControls = installIndexNativeResultControls(target, { bridge });
     bridge.nativeModeler = installIndexNativeModeler(target, { bridge });
     bridge.nativePersistence = installIndexNativePersistence(target, { bridge });
+    bridge.nativeAgentControls = installIndexNativeAgentControls(target, { bridge });
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
@@ -210,6 +212,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         nativeResultControls: target.SStructuresNativeResultControls?.getState?.() || null,
         nativeModeler: target.SStructuresNativeModeler?.getState?.() || null,
         nativePersistence: target.SStructuresNativePersistence?.getState?.() || null,
+        nativeAgentControls: target.SStructuresNativeAgentControls?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         agent: model ? summarizeAgentModelState(model, agentState) : { selection: { type: null, id: null, exists: false } },
         controls: target.document ? listAgentControls(target.document) : [],
@@ -228,6 +231,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         nativeResultControls: target.SStructuresNativeResultControls?.getState?.() || null,
         nativeModeler: target.SStructuresNativeModeler?.getState?.() || null,
         nativePersistence: target.SStructuresNativePersistence?.getState?.() || null,
+        nativeAgentControls: target.SStructuresNativeAgentControls?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         controls: target.document ? listAgentControls(target.document) : [],
       });
@@ -328,6 +332,13 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
           return saveNativeAutosave(target, payload, api);
         case 'restoreNativeAutosave':
           return restoreNativeAutosave(target, api);
+        case 'clickNativeControl':
+        case 'setNativeResultToggle':
+        case 'setNativeCombo':
+        case 'openNativeLoadCombinations':
+        case 'openNativeDesignReport':
+        case 'runNativeValidation':
+          return executeNativeAgentControl(target, action, payload, api);
         case 'setResultTab':
           return setResultTab(target, payload.tab, api);
         case 'setPDeltaStep':
@@ -383,6 +394,7 @@ function availableAgentActions() {
     'importNativeBook',
     'saveNativeAutosave',
     'restoreNativeAutosave',
+    ...NATIVE_AGENT_CONTROL_ACTIONS,
     ...MODELING_ACTIONS,
   ];
 }
@@ -865,6 +877,15 @@ function restoreNativeAutosave(target, api) {
   return {
     ...api.getSnapshot(),
     persistence,
+  };
+}
+
+function executeNativeAgentControl(target, action, payload, api) {
+  if (!target.SStructuresNativeAgentControls?.execute) throw new Error('Native agent controls are not available.');
+  const nativeControl = target.SStructuresNativeAgentControls.execute(action, payload);
+  return {
+    ...api.getSnapshot(),
+    nativeControlResult: nativeControl.actionResult,
   };
 }
 
