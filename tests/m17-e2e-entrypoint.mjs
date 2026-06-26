@@ -29,6 +29,8 @@ try {
   const rootHtml = await rootResponse.text();
   assert.match(rootHtml, /S-Structures/);
   assert.match(rootHtml, /src\/ui\/indexBridge\.js/);
+  assert.match(rootHtml, /SStructuresNativeRuntime/);
+  assert.match(rootHtml, /src\/ui\/indexBridge\.js\?runtime=m31/);
   assert.match(rootHtml, /id="canvasWrap"/);
 
   const bridgeResponse = await fetch(`${baseUrl}/src/ui/indexBridge.js`);
