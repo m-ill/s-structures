@@ -1,0 +1,91 @@
+{
+  "version": "m33-representative-building-set",
+  "id": "07-apartment-frame-equivalent",
+  "name": "Apartment frame equivalent",
+  "type": "apartment",
+  "description": "Six-story elongated residential block represented as an equivalent 3D frame.",
+  "model": {
+    "nodeCount": 126,
+    "memberCount": 270,
+    "loadCount": 540,
+    "loadCaseCount": 4,
+    "combinationCount": 3,
+    "stories": 6,
+    "size": {
+      "x": 25,
+      "y": 7.6,
+      "z": 17.4
+    }
+  },
+  "analysis": {
+    "ok": true,
+    "comboIds": [
+      "EL-DL",
+      "EL-WX",
+      "EL-WY"
+    ],
+    "maxEnvelopeDisplacement": 0.0008801571367623951,
+    "maxEnvelopeUtilization": 0.06434512308496175,
+    "designStatus": "OK",
+    "governing": {
+      "memberId": "M1",
+      "checkId": "steel-slenderness",
+      "status": "OK",
+      "ratio": 0.09223245447181126,
+      "comboId": "EL-DL",
+      "x": 0
+    },
+    "combos": {
+      "EL-DL": {
+        "ok": true,
+        "maxDisplacement": 0.0005070701499664951,
+        "maxUtilization": 0.05836443745779502,
+        "equilibriumResidual": 1.4282983783307677e-16,
+        "totalLoad": [
+          0,
+          0,
+          -3183.840000000007
+        ],
+        "totalReaction": [
+          4.707345624410664e-14,
+          9.103828801926284e-15,
+          3183.8400000000074
+        ]
+      },
+      "EL-WX": {
+        "ok": true,
+        "maxDisplacement": 0.0008801571367623951,
+        "maxUtilization": 0.06434512308496175,
+        "equilibriumResidual": 1.5286652914026609e-15,
+        "totalLoad": [
+          66.35416666666663,
+          0,
+          -2677.3200000000033
+        ],
+        "totalReaction": [
+          -66.35416666666886,
+          -8.992806499463768e-15,
+          2677.3200000000074
+        ]
+      },
+      "EL-WY": {
+        "ok": true,
+        "maxDisplacement": 0.0008614578159148212,
+        "maxUtilization": 0.06399993084720755,
+        "equilibriumResidual": 4.527609352661353e-15,
+        "totalLoad": [
+          0,
+          60.6666666666667,
+          -2677.3200000000033
+        ],
+        "totalReaction": [
+          4.374278717023117e-14,
+          -60.66666666667882,
+          2677.320000000006
+        ]
+      }
+    },
+    "errors": [],
+    "warnings": []
+  }
+}

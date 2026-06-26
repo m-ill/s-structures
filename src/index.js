@@ -68,6 +68,13 @@ export {
   summarizeTwoStoryElasticWorkflow,
 } from './examples/twoStoryElasticFrame.js';
 export {
+  REPRESENTATIVE_BUILDINGS_VERSION,
+  REPRESENTATIVE_BUILDING_SPECS,
+  createAllRepresentativeBuildingModels,
+  createRepresentativeBuildingModel,
+  summarizeRepresentativeBuilding,
+} from './examples/representativeBuildings.js';
+export {
   BENCH_INTERNAL,
   BENCH_MATERIAL,
   BENCH_SECTION,

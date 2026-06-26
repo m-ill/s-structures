@@ -1,0 +1,91 @@
+{
+  "version": "m33-representative-building-set",
+  "id": "08-courtyard-hospital",
+  "name": "Courtyard hospital frame",
+  "type": "hospital",
+  "description": "Four-story public facility frame with a central courtyard opening.",
+  "model": {
+    "nodeCount": 120,
+    "memberCount": 240,
+    "loadCount": 480,
+    "loadCaseCount": 4,
+    "combinationCount": 3,
+    "stories": 4,
+    "size": {
+      "x": 24,
+      "y": 24,
+      "z": 15.2
+    }
+  },
+  "analysis": {
+    "ok": true,
+    "comboIds": [
+      "EL-DL",
+      "EL-WX",
+      "EL-WY"
+    ],
+    "maxEnvelopeDisplacement": 0.0008237271828789811,
+    "maxEnvelopeUtilization": 0.07294645793842994,
+    "designStatus": "OK",
+    "governing": {
+      "memberId": "M73",
+      "checkId": "steel-slenderness",
+      "status": "OK",
+      "ratio": 0.12085631965271823,
+      "comboId": "EL-DL",
+      "x": 0
+    },
+    "combos": {
+      "EL-DL": {
+        "ok": true,
+        "maxDisplacement": 0.0006799769910030252,
+        "maxUtilization": 0.07294645793842994,
+        "equilibriumResidual": 2.2161176943784863e-15,
+        "totalLoad": [
+          0,
+          0,
+          -4924.7999999999865
+        ],
+        "totalReaction": [
+          2.6201263381153694e-14,
+          2.042810365310288e-14,
+          4924.799999999997
+        ]
+      },
+      "EL-WX": {
+        "ok": true,
+        "maxDisplacement": 0.0008237271828789811,
+        "maxUtilization": 0.07026905846110396,
+        "equilibriumResidual": 2.4636627559845932e-15,
+        "totalLoad": [
+          45.62500000000003,
+          0,
+          -4060.7999999999893
+        ],
+        "totalReaction": [
+          -45.62500000000432,
+          5.329070518200751e-15,
+          4060.7999999999993
+        ]
+      },
+      "EL-WY": {
+        "ok": true,
+        "maxDisplacement": 0.0008237271828789238,
+        "maxUtilization": 0.07026905846110197,
+        "equilibriumResidual": 2.2396934145314487e-15,
+        "totalLoad": [
+          0,
+          45.62500000000003,
+          -4060.7999999999893
+        ],
+        "totalReaction": [
+          3.4638958368304884e-14,
+          -45.624999999998,
+          4060.7999999999984
+        ]
+      }
+    },
+    "errors": [],
+    "warnings": []
+  }
+}

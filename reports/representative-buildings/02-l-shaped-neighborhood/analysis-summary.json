@@ -1,0 +1,91 @@
+{
+  "version": "m33-representative-building-set",
+  "id": "02-l-shaped-neighborhood",
+  "name": "L-shaped neighborhood facility",
+  "type": "neighborhood-living",
+  "description": "Three-story L-shaped low-rise commercial frame with plan irregularity.",
+  "model": {
+    "nodeCount": 48,
+    "memberCount": 84,
+    "loadCount": 168,
+    "loadCaseCount": 4,
+    "combinationCount": 3,
+    "stories": 3,
+    "size": {
+      "x": 16.5,
+      "y": 13.5,
+      "z": 10.5
+    }
+  },
+  "analysis": {
+    "ok": true,
+    "comboIds": [
+      "EL-DL",
+      "EL-WX",
+      "EL-WY"
+    ],
+    "maxEnvelopeDisplacement": 0.0007257859608495803,
+    "maxEnvelopeUtilization": 0.058818199282642855,
+    "designStatus": "OK",
+    "governing": {
+      "memberId": "M1",
+      "checkId": "steel-slenderness",
+      "status": "OK",
+      "ratio": 0.11131503125908254,
+      "comboId": "EL-DL",
+      "x": 0
+    },
+    "combos": {
+      "EL-DL": {
+        "ok": true,
+        "maxDisplacement": 0.0004225349270962994,
+        "maxUtilization": 0.05240284910773891,
+        "equilibriumResidual": 2.9605947323337506e-16,
+        "totalLoad": [
+          0,
+          0,
+          -1536
+        ],
+        "totalReaction": [
+          -2.220446049250313e-14,
+          -2.7533531010703882e-14,
+          1536.0000000000005
+        ]
+      },
+      "EL-WX": {
+        "ok": true,
+        "maxDisplacement": 0.0007257859608495803,
+        "maxUtilization": 0.058818199282642855,
+        "equilibriumResidual": 9.451129337834666e-16,
+        "totalLoad": [
+          38.733333333333334,
+          0,
+          -1248
+        ],
+        "totalReaction": [
+          -38.733333333332155,
+          5.995204332975845e-14,
+          1248
+        ]
+      },
+      "EL-WY": {
+        "ok": true,
+        "maxDisplacement": 0.0005847328968752017,
+        "maxUtilization": 0.05612573989700191,
+        "equilibriumResidual": 1.5201515260252143e-15,
+        "totalLoad": [
+          0,
+          33.199999999999996,
+          -1248
+        ],
+        "totalReaction": [
+          -6.217248937900877e-15,
+          -33.1999999999981,
+          1248.0000000000005
+        ]
+      }
+    },
+    "errors": [],
+    "warnings": []
+  }
+}

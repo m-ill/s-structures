@@ -1,0 +1,3849 @@
+{
+  "schemaVersion": 3,
+  "units": {
+    "length": "m",
+    "force": "kN",
+    "moment": "kN.m",
+    "stress": "N/mm2",
+    "displacement": "mm"
+  },
+  "materials": [
+    {
+      "id": "steel",
+      "name": "Steel SS400",
+      "E": 205000,
+      "G": 79000,
+      "Fy": 235,
+      "Fu": 400,
+      "density": 7.85,
+      "allow": {
+        "fb": 156.7,
+        "ft": 156.7,
+        "fc": 156.7,
+        "fv": 90.4
+      }
+    },
+    {
+      "id": "sm490",
+      "name": "Steel SM490",
+      "E": 205000,
+      "G": 79000,
+      "Fy": 325,
+      "Fu": 490,
+      "density": 7.85,
+      "allow": {
+        "fb": 216.7,
+        "ft": 216.7,
+        "fc": 216.7,
+        "fv": 125
+      }
+    },
+    {
+      "id": "concrete",
+      "name": "Concrete Fc24",
+      "E": 22700,
+      "G": 9500,
+      "Fy": 24,
+      "Fu": 24,
+      "density": 2.4,
+      "allow": {
+        "fb": 8,
+        "ft": 0.8,
+        "fc": 8,
+        "fv": 0.73
+      }
+    },
+    {
+      "id": "wood",
+      "name": "Wood",
+      "E": 7000,
+      "G": 440,
+      "Fy": 22,
+      "Fu": 22,
+      "density": 0.38,
+      "allow": {
+        "fb": 8.1,
+        "ft": 5.4,
+        "fc": 6.5,
+        "fv": 0.66
+      }
+    }
+  ],
+  "sections": [
+    {
+      "id": "h200",
+      "name": "H-200x100x5.5x8",
+      "type": "H",
+      "dims": {
+        "H": 200,
+        "B": 100,
+        "tw": 5.5,
+        "tf": 8
+      },
+      "A": 0.002716,
+      "Iz": 0.0000184,
+      "Zz": 0.000184,
+      "Iy": 0.00000134,
+      "Zy": 0.0000268,
+      "J": 5e-8
+    },
+    {
+      "id": "h300",
+      "name": "H-300x150x6.5x9",
+      "type": "H",
+      "dims": {
+        "H": 300,
+        "B": 150,
+        "tw": 6.5,
+        "tf": 9
+      },
+      "A": 0.004678,
+      "Iz": 0.0000721,
+      "Zz": 0.000481,
+      "Iy": 0.00000508,
+      "Zy": 0.0000677,
+      "J": 9e-8
+    },
+    {
+      "id": "h400",
+      "name": "H-400x200x8x13",
+      "type": "H",
+      "dims": {
+        "H": 400,
+        "B": 200,
+        "tw": 8,
+        "tf": 13
+      },
+      "A": 0.008412,
+      "Iz": 0.000237,
+      "Zz": 0.00119,
+      "Iy": 0.0000174,
+      "Zy": 0.000174,
+      "J": 3.7e-7
+    },
+    {
+      "id": "box200",
+      "name": "BOX-200x200x9",
+      "type": "BOX",
+      "dims": {
+        "H": 200,
+        "B": 200,
+        "t": 9
+      },
+      "A": 0.006789,
+      "Iz": 0.0000409,
+      "Zz": 0.000409,
+      "Iy": 0.0000409,
+      "Zy": 0.000409,
+      "J": 0.0000627
+    },
+    {
+      "id": "rc3060",
+      "name": "RC 300x600",
+      "type": "RECT",
+      "dims": {
+        "B": 300,
+        "H": 600
+      },
+      "A": 0.18,
+      "Iz": 0.0054,
+      "Zz": 0.018,
+      "Iy": 0.00135,
+      "Zy": 0.009,
+      "J": 0.0037
+    },
+    {
+      "id": "box400h",
+      "name": "BOX-400x400x16 equivalent",
+      "type": "BOX",
+      "dims": {
+        "H": 400,
+        "B": 400,
+        "t": 16
+      },
+      "A": 0.0246,
+      "Iz": 0.000608,
+      "Zz": 0.00304,
+      "Iy": 0.000608,
+      "Zy": 0.00304,
+      "J": 0.00112
+    }
+  ],
+  "nodes": [
+    {
+      "id": "N1",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N2",
+      "x": 5.5,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N3",
+      "x": 11,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N4",
+      "x": 16.5,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N5",
+      "x": 0,
+      "y": 4.5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N6",
+      "x": 5.5,
+      "y": 4.5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N7",
+      "x": 11,
+      "y": 4.5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N8",
+      "x": 16.5,
+      "y": 4.5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N9",
+      "x": 0,
+      "y": 9,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N10",
+      "x": 5.5,
+      "y": 9,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N11",
+      "x": 0,
+      "y": 13.5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N12",
+      "x": 5.5,
+      "y": 13.5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N13",
+      "x": 0,
+      "y": 0,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N14",
+      "x": 5.5,
+      "y": 0,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N15",
+      "x": 11,
+      "y": 0,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N16",
+      "x": 16.5,
+      "y": 0,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N17",
+      "x": 0,
+      "y": 4.5,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N18",
+      "x": 5.5,
+      "y": 4.5,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N19",
+      "x": 11,
+      "y": 4.5,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N20",
+      "x": 16.5,
+      "y": 4.5,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N21",
+      "x": 0,
+      "y": 9,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N22",
+      "x": 5.5,
+      "y": 9,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N23",
+      "x": 0,
+      "y": 13.5,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N24",
+      "x": 5.5,
+      "y": 13.5,
+      "z": 3.5,
+      "support": null
+    },
+    {
+      "id": "N25",
+      "x": 0,
+      "y": 0,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N26",
+      "x": 5.5,
+      "y": 0,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N27",
+      "x": 11,
+      "y": 0,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N28",
+      "x": 16.5,
+      "y": 0,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N29",
+      "x": 0,
+      "y": 4.5,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N30",
+      "x": 5.5,
+      "y": 4.5,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N31",
+      "x": 11,
+      "y": 4.5,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N32",
+      "x": 16.5,
+      "y": 4.5,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N33",
+      "x": 0,
+      "y": 9,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N34",
+      "x": 5.5,
+      "y": 9,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N35",
+      "x": 0,
+      "y": 13.5,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N36",
+      "x": 5.5,
+      "y": 13.5,
+      "z": 7,
+      "support": null
+    },
+    {
+      "id": "N37",
+      "x": 0,
+      "y": 0,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N38",
+      "x": 5.5,
+      "y": 0,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N39",
+      "x": 11,
+      "y": 0,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N40",
+      "x": 16.5,
+      "y": 0,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N41",
+      "x": 0,
+      "y": 4.5,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N42",
+      "x": 5.5,
+      "y": 4.5,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N43",
+      "x": 11,
+      "y": 4.5,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N44",
+      "x": 16.5,
+      "y": 4.5,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N45",
+      "x": 0,
+      "y": 9,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N46",
+      "x": 5.5,
+      "y": 9,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N47",
+      "x": 0,
+      "y": 13.5,
+      "z": 10.5,
+      "support": null
+    },
+    {
+      "id": "N48",
+      "x": 5.5,
+      "y": 13.5,
+      "z": 10.5,
+      "support": null
+    }
+  ],
+  "members": [
+    {
+      "id": "M1",
+      "type": "frame",
+      "n1": "N1",
+      "n2": "N13",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M2",
+      "type": "frame",
+      "n1": "N2",
+      "n2": "N14",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M3",
+      "type": "frame",
+      "n1": "N3",
+      "n2": "N15",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M4",
+      "type": "frame",
+      "n1": "N4",
+      "n2": "N16",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M5",
+      "type": "frame",
+      "n1": "N5",
+      "n2": "N17",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M6",
+      "type": "frame",
+      "n1": "N6",
+      "n2": "N18",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M7",
+      "type": "frame",
+      "n1": "N7",
+      "n2": "N19",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M8",
+      "type": "frame",
+      "n1": "N8",
+      "n2": "N20",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M9",
+      "type": "frame",
+      "n1": "N9",
+      "n2": "N21",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M10",
+      "type": "frame",
+      "n1": "N10",
+      "n2": "N22",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M11",
+      "type": "frame",
+      "n1": "N11",
+      "n2": "N23",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M12",
+      "type": "frame",
+      "n1": "N12",
+      "n2": "N24",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M13",
+      "type": "frame",
+      "n1": "N13",
+      "n2": "N25",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M14",
+      "type": "frame",
+      "n1": "N14",
+      "n2": "N26",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M15",
+      "type": "frame",
+      "n1": "N15",
+      "n2": "N27",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M16",
+      "type": "frame",
+      "n1": "N16",
+      "n2": "N28",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M17",
+      "type": "frame",
+      "n1": "N17",
+      "n2": "N29",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M18",
+      "type": "frame",
+      "n1": "N18",
+      "n2": "N30",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M19",
+      "type": "frame",
+      "n1": "N19",
+      "n2": "N31",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M20",
+      "type": "frame",
+      "n1": "N20",
+      "n2": "N32",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M21",
+      "type": "frame",
+      "n1": "N21",
+      "n2": "N33",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M22",
+      "type": "frame",
+      "n1": "N22",
+      "n2": "N34",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M23",
+      "type": "frame",
+      "n1": "N23",
+      "n2": "N35",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M24",
+      "type": "frame",
+      "n1": "N24",
+      "n2": "N36",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M25",
+      "type": "frame",
+      "n1": "N25",
+      "n2": "N37",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M26",
+      "type": "frame",
+      "n1": "N26",
+      "n2": "N38",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M27",
+      "type": "frame",
+      "n1": "N27",
+      "n2": "N39",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M28",
+      "type": "frame",
+      "n1": "N28",
+      "n2": "N40",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M29",
+      "type": "frame",
+      "n1": "N29",
+      "n2": "N41",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M30",
+      "type": "frame",
+      "n1": "N30",
+      "n2": "N42",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M31",
+      "type": "frame",
+      "n1": "N31",
+      "n2": "N43",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M32",
+      "type": "frame",
+      "n1": "N32",
+      "n2": "N44",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M33",
+      "type": "frame",
+      "n1": "N33",
+      "n2": "N45",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M34",
+      "type": "frame",
+      "n1": "N34",
+      "n2": "N46",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M35",
+      "type": "frame",
+      "n1": "N35",
+      "n2": "N47",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M36",
+      "type": "frame",
+      "n1": "N36",
+      "n2": "N48",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M37",
+      "type": "frame",
+      "n1": "N13",
+      "n2": "N14",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M38",
+      "type": "frame",
+      "n1": "N13",
+      "n2": "N17",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M39",
+      "type": "frame",
+      "n1": "N14",
+      "n2": "N15",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M40",
+      "type": "frame",
+      "n1": "N14",
+      "n2": "N18",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M41",
+      "type": "frame",
+      "n1": "N15",
+      "n2": "N16",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M42",
+      "type": "frame",
+      "n1": "N15",
+      "n2": "N19",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M43",
+      "type": "frame",
+      "n1": "N16",
+      "n2": "N20",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M44",
+      "type": "frame",
+      "n1": "N17",
+      "n2": "N18",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M45",
+      "type": "frame",
+      "n1": "N17",
+      "n2": "N21",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M46",
+      "type": "frame",
+      "n1": "N18",
+      "n2": "N19",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M47",
+      "type": "frame",
+      "n1": "N18",
+      "n2": "N22",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M48",
+      "type": "frame",
+      "n1": "N19",
+      "n2": "N20",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M49",
+      "type": "frame",
+      "n1": "N21",
+      "n2": "N22",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M50",
+      "type": "frame",
+      "n1": "N21",
+      "n2": "N23",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M51",
+      "type": "frame",
+      "n1": "N22",
+      "n2": "N24",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M52",
+      "type": "frame",
+      "n1": "N23",
+      "n2": "N24",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M53",
+      "type": "frame",
+      "n1": "N25",
+      "n2": "N26",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M54",
+      "type": "frame",
+      "n1": "N25",
+      "n2": "N29",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M55",
+      "type": "frame",
+      "n1": "N26",
+      "n2": "N27",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M56",
+      "type": "frame",
+      "n1": "N26",
+      "n2": "N30",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M57",
+      "type": "frame",
+      "n1": "N27",
+      "n2": "N28",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M58",
+      "type": "frame",
+      "n1": "N27",
+      "n2": "N31",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M59",
+      "type": "frame",
+      "n1": "N28",
+      "n2": "N32",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M60",
+      "type": "frame",
+      "n1": "N29",
+      "n2": "N30",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M61",
+      "type": "frame",
+      "n1": "N29",
+      "n2": "N33",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M62",
+      "type": "frame",
+      "n1": "N30",
+      "n2": "N31",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M63",
+      "type": "frame",
+      "n1": "N30",
+      "n2": "N34",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M64",
+      "type": "frame",
+      "n1": "N31",
+      "n2": "N32",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M65",
+      "type": "frame",
+      "n1": "N33",
+      "n2": "N34",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M66",
+      "type": "frame",
+      "n1": "N33",
+      "n2": "N35",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M67",
+      "type": "frame",
+      "n1": "N34",
+      "n2": "N36",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M68",
+      "type": "frame",
+      "n1": "N35",
+      "n2": "N36",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M69",
+      "type": "frame",
+      "n1": "N37",
+      "n2": "N38",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M70",
+      "type": "frame",
+      "n1": "N37",
+      "n2": "N41",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M71",
+      "type": "frame",
+      "n1": "N38",
+      "n2": "N39",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M72",
+      "type": "frame",
+      "n1": "N38",
+      "n2": "N42",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M73",
+      "type": "frame",
+      "n1": "N39",
+      "n2": "N40",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M74",
+      "type": "frame",
+      "n1": "N39",
+      "n2": "N43",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M75",
+      "type": "frame",
+      "n1": "N40",
+      "n2": "N44",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M76",
+      "type": "frame",
+      "n1": "N41",
+      "n2": "N42",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M77",
+      "type": "frame",
+      "n1": "N41",
+      "n2": "N45",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M78",
+      "type": "frame",
+      "n1": "N42",
+      "n2": "N43",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M79",
+      "type": "frame",
+      "n1": "N42",
+      "n2": "N46",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M80",
+      "type": "frame",
+      "n1": "N43",
+      "n2": "N44",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M81",
+      "type": "frame",
+      "n1": "N45",
+      "n2": "N46",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M82",
+      "type": "frame",
+      "n1": "N45",
+      "n2": "N47",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M83",
+      "type": "frame",
+      "n1": "N46",
+      "n2": "N48",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M84",
+      "type": "frame",
+      "n1": "N47",
+      "n2": "N48",
+      "matId": "steel",
+      "secId": "box400h",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    }
+  ],
+  "loads": [
+    {
+      "id": "L1",
+      "type": "udl",
+      "member": "M37",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L2",
+      "type": "udl",
+      "member": "M37",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L3",
+      "type": "udl",
+      "member": "M38",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L4",
+      "type": "udl",
+      "member": "M38",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L5",
+      "type": "udl",
+      "member": "M39",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L6",
+      "type": "udl",
+      "member": "M39",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L7",
+      "type": "udl",
+      "member": "M40",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L8",
+      "type": "udl",
+      "member": "M40",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L9",
+      "type": "udl",
+      "member": "M41",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L10",
+      "type": "udl",
+      "member": "M41",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L11",
+      "type": "udl",
+      "member": "M42",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L12",
+      "type": "udl",
+      "member": "M42",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L13",
+      "type": "udl",
+      "member": "M43",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L14",
+      "type": "udl",
+      "member": "M43",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L15",
+      "type": "udl",
+      "member": "M44",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L16",
+      "type": "udl",
+      "member": "M44",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L17",
+      "type": "udl",
+      "member": "M45",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L18",
+      "type": "udl",
+      "member": "M45",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L19",
+      "type": "udl",
+      "member": "M46",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L20",
+      "type": "udl",
+      "member": "M46",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L21",
+      "type": "udl",
+      "member": "M47",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L22",
+      "type": "udl",
+      "member": "M47",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L23",
+      "type": "udl",
+      "member": "M48",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L24",
+      "type": "udl",
+      "member": "M48",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L25",
+      "type": "udl",
+      "member": "M49",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L26",
+      "type": "udl",
+      "member": "M49",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L27",
+      "type": "udl",
+      "member": "M50",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L28",
+      "type": "udl",
+      "member": "M50",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L29",
+      "type": "udl",
+      "member": "M51",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L30",
+      "type": "udl",
+      "member": "M51",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L31",
+      "type": "udl",
+      "member": "M52",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L32",
+      "type": "udl",
+      "member": "M52",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L33",
+      "type": "udl",
+      "member": "M53",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L34",
+      "type": "udl",
+      "member": "M53",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L35",
+      "type": "udl",
+      "member": "M54",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L36",
+      "type": "udl",
+      "member": "M54",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L37",
+      "type": "udl",
+      "member": "M55",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L38",
+      "type": "udl",
+      "member": "M55",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L39",
+      "type": "udl",
+      "member": "M56",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L40",
+      "type": "udl",
+      "member": "M56",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L41",
+      "type": "udl",
+      "member": "M57",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L42",
+      "type": "udl",
+      "member": "M57",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L43",
+      "type": "udl",
+      "member": "M58",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L44",
+      "type": "udl",
+      "member": "M58",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L45",
+      "type": "udl",
+      "member": "M59",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L46",
+      "type": "udl",
+      "member": "M59",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L47",
+      "type": "udl",
+      "member": "M60",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L48",
+      "type": "udl",
+      "member": "M60",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L49",
+      "type": "udl",
+      "member": "M61",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L50",
+      "type": "udl",
+      "member": "M61",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L51",
+      "type": "udl",
+      "member": "M62",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L52",
+      "type": "udl",
+      "member": "M62",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L53",
+      "type": "udl",
+      "member": "M63",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L54",
+      "type": "udl",
+      "member": "M63",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L55",
+      "type": "udl",
+      "member": "M64",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L56",
+      "type": "udl",
+      "member": "M64",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L57",
+      "type": "udl",
+      "member": "M65",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L58",
+      "type": "udl",
+      "member": "M65",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L59",
+      "type": "udl",
+      "member": "M66",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L60",
+      "type": "udl",
+      "member": "M66",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L61",
+      "type": "udl",
+      "member": "M67",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L62",
+      "type": "udl",
+      "member": "M67",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L63",
+      "type": "udl",
+      "member": "M68",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L64",
+      "type": "udl",
+      "member": "M68",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L65",
+      "type": "udl",
+      "member": "M69",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L66",
+      "type": "udl",
+      "member": "M69",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L67",
+      "type": "udl",
+      "member": "M70",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L68",
+      "type": "udl",
+      "member": "M70",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L69",
+      "type": "udl",
+      "member": "M71",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L70",
+      "type": "udl",
+      "member": "M71",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L71",
+      "type": "udl",
+      "member": "M72",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L72",
+      "type": "udl",
+      "member": "M72",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L73",
+      "type": "udl",
+      "member": "M73",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L74",
+      "type": "udl",
+      "member": "M73",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L75",
+      "type": "udl",
+      "member": "M74",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L76",
+      "type": "udl",
+      "member": "M74",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L77",
+      "type": "udl",
+      "member": "M75",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L78",
+      "type": "udl",
+      "member": "M75",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L79",
+      "type": "udl",
+      "member": "M76",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L80",
+      "type": "udl",
+      "member": "M76",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L81",
+      "type": "udl",
+      "member": "M77",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L82",
+      "type": "udl",
+      "member": "M77",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L83",
+      "type": "udl",
+      "member": "M78",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L84",
+      "type": "udl",
+      "member": "M78",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L85",
+      "type": "udl",
+      "member": "M79",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L86",
+      "type": "udl",
+      "member": "M79",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L87",
+      "type": "udl",
+      "member": "M80",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L88",
+      "type": "udl",
+      "member": "M80",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L89",
+      "type": "udl",
+      "member": "M81",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L90",
+      "type": "udl",
+      "member": "M81",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L91",
+      "type": "udl",
+      "member": "M82",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L92",
+      "type": "udl",
+      "member": "M82",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L93",
+      "type": "udl",
+      "member": "M83",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L94",
+      "type": "udl",
+      "member": "M83",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L95",
+      "type": "udl",
+      "member": "M84",
+      "w": 4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "representative:dead-floor"
+    },
+    {
+      "id": "L96",
+      "type": "udl",
+      "member": "M84",
+      "w": 2.4,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L",
+      "source": "representative:live-floor"
+    },
+    {
+      "id": "L97",
+      "type": "nodal",
+      "node": "N13",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L98",
+      "type": "nodal",
+      "node": "N13",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L99",
+      "type": "nodal",
+      "node": "N14",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L100",
+      "type": "nodal",
+      "node": "N14",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L101",
+      "type": "nodal",
+      "node": "N15",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L102",
+      "type": "nodal",
+      "node": "N15",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L103",
+      "type": "nodal",
+      "node": "N16",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L104",
+      "type": "nodal",
+      "node": "N16",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L105",
+      "type": "nodal",
+      "node": "N17",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L106",
+      "type": "nodal",
+      "node": "N17",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L107",
+      "type": "nodal",
+      "node": "N18",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L108",
+      "type": "nodal",
+      "node": "N18",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L109",
+      "type": "nodal",
+      "node": "N19",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L110",
+      "type": "nodal",
+      "node": "N19",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L111",
+      "type": "nodal",
+      "node": "N20",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L112",
+      "type": "nodal",
+      "node": "N20",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L113",
+      "type": "nodal",
+      "node": "N21",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L114",
+      "type": "nodal",
+      "node": "N21",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L115",
+      "type": "nodal",
+      "node": "N22",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L116",
+      "type": "nodal",
+      "node": "N22",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L117",
+      "type": "nodal",
+      "node": "N23",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L118",
+      "type": "nodal",
+      "node": "N23",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L119",
+      "type": "nodal",
+      "node": "N24",
+      "P": 0.44722222222222224,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L120",
+      "type": "nodal",
+      "node": "N24",
+      "P": 0.38333333333333336,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L121",
+      "type": "nodal",
+      "node": "N25",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L122",
+      "type": "nodal",
+      "node": "N25",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L123",
+      "type": "nodal",
+      "node": "N26",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L124",
+      "type": "nodal",
+      "node": "N26",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L125",
+      "type": "nodal",
+      "node": "N27",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L126",
+      "type": "nodal",
+      "node": "N27",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L127",
+      "type": "nodal",
+      "node": "N28",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L128",
+      "type": "nodal",
+      "node": "N28",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L129",
+      "type": "nodal",
+      "node": "N29",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L130",
+      "type": "nodal",
+      "node": "N29",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L131",
+      "type": "nodal",
+      "node": "N30",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L132",
+      "type": "nodal",
+      "node": "N30",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L133",
+      "type": "nodal",
+      "node": "N31",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L134",
+      "type": "nodal",
+      "node": "N31",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L135",
+      "type": "nodal",
+      "node": "N32",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L136",
+      "type": "nodal",
+      "node": "N32",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L137",
+      "type": "nodal",
+      "node": "N33",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L138",
+      "type": "nodal",
+      "node": "N33",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L139",
+      "type": "nodal",
+      "node": "N34",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L140",
+      "type": "nodal",
+      "node": "N34",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L141",
+      "type": "nodal",
+      "node": "N35",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L142",
+      "type": "nodal",
+      "node": "N35",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L143",
+      "type": "nodal",
+      "node": "N36",
+      "P": 1.0305555555555557,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L144",
+      "type": "nodal",
+      "node": "N36",
+      "P": 0.8833333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L145",
+      "type": "nodal",
+      "node": "N37",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L146",
+      "type": "nodal",
+      "node": "N37",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L147",
+      "type": "nodal",
+      "node": "N38",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L148",
+      "type": "nodal",
+      "node": "N38",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L149",
+      "type": "nodal",
+      "node": "N39",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L150",
+      "type": "nodal",
+      "node": "N39",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L151",
+      "type": "nodal",
+      "node": "N40",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L152",
+      "type": "nodal",
+      "node": "N40",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L153",
+      "type": "nodal",
+      "node": "N41",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L154",
+      "type": "nodal",
+      "node": "N41",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L155",
+      "type": "nodal",
+      "node": "N42",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L156",
+      "type": "nodal",
+      "node": "N42",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L157",
+      "type": "nodal",
+      "node": "N43",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L158",
+      "type": "nodal",
+      "node": "N43",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L159",
+      "type": "nodal",
+      "node": "N44",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L160",
+      "type": "nodal",
+      "node": "N44",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L161",
+      "type": "nodal",
+      "node": "N45",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L162",
+      "type": "nodal",
+      "node": "N45",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L163",
+      "type": "nodal",
+      "node": "N46",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L164",
+      "type": "nodal",
+      "node": "N46",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L165",
+      "type": "nodal",
+      "node": "N47",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L166",
+      "type": "nodal",
+      "node": "N47",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    },
+    {
+      "id": "L167",
+      "type": "nodal",
+      "node": "N48",
+      "P": 1.75,
+      "dir": "+x",
+      "case": "WX",
+      "source": "representative:wind-x"
+    },
+    {
+      "id": "L168",
+      "type": "nodal",
+      "node": "N48",
+      "P": 1.5,
+      "dir": "+y",
+      "case": "WY",
+      "source": "representative:wind-y"
+    }
+  ],
+  "loadCases": [
+    {
+      "id": "D",
+      "name": "Dead load",
+      "type": "dead"
+    },
+    {
+      "id": "L",
+      "name": "Live load",
+      "type": "live"
+    },
+    {
+      "id": "WX",
+      "name": "Wind X",
+      "type": "wind"
+    },
+    {
+      "id": "WY",
+      "name": "Wind Y",
+      "type": "wind"
+    }
+  ],
+  "loadCombinations": [
+    {
+      "id": "EL-DL",
+      "name": "1.0D + 1.0L",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 1,
+        "WX": 0,
+        "WY": 0
+      }
+    },
+    {
+      "id": "EL-WX",
+      "name": "1.0D + 0.5L + 1.0WX",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 1,
+        "WY": 0
+      }
+    },
+    {
+      "id": "EL-WY",
+      "name": "1.0D + 0.5L + 1.0WY",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 0,
+        "WY": 1
+      }
+    }
+  ],
+  "analysisSettings": {
+    "analysisType": "linear_static",
+    "elementType": "3d_frame",
+    "includeShearDeformation": false,
+    "includeGeometricStiffness": false,
+    "includeSelfWeight": false,
+    "solverTolerance": 1e-10,
+    "memberStations": 21,
+    "includeFixedEndDeformation": true,
+    "validateBeforeSolve": true,
+    "pDeltaMaxIterations": 12,
+    "pDeltaTolerance": 0.0001,
+    "pDeltaMaxAmplification": 2.5,
+    "modalModeCount": 6,
+    "responseSpectrum": {
+      "enabled": false,
+      "dampingRatio": 0.05,
+      "scale": 9.80665,
+      "directions": [
+        "x",
+        "y"
+      ],
+      "points": [
+        {
+          "period": 0,
+          "sa": 0.4
+        },
+        {
+          "period": 5,
+          "sa": 0.4
+        }
+      ]
+    }
+  },
+  "designParams": {
+    "global": {
+      "mode": "off",
+      "codeCompliance": false,
+      "defaultKy": 1,
+      "defaultKz": 1,
+      "defaultLbY": null,
+      "defaultLbZ": null,
+      "defaultDeflectionLimitTotal": 250,
+      "defaultDeflectionLimitLive": 360,
+      "defaultCompressionSlendernessLimit": 200,
+      "defaultTensionSlendernessLimit": 300,
+      "warnAtRatio": 0.7
+    },
+    "rc": {
+      "defaultCover": 0.05,
+      "defaultRebarFy": 400,
+      "defaultBeamRebarRatio": 0.01,
+      "defaultColumnRebarRatio": 0.015,
+      "minBeamRebarRatio": 0.002,
+      "minColumnRebarRatio": 0.01,
+      "maxColumnRebarRatio": 0.04,
+      "phiFlexure": 0.85,
+      "phiShear": 0.75,
+      "phiCompression": 0.65,
+      "warnAtRatio": 0.7
+    },
+    "members": {}
+  },
+  "designSettings": {
+    "method": "allowable_stress",
+    "defaultCheck": "elastic_stress_interaction"
+  },
+  "meta": {
+    "id": "02-l-shaped-neighborhood",
+    "name": "L-shaped neighborhood facility",
+    "type": "neighborhood-living",
+    "description": "Three-story L-shaped low-rise commercial frame with plan irregularity.",
+    "generatorVersion": "m33-representative-building-set"
+  }
+}

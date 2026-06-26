@@ -1,0 +1,91 @@
+{
+  "version": "m33-representative-building-set",
+  "id": "10-torsion-irregular-frame",
+  "name": "Torsion irregular corner frame",
+  "type": "irregular",
+  "description": "Five-story frame with a missing corner and offset stiffness distribution.",
+  "model": {
+    "nodeCount": 88,
+    "memberCount": 179,
+    "loadCount": 358,
+    "loadCaseCount": 4,
+    "combinationCount": 3,
+    "stories": 5,
+    "size": {
+      "x": 15,
+      "y": 15,
+      "z": 17
+    }
+  },
+  "analysis": {
+    "ok": true,
+    "comboIds": [
+      "EL-DL",
+      "EL-WX",
+      "EL-WY"
+    ],
+    "maxEnvelopeDisplacement": 0.0011178202591810896,
+    "maxEnvelopeUtilization": 0.07198770514879267,
+    "designStatus": "OK",
+    "governing": {
+      "memberId": "M46",
+      "checkId": "steel-slenderness",
+      "status": "OK",
+      "ratio": 0.10813460179453735,
+      "comboId": "EL-DL",
+      "x": 0
+    },
+    "combos": {
+      "EL-DL": {
+        "ok": true,
+        "maxDisplacement": 0.0005625859216578771,
+        "maxUtilization": 0.06356637748531888,
+        "equilibriumResidual": 1.0506292280780842e-15,
+        "totalLoad": [
+          0,
+          0,
+          -2597
+        ],
+        "totalReaction": [
+          2.4868995751603507e-14,
+          -1.212363542890671e-13,
+          2596.9999999999973
+        ]
+      },
+      "EL-WX": {
+        "ok": true,
+        "maxDisplacement": 0.0011178202591810896,
+        "maxUtilization": 0.07189471965904676,
+        "equilibriumResidual": 3.260060320077404e-15,
+        "totalLoad": [
+          54.678399999999975,
+          0,
+          -2173
+        ],
+        "totalReaction": [
+          -54.67840000000706,
+          -1.4077627952246985e-13,
+          2172.9999999999977
+        ]
+      },
+      "EL-WY": {
+        "ok": true,
+        "maxDisplacement": 0.0011104846353502053,
+        "maxUtilization": 0.07198770514879267,
+        "equilibriumResidual": 8.795950111342244e-16,
+        "totalLoad": [
+          0,
+          54.678399999999975,
+          -2173
+        ],
+        "totalReaction": [
+          -1.0902390101819037e-13,
+          -54.678399999998064,
+          2172.999999999999
+        ]
+      }
+    },
+    "errors": [],
+    "warnings": []
+  }
+}
