@@ -84,6 +84,11 @@ assert.equal(response.data.analysis.ok, true);
 assert.ok(response.data.analysis.maxDisplacement > 0);
 assert.equal(readSummary().analysis.ok, true);
 
+response = sendCommand({ id: 'visuals', method: 'getResultVisuals' });
+assert.equal(response.ok, true);
+assert.equal(readSummary().resultVisuals.nodeCount, 4);
+assert.equal(readSummary().resultVisuals.memberCount, 3);
+
 response = sendCommand({
   id: 'bad-action',
   method: 'execute',
@@ -98,7 +103,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 9);
+assert.equal(response.data.agentCommandBridge.commandCount, 10);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -112,7 +117,7 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 10);
+assert.equal(state.commandCount, 11);
 assert.equal(state.errorCount, 1);
 assert.ok(counters.reanalyze >= 6);
 

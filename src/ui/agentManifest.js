@@ -13,6 +13,7 @@ import { INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION } from './indexNativeAdvancedAna
 import { INDEX_PRODUCT_HARDENING_VERSION } from './indexProductHardening.js';
 import { INDEX_AGENT_COMMAND_BRIDGE_VERSION } from './indexAgentCommandBridge.js';
 import { INDEX_RUNTIME_ADAPTER_VERSION } from './indexRuntimeAdapter.js';
+import { TWO_STORY_ELASTIC_FRAME_VERSION } from '../examples/twoStoryElasticFrame.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -39,6 +40,7 @@ export function buildAgentManifest(options = {}) {
       agentCommandBridge: INDEX_AGENT_COMMAND_BRIDGE_VERSION,
       runtimeAdapter: INDEX_RUNTIME_ADAPTER_VERSION,
       legacyResultShape: MANIFEST_LEGACY_RESULT_SHAPE_VERSION,
+      elastic3dImportWorkflow: TWO_STORY_ELASTIC_FRAME_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -82,6 +84,7 @@ export function buildAgentManifest(options = {}) {
       'agentCommandBridge',
       'originalIndexRuntimeDiagnostics',
       'legacyResultShapeCompatibility',
+      'elastic3dImportWorkflow',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -105,6 +108,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M29', status: 'available', feature: 'advanced analysis native report UX' },
       { id: 'M30', status: 'available', feature: 'integrated product hardening audit' },
       { id: 'M31', status: 'available', feature: 'DOM event API for AI and browser automation control' },
+      { id: 'M32', status: 'available', feature: 'two-story 3D elastic workflow for drawing and MGT import readiness' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

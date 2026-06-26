@@ -63,6 +63,11 @@ export {
   createIndexStartupSampleModel,
 } from './examples/indexStartupSample.js';
 export {
+  TWO_STORY_ELASTIC_FRAME_VERSION,
+  createTwoStoryElasticFrameModel,
+  summarizeTwoStoryElasticWorkflow,
+} from './examples/twoStoryElasticFrame.js';
+export {
   BENCH_INTERNAL,
   BENCH_MATERIAL,
   BENCH_SECTION,
