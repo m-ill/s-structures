@@ -22,6 +22,7 @@ import { installIndexNativePersistence } from './indexNativePersistence.js';
 import { installIndexNativeAgentControls, NATIVE_AGENT_CONTROL_ACTIONS } from './indexNativeAgentControls.js';
 import { installIndexNativeAdvancedAnalysis, NATIVE_ADVANCED_ACTIONS } from './indexNativeAdvancedAnalysis.js';
 import { installIndexProductHardening } from './indexProductHardening.js';
+import { installIndexAgentCommandBridge } from './indexAgentCommandBridge.js';
 import { installIndexRuntimeAdapter } from './indexRuntimeAdapter.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
@@ -149,6 +150,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.nativeAgentControls = installIndexNativeAgentControls(target, { bridge });
     bridge.nativeAdvancedAnalysis = installIndexNativeAdvancedAnalysis(target, { bridge });
     bridge.productHardening = installIndexProductHardening(target, { bridge });
+    bridge.agentCommandBridge = installIndexAgentCommandBridge(target, target.SStructuresAgent);
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
@@ -219,6 +221,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         nativeAgentControls: target.SStructuresNativeAgentControls?.getState?.() || null,
         nativeAdvancedAnalysis: target.SStructuresNativeAdvancedAnalysis?.getState?.() || null,
         productHardening: target.SStructuresProductHardening?.getState?.() || null,
+        agentCommandBridge: target.SStructuresAgentCommandBridge?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         agent: model ? summarizeAgentModelState(model, agentState) : { selection: { type: null, id: null, exists: false } },
         controls: target.document ? listAgentControls(target.document) : [],
@@ -240,6 +243,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         nativeAgentControls: target.SStructuresNativeAgentControls?.getState?.() || null,
         nativeAdvancedAnalysis: target.SStructuresNativeAdvancedAnalysis?.getState?.() || null,
         productHardening: target.SStructuresProductHardening?.getState?.() || null,
+        agentCommandBridge: target.SStructuresAgentCommandBridge?.getState?.() || null,
         runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
         controls: target.document ? listAgentControls(target.document) : [],
       });

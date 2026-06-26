@@ -160,6 +160,12 @@ class FakeDocument {
     this.eventHandlers[type] = this.eventHandlers[type] || [];
     this.eventHandlers[type].push(handler);
   }
+
+  dispatchEvent(event) {
+    const nextEvent = { ...event, target: event?.target || this };
+    for (const handler of this.eventHandlers[nextEvent.type] || []) handler.call(this, nextEvent);
+    return true;
+  }
 }
 
 class FakeElement {
