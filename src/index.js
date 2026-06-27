@@ -40,6 +40,7 @@ export {
 export {
   applyDesignBasisLoads,
   buildDesignBasisInputState,
+  buildLoadDerivationTrace,
   createDesignBasis,
   DESIGN_BASIS_INPUT_VERSION,
   DESIGN_BASIS_NUMERIC_FIELDS,
@@ -47,6 +48,7 @@ export {
   getDesignBasisInputFields,
   DEFAULT_DESIGN_BASIS,
   LOAD_ESTIMATION_VERSION,
+  LOAD_DERIVATION_TRACE_VERSION,
   OCCUPANCY_LOAD_PRESETS,
   setDesignBasisInput,
 } from './design/loadEstimation.js';

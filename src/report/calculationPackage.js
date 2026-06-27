@@ -106,6 +106,15 @@ export function renderCalculationPackageHtml(pkg) {
       force(d.loadDerivation.lateral[index]?.windX),
       force(d.loadDerivation.lateral[index]?.windY),
     ])) : '<div class="note">No load derivation attached.</div>'}
+    ${d.loadDerivation?.derivationTrace ? `
+    <h3>Load Derivation Formula Trace</h3>
+    ${table(['ID', 'Case', 'Formula', 'Inputs', 'Result'], d.loadDerivation.derivationTrace.rows.map((row) => [
+      row.id,
+      row.caseId || '-',
+      row.formula,
+      traceInputs(row.inputs),
+      `${traceValue(row.result)} ${row.unit || ''}`.trim(),
+    ]))}` : ''}
     <h3>KDS-Style Load Standard Audit</h3>
     ${table(['Symbol', 'Status', 'Mapped cases', 'Project input'], d.codeBasis.loadStandardAudit.symbols.map((row) => [
       row.symbol,
@@ -223,6 +232,16 @@ function length(value) {
 
 function ratio(value) {
   return value == null ? '-' : fmt(value);
+}
+
+function traceInputs(inputs = []) {
+  return inputs.map((item) => `${item.symbol}=${traceValue(item.value)}${item.unit ? ` ${item.unit}` : ''}`).join(', ');
+}
+
+function traceValue(value) {
+  const number = Number(value);
+  if (value == null || value === '') return '-';
+  return Number.isFinite(number) ? fmt(number) : String(value);
 }
 
 function fmt(value) {

@@ -295,6 +295,7 @@ function summarizeLoadDerivation(model) {
     summary: estimation.summary || null,
     gravity: estimation.storyLoads?.gravity || [],
     lateral: estimation.storyLoads?.lateral || [],
+    derivationTrace: estimation.derivationTrace || null,
     limitations: estimation.limitations || [],
   };
 }
@@ -516,8 +517,27 @@ function renderLoadDerivation(loadDerivation) {
       formatForce(row.windY),
       formatForce(row.effectiveWeight),
     ])),
+    loadDerivation.derivationTrace ? '<h3>Load Derivation Formula Trace</h3>' : '',
+    loadDerivation.derivationTrace ? renderTable(['ID', 'Group', 'Case', 'Formula', 'Inputs', 'Result'], loadDerivation.derivationTrace.rows.map((row) => [
+      row.id,
+      row.group,
+      row.caseId || '-',
+      row.formula,
+      formatTraceInputs(row.inputs),
+      `${formatTraceValue(row.result)} ${row.unit || ''}`.trim(),
+    ])) : '',
     renderList(loadDerivation.limitations || []),
   ].join('');
+}
+
+function formatTraceInputs(inputs = []) {
+  return inputs.map((item) => `${item.symbol}=${formatTraceValue(item.value)}${item.unit ? ` ${item.unit}` : ''}`).join(', ');
+}
+
+function formatTraceValue(value) {
+  const number = Number(value);
+  if (value == null || value === '') return '-';
+  return Number.isFinite(number) ? format(number) : String(value);
 }
 
 function renderRcDetailing(rcDetailing) {
