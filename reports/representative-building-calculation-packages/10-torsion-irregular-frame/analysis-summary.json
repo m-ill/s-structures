@@ -1,0 +1,122 @@
+{
+  "id": "10-torsion-irregular-frame",
+  "name": "Torsion irregular corner frame",
+  "type": "irregular",
+  "description": "Five-story frame with a missing corner and offset stiffness distribution.",
+  "generatedAt": "2026-06-27T00:00:00.000Z",
+  "packageVersion": "m42-calculation-package",
+  "analysisOk": true,
+  "auditOk": true,
+  "model": {
+    "nodes": 88,
+    "members": 179,
+    "loads": 504,
+    "loadCases": 6,
+    "combinations": 28,
+    "stories": 5,
+    "bounds": {
+      "min": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "max": {
+        "x": 15,
+        "y": 15,
+        "z": 17
+      },
+      "size": {
+        "x": 15,
+        "y": 15,
+        "z": 17
+      }
+    }
+  },
+  "designBasis": {
+    "version": "m37-load-estimation",
+    "occupancy": "office",
+    "occupancyLabel": "Office",
+    "floorArea": 225,
+    "roofArea": 225,
+    "deadLoad": 3.3,
+    "liveLoad": 1.6,
+    "roofLiveLoad": 0.8,
+    "windPressureX": 0.45,
+    "windPressureY": 0.45,
+    "seismicCoefficientX": 0.08499999999999999,
+    "seismicCoefficientY": 0.08499999999999999,
+    "seismicLiveLoadFactor": 0.25,
+    "notes": [
+      "Representative design basis generated for workflow verification.",
+      "Loads are equivalent preliminary loads and require project-specific review."
+    ]
+  },
+  "loadSummary": {
+    "version": "m37-load-estimation",
+    "occupancy": "office",
+    "floorArea": 225,
+    "roofArea": 225,
+    "storyCount": 5,
+    "totalDead": 3712.5,
+    "totalLive": 1620,
+    "totalWindX": 114.75,
+    "totalWindY": 114.75,
+    "totalSeismicX": 349.9874999999998,
+    "totalSeismicY": 349.9874999999998,
+    "generatedLoadCount": 504
+  },
+  "analysis": {
+    "status": "OK",
+    "comboCount": 28,
+    "maxDisplacement": 0.0067544642157760905,
+    "maxUtilization": 0.49547977609798666,
+    "warnings": 0,
+    "errors": 0,
+    "governing": {
+      "memberId": "M67",
+      "checkId": "steel-deflection",
+      "status": "OK",
+      "ratio": 0.49547977609798666,
+      "comboId": "KDS-ST-05-EY-N",
+      "x": 0
+    }
+  },
+  "qualityAudit": {
+    "items": [
+      {
+        "name": "Load derivation attached",
+        "status": "OK"
+      },
+      {
+        "name": "Combination results available",
+        "status": "OK"
+      },
+      {
+        "name": "Member checks available",
+        "status": "OK"
+      },
+      {
+        "name": "RC schedule available",
+        "status": "Not applicable"
+      },
+      {
+        "name": "Steel schedule available",
+        "status": "OK"
+      },
+      {
+        "name": "Foundation review available",
+        "status": "OK"
+      }
+    ],
+    "ok": true,
+    "limitations": [
+      "Print-ready HTML is intended for browser PDF output.",
+      "Final sealed calculation packages require project-specific engineering review.",
+      "Unsupported checks remain listed in the appendix rather than hidden."
+    ]
+  },
+  "designStatus": "OK",
+  "actionItems": [
+    "Review project-specific design basis, load derivation, detailing, connections, and foundation design."
+  ]
+}
