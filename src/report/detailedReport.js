@@ -1,5 +1,6 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { factorText } from '../core/combinations.js';
+import { buildRcDetailingReport } from '../design/rcDetailing.js';
 import {
   defaultKdsCombinationLimitations,
   KDS_LOAD_COMBINATION_VERSION,
@@ -52,6 +53,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     combinationResults,
     memberChecks,
     governingMembers,
+    rcDetailing: buildRcDetailingReport(model, analysis),
     messages: collectMessages(analysis),
     actionItems: buildActionItems(model, analysis, memberChecks),
   };
@@ -180,11 +182,14 @@ export function renderDetailedReportHtml(report) {
     format(row.station),
   ]))}
 
-  <h2>7. Messages And Action Items</h2>
+  <h2>7. RC Reinforcement Schedule</h2>
+  ${renderRcDetailing(report.rcDetailing)}
+
+  <h2>8. Messages And Action Items</h2>
   ${renderMessages(report.messages)}
   ${renderList(report.actionItems)}
 
-  <h2>8. Remaining Design Scope</h2>
+  <h2>9. Remaining Design Scope</h2>
   ${renderList(report.scope.missingScopes)}
 </main>
 </body>
@@ -470,6 +475,29 @@ function renderLoadDerivation(loadDerivation) {
       formatForce(row.effectiveWeight),
     ])),
     renderList(loadDerivation.limitations || []),
+  ].join('');
+}
+
+function renderRcDetailing(rcDetailing) {
+  if (!rcDetailing?.rows?.length) return '<div class="note">No RC member detailing rows are available for this model.</div>';
+  return [
+    renderTable(['Item', 'Value'], [
+      ['Version', rcDetailing.version],
+      ['Members', rcDetailing.summary.memberCount],
+      ['OK / WARN / NG', `${rcDetailing.summary.okCount} / ${rcDetailing.summary.warnCount} / ${rcDetailing.summary.ngCount}`],
+      ['Max utilization', formatRatio(rcDetailing.summary.maxUtilization)],
+    ]),
+    renderTable(['Member', 'Role', 'Status', 'Util.', 'Longitudinal strong', 'Longitudinal weak', 'Stirrup Z', 'Stirrup Y'], rcDetailing.rows.map((row) => [
+      row.memberId,
+      row.role,
+      row.status,
+      formatRatio(row.utilization),
+      row.longitudinal.strongAxis.label,
+      row.longitudinal.weakAxis.label,
+      row.transverse.zDirection.label,
+      row.transverse.yDirection.label,
+    ])),
+    renderList(rcDetailing.limitations || []),
   ].join('');
 }
 

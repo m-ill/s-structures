@@ -1,6 +1,7 @@
 import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildRcDetailingReport,
   createDetailedHtmlReport,
   createHtmlReport,
   createKdsLoadCombinations,
@@ -133,6 +134,11 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return model.loadEstimation || estimateModelLoads(model, options.designBasis || options, { generateLoads: false });
+    },
+    getRcDetailingReport(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildRcDetailingReport(model, lastResult || analyzeForIndex(model), options);
     },
     applyDesignBasisLoads(options = {}) {
       const model = bridge.getCurrentModel();
@@ -342,6 +348,15 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(model.loadEstimation || estimateModelLoads(model, options.designBasis || options, { generateLoads: false }));
+    },
+    getRcDetailingReport(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildRcDetailingReport(
+        model,
+        bridge?.getLastResult?.() || analyzeForIndex(model),
+        options,
+      ));
     },
     getRuntimeDiagnostics() {
       return cloneJson(target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null);

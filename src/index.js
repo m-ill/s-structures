@@ -46,6 +46,14 @@ export {
   OCCUPANCY_LOAD_PRESETS,
 } from './design/loadEstimation.js';
 export {
+  buildRcDetailingReport,
+  detailRcMember,
+  RC_DETAILING_VERSION,
+  selectLongitudinalBars,
+  selectStirrups,
+  STANDARD_REBARS,
+} from './design/rcDetailing.js';
+export {
   analyzeDynamics,
   buildLumpedMass,
   runResponseSpectrum,
