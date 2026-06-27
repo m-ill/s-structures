@@ -17,7 +17,7 @@ import { TWO_STORY_ELASTIC_FRAME_VERSION } from '../examples/twoStoryElasticFram
 import { REPRESENTATIVE_BUILDINGS_VERSION } from '../examples/representativeBuildings.js';
 import { CALCULATION_PACKAGE_VERSION } from '../report/calculationPackage.js';
 import { DETAILED_REPORT_VERSION } from '../report/detailedReport.js';
-import { KDS_LOAD_COMBINATION_RULE_VERSION, KDS_LOAD_COMBINATION_VERSION } from '../core/kdsLoadCombinations.js';
+import { KDS_LOAD_COMBINATION_RULE_VERSION, KDS_LOAD_COMBINATION_VERSION, KDS_LOAD_STANDARD_REGISTRY_VERSION } from '../core/kdsLoadCombinations.js';
 import { CONNECTION_FOUNDATION_VERSION } from '../design/connectionFoundation.js';
 import { LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
@@ -54,6 +54,7 @@ export function buildAgentManifest(options = {}) {
       calculationPackage: CALCULATION_PACKAGE_VERSION,
       kdsLoadCombinationPresets: KDS_LOAD_COMBINATION_VERSION,
       kdsLoadCombinationRules: KDS_LOAD_COMBINATION_RULE_VERSION,
+      kdsLoadStandardRegistry: KDS_LOAD_STANDARD_REGISTRY_VERSION,
       designBasisLoadEstimation: LOAD_ESTIMATION_VERSION,
       rcDetailing: RC_DETAILING_VERSION,
       steelDetailing: STEEL_DETAILING_VERSION,
@@ -72,6 +73,8 @@ export function buildAgentManifest(options = {}) {
       'getCalculationPackage',
       'getKdsLoadCombinationCoverage',
       'getKdsLoadCombinationRules',
+      'getKdsLoadStandardRegistry',
+      'getKdsLoadStandardAudit',
       'getDesignBasisLoadEstimation',
       'getRcDetailingReport',
       'getSteelDetailingReport',
@@ -101,6 +104,7 @@ export function buildAgentManifest(options = {}) {
       'calculationPackageHtml',
       'kdsLoadCombinationPreset',
       'kdsLoadCombinationRuleSet',
+      'kdsLoadStandardAudit',
       'designBasisLoadEstimation',
       'rcReinforcementSchedule',
       'steelMemberReviewSchedule',
@@ -156,6 +160,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M41', status: 'preliminary', feature: 'connection force and foundation reaction preliminary review' },
       { id: 'M42', status: 'available', feature: 'print-ready calculation package with cover, contents, and appendix' },
       { id: 'M43', status: 'available', feature: 'native menu and agent action for opening calculation packages' },
+      { id: 'M44', status: 'preliminary', feature: 'structured KDS-style load standard registry and audit trace' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

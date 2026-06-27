@@ -88,11 +88,15 @@ export {
 export {
   createKdsLoadCombinations,
   createKdsRuleBasedLoadCombinations,
+  buildKdsLoadStandardAudit,
   defaultKdsCombinationLimitations,
+  getKdsLoadStandardRegistry,
   KDS_LOAD_CASE_TEMPLATES,
   KDS_LOAD_COMBINATION_PRESETS,
   KDS_LOAD_COMBINATION_RULE_VERSION,
   KDS_LOAD_COMBINATION_VERSION,
+  KDS_LOAD_STANDARD_REGISTRY,
+  KDS_LOAD_STANDARD_REGISTRY_VERSION,
   summarizeKdsLoadCombinationCoverage,
   summarizeKdsLoadCombinationRules,
 } from './core/kdsLoadCombinations.js';

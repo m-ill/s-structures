@@ -1,6 +1,7 @@
 import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildKdsLoadStandardAudit,
   buildConnectionFoundationReport,
   buildRcDetailingReport,
   buildSteelDetailingReport,
@@ -10,6 +11,7 @@ import {
   createKdsLoadCombinations,
   createKdsRuleBasedLoadCombinations,
   estimateModelLoads,
+  getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
   migrateToV3,
   runPushover as runCorePushover,
   summarizeKdsLoadCombinationCoverage,
@@ -137,6 +139,14 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return summarizeKdsLoadCombinationRules(model, options);
+    },
+    getKdsLoadStandardRegistry() {
+      return getCoreKdsLoadStandardRegistry();
+    },
+    getKdsLoadStandardAudit(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildKdsLoadStandardAudit(model, options);
     },
     getDesignBasisLoadEstimation(options = {}) {
       const model = bridge.getCurrentModel();
@@ -371,6 +381,14 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(summarizeKdsLoadCombinationRules(model, options));
+    },
+    getKdsLoadStandardRegistry() {
+      return cloneJson(getCoreKdsLoadStandardRegistry());
+    },
+    getKdsLoadStandardAudit(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildKdsLoadStandardAudit(model, options));
     },
     getDesignBasisLoadEstimation(options = {}) {
       const model = getCurrentModel(target);

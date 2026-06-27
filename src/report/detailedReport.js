@@ -4,8 +4,10 @@ import { buildConnectionFoundationReport } from '../design/connectionFoundation.
 import { buildRcDetailingReport } from '../design/rcDetailing.js';
 import { buildSteelDetailingReport } from '../design/steelDetailing.js';
 import {
+  buildKdsLoadStandardAudit,
   defaultKdsCombinationLimitations,
   KDS_LOAD_COMBINATION_VERSION,
+  KDS_LOAD_STANDARD_REGISTRY_VERSION,
   summarizeKdsLoadCombinationCoverage,
 } from '../core/kdsLoadCombinations.js';
 
@@ -34,7 +36,9 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     },
     codeBasis: {
       loadCombinationPresetVersion: KDS_LOAD_COMBINATION_VERSION,
+      loadStandardRegistryVersion: KDS_LOAD_STANDARD_REGISTRY_VERSION,
       loadCombinationCoverage: summarizeKdsLoadCombinationCoverage(model),
+      loadStandardAudit: buildKdsLoadStandardAudit(model),
       limitations: defaultKdsCombinationLimitations(),
     },
     model: summarizeModel(model),
@@ -145,7 +149,22 @@ export function renderDetailedReportHtml(report) {
     ['Generated preset count', report.codeBasis.loadCombinationCoverage.generatedCount],
     ['Missing common symbols', report.codeBasis.loadCombinationCoverage.missing.join(', ') || '-'],
     ['Preset version', report.codeBasis.loadCombinationPresetVersion],
+    ['Standard registry', report.codeBasis.loadStandardRegistryVersion],
   ])}
+  <h3>KDS-Style Load Standard Audit</h3>
+  ${renderTable(['Symbol', 'Status', 'Mapped cases', 'Project input'], report.codeBasis.loadStandardAudit.symbols.map((row) => [
+    row.symbol,
+    row.status,
+    row.caseIds.join(', ') || '-',
+    row.projectInputRequired ? 'Required' : 'Optional',
+  ]))}
+  ${renderTable(['Preset', 'Status', 'Required', 'Any', 'Generated'], report.codeBasis.loadStandardAudit.presetAudit.map((row) => [
+    row.id,
+    row.status,
+    row.required.join(', ') || '-',
+    row.requiredAny.join(', ') || '-',
+    row.generatedCount,
+  ]))}
 
   <h2>4. Combination Analysis Results</h2>
   ${renderTable(['Combo', 'OK', 'Max disp.', 'Max util.', 'Total load', 'Total reaction', 'Residual'], report.combinationResults.map((row) => [

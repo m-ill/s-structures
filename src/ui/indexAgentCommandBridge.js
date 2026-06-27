@@ -20,6 +20,8 @@ const READ_METHODS = new Set([
   'getCalculationPackage',
   'getKdsLoadCombinationCoverage',
   'getKdsLoadCombinationRules',
+  'getKdsLoadStandardRegistry',
+  'getKdsLoadStandardAudit',
   'getDesignBasisLoadEstimation',
   'getRcDetailingReport',
   'getSteelDetailingReport',

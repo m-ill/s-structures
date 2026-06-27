@@ -2,6 +2,7 @@ import { formatCombinationFactors } from './combinations.js';
 
 export const KDS_LOAD_COMBINATION_VERSION = 'm35-kds-load-combination-presets';
 export const KDS_LOAD_COMBINATION_RULE_VERSION = 'm38-kds-load-combination-rules';
+export const KDS_LOAD_STANDARD_REGISTRY_VERSION = 'm44-kds-load-standard-registry';
 
 export const KDS_LOAD_CASE_TEMPLATES = [
   { symbol: 'D', label: 'Dead load', types: ['dead'] },
@@ -118,6 +119,49 @@ export const KDS_LOAD_COMBINATION_PRESETS = [
   },
 ];
 
+export const KDS_LOAD_STANDARD_REGISTRY = {
+  version: KDS_LOAD_STANDARD_REGISTRY_VERSION,
+  status: 'preliminary-scaffold',
+  label: 'KDS-style load and combination registry',
+  loadCaseSymbols: KDS_LOAD_CASE_TEMPLATES.map((template) => ({
+    symbol: template.symbol,
+    label: template.label,
+    types: template.types.slice(),
+    multi: !!template.multi,
+    projectInputRequired: ['W', 'E', 'H', 'F', 'T', 'S', 'R'].includes(template.symbol),
+  })),
+  designInputs: [
+    { id: 'occupancy', label: 'Occupancy and risk category', required: true },
+    { id: 'importanceFactor', label: 'Importance factor', required: true },
+    { id: 'windProcedure', label: 'Wind exposure, pressure, and directionality', required: true },
+    { id: 'seismicProcedure', label: 'Seismic zone, site class, and response procedure', required: true },
+    { id: 'snowRain', label: 'Snow and rain applicability', required: false },
+    { id: 'soilFluidTemperature', label: 'Earth pressure, fluid, and temperature applicability', required: false },
+    { id: 'liveLoadReduction', label: 'Live load reduction and occupancy exceptions', required: false },
+  ],
+  combinationPresets: KDS_LOAD_COMBINATION_PRESETS.map((preset) => ({
+    id: preset.id,
+    name: preset.name,
+    type: preset.type || 'strength',
+    terms: { ...preset.terms },
+    required: (preset.required || []).slice(),
+    requiredAny: (preset.requiredAny || []).slice(),
+    optional: (preset.optional || []).slice(),
+    directional: preset.directional || null,
+    basis: preset.basis,
+  })),
+  reviewChecklist: [
+    'Confirm project-specific load magnitudes before relying on generated combinations.',
+    'Confirm lateral sign convention and whether plus/minus load cases are modeled explicitly.',
+    'Confirm serviceability limits separately from strength combinations.',
+    'Confirm omitted special load symbols are truly not applicable to the project.',
+  ],
+};
+
+export function getKdsLoadStandardRegistry() {
+  return clonePlain(KDS_LOAD_STANDARD_REGISTRY);
+}
+
 export function createKdsLoadCombinations(modelOrLoadCases = {}, options = {}) {
   const loadCases = normalizeLoadCases(modelOrLoadCases);
   const map = classifyLoadCases(loadCases);
@@ -138,6 +182,7 @@ export function summarizeKdsLoadCombinationCoverage(modelOrLoadCases = {}, optio
   const loadCases = normalizeLoadCases(modelOrLoadCases);
   const map = classifyLoadCases(loadCases);
   const generated = createKdsLoadCombinations(loadCases, options);
+  const audit = buildKdsLoadStandardAudit(loadCases, options);
   const available = {};
   const missing = [];
 
@@ -149,6 +194,7 @@ export function summarizeKdsLoadCombinationCoverage(modelOrLoadCases = {}, optio
 
   return {
     version: KDS_LOAD_COMBINATION_VERSION,
+    standardRegistryVersion: KDS_LOAD_STANDARD_REGISTRY_VERSION,
     status: generated.length ? 'available' : 'no-compatible-load-cases',
     loadCaseCount: loadCases.length,
     generatedCount: generated.length,
@@ -162,7 +208,9 @@ export function summarizeKdsLoadCombinationCoverage(modelOrLoadCases = {}, optio
       factorsText: formatCombinationFactors(combo.factors),
       basis: combo.basis,
       sourcePreset: combo.sourcePreset,
+      standardTrace: combo.standardTrace || null,
     })),
+    audit,
     limitations: defaultKdsCombinationLimitations(),
   };
 }
@@ -196,6 +244,7 @@ export function summarizeKdsLoadCombinationRules(modelOrLoadCases = {}, options 
   return {
     version: KDS_LOAD_COMBINATION_RULE_VERSION,
     presetVersion: KDS_LOAD_COMBINATION_VERSION,
+    standardRegistryVersion: KDS_LOAD_STANDARD_REGISTRY_VERSION,
     status: generated.length ? 'available' : 'no-compatible-load-cases',
     generatedCount: generated.length,
     includeReverseLateral: options.includeReverseLateral !== false,
@@ -207,11 +256,61 @@ export function summarizeKdsLoadCombinationRules(modelOrLoadCases = {}, options 
       factors: { ...combo.factors },
       factorsText: formatCombinationFactors(combo.factors),
       ruleTrace: combo.ruleTrace,
+      standardTrace: combo.standardTrace || null,
     })),
     limitations: [
       ...defaultKdsCombinationLimitations(),
       'Rule expansion creates signed wind/seismic combinations by load-case factor reversal when separate plus/minus load cases are not modeled.',
     ],
+  };
+}
+
+export function buildKdsLoadStandardAudit(modelOrLoadCases = {}, options = {}) {
+  const loadCases = normalizeLoadCases(modelOrLoadCases);
+  const map = classifyLoadCases(loadCases);
+  const generated = createKdsLoadCombinations(loadCases, options);
+  const symbols = KDS_LOAD_STANDARD_REGISTRY.loadCaseSymbols.map((symbol) => {
+    const caseIds = map[symbol.symbol] || [];
+    return {
+      symbol: symbol.symbol,
+      label: symbol.label,
+      status: caseIds.length ? 'mapped' : 'missing',
+      caseIds,
+      projectInputRequired: symbol.projectInputRequired,
+    };
+  });
+  const presetAudit = KDS_LOAD_COMBINATION_PRESETS.map((preset) => {
+    const missingRequired = missingSymbols(preset.required || [], map, { fixed: {} });
+    const missingAny = preset.requiredAny?.length
+      ? !preset.requiredAny.some((symbol) => (map[symbol] || []).length)
+      : false;
+    const generatedMatches = generated.filter((combo) => combo.sourcePreset === preset.id);
+    return {
+      id: preset.id,
+      name: preset.name,
+      type: preset.type || 'strength',
+      status: missingRequired.length || missingAny ? 'blocked' : 'ready',
+      required: (preset.required || []).slice(),
+      requiredAny: (preset.requiredAny || []).slice(),
+      optional: (preset.optional || []).slice(),
+      directional: preset.directional || null,
+      missingRequired,
+      missingAny: missingAny ? (preset.requiredAny || []).slice() : [],
+      generatedCount: generatedMatches.length,
+      generatedIds: generatedMatches.map((combo) => combo.id),
+    };
+  });
+  return {
+    version: KDS_LOAD_STANDARD_REGISTRY_VERSION,
+    registryStatus: KDS_LOAD_STANDARD_REGISTRY.status,
+    loadCaseCount: loadCases.length,
+    mappedSymbolCount: symbols.filter((symbol) => symbol.status === 'mapped').length,
+    generatedCombinationCount: generated.length,
+    symbols,
+    presetAudit,
+    designInputs: KDS_LOAD_STANDARD_REGISTRY.designInputs.map((item) => ({ ...item })),
+    reviewChecklist: KDS_LOAD_STANDARD_REGISTRY.reviewChecklist.slice(),
+    limitations: defaultKdsCombinationLimitations(),
   };
 }
 
@@ -258,6 +357,7 @@ function withRuleTrace(combo, trace, usedIds, signFactor = 1) {
       sign: trace.sign,
       basis: combo.basis || null,
     },
+    standardTrace: combo.standardTrace || null,
   };
 }
 
@@ -298,6 +398,19 @@ function expandPreset(preset, loadCases, map, options) {
       includedSymbols,
       missingSymbols: missingSymbolsForCombo,
       codeReference: 'KDS-style load combination preset',
+      standardTrace: {
+        version: KDS_LOAD_STANDARD_REGISTRY_VERSION,
+        sourcePreset: preset.id,
+        required: (preset.required || []).slice(),
+        requiredAny: (preset.requiredAny || []).slice(),
+        optional: (preset.optional || []).slice(),
+        directional: preset.directional || null,
+        includedSymbols,
+        missingSymbols: missingSymbolsForCombo,
+        basis: preset.basis,
+        candidate: candidate.idSuffix || null,
+        reviewRequired: true,
+      },
     });
   }
   return out;
@@ -397,4 +510,8 @@ function uniqueId(baseId, usedIds) {
     index += 1;
   }
   return id;
+}
+
+function clonePlain(value) {
+  return JSON.parse(JSON.stringify(value));
 }

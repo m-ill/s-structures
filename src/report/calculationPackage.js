@@ -106,6 +106,13 @@ export function renderCalculationPackageHtml(pkg) {
       force(d.loadDerivation.lateral[index]?.windX),
       force(d.loadDerivation.lateral[index]?.windY),
     ])) : '<div class="note">No load derivation attached.</div>'}
+    <h3>KDS-Style Load Standard Audit</h3>
+    ${table(['Symbol', 'Status', 'Mapped cases', 'Project input'], d.codeBasis.loadStandardAudit.symbols.map((row) => [
+      row.symbol,
+      row.status,
+      row.caseIds.join(', ') || '-',
+      row.projectInputRequired ? 'Required' : 'Optional',
+    ]))}
   </section>
 
   <section id="analysis" class="page-break">
