@@ -59,6 +59,10 @@ export {
   STEEL_DETAILING_VERSION,
 } from './design/steelDetailing.js';
 export {
+  buildConnectionFoundationReport,
+  CONNECTION_FOUNDATION_VERSION,
+} from './design/connectionFoundation.js';
+export {
   analyzeDynamics,
   buildLumpedMass,
   runResponseSpectrum,

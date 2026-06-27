@@ -17,6 +17,7 @@ import { TWO_STORY_ELASTIC_FRAME_VERSION } from '../examples/twoStoryElasticFram
 import { REPRESENTATIVE_BUILDINGS_VERSION } from '../examples/representativeBuildings.js';
 import { DETAILED_REPORT_VERSION } from '../report/detailedReport.js';
 import { KDS_LOAD_COMBINATION_RULE_VERSION, KDS_LOAD_COMBINATION_VERSION } from '../core/kdsLoadCombinations.js';
+import { CONNECTION_FOUNDATION_VERSION } from '../design/connectionFoundation.js';
 import { LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
@@ -54,6 +55,7 @@ export function buildAgentManifest(options = {}) {
       designBasisLoadEstimation: LOAD_ESTIMATION_VERSION,
       rcDetailing: RC_DETAILING_VERSION,
       steelDetailing: STEEL_DETAILING_VERSION,
+      connectionFoundation: CONNECTION_FOUNDATION_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -69,6 +71,7 @@ export function buildAgentManifest(options = {}) {
       'getDesignBasisLoadEstimation',
       'getRcDetailingReport',
       'getSteelDetailingReport',
+      'getConnectionFoundationReport',
       'runPushover',
       'getRuntimeDiagnostics',
       'getCapabilities',
@@ -96,6 +99,7 @@ export function buildAgentManifest(options = {}) {
       'designBasisLoadEstimation',
       'rcReinforcementSchedule',
       'steelMemberReviewSchedule',
+      'connectionFoundationPreliminaryReview',
       'preliminaryPushover',
       'pushoverPanel',
       'designWorkflow',
@@ -143,6 +147,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M38', status: 'preliminary', feature: 'rule-expanded KDS-style load combinations with signed lateral cases' },
       { id: 'M39', status: 'preliminary', feature: 'RC member detailing schedule from preliminary design checks' },
       { id: 'M40', status: 'preliminary', feature: 'steel member detailed review schedule from preliminary checks' },
+      { id: 'M41', status: 'preliminary', feature: 'connection force and foundation reaction preliminary review' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

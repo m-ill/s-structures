@@ -1,5 +1,6 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { factorText } from '../core/combinations.js';
+import { buildConnectionFoundationReport } from '../design/connectionFoundation.js';
 import { buildRcDetailingReport } from '../design/rcDetailing.js';
 import { buildSteelDetailingReport } from '../design/steelDetailing.js';
 import {
@@ -56,6 +57,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     governingMembers,
     rcDetailing: buildRcDetailingReport(model, analysis),
     steelDetailing: buildSteelDetailingReport(model, analysis),
+    connectionFoundation: buildConnectionFoundationReport(model, analysis),
     messages: collectMessages(analysis),
     actionItems: buildActionItems(model, analysis, memberChecks),
   };
@@ -190,11 +192,14 @@ export function renderDetailedReportHtml(report) {
   <h2>8. Steel Member Review Schedule</h2>
   ${renderSteelDetailing(report.steelDetailing)}
 
-  <h2>9. Messages And Action Items</h2>
+  <h2>9. Connection And Foundation Preliminary Review</h2>
+  ${renderConnectionFoundation(report.connectionFoundation)}
+
+  <h2>10. Messages And Action Items</h2>
   ${renderMessages(report.messages)}
   ${renderList(report.actionItems)}
 
-  <h2>10. Remaining Design Scope</h2>
+  <h2>11. Remaining Design Scope</h2>
   ${renderList(report.scope.missingScopes)}
 </main>
 </body>
@@ -527,6 +532,41 @@ function renderSteelDetailing(steelDetailing) {
       row.reviewActions[0] || '-',
     ])),
     renderList(steelDetailing.limitations || []),
+  ].join('');
+}
+
+function renderConnectionFoundation(report) {
+  if (!report) return '<div class="note">No connection or foundation review is available.</div>';
+  return [
+    renderTable(['Item', 'Value'], [
+      ['Version', report.version],
+      ['Connections', report.summary.connectionCount],
+      ['Foundations', report.summary.foundationCount],
+      ['Max connection util.', formatRatio(report.summary.maxConnectionUtilization)],
+      ['Max sliding ratio', formatRatio(report.summary.maxSlidingRatio)],
+    ]),
+    renderTable(['Member', 'Status', 'Util.', 'Axial', 'Vy', 'Vz', 'My', 'Mz', 'Action'], report.connectionRows.map((row) => [
+      row.memberId,
+      row.status,
+      formatRatio(row.utilization),
+      formatForce(row.demands.axial),
+      formatForce(row.demands.shearY),
+      formatForce(row.demands.shearZ),
+      formatMoment(row.demands.momentY),
+      formatMoment(row.demands.momentZ),
+      row.action,
+    ])),
+    renderTable(['Node', 'Status', 'Vertical', 'Horizontal', 'Area', 'Square size', 'Sliding', 'Action'], report.foundationRows.map((row) => [
+      row.nodeId,
+      row.status,
+      formatForce(row.reaction.vertical),
+      formatForce(row.reaction.horizontal),
+      `${format(row.requiredArea)} m2`,
+      `${format(row.equivalentSquareSize)} m`,
+      formatRatio(row.slidingRatio),
+      row.action,
+    ])),
+    renderList(report.limitations || []),
   ].join('');
 }
 
