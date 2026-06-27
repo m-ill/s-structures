@@ -58,6 +58,7 @@ export function buildAgentManifest(options = {}) {
       rcDetailing: RC_DETAILING_VERSION,
       steelDetailing: STEEL_DETAILING_VERSION,
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
+      calculationPackageUi: 'm43-calculation-package-ui',
     },
     readApis: [
       'getSnapshot',
@@ -104,6 +105,7 @@ export function buildAgentManifest(options = {}) {
       'rcReinforcementSchedule',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
+      'nativeCalculationPackageMenu',
       'preliminaryPushover',
       'pushoverPanel',
       'designWorkflow',
@@ -153,6 +155,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M40', status: 'preliminary', feature: 'steel member detailed review schedule from preliminary checks' },
       { id: 'M41', status: 'preliminary', feature: 'connection force and foundation reaction preliminary review' },
       { id: 'M42', status: 'available', feature: 'print-ready calculation package with cover, contents, and appendix' },
+      { id: 'M43', status: 'available', feature: 'native menu and agent action for opening calculation packages' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

@@ -218,6 +218,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.productHardening = installIndexProductHardening(target, { bridge });
     bridge.agentCommandBridge = installIndexAgentCommandBridge(target, target.SStructuresAgent);
     bridge.detailedReportMenu = installDetailedReportMenuHook(target, bridge);
+    bridge.calculationPackageMenu = installCalculationPackageMenuHook(target, bridge);
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
@@ -473,6 +474,8 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         }
         case 'openNativeDetailedReport':
           return openNativeDetailedReport(target, bridge, api, payload);
+        case 'openNativeCalculationPackage':
+          return openNativeCalculationPackage(target, bridge, api, payload);
         case 'setNativeMode':
           return setNativeMode(target, payload.mode || payload.value || payload, api);
         case 'setNativePDeltaEnabled':
@@ -564,6 +567,7 @@ function availableAgentActions() {
     'applyKdsRuleBasedLoadCombinations',
     'applyDesignBasisLoads',
     'openNativeDetailedReport',
+    'openNativeCalculationPackage',
     'setNativeMode',
     'setNativePDeltaEnabled',
     'setNativePDeltaStep',
@@ -1138,11 +1142,55 @@ function installDetailedReportMenuHook(target, bridge) {
   };
 }
 
+function installCalculationPackageMenuHook(target, bridge) {
+  const doc = target?.document;
+  if (!doc?.createElement) return null;
+  const menu = doc.getElementById?.('menuDrop');
+  if (!menu?.appendChild) return null;
+  let button = doc.getElementById?.('mCalculationPackage');
+  if (!button) {
+    button = doc.createElement('button');
+    button.id = 'mCalculationPackage';
+    button.setAttribute?.('id', 'mCalculationPackage');
+    button.type = 'button';
+    button.textContent = 'Calculation Package';
+    const after = doc.getElementById?.('mDesignReport');
+    if (after?.parentNode === menu && menu.insertBefore) {
+      const afterIndex = menu.children?.indexOf?.(after) ?? -1;
+      const before = afterIndex >= 0 ? menu.children[afterIndex + 1] : null;
+      menu.insertBefore(button, before || null);
+    } else {
+      menu.appendChild(button);
+    }
+  }
+  button.setAttribute?.('data-agent-id', 'mCalculationPackage');
+  if (!button.getAttribute?.('aria-label')) button.setAttribute?.('aria-label', 'Open calculation package');
+  button.addEventListener?.('click', () => {
+    try {
+      showCalculationPackage(target, bridge, { source: 'native-menu' });
+    } catch (error) {
+      console.warn('[S-Structures] Calculation package failed.', error);
+    }
+  });
+  return {
+    version: 'm43-calculation-package-menu-hook',
+    controlId: 'mCalculationPackage',
+  };
+}
+
 function openNativeDetailedReport(target, bridge, api, payload = {}) {
   const detailedReport = showDetailedReport(target, bridge, payload);
   return {
     ...api.getSnapshot(),
     detailedReport,
+  };
+}
+
+function openNativeCalculationPackage(target, bridge, api, payload = {}) {
+  const calculationPackage = showCalculationPackage(target, bridge, payload);
+  return {
+    ...api.getSnapshot(),
+    calculationPackage,
   };
 }
 
@@ -1161,6 +1209,25 @@ function showDetailedReport(target, bridge, options = {}) {
     htmlLength: report.html?.length || 0,
     memberCheckCount: report.data?.memberChecks?.length || 0,
     actionItemCount: report.data?.actionItems?.length || 0,
+    modalOpen: !!modal?.classList?.contains?.('show'),
+  };
+}
+
+function showCalculationPackage(target, bridge, options = {}) {
+  const report = bridge?.getCalculationPackage?.(options);
+  if (!report) throw new Error('Calculation package is not available.');
+  target.SStructuresCalculationPackage = report;
+  const doc = target?.document;
+  const body = doc?.getElementById?.('reportBody');
+  if (body) body.innerHTML = report.html;
+  const modal = doc?.getElementById?.('reportModal');
+  modal?.classList?.add?.('show');
+  return {
+    version: report.data?.version || null,
+    title: report.data?.title || null,
+    htmlLength: report.html?.length || 0,
+    sectionCount: report.data?.sections?.length || 0,
+    auditOk: !!report.data?.qualityAudit?.ok,
     modalOpen: !!modal?.classList?.contains?.('show'),
   };
 }
@@ -1279,6 +1346,7 @@ function isAgentRelevantId(id) {
     'comboSel',
     'mLoadCombos',
     'mDesignReport',
+    'mCalculationPackage',
     'mValidate',
     'mSettings',
     'mHelp',
