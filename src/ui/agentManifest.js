@@ -20,6 +20,7 @@ import { DETAILED_REPORT_VERSION } from '../report/detailedReport.js';
 import { KDS_LOAD_COMBINATION_RULE_VERSION, KDS_LOAD_COMBINATION_VERSION, KDS_LOAD_STANDARD_REGISTRY_VERSION } from '../core/kdsLoadCombinations.js';
 import { CONNECTION_FOUNDATION_VERSION } from '../design/connectionFoundation.js';
 import { LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
+import { MEMBER_DESIGN_TRACE_VERSION } from '../design/memberDesignTrace.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
 
@@ -59,6 +60,7 @@ export function buildAgentManifest(options = {}) {
       rcDetailing: RC_DETAILING_VERSION,
       steelDetailing: STEEL_DETAILING_VERSION,
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
+      memberDesignTrace: MEMBER_DESIGN_TRACE_VERSION,
       calculationPackageUi: 'm43-calculation-package-ui',
     },
     readApis: [
@@ -79,6 +81,7 @@ export function buildAgentManifest(options = {}) {
       'getRcDetailingReport',
       'getSteelDetailingReport',
       'getConnectionFoundationReport',
+      'getMemberDesignTraceReport',
       'runPushover',
       'getRuntimeDiagnostics',
       'getCapabilities',
@@ -109,6 +112,7 @@ export function buildAgentManifest(options = {}) {
       'rcReinforcementSchedule',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
+      'memberDesignTraceMatrix',
       'nativeCalculationPackageMenu',
       'preliminaryPushover',
       'pushoverPanel',
@@ -161,6 +165,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M42', status: 'available', feature: 'print-ready calculation package with cover, contents, and appendix' },
       { id: 'M43', status: 'available', feature: 'native menu and agent action for opening calculation packages' },
       { id: 'M44', status: 'preliminary', feature: 'structured KDS-style load standard registry and audit trace' },
+      { id: 'M45', status: 'preliminary', feature: 'member-by-member design formula trace and action matrix' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

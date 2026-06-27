@@ -142,6 +142,14 @@ export function renderCalculationPackageHtml(pkg) {
       row.governingCheck || '-',
       row.comboId || '-',
     ]))}
+    <h3>Member Design Trace Matrix</h3>
+    ${table(['Member', 'Type', 'Status', 'Formula rows', 'Action items'], d.memberDesignTrace.rows.map((row) => [
+      row.memberId,
+      row.designType,
+      row.status,
+      row.formulaTrace.length,
+      row.actionItems.join('; '),
+    ]))}
   </section>
 
   <section id="detailing" class="page-break">

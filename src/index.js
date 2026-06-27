@@ -63,6 +63,10 @@ export {
   CONNECTION_FOUNDATION_VERSION,
 } from './design/connectionFoundation.js';
 export {
+  buildMemberDesignTraceReport,
+  MEMBER_DESIGN_TRACE_VERSION,
+} from './design/memberDesignTrace.js';
+export {
   analyzeDynamics,
   buildLumpedMass,
   runResponseSpectrum,

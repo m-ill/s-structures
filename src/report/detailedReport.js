@@ -1,6 +1,7 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { factorText } from '../core/combinations.js';
 import { buildConnectionFoundationReport } from '../design/connectionFoundation.js';
+import { buildMemberDesignTraceReport } from '../design/memberDesignTrace.js';
 import { buildRcDetailingReport } from '../design/rcDetailing.js';
 import { buildSteelDetailingReport } from '../design/steelDetailing.js';
 import {
@@ -59,6 +60,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     combinationResults,
     memberChecks,
     governingMembers,
+    memberDesignTrace: buildMemberDesignTraceReport(model, analysis),
     rcDetailing: buildRcDetailingReport(model, analysis),
     steelDetailing: buildSteelDetailingReport(model, analysis),
     connectionFoundation: buildConnectionFoundationReport(model, analysis),
@@ -203,6 +205,17 @@ export function renderDetailedReportHtml(report) {
     row.governingCheck || '-',
     row.comboId || '-',
     format(row.station),
+  ]))}
+
+  <h2>6A. Member Design Trace Matrix</h2>
+  ${renderTable(['Member', 'Type', 'Status', 'Util.', 'Governing', 'Formula rows', 'Action items'], report.memberDesignTrace.rows.map((row) => [
+    row.memberId,
+    row.designType,
+    statusLabel(row.status),
+    formatRatio(row.utilization),
+    row.governingCheck || '-',
+    row.formulaTrace.length,
+    row.actionItems.join('; '),
   ]))}
 
   <h2>7. RC Reinforcement Schedule</h2>
