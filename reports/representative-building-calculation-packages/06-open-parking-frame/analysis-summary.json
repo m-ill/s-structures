@@ -116,6 +116,17 @@
     ]
   },
   "designStatus": "OK",
+  "loadStandardAudit": {
+    "version": "m44-kds-load-standard-registry",
+    "mappedSymbolCount": 4,
+    "generatedCombinationCount": 16
+  },
+  "memberDesignTrace": {
+    "version": "m45-member-design-trace",
+    "checkedCount": 145,
+    "ngCount": 12,
+    "maxUtilization": 1.0449596042197011
+  },
   "actionItems": [
     "Review members with NG status and revise size, material, or load path."
   ]

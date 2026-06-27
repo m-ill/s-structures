@@ -6507,6 +6507,23 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-01",
+        "required": [
+          "D"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": null,
+        "includedSymbols": [
+          "D"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern for gravity-only dead load.",
+        "candidate": null,
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6537,6 +6554,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-02",
+        "required": [
+          "D",
+          "L"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": null,
+        "includedSymbols": [
+          "D",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern for dead plus live load.",
+        "candidate": null,
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6568,6 +6604,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-04",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including wind load.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6599,6 +6657,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-04",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including wind load.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6630,6 +6710,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-04",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including wind load.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6661,6 +6763,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-04",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including wind load.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6692,6 +6816,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-05",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including seismic load.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6723,6 +6869,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-05",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including seismic load.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6754,6 +6922,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-05",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including seismic load.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6785,6 +6975,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-05",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including seismic load.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6815,6 +7027,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-06",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6845,6 +7076,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-06",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6875,6 +7125,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-06",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6905,6 +7174,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-06",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6935,6 +7223,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-07",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6965,6 +7272,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-07",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -6995,6 +7321,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-07",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7025,6 +7370,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-07",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7054,6 +7418,23 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-01",
+        "required": [
+          "D"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": null,
+        "includedSymbols": [
+          "D"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for dead load.",
+        "candidate": null,
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7084,6 +7465,25 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-02",
+        "required": [
+          "D",
+          "L"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": null,
+        "includedSymbols": [
+          "D",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for gravity deflection review.",
+        "candidate": null,
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7115,6 +7515,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-03",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "L",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for wind drift review.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7146,6 +7568,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-03",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "L",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for wind drift review.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7177,6 +7621,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-03",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "L",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for wind drift review.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7208,6 +7674,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-03",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "L",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for wind drift review.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7239,6 +7727,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-04",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "L",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for seismic drift review.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7270,6 +7780,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-04",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "L",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for seismic drift review.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7301,6 +7833,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-04",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "L",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for seismic drift review.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",
@@ -7332,6 +7886,28 @@
       ],
       "missingSymbols": [],
       "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-04",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "L",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for seismic drift review.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
       "ruleTrace": {
         "version": "m38-kds-load-combination-rules",
         "presetVersion": "m35-kds-load-combination-presets",

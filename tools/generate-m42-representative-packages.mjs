@@ -7,6 +7,8 @@ import {
   createAllRepresentativeBuildingModels,
   createCalculationPackageHtml,
   createKdsRuleBasedLoadCombinations,
+  KDS_LOAD_STANDARD_REGISTRY_VERSION,
+  MEMBER_DESIGN_TRACE_VERSION,
   REPRESENTATIVE_BUILDINGS_VERSION,
 } from '../src/index.js';
 
@@ -60,7 +62,12 @@ for (const { spec, model } of createAllRepresentativeBuildingModels()) {
 }
 
 await writeJson(path.join(outputRoot, 'index.json'), {
-  version: `${REPRESENTATIVE_BUILDINGS_VERSION}+${CALCULATION_PACKAGE_VERSION}`,
+  version: [
+    REPRESENTATIVE_BUILDINGS_VERSION,
+    CALCULATION_PACKAGE_VERSION,
+    KDS_LOAD_STANDARD_REGISTRY_VERSION,
+    MEMBER_DESIGN_TRACE_VERSION,
+  ].join('+'),
   generatedAt: GENERATED_AT,
   count: generated.length,
   buildings: generated,
@@ -145,6 +152,17 @@ function summarizeAnalysis(spec, model, analysis, pkg) {
     },
     qualityAudit: pkg.qualityAudit,
     designStatus: designStatus(pkg.data),
+    loadStandardAudit: {
+      version: detailed.codeBasis.loadStandardAudit.version,
+      mappedSymbolCount: detailed.codeBasis.loadStandardAudit.mappedSymbolCount,
+      generatedCombinationCount: detailed.codeBasis.loadStandardAudit.generatedCombinationCount,
+    },
+    memberDesignTrace: {
+      version: detailed.memberDesignTrace.version,
+      checkedCount: detailed.memberDesignTrace.summary.checkedCount,
+      ngCount: detailed.memberDesignTrace.summary.ngCount,
+      maxUtilization: detailed.memberDesignTrace.summary.maxUtilization,
+    },
     actionItems: detailed.actionItems,
   };
 }
@@ -164,6 +182,8 @@ function summarizeIndexItem(spec, model, analysis, pkg, folder) {
     combinations: model.loadCombinations.length,
     maxDisplacement: pkg.detailed.analysis.maxDisplacement,
     maxUtilization: pkg.detailed.analysis.maxUtilization,
+    traceRows: pkg.detailed.memberDesignTrace.rows.length,
+    mappedLoadSymbols: pkg.detailed.codeBasis.loadStandardAudit.mappedSymbolCount,
     folder: path.relative(process.cwd(), folder),
   };
 }
@@ -174,14 +194,14 @@ async function writeJson(filePath, value) {
 
 function renderIndexMarkdown(items) {
   const rows = items.map((item) => (
-    `| ${item.id} | ${item.name} | ${item.loads} | ${item.combinations} | ${format(item.maxDisplacement)} | ${format(item.maxUtilization)} | ${item.designStatus} | ${item.auditOk ? 'OK' : 'Check'} |`
+    `| ${item.id} | ${item.name} | ${item.loads} | ${item.combinations} | ${item.traceRows} | ${item.mappedLoadSymbols} | ${format(item.maxDisplacement)} | ${format(item.maxUtilization)} | ${item.designStatus} | ${item.auditOk ? 'OK' : 'Check'} |`
   )).join('\n');
   return `# Representative Building Calculation Packages
 
-Generated M42 calculation-package review set for 10 representative structural models.
+Generated M46 refreshed calculation-package review set for 10 representative structural models.
 
-| ID | Name | Loads | Combos | Max displacement | Max utilization | Design | Package audit |
-| --- | --- | ---: | ---: | ---: | ---: | --- | --- |
+| ID | Name | Loads | Combos | Trace rows | Mapped load symbols | Max displacement | Max utilization | Design | Package audit |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
 ${rows}
 `;
 }

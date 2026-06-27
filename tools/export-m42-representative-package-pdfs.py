@@ -20,7 +20,7 @@ PDF_ROOT = Path("output/pdf/m42-representative-packages")
 TMP_ROOT = Path("tmp/pdfs/m42-representative-package-plots")
 FONT_REGULAR = Path("C:/Windows/Fonts/malgun.ttf")
 FONT_BOLD = Path("C:/Windows/Fonts/malgunbd.ttf")
-VERSION_LABEL = "M42 representative calculation package PDF set"
+VERSION_LABEL = "M46 representative calculation package PDF refresh"
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -78,8 +78,9 @@ def write_manifest(index: dict, generated: list[dict]) -> None:
         for item in generated
     )
     (PDF_ROOT / "README.md").write_text(
-        "# M42 Representative Calculation Package PDFs\n\n"
-        "Ten representative structural models were analyzed and exported as PDF review packages.\n\n"
+        "# M46 Representative Calculation Package PDFs\n\n"
+        "Ten representative structural models were analyzed and exported as refreshed PDF review packages.\n"
+        "This refresh includes M44 load-standard audit rows and M45 member design trace rows.\n\n"
         "| ID | Name | Pages | Size | File |\n"
         "| --- | --- | ---: | ---: | --- |\n"
         f"{rows}\n",
@@ -194,6 +195,19 @@ def build_building_pdf(item: dict, summary: dict, package: dict, model: dict, pl
             fmt_force(lateral.get("windY")),
         ])
     table(pdf, ["Story", "Area", "D total", "L total", "Wind X", "Wind Y"], gravity_rows, [18, 28, 34, 34, 34, 34])
+    section(pdf, "KDS-Style Load Standard Audit")
+    audit = detailed.get("codeBasis", {}).get("loadStandardAudit", {})
+    symbol_rows = [
+        [row["symbol"], row["status"], ", ".join(row.get("caseIds", [])) or "-", "Required" if row.get("projectInputRequired") else "Optional"]
+        for row in audit.get("symbols", [])
+    ]
+    table(pdf, ["Symbol", "Status", "Mapped cases", "Project input"], symbol_rows, [24, 34, 76, 46])
+    blocked_rows = [
+        [row["id"], row["status"], ", ".join(row.get("missingRequired", [])) or "-", ", ".join(row.get("missingAny", [])) or "-", row.get("generatedCount", 0)]
+        for row in audit.get("presetAudit", [])
+        if row.get("status") != "ready" or row.get("generatedCount", 0) == 0
+    ][:8]
+    table(pdf, ["Preset", "Status", "Missing", "Missing any", "Generated"], blocked_rows, [34, 26, 42, 46, 32])
 
     pdf.add_page()
     section(pdf, "Geometry")
@@ -202,7 +216,7 @@ def build_building_pdf(item: dict, summary: dict, package: dict, model: dict, pl
     section(pdf, "Combination Analysis Results")
     combo_rows = [
         [row["id"], "OK" if row["ok"] else "Check", fmt_len(row["maxDisplacement"]), fmt_ratio(row["maxUtilization"]), fmt_ratio(row["equilibriumResidual"])]
-        for row in detailed["combinationResults"][:18]
+        for row in detailed["combinationResults"][:16]
     ]
     table(pdf, ["Combo", "Status", "Max disp.", "Max util.", "Residual"], combo_rows, [50, 25, 37, 34, 34])
 
@@ -213,6 +227,31 @@ def build_building_pdf(item: dict, summary: dict, package: dict, model: dict, pl
         for idx, row in enumerate(detailed["governingMembers"][:20])
     ]
     table(pdf, ["Rank", "Member", "Status", "Util.", "Check", "Combo"], member_rows, [18, 30, 25, 27, 46, 34])
+    section(pdf, "Member Design Trace Matrix")
+    trace = detailed.get("memberDesignTrace", {})
+    trace_summary = trace.get("summary", {})
+    table(pdf, ["Item", "Value"], [
+        ["Checked members", trace_summary.get("checkedCount", "-")],
+        ["Unimplemented members", trace_summary.get("unimplementedCount", "-")],
+        ["NG / WARN", f"{trace_summary.get('ngCount', '-')}/{trace_summary.get('warnCount', '-')}"],
+        ["Max utilization", fmt_ratio(trace_summary.get("maxUtilization"))],
+    ], [70, 110])
+    trace_rows = sorted(
+        trace.get("rows", []),
+        key=lambda row: as_number(row.get("utilization")) if as_number(row.get("utilization")) is not None else -1,
+        reverse=True,
+    )[:20]
+    table(pdf, ["Member", "Type", "Status", "Util.", "Formula", "Action"], [
+        [
+            row.get("memberId", "-"),
+            row.get("designType", "-"),
+            row.get("status", "-"),
+            fmt_ratio(row.get("utilization")),
+            len(row.get("formulaTrace", [])),
+            clip("; ".join(row.get("actionItems", [])), 116),
+        ]
+        for row in trace_rows
+    ], [24, 24, 21, 22, 19, 70])
     section(pdf, "Steel, Connection, Foundation Summary")
     steel = detailed["steelDetailing"]["summary"]
     cf = detailed["connectionFoundation"]["summary"]
@@ -229,9 +268,9 @@ def build_building_pdf(item: dict, summary: dict, package: dict, model: dict, pl
 
 
 def build_index_pdf(index: dict, generated: list[dict], pdf_path: Path) -> None:
-    pdf = PackagePdf("M42 PDF Review Index")
+    pdf = PackagePdf("M46 PDF Review Index")
     pdf.add_page()
-    banner(pdf, "M42 Representative Structural Analysis PDF Set", "10 analyzed models / calculation package review PDFs")
+    banner(pdf, "M46 Representative Structural Analysis PDF Set", "10 analyzed models / refreshed calculation package PDFs")
     section(pdf, "PDF Files")
     rows = []
     for item in index["buildings"]:
@@ -241,15 +280,17 @@ def build_index_pdf(index: dict, generated: list[dict], pdf_path: Path) -> None:
             item["name"],
             item["loads"],
             item["combinations"],
+            item.get("traceRows", "-"),
             fmt_len(item["maxDisplacement"]),
             fmt_ratio(item["maxUtilization"]),
             item.get("designStatus", "-"),
             match.get("pages", "-"),
         ])
-    table(pdf, ["ID", "Name", "Loads", "Combos", "Max disp.", "Max util.", "Design", "Pages"], rows, [38, 42, 16, 18, 25, 22, 19, 14])
+    table(pdf, ["ID", "Name", "Loads", "Combos", "Trace", "Max disp.", "Max util.", "Design", "Pages"], rows, [34, 34, 13, 15, 14, 22, 19, 18, 13])
     section(pdf, "Review Notes")
     bullets(pdf, [
         "Each PDF was generated from a fresh elastic analysis run.",
+        "M44 load-standard audit and M45 member design trace summaries are included in each building PDF.",
         "The current package is a preliminary engineering trace, not a sealed final design document.",
         "Drawing/image/MGT import and agentic vision modeling audit trails are planned future inputs.",
     ])
@@ -415,6 +456,13 @@ def as_number(value) -> float | None:
 
 def safe(value) -> str:
     return str(value if value is not None else "-").replace("\u2013", "-").replace("\u2014", "-")
+
+
+def clip(value: str, limit: int) -> str:
+    text = safe(value)
+    if len(text) <= limit:
+        return text
+    return f"{text[: max(0, limit - 3)]}..."
 
 
 if __name__ == "__main__":

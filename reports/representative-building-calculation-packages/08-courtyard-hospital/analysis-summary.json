@@ -116,6 +116,17 @@
     ]
   },
   "designStatus": "OK",
+  "loadStandardAudit": {
+    "version": "m44-kds-load-standard-registry",
+    "mappedSymbolCount": 4,
+    "generatedCombinationCount": 16
+  },
+  "memberDesignTrace": {
+    "version": "m45-member-design-trace",
+    "checkedCount": 240,
+    "ngCount": 0,
+    "maxUtilization": 0.6278002775526773
+  },
   "actionItems": [
     "Review project-specific design basis, load derivation, detailing, connections, and foundation design."
   ]
