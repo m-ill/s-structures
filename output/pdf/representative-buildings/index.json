@@ -1,0 +1,85 @@
+{
+  "version": "m33-representative-building-set",
+  "sourceGeneratedAt": "2026-06-26T00:00:00.000Z",
+  "pdfGeneratedBy": "M33 representative building elastic analysis set",
+  "count": 11,
+  "files": [
+    {
+      "id": "00-index",
+      "name": "Representative building PDF index",
+      "pdf": "output\\pdf\\representative-buildings\\00-representative-building-index.pdf",
+      "sizeKB": 37.9,
+      "pages": 1
+    },
+    {
+      "id": "01-regular-office-frame",
+      "name": "Regular office frame",
+      "pdf": "output\\pdf\\representative-buildings\\01-regular-office-frame.pdf",
+      "sizeKB": 108.6,
+      "pages": 2
+    },
+    {
+      "id": "02-l-shaped-neighborhood",
+      "name": "L-shaped neighborhood facility",
+      "pdf": "output\\pdf\\representative-buildings\\02-l-shaped-neighborhood.pdf",
+      "sizeKB": 125.4,
+      "pages": 2
+    },
+    {
+      "id": "03-u-shaped-school",
+      "name": "U-shaped school wing",
+      "pdf": "output\\pdf\\representative-buildings\\03-u-shaped-school.pdf",
+      "sizeKB": 113.1,
+      "pages": 2
+    },
+    {
+      "id": "04-podium-tower-setback",
+      "name": "Podium tower setback",
+      "pdf": "output\\pdf\\representative-buildings\\04-podium-tower-setback.pdf",
+      "sizeKB": 125.9,
+      "pages": 2
+    },
+    {
+      "id": "05-long-span-warehouse",
+      "name": "Long-span warehouse",
+      "pdf": "output\\pdf\\representative-buildings\\05-long-span-warehouse.pdf",
+      "sizeKB": 114.4,
+      "pages": 2
+    },
+    {
+      "id": "06-open-parking-frame",
+      "name": "Open parking frame",
+      "pdf": "output\\pdf\\representative-buildings\\06-open-parking-frame.pdf",
+      "sizeKB": 111.8,
+      "pages": 2
+    },
+    {
+      "id": "07-apartment-frame-equivalent",
+      "name": "Apartment frame equivalent",
+      "pdf": "output\\pdf\\representative-buildings\\07-apartment-frame-equivalent.pdf",
+      "sizeKB": 106.4,
+      "pages": 2
+    },
+    {
+      "id": "08-courtyard-hospital",
+      "name": "Courtyard hospital frame",
+      "pdf": "output\\pdf\\representative-buildings\\08-courtyard-hospital.pdf",
+      "sizeKB": 119.6,
+      "pages": 2
+    },
+    {
+      "id": "09-transfer-podium-frame",
+      "name": "Transfer podium frame",
+      "pdf": "output\\pdf\\representative-buildings\\09-transfer-podium-frame.pdf",
+      "sizeKB": 115.9,
+      "pages": 2
+    },
+    {
+      "id": "10-torsion-irregular-frame",
+      "name": "Torsion irregular corner frame",
+      "pdf": "output\\pdf\\representative-buildings\\10-torsion-irregular-frame.pdf",
+      "sizeKB": 117.5,
+      "pages": 2
+    }
+  ]
+}

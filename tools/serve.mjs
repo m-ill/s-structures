@@ -4,6 +4,7 @@ import { extname, join, normalize, resolve } from 'node:path';
 
 const root = resolve(process.cwd());
 const port = Number(process.env.PORT || process.argv[2] || 5173);
+const host = process.env.HOST || process.argv[3] || '127.0.0.1';
 
 const types = {
   '.html': 'text/html; charset=utf-8',
@@ -36,8 +37,8 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(port, '127.0.0.1', () => {
-  console.log(`S-Structures dev server: http://127.0.0.1:${port}/index.html`);
+server.listen(port, host, () => {
+  console.log(`S-Structures dev server: http://${host}:${port}/index.html`);
 });
 
 function entryFile(directory) {
