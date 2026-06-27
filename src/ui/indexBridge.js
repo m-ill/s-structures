@@ -1,8 +1,10 @@
 import {
   analyzeModel as analyzeCoreModel,
+  applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   createDetailedHtmlReport,
   createHtmlReport,
   createKdsLoadCombinations,
+  estimateModelLoads,
   migrateToV3,
   runPushover as runCorePushover,
   summarizeKdsLoadCombinationCoverage,
@@ -119,6 +121,19 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return summarizeKdsLoadCombinationCoverage(model, options);
+    },
+    getDesignBasisLoadEstimation(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return model.loadEstimation || estimateModelLoads(model, options.designBasis || options, { generateLoads: false });
+    },
+    applyDesignBasisLoads(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      const estimation = applyDesignBasisLoadsToModel(model, options.designBasis || options, options);
+      lastResult = analyzeForIndex(model);
+      if (typeof target?.reanalyze === 'function') target.reanalyze(true);
+      return estimation;
     },
     applyKdsLoadCombinations(options = {}) {
       const model = bridge.getCurrentModel();
@@ -311,6 +326,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       if (!model) return null;
       return cloneJson(summarizeKdsLoadCombinationCoverage(model, options));
     },
+    getDesignBasisLoadEstimation(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(model.loadEstimation || estimateModelLoads(model, options.designBasis || options, { generateLoads: false }));
+    },
     getRuntimeDiagnostics() {
       return cloneJson(target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null);
     },
@@ -355,6 +375,16 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
           return {
             ...api.getSnapshot(),
             kdsLoadCombinations,
+          };
+        }
+        case 'applyDesignBasisLoads': {
+          const model = getCurrentModel(target);
+          if (!model) throw new Error('Current UI model is not available.');
+          const loadEstimation = applyDesignBasisLoadsToModel(model, payload.designBasis || payload, payload);
+          runUiAnalysis(target);
+          return {
+            ...api.getSnapshot(),
+            loadEstimation,
           };
         }
         case 'openNativeDetailedReport':
@@ -447,6 +477,7 @@ function availableAgentActions() {
     'setPushoverPanelOpen',
     'runPushover',
     'applyKdsLoadCombinations',
+    'applyDesignBasisLoads',
     'openNativeDetailedReport',
     'setNativeMode',
     'setNativePDeltaEnabled',

@@ -38,6 +38,14 @@ export {
   runConcreteDesign,
 } from './design/concrete.js';
 export {
+  applyDesignBasisLoads,
+  createDesignBasis,
+  estimateModelLoads,
+  DEFAULT_DESIGN_BASIS,
+  LOAD_ESTIMATION_VERSION,
+  OCCUPANCY_LOAD_PRESETS,
+} from './design/loadEstimation.js';
+export {
   analyzeDynamics,
   buildLumpedMass,
   runResponseSpectrum,

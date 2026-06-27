@@ -35,6 +35,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
       limitations: defaultKdsCombinationLimitations(),
     },
     model: summarizeModel(model),
+    loadDerivation: summarizeLoadDerivation(model),
     loadCases,
     combinations,
     analysis: {
@@ -121,6 +122,9 @@ export function renderDetailedReportHtml(report) {
     formatMoment(row.moment[1]),
     formatMoment(row.moment[2]),
   ]))}
+
+  <h2>2A. Load Derivation Summary</h2>
+  ${renderLoadDerivation(report.loadDerivation)}
 
   <h2>3. Load Combination Trace</h2>
   ${renderTable(['Combo', 'Type', 'Factors', 'Basis'], report.combinations.map((row) => [
@@ -231,6 +235,20 @@ function summarizeLoadCases(model) {
       moment,
     };
   });
+}
+
+function summarizeLoadDerivation(model) {
+  const estimation = model?.loadEstimation;
+  if (!estimation) return null;
+  return {
+    version: estimation.version || null,
+    occupancy: estimation.basis?.occupancy || null,
+    occupancyLabel: estimation.basis?.occupancyLabel || null,
+    summary: estimation.summary || null,
+    gravity: estimation.storyLoads?.gravity || [],
+    lateral: estimation.storyLoads?.lateral || [],
+    limitations: estimation.limitations || [],
+  };
 }
 
 function summarizeCombinations(model) {
@@ -415,6 +433,40 @@ function renderMessages(messages) {
     item.target || '-',
     item.message || '-',
   ]));
+}
+
+function renderLoadDerivation(loadDerivation) {
+  if (!loadDerivation) return '<div class="note">No design-basis load derivation is attached to this model.</div>';
+  return [
+    renderTable(['Item', 'Value'], [
+      ['Version', loadDerivation.version || '-'],
+      ['Occupancy', loadDerivation.occupancyLabel || loadDerivation.occupancy || '-'],
+      ['Stories', loadDerivation.summary?.storyCount ?? '-'],
+      ['Total dead', formatForce(loadDerivation.summary?.totalDead)],
+      ['Total live', formatForce(loadDerivation.summary?.totalLive)],
+      ['Total wind X/Y', `${formatForce(loadDerivation.summary?.totalWindX)} / ${formatForce(loadDerivation.summary?.totalWindY)}`],
+      ['Total seismic X/Y', `${formatForce(loadDerivation.summary?.totalSeismicX)} / ${formatForce(loadDerivation.summary?.totalSeismicY)}`],
+    ]),
+    renderTable(['Story', 'Z', 'Area', 'D intensity', 'D total', 'L intensity', 'L total', 'Beam length'], loadDerivation.gravity.map((row) => [
+      row.story,
+      format(row.z),
+      `${format(row.area)} m2`,
+      `${format(row.deadIntensity)} kN/m2`,
+      formatForce(row.deadTotal),
+      `${format(row.liveIntensity)} kN/m2`,
+      formatForce(row.liveTotal),
+      `${format(row.beamLength)} m`,
+    ])),
+    renderTable(['Story', 'Z', 'Height', 'Wind X', 'Wind Y', 'Effective seismic weight'], loadDerivation.lateral.map((row) => [
+      row.story,
+      format(row.z),
+      `${format(row.storyHeight)} m`,
+      formatForce(row.windX),
+      formatForce(row.windY),
+      formatForce(row.effectiveWeight),
+    ])),
+    renderList(loadDerivation.limitations || []),
+  ].join('');
 }
 
 function renderList(items) {
