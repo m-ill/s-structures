@@ -80,6 +80,12 @@ export {
   DETAILED_REPORT_VERSION,
 } from './report/detailedReport.js';
 export {
+  buildCalculationPackageData,
+  CALCULATION_PACKAGE_VERSION,
+  createCalculationPackageHtml,
+  renderCalculationPackageHtml,
+} from './report/calculationPackage.js';
+export {
   createKdsLoadCombinations,
   createKdsRuleBasedLoadCombinations,
   defaultKdsCombinationLimitations,

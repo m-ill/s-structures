@@ -15,6 +15,7 @@ import { INDEX_AGENT_COMMAND_BRIDGE_VERSION } from './indexAgentCommandBridge.js
 import { INDEX_RUNTIME_ADAPTER_VERSION } from './indexRuntimeAdapter.js';
 import { TWO_STORY_ELASTIC_FRAME_VERSION } from '../examples/twoStoryElasticFrame.js';
 import { REPRESENTATIVE_BUILDINGS_VERSION } from '../examples/representativeBuildings.js';
+import { CALCULATION_PACKAGE_VERSION } from '../report/calculationPackage.js';
 import { DETAILED_REPORT_VERSION } from '../report/detailedReport.js';
 import { KDS_LOAD_COMBINATION_RULE_VERSION, KDS_LOAD_COMBINATION_VERSION } from '../core/kdsLoadCombinations.js';
 import { CONNECTION_FOUNDATION_VERSION } from '../design/connectionFoundation.js';
@@ -50,6 +51,7 @@ export function buildAgentManifest(options = {}) {
       elastic3dImportWorkflow: TWO_STORY_ELASTIC_FRAME_VERSION,
       representativeBuildingSet: REPRESENTATIVE_BUILDINGS_VERSION,
       detailedDesignReport: DETAILED_REPORT_VERSION,
+      calculationPackage: CALCULATION_PACKAGE_VERSION,
       kdsLoadCombinationPresets: KDS_LOAD_COMBINATION_VERSION,
       kdsLoadCombinationRules: KDS_LOAD_COMBINATION_RULE_VERSION,
       designBasisLoadEstimation: LOAD_ESTIMATION_VERSION,
@@ -66,6 +68,7 @@ export function buildAgentManifest(options = {}) {
       'getScreenState',
       'getReport',
       'getDetailedReport',
+      'getCalculationPackage',
       'getKdsLoadCombinationCoverage',
       'getKdsLoadCombinationRules',
       'getDesignBasisLoadEstimation',
@@ -94,6 +97,7 @@ export function buildAgentManifest(options = {}) {
       'resultOverlayScene',
       'htmlReport',
       'detailedDesignReport',
+      'calculationPackageHtml',
       'kdsLoadCombinationPreset',
       'kdsLoadCombinationRuleSet',
       'designBasisLoadEstimation',
@@ -148,6 +152,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M39', status: 'preliminary', feature: 'RC member detailing schedule from preliminary design checks' },
       { id: 'M40', status: 'preliminary', feature: 'steel member detailed review schedule from preliminary checks' },
       { id: 'M41', status: 'preliminary', feature: 'connection force and foundation reaction preliminary review' },
+      { id: 'M42', status: 'available', feature: 'print-ready calculation package with cover, contents, and appendix' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

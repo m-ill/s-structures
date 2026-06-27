@@ -17,6 +17,7 @@ const READ_METHODS = new Set([
   'getResultVisuals',
   'getReport',
   'getDetailedReport',
+  'getCalculationPackage',
   'getKdsLoadCombinationCoverage',
   'getKdsLoadCombinationRules',
   'getDesignBasisLoadEstimation',
