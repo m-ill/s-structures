@@ -8,8 +8,10 @@ import {
   createCalculationPackageHtml,
   createKdsRuleBasedLoadCombinations,
   KDS_LOAD_STANDARD_REGISTRY_VERSION,
+  LOAD_DERIVATION_TRACE_VERSION,
   MEMBER_DESIGN_TRACE_VERSION,
   REPRESENTATIVE_BUILDINGS_VERSION,
+  SERVICEABILITY_DRIFT_VERSION,
 } from '../src/index.js';
 
 const outputRoot = path.resolve('reports/representative-building-calculation-packages');
@@ -67,6 +69,8 @@ await writeJson(path.join(outputRoot, 'index.json'), {
     CALCULATION_PACKAGE_VERSION,
     KDS_LOAD_STANDARD_REGISTRY_VERSION,
     MEMBER_DESIGN_TRACE_VERSION,
+    LOAD_DERIVATION_TRACE_VERSION,
+    SERVICEABILITY_DRIFT_VERSION,
   ].join('+'),
   generatedAt: GENERATED_AT,
   count: generated.length,
@@ -157,6 +161,17 @@ function summarizeAnalysis(spec, model, analysis, pkg) {
       mappedSymbolCount: detailed.codeBasis.loadStandardAudit.mappedSymbolCount,
       generatedCombinationCount: detailed.codeBasis.loadStandardAudit.generatedCombinationCount,
     },
+    loadDerivationTrace: {
+      version: detailed.loadDerivation.derivationTrace.version,
+      rowCount: detailed.loadDerivation.derivationTrace.summary.rowCount,
+      groups: detailed.loadDerivation.derivationTrace.summary.groups,
+    },
+    serviceability: {
+      version: detailed.serviceability.version,
+      status: detailed.serviceability.summary.status,
+      maxDriftRatio: detailed.serviceability.summary.maxDriftRatio,
+      governingComboId: detailed.serviceability.summary.governing?.comboId || null,
+    },
     memberDesignTrace: {
       version: detailed.memberDesignTrace.version,
       checkedCount: detailed.memberDesignTrace.summary.checkedCount,
@@ -183,6 +198,9 @@ function summarizeIndexItem(spec, model, analysis, pkg, folder) {
     maxDisplacement: pkg.detailed.analysis.maxDisplacement,
     maxUtilization: pkg.detailed.analysis.maxUtilization,
     traceRows: pkg.detailed.memberDesignTrace.rows.length,
+    derivationTraceRows: pkg.detailed.loadDerivation.derivationTrace.rows.length,
+    serviceabilityStatus: pkg.detailed.serviceability.summary.status,
+    maxDriftRatio: pkg.detailed.serviceability.summary.maxDriftRatio,
     mappedLoadSymbols: pkg.detailed.codeBasis.loadStandardAudit.mappedSymbolCount,
     folder: path.relative(process.cwd(), folder),
   };
@@ -194,14 +212,14 @@ async function writeJson(filePath, value) {
 
 function renderIndexMarkdown(items) {
   const rows = items.map((item) => (
-    `| ${item.id} | ${item.name} | ${item.loads} | ${item.combinations} | ${item.traceRows} | ${item.mappedLoadSymbols} | ${format(item.maxDisplacement)} | ${format(item.maxUtilization)} | ${item.designStatus} | ${item.auditOk ? 'OK' : 'Check'} |`
+    `| ${item.id} | ${item.name} | ${item.loads} | ${item.combinations} | ${item.traceRows} | ${item.derivationTraceRows} | ${item.serviceabilityStatus} | ${format(item.maxDriftRatio)} | ${item.mappedLoadSymbols} | ${format(item.maxDisplacement)} | ${format(item.maxUtilization)} | ${item.designStatus} | ${item.auditOk ? 'OK' : 'Check'} |`
   )).join('\n');
   return `# Representative Building Calculation Packages
 
-Generated M46 refreshed calculation-package review set for 10 representative structural models.
+Generated M50 refreshed calculation-package review set for 10 representative structural models.
 
-| ID | Name | Loads | Combos | Trace rows | Mapped load symbols | Max displacement | Max utilization | Design | Package audit |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| ID | Name | Loads | Combos | Member trace | Load trace | Drift | Max drift ratio | Mapped load symbols | Max displacement | Max utilization | Design | Package audit |
+| --- | --- | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
 ${rows}
 `;
 }

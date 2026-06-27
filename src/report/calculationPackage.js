@@ -31,7 +31,7 @@ export function buildCalculationPackageData(model, analysis, options = {}) {
 
 export function renderCalculationPackageHtml(pkg) {
   const d = pkg.detailed;
-  return `<!doctype html>
+  const html = `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -145,7 +145,7 @@ export function renderCalculationPackageHtml(pkg) {
       row.story,
       `${fmt(row.height)} m`,
       length(row.drift),
-      ratio(row.driftRatio),
+      driftRatio(row.driftRatio),
       ratio(row.demandToLimit),
       row.status,
     ])) : '<div class="note">No story drift data available.</div>'}
@@ -191,6 +191,7 @@ export function renderCalculationPackageHtml(pkg) {
 </main>
 </body>
 </html>`;
+  return stripTrailingLineWhitespace(html);
 }
 
 export function createCalculationPackageHtml(model, analysis, options = {}) {
@@ -232,6 +233,10 @@ function table(headers, rows) {
   )).join('')}</tbody></table>`;
 }
 
+function stripTrailingLineWhitespace(value) {
+  return value.replace(/[ \t]+$/gm, '');
+}
+
 function force(value) {
   return value == null ? '-' : `${fmt(value)} kN`;
 }
@@ -242,6 +247,13 @@ function length(value) {
 
 function ratio(value) {
   return value == null ? '-' : fmt(value);
+}
+
+function driftRatio(value) {
+  if (value == null) return '-';
+  const number = Number(value);
+  if (!Number.isFinite(number)) return '-';
+  return Math.abs(number) < 0.01 ? number.toFixed(5) : fmt(number);
 }
 
 function traceInputs(inputs = []) {

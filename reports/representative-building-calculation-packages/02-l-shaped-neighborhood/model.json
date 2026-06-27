@@ -11730,6 +11730,656 @@
         }
       ]
     },
+    "derivationTrace": {
+      "version": "m48-load-derivation-trace",
+      "rows": [
+        {
+          "id": "basis-occupancy",
+          "group": "basis",
+          "story": null,
+          "caseId": null,
+          "label": "Occupancy preset",
+          "formula": "occupancy preset lookup",
+          "inputs": [
+            {
+              "symbol": "occupancy",
+              "label": "Occupancy",
+              "value": "office",
+              "unit": ""
+            }
+          ],
+          "result": "Office",
+          "unit": "",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "basis-plan-area",
+          "group": "basis",
+          "story": null,
+          "caseId": null,
+          "label": "Typical floor area",
+          "formula": "max(model width * model depth, 1)",
+          "inputs": [
+            {
+              "symbol": "Bx",
+              "label": "Model width X",
+              "value": 16.5,
+              "unit": "m"
+            },
+            {
+              "symbol": "By",
+              "label": "Model depth Y",
+              "value": 13.5,
+              "unit": "m"
+            }
+          ],
+          "result": 222.75,
+          "unit": "m2",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "basis-roof-area",
+          "group": "basis",
+          "story": null,
+          "caseId": null,
+          "label": "Roof area",
+          "formula": "roofArea input or typical floor area",
+          "inputs": [
+            {
+              "symbol": "roofArea",
+              "label": "Roof area input",
+              "value": 222.75,
+              "unit": "m2"
+            }
+          ],
+          "result": 222.75,
+          "unit": "m2",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "D-ST1",
+          "group": "gravity",
+          "story": 1,
+          "caseId": "D",
+          "label": "Story dead load",
+          "formula": "A * qD",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 222.75,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qD",
+              "label": "Dead intensity",
+              "value": 4,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 891,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "L-ST1",
+          "group": "gravity",
+          "story": 1,
+          "caseId": "L",
+          "label": "Story live load",
+          "formula": "A * qL",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 222.75,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qL",
+              "label": "Live intensity",
+              "value": 2.4,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 534.6,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WX-ST1",
+          "group": "wind",
+          "story": 1,
+          "caseId": "WX",
+          "label": "Story wind X",
+          "formula": "pWX * By * h",
+          "inputs": [
+            {
+              "symbol": "pWX",
+              "label": "Wind pressure X",
+              "value": 0.45,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "By",
+              "label": "Model depth Y",
+              "value": 13.5,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.5,
+              "unit": "m"
+            }
+          ],
+          "result": 21.2625,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WY-ST1",
+          "group": "wind",
+          "story": 1,
+          "caseId": "WY",
+          "label": "Story wind Y",
+          "formula": "pWY * Bx * h",
+          "inputs": [
+            {
+              "symbol": "pWY",
+              "label": "Wind pressure Y",
+              "value": 0.45,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "Bx",
+              "label": "Model width X",
+              "value": 16.5,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.5,
+              "unit": "m"
+            }
+          ],
+          "result": 25.9875,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "D-ST2",
+          "group": "gravity",
+          "story": 2,
+          "caseId": "D",
+          "label": "Story dead load",
+          "formula": "A * qD",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 222.75,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qD",
+              "label": "Dead intensity",
+              "value": 4,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 891,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "L-ST2",
+          "group": "gravity",
+          "story": 2,
+          "caseId": "L",
+          "label": "Story live load",
+          "formula": "A * qL",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 222.75,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qL",
+              "label": "Live intensity",
+              "value": 2.4,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 534.6,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WX-ST2",
+          "group": "wind",
+          "story": 2,
+          "caseId": "WX",
+          "label": "Story wind X",
+          "formula": "pWX * By * h",
+          "inputs": [
+            {
+              "symbol": "pWX",
+              "label": "Wind pressure X",
+              "value": 0.45,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "By",
+              "label": "Model depth Y",
+              "value": 13.5,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.5,
+              "unit": "m"
+            }
+          ],
+          "result": 21.2625,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WY-ST2",
+          "group": "wind",
+          "story": 2,
+          "caseId": "WY",
+          "label": "Story wind Y",
+          "formula": "pWY * Bx * h",
+          "inputs": [
+            {
+              "symbol": "pWY",
+              "label": "Wind pressure Y",
+              "value": 0.45,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "Bx",
+              "label": "Model width X",
+              "value": 16.5,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.5,
+              "unit": "m"
+            }
+          ],
+          "result": 25.9875,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "D-ST3",
+          "group": "gravity",
+          "story": 3,
+          "caseId": "D",
+          "label": "Story dead load",
+          "formula": "A * qD",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 222.75,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qD",
+              "label": "Dead intensity",
+              "value": 4,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 891,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "L-ST3",
+          "group": "gravity",
+          "story": 3,
+          "caseId": "L",
+          "label": "Story live load",
+          "formula": "A * qL",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 222.75,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qL",
+              "label": "Live intensity",
+              "value": 1.2,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 267.3,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WX-ST3",
+          "group": "wind",
+          "story": 3,
+          "caseId": "WX",
+          "label": "Story wind X",
+          "formula": "pWX * By * h",
+          "inputs": [
+            {
+              "symbol": "pWX",
+              "label": "Wind pressure X",
+              "value": 0.45,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "By",
+              "label": "Model depth Y",
+              "value": 13.5,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.5,
+              "unit": "m"
+            }
+          ],
+          "result": 21.2625,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WY-ST3",
+          "group": "wind",
+          "story": 3,
+          "caseId": "WY",
+          "label": "Story wind Y",
+          "formula": "pWY * Bx * h",
+          "inputs": [
+            {
+              "symbol": "pWY",
+              "label": "Wind pressure Y",
+              "value": 0.45,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "Bx",
+              "label": "Model width X",
+              "value": 16.5,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.5,
+              "unit": "m"
+            }
+          ],
+          "result": 25.9875,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EX-BASE",
+          "group": "seismic",
+          "story": null,
+          "caseId": "EX",
+          "label": "Seismic base shear X",
+          "formula": "CsX * sum(Wi)",
+          "inputs": [
+            {
+              "symbol": "CsX",
+              "label": "Seismic coefficient X",
+              "value": 0.073,
+              "unit": "g"
+            },
+            {
+              "symbol": "sumW",
+              "label": "Effective seismic weight",
+              "value": 3007.125,
+              "unit": "kN"
+            }
+          ],
+          "result": 219.520125,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EY-BASE",
+          "group": "seismic",
+          "story": null,
+          "caseId": "EY",
+          "label": "Seismic base shear Y",
+          "formula": "CsY * sum(Wi)",
+          "inputs": [
+            {
+              "symbol": "CsY",
+              "label": "Seismic coefficient Y",
+              "value": 0.073,
+              "unit": "g"
+            },
+            {
+              "symbol": "sumW",
+              "label": "Effective seismic weight",
+              "value": 3007.125,
+              "unit": "kN"
+            }
+          ],
+          "result": 219.520125,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EX-ST1",
+          "group": "seismic",
+          "story": 1,
+          "caseId": "EX",
+          "label": "Story seismic X",
+          "formula": "Vx * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vx",
+              "label": "Base shear X",
+              "value": 219.520125,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 1024.65,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 3.5,
+              "unit": "m"
+            }
+          ],
+          "result": 37.819947,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EY-ST1",
+          "group": "seismic",
+          "story": 1,
+          "caseId": "EY",
+          "label": "Story seismic Y",
+          "formula": "Vy * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vy",
+              "label": "Base shear Y",
+              "value": 219.520125,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 1024.65,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 3.5,
+              "unit": "m"
+            }
+          ],
+          "result": 37.819947,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EX-ST2",
+          "group": "seismic",
+          "story": 2,
+          "caseId": "EX",
+          "label": "Story seismic X",
+          "formula": "Vx * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vx",
+              "label": "Base shear X",
+              "value": 219.520125,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 1024.65,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 7,
+              "unit": "m"
+            }
+          ],
+          "result": 75.639893,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EY-ST2",
+          "group": "seismic",
+          "story": 2,
+          "caseId": "EY",
+          "label": "Story seismic Y",
+          "formula": "Vy * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vy",
+              "label": "Base shear Y",
+              "value": 219.520125,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 1024.65,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 7,
+              "unit": "m"
+            }
+          ],
+          "result": 75.639893,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EX-ST3",
+          "group": "seismic",
+          "story": 3,
+          "caseId": "EX",
+          "label": "Story seismic X",
+          "formula": "Vx * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vx",
+              "label": "Base shear X",
+              "value": 219.520125,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 957.825,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 10.5,
+              "unit": "m"
+            }
+          ],
+          "result": 106.060285,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EY-ST3",
+          "group": "seismic",
+          "story": 3,
+          "caseId": "EY",
+          "label": "Story seismic Y",
+          "formula": "Vy * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vy",
+              "label": "Base shear Y",
+              "value": 219.520125,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 957.825,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 10.5,
+              "unit": "m"
+            }
+          ],
+          "result": 106.060285,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        }
+      ],
+      "summary": {
+        "rowCount": 23,
+        "groups": [
+          "basis",
+          "gravity",
+          "wind",
+          "seismic"
+        ],
+        "storyCount": 3
+      }
+    },
     "summary": {
       "version": "m37-load-estimation",
       "occupancy": "office",
@@ -11740,8 +12390,8 @@
       "totalLive": 1336.5,
       "totalWindX": 63.787499999999994,
       "totalWindY": 77.9625,
-      "totalSeismicX": 219.52012500000015,
-      "totalSeismicY": 219.52012500000015,
+      "totalSeismicX": 219.52012500000004,
+      "totalSeismicY": 219.52012500000004,
       "generatedLoadCount": 240
     },
     "limitations": [

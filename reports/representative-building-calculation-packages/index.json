@@ -1,5 +1,5 @@
 {
-  "version": "m33-representative-building-set+m42-calculation-package+m44-kds-load-standard-registry+m45-member-design-trace",
+  "version": "m33-representative-building-set+m42-calculation-package+m44-kds-load-standard-registry+m45-member-design-trace+m48-load-derivation-trace+m49-serviceability-drift",
   "generatedAt": "2026-06-27T00:00:00.000Z",
   "count": 10,
   "buildings": [
@@ -18,6 +18,9 @@
       "maxDisplacement": 0.005545890188501368,
       "maxUtilization": 0.3806201697299936,
       "traceRows": 84,
+      "derivationTraceRows": 29,
+      "serviceabilityStatus": "OK",
+      "maxDriftRatio": 0.0004988366984731654,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\01-regular-office-frame"
     },
@@ -36,6 +39,9 @@
       "maxDisplacement": 0.0037147569552993896,
       "maxUtilization": 0.36325985510171754,
       "traceRows": 84,
+      "derivationTraceRows": 23,
+      "serviceabilityStatus": "OK",
+      "maxDriftRatio": 0.0004254388484714699,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\02-l-shaped-neighborhood"
     },
@@ -54,6 +60,9 @@
       "maxDisplacement": 0.06365856452553192,
       "maxUtilization": 4.301254359833237,
       "traceRows": 57,
+      "derivationTraceRows": 23,
+      "serviceabilityStatus": "NG",
+      "maxDriftRatio": 0.007608043730556306,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\03-u-shaped-school"
     },
@@ -72,6 +81,9 @@
       "maxDisplacement": 0.04864944829475139,
       "maxUtilization": 3.553148684987094,
       "traceRows": 154,
+      "derivationTraceRows": 41,
+      "serviceabilityStatus": "OK",
+      "maxDriftRatio": 0.003716408531134693,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\04-podium-tower-setback"
     },
@@ -90,6 +102,9 @@
       "maxDisplacement": 0.012765286524211605,
       "maxUtilization": 0.539032032397637,
       "traceRows": 37,
+      "derivationTraceRows": 11,
+      "serviceabilityStatus": "OK",
+      "maxDriftRatio": 0.0008685486846594732,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\05-long-span-warehouse"
     },
@@ -108,6 +123,9 @@
       "maxDisplacement": 0.013552433703673499,
       "maxUtilization": 1.0449596042197011,
       "traceRows": 145,
+      "derivationTraceRows": 35,
+      "serviceabilityStatus": "OK",
+      "maxDriftRatio": 0.0011262701743108524,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\06-open-parking-frame"
     },
@@ -126,6 +144,9 @@
       "maxDisplacement": 0.0041729663419064165,
       "maxUtilization": 0.35818657294333944,
       "traceRows": 270,
+      "derivationTraceRows": 41,
+      "serviceabilityStatus": "OK",
+      "maxDriftRatio": 0.0003117247959543779,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\07-apartment-frame-equivalent"
     },
@@ -144,6 +165,9 @@
       "maxDisplacement": 0.009646189534736806,
       "maxUtilization": 0.6278002775526773,
       "traceRows": 240,
+      "derivationTraceRows": 29,
+      "serviceabilityStatus": "OK",
+      "maxDriftRatio": 0.000827371791470362,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\08-courtyard-hospital"
     },
@@ -162,6 +186,9 @@
       "maxDisplacement": 0.03728213000554564,
       "maxUtilization": 2.6517820066829403,
       "traceRows": 158,
+      "derivationTraceRows": 41,
+      "serviceabilityStatus": "OK",
+      "maxDriftRatio": 0.0024337810044446208,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\09-transfer-podium-frame"
     },
@@ -180,6 +207,9 @@
       "maxDisplacement": 0.0067544642157760905,
       "maxUtilization": 0.49547977609798666,
       "traceRows": 179,
+      "derivationTraceRows": 35,
+      "serviceabilityStatus": "OK",
+      "maxDriftRatio": 0.0005303224593365134,
       "mappedLoadSymbols": 4,
       "folder": "reports\\representative-building-calculation-packages\\10-torsion-irregular-frame"
     }

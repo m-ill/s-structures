@@ -1495,6 +1495,308 @@
           "effectiveWeight": 2457.6
         }
       ],
+      "derivationTrace": {
+        "version": "m48-load-derivation-trace",
+        "rows": [
+          {
+            "id": "basis-occupancy",
+            "group": "basis",
+            "story": null,
+            "caseId": null,
+            "label": "Occupancy preset",
+            "formula": "occupancy preset lookup",
+            "inputs": [
+              {
+                "symbol": "occupancy",
+                "label": "Occupancy",
+                "value": "warehouse",
+                "unit": ""
+              }
+            ],
+            "result": "Warehouse",
+            "unit": "",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "basis-plan-area",
+            "group": "basis",
+            "story": null,
+            "caseId": null,
+            "label": "Typical floor area",
+            "formula": "max(model width * model depth, 1)",
+            "inputs": [
+              {
+                "symbol": "Bx",
+                "label": "Model width X",
+                "value": 32,
+                "unit": "m"
+              },
+              {
+                "symbol": "By",
+                "label": "Model depth Y",
+                "value": 24,
+                "unit": "m"
+              }
+            ],
+            "result": 768,
+            "unit": "m2",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "basis-roof-area",
+            "group": "basis",
+            "story": null,
+            "caseId": null,
+            "label": "Roof area",
+            "formula": "roofArea input or typical floor area",
+            "inputs": [
+              {
+                "symbol": "roofArea",
+                "label": "Roof area input",
+                "value": 768,
+                "unit": "m2"
+              }
+            ],
+            "result": 768,
+            "unit": "m2",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "D-ST1",
+            "group": "gravity",
+            "story": 1,
+            "caseId": "D",
+            "label": "Story dead load",
+            "formula": "A * qD",
+            "inputs": [
+              {
+                "symbol": "A",
+                "label": "Area",
+                "value": 768,
+                "unit": "m2"
+              },
+              {
+                "symbol": "qD",
+                "label": "Dead intensity",
+                "value": 3,
+                "unit": "kN/m2"
+              }
+            ],
+            "result": 2304,
+            "unit": "kN",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "L-ST1",
+            "group": "gravity",
+            "story": 1,
+            "caseId": "L",
+            "label": "Story live load",
+            "formula": "A * qL",
+            "inputs": [
+              {
+                "symbol": "A",
+                "label": "Area",
+                "value": 768,
+                "unit": "m2"
+              },
+              {
+                "symbol": "qL",
+                "label": "Live intensity",
+                "value": 0.8,
+                "unit": "kN/m2"
+              }
+            ],
+            "result": 614.4,
+            "unit": "kN",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "WX-ST1",
+            "group": "wind",
+            "story": 1,
+            "caseId": "WX",
+            "label": "Story wind X",
+            "formula": "pWX * By * h",
+            "inputs": [
+              {
+                "symbol": "pWX",
+                "label": "Wind pressure X",
+                "value": 1,
+                "unit": "kN/m2"
+              },
+              {
+                "symbol": "By",
+                "label": "Model depth Y",
+                "value": 24,
+                "unit": "m"
+              },
+              {
+                "symbol": "h",
+                "label": "Story height",
+                "value": 8,
+                "unit": "m"
+              }
+            ],
+            "result": 192,
+            "unit": "kN",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "WY-ST1",
+            "group": "wind",
+            "story": 1,
+            "caseId": "WY",
+            "label": "Story wind Y",
+            "formula": "pWY * Bx * h",
+            "inputs": [
+              {
+                "symbol": "pWY",
+                "label": "Wind pressure Y",
+                "value": 0.777778,
+                "unit": "kN/m2"
+              },
+              {
+                "symbol": "Bx",
+                "label": "Model width X",
+                "value": 32,
+                "unit": "m"
+              },
+              {
+                "symbol": "h",
+                "label": "Story height",
+                "value": 8,
+                "unit": "m"
+              }
+            ],
+            "result": 199.111111,
+            "unit": "kN",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "EX-BASE",
+            "group": "seismic",
+            "story": null,
+            "caseId": "EX",
+            "label": "Seismic base shear X",
+            "formula": "CsX * sum(Wi)",
+            "inputs": [
+              {
+                "symbol": "CsX",
+                "label": "Seismic coefficient X",
+                "value": 0.061,
+                "unit": "g"
+              },
+              {
+                "symbol": "sumW",
+                "label": "Effective seismic weight",
+                "value": 2457.6,
+                "unit": "kN"
+              }
+            ],
+            "result": 149.9136,
+            "unit": "kN",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "EY-BASE",
+            "group": "seismic",
+            "story": null,
+            "caseId": "EY",
+            "label": "Seismic base shear Y",
+            "formula": "CsY * sum(Wi)",
+            "inputs": [
+              {
+                "symbol": "CsY",
+                "label": "Seismic coefficient Y",
+                "value": 0.061,
+                "unit": "g"
+              },
+              {
+                "symbol": "sumW",
+                "label": "Effective seismic weight",
+                "value": 2457.6,
+                "unit": "kN"
+              }
+            ],
+            "result": 149.9136,
+            "unit": "kN",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "EX-ST1",
+            "group": "seismic",
+            "story": 1,
+            "caseId": "EX",
+            "label": "Story seismic X",
+            "formula": "Vx * Wi * zi / sum(Wi * zi)",
+            "inputs": [
+              {
+                "symbol": "Vx",
+                "label": "Base shear X",
+                "value": 149.9136,
+                "unit": "kN"
+              },
+              {
+                "symbol": "Wi",
+                "label": "Effective story weight",
+                "value": 2457.6,
+                "unit": "kN"
+              },
+              {
+                "symbol": "zi",
+                "label": "Story elevation",
+                "value": 8,
+                "unit": "m"
+              }
+            ],
+            "result": 149.9136,
+            "unit": "kN",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "EY-ST1",
+            "group": "seismic",
+            "story": 1,
+            "caseId": "EY",
+            "label": "Story seismic Y",
+            "formula": "Vy * Wi * zi / sum(Wi * zi)",
+            "inputs": [
+              {
+                "symbol": "Vy",
+                "label": "Base shear Y",
+                "value": 149.9136,
+                "unit": "kN"
+              },
+              {
+                "symbol": "Wi",
+                "label": "Effective story weight",
+                "value": 2457.6,
+                "unit": "kN"
+              },
+              {
+                "symbol": "zi",
+                "label": "Story elevation",
+                "value": 8,
+                "unit": "m"
+              }
+            ],
+            "result": 149.9136,
+            "unit": "kN",
+            "source": "m37-load-estimation"
+          }
+        ],
+        "summary": {
+          "rowCount": 11,
+          "groups": [
+            "basis",
+            "gravity",
+            "wind",
+            "seismic"
+          ],
+          "storyCount": 1
+        }
+      },
       "limitations": [
         "Area loads are distributed to horizontal frame members by member length share.",
         "Wind and seismic loads are equivalent preliminary story nodal loads.",
@@ -2601,6 +2903,488 @@
         "equilibriumResidual": 3.4830526262750014e-16
       }
     ],
+    "serviceability": {
+      "version": "m49-serviceability-drift",
+      "criteria": {
+        "driftLimitRatio": 0.005,
+        "warnRatio": 0.8,
+        "limitText": "H/200"
+      },
+      "rows": [
+        {
+          "comboId": "KDS-ST-01",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N15",
+          "upperNode": "N30",
+          "driftX": -0.000022930542682703184,
+          "driftY": -0.000048044099100766014,
+          "drift": 0.000053235751578497484,
+          "driftRatio": 0.0000066544689473121855,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.0013308937894624371,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-02",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.000026643106736094103,
+          "driftY": 0.00005582266752660321,
+          "drift": 0.00006185487326263456,
+          "driftRatio": 0.00000773185915782932,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.001546371831565864,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-04-WX-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.005777448736455149,
+          "driftY": 0.00005033191334363262,
+          "drift": 0.0057776679727956,
+          "driftRatio": 0.00072220849659945,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.14444169931989,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-04-WX-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N5",
+          "upperNode": "N20",
+          "driftX": -0.00577744873645515,
+          "driftY": 0.00005033191334363188,
+          "drift": 0.005777667972795601,
+          "driftRatio": 0.0007222084965994502,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.14444169931989004,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-04-WY-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.000024022473286634193,
+          "driftY": 0.006948347951038007,
+          "drift": 0.006948389477275786,
+          "driftRatio": 0.0008685486846594732,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.17370973693189465,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-04-WY-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N11",
+          "upperNode": "N26",
+          "driftX": 0.000024022473286635402,
+          "driftY": -0.006948347951038,
+          "drift": 0.006948389477275779,
+          "driftRatio": 0.0008685486846594724,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.17370973693189448,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-05-EX-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.00451629769956861,
+          "driftY": 0.000050331913343637113,
+          "drift": 0.004516578153052325,
+          "driftRatio": 0.0005645722691315407,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.11291445382630813,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-05-EX-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N5",
+          "upperNode": "N20",
+          "driftX": -0.004516297699568614,
+          "driftY": 0.000050331913343640244,
+          "drift": 0.004516578153052329,
+          "driftRatio": 0.0005645722691315411,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.11291445382630821,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-05-EY-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.000024022473286636554,
+          "driftY": 0.005243946731209988,
+          "drift": 0.00524400175428944,
+          "driftRatio": 0.00065550021928618,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.131100043857236,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-05-EY-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N11",
+          "upperNode": "N26",
+          "driftX": 0.000024022473286637103,
+          "driftY": -0.005243946731209984,
+          "drift": 0.005244001754289436,
+          "driftRatio": 0.0006555002192861795,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.1311000438572359,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-06-WX-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.0057681673263216765,
+          "driftY": 0.00003088549227903659,
+          "drift": 0.005768250013485743,
+          "driftRatio": 0.0007210312516857179,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.14420625033714357,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-06-WX-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N5",
+          "upperNode": "N20",
+          "driftX": -0.005768167326321673,
+          "driftY": 0.000030885492279034925,
+          "drift": 0.005768250013485739,
+          "driftRatio": 0.0007210312516857174,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.1442062503371435,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-06-WY-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.000014741063153159206,
+          "driftY": 0.006928901529973412,
+          "drift": 0.006928917210575601,
+          "driftRatio": 0.0008661146513219501,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.17322293026439,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-06-WY-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N11",
+          "upperNode": "N26",
+          "driftX": 0.000014741063153159094,
+          "driftY": -0.006928901529973409,
+          "drift": 0.006928917210575598,
+          "driftRatio": 0.0008661146513219498,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.17322293026438995,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-07-EX-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.004507016289435136,
+          "driftY": 0.000030885492279041756,
+          "drift": 0.004507122113596101,
+          "driftRatio": 0.0005633902641995126,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.11267805283990252,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-07-EX-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N5",
+          "upperNode": "N20",
+          "driftX": -0.004507016289435136,
+          "driftY": 0.00003088549227904193,
+          "drift": 0.004507122113596101,
+          "driftRatio": 0.0005633902641995126,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.11267805283990252,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-07-EY-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.000014741063153161174,
+          "driftY": 0.0052245003101453885,
+          "drift": 0.005224521106250041,
+          "driftRatio": 0.0006530651382812551,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.13061302765625102,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-ST-07-EY-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N11",
+          "upperNode": "N26",
+          "driftX": 0.000014741063153161174,
+          "driftY": -0.0052245003101453885,
+          "drift": 0.005224521106250041,
+          "driftRatio": 0.0006530651382812551,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.13061302765625102,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-01",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N15",
+          "upperNode": "N30",
+          "driftX": -0.000016378959059073777,
+          "driftY": -0.00003431721364340505,
+          "drift": 0.00003802553684178464,
+          "driftRatio": 0.00000475319210522308,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.0009506384210446159,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-02",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N15",
+          "upperNode": "N30",
+          "driftX": -0.000020746681474827226,
+          "driftY": -0.000043468470614979025,
+          "drift": 0.00004816567999959343,
+          "driftRatio": 0.0000060207099999491785,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.0012041419999898357,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-03-WX-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.005771989083435458,
+          "driftY": 0.00003889284212916491,
+          "drift": 0.005772120115907758,
+          "driftRatio": 0.0007215150144884697,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.14430300289769393,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-03-WX-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N5",
+          "upperNode": "N20",
+          "driftX": -0.005771989083435458,
+          "driftY": 0.00003889284212916202,
+          "drift": 0.005772120115907758,
+          "driftRatio": 0.0007215150144884697,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.14430300289769393,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-03-WY-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.000018562820266943493,
+          "driftY": 0.006936908879823537,
+          "drift": 0.006936933716367118,
+          "driftRatio": 0.0008671167145458897,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.17342334290917794,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-03-WY-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N11",
+          "upperNode": "N26",
+          "driftX": 0.000018562820266943137,
+          "driftY": -0.006936908879823536,
+          "drift": 0.006936933716367117,
+          "driftRatio": 0.0008671167145458896,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.1734233429091779,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-04-EX-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.004510838046548918,
+          "driftY": 0.000038892842129171504,
+          "drift": 0.004511005712184607,
+          "driftRatio": 0.0005638757140230758,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.11277514280461516,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-04-EX-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N5",
+          "upperNode": "N20",
+          "driftX": -0.0045108380465489215,
+          "driftY": 0.000038892842129167716,
+          "drift": 0.00451100571218461,
+          "driftRatio": 0.0005638757140230763,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.11277514280461524,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-04-EY-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.000018562820266945116,
+          "driftY": 0.005232507659995516,
+          "drift": 0.0052325405865800995,
+          "driftRatio": 0.0006540675733225124,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.13081351466450247,
+          "status": "OK"
+        },
+        {
+          "comboId": "KDS-SVC-04-EY-N",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N11",
+          "upperNode": "N26",
+          "driftX": 0.000018562820266945346,
+          "driftY": -0.005232507659995516,
+          "drift": 0.0052325405865800995,
+          "driftRatio": 0.0006540675733225124,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.13081351466450247,
+          "status": "OK"
+        }
+      ],
+      "summary": {
+        "storyCount": 1,
+        "comboCount": 28,
+        "rowCount": 28,
+        "maxDrift": 0.006948389477275786,
+        "maxDriftRatio": 0.0008685486846594732,
+        "governing": {
+          "comboId": "KDS-ST-04-WY-P",
+          "story": 1,
+          "lowerZ": 0,
+          "upperZ": 8,
+          "height": 8,
+          "lowerNode": "N1",
+          "upperNode": "N16",
+          "driftX": 0.000024022473286634193,
+          "driftY": 0.006948347951038007,
+          "drift": 0.006948389477275786,
+          "driftRatio": 0.0008685486846594732,
+          "limitRatio": 0.005,
+          "demandToLimit": 0.17370973693189465,
+          "status": "OK"
+        },
+        "status": "OK"
+      }
+    },
     "memberChecks": [
       {
         "memberId": "M1",

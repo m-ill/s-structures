@@ -121,6 +121,22 @@
     "mappedSymbolCount": 4,
     "generatedCombinationCount": 16
   },
+  "loadDerivationTrace": {
+    "version": "m48-load-derivation-trace",
+    "rowCount": 11,
+    "groups": [
+      "basis",
+      "gravity",
+      "wind",
+      "seismic"
+    ]
+  },
+  "serviceability": {
+    "version": "m49-serviceability-drift",
+    "status": "OK",
+    "maxDriftRatio": 0.0008685486846594732,
+    "governingComboId": "KDS-ST-04-WY-P"
+  },
   "memberDesignTrace": {
     "version": "m45-member-design-trace",
     "checkedCount": 37,

@@ -1,7 +1,7 @@
 {
-  "version": "m33-representative-building-set+m42-calculation-package+m44-kds-load-standard-registry+m45-member-design-trace",
+  "version": "m33-representative-building-set+m42-calculation-package+m44-kds-load-standard-registry+m45-member-design-trace+m48-load-derivation-trace+m49-serviceability-drift",
   "sourceGeneratedAt": "2026-06-27T00:00:00.000Z",
-  "pdfGeneratedBy": "M46 representative calculation package PDF refresh",
+  "pdfGeneratedBy": "M50 representative calculation package PDF refresh",
   "count": 11,
   "files": [
     {
@@ -9,77 +9,77 @@
       "name": "PDF Review Index",
       "pdf": "output\\pdf\\m42-representative-packages\\00-index.pdf",
       "pages": 1,
-      "sizeKB": 25.6
+      "sizeKB": 26.1
     },
     {
       "id": "01-regular-office-frame",
       "name": "Regular office frame",
       "pdf": "output\\pdf\\m42-representative-packages\\01-regular-office-frame.pdf",
-      "pages": 6,
-      "sizeKB": 89.2
+      "pages": 7,
+      "sizeKB": 93.6
     },
     {
       "id": "02-l-shaped-neighborhood",
       "name": "L-shaped neighborhood facility",
       "pdf": "output\\pdf\\m42-representative-packages\\02-l-shaped-neighborhood.pdf",
-      "pages": 6,
-      "sizeKB": 105.9
+      "pages": 7,
+      "sizeKB": 110.3
     },
     {
       "id": "03-u-shaped-school",
       "name": "U-shaped school wing",
       "pdf": "output\\pdf\\m42-representative-packages\\03-u-shaped-school.pdf",
-      "pages": 6,
-      "sizeKB": 94.4
+      "pages": 7,
+      "sizeKB": 98.9
     },
     {
       "id": "04-podium-tower-setback",
       "name": "Podium tower setback",
       "pdf": "output\\pdf\\m42-representative-packages\\04-podium-tower-setback.pdf",
-      "pages": 6,
-      "sizeKB": 107.4
+      "pages": 7,
+      "sizeKB": 111.8
     },
     {
       "id": "05-long-span-warehouse",
       "name": "Long-span warehouse",
       "pdf": "output\\pdf\\m42-representative-packages\\05-long-span-warehouse.pdf",
-      "pages": 6,
-      "sizeKB": 95.5
+      "pages": 7,
+      "sizeKB": 99.9
     },
     {
       "id": "06-open-parking-frame",
       "name": "Open parking frame",
       "pdf": "output\\pdf\\m42-representative-packages\\06-open-parking-frame.pdf",
-      "pages": 6,
-      "sizeKB": 92.3
+      "pages": 7,
+      "sizeKB": 96.6
     },
     {
       "id": "07-apartment-frame-equivalent",
       "name": "Apartment frame equivalent",
       "pdf": "output\\pdf\\m42-representative-packages\\07-apartment-frame-equivalent.pdf",
-      "pages": 6,
-      "sizeKB": 86.1
+      "pages": 7,
+      "sizeKB": 90.3
     },
     {
       "id": "08-courtyard-hospital",
       "name": "Courtyard hospital frame",
       "pdf": "output\\pdf\\m42-representative-packages\\08-courtyard-hospital.pdf",
-      "pages": 6,
-      "sizeKB": 99.0
+      "pages": 7,
+      "sizeKB": 103.3
     },
     {
       "id": "09-transfer-podium-frame",
       "name": "Transfer podium frame",
       "pdf": "output\\pdf\\m42-representative-packages\\09-transfer-podium-frame.pdf",
-      "pages": 6,
-      "sizeKB": 95.8
+      "pages": 7,
+      "sizeKB": 100.1
     },
     {
       "id": "10-torsion-irregular-frame",
       "name": "Torsion irregular corner frame",
       "pdf": "output\\pdf\\m42-representative-packages\\10-torsion-irregular-frame.pdf",
-      "pages": 6,
-      "sizeKB": 98.5
+      "pages": 7,
+      "sizeKB": 102.9
     }
   ]
 }

@@ -500,7 +500,7 @@ function renderServiceability(serviceability) {
       ['Limit', serviceability.criteria.limitText],
       ['Status', statusLabel(serviceability.summary.status)],
       ['Max drift', formatLength(serviceability.summary.maxDrift)],
-      ['Max drift ratio', formatRatio(serviceability.summary.maxDriftRatio)],
+      ['Max drift ratio', formatDriftRatio(serviceability.summary.maxDriftRatio)],
       ['Governing', serviceability.summary.governing ? `${serviceability.summary.governing.comboId} / Story ${serviceability.summary.governing.story}` : '-'],
     ]),
     renderTable(['Combo', 'Story', 'Height', 'Drift X', 'Drift Y', 'Drift', 'Ratio', 'D/L', 'Status'], serviceability.rows.map((row) => [
@@ -510,7 +510,7 @@ function renderServiceability(serviceability) {
       formatLength(row.driftX),
       formatLength(row.driftY),
       formatLength(row.drift),
-      formatRatio(row.driftRatio),
+      formatDriftRatio(row.driftRatio),
       formatRatio(row.demandToLimit),
       statusLabel(row.status),
     ])),
@@ -679,6 +679,13 @@ function formatLength(value) {
 
 function formatRatio(value) {
   return value == null ? '-' : format(value);
+}
+
+function formatDriftRatio(value) {
+  if (value == null) return '-';
+  const number = Number(value);
+  if (!Number.isFinite(number)) return '-';
+  return Math.abs(number) < 0.01 ? number.toFixed(5) : format(number);
 }
 
 function format(value) {

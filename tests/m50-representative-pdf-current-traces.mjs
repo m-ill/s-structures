@@ -2,9 +2,8 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import {
-  CALCULATION_PACKAGE_VERSION,
-  KDS_LOAD_STANDARD_REGISTRY_VERSION,
-  MEMBER_DESIGN_TRACE_VERSION,
+  LOAD_DERIVATION_TRACE_VERSION,
+  SERVICEABILITY_DRIFT_VERSION,
 } from '../src/index.js';
 
 const reportRoot = path.resolve('reports/representative-building-calculation-packages');
@@ -12,22 +11,25 @@ const pdfRoot = path.resolve('output/pdf/m42-representative-packages');
 
 const reportIndex = readJson(path.join(reportRoot, 'index.json'));
 assert.equal(reportIndex.count, 10);
-assert.ok(reportIndex.version.includes(CALCULATION_PACKAGE_VERSION));
-assert.ok(reportIndex.version.includes(KDS_LOAD_STANDARD_REGISTRY_VERSION));
-assert.ok(reportIndex.version.includes(MEMBER_DESIGN_TRACE_VERSION));
+assert.ok(reportIndex.version.includes(LOAD_DERIVATION_TRACE_VERSION));
+assert.ok(reportIndex.version.includes(SERVICEABILITY_DRIFT_VERSION));
 
 const first = reportIndex.buildings[0];
-assert.equal(first.traceRows > 0, true);
-assert.equal(first.mappedLoadSymbols > 0, true);
+assert.ok(first.derivationTraceRows > 0);
+assert.ok(['OK', 'WARN', 'NG'].includes(first.serviceabilityStatus));
+assert.equal(typeof first.maxDriftRatio, 'number');
+
+const firstSummary = readJson(path.join(reportRoot, first.id, 'analysis-summary.json'));
+assert.equal(firstSummary.loadDerivationTrace.version, LOAD_DERIVATION_TRACE_VERSION);
+assert.equal(firstSummary.serviceability.version, SERVICEABILITY_DRIFT_VERSION);
 
 const firstPackage = readJson(path.join(reportRoot, first.id, 'calculation-package.json'));
-assert.equal(firstPackage.detailed.codeBasis.loadStandardAudit.version, KDS_LOAD_STANDARD_REGISTRY_VERSION);
-assert.equal(firstPackage.detailed.memberDesignTrace.version, MEMBER_DESIGN_TRACE_VERSION);
-assert.equal(firstPackage.detailed.memberDesignTrace.rows.length, first.traceRows);
+assert.equal(firstPackage.detailed.loadDerivation.derivationTrace.version, LOAD_DERIVATION_TRACE_VERSION);
+assert.equal(firstPackage.detailed.serviceability.version, SERVICEABILITY_DRIFT_VERSION);
 
 const pdfIndex = readJson(path.join(pdfRoot, 'index.json'));
 assert.equal(pdfIndex.count, 11);
-assert.match(pdfIndex.pdfGeneratedBy, /representative calculation package PDF refresh/i);
+assert.match(pdfIndex.pdfGeneratedBy, /M50/);
 for (const file of pdfIndex.files) {
   const pdfPath = path.resolve(file.pdf);
   assert.equal(existsSync(pdfPath), true, `missing PDF: ${pdfPath}`);
@@ -35,9 +37,9 @@ for (const file of pdfIndex.files) {
 }
 
 const pdfReadme = readFileSync(path.join(pdfRoot, 'README.md'), 'utf8');
-assert.match(pdfReadme, /Representative Calculation Package PDFs/);
-assert.match(pdfReadme, /M44 load-standard audit/);
-assert.match(pdfReadme, /M45 member design trace/);
+assert.match(pdfReadme, /M50 Representative Calculation Package PDFs/);
+assert.match(pdfReadme, /M48 load-derivation trace/);
+assert.match(pdfReadme, /M49 serviceability drift/);
 
 console.log(JSON.stringify({
   ok: true,

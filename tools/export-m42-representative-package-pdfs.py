@@ -20,7 +20,7 @@ PDF_ROOT = Path("output/pdf/m42-representative-packages")
 TMP_ROOT = Path("tmp/pdfs/m42-representative-package-plots")
 FONT_REGULAR = Path("C:/Windows/Fonts/malgun.ttf")
 FONT_BOLD = Path("C:/Windows/Fonts/malgunbd.ttf")
-VERSION_LABEL = "M46 representative calculation package PDF refresh"
+VERSION_LABEL = "M50 representative calculation package PDF refresh"
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -78,9 +78,10 @@ def write_manifest(index: dict, generated: list[dict]) -> None:
         for item in generated
     )
     (PDF_ROOT / "README.md").write_text(
-        "# M46 Representative Calculation Package PDFs\n\n"
+        "# M50 Representative Calculation Package PDFs\n\n"
         "Ten representative structural models were analyzed and exported as refreshed PDF review packages.\n"
-        "This refresh includes M44 load-standard audit rows and M45 member design trace rows.\n\n"
+        "This refresh includes M44 load-standard audit, M45 member design trace, "
+        "M48 load-derivation trace rows, and M49 serviceability drift rows.\n\n"
         "| ID | Name | Pages | Size | File |\n"
         "| --- | --- | ---: | ---: | --- |\n"
         f"{rows}\n",
@@ -195,6 +196,19 @@ def build_building_pdf(item: dict, summary: dict, package: dict, model: dict, pl
             fmt_force(lateral.get("windY")),
         ])
     table(pdf, ["Story", "Area", "D total", "L total", "Wind X", "Wind Y"], gravity_rows, [18, 28, 34, 34, 34, 34])
+    ensure_space(pdf, 86)
+    section(pdf, "Load Derivation Formula Trace")
+    trace_rows = detailed.get("loadDerivation", {}).get("derivationTrace", {}).get("rows", [])[:14]
+    table(pdf, ["ID", "Case", "Formula", "Result", "Inputs"], [
+        [
+            row.get("id", "-"),
+            row.get("caseId") or "-",
+            row.get("formula", "-"),
+            f"{fmt_num(row.get('result'))} {row.get('unit') or ''}".strip(),
+            clip(format_trace_inputs(row.get("inputs", [])), 86),
+        ]
+        for row in trace_rows
+    ], [30, 18, 44, 28, 60])
     section(pdf, "KDS-Style Load Standard Audit")
     audit = detailed.get("codeBasis", {}).get("loadStandardAudit", {})
     symbol_rows = [
@@ -221,6 +235,29 @@ def build_building_pdf(item: dict, summary: dict, package: dict, model: dict, pl
     table(pdf, ["Combo", "Status", "Max disp.", "Max util.", "Residual"], combo_rows, [50, 25, 37, 34, 34])
 
     pdf.add_page()
+    section(pdf, "Serviceability Drift Review")
+    serviceability = detailed.get("serviceability", {})
+    serviceability_summary = serviceability.get("summary", {})
+    serviceability_criteria = serviceability.get("criteria", {})
+    table(pdf, ["Item", "Value"], [
+        ["Limit", serviceability_criteria.get("limitText", "-")],
+        ["Status", serviceability_summary.get("status", "-")],
+        ["Max drift", fmt_len(serviceability_summary.get("maxDrift"))],
+        ["Max drift ratio", fmt_drift_ratio(serviceability_summary.get("maxDriftRatio"))],
+        ["Governing", f"{serviceability_summary.get('governing', {}).get('comboId', '-')} / story {serviceability_summary.get('governing', {}).get('story', '-')}"],
+    ], [58, 122])
+    table(pdf, ["Combo", "Story", "Height", "Drift", "Ratio", "D/L", "Status"], [
+        [
+            row.get("comboId", "-"),
+            row.get("story", "-"),
+            f"{fmt_num(row.get('height'))} m",
+            fmt_len(row.get("drift")),
+            fmt_drift_ratio(row.get("driftRatio")),
+            fmt_ratio(row.get("demandToLimit")),
+            row.get("status", "-"),
+        ]
+        for row in serviceability.get("rows", [])[:20]
+    ], [46, 17, 25, 27, 24, 21, 20])
     section(pdf, "Governing Members")
     member_rows = [
         [idx + 1, row["memberId"], row["status"], fmt_ratio(row["utilization"]), row.get("governingCheck") or "-", row.get("comboId") or "-"]
@@ -268,9 +305,9 @@ def build_building_pdf(item: dict, summary: dict, package: dict, model: dict, pl
 
 
 def build_index_pdf(index: dict, generated: list[dict], pdf_path: Path) -> None:
-    pdf = PackagePdf("M46 PDF Review Index")
+    pdf = PackagePdf("M50 PDF Review Index")
     pdf.add_page()
-    banner(pdf, "M46 Representative Structural Analysis PDF Set", "10 analyzed models / refreshed calculation package PDFs")
+    banner(pdf, "M50 Representative Structural Analysis PDF Set", "10 analyzed models / refreshed calculation package PDFs")
     section(pdf, "PDF Files")
     rows = []
     for item in index["buildings"]:
@@ -281,16 +318,18 @@ def build_index_pdf(index: dict, generated: list[dict], pdf_path: Path) -> None:
             item["loads"],
             item["combinations"],
             item.get("traceRows", "-"),
+            item.get("derivationTraceRows", "-"),
+            item.get("serviceabilityStatus", "-"),
             fmt_len(item["maxDisplacement"]),
             fmt_ratio(item["maxUtilization"]),
             item.get("designStatus", "-"),
             match.get("pages", "-"),
         ])
-    table(pdf, ["ID", "Name", "Loads", "Combos", "Trace", "Max disp.", "Max util.", "Design", "Pages"], rows, [34, 34, 13, 15, 14, 22, 19, 18, 13])
+    table(pdf, ["ID", "Name", "Loads", "Combos", "MTrace", "LTrace", "Drift", "Max disp.", "Max util.", "Design", "Pages"], rows, [29, 29, 12, 14, 14, 14, 14, 19, 17, 14, 6])
     section(pdf, "Review Notes")
     bullets(pdf, [
         "Each PDF was generated from a fresh elastic analysis run.",
-        "M44 load-standard audit and M45 member design trace summaries are included in each building PDF.",
+        "M44 load-standard audit, M45 member design trace, M48 load-derivation trace, and M49 serviceability drift summaries are included.",
         "The current package is a preliminary engineering trace, not a sealed final design document.",
         "Drawing/image/MGT import and agentic vision modeling audit trails are planned future inputs.",
     ])
@@ -438,6 +477,15 @@ def fmt_ratio(value) -> str:
     return fmt_num(value)
 
 
+def fmt_drift_ratio(value) -> str:
+    number = as_number(value)
+    if number is None:
+        return "-"
+    if abs(number) < 0.01:
+        return f"{number:.5f}"
+    return fmt_num(number)
+
+
 def max_num(*values) -> float | None:
     numbers = [as_number(value) for value in values]
     numbers = [value for value in numbers if value is not None]
@@ -463,6 +511,26 @@ def clip(value: str, limit: int) -> str:
     if len(text) <= limit:
         return text
     return f"{text[: max(0, limit - 3)]}..."
+
+
+def ensure_space(pdf: FPDF, min_height: float) -> None:
+    if pdf.get_y() + min_height > pdf.h - pdf.b_margin:
+        pdf.add_page()
+
+
+def format_trace_inputs(inputs: list[dict]) -> str:
+    parts = []
+    for item in inputs:
+        value = item.get("value")
+        if isinstance(value, (int, float)):
+            value_text = fmt_num(value)
+        elif value is None:
+            value_text = "-"
+        else:
+            value_text = str(value)
+        unit = item.get("unit") or ""
+        parts.append(f"{item.get('symbol', '-')}={value_text}{(' ' + unit) if unit else ''}")
+    return ", ".join(parts)
 
 
 if __name__ == "__main__":

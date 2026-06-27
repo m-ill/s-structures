@@ -61,8 +61,8 @@
     "totalLive": 1336.5,
     "totalWindX": 63.787499999999994,
     "totalWindY": 77.9625,
-    "totalSeismicX": 219.52012500000015,
-    "totalSeismicY": 219.52012500000015,
+    "totalSeismicX": 219.52012500000004,
+    "totalSeismicY": 219.52012500000004,
     "generatedLoadCount": 240
   },
   "analysis": {
@@ -120,6 +120,22 @@
     "version": "m44-kds-load-standard-registry",
     "mappedSymbolCount": 4,
     "generatedCombinationCount": 16
+  },
+  "loadDerivationTrace": {
+    "version": "m48-load-derivation-trace",
+    "rowCount": 23,
+    "groups": [
+      "basis",
+      "gravity",
+      "wind",
+      "seismic"
+    ]
+  },
+  "serviceability": {
+    "version": "m49-serviceability-drift",
+    "status": "OK",
+    "maxDriftRatio": 0.0004254388484714699,
+    "governingComboId": "KDS-ST-05-EX-P"
   },
   "memberDesignTrace": {
     "version": "m45-member-design-trace",
