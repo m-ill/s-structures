@@ -4,10 +4,12 @@ import {
   createDetailedHtmlReport,
   createHtmlReport,
   createKdsLoadCombinations,
+  createKdsRuleBasedLoadCombinations,
   estimateModelLoads,
   migrateToV3,
   runPushover as runCorePushover,
   summarizeKdsLoadCombinationCoverage,
+  summarizeKdsLoadCombinationRules,
   validateModel as validateCoreModel,
 } from '../index.js';
 import {
@@ -121,6 +123,11 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return summarizeKdsLoadCombinationCoverage(model, options);
+    },
+    getKdsLoadCombinationRules(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return summarizeKdsLoadCombinationRules(model, options);
     },
     getDesignBasisLoadEstimation(options = {}) {
       const model = bridge.getCurrentModel();
@@ -326,6 +333,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       if (!model) return null;
       return cloneJson(summarizeKdsLoadCombinationCoverage(model, options));
     },
+    getKdsLoadCombinationRules(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(summarizeKdsLoadCombinationRules(model, options));
+    },
     getDesignBasisLoadEstimation(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
@@ -372,6 +384,18 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
           const model = getCurrentModel(target);
           if (!model) throw new Error('Current UI model is not available.');
           const kdsLoadCombinations = applyKdsLoadCombinationsToModel(target, bridge, model, payload);
+          return {
+            ...api.getSnapshot(),
+            kdsLoadCombinations,
+          };
+        }
+        case 'applyKdsRuleBasedLoadCombinations': {
+          const model = getCurrentModel(target);
+          if (!model) throw new Error('Current UI model is not available.');
+          const kdsLoadCombinations = applyKdsLoadCombinationsToModel(target, bridge, model, {
+            ...payload,
+            ruleBased: true,
+          });
           return {
             ...api.getSnapshot(),
             kdsLoadCombinations,
@@ -477,6 +501,7 @@ function availableAgentActions() {
     'setPushoverPanelOpen',
     'runPushover',
     'applyKdsLoadCombinations',
+    'applyKdsRuleBasedLoadCombinations',
     'applyDesignBasisLoads',
     'openNativeDetailedReport',
     'setNativeMode',
@@ -1008,7 +1033,9 @@ function runNativeProductAudit(target, api) {
 }
 
 function applyKdsLoadCombinationsToModel(target, bridge, model, options = {}) {
-  const generated = createKdsLoadCombinations(model, options);
+  const generated = options.ruleBased
+    ? createKdsRuleBasedLoadCombinations(model, options)
+    : createKdsLoadCombinations(model, options);
   const append = options.append === true && options.replace !== true;
   if (append) {
     model.loadCombinations ||= [];
@@ -1026,10 +1053,11 @@ function applyKdsLoadCombinationsToModel(target, bridge, model, options = {}) {
   else bridge?.analyzeModel?.(model);
   return {
     version: 'm35-kds-load-combination-apply',
+    ruleBased: !!options.ruleBased,
     mode: append ? 'append' : 'replace',
     appliedCount: generated.length,
     combinationIds: (model.loadCombinations || []).map((combo) => combo.id),
-    coverage: summarizeKdsLoadCombinationCoverage(model),
+    coverage: options.ruleBased ? summarizeKdsLoadCombinationRules(model, options) : summarizeKdsLoadCombinationCoverage(model),
   };
 }
 

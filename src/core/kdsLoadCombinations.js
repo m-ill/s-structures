@@ -1,6 +1,7 @@
 import { formatCombinationFactors } from './combinations.js';
 
 export const KDS_LOAD_COMBINATION_VERSION = 'm35-kds-load-combination-presets';
+export const KDS_LOAD_COMBINATION_RULE_VERSION = 'm38-kds-load-combination-rules';
 
 export const KDS_LOAD_CASE_TEMPLATES = [
   { symbol: 'D', label: 'Dead load', types: ['dead'] },
@@ -166,12 +167,98 @@ export function summarizeKdsLoadCombinationCoverage(modelOrLoadCases = {}, optio
   };
 }
 
+export function createKdsRuleBasedLoadCombinations(modelOrLoadCases = {}, options = {}) {
+  const base = createKdsLoadCombinations(modelOrLoadCases, options)
+    .filter((combo) => includeComboType(combo, options));
+  const includeReverse = options.includeReverseLateral !== false;
+  const out = [];
+  const usedIds = new Set();
+
+  for (const combo of base) {
+    const lateralCases = lateralFactorCases(combo.factors);
+    if (!includeReverse || !lateralCases.length) {
+      out.push(withRuleTrace(combo, { sign: 'base', lateralCaseId: lateralCases[0] || null }, usedIds));
+      continue;
+    }
+
+    for (const lateralCaseId of lateralCases) {
+      out.push(withRuleTrace(combo, { sign: 'positive', lateralCaseId }, usedIds, 1));
+      out.push(withRuleTrace(combo, { sign: 'negative', lateralCaseId }, usedIds, -1));
+    }
+  }
+  return out;
+}
+
+export function summarizeKdsLoadCombinationRules(modelOrLoadCases = {}, options = {}) {
+  const loadCases = normalizeLoadCases(modelOrLoadCases);
+  const coverage = summarizeKdsLoadCombinationCoverage(loadCases, options);
+  const generated = createKdsRuleBasedLoadCombinations(loadCases, options);
+  return {
+    version: KDS_LOAD_COMBINATION_RULE_VERSION,
+    presetVersion: KDS_LOAD_COMBINATION_VERSION,
+    status: generated.length ? 'available' : 'no-compatible-load-cases',
+    generatedCount: generated.length,
+    includeReverseLateral: options.includeReverseLateral !== false,
+    coverage,
+    generated: generated.map((combo) => ({
+      id: combo.id,
+      name: combo.name,
+      type: combo.type,
+      factors: { ...combo.factors },
+      factorsText: formatCombinationFactors(combo.factors),
+      ruleTrace: combo.ruleTrace,
+    })),
+    limitations: [
+      ...defaultKdsCombinationLimitations(),
+      'Rule expansion creates signed wind/seismic combinations by load-case factor reversal when separate plus/minus load cases are not modeled.',
+    ],
+  };
+}
+
 export function defaultKdsCombinationLimitations() {
   return [
     'The preset list is a KDS-style project scaffold, not a complete legal code implementation.',
     'Occupancy, importance, seismic/wind procedure, live load reduction, snow/rain exceptions, and special load effects must be supplied by the project design basis.',
     'Generated factors should be reviewed before sealing or issuing a structural calculation package.',
   ];
+}
+
+function includeComboType(combo, options) {
+  if (options.includeStrength === false && combo.type === 'strength') return false;
+  if (options.includeService === false && combo.type === 'service') return false;
+  return true;
+}
+
+function lateralFactorCases(factors = {}) {
+  return Object.entries(factors)
+    .filter(([caseId, factor]) => /^[WE]/i.test(caseId) && Math.abs(Number(factor) || 0) > 0)
+    .map(([caseId]) => caseId);
+}
+
+function withRuleTrace(combo, trace, usedIds, signFactor = 1) {
+  const lateralCaseId = trace.lateralCaseId;
+  const factors = { ...(combo.factors || {}) };
+  if (lateralCaseId && signFactor < 0) factors[lateralCaseId] = -Math.abs(Number(factors[lateralCaseId]) || 0);
+  if (lateralCaseId && signFactor > 0) factors[lateralCaseId] = Math.abs(Number(factors[lateralCaseId]) || 0);
+  const suffix = trace.sign === 'positive' ? 'P' : trace.sign === 'negative' ? 'N' : '';
+  const rawId = suffix ? `${combo.id}-${suffix}` : combo.id;
+  const id = uniqueId(rawId, usedIds);
+  usedIds.add(id);
+  return {
+    ...combo,
+    id,
+    name: formatCombinationFactors(factors),
+    factors,
+    generatedBy: KDS_LOAD_COMBINATION_RULE_VERSION,
+    ruleTrace: {
+      version: KDS_LOAD_COMBINATION_RULE_VERSION,
+      presetVersion: KDS_LOAD_COMBINATION_VERSION,
+      sourcePreset: combo.sourcePreset || combo.id,
+      lateralCaseId,
+      sign: trace.sign,
+      basis: combo.basis || null,
+    },
+  };
 }
 
 function expandPreset(preset, loadCases, map, options) {

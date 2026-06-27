@@ -18,6 +18,7 @@ const READ_METHODS = new Set([
   'getReport',
   'getDetailedReport',
   'getKdsLoadCombinationCoverage',
+  'getKdsLoadCombinationRules',
   'getDesignBasisLoadEstimation',
   'getRuntimeDiagnostics',
 ]);

@@ -16,7 +16,7 @@ import { INDEX_RUNTIME_ADAPTER_VERSION } from './indexRuntimeAdapter.js';
 import { TWO_STORY_ELASTIC_FRAME_VERSION } from '../examples/twoStoryElasticFrame.js';
 import { REPRESENTATIVE_BUILDINGS_VERSION } from '../examples/representativeBuildings.js';
 import { DETAILED_REPORT_VERSION } from '../report/detailedReport.js';
-import { KDS_LOAD_COMBINATION_VERSION } from '../core/kdsLoadCombinations.js';
+import { KDS_LOAD_COMBINATION_RULE_VERSION, KDS_LOAD_COMBINATION_VERSION } from '../core/kdsLoadCombinations.js';
 import { LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
@@ -48,6 +48,7 @@ export function buildAgentManifest(options = {}) {
       representativeBuildingSet: REPRESENTATIVE_BUILDINGS_VERSION,
       detailedDesignReport: DETAILED_REPORT_VERSION,
       kdsLoadCombinationPresets: KDS_LOAD_COMBINATION_VERSION,
+      kdsLoadCombinationRules: KDS_LOAD_COMBINATION_RULE_VERSION,
       designBasisLoadEstimation: LOAD_ESTIMATION_VERSION,
     },
     readApis: [
@@ -60,6 +61,7 @@ export function buildAgentManifest(options = {}) {
       'getReport',
       'getDetailedReport',
       'getKdsLoadCombinationCoverage',
+      'getKdsLoadCombinationRules',
       'getDesignBasisLoadEstimation',
       'runPushover',
       'getRuntimeDiagnostics',
@@ -84,6 +86,7 @@ export function buildAgentManifest(options = {}) {
       'htmlReport',
       'detailedDesignReport',
       'kdsLoadCombinationPreset',
+      'kdsLoadCombinationRuleSet',
       'designBasisLoadEstimation',
       'preliminaryPushover',
       'pushoverPanel',
@@ -129,6 +132,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M35', status: 'preliminary', feature: 'KDS-style load combination preset generator and coverage API' },
       { id: 'M36', status: 'available', feature: 'native report menu opens detailed report view' },
       { id: 'M37', status: 'preliminary', feature: 'design-basis load estimation and generated model loads' },
+      { id: 'M38', status: 'preliminary', feature: 'rule-expanded KDS-style load combinations with signed lateral cases' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

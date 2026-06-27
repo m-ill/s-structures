@@ -127,10 +127,11 @@ export function renderDetailedReportHtml(report) {
   ${renderLoadDerivation(report.loadDerivation)}
 
   <h2>3. Load Combination Trace</h2>
-  ${renderTable(['Combo', 'Type', 'Factors', 'Basis'], report.combinations.map((row) => [
+  ${renderTable(['Combo', 'Type', 'Factors', 'Rule', 'Basis'], report.combinations.map((row) => [
     row.id,
     row.type,
     row.factorsText,
+    row.ruleText || '-',
     row.basis || '-',
   ]))}
   <h3>KDS-Style Preset Coverage</h3>
@@ -259,6 +260,9 @@ function summarizeCombinations(model) {
     factors: { ...(combo.factors || {}) },
     factorsText: factorText(combo.factors || {}),
     basis: combo.basis || combo.codeReference || combo.generatedBy || null,
+    ruleText: combo.ruleTrace
+      ? [combo.ruleTrace.sourcePreset, combo.ruleTrace.lateralCaseId, combo.ruleTrace.sign].filter(Boolean).join(' / ')
+      : null,
   }));
 }
 

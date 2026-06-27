@@ -64,11 +64,14 @@ export {
 } from './report/detailedReport.js';
 export {
   createKdsLoadCombinations,
+  createKdsRuleBasedLoadCombinations,
   defaultKdsCombinationLimitations,
   KDS_LOAD_CASE_TEMPLATES,
   KDS_LOAD_COMBINATION_PRESETS,
+  KDS_LOAD_COMBINATION_RULE_VERSION,
   KDS_LOAD_COMBINATION_VERSION,
   summarizeKdsLoadCombinationCoverage,
+  summarizeKdsLoadCombinationRules,
 } from './core/kdsLoadCombinations.js';
 export {
   buildLateralPatternLoads,
