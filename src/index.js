@@ -39,11 +39,16 @@ export {
 } from './design/concrete.js';
 export {
   applyDesignBasisLoads,
+  buildDesignBasisInputState,
   createDesignBasis,
+  DESIGN_BASIS_INPUT_VERSION,
+  DESIGN_BASIS_NUMERIC_FIELDS,
   estimateModelLoads,
+  getDesignBasisInputFields,
   DEFAULT_DESIGN_BASIS,
   LOAD_ESTIMATION_VERSION,
   OCCUPANCY_LOAD_PRESETS,
+  setDesignBasisInput,
 } from './design/loadEstimation.js';
 export {
   buildRcDetailingReport,

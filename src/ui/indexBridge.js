@@ -1,6 +1,7 @@
 import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildDesignBasisInputState,
   buildKdsLoadStandardAudit,
   buildConnectionFoundationReport,
   buildMemberDesignTraceReport,
@@ -15,6 +16,7 @@ import {
   getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
   migrateToV3,
   runPushover as runCorePushover,
+  setDesignBasisInput,
   summarizeKdsLoadCombinationCoverage,
   summarizeKdsLoadCombinationRules,
   validateModel as validateCoreModel,
@@ -153,6 +155,11 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return model.loadEstimation || estimateModelLoads(model, options.designBasis || options, { generateLoads: false });
+    },
+    getDesignBasisInput(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildDesignBasisInputState(model, options.designBasis || options);
     },
     getRcDetailingReport(options = {}) {
       const model = bridge.getCurrentModel();
@@ -401,6 +408,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       if (!model) return null;
       return cloneJson(model.loadEstimation || estimateModelLoads(model, options.designBasis || options, { generateLoads: false }));
     },
+    getDesignBasisInput(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildDesignBasisInputState(model, options.designBasis || options));
+    },
     getRcDetailingReport(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
@@ -505,6 +517,15 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
             loadEstimation,
           };
         }
+        case 'setDesignBasisInput': {
+          const model = getCurrentModel(target);
+          if (!model) throw new Error('Current UI model is not available.');
+          const designBasisInput = setDesignBasisInput(model, payload.designBasis || payload);
+          return {
+            ...api.getSnapshot(),
+            designBasisInput,
+          };
+        }
         case 'openNativeDetailedReport':
           return openNativeDetailedReport(target, bridge, api, payload);
         case 'openNativeCalculationPackage':
@@ -599,6 +620,7 @@ function availableAgentActions() {
     'applyKdsLoadCombinations',
     'applyKdsRuleBasedLoadCombinations',
     'applyDesignBasisLoads',
+    'setDesignBasisInput',
     'openNativeDetailedReport',
     'openNativeCalculationPackage',
     'setNativeMode',

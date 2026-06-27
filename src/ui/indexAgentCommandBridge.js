@@ -23,6 +23,7 @@ const READ_METHODS = new Set([
   'getKdsLoadStandardRegistry',
   'getKdsLoadStandardAudit',
   'getDesignBasisLoadEstimation',
+  'getDesignBasisInput',
   'getRcDetailingReport',
   'getSteelDetailingReport',
   'getConnectionFoundationReport',
@@ -292,6 +293,7 @@ function summarizePayload(payload) {
     analysis: summarizePayloadAnalysis(data.analysis),
     resultVisuals: summarizePayloadResultVisuals(data.resultVisuals || data),
     report: summarizePayloadReport(data),
+    designBasisInput: summarizePayloadDesignBasisInput(data.designBasisInput),
     nativeActionResult: summarizeNativeActionResult(data.nativeActionResult),
     commandCount: data.agentCommandBridge?.commandCount ?? null,
     readApiCount: Array.isArray(data.readApis) ? data.readApis.length : null,
@@ -346,6 +348,16 @@ function summarizePayloadReport(report) {
     memberCount: report.data.model?.memberCount ?? null,
     loadCount: report.data.model?.loadCount ?? null,
     htmlLength: String(report.html).length,
+  };
+}
+
+function summarizePayloadDesignBasisInput(input) {
+  if (!input || typeof input !== 'object') return null;
+  return {
+    version: input.version || null,
+    occupancy: input.basis?.occupancy || null,
+    previewGeneratedLoadCount: input.preview?.summary?.generatedLoadCount ?? null,
+    generatedModelLoadCount: input.generatedModelLoadCount ?? null,
   };
 }
 

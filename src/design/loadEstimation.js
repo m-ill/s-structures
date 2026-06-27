@@ -1,4 +1,5 @@
 export const LOAD_ESTIMATION_VERSION = 'm37-load-estimation';
+export const DESIGN_BASIS_INPUT_VERSION = 'm47-design-basis-input';
 
 export const OCCUPANCY_LOAD_PRESETS = {
   office: { label: 'Office', dead: 5.0, live: 2.5, roofLive: 1.0 },
@@ -23,6 +24,17 @@ export const DEFAULT_DESIGN_BASIS = {
   seismicLiveLoadFactor: 0.25,
 };
 
+export const DESIGN_BASIS_NUMERIC_FIELDS = [
+  { id: 'deadLoad', label: 'Dead load', unit: 'kN/m2', min: 0, step: 0.1 },
+  { id: 'liveLoad', label: 'Live load', unit: 'kN/m2', min: 0, step: 0.1 },
+  { id: 'roofLiveLoad', label: 'Roof live', unit: 'kN/m2', min: 0, step: 0.1 },
+  { id: 'windPressureX', label: 'Wind X', unit: 'kN/m2', min: 0, step: 0.05 },
+  { id: 'windPressureY', label: 'Wind Y', unit: 'kN/m2', min: 0, step: 0.05 },
+  { id: 'seismicCoefficientX', label: 'Seismic X', unit: 'g', min: 0, step: 0.01 },
+  { id: 'seismicCoefficientY', label: 'Seismic Y', unit: 'g', min: 0, step: 0.01 },
+  { id: 'seismicLiveLoadFactor', label: 'Seismic live factor', unit: '-', min: 0, step: 0.05 },
+];
+
 export function createDesignBasis(input = {}) {
   const occupancy = input.occupancy || DEFAULT_DESIGN_BASIS.occupancy;
   const preset = OCCUPANCY_LOAD_PRESETS[occupancy] || OCCUPANCY_LOAD_PRESETS.office;
@@ -42,6 +54,54 @@ export function createDesignBasis(input = {}) {
     seismicLiveLoadFactor: finite(input.seismicLiveLoadFactor, DEFAULT_DESIGN_BASIS.seismicLiveLoadFactor),
     notes: Array.isArray(input.notes) ? input.notes.slice() : [],
   };
+}
+
+export function getDesignBasisInputFields() {
+  return {
+    version: DESIGN_BASIS_INPUT_VERSION,
+    occupancyOptions: Object.entries(OCCUPANCY_LOAD_PRESETS).map(([id, preset]) => ({
+      id,
+      label: preset.label,
+      defaults: {
+        deadLoad: preset.dead,
+        liveLoad: preset.live,
+        roofLiveLoad: preset.roofLive,
+      },
+    })),
+    numericFields: DESIGN_BASIS_NUMERIC_FIELDS.map((field) => ({ ...field })),
+  };
+}
+
+export function buildDesignBasisInputState(model, input = {}) {
+  const source = input.designBasis || input || {};
+  const basis = createDesignBasis({
+    ...(model?.designBasis || {}),
+    ...source,
+  });
+  const preview = estimateModelLoads(model || { nodes: [], members: [] }, basis, { generateLoads: true });
+  return {
+    ...getDesignBasisInputFields(),
+    loadEstimationVersion: LOAD_ESTIMATION_VERSION,
+    basis,
+    preview: {
+      geometry: preview.geometry,
+      loadCases: preview.loadCases,
+      storyLoads: preview.storyLoads,
+      summary: preview.summary,
+      limitations: preview.limitations,
+    },
+    applied: summarizeAppliedLoadEstimation(model?.loadEstimation),
+    generatedModelLoadCount: (model?.loads || []).filter((load) => load.generatedBy === LOAD_ESTIMATION_VERSION).length,
+  };
+}
+
+export function setDesignBasisInput(model, input = {}) {
+  if (!model || typeof model !== 'object') throw new Error('setDesignBasisInput requires a model.');
+  model.designBasis = createDesignBasis({
+    ...(model.designBasis || {}),
+    ...(input.designBasis || input || {}),
+  });
+  return buildDesignBasisInputState(model, model.designBasis);
 }
 
 export function estimateModelLoads(model, designBasis = {}, options = {}) {
@@ -302,6 +362,15 @@ function modelBounds(nodes) {
 
 function uniqueSorted(values) {
   return [...new Set(values.map((value) => Number(value.toFixed(6))))].sort((a, b) => a - b);
+}
+
+function summarizeAppliedLoadEstimation(estimation) {
+  if (!estimation || typeof estimation !== 'object') return null;
+  return {
+    version: estimation.version || null,
+    basis: estimation.basis || null,
+    summary: estimation.summary || null,
+  };
 }
 
 function finite(...values) {
