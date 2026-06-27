@@ -139,6 +139,16 @@ export function renderCalculationPackageHtml(pkg) {
       ratio(row.maxUtilization),
       ratio(row.equilibriumResidual),
     ]))}
+    <h3>Serviceability Drift Review</h3>
+    ${d.serviceability?.rows?.length ? table(['Combo', 'Story', 'Height', 'Drift', 'Ratio', 'D/L', 'Status'], d.serviceability.rows.map((row) => [
+      row.comboId,
+      row.story,
+      `${fmt(row.height)} m`,
+      length(row.drift),
+      ratio(row.driftRatio),
+      ratio(row.demandToLimit),
+      row.status,
+    ])) : '<div class="note">No story drift data available.</div>'}
   </section>
 
   <section id="members" class="page-break">

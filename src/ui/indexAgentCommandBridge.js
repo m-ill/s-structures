@@ -28,6 +28,7 @@ const READ_METHODS = new Set([
   'getSteelDetailingReport',
   'getConnectionFoundationReport',
   'getMemberDesignTraceReport',
+  'getServiceabilityDriftReport',
   'getRuntimeDiagnostics',
 ]);
 

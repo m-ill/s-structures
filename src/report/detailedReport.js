@@ -3,6 +3,7 @@ import { factorText } from '../core/combinations.js';
 import { buildConnectionFoundationReport } from '../design/connectionFoundation.js';
 import { buildMemberDesignTraceReport } from '../design/memberDesignTrace.js';
 import { buildRcDetailingReport } from '../design/rcDetailing.js';
+import { buildServiceabilityDriftReport } from '../design/serviceability.js';
 import { buildSteelDetailingReport } from '../design/steelDetailing.js';
 import {
   buildKdsLoadStandardAudit,
@@ -58,6 +59,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
       governing: analysis?.design?.summary?.governing || analysis?.envelope?.governing?.maxUtilization || null,
     },
     combinationResults,
+    serviceability: buildServiceabilityDriftReport(model, analysis, options.serviceability || {}),
     memberChecks,
     governingMembers,
     memberDesignTrace: buildMemberDesignTraceReport(model, analysis),
@@ -178,6 +180,9 @@ export function renderDetailedReportHtml(report) {
     formatVector(row.totalReaction, formatForce),
     formatRatio(row.equilibriumResidual),
   ]))}
+
+  <h2>4A. Serviceability Drift Review</h2>
+  ${renderServiceability(report.serviceability)}
 
   <h2>5. Member Check Trace</h2>
   ${renderTable(['Member', 'Role', 'Material', 'Section', 'Status', 'Util.', 'Governing', 'Combo', 'N', 'Vy', 'Vz', 'My', 'Mz'], report.memberChecks.map((row) => [
@@ -485,6 +490,31 @@ function renderMessages(messages) {
     item.target || '-',
     item.message || '-',
   ]));
+}
+
+function renderServiceability(serviceability) {
+  if (!serviceability?.rows?.length) return '<div class="note">No story drift data available.</div>';
+  return [
+    renderTable(['Item', 'Value'], [
+      ['Version', serviceability.version],
+      ['Limit', serviceability.criteria.limitText],
+      ['Status', statusLabel(serviceability.summary.status)],
+      ['Max drift', formatLength(serviceability.summary.maxDrift)],
+      ['Max drift ratio', formatRatio(serviceability.summary.maxDriftRatio)],
+      ['Governing', serviceability.summary.governing ? `${serviceability.summary.governing.comboId} / Story ${serviceability.summary.governing.story}` : '-'],
+    ]),
+    renderTable(['Combo', 'Story', 'Height', 'Drift X', 'Drift Y', 'Drift', 'Ratio', 'D/L', 'Status'], serviceability.rows.map((row) => [
+      row.comboId,
+      row.story,
+      `${format(row.height)} m`,
+      formatLength(row.driftX),
+      formatLength(row.driftY),
+      formatLength(row.drift),
+      formatRatio(row.driftRatio),
+      formatRatio(row.demandToLimit),
+      statusLabel(row.status),
+    ])),
+  ].join('');
 }
 
 function renderLoadDerivation(loadDerivation) {

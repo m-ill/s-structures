@@ -22,6 +22,7 @@ import { CONNECTION_FOUNDATION_VERSION } from '../design/connectionFoundation.js
 import { DESIGN_BASIS_INPUT_VERSION, LOAD_DERIVATION_TRACE_VERSION, LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
 import { MEMBER_DESIGN_TRACE_VERSION } from '../design/memberDesignTrace.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
+import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
@@ -59,6 +60,7 @@ export function buildAgentManifest(options = {}) {
       designBasisLoadEstimation: LOAD_ESTIMATION_VERSION,
       designBasisInput: DESIGN_BASIS_INPUT_VERSION,
       loadDerivationTrace: LOAD_DERIVATION_TRACE_VERSION,
+      serviceabilityDrift: SERVICEABILITY_DRIFT_VERSION,
       rcDetailing: RC_DETAILING_VERSION,
       steelDetailing: STEEL_DETAILING_VERSION,
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
@@ -85,6 +87,7 @@ export function buildAgentManifest(options = {}) {
       'getSteelDetailingReport',
       'getConnectionFoundationReport',
       'getMemberDesignTraceReport',
+      'getServiceabilityDriftReport',
       'runPushover',
       'getRuntimeDiagnostics',
       'getCapabilities',
@@ -114,6 +117,7 @@ export function buildAgentManifest(options = {}) {
       'designBasisLoadEstimation',
       'designBasisInput',
       'loadDerivationTrace',
+      'serviceabilityDriftReview',
       'rcReinforcementSchedule',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
@@ -173,6 +177,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M45', status: 'preliminary', feature: 'member-by-member design formula trace and action matrix' },
       { id: 'M47', status: 'preliminary', feature: 'design-basis load input controls, preview API, and apply workflow' },
       { id: 'M48', status: 'preliminary', feature: 'load derivation formula trace for gravity, wind, and seismic generated loads' },
+      { id: 'M49', status: 'preliminary', feature: 'story drift and serviceability review table for elastic analysis results' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

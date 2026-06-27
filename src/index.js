@@ -74,6 +74,10 @@ export {
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';
 export {
+  buildServiceabilityDriftReport,
+  SERVICEABILITY_DRIFT_VERSION,
+} from './design/serviceability.js';
+export {
   analyzeDynamics,
   buildLumpedMass,
   runResponseSpectrum,
