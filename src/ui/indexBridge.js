@@ -1189,8 +1189,9 @@ function installCalculationPackageMenuHook(target, bridge) {
     button.textContent = 'Calculation Package';
     const after = doc.getElementById?.('mDesignReport');
     if (after?.parentNode === menu && menu.insertBefore) {
-      const afterIndex = menu.children?.indexOf?.(after) ?? -1;
-      const before = afterIndex >= 0 ? menu.children[afterIndex + 1] : null;
+      const children = Array.from(menu.children || []);
+      const afterIndex = children.indexOf(after);
+      const before = afterIndex >= 0 ? children[afterIndex + 1] : null;
       menu.insertBefore(button, before || null);
     } else {
       menu.appendChild(button);
