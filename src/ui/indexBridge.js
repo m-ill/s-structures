@@ -2,6 +2,7 @@ import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildRcDetailingReport,
+  buildSteelDetailingReport,
   createDetailedHtmlReport,
   createHtmlReport,
   createKdsLoadCombinations,
@@ -139,6 +140,11 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return buildRcDetailingReport(model, lastResult || analyzeForIndex(model), options);
+    },
+    getSteelDetailingReport(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildSteelDetailingReport(model, lastResult || analyzeForIndex(model), options);
     },
     applyDesignBasisLoads(options = {}) {
       const model = bridge.getCurrentModel();
@@ -353,6 +359,15 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildRcDetailingReport(
+        model,
+        bridge?.getLastResult?.() || analyzeForIndex(model),
+        options,
+      ));
+    },
+    getSteelDetailingReport(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildSteelDetailingReport(
         model,
         bridge?.getLastResult?.() || analyzeForIndex(model),
         options,

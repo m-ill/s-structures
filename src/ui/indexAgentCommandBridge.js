@@ -21,6 +21,7 @@ const READ_METHODS = new Set([
   'getKdsLoadCombinationRules',
   'getDesignBasisLoadEstimation',
   'getRcDetailingReport',
+  'getSteelDetailingReport',
   'getRuntimeDiagnostics',
 ]);
 

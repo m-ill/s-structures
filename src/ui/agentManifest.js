@@ -19,6 +19,7 @@ import { DETAILED_REPORT_VERSION } from '../report/detailedReport.js';
 import { KDS_LOAD_COMBINATION_RULE_VERSION, KDS_LOAD_COMBINATION_VERSION } from '../core/kdsLoadCombinations.js';
 import { LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
+import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -52,6 +53,7 @@ export function buildAgentManifest(options = {}) {
       kdsLoadCombinationRules: KDS_LOAD_COMBINATION_RULE_VERSION,
       designBasisLoadEstimation: LOAD_ESTIMATION_VERSION,
       rcDetailing: RC_DETAILING_VERSION,
+      steelDetailing: STEEL_DETAILING_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -66,6 +68,7 @@ export function buildAgentManifest(options = {}) {
       'getKdsLoadCombinationRules',
       'getDesignBasisLoadEstimation',
       'getRcDetailingReport',
+      'getSteelDetailingReport',
       'runPushover',
       'getRuntimeDiagnostics',
       'getCapabilities',
@@ -92,6 +95,7 @@ export function buildAgentManifest(options = {}) {
       'kdsLoadCombinationRuleSet',
       'designBasisLoadEstimation',
       'rcReinforcementSchedule',
+      'steelMemberReviewSchedule',
       'preliminaryPushover',
       'pushoverPanel',
       'designWorkflow',
@@ -138,6 +142,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M37', status: 'preliminary', feature: 'design-basis load estimation and generated model loads' },
       { id: 'M38', status: 'preliminary', feature: 'rule-expanded KDS-style load combinations with signed lateral cases' },
       { id: 'M39', status: 'preliminary', feature: 'RC member detailing schedule from preliminary design checks' },
+      { id: 'M40', status: 'preliminary', feature: 'steel member detailed review schedule from preliminary checks' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

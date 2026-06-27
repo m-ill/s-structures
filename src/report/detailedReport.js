@@ -1,6 +1,7 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { factorText } from '../core/combinations.js';
 import { buildRcDetailingReport } from '../design/rcDetailing.js';
+import { buildSteelDetailingReport } from '../design/steelDetailing.js';
 import {
   defaultKdsCombinationLimitations,
   KDS_LOAD_COMBINATION_VERSION,
@@ -54,6 +55,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     memberChecks,
     governingMembers,
     rcDetailing: buildRcDetailingReport(model, analysis),
+    steelDetailing: buildSteelDetailingReport(model, analysis),
     messages: collectMessages(analysis),
     actionItems: buildActionItems(model, analysis, memberChecks),
   };
@@ -185,11 +187,14 @@ export function renderDetailedReportHtml(report) {
   <h2>7. RC Reinforcement Schedule</h2>
   ${renderRcDetailing(report.rcDetailing)}
 
-  <h2>8. Messages And Action Items</h2>
+  <h2>8. Steel Member Review Schedule</h2>
+  ${renderSteelDetailing(report.steelDetailing)}
+
+  <h2>9. Messages And Action Items</h2>
   ${renderMessages(report.messages)}
   ${renderList(report.actionItems)}
 
-  <h2>9. Remaining Design Scope</h2>
+  <h2>10. Remaining Design Scope</h2>
   ${renderList(report.scope.missingScopes)}
 </main>
 </body>
@@ -498,6 +503,30 @@ function renderRcDetailing(rcDetailing) {
       row.transverse.yDirection.label,
     ])),
     renderList(rcDetailing.limitations || []),
+  ].join('');
+}
+
+function renderSteelDetailing(steelDetailing) {
+  if (!steelDetailing?.rows?.length) return '<div class="note">No steel member review rows are available for this model.</div>';
+  return [
+    renderTable(['Item', 'Value'], [
+      ['Version', steelDetailing.version],
+      ['Members', steelDetailing.summary.memberCount],
+      ['OK / WARN / NG', `${steelDetailing.summary.okCount} / ${steelDetailing.summary.warnCount} / ${steelDetailing.summary.ngCount}`],
+      ['Max utilization', formatRatio(steelDetailing.summary.maxUtilization)],
+    ]),
+    renderTable(['Member', 'Role', 'Status', 'Util.', 'Governing', 'Combo', 'KL/r', 'Defl. ratio', 'Action'], steelDetailing.rows.map((row) => [
+      row.memberId,
+      row.role,
+      row.status,
+      formatRatio(row.utilization),
+      row.governingCheck || '-',
+      row.comboId || '-',
+      formatRatio(row.slenderness.ratio),
+      formatRatio(row.deflection.ratio),
+      row.reviewActions[0] || '-',
+    ])),
+    renderList(steelDetailing.limitations || []),
   ].join('');
 }
 

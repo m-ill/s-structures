@@ -54,6 +54,11 @@ export {
   STANDARD_REBARS,
 } from './design/rcDetailing.js';
 export {
+  buildSteelDetailingReport,
+  detailSteelMember,
+  STEEL_DETAILING_VERSION,
+} from './design/steelDetailing.js';
+export {
   analyzeDynamics,
   buildLumpedMass,
   runResponseSpectrum,
