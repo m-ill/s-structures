@@ -15,6 +15,8 @@ import { INDEX_AGENT_COMMAND_BRIDGE_VERSION } from './indexAgentCommandBridge.js
 import { INDEX_RUNTIME_ADAPTER_VERSION } from './indexRuntimeAdapter.js';
 import { TWO_STORY_ELASTIC_FRAME_VERSION } from '../examples/twoStoryElasticFrame.js';
 import { REPRESENTATIVE_BUILDINGS_VERSION } from '../examples/representativeBuildings.js';
+import { DETAILED_REPORT_VERSION } from '../report/detailedReport.js';
+import { KDS_LOAD_COMBINATION_VERSION } from '../core/kdsLoadCombinations.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -43,6 +45,8 @@ export function buildAgentManifest(options = {}) {
       legacyResultShape: MANIFEST_LEGACY_RESULT_SHAPE_VERSION,
       elastic3dImportWorkflow: TWO_STORY_ELASTIC_FRAME_VERSION,
       representativeBuildingSet: REPRESENTATIVE_BUILDINGS_VERSION,
+      detailedDesignReport: DETAILED_REPORT_VERSION,
+      kdsLoadCombinationPresets: KDS_LOAD_COMBINATION_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -52,6 +56,8 @@ export function buildAgentManifest(options = {}) {
       'getResultVisuals',
       'getScreenState',
       'getReport',
+      'getDetailedReport',
+      'getKdsLoadCombinationCoverage',
       'runPushover',
       'getRuntimeDiagnostics',
       'getCapabilities',
@@ -73,6 +79,8 @@ export function buildAgentManifest(options = {}) {
       'resultVisuals',
       'resultOverlayScene',
       'htmlReport',
+      'detailedDesignReport',
+      'kdsLoadCombinationPreset',
       'preliminaryPushover',
       'pushoverPanel',
       'designWorkflow',
@@ -113,6 +121,9 @@ export function buildAgentManifest(options = {}) {
       { id: 'M31', status: 'available', feature: 'DOM event API for AI and browser automation control' },
       { id: 'M32', status: 'available', feature: 'two-story 3D elastic workflow for drawing and MGT import readiness' },
       { id: 'M33', status: 'available', feature: 'representative 10-building elastic analysis report set' },
+      { id: 'M34', status: 'available', feature: 'detailed report data contract for analysis and member check traceability' },
+      { id: 'M35', status: 'preliminary', feature: 'KDS-style load combination preset generator and coverage API' },
+      { id: 'M36', status: 'available', feature: 'native report menu opens detailed report view' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

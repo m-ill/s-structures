@@ -49,6 +49,20 @@ export {
   REPORT_EXPORT_VERSION,
 } from './report/htmlReport.js';
 export {
+  buildDetailedReportData,
+  createDetailedHtmlReport,
+  renderDetailedReportHtml,
+  DETAILED_REPORT_VERSION,
+} from './report/detailedReport.js';
+export {
+  createKdsLoadCombinations,
+  defaultKdsCombinationLimitations,
+  KDS_LOAD_CASE_TEMPLATES,
+  KDS_LOAD_COMBINATION_PRESETS,
+  KDS_LOAD_COMBINATION_VERSION,
+  summarizeKdsLoadCombinationCoverage,
+} from './core/kdsLoadCombinations.js';
+export {
   buildLateralPatternLoads,
   PUSHOVER_VERSION,
   runPushover,

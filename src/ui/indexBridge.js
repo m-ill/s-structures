@@ -1,8 +1,11 @@
 import {
   analyzeModel as analyzeCoreModel,
+  createDetailedHtmlReport,
   createHtmlReport,
+  createKdsLoadCombinations,
   migrateToV3,
   runPushover as runCorePushover,
+  summarizeKdsLoadCombinationCoverage,
   validateModel as validateCoreModel,
 } from '../index.js';
 import {
@@ -107,6 +110,23 @@ export function installIndexEngineBridge(target = globalThis) {
       if (!model) return null;
       return createHtmlReport(model, lastResult || analyzeForIndex(model), options);
     },
+    getDetailedReport(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return createDetailedHtmlReport(model, lastResult || analyzeForIndex(model), options);
+    },
+    getKdsLoadCombinationCoverage(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return summarizeKdsLoadCombinationCoverage(model, options);
+    },
+    applyKdsLoadCombinations(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      const applied = applyKdsLoadCombinationsToModel(target, bridge, model, options);
+      lastResult = analyzeForIndex(model);
+      return applied;
+    },
     runPushover(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
@@ -151,6 +171,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.nativeAdvancedAnalysis = installIndexNativeAdvancedAnalysis(target, { bridge });
     bridge.productHardening = installIndexProductHardening(target, { bridge });
     bridge.agentCommandBridge = installIndexAgentCommandBridge(target, target.SStructuresAgent);
+    bridge.detailedReportMenu = installDetailedReportMenuHook(target, bridge);
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
@@ -276,6 +297,20 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         options,
       ));
     },
+    getDetailedReport(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(createDetailedHtmlReport(
+        model,
+        bridge?.getLastResult?.() || analyzeForIndex(model),
+        options,
+      ));
+    },
+    getKdsLoadCombinationCoverage(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(summarizeKdsLoadCombinationCoverage(model, options));
+    },
     getRuntimeDiagnostics() {
       return cloneJson(target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null);
     },
@@ -313,6 +348,17 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
             pushover,
           };
         }
+        case 'applyKdsLoadCombinations': {
+          const model = getCurrentModel(target);
+          if (!model) throw new Error('Current UI model is not available.');
+          const kdsLoadCombinations = applyKdsLoadCombinationsToModel(target, bridge, model, payload);
+          return {
+            ...api.getSnapshot(),
+            kdsLoadCombinations,
+          };
+        }
+        case 'openNativeDetailedReport':
+          return openNativeDetailedReport(target, bridge, api, payload);
         case 'setNativeMode':
           return setNativeMode(target, payload.mode || payload.value || payload, api);
         case 'setNativePDeltaEnabled':
@@ -400,6 +446,8 @@ function availableAgentActions() {
     'setPushoverOption',
     'setPushoverPanelOpen',
     'runPushover',
+    'applyKdsLoadCombinations',
+    'openNativeDetailedReport',
     'setNativeMode',
     'setNativePDeltaEnabled',
     'setNativePDeltaStep',
@@ -928,6 +976,76 @@ function runNativeProductAudit(target, api) {
   };
 }
 
+function applyKdsLoadCombinationsToModel(target, bridge, model, options = {}) {
+  const generated = createKdsLoadCombinations(model, options);
+  const append = options.append === true && options.replace !== true;
+  if (append) {
+    model.loadCombinations ||= [];
+    const used = new Set(model.loadCombinations.map((combo) => combo.id));
+    for (const combo of generated) {
+      const copy = { ...combo, factors: { ...combo.factors } };
+      copy.id = uniqueCombinationId(copy.id, used);
+      used.add(copy.id);
+      model.loadCombinations.push(copy);
+    }
+  } else {
+    model.loadCombinations = generated.map((combo) => ({ ...combo, factors: { ...combo.factors } }));
+  }
+  if (typeof target?.reanalyze === 'function') target.reanalyze(true);
+  else bridge?.analyzeModel?.(model);
+  return {
+    version: 'm35-kds-load-combination-apply',
+    mode: append ? 'append' : 'replace',
+    appliedCount: generated.length,
+    combinationIds: (model.loadCombinations || []).map((combo) => combo.id),
+    coverage: summarizeKdsLoadCombinationCoverage(model),
+  };
+}
+
+function installDetailedReportMenuHook(target, bridge) {
+  const doc = target?.document;
+  const button = doc?.getElementById?.('mDesignReport');
+  if (!button?.addEventListener) return null;
+  button.addEventListener('click', () => {
+    try {
+      showDetailedReport(target, bridge, { source: 'native-menu' });
+    } catch (error) {
+      console.warn('[S-Structures] Detailed report failed.', error);
+    }
+  });
+  return {
+    version: 'm36-detailed-report-menu-hook',
+    controlId: 'mDesignReport',
+  };
+}
+
+function openNativeDetailedReport(target, bridge, api, payload = {}) {
+  const detailedReport = showDetailedReport(target, bridge, payload);
+  return {
+    ...api.getSnapshot(),
+    detailedReport,
+  };
+}
+
+function showDetailedReport(target, bridge, options = {}) {
+  const report = bridge?.getDetailedReport?.(options);
+  if (!report) throw new Error('Detailed report is not available.');
+  target.SStructuresDetailedReport = report;
+  const doc = target?.document;
+  const body = doc?.getElementById?.('reportBody');
+  if (body) body.innerHTML = report.html;
+  const modal = doc?.getElementById?.('reportModal');
+  modal?.classList?.add?.('show');
+  return {
+    version: report.data?.version || null,
+    title: report.data?.title || null,
+    htmlLength: report.html?.length || 0,
+    memberCheckCount: report.data?.memberChecks?.length || 0,
+    actionItemCount: report.data?.actionItems?.length || 0,
+    modalOpen: !!modal?.classList?.contains?.('show'),
+  };
+}
+
 function setResultsPanelOpen(target, open, api) {
   if (!target.SStructuresResultsPanel?.setOpen) throw new Error('Results panel is not available.');
   target.SStructuresResultsPanel.setOpen(open);
@@ -997,6 +1115,16 @@ function replaceObject(target, source) {
   for (const key of Object.keys(target)) delete target[key];
   Object.assign(target, source);
   return target;
+}
+
+function uniqueCombinationId(baseId, usedIds) {
+  let id = baseId;
+  let index = 2;
+  while (usedIds.has(id)) {
+    id = `${baseId}-${index}`;
+    index += 1;
+  }
+  return id;
 }
 
 function getEntity(model, type, id) {
