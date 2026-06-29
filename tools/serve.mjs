@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, statSync } from 'node:fs';
 import { extname, join, normalize, resolve } from 'node:path';
 
 const root = resolve(process.cwd());
@@ -42,6 +42,5 @@ server.listen(port, host, () => {
 });
 
 function entryFile(directory) {
-  const integrated = join(directory, 'index.html');
-  return existsSync(integrated) ? integrated : join(directory, 'm3.html');
+  return join(directory, 'index.html');
 }

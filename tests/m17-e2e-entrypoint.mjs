@@ -39,9 +39,6 @@ try {
   const bridgeText = await bridgeResponse.text();
   assert.match(bridgeText, /installIndexEngineBridge/);
 
-  const standaloneResponse = await fetch(`${baseUrl}/m3.html`);
-  assert.equal(standaloneResponse.status, 200);
-
   assert.match(stdout, /index\.html/);
 
   console.log(JSON.stringify({
