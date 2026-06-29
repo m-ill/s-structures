@@ -319,6 +319,7 @@ export function connectedComponentGroups(nodes, members) {
   };
 
   members.forEach((member) => {
+    if (!Object.hasOwn(parent, member.n1) || !Object.hasOwn(parent, member.n2)) return;
     const a = find(member.n1);
     const b = find(member.n2);
     if (a !== b) parent[a] = b;
@@ -326,6 +327,7 @@ export function connectedComponentGroups(nodes, members) {
 
   const groups = {};
   members.forEach((member) => {
+    if (!Object.hasOwn(parent, member.n1) || !Object.hasOwn(parent, member.n2)) return;
     const root = find(member.n1);
     groups[root] ||= { mids: new Set(), nids: new Set() };
     groups[root].mids.add(member.id);
@@ -337,23 +339,31 @@ export function connectedComponentGroups(nodes, members) {
 
 export function buildEquilibriumSummary(nodes, members, loads, out) {
   const totalLoad = [0, 0, 0];
+  const nodeIds = new Set(nodes.map((node) => node.id));
   for (const load of loads) {
     if (load.type === 'nmoment') continue;
     const direction = dirVec(load);
     let magnitude = 0;
     if (load.type === 'udl') {
       const member = members.find((m) => m.id === load.member);
-      if (member) {
-        const a = nodes.find((node) => node.id === member.n1);
-        const b = nodes.find((node) => node.id === member.n2);
-        if (a && b) {
-          magnitude = load.w * Math.hypot(b.x - a.x, b.y - a.y, (b.z || 0) - (a.z || 0));
-          if (load.shape && load.shape !== 'uniform') magnitude *= 0.5;
-        }
-      }
+      if (!member) continue;
+      const a = nodes.find((node) => node.id === member.n1);
+      const b = nodes.find((node) => node.id === member.n2);
+      if (!a || !b) continue;
+      const loadIntensity = Number(load.w);
+      if (!Number.isFinite(loadIntensity)) continue;
+      magnitude = loadIntensity * Math.hypot(b.x - a.x, b.y - a.y, (b.z || 0) - (a.z || 0));
+      if (load.shape && load.shape !== 'uniform') magnitude *= 0.5;
+    } else if (load.member) {
+      const member = members.find((m) => m.id === load.member);
+      if (!member || !nodeIds.has(member.n1) || !nodeIds.has(member.n2)) continue;
+      magnitude = Number(load.P);
     } else {
-      magnitude = load.P || 0;
+      if (load.type === 'nodal' && !nodeIds.has(load.node)) continue;
+      if (load.node && !nodeIds.has(load.node)) continue;
+      magnitude = Number(load.P);
     }
+    if (!Number.isFinite(magnitude)) continue;
     totalLoad[0] += direction[0] * magnitude;
     totalLoad[1] += direction[1] * magnitude;
     totalLoad[2] += direction[2] * magnitude;

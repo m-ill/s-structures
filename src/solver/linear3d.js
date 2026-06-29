@@ -55,7 +55,15 @@ export function analyzeModel(inputModel) {
   });
 
   const first = output.byCombo[combos[0]?.id];
-  if (first?.unstableMembers?.size) {
+  const hasSolvedCombo = Object.values(output.byCombo).some((result) => result?.ok && result.anyOk);
+  if (!hasSolvedCombo) {
+    validation.errors.push({
+      code: 'SINGULAR',
+      message: 'No load combination produced a solved structural component.',
+      target: 'model',
+    });
+    output.ok = false;
+  } else if (first?.unstableMembers?.size) {
     validation.errors.push({
       code: 'SINGULAR',
       message: 'The structure has unstable members or an unsolved stiffness matrix.',

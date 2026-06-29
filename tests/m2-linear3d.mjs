@@ -142,9 +142,50 @@ assert.ok(mechanism.validation.errors.some((error) => error.code === 'SINGULAR')
 assert.equal(mechanism.byCombo.D_ONLY.ok, false, 'mechanism combo should be marked failed');
 assert.equal(mechanism.byCombo.D_ONLY.reason, 'NO_SOLVED_COMPONENT');
 
+const invalidReferences = createSimpleBeamUdl();
+invalidReferences.model.analysisSettings = {
+  ...(invalidReferences.model.analysisSettings || {}),
+  validateBeforeSolve: false,
+};
+invalidReferences.model.loads.push(
+  { id: 'BAD-NODAL', type: 'nodal', node: 'N404', P: 100, dir: '-z', case: 'D' },
+  { id: 'BAD-MOMENT', type: 'nmoment', node: 'N404', M: 10, axis: 'bad', case: 'D' },
+  { id: 'BAD-MEMBER-LOAD', type: 'udl', member: 'M404', w: 5, dir: '-z', case: 'D' },
+);
+invalidReferences.model.members.push({
+  id: 'BAD-MEMBER',
+  n1: 'N1',
+  n2: 'N404',
+  matId: 'steel',
+  secId: 'h300',
+});
+const defensive = analyzeModel(invalidReferences.model);
+assert.equal(defensive.ok, true, 'invalid references should be skipped when validation is disabled');
+assert.equal(defensive.byCombo.D_ONLY.ok, true, 'valid component should still solve with invalid references skipped');
+close(defensive.byCombo.D_ONLY.summary.totalLoad[2], invalidReferences.expected.totalLoadZ, EPS.force, 'invalid loads should not enter total load');
+
+const onlyInvalidMember = analyzeModel({
+  schemaVersion: 3,
+  analysisSettings: { validateBeforeSolve: false },
+  nodes: [
+    { id: 'N1', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'N2', x: 4, y: 0, z: 0 },
+  ],
+  members: [
+    { id: 'M1', n1: 'N1', n2: 'N404', matId: 'steel', secId: 'h300' },
+  ],
+  loads: [
+    { id: 'L1', type: 'nodal', node: 'N2', P: 1, dir: '-z', case: 'D' },
+  ],
+  loadCases: [{ id: 'D', name: 'Dead', type: 'dead' }],
+  loadCombinations: [{ id: 'D_ONLY', factors: { D: 1 } }],
+});
+assert.equal(onlyInvalidMember.ok, false, 'model with no valid members should fail without throwing');
+assert.equal(onlyInvalidMember.byCombo.D_ONLY.reason, 'NO_SOLVED_COMPONENT');
+
 console.log(JSON.stringify({
   ok: true,
-  verificationCases: 15,
+  verificationCases: 17,
   solverChecks: [
     'solveLinear',
     'localK12 symmetry',
@@ -156,6 +197,7 @@ console.log(JSON.stringify({
     'triangular loads',
     'member releases',
     'mechanism diagnostics',
+    'invalid reference guards',
   ],
 }, null, 2));
 

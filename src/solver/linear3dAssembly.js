@@ -30,6 +30,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   for (const member of members) {
     const a = nodeMap[member.n1];
     const b = nodeMap[member.n2];
+    if (!a || !b || idx[member.n1] == null || idx[member.n2] == null) continue;
     const ax = memberAxes(a, b, member.localAxis);
     if (ax.L < 1e-9) continue;
     const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
@@ -50,16 +51,22 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     };
   }
 
+  if (!Object.keys(memData).length) return { ok: false, reason: 'NO_VALID_MEMBERS' };
+
   for (const load of loads) {
     if (load.type === 'nodal') {
+      if (idx[load.node] == null || !Number.isFinite(Number(load.P))) continue;
       const direction = dirVec(load);
       const i = idx[load.node] * 6;
-      F[i] += direction[0] * load.P;
-      F[i + 1] += direction[1] * load.P;
-      F[i + 2] += direction[2] * load.P;
+      const force = Number(load.P);
+      F[i] += direction[0] * force;
+      F[i + 1] += direction[1] * force;
+      F[i + 2] += direction[2] * force;
     } else if (load.type === 'nmoment') {
+      if (idx[load.node] == null || !Number.isFinite(Number(load.M))) continue;
       const axisIndex = { x: 0, y: 1, z: 2 }[load.axis || 'z'];
-      F[idx[load.node] * 6 + 3 + axisIndex] += load.M;
+      if (axisIndex == null) continue;
+      F[idx[load.node] * 6 + 3 + axisIndex] += Number(load.M);
     } else {
       const md = memData[load.member];
       if (!md) continue;
