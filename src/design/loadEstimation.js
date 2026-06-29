@@ -1,77 +1,29 @@
-export const LOAD_ESTIMATION_VERSION = 'm37-load-estimation';
-export const DESIGN_BASIS_INPUT_VERSION = 'm47-design-basis-input';
-export const LOAD_DERIVATION_TRACE_VERSION = 'm48-load-derivation-trace';
+import {
+  createDesignBasis,
+  getDesignBasisInputFields,
+  summarizeAppliedLoadEstimation,
+} from './designBasisInput.js';
+import {
+  buildLoadDerivationTraceFromParts,
+  computeSeismicBaseShear,
+} from './loadDerivationTrace.js';
+import { finite } from './loadMath.js';
 
-export const OCCUPANCY_LOAD_PRESETS = {
-  office: { label: 'Office', dead: 5.0, live: 2.5, roofLive: 1.0 },
-  residential: { label: 'Residential', dead: 4.5, live: 2.0, roofLive: 1.0 },
-  school: { label: 'School', dead: 5.0, live: 3.0, roofLive: 1.0 },
-  hospital: { label: 'Hospital', dead: 5.5, live: 3.0, roofLive: 1.0 },
-  parking: { label: 'Parking', dead: 5.5, live: 4.0, roofLive: 1.0 },
-  warehouse: { label: 'Warehouse', dead: 4.0, live: 5.0, roofLive: 1.0 },
-};
+import { LOAD_ESTIMATION_VERSION } from './loadEstimationConstants.js';
 
-export const DEFAULT_DESIGN_BASIS = {
-  occupancy: 'office',
-  floorArea: null,
-  roofArea: null,
-  deadLoad: null,
-  liveLoad: null,
-  roofLiveLoad: null,
-  windPressureX: 0.7,
-  windPressureY: 0.7,
-  seismicCoefficientX: 0.10,
-  seismicCoefficientY: 0.10,
-  seismicLiveLoadFactor: 0.25,
-};
-
-export const DESIGN_BASIS_NUMERIC_FIELDS = [
-  { id: 'deadLoad', label: 'Dead load', unit: 'kN/m2', min: 0, step: 0.1 },
-  { id: 'liveLoad', label: 'Live load', unit: 'kN/m2', min: 0, step: 0.1 },
-  { id: 'roofLiveLoad', label: 'Roof live', unit: 'kN/m2', min: 0, step: 0.1 },
-  { id: 'windPressureX', label: 'Wind X', unit: 'kN/m2', min: 0, step: 0.05 },
-  { id: 'windPressureY', label: 'Wind Y', unit: 'kN/m2', min: 0, step: 0.05 },
-  { id: 'seismicCoefficientX', label: 'Seismic X', unit: 'g', min: 0, step: 0.01 },
-  { id: 'seismicCoefficientY', label: 'Seismic Y', unit: 'g', min: 0, step: 0.01 },
-  { id: 'seismicLiveLoadFactor', label: 'Seismic live factor', unit: '-', min: 0, step: 0.05 },
-];
-
-export function createDesignBasis(input = {}) {
-  const occupancy = input.occupancy || DEFAULT_DESIGN_BASIS.occupancy;
-  const preset = OCCUPANCY_LOAD_PRESETS[occupancy] || OCCUPANCY_LOAD_PRESETS.office;
-  return {
-    version: LOAD_ESTIMATION_VERSION,
-    occupancy,
-    occupancyLabel: preset.label,
-    floorArea: finite(input.floorArea, DEFAULT_DESIGN_BASIS.floorArea),
-    roofArea: finite(input.roofArea, DEFAULT_DESIGN_BASIS.roofArea),
-    deadLoad: finite(input.deadLoad, DEFAULT_DESIGN_BASIS.deadLoad, preset.dead),
-    liveLoad: finite(input.liveLoad, DEFAULT_DESIGN_BASIS.liveLoad, preset.live),
-    roofLiveLoad: finite(input.roofLiveLoad, DEFAULT_DESIGN_BASIS.roofLiveLoad, preset.roofLive),
-    windPressureX: finite(input.windPressureX, DEFAULT_DESIGN_BASIS.windPressureX),
-    windPressureY: finite(input.windPressureY, DEFAULT_DESIGN_BASIS.windPressureY),
-    seismicCoefficientX: finite(input.seismicCoefficientX, DEFAULT_DESIGN_BASIS.seismicCoefficientX),
-    seismicCoefficientY: finite(input.seismicCoefficientY, DEFAULT_DESIGN_BASIS.seismicCoefficientY),
-    seismicLiveLoadFactor: finite(input.seismicLiveLoadFactor, DEFAULT_DESIGN_BASIS.seismicLiveLoadFactor),
-    notes: Array.isArray(input.notes) ? input.notes.slice() : [],
-  };
-}
-
-export function getDesignBasisInputFields() {
-  return {
-    version: DESIGN_BASIS_INPUT_VERSION,
-    occupancyOptions: Object.entries(OCCUPANCY_LOAD_PRESETS).map(([id, preset]) => ({
-      id,
-      label: preset.label,
-      defaults: {
-        deadLoad: preset.dead,
-        liveLoad: preset.live,
-        roofLiveLoad: preset.roofLive,
-      },
-    })),
-    numericFields: DESIGN_BASIS_NUMERIC_FIELDS.map((field) => ({ ...field })),
-  };
-}
+export { LOAD_ESTIMATION_VERSION } from './loadEstimationConstants.js';
+export {
+  createDesignBasis,
+  DESIGN_BASIS_INPUT_VERSION,
+  DESIGN_BASIS_NUMERIC_FIELDS,
+  DEFAULT_DESIGN_BASIS,
+  getDesignBasisInputFields,
+  OCCUPANCY_LOAD_PRESETS,
+} from './designBasisInput.js';
+export {
+  buildLoadDerivationTrace,
+  LOAD_DERIVATION_TRACE_VERSION,
+} from './loadDerivationTrace.js';
 
 export function buildDesignBasisInputState(model, input = {}) {
   const source = input.designBasis || input || {};
@@ -337,38 +289,6 @@ function addSeismicLoads(loads, model, storyLoads, basis, options) {
   }
 }
 
-export function buildLoadDerivationTrace(estimation) {
-  if (!estimation) {
-    return {
-      version: LOAD_DERIVATION_TRACE_VERSION,
-      rows: [],
-      summary: { rowCount: 0, groups: [] },
-    };
-  }
-  return buildLoadDerivationTraceFromParts({
-    basis: estimation.basis || {},
-    geometry: estimation.geometry || { size: {} },
-    storyDeadLoads: estimation.storyLoads?.gravity?.map((row) => ({
-      story: row.story,
-      z: row.z,
-      area: row.area,
-      intensity: row.deadIntensity,
-      total: row.deadTotal,
-      beamLength: row.beamLength,
-    })) || [],
-    storyLiveLoads: estimation.storyLoads?.gravity?.map((row) => ({
-      story: row.story,
-      z: row.z,
-      area: row.area,
-      intensity: row.liveIntensity,
-      total: row.liveTotal,
-      beamLength: row.beamLength,
-    })) || [],
-    storyLateralLoads: estimation.storyLoads?.lateral || [],
-    seismicSummary: computeSeismicBaseShear(estimation.storyLoads?.lateral || [], estimation.basis || {}),
-  });
-}
-
 function nodesAtLevel(model, z) {
   return (model?.nodes || []).filter((node) => Math.abs(finite(node.z, 0) - z) <= 1e-6);
 }
@@ -377,120 +297,6 @@ function storyHeightForLevel(geometry, index) {
   const current = geometry.storyLevels[index];
   const previous = index === 0 ? geometry.baseLevel : geometry.storyLevels[index - 1];
   return Math.max(1, current - previous);
-}
-
-function buildLoadDerivationTraceFromParts(parts) {
-  const {
-    basis,
-    geometry,
-    storyDeadLoads,
-    storyLiveLoads,
-    storyLateralLoads,
-    seismicSummary,
-  } = parts;
-  const rows = [
-    traceRow('basis-occupancy', 'basis', null, null, 'Occupancy preset', 'occupancy preset lookup', [
-      inputValue('occupancy', 'Occupancy', basis.occupancy || 'office'),
-    ], basis.occupancyLabel || basis.occupancy || 'Office', ''),
-    traceRow('basis-plan-area', 'basis', null, null, 'Typical floor area', 'max(model width * model depth, 1)', [
-      inputValue('Bx', 'Model width X', geometry.size?.x || 0, 'm'),
-      inputValue('By', 'Model depth Y', geometry.size?.y || 0, 'm'),
-    ], storyDeadLoads[0]?.area || 0, 'm2'),
-    traceRow('basis-roof-area', 'basis', null, null, 'Roof area', 'roofArea input or typical floor area', [
-      inputValue('roofArea', 'Roof area input', basis.roofArea || null, 'm2'),
-    ], storyDeadLoads.at(-1)?.area || 0, 'm2'),
-  ];
-
-  for (const [index, dead] of storyDeadLoads.entries()) {
-    const live = storyLiveLoads[index] || {};
-    const lateral = storyLateralLoads[index] || {};
-    rows.push(traceRow(`D-ST${dead.story}`, 'gravity', dead.story, 'D', 'Story dead load', 'A * qD', [
-      inputValue('A', 'Area', dead.area, 'm2'),
-      inputValue('qD', 'Dead intensity', dead.intensity, 'kN/m2'),
-    ], dead.total, 'kN'));
-    rows.push(traceRow(`L-ST${dead.story}`, 'gravity', dead.story, 'L', 'Story live load', 'A * qL', [
-      inputValue('A', 'Area', live.area ?? dead.area, 'm2'),
-      inputValue('qL', 'Live intensity', live.intensity, 'kN/m2'),
-    ], live.total, 'kN'));
-    rows.push(traceRow(`WX-ST${dead.story}`, 'wind', dead.story, 'WX', 'Story wind X', 'pWX * By * h', [
-      inputValue('pWX', 'Wind pressure X', basis.windPressureX, 'kN/m2'),
-      inputValue('By', 'Model depth Y', geometry.size?.y || 0, 'm'),
-      inputValue('h', 'Story height', lateral.storyHeight, 'm'),
-    ], lateral.windX, 'kN'));
-    rows.push(traceRow(`WY-ST${dead.story}`, 'wind', dead.story, 'WY', 'Story wind Y', 'pWY * Bx * h', [
-      inputValue('pWY', 'Wind pressure Y', basis.windPressureY, 'kN/m2'),
-      inputValue('Bx', 'Model width X', geometry.size?.x || 0, 'm'),
-      inputValue('h', 'Story height', lateral.storyHeight, 'm'),
-    ], lateral.windY, 'kN'));
-  }
-
-  rows.push(traceRow('EX-BASE', 'seismic', null, 'EX', 'Seismic base shear X', 'CsX * sum(Wi)', [
-    inputValue('CsX', 'Seismic coefficient X', basis.seismicCoefficientX, 'g'),
-    inputValue('sumW', 'Effective seismic weight', seismicSummary.totalWeight, 'kN'),
-  ], seismicSummary.baseShearX, 'kN'));
-  rows.push(traceRow('EY-BASE', 'seismic', null, 'EY', 'Seismic base shear Y', 'CsY * sum(Wi)', [
-    inputValue('CsY', 'Seismic coefficient Y', basis.seismicCoefficientY, 'g'),
-    inputValue('sumW', 'Effective seismic weight', seismicSummary.totalWeight, 'kN'),
-  ], seismicSummary.baseShearY, 'kN'));
-
-  for (const item of storyLateralLoads) {
-    const factor = item.effectiveWeight * Math.max(item.z, 0) / seismicSummary.denominator;
-    rows.push(traceRow(`EX-ST${item.story}`, 'seismic', item.story, 'EX', 'Story seismic X', 'Vx * Wi * zi / sum(Wi * zi)', [
-      inputValue('Vx', 'Base shear X', seismicSummary.baseShearX, 'kN'),
-      inputValue('Wi', 'Effective story weight', item.effectiveWeight, 'kN'),
-      inputValue('zi', 'Story elevation', item.z, 'm'),
-    ], seismicSummary.baseShearX * factor, 'kN'));
-    rows.push(traceRow(`EY-ST${item.story}`, 'seismic', item.story, 'EY', 'Story seismic Y', 'Vy * Wi * zi / sum(Wi * zi)', [
-      inputValue('Vy', 'Base shear Y', seismicSummary.baseShearY, 'kN'),
-      inputValue('Wi', 'Effective story weight', item.effectiveWeight, 'kN'),
-      inputValue('zi', 'Story elevation', item.z, 'm'),
-    ], seismicSummary.baseShearY * factor, 'kN'));
-  }
-
-  return {
-    version: LOAD_DERIVATION_TRACE_VERSION,
-    rows,
-    summary: {
-      rowCount: rows.length,
-      groups: [...new Set(rows.map((row) => row.group))],
-      storyCount: storyDeadLoads.length,
-    },
-  };
-}
-
-function traceRow(id, group, story, caseId, label, formula, inputs, result, unit) {
-  return {
-    id,
-    group,
-    story,
-    caseId,
-    label,
-    formula,
-    inputs,
-    result: rounded(result),
-    unit,
-    source: LOAD_ESTIMATION_VERSION,
-  };
-}
-
-function inputValue(symbol, label, value, unit = '') {
-  return {
-    symbol,
-    label,
-    value: value == null ? null : rounded(value),
-    unit,
-  };
-}
-
-function computeSeismicBaseShear(storyLoads, basis) {
-  const denominator = storyLoads.reduce((sum, item) => sum + item.effectiveWeight * Math.max(item.z, 0), 0) || 1;
-  const totalWeight = storyLoads.reduce((sum, item) => sum + item.effectiveWeight, 0);
-  return {
-    denominator,
-    totalWeight,
-    baseShearX: totalWeight * finite(basis.seismicCoefficientX, DEFAULT_DESIGN_BASIS.seismicCoefficientX),
-    baseShearY: totalWeight * finite(basis.seismicCoefficientY, DEFAULT_DESIGN_BASIS.seismicCoefficientY),
-  };
 }
 
 function mergeLoadCases(existing, generated) {
@@ -517,27 +323,4 @@ function modelBounds(nodes) {
 
 function uniqueSorted(values) {
   return [...new Set(values.map((value) => Number(value.toFixed(6))))].sort((a, b) => a - b);
-}
-
-function summarizeAppliedLoadEstimation(estimation) {
-  if (!estimation || typeof estimation !== 'object') return null;
-  return {
-    version: estimation.version || null,
-    basis: estimation.basis || null,
-    summary: estimation.summary || null,
-  };
-}
-
-function rounded(value) {
-  const number = Number(value);
-  return Number.isFinite(number) ? Number(number.toFixed(6)) : value;
-}
-
-function finite(...values) {
-  for (const value of values) {
-    if (value == null || value === '') continue;
-    const number = Number(value);
-    if (Number.isFinite(number)) return number;
-  }
-  return 0;
 }
