@@ -10,6 +10,7 @@
     "generate:representative-buildings": "node tools/generate-representative-building-reports.mjs",
     "generate:m42-representative-packages": "node tools/generate-m42-representative-packages.mjs",
     "export:m42-representative-pdfs": "python tools/export-m42-representative-package-pdfs.py",
+    "clean:generated-temp": "node tools/clean-generated-temp.mjs",
     "test:m0": "node tests/m0-smoke.mjs",
     "test:m1": "node tests/m1-schema.mjs",
     "test:m2": "node tests/m2-linear3d.mjs",

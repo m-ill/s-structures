@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import warnings
 from pathlib import Path
 
@@ -24,44 +25,57 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 def main() -> None:
-    PDF_ROOT.mkdir(parents=True, exist_ok=True)
-    TMP_ROOT.mkdir(parents=True, exist_ok=True)
-    index = read_json(REPORT_ROOT / "index.json")
-    generated = []
+    try:
+        PDF_ROOT.mkdir(parents=True, exist_ok=True)
+        TMP_ROOT.mkdir(parents=True, exist_ok=True)
+        index = read_json(REPORT_ROOT / "index.json")
+        generated = []
 
-    for item in index["buildings"]:
-        building_dir = REPORT_ROOT / item["id"]
-        summary = read_json(building_dir / "analysis-summary.json")
-        model = read_json(building_dir / "model.json")
-        plot_path = TMP_ROOT / f"{item['id']}-geometry.png"
-        render_geometry_plot(model, summary, plot_path)
-        pdf_path = PDF_ROOT / f"{item['id']}.pdf"
-        build_building_pdf(summary, model, plot_path, pdf_path)
-        generated.append(
+        for item in index["buildings"]:
+            building_dir = REPORT_ROOT / item["id"]
+            summary = read_json(building_dir / "analysis-summary.json")
+            model = read_json(building_dir / "model.json")
+            plot_path = TMP_ROOT / f"{item['id']}-geometry.png"
+            render_geometry_plot(model, summary, plot_path)
+            pdf_path = PDF_ROOT / f"{item['id']}.pdf"
+            build_building_pdf(summary, model, plot_path, pdf_path)
+            generated.append(
+                {
+                    "id": item["id"],
+                    "name": item["name"],
+                    "pdf": str(pdf_path),
+                    "sizeKB": round(pdf_path.stat().st_size / 1024, 1),
+                    "pages": count_pdf_pages(pdf_path),
+                }
+            )
+            print(f"[{len(generated)}/10] {item['id']} -> {pdf_path}")
+
+        index_pdf = PDF_ROOT / "00-representative-building-index.pdf"
+        build_index_pdf(index, generated, index_pdf)
+        generated.insert(
+            0,
             {
-                "id": item["id"],
-                "name": item["name"],
-                "pdf": str(pdf_path),
-                "sizeKB": round(pdf_path.stat().st_size / 1024, 1),
-                "pages": count_pdf_pages(pdf_path),
-            }
+                "id": "00-index",
+                "name": "Representative building PDF index",
+                "pdf": str(index_pdf),
+                "sizeKB": round(index_pdf.stat().st_size / 1024, 1),
+                "pages": count_pdf_pages(index_pdf),
+            },
         )
-        print(f"[{len(generated)}/10] {item['id']} -> {pdf_path}")
+        write_pdf_manifest(index, generated)
+        print(json.dumps({"ok": True, "outputRoot": str(PDF_ROOT), "count": len(generated)}, ensure_ascii=False, indent=2))
+    finally:
+        cleanup_temp_root()
 
-    index_pdf = PDF_ROOT / "00-representative-building-index.pdf"
-    build_index_pdf(index, generated, index_pdf)
-    generated.insert(
-        0,
-        {
-            "id": "00-index",
-            "name": "Representative building PDF index",
-            "pdf": str(index_pdf),
-            "sizeKB": round(index_pdf.stat().st_size / 1024, 1),
-            "pages": count_pdf_pages(index_pdf),
-        },
-    )
-    write_pdf_manifest(index, generated)
-    print(json.dumps({"ok": True, "outputRoot": str(PDF_ROOT), "count": len(generated)}, ensure_ascii=False, indent=2))
+
+def cleanup_temp_root() -> None:
+    shutil.rmtree(TMP_ROOT, ignore_errors=True)
+    try:
+        parent = TMP_ROOT.parent
+        if parent.exists() and not any(parent.iterdir()):
+            parent.rmdir()
+    except OSError:
+        pass
 
 
 def read_json(path: Path) -> dict:
