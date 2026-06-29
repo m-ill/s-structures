@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "manualVersion": "2026-06-29-current",
+  "product": "S-Structures",
+  "entrypoint": {
+    "recommendedUrl": "http://127.0.0.1:5173/index.html",
+    "primaryHtml": "index.html"
+  },
+  "currentScope": {
+    "modeling": "available",
+    "linearElasticAnalysis3d": "available",
+    "loadCombinations": "preliminary-kds-style",
+    "designBasisLoadInput": "preliminary",
+    "loadDerivationTrace": "available",
+    "serviceabilityDrift": "preliminary",
+    "memberDesignTrace": "preliminary",
+    "calculationPackage": "available",
+    "agentControl": "available",
+    "nonlinearPushover": "preliminary-not-final-nonlinear-engine"
+  },
+  "globalObjects": [
+    "window.SStructuresAgent",
+    "window.SStructuresAgentCommandBridge"
+  ],
+  "stableSelectors": {
+    "attribute": "data-agent-id",
+    "responseNode": "#sstructuresAgentApi"
+  },
+  "readApis": [
+    "getCapabilities",
+    "getSnapshot",
+    "getScreenState",
+    "getModel",
+    "getResults",
+    "getResultView",
+    "getResultVisuals",
+    "getReport",
+    "getDetailedReport",
+    "getCalculationPackage",
+    "getKdsLoadCombinationCoverage",
+    "getKdsLoadCombinationRules",
+    "getKdsLoadStandardRegistry",
+    "getKdsLoadStandardAudit",
+    "getDesignBasisLoadEstimation",
+    "getDesignBasisInput",
+    "getRcDetailingReport",
+    "getSteelDetailingReport",
+    "getConnectionFoundationReport",
+    "getMemberDesignTraceReport",
+    "getServiceabilityDriftReport",
+    "getRuntimeDiagnostics"
+  ],
+  "executeActions": {
+    "analysis": [
+      "runAnalysis",
+      "setAnalysisSetting"
+    ],
+    "nativeModeAndResults": [
+      "setNativeMode",
+      "setNativePDeltaEnabled",
+      "setNativePDeltaStep",
+      "setNativeResultScale",
+      "showNativeMemberResult"
+    ],
+    "nativeModeling": [
+      "nativeClearPage",
+      "nativeSelectTool",
+      "nativeDrawMember",
+      "nativeAddColumn",
+      "nativeSetSupport",
+      "nativeAddUdl",
+      "nativeAddNodalLoad",
+      "nativeMoveNode",
+      "nativeSelectMember",
+      "nativeDeleteElement"
+    ],
+    "productiveModeling": [
+      "createGridFrame",
+      "copyStory",
+      "autoAssignMemberRoles",
+      "applyLoadTemplate",
+      "generateFloorMass"
+    ],
+    "loadsAndCombinations": [
+      "setDesignBasisInput",
+      "applyDesignBasisLoads",
+      "applyKdsLoadCombinations",
+      "applyKdsRuleBasedLoadCombinations"
+    ],
+    "reports": [
+      "openNativeDetailedReport",
+      "openNativeCalculationPackage",
+      "openNativeDesignReport",
+      "runNativeValidation"
+    ],
+    "preliminaryNonlinear": [
+      "runPushover",
+      "setPushoverOption",
+      "setPushoverPanelOpen",
+      "runNativePushoverReport"
+    ],
+    "persistence": [
+      "loadNativeExample",
+      "exportNativeBook",
+      "importNativeBook",
+      "saveNativeAutosave",
+      "restoreNativeAutosave"
+    ]
+  },
+  "commandBridge": {
+    "domEvent": "sstructures:agent-command",
+    "responseEvent": "sstructures:agent-response",
+    "postMessageType": "sstructures:agent-command",
+    "responseMessageType": "sstructures:agent-response",
+    "urlHashKey": "sstructures-command",
+    "commandShape": {
+      "id": "string",
+      "method": "readApi | execute | runAnalysis | runPushover",
+      "action": "required only when method is execute",
+      "payload": "object"
+    }
+  },
+  "recommendedElasticWorkflow": [
+    "getCapabilities",
+    "getSnapshot",
+    "setNativeMode:modeling",
+    "create or edit model",
+    "autoAssignMemberRoles",
+    "setDesignBasisInput",
+    "applyDesignBasisLoads",
+    "applyKdsRuleBasedLoadCombinations",
+    "runAnalysis",
+    "getResults",
+    "getServiceabilityDriftReport",
+    "getMemberDesignTraceReport",
+    "getCalculationPackage"
+  ],
+  "generatedOutputs": {
+    "representativeCalculationPackages": "reports/representative-building-calculation-packages/",
+    "representativePdfs": "output/pdf/m42-representative-packages/",
+    "stabilizationHarness": "reports/stabilization-harness/"
+  },
+  "interpretationRules": [
+    "analysis.ok true means the elastic numerical analysis finished successfully.",
+    "calculation packages are calculation aids and review artifacts, not certified final structural design documents.",
+    "preliminary KDS-style load combinations do not replace project-specific code review.",
+    "preliminary pushover is not the final nonlinear analysis engine."
+  ]
+}
