@@ -76,9 +76,10 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
     const liveTotal = area * (isRoof ? basis.roofLiveLoad : basis.liveLoad);
     const beams = horizontalMembersAtLevel(model, z);
     const beamLength = beams.reduce((sum, item) => sum + item.length, 0);
+    const storyNodes = nodesAtLevel(model, z);
 
-    storyDeadLoads.push({ story: index + 1, z, area, intensity: basis.deadLoad, total: deadTotal, beamLength });
-    storyLiveLoads.push({ story: index + 1, z, area, intensity: isRoof ? basis.roofLiveLoad : basis.liveLoad, total: liveTotal, beamLength });
+    storyDeadLoads.push({ story: index + 1, z, area, intensity: basis.deadLoad, total: deadTotal, beamLength, beamCount: beams.length });
+    storyLiveLoads.push({ story: index + 1, z, area, intensity: isRoof ? basis.roofLiveLoad : basis.liveLoad, total: liveTotal, beamLength, beamCount: beams.length });
 
     if (options.generateLoads !== false && beamLength > 0) {
       for (const item of beams) {
@@ -89,6 +90,7 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
           intensity: basis.deadLoad,
           total: deadTotal,
           tributaryShare,
+          traceRowId: `D-DIST-ST${index + 1}`,
         }));
         loads.push(gravityLoad(`LD-L-${loadIndex++}`, item.member.id, liveTotal * tributaryShare / item.length, 'L', {
           story: index + 1,
@@ -96,6 +98,7 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
           intensity: isRoof ? basis.roofLiveLoad : basis.liveLoad,
           total: liveTotal,
           tributaryShare,
+          traceRowId: `L-DIST-ST${index + 1}`,
         }));
       }
     }
@@ -110,11 +113,18 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
       windX,
       windY,
       effectiveWeight: deadTotal + liveTotal * basis.seismicLiveLoadFactor,
+      nodeCount: storyNodes.length,
     });
 
     if (options.generateLoads !== false) {
-      addStoryNodalLoads(loads, model, z, windX, '+x', 'WX', `LD-WX-${index + 1}`);
-      addStoryNodalLoads(loads, model, z, windY, '+y', 'WY', `LD-WY-${index + 1}`);
+      addStoryNodalLoads(loads, model, z, windX, '+x', 'WX', `LD-WX-${index + 1}`, {
+        story: index + 1,
+        traceRowId: `WX-NODE-ST${index + 1}`,
+      });
+      addStoryNodalLoads(loads, model, z, windY, '+y', 'WY', `LD-WY-${index + 1}`, {
+        story: index + 1,
+        traceRowId: `WY-NODE-ST${index + 1}`,
+      });
     }
   }
 
@@ -161,6 +171,7 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
         liveIntensity: storyLiveLoads[index]?.intensity || 0,
         liveTotal: storyLiveLoads[index]?.total || 0,
         beamLength: dead.beamLength,
+        beamCount: dead.beamCount,
       })),
       lateral: storyLateralLoads,
     },
@@ -255,7 +266,7 @@ function gravityLoad(id, member, w, loadCase, derivation) {
   };
 }
 
-function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix) {
+function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix, derivation = {}) {
   if (Math.abs(totalForce) <= 1e-9) return;
   const nodes = nodesAtLevel(model, z);
   if (!nodes.length) return;
@@ -271,6 +282,7 @@ function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix) 
       unit: 'kN',
       generatedBy: LOAD_ESTIMATION_VERSION,
       derivation: {
+        ...derivation,
         storyZ: z,
         totalForce,
         nodeShare: share,
@@ -284,8 +296,14 @@ function addSeismicLoads(loads, model, storyLoads, basis, options) {
   const { denominator, baseShearX, baseShearY } = computeSeismicBaseShear(storyLoads, basis);
   for (const item of storyLoads) {
     const factor = item.effectiveWeight * Math.max(item.z, 0) / denominator;
-    addStoryNodalLoads(loads, model, item.z, baseShearX * factor, '+x', 'EX', `LD-EX-${item.story}`);
-    addStoryNodalLoads(loads, model, item.z, baseShearY * factor, '+y', 'EY', `LD-EY-${item.story}`);
+    addStoryNodalLoads(loads, model, item.z, baseShearX * factor, '+x', 'EX', `LD-EX-${item.story}`, {
+      story: item.story,
+      traceRowId: `EX-NODE-ST${item.story}`,
+    });
+    addStoryNodalLoads(loads, model, item.z, baseShearY * factor, '+y', 'EY', `LD-EY-${item.story}`, {
+      story: item.story,
+      traceRowId: `EY-NODE-ST${item.story}`,
+    });
   }
 }
 

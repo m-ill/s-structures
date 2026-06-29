@@ -27,6 +27,8 @@ export const DEFAULT_DESIGN_BASIS = {
 };
 
 export const DESIGN_BASIS_NUMERIC_FIELDS = [
+  { id: 'floorArea', label: 'Typical floor area', unit: 'm2', min: 0, step: 1 },
+  { id: 'roofArea', label: 'Roof area', unit: 'm2', min: 0, step: 1 },
   { id: 'deadLoad', label: 'Dead load', unit: 'kN/m2', min: 0, step: 0.1 },
   { id: 'liveLoad', label: 'Live load', unit: 'kN/m2', min: 0, step: 0.1 },
   { id: 'roofLiveLoad', label: 'Roof live', unit: 'kN/m2', min: 0, step: 0.1 },

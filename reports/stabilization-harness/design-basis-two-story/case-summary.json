@@ -620,7 +620,7 @@
     "calculationPackage": {
       "version": "m42-calculation-package",
       "sectionCount": 7,
-      "htmlLength": 31025,
+      "htmlLength": 32581,
       "qualityAuditOk": true,
       "qualityItems": [
         {
@@ -648,7 +648,7 @@
           "status": "OK"
         }
       ],
-      "loadDerivationRows": 17,
+      "loadDerivationRows": 29,
       "memberTraceRows": 42,
       "serviceabilityRows": 56
     },

@@ -16,7 +16,7 @@
 - Design status: Review
 - Validation errors/warnings: 0 / 0
 - Report HTML length: 15323
-- Calculation package HTML length: 31025
+- Calculation package HTML length: 32581
 
 | Combo | Status | Max displacement | Max utilization | Equilibrium residual |
 | --- | --- | ---: | ---: | ---: |

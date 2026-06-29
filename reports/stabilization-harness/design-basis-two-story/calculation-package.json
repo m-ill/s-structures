@@ -1480,7 +1480,8 @@
           "deadTotal": 504,
           "liveIntensity": 2.4,
           "liveTotal": 288,
-          "beamLength": 66
+          "beamLength": 66,
+          "beamCount": 12
         },
         {
           "story": 2,
@@ -1490,7 +1491,8 @@
           "deadTotal": 504,
           "liveIntensity": 1,
           "liveTotal": 120,
-          "beamLength": 66
+          "beamLength": 66,
+          "beamCount": 12
         }
       ],
       "lateral": [
@@ -1500,7 +1502,8 @@
           "storyHeight": 3.4,
           "windX": 24.479999999999997,
           "windY": 26.112,
-          "effectiveWeight": 576
+          "effectiveWeight": 576,
+          "nodeCount": 9
         },
         {
           "story": 2,
@@ -1508,7 +1511,8 @@
           "storyHeight": 3.4,
           "windX": 24.479999999999997,
           "windY": 26.112,
-          "effectiveWeight": 534
+          "effectiveWeight": 534,
+          "nodeCount": 9
         }
       ],
       "derivationTrace": {
@@ -1974,17 +1978,343 @@
             "result": 50.476642,
             "unit": "kN",
             "source": "m37-load-estimation"
+          },
+          {
+            "id": "D-DIST-ST1",
+            "group": "distribution",
+            "story": 1,
+            "caseId": "D",
+            "label": "Dead load member UDL distribution",
+            "formula": "Dstory / sum(Lbeam)",
+            "inputs": [
+              {
+                "symbol": "Dstory",
+                "label": "Story dead load",
+                "value": 504,
+                "unit": "kN"
+              },
+              {
+                "symbol": "sumL",
+                "label": "Total horizontal member length",
+                "value": 66,
+                "unit": "m"
+              },
+              {
+                "symbol": "nBeam",
+                "label": "Horizontal member count",
+                "value": 12,
+                "unit": ""
+              }
+            ],
+            "result": 7.636364,
+            "unit": "kN/m",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "L-DIST-ST1",
+            "group": "distribution",
+            "story": 1,
+            "caseId": "L",
+            "label": "Live load member UDL distribution",
+            "formula": "Lstory / sum(Lbeam)",
+            "inputs": [
+              {
+                "symbol": "Lstory",
+                "label": "Story live load",
+                "value": 288,
+                "unit": "kN"
+              },
+              {
+                "symbol": "sumL",
+                "label": "Total horizontal member length",
+                "value": 66,
+                "unit": "m"
+              },
+              {
+                "symbol": "nBeam",
+                "label": "Horizontal member count",
+                "value": 12,
+                "unit": ""
+              }
+            ],
+            "result": 4.363636,
+            "unit": "kN/m",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "WX-NODE-ST1",
+            "group": "distribution",
+            "story": 1,
+            "caseId": "WX",
+            "label": "Wind X nodal distribution",
+            "formula": "WXstory / nNodes",
+            "inputs": [
+              {
+                "symbol": "WXstory",
+                "label": "Story wind X",
+                "value": 24.48,
+                "unit": "kN"
+              },
+              {
+                "symbol": "nNodes",
+                "label": "Nodes at story level",
+                "value": 9,
+                "unit": ""
+              }
+            ],
+            "result": 2.72,
+            "unit": "kN/node",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "WY-NODE-ST1",
+            "group": "distribution",
+            "story": 1,
+            "caseId": "WY",
+            "label": "Wind Y nodal distribution",
+            "formula": "WYstory / nNodes",
+            "inputs": [
+              {
+                "symbol": "WYstory",
+                "label": "Story wind Y",
+                "value": 26.112,
+                "unit": "kN"
+              },
+              {
+                "symbol": "nNodes",
+                "label": "Nodes at story level",
+                "value": 9,
+                "unit": ""
+              }
+            ],
+            "result": 2.901333,
+            "unit": "kN/node",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "EX-NODE-ST1",
+            "group": "distribution",
+            "story": 1,
+            "caseId": "EX",
+            "label": "Seismic X nodal distribution",
+            "formula": "EXstory / nNodes",
+            "inputs": [
+              {
+                "symbol": "EXstory",
+                "label": "Story seismic X",
+                "value": 27.223358,
+                "unit": "kN"
+              },
+              {
+                "symbol": "nNodes",
+                "label": "Nodes at story level",
+                "value": 9,
+                "unit": ""
+              }
+            ],
+            "result": 3.024818,
+            "unit": "kN/node",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "EY-NODE-ST1",
+            "group": "distribution",
+            "story": 1,
+            "caseId": "EY",
+            "label": "Seismic Y nodal distribution",
+            "formula": "EYstory / nNodes",
+            "inputs": [
+              {
+                "symbol": "EYstory",
+                "label": "Story seismic Y",
+                "value": 27.223358,
+                "unit": "kN"
+              },
+              {
+                "symbol": "nNodes",
+                "label": "Nodes at story level",
+                "value": 9,
+                "unit": ""
+              }
+            ],
+            "result": 3.024818,
+            "unit": "kN/node",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "D-DIST-ST2",
+            "group": "distribution",
+            "story": 2,
+            "caseId": "D",
+            "label": "Dead load member UDL distribution",
+            "formula": "Dstory / sum(Lbeam)",
+            "inputs": [
+              {
+                "symbol": "Dstory",
+                "label": "Story dead load",
+                "value": 504,
+                "unit": "kN"
+              },
+              {
+                "symbol": "sumL",
+                "label": "Total horizontal member length",
+                "value": 66,
+                "unit": "m"
+              },
+              {
+                "symbol": "nBeam",
+                "label": "Horizontal member count",
+                "value": 12,
+                "unit": ""
+              }
+            ],
+            "result": 7.636364,
+            "unit": "kN/m",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "L-DIST-ST2",
+            "group": "distribution",
+            "story": 2,
+            "caseId": "L",
+            "label": "Live load member UDL distribution",
+            "formula": "Lstory / sum(Lbeam)",
+            "inputs": [
+              {
+                "symbol": "Lstory",
+                "label": "Story live load",
+                "value": 120,
+                "unit": "kN"
+              },
+              {
+                "symbol": "sumL",
+                "label": "Total horizontal member length",
+                "value": 66,
+                "unit": "m"
+              },
+              {
+                "symbol": "nBeam",
+                "label": "Horizontal member count",
+                "value": 12,
+                "unit": ""
+              }
+            ],
+            "result": 1.818182,
+            "unit": "kN/m",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "WX-NODE-ST2",
+            "group": "distribution",
+            "story": 2,
+            "caseId": "WX",
+            "label": "Wind X nodal distribution",
+            "formula": "WXstory / nNodes",
+            "inputs": [
+              {
+                "symbol": "WXstory",
+                "label": "Story wind X",
+                "value": 24.48,
+                "unit": "kN"
+              },
+              {
+                "symbol": "nNodes",
+                "label": "Nodes at story level",
+                "value": 9,
+                "unit": ""
+              }
+            ],
+            "result": 2.72,
+            "unit": "kN/node",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "WY-NODE-ST2",
+            "group": "distribution",
+            "story": 2,
+            "caseId": "WY",
+            "label": "Wind Y nodal distribution",
+            "formula": "WYstory / nNodes",
+            "inputs": [
+              {
+                "symbol": "WYstory",
+                "label": "Story wind Y",
+                "value": 26.112,
+                "unit": "kN"
+              },
+              {
+                "symbol": "nNodes",
+                "label": "Nodes at story level",
+                "value": 9,
+                "unit": ""
+              }
+            ],
+            "result": 2.901333,
+            "unit": "kN/node",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "EX-NODE-ST2",
+            "group": "distribution",
+            "story": 2,
+            "caseId": "EX",
+            "label": "Seismic X nodal distribution",
+            "formula": "EXstory / nNodes",
+            "inputs": [
+              {
+                "symbol": "EXstory",
+                "label": "Story seismic X",
+                "value": 50.476642,
+                "unit": "kN"
+              },
+              {
+                "symbol": "nNodes",
+                "label": "Nodes at story level",
+                "value": 9,
+                "unit": ""
+              }
+            ],
+            "result": 5.608516,
+            "unit": "kN/node",
+            "source": "m37-load-estimation"
+          },
+          {
+            "id": "EY-NODE-ST2",
+            "group": "distribution",
+            "story": 2,
+            "caseId": "EY",
+            "label": "Seismic Y nodal distribution",
+            "formula": "EYstory / nNodes",
+            "inputs": [
+              {
+                "symbol": "EYstory",
+                "label": "Story seismic Y",
+                "value": 50.476642,
+                "unit": "kN"
+              },
+              {
+                "symbol": "nNodes",
+                "label": "Nodes at story level",
+                "value": 9,
+                "unit": ""
+              }
+            ],
+            "result": 5.608516,
+            "unit": "kN/node",
+            "source": "m37-load-estimation"
           }
         ],
         "summary": {
-          "rowCount": 17,
+          "rowCount": 29,
           "groups": [
             "basis",
             "gravity",
             "wind",
-            "seismic"
+            "seismic",
+            "distribution"
           ],
-          "storyCount": 2
+          "storyCount": 2,
+          "distributionRowCount": 12
         }
       },
       "limitations": [

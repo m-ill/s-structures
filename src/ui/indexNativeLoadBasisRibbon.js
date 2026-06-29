@@ -6,6 +6,8 @@ import {
 
 export const LOAD_BASIS_OCCUPANCIES = ['office', 'residential', 'school', 'hospital', 'parking', 'warehouse'];
 export const LOAD_BASIS_FIELDS = [
+  { id: 'floorArea', controlId: 'ssLoadBasisFloorArea', label: 'A', value: 0, min: 0, max: 100000, step: 1 },
+  { id: 'roofArea', controlId: 'ssLoadBasisRoofArea', label: 'Ar', value: 0, min: 0, max: 100000, step: 1 },
   { id: 'deadLoad', controlId: 'ssLoadBasisDead', label: 'D', value: 5.0, min: 0, max: 30, step: 0.1 },
   { id: 'liveLoad', controlId: 'ssLoadBasisLive', label: 'L', value: 2.5, min: 0, max: 30, step: 0.1 },
   { id: 'roofLiveLoad', controlId: 'ssLoadBasisRoofLive', label: 'Lr', value: 1.0, min: 0, max: 30, step: 0.1 },
@@ -13,6 +15,7 @@ export const LOAD_BASIS_FIELDS = [
   { id: 'windPressureY', controlId: 'ssLoadBasisWindY', label: 'WY', value: 0.7, min: 0, max: 10, step: 0.05 },
   { id: 'seismicCoefficientX', controlId: 'ssLoadBasisSeisX', label: 'EX', value: 0.10, min: 0, max: 2, step: 0.01 },
   { id: 'seismicCoefficientY', controlId: 'ssLoadBasisSeisY', label: 'EY', value: 0.10, min: 0, max: 2, step: 0.01 },
+  { id: 'seismicLiveLoadFactor', controlId: 'ssLoadBasisSeisLiveFactor', label: 'psiE', value: 0.25, min: 0, max: 1, step: 0.05 },
 ];
 
 export function populateNativeLoadBasisControls(target, panel) {
@@ -208,10 +211,13 @@ function defaultNativeDesignBasis(occupancy = 'office') {
   return {
     occupancy,
     ...(presets[occupancy] || presets.office),
+    floorArea: 0,
+    roofArea: 0,
     windPressureX: 0.7,
     windPressureY: 0.7,
     seismicCoefficientX: 0.10,
     seismicCoefficientY: 0.10,
+    seismicLiveLoadFactor: 0.25,
   };
 }
 

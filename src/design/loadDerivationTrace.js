@@ -22,6 +22,7 @@ export function buildLoadDerivationTrace(estimation) {
       intensity: row.deadIntensity,
       total: row.deadTotal,
       beamLength: row.beamLength,
+      beamCount: row.beamCount,
     })) || [],
     storyLiveLoads: estimation.storyLoads?.gravity?.map((row) => ({
       story: row.story,
@@ -30,6 +31,7 @@ export function buildLoadDerivationTrace(estimation) {
       intensity: row.liveIntensity,
       total: row.liveTotal,
       beamLength: row.beamLength,
+      beamCount: row.beamCount,
     })) || [],
     storyLateralLoads: estimation.storyLoads?.lateral || [],
     seismicSummary: computeSeismicBaseShear(estimation.storyLoads?.lateral || [], estimation.basis || {}),
@@ -61,6 +63,9 @@ export function buildLoadDerivationTraceFromParts(parts) {
   for (const [index, dead] of storyDeadLoads.entries()) {
     const live = storyLiveLoads[index] || {};
     const lateral = storyLateralLoads[index] || {};
+    const storyHeight = finite(lateral.storyHeight, 0);
+    const windX = finite(lateral.windX, 0);
+    const windY = finite(lateral.windY, 0);
     rows.push(traceRow(`D-ST${dead.story}`, 'gravity', dead.story, 'D', 'Story dead load', 'A * qD', [
       inputValue('A', 'Area', dead.area, 'm2'),
       inputValue('qD', 'Dead intensity', dead.intensity, 'kN/m2'),
@@ -72,13 +77,13 @@ export function buildLoadDerivationTraceFromParts(parts) {
     rows.push(traceRow(`WX-ST${dead.story}`, 'wind', dead.story, 'WX', 'Story wind X', 'pWX * By * h', [
       inputValue('pWX', 'Wind pressure X', basis.windPressureX, 'kN/m2'),
       inputValue('By', 'Model depth Y', geometry.size?.y || 0, 'm'),
-      inputValue('h', 'Story height', lateral.storyHeight, 'm'),
-    ], lateral.windX, 'kN'));
+      inputValue('h', 'Story height', storyHeight, 'm'),
+    ], windX, 'kN'));
     rows.push(traceRow(`WY-ST${dead.story}`, 'wind', dead.story, 'WY', 'Story wind Y', 'pWY * Bx * h', [
       inputValue('pWY', 'Wind pressure Y', basis.windPressureY, 'kN/m2'),
       inputValue('Bx', 'Model width X', geometry.size?.x || 0, 'm'),
-      inputValue('h', 'Story height', lateral.storyHeight, 'm'),
-    ], lateral.windY, 'kN'));
+      inputValue('h', 'Story height', storyHeight, 'm'),
+    ], windY, 'kN'));
   }
 
   rows.push(traceRow('EX-BASE', 'seismic', null, 'EX', 'Seismic base shear X', 'CsX * sum(Wi)', [
@@ -92,16 +97,54 @@ export function buildLoadDerivationTraceFromParts(parts) {
 
   for (const item of storyLateralLoads) {
     const factor = item.effectiveWeight * Math.max(item.z, 0) / seismicSummary.denominator;
+    const storySeismicX = seismicSummary.baseShearX * factor;
+    const storySeismicY = seismicSummary.baseShearY * factor;
     rows.push(traceRow(`EX-ST${item.story}`, 'seismic', item.story, 'EX', 'Story seismic X', 'Vx * Wi * zi / sum(Wi * zi)', [
       inputValue('Vx', 'Base shear X', seismicSummary.baseShearX, 'kN'),
       inputValue('Wi', 'Effective story weight', item.effectiveWeight, 'kN'),
       inputValue('zi', 'Story elevation', item.z, 'm'),
-    ], seismicSummary.baseShearX * factor, 'kN'));
+    ], storySeismicX, 'kN'));
     rows.push(traceRow(`EY-ST${item.story}`, 'seismic', item.story, 'EY', 'Story seismic Y', 'Vy * Wi * zi / sum(Wi * zi)', [
       inputValue('Vy', 'Base shear Y', seismicSummary.baseShearY, 'kN'),
       inputValue('Wi', 'Effective story weight', item.effectiveWeight, 'kN'),
       inputValue('zi', 'Story elevation', item.z, 'm'),
-    ], seismicSummary.baseShearY * factor, 'kN'));
+    ], storySeismicY, 'kN'));
+  }
+
+  for (const [index, dead] of storyDeadLoads.entries()) {
+    const live = storyLiveLoads[index] || {};
+    const lateral = storyLateralLoads[index] || {};
+    const story = dead.story;
+    const nodeCount = Math.max(1, finite(lateral.nodeCount, 0));
+    const seismicFactor = finite(lateral.effectiveWeight, 0) * Math.max(finite(lateral.z, 0), 0) / seismicSummary.denominator;
+    const storySeismicX = seismicSummary.baseShearX * seismicFactor;
+    const storySeismicY = seismicSummary.baseShearY * seismicFactor;
+    rows.push(traceRow(`D-DIST-ST${story}`, 'distribution', story, 'D', 'Dead load member UDL distribution', 'Dstory / sum(Lbeam)', [
+      inputValue('Dstory', 'Story dead load', dead.total, 'kN'),
+      inputValue('sumL', 'Total horizontal member length', dead.beamLength, 'm'),
+      inputValue('nBeam', 'Horizontal member count', dead.beamCount || 0, ''),
+    ], safeDivide(dead.total, dead.beamLength), 'kN/m'));
+    rows.push(traceRow(`L-DIST-ST${story}`, 'distribution', story, 'L', 'Live load member UDL distribution', 'Lstory / sum(Lbeam)', [
+      inputValue('Lstory', 'Story live load', live.total, 'kN'),
+      inputValue('sumL', 'Total horizontal member length', live.beamLength ?? dead.beamLength, 'm'),
+      inputValue('nBeam', 'Horizontal member count', live.beamCount ?? dead.beamCount ?? 0, ''),
+    ], safeDivide(live.total, live.beamLength ?? dead.beamLength), 'kN/m'));
+    rows.push(traceRow(`WX-NODE-ST${story}`, 'distribution', story, 'WX', 'Wind X nodal distribution', 'WXstory / nNodes', [
+      inputValue('WXstory', 'Story wind X', lateral.windX, 'kN'),
+      inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
+    ], safeDivide(lateral.windX, nodeCount), 'kN/node'));
+    rows.push(traceRow(`WY-NODE-ST${story}`, 'distribution', story, 'WY', 'Wind Y nodal distribution', 'WYstory / nNodes', [
+      inputValue('WYstory', 'Story wind Y', lateral.windY, 'kN'),
+      inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
+    ], safeDivide(lateral.windY, nodeCount), 'kN/node'));
+    rows.push(traceRow(`EX-NODE-ST${story}`, 'distribution', story, 'EX', 'Seismic X nodal distribution', 'EXstory / nNodes', [
+      inputValue('EXstory', 'Story seismic X', storySeismicX, 'kN'),
+      inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
+    ], safeDivide(storySeismicX, nodeCount), 'kN/node'));
+    rows.push(traceRow(`EY-NODE-ST${story}`, 'distribution', story, 'EY', 'Seismic Y nodal distribution', 'EYstory / nNodes', [
+      inputValue('EYstory', 'Story seismic Y', storySeismicY, 'kN'),
+      inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
+    ], safeDivide(storySeismicY, nodeCount), 'kN/node'));
   }
 
   return {
@@ -111,6 +154,7 @@ export function buildLoadDerivationTraceFromParts(parts) {
       rowCount: rows.length,
       groups: [...new Set(rows.map((row) => row.group))],
       storyCount: storyDeadLoads.length,
+      distributionRowCount: rows.filter((row) => row.group === 'distribution').length,
     },
   };
 }
@@ -148,4 +192,10 @@ function inputValue(symbol, label, value, unit = '') {
     value: value == null ? null : rounded(value),
     unit,
   };
+}
+
+function safeDivide(numerator, denominator) {
+  const top = finite(numerator, 0);
+  const bottom = finite(denominator, 0);
+  return Math.abs(bottom) > 1e-12 ? top / bottom : 0;
 }
