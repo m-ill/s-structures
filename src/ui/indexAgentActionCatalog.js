@@ -1,0 +1,43 @@
+import { MODELING_ACTIONS } from './indexAgentActions.js';
+import { NATIVE_ADVANCED_ACTIONS } from './indexNativeAdvancedAnalysis.js';
+import { NATIVE_AGENT_CONTROL_ACTIONS } from './indexNativeAgentControls.js';
+import { NATIVE_MODELER_ACTIONS } from './indexNativeModeler.js';
+
+export function availableAgentActions() {
+  return [
+    'runAnalysis',
+    'setModel',
+    'setAnalysisSetting',
+    'setResultTab',
+    'setPDeltaStep',
+    'setResultsPanelOpen',
+    'setOverlayOption',
+    'setOverlayMode',
+    'setOverlayPDeltaStep',
+    'focusEntity',
+    'setPushoverOption',
+    'setPushoverPanelOpen',
+    'runPushover',
+    'applyKdsLoadCombinations',
+    'applyKdsRuleBasedLoadCombinations',
+    'applyDesignBasisLoads',
+    'setDesignBasisInput',
+    'openNativeDetailedReport',
+    'openNativeCalculationPackage',
+    'setNativeMode',
+    'setNativePDeltaEnabled',
+    'setNativePDeltaStep',
+    'setNativeResultScale',
+    'showNativeMemberResult',
+    ...NATIVE_MODELER_ACTIONS,
+    'loadNativeExample',
+    'exportNativeBook',
+    'importNativeBook',
+    'saveNativeAutosave',
+    'restoreNativeAutosave',
+    ...NATIVE_AGENT_CONTROL_ACTIONS,
+    ...NATIVE_ADVANCED_ACTIONS,
+    'runNativeProductAudit',
+    ...MODELING_ACTIONS,
+  ];
+}
