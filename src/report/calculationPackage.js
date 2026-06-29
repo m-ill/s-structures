@@ -1,4 +1,17 @@
 import { buildDetailedReportData } from './detailedReport.js';
+import {
+  escapeHtml,
+  formatDriftRatio as driftRatio,
+  formatForce as force,
+  formatLength as length,
+  formatNumber as fmt,
+  formatRatio as ratio,
+  formatTraceInputs as traceInputs,
+  formatTraceValue as traceValue,
+  renderMetricGrid as metricGrid,
+  renderTable as table,
+  stripTrailingLineWhitespace,
+} from './reportFormat.js';
 
 export const CALCULATION_PACKAGE_VERSION = 'm42-calculation-package';
 
@@ -220,65 +233,4 @@ function auditPackage(detailed) {
       'Unsupported checks remain listed in the appendix rather than hidden.',
     ],
   };
-}
-
-function metricGrid(items) {
-  return `<div class="grid">${items.map(([label, value]) => `<div class="metric"><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b></div>`).join('')}</div>`;
-}
-
-function table(headers, rows) {
-  if (!rows?.length) return '<div class="note">No data available.</div>';
-  return `<table><thead><tr>${headers.map((header) => `<th>${escapeHtml(header)}</th>`).join('')}</tr></thead><tbody>${rows.map((row) => (
-    `<tr>${row.map((cell) => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`
-  )).join('')}</tbody></table>`;
-}
-
-function stripTrailingLineWhitespace(value) {
-  return value.replace(/[ \t]+$/gm, '');
-}
-
-function force(value) {
-  return value == null ? '-' : `${fmt(value)} kN`;
-}
-
-function length(value) {
-  return value == null ? '-' : `${fmt(value * 1000)} mm`;
-}
-
-function ratio(value) {
-  return value == null ? '-' : fmt(value);
-}
-
-function driftRatio(value) {
-  if (value == null) return '-';
-  const number = Number(value);
-  if (!Number.isFinite(number)) return '-';
-  return Math.abs(number) < 0.01 ? number.toFixed(5) : fmt(number);
-}
-
-function traceInputs(inputs = []) {
-  return inputs.map((item) => `${item.symbol}=${traceValue(item.value)}${item.unit ? ` ${item.unit}` : ''}`).join(', ');
-}
-
-function traceValue(value) {
-  const number = Number(value);
-  if (value == null || value === '') return '-';
-  return Number.isFinite(number) ? fmt(number) : String(value);
-}
-
-function fmt(value) {
-  const number = Number(value);
-  if (!Number.isFinite(number)) return '-';
-  if (Math.abs(number) >= 1000) return number.toFixed(0);
-  if (Math.abs(number) >= 10) return number.toFixed(2);
-  return number.toFixed(3);
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
 }

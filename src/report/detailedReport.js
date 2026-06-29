@@ -12,6 +12,25 @@ import {
   KDS_LOAD_STANDARD_REGISTRY_VERSION,
   summarizeKdsLoadCombinationCoverage,
 } from '../core/kdsLoadCombinations.js';
+import {
+  analysisStatus,
+  escapeHtml,
+  finiteNumber as finite,
+  formatDriftRatio,
+  formatForce,
+  formatLength,
+  formatMoment,
+  formatNumber as format,
+  formatRatio,
+  formatTraceInputs,
+  formatTraceValue,
+  formatVector,
+  renderList,
+  renderMetricGrid,
+  renderMessageTable,
+  renderTable,
+  statusLabel,
+} from './reportFormat.js';
 
 export const DETAILED_REPORT_VERSION = 'm34-detailed-design-report';
 
@@ -465,31 +484,8 @@ function modelBounds(model) {
   return { min, max, size: { x: max.x - min.x, y: max.y - min.y, z: max.z - min.z } };
 }
 
-function analysisStatus(analysis) {
-  if (!analysis) return 'Idle';
-  if (analysis.empty) return 'No model';
-  return analysis.ok ? 'OK' : 'Check';
-}
-
-function renderMetricGrid(items) {
-  return `<div class="grid">${items.map(([label, value]) => `<div class="metric"><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b></div>`).join('')}</div>`;
-}
-
-function renderTable(headers, rows) {
-  if (!rows?.length) return '<div class="note">No data available.</div>';
-  return `<table><thead><tr>${headers.map((header) => `<th>${escapeHtml(header)}</th>`).join('')}</tr></thead><tbody>${rows.map((row) => (
-    `<tr>${row.map((cell) => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`
-  )).join('')}</tbody></table>`;
-}
-
 function renderMessages(messages) {
-  if (!messages.length) return '<div class="note">No validation or design messages.</div>';
-  return renderTable(['Level', 'Code', 'Target', 'Message'], messages.map((item) => [
-    item.level,
-    item.code || '-',
-    item.target || '-',
-    item.message || '-',
-  ]));
+  return renderMessageTable(messages, { emptyText: 'No validation or design messages.' });
 }
 
 function renderServiceability(serviceability) {
@@ -558,16 +554,6 @@ function renderLoadDerivation(loadDerivation) {
     ])) : '',
     renderList(loadDerivation.limitations || []),
   ].join('');
-}
-
-function formatTraceInputs(inputs = []) {
-  return inputs.map((item) => `${item.symbol}=${formatTraceValue(item.value)}${item.unit ? ` ${item.unit}` : ''}`).join(', ');
-}
-
-function formatTraceValue(value) {
-  const number = Number(value);
-  if (value == null || value === '') return '-';
-  return Number.isFinite(number) ? format(number) : String(value);
 }
 
 function renderRcDetailing(rcDetailing) {
@@ -650,65 +636,4 @@ function renderConnectionFoundation(report) {
     ])),
     renderList(report.limitations || []),
   ].join('');
-}
-
-function renderList(items) {
-  return `<div class="note"><ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>`;
-}
-
-function statusLabel(status) {
-  return String(status || 'UNCK').toUpperCase();
-}
-
-function formatVector(value, formatter) {
-  if (!Array.isArray(value)) return '-';
-  return `[${value.map((item) => formatter(item)).join(', ')}]`;
-}
-
-function formatForce(value) {
-  return value == null ? '-' : `${format(value)} kN`;
-}
-
-function formatMoment(value) {
-  return value == null ? '-' : `${format(value)} kN*m`;
-}
-
-function formatLength(value) {
-  return value == null ? '-' : `${format(value * 1000)} mm`;
-}
-
-function formatRatio(value) {
-  return value == null ? '-' : format(value);
-}
-
-function formatDriftRatio(value) {
-  if (value == null) return '-';
-  const number = Number(value);
-  if (!Number.isFinite(number)) return '-';
-  return Math.abs(number) < 0.01 ? number.toFixed(5) : format(number);
-}
-
-function format(value) {
-  const number = Number(value);
-  if (!Number.isFinite(number)) return '-';
-  if (Math.abs(number) >= 1000) return number.toFixed(0);
-  if (Math.abs(number) >= 10) return number.toFixed(2);
-  return number.toFixed(3);
-}
-
-function finite(...values) {
-  for (const value of values) {
-    const number = Number(value);
-    if (Number.isFinite(number)) return number;
-  }
-  return null;
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
 }
