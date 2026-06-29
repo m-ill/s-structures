@@ -1,0 +1,202 @@
+{
+  "version": "m46-stabilization-harness",
+  "id": "structured-two-story-elastic-frame",
+  "name": "Structured JSON two-story elastic frame",
+  "category": "structured-json",
+  "inputPath": "structured-json",
+  "ok": true,
+  "issues": [],
+  "checks": [
+    {
+      "id": "validation-errors",
+      "ok": true,
+      "message": "Model validation must have no errors."
+    },
+    {
+      "id": "analysis-ok",
+      "ok": true,
+      "message": "Elastic analysis must complete successfully."
+    },
+    {
+      "id": "combination-count",
+      "ok": true,
+      "message": "Required load combinations must be present."
+    },
+    {
+      "id": "load-count",
+      "ok": true,
+      "message": "Required model loads must be present."
+    },
+    {
+      "id": "combo-results",
+      "ok": true,
+      "message": "Every load combination must solve."
+    },
+    {
+      "id": "equilibrium",
+      "ok": true,
+      "message": "Equilibrium residual must stay within tolerance."
+    },
+    {
+      "id": "visual-nodes",
+      "ok": true,
+      "message": "Result visuals must include every node."
+    },
+    {
+      "id": "visual-members",
+      "ok": true,
+      "message": "Result visuals must include every member."
+    },
+    {
+      "id": "visual-displacement",
+      "ok": true,
+      "message": "Result visuals must include a nonzero displacement envelope."
+    },
+    {
+      "id": "html-report",
+      "ok": true,
+      "message": "HTML report must be generated from the same result."
+    },
+    {
+      "id": "calculation-package",
+      "ok": true,
+      "message": "Calculation package must include the standard sections."
+    },
+    {
+      "id": "member-trace",
+      "ok": true,
+      "message": "Member design trace rows must be available."
+    }
+  ],
+  "summary": {
+    "model": {
+      "nodes": 27,
+      "members": 42,
+      "loads": 84,
+      "loadCases": 4,
+      "combinations": 3
+    },
+    "validation": {
+      "ok": true,
+      "errorCount": 0,
+      "warningCount": 0,
+      "errors": [],
+      "warnings": []
+    },
+    "analysis": {
+      "ok": true,
+      "comboCount": 3,
+      "maxDisplacement": 0.013751356736879635,
+      "maxUtilization": 1.0088057410389095,
+      "designStatus": "Review",
+      "designOk": false,
+      "validationErrors": [],
+      "comboResults": [
+        {
+          "id": "EL-DL",
+          "ok": true,
+          "maxDisplacement": 0.0012484400065515965,
+          "maxUtilization": 0.21263343750802655,
+          "equilibriumResidual": 6.459479416000911e-16,
+          "solverResidualNorm": 1.453382868600205e-15,
+          "totalLoad": [
+            0,
+            0,
+            -1056
+          ],
+          "totalReaction": [
+            1.021405182655144e-14,
+            -5.551115123125783e-16,
+            1056.0000000000007
+          ]
+        },
+        {
+          "id": "EL-WX",
+          "ok": true,
+          "maxDisplacement": 0.0028127036066010395,
+          "maxUtilization": 0.2594636477961716,
+          "equilibriumResidual": 2.2488557966817986e-15,
+          "solverResidualNorm": 1.7763568394002505e-14,
+          "totalLoad": [
+            90,
+            0,
+            -891
+          ],
+          "totalReaction": [
+            -90.000000000002,
+            -1.7763568394002505e-15,
+            891.0000000000005
+          ]
+        },
+        {
+          "id": "EL-WY",
+          "ok": true,
+          "maxDisplacement": 0.013751356736879635,
+          "maxUtilization": 0.6810765954782244,
+          "equilibriumResidual": 8.13415926459374e-16,
+          "solverResidualNorm": 6.124543446282345e-14,
+          "totalLoad": [
+            0,
+            75,
+            -891
+          ],
+          "totalReaction": [
+            5.773159728050814e-15,
+            -75.00000000000072,
+            891.0000000000005
+          ]
+        }
+      ]
+    },
+    "visuals": {
+      "version": "m13-index-result-visuals",
+      "resultId": "ENVELOPE",
+      "nodes": 27,
+      "members": 42,
+      "loads": 84,
+      "reactions": 9,
+      "maxDisplacement": 0.013960368476931028
+    },
+    "report": {
+      "version": "m14-report-export",
+      "title": "Structured JSON two-story elastic frame - Stabilization Report",
+      "htmlLength": 11939
+    },
+    "calculationPackage": {
+      "version": "m42-calculation-package",
+      "sectionCount": 7,
+      "htmlLength": 19511,
+      "qualityAuditOk": false,
+      "qualityItems": [
+        {
+          "name": "Load derivation attached",
+          "status": "Missing"
+        },
+        {
+          "name": "Combination results available",
+          "status": "OK"
+        },
+        {
+          "name": "Member checks available",
+          "status": "OK"
+        },
+        {
+          "name": "RC schedule available",
+          "status": "Not applicable"
+        },
+        {
+          "name": "Steel schedule available",
+          "status": "OK"
+        },
+        {
+          "name": "Foundation review available",
+          "status": "OK"
+        }
+      ],
+      "loadDerivationRows": 0,
+      "memberTraceRows": 42,
+      "serviceabilityRows": 6
+    },
+    "actionHistory": []
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "version": "m46-stabilization-harness",
+  "id": "representative-02-l-shaped-neighborhood",
+  "name": "L-shaped neighborhood facility",
+  "category": "representative-building",
+  "inputPath": "representative-building-generator",
+  "ok": true,
+  "issues": [],
+  "checks": [
+    {
+      "id": "validation-errors",
+      "ok": true,
+      "message": "Model validation must have no errors."
+    },
+    {
+      "id": "analysis-ok",
+      "ok": true,
+      "message": "Elastic analysis must complete successfully."
+    },
+    {
+      "id": "combination-count",
+      "ok": true,
+      "message": "Required load combinations must be present."
+    },
+    {
+      "id": "load-count",
+      "ok": true,
+      "message": "Required model loads must be present."
+    },
+    {
+      "id": "combo-results",
+      "ok": true,
+      "message": "Every load combination must solve."
+    },
+    {
+      "id": "equilibrium",
+      "ok": true,
+      "message": "Equilibrium residual must stay within tolerance."
+    },
+    {
+      "id": "visual-nodes",
+      "ok": true,
+      "message": "Result visuals must include every node."
+    },
+    {
+      "id": "visual-members",
+      "ok": true,
+      "message": "Result visuals must include every member."
+    },
+    {
+      "id": "visual-displacement",
+      "ok": true,
+      "message": "Result visuals must include a nonzero displacement envelope."
+    },
+    {
+      "id": "html-report",
+      "ok": true,
+      "message": "HTML report must be generated from the same result."
+    },
+    {
+      "id": "calculation-package",
+      "ok": true,
+      "message": "Calculation package must include the standard sections."
+    },
+    {
+      "id": "member-trace",
+      "ok": true,
+      "message": "Member design trace rows must be available."
+    }
+  ],
+  "summary": {
+    "model": {
+      "nodes": 48,
+      "members": 84,
+      "loads": 168,
+      "loadCases": 4,
+      "combinations": 3
+    },
+    "validation": {
+      "ok": true,
+      "errorCount": 0,
+      "warningCount": 0,
+      "errors": [],
+      "warnings": []
+    },
+    "analysis": {
+      "ok": true,
+      "comboCount": 3,
+      "maxDisplacement": 0.0007257859608495803,
+      "maxUtilization": 0.11131503125908254,
+      "designStatus": "OK",
+      "designOk": true,
+      "validationErrors": [],
+      "comboResults": [
+        {
+          "id": "EL-DL",
+          "ok": true,
+          "maxDisplacement": 0.0004225349270962994,
+          "maxUtilization": 0.05240284910773891,
+          "equilibriumResidual": 2.9605947323337506e-16,
+          "solverResidualNorm": 4.884981308350689e-15,
+          "totalLoad": [
+            0,
+            0,
+            -1536
+          ],
+          "totalReaction": [
+            -2.220446049250313e-14,
+            -2.7533531010703882e-14,
+            1536.0000000000005
+          ]
+        },
+        {
+          "id": "EL-WX",
+          "ok": true,
+          "maxDisplacement": 0.0007257859608495803,
+          "maxUtilization": 0.058818199282642855,
+          "equilibriumResidual": 9.451129337834666e-16,
+          "solverResidualNorm": 1.311771204480185e-14,
+          "totalLoad": [
+            38.733333333333334,
+            0,
+            -1248
+          ],
+          "totalReaction": [
+            -38.733333333332155,
+            5.995204332975845e-14,
+            1248
+          ]
+        },
+        {
+          "id": "EL-WY",
+          "ok": true,
+          "maxDisplacement": 0.0005847328968752017,
+          "maxUtilization": 0.05612573989700191,
+          "equilibriumResidual": 1.5201515260252143e-15,
+          "solverResidualNorm": 1.7490282726402467e-14,
+          "totalLoad": [
+            0,
+            33.199999999999996,
+            -1248
+          ],
+          "totalReaction": [
+            -6.217248937900877e-15,
+            -33.1999999999981,
+            1248.0000000000005
+          ]
+        }
+      ]
+    },
+    "visuals": {
+      "version": "m13-index-result-visuals",
+      "resultId": "ENVELOPE",
+      "nodes": 48,
+      "members": 84,
+      "loads": 168,
+      "reactions": 12,
+      "maxDisplacement": 0.0008001166434152554
+    },
+    "report": {
+      "version": "m14-report-export",
+      "title": "L-shaped neighborhood facility - Stabilization Report",
+      "htmlLength": 12608
+    },
+    "calculationPackage": {
+      "version": "m42-calculation-package",
+      "sectionCount": 7,
+      "htmlLength": 30081,
+      "qualityAuditOk": false,
+      "qualityItems": [
+        {
+          "name": "Load derivation attached",
+          "status": "Missing"
+        },
+        {
+          "name": "Combination results available",
+          "status": "OK"
+        },
+        {
+          "name": "Member checks available",
+          "status": "OK"
+        },
+        {
+          "name": "RC schedule available",
+          "status": "Not applicable"
+        },
+        {
+          "name": "Steel schedule available",
+          "status": "OK"
+        },
+        {
+          "name": "Foundation review available",
+          "status": "OK"
+        }
+      ],
+      "loadDerivationRows": 0,
+      "memberTraceRows": 84,
+      "serviceabilityRows": 9
+    },
+    "actionHistory": []
+  }
+}

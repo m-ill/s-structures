@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solver cantilever tip-load benchmark - Stabilization Report</title>
+  <style>
+    body{font:13px/1.5 Arial,sans-serif;color:#1e2c38;margin:0;background:#f5f7fa}
+    main{max-width:980px;margin:0 auto;background:white;min-height:100vh;padding:28px 34px}
+    h1{font-size:24px;margin:0 0 4px;color:#003f73} h2{font-size:16px;margin:24px 0 8px;color:#003f73}
+    .meta{color:#647484;margin-bottom:16px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .card{border:1px solid #dfe7ef;border-radius:6px;padding:9px;background:#fafcff}.card span{display:block;color:#647484;font-size:11px}.card b{font-size:15px}
+    table{width:100%;border-collapse:collapse;margin:8px 0 14px}th,td{border-bottom:1px solid #e4ebf2;padding:6px 7px;text-align:right}th:first-child,td:first-child{text-align:left}th{background:#f6f9fc;color:#526579}
+    .ok{color:#167647}.warn{color:#9a6500}.ng{color:#b42323}.note{border:1px solid #e4ebf2;background:#fbfdff;border-radius:6px;padding:10px;margin:8px 0}
+    ul{margin:8px 0 0 18px;padding:0}@media print{body{background:white}main{padding:0;max-width:none}.card{break-inside:avoid}}
+  </style>
+</head>
+<body>
+<main>
+  <h1>Solver cantilever tip-load benchmark - Stabilization Report</h1>
+  <div class="meta">Generated 2026-06-29T00:00:00.000Z | m14-report-export</div>
+  <div class="grid"><div class="card"><span>Status</span><b>OK</b></div><div class="card"><span>Nodes</span><b>2</b></div><div class="card"><span>Members</span><b>1</b></div><div class="card"><span>Loads</span><b>1</b></div><div class="card"><span>Combos</span><b>1</b></div><div class="card"><span>Max disp.</span><b>12.8 mm</b></div><div class="card"><span>Max util.</span><b>0.8</b></div><div class="card"><span>Warnings</span><b>0</b></div></div>
+  <h2>Model Summary</h2>
+  <table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>Schema</td><td>3</td></tr><tr><td>Units</td><td>length:m, force:kN, moment:kN.m, stress:N/mm2, displacement:mm</td></tr><tr><td>Bounds X/Y/Z</td><td>4 / 0 / 0</td></tr></tbody></table>
+  <h2>Load Cases</h2>
+  <table><thead><tr><th>Case</th><th>Name</th><th>Type</th><th>Loads</th></tr></thead><tbody><tr><td>D</td><td>Benchmark load</td><td>dead</td><td>1</td></tr></tbody></table>
+  <h2>Load Combinations</h2>
+  <table><thead><tr><th>Combo</th><th>Name</th><th>Type</th><th>Factors</th></tr></thead><tbody><tr><td>D_ONLY</td><td>1.0D</td><td>strength</td><td>D=1</td></tr></tbody></table>
+  <h2>Analysis Summary</h2>
+  <table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>Result</td><td>ENVELOPE</td></tr><tr><td>Governing</td><td>M1 / steel-deflection / 0.8</td></tr><tr><td>P-Delta</td><td>Disabled</td></tr><tr><td>Modal</td><td>NO_MASS</td></tr></tbody></table>
+  <h2>Member Force Envelope</h2>
+  <table><thead><tr><th>Member</th><th>Ratio</th><th>N</th><th>Vy</th><th>Vz</th><th>My</th><th>Mz</th></tr></thead><tbody><tr><td>-</td><td>0.24</td><td>0 kN</td><td>12 kN</td><td>0 kN</td><td>0 kN-m</td><td>48 kN-m</td></tr></tbody></table>
+  <h2>Design Summary</h2>
+  <table><thead><tr><th>Member</th><th>Type</th><th>Status</th><th>Ratio</th><th>Check</th><th>Combo</th></tr></thead><tbody><tr><td>M1</td><td>steel</td><td>WARN</td><td>0.8</td><td>steel-deflection</td><td>D_ONLY</td></tr></tbody></table>
+  <h2>Messages</h2>
+  <div class="note">No warnings or errors.</div>
+  <h2>Limitations</h2>
+  <div class="note"><ul><li>This report is a preliminary engineering aid and is not a certified final structural calculation package.</li><li>Design checks are limited to the implemented preliminary steel and RC checks.</li><li>Unsupported checks must be reviewed separately by a qualified engineer.</li></ul></div>
+</main>
+</body>
+</html>

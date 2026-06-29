@@ -1,0 +1,1997 @@
+{
+  "schemaVersion": 3,
+  "units": {
+    "length": "m",
+    "force": "kN",
+    "moment": "kN.m",
+    "stress": "N/mm2",
+    "displacement": "mm"
+  },
+  "materials": [
+    {
+      "id": "steel",
+      "name": "Steel SS400",
+      "E": 205000,
+      "G": 79000,
+      "Fy": 235,
+      "Fu": 400,
+      "density": 7.85,
+      "allow": {
+        "fb": 156.7,
+        "ft": 156.7,
+        "fc": 156.7,
+        "fv": 90.4
+      }
+    },
+    {
+      "id": "sm490",
+      "name": "Steel SM490",
+      "E": 205000,
+      "G": 79000,
+      "Fy": 325,
+      "Fu": 490,
+      "density": 7.85,
+      "allow": {
+        "fb": 216.7,
+        "ft": 216.7,
+        "fc": 216.7,
+        "fv": 125
+      }
+    },
+    {
+      "id": "concrete",
+      "name": "Concrete Fc24",
+      "E": 22700,
+      "G": 9500,
+      "Fy": 24,
+      "Fu": 24,
+      "density": 2.4,
+      "allow": {
+        "fb": 8,
+        "ft": 0.8,
+        "fc": 8,
+        "fv": 0.73
+      }
+    },
+    {
+      "id": "wood",
+      "name": "Wood",
+      "E": 7000,
+      "G": 440,
+      "Fy": 22,
+      "Fu": 22,
+      "density": 0.38,
+      "allow": {
+        "fb": 8.1,
+        "ft": 5.4,
+        "fc": 6.5,
+        "fv": 0.66
+      }
+    }
+  ],
+  "sections": [
+    {
+      "id": "h200",
+      "name": "H-200x100x5.5x8",
+      "type": "H",
+      "dims": {
+        "H": 200,
+        "B": 100,
+        "tw": 5.5,
+        "tf": 8
+      },
+      "A": 0.002716,
+      "Iz": 0.0000184,
+      "Zz": 0.000184,
+      "Iy": 0.00000134,
+      "Zy": 0.0000268,
+      "J": 5e-8
+    },
+    {
+      "id": "h300",
+      "name": "H-300x150x6.5x9",
+      "type": "H",
+      "dims": {
+        "H": 300,
+        "B": 150,
+        "tw": 6.5,
+        "tf": 9
+      },
+      "A": 0.004678,
+      "Iz": 0.0000721,
+      "Zz": 0.000481,
+      "Iy": 0.00000508,
+      "Zy": 0.0000677,
+      "J": 9e-8
+    },
+    {
+      "id": "h400",
+      "name": "H-400x200x8x13",
+      "type": "H",
+      "dims": {
+        "H": 400,
+        "B": 200,
+        "tw": 8,
+        "tf": 13
+      },
+      "A": 0.008412,
+      "Iz": 0.000237,
+      "Zz": 0.00119,
+      "Iy": 0.0000174,
+      "Zy": 0.000174,
+      "J": 3.7e-7
+    },
+    {
+      "id": "box200",
+      "name": "BOX-200x200x9",
+      "type": "BOX",
+      "dims": {
+        "H": 200,
+        "B": 200,
+        "t": 9
+      },
+      "A": 0.006789,
+      "Iz": 0.0000409,
+      "Zz": 0.000409,
+      "Iy": 0.0000409,
+      "Zy": 0.000409,
+      "J": 0.0000627
+    },
+    {
+      "id": "rc3060",
+      "name": "RC 300x600",
+      "type": "RECT",
+      "dims": {
+        "B": 300,
+        "H": 600
+      },
+      "A": 0.18,
+      "Iz": 0.0054,
+      "Zz": 0.018,
+      "Iy": 0.00135,
+      "Zy": 0.009,
+      "J": 0.0037
+    }
+  ],
+  "nodes": [
+    {
+      "id": "N111",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N211",
+      "x": 6,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N311",
+      "x": 12,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N121",
+      "x": 0,
+      "y": 5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N221",
+      "x": 6,
+      "y": 5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N321",
+      "x": 12,
+      "y": 5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N131",
+      "x": 0,
+      "y": 10,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N231",
+      "x": 6,
+      "y": 10,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N331",
+      "x": 12,
+      "y": 10,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N112",
+      "x": 0,
+      "y": 0,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N212",
+      "x": 6,
+      "y": 0,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N312",
+      "x": 12,
+      "y": 0,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N122",
+      "x": 0,
+      "y": 5,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N222",
+      "x": 6,
+      "y": 5,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N322",
+      "x": 12,
+      "y": 5,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N132",
+      "x": 0,
+      "y": 10,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N232",
+      "x": 6,
+      "y": 10,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N332",
+      "x": 12,
+      "y": 10,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N113",
+      "x": 0,
+      "y": 0,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N213",
+      "x": 6,
+      "y": 0,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N313",
+      "x": 12,
+      "y": 0,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N123",
+      "x": 0,
+      "y": 5,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N223",
+      "x": 6,
+      "y": 5,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N323",
+      "x": 12,
+      "y": 5,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N133",
+      "x": 0,
+      "y": 10,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N233",
+      "x": 6,
+      "y": 10,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N333",
+      "x": 12,
+      "y": 10,
+      "z": 6.8,
+      "support": null
+    }
+  ],
+  "members": [
+    {
+      "id": "M1",
+      "type": "frame",
+      "n1": "N111",
+      "n2": "N112",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M2",
+      "type": "frame",
+      "n1": "N211",
+      "n2": "N212",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M3",
+      "type": "frame",
+      "n1": "N311",
+      "n2": "N312",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M4",
+      "type": "frame",
+      "n1": "N121",
+      "n2": "N122",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M5",
+      "type": "frame",
+      "n1": "N221",
+      "n2": "N222",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M6",
+      "type": "frame",
+      "n1": "N321",
+      "n2": "N322",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M7",
+      "type": "frame",
+      "n1": "N131",
+      "n2": "N132",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M8",
+      "type": "frame",
+      "n1": "N231",
+      "n2": "N232",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M9",
+      "type": "frame",
+      "n1": "N331",
+      "n2": "N332",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M10",
+      "type": "frame",
+      "n1": "N112",
+      "n2": "N113",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M11",
+      "type": "frame",
+      "n1": "N212",
+      "n2": "N213",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M12",
+      "type": "frame",
+      "n1": "N312",
+      "n2": "N313",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M13",
+      "type": "frame",
+      "n1": "N122",
+      "n2": "N123",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M14",
+      "type": "frame",
+      "n1": "N222",
+      "n2": "N223",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M15",
+      "type": "frame",
+      "n1": "N322",
+      "n2": "N323",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M16",
+      "type": "frame",
+      "n1": "N132",
+      "n2": "N133",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M17",
+      "type": "frame",
+      "n1": "N232",
+      "n2": "N233",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M18",
+      "type": "frame",
+      "n1": "N332",
+      "n2": "N333",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M19",
+      "type": "frame",
+      "n1": "N112",
+      "n2": "N212",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M20",
+      "type": "frame",
+      "n1": "N212",
+      "n2": "N312",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M21",
+      "type": "frame",
+      "n1": "N122",
+      "n2": "N222",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M22",
+      "type": "frame",
+      "n1": "N222",
+      "n2": "N322",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M23",
+      "type": "frame",
+      "n1": "N132",
+      "n2": "N232",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M24",
+      "type": "frame",
+      "n1": "N232",
+      "n2": "N332",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M25",
+      "type": "frame",
+      "n1": "N112",
+      "n2": "N122",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M26",
+      "type": "frame",
+      "n1": "N122",
+      "n2": "N132",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M27",
+      "type": "frame",
+      "n1": "N212",
+      "n2": "N222",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M28",
+      "type": "frame",
+      "n1": "N222",
+      "n2": "N232",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M29",
+      "type": "frame",
+      "n1": "N312",
+      "n2": "N322",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M30",
+      "type": "frame",
+      "n1": "N322",
+      "n2": "N332",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M31",
+      "type": "frame",
+      "n1": "N113",
+      "n2": "N213",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M32",
+      "type": "frame",
+      "n1": "N213",
+      "n2": "N313",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M33",
+      "type": "frame",
+      "n1": "N123",
+      "n2": "N223",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M34",
+      "type": "frame",
+      "n1": "N223",
+      "n2": "N323",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M35",
+      "type": "frame",
+      "n1": "N133",
+      "n2": "N233",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M36",
+      "type": "frame",
+      "n1": "N233",
+      "n2": "N333",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M37",
+      "type": "frame",
+      "n1": "N113",
+      "n2": "N123",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M38",
+      "type": "frame",
+      "n1": "N123",
+      "n2": "N133",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M39",
+      "type": "frame",
+      "n1": "N213",
+      "n2": "N223",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M40",
+      "type": "frame",
+      "n1": "N223",
+      "n2": "N233",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M41",
+      "type": "frame",
+      "n1": "N313",
+      "n2": "N323",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M42",
+      "type": "frame",
+      "n1": "N323",
+      "n2": "N333",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    }
+  ],
+  "loads": [
+    {
+      "id": "LD1",
+      "type": "udl",
+      "member": "M19",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL2",
+      "type": "udl",
+      "member": "M19",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD3",
+      "type": "udl",
+      "member": "M20",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL4",
+      "type": "udl",
+      "member": "M20",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD5",
+      "type": "udl",
+      "member": "M21",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL6",
+      "type": "udl",
+      "member": "M21",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD7",
+      "type": "udl",
+      "member": "M22",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL8",
+      "type": "udl",
+      "member": "M22",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD9",
+      "type": "udl",
+      "member": "M23",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL10",
+      "type": "udl",
+      "member": "M23",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD11",
+      "type": "udl",
+      "member": "M24",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL12",
+      "type": "udl",
+      "member": "M24",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD13",
+      "type": "udl",
+      "member": "M25",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL14",
+      "type": "udl",
+      "member": "M25",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD15",
+      "type": "udl",
+      "member": "M26",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL16",
+      "type": "udl",
+      "member": "M26",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD17",
+      "type": "udl",
+      "member": "M27",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL18",
+      "type": "udl",
+      "member": "M27",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD19",
+      "type": "udl",
+      "member": "M28",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL20",
+      "type": "udl",
+      "member": "M28",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD21",
+      "type": "udl",
+      "member": "M29",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL22",
+      "type": "udl",
+      "member": "M29",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD23",
+      "type": "udl",
+      "member": "M30",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL24",
+      "type": "udl",
+      "member": "M30",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD25",
+      "type": "udl",
+      "member": "M31",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL26",
+      "type": "udl",
+      "member": "M31",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD27",
+      "type": "udl",
+      "member": "M32",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL28",
+      "type": "udl",
+      "member": "M32",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD29",
+      "type": "udl",
+      "member": "M33",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL30",
+      "type": "udl",
+      "member": "M33",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD31",
+      "type": "udl",
+      "member": "M34",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL32",
+      "type": "udl",
+      "member": "M34",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD33",
+      "type": "udl",
+      "member": "M35",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL34",
+      "type": "udl",
+      "member": "M35",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD35",
+      "type": "udl",
+      "member": "M36",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL36",
+      "type": "udl",
+      "member": "M36",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD37",
+      "type": "udl",
+      "member": "M37",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL38",
+      "type": "udl",
+      "member": "M37",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD39",
+      "type": "udl",
+      "member": "M38",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL40",
+      "type": "udl",
+      "member": "M38",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD41",
+      "type": "udl",
+      "member": "M39",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL42",
+      "type": "udl",
+      "member": "M39",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD43",
+      "type": "udl",
+      "member": "M40",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL44",
+      "type": "udl",
+      "member": "M40",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD45",
+      "type": "udl",
+      "member": "M41",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL46",
+      "type": "udl",
+      "member": "M41",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LD47",
+      "type": "udl",
+      "member": "M42",
+      "w": 5.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D"
+    },
+    {
+      "id": "LL48",
+      "type": "udl",
+      "member": "M42",
+      "w": 2.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "L"
+    },
+    {
+      "id": "LWX49",
+      "type": "nodal",
+      "node": "N112",
+      "P": 4,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY50",
+      "type": "nodal",
+      "node": "N112",
+      "P": 3.3333333333333335,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX51",
+      "type": "nodal",
+      "node": "N212",
+      "P": 4,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY52",
+      "type": "nodal",
+      "node": "N212",
+      "P": 3.3333333333333335,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX53",
+      "type": "nodal",
+      "node": "N312",
+      "P": 4,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY54",
+      "type": "nodal",
+      "node": "N312",
+      "P": 3.3333333333333335,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX55",
+      "type": "nodal",
+      "node": "N122",
+      "P": 4,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY56",
+      "type": "nodal",
+      "node": "N122",
+      "P": 3.3333333333333335,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX57",
+      "type": "nodal",
+      "node": "N222",
+      "P": 4,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY58",
+      "type": "nodal",
+      "node": "N222",
+      "P": 3.3333333333333335,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX59",
+      "type": "nodal",
+      "node": "N322",
+      "P": 4,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY60",
+      "type": "nodal",
+      "node": "N322",
+      "P": 3.3333333333333335,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX61",
+      "type": "nodal",
+      "node": "N132",
+      "P": 4,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY62",
+      "type": "nodal",
+      "node": "N132",
+      "P": 3.3333333333333335,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX63",
+      "type": "nodal",
+      "node": "N232",
+      "P": 4,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY64",
+      "type": "nodal",
+      "node": "N232",
+      "P": 3.3333333333333335,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX65",
+      "type": "nodal",
+      "node": "N332",
+      "P": 4,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY66",
+      "type": "nodal",
+      "node": "N332",
+      "P": 3.3333333333333335,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX67",
+      "type": "nodal",
+      "node": "N113",
+      "P": 6,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY68",
+      "type": "nodal",
+      "node": "N113",
+      "P": 5,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX69",
+      "type": "nodal",
+      "node": "N213",
+      "P": 6,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY70",
+      "type": "nodal",
+      "node": "N213",
+      "P": 5,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX71",
+      "type": "nodal",
+      "node": "N313",
+      "P": 6,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY72",
+      "type": "nodal",
+      "node": "N313",
+      "P": 5,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX73",
+      "type": "nodal",
+      "node": "N123",
+      "P": 6,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY74",
+      "type": "nodal",
+      "node": "N123",
+      "P": 5,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX75",
+      "type": "nodal",
+      "node": "N223",
+      "P": 6,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY76",
+      "type": "nodal",
+      "node": "N223",
+      "P": 5,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX77",
+      "type": "nodal",
+      "node": "N323",
+      "P": 6,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY78",
+      "type": "nodal",
+      "node": "N323",
+      "P": 5,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX79",
+      "type": "nodal",
+      "node": "N133",
+      "P": 6,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY80",
+      "type": "nodal",
+      "node": "N133",
+      "P": 5,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX81",
+      "type": "nodal",
+      "node": "N233",
+      "P": 6,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY82",
+      "type": "nodal",
+      "node": "N233",
+      "P": 5,
+      "dir": "+y",
+      "case": "WY"
+    },
+    {
+      "id": "LWX83",
+      "type": "nodal",
+      "node": "N333",
+      "P": 6,
+      "dir": "+x",
+      "case": "WX"
+    },
+    {
+      "id": "LWY84",
+      "type": "nodal",
+      "node": "N333",
+      "P": 5,
+      "dir": "+y",
+      "case": "WY"
+    }
+  ],
+  "loadCases": [
+    {
+      "id": "D",
+      "name": "Dead load",
+      "type": "dead"
+    },
+    {
+      "id": "L",
+      "name": "Live load",
+      "type": "live"
+    },
+    {
+      "id": "WX",
+      "name": "Wind X",
+      "type": "wind"
+    },
+    {
+      "id": "WY",
+      "name": "Wind Y",
+      "type": "wind"
+    }
+  ],
+  "loadCombinations": [
+    {
+      "id": "EL-DL",
+      "name": "1.0D + 1.0L",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 1,
+        "WX": 0,
+        "WY": 0
+      }
+    },
+    {
+      "id": "EL-WX",
+      "name": "1.0D + 0.5L + 1.0WX",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 1,
+        "WY": 0
+      }
+    },
+    {
+      "id": "EL-WY",
+      "name": "1.0D + 0.5L + 1.0WY",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 0,
+        "WY": 1
+      }
+    }
+  ],
+  "analysisSettings": {
+    "analysisType": "linear_static",
+    "elementType": "3d_frame",
+    "includeShearDeformation": false,
+    "includeGeometricStiffness": false,
+    "includeSelfWeight": false,
+    "solverTolerance": 1e-10,
+    "memberStations": 21,
+    "includeFixedEndDeformation": true,
+    "validateBeforeSolve": true,
+    "pDeltaMaxIterations": 12,
+    "pDeltaTolerance": 0.0001,
+    "pDeltaMaxAmplification": 2.5,
+    "modalModeCount": 6,
+    "responseSpectrum": {
+      "enabled": false,
+      "dampingRatio": 0.05,
+      "scale": 9.80665,
+      "directions": [
+        "x",
+        "y"
+      ],
+      "points": [
+        {
+          "period": 0,
+          "sa": 0.4
+        },
+        {
+          "period": 5,
+          "sa": 0.4
+        }
+      ]
+    }
+  },
+  "designParams": {
+    "global": {
+      "mode": "off",
+      "codeCompliance": false,
+      "defaultKy": 1,
+      "defaultKz": 1,
+      "defaultLbY": null,
+      "defaultLbZ": null,
+      "defaultDeflectionLimitTotal": 250,
+      "defaultDeflectionLimitLive": 360,
+      "defaultCompressionSlendernessLimit": 200,
+      "defaultTensionSlendernessLimit": 300,
+      "warnAtRatio": 0.7
+    },
+    "rc": {
+      "defaultCover": 0.05,
+      "defaultRebarFy": 400,
+      "defaultBeamRebarRatio": 0.01,
+      "defaultColumnRebarRatio": 0.015,
+      "minBeamRebarRatio": 0.002,
+      "minColumnRebarRatio": 0.01,
+      "maxColumnRebarRatio": 0.04,
+      "phiFlexure": 0.85,
+      "phiShear": 0.75,
+      "phiCompression": 0.65,
+      "warnAtRatio": 0.7
+    },
+    "members": {}
+  },
+  "designSettings": {
+    "method": "allowable_stress",
+    "defaultCheck": "elastic_stress_interaction"
+  },
+  "meta": {
+    "name": "Structured JSON two-story elastic frame",
+    "generatorVersion": "m46-stabilization-harness"
+  }
+}

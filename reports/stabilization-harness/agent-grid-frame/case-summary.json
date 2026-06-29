@@ -1,0 +1,228 @@
+{
+  "version": "m46-stabilization-harness",
+  "id": "agent-grid-frame",
+  "name": "Agent-action generated grid frame",
+  "category": "agent-api",
+  "inputPath": "agent-modeling-actions",
+  "ok": true,
+  "issues": [],
+  "checks": [
+    {
+      "id": "validation-errors",
+      "ok": true,
+      "message": "Model validation must have no errors."
+    },
+    {
+      "id": "analysis-ok",
+      "ok": true,
+      "message": "Elastic analysis must complete successfully."
+    },
+    {
+      "id": "combination-count",
+      "ok": true,
+      "message": "Required load combinations must be present."
+    },
+    {
+      "id": "load-count",
+      "ok": true,
+      "message": "Required model loads must be present."
+    },
+    {
+      "id": "combo-results",
+      "ok": true,
+      "message": "Every load combination must solve."
+    },
+    {
+      "id": "equilibrium",
+      "ok": true,
+      "message": "Equilibrium residual must stay within tolerance."
+    },
+    {
+      "id": "visual-nodes",
+      "ok": true,
+      "message": "Result visuals must include every node."
+    },
+    {
+      "id": "visual-members",
+      "ok": true,
+      "message": "Result visuals must include every member."
+    },
+    {
+      "id": "visual-displacement",
+      "ok": true,
+      "message": "Result visuals must include a nonzero displacement envelope."
+    },
+    {
+      "id": "html-report",
+      "ok": true,
+      "message": "HTML report must be generated from the same result."
+    },
+    {
+      "id": "calculation-package",
+      "ok": true,
+      "message": "Calculation package must include the standard sections."
+    },
+    {
+      "id": "member-trace",
+      "ok": true,
+      "message": "Member design trace rows must be available."
+    },
+    {
+      "id": "agent-action-history",
+      "ok": true,
+      "message": "Agent-action case must record its modeling command path."
+    }
+  ],
+  "summary": {
+    "model": {
+      "nodes": 18,
+      "members": 26,
+      "loads": 38,
+      "loadCases": 4,
+      "combinations": 3
+    },
+    "validation": {
+      "ok": true,
+      "errorCount": 0,
+      "warningCount": 0,
+      "errors": [],
+      "warnings": []
+    },
+    "analysis": {
+      "ok": true,
+      "comboCount": 3,
+      "maxDisplacement": 0.057336342639634566,
+      "maxUtilization": 4.2122362218960365,
+      "designStatus": "Review",
+      "designOk": false,
+      "validationErrors": [],
+      "comboResults": [
+        {
+          "id": "AG-D",
+          "ok": true,
+          "maxDisplacement": 0.002451204239798114,
+          "maxUtilization": 0.3586590480927861,
+          "equilibriumResidual": 1.6194706228150432e-16,
+          "solverResidualNorm": 1.0216954370406669e-15,
+          "totalLoad": [
+            0,
+            0,
+            -351
+          ],
+          "totalReaction": [
+            7.771561172376096e-15,
+            -7.771561172376096e-16,
+            350.99999999999994
+          ]
+        },
+        {
+          "id": "AG-WX",
+          "ok": true,
+          "maxDisplacement": 0.010645251729957346,
+          "maxUtilization": 0.6376033407415078,
+          "equilibriumResidual": 7.854432520652959e-15,
+          "solverResidualNorm": 4.558154870251885e-14,
+          "totalLoad": [
+            80,
+            0,
+            -351
+          ],
+          "totalReaction": [
+            -79.99999999999724,
+            4.440892098500626e-16,
+            351.0000000000001
+          ]
+        },
+        {
+          "id": "AG-WY",
+          "ok": true,
+          "maxDisplacement": 0.057336342639634566,
+          "maxUtilization": 1.9794593855035723,
+          "equilibriumResidual": 3.323963453327876e-14,
+          "solverResidualNorm": 1.6282110010293538e-13,
+          "totalLoad": [
+            0,
+            64.99999999999999,
+            -351
+          ],
+          "totalReaction": [
+            8.215650382226158e-15,
+            -65.00000000001165,
+            351.00000000000006
+          ]
+        }
+      ]
+    },
+    "visuals": {
+      "version": "m13-index-result-visuals",
+      "resultId": "ENVELOPE",
+      "nodes": 18,
+      "members": 26,
+      "loads": 38,
+      "reactions": 6,
+      "maxDisplacement": 0.05822244156329062
+    },
+    "report": {
+      "version": "m14-report-export",
+      "title": "Agent-action generated grid frame - Stabilization Report",
+      "htmlLength": 9815
+    },
+    "calculationPackage": {
+      "version": "m42-calculation-package",
+      "sectionCount": 7,
+      "htmlLength": 15780,
+      "qualityAuditOk": false,
+      "qualityItems": [
+        {
+          "name": "Load derivation attached",
+          "status": "Missing"
+        },
+        {
+          "name": "Combination results available",
+          "status": "OK"
+        },
+        {
+          "name": "Member checks available",
+          "status": "OK"
+        },
+        {
+          "name": "RC schedule available",
+          "status": "Not applicable"
+        },
+        {
+          "name": "Steel schedule available",
+          "status": "OK"
+        },
+        {
+          "name": "Foundation review available",
+          "status": "OK"
+        }
+      ],
+      "loadDerivationRows": 0,
+      "memberTraceRows": 26,
+      "serviceabilityRows": 6
+    },
+    "actionHistory": [
+      {
+        "action": "createGridFrame",
+        "changed": true
+      },
+      {
+        "action": "autoAssignMemberRoles",
+        "changed": true
+      },
+      {
+        "action": "applyLoadTemplate",
+        "changed": true
+      },
+      {
+        "action": "applyLoadTemplate",
+        "changed": true
+      },
+      {
+        "action": "applyLoadTemplate",
+        "changed": true
+      }
+    ]
+  }
+}

@@ -160,3 +160,10 @@ export {
   createSimpleBeamUdl,
   createVerticalAxialColumn,
 } from './examples/verification.js';
+export {
+  createStabilizationHarnessCases,
+  runStabilizationCase,
+  runStabilizationHarness,
+  STABILIZATION_HARNESS_TOLERANCES,
+  STABILIZATION_HARNESS_VERSION,
+} from './verification/stabilizationHarness.js';

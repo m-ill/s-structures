@@ -81,7 +81,7 @@ export function renderHtmlReport(report) {
 <body>
 <main>
   <h1>${escapeHtml(report.title)}</h1>
-  <div class="meta">Generated ${escapeHtml(report.generatedAt)} · ${escapeHtml(report.version)}</div>
+  <div class="meta">Generated ${escapeHtml(report.generatedAt)} | ${escapeHtml(report.version)}</div>
   ${renderMetricGrid([
     ['Status', report.analysis.status],
     ['Nodes', report.model.nodeCount],

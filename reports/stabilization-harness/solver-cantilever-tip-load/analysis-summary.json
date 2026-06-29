@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "comboCount": 1,
+  "maxDisplacement": 0.012799999999999999,
+  "maxUtilization": 0.7999999999999999,
+  "designStatus": "OK",
+  "designOk": true,
+  "validationErrors": [],
+  "comboResults": [
+    {
+      "id": "D_ONLY",
+      "ok": true,
+      "maxDisplacement": 0.012799999999999999,
+      "maxUtilization": 0.23999999999999996,
+      "equilibriumResidual": 5.921189464667501e-16,
+      "solverResidualNorm": 5.921189464667501e-16,
+      "totalLoad": [
+        0,
+        0,
+        -12
+      ],
+      "totalReaction": [
+        0,
+        0,
+        11.999999999999993
+      ]
+    }
+  ]
+}

@@ -24,6 +24,7 @@ import { MEMBER_DESIGN_TRACE_VERSION } from '../design/memberDesignTrace.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
+import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -65,6 +66,7 @@ export function buildAgentManifest(options = {}) {
       steelDetailing: STEEL_DETAILING_VERSION,
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
       memberDesignTrace: MEMBER_DESIGN_TRACE_VERSION,
+      stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       calculationPackageUi: 'm43-calculation-package-ui',
     },
     readApis: [
@@ -138,6 +140,7 @@ export function buildAgentManifest(options = {}) {
       'legacyResultShapeCompatibility',
       'elastic3dImportWorkflow',
       'representativeBuildingReportSet',
+      'stabilizationHarnessReportSet',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -175,6 +178,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M43', status: 'available', feature: 'native menu and agent action for opening calculation packages' },
       { id: 'M44', status: 'preliminary', feature: 'structured KDS-style load standard registry and audit trace' },
       { id: 'M45', status: 'preliminary', feature: 'member-by-member design formula trace and action matrix' },
+      { id: 'M46', status: 'available', feature: 'stabilization harness for modeling, elastic analysis, visuals, and reports' },
       { id: 'M47', status: 'preliminary', feature: 'design-basis load input controls, preview API, and apply workflow' },
       { id: 'M48', status: 'preliminary', feature: 'load derivation formula trace for gravity, wind, and seismic generated loads' },
       { id: 'M49', status: 'preliminary', feature: 'story drift and serviceability review table for elastic analysis results' },

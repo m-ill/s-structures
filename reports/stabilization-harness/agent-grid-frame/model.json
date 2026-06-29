@@ -1,0 +1,1267 @@
+{
+  "schemaVersion": 3,
+  "units": {
+    "length": "m",
+    "force": "kN",
+    "moment": "kN.m",
+    "stress": "N/mm2",
+    "displacement": "mm"
+  },
+  "materials": [
+    {
+      "id": "steel",
+      "name": "Steel SS400",
+      "E": 205000,
+      "G": 79000,
+      "Fy": 235,
+      "Fu": 400,
+      "density": 7.85,
+      "allow": {
+        "fb": 156.7,
+        "ft": 156.7,
+        "fc": 156.7,
+        "fv": 90.4
+      }
+    },
+    {
+      "id": "sm490",
+      "name": "Steel SM490",
+      "E": 205000,
+      "G": 79000,
+      "Fy": 325,
+      "Fu": 490,
+      "density": 7.85,
+      "allow": {
+        "fb": 216.7,
+        "ft": 216.7,
+        "fc": 216.7,
+        "fv": 125
+      }
+    },
+    {
+      "id": "concrete",
+      "name": "Concrete Fc24",
+      "E": 22700,
+      "G": 9500,
+      "Fy": 24,
+      "Fu": 24,
+      "density": 2.4,
+      "allow": {
+        "fb": 8,
+        "ft": 0.8,
+        "fc": 8,
+        "fv": 0.73
+      }
+    },
+    {
+      "id": "wood",
+      "name": "Wood",
+      "E": 7000,
+      "G": 440,
+      "Fy": 22,
+      "Fu": 22,
+      "density": 0.38,
+      "allow": {
+        "fb": 8.1,
+        "ft": 5.4,
+        "fc": 6.5,
+        "fv": 0.66
+      }
+    }
+  ],
+  "sections": [
+    {
+      "id": "h200",
+      "name": "H-200x100x5.5x8",
+      "type": "H",
+      "dims": {
+        "H": 200,
+        "B": 100,
+        "tw": 5.5,
+        "tf": 8
+      },
+      "A": 0.002716,
+      "Iz": 0.0000184,
+      "Zz": 0.000184,
+      "Iy": 0.00000134,
+      "Zy": 0.0000268,
+      "J": 5e-8
+    },
+    {
+      "id": "h300",
+      "name": "H-300x150x6.5x9",
+      "type": "H",
+      "dims": {
+        "H": 300,
+        "B": 150,
+        "tw": 6.5,
+        "tf": 9
+      },
+      "A": 0.004678,
+      "Iz": 0.0000721,
+      "Zz": 0.000481,
+      "Iy": 0.00000508,
+      "Zy": 0.0000677,
+      "J": 9e-8
+    },
+    {
+      "id": "h400",
+      "name": "H-400x200x8x13",
+      "type": "H",
+      "dims": {
+        "H": 400,
+        "B": 200,
+        "tw": 8,
+        "tf": 13
+      },
+      "A": 0.008412,
+      "Iz": 0.000237,
+      "Zz": 0.00119,
+      "Iy": 0.0000174,
+      "Zy": 0.000174,
+      "J": 3.7e-7
+    },
+    {
+      "id": "box200",
+      "name": "BOX-200x200x9",
+      "type": "BOX",
+      "dims": {
+        "H": 200,
+        "B": 200,
+        "t": 9
+      },
+      "A": 0.006789,
+      "Iz": 0.0000409,
+      "Zz": 0.000409,
+      "Iy": 0.0000409,
+      "Zy": 0.000409,
+      "J": 0.0000627
+    },
+    {
+      "id": "rc3060",
+      "name": "RC 300x600",
+      "type": "RECT",
+      "dims": {
+        "B": 300,
+        "H": 600
+      },
+      "A": 0.18,
+      "Iz": 0.0054,
+      "Zz": 0.018,
+      "Iy": 0.00135,
+      "Zy": 0.009,
+      "J": 0.0037
+    }
+  ],
+  "nodes": [
+    {
+      "id": "N1",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N2",
+      "x": 6,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N3",
+      "x": 12,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N4",
+      "x": 0,
+      "y": 5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N5",
+      "x": 6,
+      "y": 5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N6",
+      "x": 12,
+      "y": 5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N7",
+      "x": 0,
+      "y": 0,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N8",
+      "x": 6,
+      "y": 0,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N9",
+      "x": 12,
+      "y": 0,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N10",
+      "x": 0,
+      "y": 5,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N11",
+      "x": 6,
+      "y": 5,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N12",
+      "x": 12,
+      "y": 5,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N13",
+      "x": 0,
+      "y": 0,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N14",
+      "x": 6,
+      "y": 0,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N15",
+      "x": 12,
+      "y": 0,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N16",
+      "x": 0,
+      "y": 5,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N17",
+      "x": 6,
+      "y": 5,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N18",
+      "x": 12,
+      "y": 5,
+      "z": 6.8,
+      "support": null
+    }
+  ],
+  "members": [
+    {
+      "id": "M1",
+      "type": "frame",
+      "n1": "N1",
+      "n2": "N7",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M2",
+      "type": "frame",
+      "n1": "N2",
+      "n2": "N8",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M3",
+      "type": "frame",
+      "n1": "N3",
+      "n2": "N9",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M4",
+      "type": "frame",
+      "n1": "N4",
+      "n2": "N10",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M5",
+      "type": "frame",
+      "n1": "N5",
+      "n2": "N11",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M6",
+      "type": "frame",
+      "n1": "N6",
+      "n2": "N12",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M7",
+      "type": "frame",
+      "n1": "N7",
+      "n2": "N13",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M8",
+      "type": "frame",
+      "n1": "N8",
+      "n2": "N14",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M9",
+      "type": "frame",
+      "n1": "N9",
+      "n2": "N15",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M10",
+      "type": "frame",
+      "n1": "N10",
+      "n2": "N16",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M11",
+      "type": "frame",
+      "n1": "N11",
+      "n2": "N17",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M12",
+      "type": "frame",
+      "n1": "N12",
+      "n2": "N18",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M13",
+      "type": "frame",
+      "n1": "N7",
+      "n2": "N8",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M14",
+      "type": "frame",
+      "n1": "N8",
+      "n2": "N9",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M15",
+      "type": "frame",
+      "n1": "N10",
+      "n2": "N11",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M16",
+      "type": "frame",
+      "n1": "N11",
+      "n2": "N12",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M17",
+      "type": "frame",
+      "n1": "N7",
+      "n2": "N10",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M18",
+      "type": "frame",
+      "n1": "N8",
+      "n2": "N11",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M19",
+      "type": "frame",
+      "n1": "N9",
+      "n2": "N12",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M20",
+      "type": "frame",
+      "n1": "N13",
+      "n2": "N14",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M21",
+      "type": "frame",
+      "n1": "N14",
+      "n2": "N15",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M22",
+      "type": "frame",
+      "n1": "N16",
+      "n2": "N17",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M23",
+      "type": "frame",
+      "n1": "N17",
+      "n2": "N18",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M24",
+      "type": "frame",
+      "n1": "N13",
+      "n2": "N16",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M25",
+      "type": "frame",
+      "n1": "N14",
+      "n2": "N17",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M26",
+      "type": "frame",
+      "n1": "N15",
+      "n2": "N18",
+      "matId": "steel",
+      "secId": "h300",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    }
+  ],
+  "loads": [
+    {
+      "id": "L1",
+      "type": "udl",
+      "member": "M13",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L2",
+      "type": "udl",
+      "member": "M14",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L3",
+      "type": "udl",
+      "member": "M15",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L4",
+      "type": "udl",
+      "member": "M16",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L5",
+      "type": "udl",
+      "member": "M17",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L6",
+      "type": "udl",
+      "member": "M18",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L7",
+      "type": "udl",
+      "member": "M19",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L8",
+      "type": "udl",
+      "member": "M20",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L9",
+      "type": "udl",
+      "member": "M21",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L10",
+      "type": "udl",
+      "member": "M22",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L11",
+      "type": "udl",
+      "member": "M23",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L12",
+      "type": "udl",
+      "member": "M24",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L13",
+      "type": "udl",
+      "member": "M25",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L14",
+      "type": "udl",
+      "member": "M26",
+      "w": 4.5,
+      "dir": "-z",
+      "coordinate": "global",
+      "case": "D",
+      "source": "template:gravityUdl"
+    },
+    {
+      "id": "L15",
+      "type": "nodal",
+      "node": "N7",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L16",
+      "type": "nodal",
+      "node": "N8",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L17",
+      "type": "nodal",
+      "node": "N9",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L18",
+      "type": "nodal",
+      "node": "N10",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L19",
+      "type": "nodal",
+      "node": "N11",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L20",
+      "type": "nodal",
+      "node": "N12",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L21",
+      "type": "nodal",
+      "node": "N13",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L22",
+      "type": "nodal",
+      "node": "N14",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L23",
+      "type": "nodal",
+      "node": "N15",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L24",
+      "type": "nodal",
+      "node": "N16",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L25",
+      "type": "nodal",
+      "node": "N17",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L26",
+      "type": "nodal",
+      "node": "N18",
+      "P": 6.666666666666667,
+      "dir": "+x",
+      "case": "WX",
+      "source": "template:windX"
+    },
+    {
+      "id": "L27",
+      "type": "nodal",
+      "node": "N7",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L28",
+      "type": "nodal",
+      "node": "N8",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L29",
+      "type": "nodal",
+      "node": "N9",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L30",
+      "type": "nodal",
+      "node": "N10",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L31",
+      "type": "nodal",
+      "node": "N11",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L32",
+      "type": "nodal",
+      "node": "N12",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L33",
+      "type": "nodal",
+      "node": "N13",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L34",
+      "type": "nodal",
+      "node": "N14",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L35",
+      "type": "nodal",
+      "node": "N15",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L36",
+      "type": "nodal",
+      "node": "N16",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L37",
+      "type": "nodal",
+      "node": "N17",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    },
+    {
+      "id": "L38",
+      "type": "nodal",
+      "node": "N18",
+      "P": 5.416666666666667,
+      "dir": "+y",
+      "case": "WY",
+      "source": "template:windY"
+    }
+  ],
+  "loadCases": [
+    {
+      "id": "D",
+      "name": "Dead load",
+      "type": "dead"
+    },
+    {
+      "id": "L",
+      "name": "Live load",
+      "type": "live"
+    },
+    {
+      "id": "WX",
+      "name": "WX",
+      "type": "wind"
+    },
+    {
+      "id": "WY",
+      "name": "WY",
+      "type": "wind"
+    }
+  ],
+  "loadCombinations": [
+    {
+      "id": "AG-D",
+      "name": "1.0D",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0,
+        "WX": 0,
+        "WY": 0
+      }
+    },
+    {
+      "id": "AG-WX",
+      "name": "1.0D + 1.0WX",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0,
+        "WX": 1,
+        "WY": 0
+      }
+    },
+    {
+      "id": "AG-WY",
+      "name": "1.0D + 1.0WY",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0,
+        "WX": 0,
+        "WY": 1
+      }
+    }
+  ],
+  "analysisSettings": {
+    "analysisType": "linear_static",
+    "elementType": "3d_frame",
+    "includeShearDeformation": false,
+    "includeGeometricStiffness": false,
+    "includeSelfWeight": false,
+    "solverTolerance": 1e-10,
+    "memberStations": 21,
+    "includeFixedEndDeformation": true,
+    "validateBeforeSolve": true,
+    "pDeltaMaxIterations": 12,
+    "pDeltaTolerance": 0.0001,
+    "pDeltaMaxAmplification": 2.5,
+    "modalModeCount": 6,
+    "responseSpectrum": {
+      "enabled": true,
+      "dampingRatio": 0.05,
+      "scale": 9.80665,
+      "directions": [
+        "x",
+        "y"
+      ],
+      "points": [
+        {
+          "period": 0,
+          "sa": 0.4
+        },
+        {
+          "period": 5,
+          "sa": 0.4
+        }
+      ]
+    }
+  },
+  "designParams": {
+    "global": {
+      "mode": "off",
+      "codeCompliance": false,
+      "defaultKy": 1,
+      "defaultKz": 1,
+      "defaultLbY": null,
+      "defaultLbZ": null,
+      "defaultDeflectionLimitTotal": 250,
+      "defaultDeflectionLimitLive": 360,
+      "defaultCompressionSlendernessLimit": 200,
+      "defaultTensionSlendernessLimit": 300,
+      "warnAtRatio": 0.7
+    },
+    "rc": {
+      "defaultCover": 0.05,
+      "defaultRebarFy": 400,
+      "defaultBeamRebarRatio": 0.01,
+      "defaultColumnRebarRatio": 0.015,
+      "minBeamRebarRatio": 0.002,
+      "minColumnRebarRatio": 0.01,
+      "maxColumnRebarRatio": 0.04,
+      "phiFlexure": 0.85,
+      "phiShear": 0.75,
+      "phiCompression": 0.65,
+      "warnAtRatio": 0.7
+    },
+    "members": {}
+  },
+  "designSettings": {
+    "method": "allowable_stress",
+    "defaultCheck": "elastic_stress_interaction"
+  },
+  "meta": {
+    "id": "agent-grid-frame",
+    "name": "Agent-action generated grid frame",
+    "generatorVersion": "m46-stabilization-harness"
+  }
+}

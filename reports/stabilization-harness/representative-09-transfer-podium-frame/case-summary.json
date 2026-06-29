@@ -1,0 +1,202 @@
+{
+  "version": "m46-stabilization-harness",
+  "id": "representative-09-transfer-podium-frame",
+  "name": "Transfer podium frame",
+  "category": "representative-building",
+  "inputPath": "representative-building-generator",
+  "ok": true,
+  "issues": [],
+  "checks": [
+    {
+      "id": "validation-errors",
+      "ok": true,
+      "message": "Model validation must have no errors."
+    },
+    {
+      "id": "analysis-ok",
+      "ok": true,
+      "message": "Elastic analysis must complete successfully."
+    },
+    {
+      "id": "combination-count",
+      "ok": true,
+      "message": "Required load combinations must be present."
+    },
+    {
+      "id": "load-count",
+      "ok": true,
+      "message": "Required model loads must be present."
+    },
+    {
+      "id": "combo-results",
+      "ok": true,
+      "message": "Every load combination must solve."
+    },
+    {
+      "id": "equilibrium",
+      "ok": true,
+      "message": "Equilibrium residual must stay within tolerance."
+    },
+    {
+      "id": "visual-nodes",
+      "ok": true,
+      "message": "Result visuals must include every node."
+    },
+    {
+      "id": "visual-members",
+      "ok": true,
+      "message": "Result visuals must include every member."
+    },
+    {
+      "id": "visual-displacement",
+      "ok": true,
+      "message": "Result visuals must include a nonzero displacement envelope."
+    },
+    {
+      "id": "html-report",
+      "ok": true,
+      "message": "HTML report must be generated from the same result."
+    },
+    {
+      "id": "calculation-package",
+      "ok": true,
+      "message": "Calculation package must include the standard sections."
+    },
+    {
+      "id": "member-trace",
+      "ok": true,
+      "message": "Member design trace rows must be available."
+    }
+  ],
+  "summary": {
+    "model": {
+      "nodes": 81,
+      "members": 158,
+      "loads": 316,
+      "loadCases": 4,
+      "combinations": 3
+    },
+    "validation": {
+      "ok": true,
+      "errorCount": 0,
+      "warningCount": 0,
+      "errors": [],
+      "warnings": []
+    },
+    "analysis": {
+      "ok": true,
+      "comboCount": 3,
+      "maxDisplacement": 0.0024424984303948946,
+      "maxUtilization": 0.1688746692485138,
+      "designStatus": "OK",
+      "designOk": true,
+      "validationErrors": [],
+      "comboResults": [
+        {
+          "id": "EL-DL",
+          "ok": true,
+          "maxDisplacement": 0.0012795093132930218,
+          "maxUtilization": 0.11117891529190353,
+          "equilibriumResidual": 5.538270014449675e-16,
+          "solverResidualNorm": 1.5026884187643576e-14,
+          "totalLoad": [
+            0,
+            0,
+            -3284.4000000000096
+          ],
+          "totalReaction": [
+            5.3734794391857577e-14,
+            4.440892098500626e-15,
+            3284.400000000008
+          ]
+        },
+        {
+          "id": "EL-WX",
+          "ok": true,
+          "maxDisplacement": 0.0023571157140809297,
+          "maxUtilization": 0.11194483939153096,
+          "equilibriumResidual": 2.598660133342566e-15,
+          "solverResidualNorm": 3.4448634421226285e-14,
+          "totalLoad": [
+            55.222499999999975,
+            0,
+            -2737
+          ],
+          "totalReaction": [
+            -55.22250000000709,
+            -1.7763568394002505e-14,
+            2737.000000000006
+          ]
+        },
+        {
+          "id": "EL-WY",
+          "ok": true,
+          "maxDisplacement": 0.0024424984303948946,
+          "maxUtilization": 0.11873540422626083,
+          "equilibriumResidual": 2.1599253056353794e-15,
+          "solverResidualNorm": 2.522352075106364e-14,
+          "totalLoad": [
+            0,
+            49.086666666666666,
+            -2737
+          ],
+          "totalReaction": [
+            3.907985046680551e-14,
+            -49.086666666664684,
+            2737.000000000006
+          ]
+        }
+      ]
+    },
+    "visuals": {
+      "version": "m13-index-result-visuals",
+      "resultId": "ENVELOPE",
+      "nodes": 81,
+      "members": 158,
+      "loads": 316,
+      "reactions": 15,
+      "maxDisplacement": 0.003213476680478737
+    },
+    "report": {
+      "version": "m14-report-export",
+      "title": "Transfer podium frame - Stabilization Report",
+      "htmlLength": 12588
+    },
+    "calculationPackage": {
+      "version": "m42-calculation-package",
+      "sectionCount": 7,
+      "htmlLength": 49716,
+      "qualityAuditOk": false,
+      "qualityItems": [
+        {
+          "name": "Load derivation attached",
+          "status": "Missing"
+        },
+        {
+          "name": "Combination results available",
+          "status": "OK"
+        },
+        {
+          "name": "Member checks available",
+          "status": "OK"
+        },
+        {
+          "name": "RC schedule available",
+          "status": "Not applicable"
+        },
+        {
+          "name": "Steel schedule available",
+          "status": "OK"
+        },
+        {
+          "name": "Foundation review available",
+          "status": "OK"
+        }
+      ],
+      "loadDerivationRows": 0,
+      "memberTraceRows": 158,
+      "serviceabilityRows": 18
+    },
+    "actionHistory": []
+  }
+}
