@@ -154,6 +154,13 @@ export function renderCalculationPackageHtml(pkg) {
       ratio(row.maxUtilization),
       ratio(row.equilibriumResidual),
     ]))}
+    <h3>Advanced Elastic Trace</h3>
+    ${d.advancedElasticTrace ? table(['Item', 'Value'], [
+      ['P-Delta', d.advancedElasticTrace.summary.pDeltaStatus],
+      ['Modes', d.advancedElasticTrace.summary.modeCount],
+      ['First period', fmt(d.advancedElasticTrace.summary.firstPeriod)],
+      ['RSA directions', d.advancedElasticTrace.summary.rsaDirectionCount],
+    ]) : '<div class="note">No advanced elastic trace available.</div>'}
     <h3>Serviceability Drift Review</h3>
     ${d.serviceability?.rows?.length ? table(['Combo', 'Story', 'Height', 'Drift', 'Ratio', 'D/L', 'Status'], d.serviceability.rows.map((row) => [
       row.comboId,

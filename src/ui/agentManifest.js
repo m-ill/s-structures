@@ -24,6 +24,7 @@ import { MEMBER_DESIGN_TRACE_VERSION } from '../design/memberDesignTrace.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
+import { ADVANCED_ELASTIC_TRACE_VERSION } from '../results/advancedTraceUtils.js';
 import { RESULT_POSTPROCESSING_VERSION } from '../results/resultUtils.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
 import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
@@ -77,6 +78,7 @@ export function buildAgentManifest(options = {}) {
       designBasisInput: DESIGN_BASIS_INPUT_VERSION,
       loadDerivationTrace: LOAD_DERIVATION_TRACE_VERSION,
       serviceabilityDrift: SERVICEABILITY_DRIFT_VERSION,
+      advancedElasticTrace: ADVANCED_ELASTIC_TRACE_VERSION,
       resultPostprocessing: RESULT_POSTPROCESSING_VERSION,
       rcDetailing: RC_DETAILING_VERSION,
       steelDetailing: STEEL_DETAILING_VERSION,
@@ -120,6 +122,7 @@ export function buildAgentManifest(options = {}) {
       'getConnectionFoundationReport',
       'getMemberDesignTraceReport',
       'getServiceabilityDriftReport',
+      'getAdvancedElasticTrace',
       'getResultPostprocessing',
       'getStorySummary',
       'getStoryMassSummary',
@@ -159,6 +162,7 @@ export function buildAgentManifest(options = {}) {
       'designBasisInput',
       'loadDerivationTrace',
       'serviceabilityDriftReview',
+      'advancedElasticTrace',
       'resultPostprocessingTables',
       'rcReinforcementSchedule',
       'steelMemberReviewSchedule',
@@ -241,6 +245,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P2-MVP-S3', status: 'available', feature: 'ten-case solver benchmark gate' },
       { id: 'P2-MVP-S4', status: 'available', feature: 'story object, member release, and rigid diaphragm contracts' },
       { id: 'P2-MVP-S5', status: 'available', feature: 'story mass center and eccentric lateral distribution contracts' },
+      { id: 'P2-M5', status: 'preliminary', feature: 'P-Delta, modal, and response spectrum trace contract' },
       { id: 'P2-M6', status: 'preliminary', feature: 'story, member station, and foundation reaction result postprocessing' },
     ],
     limitations: [

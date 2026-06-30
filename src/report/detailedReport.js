@@ -5,6 +5,7 @@ import { buildMemberDesignTraceReport } from '../design/memberDesignTrace.js';
 import { buildRcDetailingReport } from '../design/rcDetailing.js';
 import { buildServiceabilityDriftReport } from '../design/serviceability.js';
 import { buildSteelDetailingReport } from '../design/steelDetailing.js';
+import { buildAdvancedElasticTrace } from '../results/advancedElasticTrace.js';
 import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
 import {
   buildKdsLoadStandardAudit,
@@ -82,6 +83,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
       governing: analysis?.design?.summary?.governing || analysis?.envelope?.governing?.maxUtilization || null,
     },
     combinationResults,
+    advancedElasticTrace: buildAdvancedElasticTrace(model, analysis),
     serviceability: buildServiceabilityDriftReport(model, analysis, options.serviceability || {}),
     resultPostprocessing: buildResultPostprocessing(model, analysis, options.resultPostprocessing || {}),
     memberChecks,
@@ -208,10 +210,13 @@ export function renderDetailedReportHtml(report) {
     formatRatio(row.equilibriumResidual),
   ]))}
 
-  <h2>4A. Serviceability Drift Review</h2>
+  <h2>4A. Advanced Elastic Trace</h2>
+  ${renderAdvancedElasticTrace(report.advancedElasticTrace)}
+
+  <h2>4B. Serviceability Drift Review</h2>
   ${renderServiceability(report.serviceability)}
 
-  <h2>4B. Result Postprocessing Tables</h2>
+  <h2>4C. Result Postprocessing Tables</h2>
   ${renderResultPostprocessing(report.resultPostprocessing)}
 
   <h2>5. Member Check Trace</h2>
@@ -520,6 +525,40 @@ function renderServiceability(serviceability) {
       formatDriftRatio(row.driftRatio),
       formatRatio(row.demandToLimit),
       statusLabel(row.status),
+    ])),
+  ].join('');
+}
+
+function renderAdvancedElasticTrace(trace) {
+  if (!trace) return '<div class="note">No advanced elastic trace available.</div>';
+  return [
+    renderTable(['Item', 'Value'], [
+      ['Version', trace.version],
+      ['P-Delta', trace.summary.pDeltaStatus],
+      ['P-Delta combos', trace.summary.pDeltaComboCount],
+      ['Modes', trace.summary.modeCount],
+      ['First period', format(trace.summary.firstPeriod)],
+      ['RSA directions', trace.summary.rsaDirectionCount],
+    ]),
+    renderTable(['Combo', 'Converged', 'Amp.', 'Iterations', 'Reason'], trace.pDelta.combos.map((row) => [
+      row.comboId,
+      row.converged ? 'Yes' : 'No',
+      formatRatio(row.amplification),
+      row.iterationCount,
+      row.reason || '-',
+    ])),
+    renderTable(['Mode', 'T', 'Hz', 'Mass X', 'Mass Y'], trace.modal.modes.map((row) => [
+      row.id,
+      format(row.period),
+      format(row.frequencyHz),
+      formatRatio(row.massX),
+      formatRatio(row.massY),
+    ])),
+    renderTable(['Dir', 'SRSS disp.', 'Max modal disp.', 'Mass ratio'], trace.responseSpectrum.directions.map((row) => [
+      row.direction,
+      formatLength(row.srssDisplacement),
+      formatLength(row.maxModalDisplacement),
+      formatRatio(row.participatingMassRatio),
     ])),
   ].join('');
 }

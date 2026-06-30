@@ -1,6 +1,7 @@
 import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildAdvancedElasticTrace,
   buildEccentricStoryLoadDistribution,
   buildDiaphragmSummary,
   buildMemberReleaseSummary,
@@ -168,6 +169,11 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return buildServiceabilityDriftReport(model, lastResult || analyzeForIndex(model), options);
+    },
+    getAdvancedElasticTrace() {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildAdvancedElasticTrace(model, lastResult || analyzeForIndex(model));
     },
     getResultPostprocessing(options = {}) {
       const model = bridge.getCurrentModel();

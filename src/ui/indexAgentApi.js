@@ -1,6 +1,7 @@
 import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildAdvancedElasticTrace,
   buildBaselineContract,
   buildEccentricStoryLoadDistribution,
   buildDiaphragmSummary,
@@ -178,6 +179,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildServiceabilityDriftReport(model, getAnalysis(model), options));
+    },
+    getAdvancedElasticTrace() {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildAdvancedElasticTrace(model, getAnalysis(model)));
     },
     getResultPostprocessing(options = {}) {
       const model = getCurrentModel(target);
