@@ -8,6 +8,6 @@ export function storyEccentricity(mass, diaphragm, stiffness) {
 }
 
 function offset(from, to) {
-  const value = (key) => (from.x == null || to?.[key] == null ? null : round6(from[key] - to[key]));
+  const value = (key) => (from?.[key] == null || to?.[key] == null ? null : round6(from[key] - to[key]));
   return { x: value('x'), y: value('y') };
 }
