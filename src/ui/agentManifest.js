@@ -30,6 +30,7 @@ import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
 import { VALIDATION_HEALTH_VERSION } from '../core/validationHealth.js';
 import { ANALYSIS_AUDIT_VERSION } from '../solver/analysisAudit.js';
 import { STORY_MODEL_VERSION } from '../core/storyModel.js';
+import { STORY_MASS_SUMMARY_VERSION } from '../core/storyMassSummary.js';
 import { STORY_SUMMARY_VERSION } from '../core/storySummary.js';
 import { DIAPHRAGM_SUMMARY_VERSION } from '../core/diaphragmSummary.js';
 import { DIAPHRAGM_VERSION } from '../core/diaphragmContract.js';
@@ -37,6 +38,7 @@ import { MEMBER_RELEASE_VERSION } from '../core/memberReleaseContract.js';
 import { MEMBER_RELEASE_SUMMARY_VERSION } from '../core/memberReleaseSummary.js';
 import { MEMBER_RELEASE_BENCHMARK_VERSION } from '../verification/memberReleaseBenchmark.js';
 import { RIGID_DIAPHRAGM_BENCHMARK_VERSION } from '../verification/rigidDiaphragmBenchmark.js';
+import { STORY_ECCENTRIC_DISTRIBUTION_VERSION } from '../design/storyEccentricDistribution.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -85,6 +87,8 @@ export function buildAgentManifest(options = {}) {
       analysisAudit: ANALYSIS_AUDIT_VERSION,
       storyModel: STORY_MODEL_VERSION,
       storySummary: STORY_SUMMARY_VERSION,
+      storyMassSummary: STORY_MASS_SUMMARY_VERSION,
+      eccentricStoryLoadDistribution: STORY_ECCENTRIC_DISTRIBUTION_VERSION,
       diaphragm: DIAPHRAGM_VERSION,
       diaphragmSummary: DIAPHRAGM_SUMMARY_VERSION,
       rigidDiaphragmBenchmark: RIGID_DIAPHRAGM_BENCHMARK_VERSION,
@@ -115,6 +119,8 @@ export function buildAgentManifest(options = {}) {
       'getMemberDesignTraceReport',
       'getServiceabilityDriftReport',
       'getStorySummary',
+      'getStoryMassSummary',
+      'getEccentricStoryLoadDistribution',
       'getMemberReleaseSummary',
       'getMemberReleaseBenchmark',
       'getDiaphragmSummary',
@@ -177,6 +183,8 @@ export function buildAgentManifest(options = {}) {
       'phase2AnalysisAudit',
       'phase2StoryModel',
       'phase2StorySummary',
+      'phase2StoryMassSummary',
+      'phase2EccentricStoryLoadDistribution',
       'phase2RigidDiaphragm',
       'phase2DiaphragmSummary',
       'phase2RigidDiaphragmBenchmark',
@@ -227,7 +235,8 @@ export function buildAgentManifest(options = {}) {
       { id: 'P2-MVP-S1', status: 'available', feature: 'unit, sign, and schema baseline contract' },
       { id: 'P2-MVP-S2', status: 'available', feature: 'validation health score and analysis audit contract' },
       { id: 'P2-MVP-S3', status: 'available', feature: 'ten-case solver benchmark gate' },
-      { id: 'P2-MVP-S4', status: 'in_progress', feature: 'story object and member release contracts for modeling workflows' },
+      { id: 'P2-MVP-S4', status: 'available', feature: 'story object, member release, and rigid diaphragm contracts' },
+      { id: 'P2-MVP-S5', status: 'in_progress', feature: 'story mass center and eccentric lateral distribution contracts' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

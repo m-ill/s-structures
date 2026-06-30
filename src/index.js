@@ -24,6 +24,7 @@ export { VALIDATION_HEALTH_VERSION, summarizeValidationHealth } from './core/val
 export { STORY_LEVELS_VERSION, getStoryLevels, nodesAtStoryLevel } from './core/storyLevels.js';
 export { STORY_MODEL_VERSION, deriveStories, normalizeStories } from './core/storyModel.js';
 export { STORY_SUMMARY_VERSION, buildStorySummary } from './core/storySummary.js';
+export { STORY_MASS_SUMMARY_VERSION, buildStoryMassSummary } from './core/storyMassSummary.js';
 export {
   DIAPHRAGM_TYPES,
   DIAPHRAGM_VERSION,
@@ -80,6 +81,7 @@ export {
 export {
   applyDesignBasisLoads,
   buildDesignBasisInputState,
+  buildEccentricStoryLoadDistribution,
   buildLoadDerivationTrace,
   createDesignBasis,
   DESIGN_BASIS_INPUT_VERSION,
@@ -90,6 +92,7 @@ export {
   LOAD_ESTIMATION_VERSION,
   LOAD_DERIVATION_TRACE_VERSION,
   OCCUPANCY_LOAD_PRESETS,
+  STORY_ECCENTRIC_DISTRIBUTION_VERSION,
   setDesignBasisInput,
 } from './design/loadEstimation.js';
 export {

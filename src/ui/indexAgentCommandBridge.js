@@ -30,6 +30,8 @@ const READ_METHODS = new Set([
   'getMemberDesignTraceReport',
   'getServiceabilityDriftReport',
   'getStorySummary',
+  'getStoryMassSummary',
+  'getEccentricStoryLoadDistribution',
   'getMemberReleaseSummary',
   'getMemberReleaseBenchmark',
   'getDiaphragmSummary',

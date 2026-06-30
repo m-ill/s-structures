@@ -2,8 +2,10 @@ import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildBaselineContract,
+  buildEccentricStoryLoadDistribution,
   buildDiaphragmSummary,
   buildMemberReleaseSummary,
+  buildStoryMassSummary,
   buildStorySummary,
   buildDesignBasisInputState,
   buildKdsLoadStandardAudit,
@@ -180,6 +182,16 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildStorySummary(model));
+    },
+    getStoryMassSummary() {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildStoryMassSummary(model));
+    },
+    getEccentricStoryLoadDistribution(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildEccentricStoryLoadDistribution(model, options));
     },
     getMemberReleaseSummary() {
       const model = getCurrentModel(target);

@@ -25,6 +25,10 @@ export {
   buildLoadDerivationTrace,
   LOAD_DERIVATION_TRACE_VERSION,
 } from './loadDerivationTrace.js';
+export {
+  buildEccentricStoryLoadDistribution,
+  STORY_ECCENTRIC_DISTRIBUTION_VERSION,
+} from './storyEccentricDistribution.js';
 
 export function buildDesignBasisInputState(model, input = {}) {
   const source = input.designBasis || input || {};

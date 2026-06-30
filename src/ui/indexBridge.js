@@ -1,8 +1,10 @@
 import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildEccentricStoryLoadDistribution,
   buildDiaphragmSummary,
   buildMemberReleaseSummary,
+  buildStoryMassSummary,
   buildStorySummary,
   buildDesignBasisInputState,
   buildKdsLoadStandardAudit,
@@ -170,6 +172,16 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return buildStorySummary(model);
+    },
+    getStoryMassSummary() {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildStoryMassSummary(model);
+    },
+    getEccentricStoryLoadDistribution(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildEccentricStoryLoadDistribution(model, options);
     },
     getMemberReleaseSummary() {
       const model = bridge.getCurrentModel();

@@ -69,11 +69,13 @@
     "test:m54": "node tests/p2-mvp-s4-story-model.mjs",
     "test:m55": "node tests/p2-mvp-s4-member-release.mjs",
     "test:m56": "node tests/p2-mvp-s4-rigid-diaphragm.mjs",
+    "test:m57": "node tests/p2-mvp-s5-story-mass-center.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
     "test:p2s4": "node tests/p2-mvp-s4-story-model.mjs",
     "test:p2s4-release": "node tests/p2-mvp-s4-member-release.mjs",
-    "test:p2s4-diaphragm": "node tests/p2-mvp-s4-rigid-diaphragm.mjs"
+    "test:p2s4-diaphragm": "node tests/p2-mvp-s4-rigid-diaphragm.mjs",
+    "test:p2s5-story-mass": "node tests/p2-mvp-s5-story-mass-center.mjs"
   }
 }

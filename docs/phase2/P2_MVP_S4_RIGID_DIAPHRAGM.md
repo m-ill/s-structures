@@ -34,4 +34,4 @@ This slice adds explicit rigid diaphragm definitions and a linear static solver 
 
 ## Current Limits
 
-Semi-rigid diaphragm, diaphragm mass center eccentricity, shell/slab mesh behavior, and dynamic diaphragm coupling are not implemented in this slice.
+Semi-rigid diaphragm, shell/slab mesh behavior, and dynamic diaphragm coupling are not implemented in this slice. Story mass-center eccentricity is tracked in `P2_MVP_S5_STORY_MASS_CENTER.md`.
