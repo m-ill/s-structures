@@ -11,6 +11,9 @@ import { getStoryLevels, nodesAtStoryLevel } from '../core/storyLevels.js';
 import { buildStoryMassSummary } from '../core/storyMassSummary.js';
 import { attachStoryMassToLateralRows } from './storyLateralMassAttach.js';
 import { storyLoadDistribution } from './storyLoadDistribution.js';
+import { signedAccidentalLoadCases } from './signedAccidentalLoadCases.js';
+import { shouldGenerateSignedAccidental } from './signedAccidentalEligibility.js';
+import { signedAccidentalVariants } from './signedAccidentalVariants.js';
 import { finite } from './loadMath.js';
 
 import { LOAD_ESTIMATION_VERSION } from './loadEstimationConstants.js';
@@ -129,11 +132,12 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
   const storyMassSummary = buildStoryMassSummary(model);
   const lateralRows = attachStoryMassToLateralRows(storyLateralLoads, storyMassSummary);
   const distributionOptions = { ...options, designBasis: basis };
+  const useSignedAccidental = shouldGenerateSignedAccidental(storyMassSummary, basis, options);
 
   if (options.generateLoads !== false) {
-    addWindLoads(loads, model, lateralRows, storyMassSummary, distributionOptions);
+    addWindLoads(loads, model, lateralRows, storyMassSummary, distributionOptions, useSignedAccidental);
   }
-  addSeismicLoads(loads, model, lateralRows, basis, distributionOptions, storyMassSummary);
+  addSeismicLoads(loads, model, lateralRows, basis, distributionOptions, storyMassSummary, useSignedAccidental);
 
   const seismicSummary = computeSeismicBaseShear(lateralRows, basis);
   const derivationTrace = buildLoadDerivationTraceFromParts({
@@ -162,13 +166,14 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
     storyMassVersion: storyMassSummary.version,
     eccentricDistribution: options.eccentricDistribution !== false,
     accidentalEccentricityRatio: basis.accidentalEccentricityRatio,
+    signedAccidentalCases: useSignedAccidental,
   };
 
   return {
     version: LOAD_ESTIMATION_VERSION,
     basis,
     geometry,
-    loadCases: defaultDerivedLoadCases(),
+    loadCases: defaultDerivedLoadCases(useSignedAccidental),
     loads,
     storyLoads: {
       gravity: storyDeadLoads.map((dead, index) => ({
@@ -220,8 +225,8 @@ export function applyDesignBasisLoads(model, designBasis = {}, options = {}) {
   return estimation;
 }
 
-function defaultDerivedLoadCases() {
-  return [
+function defaultDerivedLoadCases(useSignedAccidental = false) {
+  const base = [
     { id: 'D', name: 'Dead load', type: 'dead' },
     { id: 'L', name: 'Live load', type: 'live' },
     { id: 'WX', name: 'Wind X', type: 'wind' },
@@ -229,6 +234,7 @@ function defaultDerivedLoadCases() {
     { id: 'EX', name: 'Seismic X', type: 'seismic' },
     { id: 'EY', name: 'Seismic Y', type: 'seismic' },
   ];
+  return useSignedAccidental ? [...base, ...signedAccidentalLoadCases()] : base;
 }
 
 function summarizeModelGeometry(model) {
@@ -307,32 +313,57 @@ function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix, 
   }
 }
 
-function addWindLoads(loads, model, storyLoads, storyMassSummary, options) {
+function addWindLoads(loads, model, storyLoads, storyMassSummary, options, useSignedAccidental) {
+  const baseOptions = { ...options, accidentalEccentricityRatio: 0 };
   for (const item of storyLoads) {
     addStoryNodalLoads(loads, model, item.z, item.windX, '+x', 'WX', `LD-WX-${item.story}`, {
       story: item.story,
       traceRowId: `WX-NODE-ST${item.story}`,
-    }, storyMassSummary, options);
+    }, storyMassSummary, baseOptions);
     addStoryNodalLoads(loads, model, item.z, item.windY, '+y', 'WY', `LD-WY-${item.story}`, {
       story: item.story,
       traceRowId: `WY-NODE-ST${item.story}`,
-    }, storyMassSummary, options);
+    }, storyMassSummary, baseOptions);
+    if (useSignedAccidental) addSignedWindLoads(loads, model, item, storyMassSummary, options);
   }
 }
 
-function addSeismicLoads(loads, model, storyLoads, basis, options, storyMassSummary) {
+function addSeismicLoads(loads, model, storyLoads, basis, options, storyMassSummary, useSignedAccidental) {
   if (options.generateLoads === false) return;
+  const baseOptions = { ...options, accidentalEccentricityRatio: 0 };
   const { denominator, baseShearX, baseShearY } = computeSeismicBaseShear(storyLoads, basis);
   for (const item of storyLoads) {
     const factor = item.effectiveWeight * Math.max(item.z, 0) / denominator;
     addStoryNodalLoads(loads, model, item.z, baseShearX * factor, '+x', 'EX', `LD-EX-${item.story}`, {
       story: item.story,
       traceRowId: `EX-NODE-ST${item.story}`,
-    }, storyMassSummary, options);
+    }, storyMassSummary, baseOptions);
     addStoryNodalLoads(loads, model, item.z, baseShearY * factor, '+y', 'EY', `LD-EY-${item.story}`, {
       story: item.story,
       traceRowId: `EY-NODE-ST${item.story}`,
-    }, storyMassSummary, options);
+    }, storyMassSummary, baseOptions);
+    if (useSignedAccidental) addSignedSeismicLoads(loads, model, item, { baseShearX, baseShearY, factor }, storyMassSummary, options);
+  }
+}
+
+function addSignedWindLoads(loads, model, item, storyMassSummary, options) {
+  addSignedLateral(loads, model, item, 'WX', item.windX, '+x', storyMassSummary, options);
+  addSignedLateral(loads, model, item, 'WY', item.windY, '+y', storyMassSummary, options);
+}
+
+function addSignedSeismicLoads(loads, model, item, shear, storyMassSummary, options) {
+  addSignedLateral(loads, model, item, 'EX', shear.baseShearX * shear.factor, '+x', storyMassSummary, options);
+  addSignedLateral(loads, model, item, 'EY', shear.baseShearY * shear.factor, '+y', storyMassSummary, options);
+}
+
+function addSignedLateral(loads, model, item, baseCase, totalForce, dir, storyMassSummary, options) {
+  for (const variant of signedAccidentalVariants(baseCase)) {
+    addStoryNodalLoads(loads, model, item.z, totalForce, dir, variant.caseId, `LD-${variant.caseId}-${item.story}`, {
+      story: item.story,
+      traceRowId: `${variant.caseId}-NODE-ST${item.story}`,
+      parentCase: baseCase,
+      accidentalSign: variant.sign,
+    }, storyMassSummary, { ...options, accidentalEccentricitySign: variant.sign });
   }
 }
 

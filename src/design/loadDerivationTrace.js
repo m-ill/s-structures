@@ -1,6 +1,7 @@
 import { DEFAULT_DESIGN_BASIS } from './designBasisInput.js';
 import { LOAD_ESTIMATION_VERSION } from './loadEstimationConstants.js';
 import { finite, rounded } from './loadMath.js';
+import { signedAccidentalVariants } from './signedAccidentalVariants.js';
 
 export const LOAD_DERIVATION_TRACE_VERSION = 'm48-load-derivation-trace';
 
@@ -151,6 +152,12 @@ export function buildLoadDerivationTraceFromParts(parts) {
       inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
       ...eccentricInputs('EY', lateral, basis, geometry),
     ], safeDivide(storySeismicY, nodeCount), 'kN/node'));
+    rows.push(...signedDistributionRows(story, lateral, basis, geometry, {
+      WX: lateral.windX,
+      WY: lateral.windY,
+      EX: storySeismicX,
+      EY: storySeismicY,
+    }, nodeCount));
   }
 
   return {
@@ -241,4 +248,35 @@ function accidentalOffset(caseId, basis, geometry) {
   const ratio = Math.max(0, Number(basis?.accidentalEccentricityRatio || 0));
   const dimension = caseId.endsWith('X') ? geometry.size?.y || 0 : geometry.size?.x || 0;
   return ratio * dimension;
+}
+
+function signedDistributionRows(story, lateral, basis, geometry, forces, nodeCount) {
+  if (!hasDistributionCenters(lateral) || Math.max(0, Number(basis?.accidentalEccentricityRatio || 0)) <= 0) return [];
+  return ['WX', 'WY', 'EX', 'EY'].flatMap((baseCase) => signedAccidentalVariants(baseCase).map((variant) => traceRow(
+    `${variant.caseId}-NODE-ST${story}`,
+    'distribution',
+    story,
+    variant.caseId,
+    `${baseCase} accidental ${variant.sign > 0 ? 'plus' : 'minus'} nodal distribution`,
+    `${baseCase}story / nNodes + Mz * r / sum(r2)`,
+    [
+      inputValue(`${baseCase}story`, `Story ${baseCase}`, forces[baseCase], 'kN'),
+      inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
+      ...eccentricInputsForSign(baseCase, lateral, basis, geometry, variant.sign),
+    ],
+    safeDivide(forces[baseCase], nodeCount),
+    'kN/node',
+  )));
+}
+
+function eccentricInputsForSign(caseId, lateral, basis, geometry, sign) {
+  const axis = caseId.endsWith('X') ? 'y' : 'x';
+  const base = Number(lateral.eccentricity?.massToDiaphragm?.[axis] || 0);
+  const accidental = accidentalOffset(caseId, basis, geometry) * sign;
+  return [
+    inputValue('e0', `Mass-to-diaphragm eccentricity ${axis.toUpperCase()}`, base, 'm'),
+    inputValue('ea', 'Accidental eccentricity', accidental, 'm'),
+    inputValue('e', 'Effective eccentricity', base + accidental, 'm'),
+    inputValue('m', 'Story mass', lateral.mass, 'kN.s2/m'),
+  ];
 }

@@ -14,24 +14,30 @@ const estimation = applyDesignBasisLoads(model, {
   accidentalEccentricityRatio: 0.1,
 });
 const wx = generatedLoads(model, 'WX');
+const wxap = generatedLoads(model, 'WXAP');
 assert.equal(estimation.version, LOAD_ESTIMATION_VERSION);
 assert.equal(sum(wx.map((load) => load.P)), estimation.storyLoads.lateral[0].windX);
-assert.ok(loadAt(wx, 'T3') > loadAt(wx, 'T1'));
+assert.equal(new Set(wx.map((load) => load.P)).size, 1);
+assert.ok(loadAt(wxap, 'T3') > loadAt(wxap, 'T1'));
 assert.equal(wx[0].derivation.baseEccentricity.y, 0);
-assert.equal(wx[0].derivation.accidentalEccentricity.y, 0.4);
-assert.equal(wx[0].derivation.eccentricity.y, 0.4);
-assert.ok(traceRow(estimation, 'WX-NODE-ST1').inputs.some((input) => input.symbol === 'ea' && input.value === 0.4));
+assert.equal(wx[0].derivation.accidentalEccentricity.y, 0);
+assert.equal(wx[0].derivation.eccentricity.y, 0);
+assert.equal(wxap[0].derivation.baseEccentricity.y, 0);
+assert.equal(wxap[0].derivation.accidentalEccentricity.y, 0.4);
+assert.equal(wxap[0].derivation.eccentricity.y, 0.4);
+assert.ok(traceRow(estimation, 'WXAP-NODE-ST1').inputs.some((input) => input.symbol === 'ea' && input.value === 0.4));
 
 const noAccidental = createSymmetricModel();
 applyDesignBasisLoads(noAccidental, { windPressureX: 2, windPressureY: 0, accidentalEccentricityRatio: 0 });
 assert.equal(new Set(generatedLoads(noAccidental, 'WX').map((load) => load.P)).size, 1);
+assert.equal(generatedLoads(noAccidental, 'WXAP').length, 0);
 
 console.log(JSON.stringify({
   ok: true,
   version: LOAD_ESTIMATION_VERSION,
-  accidentalY: wx[0].derivation.accidentalEccentricity.y,
-  wxMin: Math.min(...wx.map((load) => load.P)),
-  wxMax: Math.max(...wx.map((load) => load.P)),
+  accidentalY: wxap[0].derivation.accidentalEccentricity.y,
+  wxapMin: Math.min(...wxap.map((load) => load.P)),
+  wxapMax: Math.max(...wxap.map((load) => load.P)),
 }, null, 2));
 
 function createSymmetricModel() {

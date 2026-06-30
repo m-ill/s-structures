@@ -1,4 +1,5 @@
 import { formatCombinationFactors } from './combinations.js';
+import { isSignedAccidentalCase, signedAccidentalSign } from './signedLateralCases.js';
 
 export const KDS_LOAD_COMBINATION_VERSION = 'm35-kds-load-combination-presets';
 export const KDS_LOAD_COMBINATION_RULE_VERSION = 'm38-kds-load-combination-rules';
@@ -230,6 +231,10 @@ export function createKdsRuleBasedLoadCombinations(modelOrLoadCases = {}, option
     }
 
     for (const lateralCaseId of lateralCases) {
+      if (isSignedAccidentalCase(lateralCaseId)) {
+        out.push(withRuleTrace(combo, { sign: signedAccidentalSign(lateralCaseId), lateralCaseId, explicitSigned: true }, usedIds, 1));
+        continue;
+      }
       out.push(withRuleTrace(combo, { sign: 'positive', lateralCaseId }, usedIds, 1));
       out.push(withRuleTrace(combo, { sign: 'negative', lateralCaseId }, usedIds, -1));
     }
@@ -339,7 +344,7 @@ function withRuleTrace(combo, trace, usedIds, signFactor = 1) {
   const factors = { ...(combo.factors || {}) };
   if (lateralCaseId && signFactor < 0) factors[lateralCaseId] = -Math.abs(Number(factors[lateralCaseId]) || 0);
   if (lateralCaseId && signFactor > 0) factors[lateralCaseId] = Math.abs(Number(factors[lateralCaseId]) || 0);
-  const suffix = trace.sign === 'positive' ? 'P' : trace.sign === 'negative' ? 'N' : '';
+  const suffix = trace.explicitSigned ? '' : trace.sign === 'positive' ? 'P' : trace.sign === 'negative' ? 'N' : '';
   const rawId = suffix ? `${combo.id}-${suffix}` : combo.id;
   const id = uniqueId(rawId, usedIds);
   usedIds.add(id);
@@ -355,6 +360,7 @@ function withRuleTrace(combo, trace, usedIds, signFactor = 1) {
       sourcePreset: combo.sourcePreset || combo.id,
       lateralCaseId,
       sign: trace.sign,
+      explicitSigned: !!trace.explicitSigned,
       basis: combo.basis || null,
     },
     standardTrace: combo.standardTrace || null,

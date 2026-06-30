@@ -14,7 +14,7 @@ This slice exposes story-level mass center, diaphragm center eccentricity, and e
 | Mass center | Weighted x/y center from story node mass |
 | Diaphragm center | Existing rigid diaphragm geometry center |
 | Stiffness center | Column stiffness proxy, marked as preliminary |
-| Distribution | Nodal in-plane forces from actual plus accidental eccentricity, with uniform fallback |
+| Distribution | Base nodal force from actual eccentricity plus `AP/AN` signed accidental cases |
 | Agent API | `getStoryMassSummary()` and `getEccentricStoryLoadDistribution()` |
 
 ## Example
@@ -28,4 +28,4 @@ const distribution = SStructuresAgent.getEccentricStoryLoadDistribution({
 
 ## Limits
 
-The stiffness center is not yet a formal unit-load center of rigidity. Signed plus/minus accidental torsion load cases and code-specific torsion amplification remain future standard-engine work.
+The stiffness center is not yet a formal unit-load center of rigidity. Code-specific torsion amplification remains future standard-engine work.
