@@ -2,7 +2,7 @@
 
 manualVersion: 2026-06-29-current
 
-이 폴더는 현재 S-Structures를 사람이 직접 쓰거나 AI agent가 제어할 때 참고하는 사용자 매뉴얼이다. 기존 `docs/M*.md` 문서는 개발 마일스톤 기록이고, 이 폴더는 실제 사용 순서와 안정적인 API 계약을 기준으로 정리한다.
+이 폴더는 현재 S-Structures를 사람이 직접 쓰거나 AI agent가 제어할 때 참고하는 사용자 매뉴얼이다. 기존 `docs/milestones/M*.md` 문서는 개발 마일스톤 기록이고, 이 폴더는 실제 사용 순서와 안정적인 API 계약을 기준으로 정리한다.
 
 ## Current Product Scope
 
