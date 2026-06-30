@@ -154,6 +154,10 @@ export { RESULT_POSTPROCESSING_VERSION } from './results/resultUtils.js';
 export { buildAdvancedElasticTrace } from './results/advancedElasticTrace.js';
 export { ADVANCED_ELASTIC_TRACE_VERSION } from './results/advancedTraceUtils.js';
 export {
+  buildPracticePlatformReadiness,
+  PRACTICE_PLATFORM_VERSION,
+} from './platform/practicePlatformReadiness.js';
+export {
   createKdsLoadCombinations,
   createKdsRuleBasedLoadCombinations,
   buildKdsLoadStandardAudit,

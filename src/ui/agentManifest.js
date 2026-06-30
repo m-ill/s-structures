@@ -27,6 +27,7 @@ import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
 import { ADVANCED_ELASTIC_TRACE_VERSION } from '../results/advancedTraceUtils.js';
 import { RESULT_POSTPROCESSING_VERSION } from '../results/resultUtils.js';
+import { PRACTICE_PLATFORM_VERSION } from '../platform/practicePlatformReadiness.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
 import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
@@ -86,6 +87,7 @@ export function buildAgentManifest(options = {}) {
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
       memberDesignTrace: MEMBER_DESIGN_TRACE_VERSION,
       designDemandPackage: DESIGN_DEMAND_PACKAGE_VERSION,
+      practicePlatformReadiness: PRACTICE_PLATFORM_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       benchmarkGate: BENCHMARK_GATE_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
@@ -124,6 +126,7 @@ export function buildAgentManifest(options = {}) {
       'getConnectionFoundationReport',
       'getMemberDesignTraceReport',
       'getDesignDemandPackage',
+      'getPracticePlatformReadiness',
       'getServiceabilityDriftReport',
       'getAdvancedElasticTrace',
       'getResultPostprocessing',
@@ -172,6 +175,7 @@ export function buildAgentManifest(options = {}) {
       'connectionFoundationPreliminaryReview',
       'memberDesignTraceMatrix',
       'designDemandPackage',
+      'practicePlatformReadiness',
       'nativeCalculationPackageMenu',
       'preliminaryPushover',
       'pushoverPanel',
@@ -252,6 +256,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P2-M5', status: 'preliminary', feature: 'P-Delta, modal, and response spectrum trace contract' },
       { id: 'P2-M6', status: 'preliminary', feature: 'story, member station, and foundation reaction result postprocessing' },
       { id: 'P2-DESIGN-DEMAND', status: 'preliminary', feature: 'shared demand package for member and foundation design modules' },
+      { id: 'P2-PLATFORM', status: 'preliminary', feature: 'project workflow, AI QA, and import/export readiness contracts' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

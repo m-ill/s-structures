@@ -76,6 +76,7 @@
     "test:m61": "node tests/p2-mvp-s6-result-postprocessing.mjs",
     "test:m62": "node tests/p2-mvp-m5-advanced-elastic-trace.mjs",
     "test:m63": "node tests/p2-design-demand-package.mjs",
+    "test:m64": "node tests/p2-practice-platform-readiness.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
@@ -88,6 +89,7 @@
     "test:p2s5-signed": "node tests/p2-mvp-s5-signed-accidental-cases.mjs",
     "test:p2s6": "node tests/p2-mvp-s6-result-postprocessing.mjs",
     "test:p2m5": "node tests/p2-mvp-m5-advanced-elastic-trace.mjs",
-    "test:p2demand": "node tests/p2-design-demand-package.mjs"
+    "test:p2demand": "node tests/p2-design-demand-package.mjs",
+    "test:p2platform": "node tests/p2-practice-platform-readiness.mjs"
   }
 }

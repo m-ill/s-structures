@@ -8,6 +8,7 @@ import {
   buildMemberReleaseSummary,
   buildStoryMassSummary,
   buildStorySummary,
+  buildPracticePlatformReadiness,
   buildDesignBasisInputState,
   buildKdsLoadStandardAudit,
   buildConnectionFoundationReport,
@@ -170,6 +171,11 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return buildDesignDemandPackage(model, lastResult || analyzeForIndex(model), options);
+    },
+    getPracticePlatformReadiness(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildPracticePlatformReadiness(model, lastResult || analyzeForIndex(model), options);
     },
     getServiceabilityDriftReport(options = {}) {
       const model = bridge.getCurrentModel();

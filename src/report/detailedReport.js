@@ -8,6 +8,7 @@ import { buildServiceabilityDriftReport } from '../design/serviceability.js';
 import { buildSteelDetailingReport } from '../design/steelDetailing.js';
 import { buildAdvancedElasticTrace } from '../results/advancedElasticTrace.js';
 import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
+import { buildPracticePlatformReadiness } from '../platform/practicePlatformReadiness.js';
 import {
   buildKdsLoadStandardAudit,
   defaultKdsCombinationLimitations,
@@ -88,6 +89,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     designDemandPackage: analysis?.design?.demandPackage || buildDesignDemandPackage(model, analysis),
     serviceability: buildServiceabilityDriftReport(model, analysis, options.serviceability || {}),
     resultPostprocessing: buildResultPostprocessing(model, analysis, options.resultPostprocessing || {}),
+    practicePlatform: buildPracticePlatformReadiness(model, analysis, options.workflow || {}),
     memberChecks,
     governingMembers,
     memberDesignTrace: buildMemberDesignTraceReport(model, analysis),
@@ -271,6 +273,7 @@ export function renderDetailedReportHtml(report) {
   ${renderConnectionFoundation(report.connectionFoundation)}
 
   <h2>10. Messages And Action Items</h2>
+  ${renderPracticePlatform(report.practicePlatform)}
   ${renderMessages(report.messages)}
   ${renderList(report.actionItems)}
 
@@ -614,6 +617,25 @@ function renderDesignDemandPackage(pkg) {
       ['Foundations', pkg.summary.foundationCount],
       ['Uplift nodes', pkg.summary.upliftNodeCount],
     ]),
+  ].join('');
+}
+
+function renderPracticePlatform(platform) {
+  if (!platform) return '<div class="note">No practice platform state available.</div>';
+  return [
+    '<h3>Platform Workflow And AI QA</h3>',
+    renderTable(['Item', 'Value'], [
+      ['Version', platform.version],
+      ['Status', platform.summary.status],
+      ['Revision', platform.summary.revision],
+      ['Approval', platform.summary.approvalState],
+      ['Import sources', platform.summary.importSourceCount],
+    ]),
+    renderTable(['Check', 'Status', 'Note'], platform.qaChecklist.items.map((row) => [
+      row.label,
+      statusLabel(row.status),
+      row.note || '-',
+    ])),
   ].join('');
 }
 

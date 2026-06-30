@@ -218,6 +218,13 @@ export function renderCalculationPackageHtml(pkg) {
 
   <section id="appendix" class="page-break">
     <h2>Appendix</h2>
+    <h3>Practice Platform Readiness</h3>
+    ${d.practicePlatform ? table(['Item', 'Value'], [
+      ['Status', d.practicePlatform.summary.status],
+      ['Revision', d.practicePlatform.summary.revision],
+      ['Approval', d.practicePlatform.summary.approvalState],
+      ['QA OK', d.practicePlatform.summary.qaOk ? 'Yes' : 'No'],
+    ]) : '<div class="note">No practice platform state available.</div>'}
     <h3>Remaining Design Scope</h3>
     <div class="note"><ul>${d.scope.missingScopes.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>
     <h3>Package Limitations</h3>

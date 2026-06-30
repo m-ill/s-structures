@@ -7,6 +7,7 @@ import {
   buildEccentricStoryLoadDistribution,
   buildDiaphragmSummary,
   buildMemberReleaseSummary,
+  buildPracticePlatformReadiness,
   buildStoryMassSummary,
   buildStorySummary,
   buildDesignBasisInputState,
@@ -180,6 +181,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildDesignDemandPackage(model, getAnalysis(model), options));
+    },
+    getPracticePlatformReadiness(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildPracticePlatformReadiness(model, getAnalysis(model), options));
     },
     getServiceabilityDriftReport(options = {}) {
       const model = getCurrentModel(target);
