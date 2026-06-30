@@ -25,6 +25,7 @@ import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
+import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
 import { VALIDATION_HEALTH_VERSION } from '../core/validationHealth.js';
 import { ANALYSIS_AUDIT_VERSION } from '../solver/analysisAudit.js';
@@ -70,6 +71,7 @@ export function buildAgentManifest(options = {}) {
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
       memberDesignTrace: MEMBER_DESIGN_TRACE_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
+      benchmarkGate: BENCHMARK_GATE_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
       validationHealth: VALIDATION_HEALTH_VERSION,
       analysisAudit: ANALYSIS_AUDIT_VERSION,
@@ -148,6 +150,7 @@ export function buildAgentManifest(options = {}) {
       'elastic3dImportWorkflow',
       'representativeBuildingReportSet',
       'stabilizationHarnessReportSet',
+      'phase2BenchmarkGate',
       'phase2BaselineContract',
       'phase2ValidationHealth',
       'phase2AnalysisAudit',
@@ -194,6 +197,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M49', status: 'preliminary', feature: 'story drift and serviceability review table for elastic analysis results' },
       { id: 'P2-MVP-S1', status: 'available', feature: 'unit, sign, and schema baseline contract' },
       { id: 'P2-MVP-S2', status: 'available', feature: 'validation health score and analysis audit contract' },
+      { id: 'P2-MVP-S3', status: 'available', feature: 'ten-case solver benchmark gate' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

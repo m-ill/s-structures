@@ -187,3 +187,4 @@ export {
   STABILIZATION_HARNESS_TOLERANCES,
   STABILIZATION_HARNESS_VERSION,
 } from './verification/stabilizationHarness.js';
+export { BENCHMARK_GATE_VERSION, runBenchmarkGate } from './verification/benchmarkGate.js';

@@ -88,3 +88,4 @@ MVP 완료 판단은 feature count가 아니라 검토 가능성으로 한다.
 | --- | --- | --- |
 | P2-MVP-S1 | implemented | See `P2_MVP_S1_BASELINE_CONTRACT.md` |
 | P2-MVP-S2 | implemented | See `P2_MVP_S2_VALIDATION_AUDIT.md` |
+| P2-MVP-S3 | implemented | See `P2_MVP_S3_BENCHMARK_GATE.md` |
