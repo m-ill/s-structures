@@ -7,6 +7,7 @@ import {
 import { normalizeUnits } from './units.js';
 import { normalizeUnitSystem } from './unitSystem.js';
 import { normalizeStories } from './storyModel.js';
+import { normalizeDiaphragms } from './diaphragmContract.js';
 
 export function migrateModel(inputModel) {
   if (!inputModel) {
@@ -28,6 +29,9 @@ export function migrateModel(inputModel) {
   if (!Array.isArray(source.stories)) {
     migrations.push({ from: 'missing', to: 'stories', note: 'Created story model from node elevations.' });
   }
+  if (!Array.isArray(source.diaphragms)) {
+    migrations.push({ from: 'missing', to: 'diaphragms', note: 'Created empty diaphragm collection.' });
+  }
 
   let model = {
     ...base,
@@ -41,6 +45,7 @@ export function migrateModel(inputModel) {
     members: Array.isArray(source.members) ? source.members.map(normalizeMember) : [],
     loads: Array.isArray(source.loads) ? source.loads.map((load) => ({ ...load })) : [],
     stories: Array.isArray(source.stories) ? source.stories.map((story) => ({ ...story })) : [],
+    diaphragms: normalizeDiaphragms(source.diaphragms),
     loadCases: Array.isArray(source.loadCases) ? source.loadCases.map((loadCase) => ({ ...loadCase })) : [],
     loadCombinations: Array.isArray(source.loadCombinations) ? source.loadCombinations.map((combo) => ({ ...combo })) : [],
     analysisSettings: {

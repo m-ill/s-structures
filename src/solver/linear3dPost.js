@@ -304,7 +304,7 @@ export function createSelfWeightLoads(model) {
   });
 }
 
-export function connectedComponentGroups(nodes, members) {
+export function connectedComponentGroups(nodes, members, nodeGroups = []) {
   const parent = {};
   nodes.forEach((node) => {
     parent[node.id] = node.id;
@@ -323,6 +323,14 @@ export function connectedComponentGroups(nodes, members) {
     const a = find(member.n1);
     const b = find(member.n2);
     if (a !== b) parent[a] = b;
+  });
+  nodeGroups.forEach((group) => {
+    const first = group.find((id) => Object.hasOwn(parent, id));
+    if (!first) return;
+    const root = find(first);
+    group.forEach((id) => {
+      if (Object.hasOwn(parent, id)) parent[find(id)] = root;
+    });
   });
 
   const groups = {};

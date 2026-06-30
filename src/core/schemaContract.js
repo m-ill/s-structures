@@ -19,6 +19,7 @@ export function buildSchemaContract() {
       'loadCases',
       'loadCombinations',
       'stories',
+      'diaphragms',
     ],
     unitSystemVersion: UNIT_SYSTEM_VERSION,
     signConventionVersion: SIGN_CONVENTION_VERSION,

@@ -13,6 +13,9 @@ import {
   solveLinear,
   transform12,
 } from './linear3dElement.js';
+import { buildDiaphragmDofMap } from './diaphragmDofMap.js';
+import { reducedFixedDofs } from './diaphragmFixedDofs.js';
+import { expandReducedDisplacements, reduceSystem } from './diaphragmReduce.js';
 import { effectiveSectionMaterial } from './linear3dPost.js';
 import { recoverMemberResult } from './linear3dRecovery.js';
 
@@ -102,26 +105,35 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
 
   stabilizeUnsupportedRotations(K, nodes, fixedDofs);
   autoFixIsolatedDofs(K, fixedDofs);
+  const diaphragmGroups = activeDiaphragmGroups(nodes, ctx.diaphragms);
+  const reduced = diaphragmGroups.length ? reduceWithDiaphragms(K, F, nodes, fixedDofs, diaphragmGroups) : null;
+  const Ks = reduced?.K || K;
+  const Fs = reduced?.F || F;
+  const fixed = reduced?.fixedDofs || fixedDofs;
+  if (reduced) autoFixIsolatedDofs(Ks, fixed);
 
   const free = [];
-  for (let i = 0; i < ndof; i += 1) {
-    if (!fixedDofs.has(i)) free.push(i);
+  for (let i = 0; i < Ks.length; i += 1) {
+    if (!fixed.has(i)) free.push(i);
   }
 
   let df = [];
   if (free.length) {
     df = solveLinear(
-      free.map((i) => free.map((j) => K[i][j])),
-      free.map((i) => F[i]),
+      free.map((i) => free.map((j) => Ks[i][j])),
+      free.map((i) => Fs[i]),
     );
     if (!df) return { ok: false, reason: 'SINGULAR' };
   }
 
-  const D = new Array(ndof).fill(0);
+  const Q = new Array(Ks.length).fill(0);
   free.forEach((globalIndex, i) => {
-    D[globalIndex] = df[i];
+    Q[globalIndex] = df[i];
   });
-  const solver = buildSolverDiagnostics(K, F, D, free, fixedDofs);
+  const D = reduced ? expandReducedDisplacements(Q, reduced.map) : Q;
+  const solver = buildSolverDiagnostics(Ks, Fs, Q, free, fixed);
+  solver.diaphragmCount = diaphragmGroups.length;
+  solver.reducedDofCount = Ks.length;
 
   for (let i = 0; i < ndof; i += 1) {
     const limit = i % 6 < 3 ? 1e4 : 50;
@@ -144,6 +156,18 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   }
 
   return { ok: true, disp, reactions, memberResults, solver };
+}
+
+function activeDiaphragmGroups(nodes, groups = []) {
+  const ids = new Set(nodes.map((node) => node.id));
+  return groups.map((group) => ({ ...group, nodeIds: group.nodeIds.filter((id) => ids.has(id)) }))
+    .filter((group) => group.nodeIds.length > 1);
+}
+
+function reduceWithDiaphragms(K, F, nodes, fixedDofs, groups) {
+  const map = buildDiaphragmDofMap(nodes, groups);
+  const reduced = reduceSystem(K, F, map);
+  return { ...reduced, fixedDofs: reducedFixedDofs(fixedDofs, map), map };
 }
 
 export function assembleStiffness3D(nodes, members, ctx = {}) {
@@ -294,6 +318,8 @@ export function buildSolverDiagnostics(K, F, D, freeDofs, fixedDofs) {
     displacementNorm: D.length ? maxAbs(D) : 0,
     diagonalMin: diagonal.length ? Math.min(...diagonal) : 0,
     diagonalMax: diagonal.length ? Math.max(...diagonal) : 0,
+    diaphragmCount: 0,
+    reducedDofCount: K.length,
   };
 }
 
@@ -310,6 +336,8 @@ export function summarizeSolverDiagnostics(components) {
       residualNorm: null,
       loadNorm: null,
       displacementNorm: null,
+      diaphragmCount: 0,
+      reducedDofCount: 0,
     };
   }
   return {
@@ -324,5 +352,7 @@ export function summarizeSolverDiagnostics(components) {
     displacementNorm: Math.max(...finite.map((item) => item.displacementNorm)),
     diagonalMin: Math.min(...finite.map((item) => item.diagonalMin)),
     diagonalMax: Math.max(...finite.map((item) => item.diagonalMax)),
+    diaphragmCount: finite.reduce((sum, item) => sum + (item.diaphragmCount || 0), 0),
+    reducedDofCount: finite.reduce((sum, item) => sum + (item.reducedDofCount || item.dofCount || 0), 0),
   };
 }

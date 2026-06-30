@@ -31,9 +31,12 @@ import { VALIDATION_HEALTH_VERSION } from '../core/validationHealth.js';
 import { ANALYSIS_AUDIT_VERSION } from '../solver/analysisAudit.js';
 import { STORY_MODEL_VERSION } from '../core/storyModel.js';
 import { STORY_SUMMARY_VERSION } from '../core/storySummary.js';
+import { DIAPHRAGM_SUMMARY_VERSION } from '../core/diaphragmSummary.js';
+import { DIAPHRAGM_VERSION } from '../core/diaphragmContract.js';
 import { MEMBER_RELEASE_VERSION } from '../core/memberReleaseContract.js';
 import { MEMBER_RELEASE_SUMMARY_VERSION } from '../core/memberReleaseSummary.js';
 import { MEMBER_RELEASE_BENCHMARK_VERSION } from '../verification/memberReleaseBenchmark.js';
+import { RIGID_DIAPHRAGM_BENCHMARK_VERSION } from '../verification/rigidDiaphragmBenchmark.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -82,6 +85,9 @@ export function buildAgentManifest(options = {}) {
       analysisAudit: ANALYSIS_AUDIT_VERSION,
       storyModel: STORY_MODEL_VERSION,
       storySummary: STORY_SUMMARY_VERSION,
+      diaphragm: DIAPHRAGM_VERSION,
+      diaphragmSummary: DIAPHRAGM_SUMMARY_VERSION,
+      rigidDiaphragmBenchmark: RIGID_DIAPHRAGM_BENCHMARK_VERSION,
       memberRelease: MEMBER_RELEASE_VERSION,
       memberReleaseSummary: MEMBER_RELEASE_SUMMARY_VERSION,
       memberReleaseBenchmark: MEMBER_RELEASE_BENCHMARK_VERSION,
@@ -111,6 +117,8 @@ export function buildAgentManifest(options = {}) {
       'getStorySummary',
       'getMemberReleaseSummary',
       'getMemberReleaseBenchmark',
+      'getDiaphragmSummary',
+      'getRigidDiaphragmBenchmark',
       'getBaselineContract',
       'runPushover',
       'getRuntimeDiagnostics',
@@ -169,6 +177,9 @@ export function buildAgentManifest(options = {}) {
       'phase2AnalysisAudit',
       'phase2StoryModel',
       'phase2StorySummary',
+      'phase2RigidDiaphragm',
+      'phase2DiaphragmSummary',
+      'phase2RigidDiaphragmBenchmark',
       'phase2MemberRelease',
       'phase2MemberReleaseSummary',
       'phase2MemberReleaseBenchmark',

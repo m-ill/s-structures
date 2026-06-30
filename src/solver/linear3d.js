@@ -3,6 +3,7 @@ import { migrateToV3, validateModel } from '../core/model.js';
 import { analyzeDynamics } from '../dynamics/modal.js';
 import { vlen } from '../core/vector.js';
 import { runDesignChecks } from '../design/steel.js';
+import { resolveRigidDiaphragms } from '../core/diaphragmGroups.js';
 import { buildAnalysisAudit } from './analysisAudit.js';
 import {
   analyzeComponent3D,
@@ -123,8 +124,10 @@ export function analyzeAll(model, factors = null, options = {}) {
     sec: (id) => sectionOf(model, id),
     stations: Math.max(21, analysisSettings.memberStations | 0 || 21),
   };
+  const diaphragms = resolveRigidDiaphragms(model, nodes);
+  ctx.diaphragms = diaphragms;
 
-  const groups = connectedComponentGroups(nodes, members);
+  const groups = connectedComponentGroups(nodes, members, diaphragms.map((group) => group.nodeIds));
   const out = {
     ok: true,
     disp: {},

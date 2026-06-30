@@ -10,6 +10,7 @@ import {
 import { normalizeUnits } from './units.js';
 import { normalizeUnitSystem } from './unitSystem.js';
 import { normalizeStories } from './storyModel.js';
+import { normalizeDiaphragms } from './diaphragmContract.js';
 
 export function createModel(overrides = {}) {
   const units = normalizeUnits(overrides.units);
@@ -19,6 +20,7 @@ export function createModel(overrides = {}) {
     unitSystem: normalizeUnitSystem(overrides.unitSystem, units),
     storyModel: null,
     stories: [],
+    diaphragms: [],
     materials: clone(MATERIALS_CATALOG),
     sections: clone(SECTIONS_CATALOG),
     nodes: [],
@@ -32,6 +34,7 @@ export function createModel(overrides = {}) {
     ...overrides,
     units,
     unitSystem: normalizeUnitSystem(overrides.unitSystem, units),
+    diaphragms: normalizeDiaphragms(overrides.diaphragms),
   };
   return normalizeStories(model);
 }

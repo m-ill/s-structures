@@ -1,6 +1,7 @@
 import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildDiaphragmSummary,
   buildMemberReleaseSummary,
   buildStorySummary,
   buildDesignBasisInputState,
@@ -17,6 +18,7 @@ import {
   getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
   migrateToV3,
   runMemberReleaseBenchmark,
+  runRigidDiaphragmBenchmark,
   runPushover as runCorePushover,
   summarizeKdsLoadCombinationCoverage,
   summarizeKdsLoadCombinationRules,
@@ -176,6 +178,14 @@ export function installIndexEngineBridge(target = globalThis) {
     },
     getMemberReleaseBenchmark() {
       return runMemberReleaseBenchmark();
+    },
+    getDiaphragmSummary() {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildDiaphragmSummary(model);
+    },
+    getRigidDiaphragmBenchmark() {
+      return runRigidDiaphragmBenchmark();
     },
     applyDesignBasisLoads(options = {}) {
       const model = bridge.getCurrentModel();

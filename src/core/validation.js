@@ -14,6 +14,7 @@ import { validateUnits } from './units.js';
 import { validateUnitSystem } from './unitSystemValidation.js';
 import { summarizeValidationHealth } from './validationHealth.js';
 import { MEMBER_RELEASE_ENDS } from './memberReleaseContract.js';
+import { DIAPHRAGM_TYPES } from './diaphragmContract.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -40,6 +41,7 @@ export function validateModel(model) {
   if (errors.length) return finish(errors, warnings);
 
   const nodeIds = validateNodes(model, error, warning);
+  validateDiaphragms(model, nodeIds, error);
   const sectionIds = knownIds(model.sections, SECTIONS);
   const materialIds = knownIds(model.materials, MATERIALS);
   const memberIds = validateMembers(model, nodeIds, sectionIds, materialIds, error);
@@ -57,7 +59,7 @@ export function validateModel(model) {
 }
 
 function validateCollections(model, error) {
-  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'stories']) {
+  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'stories', 'diaphragms']) {
     if (!Array.isArray(model[key])) {
       error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array.`, key);
     }
@@ -93,6 +95,17 @@ function validateNodes(model, error, warning) {
   }
 
   return nodeIds;
+}
+
+function validateDiaphragms(model, nodeIds, error) {
+  for (const item of model.diaphragms || []) {
+    if (!DIAPHRAGM_TYPES.includes(item.type)) {
+      error(ERROR_CODES.BAD_DIAPHRAGM_TYPE, `Unsupported diaphragm type: ${item.type}`, item.id || 'diaphragms');
+    }
+    for (const nodeId of item.nodeIds || []) {
+      if (!nodeIds.has(nodeId)) error(ERROR_CODES.BAD_DIAPHRAGM_NODE_REF, 'Diaphragm references a missing node.', item.id || nodeId);
+    }
+  }
 }
 
 function validateMembers(model, nodeIds, sectionIds, materialIds, error) {

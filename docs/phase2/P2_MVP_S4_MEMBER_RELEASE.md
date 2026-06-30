@@ -36,5 +36,5 @@ Semi-rigid springs, axial/shear releases, and rigid offsets are not implemented 
 
 ## Next S4 Work
 
-1. T11 rigid diaphragm definition and solver constraint path.
+1. T11 rigid diaphragm definition and solver constraint path: see `P2_MVP_S4_RIGID_DIAPHRAGM.md`.
 2. Story result table linking diaphragm-ready story levels, drift, and lateral load traces.

@@ -32,6 +32,8 @@ const READ_METHODS = new Set([
   'getStorySummary',
   'getMemberReleaseSummary',
   'getMemberReleaseBenchmark',
+  'getDiaphragmSummary',
+  'getRigidDiaphragmBenchmark',
   'getBaselineContract',
   'getRuntimeDiagnostics',
 ]);

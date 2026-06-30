@@ -25,6 +25,14 @@ export { STORY_LEVELS_VERSION, getStoryLevels, nodesAtStoryLevel } from './core/
 export { STORY_MODEL_VERSION, deriveStories, normalizeStories } from './core/storyModel.js';
 export { STORY_SUMMARY_VERSION, buildStorySummary } from './core/storySummary.js';
 export {
+  DIAPHRAGM_TYPES,
+  DIAPHRAGM_VERSION,
+  normalizeDiaphragm,
+  normalizeDiaphragms,
+} from './core/diaphragmContract.js';
+export { resolveRigidDiaphragms } from './core/diaphragmGroups.js';
+export { DIAPHRAGM_SUMMARY_VERSION, buildDiaphragmSummary } from './core/diaphragmSummary.js';
+export {
   MEMBER_RELEASE_ENDS,
   MEMBER_RELEASE_TYPES,
   MEMBER_RELEASE_VERSION,
@@ -201,3 +209,4 @@ export {
 } from './verification/stabilizationHarness.js';
 export { BENCHMARK_GATE_VERSION, runBenchmarkGate } from './verification/benchmarkGate.js';
 export { MEMBER_RELEASE_BENCHMARK_VERSION, runMemberReleaseBenchmark } from './verification/memberReleaseBenchmark.js';
+export { RIGID_DIAPHRAGM_BENCHMARK_VERSION, runRigidDiaphragmBenchmark } from './verification/rigidDiaphragmBenchmark.js';
