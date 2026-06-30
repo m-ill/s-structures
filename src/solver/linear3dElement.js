@@ -1,4 +1,5 @@
 import { vadd, vcross, vdot, vlen, vnorm, vscale, vsub } from '../core/vector.js';
+export { memberReleaseDofs } from '../core/memberReleaseContract.js';
 
 export const AXIS = {
   '+x': [1, 0, 0],
@@ -199,15 +200,6 @@ export function condenseReleasedDofs(kl, f0, rel) {
     f0C[retained[i]] = sf;
   }
   return { klC, f0C };
-}
-
-export function memberReleaseDofs(member) {
-  const rel = [];
-  const iRelease = member.rel1 || member.releases?.i;
-  const jRelease = member.rel2 || member.releases?.j;
-  if (iRelease === 'pin') rel.push(4, 5);
-  if (jRelease === 'pin') rel.push(10, 11);
-  return rel;
 }
 
 export function integratedUniformLoad(shape, x, L) {

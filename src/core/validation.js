@@ -13,6 +13,7 @@ import {
 import { validateUnits } from './units.js';
 import { validateUnitSystem } from './unitSystemValidation.js';
 import { summarizeValidationHealth } from './validationHealth.js';
+import { MEMBER_RELEASE_ENDS } from './memberReleaseContract.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -131,13 +132,22 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
       }
     }
 
-    for (const [end, release] of Object.entries(member.releases || {})) {
-      if ((end === 'i' || end === 'j') && !RELEASE_TYPES.has(release)) {
-        error(ERROR_CODES.BAD_RELEASE_TYPE, `Unsupported ${end}-end release: ${release}`, member.id);
-      }
-    }
+    validateMemberReleases(member, error);
   }
   return memberIds;
+}
+
+function validateMemberReleases(member, error) {
+  const releases = member.releases || {};
+  for (const end of Object.keys(releases)) {
+    if (!MEMBER_RELEASE_ENDS.includes(end)) error(ERROR_CODES.BAD_RELEASE_END, `Unsupported release end: ${end}`, member.id);
+  }
+  for (const end of MEMBER_RELEASE_ENDS) {
+    if (!RELEASE_TYPES.has(releases[end])) error(ERROR_CODES.BAD_RELEASE_TYPE, `Unsupported ${end}-end release: ${releases[end]}`, member.id);
+  }
+  for (const [field, end] of [['rel1', 'i'], ['rel2', 'j']]) {
+    if (member[field] != null && !RELEASE_TYPES.has(member[field])) error(ERROR_CODES.BAD_RELEASE_TYPE, `Unsupported ${end}-end release: ${member[field]}`, member.id);
+  }
 }
 
 function validateLoads(model, nodeIds, memberIds, error, warning) {

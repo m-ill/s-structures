@@ -2,6 +2,7 @@ import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildBaselineContract,
+  buildMemberReleaseSummary,
   buildStorySummary,
   buildDesignBasisInputState,
   buildKdsLoadStandardAudit,
@@ -18,6 +19,7 @@ import {
   estimateModelLoads,
   getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
   migrateToV3,
+  runMemberReleaseBenchmark,
   runPushover as runCorePushover,
   setDesignBasisInput,
   summarizeKdsLoadCombinationCoverage,
@@ -176,6 +178,14 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildStorySummary(model));
+    },
+    getMemberReleaseSummary() {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildMemberReleaseSummary(model));
+    },
+    getMemberReleaseBenchmark() {
+      return cloneJson(runMemberReleaseBenchmark());
     },
     getRuntimeDiagnostics() {
       return cloneJson(target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null);

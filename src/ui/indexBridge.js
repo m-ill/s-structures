@@ -1,6 +1,7 @@
 import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildMemberReleaseSummary,
   buildStorySummary,
   buildDesignBasisInputState,
   buildKdsLoadStandardAudit,
@@ -15,6 +16,7 @@ import {
   estimateModelLoads,
   getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
   migrateToV3,
+  runMemberReleaseBenchmark,
   runPushover as runCorePushover,
   summarizeKdsLoadCombinationCoverage,
   summarizeKdsLoadCombinationRules,
@@ -166,6 +168,14 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return buildStorySummary(model);
+    },
+    getMemberReleaseSummary() {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildMemberReleaseSummary(model);
+    },
+    getMemberReleaseBenchmark() {
+      return runMemberReleaseBenchmark();
     },
     applyDesignBasisLoads(options = {}) {
       const model = bridge.getCurrentModel();

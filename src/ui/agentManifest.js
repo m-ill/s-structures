@@ -31,6 +31,9 @@ import { VALIDATION_HEALTH_VERSION } from '../core/validationHealth.js';
 import { ANALYSIS_AUDIT_VERSION } from '../solver/analysisAudit.js';
 import { STORY_MODEL_VERSION } from '../core/storyModel.js';
 import { STORY_SUMMARY_VERSION } from '../core/storySummary.js';
+import { MEMBER_RELEASE_VERSION } from '../core/memberReleaseContract.js';
+import { MEMBER_RELEASE_SUMMARY_VERSION } from '../core/memberReleaseSummary.js';
+import { MEMBER_RELEASE_BENCHMARK_VERSION } from '../verification/memberReleaseBenchmark.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -79,6 +82,9 @@ export function buildAgentManifest(options = {}) {
       analysisAudit: ANALYSIS_AUDIT_VERSION,
       storyModel: STORY_MODEL_VERSION,
       storySummary: STORY_SUMMARY_VERSION,
+      memberRelease: MEMBER_RELEASE_VERSION,
+      memberReleaseSummary: MEMBER_RELEASE_SUMMARY_VERSION,
+      memberReleaseBenchmark: MEMBER_RELEASE_BENCHMARK_VERSION,
       calculationPackageUi: 'm43-calculation-package-ui',
     },
     readApis: [
@@ -103,6 +109,8 @@ export function buildAgentManifest(options = {}) {
       'getMemberDesignTraceReport',
       'getServiceabilityDriftReport',
       'getStorySummary',
+      'getMemberReleaseSummary',
+      'getMemberReleaseBenchmark',
       'getBaselineContract',
       'runPushover',
       'getRuntimeDiagnostics',
@@ -161,6 +169,9 @@ export function buildAgentManifest(options = {}) {
       'phase2AnalysisAudit',
       'phase2StoryModel',
       'phase2StorySummary',
+      'phase2MemberRelease',
+      'phase2MemberReleaseSummary',
+      'phase2MemberReleaseBenchmark',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -205,7 +216,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P2-MVP-S1', status: 'available', feature: 'unit, sign, and schema baseline contract' },
       { id: 'P2-MVP-S2', status: 'available', feature: 'validation health score and analysis audit contract' },
       { id: 'P2-MVP-S3', status: 'available', feature: 'ten-case solver benchmark gate' },
-      { id: 'P2-MVP-S4', status: 'in_progress', feature: 'story object foundation for drift and lateral load workflows' },
+      { id: 'P2-MVP-S4', status: 'in_progress', feature: 'story object and member release contracts for modeling workflows' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

@@ -25,6 +25,15 @@ export { STORY_LEVELS_VERSION, getStoryLevels, nodesAtStoryLevel } from './core/
 export { STORY_MODEL_VERSION, deriveStories, normalizeStories } from './core/storyModel.js';
 export { STORY_SUMMARY_VERSION, buildStorySummary } from './core/storySummary.js';
 export {
+  MEMBER_RELEASE_ENDS,
+  MEMBER_RELEASE_TYPES,
+  MEMBER_RELEASE_VERSION,
+  memberReleaseDofs,
+  memberReleaseState,
+  normalizeMemberReleases,
+} from './core/memberReleaseContract.js';
+export { MEMBER_RELEASE_SUMMARY_VERSION, buildMemberReleaseSummary } from './core/memberReleaseSummary.js';
+export {
   addLoadCombination,
   factorText,
   formatCombinationFactors,
@@ -191,3 +200,4 @@ export {
   STABILIZATION_HARNESS_VERSION,
 } from './verification/stabilizationHarness.js';
 export { BENCHMARK_GATE_VERSION, runBenchmarkGate } from './verification/benchmarkGate.js';
+export { MEMBER_RELEASE_BENCHMARK_VERSION, runMemberReleaseBenchmark } from './verification/memberReleaseBenchmark.js';

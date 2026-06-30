@@ -34,6 +34,6 @@ This slice adds the first part of P2-MVP-S4: a shared story object contract. Mem
 
 ## Next S4 Work
 
-1. T09 member release contract audit and benchmark expansion.
+1. T09 member release contract audit and benchmark expansion: see `P2_MVP_S4_MEMBER_RELEASE.md`.
 2. T11 diaphragm definition and solver constraint path.
 3. Story result table linking drift, story force, and generated load traces.
