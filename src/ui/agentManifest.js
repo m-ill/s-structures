@@ -29,6 +29,24 @@ import { ADVANCED_ELASTIC_TRACE_VERSION } from '../results/advancedTraceUtils.js
 import { COMBINATION_ENVELOPE_CONTRACT_VERSION } from '../results/combinationEnvelopeVersion.js';
 import { RESULT_POSTPROCESSING_VERSION } from '../results/resultUtils.js';
 import { PRACTICE_PLATFORM_VERSION } from '../platform/practicePlatformReadiness.js';
+import {
+  ISSUE_REGISTRY_VERSION,
+} from '../platform/issueRegistry.js';
+import {
+  PDELTA_PRACTICE_VALIDATION_VERSION,
+} from '../platform/pDeltaPracticeValidation.js';
+import {
+  RESULT_TABLE_VALIDATION_VERSION,
+} from '../platform/resultTableValidation.js';
+import {
+  CALC_VALIDATION_VERSION,
+} from '../platform/calculationValidation.js';
+import {
+  PRACTICE_VALIDATION_REPORT_VERSION,
+} from '../platform/practiceValidationReport.js';
+import {
+  PILOT_PROJECT_VALIDATION_VERSION,
+} from '../platform/pilotProjectValidation.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
 import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
@@ -90,6 +108,12 @@ export function buildAgentManifest(options = {}) {
       memberDesignTrace: MEMBER_DESIGN_TRACE_VERSION,
       designDemandPackage: DESIGN_DEMAND_PACKAGE_VERSION,
       practicePlatformReadiness: PRACTICE_PLATFORM_VERSION,
+      issueRegistry: ISSUE_REGISTRY_VERSION,
+      pDeltaPracticeValidation: PDELTA_PRACTICE_VALIDATION_VERSION,
+      resultTableValidation: RESULT_TABLE_VALIDATION_VERSION,
+      calculationValidation: CALC_VALIDATION_VERSION,
+      practiceValidationReport: PRACTICE_VALIDATION_REPORT_VERSION,
+      pilotProjectValidation: PILOT_PROJECT_VALIDATION_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       benchmarkGate: BENCHMARK_GATE_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
@@ -130,6 +154,8 @@ export function buildAgentManifest(options = {}) {
       'getMemberDesignTraceReport',
       'getDesignDemandPackage',
       'getPracticePlatformReadiness',
+      'getPracticeValidationReport',
+      'getPilotProjectValidation',
       'getServiceabilityDriftReport',
       'getAdvancedElasticTrace',
       'getResultPostprocessing',
@@ -180,6 +206,9 @@ export function buildAgentManifest(options = {}) {
       'memberDesignTraceMatrix',
       'designDemandPackage',
       'practicePlatformReadiness',
+      'practiceValidationReport',
+      'issueRegistry',
+      'pilotProjectValidation',
       'nativeCalculationPackageMenu',
       'preliminaryPushover',
       'pushoverPanel',
@@ -262,6 +291,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P2-M6', status: 'preliminary', feature: 'story, member station, and foundation reaction result postprocessing' },
       { id: 'P2-DESIGN-DEMAND', status: 'preliminary', feature: 'shared demand package for member and foundation design modules' },
       { id: 'P2-PLATFORM', status: 'preliminary', feature: 'project workflow, AI QA, and import/export readiness contracts' },
+      { id: 'P2-T25-T50', status: 'preliminary', feature: 'practice validation report and 10-building pilot gate' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

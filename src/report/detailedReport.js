@@ -9,6 +9,7 @@ import { buildSteelDetailingReport } from '../design/steelDetailing.js';
 import { buildAdvancedElasticTrace } from '../results/advancedElasticTrace.js';
 import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
 import { buildPracticePlatformReadiness } from '../platform/practicePlatformReadiness.js';
+import { buildPracticeValidationReport } from '../platform/practiceValidationReport.js';
 import {
   buildKdsLoadStandardAudit,
   defaultKdsCombinationLimitations,
@@ -90,6 +91,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     serviceability: buildServiceabilityDriftReport(model, analysis, options.serviceability || {}),
     resultPostprocessing: buildResultPostprocessing(model, analysis, options.resultPostprocessing || {}),
     practicePlatform: buildPracticePlatformReadiness(model, analysis, options.workflow || {}),
+    practiceValidation: buildPracticeValidationReport(model, analysis, options.practiceValidation || {}),
     memberChecks,
     governingMembers,
     memberDesignTrace: buildMemberDesignTraceReport(model, analysis),
@@ -274,6 +276,7 @@ export function renderDetailedReportHtml(report) {
 
   <h2>10. Messages And Action Items</h2>
   ${renderPracticePlatform(report.practicePlatform)}
+  ${renderPracticeValidation(report.practiceValidation)}
   ${renderMessages(report.messages)}
   ${renderList(report.actionItems)}
 
@@ -635,6 +638,27 @@ function renderPracticePlatform(platform) {
       row.label,
       statusLabel(row.status),
       row.note || '-',
+    ])),
+  ].join('');
+}
+
+function renderPracticeValidation(validation) {
+  if (!validation) return '<div class="note">No practice validation report available.</div>';
+  return [
+    '<h3>Practice Validation Report</h3>',
+    renderTable(['Item', 'Value'], [
+      ['Version', validation.version],
+      ['Status', validation.status],
+      ['P-Delta', validation.pDelta.status],
+      ['Result tables', validation.resultTables.status],
+      ['Calculation trace', validation.calculation.status],
+      ['Open issues', validation.issues.summary.openCount],
+    ]),
+    renderTable(['Issue', 'Severity', 'Status', 'Action'], validation.issues.issues.slice(0, 20).map((row) => [
+      row.message,
+      statusLabel(row.severity),
+      row.status,
+      row.action,
     ])),
   ].join('');
 }

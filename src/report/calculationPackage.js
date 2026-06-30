@@ -225,6 +225,14 @@ export function renderCalculationPackageHtml(pkg) {
       ['Approval', d.practicePlatform.summary.approvalState],
       ['QA OK', d.practicePlatform.summary.qaOk ? 'Yes' : 'No'],
     ]) : '<div class="note">No practice platform state available.</div>'}
+    <h3>Practice Validation</h3>
+    ${d.practiceValidation ? table(['Item', 'Value'], [
+      ['Status', d.practiceValidation.status],
+      ['P-Delta', d.practiceValidation.pDelta.status],
+      ['Result tables', d.practiceValidation.resultTables.status],
+      ['Calculation trace', d.practiceValidation.calculation.status],
+      ['Open issues', d.practiceValidation.issues.summary.openCount],
+    ]) : '<div class="note">No practice validation report available.</div>'}
     <h3>Remaining Design Scope</h3>
     <div class="note"><ul>${d.scope.missingScopes.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>
     <h3>Package Limitations</h3>

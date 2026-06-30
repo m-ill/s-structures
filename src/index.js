@@ -163,6 +163,30 @@ export {
   PRACTICE_PLATFORM_VERSION,
 } from './platform/practicePlatformReadiness.js';
 export {
+  buildIssueRegistry,
+  ISSUE_REGISTRY_VERSION,
+} from './platform/issueRegistry.js';
+export {
+  buildPDeltaPracticeValidation,
+  PDELTA_PRACTICE_VALIDATION_VERSION,
+} from './platform/pDeltaPracticeValidation.js';
+export {
+  buildResultTableValidation,
+  RESULT_TABLE_VALIDATION_VERSION,
+} from './platform/resultTableValidation.js';
+export {
+  buildCalculationValidation,
+  CALC_VALIDATION_VERSION,
+} from './platform/calculationValidation.js';
+export {
+  buildPracticeValidationReport,
+  PRACTICE_VALIDATION_REPORT_VERSION,
+} from './platform/practiceValidationReport.js';
+export {
+  buildPilotProjectValidation,
+  PILOT_PROJECT_VALIDATION_VERSION,
+} from './platform/pilotProjectValidation.js';
+export {
   buildCombinationEnvelopeContract,
 } from './results/combinationEnvelopeContract.js';
 export { COMBINATION_ENVELOPE_CONTRACT_VERSION } from './results/combinationEnvelopeVersion.js';

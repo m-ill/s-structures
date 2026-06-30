@@ -78,6 +78,8 @@
     "test:m63": "node tests/p2-design-demand-package.mjs",
     "test:m64": "node tests/p2-practice-platform-readiness.mjs",
     "test:m65": "node tests/p2-m4-combination-envelope-contract.mjs",
+    "test:m66": "node tests/p2-practice-validation-report.mjs",
+    "test:m67": "node tests/p2-t50-pilot-project-validation.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
@@ -92,6 +94,8 @@
     "test:p2m5": "node tests/p2-mvp-m5-advanced-elastic-trace.mjs",
     "test:p2demand": "node tests/p2-design-demand-package.mjs",
     "test:p2platform": "node tests/p2-practice-platform-readiness.mjs",
-    "test:p2m4": "node tests/p2-m4-combination-envelope-contract.mjs"
+    "test:p2m4": "node tests/p2-m4-combination-envelope-contract.mjs",
+    "test:p2practice-validation": "node tests/p2-practice-validation-report.mjs",
+    "test:p2t50": "node tests/p2-t50-pilot-project-validation.mjs"
   }
 }

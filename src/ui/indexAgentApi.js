@@ -9,6 +9,8 @@ import {
   buildDiaphragmSummary,
   buildMemberReleaseSummary,
   buildPracticePlatformReadiness,
+  buildPracticeValidationReport,
+  buildPilotProjectValidation,
   buildStoryMassSummary,
   buildStorySummary,
   buildDesignBasisInputState,
@@ -192,6 +194,14 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildPracticePlatformReadiness(model, getAnalysis(model), options));
+    },
+    getPracticeValidationReport(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildPracticeValidationReport(model, getAnalysis(model), options));
+    },
+    getPilotProjectValidation(options = {}) {
+      return cloneJson(buildPilotProjectValidation(options));
     },
     getServiceabilityDriftReport(options = {}) {
       const model = getCurrentModel(target);

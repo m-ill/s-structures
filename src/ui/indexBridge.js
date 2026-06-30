@@ -10,6 +10,8 @@ import {
   buildStoryMassSummary,
   buildStorySummary,
   buildPracticePlatformReadiness,
+  buildPracticeValidationReport,
+  buildPilotProjectValidation,
   buildDesignBasisInputState,
   buildKdsLoadStandardAudit,
   buildConnectionFoundationReport,
@@ -182,6 +184,14 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return buildPracticePlatformReadiness(model, lastResult || analyzeForIndex(model), options);
+    },
+    getPracticeValidationReport(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildPracticeValidationReport(model, lastResult || analyzeForIndex(model), options);
+    },
+    getPilotProjectValidation(options = {}) {
+      return buildPilotProjectValidation(options);
     },
     getServiceabilityDriftReport(options = {}) {
       const model = bridge.getCurrentModel();
