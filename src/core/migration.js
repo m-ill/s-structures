@@ -6,6 +6,7 @@ import {
 } from './schema.js';
 import { normalizeUnits } from './units.js';
 import { normalizeUnitSystem } from './unitSystem.js';
+import { normalizeStories } from './storyModel.js';
 
 export function migrateModel(inputModel) {
   if (!inputModel) {
@@ -24,6 +25,9 @@ export function migrateModel(inputModel) {
   if (!source.unitSystem) {
     migrations.push({ from: 'missing', to: 'unitSystem', note: 'Created unit system contract.' });
   }
+  if (!Array.isArray(source.stories)) {
+    migrations.push({ from: 'missing', to: 'stories', note: 'Created story model from node elevations.' });
+  }
 
   let model = {
     ...base,
@@ -36,6 +40,7 @@ export function migrateModel(inputModel) {
     nodes: Array.isArray(source.nodes) ? source.nodes.map((node) => ({ ...node, z: Number(node.z || 0) })) : [],
     members: Array.isArray(source.members) ? source.members.map(normalizeMember) : [],
     loads: Array.isArray(source.loads) ? source.loads.map((load) => ({ ...load })) : [],
+    stories: Array.isArray(source.stories) ? source.stories.map((story) => ({ ...story })) : [],
     loadCases: Array.isArray(source.loadCases) ? source.loadCases.map((loadCase) => ({ ...loadCase })) : [],
     loadCombinations: Array.isArray(source.loadCombinations) ? source.loadCombinations.map((combo) => ({ ...combo })) : [],
     analysisSettings: {
@@ -55,6 +60,7 @@ export function migrateModel(inputModel) {
 
   model = normalizeLoadCasesAndCombinations(model, base, migrations);
   model.loads = model.loads.map((load) => normalizeLoad(load, model));
+  model = normalizeStories(model);
 
   return {
     model,

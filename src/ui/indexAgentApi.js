@@ -2,6 +2,7 @@ import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildBaselineContract,
+  buildStorySummary,
   buildDesignBasisInputState,
   buildKdsLoadStandardAudit,
   buildConnectionFoundationReport,
@@ -170,6 +171,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildServiceabilityDriftReport(model, getAnalysis(model), options));
+    },
+    getStorySummary() {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildStorySummary(model));
     },
     getRuntimeDiagnostics() {
       return cloneJson(target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null);

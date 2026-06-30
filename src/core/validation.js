@@ -56,7 +56,7 @@ export function validateModel(model) {
 }
 
 function validateCollections(model, error) {
-  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations']) {
+  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'stories']) {
     if (!Array.isArray(model[key])) {
       error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array.`, key);
     }

@@ -29,6 +29,8 @@ import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
 import { VALIDATION_HEALTH_VERSION } from '../core/validationHealth.js';
 import { ANALYSIS_AUDIT_VERSION } from '../solver/analysisAudit.js';
+import { STORY_MODEL_VERSION } from '../core/storyModel.js';
+import { STORY_SUMMARY_VERSION } from '../core/storySummary.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -75,6 +77,8 @@ export function buildAgentManifest(options = {}) {
       baselineContract: BASELINE_CONTRACT_VERSION,
       validationHealth: VALIDATION_HEALTH_VERSION,
       analysisAudit: ANALYSIS_AUDIT_VERSION,
+      storyModel: STORY_MODEL_VERSION,
+      storySummary: STORY_SUMMARY_VERSION,
       calculationPackageUi: 'm43-calculation-package-ui',
     },
     readApis: [
@@ -98,6 +102,7 @@ export function buildAgentManifest(options = {}) {
       'getConnectionFoundationReport',
       'getMemberDesignTraceReport',
       'getServiceabilityDriftReport',
+      'getStorySummary',
       'getBaselineContract',
       'runPushover',
       'getRuntimeDiagnostics',
@@ -154,6 +159,8 @@ export function buildAgentManifest(options = {}) {
       'phase2BaselineContract',
       'phase2ValidationHealth',
       'phase2AnalysisAudit',
+      'phase2StoryModel',
+      'phase2StorySummary',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -198,6 +205,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P2-MVP-S1', status: 'available', feature: 'unit, sign, and schema baseline contract' },
       { id: 'P2-MVP-S2', status: 'available', feature: 'validation health score and analysis audit contract' },
       { id: 'P2-MVP-S3', status: 'available', feature: 'ten-case solver benchmark gate' },
+      { id: 'P2-MVP-S4', status: 'in_progress', feature: 'story object foundation for drift and lateral load workflows' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

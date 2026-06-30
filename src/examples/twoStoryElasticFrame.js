@@ -1,4 +1,5 @@
 import { createModel } from '../core/model.js';
+import { normalizeStories } from '../core/storyModel.js';
 
 export const TWO_STORY_ELASTIC_FRAME_VERSION = 'm32-two-story-elastic-frame';
 
@@ -99,7 +100,7 @@ export function createTwoStoryElasticFrameModel(options = {}) {
     storyH,
   });
 
-  return model;
+  return normalizeStories(model);
 }
 
 export function summarizeTwoStoryElasticWorkflow(model, analysis) {

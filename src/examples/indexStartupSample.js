@@ -1,4 +1,5 @@
 import { createModel } from '../core/modelFactory.js';
+import { normalizeStories } from '../core/storyModel.js';
 
 export const INDEX_STARTUP_SAMPLE_VERSION = 'm27-index-startup-sample';
 
@@ -74,5 +75,5 @@ export function createIndexStartupSampleModel() {
     unit: 'kN/m',
     case: 'D',
   });
-  return sample;
+  return normalizeStories(sample);
 }

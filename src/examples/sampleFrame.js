@@ -1,4 +1,5 @@
 import { createModel } from '../core/model.js';
+import { normalizeStories } from '../core/storyModel.js';
 
 export function createPortalFrameSample() {
   const model = createModel();
@@ -69,6 +70,5 @@ export function createPortalFrameSample() {
     case: 'D',
   });
 
-  return model;
+  return normalizeStories(model);
 }
-

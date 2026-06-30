@@ -18,6 +18,7 @@ export function buildSchemaContract() {
       'sections',
       'loadCases',
       'loadCombinations',
+      'stories',
     ],
     unitSystemVersion: UNIT_SYSTEM_VERSION,
     signConventionVersion: SIGN_CONVENTION_VERSION,

@@ -66,8 +66,10 @@
     "test:m51": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:m52": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:m53": "node tests/p2-mvp-s3-benchmark-gate.mjs",
+    "test:m54": "node tests/p2-mvp-s4-story-model.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
-    "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs"
+    "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
+    "test:p2s4": "node tests/p2-mvp-s4-story-model.mjs"
   }
 }

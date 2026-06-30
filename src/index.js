@@ -21,6 +21,9 @@ export {
   buildBaselineContract,
 } from './core/baselineContract.js';
 export { VALIDATION_HEALTH_VERSION, summarizeValidationHealth } from './core/validationHealth.js';
+export { STORY_LEVELS_VERSION, getStoryLevels, nodesAtStoryLevel } from './core/storyLevels.js';
+export { STORY_MODEL_VERSION, deriveStories, normalizeStories } from './core/storyModel.js';
+export { STORY_SUMMARY_VERSION, buildStorySummary } from './core/storySummary.js';
 export {
   addLoadCombination,
   factorText,

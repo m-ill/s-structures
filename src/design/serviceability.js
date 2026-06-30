@@ -1,9 +1,11 @@
+import { getStoryLevels, nodesAtStoryLevel } from '../core/storyLevels.js';
+
 export const SERVICEABILITY_DRIFT_VERSION = 'm49-serviceability-drift';
 
 export function buildServiceabilityDriftReport(model, analysis, options = {}) {
   const driftLimitRatio = finite(options.driftLimitRatio, 1 / 200);
   const warnRatio = finite(options.warnRatio, 0.8);
-  const levels = storyLevels(model);
+  const levels = getStoryLevels(model).levels;
   const resultEntries = Object.entries(analysis?.byCombo || {});
   if (!resultEntries.length && analysis?.envelope) resultEntries.push(['ENVELOPE', analysis.envelope]);
 
@@ -82,22 +84,14 @@ function buildStoryDriftRow(model, result, comboId, storyIndex, lowerZ, upperZ, 
 }
 
 function verticalNodePairs(model, lowerZ, upperZ) {
-  const lower = nodesAtLevel(model, lowerZ);
-  const upper = nodesAtLevel(model, upperZ);
+  const lower = nodesAtStoryLevel(model, lowerZ);
+  const upper = nodesAtStoryLevel(model, upperZ);
   const pairs = [];
   for (const top of upper) {
     const bottom = lower.find((node) => samePlanLocation(node, top));
     if (bottom) pairs.push({ lower: bottom, upper: top });
   }
   return pairs;
-}
-
-function storyLevels(model) {
-  return [...new Set((model?.nodes || []).map((node) => finite(node.z, 0)).map((z) => Number(z.toFixed(6))))].sort((a, b) => a - b);
-}
-
-function nodesAtLevel(model, z) {
-  return (model?.nodes || []).filter((node) => Math.abs(finite(node.z, 0) - z) <= 1e-6);
 }
 
 function samePlanLocation(a, b) {

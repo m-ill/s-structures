@@ -8,6 +8,7 @@ import {
   parseCombinationFactors,
   parseModelJson,
   removeLoadCombination,
+  normalizeStories,
   updateLoadCombination,
 } from '../index.js';
 
@@ -91,7 +92,7 @@ export function buildFrameModel({ baysX = 1, baysY = 1, stories = 1, bayX = 6, b
     }
   }
 
-  return model;
+  return normalizeStories(model);
 }
 
 export function replaceModel(state, model) {

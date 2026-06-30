@@ -9,13 +9,16 @@ import {
 } from './schema.js';
 import { normalizeUnits } from './units.js';
 import { normalizeUnitSystem } from './unitSystem.js';
+import { normalizeStories } from './storyModel.js';
 
 export function createModel(overrides = {}) {
   const units = normalizeUnits(overrides.units);
-  return {
+  const model = {
     schemaVersion: SCHEMA_VERSION,
     units,
     unitSystem: normalizeUnitSystem(overrides.unitSystem, units),
+    storyModel: null,
+    stories: [],
     materials: clone(MATERIALS_CATALOG),
     sections: clone(SECTIONS_CATALOG),
     nodes: [],
@@ -30,6 +33,7 @@ export function createModel(overrides = {}) {
     units,
     unitSystem: normalizeUnitSystem(overrides.unitSystem, units),
   };
+  return normalizeStories(model);
 }
 
 export function clone(value) {

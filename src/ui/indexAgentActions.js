@@ -1,3 +1,5 @@
+import { normalizeStories } from '../core/storyModel.js';
+
 export const INDEX_AGENT_ACTIONS_VERSION = 'm12-agent-modeling-productivity';
 
 export const MODELING_ACTIONS = [
@@ -39,6 +41,12 @@ export function ensureAgentState(target) {
 
 export function executeModelingAction(model, state, action, payload = {}) {
   ensureCollections(model);
+  const result = executeModelingActionCore(model, state, action, payload);
+  if (result.changed) refreshStories(model);
+  return result;
+}
+
+function executeModelingActionCore(model, state, action, payload) {
   switch (action) {
     case 'selectEntity':
       return selectEntity(model, state, payload);
@@ -580,11 +588,18 @@ function ensureCollections(model) {
   model.nodes ||= [];
   model.members ||= [];
   model.loads ||= [];
+  model.stories ||= [];
   model.loadCases ||= [];
   model.loadCombinations ||= [];
   model.materials ||= [];
   model.sections ||= [];
   model.analysisSettings ||= {};
+}
+
+function refreshStories(model) {
+  const normalized = normalizeStories(model);
+  model.stories = normalized.stories;
+  model.storyModel = normalized.storyModel;
 }
 
 function getById(items, id, label) {

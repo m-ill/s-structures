@@ -1,4 +1,5 @@
 import { createModel } from '../core/model.js';
+import { normalizeStories } from '../core/storyModel.js';
 
 export const REPRESENTATIVE_BUILDINGS_VERSION = 'm33-representative-building-set';
 
@@ -256,7 +257,7 @@ export function createRepresentativeBuildingModel(specOrId) {
 
   addGravityLoads(model, spec);
   addStoryLateralLoads(model, spec, levels);
-  return model;
+  return normalizeStories(model);
 }
 
 export function createAllRepresentativeBuildingModels() {

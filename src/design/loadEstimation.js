@@ -7,6 +7,7 @@ import {
   buildLoadDerivationTraceFromParts,
   computeSeismicBaseShear,
 } from './loadDerivationTrace.js';
+import { getStoryLevels, nodesAtStoryLevel } from '../core/storyLevels.js';
 import { finite } from './loadMath.js';
 
 import { LOAD_ESTIMATION_VERSION } from './loadEstimationConstants.js';
@@ -76,7 +77,7 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
     const liveTotal = area * (isRoof ? basis.roofLiveLoad : basis.liveLoad);
     const beams = horizontalMembersAtLevel(model, z);
     const beamLength = beams.reduce((sum, item) => sum + item.length, 0);
-    const storyNodes = nodesAtLevel(model, z);
+    const storyNodes = nodesAtStoryLevel(model, z);
 
     storyDeadLoads.push({ story: index + 1, z, area, intensity: basis.deadLoad, total: deadTotal, beamLength, beamCount: beams.length });
     storyLiveLoads.push({ story: index + 1, z, area, intensity: isRoof ? basis.roofLiveLoad : basis.liveLoad, total: liveTotal, beamLength, beamCount: beams.length });
@@ -224,13 +225,13 @@ function defaultDerivedLoadCases() {
 function summarizeModelGeometry(model) {
   const nodes = model?.nodes || [];
   const bounds = modelBounds(nodes);
-  const storyLevels = uniqueSorted(nodes.map((node) => finite(node.z, 0)).filter((z) => z > bounds.min.z + 1e-6));
+  const storyInfo = getStoryLevels(model);
   return {
     bounds,
     size: bounds.size,
     planArea: Math.max(0, bounds.size.x * bounds.size.y),
-    storyLevels,
-    baseLevel: bounds.min.z,
+    storyLevels: storyInfo.storyTops,
+    baseLevel: storyInfo.baseZ,
   };
 }
 
@@ -268,7 +269,7 @@ function gravityLoad(id, member, w, loadCase, derivation) {
 
 function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix, derivation = {}) {
   if (Math.abs(totalForce) <= 1e-9) return;
-  const nodes = nodesAtLevel(model, z);
+  const nodes = nodesAtStoryLevel(model, z);
   if (!nodes.length) return;
   const share = totalForce / nodes.length;
   for (const [index, node] of nodes.entries()) {
@@ -307,10 +308,6 @@ function addSeismicLoads(loads, model, storyLoads, basis, options) {
   }
 }
 
-function nodesAtLevel(model, z) {
-  return (model?.nodes || []).filter((node) => Math.abs(finite(node.z, 0) - z) <= 1e-6);
-}
-
 function storyHeightForLevel(geometry, index) {
   const current = geometry.storyLevels[index];
   const previous = index === 0 ? geometry.baseLevel : geometry.storyLevels[index - 1];
@@ -337,8 +334,4 @@ function modelBounds(nodes) {
     z: Math.max(...nodes.map((node) => finite(node.z, 0))),
   };
   return { min, max, size: { x: max.x - min.x, y: max.y - min.y, z: max.z - min.z } };
-}
-
-function uniqueSorted(values) {
-  return [...new Set(values.map((value) => Number(value.toFixed(6))))].sort((a, b) => a - b);
 }
