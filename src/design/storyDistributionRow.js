@@ -13,6 +13,9 @@ export function distributionRow(force, stories, nodes) {
     caseId: force.caseId || force.case || null,
     dir,
     totalForce,
+    massCenter: story.massCenter,
+    diaphragmCenter: story.diaphragmCenter,
+    eccentricity: story.eccentricity.massToDiaphragm,
     torsionMz: torsionMz(totalForce, dir, story.eccentricity.massToDiaphragm),
     nodeForces: distributePlanForce(storyNodes, { mass: story.massCenter, diaphragm: story.diaphragmCenter }, totalForce, dir),
   };

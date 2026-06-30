@@ -1,10 +1,10 @@
 # P2-MVP-S5 Story Mass Center Contract
 
-status: implemented for first T18 slice
+status: implemented for T18 story mass and eccentric generated load slice
 
 ## Purpose
 
-This slice exposes story-level mass center, diaphragm center eccentricity, and an eccentric lateral load distribution preview. It prepares the seismic load engine without changing the current generated model loads yet.
+This slice exposes story-level mass center, diaphragm center eccentricity, and eccentric lateral load distribution. Generated wind and seismic story loads now use this distribution when story mass and diaphragm data are available.
 
 ## Contract
 
@@ -14,7 +14,7 @@ This slice exposes story-level mass center, diaphragm center eccentricity, and a
 | Mass center | Weighted x/y center from story node mass |
 | Diaphragm center | Existing rigid diaphragm geometry center |
 | Stiffness center | Column stiffness proxy, marked as preliminary |
-| Distribution | Preview nodal in-plane forces from force eccentricity |
+| Distribution | Nodal in-plane forces from force eccentricity, with uniform fallback |
 | Agent API | `getStoryMassSummary()` and `getEccentricStoryLoadDistribution()` |
 
 ## Example
@@ -28,4 +28,4 @@ const distribution = SStructuresAgent.getEccentricStoryLoadDistribution({
 
 ## Limits
 
-The stiffness center is not yet a formal unit-load center of rigidity. The current distribution is a preview contract and does not replace the generated load list until the next load-engine slice.
+The stiffness center is not yet a formal unit-load center of rigidity. Accidental eccentricity and code-specific torsion amplification remain future standard-engine work.

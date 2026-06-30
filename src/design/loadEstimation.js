@@ -8,6 +8,9 @@ import {
   computeSeismicBaseShear,
 } from './loadDerivationTrace.js';
 import { getStoryLevels, nodesAtStoryLevel } from '../core/storyLevels.js';
+import { buildStoryMassSummary } from '../core/storyMassSummary.js';
+import { attachStoryMassToLateralRows } from './storyLateralMassAttach.js';
+import { storyLoadDistribution } from './storyLoadDistribution.js';
 import { finite } from './loadMath.js';
 
 import { LOAD_ESTIMATION_VERSION } from './loadEstimationConstants.js';
@@ -121,28 +124,25 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
       nodeCount: storyNodes.length,
     });
 
-    if (options.generateLoads !== false) {
-      addStoryNodalLoads(loads, model, z, windX, '+x', 'WX', `LD-WX-${index + 1}`, {
-        story: index + 1,
-        traceRowId: `WX-NODE-ST${index + 1}`,
-      });
-      addStoryNodalLoads(loads, model, z, windY, '+y', 'WY', `LD-WY-${index + 1}`, {
-        story: index + 1,
-        traceRowId: `WY-NODE-ST${index + 1}`,
-      });
-    }
   }
 
-  addSeismicLoads(loads, model, storyLateralLoads, basis, options);
+  const storyMassSummary = buildStoryMassSummary(model);
+  const lateralRows = attachStoryMassToLateralRows(storyLateralLoads, storyMassSummary);
 
-  const seismicSummary = computeSeismicBaseShear(storyLateralLoads, basis);
+  if (options.generateLoads !== false) {
+    addWindLoads(loads, model, lateralRows, storyMassSummary, options);
+  }
+  addSeismicLoads(loads, model, lateralRows, basis, options, storyMassSummary);
+
+  const seismicSummary = computeSeismicBaseShear(lateralRows, basis);
   const derivationTrace = buildLoadDerivationTraceFromParts({
     basis,
     geometry,
     storyDeadLoads,
     storyLiveLoads,
-    storyLateralLoads,
+    storyLateralLoads: lateralRows,
     seismicSummary,
+    storyMassSummary,
   });
 
   const summary = {
@@ -153,11 +153,13 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
     storyCount: storyLevels.length,
     totalDead: storyDeadLoads.reduce((sum, item) => sum + item.total, 0),
     totalLive: storyLiveLoads.reduce((sum, item) => sum + item.total, 0),
-    totalWindX: storyLateralLoads.reduce((sum, item) => sum + item.windX, 0),
-    totalWindY: storyLateralLoads.reduce((sum, item) => sum + item.windY, 0),
+    totalWindX: lateralRows.reduce((sum, item) => sum + item.windX, 0),
+    totalWindY: lateralRows.reduce((sum, item) => sum + item.windY, 0),
     totalSeismicX: seismicSummary.baseShearX,
     totalSeismicY: seismicSummary.baseShearY,
     generatedLoadCount: loads.length,
+    storyMassVersion: storyMassSummary.version,
+    eccentricDistribution: options.eccentricDistribution !== false,
   };
 
   return {
@@ -178,13 +180,14 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
         beamLength: dead.beamLength,
         beamCount: dead.beamCount,
       })),
-      lateral: storyLateralLoads,
+      lateral: lateralRows,
     },
+    storyMassSummary,
     derivationTrace,
     summary,
     limitations: [
       'Area loads are distributed to horizontal frame members by member length share.',
-      'Wind and seismic loads are equivalent preliminary story nodal loads.',
+      'Wind and seismic loads use story-mass eccentric nodal distribution when story mass and diaphragm data are available.',
       'Project-specific KDS coefficients, exposure, importance, seismic site class, and load reductions are not yet fully automated.',
     ],
   };
@@ -271,18 +274,16 @@ function gravityLoad(id, member, w, loadCase, derivation) {
   };
 }
 
-function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix, derivation = {}) {
-  if (Math.abs(totalForce) <= 1e-9) return;
-  const nodes = nodesAtStoryLevel(model, z);
-  if (!nodes.length) return;
-  const share = totalForce / nodes.length;
-  for (const [index, node] of nodes.entries()) {
+function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix, derivation = {}, storyMassSummary, options = {}) {
+  const distribution = storyLoadDistribution(model, z, totalForce, dir, { ...derivation, caseId: loadCase }, storyMassSummary, options);
+  if (!distribution) return;
+  for (const [index, item] of distribution.nodeForces.entries()) {
     loads.push({
       id: `${prefix}-${index + 1}`,
       type: 'nodal',
-      node: node.id,
-      P: share,
-      dir,
+      node: item.nodeId,
+      P: item.P,
+      dir: item.dir || dir,
       case: loadCase,
       unit: 'kN',
       generatedBy: LOAD_ESTIMATION_VERSION,
@@ -290,13 +291,32 @@ function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix, 
         ...derivation,
         storyZ: z,
         totalForce,
-        nodeShare: share,
+        nodeShare: item.P,
+        distributionMethod: distribution.method,
+        torsionMz: distribution.torsionMz,
+        storyMassVersion: storyMassSummary?.version || null,
+        massCenter: distribution.massCenter || null,
+        diaphragmCenter: distribution.diaphragmCenter || null,
+        eccentricity: distribution.eccentricity || null,
       },
     });
   }
 }
 
-function addSeismicLoads(loads, model, storyLoads, basis, options) {
+function addWindLoads(loads, model, storyLoads, storyMassSummary, options) {
+  for (const item of storyLoads) {
+    addStoryNodalLoads(loads, model, item.z, item.windX, '+x', 'WX', `LD-WX-${item.story}`, {
+      story: item.story,
+      traceRowId: `WX-NODE-ST${item.story}`,
+    }, storyMassSummary, options);
+    addStoryNodalLoads(loads, model, item.z, item.windY, '+y', 'WY', `LD-WY-${item.story}`, {
+      story: item.story,
+      traceRowId: `WY-NODE-ST${item.story}`,
+    }, storyMassSummary, options);
+  }
+}
+
+function addSeismicLoads(loads, model, storyLoads, basis, options, storyMassSummary) {
   if (options.generateLoads === false) return;
   const { denominator, baseShearX, baseShearY } = computeSeismicBaseShear(storyLoads, basis);
   for (const item of storyLoads) {
@@ -304,11 +324,11 @@ function addSeismicLoads(loads, model, storyLoads, basis, options) {
     addStoryNodalLoads(loads, model, item.z, baseShearX * factor, '+x', 'EX', `LD-EX-${item.story}`, {
       story: item.story,
       traceRowId: `EX-NODE-ST${item.story}`,
-    });
+    }, storyMassSummary, options);
     addStoryNodalLoads(loads, model, item.z, baseShearY * factor, '+y', 'EY', `LD-EY-${item.story}`, {
       story: item.story,
       traceRowId: `EY-NODE-ST${item.story}`,
-    });
+    }, storyMassSummary, options);
   }
 }
 
