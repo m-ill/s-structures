@@ -1,7 +1,11 @@
+import { buildDesignDemandPackage } from './designDemandPackage.js';
+import { demandPackageHeader } from './designDemandTraceAttach.js';
+
 export const CONNECTION_FOUNDATION_VERSION = 'm41-connection-foundation';
 
 export function buildConnectionFoundationReport(model, analysis, options = {}) {
   const result = options.resultSet || analysis?.pDelta?.envelope || analysis?.envelope || firstResult(analysis);
+  const demandPackage = options.demandPackage || buildDesignDemandPackage(model, analysis, { resultSet: result });
   const assumptions = {
     allowableBearing: finite(options.allowableBearing, model?.foundationParams?.allowableBearing, 150),
     frictionCoefficient: finite(options.frictionCoefficient, model?.foundationParams?.frictionCoefficient, 0.45),
@@ -21,6 +25,7 @@ export function buildConnectionFoundationReport(model, analysis, options = {}) {
     },
     connectionRows,
     foundationRows,
+    demandPackage: demandPackageHeader(demandPackage),
     assumptions,
     limitations: [
       'Connection rows are design-force envelopes, not final bolt, weld, plate, or rebar anchorage designs.',

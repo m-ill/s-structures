@@ -1,10 +1,13 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { runConcreteDesign } from './concrete.js';
+import { buildDesignDemandPackage } from './designDemandPackage.js';
+import { attachMemberDemandTrace } from './designDemandTraceAttach.js';
 
 export function runDesignChecks(model, analysis, options = {}) {
   const resultSet = options.resultSet;
-  const steel = runSteelDesign(model, analysis, { ...(options.steel || {}), resultSet });
-  const concrete = runConcreteDesign(model, analysis, { ...(options.concrete || {}), resultSet });
+  const demandPackage = options.demandPackage || buildDesignDemandPackage(model, analysis, { resultSet });
+  const steel = runSteelDesign(model, analysis, { ...(options.steel || {}), resultSet, demandPackage });
+  const concrete = runConcreteDesign(model, analysis, { ...(options.concrete || {}), resultSet, demandPackage });
   const governing = [steel.summary.governing, concrete.summary.governing]
     .filter(Boolean)
     .reduce((best, item) => (!best || item.ratio > best.ratio ? item : best), null);
@@ -12,6 +15,7 @@ export function runDesignChecks(model, analysis, options = {}) {
     ok: steel.ok && concrete.ok,
     steel,
     concrete,
+    demandPackage,
     summary: {
       ok: steel.ok && concrete.ok,
       maxUtilization: Math.max(steel.summary.maxUtilization, concrete.summary.maxUtilization),
@@ -61,7 +65,11 @@ export function runSteelDesign(model, analysis, options = {}) {
       continue;
     }
 
-    const check = checkSteelMember(member, demand, section, material, model.designParams || {}, resultSet);
+    const check = attachMemberDemandTrace(
+      checkSteelMember(member, demand, section, material, model.designParams || {}, resultSet),
+      options.demandPackage,
+      member.id,
+    );
     memberResults[member.id] = check;
     summary.checkedMembers += 1;
     if (check.status === 'NG') summary.ngCount += 1;

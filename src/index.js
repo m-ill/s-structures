@@ -117,6 +117,10 @@ export {
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';
 export {
+  buildDesignDemandPackage,
+  DESIGN_DEMAND_PACKAGE_VERSION,
+} from './design/designDemandPackage.js';
+export {
   buildServiceabilityDriftReport,
   SERVICEABILITY_DRIFT_VERSION,
 } from './design/serviceability.js';

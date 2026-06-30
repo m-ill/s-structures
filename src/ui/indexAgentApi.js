@@ -3,6 +3,7 @@ import {
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildAdvancedElasticTrace,
   buildBaselineContract,
+  buildDesignDemandPackage,
   buildEccentricStoryLoadDistribution,
   buildDiaphragmSummary,
   buildMemberReleaseSummary,
@@ -174,6 +175,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildMemberDesignTraceReport(model, getAnalysis(model), options));
+    },
+    getDesignDemandPackage(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildDesignDemandPackage(model, getAnalysis(model), options));
     },
     getServiceabilityDriftReport(options = {}) {
       const model = getCurrentModel(target);

@@ -1,6 +1,7 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { factorText } from '../core/combinations.js';
 import { buildConnectionFoundationReport } from '../design/connectionFoundation.js';
+import { buildDesignDemandPackage } from '../design/designDemandPackage.js';
 import { buildMemberDesignTraceReport } from '../design/memberDesignTrace.js';
 import { buildRcDetailingReport } from '../design/rcDetailing.js';
 import { buildServiceabilityDriftReport } from '../design/serviceability.js';
@@ -84,6 +85,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     },
     combinationResults,
     advancedElasticTrace: buildAdvancedElasticTrace(model, analysis),
+    designDemandPackage: analysis?.design?.demandPackage || buildDesignDemandPackage(model, analysis),
     serviceability: buildServiceabilityDriftReport(model, analysis, options.serviceability || {}),
     resultPostprocessing: buildResultPostprocessing(model, analysis, options.resultPostprocessing || {}),
     memberChecks,
@@ -220,6 +222,7 @@ export function renderDetailedReportHtml(report) {
   ${renderResultPostprocessing(report.resultPostprocessing)}
 
   <h2>5. Member Check Trace</h2>
+  ${renderDesignDemandPackage(report.designDemandPackage)}
   ${renderTable(['Member', 'Role', 'Material', 'Section', 'Status', 'Util.', 'Governing', 'Combo', 'N', 'Vy', 'Vz', 'My', 'Mz'], report.memberChecks.map((row) => [
     row.memberId,
     row.role,
@@ -598,6 +601,19 @@ function renderResultPostprocessing(post) {
       row.governingVerticalCombo || '-',
       row.uplift ? 'Yes' : 'No',
     ])),
+  ].join('');
+}
+
+function renderDesignDemandPackage(pkg) {
+  if (!pkg) return '<div class="note">No design demand package available.</div>';
+  return [
+    renderTable(['Demand package', 'Value'], [
+      ['Version', pkg.version],
+      ['Active result', pkg.source?.activeResultId || '-'],
+      ['Members', pkg.summary.memberCount],
+      ['Foundations', pkg.summary.foundationCount],
+      ['Uplift nodes', pkg.summary.upliftNodeCount],
+    ]),
   ].join('');
 }
 

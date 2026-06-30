@@ -1,4 +1,5 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
+import { attachMemberDemandTrace } from './designDemandTraceAttach.js';
 
 export function runConcreteDesign(model, analysis, options = {}) {
   const resultSet = options.resultSet || analysis?.envelope || firstSolvedResult(analysis);
@@ -37,7 +38,11 @@ export function runConcreteDesign(model, analysis, options = {}) {
       continue;
     }
 
-    const check = checkConcreteMember(member, demand, section, material, model.designParams || {}, resultSet);
+    const check = attachMemberDemandTrace(
+      checkConcreteMember(member, demand, section, material, model.designParams || {}, resultSet),
+      options.demandPackage,
+      member.id,
+    );
     memberResults[member.id] = check;
     summary.checkedMembers += 1;
     if (check.status === 'NG') summary.ngCount += 1;

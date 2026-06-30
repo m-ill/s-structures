@@ -182,6 +182,12 @@ export function renderCalculationPackageHtml(pkg) {
 
   <section id="members" class="page-break">
     <h2>Member Design Summary</h2>
+    ${d.designDemandPackage ? table(['Demand package', 'Value'], [
+      ['Version', d.designDemandPackage.version],
+      ['Active result', d.designDemandPackage.source?.activeResultId || '-'],
+      ['Member demands', d.designDemandPackage.summary.memberCount],
+      ['Foundation demands', d.designDemandPackage.summary.foundationCount],
+    ]) : '<div class="note">No design demand package available.</div>'}
     ${table(['Member', 'Role', 'Status', 'Util.', 'Governing', 'Combo'], d.memberChecks.map((row) => [
       row.memberId,
       row.role,

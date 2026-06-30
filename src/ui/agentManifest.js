@@ -19,6 +19,7 @@ import { CALCULATION_PACKAGE_VERSION } from '../report/calculationPackage.js';
 import { DETAILED_REPORT_VERSION } from '../report/detailedReport.js';
 import { KDS_LOAD_COMBINATION_RULE_VERSION, KDS_LOAD_COMBINATION_VERSION, KDS_LOAD_STANDARD_REGISTRY_VERSION } from '../core/kdsLoadCombinations.js';
 import { CONNECTION_FOUNDATION_VERSION } from '../design/connectionFoundation.js';
+import { DESIGN_DEMAND_PACKAGE_VERSION } from '../design/designDemandPackage.js';
 import { DESIGN_BASIS_INPUT_VERSION, LOAD_DERIVATION_TRACE_VERSION, LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
 import { MEMBER_DESIGN_TRACE_VERSION } from '../design/memberDesignTrace.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
@@ -84,6 +85,7 @@ export function buildAgentManifest(options = {}) {
       steelDetailing: STEEL_DETAILING_VERSION,
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
       memberDesignTrace: MEMBER_DESIGN_TRACE_VERSION,
+      designDemandPackage: DESIGN_DEMAND_PACKAGE_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       benchmarkGate: BENCHMARK_GATE_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
@@ -121,6 +123,7 @@ export function buildAgentManifest(options = {}) {
       'getSteelDetailingReport',
       'getConnectionFoundationReport',
       'getMemberDesignTraceReport',
+      'getDesignDemandPackage',
       'getServiceabilityDriftReport',
       'getAdvancedElasticTrace',
       'getResultPostprocessing',
@@ -168,6 +171,7 @@ export function buildAgentManifest(options = {}) {
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
       'memberDesignTraceMatrix',
+      'designDemandPackage',
       'nativeCalculationPackageMenu',
       'preliminaryPushover',
       'pushoverPanel',
@@ -247,6 +251,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P2-MVP-S5', status: 'available', feature: 'story mass center and eccentric lateral distribution contracts' },
       { id: 'P2-M5', status: 'preliminary', feature: 'P-Delta, modal, and response spectrum trace contract' },
       { id: 'P2-M6', status: 'preliminary', feature: 'story, member station, and foundation reaction result postprocessing' },
+      { id: 'P2-DESIGN-DEMAND', status: 'preliminary', feature: 'shared demand package for member and foundation design modules' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',
