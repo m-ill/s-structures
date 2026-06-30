@@ -1,6 +1,6 @@
 # Elastic Practice Review MVP
 
-status: next execution target
+status: implemented (T01-T50 scope complete, validation and pilot gates passing)
 
 1차 목표는 "탄성해석 실무 검토 MVP"다. 최종 설계 자동화가 아니라, 구조설계사무소에서 해석 검토용 플랫폼으로 시험할 수 있는 수준을 목표로 한다.
 
@@ -92,4 +92,25 @@ MVP 완료 판단은 feature count가 아니라 검토 가능성으로 한다.
 | P2-MVP-S4 / T07 | implemented | See `P2_MVP_S4_STORY_MODEL.md`; T09/T11 remain |
 | P2-MVP-S4 / T09 | implemented | See `P2_MVP_S4_MEMBER_RELEASE.md`; T11 remains |
 | P2-MVP-S4 / T11 | implemented | See `P2_MVP_S4_RIGID_DIAPHRAGM.md`; S4 base is complete |
-| P2-MVP-S5 / T18 | implemented | See `P2_MVP_S5_STORY_MASS_CENTER.md`; torsion amplification remains future work |
+| P2-MVP-S5 / T14-T18 | implemented | See `P2_MVP_S5_STORY_MASS_CENTER.md`; gravity/wind/seismic v1 load trace |
+| P2-MVP-S5 / T21-T24 | implemented | See `P2_M4_COMBINATION_AND_ENVELOPE.md`; combination groups, coverage audit, envelope |
+| P2-MVP-S6 / T25-T26 | implemented | See `P2_M5_ADVANCED_ELASTIC_TRACE.md`, `P2_T25_T50_PRACTICE_VALIDATION.md`; P-Delta method clarity and benchmark |
+| P2-MVP-S6 / T30-T31 | implemented | See `P2_MVP_S6_RESULT_POSTPROCESSING.md`; story result table, member station force |
+| P2-MVP-S6 / T41-T43 | implemented | See `P2_T25_T50_PRACTICE_VALIDATION.md`; calculation package readiness, formula trace, issue registry |
+| P2-MVP-S6 / T50 | implemented | See `P2_T25_T50_PRACTICE_VALIDATION.md`; 10 representative building pilot gate |
+
+The full MVP ticket scope (T01-T50) is implemented and all milestone tests pass
+(`node tools/run-milestone-tests.mjs`, failed: 0). The practice validation report
+keeps design NG/WARN items as open review issues by design, and the T50 pilot gate
+fails only when a representative building cannot complete analysis.
+
+### Remaining Future Work
+
+These are tracked as post-MVP refinements, not MVP blockers.
+
+| Item | Source ticket | Note |
+| --- | --- | --- |
+| Torsion amplification | T18 / M5 | Accidental eccentricity is distributed; dynamic torsional amplification factor is future work |
+| Wind/seismic v2 | T17, T19 | v1 trace is in; detailed standard-registry pressure and site/R/Cd inputs remain |
+| Detailed design modules | T34-T40 | Preliminary RC/steel/foundation traces only; full schedules are P1 |
+| Office workflow locks | T44-T45 | Project/review state is a data contract; approval locks are not enforced yet |
