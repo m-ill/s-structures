@@ -7,7 +7,7 @@ export function distributePlanForce(nodes, centers, force, dir = '+x') {
   const c = centers?.diaphragm || centers?.mass || { x: 0, y: 0 };
   const m = centers?.mass || c;
   const key = axis === 'x' ? 'y' : 'x';
-  const e = Number(m[key] || 0) - Number(c[key] || 0);
+  const e = centers?.eccentricity?.[key] ?? Number(m[key] || 0) - Number(c[key] || 0);
   const den = nodes.reduce((sum, node) => sum + (Number(node[key] || 0) - Number(c[key] || 0)) ** 2, 0);
   const alpha = den > 1e-12 ? e * total / den : 0;
   return nodes.map((node) => {

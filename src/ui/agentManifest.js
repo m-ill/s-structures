@@ -236,7 +236,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P2-MVP-S2', status: 'available', feature: 'validation health score and analysis audit contract' },
       { id: 'P2-MVP-S3', status: 'available', feature: 'ten-case solver benchmark gate' },
       { id: 'P2-MVP-S4', status: 'available', feature: 'story object, member release, and rigid diaphragm contracts' },
-      { id: 'P2-MVP-S5', status: 'in_progress', feature: 'story mass center and eccentric lateral distribution contracts' },
+      { id: 'P2-MVP-S5', status: 'available', feature: 'story mass center and eccentric lateral distribution contracts' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

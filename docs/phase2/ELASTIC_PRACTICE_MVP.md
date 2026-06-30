@@ -92,4 +92,4 @@ MVP 완료 판단은 feature count가 아니라 검토 가능성으로 한다.
 | P2-MVP-S4 / T07 | implemented | See `P2_MVP_S4_STORY_MODEL.md`; T09/T11 remain |
 | P2-MVP-S4 / T09 | implemented | See `P2_MVP_S4_MEMBER_RELEASE.md`; T11 remains |
 | P2-MVP-S4 / T11 | implemented | See `P2_MVP_S4_RIGID_DIAPHRAGM.md`; S4 base is complete |
-| P2-MVP-S5 / T18 | implemented | See `P2_MVP_S5_STORY_MASS_CENTER.md`; accidental eccentricity remains future work |
+| P2-MVP-S5 / T18 | implemented | See `P2_MVP_S5_STORY_MASS_CENTER.md`; signed accidental torsion cases remain future work |

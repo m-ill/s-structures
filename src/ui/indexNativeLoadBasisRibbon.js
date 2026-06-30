@@ -16,6 +16,7 @@ export const LOAD_BASIS_FIELDS = [
   { id: 'seismicCoefficientX', controlId: 'ssLoadBasisSeisX', label: 'EX', value: 0.10, min: 0, max: 2, step: 0.01 },
   { id: 'seismicCoefficientY', controlId: 'ssLoadBasisSeisY', label: 'EY', value: 0.10, min: 0, max: 2, step: 0.01 },
   { id: 'seismicLiveLoadFactor', controlId: 'ssLoadBasisSeisLiveFactor', label: 'psiE', value: 0.25, min: 0, max: 1, step: 0.05 },
+  { id: 'accidentalEccentricityRatio', controlId: 'ssLoadBasisAccEcc', label: 'eA', value: 0.05, min: 0, max: 0.3, step: 0.01 },
 ];
 
 export function populateNativeLoadBasisControls(target, panel) {
@@ -218,6 +219,7 @@ function defaultNativeDesignBasis(occupancy = 'office') {
     seismicCoefficientX: 0.10,
     seismicCoefficientY: 0.10,
     seismicLiveLoadFactor: 0.25,
+    accidentalEccentricityRatio: 0.05,
   };
 }
 

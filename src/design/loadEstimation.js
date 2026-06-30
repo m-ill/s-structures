@@ -128,11 +128,12 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
 
   const storyMassSummary = buildStoryMassSummary(model);
   const lateralRows = attachStoryMassToLateralRows(storyLateralLoads, storyMassSummary);
+  const distributionOptions = { ...options, designBasis: basis };
 
   if (options.generateLoads !== false) {
-    addWindLoads(loads, model, lateralRows, storyMassSummary, options);
+    addWindLoads(loads, model, lateralRows, storyMassSummary, distributionOptions);
   }
-  addSeismicLoads(loads, model, lateralRows, basis, options, storyMassSummary);
+  addSeismicLoads(loads, model, lateralRows, basis, distributionOptions, storyMassSummary);
 
   const seismicSummary = computeSeismicBaseShear(lateralRows, basis);
   const derivationTrace = buildLoadDerivationTraceFromParts({
@@ -160,6 +161,7 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
     generatedLoadCount: loads.length,
     storyMassVersion: storyMassSummary.version,
     eccentricDistribution: options.eccentricDistribution !== false,
+    accidentalEccentricityRatio: basis.accidentalEccentricityRatio,
   };
 
   return {
@@ -297,6 +299,8 @@ function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix, 
         storyMassVersion: storyMassSummary?.version || null,
         massCenter: distribution.massCenter || null,
         diaphragmCenter: distribution.diaphragmCenter || null,
+        baseEccentricity: distribution.baseEccentricity || null,
+        accidentalEccentricity: distribution.accidentalEccentricity || null,
         eccentricity: distribution.eccentricity || null,
       },
     });

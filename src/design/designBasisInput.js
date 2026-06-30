@@ -24,6 +24,7 @@ export const DEFAULT_DESIGN_BASIS = {
   seismicCoefficientX: 0.10,
   seismicCoefficientY: 0.10,
   seismicLiveLoadFactor: 0.25,
+  accidentalEccentricityRatio: 0.05,
 };
 
 export const DESIGN_BASIS_NUMERIC_FIELDS = [
@@ -37,6 +38,7 @@ export const DESIGN_BASIS_NUMERIC_FIELDS = [
   { id: 'seismicCoefficientX', label: 'Seismic X', unit: 'g', min: 0, step: 0.01 },
   { id: 'seismicCoefficientY', label: 'Seismic Y', unit: 'g', min: 0, step: 0.01 },
   { id: 'seismicLiveLoadFactor', label: 'Seismic live factor', unit: '-', min: 0, step: 0.05 },
+  { id: 'accidentalEccentricityRatio', label: 'Accidental eccentricity', unit: 'B', min: 0, step: 0.01 },
 ];
 
 export function createDesignBasis(input = {}) {
@@ -56,6 +58,7 @@ export function createDesignBasis(input = {}) {
     seismicCoefficientX: finite(input.seismicCoefficientX, DEFAULT_DESIGN_BASIS.seismicCoefficientX),
     seismicCoefficientY: finite(input.seismicCoefficientY, DEFAULT_DESIGN_BASIS.seismicCoefficientY),
     seismicLiveLoadFactor: finite(input.seismicLiveLoadFactor, DEFAULT_DESIGN_BASIS.seismicLiveLoadFactor),
+    accidentalEccentricityRatio: finite(input.accidentalEccentricityRatio, DEFAULT_DESIGN_BASIS.accidentalEccentricityRatio),
     notes: Array.isArray(input.notes) ? input.notes.slice() : [],
   };
 }

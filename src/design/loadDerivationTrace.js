@@ -131,25 +131,25 @@ export function buildLoadDerivationTraceFromParts(parts) {
       inputValue('sumL', 'Total horizontal member length', live.beamLength ?? dead.beamLength, 'm'),
       inputValue('nBeam', 'Horizontal member count', live.beamCount ?? dead.beamCount ?? 0, ''),
     ], safeDivide(live.total, live.beamLength ?? dead.beamLength), 'kN/m'));
-    rows.push(traceRow(`WX-NODE-ST${story}`, 'distribution', story, 'WX', 'Wind X nodal distribution', lateralFormula('WX', lateral), [
+    rows.push(traceRow(`WX-NODE-ST${story}`, 'distribution', story, 'WX', 'Wind X nodal distribution', lateralFormula('WX', lateral, basis, geometry), [
       inputValue('WXstory', 'Story wind X', lateral.windX, 'kN'),
       inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
-      ...eccentricInputs('WX', lateral),
+      ...eccentricInputs('WX', lateral, basis, geometry),
     ], safeDivide(lateral.windX, nodeCount), 'kN/node'));
-    rows.push(traceRow(`WY-NODE-ST${story}`, 'distribution', story, 'WY', 'Wind Y nodal distribution', lateralFormula('WY', lateral), [
+    rows.push(traceRow(`WY-NODE-ST${story}`, 'distribution', story, 'WY', 'Wind Y nodal distribution', lateralFormula('WY', lateral, basis, geometry), [
       inputValue('WYstory', 'Story wind Y', lateral.windY, 'kN'),
       inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
-      ...eccentricInputs('WY', lateral),
+      ...eccentricInputs('WY', lateral, basis, geometry),
     ], safeDivide(lateral.windY, nodeCount), 'kN/node'));
-    rows.push(traceRow(`EX-NODE-ST${story}`, 'distribution', story, 'EX', 'Seismic X nodal distribution', lateralFormula('EX', lateral), [
+    rows.push(traceRow(`EX-NODE-ST${story}`, 'distribution', story, 'EX', 'Seismic X nodal distribution', lateralFormula('EX', lateral, basis, geometry), [
       inputValue('EXstory', 'Story seismic X', storySeismicX, 'kN'),
       inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
-      ...eccentricInputs('EX', lateral),
+      ...eccentricInputs('EX', lateral, basis, geometry),
     ], safeDivide(storySeismicX, nodeCount), 'kN/node'));
-    rows.push(traceRow(`EY-NODE-ST${story}`, 'distribution', story, 'EY', 'Seismic Y nodal distribution', lateralFormula('EY', lateral), [
+    rows.push(traceRow(`EY-NODE-ST${story}`, 'distribution', story, 'EY', 'Seismic Y nodal distribution', lateralFormula('EY', lateral, basis, geometry), [
       inputValue('EYstory', 'Story seismic Y', storySeismicY, 'kN'),
       inputValue('nNodes', 'Nodes at story level', nodeCount, ''),
-      ...eccentricInputs('EY', lateral),
+      ...eccentricInputs('EY', lateral, basis, geometry),
     ], safeDivide(storySeismicY, nodeCount), 'kN/node'));
   }
 
@@ -207,20 +207,38 @@ function safeDivide(numerator, denominator) {
   return Math.abs(bottom) > 1e-12 ? top / bottom : 0;
 }
 
-function lateralFormula(caseId, lateral) {
-  return hasEccentricity(caseId, lateral) ? `${caseId}story / nNodes + Mz * r / sum(r2)` : `${caseId}story / nNodes`;
+function lateralFormula(caseId, lateral, basis, geometry) {
+  return hasEccentricity(caseId, lateral, basis, geometry) ? `${caseId}story / nNodes + Mz * r / sum(r2)` : `${caseId}story / nNodes`;
 }
 
-function eccentricInputs(caseId, lateral) {
-  if (!hasEccentricity(caseId, lateral)) return [];
+function eccentricInputs(caseId, lateral, basis, geometry) {
+  if (!hasEccentricity(caseId, lateral, basis, geometry)) return [];
   const axis = caseId.endsWith('X') ? 'y' : 'x';
+  const base = Number(lateral.eccentricity?.massToDiaphragm?.[axis] || 0);
+  const accidental = accidentalOffset(caseId, basis, geometry);
   return [
-    inputValue('e', `Mass-to-diaphragm eccentricity ${axis.toUpperCase()}`, lateral.eccentricity?.massToDiaphragm?.[axis], 'm'),
+    inputValue('e0', `Mass-to-diaphragm eccentricity ${axis.toUpperCase()}`, base, 'm'),
+    inputValue('ea', 'Accidental eccentricity', accidental, 'm'),
+    inputValue('e', 'Effective eccentricity', base + accidental, 'm'),
     inputValue('m', 'Story mass', lateral.mass, 'kN.s2/m'),
   ];
 }
 
-function hasEccentricity(caseId, lateral) {
+function hasEccentricity(caseId, lateral, basis, geometry) {
+  if (!hasDistributionCenters(lateral)) return false;
   const axis = caseId.endsWith('X') ? 'y' : 'x';
-  return Math.abs(Number(lateral?.eccentricity?.massToDiaphragm?.[axis] || 0)) > 1e-9;
+  return Math.abs(Number(lateral?.eccentricity?.massToDiaphragm?.[axis] || 0) + accidentalOffset(caseId, basis, geometry)) > 1e-9;
+}
+
+function hasDistributionCenters(lateral) {
+  return Number.isFinite(lateral?.massCenter?.x)
+    && Number.isFinite(lateral?.massCenter?.y)
+    && Number.isFinite(lateral?.diaphragmCenter?.x)
+    && Number.isFinite(lateral?.diaphragmCenter?.y);
+}
+
+function accidentalOffset(caseId, basis, geometry) {
+  const ratio = Math.max(0, Number(basis?.accidentalEccentricityRatio || 0));
+  const dimension = caseId.endsWith('X') ? geometry.size?.y || 0 : geometry.size?.x || 0;
+  return ratio * dimension;
 }
