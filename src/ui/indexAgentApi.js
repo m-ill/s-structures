@@ -1,6 +1,7 @@
 import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildBaselineContract,
   buildDesignBasisInputState,
   buildKdsLoadStandardAudit,
   buildConnectionFoundationReport,
@@ -172,6 +173,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getRuntimeDiagnostics() {
       return cloneJson(target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null);
+    },
+    getBaselineContract() {
+      return cloneJson(buildBaselineContract(getCurrentModel(target)));
     },
     runPushover(options = {}) {
       const model = getCurrentModel(target);

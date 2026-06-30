@@ -62,6 +62,8 @@
     "test:m47": "node tests/m47-design-basis-input-ui.mjs",
     "test:m48": "node tests/m48-load-derivation-trace.mjs",
     "test:m49": "node tests/m49-serviceability-drift.mjs",
-    "test:m50": "node tests/m50-representative-pdf-current-traces.mjs"
+    "test:m50": "node tests/m50-representative-pdf-current-traces.mjs",
+    "test:m51": "node tests/p2-mvp-s1-baseline-contract.mjs",
+    "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs"
   }
 }

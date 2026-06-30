@@ -29,6 +29,7 @@ const READ_METHODS = new Set([
   'getConnectionFoundationReport',
   'getMemberDesignTraceReport',
   'getServiceabilityDriftReport',
+  'getBaselineContract',
   'getRuntimeDiagnostics',
 ]);
 

@@ -5,6 +5,7 @@ import {
   defaultLoadCombinations,
 } from './schema.js';
 import { normalizeUnits } from './units.js';
+import { normalizeUnitSystem } from './unitSystem.js';
 
 export function migrateModel(inputModel) {
   if (!inputModel) {
@@ -19,12 +20,17 @@ export function migrateModel(inputModel) {
   const originalVersion = Number.isFinite(Number(source.schemaVersion)) ? Number(source.schemaVersion) : 1;
   const migrations = [];
   const base = createModel();
+  const units = normalizeUnits(source.units);
+  if (!source.unitSystem) {
+    migrations.push({ from: 'missing', to: 'unitSystem', note: 'Created unit system contract.' });
+  }
 
   let model = {
     ...base,
     ...source,
     schemaVersion: SCHEMA_VERSION,
-    units: normalizeUnits(source.units),
+    units,
+    unitSystem: normalizeUnitSystem(source.unitSystem, units),
     materials: Array.isArray(source.materials) && source.materials.length ? source.materials.map((item) => ({ ...item })) : base.materials,
     sections: Array.isArray(source.sections) && source.sections.length ? source.sections.map((item) => ({ ...item })) : base.sections,
     nodes: Array.isArray(source.nodes) ? source.nodes.map((node) => ({ ...node, z: Number(node.z || 0) })) : [],

@@ -11,6 +11,7 @@ import {
   WARNING_CODES,
 } from './schema.js';
 import { validateUnits } from './units.js';
+import { validateUnitSystem } from './unitSystemValidation.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -31,6 +32,7 @@ export function validateModel(model) {
   }
 
   warnings.push(...validateUnits(model.units));
+  warnings.push(...validateUnitSystem(model.unitSystem));
   validateCollections(model, error);
 
   if (errors.length) return finish(errors, warnings);

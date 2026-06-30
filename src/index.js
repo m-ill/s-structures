@@ -3,6 +3,24 @@ export { DEFAULT_UNITS, MATERIALS_CATALOG, SECTIONS_CATALOG, materialOf, section
 export { SCHEMA_NAME, SCHEMA_VERSION, ERROR_CODES, WARNING_CODES } from './core/schema.js';
 export { SOLVER_UNIT_POLICY, normalizeUnits, validateUnits } from './core/units.js';
 export {
+  UNIT_SYSTEM_VERSION,
+  normalizeUnitSystem,
+  summarizeUnitSystem,
+} from './core/unitSystem.js';
+export { validateUnitSystem } from './core/unitSystemValidation.js';
+export {
+  SIGN_CONVENTION_VERSION,
+  getSignConvention,
+} from './core/signConvention.js';
+export {
+  SCHEMA_CONTRACT_VERSION,
+  buildSchemaContract,
+} from './core/schemaContract.js';
+export {
+  BASELINE_CONTRACT_VERSION,
+  buildBaselineContract,
+} from './core/baselineContract.js';
+export {
   addLoadCombination,
   factorText,
   formatCombinationFactors,
