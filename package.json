@@ -73,6 +73,7 @@
     "test:m58": "node tests/p2-mvp-s5-eccentric-load-generation.mjs",
     "test:m59": "node tests/p2-mvp-s5-accidental-eccentricity.mjs",
     "test:m60": "node tests/p2-mvp-s5-signed-accidental-cases.mjs",
+    "test:m61": "node tests/p2-mvp-s6-result-postprocessing.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
@@ -82,6 +83,7 @@
     "test:p2s5-story-mass": "node tests/p2-mvp-s5-story-mass-center.mjs",
     "test:p2s5-loads": "node tests/p2-mvp-s5-eccentric-load-generation.mjs",
     "test:p2s5-accidental": "node tests/p2-mvp-s5-accidental-eccentricity.mjs",
-    "test:p2s5-signed": "node tests/p2-mvp-s5-signed-accidental-cases.mjs"
+    "test:p2s5-signed": "node tests/p2-mvp-s5-signed-accidental-cases.mjs",
+    "test:p2s6": "node tests/p2-mvp-s6-result-postprocessing.mjs"
   }
 }

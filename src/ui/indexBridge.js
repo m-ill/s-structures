@@ -11,6 +11,7 @@ import {
   buildConnectionFoundationReport,
   buildMemberDesignTraceReport,
   buildRcDetailingReport,
+  buildResultPostprocessing,
   buildServiceabilityDriftReport,
   buildSteelDetailingReport,
   createCalculationPackageHtml,
@@ -167,6 +168,11 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return buildServiceabilityDriftReport(model, lastResult || analyzeForIndex(model), options);
+    },
+    getResultPostprocessing(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildResultPostprocessing(model, lastResult || analyzeForIndex(model), options);
     },
     getStorySummary() {
       const model = bridge.getCurrentModel();

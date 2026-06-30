@@ -5,6 +5,7 @@ import { buildMemberDesignTraceReport } from '../design/memberDesignTrace.js';
 import { buildRcDetailingReport } from '../design/rcDetailing.js';
 import { buildServiceabilityDriftReport } from '../design/serviceability.js';
 import { buildSteelDetailingReport } from '../design/steelDetailing.js';
+import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
 import {
   buildKdsLoadStandardAudit,
   defaultKdsCombinationLimitations,
@@ -82,6 +83,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     },
     combinationResults,
     serviceability: buildServiceabilityDriftReport(model, analysis, options.serviceability || {}),
+    resultPostprocessing: buildResultPostprocessing(model, analysis, options.resultPostprocessing || {}),
     memberChecks,
     governingMembers,
     memberDesignTrace: buildMemberDesignTraceReport(model, analysis),
@@ -208,6 +210,9 @@ export function renderDetailedReportHtml(report) {
 
   <h2>4A. Serviceability Drift Review</h2>
   ${renderServiceability(report.serviceability)}
+
+  <h2>4B. Result Postprocessing Tables</h2>
+  ${renderResultPostprocessing(report.resultPostprocessing)}
 
   <h2>5. Member Check Trace</h2>
   ${renderTable(['Member', 'Role', 'Material', 'Section', 'Status', 'Util.', 'Governing', 'Combo', 'N', 'Vy', 'Vz', 'My', 'Mz'], report.memberChecks.map((row) => [
@@ -515,6 +520,44 @@ function renderServiceability(serviceability) {
       formatDriftRatio(row.driftRatio),
       formatRatio(row.demandToLimit),
       statusLabel(row.status),
+    ])),
+  ].join('');
+}
+
+function renderResultPostprocessing(post) {
+  if (!post) return '<div class="note">No result postprocessing data available.</div>';
+  return [
+    renderTable(['Item', 'Value'], [
+      ['Version', post.version],
+      ['Story rows', post.summary.storyRowCount],
+      ['Member rows', post.summary.memberRowCount],
+      ['Foundation rows', post.summary.foundationRowCount],
+      ['Uplift nodes', post.summary.upliftNodeCount],
+    ]),
+    renderTable(['Combo', 'Story', 'Weight', 'Vx', 'Vy', 'Torsion', 'Drift', 'Status'], post.storyResults.map((row) => [
+      row.comboId,
+      row.story,
+      formatForce(row.weight),
+      formatForce(row.cumulativeShearX),
+      formatForce(row.cumulativeShearY),
+      formatMoment(row.torsionMz),
+      formatDriftRatio(row.driftRatio),
+      statusLabel(row.driftStatus),
+    ])),
+    renderTable(['Member', 'Stations', 'Governing', 'Combo', 'Station', 'Value'], post.memberStationForces.map((row) => [
+      row.memberId,
+      row.stationCount,
+      row.governing?.key || '-',
+      row.governing?.comboId || '-',
+      format(row.governing?.x),
+      formatForce(row.governing?.value),
+    ])),
+    renderTable(['Node', 'Rz min', 'Rz max', 'Combo', 'Uplift'], post.foundationReactions.map((row) => [
+      row.nodeId,
+      formatForce(row.reactions.rz.min),
+      formatForce(row.reactions.rz.max),
+      row.governingVerticalCombo || '-',
+      row.uplift ? 'Yes' : 'No',
     ])),
   ].join('');
 }

@@ -164,6 +164,13 @@ export function renderCalculationPackageHtml(pkg) {
       ratio(row.demandToLimit),
       row.status,
     ])) : '<div class="note">No story drift data available.</div>'}
+    <h3>Result Postprocessing</h3>
+    ${d.resultPostprocessing ? table(['Item', 'Value'], [
+      ['Story rows', d.resultPostprocessing.summary.storyRowCount],
+      ['Member station rows', d.resultPostprocessing.summary.memberRowCount],
+      ['Foundation rows', d.resultPostprocessing.summary.foundationRowCount],
+      ['Uplift nodes', d.resultPostprocessing.summary.upliftNodeCount],
+    ]) : '<div class="note">No result postprocessing data available.</div>'}
   </section>
 
   <section id="members" class="page-break">

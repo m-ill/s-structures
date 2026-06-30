@@ -144,6 +144,10 @@ export {
   renderCalculationPackageHtml,
 } from './report/calculationPackage.js';
 export {
+  buildResultPostprocessing,
+} from './results/resultPostprocessing.js';
+export { RESULT_POSTPROCESSING_VERSION } from './results/resultUtils.js';
+export {
   createKdsLoadCombinations,
   createKdsRuleBasedLoadCombinations,
   buildKdsLoadStandardAudit,

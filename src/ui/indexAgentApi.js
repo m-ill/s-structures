@@ -12,6 +12,7 @@ import {
   buildConnectionFoundationReport,
   buildMemberDesignTraceReport,
   buildRcDetailingReport,
+  buildResultPostprocessing,
   buildServiceabilityDriftReport,
   buildSteelDetailingReport,
   createCalculationPackageHtml,
@@ -177,6 +178,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildServiceabilityDriftReport(model, getAnalysis(model), options));
+    },
+    getResultPostprocessing(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildResultPostprocessing(model, getAnalysis(model), options));
     },
     getStorySummary() {
       const model = getCurrentModel(target);
