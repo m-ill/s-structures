@@ -20,6 +20,7 @@ export {
   BASELINE_CONTRACT_VERSION,
   buildBaselineContract,
 } from './core/baselineContract.js';
+export { VALIDATION_HEALTH_VERSION, summarizeValidationHealth } from './core/validationHealth.js';
 export {
   addLoadCombination,
   factorText,
@@ -44,6 +45,7 @@ export {
   memberAxes,
   solveLinear,
 } from './solver/linear3d.js';
+export { ANALYSIS_AUDIT_VERSION, buildAnalysisAudit } from './solver/analysisAudit.js';
 export {
   checkSteelMember,
   runDesignChecks,

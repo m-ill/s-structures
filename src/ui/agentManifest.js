@@ -26,6 +26,8 @@ import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
+import { VALIDATION_HEALTH_VERSION } from '../core/validationHealth.js';
+import { ANALYSIS_AUDIT_VERSION } from '../solver/analysisAudit.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -69,6 +71,8 @@ export function buildAgentManifest(options = {}) {
       memberDesignTrace: MEMBER_DESIGN_TRACE_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
+      validationHealth: VALIDATION_HEALTH_VERSION,
+      analysisAudit: ANALYSIS_AUDIT_VERSION,
       calculationPackageUi: 'm43-calculation-package-ui',
     },
     readApis: [
@@ -145,6 +149,8 @@ export function buildAgentManifest(options = {}) {
       'representativeBuildingReportSet',
       'stabilizationHarnessReportSet',
       'phase2BaselineContract',
+      'phase2ValidationHealth',
+      'phase2AnalysisAudit',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -187,6 +193,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M48', status: 'preliminary', feature: 'load derivation formula trace for gravity, wind, and seismic generated loads' },
       { id: 'M49', status: 'preliminary', feature: 'story drift and serviceability review table for elastic analysis results' },
       { id: 'P2-MVP-S1', status: 'available', feature: 'unit, sign, and schema baseline contract' },
+      { id: 'P2-MVP-S2', status: 'available', feature: 'validation health score and analysis audit contract' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

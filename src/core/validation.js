@@ -12,6 +12,7 @@ import {
 } from './schema.js';
 import { validateUnits } from './units.js';
 import { validateUnitSystem } from './unitSystemValidation.js';
+import { summarizeValidationHealth } from './validationHealth.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -225,7 +226,8 @@ function issue(level, code, message, target) {
 }
 
 function finish(errors, warnings) {
-  return { ok: errors.length === 0, errors, warnings };
+  const base = { ok: errors.length === 0, errors, warnings };
+  return { ...base, ...summarizeValidationHealth(base) };
 }
 
 function isFiniteNumber(value) {

@@ -3,6 +3,7 @@ import { migrateToV3, validateModel } from '../core/model.js';
 import { analyzeDynamics } from '../dynamics/modal.js';
 import { vlen } from '../core/vector.js';
 import { runDesignChecks } from '../design/steel.js';
+import { buildAnalysisAudit } from './analysisAudit.js';
 import {
   analyzeComponent3D,
   summarizeSolverDiagnostics,
@@ -31,9 +32,9 @@ export function analyzeModel(inputModel) {
   if (!model.members?.length) {
     output.ok = false;
     output.empty = true;
-    return output;
+    return withAudit(output);
   }
-  if (!output.ok) return output;
+  if (!output.ok) return withAudit(output);
 
   const combos = model.loadCombinations?.length ? model.loadCombinations : defaultCombos(model);
   output.combos = combos;
@@ -72,6 +73,11 @@ export function analyzeModel(inputModel) {
     output.ok = false;
   }
 
+  return withAudit(output);
+}
+
+function withAudit(output) {
+  output.audit = buildAnalysisAudit(output);
   return output;
 }
 

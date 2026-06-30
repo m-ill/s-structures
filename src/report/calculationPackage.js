@@ -141,6 +141,8 @@ export function renderCalculationPackageHtml(pkg) {
     <h2>Elastic Analysis Summary</h2>
     ${metricGrid([
       ['Status', d.analysis.status],
+      ['Audit', d.analysis.auditOk == null ? '-' : d.analysis.auditOk ? 'OK' : 'WARN'],
+      ['Eq. residual', ratio(d.analysis.maxEquilibriumResidual)],
       ['Max disp.', length(d.analysis.maxDisplacement)],
       ['Max util.', ratio(d.analysis.maxUtilization)],
       ['Warnings', d.analysis.warningCount],
