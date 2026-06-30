@@ -34,8 +34,12 @@ Phase 2 개발을 시작할 때는 아래 순서로 읽는다.
 2. `docs/user-manual/AI_AGENT_GUIDE.md`
 3. `docs/user-manual/agent-contract.json`
 4. `docs/phase2/README.md`
-5. `docs/phase2/DEVELOPMENT_FILE_MAP.md`
-6. `docs/phase2/DOCUMENTATION_GOVERNANCE.md`
+5. `docs/phase2/ROADMAP.md`
+6. `docs/phase2/IMPLEMENTATION_BACKLOG.md`
+7. `docs/phase2/ELASTIC_PRACTICE_MVP.md`
+8. `docs/phase2/STANDARD_ENGINE_PLAN.md`
+9. `docs/phase2/DEVELOPMENT_FILE_MAP.md`
+10. `docs/phase2/DOCUMENTATION_GOVERNANCE.md`
 
 ## Maintenance Rule
 

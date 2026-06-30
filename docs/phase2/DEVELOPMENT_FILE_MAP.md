@@ -10,6 +10,7 @@
 | 선형해석 | `src/solver/` | 3D frame assembly, element stiffness, recovery, P-Delta |
 | 동적해석 | `src/dynamics/` | modal, lumped mass, RSA |
 | 설계/기준식 | `src/design/` | load estimation, trace, steel/RC/detailing, connection/foundation, serviceability |
+| 기준 registry | `src/standards/` 예정 | 기준 ID, 조항 metadata, formula registry |
 | 비선형 예비 | `src/nonlinear/` | pushover preliminary |
 | 보고서 | `src/report/` | basic report, detailed report, calculation package, formatting |
 | UI/agent | `src/ui/` | index bridge, native ribbon, agent API, command bridge, result controls |
@@ -57,6 +58,7 @@
 | validation rule 추가 | `src/core/validation.js`, `tests/m1-schema.mjs` |
 | 선형 solver 수정 | `src/solver/linear3d*.js`, `docs/verification/LINEAR_SOLVER_VERIFICATION.md` |
 | 하중 산정 수정 | `src/design/loadEstimation.js`, `src/design/loadDerivationTrace.js` |
+| 기준식 registry 추가 | `docs/phase2/STANDARD_ENGINE_PLAN.md`, `src/standards/` 예정 |
 | 하중조합 수정 | `src/core/kdsLoadCombinations.js` |
 | RC/steel 검토 수정 | `src/design/rcDetailing.js`, `src/design/steelDetailing.js`, `src/design/memberDesignTrace.js` |
 | 계산서 수정 | `src/report/calculationPackage.js`, `src/report/detailedReport.js` |
