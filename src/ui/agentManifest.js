@@ -26,6 +26,7 @@ import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
 import { ADVANCED_ELASTIC_TRACE_VERSION } from '../results/advancedTraceUtils.js';
+import { COMBINATION_ENVELOPE_CONTRACT_VERSION } from '../results/combinationEnvelopeVersion.js';
 import { RESULT_POSTPROCESSING_VERSION } from '../results/resultUtils.js';
 import { PRACTICE_PLATFORM_VERSION } from '../platform/practicePlatformReadiness.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
@@ -76,6 +77,7 @@ export function buildAgentManifest(options = {}) {
       kdsLoadCombinationPresets: KDS_LOAD_COMBINATION_VERSION,
       kdsLoadCombinationRules: KDS_LOAD_COMBINATION_RULE_VERSION,
       kdsLoadStandardRegistry: KDS_LOAD_STANDARD_REGISTRY_VERSION,
+      combinationEnvelopeContract: COMBINATION_ENVELOPE_CONTRACT_VERSION,
       designBasisLoadEstimation: LOAD_ESTIMATION_VERSION,
       designBasisInput: DESIGN_BASIS_INPUT_VERSION,
       loadDerivationTrace: LOAD_DERIVATION_TRACE_VERSION,
@@ -119,6 +121,7 @@ export function buildAgentManifest(options = {}) {
       'getKdsLoadCombinationRules',
       'getKdsLoadStandardRegistry',
       'getKdsLoadStandardAudit',
+      'getCombinationEnvelopeContract',
       'getDesignBasisLoadEstimation',
       'getDesignBasisInput',
       'getRcDetailingReport',
@@ -164,6 +167,7 @@ export function buildAgentManifest(options = {}) {
       'kdsLoadCombinationPreset',
       'kdsLoadCombinationRuleSet',
       'kdsLoadStandardAudit',
+      'combinationEnvelopeContract',
       'designBasisLoadEstimation',
       'designBasisInput',
       'loadDerivationTrace',
@@ -243,6 +247,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'M42', status: 'available', feature: 'print-ready calculation package with cover, contents, and appendix' },
       { id: 'M43', status: 'available', feature: 'native menu and agent action for opening calculation packages' },
       { id: 'M44', status: 'preliminary', feature: 'structured KDS-style load standard registry and audit trace' },
+      { id: 'P2-M4', status: 'preliminary', feature: 'T21-T24 combination groups, rules, coverage, and envelope contract' },
       { id: 'M45', status: 'preliminary', feature: 'member-by-member design formula trace and action matrix' },
       { id: 'M46', status: 'available', feature: 'stabilization harness for modeling, elastic analysis, visuals, and reports' },
       { id: 'M47', status: 'preliminary', feature: 'design-basis load input controls, preview API, and apply workflow' },

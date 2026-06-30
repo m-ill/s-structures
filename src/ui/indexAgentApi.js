@@ -3,6 +3,7 @@ import {
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildAdvancedElasticTrace,
   buildBaselineContract,
+  buildCombinationEnvelopeContract,
   buildDesignDemandPackage,
   buildEccentricStoryLoadDistribution,
   buildDiaphragmSummary,
@@ -146,6 +147,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildKdsLoadStandardAudit(model, options));
+    },
+    getCombinationEnvelopeContract(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildCombinationEnvelopeContract(model, getAnalysis(model), options));
     },
     getDesignBasisLoadEstimation(options = {}) {
       const model = getCurrentModel(target);

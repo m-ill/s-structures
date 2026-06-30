@@ -53,6 +53,11 @@ export {
   updateLoadCombination,
 } from './core/combinations.js';
 export {
+  COMBINATION_GROUP_VERSION,
+  classifyCombinationGroup,
+} from './core/combinationGroup.js';
+export { summarizeCombinationGroups } from './core/combinationGroupSummary.js';
+export {
   analyzeAll,
   analyzeComponent3D,
   analyzeModel,
@@ -157,6 +162,10 @@ export {
   buildPracticePlatformReadiness,
   PRACTICE_PLATFORM_VERSION,
 } from './platform/practicePlatformReadiness.js';
+export {
+  buildCombinationEnvelopeContract,
+} from './results/combinationEnvelopeContract.js';
+export { COMBINATION_ENVELOPE_CONTRACT_VERSION } from './results/combinationEnvelopeVersion.js';
 export {
   createKdsLoadCombinations,
   createKdsRuleBasedLoadCombinations,

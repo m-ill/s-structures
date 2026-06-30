@@ -2,6 +2,7 @@ import {
   analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildAdvancedElasticTrace,
+  buildCombinationEnvelopeContract,
   buildDesignDemandPackage,
   buildEccentricStoryLoadDistribution,
   buildDiaphragmSummary,
@@ -136,6 +137,11 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       return buildKdsLoadStandardAudit(model, options);
+    },
+    getCombinationEnvelopeContract(options = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      return buildCombinationEnvelopeContract(model, lastResult || analyzeForIndex(model), options);
     },
     getDesignBasisLoadEstimation(options = {}) {
       const model = bridge.getCurrentModel();
