@@ -1,7 +1,7 @@
 # Phase 2 Development Hub
 
 phase: 2
-status: 준비
+status: complete (elastic practice MVP T01-T50 implemented; active planning moved to `docs/phase3/`)
 
 Phase 2는 현재의 선형 탄성해석 제품 흐름을 구조설계사무소용 실무 플랫폼으로 키우는 단계다. 목표는 기능을 더 붙이기 전에 파일 위치, 문서 위치, API 계약, 검증 산출물, 기준식 trace를 분리해서 장기 개발이 가능한 구조를 만드는 것이다.
 

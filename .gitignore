@@ -1,0 +1,12 @@
+# Server runtime data (users, projects, uploads) — never source.
+data/
+
+# Logs and local scratch
+*.log
+.tmp-*/
+
+# Large import inputs are never committed; use fixtures or generators.
+*.dwg
+*.las
+*.laz
+*.e57
