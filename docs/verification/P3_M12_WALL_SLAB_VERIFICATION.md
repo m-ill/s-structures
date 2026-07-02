@@ -27,6 +27,7 @@ The previous M12 trace exposed semi-rigid diaphragm rows only. P3-M12 now expose
 4. shell v1 compatible 24-DOF element contract with preliminary frame-link assembly, patch, and plate-deflection benchmarks
 5. slab redistribution report from equivalent truss brace generation
 6. material-aware equivalent link rows for shell and semi-rigid diaphragm generated members
+7. wall/slab review decision with ticket readiness flags, preliminary solver-treatment flag, blockers, and agent decision
 
 2026-07-02 update: P3-T74 now has a preliminary shell v1 module under `src/solver/shell/quad4.js` and a frame-link assembly module under `src/solver/shell/shellAssembly.js`. The shell trace exposes membrane, bending, and drilling stiffness terms, 6-DOF/node compatibility, a constant-strain membrane patch benchmark, a simply supported plate deflection benchmark, and generated edge/diagonal links for preliminary solver participation.
 
@@ -39,6 +40,8 @@ The previous M12 trace exposed semi-rigid diaphragm rows only. P3-M12 now expose
 2026-07-02 contract update: `buildWallSlabEquivalentTrace()` now exposes P3-M12 milestone metadata, P3-T73 through P3-T75 ticket coverage, `featureTicketMap`, review field names, and `summary.ticketCoverage`. AI agents and reports can verify wall mid-pier, shell v1/frame-link assembly, and semi-rigid diaphragm redistribution coverage directly from the trace while preserving the preliminary solver-treatment limitations.
 
 2026-07-02 redistribution-review update: semi-rigid diaphragm combo rows now expose `status` and `review` fields alongside `uxSpread`. This lets reports and AI agents distinguish unavailable displacement samples from available preliminary redistribution spread traces without reinterpreting null values.
+
+2026-07-03 P3-M12 rebuild review update: `buildWallSlabEquivalentTrace()` now exposes a top-level `review` block with wall mid-pier, shell frame-link, and semi-rigid redistribution readiness flags, uncovered tickets, preliminary solver-treatment status, blockers, and agent decision. This keeps the available equivalent-frame path separate from production shell/slab finite-element certification.
 
 ## Current Test Gate
 

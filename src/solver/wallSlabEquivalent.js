@@ -119,6 +119,7 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
       ],
     },
     summary,
+    review: buildWallSlabReview(summary),
     wallMidPier: {
       count: (model.wallEquivalents || []).length,
       rows: (model.wallEquivalents || []).map((row) => ({
@@ -138,6 +139,27 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
       redistribution,
       limitation: 'Semi-rigid diaphragm uses an equivalent truss brace grid for preliminary in-plane redistribution; shell slab membrane assembly remains future hardening.',
     },
+  };
+}
+
+function buildWallSlabReview(summary) {
+  const coverage = summary.ticketCoverage || [];
+  const uncovered = coverage.filter((row) => !row.covered).map((row) => row.ticket);
+  const blockers = [];
+  if (summary.wallEquivalentCount > 0 && summary.recoveredWallForceCount === 0) blockers.push('wall-pier-force-recovery-missing');
+  return {
+    traceReady: blockers.length === 0,
+    wallMidPierReady: coverage.find((row) => row.ticket === 'P3-T73')?.covered === true,
+    shellFrameLinkReady: coverage.find((row) => row.ticket === 'P3-T74')?.covered === true,
+    semiRigidRedistributionReady: coverage.find((row) => row.ticket === 'P3-T75')?.covered === true,
+    preliminarySolverTreatment: true,
+    engineerReviewRequired: true,
+    productionReady: false,
+    uncoveredTickets: uncovered,
+    blockers,
+    agentDecision: blockers.length
+      ? 'fix-wall-slab-trace-before-review'
+      : 'wall-slab-equivalent-ready-for-engineering-review',
   };
 }
 
