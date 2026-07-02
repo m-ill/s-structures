@@ -1,11 +1,14 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import {
   DWG_ADAPTER_VERSION,
+  DWG_CONVERSION_FAILED,
   DWG_CONVERTER_MISSING,
   DXF_PLAN_RECOGNITION_VERSION,
   PLAN_ASSEMBLY_VERSION,
   assemblePlansToImportCandidate,
+  createDwgConversionFailureResult,
   createDwgConversionPlan,
   createDwgMissingConverterResult,
   recognizePlanDxf,
@@ -22,6 +25,25 @@ assert.match(missing.message, /DXF/);
 const plan = createDwgConversionPlan({ inputPath: 'sample.dwg', converterPath: 'C:/Tools/ODAFileConverter.exe' });
 assert.equal(plan.canRun, true);
 assert.equal(plan.targetFormat, 'ACAD2018_ASCII_DXF');
+assert.equal(plan.outputPath, 'sample.dxf');
+assert.equal(plan.command.executable, 'C:/Tools/ODAFileConverter.exe');
+assert.deepEqual(plan.command.args.slice(2, 4), ['ACAD2018_ASCII_DXF', 'DXF']);
+assert.equal(plan.audit.requiresExternalConverter, true);
+
+const failed = createDwgConversionFailureResult({ plan }, { message: 'converter exited', stderr: 'bad file', exitCode: 2 });
+assert.equal(failed.ok, false);
+assert.equal(failed.code, DWG_CONVERSION_FAILED);
+assert.equal(failed.plan.outputPath, 'sample.dxf');
+assert.equal(failed.exitCode, 2);
+
+const cli = spawnSync(process.execPath, [
+  'tools/convert-dwg.mjs',
+  '--input', 'sample.dwg',
+  '--converter', 'C:/Tools/ODAFileConverter.exe',
+  '--out', 'tmp/import',
+], { encoding: 'utf8' });
+assert.equal(cli.status, 0);
+assert.match(cli.stdout, /sample\.dxf/);
 
 const layerMap = {
   'S-COL': { kind: 'column', section: 'H300', material: 'SS275' },
