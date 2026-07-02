@@ -11,6 +11,7 @@ import {
   buildCorotationalBeamState,
   buildNonlinearTangentAssembly,
   buildNonlinearAnalysisTrace,
+  chooseLineSearchTrace,
   createAnalysisState,
   createPortalFrameSample,
   evaluateConvergenceNorms,
@@ -64,7 +65,13 @@ assert.equal(nr.version, NEWTON_RAPHSON_VERSION);
 assert.equal(nr.converged, true);
 assert.equal(nr.lineSearchEnabled, true);
 assert.equal(nr.convergenceReason, 'CONVERGED');
+assert.ok(nr.log.iterations.every((row) => row.lineSearch && row.lineSearch.candidates.length === 4));
 assert.ok(Math.abs(nr.x - 2) < 1e-6);
+
+const lineSearch = chooseLineSearchTrace((x) => x * x - 4, 1, 1.5, -3);
+assert.equal(lineSearch.acceptedAlpha, 0.5);
+assert.equal(lineSearch.candidates.length, 4);
+assert.equal(lineSearch.improved, true);
 
 const benchmarks = runNonlinearGeometryBenchmarks();
 assert.equal(benchmarks.version, NONLINEAR_BENCHMARK_VERSION);
@@ -81,6 +88,7 @@ assert.equal(trace.geometryGate.contracts.assembly, NONLINEAR_ASSEMBLY_VERSION);
 assert.equal(trace.geometryGate.assembly.version, NONLINEAR_ASSEMBLY_VERSION);
 assert.deepEqual(trace.geometryGate.benchmarks.requiredCases, ['B1', 'B2']);
 assert.equal(trace.geometryGate.convergence.lineSearchEnabled, true);
+assert.ok(trace.geometryGate.convergence.log.iterations[0].lineSearch.candidates.length === 4);
 assert.equal(trace.benchmarks.geometry.ok, true);
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });

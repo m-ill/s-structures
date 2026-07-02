@@ -306,6 +306,7 @@ export {
 export {
   NEWTON_RAPHSON_VERSION,
   chooseLineSearchAlpha,
+  chooseLineSearchTrace,
   solveNewtonRaphson,
 } from './nonlinear/control/newtonRaphson.js';
 export {
