@@ -347,6 +347,18 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
     NONLINEAR_ENGINE_CONTRACT.benchmarks.length === 8 &&
     NONLINEAR_ENGINE_CONTRACT.convergenceNorms.length === 3 &&
     NONLINEAR_ENGINE_CONTRACT.resultFields.includes('capacityCurve');
+  const activeTickets = new Set(rows.flatMap((row) => row.tickets));
+  const absorbedTicketIds = new Set(ABSORBED_TICKETS.map((row) => row.ticket));
+  const plannedTickets = new Set([...activeTickets, ...absorbedTicketIds]);
+  const unresolvedTickets = [...plannedTickets].filter((ticket) => !activeTickets.has(ticket) && !absorbedTicketIds.has(ticket));
+  const ticketSummary = {
+    planned: plannedTickets.size,
+    active: activeTickets.size,
+    absorbed: absorbedTicketIds.size,
+    unresolved: unresolvedTickets.length,
+    effectiveCompletion: unresolvedTickets.length === 0 && absorbedTicketIds.size === ABSORBED_TICKETS.length,
+    note: 'P3-T57 and P3-T60 remain in backlog history but are explicitly absorbed by later active tickets.',
+  };
   return {
     version: PHASE3_PLAN_ALIGNMENT_VERSION,
     sourceDocs: CORE_DOCS.map((name) => `docs/phase3/${name}`),
@@ -394,14 +406,13 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
       ...NONLINEAR_ENGINE_CONTRACT,
       ok: nonlinearEngineOk,
     },
-    activeTicketCount: new Set(rows.flatMap((row) => row.tickets)).size,
+    activeTicketCount: activeTickets.size,
     absorbedTickets: ABSORBED_TICKETS,
-    plannedTicketCount: new Set([
-      ...rows.flatMap((row) => row.tickets),
-      ...ABSORBED_TICKETS.map((row) => row.ticket),
-    ]).size,
+    plannedTicketCount: plannedTickets.size,
+    unresolvedTickets,
+    ticketSummary,
     status: missing.length || !requirementsOk || !architectureOk || !serverApiOk || !frontendOk ||
-      !importPipelineOk || !materialLibraryOk || !nonlinearEngineOk ? 'REVIEW' : 'OK',
+      !importPipelineOk || !materialLibraryOk || !nonlinearEngineOk || !ticketSummary.effectiveCompletion ? 'REVIEW' : 'OK',
     missing,
     agentReadable: readApis.has('getPhase3PlanAlignment'),
     notes: [

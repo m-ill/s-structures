@@ -77,6 +77,12 @@ assert.ok(report.milestones.find((row) => row.id === 'P3-M20').tests.includes('t
 assert.equal(report.activeTicketCount, 93);
 assert.equal(report.plannedTicketCount, 95);
 assert.deepEqual(report.absorbedTickets.map((row) => row.ticket), ['P3-T57', 'P3-T60']);
+assert.deepEqual(report.unresolvedTickets, []);
+assert.equal(report.ticketSummary.planned, 95);
+assert.equal(report.ticketSummary.active, 93);
+assert.equal(report.ticketSummary.absorbed, 2);
+assert.equal(report.ticketSummary.unresolved, 0);
+assert.equal(report.ticketSummary.effectiveCompletion, true);
 assert.equal(manifest.modules.phase3PlanAlignment, PHASE3_PLAN_ALIGNMENT_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
@@ -138,6 +144,8 @@ console.log(JSON.stringify({
   nonlinearBenchmarks: report.nonlinearEngine.benchmarks.length,
   activeTickets: report.activeTicketCount,
   plannedTickets: report.plannedTicketCount,
+  absorbedTickets: report.ticketSummary.absorbed,
+  unresolvedTickets: report.ticketSummary.unresolved,
 }, null, 2));
 
 function listFiles(dir) {
