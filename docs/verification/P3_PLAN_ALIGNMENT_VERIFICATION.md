@@ -35,6 +35,7 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 | Ticket completion summary | `ticketSummary` records 95 planned, 93 active, 2 absorbed, and 0 unresolved tickets |
 | Agent readability | `getPhase3PlanAlignment()` and `phase3PlanAlignment` data contract |
 | Phase 3 runner | `tools/run-milestone-tests.mjs --phase3` and `tests/p3-runner-contract.mjs` |
+| QA command contract | `qaCommands` in `buildAgentManifest()` and `docs/user-manual/agent-contract.json` |
 
 ## Current Test Gate
 
@@ -43,6 +44,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 2026-07-02 M6-M20 audit update: the plan-alignment report now separates historical backlog count from effective execution count. The backlog has 95 planned ticket IDs, 93 active milestone tickets, 2 absorbed tickets, and 0 unresolved tickets. P3-T57 is absorbed by the active wind/seismic v2 ticket group, and P3-T60 is absorbed by the active seismic Ax ticket. This prevents the audit from treating explicitly retired backlog rows as missing implementation work.
 
 2026-07-02 runner update: the milestone runner now has a Phase 3 mode. `npm run test:p3` runs the P3-M0 to P3-M20 gate set, while `npm run test:p3:list` prints the exact milestone/test mapping. This makes the QA release plan executable without relying on the older sequential M0 to M91 script numbering.
+
+2026-07-02 agent QA command update: `buildAgentManifest()` and `docs/user-manual/agent-contract.json` now expose `qaCommands` for the full Phase 3 gate, list mode, P3-M6-to-M20 scoped gate, runner contract, and plan-alignment check. This gives AI agents a stable place to discover verification commands instead of inferring them from package scripts.
 
 For the P3-M6 restart point, the practical order is:
 

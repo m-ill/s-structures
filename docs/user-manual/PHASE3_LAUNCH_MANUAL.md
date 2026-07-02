@@ -29,7 +29,7 @@ AI agents should read these methods first:
 4. `getP3IntegratedResults()`
 5. `getCalculationPackage()`
 
-The canonical manual contract is `docs/user-manual/agent-contract.json`. The launch gate verifies that its `readApis` list matches `src/ui/agentManifest.js`, that manual execute actions are exposed by runtime `executeActions`, that import review workflows are exposed by runtime `readApis`, and that the listed Phase 3 gate modules/data contracts are present in the manifest.
+The canonical manual contract is `docs/user-manual/agent-contract.json`. The launch gate verifies that its `readApis` list matches `src/ui/agentManifest.js`, that manual execute actions are exposed by runtime `executeActions`, that import review workflows are exposed by runtime `readApis`, that QA commands match the manifest, and that the listed Phase 3 gate modules/data contracts are present in the manifest.
 
 ## Phase 3 Report Sections
 
@@ -48,7 +48,10 @@ The Phase 3 integrated results section links result postprocessing, nonlinear tr
 
 Before public release, run:
 
-- `npm.cmd test`
-- `npm.cmd run test:p3m20`
+- `npm.cmd run test:p3`
+- `npm.cmd run test:p3:list`
+- `node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20`
+
+AI agents can read the same command set from `qaCommands` in `docs/user-manual/agent-contract.json` or `getCapabilities().qaCommands`.
 
 Manual launch evidence remains in `reports/launch-readiness/`.

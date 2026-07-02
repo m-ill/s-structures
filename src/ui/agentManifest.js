@@ -297,6 +297,13 @@ export function buildAgentManifest(options = {}) {
       controlCount: options.controls?.length || 0,
       controls: options.controls || [],
     },
+    qaCommands: {
+      phase3Full: 'npm.cmd run test:p3',
+      phase3List: 'npm.cmd run test:p3:list',
+      phase3M6ToM20: 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20',
+      phase3RunnerContract: 'node tests/p3-runner-contract.mjs',
+      phase3PlanAlignment: 'node tests/p3-plan-alignment.mjs',
+    },
     dataContracts: [
       'schemaVersionedModel',
       'linear3dAnalysis',

@@ -111,6 +111,8 @@ assert.equal(report.ticketSummary.effectiveCompletion, true);
 assert.equal(manifest.modules.phase3PlanAlignment, PHASE3_PLAN_ALIGNMENT_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
+assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
+assert.equal(manifest.qaCommands.phase3M6ToM20, 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20');
 
 const agent = createIndexAgentApi({ model: () => null, reanalyze: () => {} });
 const apiReport = agent.getPhase3PlanAlignment();
