@@ -37,6 +37,8 @@ export function buildP3DetailedDesignReport(model, analysis, options = {}) {
 export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
   const issueRows = evidence.issueRows || buildIssueRows(modules);
   const formulaTrace = evidence.formulaTrace || Object.values(modules).flatMap((module) => module.formulaTrace || []);
+  const coverage = buildTicketCoverage(modules, issueRows, formulaTrace);
+  const designReview = buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage });
   return {
     version: P3_DETAILED_DESIGN_GATE_VERSION,
     milestone: 'P3-M18',
@@ -54,17 +56,19 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
       },
       reviewFields: ['summary.ticketCoverage', 'coverage', 'modules', 'issueCount', 'formulaCount', 'unregisteredFormulaCount'],
       agentUse: 'Read-only gate for reports and AI-agent inspection of P3-M18 detailed-design integration.',
+      maturity: 'preliminary-integrated-schedule',
     },
-    coverage: buildTicketCoverage(modules, issueRows, formulaTrace),
+    coverage,
     summary: {
       readyForAgentReview: true,
-      completeCoverage: buildTicketCoverage(modules, issueRows, formulaTrace).every((row) => row.covered),
+      completeCoverage: coverage.every((row) => row.covered),
       issueCount: issueRows.length,
       formulaCount: formulaTrace.length,
       unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
       serviceabilityHook: 'drift-deflection-vibration-ready',
       moduleStatuses: summarizeModuleStatuses(modules),
-      ticketCoverage: buildTicketCoverage(modules, issueRows, formulaTrace),
+      designReview,
+      ticketCoverage: coverage,
     },
     modules: Object.fromEntries(Object.entries(modules).map(([id, module]) => [id, {
       version: module.version || null,
@@ -74,14 +78,39 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     }])),
     issueCount: issueRows.length,
     formulaCount: formulaTrace.length,
-    ticketCoverage: buildTicketCoverage(modules, issueRows, formulaTrace),
+    ticketCoverage: coverage,
+    designReview,
     formulaRegistryVersion: DESIGN_FORMULA_REGISTRY_VERSION,
     unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
     serviceabilityHook: 'drift-deflection-vibration-ready',
     limitations: [
       'P3-M18 is a preliminary integrated detailed-design trace gate.',
+      'Complete coverage means trace rows and formula links are present; fabrication, geotechnical, permit, and drawing approval remain engineer review scope.',
       'Fabrication detailing, geotechnical settlement, final permits, and construction drawings remain engineer review scope.',
     ],
+  };
+}
+
+function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage }) {
+  const unregisteredFormulaCount = formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length;
+  const moduleStatuses = summarizeModuleStatuses(modules);
+  const missing = [];
+  if (!coverage.every((row) => row.covered)) missing.push('ticket-coverage');
+  if (!formulaTrace.length) missing.push('formula-trace');
+  if (unregisteredFormulaCount) missing.push('formula-registry');
+  return {
+    status: missing.length ? 'review-required' : 'trace-ready',
+    maturity: 'preliminary',
+    finalPermitDesign: false,
+    fabricationReady: false,
+    geotechnicalCertified: false,
+    completeCoverage: coverage.every((row) => row.covered),
+    issueCount: issueRows.length,
+    formulaCount: formulaTrace.length,
+    unregisteredFormulaCount,
+    moduleStatuses,
+    missing,
+    agentDecision: missing.length ? 'hold-before-m19-results' : 'm18-ready-for-m19-integrated-results-review',
   };
 }
 

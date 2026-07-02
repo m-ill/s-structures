@@ -48,6 +48,7 @@ export function buildRcDesignGate(report = {}) {
   const formulas = report.formulaTrace || rows.map((row) => collectFormula(row)).flat();
   const coverage = buildRoleCoverage(schedules);
   const missingRoles = coverage.filter((row) => row.count === 0).map((row) => row.role);
+  const rcReview = buildRcDesignReview({ rows, formulas, coverage, missingRoles });
   return {
     version: RC_DESIGN_GATE_VERSION,
     milestone: 'P3-M17',
@@ -64,6 +65,7 @@ export function buildRcDesignGate(report = {}) {
       },
       reviewFields: ['summary.ticketCoverage', 'coverage', 'status', 'formulaCount', 'issueCount'],
       agentUse: 'Read-only gate for reports and AI-agent inspection of RC detailed-design role coverage.',
+      maturity: 'preliminary-detail-schedule',
     },
     summary: {
       readyForAgentReview: true,
@@ -72,8 +74,10 @@ export function buildRcDesignGate(report = {}) {
       issueCount: rows.filter((row) => row.status && row.status !== 'OK').length,
       formulaCount: formulas.length,
       roleStatuses: summarizeRoleStatuses(rows),
+      rcReview,
       ticketCoverage: buildTicketCoverage(coverage),
     },
+    rcReview,
     schedules: {
       beams: schedules.beams?.length || 0,
       columns: schedules.columns?.length || 0,
@@ -90,8 +94,31 @@ export function buildRcDesignGate(report = {}) {
     completeRoleCoverage: missingRoles.length === 0,
     limitations: [
       'P3-M17 is a preliminary detailed-design trace gate for engineer review.',
+      'Complete role coverage means beam, column, wall, and slab schedule rows exist; it is not final permit approval.',
       'Final clause selection, seismic detailing, drawings, and constructability remain outside this gate.',
     ],
+  };
+}
+
+function buildRcDesignReview({ rows, formulas, coverage, missingRoles }) {
+  const issueCount = rows.filter((row) => row.status && row.status !== 'OK').length;
+  const unregisteredFormulaCount = formulas.filter((row) => row.standard === 'UNREGISTERED').length;
+  const missing = [];
+  if (missingRoles.length) missing.push('role-coverage');
+  if (!formulas.length) missing.push('formula-trace');
+  if (unregisteredFormulaCount) missing.push('formula-registry');
+  return {
+    status: missing.length ? 'review-required' : 'trace-ready',
+    maturity: 'preliminary',
+    finalPermitDesign: false,
+    completeRoleCoverage: missingRoles.length === 0,
+    missingRoles,
+    issueCount,
+    formulaCount: formulas.length,
+    unregisteredFormulaCount,
+    coveredTickets: coverage.filter((row) => row.count > 0).map((row) => row.ticket),
+    missing,
+    agentDecision: missing.length ? 'complete-rc-roles-or-formulas' : 'm17-ready-for-m18-integration-review',
   };
 }
 

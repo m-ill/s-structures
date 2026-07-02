@@ -23,6 +23,8 @@ Current status is preliminary. The module produces traceable schedules and regis
 
 2026-07-02 ticket coverage review update: `rcDesignGate` now exposes a formal P3-M17 contract, feature-to-ticket map, and `summary.ticketCoverage`/`ticketCoverage` rows for P3-T87 to P3-T90. The rows preserve partial-coverage cases, so agents can distinguish a valid beam/wall/slab report from a complete beam/column/wall/slab RC package.
 
+2026-07-02 RC maturity review update: `rcDesignGate` now exposes `contract.maturity` and `rcReview`. The review records complete role coverage, missing roles, issue count, formula count, unregistered formula count, covered tickets, and an `agentDecision`. This keeps partial RC schedules usable for review without implying final permit design approval.
+
 ## P3-M18 Steel / Connection / Foundation Detailed Design
 
 Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.
@@ -46,6 +48,8 @@ Current status is preliminary. M18 adds traceable steel, connection, base-plate,
 2026-07-02 contract review update: P3-M18 steel, connection, bolt, weld, base-plate, and foundation rows now expose ticket-specific contracts and compact summaries. The integrated detailed-design report exposes a top-level P3-M18 contract, and `designGate.summary` reports agent-readiness, complete ticket coverage, issue count, formula count, unregistered formula count, serviceability hook, and module status counts.
 
 2026-07-02 ticket coverage review update: `designGate` now exposes a formal P3-M18 contract, feature-to-ticket map, and `summary.ticketCoverage`/`ticketCoverage` rows for P3-T91 to P3-T95. Coverage rows include evidence strings for steel, connection, foundation, formula/issue linking, and serviceability hooks so reports and AI agents can use the same gate pattern as M17.
+
+2026-07-02 integrated maturity review update: `designGate` now exposes `contract.maturity` and `designReview`. The review records complete coverage, issue count, formula count, unregistered formula count, module statuses, and explicit false flags for final permit design, fabrication readiness, and geotechnical certification. Agents can now tell when M18 is ready for M19 result integration without treating it as a sealed construction package.
 
 ## P3-M19 Integrated Results And Report
 
