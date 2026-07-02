@@ -45,7 +45,7 @@ This audit checks the current repository against the Phase 3 planning documents.
 | P3-M8 | Preliminary | point-cloud loader/preprocess/worker/viewer contracts |
 | P3-M9 | Preliminary | synthetic point-cloud extraction/e2e tests; real field files still require future validation |
 | P3-M10 | Preliminary | versioned material/section registry tests plus library edit action/server-storage round-trip |
-| P3-M11 | Preliminary | elastic expansion trace tests plus X-brace unilateral iteration benchmark |
+| P3-M11 | Preliminary | elastic expansion trace tests, load handcalc/station recovery checks, and X-brace unilateral iteration benchmark |
 | P3-M12 | Preliminary | wall/slab equivalent trace tests, shell frame-link assembly, semi-rigid equivalent-brace redistribution, shell v1 patch and plate-deflection benchmarks |
 | P3-M13 | Preliminary | loads v2, dynamic completeness, global buckling, member Euler screening, linear THA tests |
 | P3-M14 | Preliminary | `geometryGate`, KE/KG/hinge tangent assembly trace, nonlinear geometry trace, and B1/B2 benchmark tests |

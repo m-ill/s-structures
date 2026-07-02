@@ -6,7 +6,7 @@ status: implemented-preliminary-core
 ## Completed Scope
 
 - M10: versioned material and section registry, `id@version` references, and parametric H/BOX/PIPE/RECT/CIRC section properties.
-- M11: spring support stiffness, spring settlement load vector, and advanced distributed load expansion for partial/trapezoid member loads.
+- M11: spring support stiffness, spring settlement load vector, advanced distributed load expansion for partial/trapezoid member loads, load handcalc trace rows, source-range station recovery, and member-moment station recovery.
 - M12: mid-pier wall equivalent contract, shell frame-link assembly contract, and semi-rigid diaphragm equivalent-brace redistribution contract.
 - M13: wind/seismic/environmental load trace contract, RSA base-shear scaling, torsion Ax trace, CQC close-mode report, global buckling trace, Euler buckling screening helper, and linear modal-superposition time-history trace helper.
 
@@ -14,7 +14,7 @@ status: implemented-preliminary-core
 
 This step keeps the existing 3D frame solver stable. It does not replace the frame solver with a shell/plate finite-element engine. A preliminary global frame eigenvalue buckling trace is now available for elastic member axial reference forces; shell buckling, follower loads, construction sequence, and nonlinear stability remain formal numerical verification tasks under later Phase 3 hardening gates.
 
-Temperature, temperature-gradient, and member-moment load records now have preliminary fixed-end action paths. Detailed member-station recovery and hand-calculation coverage remain light.
+Temperature, temperature-gradient, and member-moment load records now have preliminary fixed-end action paths. Uniform and gradient temperature records expose handcalc trace rows, and partial/trapezoid/member-moment records expose graph/report station recovery. These are still preliminary solver-hardening contracts, not final code-calculation sign-off.
 
 ## Agent And Data Contracts
 

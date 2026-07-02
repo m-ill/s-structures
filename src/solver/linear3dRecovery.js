@@ -63,9 +63,15 @@ export function collectMemberSpanLoads(memberId, loads, ax) {
   for (const load of loads) {
     if (load.member !== memberId) continue;
     const direction = dirVec(load);
+    if (load.type === 'temperature' || load.type === 'tgradient') continue;
+    if (load.type === 'mmoment') {
+      spanLoads.push({ type: 'moment', a: Math.max(0, Math.min(1, Number(load.at ?? 0.5))) * ax.L, axis: load.axis || 'z', M: Number(load.M || 0) });
+      continue;
+    }
     const magnitude = load.type === 'udl' ? load.w : load.P;
+    if (!Number.isFinite(Number(magnitude))) continue;
     const q = [vdot(ax.x, direction) * magnitude, vdot(ax.y, direction) * magnitude, vdot(ax.z, direction) * magnitude];
-    if (load.type === 'point') spanLoads.push({ type: 'point', a: load.t * ax.L, q });
+    if (load.type === 'point') spanLoads.push({ type: 'point', a: load.t * ax.L, q, sourceRange: load.sourceRange || null });
     else spanLoads.push({ type: 'udl', q, shape: load.shape || 'uniform' });
   }
   return spanLoads;
@@ -76,6 +82,15 @@ export function recoverMemberStations(endForces, spanLoads, L, stationCount) {
   for (let i = 0; i < stationCount; i += 1) xset.add((L * i) / (stationCount - 1));
   spanLoads.forEach((load) => {
     if (load.type === 'point') {
+      xset.add(Math.max(0, load.a - 1e-9));
+      xset.add(Math.min(L, load.a + 1e-9));
+      if (load.sourceRange) {
+        xset.add(Math.max(0, load.sourceRange.from * L - 1e-9));
+        xset.add(Math.min(L, load.sourceRange.from * L + 1e-9));
+        xset.add(Math.max(0, load.sourceRange.to * L - 1e-9));
+        xset.add(Math.min(L, load.sourceRange.to * L + 1e-9));
+      }
+    } else if (load.type === 'moment') {
       xset.add(Math.max(0, load.a - 1e-9));
       xset.add(Math.min(L, load.a + 1e-9));
     }
@@ -102,6 +117,9 @@ export function recoverMemberStations(endForces, spanLoads, L, stationCount) {
         vz += load.q[2];
         mz += load.q[1] * (x - load.a);
         my += load.q[2] * (x - load.a);
+      } else if (load.type === 'moment' && load.a <= x) {
+        if (load.axis === 'y') my += load.M;
+        else if (load.axis === 'z' || !load.axis) mz += load.M;
       } else if (load.type === 'udl') {
         const { fI, mI } = integratedUniformLoad(load.shape, x, L);
         n -= load.q[0] * fI;
@@ -144,7 +162,7 @@ export function recoverMemberShape(dl, spanLoads, ax, material, section, L, stat
         const f = fixedFixedDeflectionFunction(load.shape, x, L);
         v += (load.q[1] * f) / EIz;
         w += (load.q[2] * f) / EIy;
-      } else {
+      } else if (load.type === 'point') {
         const c = fixedFixedPointDeflectionFunction(load.a, x, L);
         v += (load.q[1] * c) / EIz;
         w += (load.q[2] * c) / EIy;

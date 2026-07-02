@@ -54,8 +54,8 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 | P3-T68 | 6-DOF spring support + settlement | Solver has node springs, settlement force contribution, and M11 regression coverage | Preliminary |
 | P3-T69 | truss/tension-only/compression-only elements | Truss axial stiffness path exists; tension/compression-only members now run per-combination active/inactive iteration and expose an advanced trace; X-brace regression covers inactive brace removal | Preliminary |
 | P3-T70 | member end offset / rigid zone | `member.endOffset.i/j` shortens clear stiffness length and has regression coverage | Preliminary |
-| P3-T71 | partial/trapezoid/multiple point/member moment loads | Partial/trapezoid expansion and member moment fixed-end path exist | Preliminary; station recovery detail remains light |
-| P3-T72 | uniform/gradient temperature loads | Uniform and gradient temperature fixed-end paths validate and solve | Preliminary; handcalc coverage is basic |
+| P3-T71 | partial/trapezoid/multiple point/member moment loads | Partial/trapezoid expansion, load-trace rows, segment handcalc rows, source-range station recovery, and member-moment station regression exist | Preliminary |
+| P3-T72 | uniform/gradient temperature loads | Uniform and gradient temperature fixed-end paths validate, solve, and expose handcalc trace rows | Preliminary |
 
 ### P3-M12 Wall And Slab
 

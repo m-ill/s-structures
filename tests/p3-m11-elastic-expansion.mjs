@@ -24,15 +24,22 @@ assert.equal(expanded.trace.version, ELASTIC_EXPANSION_VERSION);
 assert.equal(expanded.loads.length, 8);
 assert.equal(expanded.loads[0].type, 'point');
 assert.equal(expanded.loads.reduce((sum, load) => sum + load.P, 0), 20);
+assert.equal(expanded.loads[0].sourceRange.from, 0.25);
 assert.equal(expanded.trace.features.partialDistributed, 1);
 assert.equal(expanded.trace.features.springSupports, 1);
 assert.equal(expanded.trace.supportTrace[0].node, 'B');
+assert.equal(expanded.trace.loadTrace[0].expandedPointCount, 8);
+assert.equal(expanded.trace.handcalc[0].method, 'segmented-fixed-end-equivalent-point-loads');
+assert.equal(expanded.trace.handcalc[0].totalLoad, 20);
 
 const result = analyzeModel(model);
 assert.equal(result.ok, true);
 assert.equal(result.byCombo.CO1.elasticExpansion.version, ELASTIC_EXPANSION_VERSION);
 assert.equal(result.byCombo.CO1.elasticExpansion.features.springSupports, 1);
 assert.ok(result.byCombo.CO1.reactions.B);
+const partialXs = result.byCombo.CO1.memberResults.M1.xs;
+assert.ok(partialXs.some((x) => Math.abs(x - 1) < 1e-6));
+assert.ok(partialXs.some((x) => Math.abs(x - 3) < 1e-6));
 
 const badRange = createModel({
   ...model,
@@ -52,6 +59,38 @@ assert.equal(validateModel(unsupportedEffect).ok, true);
 const thermalResult = analyzeModel(unsupportedEffect);
 assert.equal(thermalResult.ok, true);
 assert.ok(Math.abs(thermalResult.byCombo.CO1.reactions.A.rx) > 0);
+const thermalCalc = thermalResult.byCombo.CO1.elasticExpansion.handcalc.find((row) => row.type === 'temperature');
+assert.equal(thermalCalc.method, 'N=E*A*alpha*dT');
+assert.ok(thermalCalc.axialForce > 0);
+
+const gradientModel = createModel({
+  nodes: [
+    { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'B', x: 4, y: 0, z: 0, support: 'fixed' },
+  ],
+  members: [{ id: 'M1', n1: 'A', n2: 'B', matId: 'steel', secId: 'h300' }],
+  loads: [{ id: 'TG1', type: 'tgradient', member: 'M1', dTtop: 30, dTbot: 10, h: 0.3, case: 'D' }],
+});
+const gradientResult = analyzeModel(gradientModel);
+assert.equal(gradientResult.ok, true);
+const gradientCalc = gradientResult.byCombo.CO1.elasticExpansion.handcalc.find((row) => row.type === 'tgradient');
+assert.equal(gradientCalc.method, 'M=E*Iz*alpha*(dTtop-dTbot)/h');
+assert.ok(Number.isFinite(gradientCalc.moment));
+
+const memberMomentModel = createModel({
+  nodes: [
+    { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'B', x: 4, y: 0, z: 0, support: 'fixed' },
+  ],
+  members: [{ id: 'M1', n1: 'A', n2: 'B', matId: 'steel', secId: 'h300' }],
+  loads: [{ id: 'MM1', type: 'mmoment', member: 'M1', M: 12, axis: 'z', at: 0.5, case: 'D' }],
+});
+const memberMomentResult = analyzeModel(memberMomentModel);
+assert.equal(memberMomentResult.ok, true);
+const momentMember = memberMomentResult.byCombo.CO1.memberResults.M1;
+assert.ok(momentMember.Mz.every(Number.isFinite));
+assert.ok(momentMember.xs.some((x) => Math.abs(x - 2) < 1e-6));
+assert.ok(memberMomentResult.byCombo.CO1.elasticExpansion.loadTrace.some((row) => row.type === 'mmoment'));
 
 const trussModel = createModel({
   nodes: [
