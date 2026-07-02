@@ -120,9 +120,16 @@ assert.ok(nlth.summary.maxResidualRatio >= 0);
 assert.ok(nlth.rows.every((row) => row.iterations >= 1 && Array.isArray(row.iterationLog)));
 assert.ok(nlth.rows.every((row) => row.energy && row.stability.reason === 'OK'));
 assert.ok(nlth.rows.some((row) => row.hingeState === 'yielded'));
+assert.equal(nlth.inputReview.status, 'available');
 const cautiousNlth = runNewmarkNlth({ accelerations: scaled.accelerations, dt: scaled.dt, stiffness: 100, energyJumpLimit: 0.5 });
 assert.equal(cautiousNlth.energyTrace.stepSplitRecommended, true);
 assert.ok(cautiousNlth.energyTrace.unstableStepCount >= 1);
+const invalidInputNlth = runNewmarkNlth({ accelerations: [0, 'bad', 0.1], dt: 0, stiffness: 0, mass: 0 });
+assert.equal(invalidInputNlth.inputReview.status, 'review-required');
+assert.ok(invalidInputNlth.inputReview.missing.includes('nlth-dt'));
+assert.ok(invalidInputNlth.inputReview.missing.includes('nlth-stiffness'));
+assert.ok(invalidInputNlth.inputReview.missing.includes('nlth-mass'));
+assert.ok(invalidInputNlth.inputReview.missing.includes('nlth-acceleration-values'));
 
 const benchmarks = runNonlinearFiberNlthBenchmarks();
 assert.equal(benchmarks.ok, true);
@@ -243,6 +250,19 @@ assert.equal(stepSplitGate.fiberNlthReview.status, 'review-required');
 assert.equal(stepSplitGate.summary.readyForAgentReview, false);
 assert.ok(stepSplitGate.fiberNlthReview.missing.includes('nlth-step-split-review'));
 assert.equal(stepSplitGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T85').covered, false);
+const invalidNlthInputGate = buildNonlinearFiberNlthGate({
+  pmm: trace.pmm,
+  fiber: trace.fiber,
+  rayleigh: trace.rayleigh,
+  groundMotion: trace.groundMotion,
+  spectrumScaling: trace.spectrumScaling,
+  nlth: invalidInputNlth,
+}, trace.benchmarks.fiberNlth);
+assert.equal(invalidNlthInputGate.fiberNlthReview.status, 'review-required');
+assert.equal(invalidNlthInputGate.summary.readyForAgentReview, false);
+assert.ok(invalidNlthInputGate.fiberNlthReview.missing.includes('nlth-input-review'));
+assert.equal(invalidNlthInputGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T85').covered, false);
+assert.ok(invalidNlthInputGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T85').evidence.includes('input=review-required'));
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();

@@ -183,6 +183,7 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       nlthConverged: trace.nlth?.converged ?? null,
       maxIterations: Math.max(0, ...(trace.nlth?.rows || []).map((row) => row.iterations || 0)),
       maxResidualRatio: trace.nlth?.summary?.maxResidualRatio ?? null,
+      inputReview: trace.nlth?.inputReview || null,
       energyTrace: trace.nlth?.energyTrace || null,
       yielded: (trace.nlth?.rows || []).some((row) => row.hingeState === 'yielded'),
     },
@@ -214,6 +215,7 @@ function buildFiberNlthReview({ trace, fiberNlthBenchmarks }) {
   if (!((trace.fiber?.momentCurvature?.rows || []).length > 0)) missing.push('moment-curvature');
   if (!trace.rayleigh?.version) missing.push('rayleigh-damping');
   if (!hasUsableGroundMotionScaling(trace)) missing.push('ground-motion-scaling');
+  if (trace.nlth?.inputReview?.status === 'review-required') missing.push('nlth-input-review');
   if (!trace.nlth?.converged) missing.push('nlth-convergence');
   if (trace.nlth?.energyTrace?.stepSplitRecommended) missing.push('nlth-step-split-review');
   if (!fiberNlthBenchmarks?.ok) missing.push('B6-B8-benchmark');
@@ -252,10 +254,11 @@ function buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }) {
       scope: 'Newmark NLTH with Rayleigh damping and step trace',
       covered: !!trace.nlth?.converged
         && (trace.nlth?.rows?.length || 0) > 0
+        && trace.nlth?.inputReview?.status !== 'review-required'
         && !!trace.rayleigh?.version
         && !!trace.nlth?.energyTrace
         && !trace.nlth?.energyTrace?.stepSplitRecommended,
-      evidence: `${trace.nlth?.rows?.length || 0} NLTH rows, converged=${!!trace.nlth?.converged}, unstable=${trace.nlth?.energyTrace?.unstableStepCount ?? 'n/a'}`,
+      evidence: `${trace.nlth?.rows?.length || 0} NLTH rows, input=${trace.nlth?.inputReview?.status || 'unknown'}, converged=${!!trace.nlth?.converged}, unstable=${trace.nlth?.energyTrace?.unstableStepCount ?? 'n/a'}`,
     },
     {
       ticket: 'P3-T86',

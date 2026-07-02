@@ -1,6 +1,9 @@
 export const NLTH_NEWMARK_VERSION = 'p3-m16-nlth-newmark';
 
 export function runNewmarkNlth(options = {}) {
+  const rawAccelerations = Array.isArray(options.accelerations) ? options.accelerations : [];
+  const ag = rawAccelerations.map(Number);
+  const inputReview = buildNlthInputReview(options, ag);
   const dt = positive(options.dt, 0.02);
   const mass = positive(options.mass, 1);
   const k0 = positive(options.stiffness, 100);
@@ -10,7 +13,6 @@ export function runNewmarkNlth(options = {}) {
   const tolerance = positive(options.tolerance, 1e-6);
   const maxIterations = Math.max(1, Math.floor(positive(options.maxIterations, 20)));
   const energyJumpLimit = positive(options.energyJumpLimit, 10);
-  const ag = options.accelerations || [];
   const beta = 0.25;
   const gamma = 0.5;
   let u = 0; let v = 0; let plastic = 0;
@@ -20,7 +22,8 @@ export function runNewmarkNlth(options = {}) {
   let dampingEnergy = 0;
   let maxEnergyJumpRatio = 0;
   for (let step = 0; step < ag.length; step += 1) {
-    const force = -mass * Number(ag[step] || 0);
+    const acceleration = Number.isFinite(ag[step]) ? ag[step] : 0;
+    const force = -mass * acceleration;
     const previous = { u, v, a, plastic };
     let uNext = u;
     let aNext = a;
@@ -108,6 +111,7 @@ export function runNewmarkNlth(options = {}) {
     },
     method: 'newmark-beta-average-acceleration-with-bilinear-spring-newton-trace',
     dt,
+    inputReview,
     tolerance,
     maxIterations,
     energyJumpLimit,
@@ -133,6 +137,35 @@ export function runNewmarkNlth(options = {}) {
       unstableStepCount: unstableRows.length,
       stepSplitRecommended: unstableRows.some((row) => row.stability.stepSplitRecommended),
     },
+  };
+}
+
+function buildNlthInputReview(options, accelerations) {
+  const missing = [];
+  const dtInput = Number(options.dt ?? 0.02);
+  const massInput = Number(options.mass ?? 1);
+  const stiffnessInput = Number(options.stiffness ?? 100);
+  const toleranceInput = Number(options.tolerance ?? 1e-6);
+  const maxIterationsInput = Number(options.maxIterations ?? 20);
+  const invalidAccelerationCount = accelerations.filter((value) => !Number.isFinite(value)).length;
+  if (!(Number.isFinite(dtInput) && dtInput > 0)) missing.push('nlth-dt');
+  if (!(Number.isFinite(massInput) && massInput > 0)) missing.push('nlth-mass');
+  if (!(Number.isFinite(stiffnessInput) && stiffnessInput > 0)) missing.push('nlth-stiffness');
+  if (!(Number.isFinite(toleranceInput) && toleranceInput > 0)) missing.push('nlth-tolerance');
+  if (!(Number.isFinite(maxIterationsInput) && maxIterationsInput >= 1)) missing.push('nlth-max-iterations');
+  if (!accelerations.length) missing.push('nlth-acceleration-record');
+  if (invalidAccelerationCount > 0) missing.push('nlth-acceleration-values');
+  return {
+    status: missing.length ? 'review-required' : 'available',
+    missing,
+    dtInput,
+    massInput,
+    stiffnessInput,
+    toleranceInput,
+    maxIterationsInput,
+    accelerationCount: accelerations.length,
+    invalidAccelerationCount,
+    agentDecision: missing.length ? 'review-nlth-inputs' : 'nlth-inputs-ready',
   };
 }
 
