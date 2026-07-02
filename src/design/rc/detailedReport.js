@@ -9,7 +9,7 @@ export const RC_DESIGN_GATE_VERSION = 'p3-m17-rc-design-gate-v1';
 
 export function buildRcDetailedDesignReport(model, analysis, options = {}) {
   const checks = Object.values(analysis?.design?.concrete?.memberResults || {});
-  const beams = checks.filter((check) => check.role !== 'column').map((check) => detailRcBeam(check, options));
+  const beams = checks.filter((check) => check.role === 'beam').map((check) => detailRcBeam(check, options));
   const columns = checks.filter((check) => check.role === 'column').map((check) => detailRcColumn(check, options));
   const walls = collectWalls(model, analysis, options).map((wall) => detailRcWall(wall, options));
   const slabs = collectSlabs(model, options).map((slab) => detailRcSlab(slab, options));

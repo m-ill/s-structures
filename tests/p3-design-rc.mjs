@@ -80,6 +80,28 @@ assert.ok(completeIssueGate.rcReview.missing.includes('design-issues'));
 assert.equal(completeIssueGate.rcReview.issueCount, 1);
 assert.equal(completeIssueGate.rcReview.agentDecision, 'resolve-rc-review-items');
 
+const unknownRoleReport = buildRcDetailedDesignReport({}, {
+  design: {
+    concrete: {
+      memberResults: {
+        U1: {
+          memberId: 'U1',
+          status: 'OK',
+          utilization: 0,
+          requiredRebar: {},
+          section: {},
+          material: {},
+        },
+      },
+    },
+  },
+});
+assert.equal(unknownRoleReport.schedules.beams.length, 0);
+assert.equal(unknownRoleReport.rows.length, 0);
+assert.ok(unknownRoleReport.rcDesignGate.missingRoles.includes('beam'));
+assert.equal(unknownRoleReport.rcDesignGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T87').covered, false);
+assert.ok(unknownRoleReport.rcDesignGate.rcReview.missing.includes('formula-trace'));
+
 const integrated = buildP3DetailedDesignReport(beam, beamAnalysis, {
   rc: { slabs: beam.slabs, walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 900 }] },
 });
