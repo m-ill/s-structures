@@ -54,3 +54,5 @@ P3-M6 remains a preliminary core. It needs more real office DXF fixtures, richer
 2026-07-03 P3-M6 rebuild review update: the M6 regression fixture now includes `$EXTMIN` and `$EXTMAX`, and `tests/p3-m6-dxf-import.mjs` locks `$ACADVER`, `$INSUNITS`, `$EXTMIN`, and `$EXTMAX` directly. This keeps the implementation aligned with `IMPORT_DXF_DWG_PLAN.md` instead of only proving partial header parsing.
 
 2026-07-03 closed-polyline review: P3-M6 now honors the DXF closed polyline flag for `LWPOLYLINE` and `POLYLINE`. `tests/p3-m6-dxf-import.mjs` verifies that a closed outline creates the final closing segment, remains a valid `ImportCandidate`, and keeps layer usage in the audit trace. This matters for plan outlines, closed column markers, and wall/area evidence used by later P3-M7 review.
+
+2026-07-03 evidence-coverage update: `getPhase3DrawingImportValidationReview()` now exposes `evidenceCoverage` for accepted project evidence rows such as real office DXF fixtures, external DWG converter logs, and visual overlay evidence. This records file-backed practical evidence without treating it as a substitute for candidate validation, analysis, or import review decisions.

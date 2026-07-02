@@ -1,8 +1,9 @@
 import { validateImportCandidate } from '../import/candidate.js';
 
-export const PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION = 'p3-drawing-import-validation-review-v1';
+export const PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION = 'p3-drawing-import-validation-review-v2';
 
 export function buildPhase3DrawingImportValidationReview(input = {}) {
+  const evidenceCoverage = buildEvidenceCoverage(input.evidence || input.projectEvidence || []);
   const dxfRows = buildDxfRows(input.dxfFixtures || []);
   const dwgRows = buildDwgRows(input.dwgConversions || []);
   const overlayRows = buildOverlayRows(input.overlayEvidence || []);
@@ -32,6 +33,7 @@ export function buildPhase3DrawingImportValidationReview(input = {}) {
       dwgLogCount: dwgRows.length,
       overlayEvidenceCount: overlayRows.length,
       reviewDecisionCount: reviewRows.length,
+      evidenceCoverage,
       agentDecision: missing.length ? 'collect-drawing-import-validation-evidence' : 'drawing-import-ready-for-owner-review',
     },
     groups,
@@ -39,6 +41,7 @@ export function buildPhase3DrawingImportValidationReview(input = {}) {
     dwgRows,
     overlayRows,
     reviewRows,
+    evidenceCoverage,
     requiredEvidence: [
       'real office DXF fixture set',
       'external DWG converter path and conversion log',
@@ -50,6 +53,27 @@ export function buildPhase3DrawingImportValidationReview(input = {}) {
       relatedApis: ['getPhase3ImportMilestoneReview', 'confirmImport', 'rejectImport'],
       rule: 'Automated fixture success is not enough; production drawing import requires real office files and visual review evidence.',
     },
+  };
+}
+
+function buildEvidenceCoverage(evidence) {
+  const requiredIds = ['real-office-dxf-fixtures', 'external-dwg-converter-log', 'import-review-overlay'];
+  const rows = requiredIds.map((id) => {
+    const matches = evidence.filter((item) => item.id === id);
+    const accepted = matches.some((item) => item.accepted === true || item.status === 'accepted');
+    return {
+      id,
+      accepted,
+      evidenceCount: matches.length,
+      fileIds: matches.map((item) => item.fileId).filter(Boolean),
+      reportPaths: matches.map((item) => item.reportPath || item.reviewReportPath).filter(Boolean),
+    };
+  });
+  return {
+    requiredIds,
+    acceptedCount: rows.filter((row) => row.accepted).length,
+    missing: rows.filter((row) => !row.accepted).map((row) => row.id),
+    rows,
   };
 }
 

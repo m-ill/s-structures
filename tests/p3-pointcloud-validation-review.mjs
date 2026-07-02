@@ -103,6 +103,18 @@ const empty = buildPhase3PointCloudValidationReview();
 assert.equal(empty.summary.ok, false);
 assert.ok(empty.summary.missing.includes('real-scan-validation'));
 assert.equal(empty.summary.agentDecision, 'collect-pointcloud-validation-evidence');
+assert.deepEqual(empty.evidenceCoverage.missing, ['real-pointcloud-files', 'large-pointcloud-performance', 'real-scan-extraction-validation']);
+
+const evidenceOnly = buildPhase3PointCloudValidationReview({
+  evidence: [
+    { id: 'real-pointcloud-files', accepted: true, fileId: 'owner-scan-file' },
+    { id: 'large-pointcloud-performance', status: 'accepted', reportPath: 'reports/pointcloud-validation/performance.md' },
+  ],
+});
+assert.equal(evidenceOnly.summary.ok, false);
+assert.equal(evidenceOnly.evidenceCoverage.acceptedCount, 2);
+assert.deepEqual(evidenceOnly.evidenceCoverage.missing, ['real-scan-extraction-validation']);
+assert.equal(evidenceOnly.evidenceCoverage.rows.find((row) => row.id === 'real-pointcloud-files').fileIds[0], 'owner-scan-file');
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3PointCloudValidationReview, PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION);
@@ -112,6 +124,8 @@ assert.equal(manifest.qaCommands.phase3PointCloudValidation, 'node tests/p3-poin
 
 const agent = createIndexAgentApi({ model: () => null, reanalyze: () => {} });
 assert.equal(agent.getPhase3PointCloudValidationReview().version, PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION);
+agent.submitProjectEvidence({ id: 'real-pointcloud-files', accepted: true, fileId: 'agent-pointcloud-file' });
+assert.equal(agent.getPhase3PointCloudValidationReview().evidenceCoverage.acceptedCount, 1);
 
 console.log(JSON.stringify({
   ok: true,

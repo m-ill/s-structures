@@ -80,4 +80,6 @@ Agents must also inspect `getLaunchReadinessReport().finalUseReview`. `FINAL_USE
 
 For file-backed drawing or point-cloud evidence, upload the file first and submit the returned `fileId` with the evidence row. Server-side evidence submission rejects unknown `fileId` values, and `createEvidenceClient().submitProjectEvidencePackage()` performs the upload-and-register sequence for API-driven agents.
 
+`getPhase3DrawingImportValidationReview()` and `getPhase3PointCloudValidationReview()` expose project evidence under `evidenceCoverage` when called through the in-page agent. Evidence coverage shows accepted file/review records, but it does not replace candidate validation, overlay review, benchmark, or owner review rows.
+
 Manual launch evidence remains in `reports/launch-readiness/`.

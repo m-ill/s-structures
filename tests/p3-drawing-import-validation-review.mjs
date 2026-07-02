@@ -68,6 +68,18 @@ const empty = buildPhase3DrawingImportValidationReview();
 assert.equal(empty.summary.ok, false);
 assert.ok(empty.summary.missing.includes('real-office-dxf-fixtures'));
 assert.equal(empty.summary.agentDecision, 'collect-drawing-import-validation-evidence');
+assert.deepEqual(empty.evidenceCoverage.missing, ['real-office-dxf-fixtures', 'external-dwg-converter-log', 'import-review-overlay']);
+
+const evidenceOnly = buildPhase3DrawingImportValidationReview({
+  evidence: [
+    { id: 'real-office-dxf-fixtures', accepted: true, fileId: 'office-dxf-file' },
+    { id: 'external-dwg-converter-log', status: 'accepted', reportPath: 'reports/import-validation/dwg-log.md' },
+  ],
+});
+assert.equal(evidenceOnly.summary.ok, false);
+assert.equal(evidenceOnly.evidenceCoverage.acceptedCount, 2);
+assert.deepEqual(evidenceOnly.evidenceCoverage.missing, ['import-review-overlay']);
+assert.equal(evidenceOnly.evidenceCoverage.rows.find((row) => row.id === 'real-office-dxf-fixtures').fileIds[0], 'office-dxf-file');
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3DrawingImportValidationReview, PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION);
@@ -77,6 +89,8 @@ assert.equal(manifest.qaCommands.phase3DrawingImportValidation, 'node tests/p3-d
 
 const agent = createIndexAgentApi({ model: () => null, reanalyze: () => {} });
 assert.equal(agent.getPhase3DrawingImportValidationReview().version, PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION);
+agent.submitProjectEvidence({ id: 'real-office-dxf-fixtures', accepted: true, fileId: 'agent-dxf-file' });
+assert.equal(agent.getPhase3DrawingImportValidationReview().evidenceCoverage.acceptedCount, 1);
 
 console.log(JSON.stringify({
   ok: true,

@@ -246,6 +246,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       return cloneJson(buildPhase3DesignMilestoneReview());
     },
     getPhase3DrawingImportValidationReview(options = {}) {
+      if (!hasEvidenceInput(options)) {
+        return cloneJson(buildPhase3DrawingImportValidationReview(withProjectEvidence(target, options)));
+      }
       return cloneJson(buildPhase3DrawingImportValidationReview(options));
     },
     getPhase3EngineeringValidationReview(options = {}) {
@@ -286,6 +289,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       return cloneJson(buildPhase3PracticeValidationReview());
     },
     getPhase3PointCloudValidationReview(options = {}) {
+      if (!hasEvidenceInput(options)) {
+        return cloneJson(buildPhase3PointCloudValidationReview(withProjectEvidence(target, options)));
+      }
       return cloneJson(buildPhase3PointCloudValidationReview(options));
     },
     getConnectionFoundationReport(options = {}) {

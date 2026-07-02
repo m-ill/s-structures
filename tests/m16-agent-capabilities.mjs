@@ -114,12 +114,14 @@ assert.equal(designMilestoneReview.summary.agentDecision, 'detailed-design-engin
 const drawingImportValidationReview = agent.getPhase3DrawingImportValidationReview();
 assert.ok(drawingImportValidationReview.summary.missing.includes('real-office-dxf-fixtures'));
 assert.equal(drawingImportValidationReview.summary.agentDecision, 'collect-drawing-import-validation-evidence');
+assert.equal(drawingImportValidationReview.evidenceCoverage.acceptedCount, 0);
 const engineeringValidationReview = agent.getPhase3EngineeringValidationReview();
 assert.ok(engineeringValidationReview.summary.missing.includes('design-code-clause-review'));
 assert.equal(engineeringValidationReview.summary.agentDecision, 'collect-engineering-validation-evidence');
 const pointCloudValidationReview = agent.getPhase3PointCloudValidationReview();
 assert.ok(pointCloudValidationReview.summary.missing.includes('real-scan-validation'));
 assert.equal(pointCloudValidationReview.summary.agentDecision, 'collect-pointcloud-validation-evidence');
+assert.equal(pointCloudValidationReview.evidenceCoverage.acceptedCount, 0);
 const productizationMilestoneReview = agent.getPhase3ProductizationMilestoneReview();
 assert.deepEqual(productizationMilestoneReview.rows.map((row) => row.milestone), ['P3-M19', 'P3-M20']);
 assert.ok(productizationMilestoneReview.summary.productizationScopes.includes('beta-pilot-scenarios'));
@@ -146,6 +148,10 @@ assert.throws(
 assert.equal(agent.listProjectEvidence().register.summary.acceptedCount, 0);
 assert.equal(agent.submitProjectEvidence({ id: 'security-signoff', accepted: true }).register.summary.acceptedCount, 1);
 assert.equal(agent.getPhase3EvidenceRegister().summary.acceptedCount, 1);
+assert.equal(agent.submitProjectEvidence({ id: 'real-office-dxf-fixtures', accepted: true, fileId: 'agent-office-dxf' }).register.summary.acceptedCount, 2);
+assert.equal(agent.submitProjectEvidence({ id: 'real-pointcloud-files', accepted: true, fileId: 'agent-owner-scan' }).register.summary.acceptedCount, 3);
+assert.equal(agent.getPhase3DrawingImportValidationReview().evidenceCoverage.acceptedCount, 1);
+assert.equal(agent.getPhase3PointCloudValidationReview().evidenceCoverage.acceptedCount, 1);
 const updatedOwnerSignoffReview = agent.getPhase3OwnerSignoffReview();
 assert.equal(updatedOwnerSignoffReview.summary.acceptedCount, 1);
 assert.equal(updatedOwnerSignoffReview.summary.missing.includes('security-signoff'), false);
@@ -154,7 +160,9 @@ const updatedEvidenceRow = updatedLaunchReadiness.finalUseReview.rows.find((row)
 const updatedOwnerRow = updatedLaunchReadiness.finalUseReview.rows.find((row) => row.id === 'owner-signoff');
 assert.equal(updatedOwnerRow.missing.includes('security-signoff'), false);
 assert.equal(updatedEvidenceRow.missing.includes('security-signoff'), false);
-assert.ok(updatedEvidenceRow.missing.includes('real-office-dxf-fixtures'));
+assert.equal(updatedEvidenceRow.missing.includes('real-office-dxf-fixtures'), false);
+assert.equal(updatedEvidenceRow.missing.includes('real-pointcloud-files'), false);
+assert.ok(updatedEvidenceRow.missing.includes('external-dwg-converter-log'));
 assert.equal(updatedLaunchReadiness.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
 const practiceValidationReview = agent.getPhase3PracticeValidationReview();
 assert.ok(practiceValidationReview.summary.affectedMilestones.includes('P3-M20'));

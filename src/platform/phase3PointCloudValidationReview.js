@@ -1,6 +1,7 @@
-export const PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION = 'p3-pointcloud-validation-review-v1';
+export const PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION = 'p3-pointcloud-validation-review-v2';
 
 export function buildPhase3PointCloudValidationReview(input = {}) {
+  const evidenceCoverage = buildEvidenceCoverage(input.evidence || input.projectEvidence || []);
   const loadRows = buildLoadRows(input.importSummaries || []);
   const extractionRows = buildExtractionRows(input.extractionBenchmarks || []);
   const realScanRows = buildRealScanRows(input.realScanEvidence || []);
@@ -30,6 +31,7 @@ export function buildPhase3PointCloudValidationReview(input = {}) {
       extractionBenchmarkCount: extractionRows.length,
       realScanEvidenceCount: realScanRows.length,
       performanceEvidenceCount: performanceRows.length,
+      evidenceCoverage,
       agentDecision: missing.length ? 'collect-pointcloud-validation-evidence' : 'pointcloud-import-ready-for-owner-review',
     },
     groups,
@@ -37,6 +39,7 @@ export function buildPhase3PointCloudValidationReview(input = {}) {
     extractionRows,
     realScanRows,
     performanceRows,
+    evidenceCoverage,
     requiredEvidence: [
       'owner-provided real point-cloud files',
       'large-file performance record',
@@ -48,6 +51,27 @@ export function buildPhase3PointCloudValidationReview(input = {}) {
       relatedApis: ['getPhase3ImportMilestoneReview', 'getPhase3PracticeValidationReview'],
       rule: 'Synthetic benchmark pass is useful but does not close real-scan production validation.',
     },
+  };
+}
+
+function buildEvidenceCoverage(evidence) {
+  const requiredIds = ['real-pointcloud-files', 'large-pointcloud-performance', 'real-scan-extraction-validation'];
+  const rows = requiredIds.map((id) => {
+    const matches = evidence.filter((item) => item.id === id);
+    const accepted = matches.some((item) => item.accepted === true || item.status === 'accepted');
+    return {
+      id,
+      accepted,
+      evidenceCount: matches.length,
+      fileIds: matches.map((item) => item.fileId).filter(Boolean),
+      reportPaths: matches.map((item) => item.reportPath || item.reviewReportPath).filter(Boolean),
+    };
+  });
+  return {
+    requiredIds,
+    acceptedCount: rows.filter((row) => row.accepted).length,
+    missing: rows.filter((row) => !row.accepted).map((row) => row.id),
+    rows,
   };
 }
 
