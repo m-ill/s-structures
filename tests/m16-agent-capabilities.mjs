@@ -63,6 +63,8 @@ assert.ok(manifest.readApis.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3OwnerSignoffReview'));
 assert.ok(manifest.readApis.includes('getPhase3CompletionAuditReview'));
 assert.ok(manifest.readApis.includes('getPhase3EvidenceRegister'));
+assert.ok(manifest.readApis.includes('listProjectEvidence'));
+assert.ok(manifest.readApis.includes('submitProjectEvidence'));
 assert.ok(manifest.dataContracts.includes('phase3LoadsV2Trace'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearAnalysisTrace'));
 assert.ok(manifest.dataContracts.includes('phase3DesignMilestoneReview'));
@@ -77,6 +79,7 @@ assert.ok(manifest.dataContracts.includes('phase3ProductizationMilestoneReview')
 assert.ok(manifest.dataContracts.includes('phase3OwnerSignoffReview'));
 assert.ok(manifest.dataContracts.includes('phase3CompletionAuditReview'));
 assert.ok(manifest.dataContracts.includes('phase3EvidenceRegister'));
+assert.ok(manifest.dataContracts.includes('phase3EvidenceClient'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3RunnerContract, 'node tests/p3-runner-contract.mjs');
 assert.equal(manifest.reviewGates.nonlinearFiberNlth.readyDecision, 'm16-ready-for-integrated-results-review');
@@ -127,6 +130,8 @@ assert.equal(completionAuditReview.summary.agentDecision, 'continue-practical-va
 const evidenceRegister = agent.getPhase3EvidenceRegister();
 assert.ok(evidenceRegister.summary.missing.includes('real-office-dxf-fixtures'));
 assert.equal(evidenceRegister.summary.agentDecision, 'collect-phase3-evidence');
+assert.equal(agent.listProjectEvidence().register.summary.acceptedCount, 0);
+assert.equal(agent.submitProjectEvidence({ id: 'security-signoff', accepted: true }).register.summary.acceptedCount, 1);
 const practiceValidationReview = agent.getPhase3PracticeValidationReview();
 assert.ok(practiceValidationReview.summary.affectedMilestones.includes('P3-M20'));
 assert.equal(practiceValidationReview.summary.agentDecision, 'collect-practice-validation-evidence-before-production-use');

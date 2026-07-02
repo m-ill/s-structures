@@ -31,6 +31,7 @@ import {
   PHASE3_EVIDENCE_REGISTER_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
+import { EVIDENCE_CLIENT_VERSION } from '../src/app/evidenceClient.js';
 
 const manifest = buildAgentManifest();
 const report = buildPhase3PlanAlignmentReport(manifest);
@@ -174,6 +175,7 @@ assert.equal(manifest.modules.phase3ProductizationMilestoneReview, PHASE3_PRODUC
 assert.equal(manifest.modules.phase3OwnerSignoffReview, PHASE3_OWNER_SIGNOFF_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3CompletionAuditReview, PHASE3_COMPLETION_AUDIT_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3EvidenceRegister, PHASE3_EVIDENCE_REGISTER_VERSION);
+assert.equal(manifest.modules.phase3EvidenceClient, EVIDENCE_CLIENT_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
 assert.ok(manifest.readApis.includes('getPhase3DesignMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3DrawingImportValidationReview'));
@@ -187,6 +189,8 @@ assert.ok(manifest.readApis.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3OwnerSignoffReview'));
 assert.ok(manifest.readApis.includes('getPhase3CompletionAuditReview'));
 assert.ok(manifest.readApis.includes('getPhase3EvidenceRegister'));
+assert.ok(manifest.readApis.includes('listProjectEvidence'));
+assert.ok(manifest.readApis.includes('submitProjectEvidence'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
 assert.ok(manifest.dataContracts.includes('phase3DesignMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3DrawingImportValidationReview'));
@@ -200,6 +204,7 @@ assert.ok(manifest.dataContracts.includes('phase3ProductizationMilestoneReview')
 assert.ok(manifest.dataContracts.includes('phase3OwnerSignoffReview'));
 assert.ok(manifest.dataContracts.includes('phase3CompletionAuditReview'));
 assert.ok(manifest.dataContracts.includes('phase3EvidenceRegister'));
+assert.ok(manifest.dataContracts.includes('phase3EvidenceClient'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3M6ToM20, 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20');
 

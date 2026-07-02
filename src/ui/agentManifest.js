@@ -87,6 +87,7 @@ import {
   SERVER_API_VERSION,
 } from '../platform/platformVersion.js';
 import { ROUTES_VERSION } from '../app/routes.js';
+import { EVIDENCE_CLIENT_VERSION } from '../app/evidenceClient.js';
 import { IMPORT_REVIEW_MODEL_VERSION } from '../app/importReviewModel.js';
 import { IMPORT_CANDIDATE_VERSION } from '../import/candidate.js';
 import { IMPORT_GEOMETRY_VERSION } from '../import/segmentClean.js';
@@ -218,6 +219,7 @@ export function buildAgentManifest(options = {}) {
       phase3Persistence: PERSISTENCE_ENVELOPE_VERSION,
       phase3AppShell: APP_SHELL_VERSION,
       phase3AppRoutes: ROUTES_VERSION,
+      phase3EvidenceClient: EVIDENCE_CLIENT_VERSION,
       phase3ImportGeometry: IMPORT_GEOMETRY_VERSION,
       phase3ImportCandidate: IMPORT_CANDIDATE_VERSION,
       phase3DxfImport: DXF_IMPORT_VERSION,
@@ -315,6 +317,8 @@ export function buildAgentManifest(options = {}) {
       'listImportCandidates',
       'resolveImportCandidate',
       'confirmImport',
+      'listProjectEvidence',
+      'submitProjectEvidence',
       'getResultPostprocessing',
       'getStorySummary',
       'getStoryMassSummary',
@@ -356,6 +360,7 @@ export function buildAgentManifest(options = {}) {
       phase3OwnerSignoffReview: 'node tests/p3-owner-signoff-review.mjs',
       phase3CompletionAuditReview: 'node tests/p3-completion-audit-review.mjs',
       phase3EvidenceRegister: 'node tests/p3-evidence-register.mjs',
+      phase3EvidenceClient: 'node tests/p3-evidence-client.mjs',
       phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
     },
     reviewGates: {
@@ -445,6 +450,7 @@ export function buildAgentManifest(options = {}) {
       'phase3OwnerSignoffReview',
       'phase3CompletionAuditReview',
       'phase3EvidenceRegister',
+      'phase3EvidenceClient',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
       'memberDesignTraceMatrix',

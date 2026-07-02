@@ -157,6 +157,7 @@
     "test:p3owner-signoff": "node tests/p3-owner-signoff-review.mjs",
     "test:p3completion-audit": "node tests/p3-completion-audit-review.mjs",
     "test:p3evidence": "node tests/p3-evidence-register.mjs",
+    "test:p3evidence-client": "node tests/p3-evidence-client.mjs",
     "test:p3m20": "node tests/p3-launch-gate.mjs",
     "test:p3alignment": "node tests/p3-plan-alignment.mjs",
     "test:p3runner": "node tests/p3-runner-contract.mjs",

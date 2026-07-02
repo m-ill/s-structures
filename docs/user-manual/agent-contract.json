@@ -61,6 +61,7 @@
     "phase3OwnerSignoffReview": "node tests/p3-owner-signoff-review.mjs",
     "phase3CompletionAuditReview": "node tests/p3-completion-audit-review.mjs",
     "phase3EvidenceRegister": "node tests/p3-evidence-register.mjs",
+    "phase3EvidenceClient": "node tests/p3-evidence-client.mjs",
     "phase3ServerRoutes": "node tests/p3-server-route-contract.mjs"
   },
   "reviewGates": {
@@ -164,6 +165,8 @@
     "listImportCandidates",
     "resolveImportCandidate",
     "confirmImport",
+    "listProjectEvidence",
+    "submitProjectEvidence",
     "getResultPostprocessing",
     "getStorySummary",
     "getStoryMassSummary",
@@ -248,6 +251,11 @@
       "listImportCandidates",
       "resolveImportCandidate",
       "confirmImport"
+    ],
+    "phase3EvidenceRegister": [
+      "listProjectEvidence",
+      "submitProjectEvidence",
+      "getPhase3EvidenceRegister"
     ]
   },
   "commandBridge": {
@@ -317,6 +325,7 @@
     "phase3OwnerSignoffReview",
     "phase3CompletionAuditReview",
     "phase3EvidenceRegister",
+    "phase3EvidenceClient",
     "phase3NonlinearAssembly",
     "phase3NonlinearHingeAssignment",
     "phase3NonlinearGeometryTrace",
@@ -349,6 +358,7 @@
     "phase3OwnerSignoffReview",
     "phase3CompletionAuditReview",
     "phase3EvidenceRegister",
+    "phase3EvidenceClient",
     "phase3NonlinearAssemblyTrace",
     "phase3NonlinearHingeAssignmentTrace",
     "phase3FiberMaterialBackboneTrace",

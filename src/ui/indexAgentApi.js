@@ -262,6 +262,20 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     getPhase3EvidenceRegister(options = {}) {
       return cloneJson(buildPhase3EvidenceRegister(options));
     },
+    listProjectEvidence() {
+      return cloneJson(getProjectEvidenceState(target));
+    },
+    submitProjectEvidence(evidence = {}) {
+      const state = getProjectEvidenceState(target);
+      state.evidence.push({
+        ...evidence,
+        status: String(evidence.status || (evidence.accepted ? 'accepted' : 'submitted')).toLowerCase(),
+        accepted: evidence.accepted === true || String(evidence.status || '').toLowerCase() === 'accepted',
+        recordedAt: evidence.recordedAt || new Date().toISOString(),
+      });
+      state.register = buildPhase3EvidenceRegister({ evidence: state.evidence });
+      return cloneJson(state);
+    },
     getPhase3PracticeValidationReview() {
       return cloneJson(buildPhase3PracticeValidationReview());
     },
@@ -816,6 +830,14 @@ function runUiAnalysis(target) {
 
 function getCurrentModel(target) {
   return typeof target?.model === 'function' ? target.model() : null;
+}
+
+function getProjectEvidenceState(target) {
+  target.__SStructuresProjectEvidence ||= {
+    evidence: [],
+    register: buildPhase3EvidenceRegister(),
+  };
+  return target.__SStructuresProjectEvidence;
 }
 
 function replaceObject(target, source) {
