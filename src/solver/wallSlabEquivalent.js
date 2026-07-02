@@ -81,9 +81,32 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
     ? Object.values(analysis.byCombo).find((result) => result?.shellFrameAssembly)?.shellFrameAssembly || expandShellsToFrameLinks(model)
     : expandShellsToFrameLinks(model);
   shell.assembly = shellAssembly;
+  const summary = {
+    wallEquivalentCount: (model.wallEquivalents || []).length,
+    recoveredWallForceCount: pierForces.length,
+    semiRigidDiaphragmCount: diaphragm.semiRigidCount,
+    shellCount: shell.shellCount,
+    shellLinkCount: shellAssembly.linkCount || 0,
+    slabRedistributionStatus: redistribution.status,
+  };
   return {
     version: WALL_SLAB_TRACE_VERSION,
     equivalentVersion: WALL_SLAB_EQUIVALENT_VERSION,
+    contract: {
+      scope: ['mid-pier-wall-equivalent', 'pier-force-recovery', 'shell-v1-contract', 'shell-frame-link-assembly', 'semi-rigid-diaphragm-redistribution'],
+      solverTreatment: {
+        wall: 'mid-pier-equivalent-frame-member',
+        shell: 'preliminary-edge-and-diagonal-frame-links',
+        diaphragm: 'equivalent-truss-brace-grid',
+      },
+      limitations: [
+        'full-24-dof-shell-global-stiffness-assembly-not-certified',
+        'shell-stress-recovery-and-automatic-meshing-not-included',
+        'semi-rigid-diaphragm-is-preliminary-in-plane-redistribution',
+        'wall-opening-auto-decomposition-not-included',
+      ],
+    },
+    summary,
     wallMidPier: {
       count: (model.wallEquivalents || []).length,
       rows: (model.wallEquivalents || []).map((row) => ({
