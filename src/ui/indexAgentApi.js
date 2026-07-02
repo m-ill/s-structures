@@ -254,12 +254,13 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       return cloneJson(buildPhase3ProductizationMilestoneReview());
     },
     getPhase3OwnerSignoffReview(options = {}) {
-      return cloneJson(buildPhase3OwnerSignoffReview(options));
+      return cloneJson(buildPhase3OwnerSignoffReview(withProjectEvidence(target, options)));
     },
     getPhase3CompletionAuditReview() {
       return cloneJson(buildPhase3CompletionAuditReview());
     },
     getPhase3EvidenceRegister(options = {}) {
+      if (!hasEvidenceInput(options)) return cloneJson(getProjectEvidenceState(target).register);
       return cloneJson(buildPhase3EvidenceRegister(options));
     },
     listProjectEvidence() {
@@ -842,12 +843,24 @@ function getProjectEvidenceState(target) {
 
 function buildLaunchEvidence(target, options = {}) {
   const supplied = options.evidence || options;
+  const projectEvidence = getProjectEvidenceState(target);
   return {
     practiceValidationReview: buildPhase3PracticeValidationReview(),
-    ownerSignoffReview: buildPhase3OwnerSignoffReview(),
-    evidenceRegister: getProjectEvidenceState(target).register,
+    ownerSignoffReview: buildPhase3OwnerSignoffReview({ evidence: projectEvidence.evidence }),
+    evidenceRegister: projectEvidence.register,
     ...supplied,
   };
+}
+
+function withProjectEvidence(target, options = {}) {
+  if (hasEvidenceInput(options)) return options;
+  return { evidence: getProjectEvidenceState(target).evidence };
+}
+
+function hasEvidenceInput(options = {}) {
+  return Object.hasOwn(options, 'evidence') ||
+    Object.hasOwn(options, 'items') ||
+    Object.hasOwn(options, 'signoffEvidence');
 }
 
 function replaceObject(target, source) {

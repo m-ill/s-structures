@@ -140,8 +140,14 @@ assert.ok(evidenceRegister.summary.missing.includes('real-office-dxf-fixtures'))
 assert.equal(evidenceRegister.summary.agentDecision, 'collect-phase3-evidence');
 assert.equal(agent.listProjectEvidence().register.summary.acceptedCount, 0);
 assert.equal(agent.submitProjectEvidence({ id: 'security-signoff', accepted: true }).register.summary.acceptedCount, 1);
+assert.equal(agent.getPhase3EvidenceRegister().summary.acceptedCount, 1);
+const updatedOwnerSignoffReview = agent.getPhase3OwnerSignoffReview();
+assert.equal(updatedOwnerSignoffReview.summary.acceptedCount, 1);
+assert.equal(updatedOwnerSignoffReview.summary.missing.includes('security-signoff'), false);
 const updatedLaunchReadiness = agent.getLaunchReadinessReport();
 const updatedEvidenceRow = updatedLaunchReadiness.finalUseReview.rows.find((row) => row.id === 'evidence-register');
+const updatedOwnerRow = updatedLaunchReadiness.finalUseReview.rows.find((row) => row.id === 'owner-signoff');
+assert.equal(updatedOwnerRow.missing.includes('security-signoff'), false);
 assert.equal(updatedEvidenceRow.missing.includes('security-signoff'), false);
 assert.ok(updatedEvidenceRow.missing.includes('real-office-dxf-fixtures'));
 assert.equal(updatedLaunchReadiness.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
