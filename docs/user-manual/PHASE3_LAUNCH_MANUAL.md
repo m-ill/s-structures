@@ -29,7 +29,7 @@ AI agents should read these methods first:
 4. `getP3IntegratedResults()`
 5. `getCalculationPackage()`
 
-The canonical manual contract is `docs/user-manual/agent-contract.json`. The launch gate verifies that its `readApis` list matches `src/ui/agentManifest.js` and that the listed Phase 3 gate modules/data contracts are present in the manifest.
+The canonical manual contract is `docs/user-manual/agent-contract.json`. The launch gate verifies that its `readApis` list matches `src/ui/agentManifest.js`, that manual execute actions are exposed by runtime `executeActions`, that import review workflows are exposed by runtime `readApis`, and that the listed Phase 3 gate modules/data contracts are present in the manifest.
 
 ## Phase 3 Report Sections
 

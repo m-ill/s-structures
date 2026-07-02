@@ -22,6 +22,8 @@ const analysis = analyzeModel(model);
 const integrated = buildP3IntegratedResults(model, analysis);
 const calculationPackage = createCalculationPackageHtml(model, analysis);
 const pilotReports = readdirSync('reports/launch-readiness').filter((name) => /^pilot-\d\d\.md$/.test(name));
+const contractExecuteActions = Object.values(agentContract.executeActions).flat();
+const contractReadWorkflows = Object.values(agentContract.readWorkflows || {}).flat();
 
 assert.equal(analysis.ok, true);
 assert.deepEqual([...agentContract.readApis].sort(), [...manifest.readApis].sort());
@@ -75,13 +77,22 @@ assert.equal(launch.packaging.smoke, true);
 assert.equal(launch.license.status, 'RECORDED');
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => analysis });
+const runtimeCapabilities = agent.getCapabilities();
 const agentLaunch = agent.getLaunchReadinessReport(evidence);
 assert.equal(agentLaunch.version, LAUNCH_READINESS_VERSION);
 assert.equal(agentLaunch.status, 'OK');
-assert.equal(agent.getCapabilities().modules.phase3LaunchReadiness, LAUNCH_READINESS_VERSION);
-assert.equal(agent.getCapabilities().modules.phase3LaunchReadinessGate, LAUNCH_READINESS_GATE_VERSION);
-assert.ok(agent.getCapabilities().readApis.includes('getLaunchReadinessReport'));
-assert.ok(agent.getCapabilities().dataContracts.includes('phase3LaunchReadinessGate'));
+assert.equal(runtimeCapabilities.modules.phase3LaunchReadiness, LAUNCH_READINESS_VERSION);
+assert.equal(runtimeCapabilities.modules.phase3LaunchReadinessGate, LAUNCH_READINESS_GATE_VERSION);
+assert.ok(runtimeCapabilities.readApis.includes('getLaunchReadinessReport'));
+assert.ok(runtimeCapabilities.dataContracts.includes('phase3LaunchReadinessGate'));
+assert.deepEqual(
+  contractExecuteActions.filter((action) => !runtimeCapabilities.executeActions.includes(action)),
+  [],
+);
+assert.deepEqual(
+  contractReadWorkflows.filter((apiName) => !runtimeCapabilities.readApis.includes(apiName)),
+  [],
+);
 
 console.log(JSON.stringify({
   ok: true,
@@ -89,4 +100,5 @@ console.log(JSON.stringify({
   gates: launch.summary.total,
   pilotReports: pilotReports.length,
   packageSections: calculationPackage.data.sections.length,
+  executeActionContractCount: contractExecuteActions.length,
 }, null, 2));

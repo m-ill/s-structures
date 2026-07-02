@@ -148,7 +148,9 @@
       "importNativeBook",
       "saveNativeAutosave",
       "restoreNativeAutosave"
-    ],
+    ]
+  },
+  "readWorkflows": {
     "phase3ImportReview": [
       "listImportCandidates",
       "resolveImportCandidate",
