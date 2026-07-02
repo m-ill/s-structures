@@ -4,10 +4,12 @@ import { join } from 'node:path';
 import {
   buildPhase3ElasticMilestoneReview,
   buildPhase3ImportMilestoneReview,
+  buildPhase3NonlinearMilestoneReview,
   buildAgentManifest,
   buildPhase3PlanAlignmentReport,
   PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION,
   PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
+  PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION,
   PHASE3_PLAN_ALIGNMENT_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
@@ -143,12 +145,15 @@ assert.equal(report.ticketSummary.effectiveCompletion, true);
 assert.equal(manifest.modules.phase3PlanAlignment, PHASE3_PLAN_ALIGNMENT_VERSION);
 assert.equal(manifest.modules.phase3ElasticMilestoneReview, PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3ImportMilestoneReview, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
+assert.equal(manifest.modules.phase3NonlinearMilestoneReview, PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
 assert.ok(manifest.readApis.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
+assert.ok(manifest.readApis.includes('getPhase3NonlinearMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
 assert.ok(manifest.dataContracts.includes('phase3ElasticMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
+assert.ok(manifest.dataContracts.includes('phase3NonlinearMilestoneReview'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3M6ToM20, 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20');
 
@@ -168,6 +173,14 @@ assert.ok(elasticMilestoneReview.rows.find((row) => row.milestone === 'P3-M13').
 assert.equal(elasticMilestoneReview.summary.agentDecision, 'elastic-completeness-engineer-review-required');
 assert.equal(elasticMilestoneReview.agentUse.readApi, 'getPhase3ElasticMilestoneReview');
 
+const nonlinearMilestoneReview = buildPhase3NonlinearMilestoneReview();
+assert.equal(nonlinearMilestoneReview.version, PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION);
+assert.deepEqual(nonlinearMilestoneReview.rows.map((row) => row.milestone), ['P3-M14', 'P3-M15', 'P3-M16']);
+assert.deepEqual(nonlinearMilestoneReview.summary.scopeLadder, ['N1', 'N2', 'N3', 'N4', 'N5', 'N6']);
+assert.deepEqual(nonlinearMilestoneReview.summary.benchmarkCases, ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8']);
+assert.equal(nonlinearMilestoneReview.rows.find((row) => row.milestone === 'P3-M15').contracts.gatePath, 'hingeControlGate.controlReview');
+assert.equal(nonlinearMilestoneReview.agentUse.readApi, 'getPhase3NonlinearMilestoneReview');
+
 const agent = createIndexAgentApi({ model: () => null, reanalyze: () => {} });
 const apiReport = agent.getPhase3PlanAlignment();
 assert.equal(apiReport.version, PHASE3_PLAN_ALIGNMENT_VERSION);
@@ -175,6 +188,7 @@ assert.equal(apiReport.status, 'OK');
 assert.equal(apiReport.productionReadiness.status, 'PRELIMINARY_REVIEW_REQUIRED');
 assert.equal(agent.getPhase3ElasticMilestoneReview().version, PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION);
 assert.equal(agent.getPhase3ImportMilestoneReview().version, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
+assert.equal(agent.getPhase3NonlinearMilestoneReview().version, PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION);
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 assert.deepEqual(Object.keys(packageJson.dependencies || {}), []);

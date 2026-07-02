@@ -200,6 +200,10 @@ export {
   PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION,
 } from './platform/phase3ElasticMilestoneReview.js';
 export {
+  buildPhase3NonlinearMilestoneReview,
+  PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION,
+} from './platform/phase3NonlinearMilestoneReview.js';
+export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';

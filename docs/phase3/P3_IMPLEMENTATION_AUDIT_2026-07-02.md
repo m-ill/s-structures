@@ -139,6 +139,22 @@ M15 is exposed through the existing `getNonlinearAnalysisTrace` contract. The fo
 
 M16 is exposed through `getNonlinearAnalysisTrace` with PMM, fiber, material-backbone, ground-motion, NLTH, and B6-B8 benchmark sections. The current implementation is still a concentrated-plasticity trace core, not a distributed plasticity or soil-structure interaction solver.
 
+### P3-M14 To P3-M16 Contract Review Update
+
+M14 to M16 now expose an agent-readable nonlinear milestone review contract
+through `getPhase3NonlinearMilestoneReview`.
+
+The contract follows `NONLINEAR_ENGINE_PLAN.md` and separates:
+
+- the N1 to N6 nonlinear scope ladder,
+- B1 to B8 benchmark evidence,
+- milestone gate paths inside `getNonlinearAnalysisTrace`,
+- final approval fields that must remain separate from next-step readiness.
+
+This gives AI agents a single read API for nonlinear planning status while
+preserving the individual `geometryGate`, `hingeControlGate`, and
+`fiberNlthGate` review paths.
+
 ## Stage E Required Scope: P3-M17 To P3-M18
 
 P3-M17 and P3-M18 must follow `DESIGN_MODULES_PLAN.md`; they should not be replaced by an unrelated report-only scope.
