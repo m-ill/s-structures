@@ -72,6 +72,8 @@ The `readyDecision` values mean the next review step may proceed. The listed `fi
 
 `getLaunchReadinessReport().status` only means the launch evidence gates are green. Agents must also check `getLaunchReadinessReport().productionReadiness.status`; `OWNER_REVIEW_REQUIRED` means owner sign-off and production deployment approval are still required.
 
+Agents should read `getLaunchReadinessReport().agentSafeStatus` before final-use automation. `LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED` means the launch evidence is green, but practical validation, owner sign-off, or evidence-register review still blocks final structural-office use.
+
 Agents must also inspect `getLaunchReadinessReport().finalUseReview`. `FINAL_USE_REVIEW_REQUIRED` means at least one practical validation, owner sign-off, or evidence-register review still blocks final structural-office use even when the automated launch gate is green.
 
 `getPhase3EvidenceRegister().summary.evidenceComplete` only means the required field, engineering, and owner evidence rows have been accepted into the review register. It does not set `productionReady`, `productionDeploymentApproved`, or any final structural-office approval field. Project evidence API rows can use the evidence-register IDs; owner sign-off review accepts the corresponding aliases.

@@ -26,6 +26,8 @@ export function buildLaunchReadinessReport(evidence = {}) {
     releaseGate,
     finalUseReview,
     status: gates.every((item) => item.status === 'OK') ? 'OK' : 'REVIEW',
+    finalUseBlocked: finalUseReview.blockingReviews.length > 0,
+    agentSafeStatus: buildAgentSafeStatus(gates, releaseGate, finalUseReview),
     gates,
     summary: {
       okCount: gates.filter((item) => item.status === 'OK').length,
@@ -35,12 +37,22 @@ export function buildLaunchReadinessReport(evidence = {}) {
       productionDeploymentApproved: releaseGate.releaseReview.productionDeploymentApproved === true,
       productionReadinessStatus: releaseGate.releaseReview.productionDeploymentApproved === true ? 'PRODUCTION_APPROVED' : 'OWNER_REVIEW_REQUIRED',
       finalUseReviewStatus: finalUseReview.status,
+      finalUseBlocked: finalUseReview.blockingReviews.length > 0,
+      agentSafeStatus: buildAgentSafeStatus(gates, releaseGate, finalUseReview),
       blockingReviewCount: finalUseReview.blockingReviews.length,
     },
     productionReadiness: buildProductionReadinessSummary(releaseGate, finalUseReview),
     packaging: buildPackagingReadiness(evidence),
     license: buildLicenseReadiness(evidence),
   };
+}
+
+function buildAgentSafeStatus(gates, releaseGate, finalUseReview) {
+  if (gates.some((item) => item.status !== 'OK')) return 'LAUNCH_EVIDENCE_REVIEW_REQUIRED';
+  if (releaseGate.releaseReview?.status !== 'owner-review-ready') return 'OWNER_RELEASE_REVIEW_REQUIRED';
+  if (finalUseReview.blockingReviews.length) return 'LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED';
+  if (releaseGate.releaseReview?.productionDeploymentApproved === true) return 'PRODUCTION_APPROVED';
+  return 'OWNER_DEPLOYMENT_APPROVAL_REQUIRED';
 }
 
 export function buildLaunchReadinessGate(gates = [], evidence = {}) {

@@ -64,3 +64,5 @@ P3-M20 remains preliminary. It proves repository-level launch readiness evidence
 2026-07-03 evidence submission guard update: `validatePhase3EvidenceRecord()` now rejects project evidence rows whose `id` or `type` is not part of the Phase 3 evidence register. The server evidence route and in-page agent API use the same guard, so unknown AI-generated evidence keys cannot be silently stored or counted toward launch evidence.
 
 2026-07-03 evidence package update: server evidence submission now validates that a supplied `fileId` references an uploaded project file. `createEvidenceClient().submitProjectEvidencePackage()` uploads a drawing or point-cloud evidence file first, then submits the evidence row with the returned `fileId`, and the evidence register preserves that `fileId` in its review records.
+
+2026-07-03 agent-safe launch status update: `getLaunchReadinessReport()` now exposes top-level `finalUseBlocked` and `agentSafeStatus`. A green automated launch gate with remaining practical, owner, or evidence-register review now returns `LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED`, so agents do not need to infer final-use blocking only from nested review rows.
