@@ -2,8 +2,10 @@ import assert from 'node:assert/strict';
 import {
   DYNAMIC_COMPLETENESS_VERSION,
   LOADS_V2_VERSION,
+  MASS_SOURCE_TRACE_VERSION,
   buildCqcCombinationReport,
   buildLoadsV2Trace,
+  buildMassSourceTrace,
   combineModalCqc,
   computeTorsionAmplificationAx,
   createTwoStoryElasticFrameModel,
@@ -23,6 +25,7 @@ const trace = buildLoadsV2Trace(model, {
   minDynamicRatio: 0.85,
   snowLoad: 0.5,
   uplift: 0.2,
+  massSource: { combos: [{ case: 'D', factor: 1 }, { case: 'L', factor: 0.25 }], includeNodeMass: true },
   torsion: { maxDrift: 1.4, avgDrift: 1 },
 });
 assert.equal(trace.version, LOADS_V2_VERSION);
@@ -32,6 +35,7 @@ assert.ok(trace.rsaScaling.scaleFactor > 1);
 assert.ok(trace.torsionAx.Ax >= 1);
 assert.ok(trace.environmental.loads.some((load) => load.case === 'S'));
 assert.ok(trace.environmental.loads.some((load) => load.case === 'U'));
+assert.equal(trace.massSource.version, MASS_SOURCE_TRACE_VERSION);
 
 const weightedTrace = buildLoadsV2Trace({
   stories: [
@@ -76,6 +80,19 @@ assert.equal(modalTha.modal.length, 2);
 const environmental = generateEnvironmentalLoadsV2(model, { soilPressure: 3, waterPressure: 2, uplift: 1, snowLoad: 0.5 });
 assert.ok(environmental.loadCases.includes('H'));
 assert.ok(environmental.loadCases.includes('F'));
+
+const massTrace = buildMassSourceTrace({
+  nodes: [{ id: 'N1', mass: [2, 2, 2] }, { id: 'N2' }],
+  members: [{ id: 'M1', n1: 'N1', n2: 'N2' }],
+  loads: [
+    { id: 'D1', type: 'nodal', node: 'N2', P: 9.80665, dir: '-z', case: 'D' },
+    { id: 'L1', type: 'point', member: 'M1', P: 19.6133, dir: '-z', case: 'L' },
+  ],
+}, { combos: [{ case: 'D', factor: 1 }, { case: 'L', factor: 0.25 }], includeNodeMass: true });
+assert.equal(massTrace.version, MASS_SOURCE_TRACE_VERSION);
+assert.equal(massTrace.nodeCount, 2);
+assert.ok(massTrace.totalMass > 3);
+assert.ok(massTrace.rows.find((row) => row.node === 'N1').sources.includes('node.mass'));
 
 const scaling = scaleRsaBaseShear(50, 100, 0.85);
 assert.equal(scaling.scaleFactor, 1.7);

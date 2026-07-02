@@ -454,6 +454,8 @@ export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elastic
 export { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION, addWallMidPierToModel, buildWallSlabEquivalentTrace, recoverWallPierForces, summarizeSemiRigidDiaphragm, wallToMidPierMember } from './solver/wallSlabEquivalent.js';
 export {
   LOADS_V2_VERSION,
+  MASS_SOURCE_TRACE_VERSION,
+  buildMassSourceTrace,
   buildLoadsV2Trace,
   buildWindRows,
   computeTorsionAmplificationAx,

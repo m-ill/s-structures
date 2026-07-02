@@ -1,0 +1,38 @@
+# P3-M13 Loads And Dynamics Verification
+
+date: 2026-07-02
+status: preliminary core locked
+
+## Scope
+
+This note verifies P3-M13 against `docs/phase3/ELASTIC_ENGINE_COMPLETENESS_PLAN.md` tickets P3-T76 to P3-T82.
+
+## Verified Items
+
+| Ticket | Plan item | Evidence |
+| --- | --- | --- |
+| P3-T76 | Wind load v2 trace | `buildLoadsV2Trace()` wind rows |
+| P3-T77 | Seismic v2, RSA scaling, torsion Ax | seismic distribution, `scaleRsaBaseShear()`, `computeTorsionAmplificationAx()` |
+| P3-T78 | Snow, soil, water, uplift loads | `generateEnvironmentalLoadsV2()` |
+| P3-T79 | CQC modal combination | `combineModalCqc()`, `buildCqcCombinationReport()`, RSA CQC test |
+| P3-T80 | Buckling trace | `estimateModelBucklingTrace()` member Euler screening |
+| P3-T81 | Linear time history | `runLinearSdofTha()`, `runModalSuperpositionTha()` |
+| P3-T82 | Mass source from loads | `buildMassSourceTrace()` and load-to-mass test |
+
+## Added Review Finding
+
+The previous M13 implementation covered loads, CQC, buckling, and THA helpers, but did not expose the load-to-mass-source contract required by P3-T82. P3-M13 now includes `MASS_SOURCE_TRACE_VERSION`, which records:
+
+1. source combinations such as `D + 0.25L`
+2. existing node mass inclusion
+3. vertical nodal/member load conversion to mass
+4. ignored non-vertical loads
+5. explicit limitations
+
+## Current Test Gate
+
+`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, linear THA, modal THA, buckling trace, and mass source trace.
+
+## Remaining Limits
+
+P3-M13 remains preliminary. Buckling is member Euler screening, not a global eigenvalue problem. Loads v2 is a traceable preliminary KDS-style implementation, not a full project-specific code automation engine.
