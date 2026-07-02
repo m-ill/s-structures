@@ -24,6 +24,7 @@ import {
   buildP3IntegratedResults,
   buildLaunchReadinessReport,
   buildPhase3DesignMilestoneReview,
+  buildPhase3DrawingImportValidationReview,
   buildPhase3ElasticMilestoneReview,
   buildPhase3ImportMilestoneReview,
   buildPhase3NonlinearMilestoneReview,
@@ -237,6 +238,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getPhase3DesignMilestoneReview() {
       return cloneJson(buildPhase3DesignMilestoneReview());
+    },
+    getPhase3DrawingImportValidationReview(options = {}) {
+      return cloneJson(buildPhase3DrawingImportValidationReview(options));
     },
     getPhase3ProductizationMilestoneReview() {
       return cloneJson(buildPhase3ProductizationMilestoneReview());

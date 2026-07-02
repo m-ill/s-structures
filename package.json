@@ -132,6 +132,7 @@
     "test:p3m6": "node tests/p3-m6-dxf-import.mjs",
     "test:p3m7": "node tests/p3-m7-dwg-plan.mjs",
     "test:p3m7-ui": "node tests/p3-m7-import-review-ui.mjs",
+    "test:p3drawing": "node tests/p3-drawing-import-validation-review.mjs",
     "test:p3m8": "node tests/p3-pointcloud-load.mjs",
     "test:p3m9": "node tests/p3-pointcloud-extraction.mjs",
     "test:p3m9-e2e": "node tests/p3-pointcloud-e2e.mjs",

@@ -3,6 +3,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   buildPhase3DesignMilestoneReview,
+  buildPhase3DrawingImportValidationReview,
   buildPhase3ElasticMilestoneReview,
   buildPhase3ImportMilestoneReview,
   buildPhase3NonlinearMilestoneReview,
@@ -11,6 +12,7 @@ import {
   buildAgentManifest,
   buildPhase3PlanAlignmentReport,
   PHASE3_DESIGN_MILESTONE_REVIEW_VERSION,
+  PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION,
   PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION,
   PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
   PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION,
@@ -150,6 +152,7 @@ assert.equal(report.ticketSummary.unresolved, 0);
 assert.equal(report.ticketSummary.effectiveCompletion, true);
 assert.equal(manifest.modules.phase3PlanAlignment, PHASE3_PLAN_ALIGNMENT_VERSION);
 assert.equal(manifest.modules.phase3DesignMilestoneReview, PHASE3_DESIGN_MILESTONE_REVIEW_VERSION);
+assert.equal(manifest.modules.phase3DrawingImportValidationReview, PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3ElasticMilestoneReview, PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3ImportMilestoneReview, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3NonlinearMilestoneReview, PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION);
@@ -157,6 +160,7 @@ assert.equal(manifest.modules.phase3PracticeValidationReview, PHASE3_PRACTICE_VA
 assert.equal(manifest.modules.phase3ProductizationMilestoneReview, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
 assert.ok(manifest.readApis.includes('getPhase3DesignMilestoneReview'));
+assert.ok(manifest.readApis.includes('getPhase3DrawingImportValidationReview'));
 assert.ok(manifest.readApis.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3NonlinearMilestoneReview'));
@@ -164,6 +168,7 @@ assert.ok(manifest.readApis.includes('getPhase3PracticeValidationReview'));
 assert.ok(manifest.readApis.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
 assert.ok(manifest.dataContracts.includes('phase3DesignMilestoneReview'));
+assert.ok(manifest.dataContracts.includes('phase3DrawingImportValidationReview'));
 assert.ok(manifest.dataContracts.includes('phase3ElasticMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearMilestoneReview'));
@@ -204,6 +209,12 @@ assert.equal(designMilestoneReview.rows.find((row) => row.milestone === 'P3-M18'
 assert.ok(designMilestoneReview.summary.designScopes.includes('connection-base-plate'));
 assert.equal(designMilestoneReview.agentUse.readApi, 'getPhase3DesignMilestoneReview');
 
+const drawingImportValidationReview = buildPhase3DrawingImportValidationReview();
+assert.equal(drawingImportValidationReview.version, PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION);
+assert.ok(drawingImportValidationReview.requiredEvidence.includes('visual overlay evidence for import review'));
+assert.equal(drawingImportValidationReview.summary.ownerReviewRequired, true);
+assert.equal(drawingImportValidationReview.agentUse.readApi, 'getPhase3DrawingImportValidationReview');
+
 const productizationMilestoneReview = buildPhase3ProductizationMilestoneReview();
 assert.equal(productizationMilestoneReview.version, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
 assert.deepEqual(productizationMilestoneReview.rows.map((row) => row.milestone), ['P3-M19', 'P3-M20']);
@@ -225,6 +236,7 @@ assert.equal(apiReport.version, PHASE3_PLAN_ALIGNMENT_VERSION);
 assert.equal(apiReport.status, 'OK');
 assert.equal(apiReport.productionReadiness.status, 'PRELIMINARY_REVIEW_REQUIRED');
 assert.equal(agent.getPhase3DesignMilestoneReview().version, PHASE3_DESIGN_MILESTONE_REVIEW_VERSION);
+assert.equal(agent.getPhase3DrawingImportValidationReview().version, PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION);
 assert.equal(agent.getPhase3ElasticMilestoneReview().version, PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION);
 assert.equal(agent.getPhase3ImportMilestoneReview().version, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
 assert.equal(agent.getPhase3NonlinearMilestoneReview().version, PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION);

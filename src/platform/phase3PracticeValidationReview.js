@@ -5,7 +5,7 @@ const ROWS = [
     'real office DXF fixture set',
     'external DWG converter path and conversion log',
     'visual overlay evidence for import review',
-  ], ['getPhase3ImportMilestoneReview'], ['docs/verification/P3_M6_IMPORT_VERIFICATION.md', 'docs/verification/P3_M7_IMPORT_REVIEW_VERIFICATION.md']),
+  ], ['getPhase3ImportMilestoneReview', 'getPhase3DrawingImportValidationReview'], ['docs/verification/P3_M6_IMPORT_VERIFICATION.md', 'docs/verification/P3_M7_IMPORT_REVIEW_VERIFICATION.md']),
   row('point-cloud-import', ['P3-M8', 'P3-M9'], [
     'owner-provided real point-cloud files',
     'large-file performance record',

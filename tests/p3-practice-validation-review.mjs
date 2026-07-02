@@ -20,6 +20,7 @@ assert.ok(review.agentUse.finalApprovalFields.includes('productionDeploymentAppr
 const drawing = review.rows.find((row) => row.id === 'drawing-import');
 assert.deepEqual(drawing.milestones, ['P3-M6', 'P3-M7']);
 assert.ok(drawing.requiredEvidence.includes('visual overlay evidence for import review'));
+assert.ok(drawing.readApis.includes('getPhase3DrawingImportValidationReview'));
 assert.equal(drawing.productionBlocker, true);
 
 const nonlinear = review.rows.find((row) => row.id === 'nonlinear-engine');

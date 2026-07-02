@@ -57,3 +57,5 @@ P3-M7 is covered by:
 ## Remaining Limits
 
 P3-M7 remains preliminary. Real DWG conversion requires an installed external converter. Plan recognition needs more office drawing fixtures and visual overlay evidence before it can be considered production-grade.
+
+2026-07-03 practice-validation update: `getPhase3DrawingImportValidationReview` now records DWG conversion readiness/log evidence and import review decision rows. The new `test:p3drawing` runner entry keeps drawing validation evidence in the P3-M7 gate while preserving the external-converter and owner-review requirements.
