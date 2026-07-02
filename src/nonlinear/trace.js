@@ -338,6 +338,7 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       arcLengthSteps: arcLength.steps.length,
       postPeakTracked: arcLength.steps.some((step) => step.dLambda < 0),
       arcLengthSatisfied: arcLength.steps.every((step) => step.satisfied),
+      arcLengthReview: arcLength.review || null,
     },
     pushover: {
       ok: !!pushover?.ok,
@@ -379,6 +380,7 @@ function buildHingeControlReview({ hingeTrace, pushover, hingeControlBenchmarks,
   if (!(displacementControl?.steps?.length > 0)) missing.push('displacement-control');
   if (displacementControl?.review?.status === 'review-required') missing.push('displacement-control-input-review');
   if (!(arcLength?.steps || []).some((step) => step.dLambda < 0)) missing.push('arc-length-post-peak');
+  if (arcLength?.review?.status === 'review-required') missing.push('arc-length-input-review');
   if (!pushover?.ok) missing.push('formal-pushover');
   if (hasPushoverStepFailure(pushover)) missing.push('formal-pushover-step-failure');
   if (!hingeControlBenchmarks?.ok) missing.push('B3-B5-benchmark');
@@ -414,7 +416,8 @@ function buildHingeControlTicketCoverage({ hingeTrace, hingeAssignment, displace
       covered: (displacementControl?.steps?.length || 0) > 0
         && displacementControl?.review?.status !== 'review-required'
         && (arcLength?.steps || []).some((step) => step.dLambda < 0)
-        && (arcLength?.steps || []).every((step) => step.satisfied),
+        && (arcLength?.steps || []).every((step) => step.satisfied)
+        && arcLength?.review?.status !== 'review-required',
       evidence: `${displacementControl?.steps?.length || 0} displacement steps, postPeak=${(arcLength?.steps || []).some((step) => step.dLambda < 0)}`,
     },
     {

@@ -3,17 +3,25 @@ export const ARC_LENGTH_CONTROL_VERSION = 'p3-m15-arc-length';
 export function buildArcLengthStep(options = {}) {
   const du = vector(options.du);
   const dLambda = Number(options.dLambda || 0);
-  const alpha = Number(options.alpha ?? 1);
-  const radius = Number(options.radius ?? 1);
+  const alphaInput = Number(options.alpha ?? 1);
+  const radiusInput = Number(options.radius ?? 1);
+  const alphaValid = Number.isFinite(alphaInput) && alphaInput > 0;
+  const radiusValid = Number.isFinite(radiusInput) && radiusInput > 0;
+  const alpha = alphaValid ? alphaInput : 1;
+  const radius = radiusValid ? radiusInput : 1;
   const norm = Math.sqrt(du.reduce((sum, v) => sum + v * v, 0) + alpha * dLambda * dLambda);
+  const satisfied = Math.abs(norm - radius) <= Number(options.tolerance ?? 1e-6);
   return {
     version: ARC_LENGTH_CONTROL_VERSION,
     du,
     dLambda,
+    alphaInput,
+    radiusInput,
     alpha,
     radius,
     constraint: norm - radius,
-    satisfied: Math.abs(norm - radius) <= Number(options.tolerance ?? 1e-6),
+    satisfied,
+    review: buildArcLengthStepReview({ alphaValid, radiusValid, satisfied }),
     formula: 'du.du + alpha*dLambda^2 = radius^2',
   };
 }
@@ -35,7 +43,9 @@ export function buildArcLengthTrace(path = [], options = {}) {
       postPeakTracked: steps.some((step) => step.dLambda < 0),
       satisfiedSteps: steps.filter((step) => step.satisfied).length,
       maxConstraintError: Math.max(0, ...steps.map((step) => Math.abs(step.constraint))),
+      review: buildArcLengthTraceReview(steps),
     },
+    review: buildArcLengthTraceReview(steps),
   };
 }
 
@@ -49,4 +59,26 @@ export function createSnapThroughBenchmarkPath(options = {}) {
 
 function vector(value = []) {
   return [...value].map((item) => Number(item) || 0);
+}
+
+function buildArcLengthStepReview({ alphaValid, radiusValid, satisfied }) {
+  const warnings = [];
+  if (!alphaValid) warnings.push('invalid-arc-length-alpha');
+  if (!radiusValid) warnings.push('invalid-arc-length-radius');
+  if (!satisfied) warnings.push('arc-length-constraint-not-satisfied');
+  return {
+    status: warnings.length ? 'review-required' : 'available',
+    warnings,
+    agentDecision: warnings.length ? 'review-arc-length-control-inputs' : 'arc-length-step-ready',
+  };
+}
+
+function buildArcLengthTraceReview(steps = []) {
+  const warnings = [...new Set(steps.flatMap((step) => step.review?.warnings || []))];
+  return {
+    status: warnings.length ? 'review-required' : 'available',
+    stepCount: steps.length,
+    warnings,
+    agentDecision: warnings.length ? 'review-arc-length-control-inputs' : 'arc-length-control-ready-for-review',
+  };
 }

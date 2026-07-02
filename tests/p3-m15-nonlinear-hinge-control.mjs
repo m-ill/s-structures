@@ -67,6 +67,12 @@ assert.equal(arc.contract.control, 'arc-length');
 assert.ok(arc.steps.some((step) => step.dLambda < 0));
 assert.ok(arc.steps.every((step) => step.satisfied));
 assert.equal(arc.summary.postPeakTracked, true);
+assert.equal(arc.review.status, 'available');
+assert.equal(arc.review.agentDecision, 'arc-length-control-ready-for-review');
+const invalidArc = buildArcLengthTrace([{ du: [0.2], dLambda: 0.1, radius: 0 }]);
+assert.equal(invalidArc.steps[0].review.status, 'review-required');
+assert.ok(invalidArc.review.warnings.includes('invalid-arc-length-radius'));
+assert.ok(invalidArc.review.warnings.includes('arc-length-constraint-not-satisfied'));
 
 const model = createPortalFrameSample();
 model.materials = [{
@@ -179,6 +185,15 @@ assert.equal(invalidControlTrace.hingeControlGate.summary.readyForAgentReview, f
 assert.equal(invalidControlTrace.hingeControlGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T55').covered, false);
 assert.ok(invalidControlTrace.hingeControlGate.controlReview.missing.includes('displacement-control-input-review'));
 assert.equal(invalidControlTrace.hingeControlGate.controlReview.agentDecision, 'hold-before-m16');
+const invalidArcGate = buildNonlinearHingeControlGate(hingeTrace, pushover, benchmarks, {
+  displacementControl: dc,
+  arcLength: invalidArc,
+  hingeAssignment: assigned,
+});
+assert.equal(invalidArcGate.control.arcLengthReview.status, 'review-required');
+assert.equal(invalidArcGate.summary.readyForAgentReview, false);
+assert.equal(invalidArcGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T55').covered, false);
+assert.ok(invalidArcGate.controlReview.missing.includes('arc-length-input-review'));
 const failedPushoverGate = buildNonlinearHingeControlGate(hingeTrace, {
   ok: true,
   control: { stopReason: 'STEP_FAILED' },
