@@ -41,6 +41,8 @@ The material library report also exposes nonlinear backbone metadata so the late
 
 2026-07-02 follow-up: The registry audit now exposes the plan-level policy contract directly. AI agents can inspect `registryPolicy`, `scopeSummary`, `softDeletedItems`, and `appendOnlyWarnings` to verify project/global/built-in priority, append-only versioning, and soft-delete behavior without reimplementing resolver logic.
 
+2026-07-02 report-contract update: `buildMaterialLibraryReport()` now exposes a P3-M10 `contract`, reference/error/warning summary counts, and registry audit summary. Calculation reports and AI agents can verify P3-T46 through P3-T49, `id@version` usage, append-only warnings, soft-delete rows, and migration warnings from the report object without separately rebuilding the registry audit.
+
 ## Current Test Gate
 
 P3-M10 is covered by:

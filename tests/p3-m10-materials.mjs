@@ -76,6 +76,14 @@ assert.deepEqual(audit.softDeletedItems, []);
 assert.deepEqual(audit.appendOnlyWarnings, []);
 const libraryReport = buildMaterialLibraryReport(model);
 assert.equal(libraryReport.version, MATERIAL_LIBRARY_REPORT_VERSION);
+assert.equal(libraryReport.contract.milestone, 'P3-M10');
+assert.deepEqual(libraryReport.contract.tickets, ['P3-T46', 'P3-T47', 'P3-T48', 'P3-T49']);
+assert.equal(libraryReport.contract.referenceFormat, 'id@version');
+assert.ok(libraryReport.contract.agentActions.includes('upsertSection'));
+assert.equal(libraryReport.summary.materialReferenceCount, 1);
+assert.equal(libraryReport.summary.sectionReferenceCount, 1);
+assert.equal(libraryReport.summary.unversionedReferenceCount, 0);
+assert.equal(libraryReport.auditSummary.registryPolicy.editRule, 'append-only-new-version');
 assert.ok(libraryReport.materials.some((row) => row.label === 'USER_STEEL@2'));
 assert.equal(libraryReport.materials.find((row) => row.label === 'USER_STEEL@2').nonlinear.model, 'bilinear');
 assert.ok(libraryReport.sections.find((row) => row.label === 'USER_H@1').properties.A > 0);
@@ -102,6 +110,9 @@ assert.deepEqual(legacyAudit.unversionedReferences.sort(), ['LEGACY_H', 'LEGACY_
 assert.ok(legacyAudit.migrationWarnings.includes('legacy-unversioned-reference:LEGACY_STEEL'));
 assert.equal(legacyAudit.resolvedReferences.materials[0].resolved, 'LEGACY_STEEL@3');
 assert.equal(legacyAudit.resolvedReferences.sections[0].resolved, 'LEGACY_H@2');
+const legacyReport = buildMaterialLibraryReport(legacyRefModel);
+assert.equal(legacyReport.summary.unversionedReferenceCount, 2);
+assert.equal(legacyReport.summary.migrationWarningCount, 2);
 
 const policyAudit = buildLibraryAudit({
   materials: [

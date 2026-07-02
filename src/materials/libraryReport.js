@@ -1,14 +1,52 @@
-import { resolveMaterialRecord, resolveSectionRecord } from './registry.js';
+import { buildLibraryAudit, resolveMaterialRecord, resolveSectionRecord } from './registry.js';
 
 export const MATERIAL_LIBRARY_REPORT_VERSION = 'p3-m10-material-library-report-v1';
 
 export function buildMaterialLibraryReport(model = {}) {
   const materialRefs = new Set((model.members || []).map((m) => m.matId).filter(Boolean));
   const sectionRefs = new Set((model.members || []).map((m) => m.secId).filter(Boolean));
+  const audit = buildLibraryAudit(model);
   return {
     version: MATERIAL_LIBRARY_REPORT_VERSION,
+    contract: buildReportContract(),
+    summary: buildSummary(audit, materialRefs, sectionRefs),
+    auditSummary: buildAuditSummary(audit),
     materials: [...materialRefs].sort().map((ref) => summarizeMaterial(ref, resolveMaterialRecord(model, ref))),
     sections: [...sectionRefs].sort().map((ref) => summarizeSection(ref, resolveSectionRecord(model, ref))),
+  };
+}
+
+function buildReportContract() {
+  return {
+    milestone: 'P3-M10',
+    tickets: ['P3-T46', 'P3-T47', 'P3-T48', 'P3-T49'],
+    referenceFormat: 'id@version',
+    readApi: 'getMaterialSectionRegistry',
+    agentActions: ['listLibrary', 'getLibraryItem', 'upsertMaterial', 'upsertSection'],
+  };
+}
+
+function buildSummary(audit, materialRefs, sectionRefs) {
+  return {
+    materialReferenceCount: materialRefs.size,
+    sectionReferenceCount: sectionRefs.size,
+    unversionedReferenceCount: audit.unversionedReferences.length,
+    migrationWarningCount: audit.migrationWarnings.length,
+    materialErrorCount: audit.materialErrors.length,
+    sectionErrorCount: audit.sectionErrors.length,
+    sectionWarningCount: audit.sectionWarnings.length,
+    appendOnlyWarningCount: audit.appendOnlyWarnings.length,
+    softDeletedCount: audit.softDeletedItems.length,
+  };
+}
+
+function buildAuditSummary(audit) {
+  return {
+    registryPolicy: audit.registryPolicy,
+    scopeSummary: audit.scopeSummary,
+    softDeletedItems: audit.softDeletedItems,
+    appendOnlyWarnings: audit.appendOnlyWarnings,
+    migrationWarnings: audit.migrationWarnings,
   };
 }
 
