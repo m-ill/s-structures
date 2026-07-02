@@ -33,9 +33,11 @@ The gate records:
 
 2026-07-02 review fix: `runNewmarkNlth()` now records per-step Newton residual/correction/tangent rows and exposes overall convergence status. The `fiberNlthGate` reports `nlthConverged` and `maxIterations` so reports and AI agents can detect a nonlinear time-history step that did not satisfy the equilibrium tolerance.
 
+2026-07-02 review update: Ground-motion records and the P3-M16 gate now expose point count, duration, period range, source PGA, target PGA, and scale factor. `buildNonlinearAnalysisTrace()` carries `spectrumScaling` beside the scaled record so reports and AI agents can audit the P3-T86 scaling basis without rebuilding it.
+
 ## Current Test Gate
 
-`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling, Newmark NLTH yielded trace, per-step Newton iteration logs, B6/B7/B8 benchmark registration, and agent manifest exposure.
+`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, B6/B7/B8 benchmark registration, and agent manifest exposure.
 
 ## Remaining Limits
 

@@ -3,7 +3,14 @@ export const GROUND_MOTION_VERSION = 'p3-m16-ground-motion';
 export function parseGroundMotionText(text = '', options = {}) {
   const dt = Number(options.dt || 0.02);
   const values = String(text).split(/[\s,]+/).map(Number).filter(Number.isFinite);
-  return { version: GROUND_MOTION_VERSION, name: options.name || 'user-record', dt, accelerations: values };
+  return {
+    version: GROUND_MOTION_VERSION,
+    name: options.name || 'user-record',
+    dt,
+    pointCount: values.length,
+    duration: Math.max(0, values.length - 1) * dt,
+    accelerations: values,
+  };
 }
 
 export function scaleGroundMotion(record = {}, options = {}) {
@@ -17,6 +24,8 @@ export function scaleGroundMotion(record = {}, options = {}) {
     scaleFactor: factor,
     targetPga,
     sourcePga: pga,
+    pointCount: (record.accelerations || []).length,
+    duration: Math.max(0, ((record.accelerations || []).length - 1) * Number(record.dt || options.dt || 0.02)),
     accelerations: (record.accelerations || []).map((value) => value * factor),
     formula: 'scaleFactor=targetPga/sourcePga',
   };
@@ -30,5 +39,12 @@ export function buildSpectrumScalingTrace(record = {}, spectrum = {}) {
     direction: spectrum.direction || 'x',
     scaled,
     periodRange: spectrum.periodRange || [0.2, 1.5],
+    targetPga: scaled.targetPga,
+    sourcePga: scaled.sourcePga,
+    scaleFactor: scaled.scaleFactor,
+    pointCount: scaled.pointCount,
+    duration: scaled.duration,
+    method: 'pga-scaling-with-period-range-trace',
+    limitations: ['Spectrum matching is represented as a trace contract; full frequency-domain matching remains hardening scope.'],
   };
 }

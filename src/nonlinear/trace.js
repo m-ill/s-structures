@@ -9,7 +9,7 @@ import { assignMemberHinges, HINGE_ASSIGNMENT_VERSION } from './hinges/hingeAssi
 import { createPmmBackboneSet, createPmmBackboneSetFromMember, interpolatePmmBackbone, PMM_HINGE_VERSION } from './hinges/pmmHinge.js';
 import { buildFiberMaterialMap, buildMemberFiberSection, buildRectangularFiberSection, FIBER_SECTION_VERSION } from './fiber/fiberSection.js';
 import { computeMomentCurvature, MOMENT_CURVATURE_VERSION } from './fiber/momentCurvature.js';
-import { GROUND_MOTION_VERSION, parseGroundMotionText, scaleGroundMotion } from './dynamics/groundMotion.js';
+import { GROUND_MOTION_VERSION, buildSpectrumScalingTrace, parseGroundMotionText, scaleGroundMotion } from './dynamics/groundMotion.js';
 import { NLTH_NEWMARK_VERSION, runNewmarkNlth } from './dynamics/newmark.js';
 import { RAYLEIGH_DAMPING_VERSION, solveRayleighDamping } from './dynamics/rayleigh.js';
 import { runFormalPushover } from './pushoverFormal.js';
@@ -44,7 +44,9 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
     momentCurvature: computeMomentCurvature(fiberSection, { materials: fiberMaterials, ...(options.momentCurvature || {}) }),
   };
   const rayleigh = solveRayleighDamping(options.rayleigh);
-  const record = scaleGroundMotion(parseGroundMotionText(options.groundMotionText || '0 0.1 -0.1 0', { dt: options.dt || 0.02 }), options.groundMotion);
+  const parsedRecord = parseGroundMotionText(options.groundMotionText || '0 0.1 -0.1 0', { dt: options.dt || 0.02, name: options.recordName });
+  const spectrumScaling = buildSpectrumScalingTrace(parsedRecord, options.groundMotion);
+  const record = scaleGroundMotion(parsedRecord, options.groundMotion);
   const nlth = runNewmarkNlth({ accelerations: record.accelerations, dt: record.dt, ...(options.nlth || {}) });
   const assembly = buildNonlinearTangentAssembly(model, state, {
     hinges: hingeAssignment.hinges,
@@ -74,7 +76,7 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
       hingeAssignment,
       assembly,
     }),
-    fiberNlthGate: buildNonlinearFiberNlthGate({ pmm, fiber, rayleigh, groundMotion: record, nlth }, fiberNlthBenchmarks),
+    fiberNlthGate: buildNonlinearFiberNlthGate({ pmm, fiber, rayleigh, groundMotion: record, spectrumScaling, nlth }, fiberNlthBenchmarks),
     steps: pushover?.steps || [],
     capacityCurve: pushover?.capacityCurve || [],
     hingeStates: hingeTrace.rows,
@@ -85,6 +87,7 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
     fiber,
     rayleigh,
     groundMotion: record,
+    spectrumScaling,
     nlth,
     pushover,
     benchmarks: {
@@ -127,7 +130,18 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       rayleighTargets: trace.rayleigh?.targets || null,
       recordName: trace.groundMotion?.name || null,
       dt: trace.groundMotion?.dt || null,
+      pointCount: trace.groundMotion?.pointCount || 0,
+      duration: trace.groundMotion?.duration || 0,
       scaleFactor: trace.groundMotion?.scaleFactor || 1,
+      spectrumScaling: trace.spectrumScaling ? {
+        direction: trace.spectrumScaling.direction,
+        periodRange: trace.spectrumScaling.periodRange,
+        targetPga: trace.spectrumScaling.targetPga,
+        sourcePga: trace.spectrumScaling.sourcePga,
+        scaleFactor: trace.spectrumScaling.scaleFactor,
+        pointCount: trace.spectrumScaling.pointCount,
+        duration: trace.spectrumScaling.duration,
+      } : null,
       nlthRows: trace.nlth?.rows?.length || 0,
       nlthConverged: trace.nlth?.converged ?? null,
       maxIterations: Math.max(0, ...(trace.nlth?.rows || []).map((row) => row.iterations || 0)),

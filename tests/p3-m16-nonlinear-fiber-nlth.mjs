@@ -64,9 +64,14 @@ assert.ok(Math.abs(dampingRatioAtFrequency(rayleigh, 2) - 0.05) < 1e-12);
 
 const record = parseGroundMotionText('0 0.2 -0.1 0', { dt: 0.01, name: 'mini' });
 assert.equal(record.version, GROUND_MOTION_VERSION);
+assert.equal(record.pointCount, 4);
+assert.equal(record.duration, 0.03);
 const scaled = scaleGroundMotion(record, { targetPga: 0.4 });
 assert.equal(scaled.scaleFactor, 2);
-assert.equal(buildSpectrumScalingTrace(record, { targetPga: 0.4 }).scaled.targetPga, 0.4);
+const scalingTrace = buildSpectrumScalingTrace(record, { targetPga: 0.4, periodRange: [0.2, 1.2] });
+assert.equal(scalingTrace.scaled.targetPga, 0.4);
+assert.equal(scalingTrace.pointCount, 4);
+assert.deepEqual(scalingTrace.periodRange, [0.2, 1.2]);
 
 const nlth = runNewmarkNlth({ accelerations: scaled.accelerations, dt: scaled.dt, stiffness: 100, yieldForce: 0.00001 });
 assert.equal(nlth.version, NLTH_NEWMARK_VERSION);
@@ -109,6 +114,8 @@ assert.equal(trace.fiberNlthGate.pmm.memberSource.memberId, model.members[0].id)
 assert.ok(trace.fiberNlthGate.dynamics.nlthRows > 0);
 assert.equal(trace.fiberNlthGate.dynamics.nlthConverged, true);
 assert.ok(trace.fiberNlthGate.dynamics.maxIterations >= 1);
+assert.ok(trace.fiberNlthGate.dynamics.spectrumScaling.pointCount > 0);
+assert.ok(trace.spectrumScaling.scaleFactor > 0);
 assert.equal(trace.benchmarks.fiberNlth.ok, true);
 assert.ok(trace.pmm.interpolated.points.length > 0);
 assert.ok(trace.fiber.momentCurvature.rows.length > 0);
