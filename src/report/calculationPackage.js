@@ -201,6 +201,12 @@ export function renderCalculationPackageHtml(pkg) {
       ['Method limitations', d.phase3IntegratedResults.integratedGate.coverage.methodLimitations],
       ['Approval state', d.phase3IntegratedResults.integratedGate.workflow.approvalState],
     ]) : ''}
+    ${d.phase3IntegratedResults?.integratedGate?.ticketCoverage ? table(['Ticket', 'Scope', 'Covered', 'Evidence'], d.phase3IntegratedResults.integratedGate.ticketCoverage.map((row) => [
+      row.ticket,
+      row.scope,
+      row.covered ? 'Yes' : 'No',
+      row.evidence,
+    ])) : ''}
     ${d.phase3IntegratedResults ? table(['Module', 'Items', 'WARN', 'NG'], Object.entries(d.phase3IntegratedResults.design.modules || {}).map(([key, module]) => [
       key,
       module.summary?.itemCount || module.summary?.memberCount || 0,

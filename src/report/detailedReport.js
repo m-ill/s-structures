@@ -568,6 +568,12 @@ function renderPhase3Integrated(integrated) {
       ['Method limitations', integrated.integratedGate.coverage.methodLimitations],
       ['Approval state', integrated.integratedGate.workflow.approvalState],
     ]) : '',
+    integrated.integratedGate?.ticketCoverage ? renderTable(['Ticket', 'Scope', 'Covered', 'Evidence'], integrated.integratedGate.ticketCoverage.map((row) => [
+      row.ticket,
+      row.scope,
+      row.covered ? 'Yes' : 'No',
+      row.evidence,
+    ])) : '',
     renderTable(['Module', 'Items', 'WARN', 'NG'], Object.entries(integrated.design.modules || {}).map(([key, module]) => [
       key,
       module.summary?.itemCount || module.summary?.memberCount || 0,

@@ -56,6 +56,7 @@ export function buildP3IntegratedResultsGate(input = {}) {
       designVersion: input.design?.version || null,
       workflowLockVersion: input.workflowLock?.version || null,
     },
+    ticketCoverage: buildTicketCoverage(input),
     coverage: {
       storyRows: input.resultPostprocessing?.summary?.storyRowCount || 0,
       memberRows: input.resultPostprocessing?.summary?.memberRowCount || 0,
@@ -78,6 +79,37 @@ export function buildP3IntegratedResultsGate(input = {}) {
       'Final sign-off still requires owner review, project-specific assumptions, and engineer approval.',
     ],
   };
+}
+
+function buildTicketCoverage(input) {
+  const benchmarkEvidence = input.benchmarkEvidence || {};
+  const methodLimitations = input.methodLimitations || [];
+  return [
+    {
+      ticket: 'P3-T58',
+      scope: 'integrated-result-postprocessing',
+      covered: !!input.resultPostprocessing?.version && !!input.nonlinear?.version && !!input.design?.version,
+      evidence: `${input.resultPostprocessing?.summary?.storyRowCount || 0} story rows, ${input.nonlinear?.capacityCurve?.length || 0} capacity points`,
+    },
+    {
+      ticket: 'P3-T59',
+      scope: 'calculation-report-method-limitations',
+      covered: methodLimitations.length > 0,
+      evidence: `${methodLimitations.length} method/limitation rows`,
+    },
+    {
+      ticket: 'P3-T61',
+      scope: 'workflow-lock',
+      covered: !!input.workflowLock?.version,
+      evidence: `${input.workflowLock?.approvalState || 'not-submitted'} / editable=${input.workflowLock?.editable !== false}`,
+    },
+    {
+      ticket: 'P3-T62',
+      scope: 'benchmark-regression',
+      covered: !!benchmarkEvidence.ok,
+      evidence: Object.entries(benchmarkEvidence.groups || {}).map(([key, ok]) => `${key}:${ok ? 'OK' : 'NG'}`).join(', '),
+    },
+  ];
 }
 
 function buildBenchmarkEvidence(nonlinear, evidence = {}) {
