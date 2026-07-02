@@ -1,11 +1,11 @@
-# P3-M6 To P3-M20 Completion Audit
+# P3-M0 To P3-M20 Completion Audit With M6 Restart Trace
 
 date: 2026-07-02
 status: current regression green, owner review still required for production sign-off
 
 ## Scope
 
-This audit checks the current implementation against the existing Phase 3 planning documents under `docs/phase3/`. It does not introduce a new roadmap. It records the restart point requested for P3-M6 onward and confirms that the implemented milestones remain traceable to the prewritten plan.
+This audit checks the current implementation against the existing Phase 3 planning documents under `docs/phase3/`. It does not introduce a new roadmap. This file started as the P3-M6 restart audit, but the current agent-readable completion audit covers the full P3-M0 to P3-M20 range.
 
 ## Plan Trace
 
@@ -41,7 +41,7 @@ The following tests were run successfully in the current worktree:
 
 ## Review Finding
 
-The current codebase is now traceable from P3-M6 through P3-M20 and back to the 14 Phase 3 planning documents. The most important correction in this audit was making absorbed backlog tickets explicit through `ticketSummary`, so the system no longer reports a confusing 95 planned versus 93 active count without explanation.
+The current codebase is now traceable from P3-M0 through P3-M20 and back to the 14 Phase 3 planning documents. P3-M6 remains the restart point for this audit history. The most important correction in this audit was making absorbed backlog tickets explicit through `ticketSummary`, so the system no longer reports a confusing 95 planned versus 93 active count without explanation.
 
 2026-07-02 source-document audit update: `tests/p3-plan-alignment.mjs` now checks the 14 core document paths against stable markers such as PRD requirement IDs, roadmap milestones, backlog ticket IDs, API paths, auth primitives, ImportCandidate contracts, material registry strings, nonlinear benchmark IDs, launch gates, and file-map folders. This makes the alignment gate depend on the actual prewritten planning documents, not only on a hardcoded document count.
 
@@ -57,7 +57,7 @@ This audit proves code/test/document traceability in the repository. It does not
 
 2026-07-03 practice-validation update: `getPhase3PracticeValidationReview` now exposes the remaining practical validation evidence for drawing import, point-cloud import, elastic core, nonlinear engine, detailed design, and productization. The new `test:p3practice` runner entry keeps these owner-review requirements visible in the P3-M20 gate instead of burying them in prose-only audit notes.
 
-2026-07-03 completion-audit API update: `getPhase3CompletionAuditReview` now exposes the P3-M6 to P3-M20 audit rows as agent-readable data. The review separates `proven`, `preliminary`, and `manual` rows, keeps production readiness false while preliminary/manual rows remain, and links each row to the follow-up read APIs that an AI agent should inspect.
+2026-07-03 completion-audit API update: `getPhase3CompletionAuditReview` now exposes the audit rows as agent-readable data. The first version covered the P3-M6 to P3-M20 restart range; the current version covers P3-M0 to P3-M20. The review separates `proven`, `preliminary`, and `manual` rows, keeps production readiness false while preliminary/manual rows remain, and links each row to the follow-up read APIs that an AI agent should inspect.
 
 2026-07-03 full-range audit update: `getPhase3CompletionAuditReview` now covers P3-M0 to P3-M20. P3-M0 to P3-M5 are included as proven platform and input-pipeline rows with their server, auth, persistence, app-shell, viewer, and ImportCandidate evidence, while P3-M6 to P3-M20 keep their existing preliminary/manual production blockers.
 
