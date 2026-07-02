@@ -230,6 +230,7 @@ export {
 export {
   buildPhase3EvidenceRegister,
   PHASE3_EVIDENCE_REGISTER_VERSION,
+  validatePhase3EvidenceRecord,
 } from './platform/phase3EvidenceRegister.js';
 export {
   buildPhase3PracticeValidationReview,

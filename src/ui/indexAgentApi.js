@@ -36,6 +36,7 @@ import {
   buildPhase3OwnerSignoffReview,
   buildPhase3CompletionAuditReview,
   buildPhase3EvidenceRegister,
+  validatePhase3EvidenceRecord,
   buildRcDetailedDesignReport,
   buildRcDetailingReport,
   getLibraryItem as getCoreLibraryItem,
@@ -267,6 +268,10 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       return cloneJson(getProjectEvidenceState(target));
     },
     submitProjectEvidence(evidence = {}) {
+      const validation = validatePhase3EvidenceRecord(evidence);
+      if (!validation.ok) {
+        throw new Error(`Unknown Phase 3 evidence id or type: ${evidence.id || evidence.type || 'blank'}`);
+      }
       const state = getProjectEvidenceState(target);
       state.evidence.push({
         ...evidence,

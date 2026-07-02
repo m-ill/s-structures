@@ -76,4 +76,6 @@ Agents must also inspect `getLaunchReadinessReport().finalUseReview`. `FINAL_USE
 
 `getPhase3EvidenceRegister().summary.evidenceComplete` only means the required field, engineering, and owner evidence rows have been accepted into the review register. It does not set `productionReady`, `productionDeploymentApproved`, or any final structural-office approval field. Project evidence API rows can use the evidence-register IDs; owner sign-off review accepts the corresponding aliases.
 
+`submitProjectEvidence` accepts only the IDs listed in `getPhase3EvidenceRegister().rows` or the matching required evidence type labels. Unknown evidence IDs are rejected by both the server route and the in-page agent command bridge.
+
 Manual launch evidence remains in `reports/launch-readiness/`.

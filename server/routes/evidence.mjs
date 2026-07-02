@@ -1,4 +1,7 @@
-import { buildPhase3EvidenceRegister } from '../../src/platform/phase3EvidenceRegister.js';
+import {
+  buildPhase3EvidenceRegister,
+  validatePhase3EvidenceRecord,
+} from '../../src/platform/phase3EvidenceRegister.js';
 import { authenticate, requireProjectRole } from '../auth/guard.mjs';
 import { ApiError, ok } from '../router.mjs';
 
@@ -16,6 +19,13 @@ export function registerEvidenceRoutes(router, ctx) {
     const evidence = body?.evidence || body;
     if (!evidence?.id && !evidence?.type) {
       throw new ApiError(400, 'VALIDATION', 'Evidence id or type is required.');
+    }
+    const validation = validatePhase3EvidenceRecord(evidence);
+    if (!validation.ok) {
+      throw new ApiError(400, 'VALIDATION', 'Evidence id or type is not in the Phase 3 evidence register.', {
+        reason: validation.reason,
+        allowedIds: validation.allowedIds,
+      });
     }
     const entry = await ctx.projectStore.addEvidence(params.id, { evidence, author: user.id });
     return ok({ evidence: entry, register: buildPhase3EvidenceRegister({ evidence: await ctx.projectStore.listEvidence(params.id) }) });

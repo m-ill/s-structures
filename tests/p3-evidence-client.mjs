@@ -31,6 +31,13 @@ try {
   assert.equal(listed.evidence.length, 1);
   assert.equal(listed.register.rows.find((row) => row.id === 'real-office-dxf-fixtures').status, 'ACCEPTED');
 
+  await assert.rejects(
+    () => client.submitProjectEvidence(projectId, { id: 'not-in-phase3-plan', accepted: true }),
+    /Evidence id or type is not in the Phase 3 evidence register/,
+  );
+  const afterRejected = await client.listProjectEvidence(projectId);
+  assert.equal(afterRejected.evidence.length, 1);
+
   const manifest = buildAgentManifest();
   assert.equal(manifest.modules.phase3EvidenceClient, EVIDENCE_CLIENT_VERSION);
   assert.ok(manifest.dataContracts.includes('phase3EvidenceClient'));

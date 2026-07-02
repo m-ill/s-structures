@@ -143,6 +143,15 @@ try {
   assert.equal(invalidEvidenceWrite.status, 400);
   assert.equal(invalidEvidenceWrite.data.error.code, 'VALIDATION');
 
+  const unknownEvidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
+    token,
+    body: { evidence: { id: 'not-in-phase3-plan', accepted: true } },
+  });
+  assert.equal(unknownEvidenceWrite.status, 400);
+  assert.equal(unknownEvidenceWrite.data.error.code, 'VALIDATION');
+  assert.equal(unknownEvidenceWrite.data.error.details.reason, 'unknown-phase3-evidence');
+  assert.ok(unknownEvidenceWrite.data.error.details.allowedIds.includes('security-signoff'));
+
   const securityEvidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
     token,
     body: { evidence: { id: 'security-signoff', accepted: true, owner: 'owner', reportPath: 'reports/launch-readiness/security.md' } },

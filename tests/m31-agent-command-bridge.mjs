@@ -134,6 +134,18 @@ assert.equal(response.ok, true);
 assert.equal(response.data.summary.agentDecision, 'collect-phase3-evidence');
 
 response = sendCommand({
+  id: 'submit-unknown-evidence',
+  method: 'submitProjectEvidence',
+  payload: { id: 'not-in-phase3-plan', accepted: true },
+});
+assert.equal(response.ok, false);
+assert.match(response.error.message, /Unknown Phase 3 evidence/);
+
+response = sendCommand({ id: 'evidence-after-unknown', method: 'listProjectEvidence' });
+assert.equal(response.ok, true);
+assert.equal(response.data.register.summary.acceptedCount, 0);
+
+response = sendCommand({
   id: 'submit-security-signoff',
   method: 'submitProjectEvidence',
   payload: { id: 'security-signoff', accepted: true, owner: 'owner' },
@@ -177,7 +189,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 27);
+assert.equal(response.data.agentCommandBridge.commandCount, 29);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -191,8 +203,8 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 28);
-assert.equal(state.errorCount, 1);
+assert.equal(state.commandCount, 30);
+assert.equal(state.errorCount, 2);
 assert.ok(state.availableMethods.includes('getPhase3ImportMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3DesignMilestoneReview'));

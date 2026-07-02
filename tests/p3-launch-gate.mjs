@@ -50,6 +50,7 @@ assert.equal(agentContract.manualReferences.remainingReview, 'docs/user-manual/P
 assert.equal(agentContract.reviewGates.launchReadiness.path, 'releaseGate.releaseReview');
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('getLaunchReadinessReport().productionReadiness.status')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('summary.evidenceComplete')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('submitProjectEvidence accepts only IDs')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('owner sign-off review aliases')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('summary.readyForAgentReview')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalApprovalField')));

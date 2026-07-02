@@ -3,6 +3,7 @@ import {
   buildAgentManifest,
   buildPhase3EvidenceRegister,
   PHASE3_EVIDENCE_REGISTER_VERSION,
+  validatePhase3EvidenceRecord,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
@@ -38,6 +39,13 @@ assert.deepEqual(full.summary.missing, []);
 assert.equal(full.summary.evidenceComplete, true);
 assert.equal(full.summary.agentDecision, 'phase3-evidence-ready-for-owner-and-engineer-review');
 assert.equal(full.summary.productionReady, false);
+
+assert.equal(validatePhase3EvidenceRecord({ id: 'security-signoff' }).ok, true);
+assert.equal(validatePhase3EvidenceRecord({ type: 'security sign-off' }).ok, true);
+const invalidRecord = validatePhase3EvidenceRecord({ id: 'not-in-phase3-plan' });
+assert.equal(invalidRecord.ok, false);
+assert.equal(invalidRecord.reason, 'unknown-phase3-evidence');
+assert.ok(invalidRecord.allowedIds.includes('security-signoff'));
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3EvidenceRegister, PHASE3_EVIDENCE_REGISTER_VERSION);

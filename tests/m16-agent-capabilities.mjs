@@ -139,6 +139,11 @@ const evidenceRegister = agent.getPhase3EvidenceRegister();
 assert.ok(evidenceRegister.summary.missing.includes('real-office-dxf-fixtures'));
 assert.equal(evidenceRegister.summary.agentDecision, 'collect-phase3-evidence');
 assert.equal(agent.listProjectEvidence().register.summary.acceptedCount, 0);
+assert.throws(
+  () => agent.submitProjectEvidence({ id: 'not-in-phase3-plan', accepted: true }),
+  /Unknown Phase 3 evidence/,
+);
+assert.equal(agent.listProjectEvidence().register.summary.acceptedCount, 0);
 assert.equal(agent.submitProjectEvidence({ id: 'security-signoff', accepted: true }).register.summary.acceptedCount, 1);
 assert.equal(agent.getPhase3EvidenceRegister().summary.acceptedCount, 1);
 const updatedOwnerSignoffReview = agent.getPhase3OwnerSignoffReview();

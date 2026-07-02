@@ -19,6 +19,19 @@ export const PHASE3_REQUIRED_EVIDENCE = [
   req('security-signoff', 'productization', 'P3-M20', 'security sign-off'),
 ];
 
+export function validatePhase3EvidenceRecord(record = {}) {
+  const normalized = normalizeRow(record);
+  const idAllowed = PHASE3_REQUIRED_EVIDENCE.some((item) => item.id === normalized.id);
+  const typeAllowed = PHASE3_REQUIRED_EVIDENCE.some((item) => item.label === normalized.type);
+  const ok = idAllowed || typeAllowed;
+  return {
+    ok,
+    record: normalized,
+    reason: ok ? null : 'unknown-phase3-evidence',
+    allowedIds: PHASE3_REQUIRED_EVIDENCE.map((item) => item.id),
+  };
+}
+
 export function buildPhase3EvidenceRegister(input = {}) {
   const evidence = normalizeEvidence(input.evidence || input.items || []);
   const rows = PHASE3_REQUIRED_EVIDENCE.map((required) => {
