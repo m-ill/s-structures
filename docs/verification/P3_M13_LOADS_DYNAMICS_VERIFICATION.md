@@ -49,9 +49,11 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 
 2026-07-03 loads coverage hardening: P3-T76, P3-T77, and P3-T82 coverage now requires nonzero wind force, seismic force, and load-to-mass total mass. A trace object with empty forces or an empty mass source now stays `review-required` with `wind-trace-empty`, `seismic-trace-empty`, or `mass-source-empty` blockers instead of appearing ticket-covered from row/object presence alone.
 
+2026-07-03 basis-input hardening: `buildLoadsV2Trace()` no longer uses default wind or seismic forces as accepted ticket evidence. Wind, seismic, and environmental coverage now requires explicit basis input, and `review.missingBasis` records missing or empty input groups. `buildMassSourceTrace()` also separates non-vertical ignored loads from skipped loads outside the active mass-source combination or zero vertical loads, so reports and AI agents can see whether a partial mass trace is a warning or only a filtered combination scope.
+
 ## Current Test Gate
 
-`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, RSA contract/review propagation, sparse-CQC RSA holds, dynamic review decisions, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace and review status, top-level mass-source warning propagation, empty load/mass coverage blocking, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.
+`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, explicit basis gating, RSA scaling, torsion Ax, CQC, RSA contract/review propagation, sparse-CQC RSA holds, dynamic review decisions, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace and review status, skipped-vs-ignored mass-source loads, top-level mass-source warning propagation, empty load/mass coverage blocking, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.
 
 ## Remaining Limits
 

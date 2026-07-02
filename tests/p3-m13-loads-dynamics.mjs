@@ -54,7 +54,11 @@ assert.equal(trace.review.productionReady, false);
 assert.equal(trace.review.preliminaryCodeAutomation, true);
 assert.deepEqual(trace.review.uncoveredTickets, []);
 assert.deepEqual(trace.review.blockers, []);
+assert.deepEqual(trace.review.missingBasis, []);
 assert.equal(trace.review.agentDecision, 'loads-v2-ready-for-engineering-review');
+assert.equal(trace.basisInputs.windPressureProvided, true);
+assert.equal(trace.basisInputs.seismicBaseShearProvided, true);
+assert.equal(trace.basisInputs.environmentalBasisProvided, true);
 assert.ok(trace.wind.length > 0 && trace.seismic.length > 0);
 assert.equal(trace.wind[1].pressure, 0.9);
 assert.equal(trace.wind[1].importance, 1);
@@ -79,6 +83,16 @@ const weightedTrace = buildLoadsV2Trace({
 assert.equal(weightedTrace.seismic[0].force, 0);
 assert.ok(weightedTrace.seismic[2].force > weightedTrace.seismic[1].force);
 assert.equal(Math.round(weightedTrace.seismic.reduce((sum, row) => sum + row.force, 0)), 150);
+
+const missingBasisTrace = buildLoadsV2Trace(model, {
+  massSource: { combos: [{ case: 'D', factor: 1 }], includeNodeMass: true },
+});
+assert.equal(missingBasisTrace.review.status, 'review-required');
+assert.ok(missingBasisTrace.review.missingBasis.includes('wind-basis-missing-or-empty'));
+assert.ok(missingBasisTrace.review.missingBasis.includes('seismic-basis-missing-or-empty'));
+assert.ok(missingBasisTrace.review.missingBasis.includes('environmental-basis-missing-or-empty'));
+assert.equal(missingBasisTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T76').covered, false);
+assert.equal(missingBasisTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T77').covered, false);
 
 const responses = [{ period: 1, displacement: 2 }, { period: 1.1, displacement: 1 }];
 assert.ok(combineModalCqc(responses, 0.05) >= Math.sqrt(5));
@@ -173,6 +187,18 @@ assert.equal(lateralIgnoredMassTrace.review.ignoredLoadCount, 1);
 assert.ok(lateralIgnoredMassTrace.review.ignoredReasons.includes('not-vertical-load'));
 assert.equal(lateralIgnoredMassTrace.review.warning, 'mass-source-has-ignored-loads');
 assert.equal(lateralIgnoredMassTrace.review.agentDecision, 'mass-source-ready-with-ignored-load-review');
+
+const skippedMassTrace = buildMassSourceTrace({
+  nodes: [{ id: 'N1' }],
+  loads: [
+    { id: 'D-ZERO', type: 'nodal', node: 'N1', fz: 0, case: 'D' },
+    { id: 'L-OUT', type: 'nodal', node: 'N1', P: 9.80665, dir: '-z', case: 'L' },
+  ],
+}, { combos: [{ case: 'D', factor: 1 }], includeNodeMass: false });
+assert.equal(skippedMassTrace.review.skippedLoadCount, 2);
+assert.ok(skippedMassTrace.review.skippedReasons.includes('zero-vertical-load'));
+assert.ok(skippedMassTrace.review.skippedReasons.includes('outside-mass-source-combo'));
+assert.equal(skippedMassTrace.ignored.length, 0);
 
 const ignoredLoadTopLevelTrace = buildLoadsV2Trace({
   nodes: [{ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 0, y: 0, z: 3 }],

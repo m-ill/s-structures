@@ -5,8 +5,9 @@ export const MASS_SOURCE_TRACE_VERSION = 'p3-m13-mass-source-trace-v1';
 
 export function buildLoadsV2Trace(model = {}, basis = {}) {
   const stories = model.stories?.length ? model.stories : inferStories(model.nodes || []);
-  const windBase = finite(basis.windPressure, 0.8);
-  const seismicBase = finite(basis.seismicBaseShear, 100);
+  const basisInputs = buildBasisInputTrace(basis, model);
+  const windBase = finite(basis.windPressure, 0);
+  const seismicBase = finite(basis.seismicBaseShear, 0);
   const seismicRows = distributeSeismic(stories, seismicBase);
   const rsaScaling = basis.dynamicBaseShear || basis.staticBaseShear
     ? scaleRsaBaseShear(basis.dynamicBaseShear || 0, basis.staticBaseShear || seismicBase, basis.minDynamicRatio)
@@ -16,12 +17,13 @@ export function buildLoadsV2Trace(model = {}, basis = {}) {
   const massSource = buildMassSourceTrace(model, basis.massSource || model.analysisSettings?.massSource || null);
   const wind = buildWindRows(stories, windBase, basis);
   const seismic = seismicRows.map((row) => ({ ...row, rsaScale: rsaScaling?.scaleFactor ?? 1, torsionAx: torsionAx?.Ax ?? 1 }));
-  const summary = summarizeLoadsV2({ wind, seismic, environmental, massSource });
+  const summary = summarizeLoadsV2({ wind, seismic, environmental, massSource, basisInputs });
   return {
     version: LOADS_V2_VERSION,
     contract: buildLoadsV2Contract(),
     summary,
     review: buildLoadsV2Review(summary, massSource),
+    basisInputs,
     wind,
     seismic,
     rsaScaling,
@@ -97,6 +99,7 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
   const g = finite(spec.gravity, 9.80665);
   const nodeRows = new Map();
   const ignored = [];
+  const skipped = [];
   if (spec.includeNodeMass !== false) {
     for (const node of model.nodes || []) {
       const mass = nodeMassValue(node.mass);
@@ -108,13 +111,20 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
   const memberLengths = buildMemberLengths(model);
   for (const load of expanded) {
     const factor = comboFactor(load.case, combos);
-    if (!factor) continue;
-    const vertical = verticalLoad(load, memberLengths[load.member] || 0);
-    if (!vertical) {
-      ignored.push({ id: load.id || null, type: load.type || null, reason: 'not-vertical-load' });
+    if (!factor) {
+      skipped.push({ id: load.id || null, type: load.type || null, case: load.case || 'LC1', reason: 'outside-mass-source-combo' });
       continue;
     }
-    const mass = Math.abs(vertical * factor) / g;
+    const vertical = verticalLoadInfo(load, memberLengths[load.member] || 0);
+    if (!vertical.ok) {
+      ignored.push({ id: load.id || null, type: load.type || null, reason: vertical.reason });
+      continue;
+    }
+    const mass = Math.abs(vertical.value * factor) / g;
+    if (!(mass > 0)) {
+      skipped.push({ id: load.id || null, type: load.type || null, case: load.case || 'LC1', reason: 'zero-vertical-load' });
+      continue;
+    }
     if (load.node) addMass(nodeRows, load.node, mass, `load:${load.case || 'LC1'}`);
     else if (load.member && memberNodes[load.member]) {
       const [a, b] = memberNodes[load.member];
@@ -133,7 +143,8 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
       scope: 'Convert selected vertical load cases to lumped nodal mass for elastic dynamics.',
       gravityUnit: 'force divided by acceleration',
       acceptedLoads: ['node.mass', 'vertical nodal force', 'vertical member point force', 'vertical member uniform load'],
-      ignoredLoads: 'non-vertical loads and loads outside the active mass-source combination',
+      ignoredLoads: 'non-vertical loads',
+      skippedLoads: 'loads outside the active mass-source combination and zero vertical loads',
     },
     gravity: g,
     combos,
@@ -142,7 +153,8 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
     nodeCount: rows.length,
     rows,
     ignored,
-    review: buildMassSourceReview({ rows, ignored, totalMass }),
+    skipped,
+    review: buildMassSourceReview({ rows, ignored, skipped, totalMass }),
     limitations: [
       'Mass source converts vertical nodal/member loads only.',
       'Generated mass is an analysis trace and does not mutate node.mass automatically.',
@@ -150,13 +162,16 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
   };
 }
 
-function buildMassSourceReview({ rows, ignored, totalMass }) {
+function buildMassSourceReview({ rows, ignored, skipped, totalMass }) {
   const ignoredReasons = [...new Set((ignored || []).map((row) => row.reason).filter(Boolean))].sort();
+  const skippedReasons = [...new Set((skipped || []).map((row) => row.reason).filter(Boolean))].sort();
   return {
     status: totalMass > 0 ? 'available' : 'empty',
     acceptedNodeCount: rows.length,
     ignoredLoadCount: ignored.length,
     ignoredReasons,
+    skippedLoadCount: skipped.length,
+    skippedReasons,
     warning: ignored.length > 0 ? 'mass-source-has-ignored-loads' : null,
     agentDecision: totalMass > 0 && ignored.length === 0
       ? 'mass-source-ready'
@@ -190,9 +205,12 @@ function buildLoadsV2Contract() {
   };
 }
 
-function summarizeLoadsV2({ wind, seismic, environmental, massSource }) {
+function summarizeLoadsV2({ wind, seismic, environmental, massSource, basisInputs }) {
   const windForce = sum(wind, 'force');
   const seismicForce = sum(seismic, 'force');
+  const windCovered = windForce > 0 && basisInputs.windPressureProvided;
+  const seismicCovered = seismicForce > 0 && basisInputs.seismicBaseShearProvided;
+  const environmentalCovered = environmental.loads.length > 0 && basisInputs.environmentalBasisProvided;
   return {
     storyCount: Math.max(wind.length, seismic.length),
     windForce,
@@ -202,9 +220,9 @@ function summarizeLoadsV2({ wind, seismic, environmental, massSource }) {
     massNodeCount: massSource.nodeCount,
     totalMass: massSource.totalMass,
     ticketCoverage: [
-      { ticket: 'P3-T76', scope: 'wind v2 trace', covered: windForce > 0, evidence: `${wind.length} story wind rows / ${windForce} total force` },
-      { ticket: 'P3-T77', scope: 'seismic v2 trace', covered: seismicForce > 0, evidence: `${seismic.length} story seismic rows / ${seismicForce} total force` },
-      { ticket: 'P3-T78', scope: 'snow soil water uplift loads', covered: environmental.loads.length > 0, evidence: environmental.loadCases.join(',') || 'no environmental cases requested' },
+      { ticket: 'P3-T76', scope: 'wind v2 trace', covered: windCovered, evidence: `${wind.length} story wind rows / ${windForce} total force` },
+      { ticket: 'P3-T77', scope: 'seismic v2 trace', covered: seismicCovered, evidence: `${seismic.length} story seismic rows / ${seismicForce} total force` },
+      { ticket: 'P3-T78', scope: 'snow soil water uplift loads', covered: environmentalCovered, evidence: environmental.loadCases.join(',') || 'no environmental cases requested' },
       { ticket: 'P3-T82', scope: 'load-to-mass source', covered: massSource.totalMass > 0, evidence: `${massSource.nodeCount} mass nodes / ${massSource.totalMass} total mass` },
     ],
   };
@@ -217,6 +235,8 @@ function buildLoadsV2Review(summary, massSource) {
   const blockers = [];
   if (!(summary.windForce > 0)) blockers.push('wind-trace-empty');
   if (!(summary.seismicForce > 0)) blockers.push('seismic-trace-empty');
+  const missingBasis = missingBasisInputs(summary);
+  blockers.push(...missingBasis);
   if (!massSource?.version) blockers.push('mass-source-trace-missing');
   if (!(summary.totalMass > 0)) blockers.push('mass-source-empty');
   if (massSource?.review?.warning) blockers.push('mass-source-ignored-loads');
@@ -238,6 +258,7 @@ function buildLoadsV2Review(summary, massSource) {
     massSourceIgnoredLoadCount,
     uncoveredTickets,
     blockers,
+    missingBasis,
     engineerReviewRequired: true,
     productionReady: false,
     preliminaryCodeAutomation: true,
@@ -274,18 +295,43 @@ function comboFactor(caseName = 'LC1', combos = []) {
   return row ? finite(row.factor, 0) : 0;
 }
 
-function verticalLoad(load = {}, memberLength = 0) {
-  if (load.fz != null) return Number(load.fz);
+function buildBasisInputTrace(basis = {}, model = {}) {
+  const environmentalKeys = ['snowLoad', 'soilPressure', 'waterPressure', 'uplift'];
+  return {
+    windPressureProvided: Number.isFinite(Number(basis.windPressure)),
+    seismicBaseShearProvided: Number.isFinite(Number(basis.seismicBaseShear)),
+    environmentalBasisProvided: environmentalKeys.some((key) => Number.isFinite(Number(basis.environmental?.[key] ?? basis[key]))),
+    massSourceProvided: !!(basis.massSource || model.analysisSettings?.massSource),
+  };
+}
+
+function missingBasisInputs(summary = {}) {
+  const coverage = Object.fromEntries((summary.ticketCoverage || []).map((row) => [row.ticket, row.covered]));
+  const missing = [];
+  if (!coverage['P3-T76']) missing.push('wind-basis-missing-or-empty');
+  if (!coverage['P3-T77']) missing.push('seismic-basis-missing-or-empty');
+  if (!coverage['P3-T78']) missing.push('environmental-basis-missing-or-empty');
+  if (!coverage['P3-T82']) missing.push('mass-source-basis-missing-or-empty');
+  return missing;
+}
+
+function verticalLoadInfo(load = {}, memberLength = 0) {
+  if (load.fz != null) return finiteLoad(load.fz, 'vertical-nodal-fz');
   if (load.P != null && ['-z', '+z', 'z'].includes(String(load.dir || load.direction || '').toLowerCase())) {
     const sign = String(load.dir || load.direction).startsWith('+') ? 1 : -1;
-    return sign * Math.abs(Number(load.P));
+    return finiteLoad(sign * Math.abs(Number(load.P)), 'vertical-point-load');
   }
   if (load.w != null && ['-z', '+z', 'z'].includes(String(load.dir || load.direction || '').toLowerCase())) {
     const sign = String(load.dir || load.direction).startsWith('+') ? 1 : -1;
     const length = Math.max(0, Number(memberLength) || 0);
-    return sign * Math.abs(Number(load.w)) * length;
+    return finiteLoad(sign * Math.abs(Number(load.w)) * length, 'vertical-uniform-load');
   }
-  return 0;
+  return { ok: false, reason: 'not-vertical-load' };
+}
+
+function finiteLoad(value, reason) {
+  const number = Number(value);
+  return Number.isFinite(number) ? { ok: true, value: number } : { ok: false, reason };
 }
 
 function buildMemberLengths(model = {}) {
