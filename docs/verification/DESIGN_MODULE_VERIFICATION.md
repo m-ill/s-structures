@@ -104,4 +104,6 @@ Current status is preliminary. M19 connects nonlinear trace, detailed-design tra
 
 2026-07-03 engineering evidence update: `getPhase3EngineeringValidationReview()` now consumes accepted project evidence rows for nonlinear solver certification, hinge/fiber/NLTH qualification, final code clause selection, and detailing/constructability approval. These rows can satisfy the engineering review package while `productionReady` remains false until final engineer or owner approval is explicit.
 
+2026-07-03 serviceability evidence hardening: P3-T95 is no longer marked covered by a static hook. `phase3ServiceabilityEvidence` now summarizes member deflection, story drift, and floor vibration evidence for `designGate`; missing evidence adds `serviceability-evidence` and `ticket-coverage` review blockers while remaining visible to reports and AI agents.
+
 2026-07-03 executable review update: `node tests/p3-design-milestone-review.mjs` now locks the P3-M17 to P3-M18 design milestone review contract. The Phase 3 runner includes this check in the P3-M18 group so RC, steel, connection, foundation, formula/issue, serviceability scope, gate paths, and `finalPermitDesign` ownership remain agent-readable.

@@ -23,6 +23,7 @@ import { DESIGN_DEMAND_PACKAGE_VERSION } from '../design/designDemandPackage.js'
 import { DESIGN_BASIS_INPUT_VERSION, LOAD_DERIVATION_TRACE_VERSION, LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
 import { MEMBER_DESIGN_TRACE_VERSION } from '../design/memberDesignTrace.js';
 import { P3_DETAILED_DESIGN_GATE_VERSION, P3_DETAILED_DESIGN_REPORT_VERSION } from '../design/p3DetailedDesignReport.js';
+import { P3_SERVICEABILITY_EVIDENCE_VERSION } from '../design/p3ServiceabilityEvidence.js';
 import { RC_DESIGN_GATE_VERSION, RC_DETAILED_DESIGN_VERSION } from '../design/rc/detailedReport.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
@@ -161,6 +162,7 @@ export function buildAgentManifest(options = {}) {
       designBasisInput: DESIGN_BASIS_INPUT_VERSION,
       loadDerivationTrace: LOAD_DERIVATION_TRACE_VERSION,
       serviceabilityDrift: SERVICEABILITY_DRIFT_VERSION,
+      phase3ServiceabilityEvidence: P3_SERVICEABILITY_EVIDENCE_VERSION,
       advancedElasticTrace: ADVANCED_ELASTIC_TRACE_VERSION,
       unilateralMemberTrace: UNILATERAL_MEMBER_TRACE_VERSION,
       resultPostprocessing: RESULT_POSTPROCESSING_VERSION,
@@ -432,6 +434,7 @@ export function buildAgentManifest(options = {}) {
       'designBasisInput',
       'loadDerivationTrace',
       'serviceabilityDriftReview',
+      'phase3ServiceabilityEvidence',
       'advancedElasticTrace',
       'unilateralMemberTrace',
       'resultPostprocessingTables',

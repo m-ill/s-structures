@@ -1,5 +1,6 @@
 import { buildConnectionDetailedDesignReport } from './connection/detailedReport.js';
 import { buildFoundationDetailedDesignReport } from './foundation/detailedReport.js';
+import { buildP3ServiceabilityEvidence } from './p3ServiceabilityEvidence.js';
 import { buildRcDetailedDesignReport } from './rc/detailedReport.js';
 import { buildSteelDetailedDesignReport } from './steel/detailedReport.js';
 import {
@@ -16,6 +17,7 @@ export function buildP3DetailedDesignReport(model, analysis, options = {}) {
   const connection = buildConnectionDetailedDesignReport(model, analysis, options.connection || options);
   const foundation = buildFoundationDetailedDesignReport(model, analysis, options.foundation || options);
   const modules = { rc, steel, connection, foundation };
+  const serviceability = buildP3ServiceabilityEvidence(model, analysis, modules, options.serviceabilityEvidence || options);
   const issueRows = buildIssueRows(modules);
   const formulaTrace = Object.values(modules).flatMap((module) => module.formulaTrace || []);
   return {
@@ -29,7 +31,8 @@ export function buildP3DetailedDesignReport(model, analysis, options = {}) {
     modelName: model?.meta?.name || null,
     summary: summarize(modules),
     modules,
-    designGate: buildP3DetailedDesignGate(modules, { issueRows, formulaTrace }),
+    serviceability,
+    designGate: buildP3DetailedDesignGate(modules, { issueRows, formulaTrace, serviceability }),
     issueRows,
     formulaTrace,
     formulaRegistryVersion: DESIGN_FORMULA_REGISTRY_VERSION,
@@ -40,8 +43,9 @@ export function buildP3DetailedDesignReport(model, analysis, options = {}) {
 export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
   const issueRows = evidence.issueRows || buildIssueRows(modules);
   const formulaTrace = evidence.formulaTrace || Object.values(modules).flatMap((module) => module.formulaTrace || []);
-  const coverage = buildTicketCoverage(modules, issueRows, formulaTrace);
-  const designReview = buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage });
+  const serviceability = evidence.serviceability || buildP3ServiceabilityEvidence(null, null, modules, evidence);
+  const coverage = buildTicketCoverage(modules, issueRows, formulaTrace, serviceability);
+  const designReview = buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage, serviceability });
   return {
     version: P3_DETAILED_DESIGN_GATE_VERSION,
     milestone: 'P3-M18',
@@ -68,7 +72,7 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
       issueCount: issueRows.length,
       formulaCount: formulaTrace.length,
       unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
-      serviceabilityHook: 'drift-deflection-vibration-ready',
+      serviceabilityStatus: serviceability.summary?.covered ? 'trace-ready' : 'review-required',
       moduleStatuses: summarizeModuleStatuses(modules),
       designReview,
       ticketCoverage: coverage,
@@ -83,9 +87,10 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     formulaCount: formulaTrace.length,
     ticketCoverage: coverage,
     designReview,
+    serviceability,
     formulaRegistryVersion: DESIGN_FORMULA_REGISTRY_VERSION,
     unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
-    serviceabilityHook: 'drift-deflection-vibration-ready',
+    serviceabilityStatus: serviceability.summary?.covered ? 'trace-ready' : 'review-required',
     limitations: [
       'P3-M18 is a preliminary integrated detailed-design trace gate.',
       'Complete coverage means trace rows and formula links are present; fabrication, geotechnical, permit, and drawing approval remain engineer review scope.',
@@ -94,7 +99,7 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
   };
 }
 
-function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage }) {
+function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage, serviceability }) {
   const unregisteredFormulaCount = formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length;
   const moduleStatuses = summarizeModuleStatuses(modules);
   const unlinkedIssueCount = issueRows.filter((row) => !(row.formulaIds || []).length).length;
@@ -103,6 +108,7 @@ function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverag
   if (!formulaTrace.length) missing.push('formula-trace');
   if (unregisteredFormulaCount) missing.push('formula-registry');
   if (unlinkedIssueCount) missing.push('issue-formula-links');
+  if (!serviceability?.summary?.covered) missing.push('serviceability-evidence');
   if (issueRows.length) missing.push('design-issues');
   return {
     status: missing.length ? 'review-required' : 'trace-ready',
@@ -115,6 +121,7 @@ function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverag
     unlinkedIssueCount,
     formulaCount: formulaTrace.length,
     unregisteredFormulaCount,
+    serviceabilityMissing: serviceability?.summary?.missing || [],
     moduleStatuses,
     missing,
     agentDecision: missing.length ? 'resolve-detailed-design-review-items' : 'm18-ready-for-m19-integrated-results-review',
@@ -159,7 +166,7 @@ function buildIssueRows(modules) {
   });
 }
 
-function buildTicketCoverage(modules, issueRows, formulaTrace) {
+function buildTicketCoverage(modules, issueRows, formulaTrace, serviceability) {
   const steelRows = rowsOf(modules.steel || {});
   const connectionRows = rowsOf(modules.connection || {});
   const foundationRows = rowsOf(modules.foundation || {});
@@ -175,7 +182,13 @@ function buildTicketCoverage(modules, issueRows, formulaTrace) {
       covered: formulaTrace.length > 0 && (issueRows.length === 0 || linkedIssueCount === issueRows.length),
       evidence: `${formulaTrace.length} formula rows, ${linkedIssueCount}/${issueRows.length} linked issue rows`,
     },
-    { ticket: 'P3-T95', scope: 'serviceability-hook', count: 1, covered: true, evidence: 'drift-deflection-vibration-ready' },
+    {
+      ticket: 'P3-T95',
+      scope: 'serviceability-integration',
+      count: serviceability?.rows?.reduce((sum, row) => sum + row.count, 0) || 0,
+      covered: !!serviceability?.summary?.covered,
+      evidence: `missing ${serviceability?.summary?.missing?.join(', ') || 'none'}`,
+    },
   ];
 }
 

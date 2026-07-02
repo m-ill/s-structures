@@ -253,6 +253,10 @@ export {
   SERVICEABILITY_DRIFT_VERSION,
 } from './design/serviceability.js';
 export {
+  buildP3ServiceabilityEvidence,
+  P3_SERVICEABILITY_EVIDENCE_VERSION,
+} from './design/p3ServiceabilityEvidence.js';
+export {
   analyzeDynamics,
   buildLumpedMass,
   runResponseSpectrum,

@@ -14,6 +14,7 @@ import {
   DESIGN_FORMULA_REGISTRY_VERSION,
   P3_DETAILED_DESIGN_GATE_VERSION,
   P3_DETAILED_DESIGN_REPORT_VERSION,
+  P3_SERVICEABILITY_EVIDENCE_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
@@ -77,13 +78,16 @@ assert.equal(integrated.designGate.contract.featureTicketMap.steelMember, 'P3-T9
 assert.ok(integrated.designGate.contract.reviewFields.includes('summary.ticketCoverage'));
 assert.equal(integrated.designGate.contract.maturity, 'preliminary-integrated-schedule');
 assert.equal(integrated.designGate.summary.readyForAgentReview, false);
-assert.equal(integrated.designGate.summary.completeCoverage, true);
+assert.equal(integrated.designGate.summary.completeCoverage, false);
 assert.equal(integrated.designGate.designReview.status, 'review-required');
 assert.equal(integrated.designGate.designReview.finalPermitDesign, false);
 assert.equal(integrated.designGate.designReview.fabricationReady, false);
 assert.equal(integrated.designGate.designReview.geotechnicalCertified, false);
 assert.equal(integrated.designGate.designReview.agentDecision, 'resolve-detailed-design-review-items');
-assert.deepEqual(integrated.designGate.designReview.missing, ['design-issues']);
+assert.deepEqual(integrated.designGate.designReview.missing, ['ticket-coverage', 'serviceability-evidence', 'design-issues']);
+assert.equal(integrated.designGate.serviceability.version, P3_SERVICEABILITY_EVIDENCE_VERSION);
+assert.ok(integrated.designGate.serviceability.summary.missing.includes('floor-vibration'));
+assert.equal(integrated.designGate.coverage.find((row) => row.ticket === 'P3-T95').covered, false);
 assert.ok(integrated.modules.steel.rows.length > 0);
 assert.ok(integrated.modules.connection.rows.length > 0);
 assert.ok(integrated.modules.foundation.footings.length > 0);
@@ -94,7 +98,6 @@ assert.ok(integrated.designGate.issueCount > 0);
 assert.equal(integrated.formulaRegistryVersion, DESIGN_FORMULA_REGISTRY_VERSION);
 assert.equal(integrated.designGate.unregisteredFormulaCount, 0);
 assert.deepEqual(integrated.designGate.coverage.map((row) => row.ticket), ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95']);
-assert.ok(integrated.designGate.coverage.every((row) => row.covered));
 assert.deepEqual(integrated.designGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95']);
 assert.ok(integrated.designGate.ticketCoverage.every((row) => row.evidence));
 assert.ok(integrated.issueRows.every((row) => Array.isArray(row.formulaIds)));
@@ -103,7 +106,7 @@ assert.ok(integrated.issueRows.some((row) => row.formulaIds.length > 0));
 const issueGate = buildP3DetailedDesignGate({
   steel: {
     version: 'steel-test',
-    rows: [{ memberId: 'S1', status: 'NG', formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1' }] }],
+    rows: [{ memberId: 'S1', status: 'NG', deflection: { status: 'OK', ratio: 0.2 }, formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1' }] }],
     formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' }],
     summary: { itemCount: 1, ngCount: 1 },
   },
@@ -121,6 +124,8 @@ const issueGate = buildP3DetailedDesignGate({
   },
 }, {
   issueRows: [{ moduleId: 'steel', itemId: 'S1', status: 'NG', formulaIds: ['KDS-ST-H1-INTERACTION-V1'] }],
+  driftReport: { rows: [{ status: 'OK' }], summary: { status: 'OK' } },
+  vibrationRows: [{ status: 'OK' }],
   formulaTrace: [
     { formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' },
     { formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' },
@@ -137,7 +142,7 @@ assert.equal(issueGate.summary.readyForAgentReview, false);
 const unlinkedIssueGate = buildP3DetailedDesignGate({
   steel: {
     version: 'steel-test',
-    rows: [{ memberId: 'S1', status: 'NG' }],
+    rows: [{ memberId: 'S1', status: 'NG', deflection: { status: 'OK', ratio: 0.2 } }],
     formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' }],
     summary: { itemCount: 1, ngCount: 1 },
   },
@@ -155,6 +160,8 @@ const unlinkedIssueGate = buildP3DetailedDesignGate({
   },
 }, {
   issueRows: [{ moduleId: 'steel', itemId: 'S1', status: 'NG', formulaIds: [] }],
+  driftReport: { rows: [{ status: 'OK' }], summary: { status: 'OK' } },
+  vibrationRows: [{ status: 'OK' }],
   formulaTrace: [
     { formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' },
     { formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' },
@@ -169,7 +176,7 @@ assert.equal(unlinkedIssueGate.summary.readyForAgentReview, false);
 const cleanIntegratedGate = buildP3DetailedDesignGate({
   steel: {
     version: 'steel-test',
-    rows: [{ memberId: 'S1', status: 'OK', formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1' }] }],
+    rows: [{ memberId: 'S1', status: 'OK', deflection: { status: 'OK', ratio: 0.2 }, formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1' }] }],
     formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' }],
     summary: { itemCount: 1 },
   },
@@ -187,6 +194,8 @@ const cleanIntegratedGate = buildP3DetailedDesignGate({
   },
 }, {
   issueRows: [],
+  driftReport: { rows: [{ status: 'OK' }], summary: { status: 'OK' } },
+  vibrationRows: [{ status: 'OK' }],
   formulaTrace: [
     { formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' },
     { formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' },
@@ -219,7 +228,7 @@ assert.equal(mismatchedIssueGate.designReview.unlinkedIssueCount, 0);
 const mismatchedExternalIssueGate = buildP3DetailedDesignGate({
   steel: {
     version: 'steel-test',
-    rows: [{ memberId: 'S1', status: 'OK', interaction: { formulaId: 'KDS-ST-H1-INTERACTION-V1' } }],
+    rows: [{ memberId: 'S1', status: 'OK', deflection: { status: 'OK', ratio: 0.2 }, interaction: { formulaId: 'KDS-ST-H1-INTERACTION-V1' } }],
     formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' }],
     summary: { itemCount: 1 },
   },
@@ -237,6 +246,8 @@ const mismatchedExternalIssueGate = buildP3DetailedDesignGate({
   },
 }, {
   issueRows: [{ moduleId: 'steel', itemId: 'S9', status: 'NG' }],
+  driftReport: { rows: [{ status: 'OK' }], summary: { status: 'OK' } },
+  vibrationRows: [{ status: 'OK' }],
   formulaTrace: [
     { formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' },
     { formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' },
@@ -255,10 +266,12 @@ assert.ok(agentReport.modules.connection.rows.length > 0);
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3DetailedDesignIntegration, P3_DETAILED_DESIGN_REPORT_VERSION);
 assert.equal(manifest.modules.phase3DetailedDesignGate, P3_DETAILED_DESIGN_GATE_VERSION);
+assert.equal(manifest.modules.phase3ServiceabilityEvidence, P3_SERVICEABILITY_EVIDENCE_VERSION);
 assert.equal(manifest.modules.phase3DesignFormulaRegistry, DESIGN_FORMULA_REGISTRY_VERSION);
 assert.ok(manifest.readApis.includes('getP3DetailedDesignReport'));
 assert.ok(manifest.dataContracts.includes('phase3DetailedDesignIntegration'));
 assert.ok(manifest.dataContracts.includes('phase3DetailedDesignGate'));
+assert.ok(manifest.dataContracts.includes('phase3ServiceabilityEvidence'));
 assert.ok(manifest.dataContracts.includes('phase3DesignFormulaRegistry'));
 assert.ok(manifest.dataContracts.includes('phase3DesignFormulaTrace'));
 assert.ok(manifest.milestones.some((item) => item.id === 'P3-M18'));
