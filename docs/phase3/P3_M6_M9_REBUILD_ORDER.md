@@ -73,3 +73,11 @@ contract covers the full M6 to M9 input pipeline. This means
 `node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M9`
 now verifies both the individual import implementations and the combined
 agent-readable review contract.
+
+## 2026-07-03 M6 Entity Coverage Update
+
+The P3-M6 DXF regression now explicitly covers `MTEXT` label entities in
+addition to `TEXT`, `LINE`, `LWPOLYLINE`, `POLYLINE`, `POINT`, `CIRCLE`, and
+`INSERT`/`BLOCK`. This locks the supported-entity list in
+`IMPORT_DXF_DWG_PLAN.md` to automated evidence rather than relying only on the
+parser implementation.

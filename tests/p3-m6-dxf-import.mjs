@@ -193,6 +193,46 @@ assert.equal(circleCandidate.audit.counts.dxfCircles, 1);
 assert.equal(circleCandidate.audit.counts.supportedEntityCount, 2);
 assert.equal(circleCandidate.audit.layers.layerUsage.find((row) => row.layer === 'S-COL').byType.CIRCLE, 1);
 
+const mtextText = [
+  '0', 'SECTION',
+  '2', 'HEADER',
+  '9', '$INSUNITS',
+  '70', '6',
+  '0', 'ENDSEC',
+  '0', 'SECTION',
+  '2', 'ENTITIES',
+  '0', 'LINE',
+  '8', 'S-BEAM',
+  '10', '0',
+  '20', '0',
+  '30', '0',
+  '11', '1',
+  '21', '0',
+  '31', '0',
+  '0', 'MTEXT',
+  '8', 'S-TEXT',
+  '10', '0.5',
+  '20', '0',
+  '30', '0',
+  '1', 'B1 H300',
+  '0', 'ENDSEC',
+  '0', 'EOF',
+].join('\n');
+const mtextGeometry = dxfEntitiesToGeometry(parseDxf(mtextText));
+assert.equal(mtextGeometry.audit.counts.MTEXT, 1);
+assert.equal(mtextGeometry.texts.length, 1);
+assert.equal(mtextGeometry.texts[0].text, 'B1 H300');
+assert.equal(mtextGeometry.texts[0].layer, 'S-TEXT');
+const mtextCandidate = importDxfToCandidate(mtextText, {
+  fileId: 'mtext-label.dxf',
+  layerMap: { 'S-BEAM': { kind: 'beam' } },
+});
+assert.equal(validateImportCandidate(mtextCandidate).ok, true);
+assert.equal(mtextCandidate.audit.counts.texts, 1);
+assert.equal(mtextCandidate.audit.counts.dxfTexts, 1);
+assert.equal(mtextCandidate.audit.counts.supportedEntityCount, 2);
+assert.equal(mtextCandidate.audit.layers.layerUsage.find((row) => row.layer === 'S-TEXT').byType.MTEXT, 1);
+
 const closedPolylineText = [
   '0', 'SECTION',
   '2', 'HEADER',
