@@ -31,8 +31,19 @@ export function buildWindRows(stories, pressure, basis = {}) {
   const exposure = finite(basis.exposureFactor, 1);
   return stories.map((story, i) => {
     const height = finite(story.height ?? story.z ?? story.elevation, i ? 3 : 0);
+    const tributaryWidth = finite(story.tributaryWidth, 1);
     const qz = pressure * importance * exposure * Math.max(1, height || 1);
-    return { story: story.id || `S${i + 1}`, qz, force: qz * finite(story.tributaryWidth, 1), formula: 'qz=pressure*importance*exposure*height' };
+    return {
+      story: story.id || `S${i + 1}`,
+      pressure,
+      importance,
+      exposure,
+      height,
+      tributaryWidth,
+      qz,
+      force: qz * tributaryWidth,
+      formula: 'qz=pressure*importance*exposure*height; F=qz*tributaryWidth',
+    };
   });
 }
 
@@ -140,8 +151,11 @@ function distributeSeismic(stories, baseShear) {
     story: row.story,
     force: row.wh > 0 ? baseShear * row.wh / denominator : 0,
     formula: 'V*wi*hi/sum(wi*hi)',
+    baseShear,
     weight: row.weight,
     height: row.height,
+    wh: row.wh,
+    sumWh: denominator,
   }));
 }
 

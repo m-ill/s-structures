@@ -33,6 +33,11 @@ const trace = buildLoadsV2Trace(model, {
 });
 assert.equal(trace.version, LOADS_V2_VERSION);
 assert.ok(trace.wind.length > 0 && trace.seismic.length > 0);
+assert.equal(trace.wind[1].pressure, 0.9);
+assert.equal(trace.wind[1].importance, 1);
+assert.equal(trace.wind[1].tributaryWidth, 1);
+assert.equal(trace.seismic[1].baseShear, 120);
+assert.ok(trace.seismic[1].sumWh > 0);
 assert.equal(trace.other.snow, 0.5);
 assert.ok(trace.rsaScaling.scaleFactor > 1);
 assert.ok(trace.torsionAx.Ax >= 1);
