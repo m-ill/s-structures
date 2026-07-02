@@ -45,9 +45,11 @@ The previous M11 trace recorded only input and output load counts. P3-M11 now ex
 
 2026-07-03 settlement validation hardening: `validateModel()` now rejects settlement records on unsupported/free nodes and requires at least one finite imposed settlement component. This locks the P3-M11 plan rule that settlement DOFs must belong to fixed or spring supports before solver assembly and AI-agent review.
 
+2026-07-03 settlement trace hardening: `expandAdvancedLoads().trace.review.settlementForceTraceReady` now requires every settlement support trace row to include a computed `settlementForce`. Spring settlement cases remain report-ready because their equivalent force is computed directly from stiffness and imposed displacement. Fixed-support settlement cases are blocked from automatic report use with `settlement-force-trace-missing` until a full imposed-displacement reaction trace is implemented.
+
 ## Current Test Gate
 
-`tests/p3-m11-elastic-expansion.mjs` verifies the M11 core behavior and trace contract, including the X-brace tension-only active/inactive iteration. It now also checks that partial distributed load boundaries appear in recovered member stations, member-moment stations stay finite, temperature/gradient handcalc rows are available for reports, spring settlement equivalent force is traceable, and member-offset clear length is traceable. `tests/p3-m10-materials.mjs` remains a dependency gate because the elastic expansion path depends on resolved material and section properties.
+`tests/p3-m11-elastic-expansion.mjs` verifies the M11 core behavior and trace contract, including the X-brace tension-only active/inactive iteration. It now also checks that partial distributed load boundaries appear in recovered member stations, member-moment stations stay finite, temperature/gradient handcalc rows are available for reports, spring settlement equivalent force is traceable, fixed-support settlement is blocked from automatic report readiness until imposed-displacement reaction trace exists, and member-offset clear length is traceable. `tests/p3-m10-materials.mjs` remains a dependency gate because the elastic expansion path depends on resolved material and section properties.
 
 ## Remaining Limits
 

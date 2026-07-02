@@ -87,6 +87,21 @@ const invalidSettlementCheck = validateModel(invalidSettlementSupport);
 assert.equal(invalidSettlementCheck.ok, false);
 assert.ok(invalidSettlementCheck.errors.some((item) => item.message.includes('Settlement requires fixed or spring support')));
 
+const fixedSettlementModel = createModel({
+  nodes: [
+    { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'B', x: 4, y: 0, z: 0, support: 'fixed', settlement: { uz: -0.01 } },
+  ],
+  members: [{ id: 'M1', n1: 'A', n2: 'B', matId: 'steel', secId: 'h300' }],
+});
+assert.equal(validateModel(fixedSettlementModel).ok, true);
+const fixedSettlementTrace = expandAdvancedLoads(fixedSettlementModel.loads, fixedSettlementModel).trace;
+assert.equal(fixedSettlementTrace.features.settlements, 1);
+assert.equal(fixedSettlementTrace.review.settlementForceTraceReady, false);
+assert.ok(fixedSettlementTrace.review.blockers.includes('settlement-force-trace-missing'));
+assert.equal(fixedSettlementTrace.review.traceReady, false);
+assert.equal(fixedSettlementTrace.review.agentDecision, 'fix-elastic-expansion-trace-before-review');
+
 const badRange = createModel({
   ...model,
   loads: [{ ...model.loads[0], from: 0.8, to: 0.2 }],

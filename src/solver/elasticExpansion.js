@@ -251,8 +251,7 @@ function pickFinite(source = {}, keys = []) {
 function buildExpansionReview(input) {
   const features = input.features || {};
   const blockers = [];
-  const settlementForceTraceReady = features.settlements === 0 ||
-    (input.supportTrace || []).some((row) => row.settlementKeys?.length && Object.keys(row.settlementForce || {}).length);
+  const settlementForceTraceReady = hasSettlementForceTrace(input.supportTrace || []);
   if (!settlementForceTraceReady) blockers.push('settlement-force-trace-missing');
   const advancedLoadCount = (features.partialDistributed || 0) + (features.trapezoid || 0) + (features.temperature || 0) + (features.temperatureGradient || 0);
   if (advancedLoadCount > 0 && !(input.handcalc || []).length) blockers.push('advanced-load-handcalc-missing');
@@ -272,4 +271,10 @@ function buildExpansionReview(input) {
       ? 'fix-elastic-expansion-trace-before-review'
       : 'elastic-expansion-ready-for-engineering-review',
   };
+}
+
+function hasSettlementForceTrace(supportTrace) {
+  const settlementRows = supportTrace.filter((row) => (row.settlementKeys || []).length);
+  if (!settlementRows.length) return true;
+  return settlementRows.every((row) => Object.keys(row.settlementForce || {}).length > 0);
 }
