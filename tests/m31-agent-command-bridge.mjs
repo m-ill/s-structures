@@ -153,6 +153,21 @@ response = sendCommand({
 assert.equal(response.ok, true);
 assert.equal(response.data.register.summary.acceptedCount, 1);
 
+response = sendCommand({
+  id: 'submit-final-approval-field',
+  method: 'submitProjectEvidence',
+  payload: {
+    id: 'final-structural-signoff',
+    accepted: true,
+    approved: true,
+    finalApprovalField: 'finalStructuralSignoff',
+    owner: 'owner',
+  },
+});
+assert.equal(response.ok, true);
+assert.equal(response.data.finalApprovals.finalStructuralSignoff, true);
+assert.equal(response.data.register.summary.acceptedCount, 2);
+
 response = sendCommand({ id: 'owner-signoff-after-evidence', method: 'getPhase3OwnerSignoffReview' });
 assert.equal(response.ok, true);
 assert.equal(response.data.summary.missing.includes('security-signoff'), false);
@@ -189,7 +204,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 29);
+assert.equal(response.data.agentCommandBridge.commandCount, 30);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -203,7 +218,7 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 30);
+assert.equal(state.commandCount, 31);
 assert.equal(state.errorCount, 2);
 assert.ok(state.availableMethods.includes('getPhase3ImportMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3ElasticMilestoneReview'));

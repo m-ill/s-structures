@@ -72,6 +72,9 @@ export function buildPhase3PracticeValidationReview(input = {}) {
   const evidence = normalizeEvidence(input.evidence || input.projectEvidence || []);
   const rows = ROWS.map((item) => copyRow(item, evidence));
   const missing = rows.filter((item) => item.evidenceCoverage.missing.length).map((item) => item.id);
+  const finalApprovalCoverage = buildFinalApprovalCoverage(input.finalApprovals || input.approvals || input);
+  const evidenceComplete = missing.length === 0;
+  const productionReady = evidenceComplete && finalApprovalCoverage.complete;
   return {
     version: PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
     scope: 'Phase 3 practical validation items before production structural-office use',
@@ -89,9 +92,15 @@ export function buildPhase3PracticeValidationReview(input = {}) {
       requiredEvidenceIdCount: rows.reduce((sum, item) => sum + item.evidenceCoverage.requiredIds.length, 0),
       evidenceAcceptedCount: rows.reduce((sum, item) => sum + item.evidenceCoverage.acceptedCount, 0),
       missing,
-      productionReady: false,
-      ownerReviewRequired: true,
-      agentDecision: 'collect-practice-validation-evidence-before-production-use',
+      evidenceComplete,
+      productionReady,
+      ownerReviewRequired: !productionReady,
+      finalApprovalCoverage,
+      agentDecision: productionReady
+        ? 'practice-validation-ready-for-final-use-review'
+        : evidenceComplete
+          ? 'collect-final-approval-fields-before-production-use'
+          : 'collect-practice-validation-evidence-before-production-use',
     },
     agentUse: {
       readApi: 'getPhase3PracticeValidationReview',
@@ -105,6 +114,29 @@ export function buildPhase3PracticeValidationReview(input = {}) {
         'productionDeploymentApproved',
       ],
     },
+  };
+}
+
+function buildFinalApprovalCoverage(approvals = {}) {
+  const fields = [
+    'productionEquilibriumSolver',
+    'productionHingeEquilibriumLoop',
+    'productionSeismicQualification',
+    'finalPermitDesign',
+    'finalStructuralSignoff',
+    'productionDeploymentApproved',
+  ];
+  const rows = fields.map((field) => ({
+    field,
+    accepted: approvals[field] === true,
+    status: approvals[field] === true ? 'ACCEPTED' : 'APPROVAL_REQUIRED',
+  }));
+  return {
+    requiredFields: fields,
+    acceptedCount: rows.filter((row) => row.accepted).length,
+    missing: rows.filter((row) => !row.accepted).map((row) => row.field),
+    complete: rows.every((row) => row.accepted),
+    rows,
   };
 }
 

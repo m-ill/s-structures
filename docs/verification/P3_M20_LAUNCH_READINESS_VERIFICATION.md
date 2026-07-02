@@ -73,6 +73,14 @@ decision for practice validation, owner sign-off, and evidence-register review.
 This gives AI agents a stable final-use checklist instead of requiring them to
 parse only `blockingReviews`.
 
+2026-07-03 explicit final-approval update: final-use gates now distinguish
+evidence acceptance from final approval fields. `submitProjectEvidence()` may
+record an allowed `finalApprovalField` only when an explicit approval flag is
+present. Complete evidence alone keeps `productionReady` and
+`productionDeploymentApproved` false, while complete evidence plus explicit
+owner/engineer approvals can close `finalUseReview` and set
+`PRODUCTION_APPROVED`.
+
 2026-07-03 performance-budget gate hardening: G7 no longer passes from a single boolean flag. `buildPerformanceBudgetReview()` now checks the eight `QA_RELEASE_PLAN.md` performance budget IDs, including point-cloud load/viewer, elastic analysis, pushover, NLTH, design report, server save, and local initial load. Missing or over-budget rows hold G7, P3-T66 ticket coverage, and `releaseReview.missing = performance-budget-items` for AI-agent and owner review.
 
 2026-07-03 manual-reference contract hardening: G9 and P3-T65 now require the manual reference map in `docs/user-manual/agent-contract.json` to match the runtime manifest. A stale launch-manual path or missing reference holds the manual/agent-contract ticket for review instead of passing from `manual.updated` alone.

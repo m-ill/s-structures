@@ -96,5 +96,10 @@ The review keeps both `summary.requiredEvidenceCount` for the 21 practical
 validation checklist phrases and `summary.requiredEvidenceIdCount` for the 25
 submission IDs accepted by `getPhase3EvidenceRegister()`. Agents should submit
 evidence by ID rather than inferring IDs from checklist text.
+Final approval fields are separate from evidence acceptance. When an owner or
+engineer explicitly approves a final field, submit the evidence row with
+`finalApprovalField` and `approved: true` or `finalApprovalAccepted: true`.
+Accepted evidence without that explicit approval flag keeps `productionReady`
+and `productionDeploymentApproved` false.
 
 Manual launch evidence remains in `reports/launch-readiness/`.

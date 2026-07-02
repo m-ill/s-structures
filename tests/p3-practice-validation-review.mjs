@@ -58,6 +58,23 @@ assert.equal(partialEvidence.rows.find((row) => row.id === 'point-cloud-import')
 assert.equal(partialEvidence.rows.find((row) => row.id === 'productization').evidenceCoverage.acceptedCount, 1);
 assert.equal(partialEvidence.rows.find((row) => row.id === 'drawing-import').evidenceCoverage.rows[0].fileIds[0], 'office-dxf-file');
 
+const fullEvidence = review.rows.flatMap((row) => row.evidenceCoverage.requiredIds).map((id) => ({ id, accepted: true }));
+const evidenceOnly = buildPhase3PracticeValidationReview({ evidence: fullEvidence });
+assert.equal(evidenceOnly.summary.evidenceComplete, true);
+assert.equal(evidenceOnly.summary.productionReady, false);
+assert.equal(evidenceOnly.summary.agentDecision, 'collect-final-approval-fields-before-production-use');
+assert.ok(evidenceOnly.summary.finalApprovalCoverage.missing.includes('finalStructuralSignoff'));
+
+const approved = buildPhase3PracticeValidationReview({
+  evidence: fullEvidence,
+  finalApprovals: Object.fromEntries(review.agentUse.finalApprovalFields.map((field) => [field, true])),
+});
+assert.equal(approved.summary.evidenceComplete, true);
+assert.equal(approved.summary.productionReady, true);
+assert.equal(approved.summary.ownerReviewRequired, false);
+assert.equal(approved.summary.finalApprovalCoverage.complete, true);
+assert.equal(approved.summary.agentDecision, 'practice-validation-ready-for-final-use-review');
+
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3PracticeValidationReview, PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PracticeValidationReview'));

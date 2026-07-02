@@ -65,13 +65,16 @@ assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('exitCr
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('remainingValidation')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalUseReview.requiredReviews')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('requiredEvidenceIdCount')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalApprovalField is allowed')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('exitCriteriaSummary')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('finalUseReview.requiredReviews')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('requiredEvidenceIdCount')));
+assert.ok(manifest.interpretationRules.some((rule) => rule.includes('finalApprovalField is allowed')));
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.agentSafeStatus/);
 assert.match(launchManual, /finalUseReview\.requiredReviews/);
 assert.match(launchManual, /requiredEvidenceIdCount/);
+assert.match(launchManual, /finalApprovalField/);
 assert.match(launchManual, /LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED/);
 assert.match(launchManual, /OWNER_REVIEW_REQUIRED/);
 assert.match(launchManual, /exitCriteriaSummary/);
@@ -207,6 +210,36 @@ assert.deepEqual(evidenceCompleteLaunch.finalUseReview.blockingReviews, ['practi
 assert.equal(evidenceCompleteLaunch.finalUseReview.rows.find((row) => row.id === 'evidence-register').acceptedField, 'evidenceComplete');
 assert.equal(evidenceCompleteLaunch.finalUseReview.rows.find((row) => row.id === 'evidence-register').status, 'ACCEPTED');
 assert.equal(evidenceCompleteLaunch.finalUseReview.requiredReviews.find((row) => row.id === 'evidence-register').accepted, true);
+
+const finalApprovalFields = [
+  'productionEquilibriumSolver',
+  'productionHingeEquilibriumLoop',
+  'productionSeismicQualification',
+  'finalPermitDesign',
+  'finalStructuralSignoff',
+  'productionDeploymentApproved',
+];
+const finalApprovals = Object.fromEntries(finalApprovalFields.map((field) => [field, true]));
+const fullEvidenceRows = buildPhase3EvidenceRegister().rows.map((row) => ({ id: row.id, accepted: true }));
+const productionApprovedLaunch = buildLaunchReadinessReport({
+  ...evidence,
+  finalApprovals,
+  practiceValidationReview: buildPhase3PracticeValidationReview({
+    evidence: fullEvidenceRows,
+    finalApprovals,
+  }),
+  ownerSignoffReview: buildPhase3OwnerSignoffReview({
+    evidence: fullEvidenceRows,
+    finalApprovals,
+  }),
+  evidenceRegister: buildPhase3EvidenceRegister({ evidence: fullEvidenceRows }),
+});
+assert.equal(productionApprovedLaunch.finalUseBlocked, false);
+assert.equal(productionApprovedLaunch.finalUseReview.status, 'FINAL_USE_REVIEW_ACCEPTED');
+assert.deepEqual(productionApprovedLaunch.finalUseReview.blockingReviews, []);
+assert.equal(productionApprovedLaunch.releaseGate.releaseReview.productionDeploymentApproved, true);
+assert.equal(productionApprovedLaunch.productionReadiness.status, 'PRODUCTION_APPROVED');
+assert.equal(productionApprovedLaunch.agentSafeStatus, 'PRODUCTION_APPROVED');
 
 const missingPilotReportLaunch = buildLaunchReadinessReport({
   ...evidence,

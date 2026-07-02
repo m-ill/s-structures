@@ -284,6 +284,10 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         throw new Error(`Unknown Phase 3 evidence id or type: ${evidence.id || evidence.type || 'blank'}`);
       }
       const state = getProjectEvidenceState(target);
+      const finalApprovalField = normalizeFinalApprovalField(evidence.finalApprovalField);
+      if (finalApprovalField && finalApprovalAccepted(evidence)) {
+        state.finalApprovals[finalApprovalField] = true;
+      }
       state.evidence.push({
         ...evidence,
         status: String(evidence.status || (evidence.accepted ? 'accepted' : 'submitted')).toLowerCase(),
@@ -863,8 +867,10 @@ function getCurrentModel(target) {
 function getProjectEvidenceState(target) {
   target.__SStructuresProjectEvidence ||= {
     evidence: [],
+    finalApprovals: {},
     register: buildPhase3EvidenceRegister(),
   };
+  target.__SStructuresProjectEvidence.finalApprovals ||= {};
   return target.__SStructuresProjectEvidence;
 }
 
@@ -872,22 +878,61 @@ function buildLaunchEvidence(target, options = {}) {
   const supplied = options.evidence || options;
   const projectEvidence = getProjectEvidenceState(target);
   return {
-    practiceValidationReview: buildPhase3PracticeValidationReview({ evidence: projectEvidence.evidence }),
-    ownerSignoffReview: buildPhase3OwnerSignoffReview({ evidence: projectEvidence.evidence }),
+    practiceValidationReview: buildPhase3PracticeValidationReview({
+      evidence: projectEvidence.evidence,
+      finalApprovals: projectEvidence.finalApprovals,
+    }),
+    ownerSignoffReview: buildPhase3OwnerSignoffReview({
+      evidence: projectEvidence.evidence,
+      finalApprovals: projectEvidence.finalApprovals,
+    }),
     evidenceRegister: projectEvidence.register,
+    finalApprovals: projectEvidence.finalApprovals,
     ...supplied,
   };
 }
 
 function withProjectEvidence(target, options = {}) {
   if (hasEvidenceInput(options)) return options;
-  return { evidence: getProjectEvidenceState(target).evidence };
+  const state = getProjectEvidenceState(target);
+  return { evidence: state.evidence, finalApprovals: state.finalApprovals };
 }
 
 function hasEvidenceInput(options = {}) {
   return Object.hasOwn(options, 'evidence') ||
     Object.hasOwn(options, 'items') ||
-    Object.hasOwn(options, 'signoffEvidence');
+    Object.hasOwn(options, 'signoffEvidence') ||
+    Object.hasOwn(options, 'finalApprovals') ||
+    Object.hasOwn(options, 'approvals');
+}
+
+function normalizeFinalApprovalField(field) {
+  const value = String(field || '').trim();
+  const allowed = new Set([
+    'productionEquilibriumSolver',
+    'productionHingeEquilibriumLoop',
+    'productionSeismicQualification',
+    'finalPermitDesign',
+    'finalStructuralSignoff',
+    'productionDeploymentApproved',
+    'ownerProductionDeploymentApproved',
+    'finalOwnerDeploymentApproval',
+    'openSourcePolicyFinalized',
+    'deploymentTargetFinalized',
+    'realDwgConversionAccepted',
+    'realPointCloudValidationAccepted',
+    'pilotFeedbackOwnerAccepted',
+    'backupRestoreOwnerAccepted',
+    'securitySignoffAccepted',
+    'ownerFinalSignoff',
+  ]);
+  return allowed.has(value) ? value : null;
+}
+
+function finalApprovalAccepted(evidence = {}) {
+  return evidence.finalApprovalAccepted === true ||
+    evidence.approvalAccepted === true ||
+    evidence.approved === true;
 }
 
 function replaceObject(target, source) {

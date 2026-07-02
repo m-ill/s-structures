@@ -430,6 +430,7 @@ export function buildAgentManifest(options = {}) {
       'Agents must still inspect remainingValidation, productionBlockers, finalUseBlockedBy, productionReady, and finalApprovalField after exitCriteria are covered.',
       'Agents should inspect getLaunchReadinessReport().finalUseReview.requiredReviews before final-use automation; each row lists the accepted field, status, missing count, and agent decision.',
       'Agents should use getPhase3PracticeValidationReview().summary.requiredEvidenceIdCount for submittable evidence IDs; requiredEvidenceCount is the human checklist phrase count.',
+      'submitProjectEvidence records final approval fields only when finalApprovalField is allowed and approved, approvalAccepted, or finalApprovalAccepted is true; accepted evidence alone does not set productionReady or productionDeploymentApproved.',
     ],
     dataContracts: [
       'schemaVersionedModel',

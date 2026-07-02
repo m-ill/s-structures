@@ -42,6 +42,15 @@ assert.equal(accepted.summary.productionReady, false);
 assert.equal(accepted.summary.productionDeploymentApproved, false);
 assert.ok(accepted.rows.every((row) => row.status === 'ACCEPTED'));
 
+const deploymentApproved = buildPhase3OwnerSignoffReview({
+  evidence: acceptedEvidence,
+  finalApprovals: { productionDeploymentApproved: true },
+});
+assert.equal(deploymentApproved.summary.productionReady, true);
+assert.equal(deploymentApproved.summary.ownerReviewRequired, false);
+assert.equal(deploymentApproved.summary.productionDeploymentApproved, true);
+assert.equal(deploymentApproved.summary.agentDecision, 'owner-production-deployment-approved');
+
 const registerKeyEvidence = [
   { id: 'owner-license-policy', accepted: true, owner: 'owner' },
   { id: 'deployment-target-selection', accepted: true, owner: 'owner' },

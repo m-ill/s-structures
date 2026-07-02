@@ -152,22 +152,33 @@ function buildReleaseReview({ gates, evidence, coverage, ticketCoverage }) {
   if (!coverage.designVerificationEvidence) missing.push('design-verification-evidence');
   if (!coverage.performanceBudgets) missing.push('performance-budget-items');
   if (!coverage.manualReferences) missing.push('manual-reference-contract');
+  const approvals = evidence.finalApprovals || evidence.approvals || {};
+  const deploymentApproved = missing.length === 0 && (
+    evidence.productionDeploymentApproved === true ||
+    approvals.productionDeploymentApproved === true ||
+    approvals.ownerProductionDeploymentApproved === true ||
+    approvals.finalOwnerDeploymentApproval === true
+  );
   return {
     status: missing.length ? 'review-required' : 'owner-review-ready',
     maturity: 'preliminary',
-    productionDeploymentApproved: false,
-    ownerFinalSignoff: false,
-    openSourcePolicyFinalized: false,
-    deploymentTargetFinalized: false,
-    realDwgConversionAccepted: false,
-    realPointCloudValidationAccepted: false,
-    pilotFeedbackOwnerAccepted: false,
-    backupRestoreOwnerAccepted: false,
-    securitySignoffAccepted: false,
+    productionDeploymentApproved: deploymentApproved,
+    ownerFinalSignoff: approvals.finalStructuralSignoff === true || approvals.ownerFinalSignoff === true,
+    openSourcePolicyFinalized: approvals.openSourcePolicyFinalized === true,
+    deploymentTargetFinalized: approvals.deploymentTargetFinalized === true,
+    realDwgConversionAccepted: approvals.realDwgConversionAccepted === true,
+    realPointCloudValidationAccepted: approvals.realPointCloudValidationAccepted === true,
+    pilotFeedbackOwnerAccepted: approvals.pilotFeedbackOwnerAccepted === true,
+    backupRestoreOwnerAccepted: approvals.backupRestoreOwnerAccepted === true,
+    securitySignoffAccepted: approvals.securitySignoffAccepted === true,
     manualSignoffItemCount: 7,
     pilotReportCount: evidence.pilotReports?.count || 0,
     missing,
-    agentDecision: missing.length ? 'hold-before-release' : 'ready-for-owner-release-signoff',
+    agentDecision: missing.length
+      ? 'hold-before-release'
+      : deploymentApproved
+        ? 'owner-production-deployment-approved'
+        : 'ready-for-owner-release-signoff',
   };
 }
 

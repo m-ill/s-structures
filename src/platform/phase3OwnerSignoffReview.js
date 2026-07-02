@@ -27,6 +27,8 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
     };
   });
   const missing = rows.filter((row) => !row.accepted).map((row) => row.id);
+  const deploymentApprovalAccepted = deploymentApproval(input.finalApprovals || input.approvals || input);
+  const productionDeploymentApproved = missing.length === 0 && deploymentApprovalAccepted;
   return {
     version: PHASE3_OWNER_SIGNOFF_REVIEW_VERSION,
     milestone: 'P3-M20',
@@ -42,12 +44,14 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
       requiredCount: rows.length,
       acceptedCount: rows.filter((row) => row.accepted).length,
       missing,
-      ownerReviewRequired: true,
-      productionReady: false,
-      productionDeploymentApproved: false,
+      ownerReviewRequired: !productionDeploymentApproved,
+      productionReady: productionDeploymentApproved,
+      productionDeploymentApproved,
       agentDecision: missing.length
         ? 'collect-owner-signoff-evidence'
-        : 'owner-signoff-ready-for-final-deployment-decision',
+        : productionDeploymentApproved
+          ? 'owner-production-deployment-approved'
+          : 'owner-signoff-ready-for-final-deployment-decision',
     },
     rows,
     requiredEvidence: PHASE3_OWNER_SIGNOFF_REQUIRED_EVIDENCE.map((row) => ({ ...row })),
@@ -62,6 +66,12 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
       rule: 'Do not mark production deployment approved from this review alone; final owner deployment approval remains manual.',
     },
   };
+}
+
+function deploymentApproval(approvals = {}) {
+  return approvals.productionDeploymentApproved === true ||
+    approvals.ownerProductionDeploymentApproved === true ||
+    approvals.finalOwnerDeploymentApproval === true;
 }
 
 function item(id, label, type, finalApprovalField, aliases = []) {
