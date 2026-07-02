@@ -11,7 +11,7 @@ export function importDxfToCandidate(text, options = {}) {
   const unit = resolveUnits(parsed.header, geometry.segments, options);
   const layerMap = options.layerMap || {};
   const segments = geometry.segments.map((segment) => applyLayerMap(scaleSegment(segment, unit), layerMap));
-  const layerAudit = buildLayerAudit(segments, layerMap);
+  const layerAudit = buildLayerAudit(segments, layerMap, geometry);
   const candidate = wireframeToImportCandidate(segments, {
     ...options,
     source: {
@@ -34,12 +34,17 @@ export function importDxfToCandidate(text, options = {}) {
       polylines: (geometry.audit.counts.LWPOLYLINE || 0) + (geometry.audit.counts.POLYLINE || 0),
       inserts: geometry.audit.counts.INSERT || 0,
       texts: (geometry.audit.counts.TEXT || 0) + (geometry.audit.counts.MTEXT || 0),
+      points: geometry.audit.counts.POINT || 0,
+      circles: geometry.audit.counts.CIRCLE || 0,
       dxfPairs: parsed.pairs.length,
       dxfSegments: geometry.segments.length,
       dxfPoints: geometry.points.length,
+      dxfCircles: geometry.circles.length,
       dxfTexts: geometry.texts.length,
       ignored: geometry.audit.ignored,
       ignoredDetails: geometry.audit.ignoredDetails,
+      supportedEntityCount: supportedEntityCount(geometry.audit.counts),
+      unsupportedEntityCount: Object.values(geometry.audit.ignored || {}).reduce((sum, count) => sum + count, 0),
     },
     units: unit,
     layers: layerAudit,
@@ -82,14 +87,38 @@ function resolveUnits(header, segments, options) {
   };
 }
 
-function buildLayerAudit(segments, layerMap) {
-  const layers = [...new Set(segments.map((segment) => segment.layer || '0'))].sort();
+function buildLayerAudit(segments, layerMap, geometry) {
+  const segmentLayers = segments.map((segment) => segment.layer || '0');
+  const entityLayers = (geometry.audit.layerUsage || []).map((row) => row.layer || '0');
+  const ignoredLayers = (geometry.audit.ignoredDetails || []).map((row) => row.layer || '0');
+  const layers = [...new Set([...segmentLayers, ...entityLayers, ...ignoredLayers])].sort();
   const mapped = layers.filter((layer) => layerMap[layer] || layerMap[String(layer).toUpperCase()]);
+  const mappedSet = new Set(mapped);
+  const layerUsage = (geometry.audit.layerUsage || []).map((row) => ({
+    ...row,
+    mapped: mappedSet.has(row.layer),
+  }));
   return {
     layers,
     mappedLayers: mapped,
-    unmappedEntityCount: segments.filter((segment) => !mapped.includes(segment.layer || '0')).length,
+    unmappedEntityCount: layerUsage.filter((row) => !row.mapped).reduce((sum, row) => sum + row.total, 0),
+    unmappedSegmentCount: segments.filter((segment) => !mappedSet.has(segment.layer || '0')).length,
+    layerUsage,
+    ignoredLayers: [...new Set(ignoredLayers)].sort(),
   };
+}
+
+function supportedEntityCount(counts = {}) {
+  return [
+    'LINE',
+    'LWPOLYLINE',
+    'POLYLINE',
+    'POINT',
+    'CIRCLE',
+    'INSERT',
+    'TEXT',
+    'MTEXT',
+  ].reduce((sum, key) => sum + (counts[key] || 0), 0);
 }
 
 function buildMergeAudit(rawSegments, candidate) {

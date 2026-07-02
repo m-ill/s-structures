@@ -16,6 +16,7 @@ export function dxfEntitiesToGeometry(parsed) {
       ignored: out.ignored,
       ignoredDetails: out.ignoredDetails,
       blocks: Object.keys(blocks).sort(),
+      layerUsage: buildLayerUsage(entities),
     },
   };
 }
@@ -169,6 +170,18 @@ function countByType(entities) {
     out[entity.type] = (out[entity.type] || 0) + 1;
     return out;
   }, {});
+}
+
+function buildLayerUsage(entities) {
+  const rows = new Map();
+  for (const entity of entities) {
+    const layer = entity.layer || '0';
+    const row = rows.get(layer) || { layer, total: 0, byType: {} };
+    row.total += 1;
+    row.byType[entity.type] = (row.byType[entity.type] || 0) + 1;
+    rows.set(layer, row);
+  }
+  return [...rows.values()].sort((a, b) => a.layer.localeCompare(b.layer));
 }
 
 function identityTransform() {

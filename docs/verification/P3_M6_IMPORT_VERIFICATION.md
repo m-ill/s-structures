@@ -40,6 +40,8 @@ The common `importCandidateToModel()` path previously used point-cloud-specific 
 
 2026-07-02 follow-up: P3-T31 is now explicitly covered. `importDxfToCandidate()` exposes the full import audit contract required by `IMPORT_DXF_DWG_PLAN.md`, including merge counts and orphan/unknown member lists for AI-agent review.
 
+2026-07-02 layer-audit review: P3-T30/P3-T31 now record DXF layer usage across supported and unsupported entities, not only generated member segments. The audit separates mapped layers, unmapped entity count, unmapped segment count, ignored layers, supported entity count, and unsupported entity count so import review UI and AI agents can explain POINT/TEXT/reference geometry that was not converted into analysis members.
+
 ## Remaining Limits
 
 P3-M6 remains a preliminary core. It needs more real office DXF fixtures, richer unsupported entity cases, and visual import-review evidence before it can be treated as production-grade drawing import.
