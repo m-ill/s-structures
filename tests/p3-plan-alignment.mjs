@@ -270,8 +270,11 @@ assert.equal(ownerSignoffReview.agentUse.readApi, 'getPhase3OwnerSignoffReview')
 
 const completionAuditReview = buildPhase3CompletionAuditReview();
 assert.equal(completionAuditReview.version, PHASE3_COMPLETION_AUDIT_REVIEW_VERSION);
-assert.equal(completionAuditReview.summary.milestoneCount, 15);
+assert.equal(completionAuditReview.summary.milestoneCount, 21);
+assert.equal(completionAuditReview.summary.provenCount, 7);
 assert.equal(completionAuditReview.summary.productionReady, false);
+assert.ok(completionAuditReview.rows.find((row) => row.milestone === 'P3-M0').readApis.includes('getPhase3PlanAlignment'));
+assert.ok(completionAuditReview.rows.find((row) => row.milestone === 'P3-M5').readApis.includes('listImportCandidates'));
 assert.ok(completionAuditReview.rows.find((row) => row.milestone === 'P3-M20').readApis.includes('getPhase3OwnerSignoffReview'));
 assert.equal(completionAuditReview.agentUse.readApi, 'getPhase3CompletionAuditReview');
 

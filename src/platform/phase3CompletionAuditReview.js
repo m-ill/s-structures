@@ -1,6 +1,12 @@
-export const PHASE3_COMPLETION_AUDIT_REVIEW_VERSION = 'p3-m6-m20-completion-audit-review-v1';
+export const PHASE3_COMPLETION_AUDIT_REVIEW_VERSION = 'p3-m0-m20-completion-audit-review-v2';
 
 const ROWS = [
+  row('P3-M0', 'proven', ['tests/m0-smoke.mjs', 'tests/p3-plan-alignment.mjs'], [], ['getPhase3PlanAlignment']),
+  row('P3-M1', 'proven', ['tests/p3-server-api.mjs', 'tests/p3-server-route-contract.mjs'], [], ['server API contract']),
+  row('P3-M2', 'proven', ['tests/p3-auth.mjs'], [], ['server auth contract']),
+  row('P3-M3', 'proven', ['tests/p3-persistence.mjs'], [], ['persistence client contract']),
+  row('P3-M4', 'proven', ['tests/p3-app-shell.mjs', 'tests/p3-viewer-core.mjs'], [], ['getCapabilities']),
+  row('P3-M5', 'proven', ['tests/p3-import-geometry.mjs'], [], ['listImportCandidates']),
   row('P3-M6', 'proven', ['tests/p3-m6-dxf-import.mjs'], [], ['getPhase3ImportMilestoneReview']),
   row('P3-M7', 'preliminary', ['tests/p3-m7-dwg-plan.mjs', 'tests/p3-m7-import-review-ui.mjs'], ['real DWG conversion remains external-tool dependent'], ['getPhase3DrawingImportValidationReview']),
   row('P3-M8', 'preliminary', ['tests/p3-pointcloud-load.mjs'], ['large point-cloud performance and binary-file validation'], ['getPhase3PointCloudValidationReview']),
@@ -26,7 +32,7 @@ export function buildPhase3CompletionAuditReview() {
   }, {});
   return {
     version: PHASE3_COMPLETION_AUDIT_REVIEW_VERSION,
-    scope: 'P3-M6 to P3-M20 completion audit from existing Phase 3 audit documents',
+    scope: 'P3-M0 to P3-M20 completion audit from existing Phase 3 audit documents',
     sourceDocs: [
       'docs/verification/P3_M6_M20_COMPLETION_AUDIT.md',
       'docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md',
@@ -41,7 +47,7 @@ export function buildPhase3CompletionAuditReview() {
       preliminaryCount: byStatus.preliminary || 0,
       manualCount: byStatus.manual || 0,
       productionReady: false,
-      completionClaim: 'repository-traceability-green-owner-and-engineer-review-required',
+      completionClaim: 'phase3-m0-m20-repository-traceability-green-owner-and-engineer-review-required',
       agentDecision: 'continue-practical-validation-before-production-use',
     },
     agentUse: {
@@ -51,7 +57,7 @@ export function buildPhase3CompletionAuditReview() {
         'getPhase3PracticeValidationReview',
         'getPhase3OwnerSignoffReview',
       ],
-      rule: 'Use this audit as the Phase 3 completion status map; preliminary or manual rows block production-ready claims.',
+      rule: 'Use this audit as the P3-M0 to P3-M20 completion status map; preliminary or manual rows block production-ready claims.',
     },
   };
 }
