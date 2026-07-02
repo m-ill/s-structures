@@ -197,6 +197,12 @@ function buildLoadsV2Contract() {
       massSource: 'P3-T82',
     },
     reviewFields: ['summary.ticketCoverage', 'wind', 'seismic', 'environmental', 'massSource'],
+    standardBasis: {
+      wind: 'KDS 41 12 preliminary trace inputs',
+      seismic: 'KDS 41 17 preliminary trace inputs',
+      environmental: 'KDS environmental load preliminary trace inputs',
+      massSource: 'D plus live-load factor mass-source trace',
+    },
     reportUse: 'Rows preserve formula inputs so reports and agents can cite the active basis without re-reading UI state.',
     limitations: [
       'Project-specific code automation and exceptional wind shapes remain outside this trace.',
@@ -259,6 +265,7 @@ function buildLoadsV2Review(summary, massSource) {
     uncoveredTickets,
     blockers,
     missingBasis,
+    requiredBasis: buildRequiredBasisReview(summary, massSource),
     engineerReviewRequired: true,
     productionReady: false,
     preliminaryCodeAutomation: true,
@@ -297,11 +304,20 @@ function comboFactor(caseName = 'LC1', combos = []) {
 
 function buildBasisInputTrace(basis = {}, model = {}) {
   const environmentalKeys = ['snowLoad', 'soilPressure', 'waterPressure', 'uplift'];
-  return {
+  const provided = {
     windPressureProvided: Number.isFinite(Number(basis.windPressure)),
     seismicBaseShearProvided: Number.isFinite(Number(basis.seismicBaseShear)),
     environmentalBasisProvided: environmentalKeys.some((key) => Number.isFinite(Number(basis.environmental?.[key] ?? basis[key]))),
     massSourceProvided: !!(basis.massSource || model.analysisSettings?.massSource),
+  };
+  return {
+    ...provided,
+    requiredInputs: [
+      { ticket: 'P3-T76', scope: 'wind v2', input: 'windPressure', provided: provided.windPressureProvided, standard: 'KDS 41 12 preliminary' },
+      { ticket: 'P3-T77', scope: 'seismic v2', input: 'seismicBaseShear', provided: provided.seismicBaseShearProvided, standard: 'KDS 41 17 preliminary' },
+      { ticket: 'P3-T78', scope: 'environmental loads', input: environmentalKeys.join('|'), provided: provided.environmentalBasisProvided, standard: 'KDS environmental preliminary' },
+      { ticket: 'P3-T82', scope: 'mass source', input: 'massSource.combos', provided: provided.massSourceProvided, standard: 'load-to-mass preliminary' },
+    ],
   };
 }
 
@@ -313,6 +329,30 @@ function missingBasisInputs(summary = {}) {
   if (!coverage['P3-T78']) missing.push('environmental-basis-missing-or-empty');
   if (!coverage['P3-T82']) missing.push('mass-source-basis-missing-or-empty');
   return missing;
+}
+
+function buildRequiredBasisReview(summary = {}, massSource = null) {
+  const missing = new Set(missingBasisInputs(summary));
+  return [
+    basisRow('P3-T76', 'windPressure', 'wind-basis-missing-or-empty', missing),
+    basisRow('P3-T77', 'seismicBaseShear', 'seismic-basis-missing-or-empty', missing),
+    basisRow('P3-T78', 'snowLoad|soilPressure|waterPressure|uplift', 'environmental-basis-missing-or-empty', missing),
+    {
+      ...basisRow('P3-T82', 'massSource.combos', 'mass-source-basis-missing-or-empty', missing),
+      warning: massSource?.review?.warning || null,
+      ignoredLoadCount: massSource?.review?.ignoredLoadCount || 0,
+    },
+  ];
+}
+
+function basisRow(ticket, input, missingKey, missing) {
+  return {
+    ticket,
+    input,
+    status: missing.has(missingKey) ? 'missing-or-empty' : 'available',
+    missingKey: missing.has(missingKey) ? missingKey : null,
+    engineerReviewRequired: true,
+  };
 }
 
 function verticalLoadInfo(load = {}, memberLength = 0) {

@@ -110,3 +110,12 @@ handcalc using `V*h^3/(3*E*I)`, recovered pier shear/moment, lateral stiffness,
 and estimated top drift. If analysis force recovery is not available, the row is
 marked `force-recovery-required` so AI agents do not treat the wall equivalent
 as reviewed.
+
+## 2026-07-03 M13 Required Basis Review Update
+
+P3-M13 loads v2 now exposes a `standardBasis` map and `review.requiredBasis`
+rows for wind, seismic, environmental loads, and mass source. Each row records
+the ticket, required input, status, missing key, and engineer-review flag. This
+keeps the current implementation honest: KDS wind/seismic/environmental logic is
+still preliminary, but AI agents can now identify missing basis inputs directly
+from `getLoadsV2Trace` without inferring them from totals.
