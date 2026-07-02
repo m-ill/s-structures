@@ -60,6 +60,29 @@ const empty = buildPhase3EngineeringValidationReview();
 assert.equal(empty.summary.ok, false);
 assert.ok(empty.summary.missing.includes('hinge-and-fiber-qualification'));
 assert.equal(empty.summary.agentDecision, 'collect-engineering-validation-evidence');
+assert.deepEqual(empty.projectEvidenceCoverage.missing, [
+  'nonlinear-solver-certification',
+  'hinge-fiber-nlth-qualification',
+  'final-code-clause-selection',
+  'detailing-constructability-approval',
+]);
+
+const projectEvidenceReview = buildPhase3EngineeringValidationReview({
+  evidence: [
+    { id: 'nonlinear-solver-certification', accepted: true, fileId: 'nl-cert-file', reportPath: 'reports/engineering-validation/nonlinear.md' },
+    { id: 'hinge-fiber-nlth-qualification', status: 'accepted', reportPath: 'reports/engineering-validation/hinge-fiber.md' },
+    { id: 'final-code-clause-selection', accepted: true, reportPath: 'reports/engineering-validation/code-clause.md' },
+    { id: 'detailing-constructability-approval', accepted: true, reportPath: 'reports/engineering-validation/detailing.md' },
+  ],
+});
+assert.equal(projectEvidenceReview.summary.ok, true);
+assert.equal(projectEvidenceReview.summary.productionReady, false);
+assert.equal(projectEvidenceReview.summary.projectEvidenceAcceptedCount, 4);
+assert.deepEqual(projectEvidenceReview.summary.missing, []);
+assert.equal(projectEvidenceReview.nonlinearRows.length, 2);
+assert.equal(projectEvidenceReview.designRows.length, 2);
+assert.equal(projectEvidenceReview.nonlinearRows[0].fileId, 'nl-cert-file');
+assert.deepEqual(projectEvidenceReview.projectEvidenceCoverage.missing, []);
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3EngineeringValidationReview, PHASE3_ENGINEERING_VALIDATION_REVIEW_VERSION);
@@ -69,6 +92,9 @@ assert.equal(manifest.qaCommands.phase3EngineeringValidation, 'node tests/p3-eng
 
 const agent = createIndexAgentApi({ model: () => null, reanalyze: () => {} });
 assert.equal(agent.getPhase3EngineeringValidationReview().version, PHASE3_ENGINEERING_VALIDATION_REVIEW_VERSION);
+agent.submitProjectEvidence({ id: 'final-code-clause-selection', accepted: true, reportPath: 'reports/engineering-validation/agent-code.md' });
+assert.equal(agent.getPhase3EngineeringValidationReview().summary.projectEvidenceAcceptedCount, 1);
+assert.equal(agent.getPhase3EngineeringValidationReview().designRows.length, 1);
 
 console.log(JSON.stringify({
   ok: true,

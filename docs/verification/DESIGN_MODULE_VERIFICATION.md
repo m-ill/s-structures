@@ -102,4 +102,6 @@ Current status is preliminary. M19 connects nonlinear trace, detailed-design tra
 
 2026-07-03 engineering-validation update: `getPhase3EngineeringValidationReview` now records the remaining professional validation evidence shared by nonlinear analysis and detailed design. It keeps final KDS clause selection, nonlinear solver certification, detailing/constructability, fabrication, and geotechnical approval separate from automated trace readiness.
 
+2026-07-03 engineering evidence update: `getPhase3EngineeringValidationReview()` now consumes accepted project evidence rows for nonlinear solver certification, hinge/fiber/NLTH qualification, final code clause selection, and detailing/constructability approval. These rows can satisfy the engineering review package while `productionReady` remains false until final engineer or owner approval is explicit.
+
 2026-07-03 executable review update: `node tests/p3-design-milestone-review.mjs` now locks the P3-M17 to P3-M18 design milestone review contract. The Phase 3 runner includes this check in the P3-M18 group so RC, steel, connection, foundation, formula/issue, serviceability scope, gate paths, and `finalPermitDesign` ownership remain agent-readable.

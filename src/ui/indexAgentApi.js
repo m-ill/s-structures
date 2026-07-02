@@ -252,6 +252,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       return cloneJson(buildPhase3DrawingImportValidationReview(options));
     },
     getPhase3EngineeringValidationReview(options = {}) {
+      if (!hasEvidenceInput(options)) {
+        return cloneJson(buildPhase3EngineeringValidationReview(withProjectEvidence(target, options)));
+      }
       return cloneJson(buildPhase3EngineeringValidationReview(options));
     },
     getPhase3ProductizationMilestoneReview() {

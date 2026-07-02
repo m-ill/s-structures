@@ -118,6 +118,7 @@ assert.equal(drawingImportValidationReview.evidenceCoverage.acceptedCount, 0);
 const engineeringValidationReview = agent.getPhase3EngineeringValidationReview();
 assert.ok(engineeringValidationReview.summary.missing.includes('design-code-clause-review'));
 assert.equal(engineeringValidationReview.summary.agentDecision, 'collect-engineering-validation-evidence');
+assert.equal(engineeringValidationReview.summary.projectEvidenceAcceptedCount, 0);
 const pointCloudValidationReview = agent.getPhase3PointCloudValidationReview();
 assert.ok(pointCloudValidationReview.summary.missing.includes('real-scan-validation'));
 assert.equal(pointCloudValidationReview.summary.agentDecision, 'collect-pointcloud-validation-evidence');
@@ -150,8 +151,10 @@ assert.equal(agent.submitProjectEvidence({ id: 'security-signoff', accepted: tru
 assert.equal(agent.getPhase3EvidenceRegister().summary.acceptedCount, 1);
 assert.equal(agent.submitProjectEvidence({ id: 'real-office-dxf-fixtures', accepted: true, fileId: 'agent-office-dxf' }).register.summary.acceptedCount, 2);
 assert.equal(agent.submitProjectEvidence({ id: 'real-pointcloud-files', accepted: true, fileId: 'agent-owner-scan' }).register.summary.acceptedCount, 3);
+assert.equal(agent.submitProjectEvidence({ id: 'final-code-clause-selection', accepted: true, reportPath: 'reports/engineering-validation/agent-code.md' }).register.summary.acceptedCount, 4);
 assert.equal(agent.getPhase3DrawingImportValidationReview().evidenceCoverage.acceptedCount, 1);
 assert.equal(agent.getPhase3PointCloudValidationReview().evidenceCoverage.acceptedCount, 1);
+assert.equal(agent.getPhase3EngineeringValidationReview().summary.projectEvidenceAcceptedCount, 1);
 const updatedOwnerSignoffReview = agent.getPhase3OwnerSignoffReview();
 assert.equal(updatedOwnerSignoffReview.summary.acceptedCount, 1);
 assert.equal(updatedOwnerSignoffReview.summary.missing.includes('security-signoff'), false);
@@ -167,7 +170,7 @@ assert.equal(updatedLaunchReadiness.finalUseReview.status, 'FINAL_USE_REVIEW_REQ
 const practiceValidationReview = agent.getPhase3PracticeValidationReview();
 assert.ok(practiceValidationReview.summary.affectedMilestones.includes('P3-M20'));
 assert.equal(practiceValidationReview.summary.agentDecision, 'collect-practice-validation-evidence-before-production-use');
-assert.equal(practiceValidationReview.summary.evidenceAcceptedCount, 3);
+assert.equal(practiceValidationReview.summary.evidenceAcceptedCount, 4);
 assert.equal(practiceValidationReview.rows.find((row) => row.id === 'drawing-import').evidenceCoverage.acceptedCount, 1);
 assert.equal(practiceValidationReview.rows.find((row) => row.id === 'point-cloud-import').evidenceCoverage.acceptedCount, 1);
 assert.ok(practiceValidationReview.summary.missing.includes('drawing-import'));

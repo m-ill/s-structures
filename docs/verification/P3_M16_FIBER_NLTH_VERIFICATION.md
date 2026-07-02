@@ -61,4 +61,6 @@ P3-M16 remains preliminary. It now consumes material nonlinear backbone data in 
 
 2026-07-03 engineering-validation update: `getPhase3EngineeringValidationReview` now records nonlinear benchmark certification, hinge equilibrium, PMM/fiber, and NLTH qualification evidence separately from the automated P3-M16 trace. This keeps production nonlinear solver approval outside the synthetic/trace regression result until an engineer accepts the validation package.
 
+2026-07-03 project-evidence bridge update: Accepted project evidence rows for nonlinear solver certification and hinge/fiber/NLTH qualification are now converted into `getPhase3EngineeringValidationReview()` nonlinear evidence rows. This lets AI agents see uploaded engineering-validation records without treating automated nonlinear trace readiness as final production solver approval.
+
 2026-07-03 executable review update: `node tests/p3-nonlinear-milestone-review.mjs` now locks the P3-M14 to P3-M16 nonlinear milestone review contract. The Phase 3 runner includes this check in the P3-M16 group so N1 to N6 scope, B1 to B8 benchmark coverage, gate paths, and final approval fields remain agent-readable and separate from production engineering sign-off.
