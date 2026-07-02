@@ -31,8 +31,21 @@ assert.ok(review.rows[0].contracts.dataContracts.includes('phase3RcDesignGate'))
 assert.ok(review.rows[1].contracts.dataContracts.includes('phase3DetailedDesignGate'));
 assert.ok(review.rows[0].remainingValidation.includes('reinforcement drawing production'));
 assert.ok(review.rows[1].remainingValidation.includes('geotechnical settlement and bearing certification'));
+assert.deepEqual(review.rows.map((row) => row.exitCriteriaSummary.status), [
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+]);
+assert.deepEqual(review.rows.map((row) => row.exitCriteria.length), [5, 6]);
+assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M17-T87').ticket, 'P3-T87');
+assert.ok(review.rows[0].exitCriteria.find((row) => row.id === 'M17-GATE').requirement.includes('final permit-design separation'));
+assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M17-T90').source, 'docs/phase3/DESIGN_MODULES_PLAN.md');
+assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'M18-T93').evidence, 'tests/p3-design-steel-foundation.mjs');
+assert.ok(review.rows[1].exitCriteria.find((row) => row.id === 'M18-T95').requirement.includes('Serviceability evidence'));
+assert.ok(review.rows[1].exitCriteria.find((row) => row.id === 'M18-GATE').requirement.includes('analysis status'));
 assert.equal(review.summary.milestoneCount, 2);
 assert.equal(review.summary.automatedEvidenceCount, 2);
+assert.equal(review.summary.exitCriteriaCount, 11);
+assert.equal(review.summary.exitCriteriaAutomatedCount, 11);
 assert.equal(review.summary.productionReady, false);
 assert.equal(review.summary.agentDecision, 'detailed-design-engineer-review-required');
 assert.ok(review.summary.designScopes.includes('foundation'));

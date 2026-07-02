@@ -38,6 +38,24 @@ const ROWS = [
   }),
 ];
 
+const EXIT_CRITERIA = {
+  'P3-M17': [
+    criterion('M17-T87', 'RC beam flexure, shear, torsion warning, serviceability, bar schedule, development, and splice trace are available.', 'tests/p3-design-rc.mjs', 'P3-T87'),
+    criterion('M17-T88', 'RC column PM curve, slenderness, tie schedule, and column schedule are available.', 'tests/p3-design-rc.mjs', 'P3-T88'),
+    criterion('M17-T89', 'RC wall pier PM, in-plane shear, reinforcement ratios, and boundary flag are available.', 'tests/p3-design-rc.mjs', 'P3-T89'),
+    criterion('M17-T90', 'RC slab one-way/two-way mode, punching shear, and reinforcement schedule are available.', 'tests/p3-design-rc.mjs', 'P3-T90'),
+    criterion('M17-GATE', 'RC gate exposes complete role coverage, formula trace, issue rows, analysis status, and final permit-design separation.', 'tests/p3-design-rc.mjs', 'P3-T87/P3-T90'),
+  ],
+  'P3-M18': [
+    criterion('M18-T91', 'Steel classification, compression, flexure LTB, shear, and H1 interaction trace are available.', 'tests/p3-design-steel-foundation.mjs', 'P3-T91'),
+    criterion('M18-T92', 'Brace, bolt, weld, base-plate, and connection demand traces are available.', 'tests/p3-design-steel-foundation.mjs', 'P3-T92'),
+    criterion('M18-T93', 'Spread footing, combined footing, mat v1, and pile group v1 traces are available.', 'tests/p3-design-steel-foundation.mjs', 'P3-T93'),
+    criterion('M18-T94', 'Integrated report links formulas, issue rows, status rows, and registered calculation trace references.', 'tests/p3-design-steel-foundation.mjs', 'P3-T94'),
+    criterion('M18-T95', 'Serviceability evidence covers member deflection, story drift, and floor vibration hooks.', 'tests/p3-design-steel-foundation.mjs', 'P3-T95'),
+    criterion('M18-GATE', 'Detailed design gate exposes ticket coverage, issue review, analysis status, and final permit-design separation.', 'tests/p3-design-steel-foundation.mjs', 'P3-T91/P3-T95'),
+  ],
+};
+
 export function buildPhase3DesignMilestoneReview() {
   const rows = ROWS.map(copyRow);
   return {
@@ -53,6 +71,8 @@ export function buildPhase3DesignMilestoneReview() {
       milestoneCount: rows.length,
       designScopes: rows.flatMap((item) => item.designScopes),
       automatedEvidenceCount: rows.reduce((sum, item) => sum + item.automatedEvidence.length, 0),
+      exitCriteriaCount: rows.reduce((sum, item) => sum + item.exitCriteria.length, 0),
+      exitCriteriaAutomatedCount: rows.reduce((sum, item) => sum + item.exitCriteria.filter((criteria) => criteria.status === 'automated').length, 0),
       preliminaryCount: rows.length,
       productionReady: false,
       agentDecision: 'detailed-design-engineer-review-required',
@@ -79,6 +99,7 @@ function row(milestone, tickets, designScopes, automatedEvidence, remainingValid
 }
 
 function copyRow(item) {
+  const criteria = EXIT_CRITERIA[item.milestone] || [];
   return {
     ...item,
     tickets: [...item.tickets],
@@ -86,11 +107,34 @@ function copyRow(item) {
     automatedEvidence: [...item.automatedEvidence],
     remainingValidation: [...item.remainingValidation],
     finalUseBlockedBy: [...item.finalUseBlockedBy],
+    exitCriteria: criteria.map((criteriaRow) => ({ ...criteriaRow })),
+    exitCriteriaSummary: summarizeExitCriteria(criteria),
     contracts: {
       readApis: [...item.contracts.readApis],
       dataContracts: [...item.contracts.dataContracts],
       gatePath: item.contracts.gatePath,
       finalApprovalField: item.contracts.finalApprovalField,
     },
+  };
+}
+
+function criterion(id, requirement, evidence, ticket) {
+  return {
+    id,
+    requirement,
+    evidence,
+    ticket,
+    source: 'docs/phase3/DESIGN_MODULES_PLAN.md',
+    status: 'automated',
+  };
+}
+
+function summarizeExitCriteria(criteria = []) {
+  const automated = criteria.filter((item) => item.status === 'automated').length;
+  return {
+    total: criteria.length,
+    automated,
+    reviewRequired: criteria.length - automated,
+    status: criteria.length === automated ? 'automated-exit-criteria-covered' : 'exit-criteria-review-required',
   };
 }
