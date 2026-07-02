@@ -207,6 +207,14 @@ function buildFinalUseReview(evidence = {}) {
     version: LAUNCH_READINESS_VERSION,
     status: blockingReviews.length ? 'FINAL_USE_REVIEW_REQUIRED' : 'FINAL_USE_REVIEW_ACCEPTED',
     rows,
+    requiredReviews: rows.map((row) => ({
+      id: row.id,
+      acceptedField: row.acceptedField,
+      status: row.status,
+      accepted: row.accepted,
+      missingCount: row.missing.length,
+      agentDecision: row.agentDecision,
+    })),
     blockingReviews,
     rule: 'Launch gate OK is not final structural-office use approval; clear these reviews before production deployment.',
   };

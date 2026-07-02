@@ -78,6 +78,11 @@ Agents should read `getLaunchReadinessReport().agentSafeStatus` before final-use
 
 Agents must also inspect `getLaunchReadinessReport().finalUseReview`. `FINAL_USE_REVIEW_REQUIRED` means at least one practical validation, owner sign-off, or evidence-register review still blocks final structural-office use even when the automated launch gate is green.
 
+For automation, read `getLaunchReadinessReport().finalUseReview.requiredReviews`.
+Each row lists the required accepted field, current status, missing count, and
+agent decision for practice validation, owner sign-off, and evidence-register
+review.
+
 `getPhase3EvidenceRegister().summary.evidenceComplete` only means the required field, engineering, and owner evidence rows have been accepted into the review register. It does not set `productionReady`, `productionDeploymentApproved`, or any final structural-office approval field. Project evidence API rows can use the evidence-register IDs; owner sign-off review accepts the corresponding aliases.
 
 `submitProjectEvidence` accepts only the IDs listed in `getPhase3EvidenceRegister().rows` or the matching required evidence type labels. Unknown evidence IDs are rejected by both the server route and the in-page agent command bridge.

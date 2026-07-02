@@ -63,9 +63,12 @@ assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('summar
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalApprovalField')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('exitCriteriaSummary')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('remainingValidation')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalUseReview.requiredReviews')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('exitCriteriaSummary')));
+assert.ok(manifest.interpretationRules.some((rule) => rule.includes('finalUseReview.requiredReviews')));
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.agentSafeStatus/);
+assert.match(launchManual, /finalUseReview\.requiredReviews/);
 assert.match(launchManual, /LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED/);
 assert.match(launchManual, /OWNER_REVIEW_REQUIRED/);
 assert.match(launchManual, /exitCriteriaSummary/);
@@ -161,6 +164,8 @@ assert.equal(launch.finalUseBlocked, true);
 assert.equal(launch.agentSafeStatus, 'LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED');
 assert.equal(launch.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
 assert.deepEqual(launch.finalUseReview.blockingReviews, ['practice-validation', 'owner-signoff', 'evidence-register']);
+assert.deepEqual(launch.finalUseReview.requiredReviews.map((row) => row.acceptedField), ['productionReady', 'productionDeploymentApproved', 'evidenceComplete']);
+assert.equal(launch.finalUseReview.requiredReviews.find((row) => row.id === 'owner-signoff').missingCount, 7);
 assert.ok(launch.finalUseReview.rows.find((row) => row.id === 'practice-validation').missing.includes('drawing-import'));
 assert.equal(launch.finalUseReview.rows.find((row) => row.id === 'owner-signoff').missing.length, 7);
 assert.equal(launch.summary.finalUseReviewStatus, 'FINAL_USE_REVIEW_REQUIRED');
@@ -198,6 +203,7 @@ const evidenceCompleteLaunch = buildLaunchReadinessReport({
 assert.deepEqual(evidenceCompleteLaunch.finalUseReview.blockingReviews, ['practice-validation', 'owner-signoff']);
 assert.equal(evidenceCompleteLaunch.finalUseReview.rows.find((row) => row.id === 'evidence-register').acceptedField, 'evidenceComplete');
 assert.equal(evidenceCompleteLaunch.finalUseReview.rows.find((row) => row.id === 'evidence-register').status, 'ACCEPTED');
+assert.equal(evidenceCompleteLaunch.finalUseReview.requiredReviews.find((row) => row.id === 'evidence-register').accepted, true);
 
 const missingPilotReportLaunch = buildLaunchReadinessReport({
   ...evidence,

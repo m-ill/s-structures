@@ -428,6 +428,7 @@ export function buildAgentManifest(options = {}) {
     interpretationRules: [
       'Milestone review APIs expose exitCriteria and exitCriteriaSummary; automated-exit-criteria-covered means written-plan criteria have regression evidence, not production approval.',
       'Agents must still inspect remainingValidation, productionBlockers, finalUseBlockedBy, productionReady, and finalApprovalField after exitCriteria are covered.',
+      'Agents should inspect getLaunchReadinessReport().finalUseReview.requiredReviews before final-use automation; each row lists the accepted field, status, missing count, and agent decision.',
     ],
     dataContracts: [
       'schemaVersionedModel',
