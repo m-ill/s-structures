@@ -13,7 +13,7 @@ This note verifies P3-M16 against `docs/phase3/NONLINEAR_ENGINE_PLAN.md` tickets
 | --- | --- | --- |
 | P3-T83 | PMM interaction hinge interpolation | `src/nonlinear/hinges/pmmHinge.js` |
 | P3-T84 | RC/steel fiber section, material-backbone consumption, and moment-curvature trace | `src/nonlinear/fiber/fiberSection.js`, `momentCurvature.js` |
-| P3-T85 | Newmark nonlinear time-history with step-level Newton iteration trace | `src/nonlinear/dynamics/newmark.js` |
+| P3-T85 | Newmark nonlinear time-history with step-level Newton iteration, energy, stability, and step-split trace | `src/nonlinear/dynamics/newmark.js` |
 | P3-T86 | Ground-motion record parsing and scaling trace | `src/nonlinear/dynamics/groundMotion.js` |
 | Damping | Rayleigh coefficient trace | `src/nonlinear/dynamics/rayleigh.js` |
 | Agent trace | `getNonlinearAnalysisTrace()` includes `fiberNlthGate` |
@@ -28,7 +28,7 @@ The gate records:
 2. PMM interpolation source range and point count
 3. PMM source member/material/section when generated from a model member
 4. fiber count, material-backbone count, curvature row count, and yield-moment summary
-5. ground-motion scale factor, time step, NLTH row count, convergence flag, max iteration count, and yielded-state flag
+5. ground-motion scale factor, time step, NLTH row count, convergence flag, max iteration count, energy trace, step-split flag, and yielded-state flag
 6. B6, B7, and B8 benchmark case status
 
 2026-07-02 review fix: `runNewmarkNlth()` now records per-step Newton residual/correction/tangent rows and exposes overall convergence status. The `fiberNlthGate` reports `nlthConverged` and `maxIterations` so reports and AI agents can detect a nonlinear time-history step that did not satisfy the equilibrium tolerance.
@@ -41,9 +41,11 @@ The gate records:
 
 2026-07-02 performance maturity review update: `fiberNlthGate` now exposes `contract.maturity` and `fiberNlthReview`. The review marks the current M16 result as a preliminary performance trace, records that distributed plasticity and production seismic qualification are still false, confirms the ground-motion scaling trace, and returns `m16-ready-for-integrated-results-review` only when PMM, fiber, moment-curvature, Rayleigh damping, ground-motion scaling, NLTH convergence, and B6-B8 benchmarks are all available.
 
+2026-07-02 NLTH stability review update: `runNewmarkNlth()` now records kinetic energy, strain energy, cumulative input energy, cumulative damping energy, residual ratio, energy jump ratio, and a `stepSplitRecommended` flag for every time step. `fiberNlthGate.dynamics.energyTrace` and `fiberNlthReview.stepSplitRecommended` expose this stability review to reports and AI agents. A step-split recommendation is treated as a review hold even when Newton convergence succeeds.
+
 ## Current Test Gate
 
-`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, B6/B7/B8 benchmark registration, and agent manifest exposure.
+`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, energy/stability rows, step-split recommendation behavior, B6/B7/B8 benchmark registration, and agent manifest exposure.
 
 ## Remaining Limits
 

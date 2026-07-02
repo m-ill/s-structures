@@ -134,7 +134,7 @@ M15 is exposed through the existing `getNonlinearAnalysisTrace` contract. The fo
 | --- | --- | --- |
 | P3-T83 | `src/nonlinear/hinges/pmmHinge.js` provides axial-ratio backbone sets, member-derived PMM source values, and interpolation trace | Preliminary |
 | P3-T84 | `src/nonlinear/fiber/fiberSection.js` and `momentCurvature.js` provide RC/steel fiber strips, material-backbone stress interpolation, member-derived fiber sections, and M-phi trace with B6 gate | Preliminary |
-| P3-T85 | `src/nonlinear/dynamics/newmark.js` and `rayleigh.js` provide Newmark step trace, per-step Newton iteration log, bilinear spring state, convergence summary, and Rayleigh coefficient trace with B7/B8 gates | Preliminary |
+| P3-T85 | `src/nonlinear/dynamics/newmark.js` and `rayleigh.js` provide Newmark step trace, per-step Newton iteration log, bilinear spring state, energy/stability trace, convergence summary, step-split review flag, and Rayleigh coefficient trace with B7/B8 gates | Preliminary |
 | P3-T86 | `src/nonlinear/dynamics/groundMotion.js` provides text record parsing, PGA scaling, and spectrum scaling trace | Preliminary |
 
 M16 is exposed through `getNonlinearAnalysisTrace` with PMM, fiber, material-backbone, ground-motion, NLTH, and B6-B8 benchmark sections. The current implementation is still a concentrated-plasticity trace core, not a distributed plasticity or soil-structure interaction solver.

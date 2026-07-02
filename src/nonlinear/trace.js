@@ -138,6 +138,8 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       groundMotionPoints: trace.groundMotion?.pointCount || 0,
       nlthConverged: trace.nlth?.converged ?? null,
       nlthYielded: (trace.nlth?.rows || []).some((row) => row.hingeState === 'yielded'),
+      nlthUnstableStepCount: trace.nlth?.energyTrace?.unstableStepCount ?? null,
+      stepSplitRecommended: !!trace.nlth?.energyTrace?.stepSplitRecommended,
       requiredBenchmarks: ['B6', 'B7', 'B8'],
       fiberNlthReview,
       ticketCoverage: buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }),
@@ -175,6 +177,8 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       nlthRows: trace.nlth?.rows?.length || 0,
       nlthConverged: trace.nlth?.converged ?? null,
       maxIterations: Math.max(0, ...(trace.nlth?.rows || []).map((row) => row.iterations || 0)),
+      maxResidualRatio: trace.nlth?.summary?.maxResidualRatio ?? null,
+      energyTrace: trace.nlth?.energyTrace || null,
       yielded: (trace.nlth?.rows || []).some((row) => row.hingeState === 'yielded'),
     },
     benchmarks: fiberNlthBenchmarks ? {
@@ -205,6 +209,7 @@ function buildFiberNlthReview({ trace, fiberNlthBenchmarks }) {
   if (!trace.rayleigh?.version) missing.push('rayleigh-damping');
   if (!trace.spectrumScaling?.scaleFactor) missing.push('ground-motion-scaling');
   if (!trace.nlth?.converged) missing.push('nlth-convergence');
+  if (trace.nlth?.energyTrace?.stepSplitRecommended) missing.push('nlth-step-split-review');
   if (!fiberNlthBenchmarks?.ok) missing.push('B6-B8-benchmark');
   return {
     status: missing.length ? 'review-required' : 'trace-ready',
@@ -213,6 +218,8 @@ function buildFiberNlthReview({ trace, fiberNlthBenchmarks }) {
     productionSeismicQualification: false,
     concentratedPlasticityTrace: true,
     groundMotionScalingTrace: !!trace.spectrumScaling?.scaleFactor,
+    nlthEnergyTrace: !!trace.nlth?.energyTrace,
+    stepSplitRecommended: !!trace.nlth?.energyTrace?.stepSplitRecommended,
     missing,
     agentDecision: missing.length ? 'hold-before-integrated-results' : 'm16-ready-for-integrated-results-review',
   };
@@ -236,8 +243,8 @@ function buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }) {
     {
       ticket: 'P3-T85',
       scope: 'Newmark NLTH with Rayleigh damping and step trace',
-      covered: !!trace.nlth?.converged && (trace.nlth?.rows?.length || 0) > 0 && !!trace.rayleigh?.version,
-      evidence: `${trace.nlth?.rows?.length || 0} NLTH rows, converged=${!!trace.nlth?.converged}`,
+      covered: !!trace.nlth?.converged && (trace.nlth?.rows?.length || 0) > 0 && !!trace.rayleigh?.version && !!trace.nlth?.energyTrace,
+      evidence: `${trace.nlth?.rows?.length || 0} NLTH rows, converged=${!!trace.nlth?.converged}, unstable=${trace.nlth?.energyTrace?.unstableStepCount ?? 'n/a'}`,
     },
     {
       ticket: 'P3-T86',
