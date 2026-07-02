@@ -19,10 +19,23 @@ export function buildArcLengthStep(options = {}) {
 }
 
 export function buildArcLengthTrace(path = [], options = {}) {
+  const steps = path.map((point, step) => ({ step, ...buildArcLengthStep({ ...options, ...point }) }));
   return {
     version: ARC_LENGTH_CONTROL_VERSION,
+    contract: {
+      milestone: 'P3-M15',
+      tickets: ['P3-T55'],
+      control: 'arc-length',
+      rule: 'Crisfield spherical constraint tracks load-displacement paths through post-peak segments.',
+    },
     method: 'crisfield-spherical-arc-length-trace',
-    steps: path.map((point, step) => ({ step, ...buildArcLengthStep({ ...options, ...point }) })),
+    steps,
+    summary: {
+      stepCount: steps.length,
+      postPeakTracked: steps.some((step) => step.dLambda < 0),
+      satisfiedSteps: steps.filter((step) => step.satisfied).length,
+      maxConstraintError: Math.max(0, ...steps.map((step) => Math.abs(step.constraint))),
+    },
   };
 }
 

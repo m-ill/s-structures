@@ -18,14 +18,27 @@ export function buildDisplacementControlStep(options = {}) {
 
 export function buildDisplacementControlTrace(targets = [], options = {}) {
   let current = Number(options.initial || 0);
+  const steps = targets.map((target, step) => {
+    const row = buildDisplacementControlStep({ ...options, target, current });
+    current = target;
+    return { step, ...row };
+  });
   return {
     version: DISPLACEMENT_CONTROL_VERSION,
+    contract: {
+      milestone: 'P3-M15',
+      tickets: ['P3-T55'],
+      control: 'displacement',
+      rule: 'Convert each target displacement increment into a load-factor increment using the supplied influence term.',
+    },
     controlDof: options.controlDof || null,
-    steps: targets.map((target, step) => {
-      const row = buildDisplacementControlStep({ ...options, target, current });
-      current = target;
-      return { step, ...row };
-    }),
+    steps,
+    summary: {
+      stepCount: steps.length,
+      finalTarget: steps.at(-1)?.target ?? null,
+      maxAbsTarget: Math.max(0, ...steps.map((step) => Math.abs(step.target))),
+      maxAbsDeltaLambda: Math.max(0, ...steps.map((step) => Math.abs(step.dLambda))),
+    },
   };
 }
 

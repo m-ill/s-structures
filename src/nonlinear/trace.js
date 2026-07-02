@@ -181,6 +181,16 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       arcLength: ARC_LENGTH_CONTROL_VERSION,
       formalPushover: pushover?.version || null,
     },
+    summary: {
+      readyForAgentReview: true,
+      benchmarkOk: hingeControlBenchmarks?.ok ?? null,
+      hingeEventCount: hingeTrace?.events?.length || 0,
+      assignedHingeCount: options.hingeAssignment?.summary?.hingeCount || 0,
+      postPeakTracked: arcLength.steps.some((step) => step.dLambda < 0),
+      pushoverOk: !!pushover?.ok,
+      pushoverStopReason: pushover?.control?.stopReason || null,
+      requiredBenchmarks: ['B3', 'B4', 'B5'],
+    },
     hinge: summarizeHingeTrace(hingeTrace),
     assignment: options.hingeAssignment ? {
       version: options.hingeAssignment.version,

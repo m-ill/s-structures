@@ -24,6 +24,13 @@ export function runFormalPushover(model, options = {}) {
     ok: !!preliminary.ok,
     version: FORMAL_PUSHOVER_VERSION,
     sourceVersion: preliminary.sourceVersion || preliminary.version,
+    contract: {
+      milestone: 'P3-M15',
+      tickets: ['P3-T54', 'P3-T56'],
+      result: 'formal-pushover-capacity-curve',
+      benchmarkLinks: ['B4', 'B5'],
+      sourcePolicy: 'Keeps sourceVersion visible until the hinge-degraded tangent path is fully integrated.',
+    },
     method: {
       elements: 'linear-frame-with-formal-pushover-contract',
       hinges: 'concentrated-M-theta-preliminary',
@@ -41,7 +48,7 @@ export function runFormalPushover(model, options = {}) {
     hingeEvents: eventRows,
     hingeStates: preliminary.memberStates || {},
     regression,
-    summary: preliminary.summary || {},
+    summary: summarizeFormalPushover(preliminary, curve, eventRows, control),
     warnings: preliminary.warnings || [],
   };
 }
@@ -102,6 +109,21 @@ export function comparePushoverRegression(current, baseline) {
     maxBaseShearDiff: Math.max(0, ...rows.map((row) => row.baseShearDiff)),
     maxRoofDispDiff: Math.max(0, ...rows.map((row) => row.roofDispDiff)),
     rows,
+  };
+}
+
+function summarizeFormalPushover(preliminary = {}, curve = [], events = [], control = {}) {
+  const baseSummary = preliminary.summary || {};
+  return {
+    ...baseSummary,
+    stepCount: curve.length,
+    capacityPointCount: curve.length,
+    maxBaseShear: Math.max(0, ...curve.map((point) => Math.abs(point.baseShear || 0))),
+    maxRoofDisp: Math.max(0, ...curve.map((point) => Math.abs(point.roofDisp || 0))),
+    eventCount: events.length,
+    firstYieldStep: events.find((event) => event.type === 'yielded')?.step ?? null,
+    firstUltimateStep: events.find((event) => event.type === 'ultimate')?.step ?? null,
+    stopReason: control.stopReason || null,
   };
 }
 

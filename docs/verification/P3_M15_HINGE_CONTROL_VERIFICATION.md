@@ -38,6 +38,8 @@ The gate records:
 
 2026-07-02 review update: `PUSHOVER_VERSION` is now promoted to `p3-m15-pushover-formal` as required by `NONLINEAR_ENGINE_PLAN.md`. The former linear reanalysis path remains visible as `sourceVersion`, so old UI and agent calls keep their signature while reports can distinguish the formal P3-M15 contract from the underlying preliminary source path.
 
+2026-07-02 contract review update: displacement-control and arc-length traces now expose P3-M15 contracts and compact summaries. Formal pushover now exposes a P3-M15 contract plus capacity-curve, hinge-event, first-yield, first-ultimate, and stop-reason summary fields. `hingeControlGate.summary` now reports benchmark, hinge-event, assigned-hinge, post-peak, pushover, and required benchmark readiness for API and AI-agent review.
+
 ## Current Test Gate
 
 `tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, member-end hinge assignment from material nonlinear backbone data, hinge state events, displacement-control increments, arc-length post-peak path tracking, formal pushover output, formal/source version separation, control stop reason, regression summary, B3/B4/B5 benchmark registration, tangent assembly correction exposure, and agent manifest exposure.
