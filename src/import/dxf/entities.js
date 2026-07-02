@@ -130,7 +130,16 @@ function polylineSegments(entity) {
   } else {
     for (const vertex of entity.vertices || []) vertices.push(pointFromCodes(vertex.pairs, 10, 20, 30));
   }
-  return vertices.slice(0, -1).map((from, index) => ({ from, to: vertices[index + 1], layer: entity.layer }));
+  const segments = vertices.slice(0, -1).map((from, index) => ({ from, to: vertices[index + 1], layer: entity.layer }));
+  if (isClosedPolyline(entity) && vertices.length > 2) {
+    segments.push({ from: vertices[vertices.length - 1], to: vertices[0], layer: entity.layer });
+  }
+  return segments;
+}
+
+function isClosedPolyline(entity) {
+  const flags = Number(valueOf(entity.pairs, 70, 0)) || 0;
+  return (flags & 1) === 1;
 }
 
 function pointEntity(entity) {

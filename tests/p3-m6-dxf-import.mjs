@@ -185,6 +185,40 @@ assert.equal(circleCandidate.audit.counts.dxfCircles, 1);
 assert.equal(circleCandidate.audit.counts.supportedEntityCount, 2);
 assert.equal(circleCandidate.audit.layers.layerUsage.find((row) => row.layer === 'S-COL').byType.CIRCLE, 1);
 
+const closedPolylineText = [
+  '0', 'SECTION',
+  '2', 'HEADER',
+  '9', '$INSUNITS',
+  '70', '6',
+  '0', 'ENDSEC',
+  '0', 'SECTION',
+  '2', 'ENTITIES',
+  '0', 'LWPOLYLINE',
+  '8', 'S-WALL',
+  '70', '1',
+  '10', '0',
+  '20', '0',
+  '10', '3',
+  '20', '0',
+  '10', '3',
+  '20', '2',
+  '10', '0',
+  '20', '2',
+  '0', 'ENDSEC',
+  '0', 'EOF',
+].join('\n');
+const closedPolylineGeometry = dxfEntitiesToGeometry(parseDxf(closedPolylineText));
+assert.equal(closedPolylineGeometry.segments.length, 4);
+assert.deepEqual(closedPolylineGeometry.segments.at(-1).from, { x: 0, y: 2, z: 0 });
+assert.deepEqual(closedPolylineGeometry.segments.at(-1).to, { x: 0, y: 0, z: 0 });
+const closedPolylineCandidate = importDxfToCandidate(closedPolylineText, {
+  fileId: 'closed-polyline.dxf',
+  layerMap: { 'S-WALL': { kind: 'beam' } },
+});
+assert.equal(validateImportCandidate(closedPolylineCandidate).ok, true);
+assert.equal(closedPolylineCandidate.audit.counts.dxfSegments, 4);
+assert.equal(closedPolylineCandidate.audit.layers.layerUsage.find((row) => row.layer === 'S-WALL').byType.LWPOLYLINE, 1);
+
 console.log(JSON.stringify({
   ok: true,
   version: DXF_IMPORT_VERSION,
