@@ -42,9 +42,9 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 
 | Ticket | Plan target | Current code | Audit result |
 | --- | --- | --- | --- |
-| P3-T46 | custom material schema + migration | `materials` arrays accepted, but no full material schema validator for `elastic/strength/nonlinear` object | Partial |
-| P3-T47 | section DB, parametric, direct input | Parametric section properties for H/BOX/PIPE/RECT/CIRC exist | Partial; KS DB tables not present |
-| P3-T48 | versioned registry + calculation trace | `id@version` resolver and audit exist | Partial; calculation report integration is light |
+| P3-T46 | custom material schema + migration | Material schema validator now covers elastic/strength/nonlinear backbone objects | Preliminary; migration warning path still light |
+| P3-T47 | section DB, parametric, direct input | Parametric section properties for H/BOX/PIPE/RECT/CIRC and KS H seed table exist | Preliminary; wider KS DB still needed |
+| P3-T48 | versioned registry + calculation trace | `id@version` resolver, immutable-version audit, and material library report summary exist | Preliminary; full calculation package chapter integration still light |
 | P3-T49 | library edit UI + server storage + agent actions | No dedicated library UI/actions found | Not implemented |
 
 ### P3-M11 Element, Boundary, Load Expansion

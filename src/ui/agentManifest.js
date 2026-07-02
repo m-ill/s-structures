@@ -84,6 +84,9 @@ import { POINT_CLOUD_EXTRACTION_VERSION } from '../import/pointcloud/extract.js'
 import { POINT_CLOUD_BENCHMARK_VERSION } from '../import/pointcloud/benchmark.js';
 import { POINT_CLOUD_LAYER_VERSION } from '../viewer/pointCloudLayer.js';
 import { MATERIAL_REGISTRY_VERSION } from '../materials/registry.js';
+import { MATERIAL_SCHEMA_VERSION } from '../materials/materialSchema.js';
+import { SECTION_SCHEMA_VERSION } from '../materials/sectionSchema.js';
+import { MATERIAL_LIBRARY_REPORT_VERSION } from '../materials/libraryReport.js';
 import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
 import { WALL_SLAB_EQUIVALENT_VERSION } from '../solver/wallSlabEquivalent.js';
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
@@ -176,6 +179,9 @@ export function buildAgentManifest(options = {}) {
       phase3PointCloudBenchmark: POINT_CLOUD_BENCHMARK_VERSION,
       phase3PointCloudLayer: POINT_CLOUD_LAYER_VERSION,
       phase3MaterialRegistry: MATERIAL_REGISTRY_VERSION,
+      phase3MaterialSchema: MATERIAL_SCHEMA_VERSION,
+      phase3SectionSchema: SECTION_SCHEMA_VERSION,
+      phase3MaterialLibraryReport: MATERIAL_LIBRARY_REPORT_VERSION,
       phase3ElasticExpansion: ELASTIC_EXPANSION_VERSION,
       phase3WallSlabEquivalent: WALL_SLAB_EQUIVALENT_VERSION,
       phase3LoadsV2: LOADS_V2_VERSION,
@@ -209,6 +215,10 @@ export function buildAgentManifest(options = {}) {
       'getServiceabilityDriftReport',
       'getAdvancedElasticTrace',
       'getMaterialSectionRegistry',
+      'listLibrary',
+      'getLibraryItem',
+      'upsertMaterial',
+      'upsertSection',
       'getElasticExpansionTrace',
       'getWallSlabEquivalentTrace',
       'getLoadsV2Trace',
@@ -316,6 +326,9 @@ export function buildAgentManifest(options = {}) {
       'phase3PointCloudExtraction',
       'phase3PointCloudBenchmark',
       'phase3MaterialSectionRegistry',
+      'phase3MaterialSchema',
+      'phase3SectionSchema',
+      'phase3MaterialLibraryReport',
       'phase3ElasticExpansionTrace',
       'phase3WallSlabEquivalentTrace',
       'phase3LoadsV2Trace',

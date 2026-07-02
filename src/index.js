@@ -294,6 +294,10 @@ export { POINT_CLOUD_BENCHMARK_VERSION, evaluatePointCloudExtraction } from './i
 export { POINT_CLOUD_LAYER_VERSION, buildPointCloudLayerData } from './viewer/pointCloudLayer.js';
 export { IMPORT_CANDIDATE_MODEL_VERSION, importCandidateToModel } from './import/candidateModel.js';
 export { MATERIAL_REGISTRY_VERSION, buildLibraryAudit, parseVersionedId, resolveMaterialRecord, resolveSectionRecord } from './materials/registry.js';
+export { MATERIAL_SCHEMA_VERSION, normalizeMaterialRecord, validateMaterialRecord } from './materials/materialSchema.js';
+export { SECTION_SCHEMA_VERSION, normalizeSectionRecord, validateSectionRecord } from './materials/sectionSchema.js';
+export { KS_H_DB_VERSION, KS_H_SECTIONS } from './materials/db/ksH.js';
+export { MATERIAL_LIBRARY_REPORT_VERSION, buildMaterialLibraryReport } from './materials/libraryReport.js';
 export { SECTION_PROPERTIES_VERSION, computeSectionProperties } from './materials/sectionProperties.js';
 export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elasticExpansion.js';
 export { WALL_SLAB_EQUIVALENT_VERSION, summarizeSemiRigidDiaphragm, wallToMidPierMember } from './solver/wallSlabEquivalent.js';

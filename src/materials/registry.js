@@ -1,4 +1,7 @@
 import { computeSectionProperties } from './sectionProperties.js';
+import { normalizeMaterialRecord, validateMaterialRecord } from './materialSchema.js';
+import { normalizeSectionRecord, validateSectionRecord } from './sectionSchema.js';
+import { KS_H_SECTIONS } from './db/ksH.js';
 
 export const MATERIAL_REGISTRY_VERSION = 'p3-m10-material-section-registry';
 
@@ -9,19 +12,25 @@ export function parseVersionedId(ref) {
 
 export function resolveMaterialRecord(model, ref, builtins = []) {
   const key = parseVersionedId(ref);
-  const all = [...asVersioned(model?.materials), ...asVersioned(builtins)];
+  const all = [...asVersioned(model?.materials), ...asVersioned(builtins)].map((item) => normalizeMaterialRecord(item));
   return selectVersion(all.filter((item) => item.id === key.id), key.version) || selectVersion(all.filter((item) => item.id === 'steel'), null);
 }
 
 export function resolveSectionRecord(model, ref, builtins = []) {
   const key = parseVersionedId(ref);
-  const all = [...asVersioned(model?.sections), ...asVersioned(builtins)].map(normalizeSection);
+  const all = [...asVersioned(model?.sections), ...asVersioned(builtins), ...asVersioned(KS_H_SECTIONS)].map(normalizeSection);
   return selectVersion(all.filter((item) => item.id === key.id), key.version) || selectVersion(all.filter((item) => item.id === 'h300'), null);
 }
 
 export function buildLibraryAudit(model = {}) {
   const refs = new Set((model.members || []).flatMap((member) => [member.matId, member.secId]).filter(Boolean));
-  return { version: MATERIAL_REGISTRY_VERSION, referenceCount: refs.size, references: [...refs].sort() };
+  return {
+    version: MATERIAL_REGISTRY_VERSION,
+    referenceCount: refs.size,
+    references: [...refs].sort(),
+    materialErrors: (model.materials || []).flatMap((item) => validateMaterialRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
+    sectionErrors: (model.sections || []).flatMap((item) => validateSectionRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
+  };
 }
 
 function asVersioned(items = []) {
@@ -36,7 +45,8 @@ function selectVersion(items, version) {
 }
 
 function normalizeSection(section) {
-  if (!section || section.A) return section;
-  const properties = section.properties || computeSectionProperties(section.shape || section.type, section.params || section.dims);
-  return { ...section, ...(properties || {}) };
+  if (!section) return section;
+  const normalized = normalizeSectionRecord(section);
+  const properties = normalized.properties || computeSectionProperties(normalized.shape, normalized.params);
+  return { ...normalized, ...(properties || {}) };
 }
