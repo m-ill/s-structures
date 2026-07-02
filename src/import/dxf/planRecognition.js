@@ -16,6 +16,8 @@ export function recognizePlanDxf(text, options = {}) {
     .map((segment, index) => beamCandidate(segment, index, layerRules, elevation))
     .filter(Boolean);
   const recognitionQuality = buildRecognitionQuality(columns, beams, options.expected || {});
+  const labelEvidence = buildLabelEvidence(geometry.texts, options.storyId || `ST${elevation}`);
+  const layerUsage = buildPlanLayerUsage(geometry.audit.layerUsage, columns, beams);
   return {
     version: DXF_PLAN_RECOGNITION_VERSION,
     storyId: options.storyId || `ST${elevation}`,
@@ -33,7 +35,11 @@ export function recognizePlanDxf(text, options = {}) {
         segments: geometry.segments.length,
       },
       ignored: geometry.audit.ignored,
-      layers: [...new Set([...columns.map((item) => item.layer), ...beams.map((item) => item.layer)].filter(Boolean))].sort(),
+      layers: layerUsage.layers,
+      recognizedLayers: layerUsage.recognizedLayers,
+      unusedLayers: layerUsage.unusedLayers,
+      layerUsage: layerUsage.rows,
+      labelEvidence,
       recognitionQuality,
     },
   };
@@ -109,5 +115,38 @@ function buildRecognitionQuality(columns, beams, expected = {}) {
     targets,
     ok: (columnRecall == null || columnRecall >= targets.columnRecall) &&
       (beamRecall == null || beamRecall >= targets.beamRecall),
+  };
+}
+
+function buildLabelEvidence(texts, storyId) {
+  const labels = (texts || []).map((item) => ({
+    text: item.text,
+    layer: item.layer,
+    point: item.point,
+  }));
+  return {
+    storyId,
+    labels,
+    labelCount: labels.length,
+    primaryLabel: labels[0]?.text || null,
+    agentDecision: labels.length ? 'use-labels-for-human-review' : 'review-story-labels-manually',
+  };
+}
+
+function buildPlanLayerUsage(rows = [], columns = [], beams = []) {
+  const recognizedLayers = [...new Set([
+    ...columns.map((item) => item.layer),
+    ...beams.map((item) => item.layer),
+  ].filter(Boolean))].sort();
+  const recognized = new Set(recognizedLayers);
+  const layers = [...new Set(rows.map((row) => row.layer || '0'))].sort();
+  return {
+    layers,
+    recognizedLayers,
+    unusedLayers: layers.filter((layer) => !recognized.has(layer)),
+    rows: rows.map((row) => ({
+      ...row,
+      recognized: recognized.has(row.layer),
+    })),
   };
 }

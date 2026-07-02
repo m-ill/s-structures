@@ -77,6 +77,11 @@ assert.equal(story1.texts[0].text, '1F');
 assert.equal(story1.audit.recognitionQuality.recall.columns, 1);
 assert.equal(story1.audit.recognitionQuality.recall.beams, 1);
 assert.equal(story1.audit.recognitionQuality.ok, true);
+assert.deepEqual(story1.audit.recognizedLayers, ['S-BEAM', 'S-COL']);
+assert.deepEqual(story1.audit.unusedLayers, ['S-TEXT']);
+assert.equal(story1.audit.layerUsage.find((row) => row.layer === 'S-TEXT').recognized, false);
+assert.equal(story1.audit.labelEvidence.primaryLabel, '1F');
+assert.equal(story1.audit.labelEvidence.agentDecision, 'use-labels-for-human-review');
 assert.equal(story2.columns[0].z, 3);
 
 const candidate = assemblePlansToImportCandidate([story2, story1], {
@@ -93,6 +98,8 @@ assert.equal(candidate.audit.planAssembly.recognitionQuality.minBeamRecall, 1);
 assert.equal(candidate.audit.planAssembly.recognitionQuality.ok, true);
 assert.equal(candidate.audit.planAssembly.columnContinuity.ok, true);
 assert.equal(candidate.audit.planAssembly.columnContinuity.incompleteStackCount, 0);
+assert.deepEqual(candidate.audit.planAssembly.labelEvidence.rows.map((row) => row.primaryLabel), ['1F', '2F']);
+assert.equal(candidate.audit.planAssembly.labelEvidence.agentDecision, 'story-labels-available-for-review');
 assert.equal(candidate.audit.planAssembly.review.status, 'ready-for-human-confirmation');
 assert.equal(candidate.audit.planAssembly.review.confirmable, true);
 assert.equal(candidate.audit.planAssembly.review.agentDecision, 'candidate-ready-for-import-review-ui');

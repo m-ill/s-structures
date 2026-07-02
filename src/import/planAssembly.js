@@ -53,12 +53,30 @@ export function assemblePlansToImportCandidate(plans = [], options = {}) {
       planCount: ordered.length,
       columnStackCount: columnKeys.size,
       generatedSegmentCount: segments.length,
+      labelEvidence: summarizePlanLabels(ordered),
       recognitionQuality,
       columnContinuity,
       review: buildPlanAssemblyReview({ ordered, recognitionQuality, columnContinuity, segments }),
     },
   };
   return candidate;
+}
+
+function summarizePlanLabels(plans) {
+  const rows = plans.map((plan) => ({
+    storyId: plan.storyId || null,
+    elevation: plan.elevation,
+    primaryLabel: plan.audit?.labelEvidence?.primaryLabel || null,
+    labelCount: plan.audit?.labelEvidence?.labelCount || 0,
+    labels: plan.audit?.labelEvidence?.labels || [],
+  }));
+  return {
+    rows,
+    missingLabelStories: rows.filter((row) => !row.primaryLabel).map((row) => row.storyId),
+    agentDecision: rows.every((row) => row.primaryLabel)
+      ? 'story-labels-available-for-review'
+      : 'review-missing-story-labels',
+  };
 }
 
 export function buildPlanAssemblyReview(input = {}) {
