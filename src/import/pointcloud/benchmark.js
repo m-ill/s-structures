@@ -29,10 +29,28 @@ export function evaluatePointCloudExtraction(candidate, groundTruth, options = {
       columnPrecision: metrics.columnPrecision >= targets.columnPrecision,
       beamRecall: metrics.beamRecall >= targets.beamRecall,
     },
+    review: buildBenchmarkReview(metrics, targets),
     validationStatus: {
       syntheticBenchmark: 'checked',
       realScan: 'pending-owner-file',
     },
+  };
+}
+
+function buildBenchmarkReview(metrics, targets) {
+  const failed = [];
+  if (!(metrics.storyErrorMax < targets.storyErrorMax)) failed.push('story-error-target');
+  if (!(metrics.columnRecall >= targets.columnRecall)) failed.push('column-recall-target');
+  if (!(metrics.columnPrecision >= targets.columnPrecision)) failed.push('column-precision-target');
+  if (!(metrics.beamRecall >= targets.beamRecall)) failed.push('beam-recall-target');
+  return {
+    syntheticGate: failed.length === 0 ? 'pass' : 'fail',
+    failedTargets: failed,
+    realScanGate: 'pending-owner-file',
+    requiresOwnerScan: true,
+    agentDecision: failed.length === 0
+      ? 'synthetic-benchmark-pass-real-scan-pending'
+      : 'synthetic-benchmark-fail',
   };
 }
 

@@ -31,7 +31,22 @@ assert.deepEqual(score.pass, {
   columnPrecision: true,
   beamRecall: true,
 });
+assert.deepEqual(score.review, {
+  syntheticGate: 'pass',
+  failedTargets: [],
+  realScanGate: 'pending-owner-file',
+  requiresOwnerScan: true,
+  agentDecision: 'synthetic-benchmark-pass-real-scan-pending',
+});
 assert.equal(score.validationStatus.realScan, 'pending-owner-file');
+
+const strictScore = evaluatePointCloudExtraction(candidate, synthetic.groundTruth, {
+  columnRecallTarget: 1.1,
+});
+assert.equal(strictScore.review.syntheticGate, 'fail');
+assert.ok(strictScore.review.failedTargets.includes('column-recall-target'));
+assert.equal(strictScore.review.agentDecision, 'synthetic-benchmark-fail');
+assert.equal(strictScore.review.requiresOwnerScan, true);
 assert.ok(candidate.candidates.members.some((m) => m.kind === 'beam'));
 assert.equal(candidate.audit.pointcloud.contract.milestone, 'P3-M9');
 assert.deepEqual(candidate.audit.pointcloud.contract.tickets, ['P3-T41', 'P3-T42', 'P3-T43', 'P3-T44', 'P3-T45']);
