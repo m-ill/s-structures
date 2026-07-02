@@ -12,6 +12,12 @@ try {
   const meta = await app.api('GET', '/api/meta');
   assert.equal(meta.data.data.version, 'p3-server-api-v1');
 
+  const rootPage = await fetch(`${app.baseUrl}/`);
+  assert.equal(rootPage.status, 200);
+  const rootHtml = await rootPage.text();
+  assert.match(rootHtml, /id="canvasWrap"/);
+  assert.match(rootHtml, /app\.html#\/login/);
+
   // register/login/me/logout
   const reg = await app.api('POST', '/api/auth/register', {
     body: { email: 'owner@example.com', password: 'super-secret-pw', name: 'Owner' },

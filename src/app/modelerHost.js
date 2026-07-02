@@ -13,17 +13,28 @@ import { clearElement } from './domUtil.js';
 export function mountModelerHostView(container, ctx) {
   const { document, params, session } = ctx;
   clearElement(container);
-  session.setCurrentProject(params.projectId);
+  const projectId = params.projectId || 'local-model';
+  session.setCurrentProject(params.projectId || null);
 
   const heading = document.createElement('div');
   heading.setAttribute('data-role', 'modeler-project-id');
-  heading.textContent = params.projectId;
+  heading.textContent = projectId;
   container.appendChild(heading);
 
   const note = document.createElement('div');
   note.setAttribute('data-role', 'modeler-placeholder-note');
-  note.textContent = 'Native modeler integration is pending (P3-T13).';
+  note.textContent = params.projectId
+    ? 'Native modeler integration is pending (P3-T13).'
+    : 'Open index.html for the local modeling workspace. Login is optional for server project storage.';
   container.appendChild(note);
+
+  if (!params.projectId) {
+    const link = document.createElement('a');
+    link.setAttribute('data-role', 'open-local-modeler');
+    link.href = './index.html';
+    link.textContent = 'Open modeling workspace';
+    container.appendChild(link);
+  }
 
   return {
     unmount() { clearElement(container); },

@@ -27,7 +27,7 @@ button{cursor:pointer;}
 #topbar{flex:none; height:48px; overflow-x:auto; scrollbar-width:none; background:var(--dku); color:#fff; display:flex; align-items:center; gap:6px; padding:0 10px; user-select:none;}
 #topbar .logo{font-weight:700; letter-spacing:.5px; font-size:15px; margin-right:8px; white-space:nowrap;}
 #topbar .logo span{color:var(--gold);}
-.tb-btn{background:transparent; border:1px solid transparent; color:#d7e5f2; border-radius:6px; padding:5px 9px; font-size:13px; white-space:nowrap;}
+.tb-btn{background:transparent; border:1px solid transparent; color:#d7e5f2; border-radius:6px; padding:5px 9px; font-size:13px; white-space:nowrap; text-decoration:none; display:inline-flex; align-items:center;}
 .tb-btn:hover{background:var(--dku2);}
 .tb-btn.active{background:var(--gold); color:#1d2b3a; font-weight:600;}
 .tb-sep{width:1px; height:24px; background:#2b6396; margin:0 4px;}
@@ -165,6 +165,7 @@ canvas{position:absolute; left:0; top:0; touch-action:none;}
   <button class="tb-btn mode" data-mode="image" title="이미지 삽입">▣ 이미지</button>
   <button class="tb-btn mode" data-mode="structure" title="3D 구조 모드">▦ 구조</button>
   <div class="spacer"></div>
+  <a class="tb-btn" id="accountBtn" href="app.html#/login" title="로그인 및 프로젝트 저장">계정</a>
   <button class="tb-btn" id="undoBtn" title="실행 취소 (Ctrl+Z)">↶</button>
   <button class="tb-btn" id="redoBtn" title="다시 실행 (Ctrl+Y)">↷</button>
   <div class="tb-sep"></div>

@@ -89,7 +89,7 @@ function serveStatic(req, res, pathname, config) {
       res.end('Forbidden');
       return;
     }
-    if (decodedPathname === '/') filePath = join(config.staticRoot, 'app.html');
+    if (decodedPathname === '/') filePath = join(config.staticRoot, 'index.html');
     const stat = statSync(filePath);
     if (stat.isDirectory()) filePath = join(filePath, 'index.html');
     res.writeHead(200, { 'Content-Type': STATIC_TYPES[extname(filePath)] || 'application/octet-stream' });

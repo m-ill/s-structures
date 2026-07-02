@@ -13,6 +13,7 @@ assert.equal(APP_SHELL_VERSION, PLATFORM_APP_SHELL_VERSION);
 
 // route table matching
 assert.deepEqual(matchRoute('#/login'), { name: 'login', params: {}, path: '/login' });
+assert.deepEqual(matchRoute('#/local/modeler'), { name: 'localModeler', params: {}, path: '/local/modeler' });
 assert.deepEqual(matchRoute('#/p/abc-123/modeler'), { name: 'modeler', params: { projectId: 'abc-123' }, path: '/p/abc-123/modeler' });
 assert.equal(matchRoute('#/nope'), null);
 assert.equal(matchRoute('#/p/%E0%A4%A/modeler'), null);
@@ -46,9 +47,15 @@ try {
   const session = createSessionState({ storage, api });
   const shell = createAppShell({ window, document, api, session, mountPoint });
 
-  // unauthenticated -> redirected to login even though default route is projects
+  // unauthenticated users land on the local modeling entry, not login.
   const started = shell.start();
-  assert.equal(started.name, 'login');
+  assert.equal(started.name, 'localModeler');
+  assert.equal(window.location.hash, '#/local/modeler');
+  assert.equal(mountPoint.querySelector('[data-role="modeler-project-id"]').textContent, 'local-model');
+  assert.ok(mountPoint.querySelector('[data-role="open-local-modeler"]'));
+
+  // login stays available as an explicit route for server project storage.
+  shell.navigate(buildHash('login'));
   const loginForm = mountPoint.querySelector('[data-view="login"]');
   assert.ok(loginForm);
 

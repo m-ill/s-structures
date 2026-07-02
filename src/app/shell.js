@@ -7,12 +7,13 @@ import { APP_SHELL_VERSION } from '../platform/platformVersion.js';
 
 export { APP_SHELL_VERSION };
 
-const PUBLIC_ROUTES = new Set(['login']);
+const PUBLIC_ROUTES = new Set(['login', 'localModeler']);
 
 const VIEW_MOUNTERS = {
   login: mountLoginView,
   projects: mountProjectsView,
   modeler: mountModelerHostView,
+  localModeler: mountModelerHostView,
 };
 
 export function createAppShell(options) {
@@ -29,7 +30,7 @@ export function createAppShell(options) {
   }
 
   function route() {
-    const match = matchRoute(window.location.hash) || { name: 'login', params: {}, path: '/login' };
+    const match = matchRoute(window.location.hash) || { name: 'localModeler', params: {}, path: '/local/modeler' };
     const state = session.getState();
     const targetName = (!state.authenticated && !PUBLIC_ROUTES.has(match.name)) ? 'login' : match.name;
 
@@ -61,7 +62,7 @@ export function createAppShell(options) {
       if (!window.location.hash) {
         // Setting the hash fires the hashchange listener, which performs the
         // initial route() call and records it in lastResult.
-        window.location.hash = buildHash('projects');
+        window.location.hash = buildHash('localModeler');
         return lastResult;
       }
       return route();
