@@ -18,6 +18,7 @@ const FORMULAS = {
   'KDS-RC-SPLICE-V1': ['KDS 14 20', 'RC-SPLICE', 'RC bar lap splice'],
   'KDS-RC-BAR-SPACING-V1': ['KDS 14 20', 'RC-BAR-SPACING', 'RC bar spacing'],
   'KDS-RC-PM-CURVE-V1': ['KDS 14 20', 'RC-PM-CURVE', 'RC PM curve generation'],
+  'KDS-RC-INPUT-GEOMETRY-V1': ['KDS 14 20', 'RC-INPUT-GEOMETRY', 'RC design input geometry and load sanity review'],
   'KDS-ST-SECTION-CLASS-V1': ['KDS 14 31', 'ST-SECTION-CLASS', 'Steel section compactness classification'],
   'KDS-ST-COMPRESSION-KL-V1': ['KDS 14 31', 'ST-COMPRESSION-KL', 'Steel compression effective length'],
   'KDS-ST-FLEXURE-LTB-V1': ['KDS 14 31', 'ST-FLEXURE-LTB', 'Steel flexural LTB review'],

@@ -8,6 +8,7 @@ import {
   buildRcPmCurve,
   createReleasedSimpleBeamUdl,
   createVerticalAxialColumn,
+  detailRcBeam,
   detailRcSlab,
   detailRcWall,
   developmentLength,
@@ -65,6 +66,18 @@ assert.ok(beamReport.schedules.walls[0].contract.tickets.includes('P3-T89'));
 assert.ok(beamReport.schedules.slabs[0].contract.tickets.includes('P3-T90'));
 assert.match(beamReport.schedules.beams[0].flexure.bottom.label, /^\d+-D/);
 assert.equal(beamReport.summary.itemCount, 3);
+
+const biaxialBeamDetail = detailRcBeam({
+  memberId: 'B-BIAX',
+  role: 'beam',
+  status: 'OK',
+  requiredRebar: { AsY: 1800, AsZ: 400 },
+  section: { b: 0.3 },
+  material: { fc: 27, fy: 400 },
+});
+assert.equal(biaxialBeamDetail.flexure.requiredAs, 1800);
+assert.ok(biaxialBeamDetail.flexure.top.providedArea >= 1800);
+assert.ok(biaxialBeamDetail.flexure.bottom.providedArea >= 1800);
 
 const completeIssueGate = buildRcDesignGate({
   schedules: {
@@ -152,10 +165,24 @@ assert.ok(pm.points[0].axial > pm.points.at(-1).axial);
 const wall = detailRcWall({ id: 'W2', section: { width: 5, thickness: 0.25 }, material: { fc: 30 }, V: 80 });
 assert.equal(wall.role, 'wall');
 assert.ok(wall.reinforcement.vertical.label);
+assert.equal(wall.inputReview.status, 'available');
+const invalidWall = detailRcWall({ id: 'W-BAD', section: { width: -5, thickness: 0 }, material: { fc: 0 }, V: 80 });
+assert.equal(invalidWall.status, 'NG');
+assert.equal(invalidWall.inputReview.status, 'review-required');
+assert.ok(invalidWall.inputReview.missing.includes('wall-width'));
+assert.ok(invalidWall.inputReview.missing.includes('wall-thickness'));
+assert.equal(invalidWall.inputReview.formulaId, 'KDS-RC-INPUT-GEOMETRY-V1');
 
 const slab = detailRcSlab({ id: 'S2', lx: 3.8, ly: 8, factoredLoad: 8, columnReaction: 90 });
 assert.equal(slab.mode, 'one-way');
 assert.ok(slab.flexure.main.label);
+assert.equal(slab.inputReview.status, 'available');
+const invalidSlab = detailRcSlab({ id: 'S-BAD', lx: 0, ly: -8, thickness: 0, factoredLoad: 0 });
+assert.equal(invalidSlab.status, 'NG');
+assert.equal(invalidSlab.inputReview.status, 'review-required');
+assert.ok(invalidSlab.inputReview.missing.includes('slab-short-span'));
+assert.ok(invalidSlab.inputReview.missing.includes('slab-long-span'));
+assert.equal(invalidSlab.inputReview.formulaId, 'KDS-RC-INPUT-GEOMETRY-V1');
 
 assert.ok(developmentLength('D19', { fc: 27, fy: 400 }).length >= 300);
 assert.ok(lapSpliceLength('D19', { fc: 27, fy: 400 }).length > developmentLength('D19', { fc: 27, fy: 400 }).length);

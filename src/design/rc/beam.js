@@ -7,8 +7,9 @@ export function detailRcBeam(check = {}, options = {}) {
   const req = check.requiredRebar || {};
   const section = check.section || {};
   const material = check.material || {};
-  const top = selectLongitudinalBars(req.AsZ || 0, { minBars: 2, preferredBar: options.beamBar || 'D19' });
-  const bottom = selectLongitudinalBars(Math.max(req.AsZ || 0, req.AsY || 0), { minBars: 2, preferredBar: options.beamBar || 'D19' });
+  const governingAs = Math.max(req.AsZ || 0, req.AsY || 0);
+  const top = selectLongitudinalBars(governingAs, { minBars: 2, preferredBar: options.beamBar || 'D19' });
+  const bottom = selectLongitudinalBars(governingAs, { minBars: 2, preferredBar: options.beamBar || 'D19' });
   const stirrup = selectStirrups(Math.max(req.AvsZ || 0, req.AvsY || 0), options);
   const serviceRatio = serviceabilityRatio(check, options);
   const torsion = torsionCheck(check, options);
@@ -34,7 +35,7 @@ export function detailRcBeam(check = {}, options = {}) {
       bottomBarLabel: bottom.label,
       stirrupLabel: stirrup.label,
     },
-    flexure: { requiredAs: req.AsZ || 0, top, bottom, formulaId: 'KDS-RC-BEAM-FLEXURE-V1' },
+    flexure: { requiredAs: governingAs, requiredAsY: req.AsY || 0, requiredAsZ: req.AsZ || 0, top, bottom, formulaId: 'KDS-RC-BEAM-FLEXURE-V1' },
     shear: { requiredAvs: Math.max(req.AvsZ || 0, req.AvsY || 0), stirrup, formulaId: 'KDS-RC-BEAM-SHEAR-V1' },
     torsion,
     serviceability: serviceRatio,

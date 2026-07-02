@@ -31,6 +31,8 @@ Current status is preliminary. The module produces traceable schedules and regis
 
 2026-07-03 RC issue-formula link hardening: `rcReview` now reports `issue-formula-links` when any WARN/NG RC row lacks a traceable formula reference. This keeps beam/column/wall/slab issue rows navigable for reports and AI agents instead of relying only on the broader `design-issues` blocker.
 
+2026-07-03 RC input/detail hardening: `detailRcBeam()` now uses the governing `max(AsY, AsZ)` value for both top and bottom longitudinal reinforcement schedule rows. `detailRcWall()` and `detailRcSlab()` now expose `inputReview` objects and mark invalid geometry/load input as `NG` with registered `KDS-RC-INPUT-GEOMETRY-V1` formula evidence. This prevents invalid wall/slab dimensions or zero design loads from being hidden behind fallback dimensions in reports or AI-agent review.
+
 2026-07-03 RC gate readiness hardening: `rcDesignGate.summary.readyForAgentReview` now follows `rcReview.status === "trace-ready"` instead of always returning true. Partial role coverage, WARN/NG design rows, missing formula traces, or unregistered formulas remain inspectable but cannot be treated as clean M17 evidence for automated M18/M19 handoff.
 
 ## P3-M18 Steel / Connection / Foundation Detailed Design

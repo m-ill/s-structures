@@ -7,8 +7,11 @@ export function detailRcWall(input = {}, options = {}) {
   const id = input.id || input.memberId || 'wall';
   const section = input.section || {};
   const material = input.material || {};
-  const width = Number(section.width || section.b || options.width || 3);
-  const thickness = Number(section.thickness || section.h || options.thickness || 0.2);
+  const widthInput = section.width ?? section.b ?? options.width ?? 3;
+  const thicknessInput = section.thickness ?? section.h ?? options.thickness ?? 0.2;
+  const inputReview = reviewWallInputs({ width: widthInput, thickness: thicknessInput, fc: material.fc ?? 24 });
+  const width = positive(widthInput, 3);
+  const thickness = positive(thicknessInput, 0.2);
   const area = width * thickness;
   const verticalRatio = Number(input.verticalRatio || options.verticalRatio || 0.0025);
   const horizontalRatio = Number(input.horizontalRatio || options.horizontalRatio || 0.0025);
@@ -27,7 +30,7 @@ export function detailRcWall(input = {}, options = {}) {
     },
     wallId: id,
     role: 'wall',
-    status: shearRatio > 1 ? 'NG' : boundary.required ? 'WARN' : 'OK',
+    status: inputReview.status === 'review-required' ? 'NG' : shearRatio > 1 ? 'NG' : boundary.required ? 'WARN' : 'OK',
     summary: {
       pmPointCount: pmCurve.points.length,
       shearRatio: round(shearRatio),
@@ -36,7 +39,9 @@ export function detailRcWall(input = {}, options = {}) {
       horizontalRatio,
       verticalLabel: vertical.label,
       horizontalLabel: horizontal.label,
+      inputStatus: inputReview.status,
     },
+    inputReview,
     pm: { curve: pmCurve, formulaId: 'KDS-RC-WALL-PM-V1' },
     shear: { ratio: round(shearRatio), horizontal, formulaId: 'KDS-RC-WALL-SHEAR-V1' },
     reinforcement: { verticalRatio, horizontalRatio, vertical, horizontal },
@@ -46,6 +51,24 @@ export function detailRcWall(input = {}, options = {}) {
 
 function axialRatio(input, pmCurve) {
   return Math.abs(Number(input.N || input.axial || 0)) / Math.max(1, pmCurve.points[0]?.axial || 1);
+}
+
+function reviewWallInputs(input = {}) {
+  const missing = [];
+  if (!(Number(input.width) > 0)) missing.push('wall-width');
+  if (!(Number(input.thickness) > 0)) missing.push('wall-thickness');
+  if (!(Number(input.fc) > 0)) missing.push('wall-concrete-strength');
+  return {
+    status: missing.length ? 'review-required' : 'available',
+    missing,
+    formulaId: 'KDS-RC-INPUT-GEOMETRY-V1',
+    agentDecision: missing.length ? 'review-rc-wall-inputs' : 'rc-wall-inputs-ready',
+  };
+}
+
+function positive(value, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number : fallback;
 }
 
 function round(value) {
