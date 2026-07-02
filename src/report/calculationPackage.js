@@ -190,7 +190,17 @@ export function renderCalculationPackageHtml(pkg) {
       ['Not checked count', d.phase3IntegratedResults.summary.notCheckedCount],
       ['Workflow locked', d.phase3IntegratedResults.summary.workflowLocked ? 'Yes' : 'No'],
       ['Nonlinear trace', d.phase3IntegratedResults.summary.nonlinearVersion],
+      ['Gate', d.phase3IntegratedResults.integratedGate?.ok ? 'OK' : 'Review'],
+      ['Benchmark evidence', d.phase3IntegratedResults.benchmarkEvidence?.ok ? 'OK' : 'Review'],
     ]) : '<div class="note">No Phase 3 integrated result package available.</div>'}
+    ${d.phase3IntegratedResults?.integratedGate ? table(['Gate item', 'Value'], [
+      ['Version', d.phase3IntegratedResults.integratedGate.version],
+      ['Tickets', d.phase3IntegratedResults.integratedGate.tickets.join(', ')],
+      ['Capacity points', d.phase3IntegratedResults.integratedGate.coverage.capacityPoints],
+      ['Nonlinear steps', d.phase3IntegratedResults.integratedGate.coverage.nonlinearStepRows],
+      ['Method limitations', d.phase3IntegratedResults.integratedGate.coverage.methodLimitations],
+      ['Approval state', d.phase3IntegratedResults.integratedGate.workflow.approvalState],
+    ]) : ''}
     ${d.phase3IntegratedResults ? table(['Module', 'Items', 'WARN', 'NG'], Object.entries(d.phase3IntegratedResults.design.modules || {}).map(([key, module]) => [
       key,
       module.summary?.itemCount || module.summary?.memberCount || 0,

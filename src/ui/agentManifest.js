@@ -96,7 +96,7 @@ import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../solver
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
-import { P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
+import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
@@ -144,6 +144,7 @@ export function buildAgentManifest(options = {}) {
       phase3DetailedDesignIntegration: P3_DETAILED_DESIGN_REPORT_VERSION,
       phase3DetailedDesignGate: P3_DETAILED_DESIGN_GATE_VERSION,
       phase3IntegratedResults: P3_INTEGRATED_RESULTS_VERSION,
+      phase3IntegratedResultsGate: P3_INTEGRATED_RESULTS_GATE_VERSION,
       steelDetailing: STEEL_DETAILING_VERSION,
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
       memberDesignTrace: MEMBER_DESIGN_TRACE_VERSION,
@@ -300,6 +301,7 @@ export function buildAgentManifest(options = {}) {
       'phase3DetailedDesignIntegration',
       'phase3DetailedDesignGate',
       'phase3IntegratedResults',
+      'phase3IntegratedResultsGate',
       'phase3LaunchReadiness',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',

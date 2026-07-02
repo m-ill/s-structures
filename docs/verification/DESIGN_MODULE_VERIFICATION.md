@@ -43,3 +43,5 @@ Scope follows `docs/phase3/ROADMAP.md` Stage F and `docs/phase3/IMPLEMENTATION_B
 | P3-T62 | Full benchmark and representative regression remains green | Full milestone runner |
 
 Current status is preliminary. M19 connects nonlinear trace, detailed-design trace, result postprocessing, and workflow lock state into the report/API contract.
+
+2026-07-02 review update: P3-M19 now exposes `integratedGate` with P3-T58, P3-T59, P3-T61, and P3-T62 coverage. The gate records result postprocessing coverage, nonlinear capacity/step rows, detailed-design issue rows, workflow lock state, method limitations, and benchmark evidence. Detailed HTML and calculation-package HTML now render the gate summary for agent and reviewer inspection.

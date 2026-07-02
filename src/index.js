@@ -168,7 +168,9 @@ export {
   revokeWorkflowApproval,
 } from './platform/workflowLock.js';
 export {
+  buildP3IntegratedResultsGate,
   buildP3IntegratedResults,
+  P3_INTEGRATED_RESULTS_GATE_VERSION,
   P3_INTEGRATED_RESULTS_VERSION,
 } from './results/p3IntegratedResults.js';
 export {

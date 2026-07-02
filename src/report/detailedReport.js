@@ -557,7 +557,17 @@ function renderPhase3Integrated(integrated) {
       ['Not checked count', integrated.summary.notCheckedCount],
       ['Workflow locked', integrated.summary.workflowLocked ? 'Yes' : 'No'],
       ['Nonlinear trace', integrated.summary.nonlinearVersion],
+      ['Gate', integrated.integratedGate?.ok ? 'OK' : 'Review'],
+      ['Benchmark evidence', integrated.benchmarkEvidence?.ok ? 'OK' : 'Review'],
     ]),
+    integrated.integratedGate ? renderTable(['Gate item', 'Value'], [
+      ['Version', integrated.integratedGate.version],
+      ['Tickets', integrated.integratedGate.tickets.join(', ')],
+      ['Capacity points', integrated.integratedGate.coverage.capacityPoints],
+      ['Nonlinear steps', integrated.integratedGate.coverage.nonlinearStepRows],
+      ['Method limitations', integrated.integratedGate.coverage.methodLimitations],
+      ['Approval state', integrated.integratedGate.workflow.approvalState],
+    ]) : '',
     renderTable(['Module', 'Items', 'WARN', 'NG'], Object.entries(integrated.design.modules || {}).map(([key, module]) => [
       key,
       module.summary?.itemCount || module.summary?.memberCount || 0,
