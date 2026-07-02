@@ -21,6 +21,7 @@ This note verifies P3-M8 against `docs/phase3/IMPORT_POINT_CLOUD_PLAN.md`.
 | Agent-readable import state | `summarizePointCloudImport()` returns counts, normalization, stages, viewer buffer, and warnings |
 | Stage-level audit rows | worker audit exposes parse/normalize/downsample/outlier input, output, and dropped counts |
 | Viewer buffer metadata | viewer output exposes typed-array names, byte counts, input/filtered counts, and z-filter state |
+| Origin shift trace | normalization audit exposes `bboxSize`, `originShift`, and `pointcloud-origin-shifted` warning for large-coordinate scans |
 
 ## Added Review Finding
 
@@ -32,6 +33,8 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 
 2026-07-02 contract update: `summarizePointCloudImport()` now exposes a P3-M8 `contract`, readiness flags, transferable viewer-buffer metadata, performance-budget targets, pending binary/LAS formats, and real-scan validation status. This keeps compact fixture readiness separate from large-field-file proof and prevents AI agents from treating P3-M8 as completed production scan validation.
 
+2026-07-02 origin-shift review: `normalizePointCloud()` now records `bboxSize` and `originShift`, the worker normalize stage carries the same trace, and `summarizePointCloudImport()` exposes it under `normalization`. Shifted field-coordinate scans now add `pointcloud-origin-shifted` so AI agents can distinguish a normal small fixture from a large-coordinate import that was moved near the local origin.
+
 ## Current Test Gate
 
 `tests/p3-pointcloud-load.mjs` verifies:
@@ -42,6 +45,7 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 4. Agent manifest data contract for point-cloud viewer buffer and import summary.
 5. Stage-level worker rows and typed viewer buffer metadata.
 6. P3-M8 contract tickets, transferable buffer readiness, performance-budget pending status, and real-scan pending status.
+7. Origin shift trace for large-coordinate point-cloud inputs.
 
 ## Remaining Limits
 

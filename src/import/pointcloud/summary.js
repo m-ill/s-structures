@@ -23,7 +23,9 @@ export function summarizePointCloudImport(input, options = {}) {
     },
     normalization: {
       bbox: audit.bbox || null,
+      bboxSize: audit.bboxSize || null,
       origin: audit.origin || null,
+      originShift: audit.originShift || null,
       scale: audit.scale ?? null,
     },
     loader: audit.loader || null,
@@ -86,6 +88,7 @@ function buildWarnings(audit, layer) {
   const warnings = [];
   if ((audit.rawCount ?? audit.inputCount ?? 0) === 0) warnings.push('pointcloud-empty-input');
   if (audit.scale && audit.scale !== 1) warnings.push('pointcloud-scale-inferred');
+  if (audit.originShift?.distance > 0) warnings.push('pointcloud-origin-shifted');
   if (layer.count === 0) warnings.push('pointcloud-view-filter-empty');
   return warnings;
 }

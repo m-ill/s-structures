@@ -36,6 +36,9 @@ assert.equal(processed.audit.stageRows[0].inputCount, 7);
 assert.equal(processed.audit.stageRows[0].outputCount, 7);
 assert.equal(processed.audit.stageRows[2].droppedCount, 3);
 assert.equal(processed.audit.stageRows[3].droppedCount, 1);
+assert.equal(processed.audit.bboxSize.x, 20);
+assert.equal(processed.audit.originShift.distance, 0);
+assert.equal(processed.audit.stageRows[1].originShift.distance, 0);
 
 const layer = buildPointCloudLayerData(processed.points, { zMin: -0.1, zMax: 3.1 });
 assert.equal(layer.count, 3);
@@ -56,6 +59,8 @@ assert.deepEqual(summary.contract.tickets, ['P3-T36', 'P3-T37', 'P3-T38', 'P3-T3
 assert.equal(summary.status, 'ready-for-review');
 assert.equal(summary.counts.raw, 7);
 assert.equal(summary.counts.viewer, 3);
+assert.equal(summary.normalization.bboxSize.x, 20);
+assert.equal(summary.normalization.originShift.distance, 0);
 assert.equal(summary.loader.format, 'xyz');
 assert.equal(summary.viewerBuffer.positionLength, 9);
 assert.equal(summary.viewerBuffer.metadata.positionType, 'Float32Array');
@@ -71,6 +76,19 @@ assert.equal(summary.readiness.viewerBufferReady, true);
 assert.equal(summary.readiness.largeFilePerformance, 'pending-large-fixture');
 assert.equal(summary.readiness.realScanValidation, 'pending-owner-file');
 assert.ok(summary.readiness.pendingFormats.includes('LAS'));
+assert.equal(summary.warnings.includes('pointcloud-origin-shifted'), false);
+
+const shiftedSummary = summarizePointCloudImport(shiftPointCloudText(xyz, { x: 5000, y: 7000, z: 0 }), {
+  voxelSize: 0.05,
+  outlier: { radius: 3.2, minNeighbors: 1 },
+  view: { zMin: -0.1, zMax: 3.1 },
+});
+assert.equal(shiftedSummary.normalization.origin.x, 5000);
+assert.equal(shiftedSummary.normalization.origin.y, 7000);
+assert.equal(shiftedSummary.normalization.originShift.vector.x, -5000);
+assert.equal(shiftedSummary.normalization.originShift.vector.y, -7000);
+assert.ok(shiftedSummary.normalization.originShift.distance > 8000);
+assert.ok(shiftedSummary.warnings.includes('pointcloud-origin-shifted'));
 const pipeline = describePointCloudPipeline();
 assert.equal(pipeline.status, 'available-core');
 assert.equal(pipeline.performanceBudget.preprocessing.targetPoints, 10000000);
@@ -80,3 +98,16 @@ assert.ok(buildAgentManifest().dataContracts.includes('phase3PointCloudViewerBuf
 assert.ok(buildAgentManifest().dataContracts.includes('phase3PointCloudImportSummary'));
 
 console.log(JSON.stringify({ ok: true, version: 'p3-pointcloud-load', points: layer.count }, null, 2));
+
+function shiftPointCloudText(text, delta) {
+  return String(text).split(/\r?\n/).map((line) => {
+    const values = line.trim().split(/\s+/).map(Number);
+    if (values.length < 3 || !values.slice(0, 3).every(Number.isFinite)) return line;
+    return [
+      values[0] + delta.x,
+      values[1] + delta.y,
+      values[2] + delta.z,
+      ...values.slice(3),
+    ].join(' ');
+  }).join('\n');
+}

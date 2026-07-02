@@ -42,6 +42,7 @@ function buildStageRows(loaded, normalized, downsampled, filtered) {
       outputCount: normalized.points?.length || 0,
       scale: normalized.audit?.scale ?? null,
       origin: normalized.audit?.origin || null,
+      originShift: normalized.audit?.originShift || null,
     },
     {
       id: 'voxel-downsample',
