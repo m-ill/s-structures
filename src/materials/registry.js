@@ -28,6 +28,8 @@ export function buildLibraryAudit(model = {}) {
   const sectionRefs = [...new Set((model.members || []).map((member) => member.secId).filter(Boolean))];
   const materials = model.materials || [];
   const sections = model.sections || [];
+  const resolvedMaterials = materialRefs.sort().map((ref) => resolvedRef(ref, resolveMaterialRecord(model, ref)));
+  const resolvedSections = sectionRefs.sort().map((ref) => resolvedRef(ref, resolveSectionRecord(model, ref)));
   return {
     version: MATERIAL_REGISTRY_VERSION,
     registryPolicy: {
@@ -44,9 +46,13 @@ export function buildLibraryAudit(model = {}) {
     softDeletedItems: [...deletedRows(materials, 'material'), ...deletedRows(sections, 'section')],
     appendOnlyWarnings: [...duplicateVersionWarnings(materials, 'material'), ...duplicateVersionWarnings(sections, 'section')],
     resolvedReferences: {
-      materials: materialRefs.sort().map((ref) => resolvedRef(ref, resolveMaterialRecord(model, ref))),
-      sections: sectionRefs.sort().map((ref) => resolvedRef(ref, resolveSectionRecord(model, ref))),
+      materials: resolvedMaterials,
+      sections: resolvedSections,
     },
+    softDeletedReferences: [
+      ...resolvedMaterials.filter((row) => row.deleted),
+      ...resolvedSections.filter((row) => row.deleted),
+    ],
     migrationWarnings: [...refs]
       .filter((ref) => parseVersionedId(ref).version == null)
       .map((ref) => `legacy-unversioned-reference:${ref}`),
@@ -61,11 +67,17 @@ function asVersioned(items = []) {
 }
 
 function selectVersion(items, version) {
+  if (version != null) {
+    const exact = items
+      .filter((item) => Number(item.version) === version)
+      .sort(scopePrioritySort);
+    const active = exact.find((item) => !item.deleted);
+    if (active) return active;
+    const deleted = exact[0];
+    return deleted ? { ...deleted, _softDeletedReference: true } : null;
+  }
   const rows = items.filter((item) => !item.deleted);
   if (!rows.length) return null;
-  if (version != null) return rows
-    .filter((item) => Number(item.version) === version)
-    .sort(scopePrioritySort)[0] || null;
   return rows.sort((a, b) => Number(b.version || 1) - Number(a.version || 1) || scopePrioritySort(a, b))[0];
 }
 
@@ -88,6 +100,8 @@ function resolvedRef(ref, record) {
     id: record?.id || null,
     version: record?.version || null,
     source: record?.source || null,
+    deleted: Boolean(record?.deleted),
+    referenceStatus: record?._softDeletedReference ? 'soft-deleted-traceable-reference' : record ? 'active' : 'unresolved',
   };
 }
 

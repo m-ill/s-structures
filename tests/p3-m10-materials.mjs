@@ -119,6 +119,8 @@ assert.deepEqual(libraryReport.materials.find((row) => row.label === 'USER_STEEL
   standard: null,
   db: null,
   note: null,
+  deleted: false,
+  referenceStatus: 'active',
 });
 assert.ok(libraryReport.sections.find((row) => row.label === 'USER_H@1').properties.A > 0);
 assert.equal(libraryReport.sections.find((row) => row.label === 'USER_H@1').sourceTrace.scope, 'project');
@@ -154,6 +156,7 @@ const builtinReport = buildMaterialLibraryReport({
 assert.equal(builtinReport.sections[0].sourceTrace.scope, 'builtin');
 assert.equal(builtinReport.sections[0].sourceTrace.db, 'KS-H-2024');
 assert.equal(builtinReport.sections[0].sourceTrace.resolvedLabel, 'H-400x200x8x13@1');
+assert.equal(builtinReport.sections[0].sourceTrace.referenceStatus, 'active');
 
 const legacyRefModel = createModel({
   materials: [
@@ -191,6 +194,32 @@ assert.equal(policyAudit.scopeSummary.project, 3);
 assert.deepEqual(policyAudit.softDeletedItems, [{ kind: 'material', id: 'SOFT_STEEL', version: 2, label: 'SOFT_STEEL@2' }]);
 assert.ok(policyAudit.appendOnlyWarnings.includes('material:duplicate-version:DUP_STEEL@1'));
 assert.equal(policyAudit.resolvedReferences.materials[0].resolved, 'SOFT_STEEL@1');
+const deletedExactAudit = buildLibraryAudit({
+  materials: [
+    { id: 'SOFT_STEEL', version: 1, E: 200000, G: 77000, Fy: 240, Fu: 400 },
+    { id: 'SOFT_STEEL', version: 2, E: 210000, G: 80000, Fy: 300, Fu: 450, deleted: true },
+  ],
+  sections: [
+    { id: 'SOFT_H', version: 1, A: 0.01, Iy: 1e-4, Iz: 2e-4 },
+    { id: 'SOFT_H', version: 2, A: 0.02, Iy: 2e-4, Iz: 3e-4, deleted: true },
+  ],
+  members: [{ id: 'M1', matId: 'SOFT_STEEL@2', secId: 'SOFT_H@2' }],
+});
+assert.equal(deletedExactAudit.resolvedReferences.materials[0].resolved, 'SOFT_STEEL@2');
+assert.equal(deletedExactAudit.resolvedReferences.materials[0].referenceStatus, 'soft-deleted-traceable-reference');
+assert.equal(deletedExactAudit.resolvedReferences.sections[0].resolved, 'SOFT_H@2');
+assert.equal(deletedExactAudit.resolvedReferences.sections[0].deleted, true);
+assert.equal(deletedExactAudit.softDeletedReferences.length, 2);
+const deletedExactReport = buildMaterialLibraryReport({
+  materials: deletedExactAudit.resolvedReferences.materials.map(() => (
+    { id: 'SOFT_STEEL', version: 2, E: 210000, G: 80000, Fy: 300, Fu: 450, deleted: true }
+  )),
+  sections: [{ id: 'SOFT_H', version: 2, A: 0.02, Iy: 2e-4, Iz: 3e-4, deleted: true }],
+  members: [{ id: 'M1', matId: 'SOFT_STEEL@2', secId: 'SOFT_H@2' }],
+});
+assert.equal(deletedExactReport.summary.softDeletedReferenceCount, 2);
+assert.ok(deletedExactReport.review.blockers.includes('soft-deleted-references-require-review'));
+assert.equal(deletedExactReport.materials[0].sourceTrace.referenceStatus, 'soft-deleted-traceable-reference');
 
 const directAudit = buildLibraryAudit({
   sections: [{

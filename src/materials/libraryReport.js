@@ -41,6 +41,7 @@ function buildSummary(audit, materialRefs, sectionRefs) {
     sectionWarningCount: audit.sectionWarnings.length,
     appendOnlyWarningCount: audit.appendOnlyWarnings.length,
     softDeletedCount: audit.softDeletedItems.length,
+    softDeletedReferenceCount: audit.softDeletedReferences.length,
   };
 }
 
@@ -49,6 +50,7 @@ function buildAuditSummary(audit) {
     registryPolicy: audit.registryPolicy,
     scopeSummary: audit.scopeSummary,
     softDeletedItems: audit.softDeletedItems,
+    softDeletedReferences: audit.softDeletedReferences,
     appendOnlyWarnings: audit.appendOnlyWarnings,
     migrationWarnings: audit.migrationWarnings,
   };
@@ -61,8 +63,10 @@ function summarizeBase(ref, record) {
     id: record?.id || null,
     version: record?.version || null,
     label,
+    deleted: Boolean(record?.deleted),
+    referenceStatus: record?._softDeletedReference ? 'soft-deleted-traceable-reference' : record ? 'active' : 'unresolved',
     source: record?.source || null,
-    sourceTrace: sourceTrace(ref, label, record?.source),
+    sourceTrace: sourceTrace(ref, label, record),
   };
 }
 
@@ -96,7 +100,8 @@ function summarizeSection(ref, record) {
   };
 }
 
-function sourceTrace(ref, label, source = {}) {
+function sourceTrace(ref, label, record = null) {
+  const source = record?.source || {};
   const scope = source?.scope || (source?.db ? 'builtin' : 'project');
   return {
     reference: ref,
@@ -105,6 +110,8 @@ function sourceTrace(ref, label, source = {}) {
     standard: source?.standard || null,
     db: source?.db || null,
     note: source?.note || null,
+    deleted: Boolean(record?.deleted),
+    referenceStatus: record?._softDeletedReference ? 'soft-deleted-traceable-reference' : record ? 'active' : 'unresolved',
   };
 }
 
@@ -114,6 +121,7 @@ function buildReview(summary, materials) {
   if (summary.sectionErrorCount > 0) blockers.push('section-schema-errors');
   if (summary.unversionedReferenceCount > 0) blockers.push('legacy-unversioned-references');
   if (summary.appendOnlyWarningCount > 0) blockers.push('append-only-policy-conflicts');
+  if (summary.softDeletedReferenceCount > 0) blockers.push('soft-deleted-references-require-review');
   const nonlinearBackboneReady = materials.every((row) => !row.nonlinear || row.nonlinear.backbonePoints >= 2);
   if (!nonlinearBackboneReady) blockers.push('nonlinear-backbone-incomplete');
   return {

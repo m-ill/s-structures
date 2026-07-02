@@ -55,13 +55,15 @@ The material library report also exposes nonlinear backbone metadata so the late
 
 2026-07-03 scope-priority hardening: registry resolution now sorts same-version candidates by scope priority, so project records override global records even when the global row appears first in the model array. `tests/p3-m10-materials.mjs` locks both material and section `project > global > builtin` behavior.
 
+2026-07-03 soft-delete trace hardening: exact `id@version` references to soft-deleted material or section rows now resolve as traceable existing-model references instead of silently falling back to another active version. Unversioned references still skip deleted rows. Audit/report rows expose `deleted`, `referenceStatus`, `softDeletedReferences`, and `softDeletedReferenceCount`; reports add `soft-deleted-references-require-review` so AI agents can distinguish historical traceability from approval for new final-use models.
+
 ## Current Test Gate
 
 P3-M10 is covered by:
 
 | Test | Coverage |
 | --- | --- |
-| `tests/p3-m10-materials.mjs` | schema validation, registry resolution, legacy reference migration warning, registry policy trace, soft-delete audit, nonlinear report summary, library edit actions, server storage round-trip |
+| `tests/p3-m10-materials.mjs` | schema validation, registry resolution, legacy reference migration warning, registry policy trace, soft-delete audit and exact-version traceability, nonlinear report summary, library edit actions, server storage round-trip |
 | `tests/p3-section-properties.mjs` | parametric H-section property comparison with KS seed data |
 
 ## Remaining Limits
