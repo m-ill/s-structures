@@ -12,7 +12,7 @@ export function registerFileRoutes(router, ctx) {
   router.post('/api/projects/:id/files', async (req, res, params) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
     await requireProjectRole(ctx, params.id, user.id, 'engineer');
-    const originalName = req.headers['x-file-name'] ? decodeURIComponent(req.headers['x-file-name']) : 'upload';
+    const originalName = readUploadFileName(req.headers['x-file-name']);
     const contentType = req.headers['content-type'] || 'application/octet-stream';
     const buffer = await readRawBody(req, ctx.config.maxUploadBytes);
     if (!buffer.length) throw new ApiError(400, 'VALIDATION', 'Upload body is empty.');
@@ -44,4 +44,19 @@ export function registerFileRoutes(router, ctx) {
     if (!deleted) throw new ApiError(404, 'NOT_FOUND', 'File not found.');
     return ok({ deleted: true });
   });
+}
+
+function readUploadFileName(value) {
+  if (!value) return 'upload';
+  let decoded;
+  try {
+    decoded = decodeURIComponent(String(value));
+  } catch {
+    throw new ApiError(400, 'BAD_URI', 'Upload file name contains invalid percent encoding.');
+  }
+  const name = decoded.trim();
+  if (!name || name.length > 240 || /[/\\\0-\x1f\x7f]/.test(name)) {
+    throw new ApiError(400, 'VALIDATION', 'Upload file name is not valid.');
+  }
+  return name;
 }

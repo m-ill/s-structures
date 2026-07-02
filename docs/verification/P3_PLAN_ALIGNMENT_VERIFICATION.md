@@ -60,6 +60,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 
 2026-07-02 server route contract update: `tests/p3-server-route-contract.mjs` now scans `server/main.mjs` and `server/routes/*.mjs` route declarations and compares them with `buildPhase3PlanAlignmentReport().serverApi.endpoints`. This prevents Phase 3 API documentation from passing while the implemented server exposes a different route set.
 
+2026-07-03 upload filename hardening: `server/routes/files.mjs` now validates `x-file-name` before saving uploaded drawing or point-cloud files. Invalid percent encoding returns `BAD_URI`, and path-like, control-character, empty, or overlong names return `VALIDATION`, while storage still uses `<fileId>.<ext>` to preserve the traversal block required by `SERVER_API_PLAN.md`.
+
 2026-07-02 review-gate alignment update: `buildPhase3PlanAlignmentReport()` now exposes `reviewGates` for P3-M14 to P3-M20. The rows verify that each agent review path is present and that final approval fields remain separate from next-step readiness decisions.
 
 2026-07-03 productization contract update: agent contracts now expose `getPhase3ProductizationMilestoneReview` and `phase3ProductizationMilestoneReview` for P3-M19 to P3-M20. This mirrors the import, elastic, nonlinear, and design milestone review APIs and keeps Stage F owner approval fields explicit.

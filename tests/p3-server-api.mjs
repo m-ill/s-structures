@@ -111,6 +111,18 @@ try {
   });
   assert.equal(rejectedExt.status, 400);
 
+  const badEncodedName = await app.api('POST', `/api/projects/${projectId}/files`, {
+    token, raw: 'nope', headers: { 'x-file-name': '%E0%A4%A' },
+  });
+  assert.equal(badEncodedName.status, 400);
+  assert.equal(badEncodedName.data.error.code, 'BAD_URI');
+
+  const pathLikeName = await app.api('POST', `/api/projects/${projectId}/files`, {
+    token, raw: 'nope', headers: { 'x-file-name': '..%2Fplan.dxf' },
+  });
+  assert.equal(pathLikeName.status, 400);
+  assert.equal(pathLikeName.data.error.code, 'VALIDATION');
+
   const download = await app.api('GET', `/api/projects/${projectId}/files/${fileId}`, { token });
   assert.equal(download.status, 200);
 
