@@ -49,12 +49,25 @@ const layerMap = {
   'S-COL': { kind: 'column', section: 'H300', material: 'SS275' },
   'S-BEAM': { kind: 'beam', section: 'H300', material: 'SS275' },
 };
-const story1 = recognizePlanDxf(readFileSync('tests/fixtures/dxf/plan-story-1.dxf', 'utf8'), { storyId: '1F', elevation: 0, layerMap });
-const story2 = recognizePlanDxf(readFileSync('tests/fixtures/dxf/plan-story-2.dxf', 'utf8'), { storyId: '2F', elevation: 3, layerMap });
+const story1 = recognizePlanDxf(readFileSync('tests/fixtures/dxf/plan-story-1.dxf', 'utf8'), {
+  storyId: '1F',
+  elevation: 0,
+  layerMap,
+  expected: { columns: 2, beams: 1 },
+});
+const story2 = recognizePlanDxf(readFileSync('tests/fixtures/dxf/plan-story-2.dxf', 'utf8'), {
+  storyId: '2F',
+  elevation: 3,
+  layerMap,
+  expected: { columns: 2, beams: 1 },
+});
 assert.equal(story1.version, DXF_PLAN_RECOGNITION_VERSION);
 assert.equal(story1.columns.length, 2);
 assert.equal(story1.beams.length, 1);
 assert.equal(story1.texts[0].text, '1F');
+assert.equal(story1.audit.recognitionQuality.recall.columns, 1);
+assert.equal(story1.audit.recognitionQuality.recall.beams, 1);
+assert.equal(story1.audit.recognitionQuality.ok, true);
 assert.equal(story2.columns[0].z, 3);
 
 const candidate = assemblePlansToImportCandidate([story2, story1], {
@@ -66,6 +79,9 @@ assert.equal(candidate.import.version, PLAN_ASSEMBLY_VERSION);
 assert.equal(validateImportCandidate(candidate).ok, true);
 assert.equal(candidate.audit.planAssembly.planCount, 2);
 assert.equal(candidate.audit.planAssembly.columnStackCount, 2);
+assert.equal(candidate.audit.planAssembly.recognitionQuality.minColumnRecall, 1);
+assert.equal(candidate.audit.planAssembly.recognitionQuality.minBeamRecall, 1);
+assert.equal(candidate.audit.planAssembly.recognitionQuality.ok, true);
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'column').length, 2);
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'beam').length, 2);
 assert.deepEqual(candidate.candidates.stories.map((story) => story.z), [0, 3]);
@@ -76,6 +92,22 @@ assert.equal(reviewSummary.review.requiresHumanReview, true);
 assert.equal(reviewSummary.review.sourceType, 'dxf-plan-assembly');
 assert.equal(reviewSummary.review.planAssembly.planCount, 2);
 assert.equal(reviewSummary.review.planAssembly.columnStackCount, 2);
+assert.equal(reviewSummary.review.planAssembly.recognitionQuality.ok, true);
+
+const weakStory = recognizePlanDxf(readFileSync('tests/fixtures/dxf/plan-story-1.dxf', 'utf8'), {
+  storyId: 'weak',
+  elevation: 0,
+  layerMap,
+  expected: { columns: 4, beams: 2 },
+});
+const weakCandidate = assemblePlansToImportCandidate([weakStory, story2], {
+  tolerance: 1e-6,
+  minLength: 1e-4,
+  source: { type: 'dxf-plan-assembly', units: 'm', fileId: 'weak-plan' },
+});
+const weakReview = summarizeImportEntry({ id: 'weak-plan-import', status: 'pending', candidate: weakCandidate });
+assert.equal(weakCandidate.audit.planAssembly.recognitionQuality.ok, false);
+assert.ok(weakReview.review.reasons.includes('plan-recognition-quality-review-required'));
 
 console.log(JSON.stringify({
   ok: true,

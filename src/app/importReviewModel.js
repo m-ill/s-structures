@@ -57,6 +57,7 @@ function buildReviewState(entry, candidate, validation, warnings) {
   if (layers?.unmappedEntityCount > 0) reasons.push('unmapped-layer-review-required');
   const planAssembly = candidate?.audit?.planAssembly || entry.audit?.planAssembly || null;
   if (planAssembly && planAssembly.planCount < 2) reasons.push('single-plan-assembly-review-required');
+  if (planAssembly?.recognitionQuality?.ok === false) reasons.push('plan-recognition-quality-review-required');
   return {
     confirmable: reasons.length === 0,
     requiresHumanReview: warnings.length > 0 || reasons.length > 0 || status === 'pending',
@@ -73,6 +74,7 @@ function buildReviewState(entry, candidate, validation, warnings) {
       planCount: planAssembly.planCount || 0,
       columnStackCount: planAssembly.columnStackCount || 0,
       generatedSegmentCount: planAssembly.generatedSegmentCount || 0,
+      recognitionQuality: planAssembly.recognitionQuality || null,
     } : null,
   };
 }

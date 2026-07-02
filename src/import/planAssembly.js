@@ -51,6 +51,7 @@ export function assemblePlansToImportCandidate(plans = [], options = {}) {
       planCount: ordered.length,
       columnStackCount: columnKeys.size,
       generatedSegmentCount: segments.length,
+      recognitionQuality: summarizeRecognitionQuality(ordered),
     },
   };
   return candidate;
@@ -59,4 +60,20 @@ export function assemblePlansToImportCandidate(plans = [], options = {}) {
 function pointKey(point, tolerance) {
   const scale = 1 / Math.max(tolerance, 1e-12);
   return `${Math.round(point.x * scale)}:${Math.round(point.y * scale)}`;
+}
+
+function summarizeRecognitionQuality(plans) {
+  const rows = plans
+    .map((plan) => plan.audit?.recognitionQuality)
+    .filter(Boolean);
+  if (!rows.length) return null;
+  const columnRecalls = rows.map((row) => row.recall?.columns).filter(Number.isFinite);
+  const beamRecalls = rows.map((row) => row.recall?.beams).filter(Number.isFinite);
+  return {
+    planCount: rows.length,
+    minColumnRecall: columnRecalls.length ? Math.min(...columnRecalls) : null,
+    minBeamRecall: beamRecalls.length ? Math.min(...beamRecalls) : null,
+    targets: rows[0].targets || { columnRecall: 0.9, beamRecall: 0.8 },
+    ok: rows.every((row) => row.ok !== false),
+  };
 }

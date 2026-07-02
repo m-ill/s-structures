@@ -15,6 +15,7 @@ export function recognizePlanDxf(text, options = {}) {
   const beams = geometry.segments
     .map((segment, index) => beamCandidate(segment, index, layerRules, elevation))
     .filter(Boolean);
+  const recognitionQuality = buildRecognitionQuality(columns, beams, options.expected || {});
   return {
     version: DXF_PLAN_RECOGNITION_VERSION,
     storyId: options.storyId || `ST${elevation}`,
@@ -33,6 +34,7 @@ export function recognizePlanDxf(text, options = {}) {
       },
       ignored: geometry.audit.ignored,
       layers: [...new Set([...columns.map((item) => item.layer), ...beams.map((item) => item.layer)].filter(Boolean))].sort(),
+      recognitionQuality,
     },
   };
 }
@@ -83,4 +85,29 @@ function inferLayer(layer = '') {
   if (/(BRC|BRACE)/.test(text)) return { kind: 'brace' };
   if (/(BEAM|GIR|B-)/.test(text)) return { kind: 'beam' };
   return {};
+}
+
+function buildRecognitionQuality(columns, beams, expected = {}) {
+  const expectedColumns = Number(expected.columns || 0);
+  const expectedBeams = Number(expected.beams || 0);
+  const columnRecall = expectedColumns > 0 ? Math.min(1, columns.length / expectedColumns) : null;
+  const beamRecall = expectedBeams > 0 ? Math.min(1, beams.length / expectedBeams) : null;
+  const targets = { columnRecall: 0.9, beamRecall: 0.8 };
+  return {
+    expected: {
+      columns: expectedColumns || null,
+      beams: expectedBeams || null,
+    },
+    actual: {
+      columns: columns.length,
+      beams: beams.length,
+    },
+    recall: {
+      columns: columnRecall,
+      beams: beamRecall,
+    },
+    targets,
+    ok: (columnRecall == null || columnRecall >= targets.columnRecall) &&
+      (beamRecall == null || beamRecall >= targets.beamRecall),
+  };
 }

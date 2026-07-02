@@ -20,6 +20,7 @@ This note verifies P3-M7 against `docs/phase3/IMPORT_DXF_DWG_PLAN.md` and `docs/
 | Two-story assembly | `src/import/planAssembly.js` stacks columns and beams into a valid `ImportCandidate` |
 | Import review UI core | `src/app/views/importReview.js`, `tests/p3-m7-import-review-ui.mjs` |
 | Agent-readable review state | `summarizeImportEntry()` now returns source, counts, layer audit, plan assembly, confirmable state, and review reasons |
+| Plan recognition quality trace | `recognitionQuality` records expected/actual column and beam counts, recall, targets, and review status |
 
 ## Added Review Finding
 
@@ -32,6 +33,8 @@ The import review model previously showed only generic candidate counts and warn
 5. `review.planAssembly`
 
 2026-07-02 review update: The DWG adapter now exposes a non-executing command plan with target DXF path and failure envelope. This keeps the proprietary-format conversion step explicit, reviewable, and controllable by AI agents without pretending that a local converter is always installed.
+
+2026-07-02 follow-up: Plan recognition now exposes fixture-quality recall traces. `recognizePlanDxf()` records expected/actual column and beam counts, recall, and target thresholds, `assemblePlansToImportCandidate()` carries the minimum recall into the candidate audit, and `summarizeImportEntry()` flags `plan-recognition-quality-review-required` when the recognition quality falls below the documented P3-M7 gate.
 
 ## Current Test Gate
 
