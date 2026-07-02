@@ -93,6 +93,13 @@ assert.ok(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T67
 assert.equal(launch.status, 'OK');
 assert.equal(launch.summary.total, 14);
 assert.equal(launch.summary.reviewCount, 0);
+assert.equal(launch.summary.ownerReviewReady, true);
+assert.equal(launch.summary.productionDeploymentApproved, false);
+assert.equal(launch.summary.productionReadinessStatus, 'OWNER_REVIEW_REQUIRED');
+assert.equal(launch.productionReadiness.status, 'OWNER_REVIEW_REQUIRED');
+assert.equal(launch.productionReadiness.ownerReviewReady, true);
+assert.equal(launch.productionReadiness.productionDeploymentApproved, false);
+assert.equal(launch.productionReadiness.agentDecision, 'wait-for-owner-release-signoff');
 assert.equal(launch.packaging.smoke, true);
 assert.equal(launch.license.status, 'RECORDED');
 
@@ -101,6 +108,7 @@ const runtimeCapabilities = agent.getCapabilities();
 const agentLaunch = agent.getLaunchReadinessReport(evidence);
 assert.equal(agentLaunch.version, LAUNCH_READINESS_VERSION);
 assert.equal(agentLaunch.status, 'OK');
+assert.equal(agentLaunch.productionReadiness.status, 'OWNER_REVIEW_REQUIRED');
 assert.equal(runtimeCapabilities.modules.phase3LaunchReadiness, LAUNCH_READINESS_VERSION);
 assert.equal(runtimeCapabilities.modules.phase3LaunchReadinessGate, LAUNCH_READINESS_GATE_VERSION);
 assert.deepEqual(runtimeCapabilities.reviewGates, manifest.reviewGates);

@@ -18,16 +18,21 @@ export function buildLaunchReadinessReport(evidence = {}) {
     gate('G13', 'Design module verification', evidence.designVerificationRecorded === true, 'RC, steel, connection, and foundation verification record exists.'),
     gate('G14', 'Calculation package completeness', evidence.notCheckedCount === 0 && evidence.calculationTraceConnected === true, 'Default calculation package has no not-checked chapter and includes trace/limitations.'),
   ];
+  const releaseGate = buildLaunchReadinessGate(gates, evidence);
   return {
     version: LAUNCH_READINESS_VERSION,
-    releaseGate: buildLaunchReadinessGate(gates, evidence),
+    releaseGate,
     status: gates.every((item) => item.status === 'OK') ? 'OK' : 'REVIEW',
     gates,
     summary: {
       okCount: gates.filter((item) => item.status === 'OK').length,
       reviewCount: gates.filter((item) => item.status !== 'OK').length,
       total: gates.length,
+      ownerReviewReady: releaseGate.releaseReview.status === 'owner-review-ready',
+      productionDeploymentApproved: releaseGate.releaseReview.productionDeploymentApproved === true,
+      productionReadinessStatus: releaseGate.releaseReview.productionDeploymentApproved === true ? 'PRODUCTION_APPROVED' : 'OWNER_REVIEW_REQUIRED',
     },
+    productionReadiness: buildProductionReadinessSummary(releaseGate),
     packaging: buildPackagingReadiness(evidence),
     license: buildLicenseReadiness(evidence),
   };
@@ -107,6 +112,22 @@ function buildReleaseReview({ gates, evidence, coverage, ticketCoverage }) {
     pilotReportCount: evidence.pilotReports?.count || 0,
     missing,
     agentDecision: missing.length ? 'hold-before-release' : 'ready-for-owner-release-signoff',
+  };
+}
+
+function buildProductionReadinessSummary(releaseGate) {
+  const review = releaseGate.releaseReview || {};
+  return {
+    version: LAUNCH_READINESS_VERSION,
+    status: review.productionDeploymentApproved === true ? 'PRODUCTION_APPROVED' : 'OWNER_REVIEW_REQUIRED',
+    ownerReviewReady: review.status === 'owner-review-ready',
+    productionDeploymentApproved: review.productionDeploymentApproved === true,
+    ownerFinalSignoff: review.ownerFinalSignoff === true,
+    openSourcePolicyFinalized: review.openSourcePolicyFinalized === true,
+    deploymentTargetFinalized: review.deploymentTargetFinalized === true,
+    pilotFeedbackOwnerAccepted: review.pilotFeedbackOwnerAccepted === true,
+    backupRestoreOwnerAccepted: review.backupRestoreOwnerAccepted === true,
+    agentDecision: review.productionDeploymentApproved === true ? 'release-approved' : 'wait-for-owner-release-signoff',
   };
 }
 

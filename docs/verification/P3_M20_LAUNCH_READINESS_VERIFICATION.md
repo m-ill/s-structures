@@ -35,9 +35,11 @@ The gate records:
 
 2026-07-02 release maturity review update: `releaseGate` now exposes `contract.maturity` and `releaseReview`. The review records owner-review readiness separately from production deployment approval, open-source policy finalization, deployment target finalization, pilot feedback acceptance, and backup/restore owner acceptance. A clean gate returns `ready-for-owner-release-signoff`, not final release approval.
 
+2026-07-02 production-readiness review update: the launch report now also exposes top-level `productionReadiness` and summary fields. `status: OK` means launch evidence gates are green; `productionReadiness.status` remains `OWNER_REVIEW_REQUIRED` until owner sign-off and production deployment approval are explicitly recorded.
+
 ## Current Test Gate
 
-`tests/p3-launch-gate.mjs` verifies launch report status, G1 to G14 pass count, release-gate ticket coverage, packaging smoke evidence, license evidence, manual/agent-contract evidence, ten pilot reports, agent API exposure, and manifest data-contract exposure.
+`tests/p3-launch-gate.mjs` verifies launch report status, G1 to G14 pass count, release-gate ticket coverage, top-level production-readiness separation, packaging smoke evidence, license evidence, manual/agent-contract evidence, ten pilot reports, agent API exposure, and manifest data-contract exposure.
 
 ## Remaining Limits
 
