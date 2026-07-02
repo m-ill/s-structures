@@ -144,9 +144,11 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
 
     const a = model.nodes.find((node) => node.id === member.n1);
     const b = model.nodes.find((node) => node.id === member.n2);
-    if (Math.hypot(b.x - a.x, b.y - a.y, (b.z || 0) - (a.z || 0)) < 1e-9) {
+    const length = Math.hypot(b.x - a.x, b.y - a.y, (b.z || 0) - (a.z || 0));
+    if (length < 1e-9) {
       error(ERROR_CODES.ZERO_LENGTH_MEMBER, 'Member length is zero.', member.id);
     }
+    validateMemberOffset(member, length, error);
 
     if (!member.secId || !sectionIds.has(member.secId)) error(ERROR_CODES.NO_SECTION, `Missing section: ${member.secId}`, member.id);
     else {
@@ -179,6 +181,23 @@ function validateMemberReleases(member, error) {
   }
   for (const [field, end] of [['rel1', 'i'], ['rel2', 'j']]) {
     if (member[field] != null && !RELEASE_TYPES.has(member[field])) error(ERROR_CODES.BAD_RELEASE_TYPE, `Unsupported ${end}-end release: ${member[field]}`, member.id);
+  }
+}
+
+function validateMemberOffset(member, length, error) {
+  if (!member.endOffset) return;
+  const i = Number(member.endOffset.i || 0);
+  const j = Number(member.endOffset.j || 0);
+  const rigidFactor = Number(member.endOffset.rigidFactor ?? 1);
+  if (!Number.isFinite(i) || !Number.isFinite(j) || i < 0 || j < 0) {
+    error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member end offsets must be finite nonnegative lengths.', member.id);
+    return;
+  }
+  if (!Number.isFinite(rigidFactor) || rigidFactor <= 0) {
+    error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member offset rigidFactor must be positive when provided.', member.id);
+  }
+  if (Number.isFinite(length) && length > 0 && i + j >= length) {
+    error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member end offsets must leave positive clear length.', member.id);
   }
 }
 

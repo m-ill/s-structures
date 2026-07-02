@@ -214,6 +214,7 @@ const cantilever = createModel({
 const clearSpan = createModel({ ...cantilever, members: [{ ...cantilever.members[0], endOffset: { i: 0.5, j: 0.5 } }] });
 const cantileverResult = analyzeModel(cantilever);
 const clearSpanResult = analyzeModel(clearSpan);
+assert.equal(validateModel(clearSpan).ok, true);
 assert.equal(clearSpanResult.ok, true);
 const clearTrace = expandAdvancedLoads(clearSpan.loads, clearSpan).trace;
 assert.equal(clearTrace.features.memberOffsets, 1);
@@ -227,11 +228,25 @@ const invalidOffsetModel = createModel({
   ...cantilever,
   members: [{ ...cantilever.members[0], endOffset: { i: 2.5, j: 2 } }],
 });
+const invalidOffsetValidation = validateModel(invalidOffsetModel);
+assert.equal(invalidOffsetValidation.ok, false);
+assert.ok(invalidOffsetValidation.errors.some((item) => item.code === 'BAD_MEMBER_OFFSET'));
 const invalidOffsetTrace = expandAdvancedLoads(invalidOffsetModel.loads, invalidOffsetModel).trace;
 assert.equal(invalidOffsetTrace.memberTrace[0].clearLength, 0);
 assert.ok(invalidOffsetTrace.warnings.some((warning) => warning.code === 'MEMBER_OFFSET_CLEAR_LENGTH_ZERO'));
 assert.ok(invalidOffsetTrace.review.blockers.includes('member-offset-clear-length-invalid'));
 assert.equal(invalidOffsetTrace.review.traceReady, false);
 assert.equal(invalidOffsetTrace.review.agentDecision, 'fix-elastic-expansion-trace-before-review');
+
+const negativeOffsetModel = createModel({
+  ...cantilever,
+  members: [{ ...cantilever.members[0], endOffset: { i: -0.1, j: 0, rigidFactor: 1 } }],
+});
+assert.ok(validateModel(negativeOffsetModel).errors.some((item) => item.code === 'BAD_MEMBER_OFFSET'));
+const badRigidFactorModel = createModel({
+  ...cantilever,
+  members: [{ ...cantilever.members[0], endOffset: { i: 0.1, j: 0, rigidFactor: 0 } }],
+});
+assert.ok(validateModel(badRigidFactorModel).errors.some((item) => item.code === 'BAD_MEMBER_OFFSET'));
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m11-elastic-expansion' }, null, 2));
