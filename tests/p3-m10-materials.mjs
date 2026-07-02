@@ -84,6 +84,13 @@ assert.equal(libraryReport.summary.materialReferenceCount, 1);
 assert.equal(libraryReport.summary.sectionReferenceCount, 1);
 assert.equal(libraryReport.summary.unversionedReferenceCount, 0);
 assert.equal(libraryReport.auditSummary.registryPolicy.editRule, 'append-only-new-version');
+assert.equal(libraryReport.review.registryReady, true);
+assert.equal(libraryReport.review.calculationTraceReady, true);
+assert.equal(libraryReport.review.nonlinearBackboneReady, true);
+assert.equal(libraryReport.review.ownerPolicyReviewRequired, true);
+assert.equal(libraryReport.review.productionReady, false);
+assert.deepEqual(libraryReport.review.blockers, []);
+assert.equal(libraryReport.review.agentDecision, 'material-library-ready-for-engineering-review');
 assert.ok(libraryReport.materials.some((row) => row.label === 'USER_STEEL@2'));
 assert.equal(libraryReport.materials.find((row) => row.label === 'USER_STEEL@2').nonlinear.model, 'bilinear');
 assert.deepEqual(libraryReport.materials.find((row) => row.label === 'USER_STEEL@2').sourceTrace, {
@@ -128,6 +135,10 @@ assert.equal(legacyAudit.resolvedReferences.sections[0].resolved, 'LEGACY_H@2');
 const legacyReport = buildMaterialLibraryReport(legacyRefModel);
 assert.equal(legacyReport.summary.unversionedReferenceCount, 2);
 assert.equal(legacyReport.summary.migrationWarningCount, 2);
+assert.equal(legacyReport.review.registryReady, false);
+assert.equal(legacyReport.review.calculationTraceReady, false);
+assert.ok(legacyReport.review.blockers.includes('legacy-unversioned-references'));
+assert.equal(legacyReport.review.agentDecision, 'fix-material-library-before-analysis');
 
 const policyAudit = buildLibraryAudit({
   materials: [
@@ -151,6 +162,14 @@ const directAudit = buildLibraryAudit({
   }],
 });
 assert.ok(directAudit.sectionWarnings.some((warning) => warning.includes('DIRECT_WARN:properties.ry-inconsistent')));
+const directReport = buildMaterialLibraryReport({
+  sections: [{
+    id: 'DIRECT_WARN', version: 1, kind: 'direct', shape: 'CUSTOM',
+    properties: { A: 0.02, Iy: 2e-4, Iz: 1e-4, ry: 0.5, rz: 0.01 },
+  }],
+  members: [{ id: 'M1', matId: 'steel@1', secId: 'DIRECT_WARN@1' }],
+});
+assert.equal(directReport.review.sectionPropertyReviewRequired, true);
 
 assert.equal(MATERIAL_LIBRARY_EDIT_VERSION, 'p3-m10-library-edit-v1');
 assert.deepEqual(MATERIAL_LIBRARY_ACTIONS, ['listLibrary', 'getLibraryItem', 'upsertMaterial', 'upsertSection']);

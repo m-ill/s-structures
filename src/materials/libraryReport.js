@@ -6,13 +6,17 @@ export function buildMaterialLibraryReport(model = {}) {
   const materialRefs = new Set((model.members || []).map((m) => m.matId).filter(Boolean));
   const sectionRefs = new Set((model.members || []).map((m) => m.secId).filter(Boolean));
   const audit = buildLibraryAudit(model);
+  const materials = [...materialRefs].sort().map((ref) => summarizeMaterial(ref, resolveMaterialRecord(model, ref)));
+  const sections = [...sectionRefs].sort().map((ref) => summarizeSection(ref, resolveSectionRecord(model, ref)));
+  const summary = buildSummary(audit, materialRefs, sectionRefs);
   return {
     version: MATERIAL_LIBRARY_REPORT_VERSION,
     contract: buildReportContract(),
-    summary: buildSummary(audit, materialRefs, sectionRefs),
+    summary,
     auditSummary: buildAuditSummary(audit),
-    materials: [...materialRefs].sort().map((ref) => summarizeMaterial(ref, resolveMaterialRecord(model, ref))),
-    sections: [...sectionRefs].sort().map((ref) => summarizeSection(ref, resolveSectionRecord(model, ref))),
+    review: buildReview(summary, materials),
+    materials,
+    sections,
   };
 }
 
@@ -101,5 +105,27 @@ function sourceTrace(ref, label, source = {}) {
     standard: source?.standard || null,
     db: source?.db || null,
     note: source?.note || null,
+  };
+}
+
+function buildReview(summary, materials) {
+  const blockers = [];
+  if (summary.materialErrorCount > 0) blockers.push('material-schema-errors');
+  if (summary.sectionErrorCount > 0) blockers.push('section-schema-errors');
+  if (summary.unversionedReferenceCount > 0) blockers.push('legacy-unversioned-references');
+  if (summary.appendOnlyWarningCount > 0) blockers.push('append-only-policy-conflicts');
+  const nonlinearBackboneReady = materials.every((row) => !row.nonlinear || row.nonlinear.backbonePoints >= 2);
+  if (!nonlinearBackboneReady) blockers.push('nonlinear-backbone-incomplete');
+  return {
+    registryReady: blockers.length === 0,
+    calculationTraceReady: summary.unversionedReferenceCount === 0,
+    nonlinearBackboneReady,
+    sectionPropertyReviewRequired: summary.sectionWarningCount > 0,
+    ownerPolicyReviewRequired: true,
+    productionReady: false,
+    blockers,
+    agentDecision: blockers.length
+      ? 'fix-material-library-before-analysis'
+      : 'material-library-ready-for-engineering-review',
   };
 }
