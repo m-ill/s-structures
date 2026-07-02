@@ -106,6 +106,19 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
     version: NONLINEAR_FIBER_NLTH_TRACE_VERSION,
     milestone: 'P3-M16',
     tickets: ['P3-T83', 'P3-T84', 'P3-T85', 'P3-T86'],
+    contract: {
+      milestone: 'P3-M16',
+      tickets: ['P3-T83', 'P3-T84', 'P3-T85', 'P3-T86'],
+      scope: 'Nonlinear fiber and NLTH v3 trace for PMM hinges, fiber section response, Newmark NLTH, Rayleigh damping, and ground-motion scaling.',
+      featureTicketMap: {
+        pmmHinge: 'P3-T83',
+        fiberMomentCurvature: 'P3-T84',
+        nlthNewmarkRayleigh: 'P3-T85',
+        groundMotionScaling: 'P3-T86',
+      },
+      reviewFields: ['summary.ticketCoverage', 'pmm', 'fiber', 'dynamics', 'benchmarks.cases'],
+      agentUse: 'Read-only gate for reports and AI-agent inspection of fiber/NLTH trace readiness.',
+    },
     contracts: {
       pmmHinge: PMM_HINGE_VERSION,
       fiberSection: FIBER_SECTION_VERSION,
@@ -124,6 +137,7 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       nlthConverged: trace.nlth?.converged ?? null,
       nlthYielded: (trace.nlth?.rows || []).some((row) => row.hingeState === 'yielded'),
       requiredBenchmarks: ['B6', 'B7', 'B8'],
+      ticketCoverage: buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }),
     },
     pmm: {
       axialRatio: trace.pmm?.interpolated?.axialRatio ?? null,
@@ -176,6 +190,39 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       'Soil-structure interaction and final production seismic qualification remain outside this trace gate.',
     ],
   };
+}
+
+function buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }) {
+  const cases = fiberNlthBenchmarks?.cases || [];
+  return [
+    {
+      ticket: 'P3-T83',
+      scope: 'PMM interaction hinge interpolation',
+      covered: (trace.pmm?.interpolated?.points?.length || 0) > 0,
+      evidence: `${trace.pmm?.interpolated?.points?.length || 0} PMM points, source=${(trace.pmm?.interpolated?.source || []).join('-') || 'default'}`,
+    },
+    {
+      ticket: 'P3-T84',
+      scope: 'fiber section and moment-curvature trace',
+      covered: (trace.fiber?.section?.fibers?.length || 0) > 0 && (trace.fiber?.momentCurvature?.rows?.length || 0) > 0,
+      evidence: `${trace.fiber?.section?.fibers?.length || 0} fibers, ${trace.fiber?.momentCurvature?.rows?.length || 0} curvature rows`,
+    },
+    {
+      ticket: 'P3-T85',
+      scope: 'Newmark NLTH with Rayleigh damping and step trace',
+      covered: !!trace.nlth?.converged && (trace.nlth?.rows?.length || 0) > 0 && !!trace.rayleigh?.version,
+      evidence: `${trace.nlth?.rows?.length || 0} NLTH rows, converged=${!!trace.nlth?.converged}`,
+    },
+    {
+      ticket: 'P3-T86',
+      scope: 'ground-motion record parsing and scaling trace',
+      covered: (trace.groundMotion?.pointCount || 0) > 0 && !!trace.spectrumScaling?.scaleFactor,
+      evidence: `${trace.groundMotion?.pointCount || 0} record points, scale=${trace.spectrumScaling?.scaleFactor || 0}`,
+    },
+  ].map((row) => ({
+    ...row,
+    benchmarkEvidence: cases.map((item) => `${item.id}:${item.ok ? 'OK' : 'NG'}`).join(',') || null,
+  }));
 }
 
 export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, options = {}) {

@@ -37,6 +37,8 @@ The gate records:
 
 2026-07-02 contract review update: PMM interpolation, fiber section, moment-curvature, Newmark NLTH, and ground-motion traces now expose P3-M16 contracts. The M16 gate summary now reports agent-readiness, benchmark status, PMM point count, fiber count, curvature rows, ground-motion point count, NLTH convergence, yielded-state status, and required B6-B8 benchmarks.
 
+2026-07-02 ticket coverage review update: `fiberNlthGate` now exposes a formal P3-M16 contract, feature-to-ticket map, and `summary.ticketCoverage` for P3-T83 to P3-T86. The coverage rows tie PMM interpolation, fiber plus moment-curvature response, Newmark/Rayleigh NLTH, and ground-motion scaling to explicit evidence, while carrying B6-B8 benchmark status for report and AI-agent audit.
+
 ## Current Test Gate
 
 `tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, B6/B7/B8 benchmark registration, and agent manifest exposure.
