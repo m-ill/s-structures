@@ -132,6 +132,13 @@ try {
   assert.equal(routeMiss.status, 404);
   assert.equal(routeMiss.data.ok, false);
 
+  const malformedApiPath = await app.api('GET', '/api/projects/%E0%A4%A', { token });
+  assert.equal(malformedApiPath.status, 400);
+  assert.equal(malformedApiPath.data.error.code, 'BAD_URI');
+
+  const malformedStaticPath = await app.api('GET', '/%E0%A4%A');
+  assert.equal(malformedStaticPath.status, 400);
+
   console.log(JSON.stringify({
     ok: true, version: 'p3-server-api', projectId, revisions: 3,
   }, null, 2));

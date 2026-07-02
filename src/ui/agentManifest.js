@@ -62,6 +62,14 @@ import { MEMBER_RELEASE_SUMMARY_VERSION } from '../core/memberReleaseSummary.js'
 import { MEMBER_RELEASE_BENCHMARK_VERSION } from '../verification/memberReleaseBenchmark.js';
 import { RIGID_DIAPHRAGM_BENCHMARK_VERSION } from '../verification/rigidDiaphragmBenchmark.js';
 import { STORY_ECCENTRIC_DISTRIBUTION_VERSION } from '../design/storyEccentricDistribution.js';
+import {
+  APP_SHELL_VERSION,
+  AUTH_CONTRACT_VERSION,
+  PERSISTENCE_ENVELOPE_VERSION,
+  PHASE3_BASELINE_VERSION,
+  SERVER_API_VERSION,
+} from '../platform/platformVersion.js';
+import { ROUTES_VERSION } from '../app/routes.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -130,6 +138,12 @@ export function buildAgentManifest(options = {}) {
       memberReleaseSummary: MEMBER_RELEASE_SUMMARY_VERSION,
       memberReleaseBenchmark: MEMBER_RELEASE_BENCHMARK_VERSION,
       calculationPackageUi: 'm43-calculation-package-ui',
+      phase3Baseline: PHASE3_BASELINE_VERSION,
+      phase3ServerApi: SERVER_API_VERSION,
+      phase3Auth: AUTH_CONTRACT_VERSION,
+      phase3Persistence: PERSISTENCE_ENVELOPE_VERSION,
+      phase3AppShell: APP_SHELL_VERSION,
+      phase3AppRoutes: ROUTES_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -240,6 +254,11 @@ export function buildAgentManifest(options = {}) {
       'phase2MemberRelease',
       'phase2MemberReleaseSummary',
       'phase2MemberReleaseBenchmark',
+      'phase3ServerApi',
+      'phase3AuthSession',
+      'phase3PersistenceEnvelope',
+      'phase3AppShellRoutes',
+      'phase3ProjectBrowser',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -292,6 +311,11 @@ export function buildAgentManifest(options = {}) {
       { id: 'P2-DESIGN-DEMAND', status: 'preliminary', feature: 'shared demand package for member and foundation design modules' },
       { id: 'P2-PLATFORM', status: 'preliminary', feature: 'project workflow, AI QA, and import/export readiness contracts' },
       { id: 'P2-T25-T50', status: 'preliminary', feature: 'practice validation report and 10-building pilot gate' },
+      { id: 'P3-M0', status: 'available', feature: 'phase 3 baseline, folders, version contracts, and documentation map' },
+      { id: 'P3-M1', status: 'available', feature: 'node server, REST envelope, project, revision, file, import, and approval APIs' },
+      { id: 'P3-M2', status: 'available', feature: 'account, login, token, role guard, and lockout contracts' },
+      { id: 'P3-M3', status: 'available', feature: 'three-layer persistence, revisions, autosave, and lineage warning' },
+      { id: 'P3-M4', status: 'available', feature: 'app shell, routes, project browser, session restore, and viewer core' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

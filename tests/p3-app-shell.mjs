@@ -7,6 +7,7 @@ import { createSessionState, SESSION_TOKEN_KEY } from '../src/app/sessionState.j
 import { createAppShell, APP_SHELL_VERSION } from '../src/app/shell.js';
 import { matchRoute, buildHash } from '../src/app/routes.js';
 import { APP_SHELL_VERSION as PLATFORM_APP_SHELL_VERSION } from '../src/platform/platformVersion.js';
+import { buildAgentManifest } from '../src/ui/agentManifest.js';
 
 assert.equal(APP_SHELL_VERSION, PLATFORM_APP_SHELL_VERSION);
 
@@ -14,7 +15,13 @@ assert.equal(APP_SHELL_VERSION, PLATFORM_APP_SHELL_VERSION);
 assert.deepEqual(matchRoute('#/login'), { name: 'login', params: {}, path: '/login' });
 assert.deepEqual(matchRoute('#/p/abc-123/modeler'), { name: 'modeler', params: { projectId: 'abc-123' }, path: '/p/abc-123/modeler' });
 assert.equal(matchRoute('#/nope'), null);
+assert.equal(matchRoute('#/p/%E0%A4%A/modeler'), null);
 assert.equal(buildHash('modeler', { projectId: 'xyz' }), '#/p/xyz/modeler');
+
+const manifest = buildAgentManifest();
+assert.equal(manifest.modules.phase3AppShell, APP_SHELL_VERSION);
+assert.ok(manifest.dataContracts.includes('phase3AppShellRoutes'));
+assert.ok(manifest.milestones.some((row) => row.id === 'P3-M4' && row.status === 'available'));
 
 const app = await bootTestApp();
 try {

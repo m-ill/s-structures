@@ -39,7 +39,7 @@ export function createRouter() {
         if (!match) continue;
         const params = {};
         route.keys.forEach((key, index) => {
-          params[key] = decodeURIComponent(match[index + 1]);
+          params[key] = decodePathSegment(match[index + 1]);
         });
         return { handler: route.handler, params, bodyType: route.bodyType };
       }
@@ -94,4 +94,12 @@ export async function readRawBody(req, maxBytes) {
     chunks.push(chunk);
   }
   return Buffer.concat(chunks);
+}
+
+export function decodePathSegment(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    throw new ApiError(400, 'BAD_URI', 'Request path contains invalid percent encoding.');
+  }
 }

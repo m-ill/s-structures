@@ -30,7 +30,11 @@ export function matchRoute(hash) {
     const match = route.regex.exec(path);
     if (!match) continue;
     const params = {};
-    route.keys.forEach((key, index) => { params[key] = decodeURIComponent(match[index + 1]); });
+    for (let index = 0; index < route.keys.length; index += 1) {
+      const decoded = safeDecode(match[index + 1]);
+      if (decoded == null) return null;
+      params[route.keys[index]] = decoded;
+    }
     return { name: route.name, params, path };
   }
   return null;
@@ -43,4 +47,12 @@ export function buildHash(routeName, params = {}) {
     segment.startsWith(':') ? encodeURIComponent(params[segment.slice(1)] ?? '') : segment
   )).join('/');
   return `#${path}`;
+}
+
+function safeDecode(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return null;
+  }
 }

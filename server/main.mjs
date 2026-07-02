@@ -2,7 +2,7 @@ import http from 'node:http';
 import { createReadStream, statSync } from 'node:fs';
 import { extname, join, normalize, resolve } from 'node:path';
 import { loadConfig } from './config.mjs';
-import { createRouter, errorEnvelope, ok, readJsonBody, sendJson } from './router.mjs';
+import { ApiError, createRouter, errorEnvelope, ok, readJsonBody, sendJson } from './router.mjs';
 import { createUserStore } from './store/userStore.mjs';
 import { createProjectStore } from './store/projectStore.mjs';
 import { registerAuthRoutes } from './routes/auth.mjs';
@@ -52,7 +52,7 @@ export function createApp(overrides = {}) {
 
 async function handleRequest(req, res, router, config) {
   const url = new URL(req.url || '/', 'http://internal');
-  const pathname = decodeURIComponent(url.pathname);
+  const pathname = url.pathname;
 
   if (pathname.startsWith('/api/')) {
     await handleApi(req, res, router, pathname, config);
@@ -62,12 +62,12 @@ async function handleRequest(req, res, router, config) {
 }
 
 async function handleApi(req, res, router, pathname, config) {
-  const matched = router.match(req.method, pathname);
-  if (!matched) {
-    sendJson(res, 404, { ok: false, error: { code: 'NOT_FOUND', message: 'No such API route.' } });
-    return;
-  }
   try {
+    const matched = router.match(req.method, pathname);
+    if (!matched) {
+      sendJson(res, 404, { ok: false, error: { code: 'NOT_FOUND', message: 'No such API route.' } });
+      return;
+    }
     const needsBody = ['POST', 'PATCH', 'PUT'].includes(req.method) && matched.bodyType === 'json';
     const body = needsBody ? await readJsonBody(req, config.maxJsonBytes) : undefined;
     const result = await matched.handler(req, res, matched.params, body);
@@ -81,21 +81,35 @@ async function handleApi(req, res, router, pathname, config) {
 
 function serveStatic(req, res, pathname, config) {
   try {
-    const safePath = normalize(pathname).replace(/^(\.\.[/\\])+/, '');
+    const decodedPathname = decodeStaticPath(pathname);
+    const safePath = normalize(decodedPathname).replace(/^(\.\.[/\\])+/, '');
     let filePath = resolve(join(config.staticRoot, safePath));
     if (!filePath.startsWith(config.staticRoot)) {
       res.writeHead(403);
       res.end('Forbidden');
       return;
     }
-    if (pathname === '/') filePath = join(config.staticRoot, 'app.html');
+    if (decodedPathname === '/') filePath = join(config.staticRoot, 'app.html');
     const stat = statSync(filePath);
     if (stat.isDirectory()) filePath = join(filePath, 'index.html');
     res.writeHead(200, { 'Content-Type': STATIC_TYPES[extname(filePath)] || 'application/octet-stream' });
     createReadStream(filePath).pipe(res);
-  } catch {
+  } catch (error) {
+    if (error instanceof ApiError) {
+      res.writeHead(error.status, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end(error.message);
+      return;
+    }
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Not found');
+  }
+}
+
+function decodeStaticPath(pathname) {
+  try {
+    return decodeURIComponent(pathname);
+  } catch {
+    throw new ApiError(400, 'BAD_URI', 'Static path contains invalid percent encoding.');
   }
 }
 
