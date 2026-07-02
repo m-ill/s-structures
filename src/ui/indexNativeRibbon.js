@@ -102,7 +102,6 @@ export function installIndexNativeRibbon(target = globalThis, options = {}) {
   if (!topbar) return null;
 
   injectNativeRibbonStyle(doc);
-  doc.body?.classList?.add('ss-native-ui');
 
   const initialMode = normalizeNativeMode(options.activeMode || readStoredMode(target) || 'modeling');
   const state = {
@@ -111,6 +110,8 @@ export function installIndexNativeRibbon(target = globalThis, options = {}) {
 
   const tabs = ensureModeTabs(doc, topbar);
   const ribbonRoot = ensureRibbonRoot(target);
+  if (!tabs || !ribbonRoot) return null;
+  doc.body?.classList?.add('ss-native-ui', 'ss-native-ui-ready');
   const api = {
     version: NATIVE_RIBBON_VERSION,
     modes: NATIVE_MAIN_MODES.map((mode) => ({ ...mode })),
@@ -216,9 +217,10 @@ function ensureModeTabs(doc, topbar) {
   separator.setAttribute('aria-hidden', 'true');
   separator.setAttribute('data-ss-native', 'mode-separator');
 
-  const spacer = topbar.querySelector?.('.spacer') || null;
-  topbar.insertBefore(separator, spacer);
-  topbar.insertBefore(tabs, spacer);
+  const firstSeparator = topbar.querySelector?.('.tb-sep') || null;
+  const before = firstSeparator?.nextSibling || topbar.querySelector?.('.spacer') || null;
+  topbar.insertBefore(tabs, before);
+  topbar.insertBefore(separator, before);
   return tabs;
 }
 
@@ -528,7 +530,7 @@ function injectNativeRibbonStyle(doc) {
   const style = doc.createElement('style');
   style.id = 'ssNativeRibbonStyle';
   style.textContent = `
-.ss-native-ui #topbar > .mode{display:none!important;}
+.ss-native-ui-ready #topbar > .mode{display:none!important;}
 .ss-native-ui #subbar{align-items:stretch;gap:0;padding:4px 8px;min-height:44px;overflow-x:visible;overflow-y:visible;flex-wrap:wrap;}
 .ss-mode-tabs{display:flex;align-items:center;gap:4px;flex:none;min-width:max-content;}
 .ss-mode-tab{height:32px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#d7e5f2;border-radius:6px;padding:0 12px;font-size:13px;font-weight:600;white-space:nowrap;}

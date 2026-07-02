@@ -50,6 +50,14 @@ function createFakeTarget() {
   logo.className = 'logo';
   topbar.appendChild(logo);
 
+  const firstSeparator = document.createElement('div');
+  firstSeparator.className = 'tb-sep';
+  topbar.appendChild(firstSeparator);
+
+  const prevPage = document.createElement('button');
+  prevPage.id = 'prevPage';
+  topbar.appendChild(prevPage);
+
   const modeButtons = [];
   for (const mode of ['structure', 'select', 'draw', 'erase', 'image']) {
     const button = document.createElement('button');
@@ -198,6 +206,12 @@ class FakeElement {
     return this.children;
   }
 
+  get nextSibling() {
+    if (!this.parentNode) return null;
+    const index = this.parentNode.children.indexOf(this);
+    return index >= 0 ? this.parentNode.children[index + 1] || null : null;
+  }
+
   set className(value) {
     this._classes = new Set(String(value || '').split(/\s+/).filter(Boolean));
   }
@@ -288,7 +302,10 @@ assert.equal(api.version, 'm22-native-index-ribbon');
 assert.equal(api.state.activeMode, 'modeling');
 assert.equal(document.body.dataset.ssActiveMode, 'modeling');
 assert.equal(document.body.classList.contains('ss-native-ui'), true);
+assert.equal(document.body.classList.contains('ss-native-ui-ready'), true);
 assert.equal(document.getElementById('ssModeTabs').querySelectorAll('[data-ss-mode]').length, 4);
+assert.equal(document.getElementById('topbar').children[2].id, 'ssModeTabs');
+assert.equal(document.getElementById('topbar').children[4].id, 'prevPage');
 assert.equal(document.getElementById('ssNativeRibbon').querySelectorAll('[data-ss-ribbon-panel]').length, 4);
 assert.equal(document.getElementById('topbar').querySelector('[data-ss-ribbon-panel="common"]') != null, true);
 assert.equal(document.querySelectorAll('[data-ss-ribbon-panel]').length, 5);
@@ -309,6 +326,7 @@ assert.equal(document.querySelector('[data-ss-mode="modeling"]').classList.conta
 assert.equal(document.querySelector('#ssNativeRibbonStyle') != null, true);
 assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-native-ribbon\{[^}]*flex-wrap:wrap/);
 assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-topbar-common\.ss-ribbon-panel\{[^}]*justify-content:flex-end/);
+assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-native-ui-ready #topbar > \.mode/);
 assert.match(document.querySelector('#ssNativeRibbonStyle').textContent, /#subbar\{[^}]*overflow-x:visible/);
 assert.doesNotMatch(document.querySelector('#ssNativeRibbonStyle').textContent, /\.ss-native-ribbon\{[^}]*min-width:max-content/);
 
