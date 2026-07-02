@@ -2,18 +2,36 @@ import assert from 'node:assert/strict';
 import {
   DYNAMIC_COMPLETENESS_VERSION,
   LOADS_V2_VERSION,
+  buildCqcCombinationReport,
   buildLoadsV2Trace,
   combineModalCqc,
+  computeTorsionAmplificationAx,
   createTwoStoryElasticFrameModel,
+  estimateModelBucklingTrace,
+  generateEnvironmentalLoadsV2,
   runLinearSdofTha,
+  runModalSuperpositionTha,
   runResponseSpectrum,
+  scaleRsaBaseShear,
 } from '../src/index.js';
 
 const model = createTwoStoryElasticFrameModel();
-const trace = buildLoadsV2Trace(model, { windPressure: 0.9, seismicBaseShear: 120, snowLoad: 0.5 });
+const trace = buildLoadsV2Trace(model, {
+  windPressure: 0.9,
+  seismicBaseShear: 120,
+  dynamicBaseShear: 60,
+  minDynamicRatio: 0.85,
+  snowLoad: 0.5,
+  uplift: 0.2,
+  torsion: { maxDrift: 1.4, avgDrift: 1 },
+});
 assert.equal(trace.version, LOADS_V2_VERSION);
 assert.ok(trace.wind.length > 0 && trace.seismic.length > 0);
 assert.equal(trace.other.snow, 0.5);
+assert.ok(trace.rsaScaling.scaleFactor > 1);
+assert.ok(trace.torsionAx.Ax >= 1);
+assert.ok(trace.environmental.loads.some((load) => load.case === 'S'));
+assert.ok(trace.environmental.loads.some((load) => load.case === 'U'));
 
 const weightedTrace = buildLoadsV2Trace({
   stories: [
@@ -28,6 +46,9 @@ assert.equal(Math.round(weightedTrace.seismic.reduce((sum, row) => sum + row.for
 
 const responses = [{ period: 1, displacement: 2 }, { period: 1.1, displacement: 1 }];
 assert.ok(combineModalCqc(responses, 0.05) >= Math.sqrt(5));
+const cqcReport = buildCqcCombinationReport([{ mode: 'M1', period: 1, displacement: 2 }, { mode: 'M2', period: 1.05, displacement: 1 }]);
+assert.equal(cqcReport.version, DYNAMIC_COMPLETENESS_VERSION);
+assert.ok(cqcReport.closeModes.length === 1);
 
 const rsa = runResponseSpectrum([
   { id: 'M1', period: 1, omega: 2 * Math.PI, participation: { x: { gamma: 1, massRatio: 0.6 } } },
@@ -40,5 +61,33 @@ const tha = runLinearSdofTha({ period: 1, accelerations: [0, 0.1, -0.1, 0] });
 assert.equal(tha.version, DYNAMIC_COMPLETENESS_VERSION);
 assert.equal(tha.method, 'linear-sdof-newmark-average-acceleration');
 assert.equal(tha.rows.length, 4);
+
+const modalTha = runModalSuperpositionTha({
+  modes: [
+    { id: 'M1', period: 1, participation: { x: { gamma: 1 } } },
+    { id: 'M2', period: 0.5, participation: { x: { gamma: 0.4 } } },
+  ],
+  accelerations: [0, 0.1, -0.1, 0],
+});
+assert.equal(modalTha.method, 'linear-modal-superposition-newmark');
+assert.equal(modalTha.rows.length, 4);
+assert.equal(modalTha.modal.length, 2);
+
+const environmental = generateEnvironmentalLoadsV2(model, { soilPressure: 3, waterPressure: 2, uplift: 1, snowLoad: 0.5 });
+assert.ok(environmental.loadCases.includes('H'));
+assert.ok(environmental.loadCases.includes('F'));
+
+const scaling = scaleRsaBaseShear(50, 100, 0.85);
+assert.equal(scaling.scaleFactor, 1.7);
+assert.ok(computeTorsionAmplificationAx({ maxDrift: 3, avgDrift: 1 }).Ax > 1);
+
+const buckling = estimateModelBucklingTrace({
+  members: [
+    { id: 'C1', buckling: { L: 3, material: { E: 200000000 }, section: { Iy: 0.001, Iz: 0.002 } } },
+    { id: 'C2', buckling: { L: 4, material: { E: 200000000 }, section: { Iy: 0.001, Iz: 0.002 } } },
+  ],
+});
+assert.equal(buckling.method, 'member-euler-screening-not-global-eigenvalue');
+assert.equal(buckling.critical.memberId, 'C2');
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m13-loads-dynamics' }, null, 2));

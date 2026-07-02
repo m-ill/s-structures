@@ -8,13 +8,13 @@ status: implemented-preliminary-core
 - M10: versioned material and section registry, `id@version` references, and parametric H/BOX/PIPE/RECT/CIRC section properties.
 - M11: spring support stiffness, spring settlement load vector, and advanced distributed load expansion for partial/trapezoid member loads.
 - M12: mid-pier wall equivalent contract and semi-rigid diaphragm summary contract.
-- M13: wind/seismic/other load trace contract, CQC modal combination output, Euler buckling trace helper, and linear SDOF time-history trace helper.
+- M13: wind/seismic/environmental load trace contract, RSA base-shear scaling, torsion Ax trace, CQC close-mode report, Euler buckling screening helper, and linear modal-superposition time-history trace helper.
 
 ## Engineering Boundary
 
 This step keeps the existing 3D frame solver stable. It does not yet replace the frame solver with a shell/plate finite-element engine, nor does it add a full generalized eigenvalue buckling solver. Those remain formal numerical verification tasks under the later Phase 3 gates.
 
-Temperature, temperature-gradient, and member-moment load records are reserved schema shapes only. They are rejected by validation until equivalent fixed-end actions are implemented, so the solver cannot silently ignore them.
+Temperature, temperature-gradient, and member-moment load records now have preliminary fixed-end action paths. Detailed member-station recovery and hand-calculation coverage remain light.
 
 ## Agent And Data Contracts
 
@@ -23,8 +23,8 @@ Temperature, temperature-gradient, and member-moment load records are reserved s
 | M10 | `buildLibraryAudit` | `getMaterialSectionRegistry` | `phase3MaterialSectionRegistry` |
 | M11 | `expandAdvancedLoads` | `getElasticExpansionTrace` | `phase3ElasticExpansionTrace` |
 | M12 | `summarizeSemiRigidDiaphragm` | `getWallSlabEquivalentTrace` | `phase3WallSlabEquivalentTrace` |
-| M13 | `buildLoadsV2Trace` | `getLoadsV2Trace` | `phase3LoadsV2Trace` |
-| M13 | `estimateMemberEulerBuckling`, `runLinearSdofTha` | `getDynamicCompletenessTrace` | `phase3DynamicCompletenessTrace` |
+| M13 | `buildLoadsV2Trace`, `generateEnvironmentalLoadsV2`, `scaleRsaBaseShear`, `computeTorsionAmplificationAx` | `getLoadsV2Trace` | `phase3LoadsV2Trace` |
+| M13 | `buildCqcCombinationReport`, `estimateModelBucklingTrace`, `runLinearSdofTha`, `runModalSuperpositionTha` | `getDynamicCompletenessTrace` | `phase3DynamicCompletenessTrace` |
 
 The browser command bridge allow-list includes the same read APIs, so AI control can call them through DOM events, postMessage, or the URL command hash.
 
@@ -36,7 +36,11 @@ The browser command bridge allow-list includes the same read APIs, so AI control
 - Modal mass uses the same effective member section/material path as stiffness, including member-level custom properties.
 - User-defined material/section records take precedence over built-ins when the same `id@version` is supplied.
 - Seismic v2 story distribution uses `wi*hi/sum(wi*hi)` and assigns zero force to zero-height base rows.
+- RSA base-shear scaling and torsion Ax are now explicit trace objects instead of implicit notes.
+- Snow, soil, water, and uplift loads can now be generated as preliminary nodal load cases for review.
+- CQC output now includes a close-mode report so SRSS/CQC differences are visible.
 - Linear SDOF time-history trace now uses Newmark average acceleration instead of explicit Euler.
+- Linear modal-superposition time-history now combines per-mode Newmark traces for elastic review.
 
 ## Verification
 

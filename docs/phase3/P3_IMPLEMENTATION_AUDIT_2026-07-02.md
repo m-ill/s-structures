@@ -69,12 +69,12 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 
 | Ticket | Plan target | Current code | Audit result |
 | --- | --- | --- | --- |
-| P3-T76 | KDS wind v2 | Simplified story wind trace only | Partial |
-| P3-T77 | KDS seismic v2 + RSA scaling + torsion Ax | Simplified `wi*hi` story distribution and CQC helper exist | Partial |
-| P3-T78 | snow/soil/water/uplift loads | Trace fields only, no model load generation/combo integration | Partial |
-| P3-T79 | CQC modal combination | CQC helper exists and RSA can return CQC displacement | Partial |
-| P3-T80 | linear eigenvalue buckling | Euler member buckling helper only, not global eigenvalue buckling | Partial |
-| P3-T81 | modal superposition linear THA | SDOF Newmark helper only, not modal superposition | Partial |
+| P3-T76 | KDS wind v2 | Story wind trace now records pressure, importance, exposure, height, and tributary-width formula fields | Preliminary |
+| P3-T77 | KDS seismic v2 + RSA scaling + torsion Ax | `wi*hi` story distribution, RSA minimum base-shear scaling trace, and torsion Ax helper exist | Preliminary |
+| P3-T78 | snow/soil/water/uplift loads | Environmental nodal load generator creates S/H/F/U load cases from roof/base/retaining elevations | Preliminary |
+| P3-T79 | CQC modal combination | CQC helper plus close-mode report exists and RSA can return CQC displacement | Preliminary |
+| P3-T80 | linear eigenvalue buckling | Member Euler screening trace exists; full `K*phi=lambda*KG*phi` global eigenvalue buckling remains | Partial |
+| P3-T81 | modal superposition linear THA | Modal superposition helper now combines per-mode Newmark SDOF traces | Preliminary |
 | P3-T82 | mass source from loads | Node/member lumped mass exists; load-to-mass source contract absent | Not implemented |
 
 ## Stage D Required Scope: P3-M14 To P3-M16

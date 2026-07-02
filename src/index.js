@@ -301,5 +301,20 @@ export { MATERIAL_LIBRARY_REPORT_VERSION, buildMaterialLibraryReport } from './m
 export { SECTION_PROPERTIES_VERSION, computeSectionProperties } from './materials/sectionProperties.js';
 export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elasticExpansion.js';
 export { WALL_SLAB_EQUIVALENT_VERSION, addWallMidPierToModel, recoverWallPierForces, summarizeSemiRigidDiaphragm, wallToMidPierMember } from './solver/wallSlabEquivalent.js';
-export { LOADS_V2_VERSION, buildLoadsV2Trace } from './loads/loadsV2.js';
-export { DYNAMIC_COMPLETENESS_VERSION, combineModalCqc, estimateMemberEulerBuckling, runLinearSdofTha } from './dynamics/elasticCompleteness.js';
+export {
+  LOADS_V2_VERSION,
+  buildLoadsV2Trace,
+  buildWindRows,
+  computeTorsionAmplificationAx,
+  generateEnvironmentalLoadsV2,
+  scaleRsaBaseShear,
+} from './loads/loadsV2.js';
+export {
+  DYNAMIC_COMPLETENESS_VERSION,
+  buildCqcCombinationReport,
+  combineModalCqc,
+  estimateMemberEulerBuckling,
+  estimateModelBucklingTrace,
+  runLinearSdofTha,
+  runModalSuperpositionTha,
+} from './dynamics/elasticCompleteness.js';

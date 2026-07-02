@@ -23,6 +23,7 @@ import {
   buildServiceabilityDriftReport,
   buildSteelDetailingReport,
   buildLoadsV2Trace,
+  buildCqcCombinationReport,
   createCalculationPackageHtml,
   createDetailedHtmlReport,
   createHtmlReport,
@@ -30,11 +31,13 @@ import {
   createKdsRuleBasedLoadCombinations,
   estimateModelLoads,
   estimateMemberEulerBuckling,
+  estimateModelBucklingTrace,
   expandAdvancedLoads,
   getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
   migrateToV3,
   runMemberReleaseBenchmark,
   runLinearSdofTha,
+  runModalSuperpositionTha,
   runRigidDiaphragmBenchmark,
   runPushover as runCorePushover,
   setDesignBasisInput,
@@ -255,7 +258,10 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       return cloneJson({
         version: buckling[0]?.version || 'p3-m13-dynamic-completeness',
         buckling,
+        bucklingTrace: estimateModelBucklingTrace(model, { results: memberResults }),
+        cqc: options.cqcResponses ? buildCqcCombinationReport(options.cqcResponses, options.dampingRatio) : null,
         timeHistory: options.timeHistory ? runLinearSdofTha(options.timeHistory) : null,
+        modalTimeHistory: options.modalTimeHistory ? runModalSuperpositionTha(options.modalTimeHistory) : null,
       });
     },
     getResultPostprocessing(options = {}) {

@@ -6,9 +6,37 @@ export function combineModalCqc(responses, dampingRatio = 0.05) {
   return Math.sqrt(Math.max(0, sum));
 }
 
+export function buildCqcCombinationReport(responses, dampingRatio = 0.05, closeRatio = 0.1) {
+  const cqc = combineModalCqc(responses, dampingRatio);
+  const srss = Math.sqrt(responses.reduce((sum, item) => sum + Number(item.displacement || 0) ** 2, 0));
+  const closeModes = [];
+  for (let i = 0; i < responses.length; i += 1) {
+    for (let j = i + 1; j < responses.length; j += 1) {
+      const a = responses[i]; const b = responses[j];
+      const ratio = Math.abs(Number(a.period) - Number(b.period)) / Math.max(1e-12, Math.max(Number(a.period), Number(b.period)));
+      if (ratio <= closeRatio) closeModes.push({ modes: [a.mode || i + 1, b.mode || j + 1], periodRatio: ratio, rho: rho(a.period, b.period, dampingRatio) });
+    }
+  }
+  return { version: DYNAMIC_COMPLETENESS_VERSION, method: 'CQC', cqc, srss, cqcToSrss: srss > 0 ? cqc / srss : 0, closeModes };
+}
+
 export function estimateMemberEulerBuckling(member, result) {
   const L = result?.L || 0; const E = result?.material?.E || result?.check?.inputs?.Fa || 0; const I = Math.min(result?.section?.Iy || 0, result?.section?.Iz || 0);
   return { version: DYNAMIC_COMPLETENESS_VERSION, memberId: member.id, pcr: L > 0 ? Math.PI ** 2 * E * I / L ** 2 : 0, method: 'Euler pinned-pinned preliminary' };
+}
+
+export function estimateModelBucklingTrace(model = {}, options = {}) {
+  const rows = (model.members || []).map((member) => {
+    const result = options.results?.[member.id] || member.buckling || {};
+    return estimateMemberEulerBuckling(member, result);
+  }).filter((row) => row.pcr > 0);
+  rows.sort((a, b) => a.pcr - b.pcr);
+  return {
+    version: DYNAMIC_COMPLETENESS_VERSION,
+    method: 'member-euler-screening-not-global-eigenvalue',
+    critical: rows[0] || null,
+    rows,
+  };
 }
 
 export function runLinearSdofTha({ period = 1, dampingRatio = 0.05, dt = 0.02, accelerations = [] } = {}) {
@@ -39,6 +67,26 @@ export function runLinearSdofTha({ period = 1, dampingRatio = 0.05, dt = 0.02, a
     rows.push({ step: i, time: i * dt, displacement: u, velocity: v, acceleration: a });
   }
   return { version: DYNAMIC_COMPLETENESS_VERSION, method: 'linear-sdof-newmark-average-acceleration', maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))), rows };
+}
+
+export function runModalSuperpositionTha({ modes = [], direction = 'x', dampingRatio = 0.05, dt = 0.02, accelerations = [] } = {}) {
+  const modal = modes.map((mode, index) => {
+    const trace = runLinearSdofTha({ period: mode.period, dampingRatio, dt, accelerations });
+    const gamma = Number(mode.participation?.[direction]?.gamma ?? mode.gamma ?? 1);
+    return { mode: mode.id || `MODE${index + 1}`, period: mode.period, gamma, trace };
+  });
+  const rows = accelerations.map((_, step) => {
+    const displacement = modal.reduce((sum, item) => sum + item.gamma * (item.trace.rows[step]?.displacement || 0), 0);
+    return { step, time: step * dt, displacement };
+  });
+  return {
+    version: DYNAMIC_COMPLETENESS_VERSION,
+    method: 'linear-modal-superposition-newmark',
+    direction,
+    modal,
+    rows,
+    maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))),
+  };
 }
 
 function rho(Ti, Tj, zeta) {
