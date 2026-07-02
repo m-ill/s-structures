@@ -2,12 +2,17 @@ import assert from 'node:assert/strict';
 import {
   WALL_SLAB_EQUIVALENT_VERSION,
   WALL_SLAB_TRACE_VERSION,
+  SHELL_QUAD4_VERSION,
   addWallMidPierToModel,
   analyzeModel,
   buildAgentManifest,
+  buildQuad4ShellElement,
+  buildShellV1Trace,
   buildWallSlabEquivalentTrace,
   createModel,
+  estimateSimplySupportedPlateDeflection,
   recoverWallPierForces,
+  runShellPatchTest,
   summarizeSemiRigidDiaphragm,
   validateModel,
   wallToMidPierMember,
@@ -35,8 +40,30 @@ const trace = buildWallSlabEquivalentTrace(wallModel, wallAnalysis);
 assert.equal(trace.version, WALL_SLAB_TRACE_VERSION);
 assert.equal(trace.wallMidPier.count, 1);
 assert.equal(trace.wallMidPier.rows[0].recoveryAvailable, true);
-assert.equal(trace.shell.status, 'not-implemented');
+assert.equal(trace.shell.status, 'available-preliminary');
+assert.equal(trace.shell.version, SHELL_QUAD4_VERSION);
+assert.equal(trace.shell.benchmarks.patch.ok, true);
+assert.equal(trace.shell.benchmarks.plate.ok, true);
 assert.ok(buildAgentManifest().dataContracts.includes('phase3WallSlabTrace'));
+assert.ok(buildAgentManifest().dataContracts.includes('phase3ShellQuad4Trace'));
+
+const shell = buildQuad4ShellElement({
+  id: 'SQ1',
+  thickness: 0.18,
+  material: { E: 25000000, nu: 0.2 },
+  nodes: [{ x: 0, y: 0, z: 0 }, { x: 4, y: 0, z: 0 }, { x: 4, y: 3, z: 0 }, { x: 0, y: 3, z: 0 }],
+});
+assert.equal(shell.matrixSize, 24);
+assert.equal(shell.dofPerNode, 6);
+assert.ok(shell.stiffness.membrane > shell.stiffness.bending);
+const patch = runShellPatchTest({ element: shell });
+assert.equal(patch.ok, true);
+assert.ok(patch.stress.sx > patch.stress.sy);
+const plate = estimateSimplySupportedPlateDeflection({ a: 4, b: 4, q: 6, element: shell });
+assert.equal(plate.ok, true);
+assert.ok(plate.wMax > 0);
+const shellTrace = buildShellV1Trace({ shells: [shell] });
+assert.equal(shellTrace.shellCount, 1);
 
 const summary = summarizeSemiRigidDiaphragm({ diaphragms: [{ id: 'D1', type: 'semiRigid', nodeIds: ['N1', 'N2'], inPlaneStiffness: 1000 }] });
 assert.equal(summary.semiRigidCount, 1);

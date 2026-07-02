@@ -94,6 +94,7 @@ import { MATERIAL_LIBRARY_REPORT_VERSION } from '../materials/libraryReport.js';
 import { MATERIAL_LIBRARY_EDIT_VERSION } from '../materials/libraryEdit.js';
 import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
 import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../solver/wallSlabEquivalent.js';
+import { SHELL_QUAD4_VERSION } from '../solver/shell/quad4.js';
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
 import { NONLINEAR_ASSEMBLY_VERSION } from '../nonlinear/assembly.js';
@@ -207,6 +208,7 @@ export function buildAgentManifest(options = {}) {
       phase3ElasticExpansion: ELASTIC_EXPANSION_VERSION,
       phase3WallSlabEquivalent: WALL_SLAB_EQUIVALENT_VERSION,
       phase3WallSlabTrace: WALL_SLAB_TRACE_VERSION,
+      phase3ShellQuad4: SHELL_QUAD4_VERSION,
       phase3LoadsV2: LOADS_V2_VERSION,
       phase3DynamicCompleteness: DYNAMIC_COMPLETENESS_VERSION,
       phase3NonlinearAssembly: NONLINEAR_ASSEMBLY_VERSION,
@@ -379,6 +381,7 @@ export function buildAgentManifest(options = {}) {
       'phase3ElasticExpansionTrace',
       'phase3WallSlabEquivalentTrace',
       'phase3WallSlabTrace',
+      'phase3ShellQuad4Trace',
       'phase3LoadsV2Trace',
       'phase3DynamicCompletenessTrace',
       'phase3NonlinearAssemblyTrace',

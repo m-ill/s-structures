@@ -1,3 +1,5 @@
+import { buildShellV1Trace } from './shell/quad4.js';
+
 export const WALL_SLAB_EQUIVALENT_VERSION = 'p3-m12-wall-slab-equivalent';
 export const WALL_SLAB_TRACE_VERSION = 'p3-m12-wall-slab-trace-v1';
 
@@ -61,6 +63,7 @@ export function summarizeSemiRigidDiaphragm(model = {}) {
 export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
   const pierForces = analysis ? recoverWallPierForces(model, analysis) : [];
   const diaphragm = summarizeSemiRigidDiaphragm(model);
+  const shell = buildShellV1Trace(model);
   return {
     version: WALL_SLAB_TRACE_VERSION,
     equivalentVersion: WALL_SLAB_EQUIVALENT_VERSION,
@@ -75,10 +78,7 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
       forces: pierForces,
     },
     diaphragm,
-    shell: {
-      status: 'not-implemented',
-      limitation: 'Shell element v1 is not active; P3-M12 currently uses mid-pier wall equivalence and semi-rigid diaphragm trace only.',
-    },
+    shell,
     slab: {
       status: diaphragm.semiRigidCount > 0 ? 'trace-only' : 'not-modeled',
       limitation: 'Semi-rigid slab redistribution is trace-only and not condensed into the solver stiffness matrix.',

@@ -13,7 +13,7 @@ This note verifies P3-M12 against `docs/phase3/ELASTIC_ENGINE_COMPLETENESS_PLAN.
 | --- | --- | --- |
 | P3-T73 | Wall mid-pier equivalent frame | `wallToMidPierMember()`, `addWallMidPierToModel()`, `tests/p3-m12-wall-slab.mjs` |
 | P3-T73 | Pier force recovery | `recoverWallPierForces()` and wall analysis regression |
-| P3-T74 | Shell v1 status | `buildWallSlabEquivalentTrace()` reports shell as not implemented |
+| P3-T74 | Shell v1 contract | `buildQuad4ShellElement()`, `runShellPatchTest()`, `estimateSimplySupportedPlateDeflection()` |
 | P3-T75 | Semi-rigid diaphragm trace | `summarizeSemiRigidDiaphragm()` and validation coverage |
 | Agent trace | `getWallSlabEquivalentTrace()` now returns wall, diaphragm, shell, and slab limitation state |
 
@@ -24,13 +24,15 @@ The previous M12 trace exposed semi-rigid diaphragm rows only. P3-M12 now expose
 1. wall equivalent rows
 2. pier force recovery availability
 3. semi-rigid diaphragm summary
-4. shell v1 not-implemented status
+4. shell v1 compatible 24-DOF element contract with patch and plate-deflection benchmarks
 5. slab redistribution trace-only limitation
+
+2026-07-02 update: P3-T74 now has a preliminary shell v1 module under `src/solver/shell/quad4.js`. The shell trace exposes membrane, bending, and drilling stiffness terms, 6-DOF/node compatibility, a constant-strain membrane patch benchmark, and a simply supported plate deflection benchmark.
 
 ## Current Test Gate
 
-`tests/p3-m12-wall-slab.mjs` verifies equivalent wall generation, analysis, pier force recovery, semi-rigid diaphragm validation, and the agent-readable trace contract.
+`tests/p3-m12-wall-slab.mjs` verifies equivalent wall generation, analysis, pier force recovery, shell v1 benchmark traces, semi-rigid diaphragm validation, and the agent-readable trace contract.
 
 ## Remaining Limits
 
-P3-M12 remains preliminary. Shell finite elements are not active, and semi-rigid slab redistribution is not condensed into solver stiffness. The current production path is mid-pier equivalent wall plus explicit limitations.
+P3-M12 remains preliminary. Shell v1 is available as an element contract and verification trace, but global frame-shell stiffness assembly and semi-rigid slab redistribution are not yet condensed into the main solver stiffness matrix.

@@ -46,7 +46,7 @@ This audit checks the current repository against the Phase 3 planning documents.
 | P3-M9 | Preliminary | synthetic point-cloud extraction/e2e tests; real field files still require future validation |
 | P3-M10 | Preliminary | versioned material/section registry tests plus library edit action/server-storage round-trip |
 | P3-M11 | Preliminary | elastic expansion trace tests |
-| P3-M12 | Preliminary | wall/slab equivalent trace tests |
+| P3-M12 | Preliminary | wall/slab equivalent trace tests plus shell v1 patch and plate-deflection benchmarks |
 | P3-M13 | Preliminary | loads v2, dynamic completeness, buckling, linear THA tests |
 | P3-M14 | Preliminary | `geometryGate`, KE/KG/hinge tangent assembly trace, nonlinear geometry trace, and B1/B2 benchmark tests |
 | P3-M15 | Preliminary | `hingeControlGate`, hinge assignment, control/pushover trace, tangent correction exposure, and B3/B4/B5 benchmark tests |
