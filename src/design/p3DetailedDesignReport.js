@@ -12,6 +12,7 @@ export const P3_DETAILED_DESIGN_REPORT_VERSION = 'p3-m18-detailed-design-integra
 export const P3_DETAILED_DESIGN_GATE_VERSION = 'p3-m18-detailed-design-gate-v1';
 
 export function buildP3DetailedDesignReport(model, analysis, options = {}) {
+  const analysisStatus = buildAnalysisStatus(analysis);
   const rc = buildRcDetailedDesignReport(model, analysis, options.rc || options);
   const steel = buildSteelDetailedDesignReport(model, analysis, options.steel || options);
   const connection = buildConnectionDetailedDesignReport(model, analysis, options.connection || options);
@@ -29,10 +30,11 @@ export function buildP3DetailedDesignReport(model, analysis, options = {}) {
       reportUse: 'Top-level issueRows and formulaTrace are the single navigation source for reports and AI-agent review.',
     },
     modelName: model?.meta?.name || null,
+    analysisStatus,
     summary: summarize(modules),
     modules,
     serviceability,
-    designGate: buildP3DetailedDesignGate(modules, { issueRows, formulaTrace, serviceability }),
+    designGate: buildP3DetailedDesignGate(modules, { issueRows, formulaTrace, serviceability, analysisStatus }),
     issueRows,
     formulaTrace,
     formulaRegistryVersion: DESIGN_FORMULA_REGISTRY_VERSION,
@@ -44,8 +46,9 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
   const issueRows = evidence.issueRows || buildIssueRows(modules);
   const formulaTrace = evidence.formulaTrace || Object.values(modules).flatMap((module) => module.formulaTrace || []);
   const serviceability = evidence.serviceability || buildP3ServiceabilityEvidence(null, null, modules, evidence);
+  const analysisStatus = evidence.analysisStatus || null;
   const coverage = buildTicketCoverage(modules, issueRows, formulaTrace, serviceability);
-  const designReview = buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage, serviceability });
+  const designReview = buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage, serviceability, analysisStatus });
   return {
     version: P3_DETAILED_DESIGN_GATE_VERSION,
     milestone: 'P3-M18',
@@ -73,6 +76,7 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
       formulaCount: formulaTrace.length,
       unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
       serviceabilityStatus: serviceability.summary?.covered ? 'trace-ready' : 'review-required',
+      analysisStatus,
       moduleStatuses: summarizeModuleStatuses(modules),
       designReview,
       ticketCoverage: coverage,
@@ -88,6 +92,7 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     ticketCoverage: coverage,
     designReview,
     serviceability,
+    analysisStatus,
     formulaRegistryVersion: DESIGN_FORMULA_REGISTRY_VERSION,
     unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
     serviceabilityStatus: serviceability.summary?.covered ? 'trace-ready' : 'review-required',
@@ -99,11 +104,12 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
   };
 }
 
-function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage, serviceability }) {
+function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage, serviceability, analysisStatus }) {
   const unregisteredFormulaCount = formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length;
   const moduleStatuses = summarizeModuleStatuses(modules);
   const unlinkedIssueCount = issueRows.filter((row) => !(row.formulaIds || []).length).length;
   const missing = [];
+  if (analysisStatus && analysisStatus.ok !== true) missing.push('analysis-status');
   if (!coverage.every((row) => row.covered)) missing.push('ticket-coverage');
   if (!formulaTrace.length) missing.push('formula-trace');
   if (unregisteredFormulaCount) missing.push('formula-registry');
@@ -116,6 +122,7 @@ function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverag
     finalPermitDesign: false,
     fabricationReady: false,
     geotechnicalCertified: false,
+    analysisOk: analysisStatus?.ok ?? null,
     completeCoverage: coverage.every((row) => row.covered),
     issueCount: issueRows.length,
     unlinkedIssueCount,
@@ -125,6 +132,14 @@ function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverag
     moduleStatuses,
     missing,
     agentDecision: missing.length ? 'resolve-detailed-design-review-items' : 'm18-ready-for-m19-integrated-results-review',
+  };
+}
+
+function buildAnalysisStatus(analysis) {
+  if (!analysis) return { ok: false, reason: 'analysis-missing' };
+  return {
+    ok: analysis.ok === true,
+    reason: analysis.ok === true ? null : analysis.reason || analysis.error || 'analysis-not-ok',
   };
 }
 

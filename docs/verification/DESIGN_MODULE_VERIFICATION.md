@@ -35,6 +35,8 @@ Current status is preliminary. The module produces traceable schedules and regis
 
 2026-07-03 RC gate readiness hardening: `rcDesignGate.summary.readyForAgentReview` now follows `rcReview.status === "trace-ready"` instead of always returning true. Partial role coverage, WARN/NG design rows, missing formula traces, or unregistered formulas remain inspectable but cannot be treated as clean M17 evidence for automated M18/M19 handoff.
 
+2026-07-03 RC analysis-status hardening: `buildRcDetailedDesignReport()` now records `analysisStatus` and `rcReview.analysisOk`. If the upstream analysis is missing or not OK, the RC gate adds `analysis-status` to `missing`, so schedule rows derived from failed demand data cannot be treated as clean M17 evidence.
+
 ## P3-M18 Steel / Connection / Foundation Detailed Design
 
 Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.
@@ -70,6 +72,8 @@ Current status is preliminary. M18 adds traceable steel, connection, base-plate,
 2026-07-03 issue item matching hardening: integrated issue rows now collect fallback formula IDs only from the matching design row. If an issue references an unknown item id, the gate leaves it unlinked instead of attaching the whole module formula list, preventing reports and AI agents from following a false calculation basis.
 
 2026-07-03 integrated gate readiness hardening: `designGate.summary.readyForAgentReview` now follows `designReview.status === "trace-ready"` instead of always returning true. Complete ticket coverage with remaining design issues, missing formula links, or unregistered formula rows stays review-required and cannot be treated as clean M19 handoff evidence.
+
+2026-07-03 integrated analysis-status hardening: `buildP3DetailedDesignReport()` now records top-level `analysisStatus`, and `designGate.designReview` reports `analysisOk`. A failed or missing analysis adds `analysis-status` to M18 review blockers even when steel, connection, foundation, formula, issue, and serviceability rows are otherwise complete.
 
 2026-07-03 design milestone contract update: P3-M17 to P3-M18 now expose `getPhase3DesignMilestoneReview`. The review contract maps RC, steel, connection, foundation, report/formula, and serviceability scopes to the existing `rcDesignGate` and `designGate` paths while keeping `finalPermitDesign` separate from trace readiness.
 

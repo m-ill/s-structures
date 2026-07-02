@@ -31,6 +31,7 @@ const beamReport = buildRcDetailedDesignReport(beam, beamAnalysis, {
   walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 900 }],
 });
 assert.equal(beamReport.version, RC_DETAILED_DESIGN_VERSION);
+assert.equal(beamReport.analysisStatus.ok, true);
 assert.equal(beamReport.contract.milestone, 'P3-M17');
 assert.equal(beamReport.rcDesignGate.version, RC_DESIGN_GATE_VERSION);
 assert.deepEqual(beamReport.rcDesignGate.tickets, ['P3-T87', 'P3-T88', 'P3-T89', 'P3-T90']);
@@ -42,6 +43,7 @@ assert.equal(beamReport.rcDesignGate.contract.maturity, 'preliminary-detail-sche
 assert.equal(beamReport.rcDesignGate.summary.readyForAgentReview, false);
 assert.equal(beamReport.rcDesignGate.rcReview.status, 'review-required');
 assert.equal(beamReport.rcDesignGate.rcReview.finalPermitDesign, false);
+assert.equal(beamReport.rcDesignGate.rcReview.analysisOk, true);
 assert.equal(beamReport.rcDesignGate.rcReview.completeRoleCoverage, false);
 assert.ok(beamReport.rcDesignGate.rcReview.missing.includes('role-coverage'));
 assert.equal(beamReport.rcDesignGate.rcReview.agentDecision, 'resolve-rc-review-items');
@@ -66,6 +68,18 @@ assert.ok(beamReport.schedules.walls[0].contract.tickets.includes('P3-T89'));
 assert.ok(beamReport.schedules.slabs[0].contract.tickets.includes('P3-T90'));
 assert.match(beamReport.schedules.beams[0].flexure.bottom.label, /^\d+-D/);
 assert.equal(beamReport.summary.itemCount, 3);
+
+const failedAnalysisRcReport = buildRcDetailedDesignReport(beam, {
+  ...beamAnalysis,
+  ok: false,
+  reason: 'SOLVER_FAILED',
+}, {
+  walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 80 }],
+});
+assert.equal(failedAnalysisRcReport.analysisStatus.ok, false);
+assert.equal(failedAnalysisRcReport.rcDesignGate.rcReview.analysisOk, false);
+assert.ok(failedAnalysisRcReport.rcDesignGate.rcReview.missing.includes('analysis-status'));
+assert.equal(failedAnalysisRcReport.rcDesignGate.summary.readyForAgentReview, false);
 
 const biaxialBeamDetail = detailRcBeam({
   memberId: 'B-BIAX',

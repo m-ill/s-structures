@@ -8,6 +8,7 @@ export const RC_DETAILED_DESIGN_VERSION = 'p3-m17-rc-detailed-design';
 export const RC_DESIGN_GATE_VERSION = 'p3-m17-rc-design-gate-v1';
 
 export function buildRcDetailedDesignReport(model, analysis, options = {}) {
+  const analysisStatus = buildAnalysisStatus(analysis);
   const checks = Object.values(analysis?.design?.concrete?.memberResults || {});
   const beams = checks.filter((check) => check.role === 'beam').map((check) => detailRcBeam(check, options));
   const columns = checks.filter((check) => check.role === 'column').map((check) => detailRcColumn(check, options));
@@ -24,8 +25,9 @@ export function buildRcDetailedDesignReport(model, analysis, options = {}) {
       reportUse: 'Rows expose formula IDs and issue rows for integrated calculation packages and AI-agent review.',
     },
     modelName: model?.meta?.name || null,
+    analysisStatus,
     summary: summarize(rows),
-    rcDesignGate: buildRcDesignGate({ beams, columns, walls, slabs, formulaTrace }),
+    rcDesignGate: buildRcDesignGate({ beams, columns, walls, slabs, formulaTrace, analysisStatus }),
     rows,
     schedules: { beams, columns, walls, slabs },
     issueRows: buildIssueRows(rows),
@@ -48,7 +50,8 @@ export function buildRcDesignGate(report = {}) {
   const formulas = report.formulaTrace || rows.map((row) => collectFormula(row)).flat();
   const coverage = buildRoleCoverage(schedules);
   const missingRoles = coverage.filter((row) => row.count === 0).map((row) => row.role);
-  const rcReview = buildRcDesignReview({ rows, formulas, coverage, missingRoles });
+  const analysisStatus = report.analysisStatus || schedules.analysisStatus || null;
+  const rcReview = buildRcDesignReview({ rows, formulas, coverage, missingRoles, analysisStatus });
   return {
     version: RC_DESIGN_GATE_VERSION,
     milestone: 'P3-M17',
@@ -71,6 +74,7 @@ export function buildRcDesignGate(report = {}) {
       readyForAgentReview: rcReview.status === 'trace-ready',
       completeRoleCoverage: missingRoles.length === 0,
       missingRoles,
+      analysisStatus,
       issueCount: rows.filter((row) => row.status && row.status !== 'OK').length,
       formulaCount: formulas.length,
       roleStatuses: summarizeRoleStatuses(rows),
@@ -85,6 +89,7 @@ export function buildRcDesignGate(report = {}) {
       slabs: schedules.slabs?.length || 0,
     },
     status: summarize(rows),
+    analysisStatus,
     formulaCount: formulas.length,
     issueCount: rows.filter((row) => row.status && row.status !== 'OK').length,
     requiredRoles: ['beam', 'column', 'wall', 'slab'],
@@ -100,12 +105,13 @@ export function buildRcDesignGate(report = {}) {
   };
 }
 
-function buildRcDesignReview({ rows, formulas, coverage, missingRoles }) {
+function buildRcDesignReview({ rows, formulas, coverage, missingRoles, analysisStatus }) {
   const issueRows = rows.filter((row) => row.status && row.status !== 'OK');
   const issueCount = issueRows.length;
   const issueFormulaMissingCount = issueRows.filter((row) => collectFormula(row).length === 0).length;
   const unregisteredFormulaCount = formulas.filter((row) => row.standard === 'UNREGISTERED').length;
   const missing = [];
+  if (analysisStatus && analysisStatus.ok !== true) missing.push('analysis-status');
   if (missingRoles.length) missing.push('role-coverage');
   if (!formulas.length) missing.push('formula-trace');
   if (unregisteredFormulaCount) missing.push('formula-registry');
@@ -116,6 +122,7 @@ function buildRcDesignReview({ rows, formulas, coverage, missingRoles }) {
     maturity: 'preliminary',
     finalPermitDesign: false,
     completeRoleCoverage: missingRoles.length === 0,
+    analysisOk: analysisStatus?.ok ?? null,
     missingRoles,
     issueCount,
     issueFormulaMissingCount,
@@ -124,6 +131,14 @@ function buildRcDesignReview({ rows, formulas, coverage, missingRoles }) {
     coveredTickets: coverage.filter((row) => row.count > 0).map((row) => row.ticket),
     missing,
     agentDecision: missing.length ? 'resolve-rc-review-items' : 'm17-ready-for-m18-integration-review',
+  };
+}
+
+function buildAnalysisStatus(analysis) {
+  if (!analysis) return { ok: false, reason: 'analysis-missing' };
+  return {
+    ok: analysis.ok === true,
+    reason: analysis.ok === true ? null : analysis.reason || analysis.error || 'analysis-not-ok',
   };
 }
 
