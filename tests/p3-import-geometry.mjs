@@ -49,6 +49,22 @@ const bad = structuredClone(candidate);
 bad.candidates.members[0].from = 'missing';
 assert.equal(validateImportCandidate(bad).ok, false);
 
+const duplicateNode = structuredClone(candidate);
+duplicateNode.candidates.nodes[1].id = duplicateNode.candidates.nodes[0].id;
+assert.ok(validateImportCandidate(duplicateNode).errors.includes(`node.${duplicateNode.candidates.nodes[0].id}.duplicate`));
+
+const missingMemberId = structuredClone(candidate);
+delete missingMemberId.candidates.members[0].id;
+assert.ok(validateImportCandidate(missingMemberId).errors.includes('member.id'));
+
+const duplicateMember = structuredClone(candidate);
+duplicateMember.candidates.members[1].id = duplicateMember.candidates.members[0].id;
+assert.ok(validateImportCandidate(duplicateMember).errors.includes(`member.${duplicateMember.candidates.members[0].id}.duplicate`));
+
+const selfMember = structuredClone(candidate);
+selfMember.candidates.members[0].to = selfMember.candidates.members[0].from;
+assert.ok(validateImportCandidate(selfMember).errors.includes(`member.${selfMember.candidates.members[0].id}.self`));
+
 const pipeline = describePointCloudPipeline();
 assert.equal(pipeline.version, POINT_CLOUD_IMPORT_PIPELINE_VERSION);
 assert.equal(pipeline.status, 'available-core');

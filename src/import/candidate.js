@@ -24,12 +24,19 @@ export function validateImportCandidate(candidate) {
   for (const key of ['stories', 'grids', 'nodes', 'members']) {
     if (!Array.isArray(candidate?.candidates?.[key])) errors.push(`candidates.${key}`);
   }
-  const nodeIds = new Set((candidate?.candidates?.nodes || []).map((node) => node.id));
+  const nodeIds = new Set();
+  const memberIds = new Set();
   for (const node of candidate?.candidates?.nodes || []) {
     if (!node.id) errors.push('node.id');
+    else if (nodeIds.has(node.id)) errors.push(`node.${node.id}.duplicate`);
+    else nodeIds.add(node.id);
     if (![node.x, node.y, node.z].every(Number.isFinite)) errors.push(`node.${node.id || '?'}.coordinate`);
   }
   for (const member of candidate?.candidates?.members || []) {
+    if (!member.id) errors.push('member.id');
+    else if (memberIds.has(member.id)) errors.push(`member.${member.id}.duplicate`);
+    else memberIds.add(member.id);
+    if (member.from === member.to) errors.push(`member.${member.id || '?'}.self`);
     if (!nodeIds.has(member.from) || !nodeIds.has(member.to)) errors.push(`member.${member.id || '?'}.endpoint`);
   }
   return { ok: errors.length === 0, errors, warnings: candidate?.audit?.warnings || [] };
