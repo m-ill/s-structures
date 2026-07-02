@@ -5,8 +5,8 @@ export const MASS_SOURCE_TRACE_VERSION = 'p3-m13-mass-source-trace-v1';
 
 export function buildLoadsV2Trace(model = {}, basis = {}) {
   const stories = model.stories?.length ? model.stories : inferStories(model.nodes || []);
-  const windBase = Number(basis.windPressure || 0.8);
-  const seismicBase = Number(basis.seismicBaseShear || 100);
+  const windBase = finite(basis.windPressure, 0.8);
+  const seismicBase = finite(basis.seismicBaseShear, 100);
   const seismicRows = distributeSeismic(stories, seismicBase);
   const rsaScaling = basis.dynamicBaseShear || basis.staticBaseShear
     ? scaleRsaBaseShear(basis.dynamicBaseShear || 0, basis.staticBaseShear || seismicBase, basis.minDynamicRatio)
@@ -191,19 +191,21 @@ function buildLoadsV2Contract() {
 }
 
 function summarizeLoadsV2({ wind, seismic, environmental, massSource }) {
+  const windForce = sum(wind, 'force');
+  const seismicForce = sum(seismic, 'force');
   return {
     storyCount: Math.max(wind.length, seismic.length),
-    windForce: sum(wind, 'force'),
-    seismicForce: sum(seismic, 'force'),
+    windForce,
+    seismicForce,
     environmentalLoadCount: environmental.loads.length,
     environmentalCases: environmental.loadCases,
     massNodeCount: massSource.nodeCount,
     totalMass: massSource.totalMass,
     ticketCoverage: [
-      { ticket: 'P3-T76', scope: 'wind v2 trace', covered: wind.length > 0, evidence: `${wind.length} story wind rows` },
-      { ticket: 'P3-T77', scope: 'seismic v2 trace', covered: seismic.length > 0, evidence: `${seismic.length} story seismic rows` },
+      { ticket: 'P3-T76', scope: 'wind v2 trace', covered: windForce > 0, evidence: `${wind.length} story wind rows / ${windForce} total force` },
+      { ticket: 'P3-T77', scope: 'seismic v2 trace', covered: seismicForce > 0, evidence: `${seismic.length} story seismic rows / ${seismicForce} total force` },
       { ticket: 'P3-T78', scope: 'snow soil water uplift loads', covered: environmental.loads.length > 0, evidence: environmental.loadCases.join(',') || 'no environmental cases requested' },
-      { ticket: 'P3-T82', scope: 'load-to-mass source', covered: !!massSource.version, evidence: `${massSource.nodeCount} mass nodes` },
+      { ticket: 'P3-T82', scope: 'load-to-mass source', covered: massSource.totalMass > 0, evidence: `${massSource.nodeCount} mass nodes / ${massSource.totalMass} total mass` },
     ],
   };
 }
@@ -216,6 +218,7 @@ function buildLoadsV2Review(summary, massSource) {
   if (!(summary.windForce > 0)) blockers.push('wind-trace-empty');
   if (!(summary.seismicForce > 0)) blockers.push('seismic-trace-empty');
   if (!massSource?.version) blockers.push('mass-source-trace-missing');
+  if (!(summary.totalMass > 0)) blockers.push('mass-source-empty');
   if (massSource?.review?.warning) blockers.push('mass-source-ignored-loads');
   const massSourceIgnoredLoadCount = massSource?.review?.ignoredLoadCount || 0;
   const massSourceReviewWarning = massSource?.review?.warning || null;
@@ -230,7 +233,7 @@ function buildLoadsV2Review(summary, massSource) {
     windTraceReady: summary.windForce > 0,
     seismicTraceReady: summary.seismicForce > 0,
     environmentalTraceReady: summary.environmentalLoadCount > 0,
-    massSourceReady: !!massSource?.version,
+    massSourceReady: !!massSource?.version && summary.totalMass > 0,
     massSourceReviewWarning,
     massSourceIgnoredLoadCount,
     uncoveredTickets,

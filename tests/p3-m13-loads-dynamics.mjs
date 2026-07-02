@@ -194,6 +194,22 @@ assert.equal(ignoredLoadTopLevelTrace.review.massSourceIgnoredLoadCount, 1);
 assert.ok(ignoredLoadTopLevelTrace.review.blockers.includes('mass-source-ignored-loads'));
 assert.equal(ignoredLoadTopLevelTrace.review.agentDecision, 'review-loads-v2-mass-source-ignored-loads');
 
+const emptyMassTopLevelTrace = buildLoadsV2Trace({
+  stories: [{ id: 'L1', z: 3, weight: 0 }],
+  nodes: [{ id: 'N1', x: 0, y: 0, z: 3 }],
+}, {
+  windPressure: 0,
+  seismicBaseShear: 0,
+  massSource: { combos: [{ case: 'D', factor: 1 }], includeNodeMass: false },
+});
+assert.equal(emptyMassTopLevelTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T76').covered, false);
+assert.equal(emptyMassTopLevelTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T77').covered, false);
+assert.equal(emptyMassTopLevelTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T82').covered, false);
+assert.equal(emptyMassTopLevelTrace.review.massSourceReady, false);
+assert.ok(emptyMassTopLevelTrace.review.blockers.includes('mass-source-empty'));
+assert.ok(emptyMassTopLevelTrace.review.blockers.includes('wind-trace-empty'));
+assert.ok(emptyMassTopLevelTrace.review.blockers.includes('seismic-trace-empty'));
+
 const dynamicMassModel = createTwoStoryElasticFrameModel();
 dynamicMassModel.analysisSettings.massSource = {
   combos: [{ case: 'D', factor: 1 }, { case: 'L', factor: 0.25 }],

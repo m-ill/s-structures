@@ -47,9 +47,11 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 
 2026-07-03 RSA trace review hardening: `runResponseSpectrum()` now exposes its own P3-M13 `contract` and `review` block, and `buildResponseSpectrumTrace()` preserves both fields for detailed reports and agent APIs. CQC RSA output is marked `review-required` when any requested direction has fewer than two modal responses, so agents do not treat a sparse modal set as a complete CQC combination trace.
 
+2026-07-03 loads coverage hardening: P3-T76, P3-T77, and P3-T82 coverage now requires nonzero wind force, seismic force, and load-to-mass total mass. A trace object with empty forces or an empty mass source now stays `review-required` with `wind-trace-empty`, `seismic-trace-empty`, or `mass-source-empty` blockers instead of appearing ticket-covered from row/object presence alone.
+
 ## Current Test Gate
 
-`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, RSA contract/review propagation, sparse-CQC RSA holds, dynamic review decisions, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace and review status, top-level mass-source warning propagation, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.
+`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, RSA contract/review propagation, sparse-CQC RSA holds, dynamic review decisions, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace and review status, top-level mass-source warning propagation, empty load/mass coverage blocking, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.
 
 ## Remaining Limits
 
