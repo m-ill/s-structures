@@ -13,7 +13,7 @@ This note verifies P3-M16 against `docs/phase3/NONLINEAR_ENGINE_PLAN.md` tickets
 | --- | --- | --- |
 | P3-T83 | PMM interaction hinge interpolation | `src/nonlinear/hinges/pmmHinge.js` |
 | P3-T84 | RC/steel fiber section, material-backbone consumption, and moment-curvature trace | `src/nonlinear/fiber/fiberSection.js`, `momentCurvature.js` |
-| P3-T85 | Newmark nonlinear time-history with step trace | `src/nonlinear/dynamics/newmark.js` |
+| P3-T85 | Newmark nonlinear time-history with step-level Newton iteration trace | `src/nonlinear/dynamics/newmark.js` |
 | P3-T86 | Ground-motion record parsing and scaling trace | `src/nonlinear/dynamics/groundMotion.js` |
 | Damping | Rayleigh coefficient trace | `src/nonlinear/dynamics/rayleigh.js` |
 | Agent trace | `getNonlinearAnalysisTrace()` includes `fiberNlthGate` |
@@ -28,12 +28,14 @@ The gate records:
 2. PMM interpolation source range and point count
 3. PMM source member/material/section when generated from a model member
 4. fiber count, material-backbone count, curvature row count, and yield-moment summary
-5. ground-motion scale factor, time step, NLTH row count, and yielded-state flag
+5. ground-motion scale factor, time step, NLTH row count, convergence flag, max iteration count, and yielded-state flag
 6. B6, B7, and B8 benchmark case status
+
+2026-07-02 review fix: `runNewmarkNlth()` now records per-step Newton residual/correction/tangent rows and exposes overall convergence status. The `fiberNlthGate` reports `nlthConverged` and `maxIterations` so reports and AI agents can detect a nonlinear time-history step that did not satisfy the equilibrium tolerance.
 
 ## Current Test Gate
 
-`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling, Newmark NLTH yielded trace, B6/B7/B8 benchmark registration, and agent manifest exposure.
+`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling, Newmark NLTH yielded trace, per-step Newton iteration logs, B6/B7/B8 benchmark registration, and agent manifest exposure.
 
 ## Remaining Limits
 

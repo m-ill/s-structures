@@ -71,6 +71,8 @@ assert.equal(buildSpectrumScalingTrace(record, { targetPga: 0.4 }).scaled.target
 const nlth = runNewmarkNlth({ accelerations: scaled.accelerations, dt: scaled.dt, stiffness: 100, yieldForce: 0.00001 });
 assert.equal(nlth.version, NLTH_NEWMARK_VERSION);
 assert.equal(nlth.rows.length, scaled.accelerations.length);
+assert.equal(nlth.converged, true);
+assert.ok(nlth.rows.every((row) => row.iterations >= 1 && Array.isArray(row.iterationLog)));
 assert.ok(nlth.rows.some((row) => row.hingeState === 'yielded'));
 
 const benchmarks = runNonlinearFiberNlthBenchmarks();
@@ -105,6 +107,8 @@ assert.ok(trace.fiberNlthGate.fiber.fiberCount > 0);
 assert.ok(trace.fiberNlthGate.fiber.materialCount >= 2);
 assert.equal(trace.fiberNlthGate.pmm.memberSource.memberId, model.members[0].id);
 assert.ok(trace.fiberNlthGate.dynamics.nlthRows > 0);
+assert.equal(trace.fiberNlthGate.dynamics.nlthConverged, true);
+assert.ok(trace.fiberNlthGate.dynamics.maxIterations >= 1);
 assert.equal(trace.benchmarks.fiberNlth.ok, true);
 assert.ok(trace.pmm.interpolated.points.length > 0);
 assert.ok(trace.fiber.momentCurvature.rows.length > 0);

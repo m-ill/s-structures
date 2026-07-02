@@ -128,6 +128,8 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       dt: trace.groundMotion?.dt || null,
       scaleFactor: trace.groundMotion?.scaleFactor || 1,
       nlthRows: trace.nlth?.rows?.length || 0,
+      nlthConverged: trace.nlth?.converged ?? null,
+      maxIterations: Math.max(0, ...(trace.nlth?.rows || []).map((row) => row.iterations || 0)),
       yielded: (trace.nlth?.rows || []).some((row) => row.hingeState === 'yielded'),
     },
     benchmarks: fiberNlthBenchmarks ? {
