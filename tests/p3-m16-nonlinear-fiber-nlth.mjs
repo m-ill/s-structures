@@ -189,6 +189,7 @@ const zeroPgaGate = buildNonlinearFiberNlthGate({
   nlth: trace.nlth,
 }, trace.benchmarks.fiberNlth);
 assert.equal(zeroPgaGate.fiberNlthReview.status, 'review-required');
+assert.equal(zeroPgaGate.summary.readyForAgentReview, false);
 assert.equal(zeroPgaGate.fiberNlthReview.groundMotionScalingTrace, false);
 assert.ok(zeroPgaGate.fiberNlthReview.missing.includes('ground-motion-scaling'));
 assert.equal(zeroPgaGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T86').covered, false);
@@ -204,7 +205,22 @@ assert.equal(clampedPmmGate.pmm.requestedAxialRatio, 1.2);
 assert.equal(clampedPmmGate.pmm.clamped, true);
 assert.equal(clampedPmmGate.pmm.review.warning, 'pmm-axial-ratio-out-of-range');
 assert.equal(clampedPmmGate.fiberNlthReview.status, 'review-required');
+assert.equal(clampedPmmGate.summary.readyForAgentReview, false);
 assert.ok(clampedPmmGate.fiberNlthReview.missing.includes('pmm-axial-ratio-input-review'));
+assert.equal(clampedPmmGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T83').covered, false);
+
+const stepSplitGate = buildNonlinearFiberNlthGate({
+  pmm: trace.pmm,
+  fiber: trace.fiber,
+  rayleigh: trace.rayleigh,
+  groundMotion: trace.groundMotion,
+  spectrumScaling: trace.spectrumScaling,
+  nlth: cautiousNlth,
+}, trace.benchmarks.fiberNlth);
+assert.equal(stepSplitGate.fiberNlthReview.status, 'review-required');
+assert.equal(stepSplitGate.summary.readyForAgentReview, false);
+assert.ok(stepSplitGate.fiberNlthReview.missing.includes('nlth-step-split-review'));
+assert.equal(stepSplitGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T85').covered, false);
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();

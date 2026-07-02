@@ -131,7 +131,7 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       groundMotion: GROUND_MOTION_VERSION,
     },
     summary: {
-      readyForAgentReview: true,
+      readyForAgentReview: fiberNlthReview.status === 'trace-ready',
       benchmarkOk: fiberNlthBenchmarks?.ok ?? null,
       pmmPointCount: trace.pmm?.interpolated?.points?.length || 0,
       fiberCount: trace.fiber?.section?.fibers?.length || 0,
@@ -236,7 +236,8 @@ function buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }) {
     {
       ticket: 'P3-T83',
       scope: 'PMM interaction hinge interpolation',
-      covered: (trace.pmm?.interpolated?.points?.length || 0) > 0,
+      covered: (trace.pmm?.interpolated?.points?.length || 0) > 0
+        && trace.pmm?.interpolated?.review?.status !== 'review-required',
       evidence: `${trace.pmm?.interpolated?.points?.length || 0} PMM points, source=${(trace.pmm?.interpolated?.source || []).join('-') || 'default'}`,
     },
     {
@@ -248,7 +249,11 @@ function buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }) {
     {
       ticket: 'P3-T85',
       scope: 'Newmark NLTH with Rayleigh damping and step trace',
-      covered: !!trace.nlth?.converged && (trace.nlth?.rows?.length || 0) > 0 && !!trace.rayleigh?.version && !!trace.nlth?.energyTrace,
+      covered: !!trace.nlth?.converged
+        && (trace.nlth?.rows?.length || 0) > 0
+        && !!trace.rayleigh?.version
+        && !!trace.nlth?.energyTrace
+        && !trace.nlth?.energyTrace?.stepSplitRecommended,
       evidence: `${trace.nlth?.rows?.length || 0} NLTH rows, converged=${!!trace.nlth?.converged}, unstable=${trace.nlth?.energyTrace?.unstableStepCount ?? 'n/a'}`,
     },
     {
@@ -299,7 +304,7 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       formalPushover: pushover?.version || null,
     },
     summary: {
-      readyForAgentReview: true,
+      readyForAgentReview: controlReview.status === 'trace-ready',
       benchmarkOk: hingeControlBenchmarks?.ok ?? null,
       hingeEventCount: hingeTrace?.events?.length || 0,
       assignedHingeCount: options.hingeAssignment?.summary?.hingeCount || 0,
@@ -406,7 +411,10 @@ function buildHingeControlTicketCoverage({ hingeTrace, hingeAssignment, displace
     {
       ticket: 'P3-T55',
       scope: 'displacement-control and arc-length control traces',
-      covered: (displacementControl?.steps?.length || 0) > 0 && (arcLength?.steps || []).some((step) => step.dLambda < 0),
+      covered: (displacementControl?.steps?.length || 0) > 0
+        && displacementControl?.review?.status !== 'review-required'
+        && (arcLength?.steps || []).some((step) => step.dLambda < 0)
+        && (arcLength?.steps || []).every((step) => step.satisfied),
       evidence: `${displacementControl?.steps?.length || 0} displacement steps, postPeak=${(arcLength?.steps || []).some((step) => step.dLambda < 0)}`,
     },
     {

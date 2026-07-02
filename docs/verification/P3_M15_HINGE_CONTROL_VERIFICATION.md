@@ -55,9 +55,11 @@ The gate records:
 
 2026-07-03 pushover failure-gate hardening: formal pushover now reports `ok: false` when the control trace stops with `STEP_FAILED`. `hingeControlGate` also treats `PUSHOVER_STEP_FAILED`, `STEP_FAILED`, or nonconverged pushover steps as `formal-pushover-step-failure`, so partial capacity curves cannot advance to M16 review as clean M15 evidence.
 
+2026-07-03 hinge-control gate hardening: `hingeControlGate.summary.readyForAgentReview` now follows `controlReview.status === "trace-ready"` instead of always returning true. P3-T55 coverage also requires displacement-control input review to pass and all arc-length steps to satisfy the constraint, so invalid control input remains inspectable but cannot be treated as clean M15 evidence.
+
 ## Current Test Gate
 
-`tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, zero-rotation elastic state, member-end hinge assignment from material nonlinear backbone data, material yield-point extraction, hinge state events, displacement-control increments and input review holds, arc-length post-peak path tracking, formal pushover output, formal/source version separation, stepwise hinge degradation trace, control stop reason, pushover step-failure review holds, regression summary, B3/B4/B5 benchmark registration, tangent assembly correction exposure, and agent manifest exposure. `tests/m16-agent-capabilities.mjs` also guards the manifest limitation text against reverting to the old no-degradation wording.
+`tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, zero-rotation elastic state, member-end hinge assignment from material nonlinear backbone data, material yield-point extraction, hinge state events, displacement-control increments and input review holds, arc-length post-peak path tracking, formal pushover output, formal/source version separation, stepwise hinge degradation trace, control stop reason, pushover step-failure review holds, invalid-control ticket blocking, regression summary, B3/B4/B5 benchmark registration, tangent assembly correction exposure, and agent manifest exposure. `tests/m16-agent-capabilities.mjs` also guards the manifest limitation text against reverting to the old no-degradation wording.
 
 ## Remaining Limits
 

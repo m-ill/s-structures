@@ -162,6 +162,8 @@ const invalidControlTrace = buildNonlinearAnalysisTrace(model, {
   pushover: { steps: 3, referenceBaseShear: 20 },
 });
 assert.equal(invalidControlTrace.hingeControlGate.control.displacementReview.status, 'review-required');
+assert.equal(invalidControlTrace.hingeControlGate.summary.readyForAgentReview, false);
+assert.equal(invalidControlTrace.hingeControlGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T55').covered, false);
 assert.ok(invalidControlTrace.hingeControlGate.controlReview.missing.includes('displacement-control-input-review'));
 assert.equal(invalidControlTrace.hingeControlGate.controlReview.agentDecision, 'hold-before-m16');
 const failedPushoverGate = buildNonlinearHingeControlGate(hingeTrace, {
@@ -178,6 +180,7 @@ const failedPushoverGate = buildNonlinearHingeControlGate(hingeTrace, {
   hingeAssignment: assigned,
 });
 assert.equal(failedPushoverGate.summary.pushoverOk, false);
+assert.equal(failedPushoverGate.summary.readyForAgentReview, false);
 assert.equal(failedPushoverGate.controlReview.status, 'review-required');
 assert.ok(failedPushoverGate.controlReview.missing.includes('formal-pushover-step-failure'));
 assert.equal(failedPushoverGate.controlReview.agentDecision, 'hold-before-m16');
