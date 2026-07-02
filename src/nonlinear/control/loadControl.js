@@ -24,15 +24,16 @@ export function buildLoadControlTrace(options = {}) {
     const previousAcceptedValue = acceptedValue;
     const du = nr.x - previousAcceptedValue;
     acceptedValue = nr.converged ? nr.x : previousAcceptedValue;
-    state = advanceAnalysisState(state, {
-      dLambda: nr.converged ? dLambda : 0,
-      du: [nr.converged ? du : 0],
-      converged: nr.converged,
-      iterations: nr.iterations,
-      events: nr.converged ? [] : [{ step: index + 1, type: 'nonconvergence' }],
-    });
+    const acceptedState = nr.converged
+      ? advanceAnalysisState(state, {
+        dLambda,
+        du: [du],
+        converged: true,
+        iterations: nr.iterations,
+      })
+      : markFailedState(state, index + 1, nr.iterations);
     rows.push({
-      step: state.step,
+      step: nr.converged ? acceptedState.step : index + 1,
       targetLambda,
       dLambda,
       converged: nr.converged,
@@ -40,8 +41,9 @@ export function buildLoadControlTrace(options = {}) {
       reason: nr.convergenceReason,
       attemptedValue: nr.x,
       acceptedValue,
-      stateSnapshot: snapshotAnalysisState(state),
+      stateSnapshot: snapshotAnalysisState(acceptedState),
     });
+    state = acceptedState;
     if (!nr.converged && options.continueOnFailure !== true) break;
   }
   return {
@@ -66,6 +68,14 @@ export function buildLoadControlTrace(options = {}) {
     converged: rows.every((row) => row.converged),
     limitations: ['Single-parameter load-control trace; global frame residual assembly is handled by the P3-M14 global-equilibrium trace.'],
   };
+}
+
+function markFailedState(state, step, iterations) {
+  const out = createAnalysisState(snapshotAnalysisState(state));
+  out.converged = false;
+  out.iterations = Math.trunc(finite(iterations, 0));
+  out.events.push({ step, type: 'nonconvergence' });
+  return out;
 }
 
 function finite(value, fallback) {

@@ -52,7 +52,9 @@ The gate records:
 
 2026-07-03 geometry-gate hardening: `geometryGate.summary.readyForAgentReview` now follows `solverReview.status === "trace-ready"` instead of always returning true. Incomplete M14 traces, such as missing tangent assembly, remain visible for inspection but are blocked from M15 handoff until the solver review has no missing items.
 
-`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, restart-safe hinge/event copies, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, reduced-DOF global equilibrium trace including singular-tangent failure, load-control trace including failed-step acceptance separation, incomplete gate review blocking, B1/B2 benchmarks, and agent trace exposure.
+2026-07-03 continued-failure hardening: `buildLoadControlTrace()` now keeps the accepted state unchanged when `continueOnFailure` is enabled. Failed rows still appear in the trace, but `step`, `lambda`, and displacement stay at the last accepted state. This preserves the P3-T50 path-state contract before M15/M16 add hinge and fiber history.
+
+`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, restart-safe hinge/event copies, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, reduced-DOF global equilibrium trace including singular-tangent failure, load-control trace including failed-step acceptance separation and continued-failure state immutability, incomplete gate review blocking, B1/B2 benchmarks, and agent trace exposure.
 
 ## Remaining Limits
 

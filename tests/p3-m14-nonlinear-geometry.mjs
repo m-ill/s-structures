@@ -144,6 +144,22 @@ assert.equal(failedLoadControl.finalState.lambda, 0);
 assert.equal(failedLoadControl.finalState.u[0], 0);
 assert.equal(failedLoadControl.finalState.events[0].type, 'nonconvergence');
 assert.equal(failedLoadControl.contract.failurePolicy, 'Record the failed step and stop unless continueOnFailure is explicitly enabled.');
+const continuedFailure = buildLoadControlTrace({
+  increments: [0.2, 0.3],
+  initial: 1,
+  residual: (x) => x * x - 4,
+  tangent: (x) => 2 * x,
+  maxIterations: 1,
+  continueOnFailure: true,
+});
+assert.equal(continuedFailure.converged, false);
+assert.equal(continuedFailure.rows.length, 2);
+assert.deepEqual(continuedFailure.rows.map((row) => row.step), [1, 2]);
+assert.equal(continuedFailure.finalState.step, 0);
+assert.equal(continuedFailure.finalState.lambda, 0);
+assert.equal(continuedFailure.finalState.u[0], 0);
+assert.equal(continuedFailure.finalState.events.length, 2);
+assert.equal(continuedFailure.rows[1].stateSnapshot.step, 0);
 
 const benchmarks = runNonlinearGeometryBenchmarks();
 assert.equal(benchmarks.version, NONLINEAR_BENCHMARK_VERSION);
