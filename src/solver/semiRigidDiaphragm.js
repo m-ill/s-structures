@@ -1,3 +1,5 @@
+import { materialOf } from '../core/catalogs.js';
+
 export const SEMI_RIGID_DIAPHRAGM_VERSION = 'p3-t75-semi-rigid-diaphragm-braces';
 
 export function expandSemiRigidDiaphragms(model = {}) {
@@ -9,14 +11,16 @@ export function expandSemiRigidDiaphragms(model = {}) {
     if (diaphragm.type !== 'semiRigid') continue;
     const ids = (diaphragm.nodeIds || []).filter((id) => nodes[id]);
     const pairs = nodePairs(ids, nodes);
+    const matId = diaphragm.matId || 'steel';
+    const E = Math.max(1e-9, Number(materialOf(model, matId).E || 205000000));
     const edgeK = Number(diaphragm.inPlaneStiffness || 0) / Math.max(1, pairs.length);
     pairs.forEach(([a, b], index) => {
       const L = distance(nodes[a], nodes[b]);
       const secId = `__semi_${diaphragm.id}_${index + 1}_sec`;
-      members.push({ id: `__semi_${diaphragm.id}_${index + 1}`, type: 'truss', n1: a, n2: b, matId: 'steel', secId, generated: true, source: 'semiRigidDiaphragm', diaphragmId: diaphragm.id });
-      sections.push({ id: secId, kind: 'direct', A: Math.max(1e-9, edgeK * L / 205000000), Iy: 1e-12, Iz: 1e-12, J: 1e-12 });
+      members.push({ id: `__semi_${diaphragm.id}_${index + 1}`, type: 'truss', n1: a, n2: b, matId, secId, generated: true, source: 'semiRigidDiaphragm', diaphragmId: diaphragm.id });
+      sections.push({ id: secId, kind: 'direct', A: Math.max(1e-9, edgeK * L / E), Iy: 1e-12, Iz: 1e-12, J: 1e-12 });
     });
-    rows.push({ id: diaphragm.id, nodeCount: ids.length, braceCount: pairs.length, inPlaneStiffness: Number(diaphragm.inPlaneStiffness || 0), edgeStiffness: edgeK });
+    rows.push({ id: diaphragm.id, nodeCount: ids.length, braceCount: pairs.length, matId, materialE: E, inPlaneStiffness: Number(diaphragm.inPlaneStiffness || 0), edgeStiffness: edgeK });
   }
   return { version: SEMI_RIGID_DIAPHRAGM_VERSION, braceCount: members.length, rows, members, sections };
 }

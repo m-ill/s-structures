@@ -13,6 +13,7 @@ export function normalizeDiaphragm(item = {}, index = 0) {
     z: Number.isFinite(Number(item.z)) ? Number(item.z) : null,
     nodeIds: Array.isArray(item.nodeIds) ? item.nodeIds.filter(Boolean) : null,
     center: item.center || null,
+    matId: item.matId || null,
     inPlaneStiffness: Number.isFinite(Number(item.inPlaneStiffness)) ? Number(item.inPlaneStiffness) : null,
   };
 }

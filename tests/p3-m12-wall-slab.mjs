@@ -91,6 +91,17 @@ assert.equal(shellFrameResult.byCombo.CO1.memberResults[shellAssembly.members[0]
 const shellFrameTrace = buildWallSlabEquivalentTrace(shellFrameModel, shellFrameResult);
 assert.equal(shellFrameTrace.shell.assembly.version, SHELL_FRAME_ASSEMBLY_VERSION);
 assert.equal(shellFrameTrace.shell.assembly.rows[0].status, 'assembled-preliminary');
+assert.equal(shellFrameTrace.shell.assembly.rows[0].materialId, 'steel');
+assert.ok(shellFrameTrace.shell.assembly.rows[0].links.every((row) => row.targetAxialStiffness > 0));
+
+const concreteShellFrameModel = createModel({
+  ...shellFrameModel,
+  shells: [{ ...shellFrameModel.shells[0], matId: 'concrete' }],
+});
+const concreteShellAssembly = expandShellsToFrameLinks(concreteShellFrameModel);
+assert.equal(concreteShellAssembly.members[0].matId, 'concrete');
+assert.ok(concreteShellAssembly.sections[0].A > shellAssembly.sections[0].A);
+assert.equal(concreteShellAssembly.rows[0].materialId, 'concrete');
 
 const summary = summarizeSemiRigidDiaphragm({
   nodes: [{ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 4, y: 0, z: 0 }],
@@ -124,6 +135,13 @@ const stiffDiaModel = createModel({ ...transferBase, diaphragms: [{ id: 'D-STIFF
 const softExpansion = expandSemiRigidDiaphragms(softDiaModel);
 assert.equal(softExpansion.version, SEMI_RIGID_DIAPHRAGM_VERSION);
 assert.equal(softExpansion.braceCount, 1);
+assert.equal(softExpansion.rows[0].matId, 'steel');
+const concreteDiaExpansion = expandSemiRigidDiaphragms(createModel({
+  ...transferBase,
+  diaphragms: [{ id: 'D-CONC', type: 'semiRigid', nodeIds: ['C', 'D'], inPlaneStiffness: 100, matId: 'concrete' }],
+}));
+assert.equal(concreteDiaExpansion.members[0].matId, 'concrete');
+assert.ok(concreteDiaExpansion.sections[0].A > softExpansion.sections[0].A);
 const softResult = analyzeModel(softDiaModel);
 const stiffResult = analyzeModel(stiffDiaModel);
 assert.equal(softResult.ok, true);

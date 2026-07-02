@@ -62,8 +62,8 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 | Ticket | Plan target | Current code | Audit result |
 | --- | --- | --- | --- |
 | P3-T73 | wall mid-pier + pier force recovery | Mid-pier equivalent can be merged into model and pier forces recovered from analysis | Preliminary |
-| P3-T74 | shell element v1 | `src/solver/shell/quad4.js` exposes a 4-node, 6-DOF/node shell v1 contract and `src/solver/shell/shellAssembly.js` expands node-linked shells into generated edge/diagonal frame links; patch, plate-deflection, and solver assembly regressions are covered | Preliminary; full 24-DOF shell FE assembly and stress recovery remain hardening |
-| P3-T75 | semi-rigid diaphragm | Semi-rigid diaphragms expand to equivalent truss brace grids in the frame solver and expose a redistribution report; transfer-level regression is covered in `tests/p3-m12-wall-slab.mjs` | Preliminary; full membrane slab FE redistribution remains hardening |
+| P3-T74 | shell element v1 | `src/solver/shell/quad4.js` exposes a 4-node, 6-DOF/node shell v1 contract and `src/solver/shell/shellAssembly.js` expands node-linked shells into generated edge/diagonal frame links; generated direct sections are material-aware; patch, plate-deflection, and solver assembly regressions are covered | Preliminary; full 24-DOF shell FE assembly and stress recovery remain hardening |
+| P3-T75 | semi-rigid diaphragm | Semi-rigid diaphragms expand to material-aware equivalent truss brace grids in the frame solver and expose a redistribution report; transfer-level regression is covered in `tests/p3-m12-wall-slab.mjs` | Preliminary; full membrane slab FE redistribution remains hardening |
 
 ### P3-M13 Loads v2 / Dynamics / Buckling
 
