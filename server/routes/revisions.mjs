@@ -1,5 +1,6 @@
 import { authenticate, requireProjectRole } from '../auth/guard.mjs';
 import { ApiError, ok } from '../router.mjs';
+import { optionalText, TEXT_LIMITS } from '../validation.mjs';
 
 export function registerRevisionRoutes(router, ctx) {
   router.get('/api/projects/:id/revisions', async (req, res, params) => {
@@ -17,7 +18,10 @@ export function registerRevisionRoutes(router, ctx) {
       throw new ApiError(400, 'VALIDATION', 'model with a schemaVersion is required.');
     }
     const result = await ctx.projectStore.saveRevision(params.id, {
-      model, note: body?.note, author: user.id, parentRev: body?.parentRev ?? null,
+      model,
+      note: optionalText(body?.note, 'Revision note', TEXT_LIMITS.revisionNote),
+      author: user.id,
+      parentRev: body?.parentRev ?? null,
     });
     return ok({ revision: result.entry, lineageWarning: result.lineageWarning });
   });

@@ -1,5 +1,6 @@
 import { authenticate, requireProjectRole } from '../auth/guard.mjs';
 import { ApiError, ok } from '../router.mjs';
+import { optionalText, requiredText, TEXT_LIMITS } from '../validation.mjs';
 
 export function registerProjectRoutes(router, ctx) {
   router.get('/api/projects', async (req) => {
@@ -10,10 +11,10 @@ export function registerProjectRoutes(router, ctx) {
 
   router.post('/api/projects', async (req, res, params, body) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
-    if (!body?.name || typeof body.name !== 'string') {
-      throw new ApiError(400, 'VALIDATION', 'Project name is required.');
-    }
-    const project = await ctx.projectStore.create(user.id, body);
+    const project = await ctx.projectStore.create(user.id, {
+      name: requiredText(body?.name, 'Project name', TEXT_LIMITS.projectName),
+      description: optionalText(body?.description, 'Project description', TEXT_LIMITS.projectDescription),
+    });
     return ok({ project });
   });
 
@@ -28,8 +29,12 @@ export function registerProjectRoutes(router, ctx) {
     const user = await authenticate({ req, userStore: ctx.userStore });
     await requireProjectRole(ctx, params.id, user.id, 'owner');
     const patch = {};
-    if (typeof body?.name === 'string') patch.name = body.name;
-    if (typeof body?.description === 'string') patch.description = body.description;
+    if (body && Object.hasOwn(body, 'name')) {
+      patch.name = requiredText(body.name, 'Project name', TEXT_LIMITS.projectName);
+    }
+    if (body && Object.hasOwn(body, 'description')) {
+      patch.description = optionalText(body.description, 'Project description', TEXT_LIMITS.projectDescription);
+    }
     const project = await ctx.projectStore.update(params.id, patch);
     return ok({ project });
   });

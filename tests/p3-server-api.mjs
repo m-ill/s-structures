@@ -50,6 +50,14 @@ try {
   assert.equal(forged.status, 401);
 
   // project CRUD
+  const blankProjectName = await app.api('POST', '/api/projects', { token, body: { name: '   ' } });
+  assert.equal(blankProjectName.status, 400);
+  assert.equal(blankProjectName.data.error.code, 'VALIDATION');
+
+  const longProjectName = await app.api('POST', '/api/projects', { token, body: { name: 'P'.repeat(121) } });
+  assert.equal(longProjectName.status, 400);
+  assert.equal(longProjectName.data.error.code, 'VALIDATION');
+
   const createProject = await app.api('POST', '/api/projects', { token, body: { name: 'Test Project' } });
   assert.equal(createProject.status, 200, JSON.stringify(createProject.data));
   const projectId = createProject.data.data.project.id;
@@ -59,6 +67,12 @@ try {
 
   const patch = await app.api('PATCH', `/api/projects/${projectId}`, { token, body: { name: 'Renamed' } });
   assert.equal(patch.data.data.project.name, 'Renamed');
+
+  const longDescriptionPatch = await app.api('PATCH', `/api/projects/${projectId}`, {
+    token, body: { description: 'D'.repeat(2001) },
+  });
+  assert.equal(longDescriptionPatch.status, 400);
+  assert.equal(longDescriptionPatch.data.error.code, 'VALIDATION');
 
   // membership + role gate
   const engineerLogin = await registerAndLogin(app, 'engineer2@example.com');
@@ -78,6 +92,18 @@ try {
 
   // revision round trip
   const model = createTwoStoryElasticFrameModel();
+  const badRevisionNote = await app.api('POST', `/api/projects/${projectId}/revisions`, {
+    token, body: { model, note: { text: 'not allowed' } },
+  });
+  assert.equal(badRevisionNote.status, 400);
+  assert.equal(badRevisionNote.data.error.code, 'VALIDATION');
+
+  const longRevisionNote = await app.api('POST', `/api/projects/${projectId}/revisions`, {
+    token, body: { model, note: 'N'.repeat(1001) },
+  });
+  assert.equal(longRevisionNote.status, 400);
+  assert.equal(longRevisionNote.data.error.code, 'VALIDATION');
+
   const saveRev1 = await app.api('POST', `/api/projects/${projectId}/revisions`, { token, body: { model } });
   assert.equal(saveRev1.status, 200, JSON.stringify(saveRev1.data));
   assert.equal(saveRev1.data.data.revision.rev, 1);
