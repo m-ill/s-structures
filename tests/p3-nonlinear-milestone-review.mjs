@@ -28,8 +28,22 @@ assert.equal(review.rows[1].contracts.finalApprovalField, 'productionHingeEquili
 assert.equal(review.rows[2].contracts.finalApprovalField, 'productionSeismicQualification');
 assert.ok(review.rows[1].contracts.readApis.includes('runPushover'));
 assert.ok(review.rows[2].remainingValidation.includes('production seismic qualification and owner record review'));
+assert.deepEqual(review.rows.map((row) => row.exitCriteriaSummary.status), [
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+]);
+assert.deepEqual(review.rows.map((row) => row.exitCriteria.length), [4, 5, 5]);
+assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'N1-E3').ticket, 'P3-T52');
+assert.ok(review.rows[0].exitCriteria.find((row) => row.id === 'N1-B1B2').requirement.includes('B1 and B2'));
+assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'N4-E1').evidence, 'tests/p3-m15-nonlinear-hinge-control.mjs');
+assert.ok(review.rows[1].exitCriteria.find((row) => row.id === 'N2N3N4-B3B5').requirement.includes('B3, B4, and B5'));
+assert.equal(review.rows[2].exitCriteria.find((row) => row.id === 'N6-E2').source, 'docs/phase3/NONLINEAR_ENGINE_PLAN.md');
+assert.ok(review.rows[2].exitCriteria.find((row) => row.id === 'N5N6-B6B8').requirement.includes('B6, B7, and B8'));
 assert.equal(review.summary.milestoneCount, 3);
 assert.equal(review.summary.automatedEvidenceCount, 3);
+assert.equal(review.summary.exitCriteriaCount, 14);
+assert.equal(review.summary.exitCriteriaAutomatedCount, 14);
 assert.equal(review.summary.productionReady, false);
 assert.equal(review.summary.agentDecision, 'nonlinear-engine-review-required');
 assert.equal(review.agentUse.primaryReviewApi, 'getNonlinearAnalysisTrace');
