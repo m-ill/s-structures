@@ -42,6 +42,7 @@ const READ_METHODS = new Set([
   'getPhase3ProductizationMilestoneReview',
   'getPhase3OwnerSignoffReview',
   'getPhase3CompletionAuditReview',
+  'getPhase3EvidenceRegister',
   'getConnectionFoundationReport',
   'getMemberDesignTraceReport',
   'getServiceabilityDriftReport',

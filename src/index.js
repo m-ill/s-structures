@@ -228,6 +228,10 @@ export {
   PHASE3_COMPLETION_AUDIT_REVIEW_VERSION,
 } from './platform/phase3CompletionAuditReview.js';
 export {
+  buildPhase3EvidenceRegister,
+  PHASE3_EVIDENCE_REGISTER_VERSION,
+} from './platform/phase3EvidenceRegister.js';
+export {
   buildPhase3PracticeValidationReview,
   PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
 } from './platform/phase3PracticeValidationReview.js';

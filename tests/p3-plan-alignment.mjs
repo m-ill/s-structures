@@ -13,6 +13,7 @@ import {
   buildPhase3ProductizationMilestoneReview,
   buildPhase3OwnerSignoffReview,
   buildPhase3CompletionAuditReview,
+  buildPhase3EvidenceRegister,
   buildAgentManifest,
   buildPhase3PlanAlignmentReport,
   PHASE3_DESIGN_MILESTONE_REVIEW_VERSION,
@@ -27,6 +28,7 @@ import {
   PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION,
   PHASE3_OWNER_SIGNOFF_REVIEW_VERSION,
   PHASE3_COMPLETION_AUDIT_REVIEW_VERSION,
+  PHASE3_EVIDENCE_REGISTER_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
@@ -170,6 +172,7 @@ assert.equal(manifest.modules.phase3PracticeValidationReview, PHASE3_PRACTICE_VA
 assert.equal(manifest.modules.phase3ProductizationMilestoneReview, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3OwnerSignoffReview, PHASE3_OWNER_SIGNOFF_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3CompletionAuditReview, PHASE3_COMPLETION_AUDIT_REVIEW_VERSION);
+assert.equal(manifest.modules.phase3EvidenceRegister, PHASE3_EVIDENCE_REGISTER_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
 assert.ok(manifest.readApis.includes('getPhase3DesignMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3DrawingImportValidationReview'));
@@ -182,6 +185,7 @@ assert.ok(manifest.readApis.includes('getPhase3PracticeValidationReview'));
 assert.ok(manifest.readApis.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3OwnerSignoffReview'));
 assert.ok(manifest.readApis.includes('getPhase3CompletionAuditReview'));
+assert.ok(manifest.readApis.includes('getPhase3EvidenceRegister'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
 assert.ok(manifest.dataContracts.includes('phase3DesignMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3DrawingImportValidationReview'));
@@ -194,6 +198,7 @@ assert.ok(manifest.dataContracts.includes('phase3PracticeValidationReview'));
 assert.ok(manifest.dataContracts.includes('phase3ProductizationMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3OwnerSignoffReview'));
 assert.ok(manifest.dataContracts.includes('phase3CompletionAuditReview'));
+assert.ok(manifest.dataContracts.includes('phase3EvidenceRegister'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3M6ToM20, 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20');
 
@@ -264,6 +269,12 @@ assert.equal(completionAuditReview.summary.productionReady, false);
 assert.ok(completionAuditReview.rows.find((row) => row.milestone === 'P3-M20').readApis.includes('getPhase3OwnerSignoffReview'));
 assert.equal(completionAuditReview.agentUse.readApi, 'getPhase3CompletionAuditReview');
 
+const evidenceRegister = buildPhase3EvidenceRegister();
+assert.equal(evidenceRegister.version, PHASE3_EVIDENCE_REGISTER_VERSION);
+assert.ok(evidenceRegister.summary.missing.includes('real-pointcloud-files'));
+assert.ok(evidenceRegister.summary.missing.includes('security-signoff'));
+assert.equal(evidenceRegister.agentUse.readApi, 'getPhase3EvidenceRegister');
+
 const practiceValidationReview = buildPhase3PracticeValidationReview();
 assert.equal(practiceValidationReview.version, PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION);
 assert.ok(practiceValidationReview.rows.find((row) => row.id === 'point-cloud-import').milestones.includes('P3-M9'));
@@ -294,6 +305,7 @@ assert.equal(agent.getPhase3PracticeValidationReview().version, PHASE3_PRACTICE_
 assert.equal(agent.getPhase3ProductizationMilestoneReview().version, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
 assert.equal(agent.getPhase3OwnerSignoffReview().version, PHASE3_OWNER_SIGNOFF_REVIEW_VERSION);
 assert.equal(agent.getPhase3CompletionAuditReview().version, PHASE3_COMPLETION_AUDIT_REVIEW_VERSION);
+assert.equal(agent.getPhase3EvidenceRegister().version, PHASE3_EVIDENCE_REGISTER_VERSION);
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 assert.deepEqual(Object.keys(packageJson.dependencies || {}), []);
