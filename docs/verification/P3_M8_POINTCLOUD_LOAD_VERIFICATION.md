@@ -50,3 +50,5 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 ## Remaining Limits
 
 P3-M8 remains preliminary. Large-file performance, binary point-cloud formats, LAS, and real scan validation require owner-provided field files or agreed sample data.
+
+2026-07-03 practice-validation update: `getPhase3PointCloudValidationReview` now records loader/worker/viewer readiness, real-scan evidence, and large-file performance records. `test:p3pointcloud` keeps the P3-M8 large-field-file requirements visible while compact XYZ/PLY/PCD fixtures remain the automated regression path.

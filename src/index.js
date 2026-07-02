@@ -220,6 +220,10 @@ export {
   PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
 } from './platform/phase3PracticeValidationReview.js';
 export {
+  buildPhase3PointCloudValidationReview,
+  PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION,
+} from './platform/phase3PointCloudValidationReview.js';
+export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';

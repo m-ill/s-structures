@@ -121,6 +121,10 @@ response = sendCommand({ id: 'practice-validation-review', method: 'getPhase3Pra
 assert.equal(response.ok, true);
 assert.equal(response.data.summary.agentDecision, 'collect-practice-validation-evidence-before-production-use');
 
+response = sendCommand({ id: 'pointcloud-validation-review', method: 'getPhase3PointCloudValidationReview' });
+assert.equal(response.ok, true);
+assert.equal(response.data.summary.agentDecision, 'collect-pointcloud-validation-evidence');
+
 response = sendCommand({ id: 'nonlinear-trace', method: 'getNonlinearAnalysisTrace' });
 assert.equal(response.ok, true);
 assert.equal(response.data.version, 'p3-m16-nonlinear-trace');
@@ -139,7 +143,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 19);
+assert.equal(response.data.agentCommandBridge.commandCount, 20);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -153,13 +157,14 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 20);
+assert.equal(state.commandCount, 21);
 assert.equal(state.errorCount, 1);
 assert.ok(state.availableMethods.includes('getPhase3ImportMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3DesignMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3DrawingImportValidationReview'));
 assert.ok(state.availableMethods.includes('getPhase3NonlinearMilestoneReview'));
+assert.ok(state.availableMethods.includes('getPhase3PointCloudValidationReview'));
 assert.ok(state.availableMethods.includes('getPhase3PracticeValidationReview'));
 assert.ok(state.availableMethods.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(counters.reanalyze >= 6);

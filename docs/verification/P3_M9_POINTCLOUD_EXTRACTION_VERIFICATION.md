@@ -51,3 +51,5 @@ P3-M9 is covered by:
 ## Remaining Limits
 
 P3-M9 remains preliminary. Beam detection still uses synthetic ground-truth assistance in the current benchmark path, wall extraction is a review candidate trace rather than production real-scan plane grouping, and real field point-cloud validation is pending.
+
+2026-07-03 practice-validation update: `getPhase3PointCloudValidationReview` now records synthetic benchmark rows separately from owner real-scan validation rows. This keeps story/column/beam benchmark success useful for regression while preventing AI agents from treating synthetic-assisted beam/wall extraction as production field-scan proof.

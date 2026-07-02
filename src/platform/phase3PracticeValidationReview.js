@@ -10,7 +10,7 @@ const ROWS = [
     'owner-provided real point-cloud files',
     'large-file performance record',
     'beam and wall validation without synthetic ground-truth assistance',
-  ], ['getPhase3ImportMilestoneReview'], ['docs/verification/P3_M8_POINTCLOUD_LOAD_VERIFICATION.md', 'docs/verification/P3_M9_POINTCLOUD_EXTRACTION_VERIFICATION.md']),
+  ], ['getPhase3ImportMilestoneReview', 'getPhase3PointCloudValidationReview'], ['docs/verification/P3_M8_POINTCLOUD_LOAD_VERIFICATION.md', 'docs/verification/P3_M9_POINTCLOUD_EXTRACTION_VERIFICATION.md']),
   row('elastic-core', ['P3-M10', 'P3-M11', 'P3-M12', 'P3-M13'], [
     'office-grade KS material and section catalog policy',
     'project-specific KDS load exception review',

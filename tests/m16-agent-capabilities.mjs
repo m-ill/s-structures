@@ -56,6 +56,7 @@ assert.ok(manifest.readApis.includes('getPhase3DrawingImportValidationReview'));
 assert.ok(manifest.readApis.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3NonlinearMilestoneReview'));
+assert.ok(manifest.readApis.includes('getPhase3PointCloudValidationReview'));
 assert.ok(manifest.readApis.includes('getPhase3PracticeValidationReview'));
 assert.ok(manifest.readApis.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3LoadsV2Trace'));
@@ -65,6 +66,7 @@ assert.ok(manifest.dataContracts.includes('phase3DrawingImportValidationReview')
 assert.ok(manifest.dataContracts.includes('phase3ElasticMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearMilestoneReview'));
+assert.ok(manifest.dataContracts.includes('phase3PointCloudValidationReview'));
 assert.ok(manifest.dataContracts.includes('phase3PracticeValidationReview'));
 assert.ok(manifest.dataContracts.includes('phase3ProductizationMilestoneReview'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
@@ -98,6 +100,9 @@ assert.equal(designMilestoneReview.summary.agentDecision, 'detailed-design-engin
 const drawingImportValidationReview = agent.getPhase3DrawingImportValidationReview();
 assert.ok(drawingImportValidationReview.summary.missing.includes('real-office-dxf-fixtures'));
 assert.equal(drawingImportValidationReview.summary.agentDecision, 'collect-drawing-import-validation-evidence');
+const pointCloudValidationReview = agent.getPhase3PointCloudValidationReview();
+assert.ok(pointCloudValidationReview.summary.missing.includes('real-scan-validation'));
+assert.equal(pointCloudValidationReview.summary.agentDecision, 'collect-pointcloud-validation-evidence');
 const productizationMilestoneReview = agent.getPhase3ProductizationMilestoneReview();
 assert.deepEqual(productizationMilestoneReview.rows.map((row) => row.milestone), ['P3-M19', 'P3-M20']);
 assert.ok(productizationMilestoneReview.summary.productizationScopes.includes('beta-pilot-scenarios'));

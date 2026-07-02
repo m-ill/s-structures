@@ -57,6 +57,7 @@ import { PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION } from '../platform/phase3Elast
 import { PHASE3_IMPORT_MILESTONE_REVIEW_VERSION } from '../platform/phase3ImportMilestoneReview.js';
 import { PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION } from '../platform/phase3NonlinearMilestoneReview.js';
 import { PHASE3_PLAN_ALIGNMENT_VERSION } from '../platform/phase3PlanAlignment.js';
+import { PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION } from '../platform/phase3PointCloudValidationReview.js';
 import { PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION } from '../platform/phase3PracticeValidationReview.js';
 import { PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION } from '../platform/phase3ProductizationMilestoneReview.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
@@ -184,6 +185,7 @@ export function buildAgentManifest(options = {}) {
       phase3ImportMilestoneReview: PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
       phase3NonlinearMilestoneReview: PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION,
       phase3PlanAlignment: PHASE3_PLAN_ALIGNMENT_VERSION,
+      phase3PointCloudValidationReview: PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION,
       phase3PracticeValidationReview: PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
       phase3ProductizationMilestoneReview: PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
@@ -277,6 +279,7 @@ export function buildAgentManifest(options = {}) {
       'getPhase3ImportMilestoneReview',
       'getPhase3NonlinearMilestoneReview',
       'getPhase3PlanAlignment',
+      'getPhase3PointCloudValidationReview',
       'getPhase3PracticeValidationReview',
       'getPhase3ProductizationMilestoneReview',
       'getConnectionFoundationReport',
@@ -330,6 +333,7 @@ export function buildAgentManifest(options = {}) {
       phase3PlanAlignment: 'node tests/p3-plan-alignment.mjs',
       phase3DocReferences: 'node tests/p3-doc-reference-integrity.mjs',
       phase3DrawingImportValidation: 'node tests/p3-drawing-import-validation-review.mjs',
+      phase3PointCloudValidation: 'node tests/p3-pointcloud-validation-review.mjs',
       phase3PracticeValidation: 'node tests/p3-practice-validation-review.mjs',
       phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
     },
@@ -413,6 +417,7 @@ export function buildAgentManifest(options = {}) {
       'phase3ImportMilestoneReview',
       'phase3NonlinearMilestoneReview',
       'phase3PlanAlignment',
+      'phase3PointCloudValidationReview',
       'phase3PracticeValidationReview',
       'phase3ProductizationMilestoneReview',
       'steelMemberReviewSchedule',

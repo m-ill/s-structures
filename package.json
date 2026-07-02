@@ -136,6 +136,7 @@
     "test:p3m8": "node tests/p3-pointcloud-load.mjs",
     "test:p3m9": "node tests/p3-pointcloud-extraction.mjs",
     "test:p3m9-e2e": "node tests/p3-pointcloud-e2e.mjs",
+    "test:p3pointcloud": "node tests/p3-pointcloud-validation-review.mjs",
     "test:p3m10": "node tests/p3-m10-materials.mjs",
     "test:p3section": "node tests/p3-section-properties.mjs",
     "test:p3m11": "node tests/p3-m11-elastic-expansion.mjs",

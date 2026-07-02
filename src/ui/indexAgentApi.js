@@ -29,6 +29,7 @@ import {
   buildPhase3ImportMilestoneReview,
   buildPhase3NonlinearMilestoneReview,
   buildPhase3PlanAlignmentReport,
+  buildPhase3PointCloudValidationReview,
   buildPhase3PracticeValidationReview,
   buildPhase3ProductizationMilestoneReview,
   buildRcDetailedDesignReport,
@@ -247,6 +248,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getPhase3PracticeValidationReview() {
       return cloneJson(buildPhase3PracticeValidationReview());
+    },
+    getPhase3PointCloudValidationReview(options = {}) {
+      return cloneJson(buildPhase3PointCloudValidationReview(options));
     },
     getConnectionFoundationReport(options = {}) {
       const model = getCurrentModel(target);
