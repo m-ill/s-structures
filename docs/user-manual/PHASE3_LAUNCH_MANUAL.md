@@ -78,4 +78,6 @@ Agents must also inspect `getLaunchReadinessReport().finalUseReview`. `FINAL_USE
 
 `submitProjectEvidence` accepts only the IDs listed in `getPhase3EvidenceRegister().rows` or the matching required evidence type labels. Unknown evidence IDs are rejected by both the server route and the in-page agent command bridge.
 
+For file-backed drawing or point-cloud evidence, upload the file first and submit the returned `fileId` with the evidence row. Server-side evidence submission rejects unknown `fileId` values, and `createEvidenceClient().submitProjectEvidencePackage()` performs the upload-and-register sequence for API-driven agents.
+
 Manual launch evidence remains in `reports/launch-readiness/`.

@@ -152,6 +152,14 @@ try {
   assert.equal(unknownEvidenceWrite.data.error.details.reason, 'unknown-phase3-evidence');
   assert.ok(unknownEvidenceWrite.data.error.details.allowedIds.includes('security-signoff'));
 
+  const missingEvidenceFileWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
+    token,
+    body: { evidence: { id: 'real-pointcloud-files', accepted: true, fileId: '00000000-0000-0000-0000-000000000000' } },
+  });
+  assert.equal(missingEvidenceFileWrite.status, 400);
+  assert.equal(missingEvidenceFileWrite.data.error.code, 'VALIDATION');
+  assert.equal(missingEvidenceFileWrite.data.error.details.reason, 'missing-evidence-file');
+
   const securityEvidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
     token,
     body: { evidence: { id: 'security-signoff', accepted: true, owner: 'owner', reportPath: 'reports/launch-readiness/security.md' } },

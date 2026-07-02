@@ -1,4 +1,4 @@
-export const PHASE3_EVIDENCE_REGISTER_VERSION = 'p3-evidence-register-v1';
+export const PHASE3_EVIDENCE_REGISTER_VERSION = 'p3-evidence-register-v2';
 
 export const PHASE3_REQUIRED_EVIDENCE = [
   req('real-office-dxf-fixtures', 'drawing-import', 'P3-M6', 'real office DXF fixture set'),
@@ -104,6 +104,7 @@ function copyRecord(row) {
     type: row.type || null,
     status: row.status || null,
     accepted: row.accepted === true || row.status === 'accepted',
+    fileId: row.fileId || null,
     reviewer: row.reviewer || row.owner || null,
     reportPath: row.reportPath || row.reviewReportPath || null,
     recordedAt: row.recordedAt || null,

@@ -27,6 +27,15 @@ export function registerEvidenceRoutes(router, ctx) {
         allowedIds: validation.allowedIds,
       });
     }
+    if (evidence.fileId) {
+      const found = await ctx.projectStore.getFile(params.id, evidence.fileId);
+      if (!found) {
+        throw new ApiError(400, 'VALIDATION', 'Evidence fileId does not reference an uploaded project file.', {
+          reason: 'missing-evidence-file',
+          fileId: evidence.fileId,
+        });
+      }
+    }
     const entry = await ctx.projectStore.addEvidence(params.id, { evidence, author: user.id });
     return ok({ evidence: entry, register: buildPhase3EvidenceRegister({ evidence: await ctx.projectStore.listEvidence(params.id) }) });
   });

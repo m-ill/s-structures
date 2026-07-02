@@ -21,13 +21,14 @@ assert.ok(empty.summary.missing.includes('security-signoff'));
 assert.ok(empty.agentUse.relatedApis.includes('getPhase3OwnerSignoffReview'));
 
 const evidence = [
-  { id: 'real-office-dxf-fixtures', accepted: true, reviewer: 'engineer', reportPath: 'reports/import-validation/dxf.md' },
+  { id: 'real-office-dxf-fixtures', accepted: true, reviewer: 'engineer', fileId: 'file-1', reportPath: 'reports/import-validation/dxf.md' },
   { id: 'real-pointcloud-files', status: 'accepted', reviewer: 'owner', reportPath: 'reports/pointcloud-validation/scan.md' },
   { id: 'security-signoff', accepted: true, owner: 'owner', reportPath: 'reports/launch-readiness/security.md' },
 ];
 const partial = buildPhase3EvidenceRegister({ evidence });
 assert.equal(partial.summary.acceptedCount, 3);
 assert.equal(partial.rows.find((row) => row.id === 'real-office-dxf-fixtures').status, 'ACCEPTED');
+assert.equal(partial.rows.find((row) => row.id === 'real-office-dxf-fixtures').records[0].fileId, 'file-1');
 assert.equal(partial.rows.find((row) => row.id === 'real-pointcloud-files').records[0].accepted, true);
 assert.ok(partial.summary.missing.includes('external-dwg-converter-log'));
 

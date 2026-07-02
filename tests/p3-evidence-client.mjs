@@ -38,6 +38,23 @@ try {
   const afterRejected = await client.listProjectEvidence(projectId);
   assert.equal(afterRejected.evidence.length, 1);
 
+  const packaged = await client.submitProjectEvidencePackage(projectId, {
+    evidence: {
+      id: 'real-pointcloud-files',
+      accepted: true,
+      reportPath: 'reports/pointcloud-validation/client-scan.md',
+    },
+    file: {
+      name: 'scan.xyz',
+      contentType: 'text/plain',
+      raw: '0 0 0\n1 0 0\n',
+    },
+  });
+  assert.match(packaged.file.id, /^[0-9a-f-]{36}$/);
+  assert.equal(packaged.evidence.fileId, packaged.file.id);
+  assert.equal(packaged.register.rows.find((row) => row.id === 'real-pointcloud-files').status, 'ACCEPTED');
+  assert.equal(packaged.register.rows.find((row) => row.id === 'real-pointcloud-files').records[0].fileId, packaged.file.id);
+
   const manifest = buildAgentManifest();
   assert.equal(manifest.modules.phase3EvidenceClient, EVIDENCE_CLIENT_VERSION);
   assert.ok(manifest.dataContracts.includes('phase3EvidenceClient'));
