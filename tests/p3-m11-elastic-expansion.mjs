@@ -28,6 +28,7 @@ assert.equal(expanded.loads[0].sourceRange.from, 0.25);
 assert.equal(expanded.trace.features.partialDistributed, 1);
 assert.equal(expanded.trace.features.springSupports, 1);
 assert.equal(expanded.trace.supportTrace[0].node, 'B');
+assert.equal(expanded.trace.supportTrace[0].spring.kz, 1000000);
 assert.equal(expanded.trace.loadTrace[0].expandedPointCount, 8);
 assert.equal(expanded.trace.handcalc[0].method, 'segmented-fixed-end-equivalent-point-loads');
 assert.equal(expanded.trace.handcalc[0].totalLoad, 20);
@@ -40,6 +41,20 @@ assert.ok(result.byCombo.CO1.reactions.B);
 const partialXs = result.byCombo.CO1.memberResults.M1.xs;
 assert.ok(partialXs.some((x) => Math.abs(x - 1) < 1e-6));
 assert.ok(partialXs.some((x) => Math.abs(x - 3) < 1e-6));
+
+const settlementModel = createModel({
+  nodes: [
+    { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'B', x: 4, y: 0, z: 0, support: 'spring', spring: { kz: 1000000 }, settlement: { uz: -0.01 } },
+  ],
+  members: [{ id: 'M1', n1: 'A', n2: 'B', matId: 'steel', secId: 'h300' }],
+});
+const settlementExpanded = expandAdvancedLoads(settlementModel.loads, settlementModel);
+assert.equal(settlementExpanded.trace.features.settlements, 1);
+assert.equal(settlementExpanded.trace.supportTrace[0].settlement.uz, -0.01);
+const settlementResult = analyzeModel(settlementModel);
+assert.equal(settlementResult.ok, true);
+assert.ok(Number.isFinite(settlementResult.byCombo.CO1.reactions.B.rz));
 
 const badRange = createModel({
   ...model,

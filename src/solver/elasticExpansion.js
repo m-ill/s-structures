@@ -145,6 +145,8 @@ function buildSupportTrace(model = {}) {
       support: node.support || null,
       springKeys: Object.entries(node.spring || {}).filter(([, value]) => Number(value) > 0).map(([key]) => key).sort(),
       settlementKeys: Object.keys(node.settlement || {}).sort(),
+      spring: pickFinite(node.spring, ['kx', 'ky', 'kz', 'krx', 'kry', 'krz']),
+      settlement: pickFinite(node.settlement, ['ux', 'uy', 'uz', 'rx', 'ry', 'rz', 'kx', 'ky', 'kz', 'krx', 'kry', 'krz']),
     }));
 }
 
@@ -156,4 +158,13 @@ function buildMemberTrace(model = {}) {
       behavior: member.type || member.behavior || 'frame',
       endOffset: member.endOffset || null,
     }));
+}
+
+function pickFinite(source = {}, keys = []) {
+  const out = {};
+  for (const key of keys) {
+    const value = Number(source?.[key]);
+    if (Number.isFinite(value)) out[key] = value;
+  }
+  return out;
 }

@@ -30,6 +30,8 @@ The previous M11 trace recorded only input and output load counts. P3-M11 now ex
 7. support/member trace rows
 8. unilateral member iteration rows through `p3-m11-unilateral-member-iteration` and `p3-m11-unilateral-member-trace`
 
+2026-07-02 review update: Spring support trace rows now include finite stiffness values and settlement values, not only key names. This makes spring reaction and settlement cases inspectable by reports and AI agents without reopening the raw model.
+
 ## Current Test Gate
 
 `tests/p3-m11-elastic-expansion.mjs` verifies the M11 core behavior and trace contract, including the X-brace tension-only active/inactive iteration. It now also checks that partial distributed load boundaries appear in recovered member stations, member-moment stations stay finite, and temperature/gradient handcalc rows are available for reports. `tests/p3-m10-materials.mjs` remains a dependency gate because the elastic expansion path depends on resolved material and section properties.
