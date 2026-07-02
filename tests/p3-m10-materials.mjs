@@ -49,9 +49,12 @@ const audit = buildLibraryAudit(model);
 assert.equal(audit.version, MATERIAL_REGISTRY_VERSION);
 assert.deepEqual(audit.materialErrors, []);
 assert.deepEqual(audit.sectionErrors, []);
+assert.deepEqual(audit.migrationWarnings, []);
 const libraryReport = buildMaterialLibraryReport(model);
 assert.equal(libraryReport.version, MATERIAL_LIBRARY_REPORT_VERSION);
 assert.ok(libraryReport.materials.some((row) => row.label === 'USER_STEEL@2'));
+assert.equal(libraryReport.materials.find((row) => row.label === 'USER_STEEL@2').nonlinear.model, 'bilinear');
+assert.ok(libraryReport.sections.find((row) => row.label === 'USER_H@1').properties.A > 0);
 
 const override = createModel({
   materials: [{ id: 'steel', version: 1, E: 190000, G: 73000, Fy: 222, Fu: 333, density: 7.7 }],
@@ -60,5 +63,20 @@ const override = createModel({
 assert.equal(materialOf(override, 'steel@1').Fy, 222000);
 assert.equal(sectionOf(override, 'h300@1').A, 0.0123);
 assert.equal(resolveSectionRecord(null, 'H-400x200x8x13@1').source.db, 'KS-H-2024');
+
+const legacyRefModel = createModel({
+  materials: [
+    { id: 'LEGACY_STEEL', version: 1, E: 190000, G: 73000, Fy: 240, Fu: 400 },
+    { id: 'LEGACY_STEEL', version: 3, E: 210000, G: 80000, Fy: 355, Fu: 490 },
+  ],
+  sections: [{ id: 'LEGACY_H', version: 2, shape: 'H', params: { H: 250, B: 125, tw: 6, tf: 9 } }],
+  nodes: [{ id: 'N1', x: 0, y: 0, z: 0, support: 'fixed' }, { id: 'N2', x: 0, y: 0, z: 3 }],
+  members: [{ id: 'M1', n1: 'N1', n2: 'N2', matId: 'LEGACY_STEEL', secId: 'LEGACY_H' }],
+});
+const legacyAudit = buildLibraryAudit(legacyRefModel);
+assert.deepEqual(legacyAudit.unversionedReferences.sort(), ['LEGACY_H', 'LEGACY_STEEL']);
+assert.ok(legacyAudit.migrationWarnings.includes('legacy-unversioned-reference:LEGACY_STEEL'));
+assert.equal(legacyAudit.resolvedReferences.materials[0].resolved, 'LEGACY_STEEL@3');
+assert.equal(legacyAudit.resolvedReferences.sections[0].resolved, 'LEGACY_H@2');
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m10-materials' }, null, 2));

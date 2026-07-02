@@ -24,10 +24,20 @@ export function resolveSectionRecord(model, ref, builtins = []) {
 
 export function buildLibraryAudit(model = {}) {
   const refs = new Set((model.members || []).flatMap((member) => [member.matId, member.secId]).filter(Boolean));
+  const materialRefs = [...new Set((model.members || []).map((member) => member.matId).filter(Boolean))];
+  const sectionRefs = [...new Set((model.members || []).map((member) => member.secId).filter(Boolean))];
   return {
     version: MATERIAL_REGISTRY_VERSION,
     referenceCount: refs.size,
     references: [...refs].sort(),
+    unversionedReferences: [...refs].filter((ref) => parseVersionedId(ref).version == null).sort(),
+    resolvedReferences: {
+      materials: materialRefs.sort().map((ref) => resolvedRef(ref, resolveMaterialRecord(model, ref))),
+      sections: sectionRefs.sort().map((ref) => resolvedRef(ref, resolveSectionRecord(model, ref))),
+    },
+    migrationWarnings: [...refs]
+      .filter((ref) => parseVersionedId(ref).version == null)
+      .map((ref) => `legacy-unversioned-reference:${ref}`),
     materialErrors: (model.materials || []).flatMap((item) => validateMaterialRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
     sectionErrors: (model.sections || []).flatMap((item) => validateSectionRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
   };
@@ -49,4 +59,14 @@ function normalizeSection(section) {
   const normalized = normalizeSectionRecord(section);
   const properties = normalized.properties || computeSectionProperties(normalized.shape, normalized.params);
   return { ...normalized, ...(properties || {}) };
+}
+
+function resolvedRef(ref, record) {
+  return {
+    ref,
+    resolved: record ? `${record.id}@${record.version || 1}` : null,
+    id: record?.id || null,
+    version: record?.version || null,
+    source: record?.source || null,
+  };
 }
