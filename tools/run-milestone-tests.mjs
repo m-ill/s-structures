@@ -35,6 +35,7 @@ const phase3Tests = [
   p3('P3-M14', 'test:p3m14'),
   p3('P3-M15', 'test:p3m15'),
   p3('P3-M16', 'test:p3m16'),
+  p3('P3-M16', 'test:p3nonlinear-review'),
   p3('P3-M17', 'test:p3m17'),
   p3('P3-M18', 'test:p3m18'),
   p3('P3-M18', 'test:p3engineering'),
