@@ -51,6 +51,7 @@ import {
   PILOT_PROJECT_VALIDATION_VERSION,
 } from '../platform/pilotProjectValidation.js';
 import { LAUNCH_READINESS_GATE_VERSION, LAUNCH_READINESS_VERSION } from '../platform/launchReadiness.js';
+import { PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION } from '../platform/phase3ElasticMilestoneReview.js';
 import { PHASE3_IMPORT_MILESTONE_REVIEW_VERSION } from '../platform/phase3ImportMilestoneReview.js';
 import { PHASE3_PLAN_ALIGNMENT_VERSION } from '../platform/phase3PlanAlignment.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
@@ -172,6 +173,7 @@ export function buildAgentManifest(options = {}) {
       pilotProjectValidation: PILOT_PROJECT_VALIDATION_VERSION,
       phase3LaunchReadiness: LAUNCH_READINESS_VERSION,
       phase3LaunchReadinessGate: LAUNCH_READINESS_GATE_VERSION,
+      phase3ElasticMilestoneReview: PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION,
       phase3ImportMilestoneReview: PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
       phase3PlanAlignment: PHASE3_PLAN_ALIGNMENT_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
@@ -259,6 +261,7 @@ export function buildAgentManifest(options = {}) {
       'getP3DetailedDesignReport',
       'getP3IntegratedResults',
       'getLaunchReadinessReport',
+      'getPhase3ElasticMilestoneReview',
       'getPhase3ImportMilestoneReview',
       'getPhase3PlanAlignment',
       'getConnectionFoundationReport',
@@ -387,6 +390,7 @@ export function buildAgentManifest(options = {}) {
       'phase3IntegratedResultsGate',
       'phase3LaunchReadiness',
       'phase3LaunchReadinessGate',
+      'phase3ElasticMilestoneReview',
       'phase3ImportMilestoneReview',
       'phase3PlanAlignment',
       'steelMemberReviewSchedule',

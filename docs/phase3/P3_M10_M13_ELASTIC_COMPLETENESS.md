@@ -28,6 +28,21 @@ Temperature, temperature-gradient, and member-moment load records now have preli
 
 The browser command bridge allow-list includes the same read APIs, so AI control can call them through DOM events, postMessage, or the URL command hash.
 
+## 2026-07-02 Contract Review Update
+
+M10 to M13 now expose an agent-readable elastic milestone review contract through
+`getPhase3ElasticMilestoneReview`.
+
+The contract separates:
+
+- automated regression evidence for P3-M10 to P3-M13,
+- the read APIs and data contracts that an AI agent should inspect,
+- remaining engineering validation required before production structural-design use.
+
+This keeps the implemented material library, elastic expansion, wall/slab
+equivalent models, and loads/dynamics helpers available for review while making
+the preliminary boundaries explicit.
+
 ## Review Fixes
 
 - Strict numeric validation now rejects `null` and blank strings instead of coercing them to zero.

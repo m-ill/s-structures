@@ -51,9 +51,11 @@ assert.ok(manifest.readApis.includes('getWallSlabEquivalentTrace'));
 assert.ok(manifest.readApis.includes('getLoadsV2Trace'));
 assert.ok(manifest.readApis.includes('getDynamicCompletenessTrace'));
 assert.ok(manifest.readApis.includes('getNonlinearAnalysisTrace'));
+assert.ok(manifest.readApis.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3LoadsV2Trace'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearAnalysisTrace'));
+assert.ok(manifest.dataContracts.includes('phase3ElasticMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3RunnerContract, 'node tests/p3-runner-contract.mjs');
@@ -71,6 +73,10 @@ assert.equal(importMilestoneReview.summary.milestoneCount, 4);
 assert.equal(importMilestoneReview.rows[0].milestone, 'P3-M6');
 assert.equal(importMilestoneReview.summary.agentDecision, 'import-pipeline-review-required');
 assert.ok(importMilestoneReview.agentUse.importApis.includes('confirmImport'));
+const elasticMilestoneReview = agent.getPhase3ElasticMilestoneReview();
+assert.deepEqual(elasticMilestoneReview.rows.map((row) => row.milestone), ['P3-M10', 'P3-M11', 'P3-M12', 'P3-M13']);
+assert.equal(elasticMilestoneReview.summary.productionReady, false);
+assert.ok(elasticMilestoneReview.agentUse.primaryReviewApis.includes('getLoadsV2Trace'));
 
 console.log(JSON.stringify({
   ok: true,

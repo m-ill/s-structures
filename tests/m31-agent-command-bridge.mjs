@@ -93,6 +93,14 @@ response = sendCommand({ id: 'loads-v2', method: 'getLoadsV2Trace', payload: { s
 assert.equal(response.ok, true);
 assert.equal(response.data.version, 'p3-m13-loads-v2-trace');
 
+response = sendCommand({ id: 'import-review', method: 'getPhase3ImportMilestoneReview' });
+assert.equal(response.ok, true);
+assert.equal(response.data.summary.agentDecision, 'import-pipeline-review-required');
+
+response = sendCommand({ id: 'elastic-review', method: 'getPhase3ElasticMilestoneReview' });
+assert.equal(response.ok, true);
+assert.equal(response.data.summary.agentDecision, 'elastic-completeness-engineer-review-required');
+
 response = sendCommand({ id: 'nonlinear-trace', method: 'getNonlinearAnalysisTrace' });
 assert.equal(response.ok, true);
 assert.equal(response.data.version, 'p3-m16-nonlinear-trace');
@@ -111,7 +119,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 12);
+assert.equal(response.data.agentCommandBridge.commandCount, 14);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -125,8 +133,10 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 13);
+assert.equal(state.commandCount, 15);
 assert.equal(state.errorCount, 1);
+assert.ok(state.availableMethods.includes('getPhase3ImportMilestoneReview'));
+assert.ok(state.availableMethods.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(counters.reanalyze >= 6);
 
 console.log(JSON.stringify({

@@ -196,6 +196,10 @@ export {
   PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
 } from './platform/phase3ImportMilestoneReview.js';
 export {
+  buildPhase3ElasticMilestoneReview,
+  PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION,
+} from './platform/phase3ElasticMilestoneReview.js';
+export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';
