@@ -2,6 +2,7 @@ import { MODELING_ACTIONS } from './indexAgentActions.js';
 import { NATIVE_ADVANCED_ACTIONS } from './indexNativeAdvancedAnalysis.js';
 import { NATIVE_AGENT_CONTROL_ACTIONS } from './indexNativeAgentControls.js';
 import { NATIVE_MODELER_ACTIONS } from './indexNativeModeler.js';
+import { MATERIAL_LIBRARY_ACTIONS } from '../materials/libraryEdit.js';
 
 export function availableAgentActions() {
   return [
@@ -22,6 +23,7 @@ export function availableAgentActions() {
     'applyKdsRuleBasedLoadCombinations',
     'applyDesignBasisLoads',
     'setDesignBasisInput',
+    ...MATERIAL_LIBRARY_ACTIONS,
     'openNativeDetailedReport',
     'openNativeCalculationPackage',
     'setNativeMode',

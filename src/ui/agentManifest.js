@@ -91,6 +91,7 @@ import { MATERIAL_REGISTRY_VERSION } from '../materials/registry.js';
 import { MATERIAL_SCHEMA_VERSION } from '../materials/materialSchema.js';
 import { SECTION_SCHEMA_VERSION } from '../materials/sectionSchema.js';
 import { MATERIAL_LIBRARY_REPORT_VERSION } from '../materials/libraryReport.js';
+import { MATERIAL_LIBRARY_EDIT_VERSION } from '../materials/libraryEdit.js';
 import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
 import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../solver/wallSlabEquivalent.js';
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
@@ -202,6 +203,7 @@ export function buildAgentManifest(options = {}) {
       phase3MaterialSchema: MATERIAL_SCHEMA_VERSION,
       phase3SectionSchema: SECTION_SCHEMA_VERSION,
       phase3MaterialLibraryReport: MATERIAL_LIBRARY_REPORT_VERSION,
+      phase3MaterialLibraryEdit: MATERIAL_LIBRARY_EDIT_VERSION,
       phase3ElasticExpansion: ELASTIC_EXPANSION_VERSION,
       phase3WallSlabEquivalent: WALL_SLAB_EQUIVALENT_VERSION,
       phase3WallSlabTrace: WALL_SLAB_TRACE_VERSION,
@@ -373,6 +375,7 @@ export function buildAgentManifest(options = {}) {
       'phase3MaterialSchema',
       'phase3SectionSchema',
       'phase3MaterialLibraryReport',
+      'phase3MaterialLibraryEdit',
       'phase3ElasticExpansionTrace',
       'phase3WallSlabEquivalentTrace',
       'phase3WallSlabTrace',

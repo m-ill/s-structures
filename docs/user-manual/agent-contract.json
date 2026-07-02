@@ -130,6 +130,12 @@
       "applyKdsLoadCombinations",
       "applyKdsRuleBasedLoadCombinations"
     ],
+    "materialLibrary": [
+      "listLibrary",
+      "getLibraryItem",
+      "upsertMaterial",
+      "upsertSection"
+    ],
     "reports": [
       "openNativeDetailedReport",
       "openNativeCalculationPackage",
@@ -209,6 +215,7 @@
     "phase3NonlinearHingeControlTrace",
     "phase3NonlinearFiberNlthTrace",
     "phase3NonlinearTrace",
+    "phase3MaterialLibraryEdit",
     "phase3DesignFormulaRegistry"
   ],
   "dataContracts": [
@@ -223,6 +230,7 @@
     "phase3NonlinearHingeControlTrace",
     "phase3NonlinearFiberNlthTrace",
     "phase3NonlinearAnalysisTrace",
+    "phase3MaterialLibraryEdit",
     "phase3DesignFormulaRegistry",
     "phase3DesignFormulaTrace",
     "phase3PointCloudExtractionSummary",

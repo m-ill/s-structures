@@ -18,6 +18,8 @@ This note verifies P3-M10 against `docs/phase3/MATERIAL_SECTION_LIBRARY_PLAN.md`
 | `id@version` resolver | `src/materials/registry.js` |
 | Legacy unversioned reference warning | `buildLibraryAudit()` migration warnings |
 | Agent-readable library report | `buildMaterialLibraryReport()` includes nonlinear and section property summaries |
+| Library edit agent actions | `listLibrary`, `getLibraryItem`, `upsertMaterial`, `upsertSection` in `tests/p3-m10-materials.mjs` |
+| Server-backed project library storage | `/api/projects/:id/library/:kind/:itemId` round-trip in `tests/p3-m10-materials.mjs` |
 
 ## Added Review Finding
 
@@ -30,15 +32,17 @@ The registry already resolved versioned references, but legacy unversioned refer
 
 The material library report also exposes nonlinear backbone metadata so the later nonlinear milestones can read material readiness without reparsing raw records.
 
+2026-07-02 update: P3-T49 now has an executable library-edit contract. Agent calls can list, fetch, and upsert material/section records with immutable `id@version` behavior. Server routes persist project-scoped library records under the project storage tree and use the same validation path.
+
 ## Current Test Gate
 
 P3-M10 is covered by:
 
 | Test | Coverage |
 | --- | --- |
-| `tests/p3-m10-materials.mjs` | schema validation, registry resolution, legacy reference migration warning, nonlinear report summary |
+| `tests/p3-m10-materials.mjs` | schema validation, registry resolution, legacy reference migration warning, nonlinear report summary, library edit actions, server storage round-trip |
 | `tests/p3-section-properties.mjs` | parametric H-section property comparison with KS seed data |
 
 ## Remaining Limits
 
-P3-M10 remains preliminary. A full office-grade KS section database, dedicated library edit UI, server-backed library persistence, and owner-approved material catalog policy still remain future hardening items.
+P3-M10 remains preliminary. A full office-grade KS section database, a polished visual library panel, and owner-approved material catalog policy still remain future hardening items.

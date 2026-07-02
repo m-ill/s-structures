@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import {
   MATERIAL_REGISTRY_VERSION,
   MATERIAL_LIBRARY_REPORT_VERSION,
+  MATERIAL_LIBRARY_ACTIONS,
+  MATERIAL_LIBRARY_EDIT_VERSION,
   MATERIAL_SCHEMA_VERSION,
   SECTION_SCHEMA_VERSION,
   SECTION_PROPERTIES_VERSION,
@@ -12,10 +14,17 @@ import {
   materialOf,
   resolveSectionRecord,
   sectionOf,
+  listLibrary,
+  getLibraryItem,
+  upsertMaterial,
+  upsertSection,
   validateMaterialRecord,
   validateModel,
   validateSectionRecord,
 } from '../src/index.js';
+import { createIndexAgentApi } from '../src/ui/indexAgentApi.js';
+import { availableAgentActions } from '../src/ui/indexAgentActionCatalog.js';
+import { bootTestApp, registerAndLogin } from './helpers/serverTestApp.mjs';
 
 const h = computeSectionProperties('H', { H: 300, B: 150, tw: 6.5, tf: 9 });
 assert.equal(SECTION_PROPERTIES_VERSION, 'p3-m10-section-properties');
@@ -78,5 +87,50 @@ assert.deepEqual(legacyAudit.unversionedReferences.sort(), ['LEGACY_H', 'LEGACY_
 assert.ok(legacyAudit.migrationWarnings.includes('legacy-unversioned-reference:LEGACY_STEEL'));
 assert.equal(legacyAudit.resolvedReferences.materials[0].resolved, 'LEGACY_STEEL@3');
 assert.equal(legacyAudit.resolvedReferences.sections[0].resolved, 'LEGACY_H@2');
+
+assert.equal(MATERIAL_LIBRARY_EDIT_VERSION, 'p3-m10-library-edit-v1');
+assert.deepEqual(MATERIAL_LIBRARY_ACTIONS, ['listLibrary', 'getLibraryItem', 'upsertMaterial', 'upsertSection']);
+const editModel = createModel();
+let edit = upsertMaterial(editModel, { id: 'AGENT_STEEL', version: 1, E: 205000, G: 79000, Fy: 275, Fu: 410 });
+assert.equal(edit.changed, true);
+edit = upsertSection(editModel, { id: 'AGENT_H', version: 1, shape: 'H', params: { H: 350, B: 175, tw: 7, tf: 11 } });
+assert.equal(edit.changed, true);
+assert.ok(listLibrary(editModel, { kind: 'materials' }).items.some((item) => item.label === 'AGENT_STEEL@1'));
+assert.equal(getLibraryItem(editModel, { kind: 'sections', id: 'AGENT_H', version: 1 }).item.id, 'AGENT_H');
+const immutable = upsertMaterial(editModel, { id: 'AGENT_STEEL', version: 1, E: 210000, G: 80000, Fy: 300, Fu: 450 });
+assert.equal(immutable.ok, false);
+assert.ok(immutable.errors.includes('immutable-version'));
+
+const target = { model: () => editModel, reanalysisCount: 0, reanalyze() { this.reanalysisCount += 1; } };
+const agent = createIndexAgentApi(target, null, { analyzeForIndex: () => ({ ok: true, combos: [], byCombo: {}, envelope: {} }) });
+assert.ok(availableAgentActions().includes('upsertMaterial'));
+const agentResult = agent.execute('upsertMaterial', { id: 'AGENT_STEEL', version: 2, E: 215000, G: 81000, Fy: 355, Fu: 490 });
+assert.equal(agentResult.library.item.version, 2);
+assert.ok(agent.execute('listLibrary', { kind: 'materials', query: 'AGENT_STEEL' }).library.count >= 2);
+assert.equal(agent.getLibraryItem({ kind: 'materials', id: 'AGENT_STEEL', version: 2 }).item.elastic.E, 215000);
+
+const app = await bootTestApp();
+try {
+  const login = await registerAndLogin(app, 'library-owner@example.com');
+  const project = await app.api('POST', '/api/projects', { token: login.token, body: { name: 'Library Project' } });
+  const projectId = project.data.data.project.id;
+  const saved = await app.api('PUT', `/api/projects/${projectId}/library/materials/SRV_STEEL`, {
+    token: login.token,
+    body: { item: { version: 1, E: 200000, G: 77000, Fy: 240, Fu: 400 } },
+  });
+  assert.equal(saved.status, 200, JSON.stringify(saved.data));
+  assert.equal(saved.data.data.item.id, 'SRV_STEEL');
+  const listServer = await app.api('GET', `/api/projects/${projectId}/library/materials`, { token: login.token });
+  assert.equal(listServer.data.data.items.length, 1);
+  const fetched = await app.api('GET', `/api/projects/${projectId}/library/materials/SRV_STEEL?version=1`, { token: login.token });
+  assert.equal(fetched.data.data.item.id, 'SRV_STEEL');
+  const blocked = await app.api('PUT', `/api/projects/${projectId}/library/materials/SRV_STEEL`, {
+    token: login.token,
+    body: { item: { version: 1, E: 210000, G: 80000, Fy: 300, Fu: 450 } },
+  });
+  assert.equal(blocked.status, 400);
+} finally {
+  await app.close();
+}
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m10-materials' }, null, 2));

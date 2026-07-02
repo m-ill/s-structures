@@ -482,6 +482,14 @@ export { MATERIAL_SCHEMA_VERSION, normalizeMaterialRecord, validateMaterialRecor
 export { SECTION_SCHEMA_VERSION, normalizeSectionRecord, validateSectionRecord } from './materials/sectionSchema.js';
 export { KS_H_DB_VERSION, KS_H_SECTIONS } from './materials/db/ksH.js';
 export { MATERIAL_LIBRARY_REPORT_VERSION, buildMaterialLibraryReport } from './materials/libraryReport.js';
+export {
+  MATERIAL_LIBRARY_ACTIONS,
+  MATERIAL_LIBRARY_EDIT_VERSION,
+  getLibraryItem,
+  listLibrary,
+  upsertMaterial,
+  upsertSection,
+} from './materials/libraryEdit.js';
 export { SECTION_PROPERTIES_VERSION, computeSectionProperties } from './materials/sectionProperties.js';
 export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elasticExpansion.js';
 export { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION, addWallMidPierToModel, buildWallSlabEquivalentTrace, recoverWallPierForces, summarizeSemiRigidDiaphragm, wallToMidPierMember } from './solver/wallSlabEquivalent.js';

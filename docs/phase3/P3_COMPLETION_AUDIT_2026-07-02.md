@@ -44,7 +44,7 @@ This audit checks the current repository against the Phase 3 planning documents.
 | P3-M7 | Preliminary | DWG adapter contract, plan assembly, import review UI tests; real DWG conversion remains external-tool dependent |
 | P3-M8 | Preliminary | point-cloud loader/preprocess/worker/viewer contracts |
 | P3-M9 | Preliminary | synthetic point-cloud extraction/e2e tests; real field files still require future validation |
-| P3-M10 | Preliminary | versioned material/section registry tests |
+| P3-M10 | Preliminary | versioned material/section registry tests plus library edit action/server-storage round-trip |
 | P3-M11 | Preliminary | elastic expansion trace tests |
 | P3-M12 | Preliminary | wall/slab equivalent trace tests |
 | P3-M13 | Preliminary | loads v2, dynamic completeness, buckling, linear THA tests |

@@ -25,9 +25,11 @@ import {
   buildLaunchReadinessReport,
   buildRcDetailedDesignReport,
   buildRcDetailingReport,
+  getLibraryItem as getCoreLibraryItem,
   buildResultPostprocessing,
   buildServiceabilityDriftReport,
   buildSteelDetailingReport,
+  listLibrary as listCoreLibrary,
   buildLoadsV2Trace,
   buildCqcCombinationReport,
   createCalculationPackageHtml,
@@ -50,6 +52,8 @@ import {
   summarizeSemiRigidDiaphragm,
   summarizeKdsLoadCombinationCoverage,
   summarizeKdsLoadCombinationRules,
+  upsertMaterial as upsertCoreMaterial,
+  upsertSection as upsertCoreSection,
 } from '../index.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
@@ -257,6 +261,30 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         sections: model.sections || [],
       });
     },
+    listLibrary(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(listCoreLibrary(model, options));
+    },
+    getLibraryItem(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(getCoreLibraryItem(model, options));
+    },
+    upsertMaterial(record = {}, options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) throw new Error('Current UI model is not available.');
+      const result = upsertCoreMaterial(model, record.record || record.material || record, options);
+      if (result.changed) runUiAnalysis(target);
+      return cloneJson(result);
+    },
+    upsertSection(record = {}, options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) throw new Error('Current UI model is not available.');
+      const result = upsertCoreSection(model, record.record || record.section || record, options);
+      if (result.changed) runUiAnalysis(target);
+      return cloneJson(result);
+    },
     getElasticExpansionTrace() {
       const model = getCurrentModel(target);
       if (!model) return null;
@@ -409,6 +437,14 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
             designBasisInput,
           };
         }
+        case 'upsertMaterial':
+          return { library: api.upsertMaterial(payload.record || payload.material || payload, payload.options || payload) };
+        case 'upsertSection':
+          return { library: api.upsertSection(payload.record || payload.section || payload, payload.options || payload) };
+        case 'listLibrary':
+          return { library: api.listLibrary(payload) };
+        case 'getLibraryItem':
+          return { library: api.getLibraryItem(payload) };
         case 'openNativeDetailedReport':
           return openNativeDetailedReport(target, bridge, api, payload);
         case 'openNativeCalculationPackage':

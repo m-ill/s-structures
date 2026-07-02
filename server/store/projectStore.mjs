@@ -57,9 +57,12 @@ export function createProjectStore(dataDir) {
       await ensureDir(join(projectDir(id), 'revisions'));
       await ensureDir(join(projectDir(id), 'files'));
       await ensureDir(join(projectDir(id), 'imports'));
+      await ensureDir(join(projectDir(id), 'libraries'));
       await writeProjectMeta(id, meta);
       await writeJsonAtomic(join(projectDir(id), 'revisions', 'index.json'), []);
       await writeJsonAtomic(join(projectDir(id), 'files', 'index.json'), []);
+      await writeJsonAtomic(join(projectDir(id), 'libraries', 'materials.json'), []);
+      await writeJsonAtomic(join(projectDir(id), 'libraries', 'sections.json'), []);
       return meta;
     },
 
@@ -231,8 +234,29 @@ export function createProjectStore(dataDir) {
       return meta.approval;
     },
 
+    async listLibrary(id, kind) {
+      const file = libraryFile(projectDir(id), kind);
+      return (await readJson(file, [])) || [];
+    },
+
+    async upsertLibraryItem(id, kind, item) {
+      const file = libraryFile(projectDir(id), kind);
+      const rows = await this.listLibrary(id, kind);
+      const version = Number(item.version || 1);
+      const index = rows.findIndex((row) => row.id === item.id && Number(row.version || 1) === version);
+      if (index >= 0) rows[index] = item;
+      else rows.push(item);
+      await ensureDir(join(projectDir(id), 'libraries'));
+      await writeJsonAtomic(file, rows);
+      return item;
+    },
+
     async purgeForTest(id) {
       await removeDir(projectDir(id));
     },
   };
+}
+
+function libraryFile(root, kind) {
+  return join(root, 'libraries', kind === 'sections' ? 'sections.json' : 'materials.json');
 }
