@@ -11,7 +11,24 @@ export function buildPointCloudLayerData(points, options = {}) {
     const color = p.color || confidenceColor(p.confidence ?? 0.5);
     colors.set(color.map((v) => Math.max(0, Math.min(255, Math.round(v)))), i * 3);
   });
-  return { version: POINT_CLOUD_LAYER_VERSION, count: selected.length, positions, colors };
+  return {
+    version: POINT_CLOUD_LAYER_VERSION,
+    count: selected.length,
+    positions,
+    colors,
+    metadata: {
+      inputCount: points.length,
+      filteredCount: selected.length,
+      positionType: 'Float32Array',
+      colorType: 'Uint8Array',
+      positionBytes: positions.byteLength,
+      colorBytes: colors.byteLength,
+      zFilter: {
+        min: Number.isFinite(zMin) ? zMin : null,
+        max: Number.isFinite(zMax) ? zMax : null,
+      },
+    },
+  };
 }
 
 function confidenceColor(confidence) {

@@ -19,12 +19,16 @@ This note verifies P3-M8 against `docs/phase3/IMPORT_POINT_CLOUD_PLAN.md`.
 | Worker-safe pipeline contract | `src/import/pointcloud/worker.js` returns processed points and audit |
 | Viewer buffer contract | `src/viewer/pointCloudLayer.js` returns typed positions/colors |
 | Agent-readable import state | `summarizePointCloudImport()` returns counts, normalization, stages, viewer buffer, and warnings |
+| Stage-level audit rows | worker audit exposes parse/normalize/downsample/outlier input, output, and dropped counts |
+| Viewer buffer metadata | viewer output exposes typed-array names, byte counts, input/filtered counts, and z-filter state |
 
 ## Added Review Finding
 
 The P3-M8 modules had separate worker and viewer contracts, but no single summary that an AI agent could read to decide whether the point cloud is ready for review. `POINT_CLOUD_IMPORT_SUMMARY_VERSION` now provides that contract.
 
 2026-07-02 review update: The worker pipeline now carries loader audit metadata through the import summary. AI agents can inspect the detected point-cloud format and rejected point count before deciding whether a file is suitable for review or needs re-export.
+
+2026-07-02 follow-up: P3-M8 now exposes step-level pipeline rows and viewer buffer metadata. `processPointCloudText()` records `stageRows`, and `buildPointCloudLayerData()` returns typed-array metadata so UI and AI agents can verify the render buffer without inspecting binary arrays directly.
 
 ## Current Test Gate
 
@@ -34,6 +38,7 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 2. Normalize, voxel downsample, and outlier-filter audit counts.
 3. Viewer buffer length and filtered count.
 4. Agent manifest data contract for point-cloud viewer buffer and import summary.
+5. Stage-level worker rows and typed viewer buffer metadata.
 
 ## Remaining Limits
 

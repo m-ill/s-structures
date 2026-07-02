@@ -27,14 +27,16 @@ export function summarizePointCloudImport(input, options = {}) {
     },
     loader: audit.loader || null,
     stages: audit.stages || pipeline.stages,
+    stageRows: audit.stageRows || [],
     viewerBuffer: {
       version: layer.version,
       count: layer.count,
       positionLength: layer.positions.length,
       colorLength: layer.colors.length,
+      metadata: layer.metadata || null,
       zFilter: {
-        min: options.view?.zMin ?? null,
-        max: options.view?.zMax ?? null,
+        min: layer.metadata?.zFilter?.min ?? options.view?.zMin ?? null,
+        max: layer.metadata?.zFilter?.max ?? options.view?.zMax ?? null,
       },
     },
     warnings: buildWarnings(audit, layer),
