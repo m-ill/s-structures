@@ -30,7 +30,7 @@ local (서버 미접속)      #/local/modeler — L1/L2 저장만 활성
 | `src/app/sessionState.js` | 사용자/토큰/현재 프로젝트 상태 |
 | `src/app/views/login.js` | 로그인/가입 폼 |
 | `src/app/views/projects.js` | 목록/생성/열기/멤버 |
-| `src/app/views/revisions.js` | revision 목록/복원/lineage 배너 |
+| `src/app/views/projects.js` | project browser, revision summary, lineage entry |
 | `src/app/views/importReview.js` | import 검토 (아래) |
 | `src/app/modelerHost.js` | 기존 모델러 마운트 + 저장 연결 (`PERSISTENCE_PLAN.md`) |
 
@@ -88,4 +88,4 @@ import는 3단 흐름으로 고정한다: **업로드 → 후보 검토 → 모�
 
 ## Testing
 
-fake dom 테스트(`tests/helpers/fakeIndexDom.mjs` 확장)로 shell 라우팅/화면 전환을 검증하고, 서버 연동은 임시 서버 부팅 e2e(`tests/p3-app-e2e.mjs`)로 검증한다. WebGL은 단위 분리: 행렬/카메라/버퍼 빌드 로직은 순수 함수로 두고 node에서 테스트, GL 호출은 스모크만.
+fake dom 테스트(`tests/helpers/fakeIndexDom.mjs` 확장)로 shell 라우팅/화면 전환을 검증하고, 서버 연동은 임시 서버 부팅 e2e(`tests/p3-app-shell.mjs`)로 검증한다. WebGL은 단위 분리: 행렬/카메라/버퍼 빌드 로직은 순수 함수로 두고 node에서 테스트, GL 호출은 스모크만.

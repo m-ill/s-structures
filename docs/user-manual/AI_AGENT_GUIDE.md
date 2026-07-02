@@ -68,6 +68,7 @@ AI agents should read `window.SStructuresAgent.getCapabilities().qaCommands` bef
 | `phase3M6ToM20` | rerun the requested P3-M6 restart-to-launch range |
 | `phase3RunnerContract` | verify the runner mapping contract |
 | `phase3PlanAlignment` | verify the 14-document plan alignment contract |
+| `phase3DocReferences` | verify referenced local files in Phase 3 docs exist |
 
 ## Execute Actions
 

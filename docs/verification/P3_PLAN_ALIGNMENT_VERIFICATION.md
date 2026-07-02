@@ -36,6 +36,7 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 | Agent readability | `getPhase3PlanAlignment()` and `phase3PlanAlignment` data contract |
 | Phase 3 runner | `tools/run-milestone-tests.mjs --phase3` and `tests/p3-runner-contract.mjs` |
 | QA command contract | `qaCommands` in `buildAgentManifest()` and `docs/user-manual/agent-contract.json` |
+| Documentation references | `tests/p3-doc-reference-integrity.mjs` verifies local file references and wildcard path references |
 
 ## Current Test Gate
 
@@ -46,6 +47,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 2026-07-02 runner update: the milestone runner now has a Phase 3 mode. `npm run test:p3` runs the P3-M0 to P3-M20 gate set, while `npm run test:p3:list` prints the exact milestone/test mapping. This makes the QA release plan executable without relying on the older sequential M0 to M91 script numbering.
 
 2026-07-02 agent QA command update: `buildAgentManifest()` and `docs/user-manual/agent-contract.json` now expose `qaCommands` for the full Phase 3 gate, list mode, P3-M6-to-M20 scoped gate, runner contract, and plan-alignment check. This gives AI agents a stable place to discover verification commands instead of inferring them from package scripts.
+
+2026-07-02 document-reference review update: the architecture document now references the actual `server/main.mjs` and `server/router.mjs` server entry/routing split. `tests/p3-doc-reference-integrity.mjs` was added to prevent stale local file references in Phase 3, verification, and user-manual documents.
 
 For the P3-M6 restart point, the practical order is:
 

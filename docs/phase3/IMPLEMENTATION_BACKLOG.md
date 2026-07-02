@@ -40,7 +40,7 @@ Phase 2 티켓(T##)과 구분하기 위해 Phase 3 티켓은 `P3-T##`로 관리�
 
 | Ticket | Priority | 작업 | 영역 | 완료 기준 |
 | --- | --- | --- | --- | --- |
-| P3-T22 | P0 | tolerance merge/중복 제거/짧은 선분 필터 | `src/import/geometry.js` | 단위 테스트 |
+| P3-T22 | P0 | tolerance merge/중복 제거/짧은 선분 필터 | `src/import/segmentClean.js` | 단위 테스트 |
 | P3-T23 | P0 | story/grid 추론 유틸 | `src/import/` | 대표건물 역추론 |
 | P3-T24 | P0 | 부재축 분류(기둥/보/가새) | `src/import/` | 분류 테스트 |
 | P3-T25 | P0 | ImportCandidate 공통 계약 | `src/import/candidate.js` | 계약 테스트 |

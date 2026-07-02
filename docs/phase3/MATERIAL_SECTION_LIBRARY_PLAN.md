@@ -50,7 +50,7 @@ milestone: P3-M10
 
 | kind | properties 산정 |
 | --- | --- |
-| db | KS 형강 테이블 값 사용 (`src/materials/db/ks-h.json` 등 정적 데이터) |
+| db | KS 형강 테이블 값 사용 (`src/materials/db/ksH.js` 등 정적 데이터) |
 | parametric | 형상 공식으로 자동 계산 + 단위 테스트로 검증 |
 | direct | 사용자 직접 입력. 물리적 타당성 검사 (A>0, I>0, ry=√(Iy/A) 일관성 warning) |
 
@@ -73,7 +73,7 @@ src/materials/
   sectionSchema.js
   sectionProperties.js   # parametric 공식 (H/BOX/PIPE/RECT/CIRC)
   registry.js            # id@version 해석, 스코프 병합, soft delete
-  db/ks-h.json           # KS H형강 테이블 (정적)
+  db/ksH.js              # KS H형강 테이블 (정적)
   db/ks-pipe.json ...
   libraryStore.js        # 서버/로컬 저장 연동
 ```
@@ -93,7 +93,7 @@ agent action: `listLibrary`, `getLibraryItem`, `upsertMaterial`, `upsertSection`
 
 ## Verification
 
-1. `tests/p3-materials.mjs` — 스키마 검증, 버전 고정/불변성, 스코프 우선순위, migration.
+1. `tests/p3-m10-materials.mjs` — 스키마 검증, 버전 고정/불변성, 스코프 우선순위, migration.
 2. `tests/p3-section-properties.mjs` — parametric 공식 vs KS 테이블 값 tolerance 비교 (대표 10개 단면).
 3. 해석 연동 회귀 — 기존 대표건물이 registry 경유로 동일 결과 (수치 diff 0).
 4. 계산서 재료 장에 `id@version` 표기 확인.

@@ -15,7 +15,7 @@ source: user direction 2026-07-02
 +--------------------------------|--------------------------------+
                                  | fetch (REST, bearer token)
 +--------------------------- Node Server ------------------------+
-| server/http.mjs      라우터 + 정적 서빙 (node:http)              |
+| server/main.mjs + server/router.mjs  node:http entrypoint, router, static serving |
 | server/routes/       auth, projects, revisions, files, imports  |
 | server/store/        파일 기반 저장 v1 (data/)                   |
 | server/auth/         scrypt, HMAC token                         |

@@ -36,6 +36,7 @@ The following tests were run successfully in the current worktree:
 | Design and productization M17-M20 | `tests/p3-design-rc.mjs`, `tests/p3-design-steel-foundation.mjs`, `tests/p3-m19-integrated-report.mjs`, `tests/p3-launch-gate.mjs` |
 | Plan alignment | `tests/p3-plan-alignment.mjs` |
 | Phase 3 runner contract | `tests/p3-runner-contract.mjs` |
+| Documentation reference integrity | `tests/p3-doc-reference-integrity.mjs` |
 
 ## Review Finding
 
@@ -44,6 +45,8 @@ The current codebase is now traceable from P3-M6 through P3-M20 and back to the 
 2026-07-02 source-document audit update: `tests/p3-plan-alignment.mjs` now checks the 14 core document paths against stable markers such as PRD requirement IDs, roadmap milestones, backlog ticket IDs, API paths, auth primitives, ImportCandidate contracts, material registry strings, nonlinear benchmark IDs, launch gates, and file-map folders. This makes the alignment gate depend on the actual prewritten planning documents, not only on a hardcoded document count.
 
 2026-07-02 runner audit update: `tools/run-milestone-tests.mjs` now supports the Phase 3 plan range directly through `--phase3`, `--from=P3-M#`, `--to=P3-M#`, and `--list`. `npm run test:p3` runs the P3-M0 to P3-M20 gate set, and `tests/p3-runner-contract.mjs` verifies that the runner includes the M6 restart path and the M20 launch/alignment gates.
+
+2026-07-02 document reference audit update: `tests/p3-doc-reference-integrity.mjs` now scans Phase 3, verification, and user-manual documents for local file references and confirms the referenced files or wildcard groups exist. This caught and corrected the stale architecture reference to the old server entrypoint name.
 
 ## Remaining Limits
 

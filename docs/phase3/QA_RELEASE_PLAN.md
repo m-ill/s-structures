@@ -25,15 +25,15 @@ milestone: 전체 (게이트), P3-M20 (출시)
 | `tests/p3-server-api.mjs` | REST 계약, error envelope |
 | `tests/p3-auth.mjs` | scrypt/토큰/권한 매트릭스 |
 | `tests/p3-persistence.mjs` | 3계층 round-trip, autosave, lineage |
-| `tests/p3-app-e2e.mjs` | shell 라우팅 + 서버 연동 |
-| `tests/p3-import-dxf.mjs` / `p3-import-plan.mjs` | DXF 파서/매핑/평면 인식 |
+| `tests/p3-app-shell.mjs` | shell 라우팅 + 서버 연동 |
+| `tests/p3-m6-dxf-import.mjs` / `tests/p3-m7-dwg-plan.mjs` | DXF 파서/매핑/평면 인식 |
 | `tests/p3-pointcloud-load.mjs` / `p3-pointcloud-extraction.mjs` / `p3-pointcloud-e2e.mjs` | 점군 |
-| `tests/p3-materials.mjs` / `p3-section-properties.mjs` | 라이브러리 |
-| `tests/p3-elastic-elements.mjs` | 스프링/침하/트러스/offset/부분하중/온도 handcalc (M11) |
-| `tests/p3-wall-shell.mjs` | mid-pier/쉘/semi-rigid benchmark (M12) |
-| `tests/p3-loads-v2.mjs` / `p3-dynamics-v2.mjs` | wind/seismic v2, CQC/좌굴/THA (M13) |
-| `tests/p3-nonlinear-benchmark.mjs` / `p3-nonlinear-trace.mjs` | 비선형 B1~B8 |
-| `tests/p3-design-rc.mjs` / `p3-design-steel.mjs` / `p3-design-foundation.mjs` | 설계 수계산 검증 (M17-M18) |
+| `tests/p3-m10-materials.mjs` / `tests/p3-section-properties.mjs` | 라이브러리 |
+| `tests/p3-m11-elastic-expansion.mjs` | 스프링/침하/트러스/offset/부분하중/온도 handcalc (M11) |
+| `tests/p3-m12-wall-slab.mjs` | mid-pier/쉘/semi-rigid benchmark (M12) |
+| `tests/p3-m13-loads-dynamics.mjs` | wind/seismic v2, CQC/좌굴/THA (M13) |
+| `tests/p3-m14-nonlinear-geometry.mjs` / `tests/p3-m15-nonlinear-hinge-control.mjs` / `tests/p3-m16-nonlinear-fiber-nlth.mjs` | 비선형 B1~B8 |
+| `tests/p3-design-rc.mjs` / `tests/p3-design-steel-foundation.mjs` | 설계 수계산 검증 (M17-M18) |
 | `tests/p3-launch-gate.mjs` | 출시 게이트 자동 점검 (아래 표를 코드로) |
 
 ## Performance Budgets
@@ -102,4 +102,4 @@ milestone: 전체 (게이트), P3-M20 (출시)
 | 9 | NLTH 성능검토 1건 (지진파 3세트) |
 | 10 | 협업/승인 workflow 1건 (2인 역할) |
 
-각 시나리오는 소요 시간, 실패 지점, 사용자 피드백을 `reports/launch-readiness/pilot-##.md`로 기록하고, blocker는 backlog 티켓으로 변환 후 게이트 재실행한다.
+각 시나리오는 소요 시간, 실패 지점, 사용자 피드백을 `reports/launch-readiness/pilot-01.md`부터 `reports/launch-readiness/pilot-10.md`로 기록하고, blocker는 backlog 티켓으로 변환 후 게이트 재실행한다.

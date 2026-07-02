@@ -50,8 +50,8 @@ server/
 | `tests/p3-*.mjs` | Phase 3 테스트 (`QA_RELEASE_PLAN.md` 목록) |
 | `tests/fixtures/dxf/` | 소형 ASCII DXF fixture |
 | `tests/fixtures/pointcloud/` | 소형 점군 + ground-truth JSON |
-| `tools/generate-dxf-fixtures.mjs` | 대표건물 → DXF 역생성 |
-| `tools/generate-synthetic-pointcloud.mjs` | 대표건물 → 합성 점군 |
+| `tests/fixtures/dxf/plan-story-1.dxf` | DXF 평면 fixture |
+| `src/import/pointcloud/synthetic.js` | 대표건물 → 합성 점군 |
 | `tools/convert-dwg.mjs` | ODA CLI 어댑터 |
 
 ## Change Routing (Phase 3 추가분)
@@ -73,5 +73,5 @@ server/
 | --- | --- |
 | `data/`, `*.log`, 업로드 원본 | git 추적 제외 |
 | 대형 점군/도면 | 커밋 금지. 생성기 또는 외부 보관 |
-| 상위 `dcr/` 참고자료 (`_app`, `_asar_*`, `_extract`, `DCR-Setup.exe`, `restored-dcr`, `일본구조계산프로그램output`) | 소스 아님. 분석 근거로 필요하면 별도 archive 폴더/드라이브로 이동 권장. 저장소 안으로 복사 금지 |
+| 상위 참고자료 (`_app`, `_asar_*`, `_extract`, setup binaries, restored references, `일본구조계산프로그램output`) | 소스 아님. 분석 근거로 필요하면 별도 archive 폴더/드라이브로 이동 권장. 저장소 안으로 복사 금지 |
 | 생성 보고서 | `reports/` (기존 규칙 유지) |

@@ -125,8 +125,8 @@ src/standards/
 | --- | --- |
 | RC 보/기둥/벽 | 교과서/예제집 수계산 10케이스 tolerance 비교 (`tests/p3-design-rc.mjs`) |
 | PM 상관도 | 대표 단면 상관도 점 (P0, Pb, M0) 수계산 비교 |
-| 철골 | KDS 예제/강구조편람 수계산 10케이스 (`tests/p3-design-steel.mjs`) |
-| 기초/접합 | 수계산 케이스 (`tests/p3-design-foundation.mjs`) |
+| 철골 | KDS 예제/강구조편람 수계산 케이스 (`tests/p3-design-steel-foundation.mjs`) |
+| 기초/접합 | 수계산 케이스 (`tests/p3-design-steel-foundation.mjs`) |
 | 통합 | 대표건물 10종 일람표 생성 회귀 + NG→issue 유입 확인 |
 
 수계산 근거는 `docs/verification/DESIGN_MODULE_VERIFICATION.md`에 케이스별로 기록한다.
