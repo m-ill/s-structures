@@ -5,6 +5,7 @@ import {
   buildConnectionDetailedDesignReport,
   buildFoundationDetailedDesignReport,
   buildP3DetailedDesignReport,
+  buildP3DetailedDesignGate,
   buildSteelDetailedDesignReport,
   createCantileverTipLoad,
   createTwoStoryElasticFrameModel,
@@ -77,18 +78,19 @@ assert.ok(integrated.designGate.contract.reviewFields.includes('summary.ticketCo
 assert.equal(integrated.designGate.contract.maturity, 'preliminary-integrated-schedule');
 assert.equal(integrated.designGate.summary.readyForAgentReview, true);
 assert.equal(integrated.designGate.summary.completeCoverage, true);
-assert.equal(integrated.designGate.designReview.status, 'trace-ready');
+assert.equal(integrated.designGate.designReview.status, 'review-required');
 assert.equal(integrated.designGate.designReview.finalPermitDesign, false);
 assert.equal(integrated.designGate.designReview.fabricationReady, false);
 assert.equal(integrated.designGate.designReview.geotechnicalCertified, false);
-assert.equal(integrated.designGate.designReview.agentDecision, 'm18-ready-for-m19-integrated-results-review');
-assert.deepEqual(integrated.designGate.designReview.missing, []);
+assert.equal(integrated.designGate.designReview.agentDecision, 'resolve-detailed-design-review-items');
+assert.deepEqual(integrated.designGate.designReview.missing, ['design-issues']);
 assert.ok(integrated.modules.steel.rows.length > 0);
 assert.ok(integrated.modules.connection.rows.length > 0);
 assert.ok(integrated.modules.foundation.footings.length > 0);
 assert.ok(integrated.formulaTrace.length > 0);
 assert.equal(integrated.designGate.formulaCount, integrated.formulaTrace.length);
 assert.equal(integrated.designGate.issueCount, integrated.issueRows.length);
+assert.ok(integrated.designGate.issueCount > 0);
 assert.equal(integrated.formulaRegistryVersion, DESIGN_FORMULA_REGISTRY_VERSION);
 assert.equal(integrated.designGate.unregisteredFormulaCount, 0);
 assert.deepEqual(integrated.designGate.coverage.map((row) => row.ticket), ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95']);
@@ -97,6 +99,39 @@ assert.deepEqual(integrated.designGate.summary.ticketCoverage.map((row) => row.t
 assert.ok(integrated.designGate.ticketCoverage.every((row) => row.evidence));
 assert.ok(integrated.issueRows.every((row) => Array.isArray(row.formulaIds)));
 assert.ok(integrated.issueRows.some((row) => row.formulaIds.length > 0));
+
+const issueGate = buildP3DetailedDesignGate({
+  steel: {
+    version: 'steel-test',
+    rows: [{ memberId: 'S1', status: 'NG', formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1' }] }],
+    formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' }],
+    summary: { itemCount: 1, ngCount: 1 },
+  },
+  connection: {
+    version: 'connection-test',
+    rows: [{ memberId: 'C1', status: 'OK', formulaTrace: [{ formulaId: 'KDS-CONN-BOLT-V1' }] }],
+    formulaTrace: [{ formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' }],
+    summary: { itemCount: 1 },
+  },
+  foundation: {
+    version: 'foundation-test',
+    rows: [{ nodeId: 'F1', status: 'OK', formulaTrace: [{ formulaId: 'KDS-FOUND-SPREAD-V1' }] }],
+    formulaTrace: [{ formulaId: 'KDS-FOUND-SPREAD-V1', standard: 'KDS 11 50' }],
+    summary: { itemCount: 1 },
+  },
+}, {
+  issueRows: [{ moduleId: 'steel', itemId: 'S1', status: 'NG', formulaIds: ['KDS-ST-H1-INTERACTION-V1'] }],
+  formulaTrace: [
+    { formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' },
+    { formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' },
+    { formulaId: 'KDS-FOUND-SPREAD-V1', standard: 'KDS 11 50' },
+  ],
+});
+assert.equal(issueGate.summary.completeCoverage, true);
+assert.equal(issueGate.designReview.status, 'review-required');
+assert.ok(issueGate.designReview.missing.includes('design-issues'));
+assert.equal(issueGate.designReview.issueCount, 1);
+assert.equal(issueGate.designReview.agentDecision, 'resolve-detailed-design-review-items');
 
 const target = { model: () => frame, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => frameAnalysis });

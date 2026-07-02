@@ -98,6 +98,7 @@ function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverag
   if (!coverage.every((row) => row.covered)) missing.push('ticket-coverage');
   if (!formulaTrace.length) missing.push('formula-trace');
   if (unregisteredFormulaCount) missing.push('formula-registry');
+  if (issueRows.length) missing.push('design-issues');
   return {
     status: missing.length ? 'review-required' : 'trace-ready',
     maturity: 'preliminary',
@@ -110,7 +111,7 @@ function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverag
     unregisteredFormulaCount,
     moduleStatuses,
     missing,
-    agentDecision: missing.length ? 'hold-before-m19-results' : 'm18-ready-for-m19-integrated-results-review',
+    agentDecision: missing.length ? 'resolve-detailed-design-review-items' : 'm18-ready-for-m19-integrated-results-review',
   };
 }
 

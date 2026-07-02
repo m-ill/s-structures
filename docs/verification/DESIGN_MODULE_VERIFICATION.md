@@ -53,6 +53,8 @@ Current status is preliminary. M18 adds traceable steel, connection, base-plate,
 
 2026-07-02 integrated maturity review update: `designGate` now exposes `contract.maturity` and `designReview`. The review records complete coverage, issue count, formula count, unregistered formula count, module statuses, and explicit false flags for final permit design, fabrication readiness, and geotechnical certification. Agents can now tell when M18 is ready for M19 result integration without treating it as a sealed construction package.
 
+2026-07-03 integrated gate code review update: `designReview` now treats WARN/NG integrated issue rows as explicit review blockers. Complete ticket coverage and registered formulas are no longer enough to return `trace-ready` when `issueRows` are present; the review reports `design-issues` in `missing` and returns `resolve-detailed-design-review-items`. This keeps steel, connection, and foundation issue rows visible to reports and AI agents before M19 integration.
+
 2026-07-03 design milestone contract update: P3-M17 to P3-M18 now expose `getPhase3DesignMilestoneReview`. The review contract maps RC, steel, connection, foundation, report/formula, and serviceability scopes to the existing `rcDesignGate` and `designGate` paths while keeping `finalPermitDesign` separate from trace readiness.
 
 ## P3-M19 Integrated Results And Report
