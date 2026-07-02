@@ -23,6 +23,7 @@ import {
   buildP3DetailedDesignReport,
   buildP3IntegratedResults,
   buildLaunchReadinessReport,
+  buildPhase3PlanAlignmentReport,
   buildRcDetailedDesignReport,
   buildRcDetailingReport,
   getLibraryItem as getCoreLibraryItem,
@@ -211,6 +212,13 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getLaunchReadinessReport(options = {}) {
       return cloneJson(buildLaunchReadinessReport(options.evidence || options));
+    },
+    getPhase3PlanAlignment() {
+      return cloneJson(buildPhase3PlanAlignmentReport(buildAgentManifest({
+        bridgeVersion,
+        availableActions: availableAgentActions(),
+        controls: target.document ? listAgentControls(target.document) : [],
+      })));
     },
     getConnectionFoundationReport(options = {}) {
       const model = getCurrentModel(target);

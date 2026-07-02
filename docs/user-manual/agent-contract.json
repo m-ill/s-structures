@@ -23,7 +23,8 @@
     "importReviewUi": "preliminary",
     "pointCloudImport": "preliminary-loader-viewer-core",
     "pointCloudExtraction": "preliminary-synthetic-benchmark",
-    "phase3LaunchReadiness": "preliminary-phase3"
+    "phase3LaunchReadiness": "preliminary-phase3",
+    "phase3PlanAlignment": "available"
   },
   "globalObjects": [
     "window.SStructuresAgent",
@@ -56,6 +57,7 @@
     "getP3DetailedDesignReport",
     "getP3IntegratedResults",
     "getLaunchReadinessReport",
+    "getPhase3PlanAlignment",
     "getConnectionFoundationReport",
     "getMemberDesignTraceReport",
     "getDesignDemandPackage",
@@ -189,7 +191,8 @@
     "getResults",
     "getP3IntegratedResults",
     "getCalculationPackage",
-    "getLaunchReadinessReport"
+    "getLaunchReadinessReport",
+    "getPhase3PlanAlignment"
   ],
   "generatedOutputs": {
     "representativeCalculationPackages": "reports/representative-building-calculation-packages/",
@@ -209,6 +212,7 @@
     "phase3DetailedDesignGate",
     "phase3IntegratedResultsGate",
     "phase3LaunchReadinessGate",
+    "phase3PlanAlignment",
     "phase3NonlinearAssembly",
     "phase3NonlinearHingeAssignment",
     "phase3NonlinearGeometryTrace",
@@ -227,6 +231,7 @@
     "phase3DetailedDesignGate",
     "phase3IntegratedResultsGate",
     "phase3LaunchReadinessGate",
+    "phase3PlanAlignment",
     "phase3NonlinearAssemblyTrace",
     "phase3NonlinearHingeAssignmentTrace",
     "phase3FiberMaterialBackboneTrace",

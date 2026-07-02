@@ -103,6 +103,7 @@
     "test:m88": "node tests/p3-design-steel-foundation.mjs",
     "test:m89": "node tests/p3-m19-integrated-report.mjs",
     "test:m90": "node tests/p3-launch-gate.mjs",
+    "test:m91": "node tests/p3-plan-alignment.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
@@ -143,6 +144,7 @@
     "test:p3m17": "node tests/p3-design-rc.mjs",
     "test:p3m18": "node tests/p3-design-steel-foundation.mjs",
     "test:p3m19": "node tests/p3-m19-integrated-report.mjs",
-    "test:p3m20": "node tests/p3-launch-gate.mjs"
+    "test:p3m20": "node tests/p3-launch-gate.mjs",
+    "test:p3alignment": "node tests/p3-plan-alignment.mjs"
   }
 }

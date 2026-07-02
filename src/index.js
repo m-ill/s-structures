@@ -188,6 +188,10 @@ export {
   LAUNCH_READINESS_VERSION,
 } from './platform/launchReadiness.js';
 export {
+  buildPhase3PlanAlignmentReport,
+  PHASE3_PLAN_ALIGNMENT_VERSION,
+} from './platform/phase3PlanAlignment.js';
+export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';
