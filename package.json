@@ -129,6 +129,7 @@
     "test:p3appshell": "node tests/p3-app-shell.mjs",
     "test:p3viewer": "node tests/p3-viewer-core.mjs",
     "test:p3import": "node tests/p3-import-geometry.mjs",
+    "test:p3import-review": "node tests/p3-import-milestone-review.mjs",
     "test:p3m6": "node tests/p3-m6-dxf-import.mjs",
     "test:p3m7": "node tests/p3-m7-dwg-plan.mjs",
     "test:p3m7-ui": "node tests/p3-m7-import-review-ui.mjs",

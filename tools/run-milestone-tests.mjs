@@ -25,6 +25,7 @@ const phase3Tests = [
   p3('P3-M9', 'test:p3m9'),
   p3('P3-M9', 'test:p3m9-e2e'),
   p3('P3-M9', 'test:p3pointcloud'),
+  p3('P3-M9', 'test:p3import-review'),
   p3('P3-M10', 'test:p3m10'),
   p3('P3-M10', 'test:p3section'),
   p3('P3-M11', 'test:p3m11'),

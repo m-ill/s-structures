@@ -62,3 +62,14 @@ The contract separates:
 This keeps the current DXF, DWG-adapter, and point-cloud pipeline usable for
 development while preventing synthetic point-cloud and missing-converter results
 from being interpreted as final field validation.
+
+## 2026-07-03 Executable Review Update
+
+The P3-M6 restart path is now locked by a dedicated import milestone review
+test: `node tests/p3-import-milestone-review.mjs`.
+
+The Phase 3 runner includes this check in the P3-M9 group because the review
+contract covers the full M6 to M9 input pipeline. This means
+`node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M9`
+now verifies both the individual import implementations and the combined
+agent-readable review contract.

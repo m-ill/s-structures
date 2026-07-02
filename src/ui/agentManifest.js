@@ -337,6 +337,7 @@ export function buildAgentManifest(options = {}) {
       phase3DocReferences: 'node tests/p3-doc-reference-integrity.mjs',
       phase3DrawingImportValidation: 'node tests/p3-drawing-import-validation-review.mjs',
       phase3EngineeringValidation: 'node tests/p3-engineering-validation-review.mjs',
+      phase3ImportMilestoneReview: 'node tests/p3-import-milestone-review.mjs',
       phase3PointCloudValidation: 'node tests/p3-pointcloud-validation-review.mjs',
       phase3PracticeValidation: 'node tests/p3-practice-validation-review.mjs',
       phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
