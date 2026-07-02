@@ -143,7 +143,27 @@ assert.equal(failedLoadControl.rows[0].acceptedValue, 0);
 assert.equal(failedLoadControl.finalState.lambda, 0);
 assert.equal(failedLoadControl.finalState.u[0], 0);
 assert.equal(failedLoadControl.finalState.events[0].type, 'nonconvergence');
-assert.equal(failedLoadControl.contract.failurePolicy, 'Record the failed step and stop unless continueOnFailure is explicitly enabled.');
+assert.equal(failedLoadControl.contract.failurePolicy, 'Record the failed step and stop unless continueOnFailure is enabled; one split retry is available when retrySplitOnFailure is true.');
+assert.equal(failedLoadControl.contract.retryPolicy, 'Failed increments expose stepSplitRecommended and can be retried as two half increments once.');
+assert.equal(failedLoadControl.rows[0].failureReview.status, 'review-required');
+assert.equal(failedLoadControl.rows[0].failureReview.stepSplitRecommended, true);
+assert.equal(failedLoadControl.rows[0].failureReview.agentDecision, 'review-load-step-or-enable-split-retry');
+assert.equal(failedLoadControl.summary.failedSteps, 1);
+assert.equal(failedLoadControl.summary.stepSplitRecommended, true);
+const splitRecoveredLoadControl = buildLoadControlTrace({
+  increments: [1],
+  retrySplitOnFailure: true,
+  maxIterations: 1,
+  residualFactory: ({ targetLambda, dLambda }) => (dLambda > 0.5 ? () => 1 : (x) => x - targetLambda),
+  tangentFactory: () => () => 1,
+});
+assert.equal(splitRecoveredLoadControl.converged, true);
+assert.equal(splitRecoveredLoadControl.rows[0].failureReview.status, 'available');
+assert.equal(splitRecoveredLoadControl.rows[0].failureReview.splitRetryAttempted, true);
+assert.equal(splitRecoveredLoadControl.rows[0].failureReview.splitRetryRecovered, true);
+assert.equal(splitRecoveredLoadControl.rows[0].failureReview.agentDecision, 'accept-split-load-step-trace');
+assert.equal(splitRecoveredLoadControl.rows[0].splitRows.length, 2);
+assert.equal(splitRecoveredLoadControl.summary.splitRetryAttempted, true);
 const continuedFailure = buildLoadControlTrace({
   increments: [0.2, 0.3],
   initial: 1,

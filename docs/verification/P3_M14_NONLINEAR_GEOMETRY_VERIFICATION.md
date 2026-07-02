@@ -54,6 +54,14 @@ The gate records:
 
 2026-07-03 continued-failure hardening: `buildLoadControlTrace()` now keeps the accepted state unchanged when `continueOnFailure` is enabled. Failed rows still appear in the trace, but `step`, `lambda`, and displacement stay at the last accepted state. This preserves the P3-T50 path-state contract before M15/M16 add hinge and fiber history.
 
+2026-07-03 load-step split review update: failed load-control rows now expose
+`failureReview` with the nonconvergence reason, `stepSplitRecommended`,
+split-retry attempt status, and an agent decision. The load-control contract also
+records the one-split retry policy, and residual/tangent factories can make the
+split retry auditable for nonlinear load-step checks. This keeps the M14
+convergence plan visible to reports and AI agents without treating a failed
+increment as accepted state.
+
 `tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, restart-safe hinge/event copies, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, reduced-DOF global equilibrium trace including singular-tangent failure, load-control trace including failed-step acceptance separation and continued-failure state immutability, incomplete gate review blocking, B1/B2 benchmarks, and agent trace exposure.
 
 ## Remaining Limits
