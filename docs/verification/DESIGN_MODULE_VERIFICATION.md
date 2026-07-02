@@ -21,6 +21,8 @@ Current status is preliminary. The module produces traceable schedules and regis
 
 2026-07-02 contract review update: P3-M17 RC beam, column, wall, and slab rows now expose ticket-specific contracts and compact summaries. The RC detailed-design report exposes a top-level P3-M17 contract, and `rcDesignGate.summary` now reports agent-readiness, role coverage, issue count, formula count, and role-by-role status counts.
 
+2026-07-02 ticket coverage review update: `rcDesignGate` now exposes a formal P3-M17 contract, feature-to-ticket map, and `summary.ticketCoverage`/`ticketCoverage` rows for P3-T87 to P3-T90. The rows preserve partial-coverage cases, so agents can distinguish a valid beam/wall/slab report from a complete beam/column/wall/slab RC package.
+
 ## P3-M18 Steel / Connection / Foundation Detailed Design
 
 Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.

@@ -52,6 +52,19 @@ export function buildRcDesignGate(report = {}) {
     version: RC_DESIGN_GATE_VERSION,
     milestone: 'P3-M17',
     tickets: ['P3-T87', 'P3-T88', 'P3-T89', 'P3-T90'],
+    contract: {
+      milestone: 'P3-M17',
+      tickets: ['P3-T87', 'P3-T88', 'P3-T89', 'P3-T90'],
+      scope: 'RC detailed-design trace gate for beam, column, wall, and slab schedules.',
+      featureTicketMap: {
+        beamDetail: 'P3-T87',
+        columnDetail: 'P3-T88',
+        wallDetail: 'P3-T89',
+        slabDetail: 'P3-T90',
+      },
+      reviewFields: ['summary.ticketCoverage', 'coverage', 'status', 'formulaCount', 'issueCount'],
+      agentUse: 'Read-only gate for reports and AI-agent inspection of RC detailed-design role coverage.',
+    },
     summary: {
       readyForAgentReview: true,
       completeRoleCoverage: missingRoles.length === 0,
@@ -59,6 +72,7 @@ export function buildRcDesignGate(report = {}) {
       issueCount: rows.filter((row) => row.status && row.status !== 'OK').length,
       formulaCount: formulas.length,
       roleStatuses: summarizeRoleStatuses(rows),
+      ticketCoverage: buildTicketCoverage(coverage),
     },
     schedules: {
       beams: schedules.beams?.length || 0,
@@ -71,6 +85,7 @@ export function buildRcDesignGate(report = {}) {
     issueCount: rows.filter((row) => row.status && row.status !== 'OK').length,
     requiredRoles: ['beam', 'column', 'wall', 'slab'],
     coverage,
+    ticketCoverage: buildTicketCoverage(coverage),
     missingRoles,
     completeRoleCoverage: missingRoles.length === 0,
     limitations: [
@@ -131,6 +146,16 @@ function buildRoleCoverage(schedules) {
     { role: 'wall', ticket: 'P3-T89', count: schedules.walls?.length || 0 },
     { role: 'slab', ticket: 'P3-T90', count: schedules.slabs?.length || 0 },
   ];
+}
+
+function buildTicketCoverage(coverage) {
+  return coverage.map((row) => ({
+    ticket: row.ticket,
+    role: row.role,
+    scope: `RC ${row.role} detailed-design schedule`,
+    covered: row.count > 0,
+    evidence: `${row.count} ${row.role} rows`,
+  }));
 }
 
 function collectFormula(row) {
