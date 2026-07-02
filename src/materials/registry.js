@@ -63,8 +63,15 @@ function asVersioned(items = []) {
 function selectVersion(items, version) {
   const rows = items.filter((item) => !item.deleted);
   if (!rows.length) return null;
-  if (version != null) return rows.find((item) => Number(item.version) === version) || null;
-  return rows.sort((a, b) => Number(b.version || 1) - Number(a.version || 1) || Number(a._priority || 0) - Number(b._priority || 0))[0];
+  if (version != null) return rows
+    .filter((item) => Number(item.version) === version)
+    .sort(scopePrioritySort)[0] || null;
+  return rows.sort((a, b) => Number(b.version || 1) - Number(a.version || 1) || scopePrioritySort(a, b))[0];
+}
+
+function scopePrioritySort(a, b) {
+  const order = { project: 0, global: 1, builtin: 2 };
+  return (order[scopeOf(a)] ?? 0) - (order[scopeOf(b)] ?? 0) || Number(a._priority || 0) - Number(b._priority || 0);
 }
 
 function normalizeSection(section) {

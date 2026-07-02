@@ -53,6 +53,8 @@ The material library report also exposes nonlinear backbone metadata so the late
 
 2026-07-03 strength-schema hardening: `validateMaterialRecord()` now enforces kind-specific strength fields for steel and concrete records. Steel requires `strength.steel.Fy/Fu` (or compatible top-level `Fy/Fu` legacy input), concrete requires `strength.concrete.fck`, and material-library reports surface missing strength as `material-schema-errors` blockers for AI-agent review.
 
+2026-07-03 scope-priority hardening: registry resolution now sorts same-version candidates by scope priority, so project records override global records even when the global row appears first in the model array. `tests/p3-m10-materials.mjs` locks both material and section `project > global > builtin` behavior.
+
 ## Current Test Gate
 
 P3-M10 is covered by:

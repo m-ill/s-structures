@@ -129,6 +129,24 @@ const override = createModel({
 });
 assert.equal(materialOf(override, 'steel@1').Fy, 222000);
 assert.equal(sectionOf(override, 'h300@1').A, 0.0123);
+const scopePriorityModel = createModel({
+  materials: [
+    { id: 'SCOPE_STEEL', version: 1, E: 190000, G: 73000, Fy: 240, Fu: 400, source: { scope: 'global' } },
+    { id: 'SCOPE_STEEL', version: 1, E: 210000, G: 80000, Fy: 355, Fu: 490, source: { scope: 'project' } },
+  ],
+  sections: [
+    { id: 'SCOPE_H', version: 1, A: 0.01, Iy: 1e-4, Iz: 2e-4, source: { scope: 'global' } },
+    { id: 'SCOPE_H', version: 1, A: 0.02, Iy: 2e-4, Iz: 3e-4, source: { scope: 'project' } },
+  ],
+});
+assert.equal(materialOf(scopePriorityModel, 'SCOPE_STEEL@1').Fy, 355000);
+assert.equal(sectionOf(scopePriorityModel, 'SCOPE_H@1').A, 0.02);
+const scopePriorityAudit = buildLibraryAudit({
+  ...scopePriorityModel,
+  members: [{ id: 'M1', matId: 'SCOPE_STEEL@1', secId: 'SCOPE_H@1' }],
+});
+assert.equal(scopePriorityAudit.resolvedReferences.materials[0].source.scope, 'project');
+assert.equal(scopePriorityAudit.resolvedReferences.sections[0].source.scope, 'project');
 assert.equal(resolveSectionRecord(null, 'H-400x200x8x13@1').source.db, 'KS-H-2024');
 const builtinReport = buildMaterialLibraryReport({
   members: [{ id: 'M1', matId: 'steel@1', secId: 'H-400x200x8x13@1' }],
