@@ -548,6 +548,7 @@ export { POINT_CLOUD_SYNTHETIC_VERSION, generateSyntheticPointCloud } from './im
 export { POINT_CLOUD_EXTRACTION_SUMMARY_VERSION, POINT_CLOUD_EXTRACTION_VERSION, buildPointCloudExtractionSummary, extractPointCloudCandidate } from './import/pointcloud/extract.js';
 export { POINT_CLOUD_BENCHMARK_VERSION, evaluatePointCloudExtraction } from './import/pointcloud/benchmark.js';
 export { POINT_CLOUD_LAYER_VERSION, buildPointCloudLayerData } from './viewer/pointCloudLayer.js';
+export { VIEWER_STATE_VERSION, createViewerState, getViewerState, setViewerSlice } from './viewer/viewerState.js';
 export { IMPORT_CANDIDATE_MODEL_VERSION, importCandidateToModel } from './import/candidateModel.js';
 export { MATERIAL_REGISTRY_VERSION, buildLibraryAudit, parseVersionedId, resolveMaterialRecord, resolveSectionRecord } from './materials/registry.js';
 export { MATERIAL_SCHEMA_VERSION, normalizeMaterialRecord, validateMaterialRecord } from './materials/materialSchema.js';

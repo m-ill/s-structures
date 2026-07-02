@@ -23,7 +23,10 @@ assert.equal(buildHash('modeler', { projectId: 'xyz' }), '#/p/xyz/modeler');
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3AppShell, APP_SHELL_VERSION);
+assert.ok(manifest.modules.phase3ViewerState);
 assert.ok(manifest.dataContracts.includes('phase3AppShellRoutes'));
+assert.ok(manifest.dataContracts.includes('phase3ViewerState'));
+assert.ok(manifest.readApis.includes('getViewerState'));
 assert.ok(manifest.milestones.some((row) => row.id === 'P3-M4' && row.status === 'available'));
 
 const app = await bootTestApp();

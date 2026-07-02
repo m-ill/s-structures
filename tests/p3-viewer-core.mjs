@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {
   createOrbitCamera, lookAt, multiplyMat4, orbitEye, perspective, transformPoint,
 } from '../src/viewer/viewerCore.js';
+import { createViewerState, getViewerState, setViewerSlice, VIEWER_STATE_VERSION } from '../src/viewer/viewerState.js';
 
 function approxEqual(a, b, tol = 1e-6) {
   assert.ok(Math.abs(a - b) < tol, `expected ${a} ~= ${b}`);
@@ -49,5 +50,16 @@ assert.deepEqual(camera.state.target, [2, 3, 3]);
 
 const viewFromCamera = camera.viewMatrix();
 assert.equal(viewFromCamera.length, 16);
+
+const host = {};
+const initialViewer = getViewerState(host);
+assert.equal(initialViewer.version, VIEWER_STATE_VERSION);
+assert.equal(initialViewer.slice.enabled, false);
+assert.equal(initialViewer.slice.zMin, null);
+const sliced = setViewerSlice(host, { enabled: true, zMin: 6, zMax: 2 });
+assert.equal(sliced.slice.enabled, true);
+assert.deepEqual([sliced.slice.zMin, sliced.slice.zMax], [2, 6]);
+assert.equal(getViewerState(host).slice.zMax, 6);
+assert.equal(createViewerState({ slice: { active: true, minZ: 1, maxZ: 4 } }).slice.enabled, true);
 
 console.log(JSON.stringify({ ok: true, version: 'p3-viewer-core' }, null, 2));

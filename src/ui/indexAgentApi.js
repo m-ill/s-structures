@@ -68,6 +68,8 @@ import {
   summarizeKdsLoadCombinationRules,
   upsertMaterial as upsertCoreMaterial,
   upsertSection as upsertCoreSection,
+  getViewerState as getCoreViewerState,
+  setViewerSlice as setCoreViewerSlice,
 } from '../index.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
@@ -132,6 +134,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getScreenState() {
       return cloneJson(buildAgentScreenState(target));
+    },
+    getViewerState() {
+      return cloneJson(getCoreViewerState(target));
     },
     getResults() {
       const model = getCurrentModel(target);
@@ -373,6 +378,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       if (result.changed) runUiAnalysis(target);
       return cloneJson(result);
     },
+    setViewerSlice(payload = {}) {
+      return cloneJson(setCoreViewerSlice(target, payload));
+    },
     getElasticExpansionTrace() {
       const model = getCurrentModel(target);
       if (!model) return null;
@@ -476,6 +484,8 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
           return api.setModel(payload.model || payload);
         case 'setAnalysisSetting':
           return setAnalysisSetting(target, payload.key, payload.value, api);
+        case 'setViewerSlice':
+          return { viewerState: api.setViewerSlice(payload) };
         case 'setNodeMass':
           return executeAgentModelingAction(target, action, payload, api);
         case 'runPushover': {

@@ -11,6 +11,7 @@ export function availableAgentActions() {
     'setAnalysisSetting',
     'setResultTab',
     'setPDeltaStep',
+    'setViewerSlice',
     'setResultsPanelOpen',
     'setOverlayOption',
     'setOverlayMode',

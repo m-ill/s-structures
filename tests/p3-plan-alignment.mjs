@@ -93,6 +93,8 @@ assert.equal(report.frontend.ok, true);
 assert.equal(report.frontend.routes.length, 7);
 assert.ok(report.frontend.routes.includes('#/p/:id/import/:jobId'));
 assert.ok(report.frontend.agentApis.includes('confirmImport'));
+assert.ok(report.frontend.agentApis.includes('getViewerState'));
+assert.ok(report.frontend.agentApis.includes('setViewerSlice'));
 assert.equal(report.importPipeline.ok, true);
 assert.deepEqual(report.importPipeline.drawingPaths.map((row) => row.id), ['3d-wireframe-dxf', '2d-floor-plan-dxf', 'dwg']);
 assert.ok(report.importPipeline.dxfEntities.includes('INSERT'));

@@ -193,8 +193,9 @@ const FRONTEND_CONTRACT = {
     'src/app/modelerHost.js',
     'src/viewer/viewerCore.js',
     'src/viewer/pointCloudLayer.js',
+    'src/viewer/viewerState.js',
   ],
-  agentApis: ['listImportCandidates', 'resolveImportCandidate', 'confirmImport', 'getCapabilities'],
+  agentApis: ['listImportCandidates', 'resolveImportCandidate', 'confirmImport', 'getViewerState', 'setViewerSlice', 'getCapabilities'],
   principles: ['vanilla-esm', 'modeler-index-preserved', 'agent-manifest-for-actions', 'csp-ready-no-new-inline-script'],
 };
 

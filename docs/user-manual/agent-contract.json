@@ -115,6 +115,7 @@
     "getResultView",
     "getResultVisuals",
     "getScreenState",
+    "getViewerState",
     "getReport",
     "getDetailedReport",
     "getCalculationPackage",
@@ -193,7 +194,8 @@
       "setNativePDeltaEnabled",
       "setNativePDeltaStep",
       "setNativeResultScale",
-      "showNativeMemberResult"
+      "showNativeMemberResult",
+      "setViewerSlice"
     ],
     "nativeModeling": [
       "nativeClearPage",
@@ -340,6 +342,7 @@
     "phase3CompletionAuditReview",
     "phase3EvidenceRegister",
     "phase3EvidenceClient",
+    "phase3ViewerState",
     "phase3NonlinearAssembly",
     "phase3NonlinearHingeAssignment",
     "phase3NonlinearGeometryTrace",
@@ -374,6 +377,7 @@
     "phase3CompletionAuditReview",
     "phase3EvidenceRegister",
     "phase3EvidenceClient",
+    "phase3ViewerState",
     "phase3NonlinearAssemblyTrace",
     "phase3NonlinearHingeAssignmentTrace",
     "phase3FiberMaterialBackboneTrace",

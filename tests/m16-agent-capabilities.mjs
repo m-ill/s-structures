@@ -44,8 +44,10 @@ assert.equal(manifest.modules.runtimeAdapter, 'm23-original-index-runtime-adapte
 assert.ok(manifest.executeActions.includes('createGridFrame'));
 assert.ok(manifest.executeActions.includes('runPushover'));
 assert.ok(manifest.executeActions.includes('setNativeMode'));
+assert.ok(manifest.executeActions.includes('setViewerSlice'));
 assert.ok(manifest.readApis.includes('getCapabilities'));
 assert.ok(manifest.readApis.includes('getRuntimeDiagnostics'));
+assert.ok(manifest.readApis.includes('getViewerState'));
 assert.ok(manifest.readApis.includes('getMaterialSectionRegistry'));
 assert.ok(manifest.readApis.includes('getElasticExpansionTrace'));
 assert.ok(manifest.readApis.includes('getWallSlabEquivalentTrace'));
@@ -90,6 +92,12 @@ assert.equal(manifest.reviewGates.rcDetailedDesign.finalApprovalField, 'finalPer
 assert.ok(manifest.milestones.some((item) => item.id === 'P3-M15'));
 assert.ok(manifest.milestones.some((item) => item.id === 'P3-M16'));
 assert.equal(manifest.uiContract.controlCount, 0);
+
+const initialViewerState = agent.getViewerState();
+assert.equal(initialViewerState.slice.enabled, false);
+const viewerSliceResult = agent.execute('setViewerSlice', { enabled: true, zMin: 4, zMax: 1 });
+assert.deepEqual([viewerSliceResult.viewerState.slice.zMin, viewerSliceResult.viewerState.slice.zMax], [1, 4]);
+assert.equal(agent.getViewerState().slice.enabled, true);
 
 const snapshot = agent.getSnapshot();
 assert.deepEqual(snapshot.availableActions, manifest.executeActions);
