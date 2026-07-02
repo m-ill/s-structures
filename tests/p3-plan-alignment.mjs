@@ -10,6 +10,22 @@ import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
 const manifest = buildAgentManifest();
 const report = buildPhase3PlanAlignmentReport(manifest);
+const sourceDocMarkers = {
+  'docs/phase3/PRODUCT_REQUIREMENTS.md': ['# Phase 3 Product Requirements', 'FR-20', 'AI agent'],
+  'docs/phase3/ROADMAP.md': ['# Phase 3 Roadmap', 'P3-M6', 'P3-M20'],
+  'docs/phase3/IMPLEMENTATION_BACKLOG.md': ['# Phase 3 Implementation Backlog', 'P3-T67', 'P3-T57'],
+  'docs/phase3/ARCHITECTURE.md': ['# Phase 3 System Architecture', 'D10', 'ImportCandidate'],
+  'docs/phase3/SERVER_API_PLAN.md': ['# Phase 3 Server API Plan', '/api/auth/login', 'UNAUTHORIZED'],
+  'docs/phase3/AUTH_ACCOUNT_PLAN.md': ['# Phase 3 Auth And Account Plan', 'scrypt', 'HMAC-SHA256'],
+  'docs/phase3/PERSISTENCE_PLAN.md': ['# Phase 3 Persistence Plan', 'autosave', 'modelToJson'],
+  'docs/phase3/FRONTEND_PLAN.md': ['# Phase 3 Frontend Plan', '#/p/:id/modeler', 'confirmImport'],
+  'docs/phase3/IMPORT_DXF_DWG_PLAN.md': ['# Phase 3 DXF/DWG Import Plan', 'P3-M6 DXF Parser', 'ImportCandidate'],
+  'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md': ['# Phase 3 Point Cloud Import Plan', 'P3-M9 Structure Extraction', 'ImportCandidate'],
+  'docs/phase3/MATERIAL_SECTION_LIBRARY_PLAN.md': ['# Phase 3 Material And Section Library Plan', 'id@version', 'src/materials/'],
+  'docs/phase3/NONLINEAR_ENGINE_PLAN.md': ['# Phase 3 Nonlinear Engine Plan', 'P3-T50', 'B1'],
+  'docs/phase3/QA_RELEASE_PLAN.md': ['# Phase 3 QA And Release Plan', 'G1', 'tests/p3-launch-gate.mjs'],
+  'docs/phase3/DEVELOPMENT_FILE_MAP.md': ['# Phase 3 Development File Map', 'server/', 'src/nonlinear/'],
+};
 
 assert.equal(report.version, PHASE3_PLAN_ALIGNMENT_VERSION);
 assert.equal(report.sourceDocCount, 14);
@@ -70,6 +86,14 @@ assert.equal(report.agentReadable, true);
 assert.equal(report.missing.length, 0);
 assert.ok(report.sourceDocs.includes('docs/phase3/ROADMAP.md'));
 assert.ok(report.sourceDocs.includes('docs/phase3/IMPLEMENTATION_BACKLOG.md'));
+assert.deepEqual([...report.sourceDocs].sort(), Object.keys(sourceDocMarkers).sort());
+for (const [file, markers] of Object.entries(sourceDocMarkers)) {
+  assert.equal(existsSync(file), true, file);
+  const text = readFileSync(file, 'utf8');
+  for (const marker of markers) {
+    assert.ok(text.includes(marker), `${file} missing ${marker}`);
+  }
+}
 assert.deepEqual(report.milestones.map((row) => row.id), Array.from({ length: 21 }, (_, index) => `P3-M${index}`));
 assert.ok(report.milestones.find((row) => row.id === 'P3-M6').tickets.includes('P3-T26'));
 assert.ok(report.milestones.find((row) => row.id === 'P3-M13').tickets.includes('P3-T82'));

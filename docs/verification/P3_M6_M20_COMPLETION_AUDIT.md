@@ -12,6 +12,7 @@ This audit checks the current implementation against the existing Phase 3 planni
 | Item | Current evidence |
 | --- | --- |
 | Source documents | `buildPhase3PlanAlignmentReport().sourceDocCount === 14` |
+| Source document markers | `tests/p3-plan-alignment.mjs` verifies each core document exists and contains role-specific markers |
 | Milestones | P3-M0 to P3-M20, 21 rows |
 | Backlog tickets | 95 planned IDs |
 | Active milestone tickets | 93 |
@@ -38,6 +39,8 @@ The following tests were run successfully in the current worktree:
 ## Review Finding
 
 The current codebase is now traceable from P3-M6 through P3-M20 and back to the 14 Phase 3 planning documents. The most important correction in this audit was making absorbed backlog tickets explicit through `ticketSummary`, so the system no longer reports a confusing 95 planned versus 93 active count without explanation.
+
+2026-07-02 source-document audit update: `tests/p3-plan-alignment.mjs` now checks the 14 core document paths against stable markers such as PRD requirement IDs, roadmap milestones, backlog ticket IDs, API paths, auth primitives, ImportCandidate contracts, material registry strings, nonlinear benchmark IDs, launch gates, and file-map folders. This makes the alignment gate depend on the actual prewritten planning documents, not only on a hardcoded document count.
 
 ## Remaining Limits
 
