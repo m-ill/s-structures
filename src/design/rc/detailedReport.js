@@ -101,12 +101,15 @@ export function buildRcDesignGate(report = {}) {
 }
 
 function buildRcDesignReview({ rows, formulas, coverage, missingRoles }) {
-  const issueCount = rows.filter((row) => row.status && row.status !== 'OK').length;
+  const issueRows = rows.filter((row) => row.status && row.status !== 'OK');
+  const issueCount = issueRows.length;
+  const issueFormulaMissingCount = issueRows.filter((row) => collectFormula(row).length === 0).length;
   const unregisteredFormulaCount = formulas.filter((row) => row.standard === 'UNREGISTERED').length;
   const missing = [];
   if (missingRoles.length) missing.push('role-coverage');
   if (!formulas.length) missing.push('formula-trace');
   if (unregisteredFormulaCount) missing.push('formula-registry');
+  if (issueFormulaMissingCount) missing.push('issue-formula-links');
   if (issueCount) missing.push('design-issues');
   return {
     status: missing.length ? 'review-required' : 'trace-ready',
@@ -115,6 +118,7 @@ function buildRcDesignReview({ rows, formulas, coverage, missingRoles }) {
     completeRoleCoverage: missingRoles.length === 0,
     missingRoles,
     issueCount,
+    issueFormulaMissingCount,
     formulaCount: formulas.length,
     unregisteredFormulaCount,
     coveredTickets: coverage.filter((row) => row.count > 0).map((row) => row.ticket),

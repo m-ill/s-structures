@@ -2,7 +2,10 @@ import { buildConnectionDetailedDesignReport } from './connection/detailedReport
 import { buildFoundationDetailedDesignReport } from './foundation/detailedReport.js';
 import { buildRcDetailedDesignReport } from './rc/detailedReport.js';
 import { buildSteelDetailedDesignReport } from './steel/detailedReport.js';
-import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
+import {
+  DESIGN_FORMULA_REGISTRY_VERSION,
+  collectDesignFormulaReferences,
+} from '../standards/designFormulaRegistry.js';
 
 export const P3_DETAILED_DESIGN_REPORT_VERSION = 'p3-m18-detailed-design-integration';
 export const P3_DETAILED_DESIGN_GATE_VERSION = 'p3-m18-detailed-design-gate-v1';
@@ -141,7 +144,7 @@ function buildIssueRows(modules) {
   return Object.entries(modules).flatMap(([moduleId, module]) => {
     const rows = module.issueRows || rowsOf(module).filter((row) => row.status && row.status !== 'OK').map((row) => ({
       moduleId,
-      itemId: row.memberId || row.nodeId || row.wallId || row.slabId || moduleId,
+      itemId: row.memberId || row.nodeId || row.wallId || row.slabId || row.version || row.role || moduleId,
       status: row.status,
       action: `${moduleId} item requires review.`,
     }));
@@ -178,8 +181,13 @@ function buildTicketCoverage(modules, issueRows, formulaTrace) {
 
 function collectIssueFormulaIds(module, issue) {
   const itemId = issue.itemId || issue.memberId || issue.nodeId || issue.wallId || issue.slabId;
-  const match = rowsOf(module).find((row) => [row.memberId, row.nodeId, row.wallId, row.slabId, row.role].includes(itemId));
-  return (match?.formulaTrace || module.formulaTrace || []).map((row) => row.formulaId).filter(Boolean);
+  if (!itemId) return (module.formulaTrace || []).map((row) => row.formulaId).filter(Boolean);
+  const match = rowsOf(module).find((row) => [row.memberId, row.nodeId, row.wallId, row.slabId, row.version, row.role].includes(itemId));
+  if (!match) return [];
+  return (match.formulaTrace || collectDesignFormulaReferences(match, {
+    id: match.memberId || match.nodeId || match.wallId || match.slabId || match.role,
+    role: match.role,
+  })).map((row) => row.formulaId).filter(Boolean);
 }
 
 function rowsOf(module) {

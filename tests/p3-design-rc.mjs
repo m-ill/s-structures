@@ -79,6 +79,17 @@ assert.equal(completeIssueGate.rcReview.status, 'review-required');
 assert.ok(completeIssueGate.rcReview.missing.includes('design-issues'));
 assert.equal(completeIssueGate.rcReview.issueCount, 1);
 assert.equal(completeIssueGate.rcReview.agentDecision, 'resolve-rc-review-items');
+const issueWithoutFormulaGate = buildRcDesignGate({
+  schedules: {
+    beams: [{ role: 'beam', status: 'OK', flexure: { formulaId: 'KDS-RC-BEAM-FLEXURE-V1' } }],
+    columns: [{ role: 'column', status: 'OK', pm: { formulaId: 'KDS-RC-COLUMN-PM-V1' } }],
+    walls: [{ role: 'wall', status: 'NG' }],
+    slabs: [{ role: 'slab', status: 'OK', punching: { formulaId: 'KDS-RC-SLAB-PUNCHING-V1' } }],
+  },
+});
+assert.equal(issueWithoutFormulaGate.completeRoleCoverage, true);
+assert.equal(issueWithoutFormulaGate.rcReview.issueFormulaMissingCount, 1);
+assert.ok(issueWithoutFormulaGate.rcReview.missing.includes('issue-formula-links'));
 
 const unknownRoleReport = buildRcDetailedDesignReport({}, {
   design: {
