@@ -64,6 +64,7 @@ const settlementModel = createModel({
 const settlementExpanded = expandAdvancedLoads(settlementModel.loads, settlementModel);
 assert.equal(settlementExpanded.trace.features.settlements, 1);
 assert.equal(settlementExpanded.trace.supportTrace[0].settlement.uz, -0.01);
+assert.equal(settlementExpanded.trace.supportTrace[0].settlementForce.kz, -10000);
 const settlementResult = analyzeModel(settlementModel);
 assert.equal(settlementResult.ok, true);
 assert.ok(Number.isFinite(settlementResult.byCombo.CO1.reactions.B.rz));

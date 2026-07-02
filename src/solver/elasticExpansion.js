@@ -182,7 +182,20 @@ function buildSupportTrace(model = {}) {
       settlementKeys: Object.keys(node.settlement || {}).sort(),
       spring: pickFinite(node.spring, ['kx', 'ky', 'kz', 'krx', 'kry', 'krz']),
       settlement: pickFinite(node.settlement, ['ux', 'uy', 'uz', 'rx', 'ry', 'rz', 'kx', 'ky', 'kz', 'krx', 'kry', 'krz']),
+      settlementForce: buildSettlementForceTrace(node),
     }));
+}
+
+function buildSettlementForceTrace(node) {
+  const stiffnessKeys = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
+  const settlementKeys = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
+  const out = {};
+  for (let i = 0; i < stiffnessKeys.length; i += 1) {
+    const k = Number(node.spring?.[stiffnessKeys[i]] || 0);
+    const imposed = Number(node.settlement?.[stiffnessKeys[i]] ?? node.settlement?.[settlementKeys[i]] ?? 0);
+    if (Number.isFinite(k) && k > 0 && Number.isFinite(imposed) && imposed !== 0) out[stiffnessKeys[i]] = k * imposed;
+  }
+  return out;
 }
 
 function buildMemberTrace(model = {}, lengths = {}) {
