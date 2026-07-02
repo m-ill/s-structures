@@ -22,6 +22,7 @@ import { CONNECTION_FOUNDATION_VERSION } from '../design/connectionFoundation.js
 import { DESIGN_DEMAND_PACKAGE_VERSION } from '../design/designDemandPackage.js';
 import { DESIGN_BASIS_INPUT_VERSION, LOAD_DERIVATION_TRACE_VERSION, LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
 import { MEMBER_DESIGN_TRACE_VERSION } from '../design/memberDesignTrace.js';
+import { P3_DETAILED_DESIGN_REPORT_VERSION } from '../design/p3DetailedDesignReport.js';
 import { RC_DETAILED_DESIGN_VERSION } from '../design/rc/detailedReport.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
@@ -136,6 +137,7 @@ export function buildAgentManifest(options = {}) {
       resultPostprocessing: RESULT_POSTPROCESSING_VERSION,
       rcDetailing: RC_DETAILING_VERSION,
       phase3RcDetailedDesign: RC_DETAILED_DESIGN_VERSION,
+      phase3DetailedDesignIntegration: P3_DETAILED_DESIGN_REPORT_VERSION,
       steelDetailing: STEEL_DETAILING_VERSION,
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
       memberDesignTrace: MEMBER_DESIGN_TRACE_VERSION,
@@ -213,6 +215,7 @@ export function buildAgentManifest(options = {}) {
       'getRcDetailingReport',
       'getRcDetailedDesignReport',
       'getSteelDetailingReport',
+      'getP3DetailedDesignReport',
       'getConnectionFoundationReport',
       'getMemberDesignTraceReport',
       'getDesignDemandPackage',
@@ -278,6 +281,7 @@ export function buildAgentManifest(options = {}) {
       'resultPostprocessingTables',
       'rcReinforcementSchedule',
       'phase3RcDetailedDesignReport',
+      'phase3DetailedDesignIntegration',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
       'memberDesignTraceMatrix',
@@ -414,6 +418,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M15', status: 'preliminary', feature: 'moment hinge state trace, displacement and arc-length control traces, and formal pushover result contract' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
+      { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

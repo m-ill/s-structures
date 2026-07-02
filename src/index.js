@@ -124,9 +124,38 @@ export {
   STEEL_DETAILING_VERSION,
 } from './design/steelDetailing.js';
 export {
+  buildSteelDetailedDesignReport,
+  detailSteelMemberP3,
+  STEEL_DETAILED_DESIGN_VERSION,
+} from './design/steel/detailedReport.js';
+export { STEEL_CLASSIFY_VERSION, classifySteelSection } from './design/steel/classify.js';
+export { STEEL_COMPRESSION_VERSION, checkSteelCompression } from './design/steel/compression.js';
+export { STEEL_FLEXURE_LTB_VERSION, checkSteelFlexureLtb } from './design/steel/flexureLTB.js';
+export { STEEL_INTERACTION_VERSION, checkSteelInteraction } from './design/steel/interaction.js';
+export { STEEL_BRACE_VERSION, checkSteelBrace } from './design/steel/brace.js';
+export {
   buildConnectionFoundationReport,
   CONNECTION_FOUNDATION_VERSION,
 } from './design/connectionFoundation.js';
+export {
+  buildConnectionDetailedDesignReport,
+  CONNECTION_DETAILED_DESIGN_VERSION,
+} from './design/connection/detailedReport.js';
+export { BOLT_CONNECTION_VERSION, designBoltGroup } from './design/connection/bolt.js';
+export { WELD_CONNECTION_VERSION, designFilletWeld } from './design/connection/weld.js';
+export { BASE_PLATE_VERSION, designBasePlate } from './design/connection/basePlate.js';
+export {
+  buildFoundationDetailedDesignReport,
+  FOUNDATION_DETAILED_DESIGN_VERSION,
+} from './design/foundation/detailedReport.js';
+export { FOOTING_DESIGN_VERSION, designSpreadFooting } from './design/foundation/footing.js';
+export { COMBINED_FOOTING_VERSION, designCombinedFooting } from './design/foundation/combined.js';
+export { MAT_FOUNDATION_VERSION, designMatFoundation } from './design/foundation/mat.js';
+export { PILE_FOUNDATION_VERSION, designPileGroup } from './design/foundation/pile.js';
+export {
+  buildP3DetailedDesignReport,
+  P3_DETAILED_DESIGN_REPORT_VERSION,
+} from './design/p3DetailedDesignReport.js';
 export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,

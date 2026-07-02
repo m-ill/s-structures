@@ -1,0 +1,32 @@
+import { buildConnectionFoundationReport } from '../connectionFoundation.js';
+import { designBasePlate } from './basePlate.js';
+import { designBoltGroup } from './bolt.js';
+import { designFilletWeld } from './weld.js';
+
+export const CONNECTION_DETAILED_DESIGN_VERSION = 'p3-m18-connection-detailed-design';
+
+export function buildConnectionDetailedDesignReport(model, analysis, options = {}) {
+  const base = buildConnectionFoundationReport(model, analysis, options);
+  const rows = base.connectionRows.map((row) => {
+    const bolt = designBoltGroup(row, options);
+    const weld = designFilletWeld(row, options);
+    return { memberId: row.memberId, status: worst([row.status, bolt.status, weld.status]), demand: row.demands, bolt, weld };
+  });
+  const basePlates = base.foundationRows.map((row) => designBasePlate(row, options));
+  return { version: CONNECTION_DETAILED_DESIGN_VERSION, summary: summarize(rows, basePlates), rows, basePlates, formulaTrace: [...rows, ...basePlates].flatMap((row) => collectFormula(row)), limitations: ['Connection rows are v1 bolt, weld, and base-plate sizing traces for review.'] };
+}
+
+function summarize(rows, basePlates) {
+  const all = [...rows, ...basePlates];
+  return { itemCount: all.length, okCount: all.filter((r) => r.status === 'OK').length, warnCount: all.filter((r) => r.status === 'WARN').length, ngCount: all.filter((r) => r.status === 'NG').length };
+}
+
+function collectFormula(row) {
+  return JSON.stringify(row).match(/KDS-[A-Z0-9-]+/g)?.map((formulaId) => ({ id: row.memberId || row.nodeId, formulaId })) || [];
+}
+
+function worst(values) {
+  if (values.includes('NG')) return 'NG';
+  if (values.includes('WARN')) return 'WARN';
+  return 'OK';
+}

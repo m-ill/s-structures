@@ -163,6 +163,28 @@ P3-M17 and P3-M18 must follow `DESIGN_MODULES_PLAN.md`; they should not be repla
 
 M17 is exposed through `getRcDetailedDesignReport` for browser and agent control. It is still a traceable preliminary detailed-design module; engineer-controlled final code clauses, seismic detailing, drawing production, and constructability are not claimed complete.
 
+### P3-M18 Required
+
+| Ticket | Required scope |
+| --- | --- |
+| P3-T91 | Steel member classification, compression, flexure/LTB, shear, P-M interaction, serviceability, schedule |
+| P3-T92 | Brace, bolt, weld, and base-plate v1 connection trace |
+| P3-T93 | Spread, combined, mat v1, and pile v1 foundation trace |
+| P3-T94 | Integrated schedules, formula IDs, and NG-to-issue bridge |
+| P3-T95 | Serviceability integration with deflection, drift, and vibration-ready hooks |
+
+### P3-M18 Implementation Review
+
+| Ticket | Current implementation | Status |
+| --- | --- | --- |
+| P3-T91 | `src/design/steel/` creates classification, compression, flexure LTB, interaction, brace, and steel schedule rows | Preliminary |
+| P3-T92 | `src/design/connection/` creates bolt, weld, and base-plate sizing trace rows | Preliminary |
+| P3-T93 | `src/design/foundation/` creates spread, combined, mat, and pile trace rows from support reactions | Preliminary |
+| P3-T94 | `src/design/p3DetailedDesignReport.js` integrates RC, steel, connection, foundation, formula trace, and issue rows | Preliminary |
+| P3-T95 | Existing drift/deflection trace remains the serviceability source; M18 links steel deflection and report-level serviceability hooks | Preliminary |
+
+M18 is exposed through `getP3DetailedDesignReport` for browser and agent control. The module is a traceable detailed-design review scaffold, not final fabrication, geotechnical, or permit calculation output.
+
 ## Corrective Implementation Order
 
 1. Do not label P3-M10 to P3-M13 as complete. Keep them as preliminary cores until the ticket gaps above are closed.
