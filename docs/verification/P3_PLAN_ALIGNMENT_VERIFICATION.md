@@ -60,6 +60,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 
 2026-07-03 frontend viewer-agent update: `FRONTEND_PLAN.md` listed `getViewerState` and `setViewerSlice` for agent-controlled viewer workflows. `src/viewer/viewerState.js`, `createIndexAgentApi()`, `buildAgentManifest()`, and `docs/user-manual/agent-contract.json` now expose that read/write contract. `tests/p3-viewer-core.mjs`, `tests/m16-agent-capabilities.mjs`, `tests/p3-app-shell.mjs`, and `tests/p3-plan-alignment.mjs` verify the state shape, slice normalization, manifest exposure, and written-plan alignment.
 
+2026-07-03 WebGL viewer contract update: `FRONTEND_PLAN.md` named `modelLayer.js`, `sliceControl.js`, and `picking.js`, but only camera math and point-cloud buffers existed. The viewer folder now includes pure data contracts for model node/member layer rows, z-slice filtering, and color-id picking tables. This does not claim a complete polished WebGL renderer; it gives UI code and AI agents stable data shapes before browser rendering is expanded.
+
 2026-07-02 server route contract update: `tests/p3-server-route-contract.mjs` now scans `server/main.mjs` and `server/routes/*.mjs` route declarations and compares them with `buildPhase3PlanAlignmentReport().serverApi.endpoints`. This prevents Phase 3 API documentation from passing while the implemented server exposes a different route set.
 
 2026-07-03 upload filename hardening: `server/routes/files.mjs` now validates `x-file-name` before saving uploaded drawing or point-cloud files. Invalid percent encoding returns `BAD_URI`, and path-like, control-character, empty, or overlong names return `VALIDATION`, while storage still uses `<fileId>.<ext>` to preserve the traversal block required by `SERVER_API_PLAN.md`.

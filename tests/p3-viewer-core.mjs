@@ -3,6 +3,9 @@ import {
   createOrbitCamera, lookAt, multiplyMat4, orbitEye, perspective, transformPoint,
 } from '../src/viewer/viewerCore.js';
 import { createViewerState, getViewerState, setViewerSlice, VIEWER_STATE_VERSION } from '../src/viewer/viewerState.js';
+import { buildModelLayerData, MODEL_LAYER_VERSION } from '../src/viewer/modelLayer.js';
+import { filterBySlice, isPointInSlice, normalizeSliceBox, SLICE_CONTROL_VERSION } from '../src/viewer/sliceControl.js';
+import { buildPickingTable, decodePickColor, encodePickId, PICKING_VERSION, resolvePick } from '../src/viewer/picking.js';
 
 function approxEqual(a, b, tol = 1e-6) {
   assert.ok(Math.abs(a - b) < tol, `expected ${a} ~= ${b}`);
@@ -61,5 +64,35 @@ assert.equal(sliced.slice.enabled, true);
 assert.deepEqual([sliced.slice.zMin, sliced.slice.zMax], [2, 6]);
 assert.equal(getViewerState(host).slice.zMax, 6);
 assert.equal(createViewerState({ slice: { active: true, minZ: 1, maxZ: 4 } }).slice.enabled, true);
+
+const slice = normalizeSliceBox({ enabled: true, zMin: 4, zMax: 1 });
+assert.equal(slice.version, SLICE_CONTROL_VERSION);
+assert.deepEqual([slice.zMin, slice.zMax], [1, 4]);
+assert.equal(isPointInSlice({ z: 3 }, slice), true);
+assert.equal(isPointInSlice({ z: 5 }, slice), false);
+assert.deepEqual(filterBySlice([{ z: 0 }, { z: 2 }, { z: 6 }], slice).rows, [{ z: 2 }]);
+
+const layer = buildModelLayerData({
+  nodes: [
+    { id: 'N1', x: 0, y: 0, z: 0 },
+    { id: 'N2', x: 0, y: 0, z: 3 },
+    { id: 'N3', x: 0, y: 0, z: 6 },
+  ],
+  members: [
+    { id: 'M1', n1: 'N1', n2: 'N2', design: { role: 'column' }, confidence: 0.95 },
+    { id: 'M2', n1: 'N2', n2: 'N3', design: { role: 'beam' }, confidence: 0.4 },
+  ],
+}, { slice: { enabled: true, zMin: 0, zMax: 3 }, colorBy: 'confidence' });
+assert.equal(layer.version, MODEL_LAYER_VERSION);
+assert.equal(layer.metadata.nodeCount, 2);
+assert.equal(layer.metadata.memberCount, 2);
+assert.deepEqual(layer.members[0].color, [30, 160, 90]);
+assert.deepEqual(layer.members[1].color, [210, 70, 70]);
+
+const pickTable = buildPickingTable([{ type: 'node', id: 'N1' }, { type: 'member', id: 'M1' }]);
+assert.equal(pickTable.version, PICKING_VERSION);
+assert.deepEqual(encodePickId(2), [0, 0, 2]);
+assert.equal(decodePickColor([0, 0, 2]), 2);
+assert.equal(resolvePick(pickTable, [0, 0, 2]).id, 'M1');
 
 console.log(JSON.stringify({ ok: true, version: 'p3-viewer-core' }, null, 2));

@@ -105,6 +105,9 @@ import { POINT_CLOUD_BENCHMARK_VERSION } from '../import/pointcloud/benchmark.js
 import { POINT_CLOUD_WALL_DETECT_VERSION } from '../import/pointcloud/wallDetect.js';
 import { POINT_CLOUD_LAYER_VERSION } from '../viewer/pointCloudLayer.js';
 import { VIEWER_STATE_VERSION } from '../viewer/viewerState.js';
+import { MODEL_LAYER_VERSION } from '../viewer/modelLayer.js';
+import { SLICE_CONTROL_VERSION } from '../viewer/sliceControl.js';
+import { PICKING_VERSION } from '../viewer/picking.js';
 import { MATERIAL_REGISTRY_VERSION } from '../materials/registry.js';
 import { MATERIAL_SCHEMA_VERSION } from '../materials/materialSchema.js';
 import { SECTION_SCHEMA_VERSION } from '../materials/sectionSchema.js';
@@ -240,6 +243,9 @@ export function buildAgentManifest(options = {}) {
       phase3PointCloudWallDetection: POINT_CLOUD_WALL_DETECT_VERSION,
       phase3PointCloudLayer: POINT_CLOUD_LAYER_VERSION,
       phase3ViewerState: VIEWER_STATE_VERSION,
+      phase3ModelLayer: MODEL_LAYER_VERSION,
+      phase3SliceControl: SLICE_CONTROL_VERSION,
+      phase3Picking: PICKING_VERSION,
       phase3MaterialRegistry: MATERIAL_REGISTRY_VERSION,
       phase3MaterialSchema: MATERIAL_SCHEMA_VERSION,
       phase3SectionSchema: SECTION_SCHEMA_VERSION,
@@ -520,6 +526,9 @@ export function buildAgentManifest(options = {}) {
       'phase3PointCloudLoader',
       'phase3PointCloudViewerBuffer',
       'phase3ViewerState',
+      'phase3ModelLayer',
+      'phase3SliceControl',
+      'phase3Picking',
       'phase3PointCloudImportSummary',
       'phase3PointCloudExtraction',
       'phase3PointCloudExtractionSummary',

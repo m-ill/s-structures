@@ -549,6 +549,9 @@ export { POINT_CLOUD_EXTRACTION_SUMMARY_VERSION, POINT_CLOUD_EXTRACTION_VERSION,
 export { POINT_CLOUD_BENCHMARK_VERSION, evaluatePointCloudExtraction } from './import/pointcloud/benchmark.js';
 export { POINT_CLOUD_LAYER_VERSION, buildPointCloudLayerData } from './viewer/pointCloudLayer.js';
 export { VIEWER_STATE_VERSION, createViewerState, getViewerState, setViewerSlice } from './viewer/viewerState.js';
+export { MODEL_LAYER_VERSION, buildModelLayerData } from './viewer/modelLayer.js';
+export { SLICE_CONTROL_VERSION, filterBySlice, isPointInSlice, normalizeSliceBox } from './viewer/sliceControl.js';
+export { PICKING_VERSION, buildPickingTable, decodePickColor, encodePickId, resolvePick } from './viewer/picking.js';
 export { IMPORT_CANDIDATE_MODEL_VERSION, importCandidateToModel } from './import/candidateModel.js';
 export { MATERIAL_REGISTRY_VERSION, buildLibraryAudit, parseVersionedId, resolveMaterialRecord, resolveSectionRecord } from './materials/registry.js';
 export { MATERIAL_SCHEMA_VERSION, normalizeMaterialRecord, validateMaterialRecord } from './materials/materialSchema.js';
