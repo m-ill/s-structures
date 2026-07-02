@@ -81,3 +81,10 @@ addition to `TEXT`, `LINE`, `LWPOLYLINE`, `POLYLINE`, `POINT`, `CIRCLE`, and
 `INSERT`/`BLOCK`. This locks the supported-entity list in
 `IMPORT_DXF_DWG_PLAN.md` to automated evidence rather than relying only on the
 parser implementation.
+
+## 2026-07-03 M7 Import Review Counts Update
+
+The P3-M7 import review summary now falls back to candidate body counts when
+`audit.counts` is absent. This keeps the review UI and AI-facing summary aligned
+with the plan requirement that import review must show candidate story, grid,
+node, and member counts before accept/reject decisions.

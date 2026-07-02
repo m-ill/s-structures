@@ -51,6 +51,12 @@ try {
   assert.match(mountPoint.querySelector('[data-role="audit"]').textContent, /decision/);
   assert.equal(shell.getCurrentView().getSummary().decision.pending, true);
   assert.equal(shell.getCurrentView().getSummary().decision.confirmable, true);
+  assert.deepEqual(shell.getCurrentView().getSummary().counts, {
+    stories: 1,
+    grids: 1,
+    nodes: 2,
+    members: 1,
+  });
   shell.getCurrentView().updateCandidate({ ...candidate, audit: candidate.audit }, 'agent adjusted candidate');
   assert.match(shell.getCurrentView().getSummary().candidate.audit.reviewHistory[0].note, /agent adjusted/);
   const invalidResolve = await app.api('PATCH', `/api/projects/${projectId}/imports/${jobId}`, {
