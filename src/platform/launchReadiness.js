@@ -43,13 +43,37 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
     backupRestore: evidence.backupRestoreRecorded === true,
     ownerSignoffChecklist: evidence.ownerSignoffChecklistRecorded === true,
   };
+  const ticketCoverage = buildLaunchTicketCoverage(gates, evidence, coverage);
   return {
     version: LAUNCH_READINESS_GATE_VERSION,
     milestone: 'P3-M20',
     tickets: ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67'],
+    contract: {
+      milestone: 'P3-M20',
+      tickets: ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67'],
+      scope: 'Launch-readiness gate for packaging, license, manual, QA, security, backup, and pilot evidence.',
+      featureTicketMap: {
+        packagingSmoke: 'P3-T63',
+        licensePolicyRecord: 'P3-T64',
+        onboardingManualAgentContract: 'P3-T65',
+        performanceSecurityGate: 'P3-T66',
+        betaPilotReports: 'P3-T67',
+      },
+      reviewFields: ['summary.ticketCoverage', 'ticketCoverage', 'coverage', 'manualSignoffRequired', 'requiredGates'],
+      agentUse: 'Read-only gate for reports and AI-agent inspection of launch-readiness evidence.',
+    },
     requiredGates: gates.map((item) => item.id),
     ok: gates.length === 14 && gates.every((item) => item.status === 'OK'),
-    ticketCoverage: buildLaunchTicketCoverage(gates, evidence, coverage),
+    summary: {
+      readyForOwnerReview: gates.length === 14 && gates.every((item) => item.status === 'OK'),
+      completeTicketCoverage: ticketCoverage.every((row) => row.covered),
+      ticketCount: ticketCoverage.length,
+      coveredTicketCount: ticketCoverage.filter((row) => row.covered).length,
+      gateCount: gates.length,
+      okGateCount: gates.filter((item) => item.status === 'OK').length,
+      ticketCoverage,
+    },
+    ticketCoverage,
     coverage,
     manualSignoffRequired: [
       'owner license policy',

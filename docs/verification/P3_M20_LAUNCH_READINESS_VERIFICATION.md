@@ -31,6 +31,8 @@ The gate records:
 
 2026-07-02 review update: `releaseGate.ticketCoverage` now maps P3-T63, P3-T64, P3-T65, P3-T66, and P3-T67 to explicit evidence rows. The rows expose packaging smoke, license record, manual/agent-contract freshness, performance/security/backup gate state, and ten-pilot coverage for reviewer and AI-agent inspection.
 
+2026-07-02 ticket coverage review update: `releaseGate` now exposes a formal P3-M20 contract, feature-to-ticket map, and `summary.ticketCoverage` alias. This matches the P3-M17 to P3-M19 gate shape so reviewers and AI agents can inspect launch-readiness scope without relying on UI-only labels.
+
 ## Current Test Gate
 
 `tests/p3-launch-gate.mjs` verifies launch report status, G1 to G14 pass count, release-gate ticket coverage, packaging smoke evidence, license evidence, manual/agent-contract evidence, ten pilot reports, agent API exposure, and manifest data-contract exposure.
