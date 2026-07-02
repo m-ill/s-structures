@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
+  analyzeModel,
   DXF_ENTITIES_VERSION,
   DXF_IMPORT_VERSION,
   DXF_PARSER_VERSION,
   dxfEntitiesToGeometry,
+  importCandidateToModel,
   importDxfToCandidate,
   parseDxf,
   validateImportCandidate,
@@ -41,6 +43,14 @@ assert.equal(candidate.candidates.nodes.length, 4);
 assert.equal(candidate.candidates.members.length, 3);
 assert.deepEqual(candidate.candidates.members.map((member) => member.kind).sort(), ['beam', 'column', 'column']);
 assert.ok(candidate.candidates.nodes.some((node) => node.z === 3));
+
+const analysisModel = importCandidateToModel(candidate, { topDeadLoad: 1 });
+const analysis = analyzeModel(analysisModel);
+assert.equal(analysis.ok, true, JSON.stringify(analysis.validation.errors, null, 2));
+assert.equal(analysisModel.meta.importSource, 'dxf');
+assert.equal(analysisModel.meta.importFileId, 'min-frame.dxf');
+assert.equal(analysisModel.loads.every((load) => load.source === 'dxf-candidate-e2e'), true);
+assert.ok(analysis.envelope.dmax >= 0);
 
 const blockText = readFileSync('tests/fixtures/dxf/block-polyline.dxf', 'utf8');
 const blockParsed = parseDxf(blockText);

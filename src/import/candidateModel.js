@@ -6,7 +6,8 @@ export function importCandidateToModel(candidate, options = {}) {
   const model = createModel();
   const nodes = candidate?.candidates?.nodes || [];
   const members = candidate?.candidates?.members || [];
-  const minZ = Math.min(...nodes.map((n) => n.z || 0));
+  const zValues = nodes.map((n) => n.z || 0);
+  const minZ = zValues.length ? Math.min(...zValues) : 0;
   model.nodes = nodes.map((n) => ({
     id: n.id, x: n.x, y: n.y, z: n.z || 0,
     support: Math.abs((n.z || 0) - minZ) <= 1e-6 ? 'fixed' : null,
@@ -16,19 +17,34 @@ export function importCandidateToModel(candidate, options = {}) {
     id: m.id || `M${i + 1}`, type: 'frame', n1: m.from, n2: m.to,
     matId: options.matId || 'steel', secId,
     releases: { i: 'rigid', j: 'rigid' },
-    design: { role: m.kind || 'unknown' },
+    design: {
+      role: m.kind || 'unknown',
+      importMemberId: m.id || null,
+      confidence: Number.isFinite(m.confidence) ? m.confidence : null,
+    },
   }));
+  model.meta = {
+    ...(model.meta || {}),
+    importSource: candidate?.source?.type || 'import',
+    importFileId: candidate?.source?.fileId || null,
+    importCandidateVersion: candidate?.version || null,
+    importAudit: {
+      warnings: candidate?.audit?.warnings || [],
+      counts: candidate?.audit?.counts || {},
+    },
+  };
   addMinimalLoads(model, options);
-  model.meta = { ...(model.meta || {}), importSource: candidate?.source?.type || 'import' };
   return model;
 }
 
 function addMinimalLoads(model, options) {
+  if (options.addMinimalLoads === false || model.nodes.length === 0) return;
   const topZ = Math.max(...model.nodes.map((n) => n.z || 0));
   const top = model.nodes.filter((n) => Math.abs((n.z || 0) - topZ) <= 1e-6);
+  const source = options.loadSource || `${model.meta?.importSource || 'import'}-candidate-e2e`;
   top.forEach((node, index) => model.loads.push({
-    id: `PCD${index + 1}`, type: 'nodal', node: node.id,
+    id: `IMP${index + 1}`, type: 'nodal', node: node.id,
     P: options.topDeadLoad ?? 1, dir: '-z', case: 'D',
-    source: 'pointcloud-import-e2e',
+    source,
   }));
 }
