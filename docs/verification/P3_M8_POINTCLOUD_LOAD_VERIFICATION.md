@@ -12,6 +12,7 @@ This note verifies P3-M8 against `docs/phase3/IMPORT_POINT_CLOUD_PLAN.md`.
 | Plan item | Evidence |
 | --- | --- |
 | XYZ/TXT, PLY, PCD compact loaders | `src/import/pointcloud/loaders.js`, `tests/p3-pointcloud-load.mjs` |
+| Loader audit metadata | `parsePointCloudWithAudit()` records detected format, line count, parsed count, rejected count, and color count |
 | Normalization metadata | `src/import/pointcloud/normalize.js` records bbox, origin, and scale |
 | Voxel downsample | `src/import/pointcloud/voxel.js` and worker audit counts |
 | Sparse outlier filtering | `src/import/pointcloud/outlier.js` and worker audit stages |
@@ -22,6 +23,8 @@ This note verifies P3-M8 against `docs/phase3/IMPORT_POINT_CLOUD_PLAN.md`.
 ## Added Review Finding
 
 The P3-M8 modules had separate worker and viewer contracts, but no single summary that an AI agent could read to decide whether the point cloud is ready for review. `POINT_CLOUD_IMPORT_SUMMARY_VERSION` now provides that contract.
+
+2026-07-02 review update: The worker pipeline now carries loader audit metadata through the import summary. AI agents can inspect the detected point-cloud format and rejected point count before deciding whether a file is suitable for review or needs re-export.
 
 ## Current Test Gate
 

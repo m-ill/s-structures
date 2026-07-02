@@ -466,7 +466,7 @@ export {
   POINT_CLOUD_IMPORT_PIPELINE_VERSION,
   describePointCloudPipeline,
 } from './import/pointcloud/pipeline.js';
-export { POINT_CLOUD_LOADER_VERSION, detectFormat, parsePointCloudText } from './import/pointcloud/loaders.js';
+export { POINT_CLOUD_LOADER_VERSION, detectFormat, parsePointCloudText, parsePointCloudWithAudit } from './import/pointcloud/loaders.js';
 export { POINT_CLOUD_NORMALIZE_VERSION, normalizePointCloud } from './import/pointcloud/normalize.js';
 export { POINT_CLOUD_VOXEL_VERSION, voxelDownsample } from './import/pointcloud/voxel.js';
 export { POINT_CLOUD_OUTLIER_VERSION, removeSparseOutliers } from './import/pointcloud/outlier.js';

@@ -1,4 +1,4 @@
-import { parsePointCloudText } from './loaders.js';
+import { parsePointCloudWithAudit } from './loaders.js';
 import { normalizePointCloud } from './normalize.js';
 import { removeSparseOutliers } from './outlier.js';
 import { voxelDownsample } from './voxel.js';
@@ -6,7 +6,8 @@ import { voxelDownsample } from './voxel.js';
 export const POINT_CLOUD_WORKER_PIPELINE_VERSION = 'p3-m8-pointcloud-worker-v1';
 
 export function processPointCloudText(text, options = {}) {
-  const raw = parsePointCloudText(text, options);
+  const loaded = parsePointCloudWithAudit(text, options);
+  const raw = loaded.points;
   const normalized = normalizePointCloud(raw, options);
   const downsampled = voxelDownsample(normalized.points, options.voxelSize ?? 0.05, options.pointLimit ?? Infinity);
   const filtered = removeSparseOutliers(downsampled, options.outlier || {});
@@ -15,6 +16,7 @@ export function processPointCloudText(text, options = {}) {
     points: filtered,
     audit: {
       ...normalized.audit,
+      loader: loaded.audit,
       rawCount: raw.length,
       downsampledCount: downsampled.length,
       outputCount: filtered.length,

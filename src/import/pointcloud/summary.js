@@ -25,6 +25,7 @@ export function summarizePointCloudImport(input, options = {}) {
       origin: audit.origin || null,
       scale: audit.scale ?? null,
     },
+    loader: audit.loader || null,
     stages: audit.stages || pipeline.stages,
     viewerBuffer: {
       version: layer.version,
