@@ -29,6 +29,7 @@ const READ_METHODS = new Set([
   'getSteelDetailingReport',
   'getP3DetailedDesignReport',
   'getP3IntegratedResults',
+  'getLaunchReadinessReport',
   'getConnectionFoundationReport',
   'getMemberDesignTraceReport',
   'getServiceabilityDriftReport',

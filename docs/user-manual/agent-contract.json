@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 1,
-  "manualVersion": "2026-06-29-current",
+  "schemaVersion": 2,
+  "manualVersion": "2026-07-02-phase3-launch",
   "product": "S-Structures",
   "entrypoint": {
     "recommendedUrl": "http://127.0.0.1:5173/index.html",
@@ -14,13 +14,16 @@
     "loadDerivationTrace": "available",
     "serviceabilityDrift": "preliminary",
     "memberDesignTrace": "preliminary",
-    "calculationPackage": "available",
+    "rcDetailedDesign": "preliminary-phase3",
+    "steelConnectionFoundationDetailedDesign": "preliminary-phase3",
+    "nonlinearTrace": "preliminary-phase3",
+    "phase3IntegratedResults": "preliminary-phase3",
+    "calculationPackage": "available-with-phase3-trace",
     "agentControl": "available",
     "importReviewUi": "preliminary",
     "pointCloudImport": "preliminary-loader-viewer-core",
     "pointCloudExtraction": "preliminary-synthetic-benchmark",
-    "materialSectionLibrary": "preliminary-versioned-registry",
-    "nonlinearPushover": "preliminary-not-final-nonlinear-engine"
+    "phase3LaunchReadiness": "preliminary-phase3"
   },
   "globalObjects": [
     "window.SStructuresAgent",
@@ -31,13 +34,12 @@
     "responseNode": "#sstructuresAgentApi"
   },
   "readApis": [
-    "getCapabilities",
     "getSnapshot",
-    "getScreenState",
     "getModel",
     "getResults",
     "getResultView",
     "getResultVisuals",
+    "getScreenState",
     "getReport",
     "getDetailedReport",
     "getCalculationPackage",
@@ -45,14 +47,51 @@
     "getKdsLoadCombinationRules",
     "getKdsLoadStandardRegistry",
     "getKdsLoadStandardAudit",
+    "getCombinationEnvelopeContract",
     "getDesignBasisLoadEstimation",
     "getDesignBasisInput",
     "getRcDetailingReport",
+    "getRcDetailedDesignReport",
     "getSteelDetailingReport",
+    "getP3DetailedDesignReport",
+    "getP3IntegratedResults",
+    "getLaunchReadinessReport",
     "getConnectionFoundationReport",
     "getMemberDesignTraceReport",
+    "getDesignDemandPackage",
+    "getPracticePlatformReadiness",
+    "getPracticeValidationReport",
+    "getPilotProjectValidation",
     "getServiceabilityDriftReport",
-    "getRuntimeDiagnostics"
+    "getAdvancedElasticTrace",
+    "getMaterialSectionRegistry",
+    "listLibrary",
+    "getLibraryItem",
+    "upsertMaterial",
+    "upsertSection",
+    "getElasticExpansionTrace",
+    "getWallSlabEquivalentTrace",
+    "getLoadsV2Trace",
+    "getDynamicCompletenessTrace",
+    "getNonlinearAnalysisTrace",
+    "listImportCandidates",
+    "resolveImportCandidate",
+    "confirmImport",
+    "getResultPostprocessing",
+    "getStorySummary",
+    "getStoryMassSummary",
+    "getEccentricStoryLoadDistribution",
+    "getMemberReleaseSummary",
+    "getMemberReleaseBenchmark",
+    "getDiaphragmSummary",
+    "getRigidDiaphragmBenchmark",
+    "getBaselineContract",
+    "runPushover",
+    "getRuntimeDiagnostics",
+    "getCapabilities",
+    "DOM event: sstructures:agent-command",
+    "window.postMessage: sstructures:agent-command",
+    "URL hash: #sstructures-command="
   ],
   "executeActions": {
     "analysis": [
@@ -140,19 +179,21 @@
     "applyKdsRuleBasedLoadCombinations",
     "runAnalysis",
     "getResults",
-    "getServiceabilityDriftReport",
-    "getMemberDesignTraceReport",
-    "getCalculationPackage"
+    "getP3IntegratedResults",
+    "getCalculationPackage",
+    "getLaunchReadinessReport"
   ],
   "generatedOutputs": {
     "representativeCalculationPackages": "reports/representative-building-calculation-packages/",
     "representativePdfs": "output/pdf/m42-representative-packages/",
-    "stabilizationHarness": "reports/stabilization-harness/"
+    "stabilizationHarness": "reports/stabilization-harness/",
+    "launchReadiness": "reports/launch-readiness/"
   },
   "interpretationRules": [
     "analysis.ok true means the elastic numerical analysis finished successfully.",
+    "Phase 3 integrated results connect nonlinear trace, detailed design trace, result postprocessing, and workflow state.",
     "calculation packages are calculation aids and review artifacts, not certified final structural design documents.",
     "preliminary KDS-style load combinations do not replace project-specific code review.",
-    "preliminary pushover is not the final nonlinear analysis engine."
+    "preliminary nonlinear trace is not final production nonlinear design."
   ]
 }

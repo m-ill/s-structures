@@ -21,6 +21,7 @@ import {
   buildMemberDesignTraceReport,
   buildP3DetailedDesignReport,
   buildP3IntegratedResults,
+  buildLaunchReadinessReport,
   buildRcDetailedDesignReport,
   buildRcDetailingReport,
   buildResultPostprocessing,
@@ -202,6 +203,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildP3IntegratedResults(model, getAnalysis(model), options));
+    },
+    getLaunchReadinessReport(options = {}) {
+      return cloneJson(buildLaunchReadinessReport(options.evidence || options));
     },
     getConnectionFoundationReport(options = {}) {
       const model = getCurrentModel(target);

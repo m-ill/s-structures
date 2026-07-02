@@ -49,6 +49,7 @@ import {
 import {
   PILOT_PROJECT_VALIDATION_VERSION,
 } from '../platform/pilotProjectValidation.js';
+import { LAUNCH_READINESS_VERSION } from '../platform/launchReadiness.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
 import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
@@ -151,6 +152,7 @@ export function buildAgentManifest(options = {}) {
       calculationValidation: CALC_VALIDATION_VERSION,
       practiceValidationReport: PRACTICE_VALIDATION_REPORT_VERSION,
       pilotProjectValidation: PILOT_PROJECT_VALIDATION_VERSION,
+      phase3LaunchReadiness: LAUNCH_READINESS_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       benchmarkGate: BENCHMARK_GATE_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
@@ -219,6 +221,7 @@ export function buildAgentManifest(options = {}) {
       'getSteelDetailingReport',
       'getP3DetailedDesignReport',
       'getP3IntegratedResults',
+      'getLaunchReadinessReport',
       'getConnectionFoundationReport',
       'getMemberDesignTraceReport',
       'getDesignDemandPackage',
@@ -286,6 +289,7 @@ export function buildAgentManifest(options = {}) {
       'phase3RcDetailedDesignReport',
       'phase3DetailedDesignIntegration',
       'phase3IntegratedResults',
+      'phase3LaunchReadiness',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
       'memberDesignTraceMatrix',
@@ -424,6 +428,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },
       { id: 'P3-M19', status: 'preliminary', feature: 'integrated nonlinear and detailed-design result package with workflow lock trace' },
+      { id: 'P3-M20', status: 'preliminary', feature: 'launch readiness gate, packaging, manual, agent contract, and pilot report evidence' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

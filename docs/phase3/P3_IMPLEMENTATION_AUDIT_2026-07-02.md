@@ -207,6 +207,28 @@ M18 is exposed through `getP3DetailedDesignReport` for browser and agent control
 
 M19 is exposed through `getP3IntegratedResults` for browser and agent control. It does not claim final launch readiness; packaging, license, manual refresh, performance/security gates, and beta pilot reports remain P3-M20 scope.
 
+### P3-M20 Required
+
+| Ticket | Required scope |
+| --- | --- |
+| P3-T63 | Packaging smoke for web/server launch path |
+| P3-T64 | License policy v1 record |
+| P3-T65 | Onboarding sample and user manual refresh |
+| P3-T66 | Performance/security launch gate |
+| P3-T67 | Ten beta pilot scenario reports |
+
+### P3-M20 Implementation Review
+
+| Ticket | Current implementation | Status |
+| --- | --- | --- |
+| P3-T63 | `buildPackagingReadiness` verifies `index.html`, `server/main.mjs`, and `npm run dev` launch path evidence | Preliminary |
+| P3-T64 | `buildLicenseReadiness` records license file and package privacy state for owner policy review | Preliminary |
+| P3-T65 | `docs/user-manual/PHASE3_LAUNCH_MANUAL.md` and refreshed `agent-contract.json` document launch and AI-agent flow | Preliminary |
+| P3-T66 | `buildLaunchReadinessReport` and `tests/p3-launch-gate.mjs` cover G1-G14 launch evidence | Preliminary |
+| P3-T67 | `reports/launch-readiness/pilot-01.md` through `pilot-10.md` record beta pilot scenarios | Preliminary |
+
+M20 is exposed through `getLaunchReadinessReport` for browser and agent control. Manual launch sign-off still requires owner review of license policy, field feedback, and deployment target.
+
 ## Corrective Implementation Order
 
 1. Do not label P3-M10 to P3-M13 as complete. Keep them as preliminary cores until the ticket gaps above are closed.

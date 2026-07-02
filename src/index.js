@@ -168,6 +168,12 @@ export {
   P3_INTEGRATED_RESULTS_VERSION,
 } from './results/p3IntegratedResults.js';
 export {
+  buildLaunchReadinessReport,
+  buildLicenseReadiness,
+  buildPackagingReadiness,
+  LAUNCH_READINESS_VERSION,
+} from './platform/launchReadiness.js';
+export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';
