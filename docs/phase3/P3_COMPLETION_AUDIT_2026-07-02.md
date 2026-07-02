@@ -68,6 +68,20 @@ This audit checks the current repository against the Phase 3 planning documents.
 | P3-M19 | `phase3IntegratedResultsGate` | `tests/p3-m19-integrated-report.mjs` |
 | P3-M20 | `phase3LaunchReadinessGate` | `tests/p3-launch-gate.mjs` |
 
+## Agent Review Paths
+
+`getCapabilities().reviewGates` and `docs/user-manual/agent-contract.json` now expose the canonical review paths for AI agents. These paths separate "ready for the next review step" from final approval:
+
+| Scope | Review path | Final approval field |
+| --- | --- | --- |
+| P3-M14 | `geometryGate.solverReview` | `productionEquilibriumSolver` |
+| P3-M15 | `hingeControlGate.controlReview` | `productionHingeEquilibriumLoop` |
+| P3-M16 | `fiberNlthGate.fiberNlthReview` | `productionSeismicQualification` |
+| P3-M17 | `rcDesignGate.rcReview` | `finalPermitDesign` |
+| P3-M18 | `designGate.designReview` | `finalPermitDesign` |
+| P3-M19 | `integratedGate.integratedReview` | `finalStructuralSignoff` |
+| P3-M20 | `releaseGate.releaseReview` | `productionDeploymentApproved` |
+
 ## Launch Gates
 
 | Gate | Status | Evidence |

@@ -54,4 +54,18 @@ Before public release, run:
 
 AI agents can read the same command set from `qaCommands` in `docs/user-manual/agent-contract.json` or `getCapabilities().qaCommands`.
 
+## Review Gate Interpretation
+
+AI agents should not treat `ok`, `readyForReviewer`, or `readyForOwnerReview` as final design approval. Read `getCapabilities().reviewGates` first, then inspect the listed review path:
+
+- `geometryGate.solverReview`
+- `hingeControlGate.controlReview`
+- `fiberNlthGate.fiberNlthReview`
+- `rcDesignGate.rcReview`
+- `designGate.designReview`
+- `integratedGate.integratedReview`
+- `releaseGate.releaseReview`
+
+The `readyDecision` values mean the next review step may proceed. The listed `finalApprovalField` values remain false until owner or engineer sign-off is recorded outside the automated gate.
+
 Manual launch evidence remains in `reports/launch-readiness/`.

@@ -43,6 +43,50 @@
     "phase3DocReferences": "node tests/p3-doc-reference-integrity.mjs",
     "phase3ServerRoutes": "node tests/p3-server-route-contract.mjs"
   },
+  "reviewGates": {
+    "nonlinearGeometry": {
+      "readApi": "getNonlinearAnalysisTrace",
+      "path": "geometryGate.solverReview",
+      "readyDecision": "m14-ready-for-m15-review",
+      "finalApprovalField": "productionEquilibriumSolver"
+    },
+    "nonlinearHingeControl": {
+      "readApi": "getNonlinearAnalysisTrace",
+      "path": "hingeControlGate.controlReview",
+      "readyDecision": "m15-ready-for-m16-review",
+      "finalApprovalField": "productionHingeEquilibriumLoop"
+    },
+    "nonlinearFiberNlth": {
+      "readApi": "getNonlinearAnalysisTrace",
+      "path": "fiberNlthGate.fiberNlthReview",
+      "readyDecision": "m16-ready-for-integrated-results-review",
+      "finalApprovalField": "productionSeismicQualification"
+    },
+    "rcDetailedDesign": {
+      "readApi": "getRcDetailedDesignReport",
+      "path": "rcDesignGate.rcReview",
+      "readyDecision": "m17-ready-for-m18-integration-review",
+      "finalApprovalField": "finalPermitDesign"
+    },
+    "detailedDesignIntegration": {
+      "readApi": "getP3DetailedDesignReport",
+      "path": "designGate.designReview",
+      "readyDecision": "m18-ready-for-m19-integrated-results-review",
+      "finalApprovalField": "finalPermitDesign"
+    },
+    "integratedResults": {
+      "readApi": "getP3IntegratedResults",
+      "path": "integratedGate.integratedReview",
+      "readyDecision": "m19-ready-for-m20-launch-review",
+      "finalApprovalField": "finalStructuralSignoff"
+    },
+    "launchReadiness": {
+      "readApi": "getLaunchReadinessReport",
+      "path": "releaseGate.releaseReview",
+      "readyDecision": "ready-for-owner-release-signoff",
+      "finalApprovalField": "productionDeploymentApproved"
+    }
+  },
   "readApis": [
     "getSnapshot",
     "getModel",

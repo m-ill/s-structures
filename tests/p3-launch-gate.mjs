@@ -30,6 +30,8 @@ assert.deepEqual([...agentContract.readApis].sort(), [...manifest.readApis].sort
 assert.ok(agentContract.modules.every((key) => manifest.modules[key]));
 assert.ok(agentContract.dataContracts.every((key) => manifest.dataContracts.includes(key)));
 assert.deepEqual(agentContract.qaCommands, manifest.qaCommands);
+assert.deepEqual(agentContract.reviewGates, manifest.reviewGates);
+assert.equal(agentContract.reviewGates.launchReadiness.path, 'releaseGate.releaseReview');
 assert.equal(pilotReports.length, 10);
 assert.equal(integrated.summary.notCheckedCount, 0);
 assert.match(calculationPackage.html, /Phase 3 Integrated Results/);
@@ -101,6 +103,7 @@ assert.equal(agentLaunch.version, LAUNCH_READINESS_VERSION);
 assert.equal(agentLaunch.status, 'OK');
 assert.equal(runtimeCapabilities.modules.phase3LaunchReadiness, LAUNCH_READINESS_VERSION);
 assert.equal(runtimeCapabilities.modules.phase3LaunchReadinessGate, LAUNCH_READINESS_GATE_VERSION);
+assert.deepEqual(runtimeCapabilities.reviewGates, manifest.reviewGates);
 assert.ok(runtimeCapabilities.readApis.includes('getLaunchReadinessReport'));
 assert.ok(runtimeCapabilities.dataContracts.includes('phase3LaunchReadinessGate'));
 assert.deepEqual(
