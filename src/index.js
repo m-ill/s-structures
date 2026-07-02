@@ -490,6 +490,7 @@ export { POINT_CLOUD_STORY_DETECT_VERSION, detectStoryLevels } from './import/po
 export { POINT_CLOUD_COLUMN_DETECT_VERSION, detectColumns } from './import/pointcloud/columnDetect.js';
 export { POINT_CLOUD_BEAM_DETECT_VERSION, detectBeamsFromGroundTruth } from './import/pointcloud/beamDetect.js';
 export { POINT_CLOUD_WALL_DETECT_VERSION, buildWallExtractionReview, detectWallsFromGroundTruth, detectWallsFromOptions } from './import/pointcloud/wallDetect.js';
+export { POINT_CLOUD_REVIEW_VERSION, buildPointCloudExtractionReview, normalizeRealScanValidation } from './import/pointcloud/review.js';
 export { POINT_CLOUD_SYNTHETIC_VERSION, generateSyntheticPointCloud } from './import/pointcloud/synthetic.js';
 export { POINT_CLOUD_EXTRACTION_SUMMARY_VERSION, POINT_CLOUD_EXTRACTION_VERSION, buildPointCloudExtractionSummary, extractPointCloudCandidate } from './import/pointcloud/extract.js';
 export { POINT_CLOUD_BENCHMARK_VERSION, evaluatePointCloudExtraction } from './import/pointcloud/benchmark.js';

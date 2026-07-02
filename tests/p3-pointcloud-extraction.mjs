@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   buildAgentManifest,
+  buildPointCloudExtractionReview,
   createRepresentativeBuildingModel,
   evaluatePointCloudExtraction,
   extractPointCloudCandidate,
@@ -43,21 +44,35 @@ assert.deepEqual(score.pass, {
   beamRecall: true,
 });
 assert.deepEqual(score.review, {
+  version: 'p3-m9-pointcloud-review-v1',
   syntheticGate: 'pass',
   failedTargets: [],
   realScanGate: 'pending-owner-file',
   requiresOwnerScan: true,
+  productionReady: false,
   agentDecision: 'synthetic-benchmark-pass-real-scan-pending',
 });
 assert.equal(score.validationStatus.realScan, 'pending-owner-file');
+assert.equal(score.review.version, 'p3-m9-pointcloud-review-v1');
+assert.equal(score.review.productionReady, false);
 
 const strictScore = evaluatePointCloudExtraction(candidate, synthetic.groundTruth, {
   columnRecallTarget: 1.1,
 });
 assert.equal(strictScore.review.syntheticGate, 'fail');
 assert.ok(strictScore.review.failedTargets.includes('column-recall-target'));
-assert.equal(strictScore.review.agentDecision, 'synthetic-benchmark-fail');
+assert.equal(strictScore.review.agentDecision, 'fix-extraction-before-review');
 assert.equal(strictScore.review.requiresOwnerScan, true);
+const checkedScore = evaluatePointCloudExtraction(candidate, synthetic.groundTruth, {
+  realScanValidation: 'checked',
+});
+assert.equal(checkedScore.validationStatus.realScan, 'checked');
+assert.equal(checkedScore.review.realScanGate, 'pass');
+assert.equal(checkedScore.review.productionReady, true);
+assert.equal(checkedScore.review.agentDecision, 'pointcloud-import-ready-for-owner-review');
+const failedReview = buildPointCloudExtractionReview({ realScanValidation: 'failed' });
+assert.equal(failedReview.realScanGate, 'failed');
+assert.equal(failedReview.agentDecision, 'collect-or-clean-real-scan');
 assert.ok(candidate.candidates.members.some((m) => m.kind === 'beam'));
 assert.equal(candidate.audit.pointcloud.contract.milestone, 'P3-M9');
 assert.deepEqual(candidate.audit.pointcloud.contract.tickets, ['P3-T41', 'P3-T42', 'P3-T43', 'P3-T44', 'P3-T45']);
@@ -71,6 +86,9 @@ assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.walls, 'review
 assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.importCandidate, 'generated');
 assert.equal(candidate.audit.pointcloud.evidence.beamSource, 'synthetic-ground-truth-assisted');
 assert.equal(candidate.audit.pointcloud.evidence.realScanValidation, 'pending-owner-file');
+assert.equal(candidate.audit.pointcloud.evidence.review.realScanGate, 'pending-owner-file');
+assert.equal(candidate.audit.pointcloud.evidence.review.agentDecision, 'synthetic-benchmark-pass-real-scan-pending');
+assert.equal(candidate.audit.pointcloud.evidence.review.productionReady, false);
 assert.deepEqual(candidate.audit.pointcloud.evidence.confidenceBands, {
   high: '>=0.8',
   review: '0.5-0.8',

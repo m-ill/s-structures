@@ -1,3 +1,5 @@
+import { buildPointCloudExtractionReview, normalizeRealScanValidation } from './review.js';
+
 export const POINT_CLOUD_BENCHMARK_VERSION = 'p3-m9-pointcloud-benchmark-v1';
 
 export function evaluatePointCloudExtraction(candidate, groundTruth, options = {}) {
@@ -23,6 +25,8 @@ export function evaluatePointCloudExtraction(candidate, groundTruth, options = {
     wallRecall: matchedWalls.length / Math.max(1, (groundTruth.walls || []).length),
     wallCandidateCount: detectedWalls.length,
   };
+  const realScan = normalizeRealScanValidation(options.realScanValidation);
+  const review = buildBenchmarkReview(metrics, targets, realScan);
   return {
     version: POINT_CLOUD_BENCHMARK_VERSION,
     ...metrics,
@@ -33,29 +37,24 @@ export function evaluatePointCloudExtraction(candidate, groundTruth, options = {
       columnPrecision: metrics.columnPrecision >= targets.columnPrecision,
       beamRecall: metrics.beamRecall >= targets.beamRecall,
     },
-    review: buildBenchmarkReview(metrics, targets),
+    review,
     validationStatus: {
       syntheticBenchmark: 'checked',
-      realScan: 'pending-owner-file',
+      realScan,
     },
   };
 }
 
-function buildBenchmarkReview(metrics, targets) {
+function buildBenchmarkReview(metrics, targets, realScanValidation) {
   const failed = [];
   if (!(metrics.storyErrorMax < targets.storyErrorMax)) failed.push('story-error-target');
   if (!(metrics.columnRecall >= targets.columnRecall)) failed.push('column-recall-target');
   if (!(metrics.columnPrecision >= targets.columnPrecision)) failed.push('column-precision-target');
   if (!(metrics.beamRecall >= targets.beamRecall)) failed.push('beam-recall-target');
-  return {
-    syntheticGate: failed.length === 0 ? 'pass' : 'fail',
+  return buildPointCloudExtractionReview({
     failedTargets: failed,
-    realScanGate: 'pending-owner-file',
-    requiresOwnerScan: true,
-    agentDecision: failed.length === 0
-      ? 'synthetic-benchmark-pass-real-scan-pending'
-      : 'synthetic-benchmark-fail',
-  };
+    realScanValidation,
+  });
 }
 
 function columnMatch(member, candidate, gt, tol) {

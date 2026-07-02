@@ -3,6 +3,7 @@ import { detectBeamsFromGroundTruth } from './beamDetect.js';
 import { detectColumns } from './columnDetect.js';
 import { detectStoryLevels } from './storyDetect.js';
 import { buildWallExtractionReview, detectWallsFromGroundTruth, detectWallsFromOptions } from './wallDetect.js';
+import { buildPointCloudExtractionReview, normalizeRealScanValidation } from './review.js';
 
 export const POINT_CLOUD_EXTRACTION_VERSION = 'p3-m9-pointcloud-extraction-v1';
 export const POINT_CLOUD_EXTRACTION_SUMMARY_VERSION = 'p3-m9-pointcloud-extraction-summary-v1';
@@ -32,7 +33,9 @@ export function buildPointCloudExtractionSummary(input = {}) {
   const beams = input.beams || [];
   const walls = input.walls || [];
   const usedGroundTruth = input.usedGroundTruth === true;
-  const wallExtraction = buildWallExtractionReview(walls, { realScanValidation: input.realScanValidation });
+  const realScanValidation = normalizeRealScanValidation(input.realScanValidation);
+  const review = buildPointCloudExtractionReview({ realScanValidation });
+  const wallExtraction = buildWallExtractionReview(walls, { realScanValidation });
   return {
     version: POINT_CLOUD_EXTRACTION_SUMMARY_VERSION,
     contract: {
@@ -65,7 +68,8 @@ export function buildPointCloudExtractionSummary(input = {}) {
         auditOnly: '<0.5',
       },
       beamSource: usedGroundTruth ? 'synthetic-ground-truth-assisted' : 'not-detected',
-      realScanValidation: 'pending-owner-file',
+      realScanValidation,
+      review,
       wallExtraction,
     },
     limitations: [
