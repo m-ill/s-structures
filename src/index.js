@@ -316,6 +316,10 @@ export {
   solveNewtonRaphson,
 } from './nonlinear/control/newtonRaphson.js';
 export {
+  GLOBAL_EQUILIBRIUM_VERSION,
+  runGlobalEquilibriumTrace,
+} from './nonlinear/control/globalEquilibrium.js';
+export {
   LOAD_CONTROL_VERSION,
   buildLoadControlTrace,
 } from './nonlinear/control/loadControl.js';

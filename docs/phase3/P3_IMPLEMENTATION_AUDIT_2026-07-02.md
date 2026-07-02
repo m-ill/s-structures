@@ -96,10 +96,10 @@ P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PLAN.md`.
 | --- | --- | --- |
 | P3-T50 | `src/nonlinear/state.js` provides state creation, restart-safe snapshot, and step advance helpers | Preliminary |
 | P3-T51 | `src/nonlinear/elements/corotationalBeam.js` and `src/nonlinear/assembly.js` provide corotational geometry, geometric stiffness, and KE/KG/hinge tangent assembly trace helpers | Preliminary |
-| P3-T52 | `src/nonlinear/control/convergence.js` and `newtonRaphson.js` provide tolerance, iteration log, line-search candidate rows, accepted residual norm, and convergence reason contracts | Preliminary |
+| P3-T52 | `src/nonlinear/control/convergence.js`, `newtonRaphson.js`, and `globalEquilibrium.js` provide tolerance, iteration log, line-search candidate rows, reduced-DOF global residual solve rows, accepted residual norm, and convergence reason contracts | Preliminary |
 | P3-T53 | `src/verification/nonlinearBenchmarks.js` registers B1 Euler buckling and B2 large-displacement cantilever screening gates | Preliminary |
 
-M14 is now exposed through `getNonlinearAnalysisTrace` for browser and agent control, including an AI-readable tangent assembly summary. This is not yet a production nonlinear frame solver: full hinge-controlled global iteration, fiber sections, and nonlinear time-history remain in P3-M15 to P3-M16.
+M14 is now exposed through `getNonlinearAnalysisTrace` for browser and agent control, including an AI-readable tangent assembly summary and reduced-DOF global residual Newton trace. This is not yet a production nonlinear frame solver: certified hinge-controlled global iteration, fiber sections, and nonlinear time-history remain in P3-M15 to P3-M16.
 
 ### P3-M15 Required
 

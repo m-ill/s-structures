@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   COROTATIONAL_BEAM_VERSION,
+  GLOBAL_EQUILIBRIUM_VERSION,
   LOAD_CONTROL_VERSION,
   NONLINEAR_CONVERGENCE_VERSION,
   NONLINEAR_ASSEMBLY_VERSION,
@@ -12,6 +13,7 @@ import {
   advanceAnalysisState,
   buildCorotationalBeamState,
   buildLoadControlTrace,
+  runGlobalEquilibriumTrace,
   buildNonlinearTangentAssembly,
   buildNonlinearAnalysisTrace,
   chooseLineSearchTrace,
@@ -55,6 +57,17 @@ assert.ok(assembly.summary.elasticMemberCount > 0);
 assert.ok(assembly.summary.geometricMemberCount >= 1);
 assert.ok(assembly.summary.hingeCorrectionCount >= 1);
 assert.ok(assembly.summary.maxAbsTangent > 0);
+const globalEquilibrium = runGlobalEquilibriumTrace(assemblyModel, createAnalysisState(), {
+  assembly,
+  loads: [{ dof: assembly.freeDofs[0], value: 1 }],
+});
+assert.equal(globalEquilibrium.version, GLOBAL_EQUILIBRIUM_VERSION);
+assert.equal(globalEquilibrium.contract.milestone, 'P3-M14');
+assert.ok(globalEquilibrium.contract.tickets.includes('P3-T52'));
+assert.equal(globalEquilibrium.converged, true);
+assert.ok(globalEquilibrium.rows.length >= 1);
+assert.ok(globalEquilibrium.rows.every((row) => row.version === NONLINEAR_CONVERGENCE_VERSION));
+assert.ok(globalEquilibrium.summary.finalResidualNorm <= globalEquilibrium.summary.initialResidualNorm);
 
 const convergence = evaluateConvergenceNorms({ force: 1e-5, displacement: 1e-5, energy: 1e-8 }, { force: 1, displacement: 1, energy: 1 });
 assert.equal(convergence.converged, true);
@@ -103,18 +116,23 @@ assert.equal(trace.geometryGate.contract.featureTicketMap.stateSnapshot, 'P3-T50
 assert.ok(trace.geometryGate.contract.reviewFields.includes('summary.ticketCoverage'));
 assert.equal(trace.geometryGate.contracts.assembly, NONLINEAR_ASSEMBLY_VERSION);
 assert.equal(trace.geometryGate.contracts.convergence, NONLINEAR_CONVERGENCE_VERSION);
+assert.equal(trace.geometryGate.contracts.globalEquilibrium, GLOBAL_EQUILIBRIUM_VERSION);
 assert.equal(trace.geometryGate.contracts.loadControl, LOAD_CONTROL_VERSION);
 assert.equal(trace.geometryGate.summary.readyForAgentReview, true);
+assert.equal(trace.geometryGate.summary.globalEquilibriumOk, true);
 assert.equal(trace.geometryGate.summary.loadControlOk, true);
 assert.equal(trace.geometryGate.contract.maturity, 'preliminary-trace-core');
 assert.equal(trace.geometryGate.solverReview.status, 'trace-ready');
 assert.equal(trace.geometryGate.solverReview.productionEquilibriumSolver, false);
-assert.equal(trace.geometryGate.solverReview.globalResidualAssembly, 'trace-only');
+assert.equal(trace.geometryGate.solverReview.globalResidualAssembly, 'reduced-dof-newton-trace');
+assert.equal(trace.geometryGate.solverReview.globalEquilibriumConverged, true);
 assert.equal(trace.geometryGate.solverReview.agentDecision, 'm14-ready-for-m15-review');
 assert.deepEqual(trace.geometryGate.solverReview.missing, []);
 assert.deepEqual(trace.geometryGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T50', 'P3-T51', 'P3-T52', 'P3-T53']);
 assert.ok(trace.geometryGate.summary.ticketCoverage.every((row) => row.covered));
 assert.equal(trace.geometryGate.assembly.version, NONLINEAR_ASSEMBLY_VERSION);
+assert.equal(trace.geometryGate.globalEquilibrium.version, GLOBAL_EQUILIBRIUM_VERSION);
+assert.equal(trace.geometryGate.globalEquilibrium.converged, true);
 assert.equal(trace.geometryGate.loadControl.version, LOAD_CONTROL_VERSION);
 assert.ok(trace.geometryGate.loadControl.rows.length > 0);
 assert.deepEqual(trace.geometryGate.benchmarks.requiredCases, ['B1', 'B2']);

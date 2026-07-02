@@ -264,6 +264,7 @@ const NONLINEAR_ENGINE_CONTRACT = {
     'src/nonlinear/fiber/fiberSection.js',
     'src/nonlinear/fiber/momentCurvature.js',
     'src/nonlinear/control/newtonRaphson.js',
+    'src/nonlinear/control/globalEquilibrium.js',
     'src/nonlinear/control/loadControl.js',
     'src/nonlinear/control/displacementControl.js',
     'src/nonlinear/control/arcLength.js',

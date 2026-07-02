@@ -41,6 +41,7 @@ export function buildNonlinearTangentAssembly(model = {}, state = {}, options = 
     ok: !!elastic.ok,
     reason: elastic.reason || null,
     ndof: elastic.ndof || K.length,
+    freeDofs: elastic.free || [],
     freeDofCount: elastic.free?.length || 0,
     fixedDofCount: elastic.fixedDofs?.size || 0,
     K,

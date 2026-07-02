@@ -1,6 +1,7 @@
 import { createAnalysisState, NONLINEAR_STATE_VERSION, snapshotAnalysisState } from './state.js';
 import { buildNonlinearTangentAssembly, NONLINEAR_ASSEMBLY_VERSION } from './assembly.js';
 import { NEWTON_RAPHSON_VERSION, solveNewtonRaphson } from './control/newtonRaphson.js';
+import { GLOBAL_EQUILIBRIUM_VERSION, runGlobalEquilibriumTrace } from './control/globalEquilibrium.js';
 import { buildLoadControlTrace, LOAD_CONTROL_VERSION } from './control/loadControl.js';
 import { NONLINEAR_CONVERGENCE_VERSION } from './control/convergence.js';
 import { ARC_LENGTH_CONTROL_VERSION, buildArcLengthTrace, createSnapThroughBenchmarkPath } from './control/arcLength.js';
@@ -70,7 +71,7 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
     state: snapshotAnalysisState(state),
     assembly,
     hingeAssignment,
-    geometryGate: buildNonlinearGeometryGate(state, geometryBenchmarks, { ...options.geometryGate, assembly }),
+    geometryGate: buildNonlinearGeometryGate(state, geometryBenchmarks, { ...options.geometryGate, assembly, model }),
     hingeControlGate: buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, {
       displacementControl,
       arcLength,
@@ -406,7 +407,13 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
     lineSearch: options.lineSearch,
   });
   const loadControl = buildLoadControlTrace(options.loadControl);
-  const solverReview = buildGeometrySolverReview({ geometryBenchmarks, convergenceSample, loadControl, assembly: options.assembly });
+  const globalEquilibrium = runGlobalEquilibriumTrace(options.model || {}, state, {
+    assembly: options.assembly,
+    loads: options.globalEquilibrium?.loads || [{ dof: options.assembly?.freeDofs?.[0] ?? 0, value: 1 }],
+    maxIterations: options.globalEquilibrium?.maxIterations || 6,
+    tolerances: options.globalEquilibrium?.tolerances,
+  });
+  const solverReview = buildGeometrySolverReview({ geometryBenchmarks, convergenceSample, loadControl, assembly: options.assembly, globalEquilibrium });
   return {
     version: NONLINEAR_GEOMETRY_TRACE_VERSION,
     milestone: 'P3-M14',
@@ -421,7 +428,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
         newtonLineSearchConvergence: 'P3-T52',
         geometryBenchmarks: 'P3-T53',
       },
-      reviewFields: ['summary.ticketCoverage', 'state', 'assembly.summary', 'convergence.log', 'loadControl.rows', 'benchmarks.cases'],
+      reviewFields: ['summary.ticketCoverage', 'state', 'assembly.summary', 'globalEquilibrium.rows', 'convergence.log', 'loadControl.rows', 'benchmarks.cases'],
       agentUse: 'Read-only gate for reports and AI-agent inspection before running later hinge, fiber, or NLTH workflows.',
       maturity: 'preliminary-trace-core',
     },
@@ -429,6 +436,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       state: NONLINEAR_STATE_VERSION,
       convergence: NONLINEAR_CONVERGENCE_VERSION,
       newtonRaphson: NEWTON_RAPHSON_VERSION,
+      globalEquilibrium: GLOBAL_EQUILIBRIUM_VERSION,
       loadControl: LOAD_CONTROL_VERSION,
       assembly: NONLINEAR_ASSEMBLY_VERSION,
     },
@@ -436,11 +444,12 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       readyForAgentReview: true,
       benchmarkOk: geometryBenchmarks?.ok ?? null,
       convergenceOk: convergenceSample.converged,
+      globalEquilibriumOk: globalEquilibrium.converged,
       loadControlOk: loadControl.converged,
       tangentAssemblyOk: options.assembly?.ok ?? null,
       requiredBenchmarks: ['B1', 'B2'],
       solverReview,
-      ticketCoverage: buildGeometryTicketCoverage({ state, options, convergenceSample, loadControl, geometryBenchmarks }),
+      ticketCoverage: buildGeometryTicketCoverage({ state, options, convergenceSample, globalEquilibrium, loadControl, geometryBenchmarks }),
     },
     solverReview,
     state: snapshotAnalysisState(state),
@@ -458,6 +467,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       reason: convergenceSample.convergenceReason,
       log: convergenceSample.log,
     },
+    globalEquilibrium,
     loadControl,
     benchmarks: geometryBenchmarks ? {
       version: geometryBenchmarks.version,
@@ -473,29 +483,31 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
     } : null,
     limitations: [
       'P3-M14 is a geometry trace core, not a production nonlinear frame solver.',
-      'Global frame residual assembly is reviewed through tangent/convergence traces and is not yet certified as a production equilibrium solver.',
+      'Global frame residual assembly is now exposed as a reduced-DOF Newton trace, but it is not yet certified as a production nonlinear solver.',
       'Material hinges, displacement control, arc-length, PMM, fiber, and NLTH are handled by later Phase 3 milestones.',
     ],
   };
 }
 
-function buildGeometrySolverReview({ geometryBenchmarks, convergenceSample, loadControl, assembly }) {
+function buildGeometrySolverReview({ geometryBenchmarks, convergenceSample, loadControl, assembly, globalEquilibrium }) {
   const missing = [];
   if (!assembly?.ok) missing.push('tangent-assembly');
   if (!convergenceSample?.converged) missing.push('newton-convergence');
+  if (!globalEquilibrium?.converged) missing.push('global-equilibrium-trace');
   if (!loadControl?.converged) missing.push('load-control');
   if (!geometryBenchmarks?.ok) missing.push('B1-B2-benchmark');
   return {
     status: missing.length ? 'review-required' : 'trace-ready',
     maturity: 'preliminary',
     productionEquilibriumSolver: false,
-    globalResidualAssembly: 'trace-only',
+    globalResidualAssembly: 'reduced-dof-newton-trace',
+    globalEquilibriumConverged: !!globalEquilibrium?.converged,
     missing,
     agentDecision: missing.length ? 'hold-before-m15' : 'm14-ready-for-m15-review',
   };
 }
 
-function buildGeometryTicketCoverage({ state, options, convergenceSample, loadControl, geometryBenchmarks }) {
+function buildGeometryTicketCoverage({ state, options, convergenceSample, globalEquilibrium, loadControl, geometryBenchmarks }) {
   const cases = geometryBenchmarks?.cases || [];
   return [
     {
@@ -512,9 +524,9 @@ function buildGeometryTicketCoverage({ state, options, convergenceSample, loadCo
     },
     {
       ticket: 'P3-T52',
-      scope: 'Newton-Raphson, line search, convergence log, and load control',
-      covered: !!convergenceSample?.converged && !!loadControl?.converged,
-      evidence: `${convergenceSample?.iterations || 0} NR iterations, ${loadControl?.rows?.length || 0} load steps`,
+      scope: 'Newton-Raphson, global residual trace, line search, convergence log, and load control',
+      covered: !!convergenceSample?.converged && !!globalEquilibrium?.converged && !!loadControl?.converged,
+      evidence: `${convergenceSample?.iterations || 0} scalar NR iterations, ${globalEquilibrium?.rows?.length || 0} global iterations, ${loadControl?.rows?.length || 0} load steps`,
     },
     {
       ticket: 'P3-T53',

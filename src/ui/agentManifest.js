@@ -103,6 +103,7 @@ import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
 import { GLOBAL_BUCKLING_TRACE_VERSION } from '../dynamics/globalBuckling.js';
 import { NONLINEAR_ASSEMBLY_VERSION } from '../nonlinear/assembly.js';
+import { GLOBAL_EQUILIBRIUM_VERSION } from '../nonlinear/control/globalEquilibrium.js';
 import { HINGE_ASSIGNMENT_VERSION } from '../nonlinear/hinges/hingeAssign.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
@@ -222,6 +223,7 @@ export function buildAgentManifest(options = {}) {
       phase3DynamicCompleteness: DYNAMIC_COMPLETENESS_VERSION,
       globalBucklingTrace: GLOBAL_BUCKLING_TRACE_VERSION,
       phase3NonlinearAssembly: NONLINEAR_ASSEMBLY_VERSION,
+      phase3NonlinearGlobalEquilibrium: GLOBAL_EQUILIBRIUM_VERSION,
       phase3NonlinearHingeAssignment: HINGE_ASSIGNMENT_VERSION,
       phase3NonlinearGeometryTrace: NONLINEAR_GEOMETRY_TRACE_VERSION,
       phase3NonlinearHingeControlTrace: NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
@@ -454,6 +456,7 @@ export function buildAgentManifest(options = {}) {
       'phase3DynamicCompletenessTrace',
       'globalBucklingTrace',
       'phase3NonlinearAssemblyTrace',
+      'phase3NonlinearGlobalEquilibriumTrace',
       'phase3NonlinearHingeAssignmentTrace',
       'phase3FiberMaterialBackboneTrace',
       'phase3NonlinearGeometryTrace',
