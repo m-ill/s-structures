@@ -23,6 +23,8 @@ export function buildPointCloudLayerData(points, options = {}) {
       colorType: 'Uint8Array',
       positionBytes: positions.byteLength,
       colorBytes: colors.byteLength,
+      totalBytes: positions.byteLength + colors.byteLength,
+      transferableBuffers: ['positions.buffer', 'colors.buffer'],
       zFilter: {
         min: Number.isFinite(zMin) ? zMin : null,
         max: Number.isFinite(zMax) ? zMax : null,

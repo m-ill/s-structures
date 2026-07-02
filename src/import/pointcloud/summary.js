@@ -11,6 +11,7 @@ export function summarizePointCloudImport(input, options = {}) {
   const pipeline = describePointCloudPipeline();
   return {
     version: POINT_CLOUD_IMPORT_SUMMARY_VERSION,
+    contract: buildContract(pipeline),
     pipelineVersion: pipeline.version,
     workerVersion: processed.version || null,
     status: buildStatus(processed, layer),
@@ -34,12 +35,43 @@ export function summarizePointCloudImport(input, options = {}) {
       positionLength: layer.positions.length,
       colorLength: layer.colors.length,
       metadata: layer.metadata || null,
+      transferable: {
+        ready: !!layer.metadata?.transferableBuffers?.length,
+        buffers: layer.metadata?.transferableBuffers || [],
+        totalBytes: layer.metadata?.totalBytes || 0,
+      },
       zFilter: {
         min: layer.metadata?.zFilter?.min ?? options.view?.zMin ?? null,
         max: layer.metadata?.zFilter?.max ?? options.view?.zMax ?? null,
       },
     },
+    readiness: buildReadiness(audit, layer, pipeline),
     warnings: buildWarnings(audit, layer),
+  };
+}
+
+function buildContract(pipeline) {
+  return {
+    milestone: 'P3-M8',
+    tickets: ['P3-T36', 'P3-T37', 'P3-T38', 'P3-T39', 'P3-T40'],
+    dataContracts: ['phase3PointCloudLoader', 'phase3PointCloudViewerBuffer', 'phase3PointCloudImportSummary'],
+    pipelineVersion: pipeline.version,
+  };
+}
+
+function buildReadiness(audit, layer, pipeline) {
+  const loader = audit.loader || {};
+  return {
+    fixtureFormatsReady: ['xyz', 'ply', 'pcd'],
+    detectedFormat: loader.format || null,
+    textLoaderReady: ['xyz', 'txt', 'ply', 'pcd'].includes(loader.format),
+    workerPipelineReady: Array.isArray(audit.stageRows) && audit.stageRows.length >= 4,
+    viewerBufferReady: layer.count > 0 && layer.metadata?.positionType === 'Float32Array',
+    transferableReady: !!layer.metadata?.transferableBuffers?.length,
+    largeFilePerformance: pipeline.performanceBudget?.preprocessing?.status || 'unknown',
+    viewerPerformance: pipeline.performanceBudget?.viewer?.status || 'unknown',
+    realScanValidation: pipeline.realScanValidation || 'unknown',
+    pendingFormats: pipeline.unsupportedOrPendingFormats || [],
   };
 }
 

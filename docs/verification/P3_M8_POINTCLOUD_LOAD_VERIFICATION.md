@@ -30,6 +30,8 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 
 2026-07-02 follow-up: P3-M8 now exposes step-level pipeline rows and viewer buffer metadata. `processPointCloudText()` records `stageRows`, and `buildPointCloudLayerData()` returns typed-array metadata so UI and AI agents can verify the render buffer without inspecting binary arrays directly.
 
+2026-07-02 contract update: `summarizePointCloudImport()` now exposes a P3-M8 `contract`, readiness flags, transferable viewer-buffer metadata, performance-budget targets, pending binary/LAS formats, and real-scan validation status. This keeps compact fixture readiness separate from large-field-file proof and prevents AI agents from treating P3-M8 as completed production scan validation.
+
 ## Current Test Gate
 
 `tests/p3-pointcloud-load.mjs` verifies:
@@ -39,6 +41,7 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 3. Viewer buffer length and filtered count.
 4. Agent manifest data contract for point-cloud viewer buffer and import summary.
 5. Stage-level worker rows and typed viewer buffer metadata.
+6. P3-M8 contract tickets, transferable buffer readiness, performance-budget pending status, and real-scan pending status.
 
 ## Remaining Limits
 
