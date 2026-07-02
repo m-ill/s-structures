@@ -22,7 +22,15 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
       if (load.type === 'trapezoid') featureCounts.trapezoid += 1;
       const rows = expandDistributed(load, segments, lengths[load.member] || 1);
       expanded.push(...rows);
-      loadTrace.push({ id: load.id || null, type: load.type, member: load.member, expandedPointCount: rows.length, from: clamp(load.from ?? 0), to: clamp(load.to ?? 1) });
+      loadTrace.push({
+        id: load.id || null,
+        type: load.type,
+        member: load.member,
+        direction: load.direction || load.dir || null,
+        expandedPointCount: rows.length,
+        from: clamp(load.from ?? 0),
+        to: clamp(load.to ?? 1),
+      });
       handcalc.push(distributedHandcalc(load, rows));
     } else if (load.type === 'temperature' || load.type === 'tgradient') {
       if (load.type === 'temperature') featureCounts.temperature += 1;
@@ -40,6 +48,15 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
     loads: expanded,
     trace: {
       version: ELASTIC_EXPANSION_VERSION,
+      contract: {
+        scope: ['spring-supports', 'settlement', 'truss-and-unilateral-members', 'member-end-offsets', 'advanced-member-loads', 'thermal-loads'],
+        signConventionRef: 'src/core/signConvention.js',
+        limitations: [
+          'unilateral-member-state-is-load-combination-specific',
+          'cable-sag-and-large-displacement-cable-effects-not-included',
+          'construction-sequence-and-prestress-not-included',
+        ],
+      },
       inputCount: loads.length,
       outputCount: expanded.length,
       warnings,
@@ -54,7 +71,7 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
         memberOffsets: countMemberOffsets(model),
       },
       supportTrace: buildSupportTrace(model),
-      memberTrace: buildMemberTrace(model),
+      memberTrace: buildMemberTrace(model, lengths),
       loadTrace,
       handcalc: handcalc.filter(Boolean),
     },
@@ -83,6 +100,8 @@ function distributedHandcalc(load, rows) {
     id: load.id || null,
     type: load.type,
     member: load.member,
+    direction: load.direction || load.dir || null,
+    range: { from: clamp(load.from ?? 0), to: clamp(load.to ?? 1) },
     method: 'segmented-fixed-end-equivalent-point-loads',
     totalLoad,
     pointCount: rows.length,
@@ -150,14 +169,27 @@ function buildSupportTrace(model = {}) {
     }));
 }
 
-function buildMemberTrace(model = {}) {
+function buildMemberTrace(model = {}, lengths = {}) {
   return (model.members || [])
     .filter((member) => ['truss', 'tensionOnly', 'compressionOnly'].includes(member.type || member.behavior) || member.endOffset)
     .map((member) => ({
       member: member.id,
       behavior: member.type || member.behavior || 'frame',
       endOffset: member.endOffset || null,
+      grossLength: lengths[member.id] ?? null,
+      clearLength: clearLength(member, lengths[member.id]),
+      offset: {
+        i: Number(member.endOffset?.i || 0),
+        j: Number(member.endOffset?.j || 0),
+        rigidFactor: Number(member.endOffset?.rigidFactor ?? 1),
+      },
     }));
+}
+
+function clearLength(member, grossLength) {
+  if (!Number.isFinite(grossLength)) return null;
+  const offset = member.endOffset || {};
+  return Math.max(0, grossLength - Number(offset.i || 0) - Number(offset.j || 0));
 }
 
 function pickFinite(source = {}, keys = []) {

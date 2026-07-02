@@ -21,6 +21,10 @@ const model = createModel({
 assert.equal(validateModel(model).ok, true);
 const expanded = expandAdvancedLoads(model.loads, model);
 assert.equal(expanded.trace.version, ELASTIC_EXPANSION_VERSION);
+assert.ok(expanded.trace.contract.scope.includes('spring-supports'));
+assert.ok(expanded.trace.contract.scope.includes('advanced-member-loads'));
+assert.equal(expanded.trace.contract.signConventionRef, 'src/core/signConvention.js');
+assert.ok(expanded.trace.contract.limitations.includes('unilateral-member-state-is-load-combination-specific'));
 assert.equal(expanded.loads.length, 8);
 assert.equal(expanded.loads[0].type, 'point');
 assert.equal(expanded.loads.reduce((sum, load) => sum + load.P, 0), 20);
@@ -30,8 +34,11 @@ assert.equal(expanded.trace.features.springSupports, 1);
 assert.equal(expanded.trace.supportTrace[0].node, 'B');
 assert.equal(expanded.trace.supportTrace[0].spring.kz, 1000000);
 assert.equal(expanded.trace.loadTrace[0].expandedPointCount, 8);
+assert.equal(expanded.trace.loadTrace[0].direction, '-z');
 assert.equal(expanded.trace.handcalc[0].method, 'segmented-fixed-end-equivalent-point-loads');
 assert.equal(expanded.trace.handcalc[0].totalLoad, 20);
+assert.deepEqual(expanded.trace.handcalc[0].range, { from: 0.25, to: 0.75 });
+assert.equal(expanded.trace.handcalc[0].direction, '-z');
 
 const result = analyzeModel(model);
 assert.equal(result.ok, true);
@@ -169,7 +176,11 @@ const clearSpan = createModel({ ...cantilever, members: [{ ...cantilever.members
 const cantileverResult = analyzeModel(cantilever);
 const clearSpanResult = analyzeModel(clearSpan);
 assert.equal(clearSpanResult.ok, true);
-assert.equal(expandAdvancedLoads(clearSpan.loads, clearSpan).trace.features.memberOffsets, 1);
+const clearTrace = expandAdvancedLoads(clearSpan.loads, clearSpan).trace;
+assert.equal(clearTrace.features.memberOffsets, 1);
+assert.equal(clearTrace.memberTrace[0].grossLength, 4);
+assert.equal(clearTrace.memberTrace[0].clearLength, 3);
+assert.deepEqual(clearTrace.memberTrace[0].offset, { i: 0.5, j: 0.5, rigidFactor: 1 });
 assert.ok(clearSpanResult.byCombo.CO1.summary.maxDisplacement < cantileverResult.byCombo.CO1.summary.maxDisplacement);
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m11-elastic-expansion' }, null, 2));
