@@ -155,6 +155,13 @@ function buildLoadsV2Contract() {
     milestone: 'P3-M13',
     tickets: ['P3-T76', 'P3-T77', 'P3-T78', 'P3-T82'],
     scope: 'Traceable preliminary wind, seismic, environmental, and mass-source loads for elastic analysis.',
+    featureTicketMap: {
+      windV2: 'P3-T76',
+      seismicV2: 'P3-T77',
+      environmentalLoads: 'P3-T78',
+      massSource: 'P3-T82',
+    },
+    reviewFields: ['summary.ticketCoverage', 'wind', 'seismic', 'environmental', 'massSource'],
     reportUse: 'Rows preserve formula inputs so reports and agents can cite the active basis without re-reading UI state.',
     limitations: [
       'Project-specific code automation and exceptional wind shapes remain outside this trace.',
@@ -172,6 +179,12 @@ function summarizeLoadsV2({ wind, seismic, environmental, massSource }) {
     environmentalCases: environmental.loadCases,
     massNodeCount: massSource.nodeCount,
     totalMass: massSource.totalMass,
+    ticketCoverage: [
+      { ticket: 'P3-T76', scope: 'wind v2 trace', covered: wind.length > 0, evidence: `${wind.length} story wind rows` },
+      { ticket: 'P3-T77', scope: 'seismic v2 trace', covered: seismic.length > 0, evidence: `${seismic.length} story seismic rows` },
+      { ticket: 'P3-T78', scope: 'snow soil water uplift loads', covered: environmental.loads.length > 0, evidence: environmental.loadCases.join(',') || 'no environmental cases requested' },
+      { ticket: 'P3-T82', scope: 'load-to-mass source', covered: !!massSource.version, evidence: `${massSource.nodeCount} mass nodes` },
+    ],
   };
 }
 

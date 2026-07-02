@@ -19,12 +19,26 @@ export function buildCqcCombinationReport(responses, dampingRatio = 0.05, closeR
       if (ratio <= closeRatio) closeModes.push({ modes: [a.mode || i + 1, b.mode || j + 1], periodRatio: ratio, rho: rho(a.period, b.period, dampingRatio) });
     }
   }
-  return { version: DYNAMIC_COMPLETENESS_VERSION, method: 'CQC', cqc, srss, cqcToSrss: srss > 0 ? cqc / srss : 0, closeModes };
+  return {
+    version: DYNAMIC_COMPLETENESS_VERSION,
+    contract: buildDynamicContract(['P3-T79'], 'CQC modal combination trace for elastic response spectrum review.'),
+    method: 'CQC',
+    cqc,
+    srss,
+    cqcToSrss: srss > 0 ? cqc / srss : 0,
+    closeModes,
+  };
 }
 
 export function estimateMemberEulerBuckling(member, result) {
   const L = result?.L || 0; const E = result?.material?.E || result?.check?.inputs?.Fa || 0; const I = Math.min(result?.section?.Iy || 0, result?.section?.Iz || 0);
-  return { version: DYNAMIC_COMPLETENESS_VERSION, memberId: member.id, pcr: L > 0 ? Math.PI ** 2 * E * I / L ** 2 : 0, method: 'Euler pinned-pinned preliminary' };
+  return {
+    version: DYNAMIC_COMPLETENESS_VERSION,
+    contract: buildDynamicContract(['P3-T80'], 'Member Euler buckling screening trace.'),
+    memberId: member.id,
+    pcr: L > 0 ? Math.PI ** 2 * E * I / L ** 2 : 0,
+    method: 'Euler pinned-pinned preliminary',
+  };
 }
 
 export function estimateModelBucklingTrace(model = {}, options = {}) {
@@ -36,6 +50,7 @@ export function estimateModelBucklingTrace(model = {}, options = {}) {
   const global = estimateGlobalBucklingTrace(model, options);
   return {
     version: DYNAMIC_COMPLETENESS_VERSION,
+    contract: buildDynamicContract(['P3-T80'], 'Global eigenvalue buckling trace paired with member Euler screening.'),
     method: global.status === 'available'
       ? 'global-eigenvalue-with-member-euler-screening'
       : 'member-euler-screening-not-global-eigenvalue',
@@ -73,7 +88,13 @@ export function runLinearSdofTha({ period = 1, dampingRatio = 0.05, dt = 0.02, a
     a = aNext;
     rows.push({ step: i, time: i * dt, displacement: u, velocity: v, acceleration: a });
   }
-  return { version: DYNAMIC_COMPLETENESS_VERSION, method: 'linear-sdof-newmark-average-acceleration', maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))), rows };
+  return {
+    version: DYNAMIC_COMPLETENESS_VERSION,
+    contract: buildDynamicContract(['P3-T81'], 'Linear SDOF Newmark trace used by modal-superposition time history.'),
+    method: 'linear-sdof-newmark-average-acceleration',
+    maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))),
+    rows,
+  };
 }
 
 export function runModalSuperpositionTha({ modes = [], direction = 'x', dampingRatio = 0.05, dt = 0.02, accelerations = [] } = {}) {
@@ -88,11 +109,30 @@ export function runModalSuperpositionTha({ modes = [], direction = 'x', dampingR
   });
   return {
     version: DYNAMIC_COMPLETENESS_VERSION,
+    contract: buildDynamicContract(['P3-T81'], 'Linear modal-superposition time-history trace.'),
     method: 'linear-modal-superposition-newmark',
     direction,
     modal,
     rows,
     maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))),
+  };
+}
+
+function buildDynamicContract(tickets, scope) {
+  return {
+    milestone: 'P3-M13',
+    tickets,
+    scope,
+    featureTicketMap: {
+      cqcCombination: 'P3-T79',
+      globalBuckling: 'P3-T80',
+      linearTimeHistory: 'P3-T81',
+    },
+    reviewFields: ['contract.tickets', 'method', 'rows', 'closeModes', 'global'],
+    limitations: [
+      'Dynamic completeness traces are preliminary elastic-analysis helpers.',
+      'Material nonlinearity, construction sequence, and project-specific code exceptions remain outside this contract.',
+    ],
   };
 }
 

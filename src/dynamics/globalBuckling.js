@@ -16,6 +16,7 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
   const eigen = inverseIteration(Kf, Gf, options);
   return {
     version: GLOBAL_BUCKLING_TRACE_VERSION,
+    contract: buildGlobalBucklingContract(),
     method: 'global-frame-geometric-stiffness-inverse-iteration',
     status: eigen.ok ? 'available' : 'not-available',
     criticalLoadFactor: eigen.lambda || null,
@@ -34,6 +35,7 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
 function baseTrace(status, reason) {
   return {
     version: GLOBAL_BUCKLING_TRACE_VERSION,
+    contract: buildGlobalBucklingContract(),
     method: 'global-frame-geometric-stiffness-inverse-iteration',
     status,
     criticalLoadFactor: null,
@@ -43,6 +45,16 @@ function baseTrace(status, reason) {
     freeDofCount: 0,
     referenceCompression: [],
     limitations: [],
+  };
+}
+
+function buildGlobalBucklingContract() {
+  return {
+    milestone: 'P3-M13',
+    tickets: ['P3-T80'],
+    scope: 'Linear global frame buckling eigenvalue trace using elastic stiffness and geometric stiffness.',
+    reviewFields: ['criticalLoadFactor', 'iterations', 'residual', 'referenceCompression'],
+    limitations: ['Shell buckling, follower loads, construction sequence, and material nonlinearity are excluded.'],
   };
 }
 

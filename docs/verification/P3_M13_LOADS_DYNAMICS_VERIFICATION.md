@@ -33,6 +33,8 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 
 2026-07-02 contract review update: `buildLoadsV2Trace()` now exposes a top-level `contract` and `summary`. The contract identifies the P3-M13 load tickets covered by the trace, the intended report/API use, and the current limitations. The summary exposes story count, total wind/seismic force, environmental case list, and mass-source totals. `buildMassSourceTrace()` also exposes its own contract so downstream dynamics, reports, and automation can distinguish accepted vertical load sources from ignored loads.
 
+2026-07-02 ticket coverage review update: M13 is split across load and dynamics modules, so each trace now exposes the relevant plan tickets directly. `buildLoadsV2Trace()` exposes P3-T76, P3-T77, P3-T78, and P3-T82 plus `summary.ticketCoverage`. CQC reports expose P3-T79, global/member buckling reports expose P3-T80, and linear SDOF/modal-superposition time-history traces expose P3-T81. This keeps the milestone aligned with `ELASTIC_ENGINE_COMPLETENESS_PLAN.md` without forcing unrelated dynamic fields into the load trace.
+
 ## Current Test Gate
 
 `tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.

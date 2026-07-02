@@ -33,11 +33,14 @@ const trace = buildLoadsV2Trace(model, {
 });
 assert.equal(trace.version, LOADS_V2_VERSION);
 assert.equal(trace.contract.milestone, 'P3-M13');
-assert.ok(trace.contract.tickets.includes('P3-T76'));
-assert.ok(trace.contract.tickets.includes('P3-T82'));
+assert.deepEqual(trace.contract.tickets, ['P3-T76', 'P3-T77', 'P3-T78', 'P3-T82']);
+assert.equal(trace.contract.featureTicketMap.windV2, 'P3-T76');
+assert.ok(trace.contract.reviewFields.includes('summary.ticketCoverage'));
 assert.ok(trace.summary.storyCount > 0);
 assert.ok(trace.summary.windForce > 0);
 assert.ok(trace.summary.seismicForce > 0);
+assert.deepEqual(trace.summary.ticketCoverage.map((row) => row.ticket), ['P3-T76', 'P3-T77', 'P3-T78', 'P3-T82']);
+assert.ok(trace.summary.ticketCoverage.every((row) => row.covered));
 assert.ok(trace.wind.length > 0 && trace.seismic.length > 0);
 assert.equal(trace.wind[1].pressure, 0.9);
 assert.equal(trace.wind[1].importance, 1);
@@ -67,6 +70,7 @@ const responses = [{ period: 1, displacement: 2 }, { period: 1.1, displacement: 
 assert.ok(combineModalCqc(responses, 0.05) >= Math.sqrt(5));
 const cqcReport = buildCqcCombinationReport([{ mode: 'M1', period: 1, displacement: 2 }, { mode: 'M2', period: 1.05, displacement: 1 }]);
 assert.equal(cqcReport.version, DYNAMIC_COMPLETENESS_VERSION);
+assert.deepEqual(cqcReport.contract.tickets, ['P3-T79']);
 assert.ok(cqcReport.closeModes.length === 1);
 
 const rsa = runResponseSpectrum([
@@ -78,6 +82,7 @@ assert.ok(rsa.combined.x.cqcDisplacement > 0);
 
 const tha = runLinearSdofTha({ period: 1, accelerations: [0, 0.1, -0.1, 0] });
 assert.equal(tha.version, DYNAMIC_COMPLETENESS_VERSION);
+assert.deepEqual(tha.contract.tickets, ['P3-T81']);
 assert.equal(tha.method, 'linear-sdof-newmark-average-acceleration');
 assert.equal(tha.rows.length, 4);
 
@@ -89,6 +94,7 @@ const modalTha = runModalSuperpositionTha({
   accelerations: [0, 0.1, -0.1, 0],
 });
 assert.equal(modalTha.method, 'linear-modal-superposition-newmark');
+assert.deepEqual(modalTha.contract.tickets, ['P3-T81']);
 assert.equal(modalTha.rows.length, 4);
 assert.equal(modalTha.modal.length, 2);
 
@@ -148,6 +154,7 @@ const buckling = estimateModelBucklingTrace({
   ],
 });
 assert.equal(buckling.method, 'member-euler-screening-not-global-eigenvalue');
+assert.deepEqual(buckling.contract.tickets, ['P3-T80']);
 assert.equal(buckling.critical.memberId, 'C2');
 
 const columnNodes = Array.from({ length: 9 }, (_, index) => ({
@@ -168,6 +175,7 @@ const columnMembers = Array.from({ length: 8 }, (_, index) => ({
 const globalBuckling = estimateGlobalBucklingTrace({ nodes: columnNodes, members: columnMembers });
 const eulerReference = Math.PI ** 2 * 205000000 * 508e-8 / 3 ** 2;
 assert.equal(globalBuckling.status, 'available');
+assert.deepEqual(globalBuckling.contract.tickets, ['P3-T80']);
 assert.ok(Math.abs(globalBuckling.criticalLoadFactor - eulerReference) / eulerReference < 0.02);
 const combinedBuckling = estimateModelBucklingTrace({ nodes: columnNodes, members: columnMembers });
 assert.equal(combinedBuckling.method, 'global-eigenvalue-with-member-euler-screening');
