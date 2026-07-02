@@ -49,6 +49,8 @@ assert.ok(Object.values(agentContract.manualReferences).every((path) => existsSy
 assert.equal(agentContract.manualReferences.remainingReview, 'docs/user-manual/PHASE3_REMAINING_REVIEW.md');
 assert.equal(agentContract.reviewGates.launchReadiness.path, 'releaseGate.releaseReview');
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('getLaunchReadinessReport().productionReadiness.status')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('summary.readyForAgentReview')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalApprovalField')));
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
 assert.match(launchManual, /OWNER_REVIEW_REQUIRED/);
 assert.match(completionAudit, /npm\.cmd run test:p3/);

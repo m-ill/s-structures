@@ -44,6 +44,8 @@ AI agents should read these APIs before making a final-use decision:
 
 If any of these reports exposes `productionReady: false`, `ownerReviewRequired: true`, a non-empty `missing` list, or `FINAL_USE_REVIEW_REQUIRED`, the agent must treat the program as review/preliminary rather than final production automation.
 
+Fields such as `summary.readyForAgentReview`, `summary.readyForReviewer`, and `summary.readyForOwnerReview` are review-handoff signals. Agents must still inspect the corresponding review path listed in `getCapabilities().reviewGates`, and the listed final approval fields remain owner- or engineer-controlled.
+
 ## Remaining Evidence
 
 | Domain | Required evidence |
@@ -64,4 +66,3 @@ If any of these reports exposes `productionReady: false`, `ownerReviewRequired: 
 | `docs/verification/P3_M20_LAUNCH_READINESS_VERIFICATION.md` | launch gate and final-use review contract |
 | `docs/user-manual/agent-contract.json` | canonical AI-agent contract |
 | `docs/user-manual/PHASE3_LAUNCH_MANUAL.md` | launch workflow and interpretation rules |
-
