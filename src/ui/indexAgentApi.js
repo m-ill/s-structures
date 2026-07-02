@@ -19,6 +19,7 @@ import {
   buildKdsLoadStandardAudit,
   buildConnectionFoundationReport,
   buildMemberDesignTraceReport,
+  buildRcDetailedDesignReport,
   buildRcDetailingReport,
   buildResultPostprocessing,
   buildServiceabilityDriftReport,
@@ -179,6 +180,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildRcDetailingReport(model, getAnalysis(model), options));
+    },
+    getRcDetailedDesignReport(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildRcDetailedDesignReport(model, getAnalysis(model), options));
     },
     getSteelDetailingReport(options = {}) {
       const model = getCurrentModel(target);

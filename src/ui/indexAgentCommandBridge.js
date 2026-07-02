@@ -25,6 +25,7 @@ const READ_METHODS = new Set([
   'getDesignBasisLoadEstimation',
   'getDesignBasisInput',
   'getRcDetailingReport',
+  'getRcDetailedDesignReport',
   'getSteelDetailingReport',
   'getConnectionFoundationReport',
   'getMemberDesignTraceReport',

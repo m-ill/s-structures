@@ -109,6 +109,16 @@ export {
   STANDARD_REBARS,
 } from './design/rcDetailing.js';
 export {
+  buildRcDetailedDesignReport,
+  RC_DETAILED_DESIGN_VERSION,
+} from './design/rc/detailedReport.js';
+export { RC_BEAM_DETAIL_VERSION, detailRcBeam } from './design/rc/beam.js';
+export { RC_COLUMN_DETAIL_VERSION, detailRcColumn } from './design/rc/column.js';
+export { RC_WALL_DETAIL_VERSION, detailRcWall } from './design/rc/wall.js';
+export { RC_SLAB_DETAIL_VERSION, detailRcSlab } from './design/rc/slab.js';
+export { RC_REBAR_DETAIL_VERSION, developmentLength, lapSpliceLength, spacingCheck } from './design/rc/rebar.js';
+export { RC_PM_CURVE_VERSION, buildRcPmCurve } from './design/rc/pmCurve.js';
+export {
   buildSteelDetailingReport,
   detailSteelMember,
   STEEL_DETAILING_VERSION,

@@ -139,6 +139,30 @@ M15 is exposed through the existing `getNonlinearAnalysisTrace` contract. The fo
 
 M16 is exposed through `getNonlinearAnalysisTrace` with PMM, fiber, ground-motion, NLTH, and B6-B8 benchmark sections. The current implementation is still a concentrated-plasticity trace core, not a distributed plasticity or soil-structure interaction solver.
 
+## Stage E Required Scope: P3-M17 To P3-M18
+
+P3-M17 and P3-M18 must follow `DESIGN_MODULES_PLAN.md`; they should not be replaced by an unrelated report-only scope.
+
+### P3-M17 Required
+
+| Ticket | Required scope |
+| --- | --- |
+| P3-T87 | RC beam flexure, shear, torsion warning, serviceability, bar/stirrup schedule, development and lap splice trace |
+| P3-T88 | RC column PM curve, slenderness, shear/tie reinforcement, column schedule |
+| P3-T89 | RC wall pier PM, in-plane shear, vertical/horizontal reinforcement ratio, boundary element warning |
+| P3-T90 | RC slab one-way/two-way/direct-design v1, punching shear, slab reinforcement schedule |
+
+### P3-M17 Implementation Review
+
+| Ticket | Current implementation | Status |
+| --- | --- | --- |
+| P3-T87 | `src/design/rc/beam.js` creates beam flexure, shear, torsion warning, serviceability, anchorage, splice, and spacing trace rows | Preliminary |
+| P3-T88 | `src/design/rc/column.js` and `pmCurve.js` create column PM curve data, slenderness warning, ties, spacing, and splice rows | Preliminary |
+| P3-T89 | `src/design/rc/wall.js` creates wall PM, shear, reinforcement ratio, and boundary warning rows | Preliminary |
+| P3-T90 | `src/design/rc/slab.js` creates slab mode selection, flexural steel, punching shear, and slab schedule rows | Preliminary |
+
+M17 is exposed through `getRcDetailedDesignReport` for browser and agent control. It is still a traceable preliminary detailed-design module; engineer-controlled final code clauses, seismic detailing, drawing production, and constructability are not claimed complete.
+
 ## Corrective Implementation Order
 
 1. Do not label P3-M10 to P3-M13 as complete. Keep them as preliminary cores until the ticket gaps above are closed.
