@@ -110,6 +110,9 @@ export function comparePushoverRegression(current, baseline) {
   return {
     version: FORMAL_PUSHOVER_VERSION,
     comparedSteps: count,
+    currentStepCount: a.length,
+    baselineStepCount: b.length,
+    stepCountMismatch: a.length !== b.length,
     maxBaseShearDiff: Math.max(0, ...rows.map((row) => row.baseShearDiff)),
     maxRoofDispDiff: Math.max(0, ...rows.map((row) => row.roofDispDiff)),
     rows,

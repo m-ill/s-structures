@@ -11,6 +11,18 @@ import { createPortalFrameSample } from '../examples/sampleFrame.js';
 import { runLinearSdofTha } from '../dynamics/elasticCompleteness.js';
 
 export const NONLINEAR_BENCHMARK_VERSION = 'p3-m16-nonlinear-benchmarks';
+export const PUSHOVER_REGRESSION_BASELINE = {
+  version: NONLINEAR_BENCHMARK_VERSION,
+  id: 'B5-fixed-portal-frame-baseline',
+  source: 'P3-M15 fixed representative portal frame baseline',
+  capacityCurve: [
+    { baseShear: 0, roofDisp: -0.000029786747572621624 },
+    { baseShear: 10, roofDisp: 0.0006373073692006837 },
+    { baseShear: 20, roofDisp: 0.001304401485973989 },
+    { baseShear: 30, roofDisp: 0.001971495602747294 },
+    { baseShear: 40, roofDisp: 0.0026385897195205996 },
+  ],
+};
 
 export function runNonlinearGeometryBenchmarks(options = {}) {
   const b1 = runEulerBucklingBenchmark(options.b1);
@@ -81,9 +93,20 @@ export function runPortalPlasticMechanismBenchmark(options = {}) {
 export function runPushoverRegressionBenchmark(options = {}) {
   const model = options.model || createPortalFrameSample();
   const current = runFormalPushover(model, { steps: 4, referenceBaseShear: 40, ...options.pushover });
-  const baseline = options.baseline || current;
+  const baseline = options.baseline || PUSHOVER_REGRESSION_BASELINE;
   const regression = comparePushoverRegression(current, baseline);
-  return { id: 'B5', name: 'representative pushover regression', reference: 0, actual: regression.maxRoofDispDiff, tolerance: 0, errorRatio: 0, ok: regression.maxRoofDispDiff === 0, regression };
+  const ok = !regression.stepCountMismatch && regression.maxBaseShearDiff === 0 && regression.maxRoofDispDiff === 0;
+  return {
+    id: 'B5',
+    name: 'representative pushover regression',
+    reference: 0,
+    actual: regression.maxRoofDispDiff,
+    tolerance: 0,
+    errorRatio: ok ? 0 : 1,
+    ok,
+    baseline: { id: baseline.id || 'custom-baseline', source: baseline.source || 'caller-supplied' },
+    regression,
+  };
 }
 
 export function runMomentCurvatureBenchmark(options = {}) {

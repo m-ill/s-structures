@@ -508,6 +508,7 @@ export {
   runNonlinearGeometryBenchmarks,
   runNonlinearThaBenchmark,
   runPortalPlasticMechanismBenchmark,
+  PUSHOVER_REGRESSION_BASELINE,
   runPushoverRegressionBenchmark,
   runSnapThroughArcLengthBenchmark,
 } from './verification/nonlinearBenchmarks.js';

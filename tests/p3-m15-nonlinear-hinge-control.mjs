@@ -9,6 +9,7 @@ import {
   NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
   NONLINEAR_TRACE_VERSION,
   PUSHOVER_SOURCE_VERSION,
+  PUSHOVER_REGRESSION_BASELINE,
   buildArcLengthTrace,
   buildDisplacementControlTrace,
   buildHingeDegradedModel,
@@ -108,6 +109,10 @@ const controlTrace = buildPushoverControlTrace(stoppedPushover, { targetDisplace
 assert.equal(controlTrace.stopReason, 'TARGET_DISPLACEMENT');
 const regression = comparePushoverRegression(pushover, { capacityCurve: pushover.capacityCurve });
 assert.equal(regression.maxBaseShearDiff, 0);
+assert.equal(regression.stepCountMismatch, false);
+const shortRegression = comparePushoverRegression(pushover, { capacityCurve: pushover.capacityCurve.slice(0, 2) });
+assert.equal(shortRegression.stepCountMismatch, true);
+assert.equal(shortRegression.baselineStepCount, 2);
 const pushoverWithBaseline = runFormalPushover(model, { steps: 4, referenceBaseShear: 30, baseline: pushover });
 assert.equal(pushoverWithBaseline.regression.maxRoofDispDiff, 0);
 const degradedModel = buildHingeDegradedModel(model, {
@@ -128,6 +133,14 @@ const benchmarks = runNonlinearHingeControlBenchmarks({ b5: { model } });
 assert.equal(benchmarks.version, NONLINEAR_BENCHMARK_VERSION);
 assert.equal(benchmarks.ok, true);
 assert.deepEqual(benchmarks.cases.map((item) => item.id), ['B3', 'B4', 'B5']);
+assert.equal(benchmarks.cases[2].baseline.id, PUSHOVER_REGRESSION_BASELINE.id);
+assert.equal(benchmarks.cases[2].regression.stepCountMismatch, false);
+const brokenB5 = runNonlinearHingeControlBenchmarks({
+  b5: { baseline: { id: 'too-short', capacityCurve: PUSHOVER_REGRESSION_BASELINE.capacityCurve.slice(0, 2) } },
+});
+assert.equal(brokenB5.ok, false);
+assert.equal(brokenB5.cases[2].ok, false);
+assert.equal(brokenB5.cases[2].regression.stepCountMismatch, true);
 
 const trace = buildNonlinearAnalysisTrace(model, { pushover: { steps: 3, referenceBaseShear: 20 } });
 assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
