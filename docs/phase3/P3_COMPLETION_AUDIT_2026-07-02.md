@@ -81,7 +81,7 @@ This audit checks the current repository against the Phase 3 planning documents.
 | G7 performance budget | Manual | `reports/launch-readiness/performance-security.md` records evidence; production hardware budget still owner-reviewed |
 | G8 security checklist | Manual | automated auth/server guards passed; release security sign-off remains owner-reviewed through `reports/launch-readiness/owner-signoff-checklist.md` |
 | G9 user manual refresh | Proven | `docs/user-manual/PHASE3_LAUNCH_MANUAL.md` |
-| G10 agent contract current | Proven | `tests/p3-launch-gate.mjs` checks manifest vs contract read APIs |
+| G10 agent contract current | Proven | `tests/p3-launch-gate.mjs` checks manifest vs contract read APIs, Phase 3 gate modules, and Phase 3 data contracts |
 | G11 beta pilot reports | Manual | 10 report shells exist; real user feedback is still needed |
 | G12 backup/restore rehearsal | Manual | checklist exists; physical backup rehearsal requires owner sign-off through `reports/launch-readiness/owner-signoff-checklist.md` |
 | G13 design verification | Proven | `docs/verification/DESIGN_MODULE_VERIFICATION.md` and M17/M18 tests |

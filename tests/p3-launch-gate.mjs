@@ -25,6 +25,8 @@ const pilotReports = readdirSync('reports/launch-readiness').filter((name) => /^
 
 assert.equal(analysis.ok, true);
 assert.deepEqual([...agentContract.readApis].sort(), [...manifest.readApis].sort());
+assert.ok(agentContract.modules.every((key) => manifest.modules[key]));
+assert.ok(agentContract.dataContracts.every((key) => manifest.dataContracts.includes(key)));
 assert.equal(pilotReports.length, 10);
 assert.equal(integrated.summary.notCheckedCount, 0);
 assert.match(calculationPackage.html, /Phase 3 Integrated Results/);

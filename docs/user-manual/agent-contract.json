@@ -195,5 +195,27 @@
     "calculation packages are calculation aids and review artifacts, not certified final structural design documents.",
     "preliminary KDS-style load combinations do not replace project-specific code review.",
     "preliminary nonlinear trace is not final production nonlinear design."
+  ],
+  "modules": [
+    "phase3RcDesignGate",
+    "phase3DetailedDesignGate",
+    "phase3IntegratedResultsGate",
+    "phase3LaunchReadinessGate",
+    "phase3NonlinearGeometryTrace",
+    "phase3NonlinearHingeControlTrace",
+    "phase3NonlinearFiberNlthTrace",
+    "phase3NonlinearTrace"
+  ],
+  "dataContracts": [
+    "phase3RcDesignGate",
+    "phase3DetailedDesignGate",
+    "phase3IntegratedResultsGate",
+    "phase3LaunchReadinessGate",
+    "phase3NonlinearGeometryTrace",
+    "phase3NonlinearHingeControlTrace",
+    "phase3NonlinearFiberNlthTrace",
+    "phase3NonlinearAnalysisTrace",
+    "phase3PointCloudExtractionSummary",
+    "phase3ImportReviewUi"
   ]
 }
