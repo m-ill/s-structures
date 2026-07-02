@@ -35,7 +35,11 @@ const candidate = importDxfToCandidate(text, {
 assert.equal(candidate.import.version, DXF_IMPORT_VERSION);
 assert.equal(validateImportCandidate(candidate).ok, true);
 assert.equal(candidate.source.units, 'mm');
+assert.deepEqual(candidate.source.transform.origin, [0, 0, 0]);
 assert.equal(candidate.audit.units.scale, 0.001);
+assert.deepEqual(candidate.audit.normalization.origin, [0, 0, 0]);
+assert.equal(candidate.audit.normalization.sourceBbox.sizeM.x, 5);
+assert.equal(candidate.audit.bbox.sizeM.z, 3);
 assert.equal(candidate.audit.counts.lines, 3);
 assert.equal(candidate.audit.counts.polylines, 0);
 assert.equal(candidate.audit.counts.inserts, 0);
@@ -68,6 +72,26 @@ assert.equal(analysisModel.meta.importSource, 'dxf');
 assert.equal(analysisModel.meta.importFileId, 'min-frame.dxf');
 assert.equal(analysisModel.loads.every((load) => load.source === 'dxf-candidate-e2e'), true);
 assert.ok(analysis.envelope.dmax >= 0);
+
+const offsetCandidate = importDxfToCandidate(shiftDxfCoordinates(text, { x: 100000, y: 200000, z: 0 }), {
+  fileId: 'offset-min-frame.dxf',
+  tolerance: 1e-6,
+  minLength: 1e-4,
+  normalizeOrigin: 'bbox-min',
+  layerMap: {
+    'S-COL': { kind: 'column', section: 'H300', material: 'SS275' },
+    'S-BEAM': { kind: 'beam', section: 'H300', material: 'SS275' },
+  },
+});
+assert.equal(validateImportCandidate(offsetCandidate).ok, true);
+assert.deepEqual(offsetCandidate.source.transform.origin, [100, 200, 0]);
+assert.deepEqual(offsetCandidate.audit.normalization.origin, [100, 200, 0]);
+assert.equal(offsetCandidate.audit.normalization.sourceBbox.min.x, 100);
+assert.equal(offsetCandidate.audit.normalization.sourceBbox.min.y, 200);
+assert.equal(offsetCandidate.audit.bbox.min.x, 0);
+assert.equal(offsetCandidate.audit.bbox.min.y, 0);
+assert.equal(offsetCandidate.audit.bbox.sizeM.x, 5);
+assert.equal(offsetCandidate.audit.bbox.sizeM.z, 3);
 
 const blockText = readFileSync('tests/fixtures/dxf/block-polyline.dxf', 'utf8');
 const blockParsed = parseDxf(blockText);
@@ -126,3 +150,18 @@ console.log(JSON.stringify({
   members: candidate.candidates.members.length + blockCandidate.candidates.members.length,
   layers: [...new Set([...candidate.audit.layers.layers, ...blockCandidate.audit.layers.layers])].sort(),
 }, null, 2));
+
+function shiftDxfCoordinates(dxfText, delta) {
+  const lines = dxfText.split(/\r?\n/);
+  const shifted = [];
+  for (let i = 0; i < lines.length; i += 2) {
+    const code = Number(String(lines[i]).trim());
+    const value = lines[i + 1];
+    shifted.push(lines[i]);
+    if ([10, 11].includes(code)) shifted.push(String(Number(value) + delta.x));
+    else if ([20, 21].includes(code)) shifted.push(String(Number(value) + delta.y));
+    else if ([30, 31].includes(code)) shifted.push(String(Number(value) + delta.z));
+    else shifted.push(value);
+  }
+  return shifted.join('\n');
+}

@@ -10,7 +10,11 @@ export function importDxfToCandidate(text, options = {}) {
   const geometry = dxfEntitiesToGeometry(parsed);
   const unit = resolveUnits(parsed.header, geometry.segments, options);
   const layerMap = options.layerMap || {};
-  const segments = geometry.segments.map((segment) => applyLayerMap(scaleSegment(segment, unit), layerMap));
+  const scaledSegments = geometry.segments.map((segment) => scaleSegment(segment, unit));
+  const normalization = resolveOriginNormalization(scaledSegments, options);
+  const segments = scaledSegments
+    .map((segment) => normalizeSegmentOrigin(segment, normalization.origin))
+    .map((segment) => applyLayerMap(segment, layerMap));
   const layerAudit = buildLayerAudit(segments, layerMap, geometry);
   const candidate = wireframeToImportCandidate(segments, {
     ...options,
@@ -18,7 +22,7 @@ export function importDxfToCandidate(text, options = {}) {
       type: 'dxf',
       fileId: options.fileId || null,
       units: unit.units,
-      transform: { origin: [0, 0, 0], up: 'z' },
+      transform: { origin: normalization.origin, up: 'z' },
     },
   });
   candidate.import = {
@@ -47,11 +51,12 @@ export function importDxfToCandidate(text, options = {}) {
       unsupportedEntityCount: Object.values(geometry.audit.ignored || {}).reduce((sum, count) => sum + count, 0),
     },
     units: unit,
+    normalization,
     layers: layerAudit,
     mapping: layerAudit,
     merge: buildMergeAudit(geometry.segments, candidate),
     orphans: buildOrphanAudit(candidate),
-    bbox: candidate.audit.bbox || bboxOfPoints(candidate.candidates.nodes),
+    bbox: buildBboxAudit(candidate.audit.bbox || bboxOfPoints(candidate.candidates.nodes)),
   };
   return candidate;
 }
@@ -69,6 +74,28 @@ function applyLayerMap(segment, layerMap) {
 function scaleSegment(segment, unit) {
   const scalePoint = (point) => [point.x * unit.scale, point.y * unit.scale, point.z * unit.scale];
   return { ...segment, from: scalePoint(segment.from), to: scalePoint(segment.to) };
+}
+
+function normalizeSegmentOrigin(segment, origin) {
+  const move = (point) => [point[0] - origin[0], point[1] - origin[1], point[2] - origin[2]];
+  return { ...segment, from: move(segment.from), to: move(segment.to) };
+}
+
+function resolveOriginNormalization(segments, options) {
+  const bbox = buildBboxAudit(bboxOfPoints(segments.flatMap((segment) => [segment.from, segment.to]).map(arrayPointToObject)));
+  const mode = options.normalizeOrigin === true ? 'bbox-min' : options.normalizeOrigin || 'none';
+  const origin = mode === 'bbox-min' && bbox
+    ? [bbox.min.x, bbox.min.y, bbox.min.z]
+    : [0, 0, 0];
+  return {
+    mode,
+    origin,
+    sourceBbox: bbox,
+  };
+}
+
+function arrayPointToObject(point) {
+  return { x: point[0], y: point[1], z: point[2] };
 }
 
 function resolveUnits(header, segments, options) {
@@ -137,5 +164,18 @@ function buildOrphanAudit(candidate) {
   return {
     nodes: [...nodeIds].filter((id) => !usedIds.has(id)),
     unknownKindMembers: (candidate.candidates?.members || []).filter((member) => member.kind === 'unknown').map((member) => member.id),
+  };
+}
+
+function buildBboxAudit(bbox) {
+  if (!bbox) return null;
+  return {
+    min: bbox.min,
+    max: bbox.max,
+    sizeM: {
+      x: bbox.max.x - bbox.min.x,
+      y: bbox.max.y - bbox.min.y,
+      z: bbox.max.z - bbox.min.z,
+    },
   };
 }
