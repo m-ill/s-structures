@@ -185,6 +185,8 @@ const FRONTEND_CONTRACT = {
     'src/app/sessionState.js',
     'src/app/views/login.js',
     'src/app/views/projects.js',
+    'src/app/views/revisions.js',
+    'src/app/views/report.js',
     'src/app/views/importReview.js',
     'src/app/modelerHost.js',
     'src/viewer/viewerCore.js',

@@ -52,6 +52,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 
 2026-07-02 server API review update: the actual server already exposed project library routes for M10 material/section storage through `server/routes/libraries.mjs`, but the Phase 3 API plan and plan-alignment contract did not list them. The API plan, alignment endpoint table, and `tests/p3-server-api.mjs` now cover list/read/upsert project library endpoints and role gating.
 
+2026-07-02 frontend route review update: `src/app/routes.js` listed revision and report routes, but `src/app/shell.js` did not mount matching views. Minimal `src/app/views/revisions.js` and `src/app/views/report.js` shell views now make the P3-M4 route contract executable, and `tests/p3-app-shell.mjs` verifies those routes.
+
 For the P3-M6 restart point, the practical order is:
 
 1. Reconfirm drawing input pipeline evidence for P3-M6 to P3-M7.

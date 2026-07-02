@@ -30,7 +30,9 @@ local (서버 미접속)      #/local/modeler — L1/L2 저장만 활성
 | `src/app/sessionState.js` | 사용자/토큰/현재 프로젝트 상태 |
 | `src/app/views/login.js` | 로그인/가입 폼 |
 | `src/app/views/projects.js` | 목록/생성/열기/멤버 |
-| `src/app/views/projects.js` | project browser, revision summary, lineage entry |
+| `src/app/views/projects.js` | project browser |
+| `src/app/views/revisions.js` | revision 목록/복원/lineage shell |
+| `src/app/views/report.js` | report/calculation shell |
 | `src/app/views/importReview.js` | import 검토 (아래) |
 | `src/app/modelerHost.js` | 기존 모델러 마운트 + 저장 연결 (`PERSISTENCE_PLAN.md`) |
 

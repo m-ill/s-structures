@@ -15,6 +15,8 @@ assert.equal(APP_SHELL_VERSION, PLATFORM_APP_SHELL_VERSION);
 assert.deepEqual(matchRoute('#/login'), { name: 'login', params: {}, path: '/login' });
 assert.deepEqual(matchRoute('#/local/modeler'), { name: 'localModeler', params: {}, path: '/local/modeler' });
 assert.deepEqual(matchRoute('#/p/abc-123/modeler'), { name: 'modeler', params: { projectId: 'abc-123' }, path: '/p/abc-123/modeler' });
+assert.deepEqual(matchRoute('#/p/abc-123/revisions'), { name: 'revisions', params: { projectId: 'abc-123' }, path: '/p/abc-123/revisions' });
+assert.deepEqual(matchRoute('#/p/abc-123/report'), { name: 'report', params: { projectId: 'abc-123' }, path: '/p/abc-123/report' });
 assert.equal(matchRoute('#/nope'), null);
 assert.equal(matchRoute('#/p/%E0%A4%A/modeler'), null);
 assert.equal(buildHash('modeler', { projectId: 'xyz' }), '#/p/xyz/modeler');
@@ -85,6 +87,16 @@ try {
   assert.equal(window.location.hash, `#/p/${projectId}/modeler`);
   assert.equal(mountPoint.querySelector('[data-role="modeler-project-id"]').textContent, projectId);
   assert.equal(session.getState().currentProjectId, projectId);
+
+  shell.navigate(buildHash('revisions', { projectId }));
+  assert.equal(mountPoint.querySelector('[data-role="revisions-project-id"]').textContent, projectId);
+  assert.ok(mountPoint.querySelector('[data-role="revision-list"]'));
+  await shell.getCurrentView().refresh();
+  assert.equal(mountPoint.querySelector('[data-role="revision-status"]').textContent, '');
+
+  shell.navigate(buildHash('report', { projectId }));
+  assert.equal(mountPoint.querySelector('[data-role="report-project-id"]').textContent, projectId);
+  assert.ok(mountPoint.querySelector('[data-role="report-shell-note"]'));
 
   // a fresh session restores from the persisted token
   const api2 = createApiClient({ baseUrl: app.baseUrl, fetch });

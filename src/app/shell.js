@@ -2,6 +2,8 @@ import { matchRoute, buildHash } from './routes.js';
 import { mountLoginView } from './views/login.js';
 import { mountProjectsView } from './views/projects.js';
 import { mountImportReviewView } from './views/importReview.js';
+import { mountRevisionsView } from './views/revisions.js';
+import { mountReportView } from './views/report.js';
 import { mountModelerHostView } from './modelerHost.js';
 import { clearElement } from './domUtil.js';
 import { APP_SHELL_VERSION } from '../platform/platformVersion.js';
@@ -16,6 +18,8 @@ const VIEW_MOUNTERS = {
   modeler: mountModelerHostView,
   localModeler: mountModelerHostView,
   importReview: mountImportReviewView,
+  revisions: mountRevisionsView,
+  report: mountReportView,
 };
 
 export function createAppShell(options) {
