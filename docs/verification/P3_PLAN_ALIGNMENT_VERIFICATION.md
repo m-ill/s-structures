@@ -18,6 +18,10 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 | Item | Evidence |
 | --- | --- |
 | 14 core planning documents | `sourceDocs`, `sourceDocCount` |
+| PRD scenarios | `scenarios` for S1 to S5 |
+| Functional requirements | `requirements.functional` for FR-01 to FR-32 |
+| Non-functional requirements | `requirements.nonFunctional` for NFR-01 to NFR-08 |
+| Success criteria and release gates | `requirements.successCriteria`, `requirements.launchGates` |
 | P3-M0 to P3-M20 milestone rows | `milestones` |
 | Stage A to Stage F grouping | `stages` |
 | P3 ticket evidence mapping | each milestone row `tickets`, `docs`, `tests` |

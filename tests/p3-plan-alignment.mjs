@@ -11,9 +11,22 @@ const report = buildPhase3PlanAlignmentReport(manifest);
 
 assert.equal(report.version, PHASE3_PLAN_ALIGNMENT_VERSION);
 assert.equal(report.sourceDocCount, 14);
+assert.equal(report.scenarios.length, 5);
 assert.equal(report.stages.length, 6);
 assert.equal(report.milestones.length, 21);
 assert.equal(report.status, 'OK');
+assert.equal(report.requirements.functional.length, 32);
+assert.equal(report.requirements.nonFunctional.length, 8);
+assert.equal(report.requirements.successCriteria.length, 9);
+assert.equal(report.requirements.launchGates.length, 14);
+assert.equal(report.requirements.ok, true);
+assert.ok(report.requirements.functional.every((row) => row.covered));
+assert.ok(report.requirements.nonFunctional.every((row) => row.covered));
+assert.ok(report.requirements.successCriteria.every((row) => row.covered));
+assert.deepEqual(report.requirements.functional.slice(0, 20).map((row) => row.id), Array.from({ length: 20 }, (_, index) => `FR-${String(index + 1).padStart(2, '0')}`));
+assert.equal(report.requirements.functional.find((row) => row.id === 'FR-20').milestones[0], 'P3-M0');
+assert.ok(report.requirements.functional.find((row) => row.id === 'FR-32').milestones.includes('P3-M18'));
+assert.ok(report.requirements.nonFunctional.find((row) => row.id === 'NFR-06').milestones.includes('P3-M20'));
 assert.equal(report.agentReadable, true);
 assert.equal(report.missing.length, 0);
 assert.ok(report.sourceDocs.includes('docs/phase3/ROADMAP.md'));
@@ -38,6 +51,7 @@ console.log(JSON.stringify({
   ok: true,
   version: PHASE3_PLAN_ALIGNMENT_VERSION,
   milestones: report.milestones.length,
+  functionalRequirements: report.requirements.functional.length,
   activeTickets: report.activeTicketCount,
   plannedTickets: report.plannedTicketCount,
 }, null, 2));
