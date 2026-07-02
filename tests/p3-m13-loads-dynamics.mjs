@@ -32,6 +32,12 @@ const trace = buildLoadsV2Trace(model, {
   torsion: { maxDrift: 1.4, avgDrift: 1 },
 });
 assert.equal(trace.version, LOADS_V2_VERSION);
+assert.equal(trace.contract.milestone, 'P3-M13');
+assert.ok(trace.contract.tickets.includes('P3-T76'));
+assert.ok(trace.contract.tickets.includes('P3-T82'));
+assert.ok(trace.summary.storyCount > 0);
+assert.ok(trace.summary.windForce > 0);
+assert.ok(trace.summary.seismicForce > 0);
 assert.ok(trace.wind.length > 0 && trace.seismic.length > 0);
 assert.equal(trace.wind[1].pressure, 0.9);
 assert.equal(trace.wind[1].importance, 1);
@@ -44,6 +50,7 @@ assert.ok(trace.torsionAx.Ax >= 1);
 assert.ok(trace.environmental.loads.some((load) => load.case === 'S'));
 assert.ok(trace.environmental.loads.some((load) => load.case === 'U'));
 assert.equal(trace.massSource.version, MASS_SOURCE_TRACE_VERSION);
+assert.ok(trace.massSource.contract.acceptedLoads.includes('vertical member uniform load'));
 
 const weightedTrace = buildLoadsV2Trace({
   stories: [
@@ -98,6 +105,7 @@ const massTrace = buildMassSourceTrace({
   ],
 }, { combos: [{ case: 'D', factor: 1 }, { case: 'L', factor: 0.25 }], includeNodeMass: true });
 assert.equal(massTrace.version, MASS_SOURCE_TRACE_VERSION);
+assert.equal(massTrace.contract.scope, 'Convert selected vertical load cases to lumped nodal mass for elastic dynamics.');
 assert.equal(massTrace.nodeCount, 2);
 assert.ok(massTrace.totalMass > 3);
 assert.ok(massTrace.rows.find((row) => row.node === 'N1').sources.includes('node.mass'));

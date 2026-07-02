@@ -31,6 +31,8 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 
 2026-07-02 review update: Wind and seismic v2 rows now preserve the input terms needed to reproduce report formulas. Wind rows include pressure, importance factor, exposure factor, height, tributary width, qz, force, and formula. Seismic distribution rows include base shear, story weight, height, wi-hi, and sum(wi-hi). This keeps P3-T76/T77 trace rows usable by reports and AI agents without re-reading the original basis object.
 
+2026-07-02 contract review update: `buildLoadsV2Trace()` now exposes a top-level `contract` and `summary`. The contract identifies the P3-M13 load tickets covered by the trace, the intended report/API use, and the current limitations. The summary exposes story count, total wind/seismic force, environmental case list, and mass-source totals. `buildMassSourceTrace()` also exposes its own contract so downstream dynamics, reports, and automation can distinguish accepted vertical load sources from ignored loads.
+
 ## Current Test Gate
 
 `tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.

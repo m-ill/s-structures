@@ -14,10 +14,14 @@ export function buildLoadsV2Trace(model = {}, basis = {}) {
   const torsionAx = basis.torsion ? computeTorsionAmplificationAx(basis.torsion) : null;
   const environmental = generateEnvironmentalLoadsV2(model, basis.environmental || basis);
   const massSource = buildMassSourceTrace(model, basis.massSource || model.analysisSettings?.massSource || null);
+  const wind = buildWindRows(stories, windBase, basis);
+  const seismic = seismicRows.map((row) => ({ ...row, rsaScale: rsaScaling?.scaleFactor ?? 1, torsionAx: torsionAx?.Ax ?? 1 }));
   return {
     version: LOADS_V2_VERSION,
-    wind: buildWindRows(stories, windBase, basis),
-    seismic: seismicRows.map((row) => ({ ...row, rsaScale: rsaScaling?.scaleFactor ?? 1, torsionAx: torsionAx?.Ax ?? 1 })),
+    contract: buildLoadsV2Contract(),
+    summary: summarizeLoadsV2({ wind, seismic, environmental, massSource }),
+    wind,
+    seismic,
     rsaScaling,
     torsionAx,
     environmental,
@@ -121,6 +125,13 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
   const rows = [...nodeRows.values()].sort((a, b) => String(a.node).localeCompare(String(b.node)));
   return {
     version: MASS_SOURCE_TRACE_VERSION,
+    contract: {
+      tickets: ['P3-T82'],
+      scope: 'Convert selected vertical load cases to lumped nodal mass for elastic dynamics.',
+      gravityUnit: 'force divided by acceleration',
+      acceptedLoads: ['node.mass', 'vertical nodal force', 'vertical member point force', 'vertical member uniform load'],
+      ignoredLoads: 'non-vertical loads and loads outside the active mass-source combination',
+    },
     gravity: g,
     combos,
     includeNodeMass: spec.includeNodeMass !== false,
@@ -137,6 +148,31 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
 
 function inferStories(nodes) {
   return [...new Set(nodes.map((node) => Number(node.z || 0)).sort((a, b) => a - b))].map((z, i, arr) => ({ id: `S${i + 1}`, z, height: i ? z - arr[i - 1] : 0 }));
+}
+
+function buildLoadsV2Contract() {
+  return {
+    milestone: 'P3-M13',
+    tickets: ['P3-T76', 'P3-T77', 'P3-T78', 'P3-T82'],
+    scope: 'Traceable preliminary wind, seismic, environmental, and mass-source loads for elastic analysis.',
+    reportUse: 'Rows preserve formula inputs so reports and agents can cite the active basis without re-reading UI state.',
+    limitations: [
+      'Project-specific code automation and exceptional wind shapes remain outside this trace.',
+      'Mass source is vertical-load based and does not mutate model node mass.',
+    ],
+  };
+}
+
+function summarizeLoadsV2({ wind, seismic, environmental, massSource }) {
+  return {
+    storyCount: Math.max(wind.length, seismic.length),
+    windForce: sum(wind, 'force'),
+    seismicForce: sum(seismic, 'force'),
+    environmentalLoadCount: environmental.loads.length,
+    environmentalCases: environmental.loadCases,
+    massNodeCount: massSource.nodeCount,
+    totalMass: massSource.totalMass,
+  };
 }
 
 function distributeSeismic(stories, baseShear) {
@@ -208,6 +244,10 @@ function addMass(rows, node, mass, source) {
   row.mass += mass;
   if (!row.sources.includes(source)) row.sources.push(source);
   rows.set(node, row);
+}
+
+function sum(rows, key) {
+  return rows.reduce((total, row) => total + finite(row[key], 0), 0);
 }
 
 function near(a, b) {
