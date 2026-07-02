@@ -19,6 +19,8 @@ assert.ok(direct.readApis.includes('runPushover'));
 assert.ok(direct.executeActions.includes('runPushover'));
 assert.equal(direct.uiContract.stableAttribute, 'data-agent-id');
 assert.equal(direct.uiContract.controlCount, 1);
+assert.equal(direct.qaCommands.phase3Full, 'npm.cmd run test:p3');
+assert.equal(direct.qaCommands.phase3M6ToM20, 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20');
 assert.ok(direct.milestones.some((item) => item.id === 'M15' && item.status === 'preliminary'));
 assert.ok(direct.limitations.some((item) => item.includes('preliminary')));
 
@@ -47,6 +49,8 @@ assert.ok(manifest.readApis.includes('getDynamicCompletenessTrace'));
 assert.ok(manifest.readApis.includes('getNonlinearAnalysisTrace'));
 assert.ok(manifest.dataContracts.includes('phase3LoadsV2Trace'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearAnalysisTrace'));
+assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
+assert.equal(manifest.qaCommands.phase3RunnerContract, 'node tests/p3-runner-contract.mjs');
 assert.ok(manifest.milestones.some((item) => item.id === 'P3-M15'));
 assert.ok(manifest.milestones.some((item) => item.id === 'P3-M16'));
 assert.equal(manifest.uiContract.controlCount, 0);

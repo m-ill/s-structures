@@ -35,6 +35,8 @@ const screen = window.SStructuresAgent.getScreenState();
 | `snapshot.analysis.ok` | 현재 해석 성공 여부 |
 | `screen.nativeUi.activeMode` | 현재 상단 작업 탭 |
 
+`caps.qaCommands` exposes the Phase 3 local QA commands. AI agents should read it before reporting Phase 3 readiness.
+
 ## Read APIs
 
 | method | 반환 목적 |
@@ -54,6 +56,18 @@ const screen = window.SStructuresAgent.getScreenState();
 | `getMemberDesignTraceReport(options)` | 부재별 설계 trace |
 | `getServiceabilityDriftReport(options)` | 층간변위 검토 |
 | `getRuntimeDiagnostics()` | 원본 index runtime adapter 진단 |
+
+## QA Commands
+
+AI agents should read `window.SStructuresAgent.getCapabilities().qaCommands` before reporting Phase 3 readiness. The canonical commands are also stored in `docs/user-manual/agent-contract.json`.
+
+| command key | purpose |
+| --- | --- |
+| `phase3Full` | run the full P3-M0 to P3-M20 gate |
+| `phase3List` | list the exact milestone/test mapping |
+| `phase3M6ToM20` | rerun the requested P3-M6 restart-to-launch range |
+| `phase3RunnerContract` | verify the runner mapping contract |
+| `phase3PlanAlignment` | verify the 14-document plan alignment contract |
 
 ## Execute Actions
 
