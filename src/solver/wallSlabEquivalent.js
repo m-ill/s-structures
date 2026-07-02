@@ -89,6 +89,7 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
     shellLinkCount: shellAssembly.linkCount || 0,
     shellSkippedCount: (shellAssembly.rows || []).filter((row) => row.status === 'skipped').length,
     slabRedistributionStatus: redistribution.status,
+    slabRedistributionSampleCount: redistribution.sampledRows || 0,
   };
   summary.ticketCoverage = buildTicketCoverage(summary);
   return {
@@ -186,8 +187,8 @@ function buildTicketCoverage(summary) {
     {
       ticket: 'P3-T75',
       scope: 'semi-rigid-diaphragm-redistribution',
-      covered: summary.semiRigidDiaphragmCount > 0 || summary.slabRedistributionStatus === 'available',
-      evidence: `${summary.semiRigidDiaphragmCount} semi-rigid diaphragms / redistribution ${summary.slabRedistributionStatus}`,
+      covered: summary.semiRigidDiaphragmCount > 0 && summary.slabRedistributionStatus === 'available' && summary.slabRedistributionSampleCount > 0,
+      evidence: `${summary.semiRigidDiaphragmCount} semi-rigid diaphragms / redistribution ${summary.slabRedistributionStatus} / ${summary.slabRedistributionSampleCount} sampled rows`,
     },
   ];
 }

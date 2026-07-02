@@ -31,7 +31,9 @@ export function buildSemiRigidRedistributionReport(model = {}, analysis = {}) {
     comboId,
     rows: expansion.rows.map((row) => driftSpread(row.id, model, result)),
   }));
-  return { version: SEMI_RIGID_DIAPHRAGM_VERSION, status: expansion.braceCount ? 'available' : 'not-modeled', braceCount: expansion.braceCount, rows: expansion.rows, combos };
+  const sampledRows = combos.flatMap((combo) => combo.rows).filter((row) => row.status === 'available').length;
+  const status = !expansion.braceCount ? 'not-modeled' : sampledRows ? 'available' : 'not-sampled';
+  return { version: SEMI_RIGID_DIAPHRAGM_VERSION, status, braceCount: expansion.braceCount, sampledRows, rows: expansion.rows, combos };
 }
 
 function nodePairs(ids, nodes) {

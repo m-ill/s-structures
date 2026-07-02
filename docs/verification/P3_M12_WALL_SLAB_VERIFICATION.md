@@ -47,9 +47,11 @@ The previous M12 trace exposed semi-rigid diaphragm rows only. P3-M12 now expose
 
 2026-07-03 shell-assembly hardening: P3-T74 coverage now requires generated shell frame links, not just a shell row. If shell node references are incomplete and frame-link assembly is skipped, the trace records `shellSkippedCount`, keeps P3-T74 uncovered, and adds `shell-frame-assembly-skipped` for AI-agent review.
 
+2026-07-03 redistribution sampling hardening: P3-T75 coverage now requires a semi-rigid diaphragm plus at least one available displacement-spread sample from an analysis result. A model that only declares a semi-rigid diaphragm now reports redistribution status `not-sampled`, keeps P3-T75 uncovered, and blocks automatic report readiness until the analysis trace contains sampled redistribution rows.
+
 ## Current Test Gate
 
-`tests/p3-m12-wall-slab.mjs` verifies equivalent wall generation, analysis, pier force recovery, shell v1 benchmark traces, shell frame-link assembly, semi-rigid diaphragm validation, material-aware equivalent link sizing, equivalent-brace redistribution with review status rows, and the agent-readable trace contract including solver treatments and limitations.
+`tests/p3-m12-wall-slab.mjs` verifies equivalent wall generation, analysis, pier force recovery, shell v1 benchmark traces, shell frame-link assembly, semi-rigid diaphragm validation, material-aware equivalent link sizing, equivalent-brace redistribution with review status rows, not-sampled redistribution blocking, and the agent-readable trace contract including solver treatments and limitations.
 
 ## Remaining Limits
 

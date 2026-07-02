@@ -171,6 +171,16 @@ const diaModel = createModel({
   diaphragms: [{ id: 'D1', type: 'semiRigid', nodeIds: ['N1', 'N2'], inPlaneStiffness: 1000 }],
 });
 assert.equal(validateModel(diaModel).ok, true);
+const unsampledDiaReport = buildSemiRigidRedistributionReport(diaModel, {});
+assert.equal(unsampledDiaReport.status, 'not-sampled');
+assert.equal(unsampledDiaReport.sampledRows, 0);
+const unsampledDiaTrace = buildWallSlabEquivalentTrace(diaModel, null);
+assert.equal(unsampledDiaTrace.summary.semiRigidDiaphragmCount, 1);
+assert.equal(unsampledDiaTrace.summary.slabRedistributionStatus, 'not-sampled');
+assert.equal(unsampledDiaTrace.summary.slabRedistributionSampleCount, 0);
+assert.equal(unsampledDiaTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T75').covered, false);
+assert.equal(unsampledDiaTrace.review.semiRigidRedistributionReady, false);
+assert.ok(unsampledDiaTrace.review.blockers.includes('uncovered-P3-T75'));
 
 const transferBase = {
   nodes: [
@@ -213,6 +223,7 @@ const slabTrace = buildWallSlabEquivalentTrace(stiffDiaModel, stiffResult);
 assert.equal(slabTrace.slab.status, 'available');
 assert.equal(slabTrace.summary.semiRigidDiaphragmCount, 1);
 assert.equal(slabTrace.summary.slabRedistributionStatus, 'available');
+assert.ok(slabTrace.summary.slabRedistributionSampleCount > 0);
 assert.equal(slabTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T75').covered, true);
 assert.equal(slabTrace.review.semiRigidRedistributionReady, true);
 assert.equal(slabTrace.review.coverageComplete, false);
