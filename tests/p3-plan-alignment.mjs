@@ -24,6 +24,16 @@ assert.equal(report.requirements.launchGates.length, 14);
 assert.equal(report.requirements.ok, true);
 assert.equal(report.architecture.decisions.length, 10);
 assert.equal(report.architecture.ok, true);
+assert.equal(report.serverApi.ok, true);
+assert.equal(report.serverApi.endpoints.length, 26);
+assert.deepEqual(report.serverApi.errorEnvelope.codes, ['UNAUTHORIZED', 'FORBIDDEN', 'NOT_FOUND', 'VALIDATION', 'CONFLICT', 'PAYLOAD_TOO_LARGE', 'RATE_LIMITED', 'INTERNAL']);
+assert.equal(report.serverApi.auth.password.hash, 'node:crypto.scrypt');
+assert.equal(report.serverApi.auth.token.signature, 'HMAC-SHA256');
+assert.deepEqual(report.serverApi.auth.projectRoles.map((row) => row.id), ['owner', 'engineer', 'reviewer', 'viewer']);
+assert.deepEqual(report.serverApi.persistence.layers.map((row) => row.id), ['L1', 'L2', 'L3']);
+assert.equal(report.serverApi.persistence.conflictRule, 'last-write-wins-with-lineage-warning');
+assert.ok(report.serverApi.endpoints.find((row) => row.method === 'POST' && row.path === '/api/projects/:id/revisions').permission === 'engineer+');
+assert.ok(report.serverApi.endpoints.find((row) => row.method === 'POST' && row.path === '/api/projects/:id/approval').permission === 'reviewer+');
 assert.deepEqual(report.architecture.decisions.map((row) => row.id), Array.from({ length: 10 }, (_, index) => `D${index + 1}`));
 assert.equal(report.architecture.decisions.find((row) => row.id === 'D2').choice, 'node-http-router');
 assert.equal(report.architecture.decisions.find((row) => row.id === 'D6').choice, 'webgl2-module');
@@ -66,6 +76,10 @@ const forbiddenServerImports = serverFiles.filter((file) => {
   return /from\s+['"]\.\.\/src\/(solver|design|nonlinear|results|report|dynamics|loads)\//.test(text);
 });
 assert.deepEqual(forbiddenServerImports, []);
+assert.ok(readFileSync('server/router.mjs', 'utf8').includes('ok: false'));
+assert.ok(readFileSync('server/auth/password.mjs', 'utf8').includes('timingSafeEqual'));
+assert.ok(readFileSync('server/auth/token.mjs', 'utf8').includes('sha256'));
+assert.ok(readFileSync('server/store/projectStore.mjs', 'utf8').includes('lineageWarning'));
 
 console.log(JSON.stringify({
   ok: true,
@@ -73,6 +87,7 @@ console.log(JSON.stringify({
   milestones: report.milestones.length,
   functionalRequirements: report.requirements.functional.length,
   architectureDecisions: report.architecture.decisions.length,
+  endpoints: report.serverApi.endpoints.length,
   activeTickets: report.activeTicketCount,
   plannedTickets: report.plannedTicketCount,
 }, null, 2));

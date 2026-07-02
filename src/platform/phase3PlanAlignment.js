@@ -102,6 +102,69 @@ const FILE_ROUTING = [
   route('src/standards/', 'code formula and load standard registry', 'docs/phase3/DEVELOPMENT_FILE_MAP.md'),
 ];
 
+const SERVER_ENDPOINTS = [
+  endpoint('POST', '/api/auth/register', 'public', 'server/routes/auth.mjs'),
+  endpoint('POST', '/api/auth/login', 'public', 'server/routes/auth.mjs'),
+  endpoint('POST', '/api/auth/logout', 'logged-in', 'server/routes/auth.mjs'),
+  endpoint('GET', '/api/auth/me', 'logged-in', 'server/routes/auth.mjs'),
+  endpoint('GET', '/api/projects', 'logged-in', 'server/routes/projects.mjs'),
+  endpoint('POST', '/api/projects', 'logged-in', 'server/routes/projects.mjs'),
+  endpoint('GET', '/api/projects/:id', 'member', 'server/routes/projects.mjs'),
+  endpoint('PATCH', '/api/projects/:id', 'owner', 'server/routes/projects.mjs'),
+  endpoint('DELETE', '/api/projects/:id', 'owner', 'server/routes/projects.mjs'),
+  endpoint('PUT', '/api/projects/:id/members/:userId', 'owner', 'server/routes/projects.mjs'),
+  endpoint('DELETE', '/api/projects/:id/members/:userId', 'owner', 'server/routes/projects.mjs'),
+  endpoint('GET', '/api/projects/:id/revisions', 'member', 'server/routes/revisions.mjs'),
+  endpoint('POST', '/api/projects/:id/revisions', 'engineer+', 'server/routes/revisions.mjs'),
+  endpoint('GET', '/api/projects/:id/revisions/:rev', 'member', 'server/routes/revisions.mjs'),
+  endpoint('GET', '/api/projects/:id/files', 'member', 'server/routes/files.mjs'),
+  endpoint('POST', '/api/projects/:id/files', 'engineer+', 'server/routes/files.mjs'),
+  endpoint('GET', '/api/projects/:id/files/:fileId', 'member', 'server/routes/files.mjs'),
+  endpoint('DELETE', '/api/projects/:id/files/:fileId', 'engineer+', 'server/routes/files.mjs'),
+  endpoint('POST', '/api/projects/:id/imports', 'engineer+', 'server/routes/imports.mjs'),
+  endpoint('GET', '/api/projects/:id/imports', 'member', 'server/routes/imports.mjs'),
+  endpoint('GET', '/api/projects/:id/imports/:importId', 'member', 'server/routes/imports.mjs'),
+  endpoint('PATCH', '/api/projects/:id/imports/:importId', 'engineer+', 'server/routes/imports.mjs'),
+  endpoint('POST', '/api/projects/:id/approval', 'reviewer+', 'server/routes/approval.mjs'),
+  endpoint('GET', '/api/projects/:id/approval', 'member', 'server/routes/approval.mjs'),
+  endpoint('GET', '/api/health', 'public', 'server/main.mjs'),
+  endpoint('GET', '/api/meta', 'public', 'server/main.mjs'),
+];
+
+const ERROR_CODES = ['UNAUTHORIZED', 'FORBIDDEN', 'NOT_FOUND', 'VALIDATION', 'CONFLICT', 'PAYLOAD_TOO_LARGE', 'RATE_LIMITED', 'INTERNAL'];
+
+const AUTH_CONTRACT = {
+  password: {
+    hash: 'node:crypto.scrypt',
+    compare: 'crypto.timingSafeEqual',
+    minLength: 10,
+    lockout: '10 failed attempts / 15 minutes',
+  },
+  token: {
+    signature: 'HMAC-SHA256',
+    payload: ['uid', 'iat', 'exp', 'ver'],
+    expiryHours: 12,
+  },
+  projectRoles: [
+    role('owner', ['all permissions', 'member management', 'delete project']),
+    role('engineer', ['save model', 'upload files', 'confirm import']),
+    role('reviewer', ['read', 'resolve/accept issue', 'approve/release']),
+    role('viewer', ['read-only']),
+  ],
+};
+
+const PERSISTENCE_CONTRACT = {
+  layers: [
+    storageLayer('L1', 'browser-local', 'localStorage/IndexedDB autosave session recovery'),
+    storageLayer('L2', 'file', 'json export/import offline handoff backup'),
+    storageLayer('L3', 'server-project', '/api/projects/:id/revisions official collaboration save'),
+  ],
+  snapshotEnvelope: ['format', 'formatVersion', 'savedAt', 'app', 'origin', 'model'],
+  autosave: { triggerIdleSeconds: 5, maxIntervalSeconds: 60, keepEntries: 3 },
+  conflictRule: 'last-write-wins-with-lineage-warning',
+  migration: 'all loads pass through migrateModel on client load',
+};
+
 const MILESTONES = [
   ms('P3-M0', ['P3-T01', 'P3-T02'], ['docs/phase3/DEVELOPMENT_FILE_MAP.md'], ['tests/m0-smoke.mjs']),
   ms('P3-M1', t(3, 7), ['docs/phase3/SERVER_API_PLAN.md'], ['tests/p3-server-api.mjs']),
@@ -155,6 +218,10 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
   const architectureOk = ARCHITECTURE_DECISIONS.length === 10 &&
     MODULE_BOUNDARIES.length >= 5 &&
     FILE_ROUTING.length >= 8;
+  const serverApiOk = SERVER_ENDPOINTS.length >= 26 &&
+    ERROR_CODES.length === 8 &&
+    AUTH_CONTRACT.projectRoles.length === 4 &&
+    PERSISTENCE_CONTRACT.layers.length === 3;
   return {
     version: PHASE3_PLAN_ALIGNMENT_VERSION,
     sourceDocs: CORE_DOCS.map((name) => `docs/phase3/${name}`),
@@ -175,13 +242,24 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
       fileRouting: FILE_ROUTING,
       ok: architectureOk,
     },
+    serverApi: {
+      endpoints: SERVER_ENDPOINTS,
+      errorEnvelope: {
+        success: '{ ok: true, data }',
+        failure: '{ ok: false, error: { code, message, details? } }',
+        codes: ERROR_CODES,
+      },
+      auth: AUTH_CONTRACT,
+      persistence: PERSISTENCE_CONTRACT,
+      ok: serverApiOk,
+    },
     activeTicketCount: new Set(rows.flatMap((row) => row.tickets)).size,
     absorbedTickets: ABSORBED_TICKETS,
     plannedTicketCount: new Set([
       ...rows.flatMap((row) => row.tickets),
       ...ABSORBED_TICKETS.map((row) => row.ticket),
     ]).size,
-    status: missing.length || !requirementsOk || !architectureOk ? 'REVIEW' : 'OK',
+    status: missing.length || !requirementsOk || !architectureOk || !serverApiOk ? 'REVIEW' : 'OK',
     missing,
     agentReadable: readApis.has('getPhase3PlanAlignment'),
     notes: [
@@ -221,6 +299,18 @@ function boundary(id, rule) {
 
 function route(path, role, source) {
   return { path, role, source };
+}
+
+function endpoint(method, path, permission, source) {
+  return { method, path, permission, source };
+}
+
+function role(id, permissions) {
+  return { id, permissions };
+}
+
+function storageLayer(id, name, purpose) {
+  return { id, name, purpose };
 }
 
 function t(from, to) {

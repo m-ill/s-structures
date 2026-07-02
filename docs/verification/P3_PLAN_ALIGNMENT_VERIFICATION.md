@@ -24,6 +24,7 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 | Success criteria and release gates | `requirements.successCriteria`, `requirements.launchGates` |
 | Architecture decisions | `architecture.decisions` for D1 to D10 |
 | Module boundaries and file routing | `architecture.moduleBoundaries`, `architecture.fileRouting` |
+| Server/API/auth/persistence | `serverApi.endpoints`, `errorEnvelope`, `auth`, `persistence` |
 | P3-M0 to P3-M20 milestone rows | `milestones` |
 | Stage A to Stage F grouping | `stages` |
 | P3 ticket evidence mapping | each milestone row `tickets`, `docs`, `tests` |
@@ -32,7 +33,7 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 
 ## Current Test Gate
 
-`tests/p3-plan-alignment.mjs` verifies the report version, 14-document source set, 21 milestone rows, PRD requirement coverage, architecture decision coverage, zero-dependency package state, server/import boundary guard, manifest module exposure, read API exposure, data contract exposure, and browser-agent API access.
+`tests/p3-plan-alignment.mjs` verifies the report version, 14-document source set, 21 milestone rows, PRD requirement coverage, architecture decision coverage, server endpoint/error/auth/persistence contracts, zero-dependency package state, server/import boundary guard, manifest module exposure, read API exposure, data contract exposure, and browser-agent API access.
 
 ## Remaining Limits
 
