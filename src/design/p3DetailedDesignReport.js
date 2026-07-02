@@ -2,6 +2,7 @@ import { buildConnectionDetailedDesignReport } from './connection/detailedReport
 import { buildFoundationDetailedDesignReport } from './foundation/detailedReport.js';
 import { buildRcDetailedDesignReport } from './rc/detailedReport.js';
 import { buildSteelDetailedDesignReport } from './steel/detailedReport.js';
+import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
 export const P3_DETAILED_DESIGN_REPORT_VERSION = 'p3-m18-detailed-design-integration';
 export const P3_DETAILED_DESIGN_GATE_VERSION = 'p3-m18-detailed-design-gate-v1';
@@ -22,6 +23,7 @@ export function buildP3DetailedDesignReport(model, analysis, options = {}) {
     designGate: buildP3DetailedDesignGate(modules, { issueRows, formulaTrace }),
     issueRows,
     formulaTrace,
+    formulaRegistryVersion: DESIGN_FORMULA_REGISTRY_VERSION,
     limitations: ['P3-M18 integrates RC, steel, connection, and foundation detailed-design trace modules for agent/report consumption.'],
   };
 }
@@ -41,6 +43,8 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     }])),
     issueCount: issueRows.length,
     formulaCount: formulaTrace.length,
+    formulaRegistryVersion: DESIGN_FORMULA_REGISTRY_VERSION,
+    unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
     serviceabilityHook: 'drift-deflection-vibration-ready',
     limitations: [
       'P3-M18 is a preliminary integrated detailed-design trace gate.',

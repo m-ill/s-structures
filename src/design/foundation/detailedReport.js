@@ -3,6 +3,7 @@ import { designCombinedFooting } from './combined.js';
 import { designSpreadFooting } from './footing.js';
 import { designMatFoundation } from './mat.js';
 import { designPileGroup } from './pile.js';
+import { collectDesignFormulaReferences } from '../../standards/designFormulaRegistry.js';
 
 export const FOUNDATION_DETAILED_DESIGN_VERSION = 'p3-m18-foundation-detailed-design';
 
@@ -21,5 +22,5 @@ function summarize(rows) {
 }
 
 function collectFormula(row) {
-  return JSON.stringify(row).match(/KDS-[A-Z0-9-]+/g)?.map((formulaId) => ({ id: row.nodeId || row.version, formulaId })) || [];
+  return collectDesignFormulaReferences(row, { id: row.nodeId || row.version });
 }

@@ -100,6 +100,7 @@ import { HINGE_ASSIGNMENT_VERSION } from '../nonlinear/hinges/hingeAssign.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
+import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -213,6 +214,7 @@ export function buildAgentManifest(options = {}) {
       phase3NonlinearFiberNlthTrace: NONLINEAR_FIBER_NLTH_TRACE_VERSION,
       phase3NonlinearTrace: NONLINEAR_TRACE_VERSION,
       phase3NonlinearBenchmark: NONLINEAR_BENCHMARK_VERSION,
+      phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -384,6 +386,8 @@ export function buildAgentManifest(options = {}) {
       'phase3NonlinearFiberNlthTrace',
       'phase3NonlinearAnalysisTrace',
       'phase3NonlinearBenchmarkTrace',
+      'phase3DesignFormulaRegistry',
+      'phase3DesignFormulaTrace',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },

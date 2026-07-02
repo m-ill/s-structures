@@ -156,12 +156,12 @@ P3-M17 and P3-M18 must follow `DESIGN_MODULES_PLAN.md`; they should not be repla
 
 | Ticket | Current implementation | Status |
 | --- | --- | --- |
-| P3-T87 | `src/design/rc/beam.js` creates beam flexure, shear, torsion warning, serviceability, anchorage, splice, and spacing trace rows | Preliminary |
-| P3-T88 | `src/design/rc/column.js` and `pmCurve.js` create column PM curve data, slenderness warning, ties, spacing, and splice rows | Preliminary |
-| P3-T89 | `src/design/rc/wall.js` creates wall PM, shear, reinforcement ratio, and boundary warning rows | Preliminary |
-| P3-T90 | `src/design/rc/slab.js` creates slab mode selection, flexural steel, punching shear, and slab schedule rows | Preliminary |
+| P3-T87 | `src/design/rc/beam.js` creates beam flexure, shear, torsion warning, serviceability, anchorage, splice, spacing trace rows, and registered formula metadata | Preliminary |
+| P3-T88 | `src/design/rc/column.js` and `pmCurve.js` create column PM curve data, slenderness warning, ties, spacing, splice rows, and registered formula metadata | Preliminary |
+| P3-T89 | `src/design/rc/wall.js` creates wall PM, shear, reinforcement ratio, boundary warning rows, and registered formula metadata | Preliminary |
+| P3-T90 | `src/design/rc/slab.js` creates slab mode selection, flexural steel, punching shear, slab schedule rows, and registered formula metadata | Preliminary |
 
-M17 is exposed through `getRcDetailedDesignReport` for browser and agent control. It is still a traceable preliminary detailed-design module; engineer-controlled final code clauses, seismic detailing, drawing production, and constructability are not claimed complete.
+M17 is exposed through `getRcDetailedDesignReport` for browser and agent control. Formula trace rows now include `standard`, `clause`, and `title` from `src/standards/designFormulaRegistry.js`. It is still a traceable preliminary detailed-design module; engineer-controlled final code clauses, seismic detailing, drawing production, and constructability are not claimed complete.
 
 ### P3-M18 Required
 
@@ -180,10 +180,10 @@ M17 is exposed through `getRcDetailedDesignReport` for browser and agent control
 | P3-T91 | `src/design/steel/` creates classification, compression, flexure LTB, interaction, brace, and steel schedule rows | Preliminary |
 | P3-T92 | `src/design/connection/` creates bolt, weld, and base-plate sizing trace rows | Preliminary |
 | P3-T93 | `src/design/foundation/` creates spread, combined, mat, and pile trace rows from support reactions | Preliminary |
-| P3-T94 | `src/design/p3DetailedDesignReport.js` integrates RC, steel, connection, foundation, formula trace, and issue rows | Preliminary |
+| P3-T94 | `src/design/p3DetailedDesignReport.js` integrates RC, steel, connection, foundation, registered formula trace, and issue rows | Preliminary |
 | P3-T95 | Existing drift/deflection trace remains the serviceability source; M18 links steel deflection and report-level serviceability hooks | Preliminary |
 
-M18 is exposed through `getP3DetailedDesignReport` for browser and agent control. The module is a traceable detailed-design review scaffold, not final fabrication, geotechnical, or permit calculation output.
+M18 is exposed through `getP3DetailedDesignReport` for browser and agent control. The design gate records the formula registry version and unregistered formula count for AI-readable QA. The module is a traceable detailed-design review scaffold, not final fabrication, geotechnical, or permit calculation output.
 
 ## Stage F Required Scope: P3-M19 To P3-M20
 

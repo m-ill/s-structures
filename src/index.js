@@ -155,6 +155,12 @@ export { COMBINED_FOOTING_VERSION, designCombinedFooting } from './design/founda
 export { MAT_FOUNDATION_VERSION, designMatFoundation } from './design/foundation/mat.js';
 export { PILE_FOUNDATION_VERSION, designPileGroup } from './design/foundation/pile.js';
 export {
+  DESIGN_FORMULA_REGISTRY_VERSION,
+  collectDesignFormulaReferences,
+  listDesignFormulaRegistry,
+  resolveDesignFormula,
+} from './standards/designFormulaRegistry.js';
+export {
   buildP3DetailedDesignGate,
   buildP3DetailedDesignReport,
   P3_DETAILED_DESIGN_GATE_VERSION,

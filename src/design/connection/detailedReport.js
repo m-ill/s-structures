@@ -2,6 +2,7 @@ import { buildConnectionFoundationReport } from '../connectionFoundation.js';
 import { designBasePlate } from './basePlate.js';
 import { designBoltGroup } from './bolt.js';
 import { designFilletWeld } from './weld.js';
+import { collectDesignFormulaReferences } from '../../standards/designFormulaRegistry.js';
 
 export const CONNECTION_DETAILED_DESIGN_VERSION = 'p3-m18-connection-detailed-design';
 
@@ -22,7 +23,7 @@ function summarize(rows, basePlates) {
 }
 
 function collectFormula(row) {
-  return JSON.stringify(row).match(/KDS-[A-Z0-9-]+/g)?.map((formulaId) => ({ id: row.memberId || row.nodeId, formulaId })) || [];
+  return collectDesignFormulaReferences(row, { id: row.memberId || row.nodeId });
 }
 
 function worst(values) {

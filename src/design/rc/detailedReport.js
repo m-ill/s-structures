@@ -2,6 +2,7 @@ import { detailRcBeam } from './beam.js';
 import { detailRcColumn } from './column.js';
 import { detailRcSlab } from './slab.js';
 import { detailRcWall } from './wall.js';
+import { collectDesignFormulaReferences } from '../../standards/designFormulaRegistry.js';
 
 export const RC_DETAILED_DESIGN_VERSION = 'p3-m17-rc-detailed-design';
 export const RC_DESIGN_GATE_VERSION = 'p3-m17-rc-design-gate-v1';
@@ -90,9 +91,8 @@ function buildIssueRows(rows) {
 }
 
 function collectFormula(row) {
-  return JSON.stringify(row).match(/KDS-[A-Z0-9-]+/g)?.map((formulaId) => ({
+  return collectDesignFormulaReferences(row, {
     id: row.memberId || row.wallId || row.slabId,
     role: row.role,
-    formulaId,
-  })) || [];
+  });
 }

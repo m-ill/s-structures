@@ -3,6 +3,7 @@ import { checkSteelBrace } from './brace.js';
 import { checkSteelCompression } from './compression.js';
 import { checkSteelFlexureLtb } from './flexureLTB.js';
 import { checkSteelInteraction } from './interaction.js';
+import { collectDesignFormulaReferences } from '../../standards/designFormulaRegistry.js';
 
 export const STEEL_DETAILED_DESIGN_VERSION = 'p3-m18-steel-detailed-design';
 
@@ -38,7 +39,7 @@ function summarize(rows) {
 }
 
 function collectFormula(row) {
-  return JSON.stringify(row).match(/KDS-[A-Z0-9-]+/g)?.map((formulaId) => ({ id: row.memberId, role: row.role, formulaId })) || [];
+  return collectDesignFormulaReferences(row, { id: row.memberId, role: row.role });
 }
 
 function worst(values) {

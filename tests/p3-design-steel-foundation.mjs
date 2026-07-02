@@ -10,6 +10,7 @@ import {
   createTwoStoryElasticFrameModel,
   designBoltGroup,
   designFilletWeld,
+  DESIGN_FORMULA_REGISTRY_VERSION,
   P3_DETAILED_DESIGN_GATE_VERSION,
   P3_DETAILED_DESIGN_REPORT_VERSION,
 } from '../src/index.js';
@@ -26,6 +27,7 @@ assert.ok(steel.rows[0].classification.formulaId);
 assert.ok(steel.rows[0].compression.formulaId);
 assert.ok(steel.rows[0].flexureLtb.formulaId);
 assert.ok(steel.formulaTrace.some((row) => row.formulaId === 'KDS-ST-H1-INTERACTION-V1'));
+assert.ok(steel.formulaTrace.every((row) => row.standard && row.clause && row.title));
 
 const frame = createTwoStoryElasticFrameModel();
 const frameAnalysis = analyzeModel(frame);
@@ -59,6 +61,8 @@ assert.ok(integrated.modules.foundation.footings.length > 0);
 assert.ok(integrated.formulaTrace.length > 0);
 assert.equal(integrated.designGate.formulaCount, integrated.formulaTrace.length);
 assert.equal(integrated.designGate.issueCount, integrated.issueRows.length);
+assert.equal(integrated.formulaRegistryVersion, DESIGN_FORMULA_REGISTRY_VERSION);
+assert.equal(integrated.designGate.unregisteredFormulaCount, 0);
 
 const target = { model: () => frame, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => frameAnalysis });
@@ -69,9 +73,12 @@ assert.ok(agentReport.modules.connection.rows.length > 0);
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3DetailedDesignIntegration, P3_DETAILED_DESIGN_REPORT_VERSION);
 assert.equal(manifest.modules.phase3DetailedDesignGate, P3_DETAILED_DESIGN_GATE_VERSION);
+assert.equal(manifest.modules.phase3DesignFormulaRegistry, DESIGN_FORMULA_REGISTRY_VERSION);
 assert.ok(manifest.readApis.includes('getP3DetailedDesignReport'));
 assert.ok(manifest.dataContracts.includes('phase3DetailedDesignIntegration'));
 assert.ok(manifest.dataContracts.includes('phase3DetailedDesignGate'));
+assert.ok(manifest.dataContracts.includes('phase3DesignFormulaRegistry'));
+assert.ok(manifest.dataContracts.includes('phase3DesignFormulaTrace'));
 assert.ok(manifest.milestones.some((item) => item.id === 'P3-M18'));
 
 console.log(JSON.stringify({

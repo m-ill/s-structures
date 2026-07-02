@@ -11,6 +11,7 @@ import {
   detailRcWall,
   developmentLength,
   lapSpliceLength,
+  DESIGN_FORMULA_REGISTRY_VERSION,
   RC_DESIGN_GATE_VERSION,
   RC_DETAILED_DESIGN_VERSION,
 } from '../src/index.js';
@@ -36,6 +37,7 @@ assert.equal(beamReport.schedules.walls.length, 1);
 assert.equal(beamReport.rows.length, 3);
 assert.ok(beamReport.issueRows.some((row) => row.moduleId === 'rc' && row.itemId === 'W1'));
 assert.ok(beamReport.formulaTrace.some((item) => item.formulaId === 'KDS-RC-BEAM-FLEXURE-V1'));
+assert.ok(beamReport.formulaTrace.every((item) => item.standard && item.clause && item.title));
 assert.match(beamReport.schedules.beams[0].flexure.bottom.label, /^\d+-D/);
 assert.equal(beamReport.summary.itemCount, 3);
 
@@ -78,9 +80,11 @@ assert.equal(agentReport.schedules.beams.length, 1);
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3RcDetailedDesign, RC_DETAILED_DESIGN_VERSION);
 assert.equal(manifest.modules.phase3RcDesignGate, RC_DESIGN_GATE_VERSION);
+assert.equal(manifest.modules.phase3DesignFormulaRegistry, DESIGN_FORMULA_REGISTRY_VERSION);
 assert.ok(manifest.readApis.includes('getRcDetailedDesignReport'));
 assert.ok(manifest.dataContracts.includes('phase3RcDetailedDesignReport'));
 assert.ok(manifest.dataContracts.includes('phase3RcDesignGate'));
+assert.ok(manifest.dataContracts.includes('phase3DesignFormulaTrace'));
 assert.ok(manifest.milestones.some((item) => item.id === 'P3-M17'));
 
 console.log(JSON.stringify({
