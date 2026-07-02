@@ -97,7 +97,23 @@ assert.equal(loadControl.rows.length, 2);
 assert.equal(loadControl.summary.stepCount, 2);
 assert.equal(loadControl.summary.convergedSteps, 2);
 assert.equal(loadControl.finalState.lambda, 0.5);
+assert.equal(loadControl.finalState.u[0], 0.5);
+assert.equal(loadControl.rows[1].stateSnapshot.u[0], 0.5);
 assert.equal(loadControl.converged, true);
+const failedLoadControl = buildLoadControlTrace({
+  increments: [0.2, 0.3],
+  initial: 1,
+  residual: (x) => x * x - 4,
+  tangent: (x) => 2 * x,
+  maxIterations: 1,
+});
+assert.equal(failedLoadControl.converged, false);
+assert.equal(failedLoadControl.rows.length, 1);
+assert.equal(failedLoadControl.rows[0].converged, false);
+assert.equal(failedLoadControl.finalState.lambda, 0);
+assert.equal(failedLoadControl.finalState.u[0], 0);
+assert.equal(failedLoadControl.finalState.events[0].type, 'nonconvergence');
+assert.equal(failedLoadControl.contract.failurePolicy, 'Record the failed step and stop unless continueOnFailure is explicitly enabled.');
 
 const benchmarks = runNonlinearGeometryBenchmarks();
 assert.equal(benchmarks.version, NONLINEAR_BENCHMARK_VERSION);

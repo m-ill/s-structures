@@ -8,7 +8,10 @@ export function buildLoadControlTrace(options = {}) {
     ? options.increments.map((value) => finite(value, 0))
     : Array.from({ length: Math.max(1, Math.trunc(finite(options.steps, 4))) }, () => finite(options.dLambda, 0.25));
   let state = createAnalysisState({ u: Math.max(1, Math.trunc(finite(options.dof, 1))), lambda: finite(options.initialLambda, 0) });
-  const rows = increments.map((dLambda, index) => {
+  let acceptedValue = finite(options.initialAcceptedValue, state.u?.[0] || 0);
+  const rows = [];
+  for (let index = 0; index < increments.length; index += 1) {
+    const dLambda = increments[index];
     const targetLambda = state.lambda + dLambda;
     const nr = solveNewtonRaphson({
       initial: options.initial ?? targetLambda,
@@ -18,14 +21,16 @@ export function buildLoadControlTrace(options = {}) {
       lineSearch: options.lineSearch,
       step: index + 1,
     });
+    const du = nr.x - acceptedValue;
+    acceptedValue = nr.converged ? nr.x : acceptedValue;
     state = advanceAnalysisState(state, {
-      dLambda,
-      du: [nr.x],
+      dLambda: nr.converged ? dLambda : 0,
+      du: [nr.converged ? du : 0],
       converged: nr.converged,
       iterations: nr.iterations,
       events: nr.converged ? [] : [{ step: index + 1, type: 'nonconvergence' }],
     });
-    return {
+    rows.push({
       step: state.step,
       targetLambda,
       dLambda,
@@ -33,8 +38,10 @@ export function buildLoadControlTrace(options = {}) {
       iterations: nr.iterations,
       reason: nr.convergenceReason,
       acceptedValue: nr.x,
-    };
-  });
+      stateSnapshot: snapshotAnalysisState(state),
+    });
+    if (!nr.converged && options.continueOnFailure !== true) break;
+  }
   return {
     version: LOAD_CONTROL_VERSION,
     contract: {
@@ -43,6 +50,7 @@ export function buildLoadControlTrace(options = {}) {
       control: 'load',
       stateRule: 'Each row starts from the previous accepted state snapshot.',
       convergenceRule: 'Newton-Raphson must converge within the configured iteration limit for every increment.',
+      failurePolicy: 'Record the failed step and stop unless continueOnFailure is explicitly enabled.',
     },
     method: 'incremental-load-control-newton-raphson',
     rows,
@@ -54,7 +62,7 @@ export function buildLoadControlTrace(options = {}) {
     },
     finalState: snapshotAnalysisState(state),
     converged: rows.every((row) => row.converged),
-    limitations: ['Single-parameter load-control trace; global frame residual assembly is handled by later hardening.'],
+    limitations: ['Single-parameter load-control trace; global frame residual assembly is handled by the P3-M14 global-equilibrium trace.'],
   };
 }
 
