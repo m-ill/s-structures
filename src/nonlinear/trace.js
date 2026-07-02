@@ -102,6 +102,7 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
 }
 
 export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = null) {
+  const fiberNlthReview = buildFiberNlthReview({ trace, fiberNlthBenchmarks });
   return {
     version: NONLINEAR_FIBER_NLTH_TRACE_VERSION,
     milestone: 'P3-M16',
@@ -118,6 +119,7 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       },
       reviewFields: ['summary.ticketCoverage', 'pmm', 'fiber', 'dynamics', 'benchmarks.cases'],
       agentUse: 'Read-only gate for reports and AI-agent inspection of fiber/NLTH trace readiness.',
+      maturity: 'preliminary-performance-trace',
     },
     contracts: {
       pmmHinge: PMM_HINGE_VERSION,
@@ -137,8 +139,10 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       nlthConverged: trace.nlth?.converged ?? null,
       nlthYielded: (trace.nlth?.rows || []).some((row) => row.hingeState === 'yielded'),
       requiredBenchmarks: ['B6', 'B7', 'B8'],
+      fiberNlthReview,
       ticketCoverage: buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }),
     },
+    fiberNlthReview,
     pmm: {
       axialRatio: trace.pmm?.interpolated?.axialRatio ?? null,
       source: trace.pmm?.interpolated?.source || [],
@@ -187,8 +191,30 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
     } : null,
     limitations: [
       'P3-M16 is a concentrated-plasticity trace core, not distributed plasticity.',
+      'Production seismic qualification requires owner review of material models, ground motions, damping, and acceptance criteria.',
       'Soil-structure interaction and final production seismic qualification remain outside this trace gate.',
     ],
+  };
+}
+
+function buildFiberNlthReview({ trace, fiberNlthBenchmarks }) {
+  const missing = [];
+  if (!((trace.pmm?.interpolated?.points || []).length > 0)) missing.push('pmm-interpolation');
+  if (!((trace.fiber?.section?.fibers || []).length > 0)) missing.push('fiber-section');
+  if (!((trace.fiber?.momentCurvature?.rows || []).length > 0)) missing.push('moment-curvature');
+  if (!trace.rayleigh?.version) missing.push('rayleigh-damping');
+  if (!trace.spectrumScaling?.scaleFactor) missing.push('ground-motion-scaling');
+  if (!trace.nlth?.converged) missing.push('nlth-convergence');
+  if (!fiberNlthBenchmarks?.ok) missing.push('B6-B8-benchmark');
+  return {
+    status: missing.length ? 'review-required' : 'trace-ready',
+    maturity: 'preliminary',
+    distributedPlasticity: false,
+    productionSeismicQualification: false,
+    concentratedPlasticityTrace: true,
+    groundMotionScalingTrace: !!trace.spectrumScaling?.scaleFactor,
+    missing,
+    agentDecision: missing.length ? 'hold-before-integrated-results' : 'm16-ready-for-integrated-results-review',
   };
 }
 
