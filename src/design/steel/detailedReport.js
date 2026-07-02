@@ -13,6 +13,11 @@ export function buildSteelDetailedDesignReport(model, analysis, options = {}) {
     .sort((a, b) => a.memberId.localeCompare(b.memberId));
   return {
     version: STEEL_DETAILED_DESIGN_VERSION,
+    contract: {
+      milestone: 'P3-M18',
+      tickets: ['P3-T91'],
+      scope: 'Steel member classification, compression, flexure LTB, shear/brace, interaction, and serviceability-ready schedule trace.',
+    },
     modelName: model?.meta?.name || null,
     summary: summarize(rows),
     rows,
@@ -31,7 +36,32 @@ export function detailSteelMemberP3(check = {}, options = {}) {
   const interaction = checkSteelInteraction(check);
   const brace = check.role === 'brace' ? checkSteelBrace(check) : null;
   const status = worst([check.status, compression.status, flexureLtb.status, interaction.status, brace?.status]);
-  return { version: STEEL_DETAILED_DESIGN_VERSION, memberId: check.memberId, role: check.role, status, utilization: check.utilization || 0, classification, compression, flexureLtb, interaction, brace };
+  return {
+    version: STEEL_DETAILED_DESIGN_VERSION,
+    contract: {
+      milestone: 'P3-M18',
+      tickets: ['P3-T91'],
+      role: check.role || 'member',
+      scope: 'Steel member detailed-design trace row.',
+    },
+    memberId: check.memberId,
+    role: check.role,
+    status,
+    utilization: check.utilization || 0,
+    summary: {
+      classification: classification.classification || classification.status || null,
+      compressionStatus: compression.status,
+      flexureStatus: flexureLtb.status,
+      interactionStatus: interaction.status,
+      braceStatus: brace?.status || null,
+      governingUtilization: Math.max(check.utilization || 0, compression.ratio || 0, flexureLtb.ratio || 0, interaction.ratio || 0, brace?.ratio || 0),
+    },
+    classification,
+    compression,
+    flexureLtb,
+    interaction,
+    brace,
+  };
 }
 
 function summarize(rows) {

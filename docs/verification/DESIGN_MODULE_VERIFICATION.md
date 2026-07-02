@@ -41,6 +41,8 @@ Current status is preliminary. M18 adds traceable steel, connection, base-plate,
 
 2026-07-02 registry update: Steel, connection, base-plate, and foundation formula traces now resolve to registered standard/clause/title metadata. The integrated gate records `unregisteredFormulaCount`, which must stay zero for the current trace set.
 
+2026-07-02 contract review update: P3-M18 steel, connection, bolt, weld, base-plate, and foundation rows now expose ticket-specific contracts and compact summaries. The integrated detailed-design report exposes a top-level P3-M18 contract, and `designGate.summary` reports agent-readiness, complete ticket coverage, issue count, formula count, unregistered formula count, serviceability hook, and module status counts.
+
 ## P3-M19 Integrated Results And Report
 
 Scope follows `docs/phase3/ROADMAP.md` Stage F and `docs/phase3/IMPLEMENTATION_BACKLOG.md` P3-T58, P3-T59, P3-T61, and P3-T62.

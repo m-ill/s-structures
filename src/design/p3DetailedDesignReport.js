@@ -17,6 +17,12 @@ export function buildP3DetailedDesignReport(model, analysis, options = {}) {
   const formulaTrace = Object.values(modules).flatMap((module) => module.formulaTrace || []);
   return {
     version: P3_DETAILED_DESIGN_REPORT_VERSION,
+    contract: {
+      milestone: 'P3-M18',
+      tickets: ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95'],
+      scope: 'Integrated RC, steel, connection, foundation, issue, formula, and serviceability-hook detailed-design trace.',
+      reportUse: 'Top-level issueRows and formulaTrace are the single navigation source for reports and AI-agent review.',
+    },
     modelName: model?.meta?.name || null,
     summary: summarize(modules),
     modules,
@@ -36,6 +42,15 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     milestone: 'P3-M18',
     tickets: ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95'],
     coverage: buildTicketCoverage(modules, issueRows, formulaTrace),
+    summary: {
+      readyForAgentReview: true,
+      completeCoverage: buildTicketCoverage(modules, issueRows, formulaTrace).every((row) => row.covered),
+      issueCount: issueRows.length,
+      formulaCount: formulaTrace.length,
+      unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
+      serviceabilityHook: 'drift-deflection-vibration-ready',
+      moduleStatuses: summarizeModuleStatuses(modules),
+    },
     modules: Object.fromEntries(Object.entries(modules).map(([id, module]) => [id, {
       version: module.version || null,
       itemCount: module.summary?.itemCount || module.summary?.memberCount || rowsOf(module).length,
@@ -61,6 +76,16 @@ function summarize(modules) {
     warnCount: items.reduce((sum, item) => sum + (item.warnCount || 0), 0),
     ngCount: items.reduce((sum, item) => sum + (item.ngCount || 0), 0),
   };
+}
+
+function summarizeModuleStatuses(modules) {
+  return Object.entries(modules).map(([id, module]) => ({
+    moduleId: id,
+    itemCount: module.summary?.itemCount || module.summary?.memberCount || rowsOf(module).length,
+    warnCount: module.summary?.warnCount || 0,
+    ngCount: module.summary?.ngCount || 0,
+    version: module.version || null,
+  }));
 }
 
 function buildIssueRows(modules) {
