@@ -95,7 +95,7 @@ assert.equal(response.data.version, 'p3-m13-loads-v2-trace');
 
 response = sendCommand({ id: 'nonlinear-trace', method: 'getNonlinearAnalysisTrace' });
 assert.equal(response.ok, true);
-assert.equal(response.data.version, 'p3-m14-nonlinear-trace');
+assert.equal(response.data.version, 'p3-m15-nonlinear-trace');
 
 response = sendCommand({
   id: 'bad-action',

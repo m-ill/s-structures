@@ -234,6 +234,28 @@ export {
   solveNewtonRaphson,
 } from './nonlinear/control/newtonRaphson.js';
 export {
+  DISPLACEMENT_CONTROL_VERSION,
+  buildDisplacementControlStep,
+  buildDisplacementControlTrace,
+} from './nonlinear/control/displacementControl.js';
+export {
+  ARC_LENGTH_CONTROL_VERSION,
+  buildArcLengthStep,
+  buildArcLengthTrace,
+  createSnapThroughBenchmarkPath,
+} from './nonlinear/control/arcLength.js';
+export {
+  MOMENT_HINGE_VERSION,
+  buildHingeStateTrace,
+  createMomentRotationBackbone,
+  evaluateMomentHinge,
+} from './nonlinear/hinges/momentHinge.js';
+export {
+  FORMAL_PUSHOVER_VERSION,
+  comparePushoverRegression,
+  runFormalPushover,
+} from './nonlinear/pushoverFormal.js';
+export {
   NONLINEAR_TRACE_VERSION,
   buildNonlinearAnalysisTrace,
 } from './nonlinear/trace.js';
@@ -289,7 +311,11 @@ export {
   NONLINEAR_BENCHMARK_VERSION,
   runCantileverLargeDisplacementBenchmark,
   runEulerBucklingBenchmark,
+  runNonlinearHingeControlBenchmarks,
   runNonlinearGeometryBenchmarks,
+  runPortalPlasticMechanismBenchmark,
+  runPushoverRegressionBenchmark,
+  runSnapThroughArcLengthBenchmark,
 } from './verification/nonlinearBenchmarks.js';
 export { MEMBER_RELEASE_BENCHMARK_VERSION, runMemberReleaseBenchmark } from './verification/memberReleaseBenchmark.js';
 export { RIGID_DIAPHRAGM_BENCHMARK_VERSION, runRigidDiaphragmBenchmark } from './verification/rigidDiaphragmBenchmark.js';

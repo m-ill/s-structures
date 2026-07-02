@@ -47,6 +47,7 @@ assert.ok(manifest.readApis.includes('getDynamicCompletenessTrace'));
 assert.ok(manifest.readApis.includes('getNonlinearAnalysisTrace'));
 assert.ok(manifest.dataContracts.includes('phase3LoadsV2Trace'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearAnalysisTrace'));
+assert.ok(manifest.milestones.some((item) => item.id === 'P3-M15'));
 assert.equal(manifest.uiContract.controlCount, 0);
 
 const snapshot = agent.getSnapshot();

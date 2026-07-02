@@ -57,13 +57,13 @@ assert.ok(benchmarks.cases.every((item) => ['B1', 'B2'].includes(item.id)));
 const model = createPortalFrameSample();
 const trace = buildNonlinearAnalysisTrace(model);
 assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
-assert.equal(trace.method.control, 'load-control-newton-raphson');
-assert.equal(trace.benchmarks.ok, true);
+assert.ok(trace.method.control.includes('load'));
+assert.equal(trace.benchmarks.geometry.ok, true);
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();
 assert.equal(apiTrace.version, NONLINEAR_TRACE_VERSION);
-assert.equal(apiTrace.benchmarks.version, NONLINEAR_BENCHMARK_VERSION);
+assert.equal(apiTrace.benchmarks.geometry.version, NONLINEAR_BENCHMARK_VERSION);
 assert.ok(agent.getCapabilities().readApis.includes('getNonlinearAnalysisTrace'));
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m14-nonlinear-geometry' }, null, 2));

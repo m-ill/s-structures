@@ -97,6 +97,7 @@
     "test:m82": "node tests/p3-pointcloud-extraction.mjs",
     "test:m83": "node tests/p3-pointcloud-e2e.mjs",
     "test:m84": "node tests/p3-m14-nonlinear-geometry.mjs",
+    "test:m85": "node tests/p3-m15-nonlinear-hinge-control.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
@@ -131,6 +132,7 @@
     "test:p3m11": "node tests/p3-m11-elastic-expansion.mjs",
     "test:p3m12": "node tests/p3-m12-wall-slab.mjs",
     "test:p3m13": "node tests/p3-m13-loads-dynamics.mjs",
-    "test:p3m14": "node tests/p3-m14-nonlinear-geometry.mjs"
+    "test:p3m14": "node tests/p3-m14-nonlinear-geometry.mjs",
+    "test:p3m15": "node tests/p3-m15-nonlinear-hinge-control.mjs"
   }
 }
