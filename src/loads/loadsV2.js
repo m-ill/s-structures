@@ -16,10 +16,12 @@ export function buildLoadsV2Trace(model = {}, basis = {}) {
   const massSource = buildMassSourceTrace(model, basis.massSource || model.analysisSettings?.massSource || null);
   const wind = buildWindRows(stories, windBase, basis);
   const seismic = seismicRows.map((row) => ({ ...row, rsaScale: rsaScaling?.scaleFactor ?? 1, torsionAx: torsionAx?.Ax ?? 1 }));
+  const summary = summarizeLoadsV2({ wind, seismic, environmental, massSource });
   return {
     version: LOADS_V2_VERSION,
     contract: buildLoadsV2Contract(),
-    summary: summarizeLoadsV2({ wind, seismic, environmental, massSource }),
+    summary,
+    review: buildLoadsV2Review(summary, massSource),
     wind,
     seismic,
     rsaScaling,
@@ -203,6 +205,32 @@ function summarizeLoadsV2({ wind, seismic, environmental, massSource }) {
       { ticket: 'P3-T78', scope: 'snow soil water uplift loads', covered: environmental.loads.length > 0, evidence: environmental.loadCases.join(',') || 'no environmental cases requested' },
       { ticket: 'P3-T82', scope: 'load-to-mass source', covered: !!massSource.version, evidence: `${massSource.nodeCount} mass nodes` },
     ],
+  };
+}
+
+function buildLoadsV2Review(summary, massSource) {
+  const uncoveredTickets = (summary.ticketCoverage || [])
+    .filter((row) => !row.covered)
+    .map((row) => row.ticket);
+  const blockers = [];
+  if (!(summary.windForce > 0)) blockers.push('wind-trace-empty');
+  if (!(summary.seismicForce > 0)) blockers.push('seismic-trace-empty');
+  if (!massSource?.version) blockers.push('mass-source-trace-missing');
+  return {
+    status: blockers.length ? 'review-required' : 'available',
+    loadsTraceReady: blockers.length === 0,
+    windTraceReady: summary.windForce > 0,
+    seismicTraceReady: summary.seismicForce > 0,
+    environmentalTraceReady: summary.environmentalLoadCount > 0,
+    massSourceReady: !!massSource?.version,
+    uncoveredTickets,
+    blockers,
+    engineerReviewRequired: true,
+    productionReady: false,
+    preliminaryCodeAutomation: true,
+    agentDecision: blockers.length
+      ? 'fix-loads-v2-trace-before-review'
+      : 'loads-v2-ready-for-engineering-review',
   };
 }
 

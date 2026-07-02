@@ -18,6 +18,7 @@ This note verifies P3-M13 against `docs/phase3/ELASTIC_ENGINE_COMPLETENESS_PLAN.
 | P3-T80 | Buckling trace | `estimateGlobalBucklingTrace()`, `estimateModelBucklingTrace()` global eigenvalue trace plus member Euler screening |
 | P3-T81 | Linear time history | `runLinearSdofTha()`, `runModalSuperpositionTha()` |
 | P3-T82 | Mass source from loads | `buildMassSourceTrace()`, nodal/member point/member UDL load conversion, `analyzeDynamics()` mass source consumption, and story-mass single-source test |
+| Loads v2 review decision | `buildLoadsV2Review()` exposes wind/seismic/environmental/mass-source readiness plus AI-readable next action | `buildLoadsV2Trace().review` |
 | Dynamic review decisions | `buildDynamicCompletenessReview()` exposes CQC, buckling, and time-history review status plus AI-readable next action |
 
 ## Added Review Finding
@@ -39,6 +40,8 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 2026-07-02 mass-source review update: `buildMassSourceTrace()` now exposes a `review` block with availability status, accepted node count, ignored load count, ignored reasons, warning code, and `agentDecision`. AI agents can now distinguish a clean mass-source trace from a trace where non-vertical or out-of-combination loads were intentionally ignored.
 
 2026-07-02 dynamic-review update: CQC, buckling, and linear time-history traces now expose a shared `review` block. Sparse CQC input, member-only buckling without a global mode, and empty time-history records are marked `review-required`; available traces expose `agentDecision` values for report and automation workflows.
+
+2026-07-03 loads-review update: `buildLoadsV2Trace()` now exposes a top-level `review` block. It records wind/seismic/environmental/mass-source readiness, uncovered plan tickets, blocking trace gaps, preliminary automation status, required engineer review, and the next AI-agent decision string. This keeps M13 load results aligned with the review-gate pattern already used by M10 to M12.
 
 ## Current Test Gate
 
