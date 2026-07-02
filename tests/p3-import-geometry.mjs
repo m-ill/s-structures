@@ -6,6 +6,7 @@ import {
   buildAgentManifest,
   cleanSegments,
   describePointCloudPipeline,
+  importCandidateToModel,
   validateImportCandidate,
   wireframeToImportCandidate,
 } from '../src/index.js';
@@ -48,6 +49,14 @@ assert.ok(candidate.candidates.grids.some((grid) => grid.axis === 'X' && grid.po
 const bad = structuredClone(candidate);
 bad.candidates.members[0].from = 'missing';
 assert.equal(validateImportCandidate(bad).ok, false);
+const badModel = importCandidateToModel(bad, { confirmed: true });
+assert.equal(badModel.meta.importValidation.ok, false);
+assert.equal(badModel.meta.importReview.required, true);
+assert.equal(badModel.meta.importReview.confirmed, false);
+assert.equal(badModel.meta.importReview.status, 'invalid-candidate');
+assert.equal(badModel.meta.importReview.candidateToAnalysisPath, 'blocked-until-candidate-validation');
+assert.equal(badModel.meta.importReview.agentDecision, 'fix-import-candidate-before-analysis');
+assert.ok(badModel.meta.importReview.validationErrors.includes(`member.${bad.candidates.members[0].id}.endpoint`));
 
 const duplicateNode = structuredClone(candidate);
 duplicateNode.candidates.nodes[1].id = duplicateNode.candidates.nodes[0].id;
