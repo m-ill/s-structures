@@ -325,6 +325,7 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
     } : null,
     control: {
       displacementSteps: displacementControl.steps.length,
+      displacementReview: displacementControl.review || null,
       arcLengthSteps: arcLength.steps.length,
       postPeakTracked: arcLength.steps.some((step) => step.dLambda < 0),
       arcLengthSatisfied: arcLength.steps.every((step) => step.satisfied),
@@ -367,6 +368,7 @@ function buildHingeControlReview({ hingeTrace, pushover, hingeControlBenchmarks,
   if (!(hingeTrace?.rows?.length > 0)) missing.push('hinge-state-trace');
   if (!(options.hingeAssignment?.summary?.hingeCount > 0)) missing.push('hinge-assignment');
   if (!(displacementControl?.steps?.length > 0)) missing.push('displacement-control');
+  if (displacementControl?.review?.status === 'review-required') missing.push('displacement-control-input-review');
   if (!(arcLength?.steps || []).some((step) => step.dLambda < 0)) missing.push('arc-length-post-peak');
   if (!pushover?.ok) missing.push('formal-pushover');
   if (!hingeControlBenchmarks?.ok) missing.push('B3-B5-benchmark');

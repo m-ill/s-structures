@@ -52,6 +52,12 @@ assert.ok(dc.contract.tickets.includes('P3-T55'));
 assert.equal(dc.steps[0].dLambda, 0.005);
 assert.equal(dc.summary.stepCount, 2);
 assert.equal(dc.summary.finalTarget, 0.02);
+assert.equal(dc.review.status, 'available');
+assert.equal(dc.review.agentDecision, 'displacement-control-ready-for-review');
+const invalidDc = buildDisplacementControlTrace([0.01], { influence: 0, controlDof: 'N3:UX' });
+assert.equal(invalidDc.steps[0].review.warning, 'invalid-displacement-control-influence');
+assert.equal(invalidDc.review.status, 'review-required');
+assert.ok(invalidDc.review.warnings.includes('invalid-displacement-control-influence'));
 
 const arc = buildArcLengthTrace(createSnapThroughBenchmarkPath(), { radius: 1 });
 assert.equal(arc.version, ARC_LENGTH_CONTROL_VERSION);
@@ -150,6 +156,13 @@ assert.equal(trace.hingeControlGate.pushover.method.hinges, 'concentrated-M-thet
 assert.equal(trace.benchmarks.hingeControl.ok, true);
 assert.ok(trace.hingeStates.length > 0);
 assert.ok(trace.capacityCurve.length > 0);
+const invalidControlTrace = buildNonlinearAnalysisTrace(model, {
+  displacementControl: { influence: 0 },
+  pushover: { steps: 3, referenceBaseShear: 20 },
+});
+assert.equal(invalidControlTrace.hingeControlGate.control.displacementReview.status, 'review-required');
+assert.ok(invalidControlTrace.hingeControlGate.controlReview.missing.includes('displacement-control-input-review'));
+assert.equal(invalidControlTrace.hingeControlGate.controlReview.agentDecision, 'hold-before-m16');
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();
