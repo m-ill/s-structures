@@ -165,6 +165,57 @@ const PERSISTENCE_CONTRACT = {
   migration: 'all loads pass through migrateModel on client load',
 };
 
+const FRONTEND_CONTRACT = {
+  routes: [
+    '#/login',
+    '#/projects',
+    '#/p/:id/modeler',
+    '#/p/:id/import/:jobId',
+    '#/p/:id/revisions',
+    '#/p/:id/report',
+    '#/local/modeler',
+  ],
+  modules: [
+    'src/app/shell.js',
+    'src/app/routes.js',
+    'src/app/apiClient.js',
+    'src/app/sessionState.js',
+    'src/app/views/login.js',
+    'src/app/views/projects.js',
+    'src/app/views/importReview.js',
+    'src/app/modelerHost.js',
+    'src/viewer/viewerCore.js',
+    'src/viewer/pointCloudLayer.js',
+  ],
+  agentApis: ['listImportCandidates', 'resolveImportCandidate', 'confirmImport', 'getCapabilities'],
+  principles: ['vanilla-esm', 'modeler-index-preserved', 'agent-manifest-for-actions', 'csp-ready-no-new-inline-script'],
+};
+
+const IMPORT_PIPELINE_CONTRACT = {
+  drawingPaths: [
+    importPath('3d-wireframe-dxf', 'P3-M6', 'line-polyline-point-insert-text-to-candidate'),
+    importPath('2d-floor-plan-dxf', 'P3-M7', 'plan-recognition-to-two-story-candidate'),
+    importPath('dwg', 'P3-M7', 'external-converter-to-ascii-dxf'),
+  ],
+  dxfEntities: ['LINE', 'LWPOLYLINE', 'POLYLINE', 'POINT', 'CIRCLE', 'INSERT', 'TEXT', 'MTEXT'],
+  auditFields: ['counts', 'units', 'bbox', 'merge', 'mapping', 'orphans', 'warnings'],
+  pointCloudFormats: [
+    { id: 'XYZ/TXT', status: 'v1' },
+    { id: 'PLY', status: 'v1' },
+    { id: 'PCD', status: 'v1' },
+    { id: 'LAS', status: 'planned-owner-file' },
+    { id: 'LAZ/E57', status: 'not-v1' },
+  ],
+  pointCloudPipeline: ['worker-parse', 'normalize', 'voxel-downsample', 'outlier-filter', 'viewer-buffer', 'story-column-beam-wall-extraction', 'ImportCandidate', 'human-review'],
+  confidenceBands: ['>=0.8 high-confidence-review-required', '0.5-0.8 review-required', '<0.5 audit-only'],
+  benchmarkTargets: {
+    storyElevationErrorMm: 30,
+    columnRecall: 0.9,
+    columnPrecision: 0.9,
+    beamRecall: 0.75,
+  },
+};
+
 const MILESTONES = [
   ms('P3-M0', ['P3-T01', 'P3-T02'], ['docs/phase3/DEVELOPMENT_FILE_MAP.md'], ['tests/m0-smoke.mjs']),
   ms('P3-M1', t(3, 7), ['docs/phase3/SERVER_API_PLAN.md'], ['tests/p3-server-api.mjs']),
@@ -222,6 +273,13 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
     ERROR_CODES.length === 8 &&
     AUTH_CONTRACT.projectRoles.length === 4 &&
     PERSISTENCE_CONTRACT.layers.length === 3;
+  const frontendOk = FRONTEND_CONTRACT.routes.length === 7 &&
+    FRONTEND_CONTRACT.modules.length >= 10 &&
+    FRONTEND_CONTRACT.agentApis.includes('confirmImport');
+  const importPipelineOk = IMPORT_PIPELINE_CONTRACT.drawingPaths.length === 3 &&
+    IMPORT_PIPELINE_CONTRACT.dxfEntities.includes('INSERT') &&
+    IMPORT_PIPELINE_CONTRACT.pointCloudFormats.filter((row) => row.status === 'v1').length === 3 &&
+    IMPORT_PIPELINE_CONTRACT.auditFields.includes('warnings');
   return {
     version: PHASE3_PLAN_ALIGNMENT_VERSION,
     sourceDocs: CORE_DOCS.map((name) => `docs/phase3/${name}`),
@@ -253,13 +311,21 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
       persistence: PERSISTENCE_CONTRACT,
       ok: serverApiOk,
     },
+    frontend: {
+      ...FRONTEND_CONTRACT,
+      ok: frontendOk,
+    },
+    importPipeline: {
+      ...IMPORT_PIPELINE_CONTRACT,
+      ok: importPipelineOk,
+    },
     activeTicketCount: new Set(rows.flatMap((row) => row.tickets)).size,
     absorbedTickets: ABSORBED_TICKETS,
     plannedTicketCount: new Set([
       ...rows.flatMap((row) => row.tickets),
       ...ABSORBED_TICKETS.map((row) => row.ticket),
     ]).size,
-    status: missing.length || !requirementsOk || !architectureOk || !serverApiOk ? 'REVIEW' : 'OK',
+    status: missing.length || !requirementsOk || !architectureOk || !serverApiOk || !frontendOk || !importPipelineOk ? 'REVIEW' : 'OK',
     missing,
     agentReadable: readApis.has('getPhase3PlanAlignment'),
     notes: [
@@ -311,6 +377,10 @@ function role(id, permissions) {
 
 function storageLayer(id, name, purpose) {
   return { id, name, purpose };
+}
+
+function importPath(id, milestone, method) {
+  return { id, milestone, method };
 }
 
 function t(from, to) {

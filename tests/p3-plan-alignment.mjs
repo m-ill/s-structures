@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   buildAgentManifest,
@@ -34,6 +34,15 @@ assert.deepEqual(report.serverApi.persistence.layers.map((row) => row.id), ['L1'
 assert.equal(report.serverApi.persistence.conflictRule, 'last-write-wins-with-lineage-warning');
 assert.ok(report.serverApi.endpoints.find((row) => row.method === 'POST' && row.path === '/api/projects/:id/revisions').permission === 'engineer+');
 assert.ok(report.serverApi.endpoints.find((row) => row.method === 'POST' && row.path === '/api/projects/:id/approval').permission === 'reviewer+');
+assert.equal(report.frontend.ok, true);
+assert.equal(report.frontend.routes.length, 7);
+assert.ok(report.frontend.routes.includes('#/p/:id/import/:jobId'));
+assert.ok(report.frontend.agentApis.includes('confirmImport'));
+assert.equal(report.importPipeline.ok, true);
+assert.deepEqual(report.importPipeline.drawingPaths.map((row) => row.id), ['3d-wireframe-dxf', '2d-floor-plan-dxf', 'dwg']);
+assert.ok(report.importPipeline.dxfEntities.includes('INSERT'));
+assert.deepEqual(report.importPipeline.pointCloudFormats.filter((row) => row.status === 'v1').map((row) => row.id), ['XYZ/TXT', 'PLY', 'PCD']);
+assert.equal(report.importPipeline.benchmarkTargets.columnRecall, 0.9);
 assert.deepEqual(report.architecture.decisions.map((row) => row.id), Array.from({ length: 10 }, (_, index) => `D${index + 1}`));
 assert.equal(report.architecture.decisions.find((row) => row.id === 'D2').choice, 'node-http-router');
 assert.equal(report.architecture.decisions.find((row) => row.id === 'D6').choice, 'webgl2-module');
@@ -80,6 +89,15 @@ assert.ok(readFileSync('server/router.mjs', 'utf8').includes('ok: false'));
 assert.ok(readFileSync('server/auth/password.mjs', 'utf8').includes('timingSafeEqual'));
 assert.ok(readFileSync('server/auth/token.mjs', 'utf8').includes('sha256'));
 assert.ok(readFileSync('server/store/projectStore.mjs', 'utf8').includes('lineageWarning'));
+for (const file of report.frontend.modules) {
+  assert.equal(existsSync(file), true, file);
+}
+assert.ok(readFileSync('src/import/candidate.js', 'utf8').includes('ImportCandidate'));
+assert.ok(readFileSync('src/import/dxf/importDxf.js', 'utf8').includes('ignoredDetails'));
+assert.ok(readFileSync('src/import/dwg/adapter.js', 'utf8').includes('IMPORT_DWG_CONVERTER_MISSING'));
+assert.ok(readFileSync('src/import/pointcloud/worker.js', 'utf8').includes('processPointCloudText'));
+assert.ok(readFileSync('src/import/pointcloud/extract.js', 'utf8').includes('realScanValidation'));
+assert.ok(readFileSync('src/app/views/importReview.js', 'utf8').includes('confirm'));
 
 console.log(JSON.stringify({
   ok: true,
@@ -88,6 +106,8 @@ console.log(JSON.stringify({
   functionalRequirements: report.requirements.functional.length,
   architectureDecisions: report.architecture.decisions.length,
   endpoints: report.serverApi.endpoints.length,
+  frontendRoutes: report.frontend.routes.length,
+  importPaths: report.importPipeline.drawingPaths.length,
   activeTickets: report.activeTicketCount,
   plannedTickets: report.plannedTicketCount,
 }, null, 2));
