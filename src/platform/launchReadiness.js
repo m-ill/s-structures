@@ -78,7 +78,7 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
     requiredGates: gates.map((item) => item.id),
     ok: gates.length === 14 && gates.every((item) => item.status === 'OK'),
     summary: {
-      readyForOwnerReview: gates.length === 14 && gates.every((item) => item.status === 'OK'),
+      readyForOwnerReview: releaseReview.status === 'owner-review-ready',
       completeTicketCoverage: ticketCoverage.every((row) => row.covered),
       ticketCount: ticketCoverage.length,
       coveredTicketCount: ticketCoverage.filter((row) => row.covered).length,

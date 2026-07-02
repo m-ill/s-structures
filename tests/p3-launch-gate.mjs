@@ -158,6 +158,15 @@ assert.equal(staleAgentContractLaunch.gates.find((row) => row.id === 'G10').stat
 assert.equal(staleAgentContractLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T65').covered, false);
 assert.ok(staleAgentContractLaunch.releaseGate.releaseReview.missing.includes('ticket-coverage'));
 
+const missingOwnerChecklistLaunch = buildLaunchReadinessReport({
+  ...evidence,
+  ownerSignoffChecklistRecorded: false,
+});
+assert.equal(missingOwnerChecklistLaunch.releaseGate.ok, true);
+assert.equal(missingOwnerChecklistLaunch.releaseGate.releaseReview.status, 'review-required');
+assert.equal(missingOwnerChecklistLaunch.releaseGate.summary.readyForOwnerReview, false);
+assert.ok(missingOwnerChecklistLaunch.releaseGate.releaseReview.missing.includes('owner-signoff-checklist'));
+
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => analysis });
 const runtimeCapabilities = agent.getCapabilities();
 const defaultAgentLaunch = agent.getLaunchReadinessReport();

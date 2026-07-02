@@ -56,3 +56,5 @@ P3-M20 remains preliminary. It proves repository-level launch readiness evidence
 2026-07-03 beta-pilot file review update: G11 and P3-T67 now require named beta pilot evidence files from `pilot-01.md` through `pilot-10.md`. Count-only evidence is not enough for the launch gate, and a missing named report produces `pilot-report-files` plus ticket-coverage review holds.
 
 2026-07-03 agent-contract freshness hardening: G10 now compares not only read APIs but also manifest modules, data contracts, QA commands, and review-gate definitions against `docs/user-manual/agent-contract.json`. A stale contract with matching read APIs but missing Phase 3 launch modules now holds P3-T65 coverage for review.
+
+2026-07-03 owner-review readiness hardening: `releaseGate.summary.readyForOwnerReview` now follows `releaseReview.status === "owner-review-ready"`, not only the 14 automated gate rows. A missing owner sign-off checklist can leave automated gates green for evidence tracking, but it no longer appears ready for owner release review.
