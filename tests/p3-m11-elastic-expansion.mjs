@@ -22,10 +22,14 @@ assert.equal(expanded.trace.version, ELASTIC_EXPANSION_VERSION);
 assert.equal(expanded.loads.length, 8);
 assert.equal(expanded.loads[0].type, 'point');
 assert.equal(expanded.loads.reduce((sum, load) => sum + load.P, 0), 20);
+assert.equal(expanded.trace.features.partialDistributed, 1);
+assert.equal(expanded.trace.features.springSupports, 1);
+assert.equal(expanded.trace.supportTrace[0].node, 'B');
 
 const result = analyzeModel(model);
 assert.equal(result.ok, true);
 assert.equal(result.byCombo.CO1.elasticExpansion.version, ELASTIC_EXPANSION_VERSION);
+assert.equal(result.byCombo.CO1.elasticExpansion.features.springSupports, 1);
 assert.ok(result.byCombo.CO1.reactions.B);
 
 const badRange = createModel({
@@ -57,6 +61,7 @@ const trussModel = createModel({
 });
 const trussResult = analyzeModel(trussModel);
 assert.equal(trussResult.ok, true);
+assert.equal(trussResult.byCombo.CO1.elasticExpansion.features.trussMembers, 1);
 assert.ok(trussResult.byCombo.CO1.memberResults.T1.Nmax > 0);
 
 const cantilever = createModel({
@@ -71,6 +76,7 @@ const clearSpan = createModel({ ...cantilever, members: [{ ...cantilever.members
 const cantileverResult = analyzeModel(cantilever);
 const clearSpanResult = analyzeModel(clearSpan);
 assert.equal(clearSpanResult.ok, true);
+assert.equal(expandAdvancedLoads(clearSpan.loads, clearSpan).trace.features.memberOffsets, 1);
 assert.ok(clearSpanResult.byCombo.CO1.summary.maxDisplacement < cantileverResult.byCombo.CO1.summary.maxDisplacement);
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m11-elastic-expansion' }, null, 2));

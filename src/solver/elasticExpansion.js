@@ -5,13 +5,49 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
   const lengths = memberLengths(model);
   const expanded = [];
   const warnings = [];
+  const featureCounts = {
+    partialDistributed: 0,
+    trapezoid: 0,
+    memberMoment: 0,
+    temperature: 0,
+    temperatureGradient: 0,
+  };
   for (const load of loads) {
-    if (load.type === 'udl-partial' || load.type === 'trapezoid') expanded.push(...expandDistributed(load, segments, lengths[load.member] || 1));
-    else if (load.type === 'temperature' || load.type === 'tgradient') expanded.push({ ...load, sourceType: load.type });
-    else if (load.type === 'mmoment') expanded.push({ ...load, sourceType: load.type });
+    if (load.type === 'udl-partial' || load.type === 'trapezoid') {
+      if (load.type === 'udl-partial') featureCounts.partialDistributed += 1;
+      if (load.type === 'trapezoid') featureCounts.trapezoid += 1;
+      expanded.push(...expandDistributed(load, segments, lengths[load.member] || 1));
+    } else if (load.type === 'temperature' || load.type === 'tgradient') {
+      if (load.type === 'temperature') featureCounts.temperature += 1;
+      if (load.type === 'tgradient') featureCounts.temperatureGradient += 1;
+      expanded.push({ ...load, sourceType: load.type });
+    } else if (load.type === 'mmoment') {
+      featureCounts.memberMoment += 1;
+      expanded.push({ ...load, sourceType: load.type });
+    }
     else expanded.push(load);
   }
-  return { loads: expanded, trace: { version: ELASTIC_EXPANSION_VERSION, inputCount: loads.length, outputCount: expanded.length, warnings, modelMembers: model.members?.length || 0 } };
+  return {
+    loads: expanded,
+    trace: {
+      version: ELASTIC_EXPANSION_VERSION,
+      inputCount: loads.length,
+      outputCount: expanded.length,
+      warnings,
+      modelMembers: model.members?.length || 0,
+      features: {
+        ...featureCounts,
+        springSupports: countSpringSupports(model),
+        settlements: countSettlements(model),
+        trussMembers: countMembersByType(model, ['truss']),
+        tensionOnlyMembers: countMembersByType(model, ['tensionOnly']),
+        compressionOnlyMembers: countMembersByType(model, ['compressionOnly']),
+        memberOffsets: countMemberOffsets(model),
+      },
+      supportTrace: buildSupportTrace(model),
+      memberTrace: buildMemberTrace(model),
+    },
+  };
 }
 
 function expandDistributed(load, segments, length) {
@@ -41,4 +77,44 @@ function memberLengths(model = {}) {
 
 function clamp(value) {
   return Math.max(0, Math.min(1, Number(value)));
+}
+
+function countSpringSupports(model = {}) {
+  return (model.nodes || []).filter((node) => node.support === 'spring').length;
+}
+
+function countSettlements(model = {}) {
+  return (model.nodes || []).filter((node) => node.settlement && Object.keys(node.settlement).length > 0).length;
+}
+
+function countMembersByType(model = {}, types = []) {
+  return (model.members || []).filter((member) => types.includes(member.type || member.behavior)).length;
+}
+
+function countMemberOffsets(model = {}) {
+  return (model.members || []).filter((member) => {
+    const offset = member.endOffset || {};
+    return Number(offset.i || 0) !== 0 || Number(offset.j || 0) !== 0;
+  }).length;
+}
+
+function buildSupportTrace(model = {}) {
+  return (model.nodes || [])
+    .filter((node) => node.support === 'spring' || node.settlement)
+    .map((node) => ({
+      node: node.id,
+      support: node.support || null,
+      springKeys: Object.entries(node.spring || {}).filter(([, value]) => Number(value) > 0).map(([key]) => key).sort(),
+      settlementKeys: Object.keys(node.settlement || {}).sort(),
+    }));
+}
+
+function buildMemberTrace(model = {}) {
+  return (model.members || [])
+    .filter((member) => ['truss', 'tensionOnly', 'compressionOnly'].includes(member.type || member.behavior) || member.endOffset)
+    .map((member) => ({
+      member: member.id,
+      behavior: member.type || member.behavior || 'frame',
+      endOffset: member.endOffset || null,
+    }));
 }
