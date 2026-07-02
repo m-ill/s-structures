@@ -70,6 +70,9 @@ assert.deepEqual(launch.releaseGate.tickets, ['P3-T63', 'P3-T64', 'P3-T65', 'P3-
 assert.deepEqual(launch.releaseGate.requiredGates, ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G12', 'G13', 'G14']);
 assert.equal(launch.releaseGate.ok, true);
 assert.equal(launch.releaseGate.coverage.ownerSignoffChecklist, true);
+assert.deepEqual(launch.releaseGate.ticketCoverage.map((row) => row.ticket), ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67']);
+assert.ok(launch.releaseGate.ticketCoverage.every((row) => row.covered));
+assert.ok(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T67').evidence.includes('10 pilot reports'));
 assert.equal(launch.status, 'OK');
 assert.equal(launch.summary.total, 14);
 assert.equal(launch.summary.reviewCount, 0);

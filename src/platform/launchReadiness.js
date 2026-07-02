@@ -34,21 +34,23 @@ export function buildLaunchReadinessReport(evidence = {}) {
 }
 
 export function buildLaunchReadinessGate(gates = [], evidence = {}) {
+  const coverage = {
+    packaging: !!(evidence.files?.indexHtml && evidence.files?.serverMain),
+    license: String(evidence.licenseText || '').trim().length > 0,
+    manual: evidence.manual?.updated === true,
+    qa: evidence.fullSuiteGreen === true && evidence.benchmarkGreen === true,
+    pilotReports: evidence.pilotReports?.count || 0,
+    backupRestore: evidence.backupRestoreRecorded === true,
+    ownerSignoffChecklist: evidence.ownerSignoffChecklistRecorded === true,
+  };
   return {
     version: LAUNCH_READINESS_GATE_VERSION,
     milestone: 'P3-M20',
     tickets: ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67'],
     requiredGates: gates.map((item) => item.id),
     ok: gates.length === 14 && gates.every((item) => item.status === 'OK'),
-    coverage: {
-      packaging: !!(evidence.files?.indexHtml && evidence.files?.serverMain),
-      license: String(evidence.licenseText || '').trim().length > 0,
-      manual: evidence.manual?.updated === true,
-      qa: evidence.fullSuiteGreen === true && evidence.benchmarkGreen === true,
-      pilotReports: evidence.pilotReports?.count || 0,
-      backupRestore: evidence.backupRestoreRecorded === true,
-      ownerSignoffChecklist: evidence.ownerSignoffChecklistRecorded === true,
-    },
+    ticketCoverage: buildLaunchTicketCoverage(gates, evidence, coverage),
+    coverage,
     manualSignoffRequired: [
       'owner license policy',
       'deployment target',
@@ -56,6 +58,43 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
       'backup restore rehearsal evidence',
     ],
   };
+}
+
+function buildLaunchTicketCoverage(gates, evidence, coverage) {
+  const byId = Object.fromEntries(gates.map((item) => [item.id, item.status === 'OK']));
+  const readApis = evidence.agentContract?.readApis?.length || 0;
+  return [
+    {
+      ticket: 'P3-T63',
+      scope: 'packaging-smoke',
+      covered: coverage.packaging === true && !!evidence.packageJson?.scripts?.dev,
+      evidence: `index=${!!evidence.files?.indexHtml}, server=${!!evidence.files?.serverMain}, mode=${evidence.packageJson?.scripts?.dev ? 'web-server' : 'manual-static'}`,
+    },
+    {
+      ticket: 'P3-T64',
+      scope: 'license-policy-record',
+      covered: coverage.license === true,
+      evidence: `license=${coverage.license ? 'RECORDED' : 'MISSING'}, private=${evidence.packageJson?.private === true}`,
+    },
+    {
+      ticket: 'P3-T65',
+      scope: 'onboarding-manual-agent-contract',
+      covered: coverage.manual === true && byId.G10 === true,
+      evidence: `manual=${coverage.manual ? 'updated' : 'missing'}, readApis=${readApis}`,
+    },
+    {
+      ticket: 'P3-T66',
+      scope: 'performance-security-launch-gate',
+      covered: ['G1', 'G2', 'G3', 'G5', 'G6', 'G7', 'G8', 'G12', 'G13', 'G14'].every((id) => byId[id] === true),
+      evidence: `performance=${byId.G7 ? 'OK' : 'REVIEW'}, security=${byId.G8 ? 'OK' : 'REVIEW'}, backup=${coverage.backupRestore ? 'OK' : 'REVIEW'}`,
+    },
+    {
+      ticket: 'P3-T67',
+      scope: 'beta-pilot-scenarios',
+      covered: coverage.pilotReports === 10 && byId.G4 === true && byId.G11 === true,
+      evidence: `${coverage.pilotReports} pilot reports, analysisOk=${evidence.pilot?.summary?.analysisOkCount || 0}`,
+    },
+  ];
 }
 
 export function buildPackagingReadiness(evidence = {}) {
