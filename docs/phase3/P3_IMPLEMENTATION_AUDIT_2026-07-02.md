@@ -32,7 +32,7 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 | P3-M4 | app shell, routes, project browser, viewer core | App shell and viewer core tests exist | Partial shell, not full production UI |
 | P3-M5 | geometry core, classification, import candidate | Geometry cleaning/import candidate tests exist | Partial core |
 | P3-M6 | DXF import v1 | ASCII group-code parser, LINE/LWPOLYLINE/POLYLINE/POINT/TEXT/INSERT+BLOCK mapping, unit scaling, layer audit, and fixtures exist | Core available; DWG and 2D plan recognition remain M7 |
-| P3-M7 | DWG/plan recognition v2 | DWG converter contract, missing-converter guidance, circle/line plan recognition, and two-story plan assembly core exist | Preliminary core; real converter e2e and review UI remain |
+| P3-M7 | DWG/plan recognition v2 | DWG converter contract, missing-converter guidance, circle/line plan recognition, two-story plan assembly, and import review UI core exist | Preliminary core; real converter e2e and richer visual review remain |
 | P3-M8 | point-cloud import pipeline | Planned shell only | Shell only |
 | P3-M9 | point-cloud extraction v2 | No extraction benchmark found | Not implemented |
 

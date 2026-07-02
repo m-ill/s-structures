@@ -275,6 +275,7 @@ export { DXF_IMPORT_VERSION, importDxfToCandidate } from './import/dxf/importDxf
 export { DXF_PLAN_RECOGNITION_VERSION, recognizePlanDxf } from './import/dxf/planRecognition.js';
 export { PLAN_ASSEMBLY_VERSION, assemblePlansToImportCandidate } from './import/planAssembly.js';
 export { DWG_ADAPTER_VERSION, DWG_CONVERTER_MISSING, createDwgConversionPlan, createDwgMissingConverterResult } from './import/dwg/adapter.js';
+export { IMPORT_REVIEW_MODEL_VERSION, canConfirmImport, resolveImportCandidate, summarizeImportEntry } from './app/importReviewModel.js';
 export {
   POINT_CLOUD_IMPORT_PIPELINE_VERSION,
   describePointCloudPipeline,

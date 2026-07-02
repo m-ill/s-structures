@@ -16,6 +16,7 @@
     "memberDesignTrace": "preliminary",
     "calculationPackage": "available",
     "agentControl": "available",
+    "importReviewUi": "preliminary",
     "nonlinearPushover": "preliminary-not-final-nonlinear-engine"
   },
   "globalObjects": [
@@ -105,6 +106,11 @@
       "importNativeBook",
       "saveNativeAutosave",
       "restoreNativeAutosave"
+    ],
+    "phase3ImportReview": [
+      "listImportCandidates",
+      "resolveImportCandidate",
+      "confirmImport"
     ]
   },
   "commandBridge": {
