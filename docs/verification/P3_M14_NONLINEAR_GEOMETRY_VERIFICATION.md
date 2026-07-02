@@ -37,6 +37,8 @@ The gate records:
 
 2026-07-02 contract review update: `buildLoadControlTrace()` now exposes a P3-M14 contract and summary with step count, converged step count, final load factor, and maximum iteration count. `geometryGate.contracts` now includes the convergence contract version, and `geometryGate.summary` exposes benchmark, convergence, load-control, and tangent-assembly readiness for agent/API review.
 
+2026-07-02 ticket coverage review update: `geometryGate` now exposes a formal P3-M14 contract, feature-to-ticket map, and `summary.ticketCoverage` for P3-T50 to P3-T53. The coverage rows tie state snapshots, corotational KE/KG tangent assembly, Newton/load-control convergence, and B1/B2 benchmarks to explicit evidence so reports and AI agents can audit the milestone without inferring intent from module names.
+
 `tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, load-control trace, B1/B2 benchmarks, and agent trace exposure.
 
 ## Remaining Limits

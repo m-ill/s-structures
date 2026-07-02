@@ -262,6 +262,19 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
     version: NONLINEAR_GEOMETRY_TRACE_VERSION,
     milestone: 'P3-M14',
     tickets: ['P3-T50', 'P3-T51', 'P3-T52', 'P3-T53'],
+    contract: {
+      milestone: 'P3-M14',
+      tickets: ['P3-T50', 'P3-T51', 'P3-T52', 'P3-T53'],
+      scope: 'Nonlinear geometry v1 trace for state snapshots, corotational tangent assembly, Newton convergence, load control, and B1/B2 benchmarks.',
+      featureTicketMap: {
+        stateSnapshot: 'P3-T50',
+        corotationalBeamKg: 'P3-T51',
+        newtonLineSearchConvergence: 'P3-T52',
+        geometryBenchmarks: 'P3-T53',
+      },
+      reviewFields: ['summary.ticketCoverage', 'state', 'assembly.summary', 'convergence.log', 'loadControl.rows', 'benchmarks.cases'],
+      agentUse: 'Read-only gate for reports and AI-agent inspection before running later hinge, fiber, or NLTH workflows.',
+    },
     contracts: {
       state: NONLINEAR_STATE_VERSION,
       convergence: NONLINEAR_CONVERGENCE_VERSION,
@@ -276,6 +289,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       loadControlOk: loadControl.converged,
       tangentAssemblyOk: options.assembly?.ok ?? null,
       requiredBenchmarks: ['B1', 'B2'],
+      ticketCoverage: buildGeometryTicketCoverage({ state, options, convergenceSample, loadControl, geometryBenchmarks }),
     },
     state: snapshotAnalysisState(state),
     assembly: options.assembly ? {
@@ -310,6 +324,36 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       'Material hinges, displacement control, arc-length, PMM, fiber, and NLTH are handled by later Phase 3 milestones.',
     ],
   };
+}
+
+function buildGeometryTicketCoverage({ state, options, convergenceSample, loadControl, geometryBenchmarks }) {
+  const cases = geometryBenchmarks?.cases || [];
+  return [
+    {
+      ticket: 'P3-T50',
+      scope: 'nonlinear state and restart-safe snapshot',
+      covered: !!state?.version,
+      evidence: `step ${state?.step ?? 0}, lambda ${state?.lambda ?? 0}`,
+    },
+    {
+      ticket: 'P3-T51',
+      scope: 'corotational beam and KE/KG tangent assembly trace',
+      covered: !!options.assembly?.summary && options.assembly.summary.elasticMemberCount > 0,
+      evidence: `${options.assembly?.summary?.elasticMemberCount || 0} elastic members, ${options.assembly?.summary?.geometricMemberCount || 0} KG members`,
+    },
+    {
+      ticket: 'P3-T52',
+      scope: 'Newton-Raphson, line search, convergence log, and load control',
+      covered: !!convergenceSample?.converged && !!loadControl?.converged,
+      evidence: `${convergenceSample?.iterations || 0} NR iterations, ${loadControl?.rows?.length || 0} load steps`,
+    },
+    {
+      ticket: 'P3-T53',
+      scope: 'B1/B2 geometry benchmark gate',
+      covered: !!geometryBenchmarks?.ok && ['B1', 'B2'].every((id) => cases.some((item) => item.id === id && item.ok)),
+      evidence: cases.map((item) => `${item.id}:${item.ok ? 'OK' : 'NG'}`).join(',') || 'benchmarks disabled',
+    },
+  ];
 }
 
 function summarizeHingeTrace(trace = {}) {
