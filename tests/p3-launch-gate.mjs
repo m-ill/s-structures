@@ -15,6 +15,7 @@ import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 const agentContract = JSON.parse(readFileSync('docs/user-manual/agent-contract.json', 'utf8'));
+const launchManual = readFileSync('docs/user-manual/PHASE3_LAUNCH_MANUAL.md', 'utf8');
 const manifest = buildAgentManifest();
 const pilot = buildPilotProjectValidation({ limit: 10 });
 const model = createTwoStoryElasticFrameModel();
@@ -32,6 +33,9 @@ assert.ok(agentContract.dataContracts.every((key) => manifest.dataContracts.incl
 assert.deepEqual(agentContract.qaCommands, manifest.qaCommands);
 assert.deepEqual(agentContract.reviewGates, manifest.reviewGates);
 assert.equal(agentContract.reviewGates.launchReadiness.path, 'releaseGate.releaseReview');
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('getLaunchReadinessReport().productionReadiness.status')));
+assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
+assert.match(launchManual, /OWNER_REVIEW_REQUIRED/);
 assert.equal(pilotReports.length, 10);
 assert.equal(integrated.summary.notCheckedCount, 0);
 assert.match(calculationPackage.html, /Phase 3 Integrated Results/);

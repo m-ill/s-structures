@@ -258,6 +258,7 @@
     "analysis.ok true means the elastic numerical analysis finished successfully.",
     "getPhase3PlanAlignment().status OK means the implementation is aligned with the written Phase 3 plan; it does not mean production readiness.",
     "getPhase3PlanAlignment().productionReadiness.status must be checked before treating Phase 3 as final.",
+    "getLaunchReadinessReport().status OK means launch evidence gates are green; getLaunchReadinessReport().productionReadiness.status must still be OWNER_REVIEW_REQUIRED until owner sign-off and deployment approval are recorded.",
     "Phase 3 integrated results connect nonlinear trace, detailed design trace, result postprocessing, and workflow state.",
     "calculation packages are calculation aids and review artifacts, not certified final structural design documents.",
     "preliminary KDS-style load combinations do not replace project-specific code review.",

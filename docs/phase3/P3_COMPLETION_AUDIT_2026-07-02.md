@@ -54,7 +54,7 @@ This audit checks the current repository against the Phase 3 planning documents.
 | P3-M17 | Preliminary | `rcDesignGate`, registered RC formula trace tests, and verification document |
 | P3-M18 | Preliminary | `designGate`, registered steel/connection/base-plate/foundation formula trace tests |
 | P3-M19 | Preliminary | `integratedGate`, nonlinear/design/report/workflow trace tests, benchmark evidence |
-| P3-M20 | Preliminary | `releaseGate`, manual, agent contract, pilot report evidence |
+| P3-M20 | Preliminary | `releaseGate`, top-level `productionReadiness`, manual, agent contract, pilot report evidence |
 
 ## Agent-Readable Gate Contracts
 
@@ -81,6 +81,8 @@ This audit checks the current repository against the Phase 3 planning documents.
 | P3-M18 | `designGate.designReview` | `finalPermitDesign` |
 | P3-M19 | `integratedGate.integratedReview` | `finalStructuralSignoff` |
 | P3-M20 | `releaseGate.releaseReview` | `productionDeploymentApproved` |
+
+Agents must also check `getLaunchReadinessReport().productionReadiness.status`. `status: OK` on the launch report means evidence gates are green; it does not override `OWNER_REVIEW_REQUIRED`.
 
 ## Launch Gates
 
@@ -109,6 +111,7 @@ This audit checks the current repository against the Phase 3 planning documents.
 4. License policy is recorded but not converted to an open-source license decision.
 5. User manual legacy pages still contain older text encoding issues; the Phase 3 launch manual and agent contract are the current clean launch references.
 6. Owner release decisions are tracked in `reports/launch-readiness/owner-signoff-checklist.md`; they are not automated approvals.
+7. `getLaunchReadinessReport().productionReadiness.status` remains `OWNER_REVIEW_REQUIRED` until owner sign-off and production deployment approval are explicitly recorded.
 
 ## Current Verification Commands
 
