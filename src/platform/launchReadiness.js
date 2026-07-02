@@ -1,4 +1,5 @@
 export const LAUNCH_READINESS_VERSION = 'p3-m20-launch-readiness';
+export const LAUNCH_READINESS_GATE_VERSION = 'p3-m20-launch-readiness-gate-v1';
 
 export function buildLaunchReadinessReport(evidence = {}) {
   const gates = [
@@ -19,6 +20,7 @@ export function buildLaunchReadinessReport(evidence = {}) {
   ];
   return {
     version: LAUNCH_READINESS_VERSION,
+    releaseGate: buildLaunchReadinessGate(gates, evidence),
     status: gates.every((item) => item.status === 'OK') ? 'OK' : 'REVIEW',
     gates,
     summary: {
@@ -28,6 +30,30 @@ export function buildLaunchReadinessReport(evidence = {}) {
     },
     packaging: buildPackagingReadiness(evidence),
     license: buildLicenseReadiness(evidence),
+  };
+}
+
+export function buildLaunchReadinessGate(gates = [], evidence = {}) {
+  return {
+    version: LAUNCH_READINESS_GATE_VERSION,
+    milestone: 'P3-M20',
+    tickets: ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67'],
+    requiredGates: gates.map((item) => item.id),
+    ok: gates.length === 14 && gates.every((item) => item.status === 'OK'),
+    coverage: {
+      packaging: !!(evidence.files?.indexHtml && evidence.files?.serverMain),
+      license: String(evidence.licenseText || '').trim().length > 0,
+      manual: evidence.manual?.updated === true,
+      qa: evidence.fullSuiteGreen === true && evidence.benchmarkGreen === true,
+      pilotReports: evidence.pilotReports?.count || 0,
+      backupRestore: evidence.backupRestoreRecorded === true,
+    },
+    manualSignoffRequired: [
+      'owner license policy',
+      'deployment target',
+      'field pilot feedback',
+      'backup restore rehearsal evidence',
+    ],
   };
 }
 

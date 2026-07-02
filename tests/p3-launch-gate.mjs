@@ -8,6 +8,7 @@ import {
   buildPilotProjectValidation,
   createCalculationPackageHtml,
   createTwoStoryElasticFrameModel,
+  LAUNCH_READINESS_GATE_VERSION,
   LAUNCH_READINESS_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
@@ -58,6 +59,10 @@ const evidence = {
 };
 const launch = buildLaunchReadinessReport(evidence);
 assert.equal(launch.version, LAUNCH_READINESS_VERSION);
+assert.equal(launch.releaseGate.version, LAUNCH_READINESS_GATE_VERSION);
+assert.deepEqual(launch.releaseGate.tickets, ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67']);
+assert.deepEqual(launch.releaseGate.requiredGates, ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G12', 'G13', 'G14']);
+assert.equal(launch.releaseGate.ok, true);
 assert.equal(launch.status, 'OK');
 assert.equal(launch.summary.total, 14);
 assert.equal(launch.summary.reviewCount, 0);
@@ -69,7 +74,9 @@ const agentLaunch = agent.getLaunchReadinessReport(evidence);
 assert.equal(agentLaunch.version, LAUNCH_READINESS_VERSION);
 assert.equal(agentLaunch.status, 'OK');
 assert.equal(agent.getCapabilities().modules.phase3LaunchReadiness, LAUNCH_READINESS_VERSION);
+assert.equal(agent.getCapabilities().modules.phase3LaunchReadinessGate, LAUNCH_READINESS_GATE_VERSION);
 assert.ok(agent.getCapabilities().readApis.includes('getLaunchReadinessReport'));
+assert.ok(agent.getCapabilities().dataContracts.includes('phase3LaunchReadinessGate'));
 
 console.log(JSON.stringify({
   ok: true,

@@ -174,9 +174,11 @@ export {
   P3_INTEGRATED_RESULTS_VERSION,
 } from './results/p3IntegratedResults.js';
 export {
+  buildLaunchReadinessGate,
   buildLaunchReadinessReport,
   buildLicenseReadiness,
   buildPackagingReadiness,
+  LAUNCH_READINESS_GATE_VERSION,
   LAUNCH_READINESS_VERSION,
 } from './platform/launchReadiness.js';
 export {

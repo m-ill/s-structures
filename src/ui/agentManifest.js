@@ -49,7 +49,7 @@ import {
 import {
   PILOT_PROJECT_VALIDATION_VERSION,
 } from '../platform/pilotProjectValidation.js';
-import { LAUNCH_READINESS_VERSION } from '../platform/launchReadiness.js';
+import { LAUNCH_READINESS_GATE_VERSION, LAUNCH_READINESS_VERSION } from '../platform/launchReadiness.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
 import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
@@ -157,6 +157,7 @@ export function buildAgentManifest(options = {}) {
       practiceValidationReport: PRACTICE_VALIDATION_REPORT_VERSION,
       pilotProjectValidation: PILOT_PROJECT_VALIDATION_VERSION,
       phase3LaunchReadiness: LAUNCH_READINESS_VERSION,
+      phase3LaunchReadinessGate: LAUNCH_READINESS_GATE_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       benchmarkGate: BENCHMARK_GATE_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
@@ -303,6 +304,7 @@ export function buildAgentManifest(options = {}) {
       'phase3IntegratedResults',
       'phase3IntegratedResultsGate',
       'phase3LaunchReadiness',
+      'phase3LaunchReadinessGate',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
       'memberDesignTraceMatrix',
