@@ -28,6 +28,7 @@ export function importCandidateToModel(candidate, options = {}) {
     importSource: candidate?.source?.type || 'import',
     importFileId: candidate?.source?.fileId || null,
     importCandidateVersion: candidate?.version || null,
+    importReview: buildImportReviewMeta(candidate, options),
     importAudit: {
       warnings: candidate?.audit?.warnings || [],
       counts: candidate?.audit?.counts || {},
@@ -35,6 +36,22 @@ export function importCandidateToModel(candidate, options = {}) {
   };
   addMinimalLoads(model, options);
   return model;
+}
+
+function buildImportReviewMeta(candidate, options) {
+  const candidateReview = candidate?.audit?.pointcloud?.candidateReview || candidate?.audit?.planAssembly?.review || null;
+  const confirmed = options.confirmed === true || options.reviewStatus === 'confirmed';
+  const humanReviewRequired = candidateReview?.humanReviewRequired !== false;
+  return {
+    required: options.reviewRequired !== false && !confirmed,
+    confirmed,
+    status: confirmed ? 'confirmed' : 'review-required',
+    candidateToAnalysisPath: candidateReview?.candidateToAnalysisPath || 'available-after-human-review',
+    sourceAssistance: candidateReview?.sourceAssistance || null,
+    blockers: candidateReview?.blockers || [],
+    agentDecision: confirmed ? 'import-candidate-confirmed-for-analysis' : 'review-import-candidate-before-final-use',
+    humanReviewRequired,
+  };
 }
 
 function addMinimalLoads(model, options) {

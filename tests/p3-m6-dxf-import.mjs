@@ -73,8 +73,16 @@ const analysis = analyzeModel(analysisModel);
 assert.equal(analysis.ok, true, JSON.stringify(analysis.validation.errors, null, 2));
 assert.equal(analysisModel.meta.importSource, 'dxf');
 assert.equal(analysisModel.meta.importFileId, 'min-frame.dxf');
+assert.equal(analysisModel.meta.importReview.required, true);
+assert.equal(analysisModel.meta.importReview.status, 'review-required');
+assert.equal(analysisModel.meta.importReview.agentDecision, 'review-import-candidate-before-final-use');
 assert.equal(analysisModel.loads.every((load) => load.source === 'dxf-candidate-e2e'), true);
 assert.ok(analysis.envelope.dmax >= 0);
+
+const confirmedAnalysisModel = importCandidateToModel(candidate, { confirmed: true, topDeadLoad: 1 });
+assert.equal(confirmedAnalysisModel.meta.importReview.required, false);
+assert.equal(confirmedAnalysisModel.meta.importReview.status, 'confirmed');
+assert.equal(confirmedAnalysisModel.meta.importReview.agentDecision, 'import-candidate-confirmed-for-analysis');
 
 const offsetCandidate = importDxfToCandidate(shiftDxfCoordinates(text, { x: 100000, y: 200000, z: 0 }), {
   fileId: 'offset-min-frame.dxf',

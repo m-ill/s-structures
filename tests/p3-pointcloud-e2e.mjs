@@ -24,6 +24,11 @@ const analysis = analyzeModel(model);
 assert.equal(analysis.ok, true, JSON.stringify(analysis.validation.errors, null, 2));
 assert.ok(model.nodes.length > 0);
 assert.ok(model.members.length > 0);
+assert.equal(model.meta.importReview.required, true);
+assert.equal(model.meta.importReview.status, 'review-required');
+assert.equal(model.meta.importReview.candidateToAnalysisPath, 'available-after-human-review');
+assert.equal(model.meta.importReview.humanReviewRequired, true);
+assert.equal(model.meta.importReview.agentDecision, 'review-import-candidate-before-final-use');
 assert.ok(analysis.envelope.dmax >= 0);
 
 console.log(JSON.stringify({

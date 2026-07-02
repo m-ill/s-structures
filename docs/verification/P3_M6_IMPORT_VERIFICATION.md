@@ -22,6 +22,8 @@ This note verifies P3-M6 against `docs/phase3/IMPORT_DXF_DWG_PLAN.md` and `docs/
 
 The common `importCandidateToModel()` path previously used point-cloud-specific load labels. It now records generic import metadata and uses source-specific load trace text, so DXF, DWG, and point-cloud candidates can share the same candidate-to-analysis conversion path.
 
+2026-07-03 candidate review metadata update: `importCandidateToModel()` now writes `meta.importReview` with review-required status, candidate-to-analysis path, blockers, and agent decision. Analysis conversion remains available for regression and preview, but AI agents can see whether the source ImportCandidate was explicitly confirmed before treating the model as final.
+
 ## Current Test Gate
 
 `tests/p3-m6-dxf-import.mjs` now verifies:
