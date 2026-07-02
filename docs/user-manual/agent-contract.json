@@ -18,6 +18,7 @@
     "agentControl": "available",
     "importReviewUi": "preliminary",
     "pointCloudImport": "preliminary-loader-viewer-core",
+    "pointCloudExtraction": "preliminary-synthetic-benchmark",
     "nonlinearPushover": "preliminary-not-final-nonlinear-engine"
   },
   "globalObjects": [

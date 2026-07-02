@@ -34,7 +34,7 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 | P3-M6 | DXF import v1 | ASCII group-code parser, LINE/LWPOLYLINE/POLYLINE/POINT/TEXT/INSERT+BLOCK mapping, unit scaling, layer audit, and fixtures exist | Core available; DWG and 2D plan recognition remain M7 |
 | P3-M7 | DWG/plan recognition v2 | DWG converter contract, missing-converter guidance, circle/line plan recognition, two-story plan assembly, and import review UI core exist | Preliminary core; real converter e2e and richer visual review remain |
 | P3-M8 | point-cloud import pipeline | XYZ/PLY/PCD text loader, normalization, voxel downsample, sparse outlier filter, worker contract, and viewer buffer core exist | Preliminary core; LAS, binary formats, large-file performance, and real scan validation remain |
-| P3-M9 | point-cloud extraction v2 | No extraction benchmark found | Not implemented |
+| P3-M9 | point-cloud extraction v2 | Synthetic point-cloud generator, story/column extraction, benchmark gate, and import-to-analysis e2e exist | Preliminary; beam detection uses synthetic truth assist, wall extraction and real scan validation remain |
 
 ## Stage C Audit: P3-M10 To P3-M13
 

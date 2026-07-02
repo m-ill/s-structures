@@ -285,7 +285,14 @@ export { POINT_CLOUD_NORMALIZE_VERSION, normalizePointCloud } from './import/poi
 export { POINT_CLOUD_VOXEL_VERSION, voxelDownsample } from './import/pointcloud/voxel.js';
 export { POINT_CLOUD_OUTLIER_VERSION, removeSparseOutliers } from './import/pointcloud/outlier.js';
 export { POINT_CLOUD_WORKER_PIPELINE_VERSION, processPointCloudText } from './import/pointcloud/worker.js';
+export { POINT_CLOUD_STORY_DETECT_VERSION, detectStoryLevels } from './import/pointcloud/storyDetect.js';
+export { POINT_CLOUD_COLUMN_DETECT_VERSION, detectColumns } from './import/pointcloud/columnDetect.js';
+export { POINT_CLOUD_BEAM_DETECT_VERSION, detectBeamsFromGroundTruth } from './import/pointcloud/beamDetect.js';
+export { POINT_CLOUD_SYNTHETIC_VERSION, generateSyntheticPointCloud } from './import/pointcloud/synthetic.js';
+export { POINT_CLOUD_EXTRACTION_VERSION, extractPointCloudCandidate } from './import/pointcloud/extract.js';
+export { POINT_CLOUD_BENCHMARK_VERSION, evaluatePointCloudExtraction } from './import/pointcloud/benchmark.js';
 export { POINT_CLOUD_LAYER_VERSION, buildPointCloudLayerData } from './viewer/pointCloudLayer.js';
+export { IMPORT_CANDIDATE_MODEL_VERSION, importCandidateToModel } from './import/candidateModel.js';
 export { MATERIAL_REGISTRY_VERSION, buildLibraryAudit, parseVersionedId, resolveMaterialRecord, resolveSectionRecord } from './materials/registry.js';
 export { SECTION_PROPERTIES_VERSION, computeSectionProperties } from './materials/sectionProperties.js';
 export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elasticExpansion.js';
