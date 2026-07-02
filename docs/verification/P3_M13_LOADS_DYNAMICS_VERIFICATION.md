@@ -51,9 +51,11 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 
 2026-07-03 basis-input hardening: `buildLoadsV2Trace()` no longer uses default wind or seismic forces as accepted ticket evidence. Wind, seismic, and environmental coverage now requires explicit basis input, and `review.missingBasis` records missing or empty input groups. `buildMassSourceTrace()` also separates non-vertical ignored loads from skipped loads outside the active mass-source combination or zero vertical loads, so reports and AI agents can see whether a partial mass trace is a warning or only a filtered combination scope.
 
+2026-07-03 dynamic input hardening: CQC traces now validate modal response period and displacement values before reporting availability. Invalid modal responses are excluded from the combination, exposed through `inputReview`, and force `review-required` with `modal-response-values`. Modal-superposition time-history traces now also require at least one valid mode and report invalid mode rows through `inputReview`, so an acceleration record without usable modes cannot be accepted as a complete P3-T81 trace.
+
 ## Current Test Gate
 
-`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, explicit basis gating, RSA scaling, torsion Ax, CQC, RSA contract/review propagation, sparse-CQC RSA holds, dynamic review decisions, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace and review status, skipped-vs-ignored mass-source loads, top-level mass-source warning propagation, empty load/mass coverage blocking, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.
+`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, explicit basis gating, RSA scaling, torsion Ax, CQC input validation, RSA contract/review propagation, sparse-CQC RSA holds, dynamic review decisions, linear THA, modal THA mode validation, global buckling trace, member Euler screening, mass source trace and review status, skipped-vs-ignored mass-source loads, top-level mass-source warning propagation, empty load/mass coverage blocking, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.
 
 ## Remaining Limits
 

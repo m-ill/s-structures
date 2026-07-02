@@ -6,8 +6,11 @@ export function buildDynamicCompletenessReview(input = {}) {
   const type = input.type || 'dynamic-trace';
   const missing = [];
   if (type === 'cqc' && !(Number(input.responseCount) >= 2)) missing.push('modal-response-count');
+  if (type === 'cqc' && Number(input.invalidResponseCount || 0) > 0) missing.push('modal-response-values');
   if (type === 'buckling' && input.globalStatus !== 'available') missing.push('global-buckling-trace');
   if (type === 'time-history' && !(Number(input.stepCount) > 0)) missing.push('time-history-steps');
+  if (type === 'time-history' && input.requiresModes === true && !(Number(input.modeCount) > 0)) missing.push('modal-mode-count');
+  if (type === 'time-history' && Number(input.invalidModeCount || 0) > 0) missing.push('modal-mode-values');
   const hasWarnings = missing.length > 0 || input.warning;
   return {
     version: DYNAMIC_COMPLETENESS_VERSION,
@@ -27,12 +30,14 @@ export function combineModalCqc(responses, dampingRatio = 0.05) {
 }
 
 export function buildCqcCombinationReport(responses, dampingRatio = 0.05, closeRatio = 0.1) {
-  const cqc = combineModalCqc(responses, dampingRatio);
-  const srss = Math.sqrt(responses.reduce((sum, item) => sum + Number(item.displacement || 0) ** 2, 0));
+  const validResponses = (responses || []).filter(validModalResponse);
+  const invalidResponseCount = (responses || []).length - validResponses.length;
+  const cqc = combineModalCqc(validResponses, dampingRatio);
+  const srss = Math.sqrt(validResponses.reduce((sum, item) => sum + Number(item.displacement || 0) ** 2, 0));
   const closeModes = [];
-  for (let i = 0; i < responses.length; i += 1) {
-    for (let j = i + 1; j < responses.length; j += 1) {
-      const a = responses[i]; const b = responses[j];
+  for (let i = 0; i < validResponses.length; i += 1) {
+    for (let j = i + 1; j < validResponses.length; j += 1) {
+      const a = validResponses[i]; const b = validResponses[j];
       const ratio = Math.abs(Number(a.period) - Number(b.period)) / Math.max(1e-12, Math.max(Number(a.period), Number(b.period)));
       if (ratio <= closeRatio) closeModes.push({ modes: [a.mode || i + 1, b.mode || j + 1], periodRatio: ratio, rho: rho(a.period, b.period, dampingRatio) });
     }
@@ -41,11 +46,22 @@ export function buildCqcCombinationReport(responses, dampingRatio = 0.05, closeR
     version: DYNAMIC_COMPLETENESS_VERSION,
     contract: buildDynamicContract(['P3-T79'], 'CQC modal combination trace for elastic response spectrum review.'),
     method: 'CQC',
-    review: buildDynamicCompletenessReview({ type: 'cqc', responseCount: responses.length }),
+    review: buildDynamicCompletenessReview({ type: 'cqc', responseCount: validResponses.length, invalidResponseCount }),
     cqc,
     srss,
     cqcToSrss: srss > 0 ? cqc / srss : 0,
     closeModes,
+    inputReview: {
+      responseCount: (responses || []).length,
+      validResponseCount: validResponses.length,
+      invalidResponseCount,
+      invalidResponses: (responses || []).filter((row) => !validModalResponse(row)).map((row, index) => ({
+        index,
+        mode: row?.mode || null,
+        period: row?.period ?? null,
+        displacement: row?.displacement ?? null,
+      })),
+    },
   };
 }
 
@@ -119,7 +135,10 @@ export function runLinearSdofTha({ period = 1, dampingRatio = 0.05, dt = 0.02, a
 }
 
 export function runModalSuperpositionTha({ modes = [], direction = 'x', dampingRatio = 0.05, dt = 0.02, accelerations = [] } = {}) {
-  const modal = modes.map((mode, index) => {
+  if (!(Number(dt) > 0)) throw new Error('dt must be positive.');
+  const validModes = (modes || []).filter(validDynamicMode);
+  const invalidModeCount = (modes || []).length - validModes.length;
+  const modal = validModes.map((mode, index) => {
     const trace = runLinearSdofTha({ period: mode.period, dampingRatio, dt, accelerations });
     const gamma = Number(mode.participation?.[direction]?.gamma ?? mode.gamma ?? 1);
     return { mode: mode.id || `MODE${index + 1}`, period: mode.period, gamma, trace };
@@ -133,11 +152,35 @@ export function runModalSuperpositionTha({ modes = [], direction = 'x', dampingR
     contract: buildDynamicContract(['P3-T81'], 'Linear modal-superposition time-history trace.'),
     method: 'linear-modal-superposition-newmark',
     direction,
-    review: buildDynamicCompletenessReview({ type: 'time-history', stepCount: rows.length }),
+    review: buildDynamicCompletenessReview({
+      type: 'time-history',
+      stepCount: rows.length,
+      requiresModes: true,
+      modeCount: modal.length,
+      invalidModeCount,
+    }),
+    inputReview: {
+      modeCount: (modes || []).length,
+      validModeCount: modal.length,
+      invalidModeCount,
+      invalidModes: (modes || []).filter((mode) => !validDynamicMode(mode)).map((mode, index) => ({
+        index,
+        mode: mode?.id || null,
+        period: mode?.period ?? null,
+      })),
+    },
     modal,
     rows,
     maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))),
   };
+}
+
+function validModalResponse(row) {
+  return Number(row?.period) > 0 && Number.isFinite(Number(row?.displacement));
+}
+
+function validDynamicMode(mode) {
+  return Number(mode?.period) > 0;
 }
 
 function dynamicHoldDecision(type) {

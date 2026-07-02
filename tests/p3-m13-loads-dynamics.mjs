@@ -105,6 +105,16 @@ assert.ok(cqcReport.closeModes.length === 1);
 const sparseCqcReview = buildDynamicCompletenessReview({ type: 'cqc', responseCount: 1 });
 assert.equal(sparseCqcReview.status, 'review-required');
 assert.ok(sparseCqcReview.missing.includes('modal-response-count'));
+const invalidCqcReport = buildCqcCombinationReport([
+  { mode: 'M1', period: 1, displacement: 2 },
+  { mode: 'M-BAD', period: 0, displacement: 1 },
+  { mode: 'M-NAN', period: 1.1, displacement: Number.NaN },
+]);
+assert.equal(invalidCqcReport.review.status, 'review-required');
+assert.ok(invalidCqcReport.review.missing.includes('modal-response-count'));
+assert.ok(invalidCqcReport.review.missing.includes('modal-response-values'));
+assert.equal(invalidCqcReport.inputReview.invalidResponseCount, 2);
+assert.equal(invalidCqcReport.inputReview.validResponseCount, 1);
 
 const rsa = runResponseSpectrum([
   { id: 'M1', period: 1, omega: 2 * Math.PI, participation: { x: { gamma: 1, massRatio: 0.6 } } },
@@ -147,6 +157,18 @@ assert.deepEqual(modalTha.contract.tickets, ['P3-T81']);
 assert.equal(modalTha.rows.length, 4);
 assert.equal(modalTha.modal.length, 2);
 assert.equal(modalTha.review.status, 'available');
+const emptyModalTha = runModalSuperpositionTha({ modes: [], accelerations: [0, 0.1] });
+assert.equal(emptyModalTha.review.status, 'review-required');
+assert.ok(emptyModalTha.review.missing.includes('modal-mode-count'));
+assert.equal(emptyModalTha.inputReview.validModeCount, 0);
+const invalidModeTha = runModalSuperpositionTha({
+  modes: [{ id: 'BAD', period: 0 }, { id: 'M1', period: 1, gamma: 1 }],
+  accelerations: [0, 0.1],
+});
+assert.equal(invalidModeTha.review.status, 'review-required');
+assert.ok(invalidModeTha.review.missing.includes('modal-mode-values'));
+assert.equal(invalidModeTha.inputReview.invalidModeCount, 1);
+assert.equal(invalidModeTha.modal.length, 1);
 
 const environmental = generateEnvironmentalLoadsV2(model, { soilPressure: 3, waterPressure: 2, uplift: 1, snowLoad: 0.5 });
 assert.ok(environmental.loadCases.includes('H'));
