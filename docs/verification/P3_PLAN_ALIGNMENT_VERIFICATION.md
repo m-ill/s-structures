@@ -24,7 +24,7 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 | Success criteria and release gates | `requirements.successCriteria`, `requirements.launchGates` |
 | Architecture decisions | `architecture.decisions` for D1 to D10 |
 | Module boundaries and file routing | `architecture.moduleBoundaries`, `architecture.fileRouting` |
-| Server/API/auth/persistence | `serverApi.endpoints`, `errorEnvelope`, `auth`, `persistence` |
+| Server/API/auth/persistence | `serverApi.endpoints`, `errorEnvelope`, `auth`, `persistence`, project library endpoints |
 | Frontend and import contracts | `frontend.routes`, `frontend.modules`, `importPipeline` |
 | Material and section library | `materialLibrary` fields, registry rules, agent actions, module list |
 | Nonlinear engine | `nonlinearEngine` scope ladder N1 to N6, convergence, benchmark, result contracts |
@@ -49,6 +49,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 2026-07-02 agent QA command update: `buildAgentManifest()` and `docs/user-manual/agent-contract.json` now expose `qaCommands` for the full Phase 3 gate, list mode, P3-M6-to-M20 scoped gate, runner contract, and plan-alignment check. This gives AI agents a stable place to discover verification commands instead of inferring them from package scripts.
 
 2026-07-02 document-reference review update: the architecture document now references the actual `server/main.mjs` and `server/router.mjs` server entry/routing split. `tests/p3-doc-reference-integrity.mjs` was added to prevent stale local file references in Phase 3, verification, and user-manual documents.
+
+2026-07-02 server API review update: the actual server already exposed project library routes for M10 material/section storage through `server/routes/libraries.mjs`, but the Phase 3 API plan and plan-alignment contract did not list them. The API plan, alignment endpoint table, and `tests/p3-server-api.mjs` now cover list/read/upsert project library endpoints and role gating.
 
 For the P3-M6 restart point, the practical order is:
 

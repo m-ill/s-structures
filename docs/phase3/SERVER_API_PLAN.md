@@ -86,6 +86,16 @@ import 처리 자체는 브라우저(worker)에서 수행하고, 확정 전 후�
 
 승인된 rev 이후 새 revision 저장 시 승인 상태를 자동 해제하고 이력에 남긴다 (P2 T45 이행).
 
+### Project Library (`server/routes/libraries.mjs`)
+
+M10 material/section library project-scope storage path. Analysis still runs in the browser, but collaborative project material and section records are stored in the same server project store.
+
+| Method | Path | Description | Permission |
+| --- | --- | --- | --- |
+| GET | `/api/projects/:id/library/:kind` | list `materials` or `sections` | viewer+ |
+| GET | `/api/projects/:id/library/:kind/:itemId` | read one `id@version` item, with optional `?version=` | viewer+ |
+| PUT | `/api/projects/:id/library/:kind/:itemId` | upsert project-scope material or section | engineer+ |
+
 ### Health/Meta
 
 | Method | Path | 설명 |

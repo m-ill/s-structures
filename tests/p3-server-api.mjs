@@ -117,6 +117,34 @@ try {
   const traversal = await app.api('GET', `/api/projects/${projectId}/files/../../secret`, { token });
   assert.equal(traversal.status, 404);
 
+  // project library: M10 material/section records through server store
+  const putMaterial = await app.api('PUT', `/api/projects/${projectId}/library/materials/SS400`, {
+    token,
+    body: { item: { id: 'SS400', version: 1, kind: 'steel', elastic: { E: 205000, G: 79000 } } },
+  });
+  assert.equal(putMaterial.status, 200, JSON.stringify(putMaterial.data));
+  assert.equal(putMaterial.data.data.item.source.scope, 'project');
+
+  const putSection = await app.api('PUT', `/api/projects/${projectId}/library/sections/H-300x150`, {
+    token,
+    body: { item: { id: 'H-300x150', version: 1, kind: 'direct', shape: 'H', properties: { A: 0.006, Iy: 8.4e-5, Iz: 1.2e-5 } } },
+  });
+  assert.equal(putSection.status, 200, JSON.stringify(putSection.data));
+
+  const materialList = await app.api('GET', `/api/projects/${projectId}/library/materials`, { token: engineerLogin.token });
+  assert.equal(materialList.status, 200);
+  assert.equal(materialList.data.data.items.length, 1);
+
+  const materialItem = await app.api('GET', `/api/projects/${projectId}/library/materials/SS400?version=1`, { token });
+  assert.equal(materialItem.status, 200);
+  assert.equal(materialItem.data.data.item.id, 'SS400');
+
+  const reviewerTriesLibraryWrite = await app.api('PUT', `/api/projects/${projectId}/library/materials/SM490`, {
+    token: engineerLogin.token,
+    body: { item: { id: 'SM490', version: 1, kind: 'steel', elastic: { E: 205000, G: 79000 } } },
+  });
+  assert.equal(reviewerTriesLibraryWrite.status, 403);
+
   // approval workflow: reviewer can approve, subsequent save revokes it
   const approve = await app.api('POST', `/api/projects/${projectId}/approval`, {
     token: engineerLogin.token, body: { state: 'approved', rev: 2 },
