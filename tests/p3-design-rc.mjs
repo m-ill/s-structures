@@ -36,6 +36,10 @@ assert.equal(beamReport.schedules.slabs.length, 1);
 assert.equal(beamReport.schedules.walls.length, 1);
 assert.equal(beamReport.rows.length, 3);
 assert.ok(beamReport.issueRows.some((row) => row.moduleId === 'rc' && row.itemId === 'W1'));
+assert.ok(beamReport.issueRows.every((row) => row.formulaIds.length > 0));
+assert.deepEqual(beamReport.rcDesignGate.missingRoles, ['column']);
+assert.equal(beamReport.rcDesignGate.completeRoleCoverage, false);
+assert.equal(beamReport.rcDesignGate.coverage.find((row) => row.role === 'wall').ticket, 'P3-T89');
 assert.ok(beamReport.formulaTrace.some((item) => item.formulaId === 'KDS-RC-BEAM-FLEXURE-V1'));
 assert.ok(beamReport.formulaTrace.every((item) => item.standard && item.clause && item.title));
 assert.match(beamReport.schedules.beams[0].flexure.bottom.label, /^\d+-D/);
@@ -53,6 +57,7 @@ column.designParams.rc.defaultColumnRebarRatio = 0.018;
 const columnAnalysis = analyzeModel(column);
 const columnReport = buildRcDetailedDesignReport(column, columnAnalysis);
 assert.equal(columnReport.schedules.columns.length, 1);
+assert.ok(columnReport.rcDesignGate.missingRoles.includes('beam'));
 assert.ok(columnReport.schedules.columns[0].pm.curve.points.length >= 4);
 assert.ok(columnReport.schedules.columns[0].ties.spacing <= 150);
 

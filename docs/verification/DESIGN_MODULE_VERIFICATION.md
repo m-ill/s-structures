@@ -17,6 +17,8 @@ Current status is preliminary. The module produces traceable schedules and regis
 
 2026-07-02 registry update: P3-M17 formula traces now resolve through `src/standards/designFormulaRegistry.js`, so AI agents can inspect `formulaId`, `standard`, `clause`, and `title` instead of parsing opaque formula strings.
 
+2026-07-02 review update: `rcDesignGate` now exposes role coverage rows, `missingRoles`, and `completeRoleCoverage`. RC issue rows also carry formula IDs, so AI agents can tell whether beam, column, wall, and slab checks are present and can jump from WARN/NG rows to the governing formula trace.
+
 ## P3-M18 Steel / Connection / Foundation Detailed Design
 
 Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.

@@ -40,6 +40,8 @@ export function buildRcDesignGate(report = {}) {
     ...(schedules.slabs || []),
   ];
   const formulas = report.formulaTrace || rows.map((row) => collectFormula(row)).flat();
+  const coverage = buildRoleCoverage(schedules);
+  const missingRoles = coverage.filter((row) => row.count === 0).map((row) => row.role);
   return {
     version: RC_DESIGN_GATE_VERSION,
     milestone: 'P3-M17',
@@ -54,6 +56,9 @@ export function buildRcDesignGate(report = {}) {
     formulaCount: formulas.length,
     issueCount: rows.filter((row) => row.status && row.status !== 'OK').length,
     requiredRoles: ['beam', 'column', 'wall', 'slab'],
+    coverage,
+    missingRoles,
+    completeRoleCoverage: missingRoles.length === 0,
     limitations: [
       'P3-M17 is a preliminary detailed-design trace gate for engineer review.',
       'Final clause selection, seismic detailing, drawings, and constructability remain outside this gate.',
@@ -86,8 +91,18 @@ function buildIssueRows(rows) {
     itemId: row.memberId || row.wallId || row.slabId || row.role,
     role: row.role,
     status: row.status,
+    formulaIds: collectFormula(row).map((item) => item.formulaId),
     action: `RC ${row.role} item requires engineer review.`,
   }));
+}
+
+function buildRoleCoverage(schedules) {
+  return [
+    { role: 'beam', ticket: 'P3-T87', count: schedules.beams?.length || 0 },
+    { role: 'column', ticket: 'P3-T88', count: schedules.columns?.length || 0 },
+    { role: 'wall', ticket: 'P3-T89', count: schedules.walls?.length || 0 },
+    { role: 'slab', ticket: 'P3-T90', count: schedules.slabs?.length || 0 },
+  ];
 }
 
 function collectFormula(row) {
