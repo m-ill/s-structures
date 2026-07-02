@@ -4,10 +4,10 @@ export const SCHEMA_NAME = 's-structures-model';
 export const DOF_KEYS = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
 export const FORCE_KEYS = ['fx', 'fy', 'fz', 'mx', 'my', 'mz'];
 
-export const SUPPORT_TYPES = new Set(['fixed', 'pin', 'roller', 'custom', null, undefined]);
-export const MEMBER_TYPES = new Set(['frame', undefined, null]);
+export const SUPPORT_TYPES = new Set(['fixed', 'pin', 'roller', 'custom', 'spring', null, undefined]);
+export const MEMBER_TYPES = new Set(['frame', 'truss', 'tensionOnly', 'compressionOnly', undefined, null]);
 export const RELEASE_TYPES = new Set(['rigid', 'pin', undefined, null]);
-export const LOAD_TYPES = new Set(['nodal', 'nmoment', 'udl', 'point']);
+export const LOAD_TYPES = new Set(['nodal', 'nmoment', 'udl', 'point', 'udl-partial', 'trapezoid', 'mmoment', 'temperature', 'tgradient']);
 export const LOAD_CASE_TYPES = new Set(['dead', 'live', 'wind', 'seismic', 'snow', 'roof', 'other', 'user']);
 export const COMBINATION_TYPES = new Set(['strength', 'service', 'envelope', 'user', undefined, null]);
 

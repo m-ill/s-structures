@@ -73,6 +73,11 @@ import { ROUTES_VERSION } from '../app/routes.js';
 import { IMPORT_CANDIDATE_VERSION } from '../import/candidate.js';
 import { IMPORT_GEOMETRY_VERSION } from '../import/segmentClean.js';
 import { POINT_CLOUD_IMPORT_PIPELINE_VERSION } from '../import/pointcloud/pipeline.js';
+import { MATERIAL_REGISTRY_VERSION } from '../materials/registry.js';
+import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
+import { WALL_SLAB_EQUIVALENT_VERSION } from '../solver/wallSlabEquivalent.js';
+import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
+import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -150,6 +155,11 @@ export function buildAgentManifest(options = {}) {
       phase3ImportGeometry: IMPORT_GEOMETRY_VERSION,
       phase3ImportCandidate: IMPORT_CANDIDATE_VERSION,
       phase3PointCloudPipelineShell: POINT_CLOUD_IMPORT_PIPELINE_VERSION,
+      phase3MaterialRegistry: MATERIAL_REGISTRY_VERSION,
+      phase3ElasticExpansion: ELASTIC_EXPANSION_VERSION,
+      phase3WallSlabEquivalent: WALL_SLAB_EQUIVALENT_VERSION,
+      phase3LoadsV2: LOADS_V2_VERSION,
+      phase3DynamicCompleteness: DYNAMIC_COMPLETENESS_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -268,6 +278,11 @@ export function buildAgentManifest(options = {}) {
       'phase3ImportCandidate',
       'phase3WireframeImport',
       'phase3PointCloudPipelineShell',
+      'phase3MaterialSectionRegistry',
+      'phase3ElasticExpansionTrace',
+      'phase3WallSlabEquivalentTrace',
+      'phase3LoadsV2Trace',
+      'phase3DynamicCompletenessTrace',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -327,6 +342,10 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M4', status: 'available', feature: 'app shell, routes, project browser, session restore, and viewer core' },
       { id: 'P3-M5', status: 'available', feature: 'input geometry core, member classification, and import candidate contract' },
       { id: 'P3-M8', status: 'planned-shell', feature: 'point-cloud import pipeline shell awaiting real files' },
+      { id: 'P3-M10', status: 'preliminary', feature: 'versioned material and section registry with parametric properties' },
+      { id: 'P3-M11', status: 'preliminary', feature: 'spring supports and advanced elastic load expansion trace' },
+      { id: 'P3-M12', status: 'preliminary', feature: 'wall mid-pier and semi-rigid diaphragm equivalent contracts' },
+      { id: 'P3-M13', status: 'preliminary', feature: 'loads v2, CQC, buckling trace, and linear time-history helpers' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

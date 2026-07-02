@@ -69,7 +69,7 @@ const invalidCases = [
   ['bad material props', mutateValid((m) => { m.materials.push({ id: 'bad-mat', E: 0, G: 0 }); m.members[0].matId = 'bad-mat'; }), ERROR_CODES.BAD_MATERIAL_PROPS],
   ['bad release type', mutateValid((m) => { m.members[0].releases.i = 'free-ish'; }), ERROR_CODES.BAD_RELEASE_TYPE],
   ['duplicate load id', mutateValid((m) => { m.loads.push({ ...m.loads[0] }); }), ERROR_CODES.DUPLICATE_LOAD_ID],
-  ['bad load type', mutateValid((m) => { m.loads[0].type = 'temperature'; }), ERROR_CODES.BAD_LOAD_TYPE],
+  ['bad load type', mutateValid((m) => { m.loads[0].type = 'temperature-ish'; }), ERROR_CODES.BAD_LOAD_TYPE],
   ['bad load member ref', mutateValid((m) => { m.loads[0].member = 'NOPE'; }), ERROR_CODES.BAD_LOAD_MEMBER_REF],
   ['bad load node ref', mutateValid((m) => { m.loads = [{ id: 'LN', type: 'nodal', node: 'NOPE', P: 1, dir: '-z', case: 'D' }]; }), ERROR_CODES.BAD_LOAD_NODE_REF],
   ['bad load magnitude', mutateValid((m) => { m.loads[0].w = Number.NaN; }), ERROR_CODES.BAD_LOAD_MAGNITUDE],

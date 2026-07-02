@@ -101,7 +101,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   }
 
   const fixedDofs = buildFixedDofs(nodes);
-  if (!fixedDofs.size) return { ok: false, reason: 'NO_SUPPORT' };
+  applyNodeSprings(nodes, idx, K, F);
+  if (!fixedDofs.size && !nodes.some((node) => node.support === 'spring')) return { ok: false, reason: 'NO_SUPPORT' };
 
   stabilizeUnsupportedRotations(K, nodes, fixedDofs);
   autoFixIsolatedDofs(K, fixedDofs);
@@ -218,7 +219,9 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
   }
 
   const fixedDofs = buildFixedDofs(nodes);
-  if (!fixedDofs.size) return { ok: false, reason: 'NO_SUPPORT', K, free: [], fixedDofs, nodeMap, idx, memData };
+  const F = new Array(ndof).fill(0);
+  applyNodeSprings(nodes, idx, K, F);
+  if (!fixedDofs.size && !nodes.some((node) => node.support === 'spring')) return { ok: false, reason: 'NO_SUPPORT', K, free: [], fixedDofs, nodeMap, idx, memData };
   stabilizeUnsupportedRotations(K, nodes, fixedDofs);
   autoFixIsolatedDofs(K, fixedDofs);
   const free = [];
@@ -249,6 +252,22 @@ export function buildFixedDofs(nodes) {
   return fixedDofs;
 }
 
+export function applyNodeSprings(nodes, idx, K, F) {
+  const keys = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
+  const dispKeys = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
+  for (const node of nodes) {
+    if (node.support !== 'spring') continue;
+    const base = idx[node.id] * 6;
+    keys.forEach((key, i) => {
+      const k = Number(node.spring?.[key] || 0);
+      if (!(k > 0)) return;
+      K[base + i][base + i] += k;
+      const imposed = Number(node.settlement?.[key] ?? node.settlement?.[dispKeys[i]] ?? 0);
+      if (Number.isFinite(imposed)) F[base + i] += k * imposed;
+    });
+  }
+}
+
 export function stabilizeUnsupportedRotations(K, nodes, fixedDofs) {
   const ndof = nodes.length * 6;
   const tr = K.reduce((sum, row, i) => sum + row[i], 0);
@@ -277,6 +296,10 @@ export function recoverReactions(nodes, K, F, D, fixedDofs) {
   const reactions = {};
   nodes.forEach((node, i) => {
     if (!node.support) return;
+    if (node.support === 'spring') {
+      reactions[node.id] = springReaction(node, D.slice(i * 6, i * 6 + 6));
+      return;
+    }
     const r = [];
     for (let k = 0; k < 6; k += 1) {
       const gi = i * 6 + k;
@@ -298,6 +321,13 @@ export function recoverReactions(nodes, K, F, D, fixedDofs) {
     };
   });
   return reactions;
+}
+
+function springReaction(node, d) {
+  const keys = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
+  const dispKeys = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
+  const out = keys.map((key, i) => -Number(node.spring?.[key] || 0) * (d[i] - Number(node.settlement?.[key] ?? node.settlement?.[dispKeys[i]] ?? 0)));
+  return { rx: out[0], ry: out[1], rz: out[2], rmx: out[3], rmy: out[4], rmz: out[5] };
 }
 
 export function buildSolverDiagnostics(K, F, D, freeDofs, fixedDofs) {

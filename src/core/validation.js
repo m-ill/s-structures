@@ -91,6 +91,9 @@ function validateNodes(model, error, warning) {
     if (node.support === 'custom' && (!Array.isArray(node.fix) || node.fix.length !== 6 || !node.fix.every((value) => typeof value === 'boolean'))) {
       error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Custom support requires a six-item boolean fix array.', node.id);
     }
+    if (node.support === 'spring' && !hasSpring(node.spring)) {
+      error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Spring support requires at least one finite positive stiffness.', node.id);
+    }
     if (!usedNodes.has(node.id)) warning(WARNING_CODES.FREE_NODE, 'Node is not connected to any member.', node.id);
   }
 
@@ -184,8 +187,11 @@ function validateLoads(model, nodeIds, memberIds, error, warning) {
     if (load.type === 'nmoment' && (!load.node || !isFiniteNumber(load.M))) {
       error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Nodal moment requires node and finite M.', load.id);
     }
-    if (load.type === 'udl' && (!load.member || !isFiniteNumber(load.w))) {
+    if ((load.type === 'udl' || load.type === 'udl-partial') && (!load.member || !isFiniteNumber(load.w))) {
       error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'UDL requires member and finite w.', load.id);
+    }
+    if (load.type === 'trapezoid' && (!load.member || !isFiniteNumber(load.w1) || !isFiniteNumber(load.w2))) {
+      error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Trapezoid load requires member and finite w1/w2.', load.id);
     }
     if (load.type === 'point') {
       if (!load.member || !isFiniteNumber(load.P)) error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Point load requires member and finite P.', load.id);
@@ -240,7 +246,9 @@ function knownIds(customItems, catalogMap) {
   const ids = new Set(Object.keys(catalogMap));
   for (const item of customItems || []) {
     if (item.id) ids.add(item.id);
+    if (item.id && item.version != null) ids.add(`${item.id}@${item.version}`);
   }
+  for (const id of Object.keys(catalogMap)) ids.add(`${id}@1`);
   return ids;
 }
 
@@ -255,4 +263,8 @@ function finish(errors, warnings) {
 
 function isFiniteNumber(value) {
   return Number.isFinite(Number(value));
+}
+
+function hasSpring(spring = {}) {
+  return ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'].some((key) => Number(spring[key]) > 0);
 }

@@ -18,6 +18,7 @@ import {
   defaultCombos,
   makeEnvelope,
 } from './linear3dPost.js';
+import { expandAdvancedLoads } from './elasticExpansion.js';
 
 export { analyzeComponent3D, assembleStiffness3D } from './linear3dAssembly.js';
 export { AXIS, localK12, memberAxes, solveLinear } from './linear3dElement.js';
@@ -89,6 +90,8 @@ export function analyzeAll(model, factors = null, options = {}) {
 
   const analysisSettings = model.analysisSettings || {};
   let loads = [...(model.loads || [])];
+  const expansion = expandAdvancedLoads(loads, model);
+  loads = expansion.loads;
   if (analysisSettings.includeSelfWeight) {
     loads = loads.concat(createSelfWeightLoads(model));
   }
@@ -137,6 +140,7 @@ export function analyzeAll(model, factors = null, options = {}) {
       type: 'linear_static_3d_frame',
       components: [],
     },
+    elasticExpansion: expansion.trace,
     unstableMembers: new Set(),
     dmax: 0,
     anyOk: false,

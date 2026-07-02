@@ -1,5 +1,6 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { assembleStiffness3D, solveLinear } from '../solver/linear3d.js';
+import { combineModalCqc } from './elasticCompleteness.js';
 
 const DOF_DIR = ['x', 'y', 'z'];
 
@@ -99,16 +100,19 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
       };
     });
     modal.push({ direction, responses });
+    const method = String(spectrum.method || 'SRSS').toUpperCase();
     combined[direction] = {
       maxModalDisplacement: Math.max(0, ...responses.map((item) => item.displacement)),
       srssDisplacement: Math.sqrt(responses.reduce((sum, item) => sum + item.displacement ** 2, 0)),
+      cqcDisplacement: combineModalCqc(responses, spectrum.dampingRatio ?? 0.05),
+      method,
       participatingMassRatio: Math.min(1, responses.reduce((sum, item) => sum + item.massRatio, 0)),
       totalMass: totalMass[dirIndex] || 0,
     };
   }
 
   return {
-    method: 'SRSS',
+    method: String(spectrum.method || 'SRSS').toUpperCase(),
     spectrum: {
       dampingRatio: spectrum.dampingRatio ?? 0.05,
       scale: spectrum.scale ?? 9.80665,

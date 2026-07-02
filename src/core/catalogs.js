@@ -1,3 +1,5 @@
+import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
+
 export const DEFAULT_UNITS = {
   length: 'm',
   force: 'kN',
@@ -145,12 +147,11 @@ export const SECTIONS = Object.fromEntries(
 );
 
 export function materialOf(model, id) {
-  const custom = model?.materials?.find((material) => material.id === id);
-  return custom ? toInternalMaterial(custom) : MATERIALS[id] || MATERIALS.steel;
+  const resolved = resolveMaterialRecord(model, id, MATERIALS_CATALOG);
+  return resolved ? toInternalMaterial(resolved) : MATERIALS.steel;
 }
 
 export function sectionOf(model, id) {
-  const custom = model?.sections?.find((section) => section.id === id);
-  return custom ? toInternalSection(custom) : SECTIONS[id] || SECTIONS.h300;
+  const resolved = resolveSectionRecord(model, id, SECTIONS_CATALOG);
+  return resolved ? toInternalSection(resolved) : SECTIONS.h300;
 }
-
