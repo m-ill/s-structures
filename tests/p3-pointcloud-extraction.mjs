@@ -23,9 +23,24 @@ assert.ok(score.columnRecall >= 0.9, `column recall ${score.columnRecall}`);
 assert.ok(score.columnPrecision >= 0.9, `column precision ${score.columnPrecision}`);
 assert.ok(score.beamRecall >= 0.75, `beam recall ${score.beamRecall}`);
 assert.ok(score.beamPrecision >= 0.75, `beam precision ${score.beamPrecision}`);
+assert.equal(score.targets.columnRecall, 0.9);
+assert.equal(score.targets.beamRecall, 0.75);
+assert.deepEqual(score.pass, {
+  story: true,
+  columnRecall: true,
+  columnPrecision: true,
+  beamRecall: true,
+});
 assert.equal(score.validationStatus.realScan, 'pending-owner-file');
 assert.ok(candidate.candidates.members.some((m) => m.kind === 'beam'));
+assert.equal(candidate.audit.pointcloud.contract.milestone, 'P3-M9');
+assert.deepEqual(candidate.audit.pointcloud.contract.tickets, ['P3-T41', 'P3-T42', 'P3-T43', 'P3-T44', 'P3-T45']);
+assert.equal(candidate.audit.pointcloud.contract.output, 'ImportCandidate');
 assert.equal(candidate.audit.pointcloud.counts.beams > 0, true);
+assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.stories, 'available');
+assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.columns, 'available');
+assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.beams, 'synthetic-assisted');
+assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.importCandidate, 'generated');
 assert.equal(candidate.audit.pointcloud.evidence.beamSource, 'synthetic-ground-truth-assisted');
 assert.equal(candidate.audit.pointcloud.evidence.realScanValidation, 'pending-owner-file');
 assert.deepEqual(candidate.audit.pointcloud.evidence.confidenceBands, {

@@ -28,6 +28,12 @@ export function buildPointCloudExtractionSummary(input = {}) {
   const usedGroundTruth = input.usedGroundTruth === true;
   return {
     version: POINT_CLOUD_EXTRACTION_SUMMARY_VERSION,
+    contract: {
+      milestone: 'P3-M9',
+      tickets: ['P3-T41', 'P3-T42', 'P3-T43', 'P3-T44', 'P3-T45'],
+      source: usedGroundTruth ? 'synthetic-benchmark' : 'scan-only-preliminary',
+      output: 'ImportCandidate',
+    },
     counts: { stories: stories.length, columns: columns.length, beams: beams.length, walls: 0 },
     confidence: {
       mean: summarizeConfidence(columns, beams),
@@ -36,6 +42,13 @@ export function buildPointCloudExtractionSummary(input = {}) {
       beamMin: minConfidence(beams),
     },
     evidence: {
+      extractionStatus: {
+        stories: stories.length > 0 ? 'available' : 'not-detected',
+        columns: columns.length > 0 ? 'available' : 'not-detected',
+        beams: beams.length > 0 ? (usedGroundTruth ? 'synthetic-assisted' : 'available') : 'not-detected',
+        walls: 'not-v1-production',
+        importCandidate: 'generated',
+      },
       storyLevels: stories.map((s) => ({ id: s.id, z: s.z, confidence: s.confidence ?? null })),
       candidates: buildCandidateEvidence(stories, columns, beams, usedGroundTruth),
       confidenceBands: {

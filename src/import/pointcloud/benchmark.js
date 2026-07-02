@@ -2,17 +2,33 @@ export const POINT_CLOUD_BENCHMARK_VERSION = 'p3-m9-pointcloud-benchmark-v1';
 
 export function evaluatePointCloudExtraction(candidate, groundTruth, options = {}) {
   const tol = options.tolerance ?? 0.08;
+  const targets = {
+    storyErrorMax: options.storyErrorTarget ?? 0.03,
+    columnRecall: options.columnRecallTarget ?? 0.9,
+    columnPrecision: options.columnPrecisionTarget ?? 0.9,
+    beamRecall: options.beamRecallTarget ?? 0.75,
+  };
   const detectedColumns = candidate.candidates.members.filter((m) => m.kind === 'column');
   const matched = groundTruth.columns.filter((gt) => detectedColumns.some((m) => columnMatch(m, candidate, gt, tol)));
   const detectedBeams = candidate.candidates.members.filter((m) => m.kind === 'beam');
   const matchedBeams = (groundTruth.beams || []).filter((gt) => detectedBeams.some((m) => beamMatch(m, candidate, gt, tol)));
-  return {
-    version: POINT_CLOUD_BENCHMARK_VERSION,
+  const metrics = {
     storyErrorMax: storyError(candidate.candidates.stories, groundTruth.stories),
     columnRecall: matched.length / Math.max(1, groundTruth.columns.length),
     columnPrecision: matched.length / Math.max(1, detectedColumns.length),
     beamRecall: matchedBeams.length / Math.max(1, (groundTruth.beams || []).length),
     beamPrecision: matchedBeams.length / Math.max(1, detectedBeams.length),
+  };
+  return {
+    version: POINT_CLOUD_BENCHMARK_VERSION,
+    ...metrics,
+    targets,
+    pass: {
+      story: metrics.storyErrorMax < targets.storyErrorMax,
+      columnRecall: metrics.columnRecall >= targets.columnRecall,
+      columnPrecision: metrics.columnPrecision >= targets.columnPrecision,
+      beamRecall: metrics.beamRecall >= targets.beamRecall,
+    },
     validationStatus: {
       syntheticBenchmark: 'checked',
       realScan: 'pending-owner-file',

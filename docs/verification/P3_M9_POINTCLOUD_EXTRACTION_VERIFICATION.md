@@ -28,6 +28,8 @@ The previous extraction audit only exposed raw counts. P3-M9 now records confide
 
 2026-07-02 follow-up: The extraction summary now exposes candidate-level evidence rows and confidence bands. Story, column, and beam candidates carry their supporting evidence, while wall extraction is explicitly marked as `not-v1-production` until real scan validation and panel grouping are available.
 
+2026-07-02 contract update: P3-M9 extraction summaries now expose a `contract` with P3-T41 through P3-T45, output type, and source status. The synthetic benchmark result now records target thresholds and pass flags for story, column recall, column precision, and beam recall, so AI agents can verify the benchmark gate without recalculating thresholds from the plan document.
+
 ## Current Test Gate
 
 P3-M9 is covered by:
