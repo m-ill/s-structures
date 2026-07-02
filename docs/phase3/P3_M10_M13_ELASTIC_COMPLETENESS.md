@@ -74,3 +74,16 @@ contract covers the full Stage C elastic engine scope. This keeps material
 registry, spring/settlement/load expansion, wall/slab equivalents, and
 loads/dynamics traces discoverable for AI agents through
 `getPhase3ElasticMilestoneReview` while preserving the engineer-review boundary.
+
+## 2026-07-03 Exit-Criteria Review Update
+
+`getPhase3ElasticMilestoneReview()` now exposes the M10 to M13 plan exit criteria
+as agent-readable `exitCriteria` rows. Each row records the source plan,
+requirement text, and automated evidence file for material registry, spring and
+advanced-load expansion, wall/slab equivalents, loads v2, CQC, buckling, modal
+time-history, and mass-source trace coverage.
+
+This does not change the production boundary. M10 to M13 remain preliminary
+until office-grade material/catalog policy, project-specific KDS exception
+review, dynamic benchmark expansion, shell buckling, follower load, and
+construction-sequence exclusions are reviewed by an engineer or owner.

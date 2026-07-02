@@ -20,8 +20,22 @@ assert.ok(review.rows[1].contracts.readApis.includes('getElasticExpansionTrace')
 assert.ok(review.rows[2].contracts.dataContracts.includes('phase3ShellQuad4Trace'));
 assert.ok(review.rows[3].contracts.readApis.includes('getDynamicCompletenessTrace'));
 assert.ok(review.rows[3].remainingValidation.includes('project-specific KDS code exception review'));
+assert.deepEqual(review.rows.map((row) => row.exitCriteriaSummary.status), [
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+]);
+assert.deepEqual(review.rows.map((row) => row.exitCriteria.length), [4, 5, 3, 7]);
+assert.ok(review.rows[0].exitCriteria.find((row) => row.id === 'M10-E2').requirement.includes('id@version'));
+assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M10-E3').evidence, 'tests/p3-section-properties.mjs');
+assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'M11-G5').source, 'docs/phase3/ELASTIC_ENGINE_COMPLETENESS_PLAN.md');
+assert.ok(review.rows[2].exitCriteria.find((row) => row.id === 'M12-G8').requirement.includes('Semi-rigid diaphragm'));
+assert.equal(review.rows[3].exitCriteria.find((row) => row.id === 'M13-G15').evidence, 'tests/p3-m13-loads-dynamics.mjs');
 assert.equal(review.summary.milestoneCount, 4);
 assert.equal(review.summary.automatedEvidenceCount, 5);
+assert.equal(review.summary.exitCriteriaCount, 19);
+assert.equal(review.summary.exitCriteriaAutomatedCount, 19);
 assert.equal(review.summary.preliminaryCount, 4);
 assert.equal(review.summary.productionReady, false);
 assert.equal(review.summary.agentDecision, 'elastic-completeness-engineer-review-required');
