@@ -61,6 +61,19 @@ const concreteMaterial = validateMaterialRecord({
 });
 assert.equal(concreteMaterial.ok, true);
 assert.equal(concreteMaterial.normalized.strength.concrete.fck, 24);
+const customMaterialMissingSource = validateMaterialRecord({
+  id: 'CUSTOM_ELASTIC', version: 1, kind: 'custom',
+  elastic: { E: 30000, G: 12500 },
+});
+assert.equal(customMaterialMissingSource.ok, true);
+assert.ok(customMaterialMissingSource.warnings.includes('source.note-missing-for-custom-material'));
+const customMaterialWithSource = validateMaterialRecord({
+  id: 'CUSTOM_REVIEWED', version: 1, kind: 'custom',
+  elastic: { E: 30000, G: 12500 },
+  source: { note: 'owner supplied reviewed material card' },
+});
+assert.equal(customMaterialWithSource.ok, true);
+assert.deepEqual(customMaterialWithSource.warnings, []);
 const legacyTopLevelSteel = validateMaterialRecord({
   id: 'LEGACY_TOP_STEEL', version: 1, E: 205000, G: 79000, Fy: 275, Fu: 410,
 });
@@ -94,6 +107,7 @@ assert.ok(sectionOf(model, 'USER_H@1').A > 0);
 const audit = buildLibraryAudit(model);
 assert.equal(audit.version, MATERIAL_REGISTRY_VERSION);
 assert.deepEqual(audit.materialErrors, []);
+assert.deepEqual(audit.materialWarnings, []);
 assert.deepEqual(audit.sectionErrors, []);
 assert.deepEqual(audit.sectionWarnings, []);
 assert.deepEqual(audit.migrationWarnings, []);
@@ -113,10 +127,12 @@ assert.ok(libraryReport.contract.agentActions.includes('upsertSection'));
 assert.equal(libraryReport.summary.materialReferenceCount, 1);
 assert.equal(libraryReport.summary.sectionReferenceCount, 1);
 assert.equal(libraryReport.summary.unversionedReferenceCount, 0);
+assert.equal(libraryReport.summary.materialWarningCount, 0);
 assert.equal(libraryReport.auditSummary.registryPolicy.editRule, 'append-only-new-version');
 assert.equal(libraryReport.review.registryReady, true);
 assert.equal(libraryReport.review.calculationTraceReady, true);
 assert.equal(libraryReport.review.nonlinearBackboneReady, true);
+assert.equal(libraryReport.review.customMaterialSourceReviewRequired, false);
 assert.equal(libraryReport.review.ownerPolicyReviewRequired, true);
 assert.equal(libraryReport.review.productionReady, false);
 assert.deepEqual(libraryReport.review.blockers, []);
@@ -264,6 +280,15 @@ const badBackboneReport = buildMaterialLibraryReport({
   members: [{ id: 'M1', matId: 'BAD_BACKBONE@1', secId: 'H-400x200x8x13@1' }],
 });
 assert.ok(badBackboneReport.review.blockers.includes('material-schema-errors'));
+
+const customSourceReport = buildMaterialLibraryReport({
+  materials: [{ id: 'CUSTOM_ELASTIC', version: 1, kind: 'custom', E: 30000, G: 12500 }],
+  members: [{ id: 'M1', matId: 'CUSTOM_ELASTIC@1', secId: 'H-400x200x8x13@1' }],
+});
+assert.equal(customSourceReport.summary.materialWarningCount, 1);
+assert.ok(customSourceReport.auditSummary.materialWarnings.includes('CUSTOM_ELASTIC:source.note-missing-for-custom-material'));
+assert.equal(customSourceReport.review.customMaterialSourceReviewRequired, true);
+assert.equal(customSourceReport.review.registryReady, true);
 
 assert.equal(MATERIAL_LIBRARY_EDIT_VERSION, 'p3-m10-library-edit-v1');
 assert.deepEqual(MATERIAL_LIBRARY_ACTIONS, ['listLibrary', 'getLibraryItem', 'upsertMaterial', 'upsertSection']);

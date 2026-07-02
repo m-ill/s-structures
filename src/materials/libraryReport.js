@@ -37,6 +37,7 @@ function buildSummary(audit, materialRefs, sectionRefs) {
     unversionedReferenceCount: audit.unversionedReferences.length,
     migrationWarningCount: audit.migrationWarnings.length,
     materialErrorCount: audit.materialErrors.length,
+    materialWarningCount: audit.materialWarnings.length,
     sectionErrorCount: audit.sectionErrors.length,
     sectionWarningCount: audit.sectionWarnings.length,
     appendOnlyWarningCount: audit.appendOnlyWarnings.length,
@@ -53,6 +54,7 @@ function buildAuditSummary(audit) {
     softDeletedReferences: audit.softDeletedReferences,
     appendOnlyWarnings: audit.appendOnlyWarnings,
     migrationWarnings: audit.migrationWarnings,
+    materialWarnings: audit.materialWarnings,
   };
 }
 
@@ -128,6 +130,7 @@ function buildReview(summary, materials) {
     registryReady: blockers.length === 0,
     calculationTraceReady: summary.unversionedReferenceCount === 0,
     nonlinearBackboneReady,
+    customMaterialSourceReviewRequired: summary.materialWarningCount > 0,
     sectionPropertyReviewRequired: summary.sectionWarningCount > 0,
     ownerPolicyReviewRequired: true,
     productionReady: false,

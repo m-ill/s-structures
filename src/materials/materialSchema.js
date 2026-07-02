@@ -2,6 +2,7 @@ export const MATERIAL_SCHEMA_VERSION = 'p3-m10-material-schema-v1';
 
 export function validateMaterialRecord(record = {}) {
   const errors = [];
+  const warnings = [];
   if (!record.id) errors.push('id');
   if (!Number.isInteger(Number(record.version)) || Number(record.version) < 1) errors.push('version');
   const elastic = record.elastic || record;
@@ -10,9 +11,10 @@ export function validateMaterialRecord(record = {}) {
   if (!['steel', 'concrete', 'timber', 'custom'].includes(kind)) errors.push('kind');
   const strength = normalizeStrength(record, kind);
   errors.push(...validateStrength(kind, strength));
+  warnings.push(...validateSourceTrace(kind, record));
   const nonlinear = record.nonlinear;
   if (nonlinear && !validateBackbone(nonlinear.backbone || [])) errors.push('nonlinear.backbone');
-  return { ok: errors.length === 0, errors, normalized: normalizeMaterialRecord(record) };
+  return { ok: errors.length === 0, errors, warnings, normalized: normalizeMaterialRecord(record) };
 }
 
 export function normalizeMaterialRecord(record = {}) {
@@ -52,6 +54,10 @@ function validateStrength(kind, strength = {}) {
   }
   if (kind === 'concrete' && !positive(strength.concrete?.fck)) errors.push('strength.concrete.fck');
   return errors;
+}
+function validateSourceTrace(kind, record) {
+  if (kind !== 'custom') return [];
+  return record.source?.note ? [] : ['source.note-missing-for-custom-material'];
 }
 function normalizeStrength(record, kind) {
   const strength = { ...(record.strength || {}) };

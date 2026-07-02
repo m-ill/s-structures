@@ -57,6 +57,7 @@ export function buildLibraryAudit(model = {}) {
       .filter((ref) => parseVersionedId(ref).version == null)
       .map((ref) => `legacy-unversioned-reference:${ref}`),
     materialErrors: materials.flatMap((item) => validateMaterialRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
+    materialWarnings: materials.flatMap((item) => validateMaterialRecord(item).warnings.map((warning) => `${item.id || '?'}:${warning}`)),
     sectionErrors: sections.flatMap((item) => validateSectionRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
     sectionWarnings: sections.flatMap((item) => validateSectionRecord(item).warnings.map((warning) => `${item.id || '?'}:${warning}`)),
   };

@@ -87,3 +87,11 @@ This does not change the production boundary. M10 to M13 remain preliminary
 until office-grade material/catalog policy, project-specific KDS exception
 review, dynamic benchmark expansion, shell buckling, follower load, and
 construction-sequence exclusions are reviewed by an engineer or owner.
+
+## 2026-07-03 M10 Custom Material Source Trace Update
+
+P3-M10 material validation now emits a review warning when a `custom` material
+has no `source.note`. The material-library report exposes this as
+`materialWarningCount`, `auditSummary.materialWarnings`, and
+`customMaterialSourceReviewRequired` so AI agents can keep custom project
+materials traceable without blocking elastic registry resolution.
