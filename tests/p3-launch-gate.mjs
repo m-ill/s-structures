@@ -137,7 +137,12 @@ assert.equal(launch.license.status, 'RECORDED');
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => analysis });
 const runtimeCapabilities = agent.getCapabilities();
+const defaultAgentLaunch = agent.getLaunchReadinessReport();
 const agentLaunch = agent.getLaunchReadinessReport(evidence);
+assert.equal(defaultAgentLaunch.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
+assert.equal(defaultAgentLaunch.finalUseReview.rows.find((row) => row.id === 'owner-signoff').missing.length, 7);
+assert.ok(defaultAgentLaunch.finalUseReview.rows.find((row) => row.id === 'evidence-register').missing.includes('real-office-dxf-fixtures'));
+assert.equal(defaultAgentLaunch.productionReadiness.agentDecision, 'collect-final-use-review-evidence');
 assert.equal(agentLaunch.version, LAUNCH_READINESS_VERSION);
 assert.equal(agentLaunch.status, 'OK');
 assert.equal(agentLaunch.productionReadiness.status, 'OWNER_REVIEW_REQUIRED');

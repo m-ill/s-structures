@@ -124,6 +124,11 @@ const productizationMilestoneReview = agent.getPhase3ProductizationMilestoneRevi
 assert.deepEqual(productizationMilestoneReview.rows.map((row) => row.milestone), ['P3-M19', 'P3-M20']);
 assert.ok(productizationMilestoneReview.summary.productizationScopes.includes('beta-pilot-scenarios'));
 assert.equal(productizationMilestoneReview.summary.agentDecision, 'productization-owner-review-required');
+const launchReadiness = agent.getLaunchReadinessReport();
+assert.equal(launchReadiness.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
+assert.ok(launchReadiness.finalUseReview.rows.find((row) => row.id === 'owner-signoff').missing.includes('security-signoff'));
+assert.ok(launchReadiness.finalUseReview.rows.find((row) => row.id === 'evidence-register').missing.includes('real-office-dxf-fixtures'));
+assert.equal(launchReadiness.productionReadiness.agentDecision, 'collect-final-use-review-evidence');
 const ownerSignoffReview = agent.getPhase3OwnerSignoffReview();
 assert.ok(ownerSignoffReview.summary.missing.includes('security-signoff'));
 assert.equal(ownerSignoffReview.summary.agentDecision, 'collect-owner-signoff-evidence');

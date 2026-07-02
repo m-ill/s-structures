@@ -223,7 +223,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       return cloneJson(buildP3IntegratedResults(model, getAnalysis(model), options));
     },
     getLaunchReadinessReport(options = {}) {
-      return cloneJson(buildLaunchReadinessReport(options.evidence || options));
+      return cloneJson(buildLaunchReadinessReport(buildLaunchEvidence(target, options)));
     },
     getPhase3PlanAlignment() {
       return cloneJson(buildPhase3PlanAlignmentReport(buildAgentManifest({
@@ -838,6 +838,16 @@ function getProjectEvidenceState(target) {
     register: buildPhase3EvidenceRegister(),
   };
   return target.__SStructuresProjectEvidence;
+}
+
+function buildLaunchEvidence(target, options = {}) {
+  const supplied = options.evidence || options;
+  return {
+    practiceValidationReview: buildPhase3PracticeValidationReview(),
+    ownerSignoffReview: buildPhase3OwnerSignoffReview(),
+    evidenceRegister: getProjectEvidenceState(target).register,
+    ...supplied,
+  };
 }
 
 function replaceObject(target, source) {
