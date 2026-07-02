@@ -47,9 +47,11 @@ The gate records:
 
 2026-07-03 PMM input-range review update: `interpolatePmmBackbone()` now records the requested axial ratio, the clamped axial ratio, a `clamped` flag, and a review warning when the requested ratio is outside 0 to 1. `fiberNlthReview.missing` includes `pmm-axial-ratio-input-review` when this occurs, so reports and AI agents cannot treat an extrapolated PMM input as a clean interpolation trace.
 
+2026-07-03 PMM input-default hardening: `createPmmBackboneSet()` and `interpolatePmmBackbone()` now fall back to the default PMM level set when an API caller supplies an empty or underspecified level array. This prevents malformed optional PMM input from crashing the M16 gate before the review layer can report status.
+
 ## Current Test Gate
 
-`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, PMM axial-ratio range review holds, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, zero-PGA scaling review hold, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, energy/stability rows, step-split recommendation behavior, B6/B7/B8 benchmark registration, and agent manifest exposure.
+`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, empty PMM level fallback, PMM axial-ratio range review holds, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, zero-PGA scaling review hold, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, energy/stability rows, step-split recommendation behavior, B6/B7/B8 benchmark registration, and agent manifest exposure.
 
 ## Remaining Limits
 

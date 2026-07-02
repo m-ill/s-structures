@@ -3,12 +3,16 @@ import { createMomentRotationBackbone } from './momentHinge.js';
 
 export const PMM_HINGE_VERSION = 'p3-m16-pmm-hinge';
 
+const DEFAULT_PMM_LEVELS = [
+  { axialRatio: 0, My: 120, thetaY: 0.012 },
+  { axialRatio: 0.3, My: 100, thetaY: 0.01 },
+  { axialRatio: 0.6, My: 65, thetaY: 0.007 },
+];
+
 export function createPmmBackboneSet(options = {}) {
-  const levels = options.levels || [
-    { axialRatio: 0, My: 120, thetaY: 0.012 },
-    { axialRatio: 0.3, My: 100, thetaY: 0.01 },
-    { axialRatio: 0.6, My: 65, thetaY: 0.007 },
-  ];
+  const levels = Array.isArray(options.levels) && options.levels.length >= 2
+    ? options.levels
+    : DEFAULT_PMM_LEVELS;
   return {
     version: PMM_HINGE_VERSION,
     contract: {
@@ -28,7 +32,7 @@ export function interpolatePmmBackbone(axialRatio, set = createPmmBackboneSet())
   const requestedAxialRatio = Number(axialRatio);
   const ratio = clamp(axialRatio, 0, 1);
   const clamped = Number.isFinite(requestedAxialRatio) && Math.abs(requestedAxialRatio - ratio) > 1e-12;
-  const levels = set.levels || [];
+  const levels = Array.isArray(set.levels) && set.levels.length >= 2 ? set.levels : createPmmBackboneSet().levels;
   let lo = levels[0];
   let hi = levels.at(-1);
   for (let i = 0; i < levels.length - 1; i += 1) {
