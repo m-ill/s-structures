@@ -51,7 +51,7 @@ assert.equal(validateImportCandidate(bad).ok, false);
 
 const pipeline = describePointCloudPipeline();
 assert.equal(pipeline.version, POINT_CLOUD_IMPORT_PIPELINE_VERSION);
-assert.equal(pipeline.status, 'planned-shell');
+assert.equal(pipeline.status, 'available-core');
 assert.ok(pipeline.stages.includes('import-candidate-review'));
 
 const manifest = buildAgentManifest();

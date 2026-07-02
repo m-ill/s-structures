@@ -280,6 +280,12 @@ export {
   POINT_CLOUD_IMPORT_PIPELINE_VERSION,
   describePointCloudPipeline,
 } from './import/pointcloud/pipeline.js';
+export { POINT_CLOUD_LOADER_VERSION, detectFormat, parsePointCloudText } from './import/pointcloud/loaders.js';
+export { POINT_CLOUD_NORMALIZE_VERSION, normalizePointCloud } from './import/pointcloud/normalize.js';
+export { POINT_CLOUD_VOXEL_VERSION, voxelDownsample } from './import/pointcloud/voxel.js';
+export { POINT_CLOUD_OUTLIER_VERSION, removeSparseOutliers } from './import/pointcloud/outlier.js';
+export { POINT_CLOUD_WORKER_PIPELINE_VERSION, processPointCloudText } from './import/pointcloud/worker.js';
+export { POINT_CLOUD_LAYER_VERSION, buildPointCloudLayerData } from './viewer/pointCloudLayer.js';
 export { MATERIAL_REGISTRY_VERSION, buildLibraryAudit, parseVersionedId, resolveMaterialRecord, resolveSectionRecord } from './materials/registry.js';
 export { SECTION_PROPERTIES_VERSION, computeSectionProperties } from './materials/sectionProperties.js';
 export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elasticExpansion.js';

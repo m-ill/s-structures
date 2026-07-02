@@ -78,6 +78,9 @@ import { DXF_PLAN_RECOGNITION_VERSION } from '../import/dxf/planRecognition.js';
 import { DWG_ADAPTER_VERSION } from '../import/dwg/adapter.js';
 import { PLAN_ASSEMBLY_VERSION } from '../import/planAssembly.js';
 import { POINT_CLOUD_IMPORT_PIPELINE_VERSION } from '../import/pointcloud/pipeline.js';
+import { POINT_CLOUD_LOADER_VERSION } from '../import/pointcloud/loaders.js';
+import { POINT_CLOUD_WORKER_PIPELINE_VERSION } from '../import/pointcloud/worker.js';
+import { POINT_CLOUD_LAYER_VERSION } from '../viewer/pointCloudLayer.js';
 import { MATERIAL_REGISTRY_VERSION } from '../materials/registry.js';
 import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
 import { WALL_SLAB_EQUIVALENT_VERSION } from '../solver/wallSlabEquivalent.js';
@@ -165,6 +168,9 @@ export function buildAgentManifest(options = {}) {
       phase3PlanAssembly: PLAN_ASSEMBLY_VERSION,
       phase3ImportReviewModel: IMPORT_REVIEW_MODEL_VERSION,
       phase3PointCloudPipelineShell: POINT_CLOUD_IMPORT_PIPELINE_VERSION,
+      phase3PointCloudLoader: POINT_CLOUD_LOADER_VERSION,
+      phase3PointCloudWorker: POINT_CLOUD_WORKER_PIPELINE_VERSION,
+      phase3PointCloudLayer: POINT_CLOUD_LAYER_VERSION,
       phase3MaterialRegistry: MATERIAL_REGISTRY_VERSION,
       phase3ElasticExpansion: ELASTIC_EXPANSION_VERSION,
       phase3WallSlabEquivalent: WALL_SLAB_EQUIVALENT_VERSION,
@@ -301,6 +307,8 @@ export function buildAgentManifest(options = {}) {
       'phase3PlanAssembly',
       'phase3ImportReviewUi',
       'phase3PointCloudPipelineShell',
+      'phase3PointCloudLoader',
+      'phase3PointCloudViewerBuffer',
       'phase3MaterialSectionRegistry',
       'phase3ElasticExpansionTrace',
       'phase3WallSlabEquivalentTrace',
@@ -366,7 +374,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M5', status: 'available', feature: 'input geometry core, member classification, and import candidate contract' },
       { id: 'P3-M6', status: 'available', feature: 'ASCII DXF v1 parser, line entity mapping, layer audit, and import candidate output' },
       { id: 'P3-M7', status: 'preliminary', feature: 'DWG converter contract, 2D plan recognition, two-story plan assembly, and import review UI core' },
-      { id: 'P3-M8', status: 'planned-shell', feature: 'point-cloud import pipeline shell awaiting real files' },
+      { id: 'P3-M8', status: 'preliminary', feature: 'point-cloud XYZ/PLY/PCD loading, preprocessing, worker contract, and viewer buffer core' },
       { id: 'P3-M10', status: 'preliminary', feature: 'versioned material and section registry with parametric properties' },
       { id: 'P3-M11', status: 'preliminary', feature: 'spring supports and advanced elastic load expansion trace' },
       { id: 'P3-M12', status: 'preliminary', feature: 'wall mid-pier and semi-rigid diaphragm equivalent contracts' },

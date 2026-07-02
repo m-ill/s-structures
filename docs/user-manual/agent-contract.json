@@ -17,6 +17,7 @@
     "calculationPackage": "available",
     "agentControl": "available",
     "importReviewUi": "preliminary",
+    "pointCloudImport": "preliminary-loader-viewer-core",
     "nonlinearPushover": "preliminary-not-final-nonlinear-engine"
   },
   "globalObjects": [

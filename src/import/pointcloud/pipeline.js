@@ -1,17 +1,18 @@
-export const POINT_CLOUD_IMPORT_PIPELINE_VERSION = 'p3-pointcloud-pipeline-shell';
+export const POINT_CLOUD_IMPORT_PIPELINE_VERSION = 'p3-m8-pointcloud-pipeline-v1';
 
 export function describePointCloudPipeline() {
   return {
     version: POINT_CLOUD_IMPORT_PIPELINE_VERSION,
-    status: 'planned-shell',
+    status: 'available-core',
     stages: [
-      'load-xyz-ply-pcd-las',
+      'load-xyz-ply-pcd',
       'voxel-downsample',
       'outlier-filter',
+      'viewer-buffer',
       'story-level-detection',
       'column-beam-wall-extraction',
       'import-candidate-review',
     ],
-    currentScope: 'contract-only-until-real-files-arrive',
+    currentScope: 'xyz-ply-pcd text loading, normalization, downsample, outlier filtering, and viewer buffer contract',
   };
 }
