@@ -133,6 +133,24 @@ response = sendCommand({ id: 'evidence-register', method: 'getPhase3EvidenceRegi
 assert.equal(response.ok, true);
 assert.equal(response.data.summary.agentDecision, 'collect-phase3-evidence');
 
+response = sendCommand({
+  id: 'submit-security-signoff',
+  method: 'submitProjectEvidence',
+  payload: { id: 'security-signoff', accepted: true, owner: 'owner' },
+});
+assert.equal(response.ok, true);
+assert.equal(response.data.register.summary.acceptedCount, 1);
+
+response = sendCommand({ id: 'owner-signoff-after-evidence', method: 'getPhase3OwnerSignoffReview' });
+assert.equal(response.ok, true);
+assert.equal(response.data.summary.missing.includes('security-signoff'), false);
+
+response = sendCommand({ id: 'launch-after-evidence', method: 'getLaunchReadinessReport' });
+assert.equal(response.ok, true);
+assert.equal(response.data.finalUseReview.rows.find((row) => row.id === 'owner-signoff').missing.includes('security-signoff'), false);
+assert.equal(response.data.finalUseReview.rows.find((row) => row.id === 'evidence-register').missing.includes('security-signoff'), false);
+assert.equal(response.data.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
+
 response = sendCommand({ id: 'practice-validation-review', method: 'getPhase3PracticeValidationReview' });
 assert.equal(response.ok, true);
 assert.equal(response.data.summary.agentDecision, 'collect-practice-validation-evidence-before-production-use');
@@ -159,7 +177,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 24);
+assert.equal(response.data.agentCommandBridge.commandCount, 27);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -173,7 +191,7 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 25);
+assert.equal(state.commandCount, 28);
 assert.equal(state.errorCount, 1);
 assert.ok(state.availableMethods.includes('getPhase3ImportMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3ElasticMilestoneReview'));
