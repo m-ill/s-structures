@@ -65,6 +65,8 @@ assert.equal(review.loadRows[0].status, 'validated');
 assert.equal(review.loadRows[0].workerPipelineReady, true);
 assert.equal(review.extractionRows[0].status, 'synthetic-validated');
 assert.equal(review.extractionRows[0].realScanGate, 'pass');
+assert.equal(review.extractionRows[0].ownerReviewReady, true);
+assert.equal(review.extractionRows[0].productionReady, false);
 assert.equal(review.realScanRows[0].status, 'checked');
 assert.deepEqual(review.realScanRows[0].missing, []);
 assert.equal(review.performanceRows[0].status, 'recorded');

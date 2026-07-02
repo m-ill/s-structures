@@ -16,7 +16,8 @@ export function buildPointCloudExtractionReview(input = {}) {
     failedTargets,
     realScanGate,
     requiresOwnerScan: realScan === 'pending-owner-file' || realScan === 'failed',
-    productionReady: syntheticGate === 'pass' && realScan === 'checked',
+    ownerReviewReady: syntheticGate === 'pass' && realScan === 'checked',
+    productionReady: false,
     agentDecision: decide(syntheticGate, realScan),
   };
 }

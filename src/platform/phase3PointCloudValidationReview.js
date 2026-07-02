@@ -70,6 +70,7 @@ function buildExtractionRows(benchmarks) {
     status: item.review?.syntheticGate === 'pass' ? 'synthetic-validated' : 'review-required',
     syntheticGate: item.review?.syntheticGate || null,
     realScanGate: item.review?.realScanGate || item.validationStatus?.realScan || null,
+    ownerReviewReady: item.review?.ownerReviewReady === true,
     productionReady: item.review?.productionReady === true,
     storyErrorMax: item.storyErrorMax ?? null,
     columnRecall: item.columnRecall ?? null,

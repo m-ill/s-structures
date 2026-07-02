@@ -49,6 +49,7 @@ assert.deepEqual(score.review, {
   failedTargets: [],
   realScanGate: 'pending-owner-file',
   requiresOwnerScan: true,
+  ownerReviewReady: false,
   productionReady: false,
   agentDecision: 'synthetic-benchmark-pass-real-scan-pending',
 });
@@ -68,7 +69,8 @@ const checkedScore = evaluatePointCloudExtraction(candidate, synthetic.groundTru
 });
 assert.equal(checkedScore.validationStatus.realScan, 'checked');
 assert.equal(checkedScore.review.realScanGate, 'pass');
-assert.equal(checkedScore.review.productionReady, true);
+assert.equal(checkedScore.review.ownerReviewReady, true);
+assert.equal(checkedScore.review.productionReady, false);
 assert.equal(checkedScore.review.agentDecision, 'pointcloud-import-ready-for-owner-review');
 const failedReview = buildPointCloudExtractionReview({ realScanValidation: 'failed' });
 assert.equal(failedReview.realScanGate, 'failed');
