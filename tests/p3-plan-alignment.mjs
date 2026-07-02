@@ -6,6 +6,7 @@ import {
   buildPhase3ElasticMilestoneReview,
   buildPhase3ImportMilestoneReview,
   buildPhase3NonlinearMilestoneReview,
+  buildPhase3ProductizationMilestoneReview,
   buildAgentManifest,
   buildPhase3PlanAlignmentReport,
   PHASE3_DESIGN_MILESTONE_REVIEW_VERSION,
@@ -13,6 +14,7 @@ import {
   PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
   PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION,
   PHASE3_PLAN_ALIGNMENT_VERSION,
+  PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
@@ -149,16 +151,19 @@ assert.equal(manifest.modules.phase3DesignMilestoneReview, PHASE3_DESIGN_MILESTO
 assert.equal(manifest.modules.phase3ElasticMilestoneReview, PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3ImportMilestoneReview, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3NonlinearMilestoneReview, PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION);
+assert.equal(manifest.modules.phase3ProductizationMilestoneReview, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
 assert.ok(manifest.readApis.includes('getPhase3DesignMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3NonlinearMilestoneReview'));
+assert.ok(manifest.readApis.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
 assert.ok(manifest.dataContracts.includes('phase3DesignMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ElasticMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearMilestoneReview'));
+assert.ok(manifest.dataContracts.includes('phase3ProductizationMilestoneReview'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3M6ToM20, 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20');
 
@@ -194,6 +199,14 @@ assert.equal(designMilestoneReview.rows.find((row) => row.milestone === 'P3-M18'
 assert.ok(designMilestoneReview.summary.designScopes.includes('connection-base-plate'));
 assert.equal(designMilestoneReview.agentUse.readApi, 'getPhase3DesignMilestoneReview');
 
+const productizationMilestoneReview = buildPhase3ProductizationMilestoneReview();
+assert.equal(productizationMilestoneReview.version, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
+assert.deepEqual(productizationMilestoneReview.rows.map((row) => row.milestone), ['P3-M19', 'P3-M20']);
+assert.ok(productizationMilestoneReview.rows.find((row) => row.milestone === 'P3-M19').tickets.includes('P3-T62'));
+assert.equal(productizationMilestoneReview.rows.find((row) => row.milestone === 'P3-M20').contracts.gatePath, 'releaseGate.releaseReview');
+assert.ok(productizationMilestoneReview.summary.productizationScopes.includes('calculation-report-method-limitations'));
+assert.equal(productizationMilestoneReview.agentUse.readApi, 'getPhase3ProductizationMilestoneReview');
+
 const agent = createIndexAgentApi({ model: () => null, reanalyze: () => {} });
 const apiReport = agent.getPhase3PlanAlignment();
 assert.equal(apiReport.version, PHASE3_PLAN_ALIGNMENT_VERSION);
@@ -203,6 +216,7 @@ assert.equal(agent.getPhase3DesignMilestoneReview().version, PHASE3_DESIGN_MILES
 assert.equal(agent.getPhase3ElasticMilestoneReview().version, PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION);
 assert.equal(agent.getPhase3ImportMilestoneReview().version, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
 assert.equal(agent.getPhase3NonlinearMilestoneReview().version, PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION);
+assert.equal(agent.getPhase3ProductizationMilestoneReview().version, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 assert.deepEqual(Object.keys(packageJson.dependencies || {}), []);

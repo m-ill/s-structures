@@ -28,6 +28,7 @@ import {
   buildPhase3ImportMilestoneReview,
   buildPhase3NonlinearMilestoneReview,
   buildPhase3PlanAlignmentReport,
+  buildPhase3ProductizationMilestoneReview,
   buildRcDetailedDesignReport,
   buildRcDetailingReport,
   getLibraryItem as getCoreLibraryItem,
@@ -235,6 +236,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getPhase3DesignMilestoneReview() {
       return cloneJson(buildPhase3DesignMilestoneReview());
+    },
+    getPhase3ProductizationMilestoneReview() {
+      return cloneJson(buildPhase3ProductizationMilestoneReview());
     },
     getConnectionFoundationReport(options = {}) {
       const model = getCurrentModel(target);

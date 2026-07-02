@@ -55,12 +55,14 @@ assert.ok(manifest.readApis.includes('getPhase3DesignMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3NonlinearMilestoneReview'));
+assert.ok(manifest.readApis.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3LoadsV2Trace'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearAnalysisTrace'));
 assert.ok(manifest.dataContracts.includes('phase3DesignMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ElasticMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearMilestoneReview'));
+assert.ok(manifest.dataContracts.includes('phase3ProductizationMilestoneReview'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3RunnerContract, 'node tests/p3-runner-contract.mjs');
 assert.equal(manifest.reviewGates.nonlinearFiberNlth.readyDecision, 'm16-ready-for-integrated-results-review');
@@ -89,6 +91,10 @@ const designMilestoneReview = agent.getPhase3DesignMilestoneReview();
 assert.deepEqual(designMilestoneReview.rows.map((row) => row.milestone), ['P3-M17', 'P3-M18']);
 assert.ok(designMilestoneReview.summary.designScopes.includes('foundation'));
 assert.equal(designMilestoneReview.summary.agentDecision, 'detailed-design-engineer-review-required');
+const productizationMilestoneReview = agent.getPhase3ProductizationMilestoneReview();
+assert.deepEqual(productizationMilestoneReview.rows.map((row) => row.milestone), ['P3-M19', 'P3-M20']);
+assert.ok(productizationMilestoneReview.summary.productizationScopes.includes('beta-pilot-scenarios'));
+assert.equal(productizationMilestoneReview.summary.agentDecision, 'productization-owner-review-required');
 
 console.log(JSON.stringify({
   ok: true,

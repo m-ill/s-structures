@@ -62,6 +62,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 
 2026-07-02 review-gate alignment update: `buildPhase3PlanAlignmentReport()` now exposes `reviewGates` for P3-M14 to P3-M20. The rows verify that each agent review path is present and that final approval fields remain separate from next-step readiness decisions.
 
+2026-07-03 productization contract update: agent contracts now expose `getPhase3ProductizationMilestoneReview` and `phase3ProductizationMilestoneReview` for P3-M19 to P3-M20. This mirrors the import, elastic, nonlinear, and design milestone review APIs and keeps Stage F owner approval fields explicit.
+
 2026-07-02 maturity separation update: the plan-alignment report now keeps `status: OK` limited to written-plan alignment and exposes `productionReadiness.status` separately. AI agents must treat `PRELIMINARY_REVIEW_REQUIRED` as a hard signal that final engineering/owner review is still required, even when all documented paths and tests are aligned.
 
 For the P3-M6 restart point, the practical order is:

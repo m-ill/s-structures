@@ -44,3 +44,5 @@ The gate records:
 ## Remaining Limits
 
 P3-M20 remains preliminary. It proves repository-level launch readiness evidence, not final production deployment sign-off. Owner review is still required for license policy, deployment target, field pilot feedback, and backup/restore rehearsal evidence.
+
+2026-07-03 productization milestone contract update: P3-M20 now participates in `getPhase3ProductizationMilestoneReview`. The review contract maps packaging smoke, license policy record, onboarding/manual/agent contract, performance/security launch gate, and beta pilot scenarios to `releaseGate.releaseReview` while keeping `productionDeploymentApproved` owner-controlled.

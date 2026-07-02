@@ -208,6 +208,10 @@ export {
   PHASE3_DESIGN_MILESTONE_REVIEW_VERSION,
 } from './platform/phase3DesignMilestoneReview.js';
 export {
+  buildPhase3ProductizationMilestoneReview,
+  PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION,
+} from './platform/phase3ProductizationMilestoneReview.js';
+export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';
