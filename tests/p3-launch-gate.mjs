@@ -89,9 +89,24 @@ const evidence = {
   performanceRecorded: true,
   performanceBudgets,
   securityChecklistSigned: true,
+  securityEvidence: {
+    signed: true,
+    reportPath: 'reports/launch-readiness/performance-security.md',
+    items: ['upload-policy', 'evidence-route', 'launch-gate'],
+  },
   backupRestoreRecorded: true,
+  backupRestoreEvidence: {
+    recorded: true,
+    reportPath: 'reports/launch-readiness/backup-restore.md',
+    items: ['backup', 'restore', 'owner-review'],
+  },
   ownerSignoffChecklistRecorded: true,
   designVerificationRecorded: true,
+  designVerificationEvidence: {
+    recorded: true,
+    reportPath: 'docs/verification/DESIGN_MODULE_VERIFICATION.md',
+    items: ['rc', 'steel', 'connection', 'foundation'],
+  },
   calculationTraceConnected: true,
   notCheckedCount: integrated.summary.notCheckedCount,
   manifest,
@@ -126,6 +141,9 @@ assert.equal(launch.releaseGate.releaseReview.agentDecision, 'ready-for-owner-re
 assert.deepEqual(launch.releaseGate.releaseReview.missing, []);
 assert.equal(launch.releaseGate.summary.coveredTicketCount, 5);
 assert.equal(launch.releaseGate.coverage.ownerSignoffChecklist, true);
+assert.equal(launch.releaseGate.coverage.securityEvidence, true);
+assert.equal(launch.releaseGate.coverage.backupRestore, true);
+assert.equal(launch.releaseGate.coverage.designVerificationEvidence, true);
 assert.equal(launch.releaseGate.coverage.pilotReportFilesComplete, true);
 assert.equal(launch.releaseGate.coverage.manualReferences, true);
 assert.deepEqual(launch.releaseGate.ticketCoverage.map((row) => row.ticket), ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67']);
@@ -161,6 +179,8 @@ assert.equal(launch.performanceBudgetReview.passedCount, 8);
 assert.equal(launch.performanceBudgetReview.agentDecision, 'performance-budget-ready-for-launch-review');
 assert.equal(launch.releaseGate.coverage.performanceBudgets, true);
 assert.match(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T66').evidence, /performance=OK 8\/8/);
+assert.match(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T66').evidence, /security=OK/);
+assert.match(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T66').evidence, /designVerification=OK/);
 assert.equal(launch.packaging.smoke, true);
 assert.equal(launch.license.status, 'RECORDED');
 
@@ -193,6 +213,23 @@ assert.equal(missingPerformanceLaunch.performanceBudgetReview.ok, false);
 assert.ok(missingPerformanceLaunch.performanceBudgetReview.missing.includes('nlth-record'));
 assert.equal(missingPerformanceLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T66').covered, false);
 assert.ok(missingPerformanceLaunch.releaseGate.releaseReview.missing.includes('performance-budget-items'));
+
+const booleanOnlyEvidenceLaunch = buildLaunchReadinessReport({
+  ...evidence,
+  securityEvidence: null,
+  backupRestoreEvidence: null,
+  designVerificationEvidence: null,
+});
+assert.equal(booleanOnlyEvidenceLaunch.gates.find((row) => row.id === 'G8').status, 'REVIEW');
+assert.equal(booleanOnlyEvidenceLaunch.gates.find((row) => row.id === 'G12').status, 'REVIEW');
+assert.equal(booleanOnlyEvidenceLaunch.gates.find((row) => row.id === 'G13').status, 'REVIEW');
+assert.equal(booleanOnlyEvidenceLaunch.releaseGate.coverage.securityEvidence, false);
+assert.equal(booleanOnlyEvidenceLaunch.releaseGate.coverage.backupRestore, false);
+assert.equal(booleanOnlyEvidenceLaunch.releaseGate.coverage.designVerificationEvidence, false);
+assert.equal(booleanOnlyEvidenceLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T66').covered, false);
+assert.ok(booleanOnlyEvidenceLaunch.releaseGate.releaseReview.missing.includes('security-checklist-evidence'));
+assert.ok(booleanOnlyEvidenceLaunch.releaseGate.releaseReview.missing.includes('backup-restore-record'));
+assert.ok(booleanOnlyEvidenceLaunch.releaseGate.releaseReview.missing.includes('design-verification-evidence'));
 
 const overBudgetLaunch = buildLaunchReadinessReport({
   ...evidence,

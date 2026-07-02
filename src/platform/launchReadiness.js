@@ -16,6 +16,9 @@ export function buildLaunchReadinessReport(evidence = {}) {
   const performanceBudgetReview = buildPerformanceBudgetReview(evidence.performanceBudgets || evidence.performanceBudgetRows || []);
   const manualReferencesCurrent = manualReferenceContractMatches(evidence.manifest, evidence.agentContract);
   const agentContractCurrent = agentContractMatches(evidence.manifest, evidence.agentContract);
+  const securityEvidence = buildEvidenceRecordReview(evidence.securityEvidence || evidence.securityChecklist, evidence.securityChecklistSigned, 'security-checklist');
+  const backupRestoreEvidence = buildEvidenceRecordReview(evidence.backupRestoreEvidence || evidence.backupRestore, evidence.backupRestoreRecorded, 'backup-restore');
+  const designVerificationEvidence = buildEvidenceRecordReview(evidence.designVerificationEvidence || evidence.designVerification, evidence.designVerificationRecorded, 'design-verification');
   const gates = [
     gate('G1', 'Full test suite', evidence.fullSuiteGreen === true, 'Automated suite completed with failed 0.'),
     gate('G2', 'Solver and nonlinear benchmarks', evidence.benchmarkGreen === true, 'B1-B8 and elastic benchmark gates passed.'),
@@ -24,15 +27,21 @@ export function buildLaunchReadinessReport(evidence = {}) {
     gate('G5', 'Platform workflow e2e', evidence.platformGreen === true, 'Login, project, revision, report, and approval tests passed.'),
     gate('G6', 'Import e2e', evidence.importGreen === true, 'DXF and point-cloud import validation reached analyzable models.'),
     gate('G7', 'Performance budget record', performanceBudgetReview.ok, `Performance budgets ${performanceBudgetReview.passedCount}/${performanceBudgetReview.requiredCount} passed.`),
-    gate('G8', 'Security checklist', evidence.securityChecklistSigned === true, 'Security checklist recorded for launch review.'),
+    gate('G8', 'Security checklist', securityEvidence.ok, 'Security checklist recorded for launch review.'),
     gate('G9', 'User manual refresh', evidence.manual?.updated === true && manualReferencesCurrent, 'Manual includes Phase 3 import, nonlinear, design, report, and agent workflow.'),
     gate('G10', 'Agent contract current', agentContractCurrent, 'Manual agent contract mirrors manifest read APIs.'),
     gate('G11', 'Beta pilot reports', pilotReportsComplete(evidence.pilotReports), 'Ten named beta pilot scenario reports are present.'),
-    gate('G12', 'Backup restore rehearsal', evidence.backupRestoreRecorded === true, 'Backup and restore rehearsal record exists.'),
-    gate('G13', 'Design module verification', evidence.designVerificationRecorded === true, 'RC, steel, connection, and foundation verification record exists.'),
+    gate('G12', 'Backup restore rehearsal', backupRestoreEvidence.ok, 'Backup and restore rehearsal record exists.'),
+    gate('G13', 'Design module verification', designVerificationEvidence.ok, 'RC, steel, connection, and foundation verification record exists.'),
     gate('G14', 'Calculation package completeness', evidence.notCheckedCount === 0 && evidence.calculationTraceConnected === true, 'Default calculation package has no not-checked chapter and includes trace/limitations.'),
   ];
-  const releaseGate = buildLaunchReadinessGate(gates, { ...evidence, performanceBudgetReview });
+  const releaseGate = buildLaunchReadinessGate(gates, {
+    ...evidence,
+    performanceBudgetReview,
+    securityEvidence,
+    backupRestoreEvidence,
+    designVerificationEvidence,
+  });
   const finalUseReview = buildFinalUseReview(evidence);
   return {
     version: LAUNCH_READINESS_VERSION,
@@ -78,7 +87,9 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
     qa: evidence.fullSuiteGreen === true && evidence.benchmarkGreen === true,
     pilotReports: evidence.pilotReports?.count || 0,
     pilotReportFilesComplete: pilotReportsComplete(evidence.pilotReports),
-    backupRestore: evidence.backupRestoreRecorded === true,
+    securityEvidence: evidence.securityEvidence?.ok === true,
+    backupRestore: evidence.backupRestoreEvidence?.ok === true,
+    designVerificationEvidence: evidence.designVerificationEvidence?.ok === true,
     ownerSignoffChecklist: evidence.ownerSignoffChecklistRecorded === true,
     performanceBudgets: evidence.performanceBudgetReview?.ok === true,
   };
@@ -136,7 +147,9 @@ function buildReleaseReview({ gates, evidence, coverage, ticketCoverage }) {
   if (!ticketCoverage.every((row) => row.covered)) missing.push('ticket-coverage');
   if (!coverage.pilotReportFilesComplete) missing.push('pilot-report-files');
   if (!coverage.ownerSignoffChecklist) missing.push('owner-signoff-checklist');
+  if (!coverage.securityEvidence) missing.push('security-checklist-evidence');
   if (!coverage.backupRestore) missing.push('backup-restore-record');
+  if (!coverage.designVerificationEvidence) missing.push('design-verification-evidence');
   if (!coverage.performanceBudgets) missing.push('performance-budget-items');
   if (!coverage.manualReferences) missing.push('manual-reference-contract');
   return {
@@ -237,8 +250,11 @@ function buildLaunchTicketCoverage(gates, evidence, coverage) {
     {
       ticket: 'P3-T66',
       scope: 'performance-security-launch-gate',
-      covered: ['G1', 'G2', 'G3', 'G5', 'G6', 'G7', 'G8', 'G12', 'G13', 'G14'].every((id) => byId[id] === true),
-      evidence: `performance=${byId.G7 ? 'OK' : 'REVIEW'} ${evidence.performanceBudgetReview?.passedCount || 0}/${evidence.performanceBudgetReview?.requiredCount || PERFORMANCE_BUDGETS.length}, security=${byId.G8 ? 'OK' : 'REVIEW'}, backup=${coverage.backupRestore ? 'OK' : 'REVIEW'}`,
+      covered: ['G1', 'G2', 'G3', 'G5', 'G6', 'G7', 'G8', 'G12', 'G13', 'G14'].every((id) => byId[id] === true)
+        && coverage.securityEvidence === true
+        && coverage.backupRestore === true
+        && coverage.designVerificationEvidence === true,
+      evidence: `performance=${byId.G7 ? 'OK' : 'REVIEW'} ${evidence.performanceBudgetReview?.passedCount || 0}/${evidence.performanceBudgetReview?.requiredCount || PERFORMANCE_BUDGETS.length}, security=${coverage.securityEvidence ? 'OK' : 'REVIEW'}, backup=${coverage.backupRestore ? 'OK' : 'REVIEW'}, designVerification=${coverage.designVerificationEvidence ? 'OK' : 'REVIEW'}`,
     },
     {
       ticket: 'P3-T67',
@@ -247,6 +263,26 @@ function buildLaunchTicketCoverage(gates, evidence, coverage) {
       evidence: `${coverage.pilotReports} pilot reports, namedFiles=${pilotFileCount}/10, analysisOk=${evidence.pilot?.summary?.analysisOkCount || 0}`,
     },
   ];
+}
+
+function buildEvidenceRecordReview(record, accepted, id) {
+  const source = record && typeof record === 'object' ? record : {};
+  const explicitlyAccepted = accepted === true || source.accepted === true || source.recorded === true || source.signed === true;
+  const hasPath = [source.reportPath, source.path, source.file].some((value) => typeof value === 'string' && value.trim().length > 0);
+  const hasRows = [source.items, source.rows, source.checks].some((value) => Array.isArray(value) && value.length > 0);
+  const hasEvidence = hasPath || hasRows || source.evidenceRecorded === true;
+  const missing = [];
+  if (!explicitlyAccepted) missing.push(`${id}-acceptance`);
+  if (!hasEvidence) missing.push(`${id}-record`);
+  return {
+    id,
+    ok: explicitlyAccepted && hasEvidence,
+    accepted: explicitlyAccepted,
+    hasPath,
+    hasRows,
+    status: explicitlyAccepted && hasEvidence ? 'available' : 'review-required',
+    missing,
+  };
 }
 
 function pilotReportNames(pilotReports = {}) {
