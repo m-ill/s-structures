@@ -260,3 +260,16 @@ export {
 export { BENCHMARK_GATE_VERSION, runBenchmarkGate } from './verification/benchmarkGate.js';
 export { MEMBER_RELEASE_BENCHMARK_VERSION, runMemberReleaseBenchmark } from './verification/memberReleaseBenchmark.js';
 export { RIGID_DIAPHRAGM_BENCHMARK_VERSION, runRigidDiaphragmBenchmark } from './verification/rigidDiaphragmBenchmark.js';
+export {
+  IMPORT_CANDIDATE_VERSION,
+  buildImportCandidate,
+  validateImportCandidate,
+} from './import/candidate.js';
+export { IMPORT_GEOMETRY_VERSION, cleanSegments } from './import/segmentClean.js';
+export { classifyMember, classifyMembers } from './import/memberClassify.js';
+export { inferGrids, inferStories } from './import/storyGrid.js';
+export { wireframeToImportCandidate } from './import/wireframe.js';
+export {
+  POINT_CLOUD_IMPORT_PIPELINE_VERSION,
+  describePointCloudPipeline,
+} from './import/pointcloud/pipeline.js';

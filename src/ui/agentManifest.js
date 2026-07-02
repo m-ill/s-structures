@@ -70,6 +70,9 @@ import {
   SERVER_API_VERSION,
 } from '../platform/platformVersion.js';
 import { ROUTES_VERSION } from '../app/routes.js';
+import { IMPORT_CANDIDATE_VERSION } from '../import/candidate.js';
+import { IMPORT_GEOMETRY_VERSION } from '../import/segmentClean.js';
+import { POINT_CLOUD_IMPORT_PIPELINE_VERSION } from '../import/pointcloud/pipeline.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -144,6 +147,9 @@ export function buildAgentManifest(options = {}) {
       phase3Persistence: PERSISTENCE_ENVELOPE_VERSION,
       phase3AppShell: APP_SHELL_VERSION,
       phase3AppRoutes: ROUTES_VERSION,
+      phase3ImportGeometry: IMPORT_GEOMETRY_VERSION,
+      phase3ImportCandidate: IMPORT_CANDIDATE_VERSION,
+      phase3PointCloudPipelineShell: POINT_CLOUD_IMPORT_PIPELINE_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -259,6 +265,9 @@ export function buildAgentManifest(options = {}) {
       'phase3PersistenceEnvelope',
       'phase3AppShellRoutes',
       'phase3ProjectBrowser',
+      'phase3ImportCandidate',
+      'phase3WireframeImport',
+      'phase3PointCloudPipelineShell',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -316,6 +325,8 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M2', status: 'available', feature: 'account, login, token, role guard, and lockout contracts' },
       { id: 'P3-M3', status: 'available', feature: 'three-layer persistence, revisions, autosave, and lineage warning' },
       { id: 'P3-M4', status: 'available', feature: 'app shell, routes, project browser, session restore, and viewer core' },
+      { id: 'P3-M5', status: 'available', feature: 'input geometry core, member classification, and import candidate contract' },
+      { id: 'P3-M8', status: 'planned-shell', feature: 'point-cloud import pipeline shell awaiting real files' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

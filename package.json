@@ -85,6 +85,7 @@
     "test:m70": "node tests/p3-persistence.mjs",
     "test:m71": "node tests/p3-app-shell.mjs",
     "test:m72": "node tests/p3-viewer-core.mjs",
+    "test:m73": "node tests/p3-import-geometry.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
@@ -106,6 +107,7 @@
     "test:p3auth": "node tests/p3-auth.mjs",
     "test:p3persistence": "node tests/p3-persistence.mjs",
     "test:p3appshell": "node tests/p3-app-shell.mjs",
-    "test:p3viewer": "node tests/p3-viewer-core.mjs"
+    "test:p3viewer": "node tests/p3-viewer-core.mjs",
+    "test:p3import": "node tests/p3-import-geometry.mjs"
   }
 }
