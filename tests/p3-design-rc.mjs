@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {
   analyzeModel,
   buildAgentManifest,
+  buildP3DetailedDesignReport,
   buildRcDetailedDesignReport,
   buildRcPmCurve,
   createReleasedSimpleBeamUdl,
@@ -10,6 +11,7 @@ import {
   detailRcWall,
   developmentLength,
   lapSpliceLength,
+  RC_DESIGN_GATE_VERSION,
   RC_DETAILED_DESIGN_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
@@ -23,15 +25,24 @@ const beamAnalysis = analyzeModel(beam);
 assert.equal(beamAnalysis.ok, true);
 
 const beamReport = buildRcDetailedDesignReport(beam, beamAnalysis, {
-  walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 120 }],
+  walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 900 }],
 });
 assert.equal(beamReport.version, RC_DETAILED_DESIGN_VERSION);
+assert.equal(beamReport.rcDesignGate.version, RC_DESIGN_GATE_VERSION);
+assert.deepEqual(beamReport.rcDesignGate.tickets, ['P3-T87', 'P3-T88', 'P3-T89', 'P3-T90']);
 assert.equal(beamReport.schedules.beams.length, 1);
 assert.equal(beamReport.schedules.slabs.length, 1);
 assert.equal(beamReport.schedules.walls.length, 1);
+assert.equal(beamReport.rows.length, 3);
+assert.ok(beamReport.issueRows.some((row) => row.moduleId === 'rc' && row.itemId === 'W1'));
 assert.ok(beamReport.formulaTrace.some((item) => item.formulaId === 'KDS-RC-BEAM-FLEXURE-V1'));
 assert.match(beamReport.schedules.beams[0].flexure.bottom.label, /^\d+-D/);
 assert.equal(beamReport.summary.itemCount, 3);
+
+const integrated = buildP3DetailedDesignReport(beam, beamAnalysis, {
+  rc: { slabs: beam.slabs, walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 900 }] },
+});
+assert.ok(integrated.issueRows.some((row) => row.moduleId === 'rc' && row.itemId === 'W1'));
 
 const column = createVerticalAxialColumn({ L: 3, P: 1800 }).model;
 column.members[0].matId = 'concrete';
@@ -66,8 +77,10 @@ assert.equal(agentReport.schedules.beams.length, 1);
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3RcDetailedDesign, RC_DETAILED_DESIGN_VERSION);
+assert.equal(manifest.modules.phase3RcDesignGate, RC_DESIGN_GATE_VERSION);
 assert.ok(manifest.readApis.includes('getRcDetailedDesignReport'));
 assert.ok(manifest.dataContracts.includes('phase3RcDetailedDesignReport'));
+assert.ok(manifest.dataContracts.includes('phase3RcDesignGate'));
 assert.ok(manifest.milestones.some((item) => item.id === 'P3-M17'));
 
 console.log(JSON.stringify({

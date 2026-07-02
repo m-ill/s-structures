@@ -13,6 +13,8 @@ Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.
 
 Current status is preliminary. The module produces traceable schedules and formula IDs for agent/report consumption, but final clause selection, seismic detailing, constructability, and drawing production remain review items.
 
+2026-07-02 review update: P3-M17 now exposes `rcDesignGate`, flat `rows`, and module-level `issueRows`. The integrated detailed-design report also reads RC schedule rows, so RC WARN/NG items are visible to AI agents through the unified issue list.
+
 ## P3-M18 Steel / Connection / Foundation Detailed Design
 
 Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.

@@ -32,14 +32,32 @@ function summarize(modules) {
 }
 
 function buildIssueRows(modules) {
-  return Object.entries(modules).flatMap(([moduleId, module]) => rowsOf(module).filter((row) => row.status && row.status !== 'OK').map((row) => ({
-    moduleId,
-    itemId: row.memberId || row.nodeId || row.wallId || row.slabId || moduleId,
-    status: row.status,
-    action: `${moduleId} item requires review.`,
-  })));
+  return Object.entries(modules).flatMap(([moduleId, module]) => {
+    const rows = module.issueRows || rowsOf(module).filter((row) => row.status && row.status !== 'OK').map((row) => ({
+      moduleId,
+      itemId: row.memberId || row.nodeId || row.wallId || row.slabId || moduleId,
+      status: row.status,
+      action: `${moduleId} item requires review.`,
+    }));
+    return rows.map((row) => ({
+      moduleId: row.moduleId || moduleId,
+      itemId: row.itemId || row.memberId || row.nodeId || row.wallId || row.slabId || moduleId,
+      status: row.status,
+      action: row.action || `${moduleId} item requires review.`,
+    }));
+  });
 }
 
 function rowsOf(module) {
-  return [...(module.rows || []), ...(module.footings || []), ...(module.piles || []), ...(module.basePlates || [])];
+  const schedules = module.schedules || {};
+  return [
+    ...(module.rows || []),
+    ...(schedules.beams || []),
+    ...(schedules.columns || []),
+    ...(schedules.walls || []),
+    ...(schedules.slabs || []),
+    ...(module.footings || []),
+    ...(module.piles || []),
+    ...(module.basePlates || []),
+  ];
 }

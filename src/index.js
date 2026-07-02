@@ -109,7 +109,9 @@ export {
   STANDARD_REBARS,
 } from './design/rcDetailing.js';
 export {
+  buildRcDesignGate,
   buildRcDetailedDesignReport,
+  RC_DESIGN_GATE_VERSION,
   RC_DETAILED_DESIGN_VERSION,
 } from './design/rc/detailedReport.js';
 export { RC_BEAM_DETAIL_VERSION, detailRcBeam } from './design/rc/beam.js';
