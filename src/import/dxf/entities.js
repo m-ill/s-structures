@@ -9,6 +9,7 @@ export function dxfEntitiesToGeometry(parsed) {
     version: DXF_ENTITIES_VERSION,
     segments: out.segments.filter(Boolean),
     points: out.points.filter(Boolean),
+    circles: out.circles.filter(Boolean),
     texts: out.texts.filter(Boolean),
     audit: {
       counts: countByType(entities),
@@ -77,11 +78,12 @@ function collectBlocks(pairs) {
 }
 
 function collectGeometry(entities, blocks = {}, transform = identityTransform()) {
-  const out = { segments: [], points: [], texts: [], ignored: {} };
+  const out = { segments: [], points: [], circles: [], texts: [], ignored: {} };
   for (const entity of entities) {
     if (entity.type === 'LINE') out.segments.push(transformSegment(lineSegment(entity), transform));
     else if (entity.type === 'LWPOLYLINE' || entity.type === 'POLYLINE') out.segments.push(...polylineSegments(entity).map((segment) => transformSegment(segment, transform)));
     else if (entity.type === 'POINT') out.points.push(transformPointRecord(pointEntity(entity), transform));
+    else if (entity.type === 'CIRCLE') out.circles.push(transformCircleRecord(circleEntity(entity), transform));
     else if (entity.type === 'TEXT' || entity.type === 'MTEXT') out.texts.push(transformTextRecord(textEntity(entity), transform));
     else if (entity.type === 'INSERT') {
       const name = String(valueOf(entity.pairs, 2, ''));
@@ -93,6 +95,7 @@ function collectGeometry(entities, blocks = {}, transform = identityTransform())
       const nested = collectGeometry(children, blocks, composeTransform(transform, insertTransform(entity)));
       out.segments.push(...nested.segments);
       out.points.push(...nested.points);
+      out.circles.push(...nested.circles);
       out.texts.push(...nested.texts);
       mergeIgnored(out.ignored, nested.ignored);
     } else {
@@ -135,6 +138,14 @@ function textEntity(entity) {
   return {
     point: pointFromCodes(entity.pairs, 10, 20, 30),
     text: String(valueOf(entity.pairs, 1, '')),
+    layer: entity.layer,
+  };
+}
+
+function circleEntity(entity) {
+  return {
+    center: pointFromCodes(entity.pairs, 10, 20, 30),
+    radius: Number(valueOf(entity.pairs, 40, 0)),
     layer: entity.layer,
   };
 }
@@ -200,6 +211,14 @@ function transformPointRecord(record, transform) {
 
 function transformTextRecord(record, transform) {
   return { ...record, point: applyPoint(record.point, transform) };
+}
+
+function transformCircleRecord(record, transform) {
+  return {
+    ...record,
+    center: applyPoint(record.center, transform),
+    radius: Math.abs(record.radius * Math.max(transform.sx, transform.sy)),
+  };
 }
 
 function applyPoint(point, transform) {
