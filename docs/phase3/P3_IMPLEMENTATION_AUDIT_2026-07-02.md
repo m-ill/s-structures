@@ -32,7 +32,7 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 | P3-M4 | app shell, routes, project browser, viewer core | App shell and viewer core tests exist | Partial shell, not full production UI |
 | P3-M5 | geometry core, classification, import candidate | Geometry cleaning/import candidate tests exist | Partial core |
 | P3-M6 | DXF import v1 | ASCII group-code parser, LINE/LWPOLYLINE/POLYLINE/POINT/TEXT/INSERT+BLOCK mapping, unit scaling, layer audit, and fixtures exist | Core available; DWG and 2D plan recognition remain M7 |
-| P3-M7 | DWG/plan recognition v2 | DWG converter contract, missing-converter guidance, circle/line plan recognition, two-story plan assembly, and import review UI core exist | Preliminary core; real converter e2e and richer visual review remain |
+| P3-M7 | DWG/plan recognition v2 | DWG converter contract, readiness decision, missing-converter guidance, circle/line plan recognition, two-story plan assembly review decision, and import review UI core exist | Preliminary core; real converter e2e and richer visual review remain |
 | P3-M8 | point-cloud import pipeline | XYZ/PLY/PCD text loader, normalization, voxel downsample, sparse outlier filter, worker contract, and viewer buffer core exist | Preliminary core; LAS, binary formats, large-file performance, and real scan validation remain |
 | P3-M9 | point-cloud extraction v2 | Synthetic point-cloud generator, story/column extraction, beam benchmark, wall review candidate trace, benchmark gate, and import-to-analysis e2e exist | Preliminary; beam detection uses synthetic truth assist, wall extraction is review-only, and real scan validation remains |
 

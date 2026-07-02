@@ -8,6 +8,8 @@ import {
   DXF_PLAN_RECOGNITION_VERSION,
   PLAN_ASSEMBLY_VERSION,
   assemblePlansToImportCandidate,
+  buildDwgConversionReadiness,
+  buildPlanAssemblyReview,
   createDwgConversionFailureResult,
   createDwgConversionPlan,
   createDwgMissingConverterResult,
@@ -21,6 +23,8 @@ assert.equal(missing.version, DWG_ADAPTER_VERSION);
 assert.equal(missing.code, DWG_CONVERTER_MISSING);
 assert.equal(missing.ok, false);
 assert.match(missing.message, /DXF/);
+assert.equal(missing.plan.audit.readiness.status, 'external-converter-required');
+assert.equal(missing.plan.audit.readiness.agentDecision, 'request-ascii-dxf-or-configure-converter');
 
 const plan = createDwgConversionPlan({ inputPath: 'sample.dwg', converterPath: 'C:/Tools/ODAFileConverter.exe' });
 assert.equal(plan.canRun, true);
@@ -29,6 +33,11 @@ assert.equal(plan.outputPath, 'sample.dxf');
 assert.equal(plan.command.executable, 'C:/Tools/ODAFileConverter.exe');
 assert.deepEqual(plan.command.args.slice(2, 4), ['ACAD2018_ASCII_DXF', 'DXF']);
 assert.equal(plan.audit.requiresExternalConverter, true);
+assert.equal(plan.audit.readiness.status, 'ready-to-convert');
+assert.equal(plan.audit.readiness.agentDecision, 'run-converter-then-parse-dxf');
+const directReadiness = buildDwgConversionReadiness({ inputPath: 'sample.dwg', outputPath: 'sample.dxf' });
+assert.equal(directReadiness.canRun, false);
+assert.ok(directReadiness.missing.includes('converter-path'));
 
 const failed = createDwgConversionFailureResult({ plan }, { message: 'converter exited', stderr: 'bad file', exitCode: 2 });
 assert.equal(failed.ok, false);
@@ -84,6 +93,9 @@ assert.equal(candidate.audit.planAssembly.recognitionQuality.minBeamRecall, 1);
 assert.equal(candidate.audit.planAssembly.recognitionQuality.ok, true);
 assert.equal(candidate.audit.planAssembly.columnContinuity.ok, true);
 assert.equal(candidate.audit.planAssembly.columnContinuity.incompleteStackCount, 0);
+assert.equal(candidate.audit.planAssembly.review.status, 'ready-for-human-confirmation');
+assert.equal(candidate.audit.planAssembly.review.confirmable, true);
+assert.equal(candidate.audit.planAssembly.review.agentDecision, 'candidate-ready-for-import-review-ui');
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'column').length, 2);
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'beam').length, 2);
 assert.deepEqual(candidate.candidates.stories.map((story) => story.z), [0, 3]);
@@ -100,6 +112,8 @@ assert.equal(reviewSummary.review.planAssembly.planCount, 2);
 assert.equal(reviewSummary.review.planAssembly.columnStackCount, 2);
 assert.equal(reviewSummary.review.planAssembly.recognitionQuality.ok, true);
 assert.equal(reviewSummary.review.planAssembly.columnContinuity.ok, true);
+assert.equal(reviewSummary.review.planAssembly.review.confirmable, true);
+assert.equal(reviewSummary.review.planAssembly.review.agentDecision, 'candidate-ready-for-import-review-ui');
 
 const rejectedReview = summarizeImportEntry({ id: 'plan-2story-import', status: 'rejected', candidate });
 assert.equal(rejectedReview.review.confirmable, false);
@@ -120,6 +134,8 @@ const weakCandidate = assemblePlansToImportCandidate([weakStory, story2], {
 });
 const weakReview = summarizeImportEntry({ id: 'weak-plan-import', status: 'pending', candidate: weakCandidate });
 assert.equal(weakCandidate.audit.planAssembly.recognitionQuality.ok, false);
+assert.equal(weakCandidate.audit.planAssembly.review.status, 'review-required');
+assert.equal(weakCandidate.audit.planAssembly.review.agentDecision, 'hold-import-for-plan-review');
 assert.ok(weakReview.review.reasons.includes('plan-recognition-quality-review-required'));
 
 const discontinuousStory2 = { ...story2, columns: story2.columns.slice(0, 1) };
@@ -134,8 +150,12 @@ const discontinuousReview = summarizeImportEntry({
   candidate: discontinuousCandidate,
 });
 assert.equal(discontinuousCandidate.audit.planAssembly.columnContinuity.ok, false);
+assert.equal(discontinuousCandidate.audit.planAssembly.review.status, 'review-required');
 assert.equal(discontinuousCandidate.audit.planAssembly.columnContinuity.incompleteStackCount, 1);
 assert.ok(discontinuousReview.review.reasons.includes('column-stack-continuity-review-required'));
+const emptyReview = buildPlanAssemblyReview({ ordered: [], segments: [] });
+assert.equal(emptyReview.confirmable, false);
+assert.ok(emptyReview.reasons.includes('single-plan-assembly-review-required'));
 
 console.log(JSON.stringify({
   ok: true,

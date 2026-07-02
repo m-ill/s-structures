@@ -61,6 +61,7 @@ function buildReviewState(entry, candidate, validation, warnings) {
   if (planAssembly && planAssembly.planCount < 2) reasons.push('single-plan-assembly-review-required');
   if (planAssembly?.recognitionQuality?.ok === false) reasons.push('plan-recognition-quality-review-required');
   if (planAssembly?.columnContinuity?.ok === false) reasons.push('column-stack-continuity-review-required');
+  reasons.push(...(planAssembly?.review?.reasons || []));
   return {
     confirmable: reasons.length === 0,
     requiresHumanReview: warnings.length > 0 || reasons.length > 0 || status === 'pending',
@@ -79,6 +80,7 @@ function buildReviewState(entry, candidate, validation, warnings) {
       generatedSegmentCount: planAssembly.generatedSegmentCount || 0,
       recognitionQuality: planAssembly.recognitionQuality || null,
       columnContinuity: planAssembly.columnContinuity || null,
+      review: planAssembly.review || null,
     } : null,
   };
 }

@@ -44,6 +44,8 @@ export function assemblePlansToImportCandidate(plans = [], options = {}) {
     version: PLAN_ASSEMBLY_VERSION,
     planCount: ordered.length,
   };
+  const recognitionQuality = summarizeRecognitionQuality(ordered);
+  const columnContinuity = summarizeColumnContinuity(columnKeys, ordered);
   candidate.audit = {
     ...candidate.audit,
     planAssembly: {
@@ -51,11 +53,35 @@ export function assemblePlansToImportCandidate(plans = [], options = {}) {
       planCount: ordered.length,
       columnStackCount: columnKeys.size,
       generatedSegmentCount: segments.length,
-      recognitionQuality: summarizeRecognitionQuality(ordered),
-      columnContinuity: summarizeColumnContinuity(columnKeys, ordered),
+      recognitionQuality,
+      columnContinuity,
+      review: buildPlanAssemblyReview({ ordered, recognitionQuality, columnContinuity, segments }),
     },
   };
   return candidate;
+}
+
+export function buildPlanAssemblyReview(input = {}) {
+  const reasons = [];
+  if ((input.ordered || []).length < 2) reasons.push('single-plan-assembly-review-required');
+  if (input.recognitionQuality?.ok === false) reasons.push('plan-recognition-quality-review-required');
+  if (input.columnContinuity?.ok === false) reasons.push('column-stack-continuity-review-required');
+  if (!(input.segments || []).length) reasons.push('no-generated-structural-segments');
+  return {
+    version: PLAN_ASSEMBLY_VERSION,
+    status: reasons.length ? 'review-required' : 'ready-for-human-confirmation',
+    confirmable: reasons.length === 0,
+    reasons,
+    requiresHumanReview: true,
+    agentDecision: reasons.length ? 'hold-import-for-plan-review' : 'candidate-ready-for-import-review-ui',
+    evidence: {
+      planCount: (input.ordered || []).length,
+      generatedSegmentCount: (input.segments || []).length,
+      minColumnRecall: input.recognitionQuality?.minColumnRecall ?? null,
+      minBeamRecall: input.recognitionQuality?.minBeamRecall ?? null,
+      incompleteStackCount: input.columnContinuity?.incompleteStackCount ?? null,
+    },
+  };
 }
 
 function pointKey(point, tolerance) {

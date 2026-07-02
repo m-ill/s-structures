@@ -34,7 +34,25 @@ export function createDwgConversionPlan(input = {}) {
       requiresExternalConverter: true,
       executableConfigured: !!converterPath,
       targetPathKnown: !!outputPath,
+      readiness: buildDwgConversionReadiness({ converterPath, inputPath, outputPath }),
     },
+  };
+}
+
+export function buildDwgConversionReadiness(input = {}) {
+  const missing = [];
+  if (!input.converterPath) missing.push('converter-path');
+  if (!input.inputPath) missing.push('input-path');
+  if (!input.outputPath) missing.push('output-path');
+  return {
+    version: DWG_ADAPTER_VERSION,
+    status: missing.length ? 'external-converter-required' : 'ready-to-convert',
+    canRun: missing.length === 0,
+    missing,
+    agentDecision: missing.length ? 'request-ascii-dxf-or-configure-converter' : 'run-converter-then-parse-dxf',
+    guidance: missing.length
+      ? 'DWG is handled through an external converter. Provide ASCII DXF when the converter is not configured.'
+      : 'Conversion command can be executed by the approved host environment.',
   };
 }
 
