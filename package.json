@@ -7,6 +7,8 @@
     "dev": "node tools/serve.mjs",
     "dev:public": "node tools/serve.mjs 5173 0.0.0.0",
     "test": "node tools/run-milestone-tests.mjs",
+    "test:p3": "node tools/run-milestone-tests.mjs --phase3",
+    "test:p3:list": "node tools/run-milestone-tests.mjs --phase3 --list",
     "generate:representative-buildings": "node tools/generate-representative-building-reports.mjs",
     "generate:m42-representative-packages": "node tools/generate-m42-representative-packages.mjs",
     "generate:stabilization-harness": "node tools/run-stabilization-harness.mjs",
@@ -145,6 +147,7 @@
     "test:p3m18": "node tests/p3-design-steel-foundation.mjs",
     "test:p3m19": "node tests/p3-m19-integrated-report.mjs",
     "test:p3m20": "node tests/p3-launch-gate.mjs",
-    "test:p3alignment": "node tests/p3-plan-alignment.mjs"
+    "test:p3alignment": "node tests/p3-plan-alignment.mjs",
+    "test:p3runner": "node tests/p3-runner-contract.mjs"
   }
 }

@@ -35,12 +35,15 @@ The following tests were run successfully in the current worktree:
 | Nonlinear M14-M16 | `tests/p3-m14-nonlinear-geometry.mjs`, `tests/p3-m15-nonlinear-hinge-control.mjs`, `tests/p3-m16-nonlinear-fiber-nlth.mjs` |
 | Design and productization M17-M20 | `tests/p3-design-rc.mjs`, `tests/p3-design-steel-foundation.mjs`, `tests/p3-m19-integrated-report.mjs`, `tests/p3-launch-gate.mjs` |
 | Plan alignment | `tests/p3-plan-alignment.mjs` |
+| Phase 3 runner contract | `tests/p3-runner-contract.mjs` |
 
 ## Review Finding
 
 The current codebase is now traceable from P3-M6 through P3-M20 and back to the 14 Phase 3 planning documents. The most important correction in this audit was making absorbed backlog tickets explicit through `ticketSummary`, so the system no longer reports a confusing 95 planned versus 93 active count without explanation.
 
 2026-07-02 source-document audit update: `tests/p3-plan-alignment.mjs` now checks the 14 core document paths against stable markers such as PRD requirement IDs, roadmap milestones, backlog ticket IDs, API paths, auth primitives, ImportCandidate contracts, material registry strings, nonlinear benchmark IDs, launch gates, and file-map folders. This makes the alignment gate depend on the actual prewritten planning documents, not only on a hardcoded document count.
+
+2026-07-02 runner audit update: `tools/run-milestone-tests.mjs` now supports the Phase 3 plan range directly through `--phase3`, `--from=P3-M#`, `--to=P3-M#`, and `--list`. `npm run test:p3` runs the P3-M0 to P3-M20 gate set, and `tests/p3-runner-contract.mjs` verifies that the runner includes the M6 restart path and the M20 launch/alignment gates.
 
 ## Remaining Limits
 

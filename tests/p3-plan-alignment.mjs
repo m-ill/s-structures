@@ -98,6 +98,7 @@ assert.deepEqual(report.milestones.map((row) => row.id), Array.from({ length: 21
 assert.ok(report.milestones.find((row) => row.id === 'P3-M6').tickets.includes('P3-T26'));
 assert.ok(report.milestones.find((row) => row.id === 'P3-M13').tickets.includes('P3-T82'));
 assert.ok(report.milestones.find((row) => row.id === 'P3-M20').tests.includes('tests/p3-launch-gate.mjs'));
+assert.ok(report.milestones.find((row) => row.id === 'P3-M20').tests.includes('tests/p3-runner-contract.mjs'));
 assert.equal(report.activeTicketCount, 93);
 assert.equal(report.plannedTicketCount, 95);
 assert.deepEqual(report.absorbedTickets.map((row) => row.ticket), ['P3-T57', 'P3-T60']);

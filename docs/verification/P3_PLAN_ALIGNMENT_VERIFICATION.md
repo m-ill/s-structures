@@ -34,12 +34,15 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 | Absorbed backlog tickets | `absorbedTickets` for P3-T57 and P3-T60 |
 | Ticket completion summary | `ticketSummary` records 95 planned, 93 active, 2 absorbed, and 0 unresolved tickets |
 | Agent readability | `getPhase3PlanAlignment()` and `phase3PlanAlignment` data contract |
+| Phase 3 runner | `tools/run-milestone-tests.mjs --phase3` and `tests/p3-runner-contract.mjs` |
 
 ## Current Test Gate
 
 `tests/p3-plan-alignment.mjs` verifies the report version, 14-document source set, 21 milestone rows, PRD requirement coverage, architecture decision coverage, server endpoint/error/auth/persistence contracts, frontend/import contracts, material/section library contracts, nonlinear engine contracts, zero-dependency package state, server/import boundary guard, manifest module exposure, read API exposure, data contract exposure, and browser-agent API access.
 
 2026-07-02 M6-M20 audit update: the plan-alignment report now separates historical backlog count from effective execution count. The backlog has 95 planned ticket IDs, 93 active milestone tickets, 2 absorbed tickets, and 0 unresolved tickets. P3-T57 is absorbed by the active wind/seismic v2 ticket group, and P3-T60 is absorbed by the active seismic Ax ticket. This prevents the audit from treating explicitly retired backlog rows as missing implementation work.
+
+2026-07-02 runner update: the milestone runner now has a Phase 3 mode. `npm run test:p3` runs the P3-M0 to P3-M20 gate set, while `npm run test:p3:list` prints the exact milestone/test mapping. This makes the QA release plan executable without relying on the older sequential M0 to M91 script numbering.
 
 For the P3-M6 restart point, the practical order is:
 
