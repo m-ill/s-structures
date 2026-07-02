@@ -1,4 +1,22 @@
 export const PHASE3_EVIDENCE_REGISTER_VERSION = 'p3-evidence-register-v3';
+export const PHASE3_FINAL_APPROVAL_FIELDS = [
+  'productionEquilibriumSolver',
+  'productionHingeEquilibriumLoop',
+  'productionSeismicQualification',
+  'finalPermitDesign',
+  'finalStructuralSignoff',
+  'productionDeploymentApproved',
+  'ownerProductionDeploymentApproved',
+  'finalOwnerDeploymentApproval',
+  'openSourcePolicyFinalized',
+  'deploymentTargetFinalized',
+  'realDwgConversionAccepted',
+  'realPointCloudValidationAccepted',
+  'pilotFeedbackOwnerAccepted',
+  'backupRestoreOwnerAccepted',
+  'securitySignoffAccepted',
+  'ownerFinalSignoff',
+];
 
 export const PHASE3_REQUIRED_EVIDENCE = [
   req('real-office-dxf-fixtures', 'drawing-import', 'P3-M6', 'real office DXF fixture set'),
@@ -39,6 +57,20 @@ export function validatePhase3EvidenceRecord(record = {}) {
     reason: ok ? null : 'unknown-phase3-evidence',
     allowedIds: PHASE3_REQUIRED_EVIDENCE.map((item) => item.id),
   };
+}
+
+export function buildPhase3FinalApprovals(evidence = []) {
+  const approvals = {};
+  normalizeEvidence(evidence).forEach((row) => {
+    const field = normalizeFinalApprovalField(row.finalApprovalField);
+    if (field && finalApprovalAccepted(row)) approvals[field] = true;
+  });
+  return approvals;
+}
+
+export function normalizeFinalApprovalField(field) {
+  const value = String(field || '').trim();
+  return PHASE3_FINAL_APPROVAL_FIELDS.includes(value) ? value : null;
 }
 
 export function buildPhase3EvidenceRegister(input = {}) {
@@ -105,6 +137,12 @@ function normalizeRow(row = {}) {
     status: String(row.status || '').trim().toLowerCase(),
     accepted: row.accepted === true,
   };
+}
+
+function finalApprovalAccepted(row = {}) {
+  return row.finalApprovalAccepted === true ||
+    row.approvalAccepted === true ||
+    row.approved === true;
 }
 
 function copyRecord(row) {

@@ -83,8 +83,8 @@ Phase 3 field, engineering, and owner evidence is stored at project scope so AI 
 
 | Method | Path | Description | Permission |
 | --- | --- | --- | --- |
-| GET | `/api/projects/:id/evidence` | list evidence rows plus `getPhase3EvidenceRegister` summary | viewer+ |
-| POST | `/api/projects/:id/evidence` | append evidence row `{ id, type?, accepted?, status?, reportPath? }` | engineer+ |
+| GET | `/api/projects/:id/evidence` | list evidence rows plus `getPhase3EvidenceRegister` summary and `finalApprovals` derived from explicit final approval rows | viewer+ |
+| POST | `/api/projects/:id/evidence` | append evidence row `{ id, type?, accepted?, status?, reportPath?, finalApprovalField?, approved? }` and return updated register/final approvals | engineer+ |
 
 ### Workflow — 승인 (P3-M13, T61)
 

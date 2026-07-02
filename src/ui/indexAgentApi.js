@@ -36,6 +36,7 @@ import {
   buildPhase3OwnerSignoffReview,
   buildPhase3CompletionAuditReview,
   buildPhase3EvidenceRegister,
+  buildPhase3FinalApprovals,
   validatePhase3EvidenceRecord,
   buildRcDetailedDesignReport,
   buildRcDetailingReport,
@@ -284,10 +285,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         throw new Error(`Unknown Phase 3 evidence id or type: ${evidence.id || evidence.type || 'blank'}`);
       }
       const state = getProjectEvidenceState(target);
-      const finalApprovalField = normalizeFinalApprovalField(evidence.finalApprovalField);
-      if (finalApprovalField && finalApprovalAccepted(evidence)) {
-        state.finalApprovals[finalApprovalField] = true;
-      }
+      Object.assign(state.finalApprovals, buildPhase3FinalApprovals([evidence]));
       state.evidence.push({
         ...evidence,
         status: String(evidence.status || (evidence.accepted ? 'accepted' : 'submitted')).toLowerCase(),
@@ -904,35 +902,6 @@ function hasEvidenceInput(options = {}) {
     Object.hasOwn(options, 'signoffEvidence') ||
     Object.hasOwn(options, 'finalApprovals') ||
     Object.hasOwn(options, 'approvals');
-}
-
-function normalizeFinalApprovalField(field) {
-  const value = String(field || '').trim();
-  const allowed = new Set([
-    'productionEquilibriumSolver',
-    'productionHingeEquilibriumLoop',
-    'productionSeismicQualification',
-    'finalPermitDesign',
-    'finalStructuralSignoff',
-    'productionDeploymentApproved',
-    'ownerProductionDeploymentApproved',
-    'finalOwnerDeploymentApproval',
-    'openSourcePolicyFinalized',
-    'deploymentTargetFinalized',
-    'realDwgConversionAccepted',
-    'realPointCloudValidationAccepted',
-    'pilotFeedbackOwnerAccepted',
-    'backupRestoreOwnerAccepted',
-    'securitySignoffAccepted',
-    'ownerFinalSignoff',
-  ]);
-  return allowed.has(value) ? value : null;
-}
-
-function finalApprovalAccepted(evidence = {}) {
-  return evidence.finalApprovalAccepted === true ||
-    evidence.approvalAccepted === true ||
-    evidence.approved === true;
 }
 
 function replaceObject(target, source) {

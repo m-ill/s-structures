@@ -17,6 +17,7 @@ try {
 
   const empty = await client.listProjectEvidence(projectId);
   assert.equal(empty.evidence.length, 0);
+  assert.deepEqual(empty.finalApprovals, {});
   assert.ok(empty.register.summary.missing.includes('real-office-dxf-fixtures'));
 
   const submitted = await client.submitProjectEvidence(projectId, {
@@ -54,6 +55,17 @@ try {
   assert.equal(packaged.evidence.fileId, packaged.file.id);
   assert.equal(packaged.register.rows.find((row) => row.id === 'real-pointcloud-files').status, 'ACCEPTED');
   assert.equal(packaged.register.rows.find((row) => row.id === 'real-pointcloud-files').records[0].fileId, packaged.file.id);
+
+  const finalApproval = await client.submitProjectEvidence(projectId, {
+    id: 'final-structural-signoff',
+    accepted: true,
+    approved: true,
+    finalApprovalField: 'finalStructuralSignoff',
+    reportPath: 'reports/launch-readiness/final-signoff.md',
+  });
+  assert.equal(finalApproval.finalApprovals.finalStructuralSignoff, true);
+  const finalListed = await client.listProjectEvidence(projectId);
+  assert.equal(finalListed.finalApprovals.finalStructuralSignoff, true);
 
   const manifest = buildAgentManifest();
   assert.equal(manifest.modules.phase3EvidenceClient, EVIDENCE_CLIENT_VERSION);

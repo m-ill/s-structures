@@ -8,6 +8,7 @@ export function createEvidenceClient(api) {
       const result = await api.get(`/api/projects/${encodeURIComponent(projectId)}/evidence`);
       return {
         evidence: result.evidence || [],
+        finalApprovals: result.finalApprovals || {},
         register: result.register,
       };
     },
@@ -18,6 +19,7 @@ export function createEvidenceClient(api) {
       });
       return {
         evidence: result.evidence,
+        finalApprovals: result.finalApprovals || {},
         register: result.register,
       };
     },

@@ -230,7 +230,10 @@ export {
   PHASE3_COMPLETION_AUDIT_REVIEW_VERSION,
 } from './platform/phase3CompletionAuditReview.js';
 export {
+  buildPhase3FinalApprovals,
   buildPhase3EvidenceRegister,
+  normalizeFinalApprovalField,
+  PHASE3_FINAL_APPROVAL_FIELDS,
   PHASE3_EVIDENCE_REGISTER_VERSION,
   validatePhase3EvidenceRecord,
 } from './platform/phase3EvidenceRegister.js';

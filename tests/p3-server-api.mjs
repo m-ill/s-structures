@@ -159,6 +159,7 @@ try {
   const emptyEvidence = await app.api('GET', `/api/projects/${projectId}/evidence`, { token });
   assert.equal(emptyEvidence.status, 200);
   assert.equal(emptyEvidence.data.data.register.summary.acceptedCount, 0);
+  assert.deepEqual(emptyEvidence.data.data.finalApprovals, {});
   assert.ok(emptyEvidence.data.data.register.summary.missing.includes('real-office-dxf-fixtures'));
 
   const evidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
@@ -205,6 +206,26 @@ try {
   assert.equal(securityEvidenceWrite.status, 200, JSON.stringify(securityEvidenceWrite.data));
   assert.equal(securityEvidenceWrite.data.data.register.summary.acceptedCount, 2);
   assert.equal(securityEvidenceWrite.data.data.register.rows.find((row) => row.id === 'security-signoff').status, 'ACCEPTED');
+  assert.deepEqual(securityEvidenceWrite.data.data.finalApprovals, {});
+
+  const finalApprovalEvidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
+    token,
+    body: {
+      evidence: {
+        id: 'final-structural-signoff',
+        accepted: true,
+        approved: true,
+        finalApprovalField: 'finalStructuralSignoff',
+        owner: 'owner',
+      },
+    },
+  });
+  assert.equal(finalApprovalEvidenceWrite.status, 200, JSON.stringify(finalApprovalEvidenceWrite.data));
+  assert.equal(finalApprovalEvidenceWrite.data.data.finalApprovals.finalStructuralSignoff, true);
+  assert.equal(finalApprovalEvidenceWrite.data.data.register.summary.acceptedCount, 3);
+
+  const finalApprovalEvidenceList = await app.api('GET', `/api/projects/${projectId}/evidence`, { token });
+  assert.equal(finalApprovalEvidenceList.data.data.finalApprovals.finalStructuralSignoff, true);
 
   const reviewerTriesEvidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
     token: engineerLogin.token,

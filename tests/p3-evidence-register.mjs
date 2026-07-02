@@ -2,7 +2,10 @@ import assert from 'node:assert/strict';
 import {
   buildAgentManifest,
   buildPhase3EvidenceRegister,
+  buildPhase3FinalApprovals,
   PHASE3_EVIDENCE_REGISTER_VERSION,
+  PHASE3_FINAL_APPROVAL_FIELDS,
+  normalizeFinalApprovalField,
   validatePhase3EvidenceRecord,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
@@ -52,6 +55,20 @@ const invalidRecord = validatePhase3EvidenceRecord({ id: 'not-in-phase3-plan' })
 assert.equal(invalidRecord.ok, false);
 assert.equal(invalidRecord.reason, 'unknown-phase3-evidence');
 assert.ok(invalidRecord.allowedIds.includes('security-signoff'));
+
+assert.ok(PHASE3_FINAL_APPROVAL_FIELDS.includes('finalStructuralSignoff'));
+assert.equal(normalizeFinalApprovalField('finalStructuralSignoff'), 'finalStructuralSignoff');
+assert.equal(normalizeFinalApprovalField('notAllowed'), null);
+assert.deepEqual(buildPhase3FinalApprovals([
+  { id: 'final-structural-signoff', accepted: true, finalApprovalField: 'finalStructuralSignoff' },
+]), {});
+assert.deepEqual(buildPhase3FinalApprovals([
+  { id: 'final-structural-signoff', accepted: true, approved: true, finalApprovalField: 'finalStructuralSignoff' },
+  { id: 'security-signoff', accepted: true, finalApprovalAccepted: true, finalApprovalField: 'securitySignoffAccepted' },
+]), {
+  finalStructuralSignoff: true,
+  securitySignoffAccepted: true,
+});
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3EvidenceRegister, PHASE3_EVIDENCE_REGISTER_VERSION);
