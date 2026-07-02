@@ -251,6 +251,37 @@ export {
   evaluateMomentHinge,
 } from './nonlinear/hinges/momentHinge.js';
 export {
+  PMM_HINGE_VERSION,
+  createPmmBackboneSet,
+  interpolatePmmBackbone,
+} from './nonlinear/hinges/pmmHinge.js';
+export {
+  FIBER_SECTION_VERSION,
+  applyFiberStrain,
+  buildRectangularFiberSection,
+  buildSteelIFiberSection,
+} from './nonlinear/fiber/fiberSection.js';
+export {
+  MOMENT_CURVATURE_VERSION,
+  compareMomentCurvatureTheory,
+  computeMomentCurvature,
+} from './nonlinear/fiber/momentCurvature.js';
+export {
+  NLTH_NEWMARK_VERSION,
+  runNewmarkNlth,
+} from './nonlinear/dynamics/newmark.js';
+export {
+  RAYLEIGH_DAMPING_VERSION,
+  dampingRatioAtFrequency,
+  solveRayleighDamping,
+} from './nonlinear/dynamics/rayleigh.js';
+export {
+  GROUND_MOTION_VERSION,
+  buildSpectrumScalingTrace,
+  parseGroundMotionText,
+  scaleGroundMotion,
+} from './nonlinear/dynamics/groundMotion.js';
+export {
   FORMAL_PUSHOVER_VERSION,
   comparePushoverRegression,
   runFormalPushover,
@@ -311,8 +342,12 @@ export {
   NONLINEAR_BENCHMARK_VERSION,
   runCantileverLargeDisplacementBenchmark,
   runEulerBucklingBenchmark,
+  runLinearThaCompatibilityBenchmark,
+  runMomentCurvatureBenchmark,
   runNonlinearHingeControlBenchmarks,
+  runNonlinearFiberNlthBenchmarks,
   runNonlinearGeometryBenchmarks,
+  runNonlinearThaBenchmark,
   runPortalPlasticMechanismBenchmark,
   runPushoverRegressionBenchmark,
   runSnapThroughArcLengthBenchmark,

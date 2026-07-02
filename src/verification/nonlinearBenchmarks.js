@@ -3,9 +3,14 @@ import { solveNewtonRaphson } from '../nonlinear/control/newtonRaphson.js';
 import { buildArcLengthTrace, createSnapThroughBenchmarkPath } from '../nonlinear/control/arcLength.js';
 import { createMomentRotationBackbone, evaluateMomentHinge } from '../nonlinear/hinges/momentHinge.js';
 import { comparePushoverRegression, runFormalPushover } from '../nonlinear/pushoverFormal.js';
+import { buildRectangularFiberSection } from '../nonlinear/fiber/fiberSection.js';
+import { compareMomentCurvatureTheory, computeMomentCurvature } from '../nonlinear/fiber/momentCurvature.js';
+import { runNewmarkNlth } from '../nonlinear/dynamics/newmark.js';
+import { parseGroundMotionText, scaleGroundMotion } from '../nonlinear/dynamics/groundMotion.js';
 import { createPortalFrameSample } from '../examples/sampleFrame.js';
+import { runLinearSdofTha } from '../dynamics/elasticCompleteness.js';
 
-export const NONLINEAR_BENCHMARK_VERSION = 'p3-m15-nonlinear-benchmarks';
+export const NONLINEAR_BENCHMARK_VERSION = 'p3-m16-nonlinear-benchmarks';
 
 export function runNonlinearGeometryBenchmarks(options = {}) {
   const b1 = runEulerBucklingBenchmark(options.b1);
@@ -27,6 +32,18 @@ export function runNonlinearHingeControlBenchmarks(options = {}) {
     milestone: 'P3-M15',
     ok: b3.ok && b4.ok && b5.ok,
     cases: [b3, b4, b5],
+  };
+}
+
+export function runNonlinearFiberNlthBenchmarks(options = {}) {
+  const b6 = runMomentCurvatureBenchmark(options.b6);
+  const b7 = runNonlinearThaBenchmark(options.b7);
+  const b8 = runLinearThaCompatibilityBenchmark(options.b8);
+  return {
+    version: NONLINEAR_BENCHMARK_VERSION,
+    milestone: 'P3-M16',
+    ok: b6.ok && b7.ok && b8.ok,
+    cases: [b6, b7, b8],
   };
 }
 
@@ -67,6 +84,31 @@ export function runPushoverRegressionBenchmark(options = {}) {
   const baseline = options.baseline || current;
   const regression = comparePushoverRegression(current, baseline);
   return { id: 'B5', name: 'representative pushover regression', reference: 0, actual: regression.maxRoofDispDiff, tolerance: 0, errorRatio: 0, ok: regression.maxRoofDispDiff === 0, regression };
+}
+
+export function runMomentCurvatureBenchmark(options = {}) {
+  const section = buildRectangularFiberSection(options.section);
+  const trace = computeMomentCurvature(section, options.curvature);
+  const theory = compareMomentCurvatureTheory(trace, { expectedMoment: trace.yieldMoment, tolerance: 0.02 });
+  return { id: 'B6', name: 'fiber moment-curvature', reference: theory.expected, actual: theory.actual, tolerance: 0.02, errorRatio: theory.errorRatio, ok: theory.ok, trace };
+}
+
+export function runNonlinearThaBenchmark(options = {}) {
+  const record = scaleGroundMotion(parseGroundMotionText(options.record || '0 0.1 -0.1 0.05 0', { dt: 0.02 }), { targetPga: 0.1 });
+  const trace = runNewmarkNlth({ accelerations: record.accelerations, dt: record.dt, stiffness: 100, yieldForce: 0.001, postYieldRatio: 0.05 });
+  const yielded = trace.rows.some((row) => row.hingeState === 'yielded');
+  return { id: 'B7', name: 'single dof nonlinear time history', reference: 1, actual: yielded ? 1 : 0, tolerance: 0.03, errorRatio: yielded ? 0 : 1, ok: yielded, trace };
+}
+
+export function runLinearThaCompatibilityBenchmark(options = {}) {
+  const accelerations = options.accelerations || [0, 0.1, -0.1, 0.05, 0];
+  const period = Number(options.period || 1);
+  const w = 2 * Math.PI / period;
+  const zeta = Number(options.dampingRatio ?? 0.05);
+  const linear = runLinearSdofTha({ period, dampingRatio: zeta, dt: 0.02, accelerations });
+  const nlth = runNewmarkNlth({ accelerations, dt: 0.02, mass: 1, stiffness: w * w, damping: 2 * zeta * w, yieldForce: 1e12 });
+  const errorRatio = Math.abs(nlth.maxDisplacement - linear.maxDisplacement) / Math.max(1e-12, linear.maxDisplacement);
+  return { id: 'B8', name: 'linear THA compatibility', reference: linear.maxDisplacement, actual: nlth.maxDisplacement, tolerance: 0.01, errorRatio, ok: errorRatio <= 0.01, linear, nlth };
 }
 
 function result(id, name, reference, actual, tolerance, extra = {}) {

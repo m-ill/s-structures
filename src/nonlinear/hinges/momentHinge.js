@@ -15,7 +15,7 @@ export function createMomentRotationBackbone(input = {}) {
       { id: 'E', state: 'residual', theta: positive(input.thetaE, thetaY * 12), moment: My * residualRatio },
     ],
     unloading: 'initial-stiffness-parallel-v1',
-    limitation: 'no-PMM-interaction-until-P3-M16',
+    limitation: 'PMM interaction is provided by the P3-M16 pmmHinge trace',
   };
 }
 

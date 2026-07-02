@@ -408,6 +408,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M13', status: 'preliminary', feature: 'loads v2, CQC, buckling trace, and linear time-history helpers' },
       { id: 'P3-M14', status: 'preliminary', feature: 'nonlinear state snapshot, corotational geometry trace, Newton convergence log, and B1/B2 benchmark gate' },
       { id: 'P3-M15', status: 'preliminary', feature: 'moment hinge state trace, displacement and arc-length control traces, and formal pushover result contract' },
+      { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',

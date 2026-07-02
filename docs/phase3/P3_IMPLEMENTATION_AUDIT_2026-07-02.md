@@ -128,6 +128,17 @@ M15 is exposed through the existing `getNonlinearAnalysisTrace` contract. The fo
 | P3-T85 | Newmark NLTH with Rayleigh damping and step trace |
 | P3-T86 | ground-motion record and scaling trace |
 
+### P3-M16 Implementation Review
+
+| Ticket | Current code | Audit result |
+| --- | --- | --- |
+| P3-T83 | `src/nonlinear/hinges/pmmHinge.js` provides axial-ratio backbone sets and interpolation trace | Preliminary |
+| P3-T84 | `src/nonlinear/fiber/fiberSection.js` and `momentCurvature.js` provide RC/steel fiber strips and M-phi trace with B6 gate | Preliminary |
+| P3-T85 | `src/nonlinear/dynamics/newmark.js` and `rayleigh.js` provide Newmark step trace, bilinear spring state, and Rayleigh coefficient trace with B7/B8 gates | Preliminary |
+| P3-T86 | `src/nonlinear/dynamics/groundMotion.js` provides text record parsing, PGA scaling, and spectrum scaling trace | Preliminary |
+
+M16 is exposed through `getNonlinearAnalysisTrace` with PMM, fiber, ground-motion, NLTH, and B6-B8 benchmark sections. The current implementation is still a concentrated-plasticity trace core, not a distributed plasticity or soil-structure interaction solver.
+
 ## Corrective Implementation Order
 
 1. Do not label P3-M10 to P3-M13 as complete. Keep them as preliminary cores until the ticket gaps above are closed.

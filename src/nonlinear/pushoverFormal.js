@@ -24,7 +24,7 @@ export function runFormalPushover(model, options = {}) {
     },
     limitations: [
       'Uses existing pushover analysis path until tangent stiffness hinge degradation is integrated.',
-      'PMM interaction and fiber sections remain P3-M16 scope.',
+      'PMM and fiber traces are available in the P3-M16 nonlinear trace, but are not yet condensed into this pushover tangent path.',
     ],
     controlNodeId: preliminary.controlNodeId,
     direction: preliminary.direction,
