@@ -3,6 +3,7 @@ import {
   COROTATIONAL_BEAM_VERSION,
   NEWTON_RAPHSON_VERSION,
   NONLINEAR_BENCHMARK_VERSION,
+  NONLINEAR_GEOMETRY_TRACE_VERSION,
   NONLINEAR_STATE_VERSION,
   NONLINEAR_TRACE_VERSION,
   advanceAnalysisState,
@@ -46,6 +47,8 @@ const nr = solveNewtonRaphson({
 });
 assert.equal(nr.version, NEWTON_RAPHSON_VERSION);
 assert.equal(nr.converged, true);
+assert.equal(nr.lineSearchEnabled, true);
+assert.equal(nr.convergenceReason, 'CONVERGED');
 assert.ok(Math.abs(nr.x - 2) < 1e-6);
 
 const benchmarks = runNonlinearGeometryBenchmarks();
@@ -58,12 +61,17 @@ const model = createPortalFrameSample();
 const trace = buildNonlinearAnalysisTrace(model);
 assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
 assert.ok(trace.method.control.includes('load'));
+assert.equal(trace.geometryGate.version, NONLINEAR_GEOMETRY_TRACE_VERSION);
+assert.deepEqual(trace.geometryGate.benchmarks.requiredCases, ['B1', 'B2']);
+assert.equal(trace.geometryGate.convergence.lineSearchEnabled, true);
 assert.equal(trace.benchmarks.geometry.ok, true);
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();
 assert.equal(apiTrace.version, NONLINEAR_TRACE_VERSION);
 assert.equal(apiTrace.benchmarks.geometry.version, NONLINEAR_BENCHMARK_VERSION);
+assert.equal(apiTrace.geometryGate.milestone, 'P3-M14');
 assert.ok(agent.getCapabilities().readApis.includes('getNonlinearAnalysisTrace'));
+assert.ok(agent.getCapabilities().dataContracts.includes('phase3NonlinearGeometryTrace'));
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m14-nonlinear-geometry' }, null, 2));

@@ -343,7 +343,9 @@ export {
   runFormalPushover,
 } from './nonlinear/pushoverFormal.js';
 export {
+  NONLINEAR_GEOMETRY_TRACE_VERSION,
   NONLINEAR_TRACE_VERSION,
+  buildNonlinearGeometryGate,
   buildNonlinearAnalysisTrace,
 } from './nonlinear/trace.js';
 export {

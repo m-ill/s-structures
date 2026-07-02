@@ -21,7 +21,15 @@ export function solveNewtonRaphson(options = {}) {
     x += dx;
     if (check.converged) break;
   }
-  return { version: NEWTON_RAPHSON_VERSION, x, converged: log.converged, iterations: log.iterations.length, log };
+  return {
+    version: NEWTON_RAPHSON_VERSION,
+    x,
+    converged: log.converged,
+    iterations: log.iterations.length,
+    lineSearchEnabled: lineSearch,
+    convergenceReason: log.reason,
+    log,
+  };
 }
 
 export function chooseLineSearchAlpha(residual, x, dx, r0) {
