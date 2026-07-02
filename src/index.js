@@ -538,6 +538,7 @@ export {
 export {
   DYNAMIC_COMPLETENESS_VERSION,
   buildCqcCombinationReport,
+  buildDynamicCompletenessReview,
   combineModalCqc,
   estimateMemberEulerBuckling,
   estimateModelBucklingTrace,

@@ -2,6 +2,24 @@ import { estimateGlobalBucklingTrace } from './globalBuckling.js';
 
 export const DYNAMIC_COMPLETENESS_VERSION = 'p3-m13-dynamic-completeness';
 
+export function buildDynamicCompletenessReview(input = {}) {
+  const type = input.type || 'dynamic-trace';
+  const missing = [];
+  if (type === 'cqc' && !(Number(input.responseCount) >= 2)) missing.push('modal-response-count');
+  if (type === 'buckling' && input.globalStatus !== 'available') missing.push('global-buckling-trace');
+  if (type === 'time-history' && !(Number(input.stepCount) > 0)) missing.push('time-history-steps');
+  const hasWarnings = missing.length > 0 || input.warning;
+  return {
+    version: DYNAMIC_COMPLETENESS_VERSION,
+    type,
+    status: hasWarnings ? 'review-required' : 'available',
+    missing,
+    warning: input.warning || null,
+    productionReady: false,
+    agentDecision: hasWarnings ? dynamicHoldDecision(type) : dynamicReadyDecision(type),
+  };
+}
+
 export function combineModalCqc(responses, dampingRatio = 0.05) {
   let sum = 0;
   for (const a of responses) for (const b of responses) sum += rho(a.period, b.period, dampingRatio) * a.displacement * b.displacement;
@@ -23,6 +41,7 @@ export function buildCqcCombinationReport(responses, dampingRatio = 0.05, closeR
     version: DYNAMIC_COMPLETENESS_VERSION,
     contract: buildDynamicContract(['P3-T79'], 'CQC modal combination trace for elastic response spectrum review.'),
     method: 'CQC',
+    review: buildDynamicCompletenessReview({ type: 'cqc', responseCount: responses.length }),
     cqc,
     srss,
     cqcToSrss: srss > 0 ? cqc / srss : 0,
@@ -56,6 +75,7 @@ export function estimateModelBucklingTrace(model = {}, options = {}) {
       : 'member-euler-screening-not-global-eigenvalue',
     critical: rows[0] || null,
     globalCritical: global.status === 'available' ? global.criticalLoadFactor : null,
+    review: buildDynamicCompletenessReview({ type: 'buckling', globalStatus: global.status }),
     global,
     rows,
   };
@@ -92,6 +112,7 @@ export function runLinearSdofTha({ period = 1, dampingRatio = 0.05, dt = 0.02, a
     version: DYNAMIC_COMPLETENESS_VERSION,
     contract: buildDynamicContract(['P3-T81'], 'Linear SDOF Newmark trace used by modal-superposition time history.'),
     method: 'linear-sdof-newmark-average-acceleration',
+    review: buildDynamicCompletenessReview({ type: 'time-history', stepCount: rows.length }),
     maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))),
     rows,
   };
@@ -112,10 +133,25 @@ export function runModalSuperpositionTha({ modes = [], direction = 'x', dampingR
     contract: buildDynamicContract(['P3-T81'], 'Linear modal-superposition time-history trace.'),
     method: 'linear-modal-superposition-newmark',
     direction,
+    review: buildDynamicCompletenessReview({ type: 'time-history', stepCount: rows.length }),
     modal,
     rows,
     maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))),
   };
+}
+
+function dynamicHoldDecision(type) {
+  if (type === 'cqc') return 'add-modal-responses-before-cqc-review';
+  if (type === 'buckling') return 'review-member-euler-screening-without-global-mode';
+  if (type === 'time-history') return 'provide-ground-motion-steps';
+  return 'review-dynamic-trace-inputs';
+}
+
+function dynamicReadyDecision(type) {
+  if (type === 'cqc') return 'cqc-trace-ready-for-review';
+  if (type === 'buckling') return 'buckling-trace-ready-for-review';
+  if (type === 'time-history') return 'time-history-trace-ready-for-review';
+  return 'dynamic-trace-ready-for-review';
 }
 
 function buildDynamicContract(tickets, scope) {
