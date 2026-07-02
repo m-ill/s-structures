@@ -90,6 +90,17 @@ P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PLAN.md`.
 | P3-T52 | Newton-Raphson, line search, convergence log contract |
 | P3-T53 | B1/B2 benchmark gate registration |
 
+### P3-M14 Implementation Review
+
+| Ticket | Current code | Audit result |
+| --- | --- | --- |
+| P3-T50 | `src/nonlinear/state.js` provides state creation, restart-safe snapshot, and step advance helpers | Preliminary |
+| P3-T51 | `src/nonlinear/elements/corotationalBeam.js` provides corotational geometry and geometric stiffness trace helpers | Preliminary |
+| P3-T52 | `src/nonlinear/control/convergence.js` and `newtonRaphson.js` provide tolerance, iteration log, and line-search trace contracts | Preliminary |
+| P3-T53 | `src/verification/nonlinearBenchmarks.js` registers B1 Euler buckling and B2 large-displacement cantilever screening gates | Preliminary |
+
+M14 is now exposed through `getNonlinearAnalysisTrace` for browser and agent control. This is not yet a production nonlinear frame solver: hinge material behavior, displacement/arc-length control, fiber sections, and nonlinear time-history remain in P3-M15 to P3-M16.
+
 ### P3-M15 Required
 
 | Ticket | Required output |

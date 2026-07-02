@@ -35,6 +35,7 @@ const READ_METHODS = new Set([
   'getWallSlabEquivalentTrace',
   'getLoadsV2Trace',
   'getDynamicCompletenessTrace',
+  'getNonlinearAnalysisTrace',
   'getResultPostprocessing',
   'getDesignDemandPackage',
   'getPracticePlatformReadiness',

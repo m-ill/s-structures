@@ -93,6 +93,10 @@ response = sendCommand({ id: 'loads-v2', method: 'getLoadsV2Trace', payload: { s
 assert.equal(response.ok, true);
 assert.equal(response.data.version, 'p3-m13-loads-v2-trace');
 
+response = sendCommand({ id: 'nonlinear-trace', method: 'getNonlinearAnalysisTrace' });
+assert.equal(response.ok, true);
+assert.equal(response.data.version, 'p3-m14-nonlinear-trace');
+
 response = sendCommand({
   id: 'bad-action',
   method: 'execute',
@@ -107,7 +111,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 11);
+assert.equal(response.data.agentCommandBridge.commandCount, 12);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -121,7 +125,7 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 12);
+assert.equal(state.commandCount, 13);
 assert.equal(state.errorCount, 1);
 assert.ok(counters.reanalyze >= 6);
 

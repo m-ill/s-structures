@@ -9,6 +9,7 @@ import {
   buildEccentricStoryLoadDistribution,
   buildDiaphragmSummary,
   buildMemberReleaseSummary,
+  buildNonlinearAnalysisTrace,
   buildPracticePlatformReadiness,
   buildPracticeValidationReport,
   buildPilotProjectValidation,
@@ -263,6 +264,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         timeHistory: options.timeHistory ? runLinearSdofTha(options.timeHistory) : null,
         modalTimeHistory: options.modalTimeHistory ? runModalSuperpositionTha(options.modalTimeHistory) : null,
       });
+    },
+    getNonlinearAnalysisTrace(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildNonlinearAnalysisTrace(model, options));
     },
     getResultPostprocessing(options = {}) {
       const model = getCurrentModel(target);

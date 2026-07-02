@@ -211,6 +211,33 @@ export {
   runPushover,
 } from './nonlinear/pushover.js';
 export {
+  NONLINEAR_STATE_VERSION,
+  advanceAnalysisState,
+  createAnalysisState,
+  snapshotAnalysisState,
+} from './nonlinear/state.js';
+export {
+  COROTATIONAL_BEAM_VERSION,
+  buildCorotationalBeamState,
+  estimateCantileverLargeDisplacement,
+  geometricStiffnessTrace,
+} from './nonlinear/elements/corotationalBeam.js';
+export {
+  NONLINEAR_CONVERGENCE_VERSION,
+  appendConvergenceIteration,
+  createConvergenceLog,
+  evaluateConvergenceNorms,
+} from './nonlinear/control/convergence.js';
+export {
+  NEWTON_RAPHSON_VERSION,
+  chooseLineSearchAlpha,
+  solveNewtonRaphson,
+} from './nonlinear/control/newtonRaphson.js';
+export {
+  NONLINEAR_TRACE_VERSION,
+  buildNonlinearAnalysisTrace,
+} from './nonlinear/trace.js';
+export {
   AGENT_MANIFEST_VERSION,
   buildAgentManifest,
 } from './ui/agentManifest.js';
@@ -258,6 +285,12 @@ export {
   STABILIZATION_HARNESS_VERSION,
 } from './verification/stabilizationHarness.js';
 export { BENCHMARK_GATE_VERSION, runBenchmarkGate } from './verification/benchmarkGate.js';
+export {
+  NONLINEAR_BENCHMARK_VERSION,
+  runCantileverLargeDisplacementBenchmark,
+  runEulerBucklingBenchmark,
+  runNonlinearGeometryBenchmarks,
+} from './verification/nonlinearBenchmarks.js';
 export { MEMBER_RELEASE_BENCHMARK_VERSION, runMemberReleaseBenchmark } from './verification/memberReleaseBenchmark.js';
 export { RIGID_DIAPHRAGM_BENCHMARK_VERSION, runRigidDiaphragmBenchmark } from './verification/rigidDiaphragmBenchmark.js';
 export {

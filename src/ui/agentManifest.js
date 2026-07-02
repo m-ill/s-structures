@@ -91,6 +91,8 @@ import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
 import { WALL_SLAB_EQUIVALENT_VERSION } from '../solver/wallSlabEquivalent.js';
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
+import { NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
+import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 
 export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -186,6 +188,8 @@ export function buildAgentManifest(options = {}) {
       phase3WallSlabEquivalent: WALL_SLAB_EQUIVALENT_VERSION,
       phase3LoadsV2: LOADS_V2_VERSION,
       phase3DynamicCompleteness: DYNAMIC_COMPLETENESS_VERSION,
+      phase3NonlinearTrace: NONLINEAR_TRACE_VERSION,
+      phase3NonlinearBenchmark: NONLINEAR_BENCHMARK_VERSION,
     },
     readApis: [
       'getSnapshot',
@@ -223,6 +227,7 @@ export function buildAgentManifest(options = {}) {
       'getWallSlabEquivalentTrace',
       'getLoadsV2Trace',
       'getDynamicCompletenessTrace',
+      'getNonlinearAnalysisTrace',
       'listImportCandidates',
       'resolveImportCandidate',
       'confirmImport',
@@ -333,6 +338,8 @@ export function buildAgentManifest(options = {}) {
       'phase3WallSlabEquivalentTrace',
       'phase3LoadsV2Trace',
       'phase3DynamicCompletenessTrace',
+      'phase3NonlinearAnalysisTrace',
+      'phase3NonlinearBenchmarkTrace',
     ],
     milestones: [
       { id: 'M9', status: 'available', feature: 'existing index UI engine bridge' },
@@ -399,6 +406,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M11', status: 'preliminary', feature: 'spring supports, settlement, truss axial stiffness, member offsets, member moments, and temperature load paths' },
       { id: 'P3-M12', status: 'preliminary', feature: 'wall mid-pier model merge, pier force recovery, and semi-rigid diaphragm trace' },
       { id: 'P3-M13', status: 'preliminary', feature: 'loads v2, CQC, buckling trace, and linear time-history helpers' },
+      { id: 'P3-M14', status: 'preliminary', feature: 'nonlinear state snapshot, corotational geometry trace, Newton convergence log, and B1/B2 benchmark gate' },
     ],
     limitations: [
       'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',
