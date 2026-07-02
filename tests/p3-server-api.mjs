@@ -1,0 +1,140 @@
+import assert from 'node:assert/strict';
+import { bootTestApp, registerAndLogin } from './helpers/serverTestApp.mjs';
+import { createTwoStoryElasticFrameModel } from '../src/index.js';
+
+const app = await bootTestApp();
+
+try {
+  // health / meta
+  const health = await app.api('GET', '/api/health');
+  assert.equal(health.status, 200);
+  assert.equal(health.data.data.status, 'ok');
+  const meta = await app.api('GET', '/api/meta');
+  assert.equal(meta.data.data.version, 'p3-server-api-v1');
+
+  // register/login/me/logout
+  const reg = await app.api('POST', '/api/auth/register', {
+    body: { email: 'owner@example.com', password: 'super-secret-pw', name: 'Owner' },
+  });
+  assert.equal(reg.status, 200, JSON.stringify(reg.data));
+  assert.equal(reg.data.data.user.email, 'owner@example.com');
+
+  const dupe = await app.api('POST', '/api/auth/register', {
+    body: { email: 'owner@example.com', password: 'super-secret-pw', name: 'Owner' },
+  });
+  assert.equal(dupe.status, 409);
+  assert.equal(dupe.data.error.code, 'CONFLICT');
+
+  const badLogin = await app.api('POST', '/api/auth/login', { body: { email: 'owner@example.com', password: 'wrong' } });
+  assert.equal(badLogin.status, 401);
+
+  const login = await app.api('POST', '/api/auth/login', { body: { email: 'owner@example.com', password: 'super-secret-pw' } });
+  assert.equal(login.status, 200);
+  const token = login.data.data.token;
+  assert.ok(token);
+
+  const me = await app.api('GET', '/api/auth/me', { token });
+  assert.equal(me.data.data.user.email, 'owner@example.com');
+
+  const noAuth = await app.api('GET', '/api/auth/me');
+  assert.equal(noAuth.status, 401);
+  assert.equal(noAuth.data.error.code, 'UNAUTHORIZED');
+
+  const forged = await app.api('GET', '/api/auth/me', { token: `${token}x` });
+  assert.equal(forged.status, 401);
+
+  // project CRUD
+  const createProject = await app.api('POST', '/api/projects', { token, body: { name: 'Test Project' } });
+  assert.equal(createProject.status, 200, JSON.stringify(createProject.data));
+  const projectId = createProject.data.data.project.id;
+
+  const list = await app.api('GET', '/api/projects', { token });
+  assert.equal(list.data.data.projects.length, 1);
+
+  const patch = await app.api('PATCH', `/api/projects/${projectId}`, { token, body: { name: 'Renamed' } });
+  assert.equal(patch.data.data.project.name, 'Renamed');
+
+  // membership + role gate
+  const engineerLogin = await registerAndLogin(app, 'engineer2@example.com');
+  const forbidden = await app.api('GET', `/api/projects/${projectId}`, { token: engineerLogin.token });
+  assert.equal(forbidden.status, 404); // non-member sees not-found, not forbidden (no membership leak)
+
+  const addMember = await app.api('PUT', `/api/projects/${projectId}/members/${engineerLogin.user.id}`, {
+    token, body: { role: 'reviewer' },
+  });
+  assert.equal(addMember.status, 200);
+
+  const reviewerTriesEngineerAction = await app.api('POST', `/api/projects/${projectId}/revisions`, {
+    token: engineerLogin.token, body: { model: createTwoStoryElasticFrameModel() },
+  });
+  assert.equal(reviewerTriesEngineerAction.status, 403);
+  assert.equal(reviewerTriesEngineerAction.data.error.code, 'FORBIDDEN');
+
+  // revision round trip
+  const model = createTwoStoryElasticFrameModel();
+  const saveRev1 = await app.api('POST', `/api/projects/${projectId}/revisions`, { token, body: { model } });
+  assert.equal(saveRev1.status, 200, JSON.stringify(saveRev1.data));
+  assert.equal(saveRev1.data.data.revision.rev, 1);
+  assert.equal(saveRev1.data.data.lineageWarning, false);
+
+  const getRev1 = await app.api('GET', `/api/projects/${projectId}/revisions/1`, { token });
+  assert.equal(getRev1.status, 200);
+  assert.equal(getRev1.data.data.model.nodes.length, model.nodes.length);
+  assert.deepEqual(getRev1.data.data.model.schemaVersion, model.schemaVersion);
+
+  // lineage warning: save with a stale parentRev
+  const saveRev2 = await app.api('POST', `/api/projects/${projectId}/revisions`, {
+    token, body: { model, parentRev: 0 },
+  });
+  assert.equal(saveRev2.data.data.revision.rev, 2);
+  assert.equal(saveRev2.data.data.lineageWarning, true);
+
+  const revList = await app.api('GET', `/api/projects/${projectId}/revisions`, { token });
+  assert.equal(revList.data.data.revisions.length, 2);
+
+  // file upload: allowlist + traversal safety
+  const upload = await app.api('POST', `/api/projects/${projectId}/files`, {
+    token, raw: 'LINE\n0\n', headers: { 'x-file-name': 'plan.dxf', 'content-type': 'application/dxf' },
+  });
+  assert.equal(upload.status, 200, JSON.stringify(upload.data));
+  const fileId = upload.data.data.file.id;
+  assert.match(fileId, /^[0-9a-f-]{36}$/);
+
+  const rejectedExt = await app.api('POST', `/api/projects/${projectId}/files`, {
+    token, raw: 'nope', headers: { 'x-file-name': 'virus.exe' },
+  });
+  assert.equal(rejectedExt.status, 400);
+
+  const download = await app.api('GET', `/api/projects/${projectId}/files/${fileId}`, { token });
+  assert.equal(download.status, 200);
+
+  const traversal = await app.api('GET', `/api/projects/${projectId}/files/../../secret`, { token });
+  assert.equal(traversal.status, 404);
+
+  // approval workflow: reviewer can approve, subsequent save revokes it
+  const approve = await app.api('POST', `/api/projects/${projectId}/approval`, {
+    token: engineerLogin.token, body: { state: 'approved', rev: 2 },
+  });
+  assert.equal(approve.status, 200, JSON.stringify(approve.data));
+  assert.equal(approve.data.data.approval.state, 'approved');
+
+  const saveRev3 = await app.api('POST', `/api/projects/${projectId}/revisions`, { token, body: { model, parentRev: 2 } });
+  assert.equal(saveRev3.data.data.revision.rev, 3);
+  const approvalAfter = await app.api('GET', `/api/projects/${projectId}/approval`, { token });
+  assert.equal(approvalAfter.data.data.approval.state, 'revoked');
+
+  // error envelope shape
+  const notFound = await app.api('GET', '/api/projects/not-a-uuid', { token });
+  assert.equal(notFound.status, 404);
+  assert.ok(notFound.data.error.code);
+
+  const routeMiss = await app.api('GET', '/api/does-not-exist');
+  assert.equal(routeMiss.status, 404);
+  assert.equal(routeMiss.data.ok, false);
+
+  console.log(JSON.stringify({
+    ok: true, version: 'p3-server-api', projectId, revisions: 3,
+  }, null, 2));
+} finally {
+  await app.close();
+}

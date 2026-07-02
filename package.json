@@ -80,6 +80,11 @@
     "test:m65": "node tests/p2-m4-combination-envelope-contract.mjs",
     "test:m66": "node tests/p2-practice-validation-report.mjs",
     "test:m67": "node tests/p2-t50-pilot-project-validation.mjs",
+    "test:m68": "node tests/p3-server-api.mjs",
+    "test:m69": "node tests/p3-auth.mjs",
+    "test:m70": "node tests/p3-persistence.mjs",
+    "test:m71": "node tests/p3-app-shell.mjs",
+    "test:m72": "node tests/p3-viewer-core.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
@@ -96,6 +101,11 @@
     "test:p2platform": "node tests/p2-practice-platform-readiness.mjs",
     "test:p2m4": "node tests/p2-m4-combination-envelope-contract.mjs",
     "test:p2practice-validation": "node tests/p2-practice-validation-report.mjs",
-    "test:p2t50": "node tests/p2-t50-pilot-project-validation.mjs"
+    "test:p2t50": "node tests/p2-t50-pilot-project-validation.mjs",
+    "test:p3server": "node tests/p3-server-api.mjs",
+    "test:p3auth": "node tests/p3-auth.mjs",
+    "test:p3persistence": "node tests/p3-persistence.mjs",
+    "test:p3appshell": "node tests/p3-app-shell.mjs",
+    "test:p3viewer": "node tests/p3-viewer-core.mjs"
   }
 }

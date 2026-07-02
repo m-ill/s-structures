@@ -1,0 +1,112 @@
+import http from 'node:http';
+import { createReadStream, statSync } from 'node:fs';
+import { extname, join, normalize, resolve } from 'node:path';
+import { loadConfig } from './config.mjs';
+import { createRouter, errorEnvelope, ok, readJsonBody, sendJson } from './router.mjs';
+import { createUserStore } from './store/userStore.mjs';
+import { createProjectStore } from './store/projectStore.mjs';
+import { registerAuthRoutes } from './routes/auth.mjs';
+import { registerProjectRoutes } from './routes/projects.mjs';
+import { registerRevisionRoutes } from './routes/revisions.mjs';
+import { registerFileRoutes } from './routes/files.mjs';
+import { registerImportRoutes } from './routes/imports.mjs';
+import { registerApprovalRoutes } from './routes/approval.mjs';
+import { SERVER_API_VERSION } from '../src/platform/platformVersion.js';
+
+const STATIC_TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+};
+
+const BOOT_TIME = Date.now();
+
+export function createApp(overrides = {}) {
+  const config = loadConfig(overrides);
+  const userStore = createUserStore(config.dataDir);
+  const projectStore = createProjectStore(config.dataDir);
+  const ctx = { config, userStore, projectStore };
+  const router = createRouter();
+
+  router.get('/api/health', async () => ok({ status: 'ok', uptimeSeconds: (Date.now() - BOOT_TIME) / 1000 }));
+  router.get('/api/meta', async () => ok({
+    version: SERVER_API_VERSION,
+    limits: { maxJsonBytes: config.maxJsonBytes, maxUploadBytes: config.maxUploadBytes },
+    allowRegistration: config.allowRegistration,
+  }));
+
+  registerAuthRoutes(router, ctx);
+  registerProjectRoutes(router, ctx);
+  registerRevisionRoutes(router, ctx);
+  registerFileRoutes(router, ctx);
+  registerImportRoutes(router, ctx);
+  registerApprovalRoutes(router, ctx);
+
+  const server = http.createServer((req, res) => handleRequest(req, res, router, config));
+  return { server, config, ctx };
+}
+
+async function handleRequest(req, res, router, config) {
+  const url = new URL(req.url || '/', 'http://internal');
+  const pathname = decodeURIComponent(url.pathname);
+
+  if (pathname.startsWith('/api/')) {
+    await handleApi(req, res, router, pathname, config);
+    return;
+  }
+  serveStatic(req, res, pathname, config);
+}
+
+async function handleApi(req, res, router, pathname, config) {
+  const matched = router.match(req.method, pathname);
+  if (!matched) {
+    sendJson(res, 404, { ok: false, error: { code: 'NOT_FOUND', message: 'No such API route.' } });
+    return;
+  }
+  try {
+    const needsBody = ['POST', 'PATCH', 'PUT'].includes(req.method) && matched.bodyType === 'json';
+    const body = needsBody ? await readJsonBody(req, config.maxJsonBytes) : undefined;
+    const result = await matched.handler(req, res, matched.params, body);
+    if (result?.handled) return;
+    sendJson(res, 200, result);
+  } catch (error) {
+    const { status, body: errorBody } = errorEnvelope(error);
+    if (!res.headersSent) sendJson(res, status, errorBody);
+  }
+}
+
+function serveStatic(req, res, pathname, config) {
+  try {
+    const safePath = normalize(pathname).replace(/^(\.\.[/\\])+/, '');
+    let filePath = resolve(join(config.staticRoot, safePath));
+    if (!filePath.startsWith(config.staticRoot)) {
+      res.writeHead(403);
+      res.end('Forbidden');
+      return;
+    }
+    if (pathname === '/') filePath = join(config.staticRoot, 'app.html');
+    const stat = statSync(filePath);
+    if (stat.isDirectory()) filePath = join(filePath, 'index.html');
+    res.writeHead(200, { 'Content-Type': STATIC_TYPES[extname(filePath)] || 'application/octet-stream' });
+    createReadStream(filePath).pipe(res);
+  } catch {
+    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Not found');
+  }
+}
+
+function isMain() {
+  const entry = process.argv[1] || '';
+  return entry.replace(/\\/g, '/').endsWith('server/main.mjs');
+}
+
+if (isMain()) {
+  const { server, config } = createApp();
+  server.listen(config.port, config.host, () => {
+    console.log(`S-Structures server: http://${config.host}:${config.port}/`);
+  });
+}
