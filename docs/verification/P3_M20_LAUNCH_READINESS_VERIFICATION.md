@@ -33,6 +33,8 @@ The gate records:
 
 2026-07-02 ticket coverage review update: `releaseGate` now exposes a formal P3-M20 contract, feature-to-ticket map, and `summary.ticketCoverage` alias. This matches the P3-M17 to P3-M19 gate shape so reviewers and AI agents can inspect launch-readiness scope without relying on UI-only labels.
 
+2026-07-02 release maturity review update: `releaseGate` now exposes `contract.maturity` and `releaseReview`. The review records owner-review readiness separately from production deployment approval, open-source policy finalization, deployment target finalization, pilot feedback acceptance, and backup/restore owner acceptance. A clean gate returns `ready-for-owner-release-signoff`, not final release approval.
+
 ## Current Test Gate
 
 `tests/p3-launch-gate.mjs` verifies launch report status, G1 to G14 pass count, release-gate ticket coverage, packaging smoke evidence, license evidence, manual/agent-contract evidence, ten pilot reports, agent API exposure, and manifest data-contract exposure.

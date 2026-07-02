@@ -44,6 +44,7 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
     ownerSignoffChecklist: evidence.ownerSignoffChecklistRecorded === true,
   };
   const ticketCoverage = buildLaunchTicketCoverage(gates, evidence, coverage);
+  const releaseReview = buildReleaseReview({ gates, evidence, coverage, ticketCoverage });
   return {
     version: LAUNCH_READINESS_GATE_VERSION,
     milestone: 'P3-M20',
@@ -61,6 +62,7 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
       },
       reviewFields: ['summary.ticketCoverage', 'ticketCoverage', 'coverage', 'manualSignoffRequired', 'requiredGates'],
       agentUse: 'Read-only gate for reports and AI-agent inspection of launch-readiness evidence.',
+      maturity: 'owner-review-ready',
     },
     requiredGates: gates.map((item) => item.id),
     ok: gates.length === 14 && gates.every((item) => item.status === 'OK'),
@@ -71,16 +73,40 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
       coveredTicketCount: ticketCoverage.filter((row) => row.covered).length,
       gateCount: gates.length,
       okGateCount: gates.filter((item) => item.status === 'OK').length,
+      releaseReview,
       ticketCoverage,
     },
     ticketCoverage,
     coverage,
+    releaseReview,
     manualSignoffRequired: [
       'owner license policy',
       'deployment target',
       'field pilot feedback',
       'backup restore rehearsal evidence',
     ],
+  };
+}
+
+function buildReleaseReview({ gates, evidence, coverage, ticketCoverage }) {
+  const missing = [];
+  if (gates.length !== 14 || gates.some((item) => item.status !== 'OK')) missing.push('launch-gates');
+  if (!ticketCoverage.every((row) => row.covered)) missing.push('ticket-coverage');
+  if (!coverage.ownerSignoffChecklist) missing.push('owner-signoff-checklist');
+  if (!coverage.backupRestore) missing.push('backup-restore-record');
+  return {
+    status: missing.length ? 'review-required' : 'owner-review-ready',
+    maturity: 'preliminary',
+    productionDeploymentApproved: false,
+    ownerFinalSignoff: false,
+    openSourcePolicyFinalized: false,
+    deploymentTargetFinalized: false,
+    pilotFeedbackOwnerAccepted: false,
+    backupRestoreOwnerAccepted: false,
+    manualSignoffItemCount: 4,
+    pilotReportCount: evidence.pilotReports?.count || 0,
+    missing,
+    agentDecision: missing.length ? 'hold-before-release' : 'ready-for-owner-release-signoff',
   };
 }
 

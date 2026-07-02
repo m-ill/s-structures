@@ -52,6 +52,7 @@ export function buildP3IntegratedResultsGate(input = {}) {
     && !!benchmarkEvidence.ok
     && (input.methodLimitations || []).length > 0
     && ticketCoverage.every((row) => row.covered);
+  const integratedReview = buildIntegratedResultsReview({ ok, ticketCoverage, coverage, workflow, benchmarkEvidence, input });
   return {
     version: P3_INTEGRATED_RESULTS_GATE_VERSION,
     milestone: 'P3-M19',
@@ -68,6 +69,7 @@ export function buildP3IntegratedResultsGate(input = {}) {
       },
       reviewFields: ['summary.ticketCoverage', 'ticketCoverage', 'coverage', 'workflow', 'benchmarkEvidence'],
       agentUse: 'Read-only gate for reports and AI-agent inspection of integrated Phase 3 result readiness.',
+      maturity: 'preliminary-integrated-results',
     },
     ok,
     resultContract: {
@@ -76,16 +78,40 @@ export function buildP3IntegratedResultsGate(input = {}) {
       designVersion: input.design?.version || null,
       workflowLockVersion: input.workflowLock?.version || null,
     },
-    summary: buildGateSummary({ ok, ticketCoverage, coverage, workflow, benchmarkEvidence }),
+    summary: buildGateSummary({ ok, ticketCoverage, coverage, workflow, benchmarkEvidence, integratedReview }),
     ticketCoverage,
     coverage,
     workflow,
     benchmarkEvidence,
+    integratedReview,
     reportChapters: ['detailed-report-phase3', 'calculation-package-phase3'],
     limitations: [
       'P3-M19 integrates trace contracts for review and launch-gate evidence.',
+      'Ready for reviewer means trace coverage is complete; it is not owner approval or final structural sign-off.',
       'Final sign-off still requires owner review, project-specific assumptions, and engineer approval.',
     ],
+  };
+}
+
+function buildIntegratedResultsReview({ ok, ticketCoverage, coverage, workflow, benchmarkEvidence, input }) {
+  const missing = [];
+  if (!ok) missing.push('gate-ok');
+  if (!ticketCoverage.every((row) => row.covered)) missing.push('ticket-coverage');
+  if (!benchmarkEvidence.ok) missing.push('benchmark-evidence');
+  if (!coverage.methodLimitations) missing.push('method-limitations');
+  if (!input.design?.designGate?.designReview) missing.push('detailed-design-review');
+  return {
+    status: missing.length ? 'review-required' : 'trace-ready',
+    maturity: 'preliminary',
+    ownerApproved: workflow.approvalState === 'approved',
+    finalStructuralSignoff: false,
+    launchReady: false,
+    completeTicketCoverage: ticketCoverage.every((row) => row.covered),
+    benchmarkOk: !!benchmarkEvidence.ok,
+    methodLimitationCount: coverage.methodLimitations,
+    designReviewStatus: input.design?.designGate?.designReview?.status || null,
+    missing,
+    agentDecision: missing.length ? 'hold-before-m20-launch-gate' : 'm19-ready-for-m20-launch-review',
   };
 }
 
@@ -158,6 +184,7 @@ function buildGateSummary(input) {
     designIssueRows: input.coverage.issueRows,
     workflowLocked: input.workflow.locked,
     workflowApprovalState: input.workflow.approvalState,
+    integratedReview: input.integratedReview,
     ticketCoverage: input.ticketCoverage,
   };
 }
