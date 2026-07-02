@@ -2,15 +2,18 @@ import assert from 'node:assert/strict';
 import {
   WALL_SLAB_EQUIVALENT_VERSION,
   WALL_SLAB_TRACE_VERSION,
+  SEMI_RIGID_DIAPHRAGM_VERSION,
   SHELL_QUAD4_VERSION,
   addWallMidPierToModel,
   analyzeModel,
   buildAgentManifest,
+  buildSemiRigidRedistributionReport,
   buildQuad4ShellElement,
   buildShellV1Trace,
   buildWallSlabEquivalentTrace,
   createModel,
   estimateSimplySupportedPlateDeflection,
+  expandSemiRigidDiaphragms,
   recoverWallPierForces,
   runShellPatchTest,
   summarizeSemiRigidDiaphragm,
@@ -65,15 +68,51 @@ assert.ok(plate.wMax > 0);
 const shellTrace = buildShellV1Trace({ shells: [shell] });
 assert.equal(shellTrace.shellCount, 1);
 
-const summary = summarizeSemiRigidDiaphragm({ diaphragms: [{ id: 'D1', type: 'semiRigid', nodeIds: ['N1', 'N2'], inPlaneStiffness: 1000 }] });
+const summary = summarizeSemiRigidDiaphragm({
+  nodes: [{ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 4, y: 0, z: 0 }],
+  diaphragms: [{ id: 'D1', type: 'semiRigid', nodeIds: ['N1', 'N2'], inPlaneStiffness: 1000 }],
+});
 assert.equal(summary.semiRigidCount, 1);
-assert.equal(summary.rows[0].solverTreatment, 'not-condensed-trace-only');
+assert.equal(summary.rows[0].solverTreatment, 'equivalent-truss-brace-grid');
+assert.equal(summary.rows[0].generatedBraceCount, 1);
 
 const diaModel = createModel({
   nodes: [{ id: 'N1', x: 0, y: 0, z: 0, support: 'fixed' }, { id: 'N2', x: 4, y: 0, z: 0 }],
   diaphragms: [{ id: 'D1', type: 'semiRigid', nodeIds: ['N1', 'N2'], inPlaneStiffness: 1000 }],
 });
 assert.equal(validateModel(diaModel).ok, true);
+
+const transferBase = {
+  nodes: [
+    { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'B', x: 4, y: 0, z: 0, support: 'fixed' },
+    { id: 'C', x: 0, y: 0, z: 3 },
+    { id: 'D', x: 4, y: 0, z: 3 },
+  ],
+  members: [
+    { id: 'C1', n1: 'A', n2: 'C', matId: 'steel', secId: 'h300' },
+    { id: 'C2', n1: 'B', n2: 'D', matId: 'steel', secId: 'h300' },
+  ],
+  loads: [{ id: 'PX', type: 'nodal', node: 'C', P: 30, dir: '+x', case: 'D' }],
+};
+const softDiaModel = createModel({ ...transferBase, diaphragms: [{ id: 'D-SOFT', type: 'semiRigid', nodeIds: ['C', 'D'], inPlaneStiffness: 100 }] });
+const stiffDiaModel = createModel({ ...transferBase, diaphragms: [{ id: 'D-STIFF', type: 'semiRigid', nodeIds: ['C', 'D'], inPlaneStiffness: 100000 }] });
+const softExpansion = expandSemiRigidDiaphragms(softDiaModel);
+assert.equal(softExpansion.version, SEMI_RIGID_DIAPHRAGM_VERSION);
+assert.equal(softExpansion.braceCount, 1);
+const softResult = analyzeModel(softDiaModel);
+const stiffResult = analyzeModel(stiffDiaModel);
+assert.equal(softResult.ok, true);
+assert.equal(stiffResult.ok, true);
+assert.equal(softResult.byCombo.CO1.memberResults[softExpansion.members[0].id], undefined);
+assert.ok(stiffResult.byCombo.CO1.disp.D[0] > softResult.byCombo.CO1.disp.D[0]);
+const softReport = buildSemiRigidRedistributionReport(softDiaModel, softResult);
+const stiffReport = buildSemiRigidRedistributionReport(stiffDiaModel, stiffResult);
+assert.equal(stiffReport.status, 'available');
+assert.ok(stiffReport.combos[0].rows[0].uxSpread < softReport.combos[0].rows[0].uxSpread);
+const slabTrace = buildWallSlabEquivalentTrace(stiffDiaModel, stiffResult);
+assert.equal(slabTrace.slab.status, 'available');
+assert.equal(slabTrace.slab.redistribution.version, SEMI_RIGID_DIAPHRAGM_VERSION);
 
 const badDia = createModel({
   nodes: diaModel.nodes,

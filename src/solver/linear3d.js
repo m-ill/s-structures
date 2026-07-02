@@ -19,6 +19,7 @@ import {
   makeEnvelope,
 } from './linear3dPost.js';
 import { expandAdvancedLoads } from './elasticExpansion.js';
+import { expandSemiRigidDiaphragms } from './semiRigidDiaphragm.js';
 
 export { analyzeComponent3D, assembleStiffness3D } from './linear3dAssembly.js';
 export { AXIS, localK12, memberAxes, solveLinear } from './linear3dElement.js';
@@ -92,10 +93,14 @@ export function analyzeAll(model, factors = null, options = {}) {
 
 function analyzeAllOnce(model, factors = null, options = {}) {
   const nodes = model.nodes || [];
+  const semiRigid = expandSemiRigidDiaphragms(model);
+  const solverModel = semiRigid.braceCount
+    ? { ...model, members: [...(model.members || []), ...semiRigid.members], sections: [...(model.sections || []), ...semiRigid.sections] }
+    : model;
   const activeMemberIds = options.activeMemberIds || null;
   const members = activeMemberIds
-    ? (model.members || []).filter((member) => activeMemberIds.has(member.id))
-    : (model.members || []);
+    ? (solverModel.members || []).filter((member) => member.generated || activeMemberIds.has(member.id))
+    : (solverModel.members || []);
   if (!members.length) return { ok: false, empty: true };
 
   const analysisSettings = model.analysisSettings || {};
@@ -133,8 +138,8 @@ function analyzeAllOnce(model, factors = null, options = {}) {
   }
 
   const ctx = {
-    mat: (id) => materialOf(model, id),
-    sec: (id) => sectionOf(model, id),
+    mat: (id) => materialOf(solverModel, id),
+    sec: (id) => sectionOf(solverModel, id),
     stations: Math.max(21, analysisSettings.memberStations | 0 || 21),
   };
   const diaphragms = resolveRigidDiaphragms(model, nodes);
@@ -175,7 +180,9 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     out.solver.components.push(result.solver);
     Object.assign(out.disp, result.disp);
     Object.assign(out.reactions, result.reactions);
-    Object.assign(out.memberResults, result.memberResults);
+    Object.entries(result.memberResults).forEach(([id, row]) => {
+      if (!ms.find((member) => member.id === id)?.generated) out.memberResults[id] = row;
+    });
   }
 
   for (const id of Object.keys(out.disp)) {
@@ -197,6 +204,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     out.reason = 'UNSTABLE_COMPONENT';
   }
   out.solver = summarizeSolverDiagnostics(out.solver.components);
+  out.semiRigidDiaphragm = semiRigid;
   out.summary = buildEquilibriumSummary(nodes, members, loads, out);
   return out;
 }

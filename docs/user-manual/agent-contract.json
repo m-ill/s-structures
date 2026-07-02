@@ -218,7 +218,8 @@
     "phase3MaterialLibraryEdit",
     "phase3DesignFormulaRegistry",
     "unilateralMemberTrace",
-    "globalBucklingTrace"
+    "globalBucklingTrace",
+    "semiRigidDiaphragmRedistribution"
   ],
   "dataContracts": [
     "phase3RcDesignGate",
@@ -237,6 +238,7 @@
     "phase3DesignFormulaTrace",
     "unilateralMemberTrace",
     "globalBucklingTrace",
+    "semiRigidDiaphragmRedistribution",
     "phase3PointCloudExtractionSummary",
     "phase3ImportReviewUi"
   ]

@@ -1,4 +1,5 @@
 import { buildShellV1Trace } from './shell/quad4.js';
+import { buildSemiRigidRedistributionReport, expandSemiRigidDiaphragms } from './semiRigidDiaphragm.js';
 
 export const WALL_SLAB_EQUIVALENT_VERSION = 'p3-m12-wall-slab-equivalent';
 export const WALL_SLAB_TRACE_VERSION = 'p3-m12-wall-slab-trace-v1';
@@ -50,12 +51,14 @@ export function recoverWallPierForces(model, analysis) {
 }
 
 export function summarizeSemiRigidDiaphragm(model = {}) {
+  const expansion = expandSemiRigidDiaphragms(model);
   const rows = (model.diaphragms || []).map((item) => ({
     id: item.id,
     type: item.type,
     nodeCount: item.nodeIds?.length || 0,
     stiffness: item.inPlaneStiffness || null,
-    solverTreatment: item.type === 'semiRigid' ? 'not-condensed-trace-only' : 'rigid-condensed',
+    solverTreatment: item.type === 'semiRigid' ? 'equivalent-truss-brace-grid' : 'rigid-condensed',
+    generatedBraceCount: expansion.rows.find((row) => row.id === item.id)?.braceCount || 0,
   }));
   return { version: WALL_SLAB_EQUIVALENT_VERSION, semiRigidCount: rows.filter((row) => row.type === 'semiRigid').length, rows };
 }
@@ -63,6 +66,7 @@ export function summarizeSemiRigidDiaphragm(model = {}) {
 export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
   const pierForces = analysis ? recoverWallPierForces(model, analysis) : [];
   const diaphragm = summarizeSemiRigidDiaphragm(model);
+  const redistribution = buildSemiRigidRedistributionReport(model, analysis || {});
   const shell = buildShellV1Trace(model);
   return {
     version: WALL_SLAB_TRACE_VERSION,
@@ -80,8 +84,9 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
     diaphragm,
     shell,
     slab: {
-      status: diaphragm.semiRigidCount > 0 ? 'trace-only' : 'not-modeled',
-      limitation: 'Semi-rigid slab redistribution is trace-only and not condensed into the solver stiffness matrix.',
+      status: redistribution.status,
+      redistribution,
+      limitation: 'Semi-rigid diaphragm uses an equivalent truss brace grid for preliminary in-plane redistribution; shell slab membrane assembly remains future hardening.',
     },
   };
 }

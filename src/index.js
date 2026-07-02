@@ -494,6 +494,7 @@ export {
 export { SECTION_PROPERTIES_VERSION, computeSectionProperties } from './materials/sectionProperties.js';
 export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elasticExpansion.js';
 export { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION, addWallMidPierToModel, buildWallSlabEquivalentTrace, recoverWallPierForces, summarizeSemiRigidDiaphragm, wallToMidPierMember } from './solver/wallSlabEquivalent.js';
+export { SEMI_RIGID_DIAPHRAGM_VERSION, buildSemiRigidRedistributionReport, expandSemiRigidDiaphragms } from './solver/semiRigidDiaphragm.js';
 export {
   SHELL_QUAD4_VERSION,
   buildQuad4ShellElement,

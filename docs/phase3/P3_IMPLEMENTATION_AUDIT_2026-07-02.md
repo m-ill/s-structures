@@ -63,7 +63,7 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 | --- | --- | --- | --- |
 | P3-T73 | wall mid-pier + pier force recovery | Mid-pier equivalent can be merged into model and pier forces recovered from analysis | Preliminary |
 | P3-T74 | shell element v1 | `src/solver/shell/quad4.js` exposes a 4-node, 6-DOF/node shell v1 contract with membrane/bending/drilling stiffness trace plus patch and plate-deflection benchmarks | Preliminary; global frame-shell assembly remains hardening |
-| P3-T75 | semi-rigid diaphragm | Validation and trace summary exist; solver leaves semi-rigid diaphragms uncondensed with trace | Preliminary; no membrane grid redistribution yet |
+| P3-T75 | semi-rigid diaphragm | Semi-rigid diaphragms expand to equivalent truss brace grids in the frame solver and expose a redistribution report; transfer-level regression is covered in `tests/p3-m12-wall-slab.mjs` | Preliminary; full membrane slab FE redistribution remains hardening |
 
 ### P3-M13 Loads v2 / Dynamics / Buckling
 

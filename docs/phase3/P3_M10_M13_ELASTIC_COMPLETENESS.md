@@ -7,7 +7,7 @@ status: implemented-preliminary-core
 
 - M10: versioned material and section registry, `id@version` references, and parametric H/BOX/PIPE/RECT/CIRC section properties.
 - M11: spring support stiffness, spring settlement load vector, and advanced distributed load expansion for partial/trapezoid member loads.
-- M12: mid-pier wall equivalent contract and semi-rigid diaphragm summary contract.
+- M12: mid-pier wall equivalent contract and semi-rigid diaphragm equivalent-brace redistribution contract.
 - M13: wind/seismic/environmental load trace contract, RSA base-shear scaling, torsion Ax trace, CQC close-mode report, global buckling trace, Euler buckling screening helper, and linear modal-superposition time-history trace helper.
 
 ## Engineering Boundary
@@ -32,7 +32,7 @@ The browser command bridge allow-list includes the same read APIs, so AI control
 
 - Strict numeric validation now rejects `null` and blank strings instead of coercing them to zero.
 - Partial and trapezoid load ranges require `0 <= from < to <= 1`.
-- Semi-rigid diaphragms require at least two node references and positive `inPlaneStiffness`.
+- Semi-rigid diaphragms require at least two node references and positive `inPlaneStiffness`; the solver now expands them into generated equivalent truss braces for preliminary in-plane redistribution.
 - Modal mass uses the same effective member section/material path as stiffness, including member-level custom properties.
 - User-defined material/section records take precedence over built-ins when the same `id@version` is supplied.
 - Seismic v2 story distribution uses `wi*hi/sum(wi*hi)` and assigns zero force to zero-height base rows.
