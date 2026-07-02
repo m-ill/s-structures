@@ -32,6 +32,8 @@ The previous M12 trace exposed semi-rigid diaphragm rows only. P3-M12 now expose
 
 2026-07-02 review fix: generated shell links and semi-rigid diaphragm braces now size their direct sections from the actual generated member material modulus. This keeps the intended equivalent axial stiffness consistent when `matId` is concrete, steel, or a project material, and records the material id/modulus in the trace rows.
 
+2026-07-02 review update: Wall mid-pier trace rows now preserve the source wall geometry and generated section properties. Reports and AI agents can inspect thickness, length, height, center, z-range, area, and stiffness terms without rebuilding the equivalent member.
+
 ## Current Test Gate
 
 `tests/p3-m12-wall-slab.mjs` verifies equivalent wall generation, analysis, pier force recovery, shell v1 benchmark traces, shell frame-link assembly, semi-rigid diaphragm validation, material-aware equivalent link sizing, equivalent-brace redistribution, and the agent-readable trace contract.

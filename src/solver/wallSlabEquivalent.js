@@ -10,11 +10,13 @@ export function wallToMidPierMember(wall) {
   const z2 = Math.max(...wall.nodes.map((node) => node.z || 0));
   const cx = avg(wall.nodes, 'x'); const cy = avg(wall.nodes, 'y');
   const t = Number(wall.thickness || 0.2); const length = Number(wall.length || Math.max(1, wall.width || 1));
+  const height = Math.max(0, z2 - z1);
   return {
     version: WALL_SLAB_EQUIVALENT_VERSION,
     nodes: [{ id: `${wall.id}-b`, x: cx, y: cy, z: z1 }, { id: `${wall.id}-t`, x: cx, y: cy, z: z2 }],
     member: { id: `${wall.id}-pier`, n1: `${wall.id}-b`, n2: `${wall.id}-t`, type: 'frame', secId: wall.secId || `${wall.id}-sec`, matId: wall.matId || 'concrete' },
     section: { id: wall.secId || `${wall.id}-sec`, type: 'RECT', A: t * length, Iy: length * t ** 3 / 12, Iz: t * length ** 3 / 12, J: t * length * (t ** 2 + length ** 2) / 12, Zy: t * length ** 2 / 6, Zz: length * t ** 2 / 6 },
+    sourceGeometry: { thickness: t, length, height, center: { x: cx, y: cy }, zRange: [z1, z2] },
   };
 }
 
@@ -29,7 +31,13 @@ export function addWallMidPierToModel(model, wall) {
     nodes,
     members: [...(model.members || []), eq.member],
     sections: [...(model.sections || []), eq.section],
-    wallEquivalents: [...(model.wallEquivalents || []), { wallId: wall.id, memberId: eq.member.id, sectionId: eq.section.id }],
+    wallEquivalents: [...(model.wallEquivalents || []), {
+      wallId: wall.id,
+      memberId: eq.member.id,
+      sectionId: eq.section.id,
+      sourceGeometry: eq.sourceGeometry,
+      section: eq.section,
+    }],
   };
 }
 
@@ -82,6 +90,8 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
         wallId: row.wallId,
         memberId: row.memberId,
         sectionId: row.sectionId,
+        sourceGeometry: row.sourceGeometry || null,
+        section: row.section || null,
         recoveryAvailable: pierForces.some((force) => force.wallId === row.wallId),
       })),
       forces: pierForces,
