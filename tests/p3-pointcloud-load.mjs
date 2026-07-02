@@ -109,6 +109,22 @@ assert.equal(shiftedSummary.normalization.originShift.vector.y, -7000);
 assert.ok(shiftedSummary.normalization.originShift.distance > 8000);
 assert.ok(shiftedSummary.warnings.includes('pointcloud-origin-shifted'));
 assert.ok(shiftedSummary.review.warnings.includes('pointcloud-origin-shifted'));
+const yUpSummary = summarizePointCloudImport([
+  '0 0 0',
+  '0 3 0',
+  '4 3 0',
+  '4 0 0',
+].join('\n'), {
+  upAxis: 'y',
+  voxelSize: 0.01,
+  outlier: { radius: 10, minNeighbors: 1 },
+});
+assert.equal(yUpSummary.normalization.axis.sourceUp, 'y');
+assert.equal(yUpSummary.normalization.axis.targetUp, 'z');
+assert.equal(yUpSummary.normalization.axis.remapped, true);
+assert.deepEqual(yUpSummary.normalization.axis.mapping, { x: 'x', y: 'z', z: 'y' });
+assert.equal(yUpSummary.normalization.bboxSize.z, 3);
+assert.ok(yUpSummary.warnings.includes('pointcloud-axis-remapped-to-z-up'));
 const pipeline = describePointCloudPipeline();
 assert.equal(pipeline.status, 'available-core');
 assert.equal(pipeline.performanceBudget.preprocessing.targetPoints, 10000000);

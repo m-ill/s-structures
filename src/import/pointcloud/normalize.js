@@ -3,10 +3,12 @@ import { bboxOfPoints } from '../point.js';
 export const POINT_CLOUD_NORMALIZE_VERSION = 'p3-m8-pointcloud-normalize-v1';
 
 export function normalizePointCloud(points, options = {}) {
-  const bbox = bboxOfPoints(points) || { min: { x: 0, y: 0, z: 0 }, max: { x: 0, y: 0, z: 0 } };
+  const axis = resolveAxis(options);
+  const oriented = points.map((point) => orientPoint(point, axis.sourceUp));
+  const bbox = bboxOfPoints(oriented) || { min: { x: 0, y: 0, z: 0 }, max: { x: 0, y: 0, z: 0 } };
   const origin = options.origin || bbox.min;
   const scale = options.scale ?? inferScale(bbox);
-  const normalized = points.map((p, id) => ({
+  const normalized = oriented.map((p, id) => ({
     id: p.id || `P${id + 1}`,
     x: (p.x - origin.x) * scale,
     y: (p.y - origin.y) * scale,
@@ -21,9 +23,41 @@ export function normalizePointCloud(points, options = {}) {
       bboxSize: bboxSize(bbox),
       origin,
       originShift: originShift(origin, scale),
+      axis,
       scale,
     },
   };
+}
+
+function resolveAxis(options) {
+  const sourceUp = normalizeAxis(options.upAxis || options.sourceUpAxis || 'z');
+  return {
+    sourceUp,
+    targetUp: 'z',
+    remapped: sourceUp !== 'z',
+    mapping: axisMapping(sourceUp),
+  };
+}
+
+function normalizeAxis(axis) {
+  const text = String(axis || 'z').toLowerCase();
+  return ['x', 'y', 'z'].includes(text) ? text : 'z';
+}
+
+function axisMapping(sourceUp) {
+  if (sourceUp === 'x') return { x: 'y', y: 'z', z: 'x' };
+  if (sourceUp === 'y') return { x: 'x', y: 'z', z: 'y' };
+  return { x: 'x', y: 'y', z: 'z' };
+}
+
+function orientPoint(point, sourceUp) {
+  if (sourceUp === 'x') {
+    return { ...point, x: point.y, y: point.z, z: point.x };
+  }
+  if (sourceUp === 'y') {
+    return { ...point, x: point.x, y: point.z, z: point.y };
+  }
+  return { ...point };
 }
 
 function inferScale(bbox) {

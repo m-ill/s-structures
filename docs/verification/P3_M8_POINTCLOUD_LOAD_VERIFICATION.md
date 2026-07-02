@@ -40,6 +40,8 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 
 2026-07-03 fixture-audit lock update: `tests/p3-pointcloud-load.mjs` now verifies PLY and PCD loader audit fields, not only parsed point counts. The gate locks detected format, data-line count, rejected count, and color-count behavior so AI agents can trust the compact fixture evidence exposed by `parsePointCloudWithAudit()`.
 
+2026-07-03 z-up normalization update: `normalizePointCloud()` now records `axis` metadata and can remap x-up or y-up input into the platform z-up contract. `summarizePointCloudImport()` exposes this under `normalization.axis` and warns with `pointcloud-axis-remapped-to-z-up` so AI agents can distinguish native z-up fixtures from remapped field scans.
+
 ## Current Test Gate
 
 `tests/p3-pointcloud-load.mjs` verifies:
