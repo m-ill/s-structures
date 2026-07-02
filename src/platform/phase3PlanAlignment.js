@@ -69,6 +69,39 @@ const SUCCESS_CRITERIA = [
 
 const RELEASE_GATES = Array.from({ length: 14 }, (_, index) => `G${index + 1}`);
 
+const ARCHITECTURE_DECISIONS = [
+  decision(1, 'language', 'javascript-esm'),
+  decision(2, 'server-framework', 'node-http-router'),
+  decision(3, 'password-hash', 'node-crypto-scrypt'),
+  decision(4, 'session-token', 'hmac-sha256-token'),
+  decision(5, 'storage-v1', 'file-json-blob-data'),
+  decision(6, 'viewer', 'webgl2-module'),
+  decision(7, 'dxf', 'ascii-dxf-parser'),
+  decision(8, 'dwg', 'oda-cli-adapter'),
+  decision(9, 'heavy-preprocess', 'web-worker-transferable'),
+  decision(10, 'desktop-packaging', 'electron-wrapper-decision-at-m20'),
+];
+
+const MODULE_BOUNDARIES = [
+  boundary('server-to-src', 'server may import core schema/migration only; analysis engine stays in browser'),
+  boundary('app-to-ui', 'app shell mounts ui modules; ui does not own app routing'),
+  boundary('import-to-core', 'importers output ImportCandidate; core factory confirms model'),
+  boundary('viewer-readonly', 'viewer renders and selects; it does not mutate model'),
+  boundary('nonlinear-to-solver', 'nonlinear owns state/control while sharing element and assembly contracts'),
+];
+
+const FILE_ROUTING = [
+  route('server/', 'node server routes auth store', 'docs/phase3/SERVER_API_PLAN.md'),
+  route('src/app/', 'app shell routes api client views', 'docs/phase3/FRONTEND_PLAN.md'),
+  route('src/viewer/', 'WebGL2 point cloud and model viewer', 'docs/phase3/FRONTEND_PLAN.md'),
+  route('src/import/', 'ImportCandidate geometry pipeline', 'docs/phase3/IMPORT_DXF_DWG_PLAN.md'),
+  route('src/import/pointcloud/', 'point-cloud loader preprocess extraction worker', 'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md'),
+  route('src/materials/', 'material and section registry', 'docs/phase3/MATERIAL_SECTION_LIBRARY_PLAN.md'),
+  route('src/nonlinear/', 'nonlinear state elements hinges fiber control dynamics', 'docs/phase3/NONLINEAR_ENGINE_PLAN.md'),
+  route('src/design/', 'rc steel connection foundation design modules', 'docs/phase3/DESIGN_MODULES_PLAN.md'),
+  route('src/standards/', 'code formula and load standard registry', 'docs/phase3/DEVELOPMENT_FILE_MAP.md'),
+];
+
 const MILESTONES = [
   ms('P3-M0', ['P3-T01', 'P3-T02'], ['docs/phase3/DEVELOPMENT_FILE_MAP.md'], ['tests/m0-smoke.mjs']),
   ms('P3-M1', t(3, 7), ['docs/phase3/SERVER_API_PLAN.md'], ['tests/p3-server-api.mjs']),
@@ -119,6 +152,9 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
     nfrCoverage.every((row) => row.covered) &&
     successCoverage.every((row) => row.covered) &&
     RELEASE_GATES.length >= 12;
+  const architectureOk = ARCHITECTURE_DECISIONS.length === 10 &&
+    MODULE_BOUNDARIES.length >= 5 &&
+    FILE_ROUTING.length >= 8;
   return {
     version: PHASE3_PLAN_ALIGNMENT_VERSION,
     sourceDocs: CORE_DOCS.map((name) => `docs/phase3/${name}`),
@@ -133,13 +169,19 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
       launchGates: RELEASE_GATES,
       ok: requirementsOk,
     },
+    architecture: {
+      decisions: ARCHITECTURE_DECISIONS,
+      moduleBoundaries: MODULE_BOUNDARIES,
+      fileRouting: FILE_ROUTING,
+      ok: architectureOk,
+    },
     activeTicketCount: new Set(rows.flatMap((row) => row.tickets)).size,
     absorbedTickets: ABSORBED_TICKETS,
     plannedTicketCount: new Set([
       ...rows.flatMap((row) => row.tickets),
       ...ABSORBED_TICKETS.map((row) => row.ticket),
     ]).size,
-    status: missing.length || !requirementsOk ? 'REVIEW' : 'OK',
+    status: missing.length || !requirementsOk || !architectureOk ? 'REVIEW' : 'OK',
     missing,
     agentReadable: readApis.has('getPhase3PlanAlignment'),
     notes: [
@@ -167,6 +209,18 @@ function nfr(number, name, milestones) {
 
 function success(id, milestones) {
   return { id, milestones };
+}
+
+function decision(number, topic, choice) {
+  return { id: `D${number}`, topic, choice, source: 'docs/phase3/ARCHITECTURE.md' };
+}
+
+function boundary(id, rule) {
+  return { id, rule, source: 'docs/phase3/ARCHITECTURE.md' };
+}
+
+function route(path, role, source) {
+  return { path, role, source };
 }
 
 function t(from, to) {
