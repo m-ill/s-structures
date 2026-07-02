@@ -1,4 +1,5 @@
 import { createAnalysisState, NONLINEAR_STATE_VERSION, snapshotAnalysisState } from './state.js';
+import { buildNonlinearTangentAssembly, NONLINEAR_ASSEMBLY_VERSION } from './assembly.js';
 import { NEWTON_RAPHSON_VERSION, solveNewtonRaphson } from './control/newtonRaphson.js';
 import { ARC_LENGTH_CONTROL_VERSION, buildArcLengthTrace, createSnapThroughBenchmarkPath } from './control/arcLength.js';
 import { buildDisplacementControlTrace, DISPLACEMENT_CONTROL_VERSION } from './control/displacementControl.js';
@@ -34,10 +35,12 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
   const rayleigh = solveRayleighDamping(options.rayleigh);
   const record = scaleGroundMotion(parseGroundMotionText(options.groundMotionText || '0 0.1 -0.1 0', { dt: options.dt || 0.02 }), options.groundMotion);
   const nlth = runNewmarkNlth({ accelerations: record.accelerations, dt: record.dt, ...(options.nlth || {}) });
+  const assembly = buildNonlinearTangentAssembly(model, state, options.assembly);
   return {
     version: NONLINEAR_TRACE_VERSION,
     method: {
       elements: 'corotational-beam-preliminary',
+      assembly: 'KE+KG+hinge-tangent-trace',
       hinges: 'concentrated-M-theta',
       control: 'load/displacement/arc-length/newmark',
       fiber: 'hinge-location-fiber-section',
@@ -48,7 +51,8 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
       'Distributed plasticity and soil-structure interaction are out of scope.',
     ],
     state: snapshotAnalysisState(state),
-    geometryGate: buildNonlinearGeometryGate(state, geometryBenchmarks, options.geometryGate),
+    assembly,
+    geometryGate: buildNonlinearGeometryGate(state, geometryBenchmarks, { ...options.geometryGate, assembly }),
     hingeControlGate: buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, { displacementControl, arcLength }),
     fiberNlthGate: buildNonlinearFiberNlthGate({ pmm, fiber, rayleigh, groundMotion: record, nlth }, fiberNlthBenchmarks),
     steps: pushover?.steps || [],
@@ -185,8 +189,15 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
     contracts: {
       state: NONLINEAR_STATE_VERSION,
       newtonRaphson: NEWTON_RAPHSON_VERSION,
+      assembly: NONLINEAR_ASSEMBLY_VERSION,
     },
     state: snapshotAnalysisState(state),
+    assembly: options.assembly ? {
+      version: options.assembly.version,
+      ok: options.assembly.ok,
+      ndof: options.assembly.ndof,
+      summary: options.assembly.summary,
+    } : null,
     convergence: {
       version: convergenceSample.version,
       converged: convergenceSample.converged,

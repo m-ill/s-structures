@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   COROTATIONAL_BEAM_VERSION,
+  NONLINEAR_ASSEMBLY_VERSION,
   NEWTON_RAPHSON_VERSION,
   NONLINEAR_BENCHMARK_VERSION,
   NONLINEAR_GEOMETRY_TRACE_VERSION,
@@ -8,6 +9,7 @@ import {
   NONLINEAR_TRACE_VERSION,
   advanceAnalysisState,
   buildCorotationalBeamState,
+  buildNonlinearTangentAssembly,
   buildNonlinearAnalysisTrace,
   createAnalysisState,
   createPortalFrameSample,
@@ -37,6 +39,19 @@ const kg = geometricStiffnessTrace({ axialForce: 100, length: 5 });
 assert.equal(kg.matrix2[0][0], 20);
 assert.equal(kg.matrix2[0][1], -20);
 
+const assemblyModel = createPortalFrameSample();
+const assemblyMemberId = assemblyModel.members[0].id;
+const assembly = buildNonlinearTangentAssembly(assemblyModel, createAnalysisState(), {
+  axialForces: { [assemblyMemberId]: 50 },
+  hinges: [{ memberId: assemblyMemberId, end: 'i', rotation: 0.02, My: 20, thetaY: 0.01 }],
+});
+assert.equal(assembly.version, NONLINEAR_ASSEMBLY_VERSION);
+assert.equal(assembly.ok, true);
+assert.ok(assembly.summary.elasticMemberCount > 0);
+assert.ok(assembly.summary.geometricMemberCount >= 1);
+assert.ok(assembly.summary.hingeCorrectionCount >= 1);
+assert.ok(assembly.summary.maxAbsTangent > 0);
+
 const convergence = evaluateConvergenceNorms({ force: 1e-5, displacement: 1e-5, energy: 1e-8 }, { force: 1, displacement: 1, energy: 1 });
 assert.equal(convergence.converged, true);
 
@@ -62,6 +77,8 @@ const trace = buildNonlinearAnalysisTrace(model);
 assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
 assert.ok(trace.method.control.includes('load'));
 assert.equal(trace.geometryGate.version, NONLINEAR_GEOMETRY_TRACE_VERSION);
+assert.equal(trace.geometryGate.contracts.assembly, NONLINEAR_ASSEMBLY_VERSION);
+assert.equal(trace.geometryGate.assembly.version, NONLINEAR_ASSEMBLY_VERSION);
 assert.deepEqual(trace.geometryGate.benchmarks.requiredCases, ['B1', 'B2']);
 assert.equal(trace.geometryGate.convergence.lineSearchEnabled, true);
 assert.equal(trace.benchmarks.geometry.ok, true);

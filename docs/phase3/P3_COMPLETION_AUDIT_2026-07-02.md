@@ -48,7 +48,7 @@ This audit checks the current repository against the Phase 3 planning documents.
 | P3-M11 | Preliminary | elastic expansion trace tests |
 | P3-M12 | Preliminary | wall/slab equivalent trace tests |
 | P3-M13 | Preliminary | loads v2, dynamic completeness, buckling, linear THA tests |
-| P3-M14 | Preliminary | `geometryGate`, nonlinear geometry trace, and B1/B2 benchmark tests |
+| P3-M14 | Preliminary | `geometryGate`, KE/KG/hinge tangent assembly trace, nonlinear geometry trace, and B1/B2 benchmark tests |
 | P3-M15 | Preliminary | `hingeControlGate`, hinge/control/pushover trace, and B3/B4/B5 benchmark tests |
 | P3-M16 | Preliminary | `fiberNlthGate`, PMM/fiber/NLTH/ground-motion trace, and B6-B8 tests |
 | P3-M17 | Preliminary | `rcDesignGate`, RC detailed design trace tests, and verification document |

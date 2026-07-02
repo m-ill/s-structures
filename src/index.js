@@ -275,6 +275,10 @@ export {
   runPushover,
 } from './nonlinear/pushover.js';
 export {
+  NONLINEAR_ASSEMBLY_VERSION,
+  buildNonlinearTangentAssembly,
+} from './nonlinear/assembly.js';
+export {
   NONLINEAR_STATE_VERSION,
   advanceAnalysisState,
   createAnalysisState,
