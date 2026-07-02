@@ -41,6 +41,7 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
       featureCounts.memberMoment += 1;
       expanded.push({ ...load, sourceType: load.type });
       loadTrace.push({ id: load.id || null, type: load.type, member: load.member, at: Number(load.at ?? 0.5), axis: load.axis || 'z', moment: Number(load.M || 0) });
+      handcalc.push(memberMomentHandcalc(load));
     }
     else expanded.push(load);
   }
@@ -142,6 +143,24 @@ function temperatureHandcalc(load, model) {
   const h = Math.max(1e-9, Number(load.h || section.H || 1));
   const curvature = alpha * (Number(load.dTtop || 0) - Number(load.dTbot || 0)) / h;
   return { id: load.id || null, type: load.type, member: load.member, method: 'M=E*Iz*alpha*(dTtop-dTbot)/h', moment: Number(material.E || 0) * Number(section.Iz || 0) * curvature, E: material.E, Iz: section.Iz, alpha, h, curvature };
+}
+
+function memberMomentHandcalc(load) {
+  const at = clamp(load.at ?? 0.5);
+  const moment = Number(load.M || 0);
+  return {
+    id: load.id || null,
+    type: load.type,
+    member: load.member,
+    method: 'fixed-end-member-moment-split',
+    axis: load.axis || 'z',
+    at,
+    moment,
+    endMoments: {
+      i: moment * (1 - at),
+      j: moment * at,
+    },
+  };
 }
 
 function memberLengths(model = {}) {
@@ -253,7 +272,7 @@ function buildExpansionReview(input) {
   const blockers = [];
   const settlementForceTraceReady = hasSettlementForceTrace(input.supportTrace || []);
   if (!settlementForceTraceReady) blockers.push('settlement-force-trace-missing');
-  const advancedLoadCount = (features.partialDistributed || 0) + (features.trapezoid || 0) + (features.temperature || 0) + (features.temperatureGradient || 0);
+  const advancedLoadCount = (features.partialDistributed || 0) + (features.trapezoid || 0) + (features.memberMoment || 0) + (features.temperature || 0) + (features.temperatureGradient || 0);
   if (advancedLoadCount > 0 && !(input.handcalc || []).length) blockers.push('advanced-load-handcalc-missing');
   if ((input.warnings || []).length) blockers.push('elastic-expansion-warnings-present');
   if ((input.warnings || []).some((warning) => warning.code === 'MEMBER_OFFSET_CLEAR_LENGTH_ZERO')) blockers.push('member-offset-clear-length-invalid');

@@ -152,6 +152,12 @@ const momentMember = memberMomentResult.byCombo.CO1.memberResults.M1;
 assert.ok(momentMember.Mz.every(Number.isFinite));
 assert.ok(momentMember.xs.some((x) => Math.abs(x - 2) < 1e-6));
 assert.ok(memberMomentResult.byCombo.CO1.elasticExpansion.loadTrace.some((row) => row.type === 'mmoment'));
+const memberMomentCalc = memberMomentResult.byCombo.CO1.elasticExpansion.handcalc.find((row) => row.type === 'mmoment');
+assert.equal(memberMomentCalc.method, 'fixed-end-member-moment-split');
+assert.equal(memberMomentCalc.axis, 'z');
+assert.equal(memberMomentCalc.endMoments.i, 6);
+assert.equal(memberMomentCalc.endMoments.j, 6);
+assert.equal(memberMomentResult.byCombo.CO1.elasticExpansion.review.advancedLoadHandcalcReady, true);
 
 const trussModel = createModel({
   nodes: [

@@ -95,3 +95,10 @@ has no `source.note`. The material-library report exposes this as
 `materialWarningCount`, `auditSummary.materialWarnings`, and
 `customMaterialSourceReviewRequired` so AI agents can keep custom project
 materials traceable without blocking elastic registry resolution.
+
+## 2026-07-03 M11 Member Moment Handcalc Update
+
+P3-M11 elastic expansion now records `mmoment` loads in the handcalc trace with
+the member axis, station, input moment, and fixed-end split to i/j ends. This
+keeps member moment loads aligned with the G5 requirement for fixed-end and
+station recovery traces.
