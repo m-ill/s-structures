@@ -30,8 +30,21 @@ assert.ok(review.rows[0].contracts.dataContracts.includes('phase3IntegratedResul
 assert.ok(review.rows[1].contracts.dataContracts.includes('phase3LaunchReadinessGate'));
 assert.ok(review.rows[0].remainingValidation.includes('owner approval of workflow lock policy'));
 assert.ok(review.rows[1].remainingValidation.includes('backup restore owner acceptance'));
+assert.deepEqual(review.rows.map((row) => row.exitCriteriaSummary.status), [
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+]);
+assert.deepEqual(review.rows.map((row) => row.exitCriteria.length), [5, 6]);
+assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M19-T58').ticket, 'P3-T58');
+assert.ok(review.rows[0].exitCriteria.find((row) => row.id === 'M19-GATE').requirement.includes('final structural sign-off'));
+assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M19-T62').evidence, 'npm.cmd run test:p3');
+assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'M20-T63').source, 'docs/phase3/QA_RELEASE_PLAN.md');
+assert.ok(review.rows[1].exitCriteria.find((row) => row.id === 'M20-T66').requirement.includes('Performance, security, backup/restore'));
+assert.ok(review.rows[1].exitCriteria.find((row) => row.id === 'M20-GATE').requirement.includes('owner deployment approval'));
 assert.equal(review.summary.milestoneCount, 2);
 assert.equal(review.summary.automatedEvidenceCount, 6);
+assert.equal(review.summary.exitCriteriaCount, 11);
+assert.equal(review.summary.exitCriteriaAutomatedCount, 11);
 assert.equal(review.summary.productionReady, false);
 assert.equal(review.summary.agentDecision, 'productization-owner-review-required');
 assert.ok(review.summary.productizationScopes.includes('performance-security-launch-gate'));
