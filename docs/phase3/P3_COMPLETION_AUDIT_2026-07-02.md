@@ -26,8 +26,8 @@ This audit checks the current repository against the Phase 3 planning documents.
 | `IMPORT_DXF_DWG_PLAN.md` | P3-M5 to P3-M7 tests |
 | `IMPORT_POINT_CLOUD_PLAN.md` | P3-M8 to P3-M9 tests |
 | `MATERIAL_SECTION_LIBRARY_PLAN.md` | P3-M10 tests |
-| `NONLINEAR_ENGINE_PLAN.md` | P3-M14 to P3-M16 tests |
-| `QA_RELEASE_PLAN.md` | `tests/p3-launch-gate.mjs` |
+| `NONLINEAR_ENGINE_PLAN.md` | P3-M14 to P3-M16 tests and agent-readable nonlinear gates |
+| `QA_RELEASE_PLAN.md` | `tests/p3-launch-gate.mjs`, `releaseGate` |
 | `DEVELOPMENT_FILE_MAP.md` | Phase 3 folders and report/manual locations created |
 
 ## Milestone Evidence
@@ -48,13 +48,25 @@ This audit checks the current repository against the Phase 3 planning documents.
 | P3-M11 | Preliminary | elastic expansion trace tests |
 | P3-M12 | Preliminary | wall/slab equivalent trace tests |
 | P3-M13 | Preliminary | loads v2, dynamic completeness, buckling, linear THA tests |
-| P3-M14 | Preliminary | nonlinear geometry trace and B1/B2 benchmark tests |
-| P3-M15 | Preliminary | hinge/control/pushover trace and benchmark tests |
-| P3-M16 | Preliminary | PMM/fiber/NLTH/ground-motion trace and B6-B8 tests |
-| P3-M17 | Preliminary | RC detailed design trace tests and verification document |
-| P3-M18 | Preliminary | steel, connection, base-plate, foundation trace tests |
-| P3-M19 | Preliminary | integrated nonlinear/design/report/workflow trace tests |
-| P3-M20 | Preliminary | launch-readiness gate, manual, agent contract, pilot report evidence |
+| P3-M14 | Preliminary | `geometryGate`, nonlinear geometry trace, and B1/B2 benchmark tests |
+| P3-M15 | Preliminary | `hingeControlGate`, hinge/control/pushover trace, and B3/B4/B5 benchmark tests |
+| P3-M16 | Preliminary | `fiberNlthGate`, PMM/fiber/NLTH/ground-motion trace, and B6-B8 tests |
+| P3-M17 | Preliminary | `rcDesignGate`, RC detailed design trace tests, and verification document |
+| P3-M18 | Preliminary | `designGate`, steel/connection/base-plate/foundation trace tests |
+| P3-M19 | Preliminary | `integratedGate`, nonlinear/design/report/workflow trace tests, benchmark evidence |
+| P3-M20 | Preliminary | `releaseGate`, manual, agent contract, pilot report evidence |
+
+## Agent-Readable Gate Contracts
+
+| Scope | Contract | Evidence |
+| --- | --- | --- |
+| P3-M14 | `phase3NonlinearGeometryTrace` | `tests/p3-m14-nonlinear-geometry.mjs` |
+| P3-M15 | `phase3NonlinearHingeControlTrace` | `tests/p3-m15-nonlinear-hinge-control.mjs` |
+| P3-M16 | `phase3NonlinearFiberNlthTrace` | `tests/p3-m16-nonlinear-fiber-nlth.mjs` |
+| P3-M17 | `phase3RcDesignGate` | `tests/p3-design-rc.mjs` |
+| P3-M18 | `phase3DetailedDesignGate` | `tests/p3-design-steel-foundation.mjs` |
+| P3-M19 | `phase3IntegratedResultsGate` | `tests/p3-m19-integrated-report.mjs` |
+| P3-M20 | `phase3LaunchReadinessGate` | `tests/p3-launch-gate.mjs` |
 
 ## Launch Gates
 
@@ -85,12 +97,13 @@ This audit checks the current repository against the Phase 3 planning documents.
 
 ## Current Verification Commands
 
-The following commands were run successfully after P3-M20:
+The following commands were run successfully after the latest P3-M14 to P3-M20 gate updates:
 
-- `npm.cmd run test:p3m20`
-- `npm.cmd test -- --from=89 --to=90`
-- `npm.cmd run test:m31`
-- `npm.cmd run test:m16`
 - `npm.cmd test`
+- `node tests/p3-design-rc.mjs`
+- `node tests/p3-design-steel-foundation.mjs`
+- `node tests/p3-m19-integrated-report.mjs`
+- `node tests/p3-launch-gate.mjs`
+- `node tests/m16-agent-capabilities.mjs`
 - `git diff --check`
-- staged forbidden-string scan
+- forbidden-string scan
