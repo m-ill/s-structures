@@ -101,6 +101,7 @@ function buildIntegratedResultsReview({ ok, ticketCoverage, coverage, workflow, 
   if (!ticketCoverage.every((row) => row.covered)) missing.push('ticket-coverage');
   if (!benchmarkEvidence.ok) missing.push('benchmark-evidence');
   if (!coverage.methodLimitations) missing.push('method-limitations');
+  if (workflow.review?.status === 'review-required') missing.push('workflow-lock-state');
   if (!input.design?.designGate?.designReview) missing.push('detailed-design-review');
   else if (input.design.designGate.designReview.status !== 'trace-ready') missing.push('detailed-design-review');
   if (input.design?.issueRows?.length) missing.push('design-issues');
@@ -171,6 +172,7 @@ function buildWorkflowSummary(workflowLock) {
     editable: workflowLock?.editable !== false,
     approvalState: workflowLock?.approvalState || 'not-submitted',
     revocable: !!workflowLock && workflowLock.approvalState !== 'not-submitted',
+    review: workflowLock?.review || null,
   };
 }
 
@@ -224,8 +226,8 @@ function buildTicketCoverage(input) {
     {
       ticket: 'P3-T61',
       scope: 'workflow-lock',
-      covered: !!input.workflowLock?.version,
-      evidence: `${input.workflowLock?.approvalState || 'not-submitted'} / editable=${input.workflowLock?.editable !== false}`,
+      covered: !!input.workflowLock?.version && input.workflowLock?.review?.status !== 'review-required',
+      evidence: `${input.workflowLock?.approvalState || 'not-submitted'} / locked=${!!input.workflowLock?.locked} / editable=${input.workflowLock?.editable !== false} / review=${input.workflowLock?.review?.status || 'n/a'}`,
     },
     {
       ticket: 'P3-T62',

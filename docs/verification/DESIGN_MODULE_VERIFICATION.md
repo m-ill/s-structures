@@ -92,6 +92,8 @@ Current status is preliminary. M19 connects nonlinear trace, detailed-design tra
 
 2026-07-03 integrated result coverage hardening: P3-T58 coverage now requires actual result rows, nonlinear capacity points, nonlinear step rows, and detailed-design item rows in addition to version strings. Empty placeholder traces no longer satisfy integrated-result postprocessing coverage, so AI agents cannot treat a version-only package as an integrated result.
 
+2026-07-03 workflow-lock state hardening: `buildWorkflowLockState()` now exposes a review block for approval/lock/editability consistency. P3-T61 coverage now requires that review to be clean, so an approved or released workflow that remains editable is held with `workflow-lock-state` instead of being accepted by version string alone.
+
 2026-07-03 productization milestone contract update: P3-M19 now participates in `getPhase3ProductizationMilestoneReview`. The review contract maps integrated result postprocessing, calculation report limitations, workflow lock, and benchmark regression to `integratedGate.integratedReview` while keeping `finalStructuralSignoff` separate from trace readiness.
 
 2026-07-03 engineering-validation update: `getPhase3EngineeringValidationReview` now records the remaining professional validation evidence shared by nonlinear analysis and detailed design. It keeps final KDS clause selection, nonlinear solver certification, detailing/constructability, fabrication, and geotechnical approval separate from automated trace readiness.

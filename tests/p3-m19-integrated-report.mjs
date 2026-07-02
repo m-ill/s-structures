@@ -95,14 +95,39 @@ assert.equal(emptyIntegratedResultGate.ticketCoverage.find((row) => row.ticket =
 assert.ok(emptyIntegratedResultGate.ticketCoverage.find((row) => row.ticket === 'P3-T58').evidence.includes('0 capacity points'));
 assert.ok(emptyIntegratedResultGate.integratedReview.missing.includes('ticket-coverage'));
 
+const inconsistentWorkflowGate = buildP3IntegratedResultsGate({
+  analysis: { ok: true },
+  resultPostprocessing: { version: 'post', summary: { storyRowCount: 1, memberRowCount: 1 } },
+  nonlinear: { version: 'nonlinear', capacityCurve: [{ baseShear: 1 }], steps: [{ step: 1 }] },
+  design: {
+    version: 'design',
+    summary: { itemCount: 1 },
+    issueRows: [],
+    designGate: { designReview: { status: 'trace-ready' } },
+  },
+  workflowLock: {
+    version: 'workflow',
+    approvalState: 'approved',
+    locked: false,
+    editable: true,
+    review: { status: 'review-required', missing: ['approval-lock', 'approval-edit-lock'] },
+  },
+  benchmarkEvidence: { ok: true, groups: { geometry: true, hingeControl: true, fiberNlth: true } },
+  methodLimitations: ['limitation'],
+});
+assert.equal(inconsistentWorkflowGate.ticketCoverage.find((row) => row.ticket === 'P3-T61').covered, false);
+assert.ok(inconsistentWorkflowGate.integratedReview.missing.includes('workflow-lock-state'));
+
 const approved = applyWorkflowApproval(model, { state: 'approved', rev: 'R2' });
 assert.equal(approved.locked, true);
 assert.equal(approved.editable, false);
+assert.equal(approved.review.status, 'available');
 assert.equal(buildP3IntegratedResults(model, analysis).workflowLock.locked, true);
 
 const revoked = revokeWorkflowApproval(model, 'design-update');
 assert.equal(revoked.locked, false);
 assert.equal(revoked.editable, true);
+assert.equal(revoked.review.status, 'available');
 
 const detailed = createDetailedHtmlReport(model, analysis);
 assert.equal(detailed.data.phase3IntegratedResults.version, P3_INTEGRATED_RESULTS_VERSION);
