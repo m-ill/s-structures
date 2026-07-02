@@ -13,6 +13,7 @@ import {
   createTwoStoryElasticFrameModel,
   LAUNCH_READINESS_GATE_VERSION,
   LAUNCH_READINESS_VERSION,
+  PERFORMANCE_BUDGETS,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
@@ -32,6 +33,11 @@ const calculationPackage = createCalculationPackageHtml(model, analysis);
 const pilotReports = readdirSync('reports/launch-readiness').filter((name) => /^pilot-\d\d\.md$/.test(name)).sort();
 const contractExecuteActions = Object.values(agentContract.executeActions).flat();
 const contractReadWorkflows = Object.values(agentContract.readWorkflows || {}).flat();
+const performanceBudgets = PERFORMANCE_BUDGETS.map((row) => ({
+  id: row.id,
+  value: row.unit === 'fps-min' ? row.limit : row.limit * 0.5,
+  source: `reports/launch-readiness/performance-security.md#${row.id}`,
+}));
 
 assert.equal(analysis.ok, true);
 assert.deepEqual([...agentContract.readApis].sort(), [...manifest.readApis].sort());
@@ -81,6 +87,7 @@ const evidence = {
   platformGreen: true,
   importGreen: true,
   performanceRecorded: true,
+  performanceBudgets,
   securityChecklistSigned: true,
   backupRestoreRecorded: true,
   ownerSignoffChecklistRecorded: true,
@@ -147,6 +154,12 @@ assert.equal(launch.productionReadiness.productionDeploymentApproved, false);
 assert.equal(launch.productionReadiness.blockingReviewCount, 3);
 assert.equal(launch.productionReadiness.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
 assert.equal(launch.productionReadiness.agentDecision, 'collect-final-use-review-evidence');
+assert.equal(launch.performanceBudgetReview.ok, true);
+assert.equal(launch.performanceBudgetReview.requiredCount, 8);
+assert.equal(launch.performanceBudgetReview.passedCount, 8);
+assert.equal(launch.performanceBudgetReview.agentDecision, 'performance-budget-ready-for-launch-review');
+assert.equal(launch.releaseGate.coverage.performanceBudgets, true);
+assert.match(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T66').evidence, /performance=OK 8\/8/);
 assert.equal(launch.packaging.smoke, true);
 assert.equal(launch.license.status, 'RECORDED');
 
@@ -169,6 +182,25 @@ assert.equal(missingPilotReportLaunch.releaseGate.coverage.pilotReportFilesCompl
 assert.equal(missingPilotReportLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T67').covered, false);
 assert.ok(missingPilotReportLaunch.releaseGate.releaseReview.missing.includes('pilot-report-files'));
 assert.ok(missingPilotReportLaunch.releaseGate.releaseReview.missing.includes('ticket-coverage'));
+
+const missingPerformanceLaunch = buildLaunchReadinessReport({
+  ...evidence,
+  performanceBudgets: performanceBudgets.filter((row) => row.id !== 'nlth-record'),
+});
+assert.equal(missingPerformanceLaunch.gates.find((row) => row.id === 'G7').status, 'REVIEW');
+assert.equal(missingPerformanceLaunch.performanceBudgetReview.ok, false);
+assert.ok(missingPerformanceLaunch.performanceBudgetReview.missing.includes('nlth-record'));
+assert.equal(missingPerformanceLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T66').covered, false);
+assert.ok(missingPerformanceLaunch.releaseGate.releaseReview.missing.includes('performance-budget-items'));
+
+const overBudgetLaunch = buildLaunchReadinessReport({
+  ...evidence,
+  performanceBudgets: performanceBudgets.map((row) => (
+    row.id === 'server-save' ? { ...row, value: 20 } : row
+  )),
+});
+assert.equal(overBudgetLaunch.gates.find((row) => row.id === 'G7').status, 'REVIEW');
+assert.ok(overBudgetLaunch.performanceBudgetReview.missing.includes('server-save'));
 
 const staleAgentContractLaunch = buildLaunchReadinessReport({
   ...evidence,

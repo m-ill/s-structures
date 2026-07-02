@@ -184,8 +184,10 @@ export {
   buildLaunchReadinessReport,
   buildLicenseReadiness,
   buildPackagingReadiness,
+  buildPerformanceBudgetReview,
   LAUNCH_READINESS_GATE_VERSION,
   LAUNCH_READINESS_VERSION,
+  PERFORMANCE_BUDGETS,
 } from './platform/launchReadiness.js';
 export {
   buildPhase3PlanAlignmentReport,
