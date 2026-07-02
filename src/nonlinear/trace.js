@@ -185,6 +185,18 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
     version: NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
     milestone: 'P3-M15',
     tickets: ['P3-T54', 'P3-T55', 'P3-T56'],
+    contract: {
+      milestone: 'P3-M15',
+      tickets: ['P3-T54', 'P3-T55', 'P3-T56'],
+      scope: 'Nonlinear hinge and control v2 trace for moment hinges, displacement/arc-length control, and formal pushover review.',
+      featureTicketMap: {
+        momentHingeState: 'P3-T54',
+        displacementArcLengthControl: 'P3-T55',
+        formalPushover: 'P3-T56',
+      },
+      reviewFields: ['summary.ticketCoverage', 'hinge', 'assignment.summary', 'control', 'pushover', 'benchmarks.cases'],
+      agentUse: 'Read-only gate for reports and AI-agent inspection of hinge/control readiness before P3-M16 fiber and NLTH workflows.',
+    },
     contracts: {
       momentHinge: MOMENT_HINGE_VERSION,
       hingeAssignment: HINGE_ASSIGNMENT_VERSION,
@@ -201,6 +213,14 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       pushoverOk: !!pushover?.ok,
       pushoverStopReason: pushover?.control?.stopReason || null,
       requiredBenchmarks: ['B3', 'B4', 'B5'],
+      ticketCoverage: buildHingeControlTicketCoverage({
+        hingeTrace,
+        hingeAssignment: options.hingeAssignment,
+        displacementControl,
+        arcLength,
+        pushover,
+        hingeControlBenchmarks,
+      }),
     },
     hinge: summarizeHingeTrace(hingeTrace),
     assignment: options.hingeAssignment ? {
@@ -247,6 +267,30 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       'PMM interaction, fiber section response, and nonlinear time history remain P3-M16 scope.',
     ],
   };
+}
+
+function buildHingeControlTicketCoverage({ hingeTrace, hingeAssignment, displacementControl, arcLength, pushover, hingeControlBenchmarks }) {
+  const cases = hingeControlBenchmarks?.cases || [];
+  return [
+    {
+      ticket: 'P3-T54',
+      scope: 'moment-rotation hinge backbone, assignment, and state trace',
+      covered: (hingeTrace?.rows?.length || 0) > 0 && (hingeAssignment?.summary?.hingeCount || 0) > 0,
+      evidence: `${hingeTrace?.rows?.length || 0} hinge rows, ${hingeAssignment?.summary?.hingeCount || 0} assigned hinges`,
+    },
+    {
+      ticket: 'P3-T55',
+      scope: 'displacement-control and arc-length control traces',
+      covered: (displacementControl?.steps?.length || 0) > 0 && (arcLength?.steps || []).some((step) => step.dLambda < 0),
+      evidence: `${displacementControl?.steps?.length || 0} displacement steps, postPeak=${(arcLength?.steps || []).some((step) => step.dLambda < 0)}`,
+    },
+    {
+      ticket: 'P3-T56',
+      scope: 'formal pushover result contract and B4/B5 benchmark link',
+      covered: !!pushover?.ok && ['B4', 'B5'].every((id) => cases.some((item) => item.id === id && item.ok)),
+      evidence: `${pushover?.capacityCurve?.length || 0} capacity points, ${cases.map((item) => `${item.id}:${item.ok ? 'OK' : 'NG'}`).join(',') || 'benchmarks disabled'}`,
+    },
+  ];
 }
 
 export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = {}) {

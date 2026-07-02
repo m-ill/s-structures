@@ -40,6 +40,8 @@ The gate records:
 
 2026-07-02 contract review update: displacement-control and arc-length traces now expose P3-M15 contracts and compact summaries. Formal pushover now exposes a P3-M15 contract plus capacity-curve, hinge-event, first-yield, first-ultimate, and stop-reason summary fields. `hingeControlGate.summary` now reports benchmark, hinge-event, assigned-hinge, post-peak, pushover, and required benchmark readiness for API and AI-agent review.
 
+2026-07-02 ticket coverage review update: `hingeControlGate` now exposes a formal P3-M15 contract, feature-to-ticket map, and `summary.ticketCoverage` for P3-T54 to P3-T56. The coverage rows tie hinge state/assignment, displacement plus arc-length controls, and formal pushover with B4/B5 benchmark evidence to explicit rows for report and AI-agent audit.
+
 ## Current Test Gate
 
 `tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, member-end hinge assignment from material nonlinear backbone data, hinge state events, displacement-control increments, arc-length post-peak path tracking, formal pushover output, formal/source version separation, control stop reason, regression summary, B3/B4/B5 benchmark registration, tangent assembly correction exposure, and agent manifest exposure.

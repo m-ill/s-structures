@@ -100,8 +100,14 @@ const trace = buildNonlinearAnalysisTrace(model, { pushover: { steps: 3, referen
 assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
 assert.equal(trace.hingeControlGate.version, NONLINEAR_HINGE_CONTROL_TRACE_VERSION);
 assert.deepEqual(trace.hingeControlGate.tickets, ['P3-T54', 'P3-T55', 'P3-T56']);
+assert.equal(trace.hingeControlGate.contract.milestone, 'P3-M15');
+assert.deepEqual(trace.hingeControlGate.contract.tickets, ['P3-T54', 'P3-T55', 'P3-T56']);
+assert.equal(trace.hingeControlGate.contract.featureTicketMap.momentHingeState, 'P3-T54');
+assert.ok(trace.hingeControlGate.contract.reviewFields.includes('summary.ticketCoverage'));
 assert.equal(trace.hingeControlGate.summary.readyForAgentReview, true);
 assert.equal(trace.hingeControlGate.summary.pushoverOk, true);
+assert.deepEqual(trace.hingeControlGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T54', 'P3-T55', 'P3-T56']);
+assert.ok(trace.hingeControlGate.summary.ticketCoverage.every((row) => row.covered));
 assert.deepEqual(trace.hingeControlGate.benchmarks.requiredCases, ['B3', 'B4', 'B5']);
 assert.equal(trace.hingeControlGate.control.postPeakTracked, true);
 assert.equal(trace.hingeControlGate.contracts.hingeAssignment, HINGE_ASSIGNMENT_VERSION);
