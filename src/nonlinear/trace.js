@@ -461,7 +461,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       assembly: NONLINEAR_ASSEMBLY_VERSION,
     },
     summary: {
-      readyForAgentReview: true,
+      readyForAgentReview: solverReview.status === 'trace-ready',
       benchmarkOk: geometryBenchmarks?.ok ?? null,
       convergenceOk: convergenceSample.converged,
       globalEquilibriumOk: globalEquilibrium.converged,

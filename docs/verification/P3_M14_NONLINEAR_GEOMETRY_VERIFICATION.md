@@ -50,7 +50,9 @@ The gate records:
 
 2026-07-03 failure-trace hardening: failed load-control rows now separate `attemptedValue` from the last accepted `acceptedValue`, so a nonconverged step cannot look accepted in reports or agent APIs. The reduced-DOF global equilibrium trace now reports `SINGULAR_TANGENT` when the tangent solve fails instead of exhausting iterations with a hidden zero increment.
 
-`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, restart-safe hinge/event copies, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, reduced-DOF global equilibrium trace including singular-tangent failure, load-control trace including failed-step acceptance separation, B1/B2 benchmarks, and agent trace exposure.
+2026-07-03 geometry-gate hardening: `geometryGate.summary.readyForAgentReview` now follows `solverReview.status === "trace-ready"` instead of always returning true. Incomplete M14 traces, such as missing tangent assembly, remain visible for inspection but are blocked from M15 handoff until the solver review has no missing items.
+
+`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, restart-safe hinge/event copies, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, reduced-DOF global equilibrium trace including singular-tangent failure, load-control trace including failed-step acceptance separation, incomplete gate review blocking, B1/B2 benchmarks, and agent trace exposure.
 
 ## Remaining Limits
 

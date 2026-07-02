@@ -13,6 +13,7 @@ import {
   advanceAnalysisState,
   buildCorotationalBeamState,
   buildLoadControlTrace,
+  buildNonlinearGeometryGate,
   runGlobalEquilibriumTrace,
   buildNonlinearTangentAssembly,
   buildNonlinearAnalysisTrace,
@@ -184,6 +185,11 @@ assert.deepEqual(trace.geometryGate.benchmarks.requiredCases, ['B1', 'B2']);
 assert.equal(trace.geometryGate.convergence.lineSearchEnabled, true);
 assert.ok(trace.geometryGate.convergence.log.iterations[0].lineSearch.candidates.length === 4);
 assert.equal(trace.benchmarks.geometry.ok, true);
+
+const incompleteGate = buildNonlinearGeometryGate(createAnalysisState(), benchmarks, {});
+assert.equal(incompleteGate.solverReview.status, 'review-required');
+assert.equal(incompleteGate.summary.readyForAgentReview, false);
+assert.ok(incompleteGate.solverReview.missing.includes('tangent-assembly'));
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();
