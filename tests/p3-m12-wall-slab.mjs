@@ -113,6 +113,7 @@ const shellFrameModel = createModel({
   shells: [{ id: 'S1', nodeIds: ['A', 'B', 'D', 'C'], thickness: 0.18, material: { E: 25000000, nu: 0.2 } }],
   loads: [{ id: 'PX', type: 'nodal', node: 'D', P: 20, dir: '+x', case: 'D' }],
 });
+assert.equal(validateModel(shellFrameModel).ok, true);
 const shellAssembly = expandShellsToFrameLinks(shellFrameModel);
 assert.equal(shellAssembly.version, SHELL_FRAME_ASSEMBLY_VERSION);
 assert.equal(shellAssembly.linkCount, 6);
@@ -150,6 +151,9 @@ const invalidShellModel = createModel({
   ],
   shells: [{ id: 'S-BAD', nodeIds: ['A', 'B', 'C'], thickness: 0.18, material: { E: 25000000, nu: 0.2 } }],
 });
+const invalidShellValidation = validateModel(invalidShellModel);
+assert.equal(invalidShellValidation.ok, false);
+assert.ok(invalidShellValidation.errors.some((item) => item.code === 'BAD_SHELL_PROPS'));
 const invalidShellTrace = buildWallSlabEquivalentTrace(invalidShellModel, null);
 assert.equal(invalidShellTrace.summary.shellCount, 1);
 assert.equal(invalidShellTrace.summary.shellLinkCount, 0);
@@ -157,6 +161,16 @@ assert.equal(invalidShellTrace.summary.shellSkippedCount, 1);
 assert.equal(invalidShellTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T74').covered, false);
 assert.ok(invalidShellTrace.review.blockers.includes('shell-frame-assembly-skipped'));
 assert.ok(invalidShellTrace.shell.assembly.rows.some((row) => row.status === 'skipped'));
+const missingShellNodeModel = createModel({
+  nodes: shellFrameModel.nodes.slice(0, 3),
+  shells: [{ id: 'S-MISSING', nodeIds: ['A', 'B', 'D', 'C'], thickness: 0.18 }],
+});
+assert.ok(validateModel(missingShellNodeModel).errors.some((item) => item.code === 'BAD_SHELL_NODE_REF'));
+const badShellMaterialModel = createModel({
+  nodes: shellFrameModel.nodes,
+  shells: [{ id: 'S-MAT', nodeIds: ['A', 'B', 'D', 'C'], thickness: 0.18, material: { E: 0, nu: 0.7 } }],
+});
+assert.ok(validateModel(badShellMaterialModel).errors.some((item) => item.code === 'BAD_SHELL_PROPS'));
 
 const summary = summarizeSemiRigidDiaphragm({
   nodes: [{ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 4, y: 0, z: 0 }],

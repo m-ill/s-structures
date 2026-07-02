@@ -49,6 +49,8 @@ The previous M12 trace exposed semi-rigid diaphragm rows only. P3-M12 now expose
 
 2026-07-03 redistribution sampling hardening: P3-T75 coverage now requires a semi-rigid diaphragm plus at least one available displacement-spread sample from an analysis result. A model that only declares a semi-rigid diaphragm now reports redistribution status `not-sampled`, keeps P3-T75 uncovered, and blocks automatic report readiness until the analysis trace contains sampled redistribution rows.
 
+2026-07-03 shell validation hardening: `validateModel()` now validates optional `shells` and shell-type `slabs` before solver assembly. Shell v1 requires four node references, existing node IDs, positive thickness, valid optional material parameters, and valid `matId` references. `tests/p3-m12-wall-slab.mjs` locks valid shell models, skipped shell trace rows, missing shell nodes, and invalid shell material data.
+
 ## Current Test Gate
 
 `tests/p3-m12-wall-slab.mjs` verifies equivalent wall generation, analysis, pier force recovery, shell v1 benchmark traces, shell frame-link assembly, semi-rigid diaphragm validation, material-aware equivalent link sizing, equivalent-brace redistribution with review status rows, not-sampled redistribution blocking, and the agent-readable trace contract including solver treatments and limitations.

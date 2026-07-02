@@ -37,6 +37,7 @@ export function validateModel(model) {
   warnings.push(...validateUnits(model.units));
   warnings.push(...validateUnitSystem(model.unitSystem));
   validateCollections(model, error);
+  validateOptionalCollections(model, error);
 
   if (errors.length) return finish(errors, warnings);
 
@@ -44,6 +45,7 @@ export function validateModel(model) {
   validateDiaphragms(model, nodeIds, error);
   const sectionIds = knownIds(model.sections, SECTIONS);
   const materialIds = knownIds(model.materials, MATERIALS);
+  validateShells(model, nodeIds, materialIds, error);
   const memberIds = validateMembers(model, nodeIds, sectionIds, materialIds, error);
   validateLoads(model, nodeIds, memberIds, error, warning);
   validateLoadCasesAndCombinations(model, error, warning);
@@ -62,6 +64,14 @@ function validateCollections(model, error) {
   for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'stories', 'diaphragms']) {
     if (!Array.isArray(model[key])) {
       error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array.`, key);
+    }
+  }
+}
+
+function validateOptionalCollections(model, error) {
+  for (const key of ['shells', 'slabs']) {
+    if (model[key] != null && !Array.isArray(model[key])) {
+      error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array when provided.`, key);
     }
   }
 }
@@ -125,6 +135,43 @@ function validateDiaphragms(model, nodeIds, error) {
       if (!nodeIds.has(nodeId)) error(ERROR_CODES.BAD_DIAPHRAGM_NODE_REF, 'Diaphragm references a missing node.', item.id || nodeId);
     }
   }
+}
+
+function validateShells(model, nodeIds, materialIds, error) {
+  const shells = [
+    ...(model.shells || []),
+    ...(model.slabs || []).filter((item) => item?.type === 'shell'),
+  ];
+  for (const shell of shells) {
+    const id = shell.id || 'shells';
+    const ids = shellNodeIds(shell);
+    if (ids.length !== 4) {
+      error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell v1 requires exactly four node references.', id);
+    }
+    for (const nodeId of ids) {
+      if (!nodeIds.has(nodeId)) error(ERROR_CODES.BAD_SHELL_NODE_REF, 'Shell references a missing node.', id);
+    }
+    if (!(isFiniteNumber(shell.thickness) && Number(shell.thickness) > 0)) {
+      error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell thickness must be positive.', id);
+    }
+    if (shell.matId && !materialIds.has(shell.matId)) {
+      error(ERROR_CODES.NO_MATERIAL, `Missing material: ${shell.matId}`, id);
+    }
+    if (shell.material) {
+      if (!(isFiniteNumber(shell.material.E) && Number(shell.material.E) > 0)) {
+        error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell material.E must be positive.', id);
+      }
+      if (shell.material.nu != null && !(isFiniteNumber(shell.material.nu) && Number(shell.material.nu) >= 0 && Number(shell.material.nu) < 0.5)) {
+        error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell material.nu must satisfy 0 <= nu < 0.5.', id);
+      }
+    }
+  }
+}
+
+function shellNodeIds(shell = {}) {
+  if (Array.isArray(shell.nodeIds)) return shell.nodeIds.filter(Boolean);
+  if (Array.isArray(shell.nodes)) return shell.nodes.map((node) => node?.id).filter(Boolean);
+  return [];
 }
 
 function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
