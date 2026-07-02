@@ -84,7 +84,7 @@ import { POINT_CLOUD_IMPORT_PIPELINE_VERSION } from '../import/pointcloud/pipeli
 import { POINT_CLOUD_LOADER_VERSION } from '../import/pointcloud/loaders.js';
 import { POINT_CLOUD_WORKER_PIPELINE_VERSION } from '../import/pointcloud/worker.js';
 import { POINT_CLOUD_IMPORT_SUMMARY_VERSION } from '../import/pointcloud/summary.js';
-import { POINT_CLOUD_EXTRACTION_VERSION } from '../import/pointcloud/extract.js';
+import { POINT_CLOUD_EXTRACTION_SUMMARY_VERSION, POINT_CLOUD_EXTRACTION_VERSION } from '../import/pointcloud/extract.js';
 import { POINT_CLOUD_BENCHMARK_VERSION } from '../import/pointcloud/benchmark.js';
 import { POINT_CLOUD_LAYER_VERSION } from '../viewer/pointCloudLayer.js';
 import { MATERIAL_REGISTRY_VERSION } from '../materials/registry.js';
@@ -188,6 +188,7 @@ export function buildAgentManifest(options = {}) {
       phase3PointCloudWorker: POINT_CLOUD_WORKER_PIPELINE_VERSION,
       phase3PointCloudImportSummary: POINT_CLOUD_IMPORT_SUMMARY_VERSION,
       phase3PointCloudExtraction: POINT_CLOUD_EXTRACTION_VERSION,
+      phase3PointCloudExtractionSummary: POINT_CLOUD_EXTRACTION_SUMMARY_VERSION,
       phase3PointCloudBenchmark: POINT_CLOUD_BENCHMARK_VERSION,
       phase3PointCloudLayer: POINT_CLOUD_LAYER_VERSION,
       phase3MaterialRegistry: MATERIAL_REGISTRY_VERSION,
@@ -348,6 +349,7 @@ export function buildAgentManifest(options = {}) {
       'phase3PointCloudViewerBuffer',
       'phase3PointCloudImportSummary',
       'phase3PointCloudExtraction',
+      'phase3PointCloudExtractionSummary',
       'phase3PointCloudBenchmark',
       'phase3MaterialSectionRegistry',
       'phase3MaterialSchema',

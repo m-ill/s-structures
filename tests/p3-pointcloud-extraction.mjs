@@ -22,7 +22,12 @@ assert.ok(score.storyErrorMax < 0.03, `story error ${score.storyErrorMax}`);
 assert.ok(score.columnRecall >= 0.9, `column recall ${score.columnRecall}`);
 assert.ok(score.columnPrecision >= 0.9, `column precision ${score.columnPrecision}`);
 assert.ok(candidate.candidates.members.some((m) => m.kind === 'beam'));
+assert.equal(candidate.audit.pointcloud.counts.beams > 0, true);
+assert.equal(candidate.audit.pointcloud.evidence.beamSource, 'synthetic-ground-truth-assisted');
+assert.ok(candidate.audit.pointcloud.limitations.includes('beam-detection-uses-synthetic-ground-truth'));
+assert.ok(candidate.audit.pointcloud.limitations.includes('real-field-pointcloud-validation-pending'));
 assert.ok(buildAgentManifest().dataContracts.includes('phase3PointCloudBenchmark'));
+assert.ok(buildAgentManifest().dataContracts.includes('phase3PointCloudExtractionSummary'));
 
 console.log(JSON.stringify({
   ok: true,
