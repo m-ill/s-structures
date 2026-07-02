@@ -133,6 +133,38 @@ assert.ok(issueGate.designReview.missing.includes('design-issues'));
 assert.equal(issueGate.designReview.issueCount, 1);
 assert.equal(issueGate.designReview.agentDecision, 'resolve-detailed-design-review-items');
 
+const unlinkedIssueGate = buildP3DetailedDesignGate({
+  steel: {
+    version: 'steel-test',
+    rows: [{ memberId: 'S1', status: 'NG' }],
+    formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' }],
+    summary: { itemCount: 1, ngCount: 1 },
+  },
+  connection: {
+    version: 'connection-test',
+    rows: [{ memberId: 'C1', status: 'OK' }],
+    formulaTrace: [{ formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' }],
+    summary: { itemCount: 1 },
+  },
+  foundation: {
+    version: 'foundation-test',
+    rows: [{ nodeId: 'F1', status: 'OK' }],
+    formulaTrace: [{ formulaId: 'KDS-FOUND-SPREAD-V1', standard: 'KDS 11 50' }],
+    summary: { itemCount: 1 },
+  },
+}, {
+  issueRows: [{ moduleId: 'steel', itemId: 'S1', status: 'NG', formulaIds: [] }],
+  formulaTrace: [
+    { formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' },
+    { formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' },
+    { formulaId: 'KDS-FOUND-SPREAD-V1', standard: 'KDS 11 50' },
+  ],
+});
+assert.equal(unlinkedIssueGate.coverage.find((row) => row.ticket === 'P3-T94').covered, false);
+assert.equal(unlinkedIssueGate.designReview.unlinkedIssueCount, 1);
+assert.ok(unlinkedIssueGate.designReview.missing.includes('issue-formula-links'));
+assert.ok(unlinkedIssueGate.designReview.missing.includes('ticket-coverage'));
+
 const target = { model: () => frame, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => frameAnalysis });
 const agentReport = agent.getP3DetailedDesignReport();

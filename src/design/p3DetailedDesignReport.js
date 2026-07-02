@@ -94,10 +94,12 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
 function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverage }) {
   const unregisteredFormulaCount = formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length;
   const moduleStatuses = summarizeModuleStatuses(modules);
+  const unlinkedIssueCount = issueRows.filter((row) => !(row.formulaIds || []).length).length;
   const missing = [];
   if (!coverage.every((row) => row.covered)) missing.push('ticket-coverage');
   if (!formulaTrace.length) missing.push('formula-trace');
   if (unregisteredFormulaCount) missing.push('formula-registry');
+  if (unlinkedIssueCount) missing.push('issue-formula-links');
   if (issueRows.length) missing.push('design-issues');
   return {
     status: missing.length ? 'review-required' : 'trace-ready',
@@ -107,6 +109,7 @@ function buildIntegratedDesignReview({ modules, issueRows, formulaTrace, coverag
     geotechnicalCertified: false,
     completeCoverage: coverage.every((row) => row.covered),
     issueCount: issueRows.length,
+    unlinkedIssueCount,
     formulaCount: formulaTrace.length,
     unregisteredFormulaCount,
     moduleStatuses,
@@ -157,6 +160,7 @@ function buildTicketCoverage(modules, issueRows, formulaTrace) {
   const steelRows = rowsOf(modules.steel || {});
   const connectionRows = rowsOf(modules.connection || {});
   const foundationRows = rowsOf(modules.foundation || {});
+  const linkedIssueCount = issueRows.filter((row) => (row.formulaIds || []).length > 0).length;
   return [
     { ticket: 'P3-T91', scope: 'steel', count: steelRows.length, covered: steelRows.length > 0, evidence: `${steelRows.length} steel rows` },
     { ticket: 'P3-T92', scope: 'connection', count: connectionRows.length, covered: connectionRows.length > 0, evidence: `${connectionRows.length} connection rows` },
@@ -164,9 +168,9 @@ function buildTicketCoverage(modules, issueRows, formulaTrace) {
     {
       ticket: 'P3-T94',
       scope: 'report-issue-formula-link',
-      count: issueRows.filter((row) => (row.formulaIds || []).length > 0).length,
-      covered: formulaTrace.length > 0,
-      evidence: `${formulaTrace.length} formula rows, ${issueRows.length} issue rows`,
+      count: linkedIssueCount,
+      covered: formulaTrace.length > 0 && (issueRows.length === 0 || linkedIssueCount === issueRows.length),
+      evidence: `${formulaTrace.length} formula rows, ${linkedIssueCount}/${issueRows.length} linked issue rows`,
     },
     { ticket: 'P3-T95', scope: 'serviceability-hook', count: 1, covered: true, evidence: 'drift-deflection-vibration-ready' },
   ];
