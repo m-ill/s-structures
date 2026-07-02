@@ -88,3 +88,11 @@ The P3-M7 import review summary now falls back to candidate body counts when
 `audit.counts` is absent. This keeps the review UI and AI-facing summary aligned
 with the plan requirement that import review must show candidate story, grid,
 node, and member counts before accept/reject decisions.
+
+## 2026-07-03 M8 Worker Message Contract Update
+
+The P3-M8 point-cloud worker path now exposes a message-style envelope for
+`process-pointcloud-text` requests. The regression covers successful processing,
+unsupported format guidance, request ID round-tripping, and unknown message
+handling so UI workers and AI agents can inspect the same auditable pipeline
+result.

@@ -4,6 +4,7 @@ import {
   buildAgentManifest,
   buildPointCloudLayerData,
   describePointCloudPipeline,
+  handlePointCloudWorkerMessage,
   POINT_CLOUD_EXTERNAL_CONVERSION_GUIDANCE,
   POINT_CLOUD_UNSUPPORTED_FORMAT,
   parsePointCloudText,
@@ -67,6 +68,29 @@ assert.equal(processed.audit.stageRows[3].droppedCount, 1);
 assert.equal(processed.audit.bboxSize.x, 20);
 assert.equal(processed.audit.originShift.distance, 0);
 assert.equal(processed.audit.stageRows[1].originShift.distance, 0);
+const workerMessage = handlePointCloudWorkerMessage({
+  type: 'process-pointcloud-text',
+  requestId: 'm8-worker-001',
+  text: xyz,
+  options: { voxelSize: 0.05, outlier: { radius: 3.2, minNeighbors: 1 } },
+});
+assert.equal(workerMessage.ok, true);
+assert.equal(workerMessage.requestId, 'm8-worker-001');
+assert.equal(workerMessage.result.audit.stageRows.length, 4);
+assert.equal(workerMessage.transferable.pointCount, workerMessage.result.points.length);
+const workerUnsupported = handlePointCloudWorkerMessage({
+  type: 'process-pointcloud-text',
+  requestId: 'm8-worker-unsupported',
+  text: '',
+  options: { format: 'las' },
+});
+assert.equal(workerUnsupported.ok, false);
+assert.equal(workerUnsupported.requestId, 'm8-worker-unsupported');
+assert.equal(workerUnsupported.error.code, POINT_CLOUD_UNSUPPORTED_FORMAT);
+assert.match(workerUnsupported.error.guidance, /Convert LAS/);
+const workerUnknown = handlePointCloudWorkerMessage({ type: 'unknown-message', requestId: 'm8-worker-unknown' });
+assert.equal(workerUnknown.ok, false);
+assert.equal(workerUnknown.error.code, 'POINT_CLOUD_WORKER_UNKNOWN_MESSAGE');
 
 const layer = buildPointCloudLayerData(processed.points, { zMin: -0.1, zMax: 3.1 });
 assert.equal(layer.count, 3);

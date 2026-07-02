@@ -5,6 +5,46 @@ import { voxelDownsample } from './voxel.js';
 
 export const POINT_CLOUD_WORKER_PIPELINE_VERSION = 'p3-m8-pointcloud-worker-v1';
 
+export function handlePointCloudWorkerMessage(message = {}) {
+  const requestId = message.requestId || null;
+  try {
+    if (message.type !== 'process-pointcloud-text') {
+      return {
+        version: POINT_CLOUD_WORKER_PIPELINE_VERSION,
+        ok: false,
+        requestId,
+        error: {
+          code: 'POINT_CLOUD_WORKER_UNKNOWN_MESSAGE',
+          message: `Unsupported point-cloud worker message: ${message.type || 'unknown'}`,
+        },
+      };
+    }
+    const result = processPointCloudText(message.text || '', message.options || {});
+    return {
+      version: POINT_CLOUD_WORKER_PIPELINE_VERSION,
+      ok: true,
+      requestId,
+      result,
+      transferable: {
+        pointCount: result.points.length,
+        buffers: [],
+      },
+    };
+  } catch (error) {
+    return {
+      version: POINT_CLOUD_WORKER_PIPELINE_VERSION,
+      ok: false,
+      requestId,
+      error: {
+        code: error.code || 'POINT_CLOUD_WORKER_FAILED',
+        message: error.message || 'Point-cloud worker failed.',
+        format: error.format || null,
+        guidance: error.guidance || null,
+      },
+    };
+  }
+}
+
 export function processPointCloudText(text, options = {}) {
   const loaded = parsePointCloudWithAudit(text, options);
   const raw = loaded.points;

@@ -540,7 +540,7 @@ export { POINT_CLOUD_EXTERNAL_CONVERSION_GUIDANCE, POINT_CLOUD_LOADER_VERSION, P
 export { POINT_CLOUD_NORMALIZE_VERSION, normalizePointCloud } from './import/pointcloud/normalize.js';
 export { POINT_CLOUD_VOXEL_VERSION, voxelDownsample } from './import/pointcloud/voxel.js';
 export { POINT_CLOUD_OUTLIER_VERSION, removeSparseOutliers } from './import/pointcloud/outlier.js';
-export { POINT_CLOUD_WORKER_PIPELINE_VERSION, processPointCloudText } from './import/pointcloud/worker.js';
+export { POINT_CLOUD_WORKER_PIPELINE_VERSION, handlePointCloudWorkerMessage, processPointCloudText } from './import/pointcloud/worker.js';
 export { POINT_CLOUD_IMPORT_SUMMARY_VERSION, summarizePointCloudImport } from './import/pointcloud/summary.js';
 export { POINT_CLOUD_STORY_DETECT_VERSION, detectStoryLevels } from './import/pointcloud/storyDetect.js';
 export { POINT_CLOUD_COLUMN_DETECT_VERSION, detectColumns } from './import/pointcloud/columnDetect.js';
