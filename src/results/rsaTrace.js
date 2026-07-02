@@ -5,6 +5,8 @@ export function buildResponseSpectrumTrace(analysis) {
   return {
     enabled: !!rsa,
     status: traceStatus(!!rsa, !!rsa),
+    contract: rsa?.contract || null,
+    review: rsa?.review || null,
     method: rsa?.method || null,
     spectrum: rsa?.spectrum || null,
     directions: Object.entries(rsa?.combined || {}).map(([direction, row]) => ({

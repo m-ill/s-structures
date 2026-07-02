@@ -2,7 +2,10 @@ import { materialOf, sectionOf } from '../core/catalogs.js';
 import { buildMassSourceTrace } from '../loads/loadsV2.js';
 import { assembleStiffness3D, solveLinear } from '../solver/linear3d.js';
 import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
-import { combineModalCqc } from './elasticCompleteness.js';
+import {
+  DYNAMIC_COMPLETENESS_VERSION,
+  combineModalCqc,
+} from './elasticCompleteness.js';
 
 const DOF_DIR = ['x', 'y', 'z'];
 
@@ -126,7 +129,10 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
   }
 
   return {
+    version: DYNAMIC_COMPLETENESS_VERSION,
+    contract: buildResponseSpectrumContract(),
     method: String(spectrum.method || 'SRSS').toUpperCase(),
+    review: buildResponseSpectrumReview({ method: spectrum.method, modal, combined }),
     spectrum: {
       dampingRatio: spectrum.dampingRatio ?? 0.05,
       scale: spectrum.scale ?? 9.80665,
@@ -134,6 +140,44 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
     },
     modal,
     combined,
+  };
+}
+
+function buildResponseSpectrumContract() {
+  return {
+    milestone: 'P3-M13',
+    tickets: ['P3-T77', 'P3-T79'],
+    scope: 'Elastic response-spectrum trace with modal combination method and direction-level participation.',
+    reviewFields: ['method', 'combined', 'modal', 'review'],
+    limitations: [
+      'RSA is a preliminary elastic trace and does not replace project-specific seismic code review.',
+      'CQC review requires at least two modal responses in every requested direction.',
+    ],
+  };
+}
+
+function buildResponseSpectrumReview({ method, modal, combined }) {
+  const normalizedMethod = String(method || 'SRSS').toUpperCase();
+  const directionRows = Object.entries(combined || {}).map(([direction, row]) => ({
+    direction,
+    responseCount: (modal.find((item) => item.direction === direction)?.responses || []).length,
+    participatingMassRatio: row.participatingMassRatio || 0,
+  }));
+  const missing = [];
+  if (!directionRows.length) missing.push('rsa-directions');
+  if (normalizedMethod === 'CQC' && directionRows.some((row) => row.responseCount < 2)) missing.push('cqc-modal-response-count');
+  if (directionRows.some((row) => !(row.participatingMassRatio > 0))) missing.push('participating-mass-ratio');
+  return {
+    version: DYNAMIC_COMPLETENESS_VERSION,
+    type: 'response-spectrum',
+    status: missing.length ? 'review-required' : 'available',
+    method: normalizedMethod,
+    directionRows,
+    missing,
+    productionReady: false,
+    agentDecision: missing.length
+      ? 'review-response-spectrum-inputs'
+      : 'response-spectrum-trace-ready-for-review',
   };
 }
 

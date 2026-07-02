@@ -4,6 +4,7 @@ import {
   LOADS_V2_VERSION,
   MASS_SOURCE_TRACE_VERSION,
   analyzeDynamics,
+  buildAdvancedElasticTrace,
   buildStoryMassSummary,
   buildCqcCombinationReport,
   buildDynamicCompletenessReview,
@@ -96,7 +97,19 @@ const rsa = runResponseSpectrum([
   { id: 'M2', period: 1.1, omega: 2 * Math.PI / 1.1, participation: { x: { gamma: 0.5, massRatio: 0.2 } } },
 ], [0], [1], [1, 0, 0], { method: 'CQC', directions: ['x'], points: [{ period: 0, sa: 0.4 }, { period: 5, sa: 0.4 }] });
 assert.equal(rsa.method, 'CQC');
+assert.deepEqual(rsa.contract.tickets, ['P3-T77', 'P3-T79']);
+assert.equal(rsa.review.status, 'available');
+assert.equal(rsa.review.agentDecision, 'response-spectrum-trace-ready-for-review');
 assert.ok(rsa.combined.x.cqcDisplacement > 0);
+const rsaAdvancedTrace = buildAdvancedElasticTrace({}, { dynamics: { rsa } });
+assert.deepEqual(rsaAdvancedTrace.responseSpectrum.contract.tickets, ['P3-T77', 'P3-T79']);
+assert.equal(rsaAdvancedTrace.responseSpectrum.review.status, 'available');
+const sparseRsa = runResponseSpectrum([
+  { id: 'M1', period: 1, omega: 2 * Math.PI, participation: { x: { gamma: 1, massRatio: 1 } } },
+], [0], [1], [1, 0, 0], { method: 'CQC', directions: ['x'] });
+assert.equal(sparseRsa.review.status, 'review-required');
+assert.ok(sparseRsa.review.missing.includes('cqc-modal-response-count'));
+assert.equal(sparseRsa.review.agentDecision, 'review-response-spectrum-inputs');
 
 const tha = runLinearSdofTha({ period: 1, accelerations: [0, 0.1, -0.1, 0] });
 assert.equal(tha.version, DYNAMIC_COMPLETENESS_VERSION);
