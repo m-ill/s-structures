@@ -22,7 +22,7 @@ import { CONNECTION_FOUNDATION_VERSION } from '../design/connectionFoundation.js
 import { DESIGN_DEMAND_PACKAGE_VERSION } from '../design/designDemandPackage.js';
 import { DESIGN_BASIS_INPUT_VERSION, LOAD_DERIVATION_TRACE_VERSION, LOAD_ESTIMATION_VERSION } from '../design/loadEstimation.js';
 import { MEMBER_DESIGN_TRACE_VERSION } from '../design/memberDesignTrace.js';
-import { P3_DETAILED_DESIGN_REPORT_VERSION } from '../design/p3DetailedDesignReport.js';
+import { P3_DETAILED_DESIGN_GATE_VERSION, P3_DETAILED_DESIGN_REPORT_VERSION } from '../design/p3DetailedDesignReport.js';
 import { RC_DESIGN_GATE_VERSION, RC_DETAILED_DESIGN_VERSION } from '../design/rc/detailedReport.js';
 import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
@@ -142,6 +142,7 @@ export function buildAgentManifest(options = {}) {
       phase3RcDetailedDesign: RC_DETAILED_DESIGN_VERSION,
       phase3RcDesignGate: RC_DESIGN_GATE_VERSION,
       phase3DetailedDesignIntegration: P3_DETAILED_DESIGN_REPORT_VERSION,
+      phase3DetailedDesignGate: P3_DETAILED_DESIGN_GATE_VERSION,
       phase3IntegratedResults: P3_INTEGRATED_RESULTS_VERSION,
       steelDetailing: STEEL_DETAILING_VERSION,
       connectionFoundation: CONNECTION_FOUNDATION_VERSION,
@@ -297,6 +298,7 @@ export function buildAgentManifest(options = {}) {
       'phase3RcDetailedDesignReport',
       'phase3RcDesignGate',
       'phase3DetailedDesignIntegration',
+      'phase3DetailedDesignGate',
       'phase3IntegratedResults',
       'phase3LaunchReadiness',
       'steelMemberReviewSchedule',

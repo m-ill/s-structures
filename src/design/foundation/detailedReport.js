@@ -13,7 +13,7 @@ export function buildFoundationDetailedDesignReport(model, analysis, options = {
   const combined = designCombinedFooting(base.foundationRows, options);
   const mat = designMatFoundation(base.foundationRows, options);
   const rows = [...footings, ...piles, combined, mat];
-  return { version: FOUNDATION_DETAILED_DESIGN_VERSION, summary: summarize(rows), footings, piles, combined, mat, formulaTrace: rows.flatMap((row) => collectFormula(row)), limitations: ['Foundation rows are preliminary geotechnical and reinforcement sizing traces for review.'] };
+  return { version: FOUNDATION_DETAILED_DESIGN_VERSION, summary: summarize(rows), rows, footings, piles, combined, mat, formulaTrace: rows.flatMap((row) => collectFormula(row)), limitations: ['Foundation rows are preliminary geotechnical and reinforcement sizing traces for review.'] };
 }
 
 function summarize(rows) {

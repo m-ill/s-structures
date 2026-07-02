@@ -10,6 +10,7 @@ import {
   createTwoStoryElasticFrameModel,
   designBoltGroup,
   designFilletWeld,
+  P3_DETAILED_DESIGN_GATE_VERSION,
   P3_DETAILED_DESIGN_REPORT_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
@@ -39,6 +40,7 @@ assert.ok(connection.formulaTrace.some((row) => row.formulaId === 'KDS-CONN-BASE
 const foundation = buildFoundationDetailedDesignReport(frame, frameAnalysis);
 assert.ok(foundation.footings.length > 0);
 assert.ok(foundation.piles.length > 0);
+assert.equal(foundation.rows.length, foundation.summary.itemCount);
 assert.ok(foundation.formulaTrace.some((row) => row.formulaId === 'KDS-FOUND-SPREAD-V1'));
 assert.ok(foundation.formulaTrace.some((row) => row.formulaId === 'KDS-FOUND-MAT-V1'));
 
@@ -49,10 +51,14 @@ assert.ok(weld.requiredLength >= 100);
 
 const integrated = buildP3DetailedDesignReport(frame, frameAnalysis);
 assert.equal(integrated.version, P3_DETAILED_DESIGN_REPORT_VERSION);
+assert.equal(integrated.designGate.version, P3_DETAILED_DESIGN_GATE_VERSION);
+assert.deepEqual(integrated.designGate.tickets, ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95']);
 assert.ok(integrated.modules.steel.rows.length > 0);
 assert.ok(integrated.modules.connection.rows.length > 0);
 assert.ok(integrated.modules.foundation.footings.length > 0);
 assert.ok(integrated.formulaTrace.length > 0);
+assert.equal(integrated.designGate.formulaCount, integrated.formulaTrace.length);
+assert.equal(integrated.designGate.issueCount, integrated.issueRows.length);
 
 const target = { model: () => frame, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => frameAnalysis });
@@ -62,8 +68,10 @@ assert.ok(agentReport.modules.connection.rows.length > 0);
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3DetailedDesignIntegration, P3_DETAILED_DESIGN_REPORT_VERSION);
+assert.equal(manifest.modules.phase3DetailedDesignGate, P3_DETAILED_DESIGN_GATE_VERSION);
 assert.ok(manifest.readApis.includes('getP3DetailedDesignReport'));
 assert.ok(manifest.dataContracts.includes('phase3DetailedDesignIntegration'));
+assert.ok(manifest.dataContracts.includes('phase3DetailedDesignGate'));
 assert.ok(manifest.milestones.some((item) => item.id === 'P3-M18'));
 
 console.log(JSON.stringify({

@@ -29,6 +29,8 @@ Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.
 
 Current status is preliminary. M18 adds traceable steel, connection, base-plate, and foundation schedules for agent/report consumption. Final local buckling table selection, fabrication detailing, geotechnical settlement, and construction drawings remain review items.
 
+2026-07-02 review update: P3-M18 now exposes `designGate` with P3-T91 to P3-T95 coverage, module versions, formula count, issue count, and a serviceability hook marker. Foundation detailed reports now also expose flat `rows`, so spread, pile, combined, and mat checks are all available to the integrated issue scanner.
+
 ## P3-M19 Integrated Results And Report
 
 Scope follows `docs/phase3/ROADMAP.md` Stage F and `docs/phase3/IMPLEMENTATION_BACKLOG.md` P3-T58, P3-T59, P3-T61, and P3-T62.

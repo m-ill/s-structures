@@ -4,6 +4,7 @@ import { buildRcDetailedDesignReport } from './rc/detailedReport.js';
 import { buildSteelDetailedDesignReport } from './steel/detailedReport.js';
 
 export const P3_DETAILED_DESIGN_REPORT_VERSION = 'p3-m18-detailed-design-integration';
+export const P3_DETAILED_DESIGN_GATE_VERSION = 'p3-m18-detailed-design-gate-v1';
 
 export function buildP3DetailedDesignReport(model, analysis, options = {}) {
   const rc = buildRcDetailedDesignReport(model, analysis, options.rc || options);
@@ -11,14 +12,40 @@ export function buildP3DetailedDesignReport(model, analysis, options = {}) {
   const connection = buildConnectionDetailedDesignReport(model, analysis, options.connection || options);
   const foundation = buildFoundationDetailedDesignReport(model, analysis, options.foundation || options);
   const modules = { rc, steel, connection, foundation };
+  const issueRows = buildIssueRows(modules);
+  const formulaTrace = Object.values(modules).flatMap((module) => module.formulaTrace || []);
   return {
     version: P3_DETAILED_DESIGN_REPORT_VERSION,
     modelName: model?.meta?.name || null,
     summary: summarize(modules),
     modules,
-    issueRows: buildIssueRows(modules),
-    formulaTrace: Object.values(modules).flatMap((module) => module.formulaTrace || []),
+    designGate: buildP3DetailedDesignGate(modules, { issueRows, formulaTrace }),
+    issueRows,
+    formulaTrace,
     limitations: ['P3-M18 integrates RC, steel, connection, and foundation detailed-design trace modules for agent/report consumption.'],
+  };
+}
+
+export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
+  const issueRows = evidence.issueRows || buildIssueRows(modules);
+  const formulaTrace = evidence.formulaTrace || Object.values(modules).flatMap((module) => module.formulaTrace || []);
+  return {
+    version: P3_DETAILED_DESIGN_GATE_VERSION,
+    milestone: 'P3-M18',
+    tickets: ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95'],
+    modules: Object.fromEntries(Object.entries(modules).map(([id, module]) => [id, {
+      version: module.version || null,
+      itemCount: module.summary?.itemCount || module.summary?.memberCount || rowsOf(module).length,
+      warnCount: module.summary?.warnCount || 0,
+      ngCount: module.summary?.ngCount || 0,
+    }])),
+    issueCount: issueRows.length,
+    formulaCount: formulaTrace.length,
+    serviceabilityHook: 'drift-deflection-vibration-ready',
+    limitations: [
+      'P3-M18 is a preliminary integrated detailed-design trace gate.',
+      'Fabrication detailing, geotechnical settlement, final permits, and construction drawings remain engineer review scope.',
+    ],
   };
 }
 
@@ -59,5 +86,7 @@ function rowsOf(module) {
     ...(module.footings || []),
     ...(module.piles || []),
     ...(module.basePlates || []),
+    ...(module.combined ? [module.combined] : []),
+    ...(module.mat ? [module.mat] : []),
   ];
 }
