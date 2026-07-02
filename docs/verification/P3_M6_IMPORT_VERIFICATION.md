@@ -26,7 +26,7 @@ The common `importCandidateToModel()` path previously used point-cloud-specific 
 
 `tests/p3-m6-dxf-import.mjs` now verifies:
 
-1. DXF parser version and header/layer extraction.
+1. DXF parser version, `$ACADVER`, `$INSUNITS`, `$EXTMIN`, `$EXTMAX`, and layer extraction.
 2. Entity geometry extraction and unsupported entity audit.
 3. Layer map and unit scaling.
 4. Valid `ImportCandidate`.
@@ -50,3 +50,5 @@ The common `importCandidateToModel()` path previously used point-cloud-specific 
 P3-M6 remains a preliminary core. It needs more real office DXF fixtures, richer unsupported entity cases, and visual import-review evidence before it can be treated as production-grade drawing import.
 
 2026-07-03 practice-validation update: `getPhase3DrawingImportValidationReview` now records real-office DXF fixture evidence, unit/layer audit presence, analysis readiness, and visual overlay evidence. `tests/p3-drawing-import-validation-review.mjs` uses the existing DXF fixture path as a harness sample while keeping production readiness blocked until owner-reviewed office files are supplied.
+
+2026-07-03 P3-M6 rebuild review update: the M6 regression fixture now includes `$EXTMIN` and `$EXTMAX`, and `tests/p3-m6-dxf-import.mjs` locks `$ACADVER`, `$INSUNITS`, `$EXTMIN`, and `$EXTMAX` directly. This keeps the implementation aligned with `IMPORT_DXF_DWG_PLAN.md` instead of only proving partial header parsing.

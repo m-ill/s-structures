@@ -16,6 +16,9 @@ const text = readFileSync('tests/fixtures/dxf/min-frame.dxf', 'utf8');
 const parsed = parseDxf(text);
 assert.equal(parsed.version, DXF_PARSER_VERSION);
 assert.equal(parsed.header.$INSUNITS, 4);
+assert.equal(parsed.header.$ACADVER, 'AC1027');
+assert.deepEqual(parsed.header.$EXTMIN, [0, 0, 0]);
+assert.deepEqual(parsed.header.$EXTMAX, [5000, 0, 3000]);
 assert.ok(parsed.layers.some((layer) => layer.name === 'S-COL'));
 
 const geometry = dxfEntitiesToGeometry(parsed);
