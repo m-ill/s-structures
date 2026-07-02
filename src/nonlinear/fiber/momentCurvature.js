@@ -15,9 +15,21 @@ export function computeMomentCurvature(section = buildRectangularFiberSection(),
   });
   return {
     version: MOMENT_CURVATURE_VERSION,
+    contract: {
+      milestone: 'P3-M16',
+      tickets: ['P3-T84'],
+      method: 'fiber-section moment-curvature sweep',
+      comparisonGate: 'B6',
+    },
     sectionType: section.type,
     rows,
     yieldMoment: Math.max(0, ...rows.map((row) => Math.abs(row.moment))),
+    summary: {
+      rowCount: rows.length,
+      maxMoment: Math.max(0, ...rows.map((row) => Math.abs(row.moment))),
+      maxAxialForce: Math.max(0, ...rows.map((row) => Math.abs(row.axialForce))),
+      maxExtremeStrain: Math.max(0, ...rows.map((row) => Math.abs(row.extremeStrain))),
+    },
   };
 }
 

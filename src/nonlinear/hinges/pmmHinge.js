@@ -11,6 +11,12 @@ export function createPmmBackboneSet(options = {}) {
   ];
   return {
     version: PMM_HINGE_VERSION,
+    contract: {
+      milestone: 'P3-M16',
+      tickets: ['P3-T83'],
+      model: 'axial-ratio-dependent M-theta backbone interpolation',
+      range: '0 <= axialRatio <= 1',
+    },
     levels: levels.map((level) => ({
       axialRatio: clamp(level.axialRatio, 0, 1),
       backbone: createMomentRotationBackbone(level),
@@ -37,7 +43,22 @@ export function interpolatePmmBackbone(axialRatio, set = createPmmBackboneSet())
     theta: mix(point.theta, hi.backbone.points[i].theta, t),
     moment: mix(point.moment, hi.backbone.points[i].moment, t),
   }));
-  return { version: PMM_HINGE_VERSION, axialRatio: ratio, points, source: [lo.axialRatio, hi.axialRatio] };
+  return {
+    version: PMM_HINGE_VERSION,
+    contract: {
+      milestone: 'P3-M16',
+      tickets: ['P3-T83'],
+      interpolation: 'linear between adjacent axial-ratio backbone levels',
+    },
+    axialRatio: ratio,
+    points,
+    source: [lo.axialRatio, hi.axialRatio],
+    summary: {
+      pointCount: points.length,
+      yieldMoment: points.find((point) => point.id === 'B')?.moment || 0,
+      residualMoment: points.find((point) => point.id === 'E')?.moment || 0,
+    },
+  };
 }
 
 export function createPmmBackboneSetFromMember(model = {}, member = {}, options = {}) {

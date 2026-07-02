@@ -114,6 +114,17 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
       rayleigh: RAYLEIGH_DAMPING_VERSION,
       groundMotion: GROUND_MOTION_VERSION,
     },
+    summary: {
+      readyForAgentReview: true,
+      benchmarkOk: fiberNlthBenchmarks?.ok ?? null,
+      pmmPointCount: trace.pmm?.interpolated?.points?.length || 0,
+      fiberCount: trace.fiber?.section?.fibers?.length || 0,
+      curvatureRows: trace.fiber?.momentCurvature?.rows?.length || 0,
+      groundMotionPoints: trace.groundMotion?.pointCount || 0,
+      nlthConverged: trace.nlth?.converged ?? null,
+      nlthYielded: (trace.nlth?.rows || []).some((row) => row.hingeState === 'yielded'),
+      requiredBenchmarks: ['B6', 'B7', 'B8'],
+    },
     pmm: {
       axialRatio: trace.pmm?.interpolated?.axialRatio ?? null,
       source: trace.pmm?.interpolated?.source || [],

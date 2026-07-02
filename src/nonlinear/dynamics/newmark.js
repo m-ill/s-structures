@@ -62,6 +62,13 @@ export function runNewmarkNlth(options = {}) {
   }
   return {
     version: NLTH_NEWMARK_VERSION,
+    contract: {
+      milestone: 'P3-M16',
+      tickets: ['P3-T85'],
+      integrator: 'Newmark-beta average acceleration',
+      nonlinearIteration: 'step-level Newton trace with bilinear spring state',
+      benchmarkLinks: ['B7', 'B8'],
+    },
     method: 'newmark-beta-average-acceleration-with-bilinear-spring-newton-trace',
     dt,
     tolerance,
@@ -69,6 +76,14 @@ export function runNewmarkNlth(options = {}) {
     converged: rows.every((row) => row.converged),
     rows,
     maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))),
+    summary: {
+      stepCount: rows.length,
+      convergedSteps: rows.filter((row) => row.converged).length,
+      yielded: rows.some((row) => row.hingeState === 'yielded'),
+      maxIterations: Math.max(0, ...rows.map((row) => row.iterations || 0)),
+      maxAbsResidual: Math.max(0, ...rows.map((row) => Math.abs(row.residual || 0))),
+      maxAbsDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))),
+    },
   };
 }
 

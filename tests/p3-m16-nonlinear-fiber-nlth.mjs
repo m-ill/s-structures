@@ -32,15 +32,21 @@ import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
 const pmm = createPmmBackboneSet();
 assert.equal(pmm.version, PMM_HINGE_VERSION);
+assert.equal(pmm.contract.milestone, 'P3-M16');
 const mid = interpolatePmmBackbone(0.45, pmm);
 assert.equal(mid.version, PMM_HINGE_VERSION);
+assert.ok(mid.contract.tickets.includes('P3-T83'));
 assert.deepEqual(mid.source, [0.3, 0.6]);
+assert.equal(mid.summary.pointCount, mid.points.length);
 assert.ok(mid.points[1].moment < pmm.levels[1].backbone.points[1].moment);
 
 const section = buildRectangularFiberSection({ width: 0.4, depth: 0.6, strips: 8 });
 assert.equal(section.version, FIBER_SECTION_VERSION);
+assert.equal(section.contract.milestone, 'P3-M16');
+assert.equal(section.summary.fiberCount, section.fibers.length);
 const strained = applyFiberStrain(section, { curvature: 0.001 });
 assert.ok(strained.fibers.some((fiber) => fiber.force !== 0));
+assert.ok(strained.strainState.maxAbsStrain > 0);
 const customFiberMaterial = fiberMaterialFromRecord({
   E: 200000000,
   Fy: 400000,
@@ -55,7 +61,9 @@ assert.equal(customStress.fibers[0].stress, 200000);
 
 const mc = computeMomentCurvature(section);
 assert.equal(mc.version, MOMENT_CURVATURE_VERSION);
+assert.ok(mc.contract.tickets.includes('P3-T84'));
 assert.ok(mc.rows.length > 2);
+assert.equal(mc.summary.rowCount, mc.rows.length);
 assert.equal(compareMomentCurvatureTheory(mc, { expectedMoment: mc.yieldMoment }).ok, true);
 
 const rayleigh = solveRayleighDamping({ w1: 2, w2: 5, zeta1: 0.05, zeta2: 0.05 });
@@ -64,9 +72,11 @@ assert.ok(Math.abs(dampingRatioAtFrequency(rayleigh, 2) - 0.05) < 1e-12);
 
 const record = parseGroundMotionText('0 0.2 -0.1 0', { dt: 0.01, name: 'mini' });
 assert.equal(record.version, GROUND_MOTION_VERSION);
+assert.equal(record.contract.milestone, 'P3-M16');
 assert.equal(record.pointCount, 4);
 assert.equal(record.duration, 0.03);
 const scaled = scaleGroundMotion(record, { targetPga: 0.4 });
+assert.ok(scaled.contract.tickets.includes('P3-T86'));
 assert.equal(scaled.scaleFactor, 2);
 const scalingTrace = buildSpectrumScalingTrace(record, { targetPga: 0.4, periodRange: [0.2, 1.2] });
 assert.equal(scalingTrace.scaled.targetPga, 0.4);
@@ -75,8 +85,10 @@ assert.deepEqual(scalingTrace.periodRange, [0.2, 1.2]);
 
 const nlth = runNewmarkNlth({ accelerations: scaled.accelerations, dt: scaled.dt, stiffness: 100, yieldForce: 0.00001 });
 assert.equal(nlth.version, NLTH_NEWMARK_VERSION);
+assert.ok(nlth.contract.tickets.includes('P3-T85'));
 assert.equal(nlth.rows.length, scaled.accelerations.length);
 assert.equal(nlth.converged, true);
+assert.equal(nlth.summary.stepCount, nlth.rows.length);
 assert.ok(nlth.rows.every((row) => row.iterations >= 1 && Array.isArray(row.iterationLog)));
 assert.ok(nlth.rows.some((row) => row.hingeState === 'yielded'));
 
@@ -106,6 +118,8 @@ const trace = buildNonlinearAnalysisTrace(model);
 assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
 assert.equal(trace.fiberNlthGate.version, NONLINEAR_FIBER_NLTH_TRACE_VERSION);
 assert.deepEqual(trace.fiberNlthGate.tickets, ['P3-T83', 'P3-T84', 'P3-T85', 'P3-T86']);
+assert.equal(trace.fiberNlthGate.summary.readyForAgentReview, true);
+assert.equal(trace.fiberNlthGate.summary.nlthConverged, true);
 assert.deepEqual(trace.fiberNlthGate.benchmarks.requiredCases, ['B6', 'B7', 'B8']);
 assert.equal(trace.fiberNlthGate.contracts.rayleigh, RAYLEIGH_DAMPING_VERSION);
 assert.ok(trace.fiberNlthGate.fiber.fiberCount > 0);

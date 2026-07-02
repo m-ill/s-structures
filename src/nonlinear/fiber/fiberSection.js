@@ -15,7 +15,15 @@ export function buildRectangularFiberSection(options = {}) {
   for (const [i, bar] of (options.bars || defaultBars(width, depth)).entries()) {
     fibers.push({ id: `R${i + 1}`, material: options.steelMaterial || 'steel', area: positive(bar.area, 0.0002), y: Number(bar.y), strain: 0, stress: 0 });
   }
-  return { version: FIBER_SECTION_VERSION, type: 'rectangular-rc-fiber', width, depth, fibers };
+  return {
+    version: FIBER_SECTION_VERSION,
+    contract: fiberContract('rectangular-rc-fiber'),
+    type: 'rectangular-rc-fiber',
+    width,
+    depth,
+    fibers,
+    summary: summarizeFibers(fibers),
+  };
 }
 
 export function buildSteelIFiberSection(options = {}) {
@@ -24,26 +32,36 @@ export function buildSteelIFiberSection(options = {}) {
   const tf = positive(options.flangeThickness, 0.012);
   const tw = positive(options.webThickness, 0.008);
   const material = options.material || 'steel';
+  const fibers = [
+    { id: 'TF', material, area: bf * tf, y: d / 2 - tf / 2 },
+    { id: 'WEB', material, area: tw * (d - 2 * tf), y: 0 },
+    { id: 'BF', material, area: bf * tf, y: -d / 2 + tf / 2 },
+  ];
   return {
     version: FIBER_SECTION_VERSION,
+    contract: fiberContract('steel-i-strip-fiber'),
     type: 'steel-i-strip-fiber',
-    fibers: [
-      { id: 'TF', material, area: bf * tf, y: d / 2 - tf / 2 },
-      { id: 'WEB', material, area: tw * (d - 2 * tf), y: 0 },
-      { id: 'BF', material, area: bf * tf, y: -d / 2 + tf / 2 },
-    ],
+    fibers,
+    summary: summarizeFibers(fibers),
   };
 }
 
 export function applyFiberStrain(section, { curvature = 0, axialStrain = 0, materials = {} } = {}) {
+  const fibers = (section.fibers || []).map((fiber) => {
+    const strain = Number(axialStrain) - Number(curvature) * Number(fiber.y || 0);
+    const mat = materials[fiber.material] || defaultMaterial(fiber.material);
+    const stress = stressAtStrain(mat, strain);
+    return { ...fiber, strain, stress, force: stress * Number(fiber.area || 0), moment: stress * Number(fiber.area || 0) * Number(fiber.y || 0) };
+  });
   return {
     ...section,
-    fibers: (section.fibers || []).map((fiber) => {
-      const strain = Number(axialStrain) - Number(curvature) * Number(fiber.y || 0);
-      const mat = materials[fiber.material] || defaultMaterial(fiber.material);
-      const stress = stressAtStrain(mat, strain);
-      return { ...fiber, strain, stress, force: stress * Number(fiber.area || 0), moment: stress * Number(fiber.area || 0) * Number(fiber.y || 0) };
-    }),
+    fibers,
+    strainState: {
+      curvature,
+      axialStrain,
+      maxAbsStrain: Math.max(0, ...fibers.map((fiber) => Math.abs(fiber.strain))),
+      materialCount: Object.keys(materials).length,
+    },
   };
 }
 
@@ -86,6 +104,24 @@ export function fiberMaterialFromRecord(material = {}) {
     E: positive(material.E, 200000000),
     fy,
     backbone: normalizeBackbone(material.nonlinear?.backbone || [], fy),
+  };
+}
+
+function fiberContract(type) {
+  return {
+    milestone: 'P3-M16',
+    tickets: ['P3-T84'],
+    type,
+    scope: 'Fiber-section trace for hinge-location moment-curvature checks.',
+  };
+}
+
+function summarizeFibers(fibers = []) {
+  return {
+    fiberCount: fibers.length,
+    materialIds: [...new Set(fibers.map((fiber) => fiber.material))],
+    totalArea: fibers.reduce((sum, fiber) => sum + Number(fiber.area || 0), 0),
+    maxAbsY: Math.max(0, ...fibers.map((fiber) => Math.abs(Number(fiber.y || 0)))),
   };
 }
 
