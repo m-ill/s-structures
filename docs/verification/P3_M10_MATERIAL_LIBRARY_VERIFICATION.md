@@ -57,6 +57,8 @@ The material library report also exposes nonlinear backbone metadata so the late
 
 2026-07-03 soft-delete trace hardening: exact `id@version` references to soft-deleted material or section rows now resolve as traceable existing-model references instead of silently falling back to another active version. Unversioned references still skip deleted rows. Audit/report rows expose `deleted`, `referenceStatus`, `softDeletedReferences`, and `softDeletedReferenceCount`; reports add `soft-deleted-references-require-review` so AI agents can distinguish historical traceability from approval for new final-use models.
 
+2026-07-03 nonlinear backbone monotonicity hardening: `validateMaterialRecord()` now rejects nonlinear backbone rows whose strain/rotation coordinate is not strictly increasing. `tests/p3-m10-materials.mjs` covers both direct schema validation and material-library report blockers, so later nonlinear milestones cannot consume a scrambled material curve without an explicit schema error.
+
 ## Current Test Gate
 
 P3-M10 is covered by:

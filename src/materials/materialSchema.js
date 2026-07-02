@@ -33,9 +33,16 @@ export function normalizeMaterialRecord(record = {}) {
 }
 
 function validateBackbone(rows) {
-  return Array.isArray(rows) && rows.length >= 2 && rows.every((row) => (
-    Number.isFinite(row.strain ?? row.rotation) && Number.isFinite(row.stress ?? row.moment)
-  ));
+  if (!Array.isArray(rows) || rows.length < 2) return false;
+  let lastX = -Infinity;
+  for (const row of rows) {
+    const x = row.strain ?? row.rotation;
+    const y = row.stress ?? row.moment;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return false;
+    if (x <= lastX) return false;
+    lastX = x;
+  }
+  return true;
 }
 function validateStrength(kind, strength = {}) {
   const errors = [];

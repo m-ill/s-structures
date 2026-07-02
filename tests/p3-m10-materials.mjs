@@ -36,6 +36,17 @@ assert.equal(validateMaterialRecord({
   elastic: { E: 205000, G: 79000 },
   strength: { steel: { Fy: 275, Fu: 410 } },
 }).ok, true);
+const nonMonotonicBackbone = validateMaterialRecord({
+  id: 'BAD_BACKBONE', version: 1, kind: 'steel',
+  elastic: { E: 205000, G: 79000 },
+  strength: { steel: { Fy: 275, Fu: 410 } },
+  nonlinear: {
+    model: 'bilinear',
+    backbone: [{ strain: 0, stress: 0 }, { strain: 0.003, stress: 275 }, { strain: 0.002, stress: 280 }],
+  },
+});
+assert.equal(nonMonotonicBackbone.ok, false);
+assert.ok(nonMonotonicBackbone.errors.includes('nonlinear.backbone'));
 const steelMissingFu = validateMaterialRecord({
   id: 'BAD_STEEL', version: 1, kind: 'steel',
   elastic: { E: 205000, G: 79000 },
@@ -244,6 +255,15 @@ const badStrengthReport = buildMaterialLibraryReport({
 assert.ok(badStrengthReport.summary.materialErrorCount > 0);
 assert.ok(badStrengthReport.review.blockers.includes('material-schema-errors'));
 assert.equal(badStrengthReport.review.registryReady, false);
+const badBackboneReport = buildMaterialLibraryReport({
+  materials: [{
+    id: 'BAD_BACKBONE', version: 1, kind: 'steel',
+    E: 205000, G: 79000, Fy: 275, Fu: 410,
+    nonlinear: { model: 'bilinear', backbone: [{ strain: 0, stress: 0 }, { strain: 0, stress: 275 }] },
+  }],
+  members: [{ id: 'M1', matId: 'BAD_BACKBONE@1', secId: 'H-400x200x8x13@1' }],
+});
+assert.ok(badBackboneReport.review.blockers.includes('material-schema-errors'));
 
 assert.equal(MATERIAL_LIBRARY_EDIT_VERSION, 'p3-m10-library-edit-v1');
 assert.deepEqual(MATERIAL_LIBRARY_ACTIONS, ['listLibrary', 'getLibraryItem', 'upsertMaterial', 'upsertSection']);
