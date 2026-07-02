@@ -36,6 +36,8 @@ The previous M12 trace exposed semi-rigid diaphragm rows only. P3-M12 now expose
 
 2026-07-02 follow-up: `buildWallSlabEquivalentTrace()` now exposes a top-level M12 contract and summary. The trace identifies wall, shell, and diaphragm solver treatments, records M12 limitations, and gives quick counts for wall equivalents, recovered wall forces, shell frame links, and semi-rigid diaphragm redistribution status.
 
+2026-07-02 contract update: `buildWallSlabEquivalentTrace()` now exposes P3-M12 milestone metadata, P3-T73 through P3-T75 ticket coverage, `featureTicketMap`, review field names, and `summary.ticketCoverage`. AI agents and reports can verify wall mid-pier, shell v1/frame-link assembly, and semi-rigid diaphragm redistribution coverage directly from the trace while preserving the preliminary solver-treatment limitations.
+
 ## Current Test Gate
 
 `tests/p3-m12-wall-slab.mjs` verifies equivalent wall generation, analysis, pier force recovery, shell v1 benchmark traces, shell frame-link assembly, semi-rigid diaphragm validation, material-aware equivalent link sizing, equivalent-brace redistribution, and the agent-readable trace contract including solver treatments and limitations.

@@ -89,16 +89,28 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
     shellLinkCount: shellAssembly.linkCount || 0,
     slabRedistributionStatus: redistribution.status,
   };
+  summary.ticketCoverage = buildTicketCoverage(summary);
   return {
     version: WALL_SLAB_TRACE_VERSION,
     equivalentVersion: WALL_SLAB_EQUIVALENT_VERSION,
     contract: {
+      milestone: 'P3-M12',
+      tickets: ['P3-T73', 'P3-T74', 'P3-T75'],
       scope: ['mid-pier-wall-equivalent', 'pier-force-recovery', 'shell-v1-contract', 'shell-frame-link-assembly', 'semi-rigid-diaphragm-redistribution'],
+      featureTicketMap: {
+        wallMidPier: 'P3-T73',
+        pierForceRecovery: 'P3-T73',
+        shellV1: 'P3-T74',
+        shellFrameLinkAssembly: 'P3-T74',
+        semiRigidDiaphragm: 'P3-T75',
+        slabRedistribution: 'P3-T75',
+      },
       solverTreatment: {
         wall: 'mid-pier-equivalent-frame-member',
         shell: 'preliminary-edge-and-diagonal-frame-links',
         diaphragm: 'equivalent-truss-brace-grid',
       },
+      reviewFields: ['summary.ticketCoverage', 'wallMidPier.rows', 'wallMidPier.forces', 'shell.rows', 'shell.assembly.rows', 'slab.redistribution'],
       limitations: [
         'full-24-dof-shell-global-stiffness-assembly-not-certified',
         'shell-stress-recovery-and-automatic-meshing-not-included',
@@ -127,6 +139,29 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
       limitation: 'Semi-rigid diaphragm uses an equivalent truss brace grid for preliminary in-plane redistribution; shell slab membrane assembly remains future hardening.',
     },
   };
+}
+
+function buildTicketCoverage(summary) {
+  return [
+    {
+      ticket: 'P3-T73',
+      scope: 'wall-mid-pier-and-pier-force',
+      covered: summary.wallEquivalentCount > 0 && summary.recoveredWallForceCount > 0,
+      evidence: `${summary.wallEquivalentCount} wall equivalents / ${summary.recoveredWallForceCount} recovered force rows`,
+    },
+    {
+      ticket: 'P3-T74',
+      scope: 'shell-v1-and-frame-link-assembly',
+      covered: summary.shellCount > 0 || summary.shellLinkCount > 0,
+      evidence: `${summary.shellCount} shells / ${summary.shellLinkCount} frame links`,
+    },
+    {
+      ticket: 'P3-T75',
+      scope: 'semi-rigid-diaphragm-redistribution',
+      covered: summary.semiRigidDiaphragmCount > 0 || summary.slabRedistributionStatus === 'available',
+      evidence: `${summary.semiRigidDiaphragmCount} semi-rigid diaphragms / redistribution ${summary.slabRedistributionStatus}`,
+    },
+  ];
 }
 
 function avg(nodes, key) {
