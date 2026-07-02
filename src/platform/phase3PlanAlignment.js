@@ -308,6 +308,7 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
   const manifestMilestones = new Set((manifest.milestones || []).map((row) => row.id));
   const readApis = new Set(manifest.readApis || []);
   const reviewGates = buildReviewGateAlignment(manifest.reviewGates || {});
+  const maturity = buildMilestoneMaturity(manifest.milestones || []);
   const rows = MILESTONES.map((row) => ({
     ...row,
     manifestListed: manifestMilestones.has(row.id),
@@ -412,6 +413,13 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
       ...NONLINEAR_ENGINE_CONTRACT,
       ok: nonlinearEngineOk,
     },
+    maturity,
+    productionReadiness: {
+      status: maturity.productionReady ? 'PRODUCTION_READY' : 'PRELIMINARY_REVIEW_REQUIRED',
+      productionReady: maturity.productionReady,
+      rule: 'Plan alignment can be OK while one or more milestones remain preliminary.',
+      requiredBeforeFinalUse: maturity.preliminaryMilestones,
+    },
     reviewGates,
     activeTicketCount: activeTickets.size,
     absorbedTickets: ABSORBED_TICKETS,
@@ -426,6 +434,32 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
       'Report follows existing Phase 3 planning documents only.',
       'Preliminary rows still require engineer and owner review before production sign-off.',
     ],
+  };
+}
+
+function buildMilestoneMaturity(manifestMilestones = []) {
+  const phase3Rows = manifestMilestones.filter((row) => /^P3-M\d+$/.test(row.id));
+  const byStatus = phase3Rows.reduce((acc, row) => {
+    const status = row.status || 'unknown';
+    acc[status] = (acc[status] || 0) + 1;
+    return acc;
+  }, {});
+  const preliminaryMilestones = phase3Rows
+    .filter((row) => row.status !== 'available')
+    .map((row) => ({
+      id: row.id,
+      status: row.status || 'unknown',
+      feature: row.feature || '',
+    }));
+  return {
+    source: 'getCapabilities().milestones',
+    milestoneCount: phase3Rows.length,
+    availableCount: byStatus.available || 0,
+    preliminaryCount: preliminaryMilestones.length,
+    byStatus,
+    preliminaryMilestones,
+    productionReady: preliminaryMilestones.length === 0 && phase3Rows.length >= MILESTONES.length,
+    interpretation: 'available means the automated contract exists; preliminary means final engineering or owner sign-off is still required.',
   };
 }
 

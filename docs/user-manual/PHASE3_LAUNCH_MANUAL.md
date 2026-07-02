@@ -68,4 +68,6 @@ AI agents should not treat `ok`, `readyForReviewer`, or `readyForOwnerReview` as
 
 The `readyDecision` values mean the next review step may proceed. The listed `finalApprovalField` values remain false until owner or engineer sign-off is recorded outside the automated gate.
 
+`getPhase3PlanAlignment().status` only means the implementation is aligned with the written Phase 3 plan. Agents must also check `getPhase3PlanAlignment().productionReadiness.status`; `PRELIMINARY_REVIEW_REQUIRED` means the program remains a review/preliminary platform until the listed milestones and final approval fields are cleared.
+
 Manual launch evidence remains in `reports/launch-readiness/`.

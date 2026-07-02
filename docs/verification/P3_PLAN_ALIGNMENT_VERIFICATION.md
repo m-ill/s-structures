@@ -29,6 +29,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 | Material and section library | `materialLibrary` fields, registry rules, agent actions, module list |
 | Nonlinear engine | `nonlinearEngine` scope ladder N1 to N6, convergence, benchmark, result contracts |
 | Agent review gates | `reviewGates` rows for P3-M14 to P3-M20 review paths and final approval fields |
+| Milestone maturity | `maturity` records available/preliminary Phase 3 milestone counts from `getCapabilities().milestones` |
+| Production readiness separation | `productionReadiness.status` remains `PRELIMINARY_REVIEW_REQUIRED` while any Phase 3 milestone is preliminary |
 | P3-M0 to P3-M20 milestone rows | `milestones` |
 | Stage A to Stage F grouping | `stages` |
 | P3 ticket evidence mapping | each milestone row `tickets`, `docs`, `tests` |
@@ -59,6 +61,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 2026-07-02 server route contract update: `tests/p3-server-route-contract.mjs` now scans `server/main.mjs` and `server/routes/*.mjs` route declarations and compares them with `buildPhase3PlanAlignmentReport().serverApi.endpoints`. This prevents Phase 3 API documentation from passing while the implemented server exposes a different route set.
 
 2026-07-02 review-gate alignment update: `buildPhase3PlanAlignmentReport()` now exposes `reviewGates` for P3-M14 to P3-M20. The rows verify that each agent review path is present and that final approval fields remain separate from next-step readiness decisions.
+
+2026-07-02 maturity separation update: the plan-alignment report now keeps `status: OK` limited to written-plan alignment and exposes `productionReadiness.status` separately. AI agents must treat `PRELIMINARY_REVIEW_REQUIRED` as a hard signal that final engineering/owner review is still required, even when all documented paths and tests are aligned.
 
 For the P3-M6 restart point, the practical order is:
 
