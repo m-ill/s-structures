@@ -21,6 +21,18 @@ const loadedXyz = parsePointCloudWithAudit(xyz);
 assert.equal(loadedXyz.audit.format, 'xyz');
 assert.equal(loadedXyz.audit.parsedCount, 7);
 assert.equal(loadedXyz.audit.rejectedCount, 0);
+const loadedPly = parsePointCloudWithAudit(ply);
+assert.equal(loadedPly.audit.format, 'ply');
+assert.equal(loadedPly.audit.dataLineCount, 4);
+assert.equal(loadedPly.audit.parsedCount, 4);
+assert.equal(loadedPly.audit.rejectedCount, 0);
+assert.equal(loadedPly.audit.colorCount, 4);
+const loadedPcd = parsePointCloudWithAudit(pcd);
+assert.equal(loadedPcd.audit.format, 'pcd');
+assert.equal(loadedPcd.audit.dataLineCount, 3);
+assert.equal(loadedPcd.audit.parsedCount, 3);
+assert.equal(loadedPcd.audit.rejectedCount, 0);
+assert.equal(loadedPcd.audit.colorCount, 0);
 
 const processed = processPointCloudText(xyz, {
   voxelSize: 0.05,

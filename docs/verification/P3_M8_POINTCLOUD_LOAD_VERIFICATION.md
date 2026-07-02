@@ -38,6 +38,8 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 
 2026-07-03 P3-M8 rebuild review update: `summarizePointCloudImport()` now includes a `review` block with `fixtureReady`, `productionReady`, `ownerReviewRequired`, `missing`, `evidenceClass`, and `agentDecision`. This gives AI agents a direct branch point: compact fixture loading can be ready for review while large-file performance and real-scan validation remain required evidence.
 
+2026-07-03 fixture-audit lock update: `tests/p3-pointcloud-load.mjs` now verifies PLY and PCD loader audit fields, not only parsed point counts. The gate locks detected format, data-line count, rejected count, and color-count behavior so AI agents can trust the compact fixture evidence exposed by `parsePointCloudWithAudit()`.
+
 ## Current Test Gate
 
 `tests/p3-pointcloud-load.mjs` verifies:
@@ -50,6 +52,7 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 6. P3-M8 contract tickets, transferable buffer readiness, performance-budget pending status, and real-scan pending status.
 7. Origin shift trace for large-coordinate point-cloud inputs.
 8. Agent review decision separating compact fixture readiness from missing field evidence.
+9. PLY and PCD loader audit metadata for deterministic compact fixtures.
 
 ## Remaining Limits
 
