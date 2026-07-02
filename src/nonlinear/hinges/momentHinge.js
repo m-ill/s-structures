@@ -25,6 +25,16 @@ export function evaluateMomentHinge(rotation, backbone = createMomentRotationBac
   const points = backbone.points || [];
   let left = points[0];
   let right = points.at(-1);
+  if (theta <= Number(points[0]?.theta || 0)) {
+    return {
+      version: MOMENT_HINGE_VERSION,
+      rotation,
+      moment: 0,
+      tangent: initialTangent(points),
+      state: points[0]?.state || 'elastic',
+      point: points[0]?.id || 'A',
+    };
+  }
   for (let i = 0; i < points.length - 1; i += 1) {
     if (theta <= points[i + 1].theta) {
       left = points[i];
@@ -40,8 +50,8 @@ export function evaluateMomentHinge(rotation, backbone = createMomentRotationBac
     rotation,
     moment: sign * moment,
     tangent: span > 0 ? (right.moment - left.moment) / span : 0,
-    state: right.state,
-    point: right.id,
+    state: t >= 1 ? right.state : left.state,
+    point: t >= 1 ? right.id : left.id,
   };
 }
 
@@ -58,6 +68,13 @@ export function buildHingeStateTrace(steps = [], backbone = createMomentRotation
 
 function stepId(row) {
   return row.hingeId || 'H1';
+}
+
+function initialTangent(points = []) {
+  const a = points[0] || { theta: 0, moment: 0 };
+  const b = points[1] || a;
+  const span = Math.max(1e-12, Number(b.theta || 0) - Number(a.theta || 0));
+  return (Number(b.moment || 0) - Number(a.moment || 0)) / span;
 }
 
 function positive(value, fallback) {

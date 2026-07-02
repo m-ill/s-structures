@@ -30,13 +30,19 @@ const backbone = createMomentRotationBackbone({ My: 120, thetaY: 0.01 });
 assert.equal(backbone.version, MOMENT_HINGE_VERSION);
 assert.equal(backbone.points.length, 5);
 
+const elastic = evaluateMomentHinge(0, backbone);
+assert.equal(elastic.state, 'elastic');
+assert.equal(elastic.point, 'A');
+assert.equal(elastic.moment, 0);
 const yielded = evaluateMomentHinge(0.011, backbone);
 assert.equal(yielded.version, MOMENT_HINGE_VERSION);
 assert.ok(['yielded', 'capping'].includes(yielded.state));
 assert.ok(yielded.moment > 0);
 
 const hingeTrace = buildHingeStateTrace([{ rotation: 0 }, { rotation: 0.011 }, { rotation: 0.06 }], backbone);
+assert.equal(hingeTrace.rows[0].state, 'elastic');
 assert.equal(hingeTrace.events.length >= 1, true);
+assert.equal(hingeTrace.events[0].type, 'yielded');
 assert.ok(hingeTrace.rows.some((row) => row.state !== 'elastic'));
 
 const dc = buildDisplacementControlTrace([0.01, 0.02], { influence: 2, controlDof: 'N3:UX' });
@@ -68,6 +74,8 @@ const assigned = assignMemberHinges(model);
 assert.equal(assigned.version, HINGE_ASSIGNMENT_VERSION);
 assert.ok(assigned.summary.hingeCount >= model.members.length * 2);
 assert.ok(assigned.summary.materialBackboneCount >= 2);
+assert.equal(assigned.hinges[0].My, 55);
+assert.equal(assigned.hinges[0].thetaY, 0.008);
 const pushover = runFormalPushover(model, { steps: 4, referenceBaseShear: 30 });
 assert.equal(pushover.version, FORMAL_PUSHOVER_VERSION);
 assert.equal(pushover.sourceVersion, PUSHOVER_SOURCE_VERSION);

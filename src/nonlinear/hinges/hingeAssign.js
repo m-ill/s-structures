@@ -55,7 +55,7 @@ function findOverride(member, end) {
 function materialBackbone(material = {}) {
   const points = material.nonlinear?.backbone;
   if (!Array.isArray(points) || points.length < 2) return null;
-  const yieldPoint = points.find((point) => point.moment != null || point.stress != null) || points[1];
+  const yieldPoint = points.find((point) => positive(point.moment ?? point.stress, 0) > 0) || points[1];
   const thetaY = positive(yieldPoint.rotation ?? yieldPoint.strain, 0.01);
   const My = positive(yieldPoint.moment ?? yieldPoint.stress, strength(material));
   return {
