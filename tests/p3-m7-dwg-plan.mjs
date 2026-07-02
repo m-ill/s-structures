@@ -82,6 +82,8 @@ assert.equal(candidate.audit.planAssembly.columnStackCount, 2);
 assert.equal(candidate.audit.planAssembly.recognitionQuality.minColumnRecall, 1);
 assert.equal(candidate.audit.planAssembly.recognitionQuality.minBeamRecall, 1);
 assert.equal(candidate.audit.planAssembly.recognitionQuality.ok, true);
+assert.equal(candidate.audit.planAssembly.columnContinuity.ok, true);
+assert.equal(candidate.audit.planAssembly.columnContinuity.incompleteStackCount, 0);
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'column').length, 2);
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'beam').length, 2);
 assert.deepEqual(candidate.candidates.stories.map((story) => story.z), [0, 3]);
@@ -97,6 +99,7 @@ assert.equal(reviewSummary.review.sourceType, 'dxf-plan-assembly');
 assert.equal(reviewSummary.review.planAssembly.planCount, 2);
 assert.equal(reviewSummary.review.planAssembly.columnStackCount, 2);
 assert.equal(reviewSummary.review.planAssembly.recognitionQuality.ok, true);
+assert.equal(reviewSummary.review.planAssembly.columnContinuity.ok, true);
 
 const rejectedReview = summarizeImportEntry({ id: 'plan-2story-import', status: 'rejected', candidate });
 assert.equal(rejectedReview.review.confirmable, false);
@@ -118,6 +121,21 @@ const weakCandidate = assemblePlansToImportCandidate([weakStory, story2], {
 const weakReview = summarizeImportEntry({ id: 'weak-plan-import', status: 'pending', candidate: weakCandidate });
 assert.equal(weakCandidate.audit.planAssembly.recognitionQuality.ok, false);
 assert.ok(weakReview.review.reasons.includes('plan-recognition-quality-review-required'));
+
+const discontinuousStory2 = { ...story2, columns: story2.columns.slice(0, 1) };
+const discontinuousCandidate = assemblePlansToImportCandidate([story1, discontinuousStory2], {
+  tolerance: 1e-6,
+  minLength: 1e-4,
+  source: { type: 'dxf-plan-assembly', units: 'm', fileId: 'discontinuous-plan' },
+});
+const discontinuousReview = summarizeImportEntry({
+  id: 'discontinuous-plan-import',
+  status: 'pending',
+  candidate: discontinuousCandidate,
+});
+assert.equal(discontinuousCandidate.audit.planAssembly.columnContinuity.ok, false);
+assert.equal(discontinuousCandidate.audit.planAssembly.columnContinuity.incompleteStackCount, 1);
+assert.ok(discontinuousReview.review.reasons.includes('column-stack-continuity-review-required'));
 
 console.log(JSON.stringify({
   ok: true,

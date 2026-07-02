@@ -52,6 +52,7 @@ export function assemblePlansToImportCandidate(plans = [], options = {}) {
       columnStackCount: columnKeys.size,
       generatedSegmentCount: segments.length,
       recognitionQuality: summarizeRecognitionQuality(ordered),
+      columnContinuity: summarizeColumnContinuity(columnKeys, ordered),
     },
   };
   return candidate;
@@ -75,5 +76,24 @@ function summarizeRecognitionQuality(plans) {
     minBeamRecall: beamRecalls.length ? Math.min(...beamRecalls) : null,
     targets: rows[0].targets || { columnRecall: 0.9, beamRecall: 0.8 },
     ok: rows.every((row) => row.ok !== false),
+  };
+}
+
+function summarizeColumnContinuity(columnKeys, plans) {
+  const expectedStoryCount = plans.length;
+  const incompleteStacks = [...columnKeys.entries()]
+    .filter(([, columns]) => columns.length < expectedStoryCount)
+    .map(([key, columns]) => ({
+      key,
+      observedStoryCount: columns.length,
+      expectedStoryCount,
+      elevations: columns.map((column) => column.z).sort((a, b) => a - b),
+    }));
+  return {
+    expectedStoryCount,
+    stackCount: columnKeys.size,
+    incompleteStackCount: incompleteStacks.length,
+    incompleteStacks,
+    ok: incompleteStacks.length === 0,
   };
 }
