@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import {
   buildAgentManifest,
   buildPhase3CompletionAuditReview,
@@ -7,6 +8,7 @@ import {
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
 const review = buildPhase3CompletionAuditReview();
+const remainingReview = readFileSync('docs/user-manual/PHASE3_REMAINING_REVIEW.md', 'utf8');
 assert.equal(review.version, PHASE3_COMPLETION_AUDIT_REVIEW_VERSION);
 assert.equal(review.summary.milestoneCount, 21);
 assert.equal(review.rows[0].milestone, 'P3-M0');
@@ -24,6 +26,10 @@ assert.ok(review.rows.find((row) => row.milestone === 'P3-M7').productionBlocker
 assert.ok(review.rows.find((row) => row.milestone === 'P3-M9').productionBlockers.includes('real field scan validation'));
 assert.ok(review.rows.find((row) => row.milestone === 'P3-M20').readApis.includes('getPhase3OwnerSignoffReview'));
 assert.equal(review.agentUse.readApi, 'getPhase3CompletionAuditReview');
+assert.match(remainingReview, /P3-M0 to P3-M20/);
+assert.match(remainingReview, /FINAL_USE_REVIEW_REQUIRED/);
+assert.match(remainingReview, /getPhase3CompletionAuditReview\(\)/);
+assert.match(remainingReview, /getPhase3EvidenceRegister\(\)/);
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3CompletionAuditReview, PHASE3_COMPLETION_AUDIT_REVIEW_VERSION);

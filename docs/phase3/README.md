@@ -70,6 +70,7 @@ Phase 3 is the final planned productization phase. Items excluded from implement
 | `NONLINEAR_ENGINE_PLAN.md` | nonlinear analysis plan |
 | `DESIGN_MODULES_PLAN.md` | detailed design module plan |
 | `QA_RELEASE_PLAN.md` | verification and release gates |
+| `../user-manual/PHASE3_REMAINING_REVIEW.md` | P3-M0 to P3-M20 remaining review map for users and AI agents |
 
 ## Reading Order
 

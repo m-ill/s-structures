@@ -24,6 +24,8 @@ manualVersion: 2026-06-29-current
 
 0. [Phase 3 Launch Manual](PHASE3_LAUNCH_MANUAL.md)
    - Phase 3 launch workflow, integrated result report, agent reading order, and launch gate commands.
+0-1. [Phase 3 Remaining Review Map](PHASE3_REMAINING_REVIEW.md)
+   - P3-M0 to P3-M20 audit state, remaining preliminary/manual blockers, and AI-agent final-use read order.
 1. [01 Getting Started](01-getting-started.md)
    - 실행 주소, 화면 탭, 기본 사용 흐름.
 2. [02 Modeling And Elastic Analysis](02-modeling-and-elastic-analysis.md)
