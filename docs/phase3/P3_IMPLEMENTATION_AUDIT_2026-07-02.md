@@ -75,7 +75,7 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 | P3-T79 | CQC modal combination | CQC helper plus close-mode report exists and RSA can return CQC displacement | Preliminary |
 | P3-T80 | linear eigenvalue buckling | Global frame geometric-stiffness inverse-iteration trace exists and is paired with member Euler screening; Euler column benchmark is covered in `tests/p3-m13-loads-dynamics.mjs` | Preliminary |
 | P3-T81 | modal superposition linear THA | Modal superposition helper now combines per-mode Newmark SDOF traces | Preliminary |
-| P3-T82 | mass source from loads | `buildMassSourceTrace()` converts D+0.25L-style vertical loads to nodal mass; `analyzeDynamics()` and `buildStoryMassSummary()` now consume the same `analysisSettings.massSource` contract | Preliminary |
+| P3-T82 | mass source from loads | `buildMassSourceTrace()` converts D+0.25L-style vertical nodal, member point, and member UDL loads to nodal mass; `analyzeDynamics()` and `buildStoryMassSummary()` now consume the same `analysisSettings.massSource` contract | Preliminary |
 
 ## Stage D Required Scope: P3-M14 To P3-M16
 

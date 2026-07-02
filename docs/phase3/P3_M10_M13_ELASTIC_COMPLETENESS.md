@@ -35,6 +35,7 @@ The browser command bridge allow-list includes the same read APIs, so AI control
 - Semi-rigid diaphragms require at least two node references and positive `inPlaneStiffness`; the solver now expands them into generated equivalent truss braces for preliminary in-plane redistribution.
 - Shell frame links and semi-rigid diaphragm braces size their direct sections from the generated member material modulus, so equivalent axial stiffness remains traceable when concrete or project materials are used.
 - Modal mass uses the same effective member section/material path as stiffness, including member-level custom properties.
+- Mass-source trace now converts vertical nodal loads, member point loads, and member UDL records from selected load cases into nodal mass rows for modal/RSA and story mass summaries.
 - User-defined material/section records take precedence over built-ins when the same `id@version` is supplied.
 - Seismic v2 story distribution uses `wi*hi/sum(wi*hi)` and assigns zero force to zero-height base rows.
 - RSA base-shear scaling and torsion Ax are now explicit trace objects instead of implicit notes.

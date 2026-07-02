@@ -97,6 +97,15 @@ assert.equal(massTrace.nodeCount, 2);
 assert.ok(massTrace.totalMass > 3);
 assert.ok(massTrace.rows.find((row) => row.node === 'N1').sources.includes('node.mass'));
 
+const udlMassTrace = buildMassSourceTrace({
+  nodes: [{ id: 'A', x: 0, y: 0, z: 0 }, { id: 'B', x: 4, y: 0, z: 0 }],
+  members: [{ id: 'BM1', n1: 'A', n2: 'B' }],
+  loads: [{ id: 'D-UDL', type: 'udl', member: 'BM1', w: 9.80665, dir: '-z', case: 'D' }],
+}, { combos: [{ case: 'D', factor: 1 }], includeNodeMass: false });
+assert.equal(udlMassTrace.nodeCount, 2);
+assert.ok(Math.abs(udlMassTrace.totalMass - 4) < 1e-9);
+assert.ok(udlMassTrace.rows.every((row) => row.sources.includes('member-load:D')));
+
 const dynamicMassModel = createTwoStoryElasticFrameModel();
 dynamicMassModel.analysisSettings.massSource = {
   combos: [{ case: 'D', factor: 1 }, { case: 'L', factor: 0.25 }],

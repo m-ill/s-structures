@@ -88,10 +88,11 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
   }
   const expanded = expandAdvancedLoads(model.loads || [], model).loads;
   const memberNodes = Object.fromEntries((model.members || []).map((m) => [m.id, [m.n1, m.n2]]));
+  const memberLengths = buildMemberLengths(model);
   for (const load of expanded) {
     const factor = comboFactor(load.case, combos);
     if (!factor) continue;
-    const vertical = verticalLoad(load);
+    const vertical = verticalLoad(load, memberLengths[load.member] || 0);
     if (!vertical) {
       ignored.push({ id: load.id || null, type: load.type || null, reason: 'not-vertical-load' });
       continue;
@@ -153,13 +154,33 @@ function comboFactor(caseName = 'LC1', combos = []) {
   return row ? finite(row.factor, 0) : 0;
 }
 
-function verticalLoad(load = {}) {
+function verticalLoad(load = {}, memberLength = 0) {
   if (load.fz != null) return Number(load.fz);
   if (load.P != null && ['-z', '+z', 'z'].includes(String(load.dir || load.direction || '').toLowerCase())) {
     const sign = String(load.dir || load.direction).startsWith('+') ? 1 : -1;
     return sign * Math.abs(Number(load.P));
   }
+  if (load.w != null && ['-z', '+z', 'z'].includes(String(load.dir || load.direction || '').toLowerCase())) {
+    const sign = String(load.dir || load.direction).startsWith('+') ? 1 : -1;
+    const length = Math.max(0, Number(memberLength) || 0);
+    return sign * Math.abs(Number(load.w)) * length;
+  }
   return 0;
+}
+
+function buildMemberLengths(model = {}) {
+  const nodes = Object.fromEntries((model.nodes || []).map((node) => [node.id, node]));
+  const out = {};
+  for (const member of model.members || []) {
+    const a = nodes[member.n1];
+    const b = nodes[member.n2];
+    if (a && b) out[member.id] = Math.hypot(
+      finite(b.x, 0) - finite(a.x, 0),
+      finite(b.y, 0) - finite(a.y, 0),
+      finite(b.z, 0) - finite(a.z, 0),
+    );
+  }
+  return out;
 }
 
 function nodeMassValue(mass) {

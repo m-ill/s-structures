@@ -17,7 +17,7 @@ This note verifies P3-M13 against `docs/phase3/ELASTIC_ENGINE_COMPLETENESS_PLAN.
 | P3-T79 | CQC modal combination | `combineModalCqc()`, `buildCqcCombinationReport()`, RSA CQC test |
 | P3-T80 | Buckling trace | `estimateGlobalBucklingTrace()`, `estimateModelBucklingTrace()` global eigenvalue trace plus member Euler screening |
 | P3-T81 | Linear time history | `runLinearSdofTha()`, `runModalSuperpositionTha()` |
-| P3-T82 | Mass source from loads | `buildMassSourceTrace()`, `analyzeDynamics()` mass source consumption, and story-mass single-source test |
+| P3-T82 | Mass source from loads | `buildMassSourceTrace()`, nodal/member point/member UDL load conversion, `analyzeDynamics()` mass source consumption, and story-mass single-source test |
 
 ## Added Review Finding
 
@@ -25,13 +25,13 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 
 1. source combinations such as `D + 0.25L`
 2. existing node mass inclusion
-3. vertical nodal/member load conversion to mass
+3. vertical nodal/member point and member uniform-load conversion to mass
 4. ignored non-vertical loads
 5. explicit limitations
 
 ## Current Test Gate
 
-`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace, dynamic mass assembly, and story-mass single-source behavior.
+`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.
 
 ## Remaining Limits
 
