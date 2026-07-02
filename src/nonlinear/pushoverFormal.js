@@ -4,6 +4,7 @@ export const FORMAL_PUSHOVER_VERSION = 'p3-m15-pushover-formal';
 
 export function runFormalPushover(model, options = {}) {
   const preliminary = runPushover(model, options);
+  const eventRows = buildPushoverHingeEvents(preliminary.curve || []);
   const curve = (preliminary.curve || []).map((point) => ({
     step: point.step,
     lambda: point.loadFactor,
@@ -11,7 +12,7 @@ export function runFormalPushover(model, options = {}) {
     roofDisp: point.controlDisplacement,
     converged: point.ok,
     iterations: point.ok ? 1 : 0,
-    hingeEvents: [],
+    hingeEvents: eventRows.filter((event) => event.step === point.step),
   }));
   return {
     ok: !!preliminary.ok,
@@ -30,10 +31,30 @@ export function runFormalPushover(model, options = {}) {
     direction: preliminary.direction,
     steps: curve,
     capacityCurve: curve.map((point) => ({ baseShear: point.baseShear, roofDisp: point.roofDisp })),
+    hingeEvents: eventRows,
     hingeStates: preliminary.memberStates || {},
     summary: preliminary.summary || {},
     warnings: preliminary.warnings || [],
   };
+}
+
+export function buildPushoverHingeEvents(curve = []) {
+  const events = [];
+  let yielded = 0;
+  let ultimate = 0;
+  for (const point of curve) {
+    const nextYielded = Math.max(0, Number(point.yieldedMemberCount) || 0);
+    const nextUltimate = Math.max(0, Number(point.ultimateMemberCount) || 0);
+    if (nextYielded > yielded) {
+      events.push({ step: point.step, type: 'yielded', count: nextYielded, delta: nextYielded - yielded });
+    }
+    if (nextUltimate > ultimate) {
+      events.push({ step: point.step, type: 'ultimate', count: nextUltimate, delta: nextUltimate - ultimate });
+    }
+    yielded = nextYielded;
+    ultimate = nextUltimate;
+  }
+  return events;
 }
 
 export function comparePushoverRegression(current, baseline) {

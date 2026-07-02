@@ -339,13 +339,16 @@ export {
 } from './nonlinear/dynamics/groundMotion.js';
 export {
   FORMAL_PUSHOVER_VERSION,
+  buildPushoverHingeEvents,
   comparePushoverRegression,
   runFormalPushover,
 } from './nonlinear/pushoverFormal.js';
 export {
   NONLINEAR_GEOMETRY_TRACE_VERSION,
+  NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
   NONLINEAR_TRACE_VERSION,
   buildNonlinearGeometryGate,
+  buildNonlinearHingeControlGate,
   buildNonlinearAnalysisTrace,
 } from './nonlinear/trace.js';
 export {

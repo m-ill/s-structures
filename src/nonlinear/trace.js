@@ -1,8 +1,8 @@
 import { createAnalysisState, NONLINEAR_STATE_VERSION, snapshotAnalysisState } from './state.js';
 import { NEWTON_RAPHSON_VERSION, solveNewtonRaphson } from './control/newtonRaphson.js';
-import { buildArcLengthTrace, createSnapThroughBenchmarkPath } from './control/arcLength.js';
-import { buildDisplacementControlTrace } from './control/displacementControl.js';
-import { buildHingeStateTrace, createMomentRotationBackbone } from './hinges/momentHinge.js';
+import { ARC_LENGTH_CONTROL_VERSION, buildArcLengthTrace, createSnapThroughBenchmarkPath } from './control/arcLength.js';
+import { buildDisplacementControlTrace, DISPLACEMENT_CONTROL_VERSION } from './control/displacementControl.js';
+import { buildHingeStateTrace, createMomentRotationBackbone, MOMENT_HINGE_VERSION } from './hinges/momentHinge.js';
 import { createPmmBackboneSet, interpolatePmmBackbone } from './hinges/pmmHinge.js';
 import { buildRectangularFiberSection } from './fiber/fiberSection.js';
 import { computeMomentCurvature } from './fiber/momentCurvature.js';
@@ -13,6 +13,7 @@ import { runNonlinearFiberNlthBenchmarks, runNonlinearGeometryBenchmarks, runNon
 
 export const NONLINEAR_TRACE_VERSION = 'p3-m16-nonlinear-trace';
 export const NONLINEAR_GEOMETRY_TRACE_VERSION = 'p3-m14-nonlinear-geometry-trace-v1';
+export const NONLINEAR_HINGE_CONTROL_TRACE_VERSION = 'p3-m15-hinge-control-trace-v1';
 
 export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
   const state = createAnalysisState({ u: (model.nodes || []).length * 6, lambda: options.lambda || 0 });
@@ -22,6 +23,8 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
   const backbone = createMomentRotationBackbone(options.backbone);
   const hingeTrace = buildHingeStateTrace(options.hingeSteps || [{ rotation: 0 }, { rotation: backbone.points[1].theta * 1.1 }], backbone);
   const pushover = options.includePushover === false ? null : runFormalPushover(model, options.pushover || {});
+  const displacementControl = buildDisplacementControlTrace(options.displacementTargets || [0.01, 0.02], options.displacementControl);
+  const arcLength = buildArcLengthTrace(options.arcLengthPath || createSnapThroughBenchmarkPath(), options.arcLength);
   const pmmSet = createPmmBackboneSet(options.pmm);
   const fiberSection = buildRectangularFiberSection(options.fiberSection);
   const record = scaleGroundMotion(parseGroundMotionText(options.groundMotionText || '0 0.1 -0.1 0', { dt: options.dt || 0.02 }), options.groundMotion);
@@ -40,12 +43,13 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
     ],
     state: snapshotAnalysisState(state),
     geometryGate: buildNonlinearGeometryGate(state, geometryBenchmarks, options.geometryGate),
+    hingeControlGate: buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, { displacementControl, arcLength }),
     steps: pushover?.steps || [],
     capacityCurve: pushover?.capacityCurve || [],
     hingeStates: hingeTrace.rows,
     hingeTrace,
-    displacementControl: buildDisplacementControlTrace(options.displacementTargets || [0.01, 0.02], options.displacementControl),
-    arcLength: buildArcLengthTrace(options.arcLengthPath || createSnapThroughBenchmarkPath(), options.arcLength),
+    displacementControl,
+    arcLength,
     pmm: { set: pmmSet, interpolated: interpolatePmmBackbone(options.axialRatio ?? 0.3, pmmSet) },
     fiber: { section: fiberSection, momentCurvature: computeMomentCurvature(fiberSection, options.momentCurvature) },
     groundMotion: record,
@@ -58,6 +62,52 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
       fiberNlth: fiberNlthBenchmarks,
       ok: (geometryBenchmarks?.ok ?? true) && (hingeControlBenchmarks?.ok ?? true) && (fiberNlthBenchmarks?.ok ?? true),
     },
+  };
+}
+
+export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, options = {}) {
+  const displacementControl = options.displacementControl || buildDisplacementControlTrace([0.01, 0.02]);
+  const arcLength = options.arcLength || buildArcLengthTrace(createSnapThroughBenchmarkPath());
+  return {
+    version: NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
+    milestone: 'P3-M15',
+    tickets: ['P3-T54', 'P3-T55', 'P3-T56'],
+    contracts: {
+      momentHinge: MOMENT_HINGE_VERSION,
+      displacementControl: DISPLACEMENT_CONTROL_VERSION,
+      arcLength: ARC_LENGTH_CONTROL_VERSION,
+      formalPushover: pushover?.version || null,
+    },
+    hinge: summarizeHingeTrace(hingeTrace),
+    control: {
+      displacementSteps: displacementControl.steps.length,
+      arcLengthSteps: arcLength.steps.length,
+      postPeakTracked: arcLength.steps.some((step) => step.dLambda < 0),
+      arcLengthSatisfied: arcLength.steps.every((step) => step.satisfied),
+    },
+    pushover: {
+      ok: !!pushover?.ok,
+      steps: pushover?.steps?.length || 0,
+      capacityPoints: pushover?.capacityCurve?.length || 0,
+      hingeEvents: pushover?.hingeEvents || [],
+      method: pushover?.method || null,
+    },
+    benchmarks: hingeControlBenchmarks ? {
+      version: hingeControlBenchmarks.version,
+      ok: hingeControlBenchmarks.ok,
+      requiredCases: ['B3', 'B4', 'B5'],
+      cases: hingeControlBenchmarks.cases.map((item) => ({
+        id: item.id,
+        name: item.name,
+        ok: item.ok,
+        tolerance: item.tolerance,
+        errorRatio: item.errorRatio,
+      })),
+    } : null,
+    limitations: [
+      'P3-M15 records concentrated hinge and control traces without tangent stiffness degradation condensation.',
+      'PMM interaction, fiber section response, and nonlinear time history remain P3-M16 scope.',
+    ],
   };
 }
 
@@ -102,5 +152,15 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       'P3-M14 is a geometry trace core, not a production nonlinear frame solver.',
       'Material hinges, displacement control, arc-length, PMM, fiber, and NLTH are handled by later Phase 3 milestones.',
     ],
+  };
+}
+
+function summarizeHingeTrace(trace = {}) {
+  const rows = trace.rows || [];
+  return {
+    version: trace.version || null,
+    pointIds: (trace.backbone?.points || []).map((point) => point.id),
+    states: [...new Set(rows.map((row) => row.state))],
+    events: trace.events || [],
   };
 }
