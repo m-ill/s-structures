@@ -544,7 +544,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M20', status: 'preliminary', feature: 'launch readiness gate, packaging, manual, agent contract, and pilot report evidence' },
     ],
     limitations: [
-      'Pushover is currently preliminary and does not yet rebuild tangent stiffness with hinge degradation.',
+      'Pushover is preliminary: previous-step hinge secant stiffness degradation is traced, but a simultaneous hinge-controlled global equilibrium loop is not production-certified.',
       'Report output is a calculation aid and not a certified final structural calculation package.',
       'Unsupported design checks must be reviewed separately.',
       'Large models still use the current in-browser dense solver path.',

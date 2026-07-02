@@ -47,9 +47,11 @@ The gate records:
 
 2026-07-02 secant stiffness review update: `runPushover()` now carries the previous accepted hinge state into the next load step by generating member-specific degraded section records. The formal pushover result exposes `hingeDegradation.trace`, per-step `degradedMemberCount`, `minStiffnessFactor`, and `method.stiffnessUpdate = previous-step-hinge-secant-stiffness`. This closes the earlier gap where hinge state was only reported after each linear step. It remains preliminary because the reduction is a previous-step secant update, not a simultaneous global hinge equilibrium loop.
 
+2026-07-02 agent-manifest alignment update: the agent capability manifest now uses the same wording as the formal pushover trace. It no longer states that pushover lacks hinge-degradation stiffness rebuilding; instead, it states that previous-step secant degradation is traced while simultaneous hinge-controlled global equilibrium remains non-production.
+
 ## Current Test Gate
 
-`tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, member-end hinge assignment from material nonlinear backbone data, hinge state events, displacement-control increments, arc-length post-peak path tracking, formal pushover output, formal/source version separation, stepwise hinge degradation trace, control stop reason, regression summary, B3/B4/B5 benchmark registration, tangent assembly correction exposure, and agent manifest exposure.
+`tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, member-end hinge assignment from material nonlinear backbone data, hinge state events, displacement-control increments, arc-length post-peak path tracking, formal pushover output, formal/source version separation, stepwise hinge degradation trace, control stop reason, regression summary, B3/B4/B5 benchmark registration, tangent assembly correction exposure, and agent manifest exposure. `tests/m16-agent-capabilities.mjs` also guards the manifest limitation text against reverting to the old no-degradation wording.
 
 ## Remaining Limits
 

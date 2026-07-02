@@ -25,6 +25,8 @@ assert.equal(direct.reviewGates.integratedResults.path, 'integratedGate.integrat
 assert.equal(direct.reviewGates.launchReadiness.finalApprovalField, 'productionDeploymentApproved');
 assert.ok(direct.milestones.some((item) => item.id === 'M15' && item.status === 'preliminary'));
 assert.ok(direct.limitations.some((item) => item.includes('preliminary')));
+assert.ok(direct.limitations.some((item) => item.includes('previous-step hinge secant stiffness degradation')));
+assert.equal(direct.limitations.some((item) => item.includes('does not yet rebuild tangent stiffness')), false);
 
 const model = createPortalFrameSample();
 const target = {
