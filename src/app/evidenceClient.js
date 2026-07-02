@@ -1,4 +1,4 @@
-export const EVIDENCE_CLIENT_VERSION = 'p3-evidence-client-v2';
+export const EVIDENCE_CLIENT_VERSION = 'p3-evidence-client-v3';
 
 export function createEvidenceClient(api) {
   return {
