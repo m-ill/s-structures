@@ -136,6 +136,21 @@ try {
   assert.equal(evidenceList.data.data.evidence.length, 1);
   assert.equal(evidenceList.data.data.register.rows.find((row) => row.id === 'real-office-dxf-fixtures').status, 'ACCEPTED');
 
+  const invalidEvidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
+    token,
+    body: { evidence: { accepted: true } },
+  });
+  assert.equal(invalidEvidenceWrite.status, 400);
+  assert.equal(invalidEvidenceWrite.data.error.code, 'VALIDATION');
+
+  const securityEvidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
+    token,
+    body: { evidence: { id: 'security-signoff', accepted: true, owner: 'owner', reportPath: 'reports/launch-readiness/security.md' } },
+  });
+  assert.equal(securityEvidenceWrite.status, 200, JSON.stringify(securityEvidenceWrite.data));
+  assert.equal(securityEvidenceWrite.data.data.register.summary.acceptedCount, 2);
+  assert.equal(securityEvidenceWrite.data.data.register.rows.find((row) => row.id === 'security-signoff').status, 'ACCEPTED');
+
   const reviewerTriesEvidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
     token: engineerLogin.token,
     body: { evidence: { id: 'security-signoff', accepted: true } },
