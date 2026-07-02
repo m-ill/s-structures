@@ -1,6 +1,7 @@
 import { distance3 } from './point.js';
 
 export function classifyMember(member, nodesById, options = {}) {
+  if (member.kindHint) return { kind: member.kindHint, confidence: 0.95, reason: 'layer-map' };
   const verticalRatio = options.verticalRatio ?? 0.85;
   const horizontalRatio = options.horizontalRatio ?? 0.15;
   const a = nodesById.get(member.from);

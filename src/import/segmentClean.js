@@ -9,6 +9,7 @@ export function normalizeSegment(segment) {
     from,
     to,
     layer: segment.layer || null,
+    kindHint: segment.kindHint || null,
     sectionHint: segment.sectionHint || null,
     materialHint: segment.materialHint || null,
   };
@@ -35,7 +36,7 @@ export function cleanSegments(segments, options = {}) {
     const key = [from, to].sort().join('|');
     if (seen.has(key)) { duplicateSegments += 1; continue; }
     seen.add(key);
-    members.push({ from, to, layer: segment.layer, sectionHint: segment.sectionHint, materialHint: segment.materialHint });
+    members.push({ from, to, layer: segment.layer, kindHint: segment.kindHint, sectionHint: segment.sectionHint, materialHint: segment.materialHint });
   }
   return { nodes, members, audit: { inputSegments: segments?.length || 0, shortSegments, duplicateSegments, invalidSegments } };
 }

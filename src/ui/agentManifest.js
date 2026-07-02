@@ -72,6 +72,7 @@ import {
 import { ROUTES_VERSION } from '../app/routes.js';
 import { IMPORT_CANDIDATE_VERSION } from '../import/candidate.js';
 import { IMPORT_GEOMETRY_VERSION } from '../import/segmentClean.js';
+import { DXF_IMPORT_VERSION } from '../import/dxf/importDxf.js';
 import { POINT_CLOUD_IMPORT_PIPELINE_VERSION } from '../import/pointcloud/pipeline.js';
 import { MATERIAL_REGISTRY_VERSION } from '../materials/registry.js';
 import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
@@ -154,6 +155,7 @@ export function buildAgentManifest(options = {}) {
       phase3AppRoutes: ROUTES_VERSION,
       phase3ImportGeometry: IMPORT_GEOMETRY_VERSION,
       phase3ImportCandidate: IMPORT_CANDIDATE_VERSION,
+      phase3DxfImport: DXF_IMPORT_VERSION,
       phase3PointCloudPipelineShell: POINT_CLOUD_IMPORT_PIPELINE_VERSION,
       phase3MaterialRegistry: MATERIAL_REGISTRY_VERSION,
       phase3ElasticExpansion: ELASTIC_EXPANSION_VERSION,
@@ -282,6 +284,7 @@ export function buildAgentManifest(options = {}) {
       'phase3ProjectBrowser',
       'phase3ImportCandidate',
       'phase3WireframeImport',
+      'phase3DxfImport',
       'phase3PointCloudPipelineShell',
       'phase3MaterialSectionRegistry',
       'phase3ElasticExpansionTrace',
@@ -346,6 +349,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M3', status: 'available', feature: 'three-layer persistence, revisions, autosave, and lineage warning' },
       { id: 'P3-M4', status: 'available', feature: 'app shell, routes, project browser, session restore, and viewer core' },
       { id: 'P3-M5', status: 'available', feature: 'input geometry core, member classification, and import candidate contract' },
+      { id: 'P3-M6', status: 'available', feature: 'ASCII DXF v1 parser, line entity mapping, layer audit, and import candidate output' },
       { id: 'P3-M8', status: 'planned-shell', feature: 'point-cloud import pipeline shell awaiting real files' },
       { id: 'P3-M10', status: 'preliminary', feature: 'versioned material and section registry with parametric properties' },
       { id: 'P3-M11', status: 'preliminary', feature: 'spring supports and advanced elastic load expansion trace' },

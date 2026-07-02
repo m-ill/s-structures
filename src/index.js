@@ -269,6 +269,9 @@ export { IMPORT_GEOMETRY_VERSION, cleanSegments } from './import/segmentClean.js
 export { classifyMember, classifyMembers } from './import/memberClassify.js';
 export { inferGrids, inferStories } from './import/storyGrid.js';
 export { wireframeToImportCandidate } from './import/wireframe.js';
+export { DXF_PARSER_VERSION, parseDxf, tokenizeDxf } from './import/dxf/parser.js';
+export { DXF_ENTITIES_VERSION, dxfEntitiesToGeometry } from './import/dxf/entities.js';
+export { DXF_IMPORT_VERSION, importDxfToCandidate } from './import/dxf/importDxf.js';
 export {
   POINT_CLOUD_IMPORT_PIPELINE_VERSION,
   describePointCloudPipeline,
