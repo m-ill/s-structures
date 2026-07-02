@@ -125,6 +125,10 @@ response = sendCommand({ id: 'owner-signoff-review', method: 'getPhase3OwnerSign
 assert.equal(response.ok, true);
 assert.equal(response.data.summary.agentDecision, 'collect-owner-signoff-evidence');
 
+response = sendCommand({ id: 'completion-audit-review', method: 'getPhase3CompletionAuditReview' });
+assert.equal(response.ok, true);
+assert.equal(response.data.summary.agentDecision, 'continue-practical-validation-before-production-use');
+
 response = sendCommand({ id: 'practice-validation-review', method: 'getPhase3PracticeValidationReview' });
 assert.equal(response.ok, true);
 assert.equal(response.data.summary.agentDecision, 'collect-practice-validation-evidence-before-production-use');
@@ -151,7 +155,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 22);
+assert.equal(response.data.agentCommandBridge.commandCount, 23);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -165,7 +169,7 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 23);
+assert.equal(state.commandCount, 24);
 assert.equal(state.errorCount, 1);
 assert.ok(state.availableMethods.includes('getPhase3ImportMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3ElasticMilestoneReview'));
@@ -177,6 +181,7 @@ assert.ok(state.availableMethods.includes('getPhase3PointCloudValidationReview')
 assert.ok(state.availableMethods.includes('getPhase3PracticeValidationReview'));
 assert.ok(state.availableMethods.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3OwnerSignoffReview'));
+assert.ok(state.availableMethods.includes('getPhase3CompletionAuditReview'));
 assert.ok(counters.reanalyze >= 6);
 
 console.log(JSON.stringify({

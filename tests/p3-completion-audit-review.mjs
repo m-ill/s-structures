@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';
+import {
+  buildAgentManifest,
+  buildPhase3CompletionAuditReview,
+  PHASE3_COMPLETION_AUDIT_REVIEW_VERSION,
+} from '../src/index.js';
+import { createIndexAgentApi } from '../src/ui/indexBridge.js';
+
+const review = buildPhase3CompletionAuditReview();
+assert.equal(review.version, PHASE3_COMPLETION_AUDIT_REVIEW_VERSION);
+assert.equal(review.summary.milestoneCount, 15);
+assert.equal(review.rows[0].milestone, 'P3-M6');
+assert.equal(review.rows.at(-1).milestone, 'P3-M20');
+assert.equal(review.summary.provenCount, 1);
+assert.equal(review.summary.preliminaryCount, 13);
+assert.equal(review.summary.manualCount, 1);
+assert.equal(review.summary.productionReady, false);
+assert.equal(review.summary.agentDecision, 'continue-practical-validation-before-production-use');
+assert.ok(review.sourceDocs.includes('docs/verification/P3_M6_M20_COMPLETION_AUDIT.md'));
+assert.ok(review.rows.find((row) => row.milestone === 'P3-M7').productionBlockers.includes('real DWG conversion remains external-tool dependent'));
+assert.ok(review.rows.find((row) => row.milestone === 'P3-M9').productionBlockers.includes('real field scan validation'));
+assert.ok(review.rows.find((row) => row.milestone === 'P3-M20').readApis.includes('getPhase3OwnerSignoffReview'));
+assert.equal(review.agentUse.readApi, 'getPhase3CompletionAuditReview');
+
+const manifest = buildAgentManifest();
+assert.equal(manifest.modules.phase3CompletionAuditReview, PHASE3_COMPLETION_AUDIT_REVIEW_VERSION);
+assert.ok(manifest.readApis.includes('getPhase3CompletionAuditReview'));
+assert.ok(manifest.dataContracts.includes('phase3CompletionAuditReview'));
+assert.equal(manifest.qaCommands.phase3CompletionAuditReview, 'node tests/p3-completion-audit-review.mjs');
+
+const agent = createIndexAgentApi({ model: () => null, reanalyze: () => {} });
+assert.equal(agent.getPhase3CompletionAuditReview().version, PHASE3_COMPLETION_AUDIT_REVIEW_VERSION);
+
+console.log(JSON.stringify({
+  ok: true,
+  version: review.version,
+  milestones: review.summary.milestoneCount,
+  preliminary: review.summary.preliminaryCount,
+  manual: review.summary.manualCount,
+}, null, 2));

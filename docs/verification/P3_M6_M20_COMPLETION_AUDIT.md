@@ -56,3 +56,5 @@ The current codebase is now traceable from P3-M6 through P3-M20 and back to the 
 This audit proves code/test/document traceability in the repository. It does not certify final structural design practice readiness. Final production use still needs owner review of calculation assumptions, code interpretation, licensing, deployment target, pilot feedback, and backup/restore rehearsal evidence.
 
 2026-07-03 practice-validation update: `getPhase3PracticeValidationReview` now exposes the remaining practical validation evidence for drawing import, point-cloud import, elastic core, nonlinear engine, detailed design, and productization. The new `test:p3practice` runner entry keeps these owner-review requirements visible in the P3-M20 gate instead of burying them in prose-only audit notes.
+
+2026-07-03 completion-audit API update: `getPhase3CompletionAuditReview` now exposes the P3-M6 to P3-M20 audit rows as agent-readable data. The review separates `proven`, `preliminary`, and `manual` rows, keeps production readiness false while preliminary/manual rows remain, and links each row to the follow-up read APIs that an AI agent should inspect.

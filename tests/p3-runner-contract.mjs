@@ -22,6 +22,7 @@ const expectedQaCommands = {
   phase3PracticeValidation: 'node tests/p3-practice-validation-review.mjs',
   phase3ProductizationMilestoneReview: 'node tests/p3-productization-milestone-review.mjs',
   phase3OwnerSignoffReview: 'node tests/p3-owner-signoff-review.mjs',
+  phase3CompletionAuditReview: 'node tests/p3-completion-audit-review.mjs',
   phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
 };
 
@@ -30,7 +31,7 @@ assert.deepEqual(agentContract.qaCommands, expectedQaCommands);
 
 const list = execFileSync(process.execPath, ['tools/run-milestone-tests.mjs', '--phase3', '--list'], { encoding: 'utf8' });
 const rows = list.trim().split(/\r?\n/).map((line) => line.split('\t'));
-assert.equal(rows.length, 39);
+assert.equal(rows.length, 40);
 assert.deepEqual(rows[0].slice(0, 2), ['P3-M0', 'test:m0']);
 assert.deepEqual(rows.at(-1).slice(0, 2), ['P3-M20', 'test:p3routes']);
 assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M6' && name === 'test:p3m6'));
@@ -43,6 +44,7 @@ assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M18' && name === 't
 assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M18' && name === 'test:p3design-review'));
 assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3productization-review'));
 assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3owner-signoff'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3completion-audit'));
 assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3m20'));
 assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3alignment'));
 assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3runner'));

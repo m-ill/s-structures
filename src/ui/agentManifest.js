@@ -62,6 +62,7 @@ import { PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION } from '../platform/phase3
 import { PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION } from '../platform/phase3PracticeValidationReview.js';
 import { PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION } from '../platform/phase3ProductizationMilestoneReview.js';
 import { PHASE3_OWNER_SIGNOFF_REVIEW_VERSION } from '../platform/phase3OwnerSignoffReview.js';
+import { PHASE3_COMPLETION_AUDIT_REVIEW_VERSION } from '../platform/phase3CompletionAuditReview.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
 import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
@@ -192,6 +193,7 @@ export function buildAgentManifest(options = {}) {
       phase3PracticeValidationReview: PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
       phase3ProductizationMilestoneReview: PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION,
       phase3OwnerSignoffReview: PHASE3_OWNER_SIGNOFF_REVIEW_VERSION,
+      phase3CompletionAuditReview: PHASE3_COMPLETION_AUDIT_REVIEW_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       benchmarkGate: BENCHMARK_GATE_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
@@ -288,6 +290,7 @@ export function buildAgentManifest(options = {}) {
       'getPhase3PracticeValidationReview',
       'getPhase3ProductizationMilestoneReview',
       'getPhase3OwnerSignoffReview',
+      'getPhase3CompletionAuditReview',
       'getConnectionFoundationReport',
       'getMemberDesignTraceReport',
       'getDesignDemandPackage',
@@ -348,6 +351,7 @@ export function buildAgentManifest(options = {}) {
       phase3PracticeValidation: 'node tests/p3-practice-validation-review.mjs',
       phase3ProductizationMilestoneReview: 'node tests/p3-productization-milestone-review.mjs',
       phase3OwnerSignoffReview: 'node tests/p3-owner-signoff-review.mjs',
+      phase3CompletionAuditReview: 'node tests/p3-completion-audit-review.mjs',
       phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
     },
     reviewGates: {
@@ -435,6 +439,7 @@ export function buildAgentManifest(options = {}) {
       'phase3PracticeValidationReview',
       'phase3ProductizationMilestoneReview',
       'phase3OwnerSignoffReview',
+      'phase3CompletionAuditReview',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
       'memberDesignTraceMatrix',

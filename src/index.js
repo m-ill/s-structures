@@ -224,6 +224,10 @@ export {
   PHASE3_OWNER_SIGNOFF_REVIEW_VERSION,
 } from './platform/phase3OwnerSignoffReview.js';
 export {
+  buildPhase3CompletionAuditReview,
+  PHASE3_COMPLETION_AUDIT_REVIEW_VERSION,
+} from './platform/phase3CompletionAuditReview.js';
+export {
   buildPhase3PracticeValidationReview,
   PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
 } from './platform/phase3PracticeValidationReview.js';
