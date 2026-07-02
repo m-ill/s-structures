@@ -43,7 +43,14 @@ function nodePairs(ids, nodes) {
 function driftSpread(diaphragmId, model, result) {
   const diaphragm = (model.diaphragms || []).find((item) => item.id === diaphragmId);
   const values = (diaphragm?.nodeIds || []).map((id) => result?.disp?.[id]?.[0]).filter((value) => Number.isFinite(Number(value))).map(Number);
-  return { diaphragmId, uxSpread: values.length ? Math.max(...values) - Math.min(...values) : null, sampledNodeCount: values.length };
+  const spread = values.length ? Math.max(...values) - Math.min(...values) : null;
+  return {
+    diaphragmId,
+    uxSpread: spread,
+    sampledNodeCount: values.length,
+    status: spread == null ? 'not-sampled' : 'available',
+    review: spread == null ? 'no-displacement-samples' : 'redistribution-spread-trace',
+  };
 }
 
 function distance(a, b) {

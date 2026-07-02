@@ -173,6 +173,8 @@ assert.ok(stiffResult.byCombo.CO1.disp.D[0] > softResult.byCombo.CO1.disp.D[0]);
 const softReport = buildSemiRigidRedistributionReport(softDiaModel, softResult);
 const stiffReport = buildSemiRigidRedistributionReport(stiffDiaModel, stiffResult);
 assert.equal(stiffReport.status, 'available');
+assert.equal(stiffReport.combos[0].rows[0].status, 'available');
+assert.equal(stiffReport.combos[0].rows[0].review, 'redistribution-spread-trace');
 assert.ok(stiffReport.combos[0].rows[0].uxSpread < softReport.combos[0].rows[0].uxSpread);
 const slabTrace = buildWallSlabEquivalentTrace(stiffDiaModel, stiffResult);
 assert.equal(slabTrace.slab.status, 'available');
