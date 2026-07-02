@@ -132,12 +132,12 @@ M15 is exposed through the existing `getNonlinearAnalysisTrace` contract. The fo
 
 | Ticket | Current code | Audit result |
 | --- | --- | --- |
-| P3-T83 | `src/nonlinear/hinges/pmmHinge.js` provides axial-ratio backbone sets and interpolation trace | Preliminary |
-| P3-T84 | `src/nonlinear/fiber/fiberSection.js` and `momentCurvature.js` provide RC/steel fiber strips and M-phi trace with B6 gate | Preliminary |
+| P3-T83 | `src/nonlinear/hinges/pmmHinge.js` provides axial-ratio backbone sets, member-derived PMM source values, and interpolation trace | Preliminary |
+| P3-T84 | `src/nonlinear/fiber/fiberSection.js` and `momentCurvature.js` provide RC/steel fiber strips, material-backbone stress interpolation, member-derived fiber sections, and M-phi trace with B6 gate | Preliminary |
 | P3-T85 | `src/nonlinear/dynamics/newmark.js` and `rayleigh.js` provide Newmark step trace, bilinear spring state, and Rayleigh coefficient trace with B7/B8 gates | Preliminary |
 | P3-T86 | `src/nonlinear/dynamics/groundMotion.js` provides text record parsing, PGA scaling, and spectrum scaling trace | Preliminary |
 
-M16 is exposed through `getNonlinearAnalysisTrace` with PMM, fiber, ground-motion, NLTH, and B6-B8 benchmark sections. The current implementation is still a concentrated-plasticity trace core, not a distributed plasticity or soil-structure interaction solver.
+M16 is exposed through `getNonlinearAnalysisTrace` with PMM, fiber, material-backbone, ground-motion, NLTH, and B6-B8 benchmark sections. The current implementation is still a concentrated-plasticity trace core, not a distributed plasticity or soil-structure interaction solver.
 
 ## Stage E Required Scope: P3-M17 To P3-M18
 

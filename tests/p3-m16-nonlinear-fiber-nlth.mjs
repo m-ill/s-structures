@@ -9,13 +9,17 @@ import {
   PMM_HINGE_VERSION,
   RAYLEIGH_DAMPING_VERSION,
   applyFiberStrain,
+  buildFiberMaterialMap,
+  buildMemberFiberSection,
   buildNonlinearAnalysisTrace,
   buildRectangularFiberSection,
   buildSpectrumScalingTrace,
   compareMomentCurvatureTheory,
   computeMomentCurvature,
   createPmmBackboneSet,
+  createPmmBackboneSetFromMember,
   createPortalFrameSample,
+  fiberMaterialFromRecord,
   dampingRatioAtFrequency,
   interpolatePmmBackbone,
   parseGroundMotionText,
@@ -37,6 +41,17 @@ const section = buildRectangularFiberSection({ width: 0.4, depth: 0.6, strips: 8
 assert.equal(section.version, FIBER_SECTION_VERSION);
 const strained = applyFiberStrain(section, { curvature: 0.001 });
 assert.ok(strained.fibers.some((fiber) => fiber.force !== 0));
+const customFiberMaterial = fiberMaterialFromRecord({
+  E: 200000000,
+  Fy: 400000,
+  nonlinear: { backbone: [{ strain: 0, stress: 0 }, { strain: 0.001, stress: 200 }, { strain: 0.003, stress: 260 }] },
+});
+assert.equal(customFiberMaterial.backbone[1].stress, 200000);
+const customStress = applyFiberStrain(
+  { version: FIBER_SECTION_VERSION, type: 'single-fiber', fibers: [{ id: 'F1', material: 'custom', area: 1, y: -1 }] },
+  { curvature: 0.001, materials: { custom: customFiberMaterial } },
+);
+assert.equal(customStress.fibers[0].stress, 200000);
 
 const mc = computeMomentCurvature(section);
 assert.equal(mc.version, MOMENT_CURVATURE_VERSION);
@@ -63,6 +78,23 @@ assert.equal(benchmarks.ok, true);
 assert.deepEqual(benchmarks.cases.map((item) => item.id), ['B6', 'B7', 'B8']);
 
 const model = createPortalFrameSample();
+model.materials = [{
+  id: 'M16_STEEL',
+  version: 1,
+  E: 205000,
+  G: 79000,
+  Fy: 325,
+  nonlinear: { backbone: [{ strain: 0, stress: 0 }, { strain: 0.0015, stress: 325 }, { strain: 0.004, stress: 390 }] },
+}];
+model.members[0].matId = 'M16_STEEL@1';
+const memberFiber = buildMemberFiberSection(model, model.members[0]);
+assert.equal(memberFiber.version, FIBER_SECTION_VERSION);
+assert.ok(memberFiber.fibers.some((fiber) => fiber.material === 'M16_STEEL'));
+const materialMap = buildFiberMaterialMap(model, [model.members[0].matId]);
+assert.ok(materialMap.M16_STEEL.backbone.length >= 2);
+const pmmFromMember = createPmmBackboneSetFromMember(model, model.members[0]);
+assert.equal(pmmFromMember.version, PMM_HINGE_VERSION);
+assert.equal(pmmFromMember.source.memberId, model.members[0].id);
 const trace = buildNonlinearAnalysisTrace(model);
 assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
 assert.equal(trace.fiberNlthGate.version, NONLINEAR_FIBER_NLTH_TRACE_VERSION);
@@ -70,10 +102,13 @@ assert.deepEqual(trace.fiberNlthGate.tickets, ['P3-T83', 'P3-T84', 'P3-T85', 'P3
 assert.deepEqual(trace.fiberNlthGate.benchmarks.requiredCases, ['B6', 'B7', 'B8']);
 assert.equal(trace.fiberNlthGate.contracts.rayleigh, RAYLEIGH_DAMPING_VERSION);
 assert.ok(trace.fiberNlthGate.fiber.fiberCount > 0);
+assert.ok(trace.fiberNlthGate.fiber.materialCount >= 2);
+assert.equal(trace.fiberNlthGate.pmm.memberSource.memberId, model.members[0].id);
 assert.ok(trace.fiberNlthGate.dynamics.nlthRows > 0);
 assert.equal(trace.benchmarks.fiberNlth.ok, true);
 assert.ok(trace.pmm.interpolated.points.length > 0);
 assert.ok(trace.fiber.momentCurvature.rows.length > 0);
+assert.ok(trace.fiber.materials.M16_STEEL.backbone.length >= 2);
 assert.equal(trace.rayleigh.version, RAYLEIGH_DAMPING_VERSION);
 assert.ok(trace.nlth.rows.length > 0);
 

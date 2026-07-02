@@ -1,3 +1,4 @@
+import { materialOf, sectionOf } from '../../core/catalogs.js';
 import { createMomentRotationBackbone } from './momentHinge.js';
 
 export const PMM_HINGE_VERSION = 'p3-m16-pmm-hinge';
@@ -39,6 +40,36 @@ export function interpolatePmmBackbone(axialRatio, set = createPmmBackboneSet())
   return { version: PMM_HINGE_VERSION, axialRatio: ratio, points, source: [lo.axialRatio, hi.axialRatio] };
 }
 
+export function createPmmBackboneSetFromMember(model = {}, member = {}, options = {}) {
+  const material = materialOf(model, member.matId);
+  const section = sectionOf(model, member.secId);
+  const fy = positive(material.Fy ?? material.fc, 240000);
+  const area = positive(section.A, 0.01);
+  const z = Math.max(positive(section.Zz, 0), positive(section.Zy, 0), area * positive(section.H, 0.3) / 6);
+  const nominalAxial = fy * area;
+  const nominalMoment = fy * z;
+  const levels = (options.levels || [0, 0.3, 0.6, 0.85]).map((axialRatio) => {
+    const reduction = Math.max(0.18, 1 - 0.82 * Number(axialRatio));
+    return {
+      axialRatio,
+      My: nominalMoment * reduction,
+      thetaY: positive(options.thetaY, 0.012 * Math.max(0.35, reduction)),
+      capRatio: positive(material.nonlinear?.capRatio, 1.08),
+      residualRatio: positive(material.nonlinear?.residualRatio, 0.25),
+    };
+  });
+  return {
+    ...createPmmBackboneSet({ levels }),
+    source: {
+      memberId: member.id || null,
+      materialId: member.matId || null,
+      sectionId: member.secId || null,
+      nominalAxial,
+      nominalMoment,
+    },
+  };
+}
+
 function mix(a, b, t) {
   return Number(a) * (1 - t) + Number(b) * t;
 }
@@ -46,4 +77,9 @@ function mix(a, b, t) {
 function clamp(value, min, max) {
   const n = Number(value);
   return Math.min(max, Math.max(min, Number.isFinite(n) ? n : min));
+}
+
+function positive(value, fallback) {
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
 }

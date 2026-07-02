@@ -5,8 +5,8 @@ import { ARC_LENGTH_CONTROL_VERSION, buildArcLengthTrace, createSnapThroughBench
 import { buildDisplacementControlTrace, DISPLACEMENT_CONTROL_VERSION } from './control/displacementControl.js';
 import { buildHingeStateTrace, createMomentRotationBackbone, MOMENT_HINGE_VERSION } from './hinges/momentHinge.js';
 import { assignMemberHinges, HINGE_ASSIGNMENT_VERSION } from './hinges/hingeAssign.js';
-import { createPmmBackboneSet, interpolatePmmBackbone, PMM_HINGE_VERSION } from './hinges/pmmHinge.js';
-import { buildRectangularFiberSection, FIBER_SECTION_VERSION } from './fiber/fiberSection.js';
+import { createPmmBackboneSet, createPmmBackboneSetFromMember, interpolatePmmBackbone, PMM_HINGE_VERSION } from './hinges/pmmHinge.js';
+import { buildFiberMaterialMap, buildMemberFiberSection, buildRectangularFiberSection, FIBER_SECTION_VERSION } from './fiber/fiberSection.js';
 import { computeMomentCurvature, MOMENT_CURVATURE_VERSION } from './fiber/momentCurvature.js';
 import { GROUND_MOTION_VERSION, parseGroundMotionText, scaleGroundMotion } from './dynamics/groundMotion.js';
 import { NLTH_NEWMARK_VERSION, runNewmarkNlth } from './dynamics/newmark.js';
@@ -30,10 +30,18 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
   const pushover = options.includePushover === false ? null : runFormalPushover(model, options.pushover || {});
   const displacementControl = buildDisplacementControlTrace(options.displacementTargets || [0.01, 0.02], options.displacementControl);
   const arcLength = buildArcLengthTrace(options.arcLengthPath || createSnapThroughBenchmarkPath(), options.arcLength);
-  const pmmSet = createPmmBackboneSet(options.pmm);
+  const fiberMember = (model.members || [])[0] || null;
+  const pmmSet = fiberMember && !options.pmm ? createPmmBackboneSetFromMember(model, fiberMember, options.pmmFromMember) : createPmmBackboneSet(options.pmm);
   const pmm = { set: pmmSet, interpolated: interpolatePmmBackbone(options.axialRatio ?? 0.3, pmmSet) };
-  const fiberSection = buildRectangularFiberSection(options.fiberSection);
-  const fiber = { section: fiberSection, momentCurvature: computeMomentCurvature(fiberSection, options.momentCurvature) };
+  const fiberSection = options.fiberSection
+    ? buildRectangularFiberSection(options.fiberSection)
+    : buildMemberFiberSection(model, fiberMember || {}, options.memberFiberSection);
+  const fiberMaterials = buildFiberMaterialMap(model, [fiberMember?.matId]);
+  const fiber = {
+    section: fiberSection,
+    materials: fiberMaterials,
+    momentCurvature: computeMomentCurvature(fiberSection, { materials: fiberMaterials, ...(options.momentCurvature || {}) }),
+  };
   const rayleigh = solveRayleighDamping(options.rayleigh);
   const record = scaleGroundMotion(parseGroundMotionText(options.groundMotionText || '0 0.1 -0.1 0', { dt: options.dt || 0.02 }), options.groundMotion);
   const nlth = runNewmarkNlth({ accelerations: record.accelerations, dt: record.dt, ...(options.nlth || {}) });
@@ -104,11 +112,13 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
     pmm: {
       axialRatio: trace.pmm?.interpolated?.axialRatio ?? null,
       source: trace.pmm?.interpolated?.source || [],
+      memberSource: trace.pmm?.set?.source || null,
       pointCount: trace.pmm?.interpolated?.points?.length || 0,
     },
     fiber: {
       sectionType: trace.fiber?.section?.type || null,
       fiberCount: trace.fiber?.section?.fibers?.length || 0,
+      materialCount: Object.keys(trace.fiber?.materials || {}).length,
       curvatureRows: trace.fiber?.momentCurvature?.rows?.length || 0,
       yieldMoment: trace.fiber?.momentCurvature?.yieldMoment || 0,
     },

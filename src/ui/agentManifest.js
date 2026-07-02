@@ -378,6 +378,7 @@ export function buildAgentManifest(options = {}) {
       'phase3DynamicCompletenessTrace',
       'phase3NonlinearAssemblyTrace',
       'phase3NonlinearHingeAssignmentTrace',
+      'phase3FiberMaterialBackboneTrace',
       'phase3NonlinearGeometryTrace',
       'phase3NonlinearHingeControlTrace',
       'phase3NonlinearFiberNlthTrace',

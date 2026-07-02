@@ -217,6 +217,7 @@
     "phase3LaunchReadinessGate",
     "phase3NonlinearAssemblyTrace",
     "phase3NonlinearHingeAssignmentTrace",
+    "phase3FiberMaterialBackboneTrace",
     "phase3NonlinearGeometryTrace",
     "phase3NonlinearHingeControlTrace",
     "phase3NonlinearFiberNlthTrace",

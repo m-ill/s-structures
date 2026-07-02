@@ -325,13 +325,17 @@ export {
 export {
   PMM_HINGE_VERSION,
   createPmmBackboneSet,
+  createPmmBackboneSetFromMember,
   interpolatePmmBackbone,
 } from './nonlinear/hinges/pmmHinge.js';
 export {
   FIBER_SECTION_VERSION,
   applyFiberStrain,
+  buildFiberMaterialMap,
+  buildMemberFiberSection,
   buildRectangularFiberSection,
   buildSteelIFiberSection,
+  fiberMaterialFromRecord,
 } from './nonlinear/fiber/fiberSection.js';
 export {
   MOMENT_CURVATURE_VERSION,
