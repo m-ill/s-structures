@@ -55,6 +55,7 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
   };
   const supportTrace = buildSupportTrace(model);
   const memberTrace = buildMemberTrace(model, lengths);
+  warnings.push(...buildMemberOffsetWarnings(memberTrace));
   return {
     loads: expanded,
     trace: {
@@ -219,6 +220,19 @@ function buildMemberTrace(model = {}, lengths = {}) {
     }));
 }
 
+function buildMemberOffsetWarnings(memberTrace = []) {
+  return memberTrace
+    .filter((row) => row.endOffset && Number(row.clearLength) <= 0)
+    .map((row) => ({
+      code: 'MEMBER_OFFSET_CLEAR_LENGTH_ZERO',
+      member: row.member,
+      message: 'Member end offsets reduce the clear length to zero; solver may ignore or clamp the offset.',
+      grossLength: row.grossLength,
+      clearLength: row.clearLength,
+      offset: row.offset,
+    }));
+}
+
 function clearLength(member, grossLength) {
   if (!Number.isFinite(grossLength)) return null;
   const offset = member.endOffset || {};
@@ -243,6 +257,7 @@ function buildExpansionReview(input) {
   const advancedLoadCount = (features.partialDistributed || 0) + (features.trapezoid || 0) + (features.temperature || 0) + (features.temperatureGradient || 0);
   if (advancedLoadCount > 0 && !(input.handcalc || []).length) blockers.push('advanced-load-handcalc-missing');
   if ((input.warnings || []).length) blockers.push('elastic-expansion-warnings-present');
+  if ((input.warnings || []).some((warning) => warning.code === 'MEMBER_OFFSET_CLEAR_LENGTH_ZERO')) blockers.push('member-offset-clear-length-invalid');
   const unilateralMemberCount = (features.tensionOnlyMembers || 0) + (features.compressionOnlyMembers || 0);
   return {
     traceReady: blockers.length === 0,

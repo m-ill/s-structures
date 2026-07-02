@@ -198,4 +198,15 @@ assert.deepEqual(clearTrace.memberTrace[0].offset, { i: 0.5, j: 0.5, rigidFactor
 assert.equal(clearTrace.review.memberOffsetReviewRequired, true);
 assert.ok(clearSpanResult.byCombo.CO1.summary.maxDisplacement < cantileverResult.byCombo.CO1.summary.maxDisplacement);
 
+const invalidOffsetModel = createModel({
+  ...cantilever,
+  members: [{ ...cantilever.members[0], endOffset: { i: 2.5, j: 2 } }],
+});
+const invalidOffsetTrace = expandAdvancedLoads(invalidOffsetModel.loads, invalidOffsetModel).trace;
+assert.equal(invalidOffsetTrace.memberTrace[0].clearLength, 0);
+assert.ok(invalidOffsetTrace.warnings.some((warning) => warning.code === 'MEMBER_OFFSET_CLEAR_LENGTH_ZERO'));
+assert.ok(invalidOffsetTrace.review.blockers.includes('member-offset-clear-length-invalid'));
+assert.equal(invalidOffsetTrace.review.traceReady, false);
+assert.equal(invalidOffsetTrace.review.agentDecision, 'fix-elastic-expansion-trace-before-review');
+
 console.log(JSON.stringify({ ok: true, version: 'p3-m11-elastic-expansion' }, null, 2));
