@@ -16,6 +16,7 @@ import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 const agentContract = JSON.parse(readFileSync('docs/user-manual/agent-contract.json', 'utf8'));
 const launchManual = readFileSync('docs/user-manual/PHASE3_LAUNCH_MANUAL.md', 'utf8');
+const completionAudit = readFileSync('docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md', 'utf8');
 const manifest = buildAgentManifest();
 const pilot = buildPilotProjectValidation({ limit: 10 });
 const model = createTwoStoryElasticFrameModel();
@@ -36,6 +37,9 @@ assert.equal(agentContract.reviewGates.launchReadiness.path, 'releaseGate.releas
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('getLaunchReadinessReport().productionReadiness.status')));
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
 assert.match(launchManual, /OWNER_REVIEW_REQUIRED/);
+assert.match(completionAudit, /npm\.cmd run test:p3/);
+assert.match(completionAudit, /node tools\/run-milestone-tests\.mjs --phase3 --from=P3-M6 --to=P3-M20/);
+assert.equal(completionAudit.includes('- `npm.cmd test`'), false);
 assert.equal(pilotReports.length, 10);
 assert.equal(integrated.summary.notCheckedCount, 0);
 assert.match(calculationPackage.html, /Phase 3 Integrated Results/);

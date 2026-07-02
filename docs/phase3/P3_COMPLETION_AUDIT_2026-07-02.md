@@ -88,7 +88,7 @@ Agents must also check `getLaunchReadinessReport().productionReadiness.status`. 
 
 | Gate | Status | Evidence |
 | --- | --- | --- |
-| G1 full suite | Proven | `npm.cmd test` passed |
+| G1 full suite | Proven | `npm.cmd run test:p3` passed |
 | G2 benchmark | Proven | milestone and nonlinear benchmark tests passed |
 | G3 point-cloud benchmark | Proven | point-cloud extraction/e2e tests passed |
 | G4 representative pilot | Proven | 10 representative pilot rows generated |
@@ -115,13 +115,18 @@ Agents must also check `getLaunchReadinessReport().productionReadiness.status`. 
 
 ## Current Verification Commands
 
-The following commands were run successfully after the latest P3-M14 to P3-M20 gate updates:
+The following commands were run successfully after the latest P3-M0 to P3-M20 gate updates:
 
-- `npm.cmd test`
+- `npm.cmd run test:p3`
+- `npm.cmd run test:p3:list`
+- `node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20`
 - `node tests/p3-design-rc.mjs`
 - `node tests/p3-design-steel-foundation.mjs`
 - `node tests/p3-m19-integrated-report.mjs`
 - `node tests/p3-launch-gate.mjs`
 - `node tests/m16-agent-capabilities.mjs`
+- `node tests/p3-plan-alignment.mjs`
+- `node tests/p3-doc-reference-integrity.mjs`
+- `node tests/p3-server-route-contract.mjs`
 - `git diff --check`
 - forbidden-string scan
