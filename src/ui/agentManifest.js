@@ -437,6 +437,7 @@ export function buildAgentManifest(options = {}) {
       'phase3IntegratedResultsGate',
       'phase3LaunchReadiness',
       'phase3LaunchReadinessGate',
+      'phase3FinalUseReview',
       'phase3DesignMilestoneReview',
       'phase3DrawingImportValidationReview',
       'phase3EngineeringValidationReview',

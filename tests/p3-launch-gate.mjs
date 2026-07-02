@@ -4,6 +4,9 @@ import {
   analyzeModel,
   buildAgentManifest,
   buildLaunchReadinessReport,
+  buildPhase3EvidenceRegister,
+  buildPhase3OwnerSignoffReview,
+  buildPhase3PracticeValidationReview,
   buildP3IntegratedResults,
   buildPilotProjectValidation,
   createCalculationPackageHtml,
@@ -18,6 +21,9 @@ const agentContract = JSON.parse(readFileSync('docs/user-manual/agent-contract.j
 const launchManual = readFileSync('docs/user-manual/PHASE3_LAUNCH_MANUAL.md', 'utf8');
 const completionAudit = readFileSync('docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md', 'utf8');
 const manifest = buildAgentManifest();
+const practiceValidationReview = buildPhase3PracticeValidationReview();
+const ownerSignoffReview = buildPhase3OwnerSignoffReview();
+const evidenceRegister = buildPhase3EvidenceRegister();
 const pilot = buildPilotProjectValidation({ limit: 10 });
 const model = createTwoStoryElasticFrameModel();
 const analysis = analyzeModel(model);
@@ -35,6 +41,7 @@ assert.ok(agentContract.modules.includes('phase3LaunchReadiness'));
 assert.ok(agentContract.modules.includes('phase3LaunchReadinessGate'));
 assert.ok(agentContract.dataContracts.includes('phase3LaunchReadiness'));
 assert.ok(agentContract.dataContracts.includes('phase3LaunchReadinessGate'));
+assert.ok(agentContract.dataContracts.includes('phase3FinalUseReview'));
 assert.deepEqual(agentContract.qaCommands, manifest.qaCommands);
 assert.deepEqual(agentContract.reviewGates, manifest.reviewGates);
 assert.equal(agentContract.reviewGates.launchReadiness.path, 'releaseGate.releaseReview');
@@ -71,6 +78,9 @@ const evidence = {
   notCheckedCount: integrated.summary.notCheckedCount,
   manifest,
   agentContract,
+  practiceValidationReview,
+  ownerSignoffReview,
+  evidenceRegister,
   pilot,
   pilotReports: { count: pilotReports.length },
   manual: { updated: true },
@@ -103,6 +113,11 @@ assert.deepEqual(launch.releaseGate.summary.ticketCoverage.map((row) => row.tick
 assert.ok(launch.releaseGate.ticketCoverage.every((row) => row.covered));
 assert.ok(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T67').evidence.includes('10 pilot reports'));
 assert.equal(launch.status, 'OK');
+assert.equal(launch.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
+assert.deepEqual(launch.finalUseReview.blockingReviews, ['practice-validation', 'owner-signoff', 'evidence-register']);
+assert.equal(launch.finalUseReview.rows.find((row) => row.id === 'owner-signoff').missing.length, 7);
+assert.equal(launch.summary.finalUseReviewStatus, 'FINAL_USE_REVIEW_REQUIRED');
+assert.equal(launch.summary.blockingReviewCount, 3);
 assert.equal(launch.summary.total, 14);
 assert.equal(launch.summary.reviewCount, 0);
 assert.equal(launch.summary.ownerReviewReady, true);
@@ -111,7 +126,9 @@ assert.equal(launch.summary.productionReadinessStatus, 'OWNER_REVIEW_REQUIRED');
 assert.equal(launch.productionReadiness.status, 'OWNER_REVIEW_REQUIRED');
 assert.equal(launch.productionReadiness.ownerReviewReady, true);
 assert.equal(launch.productionReadiness.productionDeploymentApproved, false);
-assert.equal(launch.productionReadiness.agentDecision, 'wait-for-owner-release-signoff');
+assert.equal(launch.productionReadiness.blockingReviewCount, 3);
+assert.equal(launch.productionReadiness.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
+assert.equal(launch.productionReadiness.agentDecision, 'collect-final-use-review-evidence');
 assert.equal(launch.packaging.smoke, true);
 assert.equal(launch.license.status, 'RECORDED');
 
@@ -121,11 +138,13 @@ const agentLaunch = agent.getLaunchReadinessReport(evidence);
 assert.equal(agentLaunch.version, LAUNCH_READINESS_VERSION);
 assert.equal(agentLaunch.status, 'OK');
 assert.equal(agentLaunch.productionReadiness.status, 'OWNER_REVIEW_REQUIRED');
+assert.equal(agentLaunch.productionReadiness.agentDecision, 'collect-final-use-review-evidence');
 assert.equal(runtimeCapabilities.modules.phase3LaunchReadiness, LAUNCH_READINESS_VERSION);
 assert.equal(runtimeCapabilities.modules.phase3LaunchReadinessGate, LAUNCH_READINESS_GATE_VERSION);
 assert.deepEqual(runtimeCapabilities.reviewGates, manifest.reviewGates);
 assert.ok(runtimeCapabilities.readApis.includes('getLaunchReadinessReport'));
 assert.ok(runtimeCapabilities.dataContracts.includes('phase3LaunchReadinessGate'));
+assert.ok(runtimeCapabilities.dataContracts.includes('phase3FinalUseReview'));
 assert.deepEqual(
   contractExecuteActions.filter((action) => !runtimeCapabilities.executeActions.includes(action)),
   [],

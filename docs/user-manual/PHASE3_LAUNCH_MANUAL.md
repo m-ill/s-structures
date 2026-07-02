@@ -72,4 +72,6 @@ The `readyDecision` values mean the next review step may proceed. The listed `fi
 
 `getLaunchReadinessReport().status` only means the launch evidence gates are green. Agents must also check `getLaunchReadinessReport().productionReadiness.status`; `OWNER_REVIEW_REQUIRED` means owner sign-off and production deployment approval are still required.
 
+Agents must also inspect `getLaunchReadinessReport().finalUseReview`. `FINAL_USE_REVIEW_REQUIRED` means at least one practical validation, owner sign-off, or evidence-register review still blocks final structural-office use even when the automated launch gate is green.
+
 Manual launch evidence remains in `reports/launch-readiness/`.

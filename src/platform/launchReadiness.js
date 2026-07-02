@@ -19,9 +19,11 @@ export function buildLaunchReadinessReport(evidence = {}) {
     gate('G14', 'Calculation package completeness', evidence.notCheckedCount === 0 && evidence.calculationTraceConnected === true, 'Default calculation package has no not-checked chapter and includes trace/limitations.'),
   ];
   const releaseGate = buildLaunchReadinessGate(gates, evidence);
+  const finalUseReview = buildFinalUseReview(evidence);
   return {
     version: LAUNCH_READINESS_VERSION,
     releaseGate,
+    finalUseReview,
     status: gates.every((item) => item.status === 'OK') ? 'OK' : 'REVIEW',
     gates,
     summary: {
@@ -31,8 +33,10 @@ export function buildLaunchReadinessReport(evidence = {}) {
       ownerReviewReady: releaseGate.releaseReview.status === 'owner-review-ready',
       productionDeploymentApproved: releaseGate.releaseReview.productionDeploymentApproved === true,
       productionReadinessStatus: releaseGate.releaseReview.productionDeploymentApproved === true ? 'PRODUCTION_APPROVED' : 'OWNER_REVIEW_REQUIRED',
+      finalUseReviewStatus: finalUseReview.status,
+      blockingReviewCount: finalUseReview.blockingReviews.length,
     },
-    productionReadiness: buildProductionReadinessSummary(releaseGate),
+    productionReadiness: buildProductionReadinessSummary(releaseGate, finalUseReview),
     packaging: buildPackagingReadiness(evidence),
     license: buildLicenseReadiness(evidence),
   };
@@ -121,7 +125,7 @@ function buildReleaseReview({ gates, evidence, coverage, ticketCoverage }) {
   };
 }
 
-function buildProductionReadinessSummary(releaseGate) {
+function buildProductionReadinessSummary(releaseGate, finalUseReview) {
   const review = releaseGate.releaseReview || {};
   return {
     version: LAUNCH_READINESS_VERSION,
@@ -136,7 +140,41 @@ function buildProductionReadinessSummary(releaseGate) {
     pilotFeedbackOwnerAccepted: review.pilotFeedbackOwnerAccepted === true,
     backupRestoreOwnerAccepted: review.backupRestoreOwnerAccepted === true,
     securitySignoffAccepted: review.securitySignoffAccepted === true,
-    agentDecision: review.productionDeploymentApproved === true ? 'release-approved' : 'wait-for-owner-release-signoff',
+    finalUseReview,
+    blockingReviewCount: finalUseReview.blockingReviews.length,
+    agentDecision: review.productionDeploymentApproved === true
+      ? 'release-approved'
+      : finalUseReview.blockingReviews.length
+        ? 'collect-final-use-review-evidence'
+        : 'wait-for-owner-release-signoff',
+  };
+}
+
+function buildFinalUseReview(evidence = {}) {
+  const rows = [
+    reviewRow('practice-validation', evidence.practiceValidationReview?.summary, 'productionReady'),
+    reviewRow('owner-signoff', evidence.ownerSignoffReview?.summary, 'productionDeploymentApproved'),
+    reviewRow('evidence-register', evidence.evidenceRegister?.summary, 'productionReady'),
+  ];
+  const blockingReviews = rows.filter((row) => row.status !== 'ACCEPTED').map((row) => row.id);
+  return {
+    version: LAUNCH_READINESS_VERSION,
+    status: blockingReviews.length ? 'FINAL_USE_REVIEW_REQUIRED' : 'FINAL_USE_REVIEW_ACCEPTED',
+    rows,
+    blockingReviews,
+    rule: 'Launch gate OK is not final structural-office use approval; clear these reviews before production deployment.',
+  };
+}
+
+function reviewRow(id, summary, acceptedField) {
+  const accepted = summary?.[acceptedField] === true;
+  return {
+    id,
+    status: accepted ? 'ACCEPTED' : 'REVIEW_REQUIRED',
+    accepted,
+    acceptedField,
+    missing: Array.isArray(summary?.missing) ? [...summary.missing] : [],
+    agentDecision: summary?.agentDecision || 'review-data-not-provided',
   };
 }
 
