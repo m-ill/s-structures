@@ -1,5 +1,6 @@
 export const LAUNCH_READINESS_VERSION = 'p3-m20-launch-readiness';
 export const LAUNCH_READINESS_GATE_VERSION = 'p3-m20-launch-readiness-gate-v1';
+const REQUIRED_PILOT_REPORT_FILES = Array.from({ length: 10 }, (_, index) => `pilot-${String(index + 1).padStart(2, '0')}.md`);
 
 export function buildLaunchReadinessReport(evidence = {}) {
   const gates = [
@@ -13,7 +14,7 @@ export function buildLaunchReadinessReport(evidence = {}) {
     gate('G8', 'Security checklist', evidence.securityChecklistSigned === true, 'Security checklist recorded for launch review.'),
     gate('G9', 'User manual refresh', evidence.manual?.updated === true, 'Manual includes Phase 3 import, nonlinear, design, report, and agent workflow.'),
     gate('G10', 'Agent contract current', agentContractMatches(evidence.manifest, evidence.agentContract), 'Manual agent contract mirrors manifest read APIs.'),
-    gate('G11', 'Beta pilot reports', evidence.pilotReports?.count === 10, 'Ten beta pilot scenario reports are present.'),
+    gate('G11', 'Beta pilot reports', pilotReportsComplete(evidence.pilotReports), 'Ten named beta pilot scenario reports are present.'),
     gate('G12', 'Backup restore rehearsal', evidence.backupRestoreRecorded === true, 'Backup and restore rehearsal record exists.'),
     gate('G13', 'Design module verification', evidence.designVerificationRecorded === true, 'RC, steel, connection, and foundation verification record exists.'),
     gate('G14', 'Calculation package completeness', evidence.notCheckedCount === 0 && evidence.calculationTraceConnected === true, 'Default calculation package has no not-checked chapter and includes trace/limitations.'),
@@ -49,6 +50,7 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
     manual: evidence.manual?.updated === true,
     qa: evidence.fullSuiteGreen === true && evidence.benchmarkGreen === true,
     pilotReports: evidence.pilotReports?.count || 0,
+    pilotReportFilesComplete: pilotReportsComplete(evidence.pilotReports),
     backupRestore: evidence.backupRestoreRecorded === true,
     ownerSignoffChecklist: evidence.ownerSignoffChecklistRecorded === true,
   };
@@ -104,6 +106,7 @@ function buildReleaseReview({ gates, evidence, coverage, ticketCoverage }) {
   const missing = [];
   if (gates.length !== 14 || gates.some((item) => item.status !== 'OK')) missing.push('launch-gates');
   if (!ticketCoverage.every((row) => row.covered)) missing.push('ticket-coverage');
+  if (!coverage.pilotReportFilesComplete) missing.push('pilot-report-files');
   if (!coverage.ownerSignoffChecklist) missing.push('owner-signoff-checklist');
   if (!coverage.backupRestore) missing.push('backup-restore-record');
   return {
@@ -181,6 +184,7 @@ function reviewRow(id, summary, acceptedField) {
 function buildLaunchTicketCoverage(gates, evidence, coverage) {
   const byId = Object.fromEntries(gates.map((item) => [item.id, item.status === 'OK']));
   const readApis = evidence.agentContract?.readApis?.length || 0;
+  const pilotFileCount = pilotReportNames(evidence.pilotReports).length;
   return [
     {
       ticket: 'P3-T63',
@@ -209,10 +213,21 @@ function buildLaunchTicketCoverage(gates, evidence, coverage) {
     {
       ticket: 'P3-T67',
       scope: 'beta-pilot-scenarios',
-      covered: coverage.pilotReports === 10 && byId.G4 === true && byId.G11 === true,
-      evidence: `${coverage.pilotReports} pilot reports, analysisOk=${evidence.pilot?.summary?.analysisOkCount || 0}`,
+      covered: coverage.pilotReportFilesComplete === true && byId.G4 === true && byId.G11 === true,
+      evidence: `${coverage.pilotReports} pilot reports, namedFiles=${pilotFileCount}/10, analysisOk=${evidence.pilot?.summary?.analysisOkCount || 0}`,
     },
   ];
+}
+
+function pilotReportNames(pilotReports = {}) {
+  const rows = pilotReports.files || pilotReports.names || [];
+  return [...new Set(rows.map((name) => String(name).split(/[\\/]/).pop()).filter(Boolean))].sort();
+}
+
+function pilotReportsComplete(pilotReports = {}) {
+  const names = pilotReportNames(pilotReports);
+  if (!names.length) return false;
+  return REQUIRED_PILOT_REPORT_FILES.every((name) => names.includes(name));
 }
 
 export function buildPackagingReadiness(evidence = {}) {

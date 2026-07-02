@@ -52,3 +52,5 @@ P3-M20 remains preliminary. It proves repository-level launch readiness evidence
 2026-07-03 owner sign-off contract update: `getPhase3OwnerSignoffReview()` now exposes the seven manual owner checklist rows from `reports/launch-readiness/owner-signoff-checklist.md`. A clean checklist can return `owner-signoff-ready-for-final-deployment-decision`, but `productionDeploymentApproved` remains false until the owner explicitly records final deployment approval outside the automated gate.
 
 2026-07-03 final-use review update: `getLaunchReadinessReport()` now exposes `finalUseReview` and mirrors it under `productionReadiness.finalUseReview`. This links practical validation, owner sign-off, and evidence-register status directly to the launch report so AI agents do not treat a green automated launch gate as permission for final structural-office use.
+
+2026-07-03 beta-pilot file review update: G11 and P3-T67 now require named beta pilot evidence files from `pilot-01.md` through `pilot-10.md`. Count-only evidence is not enough for the launch gate, and a missing named report produces `pilot-report-files` plus ticket-coverage review holds.

@@ -29,7 +29,7 @@ const model = createTwoStoryElasticFrameModel();
 const analysis = analyzeModel(model);
 const integrated = buildP3IntegratedResults(model, analysis);
 const calculationPackage = createCalculationPackageHtml(model, analysis);
-const pilotReports = readdirSync('reports/launch-readiness').filter((name) => /^pilot-\d\d\.md$/.test(name));
+const pilotReports = readdirSync('reports/launch-readiness').filter((name) => /^pilot-\d\d\.md$/.test(name)).sort();
 const contractExecuteActions = Object.values(agentContract.executeActions).flat();
 const contractReadWorkflows = Object.values(agentContract.readWorkflows || {}).flat();
 
@@ -85,7 +85,7 @@ const evidence = {
   ownerSignoffReview,
   evidenceRegister,
   pilot,
-  pilotReports: { count: pilotReports.length },
+  pilotReports: { count: pilotReports.length, files: pilotReports },
   manual: { updated: true },
   packageJson,
   files: { indexHtml: true, serverMain: true },
@@ -111,10 +111,12 @@ assert.equal(launch.releaseGate.releaseReview.agentDecision, 'ready-for-owner-re
 assert.deepEqual(launch.releaseGate.releaseReview.missing, []);
 assert.equal(launch.releaseGate.summary.coveredTicketCount, 5);
 assert.equal(launch.releaseGate.coverage.ownerSignoffChecklist, true);
+assert.equal(launch.releaseGate.coverage.pilotReportFilesComplete, true);
 assert.deepEqual(launch.releaseGate.ticketCoverage.map((row) => row.ticket), ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67']);
 assert.deepEqual(launch.releaseGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67']);
 assert.ok(launch.releaseGate.ticketCoverage.every((row) => row.covered));
 assert.ok(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T67').evidence.includes('10 pilot reports'));
+assert.ok(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T67').evidence.includes('namedFiles=10/10'));
 assert.equal(launch.status, 'OK');
 assert.equal(launch.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
 assert.deepEqual(launch.finalUseReview.blockingReviews, ['practice-validation', 'owner-signoff', 'evidence-register']);
@@ -134,6 +136,16 @@ assert.equal(launch.productionReadiness.finalUseReview.status, 'FINAL_USE_REVIEW
 assert.equal(launch.productionReadiness.agentDecision, 'collect-final-use-review-evidence');
 assert.equal(launch.packaging.smoke, true);
 assert.equal(launch.license.status, 'RECORDED');
+
+const missingPilotReportLaunch = buildLaunchReadinessReport({
+  ...evidence,
+  pilotReports: { count: 10, files: pilotReports.slice(0, 9) },
+});
+assert.equal(missingPilotReportLaunch.gates.find((row) => row.id === 'G11').status, 'REVIEW');
+assert.equal(missingPilotReportLaunch.releaseGate.coverage.pilotReportFilesComplete, false);
+assert.equal(missingPilotReportLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T67').covered, false);
+assert.ok(missingPilotReportLaunch.releaseGate.releaseReview.missing.includes('pilot-report-files'));
+assert.ok(missingPilotReportLaunch.releaseGate.releaseReview.missing.includes('ticket-coverage'));
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => analysis });
 const runtimeCapabilities = agent.getCapabilities();
