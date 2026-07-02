@@ -51,6 +51,8 @@ The import review model previously showed only generic candidate counts and warn
 
 2026-07-03 DWG preflight update: `buildDwgConversionPreflight()` now records whether the converter file, source DWG, and output directory have been host-checked. `tools/convert-dwg.mjs` includes that preflight result in its JSON output, performs host file/directory checks when explicit booleans are not supplied, and exposes `readyToExecute` separately from `ok`. AI agents can therefore distinguish "plan is structurally ready" from "safe to execute on this machine." The drawing validation review preserves this preflight row under each DWG conversion evidence item.
 
+2026-07-03 closed-polyline column update: `recognizePlanDxf()` now detects small closed polyline loops on column layers as column candidates and records `closedPolylineColumns` in the audit counts. This covers the P3-M7 plan requirement for closed-polyline column detection while keeping the result as reviewable candidate evidence.
+
 ## Current Test Gate
 
 P3-M7 is covered by:

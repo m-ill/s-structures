@@ -126,6 +126,49 @@ assert.equal(story1.audit.labelEvidence.primaryLabel, '1F');
 assert.equal(story1.audit.labelEvidence.agentDecision, 'use-labels-for-human-review');
 assert.equal(story2.columns[0].z, 3);
 
+const closedColumnPlan = recognizePlanDxf([
+  '0', 'SECTION',
+  '2', 'HEADER',
+  '9', '$INSUNITS',
+  '70', '6',
+  '0', 'ENDSEC',
+  '0', 'SECTION',
+  '2', 'ENTITIES',
+  '0', 'LWPOLYLINE',
+  '8', 'S-COL',
+  '10', '-0.2',
+  '20', '-0.2',
+  '10', '0.2',
+  '20', '-0.2',
+  '10', '0.2',
+  '20', '0.2',
+  '10', '-0.2',
+  '20', '0.2',
+  '10', '-0.2',
+  '20', '-0.2',
+  '0', 'LINE',
+  '8', 'S-BEAM',
+  '10', '0',
+  '20', '0',
+  '30', '0',
+  '11', '5',
+  '21', '0',
+  '31', '0',
+  '0', 'ENDSEC',
+  '0', 'EOF',
+].join('\n'), {
+  storyId: 'poly-column',
+  elevation: 0,
+  layerMap,
+  expected: { columns: 1, beams: 1 },
+});
+assert.equal(closedColumnPlan.columns.length, 1);
+assert.equal(closedColumnPlan.columns[0].source, 'closed-polyline');
+assert.equal(closedColumnPlan.columns[0].x, 0);
+assert.equal(closedColumnPlan.columns[0].y, 0);
+assert.equal(closedColumnPlan.audit.counts.closedPolylineColumns, 1);
+assert.equal(closedColumnPlan.audit.recognitionQuality.recall.columns, 1);
+
 const candidate = assemblePlansToImportCandidate([story2, story1], {
   tolerance: 1e-6,
   minLength: 1e-4,
