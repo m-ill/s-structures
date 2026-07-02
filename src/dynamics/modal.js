@@ -1,4 +1,5 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
+import { buildMassSourceTrace } from '../loads/loadsV2.js';
 import { assembleStiffness3D, solveLinear } from '../solver/linear3d.js';
 import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
 import { combineModalCqc } from './elasticCompleteness.js';
@@ -14,7 +15,9 @@ export function analyzeDynamics(model, options = {}) {
   });
   if (!system.ok) return { ok: false, reason: system.reason || 'NO_STIFFNESS' };
 
-  const mass = buildLumpedMass(model, system);
+  const massSourceSpec = settings.massSource || null;
+  const massSourceTrace = massSourceSpec ? buildMassSourceTrace(model, massSourceSpec) : null;
+  const mass = buildLumpedMass(model, system, massSourceSpec);
   const modalDofs = system.free.filter((dof) => dof % 6 < 3 && mass[dof] > 0);
   if (!modalDofs.length) return { ok: false, reason: 'NO_MASS', modes: [], rsa: null };
 
@@ -47,12 +50,14 @@ export function analyzeDynamics(model, options = {}) {
       total: totalMass,
       modalDofCount: modalDofs.length,
       freeDofCount: system.free.length,
+      source: massSourceTrace ? 'analysisSettings.massSource' : 'node-and-member-mass',
+      massSource: massSourceTrace,
     },
     rsa,
   };
 }
 
-export function buildLumpedMass(model, system) {
+export function buildLumpedMass(model, system, massSource = null) {
   const mass = new Array(system.ndof || (model.nodes || []).length * 6).fill(0);
   const idx = system.idx || Object.fromEntries((model.nodes || []).map((node, i) => [node.id, i]));
 
@@ -68,12 +73,21 @@ export function buildLumpedMass(model, system) {
     }
   }
 
-  for (const node of model.nodes || []) {
-    const base = idx[node.id] * 6;
-    if (Number(node.mass) > 0) {
-      for (let i = 0; i < 3; i += 1) mass[base + i] += Number(node.mass);
-    } else if (Array.isArray(node.mass)) {
-      for (let i = 0; i < 3; i += 1) mass[base + i] += Math.max(0, Number(node.mass[i]) || 0);
+  if (massSource) {
+    const trace = buildMassSourceTrace(model, massSource);
+    for (const row of trace.rows || []) {
+      const base = idx[row.node] * 6;
+      if (!Number.isFinite(base)) continue;
+      for (let i = 0; i < 3; i += 1) mass[base + i] += Math.max(0, Number(row.mass) || 0);
+    }
+  } else {
+    for (const node of model.nodes || []) {
+      const base = idx[node.id] * 6;
+      if (Number(node.mass) > 0) {
+        for (let i = 0; i < 3; i += 1) mass[base + i] += Number(node.mass);
+      } else if (Array.isArray(node.mass)) {
+        for (let i = 0; i < 3; i += 1) mass[base + i] += Math.max(0, Number(node.mass[i]) || 0);
+      }
     }
   }
   return mass;

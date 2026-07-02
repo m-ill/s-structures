@@ -3,9 +3,10 @@ import { storyEccentricity } from './storyMassEccentricity.js';
 import { storyStiffnessProxy } from './storyStiffnessProxy.js';
 import { nodeMassValue, weightedCenter } from './storyMassValues.js';
 
-export function buildStoryMassRow(model, story, nodes, diaphragms) {
+export function buildStoryMassRow(model, story, nodes, diaphragms, massByNode = null) {
   const storyNodes = story.nodeIds.map((id) => nodes[id]).filter(Boolean);
-  const cm = weightedCenter(storyNodes, nodeMassValue);
+  const weightOf = massByNode ? (node) => Math.max(0, Number(massByNode[node.id]) || 0) : nodeMassValue;
+  const cm = weightedCenter(storyNodes, weightOf);
   const diaphragm = findStoryDiaphragm(story, diaphragms);
   const stiffness = storyStiffnessProxy(model, story);
   return {

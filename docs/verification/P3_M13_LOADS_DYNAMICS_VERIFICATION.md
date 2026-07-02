@@ -17,11 +17,11 @@ This note verifies P3-M13 against `docs/phase3/ELASTIC_ENGINE_COMPLETENESS_PLAN.
 | P3-T79 | CQC modal combination | `combineModalCqc()`, `buildCqcCombinationReport()`, RSA CQC test |
 | P3-T80 | Buckling trace | `estimateModelBucklingTrace()` member Euler screening |
 | P3-T81 | Linear time history | `runLinearSdofTha()`, `runModalSuperpositionTha()` |
-| P3-T82 | Mass source from loads | `buildMassSourceTrace()` and load-to-mass test |
+| P3-T82 | Mass source from loads | `buildMassSourceTrace()`, `analyzeDynamics()` mass source consumption, and story-mass single-source test |
 
 ## Added Review Finding
 
-The previous M13 implementation covered loads, CQC, buckling, and THA helpers, but did not expose the load-to-mass-source contract required by P3-T82. P3-M13 now includes `MASS_SOURCE_TRACE_VERSION`, which records:
+The previous M13 implementation covered loads, CQC, buckling, and THA helpers, but did not expose the load-to-mass-source contract required by P3-T82. P3-M13 now includes `MASS_SOURCE_TRACE_VERSION`, and the trace is consumed by modal/RSA mass assembly and story-mass summaries when `analysisSettings.massSource` is present. It records:
 
 1. source combinations such as `D + 0.25L`
 2. existing node mass inclusion
@@ -31,7 +31,7 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 
 ## Current Test Gate
 
-`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, linear THA, modal THA, buckling trace, and mass source trace.
+`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, linear THA, modal THA, buckling trace, mass source trace, dynamic mass assembly, and story-mass single-source behavior.
 
 ## Remaining Limits
 

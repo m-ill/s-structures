@@ -3,6 +3,8 @@ import {
   DYNAMIC_COMPLETENESS_VERSION,
   LOADS_V2_VERSION,
   MASS_SOURCE_TRACE_VERSION,
+  analyzeDynamics,
+  buildStoryMassSummary,
   buildCqcCombinationReport,
   buildLoadsV2Trace,
   buildMassSourceTrace,
@@ -93,6 +95,24 @@ assert.equal(massTrace.version, MASS_SOURCE_TRACE_VERSION);
 assert.equal(massTrace.nodeCount, 2);
 assert.ok(massTrace.totalMass > 3);
 assert.ok(massTrace.rows.find((row) => row.node === 'N1').sources.includes('node.mass'));
+
+const dynamicMassModel = createTwoStoryElasticFrameModel();
+dynamicMassModel.analysisSettings.massSource = {
+  combos: [{ case: 'D', factor: 1 }, { case: 'L', factor: 0.25 }],
+  includeNodeMass: false,
+};
+dynamicMassModel.loads.push(
+  { id: 'D-MASS-1', type: 'nodal', node: 'N222', P: 98.0665, dir: '-z', case: 'D' },
+  { id: 'L-MASS-1', type: 'nodal', node: 'N223', P: 39.2266, dir: '-z', case: 'L' },
+);
+const dynamicMass = analyzeDynamics(dynamicMassModel);
+assert.equal(dynamicMass.mass.source, 'analysisSettings.massSource');
+assert.equal(dynamicMass.mass.massSource.version, MASS_SOURCE_TRACE_VERSION);
+assert.ok(dynamicMass.mass.massSource.rows.some((row) => row.sources.includes('load:D')));
+const storyMass = buildStoryMassSummary(dynamicMassModel);
+assert.equal(storyMass.source, 'analysisSettings.massSource');
+assert.equal(storyMass.massSourceVersion, MASS_SOURCE_TRACE_VERSION);
+assert.ok(storyMass.totalMass > 10);
 
 const scaling = scaleRsaBaseShear(50, 100, 0.85);
 assert.equal(scaling.scaleFactor, 1.7);
