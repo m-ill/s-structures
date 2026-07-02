@@ -167,6 +167,10 @@ assert.equal(updatedLaunchReadiness.finalUseReview.status, 'FINAL_USE_REVIEW_REQ
 const practiceValidationReview = agent.getPhase3PracticeValidationReview();
 assert.ok(practiceValidationReview.summary.affectedMilestones.includes('P3-M20'));
 assert.equal(practiceValidationReview.summary.agentDecision, 'collect-practice-validation-evidence-before-production-use');
+assert.equal(practiceValidationReview.summary.evidenceAcceptedCount, 3);
+assert.equal(practiceValidationReview.rows.find((row) => row.id === 'drawing-import').evidenceCoverage.acceptedCount, 1);
+assert.equal(practiceValidationReview.rows.find((row) => row.id === 'point-cloud-import').evidenceCoverage.acceptedCount, 1);
+assert.ok(practiceValidationReview.summary.missing.includes('drawing-import'));
 
 console.log(JSON.stringify({
   ok: true,

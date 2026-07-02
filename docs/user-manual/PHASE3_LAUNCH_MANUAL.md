@@ -82,4 +82,6 @@ For file-backed drawing or point-cloud evidence, upload the file first and submi
 
 `getPhase3DrawingImportValidationReview()` and `getPhase3PointCloudValidationReview()` expose project evidence under `evidenceCoverage` when called through the in-page agent. Evidence coverage shows accepted file/review records, but it does not replace candidate validation, overlay review, benchmark, or owner review rows.
 
+`getPhase3PracticeValidationReview()` also summarizes project evidence by practical validation domain. Its `summary.missing` field lists domains whose required evidence IDs are not yet accepted; `productionReady` still remains false until owner and engineering approval is explicit.
+
 Manual launch evidence remains in `reports/launch-readiness/`.

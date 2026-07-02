@@ -285,8 +285,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       state.register = buildPhase3EvidenceRegister({ evidence: state.evidence });
       return cloneJson(state);
     },
-    getPhase3PracticeValidationReview() {
-      return cloneJson(buildPhase3PracticeValidationReview());
+    getPhase3PracticeValidationReview(options = {}) {
+      if (!hasEvidenceInput(options)) {
+        return cloneJson(buildPhase3PracticeValidationReview(withProjectEvidence(target, options)));
+      }
+      return cloneJson(buildPhase3PracticeValidationReview(options));
     },
     getPhase3PointCloudValidationReview(options = {}) {
       if (!hasEvidenceInput(options)) {
@@ -856,7 +859,7 @@ function buildLaunchEvidence(target, options = {}) {
   const supplied = options.evidence || options;
   const projectEvidence = getProjectEvidenceState(target);
   return {
-    practiceValidationReview: buildPhase3PracticeValidationReview(),
+    practiceValidationReview: buildPhase3PracticeValidationReview({ evidence: projectEvidence.evidence }),
     ownerSignoffReview: buildPhase3OwnerSignoffReview({ evidence: projectEvidence.evidence }),
     evidenceRegister: projectEvidence.register,
     ...supplied,

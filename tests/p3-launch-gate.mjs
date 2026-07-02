@@ -125,6 +125,7 @@ assert.ok(launch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T67
 assert.equal(launch.status, 'OK');
 assert.equal(launch.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
 assert.deepEqual(launch.finalUseReview.blockingReviews, ['practice-validation', 'owner-signoff', 'evidence-register']);
+assert.ok(launch.finalUseReview.rows.find((row) => row.id === 'practice-validation').missing.includes('drawing-import'));
 assert.equal(launch.finalUseReview.rows.find((row) => row.id === 'owner-signoff').missing.length, 7);
 assert.equal(launch.summary.finalUseReviewStatus, 'FINAL_USE_REVIEW_REQUIRED');
 assert.equal(launch.summary.blockingReviewCount, 3);

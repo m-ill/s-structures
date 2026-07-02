@@ -1,4 +1,4 @@
-export const PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION = 'p3-practice-validation-review-v1';
+export const PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION = 'p3-practice-validation-review-v2';
 
 const ROWS = [
   row('drawing-import', ['P3-M6', 'P3-M7'], [
@@ -36,8 +36,19 @@ const ROWS = [
   ], ['getPhase3ProductizationMilestoneReview', 'getLaunchReadinessReport'], ['docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md', 'docs/verification/P3_M20_LAUNCH_READINESS_VERIFICATION.md']),
 ];
 
-export function buildPhase3PracticeValidationReview() {
-  const rows = ROWS.map(copyRow);
+const EVIDENCE_IDS_BY_DOMAIN = {
+  'drawing-import': ['real-office-dxf-fixtures', 'external-dwg-converter-log', 'import-review-overlay'],
+  'point-cloud-import': ['real-pointcloud-files', 'large-pointcloud-performance', 'real-scan-extraction-validation'],
+  'elastic-core': ['project-kds-load-review'],
+  'nonlinear-engine': ['nonlinear-solver-certification', 'hinge-fiber-nlth-qualification'],
+  'detailed-design': ['final-code-clause-selection', 'detailing-constructability-approval'],
+  productization: ['owner-license-policy', 'deployment-target-selection', 'field-pilot-feedback', 'backup-restore-rehearsal', 'security-signoff'],
+};
+
+export function buildPhase3PracticeValidationReview(input = {}) {
+  const evidence = normalizeEvidence(input.evidence || input.projectEvidence || []);
+  const rows = ROWS.map((item) => copyRow(item, evidence));
+  const missing = rows.filter((item) => item.evidenceCoverage.missing.length).map((item) => item.id);
   return {
     version: PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
     scope: 'Phase 3 practical validation items before production structural-office use',
@@ -52,6 +63,8 @@ export function buildPhase3PracticeValidationReview() {
       rowCount: rows.length,
       affectedMilestones: [...new Set(rows.flatMap((item) => item.milestones))],
       requiredEvidenceCount: rows.reduce((sum, item) => sum + item.requiredEvidence.length, 0),
+      evidenceAcceptedCount: rows.reduce((sum, item) => sum + item.evidenceCoverage.acceptedCount, 0),
+      missing,
       productionReady: false,
       ownerReviewRequired: true,
       agentDecision: 'collect-practice-validation-evidence-before-production-use',
@@ -83,12 +96,49 @@ function row(id, milestones, requiredEvidence, readApis, sourceDocs) {
   };
 }
 
-function copyRow(item) {
+function copyRow(item, evidence) {
+  const evidenceCoverage = buildEvidenceCoverage(item.id, evidence);
   return {
     ...item,
     milestones: [...item.milestones],
     requiredEvidence: [...item.requiredEvidence],
     readApis: [...item.readApis],
     sourceDocs: [...item.sourceDocs],
+    evidenceCoverage,
+  };
+}
+
+function buildEvidenceCoverage(domain, evidence) {
+  const requiredIds = EVIDENCE_IDS_BY_DOMAIN[domain] || [];
+  const rows = requiredIds.map((id) => {
+    const matches = evidence.filter((item) => item.id === id);
+    const accepted = matches.some((item) => item.accepted === true || item.status === 'accepted');
+    return {
+      id,
+      accepted,
+      evidenceCount: matches.length,
+      fileIds: matches.map((item) => item.fileId).filter(Boolean),
+      reportPaths: matches.map((item) => item.reportPath || item.reviewReportPath).filter(Boolean),
+    };
+  });
+  return {
+    requiredIds,
+    acceptedCount: rows.filter((row) => row.accepted).length,
+    missing: rows.filter((row) => !row.accepted).map((row) => row.id),
+    rows,
+  };
+}
+
+function normalizeEvidence(evidence) {
+  if (Array.isArray(evidence)) return evidence.map(normalizeRow);
+  return Object.entries(evidence || {}).map(([id, value]) => normalizeRow({ id, ...(value || {}) }));
+}
+
+function normalizeRow(row = {}) {
+  return {
+    ...row,
+    id: String(row.id || '').trim(),
+    status: String(row.status || '').trim().toLowerCase(),
+    accepted: row.accepted === true,
   };
 }
