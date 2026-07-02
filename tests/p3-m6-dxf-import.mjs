@@ -146,6 +146,45 @@ assert.deepEqual(blockCandidate.audit.orphans.unknownKindMembers, []);
 assert.equal(blockCandidate.candidates.members.length, 4);
 assert.deepEqual(blockCandidate.candidates.members.map((member) => member.kind).sort(), ['beam', 'brace', 'column', 'column']);
 
+const circleText = [
+  '0', 'SECTION',
+  '2', 'HEADER',
+  '9', '$INSUNITS',
+  '70', '6',
+  '0', 'ENDSEC',
+  '0', 'SECTION',
+  '2', 'ENTITIES',
+  '0', 'LINE',
+  '8', 'S-BEAM',
+  '10', '0',
+  '20', '0',
+  '30', '0',
+  '11', '1',
+  '21', '0',
+  '31', '0',
+  '0', 'CIRCLE',
+  '8', 'S-COL',
+  '10', '0.5',
+  '20', '0.5',
+  '30', '0',
+  '40', '0.2',
+  '0', 'ENDSEC',
+  '0', 'EOF',
+].join('\n');
+const circleGeometry = dxfEntitiesToGeometry(parseDxf(circleText));
+assert.equal(circleGeometry.audit.counts.CIRCLE, 1);
+assert.equal(circleGeometry.circles.length, 1);
+assert.equal(circleGeometry.circles[0].layer, 'S-COL');
+assert.equal(circleGeometry.circles[0].radius, 0.2);
+const circleCandidate = importDxfToCandidate(circleText, {
+  fileId: 'circle-audit.dxf',
+  layerMap: { 'S-BEAM': { kind: 'beam' }, 'S-COL': { kind: 'column' } },
+});
+assert.equal(circleCandidate.audit.counts.circles, 1);
+assert.equal(circleCandidate.audit.counts.dxfCircles, 1);
+assert.equal(circleCandidate.audit.counts.supportedEntityCount, 2);
+assert.equal(circleCandidate.audit.layers.layerUsage.find((row) => row.layer === 'S-COL').byType.CIRCLE, 1);
+
 console.log(JSON.stringify({
   ok: true,
   version: DXF_IMPORT_VERSION,
