@@ -315,6 +315,7 @@
     "getPhase3EvidenceRegister().summary.missing lists the field, engineering, and owner evidence records still needed before production review.",
     "getPhase3EvidenceRegister().summary.evidenceComplete true means the evidence register is complete for review; it does not mean final production readiness or deployment approval.",
     "submitProjectEvidence accepts only IDs listed by getPhase3EvidenceRegister().rows or a matching required evidence type label; unknown IDs are rejected.",
+    "getPhase3PracticeValidationReview().summary.requiredEvidenceIdCount is the AI-submittable evidence ID count; requiredEvidenceCount is the human checklist phrase count.",
     "Evidence register IDs may be submitted through project evidence APIs and reused by owner sign-off review aliases.",
     "Milestone review APIs expose exitCriteria and exitCriteriaSummary; automated-exit-criteria-covered means written-plan criteria have regression evidence, not production approval.",
     "Agents must still inspect remainingValidation, productionBlockers, finalUseBlockedBy, productionReady, and finalApprovalField after exitCriteria are covered.",

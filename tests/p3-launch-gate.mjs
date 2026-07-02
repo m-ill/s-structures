@@ -64,11 +64,14 @@ assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalA
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('exitCriteriaSummary')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('remainingValidation')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalUseReview.requiredReviews')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('requiredEvidenceIdCount')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('exitCriteriaSummary')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('finalUseReview.requiredReviews')));
+assert.ok(manifest.interpretationRules.some((rule) => rule.includes('requiredEvidenceIdCount')));
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.agentSafeStatus/);
 assert.match(launchManual, /finalUseReview\.requiredReviews/);
+assert.match(launchManual, /requiredEvidenceIdCount/);
 assert.match(launchManual, /LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED/);
 assert.match(launchManual, /OWNER_REVIEW_REQUIRED/);
 assert.match(launchManual, /exitCriteriaSummary/);

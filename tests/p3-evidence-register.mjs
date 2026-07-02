@@ -9,13 +9,16 @@ import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
 const empty = buildPhase3EvidenceRegister();
 assert.equal(empty.version, PHASE3_EVIDENCE_REGISTER_VERSION);
-assert.equal(empty.summary.requiredCount, 16);
+assert.equal(empty.summary.requiredCount, 25);
 assert.equal(empty.summary.acceptedCount, 0);
 assert.equal(empty.summary.evidenceComplete, false);
 assert.equal(empty.summary.productionReady, false);
 assert.equal(empty.summary.agentDecision, 'collect-phase3-evidence');
 assert.ok(empty.summary.missing.includes('real-office-dxf-fixtures'));
 assert.ok(empty.summary.missing.includes('real-pointcloud-files'));
+assert.ok(empty.summary.missing.includes('office-grade-ks-catalog-policy'));
+assert.ok(empty.summary.missing.includes('simultaneous-hinge-equilibrium-qualification'));
+assert.ok(empty.summary.missing.includes('final-structural-signoff'));
 assert.ok(empty.summary.missing.includes('nonlinear-solver-certification'));
 assert.ok(empty.summary.missing.includes('security-signoff'));
 assert.ok(empty.agentUse.relatedApis.includes('getPhase3OwnerSignoffReview'));
@@ -35,14 +38,16 @@ assert.ok(partial.summary.missing.includes('external-dwg-converter-log'));
 const full = buildPhase3EvidenceRegister({
   evidence: empty.rows.map((row) => ({ id: row.id, accepted: true })),
 });
-assert.equal(full.summary.acceptedCount, 16);
+assert.equal(full.summary.acceptedCount, 25);
 assert.deepEqual(full.summary.missing, []);
 assert.equal(full.summary.evidenceComplete, true);
 assert.equal(full.summary.agentDecision, 'phase3-evidence-ready-for-owner-and-engineer-review');
 assert.equal(full.summary.productionReady, false);
 
 assert.equal(validatePhase3EvidenceRecord({ id: 'security-signoff' }).ok, true);
+assert.equal(validatePhase3EvidenceRecord({ id: 'final-structural-signoff' }).ok, true);
 assert.equal(validatePhase3EvidenceRecord({ type: 'security sign-off' }).ok, true);
+assert.equal(validatePhase3EvidenceRecord({ type: 'office-grade KS material and section catalog policy' }).ok, true);
 const invalidRecord = validatePhase3EvidenceRecord({ id: 'not-in-phase3-plan' });
 assert.equal(invalidRecord.ok, false);
 assert.equal(invalidRecord.reason, 'unknown-phase3-evidence');

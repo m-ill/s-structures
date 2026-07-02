@@ -16,6 +16,8 @@ assert.ok(review.summary.missing.includes('productization'));
 assert.equal(review.summary.productionReady, false);
 assert.equal(review.summary.ownerReviewRequired, true);
 assert.equal(review.summary.agentDecision, 'collect-practice-validation-evidence-before-production-use');
+assert.equal(review.summary.requiredEvidenceCount, 21);
+assert.equal(review.summary.requiredEvidenceIdCount, 25);
 assert.ok(review.sourceDocs.includes('docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md'));
 assert.ok(review.summary.affectedMilestones.includes('P3-M20'));
 assert.ok(review.agentUse.finalApprovalFields.includes('productionDeploymentApproved'));
@@ -30,10 +32,17 @@ assert.deepEqual(drawing.evidenceCoverage.missing, ['real-office-dxf-fixtures', 
 const nonlinear = review.rows.find((row) => row.id === 'nonlinear-engine');
 assert.ok(nonlinear.requiredEvidence.includes('simultaneous hinge-controlled equilibrium qualification'));
 assert.ok(nonlinear.readApis.includes('getNonlinearAnalysisTrace'));
+assert.ok(nonlinear.evidenceCoverage.missing.includes('simultaneous-hinge-equilibrium-qualification'));
+assert.ok(nonlinear.evidenceCoverage.missing.includes('production-seismic-qualification'));
+
+const elastic = review.rows.find((row) => row.id === 'elastic-core');
+assert.ok(elastic.evidenceCoverage.missing.includes('office-grade-ks-catalog-policy'));
+assert.ok(elastic.evidenceCoverage.missing.includes('shell-wall-slab-production-validation'));
 
 const productization = review.rows.find((row) => row.id === 'productization');
 assert.ok(productization.requiredEvidence.includes('field pilot feedback and backup restore owner acceptance'));
 assert.ok(productization.readApis.includes('getLaunchReadinessReport'));
+assert.ok(productization.evidenceCoverage.missing.includes('final-structural-signoff'));
 
 const partialEvidence = buildPhase3PracticeValidationReview({
   evidence: [

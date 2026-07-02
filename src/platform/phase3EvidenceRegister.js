@@ -1,4 +1,4 @@
-export const PHASE3_EVIDENCE_REGISTER_VERSION = 'p3-evidence-register-v2';
+export const PHASE3_EVIDENCE_REGISTER_VERSION = 'p3-evidence-register-v3';
 
 export const PHASE3_REQUIRED_EVIDENCE = [
   req('real-office-dxf-fixtures', 'drawing-import', 'P3-M6', 'real office DXF fixture set'),
@@ -7,11 +7,20 @@ export const PHASE3_REQUIRED_EVIDENCE = [
   req('real-pointcloud-files', 'point-cloud-import', 'P3-M8', 'owner-provided real point-cloud files'),
   req('large-pointcloud-performance', 'point-cloud-import', 'P3-M8', 'large-file performance record'),
   req('real-scan-extraction-validation', 'point-cloud-import', 'P3-M9', 'beam and wall validation without synthetic ground-truth assistance'),
+  req('office-grade-ks-catalog-policy', 'elastic-core', 'P3-M10', 'office-grade KS material and section catalog policy'),
   req('project-kds-load-review', 'elastic-core', 'P3-M13', 'project-specific KDS load exception review'),
+  req('shell-wall-slab-production-validation', 'elastic-core', 'P3-M12', 'shell stress recovery, meshing, and production wall/slab validation'),
+  req('dynamic-buckling-construction-benchmark', 'elastic-core', 'P3-M13', 'dynamic, buckling, and construction-sequence benchmark expansion'),
   req('nonlinear-solver-certification', 'nonlinear-engine', 'P3-M14', 'production nonlinear solver certification'),
+  req('simultaneous-hinge-equilibrium-qualification', 'nonlinear-engine', 'P3-M15', 'simultaneous hinge-controlled equilibrium qualification'),
   req('hinge-fiber-nlth-qualification', 'nonlinear-engine', 'P3-M16', 'hinge equilibrium, PMM, fiber, or NLTH qualification'),
+  req('distributed-plasticity-material-validation', 'nonlinear-engine', 'P3-M16', 'distributed plasticity and field-calibrated material validation'),
+  req('production-seismic-qualification', 'nonlinear-engine', 'P3-M16', 'production seismic qualification'),
   req('final-code-clause-selection', 'detailed-design', 'P3-M17', 'final KDS code clause selection'),
+  req('seismic-detailing-drawing-review', 'detailed-design', 'P3-M18', 'seismic detailing, constructability, and drawing review'),
   req('detailing-constructability-approval', 'detailed-design', 'P3-M18', 'detailing, constructability, fabrication, or geotechnical approval'),
+  req('fabrication-geotechnical-permit-approval', 'detailed-design', 'P3-M18', 'fabrication, geotechnical, and permit calculation approval'),
+  req('final-structural-signoff', 'productization', 'P3-M19', 'final structural sign-off'),
   req('owner-license-policy', 'productization', 'P3-M20', 'owner license policy'),
   req('deployment-target-selection', 'productization', 'P3-M20', 'deployment target'),
   req('field-pilot-feedback', 'productization', 'P3-M20', 'field pilot feedback'),

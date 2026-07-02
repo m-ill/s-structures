@@ -1,4 +1,4 @@
-export const PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION = 'p3-practice-validation-review-v2';
+export const PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION = 'p3-practice-validation-review-v3';
 
 const ROWS = [
   row('drawing-import', ['P3-M6', 'P3-M7'], [
@@ -39,10 +39,33 @@ const ROWS = [
 const EVIDENCE_IDS_BY_DOMAIN = {
   'drawing-import': ['real-office-dxf-fixtures', 'external-dwg-converter-log', 'import-review-overlay'],
   'point-cloud-import': ['real-pointcloud-files', 'large-pointcloud-performance', 'real-scan-extraction-validation'],
-  'elastic-core': ['project-kds-load-review'],
-  'nonlinear-engine': ['nonlinear-solver-certification', 'hinge-fiber-nlth-qualification'],
-  'detailed-design': ['final-code-clause-selection', 'detailing-constructability-approval'],
-  productization: ['owner-license-policy', 'deployment-target-selection', 'field-pilot-feedback', 'backup-restore-rehearsal', 'security-signoff'],
+  'elastic-core': [
+    'office-grade-ks-catalog-policy',
+    'project-kds-load-review',
+    'shell-wall-slab-production-validation',
+    'dynamic-buckling-construction-benchmark',
+  ],
+  'nonlinear-engine': [
+    'nonlinear-solver-certification',
+    'simultaneous-hinge-equilibrium-qualification',
+    'hinge-fiber-nlth-qualification',
+    'distributed-plasticity-material-validation',
+    'production-seismic-qualification',
+  ],
+  'detailed-design': [
+    'final-code-clause-selection',
+    'seismic-detailing-drawing-review',
+    'detailing-constructability-approval',
+    'fabrication-geotechnical-permit-approval',
+  ],
+  productization: [
+    'final-structural-signoff',
+    'owner-license-policy',
+    'deployment-target-selection',
+    'field-pilot-feedback',
+    'backup-restore-rehearsal',
+    'security-signoff',
+  ],
 };
 
 export function buildPhase3PracticeValidationReview(input = {}) {
@@ -63,6 +86,7 @@ export function buildPhase3PracticeValidationReview(input = {}) {
       rowCount: rows.length,
       affectedMilestones: [...new Set(rows.flatMap((item) => item.milestones))],
       requiredEvidenceCount: rows.reduce((sum, item) => sum + item.requiredEvidence.length, 0),
+      requiredEvidenceIdCount: rows.reduce((sum, item) => sum + item.evidenceCoverage.requiredIds.length, 0),
       evidenceAcceptedCount: rows.reduce((sum, item) => sum + item.evidenceCoverage.acceptedCount, 0),
       missing,
       productionReady: false,
