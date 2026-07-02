@@ -92,7 +92,7 @@ import { MATERIAL_SCHEMA_VERSION } from '../materials/materialSchema.js';
 import { SECTION_SCHEMA_VERSION } from '../materials/sectionSchema.js';
 import { MATERIAL_LIBRARY_REPORT_VERSION } from '../materials/libraryReport.js';
 import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
-import { WALL_SLAB_EQUIVALENT_VERSION } from '../solver/wallSlabEquivalent.js';
+import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../solver/wallSlabEquivalent.js';
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
 import { NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
@@ -197,6 +197,7 @@ export function buildAgentManifest(options = {}) {
       phase3MaterialLibraryReport: MATERIAL_LIBRARY_REPORT_VERSION,
       phase3ElasticExpansion: ELASTIC_EXPANSION_VERSION,
       phase3WallSlabEquivalent: WALL_SLAB_EQUIVALENT_VERSION,
+      phase3WallSlabTrace: WALL_SLAB_TRACE_VERSION,
       phase3LoadsV2: LOADS_V2_VERSION,
       phase3DynamicCompleteness: DYNAMIC_COMPLETENESS_VERSION,
       phase3NonlinearTrace: NONLINEAR_TRACE_VERSION,
@@ -357,6 +358,7 @@ export function buildAgentManifest(options = {}) {
       'phase3MaterialLibraryReport',
       'phase3ElasticExpansionTrace',
       'phase3WallSlabEquivalentTrace',
+      'phase3WallSlabTrace',
       'phase3LoadsV2Trace',
       'phase3DynamicCompletenessTrace',
       'phase3NonlinearAnalysisTrace',

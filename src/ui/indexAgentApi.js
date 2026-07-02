@@ -19,6 +19,7 @@ import {
   buildKdsLoadStandardAudit,
   buildConnectionFoundationReport,
   buildMemberDesignTraceReport,
+  buildWallSlabEquivalentTrace,
   buildP3DetailedDesignReport,
   buildP3IntegratedResults,
   buildLaunchReadinessReport,
@@ -264,7 +265,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     getWallSlabEquivalentTrace() {
       const model = getCurrentModel(target);
       if (!model) return null;
-      return cloneJson(summarizeSemiRigidDiaphragm(model));
+      return cloneJson(buildWallSlabEquivalentTrace(model, getAnalysis(model)));
     },
     getLoadsV2Trace(options = {}) {
       const model = getCurrentModel(target);

@@ -1,8 +1,11 @@
 import assert from 'node:assert/strict';
 import {
   WALL_SLAB_EQUIVALENT_VERSION,
+  WALL_SLAB_TRACE_VERSION,
   addWallMidPierToModel,
   analyzeModel,
+  buildAgentManifest,
+  buildWallSlabEquivalentTrace,
   createModel,
   recoverWallPierForces,
   summarizeSemiRigidDiaphragm,
@@ -28,6 +31,12 @@ assert.equal(wallAnalysis.ok, true, JSON.stringify(wallAnalysis.validation.error
 const pierForces = recoverWallPierForces(wallModel, wallAnalysis);
 assert.equal(pierForces.length, 1);
 assert.ok(pierForces[0].Mz > 0 || pierForces[0].My > 0);
+const trace = buildWallSlabEquivalentTrace(wallModel, wallAnalysis);
+assert.equal(trace.version, WALL_SLAB_TRACE_VERSION);
+assert.equal(trace.wallMidPier.count, 1);
+assert.equal(trace.wallMidPier.rows[0].recoveryAvailable, true);
+assert.equal(trace.shell.status, 'not-implemented');
+assert.ok(buildAgentManifest().dataContracts.includes('phase3WallSlabTrace'));
 
 const summary = summarizeSemiRigidDiaphragm({ diaphragms: [{ id: 'D1', type: 'semiRigid', nodeIds: ['N1', 'N2'], inPlaneStiffness: 1000 }] });
 assert.equal(summary.semiRigidCount, 1);
