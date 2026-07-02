@@ -32,19 +32,20 @@ assert.ok(unlocked.integratedGate.contract.reviewFields.includes('summary.ticket
 assert.equal(unlocked.integratedGate.contract.maturity, 'preliminary-integrated-results');
 assert.equal(unlocked.integratedGate.ok, false);
 assert.equal(unlocked.integratedGate.summary.readyForReviewer, false);
-assert.equal(unlocked.integratedGate.summary.completeTicketCoverage, true);
+assert.equal(unlocked.integratedGate.summary.completeTicketCoverage, false);
 assert.equal(unlocked.integratedGate.integratedReview.status, 'review-required');
 assert.equal(unlocked.integratedGate.integratedReview.finalStructuralSignoff, false);
 assert.equal(unlocked.integratedGate.integratedReview.launchReady, false);
 assert.equal(unlocked.integratedGate.integratedReview.agentDecision, 'hold-before-m20-launch-gate');
 assert.ok(unlocked.integratedGate.integratedReview.missing.includes('detailed-design-review'));
 assert.ok(unlocked.integratedGate.integratedReview.missing.includes('design-issues'));
+assert.ok(unlocked.integratedGate.integratedReview.missing.includes('ticket-coverage'));
 assert.equal(unlocked.integratedGate.integratedReview.designIssueRows, unlocked.design.issueRows.length);
-assert.equal(unlocked.integratedGate.summary.coveredTicketCount, 4);
+assert.equal(unlocked.integratedGate.summary.coveredTicketCount, 3);
 assert.equal(unlocked.summary.analysisOk, true);
 assert.equal(unlocked.summary.gateOk, false);
 assert.equal(unlocked.summary.readyForReviewer, false);
-assert.equal(unlocked.summary.completeTicketCoverage, true);
+assert.equal(unlocked.summary.completeTicketCoverage, false);
 assert.equal(unlocked.summary.benchmarkOk, true);
 assert.equal(unlocked.summary.notCheckedCount, 0);
 assert.ok(unlocked.summary.designItems > 0);
@@ -57,7 +58,8 @@ assert.ok(unlocked.integratedGate.coverage.methodLimitations > 0);
 assert.equal(unlocked.integratedGate.summary.methodLimitationCount, unlocked.integratedGate.coverage.methodLimitations);
 assert.deepEqual(unlocked.integratedGate.ticketCoverage.map((row) => row.ticket), ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62']);
 assert.deepEqual(unlocked.integratedGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62']);
-assert.ok(unlocked.integratedGate.ticketCoverage.every((row) => row.covered));
+assert.equal(unlocked.integratedGate.ticketCoverage.find((row) => row.ticket === 'P3-T58').covered, false);
+assert.match(unlocked.integratedGate.ticketCoverage.find((row) => row.ticket === 'P3-T58').evidence, /designReview=review-required/);
 assert.ok(unlocked.integratedGate.ticketCoverage.find((row) => row.ticket === 'P3-T62').evidence.includes('geometry:OK'));
 
 const cleanGate = buildP3IntegratedResultsGate({

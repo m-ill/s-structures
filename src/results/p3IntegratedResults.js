@@ -204,6 +204,8 @@ function buildTicketCoverage(input) {
   const capacityPoints = input.nonlinear?.capacityCurve?.length || 0;
   const nonlinearStepRows = input.nonlinear?.steps?.length || 0;
   const designItems = input.design?.summary?.itemCount || 0;
+  const designReviewReady = input.design?.designGate?.designReview?.status === 'trace-ready';
+  const designIssueRows = input.design?.issueRows?.length || 0;
   return [
     {
       ticket: 'P3-T58',
@@ -214,8 +216,10 @@ function buildTicketCoverage(input) {
         && (storyRows > 0 || memberRows > 0)
         && capacityPoints > 0
         && nonlinearStepRows > 0
-        && designItems > 0,
-      evidence: `${storyRows} story rows, ${memberRows} member rows, ${capacityPoints} capacity points, ${nonlinearStepRows} nonlinear steps, ${designItems} design items`,
+        && designItems > 0
+        && designReviewReady
+        && designIssueRows === 0,
+      evidence: `${storyRows} story rows, ${memberRows} member rows, ${capacityPoints} capacity points, ${nonlinearStepRows} nonlinear steps, ${designItems} design items, designReview=${designReviewReady ? 'trace-ready' : 'review-required'}, designIssues=${designIssueRows}`,
     },
     {
       ticket: 'P3-T59',
