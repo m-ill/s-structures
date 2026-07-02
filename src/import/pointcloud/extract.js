@@ -37,8 +37,19 @@ export function buildPointCloudExtractionSummary(input = {}) {
     },
     evidence: {
       storyLevels: stories.map((s) => ({ id: s.id, z: s.z, confidence: s.confidence ?? null })),
+      candidates: buildCandidateEvidence(stories, columns, beams, usedGroundTruth),
+      confidenceBands: {
+        high: '>=0.8',
+        review: '0.5-0.8',
+        auditOnly: '<0.5',
+      },
       beamSource: usedGroundTruth ? 'synthetic-ground-truth-assisted' : 'not-detected',
       realScanValidation: 'pending-owner-file',
+      wallExtraction: {
+        status: 'not-v1-production',
+        reason: 'plane-extraction-and-panel-grouping-require-real-scan-validation',
+        candidateCount: 0,
+      },
     },
     limitations: [
       ...(usedGroundTruth ? ['beam-detection-uses-synthetic-ground-truth'] : ['beam-detection-not-available-without-ground-truth']),
@@ -46,6 +57,44 @@ export function buildPointCloudExtractionSummary(input = {}) {
       'real-field-pointcloud-validation-pending',
     ],
   };
+}
+
+function buildCandidateEvidence(stories, columns, beams, usedGroundTruth) {
+  return {
+    stories: stories.map((story) => ({
+      id: story.id,
+      z: story.z,
+      confidence: story.confidence ?? null,
+      band: confidenceBand(story.confidence),
+      evidence: ['z-histogram-cluster'],
+    })),
+    columns: columns.map((column, index) => ({
+      id: `C${index + 1}`,
+      x: column.x,
+      y: column.y,
+      z1: column.z1,
+      z2: column.z2,
+      confidence: column.confidence ?? null,
+      band: confidenceBand(column.confidence),
+      evidence: ['vertical-continuity', 'xy-cluster', 'story-span-support'],
+    })),
+    beams: beams.map((beam, index) => ({
+      id: `B${index + 1}`,
+      from: beam.from,
+      to: beam.to,
+      confidence: beam.confidence ?? null,
+      band: confidenceBand(beam.confidence),
+      evidence: usedGroundTruth ? ['synthetic-ground-truth-assisted'] : ['not-detected'],
+    })),
+    walls: [],
+  };
+}
+
+function confidenceBand(value) {
+  if (!Number.isFinite(value)) return 'unknown';
+  if (value >= 0.8) return 'high';
+  if (value >= 0.5) return 'review';
+  return 'audit-only';
 }
 
 function summarizeConfidence(columns, beams) {
