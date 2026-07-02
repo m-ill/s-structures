@@ -41,6 +41,20 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     version: P3_DETAILED_DESIGN_GATE_VERSION,
     milestone: 'P3-M18',
     tickets: ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95'],
+    contract: {
+      milestone: 'P3-M18',
+      tickets: ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95'],
+      scope: 'Integrated steel, connection, foundation, formula, issue, and serviceability detailed-design trace gate.',
+      featureTicketMap: {
+        steelMember: 'P3-T91',
+        connectionBasePlate: 'P3-T92',
+        foundation: 'P3-T93',
+        reportIssueFormula: 'P3-T94',
+        serviceabilityHook: 'P3-T95',
+      },
+      reviewFields: ['summary.ticketCoverage', 'coverage', 'modules', 'issueCount', 'formulaCount', 'unregisteredFormulaCount'],
+      agentUse: 'Read-only gate for reports and AI-agent inspection of P3-M18 detailed-design integration.',
+    },
     coverage: buildTicketCoverage(modules, issueRows, formulaTrace),
     summary: {
       readyForAgentReview: true,
@@ -50,6 +64,7 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
       unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
       serviceabilityHook: 'drift-deflection-vibration-ready',
       moduleStatuses: summarizeModuleStatuses(modules),
+      ticketCoverage: buildTicketCoverage(modules, issueRows, formulaTrace),
     },
     modules: Object.fromEntries(Object.entries(modules).map(([id, module]) => [id, {
       version: module.version || null,
@@ -59,6 +74,7 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     }])),
     issueCount: issueRows.length,
     formulaCount: formulaTrace.length,
+    ticketCoverage: buildTicketCoverage(modules, issueRows, formulaTrace),
     formulaRegistryVersion: DESIGN_FORMULA_REGISTRY_VERSION,
     unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,
     serviceabilityHook: 'drift-deflection-vibration-ready',
@@ -112,11 +128,17 @@ function buildTicketCoverage(modules, issueRows, formulaTrace) {
   const connectionRows = rowsOf(modules.connection || {});
   const foundationRows = rowsOf(modules.foundation || {});
   return [
-    { ticket: 'P3-T91', scope: 'steel', count: steelRows.length, covered: steelRows.length > 0 },
-    { ticket: 'P3-T92', scope: 'connection', count: connectionRows.length, covered: connectionRows.length > 0 },
-    { ticket: 'P3-T93', scope: 'foundation', count: foundationRows.length, covered: foundationRows.length > 0 },
-    { ticket: 'P3-T94', scope: 'report-issue-formula-link', count: issueRows.filter((row) => (row.formulaIds || []).length > 0).length, covered: formulaTrace.length > 0 },
-    { ticket: 'P3-T95', scope: 'serviceability-hook', count: 1, covered: true },
+    { ticket: 'P3-T91', scope: 'steel', count: steelRows.length, covered: steelRows.length > 0, evidence: `${steelRows.length} steel rows` },
+    { ticket: 'P3-T92', scope: 'connection', count: connectionRows.length, covered: connectionRows.length > 0, evidence: `${connectionRows.length} connection rows` },
+    { ticket: 'P3-T93', scope: 'foundation', count: foundationRows.length, covered: foundationRows.length > 0, evidence: `${foundationRows.length} foundation rows` },
+    {
+      ticket: 'P3-T94',
+      scope: 'report-issue-formula-link',
+      count: issueRows.filter((row) => (row.formulaIds || []).length > 0).length,
+      covered: formulaTrace.length > 0,
+      evidence: `${formulaTrace.length} formula rows, ${issueRows.length} issue rows`,
+    },
+    { ticket: 'P3-T95', scope: 'serviceability-hook', count: 1, covered: true, evidence: 'drift-deflection-vibration-ready' },
   ];
 }
 

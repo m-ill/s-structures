@@ -70,6 +70,10 @@ assert.equal(integrated.version, P3_DETAILED_DESIGN_REPORT_VERSION);
 assert.equal(integrated.contract.milestone, 'P3-M18');
 assert.equal(integrated.designGate.version, P3_DETAILED_DESIGN_GATE_VERSION);
 assert.deepEqual(integrated.designGate.tickets, ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95']);
+assert.equal(integrated.designGate.contract.milestone, 'P3-M18');
+assert.deepEqual(integrated.designGate.contract.tickets, ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95']);
+assert.equal(integrated.designGate.contract.featureTicketMap.steelMember, 'P3-T91');
+assert.ok(integrated.designGate.contract.reviewFields.includes('summary.ticketCoverage'));
 assert.equal(integrated.designGate.summary.readyForAgentReview, true);
 assert.equal(integrated.designGate.summary.completeCoverage, true);
 assert.ok(integrated.modules.steel.rows.length > 0);
@@ -82,6 +86,8 @@ assert.equal(integrated.formulaRegistryVersion, DESIGN_FORMULA_REGISTRY_VERSION)
 assert.equal(integrated.designGate.unregisteredFormulaCount, 0);
 assert.deepEqual(integrated.designGate.coverage.map((row) => row.ticket), ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95']);
 assert.ok(integrated.designGate.coverage.every((row) => row.covered));
+assert.deepEqual(integrated.designGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95']);
+assert.ok(integrated.designGate.ticketCoverage.every((row) => row.evidence));
 assert.ok(integrated.issueRows.every((row) => Array.isArray(row.formulaIds)));
 assert.ok(integrated.issueRows.some((row) => row.formulaIds.length > 0));
 

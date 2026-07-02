@@ -45,6 +45,8 @@ Current status is preliminary. M18 adds traceable steel, connection, base-plate,
 
 2026-07-02 contract review update: P3-M18 steel, connection, bolt, weld, base-plate, and foundation rows now expose ticket-specific contracts and compact summaries. The integrated detailed-design report exposes a top-level P3-M18 contract, and `designGate.summary` reports agent-readiness, complete ticket coverage, issue count, formula count, unregistered formula count, serviceability hook, and module status counts.
 
+2026-07-02 ticket coverage review update: `designGate` now exposes a formal P3-M18 contract, feature-to-ticket map, and `summary.ticketCoverage`/`ticketCoverage` rows for P3-T91 to P3-T95. Coverage rows include evidence strings for steel, connection, foundation, formula/issue linking, and serviceability hooks so reports and AI agents can use the same gate pattern as M17.
+
 ## P3-M19 Integrated Results And Report
 
 Scope follows `docs/phase3/ROADMAP.md` Stage F and `docs/phase3/IMPLEMENTATION_BACKLOG.md` P3-T58, P3-T59, P3-T61, and P3-T62.
