@@ -281,6 +281,7 @@ export {
   summarizeKdsLoadCombinationRules,
 } from './core/kdsLoadCombinations.js';
 export {
+  buildHingeDegradedModel,
   buildLateralPatternLoads,
   PUSHOVER_VERSION,
   PUSHOVER_SOURCE_VERSION,

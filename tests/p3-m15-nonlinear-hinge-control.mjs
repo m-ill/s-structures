@@ -11,6 +11,7 @@ import {
   PUSHOVER_SOURCE_VERSION,
   buildArcLengthTrace,
   buildDisplacementControlTrace,
+  buildHingeDegradedModel,
   buildHingeStateTrace,
   buildPushoverControlTrace,
   buildNonlinearAnalysisTrace,
@@ -73,7 +74,11 @@ assert.equal(pushover.sourceVersion, PUSHOVER_SOURCE_VERSION);
 assert.equal(pushover.contract.milestone, 'P3-M15');
 assert.ok(pushover.contract.tickets.includes('P3-T56'));
 assert.ok(pushover.capacityCurve.length > 0);
-assert.equal(pushover.method.hinges, 'concentrated-M-theta-preliminary');
+assert.equal(pushover.method.hinges, 'concentrated-M-theta-secant-update');
+assert.equal(pushover.method.stiffnessUpdate, 'previous-step-hinge-secant-stiffness');
+assert.equal(pushover.hingeDegradation.enabled, true);
+assert.equal(pushover.hingeDegradation.trace.length, pushover.capacityCurve.length);
+assert.ok(pushover.steps.every((step) => Number.isFinite(step.minStiffnessFactor)));
 assert.equal(pushover.control.type, 'load-control');
 assert.equal(pushover.steps[0].controlType, 'load-control');
 assert.ok(pushover.steps.every((step) => Array.isArray(step.hingeEvents)));
@@ -90,6 +95,19 @@ const regression = comparePushoverRegression(pushover, { capacityCurve: pushover
 assert.equal(regression.maxBaseShearDiff, 0);
 const pushoverWithBaseline = runFormalPushover(model, { steps: 4, referenceBaseShear: 30, baseline: pushover });
 assert.equal(pushoverWithBaseline.regression.maxRoofDispDiff, 0);
+const degradedModel = buildHingeDegradedModel(model, {
+  [model.members[0].id]: { overall: 'yielded', i: { ratio: 1.25 }, j: { ratio: 0 } },
+});
+assert.equal(degradedModel.summary.degradedMemberCount, 1);
+assert.ok(degradedModel.summary.minFactor < 1);
+assert.ok(degradedModel.model.members[0].secId.includes('__p3hinge_'));
+const versionedSectionModel = { ...model, members: model.members.map((member, index) => (index === 0 ? { ...member, secId: 'h300@1' } : member)) };
+const versionedDegradedModel = buildHingeDegradedModel(versionedSectionModel, {
+  [model.members[0].id]: { overall: 'yielded', i: { ratio: 1.25 }, j: { ratio: 0 } },
+});
+assert.equal(versionedDegradedModel.summary.degradedMemberCount, 1);
+assert.equal(versionedDegradedModel.model.members[0].secId.includes('@'), false);
+assert.equal(versionedDegradedModel.model.sections.at(-1).source.sourceSection, 'h300@1');
 
 const benchmarks = runNonlinearHingeControlBenchmarks({ b5: { model } });
 assert.equal(benchmarks.version, NONLINEAR_BENCHMARK_VERSION);
@@ -120,6 +138,7 @@ assert.equal(trace.hingeControlGate.contracts.hingeAssignment, HINGE_ASSIGNMENT_
 assert.ok(trace.hingeControlGate.assignment.summary.hingeCount >= model.members.length * 2);
 assert.ok(trace.hingeControlGate.tangentAssembly.hingeCorrectionCount >= 1);
 assert.equal(trace.hingeControlGate.pushover.control.type, 'load-control');
+assert.equal(trace.hingeControlGate.pushover.method.hinges, 'concentrated-M-theta-secant-update');
 assert.equal(trace.benchmarks.hingeControl.ok, true);
 assert.ok(trace.hingeStates.length > 0);
 assert.ok(trace.capacityCurve.length > 0);

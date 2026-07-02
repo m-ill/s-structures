@@ -31,23 +31,31 @@ export function runPushover(model, options = {}) {
   const combo = pickCombo(model, options);
   const curve = [];
   let finalStates = {};
+  let previousStates = {};
   let firstYield = null;
   let stopped = false;
   const warnings = [];
+  const degradationEnabled = options.hingeDegradation !== false;
+  const degradationTrace = [];
 
   for (let step = 0; step <= steps; step += 1) {
     const loadFactor = (maxLoadFactor * step) / steps;
+    const degradation = degradationEnabled
+      ? buildHingeDegradedModel(model, previousStates, { step, ...options })
+      : { model, rows: [], summary: emptyDegradationSummary(step, false) };
+    degradationTrace.push(degradation.summary);
     const lateral = buildLateralPatternLoads(model, {
       direction,
       total: referenceBaseShear * loadFactor,
       pattern: options.pattern || 'triangular',
       step,
     });
-    const result = analyzeAll(model, combo?.factors || null, { extraLoads: lateral.loads });
+    const result = analyzeAll(degradation.model, combo?.factors || null, { extraLoads: lateral.loads });
     const controlDisplacement = controlDisp(result, controlNodeId, direction.vector);
     const hinge = evaluateHinges(model, result, options);
     const plasticMemberCount = hinge.yieldedMemberCount + hinge.ultimateMemberCount;
     finalStates = hinge.memberStates;
+    previousStates = hinge.memberStates;
     if (!firstYield && plasticMemberCount > 0) {
       firstYield = { step, loadFactor, baseShear: lateral.total, controlDisplacement };
     }
@@ -59,6 +67,8 @@ export function runPushover(model, options = {}) {
       plasticMemberCount,
       yieldedMemberCount: hinge.yieldedMemberCount,
       ultimateMemberCount: hinge.ultimateMemberCount,
+      degradedMemberCount: degradation.summary.degradedMemberCount,
+      minStiffnessFactor: degradation.summary.minFactor,
       ok: !!result.ok,
       reason: result.reason || null,
     });
@@ -90,6 +100,15 @@ export function runPushover(model, options = {}) {
     pattern: options.pattern || 'triangular',
     referenceBaseShear,
     maxLoadFactor,
+    hingeDegradation: {
+      enabled: degradationEnabled,
+      method: 'previous-step-hinge-secant-stiffness',
+      trace: degradationTrace,
+      limitations: [
+        'Member flexural stiffness is reduced from the previous accepted hinge state.',
+        'This is a secant update path, not a full simultaneous hinge tangent equilibrium loop.',
+      ],
+    },
     stopped,
     firstYield,
     summary: {
@@ -99,10 +118,49 @@ export function runPushover(model, options = {}) {
       plasticMemberCount: (last.yieldedMemberCount || 0) + (last.ultimateMemberCount || 0),
       yieldedMemberCount: last.yieldedMemberCount || 0,
       ultimateMemberCount: last.ultimateMemberCount || 0,
+      degradedStepCount: degradationTrace.filter((row) => row.degradedMemberCount > 0).length,
+      minStiffnessFactor: Math.min(1, ...degradationTrace.map((row) => row.minFactor)),
     },
     curve,
     memberStates: finalStates,
     warnings,
+  };
+}
+
+export function buildHingeDegradedModel(model = {}, memberStates = {}, options = {}) {
+  const rows = (model.members || []).map((member) => {
+    const state = memberStates[member.id];
+    const factor = hingeStiffnessFactor(state, options);
+    return { memberId: member.id, secId: member.secId, factor, state: state?.overall || 'elastic' };
+  });
+  const degraded = rows.filter((row) => row.factor < 0.999999);
+  if (!degraded.length) {
+    return { model, rows, summary: emptyDegradationSummary(options.step || 0, true) };
+  }
+  const sectionMap = new Map();
+  const members = (model.members || []).map((member) => {
+    const row = rows.find((item) => item.memberId === member.id);
+    if (!row || row.factor >= 0.999999) return member;
+    const sec = sectionOf(model, member.secId);
+    const id = generatedSectionId(member.secId, member.id);
+    sectionMap.set(id, scaleSectionForHinge(sec, id, row.factor, member.secId));
+    return { ...member, secId: id, nonlinearStiffnessFactor: row.factor };
+  });
+  return {
+    model: {
+      ...model,
+      members,
+      sections: [...(model.sections || []), ...sectionMap.values()],
+    },
+    rows,
+    summary: {
+      step: Number(options.step || 0),
+      enabled: true,
+      degradedMemberCount: degraded.length,
+      minFactor: Math.min(1, ...degraded.map((row) => row.factor)),
+      maxFactor: Math.max(0, ...degraded.map((row) => row.factor)),
+      memberIds: degraded.map((row) => row.memberId),
+    },
   };
 }
 
@@ -185,6 +243,62 @@ function hingeState(ratio) {
   if (ratio >= 1.5) return 'ultimate';
   if (ratio >= 1) return 'yielded';
   return 'elastic';
+}
+
+function hingeStiffnessFactor(state, options = {}) {
+  if (!state || state.overall === 'unknown') return 1;
+  const minFactor = Math.min(1, Math.max(1e-4, number(options.minHingeStiffnessFactor, 0.15)));
+  const ultimateFactor = Math.min(minFactor, Math.max(1e-4, number(options.ultimateHingeStiffnessFactor, minFactor * 0.5)));
+  const ratio = Math.max(number(state.i?.ratio), number(state.j?.ratio));
+  if (state.overall === 'ultimate' || ratio >= 1.5) return ultimateFactor;
+  if (state.overall !== 'yielded' || ratio < 1) return 1;
+  const t = Math.min(1, Math.max(0, (ratio - 1) / 0.5));
+  return 1 - (1 - minFactor) * t;
+}
+
+function scaleSectionForHinge(section, id, factor, sourceId) {
+  const scale = Math.min(1, Math.max(1e-4, number(factor, 1)));
+  const props = section.properties || section;
+  return {
+    ...section,
+    id,
+    name: `${section.name || sourceId || id} hinge stiffness ${scale.toFixed(3)}`,
+    kind: 'direct',
+    shape: section.shape || section.type || 'CUSTOM',
+    source: { ...(section.source || {}), generated: 'p3-pushover-hinge-degradation', sourceSection: sourceId || section.id || null },
+    A: props.A,
+    Iy: Number(props.Iy || 0) * scale,
+    Iz: Number(props.Iz || 0) * scale,
+    J: Number(props.J || 0) * scale,
+    Zy: Number(props.Zy || 0) * scale,
+    Zz: Number(props.Zz || 0) * scale,
+    properties: {
+      ...props,
+      A: props.A,
+      Iy: Number(props.Iy || 0) * scale,
+      Iz: Number(props.Iz || 0) * scale,
+      J: Number(props.J || 0) * scale,
+      Zy: Number(props.Zy || 0) * scale,
+      Zz: Number(props.Zz || 0) * scale,
+    },
+  };
+}
+
+function generatedSectionId(secId, memberId) {
+  const base = String(secId || 'section').replace(/[^A-Za-z0-9_-]/g, '_');
+  const member = String(memberId || 'member').replace(/[^A-Za-z0-9_-]/g, '_');
+  return `${base}__p3hinge_${member}`;
+}
+
+function emptyDegradationSummary(step, enabled) {
+  return {
+    step: Number(step || 0),
+    enabled: !!enabled,
+    degradedMemberCount: 0,
+    minFactor: 1,
+    maxFactor: 1,
+    memberIds: [],
+  };
 }
 
 function pickCombo(model, options) {
