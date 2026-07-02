@@ -177,6 +177,7 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
         scaleFactor: trace.spectrumScaling.scaleFactor,
         pointCount: trace.spectrumScaling.pointCount,
         duration: trace.spectrumScaling.duration,
+        review: trace.spectrumScaling.review || null,
       } : null,
       nlthRows: trace.nlth?.rows?.length || 0,
       nlthConverged: trace.nlth?.converged ?? null,
@@ -272,7 +273,15 @@ function hasUsableGroundMotionScaling(trace = {}) {
   const pointCount = Number(trace.groundMotion?.pointCount || trace.spectrumScaling?.pointCount || 0);
   const sourcePga = Number(trace.spectrumScaling?.sourcePga ?? trace.groundMotion?.sourcePga ?? 0);
   const scaleFactor = Number(trace.spectrumScaling?.scaleFactor);
-  return pointCount > 0 && sourcePga > 0 && Number.isFinite(scaleFactor) && scaleFactor > 0;
+  const dt = Number(trace.spectrumScaling?.scaled?.dt ?? trace.spectrumScaling?.dt ?? trace.groundMotion?.dt);
+  return pointCount > 0
+    && sourcePga > 0
+    && Number.isFinite(scaleFactor)
+    && scaleFactor > 0
+    && Number.isFinite(dt)
+    && dt > 0
+    && trace.spectrumScaling?.review?.status !== 'review-required'
+    && trace.groundMotion?.review?.status !== 'review-required';
 }
 
 export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, options = {}) {

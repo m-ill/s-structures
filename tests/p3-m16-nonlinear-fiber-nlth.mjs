@@ -87,15 +87,24 @@ assert.equal(record.version, GROUND_MOTION_VERSION);
 assert.equal(record.contract.milestone, 'P3-M16');
 assert.equal(record.pointCount, 4);
 assert.equal(record.duration, 0.03);
+assert.equal(record.review.status, 'available');
 const scaled = scaleGroundMotion(record, { targetPga: 0.4 });
 assert.ok(scaled.contract.tickets.includes('P3-T86'));
 assert.equal(scaled.scaleFactor, 2);
+assert.equal(scaled.review.status, 'available');
 const scalingTrace = buildSpectrumScalingTrace(record, { targetPga: 0.4, periodRange: [0.2, 1.2] });
 assert.equal(scalingTrace.scaled.targetPga, 0.4);
 assert.equal(scalingTrace.pointCount, 4);
 assert.deepEqual(scalingTrace.periodRange, [0.2, 1.2]);
+assert.equal(scalingTrace.review.status, 'available');
 const zeroPgaTrace = buildSpectrumScalingTrace(parseGroundMotionText('0 0 0', { dt: 0.01 }), { targetPga: 0.4 });
 assert.equal(zeroPgaTrace.sourcePga, 0);
+assert.ok(zeroPgaTrace.review.missing.includes('ground-motion-source-pga'));
+const invalidDtRecord = parseGroundMotionText('0 0.2 -0.1', { dt: 0 });
+assert.equal(invalidDtRecord.review.status, 'review-required');
+assert.ok(invalidDtRecord.review.missing.includes('ground-motion-dt'));
+const invalidDtScalingTrace = buildSpectrumScalingTrace(invalidDtRecord, { targetPga: 0.4 });
+assert.equal(invalidDtScalingTrace.review.status, 'review-required');
 
 const nlth = runNewmarkNlth({ accelerations: scaled.accelerations, dt: scaled.dt, stiffness: 100, yieldForce: 0.00001 });
 assert.equal(nlth.version, NLTH_NEWMARK_VERSION);
@@ -193,6 +202,19 @@ assert.equal(zeroPgaGate.summary.readyForAgentReview, false);
 assert.equal(zeroPgaGate.fiberNlthReview.groundMotionScalingTrace, false);
 assert.ok(zeroPgaGate.fiberNlthReview.missing.includes('ground-motion-scaling'));
 assert.equal(zeroPgaGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T86').covered, false);
+const invalidDtGate = buildNonlinearFiberNlthGate({
+  ...trace.fiberNlthGate,
+  pmm: trace.pmm,
+  fiber: trace.fiber,
+  rayleigh: trace.rayleigh,
+  groundMotion: invalidDtRecord,
+  spectrumScaling: invalidDtScalingTrace,
+  nlth: trace.nlth,
+}, trace.benchmarks.fiberNlth);
+assert.equal(invalidDtGate.fiberNlthReview.status, 'review-required');
+assert.equal(invalidDtGate.fiberNlthReview.groundMotionScalingTrace, false);
+assert.ok(invalidDtGate.fiberNlthReview.missing.includes('ground-motion-scaling'));
+assert.equal(invalidDtGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T86').covered, false);
 const clampedPmmGate = buildNonlinearFiberNlthGate({
   pmm: { ...trace.pmm, interpolated: clampedPmm },
   fiber: trace.fiber,

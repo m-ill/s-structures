@@ -51,9 +51,11 @@ The gate records:
 
 2026-07-03 fiber/NLTH gate hardening: `fiberNlthGate.summary.readyForAgentReview` now follows `fiberNlthReview.status === "trace-ready"`. P3-T83 coverage requires the PMM interpolation review to pass, and P3-T85 coverage now fails when the NLTH energy trace recommends step splitting. Review-held M16 traces remain inspectable but cannot be treated as clean integrated-results evidence.
 
+2026-07-03 ground-motion time-step hardening: `parseGroundMotionText()`, `scaleGroundMotion()`, and `buildSpectrumScalingTrace()` now expose review objects for record point count, source PGA, scale factor, and positive `dt`. The M16 gate treats zero or invalid time-step input as a P3-T86 review hold, so an NLTH trace cannot pass ground-motion scaling coverage unless the record timing is auditable.
+
 ## Current Test Gate
 
-`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, empty PMM level fallback, PMM axial-ratio range review holds, PMM ticket blocking, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, zero-PGA scaling review hold, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, energy/stability rows, step-split recommendation behavior and ticket blocking, B6/B7/B8 benchmark registration, and agent manifest exposure.
+`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, empty PMM level fallback, PMM axial-ratio range review holds, PMM ticket blocking, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, zero-PGA and invalid-dt scaling review holds, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, energy/stability rows, step-split recommendation behavior and ticket blocking, B6/B7/B8 benchmark registration, and agent manifest exposure.
 
 ## Remaining Limits
 
