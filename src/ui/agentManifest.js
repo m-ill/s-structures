@@ -425,6 +425,10 @@ export function buildAgentManifest(options = {}) {
       completionAudit: 'docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md',
       planAlignmentVerification: 'docs/verification/P3_PLAN_ALIGNMENT_VERIFICATION.md',
     },
+    interpretationRules: [
+      'Milestone review APIs expose exitCriteria and exitCriteriaSummary; automated-exit-criteria-covered means written-plan criteria have regression evidence, not production approval.',
+      'Agents must still inspect remainingValidation, productionBlockers, finalUseBlockedBy, productionReady, and finalApprovalField after exitCriteria are covered.',
+    ],
     dataContracts: [
       'schemaVersionedModel',
       'linear3dAnalysis',

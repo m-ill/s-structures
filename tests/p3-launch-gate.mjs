@@ -61,10 +61,15 @@ assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('submit
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('owner sign-off review aliases')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('summary.readyForAgentReview')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalApprovalField')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('exitCriteriaSummary')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('remainingValidation')));
+assert.ok(manifest.interpretationRules.some((rule) => rule.includes('exitCriteriaSummary')));
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.agentSafeStatus/);
 assert.match(launchManual, /LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED/);
 assert.match(launchManual, /OWNER_REVIEW_REQUIRED/);
+assert.match(launchManual, /exitCriteriaSummary/);
+assert.match(launchManual, /automated-exit-criteria-covered/);
 assert.match(completionAudit, /npm\.cmd run test:p3/);
 assert.match(completionAudit, /node tools\/run-milestone-tests\.mjs --phase3 --from=P3-M6 --to=P3-M20/);
 assert.equal(completionAudit.includes('- `npm.cmd test`'), false);

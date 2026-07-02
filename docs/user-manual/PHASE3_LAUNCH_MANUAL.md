@@ -70,6 +70,8 @@ The `readyDecision` values mean the next review step may proceed. The listed `fi
 
 `getPhase3PlanAlignment().status` only means the implementation is aligned with the written Phase 3 plan. Agents must also check `getPhase3PlanAlignment().productionReadiness.status`; `PRELIMINARY_REVIEW_REQUIRED` means the program remains a review/preliminary platform until the listed milestones and final approval fields are cleared.
 
+Milestone review APIs and `getPhase3CompletionAuditReview()` expose `exitCriteria` rows with `exitCriteriaSummary`. `automated-exit-criteria-covered` means the written-plan exit criteria have regression evidence for that milestone. It does not override `remainingValidation`, `productionBlockers`, `finalUseBlockedBy`, `productionReady`, or any `finalApprovalField`.
+
 `getLaunchReadinessReport().status` only means the launch evidence gates are green. Agents must also check `getLaunchReadinessReport().productionReadiness.status`; `OWNER_REVIEW_REQUIRED` means owner sign-off and production deployment approval are still required.
 
 Agents should read `getLaunchReadinessReport().agentSafeStatus` before final-use automation. `LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED` means the launch evidence is green, but practical validation, owner sign-off, or evidence-register review still blocks final structural-office use.
