@@ -29,6 +29,32 @@ const ROWS = [
   ]),
 ];
 
+const EXIT_CRITERIA = {
+  'P3-M6': [
+    criterion('M6-E1', 'ASCII DXF parser reads headers, layers, blocks, and supported entities.', 'tests/p3-m6-dxf-import.mjs'),
+    criterion('M6-E2', 'Wireframe DXF converts to a valid ImportCandidate.', 'tests/p3-m6-dxf-import.mjs'),
+    criterion('M6-E3', 'Unit scaling and layer coverage audit are present.', 'tests/p3-m6-dxf-import.mjs'),
+    criterion('M6-E4', 'Unsupported entities are reported and listed.', 'tests/p3-m6-dxf-import.mjs'),
+    criterion('M6-E5', 'Generated candidate converts to a model and analyzes in follow-up path.', 'tests/p3-m6-dxf-import.mjs'),
+  ],
+  'P3-M7': [
+    criterion('M7-E1', 'DWG converter contract handles configured, missing, and failed states.', 'tests/p3-m7-dwg-plan.mjs'),
+    criterion('M7-E2', 'Two floor-plan fixtures assemble into a 3D candidate.', 'tests/p3-m7-dwg-plan.mjs'),
+    criterion('M7-E3', 'Import review UI exposes counts, warnings, and accept/reject state.', 'tests/p3-m7-import-review-ui.mjs'),
+  ],
+  'P3-M8': [
+    criterion('M8-E1', 'XYZ, PLY, and PCD fixtures load deterministically.', 'tests/p3-pointcloud-load.mjs'),
+    criterion('M8-E2', 'Normalization, downsample, and worker pipeline return audit metadata.', 'tests/p3-pointcloud-load.mjs'),
+    criterion('M8-E3', 'Viewer buffer contract is stable for AI and UI inspection.', 'tests/p3-pointcloud-load.mjs'),
+  ],
+  'P3-M9': [
+    criterion('M9-E1', 'Synthetic benchmark passes story and column extraction gates.', 'tests/p3-pointcloud-extraction.mjs'),
+    criterion('M9-E2', 'Extracted candidate validates as ImportCandidate.', 'tests/p3-pointcloud-extraction.mjs'),
+    criterion('M9-E3', 'Candidate converts to analysis model and elastic analysis runs.', 'tests/p3-pointcloud-e2e.mjs'),
+    criterion('M9-E4', 'Real scan validation status remains explicit when no owner scan exists.', 'tests/p3-pointcloud-extraction.mjs'),
+  ],
+};
+
 export function buildPhase3ImportMilestoneReview() {
   const preliminary = ROWS.filter((item) => item.status !== 'available');
   const rows = ROWS.map((item) => ({
@@ -37,6 +63,8 @@ export function buildPhase3ImportMilestoneReview() {
     automatedEvidence: [...item.automatedEvidence],
     externalEvidenceRequired: [...item.externalEvidenceRequired],
     finalUseBlockedBy: [...item.finalUseBlockedBy],
+    exitCriteria: (EXIT_CRITERIA[item.milestone] || []).map((criteria) => ({ ...criteria })),
+    exitCriteriaSummary: summarizeExitCriteria(EXIT_CRITERIA[item.milestone] || []),
   }));
   return {
     version: PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
@@ -50,6 +78,8 @@ export function buildPhase3ImportMilestoneReview() {
     summary: {
       milestoneCount: ROWS.length,
       automatedEvidenceCount: ROWS.reduce((sum, item) => sum + item.automatedEvidence.length, 0),
+      exitCriteriaCount: rows.reduce((sum, item) => sum + item.exitCriteria.length, 0),
+      exitCriteriaAutomatedCount: rows.reduce((sum, item) => sum + item.exitCriteria.filter((criteria) => criteria.status === 'automated').length, 0),
       preliminaryCount: preliminary.length,
       productionReady: preliminary.length === 0,
       agentDecision: preliminary.length ? 'import-pipeline-review-required' : 'import-pipeline-ready',
@@ -70,5 +100,27 @@ function row(milestone, tickets, status, automatedEvidence, externalEvidenceRequ
     automatedEvidence,
     externalEvidenceRequired,
     finalUseBlockedBy: status === 'available' ? [] : externalEvidenceRequired,
+  };
+}
+
+function criterion(id, requirement, evidence) {
+  return {
+    id,
+    requirement,
+    evidence,
+    status: 'automated',
+    source: id.startsWith('M8') || id.startsWith('M9')
+      ? 'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md'
+      : 'docs/phase3/IMPORT_DXF_DWG_PLAN.md',
+  };
+}
+
+function summarizeExitCriteria(criteria = []) {
+  const automated = criteria.filter((item) => item.status === 'automated').length;
+  return {
+    total: criteria.length,
+    automated,
+    reviewRequired: criteria.length - automated,
+    status: criteria.length === automated ? 'automated-exit-criteria-covered' : 'exit-criteria-review-required',
   };
 }

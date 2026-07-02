@@ -23,6 +23,8 @@ The import plan requires drawing and point-cloud input to produce a reviewable `
 
 2026-07-03 candidate validation hardening: `importCandidateToModel()` now records `meta.importValidation` and marks invalid candidates as `meta.importReview.status = "invalid-candidate"`. Invalid candidates remain `required: true`, cannot become confirmed even when a caller passes `confirmed: true`, expose validation errors as blockers, and return `agentDecision = "fix-import-candidate-before-analysis"`.
 
+2026-07-03 exit-criteria review update: `getPhase3ImportMilestoneReview()` now exposes the original M6 to M9 exit criteria from the import plan documents as `exitCriteria` rows. Each row records the source plan, requirement text, and automated evidence file, so AI agents can distinguish "plan exit criteria are regression-covered" from "production field evidence is still preliminary."
+
 ## Remaining Limits
 
 Stage B remains preliminary for production drawing and scan use. Required external evidence still includes real office DXF variants, configured DWG converter logs, visual overlay review evidence, large point-cloud performance evidence, binary LAS/PCD owner fixtures, and real scan beam/wall validation.

@@ -19,7 +19,23 @@ assert.ok(review.rows[0].automatedEvidence.includes('tests/p3-m6-dxf-import.mjs'
 assert.ok(review.rows[1].automatedEvidence.includes('tests/p3-m7-import-review-ui.mjs'));
 assert.ok(review.rows[2].externalEvidenceRequired.includes('large-file performance evidence'));
 assert.ok(review.rows[3].externalEvidenceRequired.includes('real scan beam/wall validation'));
+assert.deepEqual(review.rows.map((row) => row.exitCriteriaSummary.status), [
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+  'automated-exit-criteria-covered',
+]);
+assert.equal(review.rows[0].exitCriteria.length, 5);
+assert.equal(review.rows[1].exitCriteria.length, 3);
+assert.equal(review.rows[2].exitCriteria.length, 3);
+assert.equal(review.rows[3].exitCriteria.length, 4);
+assert.ok(review.rows[0].exitCriteria.find((row) => row.id === 'M6-E4').requirement.includes('Unsupported entities'));
+assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M6-E5').evidence, 'tests/p3-m6-dxf-import.mjs');
+assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'M7-E1').source, 'docs/phase3/IMPORT_DXF_DWG_PLAN.md');
+assert.equal(review.rows[3].exitCriteria.find((row) => row.id === 'M9-E4').source, 'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md');
 assert.equal(review.summary.milestoneCount, 4);
+assert.equal(review.summary.exitCriteriaCount, 15);
+assert.equal(review.summary.exitCriteriaAutomatedCount, 15);
 assert.equal(review.summary.preliminaryCount, 3);
 assert.equal(review.summary.productionReady, false);
 assert.equal(review.summary.agentDecision, 'import-pipeline-review-required');
