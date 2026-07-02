@@ -25,7 +25,9 @@ export function createPmmBackboneSet(options = {}) {
 }
 
 export function interpolatePmmBackbone(axialRatio, set = createPmmBackboneSet()) {
+  const requestedAxialRatio = Number(axialRatio);
   const ratio = clamp(axialRatio, 0, 1);
+  const clamped = Number.isFinite(requestedAxialRatio) && Math.abs(requestedAxialRatio - ratio) > 1e-12;
   const levels = set.levels || [];
   let lo = levels[0];
   let hi = levels.at(-1);
@@ -50,13 +52,20 @@ export function interpolatePmmBackbone(axialRatio, set = createPmmBackboneSet())
       tickets: ['P3-T83'],
       interpolation: 'linear between adjacent axial-ratio backbone levels',
     },
+    requestedAxialRatio: Number.isFinite(requestedAxialRatio) ? requestedAxialRatio : null,
     axialRatio: ratio,
+    clamped,
     points,
     source: [lo.axialRatio, hi.axialRatio],
     summary: {
       pointCount: points.length,
       yieldMoment: points.find((point) => point.id === 'B')?.moment || 0,
       residualMoment: points.find((point) => point.id === 'E')?.moment || 0,
+    },
+    review: {
+      status: clamped ? 'review-required' : 'available',
+      warning: clamped ? 'pmm-axial-ratio-out-of-range' : null,
+      agentDecision: clamped ? 'review-pmm-axial-ratio-input' : 'pmm-backbone-ready-for-review',
     },
   };
 }

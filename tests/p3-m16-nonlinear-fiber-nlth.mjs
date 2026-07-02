@@ -40,6 +40,12 @@ assert.ok(mid.contract.tickets.includes('P3-T83'));
 assert.deepEqual(mid.source, [0.3, 0.6]);
 assert.equal(mid.summary.pointCount, mid.points.length);
 assert.ok(mid.points[1].moment < pmm.levels[1].backbone.points[1].moment);
+assert.equal(mid.review.status, 'available');
+const clampedPmm = interpolatePmmBackbone(1.2, pmm);
+assert.equal(clampedPmm.requestedAxialRatio, 1.2);
+assert.equal(clampedPmm.axialRatio, 1);
+assert.equal(clampedPmm.clamped, true);
+assert.equal(clampedPmm.review.warning, 'pmm-axial-ratio-out-of-range');
 
 const section = buildRectangularFiberSection({ width: 0.4, depth: 0.6, strips: 8 });
 assert.equal(section.version, FIBER_SECTION_VERSION);
@@ -181,6 +187,19 @@ assert.equal(zeroPgaGate.fiberNlthReview.status, 'review-required');
 assert.equal(zeroPgaGate.fiberNlthReview.groundMotionScalingTrace, false);
 assert.ok(zeroPgaGate.fiberNlthReview.missing.includes('ground-motion-scaling'));
 assert.equal(zeroPgaGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T86').covered, false);
+const clampedPmmGate = buildNonlinearFiberNlthGate({
+  pmm: { ...trace.pmm, interpolated: clampedPmm },
+  fiber: trace.fiber,
+  rayleigh: trace.rayleigh,
+  groundMotion: trace.groundMotion,
+  spectrumScaling: trace.spectrumScaling,
+  nlth: trace.nlth,
+}, trace.benchmarks.fiberNlth);
+assert.equal(clampedPmmGate.pmm.requestedAxialRatio, 1.2);
+assert.equal(clampedPmmGate.pmm.clamped, true);
+assert.equal(clampedPmmGate.pmm.review.warning, 'pmm-axial-ratio-out-of-range');
+assert.equal(clampedPmmGate.fiberNlthReview.status, 'review-required');
+assert.ok(clampedPmmGate.fiberNlthReview.missing.includes('pmm-axial-ratio-input-review'));
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();

@@ -147,7 +147,10 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
     },
     fiberNlthReview,
     pmm: {
+      requestedAxialRatio: trace.pmm?.interpolated?.requestedAxialRatio ?? null,
       axialRatio: trace.pmm?.interpolated?.axialRatio ?? null,
+      clamped: !!trace.pmm?.interpolated?.clamped,
+      review: trace.pmm?.interpolated?.review || null,
       source: trace.pmm?.interpolated?.source || [],
       memberSource: trace.pmm?.set?.source || null,
       pointCount: trace.pmm?.interpolated?.points?.length || 0,
@@ -205,6 +208,7 @@ export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = nu
 function buildFiberNlthReview({ trace, fiberNlthBenchmarks }) {
   const missing = [];
   if (!((trace.pmm?.interpolated?.points || []).length > 0)) missing.push('pmm-interpolation');
+  if (trace.pmm?.interpolated?.review?.status === 'review-required') missing.push('pmm-axial-ratio-input-review');
   if (!((trace.fiber?.section?.fibers || []).length > 0)) missing.push('fiber-section');
   if (!((trace.fiber?.momentCurvature?.rows || []).length > 0)) missing.push('moment-curvature');
   if (!trace.rayleigh?.version) missing.push('rayleigh-damping');
