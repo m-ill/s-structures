@@ -11,6 +11,7 @@ export function importDxfToCandidate(text, options = {}) {
   const unit = resolveUnits(parsed.header, geometry.segments, options);
   const layerMap = options.layerMap || {};
   const segments = geometry.segments.map((segment) => applyLayerMap(scaleSegment(segment, unit), layerMap));
+  const layerAudit = buildLayerAudit(segments, layerMap);
   const candidate = wireframeToImportCandidate(segments, {
     ...options,
     source: {
@@ -29,6 +30,10 @@ export function importDxfToCandidate(text, options = {}) {
     ...candidate.audit,
     counts: {
       ...candidate.audit.counts,
+      lines: geometry.audit.counts.LINE || 0,
+      polylines: (geometry.audit.counts.LWPOLYLINE || 0) + (geometry.audit.counts.POLYLINE || 0),
+      inserts: geometry.audit.counts.INSERT || 0,
+      texts: (geometry.audit.counts.TEXT || 0) + (geometry.audit.counts.MTEXT || 0),
       dxfPairs: parsed.pairs.length,
       dxfSegments: geometry.segments.length,
       dxfPoints: geometry.points.length,
@@ -37,7 +42,10 @@ export function importDxfToCandidate(text, options = {}) {
       ignoredDetails: geometry.audit.ignoredDetails,
     },
     units: unit,
-    layers: buildLayerAudit(segments, layerMap),
+    layers: layerAudit,
+    mapping: layerAudit,
+    merge: buildMergeAudit(geometry.segments, candidate),
+    orphans: buildOrphanAudit(candidate),
     bbox: candidate.audit.bbox || bboxOfPoints(candidate.candidates.nodes),
   };
   return candidate;
@@ -81,5 +89,24 @@ function buildLayerAudit(segments, layerMap) {
     layers,
     mappedLayers: mapped,
     unmappedEntityCount: segments.filter((segment) => !mapped.includes(segment.layer || '0')).length,
+  };
+}
+
+function buildMergeAudit(rawSegments, candidate) {
+  const counts = candidate.audit?.counts || {};
+  return {
+    nodesBefore: (rawSegments || []).length * 2,
+    nodesAfter: candidate.candidates?.nodes?.length || 0,
+    shortSegmentsDropped: counts.shortSegments || 0,
+    duplicatesDropped: counts.duplicateSegments || 0,
+  };
+}
+
+function buildOrphanAudit(candidate) {
+  const nodeIds = new Set((candidate.candidates?.nodes || []).map((node) => node.id));
+  const usedIds = new Set((candidate.candidates?.members || []).flatMap((member) => [member.from, member.to]));
+  return {
+    nodes: [...nodeIds].filter((id) => !usedIds.has(id)),
+    unknownKindMembers: (candidate.candidates?.members || []).filter((member) => member.kind === 'unknown').map((member) => member.id),
   };
 }
