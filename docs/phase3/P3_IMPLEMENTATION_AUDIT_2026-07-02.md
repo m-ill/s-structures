@@ -61,9 +61,9 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 
 | Ticket | Plan target | Current code | Audit result |
 | --- | --- | --- | --- |
-| P3-T73 | wall mid-pier + pier force recovery | `wallToMidPierMember` creates an equivalent contract only | Partial |
+| P3-T73 | wall mid-pier + pier force recovery | Mid-pier equivalent can be merged into model and pier forces recovered from analysis | Preliminary |
 | P3-T74 | shell element v1 | No shell solver found | Not implemented |
-| P3-T75 | semi-rigid diaphragm | Summary and validation contract exist; solver only resolves rigid diaphragms | Partial |
+| P3-T75 | semi-rigid diaphragm | Validation and trace summary exist; solver leaves semi-rigid diaphragms uncondensed with trace | Preliminary; no membrane grid redistribution yet |
 
 ### P3-M13 Loads v2 / Dynamics / Buckling
 

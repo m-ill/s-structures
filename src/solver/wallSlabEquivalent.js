@@ -13,11 +13,54 @@ export function wallToMidPierMember(wall) {
   };
 }
 
+export function addWallMidPierToModel(model, wall) {
+  const eq = wallToMidPierMember(wall);
+  const nodes = [...(model.nodes || []), ...eq.nodes.map((node, index) => ({
+    ...node,
+    support: index === 0 && wall.baseSupport ? wall.baseSupport : node.support,
+  }))];
+  return {
+    ...model,
+    nodes,
+    members: [...(model.members || []), eq.member],
+    sections: [...(model.sections || []), eq.section],
+    wallEquivalents: [...(model.wallEquivalents || []), { wallId: wall.id, memberId: eq.member.id, sectionId: eq.section.id }],
+  };
+}
+
+export function recoverWallPierForces(model, analysis) {
+  const result = analysis?.envelope || Object.values(analysis?.byCombo || {})[0] || null;
+  return (model.wallEquivalents || []).map((row) => {
+    const member = result?.memberResults?.[row.memberId] || {};
+    return {
+      version: WALL_SLAB_EQUIVALENT_VERSION,
+      wallId: row.wallId,
+      memberId: row.memberId,
+      N: maxAbs(member.N),
+      Vy: maxAbs(member.Vy),
+      Vz: maxAbs(member.Vz),
+      My: maxAbs(member.My),
+      Mz: maxAbs(member.Mz),
+      source: 'mid-pier-equivalent',
+    };
+  });
+}
+
 export function summarizeSemiRigidDiaphragm(model = {}) {
-  const rows = (model.diaphragms || []).map((item) => ({ id: item.id, type: item.type, nodeCount: item.nodeIds?.length || 0, stiffness: item.inPlaneStiffness || null }));
+  const rows = (model.diaphragms || []).map((item) => ({
+    id: item.id,
+    type: item.type,
+    nodeCount: item.nodeIds?.length || 0,
+    stiffness: item.inPlaneStiffness || null,
+    solverTreatment: item.type === 'semiRigid' ? 'not-condensed-trace-only' : 'rigid-condensed',
+  }));
   return { version: WALL_SLAB_EQUIVALENT_VERSION, semiRigidCount: rows.filter((row) => row.type === 'semiRigid').length, rows };
 }
 
 function avg(nodes, key) {
   return nodes.reduce((sum, node) => sum + Number(node[key] || 0), 0) / Math.max(1, nodes.length);
+}
+
+function maxAbs(values = []) {
+  return values.length ? Math.max(...values.map((value) => Math.abs(Number(value || 0)))) : 0;
 }

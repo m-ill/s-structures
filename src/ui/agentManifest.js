@@ -397,7 +397,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M9', status: 'preliminary', feature: 'synthetic point-cloud generation, story/column extraction, benchmark gate, and import-to-analysis e2e' },
       { id: 'P3-M10', status: 'preliminary', feature: 'versioned material and section registry with parametric properties' },
       { id: 'P3-M11', status: 'preliminary', feature: 'spring supports, settlement, truss axial stiffness, member offsets, member moments, and temperature load paths' },
-      { id: 'P3-M12', status: 'preliminary', feature: 'wall mid-pier and semi-rigid diaphragm equivalent contracts' },
+      { id: 'P3-M12', status: 'preliminary', feature: 'wall mid-pier model merge, pier force recovery, and semi-rigid diaphragm trace' },
       { id: 'P3-M13', status: 'preliminary', feature: 'loads v2, CQC, buckling trace, and linear time-history helpers' },
     ],
     limitations: [

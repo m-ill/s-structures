@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import {
   WALL_SLAB_EQUIVALENT_VERSION,
+  addWallMidPierToModel,
+  analyzeModel,
   createModel,
+  recoverWallPierForces,
   summarizeSemiRigidDiaphragm,
   validateModel,
   wallToMidPierMember,
@@ -17,8 +20,18 @@ assert.equal(wall.version, WALL_SLAB_EQUIVALENT_VERSION);
 assert.equal(wall.nodes.length, 2);
 assert.ok(wall.section.A > 0 && wall.section.Iz > wall.section.Iy);
 
+const wallModel = addWallMidPierToModel(createModel({
+  loads: [{ id: 'P1', type: 'nodal', node: 'W1-t', P: 100, dir: '+x', case: 'D' }],
+}), { id: 'W1', thickness: 0.2, length: 4, baseSupport: 'fixed', nodes: wall.nodes });
+const wallAnalysis = analyzeModel(wallModel);
+assert.equal(wallAnalysis.ok, true, JSON.stringify(wallAnalysis.validation.errors, null, 2));
+const pierForces = recoverWallPierForces(wallModel, wallAnalysis);
+assert.equal(pierForces.length, 1);
+assert.ok(pierForces[0].Mz > 0 || pierForces[0].My > 0);
+
 const summary = summarizeSemiRigidDiaphragm({ diaphragms: [{ id: 'D1', type: 'semiRigid', nodeIds: ['N1', 'N2'], inPlaneStiffness: 1000 }] });
 assert.equal(summary.semiRigidCount, 1);
+assert.equal(summary.rows[0].solverTreatment, 'not-condensed-trace-only');
 
 const diaModel = createModel({
   nodes: [{ id: 'N1', x: 0, y: 0, z: 0, support: 'fixed' }, { id: 'N2', x: 4, y: 0, z: 0 }],
