@@ -67,6 +67,13 @@ assert.deepEqual(audit.materialErrors, []);
 assert.deepEqual(audit.sectionErrors, []);
 assert.deepEqual(audit.sectionWarnings, []);
 assert.deepEqual(audit.migrationWarnings, []);
+assert.equal(audit.registryPolicy.referenceFormat, 'id@version');
+assert.equal(audit.registryPolicy.editRule, 'append-only-new-version');
+assert.deepEqual(audit.registryPolicy.scopePriority, ['project', 'global', 'builtin']);
+assert.equal(audit.registryPolicy.deleteRule, 'soft-delete-new-references-blocked-existing-models-retained');
+assert.equal(audit.scopeSummary.project, 3);
+assert.deepEqual(audit.softDeletedItems, []);
+assert.deepEqual(audit.appendOnlyWarnings, []);
 const libraryReport = buildMaterialLibraryReport(model);
 assert.equal(libraryReport.version, MATERIAL_LIBRARY_REPORT_VERSION);
 assert.ok(libraryReport.materials.some((row) => row.label === 'USER_STEEL@2'));
@@ -95,6 +102,21 @@ assert.deepEqual(legacyAudit.unversionedReferences.sort(), ['LEGACY_H', 'LEGACY_
 assert.ok(legacyAudit.migrationWarnings.includes('legacy-unversioned-reference:LEGACY_STEEL'));
 assert.equal(legacyAudit.resolvedReferences.materials[0].resolved, 'LEGACY_STEEL@3');
 assert.equal(legacyAudit.resolvedReferences.sections[0].resolved, 'LEGACY_H@2');
+
+const policyAudit = buildLibraryAudit({
+  materials: [
+    { id: 'SOFT_STEEL', version: 1, E: 200000, G: 77000, Fy: 240, Fu: 400, source: { scope: 'global' } },
+    { id: 'SOFT_STEEL', version: 2, E: 210000, G: 80000, Fy: 300, Fu: 450, deleted: true, source: { scope: 'project' } },
+    { id: 'DUP_STEEL', version: 1, E: 200000, G: 77000, Fy: 240, Fu: 400 },
+    { id: 'DUP_STEEL', version: 1, E: 210000, G: 80000, Fy: 300, Fu: 450 },
+  ],
+  members: [{ id: 'M1', matId: 'SOFT_STEEL', secId: 'H-400x200x8x13@1' }],
+});
+assert.equal(policyAudit.scopeSummary.global, 1);
+assert.equal(policyAudit.scopeSummary.project, 3);
+assert.deepEqual(policyAudit.softDeletedItems, [{ kind: 'material', id: 'SOFT_STEEL', version: 2, label: 'SOFT_STEEL@2' }]);
+assert.ok(policyAudit.appendOnlyWarnings.includes('material:duplicate-version:DUP_STEEL@1'));
+assert.equal(policyAudit.resolvedReferences.materials[0].resolved, 'SOFT_STEEL@1');
 
 const directAudit = buildLibraryAudit({
   sections: [{

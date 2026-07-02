@@ -26,11 +26,23 @@ export function buildLibraryAudit(model = {}) {
   const refs = new Set((model.members || []).flatMap((member) => [member.matId, member.secId]).filter(Boolean));
   const materialRefs = [...new Set((model.members || []).map((member) => member.matId).filter(Boolean))];
   const sectionRefs = [...new Set((model.members || []).map((member) => member.secId).filter(Boolean))];
+  const materials = model.materials || [];
+  const sections = model.sections || [];
   return {
     version: MATERIAL_REGISTRY_VERSION,
+    registryPolicy: {
+      referenceFormat: 'id@version',
+      editRule: 'append-only-new-version',
+      scopePriority: ['project', 'global', 'builtin'],
+      deleteRule: 'soft-delete-new-references-blocked-existing-models-retained',
+      legacyMigration: 'unversioned-reference-resolves-latest-with-warning',
+    },
     referenceCount: refs.size,
     references: [...refs].sort(),
     unversionedReferences: [...refs].filter((ref) => parseVersionedId(ref).version == null).sort(),
+    scopeSummary: buildScopeSummary(materials, sections),
+    softDeletedItems: [...deletedRows(materials, 'material'), ...deletedRows(sections, 'section')],
+    appendOnlyWarnings: [...duplicateVersionWarnings(materials, 'material'), ...duplicateVersionWarnings(sections, 'section')],
     resolvedReferences: {
       materials: materialRefs.sort().map((ref) => resolvedRef(ref, resolveMaterialRecord(model, ref))),
       sections: sectionRefs.sort().map((ref) => resolvedRef(ref, resolveSectionRecord(model, ref))),
@@ -38,9 +50,9 @@ export function buildLibraryAudit(model = {}) {
     migrationWarnings: [...refs]
       .filter((ref) => parseVersionedId(ref).version == null)
       .map((ref) => `legacy-unversioned-reference:${ref}`),
-    materialErrors: (model.materials || []).flatMap((item) => validateMaterialRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
-    sectionErrors: (model.sections || []).flatMap((item) => validateSectionRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
-    sectionWarnings: (model.sections || []).flatMap((item) => validateSectionRecord(item).warnings.map((warning) => `${item.id || '?'}:${warning}`)),
+    materialErrors: materials.flatMap((item) => validateMaterialRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
+    sectionErrors: sections.flatMap((item) => validateSectionRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
+    sectionWarnings: sections.flatMap((item) => validateSectionRecord(item).warnings.map((warning) => `${item.id || '?'}:${warning}`)),
   };
 }
 
@@ -70,4 +82,37 @@ function resolvedRef(ref, record) {
     version: record?.version || null,
     source: record?.source || null,
   };
+}
+
+function buildScopeSummary(materials, sections) {
+  const rows = [...materials.map((item) => ({ ...item, kind: 'material' })), ...sections.map((item) => ({ ...item, kind: 'section' }))];
+  return rows.reduce((out, item) => {
+    const scope = scopeOf(item);
+    out[scope] = (out[scope] || 0) + 1;
+    return out;
+  }, { project: 0, global: 0, builtin: 0 });
+}
+
+function scopeOf(item) {
+  if (item.source?.scope) return item.source.scope;
+  if (item.source?.db) return 'builtin';
+  return 'project';
+}
+
+function deletedRows(rows, kind) {
+  return (rows || [])
+    .filter((item) => item.deleted)
+    .map((item) => ({ kind, id: item.id, version: Number(item.version || 1), label: `${item.id}@${item.version || 1}` }));
+}
+
+function duplicateVersionWarnings(rows, kind) {
+  const seen = new Map();
+  const warnings = [];
+  for (const item of rows || []) {
+    const key = `${item.id}@${item.version || 1}`;
+    const prior = seen.get(key);
+    if (prior && JSON.stringify(prior) !== JSON.stringify(item)) warnings.push(`${kind}:duplicate-version:${key}`);
+    if (!prior) seen.set(key, item);
+  }
+  return warnings;
 }
