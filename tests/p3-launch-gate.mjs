@@ -49,6 +49,8 @@ assert.ok(Object.values(agentContract.manualReferences).every((path) => existsSy
 assert.equal(agentContract.manualReferences.remainingReview, 'docs/user-manual/PHASE3_REMAINING_REVIEW.md');
 assert.equal(agentContract.reviewGates.launchReadiness.path, 'releaseGate.releaseReview');
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('getLaunchReadinessReport().productionReadiness.status')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('summary.evidenceComplete')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('owner sign-off review aliases')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('summary.readyForAgentReview')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalApprovalField')));
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
@@ -138,6 +140,16 @@ assert.equal(launch.productionReadiness.finalUseReview.status, 'FINAL_USE_REVIEW
 assert.equal(launch.productionReadiness.agentDecision, 'collect-final-use-review-evidence');
 assert.equal(launch.packaging.smoke, true);
 assert.equal(launch.license.status, 'RECORDED');
+
+const evidenceCompleteLaunch = buildLaunchReadinessReport({
+  ...evidence,
+  evidenceRegister: buildPhase3EvidenceRegister({
+    evidence: buildPhase3EvidenceRegister().rows.map((row) => ({ id: row.id, accepted: true })),
+  }),
+});
+assert.deepEqual(evidenceCompleteLaunch.finalUseReview.blockingReviews, ['practice-validation', 'owner-signoff']);
+assert.equal(evidenceCompleteLaunch.finalUseReview.rows.find((row) => row.id === 'evidence-register').acceptedField, 'evidenceComplete');
+assert.equal(evidenceCompleteLaunch.finalUseReview.rows.find((row) => row.id === 'evidence-register').status, 'ACCEPTED');
 
 const missingPilotReportLaunch = buildLaunchReadinessReport({
   ...evidence,

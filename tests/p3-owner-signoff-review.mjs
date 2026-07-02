@@ -42,6 +42,25 @@ assert.equal(accepted.summary.productionReady, false);
 assert.equal(accepted.summary.productionDeploymentApproved, false);
 assert.ok(accepted.rows.every((row) => row.status === 'ACCEPTED'));
 
+const registerKeyEvidence = [
+  { id: 'owner-license-policy', accepted: true, owner: 'owner' },
+  { id: 'deployment-target-selection', accepted: true, owner: 'owner' },
+  { id: 'external-dwg-converter-log', accepted: true, owner: 'owner' },
+  { id: 'real-scan-extraction-validation', accepted: true, owner: 'owner' },
+  { id: 'field-pilot-feedback', accepted: true, owner: 'owner' },
+  { id: 'backup-restore-rehearsal', accepted: true, owner: 'owner' },
+  { id: 'security-signoff', accepted: true, owner: 'owner' },
+];
+const acceptedFromRegisterKeys = buildPhase3OwnerSignoffReview({ evidence: registerKeyEvidence });
+assert.equal(acceptedFromRegisterKeys.summary.acceptedCount, 7);
+assert.deepEqual(acceptedFromRegisterKeys.summary.missing, []);
+assert.equal(acceptedFromRegisterKeys.rows.find((row) => row.id === 'license-policy').acceptedFrom, 'owner-license-policy');
+
+const pointCloudFileOnly = buildPhase3OwnerSignoffReview({
+  evidence: [{ id: 'real-pointcloud-files', accepted: true, owner: 'owner' }],
+});
+assert.ok(pointCloudFileOnly.summary.missing.includes('real-pointcloud-validation'));
+
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3OwnerSignoffReview, PHASE3_OWNER_SIGNOFF_REVIEW_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3OwnerSignoffReview'));

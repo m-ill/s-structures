@@ -10,6 +10,7 @@ const empty = buildPhase3EvidenceRegister();
 assert.equal(empty.version, PHASE3_EVIDENCE_REGISTER_VERSION);
 assert.equal(empty.summary.requiredCount, 16);
 assert.equal(empty.summary.acceptedCount, 0);
+assert.equal(empty.summary.evidenceComplete, false);
 assert.equal(empty.summary.productionReady, false);
 assert.equal(empty.summary.agentDecision, 'collect-phase3-evidence');
 assert.ok(empty.summary.missing.includes('real-office-dxf-fixtures'));
@@ -34,6 +35,7 @@ const full = buildPhase3EvidenceRegister({
 });
 assert.equal(full.summary.acceptedCount, 16);
 assert.deepEqual(full.summary.missing, []);
+assert.equal(full.summary.evidenceComplete, true);
 assert.equal(full.summary.agentDecision, 'phase3-evidence-ready-for-owner-and-engineer-review');
 assert.equal(full.summary.productionReady, false);
 

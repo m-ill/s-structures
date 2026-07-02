@@ -157,7 +157,7 @@ function buildFinalUseReview(evidence = {}) {
   const rows = [
     reviewRow('practice-validation', evidence.practiceValidationReview?.summary, 'productionReady'),
     reviewRow('owner-signoff', evidence.ownerSignoffReview?.summary, 'productionDeploymentApproved'),
-    reviewRow('evidence-register', evidence.evidenceRegister?.summary, 'productionReady'),
+    reviewRow('evidence-register', evidence.evidenceRegister?.summary, 'evidenceComplete'),
   ];
   const blockingReviews = rows.filter((row) => row.status !== 'ACCEPTED').map((row) => row.id);
   return {

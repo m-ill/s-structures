@@ -33,6 +33,7 @@ export function buildPhase3EvidenceRegister(input = {}) {
     };
   });
   const missing = rows.filter((row) => !row.accepted).map((row) => row.id);
+  const evidenceComplete = missing.length === 0;
   return {
     version: PHASE3_EVIDENCE_REGISTER_VERSION,
     scope: 'Structured Phase 3 field, engineering, and owner evidence register',
@@ -47,8 +48,9 @@ export function buildPhase3EvidenceRegister(input = {}) {
       requiredCount: rows.length,
       acceptedCount: rows.filter((row) => row.accepted).length,
       missing,
+      evidenceComplete,
       productionReady: false,
-      agentDecision: missing.length ? 'collect-phase3-evidence' : 'phase3-evidence-ready-for-owner-and-engineer-review',
+      agentDecision: evidenceComplete ? 'phase3-evidence-ready-for-owner-and-engineer-review' : 'collect-phase3-evidence',
     },
     agentUse: {
       readApi: 'getPhase3EvidenceRegister',

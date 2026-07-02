@@ -1,19 +1,20 @@
 export const PHASE3_OWNER_SIGNOFF_REVIEW_VERSION = 'p3-owner-signoff-review-v1';
 
 export const PHASE3_OWNER_SIGNOFF_REQUIRED_EVIDENCE = [
-  item('license-policy', 'License policy', 'owner license policy', 'openSourcePolicyFinalized'),
-  item('deployment-target', 'Deployment target', 'deployment target', 'deploymentTargetFinalized'),
-  item('real-dwg-conversion', 'Real DWG conversion', 'real DWG conversion', 'realDwgConversionAccepted'),
-  item('real-pointcloud-validation', 'Real point-cloud validation', 'real point-cloud validation', 'realPointCloudValidationAccepted'),
-  item('field-pilot-feedback', 'Field pilot feedback', 'field pilot feedback', 'pilotFeedbackOwnerAccepted'),
-  item('backup-restore', 'Backup restore rehearsal', 'backup restore rehearsal evidence', 'backupRestoreOwnerAccepted'),
-  item('security-signoff', 'Security sign-off', 'security sign-off', 'securitySignoffAccepted'),
+  item('license-policy', 'License policy', 'owner license policy', 'openSourcePolicyFinalized', ['owner-license-policy']),
+  item('deployment-target', 'Deployment target', 'deployment target', 'deploymentTargetFinalized', ['deployment-target-selection']),
+  item('real-dwg-conversion', 'Real DWG conversion', 'real DWG conversion', 'realDwgConversionAccepted', ['external-dwg-converter-log']),
+  item('real-pointcloud-validation', 'Real point-cloud validation', 'real point-cloud validation', 'realPointCloudValidationAccepted', ['real-scan-extraction-validation']),
+  item('field-pilot-feedback', 'Field pilot feedback', 'field pilot feedback', 'pilotFeedbackOwnerAccepted', ['field-pilot-feedback']),
+  item('backup-restore', 'Backup restore rehearsal', 'backup restore rehearsal evidence', 'backupRestoreOwnerAccepted', ['backup-restore-rehearsal']),
+  item('security-signoff', 'Security sign-off', 'security sign-off', 'securitySignoffAccepted', ['security-signoff']),
 ];
 
 export function buildPhase3OwnerSignoffReview(input = {}) {
   const evidence = normalizeEvidence(input.evidence || input.signoffEvidence || input.items || []);
   const rows = PHASE3_OWNER_SIGNOFF_REQUIRED_EVIDENCE.map((required) => {
-    const match = evidence.find((row) => row.id === required.id || row.type === required.type || row.type === required.label);
+    const aliases = new Set([required.id, ...(required.aliases || [])]);
+    const match = evidence.find((row) => aliases.has(row.id) || row.type === required.type || row.type === required.label);
     const accepted = match?.accepted === true || match?.status === 'accepted';
     return {
       ...required,
@@ -22,6 +23,7 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
       owner: match?.owner || null,
       recordedAt: match?.recordedAt || null,
       note: match?.note || null,
+      acceptedFrom: match?.id || null,
     };
   });
   const missing = rows.filter((row) => !row.accepted).map((row) => row.id);
@@ -62,8 +64,8 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
   };
 }
 
-function item(id, label, type, finalApprovalField) {
-  return { id, label, type, finalApprovalField };
+function item(id, label, type, finalApprovalField, aliases = []) {
+  return { id, label, type, finalApprovalField, aliases };
 }
 
 function normalizeEvidence(evidence) {

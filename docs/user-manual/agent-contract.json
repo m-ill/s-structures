@@ -309,6 +309,8 @@
     "getPhase3OwnerSignoffReview().summary.missing must be empty before owner deployment approval can be considered.",
     "getPhase3CompletionAuditReview().summary.productionReady false means Phase 3 has repository traceability but still has preliminary or manual rows.",
     "getPhase3EvidenceRegister().summary.missing lists the field, engineering, and owner evidence records still needed before production review.",
+    "getPhase3EvidenceRegister().summary.evidenceComplete true means the evidence register is complete for review; it does not mean final production readiness or deployment approval.",
+    "Evidence register IDs may be submitted through project evidence APIs and reused by owner sign-off review aliases.",
     "summary.readyForAgentReview, summary.readyForReviewer, and summary.readyForOwnerReview are convenience mirrors of their review gate status and must be interpreted through getCapabilities().reviewGates before advancing workflows.",
     "A readyDecision only permits the next planned review handoff; it does not set the listed finalApprovalField or approve final structural-office use.",
     "Phase 3 integrated results connect nonlinear trace, detailed design trace, result postprocessing, and workflow state.",
