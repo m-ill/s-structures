@@ -22,18 +22,18 @@ export function buildP3IntegratedResults(model, analysis, options = {}) {
     benchmarkEvidence,
     methodLimitations,
   });
+  const summary = buildIntegratedSummary({
+    analysis,
+    nonlinear,
+    design,
+    workflowLock,
+    integratedGate,
+  });
   return {
     version: P3_INTEGRATED_RESULTS_VERSION,
+    contract: buildIntegratedContract(integratedGate),
     integratedGate,
-    summary: {
-      analysisOk: !!analysis?.ok,
-      nonlinearVersion: nonlinear.version,
-      designItems: design.summary.itemCount,
-      issueRows: design.issueRows.length,
-      notCheckedCount: countNotChecked(design),
-      workflowLocked: workflowLock.locked,
-      gateOk: integratedGate.ok,
-    },
+    summary,
     resultPostprocessing,
     nonlinear,
     design,
@@ -45,39 +45,106 @@ export function buildP3IntegratedResults(model, analysis, options = {}) {
 
 export function buildP3IntegratedResultsGate(input = {}) {
   const benchmarkEvidence = input.benchmarkEvidence || {};
+  const ticketCoverage = buildTicketCoverage(input);
+  const coverage = buildCoverage(input);
+  const workflow = buildWorkflowSummary(input.workflowLock);
+  const ok = !!input.analysis?.ok
+    && !!benchmarkEvidence.ok
+    && (input.methodLimitations || []).length > 0
+    && ticketCoverage.every((row) => row.covered);
   return {
     version: P3_INTEGRATED_RESULTS_GATE_VERSION,
     milestone: 'P3-M19',
     tickets: ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62'],
-    ok: !!input.analysis?.ok && !!benchmarkEvidence.ok && (input.methodLimitations || []).length > 0,
+    ok,
     resultContract: {
       postprocessingVersion: input.resultPostprocessing?.version || null,
       nonlinearVersion: input.nonlinear?.version || null,
       designVersion: input.design?.version || null,
       workflowLockVersion: input.workflowLock?.version || null,
     },
-    ticketCoverage: buildTicketCoverage(input),
-    coverage: {
-      storyRows: input.resultPostprocessing?.summary?.storyRowCount || 0,
-      memberRows: input.resultPostprocessing?.summary?.memberRowCount || 0,
-      capacityPoints: input.nonlinear?.capacityCurve?.length || 0,
-      nonlinearStepRows: input.nonlinear?.steps?.length || 0,
-      designItems: input.design?.summary?.itemCount || 0,
-      issueRows: input.design?.issueRows?.length || 0,
-      methodLimitations: input.methodLimitations?.length || 0,
-    },
-    workflow: {
-      locked: !!input.workflowLock?.locked,
-      editable: input.workflowLock?.editable !== false,
-      approvalState: input.workflowLock?.approvalState || 'not-submitted',
-      revocable: !!input.workflowLock && input.workflowLock.approvalState !== 'not-submitted',
-    },
+    summary: buildGateSummary({ ok, ticketCoverage, coverage, workflow, benchmarkEvidence }),
+    ticketCoverage,
+    coverage,
+    workflow,
     benchmarkEvidence,
     reportChapters: ['detailed-report-phase3', 'calculation-package-phase3'],
     limitations: [
       'P3-M19 integrates trace contracts for review and launch-gate evidence.',
       'Final sign-off still requires owner review, project-specific assumptions, and engineer approval.',
     ],
+  };
+}
+
+function buildIntegratedSummary(input) {
+  return {
+    analysisOk: !!input.analysis?.ok,
+    nonlinearVersion: input.nonlinear.version,
+    designItems: input.design.summary.itemCount,
+    issueRows: input.design.issueRows.length,
+    notCheckedCount: countNotChecked(input.design),
+    workflowLocked: input.workflowLock.locked,
+    gateOk: input.integratedGate.ok,
+    readyForReviewer: input.integratedGate.summary.readyForReviewer,
+    completeTicketCoverage: input.integratedGate.summary.completeTicketCoverage,
+    benchmarkOk: input.integratedGate.summary.benchmarkOk,
+    methodLimitationCount: input.integratedGate.summary.methodLimitationCount,
+  };
+}
+
+function buildIntegratedContract(gate) {
+  return {
+    milestone: 'P3-M19',
+    gateVersion: gate.version,
+    tickets: gate.tickets,
+    readApi: 'getP3IntegratedResults',
+    reportSections: gate.reportChapters,
+    reviewFields: [
+      'summary.readyForReviewer',
+      'integratedGate.ticketCoverage',
+      'integratedGate.coverage',
+      'integratedGate.workflow',
+      'methodLimitations',
+    ],
+  };
+}
+
+function buildCoverage(input) {
+  return {
+    storyRows: input.resultPostprocessing?.summary?.storyRowCount || 0,
+    memberRows: input.resultPostprocessing?.summary?.memberRowCount || 0,
+    capacityPoints: input.nonlinear?.capacityCurve?.length || 0,
+    nonlinearStepRows: input.nonlinear?.steps?.length || 0,
+    designItems: input.design?.summary?.itemCount || 0,
+    issueRows: input.design?.issueRows?.length || 0,
+    methodLimitations: input.methodLimitations?.length || 0,
+  };
+}
+
+function buildWorkflowSummary(workflowLock) {
+  return {
+    locked: !!workflowLock?.locked,
+    editable: workflowLock?.editable !== false,
+    approvalState: workflowLock?.approvalState || 'not-submitted',
+    revocable: !!workflowLock && workflowLock.approvalState !== 'not-submitted',
+  };
+}
+
+function buildGateSummary(input) {
+  const completeTicketCoverage = input.ticketCoverage.every((row) => row.covered);
+  return {
+    ok: input.ok,
+    readyForReviewer: input.ok && completeTicketCoverage,
+    completeTicketCoverage,
+    benchmarkOk: !!input.benchmarkEvidence.ok,
+    ticketCount: input.ticketCoverage.length,
+    coveredTicketCount: input.ticketCoverage.filter((row) => row.covered).length,
+    methodLimitationCount: input.coverage.methodLimitations,
+    nonlinearStepRows: input.coverage.nonlinearStepRows,
+    capacityPoints: input.coverage.capacityPoints,
+    designIssueRows: input.coverage.issueRows,
+    workflowLocked: input.workflow.locked,
+    workflowApprovalState: input.workflow.approvalState,
   };
 }
 
@@ -121,6 +188,11 @@ function buildBenchmarkEvidence(nonlinear, evidence = {}) {
   };
   return {
     version: evidence.version || 'p3-m19-benchmark-evidence-v1',
+    contract: {
+      milestone: 'P3-M19',
+      groups: Object.keys(groups),
+      runner: 'full milestone regression',
+    },
     ok: Object.values(groups).every(Boolean),
     groups,
     runner: evidence.runner || 'tests/p3-m19-integrated-report.mjs plus milestone regression',

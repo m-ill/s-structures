@@ -556,6 +556,8 @@ function renderPhase3Integrated(integrated) {
       ['Issue rows', integrated.summary.issueRows],
       ['Not checked count', integrated.summary.notCheckedCount],
       ['Workflow locked', integrated.summary.workflowLocked ? 'Yes' : 'No'],
+      ['Ready for reviewer', integrated.summary.readyForReviewer ? 'Yes' : 'No'],
+      ['Ticket coverage', integrated.summary.completeTicketCoverage ? 'Complete' : 'Review'],
       ['Nonlinear trace', integrated.summary.nonlinearVersion],
       ['Gate', integrated.integratedGate?.ok ? 'OK' : 'Review'],
       ['Benchmark evidence', integrated.benchmarkEvidence?.ok ? 'OK' : 'Review'],
@@ -567,6 +569,7 @@ function renderPhase3Integrated(integrated) {
       ['Nonlinear steps', integrated.integratedGate.coverage.nonlinearStepRows],
       ['Method limitations', integrated.integratedGate.coverage.methodLimitations],
       ['Approval state', integrated.integratedGate.workflow.approvalState],
+      ['Covered tickets', `${integrated.integratedGate.summary.coveredTicketCount}/${integrated.integratedGate.summary.ticketCount}`],
     ]) : '',
     integrated.integratedGate?.ticketCoverage ? renderTable(['Ticket', 'Scope', 'Covered', 'Evidence'], integrated.integratedGate.ticketCoverage.map((row) => [
       row.ticket,

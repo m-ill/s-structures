@@ -189,6 +189,8 @@ export function renderCalculationPackageHtml(pkg) {
       ['Issue rows', d.phase3IntegratedResults.summary.issueRows],
       ['Not checked count', d.phase3IntegratedResults.summary.notCheckedCount],
       ['Workflow locked', d.phase3IntegratedResults.summary.workflowLocked ? 'Yes' : 'No'],
+      ['Ready for reviewer', d.phase3IntegratedResults.summary.readyForReviewer ? 'Yes' : 'No'],
+      ['Ticket coverage', d.phase3IntegratedResults.summary.completeTicketCoverage ? 'Complete' : 'Review'],
       ['Nonlinear trace', d.phase3IntegratedResults.summary.nonlinearVersion],
       ['Gate', d.phase3IntegratedResults.integratedGate?.ok ? 'OK' : 'Review'],
       ['Benchmark evidence', d.phase3IntegratedResults.benchmarkEvidence?.ok ? 'OK' : 'Review'],
@@ -200,6 +202,7 @@ export function renderCalculationPackageHtml(pkg) {
       ['Nonlinear steps', d.phase3IntegratedResults.integratedGate.coverage.nonlinearStepRows],
       ['Method limitations', d.phase3IntegratedResults.integratedGate.coverage.methodLimitations],
       ['Approval state', d.phase3IntegratedResults.integratedGate.workflow.approvalState],
+      ['Covered tickets', `${d.phase3IntegratedResults.integratedGate.summary.coveredTicketCount}/${d.phase3IntegratedResults.integratedGate.summary.ticketCount}`],
     ]) : ''}
     ${d.phase3IntegratedResults?.integratedGate?.ticketCoverage ? table(['Ticket', 'Scope', 'Covered', 'Evidence'], d.phase3IntegratedResults.integratedGate.ticketCoverage.map((row) => [
       row.ticket,
