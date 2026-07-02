@@ -13,6 +13,7 @@ import {
   buildDisplacementControlTrace,
   buildHingeDegradedModel,
   buildHingeStateTrace,
+  buildNonlinearHingeControlGate,
   buildPushoverControlTrace,
   buildNonlinearAnalysisTrace,
   assignMemberHinges,
@@ -163,6 +164,23 @@ const invalidControlTrace = buildNonlinearAnalysisTrace(model, {
 assert.equal(invalidControlTrace.hingeControlGate.control.displacementReview.status, 'review-required');
 assert.ok(invalidControlTrace.hingeControlGate.controlReview.missing.includes('displacement-control-input-review'));
 assert.equal(invalidControlTrace.hingeControlGate.controlReview.agentDecision, 'hold-before-m16');
+const failedPushoverGate = buildNonlinearHingeControlGate(hingeTrace, {
+  ok: true,
+  control: { stopReason: 'STEP_FAILED' },
+  warnings: [{ code: 'PUSHOVER_STEP_FAILED' }],
+  steps: [{ converged: false }],
+  capacityCurve: [{ baseShear: 0, roofDisp: 0 }],
+  hingeEvents: [],
+  version: FORMAL_PUSHOVER_VERSION,
+}, benchmarks, {
+  displacementControl: dc,
+  arcLength: arc,
+  hingeAssignment: assigned,
+});
+assert.equal(failedPushoverGate.summary.pushoverOk, false);
+assert.equal(failedPushoverGate.controlReview.status, 'review-required');
+assert.ok(failedPushoverGate.controlReview.missing.includes('formal-pushover-step-failure'));
+assert.equal(failedPushoverGate.controlReview.agentDecision, 'hold-before-m16');
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();

@@ -23,7 +23,7 @@ export function runFormalPushover(model, options = {}) {
   }));
   const regression = options.baseline ? comparePushoverRegression({ capacityCurve: curve }, options.baseline) : null;
   return {
-    ok: !!preliminary.ok,
+    ok: !!preliminary.ok && control.stopReason !== 'STEP_FAILED',
     version: FORMAL_PUSHOVER_VERSION,
     sourceVersion: preliminary.sourceVersion || preliminary.version,
     contract: {

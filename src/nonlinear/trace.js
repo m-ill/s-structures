@@ -304,7 +304,7 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       hingeEventCount: hingeTrace?.events?.length || 0,
       assignedHingeCount: options.hingeAssignment?.summary?.hingeCount || 0,
       postPeakTracked: arcLength.steps.some((step) => step.dLambda < 0),
-      pushoverOk: !!pushover?.ok,
+      pushoverOk: !!pushover?.ok && !hasPushoverStepFailure(pushover),
       pushoverStopReason: pushover?.control?.stopReason || null,
       requiredBenchmarks: ['B3', 'B4', 'B5'],
       controlReview,
@@ -375,6 +375,7 @@ function buildHingeControlReview({ hingeTrace, pushover, hingeControlBenchmarks,
   if (displacementControl?.review?.status === 'review-required') missing.push('displacement-control-input-review');
   if (!(arcLength?.steps || []).some((step) => step.dLambda < 0)) missing.push('arc-length-post-peak');
   if (!pushover?.ok) missing.push('formal-pushover');
+  if (hasPushoverStepFailure(pushover)) missing.push('formal-pushover-step-failure');
   if (!hingeControlBenchmarks?.ok) missing.push('B3-B5-benchmark');
   return {
     status: missing.length ? 'review-required' : 'trace-ready',
@@ -385,6 +386,12 @@ function buildHingeControlReview({ hingeTrace, pushover, hingeControlBenchmarks,
     missing,
     agentDecision: missing.length ? 'hold-before-m16' : 'm15-ready-for-m16-review',
   };
+}
+
+function hasPushoverStepFailure(pushover = {}) {
+  return pushover?.control?.stopReason === 'STEP_FAILED'
+    || (pushover?.warnings || []).some((warning) => warning.code === 'PUSHOVER_STEP_FAILED')
+    || (pushover?.steps || []).some((step) => step.converged === false);
 }
 
 function buildHingeControlTicketCoverage({ hingeTrace, hingeAssignment, displacementControl, arcLength, pushover, hingeControlBenchmarks }) {
