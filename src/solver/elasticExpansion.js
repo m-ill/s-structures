@@ -44,6 +44,17 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
     }
     else expanded.push(load);
   }
+  const features = {
+    ...featureCounts,
+    springSupports: countSpringSupports(model),
+    settlements: countSettlements(model),
+    trussMembers: countMembersByType(model, ['truss']),
+    tensionOnlyMembers: countMembersByType(model, ['tensionOnly']),
+    compressionOnlyMembers: countMembersByType(model, ['compressionOnly']),
+    memberOffsets: countMemberOffsets(model),
+  };
+  const supportTrace = buildSupportTrace(model);
+  const memberTrace = buildMemberTrace(model, lengths);
   return {
     loads: expanded,
     trace: {
@@ -77,19 +88,12 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
       outputCount: expanded.length,
       warnings,
       modelMembers: model.members?.length || 0,
-      features: {
-        ...featureCounts,
-        springSupports: countSpringSupports(model),
-        settlements: countSettlements(model),
-        trussMembers: countMembersByType(model, ['truss']),
-        tensionOnlyMembers: countMembersByType(model, ['tensionOnly']),
-        compressionOnlyMembers: countMembersByType(model, ['compressionOnly']),
-        memberOffsets: countMemberOffsets(model),
-      },
-      supportTrace: buildSupportTrace(model),
-      memberTrace: buildMemberTrace(model, lengths),
+      features,
+      supportTrace,
+      memberTrace,
       loadTrace,
       handcalc: handcalc.filter(Boolean),
+      review: buildExpansionReview({ features, warnings, supportTrace, memberTrace, loadTrace, handcalc: handcalc.filter(Boolean) }),
     },
   };
 }
@@ -228,4 +232,29 @@ function pickFinite(source = {}, keys = []) {
     if (Number.isFinite(value)) out[key] = value;
   }
   return out;
+}
+
+function buildExpansionReview(input) {
+  const features = input.features || {};
+  const blockers = [];
+  const settlementForceTraceReady = features.settlements === 0 ||
+    (input.supportTrace || []).some((row) => row.settlementKeys?.length && Object.keys(row.settlementForce || {}).length);
+  if (!settlementForceTraceReady) blockers.push('settlement-force-trace-missing');
+  const advancedLoadCount = (features.partialDistributed || 0) + (features.trapezoid || 0) + (features.temperature || 0) + (features.temperatureGradient || 0);
+  if (advancedLoadCount > 0 && !(input.handcalc || []).length) blockers.push('advanced-load-handcalc-missing');
+  if ((input.warnings || []).length) blockers.push('elastic-expansion-warnings-present');
+  const unilateralMemberCount = (features.tensionOnlyMembers || 0) + (features.compressionOnlyMembers || 0);
+  return {
+    traceReady: blockers.length === 0,
+    settlementForceTraceReady,
+    advancedLoadHandcalcReady: advancedLoadCount === 0 || (input.handcalc || []).length > 0,
+    unilateralEnvelopeReviewRequired: unilateralMemberCount > 0,
+    memberOffsetReviewRequired: (features.memberOffsets || 0) > 0,
+    engineerReviewRequired: true,
+    productionReady: false,
+    blockers,
+    agentDecision: blockers.length
+      ? 'fix-elastic-expansion-trace-before-review'
+      : 'elastic-expansion-ready-for-engineering-review',
+  };
 }

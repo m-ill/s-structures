@@ -44,6 +44,13 @@ assert.equal(expanded.trace.handcalc[0].method, 'segmented-fixed-end-equivalent-
 assert.equal(expanded.trace.handcalc[0].totalLoad, 20);
 assert.deepEqual(expanded.trace.handcalc[0].range, { from: 0.25, to: 0.75 });
 assert.equal(expanded.trace.handcalc[0].direction, '-z');
+assert.equal(expanded.trace.review.traceReady, true);
+assert.equal(expanded.trace.review.settlementForceTraceReady, true);
+assert.equal(expanded.trace.review.advancedLoadHandcalcReady, true);
+assert.equal(expanded.trace.review.engineerReviewRequired, true);
+assert.equal(expanded.trace.review.productionReady, false);
+assert.deepEqual(expanded.trace.review.blockers, []);
+assert.equal(expanded.trace.review.agentDecision, 'elastic-expansion-ready-for-engineering-review');
 
 const result = analyzeModel(model);
 assert.equal(result.ok, true);
@@ -65,6 +72,7 @@ const settlementExpanded = expandAdvancedLoads(settlementModel.loads, settlement
 assert.equal(settlementExpanded.trace.features.settlements, 1);
 assert.equal(settlementExpanded.trace.supportTrace[0].settlement.uz, -0.01);
 assert.equal(settlementExpanded.trace.supportTrace[0].settlementForce.kz, -10000);
+assert.equal(settlementExpanded.trace.review.settlementForceTraceReady, true);
 const settlementResult = analyzeModel(settlementModel);
 assert.equal(settlementResult.ok, true);
 assert.ok(Number.isFinite(settlementResult.byCombo.CO1.reactions.B.rz));
@@ -187,6 +195,7 @@ assert.equal(clearTrace.features.memberOffsets, 1);
 assert.equal(clearTrace.memberTrace[0].grossLength, 4);
 assert.equal(clearTrace.memberTrace[0].clearLength, 3);
 assert.deepEqual(clearTrace.memberTrace[0].offset, { i: 0.5, j: 0.5, rigidFactor: 1 });
+assert.equal(clearTrace.review.memberOffsetReviewRequired, true);
 assert.ok(clearSpanResult.byCombo.CO1.summary.maxDisplacement < cantileverResult.byCombo.CO1.summary.maxDisplacement);
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m11-elastic-expansion' }, null, 2));

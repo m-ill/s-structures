@@ -29,6 +29,7 @@ The previous M11 trace recorded only input and output load counts. P3-M11 now ex
 6. temperature and gradient fixed-end handcalc rows
 7. support/member trace rows
 8. unilateral member iteration rows through `p3-m11-unilateral-member-iteration` and `p3-m11-unilateral-member-trace`
+9. elastic expansion review decision with trace readiness, settlement-force trace readiness, handcalc readiness, offset/unilateral review flags, blockers, and agent decision
 
 2026-07-02 review update: Spring support trace rows now include finite stiffness values and settlement values, not only key names. This makes spring reaction and settlement cases inspectable by reports and AI agents without reopening the raw model.
 
@@ -37,6 +38,8 @@ The previous M11 trace recorded only input and output load counts. P3-M11 now ex
 2026-07-02 contract update: `elasticExpansion.trace.contract` now includes P3-M11 milestone metadata, P3-T68 through P3-T72 ticket coverage, `featureTicketMap`, and review field names. Reports and AI agents can map spring, settlement, unilateral, offset, advanced load, and thermal load trace rows to their planned tickets without reconstructing the plan mapping.
 
 2026-07-02 settlement-force update: support trace rows now expose `settlementForce` computed from spring stiffness and imposed displacement using the same convention as the solver right-hand-side assembly. This gives reports and AI agents a direct handcalc row for spring settlement cases instead of requiring them to multiply raw stiffness and settlement fields.
+
+2026-07-03 P3-M11 rebuild review update: `expandAdvancedLoads().trace` now includes a `review` block with trace readiness, settlement-force trace readiness, advanced-load handcalc readiness, unilateral envelope review requirement, member-offset review requirement, blockers, and agent decision. This gives AI agents one stable branch point before using expanded elastic results in reports or design workflows.
 
 ## Current Test Gate
 
