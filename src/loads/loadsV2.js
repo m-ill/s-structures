@@ -216,6 +216,14 @@ function buildLoadsV2Review(summary, massSource) {
   if (!(summary.windForce > 0)) blockers.push('wind-trace-empty');
   if (!(summary.seismicForce > 0)) blockers.push('seismic-trace-empty');
   if (!massSource?.version) blockers.push('mass-source-trace-missing');
+  if (massSource?.review?.warning) blockers.push('mass-source-ignored-loads');
+  const massSourceIgnoredLoadCount = massSource?.review?.ignoredLoadCount || 0;
+  const massSourceReviewWarning = massSource?.review?.warning || null;
+  const agentDecision = massSourceReviewWarning
+    ? 'review-loads-v2-mass-source-ignored-loads'
+    : blockers.length
+      ? 'fix-loads-v2-trace-before-review'
+      : 'loads-v2-ready-for-engineering-review';
   return {
     status: blockers.length ? 'review-required' : 'available',
     loadsTraceReady: blockers.length === 0,
@@ -223,14 +231,14 @@ function buildLoadsV2Review(summary, massSource) {
     seismicTraceReady: summary.seismicForce > 0,
     environmentalTraceReady: summary.environmentalLoadCount > 0,
     massSourceReady: !!massSource?.version,
+    massSourceReviewWarning,
+    massSourceIgnoredLoadCount,
     uncoveredTickets,
     blockers,
     engineerReviewRequired: true,
     productionReady: false,
     preliminaryCodeAutomation: true,
-    agentDecision: blockers.length
-      ? 'fix-loads-v2-trace-before-review'
-      : 'loads-v2-ready-for-engineering-review',
+    agentDecision,
   };
 }
 

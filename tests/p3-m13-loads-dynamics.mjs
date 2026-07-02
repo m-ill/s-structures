@@ -161,6 +161,26 @@ assert.ok(lateralIgnoredMassTrace.review.ignoredReasons.includes('not-vertical-l
 assert.equal(lateralIgnoredMassTrace.review.warning, 'mass-source-has-ignored-loads');
 assert.equal(lateralIgnoredMassTrace.review.agentDecision, 'mass-source-ready-with-ignored-load-review');
 
+const ignoredLoadTopLevelTrace = buildLoadsV2Trace({
+  nodes: [{ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 0, y: 0, z: 3 }],
+  loads: [
+    { id: 'D-Z', type: 'nodal', node: 'N2', P: 9.80665, dir: '-z', case: 'D' },
+    { id: 'D-X', type: 'nodal', node: 'N2', P: 9.80665, dir: '+x', case: 'D' },
+  ],
+}, {
+  windPressure: 0.9,
+  seismicBaseShear: 120,
+  snowLoad: 0.5,
+  massSource: { combos: [{ case: 'D', factor: 1 }], includeNodeMass: false },
+});
+assert.equal(ignoredLoadTopLevelTrace.massSource.review.warning, 'mass-source-has-ignored-loads');
+assert.equal(ignoredLoadTopLevelTrace.review.status, 'review-required');
+assert.equal(ignoredLoadTopLevelTrace.review.loadsTraceReady, false);
+assert.equal(ignoredLoadTopLevelTrace.review.massSourceReviewWarning, 'mass-source-has-ignored-loads');
+assert.equal(ignoredLoadTopLevelTrace.review.massSourceIgnoredLoadCount, 1);
+assert.ok(ignoredLoadTopLevelTrace.review.blockers.includes('mass-source-ignored-loads'));
+assert.equal(ignoredLoadTopLevelTrace.review.agentDecision, 'review-loads-v2-mass-source-ignored-loads');
+
 const dynamicMassModel = createTwoStoryElasticFrameModel();
 dynamicMassModel.analysisSettings.massSource = {
   combos: [{ case: 'D', factor: 1 }, { case: 'L', factor: 0.25 }],

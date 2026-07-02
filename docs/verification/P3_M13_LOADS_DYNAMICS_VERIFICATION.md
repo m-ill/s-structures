@@ -43,9 +43,11 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 
 2026-07-03 loads-review update: `buildLoadsV2Trace()` now exposes a top-level `review` block. It records wind/seismic/environmental/mass-source readiness, uncovered plan tickets, blocking trace gaps, preliminary automation status, required engineer review, and the next AI-agent decision string. This keeps M13 load results aligned with the review-gate pattern already used by M10 to M12.
 
+2026-07-03 mass-source gate hardening: The top-level loads v2 review now propagates `buildMassSourceTrace().review.warning`. If selected mass-source combinations include ignored non-vertical loads, `buildLoadsV2Trace().review` becomes `review-required`, adds `mass-source-ignored-loads`, exposes the ignored-load count, and returns `review-loads-v2-mass-source-ignored-loads`. This prevents reports or AI agents from treating a partial load-to-mass conversion as a clean load trace.
+
 ## Current Test Gate
 
-`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, dynamic review decisions, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace and review status, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.
+`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, dynamic review decisions, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace and review status, top-level mass-source warning propagation, member UDL-to-mass conversion, dynamic mass assembly, and story-mass single-source behavior.
 
 ## Remaining Limits
 
