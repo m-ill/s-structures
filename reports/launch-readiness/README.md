@@ -20,3 +20,7 @@ This folder records P3-M20 launch evidence.
 | G12 backup restore | `backup-restore.md` |
 | G13 design verification | `docs/verification/DESIGN_MODULE_VERIFICATION.md` |
 | G14 calculation completeness | `tests/p3-launch-gate.mjs` |
+
+## Manual Sign-Off
+
+Automated gate success does not equal owner approval for public release. Manual release decisions are tracked in `owner-signoff-checklist.md`.

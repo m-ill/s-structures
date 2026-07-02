@@ -79,11 +79,11 @@ This audit checks the current repository against the Phase 3 planning documents.
 | G5 platform workflow e2e | Proven | server/auth/persistence/app tests passed |
 | G6 import e2e | Proven | DXF, plan, point-cloud tests passed |
 | G7 performance budget | Manual | `reports/launch-readiness/performance-security.md` records evidence; production hardware budget still owner-reviewed |
-| G8 security checklist | Manual | automated auth/server guards passed; release security sign-off remains owner-reviewed |
+| G8 security checklist | Manual | automated auth/server guards passed; release security sign-off remains owner-reviewed through `reports/launch-readiness/owner-signoff-checklist.md` |
 | G9 user manual refresh | Proven | `docs/user-manual/PHASE3_LAUNCH_MANUAL.md` |
 | G10 agent contract current | Proven | `tests/p3-launch-gate.mjs` checks manifest vs contract read APIs |
 | G11 beta pilot reports | Manual | 10 report shells exist; real user feedback is still needed |
-| G12 backup/restore rehearsal | Manual | checklist exists; physical backup rehearsal requires owner sign-off |
+| G12 backup/restore rehearsal | Manual | checklist exists; physical backup rehearsal requires owner sign-off through `reports/launch-readiness/owner-signoff-checklist.md` |
 | G13 design verification | Proven | `docs/verification/DESIGN_MODULE_VERIFICATION.md` and M17/M18 tests |
 | G14 calculation completeness | Proven | M19/M20 tests check Phase 3 trace and no default not-checked chapter |
 
@@ -94,6 +94,7 @@ This audit checks the current repository against the Phase 3 planning documents.
 3. Real point-cloud and field pilot validation remains future evidence.
 4. License policy is recorded but not converted to an open-source license decision.
 5. User manual legacy pages still contain older text encoding issues; the Phase 3 launch manual and agent contract are the current clean launch references.
+6. Owner release decisions are tracked in `reports/launch-readiness/owner-signoff-checklist.md`; they are not automated approvals.
 
 ## Current Verification Commands
 

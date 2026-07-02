@@ -34,6 +34,7 @@ assert.equal(existsSync('LICENSE.txt'), true);
 assert.equal(existsSync('docs/user-manual/PHASE3_LAUNCH_MANUAL.md'), true);
 assert.equal(existsSync('reports/launch-readiness/performance-security.md'), true);
 assert.equal(existsSync('reports/launch-readiness/backup-restore.md'), true);
+assert.equal(existsSync('reports/launch-readiness/owner-signoff-checklist.md'), true);
 assert.equal(existsSync('docs/verification/DESIGN_MODULE_VERIFICATION.md'), true);
 
 const evidence = {
@@ -45,6 +46,7 @@ const evidence = {
   performanceRecorded: true,
   securityChecklistSigned: true,
   backupRestoreRecorded: true,
+  ownerSignoffChecklistRecorded: true,
   designVerificationRecorded: true,
   calculationTraceConnected: true,
   notCheckedCount: integrated.summary.notCheckedCount,
@@ -63,6 +65,7 @@ assert.equal(launch.releaseGate.version, LAUNCH_READINESS_GATE_VERSION);
 assert.deepEqual(launch.releaseGate.tickets, ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67']);
 assert.deepEqual(launch.releaseGate.requiredGates, ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G12', 'G13', 'G14']);
 assert.equal(launch.releaseGate.ok, true);
+assert.equal(launch.releaseGate.coverage.ownerSignoffChecklist, true);
 assert.equal(launch.status, 'OK');
 assert.equal(launch.summary.total, 14);
 assert.equal(launch.summary.reviewCount, 0);

@@ -47,6 +47,7 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
       qa: evidence.fullSuiteGreen === true && evidence.benchmarkGreen === true,
       pilotReports: evidence.pilotReports?.count || 0,
       backupRestore: evidence.backupRestoreRecorded === true,
+      ownerSignoffChecklist: evidence.ownerSignoffChecklistRecorded === true,
     },
     manualSignoffRequired: [
       'owner license policy',
