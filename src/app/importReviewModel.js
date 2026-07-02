@@ -8,6 +8,7 @@ export function summarizeImportEntry(entry = {}) {
   const counts = candidate?.audit?.counts || entry.audit?.counts || {};
   const warnings = uniqueStrings([...(validation.warnings || []), ...(entry.audit?.warnings || [])]);
   const review = buildReviewState(entry, candidate, validation, warnings);
+  const decision = buildDecisionState(entry, candidate, validation, review);
   return {
     version: IMPORT_REVIEW_MODEL_VERSION,
     id: entry.id || null,
@@ -24,6 +25,7 @@ export function summarizeImportEntry(entry = {}) {
     layers: candidate?.audit?.layers || entry.audit?.layers || null,
     planAssembly: candidate?.audit?.planAssembly || entry.audit?.planAssembly || null,
     review,
+    decision,
     warnings,
   };
 }
@@ -76,6 +78,21 @@ function buildReviewState(entry, candidate, validation, warnings) {
       generatedSegmentCount: planAssembly.generatedSegmentCount || 0,
       recognitionQuality: planAssembly.recognitionQuality || null,
     } : null,
+  };
+}
+
+function buildDecisionState(entry, candidate, validation, review) {
+  const status = entry.status || 'pending';
+  return {
+    status,
+    accepted: status === 'confirmed',
+    rejected: status === 'rejected',
+    pending: status === 'pending',
+    confirmable: !!candidate && validation?.ok === true && review?.confirmable !== false && status !== 'rejected',
+    resolvedCandidatePresent: !!entry.resolvedCandidate,
+    resolvedBy: entry.resolvedBy || null,
+    decidedAt: entry.updatedAt || entry.createdAt || null,
+    reasons: review?.reasons || [],
   };
 }
 

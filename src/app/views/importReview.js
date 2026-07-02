@@ -51,6 +51,7 @@ export function mountImportReviewView(container, ctx) {
       status: summary.status,
       validation: summary.validation,
       review: summary.review,
+      decision: summary.decision,
       counts: summary.counts,
       source: summary.source,
       layers: summary.layers,

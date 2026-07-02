@@ -89,10 +89,20 @@ assert.deepEqual(candidate.candidates.stories.map((story) => story.z), [0, 3]);
 const reviewSummary = summarizeImportEntry({ id: 'plan-2story-import', status: 'pending', candidate });
 assert.equal(reviewSummary.review.confirmable, true);
 assert.equal(reviewSummary.review.requiresHumanReview, true);
+assert.equal(reviewSummary.decision.pending, true);
+assert.equal(reviewSummary.decision.confirmable, true);
+assert.equal(reviewSummary.decision.accepted, false);
+assert.equal(reviewSummary.decision.rejected, false);
 assert.equal(reviewSummary.review.sourceType, 'dxf-plan-assembly');
 assert.equal(reviewSummary.review.planAssembly.planCount, 2);
 assert.equal(reviewSummary.review.planAssembly.columnStackCount, 2);
 assert.equal(reviewSummary.review.planAssembly.recognitionQuality.ok, true);
+
+const rejectedReview = summarizeImportEntry({ id: 'plan-2story-import', status: 'rejected', candidate });
+assert.equal(rejectedReview.review.confirmable, false);
+assert.equal(rejectedReview.decision.rejected, true);
+assert.equal(rejectedReview.decision.confirmable, false);
+assert.ok(rejectedReview.decision.reasons.includes('already-rejected'));
 
 const weakStory = recognizePlanDxf(readFileSync('tests/fixtures/dxf/plan-story-1.dxf', 'utf8'), {
   storyId: 'weak',

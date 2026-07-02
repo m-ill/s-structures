@@ -36,6 +36,8 @@ The import review model previously showed only generic candidate counts and warn
 
 2026-07-02 follow-up: Plan recognition now exposes fixture-quality recall traces. `recognizePlanDxf()` records expected/actual column and beam counts, recall, and target thresholds, `assemblePlansToImportCandidate()` carries the minimum recall into the candidate audit, and `summarizeImportEntry()` flags `plan-recognition-quality-review-required` when the recognition quality falls below the documented P3-M7 gate.
 
+2026-07-02 decision-state update: `summarizeImportEntry()` now exposes `decision` state for pending, confirmed, and rejected imports. The import review screen renders this state in its audit JSON, and the M7 UI test covers both confirm and reject paths so AI agents can verify accept/reject status without inferring it from button state.
+
 ## Current Test Gate
 
 P3-M7 is covered by:
