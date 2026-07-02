@@ -22,12 +22,12 @@ const ROWS = [
     'simultaneous hinge-controlled equilibrium qualification',
     'distributed plasticity and field-calibrated material validation',
     'production seismic qualification',
-  ], ['getPhase3NonlinearMilestoneReview', 'getNonlinearAnalysisTrace'], ['docs/verification/P3_M14_NONLINEAR_GEOMETRY_VERIFICATION.md', 'docs/verification/P3_M16_FIBER_NLTH_VERIFICATION.md']),
+  ], ['getPhase3NonlinearMilestoneReview', 'getPhase3EngineeringValidationReview', 'getNonlinearAnalysisTrace'], ['docs/verification/P3_M14_NONLINEAR_GEOMETRY_VERIFICATION.md', 'docs/verification/P3_M16_FIBER_NLTH_VERIFICATION.md']),
   row('detailed-design', ['P3-M17', 'P3-M18'], [
     'final code clause selection',
     'seismic detailing, constructability, and drawing review',
     'fabrication, geotechnical, and permit calculation approval',
-  ], ['getPhase3DesignMilestoneReview', 'getP3DetailedDesignReport'], ['docs/verification/DESIGN_MODULE_VERIFICATION.md']),
+  ], ['getPhase3DesignMilestoneReview', 'getPhase3EngineeringValidationReview', 'getP3DetailedDesignReport'], ['docs/verification/DESIGN_MODULE_VERIFICATION.md']),
   row('productization', ['P3-M19', 'P3-M20'], [
     'final structural sign-off',
     'open-source license policy finalization',

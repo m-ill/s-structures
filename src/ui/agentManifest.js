@@ -53,6 +53,7 @@ import {
 import { LAUNCH_READINESS_GATE_VERSION, LAUNCH_READINESS_VERSION } from '../platform/launchReadiness.js';
 import { PHASE3_DESIGN_MILESTONE_REVIEW_VERSION } from '../platform/phase3DesignMilestoneReview.js';
 import { PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION } from '../platform/phase3DrawingImportValidationReview.js';
+import { PHASE3_ENGINEERING_VALIDATION_REVIEW_VERSION } from '../platform/phase3EngineeringValidationReview.js';
 import { PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION } from '../platform/phase3ElasticMilestoneReview.js';
 import { PHASE3_IMPORT_MILESTONE_REVIEW_VERSION } from '../platform/phase3ImportMilestoneReview.js';
 import { PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION } from '../platform/phase3NonlinearMilestoneReview.js';
@@ -181,6 +182,7 @@ export function buildAgentManifest(options = {}) {
       phase3LaunchReadinessGate: LAUNCH_READINESS_GATE_VERSION,
       phase3DesignMilestoneReview: PHASE3_DESIGN_MILESTONE_REVIEW_VERSION,
       phase3DrawingImportValidationReview: PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION,
+      phase3EngineeringValidationReview: PHASE3_ENGINEERING_VALIDATION_REVIEW_VERSION,
       phase3ElasticMilestoneReview: PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION,
       phase3ImportMilestoneReview: PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
       phase3NonlinearMilestoneReview: PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION,
@@ -275,6 +277,7 @@ export function buildAgentManifest(options = {}) {
       'getLaunchReadinessReport',
       'getPhase3DesignMilestoneReview',
       'getPhase3DrawingImportValidationReview',
+      'getPhase3EngineeringValidationReview',
       'getPhase3ElasticMilestoneReview',
       'getPhase3ImportMilestoneReview',
       'getPhase3NonlinearMilestoneReview',
@@ -333,6 +336,7 @@ export function buildAgentManifest(options = {}) {
       phase3PlanAlignment: 'node tests/p3-plan-alignment.mjs',
       phase3DocReferences: 'node tests/p3-doc-reference-integrity.mjs',
       phase3DrawingImportValidation: 'node tests/p3-drawing-import-validation-review.mjs',
+      phase3EngineeringValidation: 'node tests/p3-engineering-validation-review.mjs',
       phase3PointCloudValidation: 'node tests/p3-pointcloud-validation-review.mjs',
       phase3PracticeValidation: 'node tests/p3-practice-validation-review.mjs',
       phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
@@ -413,6 +417,7 @@ export function buildAgentManifest(options = {}) {
       'phase3LaunchReadinessGate',
       'phase3DesignMilestoneReview',
       'phase3DrawingImportValidationReview',
+      'phase3EngineeringValidationReview',
       'phase3ElasticMilestoneReview',
       'phase3ImportMilestoneReview',
       'phase3NonlinearMilestoneReview',

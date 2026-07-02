@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import {
   buildPhase3DesignMilestoneReview,
   buildPhase3DrawingImportValidationReview,
+  buildPhase3EngineeringValidationReview,
   buildPhase3ElasticMilestoneReview,
   buildPhase3ImportMilestoneReview,
   buildPhase3NonlinearMilestoneReview,
@@ -14,6 +15,7 @@ import {
   buildPhase3PlanAlignmentReport,
   PHASE3_DESIGN_MILESTONE_REVIEW_VERSION,
   PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION,
+  PHASE3_ENGINEERING_VALIDATION_REVIEW_VERSION,
   PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION,
   PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
   PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION,
@@ -155,6 +157,7 @@ assert.equal(report.ticketSummary.effectiveCompletion, true);
 assert.equal(manifest.modules.phase3PlanAlignment, PHASE3_PLAN_ALIGNMENT_VERSION);
 assert.equal(manifest.modules.phase3DesignMilestoneReview, PHASE3_DESIGN_MILESTONE_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3DrawingImportValidationReview, PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION);
+assert.equal(manifest.modules.phase3EngineeringValidationReview, PHASE3_ENGINEERING_VALIDATION_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3ElasticMilestoneReview, PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3ImportMilestoneReview, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3NonlinearMilestoneReview, PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION);
@@ -164,6 +167,7 @@ assert.equal(manifest.modules.phase3ProductizationMilestoneReview, PHASE3_PRODUC
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
 assert.ok(manifest.readApis.includes('getPhase3DesignMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3DrawingImportValidationReview'));
+assert.ok(manifest.readApis.includes('getPhase3EngineeringValidationReview'));
 assert.ok(manifest.readApis.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3NonlinearMilestoneReview'));
@@ -173,6 +177,7 @@ assert.ok(manifest.readApis.includes('getPhase3ProductizationMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
 assert.ok(manifest.dataContracts.includes('phase3DesignMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3DrawingImportValidationReview'));
+assert.ok(manifest.dataContracts.includes('phase3EngineeringValidationReview'));
 assert.ok(manifest.dataContracts.includes('phase3ElasticMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearMilestoneReview'));
@@ -220,6 +225,12 @@ assert.ok(drawingImportValidationReview.requiredEvidence.includes('visual overla
 assert.equal(drawingImportValidationReview.summary.ownerReviewRequired, true);
 assert.equal(drawingImportValidationReview.agentUse.readApi, 'getPhase3DrawingImportValidationReview');
 
+const engineeringValidationReview = buildPhase3EngineeringValidationReview();
+assert.equal(engineeringValidationReview.version, PHASE3_ENGINEERING_VALIDATION_REVIEW_VERSION);
+assert.ok(engineeringValidationReview.requiredEvidence.includes('production nonlinear solver certification'));
+assert.equal(engineeringValidationReview.summary.engineerReviewRequired, true);
+assert.equal(engineeringValidationReview.agentUse.readApi, 'getPhase3EngineeringValidationReview');
+
 const productizationMilestoneReview = buildPhase3ProductizationMilestoneReview();
 assert.equal(productizationMilestoneReview.version, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
 assert.deepEqual(productizationMilestoneReview.rows.map((row) => row.milestone), ['P3-M19', 'P3-M20']);
@@ -249,6 +260,7 @@ assert.equal(apiReport.status, 'OK');
 assert.equal(apiReport.productionReadiness.status, 'PRELIMINARY_REVIEW_REQUIRED');
 assert.equal(agent.getPhase3DesignMilestoneReview().version, PHASE3_DESIGN_MILESTONE_REVIEW_VERSION);
 assert.equal(agent.getPhase3DrawingImportValidationReview().version, PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION);
+assert.equal(agent.getPhase3EngineeringValidationReview().version, PHASE3_ENGINEERING_VALIDATION_REVIEW_VERSION);
 assert.equal(agent.getPhase3ElasticMilestoneReview().version, PHASE3_ELASTIC_MILESTONE_REVIEW_VERSION);
 assert.equal(agent.getPhase3ImportMilestoneReview().version, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
 assert.equal(agent.getPhase3NonlinearMilestoneReview().version, PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION);

@@ -212,6 +212,10 @@ export {
   PHASE3_DRAWING_IMPORT_VALIDATION_REVIEW_VERSION,
 } from './platform/phase3DrawingImportValidationReview.js';
 export {
+  buildPhase3EngineeringValidationReview,
+  PHASE3_ENGINEERING_VALIDATION_REVIEW_VERSION,
+} from './platform/phase3EngineeringValidationReview.js';
+export {
   buildPhase3ProductizationMilestoneReview,
   PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION,
 } from './platform/phase3ProductizationMilestoneReview.js';
