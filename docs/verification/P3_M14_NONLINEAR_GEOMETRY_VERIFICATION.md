@@ -46,7 +46,9 @@ The gate records:
 
 2026-07-03 load-control code review update: `buildLoadControlTrace()` now treats the Newton result as an accepted control value and stores only the increment into the next state. This fixes the previous accumulation bug where absolute accepted values could be added as displacement increments. Failed increments are recorded but not accepted into `lambda` or displacement, and the trace stops unless `continueOnFailure` is explicitly enabled. Each row records a `stateSnapshot`, matching the P3-M14 convergence contract.
 
-`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, reduced-DOF global equilibrium trace, load-control trace, B1/B2 benchmarks, and agent trace exposure.
+2026-07-03 restart-safety hardening: `createAnalysisState()`, `snapshotAnalysisState()`, and `advanceAnalysisState()` now deep-copy hinge rows and event rows. This prevents later path-dependent hinge history mutation from changing prior accepted states or snapshots, which is required before M15/M16 hinge/fiber history can rely on M14 state restart records.
+
+`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, restart-safe hinge/event copies, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, reduced-DOF global equilibrium trace, load-control trace, B1/B2 benchmarks, and agent trace exposure.
 
 ## Remaining Limits
 

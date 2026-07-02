@@ -9,7 +9,7 @@ export function createAnalysisState(options = {}) {
     hinges: normalizeHinges(options.hinges),
     converged: !!options.converged,
     iterations: integer(options.iterations, 0),
-    events: [...(options.events || [])],
+    events: cloneRows(options.events || []),
   };
 }
 
@@ -19,10 +19,10 @@ export function snapshotAnalysisState(state) {
     step: integer(state.step, 0),
     lambda: number(state.lambda, 0),
     u: [...(state.u || [])],
-    hinges: [...(state.hinges || new Map()).entries()].map(([id, value]) => ({ id, ...value })),
+    hinges: [...(state.hinges || new Map()).entries()].map(([id, value]) => ({ id, ...cloneRow(value) })),
     converged: !!state.converged,
     iterations: integer(state.iterations, 0),
-    events: [...(state.events || [])],
+    events: cloneRows(state.events || []),
   };
 }
 
@@ -32,7 +32,7 @@ export function advanceAnalysisState(state, increment = {}) {
     step: integer(state.step, 0) + 1,
     lambda: number(state.lambda, 0) + number(increment.dLambda, 0),
     u: addVectors(state.u, increment.du),
-    hinges: state.hinges,
+    hinges: snapshotAnalysisState(state).hinges,
     events: [...(state.events || []), ...(increment.events || [])],
   });
   next.converged = !!increment.converged;
@@ -47,15 +47,25 @@ function addVectors(a = [], b = []) {
 
 function normalizeHinges(hinges = []) {
   const items = hinges || [];
-  if (items instanceof Map) return new Map(items);
+  if (items instanceof Map) return new Map([...items.entries()].map(([id, value]) => [id, cloneRow(value)]));
   return new Map([...items].map((item) => (
-    Array.isArray(item) ? item : [item.id, withoutId(item)]
+    Array.isArray(item) ? [item[0], cloneRow(item[1])] : [item.id, withoutId(item)]
   )));
 }
 
 function withoutId(item) {
   const { id: _id, ...value } = item || {};
-  return value;
+  return cloneRow(value);
+}
+
+function cloneRows(rows) {
+  return [...rows].map(cloneRow);
+}
+
+function cloneRow(row) {
+  if (!row || typeof row !== 'object') return row;
+  if (Array.isArray(row)) return row.map(cloneRow);
+  return Object.fromEntries(Object.entries(row).map(([key, value]) => [key, cloneRow(value)]));
 }
 
 function number(value, fallback) {
