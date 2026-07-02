@@ -349,6 +349,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
     lineSearch: options.lineSearch,
   });
   const loadControl = buildLoadControlTrace(options.loadControl);
+  const solverReview = buildGeometrySolverReview({ geometryBenchmarks, convergenceSample, loadControl, assembly: options.assembly });
   return {
     version: NONLINEAR_GEOMETRY_TRACE_VERSION,
     milestone: 'P3-M14',
@@ -365,6 +366,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       },
       reviewFields: ['summary.ticketCoverage', 'state', 'assembly.summary', 'convergence.log', 'loadControl.rows', 'benchmarks.cases'],
       agentUse: 'Read-only gate for reports and AI-agent inspection before running later hinge, fiber, or NLTH workflows.',
+      maturity: 'preliminary-trace-core',
     },
     contracts: {
       state: NONLINEAR_STATE_VERSION,
@@ -380,8 +382,10 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       loadControlOk: loadControl.converged,
       tangentAssemblyOk: options.assembly?.ok ?? null,
       requiredBenchmarks: ['B1', 'B2'],
+      solverReview,
       ticketCoverage: buildGeometryTicketCoverage({ state, options, convergenceSample, loadControl, geometryBenchmarks }),
     },
+    solverReview,
     state: snapshotAnalysisState(state),
     assembly: options.assembly ? {
       version: options.assembly.version,
@@ -412,8 +416,25 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
     } : null,
     limitations: [
       'P3-M14 is a geometry trace core, not a production nonlinear frame solver.',
+      'Global frame residual assembly is reviewed through tangent/convergence traces and is not yet certified as a production equilibrium solver.',
       'Material hinges, displacement control, arc-length, PMM, fiber, and NLTH are handled by later Phase 3 milestones.',
     ],
+  };
+}
+
+function buildGeometrySolverReview({ geometryBenchmarks, convergenceSample, loadControl, assembly }) {
+  const missing = [];
+  if (!assembly?.ok) missing.push('tangent-assembly');
+  if (!convergenceSample?.converged) missing.push('newton-convergence');
+  if (!loadControl?.converged) missing.push('load-control');
+  if (!geometryBenchmarks?.ok) missing.push('B1-B2-benchmark');
+  return {
+    status: missing.length ? 'review-required' : 'trace-ready',
+    maturity: 'preliminary',
+    productionEquilibriumSolver: false,
+    globalResidualAssembly: 'trace-only',
+    missing,
+    agentDecision: missing.length ? 'hold-before-m15' : 'm14-ready-for-m15-review',
   };
 }
 

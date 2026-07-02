@@ -106,6 +106,12 @@ assert.equal(trace.geometryGate.contracts.convergence, NONLINEAR_CONVERGENCE_VER
 assert.equal(trace.geometryGate.contracts.loadControl, LOAD_CONTROL_VERSION);
 assert.equal(trace.geometryGate.summary.readyForAgentReview, true);
 assert.equal(trace.geometryGate.summary.loadControlOk, true);
+assert.equal(trace.geometryGate.contract.maturity, 'preliminary-trace-core');
+assert.equal(trace.geometryGate.solverReview.status, 'trace-ready');
+assert.equal(trace.geometryGate.solverReview.productionEquilibriumSolver, false);
+assert.equal(trace.geometryGate.solverReview.globalResidualAssembly, 'trace-only');
+assert.equal(trace.geometryGate.solverReview.agentDecision, 'm14-ready-for-m15-review');
+assert.deepEqual(trace.geometryGate.solverReview.missing, []);
 assert.deepEqual(trace.geometryGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T50', 'P3-T51', 'P3-T52', 'P3-T53']);
 assert.ok(trace.geometryGate.summary.ticketCoverage.every((row) => row.covered));
 assert.equal(trace.geometryGate.assembly.version, NONLINEAR_ASSEMBLY_VERSION);
