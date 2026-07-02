@@ -1,3 +1,5 @@
+import { estimateGlobalBucklingTrace } from './globalBuckling.js';
+
 export const DYNAMIC_COMPLETENESS_VERSION = 'p3-m13-dynamic-completeness';
 
 export function combineModalCqc(responses, dampingRatio = 0.05) {
@@ -31,10 +33,15 @@ export function estimateModelBucklingTrace(model = {}, options = {}) {
     return estimateMemberEulerBuckling(member, result);
   }).filter((row) => row.pcr > 0);
   rows.sort((a, b) => a.pcr - b.pcr);
+  const global = estimateGlobalBucklingTrace(model, options);
   return {
     version: DYNAMIC_COMPLETENESS_VERSION,
-    method: 'member-euler-screening-not-global-eigenvalue',
+    method: global.status === 'available'
+      ? 'global-eigenvalue-with-member-euler-screening'
+      : 'member-euler-screening-not-global-eigenvalue',
     critical: rows[0] || null,
+    globalCritical: global.status === 'available' ? global.criticalLoadFactor : null,
+    global,
     rows,
   };
 }

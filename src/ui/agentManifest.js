@@ -98,6 +98,7 @@ import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../solver
 import { SHELL_QUAD4_VERSION } from '../solver/shell/quad4.js';
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
+import { GLOBAL_BUCKLING_TRACE_VERSION } from '../dynamics/globalBuckling.js';
 import { NONLINEAR_ASSEMBLY_VERSION } from '../nonlinear/assembly.js';
 import { HINGE_ASSIGNMENT_VERSION } from '../nonlinear/hinges/hingeAssign.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
@@ -213,6 +214,7 @@ export function buildAgentManifest(options = {}) {
       phase3ShellQuad4: SHELL_QUAD4_VERSION,
       phase3LoadsV2: LOADS_V2_VERSION,
       phase3DynamicCompleteness: DYNAMIC_COMPLETENESS_VERSION,
+      globalBucklingTrace: GLOBAL_BUCKLING_TRACE_VERSION,
       phase3NonlinearAssembly: NONLINEAR_ASSEMBLY_VERSION,
       phase3NonlinearHingeAssignment: HINGE_ASSIGNMENT_VERSION,
       phase3NonlinearGeometryTrace: NONLINEAR_GEOMETRY_TRACE_VERSION,
@@ -387,6 +389,7 @@ export function buildAgentManifest(options = {}) {
       'phase3ShellQuad4Trace',
       'phase3LoadsV2Trace',
       'phase3DynamicCompletenessTrace',
+      'globalBucklingTrace',
       'phase3NonlinearAssemblyTrace',
       'phase3NonlinearHingeAssignmentTrace',
       'phase3FiberMaterialBackboneTrace',

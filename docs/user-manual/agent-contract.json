@@ -217,7 +217,8 @@
     "phase3NonlinearTrace",
     "phase3MaterialLibraryEdit",
     "phase3DesignFormulaRegistry",
-    "unilateralMemberTrace"
+    "unilateralMemberTrace",
+    "globalBucklingTrace"
   ],
   "dataContracts": [
     "phase3RcDesignGate",
@@ -235,6 +236,7 @@
     "phase3DesignFormulaRegistry",
     "phase3DesignFormulaTrace",
     "unilateralMemberTrace",
+    "globalBucklingTrace",
     "phase3PointCloudExtractionSummary",
     "phase3ImportReviewUi"
   ]

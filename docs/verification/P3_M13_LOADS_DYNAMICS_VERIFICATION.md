@@ -15,7 +15,7 @@ This note verifies P3-M13 against `docs/phase3/ELASTIC_ENGINE_COMPLETENESS_PLAN.
 | P3-T77 | Seismic v2, RSA scaling, torsion Ax | seismic distribution, `scaleRsaBaseShear()`, `computeTorsionAmplificationAx()` |
 | P3-T78 | Snow, soil, water, uplift loads | `generateEnvironmentalLoadsV2()` |
 | P3-T79 | CQC modal combination | `combineModalCqc()`, `buildCqcCombinationReport()`, RSA CQC test |
-| P3-T80 | Buckling trace | `estimateModelBucklingTrace()` member Euler screening |
+| P3-T80 | Buckling trace | `estimateGlobalBucklingTrace()`, `estimateModelBucklingTrace()` global eigenvalue trace plus member Euler screening |
 | P3-T81 | Linear time history | `runLinearSdofTha()`, `runModalSuperpositionTha()` |
 | P3-T82 | Mass source from loads | `buildMassSourceTrace()`, `analyzeDynamics()` mass source consumption, and story-mass single-source test |
 
@@ -31,8 +31,8 @@ The previous M13 implementation covered loads, CQC, buckling, and THA helpers, b
 
 ## Current Test Gate
 
-`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, linear THA, modal THA, buckling trace, mass source trace, dynamic mass assembly, and story-mass single-source behavior.
+`tests/p3-m13-loads-dynamics.mjs` verifies wind/seismic/environmental loads, RSA scaling, torsion Ax, CQC, linear THA, modal THA, global buckling trace, member Euler screening, mass source trace, dynamic mass assembly, and story-mass single-source behavior.
 
 ## Remaining Limits
 
-P3-M13 remains preliminary. Buckling is member Euler screening, not a global eigenvalue problem. Loads v2 is a traceable preliminary KDS-style implementation, not a full project-specific code automation engine.
+P3-M13 remains preliminary. Buckling now includes a small-displacement global frame eigenvalue trace based on member axial reference compression and geometric stiffness, but shell buckling, follower loads, construction sequence, and material nonlinearity remain outside this elastic contract. Loads v2 is a traceable preliminary KDS-style implementation, not a full project-specific code automation engine.

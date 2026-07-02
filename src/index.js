@@ -512,6 +512,10 @@ export {
   scaleRsaBaseShear,
 } from './loads/loadsV2.js';
 export {
+  estimateGlobalBucklingTrace,
+  GLOBAL_BUCKLING_TRACE_VERSION,
+} from './dynamics/globalBuckling.js';
+export {
   DYNAMIC_COMPLETENESS_VERSION,
   buildCqcCombinationReport,
   combineModalCqc,

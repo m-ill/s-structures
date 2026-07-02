@@ -11,6 +11,7 @@ import {
   combineModalCqc,
   computeTorsionAmplificationAx,
   createTwoStoryElasticFrameModel,
+  estimateGlobalBucklingTrace,
   estimateModelBucklingTrace,
   generateEnvironmentalLoadsV2,
   runLinearSdofTha,
@@ -126,5 +127,28 @@ const buckling = estimateModelBucklingTrace({
 });
 assert.equal(buckling.method, 'member-euler-screening-not-global-eigenvalue');
 assert.equal(buckling.critical.memberId, 'C2');
+
+const columnNodes = Array.from({ length: 9 }, (_, index) => ({
+  id: `N${index}`,
+  x: 0,
+  y: 0,
+  z: (3 * index) / 8,
+  support: index === 0 || index === 8 ? 'pin' : undefined,
+}));
+const columnMembers = Array.from({ length: 8 }, (_, index) => ({
+  id: `C${index + 1}`,
+  n1: `N${index}`,
+  n2: `N${index + 1}`,
+  matId: 'steel',
+  secId: 'h300',
+  buckling: { referenceCompression: 1 },
+}));
+const globalBuckling = estimateGlobalBucklingTrace({ nodes: columnNodes, members: columnMembers });
+const eulerReference = Math.PI ** 2 * 205000000 * 508e-8 / 3 ** 2;
+assert.equal(globalBuckling.status, 'available');
+assert.ok(Math.abs(globalBuckling.criticalLoadFactor - eulerReference) / eulerReference < 0.02);
+const combinedBuckling = estimateModelBucklingTrace({ nodes: columnNodes, members: columnMembers });
+assert.equal(combinedBuckling.method, 'global-eigenvalue-with-member-euler-screening');
+assert.equal(combinedBuckling.global.status, 'available');
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m13-loads-dynamics' }, null, 2));

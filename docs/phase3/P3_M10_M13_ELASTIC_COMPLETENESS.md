@@ -8,11 +8,11 @@ status: implemented-preliminary-core
 - M10: versioned material and section registry, `id@version` references, and parametric H/BOX/PIPE/RECT/CIRC section properties.
 - M11: spring support stiffness, spring settlement load vector, and advanced distributed load expansion for partial/trapezoid member loads.
 - M12: mid-pier wall equivalent contract and semi-rigid diaphragm summary contract.
-- M13: wind/seismic/environmental load trace contract, RSA base-shear scaling, torsion Ax trace, CQC close-mode report, Euler buckling screening helper, and linear modal-superposition time-history trace helper.
+- M13: wind/seismic/environmental load trace contract, RSA base-shear scaling, torsion Ax trace, CQC close-mode report, global buckling trace, Euler buckling screening helper, and linear modal-superposition time-history trace helper.
 
 ## Engineering Boundary
 
-This step keeps the existing 3D frame solver stable. It does not yet replace the frame solver with a shell/plate finite-element engine, nor does it add a full generalized eigenvalue buckling solver. Those remain formal numerical verification tasks under the later Phase 3 gates.
+This step keeps the existing 3D frame solver stable. It does not replace the frame solver with a shell/plate finite-element engine. A preliminary global frame eigenvalue buckling trace is now available for elastic member axial reference forces; shell buckling, follower loads, construction sequence, and nonlinear stability remain formal numerical verification tasks under later Phase 3 hardening gates.
 
 Temperature, temperature-gradient, and member-moment load records now have preliminary fixed-end action paths. Detailed member-station recovery and hand-calculation coverage remain light.
 
@@ -24,7 +24,7 @@ Temperature, temperature-gradient, and member-moment load records now have preli
 | M11 | `expandAdvancedLoads` | `getElasticExpansionTrace` | `phase3ElasticExpansionTrace` |
 | M12 | `summarizeSemiRigidDiaphragm` | `getWallSlabEquivalentTrace` | `phase3WallSlabEquivalentTrace` |
 | M13 | `buildLoadsV2Trace`, `generateEnvironmentalLoadsV2`, `scaleRsaBaseShear`, `computeTorsionAmplificationAx` | `getLoadsV2Trace` | `phase3LoadsV2Trace` |
-| M13 | `buildCqcCombinationReport`, `estimateModelBucklingTrace`, `runLinearSdofTha`, `runModalSuperpositionTha` | `getDynamicCompletenessTrace` | `phase3DynamicCompletenessTrace` |
+| M13 | `buildCqcCombinationReport`, `estimateGlobalBucklingTrace`, `estimateModelBucklingTrace`, `runLinearSdofTha`, `runModalSuperpositionTha` | `getDynamicCompletenessTrace` | `phase3DynamicCompletenessTrace`, `globalBucklingTrace` |
 
 The browser command bridge allow-list includes the same read APIs, so AI control can call them through DOM events, postMessage, or the URL command hash.
 
