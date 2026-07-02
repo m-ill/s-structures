@@ -279,6 +279,7 @@ export {
 export {
   buildLateralPatternLoads,
   PUSHOVER_VERSION,
+  PUSHOVER_SOURCE_VERSION,
   runPushover,
 } from './nonlinear/pushover.js';
 export {

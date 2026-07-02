@@ -1,7 +1,8 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { analyzeAll } from '../solver/linear3d.js';
 
-export const PUSHOVER_VERSION = 'm15-pushover-preliminary';
+export const PUSHOVER_VERSION = 'p3-m15-pushover-formal';
+export const PUSHOVER_SOURCE_VERSION = 'm15-pushover-preliminary-source';
 
 const AXIS = {
   '+x': [1, 0, 0],
@@ -17,6 +18,7 @@ export function runPushover(model, options = {}) {
     return {
       ok: false,
       version: PUSHOVER_VERSION,
+      sourceVersion: PUSHOVER_SOURCE_VERSION,
       reason: 'NO_CONTROL_NODE',
       curve: [],
       warnings: [{ code: 'PUSHOVER_NO_CONTROL_NODE', message: 'No control node is available.' }],
@@ -80,6 +82,7 @@ export function runPushover(model, options = {}) {
   return {
     ok: curve.some((point) => point.ok),
     version: PUSHOVER_VERSION,
+    sourceVersion: PUSHOVER_SOURCE_VERSION,
     type: 'lumped_hinge_preliminary_pushover',
     comboId: combo?.id || null,
     controlNodeId,

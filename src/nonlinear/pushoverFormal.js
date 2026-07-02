@@ -23,7 +23,7 @@ export function runFormalPushover(model, options = {}) {
   return {
     ok: !!preliminary.ok,
     version: FORMAL_PUSHOVER_VERSION,
-    sourceVersion: preliminary.version,
+    sourceVersion: preliminary.sourceVersion || preliminary.version,
     method: {
       elements: 'linear-frame-with-formal-pushover-contract',
       hinges: 'concentrated-M-theta-preliminary',

@@ -36,9 +36,11 @@ The gate records:
 
 2026-07-02 review fix: formal pushover now includes `control` metadata with control type, pattern, direction, target displacement, stop reason, and final response. It also accepts a baseline capacity curve and returns a regression summary for B5-style pushover comparison.
 
+2026-07-02 review update: `PUSHOVER_VERSION` is now promoted to `p3-m15-pushover-formal` as required by `NONLINEAR_ENGINE_PLAN.md`. The former linear reanalysis path remains visible as `sourceVersion`, so old UI and agent calls keep their signature while reports can distinguish the formal P3-M15 contract from the underlying preliminary source path.
+
 ## Current Test Gate
 
-`tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, member-end hinge assignment from material nonlinear backbone data, hinge state events, displacement-control increments, arc-length post-peak path tracking, formal pushover output, control stop reason, regression summary, B3/B4/B5 benchmark registration, tangent assembly correction exposure, and agent manifest exposure.
+`tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, member-end hinge assignment from material nonlinear backbone data, hinge state events, displacement-control increments, arc-length post-peak path tracking, formal pushover output, formal/source version separation, control stop reason, regression summary, B3/B4/B5 benchmark registration, tangent assembly correction exposure, and agent manifest exposure.
 
 ## Remaining Limits
 

@@ -8,6 +8,7 @@ import {
   NONLINEAR_BENCHMARK_VERSION,
   NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
   NONLINEAR_TRACE_VERSION,
+  PUSHOVER_SOURCE_VERSION,
   buildArcLengthTrace,
   buildDisplacementControlTrace,
   buildHingeStateTrace,
@@ -62,6 +63,7 @@ assert.ok(assigned.summary.hingeCount >= model.members.length * 2);
 assert.ok(assigned.summary.materialBackboneCount >= 2);
 const pushover = runFormalPushover(model, { steps: 4, referenceBaseShear: 30 });
 assert.equal(pushover.version, FORMAL_PUSHOVER_VERSION);
+assert.equal(pushover.sourceVersion, PUSHOVER_SOURCE_VERSION);
 assert.ok(pushover.capacityCurve.length > 0);
 assert.equal(pushover.method.hinges, 'concentrated-M-theta-preliminary');
 assert.equal(pushover.control.type, 'load-control');
