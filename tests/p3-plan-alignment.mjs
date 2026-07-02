@@ -2,8 +2,10 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import {
+  buildPhase3ImportMilestoneReview,
   buildAgentManifest,
   buildPhase3PlanAlignmentReport,
+  PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
   PHASE3_PLAN_ALIGNMENT_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
@@ -137,16 +139,28 @@ assert.equal(report.ticketSummary.absorbed, 2);
 assert.equal(report.ticketSummary.unresolved, 0);
 assert.equal(report.ticketSummary.effectiveCompletion, true);
 assert.equal(manifest.modules.phase3PlanAlignment, PHASE3_PLAN_ALIGNMENT_VERSION);
+assert.equal(manifest.modules.phase3ImportMilestoneReview, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
+assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
+assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3M6ToM20, 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20');
+
+const importMilestoneReview = buildPhase3ImportMilestoneReview();
+assert.equal(importMilestoneReview.version, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
+assert.deepEqual(importMilestoneReview.rows.map((row) => row.milestone), ['P3-M6', 'P3-M7', 'P3-M8', 'P3-M9']);
+assert.ok(importMilestoneReview.rows.find((row) => row.milestone === 'P3-M6').automatedEvidence.includes('tests/p3-m6-dxf-import.mjs'));
+assert.ok(importMilestoneReview.rows.find((row) => row.milestone === 'P3-M9').externalEvidenceRequired.includes('real scan beam/wall validation'));
+assert.equal(importMilestoneReview.summary.productionReady, false);
+assert.equal(importMilestoneReview.agentUse.readApi, 'getPhase3ImportMilestoneReview');
 
 const agent = createIndexAgentApi({ model: () => null, reanalyze: () => {} });
 const apiReport = agent.getPhase3PlanAlignment();
 assert.equal(apiReport.version, PHASE3_PLAN_ALIGNMENT_VERSION);
 assert.equal(apiReport.status, 'OK');
 assert.equal(apiReport.productionReadiness.status, 'PRELIMINARY_REVIEW_REQUIRED');
+assert.equal(agent.getPhase3ImportMilestoneReview().version, PHASE3_IMPORT_MILESTONE_REVIEW_VERSION);
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 assert.deepEqual(Object.keys(packageJson.dependencies || {}), []);

@@ -46,3 +46,19 @@ When continuing from P3-M6, each milestone must include:
 3. Agent-readable metadata or API exposure when the result affects AI control.
 4. A short verification note under `docs/phase3/` or `docs/verification/`.
 5. No claim of final structural design automation unless real fixtures and owner review prove it.
+
+## 2026-07-02 Contract Review Update
+
+M6 to M9 now expose an agent-readable import milestone review contract through
+`getPhase3ImportMilestoneReview`.
+
+The contract separates:
+
+- automated regression evidence for P3-M6 to P3-M9,
+- external field-file evidence still required before production import claims,
+- the import review APIs an AI agent should use (`listImportCandidates`,
+  `resolveImportCandidate`, `confirmImport`).
+
+This keeps the current DXF, DWG-adapter, and point-cloud pipeline usable for
+development while preventing synthetic point-cloud and missing-converter results
+from being interpreted as final field validation.

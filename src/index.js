@@ -192,6 +192,10 @@ export {
   PHASE3_PLAN_ALIGNMENT_VERSION,
 } from './platform/phase3PlanAlignment.js';
 export {
+  buildPhase3ImportMilestoneReview,
+  PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
+} from './platform/phase3ImportMilestoneReview.js';
+export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';

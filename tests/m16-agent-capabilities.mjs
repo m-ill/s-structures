@@ -51,8 +51,10 @@ assert.ok(manifest.readApis.includes('getWallSlabEquivalentTrace'));
 assert.ok(manifest.readApis.includes('getLoadsV2Trace'));
 assert.ok(manifest.readApis.includes('getDynamicCompletenessTrace'));
 assert.ok(manifest.readApis.includes('getNonlinearAnalysisTrace'));
+assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3LoadsV2Trace'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearAnalysisTrace'));
+assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3RunnerContract, 'node tests/p3-runner-contract.mjs');
 assert.equal(manifest.reviewGates.nonlinearFiberNlth.readyDecision, 'm16-ready-for-integrated-results-review');
@@ -64,6 +66,11 @@ assert.equal(manifest.uiContract.controlCount, 0);
 const snapshot = agent.getSnapshot();
 assert.deepEqual(snapshot.availableActions, manifest.executeActions);
 assert.ok(manifest.milestones.some((item) => item.id === 'M23'));
+const importMilestoneReview = agent.getPhase3ImportMilestoneReview();
+assert.equal(importMilestoneReview.summary.milestoneCount, 4);
+assert.equal(importMilestoneReview.rows[0].milestone, 'P3-M6');
+assert.equal(importMilestoneReview.summary.agentDecision, 'import-pipeline-review-required');
+assert.ok(importMilestoneReview.agentUse.importApis.includes('confirmImport'));
 
 console.log(JSON.stringify({
   ok: true,
