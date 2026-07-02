@@ -127,6 +127,7 @@ assert.deepEqual(launch.releaseGate.releaseReview.missing, []);
 assert.equal(launch.releaseGate.summary.coveredTicketCount, 5);
 assert.equal(launch.releaseGate.coverage.ownerSignoffChecklist, true);
 assert.equal(launch.releaseGate.coverage.pilotReportFilesComplete, true);
+assert.equal(launch.releaseGate.coverage.manualReferences, true);
 assert.deepEqual(launch.releaseGate.ticketCoverage.map((row) => row.ticket), ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67']);
 assert.deepEqual(launch.releaseGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T63', 'P3-T64', 'P3-T65', 'P3-T66', 'P3-T67']);
 assert.ok(launch.releaseGate.ticketCoverage.every((row) => row.covered));
@@ -212,6 +213,24 @@ const staleAgentContractLaunch = buildLaunchReadinessReport({
 assert.equal(staleAgentContractLaunch.gates.find((row) => row.id === 'G10').status, 'REVIEW');
 assert.equal(staleAgentContractLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T65').covered, false);
 assert.ok(staleAgentContractLaunch.releaseGate.releaseReview.missing.includes('ticket-coverage'));
+
+const staleManualReferenceLaunch = buildLaunchReadinessReport({
+  ...evidence,
+  agentContract: {
+    ...agentContract,
+    manualReferences: {
+      ...agentContract.manualReferences,
+      launchManual: 'docs/user-manual/STALE_PHASE3_LAUNCH_MANUAL.md',
+    },
+  },
+});
+assert.equal(staleManualReferenceLaunch.gates.find((row) => row.id === 'G9').status, 'REVIEW');
+assert.equal(staleManualReferenceLaunch.gates.find((row) => row.id === 'G10').status, 'REVIEW');
+assert.equal(staleManualReferenceLaunch.releaseGate.coverage.manualReferences, false);
+assert.equal(staleManualReferenceLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T65').covered, false);
+assert.ok(staleManualReferenceLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T65').evidence.includes('manualRefs=review'));
+assert.ok(staleManualReferenceLaunch.releaseGate.releaseReview.missing.includes('manual-reference-contract'));
+assert.ok(staleManualReferenceLaunch.releaseGate.releaseReview.missing.includes('ticket-coverage'));
 
 const missingOwnerChecklistLaunch = buildLaunchReadinessReport({
   ...evidence,

@@ -14,6 +14,8 @@ export const PERFORMANCE_BUDGETS = [
 
 export function buildLaunchReadinessReport(evidence = {}) {
   const performanceBudgetReview = buildPerformanceBudgetReview(evidence.performanceBudgets || evidence.performanceBudgetRows || []);
+  const manualReferencesCurrent = manualReferenceContractMatches(evidence.manifest, evidence.agentContract);
+  const agentContractCurrent = agentContractMatches(evidence.manifest, evidence.agentContract);
   const gates = [
     gate('G1', 'Full test suite', evidence.fullSuiteGreen === true, 'Automated suite completed with failed 0.'),
     gate('G2', 'Solver and nonlinear benchmarks', evidence.benchmarkGreen === true, 'B1-B8 and elastic benchmark gates passed.'),
@@ -23,8 +25,8 @@ export function buildLaunchReadinessReport(evidence = {}) {
     gate('G6', 'Import e2e', evidence.importGreen === true, 'DXF and point-cloud import validation reached analyzable models.'),
     gate('G7', 'Performance budget record', performanceBudgetReview.ok, `Performance budgets ${performanceBudgetReview.passedCount}/${performanceBudgetReview.requiredCount} passed.`),
     gate('G8', 'Security checklist', evidence.securityChecklistSigned === true, 'Security checklist recorded for launch review.'),
-    gate('G9', 'User manual refresh', evidence.manual?.updated === true, 'Manual includes Phase 3 import, nonlinear, design, report, and agent workflow.'),
-    gate('G10', 'Agent contract current', agentContractMatches(evidence.manifest, evidence.agentContract), 'Manual agent contract mirrors manifest read APIs.'),
+    gate('G9', 'User manual refresh', evidence.manual?.updated === true && manualReferencesCurrent, 'Manual includes Phase 3 import, nonlinear, design, report, and agent workflow.'),
+    gate('G10', 'Agent contract current', agentContractCurrent, 'Manual agent contract mirrors manifest read APIs.'),
     gate('G11', 'Beta pilot reports', pilotReportsComplete(evidence.pilotReports), 'Ten named beta pilot scenario reports are present.'),
     gate('G12', 'Backup restore rehearsal', evidence.backupRestoreRecorded === true, 'Backup and restore rehearsal record exists.'),
     gate('G13', 'Design module verification', evidence.designVerificationRecorded === true, 'RC, steel, connection, and foundation verification record exists.'),
@@ -72,6 +74,7 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
     packaging: !!(evidence.files?.indexHtml && evidence.files?.serverMain),
     license: String(evidence.licenseText || '').trim().length > 0,
     manual: evidence.manual?.updated === true,
+    manualReferences: manualReferenceContractMatches(evidence.manifest, evidence.agentContract),
     qa: evidence.fullSuiteGreen === true && evidence.benchmarkGreen === true,
     pilotReports: evidence.pilotReports?.count || 0,
     pilotReportFilesComplete: pilotReportsComplete(evidence.pilotReports),
@@ -135,6 +138,7 @@ function buildReleaseReview({ gates, evidence, coverage, ticketCoverage }) {
   if (!coverage.ownerSignoffChecklist) missing.push('owner-signoff-checklist');
   if (!coverage.backupRestore) missing.push('backup-restore-record');
   if (!coverage.performanceBudgets) missing.push('performance-budget-items');
+  if (!coverage.manualReferences) missing.push('manual-reference-contract');
   return {
     status: missing.length ? 'review-required' : 'owner-review-ready',
     maturity: 'preliminary',
@@ -227,8 +231,8 @@ function buildLaunchTicketCoverage(gates, evidence, coverage) {
     {
       ticket: 'P3-T65',
       scope: 'onboarding-manual-agent-contract',
-      covered: coverage.manual === true && byId.G10 === true,
-      evidence: `manual=${coverage.manual ? 'updated' : 'missing'}, readApis=${readApis}`,
+      covered: coverage.manual === true && coverage.manualReferences === true && byId.G10 === true,
+      evidence: `manual=${coverage.manual ? 'updated' : 'missing'}, manualRefs=${coverage.manualReferences ? 'current' : 'review'}, readApis=${readApis}`,
     },
     {
       ticket: 'P3-T66',
@@ -323,7 +327,22 @@ function agentContractMatches(manifest, contract) {
     && requiredModules.every((key) => (contract.modules || []).includes(key))
     && requiredContracts.every((key) => (contract.dataContracts || []).includes(key))
     && JSON.stringify(manifest.qaCommands || {}) === JSON.stringify(contract.qaCommands || {})
-    && JSON.stringify(manifest.reviewGates || {}) === JSON.stringify(contract.reviewGates || {});
+    && JSON.stringify(manifest.reviewGates || {}) === JSON.stringify(contract.reviewGates || {})
+    && manualReferenceContractMatches(manifest, contract);
+}
+
+function manualReferenceContractMatches(manifest, contract) {
+  const expected = manifest?.manualReferences || {};
+  const actual = contract?.manualReferences || {};
+  const expectedKeys = Object.keys(expected).sort();
+  const actualKeys = Object.keys(actual).sort();
+  if (!expectedKeys.length) return false;
+  if (JSON.stringify(expectedKeys) !== JSON.stringify(actualKeys)) return false;
+  return expectedKeys.every((key) => (
+    typeof expected[key] === 'string'
+    && expected[key].length > 0
+    && actual[key] === expected[key]
+  ));
 }
 
 function sameSet(a = [], b = []) {

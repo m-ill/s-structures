@@ -97,6 +97,24 @@ assert.equal(emptyIntegratedResultGate.ticketCoverage.find((row) => row.ticket =
 assert.ok(emptyIntegratedResultGate.ticketCoverage.find((row) => row.ticket === 'P3-T58').evidence.includes('0 capacity points'));
 assert.ok(emptyIntegratedResultGate.integratedReview.missing.includes('ticket-coverage'));
 
+const failedAnalysisGate = buildP3IntegratedResultsGate({
+  analysis: { ok: false, reason: 'SOLVER_FAILED' },
+  resultPostprocessing: { version: 'post', summary: { storyRowCount: 1, memberRowCount: 1 } },
+  nonlinear: { version: 'nonlinear', capacityCurve: [{ baseShear: 1 }], steps: [{ step: 1 }] },
+  design: {
+    version: 'design',
+    summary: { itemCount: 1 },
+    issueRows: [],
+    designGate: { designReview: { status: 'trace-ready' } },
+  },
+  workflowLock: { version: 'workflow', editable: true, approvalState: 'not-submitted', review: { status: 'available' } },
+  benchmarkEvidence: { ok: true, groups: { geometry: true, hingeControl: true, fiberNlth: true } },
+  methodLimitations: ['limitation'],
+});
+assert.equal(failedAnalysisGate.ticketCoverage.find((row) => row.ticket === 'P3-T58').covered, false);
+assert.ok(failedAnalysisGate.ticketCoverage.find((row) => row.ticket === 'P3-T58').evidence.includes('analysis=NG'));
+assert.ok(failedAnalysisGate.integratedReview.missing.includes('ticket-coverage'));
+
 const inconsistentWorkflowGate = buildP3IntegratedResultsGate({
   analysis: { ok: true },
   resultPostprocessing: { version: 'post', summary: { storyRowCount: 1, memberRowCount: 1 } },

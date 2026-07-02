@@ -204,13 +204,15 @@ function buildTicketCoverage(input) {
   const capacityPoints = input.nonlinear?.capacityCurve?.length || 0;
   const nonlinearStepRows = input.nonlinear?.steps?.length || 0;
   const designItems = input.design?.summary?.itemCount || 0;
+  const analysisOk = !!input.analysis?.ok;
   const designReviewReady = input.design?.designGate?.designReview?.status === 'trace-ready';
   const designIssueRows = input.design?.issueRows?.length || 0;
   return [
     {
       ticket: 'P3-T58',
       scope: 'integrated-result-postprocessing',
-      covered: !!input.resultPostprocessing?.version
+      covered: analysisOk
+        && !!input.resultPostprocessing?.version
         && !!input.nonlinear?.version
         && !!input.design?.version
         && (storyRows > 0 || memberRows > 0)
@@ -219,7 +221,7 @@ function buildTicketCoverage(input) {
         && designItems > 0
         && designReviewReady
         && designIssueRows === 0,
-      evidence: `${storyRows} story rows, ${memberRows} member rows, ${capacityPoints} capacity points, ${nonlinearStepRows} nonlinear steps, ${designItems} design items, designReview=${designReviewReady ? 'trace-ready' : 'review-required'}, designIssues=${designIssueRows}`,
+      evidence: `analysis=${analysisOk ? 'OK' : 'NG'}, ${storyRows} story rows, ${memberRows} member rows, ${capacityPoints} capacity points, ${nonlinearStepRows} nonlinear steps, ${designItems} design items, designReview=${designReviewReady ? 'trace-ready' : 'review-required'}, designIssues=${designIssueRows}`,
     },
     {
       ticket: 'P3-T59',

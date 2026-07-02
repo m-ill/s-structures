@@ -104,6 +104,8 @@ Current status is preliminary. M19 connects nonlinear trace, detailed-design tra
 
 2026-07-03 workflow-lock state hardening: `buildWorkflowLockState()` now exposes a review block for approval/lock/editability consistency. P3-T61 coverage now requires that review to be clean, so an approved or released workflow that remains editable is held with `workflow-lock-state` instead of being accepted by version string alone.
 
+2026-07-03 integrated analysis-status hardening: P3-T58 coverage now requires `analysis.ok === true` in addition to result rows, nonlinear capacity/step rows, and clean detailed-design review. A failed analysis can still expose diagnostic traces, but the integrated-result ticket row records `analysis=NG` and remains uncovered for AI-agent review.
+
 2026-07-03 productization milestone contract update: P3-M19 now participates in `getPhase3ProductizationMilestoneReview`. The review contract maps integrated result postprocessing, calculation report limitations, workflow lock, and benchmark regression to `integratedGate.integratedReview` while keeping `finalStructuralSignoff` separate from trace readiness.
 
 2026-07-03 engineering-validation update: `getPhase3EngineeringValidationReview` now records the remaining professional validation evidence shared by nonlinear analysis and detailed design. It keeps final KDS clause selection, nonlinear solver certification, detailing/constructability, fabrication, and geotechnical approval separate from automated trace readiness.
