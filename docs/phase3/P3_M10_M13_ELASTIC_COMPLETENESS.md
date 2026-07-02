@@ -63,3 +63,14 @@ the preliminary boundaries explicit.
 
 - `npm.cmd test -- --from=74 --to=77`
 - Full regression suite before commit.
+
+## 2026-07-03 Executable Review Update
+
+The P3-M10 to P3-M13 elastic-completeness contract is now locked by
+`node tests/p3-elastic-milestone-review.mjs`.
+
+The Phase 3 runner includes this check in the P3-M13 group because the review
+contract covers the full Stage C elastic engine scope. This keeps material
+registry, spring/settlement/load expansion, wall/slab equivalents, and
+loads/dynamics traces discoverable for AI agents through
+`getPhase3ElasticMilestoneReview` while preserving the engineer-review boundary.

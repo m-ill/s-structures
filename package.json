@@ -143,6 +143,7 @@
     "test:p3m11": "node tests/p3-m11-elastic-expansion.mjs",
     "test:p3m12": "node tests/p3-m12-wall-slab.mjs",
     "test:p3m13": "node tests/p3-m13-loads-dynamics.mjs",
+    "test:p3elastic-review": "node tests/p3-elastic-milestone-review.mjs",
     "test:p3m14": "node tests/p3-m14-nonlinear-geometry.mjs",
     "test:p3m15": "node tests/p3-m15-nonlinear-hinge-control.mjs",
     "test:p3m16": "node tests/p3-m16-nonlinear-fiber-nlth.mjs",
