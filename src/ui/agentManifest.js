@@ -407,6 +407,13 @@ export function buildAgentManifest(options = {}) {
         finalApprovalField: 'productionDeploymentApproved',
       },
     },
+    manualReferences: {
+      launchManual: 'docs/user-manual/PHASE3_LAUNCH_MANUAL.md',
+      remainingReview: 'docs/user-manual/PHASE3_REMAINING_REVIEW.md',
+      agentContract: 'docs/user-manual/agent-contract.json',
+      completionAudit: 'docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md',
+      planAlignmentVerification: 'docs/verification/P3_PLAN_ALIGNMENT_VERIFICATION.md',
+    },
     dataContracts: [
       'schemaVersionedModel',
       'linear3dAnalysis',

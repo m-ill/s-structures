@@ -293,6 +293,13 @@
     "stabilizationHarness": "reports/stabilization-harness/",
     "launchReadiness": "reports/launch-readiness/"
   },
+  "manualReferences": {
+    "launchManual": "docs/user-manual/PHASE3_LAUNCH_MANUAL.md",
+    "remainingReview": "docs/user-manual/PHASE3_REMAINING_REVIEW.md",
+    "agentContract": "docs/user-manual/agent-contract.json",
+    "completionAudit": "docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md",
+    "planAlignmentVerification": "docs/verification/P3_PLAN_ALIGNMENT_VERIFICATION.md"
+  },
   "interpretationRules": [
     "analysis.ok true means the elastic numerical analysis finished successfully.",
     "getPhase3PlanAlignment().status OK means the implementation is aligned with the written Phase 3 plan; it does not mean production readiness.",
