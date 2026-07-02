@@ -83,6 +83,7 @@ import { PLAN_ASSEMBLY_VERSION } from '../import/planAssembly.js';
 import { POINT_CLOUD_IMPORT_PIPELINE_VERSION } from '../import/pointcloud/pipeline.js';
 import { POINT_CLOUD_LOADER_VERSION } from '../import/pointcloud/loaders.js';
 import { POINT_CLOUD_WORKER_PIPELINE_VERSION } from '../import/pointcloud/worker.js';
+import { POINT_CLOUD_IMPORT_SUMMARY_VERSION } from '../import/pointcloud/summary.js';
 import { POINT_CLOUD_EXTRACTION_VERSION } from '../import/pointcloud/extract.js';
 import { POINT_CLOUD_BENCHMARK_VERSION } from '../import/pointcloud/benchmark.js';
 import { POINT_CLOUD_LAYER_VERSION } from '../viewer/pointCloudLayer.js';
@@ -185,6 +186,7 @@ export function buildAgentManifest(options = {}) {
       phase3PointCloudPipelineShell: POINT_CLOUD_IMPORT_PIPELINE_VERSION,
       phase3PointCloudLoader: POINT_CLOUD_LOADER_VERSION,
       phase3PointCloudWorker: POINT_CLOUD_WORKER_PIPELINE_VERSION,
+      phase3PointCloudImportSummary: POINT_CLOUD_IMPORT_SUMMARY_VERSION,
       phase3PointCloudExtraction: POINT_CLOUD_EXTRACTION_VERSION,
       phase3PointCloudBenchmark: POINT_CLOUD_BENCHMARK_VERSION,
       phase3PointCloudLayer: POINT_CLOUD_LAYER_VERSION,
@@ -344,6 +346,7 @@ export function buildAgentManifest(options = {}) {
       'phase3PointCloudPipelineShell',
       'phase3PointCloudLoader',
       'phase3PointCloudViewerBuffer',
+      'phase3PointCloudImportSummary',
       'phase3PointCloudExtraction',
       'phase3PointCloudBenchmark',
       'phase3MaterialSectionRegistry',
