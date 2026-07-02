@@ -57,6 +57,7 @@ const invalidCases = [
   ['node missing id', mutateValid((m) => { m.nodes[0].id = ''; }), ERROR_CODES.NODE_MISSING_ID],
   ['duplicate node id', mutateValid((m) => { m.nodes[1].id = m.nodes[0].id; }), ERROR_CODES.DUPLICATE_NODE_ID],
   ['bad node coords', mutateValid((m) => { m.nodes[1].x = Number.NaN; }), ERROR_CODES.BAD_NODE_COORDS],
+  ['blank node coords', mutateValid((m) => { m.nodes[1].x = ''; }), ERROR_CODES.BAD_NODE_COORDS],
   ['bad support type', mutateValid((m) => { m.nodes[0].support = 'hinged-ish'; }), ERROR_CODES.BAD_SUPPORT_TYPE],
   ['bad custom support', mutateValid((m) => { m.nodes[0].support = 'custom'; m.nodes[0].fix = [true]; }), ERROR_CODES.BAD_CUSTOM_SUPPORT],
   ['duplicate member id', mutateValid((m) => { m.members.push({ ...m.members[0] }); }), ERROR_CODES.DUPLICATE_MEMBER_ID],
@@ -73,11 +74,14 @@ const invalidCases = [
   ['bad load member ref', mutateValid((m) => { m.loads[0].member = 'NOPE'; }), ERROR_CODES.BAD_LOAD_MEMBER_REF],
   ['bad load node ref', mutateValid((m) => { m.loads = [{ id: 'LN', type: 'nodal', node: 'NOPE', P: 1, dir: '-z', case: 'D' }]; }), ERROR_CODES.BAD_LOAD_NODE_REF],
   ['bad load magnitude', mutateValid((m) => { m.loads[0].w = Number.NaN; }), ERROR_CODES.BAD_LOAD_MAGNITUDE],
+  ['null load magnitude', mutateValid((m) => { m.loads[0].w = null; }), ERROR_CODES.BAD_LOAD_MAGNITUDE],
+  ['unsupported load effect', mutateValid((m) => { m.loads = [{ id: 'LT', type: 'temperature', member: 'M1', dT: 20, case: 'D' }]; }), ERROR_CODES.UNSUPPORTED_LOAD_EFFECT],
   ['bad point load location', mutateValid((m) => { m.loads = [{ id: 'LP', type: 'point', member: 'M1', P: 1, t: 1.5, dir: '-z', case: 'D' }]; }), ERROR_CODES.BAD_POINT_LOAD_LOCATION],
   ['duplicate load case id', mutateValid((m) => { m.loadCases.push({ ...m.loadCases[0] }); }), ERROR_CODES.DUPLICATE_LOAD_CASE_ID],
   ['bad load case type', mutateValid((m) => { m.loadCases[0].type = 'gravity-ish'; }), ERROR_CODES.BAD_LOAD_CASE_TYPE],
   ['duplicate combo id', mutateValid((m) => { m.loadCombinations.push({ ...m.loadCombinations[0], factors: { ...m.loadCombinations[0].factors } }); }), ERROR_CODES.DUPLICATE_COMBO_ID],
   ['bad combo factors', mutateValid((m) => { m.loadCombinations[0].factors.D = Number.NaN; }), ERROR_CODES.BAD_COMBO_FACTORS],
+  ['blank combo factors', mutateValid((m) => { m.loadCombinations[0].factors.D = ''; }), ERROR_CODES.BAD_COMBO_FACTORS],
   ['no support', mutateValid((m) => { m.nodes.forEach((node) => { node.support = null; }); }), ERROR_CODES.NO_SUPPORT],
 ];
 

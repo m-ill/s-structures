@@ -29,4 +29,11 @@ assert.equal(materialOf(model, 'USER_STEEL@2').Fy, 300000);
 assert.ok(sectionOf(model, 'USER_H@1').A > 0);
 assert.equal(buildLibraryAudit(model).version, MATERIAL_REGISTRY_VERSION);
 
+const override = createModel({
+  materials: [{ id: 'steel', version: 1, E: 190000, G: 73000, Fy: 222, Fu: 333, density: 7.7 }],
+  sections: [{ id: 'h300', version: 1, A: 0.0123, Iy: 1e-4, Iz: 2e-4, J: 5e-5, Zz: 1e-3, Zy: 8e-4 }],
+});
+assert.equal(materialOf(override, 'steel@1').Fy, 222000);
+assert.equal(sectionOf(override, 'h300@1').A, 0.0123);
+
 console.log(JSON.stringify({ ok: true, version: 'p3-m10-materials' }, null, 2));

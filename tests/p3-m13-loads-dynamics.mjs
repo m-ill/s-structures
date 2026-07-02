@@ -15,6 +15,17 @@ assert.equal(trace.version, LOADS_V2_VERSION);
 assert.ok(trace.wind.length > 0 && trace.seismic.length > 0);
 assert.equal(trace.other.snow, 0.5);
 
+const weightedTrace = buildLoadsV2Trace({
+  stories: [
+    { id: 'BASE', z: 0, weight: 100 },
+    { id: 'L2', z: 3, weight: 100 },
+    { id: 'L3', z: 6, weight: 200 },
+  ],
+}, { seismicBaseShear: 150 });
+assert.equal(weightedTrace.seismic[0].force, 0);
+assert.ok(weightedTrace.seismic[2].force > weightedTrace.seismic[1].force);
+assert.equal(Math.round(weightedTrace.seismic.reduce((sum, row) => sum + row.force, 0)), 150);
+
 const responses = [{ period: 1, displacement: 2 }, { period: 1.1, displacement: 1 }];
 assert.ok(combineModalCqc(responses, 0.05) >= Math.sqrt(5));
 
@@ -27,6 +38,7 @@ assert.ok(rsa.combined.x.cqcDisplacement > 0);
 
 const tha = runLinearSdofTha({ period: 1, accelerations: [0, 0.1, -0.1, 0] });
 assert.equal(tha.version, DYNAMIC_COMPLETENESS_VERSION);
+assert.equal(tha.method, 'linear-sdof-newmark-average-acceleration');
 assert.equal(tha.rows.length, 4);
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m13-loads-dynamics' }, null, 2));

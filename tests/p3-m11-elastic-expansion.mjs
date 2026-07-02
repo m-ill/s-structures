@@ -28,4 +28,16 @@ assert.equal(result.ok, true);
 assert.equal(result.byCombo.CO1.elasticExpansion.version, ELASTIC_EXPANSION_VERSION);
 assert.ok(result.byCombo.CO1.reactions.B);
 
+const badRange = createModel({
+  ...model,
+  loads: [{ ...model.loads[0], from: 0.8, to: 0.2 }],
+});
+assert.equal(validateModel(badRange).ok, false);
+
+const unsupportedEffect = createModel({
+  ...model,
+  loads: [{ id: 'T1', type: 'temperature', member: 'M1', dT: 20, case: 'D' }],
+});
+assert.equal(validateModel(unsupportedEffect).ok, false);
+
 console.log(JSON.stringify({ ok: true, version: 'p3-m11-elastic-expansion' }, null, 2));

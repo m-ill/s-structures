@@ -105,6 +105,14 @@ function validateDiaphragms(model, nodeIds, error) {
     if (!DIAPHRAGM_TYPES.includes(item.type)) {
       error(ERROR_CODES.BAD_DIAPHRAGM_TYPE, `Unsupported diaphragm type: ${item.type}`, item.id || 'diaphragms');
     }
+    if (item.type === 'semiRigid') {
+      if (!Array.isArray(item.nodeIds) || item.nodeIds.length < 2) {
+        error(ERROR_CODES.BAD_DIAPHRAGM_PROPS, 'Semi-rigid diaphragm requires at least two node references.', item.id || 'diaphragms');
+      }
+      if (!(isFiniteNumber(item.inPlaneStiffness) && Number(item.inPlaneStiffness) > 0)) {
+        error(ERROR_CODES.BAD_DIAPHRAGM_PROPS, 'Semi-rigid diaphragm requires positive inPlaneStiffness.', item.id || 'diaphragms');
+      }
+    }
     for (const nodeId of item.nodeIds || []) {
       if (!nodeIds.has(nodeId)) error(ERROR_CODES.BAD_DIAPHRAGM_NODE_REF, 'Diaphragm references a missing node.', item.id || nodeId);
     }
@@ -190,13 +198,37 @@ function validateLoads(model, nodeIds, memberIds, error, warning) {
     if ((load.type === 'udl' || load.type === 'udl-partial') && (!load.member || !isFiniteNumber(load.w))) {
       error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'UDL requires member and finite w.', load.id);
     }
+    if (load.type === 'udl-partial') validateLoadRange(load, error);
     if (load.type === 'trapezoid' && (!load.member || !isFiniteNumber(load.w1) || !isFiniteNumber(load.w2))) {
       error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Trapezoid load requires member and finite w1/w2.', load.id);
+    }
+    if (load.type === 'trapezoid') validateLoadRange(load, error);
+    if (load.type === 'mmoment') {
+      if (!load.member || !isFiniteNumber(load.M) || !isFiniteNumber(load.at) || load.at < 0 || load.at > 1) {
+        error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Member moment requires member, finite M, and at between 0 and 1.', load.id);
+      }
+      error(ERROR_CODES.UNSUPPORTED_LOAD_EFFECT, 'Member moment equivalent load is not implemented yet.', load.id);
+    }
+    if (load.type === 'temperature') {
+      if (!load.member || !isFiniteNumber(load.dT)) error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Temperature load requires member and finite dT.', load.id);
+      error(ERROR_CODES.UNSUPPORTED_LOAD_EFFECT, 'Temperature load effect is not implemented yet.', load.id);
+    }
+    if (load.type === 'tgradient') {
+      if (!load.member || !isFiniteNumber(load.dTtop) || !isFiniteNumber(load.dTbot) || !isFiniteNumber(load.h) || !(Number(load.h) > 0)) {
+        error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Temperature gradient requires member, finite dTtop/dTbot, and positive h.', load.id);
+      }
+      error(ERROR_CODES.UNSUPPORTED_LOAD_EFFECT, 'Temperature gradient load effect is not implemented yet.', load.id);
     }
     if (load.type === 'point') {
       if (!load.member || !isFiniteNumber(load.P)) error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Point load requires member and finite P.', load.id);
       if (!isFiniteNumber(load.t) || load.t < 0 || load.t > 1) error(ERROR_CODES.BAD_POINT_LOAD_LOCATION, 'Point load t must be between 0 and 1.', load.id);
     }
+  }
+}
+
+function validateLoadRange(load, error) {
+  if (!isFiniteNumber(load.from) || !isFiniteNumber(load.to) || load.from < 0 || load.to > 1 || Number(load.from) >= Number(load.to)) {
+    error(ERROR_CODES.BAD_POINT_LOAD_LOCATION, 'Distributed load range must satisfy 0 <= from < to <= 1.', load.id);
   }
 }
 
@@ -225,7 +257,7 @@ function validateLoadCasesAndCombinations(model, error, warning) {
     }
     for (const [caseId, factor] of Object.entries(combo.factors)) {
       comboCaseIds.add(caseId);
-      if (!Number.isFinite(Number(factor))) {
+      if (!isFiniteNumber(factor)) {
         error(ERROR_CODES.BAD_COMBO_FACTORS, `Combination factor must be finite: ${caseId}`, combo.id);
       }
       if (loadCaseIds.size && !loadCaseIds.has(caseId)) {
@@ -262,9 +294,11 @@ function finish(errors, warnings) {
 }
 
 function isFiniteNumber(value) {
-  return Number.isFinite(Number(value));
+  if (typeof value === 'number') return Number.isFinite(value);
+  if (typeof value === 'string') return value.trim() !== '' && Number.isFinite(Number(value));
+  return false;
 }
 
 function hasSpring(spring = {}) {
-  return ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'].some((key) => Number(spring[key]) > 0);
+  return ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'].some((key) => isFiniteNumber(spring[key]) && Number(spring[key]) > 0);
 }

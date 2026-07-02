@@ -39,6 +39,12 @@ assert.ok(manifest.executeActions.includes('runPushover'));
 assert.ok(manifest.executeActions.includes('setNativeMode'));
 assert.ok(manifest.readApis.includes('getCapabilities'));
 assert.ok(manifest.readApis.includes('getRuntimeDiagnostics'));
+assert.ok(manifest.readApis.includes('getMaterialSectionRegistry'));
+assert.ok(manifest.readApis.includes('getElasticExpansionTrace'));
+assert.ok(manifest.readApis.includes('getWallSlabEquivalentTrace'));
+assert.ok(manifest.readApis.includes('getLoadsV2Trace'));
+assert.ok(manifest.readApis.includes('getDynamicCompletenessTrace'));
+assert.ok(manifest.dataContracts.includes('phase3LoadsV2Trace'));
 assert.equal(manifest.uiContract.controlCount, 0);
 
 const snapshot = agent.getSnapshot();

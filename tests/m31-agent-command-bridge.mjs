@@ -89,6 +89,10 @@ assert.equal(response.ok, true);
 assert.equal(readSummary().resultVisuals.nodeCount, 4);
 assert.equal(readSummary().resultVisuals.memberCount, 3);
 
+response = sendCommand({ id: 'loads-v2', method: 'getLoadsV2Trace', payload: { seismicBaseShear: 90 } });
+assert.equal(response.ok, true);
+assert.equal(response.data.version, 'p3-m13-loads-v2-trace');
+
 response = sendCommand({
   id: 'bad-action',
   method: 'execute',
@@ -103,7 +107,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 10);
+assert.equal(response.data.agentCommandBridge.commandCount, 11);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -117,7 +121,7 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 11);
+assert.equal(state.commandCount, 12);
 assert.equal(state.errorCount, 1);
 assert.ok(counters.reanalyze >= 6);
 

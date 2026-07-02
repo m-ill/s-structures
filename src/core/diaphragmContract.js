@@ -1,5 +1,5 @@
 export const DIAPHRAGM_VERSION = 'p2-t11-rigid-diaphragm';
-export const DIAPHRAGM_TYPES = ['rigid'];
+export const DIAPHRAGM_TYPES = ['rigid', 'semiRigid'];
 
 export function normalizeDiaphragms(items = []) {
   return Array.isArray(items) ? items.map(normalizeDiaphragm) : [];
@@ -13,5 +13,6 @@ export function normalizeDiaphragm(item = {}, index = 0) {
     z: Number.isFinite(Number(item.z)) ? Number(item.z) : null,
     nodeIds: Array.isArray(item.nodeIds) ? item.nodeIds.filter(Boolean) : null,
     center: item.center || null,
+    inPlaneStiffness: Number.isFinite(Number(item.inPlaneStiffness)) ? Number(item.inPlaneStiffness) : null,
   };
 }

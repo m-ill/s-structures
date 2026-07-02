@@ -9,13 +9,13 @@ export function parseVersionedId(ref) {
 
 export function resolveMaterialRecord(model, ref, builtins = []) {
   const key = parseVersionedId(ref);
-  const all = [...asVersioned(builtins), ...asVersioned(model?.materials)];
+  const all = [...asVersioned(model?.materials), ...asVersioned(builtins)];
   return selectVersion(all.filter((item) => item.id === key.id), key.version) || selectVersion(all.filter((item) => item.id === 'steel'), null);
 }
 
 export function resolveSectionRecord(model, ref, builtins = []) {
   const key = parseVersionedId(ref);
-  const all = [...asVersioned(builtins), ...asVersioned(model?.sections)].map(normalizeSection);
+  const all = [...asVersioned(model?.sections), ...asVersioned(builtins)].map(normalizeSection);
   return selectVersion(all.filter((item) => item.id === key.id), key.version) || selectVersion(all.filter((item) => item.id === 'h300'), null);
 }
 
@@ -25,14 +25,14 @@ export function buildLibraryAudit(model = {}) {
 }
 
 function asVersioned(items = []) {
-  return (items || []).filter(Boolean).map((item) => ({ version: 1, ...item }));
+  return (items || []).filter(Boolean).map((item, index) => ({ version: 1, ...item, _priority: index }));
 }
 
 function selectVersion(items, version) {
   const rows = items.filter((item) => !item.deleted);
   if (!rows.length) return null;
   if (version != null) return rows.find((item) => Number(item.version) === version) || null;
-  return rows.sort((a, b) => Number(b.version || 1) - Number(a.version || 1))[0];
+  return rows.sort((a, b) => Number(b.version || 1) - Number(a.version || 1) || Number(a._priority || 0) - Number(b._priority || 0))[0];
 }
 
 function normalizeSection(section) {

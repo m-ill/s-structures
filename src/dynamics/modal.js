@@ -1,5 +1,6 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { assembleStiffness3D, solveLinear } from '../solver/linear3d.js';
+import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
 import { combineModalCqc } from './elasticCompleteness.js';
 
 const DOF_DIR = ['x', 'y', 'z'];
@@ -58,8 +59,7 @@ export function buildLumpedMass(model, system) {
   for (const member of model.members || []) {
     const md = system.memData?.[member.id];
     if (!md) continue;
-    const material = materialOf(model, member.matId);
-    const section = sectionOf(model, member.secId);
+    const { section, material } = effectiveSectionMaterial((id) => sectionOf(model, id), (id) => materialOf(model, id), member);
     const m = Math.max(0, Number(material.density || 0) * Number(section.A || 0) * Number(md.ax.L || 0));
     if (!(m > 0)) continue;
     for (const nodeId of [member.n1, member.n2]) {

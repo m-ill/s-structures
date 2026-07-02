@@ -3,6 +3,7 @@ import {
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildAdvancedElasticTrace,
   buildBaselineContract,
+  buildLibraryAudit,
   buildCombinationEnvelopeContract,
   buildDesignDemandPackage,
   buildEccentricStoryLoadDistribution,
@@ -21,18 +22,23 @@ import {
   buildResultPostprocessing,
   buildServiceabilityDriftReport,
   buildSteelDetailingReport,
+  buildLoadsV2Trace,
   createCalculationPackageHtml,
   createDetailedHtmlReport,
   createHtmlReport,
   createKdsLoadCombinations,
   createKdsRuleBasedLoadCombinations,
   estimateModelLoads,
+  estimateMemberEulerBuckling,
+  expandAdvancedLoads,
   getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
   migrateToV3,
   runMemberReleaseBenchmark,
+  runLinearSdofTha,
   runRigidDiaphragmBenchmark,
   runPushover as runCorePushover,
   setDesignBasisInput,
+  summarizeSemiRigidDiaphragm,
   summarizeKdsLoadCombinationCoverage,
   summarizeKdsLoadCombinationRules,
 } from '../index.js';
@@ -212,6 +218,45 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildAdvancedElasticTrace(model, getAnalysis(model)));
+    },
+    getMaterialSectionRegistry() {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      const audit = buildLibraryAudit(model);
+      return cloneJson({
+        version: audit.version,
+        audit,
+        materials: model.materials || [],
+        sections: model.sections || [],
+      });
+    },
+    getElasticExpansionTrace() {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(expandAdvancedLoads(model.loads || [], model).trace);
+    },
+    getWallSlabEquivalentTrace() {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(summarizeSemiRigidDiaphragm(model));
+    },
+    getLoadsV2Trace(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildLoadsV2Trace(model, options));
+    },
+    getDynamicCompletenessTrace(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      const analysis = getAnalysis(model);
+      const firstCombo = Object.keys(analysis?.byCombo || {})[0];
+      const memberResults = analysis?.envelope?.memberResults || analysis?.byCombo?.[firstCombo]?.memberResults || {};
+      const buckling = (model.members || []).map((member) => estimateMemberEulerBuckling(member, memberResults[member.id] || { section: {}, material: {} }));
+      return cloneJson({
+        version: buckling[0]?.version || 'p3-m13-dynamic-completeness',
+        buckling,
+        timeHistory: options.timeHistory ? runLinearSdofTha(options.timeHistory) : null,
+      });
     },
     getResultPostprocessing(options = {}) {
       const model = getCurrentModel(target);
