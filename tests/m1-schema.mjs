@@ -75,7 +75,6 @@ const invalidCases = [
   ['bad load node ref', mutateValid((m) => { m.loads = [{ id: 'LN', type: 'nodal', node: 'NOPE', P: 1, dir: '-z', case: 'D' }]; }), ERROR_CODES.BAD_LOAD_NODE_REF],
   ['bad load magnitude', mutateValid((m) => { m.loads[0].w = Number.NaN; }), ERROR_CODES.BAD_LOAD_MAGNITUDE],
   ['null load magnitude', mutateValid((m) => { m.loads[0].w = null; }), ERROR_CODES.BAD_LOAD_MAGNITUDE],
-  ['unsupported load effect', mutateValid((m) => { m.loads = [{ id: 'LT', type: 'temperature', member: 'M1', dT: 20, case: 'D' }]; }), ERROR_CODES.UNSUPPORTED_LOAD_EFFECT],
   ['bad point load location', mutateValid((m) => { m.loads = [{ id: 'LP', type: 'point', member: 'M1', P: 1, t: 1.5, dir: '-z', case: 'D' }]; }), ERROR_CODES.BAD_POINT_LOAD_LOCATION],
   ['duplicate load case id', mutateValid((m) => { m.loadCases.push({ ...m.loadCases[0] }); }), ERROR_CODES.DUPLICATE_LOAD_CASE_ID],
   ['bad load case type', mutateValid((m) => { m.loadCases[0].type = 'gravity-ish'; }), ERROR_CODES.BAD_LOAD_CASE_TYPE],

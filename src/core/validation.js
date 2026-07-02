@@ -207,17 +207,14 @@ function validateLoads(model, nodeIds, memberIds, error, warning) {
       if (!load.member || !isFiniteNumber(load.M) || !isFiniteNumber(load.at) || load.at < 0 || load.at > 1) {
         error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Member moment requires member, finite M, and at between 0 and 1.', load.id);
       }
-      error(ERROR_CODES.UNSUPPORTED_LOAD_EFFECT, 'Member moment equivalent load is not implemented yet.', load.id);
     }
     if (load.type === 'temperature') {
       if (!load.member || !isFiniteNumber(load.dT)) error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Temperature load requires member and finite dT.', load.id);
-      error(ERROR_CODES.UNSUPPORTED_LOAD_EFFECT, 'Temperature load effect is not implemented yet.', load.id);
     }
     if (load.type === 'tgradient') {
       if (!load.member || !isFiniteNumber(load.dTtop) || !isFiniteNumber(load.dTbot) || !isFiniteNumber(load.h) || !(Number(load.h) > 0)) {
         error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Temperature gradient requires member, finite dTtop/dTbot, and positive h.', load.id);
       }
-      error(ERROR_CODES.UNSUPPORTED_LOAD_EFFECT, 'Temperature gradient load effect is not implemented yet.', load.id);
     }
     if (load.type === 'point') {
       if (!load.member || !isFiniteNumber(load.P)) error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Point load requires member and finite P.', load.id);

@@ -4,6 +4,7 @@ import {
   dirVec,
   fixedEndForces3D,
   localK12,
+  localTrussK12,
   matMul,
   matTrans,
   matVec,
@@ -18,6 +19,21 @@ import { reducedFixedDofs } from './diaphragmFixedDofs.js';
 import { expandReducedDisplacements, reduceSystem } from './diaphragmReduce.js';
 import { effectiveSectionMaterial } from './linear3dPost.js';
 import { recoverMemberResult } from './linear3dRecovery.js';
+
+function memberBehavior(member = {}) {
+  const value = member.behavior || member.type;
+  return ['truss', 'tensionOnly', 'compressionOnly'].includes(value) ? 'truss' : 'frame';
+}
+
+function memberAxesWithOffset(member, a, b) {
+  const base = memberAxes(a, b, member.localAxis);
+  const oi = Math.max(0, Number(member.endOffset?.i || 0));
+  const oj = Math.max(0, Number(member.endOffset?.j || 0));
+  if (!(oi || oj) || base.L <= oi + oj + 1e-9) return base;
+  const ae = { ...a, x: a.x + base.x[0] * oi, y: a.y + base.x[1] * oi, z: (a.z || 0) + base.x[2] * oi };
+  const be = { ...b, x: b.x - base.x[0] * oj, y: b.y - base.x[1] * oj, z: (b.z || 0) - base.x[2] * oj };
+  return { ...memberAxes(ae, be, member.localAxis), grossL: base.L, offset: { i: oi, j: oj } };
+}
 
 export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   const getMat = ctx.mat || ((id) => materialOf(null, id));
@@ -34,10 +50,12 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     const a = nodeMap[member.n1];
     const b = nodeMap[member.n2];
     if (!a || !b || idx[member.n1] == null || idx[member.n2] == null) continue;
-    const ax = memberAxes(a, b, member.localAxis);
+    const ax = memberAxesWithOffset(member, a, b);
     if (ax.L < 1e-9) continue;
     const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
-    const kl = localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L);
+    const kl = memberBehavior(member) === 'truss'
+      ? localTrussK12(material.E, section.A, ax.L)
+      : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L);
     const T = transform12(ax);
     const i1 = idx[member.n1] * 6;
     const i2 = idx[member.n2] * 6;
@@ -73,7 +91,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     } else {
       const md = memData[load.member];
       if (!md) continue;
-      const f0 = fixedEndForces3D(load, md.ax);
+      const f0 = fixedEndForces3D(load, md.ax, md);
       for (let i = 0; i < 12; i += 1) md.f0[i] += f0[i];
     }
   }
@@ -184,10 +202,12 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     const a = nodeMap[member.n1];
     const b = nodeMap[member.n2];
     if (!a || !b) continue;
-    const ax = memberAxes(a, b, member.localAxis);
+    const ax = memberAxesWithOffset(member, a, b);
     if (ax.L < 1e-9) continue;
     const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
-    const kl = localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L);
+    const kl = memberBehavior(member) === 'truss'
+      ? localTrussK12(material.E, section.A, ax.L)
+      : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L);
     const T = transform12(ax);
     const i1 = idx[member.n1] * 6;
     const i2 = idx[member.n2] * 6;

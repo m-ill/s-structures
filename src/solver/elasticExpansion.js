@@ -7,8 +7,8 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
   const warnings = [];
   for (const load of loads) {
     if (load.type === 'udl-partial' || load.type === 'trapezoid') expanded.push(...expandDistributed(load, segments, lengths[load.member] || 1));
-    else if (load.type === 'temperature' || load.type === 'tgradient') warnings.push({ code: 'TEMP_TRACE_ONLY', loadId: load.id });
-    else if (load.type === 'mmoment') warnings.push({ code: 'MEMBER_MOMENT_TRACE_ONLY', loadId: load.id });
+    else if (load.type === 'temperature' || load.type === 'tgradient') expanded.push({ ...load, sourceType: load.type });
+    else if (load.type === 'mmoment') expanded.push({ ...load, sourceType: load.type });
     else expanded.push(load);
   }
   return { loads: expanded, trace: { version: ELASTIC_EXPANSION_VERSION, inputCount: loads.length, outputCount: expanded.length, warnings, modelMembers: model.members?.length || 0 } };

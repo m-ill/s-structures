@@ -51,11 +51,11 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 
 | Ticket | Plan target | Current code | Audit result |
 | --- | --- | --- | --- |
-| P3-T68 | 6-DOF spring support + settlement | Solver has node springs and settlement force contribution | Partial; handcalc benchmark should be added |
-| P3-T69 | truss/tension-only/compression-only elements | Schema allows member types, solver does not branch by type | Not implemented |
-| P3-T70 | member end offset / rigid zone | No solver offset/rigid-zone implementation found | Not implemented |
-| P3-T71 | partial/trapezoid/multiple point/member moment loads | Partial/trapezoid expands to point loads; member moment is rejected as unsupported | Partial |
-| P3-T72 | uniform/gradient temperature loads | Schema recognizes shapes, validation rejects them until implemented | Not implemented |
+| P3-T68 | 6-DOF spring support + settlement | Solver has node springs, settlement force contribution, and M11 regression coverage | Preliminary |
+| P3-T69 | truss/tension-only/compression-only elements | Truss axial stiffness path exists; tension/compression-only state iteration remains | Partial |
+| P3-T70 | member end offset / rigid zone | `member.endOffset.i/j` shortens clear stiffness length and has regression coverage | Preliminary |
+| P3-T71 | partial/trapezoid/multiple point/member moment loads | Partial/trapezoid expansion and member moment fixed-end path exist | Preliminary; station recovery detail remains light |
+| P3-T72 | uniform/gradient temperature loads | Uniform and gradient temperature fixed-end paths validate and solve | Preliminary; handcalc coverage is basic |
 
 ### P3-M12 Wall And Slab
 

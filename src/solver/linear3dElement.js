@@ -114,6 +114,16 @@ export function localK12(E, G, A, Iy, Iz, J, L) {
   return k;
 }
 
+export function localTrussK12(E, A, L) {
+  const k = Array.from({ length: 12 }, () => new Array(12).fill(0));
+  const EA = (E * A) / L;
+  k[0][0] = EA;
+  k[6][6] = EA;
+  k[0][6] = -EA;
+  k[6][0] = -EA;
+  return k;
+}
+
 export function dirVec(load) {
   if (Array.isArray(load.direction) && load.direction.length === 3) {
     const l = Math.hypot(load.direction[0], load.direction[1], load.direction[2]) || 1;
@@ -133,7 +143,7 @@ export function transform12(ax) {
   return T;
 }
 
-export function fixedEndForces3D(load, ax) {
+export function fixedEndForces3D(load, ax, md = {}) {
   const { L } = ax;
   const f0 = new Array(12).fill(0);
   const direction = dirVec(load);
@@ -165,6 +175,26 @@ export function fixedEndForces3D(load, ax) {
     f0[8] -= q[2] * coeffs.sh2;
     f0[4] += q[2] * coeffs.m1;
     f0[10] -= q[2] * coeffs.m2;
+  } else if (load.type === 'temperature') {
+    const alpha = Number(load.alpha ?? md.material?.alpha ?? 1.2e-5);
+    const N = Number(md.material?.E || 0) * Number(md.section?.A || 0) * alpha * Number(load.dT || 0);
+    f0[0] -= N;
+    f0[6] += N;
+  } else if (load.type === 'tgradient') {
+    const alpha = Number(load.alpha ?? md.material?.alpha ?? 1.2e-5);
+    const h = Math.max(1e-9, Number(load.h || md.section?.H || 1));
+    const curvature = alpha * (Number(load.dTtop || 0) - Number(load.dTbot || 0)) / h;
+    const M = Number(md.material?.E || 0) * Number(md.section?.Iz || 0) * curvature;
+    f0[5] -= M;
+    f0[11] += M;
+  } else if (load.type === 'mmoment') {
+    const axis = load.axis || 'z';
+    const i = axis === 'y' ? 4 : axis === 'x' ? 3 : 5;
+    const j = i + 6;
+    const t = Math.max(0, Math.min(1, Number(load.at ?? 0.5)));
+    const M = Number(load.M || 0);
+    f0[i] -= M * (1 - t);
+    f0[j] -= M * t;
   }
 
   return f0;
