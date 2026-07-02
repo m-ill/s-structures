@@ -87,6 +87,7 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
     semiRigidDiaphragmCount: diaphragm.semiRigidCount,
     shellCount: shell.shellCount,
     shellLinkCount: shellAssembly.linkCount || 0,
+    shellSkippedCount: (shellAssembly.rows || []).filter((row) => row.status === 'skipped').length,
     slabRedistributionStatus: redistribution.status,
   };
   summary.ticketCoverage = buildTicketCoverage(summary);
@@ -147,6 +148,7 @@ function buildWallSlabReview(summary) {
   const uncovered = coverage.filter((row) => !row.covered).map((row) => row.ticket);
   const blockers = uncovered.map((ticket) => `uncovered-${ticket}`);
   if (summary.wallEquivalentCount > 0 && summary.recoveredWallForceCount === 0) blockers.push('wall-pier-force-recovery-missing');
+  if (summary.shellSkippedCount > 0) blockers.push('shell-frame-assembly-skipped');
   return {
     traceReady: blockers.length === 0,
     coverageComplete: uncovered.length === 0,
@@ -178,8 +180,8 @@ function buildTicketCoverage(summary) {
     {
       ticket: 'P3-T74',
       scope: 'shell-v1-and-frame-link-assembly',
-      covered: summary.shellCount > 0 || summary.shellLinkCount > 0,
-      evidence: `${summary.shellCount} shells / ${summary.shellLinkCount} frame links`,
+      covered: summary.shellLinkCount > 0 && summary.shellSkippedCount === 0,
+      evidence: `${summary.shellCount} shells / ${summary.shellLinkCount} frame links / ${summary.shellSkippedCount} skipped`,
     },
     {
       ticket: 'P3-T75',

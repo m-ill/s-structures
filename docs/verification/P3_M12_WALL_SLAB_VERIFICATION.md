@@ -45,6 +45,8 @@ The previous M12 trace exposed semi-rigid diaphragm rows only. P3-M12 now expose
 
 2026-07-03 coverage hardening: uncovered P3-M12 tickets now become explicit review blockers such as `uncovered-P3-T74`. A wall-only, shell-only, or diaphragm-only trace can still expose useful feature evidence, but `coverageComplete` remains false and the agent decision asks for full wall/slab ticket coverage before treating the M12 trace as complete.
 
+2026-07-03 shell-assembly hardening: P3-T74 coverage now requires generated shell frame links, not just a shell row. If shell node references are incomplete and frame-link assembly is skipped, the trace records `shellSkippedCount`, keeps P3-T74 uncovered, and adds `shell-frame-assembly-skipped` for AI-agent review.
+
 ## Current Test Gate
 
 `tests/p3-m12-wall-slab.mjs` verifies equivalent wall generation, analysis, pier force recovery, shell v1 benchmark traces, shell frame-link assembly, semi-rigid diaphragm validation, material-aware equivalent link sizing, equivalent-brace redistribution with review status rows, and the agent-readable trace contract including solver treatments and limitations.

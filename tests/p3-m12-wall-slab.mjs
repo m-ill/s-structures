@@ -124,6 +124,7 @@ const shellFrameTrace = buildWallSlabEquivalentTrace(shellFrameModel, shellFrame
 assert.equal(shellFrameTrace.shell.assembly.version, SHELL_FRAME_ASSEMBLY_VERSION);
 assert.equal(shellFrameTrace.summary.shellCount, 1);
 assert.equal(shellFrameTrace.summary.shellLinkCount, 6);
+assert.equal(shellFrameTrace.summary.shellSkippedCount, 0);
 assert.equal(shellFrameTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T74').covered, true);
 assert.equal(shellFrameTrace.review.shellFrameLinkReady, true);
 assert.equal(shellFrameTrace.review.coverageComplete, false);
@@ -140,6 +141,22 @@ const concreteShellAssembly = expandShellsToFrameLinks(concreteShellFrameModel);
 assert.equal(concreteShellAssembly.members[0].matId, 'concrete');
 assert.ok(concreteShellAssembly.sections[0].A > shellAssembly.sections[0].A);
 assert.equal(concreteShellAssembly.rows[0].materialId, 'concrete');
+
+const invalidShellModel = createModel({
+  nodes: [
+    { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'B', x: 4, y: 0, z: 0, support: 'fixed' },
+    { id: 'C', x: 0, y: 3, z: 0, support: 'fixed' },
+  ],
+  shells: [{ id: 'S-BAD', nodeIds: ['A', 'B', 'C'], thickness: 0.18, material: { E: 25000000, nu: 0.2 } }],
+});
+const invalidShellTrace = buildWallSlabEquivalentTrace(invalidShellModel, null);
+assert.equal(invalidShellTrace.summary.shellCount, 1);
+assert.equal(invalidShellTrace.summary.shellLinkCount, 0);
+assert.equal(invalidShellTrace.summary.shellSkippedCount, 1);
+assert.equal(invalidShellTrace.summary.ticketCoverage.find((row) => row.ticket === 'P3-T74').covered, false);
+assert.ok(invalidShellTrace.review.blockers.includes('shell-frame-assembly-skipped'));
+assert.ok(invalidShellTrace.shell.assembly.rows.some((row) => row.status === 'skipped'));
 
 const summary = summarizeSemiRigidDiaphragm({
   nodes: [{ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 4, y: 0, z: 0 }],
