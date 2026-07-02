@@ -5,15 +5,21 @@ export const FORMAL_PUSHOVER_VERSION = 'p3-m15-pushover-formal';
 export function runFormalPushover(model, options = {}) {
   const preliminary = runPushover(model, options);
   const eventRows = buildPushoverHingeEvents(preliminary.curve || []);
+  const control = buildPushoverControlTrace(preliminary, options);
   const curve = (preliminary.curve || []).map((point) => ({
     step: point.step,
     lambda: point.loadFactor,
     baseShear: point.baseShear,
     roofDisp: point.controlDisplacement,
+    controlType: control.type,
+    controlNodeId: preliminary.controlNodeId,
+    pattern: preliminary.pattern || options.pattern || 'triangular',
+    targetReached: control.targetDisplacement != null && Math.abs(point.controlDisplacement || 0) >= Math.abs(control.targetDisplacement),
     converged: point.ok,
     iterations: point.ok ? 1 : 0,
     hingeEvents: eventRows.filter((event) => event.step === point.step),
   }));
+  const regression = options.baseline ? comparePushoverRegression({ capacityCurve: curve }, options.baseline) : null;
   return {
     ok: !!preliminary.ok,
     version: FORMAL_PUSHOVER_VERSION,
@@ -29,12 +35,36 @@ export function runFormalPushover(model, options = {}) {
     ],
     controlNodeId: preliminary.controlNodeId,
     direction: preliminary.direction,
+    control,
     steps: curve,
     capacityCurve: curve.map((point) => ({ baseShear: point.baseShear, roofDisp: point.roofDisp })),
     hingeEvents: eventRows,
     hingeStates: preliminary.memberStates || {},
+    regression,
     summary: preliminary.summary || {},
     warnings: preliminary.warnings || [],
+  };
+}
+
+export function buildPushoverControlTrace(preliminary = {}, options = {}) {
+  const steps = preliminary.curve || preliminary.steps || [];
+  const last = steps.at(-1) || {};
+  const targetDisplacement = options.targetDisplacement == null ? null : Number(options.targetDisplacement);
+  return {
+    version: FORMAL_PUSHOVER_VERSION,
+    type: options.control || 'load-control',
+    direction: preliminary.direction || options.direction || '+x',
+    pattern: preliminary.pattern || options.pattern || 'triangular',
+    controlNodeId: preliminary.controlNodeId || null,
+    referenceBaseShear: preliminary.referenceBaseShear ?? options.referenceBaseShear ?? null,
+    maxLoadFactor: preliminary.maxLoadFactor ?? options.maxLoadFactor ?? null,
+    targetDisplacement,
+    stopped: !!preliminary.stopped,
+    stopReason: stopReason(preliminary, targetDisplacement, last),
+    finalStep: last.step ?? null,
+    finalLambda: last.loadFactor ?? last.lambda ?? null,
+    finalRoofDisp: last.controlDisplacement ?? last.roofDisp ?? null,
+    finalBaseShear: last.baseShear ?? null,
   };
 }
 
@@ -73,4 +103,12 @@ export function comparePushoverRegression(current, baseline) {
     maxRoofDispDiff: Math.max(0, ...rows.map((row) => row.roofDispDiff)),
     rows,
   };
+}
+
+function stopReason(preliminary, targetDisplacement, last) {
+  if ((preliminary.warnings || []).some((warning) => warning.code === 'PUSHOVER_STEP_FAILED')) return 'STEP_FAILED';
+  const controlDisplacement = last.controlDisplacement ?? last.roofDisp ?? 0;
+  if (targetDisplacement != null && Math.abs(controlDisplacement) >= Math.abs(targetDisplacement)) return 'TARGET_DISPLACEMENT';
+  if (preliminary.stopped) return 'STOPPED';
+  return 'COMPLETED';
 }

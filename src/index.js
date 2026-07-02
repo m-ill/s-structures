@@ -367,6 +367,7 @@ export {
 } from './nonlinear/dynamics/groundMotion.js';
 export {
   FORMAL_PUSHOVER_VERSION,
+  buildPushoverControlTrace,
   buildPushoverHingeEvents,
   comparePushoverRegression,
   runFormalPushover,

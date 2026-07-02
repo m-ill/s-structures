@@ -115,7 +115,7 @@ M14 is now exposed through `getNonlinearAnalysisTrace` for browser and agent con
 | --- | --- | --- |
 | P3-T54 | `src/nonlinear/hinges/momentHinge.js` and `src/nonlinear/hinges/hingeAssign.js` provide M-theta backbone A-E, member-end hinge assignment, state evaluation, and event trace | Preliminary |
 | P3-T55 | `src/nonlinear/control/displacementControl.js` and `arcLength.js` provide displacement-control and Crisfield arc-length trace contracts, including B3 post-peak path trace | Preliminary |
-| P3-T56 | `src/nonlinear/pushoverFormal.js` wraps the existing pushover path into a formal result contract and registers B4/B5 benchmark traces | Preliminary |
+| P3-T56 | `src/nonlinear/pushoverFormal.js` wraps the existing pushover path into a formal result contract with control metadata, hinge events, regression comparison summary, and B4/B5 benchmark traces | Preliminary |
 
 M15 is exposed through the existing `getNonlinearAnalysisTrace` contract. The formal pushover contract is now available for agents and reports, and assigned member-end hinges now feed tangent assembly corrections. Full hinge-controlled global nonlinear iterations and PMM/fiber behavior remain later Phase 3 work.
 

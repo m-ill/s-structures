@@ -185,6 +185,12 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       steps: pushover?.steps?.length || 0,
       capacityPoints: pushover?.capacityCurve?.length || 0,
       hingeEvents: pushover?.hingeEvents || [],
+      control: pushover?.control || null,
+      regression: pushover?.regression ? {
+        comparedSteps: pushover.regression.comparedSteps,
+        maxBaseShearDiff: pushover.regression.maxBaseShearDiff,
+        maxRoofDispDiff: pushover.regression.maxRoofDispDiff,
+      } : null,
       method: pushover?.method || null,
     },
     benchmarks: hingeControlBenchmarks ? {

@@ -11,8 +11,10 @@ import {
   buildArcLengthTrace,
   buildDisplacementControlTrace,
   buildHingeStateTrace,
+  buildPushoverControlTrace,
   buildNonlinearAnalysisTrace,
   assignMemberHinges,
+  comparePushoverRegression,
   createMomentRotationBackbone,
   createPortalFrameSample,
   createSnapThroughBenchmarkPath,
@@ -62,8 +64,20 @@ const pushover = runFormalPushover(model, { steps: 4, referenceBaseShear: 30 });
 assert.equal(pushover.version, FORMAL_PUSHOVER_VERSION);
 assert.ok(pushover.capacityCurve.length > 0);
 assert.equal(pushover.method.hinges, 'concentrated-M-theta-preliminary');
+assert.equal(pushover.control.type, 'load-control');
+assert.equal(pushover.steps[0].controlType, 'load-control');
 assert.ok(pushover.steps.every((step) => Array.isArray(step.hingeEvents)));
 assert.equal(pushover.hingeEvents.length, pushover.steps.reduce((sum, step) => sum + step.hingeEvents.length, 0));
+
+const stoppedPushover = runFormalPushover(model, { steps: 8, referenceBaseShear: 3000, targetDisplacement: 0.05 });
+assert.equal(stoppedPushover.control.stopReason, 'TARGET_DISPLACEMENT');
+assert.ok(stoppedPushover.steps.some((step) => step.targetReached));
+const controlTrace = buildPushoverControlTrace(stoppedPushover, { targetDisplacement: 0.05 });
+assert.equal(controlTrace.stopReason, 'TARGET_DISPLACEMENT');
+const regression = comparePushoverRegression(pushover, { capacityCurve: pushover.capacityCurve });
+assert.equal(regression.maxBaseShearDiff, 0);
+const pushoverWithBaseline = runFormalPushover(model, { steps: 4, referenceBaseShear: 30, baseline: pushover });
+assert.equal(pushoverWithBaseline.regression.maxRoofDispDiff, 0);
 
 const benchmarks = runNonlinearHingeControlBenchmarks({ b5: { model } });
 assert.equal(benchmarks.version, NONLINEAR_BENCHMARK_VERSION);
@@ -79,6 +93,7 @@ assert.equal(trace.hingeControlGate.control.postPeakTracked, true);
 assert.equal(trace.hingeControlGate.contracts.hingeAssignment, HINGE_ASSIGNMENT_VERSION);
 assert.ok(trace.hingeControlGate.assignment.summary.hingeCount >= model.members.length * 2);
 assert.ok(trace.hingeControlGate.tangentAssembly.hingeCorrectionCount >= 1);
+assert.equal(trace.hingeControlGate.pushover.control.type, 'load-control');
 assert.equal(trace.benchmarks.hingeControl.ok, true);
 assert.ok(trace.hingeStates.length > 0);
 assert.ok(trace.capacityCurve.length > 0);
