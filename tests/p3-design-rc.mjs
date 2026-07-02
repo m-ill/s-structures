@@ -3,6 +3,7 @@ import {
   analyzeModel,
   buildAgentManifest,
   buildP3DetailedDesignReport,
+  buildRcDesignGate,
   buildRcDetailedDesignReport,
   buildRcPmCurve,
   createReleasedSimpleBeamUdl,
@@ -42,7 +43,7 @@ assert.equal(beamReport.rcDesignGate.rcReview.status, 'review-required');
 assert.equal(beamReport.rcDesignGate.rcReview.finalPermitDesign, false);
 assert.equal(beamReport.rcDesignGate.rcReview.completeRoleCoverage, false);
 assert.ok(beamReport.rcDesignGate.rcReview.missing.includes('role-coverage'));
-assert.equal(beamReport.rcDesignGate.rcReview.agentDecision, 'complete-rc-roles-or-formulas');
+assert.equal(beamReport.rcDesignGate.rcReview.agentDecision, 'resolve-rc-review-items');
 assert.deepEqual(beamReport.rcDesignGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T87', 'P3-T88', 'P3-T89', 'P3-T90']);
 assert.equal(beamReport.rcDesignGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T88').covered, false);
 assert.equal(beamReport.schedules.beams.length, 1);
@@ -64,6 +65,20 @@ assert.ok(beamReport.schedules.walls[0].contract.tickets.includes('P3-T89'));
 assert.ok(beamReport.schedules.slabs[0].contract.tickets.includes('P3-T90'));
 assert.match(beamReport.schedules.beams[0].flexure.bottom.label, /^\d+-D/);
 assert.equal(beamReport.summary.itemCount, 3);
+
+const completeIssueGate = buildRcDesignGate({
+  schedules: {
+    beams: [{ role: 'beam', status: 'OK', flexure: { formulaId: 'KDS-RC-BEAM-FLEXURE-V1' } }],
+    columns: [{ role: 'column', status: 'OK', pm: { formulaId: 'KDS-RC-COLUMN-PM-V1' } }],
+    walls: [{ role: 'wall', status: 'NG', shear: { formulaId: 'KDS-RC-WALL-SHEAR-V1' } }],
+    slabs: [{ role: 'slab', status: 'OK', punching: { formulaId: 'KDS-RC-SLAB-PUNCHING-V1' } }],
+  },
+});
+assert.equal(completeIssueGate.completeRoleCoverage, true);
+assert.equal(completeIssueGate.rcReview.status, 'review-required');
+assert.ok(completeIssueGate.rcReview.missing.includes('design-issues'));
+assert.equal(completeIssueGate.rcReview.issueCount, 1);
+assert.equal(completeIssueGate.rcReview.agentDecision, 'resolve-rc-review-items');
 
 const integrated = buildP3DetailedDesignReport(beam, beamAnalysis, {
   rc: { slabs: beam.slabs, walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 900 }] },

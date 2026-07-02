@@ -25,6 +25,8 @@ Current status is preliminary. The module produces traceable schedules and regis
 
 2026-07-02 RC maturity review update: `rcDesignGate` now exposes `contract.maturity` and `rcReview`. The review records complete role coverage, missing roles, issue count, formula count, unregistered formula count, covered tickets, and an `agentDecision`. This keeps partial RC schedules usable for review without implying final permit design approval.
 
+2026-07-03 RC gate code review update: `rcReview` now treats WARN/NG design rows as explicit review blockers. Complete beam/column/wall/slab role coverage and registered formulas are no longer enough to return `trace-ready` when `issueCount` is positive; the review reports `design-issues` in `missing` and returns `resolve-rc-review-items`. This prevents reports or AI agents from accepting a complete-looking RC package that still contains unresolved design issues.
+
 ## P3-M18 Steel / Connection / Foundation Detailed Design
 
 Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.

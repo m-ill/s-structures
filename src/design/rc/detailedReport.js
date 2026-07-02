@@ -107,6 +107,7 @@ function buildRcDesignReview({ rows, formulas, coverage, missingRoles }) {
   if (missingRoles.length) missing.push('role-coverage');
   if (!formulas.length) missing.push('formula-trace');
   if (unregisteredFormulaCount) missing.push('formula-registry');
+  if (issueCount) missing.push('design-issues');
   return {
     status: missing.length ? 'review-required' : 'trace-ready',
     maturity: 'preliminary',
@@ -118,7 +119,7 @@ function buildRcDesignReview({ rows, formulas, coverage, missingRoles }) {
     unregisteredFormulaCount,
     coveredTickets: coverage.filter((row) => row.count > 0).map((row) => row.ticket),
     missing,
-    agentDecision: missing.length ? 'complete-rc-roles-or-formulas' : 'm17-ready-for-m18-integration-review',
+    agentDecision: missing.length ? 'resolve-rc-review-items' : 'm17-ready-for-m18-integration-review',
   };
 }
 
