@@ -97,6 +97,7 @@ import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
 import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../solver/wallSlabEquivalent.js';
 import { SEMI_RIGID_DIAPHRAGM_VERSION } from '../solver/semiRigidDiaphragm.js';
 import { SHELL_QUAD4_VERSION } from '../solver/shell/quad4.js';
+import { SHELL_FRAME_ASSEMBLY_VERSION } from '../solver/shell/shellAssembly.js';
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
 import { GLOBAL_BUCKLING_TRACE_VERSION } from '../dynamics/globalBuckling.js';
@@ -214,6 +215,7 @@ export function buildAgentManifest(options = {}) {
       phase3WallSlabTrace: WALL_SLAB_TRACE_VERSION,
       semiRigidDiaphragmRedistribution: SEMI_RIGID_DIAPHRAGM_VERSION,
       phase3ShellQuad4: SHELL_QUAD4_VERSION,
+      shellFrameAssembly: SHELL_FRAME_ASSEMBLY_VERSION,
       phase3LoadsV2: LOADS_V2_VERSION,
       phase3DynamicCompleteness: DYNAMIC_COMPLETENESS_VERSION,
       globalBucklingTrace: GLOBAL_BUCKLING_TRACE_VERSION,
@@ -390,6 +392,7 @@ export function buildAgentManifest(options = {}) {
       'phase3WallSlabTrace',
       'semiRigidDiaphragmRedistribution',
       'phase3ShellQuad4Trace',
+      'shellFrameAssembly',
       'phase3LoadsV2Trace',
       'phase3DynamicCompletenessTrace',
       'globalBucklingTrace',

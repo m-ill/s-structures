@@ -89,7 +89,7 @@ export function buildShellV1Trace(model = {}) {
     benchmarks: { patch, plate },
     limitations: [
       'Shell v1 is exposed as an element contract and verification trace.',
-      'Global frame-shell stiffness assembly remains a later hardening task.',
+      'Shell-to-frame assembly uses preliminary edge and diagonal membrane links; full shell finite-element assembly remains hardening.',
     ],
   };
 }

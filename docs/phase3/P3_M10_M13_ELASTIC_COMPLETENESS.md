@@ -7,7 +7,7 @@ status: implemented-preliminary-core
 
 - M10: versioned material and section registry, `id@version` references, and parametric H/BOX/PIPE/RECT/CIRC section properties.
 - M11: spring support stiffness, spring settlement load vector, and advanced distributed load expansion for partial/trapezoid member loads.
-- M12: mid-pier wall equivalent contract and semi-rigid diaphragm equivalent-brace redistribution contract.
+- M12: mid-pier wall equivalent contract, shell frame-link assembly contract, and semi-rigid diaphragm equivalent-brace redistribution contract.
 - M13: wind/seismic/environmental load trace contract, RSA base-shear scaling, torsion Ax trace, CQC close-mode report, global buckling trace, Euler buckling screening helper, and linear modal-superposition time-history trace helper.
 
 ## Engineering Boundary

@@ -20,6 +20,7 @@ import {
 } from './linear3dPost.js';
 import { expandAdvancedLoads } from './elasticExpansion.js';
 import { expandSemiRigidDiaphragms } from './semiRigidDiaphragm.js';
+import { expandShellsToFrameLinks } from './shell/shellAssembly.js';
 
 export { analyzeComponent3D, assembleStiffness3D } from './linear3dAssembly.js';
 export { AXIS, localK12, memberAxes, solveLinear } from './linear3dElement.js';
@@ -94,8 +95,11 @@ export function analyzeAll(model, factors = null, options = {}) {
 function analyzeAllOnce(model, factors = null, options = {}) {
   const nodes = model.nodes || [];
   const semiRigid = expandSemiRigidDiaphragms(model);
-  const solverModel = semiRigid.braceCount
-    ? { ...model, members: [...(model.members || []), ...semiRigid.members], sections: [...(model.sections || []), ...semiRigid.sections] }
+  const shellAssembly = expandShellsToFrameLinks(model);
+  const generatedMembers = [...semiRigid.members, ...shellAssembly.members];
+  const generatedSections = [...semiRigid.sections, ...shellAssembly.sections];
+  const solverModel = generatedMembers.length
+    ? { ...model, members: [...(model.members || []), ...generatedMembers], sections: [...(model.sections || []), ...generatedSections] }
     : model;
   const activeMemberIds = options.activeMemberIds || null;
   const members = activeMemberIds
@@ -205,6 +209,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
   }
   out.solver = summarizeSolverDiagnostics(out.solver.components);
   out.semiRigidDiaphragm = semiRigid;
+  out.shellFrameAssembly = shellAssembly;
   out.summary = buildEquilibriumSummary(nodes, members, loads, out);
   return out;
 }

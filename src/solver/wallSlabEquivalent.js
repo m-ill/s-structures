@@ -1,4 +1,5 @@
 import { buildShellV1Trace } from './shell/quad4.js';
+import { expandShellsToFrameLinks } from './shell/shellAssembly.js';
 import { buildSemiRigidRedistributionReport, expandSemiRigidDiaphragms } from './semiRigidDiaphragm.js';
 
 export const WALL_SLAB_EQUIVALENT_VERSION = 'p3-m12-wall-slab-equivalent';
@@ -68,6 +69,10 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
   const diaphragm = summarizeSemiRigidDiaphragm(model);
   const redistribution = buildSemiRigidRedistributionReport(model, analysis || {});
   const shell = buildShellV1Trace(model);
+  const shellAssembly = analysis?.byCombo
+    ? Object.values(analysis.byCombo).find((result) => result?.shellFrameAssembly)?.shellFrameAssembly || expandShellsToFrameLinks(model)
+    : expandShellsToFrameLinks(model);
+  shell.assembly = shellAssembly;
   return {
     version: WALL_SLAB_TRACE_VERSION,
     equivalentVersion: WALL_SLAB_EQUIVALENT_VERSION,

@@ -4,6 +4,7 @@ import {
   WALL_SLAB_TRACE_VERSION,
   SEMI_RIGID_DIAPHRAGM_VERSION,
   SHELL_QUAD4_VERSION,
+  SHELL_FRAME_ASSEMBLY_VERSION,
   addWallMidPierToModel,
   analyzeModel,
   buildAgentManifest,
@@ -13,6 +14,7 @@ import {
   buildWallSlabEquivalentTrace,
   createModel,
   estimateSimplySupportedPlateDeflection,
+  expandShellsToFrameLinks,
   expandSemiRigidDiaphragms,
   recoverWallPierForces,
   runShellPatchTest,
@@ -67,6 +69,28 @@ assert.equal(plate.ok, true);
 assert.ok(plate.wMax > 0);
 const shellTrace = buildShellV1Trace({ shells: [shell] });
 assert.equal(shellTrace.shellCount, 1);
+
+const shellFrameModel = createModel({
+  nodes: [
+    { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'B', x: 4, y: 0, z: 0, support: 'fixed' },
+    { id: 'C', x: 0, y: 3, z: 0, support: 'fixed' },
+    { id: 'D', x: 4, y: 3, z: 0 },
+  ],
+  members: [{ id: 'M1', n1: 'A', n2: 'D', matId: 'steel', secId: 'h300' }],
+  shells: [{ id: 'S1', nodeIds: ['A', 'B', 'D', 'C'], thickness: 0.18, material: { E: 25000000, nu: 0.2 } }],
+  loads: [{ id: 'PX', type: 'nodal', node: 'D', P: 20, dir: '+x', case: 'D' }],
+});
+const shellAssembly = expandShellsToFrameLinks(shellFrameModel);
+assert.equal(shellAssembly.version, SHELL_FRAME_ASSEMBLY_VERSION);
+assert.equal(shellAssembly.linkCount, 6);
+const shellFrameResult = analyzeModel(shellFrameModel);
+assert.equal(shellFrameResult.ok, true);
+assert.equal(shellFrameResult.byCombo.CO1.shellFrameAssembly.linkCount, 6);
+assert.equal(shellFrameResult.byCombo.CO1.memberResults[shellAssembly.members[0].id], undefined);
+const shellFrameTrace = buildWallSlabEquivalentTrace(shellFrameModel, shellFrameResult);
+assert.equal(shellFrameTrace.shell.assembly.version, SHELL_FRAME_ASSEMBLY_VERSION);
+assert.equal(shellFrameTrace.shell.assembly.rows[0].status, 'assembled-preliminary');
 
 const summary = summarizeSemiRigidDiaphragm({
   nodes: [{ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 4, y: 0, z: 0 }],

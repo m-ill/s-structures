@@ -502,6 +502,7 @@ export {
   estimateSimplySupportedPlateDeflection,
   runShellPatchTest,
 } from './solver/shell/quad4.js';
+export { SHELL_FRAME_ASSEMBLY_VERSION, expandShellsToFrameLinks } from './solver/shell/shellAssembly.js';
 export {
   LOADS_V2_VERSION,
   MASS_SOURCE_TRACE_VERSION,
