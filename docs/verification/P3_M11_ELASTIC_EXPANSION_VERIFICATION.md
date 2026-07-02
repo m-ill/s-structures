@@ -34,6 +34,8 @@ The previous M11 trace recorded only input and output load counts. P3-M11 now ex
 
 2026-07-02 follow-up: `elasticExpansion.trace.contract` now exposes the M11 scope, sign-convention reference, and practical limitations. Member offset trace rows also include gross length, clear length, and normalized offset values, while distributed-load handcalc rows carry direction and source range for report and AI-agent review.
 
+2026-07-02 contract update: `elasticExpansion.trace.contract` now includes P3-M11 milestone metadata, P3-T68 through P3-T72 ticket coverage, `featureTicketMap`, and review field names. Reports and AI agents can map spring, settlement, unilateral, offset, advanced load, and thermal load trace rows to their planned tickets without reconstructing the plan mapping.
+
 ## Current Test Gate
 
 `tests/p3-m11-elastic-expansion.mjs` verifies the M11 core behavior and trace contract, including the X-brace tension-only active/inactive iteration. It now also checks that partial distributed load boundaries appear in recovered member stations, member-moment stations stay finite, temperature/gradient handcalc rows are available for reports, and member-offset clear length is traceable. `tests/p3-m10-materials.mjs` remains a dependency gate because the elastic expansion path depends on resolved material and section properties.

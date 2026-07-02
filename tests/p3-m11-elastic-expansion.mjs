@@ -21,8 +21,13 @@ const model = createModel({
 assert.equal(validateModel(model).ok, true);
 const expanded = expandAdvancedLoads(model.loads, model);
 assert.equal(expanded.trace.version, ELASTIC_EXPANSION_VERSION);
+assert.equal(expanded.trace.contract.milestone, 'P3-M11');
+assert.deepEqual(expanded.trace.contract.tickets, ['P3-T68', 'P3-T69', 'P3-T70', 'P3-T71', 'P3-T72']);
 assert.ok(expanded.trace.contract.scope.includes('spring-supports'));
 assert.ok(expanded.trace.contract.scope.includes('advanced-member-loads'));
+assert.equal(expanded.trace.contract.featureTicketMap.springSupports, 'P3-T68');
+assert.equal(expanded.trace.contract.featureTicketMap.partialDistributed, 'P3-T71');
+assert.ok(expanded.trace.contract.reviewFields.includes('handcalc'));
 assert.equal(expanded.trace.contract.signConventionRef, 'src/core/signConvention.js');
 assert.ok(expanded.trace.contract.limitations.includes('unilateral-member-state-is-load-combination-specific'));
 assert.equal(expanded.loads.length, 8);

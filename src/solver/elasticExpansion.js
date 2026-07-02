@@ -49,8 +49,24 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
     trace: {
       version: ELASTIC_EXPANSION_VERSION,
       contract: {
+        milestone: 'P3-M11',
+        tickets: ['P3-T68', 'P3-T69', 'P3-T70', 'P3-T71', 'P3-T72'],
         scope: ['spring-supports', 'settlement', 'truss-and-unilateral-members', 'member-end-offsets', 'advanced-member-loads', 'thermal-loads'],
         signConventionRef: 'src/core/signConvention.js',
+        featureTicketMap: {
+          springSupports: 'P3-T68',
+          settlements: 'P3-T68',
+          trussMembers: 'P3-T69',
+          tensionOnlyMembers: 'P3-T69',
+          compressionOnlyMembers: 'P3-T69',
+          memberOffsets: 'P3-T70',
+          partialDistributed: 'P3-T71',
+          trapezoid: 'P3-T71',
+          memberMoment: 'P3-T71',
+          temperature: 'P3-T72',
+          temperatureGradient: 'P3-T72',
+        },
+        reviewFields: ['features', 'supportTrace', 'memberTrace', 'loadTrace', 'handcalc'],
         limitations: [
           'unilateral-member-state-is-load-combination-specific',
           'cable-sag-and-large-displacement-cable-effects-not-included',
