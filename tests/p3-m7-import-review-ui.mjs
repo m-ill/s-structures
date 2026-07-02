@@ -38,6 +38,7 @@ try {
 
   assert.equal(mountPoint.querySelector('[data-role="confirm-import"]').disabled, false);
   assert.match(mountPoint.querySelector('[data-role="audit"]').textContent, /review required/);
+  assert.match(mountPoint.querySelector('[data-role="audit"]').textContent, /confirmable/);
   shell.getCurrentView().updateCandidate({ ...candidate, audit: candidate.audit }, 'agent adjusted candidate');
   assert.match(shell.getCurrentView().getSummary().candidate.audit.reviewHistory[0].note, /agent adjusted/);
   await shell.getCurrentView().confirm();

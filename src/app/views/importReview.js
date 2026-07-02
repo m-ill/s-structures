@@ -50,6 +50,11 @@ export function mountImportReviewView(container, ctx) {
     audit.textContent = JSON.stringify({
       status: summary.status,
       validation: summary.validation,
+      review: summary.review,
+      counts: summary.counts,
+      source: summary.source,
+      layers: summary.layers,
+      planAssembly: summary.planAssembly,
       warnings: summary.warnings,
     }, null, 2);
     confirm.disabled = !canConfirmImport(summary);

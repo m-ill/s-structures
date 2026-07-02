@@ -9,6 +9,7 @@ import {
   createDwgConversionPlan,
   createDwgMissingConverterResult,
   recognizePlanDxf,
+  summarizeImportEntry,
   validateImportCandidate,
 } from '../src/index.js';
 
@@ -46,6 +47,13 @@ assert.equal(candidate.audit.planAssembly.columnStackCount, 2);
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'column').length, 2);
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'beam').length, 2);
 assert.deepEqual(candidate.candidates.stories.map((story) => story.z), [0, 3]);
+
+const reviewSummary = summarizeImportEntry({ id: 'plan-2story-import', status: 'pending', candidate });
+assert.equal(reviewSummary.review.confirmable, true);
+assert.equal(reviewSummary.review.requiresHumanReview, true);
+assert.equal(reviewSummary.review.sourceType, 'dxf-plan-assembly');
+assert.equal(reviewSummary.review.planAssembly.planCount, 2);
+assert.equal(reviewSummary.review.planAssembly.columnStackCount, 2);
 
 console.log(JSON.stringify({
   ok: true,

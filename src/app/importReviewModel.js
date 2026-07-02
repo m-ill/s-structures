@@ -6,23 +6,30 @@ export function summarizeImportEntry(entry = {}) {
   const candidate = entry.resolvedCandidate || entry.candidate || null;
   const validation = validateImportCandidate(candidate);
   const counts = candidate?.audit?.counts || entry.audit?.counts || {};
+  const warnings = uniqueStrings([...(validation.warnings || []), ...(entry.audit?.warnings || [])]);
+  const review = buildReviewState(entry, candidate, validation, warnings);
   return {
+    version: IMPORT_REVIEW_MODEL_VERSION,
     id: entry.id || null,
     status: entry.status || 'pending',
     candidate,
     validation,
+    source: candidate?.source || null,
     counts: {
       stories: counts.stories || 0,
       grids: counts.grids || 0,
       nodes: counts.nodes || 0,
       members: counts.members || 0,
     },
-    warnings: [...(validation.warnings || []), ...(entry.audit?.warnings || [])],
+    layers: candidate?.audit?.layers || entry.audit?.layers || null,
+    planAssembly: candidate?.audit?.planAssembly || entry.audit?.planAssembly || null,
+    review,
+    warnings,
   };
 }
 
 export function canConfirmImport(summary) {
-  return !!summary?.candidate && summary.validation?.ok === true && summary.status !== 'rejected';
+  return !!summary?.candidate && summary.validation?.ok === true && summary.status !== 'rejected' && summary.review?.confirmable !== false;
 }
 
 export function resolveImportCandidate(summary, nextCandidate, note = 'manual review') {
@@ -38,4 +45,38 @@ export function resolveImportCandidate(summary, nextCandidate, note = 'manual re
       ],
     },
   };
+}
+
+function buildReviewState(entry, candidate, validation, warnings) {
+  const status = entry.status || 'pending';
+  const reasons = [];
+  if (!candidate) reasons.push('candidate-missing');
+  if (validation?.ok !== true) reasons.push(...(validation?.errors || ['validation-failed']));
+  if (status === 'rejected') reasons.push('already-rejected');
+  const layers = candidate?.audit?.layers || entry.audit?.layers || null;
+  if (layers?.unmappedEntityCount > 0) reasons.push('unmapped-layer-review-required');
+  const planAssembly = candidate?.audit?.planAssembly || entry.audit?.planAssembly || null;
+  if (planAssembly && planAssembly.planCount < 2) reasons.push('single-plan-assembly-review-required');
+  return {
+    confirmable: reasons.length === 0,
+    requiresHumanReview: warnings.length > 0 || reasons.length > 0 || status === 'pending',
+    reasons: uniqueStrings(reasons),
+    sourceType: candidate?.source?.type || entry.source?.type || null,
+    fileId: candidate?.source?.fileId || entry.fileId || null,
+    layerAudit: layers ? {
+      layers: layers.layers || [],
+      mappedLayers: layers.mappedLayers || [],
+      unmappedEntityCount: layers.unmappedEntityCount || 0,
+    } : null,
+    planAssembly: planAssembly ? {
+      version: planAssembly.version || null,
+      planCount: planAssembly.planCount || 0,
+      columnStackCount: planAssembly.columnStackCount || 0,
+      generatedSegmentCount: planAssembly.generatedSegmentCount || 0,
+    } : null,
+  };
+}
+
+function uniqueStrings(values) {
+  return [...new Set((values || []).filter((value) => typeof value === 'string' && value.length > 0))];
 }
