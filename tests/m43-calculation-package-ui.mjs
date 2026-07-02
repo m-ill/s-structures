@@ -58,13 +58,14 @@ assert.equal(reportModal.classList.contains('show'), true);
 assert.equal(target.SStructuresCalculationPackage.data.version, CALCULATION_PACKAGE_VERSION);
 assert.match(reportBody.innerHTML, /Table of Contents/);
 assert.match(reportBody.innerHTML, /Design Basis And Loads/);
+assert.match(reportBody.innerHTML, /Phase 3 Integrated Results/);
 
 const snapshot = target.SStructuresAgent.execute('openNativeCalculationPackage', {
   generatedAt: '2026-06-27T00:00:00.000Z',
 });
 assert.equal(snapshot.calculationPackage.version, CALCULATION_PACKAGE_VERSION);
 assert.equal(snapshot.calculationPackage.modalOpen, true);
-assert.equal(snapshot.calculationPackage.sectionCount, 7);
+assert.equal(snapshot.calculationPackage.sectionCount, 8);
 assert.equal(snapshot.calculationPackage.auditOk, true);
 
 console.log(JSON.stringify({

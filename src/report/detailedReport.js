@@ -3,9 +3,12 @@ import { factorText } from '../core/combinations.js';
 import { buildConnectionFoundationReport } from '../design/connectionFoundation.js';
 import { buildDesignDemandPackage } from '../design/designDemandPackage.js';
 import { buildMemberDesignTraceReport } from '../design/memberDesignTrace.js';
+import { buildP3DetailedDesignReport } from '../design/p3DetailedDesignReport.js';
 import { buildRcDetailingReport } from '../design/rcDetailing.js';
 import { buildServiceabilityDriftReport } from '../design/serviceability.js';
 import { buildSteelDetailingReport } from '../design/steelDetailing.js';
+import { buildNonlinearAnalysisTrace } from '../nonlinear/trace.js';
+import { buildP3IntegratedResults } from '../results/p3IntegratedResults.js';
 import { buildAdvancedElasticTrace } from '../results/advancedElasticTrace.js';
 import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
 import { buildPracticePlatformReadiness } from '../platform/practicePlatformReadiness.js';
@@ -95,6 +98,9 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     memberChecks,
     governingMembers,
     memberDesignTrace: buildMemberDesignTraceReport(model, analysis),
+    phase3IntegratedResults: buildP3IntegratedResults(model, analysis, options.phase3 || {}),
+    phase3DetailedDesign: buildP3DetailedDesignReport(model, analysis, options.phase3Design || {}),
+    nonlinearTrace: buildNonlinearAnalysisTrace(model, options.nonlinear || {}),
     rcDetailing: buildRcDetailingReport(model, analysis),
     steelDetailing: buildSteelDetailingReport(model, analysis),
     connectionFoundation: buildConnectionFoundationReport(model, analysis),
@@ -264,6 +270,9 @@ export function renderDetailedReportHtml(report) {
     row.formulaTrace.length,
     row.actionItems.join('; '),
   ]))}
+
+  <h2>6B. Phase 3 Integrated Design And Nonlinear Trace</h2>
+  ${renderPhase3Integrated(report.phase3IntegratedResults)}
 
   <h2>7. RC Reinforcement Schedule</h2>
   ${renderRcDetailing(report.rcDetailing)}
@@ -536,6 +545,33 @@ function renderServiceability(serviceability) {
       statusLabel(row.status),
     ])),
   ].join('');
+}
+
+function renderPhase3Integrated(integrated) {
+  if (!integrated) return '<div class="note">No Phase 3 integrated trace is available.</div>';
+  return [
+    renderTable(['Item', 'Value'], [
+      ['Version', integrated.version],
+      ['Design items', integrated.summary.designItems],
+      ['Issue rows', integrated.summary.issueRows],
+      ['Not checked count', integrated.summary.notCheckedCount],
+      ['Workflow locked', integrated.summary.workflowLocked ? 'Yes' : 'No'],
+      ['Nonlinear trace', integrated.summary.nonlinearVersion],
+    ]),
+    renderTable(['Module', 'Items', 'WARN', 'NG'], Object.entries(integrated.design.modules || {}).map(([key, module]) => [
+      key,
+      module.summary?.itemCount || module.summary?.memberCount || 0,
+      module.summary?.warnCount || 0,
+      module.summary?.ngCount || 0,
+    ])),
+    renderTable(['Issue module', 'Item', 'Status', 'Action'], integrated.design.issueRows.slice(0, 30).map((row) => [
+      row.moduleId,
+      row.itemId,
+      row.status,
+      row.action,
+    ])),
+    renderList(integrated.methodLimitations || []),
+  ].join('\n');
 }
 
 function renderAdvancedElasticTrace(trace) {

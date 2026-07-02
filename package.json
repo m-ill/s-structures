@@ -101,6 +101,7 @@
     "test:m86": "node tests/p3-m16-nonlinear-fiber-nlth.mjs",
     "test:m87": "node tests/p3-design-rc.mjs",
     "test:m88": "node tests/p3-design-steel-foundation.mjs",
+    "test:m89": "node tests/p3-m19-integrated-report.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",
@@ -139,6 +140,7 @@
     "test:p3m15": "node tests/p3-m15-nonlinear-hinge-control.mjs",
     "test:p3m16": "node tests/p3-m16-nonlinear-fiber-nlth.mjs",
     "test:p3m17": "node tests/p3-design-rc.mjs",
-    "test:p3m18": "node tests/p3-design-steel-foundation.mjs"
+    "test:p3m18": "node tests/p3-design-steel-foundation.mjs",
+    "test:p3m19": "node tests/p3-m19-integrated-report.mjs"
   }
 }

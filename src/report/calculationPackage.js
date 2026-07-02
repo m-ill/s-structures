@@ -22,6 +22,7 @@ export function buildCalculationPackageData(model, analysis, options = {}) {
     { id: 'toc', title: 'Table of Contents' },
     { id: 'basis', title: 'Design Basis And Loads' },
     { id: 'analysis', title: 'Elastic Analysis Summary' },
+    { id: 'phase3', title: 'Phase 3 Integrated Results' },
     { id: 'members', title: 'Member Design Summary' },
     { id: 'detailing', title: 'Detailing And Foundation Summary' },
     { id: 'appendix', title: 'Appendix' },
@@ -180,6 +181,24 @@ export function renderCalculationPackageHtml(pkg) {
     ]) : '<div class="note">No result postprocessing data available.</div>'}
   </section>
 
+  <section id="phase3" class="page-break">
+    <h2>Phase 3 Integrated Results</h2>
+    ${d.phase3IntegratedResults ? table(['Item', 'Value'], [
+      ['Version', d.phase3IntegratedResults.version],
+      ['Design items', d.phase3IntegratedResults.summary.designItems],
+      ['Issue rows', d.phase3IntegratedResults.summary.issueRows],
+      ['Not checked count', d.phase3IntegratedResults.summary.notCheckedCount],
+      ['Workflow locked', d.phase3IntegratedResults.summary.workflowLocked ? 'Yes' : 'No'],
+      ['Nonlinear trace', d.phase3IntegratedResults.summary.nonlinearVersion],
+    ]) : '<div class="note">No Phase 3 integrated result package available.</div>'}
+    ${d.phase3IntegratedResults ? table(['Module', 'Items', 'WARN', 'NG'], Object.entries(d.phase3IntegratedResults.design.modules || {}).map(([key, module]) => [
+      key,
+      module.summary?.itemCount || module.summary?.memberCount || 0,
+      module.summary?.warnCount || 0,
+      module.summary?.ngCount || 0,
+    ])) : ''}
+  </section>
+
   <section id="members" class="page-break">
     <h2>Member Design Summary</h2>
     ${d.designDemandPackage ? table(['Demand package', 'Value'], [
@@ -260,6 +279,8 @@ function auditPackage(detailed) {
     { name: 'RC schedule available', status: detailed.rcDetailing.rows.length ? 'OK' : 'Not applicable' },
     { name: 'Steel schedule available', status: detailed.steelDetailing.rows.length ? 'OK' : 'Not applicable' },
     { name: 'Foundation review available', status: detailed.connectionFoundation.foundationRows.length ? 'OK' : 'Missing' },
+    { name: 'Phase 3 integrated results available', status: detailed.phase3IntegratedResults ? 'OK' : 'Missing' },
+    { name: 'Phase 3 default not-checked cleanup', status: detailed.phase3IntegratedResults?.summary?.notCheckedCount === 0 ? 'OK' : 'Review' },
   ];
   return {
     items,

@@ -185,6 +185,28 @@ M17 is exposed through `getRcDetailedDesignReport` for browser and agent control
 
 M18 is exposed through `getP3DetailedDesignReport` for browser and agent control. The module is a traceable detailed-design review scaffold, not final fabrication, geotechnical, or permit calculation output.
 
+## Stage F Required Scope: P3-M19 To P3-M20
+
+### P3-M19 Required
+
+| Ticket | Required scope |
+| --- | --- |
+| P3-T58 | Integrated result postprocessing, nonlinear result trace, and capacity/design package contract |
+| P3-T59 | Calculation report nonlinear/design chapter integration with method and limitations |
+| P3-T61 | Approval workflow lock and revocation contract |
+| P3-T62 | Full suite and representative benchmark refresh |
+
+### P3-M19 Implementation Review
+
+| Ticket | Current implementation | Status |
+| --- | --- | --- |
+| P3-T58 | `src/results/p3IntegratedResults.js` combines result postprocessing, nonlinear trace, detailed design, and workflow lock state | Preliminary |
+| P3-T59 | `src/report/detailedReport.js` and `src/report/calculationPackage.js` include Phase 3 integrated result chapters | Preliminary |
+| P3-T61 | `src/platform/workflowLock.js` provides approve, release, revoke, editable, and lock state helpers | Preliminary |
+| P3-T62 | `tests/p3-m19-integrated-report.mjs` plus full milestone runner cover the integrated report path | Preliminary |
+
+M19 is exposed through `getP3IntegratedResults` for browser and agent control. It does not claim final launch readiness; packaging, license, manual refresh, performance/security gates, and beta pilot reports remain P3-M20 scope.
+
 ## Corrective Implementation Order
 
 1. Do not label P3-M10 to P3-M13 as complete. Keep them as preliminary cores until the ticket gaps above are closed.

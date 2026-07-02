@@ -26,3 +26,16 @@ Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.
 | P3-T95 | Serviceability hook remains available through existing drift/deflection reports and steel deflection trace | Full milestone runner plus M40/M49 coverage |
 
 Current status is preliminary. M18 adds traceable steel, connection, base-plate, and foundation schedules for agent/report consumption. Final local buckling table selection, fabrication detailing, geotechnical settlement, and construction drawings remain review items.
+
+## P3-M19 Integrated Results And Report
+
+Scope follows `docs/phase3/ROADMAP.md` Stage F and `docs/phase3/IMPLEMENTATION_BACKLOG.md` P3-T58, P3-T59, P3-T61, and P3-T62.
+
+| Ticket | Module | Verification |
+| --- | --- | --- |
+| P3-T58 | Integrated result postprocessing, nonlinear trace, and capacity/design package contract | `tests/p3-m19-integrated-report.mjs` integrated result case |
+| P3-T59 | Calculation report method and limitation integration | `tests/p3-m19-integrated-report.mjs` detailed report and calculation package HTML case |
+| P3-T61 | Approval workflow lock/revoke contract | `tests/p3-m19-integrated-report.mjs` workflow lock case |
+| P3-T62 | Full benchmark and representative regression remains green | Full milestone runner |
+
+Current status is preliminary. M19 connects nonlinear trace, detailed-design trace, result postprocessing, and workflow lock state into the report/API contract.

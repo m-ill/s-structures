@@ -25,11 +25,13 @@ const pkg = createCalculationPackageHtml(model, analysis, {
   generatedAt: '2026-06-27T00:00:00.000Z',
 });
 assert.equal(pkg.data.version, CALCULATION_PACKAGE_VERSION);
-assert.equal(pkg.data.sections.length, 7);
+assert.equal(pkg.data.sections.length, 8);
+assert.ok(pkg.data.sections.some((section) => section.id === 'phase3'));
 assert.equal(pkg.data.qualityAudit.items.find((item) => item.name === 'Load derivation attached').status, 'OK');
 assert.match(pkg.html, /Table of Contents/);
 assert.match(pkg.html, /@page/);
 assert.match(pkg.html, /Appendix/);
+assert.match(pkg.html, /Phase 3 Integrated Results/);
 assert.match(pkg.html, /Calculation Package Test Report/);
 
 const target = {

@@ -157,6 +157,17 @@ export {
   P3_DETAILED_DESIGN_REPORT_VERSION,
 } from './design/p3DetailedDesignReport.js';
 export {
+  WORKFLOW_LOCK_VERSION,
+  applyWorkflowApproval,
+  buildWorkflowLockState,
+  canEditWorkflow,
+  revokeWorkflowApproval,
+} from './platform/workflowLock.js';
+export {
+  buildP3IntegratedResults,
+  P3_INTEGRATED_RESULTS_VERSION,
+} from './results/p3IntegratedResults.js';
+export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';
