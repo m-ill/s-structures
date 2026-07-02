@@ -160,7 +160,15 @@ try {
   // project library: M10 material/section records through server store
   const putMaterial = await app.api('PUT', `/api/projects/${projectId}/library/materials/SS400`, {
     token,
-    body: { item: { id: 'SS400', version: 1, kind: 'steel', elastic: { E: 205000, G: 79000 } } },
+    body: {
+      item: {
+        id: 'SS400',
+        version: 1,
+        kind: 'steel',
+        elastic: { E: 205000, G: 79000 },
+        strength: { steel: { Fy: 235, Fu: 400 } },
+      },
+    },
   });
   assert.equal(putMaterial.status, 200, JSON.stringify(putMaterial.data));
   assert.equal(putMaterial.data.data.item.source.scope, 'project');

@@ -51,6 +51,8 @@ The material library report also exposes nonlinear backbone metadata so the late
 
 2026-07-03 append-only hardening: `upsertMaterial()` and `upsertSection()` now reject changed records for an existing `id@version` even if a caller supplies `replace: true`. Identical replay remains allowed, but any changed record must create a new version so existing model references stay immutable for reports and AI-agent workflows.
 
+2026-07-03 strength-schema hardening: `validateMaterialRecord()` now enforces kind-specific strength fields for steel and concrete records. Steel requires `strength.steel.Fy/Fu` (or compatible top-level `Fy/Fu` legacy input), concrete requires `strength.concrete.fck`, and material-library reports surface missing strength as `material-schema-errors` blockers for AI-agent review.
+
 ## Current Test Gate
 
 P3-M10 is covered by:

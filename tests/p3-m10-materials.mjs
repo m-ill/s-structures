@@ -36,6 +36,25 @@ assert.equal(validateMaterialRecord({
   elastic: { E: 205000, G: 79000 },
   strength: { steel: { Fy: 275, Fu: 410 } },
 }).ok, true);
+const steelMissingFu = validateMaterialRecord({
+  id: 'BAD_STEEL', version: 1, kind: 'steel',
+  elastic: { E: 205000, G: 79000 },
+  strength: { steel: { Fy: 275 } },
+});
+assert.equal(steelMissingFu.ok, false);
+assert.ok(steelMissingFu.errors.includes('strength.steel.Fu'));
+const concreteMaterial = validateMaterialRecord({
+  id: 'CONC24', version: 1, kind: 'concrete',
+  elastic: { E: 27000, G: 11250 },
+  strength: { concrete: { fck: 24, fy_rebar: 400 } },
+});
+assert.equal(concreteMaterial.ok, true);
+assert.equal(concreteMaterial.normalized.strength.concrete.fck, 24);
+const legacyTopLevelSteel = validateMaterialRecord({
+  id: 'LEGACY_TOP_STEEL', version: 1, E: 205000, G: 79000, Fy: 275, Fu: 410,
+});
+assert.equal(legacyTopLevelSteel.ok, true);
+assert.equal(legacyTopLevelSteel.normalized.strength.steel.Fy, 275);
 assert.equal(validateSectionRecord({
   id: 'H-CUSTOM', version: 1, kind: 'parametric',
   shape: 'H', params: { H: 300, B: 150, tw: 6.5, tf: 9 },
@@ -170,6 +189,14 @@ const directReport = buildMaterialLibraryReport({
   members: [{ id: 'M1', matId: 'steel@1', secId: 'DIRECT_WARN@1' }],
 });
 assert.equal(directReport.review.sectionPropertyReviewRequired, true);
+
+const badStrengthReport = buildMaterialLibraryReport({
+  materials: [{ id: 'BAD_STEEL', version: 1, kind: 'steel', E: 205000, G: 79000, Fy: 275 }],
+  members: [{ id: 'M1', matId: 'BAD_STEEL@1', secId: 'H-400x200x8x13@1' }],
+});
+assert.ok(badStrengthReport.summary.materialErrorCount > 0);
+assert.ok(badStrengthReport.review.blockers.includes('material-schema-errors'));
+assert.equal(badStrengthReport.review.registryReady, false);
 
 assert.equal(MATERIAL_LIBRARY_EDIT_VERSION, 'p3-m10-library-edit-v1');
 assert.deepEqual(MATERIAL_LIBRARY_ACTIONS, ['listLibrary', 'getLibraryItem', 'upsertMaterial', 'upsertSection']);

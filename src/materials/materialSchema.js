@@ -8,6 +8,8 @@ export function validateMaterialRecord(record = {}) {
   for (const key of ['E', 'G']) if (!positive(elastic[key])) errors.push(`elastic.${key}`);
   const kind = record.kind || inferKind(record);
   if (!['steel', 'concrete', 'timber', 'custom'].includes(kind)) errors.push('kind');
+  const strength = normalizeStrength(record, kind);
+  errors.push(...validateStrength(kind, strength));
   const nonlinear = record.nonlinear;
   if (nonlinear && !validateBackbone(nonlinear.backbone || [])) errors.push('nonlinear.backbone');
   return { ok: errors.length === 0, errors, normalized: normalizeMaterialRecord(record) };
@@ -15,10 +17,11 @@ export function validateMaterialRecord(record = {}) {
 
 export function normalizeMaterialRecord(record = {}) {
   const elastic = record.elastic || record;
-  const strength = record.strength || {};
+  const kind = record.kind || inferKind(record);
+  const strength = normalizeStrength(record, kind);
   return {
     ...record,
-    kind: record.kind || inferKind(record),
+    kind,
     elastic: {
       E: elastic.E, G: elastic.G, nu: elastic.nu ?? null,
       rho: elastic.rho ?? elastic.density ?? record.density ?? null,
@@ -33,6 +36,33 @@ function validateBackbone(rows) {
   return Array.isArray(rows) && rows.length >= 2 && rows.every((row) => (
     Number.isFinite(row.strain ?? row.rotation) && Number.isFinite(row.stress ?? row.moment)
   ));
+}
+function validateStrength(kind, strength = {}) {
+  const errors = [];
+  if (kind === 'steel') {
+    if (!positive(strength.steel?.Fy)) errors.push('strength.steel.Fy');
+    if (!positive(strength.steel?.Fu)) errors.push('strength.steel.Fu');
+  }
+  if (kind === 'concrete' && !positive(strength.concrete?.fck)) errors.push('strength.concrete.fck');
+  return errors;
+}
+function normalizeStrength(record, kind) {
+  const strength = { ...(record.strength || {}) };
+  if (kind === 'steel') {
+    strength.steel = {
+      ...(strength.steel || {}),
+      Fy: strength.steel?.Fy ?? record.Fy ?? record.fy ?? null,
+      Fu: strength.steel?.Fu ?? record.Fu ?? record.fu ?? null,
+    };
+  }
+  if (kind === 'concrete') {
+    strength.concrete = {
+      ...(strength.concrete || {}),
+      fck: strength.concrete?.fck ?? record.fck ?? record.Fck ?? null,
+      fy_rebar: strength.concrete?.fy_rebar ?? record.fy_rebar ?? record.fyRebar ?? null,
+    };
+  }
+  return strength;
 }
 function defaultNonlinear(record) {
   const fy = record.Fy || record.strength?.steel?.Fy || record.strength?.concrete?.fck;
