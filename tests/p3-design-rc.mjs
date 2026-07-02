@@ -38,7 +38,7 @@ assert.deepEqual(beamReport.rcDesignGate.contract.tickets, ['P3-T87', 'P3-T88', 
 assert.equal(beamReport.rcDesignGate.contract.featureTicketMap.beamDetail, 'P3-T87');
 assert.ok(beamReport.rcDesignGate.contract.reviewFields.includes('summary.ticketCoverage'));
 assert.equal(beamReport.rcDesignGate.contract.maturity, 'preliminary-detail-schedule');
-assert.equal(beamReport.rcDesignGate.summary.readyForAgentReview, true);
+assert.equal(beamReport.rcDesignGate.summary.readyForAgentReview, false);
 assert.equal(beamReport.rcDesignGate.rcReview.status, 'review-required');
 assert.equal(beamReport.rcDesignGate.rcReview.finalPermitDesign, false);
 assert.equal(beamReport.rcDesignGate.rcReview.completeRoleCoverage, false);
@@ -79,6 +79,7 @@ assert.equal(completeIssueGate.rcReview.status, 'review-required');
 assert.ok(completeIssueGate.rcReview.missing.includes('design-issues'));
 assert.equal(completeIssueGate.rcReview.issueCount, 1);
 assert.equal(completeIssueGate.rcReview.agentDecision, 'resolve-rc-review-items');
+assert.equal(completeIssueGate.summary.readyForAgentReview, false);
 const issueWithoutFormulaGate = buildRcDesignGate({
   schedules: {
     beams: [{ role: 'beam', status: 'OK', flexure: { formulaId: 'KDS-RC-BEAM-FLEXURE-V1' } }],
@@ -90,6 +91,18 @@ const issueWithoutFormulaGate = buildRcDesignGate({
 assert.equal(issueWithoutFormulaGate.completeRoleCoverage, true);
 assert.equal(issueWithoutFormulaGate.rcReview.issueFormulaMissingCount, 1);
 assert.ok(issueWithoutFormulaGate.rcReview.missing.includes('issue-formula-links'));
+assert.equal(issueWithoutFormulaGate.summary.readyForAgentReview, false);
+
+const cleanCompleteGate = buildRcDesignGate({
+  schedules: {
+    beams: [{ role: 'beam', status: 'OK', flexure: { formulaId: 'KDS-RC-BEAM-FLEXURE-V1' } }],
+    columns: [{ role: 'column', status: 'OK', pm: { formulaId: 'KDS-RC-COLUMN-PM-V1' } }],
+    walls: [{ role: 'wall', status: 'OK', shear: { formulaId: 'KDS-RC-WALL-SHEAR-V1' } }],
+    slabs: [{ role: 'slab', status: 'OK', punching: { formulaId: 'KDS-RC-SLAB-PUNCHING-V1' } }],
+  },
+});
+assert.equal(cleanCompleteGate.rcReview.status, 'trace-ready');
+assert.equal(cleanCompleteGate.summary.readyForAgentReview, true);
 
 const unknownRoleReport = buildRcDetailedDesignReport({}, {
   design: {

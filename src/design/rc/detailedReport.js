@@ -68,7 +68,7 @@ export function buildRcDesignGate(report = {}) {
       maturity: 'preliminary-detail-schedule',
     },
     summary: {
-      readyForAgentReview: true,
+      readyForAgentReview: rcReview.status === 'trace-ready',
       completeRoleCoverage: missingRoles.length === 0,
       missingRoles,
       issueCount: rows.filter((row) => row.status && row.status !== 'OK').length,

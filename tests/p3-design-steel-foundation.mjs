@@ -76,7 +76,7 @@ assert.deepEqual(integrated.designGate.contract.tickets, ['P3-T91', 'P3-T92', 'P
 assert.equal(integrated.designGate.contract.featureTicketMap.steelMember, 'P3-T91');
 assert.ok(integrated.designGate.contract.reviewFields.includes('summary.ticketCoverage'));
 assert.equal(integrated.designGate.contract.maturity, 'preliminary-integrated-schedule');
-assert.equal(integrated.designGate.summary.readyForAgentReview, true);
+assert.equal(integrated.designGate.summary.readyForAgentReview, false);
 assert.equal(integrated.designGate.summary.completeCoverage, true);
 assert.equal(integrated.designGate.designReview.status, 'review-required');
 assert.equal(integrated.designGate.designReview.finalPermitDesign, false);
@@ -132,6 +132,7 @@ assert.equal(issueGate.designReview.status, 'review-required');
 assert.ok(issueGate.designReview.missing.includes('design-issues'));
 assert.equal(issueGate.designReview.issueCount, 1);
 assert.equal(issueGate.designReview.agentDecision, 'resolve-detailed-design-review-items');
+assert.equal(issueGate.summary.readyForAgentReview, false);
 
 const unlinkedIssueGate = buildP3DetailedDesignGate({
   steel: {
@@ -164,6 +165,36 @@ assert.equal(unlinkedIssueGate.coverage.find((row) => row.ticket === 'P3-T94').c
 assert.equal(unlinkedIssueGate.designReview.unlinkedIssueCount, 1);
 assert.ok(unlinkedIssueGate.designReview.missing.includes('issue-formula-links'));
 assert.ok(unlinkedIssueGate.designReview.missing.includes('ticket-coverage'));
+assert.equal(unlinkedIssueGate.summary.readyForAgentReview, false);
+const cleanIntegratedGate = buildP3DetailedDesignGate({
+  steel: {
+    version: 'steel-test',
+    rows: [{ memberId: 'S1', status: 'OK', formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1' }] }],
+    formulaTrace: [{ formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' }],
+    summary: { itemCount: 1 },
+  },
+  connection: {
+    version: 'connection-test',
+    rows: [{ memberId: 'C1', status: 'OK', formulaTrace: [{ formulaId: 'KDS-CONN-BOLT-V1' }] }],
+    formulaTrace: [{ formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' }],
+    summary: { itemCount: 1 },
+  },
+  foundation: {
+    version: 'foundation-test',
+    rows: [{ nodeId: 'F1', status: 'OK', formulaTrace: [{ formulaId: 'KDS-FOUND-SPREAD-V1' }] }],
+    formulaTrace: [{ formulaId: 'KDS-FOUND-SPREAD-V1', standard: 'KDS 11 50' }],
+    summary: { itemCount: 1 },
+  },
+}, {
+  issueRows: [],
+  formulaTrace: [
+    { formulaId: 'KDS-ST-H1-INTERACTION-V1', standard: 'KDS 14 31' },
+    { formulaId: 'KDS-CONN-BOLT-V1', standard: 'KDS 14 31' },
+    { formulaId: 'KDS-FOUND-SPREAD-V1', standard: 'KDS 11 50' },
+  ],
+});
+assert.equal(cleanIntegratedGate.designReview.status, 'trace-ready');
+assert.equal(cleanIntegratedGate.summary.readyForAgentReview, true);
 const mismatchedIssueGate = buildP3DetailedDesignGate({
   steel: {
     version: 'steel-test',

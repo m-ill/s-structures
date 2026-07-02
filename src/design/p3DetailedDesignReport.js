@@ -63,7 +63,7 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     },
     coverage,
     summary: {
-      readyForAgentReview: true,
+      readyForAgentReview: designReview.status === 'trace-ready',
       completeCoverage: coverage.every((row) => row.covered),
       issueCount: issueRows.length,
       formulaCount: formulaTrace.length,
