@@ -10,6 +10,15 @@ import {
 
 const model = createRepresentativeBuildingModel('01-regular-office-frame');
 const synthetic = generateSyntheticPointCloud(model, { step: 1.2 });
+synthetic.groundTruth.walls = [{
+  id: 'W1',
+  from: [0, 0, 0],
+  to: [6, 0, 0],
+  z1: 0,
+  z2: 3,
+  thickness: 0.2,
+  confidence: 0.84,
+}];
 const candidate = extractPointCloudCandidate(synthetic.points, {
   groundTruth: synthetic.groundTruth,
   story: { tolerance: 0.08 },
@@ -23,6 +32,8 @@ assert.ok(score.columnRecall >= 0.9, `column recall ${score.columnRecall}`);
 assert.ok(score.columnPrecision >= 0.9, `column precision ${score.columnPrecision}`);
 assert.ok(score.beamRecall >= 0.75, `beam recall ${score.beamRecall}`);
 assert.ok(score.beamPrecision >= 0.75, `beam precision ${score.beamPrecision}`);
+assert.equal(score.wallRecall, 1);
+assert.equal(score.wallCandidateCount, 1);
 assert.equal(score.targets.columnRecall, 0.9);
 assert.equal(score.targets.beamRecall, 0.75);
 assert.deepEqual(score.pass, {
@@ -52,9 +63,11 @@ assert.equal(candidate.audit.pointcloud.contract.milestone, 'P3-M9');
 assert.deepEqual(candidate.audit.pointcloud.contract.tickets, ['P3-T41', 'P3-T42', 'P3-T43', 'P3-T44', 'P3-T45']);
 assert.equal(candidate.audit.pointcloud.contract.output, 'ImportCandidate');
 assert.equal(candidate.audit.pointcloud.counts.beams > 0, true);
+assert.equal(candidate.audit.pointcloud.counts.walls, 1);
 assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.stories, 'available');
 assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.columns, 'available');
 assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.beams, 'synthetic-assisted');
+assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.walls, 'review-candidates-available');
 assert.equal(candidate.audit.pointcloud.evidence.extractionStatus.importCandidate, 'generated');
 assert.equal(candidate.audit.pointcloud.evidence.beamSource, 'synthetic-ground-truth-assisted');
 assert.equal(candidate.audit.pointcloud.evidence.realScanValidation, 'pending-owner-file');
@@ -66,15 +79,20 @@ assert.deepEqual(candidate.audit.pointcloud.evidence.confidenceBands, {
 assert.equal(candidate.audit.pointcloud.evidence.candidates.stories.length > 0, true);
 assert.equal(candidate.audit.pointcloud.evidence.candidates.columns.length > 0, true);
 assert.equal(candidate.audit.pointcloud.evidence.candidates.beams.length > 0, true);
+assert.equal(candidate.audit.pointcloud.evidence.candidates.walls.length, 1);
 assert.ok(candidate.audit.pointcloud.evidence.candidates.columns[0].evidence.includes('vertical-continuity'));
 assert.ok(candidate.audit.pointcloud.evidence.candidates.beams[0].evidence.includes('synthetic-ground-truth-assisted'));
-assert.equal(candidate.audit.pointcloud.evidence.wallExtraction.status, 'not-v1-production');
-assert.equal(candidate.audit.pointcloud.evidence.wallExtraction.candidateCount, 0);
+assert.equal(candidate.audit.pointcloud.evidence.candidates.walls[0].band, 'high');
+assert.equal(candidate.audit.pointcloud.evidence.wallExtraction.status, 'review-candidates-available');
+assert.equal(candidate.audit.pointcloud.evidence.wallExtraction.productionReady, false);
+assert.equal(candidate.audit.pointcloud.evidence.wallExtraction.candidateCount, 1);
+assert.equal(candidate.audit.pointcloud.evidence.wallExtraction.candidates[0].midPierReady, true);
 assert.ok(candidate.audit.pointcloud.limitations.includes('beam-detection-uses-synthetic-ground-truth'));
-assert.ok(candidate.audit.pointcloud.limitations.includes('wall-extraction-pending-real-scan-validation'));
+assert.ok(candidate.audit.pointcloud.limitations.includes('wall-candidates-require-human-review'));
 assert.ok(candidate.audit.pointcloud.limitations.includes('real-field-pointcloud-validation-pending'));
 assert.ok(buildAgentManifest().dataContracts.includes('phase3PointCloudBenchmark'));
 assert.ok(buildAgentManifest().dataContracts.includes('phase3PointCloudExtractionSummary'));
+assert.ok(buildAgentManifest().dataContracts.includes('phase3PointCloudWallDetectionTrace'));
 
 console.log(JSON.stringify({
   ok: true,
@@ -84,4 +102,5 @@ console.log(JSON.stringify({
   columnPrecision: score.columnPrecision,
   beamRecall: score.beamRecall,
   beamPrecision: score.beamPrecision,
+  wallRecall: score.wallRecall,
 }, null, 2));

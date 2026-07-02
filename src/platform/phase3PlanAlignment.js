@@ -212,6 +212,7 @@ const IMPORT_PIPELINE_CONTRACT = {
     { id: 'LAZ/E57', status: 'not-v1' },
   ],
   pointCloudPipeline: ['worker-parse', 'normalize', 'voxel-downsample', 'outlier-filter', 'viewer-buffer', 'story-column-beam-wall-extraction', 'ImportCandidate', 'human-review'],
+  pointCloudExtractionModules: ['src/import/pointcloud/storyDetect.js', 'src/import/pointcloud/columnDetect.js', 'src/import/pointcloud/beamDetect.js', 'src/import/pointcloud/wallDetect.js', 'src/import/pointcloud/extract.js'],
   confidenceBands: ['>=0.8 high-confidence-review-required', '0.5-0.8 review-required', '<0.5 audit-only'],
   benchmarkTargets: {
     storyElevationErrorMm: 30,
