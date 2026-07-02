@@ -301,7 +301,7 @@ const MILESTONES = [
   ms('P3-M17', t(87, 90), ['docs/verification/DESIGN_MODULE_VERIFICATION.md'], ['tests/p3-design-rc.mjs']),
   ms('P3-M18', t(91, 95), ['docs/verification/DESIGN_MODULE_VERIFICATION.md'], ['tests/p3-design-steel-foundation.mjs']),
   ms('P3-M19', ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62'], ['docs/verification/DESIGN_MODULE_VERIFICATION.md'], ['tests/p3-m19-integrated-report.mjs']),
-  ms('P3-M20', t(63, 67), ['docs/verification/P3_M20_LAUNCH_READINESS_VERIFICATION.md'], ['tests/p3-launch-gate.mjs', 'tests/p3-runner-contract.mjs', 'tests/p3-doc-reference-integrity.mjs']),
+  ms('P3-M20', t(63, 67), ['docs/verification/P3_M20_LAUNCH_READINESS_VERIFICATION.md'], ['tests/p3-launch-gate.mjs', 'tests/p3-runner-contract.mjs', 'tests/p3-doc-reference-integrity.mjs', 'tests/p3-server-route-contract.mjs']),
 ];
 
 export function buildPhase3PlanAlignmentReport(manifest = {}) {

@@ -101,6 +101,7 @@ assert.ok(report.milestones.find((row) => row.id === 'P3-M13').tickets.includes(
 assert.ok(report.milestones.find((row) => row.id === 'P3-M20').tests.includes('tests/p3-launch-gate.mjs'));
 assert.ok(report.milestones.find((row) => row.id === 'P3-M20').tests.includes('tests/p3-runner-contract.mjs'));
 assert.ok(report.milestones.find((row) => row.id === 'P3-M20').tests.includes('tests/p3-doc-reference-integrity.mjs'));
+assert.ok(report.milestones.find((row) => row.id === 'P3-M20').tests.includes('tests/p3-server-route-contract.mjs'));
 assert.equal(report.activeTicketCount, 93);
 assert.equal(report.plannedTicketCount, 95);
 assert.deepEqual(report.absorbedTickets.map((row) => row.ticket), ['P3-T57', 'P3-T60']);

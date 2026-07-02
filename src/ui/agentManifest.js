@@ -304,6 +304,7 @@ export function buildAgentManifest(options = {}) {
       phase3RunnerContract: 'node tests/p3-runner-contract.mjs',
       phase3PlanAlignment: 'node tests/p3-plan-alignment.mjs',
       phase3DocReferences: 'node tests/p3-doc-reference-integrity.mjs',
+      phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
     },
     dataContracts: [
       'schemaVersionedModel',

@@ -69,6 +69,7 @@ AI agents should read `window.SStructuresAgent.getCapabilities().qaCommands` bef
 | `phase3RunnerContract` | verify the runner mapping contract |
 | `phase3PlanAlignment` | verify the 14-document plan alignment contract |
 | `phase3DocReferences` | verify referenced local files in Phase 3 docs exist |
+| `phase3ServerRoutes` | verify server route declarations match the Phase 3 endpoint contract |
 
 ## Execute Actions
 

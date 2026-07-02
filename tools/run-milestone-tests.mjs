@@ -38,6 +38,7 @@ const phase3Tests = [
   p3('P3-M20', 'test:p3alignment'),
   p3('P3-M20', 'test:p3runner'),
   p3('P3-M20', 'test:p3docs'),
+  p3('P3-M20', 'test:p3routes'),
 ];
 
 const args = process.argv.slice(2);

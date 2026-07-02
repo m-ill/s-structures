@@ -37,6 +37,7 @@ The following tests were run successfully in the current worktree:
 | Plan alignment | `tests/p3-plan-alignment.mjs` |
 | Phase 3 runner contract | `tests/p3-runner-contract.mjs` |
 | Documentation reference integrity | `tests/p3-doc-reference-integrity.mjs` |
+| Server route contract | `tests/p3-server-route-contract.mjs` |
 
 ## Review Finding
 
@@ -47,6 +48,8 @@ The current codebase is now traceable from P3-M6 through P3-M20 and back to the 
 2026-07-02 runner audit update: `tools/run-milestone-tests.mjs` now supports the Phase 3 plan range directly through `--phase3`, `--from=P3-M#`, `--to=P3-M#`, and `--list`. `npm run test:p3` runs the P3-M0 to P3-M20 gate set, and `tests/p3-runner-contract.mjs` verifies that the runner includes the M6 restart path and the M20 launch/alignment gates.
 
 2026-07-02 document reference audit update: `tests/p3-doc-reference-integrity.mjs` now scans Phase 3, verification, and user-manual documents for local file references and confirms the referenced files or wildcard groups exist. This caught and corrected the stale architecture reference to the old server entrypoint name.
+
+2026-07-02 server route audit update: `tests/p3-server-route-contract.mjs` now compares the implemented server route declarations with the Phase 3 endpoint table. This closes the gap where a server API plan could be updated without proving the corresponding route set still matches.
 
 ## Remaining Limits
 

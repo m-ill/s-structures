@@ -40,7 +40,8 @@
     "phase3M6ToM20": "node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20",
     "phase3RunnerContract": "node tests/p3-runner-contract.mjs",
     "phase3PlanAlignment": "node tests/p3-plan-alignment.mjs",
-    "phase3DocReferences": "node tests/p3-doc-reference-integrity.mjs"
+    "phase3DocReferences": "node tests/p3-doc-reference-integrity.mjs",
+    "phase3ServerRoutes": "node tests/p3-server-route-contract.mjs"
   },
   "readApis": [
     "getSnapshot",
