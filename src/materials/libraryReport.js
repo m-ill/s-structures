@@ -51,12 +51,14 @@ function buildAuditSummary(audit) {
 }
 
 function summarizeBase(ref, record) {
+  const label = record ? `${record.id}@${record.version || 1}` : ref;
   return {
     ref,
     id: record?.id || null,
     version: record?.version || null,
-    label: record ? `${record.id}@${record.version || 1}` : ref,
+    label,
     source: record?.source || null,
+    sourceTrace: sourceTrace(ref, label, record?.source),
   };
 }
 
@@ -87,5 +89,17 @@ function summarizeSection(ref, record) {
       Iz: record?.Iz ?? null,
       J: record?.J ?? null,
     },
+  };
+}
+
+function sourceTrace(ref, label, source = {}) {
+  const scope = source?.scope || (source?.db ? 'builtin' : 'project');
+  return {
+    reference: ref,
+    resolvedLabel: label,
+    scope,
+    standard: source?.standard || null,
+    db: source?.db || null,
+    note: source?.note || null,
   };
 }

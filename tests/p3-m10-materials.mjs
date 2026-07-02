@@ -86,7 +86,16 @@ assert.equal(libraryReport.summary.unversionedReferenceCount, 0);
 assert.equal(libraryReport.auditSummary.registryPolicy.editRule, 'append-only-new-version');
 assert.ok(libraryReport.materials.some((row) => row.label === 'USER_STEEL@2'));
 assert.equal(libraryReport.materials.find((row) => row.label === 'USER_STEEL@2').nonlinear.model, 'bilinear');
+assert.deepEqual(libraryReport.materials.find((row) => row.label === 'USER_STEEL@2').sourceTrace, {
+  reference: 'USER_STEEL@2',
+  resolvedLabel: 'USER_STEEL@2',
+  scope: 'project',
+  standard: null,
+  db: null,
+  note: null,
+});
 assert.ok(libraryReport.sections.find((row) => row.label === 'USER_H@1').properties.A > 0);
+assert.equal(libraryReport.sections.find((row) => row.label === 'USER_H@1').sourceTrace.scope, 'project');
 
 const override = createModel({
   materials: [{ id: 'steel', version: 1, E: 190000, G: 73000, Fy: 222, Fu: 333, density: 7.7 }],
@@ -95,6 +104,12 @@ const override = createModel({
 assert.equal(materialOf(override, 'steel@1').Fy, 222000);
 assert.equal(sectionOf(override, 'h300@1').A, 0.0123);
 assert.equal(resolveSectionRecord(null, 'H-400x200x8x13@1').source.db, 'KS-H-2024');
+const builtinReport = buildMaterialLibraryReport({
+  members: [{ id: 'M1', matId: 'steel@1', secId: 'H-400x200x8x13@1' }],
+});
+assert.equal(builtinReport.sections[0].sourceTrace.scope, 'builtin');
+assert.equal(builtinReport.sections[0].sourceTrace.db, 'KS-H-2024');
+assert.equal(builtinReport.sections[0].sourceTrace.resolvedLabel, 'H-400x200x8x13@1');
 
 const legacyRefModel = createModel({
   materials: [
