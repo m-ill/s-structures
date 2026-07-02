@@ -4,6 +4,8 @@ import {
   buildAgentManifest,
   buildPointCloudLayerData,
   describePointCloudPipeline,
+  POINT_CLOUD_EXTERNAL_CONVERSION_GUIDANCE,
+  POINT_CLOUD_UNSUPPORTED_FORMAT,
   parsePointCloudText,
   parsePointCloudWithAudit,
   processPointCloudText,
@@ -33,6 +35,20 @@ assert.equal(loadedPcd.audit.dataLineCount, 3);
 assert.equal(loadedPcd.audit.parsedCount, 3);
 assert.equal(loadedPcd.audit.rejectedCount, 0);
 assert.equal(loadedPcd.audit.colorCount, 0);
+
+assertUnsupportedPointCloud(
+  () => parsePointCloudWithAudit('ply\nformat binary_little_endian 1.0\nend_header\n', { format: 'ply' }),
+  'binary-PLY',
+);
+assertUnsupportedPointCloud(
+  () => parsePointCloudWithAudit('# .PCD v0.7\nFIELDS x y z\nPOINTS 1\nDATA binary\n', { format: 'pcd' }),
+  'binary-PCD',
+);
+assertUnsupportedPointCloud(
+  () => parsePointCloudWithAudit('', { format: 'las' }),
+  'LAS',
+);
+assert.match(POINT_CLOUD_EXTERNAL_CONVERSION_GUIDANCE.LAS, /Convert LAS/);
 
 const processed = processPointCloudText(xyz, {
   voxelSize: 0.05,
@@ -146,4 +162,14 @@ function shiftPointCloudText(text, delta) {
       ...values.slice(3),
     ].join(' ');
   }).join('\n');
+}
+
+function assertUnsupportedPointCloud(fn, format) {
+  assert.throws(fn, (error) => {
+    assert.equal(error.code, POINT_CLOUD_UNSUPPORTED_FORMAT);
+    assert.equal(error.format, format);
+    assert.equal(typeof error.guidance, 'string');
+    assert.ok(error.guidance.length > 0);
+    return true;
+  });
 }

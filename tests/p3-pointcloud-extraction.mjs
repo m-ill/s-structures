@@ -89,6 +89,8 @@ assert.equal(scanOnlyCandidate.audit.pointcloud.candidateReview.productionReady,
 assert.equal(scanOnlyCandidate.audit.pointcloud.candidateReview.humanReviewRequired, true);
 assert.equal(scanOnlyCandidate.audit.pointcloud.candidateReview.blockers.includes('synthetic-ground-truth-assisted-extraction'), false);
 assert.equal(scanOnlyCandidate.audit.pointcloud.candidateReview.blockers.includes('real-scan-validation-not-checked'), false);
+assert.ok(scanOnlyCandidate.audit.pointcloud.limitations.includes('real-field-pointcloud-owner-review-required'));
+assert.equal(scanOnlyCandidate.audit.pointcloud.limitations.includes('real-field-pointcloud-validation-pending'), false);
 assert.ok(scanOnlyCandidate.audit.pointcloud.limitations.includes('beam-detection-not-available-without-ground-truth'));
 assert.ok(candidate.candidates.members.some((m) => m.kind === 'beam'));
 assert.equal(candidate.audit.pointcloud.contract.milestone, 'P3-M9');

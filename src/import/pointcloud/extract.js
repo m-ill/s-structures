@@ -76,7 +76,9 @@ export function buildPointCloudExtractionSummary(input = {}) {
     limitations: [
       ...(usedGroundTruth ? ['beam-detection-uses-synthetic-ground-truth'] : ['beam-detection-not-available-without-ground-truth']),
       ...(walls.length ? ['wall-candidates-require-human-review'] : ['wall-extraction-pending-real-scan-validation']),
-      'real-field-pointcloud-validation-pending',
+      realScanValidation === 'checked'
+        ? 'real-field-pointcloud-owner-review-required'
+        : 'real-field-pointcloud-validation-pending',
     ],
   };
 }

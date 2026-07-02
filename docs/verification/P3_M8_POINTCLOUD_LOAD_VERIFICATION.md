@@ -42,6 +42,8 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 
 2026-07-03 z-up normalization update: `normalizePointCloud()` now records `axis` metadata and can remap x-up or y-up input into the platform z-up contract. `summarizePointCloudImport()` exposes this under `normalization.axis` and warns with `pointcloud-axis-remapped-to-z-up` so AI agents can distinguish native z-up fixtures from remapped field scans.
 
+2026-07-03 unsupported-format guidance update: `parsePointCloudWithAudit()` now rejects binary PLY, binary PCD, LAS, LAZ, and E57 with `POINT_CLOUD_UNSUPPORTED_FORMAT`, the detected format, and external conversion guidance. `tests/p3-pointcloud-load.mjs` locks this behavior so AI agents do not mistake pending owner-file formats for supported v1 imports.
+
 ## Current Test Gate
 
 `tests/p3-pointcloud-load.mjs` verifies:

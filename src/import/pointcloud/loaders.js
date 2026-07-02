@@ -1,4 +1,12 @@
 export const POINT_CLOUD_LOADER_VERSION = 'p3-m8-pointcloud-loader-v1';
+export const POINT_CLOUD_UNSUPPORTED_FORMAT = 'POINT_CLOUD_UNSUPPORTED_FORMAT';
+export const POINT_CLOUD_EXTERNAL_CONVERSION_GUIDANCE = {
+  LAS: 'Convert LAS to XYZ/PLY/PCD ASCII with a reviewed external point-cloud tool before import.',
+  LAZ: 'Convert LAZ to XYZ/PLY/PCD ASCII with a reviewed external point-cloud tool before import.',
+  E57: 'Convert E57 to XYZ/PLY/PCD ASCII with a reviewed external point-cloud tool before import.',
+  'binary-PCD': 'Export PCD as DATA ascii before importing.',
+  'binary-PLY': 'Export PLY as format ascii before importing.',
+};
 
 export function parsePointCloudText(text, options = {}) {
   return parsePointCloudWithAudit(text, options).points;
@@ -6,11 +14,12 @@ export function parsePointCloudText(text, options = {}) {
 
 export function parsePointCloudWithAudit(text, options = {}) {
   const format = (options.format || detectFormat(text)).toLowerCase();
+  assertSupportedTextPointCloud(format, text);
   let points = null;
   if (format === 'xyz' || format === 'txt') points = parseXyz(text);
   else if (format === 'ply') points = parsePlyAscii(text);
   else if (format === 'pcd') points = parsePcdAscii(text);
-  else throw new Error(`Unsupported point cloud format: ${format}`);
+  else throw unsupportedFormatError(format);
   const dataLineCount = countDataLines(text, format);
   return {
     version: POINT_CLOUD_LOADER_VERSION,
@@ -50,6 +59,22 @@ function parsePcdAscii(text) {
   const lines = String(text).split(/\r?\n/);
   const start = lines.findIndex((line) => line.trim().toLowerCase() === 'data ascii');
   return lines.slice(start + 1).map(partsToPoint).filter(Boolean);
+}
+
+function assertSupportedTextPointCloud(format, text) {
+  const head = String(text || '').slice(0, 512).toLowerCase();
+  if (['las', 'laz', 'e57'].includes(format)) throw unsupportedFormatError(format.toUpperCase());
+  if (format === 'ply' && head.includes('format binary')) throw unsupportedFormatError('binary-PLY');
+  if (format === 'pcd' && /data\s+binary/.test(head)) throw unsupportedFormatError('binary-PCD');
+}
+
+function unsupportedFormatError(format) {
+  const canonical = String(format || 'unknown');
+  const error = new Error(`Unsupported point cloud format: ${canonical}`);
+  error.code = POINT_CLOUD_UNSUPPORTED_FORMAT;
+  error.format = canonical;
+  error.guidance = POINT_CLOUD_EXTERNAL_CONVERSION_GUIDANCE[canonical] || 'Use XYZ, ASCII PLY, or ASCII PCD for Phase 3 point-cloud import.';
+  return error;
 }
 
 function rows(text) {
