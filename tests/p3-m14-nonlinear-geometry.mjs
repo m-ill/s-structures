@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   COROTATIONAL_BEAM_VERSION,
+  LOAD_CONTROL_VERSION,
   NONLINEAR_ASSEMBLY_VERSION,
   NEWTON_RAPHSON_VERSION,
   NONLINEAR_BENCHMARK_VERSION,
@@ -9,6 +10,7 @@ import {
   NONLINEAR_TRACE_VERSION,
   advanceAnalysisState,
   buildCorotationalBeamState,
+  buildLoadControlTrace,
   buildNonlinearTangentAssembly,
   buildNonlinearAnalysisTrace,
   chooseLineSearchTrace,
@@ -73,6 +75,12 @@ assert.equal(lineSearch.acceptedAlpha, 0.5);
 assert.equal(lineSearch.candidates.length, 4);
 assert.equal(lineSearch.improved, true);
 
+const loadControl = buildLoadControlTrace({ increments: [0.2, 0.3] });
+assert.equal(loadControl.version, LOAD_CONTROL_VERSION);
+assert.equal(loadControl.rows.length, 2);
+assert.equal(loadControl.finalState.lambda, 0.5);
+assert.equal(loadControl.converged, true);
+
 const benchmarks = runNonlinearGeometryBenchmarks();
 assert.equal(benchmarks.version, NONLINEAR_BENCHMARK_VERSION);
 assert.equal(benchmarks.ok, true);
@@ -85,7 +93,10 @@ assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
 assert.ok(trace.method.control.includes('load'));
 assert.equal(trace.geometryGate.version, NONLINEAR_GEOMETRY_TRACE_VERSION);
 assert.equal(trace.geometryGate.contracts.assembly, NONLINEAR_ASSEMBLY_VERSION);
+assert.equal(trace.geometryGate.contracts.loadControl, LOAD_CONTROL_VERSION);
 assert.equal(trace.geometryGate.assembly.version, NONLINEAR_ASSEMBLY_VERSION);
+assert.equal(trace.geometryGate.loadControl.version, LOAD_CONTROL_VERSION);
+assert.ok(trace.geometryGate.loadControl.rows.length > 0);
 assert.deepEqual(trace.geometryGate.benchmarks.requiredCases, ['B1', 'B2']);
 assert.equal(trace.geometryGate.convergence.lineSearchEnabled, true);
 assert.ok(trace.geometryGate.convergence.log.iterations[0].lineSearch.candidates.length === 4);

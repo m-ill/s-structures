@@ -1,6 +1,7 @@
 import { createAnalysisState, NONLINEAR_STATE_VERSION, snapshotAnalysisState } from './state.js';
 import { buildNonlinearTangentAssembly, NONLINEAR_ASSEMBLY_VERSION } from './assembly.js';
 import { NEWTON_RAPHSON_VERSION, solveNewtonRaphson } from './control/newtonRaphson.js';
+import { buildLoadControlTrace, LOAD_CONTROL_VERSION } from './control/loadControl.js';
 import { ARC_LENGTH_CONTROL_VERSION, buildArcLengthTrace, createSnapThroughBenchmarkPath } from './control/arcLength.js';
 import { buildDisplacementControlTrace, DISPLACEMENT_CONTROL_VERSION } from './control/displacementControl.js';
 import { buildHingeStateTrace, createMomentRotationBackbone, MOMENT_HINGE_VERSION } from './hinges/momentHinge.js';
@@ -220,6 +221,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
     maxIterations: options.maxIterations || 30,
     lineSearch: options.lineSearch,
   });
+  const loadControl = buildLoadControlTrace(options.loadControl);
   return {
     version: NONLINEAR_GEOMETRY_TRACE_VERSION,
     milestone: 'P3-M14',
@@ -227,6 +229,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
     contracts: {
       state: NONLINEAR_STATE_VERSION,
       newtonRaphson: NEWTON_RAPHSON_VERSION,
+      loadControl: LOAD_CONTROL_VERSION,
       assembly: NONLINEAR_ASSEMBLY_VERSION,
     },
     state: snapshotAnalysisState(state),
@@ -244,6 +247,7 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
       reason: convergenceSample.convergenceReason,
       log: convergenceSample.log,
     },
+    loadControl,
     benchmarks: geometryBenchmarks ? {
       version: geometryBenchmarks.version,
       ok: geometryBenchmarks.ok,

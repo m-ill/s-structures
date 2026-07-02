@@ -33,7 +33,9 @@ The gate records:
 
 2026-07-02 review fix: Newton-Raphson line-search now records evaluated alpha candidates and accepted residual norms per iteration. This gives reports and AI agents enough data to explain whether convergence used full Newton steps or damped steps.
 
-`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, B1/B2 benchmarks, and agent trace exposure.
+2026-07-02 review update: Added the explicit P3-M14 load-control trace module required by `NONLINEAR_ENGINE_PLAN.md`. `buildLoadControlTrace()` records lambda increments, Newton convergence status, iteration count, final state snapshot, and limitations, and `geometryGate.contracts.loadControl` now exposes the contract version for reports and AI agents.
+
+`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, load-control trace, B1/B2 benchmarks, and agent trace exposure.
 
 ## Remaining Limits
 

@@ -310,6 +310,10 @@ export {
   solveNewtonRaphson,
 } from './nonlinear/control/newtonRaphson.js';
 export {
+  LOAD_CONTROL_VERSION,
+  buildLoadControlTrace,
+} from './nonlinear/control/loadControl.js';
+export {
   DISPLACEMENT_CONTROL_VERSION,
   buildDisplacementControlStep,
   buildDisplacementControlTrace,
