@@ -57,10 +57,12 @@ export function createProjectStore(dataDir) {
       await ensureDir(join(projectDir(id), 'revisions'));
       await ensureDir(join(projectDir(id), 'files'));
       await ensureDir(join(projectDir(id), 'imports'));
+      await ensureDir(join(projectDir(id), 'evidence'));
       await ensureDir(join(projectDir(id), 'libraries'));
       await writeProjectMeta(id, meta);
       await writeJsonAtomic(join(projectDir(id), 'revisions', 'index.json'), []);
       await writeJsonAtomic(join(projectDir(id), 'files', 'index.json'), []);
+      await writeJsonAtomic(join(projectDir(id), 'evidence', 'index.json'), []);
       await writeJsonAtomic(join(projectDir(id), 'libraries', 'materials.json'), []);
       await writeJsonAtomic(join(projectDir(id), 'libraries', 'sections.json'), []);
       return meta;
@@ -220,6 +222,30 @@ export function createProjectStore(dataDir) {
       const next = { ...existing, ...patch, resolvedAt: new Date().toISOString() };
       await writeJsonAtomic(join(projectDir(id), 'imports', `${importId}.json`), next);
       return next;
+    },
+
+    async listEvidence(id) {
+      return (await readJson(join(projectDir(id), 'evidence', 'index.json'), [])) || [];
+    },
+
+    async addEvidence(id, { evidence, author }) {
+      const meta = await this.get(id);
+      if (!meta) return null;
+      const rows = await this.listEvidence(id);
+      const entry = {
+        ...evidence,
+        id: String(evidence.id || '').trim(),
+        status: String(evidence.status || (evidence.accepted ? 'accepted' : 'submitted')).trim().toLowerCase(),
+        accepted: evidence.accepted === true || String(evidence.status || '').toLowerCase() === 'accepted',
+        author,
+        recordedAt: new Date().toISOString(),
+      };
+      rows.push(entry);
+      await ensureDir(join(projectDir(id), 'evidence'));
+      await writeJsonAtomic(join(projectDir(id), 'evidence', 'index.json'), rows);
+      meta.updatedAt = new Date().toISOString();
+      await writeProjectMeta(id, meta);
+      return entry;
     },
 
     async setApproval(id, { state, rev, approvedBy }) {

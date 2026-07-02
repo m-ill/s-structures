@@ -125,6 +125,8 @@ const SERVER_ENDPOINTS = [
   endpoint('GET', '/api/projects/:id/imports', 'member', 'server/routes/imports.mjs'),
   endpoint('GET', '/api/projects/:id/imports/:importId', 'member', 'server/routes/imports.mjs'),
   endpoint('PATCH', '/api/projects/:id/imports/:importId', 'engineer+', 'server/routes/imports.mjs'),
+  endpoint('GET', '/api/projects/:id/evidence', 'viewer+', 'server/routes/evidence.mjs'),
+  endpoint('POST', '/api/projects/:id/evidence', 'engineer+', 'server/routes/evidence.mjs'),
   endpoint('POST', '/api/projects/:id/approval', 'reviewer+', 'server/routes/approval.mjs'),
   endpoint('GET', '/api/projects/:id/approval', 'member', 'server/routes/approval.mjs'),
   endpoint('GET', '/api/projects/:id/library/:kind', 'viewer+', 'server/routes/libraries.mjs'),
@@ -337,7 +339,7 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
   const architectureOk = ARCHITECTURE_DECISIONS.length === 10 &&
     MODULE_BOUNDARIES.length >= 5 &&
     FILE_ROUTING.length >= 8;
-  const serverApiOk = SERVER_ENDPOINTS.length >= 29 &&
+  const serverApiOk = SERVER_ENDPOINTS.length >= 31 &&
     ERROR_CODES.length === 8 &&
     AUTH_CONTRACT.projectRoles.length === 4 &&
     PERSISTENCE_CONTRACT.layers.length === 3;

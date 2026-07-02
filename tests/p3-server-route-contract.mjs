@@ -9,6 +9,7 @@ const routeFiles = [
   'server/routes/revisions.mjs',
   'server/routes/files.mjs',
   'server/routes/imports.mjs',
+  'server/routes/evidence.mjs',
   'server/routes/approval.mjs',
   'server/routes/libraries.mjs',
 ];
@@ -19,7 +20,7 @@ const planned = buildPhase3PlanAlignmentReport(buildAgentManifest()).serverApi.e
   .sort();
 
 assert.deepEqual(actual.map((row) => `${row.method} ${row.path}`).sort(), planned);
-assert.equal(actual.length, 29);
+assert.equal(actual.length, 31);
 
 console.log(JSON.stringify({
   ok: true,

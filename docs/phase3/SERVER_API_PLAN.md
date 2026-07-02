@@ -77,6 +77,15 @@ import 처리 자체는 브라우저(worker)에서 수행하고, 확정 전 후�
 | GET | `/api/projects/:id/imports/:importId` | 후보 본문 | member |
 | PATCH | `/api/projects/:id/imports/:importId` | 검토 상태 갱신 `{ status: 'confirmed'\|'rejected', resolvedCandidate? }` | engineer+ |
 
+### Evidence register (`server/routes/evidence.mjs`)
+
+Phase 3 field, engineering, and owner evidence is stored at project scope so AI agents can inspect whether real drawing, point-cloud, engineering, and launch sign-off records have been attached.
+
+| Method | Path | Description | Permission |
+| --- | --- | --- | --- |
+| GET | `/api/projects/:id/evidence` | list evidence rows plus `getPhase3EvidenceRegister` summary | viewer+ |
+| POST | `/api/projects/:id/evidence` | append evidence row `{ id, type?, accepted?, status?, reportPath? }` | engineer+ |
+
 ### Workflow — 승인 (P3-M13, T61)
 
 | Method | Path | 설명 | 권한 |
@@ -120,6 +129,8 @@ data/
         <fileId>.<ext>
       imports/
         <importId>.json
+      evidence/
+        index.json               # Phase 3 field/engineering/owner evidence rows
 ```
 
 쓰기는 write-to-temp + rename으로 원자성 확보. `users.json`과 `index.json`은 프로세스 내 mutex(Promise chain)로 직렬화. 동시성 요구가 커지면 SQLite 승격 (ARCHITECTURE D5).

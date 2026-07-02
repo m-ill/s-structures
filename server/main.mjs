@@ -12,6 +12,7 @@ import { registerFileRoutes } from './routes/files.mjs';
 import { registerImportRoutes } from './routes/imports.mjs';
 import { registerApprovalRoutes } from './routes/approval.mjs';
 import { registerLibraryRoutes } from './routes/libraries.mjs';
+import { registerEvidenceRoutes } from './routes/evidence.mjs';
 import { SERVER_API_VERSION } from '../src/platform/platformVersion.js';
 
 const STATIC_TYPES = {
@@ -47,6 +48,7 @@ export function createApp(overrides = {}) {
   registerImportRoutes(router, ctx);
   registerApprovalRoutes(router, ctx);
   registerLibraryRoutes(router, ctx);
+  registerEvidenceRoutes(router, ctx);
 
   const server = http.createServer((req, res) => handleRequest(req, res, router, config));
   return { server, config, ctx };

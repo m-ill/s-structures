@@ -77,7 +77,7 @@ assert.equal(report.requirements.ok, true);
 assert.equal(report.architecture.decisions.length, 10);
 assert.equal(report.architecture.ok, true);
 assert.equal(report.serverApi.ok, true);
-assert.equal(report.serverApi.endpoints.length, 29);
+assert.equal(report.serverApi.endpoints.length, 31);
 assert.deepEqual(report.serverApi.errorEnvelope.codes, ['UNAUTHORIZED', 'FORBIDDEN', 'NOT_FOUND', 'VALIDATION', 'CONFLICT', 'PAYLOAD_TOO_LARGE', 'RATE_LIMITED', 'INTERNAL']);
 assert.equal(report.serverApi.auth.password.hash, 'node:crypto.scrypt');
 assert.equal(report.serverApi.auth.token.signature, 'HMAC-SHA256');
@@ -87,6 +87,7 @@ assert.equal(report.serverApi.persistence.conflictRule, 'last-write-wins-with-li
 assert.ok(report.serverApi.endpoints.find((row) => row.method === 'POST' && row.path === '/api/projects/:id/revisions').permission === 'engineer+');
 assert.ok(report.serverApi.endpoints.find((row) => row.method === 'POST' && row.path === '/api/projects/:id/approval').permission === 'reviewer+');
 assert.ok(report.serverApi.endpoints.find((row) => row.method === 'PUT' && row.path === '/api/projects/:id/library/:kind/:itemId').permission === 'engineer+');
+assert.ok(report.serverApi.endpoints.find((row) => row.method === 'POST' && row.path === '/api/projects/:id/evidence').permission === 'engineer+');
 assert.equal(report.frontend.ok, true);
 assert.equal(report.frontend.routes.length, 7);
 assert.ok(report.frontend.routes.includes('#/p/:id/import/:jobId'));

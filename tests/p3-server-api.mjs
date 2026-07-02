@@ -117,6 +117,31 @@ try {
   const traversal = await app.api('GET', `/api/projects/${projectId}/files/../../secret`, { token });
   assert.equal(traversal.status, 404);
 
+  // Phase 3 evidence register: project-scoped field and owner evidence rows
+  const emptyEvidence = await app.api('GET', `/api/projects/${projectId}/evidence`, { token });
+  assert.equal(emptyEvidence.status, 200);
+  assert.equal(emptyEvidence.data.data.register.summary.acceptedCount, 0);
+  assert.ok(emptyEvidence.data.data.register.summary.missing.includes('real-office-dxf-fixtures'));
+
+  const evidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
+    token,
+    body: { evidence: { id: 'real-office-dxf-fixtures', accepted: true, fileId, reportPath: 'reports/import-validation/dxf.md' } },
+  });
+  assert.equal(evidenceWrite.status, 200, JSON.stringify(evidenceWrite.data));
+  assert.equal(evidenceWrite.data.data.evidence.accepted, true);
+  assert.equal(evidenceWrite.data.data.register.summary.acceptedCount, 1);
+
+  const evidenceList = await app.api('GET', `/api/projects/${projectId}/evidence`, { token: engineerLogin.token });
+  assert.equal(evidenceList.status, 200);
+  assert.equal(evidenceList.data.data.evidence.length, 1);
+  assert.equal(evidenceList.data.data.register.rows.find((row) => row.id === 'real-office-dxf-fixtures').status, 'ACCEPTED');
+
+  const reviewerTriesEvidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
+    token: engineerLogin.token,
+    body: { evidence: { id: 'security-signoff', accepted: true } },
+  });
+  assert.equal(reviewerTriesEvidenceWrite.status, 403);
+
   // project library: M10 material/section records through server store
   const putMaterial = await app.api('PUT', `/api/projects/${projectId}/library/materials/SS400`, {
     token,
