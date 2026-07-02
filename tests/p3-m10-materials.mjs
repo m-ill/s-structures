@@ -183,6 +183,16 @@ assert.equal(getLibraryItem(editModel, { kind: 'sections', id: 'AGENT_H', versio
 const immutable = upsertMaterial(editModel, { id: 'AGENT_STEEL', version: 1, E: 210000, G: 80000, Fy: 300, Fu: 450 });
 assert.equal(immutable.ok, false);
 assert.ok(immutable.errors.includes('immutable-version'));
+const immutableWithReplace = upsertMaterial(
+  editModel,
+  { id: 'AGENT_STEEL', version: 1, E: 210000, G: 80000, Fy: 300, Fu: 450 },
+  { replace: true },
+);
+assert.equal(immutableWithReplace.ok, false);
+assert.ok(immutableWithReplace.errors.includes('immutable-version'));
+const identicalReplay = upsertMaterial(editModel, { id: 'AGENT_STEEL', version: 1, E: 205000, G: 79000, Fy: 275, Fu: 410 });
+assert.equal(identicalReplay.changed, true);
+assert.equal(identicalReplay.item.version, 1);
 
 const target = { model: () => editModel, reanalysisCount: 0, reanalyze() { this.reanalysisCount += 1; } };
 const agent = createIndexAgentApi(target, null, { analyzeForIndex: () => ({ ok: true, combos: [], byCombo: {}, envelope: {} }) });

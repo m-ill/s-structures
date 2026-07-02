@@ -49,6 +49,8 @@ The material library report also exposes nonlinear backbone metadata so the late
 
 2026-07-03 P3-M10 rebuild review update: `buildMaterialLibraryReport()` now includes a `review` block with registry readiness, calculation trace readiness, nonlinear backbone readiness, section property review state, policy-review requirement, blockers, and an AI decision. This gives agents a stable branch point before using a project library in analysis or reports.
 
+2026-07-03 append-only hardening: `upsertMaterial()` and `upsertSection()` now reject changed records for an existing `id@version` even if a caller supplies `replace: true`. Identical replay remains allowed, but any changed record must create a new version so existing model references stay immutable for reports and AI-agent workflows.
+
 ## Current Test Gate
 
 P3-M10 is covered by:

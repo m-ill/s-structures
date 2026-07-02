@@ -39,7 +39,7 @@ function upsert(model, key, record, options) {
   const item = { ...record, source: { scope: options.scope || 'project', ...(record.source || {}) } };
   item.version = Number(item.version || nextVersion(model[key], item.id));
   const existing = model[key].find((row) => row.id === item.id && Number(row.version || 1) === item.version);
-  if (existing && JSON.stringify(existing) !== JSON.stringify(item) && options.replace !== true) {
+  if (existing && JSON.stringify(existing) !== JSON.stringify(item)) {
     return fail(key.slice(0, -1), ['immutable-version']);
   }
   if (existing) Object.assign(existing, item);
