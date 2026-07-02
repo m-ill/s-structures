@@ -55,6 +55,8 @@ Current status is preliminary. M18 adds traceable steel, connection, base-plate,
 
 2026-07-02 registry update: Steel, connection, base-plate, and foundation formula traces now resolve to registered standard/clause/title metadata. The integrated gate records `unregisteredFormulaCount`, which must stay zero for the current trace set.
 
+2026-07-03 M18 input hardening: Bolt, base-plate, spread-footing, and pile design traces now expose `inputReview` objects. Invalid bolt capacities, base-plate bearing input, negative vertical reactions, invalid footing area, or invalid pile capacity force `NG` status with registered `KDS-CONN-INPUT-V1` or `KDS-FOUND-INPUT-V1` evidence instead of producing false OK rows from fallback capacities.
+
 2026-07-02 contract review update: P3-M18 steel, connection, bolt, weld, base-plate, and foundation rows now expose ticket-specific contracts and compact summaries. The integrated detailed-design report exposes a top-level P3-M18 contract, and `designGate.summary` reports agent-readiness, complete ticket coverage, issue count, formula count, unregistered formula count, serviceability hook, and module status counts.
 
 2026-07-02 ticket coverage review update: `designGate` now exposes a formal P3-M18 contract, feature-to-ticket map, and `summary.ticketCoverage`/`ticketCoverage` rows for P3-T91 to P3-T95. Coverage rows include evidence strings for steel, connection, foundation, formula/issue linking, and serviceability hooks so reports and AI agents can use the same gate pattern as M17.

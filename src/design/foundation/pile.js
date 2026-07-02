@@ -1,8 +1,11 @@
 export const PILE_FOUNDATION_VERSION = 'p3-m18-pile-foundation';
 
 export function designPileGroup(row = {}, options = {}) {
-  const vertical = Number(row.reaction?.vertical) || 0;
-  const pileCapacity = Number(options.pileCapacity || 600);
+  const verticalInput = row.reaction?.vertical ?? 0;
+  const capacityInput = options.pileCapacity ?? 600;
+  const inputReview = reviewPileInputs({ vertical: verticalInput, pileCapacity: capacityInput });
+  const vertical = Math.max(0, Number(verticalInput) || 0);
+  const pileCapacity = positive(capacityInput, 600);
   const count = Math.max(2, Math.ceil(vertical / Math.max(1, pileCapacity)));
   const ratio = vertical / Math.max(1, count * pileCapacity);
   return {
@@ -16,8 +19,26 @@ export function designPileGroup(row = {}, options = {}) {
     pileCapacity,
     count,
     ratio,
-    status: ratio > 1 ? 'NG' : ratio > 0.8 ? 'WARN' : 'OK',
+    status: inputReview.status === 'review-required' ? 'NG' : ratio > 1 ? 'NG' : ratio > 0.8 ? 'WARN' : 'OK',
     formulaId: 'KDS-FOUND-PILE-V1',
+    inputReview,
     summary: { vertical, pileCapacity, count },
   };
+}
+
+function reviewPileInputs(input = {}) {
+  const missing = [];
+  if (!(Number(input.vertical) >= 0)) missing.push('pile-vertical-reaction');
+  if (!(Number(input.pileCapacity) > 0)) missing.push('pile-capacity');
+  return {
+    status: missing.length ? 'review-required' : 'available',
+    missing,
+    formulaId: 'KDS-FOUND-INPUT-V1',
+    agentDecision: missing.length ? 'review-pile-inputs' : 'pile-inputs-ready',
+  };
+}
+
+function positive(value, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number : fallback;
 }

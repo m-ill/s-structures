@@ -9,8 +9,11 @@ import {
   buildSteelDetailedDesignReport,
   createCantileverTipLoad,
   createTwoStoryElasticFrameModel,
+  designBasePlate,
   designBoltGroup,
   designFilletWeld,
+  designPileGroup,
+  designSpreadFooting,
   DESIGN_FORMULA_REGISTRY_VERSION,
   P3_DETAILED_DESIGN_GATE_VERSION,
   P3_DETAILED_DESIGN_REPORT_VERSION,
@@ -66,6 +69,26 @@ assert.ok(bolt.requiredCount >= 2);
 assert.equal(bolt.contract.milestone, 'P3-M18');
 assert.ok(weld.requiredLength >= 100);
 assert.equal(weld.contract.milestone, 'P3-M18');
+const invalidBolt = designBoltGroup({ memberId: 'B-BAD', demands: { shearY: 90 } }, { boltShearCapacity: -1, boltTensionCapacity: 0 });
+assert.equal(invalidBolt.status, 'NG');
+assert.equal(invalidBolt.inputReview.status, 'review-required');
+assert.ok(invalidBolt.inputReview.missing.includes('bolt-shear-capacity'));
+assert.equal(invalidBolt.inputReview.formulaId, 'KDS-CONN-INPUT-V1');
+const invalidBasePlate = designBasePlate({ nodeId: 'BP-BAD', reaction: { vertical: -10 }, allowableBearing: 0 });
+assert.equal(invalidBasePlate.status, 'NG');
+assert.equal(invalidBasePlate.inputReview.status, 'review-required');
+assert.ok(invalidBasePlate.inputReview.missing.includes('base-plate-vertical-reaction'));
+assert.equal(invalidBasePlate.inputReview.formulaId, 'KDS-CONN-INPUT-V1');
+const invalidFooting = designSpreadFooting({ nodeId: 'F-BAD', reaction: { vertical: -10 }, requiredArea: 0 });
+assert.equal(invalidFooting.status, 'NG');
+assert.equal(invalidFooting.rebarArea, 0);
+assert.ok(invalidFooting.inputReview.missing.includes('footing-vertical-reaction'));
+assert.equal(invalidFooting.inputReview.formulaId, 'KDS-FOUND-INPUT-V1');
+const invalidPile = designPileGroup({ nodeId: 'P-BAD', reaction: { vertical: -10 } }, { pileCapacity: -1 });
+assert.equal(invalidPile.status, 'NG');
+assert.equal(invalidPile.ratio, 0);
+assert.ok(invalidPile.inputReview.missing.includes('pile-vertical-reaction'));
+assert.equal(invalidPile.inputReview.formulaId, 'KDS-FOUND-INPUT-V1');
 
 const integrated = buildP3DetailedDesignReport(frame, frameAnalysis);
 assert.equal(integrated.version, P3_DETAILED_DESIGN_REPORT_VERSION);

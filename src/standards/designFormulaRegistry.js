@@ -27,10 +27,12 @@ const FORMULAS = {
   'KDS-CONN-BOLT-V1': ['KDS 14 31', 'CONN-BOLT', 'Bolt group shear and tension'],
   'KDS-CONN-WELD-V1': ['KDS 14 31', 'CONN-WELD', 'Fillet weld sizing'],
   'KDS-CONN-BASEPLATE-V1': ['KDS 14 31', 'CONN-BASEPLATE', 'Base plate bearing and anchor trace'],
+  'KDS-CONN-INPUT-V1': ['KDS 14 31', 'CONN-INPUT', 'Connection design input sanity review'],
   'KDS-FOUND-SPREAD-V1': ['KDS 11 50', 'FOUND-SPREAD', 'Spread footing sizing'],
   'KDS-FOUND-COMBINED-V1': ['KDS 11 50', 'FOUND-COMBINED', 'Combined footing trace'],
   'KDS-FOUND-MAT-V1': ['KDS 11 50', 'FOUND-MAT', 'Mat foundation pressure trace'],
   'KDS-FOUND-PILE-V1': ['KDS 11 50', 'FOUND-PILE', 'Pile group capacity trace'],
+  'KDS-FOUND-INPUT-V1': ['KDS 11 50', 'FOUND-INPUT', 'Foundation design input sanity review'],
 };
 
 export function resolveDesignFormula(formulaId) {
