@@ -81,15 +81,25 @@ function buildExtractionRows(benchmarks) {
 }
 
 function buildRealScanRows(evidence) {
-  return evidence.map((item) => ({
-    id: item.id || item.fileId || null,
-    status: item.status || (item.validationStatus === 'checked' ? 'checked' : 'pending-owner-review'),
-    fileId: item.fileId || null,
-    format: item.format || null,
-    ownerProvided: item.ownerProvided === true,
-    beamWallValidation: item.beamWallValidation === true,
-    reviewReportPath: item.reviewReportPath || null,
-  }));
+  return evidence.map((item) => {
+    const missing = [];
+    if (!item.fileId) missing.push('file-id');
+    if (item.ownerProvided !== true) missing.push('owner-provided-file');
+    if (item.beamWallValidation !== true) missing.push('beam-wall-validation');
+    if (!item.reviewReportPath) missing.push('review-report');
+    const rawStatus = item.status || (item.validationStatus === 'checked' ? 'checked' : 'pending-owner-review');
+    return {
+      id: item.id || item.fileId || null,
+      status: rawStatus === 'checked' && missing.length === 0 ? 'checked' : 'pending-owner-review',
+      rawStatus,
+      fileId: item.fileId || null,
+      format: item.format || null,
+      ownerProvided: item.ownerProvided === true,
+      beamWallValidation: item.beamWallValidation === true,
+      reviewReportPath: item.reviewReportPath || null,
+      missing,
+    };
+  });
 }
 
 function buildPerformanceRows(evidence) {

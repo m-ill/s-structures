@@ -66,8 +66,36 @@ assert.equal(review.loadRows[0].workerPipelineReady, true);
 assert.equal(review.extractionRows[0].status, 'synthetic-validated');
 assert.equal(review.extractionRows[0].realScanGate, 'pass');
 assert.equal(review.realScanRows[0].status, 'checked');
+assert.deepEqual(review.realScanRows[0].missing, []);
 assert.equal(review.performanceRows[0].status, 'recorded');
 assert.ok(review.requiredEvidence.includes('beam and wall validation without synthetic ground-truth assistance'));
+
+const weakRealScan = buildPhase3PointCloudValidationReview({
+  importSummaries: [{ id: 'mini-xyz', ...importSummary }],
+  extractionBenchmarks: [{ id: 'regular-office-synthetic', ...benchmark }],
+  realScanEvidence: [{
+    id: 'owner-scan-without-beam-wall-review',
+    fileId: 'owner-field-scan.xyz',
+    format: 'XYZ',
+    status: 'checked',
+    ownerProvided: true,
+  }],
+  performanceEvidence: [{
+    id: 'large-file-budget-placeholder',
+    recorded: true,
+    pointCount: 1000000,
+    parseMs: 1200,
+    preprocessMs: 2800,
+    viewerFps: 30,
+    budget: 'pending-owner-hardware-review',
+  }],
+});
+assert.equal(weakRealScan.groups.find((row) => row.id === 'real-scan-validation').ok, false);
+assert.equal(weakRealScan.realScanRows[0].rawStatus, 'checked');
+assert.equal(weakRealScan.realScanRows[0].status, 'pending-owner-review');
+assert.ok(weakRealScan.realScanRows[0].missing.includes('beam-wall-validation'));
+assert.ok(weakRealScan.realScanRows[0].missing.includes('review-report'));
+assert.ok(weakRealScan.summary.missing.includes('real-scan-validation'));
 
 const empty = buildPhase3PointCloudValidationReview();
 assert.equal(empty.summary.ok, false);

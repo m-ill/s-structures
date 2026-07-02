@@ -56,3 +56,5 @@ P3-M9 is covered by:
 P3-M9 remains preliminary. Beam detection still uses synthetic ground-truth assistance in the current benchmark path, wall extraction is a review candidate trace rather than production real-scan plane grouping, and real field point-cloud validation is pending.
 
 2026-07-03 practice-validation update: `getPhase3PointCloudValidationReview` now records synthetic benchmark rows separately from owner real-scan validation rows. This keeps story/column/beam benchmark success useful for regression while preventing AI agents from treating synthetic-assisted beam/wall extraction as production field-scan proof.
+
+2026-07-03 real-scan evidence hardening: real-scan validation rows now require a file id, owner-provided file flag, beam/wall validation flag, and review report path before the `real-scan-validation` group can pass. A row with only `status: checked` remains `pending-owner-review`, so AI agents cannot treat a bare checked flag as field-scan proof.
