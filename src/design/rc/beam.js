@@ -16,10 +16,24 @@ export function detailRcBeam(check = {}, options = {}) {
   const status = worstStatus([check.status, serviceRatio.status, torsion.status, spacingCheck(bottom, widthMm).status]);
   return {
     version: RC_BEAM_DETAIL_VERSION,
+    contract: {
+      milestone: 'P3-M17',
+      tickets: ['P3-T87'],
+      role: 'beam',
+      scope: 'RC beam flexure, shear, torsion warning, serviceability, anchorage, splice, and bar schedule trace.',
+    },
     memberId: check.memberId,
     role: 'beam',
     status,
     utilization: check.utilization || 0,
+    summary: {
+      flexureStatus: check.status || 'OK',
+      shearStatus: stirrup.status || 'OK',
+      torsionStatus: torsion.status,
+      serviceabilityStatus: serviceRatio.status,
+      bottomBarLabel: bottom.label,
+      stirrupLabel: stirrup.label,
+    },
     flexure: { requiredAs: req.AsZ || 0, top, bottom, formulaId: 'KDS-RC-BEAM-FLEXURE-V1' },
     shear: { requiredAvs: Math.max(req.AvsZ || 0, req.AvsY || 0), stirrup, formulaId: 'KDS-RC-BEAM-SHEAR-V1' },
     torsion,

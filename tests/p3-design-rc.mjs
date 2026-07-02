@@ -29,8 +29,10 @@ const beamReport = buildRcDetailedDesignReport(beam, beamAnalysis, {
   walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 900 }],
 });
 assert.equal(beamReport.version, RC_DETAILED_DESIGN_VERSION);
+assert.equal(beamReport.contract.milestone, 'P3-M17');
 assert.equal(beamReport.rcDesignGate.version, RC_DESIGN_GATE_VERSION);
 assert.deepEqual(beamReport.rcDesignGate.tickets, ['P3-T87', 'P3-T88', 'P3-T89', 'P3-T90']);
+assert.equal(beamReport.rcDesignGate.summary.readyForAgentReview, true);
 assert.equal(beamReport.schedules.beams.length, 1);
 assert.equal(beamReport.schedules.slabs.length, 1);
 assert.equal(beamReport.schedules.walls.length, 1);
@@ -39,9 +41,14 @@ assert.ok(beamReport.issueRows.some((row) => row.moduleId === 'rc' && row.itemId
 assert.ok(beamReport.issueRows.every((row) => row.formulaIds.length > 0));
 assert.deepEqual(beamReport.rcDesignGate.missingRoles, ['column']);
 assert.equal(beamReport.rcDesignGate.completeRoleCoverage, false);
+assert.equal(beamReport.rcDesignGate.summary.completeRoleCoverage, false);
 assert.equal(beamReport.rcDesignGate.coverage.find((row) => row.role === 'wall').ticket, 'P3-T89');
 assert.ok(beamReport.formulaTrace.some((item) => item.formulaId === 'KDS-RC-BEAM-FLEXURE-V1'));
 assert.ok(beamReport.formulaTrace.every((item) => item.standard && item.clause && item.title));
+assert.ok(beamReport.schedules.beams[0].contract.tickets.includes('P3-T87'));
+assert.equal(beamReport.schedules.beams[0].summary.serviceabilityStatus, 'OK');
+assert.ok(beamReport.schedules.walls[0].contract.tickets.includes('P3-T89'));
+assert.ok(beamReport.schedules.slabs[0].contract.tickets.includes('P3-T90'));
 assert.match(beamReport.schedules.beams[0].flexure.bottom.label, /^\d+-D/);
 assert.equal(beamReport.summary.itemCount, 3);
 
@@ -57,8 +64,10 @@ column.designParams.rc.defaultColumnRebarRatio = 0.018;
 const columnAnalysis = analyzeModel(column);
 const columnReport = buildRcDetailedDesignReport(column, columnAnalysis);
 assert.equal(columnReport.schedules.columns.length, 1);
+assert.ok(columnReport.schedules.columns[0].contract.tickets.includes('P3-T88'));
 assert.ok(columnReport.rcDesignGate.missingRoles.includes('beam'));
 assert.ok(columnReport.schedules.columns[0].pm.curve.points.length >= 4);
+assert.equal(columnReport.schedules.columns[0].summary.pmPointCount, columnReport.schedules.columns[0].pm.curve.points.length);
 assert.ok(columnReport.schedules.columns[0].ties.spacing <= 150);
 
 const pm = buildRcPmCurve({ b: 0.3, h: 0.6, Ag: 0.18, AsTotal: 2400 }, { fc: 27, fy: 400 });

@@ -19,6 +19,8 @@ Current status is preliminary. The module produces traceable schedules and regis
 
 2026-07-02 review update: `rcDesignGate` now exposes role coverage rows, `missingRoles`, and `completeRoleCoverage`. RC issue rows also carry formula IDs, so AI agents can tell whether beam, column, wall, and slab checks are present and can jump from WARN/NG rows to the governing formula trace.
 
+2026-07-02 contract review update: P3-M17 RC beam, column, wall, and slab rows now expose ticket-specific contracts and compact summaries. The RC detailed-design report exposes a top-level P3-M17 contract, and `rcDesignGate.summary` now reports agent-readiness, role coverage, issue count, formula count, and role-by-role status counts.
+
 ## P3-M18 Steel / Connection / Foundation Detailed Design
 
 Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.

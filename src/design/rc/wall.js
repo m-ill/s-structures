@@ -19,9 +19,24 @@ export function detailRcWall(input = {}, options = {}) {
   const boundary = { required: axialRatio(input, pmCurve) > 0.2 || shearRatio > 0.6, formulaId: 'KDS-RC-WALL-BOUNDARY-V1' };
   return {
     version: RC_WALL_DETAIL_VERSION,
+    contract: {
+      milestone: 'P3-M17',
+      tickets: ['P3-T89'],
+      role: 'wall',
+      scope: 'RC wall pier PM, in-plane shear, reinforcement ratio, boundary-element warning, and schedule trace.',
+    },
     wallId: id,
     role: 'wall',
     status: shearRatio > 1 ? 'NG' : boundary.required ? 'WARN' : 'OK',
+    summary: {
+      pmPointCount: pmCurve.points.length,
+      shearRatio: round(shearRatio),
+      boundaryRequired: boundary.required,
+      verticalRatio,
+      horizontalRatio,
+      verticalLabel: vertical.label,
+      horizontalLabel: horizontal.label,
+    },
     pm: { curve: pmCurve, formulaId: 'KDS-RC-WALL-PM-V1' },
     shear: { ratio: round(shearRatio), horizontal, formulaId: 'KDS-RC-WALL-SHEAR-V1' },
     reinforcement: { verticalRatio, horizontalRatio, vertical, horizontal },

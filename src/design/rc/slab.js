@@ -15,10 +15,23 @@ export function detailRcSlab(input = {}, options = {}) {
   const punching = punchingCheck(input, t);
   return {
     version: RC_SLAB_DETAIL_VERSION,
+    contract: {
+      milestone: 'P3-M17',
+      tickets: ['P3-T90'],
+      role: 'slab',
+      scope: 'RC slab one-way/two-way mode, flexural reinforcement, punching shear, and schedule trace.',
+    },
     slabId: id,
     role: 'slab',
     status: punching.status,
     mode,
+    summary: {
+      mode,
+      punchingStatus: punching.status,
+      punchingRatio: punching.ratio,
+      flexureMoment: round(moment),
+      mainBarLabel: main.label,
+    },
     spans: { lx, ly, thickness: t },
     flexure: { moment: round(moment), requiredAs: round(asReq), main, formulaId: `KDS-RC-SLAB-${mode.toUpperCase()}-V1` },
     punching,

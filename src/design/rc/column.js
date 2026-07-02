@@ -16,10 +16,23 @@ export function detailRcColumn(check = {}, options = {}) {
   const status = worstStatus([check.status, slenderness.status, shear.ratio > 1 ? 'NG' : 'OK']);
   return {
     version: RC_COLUMN_DETAIL_VERSION,
+    contract: {
+      milestone: 'P3-M17',
+      tickets: ['P3-T88'],
+      role: 'column',
+      scope: 'RC column PM curve, slenderness, shear/tie reinforcement, splice, and schedule trace.',
+    },
     memberId: check.memberId,
     role: 'column',
     status,
     utilization: check.utilization || 0,
+    summary: {
+      pmPointCount: pmCurve.points.length,
+      slendernessStatus: slenderness.status,
+      shearStatus: shear.ratio > 1 ? 'NG' : 'OK',
+      longitudinalLabel: longitudinal.label,
+      tieLabel: ties.label,
+    },
     pm: { curve: pmCurve, governing: check.governingCheck, formulaId: 'KDS-RC-COLUMN-PM-V1' },
     slenderness,
     longitudinal,

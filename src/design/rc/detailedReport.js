@@ -17,6 +17,12 @@ export function buildRcDetailedDesignReport(model, analysis, options = {}) {
   const formulaTrace = rows.map((row) => collectFormula(row)).flat();
   return {
     version: RC_DETAILED_DESIGN_VERSION,
+    contract: {
+      milestone: 'P3-M17',
+      tickets: ['P3-T87', 'P3-T88', 'P3-T89', 'P3-T90'],
+      scope: 'Traceable preliminary RC detailed-design schedules for beam, column, wall, and slab checks.',
+      reportUse: 'Rows expose formula IDs and issue rows for integrated calculation packages and AI-agent review.',
+    },
     modelName: model?.meta?.name || null,
     summary: summarize(rows),
     rcDesignGate: buildRcDesignGate({ beams, columns, walls, slabs, formulaTrace }),
@@ -46,6 +52,14 @@ export function buildRcDesignGate(report = {}) {
     version: RC_DESIGN_GATE_VERSION,
     milestone: 'P3-M17',
     tickets: ['P3-T87', 'P3-T88', 'P3-T89', 'P3-T90'],
+    summary: {
+      readyForAgentReview: true,
+      completeRoleCoverage: missingRoles.length === 0,
+      missingRoles,
+      issueCount: rows.filter((row) => row.status && row.status !== 'OK').length,
+      formulaCount: formulas.length,
+      roleStatuses: summarizeRoleStatuses(rows),
+    },
     schedules: {
       beams: schedules.beams?.length || 0,
       columns: schedules.columns?.length || 0,
@@ -94,6 +108,20 @@ function buildIssueRows(rows) {
     formulaIds: collectFormula(row).map((item) => item.formulaId),
     action: `RC ${row.role} item requires engineer review.`,
   }));
+}
+
+function summarizeRoleStatuses(rows) {
+  const roles = ['beam', 'column', 'wall', 'slab'];
+  return roles.map((role) => {
+    const roleRows = rows.filter((row) => row.role === role);
+    return {
+      role,
+      count: roleRows.length,
+      ok: roleRows.filter((row) => row.status === 'OK').length,
+      warn: roleRows.filter((row) => row.status === 'WARN').length,
+      ng: roleRows.filter((row) => row.status === 'NG').length,
+    };
+  });
 }
 
 function buildRoleCoverage(schedules) {
