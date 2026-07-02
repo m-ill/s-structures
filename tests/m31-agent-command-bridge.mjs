@@ -101,6 +101,10 @@ response = sendCommand({ id: 'elastic-review', method: 'getPhase3ElasticMileston
 assert.equal(response.ok, true);
 assert.equal(response.data.summary.agentDecision, 'elastic-completeness-engineer-review-required');
 
+response = sendCommand({ id: 'design-review', method: 'getPhase3DesignMilestoneReview' });
+assert.equal(response.ok, true);
+assert.equal(response.data.summary.agentDecision, 'detailed-design-engineer-review-required');
+
 response = sendCommand({ id: 'nonlinear-review', method: 'getPhase3NonlinearMilestoneReview' });
 assert.equal(response.ok, true);
 assert.equal(response.data.summary.agentDecision, 'nonlinear-engine-review-required');
@@ -123,7 +127,7 @@ response = sendMessageCommand({
   method: 'getScreenState',
 });
 assert.equal(response.ok, true);
-assert.equal(response.data.agentCommandBridge.commandCount, 15);
+assert.equal(response.data.agentCommandBridge.commandCount, 16);
 assert.equal(target.lastPostedMessage.type, AGENT_RESPONSE_MESSAGE_TYPE);
 assert.equal(target.lastPostedMessage.response.id, 'screen-message');
 
@@ -137,10 +141,11 @@ assert.equal(target.location.hash, '');
 assert.equal(target.history.replacedUrl, '/index.html');
 
 const state = target.SStructuresAgentCommandBridge.getState();
-assert.equal(state.commandCount, 16);
+assert.equal(state.commandCount, 17);
 assert.equal(state.errorCount, 1);
 assert.ok(state.availableMethods.includes('getPhase3ImportMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3ElasticMilestoneReview'));
+assert.ok(state.availableMethods.includes('getPhase3DesignMilestoneReview'));
 assert.ok(state.availableMethods.includes('getPhase3NonlinearMilestoneReview'));
 assert.ok(counters.reanalyze >= 6);
 

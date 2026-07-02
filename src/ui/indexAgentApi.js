@@ -23,6 +23,7 @@ import {
   buildP3DetailedDesignReport,
   buildP3IntegratedResults,
   buildLaunchReadinessReport,
+  buildPhase3DesignMilestoneReview,
   buildPhase3ElasticMilestoneReview,
   buildPhase3ImportMilestoneReview,
   buildPhase3NonlinearMilestoneReview,
@@ -231,6 +232,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getPhase3NonlinearMilestoneReview() {
       return cloneJson(buildPhase3NonlinearMilestoneReview());
+    },
+    getPhase3DesignMilestoneReview() {
+      return cloneJson(buildPhase3DesignMilestoneReview());
     },
     getConnectionFoundationReport(options = {}) {
       const model = getCurrentModel(target);

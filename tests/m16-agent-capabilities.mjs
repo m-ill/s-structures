@@ -51,11 +51,13 @@ assert.ok(manifest.readApis.includes('getWallSlabEquivalentTrace'));
 assert.ok(manifest.readApis.includes('getLoadsV2Trace'));
 assert.ok(manifest.readApis.includes('getDynamicCompletenessTrace'));
 assert.ok(manifest.readApis.includes('getNonlinearAnalysisTrace'));
+assert.ok(manifest.readApis.includes('getPhase3DesignMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ElasticMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3ImportMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3NonlinearMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3LoadsV2Trace'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearAnalysisTrace'));
+assert.ok(manifest.dataContracts.includes('phase3DesignMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ElasticMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3ImportMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3NonlinearMilestoneReview'));
@@ -83,6 +85,10 @@ const nonlinearMilestoneReview = agent.getPhase3NonlinearMilestoneReview();
 assert.deepEqual(nonlinearMilestoneReview.rows.map((row) => row.milestone), ['P3-M14', 'P3-M15', 'P3-M16']);
 assert.deepEqual(nonlinearMilestoneReview.summary.benchmarkCases, ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8']);
 assert.equal(nonlinearMilestoneReview.summary.agentDecision, 'nonlinear-engine-review-required');
+const designMilestoneReview = agent.getPhase3DesignMilestoneReview();
+assert.deepEqual(designMilestoneReview.rows.map((row) => row.milestone), ['P3-M17', 'P3-M18']);
+assert.ok(designMilestoneReview.summary.designScopes.includes('foundation'));
+assert.equal(designMilestoneReview.summary.agentDecision, 'detailed-design-engineer-review-required');
 
 console.log(JSON.stringify({
   ok: true,
