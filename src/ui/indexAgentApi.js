@@ -33,6 +33,7 @@ import {
   buildPhase3PointCloudValidationReview,
   buildPhase3PracticeValidationReview,
   buildPhase3ProductizationMilestoneReview,
+  buildPhase3OwnerSignoffReview,
   buildRcDetailedDesignReport,
   buildRcDetailingReport,
   getLibraryItem as getCoreLibraryItem,
@@ -249,6 +250,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getPhase3ProductizationMilestoneReview() {
       return cloneJson(buildPhase3ProductizationMilestoneReview());
+    },
+    getPhase3OwnerSignoffReview(options = {}) {
+      return cloneJson(buildPhase3OwnerSignoffReview(options));
     },
     getPhase3PracticeValidationReview() {
       return cloneJson(buildPhase3PracticeValidationReview());

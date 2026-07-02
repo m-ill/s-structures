@@ -87,8 +87,11 @@ export function buildLaunchReadinessGate(gates = [], evidence = {}) {
     manualSignoffRequired: [
       'owner license policy',
       'deployment target',
+      'real DWG conversion',
+      'real point-cloud validation',
       'field pilot feedback',
       'backup restore rehearsal evidence',
+      'security sign-off',
     ],
   };
 }
@@ -106,9 +109,12 @@ function buildReleaseReview({ gates, evidence, coverage, ticketCoverage }) {
     ownerFinalSignoff: false,
     openSourcePolicyFinalized: false,
     deploymentTargetFinalized: false,
+    realDwgConversionAccepted: false,
+    realPointCloudValidationAccepted: false,
     pilotFeedbackOwnerAccepted: false,
     backupRestoreOwnerAccepted: false,
-    manualSignoffItemCount: 4,
+    securitySignoffAccepted: false,
+    manualSignoffItemCount: 7,
     pilotReportCount: evidence.pilotReports?.count || 0,
     missing,
     agentDecision: missing.length ? 'hold-before-release' : 'ready-for-owner-release-signoff',
@@ -125,8 +131,11 @@ function buildProductionReadinessSummary(releaseGate) {
     ownerFinalSignoff: review.ownerFinalSignoff === true,
     openSourcePolicyFinalized: review.openSourcePolicyFinalized === true,
     deploymentTargetFinalized: review.deploymentTargetFinalized === true,
+    realDwgConversionAccepted: review.realDwgConversionAccepted === true,
+    realPointCloudValidationAccepted: review.realPointCloudValidationAccepted === true,
     pilotFeedbackOwnerAccepted: review.pilotFeedbackOwnerAccepted === true,
     backupRestoreOwnerAccepted: review.backupRestoreOwnerAccepted === true,
+    securitySignoffAccepted: review.securitySignoffAccepted === true,
     agentDecision: review.productionDeploymentApproved === true ? 'release-approved' : 'wait-for-owner-release-signoff',
   };
 }

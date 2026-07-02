@@ -43,8 +43,10 @@ The gate records:
 
 ## Remaining Limits
 
-P3-M20 remains preliminary. It proves repository-level launch readiness evidence, not final production deployment sign-off. Owner review is still required for license policy, deployment target, field pilot feedback, and backup/restore rehearsal evidence.
+P3-M20 remains preliminary. It proves repository-level launch readiness evidence, not final production deployment sign-off. Owner review is still required for license policy, deployment target, real DWG conversion, real point-cloud validation, field pilot feedback, backup/restore rehearsal evidence, and security sign-off.
 
 2026-07-03 productization milestone contract update: P3-M20 now participates in `getPhase3ProductizationMilestoneReview`. The review contract maps packaging smoke, license policy record, onboarding/manual/agent contract, performance/security launch gate, and beta pilot scenarios to `releaseGate.releaseReview` while keeping `productionDeploymentApproved` owner-controlled.
 
 2026-07-03 executable review update: `node tests/p3-productization-milestone-review.mjs` now locks the P3-M19 to P3-M20 productization milestone review contract. The Phase 3 runner includes this check in the P3-M20 group so integrated-result readiness, launch readiness, gate paths, `finalStructuralSignoff`, and `productionDeploymentApproved` remain agent-readable and owner-controlled.
+
+2026-07-03 owner sign-off contract update: `getPhase3OwnerSignoffReview()` now exposes the seven manual owner checklist rows from `reports/launch-readiness/owner-signoff-checklist.md`. A clean checklist can return `owner-signoff-ready-for-final-deployment-decision`, but `productionDeploymentApproved` remains false until the owner explicitly records final deployment approval outside the automated gate.

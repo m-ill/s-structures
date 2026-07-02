@@ -11,6 +11,7 @@ import {
   buildPhase3PointCloudValidationReview,
   buildPhase3PracticeValidationReview,
   buildPhase3ProductizationMilestoneReview,
+  buildPhase3OwnerSignoffReview,
   buildAgentManifest,
   buildPhase3PlanAlignmentReport,
   PHASE3_DESIGN_MILESTONE_REVIEW_VERSION,
@@ -23,6 +24,7 @@ import {
   PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION,
   PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
   PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION,
+  PHASE3_OWNER_SIGNOFF_REVIEW_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
@@ -164,6 +166,7 @@ assert.equal(manifest.modules.phase3NonlinearMilestoneReview, PHASE3_NONLINEAR_M
 assert.equal(manifest.modules.phase3PointCloudValidationReview, PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3PracticeValidationReview, PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION);
 assert.equal(manifest.modules.phase3ProductizationMilestoneReview, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
+assert.equal(manifest.modules.phase3OwnerSignoffReview, PHASE3_OWNER_SIGNOFF_REVIEW_VERSION);
 assert.ok(manifest.readApis.includes('getPhase3PlanAlignment'));
 assert.ok(manifest.readApis.includes('getPhase3DesignMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3DrawingImportValidationReview'));
@@ -174,6 +177,7 @@ assert.ok(manifest.readApis.includes('getPhase3NonlinearMilestoneReview'));
 assert.ok(manifest.readApis.includes('getPhase3PointCloudValidationReview'));
 assert.ok(manifest.readApis.includes('getPhase3PracticeValidationReview'));
 assert.ok(manifest.readApis.includes('getPhase3ProductizationMilestoneReview'));
+assert.ok(manifest.readApis.includes('getPhase3OwnerSignoffReview'));
 assert.ok(manifest.dataContracts.includes('phase3PlanAlignment'));
 assert.ok(manifest.dataContracts.includes('phase3DesignMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3DrawingImportValidationReview'));
@@ -184,6 +188,7 @@ assert.ok(manifest.dataContracts.includes('phase3NonlinearMilestoneReview'));
 assert.ok(manifest.dataContracts.includes('phase3PointCloudValidationReview'));
 assert.ok(manifest.dataContracts.includes('phase3PracticeValidationReview'));
 assert.ok(manifest.dataContracts.includes('phase3ProductizationMilestoneReview'));
+assert.ok(manifest.dataContracts.includes('phase3OwnerSignoffReview'));
 assert.equal(manifest.qaCommands.phase3Full, 'npm.cmd run test:p3');
 assert.equal(manifest.qaCommands.phase3M6ToM20, 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20');
 
@@ -239,6 +244,14 @@ assert.equal(productizationMilestoneReview.rows.find((row) => row.milestone === 
 assert.ok(productizationMilestoneReview.summary.productizationScopes.includes('calculation-report-method-limitations'));
 assert.equal(productizationMilestoneReview.agentUse.readApi, 'getPhase3ProductizationMilestoneReview');
 
+const ownerSignoffReview = buildPhase3OwnerSignoffReview();
+assert.equal(ownerSignoffReview.version, PHASE3_OWNER_SIGNOFF_REVIEW_VERSION);
+assert.equal(ownerSignoffReview.summary.requiredCount, 7);
+assert.ok(ownerSignoffReview.summary.missing.includes('real-dwg-conversion'));
+assert.ok(ownerSignoffReview.summary.missing.includes('security-signoff'));
+assert.equal(ownerSignoffReview.summary.productionDeploymentApproved, false);
+assert.equal(ownerSignoffReview.agentUse.readApi, 'getPhase3OwnerSignoffReview');
+
 const practiceValidationReview = buildPhase3PracticeValidationReview();
 assert.equal(practiceValidationReview.version, PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION);
 assert.ok(practiceValidationReview.rows.find((row) => row.id === 'point-cloud-import').milestones.includes('P3-M9'));
@@ -267,6 +280,7 @@ assert.equal(agent.getPhase3NonlinearMilestoneReview().version, PHASE3_NONLINEAR
 assert.equal(agent.getPhase3PointCloudValidationReview().version, PHASE3_POINT_CLOUD_VALIDATION_REVIEW_VERSION);
 assert.equal(agent.getPhase3PracticeValidationReview().version, PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION);
 assert.equal(agent.getPhase3ProductizationMilestoneReview().version, PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION);
+assert.equal(agent.getPhase3OwnerSignoffReview().version, PHASE3_OWNER_SIGNOFF_REVIEW_VERSION);
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 assert.deepEqual(Object.keys(packageJson.dependencies || {}), []);

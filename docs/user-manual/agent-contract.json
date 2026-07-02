@@ -29,6 +29,7 @@
     "phase3EngineeringValidation": "engineer-review-required",
     "phase3PointCloudValidation": "owner-review-required",
     "phase3PracticeValidation": "owner-review-required",
+    "phase3OwnerSignoff": "owner-review-required",
     "phase3ProductionReadiness": "preliminary-review-required"
   },
   "globalObjects": [
@@ -55,6 +56,7 @@
     "phase3PointCloudValidation": "node tests/p3-pointcloud-validation-review.mjs",
     "phase3PracticeValidation": "node tests/p3-practice-validation-review.mjs",
     "phase3ProductizationMilestoneReview": "node tests/p3-productization-milestone-review.mjs",
+    "phase3OwnerSignoffReview": "node tests/p3-owner-signoff-review.mjs",
     "phase3ServerRoutes": "node tests/p3-server-route-contract.mjs"
   },
   "reviewGates": {
@@ -134,6 +136,7 @@
     "getPhase3PointCloudValidationReview",
     "getPhase3PracticeValidationReview",
     "getPhase3ProductizationMilestoneReview",
+    "getPhase3OwnerSignoffReview",
     "getConnectionFoundationReport",
     "getMemberDesignTraceReport",
     "getDesignDemandPackage",
@@ -281,6 +284,7 @@
     "getPhase3PlanAlignment().status OK means the implementation is aligned with the written Phase 3 plan; it does not mean production readiness.",
     "getPhase3PlanAlignment().productionReadiness.status must be checked before treating Phase 3 as final.",
     "getLaunchReadinessReport().status OK means launch evidence gates are green; getLaunchReadinessReport().productionReadiness.status must still be OWNER_REVIEW_REQUIRED until owner sign-off and deployment approval are recorded.",
+    "getPhase3OwnerSignoffReview().summary.missing must be empty before owner deployment approval can be considered.",
     "Phase 3 integrated results connect nonlinear trace, detailed design trace, result postprocessing, and workflow state.",
     "calculation packages are calculation aids and review artifacts, not certified final structural design documents.",
     "preliminary KDS-style load combinations do not replace project-specific code review.",
@@ -302,6 +306,7 @@
     "phase3PointCloudValidationReview",
     "phase3PracticeValidationReview",
     "phase3ProductizationMilestoneReview",
+    "phase3OwnerSignoffReview",
     "phase3NonlinearAssembly",
     "phase3NonlinearHingeAssignment",
     "phase3NonlinearGeometryTrace",
@@ -331,6 +336,7 @@
     "phase3PointCloudValidationReview",
     "phase3PracticeValidationReview",
     "phase3ProductizationMilestoneReview",
+    "phase3OwnerSignoffReview",
     "phase3NonlinearAssemblyTrace",
     "phase3NonlinearHingeAssignmentTrace",
     "phase3FiberMaterialBackboneTrace",
