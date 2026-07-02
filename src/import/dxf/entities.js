@@ -1,29 +1,19 @@
 export const DXF_ENTITIES_VERSION = 'p3-m6-dxf-entities';
 
 export function dxfEntitiesToGeometry(parsed) {
-  const pairs = parsed?.sections?.ENTITIES?.pairs || [];
-  const entities = collectEntities(pairs);
-  const segments = [];
-  const points = [];
-  const texts = [];
-  const ignored = {};
-
-  for (const entity of entities) {
-    if (entity.type === 'LINE') segments.push(lineSegment(entity));
-    else if (entity.type === 'LWPOLYLINE' || entity.type === 'POLYLINE') segments.push(...polylineSegments(entity));
-    else if (entity.type === 'POINT') points.push(pointEntity(entity));
-    else if (entity.type === 'TEXT' || entity.type === 'MTEXT') texts.push(textEntity(entity));
-    else ignored[entity.type] = (ignored[entity.type] || 0) + 1;
-  }
+  const blocks = collectBlocks(parsed?.sections?.BLOCKS?.pairs || []);
+  const entities = collectEntities(parsed?.sections?.ENTITIES?.pairs || []);
+  const out = collectGeometry(entities, blocks);
 
   return {
     version: DXF_ENTITIES_VERSION,
-    segments: segments.filter(Boolean),
-    points: points.filter(Boolean),
-    texts: texts.filter(Boolean),
+    segments: out.segments.filter(Boolean),
+    points: out.points.filter(Boolean),
+    texts: out.texts.filter(Boolean),
     audit: {
       counts: countByType(entities),
-      ignored,
+      ignored: out.ignored,
+      blocks: Object.keys(blocks).sort(),
     },
   };
 }
@@ -31,8 +21,28 @@ export function dxfEntitiesToGeometry(parsed) {
 function collectEntities(pairs) {
   const entities = [];
   let current = null;
-  for (const pair of pairs) {
+  let polyline = null;
+  for (let i = 0; i < pairs.length; i += 1) {
+    const pair = pairs[i];
     if (pair.code === 0) {
+      if (pair.value === 'POLYLINE') {
+        if (current) entities.push(current);
+        polyline = { type: 'POLYLINE', pairs: [], vertices: [], layer: '0' };
+        current = polyline;
+        continue;
+      }
+      if (pair.value === 'VERTEX' && polyline) {
+        const vertexPairs = [];
+        for (let j = i + 1; j < pairs.length && pairs[j].code !== 0; j += 1) vertexPairs.push(pairs[j]);
+        polyline.vertices.push({ type: 'VERTEX', pairs: vertexPairs, layer: polyline.layer });
+        continue;
+      }
+      if (pair.value === 'SEQEND' && polyline) {
+        entities.push(polyline);
+        polyline = null;
+        current = null;
+        continue;
+      }
       if (current) entities.push(current);
       current = { type: pair.value, pairs: [], layer: '0' };
     } else if (current) {
@@ -41,7 +51,55 @@ function collectEntities(pairs) {
     }
   }
   if (current) entities.push(current);
-  return entities.filter((entity) => !['SEQEND', 'VERTEX'].includes(entity.type));
+  return entities.filter((entity) => !['SEQEND', 'VERTEX', 'ENDBLK'].includes(entity.type));
+}
+
+function collectBlocks(pairs) {
+  const blocks = {};
+  let currentName = null;
+  let currentPairs = [];
+  for (let i = 0; i < pairs.length; i += 1) {
+    const pair = pairs[i];
+    if (pair.code === 0 && pair.value === 'BLOCK') {
+      currentName = null;
+      currentPairs = [];
+    } else if (pair.code === 2 && currentName == null) {
+      currentName = String(pair.value);
+    } else if (pair.code === 0 && pair.value === 'ENDBLK') {
+      if (currentName) blocks[currentName] = collectEntities(currentPairs);
+      currentName = null;
+      currentPairs = [];
+    } else if (currentName != null) {
+      currentPairs.push(pair);
+    }
+  }
+  return blocks;
+}
+
+function collectGeometry(entities, blocks = {}, transform = identityTransform()) {
+  const out = { segments: [], points: [], texts: [], ignored: {} };
+  for (const entity of entities) {
+    if (entity.type === 'LINE') out.segments.push(transformSegment(lineSegment(entity), transform));
+    else if (entity.type === 'LWPOLYLINE' || entity.type === 'POLYLINE') out.segments.push(...polylineSegments(entity).map((segment) => transformSegment(segment, transform)));
+    else if (entity.type === 'POINT') out.points.push(transformPointRecord(pointEntity(entity), transform));
+    else if (entity.type === 'TEXT' || entity.type === 'MTEXT') out.texts.push(transformTextRecord(textEntity(entity), transform));
+    else if (entity.type === 'INSERT') {
+      const name = String(valueOf(entity.pairs, 2, ''));
+      const children = blocks[name];
+      if (!children) {
+        out.ignored.INSERT = (out.ignored.INSERT || 0) + 1;
+        continue;
+      }
+      const nested = collectGeometry(children, blocks, composeTransform(transform, insertTransform(entity)));
+      out.segments.push(...nested.segments);
+      out.points.push(...nested.points);
+      out.texts.push(...nested.texts);
+      mergeIgnored(out.ignored, nested.ignored);
+    } else {
+      out.ignored[entity.type] = (out.ignored[entity.type] || 0) + 1;
+    }
+  }
+  return out;
 }
 
 function lineSegment(entity) {
@@ -63,6 +121,8 @@ function polylineSegments(entity) {
       } else if (current && pair.code === 20) current.y = Number(pair.value);
       else if (current && pair.code === 30) current.z = Number(pair.value);
     }
+  } else {
+    for (const vertex of entity.vertices || []) vertices.push(pointFromCodes(vertex.pairs, 10, 20, 30));
   }
   return vertices.slice(0, -1).map((from, index) => ({ from, to: vertices[index + 1], layer: entity.layer }));
 }
@@ -96,4 +156,63 @@ function countByType(entities) {
     out[entity.type] = (out[entity.type] || 0) + 1;
     return out;
   }, {});
+}
+
+function identityTransform() {
+  return { x: 0, y: 0, z: 0, sx: 1, sy: 1, sz: 1, rotation: 0 };
+}
+
+function insertTransform(entity) {
+  const sx = Number(valueOf(entity.pairs, 41, 1)) || 1;
+  const sy = Number(valueOf(entity.pairs, 42, sx)) || sx;
+  const sz = Number(valueOf(entity.pairs, 43, 1)) || 1;
+  return {
+    x: Number(valueOf(entity.pairs, 10, 0)) || 0,
+    y: Number(valueOf(entity.pairs, 20, 0)) || 0,
+    z: Number(valueOf(entity.pairs, 30, 0)) || 0,
+    sx,
+    sy,
+    sz,
+    rotation: Number(valueOf(entity.pairs, 50, 0)) || 0,
+  };
+}
+
+function composeTransform(parent, child) {
+  const p = applyPoint({ x: child.x, y: child.y, z: child.z }, parent);
+  return {
+    x: p.x,
+    y: p.y,
+    z: p.z,
+    sx: parent.sx * child.sx,
+    sy: parent.sy * child.sy,
+    sz: parent.sz * child.sz,
+    rotation: parent.rotation + child.rotation,
+  };
+}
+
+function transformSegment(segment, transform) {
+  return { ...segment, from: applyPoint(segment.from, transform), to: applyPoint(segment.to, transform) };
+}
+
+function transformPointRecord(record, transform) {
+  return { ...record, point: applyPoint(record.point, transform) };
+}
+
+function transformTextRecord(record, transform) {
+  return { ...record, point: applyPoint(record.point, transform) };
+}
+
+function applyPoint(point, transform) {
+  const angle = (transform.rotation || 0) * Math.PI / 180;
+  const x = point.x * transform.sx;
+  const y = point.y * transform.sy;
+  return {
+    x: transform.x + x * Math.cos(angle) - y * Math.sin(angle),
+    y: transform.y + x * Math.sin(angle) + y * Math.cos(angle),
+    z: transform.z + point.z * transform.sz,
+  };
+}
+
+function mergeIgnored(target, source) {
+  for (const [key, value] of Object.entries(source || {})) target[key] = (target[key] || 0) + value;
 }

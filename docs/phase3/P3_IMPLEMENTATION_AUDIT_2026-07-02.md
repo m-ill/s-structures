@@ -31,7 +31,7 @@ The biggest correction is that P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PL
 | P3-M3 | three-layer persistence, autosave, lineage warning | Persistence contract exists | Partial; lineage conflict should be revisited |
 | P3-M4 | app shell, routes, project browser, viewer core | App shell and viewer core tests exist | Partial shell, not full production UI |
 | P3-M5 | geometry core, classification, import candidate | Geometry cleaning/import candidate tests exist | Partial core |
-| P3-M6 | DXF import v1 | ASCII group-code parser, LINE mapping, unit scaling, layer audit, and min-frame fixture exist | Core available; richer entity coverage remains |
+| P3-M6 | DXF import v1 | ASCII group-code parser, LINE/LWPOLYLINE/POLYLINE/POINT/TEXT/INSERT+BLOCK mapping, unit scaling, layer audit, and fixtures exist | Core available; DWG and 2D plan recognition remain M7 |
 | P3-M7 | DWG/plan recognition v2 | No real DWG conversion or plan recognition found | Not implemented |
 | P3-M8 | point-cloud import pipeline | Planned shell only | Shell only |
 | P3-M9 | point-cloud extraction v2 | No extraction benchmark found | Not implemented |
