@@ -56,6 +56,19 @@ export function buildP3IntegratedResultsGate(input = {}) {
     version: P3_INTEGRATED_RESULTS_GATE_VERSION,
     milestone: 'P3-M19',
     tickets: ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62'],
+    contract: {
+      milestone: 'P3-M19',
+      tickets: ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62'],
+      scope: 'Integrated result, report, workflow, and benchmark regression gate.',
+      featureTicketMap: {
+        integratedResultPostprocessing: 'P3-T58',
+        calculationReportMethodLimitations: 'P3-T59',
+        workflowLock: 'P3-T61',
+        benchmarkRegression: 'P3-T62',
+      },
+      reviewFields: ['summary.ticketCoverage', 'ticketCoverage', 'coverage', 'workflow', 'benchmarkEvidence'],
+      agentUse: 'Read-only gate for reports and AI-agent inspection of integrated Phase 3 result readiness.',
+    },
     ok,
     resultContract: {
       postprocessingVersion: input.resultPostprocessing?.version || null,
@@ -145,6 +158,7 @@ function buildGateSummary(input) {
     designIssueRows: input.coverage.issueRows,
     workflowLocked: input.workflow.locked,
     workflowApprovalState: input.workflow.approvalState,
+    ticketCoverage: input.ticketCoverage,
   };
 }
 

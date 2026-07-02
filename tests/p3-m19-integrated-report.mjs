@@ -24,6 +24,10 @@ assert.equal(unlocked.contract.readApi, 'getP3IntegratedResults');
 assert.ok(unlocked.contract.reviewFields.includes('integratedGate.ticketCoverage'));
 assert.equal(unlocked.integratedGate.version, P3_INTEGRATED_RESULTS_GATE_VERSION);
 assert.deepEqual(unlocked.integratedGate.tickets, ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62']);
+assert.equal(unlocked.integratedGate.contract.milestone, 'P3-M19');
+assert.deepEqual(unlocked.integratedGate.contract.tickets, ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62']);
+assert.equal(unlocked.integratedGate.contract.featureTicketMap.integratedResultPostprocessing, 'P3-T58');
+assert.ok(unlocked.integratedGate.contract.reviewFields.includes('summary.ticketCoverage'));
 assert.equal(unlocked.integratedGate.ok, true);
 assert.equal(unlocked.integratedGate.summary.readyForReviewer, true);
 assert.equal(unlocked.integratedGate.summary.completeTicketCoverage, true);
@@ -43,6 +47,7 @@ assert.equal(unlocked.integratedGate.benchmarkEvidence.ok, true);
 assert.ok(unlocked.integratedGate.coverage.methodLimitations > 0);
 assert.equal(unlocked.integratedGate.summary.methodLimitationCount, unlocked.integratedGate.coverage.methodLimitations);
 assert.deepEqual(unlocked.integratedGate.ticketCoverage.map((row) => row.ticket), ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62']);
+assert.deepEqual(unlocked.integratedGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62']);
 assert.ok(unlocked.integratedGate.ticketCoverage.every((row) => row.covered));
 assert.ok(unlocked.integratedGate.ticketCoverage.find((row) => row.ticket === 'P3-T62').evidence.includes('geometry:OK'));
 
