@@ -9,6 +9,9 @@ export function summarizePointCloudImport(input, options = {}) {
   const layer = buildPointCloudLayerData(processed.points || [], options.view || {});
   const audit = processed.audit || {};
   const pipeline = describePointCloudPipeline();
+  const readiness = buildReadiness(audit, layer, pipeline);
+  const warnings = buildWarnings(audit, layer);
+  const review = buildReview(readiness, warnings);
   return {
     version: POINT_CLOUD_IMPORT_SUMMARY_VERSION,
     contract: buildContract(pipeline),
@@ -47,8 +50,9 @@ export function summarizePointCloudImport(input, options = {}) {
         max: layer.metadata?.zFilter?.max ?? options.view?.zMax ?? null,
       },
     },
-    readiness: buildReadiness(audit, layer, pipeline),
-    warnings: buildWarnings(audit, layer),
+    readiness,
+    review,
+    warnings,
   };
 }
 
@@ -91,4 +95,24 @@ function buildWarnings(audit, layer) {
   if (audit.originShift?.distance > 0) warnings.push('pointcloud-origin-shifted');
   if (layer.count === 0) warnings.push('pointcloud-view-filter-empty');
   return warnings;
+}
+
+function buildReview(readiness, warnings) {
+  const missing = [];
+  if (!readiness.textLoaderReady) missing.push('text-loader');
+  if (!readiness.workerPipelineReady) missing.push('worker-pipeline');
+  if (!readiness.viewerBufferReady) missing.push('viewer-buffer');
+  if (readiness.largeFilePerformance !== 'validated') missing.push('large-file-performance');
+  if (readiness.realScanValidation !== 'checked') missing.push('real-scan-validation');
+  return {
+    fixtureReady: missing.every((item) => !['text-loader', 'worker-pipeline', 'viewer-buffer'].includes(item)),
+    productionReady: false,
+    ownerReviewRequired: true,
+    missing,
+    warnings,
+    evidenceClass: readiness.realScanValidation === 'checked' ? 'field-scan' : 'compact-fixture',
+    agentDecision: missing.length
+      ? 'collect-pointcloud-field-evidence'
+      : 'pointcloud-load-ready-for-owner-review',
+  };
 }

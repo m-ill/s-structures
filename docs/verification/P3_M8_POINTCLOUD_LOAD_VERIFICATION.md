@@ -22,6 +22,7 @@ This note verifies P3-M8 against `docs/phase3/IMPORT_POINT_CLOUD_PLAN.md`.
 | Stage-level audit rows | worker audit exposes parse/normalize/downsample/outlier input, output, and dropped counts |
 | Viewer buffer metadata | viewer output exposes typed-array names, byte counts, input/filtered counts, and z-filter state |
 | Origin shift trace | normalization audit exposes `bboxSize`, `originShift`, and `pointcloud-origin-shifted` warning for large-coordinate scans |
+| Agent review decision | `summarizePointCloudImport().review` separates fixture readiness from production readiness and lists missing field evidence |
 
 ## Added Review Finding
 
@@ -35,6 +36,8 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 
 2026-07-02 origin-shift review: `normalizePointCloud()` now records `bboxSize` and `originShift`, the worker normalize stage carries the same trace, and `summarizePointCloudImport()` exposes it under `normalization`. Shifted field-coordinate scans now add `pointcloud-origin-shifted` so AI agents can distinguish a normal small fixture from a large-coordinate import that was moved near the local origin.
 
+2026-07-03 P3-M8 rebuild review update: `summarizePointCloudImport()` now includes a `review` block with `fixtureReady`, `productionReady`, `ownerReviewRequired`, `missing`, `evidenceClass`, and `agentDecision`. This gives AI agents a direct branch point: compact fixture loading can be ready for review while large-file performance and real-scan validation remain required evidence.
+
 ## Current Test Gate
 
 `tests/p3-pointcloud-load.mjs` verifies:
@@ -46,6 +49,7 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 5. Stage-level worker rows and typed viewer buffer metadata.
 6. P3-M8 contract tickets, transferable buffer readiness, performance-budget pending status, and real-scan pending status.
 7. Origin shift trace for large-coordinate point-cloud inputs.
+8. Agent review decision separating compact fixture readiness from missing field evidence.
 
 ## Remaining Limits
 

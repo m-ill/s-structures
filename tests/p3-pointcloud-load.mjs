@@ -76,6 +76,13 @@ assert.equal(summary.readiness.viewerBufferReady, true);
 assert.equal(summary.readiness.largeFilePerformance, 'pending-large-fixture');
 assert.equal(summary.readiness.realScanValidation, 'pending-owner-file');
 assert.ok(summary.readiness.pendingFormats.includes('LAS'));
+assert.equal(summary.review.fixtureReady, true);
+assert.equal(summary.review.productionReady, false);
+assert.equal(summary.review.ownerReviewRequired, true);
+assert.equal(summary.review.evidenceClass, 'compact-fixture');
+assert.equal(summary.review.agentDecision, 'collect-pointcloud-field-evidence');
+assert.ok(summary.review.missing.includes('large-file-performance'));
+assert.ok(summary.review.missing.includes('real-scan-validation'));
 assert.equal(summary.warnings.includes('pointcloud-origin-shifted'), false);
 
 const shiftedSummary = summarizePointCloudImport(shiftPointCloudText(xyz, { x: 5000, y: 7000, z: 0 }), {
@@ -89,6 +96,7 @@ assert.equal(shiftedSummary.normalization.originShift.vector.x, -5000);
 assert.equal(shiftedSummary.normalization.originShift.vector.y, -7000);
 assert.ok(shiftedSummary.normalization.originShift.distance > 8000);
 assert.ok(shiftedSummary.warnings.includes('pointcloud-origin-shifted'));
+assert.ok(shiftedSummary.review.warnings.includes('pointcloud-origin-shifted'));
 const pipeline = describePointCloudPipeline();
 assert.equal(pipeline.status, 'available-core');
 assert.equal(pipeline.performanceBudget.preprocessing.targetPoints, 10000000);
