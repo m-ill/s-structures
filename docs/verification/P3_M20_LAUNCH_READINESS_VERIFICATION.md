@@ -54,3 +54,5 @@ P3-M20 remains preliminary. It proves repository-level launch readiness evidence
 2026-07-03 final-use review update: `getLaunchReadinessReport()` now exposes `finalUseReview` and mirrors it under `productionReadiness.finalUseReview`. This links practical validation, owner sign-off, and evidence-register status directly to the launch report so AI agents do not treat a green automated launch gate as permission for final structural-office use.
 
 2026-07-03 beta-pilot file review update: G11 and P3-T67 now require named beta pilot evidence files from `pilot-01.md` through `pilot-10.md`. Count-only evidence is not enough for the launch gate, and a missing named report produces `pilot-report-files` plus ticket-coverage review holds.
+
+2026-07-03 agent-contract freshness hardening: G10 now compares not only read APIs but also manifest modules, data contracts, QA commands, and review-gate definitions against `docs/user-manual/agent-contract.json`. A stale contract with matching read APIs but missing Phase 3 launch modules now holds P3-T65 coverage for review.

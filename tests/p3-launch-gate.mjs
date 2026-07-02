@@ -147,6 +147,17 @@ assert.equal(missingPilotReportLaunch.releaseGate.ticketCoverage.find((row) => r
 assert.ok(missingPilotReportLaunch.releaseGate.releaseReview.missing.includes('pilot-report-files'));
 assert.ok(missingPilotReportLaunch.releaseGate.releaseReview.missing.includes('ticket-coverage'));
 
+const staleAgentContractLaunch = buildLaunchReadinessReport({
+  ...evidence,
+  agentContract: {
+    ...agentContract,
+    modules: agentContract.modules.filter((key) => key !== 'phase3LaunchReadinessGate'),
+  },
+});
+assert.equal(staleAgentContractLaunch.gates.find((row) => row.id === 'G10').status, 'REVIEW');
+assert.equal(staleAgentContractLaunch.releaseGate.ticketCoverage.find((row) => row.ticket === 'P3-T65').covered, false);
+assert.ok(staleAgentContractLaunch.releaseGate.releaseReview.missing.includes('ticket-coverage'));
+
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => analysis });
 const runtimeCapabilities = agent.getCapabilities();
 const defaultAgentLaunch = agent.getLaunchReadinessReport();

@@ -254,9 +254,24 @@ export function buildLicenseReadiness(evidence = {}) {
 
 function agentContractMatches(manifest, contract) {
   if (!manifest || !contract) return false;
-  const manifestApis = [...(manifest.readApis || [])].sort();
-  const contractApis = [...(contract.readApis || [])].sort();
-  return JSON.stringify(manifestApis) === JSON.stringify(contractApis);
+  const requiredModules = ['phase3LaunchReadiness', 'phase3LaunchReadinessGate'];
+  const requiredContracts = ['phase3LaunchReadiness', 'phase3LaunchReadinessGate', 'phase3FinalUseReview'];
+  return sameSet(manifest.readApis, contract.readApis)
+    && isSubset(contract.modules, Object.keys(manifest.modules || {}))
+    && isSubset(contract.dataContracts, manifest.dataContracts)
+    && requiredModules.every((key) => (contract.modules || []).includes(key))
+    && requiredContracts.every((key) => (contract.dataContracts || []).includes(key))
+    && JSON.stringify(manifest.qaCommands || {}) === JSON.stringify(contract.qaCommands || {})
+    && JSON.stringify(manifest.reviewGates || {}) === JSON.stringify(contract.reviewGates || {});
+}
+
+function sameSet(a = [], b = []) {
+  return JSON.stringify([...(a || [])].sort()) === JSON.stringify([...(b || [])].sort());
+}
+
+function isSubset(subset = [], superset = []) {
+  const supersetValues = new Set(superset || []);
+  return (subset || []).every((item) => supersetValues.has(item));
 }
 
 function gate(id, name, ok, evidence) {
