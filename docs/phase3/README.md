@@ -1,104 +1,114 @@
 # Phase 3 Development Hub
 
 phase: 3
-status: active planning
+status: active planning and preliminary implementation
 source: user direction 2026-07-02
 
-Phase 3의 목표는 현재의 탄성해석 실무 검토 플랫폼(Phase 2 MVP 완료)을 **출시 직전 수준의 완전한 구조해석 제품**으로 만드는 것이다.
+Phase 3의 목표는 현재의 탄성해석 MVP를 건축구조사무소에서 검토 가능한 실무 플랫폼 수준으로 확장하는 것이다. 핵심 흐름은 도면/점군 입력, 3D 모델 후보 생성, 사용자 검토, 탄성 및 비선형 해석, 상세 설계 trace, 계산서 출력, AI agent 제어이다.
 
 ## Vision
 
 ```text
-입력:  DWG/DXF 도면, 3D point cloud, 기존 JSON 모델
-  -> 자동 3D 모델링 + human-in-loop 검토 확정
-  -> 커스텀 재료/단면 라이브러리
-  -> 탄성해석 ~ 정식 비선형해석
-  -> 계산서 / 검토 workflow / 승인
-플랫폼: 로그인 + 프로젝트 저장 + 서버 + 프론트 앱
+DWG/DXF drawing, point cloud, or JSON model
+ -> import candidate
+ -> human review and model confirmation
+ -> material and section libraries
+ -> elastic and nonlinear analysis
+ -> design trace and calculation package
+ -> approval workflow and agent-readable state
 ```
 
-## Seven Pillars (rev 2 — Phase 4 폐지, 실무 완전성 흡수)
+## Pillars
 
-| Pillar | 내용 | 관련 문서 |
+| Pillar | Scope | Main documents |
 | --- | --- | --- |
-| 1. 도면 import | DXF 직접 파싱, DWG 변환 경로, 2D 평면→3D 조립 | `IMPORT_DXF_DWG_PLAN.md` |
-| 2. Point cloud import | 점군 로드/시각화, 층/기둥/보/벽 추출, 검토 확정 | `IMPORT_POINT_CLOUD_PLAN.md` |
-| 3. 재료/단면 커스텀 | versioned 라이브러리, 비선형 재료 파라미터 | `MATERIAL_SECTION_LIBRARY_PLAN.md` |
-| 4. 탄성 엔진 완전성 | 스프링/침하/트러스/offset/부분하중/온도, 벽체/쉘, 하중 v2, CQC/좌굴/THA | `ELASTIC_ENGINE_COMPLETENESS_PLAN.md` |
-| 5. 비선형 해석 정식화 | 기하/재료 비선형, NR/arc-length, PMM/fiber, NLTH | `NONLINEAR_ENGINE_PLAN.md` |
-| 6. 상세 설계 모듈 | RC(보/기둥/벽/슬래브), 철골(LTB/P-M/접합), 기초 — 일람표까지 | `DESIGN_MODULES_PLAN.md` |
-| 7. 제품 플랫폼 | 서버, 로그인, 저장, 프론트 앱, 출시 준비 | `ARCHITECTURE.md`, `SERVER_API_PLAN.md`, `AUTH_ACCOUNT_PLAN.md`, `PERSISTENCE_PLAN.md`, `FRONTEND_PLAN.md`, `QA_RELEASE_PLAN.md` |
+| Drawing import | DXF parser, DWG conversion path, 2D plan to 3D assembly | `IMPORT_DXF_DWG_PLAN.md` |
+| Point-cloud import | point loading, viewer buffer, story/member extraction | `IMPORT_POINT_CLOUD_PLAN.md` |
+| Material and section library | versioned material/section registry, nonlinear parameters | `MATERIAL_SECTION_LIBRARY_PLAN.md` |
+| Elastic engine completeness | spring, settlement, truss, offset, wall/slab, wind/seismic v2, dynamics | `ELASTIC_ENGINE_COMPLETENESS_PLAN.md` |
+| Nonlinear engine | geometry nonlinearity, hinges, control, fiber, nonlinear time history | `NONLINEAR_ENGINE_PLAN.md` |
+| Detailed design | RC, steel, connection, foundation trace modules | `DESIGN_MODULES_PLAN.md` |
+| Product hardening | server, persistence, frontend shell, packaging, QA, manuals | `ARCHITECTURE.md`, `QA_RELEASE_PLAN.md` |
 
 ## Baseline From Phase 2
 
-Phase 2 MVP(T01-T50)는 완료 상태다. Phase 3는 아래를 그대로 물려받는다.
+Phase 3 inherits these working foundations:
 
-1. schema-versioned model + migration + validation gate.
-2. 3D 선형 solver + benchmark gate + analysis audit.
-3. story/release/diaphragm 모델링, 하중 산정 trace, 조합/envelope.
-4. 계산서/practice validation/issue registry/대표건물 10종 pilot gate.
-5. agent API 계약 (`agent-contract.json`, capability manifest).
+1. Schema-versioned model and validation gate.
+2. 3D elastic frame solver, analysis audit, and benchmark tests.
+3. Story, load, combination, envelope, and report traces.
+4. Representative building scenarios and calculation-package path.
+5. Agent API contract and capability manifest.
 
-**Phase 4는 없다.** Phase 2 잔여 항목(torsion amplification, wind/seismic v2, rigid offset, snow/토압 하중, 상세 설계 모듈 T34-T40, workflow lock T44-T45)은 전부 Phase 3 마일스톤에 흡수하며, 위치는 `ROADMAP.md`의 Carry-Over 표에 명시한다. 최종 제외 항목은 각 계획 문서의 비목표 표에만 존재한다.
+Phase 3 is the final planned productization phase. Items excluded from implementation must be listed as limitations in the relevant plan, report, or manual.
 
-## Phase 3 Tracks
+## Milestone Map
 
-| Track | 목적 | 주요 폴더 |
+| Stage | Milestones | Scope |
 | --- | --- | --- |
-| P3-A Platform Backbone | 서버, 계정, 프로젝트 저장, 프론트 앱 shell | `server/`, `src/app/` |
-| P3-B Geometry Import | DXF/DWG/point cloud를 model schema로 수렴 | `src/import/`, `src/viewer/` |
-| P3-C Material Library | 커스텀 재료/단면 versioned registry | `src/materials/` |
-| P3-D Nonlinear Engine | 정식 기하/재료 비선형 해석 | `src/nonlinear/`, `src/solver/` |
-| P3-E Product Hardening | 성능, 보안, packaging, 베타 파일럿 | 전체 |
+| A Platform | P3-M0 to P3-M4 | server, account, persistence, app shell |
+| B Import | P3-M5 to P3-M9 | geometry core, DXF/DWG, point cloud |
+| C Elastic completeness | P3-M10 to P3-M13 | libraries, element/load expansion, wall/slab, dynamics |
+| D Nonlinear | P3-M14 to P3-M16 | nonlinear geometry, hinges/control, fiber/NLTH |
+| E Design | P3-M17 to P3-M18 | RC, steel, connection, foundation detailed trace |
+| F Productization | P3-M19 to P3-M20 | integrated results, launch readiness |
 
-## Active Phase 3 Documents
+## Active Documents
 
-| 문서 | 역할 |
+| Document | Role |
 | --- | --- |
-| `ROADMAP.md` | P3-M0부터 P3-M20까지 마일스톤 로드맵 (6 stage) |
-| `IMPLEMENTATION_BACKLOG.md` | P3-T## 티켓 백로그 |
-| `PRODUCT_REQUIREMENTS.md` | Phase 3 제품 요구사항 (PRD) |
-| `ARCHITECTURE.md` | 전체 시스템 아키텍처와 기술 결정 |
-| `FRONTEND_PLAN.md` | 앱 shell, 라우팅, 뷰어, import 검토 UI |
-| `SERVER_API_PLAN.md` | REST API 명세와 서버 구조 |
-| `AUTH_ACCOUNT_PLAN.md` | 회원/로그인/권한 설계 |
-| `PERSISTENCE_PLAN.md` | 저장, autosave, revision, 마이그레이션 |
-| `IMPORT_DXF_DWG_PLAN.md` | 도면 import 파이프라인 명세 |
-| `IMPORT_POINT_CLOUD_PLAN.md` | 점군 import 파이프라인 명세 |
-| `MATERIAL_SECTION_LIBRARY_PLAN.md` | 재료/단면 라이브러리 명세 |
-| `ELASTIC_ENGINE_COMPLETENESS_PLAN.md` | 탄성 엔진 격차 리뷰(G1~G17)와 확장 명세 |
-| `NONLINEAR_ENGINE_PLAN.md` | 비선형 엔진 명세 (기하/힌지/fiber/NLTH)와 검증 계획 |
-| `DESIGN_MODULES_PLAN.md` | RC/철골/기초/접합 상세설계 명세 |
-| `QA_RELEASE_PLAN.md` | 테스트 전략, 성능/보안, 출시 게이트 |
-| `DEVELOPMENT_FILE_MAP.md` | Phase 3 폴더/파일 지도 |
+| `ROADMAP.md` | P3-M0 to P3-M20 milestone roadmap |
+| `IMPLEMENTATION_BACKLOG.md` | P3-T## ticket backlog |
+| `PRODUCT_REQUIREMENTS.md` | Phase 3 PRD |
+| `ARCHITECTURE.md` | system architecture and technical decisions |
+| `DEVELOPMENT_FILE_MAP.md` | folder and file routing |
+| `P3_M6_M9_REBUILD_ORDER.md` | corrected restart order from P3-M6 |
+| `IMPORT_DXF_DWG_PLAN.md` | DXF/DWG import specification |
+| `IMPORT_POINT_CLOUD_PLAN.md` | point-cloud import specification |
+| `MATERIAL_SECTION_LIBRARY_PLAN.md` | material and section registry plan |
+| `ELASTIC_ENGINE_COMPLETENESS_PLAN.md` | elastic engine gap list and implementation plan |
+| `NONLINEAR_ENGINE_PLAN.md` | nonlinear analysis plan |
+| `DESIGN_MODULES_PLAN.md` | detailed design module plan |
+| `QA_RELEASE_PLAN.md` | verification and release gates |
 
 ## Reading Order
 
 1. `PRODUCT_REQUIREMENTS.md`
 2. `ROADMAP.md`
 3. `ARCHITECTURE.md`
-4. 착수할 마일스톤의 상세 계획 문서
-5. `IMPLEMENTATION_BACKLOG.md`에서 티켓 선택
-6. `DEVELOPMENT_FILE_MAP.md`로 파일 위치 확인
+4. `P3_M6_M9_REBUILD_ORDER.md` when restarting from drawing/point-cloud import
+5. The detailed plan for the active milestone
+6. `IMPLEMENTATION_BACKLOG.md`
+7. `DEVELOPMENT_FILE_MAP.md`
+
+## Restart Rule From P3-M6
+
+The correct restart point is P3-M6. Existing implementation should be reviewed and strengthened against the plan rather than deleted blindly.
+
+| Milestone | First action |
+| --- | --- |
+| P3-M6 | lock DXF parser, wireframe mapping, layer audit, unsupported-entity audit |
+| P3-M7 | lock DWG adapter contract, 2D plan recognition, import review UI core |
+| P3-M8 | lock point-cloud loader, normalization, worker and viewer buffer |
+| P3-M9 | lock synthetic extraction, candidate-to-analysis E2E, real-scan limitation note |
 
 ## Phase 3 Gate
 
-기능을 Phase 3 baseline에 넣기 전 최소 조건. Phase 2 gate를 계승하고 두 항목을 추가한다.
+Before a feature is treated as part of Phase 3 baseline:
 
-1. public API/UI action 변경 시 `agent-contract.json` 갱신.
-2. 사용자 흐름 변경 시 `user-manual/` 갱신.
-3. 새 계산 로직은 단위 테스트 + workflow 테스트.
-4. 보고서 표시 값은 source trace 또는 limitation 동반.
-5. 생성 파일은 `reports/` 또는 `output/`로만.
-6. (신규) import 결과 모델은 validation을 통과해야 저장 가능.
-7. (신규) 서버 API 변경은 `SERVER_API_PLAN.md`와 API 계약 테스트 동시 갱신.
+1. Public API or UI action changes update the agent contract.
+2. User-facing workflow changes update `docs/user-manual/`.
+3. Numerical logic has focused tests and workflow tests.
+4. Reported values include source trace or limitation text.
+5. Generated outputs stay under `reports/` or `output/`.
+6. Imported models must pass validation before analysis.
+7. Server API changes update both the API plan and tests.
 
-## Repository And Material Hygiene
+## Repository Hygiene
 
-| 항목 | 규칙 |
+| Item | Rule |
 | --- | --- |
-| 개발 저장소 | `s-structures-review/`가 유일한 소스 저장소 |
-| 상위 `dcr/` 폴더의 원본 추출물 | `_app`, `_asar_*`, `_extract`, `DCR-Setup.exe`, `restored-dcr`, `일본구조계산프로그램output`은 분석 참고자료. 소스로 취급하지 않고, 백업 후 별도 보관(archive) 권장 |
-| 서버 런타임 데이터 | `data/` (git 추적 제외) |
-| 업로드 원본(도면/점군) | `data/projects/<id>/files/` (git 추적 제외) |
-| 대용량 테스트 fixture | `tests/fixtures/` 소형 결정적 파일만. 대형 점군은 생성 스크립트로 합성 |
+| Development repo | `s-structures-review/` is the active source repository |
+| Generated data | use `data/`, `reports/`, or `output/` according to purpose |
+| Uploaded files | keep outside git-tracked source unless they are compact fixtures |
+| Large point clouds | store real samples outside git and keep deterministic generators/tests in repo |
