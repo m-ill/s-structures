@@ -1,6 +1,7 @@
 import { buildShellV1Trace } from './shell/quad4.js';
 import { expandShellsToFrameLinks } from './shell/shellAssembly.js';
 import { buildSemiRigidRedistributionReport, expandSemiRigidDiaphragms } from './semiRigidDiaphragm.js';
+import { materialOf } from '../core/catalogs.js';
 
 export const WALL_SLAB_EQUIVALENT_VERSION = 'p3-m12-wall-slab-equivalent';
 export const WALL_SLAB_TRACE_VERSION = 'p3-m12-wall-slab-trace-v1';
@@ -124,14 +125,7 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
     review: buildWallSlabReview(summary),
     wallMidPier: {
       count: (model.wallEquivalents || []).length,
-      rows: (model.wallEquivalents || []).map((row) => ({
-        wallId: row.wallId,
-        memberId: row.memberId,
-        sectionId: row.sectionId,
-        sourceGeometry: row.sourceGeometry || null,
-        section: row.section || null,
-        recoveryAvailable: pierForces.some((force) => force.wallId === row.wallId),
-      })),
+      rows: (model.wallEquivalents || []).map((row) => buildWallMidPierTraceRow(row, model, pierForces)),
       forces: pierForces,
     },
     diaphragm,
@@ -141,6 +135,51 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
       redistribution,
       limitation: 'Semi-rigid diaphragm uses an equivalent truss brace grid for preliminary in-plane redistribution; shell slab membrane assembly remains future hardening.',
     },
+  };
+}
+
+function buildWallMidPierTraceRow(row, model, pierForces) {
+  const force = pierForces.find((item) => item.wallId === row.wallId) || null;
+  return {
+    wallId: row.wallId,
+    memberId: row.memberId,
+    sectionId: row.sectionId,
+    sourceGeometry: row.sourceGeometry || null,
+    section: row.section || null,
+    recoveryAvailable: Boolean(force),
+    cantileverHandcalc: buildCantileverWallHandcalc(row, model, force),
+  };
+}
+
+function buildCantileverWallHandcalc(row, model, force) {
+  if (!force) {
+    return {
+      status: 'force-recovery-required',
+      method: 'V*h^3/(3*E*I)',
+    };
+  }
+  const member = (model.members || []).find((item) => item.id === row.memberId);
+  const material = member ? materialOf(model, member.matId) : {};
+  const section = row.section || {};
+  const height = Number(row.sourceGeometry?.height || 0);
+  const E = Number(material.E || 0);
+  const I = Math.max(Number(section.Iy || 0), Number(section.Iz || 0));
+  const shear = Math.max(Math.abs(Number(force.Vy || 0)), Math.abs(Number(force.Vz || 0)));
+  const moment = Math.max(Math.abs(Number(force.My || 0)), Math.abs(Number(force.Mz || 0)));
+  const stiffness = E > 0 && I > 0 && height > 0 ? 3 * E * I / height ** 3 : null;
+  return {
+    status: stiffness ? 'available-preliminary' : 'insufficient-section-or-material',
+    method: 'V*h^3/(3*E*I)',
+    shear,
+    moment,
+    height,
+    E: E || null,
+    I: I || null,
+    lateralStiffness: stiffness,
+    estimatedTopDrift: stiffness ? shear / stiffness : null,
+    equivalentBaseMoment: shear * height,
+    momentRecoveryDelta: moment ? Math.abs(moment - shear * height) : null,
+    review: 'cantilever-wall-handcalc-preliminary',
   };
 }
 

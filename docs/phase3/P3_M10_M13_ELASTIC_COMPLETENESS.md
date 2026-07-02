@@ -102,3 +102,11 @@ P3-M11 elastic expansion now records `mmoment` loads in the handcalc trace with
 the member axis, station, input moment, and fixed-end split to i/j ends. This
 keeps member moment loads aligned with the G5 requirement for fixed-end and
 station recovery traces.
+
+## 2026-07-03 M12 Wall Handcalc Trace Update
+
+P3-M12 wall mid-pier trace rows now include a preliminary cantilever wall
+handcalc using `V*h^3/(3*E*I)`, recovered pier shear/moment, lateral stiffness,
+and estimated top drift. If analysis force recovery is not available, the row is
+marked `force-recovery-required` so AI agents do not treat the wall equivalent
+as reviewed.
