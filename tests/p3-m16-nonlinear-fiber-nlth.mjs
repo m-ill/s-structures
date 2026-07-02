@@ -4,6 +4,7 @@ import {
   GROUND_MOTION_VERSION,
   MOMENT_CURVATURE_VERSION,
   NLTH_NEWMARK_VERSION,
+  NONLINEAR_FIBER_NLTH_TRACE_VERSION,
   NONLINEAR_TRACE_VERSION,
   PMM_HINGE_VERSION,
   RAYLEIGH_DAMPING_VERSION,
@@ -64,15 +65,24 @@ assert.deepEqual(benchmarks.cases.map((item) => item.id), ['B6', 'B7', 'B8']);
 const model = createPortalFrameSample();
 const trace = buildNonlinearAnalysisTrace(model);
 assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
+assert.equal(trace.fiberNlthGate.version, NONLINEAR_FIBER_NLTH_TRACE_VERSION);
+assert.deepEqual(trace.fiberNlthGate.tickets, ['P3-T83', 'P3-T84', 'P3-T85', 'P3-T86']);
+assert.deepEqual(trace.fiberNlthGate.benchmarks.requiredCases, ['B6', 'B7', 'B8']);
+assert.equal(trace.fiberNlthGate.contracts.rayleigh, RAYLEIGH_DAMPING_VERSION);
+assert.ok(trace.fiberNlthGate.fiber.fiberCount > 0);
+assert.ok(trace.fiberNlthGate.dynamics.nlthRows > 0);
 assert.equal(trace.benchmarks.fiberNlth.ok, true);
 assert.ok(trace.pmm.interpolated.points.length > 0);
 assert.ok(trace.fiber.momentCurvature.rows.length > 0);
+assert.equal(trace.rayleigh.version, RAYLEIGH_DAMPING_VERSION);
 assert.ok(trace.nlth.rows.length > 0);
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();
 assert.equal(apiTrace.version, NONLINEAR_TRACE_VERSION);
+assert.equal(apiTrace.fiberNlthGate.milestone, 'P3-M16');
 assert.equal(apiTrace.benchmarks.fiberNlth.ok, true);
 assert.ok(agent.getCapabilities().milestones.some((item) => item.id === 'P3-M16'));
+assert.ok(agent.getCapabilities().dataContracts.includes('phase3NonlinearFiberNlthTrace'));
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m16-nonlinear-fiber-nlth' }, null, 2));

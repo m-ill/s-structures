@@ -3,17 +3,19 @@ import { NEWTON_RAPHSON_VERSION, solveNewtonRaphson } from './control/newtonRaph
 import { ARC_LENGTH_CONTROL_VERSION, buildArcLengthTrace, createSnapThroughBenchmarkPath } from './control/arcLength.js';
 import { buildDisplacementControlTrace, DISPLACEMENT_CONTROL_VERSION } from './control/displacementControl.js';
 import { buildHingeStateTrace, createMomentRotationBackbone, MOMENT_HINGE_VERSION } from './hinges/momentHinge.js';
-import { createPmmBackboneSet, interpolatePmmBackbone } from './hinges/pmmHinge.js';
-import { buildRectangularFiberSection } from './fiber/fiberSection.js';
-import { computeMomentCurvature } from './fiber/momentCurvature.js';
-import { parseGroundMotionText, scaleGroundMotion } from './dynamics/groundMotion.js';
-import { runNewmarkNlth } from './dynamics/newmark.js';
+import { createPmmBackboneSet, interpolatePmmBackbone, PMM_HINGE_VERSION } from './hinges/pmmHinge.js';
+import { buildRectangularFiberSection, FIBER_SECTION_VERSION } from './fiber/fiberSection.js';
+import { computeMomentCurvature, MOMENT_CURVATURE_VERSION } from './fiber/momentCurvature.js';
+import { GROUND_MOTION_VERSION, parseGroundMotionText, scaleGroundMotion } from './dynamics/groundMotion.js';
+import { NLTH_NEWMARK_VERSION, runNewmarkNlth } from './dynamics/newmark.js';
+import { RAYLEIGH_DAMPING_VERSION, solveRayleighDamping } from './dynamics/rayleigh.js';
 import { runFormalPushover } from './pushoverFormal.js';
 import { runNonlinearFiberNlthBenchmarks, runNonlinearGeometryBenchmarks, runNonlinearHingeControlBenchmarks } from '../verification/nonlinearBenchmarks.js';
 
 export const NONLINEAR_TRACE_VERSION = 'p3-m16-nonlinear-trace';
 export const NONLINEAR_GEOMETRY_TRACE_VERSION = 'p3-m14-nonlinear-geometry-trace-v1';
 export const NONLINEAR_HINGE_CONTROL_TRACE_VERSION = 'p3-m15-hinge-control-trace-v1';
+export const NONLINEAR_FIBER_NLTH_TRACE_VERSION = 'p3-m16-fiber-nlth-trace-v1';
 
 export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
   const state = createAnalysisState({ u: (model.nodes || []).length * 6, lambda: options.lambda || 0 });
@@ -26,8 +28,12 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
   const displacementControl = buildDisplacementControlTrace(options.displacementTargets || [0.01, 0.02], options.displacementControl);
   const arcLength = buildArcLengthTrace(options.arcLengthPath || createSnapThroughBenchmarkPath(), options.arcLength);
   const pmmSet = createPmmBackboneSet(options.pmm);
+  const pmm = { set: pmmSet, interpolated: interpolatePmmBackbone(options.axialRatio ?? 0.3, pmmSet) };
   const fiberSection = buildRectangularFiberSection(options.fiberSection);
+  const fiber = { section: fiberSection, momentCurvature: computeMomentCurvature(fiberSection, options.momentCurvature) };
+  const rayleigh = solveRayleighDamping(options.rayleigh);
   const record = scaleGroundMotion(parseGroundMotionText(options.groundMotionText || '0 0.1 -0.1 0', { dt: options.dt || 0.02 }), options.groundMotion);
+  const nlth = runNewmarkNlth({ accelerations: record.accelerations, dt: record.dt, ...(options.nlth || {}) });
   return {
     version: NONLINEAR_TRACE_VERSION,
     method: {
@@ -44,16 +50,18 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
     state: snapshotAnalysisState(state),
     geometryGate: buildNonlinearGeometryGate(state, geometryBenchmarks, options.geometryGate),
     hingeControlGate: buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, { displacementControl, arcLength }),
+    fiberNlthGate: buildNonlinearFiberNlthGate({ pmm, fiber, rayleigh, groundMotion: record, nlth }, fiberNlthBenchmarks),
     steps: pushover?.steps || [],
     capacityCurve: pushover?.capacityCurve || [],
     hingeStates: hingeTrace.rows,
     hingeTrace,
     displacementControl,
     arcLength,
-    pmm: { set: pmmSet, interpolated: interpolatePmmBackbone(options.axialRatio ?? 0.3, pmmSet) },
-    fiber: { section: fiberSection, momentCurvature: computeMomentCurvature(fiberSection, options.momentCurvature) },
+    pmm,
+    fiber,
+    rayleigh,
     groundMotion: record,
-    nlth: runNewmarkNlth({ accelerations: record.accelerations, dt: record.dt, ...(options.nlth || {}) }),
+    nlth,
     pushover,
     benchmarks: {
       version: NONLINEAR_TRACE_VERSION,
@@ -62,6 +70,57 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
       fiberNlth: fiberNlthBenchmarks,
       ok: (geometryBenchmarks?.ok ?? true) && (hingeControlBenchmarks?.ok ?? true) && (fiberNlthBenchmarks?.ok ?? true),
     },
+  };
+}
+
+export function buildNonlinearFiberNlthGate(trace = {}, fiberNlthBenchmarks = null) {
+  return {
+    version: NONLINEAR_FIBER_NLTH_TRACE_VERSION,
+    milestone: 'P3-M16',
+    tickets: ['P3-T83', 'P3-T84', 'P3-T85', 'P3-T86'],
+    contracts: {
+      pmmHinge: PMM_HINGE_VERSION,
+      fiberSection: FIBER_SECTION_VERSION,
+      momentCurvature: MOMENT_CURVATURE_VERSION,
+      newmark: NLTH_NEWMARK_VERSION,
+      rayleigh: RAYLEIGH_DAMPING_VERSION,
+      groundMotion: GROUND_MOTION_VERSION,
+    },
+    pmm: {
+      axialRatio: trace.pmm?.interpolated?.axialRatio ?? null,
+      source: trace.pmm?.interpolated?.source || [],
+      pointCount: trace.pmm?.interpolated?.points?.length || 0,
+    },
+    fiber: {
+      sectionType: trace.fiber?.section?.type || null,
+      fiberCount: trace.fiber?.section?.fibers?.length || 0,
+      curvatureRows: trace.fiber?.momentCurvature?.rows?.length || 0,
+      yieldMoment: trace.fiber?.momentCurvature?.yieldMoment || 0,
+    },
+    dynamics: {
+      rayleighTargets: trace.rayleigh?.targets || null,
+      recordName: trace.groundMotion?.name || null,
+      dt: trace.groundMotion?.dt || null,
+      scaleFactor: trace.groundMotion?.scaleFactor || 1,
+      nlthRows: trace.nlth?.rows?.length || 0,
+      yielded: (trace.nlth?.rows || []).some((row) => row.hingeState === 'yielded'),
+    },
+    benchmarks: fiberNlthBenchmarks ? {
+      version: fiberNlthBenchmarks.version,
+      ok: fiberNlthBenchmarks.ok,
+      requiredCases: ['B6', 'B7', 'B8'],
+      cases: fiberNlthBenchmarks.cases.map((item) => ({
+        id: item.id,
+        name: item.name,
+        ok: item.ok,
+        tolerance: item.tolerance,
+        errorRatio: item.errorRatio,
+      })),
+    } : null,
+    limitations: [
+      'P3-M16 is a concentrated-plasticity trace core, not distributed plasticity.',
+      'Soil-structure interaction and final production seismic qualification remain outside this trace gate.',
+    ],
   };
 }
 

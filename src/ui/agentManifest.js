@@ -95,7 +95,7 @@ import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
 import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../solver/wallSlabEquivalent.js';
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
-import { NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
+import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 
@@ -202,6 +202,7 @@ export function buildAgentManifest(options = {}) {
       phase3DynamicCompleteness: DYNAMIC_COMPLETENESS_VERSION,
       phase3NonlinearGeometryTrace: NONLINEAR_GEOMETRY_TRACE_VERSION,
       phase3NonlinearHingeControlTrace: NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
+      phase3NonlinearFiberNlthTrace: NONLINEAR_FIBER_NLTH_TRACE_VERSION,
       phase3NonlinearTrace: NONLINEAR_TRACE_VERSION,
       phase3NonlinearBenchmark: NONLINEAR_BENCHMARK_VERSION,
     },
@@ -365,6 +366,7 @@ export function buildAgentManifest(options = {}) {
       'phase3DynamicCompletenessTrace',
       'phase3NonlinearGeometryTrace',
       'phase3NonlinearHingeControlTrace',
+      'phase3NonlinearFiberNlthTrace',
       'phase3NonlinearAnalysisTrace',
       'phase3NonlinearBenchmarkTrace',
     ],

@@ -344,9 +344,11 @@ export {
   runFormalPushover,
 } from './nonlinear/pushoverFormal.js';
 export {
+  NONLINEAR_FIBER_NLTH_TRACE_VERSION,
   NONLINEAR_GEOMETRY_TRACE_VERSION,
   NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
   NONLINEAR_TRACE_VERSION,
+  buildNonlinearFiberNlthGate,
   buildNonlinearGeometryGate,
   buildNonlinearHingeControlGate,
   buildNonlinearAnalysisTrace,
