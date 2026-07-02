@@ -26,6 +26,8 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 | Module boundaries and file routing | `architecture.moduleBoundaries`, `architecture.fileRouting` |
 | Server/API/auth/persistence | `serverApi.endpoints`, `errorEnvelope`, `auth`, `persistence` |
 | Frontend and import contracts | `frontend.routes`, `frontend.modules`, `importPipeline` |
+| Material and section library | `materialLibrary` fields, registry rules, agent actions, module list |
+| Nonlinear engine | `nonlinearEngine` scope ladder N1 to N6, convergence, benchmark, result contracts |
 | P3-M0 to P3-M20 milestone rows | `milestones` |
 | Stage A to Stage F grouping | `stages` |
 | P3 ticket evidence mapping | each milestone row `tickets`, `docs`, `tests` |
@@ -34,7 +36,14 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 
 ## Current Test Gate
 
-`tests/p3-plan-alignment.mjs` verifies the report version, 14-document source set, 21 milestone rows, PRD requirement coverage, architecture decision coverage, server endpoint/error/auth/persistence contracts, frontend/import contracts, zero-dependency package state, server/import boundary guard, manifest module exposure, read API exposure, data contract exposure, and browser-agent API access.
+`tests/p3-plan-alignment.mjs` verifies the report version, 14-document source set, 21 milestone rows, PRD requirement coverage, architecture decision coverage, server endpoint/error/auth/persistence contracts, frontend/import contracts, material/section library contracts, nonlinear engine contracts, zero-dependency package state, server/import boundary guard, manifest module exposure, read API exposure, data contract exposure, and browser-agent API access.
+
+For the P3-M6 restart point, the practical order is:
+
+1. Reconfirm drawing input pipeline evidence for P3-M6 to P3-M7.
+2. Keep point-cloud work at the planned scaffold level unless owner files are supplied.
+3. Lock P3-M10 material/section trace before extending elastic completeness.
+4. Treat P3-M14 to P3-M16 nonlinear work as staged engine contracts with benchmark gates, not as a single UI feature.
 
 ## Remaining Limits
 

@@ -216,6 +216,65 @@ const IMPORT_PIPELINE_CONTRACT = {
   },
 };
 
+const MATERIAL_LIBRARY_CONTRACT = {
+  materialFields: ['id', 'version', 'kind', 'elastic', 'strength', 'nonlinear', 'damping', 'source'],
+  sectionFields: ['id', 'version', 'kind', 'shape', 'params', 'properties', 'designMeta', 'source'],
+  registryRules: [
+    'id@version-reference',
+    'append-only-edit',
+    'project-over-global-priority',
+    'soft-delete',
+    'calculation-report-id-version-source',
+    'legacy-unversioned-warning',
+  ],
+  modules: [
+    'src/materials/materialSchema.js',
+    'src/materials/sectionSchema.js',
+    'src/materials/sectionProperties.js',
+    'src/materials/registry.js',
+    'src/materials/db/ksH.js',
+    'src/materials/libraryReport.js',
+    'src/materials/libraryEdit.js',
+  ],
+  agentActions: ['listLibrary', 'getLibraryItem', 'upsertMaterial', 'upsertSection'],
+  verification: ['tests/p3-m10-materials.mjs', 'tests/p3-section-properties.mjs'],
+};
+
+const NONLINEAR_ENGINE_CONTRACT = {
+  scopeLadder: [
+    nonlinearScope('N1', 'P3-M14', 'corotational-beam-kg-newton-load-control'),
+    nonlinearScope('N2', 'P3-M15', 'concentrated-m-theta-hinge-state-trace'),
+    nonlinearScope('N3', 'P3-M15', 'displacement-control-arc-length'),
+    nonlinearScope('N4', 'P3-M15', 'formal-pushover-capacity-curve'),
+    nonlinearScope('N5', 'P3-M16', 'pmm-hinge-fiber-section'),
+    nonlinearScope('N6', 'P3-M16', 'newmark-rayleigh-ground-motion'),
+  ],
+  modules: [
+    'src/nonlinear/state.js',
+    'src/nonlinear/assembly.js',
+    'src/nonlinear/elements/corotationalBeam.js',
+    'src/nonlinear/hinges/momentHinge.js',
+    'src/nonlinear/hinges/pmmHinge.js',
+    'src/nonlinear/hinges/hingeAssign.js',
+    'src/nonlinear/fiber/fiberSection.js',
+    'src/nonlinear/fiber/momentCurvature.js',
+    'src/nonlinear/control/newtonRaphson.js',
+    'src/nonlinear/control/loadControl.js',
+    'src/nonlinear/control/displacementControl.js',
+    'src/nonlinear/control/arcLength.js',
+    'src/nonlinear/dynamics/newmark.js',
+    'src/nonlinear/dynamics/rayleigh.js',
+    'src/nonlinear/dynamics/groundMotion.js',
+    'src/nonlinear/pushoverFormal.js',
+    'src/nonlinear/trace.js',
+  ],
+  stateFields: ['step', 'lambda', 'u', 'hinges', 'converged', 'iterations', 'events'],
+  convergenceNorms: ['force', 'displacement', 'energy'],
+  hingeStates: ['elastic', 'yielded', 'capping', 'degrading', 'residual'],
+  benchmarks: ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8'],
+  resultFields: ['method', 'limitations', 'steps', 'capacityCurve', 'hingeStates'],
+};
+
 const MILESTONES = [
   ms('P3-M0', ['P3-T01', 'P3-T02'], ['docs/phase3/DEVELOPMENT_FILE_MAP.md'], ['tests/m0-smoke.mjs']),
   ms('P3-M1', t(3, 7), ['docs/phase3/SERVER_API_PLAN.md'], ['tests/p3-server-api.mjs']),
@@ -280,6 +339,14 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
     IMPORT_PIPELINE_CONTRACT.dxfEntities.includes('INSERT') &&
     IMPORT_PIPELINE_CONTRACT.pointCloudFormats.filter((row) => row.status === 'v1').length === 3 &&
     IMPORT_PIPELINE_CONTRACT.auditFields.includes('warnings');
+  const materialLibraryOk = MATERIAL_LIBRARY_CONTRACT.materialFields.includes('nonlinear') &&
+    MATERIAL_LIBRARY_CONTRACT.sectionFields.includes('properties') &&
+    MATERIAL_LIBRARY_CONTRACT.registryRules.includes('id@version-reference') &&
+    MATERIAL_LIBRARY_CONTRACT.agentActions.length === 4;
+  const nonlinearEngineOk = NONLINEAR_ENGINE_CONTRACT.scopeLadder.length === 6 &&
+    NONLINEAR_ENGINE_CONTRACT.benchmarks.length === 8 &&
+    NONLINEAR_ENGINE_CONTRACT.convergenceNorms.length === 3 &&
+    NONLINEAR_ENGINE_CONTRACT.resultFields.includes('capacityCurve');
   return {
     version: PHASE3_PLAN_ALIGNMENT_VERSION,
     sourceDocs: CORE_DOCS.map((name) => `docs/phase3/${name}`),
@@ -319,13 +386,22 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
       ...IMPORT_PIPELINE_CONTRACT,
       ok: importPipelineOk,
     },
+    materialLibrary: {
+      ...MATERIAL_LIBRARY_CONTRACT,
+      ok: materialLibraryOk,
+    },
+    nonlinearEngine: {
+      ...NONLINEAR_ENGINE_CONTRACT,
+      ok: nonlinearEngineOk,
+    },
     activeTicketCount: new Set(rows.flatMap((row) => row.tickets)).size,
     absorbedTickets: ABSORBED_TICKETS,
     plannedTicketCount: new Set([
       ...rows.flatMap((row) => row.tickets),
       ...ABSORBED_TICKETS.map((row) => row.ticket),
     ]).size,
-    status: missing.length || !requirementsOk || !architectureOk || !serverApiOk || !frontendOk || !importPipelineOk ? 'REVIEW' : 'OK',
+    status: missing.length || !requirementsOk || !architectureOk || !serverApiOk || !frontendOk ||
+      !importPipelineOk || !materialLibraryOk || !nonlinearEngineOk ? 'REVIEW' : 'OK',
     missing,
     agentReadable: readApis.has('getPhase3PlanAlignment'),
     notes: [
@@ -381,6 +457,10 @@ function storageLayer(id, name, purpose) {
 
 function importPath(id, milestone, method) {
   return { id, milestone, method };
+}
+
+function nonlinearScope(id, milestone, scope) {
+  return { id, milestone, scope };
 }
 
 function t(from, to) {

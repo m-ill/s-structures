@@ -43,6 +43,17 @@ assert.deepEqual(report.importPipeline.drawingPaths.map((row) => row.id), ['3d-w
 assert.ok(report.importPipeline.dxfEntities.includes('INSERT'));
 assert.deepEqual(report.importPipeline.pointCloudFormats.filter((row) => row.status === 'v1').map((row) => row.id), ['XYZ/TXT', 'PLY', 'PCD']);
 assert.equal(report.importPipeline.benchmarkTargets.columnRecall, 0.9);
+assert.equal(report.materialLibrary.ok, true);
+assert.ok(report.materialLibrary.materialFields.includes('nonlinear'));
+assert.ok(report.materialLibrary.sectionFields.includes('properties'));
+assert.ok(report.materialLibrary.registryRules.includes('id@version-reference'));
+assert.ok(report.materialLibrary.registryRules.includes('legacy-unversioned-warning'));
+assert.deepEqual(report.materialLibrary.agentActions, ['listLibrary', 'getLibraryItem', 'upsertMaterial', 'upsertSection']);
+assert.equal(report.nonlinearEngine.ok, true);
+assert.deepEqual(report.nonlinearEngine.scopeLadder.map((row) => row.id), ['N1', 'N2', 'N3', 'N4', 'N5', 'N6']);
+assert.deepEqual(report.nonlinearEngine.benchmarks, ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8']);
+assert.deepEqual(report.nonlinearEngine.convergenceNorms, ['force', 'displacement', 'energy']);
+assert.ok(report.nonlinearEngine.resultFields.includes('capacityCurve'));
 assert.deepEqual(report.architecture.decisions.map((row) => row.id), Array.from({ length: 10 }, (_, index) => `D${index + 1}`));
 assert.equal(report.architecture.decisions.find((row) => row.id === 'D2').choice, 'node-http-router');
 assert.equal(report.architecture.decisions.find((row) => row.id === 'D6').choice, 'webgl2-module');
@@ -92,12 +103,27 @@ assert.ok(readFileSync('server/store/projectStore.mjs', 'utf8').includes('lineag
 for (const file of report.frontend.modules) {
   assert.equal(existsSync(file), true, file);
 }
+for (const file of report.materialLibrary.modules) {
+  assert.equal(existsSync(file), true, file);
+}
+for (const file of report.nonlinearEngine.modules) {
+  assert.equal(existsSync(file), true, file);
+}
 assert.ok(readFileSync('src/import/candidate.js', 'utf8').includes('ImportCandidate'));
 assert.ok(readFileSync('src/import/dxf/importDxf.js', 'utf8').includes('ignoredDetails'));
 assert.ok(readFileSync('src/import/dwg/adapter.js', 'utf8').includes('IMPORT_DWG_CONVERTER_MISSING'));
 assert.ok(readFileSync('src/import/pointcloud/worker.js', 'utf8').includes('processPointCloudText'));
 assert.ok(readFileSync('src/import/pointcloud/extract.js', 'utf8').includes('realScanValidation'));
 assert.ok(readFileSync('src/app/views/importReview.js', 'utf8').includes('confirm'));
+assert.ok(readFileSync('src/materials/registry.js', 'utf8').includes('parseVersionedId'));
+assert.ok(readFileSync('src/materials/materialSchema.js', 'utf8').includes('nonlinear.backbone'));
+assert.ok(readFileSync('src/materials/libraryEdit.js', 'utf8').includes('upsertMaterial'));
+assert.ok(readFileSync('src/materials/db/ksH.js', 'utf8').includes('KS-H-2024'));
+assert.ok(readFileSync('src/nonlinear/trace.js', 'utf8').includes('requiredCases'));
+assert.ok(readFileSync('src/nonlinear/trace.js', 'utf8').includes('capacityCurve'));
+assert.ok(readFileSync('src/nonlinear/control/newtonRaphson.js', 'utf8').includes('lineSearch'));
+assert.ok(readFileSync('src/nonlinear/control/arcLength.js', 'utf8').includes('crisfield'));
+assert.ok(readFileSync('src/nonlinear/dynamics/newmark.js', 'utf8').includes('NLTH_NEWMARK_VERSION'));
 
 console.log(JSON.stringify({
   ok: true,
@@ -108,6 +134,8 @@ console.log(JSON.stringify({
   endpoints: report.serverApi.endpoints.length,
   frontendRoutes: report.frontend.routes.length,
   importPaths: report.importPipeline.drawingPaths.length,
+  materialFields: report.materialLibrary.materialFields.length,
+  nonlinearBenchmarks: report.nonlinearEngine.benchmarks.length,
   activeTickets: report.activeTicketCount,
   plannedTickets: report.plannedTicketCount,
 }, null, 2));
