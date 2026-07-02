@@ -1,7 +1,7 @@
 # Phase 3 QA And Release Plan
 
 status: active
-milestone: 전체 (게이트), P3-M14 (출시)
+milestone: 전체 (게이트), P3-M20 (출시)
 
 ## Test Strategy
 
@@ -12,8 +12,9 @@ milestone: 전체 (게이트), P3-M14 (출시)
 | unit | core/solver/import 수치 유틸 | 기존 + `p3-*` 단위 |
 | contract | agent API, ImportCandidate, registry, 서버 API | envelope/스키마 고정 테스트 |
 | workflow | fake dom e2e, 서버 부팅 e2e | login→저장→해석→계산서 |
-| benchmark | 선형(기존 gate) + 비선형 B1-B5 + 점군 합성 recall | tolerance 게이트 |
-| regression | 대표건물 10종, pushover 회귀 | full suite |
+| benchmark | 선형(기존 gate + 탄성 확장 handcalc) + 비선형 B1-B8 + 점군 합성 recall | tolerance 게이트 |
+| regression | 대표건물 10종, pushover 회귀, 설계 일람표 회귀 | full suite |
+| design | RC/철골/기초 수계산 검증 케이스 | `docs/verification/DESIGN_MODULE_VERIFICATION.md` 연동 |
 
 **Merge 조건: full suite green.** benchmark tolerance 실패는 skip이 아니라 실패다.
 
@@ -28,7 +29,11 @@ milestone: 전체 (게이트), P3-M14 (출시)
 | `tests/p3-import-dxf.mjs` / `p3-import-plan.mjs` | DXF 파서/매핑/평면 인식 |
 | `tests/p3-pointcloud-load.mjs` / `p3-pointcloud-extraction.mjs` / `p3-pointcloud-e2e.mjs` | 점군 |
 | `tests/p3-materials.mjs` / `p3-section-properties.mjs` | 라이브러리 |
-| `tests/p3-nonlinear-benchmark.mjs` / `p3-nonlinear-trace.mjs` | 비선형 |
+| `tests/p3-elastic-elements.mjs` | 스프링/침하/트러스/offset/부분하중/온도 handcalc (M11) |
+| `tests/p3-wall-shell.mjs` | mid-pier/쉘/semi-rigid benchmark (M12) |
+| `tests/p3-loads-v2.mjs` / `p3-dynamics-v2.mjs` | wind/seismic v2, CQC/좌굴/THA (M13) |
+| `tests/p3-nonlinear-benchmark.mjs` / `p3-nonlinear-trace.mjs` | 비선형 B1~B8 |
+| `tests/p3-design-rc.mjs` / `p3-design-steel.mjs` / `p3-design-foundation.mjs` | 설계 수계산 검증 (M17-M18) |
 | `tests/p3-launch-gate.mjs` | 출시 게이트 자동 점검 (아래 표를 코드로) |
 
 ## Performance Budgets
@@ -39,10 +44,12 @@ milestone: 전체 (게이트), P3-M14 (출시)
 | 점군 뷰어 | 2e6점 60fps | 수동 + frame time 로그 |
 | 탄성해석 | 대표건물 조합군 10초 | suite 내 타이머 |
 | 비선형 pushover | 대표건물 60초/방향 | benchmark 타이머 |
+| NLTH | 대표건물 20초 기록 10분 내 | benchmark 타이머 |
+| 설계 일람표 | 대표건물 전 부재 30초 | suite 내 타이머 |
 | 서버 저장 | 10MB snapshot 2초 | API 테스트 타이머 |
 | 앱 초기 로드 | 3초 (로컬) | 수동 |
 
-## Security Checklist (M2, M14 재점검)
+## Security Checklist (M2, M20 재점검)
 
 `AUTH_ACCOUNT_PLAN.md`의 체크리스트를 기준으로 하고, 출시 전 아래를 재점검한다.
 
@@ -54,12 +61,12 @@ milestone: 전체 (게이트), P3-M14 (출시)
 6. 의존성 감사 — zero-dependency 확인 또는 도입분 lockfile 고정.
 7. `data/` 백업/복원 절차 문서화 및 리허설.
 
-## Release Packaging (M14-1)
+## Release Packaging (M20-1)
 
 | 형태 | 내용 | 검증 |
 | --- | --- | --- |
 | 웹 배포 | `node server/main.mjs` 단일 프로세스, 정적 포함, systemd/서비스 가이드 | 클린 머신 설치 smoke |
-| 데스크톱 | Electron 래핑 (내장 서버 + 로컬 data/) — M14에서 최종 결정 | 설치→실행→해석→저장 smoke |
+| 데스크톱 | Electron 래핑 (내장 서버 + 로컬 data/) — M20에서 최종 결정 | 설치→실행→해석→저장 smoke |
 | 버전 | `package.json` version + `platformVersion.js` 동기, CHANGELOG 시작 | 버전 표기 테스트 |
 
 ## Launch Gate (출시 직전 판정표)
@@ -69,7 +76,7 @@ milestone: 전체 (게이트), P3-M14 (출시)
 | # | Gate | 종류 | Pass 조건 |
 | --- | --- | --- | --- |
 | G1 | full test suite | 자동 | failed 0 |
-| G2 | 선형+비선형 benchmark | 자동 | 전체 tolerance 통과 |
+| G2 | 선형(확장 포함)+비선형 benchmark | 자동 | B1~B8 + 탄성 확장 handcalc 전체 tolerance 통과 |
 | G3 | 점군 합성 벤치마크 | 자동 | recall/precision 목표 달성 |
 | G4 | 대표건물 10종 pilot | 자동 | 해석+검토 데이터 생성 (P2 T50 계승) |
 | G5 | 플랫폼 e2e | 자동 | 가입→로그인→프로젝트→저장→revision→승인 |
@@ -80,15 +87,19 @@ milestone: 전체 (게이트), P3-M14 (출시)
 | G10 | agent-contract 최신화 | 자동 | manifest ↔ contract diff 없음 |
 | G11 | 베타 파일럿 리포트 | 수동 | 실무 시나리오 10종 + 이슈 반영 기록 |
 | G12 | 백업/복원 리허설 | 수동 | data/ 복원 성공 기록 |
+| G13 | 설계 모듈 수계산 검증 | 자동 | RC/철골/기초 검증 케이스 전체 통과 + `docs/verification/DESIGN_MODULE_VERIFICATION.md` 기록 |
+| G14 | 계산서 완결성 | 자동 | 기본 목차에 `not checked` 장 없음, 전 장 trace/limitation 연결 |
 
-## Beta Pilot (M14-5)
+## Beta Pilot (M20-5)
 
 | 시나리오 | 내용 |
 | --- | --- |
-| 1-3 | 도면 기반 신축 검토 3건 (규모/형상 다양) |
+| 1-3 | 도면 기반 신축 검토 3건 (라멘/벽식/철골 — 상세설계 일람표까지) |
 | 4-5 | 점군 기반 현황 모델 2건 (합성 1 + 실측 1) |
-| 6-7 | 커스텀 재료/단면 프로젝트 2건 |
-| 8-9 | 비선형 pushover 검토 2건 |
+| 6 | 커스텀 재료/단면 프로젝트 1건 |
+| 7 | 지하층/기초 검토 1건 (토압/수압/스프링/매트) |
+| 8 | 비선형 pushover 검토 1건 |
+| 9 | NLTH 성능검토 1건 (지진파 3세트) |
 | 10 | 협업/승인 workflow 1건 (2인 역할) |
 
 각 시나리오는 소요 시간, 실패 지점, 사용자 피드백을 `reports/launch-readiness/pilot-##.md`로 기록하고, blocker는 backlog 티켓으로 변환 후 게이트 재실행한다.

@@ -1,21 +1,22 @@
 # Phase 3 Nonlinear Engine Plan
 
 status: active
-milestones: P3-M11(기하 v1), P3-M12(재료+control v2)
+milestones: P3-M14(기하 v1), P3-M15(재료+control v2), P3-M16(fiber/NLTH v3)
 
 ## Goal
 
-pushover preliminary(`m15-pushover-preliminary`: 선형 재해석 반복)를 **정식 비선형 엔진**으로 대체한다. 범위는 정적 비선형까지다. 시간이력(NLTH)은 상태 구조만 대비하고 구현은 Phase 4 (PRD 비목표 4).
+pushover preliminary(`m15-pushover-preliminary`: 선형 재해석 반복)를 **정식 비선형 엔진**으로 대체한다. rev 2: Phase 4 폐지에 따라 fiber 단면과 비선형 시간이력(NLTH)까지 Phase 3 범위다. 성능기반 내진설계 검토(pushover + NLTH)가 사무소 실무 요구의 종착점이다.
 
 ## Scope Ladder
 
 | 단계 | 내용 | 마일스톤 |
 | --- | --- | --- |
-| N1 기하비선형 | corotational beam + KG, full Newton-Raphson, load control | M11 |
-| N2 재료비선형 | 집중 소성힌지 (M-θ backbone), 힌지 상태 추적 | M12 |
-| N3 고급 control | displacement control, arc-length (Crisfield) | M12 |
-| N4 pushover 정식화 | 하중 패턴, 성능점, capacity curve 계약 | M12 |
-| (N5 fiber/NLTH) | Phase 4 | - |
+| N1 기하비선형 | corotational beam + KG, full Newton-Raphson, load control | M14 |
+| N2 재료비선형 | 집중 소성힌지 (M-θ backbone), 힌지 상태 추적 | M15 |
+| N3 고급 control | displacement control, arc-length (Crisfield) | M15 |
+| N4 pushover 정식화 | 하중 패턴, 성능점, capacity curve 계약 | M15 |
+| N5 PMM/fiber | 축력 상관 힌지, fiber 단면 (RC/steel) | M16 |
+| N6 NLTH | Newmark-β 직접적분, Rayleigh 감쇠, 지진파 관리 | M16 |
 
 ## Module Layout
 
@@ -27,13 +28,21 @@ src/nonlinear/
     corotationalBeam.js # 3D corotational 변환 + 국부 탄성/기하 강성
   hinges/
     momentHinge.js      # M-θ backbone, 상태머신 (elastic→yield→...→residual)
+    pmmHinge.js         # 축력 수준별 backbone 보간 (N5)
     hingeAssign.js      # 부재 단부 힌지 배정 (재료 nonlinear 파라미터 소비)
+  fiber/
+    fiberSection.js     # RC/steel fiber 분할, 재료 backbone 소비 (N5)
+    momentCurvature.js  # M-φ 산정 + 검증
   control/
     newtonRaphson.js    # full NR + line search
     loadControl.js
     displacementControl.js
     arcLength.js        # Crisfield 구면 arc-length
     convergence.js      # norm 계약 (아래)
+  dynamics/
+    newmark.js          # Newmark-β 직접적분 + step 내 NR (N6)
+    rayleigh.js         # 감쇠 행렬
+    groundMotion.js     # 지진파 기록 파싱/scaling (T86)
   pushover.js           # 정식 pushover 드라이버 (기존 파일 대체)
 ```
 
@@ -80,10 +89,31 @@ M |     B____C
 | --- | --- |
 | 제하(unloading) | 초기 강성 평행 (v1) |
 | 강성 반영 | 힌지 접선 강성을 요소 단부에 응축(static condensation) |
-| PMM 상관 | v2.1 후보로 명시. v1 계산서에 limitation 표기 |
+| PMM 상관 | N5(T83)에서 구현: 축력 수준별 backbone 보간. M15 시점 계산서에는 limitation 표기 후 M16에서 해제 |
 | trace | 힌지별 상태 이력이 `events`에 기록, 결과 후처리에서 층별 분포 표 |
 
-## Verification Benchmarks (P3-T53, T55, T56)
+## N5. PMM Hinge And Fiber Section (M16, P3-T83~T84)
+
+| 항목 | 내용 |
+| --- | --- |
+| PMM 힌지 | 축력비(P/Pₙ) 구간별 M-θ backbone 세트 보간. 상관면은 재료/단면에서 생성 (RC: PM 상관 모듈 P3-T88 재사용, steel: H1 상관식) |
+| fiber 단면 | 단면을 fiber로 분할 (RC: 피복/심부 콘크리트+철근, steel: 플랜지/웨브 스트립). 재료 라이브러리 backbone(σ-ε) 소비 |
+| fiber 요소 적용 | v1은 힌지 위치의 fiber 단면 (distributed plasticity는 비목표 — 집중 소성 유지) |
+| 검증 | 모멘트-곡률(M-φ) 이론해 비교 (탄소성 직사각형 단면), RC 단면 Pb/M0 수계산 |
+
+## N6. Nonlinear Time History (M16, P3-T85~T86)
+
+| 항목 | 내용 |
+| --- | --- |
+| 적분 | Newmark-β (γ=1/2, β=1/4 기본), step 내 Newton-Raphson 평형 반복 |
+| 감쇠 | Rayleigh (α, β — 두 모드 지정), 힌지 이력 감쇠는 자동 포함 |
+| 입력 | 지반가속도 기록 (내장 기록 + 사용자 업로드 CSV/PEER 형식), 방향별 배율 |
+| scaling | 설계 스펙트럼 맞춤 배율 v1 (주기 구간 평균 비율), scaling trace 계산서 표기 |
+| 출력 | 시간이력 응답 (변위/층전단/힌지 상태), 최대치 envelope → 기존 결과 계약 합류 |
+| 안정성 | 발산 감지 (에너지 증가율), step 자동 분할 1회 |
+| 한계 명시 | 집중 소성 모델, P-Δ 포함 여부 옵션, 지반-구조 상호작용 미포함 |
+
+## Verification Benchmarks (P3-T53, T55, T56, T83~T85)
 
 benchmark gate(`src/verification/benchmarkGate*.js`)에 등록하고 tolerance로 게이트한다.
 
@@ -94,6 +124,9 @@ benchmark gate(`src/verification/benchmarkGate*.js`)에 등록하고 tolerance�
 | B3 | von Mises truss snap-through | arc-length | 해석해 한계점 | ±2%, post-peak 경로 추적 성공 |
 | B4 | 포탈 프레임 소성 메커니즘 | 힌지 | 소성해석 λ = 수계산 | ±3% |
 | B5 | 대표건물 pushover 회귀 | 전체 | 기존 preliminary 대비 곡선 비교 리포트 + 신규 기준 고정 | 회귀 고정 |
+| B6 | 탄소성 M-φ | fiber | 직사각형 단면 이론해 | ±2% |
+| B7 | 1자유도 탄소성 THA | Newmark+힌지 | 정해(구간 해석해) | ±3% |
+| B8 | 선형 THA 일치 | Newmark | 탄성 케이스에서 modal superposition(T81)과 일치 | ±1% |
 
 ## Result And Report Contract (M13 연결)
 

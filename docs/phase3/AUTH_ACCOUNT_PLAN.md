@@ -5,7 +5,7 @@ milestone: P3-M2
 
 ## Scope
 
-email+password 계정, 서명 토큰 세션, 역할 기반 프로젝트 권한. 외부 IdP(OAuth)는 Phase 4 후보.
+email+password 계정, 서명 토큰 세션, 역할 기반 프로젝트 권한. 외부 IdP(OAuth)는 출시 후 확장 후보 (출시 범위 아님).
 
 ## Account Model
 

@@ -25,7 +25,7 @@ source: user direction 2026-07-02
                           users.json, projects/<id>/...
 ```
 
-핵심 구조 결정: **해석 엔진은 브라우저에서 실행을 유지**한다. 서버는 계정/저장/파일/협업만 담당한다. 이 결정으로 기존 코드와 agent 계약을 그대로 유지하고, 서버 비용과 복잡도를 최소화한다. 서버측 해석(대규모 배치)은 Phase 4 후보로 남긴다.
+핵심 구조 결정: **해석 엔진은 브라우저에서 실행을 유지**한다. 서버는 계정/저장/파일/협업만 담당한다. 이 결정으로 기존 코드와 agent 계약을 그대로 유지하고, 서버 비용과 복잡도를 최소화한다. 서버측 해석(대규모 배치)은 출시 후 확장 후보로만 남긴다 (Phase 4 없음 — 출시 범위 아님을 의미).
 
 ## Technology Decisions
 
@@ -40,7 +40,7 @@ source: user direction 2026-07-02
 | D7 | DXF | 자체 ASCII DXF 파서 | 포맷 공개, 필요 entity 한정적 | 외부 파서 라이브러리(의존성/제어) |
 | D8 | DWG | ODA File Converter 외부 CLI 호출 | DWG는 사유 포맷, 직접 파싱 비현실적 | LibreDWG wasm(성숙도 검토 후 v2 후보) |
 | D9 | 무거운 전처리 | Web Worker + Transferable(Float32Array) | 메인스레드 무블로킹 NFR | 서버 처리(업로드 왕복 비용, 오프라인 불가) |
-| D10 | 데스크톱 배포 | Electron 래핑 (M14에서 확정) | 사무소 오프라인/파일 접근 요구 | Tauri(러스트 체인 도입 부담) |
+| D10 | 데스크톱 배포 | Electron 래핑 (M20에서 확정) | 사무소 오프라인/파일 접근 요구 | Tauri(러스트 체인 도입 부담) |
 
 의존성 도입이 필요해지면 이 표에 행을 추가하고 근거를 남긴다.
 
@@ -101,7 +101,10 @@ s-structures-review/
       pointcloud/       # 로더, downsample, 검출(RANSAC/클러스터), worker
       candidate.js      # 공통 후보 계약
     materials/          # 커스텀 재료/단면 registry
-    nonlinear/          # 정식 비선형 (state, elements, control, hinges)
+    nonlinear/          # 정식 비선형 (state, elements, hinges, fiber, control, dynamics)
+    solver/shell/       # 쉘 요소 (M12)
+    design/rc|steel|connection|foundation/  # 상세 설계 모듈 (M17-M18)
+    standards/          # KDS 기준식 registry
     (core|solver|design|results|report|platform|ui|examples|verification 기존 유지)
   data/                 # 서버 런타임 (git 제외)
   tests/fixtures/dxf/   # 소형 DXF fixture
@@ -113,8 +116,8 @@ s-structures-review/
 | 형태 | 구성 | 시점 |
 | --- | --- | --- |
 | 개발 | `node server/main.mjs` → localhost, `data/` 로컬 | M1부터 |
-| 사무소 배포(웹) | 단일 node 프로세스 + 리버스 프록시(TLS) | M14 |
-| 데스크톱 | Electron: 내장 서버 모드(로컬 data/) | M14 결정 |
+| 사무소 배포(웹) | 단일 node 프로세스 + 리버스 프록시(TLS) | M20 |
+| 데스크톱 | Electron: 내장 서버 모드(로컬 data/) | M20 결정 |
 
 ## Risks
 

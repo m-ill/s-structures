@@ -23,8 +23,13 @@ Phase 2 지도(`docs/phase2/DEVELOPMENT_FILE_MAP.md`)를 계승한다. 여기는
 | `src/import/dwg/` | ODA 변환 어댑터 | 〃 |
 | `src/import/pointcloud/` | 로더, voxel/RANSAC/DBSCAN, worker | `IMPORT_POINT_CLOUD_PLAN.md` |
 | `src/materials/` | 재료/단면 registry, KS DB, 특성 계산 | `MATERIAL_SECTION_LIBRARY_PLAN.md` |
-| `src/nonlinear/` | 정식 비선형 (state/elements/hinges/control) | `NONLINEAR_ENGINE_PLAN.md` |
-| `src/standards/` | (P2 예정 계승) 기준식 registry 상세화 시 | `../phase2/STANDARD_ENGINE_PLAN.md` |
+| `src/nonlinear/` | 정식 비선형 (state/elements/hinges/fiber/control/dynamics) | `NONLINEAR_ENGINE_PLAN.md` |
+| `src/solver/shell/` | 쉘 요소 (막+판굽힘), 벽체 mid-pier | `ELASTIC_ENGINE_COMPLETENESS_PLAN.md` |
+| `src/design/rc/` | RC 상세설계 (beam/column/wall/slab/rebar/pmCurve) | `DESIGN_MODULES_PLAN.md` |
+| `src/design/steel/` | 철골 상세설계 (classify/compression/flexureLTB/interaction/brace) | 〃 |
+| `src/design/connection/` | 볼트/용접/base plate | 〃 |
+| `src/design/foundation/` | 확대/복합/매트/말뚝 기초 | 〃 |
+| `src/standards/` | KDS 기준식 registry (41 11/12/17, 14 20/31) | `../phase2/STANDARD_ENGINE_PLAN.md`, `DESIGN_MODULES_PLAN.md` |
 
 ## Server Layout
 

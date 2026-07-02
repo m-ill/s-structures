@@ -17,15 +17,17 @@ Phase 3의 목표는 현재의 탄성해석 실무 검토 플랫폼(Phase 2 MVP 
 플랫폼: 로그인 + 프로젝트 저장 + 서버 + 프론트 앱
 ```
 
-## Five Pillars
+## Seven Pillars (rev 2 — Phase 4 폐지, 실무 완전성 흡수)
 
 | Pillar | 내용 | 관련 문서 |
 | --- | --- | --- |
 | 1. 도면 import | DXF 직접 파싱, DWG 변환 경로, 2D 평면→3D 조립 | `IMPORT_DXF_DWG_PLAN.md` |
 | 2. Point cloud import | 점군 로드/시각화, 층/기둥/보/벽 추출, 검토 확정 | `IMPORT_POINT_CLOUD_PLAN.md` |
 | 3. 재료/단면 커스텀 | versioned 라이브러리, 비선형 재료 파라미터 | `MATERIAL_SECTION_LIBRARY_PLAN.md` |
-| 4. 비선형 해석 정식화 | 기하/재료 비선형, NR/arc-length, 검증 benchmark | `NONLINEAR_ENGINE_PLAN.md` |
-| 5. 제품 플랫폼 | 서버, 로그인, 저장, 프론트 앱, 출시 준비 | `ARCHITECTURE.md`, `SERVER_API_PLAN.md`, `AUTH_ACCOUNT_PLAN.md`, `PERSISTENCE_PLAN.md`, `FRONTEND_PLAN.md`, `QA_RELEASE_PLAN.md` |
+| 4. 탄성 엔진 완전성 | 스프링/침하/트러스/offset/부분하중/온도, 벽체/쉘, 하중 v2, CQC/좌굴/THA | `ELASTIC_ENGINE_COMPLETENESS_PLAN.md` |
+| 5. 비선형 해석 정식화 | 기하/재료 비선형, NR/arc-length, PMM/fiber, NLTH | `NONLINEAR_ENGINE_PLAN.md` |
+| 6. 상세 설계 모듈 | RC(보/기둥/벽/슬래브), 철골(LTB/P-M/접합), 기초 — 일람표까지 | `DESIGN_MODULES_PLAN.md` |
+| 7. 제품 플랫폼 | 서버, 로그인, 저장, 프론트 앱, 출시 준비 | `ARCHITECTURE.md`, `SERVER_API_PLAN.md`, `AUTH_ACCOUNT_PLAN.md`, `PERSISTENCE_PLAN.md`, `FRONTEND_PLAN.md`, `QA_RELEASE_PLAN.md` |
 
 ## Baseline From Phase 2
 
@@ -37,7 +39,7 @@ Phase 2 MVP(T01-T50)는 완료 상태다. Phase 3는 아래를 그대로 물려�
 4. 계산서/practice validation/issue registry/대표건물 10종 pilot gate.
 5. agent API 계약 (`agent-contract.json`, capability manifest).
 
-Phase 2 잔여 항목(torsion amplification, wind/seismic v2, 상세 설계 모듈 T34-T40, workflow lock T44-T45)은 Phase 3 마일스톤에 흡수한다. 위치는 `ROADMAP.md`에 명시한다.
+**Phase 4는 없다.** Phase 2 잔여 항목(torsion amplification, wind/seismic v2, rigid offset, snow/토압 하중, 상세 설계 모듈 T34-T40, workflow lock T44-T45)은 전부 Phase 3 마일스톤에 흡수하며, 위치는 `ROADMAP.md`의 Carry-Over 표에 명시한다. 최종 제외 항목은 각 계획 문서의 비목표 표에만 존재한다.
 
 ## Phase 3 Tracks
 
@@ -53,7 +55,7 @@ Phase 2 잔여 항목(torsion amplification, wind/seismic v2, 상세 설계 모�
 
 | 문서 | 역할 |
 | --- | --- |
-| `ROADMAP.md` | P3-M0부터 P3-M14까지 마일스톤 로드맵 |
+| `ROADMAP.md` | P3-M0부터 P3-M20까지 마일스톤 로드맵 (6 stage) |
 | `IMPLEMENTATION_BACKLOG.md` | P3-T## 티켓 백로그 |
 | `PRODUCT_REQUIREMENTS.md` | Phase 3 제품 요구사항 (PRD) |
 | `ARCHITECTURE.md` | 전체 시스템 아키텍처와 기술 결정 |
@@ -64,7 +66,9 @@ Phase 2 잔여 항목(torsion amplification, wind/seismic v2, 상세 설계 모�
 | `IMPORT_DXF_DWG_PLAN.md` | 도면 import 파이프라인 명세 |
 | `IMPORT_POINT_CLOUD_PLAN.md` | 점군 import 파이프라인 명세 |
 | `MATERIAL_SECTION_LIBRARY_PLAN.md` | 재료/단면 라이브러리 명세 |
-| `NONLINEAR_ENGINE_PLAN.md` | 비선형 엔진 명세와 검증 계획 |
+| `ELASTIC_ENGINE_COMPLETENESS_PLAN.md` | 탄성 엔진 격차 리뷰(G1~G17)와 확장 명세 |
+| `NONLINEAR_ENGINE_PLAN.md` | 비선형 엔진 명세 (기하/힌지/fiber/NLTH)와 검증 계획 |
+| `DESIGN_MODULES_PLAN.md` | RC/철골/기초/접합 상세설계 명세 |
 | `QA_RELEASE_PLAN.md` | 테스트 전략, 성능/보안, 출시 게이트 |
 | `DEVELOPMENT_FILE_MAP.md` | Phase 3 폴더/파일 지도 |
 

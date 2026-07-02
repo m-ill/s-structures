@@ -63,13 +63,25 @@ S-Structures는 구조설계사무소가 **도면(DWG/DXF)이나 현장 점군(p
 | FR-11 | 커스텀 재료 (탄성+비선형 파라미터) | P0 | M10 |
 | FR-12 | 단면 DB + 커스텀 단면 | P0 | M10 |
 | FR-13 | 재료/단면 versioned registry, 계산서 표기 | P0 | M10 |
-| FR-14 | 기하비선형 해석 (NR, load control) | P0 | M11 |
-| FR-15 | 재료비선형 (소성힌지) + displacement/arc-length | P0 | M12 |
-| FR-16 | 비선형 결과 후처리/계산서 통합 | P0 | M13 |
-| FR-17 | 승인 잠금 workflow (P2 T44-45) | P1 | M13 |
-| FR-18 | 온보딩 샘플/튜토리얼, 매뉴얼 갱신 | P0 | M14 |
-| FR-19 | 라이선스 키 검증 v1 | P1 | M14 |
+| FR-14 | 기하비선형 해석 (NR, load control) | P0 | M14 |
+| FR-15 | 재료비선형 (소성힌지) + displacement/arc-length | P0 | M15 |
+| FR-16 | 비선형 결과 후처리/계산서 통합 | P0 | M19 |
+| FR-17 | 승인 잠금 workflow (P2 T44-45) | P1 | M19 |
+| FR-18 | 온보딩 샘플/튜토리얼, 매뉴얼 갱신 | P0 | M20 |
+| FR-19 | 라이선스 키 검증 v1 | P1 | M20 |
 | FR-20 | agent API 계약 유지 (전 기능 노출) | P0 | 전체 |
+| FR-21 | 스프링 지지/지점 침하/트러스/인장·압축전담/부재 offset | P0 | M11 |
+| FR-22 | 부분·사다리꼴 분포하중, 부재 모멘트, 온도하중 | P0 | M11 |
+| FR-23 | 전단벽 요소 (mid-pier v1, 쉘 v1) + semi-rigid diaphragm | P0 | M12 |
+| FR-24 | 풍하중 v2 / 지진하중 v2 (KDS 상세 + RSA scaling + Ax) | P0 | M13 |
+| FR-25 | 설하중/토압/수압/부력 | P0 | M13 |
+| FR-26 | CQC, 선형 좌굴 해석, 선형 시간이력, 질량 소스 | P0 | M13 |
+| FR-27 | PMM 힌지 + fiber 단면 | P0 | M16 |
+| FR-28 | 비선형 시간이력(NLTH) + 지진파 관리/scaling | P0 | M16 |
+| FR-29 | RC 상세설계 (보/기둥 PM/벽체/슬래브) + 일람표 | P0 | M17 |
+| FR-30 | 철골 상세설계 (조밀성/LTB/P-M/가새) + 접합/base plate | P0 | M18 |
+| FR-31 | 기초 설계 (확대/복합/매트 v1/말뚝 v1) | P0 | M18 |
+| FR-32 | 설계 일람표 계산서 통합 + NG→issue 연동 | P0 | M18 |
 
 ## Non-Functional Requirements
 
@@ -84,14 +96,17 @@ S-Structures는 구조설계사무소가 **도면(DWG/DXF)이나 현장 점군(p
 | NFR-07 | 이식성 | 브라우저(Chromium 계열) + 단일 node 서버. 데스크톱은 Electron 래핑 |
 | NFR-08 | 의존성 | zero-dependency 기본. 도입 시 결정 기록 필수 |
 
-## Explicit Non-Goals (Phase 3)
+## Explicit Non-Goals (최종 — Phase 4 없음)
 
-1. RC/steel/기초 **상세 설계 자동화** (P2 T34-T40 수준 이상) — Phase 4.
-2. 시공상세/배근도 생성.
-3. IFC/BIM 왕복 완전 지원 — mapping 계약만 유지.
-4. 시간이력 비선형(NLTH) — 엔진 구조는 대비하되 구현은 Phase 4.
-5. 인허가 문서 자동 제출.
-6. 다중 서버 스케일아웃 — 단일 서버 배포까지만.
+rev 2: 상세 설계 모듈과 NLTH는 Phase 3 범위로 승격되었다. 아래만 최종 제외이며, 해당 기능은 계산서/매뉴얼에 미지원을 명시한다.
+
+1. 배근도/샵도면 생성 — 일람표(schedule)까지만.
+2. IFC/BIM 왕복 완전 지원 — mapping 계약만 유지.
+3. 인허가 문서 자동 제출.
+4. 다중 서버 스케일아웃 — 단일 서버 배포까지만.
+5. 시공단계 해석, 이동하중/영향선, 프리스트레스/텐던 (`ELASTIC_ENGINE_COMPLETENESS_PLAN.md` 비목표 표).
+6. PC/목구조/조적 설계, distributed plasticity (`DESIGN_MODULES_PLAN.md`, `NONLINEAR_ENGINE_PLAN.md` 비목표).
+7. 비정형 자동 메쉬, FEM 지반 모델 — 격자 분할/스프링 근사로 대체.
 
 ## Success Criteria (출시 직전 판정)
 
@@ -100,7 +115,9 @@ S-Structures는 구조설계사무소가 **도면(DWG/DXF)이나 현장 점군(p
 | 도면 import | 대표 도면 fixture 세트에서 검토 확정 후 해석 가능 모델 생성 |
 | 점군 import | 합성 벤치마크 recall/precision 목표 달성 + 실측 점군 1건 데모 |
 | 재료 커스텀 | 커스텀 재료/단면으로 해석~계산서 trace 완결 |
-| 비선형 | benchmark 4종(좌굴/대변위/snap-through/pushover 회귀) 통과 |
+| 탄성 완전성 | 격차 목록(G1~G15) 전체 구현 + handcalc/benchmark 통과 |
+| 비선형 | benchmark B1~B8(좌굴/대변위/snap-through/소성/pushover/M-φ/THA) 통과 |
+| 설계 모듈 | RC/철골/기초 수계산 검증 케이스 통과 + 대표건물 일람표 생성, 기본 목차에 `not checked` 장 없음 |
 | 플랫폼 | 가입→로그인→프로젝트→저장→revision→승인 e2e 통과 |
 | 품질 | `QA_RELEASE_PLAN.md` 출시 게이트 전체 통과 |
 | 파일럿 | 실무 시나리오 10종 파일럿 리포트 완료 |
