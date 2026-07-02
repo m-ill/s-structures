@@ -21,9 +21,13 @@ assert.equal(validateImportCandidate(candidate).ok, true);
 assert.ok(score.storyErrorMax < 0.03, `story error ${score.storyErrorMax}`);
 assert.ok(score.columnRecall >= 0.9, `column recall ${score.columnRecall}`);
 assert.ok(score.columnPrecision >= 0.9, `column precision ${score.columnPrecision}`);
+assert.ok(score.beamRecall >= 0.75, `beam recall ${score.beamRecall}`);
+assert.ok(score.beamPrecision >= 0.75, `beam precision ${score.beamPrecision}`);
+assert.equal(score.validationStatus.realScan, 'pending-owner-file');
 assert.ok(candidate.candidates.members.some((m) => m.kind === 'beam'));
 assert.equal(candidate.audit.pointcloud.counts.beams > 0, true);
 assert.equal(candidate.audit.pointcloud.evidence.beamSource, 'synthetic-ground-truth-assisted');
+assert.equal(candidate.audit.pointcloud.evidence.realScanValidation, 'pending-owner-file');
 assert.ok(candidate.audit.pointcloud.limitations.includes('beam-detection-uses-synthetic-ground-truth'));
 assert.ok(candidate.audit.pointcloud.limitations.includes('real-field-pointcloud-validation-pending'));
 assert.ok(buildAgentManifest().dataContracts.includes('phase3PointCloudBenchmark'));
@@ -35,4 +39,6 @@ console.log(JSON.stringify({
   storyErrorMax: score.storyErrorMax,
   columnRecall: score.columnRecall,
   columnPrecision: score.columnPrecision,
+  beamRecall: score.beamRecall,
+  beamPrecision: score.beamPrecision,
 }, null, 2));

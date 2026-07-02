@@ -38,6 +38,7 @@ export function buildPointCloudExtractionSummary(input = {}) {
     evidence: {
       storyLevels: stories.map((s) => ({ id: s.id, z: s.z, confidence: s.confidence ?? null })),
       beamSource: usedGroundTruth ? 'synthetic-ground-truth-assisted' : 'not-detected',
+      realScanValidation: 'pending-owner-file',
     },
     limitations: [
       ...(usedGroundTruth ? ['beam-detection-uses-synthetic-ground-truth'] : ['beam-detection-not-available-without-ground-truth']),
