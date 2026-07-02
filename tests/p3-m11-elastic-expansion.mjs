@@ -76,6 +76,16 @@ assert.equal(settlementExpanded.trace.review.settlementForceTraceReady, true);
 const settlementResult = analyzeModel(settlementModel);
 assert.equal(settlementResult.ok, true);
 assert.ok(Number.isFinite(settlementResult.byCombo.CO1.reactions.B.rz));
+const invalidSettlementSupport = createModel({
+  nodes: [
+    { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'B', x: 4, y: 0, z: 0, settlement: { uz: -0.01 } },
+  ],
+  members: [{ id: 'M1', n1: 'A', n2: 'B', matId: 'steel', secId: 'h300' }],
+});
+const invalidSettlementCheck = validateModel(invalidSettlementSupport);
+assert.equal(invalidSettlementCheck.ok, false);
+assert.ok(invalidSettlementCheck.errors.some((item) => item.message.includes('Settlement requires fixed or spring support')));
 
 const badRange = createModel({
   ...model,

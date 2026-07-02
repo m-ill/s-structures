@@ -43,6 +43,8 @@ The previous M11 trace recorded only input and output load counts. P3-M11 now ex
 
 2026-07-03 member-offset hardening: member end offsets that reduce clear length to zero now produce `MEMBER_OFFSET_CLEAR_LENGTH_ZERO` in the M11 trace warnings and add `member-offset-clear-length-invalid` to review blockers. This prevents reports and AI agents from treating an over-offset member as a valid clear-span analysis case when the solver has to ignore or clamp the offset.
 
+2026-07-03 settlement validation hardening: `validateModel()` now rejects settlement records on unsupported/free nodes and requires at least one finite imposed settlement component. This locks the P3-M11 plan rule that settlement DOFs must belong to fixed or spring supports before solver assembly and AI-agent review.
+
 ## Current Test Gate
 
 `tests/p3-m11-elastic-expansion.mjs` verifies the M11 core behavior and trace contract, including the X-brace tension-only active/inactive iteration. It now also checks that partial distributed load boundaries appear in recovered member stations, member-moment stations stay finite, temperature/gradient handcalc rows are available for reports, spring settlement equivalent force is traceable, and member-offset clear length is traceable. `tests/p3-m10-materials.mjs` remains a dependency gate because the elastic expansion path depends on resolved material and section properties.

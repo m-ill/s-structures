@@ -94,6 +94,14 @@ function validateNodes(model, error, warning) {
     if (node.support === 'spring' && !hasSpring(node.spring)) {
       error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Spring support requires at least one finite positive stiffness.', node.id);
     }
+    if (node.settlement) {
+      if (!['fixed', 'spring'].includes(node.support)) {
+        error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Settlement requires fixed or spring support.', node.id);
+      }
+      if (!hasValidSettlement(node.settlement)) {
+        error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Settlement values must include at least one finite imposed displacement or rotation.', node.id);
+      }
+    }
     if (!usedNodes.has(node.id)) warning(WARNING_CODES.FREE_NODE, 'Node is not connected to any member.', node.id);
   }
 
@@ -298,4 +306,9 @@ function isFiniteNumber(value) {
 
 function hasSpring(spring = {}) {
   return ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'].some((key) => isFiniteNumber(spring[key]) && Number(spring[key]) > 0);
+}
+
+function hasValidSettlement(settlement = {}) {
+  return ['ux', 'uy', 'uz', 'rx', 'ry', 'rz', 'kx', 'ky', 'kz', 'krx', 'kry', 'krz']
+    .some((key) => isFiniteNumber(settlement[key]));
 }
