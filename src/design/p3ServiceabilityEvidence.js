@@ -11,16 +11,26 @@ export function buildP3ServiceabilityEvidence(model, analysis, modules = {}, opt
     evidenceRow('story-drift', drift.rows?.length || 0, drift.summary?.status !== 'NG'),
     evidenceRow('floor-vibration', vibrationRows.length, vibrationRows.every((row) => row.status !== 'NG')),
   ];
+  const review = buildServiceabilityReview(rows);
   return {
     version: P3_SERVICEABILITY_EVIDENCE_VERSION,
     rows,
     deflectionRows,
     drift,
     vibrationRows,
+    requiredEvidence: rows.map((row) => ({
+      id: row.id,
+      status: row.covered ? 'available' : 'missing-or-ng',
+      count: row.count,
+      missingKey: row.covered ? null : row.id,
+      engineerReviewRequired: true,
+    })),
+    review,
     summary: {
       covered: rows.every((row) => row.covered),
       missing: rows.filter((row) => !row.covered).map((row) => row.id),
       issueCount: rows.filter((row) => row.status !== 'OK').length,
+      review,
     },
   };
 }
@@ -43,6 +53,23 @@ function evidenceRow(id, count, clean) {
     covered: count > 0 && clean,
     status: count <= 0 ? 'MISSING' : clean ? 'OK' : 'NG',
   };
+}
+
+function buildServiceabilityReview(rows = []) {
+  const missing = rows.filter((row) => !row.covered).map((row) => row.id);
+  return {
+    status: missing.length ? 'review-required' : 'trace-ready',
+    missing,
+    memberDeflectionReady: rowReady(rows, 'member-deflection'),
+    storyDriftReady: rowReady(rows, 'story-drift'),
+    floorVibrationReady: rowReady(rows, 'floor-vibration'),
+    finalServiceabilityApproval: false,
+    agentDecision: missing.length ? 'collect-serviceability-evidence' : 'serviceability-evidence-ready-for-design-gate',
+  };
+}
+
+function rowReady(rows, id) {
+  return !!rows.find((row) => row.id === id && row.covered);
 }
 
 function normalizeRows(value) {

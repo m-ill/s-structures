@@ -118,6 +118,12 @@ Current status is preliminary. M19 connects nonlinear trace, detailed-design tra
 
 2026-07-03 serviceability evidence hardening: P3-T95 is no longer marked covered by a static hook. `phase3ServiceabilityEvidence` now summarizes member deflection, story drift, and floor vibration evidence for `designGate`; missing evidence adds `serviceability-evidence` and `ticket-coverage` review blockers while remaining visible to reports and AI agents.
 
+2026-07-03 serviceability evidence review update: `phase3ServiceabilityEvidence`
+now exposes `requiredEvidence` rows and a `review` object for member deflection,
+story drift, and floor vibration evidence. `designGate.serviceabilityReview`
+mirrors that status, so AI agents can distinguish a clean P3-T95 serviceability
+trace from missing or NG evidence without parsing the free-form missing list.
+
 2026-07-03 executable review update: `node tests/p3-design-milestone-review.mjs` now locks the P3-M17 to P3-M18 design milestone review contract. The Phase 3 runner includes this check in the P3-M18 group so RC, steel, connection, foundation, formula/issue, serviceability scope, gate paths, and `finalPermitDesign` ownership remain agent-readable.
 
 2026-07-03 design exit-criteria review update: `getPhase3DesignMilestoneReview()` now exposes M17 and M18 plan coverage as `exitCriteria` rows. Each row records the `DESIGN_MODULES_PLAN.md` source, related ticket, requirement text, and automated evidence file, so AI agents can inspect RC beam/column/wall/slab, steel, connection, foundation, formula/issue, serviceability, gate readiness, and final permit-design separation from one review contract.

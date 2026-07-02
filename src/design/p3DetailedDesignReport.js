@@ -92,6 +92,7 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     ticketCoverage: coverage,
     designReview,
     serviceability,
+    serviceabilityReview: serviceability.review || null,
     analysisStatus,
     formulaRegistryVersion: DESIGN_FORMULA_REGISTRY_VERSION,
     unregisteredFormulaCount: formulaTrace.filter((row) => row.standard === 'UNREGISTERED').length,

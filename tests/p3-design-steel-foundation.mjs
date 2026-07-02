@@ -112,6 +112,10 @@ assert.equal(integrated.designGate.designReview.agentDecision, 'resolve-detailed
 assert.deepEqual(integrated.designGate.designReview.missing, ['ticket-coverage', 'serviceability-evidence', 'design-issues']);
 assert.equal(integrated.designGate.serviceability.version, P3_SERVICEABILITY_EVIDENCE_VERSION);
 assert.ok(integrated.designGate.serviceability.summary.missing.includes('floor-vibration'));
+assert.equal(integrated.designGate.serviceability.review.status, 'review-required');
+assert.equal(integrated.designGate.serviceability.review.agentDecision, 'collect-serviceability-evidence');
+assert.equal(integrated.designGate.serviceability.requiredEvidence.find((row) => row.id === 'floor-vibration').status, 'missing-or-ng');
+assert.equal(integrated.designGate.serviceabilityReview.finalServiceabilityApproval, false);
 assert.equal(integrated.designGate.coverage.find((row) => row.ticket === 'P3-T95').covered, false);
 assert.ok(integrated.modules.steel.rows.length > 0);
 assert.ok(integrated.modules.connection.rows.length > 0);
@@ -229,6 +233,8 @@ const cleanIntegratedGate = buildP3DetailedDesignGate({
 });
 assert.equal(cleanIntegratedGate.designReview.status, 'trace-ready');
 assert.equal(cleanIntegratedGate.summary.readyForAgentReview, true);
+assert.equal(cleanIntegratedGate.serviceabilityReview.status, 'trace-ready');
+assert.equal(cleanIntegratedGate.serviceabilityReview.agentDecision, 'serviceability-evidence-ready-for-design-gate');
 const failedAnalysisIntegratedGate = buildP3DetailedDesignGate({
   steel: {
     version: 'steel-test',
