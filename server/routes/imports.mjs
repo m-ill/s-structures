@@ -1,11 +1,13 @@
 import { authenticate, requireProjectRole } from '../auth/guard.mjs';
 import { ApiError, ok } from '../router.mjs';
+import { validateImportCandidate } from '../../src/import/candidate.js';
 
 export function registerImportRoutes(router, ctx) {
   router.post('/api/projects/:id/imports', async (req, res, params, body) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
     await requireProjectRole(ctx, params.id, user.id, 'engineer');
     if (!body?.candidate) throw new ApiError(400, 'VALIDATION', 'candidate is required.');
+    assertImportCandidate(body.candidate, 'candidate');
     const entry = await ctx.projectStore.saveImport(params.id, body);
     return ok({ import: entry });
   });
@@ -31,10 +33,21 @@ export function registerImportRoutes(router, ctx) {
     if (!['confirmed', 'rejected'].includes(body?.status)) {
       throw new ApiError(400, 'VALIDATION', 'status must be confirmed or rejected.');
     }
+    if (body.resolvedCandidate != null) assertImportCandidate(body.resolvedCandidate, 'resolvedCandidate');
     const entry = await ctx.projectStore.updateImport(params.id, params.importId, {
       status: body.status, resolvedCandidate: body.resolvedCandidate ?? null, resolvedBy: user.id,
     });
     if (!entry) throw new ApiError(404, 'NOT_FOUND', 'Import not found.');
     return ok({ import: entry });
   });
+}
+
+function assertImportCandidate(candidate, field) {
+  const validation = validateImportCandidate(candidate);
+  if (!validation.ok) {
+    throw new ApiError(400, 'VALIDATION', `${field} is not a valid ImportCandidate.`, {
+      field,
+      errors: validation.errors,
+    });
+  }
 }

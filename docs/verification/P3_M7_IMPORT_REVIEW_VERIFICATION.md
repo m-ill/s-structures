@@ -55,6 +55,8 @@ The import review model previously showed only generic candidate counts and warn
 
 2026-07-03 plan-unit review: `recognizePlanDxf()` now applies `$INSUNITS` scaling before column, beam, label, and closed-polyline recognition. The audit exposes `units` with declared code, unit name, scale, and missing-unit suspicion, and `tests/p3-m7-dwg-plan.mjs` verifies that a millimeter floor plan produces meter-space column and beam coordinates.
 
+2026-07-03 import server validation: `server/routes/imports.mjs` now validates both saved `candidate` payloads and `resolvedCandidate` payloads with the shared `ImportCandidate` contract before persistence. `tests/p3-m7-import-review-ui.mjs` covers invalid initial import saves and invalid confirmed-resolution candidates, matching the plan rule that import audit records are saved only after candidate validation.
+
 ## Current Test Gate
 
 P3-M7 is covered by:

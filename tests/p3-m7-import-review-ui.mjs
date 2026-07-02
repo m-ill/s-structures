@@ -14,6 +14,15 @@ try {
   const token = login.data.data.token;
   const project = await app.api('POST', '/api/projects', { token, body: { name: 'Import Review' } });
   const projectId = project.data.data.project.id;
+
+  const invalidCandidateSave = await app.api('POST', `/api/projects/${projectId}/imports`, {
+    token,
+    body: { fileId: 'fixture-invalid', candidate: { version: 'wrong' }, audit: {} },
+  });
+  assert.equal(invalidCandidateSave.status, 400);
+  assert.equal(invalidCandidateSave.data.error.code, 'VALIDATION');
+  assert.ok(invalidCandidateSave.data.error.details.errors.includes('version'));
+
   const candidate = buildImportCandidate({
     source: { type: 'dxf', fileId: 'fixture-plan' },
     stories: [{ id: 'S1', z: 0 }],
@@ -44,6 +53,12 @@ try {
   assert.equal(shell.getCurrentView().getSummary().decision.confirmable, true);
   shell.getCurrentView().updateCandidate({ ...candidate, audit: candidate.audit }, 'agent adjusted candidate');
   assert.match(shell.getCurrentView().getSummary().candidate.audit.reviewHistory[0].note, /agent adjusted/);
+  const invalidResolve = await app.api('PATCH', `/api/projects/${projectId}/imports/${jobId}`, {
+    token,
+    body: { status: 'confirmed', resolvedCandidate: { version: 'wrong' } },
+  });
+  assert.equal(invalidResolve.status, 400);
+  assert.equal(invalidResolve.data.error.code, 'VALIDATION');
   await shell.getCurrentView().confirm();
   const after = await app.api('GET', `/api/projects/${projectId}/imports/${jobId}`, { token });
   assert.equal(after.data.data.import.status, 'confirmed');
