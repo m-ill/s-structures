@@ -43,6 +43,8 @@ The previous M12 trace exposed semi-rigid diaphragm rows only. P3-M12 now expose
 
 2026-07-03 P3-M12 rebuild review update: `buildWallSlabEquivalentTrace()` now exposes a top-level `review` block with wall mid-pier, shell frame-link, and semi-rigid redistribution readiness flags, uncovered tickets, preliminary solver-treatment status, blockers, and agent decision. This keeps the available equivalent-frame path separate from production shell/slab finite-element certification.
 
+2026-07-03 coverage hardening: uncovered P3-M12 tickets now become explicit review blockers such as `uncovered-P3-T74`. A wall-only, shell-only, or diaphragm-only trace can still expose useful feature evidence, but `coverageComplete` remains false and the agent decision asks for full wall/slab ticket coverage before treating the M12 trace as complete.
+
 ## Current Test Gate
 
 `tests/p3-m12-wall-slab.mjs` verifies equivalent wall generation, analysis, pier force recovery, shell v1 benchmark traces, shell frame-link assembly, semi-rigid diaphragm validation, material-aware equivalent link sizing, equivalent-brace redistribution with review status rows, and the agent-readable trace contract including solver treatments and limitations.
