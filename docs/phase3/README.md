@@ -4,7 +4,7 @@ phase: 3
 status: active planning and preliminary implementation
 source: user direction 2026-07-02
 
-Phase 3의 목표는 현재의 탄성해석 MVP를 건축구조사무소에서 검토 가능한 실무 플랫폼 수준으로 확장하는 것이다. 핵심 흐름은 도면/점군 입력, 3D 모델 후보 생성, 사용자 검토, 탄성 및 비선형 해석, 상세 설계 trace, 계산서 출력, AI agent 제어이다.
+Phase 3 expands the current elastic-analysis MVP into a practical building-structure platform. The target workflow is drawing/scan input, 3D model candidate generation, human review, elastic and nonlinear analysis, detailed design trace, calculation output, approval workflow, and AI-agent-readable control.
 
 ## Vision
 
@@ -32,15 +32,13 @@ DWG/DXF drawing, point cloud, or JSON model
 
 ## Baseline From Phase 2
 
-Phase 3 inherits these working foundations:
-
 1. Schema-versioned model and validation gate.
 2. 3D elastic frame solver, analysis audit, and benchmark tests.
 3. Story, load, combination, envelope, and report traces.
 4. Representative building scenarios and calculation-package path.
 5. Agent API contract and capability manifest.
 
-Phase 3 is the final planned productization phase. Items excluded from implementation must be listed as limitations in the relevant plan, report, or manual.
+Items excluded from implementation must be listed as limitations in the relevant plan, report, or manual.
 
 ## Milestone Map
 
@@ -70,7 +68,7 @@ Phase 3 is the final planned productization phase. Items excluded from implement
 | `NONLINEAR_ENGINE_PLAN.md` | nonlinear analysis plan |
 | `DESIGN_MODULES_PLAN.md` | detailed design module plan |
 | `QA_RELEASE_PLAN.md` | verification and release gates |
-| `../user-manual/PHASE3_REMAINING_REVIEW.md` | P3-M0 to P3-M20 remaining review map for users and AI agents |
+| `../user-manual/PHASE3_REMAINING_REVIEW.md` | remaining review map for users and AI agents |
 
 ## Reading Order
 
@@ -90,12 +88,10 @@ The correct restart point is P3-M6. Existing implementation should be reviewed a
 | --- | --- |
 | P3-M6 | lock DXF parser, wireframe mapping, layer audit, unsupported-entity audit |
 | P3-M7 | lock DWG adapter contract, 2D plan recognition, import review UI core |
-| P3-M8 | lock point-cloud loader, normalization, worker and viewer buffer |
+| P3-M8 | lock point-cloud loader, normalization, worker, and viewer buffer |
 | P3-M9 | lock synthetic extraction, candidate-to-analysis E2E, real-scan limitation note |
 
 ## Phase 3 Gate
-
-Before a feature is treated as part of Phase 3 baseline:
 
 1. Public API or UI action changes update the agent contract.
 2. User-facing workflow changes update `docs/user-manual/`.
