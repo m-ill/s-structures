@@ -66,6 +66,7 @@ const cleanGate = buildP3IntegratedResultsGate({
   nonlinear: { version: 'nonlinear', capacityCurve: [{ baseShear: 1 }], steps: [{ step: 1 }] },
   design: {
     version: 'design',
+    summary: { itemCount: 1 },
     issueRows: [],
     designGate: { designReview: { status: 'trace-ready' } },
   },
@@ -75,6 +76,24 @@ const cleanGate = buildP3IntegratedResultsGate({
 });
 assert.equal(cleanGate.integratedReview.status, 'trace-ready');
 assert.equal(cleanGate.integratedReview.agentDecision, 'm19-ready-for-m20-launch-review');
+
+const emptyIntegratedResultGate = buildP3IntegratedResultsGate({
+  analysis: { ok: true },
+  resultPostprocessing: { version: 'post', summary: { storyRowCount: 0, memberRowCount: 0 } },
+  nonlinear: { version: 'nonlinear', capacityCurve: [], steps: [] },
+  design: {
+    version: 'design',
+    summary: { itemCount: 0 },
+    issueRows: [],
+    designGate: { designReview: { status: 'trace-ready' } },
+  },
+  workflowLock: { version: 'workflow', editable: true, approvalState: 'not-submitted' },
+  benchmarkEvidence: { ok: true, groups: { geometry: true, hingeControl: true, fiberNlth: true } },
+  methodLimitations: ['limitation'],
+});
+assert.equal(emptyIntegratedResultGate.ticketCoverage.find((row) => row.ticket === 'P3-T58').covered, false);
+assert.ok(emptyIntegratedResultGate.ticketCoverage.find((row) => row.ticket === 'P3-T58').evidence.includes('0 capacity points'));
+assert.ok(emptyIntegratedResultGate.integratedReview.missing.includes('ticket-coverage'));
 
 const approved = applyWorkflowApproval(model, { state: 'approved', rev: 'R2' });
 assert.equal(approved.locked, true);

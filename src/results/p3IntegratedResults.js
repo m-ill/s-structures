@@ -197,12 +197,23 @@ function buildGateSummary(input) {
 function buildTicketCoverage(input) {
   const benchmarkEvidence = input.benchmarkEvidence || {};
   const methodLimitations = input.methodLimitations || [];
+  const storyRows = input.resultPostprocessing?.summary?.storyRowCount || 0;
+  const memberRows = input.resultPostprocessing?.summary?.memberRowCount || 0;
+  const capacityPoints = input.nonlinear?.capacityCurve?.length || 0;
+  const nonlinearStepRows = input.nonlinear?.steps?.length || 0;
+  const designItems = input.design?.summary?.itemCount || 0;
   return [
     {
       ticket: 'P3-T58',
       scope: 'integrated-result-postprocessing',
-      covered: !!input.resultPostprocessing?.version && !!input.nonlinear?.version && !!input.design?.version,
-      evidence: `${input.resultPostprocessing?.summary?.storyRowCount || 0} story rows, ${input.nonlinear?.capacityCurve?.length || 0} capacity points`,
+      covered: !!input.resultPostprocessing?.version
+        && !!input.nonlinear?.version
+        && !!input.design?.version
+        && (storyRows > 0 || memberRows > 0)
+        && capacityPoints > 0
+        && nonlinearStepRows > 0
+        && designItems > 0,
+      evidence: `${storyRows} story rows, ${memberRows} member rows, ${capacityPoints} capacity points, ${nonlinearStepRows} nonlinear steps, ${designItems} design items`,
     },
     {
       ticket: 'P3-T59',
