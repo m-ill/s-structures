@@ -3,6 +3,7 @@ import {
   ARC_LENGTH_CONTROL_VERSION,
   DISPLACEMENT_CONTROL_VERSION,
   FORMAL_PUSHOVER_VERSION,
+  HINGE_ASSIGNMENT_VERSION,
   MOMENT_HINGE_VERSION,
   NONLINEAR_BENCHMARK_VERSION,
   NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
@@ -11,6 +12,7 @@ import {
   buildDisplacementControlTrace,
   buildHingeStateTrace,
   buildNonlinearAnalysisTrace,
+  assignMemberHinges,
   createMomentRotationBackbone,
   createPortalFrameSample,
   createSnapThroughBenchmarkPath,
@@ -43,6 +45,19 @@ assert.ok(arc.steps.some((step) => step.dLambda < 0));
 assert.ok(arc.steps.every((step) => step.satisfied));
 
 const model = createPortalFrameSample();
+model.materials = [{
+  id: 'HINGE_STEEL',
+  version: 1,
+  E: 205000,
+  G: 79000,
+  Fy: 275,
+  nonlinear: { backbone: [{ rotation: 0, moment: 0 }, { rotation: 0.008, moment: 55 }], hardeningRatio: 0.03 },
+}];
+model.members[0].matId = 'HINGE_STEEL@1';
+const assigned = assignMemberHinges(model);
+assert.equal(assigned.version, HINGE_ASSIGNMENT_VERSION);
+assert.ok(assigned.summary.hingeCount >= model.members.length * 2);
+assert.ok(assigned.summary.materialBackboneCount >= 2);
 const pushover = runFormalPushover(model, { steps: 4, referenceBaseShear: 30 });
 assert.equal(pushover.version, FORMAL_PUSHOVER_VERSION);
 assert.ok(pushover.capacityCurve.length > 0);
@@ -61,6 +76,9 @@ assert.equal(trace.hingeControlGate.version, NONLINEAR_HINGE_CONTROL_TRACE_VERSI
 assert.deepEqual(trace.hingeControlGate.tickets, ['P3-T54', 'P3-T55', 'P3-T56']);
 assert.deepEqual(trace.hingeControlGate.benchmarks.requiredCases, ['B3', 'B4', 'B5']);
 assert.equal(trace.hingeControlGate.control.postPeakTracked, true);
+assert.equal(trace.hingeControlGate.contracts.hingeAssignment, HINGE_ASSIGNMENT_VERSION);
+assert.ok(trace.hingeControlGate.assignment.summary.hingeCount >= model.members.length * 2);
+assert.ok(trace.hingeControlGate.tangentAssembly.hingeCorrectionCount >= 1);
 assert.equal(trace.benchmarks.hingeControl.ok, true);
 assert.ok(trace.hingeStates.length > 0);
 assert.ok(trace.capacityCurve.length > 0);

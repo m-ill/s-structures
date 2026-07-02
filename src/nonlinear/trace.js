@@ -4,6 +4,7 @@ import { NEWTON_RAPHSON_VERSION, solveNewtonRaphson } from './control/newtonRaph
 import { ARC_LENGTH_CONTROL_VERSION, buildArcLengthTrace, createSnapThroughBenchmarkPath } from './control/arcLength.js';
 import { buildDisplacementControlTrace, DISPLACEMENT_CONTROL_VERSION } from './control/displacementControl.js';
 import { buildHingeStateTrace, createMomentRotationBackbone, MOMENT_HINGE_VERSION } from './hinges/momentHinge.js';
+import { assignMemberHinges, HINGE_ASSIGNMENT_VERSION } from './hinges/hingeAssign.js';
 import { createPmmBackboneSet, interpolatePmmBackbone, PMM_HINGE_VERSION } from './hinges/pmmHinge.js';
 import { buildRectangularFiberSection, FIBER_SECTION_VERSION } from './fiber/fiberSection.js';
 import { computeMomentCurvature, MOMENT_CURVATURE_VERSION } from './fiber/momentCurvature.js';
@@ -25,6 +26,7 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
   const fiberNlthBenchmarks = options.includeBenchmarks === false ? null : runNonlinearFiberNlthBenchmarks(options.benchmarks);
   const backbone = createMomentRotationBackbone(options.backbone);
   const hingeTrace = buildHingeStateTrace(options.hingeSteps || [{ rotation: 0 }, { rotation: backbone.points[1].theta * 1.1 }], backbone);
+  const hingeAssignment = assignMemberHinges(model, options.hingeAssignment);
   const pushover = options.includePushover === false ? null : runFormalPushover(model, options.pushover || {});
   const displacementControl = buildDisplacementControlTrace(options.displacementTargets || [0.01, 0.02], options.displacementControl);
   const arcLength = buildArcLengthTrace(options.arcLengthPath || createSnapThroughBenchmarkPath(), options.arcLength);
@@ -35,7 +37,10 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
   const rayleigh = solveRayleighDamping(options.rayleigh);
   const record = scaleGroundMotion(parseGroundMotionText(options.groundMotionText || '0 0.1 -0.1 0', { dt: options.dt || 0.02 }), options.groundMotion);
   const nlth = runNewmarkNlth({ accelerations: record.accelerations, dt: record.dt, ...(options.nlth || {}) });
-  const assembly = buildNonlinearTangentAssembly(model, state, options.assembly);
+  const assembly = buildNonlinearTangentAssembly(model, state, {
+    hinges: hingeAssignment.hinges,
+    ...(options.assembly || {}),
+  });
   return {
     version: NONLINEAR_TRACE_VERSION,
     method: {
@@ -52,8 +57,14 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
     ],
     state: snapshotAnalysisState(state),
     assembly,
+    hingeAssignment,
     geometryGate: buildNonlinearGeometryGate(state, geometryBenchmarks, { ...options.geometryGate, assembly }),
-    hingeControlGate: buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, { displacementControl, arcLength }),
+    hingeControlGate: buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, {
+      displacementControl,
+      arcLength,
+      hingeAssignment,
+      assembly,
+    }),
     fiberNlthGate: buildNonlinearFiberNlthGate({ pmm, fiber, rayleigh, groundMotion: record, nlth }, fiberNlthBenchmarks),
     steps: pushover?.steps || [],
     capacityCurve: pushover?.capacityCurve || [],
@@ -137,11 +148,20 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
     tickets: ['P3-T54', 'P3-T55', 'P3-T56'],
     contracts: {
       momentHinge: MOMENT_HINGE_VERSION,
+      hingeAssignment: HINGE_ASSIGNMENT_VERSION,
       displacementControl: DISPLACEMENT_CONTROL_VERSION,
       arcLength: ARC_LENGTH_CONTROL_VERSION,
       formalPushover: pushover?.version || null,
     },
     hinge: summarizeHingeTrace(hingeTrace),
+    assignment: options.hingeAssignment ? {
+      version: options.hingeAssignment.version,
+      summary: options.hingeAssignment.summary,
+    } : null,
+    tangentAssembly: options.assembly ? {
+      version: options.assembly.version,
+      hingeCorrectionCount: options.assembly.summary?.hingeCorrectionCount || 0,
+    } : null,
     control: {
       displacementSteps: displacementControl.steps.length,
       arcLengthSteps: arcLength.steps.length,
@@ -168,7 +188,7 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       })),
     } : null,
     limitations: [
-      'P3-M15 records concentrated hinge and control traces without tangent stiffness degradation condensation.',
+      'P3-M15 assigns concentrated member-end hinges and records tangent assembly corrections.',
       'PMM interaction, fiber section response, and nonlinear time history remain P3-M16 scope.',
     ],
   };

@@ -11,7 +11,7 @@ This note verifies P3-M15 against `docs/phase3/NONLINEAR_ENGINE_PLAN.md` tickets
 
 | Ticket | Plan item | Evidence |
 | --- | --- | --- |
-| P3-T54 | Moment-rotation hinge backbone and state trace | `src/nonlinear/hinges/momentHinge.js` |
+| P3-T54 | Moment-rotation hinge backbone, assignment, and state trace | `src/nonlinear/hinges/momentHinge.js`, `src/nonlinear/hinges/hingeAssign.js` |
 | P3-T55 | Displacement control and Crisfield arc-length trace | `src/nonlinear/control/displacementControl.js`, `arcLength.js` |
 | P3-T56 | Formal pushover result contract and B4/B5 link | `src/nonlinear/pushoverFormal.js` |
 | Agent trace | `getNonlinearAnalysisTrace()` includes `hingeControlGate` |
@@ -26,7 +26,8 @@ The gate records:
 2. hinge backbone point IDs, state rows, and event transitions
 3. displacement and arc-length control step summaries with post-peak tracking
 4. B3, B4, and B5 benchmark case status
-5. explicit limitations separating M15 from PMM, fiber, and nonlinear time-history scope
+5. member-end hinge assignment summary and tangent assembly correction count
+6. explicit limitations separating M15 from PMM, fiber, and nonlinear time-history scope
 
 ## Formal Pushover Fix
 
@@ -34,8 +35,8 @@ The gate records:
 
 ## Current Test Gate
 
-`tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, hinge state events, displacement-control increments, arc-length post-peak path tracking, formal pushover output, B3/B4/B5 benchmark registration, and agent manifest exposure.
+`tests/p3-m15-nonlinear-hinge-control.mjs` verifies M-theta backbone creation, member-end hinge assignment from material nonlinear backbone data, hinge state events, displacement-control increments, arc-length post-peak path tracking, formal pushover output, B3/B4/B5 benchmark registration, tangent assembly correction exposure, and agent manifest exposure.
 
 ## Remaining Limits
 
-P3-M15 remains preliminary. It does not yet condense hinge tangent degradation into the global tangent stiffness path. PMM interaction, fiber section response, and nonlinear time-history remain P3-M16 scope.
+P3-M15 remains preliminary. It now feeds concentrated hinge tangent corrections into the tangent assembly trace, but it does not yet run a full hinge-controlled global nonlinear equilibrium loop. PMM interaction, fiber section response, and nonlinear time-history remain P3-M16 scope.

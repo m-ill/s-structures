@@ -313,6 +313,10 @@ export {
   createSnapThroughBenchmarkPath,
 } from './nonlinear/control/arcLength.js';
 export {
+  HINGE_ASSIGNMENT_VERSION,
+  assignMemberHinges,
+} from './nonlinear/hinges/hingeAssign.js';
+export {
   MOMENT_HINGE_VERSION,
   buildHingeStateTrace,
   createMomentRotationBackbone,
