@@ -150,6 +150,7 @@
     "test:p3nonlinear-review": "node tests/p3-nonlinear-milestone-review.mjs",
     "test:p3m17": "node tests/p3-design-rc.mjs",
     "test:p3m18": "node tests/p3-design-steel-foundation.mjs",
+    "test:p3design-review": "node tests/p3-design-milestone-review.mjs",
     "test:p3engineering": "node tests/p3-engineering-validation-review.mjs",
     "test:p3m19": "node tests/p3-m19-integrated-report.mjs",
     "test:p3m20": "node tests/p3-launch-gate.mjs",
