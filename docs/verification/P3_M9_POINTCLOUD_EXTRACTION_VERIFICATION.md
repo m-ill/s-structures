@@ -22,6 +22,7 @@ This note verifies P3-M9 against `docs/phase3/IMPORT_POINT_CLOUD_PLAN.md`.
 | Candidate evidence contract | extraction summary exposes story/column/beam/wall evidence, confidence bands, and wall review status |
 | Benchmark review decision | benchmark score exposes `review.syntheticGate`, failed target IDs, real scan gate, and AI-readable decision |
 | Real-scan validation decision | extraction summary and benchmark score now share `buildPointCloudExtractionReview()` so owner-file status changes are reflected in `realScanGate`, `productionReady`, and `agentDecision` |
+| Candidate-to-analysis review decision | extraction summary exposes `candidateReview` so AI agents know the E2E path exists but remains human-review gated |
 
 ## Added Review Finding
 
@@ -38,6 +39,8 @@ The previous extraction audit only exposed raw counts. P3-M9 now records confide
 2026-07-02 wall-candidate update: `wallDetect.js` now exposes wall panel review candidates from synthetic ground truth or user-supplied review input. The extraction summary records `wallExtraction.status`, candidate geometry, confidence band, `midPierReady`, and limitations. These wall candidates are audit/review evidence only; the point-cloud import path does not yet auto-convert wall panels into production mid-pier analysis members.
 
 2026-07-02 real-scan decision update: point-cloud extraction review decisions now normalize `pending-owner-file`, `checked`, and `failed` states. A synthetic benchmark pass remains non-production until real scan validation is `checked`; AI agents can branch on `pointcloud.evidence.review.productionReady` instead of inferring readiness from raw benchmark values.
+
+2026-07-03 P3-M9 rebuild review update: extraction summaries now include `candidateReview` with `importCandidateGenerated`, `candidateToAnalysisPath`, `sourceAssistance`, `humanReviewRequired`, blockers, the E2E test reference, and an AI decision. This documents the planned ImportCandidate-to-analysis path while preserving the human-review requirement for synthetic-assisted or unvalidated field scans.
 
 ## Current Test Gate
 

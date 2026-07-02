@@ -89,6 +89,15 @@ assert.equal(candidate.audit.pointcloud.evidence.realScanValidation, 'pending-ow
 assert.equal(candidate.audit.pointcloud.evidence.review.realScanGate, 'pending-owner-file');
 assert.equal(candidate.audit.pointcloud.evidence.review.agentDecision, 'synthetic-benchmark-pass-real-scan-pending');
 assert.equal(candidate.audit.pointcloud.evidence.review.productionReady, false);
+assert.equal(candidate.audit.pointcloud.candidateReview.importCandidateGenerated, true);
+assert.equal(candidate.audit.pointcloud.candidateReview.candidateToAnalysisPath, 'available-after-human-review');
+assert.equal(candidate.audit.pointcloud.candidateReview.sourceAssistance, 'synthetic-ground-truth-assisted');
+assert.equal(candidate.audit.pointcloud.candidateReview.humanReviewRequired, true);
+assert.equal(candidate.audit.pointcloud.candidateReview.productionReady, false);
+assert.ok(candidate.audit.pointcloud.candidateReview.blockers.includes('synthetic-ground-truth-assisted-extraction'));
+assert.ok(candidate.audit.pointcloud.candidateReview.blockers.includes('real-scan-validation-not-checked'));
+assert.equal(candidate.audit.pointcloud.candidateReview.relatedTest, 'tests/p3-pointcloud-e2e.mjs');
+assert.equal(candidate.audit.pointcloud.candidateReview.agentDecision, 'review-pointcloud-candidate-before-analysis');
 assert.deepEqual(candidate.audit.pointcloud.evidence.confidenceBands, {
   high: '>=0.8',
   review: '0.5-0.8',

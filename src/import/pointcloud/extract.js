@@ -72,11 +72,35 @@ export function buildPointCloudExtractionSummary(input = {}) {
       review,
       wallExtraction,
     },
+    candidateReview: buildCandidateReview({ stories, columns, beams, walls, usedGroundTruth, realScanValidation, review }),
     limitations: [
       ...(usedGroundTruth ? ['beam-detection-uses-synthetic-ground-truth'] : ['beam-detection-not-available-without-ground-truth']),
       ...(walls.length ? ['wall-candidates-require-human-review'] : ['wall-extraction-pending-real-scan-validation']),
       'real-field-pointcloud-validation-pending',
     ],
+  };
+}
+
+function buildCandidateReview(input) {
+  const memberCandidateCount = input.columns.length + input.beams.length;
+  const generated = memberCandidateCount > 0 && input.stories.length > 0;
+  const blockers = [];
+  if (!generated) blockers.push('insufficient-structural-candidates');
+  if (input.usedGroundTruth) blockers.push('synthetic-ground-truth-assisted-extraction');
+  if (input.walls.length > 0) blockers.push('wall-candidates-require-human-review');
+  if (input.realScanValidation !== 'checked') blockers.push('real-scan-validation-not-checked');
+  return {
+    importCandidateGenerated: generated,
+    memberCandidateCount,
+    sourceAssistance: input.usedGroundTruth ? 'synthetic-ground-truth-assisted' : 'scan-only',
+    candidateToAnalysisPath: generated ? 'available-after-human-review' : 'blocked',
+    humanReviewRequired: true,
+    productionReady: false,
+    blockers,
+    relatedTest: 'tests/p3-pointcloud-e2e.mjs',
+    agentDecision: generated
+      ? 'review-pointcloud-candidate-before-analysis'
+      : 'fix-pointcloud-extraction-before-analysis',
   };
 }
 
