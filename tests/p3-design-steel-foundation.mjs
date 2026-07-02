@@ -63,6 +63,10 @@ assert.equal(integrated.designGate.formulaCount, integrated.formulaTrace.length)
 assert.equal(integrated.designGate.issueCount, integrated.issueRows.length);
 assert.equal(integrated.formulaRegistryVersion, DESIGN_FORMULA_REGISTRY_VERSION);
 assert.equal(integrated.designGate.unregisteredFormulaCount, 0);
+assert.deepEqual(integrated.designGate.coverage.map((row) => row.ticket), ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95']);
+assert.ok(integrated.designGate.coverage.every((row) => row.covered));
+assert.ok(integrated.issueRows.every((row) => Array.isArray(row.formulaIds)));
+assert.ok(integrated.issueRows.some((row) => row.formulaIds.length > 0));
 
 const target = { model: () => frame, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => frameAnalysis });

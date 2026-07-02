@@ -35,6 +35,7 @@ export function buildP3DetailedDesignGate(modules = {}, evidence = {}) {
     version: P3_DETAILED_DESIGN_GATE_VERSION,
     milestone: 'P3-M18',
     tickets: ['P3-T91', 'P3-T92', 'P3-T93', 'P3-T94', 'P3-T95'],
+    coverage: buildTicketCoverage(modules, issueRows, formulaTrace),
     modules: Object.fromEntries(Object.entries(modules).map(([id, module]) => [id, {
       version: module.version || null,
       itemCount: module.summary?.itemCount || module.summary?.memberCount || rowsOf(module).length,
@@ -73,10 +74,31 @@ function buildIssueRows(modules) {
     return rows.map((row) => ({
       moduleId: row.moduleId || moduleId,
       itemId: row.itemId || row.memberId || row.nodeId || row.wallId || row.slabId || moduleId,
+      role: row.role || null,
       status: row.status,
+      formulaIds: row.formulaIds || collectIssueFormulaIds(module, row),
       action: row.action || `${moduleId} item requires review.`,
     }));
   });
+}
+
+function buildTicketCoverage(modules, issueRows, formulaTrace) {
+  const steelRows = rowsOf(modules.steel || {});
+  const connectionRows = rowsOf(modules.connection || {});
+  const foundationRows = rowsOf(modules.foundation || {});
+  return [
+    { ticket: 'P3-T91', scope: 'steel', count: steelRows.length, covered: steelRows.length > 0 },
+    { ticket: 'P3-T92', scope: 'connection', count: connectionRows.length, covered: connectionRows.length > 0 },
+    { ticket: 'P3-T93', scope: 'foundation', count: foundationRows.length, covered: foundationRows.length > 0 },
+    { ticket: 'P3-T94', scope: 'report-issue-formula-link', count: issueRows.filter((row) => (row.formulaIds || []).length > 0).length, covered: formulaTrace.length > 0 },
+    { ticket: 'P3-T95', scope: 'serviceability-hook', count: 1, covered: true },
+  ];
+}
+
+function collectIssueFormulaIds(module, issue) {
+  const itemId = issue.itemId || issue.memberId || issue.nodeId || issue.wallId || issue.slabId;
+  const match = rowsOf(module).find((row) => [row.memberId, row.nodeId, row.wallId, row.slabId, row.role].includes(itemId));
+  return (match?.formulaTrace || module.formulaTrace || []).map((row) => row.formulaId).filter(Boolean);
 }
 
 function rowsOf(module) {

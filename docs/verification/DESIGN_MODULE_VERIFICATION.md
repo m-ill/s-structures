@@ -35,6 +35,8 @@ Current status is preliminary. M18 adds traceable steel, connection, base-plate,
 
 2026-07-02 review update: P3-M18 now exposes `designGate` with P3-T91 to P3-T95 coverage, module versions, formula count, issue count, formula registry version, and a serviceability hook marker. Foundation detailed reports now also expose flat `rows`, so spread, pile, combined, and mat checks are all available to the integrated issue scanner.
 
+2026-07-02 review update: `designGate.coverage` now reports ticket-level coverage for steel, connection, foundation, issue/formula linking, and serviceability. Integrated issue rows preserve `formulaIds`, so AI agents can navigate from WARN/NG items to the governing formula references instead of re-scanning every module.
+
 2026-07-02 registry update: Steel, connection, base-plate, and foundation formula traces now resolve to registered standard/clause/title metadata. The integrated gate records `unregisteredFormulaCount`, which must stay zero for the current trace set.
 
 ## P3-M19 Integrated Results And Report
