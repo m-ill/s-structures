@@ -124,7 +124,58 @@ assert.deepEqual(story1.audit.unusedLayers, ['S-TEXT']);
 assert.equal(story1.audit.layerUsage.find((row) => row.layer === 'S-TEXT').recognized, false);
 assert.equal(story1.audit.labelEvidence.primaryLabel, '1F');
 assert.equal(story1.audit.labelEvidence.agentDecision, 'use-labels-for-human-review');
+assert.equal(story1.audit.units.units, 'm');
+assert.equal(story1.audit.units.scale, 1);
 assert.equal(story2.columns[0].z, 3);
+
+const mmPlan = recognizePlanDxf([
+  '0', 'SECTION',
+  '2', 'HEADER',
+  '9', '$INSUNITS',
+  '70', '4',
+  '0', 'ENDSEC',
+  '0', 'SECTION',
+  '2', 'ENTITIES',
+  '0', 'CIRCLE',
+  '8', 'S-COL',
+  '10', '0',
+  '20', '0',
+  '30', '0',
+  '40', '200',
+  '0', 'CIRCLE',
+  '8', 'S-COL',
+  '10', '5000',
+  '20', '0',
+  '30', '0',
+  '40', '200',
+  '0', 'LINE',
+  '8', 'S-BEAM',
+  '10', '0',
+  '20', '0',
+  '30', '0',
+  '11', '5000',
+  '21', '0',
+  '31', '0',
+  '0', 'TEXT',
+  '8', 'S-TEXT',
+  '10', '0',
+  '20', '0',
+  '30', '0',
+  '1', 'MM-1F',
+  '0', 'ENDSEC',
+  '0', 'EOF',
+].join('\n'), {
+  storyId: 'mm-plan',
+  elevation: 0,
+  layerMap,
+  expected: { columns: 2, beams: 1 },
+});
+assert.equal(mmPlan.audit.units.units, 'mm');
+assert.equal(mmPlan.audit.units.scale, 0.001);
+assert.equal(mmPlan.columns[1].x, 5);
+assert.equal(mmPlan.beams[0].to.x, 5);
+assert.equal(mmPlan.texts[0].point.x, 0);
+assert.equal(mmPlan.audit.recognitionQuality.ok, true);
 
 const closedColumnPlan = recognizePlanDxf([
   '0', 'SECTION',

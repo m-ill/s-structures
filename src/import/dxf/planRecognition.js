@@ -5,7 +5,9 @@ export const DXF_PLAN_RECOGNITION_VERSION = 'p3-m7-dxf-plan-recognition';
 
 export function recognizePlanDxf(text, options = {}) {
   const parsed = parseDxf(text);
-  const geometry = dxfEntitiesToGeometry(parsed);
+  const rawGeometry = dxfEntitiesToGeometry(parsed);
+  const unit = resolvePlanUnits(parsed.header, rawGeometry, options);
+  const geometry = scalePlanGeometry(rawGeometry, unit.scale);
   const layerRules = normalizeLayerRules(options.layerMap || {});
   const elevation = Number(options.elevation ?? options.z ?? 0);
   const rawColumns = [
@@ -45,8 +47,47 @@ export function recognizePlanDxf(text, options = {}) {
       layerUsage: layerUsage.rows,
       labelEvidence,
       recognitionQuality,
+      units: unit,
     },
   };
+}
+
+function resolvePlanUnits(header, geometry, options) {
+  const declared = Number(header?.$INSUNITS ?? options.insunits ?? 0);
+  const scale = ({ 4: 1e-3, 5: 1e-2, 6: 1, 1: 0.0254 }[declared]) || Number(options.unitScale || 1);
+  const units = ({ 4: 'mm', 5: 'cm', 6: 'm', 1: 'inch' }[declared]) || options.units || 'm';
+  const maxCoord = maxPlanCoordinate(geometry);
+  return {
+    declared,
+    units,
+    scale,
+    suspicion: declared ? null : maxCoord > 100 ? 'missing-units-large-plan-coordinates' : null,
+  };
+}
+
+function scalePlanGeometry(geometry, scale) {
+  const point = (row) => ({ x: row.x * scale, y: row.y * scale, z: row.z * scale });
+  return {
+    ...geometry,
+    segments: geometry.segments.map((segment) => ({
+      ...segment,
+      from: point(segment.from),
+      to: point(segment.to),
+    })),
+    points: geometry.points.map((row) => ({ ...row, point: point(row.point) })),
+    circles: geometry.circles.map((row) => ({ ...row, center: point(row.center), radius: row.radius * scale })),
+    texts: geometry.texts.map((row) => ({ ...row, point: point(row.point) })),
+  };
+}
+
+function maxPlanCoordinate(geometry) {
+  const values = [
+    ...geometry.segments.flatMap((segment) => [segment.from, segment.to]),
+    ...geometry.points.map((row) => row.point),
+    ...geometry.circles.map((row) => row.center),
+    ...geometry.texts.map((row) => row.point),
+  ].flatMap((point) => [Math.abs(point.x), Math.abs(point.y), Math.abs(point.z)]);
+  return Math.max(0, ...values);
 }
 
 function columnCandidate(point, layer, index, source, rules, elevation) {
