@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import {
   ELASTIC_EXPANSION_VERSION,
+  UNILATERAL_MEMBER_TRACE_VERSION,
   analyzeModel,
+  buildAdvancedElasticTrace,
   createModel,
   expandAdvancedLoads,
   validateModel,
@@ -63,6 +65,43 @@ const trussResult = analyzeModel(trussModel);
 assert.equal(trussResult.ok, true);
 assert.equal(trussResult.byCombo.CO1.elasticExpansion.features.trussMembers, 1);
 assert.ok(trussResult.byCombo.CO1.memberResults.T1.Nmax > 0);
+
+const braceModel = createModel({
+  nodes: [
+    { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
+    { id: 'B', x: 4, y: 0, z: 0, support: 'fixed' },
+    { id: 'C', x: 0, y: 0, z: 3 },
+    { id: 'D', x: 4, y: 0, z: 3 },
+  ],
+  members: [
+    { id: 'C1', n1: 'A', n2: 'C', matId: 'steel', secId: 'h300' },
+    { id: 'C2', n1: 'B', n2: 'D', matId: 'steel', secId: 'h300' },
+    { id: 'B1', n1: 'C', n2: 'D', matId: 'steel', secId: 'h300' },
+    { id: 'X1', type: 'tensionOnly', n1: 'A', n2: 'D', matId: 'steel', secId: 'h300' },
+    { id: 'X2', type: 'tensionOnly', n1: 'B', n2: 'C', matId: 'steel', secId: 'h300' },
+  ],
+  loads: [{ id: 'P1', type: 'nodal', node: 'D', P: 50, dir: '+x', case: 'D' }],
+});
+const braceResult = analyzeModel(braceModel);
+assert.equal(braceResult.ok, true);
+const unilateral = braceResult.byCombo.CO1.unilateral;
+assert.equal(unilateral.version, 'p3-m11-unilateral-member-iteration');
+assert.equal(unilateral.converged, true);
+assert.ok(unilateral.iterationCount >= 2);
+assert.ok(unilateral.inactiveMemberIds.includes('X2'));
+assert.equal(braceResult.byCombo.CO1.memberResults.X2, undefined);
+const braceTrace = buildAdvancedElasticTrace(braceModel, braceResult);
+assert.equal(braceTrace.unilateral.version, UNILATERAL_MEMBER_TRACE_VERSION);
+assert.equal(braceTrace.unilateral.comboCount, braceModel.loadCombinations.length);
+assert.equal(braceTrace.unilateral.convergedCount, braceModel.loadCombinations.length);
+assert.ok(braceTrace.summary.unilateralInactiveMemberCount >= 1);
+const limitedBraceResult = analyzeModel(createModel({
+  ...braceModel,
+  analysisSettings: { ...braceModel.analysisSettings, unilateralMaxIterations: 1 },
+}));
+assert.equal(limitedBraceResult.byCombo.CO1.unilateral.converged, false);
+assert.equal(limitedBraceResult.byCombo.CO1.memberResults.X2, undefined);
+assert.ok(limitedBraceResult.audit.warnings.some((warning) => warning.code === 'UNILATERAL_NOT_CONVERGED'));
 
 const cantilever = createModel({
   nodes: [

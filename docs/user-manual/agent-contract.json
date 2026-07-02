@@ -216,7 +216,8 @@
     "phase3NonlinearFiberNlthTrace",
     "phase3NonlinearTrace",
     "phase3MaterialLibraryEdit",
-    "phase3DesignFormulaRegistry"
+    "phase3DesignFormulaRegistry",
+    "unilateralMemberTrace"
   ],
   "dataContracts": [
     "phase3RcDesignGate",
@@ -233,6 +234,7 @@
     "phase3MaterialLibraryEdit",
     "phase3DesignFormulaRegistry",
     "phase3DesignFormulaTrace",
+    "unilateralMemberTrace",
     "phase3PointCloudExtractionSummary",
     "phase3ImportReviewUi"
   ]

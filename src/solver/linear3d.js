@@ -84,8 +84,18 @@ function withAudit(output) {
 }
 
 export function analyzeAll(model, factors = null, options = {}) {
+  if (!options.skipUnilateral && hasUnilateralMembers(model)) {
+    return analyzeUnilateralMembers(model, factors, options);
+  }
+  return analyzeAllOnce(model, factors, options);
+}
+
+function analyzeAllOnce(model, factors = null, options = {}) {
   const nodes = model.nodes || [];
-  const members = model.members || [];
+  const activeMemberIds = options.activeMemberIds || null;
+  const members = activeMemberIds
+    ? (model.members || []).filter((member) => activeMemberIds.has(member.id))
+    : (model.members || []);
   if (!members.length) return { ok: false, empty: true };
 
   const analysisSettings = model.analysisSettings || {};
@@ -189,6 +199,69 @@ export function analyzeAll(model, factors = null, options = {}) {
   out.solver = summarizeSolverDiagnostics(out.solver.components);
   out.summary = buildEquilibriumSummary(nodes, members, loads, out);
   return out;
+}
+
+function analyzeUnilateralMembers(model, factors = null, options = {}) {
+  const unilateral = (model.members || []).filter((member) => ['tensionOnly', 'compressionOnly'].includes(member.behavior || member.type));
+  const maxIterations = Math.max(1, model.analysisSettings?.unilateralMaxIterations | 0 || 10);
+  const tolerance = Number(model.analysisSettings?.unilateralTolerance) >= 0 ? Number(model.analysisSettings.unilateralTolerance) : 1e-7;
+  const active = new Set((model.members || []).map((member) => member.id));
+  const iterations = [];
+  let result = null;
+  let converged = false;
+
+  for (let iteration = 1; iteration <= maxIterations; iteration += 1) {
+    result = analyzeAllOnce(model, factors, { ...options, skipUnilateral: true, activeMemberIds: active });
+    const newlyInactive = [];
+    if (result.ok) {
+      for (const member of unilateral) {
+        if (!active.has(member.id)) continue;
+        const axial = signedAxial(result.memberResults?.[member.id]);
+        const behavior = member.behavior || member.type;
+        if (behavior === 'tensionOnly' && axial < -tolerance) newlyInactive.push({ memberId: member.id, axial, reason: 'compression-in-tension-only' });
+        if (behavior === 'compressionOnly' && axial > tolerance) newlyInactive.push({ memberId: member.id, axial, reason: 'tension-in-compression-only' });
+      }
+    }
+    for (const row of newlyInactive) active.delete(row.memberId);
+    iterations.push({
+      iteration,
+      ok: !!result.ok,
+      activeMemberIds: [...active].sort(),
+      newlyInactive,
+      inactiveMemberIds: unilateral.map((member) => member.id).filter((id) => !active.has(id)).sort(),
+    });
+    if (!result.ok || !newlyInactive.length) {
+      converged = !!result.ok;
+      break;
+    }
+  }
+
+  const lastIteration = iterations[iterations.length - 1];
+  if (!result || (!converged && lastIteration?.newlyInactive?.length)) {
+    result = analyzeAllOnce(model, factors, { ...options, skipUnilateral: true, activeMemberIds: active });
+  }
+  result.unilateral = {
+    version: 'p3-m11-unilateral-member-iteration',
+    enabled: true,
+    converged,
+    maxIterations,
+    iterationCount: iterations.length,
+    activeMemberIds: [...active].sort(),
+    inactiveMemberIds: unilateral.map((member) => member.id).filter((id) => !active.has(id)).sort(),
+    iterations,
+    warning: converged ? null : 'UNILATERAL_NOT_CONVERGED',
+  };
+  return result;
+}
+
+function hasUnilateralMembers(model = {}) {
+  return (model.members || []).some((member) => ['tensionOnly', 'compressionOnly'].includes(member.behavior || member.type));
+}
+
+function signedAxial(memberResult) {
+  const values = memberResult?.N || [];
+  if (!values.length) return 0;
+  return values.reduce((sum, value) => sum + Number(value || 0), 0) / values.length;
 }
 
 export function analyzePDeltaCombinations(model, combos) {

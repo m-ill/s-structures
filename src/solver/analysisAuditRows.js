@@ -4,6 +4,8 @@ export function buildAuditRows(byCombo = {}) {
     ok: !!result?.ok && !!result?.anyOk,
     equilibriumResidual: finite(result?.summary?.equilibriumResidual),
     solverResidualNorm: finite(result?.summary?.solverResidualNorm),
+    unilateralConverged: result?.unilateral?.enabled ? !!result.unilateral.converged : null,
+    unilateralInactiveMemberCount: result?.unilateral?.inactiveMemberIds?.length ?? 0,
   }));
 }
 

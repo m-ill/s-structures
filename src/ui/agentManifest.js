@@ -28,6 +28,7 @@ import { RC_DETAILING_VERSION } from '../design/rcDetailing.js';
 import { SERVICEABILITY_DRIFT_VERSION } from '../design/serviceability.js';
 import { STEEL_DETAILING_VERSION } from '../design/steelDetailing.js';
 import { ADVANCED_ELASTIC_TRACE_VERSION } from '../results/advancedTraceUtils.js';
+import { UNILATERAL_MEMBER_TRACE_VERSION } from '../results/unilateralTrace.js';
 import { COMBINATION_ENVELOPE_CONTRACT_VERSION } from '../results/combinationEnvelopeVersion.js';
 import { RESULT_POSTPROCESSING_VERSION } from '../results/resultUtils.js';
 import { PRACTICE_PLATFORM_VERSION } from '../platform/practicePlatformReadiness.js';
@@ -142,6 +143,7 @@ export function buildAgentManifest(options = {}) {
       loadDerivationTrace: LOAD_DERIVATION_TRACE_VERSION,
       serviceabilityDrift: SERVICEABILITY_DRIFT_VERSION,
       advancedElasticTrace: ADVANCED_ELASTIC_TRACE_VERSION,
+      unilateralMemberTrace: UNILATERAL_MEMBER_TRACE_VERSION,
       resultPostprocessing: RESULT_POSTPROCESSING_VERSION,
       rcDetailing: RC_DETAILING_VERSION,
       phase3RcDetailedDesign: RC_DETAILED_DESIGN_VERSION,
@@ -305,6 +307,7 @@ export function buildAgentManifest(options = {}) {
       'loadDerivationTrace',
       'serviceabilityDriftReview',
       'advancedElasticTrace',
+      'unilateralMemberTrace',
       'resultPostprocessingTables',
       'rcReinforcementSchedule',
       'phase3RcDetailedDesignReport',
