@@ -48,6 +48,7 @@ assert.deepEqual(score.review, {
   syntheticGate: 'pass',
   failedTargets: [],
   realScanGate: 'pending-owner-file',
+  requiredEvidence: ['owner-pointcloud-file', 'field-extraction-review'],
   requiresOwnerScan: true,
   ownerReviewReady: false,
   productionReady: false,
@@ -62,6 +63,8 @@ const strictScore = evaluatePointCloudExtraction(candidate, synthetic.groundTrut
 });
 assert.equal(strictScore.review.syntheticGate, 'fail');
 assert.ok(strictScore.review.failedTargets.includes('column-recall-target'));
+assert.ok(strictScore.review.requiredEvidence.includes('synthetic-extraction-regression-fix'));
+assert.ok(strictScore.review.requiredEvidence.includes('owner-pointcloud-file'));
 assert.equal(strictScore.review.agentDecision, 'fix-extraction-before-review');
 assert.equal(strictScore.review.requiresOwnerScan, true);
 const checkedScore = evaluatePointCloudExtraction(candidate, synthetic.groundTruth, {
@@ -69,11 +72,13 @@ const checkedScore = evaluatePointCloudExtraction(candidate, synthetic.groundTru
 });
 assert.equal(checkedScore.validationStatus.realScan, 'checked');
 assert.equal(checkedScore.review.realScanGate, 'pass');
+assert.deepEqual(checkedScore.review.requiredEvidence, []);
 assert.equal(checkedScore.review.ownerReviewReady, true);
 assert.equal(checkedScore.review.productionReady, false);
 assert.equal(checkedScore.review.agentDecision, 'pointcloud-import-ready-for-owner-review');
 const failedReview = buildPointCloudExtractionReview({ realScanValidation: 'failed' });
 assert.equal(failedReview.realScanGate, 'failed');
+assert.deepEqual(failedReview.requiredEvidence, ['clean-or-replace-owner-pointcloud-file']);
 assert.equal(failedReview.agentDecision, 'collect-or-clean-real-scan');
 const scanOnlyCandidate = extractPointCloudCandidate(synthetic.points, {
   story: { tolerance: 0.08 },

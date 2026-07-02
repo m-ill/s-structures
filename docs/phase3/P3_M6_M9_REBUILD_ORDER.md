@@ -96,3 +96,10 @@ The P3-M8 point-cloud worker path now exposes a message-style envelope for
 unsupported format guidance, request ID round-tripping, and unknown message
 handling so UI workers and AI agents can inspect the same auditable pipeline
 result.
+
+## 2026-07-03 M9 Field Evidence Update
+
+The P3-M9 point-cloud extraction review now lists required field evidence when
+real scan validation is missing or failed. Agents can read `requiredEvidence`
+beside `realScanGate` to distinguish synthetic-regression fixes from owner
+point-cloud file collection and field extraction review.

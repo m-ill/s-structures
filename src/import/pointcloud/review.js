@@ -15,11 +15,23 @@ export function buildPointCloudExtractionReview(input = {}) {
     syntheticGate,
     failedTargets,
     realScanGate,
+    requiredEvidence: buildRequiredEvidence(syntheticGate, realScan),
     requiresOwnerScan: realScan === 'pending-owner-file' || realScan === 'failed',
     ownerReviewReady: syntheticGate === 'pass' && realScan === 'checked',
     productionReady: false,
     agentDecision: decide(syntheticGate, realScan),
   };
+}
+
+function buildRequiredEvidence(syntheticGate, realScan) {
+  const evidence = [];
+  if (syntheticGate === 'fail') evidence.push('synthetic-extraction-regression-fix');
+  if (realScan === 'pending-owner-file') {
+    evidence.push('owner-pointcloud-file');
+    evidence.push('field-extraction-review');
+  }
+  if (realScan === 'failed') evidence.push('clean-or-replace-owner-pointcloud-file');
+  return evidence;
 }
 
 function decide(syntheticGate, realScan) {
