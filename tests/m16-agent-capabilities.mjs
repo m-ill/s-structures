@@ -140,6 +140,11 @@ assert.ok(evidenceRegister.summary.missing.includes('real-office-dxf-fixtures'))
 assert.equal(evidenceRegister.summary.agentDecision, 'collect-phase3-evidence');
 assert.equal(agent.listProjectEvidence().register.summary.acceptedCount, 0);
 assert.equal(agent.submitProjectEvidence({ id: 'security-signoff', accepted: true }).register.summary.acceptedCount, 1);
+const updatedLaunchReadiness = agent.getLaunchReadinessReport();
+const updatedEvidenceRow = updatedLaunchReadiness.finalUseReview.rows.find((row) => row.id === 'evidence-register');
+assert.equal(updatedEvidenceRow.missing.includes('security-signoff'), false);
+assert.ok(updatedEvidenceRow.missing.includes('real-office-dxf-fixtures'));
+assert.equal(updatedLaunchReadiness.finalUseReview.status, 'FINAL_USE_REVIEW_REQUIRED');
 const practiceValidationReview = agent.getPhase3PracticeValidationReview();
 assert.ok(practiceValidationReview.summary.affectedMilestones.includes('P3-M20'));
 assert.equal(practiceValidationReview.summary.agentDecision, 'collect-practice-validation-evidence-before-production-use');
