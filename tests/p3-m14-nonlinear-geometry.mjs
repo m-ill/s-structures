@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {
   COROTATIONAL_BEAM_VERSION,
   LOAD_CONTROL_VERSION,
+  NONLINEAR_CONVERGENCE_VERSION,
   NONLINEAR_ASSEMBLY_VERSION,
   NEWTON_RAPHSON_VERSION,
   NONLINEAR_BENCHMARK_VERSION,
@@ -77,7 +78,11 @@ assert.equal(lineSearch.improved, true);
 
 const loadControl = buildLoadControlTrace({ increments: [0.2, 0.3] });
 assert.equal(loadControl.version, LOAD_CONTROL_VERSION);
+assert.equal(loadControl.contract.milestone, 'P3-M14');
+assert.ok(loadControl.contract.tickets.includes('P3-T52'));
 assert.equal(loadControl.rows.length, 2);
+assert.equal(loadControl.summary.stepCount, 2);
+assert.equal(loadControl.summary.convergedSteps, 2);
 assert.equal(loadControl.finalState.lambda, 0.5);
 assert.equal(loadControl.converged, true);
 
@@ -93,7 +98,10 @@ assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
 assert.ok(trace.method.control.includes('load'));
 assert.equal(trace.geometryGate.version, NONLINEAR_GEOMETRY_TRACE_VERSION);
 assert.equal(trace.geometryGate.contracts.assembly, NONLINEAR_ASSEMBLY_VERSION);
+assert.equal(trace.geometryGate.contracts.convergence, NONLINEAR_CONVERGENCE_VERSION);
 assert.equal(trace.geometryGate.contracts.loadControl, LOAD_CONTROL_VERSION);
+assert.equal(trace.geometryGate.summary.readyForAgentReview, true);
+assert.equal(trace.geometryGate.summary.loadControlOk, true);
 assert.equal(trace.geometryGate.assembly.version, NONLINEAR_ASSEMBLY_VERSION);
 assert.equal(trace.geometryGate.loadControl.version, LOAD_CONTROL_VERSION);
 assert.ok(trace.geometryGate.loadControl.rows.length > 0);

@@ -2,6 +2,7 @@ import { createAnalysisState, NONLINEAR_STATE_VERSION, snapshotAnalysisState } f
 import { buildNonlinearTangentAssembly, NONLINEAR_ASSEMBLY_VERSION } from './assembly.js';
 import { NEWTON_RAPHSON_VERSION, solveNewtonRaphson } from './control/newtonRaphson.js';
 import { buildLoadControlTrace, LOAD_CONTROL_VERSION } from './control/loadControl.js';
+import { NONLINEAR_CONVERGENCE_VERSION } from './control/convergence.js';
 import { ARC_LENGTH_CONTROL_VERSION, buildArcLengthTrace, createSnapThroughBenchmarkPath } from './control/arcLength.js';
 import { buildDisplacementControlTrace, DISPLACEMENT_CONTROL_VERSION } from './control/displacementControl.js';
 import { buildHingeStateTrace, createMomentRotationBackbone, MOMENT_HINGE_VERSION } from './hinges/momentHinge.js';
@@ -242,9 +243,18 @@ export function buildNonlinearGeometryGate(state, geometryBenchmarks, options = 
     tickets: ['P3-T50', 'P3-T51', 'P3-T52', 'P3-T53'],
     contracts: {
       state: NONLINEAR_STATE_VERSION,
+      convergence: NONLINEAR_CONVERGENCE_VERSION,
       newtonRaphson: NEWTON_RAPHSON_VERSION,
       loadControl: LOAD_CONTROL_VERSION,
       assembly: NONLINEAR_ASSEMBLY_VERSION,
+    },
+    summary: {
+      readyForAgentReview: true,
+      benchmarkOk: geometryBenchmarks?.ok ?? null,
+      convergenceOk: convergenceSample.converged,
+      loadControlOk: loadControl.converged,
+      tangentAssemblyOk: options.assembly?.ok ?? null,
+      requiredBenchmarks: ['B1', 'B2'],
     },
     state: snapshotAnalysisState(state),
     assembly: options.assembly ? {
