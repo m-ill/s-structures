@@ -13,6 +13,7 @@ This note verifies P3-M10 against `docs/phase3/MATERIAL_SECTION_LIBRARY_PLAN.md`
 | --- | --- |
 | Material schema | `src/materials/materialSchema.js`, `tests/p3-m10-materials.mjs` |
 | Section schema | `src/materials/sectionSchema.js`, `tests/p3-m10-materials.mjs` |
+| Direct section physical consistency warning | `validateSectionRecord()` and `buildLibraryAudit().sectionWarnings` report inconsistent `ry/rz` values |
 | Parametric section properties | `src/materials/sectionProperties.js`, `tests/p3-section-properties.mjs` |
 | KS H seed table | `src/materials/db/ksH.js`, `tests/p3-section-properties.mjs` |
 | `id@version` resolver | `src/materials/registry.js` |
@@ -33,6 +34,8 @@ The registry already resolved versioned references, but legacy unversioned refer
 The material library report also exposes nonlinear backbone metadata so the later nonlinear milestones can read material readiness without reparsing raw records.
 
 2026-07-02 update: P3-T49 now has an executable library-edit contract. Agent calls can list, fetch, and upsert material/section records with immutable `id@version` behavior. Server routes persist project-scoped library records under the project storage tree and use the same validation path.
+
+2026-07-02 review update: Direct-input section records now keep passing when required positive properties exist, but inconsistent radius values such as `ry != sqrt(Iy/A)` and `rz != sqrt(Iz/A)` are surfaced as audit warnings. This matches the plan requirement for physical-consistency review without blocking legacy direct-input records.
 
 ## Current Test Gate
 

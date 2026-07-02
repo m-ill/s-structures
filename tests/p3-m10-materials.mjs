@@ -40,6 +40,13 @@ assert.equal(validateSectionRecord({
   id: 'H-CUSTOM', version: 1, kind: 'parametric',
   shape: 'H', params: { H: 300, B: 150, tw: 6.5, tf: 9 },
 }).ok, true);
+const directSectionCheck = validateSectionRecord({
+  id: 'DIRECT_WARN', version: 1, kind: 'direct', shape: 'CUSTOM',
+  properties: { A: 0.02, Iy: 2e-4, Iz: 1e-4, ry: 0.5, rz: 0.01 },
+});
+assert.equal(directSectionCheck.ok, true);
+assert.ok(directSectionCheck.warnings.some((warning) => warning.startsWith('properties.ry-inconsistent')));
+assert.ok(directSectionCheck.warnings.some((warning) => warning.startsWith('properties.rz-inconsistent')));
 
 const model = createModel({
   materials: [
@@ -58,6 +65,7 @@ const audit = buildLibraryAudit(model);
 assert.equal(audit.version, MATERIAL_REGISTRY_VERSION);
 assert.deepEqual(audit.materialErrors, []);
 assert.deepEqual(audit.sectionErrors, []);
+assert.deepEqual(audit.sectionWarnings, []);
 assert.deepEqual(audit.migrationWarnings, []);
 const libraryReport = buildMaterialLibraryReport(model);
 assert.equal(libraryReport.version, MATERIAL_LIBRARY_REPORT_VERSION);
@@ -87,6 +95,14 @@ assert.deepEqual(legacyAudit.unversionedReferences.sort(), ['LEGACY_H', 'LEGACY_
 assert.ok(legacyAudit.migrationWarnings.includes('legacy-unversioned-reference:LEGACY_STEEL'));
 assert.equal(legacyAudit.resolvedReferences.materials[0].resolved, 'LEGACY_STEEL@3');
 assert.equal(legacyAudit.resolvedReferences.sections[0].resolved, 'LEGACY_H@2');
+
+const directAudit = buildLibraryAudit({
+  sections: [{
+    id: 'DIRECT_WARN', version: 1, kind: 'direct', shape: 'CUSTOM',
+    properties: { A: 0.02, Iy: 2e-4, Iz: 1e-4, ry: 0.5, rz: 0.01 },
+  }],
+});
+assert.ok(directAudit.sectionWarnings.some((warning) => warning.includes('DIRECT_WARN:properties.ry-inconsistent')));
 
 assert.equal(MATERIAL_LIBRARY_EDIT_VERSION, 'p3-m10-library-edit-v1');
 assert.deepEqual(MATERIAL_LIBRARY_ACTIONS, ['listLibrary', 'getLibraryItem', 'upsertMaterial', 'upsertSection']);

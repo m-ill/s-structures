@@ -40,6 +40,7 @@ export function buildLibraryAudit(model = {}) {
       .map((ref) => `legacy-unversioned-reference:${ref}`),
     materialErrors: (model.materials || []).flatMap((item) => validateMaterialRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
     sectionErrors: (model.sections || []).flatMap((item) => validateSectionRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
+    sectionWarnings: (model.sections || []).flatMap((item) => validateSectionRecord(item).warnings.map((warning) => `${item.id || '?'}:${warning}`)),
   };
 }
 
