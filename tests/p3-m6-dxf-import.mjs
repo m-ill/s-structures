@@ -62,6 +62,9 @@ assert.equal(blockGeometry.audit.counts.INSERT, 2);
 assert.equal(blockGeometry.audit.counts.LWPOLYLINE, 1);
 assert.equal(blockGeometry.audit.counts.POLYLINE, 1);
 assert.equal(blockGeometry.audit.ignored.ARC, 1);
+assert.deepEqual(blockGeometry.audit.ignoredDetails, [
+  { type: 'ARC', layer: 'S-REF', reason: 'unsupported-entity' },
+]);
 assert.deepEqual(blockGeometry.audit.blocks, ['COLBLK']);
 
 const blockCandidate = importDxfToCandidate(blockText, {
@@ -77,6 +80,7 @@ const blockCandidate = importDxfToCandidate(blockText, {
 assert.equal(validateImportCandidate(blockCandidate).ok, true);
 assert.equal(blockCandidate.source.units, 'm');
 assert.equal(blockCandidate.audit.counts.ignored.ARC, 1);
+assert.equal(blockCandidate.audit.counts.ignoredDetails[0].layer, 'S-REF');
 assert.equal(blockCandidate.candidates.members.length, 4);
 assert.deepEqual(blockCandidate.candidates.members.map((member) => member.kind).sort(), ['beam', 'brace', 'column', 'column']);
 

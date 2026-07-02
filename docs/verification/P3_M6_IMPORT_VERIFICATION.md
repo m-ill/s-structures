@@ -32,6 +32,10 @@ The common `importCandidateToModel()` path previously used point-cloud-specific 
 5. Candidate conversion to a model.
 6. Successful elastic analysis from the imported DXF candidate.
 
+## Review Update
+
+2026-07-02: P3-M6 DXF import now records unsupported entity details, not only counts. `ignoredDetails` keeps the entity type, source layer, and reason so the import review UI and AI agents can explain why drawing content was not converted.
+
 ## Remaining Limits
 
 P3-M6 remains a preliminary core. It needs more real office DXF fixtures, richer unsupported entity cases, and visual import-review evidence before it can be treated as production-grade drawing import.

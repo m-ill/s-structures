@@ -34,6 +34,7 @@ export function importDxfToCandidate(text, options = {}) {
       dxfPoints: geometry.points.length,
       dxfTexts: geometry.texts.length,
       ignored: geometry.audit.ignored,
+      ignoredDetails: geometry.audit.ignoredDetails,
     },
     units: unit,
     layers: buildLayerAudit(segments, layerMap),

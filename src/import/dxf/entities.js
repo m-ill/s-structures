@@ -14,6 +14,7 @@ export function dxfEntitiesToGeometry(parsed) {
     audit: {
       counts: countByType(entities),
       ignored: out.ignored,
+      ignoredDetails: out.ignoredDetails,
       blocks: Object.keys(blocks).sort(),
     },
   };
@@ -78,7 +79,7 @@ function collectBlocks(pairs) {
 }
 
 function collectGeometry(entities, blocks = {}, transform = identityTransform()) {
-  const out = { segments: [], points: [], circles: [], texts: [], ignored: {} };
+  const out = { segments: [], points: [], circles: [], texts: [], ignored: {}, ignoredDetails: [] };
   for (const entity of entities) {
     if (entity.type === 'LINE') out.segments.push(transformSegment(lineSegment(entity), transform));
     else if (entity.type === 'LWPOLYLINE' || entity.type === 'POLYLINE') out.segments.push(...polylineSegments(entity).map((segment) => transformSegment(segment, transform)));
@@ -89,7 +90,7 @@ function collectGeometry(entities, blocks = {}, transform = identityTransform())
       const name = String(valueOf(entity.pairs, 2, ''));
       const children = blocks[name];
       if (!children) {
-        out.ignored.INSERT = (out.ignored.INSERT || 0) + 1;
+        addIgnored(out, entity, 'missing-block');
         continue;
       }
       const nested = collectGeometry(children, blocks, composeTransform(transform, insertTransform(entity)));
@@ -98,8 +99,9 @@ function collectGeometry(entities, blocks = {}, transform = identityTransform())
       out.circles.push(...nested.circles);
       out.texts.push(...nested.texts);
       mergeIgnored(out.ignored, nested.ignored);
+      out.ignoredDetails.push(...nested.ignoredDetails);
     } else {
-      out.ignored[entity.type] = (out.ignored[entity.type] || 0) + 1;
+      addIgnored(out, entity, 'unsupported-entity');
     }
   }
   return out;
@@ -234,4 +236,13 @@ function applyPoint(point, transform) {
 
 function mergeIgnored(target, source) {
   for (const [key, value] of Object.entries(source || {})) target[key] = (target[key] || 0) + value;
+}
+
+function addIgnored(out, entity, reason) {
+  out.ignored[entity.type] = (out.ignored[entity.type] || 0) + 1;
+  out.ignoredDetails.push({
+    type: entity.type,
+    layer: entity.layer || '0',
+    reason,
+  });
 }
