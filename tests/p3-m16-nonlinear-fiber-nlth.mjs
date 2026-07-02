@@ -11,6 +11,7 @@ import {
   applyFiberStrain,
   buildFiberMaterialMap,
   buildMemberFiberSection,
+  buildNonlinearFiberNlthGate,
   buildNonlinearAnalysisTrace,
   buildRectangularFiberSection,
   buildSpectrumScalingTrace,
@@ -82,6 +83,8 @@ const scalingTrace = buildSpectrumScalingTrace(record, { targetPga: 0.4, periodR
 assert.equal(scalingTrace.scaled.targetPga, 0.4);
 assert.equal(scalingTrace.pointCount, 4);
 assert.deepEqual(scalingTrace.periodRange, [0.2, 1.2]);
+const zeroPgaTrace = buildSpectrumScalingTrace(parseGroundMotionText('0 0 0', { dt: 0.01 }), { targetPga: 0.4 });
+assert.equal(zeroPgaTrace.sourcePga, 0);
 
 const nlth = runNewmarkNlth({ accelerations: scaled.accelerations, dt: scaled.dt, stiffness: 100, yieldForce: 0.00001 });
 assert.equal(nlth.version, NLTH_NEWMARK_VERSION);
@@ -140,6 +143,7 @@ assert.equal(trace.fiberNlthGate.fiberNlthReview.productionSeismicQualification,
 assert.equal(trace.fiberNlthGate.fiberNlthReview.concentratedPlasticityTrace, true);
 assert.equal(trace.fiberNlthGate.fiberNlthReview.nlthEnergyTrace, true);
 assert.equal(trace.fiberNlthGate.fiberNlthReview.stepSplitRecommended, false);
+assert.equal(trace.fiberNlthGate.fiberNlthReview.groundMotionScalingTrace, true);
 assert.equal(trace.fiberNlthGate.fiberNlthReview.agentDecision, 'm16-ready-for-integrated-results-review');
 assert.deepEqual(trace.fiberNlthGate.fiberNlthReview.missing, []);
 assert.deepEqual(trace.fiberNlthGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T83', 'P3-T84', 'P3-T85', 'P3-T86']);
@@ -163,6 +167,20 @@ assert.ok(trace.fiber.momentCurvature.rows.length > 0);
 assert.ok(trace.fiber.materials.M16_STEEL.backbone.length >= 2);
 assert.equal(trace.rayleigh.version, RAYLEIGH_DAMPING_VERSION);
 assert.ok(trace.nlth.rows.length > 0);
+
+const zeroPgaGate = buildNonlinearFiberNlthGate({
+  ...trace.fiberNlthGate,
+  pmm: trace.pmm,
+  fiber: trace.fiber,
+  rayleigh: trace.rayleigh,
+  groundMotion: { ...trace.groundMotion, pointCount: 3, sourcePga: 0 },
+  spectrumScaling: zeroPgaTrace,
+  nlth: trace.nlth,
+}, trace.benchmarks.fiberNlth);
+assert.equal(zeroPgaGate.fiberNlthReview.status, 'review-required');
+assert.equal(zeroPgaGate.fiberNlthReview.groundMotionScalingTrace, false);
+assert.ok(zeroPgaGate.fiberNlthReview.missing.includes('ground-motion-scaling'));
+assert.equal(zeroPgaGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T86').covered, false);
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
 const apiTrace = agent.getNonlinearAnalysisTrace();

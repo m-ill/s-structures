@@ -43,9 +43,11 @@ The gate records:
 
 2026-07-02 NLTH stability review update: `runNewmarkNlth()` now records kinetic energy, strain energy, cumulative input energy, cumulative damping energy, residual ratio, energy jump ratio, and a `stepSplitRecommended` flag for every time step. `fiberNlthGate.dynamics.energyTrace` and `fiberNlthReview.stepSplitRecommended` expose this stability review to reports and AI agents. A step-split recommendation is treated as a review hold even when Newton convergence succeeds.
 
+2026-07-03 ground-motion code review update: `fiberNlthReview` now requires a usable ground-motion scaling basis, not only a truthy scale factor. The review and P3-T86 ticket coverage require record points, positive source PGA, and a finite positive scale factor. Zero-PGA or empty records are now held for review with `ground-motion-scaling` in `missing`, preventing reports or AI agents from accepting an NLTH trace whose scaling basis cannot be audited.
+
 ## Current Test Gate
 
-`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, energy/stability rows, step-split recommendation behavior, B6/B7/B8 benchmark registration, and agent manifest exposure.
+`tests/p3-m16-nonlinear-fiber-nlth.mjs` verifies PMM interpolation, member-derived PMM backbone generation, material-backbone stress interpolation, member-derived fiber section generation, fiber strain force recovery, moment-curvature comparison, Rayleigh damping targets, ground-motion scaling basis, zero-PGA scaling review hold, spectrum-scaling trace exposure, Newmark NLTH yielded trace, per-step Newton iteration logs, energy/stability rows, step-split recommendation behavior, B6/B7/B8 benchmark registration, and agent manifest exposure.
 
 ## Remaining Limits
 

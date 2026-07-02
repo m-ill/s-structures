@@ -208,7 +208,7 @@ function buildFiberNlthReview({ trace, fiberNlthBenchmarks }) {
   if (!((trace.fiber?.section?.fibers || []).length > 0)) missing.push('fiber-section');
   if (!((trace.fiber?.momentCurvature?.rows || []).length > 0)) missing.push('moment-curvature');
   if (!trace.rayleigh?.version) missing.push('rayleigh-damping');
-  if (!trace.spectrumScaling?.scaleFactor) missing.push('ground-motion-scaling');
+  if (!hasUsableGroundMotionScaling(trace)) missing.push('ground-motion-scaling');
   if (!trace.nlth?.converged) missing.push('nlth-convergence');
   if (trace.nlth?.energyTrace?.stepSplitRecommended) missing.push('nlth-step-split-review');
   if (!fiberNlthBenchmarks?.ok) missing.push('B6-B8-benchmark');
@@ -218,7 +218,7 @@ function buildFiberNlthReview({ trace, fiberNlthBenchmarks }) {
     distributedPlasticity: false,
     productionSeismicQualification: false,
     concentratedPlasticityTrace: true,
-    groundMotionScalingTrace: !!trace.spectrumScaling?.scaleFactor,
+    groundMotionScalingTrace: hasUsableGroundMotionScaling(trace),
     nlthEnergyTrace: !!trace.nlth?.energyTrace,
     stepSplitRecommended: !!trace.nlth?.energyTrace?.stepSplitRecommended,
     missing,
@@ -250,13 +250,20 @@ function buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }) {
     {
       ticket: 'P3-T86',
       scope: 'ground-motion record parsing and scaling trace',
-      covered: (trace.groundMotion?.pointCount || 0) > 0 && !!trace.spectrumScaling?.scaleFactor,
-      evidence: `${trace.groundMotion?.pointCount || 0} record points, scale=${trace.spectrumScaling?.scaleFactor || 0}`,
+      covered: hasUsableGroundMotionScaling(trace),
+      evidence: `${trace.groundMotion?.pointCount || 0} record points, sourcePga=${trace.spectrumScaling?.sourcePga || 0}, scale=${trace.spectrumScaling?.scaleFactor || 0}`,
     },
   ].map((row) => ({
     ...row,
     benchmarkEvidence: cases.map((item) => `${item.id}:${item.ok ? 'OK' : 'NG'}`).join(',') || null,
   }));
+}
+
+function hasUsableGroundMotionScaling(trace = {}) {
+  const pointCount = Number(trace.groundMotion?.pointCount || trace.spectrumScaling?.pointCount || 0);
+  const sourcePga = Number(trace.spectrumScaling?.sourcePga ?? trace.groundMotion?.sourcePga ?? 0);
+  const scaleFactor = Number(trace.spectrumScaling?.scaleFactor);
+  return pointCount > 0 && sourcePga > 0 && Number.isFinite(scaleFactor) && scaleFactor > 0;
 }
 
 export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, options = {}) {
