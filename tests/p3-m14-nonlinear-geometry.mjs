@@ -81,6 +81,20 @@ assert.equal(globalEquilibrium.converged, true);
 assert.ok(globalEquilibrium.rows.length >= 1);
 assert.ok(globalEquilibrium.rows.every((row) => row.version === NONLINEAR_CONVERGENCE_VERSION));
 assert.ok(globalEquilibrium.summary.finalResidualNorm <= globalEquilibrium.summary.initialResidualNorm);
+const singularEquilibrium = runGlobalEquilibriumTrace({}, createAnalysisState(), {
+  assembly: {
+    version: NONLINEAR_ASSEMBLY_VERSION,
+    ok: true,
+    ndof: 1,
+    K: [[0]],
+    freeDofs: [0],
+    summary: {},
+  },
+  loads: [{ dof: 0, value: 1 }],
+});
+assert.equal(singularEquilibrium.converged, false);
+assert.equal(singularEquilibrium.reason, 'SINGULAR_TANGENT');
+assert.equal(singularEquilibrium.rows[0].solved, false);
 
 const convergence = evaluateConvergenceNorms({ force: 1e-5, displacement: 1e-5, energy: 1e-8 }, { force: 1, displacement: 1, energy: 1 });
 assert.equal(convergence.converged, true);
@@ -123,6 +137,8 @@ const failedLoadControl = buildLoadControlTrace({
 assert.equal(failedLoadControl.converged, false);
 assert.equal(failedLoadControl.rows.length, 1);
 assert.equal(failedLoadControl.rows[0].converged, false);
+assert.ok(failedLoadControl.rows[0].attemptedValue !== failedLoadControl.rows[0].acceptedValue);
+assert.equal(failedLoadControl.rows[0].acceptedValue, 0);
 assert.equal(failedLoadControl.finalState.lambda, 0);
 assert.equal(failedLoadControl.finalState.u[0], 0);
 assert.equal(failedLoadControl.finalState.events[0].type, 'nonconvergence');

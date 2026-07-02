@@ -25,7 +25,8 @@ export function runGlobalEquilibriumTrace(model = {}, state = {}, options = {}) 
     const residual = load.map((value, index) => value - (internal[index] || 0));
     const reducedResidual = free.map((index) => residual[index] || 0);
     const reducedK = free.map((i) => free.map((j) => assembly.K?.[i]?.[j] || 0));
-    const duReduced = solveLinear(reducedK, reducedResidual) || new Array(free.length).fill(0);
+    const solvedDu = solveLinear(reducedK, reducedResidual);
+    const duReduced = solvedDu || new Array(free.length).fill(0);
     const du = new Array(ndof).fill(0);
     free.forEach((index, i) => { du[index] = duReduced[i] || 0; });
     const current = {
@@ -44,19 +45,19 @@ export function runGlobalEquilibriumTrace(model = {}, state = {}, options = {}) 
       norms: check.norms,
       tolerances: check.tolerances,
       converged: check.converged,
-      solved: !!duReduced && (duReduced.some((value) => value !== 0) || current.force <= check.tolerances.force),
+      solved: !!solvedDu || check.converged,
       lineSearch: { acceptedAlpha: 1, candidates: [{ alpha: 1, norm: current.force }] },
     });
-    u = u.map((value, index) => value + du[index]);
     if (check.converged) {
       converged = true;
       reason = 'CONVERGED';
       break;
     }
-    if (!duReduced || !duReduced.every(Number.isFinite)) {
+    if (!solvedDu || !duReduced.every(Number.isFinite)) {
       reason = 'SINGULAR_TANGENT';
       break;
     }
+    u = u.map((value, index) => value + du[index]);
   }
 
   return {

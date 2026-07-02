@@ -21,8 +21,9 @@ export function buildLoadControlTrace(options = {}) {
       lineSearch: options.lineSearch,
       step: index + 1,
     });
-    const du = nr.x - acceptedValue;
-    acceptedValue = nr.converged ? nr.x : acceptedValue;
+    const previousAcceptedValue = acceptedValue;
+    const du = nr.x - previousAcceptedValue;
+    acceptedValue = nr.converged ? nr.x : previousAcceptedValue;
     state = advanceAnalysisState(state, {
       dLambda: nr.converged ? dLambda : 0,
       du: [nr.converged ? du : 0],
@@ -37,7 +38,8 @@ export function buildLoadControlTrace(options = {}) {
       converged: nr.converged,
       iterations: nr.iterations,
       reason: nr.convergenceReason,
-      acceptedValue: nr.x,
+      attemptedValue: nr.x,
+      acceptedValue,
       stateSnapshot: snapshotAnalysisState(state),
     });
     if (!nr.converged && options.continueOnFailure !== true) break;

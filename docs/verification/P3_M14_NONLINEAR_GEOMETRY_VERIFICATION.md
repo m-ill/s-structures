@@ -48,7 +48,9 @@ The gate records:
 
 2026-07-03 restart-safety hardening: `createAnalysisState()`, `snapshotAnalysisState()`, and `advanceAnalysisState()` now deep-copy hinge rows and event rows. This prevents later path-dependent hinge history mutation from changing prior accepted states or snapshots, which is required before M15/M16 hinge/fiber history can rely on M14 state restart records.
 
-`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, restart-safe hinge/event copies, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, reduced-DOF global equilibrium trace, load-control trace, B1/B2 benchmarks, and agent trace exposure.
+2026-07-03 failure-trace hardening: failed load-control rows now separate `attemptedValue` from the last accepted `acceptedValue`, so a nonconverged step cannot look accepted in reports or agent APIs. The reduced-DOF global equilibrium trace now reports `SINGULAR_TANGENT` when the tangent solve fails instead of exhausting iterations with a hidden zero increment.
+
+`tests/p3-m14-nonlinear-geometry.mjs` verifies state snapshots, restart-safe hinge/event copies, corotational beam state, geometric stiffness, nonlinear tangent assembly, convergence norms, Newton-Raphson line-search candidate trace, reduced-DOF global equilibrium trace including singular-tangent failure, load-control trace including failed-step acceptance separation, B1/B2 benchmarks, and agent trace exposure.
 
 ## Remaining Limits
 
