@@ -56,6 +56,38 @@ export function buildDwgConversionReadiness(input = {}) {
   };
 }
 
+export function buildDwgConversionPreflight(input = {}) {
+  const plan = input.plan || null;
+  const readiness = input.readiness || plan?.audit?.readiness || buildDwgConversionReadiness({
+    converterPath: input.converterPath || plan?.converterPath,
+    inputPath: input.inputPath || plan?.inputPath,
+    outputPath: input.outputPath || plan?.outputPath,
+  });
+  const checks = [
+    readiness.canRun
+      ? check('readiness-fields', 'ok')
+      : check('readiness-fields', 'blocked', readiness.missing),
+    booleanCheck('converter-file', input.converterExists),
+    booleanCheck('input-file', input.inputExists),
+    booleanCheck('output-directory', input.outputDirWritable),
+  ];
+  const blocking = checks.filter((item) => item.status === 'blocked').map((item) => item.id);
+  const unknown = checks.filter((item) => item.status === 'unknown').map((item) => item.id);
+  return {
+    version: DWG_ADAPTER_VERSION,
+    status: blocking.length ? 'blocked' : unknown.length ? 'needs-host-check' : 'ready-for-execution',
+    canExecute: blocking.length === 0 && unknown.length === 0,
+    checks,
+    blocking,
+    unknown,
+    agentDecision: blocking.length
+      ? 'fix-dwg-conversion-inputs-before-running'
+      : unknown.length
+        ? 'run-host-preflight-before-conversion'
+        : 'execute-converter-and-parse-output-dxf',
+  };
+}
+
 export function createDwgMissingConverterResult(input = {}) {
   const plan = createDwgConversionPlan(input);
   return {
@@ -104,4 +136,14 @@ function joinPath(dir, file) {
 function replaceExtension(file, ext) {
   if (!file) return null;
   return String(file).replace(/\.[^.\\/]*$/, '') + ext;
+}
+
+function booleanCheck(id, value) {
+  if (value === true) return check(id, 'ok');
+  if (value === false) return check(id, 'blocked');
+  return check(id, 'unknown');
+}
+
+function check(id, status, missing = []) {
+  return { id, status, missing };
 }

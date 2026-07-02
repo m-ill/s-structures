@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import {
   analyzeModel,
   buildAgentManifest,
+  buildDwgConversionPreflight,
   buildPhase3DrawingImportValidationReview,
   createDwgConversionPlan,
   importCandidateToModel,
@@ -28,10 +29,16 @@ const dwgPlan = createDwgConversionPlan({
   inputPath: 'office-sample.dwg',
   converterPath: 'C:/Tools/ODAFileConverter.exe',
 });
+const dwgPreflight = buildDwgConversionPreflight({
+  plan: dwgPlan,
+  converterExists: true,
+  inputExists: true,
+  outputDirWritable: true,
+});
 const reviewEntry = summarizeImportEntry({ id: 'office-sample-import', status: 'confirmed', candidate });
 const review = buildPhase3DrawingImportValidationReview({
   dxfFixtures: [{ id: 'office-sample-min-frame', candidate, analysisOk: analysis.ok }],
-  dwgConversions: [{ id: 'office-sample-dwg', plan: dwgPlan, log: 'planned conversion command recorded' }],
+  dwgConversions: [{ id: 'office-sample-dwg', plan: dwgPlan, preflight: dwgPreflight, log: 'planned conversion command recorded' }],
   overlayEvidence: [{
     id: 'office-sample-overlay',
     sourcePath: 'tests/fixtures/dxf/min-frame.dxf',
@@ -52,6 +59,7 @@ assert.equal(review.dxfRows[0].status, 'validated');
 assert.equal(review.dxfRows[0].layerAuditPresent, true);
 assert.equal(review.dxfRows[0].unitAuditPresent, true);
 assert.equal(review.dwgRows[0].status, 'ready-to-convert');
+assert.equal(review.dwgRows[0].preflight.status, 'ready-for-execution');
 assert.equal(review.overlayRows[0].status, 'recorded');
 assert.equal(review.reviewRows[0].accepted, true);
 assert.ok(review.requiredEvidence.includes('external DWG converter path and conversion log'));

@@ -81,6 +81,7 @@ function buildDwgRows(conversions) {
       converterConfigured: !!(item.converterPath || item.plan?.converterPath),
       outputPath: item.outputPath || item.plan?.outputPath || null,
       readiness,
+      preflight: item.preflight || null,
       logRecorded: !!(item.stderr || item.stdout || item.log || item.plan),
     };
   });

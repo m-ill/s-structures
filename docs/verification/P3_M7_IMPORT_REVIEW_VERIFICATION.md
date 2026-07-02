@@ -16,6 +16,7 @@ This note verifies P3-M7 against `docs/phase3/IMPORT_DXF_DWG_PLAN.md` and `docs/
 | DWG command plan | `createDwgConversionPlan()` now returns output DXF path, executable, command args, and audit metadata without running the external converter |
 | DWG failure envelope | `createDwgConversionFailureResult()` records failed conversion code, stderr, exit code, and the original command plan |
 | DWG readiness decision | `buildDwgConversionReadiness()` records missing converter/input/output fields and agent decision |
+| DWG host preflight decision | `buildDwgConversionPreflight()` separates unknown host checks, blocked execution, and ready-for-execution states |
 | DWG CLI planning tool | `tools/convert-dwg.mjs` prints the same JSON conversion contract for agent/operator workflows |
 | 2D plan recognition | `src/import/dxf/planRecognition.js` detects column and beam candidates from floor-plan fixtures |
 | Two-story assembly | `src/import/planAssembly.js` stacks columns and beams into a valid `ImportCandidate` |
@@ -47,6 +48,8 @@ The import review model previously showed only generic candidate counts and warn
 2026-07-02 readiness-decision update: DWG conversion plans now include `audit.readiness` with `ready-to-convert` or `external-converter-required` status. 2D plan assemblies now include `planAssembly.review` with `candidate-ready-for-import-review-ui` or `hold-import-for-plan-review`. This lets AI agents branch on explicit import decisions instead of reinterpreting counts and warnings.
 
 2026-07-03 P3-M7 rebuild review update: floor-plan recognition now carries label evidence and full layer-use evidence. `recognizePlanDxf()` exposes `labelEvidence`, `recognizedLayers`, `unusedLayers`, and `layerUsage`, while `assemblePlansToImportCandidate()` summarizes per-story labels under `planAssembly.labelEvidence`. This supports the plan's label-mapping and human-review requirements without auto-confirming drawing interpretation.
+
+2026-07-03 DWG preflight update: `buildDwgConversionPreflight()` now records whether the converter file, source DWG, and output directory have been host-checked. `tools/convert-dwg.mjs` includes that preflight result in its JSON output, performs host file/directory checks when explicit booleans are not supplied, and exposes `readyToExecute` separately from `ok`. AI agents can therefore distinguish "plan is structurally ready" from "safe to execute on this machine." The drawing validation review preserves this preflight row under each DWG conversion evidence item.
 
 ## Current Test Gate
 

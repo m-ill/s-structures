@@ -8,6 +8,7 @@ import {
   DXF_PLAN_RECOGNITION_VERSION,
   PLAN_ASSEMBLY_VERSION,
   assemblePlansToImportCandidate,
+  buildDwgConversionPreflight,
   buildDwgConversionReadiness,
   buildPlanAssemblyReview,
   createDwgConversionFailureResult,
@@ -39,6 +40,32 @@ const directReadiness = buildDwgConversionReadiness({ inputPath: 'sample.dwg', o
 assert.equal(directReadiness.canRun, false);
 assert.ok(directReadiness.missing.includes('converter-path'));
 
+const unknownPreflight = buildDwgConversionPreflight({ plan });
+assert.equal(unknownPreflight.status, 'needs-host-check');
+assert.equal(unknownPreflight.canExecute, false);
+assert.ok(unknownPreflight.unknown.includes('converter-file'));
+assert.equal(unknownPreflight.agentDecision, 'run-host-preflight-before-conversion');
+
+const blockedPreflight = buildDwgConversionPreflight({
+  plan,
+  converterExists: false,
+  inputExists: true,
+  outputDirWritable: true,
+});
+assert.equal(blockedPreflight.status, 'blocked');
+assert.ok(blockedPreflight.blocking.includes('converter-file'));
+assert.equal(blockedPreflight.agentDecision, 'fix-dwg-conversion-inputs-before-running');
+
+const executablePreflight = buildDwgConversionPreflight({
+  plan,
+  converterExists: true,
+  inputExists: true,
+  outputDirWritable: true,
+});
+assert.equal(executablePreflight.status, 'ready-for-execution');
+assert.equal(executablePreflight.canExecute, true);
+assert.equal(executablePreflight.agentDecision, 'execute-converter-and-parse-output-dxf');
+
 const failed = createDwgConversionFailureResult({ plan }, { message: 'converter exited', stderr: 'bad file', exitCode: 2 });
 assert.equal(failed.ok, false);
 assert.equal(failed.code, DWG_CONVERSION_FAILED);
@@ -50,9 +77,24 @@ const cli = spawnSync(process.execPath, [
   '--input', 'sample.dwg',
   '--converter', 'C:/Tools/ODAFileConverter.exe',
   '--out', 'tmp/import',
+  '--converterExists', 'true',
+  '--inputExists', 'true',
+  '--outputDirWritable', 'true',
 ], { encoding: 'utf8' });
 assert.equal(cli.status, 0);
 assert.match(cli.stdout, /sample\.dxf/);
+assert.match(cli.stdout, /ready-for-execution/);
+assert.match(cli.stdout, /"readyToExecute": true/);
+
+const blockedCli = spawnSync(process.execPath, [
+  'tools/convert-dwg.mjs',
+  '--input', 'sample.dwg',
+  '--converter', 'C:/Tools/ODAFileConverter.exe',
+  '--out', 'tmp/import',
+], { encoding: 'utf8' });
+assert.equal(blockedCli.status, 0);
+assert.match(blockedCli.stdout, /"readyToExecute": false/);
+assert.match(blockedCli.stdout, /"status": "blocked"/);
 
 const layerMap = {
   'S-COL': { kind: 'column', section: 'H300', material: 'SS275' },
