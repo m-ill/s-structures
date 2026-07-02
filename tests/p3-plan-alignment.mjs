@@ -71,6 +71,19 @@ assert.deepEqual(report.nonlinearEngine.scopeLadder.map((row) => row.id), ['N1',
 assert.deepEqual(report.nonlinearEngine.benchmarks, ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8']);
 assert.deepEqual(report.nonlinearEngine.convergenceNorms, ['force', 'displacement', 'energy']);
 assert.ok(report.nonlinearEngine.resultFields.includes('capacityCurve'));
+assert.equal(report.reviewGates.ok, true);
+assert.deepEqual(report.reviewGates.rows.map((row) => row.id), [
+  'nonlinearGeometry',
+  'nonlinearHingeControl',
+  'nonlinearFiberNlth',
+  'rcDetailedDesign',
+  'detailedDesignIntegration',
+  'integratedResults',
+  'launchReadiness',
+]);
+assert.deepEqual(report.reviewGates.missing, []);
+assert.equal(report.reviewGates.rows.find((row) => row.id === 'launchReadiness').path, 'releaseGate.releaseReview');
+assert.equal(report.reviewGates.rows.find((row) => row.id === 'integratedResults').finalApprovalField, 'finalStructuralSignoff');
 assert.deepEqual(report.architecture.decisions.map((row) => row.id), Array.from({ length: 10 }, (_, index) => `D${index + 1}`));
 assert.equal(report.architecture.decisions.find((row) => row.id === 'D2').choice, 'node-http-router');
 assert.equal(report.architecture.decisions.find((row) => row.id === 'D6').choice, 'webgl2-module');
@@ -172,6 +185,7 @@ console.log(JSON.stringify({
   importPaths: report.importPipeline.drawingPaths.length,
   materialFields: report.materialLibrary.materialFields.length,
   nonlinearBenchmarks: report.nonlinearEngine.benchmarks.length,
+  reviewGates: report.reviewGates.rows.length,
   activeTickets: report.activeTicketCount,
   plannedTickets: report.plannedTicketCount,
   absorbedTickets: report.ticketSummary.absorbed,

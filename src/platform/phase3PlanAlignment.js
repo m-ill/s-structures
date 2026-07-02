@@ -307,6 +307,7 @@ const MILESTONES = [
 export function buildPhase3PlanAlignmentReport(manifest = {}) {
   const manifestMilestones = new Set((manifest.milestones || []).map((row) => row.id));
   const readApis = new Set(manifest.readApis || []);
+  const reviewGates = buildReviewGateAlignment(manifest.reviewGates || {});
   const rows = MILESTONES.map((row) => ({
     ...row,
     manifestListed: manifestMilestones.has(row.id),
@@ -411,19 +412,47 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
       ...NONLINEAR_ENGINE_CONTRACT,
       ok: nonlinearEngineOk,
     },
+    reviewGates,
     activeTicketCount: activeTickets.size,
     absorbedTickets: ABSORBED_TICKETS,
     plannedTicketCount: plannedTickets.size,
     unresolvedTickets,
     ticketSummary,
     status: missing.length || !requirementsOk || !architectureOk || !serverApiOk || !frontendOk ||
-      !importPipelineOk || !materialLibraryOk || !nonlinearEngineOk || !ticketSummary.effectiveCompletion ? 'REVIEW' : 'OK',
+      !importPipelineOk || !materialLibraryOk || !nonlinearEngineOk || !reviewGates.ok || !ticketSummary.effectiveCompletion ? 'REVIEW' : 'OK',
     missing,
     agentReadable: readApis.has('getPhase3PlanAlignment'),
     notes: [
       'Report follows existing Phase 3 planning documents only.',
       'Preliminary rows still require engineer and owner review before production sign-off.',
     ],
+  };
+}
+
+function buildReviewGateAlignment(reviewGates = {}) {
+  const required = [
+    reviewGate('P3-M14', 'nonlinearGeometry', 'geometryGate.solverReview', 'productionEquilibriumSolver'),
+    reviewGate('P3-M15', 'nonlinearHingeControl', 'hingeControlGate.controlReview', 'productionHingeEquilibriumLoop'),
+    reviewGate('P3-M16', 'nonlinearFiberNlth', 'fiberNlthGate.fiberNlthReview', 'productionSeismicQualification'),
+    reviewGate('P3-M17', 'rcDetailedDesign', 'rcDesignGate.rcReview', 'finalPermitDesign'),
+    reviewGate('P3-M18', 'detailedDesignIntegration', 'designGate.designReview', 'finalPermitDesign'),
+    reviewGate('P3-M19', 'integratedResults', 'integratedGate.integratedReview', 'finalStructuralSignoff'),
+    reviewGate('P3-M20', 'launchReadiness', 'releaseGate.releaseReview', 'productionDeploymentApproved'),
+  ];
+  const rows = required.map((row) => {
+    const actual = reviewGates[row.id] || {};
+    return {
+      ...row,
+      readApi: actual.readApi || null,
+      readyDecision: actual.readyDecision || null,
+      covered: actual.path === row.path && actual.finalApprovalField === row.finalApprovalField,
+    };
+  });
+  return {
+    ok: rows.every((row) => row.covered),
+    rows,
+    missing: rows.filter((row) => !row.covered).map((row) => row.id),
+    rule: 'Review paths must separate next-step readiness from final approval fields.',
   };
 }
 
@@ -477,6 +506,10 @@ function importPath(id, milestone, method) {
 
 function nonlinearScope(id, milestone, scope) {
   return { id, milestone, scope };
+}
+
+function reviewGate(milestone, id, path, finalApprovalField) {
+  return { milestone, id, path, finalApprovalField };
 }
 
 function t(from, to) {
