@@ -4,6 +4,7 @@ import {
   applyWorkflowApproval,
   buildAgentManifest,
   buildP3IntegratedResults,
+  buildP3IntegratedResultsGate,
   createCalculationPackageHtml,
   createDetailedHtmlReport,
   createTwoStoryElasticFrameModel,
@@ -29,23 +30,25 @@ assert.deepEqual(unlocked.integratedGate.contract.tickets, ['P3-T58', 'P3-T59', 
 assert.equal(unlocked.integratedGate.contract.featureTicketMap.integratedResultPostprocessing, 'P3-T58');
 assert.ok(unlocked.integratedGate.contract.reviewFields.includes('summary.ticketCoverage'));
 assert.equal(unlocked.integratedGate.contract.maturity, 'preliminary-integrated-results');
-assert.equal(unlocked.integratedGate.ok, true);
-assert.equal(unlocked.integratedGate.summary.readyForReviewer, true);
+assert.equal(unlocked.integratedGate.ok, false);
+assert.equal(unlocked.integratedGate.summary.readyForReviewer, false);
 assert.equal(unlocked.integratedGate.summary.completeTicketCoverage, true);
-assert.equal(unlocked.integratedGate.integratedReview.status, 'trace-ready');
+assert.equal(unlocked.integratedGate.integratedReview.status, 'review-required');
 assert.equal(unlocked.integratedGate.integratedReview.finalStructuralSignoff, false);
 assert.equal(unlocked.integratedGate.integratedReview.launchReady, false);
-assert.equal(unlocked.integratedGate.integratedReview.agentDecision, 'm19-ready-for-m20-launch-review');
-assert.deepEqual(unlocked.integratedGate.integratedReview.missing, []);
+assert.equal(unlocked.integratedGate.integratedReview.agentDecision, 'hold-before-m20-launch-gate');
+assert.ok(unlocked.integratedGate.integratedReview.missing.includes('detailed-design-review'));
+assert.ok(unlocked.integratedGate.integratedReview.missing.includes('design-issues'));
+assert.equal(unlocked.integratedGate.integratedReview.designIssueRows, unlocked.design.issueRows.length);
 assert.equal(unlocked.integratedGate.summary.coveredTicketCount, 4);
 assert.equal(unlocked.summary.analysisOk, true);
-assert.equal(unlocked.summary.gateOk, true);
-assert.equal(unlocked.summary.readyForReviewer, true);
+assert.equal(unlocked.summary.gateOk, false);
+assert.equal(unlocked.summary.readyForReviewer, false);
 assert.equal(unlocked.summary.completeTicketCoverage, true);
 assert.equal(unlocked.summary.benchmarkOk, true);
 assert.equal(unlocked.summary.notCheckedCount, 0);
 assert.ok(unlocked.summary.designItems > 0);
-assert.ok(unlocked.summary.issueRows >= 0);
+assert.ok(unlocked.summary.issueRows > 0);
 assert.ok(unlocked.nonlinear.version.includes('nonlinear'));
 assert.equal(unlocked.benchmarkEvidence.ok, true);
 assert.equal(unlocked.benchmarkEvidence.contract.milestone, 'P3-M19');
@@ -56,6 +59,22 @@ assert.deepEqual(unlocked.integratedGate.ticketCoverage.map((row) => row.ticket)
 assert.deepEqual(unlocked.integratedGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T58', 'P3-T59', 'P3-T61', 'P3-T62']);
 assert.ok(unlocked.integratedGate.ticketCoverage.every((row) => row.covered));
 assert.ok(unlocked.integratedGate.ticketCoverage.find((row) => row.ticket === 'P3-T62').evidence.includes('geometry:OK'));
+
+const cleanGate = buildP3IntegratedResultsGate({
+  analysis: { ok: true },
+  resultPostprocessing: { version: 'post', summary: { storyRowCount: 1, memberRowCount: 1 } },
+  nonlinear: { version: 'nonlinear', capacityCurve: [{ baseShear: 1 }], steps: [{ step: 1 }] },
+  design: {
+    version: 'design',
+    issueRows: [],
+    designGate: { designReview: { status: 'trace-ready' } },
+  },
+  workflowLock: { version: 'workflow', editable: true, approvalState: 'not-submitted' },
+  benchmarkEvidence: { ok: true, groups: { geometry: true, hingeControl: true, fiberNlth: true } },
+  methodLimitations: ['limitation'],
+});
+assert.equal(cleanGate.integratedReview.status, 'trace-ready');
+assert.equal(cleanGate.integratedReview.agentDecision, 'm19-ready-for-m20-launch-review');
 
 const approved = applyWorkflowApproval(model, { state: 'approved', rev: 'R2' });
 assert.equal(approved.locked, true);

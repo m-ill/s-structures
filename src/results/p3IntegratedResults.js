@@ -51,7 +51,9 @@ export function buildP3IntegratedResultsGate(input = {}) {
   const ok = !!input.analysis?.ok
     && !!benchmarkEvidence.ok
     && (input.methodLimitations || []).length > 0
-    && ticketCoverage.every((row) => row.covered);
+    && ticketCoverage.every((row) => row.covered)
+    && input.design?.designGate?.designReview?.status === 'trace-ready'
+    && (input.design?.issueRows?.length || 0) === 0;
   const integratedReview = buildIntegratedResultsReview({ ok, ticketCoverage, coverage, workflow, benchmarkEvidence, input });
   return {
     version: P3_INTEGRATED_RESULTS_GATE_VERSION,
@@ -100,6 +102,8 @@ function buildIntegratedResultsReview({ ok, ticketCoverage, coverage, workflow, 
   if (!benchmarkEvidence.ok) missing.push('benchmark-evidence');
   if (!coverage.methodLimitations) missing.push('method-limitations');
   if (!input.design?.designGate?.designReview) missing.push('detailed-design-review');
+  else if (input.design.designGate.designReview.status !== 'trace-ready') missing.push('detailed-design-review');
+  if (input.design?.issueRows?.length) missing.push('design-issues');
   return {
     status: missing.length ? 'review-required' : 'trace-ready',
     maturity: 'preliminary',
@@ -110,6 +114,7 @@ function buildIntegratedResultsReview({ ok, ticketCoverage, coverage, workflow, 
     benchmarkOk: !!benchmarkEvidence.ok,
     methodLimitationCount: coverage.methodLimitations,
     designReviewStatus: input.design?.designGate?.designReview?.status || null,
+    designIssueRows: input.design?.issueRows?.length || 0,
     missing,
     agentDecision: missing.length ? 'hold-before-m20-launch-gate' : 'm19-ready-for-m20-launch-review',
   };

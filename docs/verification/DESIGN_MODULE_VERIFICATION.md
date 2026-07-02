@@ -80,6 +80,8 @@ Current status is preliminary. M19 connects nonlinear trace, detailed-design tra
 
 2026-07-02 integrated result maturity review update: `integratedGate` now exposes `contract.maturity` and `integratedReview`. The review records complete ticket coverage, benchmark evidence, method limitation count, detailed-design review status, and explicit false flags for final structural sign-off and launch readiness. Agents can now move M19 evidence into M20 launch review without treating the integrated result as an approved design.
 
+2026-07-03 integrated-results code review update: `integratedGate` now consumes `designGate.designReview.status` and top-level detailed-design `issueRows`. Complete result/report/workflow/benchmark ticket coverage is no longer enough to return `trace-ready` when detailed-design review is still required. The gate reports `detailed-design-review` and `design-issues` in `missing` and keeps `agentDecision = hold-before-m20-launch-gate` until design issues are cleared.
+
 2026-07-03 productization milestone contract update: P3-M19 now participates in `getPhase3ProductizationMilestoneReview`. The review contract maps integrated result postprocessing, calculation report limitations, workflow lock, and benchmark regression to `integratedGate.integratedReview` while keeping `finalStructuralSignoff` separate from trace readiness.
 
 2026-07-03 engineering-validation update: `getPhase3EngineeringValidationReview` now records the remaining professional validation evidence shared by nonlinear analysis and detailed design. It keeps final KDS clause selection, nonlinear solver certification, detailing/constructability, fabrication, and geotechnical approval separate from automated trace readiness.
