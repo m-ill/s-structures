@@ -228,6 +228,7 @@ function buildFiberNlthTicketCoverage({ trace, fiberNlthBenchmarks }) {
 export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeControlBenchmarks, options = {}) {
   const displacementControl = options.displacementControl || buildDisplacementControlTrace([0.01, 0.02]);
   const arcLength = options.arcLength || buildArcLengthTrace(createSnapThroughBenchmarkPath());
+  const controlReview = buildHingeControlReview({ hingeTrace, pushover, hingeControlBenchmarks, options, displacementControl, arcLength });
   return {
     version: NONLINEAR_HINGE_CONTROL_TRACE_VERSION,
     milestone: 'P3-M15',
@@ -243,6 +244,7 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       },
       reviewFields: ['summary.ticketCoverage', 'hinge', 'assignment.summary', 'control', 'pushover', 'benchmarks.cases'],
       agentUse: 'Read-only gate for reports and AI-agent inspection of hinge/control readiness before P3-M16 fiber and NLTH workflows.',
+      maturity: 'preliminary-formal-contract',
     },
     contracts: {
       momentHinge: MOMENT_HINGE_VERSION,
@@ -260,6 +262,7 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
       pushoverOk: !!pushover?.ok,
       pushoverStopReason: pushover?.control?.stopReason || null,
       requiredBenchmarks: ['B3', 'B4', 'B5'],
+      controlReview,
       ticketCoverage: buildHingeControlTicketCoverage({
         hingeTrace,
         hingeAssignment: options.hingeAssignment,
@@ -269,6 +272,7 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
         hingeControlBenchmarks,
       }),
     },
+    controlReview,
     hinge: summarizeHingeTrace(hingeTrace),
     assignment: options.hingeAssignment ? {
       version: options.hingeAssignment.version,
@@ -311,8 +315,28 @@ export function buildNonlinearHingeControlGate(hingeTrace, pushover, hingeContro
     } : null,
     limitations: [
       'P3-M15 assigns concentrated member-end hinges and records tangent assembly corrections.',
+      'Formal pushover still exposes the source path until hinge-degraded tangent equilibrium is fully integrated.',
       'PMM interaction, fiber section response, and nonlinear time history remain P3-M16 scope.',
     ],
+  };
+}
+
+function buildHingeControlReview({ hingeTrace, pushover, hingeControlBenchmarks, options, displacementControl, arcLength }) {
+  const missing = [];
+  if (!(hingeTrace?.rows?.length > 0)) missing.push('hinge-state-trace');
+  if (!(options.hingeAssignment?.summary?.hingeCount > 0)) missing.push('hinge-assignment');
+  if (!(displacementControl?.steps?.length > 0)) missing.push('displacement-control');
+  if (!(arcLength?.steps || []).some((step) => step.dLambda < 0)) missing.push('arc-length-post-peak');
+  if (!pushover?.ok) missing.push('formal-pushover');
+  if (!hingeControlBenchmarks?.ok) missing.push('B3-B5-benchmark');
+  return {
+    status: missing.length ? 'review-required' : 'trace-ready',
+    maturity: 'preliminary',
+    productionHingeEquilibriumLoop: false,
+    hingeTangentCorrectionExposed: (options.assembly?.summary?.hingeCorrectionCount || 0) > 0,
+    formalPushoverSourcePolicy: pushover?.contract?.sourcePolicy || null,
+    missing,
+    agentDecision: missing.length ? 'hold-before-m16' : 'm15-ready-for-m16-review',
   };
 }
 
