@@ -25,6 +25,7 @@
     "pointCloudExtraction": "preliminary-synthetic-benchmark",
     "phase3LaunchReadiness": "preliminary-phase3",
     "phase3PlanAlignment": "available-plan-alignment",
+    "phase3PracticeValidation": "owner-review-required",
     "phase3ProductionReadiness": "preliminary-review-required"
   },
   "globalObjects": [
@@ -42,6 +43,7 @@
     "phase3RunnerContract": "node tests/p3-runner-contract.mjs",
     "phase3PlanAlignment": "node tests/p3-plan-alignment.mjs",
     "phase3DocReferences": "node tests/p3-doc-reference-integrity.mjs",
+    "phase3PracticeValidation": "node tests/p3-practice-validation-review.mjs",
     "phase3ServerRoutes": "node tests/p3-server-route-contract.mjs"
   },
   "reviewGates": {
@@ -116,6 +118,7 @@
     "getPhase3ImportMilestoneReview",
     "getPhase3NonlinearMilestoneReview",
     "getPhase3PlanAlignment",
+    "getPhase3PracticeValidationReview",
     "getPhase3ProductizationMilestoneReview",
     "getConnectionFoundationReport",
     "getMemberDesignTraceReport",
@@ -280,6 +283,7 @@
     "phase3ImportMilestoneReview",
     "phase3NonlinearMilestoneReview",
     "phase3PlanAlignment",
+    "phase3PracticeValidationReview",
     "phase3ProductizationMilestoneReview",
     "phase3NonlinearAssembly",
     "phase3NonlinearHingeAssignment",
@@ -305,6 +309,7 @@
     "phase3ImportMilestoneReview",
     "phase3NonlinearMilestoneReview",
     "phase3PlanAlignment",
+    "phase3PracticeValidationReview",
     "phase3ProductizationMilestoneReview",
     "phase3NonlinearAssemblyTrace",
     "phase3NonlinearHingeAssignmentTrace",

@@ -212,6 +212,10 @@ export {
   PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION,
 } from './platform/phase3ProductizationMilestoneReview.js';
 export {
+  buildPhase3PracticeValidationReview,
+  PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
+} from './platform/phase3PracticeValidationReview.js';
+export {
   buildMemberDesignTraceReport,
   MEMBER_DESIGN_TRACE_VERSION,
 } from './design/memberDesignTrace.js';

@@ -150,6 +150,7 @@
     "test:p3alignment": "node tests/p3-plan-alignment.mjs",
     "test:p3runner": "node tests/p3-runner-contract.mjs",
     "test:p3docs": "node tests/p3-doc-reference-integrity.mjs",
+    "test:p3practice": "node tests/p3-practice-validation-review.mjs",
     "test:p3routes": "node tests/p3-server-route-contract.mjs"
   }
 }
