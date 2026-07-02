@@ -343,6 +343,7 @@ export function buildAgentManifest(options = {}) {
       phase3NonlinearMilestoneReview: 'node tests/p3-nonlinear-milestone-review.mjs',
       phase3PointCloudValidation: 'node tests/p3-pointcloud-validation-review.mjs',
       phase3PracticeValidation: 'node tests/p3-practice-validation-review.mjs',
+      phase3ProductizationMilestoneReview: 'node tests/p3-productization-milestone-review.mjs',
       phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
     },
     reviewGates: {
