@@ -123,6 +123,7 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
     }
   }
   const rows = [...nodeRows.values()].sort((a, b) => String(a.node).localeCompare(String(b.node)));
+  const totalMass = rows.reduce((sum, row) => sum + row.mass, 0);
   return {
     version: MASS_SOURCE_TRACE_VERSION,
     contract: {
@@ -135,14 +136,31 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
     gravity: g,
     combos,
     includeNodeMass: spec.includeNodeMass !== false,
-    totalMass: rows.reduce((sum, row) => sum + row.mass, 0),
+    totalMass,
     nodeCount: rows.length,
     rows,
     ignored,
+    review: buildMassSourceReview({ rows, ignored, totalMass }),
     limitations: [
       'Mass source converts vertical nodal/member loads only.',
       'Generated mass is an analysis trace and does not mutate node.mass automatically.',
     ],
+  };
+}
+
+function buildMassSourceReview({ rows, ignored, totalMass }) {
+  const ignoredReasons = [...new Set((ignored || []).map((row) => row.reason).filter(Boolean))].sort();
+  return {
+    status: totalMass > 0 ? 'available' : 'empty',
+    acceptedNodeCount: rows.length,
+    ignoredLoadCount: ignored.length,
+    ignoredReasons,
+    warning: ignored.length > 0 ? 'mass-source-has-ignored-loads' : null,
+    agentDecision: totalMass > 0 && ignored.length === 0
+      ? 'mass-source-ready'
+      : totalMass > 0
+        ? 'mass-source-ready-with-ignored-load-review'
+        : 'mass-source-empty-review-required',
   };
 }
 

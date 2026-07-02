@@ -115,6 +115,8 @@ assert.equal(massTrace.contract.scope, 'Convert selected vertical load cases to 
 assert.equal(massTrace.nodeCount, 2);
 assert.ok(massTrace.totalMass > 3);
 assert.ok(massTrace.rows.find((row) => row.node === 'N1').sources.includes('node.mass'));
+assert.equal(massTrace.review.status, 'available');
+assert.equal(massTrace.review.agentDecision, 'mass-source-ready');
 
 const udlMassTrace = buildMassSourceTrace({
   nodes: [{ id: 'A', x: 0, y: 0, z: 0 }, { id: 'B', x: 4, y: 0, z: 0 }],
@@ -124,6 +126,17 @@ const udlMassTrace = buildMassSourceTrace({
 assert.equal(udlMassTrace.nodeCount, 2);
 assert.ok(Math.abs(udlMassTrace.totalMass - 4) < 1e-9);
 assert.ok(udlMassTrace.rows.every((row) => row.sources.includes('member-load:D')));
+const lateralIgnoredMassTrace = buildMassSourceTrace({
+  nodes: [{ id: 'N1' }],
+  loads: [
+    { id: 'D-Z', type: 'nodal', node: 'N1', P: 9.80665, dir: '-z', case: 'D' },
+    { id: 'D-X', type: 'nodal', node: 'N1', P: 9.80665, dir: '+x', case: 'D' },
+  ],
+}, { combos: [{ case: 'D', factor: 1 }], includeNodeMass: false });
+assert.equal(lateralIgnoredMassTrace.review.ignoredLoadCount, 1);
+assert.ok(lateralIgnoredMassTrace.review.ignoredReasons.includes('not-vertical-load'));
+assert.equal(lateralIgnoredMassTrace.review.warning, 'mass-source-has-ignored-loads');
+assert.equal(lateralIgnoredMassTrace.review.agentDecision, 'mass-source-ready-with-ignored-load-review');
 
 const dynamicMassModel = createTwoStoryElasticFrameModel();
 dynamicMassModel.analysisSettings.massSource = {
