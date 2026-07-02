@@ -58,3 +58,5 @@ P3-M9 remains preliminary. Beam detection still uses synthetic ground-truth assi
 2026-07-03 practice-validation update: `getPhase3PointCloudValidationReview` now records synthetic benchmark rows separately from owner real-scan validation rows. This keeps story/column/beam benchmark success useful for regression while preventing AI agents from treating synthetic-assisted beam/wall extraction as production field-scan proof.
 
 2026-07-03 real-scan evidence hardening: real-scan validation rows now require a file id, owner-provided file flag, beam/wall validation flag, and review report path before the `real-scan-validation` group can pass. A row with only `status: checked` remains `pending-owner-review`, so AI agents cannot treat a bare checked flag as field-scan proof.
+
+2026-07-03 scan-only audit update: `tests/p3-pointcloud-extraction.mjs` now locks the no-ground-truth extraction path. A scan-only candidate records `contract.source: scan-only-preliminary`, `beamSource: not-detected`, and `beam-detection-not-available-without-ground-truth`, while still requiring human review even when real-scan validation is marked checked.

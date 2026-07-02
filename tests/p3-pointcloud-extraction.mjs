@@ -73,6 +73,21 @@ assert.equal(checkedScore.review.agentDecision, 'pointcloud-import-ready-for-own
 const failedReview = buildPointCloudExtractionReview({ realScanValidation: 'failed' });
 assert.equal(failedReview.realScanGate, 'failed');
 assert.equal(failedReview.agentDecision, 'collect-or-clean-real-scan');
+const scanOnlyCandidate = extractPointCloudCandidate(synthetic.points, {
+  story: { tolerance: 0.08 },
+  column: { xyTolerance: 0.08, zTolerance: 0.08 },
+  realScanValidation: 'checked',
+});
+assert.equal(validateImportCandidate(scanOnlyCandidate).ok, true);
+assert.equal(scanOnlyCandidate.audit.pointcloud.contract.source, 'scan-only-preliminary');
+assert.equal(scanOnlyCandidate.audit.pointcloud.evidence.extractionStatus.beams, 'not-detected');
+assert.equal(scanOnlyCandidate.audit.pointcloud.evidence.beamSource, 'not-detected');
+assert.equal(scanOnlyCandidate.audit.pointcloud.candidateReview.sourceAssistance, 'scan-only');
+assert.equal(scanOnlyCandidate.audit.pointcloud.candidateReview.productionReady, false);
+assert.equal(scanOnlyCandidate.audit.pointcloud.candidateReview.humanReviewRequired, true);
+assert.equal(scanOnlyCandidate.audit.pointcloud.candidateReview.blockers.includes('synthetic-ground-truth-assisted-extraction'), false);
+assert.equal(scanOnlyCandidate.audit.pointcloud.candidateReview.blockers.includes('real-scan-validation-not-checked'), false);
+assert.ok(scanOnlyCandidate.audit.pointcloud.limitations.includes('beam-detection-not-available-without-ground-truth'));
 assert.ok(candidate.candidates.members.some((m) => m.kind === 'beam'));
 assert.equal(candidate.audit.pointcloud.contract.milestone, 'P3-M9');
 assert.deepEqual(candidate.audit.pointcloud.contract.tickets, ['P3-T41', 'P3-T42', 'P3-T43', 'P3-T44', 'P3-T45']);
