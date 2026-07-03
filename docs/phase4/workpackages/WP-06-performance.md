@@ -66,3 +66,10 @@ perf-budget 게이트를 launch gate 목록에 연결 (L4). TD-08/15 fixed 처�
 - Member role updates now perform owner-role verification and target-user lookup with Promise.all.
 - saveRevision now loads project meta and revision index with Promise.all after ID validation.
 - Added tests/p4-independent-io.mjs and wired it into npm test as test:m97.
+
+2026-07-03 P4-T31 / performance budget:
+
+- Added tools/measure-perf.mjs and npm run measure:perf.
+- Generated reports/validation-evidence/perf-budget.json with six measured budget rows and machine metadata.
+- Added tests/p4-perf-budget.mjs and wired it into npm test as test:m98.
+- Point-cloud and viewer rows are marked as automated proxy measurements until owner-provided large files and browser FPS captures are available.
