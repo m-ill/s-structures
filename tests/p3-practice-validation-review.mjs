@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {
   buildAgentManifest,
   buildPhase3PracticeValidationReview,
+  PHASE3_FINAL_APPROVAL_GROUPS,
   PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
@@ -21,6 +22,8 @@ assert.equal(review.summary.requiredEvidenceIdCount, 25);
 assert.ok(review.sourceDocs.includes('docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md'));
 assert.ok(review.summary.affectedMilestones.includes('P3-M20'));
 assert.ok(review.agentUse.finalApprovalFields.includes('productionDeploymentApproved'));
+assert.ok(review.agentUse.finalApprovalFields.includes('ownerProductionDeploymentApproved'));
+assert.equal(review.agentUse.finalApprovalGroups.length, PHASE3_FINAL_APPROVAL_GROUPS.length);
 
 const drawing = review.rows.find((row) => row.id === 'drawing-import');
 assert.deepEqual(drawing.milestones, ['P3-M6', 'P3-M7']);
@@ -63,17 +66,39 @@ const evidenceOnly = buildPhase3PracticeValidationReview({ evidence: fullEvidenc
 assert.equal(evidenceOnly.summary.evidenceComplete, true);
 assert.equal(evidenceOnly.summary.productionReady, false);
 assert.equal(evidenceOnly.summary.agentDecision, 'collect-final-approval-fields-before-production-use');
-assert.ok(evidenceOnly.summary.finalApprovalCoverage.missing.includes('finalStructuralSignoff'));
+assert.ok(evidenceOnly.summary.finalApprovalCoverage.missing.includes('final-structural-signoff'));
+assert.equal(evidenceOnly.summary.finalApprovalCoverage.requiredCount, PHASE3_FINAL_APPROVAL_GROUPS.length);
 
+const groupedApprovals = Object.fromEntries(PHASE3_FINAL_APPROVAL_GROUPS.map((group) => [group.fields[0], true]));
 const approved = buildPhase3PracticeValidationReview({
   evidence: fullEvidence,
-  finalApprovals: Object.fromEntries(review.agentUse.finalApprovalFields.map((field) => [field, true])),
+  finalApprovals: groupedApprovals,
 });
 assert.equal(approved.summary.evidenceComplete, true);
 assert.equal(approved.summary.productionReady, true);
 assert.equal(approved.summary.ownerReviewRequired, false);
 assert.equal(approved.summary.finalApprovalCoverage.complete, true);
 assert.equal(approved.summary.agentDecision, 'practice-validation-ready-for-final-use-review');
+
+const approvedWithAliases = buildPhase3PracticeValidationReview({
+  evidence: fullEvidence,
+  finalApprovals: {
+    ...groupedApprovals,
+    finalStructuralSignoff: false,
+    productionDeploymentApproved: false,
+    ownerFinalSignoff: true,
+    ownerProductionDeploymentApproved: true,
+  },
+});
+assert.equal(approvedWithAliases.summary.productionReady, true);
+assert.deepEqual(
+  approvedWithAliases.summary.finalApprovalCoverage.rows.find((row) => row.id === 'final-structural-signoff').acceptedFields,
+  ['ownerFinalSignoff'],
+);
+assert.deepEqual(
+  approvedWithAliases.summary.finalApprovalCoverage.rows.find((row) => row.id === 'production-deployment-approval').acceptedFields,
+  ['ownerProductionDeploymentApproved'],
+);
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3PracticeValidationReview, PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION);

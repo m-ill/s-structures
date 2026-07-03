@@ -108,5 +108,9 @@ engineer explicitly approves a final field, submit the evidence row with
 `finalApprovalField` and `approved: true` or `finalApprovalAccepted: true`.
 Accepted evidence without that explicit approval flag keeps `productionReady`
 and `productionDeploymentApproved` false.
+`getPhase3PracticeValidationReview().summary.finalApprovalCoverage` uses the
+same required approval groups as `finalApprovalReview`; owner alias fields such
+as `ownerFinalSignoff` or `ownerProductionDeploymentApproved` satisfy their
+group without requiring every allowed field.
 
 Manual launch evidence remains in `reports/launch-readiness/`.

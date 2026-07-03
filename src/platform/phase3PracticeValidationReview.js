@@ -1,4 +1,10 @@
-export const PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION = 'p3-practice-validation-review-v3';
+import {
+  PHASE3_FINAL_APPROVAL_FIELDS,
+  PHASE3_FINAL_APPROVAL_GROUPS,
+  buildPhase3FinalApprovalReview,
+} from './phase3EvidenceRegister.js';
+
+export const PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION = 'p3-practice-validation-review-v4';
 
 const ROWS = [
   row('drawing-import', ['P3-M6', 'P3-M7'], [
@@ -105,38 +111,27 @@ export function buildPhase3PracticeValidationReview(input = {}) {
     agentUse: {
       readApi: 'getPhase3PracticeValidationReview',
       rule: 'Treat this as the practical validation checklist after automated Phase 3 gates pass.',
-      finalApprovalFields: [
-        'productionEquilibriumSolver',
-        'productionHingeEquilibriumLoop',
-        'productionSeismicQualification',
-        'finalPermitDesign',
-        'finalStructuralSignoff',
-        'productionDeploymentApproved',
-      ],
+      finalApprovalFields: [...PHASE3_FINAL_APPROVAL_FIELDS],
+      finalApprovalGroups: PHASE3_FINAL_APPROVAL_GROUPS.map((group) => ({
+        id: group.id,
+        fields: [...group.fields],
+      })),
     },
   };
 }
 
 function buildFinalApprovalCoverage(approvals = {}) {
-  const fields = [
-    'productionEquilibriumSolver',
-    'productionHingeEquilibriumLoop',
-    'productionSeismicQualification',
-    'finalPermitDesign',
-    'finalStructuralSignoff',
-    'productionDeploymentApproved',
-  ];
-  const rows = fields.map((field) => ({
-    field,
-    accepted: approvals[field] === true,
-    status: approvals[field] === true ? 'ACCEPTED' : 'APPROVAL_REQUIRED',
-  }));
+  const review = buildPhase3FinalApprovalReview({ finalApprovals: approvals });
   return {
-    requiredFields: fields,
-    acceptedCount: rows.filter((row) => row.accepted).length,
-    missing: rows.filter((row) => !row.accepted).map((row) => row.field),
-    complete: rows.every((row) => row.accepted),
-    rows,
+    requiredFields: PHASE3_FINAL_APPROVAL_GROUPS.map((group) => group.fields[0]),
+    allowedFields: [...PHASE3_FINAL_APPROVAL_FIELDS],
+    requiredApprovalGroups: review.requiredApprovalGroups,
+    acceptedCount: review.acceptedCount,
+    requiredCount: review.requiredCount,
+    missing: review.missing,
+    complete: review.complete,
+    rows: review.rows,
+    allowedRows: review.allowedRows,
   };
 }
 

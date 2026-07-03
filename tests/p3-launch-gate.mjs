@@ -11,6 +11,7 @@ import {
   buildPilotProjectValidation,
   createCalculationPackageHtml,
   createTwoStoryElasticFrameModel,
+  PHASE3_FINAL_APPROVAL_GROUPS,
   LAUNCH_READINESS_GATE_VERSION,
   LAUNCH_READINESS_VERSION,
   PERFORMANCE_BUDGETS,
@@ -68,12 +69,14 @@ assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('requir
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalApprovalField is allowed')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('listProjectEvidence().finalApprovals')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('listProjectEvidence().finalApprovalReview')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('summary.finalApprovalCoverage uses the same required approval groups')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('exitCriteriaSummary')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('finalUseReview.requiredReviews')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('requiredEvidenceIdCount')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('finalApprovalField is allowed')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('listProjectEvidence().finalApprovals')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('listProjectEvidence().finalApprovalReview')));
+assert.ok(manifest.interpretationRules.some((rule) => rule.includes('summary.finalApprovalCoverage uses the same required approval groups')));
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.agentSafeStatus/);
 assert.match(launchManual, /finalUseReview\.requiredReviews/);
@@ -82,6 +85,7 @@ assert.match(launchManual, /finalApprovalField/);
 assert.match(launchManual, /listProjectEvidence\(\)/);
 assert.match(launchManual, /finalApprovals/);
 assert.match(launchManual, /finalApprovalReview/);
+assert.match(launchManual, /summary\.finalApprovalCoverage/);
 assert.match(launchManual, /LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED/);
 assert.match(launchManual, /OWNER_REVIEW_REQUIRED/);
 assert.match(launchManual, /exitCriteriaSummary/);
@@ -218,14 +222,7 @@ assert.equal(evidenceCompleteLaunch.finalUseReview.rows.find((row) => row.id ===
 assert.equal(evidenceCompleteLaunch.finalUseReview.rows.find((row) => row.id === 'evidence-register').status, 'ACCEPTED');
 assert.equal(evidenceCompleteLaunch.finalUseReview.requiredReviews.find((row) => row.id === 'evidence-register').accepted, true);
 
-const finalApprovalFields = [
-  'productionEquilibriumSolver',
-  'productionHingeEquilibriumLoop',
-  'productionSeismicQualification',
-  'finalPermitDesign',
-  'finalStructuralSignoff',
-  'productionDeploymentApproved',
-];
+const finalApprovalFields = PHASE3_FINAL_APPROVAL_GROUPS.map((group) => group.fields[0]);
 const finalApprovals = Object.fromEntries(finalApprovalFields.map((field) => [field, true]));
 const fullEvidenceRows = buildPhase3EvidenceRegister().rows.map((row) => ({ id: row.id, accepted: true }));
 const productionApprovedLaunch = buildLaunchReadinessReport({
