@@ -7,6 +7,7 @@ export const ROUTE_TABLE = [
   { name: 'projects', pattern: '/projects' },
   { name: 'modeler', pattern: '/p/:projectId/modeler' },
   { name: 'importReview', pattern: '/p/:projectId/import/:jobId' },
+  { name: 'library', pattern: '/p/:projectId/library' },
   { name: 'revisions', pattern: '/p/:projectId/revisions' },
   { name: 'report', pattern: '/p/:projectId/report' },
   { name: 'localModeler', pattern: '/local/modeler' },

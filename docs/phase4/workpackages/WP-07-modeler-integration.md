@@ -104,4 +104,10 @@ R3 — 스파이크로 선제 완화. iframe 방식이면 통합 리스크는 �
 - Connected import review UI to overlay item rendering and selected entity state.
 - Added `tests/p4-import-review-overlay.mjs` and `npm run test:m103`.
 
+2026-07-03 P4-T38 material library UI:
+
+- Added `#/p/:projectId/library` shell route and `src/app/views/library.js`.
+- Connected project material library list/save flow to existing server library APIs.
+- Added `tests/p4-library-ui.mjs` and `npm run test:m104` to prove versioned material records are stored and listed.
+
 (완료 시 기입)

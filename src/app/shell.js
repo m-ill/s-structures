@@ -2,6 +2,7 @@ import { matchRoute, buildHash } from './routes.js';
 import { mountLoginView } from './views/login.js';
 import { mountProjectsView } from './views/projects.js';
 import { mountImportReviewView } from './views/importReview.js';
+import { mountLibraryView } from './views/library.js';
 import { mountRevisionsView } from './views/revisions.js';
 import { mountReportView } from './views/report.js';
 import { mountModelerHostView } from './modelerHost.js';
@@ -18,6 +19,7 @@ const VIEW_MOUNTERS = {
   modeler: mountModelerHostView,
   localModeler: mountModelerHostView,
   importReview: mountImportReviewView,
+  library: mountLibraryView,
   revisions: mountRevisionsView,
   report: mountReportView,
 };
