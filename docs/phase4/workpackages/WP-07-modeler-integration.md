@@ -1,7 +1,7 @@
 # WP-07 모델러 통합·프론트 완성
 
 stage: H / milestone: P4-M7 / tickets: P4-T33~T39 / 크기: L (Phase 4 최대 단일 작업)
-status: in-progress
+status: complete
 선행 스파이크: R3 대응 1일 스파이크를 다른 WP보다 먼저 실행 권장
 
 ## Objective

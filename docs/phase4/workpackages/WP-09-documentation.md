@@ -1,7 +1,7 @@
 # WP-09 사용자 문서/온보딩
 
 stage: R / milestone: P4-M9 / tickets: P4-T46~T49 / 크기: M~L
-status: not-started
+status: complete
 선행: WP-07 완료 (최종 UI 기준 작성). 구조 설계·목차·한계 문구는 조기 착수 가능.
 
 ## Objective

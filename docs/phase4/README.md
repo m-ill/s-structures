@@ -41,6 +41,7 @@ Phase 4의 완료(=출시)는 아래 4개 조건의 동시 만족이다.
 | `OPERATIONS_RUNBOOK.md` | 설치/백업/복구/업그레이드/장애 대응 절차 | 출시 전 확정 |
 | `BETA_PROGRAM_PLAN.md` | 베타 파일럿 운영 계획 | Stage R 중 |
 | `DOCUMENTATION_PLAN.md` | 사용자 매뉴얼/튜토리얼/온보딩 완성 계획 | Stage R 중 |
+| `PRE_BETA_EXECUTION_AUDIT.md` | 현재 요청 범위의 WP-05~WP-09 완료 증거와 제외 게이트 정리 | pre-beta 범위 완료 시 |
 | `RISK_REGISTER.md` | 리스크와 대응 | 상시 |
 | `workpackages/WP-01..WP-10` | 실행 단위 작업 패키지 (세부 작업문서) | 착수 시 상세화, 완료 시 결과 기록 |
 

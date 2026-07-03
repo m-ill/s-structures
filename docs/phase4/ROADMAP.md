@@ -3,6 +3,24 @@
 status: active
 start: 2026-07-03
 
+## Current Pre-Beta Execution Status
+
+This section is the current execution status for the user-requested pre-beta
+scope. The validation WPs and beta/GA WPs are intentionally left unstarted.
+
+| Milestone | Status | Completed | Evidence |
+| --- | --- | --- | --- |
+| P4-M0 | complete | 2026-07-03 | Phase 4 document set exists and the full regression suite is green. |
+| P4-M1~M4 | deferred-by-scope | - | Validation WPs are excluded from the current user request. |
+| P4-M5 | complete | 2026-07-03 | WP-05 complete; TD-02..06, TD-09, TD-12, TD-13 fixed and covered by P4 tests. |
+| P4-M6 | complete | 2026-07-03 | WP-06 complete; project-meta cache, independent I/O, perf budget, and scale evidence covered by P4 tests. |
+| P4-M7 | complete | 2026-07-03 | WP-07 complete; modeler host, revision save flow, import overlay, library UI, and preview validation covered by P4 tests. |
+| P4-M8 | complete-for-pre-beta | 2026-07-03 | WP-08 complete for pre-beta packaging; release build, version sync, license, backup, and smoke records exist. |
+| P4-M9 | complete-for-pre-beta | 2026-07-03 | WP-09 complete for pre-beta documentation; coverage, onboarding, tutorials, and agent contract are machine-checked. |
+| P4-M10~M11 | not-started | - | Beta pilot and GA release remain out of the current execution scope. |
+
+Detailed evidence is recorded in `docs/phase4/PRE_BETA_EXECUTION_AUDIT.md`.
+
 3개 stage, 12개 마일스톤(P4-M0~M11). 각 마일스톤은 **기계 확인 가능한 exit criteria**가 있고, 완료 시 해당 review 계약(코드)의 상태가 바뀌어 테스트로 잠긴다. 크기: S 며칠 / M 1-2주 / L 2-4주 상당.
 
 ## Stage Overview

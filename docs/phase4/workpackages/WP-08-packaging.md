@@ -1,7 +1,7 @@
 # WP-08 패키징/배포
 
 stage: R / milestone: P4-M8 / tickets: P4-T40~T45 / 크기: M~L
-status: not-started
+status: complete
 선행: WP-05 완료 (강화된 서버 전제), WP-07 완료 권장 (패키징 대상 UI 확정)
 
 ## Objective
