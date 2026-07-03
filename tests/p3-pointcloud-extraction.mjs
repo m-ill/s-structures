@@ -122,6 +122,13 @@ assert.ok(candidate.audit.pointcloud.candidateReview.blockers.includes('syntheti
 assert.ok(candidate.audit.pointcloud.candidateReview.blockers.includes('real-scan-validation-not-checked'));
 assert.equal(candidate.audit.pointcloud.candidateReview.relatedTest, 'tests/p3-pointcloud-e2e.mjs');
 assert.equal(candidate.audit.pointcloud.candidateReview.agentDecision, 'review-pointcloud-candidate-before-analysis');
+assert.equal(candidate.audit.pointcloud.importCandidateTrace.validationOk, true);
+assert.equal(candidate.audit.pointcloud.importCandidateTrace.counts.nodes, candidate.candidates.nodes.length);
+assert.equal(candidate.audit.pointcloud.importCandidateTrace.counts.members, candidate.candidates.members.length);
+assert.equal(candidate.audit.pointcloud.importCandidateTrace.memberKinds.column > 0, true);
+assert.equal(candidate.audit.pointcloud.importCandidateTrace.memberKinds.beam > 0, true);
+assert.equal(candidate.audit.pointcloud.importCandidateTrace.candidateToAnalysisPath, 'available-after-human-review');
+assert.equal(candidate.audit.pointcloud.importCandidateTrace.agentDecision, 'review-pointcloud-import-candidate-before-analysis');
 assert.deepEqual(candidate.audit.pointcloud.evidence.confidenceBands, {
   high: '>=0.8',
   review: '0.5-0.8',

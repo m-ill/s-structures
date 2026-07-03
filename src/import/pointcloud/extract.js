@@ -1,4 +1,5 @@
 import { wireframeToImportCandidate } from '../wireframe.js';
+import { validateImportCandidate } from '../candidate.js';
 import { detectBeamsFromGroundTruth } from './beamDetect.js';
 import { detectColumns } from './columnDetect.js';
 import { detectStoryLevels } from './storyDetect.js';
@@ -22,6 +23,7 @@ export function extractPointCloudCandidate(points, options = {}) {
   ];
   const candidate = wireframeToImportCandidate(segments, { source: { type: 'pointcloud' }, tolerance: 0.05, minLength: 0.2 });
   const summary = buildPointCloudExtractionSummary({ stories, columns, beams, walls, usedGroundTruth: !!options.groundTruth, realScanValidation: options.realScanValidation });
+  summary.importCandidateTrace = buildImportCandidateTrace(candidate);
   candidate.import = { version: POINT_CLOUD_EXTRACTION_VERSION, confidence: summary.confidence.mean };
   candidate.audit = { ...candidate.audit, pointcloud: summary };
   return candidate;
@@ -104,6 +106,35 @@ function buildCandidateReview(input) {
       ? 'review-pointcloud-candidate-before-analysis'
       : 'fix-pointcloud-extraction-before-analysis',
   };
+}
+
+function buildImportCandidateTrace(candidate) {
+  const validation = validateImportCandidate(candidate);
+  const members = candidate?.candidates?.members || [];
+  return {
+    version: POINT_CLOUD_EXTRACTION_VERSION,
+    validationOk: validation.ok,
+    validationErrors: validation.errors,
+    counts: {
+      stories: candidate?.candidates?.stories?.length || 0,
+      grids: candidate?.candidates?.grids?.length || 0,
+      nodes: candidate?.candidates?.nodes?.length || 0,
+      members: members.length,
+    },
+    memberKinds: countBy(members, (member) => member.kind || 'unknown'),
+    candidateToAnalysisPath: validation.ok ? 'available-after-human-review' : 'blocked-until-candidate-validation',
+    agentDecision: validation.ok
+      ? 'review-pointcloud-import-candidate-before-analysis'
+      : 'fix-pointcloud-import-candidate-before-analysis',
+  };
+}
+
+function countBy(items, keyFn) {
+  return (items || []).reduce((acc, item) => {
+    const key = keyFn(item);
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
 }
 
 function buildCandidateEvidence(stories, columns, beams, walls, usedGroundTruth) {

@@ -18,6 +18,8 @@ const candidate = extractPointCloudCandidate(synthetic.points, {
 assert.equal(validateImportCandidate(candidate).ok, true);
 assert.equal(candidate.audit.pointcloud.candidateReview.importCandidateGenerated, true);
 assert.equal(candidate.audit.pointcloud.candidateReview.candidateToAnalysisPath, 'available-after-human-review');
+assert.equal(candidate.audit.pointcloud.importCandidateTrace.validationOk, true);
+assert.equal(candidate.audit.pointcloud.importCandidateTrace.candidateToAnalysisPath, 'available-after-human-review');
 
 const model = importCandidateToModel(candidate, { topDeadLoad: 1 });
 const analysis = analyzeModel(model);

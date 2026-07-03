@@ -23,6 +23,7 @@ This note verifies P3-M9 against `docs/phase3/IMPORT_POINT_CLOUD_PLAN.md`.
 | Benchmark review decision | benchmark score exposes `review.syntheticGate`, failed target IDs, real scan gate, and AI-readable decision |
 | Real-scan validation decision | extraction summary and benchmark score now share `buildPointCloudExtractionReview()` so owner-file status changes are reflected in `realScanGate`, `productionReady`, and `agentDecision` |
 | Candidate-to-analysis review decision | extraction summary exposes `candidateReview` so AI agents know the E2E path exists but remains human-review gated |
+| ImportCandidate trace | extraction summary exposes `importCandidateTrace` with validation status, body counts, member kind breakdown, and analysis-path decision |
 
 ## Added Review Finding
 
@@ -41,6 +42,8 @@ The previous extraction audit only exposed raw counts. P3-M9 now records confide
 2026-07-02 real-scan decision update: point-cloud extraction review decisions now normalize `pending-owner-file`, `checked`, and `failed` states. A synthetic benchmark pass remains non-production until real scan validation is `checked`; AI agents can branch on `pointcloud.evidence.review.productionReady` instead of inferring readiness from raw benchmark values.
 
 2026-07-03 P3-M9 rebuild review update: extraction summaries now include `candidateReview` with `importCandidateGenerated`, `candidateToAnalysisPath`, `sourceAssistance`, `humanReviewRequired`, blockers, the E2E test reference, and an AI decision. This documents the planned ImportCandidate-to-analysis path while preserving the human-review requirement for synthetic-assisted or unvalidated field scans.
+
+2026-07-03 ImportCandidate trace update: `extractPointCloudCandidate()` now records `pointcloud.importCandidateTrace` after building the candidate. The trace includes shared candidate validation status, validation errors, story/grid/node/member counts, member kind counts, the candidate-to-analysis path, and an AI decision so agents can connect extraction evidence to the actual candidate body before model conversion.
 
 ## Current Test Gate
 
