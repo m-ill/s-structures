@@ -33,6 +33,7 @@ try {
 
   const badLogin = await app.api('POST', '/api/auth/login', { body: { email: 'owner@example.com', password: 'wrong' } });
   assert.equal(badLogin.status, 401);
+  assert.equal(badLogin.data.error.details.reason, 'INVALID_CREDENTIALS');
 
   const login = await app.api('POST', '/api/auth/login', { body: { email: 'owner@example.com', password: 'super-secret-pw' } });
   assert.equal(login.status, 200);

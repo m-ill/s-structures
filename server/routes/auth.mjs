@@ -32,7 +32,7 @@ export function registerAuthRoutes(router, ctx) {
       const message = result.code === 'LOCKED'
         ? 'Account is temporarily locked after repeated failed logins.'
         : 'Invalid email or password.';
-      throw new ApiError(401, 'UNAUTHORIZED', message);
+      throw new ApiError(401, 'UNAUTHORIZED', message, { reason: result.code });
     }
     const secret = await ctx.userStore.getSecret();
     const { token, expiresAt } = issueToken(

@@ -34,6 +34,11 @@ email+password 계정, 서명 토큰 세션, 역할 기반 프로젝트 권한. 
 | 잠금 | 연속 실패 10회 → 15분 잠금 (P3-T12) |
 | 재설정 | v1: admin이 임시 비밀번호 발급. self-service 메일 재설정은 출시 후 |
 
+Login failure responses keep the common error envelope. `UNAUTHORIZED` includes
+`details.reason = INVALID_CREDENTIALS` or `LOCKED` so UI and AI agents can
+distinguish normal password failure from temporary account lockout without
+parsing message text.
+
 ## Session Token
 
 stateless HMAC 서명 토큰. 외부 JWT 라이브러리 없이 node:crypto로 구현한다.

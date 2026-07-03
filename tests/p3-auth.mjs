@@ -111,11 +111,15 @@ try {
   const lockedApp = await bootTestApp({ loginFailLimit: 3, loginLockSeconds: 60 });
   try {
     await lockedApp.api('POST', '/api/auth/register', { body: { email: 'lockout@example.com', password: 'super-secret-pw', name: 'L' } });
-    for (let i = 0; i < 3; i += 1) {
+    const firstFailedLogin = await lockedApp.api('POST', '/api/auth/login', { body: { email: 'lockout@example.com', password: 'wrong' } });
+    assert.equal(firstFailedLogin.status, 401);
+    assert.equal(firstFailedLogin.data.error.details.reason, 'INVALID_CREDENTIALS');
+    for (let i = 0; i < 2; i += 1) {
       await lockedApp.api('POST', '/api/auth/login', { body: { email: 'lockout@example.com', password: 'wrong' } });
     }
     const lockedAttempt = await lockedApp.api('POST', '/api/auth/login', { body: { email: 'lockout@example.com', password: 'super-secret-pw' } });
     assert.equal(lockedAttempt.status, 401);
+    assert.equal(lockedAttempt.data.error.details.reason, 'LOCKED');
   } finally {
     await lockedApp.close();
   }

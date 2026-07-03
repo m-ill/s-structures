@@ -22,6 +22,10 @@ milestones: P3-M1, P3-M2
 | ID | `crypto.randomUUID()` |
 | 본문 제한 | JSON 20MB, 파일 업로드 500MB (설정 가능) |
 
+Authentication failures use the same envelope. Login failures include
+`error.details.reason` as `INVALID_CREDENTIALS` or `LOCKED` so clients and AI
+agents do not need to parse localized messages.
+
 ## Endpoints
 
 ### Auth (`server/routes/auth.mjs`)
