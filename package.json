@@ -121,6 +121,7 @@
     "test:m102": "node tests/p4-route-pattern-contract.mjs",
     "test:m103": "node tests/p4-import-review-overlay.mjs",
     "test:m104": "node tests/p4-library-ui.mjs",
+    "test:m105": "node tests/p4-preview-integrated-validation.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",

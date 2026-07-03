@@ -82,7 +82,7 @@ R3 — 스파이크로 선제 완화. iframe 방식이면 통합 리스크는 �
 - Added `src/app/modelerBridge.js` for versioned parent-to-iframe modeler commands.
 - Updated the native index command bridge so iframe commands can respond back to the shell host.
 - Connected `#/p/:projectId/modeler` save controls to `persistenceClient.saveToServer`.
-- Added project save status, a revisions shortcut, and lineage-warning banner support in the modeler host.
+- Added project save status, unsaved/autosave ring status, a revisions shortcut, and lineage-warning banner support in the modeler host.
 - Added `tests/p4-modeler-save-flow.mjs` and `npm run test:m100` to prove save button/Ctrl+S creates server revisions.
 
 2026-07-03 P4-T35 route reentry guard:
@@ -109,5 +109,13 @@ R3 — 스파이크로 선제 완화. iframe 방식이면 통합 리스크는 �
 - Added `#/p/:projectId/library` shell route and `src/app/views/library.js`.
 - Connected project material library list/save flow to existing server library APIs.
 - Added `tests/p4-library-ui.mjs` and `npm run test:m104` to prove versioned material records are stored and listed.
+
+2026-07-03 P4-T39 preview integrated validation:
+
+- Added `tests/p4-preview-integrated-validation.mjs` and `npm run test:m105`.
+- The integrated flow covers project modeler save, revisions list, material library save, and import overlay selection.
+- Wrote `reports/validation-evidence/p4-preview-integrated-validation.json`.
+- In-app browser control timed out during local navigation/new-tab setup; Chrome headless was available but returned no DOM output in this shell, so this pass records automated app-shell evidence instead of screenshot evidence.
+- Marked TD-01 fixed in `TECH_DEBT_REGISTER.md`.
 
 (완료 시 기입)

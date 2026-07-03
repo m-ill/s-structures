@@ -23,6 +23,7 @@ try {
   const projectId = project.project.id;
   const document = createFakeIndexDocument();
   const window = createFakeWindow();
+  window.localStorage = createMemoryStorage();
   const mountPoint = document.createElement('div');
   document.body.appendChild(mountPoint);
 
@@ -57,6 +58,12 @@ try {
   assert.equal(second.rev, 2);
   assert.equal(shell.getCurrentView().getLastSavedRev(), 2);
   assert.equal(readCount, 2);
+
+  assert.equal(shell.getCurrentView().markUnsaved(), true);
+  assert.match(mountPoint.querySelector('[data-role="modeler-unsaved-status"]').textContent, /Unsaved/);
+  const autosaves = await shell.getCurrentView().flushAutosave();
+  assert.equal(autosaves.length, 1);
+  assert.equal(shell.getCurrentView().getAutosaveEntries().length, 1);
 
   let prevented = false;
   window.dispatchEvent({

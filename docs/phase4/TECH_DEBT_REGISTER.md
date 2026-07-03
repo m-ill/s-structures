@@ -10,7 +10,7 @@ source: 2026-07-02 8각도 코드리뷰 + 2026-07-03 재검증
 
 | TD | P | 위치 | 내용 | 실패 시나리오 | 배정 | 상태 |
 | --- | --- | --- | --- | --- | --- | --- |
-| TD-01 | **P0** | `src/app/modelerHost.js` | native 모델러가 앱 shell 라우트에 미통합 (placeholder). index.html 단독 실행과 플랫폼(로그인/프로젝트/서버 저장)이 분리됨 | 사용자가 프로젝트를 열어도 모델링 불가 — 제품 핵심 흐름 단절 | WP-07 | open |
+| TD-01 | **P0** | `src/app/modelerHost.js` | native 모델러가 앱 shell 라우트에 미통합 (placeholder). index.html 단독 실행과 플랫폼(로그인/프로젝트/서버 저장)이 분리됨 | 사용자가 프로젝트를 열어도 모델링 불가 — 제품 핵심 흐름 단절 | WP-07 | fixed |
 | TD-02 | P1 | `server/routes/files.mjs:32` | 파일 다운로드가 업로드 시 Content-Type을 그대로 반사, `X-Content-Type-Options: nosniff` 부재 | engineer가 text/html로 업로드 → viewer가 브라우저에서 열면 stored-XSS 소지 (attachment 헤더로 완화되나 불충분) | WP-05 | fixed |
 | TD-03 | P1 | `server/routes/*.mjs` 17개 핸들러 | authenticate+requireProjectRole 2-step을 수동 반복 — 라우터 수준 인증 선언 부재 | 신규 라우트에서 role 체크 누락 시 무증상으로 프로젝트 데이터 노출 | WP-05 | fixed |
 | TD-04 | P1 | `server/auth/guard.mjs` | requireProjectRole의 minRole이 자유 문자열 — 오타('viewr') 시 정적 검출 불가 | roleAtLeast가 0 rank로 평가 → 의도와 다른 fail 방향 | WP-05 | fixed |

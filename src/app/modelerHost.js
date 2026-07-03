@@ -2,6 +2,8 @@ import { clearElement } from './domUtil.js';
 import { buildHash } from './routes.js';
 import { createPersistenceClient } from './persistenceClient.js';
 import { createModelerBridge } from './modelerBridge.js';
+import { createAutosaveScheduler } from './autosaveScheduler.js';
+import { latestAutosave, pushAutosave, readEntries } from './autosaveRingBuffer.js';
 
 export const MODELER_HOST_VERSION = 'p4-m7-modeler-host-save-flow';
 
@@ -42,6 +44,12 @@ export function mountModelerHostView(container, ctx) {
   status.style.color = '#5f7285';
   status.style.fontSize = '12px';
   bar.appendChild(status);
+
+  const unsaved = document.createElement('div');
+  unsaved.setAttribute('data-role', 'modeler-unsaved-status');
+  unsaved.textContent = projectBacked ? 'Saved' : 'Local';
+  unsaved.style.fontSize = '12px';
+  bar.appendChild(unsaved);
 
   const saveButton = document.createElement('button');
   saveButton.type = 'button';
@@ -93,8 +101,13 @@ export function mountModelerHostView(container, ctx) {
 
   const bridge = (modelerBridgeFactory || createModelerBridge)({ window, iframe });
   const persistence = projectBacked ? createPersistenceClient(api) : null;
+  const storage = window?.localStorage || null;
+  const autosaveScope = `project-${projectId}`;
+  const autosaveScheduler = createAutosaveScheduler((reason) => saveAutosave(reason), ctx.autosaveOptions || {});
   let lastSavedRev = null;
+  let dirty = false;
   let saving = null;
+  let autosaveInFlight = null;
 
   async function saveProjectRevision() {
     if (!projectBacked) return null;
@@ -109,7 +122,9 @@ export function mountModelerHostView(container, ctx) {
           parentRev: lastSavedRev,
         });
         lastSavedRev = result.rev;
+        dirty = false;
         status.textContent = `Saved rev ${result.rev}`;
+        updateUnsavedStatus();
         lineageBanner.hidden = !result.lineageWarning;
         lineageBanner.textContent = result.lineageWarning
           ? `Lineage warning: latest revision is ${result.latestRev}. Open revisions to compare.`
@@ -124,6 +139,39 @@ export function mountModelerHostView(container, ctx) {
       }
     })();
     return saving;
+  }
+
+  function markUnsaved() {
+    if (!projectBacked) return false;
+    dirty = true;
+    updateUnsavedStatus();
+    autosaveScheduler.notifyChange();
+    return true;
+  }
+
+  function saveAutosave(reason = 'manual') {
+    if (!projectBacked || !storage) return Promise.resolve(null);
+    autosaveInFlight = bridge.getModel()
+      .then((model) => pushAutosave(storage, autosaveScope, { model, reason, savedAt: new Date().toISOString() }))
+      .then((entries) => {
+        updateUnsavedStatus();
+        return entries;
+      })
+      .catch((error) => {
+        status.textContent = error.message || 'Autosave failed.';
+        return null;
+      });
+    return autosaveInFlight;
+  }
+
+  async function flushAutosave() {
+    return saveAutosave('flush');
+  }
+
+  function updateUnsavedStatus() {
+    const latest = storage ? latestAutosave(storage, autosaveScope) : null;
+    const autosaveText = latest ? `, autosaved ${latest.payload?.reason || 'change'}` : '';
+    unsaved.textContent = dirty ? `Unsaved${autosaveText}` : `Saved${autosaveText}`;
   }
 
   function onKeydown(event) {
@@ -145,9 +193,14 @@ export function mountModelerHostView(container, ctx) {
     getLastSavedRev() { return lastSavedRev; },
     unmount() {
       window?.removeEventListener?.('keydown', onKeydown);
+      autosaveScheduler.dispose();
       bridge.dispose?.();
       clearElement(container);
     },
+    markUnsaved,
+    flushAutosave,
+    getAutosaveEntries() { return storage ? readEntries(storage, autosaveScope) : []; },
+    getAutosaveInFlight() { return autosaveInFlight; },
   };
 }
 
