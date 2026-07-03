@@ -23,7 +23,7 @@ const VIEW_MOUNTERS = {
 };
 
 export function createAppShell(options) {
-  const { window, document, api, session, mountPoint } = options;
+  const { window, document, api, session, mountPoint, modelerBridgeFactory } = options;
   let current = null;
   let lastResult = null;
 
@@ -52,7 +52,7 @@ export function createAppShell(options) {
       lastResult = { name: 'not-found' };
       return lastResult;
     }
-    current = mounter(mountPoint, { document, window, api, session, navigate, params: match.params });
+    current = mounter(mountPoint, { document, window, api, session, navigate, params: match.params, modelerBridgeFactory });
     lastResult = { name: targetName, params: match.params };
     return lastResult;
   }

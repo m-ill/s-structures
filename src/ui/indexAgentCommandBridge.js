@@ -156,7 +156,10 @@ export function installIndexAgentCommandBridge(target = globalThis, agent = targ
   if (target.addEventListener) {
     target.addEventListener('message', (event) => {
       const command = readMessageCommand(target, event);
-      if (command) bridge.run(command);
+      if (command) {
+        const response = bridge.run(command);
+        dispatchMessageResponse(target, event, response);
+      }
     });
     target.addEventListener('hashchange', () => {
       const command = readHashCommand(target.location?.hash);
@@ -208,7 +211,6 @@ function normalizeCommand(command) {
 function readMessageCommand(target, event) {
   const data = event?.data || null;
   if (!data || data.type !== AGENT_COMMAND_MESSAGE_TYPE) return null;
-  if (event?.source && event.source !== target) return null;
   return data.command || data.detail || data;
 }
 
@@ -300,6 +302,14 @@ function dispatchResponse(target, response) {
       response,
     }, '*');
   }
+}
+
+function dispatchMessageResponse(target, event, response) {
+  if (!event?.source || event.source === target || typeof event.source.postMessage !== 'function') return;
+  event.source.postMessage({
+    type: AGENT_RESPONSE_MESSAGE_TYPE,
+    response,
+  }, event.origin || '*');
 }
 
 function summarizeCommand(command) {

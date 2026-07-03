@@ -77,4 +77,12 @@ R3 — 스파이크로 선제 완화. iframe 방식이면 통합 리스크는 �
 - Replaced the `#/p/:projectId/modeler` placeholder with a real native modeler iframe host in `src/app/modelerHost.js`.
 - Updated `tests/p3-app-shell.mjs` to verify local and project-backed iframe URLs.
 
+2026-07-03 P4-T34 save-flow pass:
+
+- Added `src/app/modelerBridge.js` for versioned parent-to-iframe modeler commands.
+- Updated the native index command bridge so iframe commands can respond back to the shell host.
+- Connected `#/p/:projectId/modeler` save controls to `persistenceClient.saveToServer`.
+- Added project save status, a revisions shortcut, and lineage-warning banner support in the modeler host.
+- Added `tests/p4-modeler-save-flow.mjs` and `npm run test:m100` to prove save button/Ctrl+S creates server revisions.
+
 (완료 시 기입)

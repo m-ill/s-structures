@@ -1,9 +1,12 @@
 import { clearElement } from './domUtil.js';
+import { buildHash } from './routes.js';
+import { createPersistenceClient } from './persistenceClient.js';
+import { createModelerBridge } from './modelerBridge.js';
 
-export const MODELER_HOST_VERSION = 'p4-m7-modeler-host-iframe';
+export const MODELER_HOST_VERSION = 'p4-m7-modeler-host-save-flow';
 
 export function mountModelerHostView(container, ctx) {
-  const { document, params, session } = ctx;
+  const { document, window, api, params, session, navigate, modelerBridgeFactory } = ctx;
   clearElement(container);
 
   const projectId = params.projectId || 'local-model';
@@ -35,10 +38,28 @@ export function mountModelerHostView(container, ctx) {
 
   const status = document.createElement('div');
   status.setAttribute('data-role', 'modeler-host-status');
-  status.textContent = projectBacked ? 'Project modeler iframe mounted' : 'Local modeler iframe mounted';
+  status.textContent = projectBacked ? 'Project modeler ready for server save' : 'Local modeler iframe mounted';
   status.style.color = '#5f7285';
   status.style.fontSize = '12px';
   bar.appendChild(status);
+
+  const saveButton = document.createElement('button');
+  saveButton.type = 'button';
+  saveButton.setAttribute('data-role', 'modeler-save');
+  saveButton.textContent = projectBacked ? 'Save revision' : 'Local save only';
+  saveButton.disabled = !projectBacked;
+  saveButton.style.marginLeft = 'auto';
+  bar.appendChild(saveButton);
+
+  const revisionsLink = document.createElement('button');
+  revisionsLink.type = 'button';
+  revisionsLink.setAttribute('data-role', 'modeler-revisions-link');
+  revisionsLink.textContent = 'Revisions';
+  revisionsLink.disabled = !projectBacked;
+  revisionsLink.addEventListener('click', () => {
+    if (projectBacked) navigate(buildHash('revisions', { projectId }));
+  });
+  bar.appendChild(revisionsLink);
 
   const openStandalone = document.createElement('a');
   openStandalone.setAttribute('data-role', 'open-local-modeler');
@@ -46,8 +67,14 @@ export function mountModelerHostView(container, ctx) {
   openStandalone.target = '_blank';
   openStandalone.rel = 'noopener';
   openStandalone.textContent = 'Open standalone';
-  openStandalone.style.marginLeft = 'auto';
   bar.appendChild(openStandalone);
+
+  const lineageBanner = document.createElement('div');
+  lineageBanner.setAttribute('data-role', 'modeler-lineage-warning');
+  lineageBanner.hidden = true;
+  lineageBanner.style.padding = '8px 10px';
+  lineageBanner.style.background = '#fff7dc';
+  lineageBanner.style.borderBottom = '1px solid #ead79d';
 
   const iframe = document.createElement('iframe');
   iframe.setAttribute('data-role', 'modeler-frame');
@@ -60,11 +87,67 @@ export function mountModelerHostView(container, ctx) {
   iframe.style.background = '#fff';
 
   host.appendChild(bar);
+  host.appendChild(lineageBanner);
   host.appendChild(iframe);
   container.appendChild(host);
 
+  const bridge = (modelerBridgeFactory || createModelerBridge)({ window, iframe });
+  const persistence = projectBacked ? createPersistenceClient(api) : null;
+  let lastSavedRev = null;
+  let saving = null;
+
+  async function saveProjectRevision() {
+    if (!projectBacked) return null;
+    if (saving) return saving;
+    saveButton.disabled = true;
+    status.textContent = 'Saving revision...';
+    saving = (async () => {
+      try {
+        const model = await bridge.getModel();
+        const result = await persistence.saveToServer(projectId, model, {
+          note: 'Saved from modeler host',
+          parentRev: lastSavedRev,
+        });
+        lastSavedRev = result.rev;
+        status.textContent = `Saved rev ${result.rev}`;
+        lineageBanner.hidden = !result.lineageWarning;
+        lineageBanner.textContent = result.lineageWarning
+          ? `Lineage warning: latest revision is ${result.latestRev}. Open revisions to compare.`
+          : '';
+        return result;
+      } catch (error) {
+        status.textContent = error.message || 'Failed to save revision.';
+        throw error;
+      } finally {
+        saveButton.disabled = false;
+        saving = null;
+      }
+    })();
+    return saving;
+  }
+
+  function onKeydown(event) {
+    if (!projectBacked) return;
+    const key = String(event?.key || '').toLowerCase();
+    if ((event.ctrlKey || event.metaKey) && key === 's') {
+      event.preventDefault?.();
+      saveProjectRevision().catch(() => {});
+    }
+  }
+
+  saveButton.addEventListener('click', () => {
+    saveProjectRevision().catch(() => {});
+  });
+  window?.addEventListener?.('keydown', onKeydown);
+
   return {
-    unmount() { clearElement(container); },
+    saveProjectRevision,
+    getLastSavedRev() { return lastSavedRev; },
+    unmount() {
+      window?.removeEventListener?.('keydown', onKeydown);
+      bridge.dispose?.();
+      clearElement(container);
+    },
   };
 }
 

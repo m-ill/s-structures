@@ -22,5 +22,10 @@ export function createFakeWindow() {
       const index = list.indexOf(handler);
       if (index >= 0) list.splice(index, 1);
     },
+    dispatchEvent(event) {
+      const nextEvent = { ...event, target: event?.target || this };
+      for (const handler of listeners.get(nextEvent.type) || []) handler(nextEvent);
+      return true;
+    },
   };
 }

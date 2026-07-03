@@ -102,7 +102,7 @@ try {
   assert.equal(window.location.hash, `#/p/${projectId}/modeler`);
   assert.equal(mountPoint.querySelector('[data-role="modeler-project-id"]').textContent, projectId);
   assert.equal(mountPoint.querySelector('[data-role="modeler-frame"]').getAttribute('src'), `./index.html?shell=1&project=${projectId}&storage=server`);
-  assert.equal(mountPoint.querySelector('[data-role="modeler-host-status"]').textContent, 'Project modeler iframe mounted');
+  assert.equal(mountPoint.querySelector('[data-role="modeler-host-status"]').textContent, 'Project modeler ready for server save');
   assert.equal(session.getState().currentProjectId, projectId);
 
   shell.navigate(buildHash('revisions', { projectId }));
