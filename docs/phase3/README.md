@@ -1,8 +1,8 @@
 # Phase 3 Development Hub
 
 phase: 3
-status: active planning and preliminary implementation
-source: user direction 2026-07-02
+status: complete (P3-M0..M20 implemented and tested; 7 proven / 13 preliminary / 1 manual — active planning moved to `docs/phase4/`)
+source: user direction 2026-07-02, closed 2026-07-03
 
 Phase 3 expands the current elastic-analysis MVP into a practical building-structure platform. The target workflow is drawing/scan input, 3D model candidate generation, human review, elastic and nonlinear analysis, detailed design trace, calculation output, approval workflow, and AI-agent-readable control.
 
