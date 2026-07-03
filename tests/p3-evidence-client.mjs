@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { createApiClient } from '../src/app/apiClient.js';
 import { createEvidenceClient, EVIDENCE_CLIENT_VERSION } from '../src/app/evidenceClient.js';
 import { buildAgentManifest } from '../src/index.js';
@@ -69,6 +70,12 @@ try {
   const finalListed = await client.listProjectEvidence(projectId);
   assert.equal(finalListed.finalApprovals.finalStructuralSignoff, true);
   assert.equal(finalListed.finalApprovalReview.acceptedCount, 1);
+
+  const serverPlan = readFileSync('docs/phase3/SERVER_API_PLAN.md', 'utf8');
+  const launchVerification = readFileSync('docs/verification/P3_M20_LAUNCH_READINESS_VERIFICATION.md', 'utf8');
+  assert.match(serverPlan, /finalApprovalReview/);
+  assert.match(serverPlan, /approval-group status/);
+  assert.match(launchVerification, /final-approval review grouping update/);
 
   const manifest = buildAgentManifest();
   assert.equal(manifest.modules.phase3EvidenceClient, EVIDENCE_CLIENT_VERSION);

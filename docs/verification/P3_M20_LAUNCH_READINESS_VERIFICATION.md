@@ -87,6 +87,11 @@ approval rows. This keeps API-driven agents aligned with the in-page
 `submitProjectEvidence()` path and makes final approval state readable without
 re-parsing raw evidence rows.
 
+2026-07-03 final-approval review grouping update: `finalApprovalReview` now
+separates allowed approval fields from required approval groups. Equivalent
+owner deployment approval fields are accepted as alternatives within one group,
+so AI agents do not over-require every allowed final approval field.
+
 2026-07-03 performance-budget gate hardening: G7 no longer passes from a single boolean flag. `buildPerformanceBudgetReview()` now checks the eight `QA_RELEASE_PLAN.md` performance budget IDs, including point-cloud load/viewer, elastic analysis, pushover, NLTH, design report, server save, and local initial load. Missing or over-budget rows hold G7, P3-T66 ticket coverage, and `releaseReview.missing = performance-budget-items` for AI-agent and owner review.
 
 2026-07-03 manual-reference contract hardening: G9 and P3-T65 now require the manual reference map in `docs/user-manual/agent-contract.json` to match the runtime manifest. A stale launch-manual path or missing reference holds the manual/agent-contract ticket for review instead of passing from `manual.updated` alone.
