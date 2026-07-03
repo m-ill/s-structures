@@ -1,7 +1,7 @@
 # WP-05 플랫폼/보안 강화
 
 stage: H / milestone: P4-M5 / tickets: P4-T22~T28 / 크기: M
-status: in-progress
+status: complete
 
 ## Objective
 
