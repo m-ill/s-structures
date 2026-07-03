@@ -6,6 +6,7 @@ import { createApiClient } from '../src/app/apiClient.js';
 import { createSessionState, SESSION_TOKEN_KEY } from '../src/app/sessionState.js';
 import { createAppShell, APP_SHELL_VERSION } from '../src/app/shell.js';
 import { matchRoute, buildHash } from '../src/app/routes.js';
+import { MODELER_HOST_VERSION, buildModelerFrameUrl } from '../src/app/modelerHost.js';
 import { APP_SHELL_VERSION as PLATFORM_APP_SHELL_VERSION } from '../src/platform/platformVersion.js';
 import { buildAgentManifest } from '../src/ui/agentManifest.js';
 
@@ -20,6 +21,8 @@ assert.deepEqual(matchRoute('#/p/abc-123/report'), { name: 'report', params: { p
 assert.equal(matchRoute('#/nope'), null);
 assert.equal(matchRoute('#/p/%E0%A4%A/modeler'), null);
 assert.equal(buildHash('modeler', { projectId: 'xyz' }), '#/p/xyz/modeler');
+assert.equal(buildModelerFrameUrl('xyz', { projectBacked: true }), './index.html?shell=1&project=xyz&storage=server');
+assert.equal(buildModelerFrameUrl(), './index.html?shell=1&project=local-model&storage=local');
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3AppShell, APP_SHELL_VERSION);
@@ -63,6 +66,9 @@ try {
   assert.equal(started.name, 'localModeler');
   assert.equal(window.location.hash, '#/local/modeler');
   assert.equal(mountPoint.querySelector('[data-role="modeler-project-id"]').textContent, 'local-model');
+  assert.equal(mountPoint.querySelector('[data-view="modeler-host"]').getAttribute('data-version'), MODELER_HOST_VERSION);
+  assert.equal(mountPoint.querySelector('[data-role="modeler-frame"]').getAttribute('src'), './index.html?shell=1&project=local-model&storage=local');
+  assert.equal(mountPoint.querySelector('[data-role="modeler-host-status"]').textContent, 'Local modeler iframe mounted');
   assert.ok(mountPoint.querySelector('[data-role="open-local-modeler"]'));
 
   // login stays available as an explicit route for server project storage.
@@ -95,6 +101,8 @@ try {
   projectItems[0].click();
   assert.equal(window.location.hash, `#/p/${projectId}/modeler`);
   assert.equal(mountPoint.querySelector('[data-role="modeler-project-id"]').textContent, projectId);
+  assert.equal(mountPoint.querySelector('[data-role="modeler-frame"]').getAttribute('src'), `./index.html?shell=1&project=${projectId}&storage=server`);
+  assert.equal(mountPoint.querySelector('[data-role="modeler-host-status"]').textContent, 'Project modeler iframe mounted');
   assert.equal(session.getState().currentProjectId, projectId);
 
   shell.navigate(buildHash('revisions', { projectId }));
