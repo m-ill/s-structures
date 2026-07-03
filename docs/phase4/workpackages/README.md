@@ -15,7 +15,7 @@ WP는 Phase 4의 실행 단위다. 착수 시 담당·시작일을 기입하고,
 
 | [WP-07](WP-07-modeler-integration.md) | 모델러 통합·프론트 완성 | H | P4-M7 | T33~T39 | complete |
 | [WP-08](WP-08-packaging.md) | 패키징/배포 | R | P4-M8 | T40~T45 | complete |
-| [WP-09](WP-09-documentation.md) | 사용자 문서/온보딩 | R | P4-M9 | T46~T49 | not-started |
+| [WP-09](WP-09-documentation.md) | 사용자 문서/온보딩 | R | P4-M9 | T46~T49 | complete |
 | [WP-10](WP-10-beta-launch.md) | 베타 파일럿·출시 | R | P4-M10~11 | T50~T52 | not-started |
 
 ## Document Template

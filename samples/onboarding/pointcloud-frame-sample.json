@@ -1,0 +1,7 @@
+{
+  "version": "p4-onboarding-sample-v1",
+  "id": "pointcloud-frame",
+  "tutorial": "T2-pointcloud-to-model",
+  "source": "pointcloud",
+  "expected": { "stories": 2, "columns": 4, "beams": 4 }
+}

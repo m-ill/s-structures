@@ -1,0 +1,7 @@
+{
+  "version": "p4-onboarding-sample-v1",
+  "id": "office-frame",
+  "tutorial": "T1-drawing-to-calculation",
+  "source": "drawing",
+  "expected": { "nodes": 8, "members": 8, "loads": 2 }
+}

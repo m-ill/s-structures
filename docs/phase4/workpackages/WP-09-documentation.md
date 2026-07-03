@@ -49,4 +49,12 @@ UI가 이후 변경되면 캡처 재작업 — WP-07 완료 후 착수 원칙으
 
 ## Result
 
-(완료 시 기입)
+2026-07-03 P4-T46~T49 implementation pass:
+
+- Added missing manual pages `00`, `04`, `05`, `06`, `07`, and `08`.
+- Rewrote `docs/user-manual/README.md` for the Phase 4 pre-beta manual map.
+- Added `docs/phase4/DOCUMENTATION_COVERAGE.md` with zero empty pre-beta rows.
+- Added tutorials T1/T2/T3 and three onboarding samples under `samples/onboarding/`.
+- Added `tools/check-agent-contract.mjs`, refreshed `docs/user-manual/agent-contract.json`, and added `npm run check:agent-contract`.
+- Added tests `p4-documentation-coverage` and `p4-onboarding-samples`.
+- New-user 30-minute validation is recorded as an owner-run pending GA activity; the pre-beta documentation set is internally complete and machine-checked.

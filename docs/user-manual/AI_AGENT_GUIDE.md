@@ -61,6 +61,27 @@ const screen = window.SStructuresAgent.getScreenState();
 
 AI agents should read `window.SStructuresAgent.getCapabilities().qaCommands` before reporting Phase 3 readiness. The canonical commands are also stored in `docs/user-manual/agent-contract.json`.
 
+For Phase 4 pre-beta documentation and release checks, use:
+
+| command | purpose |
+| --- | --- |
+| `npm.cmd run check:agent-contract` | verify `agent-contract.json` matches current code |
+| `npm.cmd run test:m109` | verify manual coverage map and agent contract |
+| `npm.cmd run test:m110` | verify onboarding samples and tutorial links |
+| `npm.cmd run test:m108` | verify release folder and zip creation |
+
+## Phase 4 Shell Routes
+
+| route | purpose |
+| --- | --- |
+| `#/local/modeler` | standalone local modeler entry |
+| `#/projects` | project list after login |
+| `#/p/:projectId/modeler` | native modeler host with server revision save |
+| `#/p/:projectId/revisions` | revision list |
+| `#/p/:projectId/library` | project material/section library shell view |
+| `#/p/:projectId/import/:jobId` | import review overlay and confirmation |
+| `#/p/:projectId/report` | project report shell |
+
 | command key | purpose |
 | --- | --- |
 | `phase3Full` | run the full P3-M0 to P3-M20 gate |
