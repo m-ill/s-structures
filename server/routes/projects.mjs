@@ -48,12 +48,14 @@ export function registerProjectRoutes(router, ctx) {
 
   router.put('/api/projects/:id/members/:userId', async (req, res, params, body) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
-    await requireProjectRole(ctx, params.id, user.id, 'owner');
     const role = body?.role;
     if (!['owner', 'engineer', 'reviewer', 'viewer'].includes(role)) {
       throw new ApiError(400, 'VALIDATION', 'role must be one of owner, engineer, reviewer, viewer.');
     }
-    const targetUser = await ctx.userStore.findById(params.userId);
+    const [, targetUser] = await Promise.all([
+      requireProjectRole(ctx, params.id, user.id, 'owner'),
+      ctx.userStore.findById(params.userId),
+    ]);
     if (!targetUser) throw new ApiError(404, 'NOT_FOUND', 'User not found.');
     const project = await ctx.projectStore.setMemberRole(params.id, params.userId, role);
     await ctx.auditLog?.append('member-changed', {

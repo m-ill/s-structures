@@ -60,3 +60,9 @@ perf-budget 게이트를 launch gate 목록에 연결 (L4). TD-08/15 fixed 처�
 - Added request-scoped project meta caching in server/store/projectStore.mjs.
 - server/main.mjs now wraps API handlers with the project store request cache.
 - Added tests/p4-project-meta-cache.mjs and wired it into npm test as test:m96; a GET project request now reads project meta once.
+
+2026-07-03 P4-T30 / TD-15:
+
+- Member role updates now perform owner-role verification and target-user lookup with Promise.all.
+- saveRevision now loads project meta and revision index with Promise.all after ID validation.
+- Added tests/p4-independent-io.mjs and wired it into npm test as test:m97.

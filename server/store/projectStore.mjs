@@ -143,9 +143,9 @@ export function createProjectStore(dataDir) {
     },
 
     async saveRevision(id, { model, note, author, parentRev }) {
-      const meta = await this.get(id);
+      if (!isValidId(id)) return null;
+      const [meta, revisions] = await Promise.all([this.get(id), this.listRevisions(id)]);
       if (!meta) return null;
-      const revisions = await this.listRevisions(id);
       const latest = revisions.at(-1) || null;
       const rev = (latest?.rev ?? 0) + 1;
       const lineageWarning = latest != null && parentRev != null && parentRev !== latest.rev;
