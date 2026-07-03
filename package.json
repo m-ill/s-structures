@@ -131,6 +131,8 @@
     "test:m109": "node tests/p4-documentation-coverage.mjs",
     "test:m110": "node tests/p4-onboarding-samples.mjs",
     "test:m111": "node tests/p4-install-smoke-web.mjs",
+    "test:m112": "node tests/p4-feature-manual.mjs",
+    "test:p4manual": "node tests/p4-feature-manual.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",

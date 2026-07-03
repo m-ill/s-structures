@@ -12,7 +12,8 @@
 :root{ --dku:#00467F; --panel:#f2f6fa; --line:#c9d7e4; --ink:#222; }
 *{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI','Malgun Gothic',sans-serif;}
 body{ background:#e7edf4; color:var(--ink); }
-header{ background:var(--dku); color:#fff; padding:10px 16px; font-weight:700; }
+header{ background:var(--dku); color:#fff; padding:10px 16px; font-weight:700; display:flex; align-items:center; justify-content:space-between; }
+header a.manual-link{ color:#d7e5f2; font-size:13px; font-weight:400; text-decoration:none; border:1px solid rgba(255,255,255,.35); padding:3px 10px; border-radius:6px; }
 #app{ padding:16px; max-width:720px; margin:0 auto; }
 input,button{ font-size:14px; padding:6px 8px; margin:4px 4px 4px 0; }
 li{ list-style:none; padding:8px; border:1px solid var(--line); border-radius:6px; margin-bottom:6px; background:#fff; cursor:pointer; }
@@ -20,7 +21,7 @@ li{ list-style:none; padding:8px; border:1px solid var(--line); border-radius:6p
 </style>
 </head>
 <body>
-<header>S-Structures Practice Platform</header>
+<header>S-Structures Practice Platform <a class="manual-link" href="./manual.html">기능 설명서</a></header>
 <div id="app"></div>
 <script type="module">
 import { createApiClient } from './src/app/apiClient.js';

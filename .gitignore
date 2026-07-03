@@ -10,3 +10,6 @@ data/
 *.las
 *.laz
 *.e57
+
+# Release build output is regenerable via `npm run build:release`.
+output/release/

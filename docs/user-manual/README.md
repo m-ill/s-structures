@@ -6,6 +6,15 @@ This folder is the user-facing and AI-readable manual set for the current
 pre-beta product. Development milestone notes stay outside this folder; this
 folder explains how to operate the program as it exists now.
 
+## Feature Reference (HTML)
+
+`/manual.html` is the categorized feature reference for the whole program —
+13 categories, 75 feature entries, searchable, with deep links
+(`manual.html#<feature-id>`). It renders `src/platform/featureCatalog.js`,
+which is also the single source of feature-control keys (`feature.<id>`)
+for future feature toggling. Every agent execute action and read API is
+mapped to a feature entry, enforced by `tests/p4-feature-manual.mjs`.
+
 ## Manual Map
 
 | Order | Document | Purpose |
