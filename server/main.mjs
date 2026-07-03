@@ -51,7 +51,7 @@ export function createApp(overrides = {}) {
   registerEvidenceRoutes(router, ctx);
 
   const server = http.createServer((req, res) => handleRequest(req, res, router, config));
-  return { server, config, ctx };
+  return { server, config, ctx, router };
 }
 
 async function handleRequest(req, res, router, config) {

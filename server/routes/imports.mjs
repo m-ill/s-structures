@@ -11,14 +11,14 @@ export function registerImportRoutes(router, ctx) {
     assertImportCandidate(body.candidate, 'candidate');
     const entry = await ctx.projectStore.saveImport(params.id, body);
     return ok({ import: withImportReview(entry) });
-  });
+  }, { auth: { project: true, role: 'engineer' } });
 
   router.get('/api/projects/:id/imports', async (req, res, params) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
     await requireProjectRole(ctx, params.id, user.id, 'viewer');
     const imports = await ctx.projectStore.listImports(params.id);
     return ok({ imports: imports.map(withImportReview) });
-  });
+  }, { auth: { project: true, role: 'viewer' } });
 
   router.get('/api/projects/:id/imports/:importId', async (req, res, params) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -26,7 +26,7 @@ export function registerImportRoutes(router, ctx) {
     const entry = await ctx.projectStore.getImport(params.id, params.importId);
     if (!entry) throw new ApiError(404, 'NOT_FOUND', 'Import not found.');
     return ok({ import: withImportReview(entry) });
-  });
+  }, { auth: { project: true, role: 'viewer' } });
 
   router.patch('/api/projects/:id/imports/:importId', async (req, res, params, body) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -40,7 +40,7 @@ export function registerImportRoutes(router, ctx) {
     });
     if (!entry) throw new ApiError(404, 'NOT_FOUND', 'Import not found.');
     return ok({ import: withImportReview(entry) });
-  });
+  }, { auth: { project: true, role: 'engineer' } });
 }
 
 function withImportReview(entry) {

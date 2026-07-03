@@ -1,5 +1,5 @@
 import { verifyToken } from './token.mjs';
-import { roleAtLeast } from '../store/projectStore.mjs';
+import { isProjectRole, roleAtLeast } from '../store/projectStore.mjs';
 import { ApiError } from '../router.mjs';
 
 export function extractBearerToken(req) {
@@ -23,6 +23,9 @@ export async function authenticate(ctx) {
 }
 
 export async function requireProjectRole(ctx, projectId, userId, minRole) {
+  if (!isProjectRole(minRole)) {
+    throw new ApiError(500, 'INTERNAL', 'Project role guard is misconfigured.');
+  }
   const role = await ctx.projectStore.memberRole(projectId, userId);
   if (!role) throw new ApiError(404, 'NOT_FOUND', 'Project not found.');
   if (!roleAtLeast(role, minRole)) {

@@ -7,10 +7,13 @@ export class ApiError extends Error {
   }
 }
 
+export const ROUTER_ROLES = ['viewer', 'reviewer', 'engineer', 'owner'];
+
 export function createRouter() {
   const routes = [];
 
   function add(method, pattern, handler, options = {}) {
+    const normalizedOptions = normalizeRouteOptions(options);
     const keys = [];
     const regexSource = pattern
       .split('/')
@@ -22,7 +25,15 @@ export function createRouter() {
         return segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       })
       .join('/');
-    routes.push({ method, regex: new RegExp(`^${regexSource}$`), keys, handler, bodyType: options.bodyType || 'json' });
+    routes.push({
+      method,
+      pattern,
+      regex: new RegExp(`^${regexSource}$`),
+      keys,
+      handler,
+      bodyType: normalizedOptions.bodyType,
+      auth: normalizedOptions.auth,
+    });
   }
 
   return {
@@ -41,11 +52,36 @@ export function createRouter() {
         route.keys.forEach((key, index) => {
           params[key] = decodePathSegment(match[index + 1]);
         });
-        return { handler: route.handler, params, bodyType: route.bodyType };
+        return { handler: route.handler, params, bodyType: route.bodyType, auth: route.auth, pattern: route.pattern };
       }
       return null;
     },
+    listRoutes() {
+      return routes.map((route) => ({
+        method: route.method,
+        path: route.pattern,
+        bodyType: route.bodyType,
+        auth: route.auth ? { ...route.auth } : null,
+      }));
+    },
   };
+}
+
+function normalizeRouteOptions(options = {}) {
+  const normalized = {
+    bodyType: options.bodyType || 'json',
+    auth: options.auth || null,
+  };
+  if (!normalized.auth) return normalized;
+  if (normalized.auth.role && !ROUTER_ROLES.includes(normalized.auth.role)) {
+    throw new Error(`Invalid route auth role: ${normalized.auth.role}`);
+  }
+  normalized.auth = {
+    project: normalized.auth.project === true,
+    user: normalized.auth.user === true,
+    role: normalized.auth.role || null,
+  };
+  return normalized;
 }
 
 export function sendJson(res, status, body) {

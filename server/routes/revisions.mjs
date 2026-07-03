@@ -8,7 +8,7 @@ export function registerRevisionRoutes(router, ctx) {
     await requireProjectRole(ctx, params.id, user.id, 'viewer');
     const revisions = await ctx.projectStore.listRevisions(params.id);
     return ok({ revisions });
-  });
+  }, { auth: { project: true, role: 'viewer' } });
 
   router.post('/api/projects/:id/revisions', async (req, res, params, body) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -34,7 +34,7 @@ export function registerRevisionRoutes(router, ctx) {
         savedRev: result.entry.rev,
       },
     });
-  });
+  }, { auth: { project: true, role: 'engineer' } });
 
   router.get('/api/projects/:id/revisions/:rev', async (req, res, params) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -42,5 +42,5 @@ export function registerRevisionRoutes(router, ctx) {
     const model = await ctx.projectStore.getRevision(params.id, params.rev);
     if (!model) throw new ApiError(404, 'NOT_FOUND', 'Revision not found.');
     return ok({ model });
-  });
+  }, { auth: { project: true, role: 'viewer' } });
 }

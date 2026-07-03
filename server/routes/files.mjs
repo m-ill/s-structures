@@ -7,7 +7,7 @@ export function registerFileRoutes(router, ctx) {
     await requireProjectRole(ctx, params.id, user.id, 'viewer');
     const files = await ctx.projectStore.listFiles(params.id);
     return ok({ files });
-  });
+  }, { auth: { project: true, role: 'viewer' } });
 
   router.post('/api/projects/:id/files', async (req, res, params) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -21,7 +21,7 @@ export function registerFileRoutes(router, ctx) {
     );
     if (!result.ok) throw new ApiError(400, 'VALIDATION', 'File extension is not allowed.');
     return ok({ file: result.entry });
-  }, { bodyType: 'raw' });
+  }, { bodyType: 'raw', auth: { project: true, role: 'engineer' } });
 
   router.get('/api/projects/:id/files/:fileId', async (req, res, params) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -36,7 +36,7 @@ export function registerFileRoutes(router, ctx) {
     });
     res.end(found.buffer);
     return { handled: true };
-  });
+  }, { auth: { project: true, role: 'viewer' } });
 
   router.delete('/api/projects/:id/files/:fileId', async (req, res, params) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -44,7 +44,7 @@ export function registerFileRoutes(router, ctx) {
     const deleted = await ctx.projectStore.deleteFile(params.id, params.fileId);
     if (!deleted) throw new ApiError(404, 'NOT_FOUND', 'File not found.');
     return ok({ deleted: true });
-  });
+  }, { auth: { project: true, role: 'engineer' } });
 }
 
 function readUploadFileName(value) {

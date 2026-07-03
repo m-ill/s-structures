@@ -8,7 +8,7 @@ export function registerLibraryRoutes(router, ctx) {
     await requireProjectRole(ctx, params.id, user.id, 'viewer');
     const kind = normalizeKind(params.kind);
     return ok({ kind, items: await ctx.projectStore.listLibrary(params.id, kind) });
-  });
+  }, { auth: { project: true, role: 'viewer' } });
 
   router.get('/api/projects/:id/library/:kind/:itemId', async (req, res, params) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -20,7 +20,7 @@ export function registerLibraryRoutes(router, ctx) {
     const item = rows.find((row) => row.id === params.itemId && (version == null || Number(row.version || 1) === Number(version)));
     if (!item) throw new ApiError(404, 'NOT_FOUND', 'Library item not found.');
     return ok({ kind, item });
-  });
+  }, { auth: { project: true, role: 'viewer' } });
 
   router.put('/api/projects/:id/library/:kind/:itemId', async (req, res, params, body) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -32,7 +32,7 @@ export function registerLibraryRoutes(router, ctx) {
     if (result.ok === false) throw new ApiError(400, 'VALIDATION', 'Library item is not valid.', result.errors);
     await ctx.projectStore.upsertLibraryItem(params.id, kind, result.item);
     return ok({ kind, item: result.item, audit: result.audit });
-  });
+  }, { auth: { project: true, role: 'engineer' } });
 }
 
 function normalizeKind(kind) {

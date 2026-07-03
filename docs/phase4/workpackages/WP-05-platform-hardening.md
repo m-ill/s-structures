@@ -69,3 +69,9 @@ S1~S12 체크리스트 전수 확인 표를 SECURITY 문서에 기입. TD 레지
 - Added `tests/p4-security-headers.mjs` and wired it into `npm test` as `test:m92`.
 
 (완료 시 기입)
+2026-07-03 P4-T23 / S2-S3:
+
+- `server/router.mjs` now stores route auth metadata and rejects invalid route role strings at registration time.
+- Project-scoped routes now declare `auth: { project: true, role }`; project list/create routes declare user auth.
+- `requireProjectRole()` now rejects misconfigured role names instead of treating unknown roles as rank 0.
+- `tests/p3-server-route-contract.mjs` verifies project route auth metadata and role enum failures.

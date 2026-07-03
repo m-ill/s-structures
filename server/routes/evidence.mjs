@@ -21,7 +21,7 @@ export function registerEvidenceRoutes(router, ctx) {
       ownerSignoffReview: buildPhase3OwnerSignoffReview({ evidence, finalApprovals }),
       register: buildPhase3EvidenceRegister({ evidence }),
     });
-  });
+  }, { auth: { project: true, role: 'viewer' } });
 
   router.post('/api/projects/:id/evidence', async (req, res, params, body) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
@@ -56,5 +56,5 @@ export function registerEvidenceRoutes(router, ctx) {
       ownerSignoffReview: buildPhase3OwnerSignoffReview({ evidence: rows, finalApprovals }),
       register: buildPhase3EvidenceRegister({ evidence: rows }),
     });
-  });
+  }, { auth: { project: true, role: 'engineer' } });
 }

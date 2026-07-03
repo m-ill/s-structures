@@ -4,10 +4,17 @@ import {
   removeDir, writeBufferAtomic, writeJsonAtomic,
 } from './fileStore.mjs';
 
+export const PROJECT_ROLES = ['viewer', 'reviewer', 'engineer', 'owner'];
+
 const ROLE_RANK = { viewer: 1, reviewer: 2, engineer: 3, owner: 4 };
 
 export function roleAtLeast(role, minRole) {
-  return (ROLE_RANK[role] || 0) >= (ROLE_RANK[minRole] || 0);
+  if (!isProjectRole(role) || !isProjectRole(minRole)) return false;
+  return ROLE_RANK[role] >= ROLE_RANK[minRole];
+}
+
+export function isProjectRole(role) {
+  return PROJECT_ROLES.includes(role);
 }
 
 export function createProjectStore(dataDir) {
