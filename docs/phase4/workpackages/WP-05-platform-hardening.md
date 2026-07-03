@@ -88,3 +88,9 @@ S1~S12 체크리스트 전수 확인 표를 SECURITY 문서에 기입. TD 레지
 - `server/main.mjs` now uses `startServer()` to acquire the data directory lock for real server startup.
 - Stale lock files are reclaimed; live duplicate startup fails with a clear data directory lock error.
 - Added `tests/p4-data-dir-lock.mjs` and wired it into `npm test` as `test:m93`.
+
+2026-07-03 P4-T26 / TD-09:
+
+- Removed the legacy `tools/serve.mjs` static server.
+- `npm run dev` and `npm run dev:public` now launch `server/main.mjs` with port 5173.
+- `tests/m17-e2e-entrypoint.mjs` now boots the same server entrypoint used by production and dev.

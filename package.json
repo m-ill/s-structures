@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node tools/serve.mjs",
-    "dev:public": "node tools/serve.mjs 5173 0.0.0.0",
+    "dev": "node server/main.mjs 5173",
+    "dev:public": "node server/main.mjs 5173 0.0.0.0",
     "test": "node tools/run-milestone-tests.mjs",
     "test:p3": "node tools/run-milestone-tests.mjs --phase3",
     "test:p3:list": "node tools/run-milestone-tests.mjs --phase3 --list",

@@ -31,7 +31,7 @@
 
 | 도구 | 위치 | 산출물 |
 | --- | --- | --- |
-| local server | `tools/serve.mjs` | browser app |
+| local server | `server/main.mjs` | browser app |
 | representative HTML/JSON | `tools/generate-m42-representative-packages.mjs` | `reports/representative-building-calculation-packages/` |
 | representative PDF | `tools/export-m42-representative-package-pdfs.py` | `output/pdf/m42-representative-packages/` |
 | stabilization harness | `tools/run-stabilization-harness.mjs` | `reports/stabilization-harness/` |

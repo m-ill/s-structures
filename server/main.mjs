@@ -146,7 +146,7 @@ function isMain() {
 
 if (isMain()) {
   try {
-    const app = await startServer();
+    const app = await startServer(parseCliOverrides(process.argv));
     app.server.listen(app.config.port, app.config.host, () => {
       console.log(`S-Structures server: http://${app.config.host}:${app.config.port}/`);
     });
@@ -161,4 +161,13 @@ if (isMain()) {
       throw error;
     }
   }
+}
+
+function parseCliOverrides(argv) {
+  const port = Number(argv[2] || 0);
+  const host = argv[3];
+  return {
+    ...(Number.isFinite(port) && port > 0 ? { port } : {}),
+    ...(host ? { host } : {}),
+  };
 }

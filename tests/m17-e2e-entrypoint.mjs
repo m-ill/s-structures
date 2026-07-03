@@ -1,13 +1,18 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 
 const root = new URL('..', import.meta.url);
 const port = 5187;
 const baseUrl = `http://127.0.0.1:${port}`;
-const server = spawn(process.execPath, ['tools/serve.mjs', String(port)], {
+const dataDir = await mkdtemp(join(tmpdir(), 's-structures-e2e-'));
+const server = spawn(process.execPath, ['server/main.mjs', String(port)], {
   cwd: root,
+  env: { ...process.env, S_STRUCTURES_DATA_DIR: dataDir },
   stdio: ['ignore', 'pipe', 'pipe'],
 });
 
@@ -39,7 +44,7 @@ try {
   const bridgeText = await bridgeResponse.text();
   assert.match(bridgeText, /installIndexEngineBridge/);
 
-  assert.match(stdout, /index\.html/);
+  assert.match(stdout, /S-Structures server/);
 
   console.log(JSON.stringify({
     ok: true,
@@ -49,6 +54,7 @@ try {
   }, null, 2));
 } finally {
   await stopServer(server);
+  await rm(dataDir, { recursive: true, force: true });
 }
 
 async function waitForHttp(url) {
