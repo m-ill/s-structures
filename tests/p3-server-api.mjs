@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { bootTestApp, registerAndLogin } from './helpers/serverTestApp.mjs';
-import { createTwoStoryElasticFrameModel } from '../src/index.js';
+import { createTwoStoryElasticFrameModel, importDxfToCandidate } from '../src/index.js';
 
 const app = await bootTestApp();
 
@@ -169,6 +170,47 @@ try {
 
   const traversal = await app.api('GET', `/api/projects/${projectId}/files/../../secret`, { token });
   assert.equal(traversal.status, 404);
+
+  // import candidate API: every response carries agent-readable review state
+  const importCandidate = importDxfToCandidate(readFileSync('tests/fixtures/dxf/min-frame.dxf', 'utf8'), {
+    fileId,
+    tolerance: 1e-6,
+    minLength: 1e-4,
+    layerMap: {
+      'S-COL': { kind: 'column', section: 'H300', material: 'SS275' },
+      'S-BEAM': { kind: 'beam', section: 'H300', material: 'SS275' },
+    },
+  });
+  const saveImport = await app.api('POST', `/api/projects/${projectId}/imports`, {
+    token,
+    body: { fileId, candidate: importCandidate, audit: { warnings: ['server-review-smoke'] } },
+  });
+  assert.equal(saveImport.status, 200, JSON.stringify(saveImport.data));
+  const importId = saveImport.data.data.import.id;
+  assert.equal(saveImport.data.data.import.review.status, 'pending');
+  assert.equal(saveImport.data.data.import.review.source.type, 'dxf');
+  assert.equal(saveImport.data.data.import.review.counts.members, 3);
+  assert.equal(saveImport.data.data.import.review.decision.pending, true);
+  assert.equal(saveImport.data.data.import.review.decision.confirmable, true);
+  assert.ok(saveImport.data.data.import.review.warnings.includes('server-review-smoke'));
+
+  const importList = await app.api('GET', `/api/projects/${projectId}/imports`, { token: engineerLogin.token });
+  assert.equal(importList.status, 200);
+  assert.equal(importList.data.data.imports[0].review.id, importId);
+  assert.equal(importList.data.data.imports[0].review.validation.ok, true);
+
+  const importRead = await app.api('GET', `/api/projects/${projectId}/imports/${importId}`, { token });
+  assert.equal(importRead.status, 200);
+  assert.equal(importRead.data.data.import.review.decision.pending, true);
+
+  const confirmImport = await app.api('PATCH', `/api/projects/${projectId}/imports/${importId}`, {
+    token,
+    body: { status: 'confirmed', resolvedCandidate: importCandidate },
+  });
+  assert.equal(confirmImport.status, 200, JSON.stringify(confirmImport.data));
+  assert.equal(confirmImport.data.data.import.review.status, 'confirmed');
+  assert.equal(confirmImport.data.data.import.review.decision.accepted, true);
+  assert.equal(confirmImport.data.data.import.review.decision.resolvedCandidatePresent, true);
 
   // Phase 3 evidence register: project-scoped field and owner evidence rows
   const emptyEvidence = await app.api('GET', `/api/projects/${projectId}/evidence`, { token });

@@ -45,6 +45,8 @@ The import review model previously showed only generic candidate counts and warn
 
 2026-07-02 column-continuity review: `assemblePlansToImportCandidate()` now records `planAssembly.columnContinuity` with expected story count, stack count, and incomplete stacks. `summarizeImportEntry()` flags `column-stack-continuity-review-required` so AI agents and reviewers do not silently confirm a 2D plan assembly where a column appears on one floor but not another.
 
+2026-07-03 server API review contract: `/api/projects/:id/imports` save, list, read, and decision responses now include the same `review` summary returned by `summarizeImportEntry()`. API-driven agents can read source, counts, validation, warnings, confirmable state, and accepted/rejected/pending decision state without opening the browser import review screen.
+
 2026-07-02 readiness-decision update: DWG conversion plans now include `audit.readiness` with `ready-to-convert` or `external-converter-required` status. 2D plan assemblies now include `planAssembly.review` with `candidate-ready-for-import-review-ui` or `hold-import-for-plan-review`. This lets AI agents branch on explicit import decisions instead of reinterpreting counts and warnings.
 
 2026-07-03 P3-M7 rebuild review update: floor-plan recognition now carries label evidence and full layer-use evidence. `recognizePlanDxf()` exposes `labelEvidence`, `recognizedLayers`, `unusedLayers`, and `layerUsage`, while `assemblePlansToImportCandidate()` summarizes per-story labels under `planAssembly.labelEvidence`. This supports the plan's label-mapping and human-review requirements without auto-confirming drawing interpretation.

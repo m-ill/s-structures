@@ -1,5 +1,6 @@
 import { authenticate, requireProjectRole } from '../auth/guard.mjs';
 import { ApiError, ok } from '../router.mjs';
+import { summarizeImportEntry } from '../../src/app/importReviewModel.js';
 import { validateImportCandidate } from '../../src/import/candidate.js';
 
 export function registerImportRoutes(router, ctx) {
@@ -9,14 +10,14 @@ export function registerImportRoutes(router, ctx) {
     if (!body?.candidate) throw new ApiError(400, 'VALIDATION', 'candidate is required.');
     assertImportCandidate(body.candidate, 'candidate');
     const entry = await ctx.projectStore.saveImport(params.id, body);
-    return ok({ import: entry });
+    return ok({ import: withImportReview(entry) });
   });
 
   router.get('/api/projects/:id/imports', async (req, res, params) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
     await requireProjectRole(ctx, params.id, user.id, 'viewer');
     const imports = await ctx.projectStore.listImports(params.id);
-    return ok({ imports });
+    return ok({ imports: imports.map(withImportReview) });
   });
 
   router.get('/api/projects/:id/imports/:importId', async (req, res, params) => {
@@ -24,7 +25,7 @@ export function registerImportRoutes(router, ctx) {
     await requireProjectRole(ctx, params.id, user.id, 'viewer');
     const entry = await ctx.projectStore.getImport(params.id, params.importId);
     if (!entry) throw new ApiError(404, 'NOT_FOUND', 'Import not found.');
-    return ok({ import: entry });
+    return ok({ import: withImportReview(entry) });
   });
 
   router.patch('/api/projects/:id/imports/:importId', async (req, res, params, body) => {
@@ -38,8 +39,12 @@ export function registerImportRoutes(router, ctx) {
       status: body.status, resolvedCandidate: body.resolvedCandidate ?? null, resolvedBy: user.id,
     });
     if (!entry) throw new ApiError(404, 'NOT_FOUND', 'Import not found.');
-    return ok({ import: entry });
+    return ok({ import: withImportReview(entry) });
   });
+}
+
+function withImportReview(entry) {
+  return { ...entry, review: summarizeImportEntry(entry) };
 }
 
 function assertImportCandidate(candidate, field) {
