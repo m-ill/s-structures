@@ -161,7 +161,7 @@ try {
   assert.equal(emptyEvidence.data.data.register.summary.acceptedCount, 0);
   assert.deepEqual(emptyEvidence.data.data.finalApprovals, {});
   assert.equal(emptyEvidence.data.data.finalApprovalReview.acceptedCount, 0);
-  assert.ok(emptyEvidence.data.data.finalApprovalReview.missing.includes('finalStructuralSignoff'));
+  assert.ok(emptyEvidence.data.data.finalApprovalReview.missing.includes('final-structural-signoff'));
   assert.ok(emptyEvidence.data.data.register.summary.missing.includes('real-office-dxf-fixtures'));
 
   const evidenceWrite = await app.api('POST', `/api/projects/${projectId}/evidence`, {
@@ -224,7 +224,7 @@ try {
   });
   assert.equal(finalApprovalEvidenceWrite.status, 200, JSON.stringify(finalApprovalEvidenceWrite.data));
   assert.equal(finalApprovalEvidenceWrite.data.data.finalApprovals.finalStructuralSignoff, true);
-  assert.equal(finalApprovalEvidenceWrite.data.data.finalApprovalReview.rows.find((row) => row.field === 'finalStructuralSignoff').status, 'ACCEPTED');
+  assert.equal(finalApprovalEvidenceWrite.data.data.finalApprovalReview.rows.find((row) => row.id === 'final-structural-signoff').status, 'ACCEPTED');
   assert.equal(finalApprovalEvidenceWrite.data.data.register.summary.acceptedCount, 3);
 
   const finalApprovalEvidenceList = await app.api('GET', `/api/projects/${projectId}/evidence`, { token });

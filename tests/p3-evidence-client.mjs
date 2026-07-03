@@ -65,7 +65,7 @@ try {
     reportPath: 'reports/launch-readiness/final-signoff.md',
   });
   assert.equal(finalApproval.finalApprovals.finalStructuralSignoff, true);
-  assert.equal(finalApproval.finalApprovalReview.rows.find((row) => row.field === 'finalStructuralSignoff').status, 'ACCEPTED');
+  assert.equal(finalApproval.finalApprovalReview.rows.find((row) => row.id === 'final-structural-signoff').status, 'ACCEPTED');
   const finalListed = await client.listProjectEvidence(projectId);
   assert.equal(finalListed.finalApprovals.finalStructuralSignoff, true);
   assert.equal(finalListed.finalApprovalReview.acceptedCount, 1);

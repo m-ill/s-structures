@@ -94,7 +94,7 @@ Its `finalApprovals` object is the server-derived final approval state from
 explicit approval evidence rows. Do not infer final approval by scanning
 accepted evidence rows directly.
 Use `finalApprovalReview` from the same response to inspect required final
-approval fields, accepted count, and missing fields.
+approval groups, accepted count, missing groups, and allowed approval fields.
 
 `getPhase3DrawingImportValidationReview()` and `getPhase3PointCloudValidationReview()` expose project evidence under `evidenceCoverage` when called through the in-page agent. Evidence coverage shows accepted file/review records, but it does not replace candidate validation, overlay review, benchmark, or owner review rows.
 

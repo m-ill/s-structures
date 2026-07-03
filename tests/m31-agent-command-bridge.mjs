@@ -166,7 +166,7 @@ response = sendCommand({
 });
 assert.equal(response.ok, true);
 assert.equal(response.data.finalApprovals.finalStructuralSignoff, true);
-assert.equal(response.data.finalApprovalReview.rows.find((row) => row.field === 'finalStructuralSignoff').status, 'ACCEPTED');
+assert.equal(response.data.finalApprovalReview.rows.find((row) => row.id === 'final-structural-signoff').status, 'ACCEPTED');
 assert.equal(response.data.register.summary.acceptedCount, 2);
 
 response = sendCommand({ id: 'owner-signoff-after-evidence', method: 'getPhase3OwnerSignoffReview' });

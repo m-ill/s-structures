@@ -235,6 +235,7 @@ export {
   buildPhase3EvidenceRegister,
   normalizeFinalApprovalField,
   PHASE3_FINAL_APPROVAL_FIELDS,
+  PHASE3_FINAL_APPROVAL_GROUPS,
   PHASE3_EVIDENCE_REGISTER_VERSION,
   validatePhase3EvidenceRecord,
 } from './platform/phase3EvidenceRegister.js';

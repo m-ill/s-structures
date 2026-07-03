@@ -17,6 +17,25 @@ export const PHASE3_FINAL_APPROVAL_FIELDS = [
   'securitySignoffAccepted',
   'ownerFinalSignoff',
 ];
+export const PHASE3_FINAL_APPROVAL_GROUPS = [
+  approvalGroup('production-equilibrium-solver', ['productionEquilibriumSolver']),
+  approvalGroup('production-hinge-equilibrium-loop', ['productionHingeEquilibriumLoop']),
+  approvalGroup('production-seismic-qualification', ['productionSeismicQualification']),
+  approvalGroup('final-permit-design', ['finalPermitDesign']),
+  approvalGroup('final-structural-signoff', ['finalStructuralSignoff', 'ownerFinalSignoff']),
+  approvalGroup('production-deployment-approval', [
+    'productionDeploymentApproved',
+    'ownerProductionDeploymentApproved',
+    'finalOwnerDeploymentApproval',
+  ]),
+  approvalGroup('open-source-policy', ['openSourcePolicyFinalized']),
+  approvalGroup('deployment-target', ['deploymentTargetFinalized']),
+  approvalGroup('real-dwg-conversion', ['realDwgConversionAccepted']),
+  approvalGroup('real-pointcloud-validation', ['realPointCloudValidationAccepted']),
+  approvalGroup('field-pilot-feedback', ['pilotFeedbackOwnerAccepted']),
+  approvalGroup('backup-restore', ['backupRestoreOwnerAccepted']),
+  approvalGroup('security-signoff', ['securitySignoffAccepted']),
+];
 
 export const PHASE3_REQUIRED_EVIDENCE = [
   req('real-office-dxf-fixtures', 'drawing-import', 'P3-M6', 'real office DXF fixture set'),
@@ -70,18 +89,33 @@ export function buildPhase3FinalApprovals(evidence = []) {
 
 export function buildPhase3FinalApprovalReview(input = {}) {
   const approvals = input.finalApprovals || input.approvals || buildPhase3FinalApprovals(input.evidence || input.items || []);
-  const rows = PHASE3_FINAL_APPROVAL_FIELDS.map((field) => ({
+  const allowedRows = PHASE3_FINAL_APPROVAL_FIELDS.map((field) => ({
     field,
     accepted: approvals[field] === true,
-    status: approvals[field] === true ? 'ACCEPTED' : 'APPROVAL_REQUIRED',
+    status: approvals[field] === true ? 'ACCEPTED' : 'ALLOWED',
   }));
-  const missing = rows.filter((row) => !row.accepted).map((row) => row.field);
+  const rows = PHASE3_FINAL_APPROVAL_GROUPS.map((group) => {
+    const acceptedFields = group.fields.filter((field) => approvals[field] === true);
+    return {
+      id: group.id,
+      fields: [...group.fields],
+      accepted: acceptedFields.length > 0,
+      acceptedFields,
+      status: acceptedFields.length ? 'ACCEPTED' : 'APPROVAL_REQUIRED',
+    };
+  });
+  const missing = rows.filter((row) => !row.accepted).map((row) => row.id);
   return {
-    requiredFields: [...PHASE3_FINAL_APPROVAL_FIELDS],
-    acceptedCount: rows.length - missing.length,
+    allowedFields: [...PHASE3_FINAL_APPROVAL_FIELDS],
+    requiredApprovalGroups: PHASE3_FINAL_APPROVAL_GROUPS.map((group) => ({
+      id: group.id,
+      fields: [...group.fields],
+    })),
+    acceptedCount: rows.filter((row) => row.accepted).length,
     requiredCount: rows.length,
     complete: missing.length === 0,
     missing,
+    allowedRows,
     rows,
     agentDecision: missing.length ? 'collect-final-approval-fields' : 'final-approval-fields-complete',
   };
@@ -141,6 +175,10 @@ export function buildPhase3EvidenceRegister(input = {}) {
 
 function req(id, domain, milestone, label) {
   return { id, domain, milestone, label };
+}
+
+function approvalGroup(id, fields) {
+  return { id, fields };
 }
 
 function normalizeEvidence(evidence) {
