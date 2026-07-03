@@ -59,6 +59,16 @@ for (const item of features) {
   assert.ok(existsSync(path), `manualPage does not exist for ${item.id}: ${item.manualPage}`);
 }
 
+// 3b. 본문 충실도 — 목차만 있는 빈 설명서를 구조적으로 금지한다
+for (const item of features) {
+  assert.ok(item.howTo.length >= 2, `feature needs at least 2 howTo steps: ${item.id}`);
+  assert.notEqual(item.description, item.summary, `feature needs a real description: ${item.id}`);
+  assert.ok(item.description.length > item.summary.length, `description should extend the summary: ${item.id}`);
+  if (item.status === 'preliminary') {
+    assert.ok(item.limits.length >= 1, `preliminary feature must state limits: ${item.id}`);
+  }
+}
+
 // 4. 기능 토글 계약 (향후 기능 제어의 진입점)
 assert.equal(resolveFeatureEnabled('pushover'), true);
 assert.equal(resolveFeatureEnabled('pushover', { 'feature.pushover': false }), false);
