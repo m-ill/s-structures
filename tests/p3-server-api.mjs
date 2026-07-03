@@ -109,6 +109,13 @@ try {
   assert.equal(saveRev1.status, 200, JSON.stringify(saveRev1.data));
   assert.equal(saveRev1.data.data.revision.rev, 1);
   assert.equal(saveRev1.data.data.lineageWarning, false);
+  assert.equal(saveRev1.data.data.latestRev, null);
+  assert.deepEqual(saveRev1.data.data.lineage, {
+    warning: false,
+    requestedParentRev: null,
+    latestRev: null,
+    savedRev: 1,
+  });
 
   const getRev1 = await app.api('GET', `/api/projects/${projectId}/revisions/1`, { token });
   assert.equal(getRev1.status, 200);
@@ -121,6 +128,13 @@ try {
   });
   assert.equal(saveRev2.data.data.revision.rev, 2);
   assert.equal(saveRev2.data.data.lineageWarning, true);
+  assert.equal(saveRev2.data.data.latestRev, 1);
+  assert.deepEqual(saveRev2.data.data.lineage, {
+    warning: true,
+    requestedParentRev: 0,
+    latestRev: 1,
+    savedRev: 2,
+  });
 
   const revList = await app.api('GET', `/api/projects/${projectId}/revisions`, { token });
   assert.equal(revList.data.data.revisions.length, 2);

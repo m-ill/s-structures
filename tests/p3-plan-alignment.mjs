@@ -332,6 +332,8 @@ assert.ok(readFileSync('server/router.mjs', 'utf8').includes('ok: false'));
 assert.ok(readFileSync('server/auth/password.mjs', 'utf8').includes('timingSafeEqual'));
 assert.ok(readFileSync('server/auth/token.mjs', 'utf8').includes('sha256'));
 assert.ok(readFileSync('server/store/projectStore.mjs', 'utf8').includes('lineageWarning'));
+assert.ok(readFileSync('server/routes/revisions.mjs', 'utf8').includes('latestRev'));
+assert.ok(readFileSync('src/app/persistenceClient.js', 'utf8').includes('latestRev'));
 for (const file of report.frontend.modules) {
   assert.equal(existsSync(file), true, file);
 }

@@ -73,6 +73,12 @@ Phase 3 milestones had local verification notes and tests, but AI agents did not
 common error envelope machine-readable for UI flows and AI agents without
 parsing message text.
 
+2026-07-03 persistence lineage contract update: revision save responses now
+include `latestRev` and a structured `lineage` object with warning,
+requestedParentRev, latestRev, and savedRev. This fulfills the
+`PERSISTENCE_PLAN.md` M3-4 conflict rule so AI agents can show or act on branch
+warnings without re-listing revisions.
+
 2026-07-03 server text input hardening: `AUTH_ACCOUNT_PLAN.md` requires JSON validation and string length limits. Project create/update routes now trim and limit project names/descriptions before persistence, and revision saves now reject non-string or overlong notes. `tests/p3-server-api.mjs` covers blank project names, overlong project names/descriptions, and invalid revision notes.
 
 2026-07-02 review-gate alignment update: `buildPhase3PlanAlignmentReport()` now exposes `reviewGates` for P3-M14 to P3-M20. The rows verify that each agent review path is present and that final approval fields remain separate from next-step readiness decisions.

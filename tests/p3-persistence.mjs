@@ -36,6 +36,8 @@ try {
   const saved = await persistence.saveToServer(projectId, model, { note: 'initial' });
   assert.equal(saved.rev, 1);
   assert.equal(saved.lineageWarning, false);
+  assert.equal(saved.latestRev, null);
+  assert.equal(saved.lineage.savedRev, 1);
   assert.deepEqual(saved.signature, signature);
 
   const loaded = await persistence.loadFromServer(projectId, 1);
@@ -53,6 +55,13 @@ try {
   // lineage warning surfaces through the client
   const savedStale = await persistence.saveToServer(projectId, model, { parentRev: 0 });
   assert.equal(savedStale.lineageWarning, true);
+  assert.equal(savedStale.latestRev, 2);
+  assert.deepEqual(savedStale.lineage, {
+    warning: true,
+    requestedParentRev: 0,
+    latestRev: 2,
+    savedRev: 3,
+  });
 
   const revisions = await persistence.listRevisions(projectId);
   assert.equal(revisions.length, 3);

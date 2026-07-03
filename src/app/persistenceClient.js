@@ -1,7 +1,7 @@
 import { migrateToV3 } from '../core/migration.js';
 import { productModelSignature } from '../ui/indexNativePersistence.js';
 
-export const PERSISTENCE_CLIENT_VERSION = 'p3-persistence-client-v1';
+export const PERSISTENCE_CLIENT_VERSION = 'p3-persistence-client-v2';
 
 /**
  * L3 (server project) layer. L1 (browser local) and L2 (file export/import)
@@ -21,6 +21,8 @@ export function createPersistenceClient(api) {
       return {
         rev: result.revision.rev,
         lineageWarning: result.lineageWarning,
+        latestRev: result.latestRev ?? result.lineage?.latestRev ?? null,
+        lineage: result.lineage || null,
         signature: productModelSignature(model),
       };
     },

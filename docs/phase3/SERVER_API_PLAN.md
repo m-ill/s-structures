@@ -57,7 +57,7 @@ agents do not need to parse localized messages.
 | POST | `/api/projects/:id/revisions` | snapshot 저장 `{ model, note?, parentRev? }` | engineer+ |
 | GET | `/api/projects/:id/revisions/:rev` | snapshot 본문 | member |
 
-서버는 model 본문을 해석하지 않는다. 검증은 `schemaVersion` 존재, JSON 형식, 크기 제한만. `parentRev`가 최신 rev와 다르면 저장은 허용하되 응답에 `lineageWarning: true` (PERSISTENCE M3-4).
+서버는 model 본문을 해석하지 않는다. 검증은 `schemaVersion` 존재, JSON 형식, 크기 제한만. `parentRev`가 최신 rev와 다르면 저장은 허용하되 응답에 `lineageWarning: true`, `latestRev`, `lineage`를 포함한다 (PERSISTENCE M3-4).
 
 ### Files — 도면/점군 업로드 (`server/routes/files.mjs`)
 

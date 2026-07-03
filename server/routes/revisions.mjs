@@ -23,7 +23,17 @@ export function registerRevisionRoutes(router, ctx) {
       author: user.id,
       parentRev: body?.parentRev ?? null,
     });
-    return ok({ revision: result.entry, lineageWarning: result.lineageWarning });
+    return ok({
+      revision: result.entry,
+      lineageWarning: result.lineageWarning,
+      latestRev: result.latestRev,
+      lineage: {
+        warning: result.lineageWarning,
+        requestedParentRev: body?.parentRev ?? null,
+        latestRev: result.latestRev,
+        savedRev: result.entry.rev,
+      },
+    });
   });
 
   router.get('/api/projects/:id/revisions/:rev', async (req, res, params) => {
