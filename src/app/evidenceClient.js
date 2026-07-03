@@ -9,6 +9,7 @@ export function createEvidenceClient(api) {
       return {
         evidence: result.evidence || [],
         finalApprovals: result.finalApprovals || {},
+        finalApprovalReview: result.finalApprovalReview || null,
         register: result.register,
       };
     },
@@ -20,6 +21,7 @@ export function createEvidenceClient(api) {
       return {
         evidence: result.evidence,
         finalApprovals: result.finalApprovals || {},
+        finalApprovalReview: result.finalApprovalReview || null,
         register: result.register,
       };
     },

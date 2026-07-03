@@ -1,4 +1,5 @@
 import {
+  buildPhase3FinalApprovalReview,
   buildPhase3FinalApprovals,
   buildPhase3EvidenceRegister,
   validatePhase3EvidenceRecord,
@@ -11,9 +12,11 @@ export function registerEvidenceRoutes(router, ctx) {
     const user = await authenticate({ req, userStore: ctx.userStore });
     await requireProjectRole(ctx, params.id, user.id, 'viewer');
     const evidence = await ctx.projectStore.listEvidence(params.id);
+    const finalApprovals = buildPhase3FinalApprovals(evidence);
     return ok({
       evidence,
-      finalApprovals: buildPhase3FinalApprovals(evidence),
+      finalApprovals,
+      finalApprovalReview: buildPhase3FinalApprovalReview({ finalApprovals }),
       register: buildPhase3EvidenceRegister({ evidence }),
     });
   });
@@ -43,9 +46,11 @@ export function registerEvidenceRoutes(router, ctx) {
     }
     const entry = await ctx.projectStore.addEvidence(params.id, { evidence, author: user.id });
     const rows = await ctx.projectStore.listEvidence(params.id);
+    const finalApprovals = buildPhase3FinalApprovals(rows);
     return ok({
       evidence: entry,
-      finalApprovals: buildPhase3FinalApprovals(rows),
+      finalApprovals,
+      finalApprovalReview: buildPhase3FinalApprovalReview({ finalApprovals }),
       register: buildPhase3EvidenceRegister({ evidence: rows }),
     });
   });

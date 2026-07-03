@@ -36,6 +36,7 @@ import {
   buildPhase3OwnerSignoffReview,
   buildPhase3CompletionAuditReview,
   buildPhase3EvidenceRegister,
+  buildPhase3FinalApprovalReview,
   buildPhase3FinalApprovals,
   validatePhase3EvidenceRecord,
   buildRcDetailedDesignReport,
@@ -277,7 +278,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       return cloneJson(buildPhase3EvidenceRegister(options));
     },
     listProjectEvidence() {
-      return cloneJson(getProjectEvidenceState(target));
+      return cloneJson(buildProjectEvidenceView(target));
     },
     submitProjectEvidence(evidence = {}) {
       const validation = validatePhase3EvidenceRecord(evidence);
@@ -293,7 +294,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         recordedAt: evidence.recordedAt || new Date().toISOString(),
       });
       state.register = buildPhase3EvidenceRegister({ evidence: state.evidence });
-      return cloneJson(state);
+      return cloneJson(buildProjectEvidenceView(target));
     },
     getPhase3PracticeValidationReview(options = {}) {
       if (!hasEvidenceInput(options)) {
@@ -870,6 +871,14 @@ function getProjectEvidenceState(target) {
   };
   target.__SStructuresProjectEvidence.finalApprovals ||= {};
   return target.__SStructuresProjectEvidence;
+}
+
+function buildProjectEvidenceView(target) {
+  const state = getProjectEvidenceState(target);
+  return {
+    ...state,
+    finalApprovalReview: buildPhase3FinalApprovalReview({ finalApprovals: state.finalApprovals }),
+  };
 }
 
 function buildLaunchEvidence(target, options = {}) {

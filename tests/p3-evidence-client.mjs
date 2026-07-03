@@ -18,6 +18,7 @@ try {
   const empty = await client.listProjectEvidence(projectId);
   assert.equal(empty.evidence.length, 0);
   assert.deepEqual(empty.finalApprovals, {});
+  assert.equal(empty.finalApprovalReview.acceptedCount, 0);
   assert.ok(empty.register.summary.missing.includes('real-office-dxf-fixtures'));
 
   const submitted = await client.submitProjectEvidence(projectId, {
@@ -64,8 +65,10 @@ try {
     reportPath: 'reports/launch-readiness/final-signoff.md',
   });
   assert.equal(finalApproval.finalApprovals.finalStructuralSignoff, true);
+  assert.equal(finalApproval.finalApprovalReview.rows.find((row) => row.field === 'finalStructuralSignoff').status, 'ACCEPTED');
   const finalListed = await client.listProjectEvidence(projectId);
   assert.equal(finalListed.finalApprovals.finalStructuralSignoff, true);
+  assert.equal(finalListed.finalApprovalReview.acceptedCount, 1);
 
   const manifest = buildAgentManifest();
   assert.equal(manifest.modules.phase3EvidenceClient, EVIDENCE_CLIENT_VERSION);

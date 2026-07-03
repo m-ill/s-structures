@@ -231,6 +231,7 @@ export {
 } from './platform/phase3CompletionAuditReview.js';
 export {
   buildPhase3FinalApprovals,
+  buildPhase3FinalApprovalReview,
   buildPhase3EvidenceRegister,
   normalizeFinalApprovalField,
   PHASE3_FINAL_APPROVAL_FIELDS,

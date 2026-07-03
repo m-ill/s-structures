@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {
   buildAgentManifest,
   buildPhase3EvidenceRegister,
+  buildPhase3FinalApprovalReview,
   buildPhase3FinalApprovals,
   PHASE3_EVIDENCE_REGISTER_VERSION,
   PHASE3_FINAL_APPROVAL_FIELDS,
@@ -69,6 +70,17 @@ assert.deepEqual(buildPhase3FinalApprovals([
   finalStructuralSignoff: true,
   securitySignoffAccepted: true,
 });
+const approvalReview = buildPhase3FinalApprovalReview({
+  finalApprovals: {
+    finalStructuralSignoff: true,
+    securitySignoffAccepted: true,
+  },
+});
+assert.equal(approvalReview.requiredCount, PHASE3_FINAL_APPROVAL_FIELDS.length);
+assert.equal(approvalReview.acceptedCount, 2);
+assert.equal(approvalReview.complete, false);
+assert.ok(approvalReview.missing.includes('productionDeploymentApproved'));
+assert.equal(approvalReview.rows.find((row) => row.field === 'finalStructuralSignoff').status, 'ACCEPTED');
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3EvidenceRegister, PHASE3_EVIDENCE_REGISTER_VERSION);

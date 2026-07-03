@@ -432,6 +432,7 @@ export function buildAgentManifest(options = {}) {
       'Agents should use getPhase3PracticeValidationReview().summary.requiredEvidenceIdCount for submittable evidence IDs; requiredEvidenceCount is the human checklist phrase count.',
       'submitProjectEvidence records final approval fields only when finalApprovalField is allowed and approved, approvalAccepted, or finalApprovalAccepted is true; accepted evidence alone does not set productionReady or productionDeploymentApproved.',
       'createEvidenceClient().listProjectEvidence().finalApprovals is the server-derived final approval state for API-driven agents; do not infer approval by scanning accepted evidence rows.',
+      'createEvidenceClient().listProjectEvidence().finalApprovalReview lists required final approval fields, accepted count, and missing fields.',
     ],
     dataContracts: [
       'schemaVersionedModel',

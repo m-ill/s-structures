@@ -68,6 +68,25 @@ export function buildPhase3FinalApprovals(evidence = []) {
   return approvals;
 }
 
+export function buildPhase3FinalApprovalReview(input = {}) {
+  const approvals = input.finalApprovals || input.approvals || buildPhase3FinalApprovals(input.evidence || input.items || []);
+  const rows = PHASE3_FINAL_APPROVAL_FIELDS.map((field) => ({
+    field,
+    accepted: approvals[field] === true,
+    status: approvals[field] === true ? 'ACCEPTED' : 'APPROVAL_REQUIRED',
+  }));
+  const missing = rows.filter((row) => !row.accepted).map((row) => row.field);
+  return {
+    requiredFields: [...PHASE3_FINAL_APPROVAL_FIELDS],
+    acceptedCount: rows.length - missing.length,
+    requiredCount: rows.length,
+    complete: missing.length === 0,
+    missing,
+    rows,
+    agentDecision: missing.length ? 'collect-final-approval-fields' : 'final-approval-fields-complete',
+  };
+}
+
 export function normalizeFinalApprovalField(field) {
   const value = String(field || '').trim();
   return PHASE3_FINAL_APPROVAL_FIELDS.includes(value) ? value : null;
