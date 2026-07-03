@@ -98,6 +98,12 @@ deployment approval accepted fields. This keeps owner checklist evidence
 separate from final production deployment approval while showing agents which
 deployment approval aliases satisfy the required group.
 
+2026-07-03 evidence API owner-signoff view update: project evidence API
+responses and `createEvidenceClient().listProjectEvidence()` now include
+`ownerSignoffReview`. This keeps server-side agents aligned with the in-page
+`listProjectEvidence()` state for owner checklist and deployment approval
+decisions.
+
 2026-07-03 performance-budget gate hardening: G7 no longer passes from a single boolean flag. `buildPerformanceBudgetReview()` now checks the eight `QA_RELEASE_PLAN.md` performance budget IDs, including point-cloud load/viewer, elastic analysis, pushover, NLTH, design report, server save, and local initial load. Missing or over-budget rows hold G7, P3-T66 ticket coverage, and `releaseReview.missing = performance-budget-items` for AI-agent and owner review.
 
 2026-07-03 manual-reference contract hardening: G9 and P3-T65 now require the manual reference map in `docs/user-manual/agent-contract.json` to match the runtime manifest. A stale launch-manual path or missing reference holds the manual/agent-contract ticket for review instead of passing from `manual.updated` alone.

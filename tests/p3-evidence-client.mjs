@@ -20,6 +20,8 @@ try {
   assert.equal(empty.evidence.length, 0);
   assert.deepEqual(empty.finalApprovals, {});
   assert.equal(empty.finalApprovalReview.acceptedCount, 0);
+  assert.equal(empty.ownerSignoffReview.summary.acceptedCount, 0);
+  assert.equal(empty.ownerSignoffReview.deploymentApprovalGroup.status, 'APPROVAL_REQUIRED');
   assert.ok(empty.register.summary.missing.includes('real-office-dxf-fixtures'));
 
   const submitted = await client.submitProjectEvidence(projectId, {
@@ -67,14 +69,18 @@ try {
   });
   assert.equal(finalApproval.finalApprovals.finalStructuralSignoff, true);
   assert.equal(finalApproval.finalApprovalReview.rows.find((row) => row.id === 'final-structural-signoff').status, 'ACCEPTED');
+  assert.equal(finalApproval.ownerSignoffReview.summary.productionDeploymentApproved, false);
   const finalListed = await client.listProjectEvidence(projectId);
   assert.equal(finalListed.finalApprovals.finalStructuralSignoff, true);
   assert.equal(finalListed.finalApprovalReview.acceptedCount, 1);
+  assert.equal(finalListed.ownerSignoffReview.deploymentApprovalGroup.accepted, false);
 
   const serverPlan = readFileSync('docs/phase3/SERVER_API_PLAN.md', 'utf8');
   const launchVerification = readFileSync('docs/verification/P3_M20_LAUNCH_READINESS_VERIFICATION.md', 'utf8');
   assert.match(serverPlan, /finalApprovalReview/);
+  assert.match(serverPlan, /ownerSignoffReview/);
   assert.match(serverPlan, /approval-group status/);
+  assert.match(launchVerification, /owner sign-off deployment approval update/);
   assert.match(launchVerification, /final-approval review grouping update/);
 
   const manifest = buildAgentManifest();

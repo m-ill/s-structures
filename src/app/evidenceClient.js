@@ -1,4 +1,4 @@
-export const EVIDENCE_CLIENT_VERSION = 'p3-evidence-client-v3';
+export const EVIDENCE_CLIENT_VERSION = 'p3-evidence-client-v4';
 
 export function createEvidenceClient(api) {
   return {
@@ -10,6 +10,7 @@ export function createEvidenceClient(api) {
         evidence: result.evidence || [],
         finalApprovals: result.finalApprovals || {},
         finalApprovalReview: result.finalApprovalReview || null,
+        ownerSignoffReview: result.ownerSignoffReview || null,
         register: result.register,
       };
     },
@@ -22,6 +23,7 @@ export function createEvidenceClient(api) {
         evidence: result.evidence,
         finalApprovals: result.finalApprovals || {},
         finalApprovalReview: result.finalApprovalReview || null,
+        ownerSignoffReview: result.ownerSignoffReview || null,
         register: result.register,
       };
     },

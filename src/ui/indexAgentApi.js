@@ -878,6 +878,10 @@ function buildProjectEvidenceView(target) {
   return {
     ...state,
     finalApprovalReview: buildPhase3FinalApprovalReview({ finalApprovals: state.finalApprovals }),
+    ownerSignoffReview: buildPhase3OwnerSignoffReview({
+      evidence: state.evidence,
+      finalApprovals: state.finalApprovals,
+    }),
   };
 }
 

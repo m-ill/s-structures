@@ -144,6 +144,8 @@ assert.match(response.error.message, /Unknown Phase 3 evidence/);
 response = sendCommand({ id: 'evidence-after-unknown', method: 'listProjectEvidence' });
 assert.equal(response.ok, true);
 assert.equal(response.data.register.summary.acceptedCount, 0);
+assert.equal(response.data.ownerSignoffReview.summary.acceptedCount, 0);
+assert.equal(response.data.ownerSignoffReview.deploymentApprovalGroup.status, 'APPROVAL_REQUIRED');
 
 response = sendCommand({
   id: 'submit-security-signoff',
@@ -167,6 +169,7 @@ response = sendCommand({
 assert.equal(response.ok, true);
 assert.equal(response.data.finalApprovals.finalStructuralSignoff, true);
 assert.equal(response.data.finalApprovalReview.rows.find((row) => row.id === 'final-structural-signoff').status, 'ACCEPTED');
+assert.equal(response.data.ownerSignoffReview.summary.productionDeploymentApproved, false);
 assert.equal(response.data.register.summary.acceptedCount, 2);
 
 response = sendCommand({ id: 'owner-signoff-after-evidence', method: 'getPhase3OwnerSignoffReview' });

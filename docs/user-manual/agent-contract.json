@@ -319,6 +319,7 @@
     "submitProjectEvidence records final approval fields only when finalApprovalField is allowed and approved, approvalAccepted, or finalApprovalAccepted is true; accepted evidence alone does not set productionReady or productionDeploymentApproved.",
     "createEvidenceClient().listProjectEvidence().finalApprovals is the server-derived final approval state for API-driven agents; do not infer approval by scanning accepted evidence rows.",
     "createEvidenceClient().listProjectEvidence().finalApprovalReview lists required final approval groups, accepted count, missing groups, and allowed approval fields.",
+    "createEvidenceClient().listProjectEvidence().ownerSignoffReview and in-page listProjectEvidence().ownerSignoffReview expose the same owner sign-off deployment decision contract.",
     "getPhase3PracticeValidationReview().summary.finalApprovalCoverage uses the same required approval groups as finalApprovalReview; owner alias approval fields satisfy their group without requiring every allowed field.",
     "getPhase3OwnerSignoffReview().deploymentApprovalGroup lists the accepted deployment approval aliases; owner checklist evidence alone does not set productionReady.",
     "Evidence register IDs may be submitted through project evidence APIs and reused by owner sign-off review aliases.",

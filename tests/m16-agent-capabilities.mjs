@@ -155,7 +155,10 @@ assert.throws(
   /Unknown Phase 3 evidence/,
 );
 assert.equal(agent.listProjectEvidence().register.summary.acceptedCount, 0);
-assert.equal(agent.submitProjectEvidence({ id: 'security-signoff', accepted: true }).register.summary.acceptedCount, 1);
+assert.equal(agent.listProjectEvidence().ownerSignoffReview.summary.acceptedCount, 0);
+const securityEvidenceState = agent.submitProjectEvidence({ id: 'security-signoff', accepted: true });
+assert.equal(securityEvidenceState.register.summary.acceptedCount, 1);
+assert.equal(securityEvidenceState.ownerSignoffReview.rows.find((row) => row.id === 'security-signoff').status, 'ACCEPTED');
 assert.equal(agent.getPhase3EvidenceRegister().summary.acceptedCount, 1);
 assert.equal(agent.submitProjectEvidence({ id: 'real-office-dxf-fixtures', accepted: true, fileId: 'agent-office-dxf' }).register.summary.acceptedCount, 2);
 assert.equal(agent.submitProjectEvidence({ id: 'real-pointcloud-files', accepted: true, fileId: 'agent-owner-scan' }).register.summary.acceptedCount, 3);

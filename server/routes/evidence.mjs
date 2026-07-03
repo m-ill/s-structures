@@ -4,6 +4,7 @@ import {
   buildPhase3EvidenceRegister,
   validatePhase3EvidenceRecord,
 } from '../../src/platform/phase3EvidenceRegister.js';
+import { buildPhase3OwnerSignoffReview } from '../../src/platform/phase3OwnerSignoffReview.js';
 import { authenticate, requireProjectRole } from '../auth/guard.mjs';
 import { ApiError, ok } from '../router.mjs';
 
@@ -17,6 +18,7 @@ export function registerEvidenceRoutes(router, ctx) {
       evidence,
       finalApprovals,
       finalApprovalReview: buildPhase3FinalApprovalReview({ finalApprovals }),
+      ownerSignoffReview: buildPhase3OwnerSignoffReview({ evidence, finalApprovals }),
       register: buildPhase3EvidenceRegister({ evidence }),
     });
   });
@@ -51,6 +53,7 @@ export function registerEvidenceRoutes(router, ctx) {
       evidence: entry,
       finalApprovals,
       finalApprovalReview: buildPhase3FinalApprovalReview({ finalApprovals }),
+      ownerSignoffReview: buildPhase3OwnerSignoffReview({ evidence: rows, finalApprovals }),
       register: buildPhase3EvidenceRegister({ evidence: rows }),
     });
   });
