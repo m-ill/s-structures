@@ -72,12 +72,18 @@ const workerMessage = handlePointCloudWorkerMessage({
   type: 'process-pointcloud-text',
   requestId: 'm8-worker-001',
   text: xyz,
-  options: { voxelSize: 0.05, outlier: { radius: 3.2, minNeighbors: 1 } },
+  options: { voxelSize: 0.05, outlier: { radius: 3.2, minNeighbors: 1 }, view: { zMin: -0.1, zMax: 3.1 } },
 });
 assert.equal(workerMessage.ok, true);
 assert.equal(workerMessage.requestId, 'm8-worker-001');
 assert.equal(workerMessage.result.audit.stageRows.length, 4);
 assert.equal(workerMessage.transferable.pointCount, workerMessage.result.points.length);
+assert.equal(workerMessage.transferable.viewerPointCount, 3);
+assert.deepEqual(workerMessage.transferable.buffers, ['positions.buffer', 'colors.buffer']);
+assert.equal(workerMessage.transferable.totalBytes, 45);
+assert.equal(workerMessage.transferable.metadata.positionType, 'Float32Array');
+assert.equal(workerMessage.transferable.metadata.zFilter.min, -0.1);
+assert.equal(workerMessage.transferable.metadata.zFilter.max, 3.1);
 const workerUnsupported = handlePointCloudWorkerMessage({
   type: 'process-pointcloud-text',
   requestId: 'm8-worker-unsupported',

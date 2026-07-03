@@ -44,6 +44,8 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 
 2026-07-03 unsupported-format guidance update: `parsePointCloudWithAudit()` now rejects binary PLY, binary PCD, LAS, LAZ, and E57 with `POINT_CLOUD_UNSUPPORTED_FORMAT`, the detected format, and external conversion guidance. `tests/p3-pointcloud-load.mjs` locks this behavior so AI agents do not mistake pending owner-file formats for supported v1 imports.
 
+2026-07-03 worker transferable response update: `handlePointCloudWorkerMessage()` now returns viewer-buffer transferable metadata beside the processed points. The response includes viewer point count, buffer names, byte total, typed-array metadata, and z-filter state so browser workers and AI agents can verify render-ready buffers without rebuilding the viewer layer separately.
+
 ## Current Test Gate
 
 `tests/p3-pointcloud-load.mjs` verifies:
@@ -57,6 +59,7 @@ The P3-M8 modules had separate worker and viewer contracts, but no single summar
 7. Origin shift trace for large-coordinate point-cloud inputs.
 8. Agent review decision separating compact fixture readiness from missing field evidence.
 9. PLY and PCD loader audit metadata for deterministic compact fixtures.
+10. Worker response transferable metadata for viewer-ready point buffers.
 
 ## Remaining Limits
 

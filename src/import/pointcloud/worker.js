@@ -2,6 +2,7 @@ import { parsePointCloudWithAudit } from './loaders.js';
 import { normalizePointCloud } from './normalize.js';
 import { removeSparseOutliers } from './outlier.js';
 import { voxelDownsample } from './voxel.js';
+import { buildPointCloudLayerData } from '../../viewer/pointCloudLayer.js';
 
 export const POINT_CLOUD_WORKER_PIPELINE_VERSION = 'p3-m8-pointcloud-worker-v1';
 
@@ -20,6 +21,7 @@ export function handlePointCloudWorkerMessage(message = {}) {
       };
     }
     const result = processPointCloudText(message.text || '', message.options || {});
+    const layer = buildPointCloudLayerData(result.points, message.options?.view || {});
     return {
       version: POINT_CLOUD_WORKER_PIPELINE_VERSION,
       ok: true,
@@ -27,7 +29,10 @@ export function handlePointCloudWorkerMessage(message = {}) {
       result,
       transferable: {
         pointCount: result.points.length,
-        buffers: [],
+        viewerPointCount: layer.count,
+        buffers: layer.metadata?.transferableBuffers || [],
+        totalBytes: layer.metadata?.totalBytes || 0,
+        metadata: layer.metadata || null,
       },
     };
   } catch (error) {
