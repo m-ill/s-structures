@@ -98,4 +98,10 @@ R3 — 스파이크로 선제 완화. iframe 방식이면 통합 리스크는 �
 - Added `tests/p4-route-pattern-contract.mjs` and `npm run test:m102`.
 - Marked TD-10 and TD-11 fixed in `TECH_DEBT_REGISTER.md`.
 
+2026-07-03 P4-T37 import review overlay:
+
+- Added `src/app/importReviewOverlay.js` to convert import candidates into model-layer and picking data.
+- Connected import review UI to overlay item rendering and selected entity state.
+- Added `tests/p4-import-review-overlay.mjs` and `npm run test:m103`.
+
 (완료 시 기입)
