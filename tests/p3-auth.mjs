@@ -124,6 +124,20 @@ try {
     await lockedApp.close();
   }
 
+  const raceApp = await bootTestApp({ loginFailLimit: 10, loginLockSeconds: 60 });
+  try {
+    await raceApp.api('POST', '/api/auth/register', { body: { email: 'race-lock@example.com', password: 'super-secret-pw', name: 'R' } });
+    const failures = await Promise.all(Array.from({ length: 10 }, () => (
+      raceApp.api('POST', '/api/auth/login', { body: { email: 'race-lock@example.com', password: 'wrong' } })
+    )));
+    assert.equal(failures.every((item) => item.status === 401), true);
+    const lockedAttempt = await raceApp.api('POST', '/api/auth/login', { body: { email: 'race-lock@example.com', password: 'super-secret-pw' } });
+    assert.equal(lockedAttempt.status, 401);
+    assert.equal(lockedAttempt.data.error.details.reason, 'LOCKED');
+  } finally {
+    await raceApp.close();
+  }
+
   console.log(JSON.stringify({ ok: true, version: 'p3-auth', projectId }, null, 2));
 } finally {
   await app.close();

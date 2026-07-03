@@ -1,7 +1,9 @@
 import { randomBytes } from 'node:crypto';
 import { join } from 'node:path';
 import { hashPassword, verifyPassword } from '../auth/password.mjs';
-import { ensureDir, newId, readJson, writeJsonAtomic } from './fileStore.mjs';
+import {
+  ensureDir, newId, readJson, withLock, writeJsonAtomic, writeJsonAtomicUnlocked,
+} from './fileStore.mjs';
 
 export function createUserStore(dataDir) {
   const usersPath = join(dataDir, 'users.json');
@@ -13,6 +15,10 @@ export function createUserStore(dataDir) {
 
   async function saveUsers(users) {
     await writeJsonAtomic(usersPath, users);
+  }
+
+  async function saveUsersUnlocked(users) {
+    await writeJsonAtomicUnlocked(usersPath, users);
   }
 
   return {
@@ -62,31 +68,33 @@ export function createUserStore(dataDir) {
     },
 
     async verifyCredentials(email, password, { failLimit, lockSeconds }) {
-      const normalized = String(email || '').trim().toLowerCase();
-      const users = await loadUsers();
-      const index = users.findIndex((user) => user.email === normalized);
-      if (index === -1) return { ok: false, code: 'INVALID_CREDENTIALS' };
-      const user = users[index];
-      const now = Date.now();
-      if (user.lockedUntil && new Date(user.lockedUntil).getTime() > now) {
-        return { ok: false, code: 'LOCKED' };
-      }
-      const valid = await verifyPassword(password, user.salt, user.scrypt);
-      if (!valid) {
-        user.failedLogins = (user.failedLogins || 0) + 1;
-        if (user.failedLogins >= failLimit) {
-          user.lockedUntil = new Date(now + lockSeconds * 1000).toISOString();
-          user.failedLogins = 0;
+      return withLock(usersPath, async () => {
+        const normalized = String(email || '').trim().toLowerCase();
+        const users = await loadUsers();
+        const index = users.findIndex((user) => user.email === normalized);
+        if (index === -1) return { ok: false, code: 'INVALID_CREDENTIALS' };
+        const user = users[index];
+        const now = Date.now();
+        if (user.lockedUntil && new Date(user.lockedUntil).getTime() > now) {
+          return { ok: false, code: 'LOCKED' };
         }
+        const valid = await verifyPassword(password, user.salt, user.scrypt);
+        if (!valid) {
+          user.failedLogins = (user.failedLogins || 0) + 1;
+          if (user.failedLogins >= failLimit) {
+            user.lockedUntil = new Date(now + lockSeconds * 1000).toISOString();
+            user.failedLogins = 0;
+          }
+          users[index] = user;
+          await saveUsersUnlocked(users);
+          return { ok: false, code: 'INVALID_CREDENTIALS' };
+        }
+        user.failedLogins = 0;
+        user.lockedUntil = null;
         users[index] = user;
-        await saveUsers(users);
-        return { ok: false, code: 'INVALID_CREDENTIALS' };
-      }
-      user.failedLogins = 0;
-      user.lockedUntil = null;
-      users[index] = user;
-      await saveUsers(users);
-      return { ok: true, user };
+        await saveUsersUnlocked(users);
+        return { ok: true, user };
+      });
     },
 
     async bumpTokenVersion(userId) {

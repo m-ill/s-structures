@@ -75,3 +75,9 @@ S1~S12 체크리스트 전수 확인 표를 SECURITY 문서에 기입. TD 레지
 - Project-scoped routes now declare `auth: { project: true, role }`; project list/create routes declare user auth.
 - `requireProjectRole()` now rejects misconfigured role names instead of treating unknown roles as rank 0.
 - `tests/p3-server-route-contract.mjs` verifies project route auth metadata and role enum failures.
+
+2026-07-03 P4-T24 / S4:
+
+- `fileStore.withLock()` is now reusable for read-modify-write critical sections.
+- `userStore.verifyCredentials()` serializes failed-login counter updates for each `users.json`.
+- `tests/p3-auth.mjs` now covers 10 concurrent failed logins and verifies lockout is not bypassed.

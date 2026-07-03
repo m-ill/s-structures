@@ -29,11 +29,15 @@ export async function readJson(path, fallback = null) {
 
 export async function writeJsonAtomic(path, value) {
   await withLock(path, async () => {
-    await ensureDir(dirname(path));
-    const tmp = `${path}.tmp-${randomUUID()}`;
-    await writeFile(tmp, JSON.stringify(value, null, 2), 'utf8');
-    await rename(tmp, path);
+    await writeJsonAtomicUnlocked(path, value);
   });
+}
+
+export async function writeJsonAtomicUnlocked(path, value) {
+  await ensureDir(dirname(path));
+  const tmp = `${path}.tmp-${randomUUID()}`;
+  await writeFile(tmp, JSON.stringify(value, null, 2), 'utf8');
+  await rename(tmp, path);
 }
 
 export async function writeBufferAtomic(path, buffer) {
@@ -67,7 +71,7 @@ export async function removeDir(path) {
  * Cross-process concurrency is out of scope for the v1 file store
  * (PERSISTENCE_PLAN.md D5 — SQLite is the v2 escalation path).
  */
-function withLock(key, fn) {
+export function withLock(key, fn) {
   const previous = locks.get(key) || Promise.resolve();
   const next = previous.then(fn, fn).finally(() => {
     if (locks.get(key) === next) locks.delete(key);
