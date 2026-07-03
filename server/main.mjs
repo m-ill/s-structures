@@ -6,6 +6,7 @@ import { ApiError, createRouter, errorEnvelope, ok, readJsonBody, sendJson } fro
 import { createUserStore } from './store/userStore.mjs';
 import { createProjectStore } from './store/projectStore.mjs';
 import { acquireDataDirLock, DataDirLockError } from './store/lockfile.mjs';
+import { createAuditLog } from './store/auditLog.mjs';
 import { registerAuthRoutes } from './routes/auth.mjs';
 import { registerProjectRoutes } from './routes/projects.mjs';
 import { registerRevisionRoutes } from './routes/revisions.mjs';
@@ -32,7 +33,8 @@ export function createApp(overrides = {}) {
   const config = loadConfig(overrides);
   const userStore = createUserStore(config.dataDir);
   const projectStore = createProjectStore(config.dataDir);
-  const ctx = { config, userStore, projectStore };
+  const auditLog = createAuditLog(config.dataDir);
+  const ctx = { config, userStore, projectStore, auditLog };
   const router = createRouter();
 
   router.get('/api/health', async () => ok({ status: 'ok', uptimeSeconds: (Date.now() - BOOT_TIME) / 1000 }));

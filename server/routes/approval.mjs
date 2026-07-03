@@ -22,6 +22,9 @@ export function registerApprovalRoutes(router, ctx) {
     if (rev == null) throw new ApiError(400, 'VALIDATION', 'Project has no revisions to approve.');
     const approval = await ctx.projectStore.setApproval(params.id, { state: body.state, rev, approvedBy: user.id });
     if (!approval) throw new ApiError(404, 'NOT_FOUND', 'Project not found.');
+    await ctx.auditLog?.append('approval-changed', {
+      projectId: params.id, actorId: user.id, state: body.state, rev,
+    });
     return ok({ approval });
   }, { auth: { project: true, role: 'reviewer' } });
 }

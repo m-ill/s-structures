@@ -19,6 +19,7 @@ export async function authenticate(ctx) {
   if ((user.tokenVersion || 1) !== result.claims.ver) {
     throw new ApiError(401, 'UNAUTHORIZED', 'Token has been invalidated.');
   }
+  ctx.req.user = user;
   return user;
 }
 
@@ -29,6 +30,7 @@ export async function requireProjectRole(ctx, projectId, userId, minRole) {
   const role = await ctx.projectStore.memberRole(projectId, userId);
   if (!role) throw new ApiError(404, 'NOT_FOUND', 'Project not found.');
   if (!roleAtLeast(role, minRole)) {
+    await ctx.auditLog?.append('forbidden', { projectId, userId, role, requiredRole: minRole });
     throw new ApiError(403, 'FORBIDDEN', `Requires role >= ${minRole}, has ${role}.`);
   }
   return role;

@@ -56,6 +56,9 @@ export function registerProjectRoutes(router, ctx) {
     const targetUser = await ctx.userStore.findById(params.userId);
     if (!targetUser) throw new ApiError(404, 'NOT_FOUND', 'User not found.');
     const project = await ctx.projectStore.setMemberRole(params.id, params.userId, role);
+    await ctx.auditLog?.append('member-changed', {
+      projectId: params.id, actorId: user.id, targetUserId: params.userId, role, action: 'upsert',
+    });
     return ok({ project });
   }, { auth: { project: true, role: 'owner' } });
 
@@ -63,6 +66,9 @@ export function registerProjectRoutes(router, ctx) {
     const user = await authenticate({ req, userStore: ctx.userStore });
     await requireProjectRole(ctx, params.id, user.id, 'owner');
     const project = await ctx.projectStore.removeMember(params.id, params.userId);
+    await ctx.auditLog?.append('member-changed', {
+      projectId: params.id, actorId: user.id, targetUserId: params.userId, action: 'remove',
+    });
     return ok({ project });
   }, { auth: { project: true, role: 'owner' } });
 }

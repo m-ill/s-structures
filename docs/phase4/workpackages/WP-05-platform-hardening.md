@@ -100,3 +100,9 @@ S1~S12 체크리스트 전수 확인 표를 SECURITY 문서에 기입. TD 레지
 - Approval GET/POST routes now re-check missing projects after role/list operations and return 404.
 - Revision numbering now uses `(latest?.rev ?? 0) + 1`.
 - Added `tests/p4-approval-route-guards.mjs` and wired it into `npm test` as `test:m94`.
+
+2026-07-03 P4-T28 / audit log:
+
+- Added append-only `server/store/auditLog.mjs` writing JSONL to `data/audit.log`.
+- Audit events now cover `login-failed`, `forbidden`, `approval-changed`, `member-changed`, and `logout-all`.
+- Added `tests/p4-audit-log.mjs` and wired it into `npm test` as `test:m95`.

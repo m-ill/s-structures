@@ -29,6 +29,7 @@ export function registerAuthRoutes(router, ctx) {
       lockSeconds: ctx.config.loginLockSeconds,
     });
     if (!result.ok) {
+      await ctx.auditLog?.append('login-failed', { email: String(email || '').toLowerCase(), reason: result.code });
       const message = result.code === 'LOCKED'
         ? 'Account is temporarily locked after repeated failed logins.'
         : 'Invalid email or password.';
@@ -46,6 +47,7 @@ export function registerAuthRoutes(router, ctx) {
   router.post('/api/auth/logout', async (req) => {
     const user = await authenticate({ req, userStore: ctx.userStore });
     await ctx.userStore.bumpTokenVersion(user.id);
+    await ctx.auditLog?.append('logout-all', { userId: user.id });
     return ok({ loggedOut: true });
   });
 
