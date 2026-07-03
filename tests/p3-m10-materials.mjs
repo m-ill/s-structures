@@ -132,11 +132,18 @@ assert.equal(libraryReport.auditSummary.registryPolicy.editRule, 'append-only-ne
 assert.equal(libraryReport.review.registryReady, true);
 assert.equal(libraryReport.review.calculationTraceReady, true);
 assert.equal(libraryReport.review.nonlinearBackboneReady, true);
+assert.equal(libraryReport.review.sectionProvenanceReady, true);
 assert.equal(libraryReport.review.customMaterialSourceReviewRequired, false);
 assert.equal(libraryReport.review.ownerPolicyReviewRequired, true);
 assert.equal(libraryReport.review.productionReady, false);
 assert.deepEqual(libraryReport.review.blockers, []);
 assert.equal(libraryReport.review.agentDecision, 'material-library-ready-for-engineering-review');
+assert.equal(libraryReport.coverage.nonlinearBackbone.referencedMaterialCount, 1);
+assert.equal(libraryReport.coverage.nonlinearBackbone.withBackboneCount, 1);
+assert.equal(libraryReport.coverage.nonlinearBackbone.rows[0].ready, true);
+assert.equal(libraryReport.coverage.sectionProvenance.referencedSectionCount, 1);
+assert.equal(libraryReport.coverage.sectionProvenance.parametricCount, 1);
+assert.equal(libraryReport.coverage.sectionProvenance.rows[0].propertySource, 'computed-parametric');
 assert.ok(libraryReport.materials.some((row) => row.label === 'USER_STEEL@2'));
 assert.equal(libraryReport.materials.find((row) => row.label === 'USER_STEEL@2').nonlinear.model, 'bilinear');
 assert.deepEqual(libraryReport.materials.find((row) => row.label === 'USER_STEEL@2').sourceTrace, {
@@ -184,6 +191,8 @@ assert.equal(builtinReport.sections[0].sourceTrace.scope, 'builtin');
 assert.equal(builtinReport.sections[0].sourceTrace.db, 'KS-H-2024');
 assert.equal(builtinReport.sections[0].sourceTrace.resolvedLabel, 'H-400x200x8x13@1');
 assert.equal(builtinReport.sections[0].sourceTrace.referenceStatus, 'active');
+assert.equal(builtinReport.coverage.sectionProvenance.dbCount, 1);
+assert.equal(builtinReport.coverage.sectionProvenance.rows[0].propertySource, 'seed-db');
 
 const legacyRefModel = createModel({
   materials: [
@@ -263,6 +272,8 @@ const directReport = buildMaterialLibraryReport({
   members: [{ id: 'M1', matId: 'steel@1', secId: 'DIRECT_WARN@1' }],
 });
 assert.equal(directReport.review.sectionPropertyReviewRequired, true);
+assert.equal(directReport.coverage.sectionProvenance.directCount, 1);
+assert.equal(directReport.coverage.sectionProvenance.rows[0].propertySource, 'direct-input');
 
 const badStrengthReport = buildMaterialLibraryReport({
   materials: [{ id: 'BAD_STEEL', version: 1, kind: 'steel', E: 205000, G: 79000, Fy: 275 }],

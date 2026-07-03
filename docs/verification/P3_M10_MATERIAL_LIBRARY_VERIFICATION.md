@@ -21,6 +21,7 @@ This note verifies P3-M10 against `docs/phase3/MATERIAL_SECTION_LIBRARY_PLAN.md`
 | Registry policy trace | `buildLibraryAudit()` exposes reference format, append-only, scope priority, soft-delete, and legacy migration rules |
 | Soft-delete and append-only audit | `softDeletedItems` and `appendOnlyWarnings` expose deleted rows and duplicate version conflicts |
 | Agent-readable library report | `buildMaterialLibraryReport()` includes nonlinear and section property summaries |
+| Library coverage trace | report `coverage` records nonlinear backbone readiness and section provenance rows |
 | Calculation source trace | report rows expose `sourceTrace` with `id@version`, scope, standard/db, and note fields |
 | Agent review decision | `buildMaterialLibraryReport().review` exposes registry readiness, trace readiness, nonlinear backbone readiness, policy review, blockers, and agent decision |
 | Library edit agent actions | `listLibrary`, `getLibraryItem`, `upsertMaterial`, `upsertSection` in `tests/p3-m10-materials.mjs` |
@@ -58,6 +59,8 @@ The material library report also exposes nonlinear backbone metadata so the late
 2026-07-03 soft-delete trace hardening: exact `id@version` references to soft-deleted material or section rows now resolve as traceable existing-model references instead of silently falling back to another active version. Unversioned references still skip deleted rows. Audit/report rows expose `deleted`, `referenceStatus`, `softDeletedReferences`, and `softDeletedReferenceCount`; reports add `soft-deleted-references-require-review` so AI agents can distinguish historical traceability from approval for new final-use models.
 
 2026-07-03 nonlinear backbone monotonicity hardening: `validateMaterialRecord()` now rejects nonlinear backbone rows whose strain/rotation coordinate is not strictly increasing. `tests/p3-m10-materials.mjs` covers both direct schema validation and material-library report blockers, so later nonlinear milestones cannot consume a scrambled material curve without an explicit schema error.
+
+2026-07-03 coverage trace update: `buildMaterialLibraryReport()` now exposes `coverage.nonlinearBackbone` and `coverage.sectionProvenance`. Agents can inspect referenced material backbone point counts and section property provenance (`seed-db`, `computed-parametric`, or `direct-input`) without reparsing raw library rows before elastic, nonlinear, or report workflows.
 
 ## Current Test Gate
 

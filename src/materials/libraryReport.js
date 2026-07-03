@@ -14,7 +14,8 @@ export function buildMaterialLibraryReport(model = {}) {
     contract: buildReportContract(),
     summary,
     auditSummary: buildAuditSummary(audit),
-    review: buildReview(summary, materials),
+    coverage: buildCoverage(materials, sections),
+    review: buildReview(summary, materials, sections),
     materials,
     sections,
   };
@@ -102,6 +103,50 @@ function summarizeSection(ref, record) {
   };
 }
 
+function buildCoverage(materials, sections) {
+  return {
+    nonlinearBackbone: buildNonlinearBackboneCoverage(materials),
+    sectionProvenance: buildSectionProvenanceCoverage(sections),
+  };
+}
+
+function buildNonlinearBackboneCoverage(materials) {
+  const rows = materials.map((row) => ({
+    label: row.label,
+    kind: row.kind,
+    model: row.nonlinear?.model || null,
+    backbonePoints: row.nonlinear?.backbonePoints || 0,
+    ready: row.nonlinear == null || row.nonlinear.backbonePoints >= 2,
+  }));
+  return {
+    referencedMaterialCount: rows.length,
+    withBackboneCount: rows.filter((row) => row.backbonePoints >= 2).length,
+    missingBackboneCount: rows.filter((row) => row.backbonePoints === 0).length,
+    incompleteBackboneCount: rows.filter((row) => row.backbonePoints > 0 && row.backbonePoints < 2).length,
+    rows,
+  };
+}
+
+function buildSectionProvenanceCoverage(sections) {
+  const rows = sections.map((row) => ({
+    label: row.label,
+    kind: row.kind,
+    shape: row.shape,
+    scope: row.sourceTrace?.scope || null,
+    db: row.sourceTrace?.db || null,
+    hasProperties: !!(row.properties?.A && row.properties?.Iy && row.properties?.Iz),
+    propertySource: row.sourceTrace?.db ? 'seed-db' : row.kind === 'parametric' ? 'computed-parametric' : 'direct-input',
+  }));
+  return {
+    referencedSectionCount: rows.length,
+    dbCount: rows.filter((row) => row.propertySource === 'seed-db').length,
+    parametricCount: rows.filter((row) => row.propertySource === 'computed-parametric').length,
+    directCount: rows.filter((row) => row.propertySource === 'direct-input').length,
+    missingPropertiesCount: rows.filter((row) => !row.hasProperties).length,
+    rows,
+  };
+}
+
 function sourceTrace(ref, label, record = null) {
   const source = record?.source || {};
   const scope = source?.scope || (source?.db ? 'builtin' : 'project');
@@ -117,7 +162,7 @@ function sourceTrace(ref, label, record = null) {
   };
 }
 
-function buildReview(summary, materials) {
+function buildReview(summary, materials, sections) {
   const blockers = [];
   if (summary.materialErrorCount > 0) blockers.push('material-schema-errors');
   if (summary.sectionErrorCount > 0) blockers.push('section-schema-errors');
@@ -125,11 +170,13 @@ function buildReview(summary, materials) {
   if (summary.appendOnlyWarningCount > 0) blockers.push('append-only-policy-conflicts');
   if (summary.softDeletedReferenceCount > 0) blockers.push('soft-deleted-references-require-review');
   const nonlinearBackboneReady = materials.every((row) => !row.nonlinear || row.nonlinear.backbonePoints >= 2);
+  const sectionProvenanceReady = sections.every((row) => row.properties?.A && row.properties?.Iy && row.properties?.Iz);
   if (!nonlinearBackboneReady) blockers.push('nonlinear-backbone-incomplete');
   return {
     registryReady: blockers.length === 0,
     calculationTraceReady: summary.unversionedReferenceCount === 0,
     nonlinearBackboneReady,
+    sectionProvenanceReady,
     customMaterialSourceReviewRequired: summary.materialWarningCount > 0,
     sectionPropertyReviewRequired: summary.sectionWarningCount > 0,
     ownerPolicyReviewRequired: true,
