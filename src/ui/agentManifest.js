@@ -434,6 +434,7 @@ export function buildAgentManifest(options = {}) {
       'createEvidenceClient().listProjectEvidence().finalApprovals is the server-derived final approval state for API-driven agents; do not infer approval by scanning accepted evidence rows.',
       'createEvidenceClient().listProjectEvidence().finalApprovalReview lists required final approval groups, accepted count, missing groups, and allowed approval fields.',
       'getPhase3PracticeValidationReview().summary.finalApprovalCoverage uses the same required approval groups as finalApprovalReview; owner alias approval fields satisfy their group without requiring every allowed field.',
+      'getPhase3OwnerSignoffReview().deploymentApprovalGroup lists the accepted deployment approval aliases; owner checklist evidence alone does not set productionReady.',
     ],
     dataContracts: [
       'schemaVersionedModel',

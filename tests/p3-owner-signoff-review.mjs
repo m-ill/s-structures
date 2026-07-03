@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {
   buildAgentManifest,
   buildPhase3OwnerSignoffReview,
+  PHASE3_FINAL_APPROVAL_GROUPS,
   PHASE3_OWNER_SIGNOFF_REVIEW_VERSION,
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
@@ -23,10 +24,17 @@ assert.deepEqual(empty.summary.missing, [
 assert.equal(empty.summary.ownerReviewRequired, true);
 assert.equal(empty.summary.productionReady, false);
 assert.equal(empty.summary.productionDeploymentApproved, false);
+assert.equal(empty.summary.deploymentApprovalAccepted, false);
+assert.deepEqual(empty.summary.deploymentApprovalAcceptedFields, []);
 assert.equal(empty.summary.agentDecision, 'collect-owner-signoff-evidence');
 assert.ok(empty.requiredEvidence.find((row) => row.id === 'real-dwg-conversion'));
 assert.ok(empty.requiredEvidence.find((row) => row.id === 'security-signoff'));
 assert.equal(empty.agentUse.readApi, 'getPhase3OwnerSignoffReview');
+assert.deepEqual(
+  empty.deploymentApprovalGroup.fields,
+  PHASE3_FINAL_APPROVAL_GROUPS.find((row) => row.id === 'production-deployment-approval').fields,
+);
+assert.ok(empty.finalApprovalFields.includes('ownerProductionDeploymentApproved'));
 
 const acceptedEvidence = empty.requiredEvidence.map((row) => ({
   id: row.id,
@@ -49,7 +57,17 @@ const deploymentApproved = buildPhase3OwnerSignoffReview({
 assert.equal(deploymentApproved.summary.productionReady, true);
 assert.equal(deploymentApproved.summary.ownerReviewRequired, false);
 assert.equal(deploymentApproved.summary.productionDeploymentApproved, true);
+assert.equal(deploymentApproved.summary.deploymentApprovalAccepted, true);
+assert.deepEqual(deploymentApproved.summary.deploymentApprovalAcceptedFields, ['productionDeploymentApproved']);
+assert.deepEqual(deploymentApproved.deploymentApprovalGroup.acceptedFields, ['productionDeploymentApproved']);
 assert.equal(deploymentApproved.summary.agentDecision, 'owner-production-deployment-approved');
+
+const ownerAliasDeploymentApproved = buildPhase3OwnerSignoffReview({
+  evidence: acceptedEvidence,
+  finalApprovals: { ownerProductionDeploymentApproved: true },
+});
+assert.equal(ownerAliasDeploymentApproved.summary.productionReady, true);
+assert.deepEqual(ownerAliasDeploymentApproved.summary.deploymentApprovalAcceptedFields, ['ownerProductionDeploymentApproved']);
 
 const registerKeyEvidence = [
   { id: 'owner-license-policy', accepted: true, owner: 'owner' },

@@ -74,6 +74,11 @@ Milestone review APIs and `getPhase3CompletionAuditReview()` expose `exitCriteri
 
 `getLaunchReadinessReport().status` only means the launch evidence gates are green. Agents must also check `getLaunchReadinessReport().productionReadiness.status`; `OWNER_REVIEW_REQUIRED` means owner sign-off and production deployment approval are still required.
 
+`getPhase3OwnerSignoffReview().deploymentApprovalGroup` lists the accepted
+deployment approval aliases. Owner checklist evidence can make the review ready
+for a deployment decision, but `productionReady` remains false until one field
+in that deployment approval group is explicitly approved.
+
 Agents should read `getLaunchReadinessReport().agentSafeStatus` before final-use automation. `LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED` means the launch evidence is green, but practical validation, owner sign-off, or evidence-register review still blocks final structural-office use.
 
 Agents must also inspect `getLaunchReadinessReport().finalUseReview`. `FINAL_USE_REVIEW_REQUIRED` means at least one practical validation, owner sign-off, or evidence-register review still blocks final structural-office use even when the automated launch gate is green.

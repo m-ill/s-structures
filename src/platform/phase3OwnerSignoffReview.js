@@ -1,4 +1,6 @@
-export const PHASE3_OWNER_SIGNOFF_REVIEW_VERSION = 'p3-owner-signoff-review-v1';
+import { PHASE3_FINAL_APPROVAL_GROUPS } from './phase3EvidenceRegister.js';
+
+export const PHASE3_OWNER_SIGNOFF_REVIEW_VERSION = 'p3-owner-signoff-review-v2';
 
 export const PHASE3_OWNER_SIGNOFF_REQUIRED_EVIDENCE = [
   item('license-policy', 'License policy', 'owner license policy', 'openSourcePolicyFinalized', ['owner-license-policy']),
@@ -12,6 +14,7 @@ export const PHASE3_OWNER_SIGNOFF_REQUIRED_EVIDENCE = [
 
 export function buildPhase3OwnerSignoffReview(input = {}) {
   const evidence = normalizeEvidence(input.evidence || input.signoffEvidence || input.items || []);
+  const approvals = input.finalApprovals || input.approvals || input;
   const rows = PHASE3_OWNER_SIGNOFF_REQUIRED_EVIDENCE.map((required) => {
     const aliases = new Set([required.id, ...(required.aliases || [])]);
     const match = evidence.find((row) => aliases.has(row.id) || row.type === required.type || row.type === required.label);
@@ -27,7 +30,8 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
     };
   });
   const missing = rows.filter((row) => !row.accepted).map((row) => row.id);
-  const deploymentApprovalAccepted = deploymentApproval(input.finalApprovals || input.approvals || input);
+  const deploymentApprovalReview = buildDeploymentApprovalReview(approvals);
+  const deploymentApprovalAccepted = deploymentApprovalReview.accepted;
   const productionDeploymentApproved = missing.length === 0 && deploymentApprovalAccepted;
   return {
     version: PHASE3_OWNER_SIGNOFF_REVIEW_VERSION,
@@ -47,6 +51,9 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
       ownerReviewRequired: !productionDeploymentApproved,
       productionReady: productionDeploymentApproved,
       productionDeploymentApproved,
+      deploymentApprovalAccepted,
+      deploymentApprovalFields: deploymentApprovalReview.fields,
+      deploymentApprovalAcceptedFields: deploymentApprovalReview.acceptedFields,
       agentDecision: missing.length
         ? 'collect-owner-signoff-evidence'
         : productionDeploymentApproved
@@ -55,7 +62,11 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
     },
     rows,
     requiredEvidence: PHASE3_OWNER_SIGNOFF_REQUIRED_EVIDENCE.map((row) => ({ ...row })),
-    finalApprovalFields: PHASE3_OWNER_SIGNOFF_REQUIRED_EVIDENCE.map((row) => row.finalApprovalField),
+    finalApprovalFields: unique([
+      ...PHASE3_OWNER_SIGNOFF_REQUIRED_EVIDENCE.map((row) => row.finalApprovalField),
+      ...deploymentApprovalReview.fields,
+    ]),
+    deploymentApprovalGroup: deploymentApprovalReview,
     agentUse: {
       readApi: 'getPhase3OwnerSignoffReview',
       relatedApis: [
@@ -63,15 +74,22 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
         'getPhase3ProductizationMilestoneReview',
         'getPhase3PracticeValidationReview',
       ],
-      rule: 'Do not mark production deployment approved from this review alone; final owner deployment approval remains manual.',
+      rule: 'Do not mark production deployment approved from owner evidence alone; a deployment approval field from deploymentApprovalGroup must also be explicitly accepted.',
     },
   };
 }
 
-function deploymentApproval(approvals = {}) {
-  return approvals.productionDeploymentApproved === true ||
-    approvals.ownerProductionDeploymentApproved === true ||
-    approvals.finalOwnerDeploymentApproval === true;
+function buildDeploymentApprovalReview(approvals = {}) {
+  const group = PHASE3_FINAL_APPROVAL_GROUPS.find((item) => item.id === 'production-deployment-approval');
+  const fields = group?.fields || ['productionDeploymentApproved'];
+  const acceptedFields = fields.filter((field) => approvals[field] === true);
+  return {
+    id: 'production-deployment-approval',
+    fields: [...fields],
+    accepted: acceptedFields.length > 0,
+    acceptedFields,
+    status: acceptedFields.length ? 'ACCEPTED' : 'APPROVAL_REQUIRED',
+  };
 }
 
 function item(id, label, type, finalApprovalField, aliases = []) {
@@ -91,4 +109,8 @@ function normalizeRow(row = {}) {
     status: String(row.status || '').trim().toLowerCase(),
     accepted: row.accepted === true,
   };
+}
+
+function unique(values) {
+  return [...new Set(values.filter(Boolean))];
 }

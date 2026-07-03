@@ -70,6 +70,7 @@ assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('finalA
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('listProjectEvidence().finalApprovals')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('listProjectEvidence().finalApprovalReview')));
 assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('summary.finalApprovalCoverage uses the same required approval groups')));
+assert.ok(agentContract.interpretationRules.some((rule) => rule.includes('getPhase3OwnerSignoffReview().deploymentApprovalGroup')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('exitCriteriaSummary')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('finalUseReview.requiredReviews')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('requiredEvidenceIdCount')));
@@ -77,6 +78,7 @@ assert.ok(manifest.interpretationRules.some((rule) => rule.includes('finalApprov
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('listProjectEvidence().finalApprovals')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('listProjectEvidence().finalApprovalReview')));
 assert.ok(manifest.interpretationRules.some((rule) => rule.includes('summary.finalApprovalCoverage uses the same required approval groups')));
+assert.ok(manifest.interpretationRules.some((rule) => rule.includes('getPhase3OwnerSignoffReview().deploymentApprovalGroup')));
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.productionReadiness\.status/);
 assert.match(launchManual, /getLaunchReadinessReport\(\)\.agentSafeStatus/);
 assert.match(launchManual, /finalUseReview\.requiredReviews/);
@@ -86,6 +88,7 @@ assert.match(launchManual, /listProjectEvidence\(\)/);
 assert.match(launchManual, /finalApprovals/);
 assert.match(launchManual, /finalApprovalReview/);
 assert.match(launchManual, /summary\.finalApprovalCoverage/);
+assert.match(launchManual, /deploymentApprovalGroup/);
 assert.match(launchManual, /LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED/);
 assert.match(launchManual, /OWNER_REVIEW_REQUIRED/);
 assert.match(launchManual, /exitCriteriaSummary/);
