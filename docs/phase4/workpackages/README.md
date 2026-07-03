@@ -11,7 +11,8 @@ WP는 Phase 4의 실행 단위다. 착수 시 담당·시작일을 기입하고,
 | [WP-03](WP-03-design-validation.md) | 설계모듈 실증 | V | P4-M3 | T12~T16 | not-started |
 | [WP-04](WP-04-import-validation.md) | 도면/점군 import 실증 | V | P4-M4 | T17~T21 | not-started |
 | [WP-05](WP-05-platform-hardening.md) | 플랫폼/보안 강화 | H | P4-M5 | T22~T28 | complete |
-| [WP-06](WP-06-performance.md) | 성능/규모 실증 | H | P4-M6 | T29~T32 | not-started |
+| [WP-06](WP-06-performance.md) | 성능/규모 실증 | H | P4-M6 | T29~T32 | complete |
+
 | [WP-07](WP-07-modeler-integration.md) | 모델러 통합·프론트 완성 | H | P4-M7 | T33~T39 | not-started |
 | [WP-08](WP-08-packaging.md) | 패키징/배포 | R | P4-M8 | T40~T45 | not-started |
 | [WP-09](WP-09-documentation.md) | 사용자 문서/온보딩 | R | P4-M9 | T46~T49 | not-started |

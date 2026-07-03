@@ -76,3 +76,13 @@ git diff --check
 6. 하중 산정과 설계검토 trace가 보고서에 붙는다.
 
 하지만 “최종 구조설계가 자동으로 끝났다”는 뜻은 아니다. 현재 프로그램은 계산을 투명하게 정리하고 검토 포인트를 드러내는 방향으로 완성도를 올리는 단계다.
+
+## Phase 4 Performance Limits
+
+Current automated scale evidence is recorded in `reports/validation-evidence/scale-limits.json`.
+
+- Routine interactive use: up to about 1,000 frame members.
+- Review-required range: 2,000 members and above.
+- Long-run validation required: about 4,000 members before production use.
+
+The 2,000 and 4,000 member rows are generated for scale evidence, but full solver validation is intentionally deferred to a longer dedicated run. `reports/validation-evidence/perf-budget.json` records the current automated performance budget; point-cloud and viewer rows are proxy measurements until owner-provided field files and browser frame captures are available.

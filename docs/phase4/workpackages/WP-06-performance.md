@@ -1,7 +1,7 @@
 # WP-06 성능/규모 실증
 
 stage: H / milestone: P4-M6 / tickets: P4-T29~T32 / 크기: M
-status: in-progress
+status: complete
 
 ## Objective
 
@@ -73,3 +73,10 @@ perf-budget 게이트를 launch gate 목록에 연결 (L4). TD-08/15 fixed 처�
 - Generated reports/validation-evidence/perf-budget.json with six measured budget rows and machine metadata.
 - Added tests/p4-perf-budget.mjs and wired it into npm test as test:m98.
 - Point-cloud and viewer rows are marked as automated proxy measurements until owner-provided large files and browser FPS captures are available.
+
+2026-07-03 P4-T32 / scale limits:
+
+- Added tools/measure-scale-limits.mjs and npm run measure:scale.
+- Generated reports/validation-evidence/scale-limits.json for about 500, 1,000, 2,000, and 4,000 member classes.
+- Added docs/user-manual/STATUS_AND_LIMITS.md for users and AI agents.
+- Added tests/p4-scale-limits.mjs and wired it into npm test as test:m99.
