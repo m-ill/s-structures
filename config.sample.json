@@ -1,0 +1,12 @@
+{
+  "port": 5173,
+  "host": "127.0.0.1",
+  "dataDir": "./data",
+  "maxJsonBytes": 20971520,
+  "maxUploadBytes": 524288000,
+  "tokenTtlSeconds": 43200,
+  "loginFailLimit": 10,
+  "loginLockSeconds": 900,
+  "allowRegistration": true,
+  "allowedUploadExtensions": [".dxf", ".dwg", ".ply", ".xyz", ".txt", ".pcd", ".las", ".json"]
+}

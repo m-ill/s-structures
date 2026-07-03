@@ -141,12 +141,11 @@ function decodeStaticPath(pathname) {
   }
 }
 
-function isMain() {
-  const entry = process.argv[1] || '';
+export function isMainEntry(entry = process.argv[1] || '') {
   return entry.replace(/\\/g, '/').endsWith('server/main.mjs');
 }
 
-if (isMain()) {
+if (isMainEntry()) {
   try {
     const app = await startServer(parseCliOverrides(process.argv));
     app.server.listen(app.config.port, app.config.host, () => {

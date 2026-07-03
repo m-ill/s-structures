@@ -21,3 +21,10 @@ Automated supporting tests:
 - `tests/m27-native-persistence.mjs`
 - `tests/p3-persistence.mjs`
 - `tests/p3-server-api.mjs`
+- `tests/p4-backup-tool.mjs`
+
+Phase 4 backup tool:
+
+- `tools/backup-data.mjs --verify` copies a data directory into a backup folder.
+- `backup-manifest.json` records file paths and SHA256 hashes.
+- Verification re-hashes copied files and fails on mismatch.

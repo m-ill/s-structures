@@ -23,7 +23,7 @@ source: 2026-07-02 8각도 코드리뷰 + 2026-07-03 재검증
 | TD-11 | P2 | `src/viewer/viewerCore.js` | 내부 sub/dot/cross/normalize가 `src/core/vector.js` 미사용 | 벡터 수학 정밀도 수정이 뷰어에 미전파 | WP-07 | fixed |
 | TD-12 | P2 | `server/routes/approval.mjs` | requireProjectRole 후 get() 결과 null 재확인 없음 (동시 softDelete race) | 드문 race에서 500 INTERNAL (404가 정답) | WP-05 | fixed |
 | TD-13 | P2 | `server/store/projectStore.mjs` saveRevision | `(latest?.rev \|\| 0)+1` — rev 0 유입 시 falsy 처리 (현재 도달 불가, latent) | 외부 스크립트가 0-base index 기록 시 rev 충돌 | WP-05 | fixed |
-| TD-14 | P2 | `server/main.mjs` isMain() | argv[1] 접미사 문자열 매칭 — 파일 이동/래퍼 실행 시 서버가 조용히 미기동 | 패키징(Electron/서비스) 시 무증상 실패 | WP-08 | open |
+| TD-14 | P2 | `server/main.mjs` isMain() | argv[1] 접미사 문자열 매칭 — 파일 이동/래퍼 실행 시 서버가 조용히 미기동 | 패키징(Electron/서비스) 시 무증상 실패 | WP-08 | fixed |
 | TD-15 | P2 | `server/routes/projects.mjs` 등 | 독립 I/O의 순차 await (member PUT의 user 조회, approval의 listRevisions) | 요청당 1 I/O 왕복 지연 추가 | WP-06 | fixed |
 
 ## Fixed During Phase 3 (기록용)

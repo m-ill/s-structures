@@ -54,4 +54,14 @@ R4(Electron 복잡도) — Step 3만 분리 가능하게 커밋 구성. 빌드 �
 
 ## Result
 
-(완료 시 기입)
+2026-07-03 P4-T40~T45 implementation pass:
+
+- Added `tools/build-release.mjs`, `npm run build:release`, release manifest generation, zip output, and SHA256 sidecar.
+- Added `config.sample.json` and config-file loading with environment and override precedence.
+- Added `CHANGELOG.md` and `PRODUCT_VERSION` sync coverage.
+- Added `server/auth/license.mjs` and `tools/issue-license.mjs` for signed offline license payloads.
+- Added `tools/backup-data.mjs`, `npm run backup:data`, and verified backup manifest hashing.
+- Added `desktop/` scaffold and recorded desktop packaging as an owner-decision scaffold rather than a required installer gate for this pass.
+- Added `reports/launch-readiness/install-smoke-web.md`, `install-smoke-desktop.md`, and updated `backup-restore.md`.
+- Added tests `p4-release-tools`, `p4-backup-tool`, and `p4-build-release`.
+- Marked TD-14 fixed in `TECH_DEBT_REGISTER.md`.
