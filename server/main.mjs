@@ -4,7 +4,7 @@ import { extname, join, normalize, resolve } from 'node:path';
 import { loadConfig } from './config.mjs';
 import { ApiError, createRouter, errorEnvelope, ok, readJsonBody, sendJson } from './router.mjs';
 import { createUserStore } from './store/userStore.mjs';
-import { createProjectStore } from './store/projectStore.mjs';
+import { createProjectStore, withProjectStoreRequestCache } from './store/projectStore.mjs';
 import { acquireDataDirLock, DataDirLockError } from './store/lockfile.mjs';
 import { createAuditLog } from './store/auditLog.mjs';
 import { registerAuthRoutes } from './routes/auth.mjs';
@@ -98,7 +98,7 @@ async function handleApi(req, res, router, pathname, config) {
     }
     const needsBody = ['POST', 'PATCH', 'PUT'].includes(req.method) && matched.bodyType === 'json';
     const body = needsBody ? await readJsonBody(req, config.maxJsonBytes) : undefined;
-    const result = await matched.handler(req, res, matched.params, body);
+    const result = await withProjectStoreRequestCache(() => matched.handler(req, res, matched.params, body));
     if (result?.handled) return;
     sendJson(res, 200, result);
   } catch (error) {

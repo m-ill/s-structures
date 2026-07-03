@@ -1,7 +1,7 @@
 # WP-06 성능/규모 실증
 
 stage: H / milestone: P4-M6 / tickets: P4-T29~T32 / 크기: M
-status: not-started
+status: in-progress
 
 ## Objective
 
@@ -54,3 +54,9 @@ perf-budget 게이트를 launch gate 목록에 연결 (L4). TD-08/15 fixed 처�
 ## Result
 
 (완료 시 기입)
+
+2026-07-03 P4-T29 / TD-08:
+
+- Added request-scoped project meta caching in server/store/projectStore.mjs.
+- server/main.mjs now wraps API handlers with the project store request cache.
+- Added tests/p4-project-meta-cache.mjs and wired it into npm test as test:m96; a GET project request now reads project meta once.

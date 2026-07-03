@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { extname, join } from 'node:path';
 import {
   ensureDir, isValidId, joinSafe, listDir, newId, readBuffer, readJson,
@@ -7,6 +8,11 @@ import {
 export const PROJECT_ROLES = ['viewer', 'reviewer', 'engineer', 'owner'];
 
 const ROLE_RANK = { viewer: 1, reviewer: 2, engineer: 3, owner: 4 };
+const requestCache = new AsyncLocalStorage();
+
+export async function withProjectStoreRequestCache(fn) {
+  return requestCache.run(new Map(), fn);
+}
 
 export function roleAtLeast(role, minRole) {
   if (!isProjectRole(role) || !isProjectRole(minRole)) return false;
@@ -19,17 +25,25 @@ export function isProjectRole(role) {
 
 export function createProjectStore(dataDir) {
   const projectsRoot = join(dataDir, 'projects');
+  const debug = { metaReads: new Map() };
 
   function projectDir(id) {
     return joinSafe(projectsRoot, id);
   }
 
   async function readProjectMeta(id) {
-    return readJson(join(projectDir(id), 'project.json'), null);
+    const cache = requestCache.getStore();
+    const cacheKey = `${dataDir}:${id}`;
+    if (cache?.has(cacheKey)) return cache.get(cacheKey);
+    debug.metaReads.set(id, (debug.metaReads.get(id) || 0) + 1);
+    const meta = await readJson(join(projectDir(id), 'project.json'), null);
+    cache?.set(cacheKey, meta);
+    return meta;
   }
 
   async function writeProjectMeta(id, meta) {
     await writeJsonAtomic(join(projectDir(id), 'project.json'), meta);
+    requestCache.getStore()?.set(`${dataDir}:${id}`, meta);
   }
 
   return {
@@ -286,6 +300,14 @@ export function createProjectStore(dataDir) {
 
     async purgeForTest(id) {
       await removeDir(projectDir(id));
+    },
+
+    debugMetaReadCount(id) {
+      return debug.metaReads.get(id) || 0;
+    },
+
+    resetDebugCounters() {
+      debug.metaReads.clear();
     },
   };
 }
