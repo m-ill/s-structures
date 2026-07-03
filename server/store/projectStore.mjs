@@ -133,7 +133,7 @@ export function createProjectStore(dataDir) {
       if (!meta) return null;
       const revisions = await this.listRevisions(id);
       const latest = revisions.at(-1) || null;
-      const rev = (latest?.rev || 0) + 1;
+      const rev = (latest?.rev ?? 0) + 1;
       const lineageWarning = latest != null && parentRev != null && parentRev !== latest.rev;
       const entry = {
         rev, author, savedAt: new Date().toISOString(), note: note || '',

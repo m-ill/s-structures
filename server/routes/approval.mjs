@@ -6,6 +6,7 @@ export function registerApprovalRoutes(router, ctx) {
     const user = await authenticate({ req, userStore: ctx.userStore });
     await requireProjectRole(ctx, params.id, user.id, 'viewer');
     const project = await ctx.projectStore.get(params.id);
+    if (!project) throw new ApiError(404, 'NOT_FOUND', 'Project not found.');
     return ok({ approval: project.approval });
   }, { auth: { project: true, role: 'viewer' } });
 
@@ -20,6 +21,7 @@ export function registerApprovalRoutes(router, ctx) {
     const rev = body.rev ?? latestRev;
     if (rev == null) throw new ApiError(400, 'VALIDATION', 'Project has no revisions to approve.');
     const approval = await ctx.projectStore.setApproval(params.id, { state: body.state, rev, approvedBy: user.id });
+    if (!approval) throw new ApiError(404, 'NOT_FOUND', 'Project not found.');
     return ok({ approval });
   }, { auth: { project: true, role: 'reviewer' } });
 }

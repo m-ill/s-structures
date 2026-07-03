@@ -94,3 +94,9 @@ S1~S12 체크리스트 전수 확인 표를 SECURITY 문서에 기입. TD 레지
 - Removed the legacy `tools/serve.mjs` static server.
 - `npm run dev` and `npm run dev:public` now launch `server/main.mjs` with port 5173.
 - `tests/m17-e2e-entrypoint.mjs` now boots the same server entrypoint used by production and dev.
+
+2026-07-03 P4-T27 / TD-12-TD-13:
+
+- Approval GET/POST routes now re-check missing projects after role/list operations and return 404.
+- Revision numbering now uses `(latest?.rev ?? 0) + 1`.
+- Added `tests/p4-approval-route-guards.mjs` and wired it into `npm test` as `test:m94`.
