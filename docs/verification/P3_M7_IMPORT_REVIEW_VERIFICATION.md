@@ -26,6 +26,7 @@ This note verifies P3-M7 against `docs/phase3/IMPORT_DXF_DWG_PLAN.md` and `docs/
 | Column stack continuity trace | `columnContinuity` records incomplete floor-to-floor column stacks and review status |
 | Plan assembly review decision | `planAssembly.review` records confirmable status, hold reasons, evidence, and agent decision |
 | Plan label and unused-layer evidence | `recognizePlanDxf()` records TEXT/MTEXT labels, recognized layers, unused layers, and layer usage rows for AI review |
+| Plan overlay evidence | `planAssembly.overlayEvidence` records source layers, candidate counts, unused layers, candidate member rows, and review decision |
 
 ## Added Review Finding
 
@@ -36,6 +37,7 @@ The import review model previously showed only generic candidate counts and warn
 3. `review.reasons`
 4. `review.layerAudit`
 5. `review.planAssembly`
+6. `review.planAssembly.overlayEvidence`
 
 2026-07-02 review update: The DWG adapter now exposes a non-executing command plan with target DXF path and failure envelope. This keeps the proprietary-format conversion step explicit, reviewable, and controllable by AI agents without pretending that a local converter is always installed.
 
@@ -60,6 +62,8 @@ The import review model previously showed only generic candidate counts and warn
 2026-07-03 plan-unit review: `recognizePlanDxf()` now applies `$INSUNITS` scaling before column, beam, label, and closed-polyline recognition. The audit exposes `units` with declared code, unit name, scale, and missing-unit suspicion, and `tests/p3-m7-dwg-plan.mjs` verifies that a millimeter floor plan produces meter-space column and beam coordinates.
 
 2026-07-03 import server validation: `server/routes/imports.mjs` now validates both saved `candidate` payloads and `resolvedCandidate` payloads with the shared `ImportCandidate` contract before persistence. `tests/p3-m7-import-review-ui.mjs` covers invalid initial import saves and invalid confirmed-resolution candidates, matching the plan rule that import audit records are saved only after candidate validation.
+
+2026-07-03 plan overlay evidence update: `assemblePlansToImportCandidate()` now records `planAssembly.overlayEvidence` with per-story source layers, recognized and unused layers, candidate counts, candidate member rows, and an agent decision. `summarizeImportEntry()` carries this into `review.planAssembly.overlayEvidence` so browser-control and API agents can inspect the same overlay-review basis before confirming a 2D plan assembly.
 
 ## Current Test Gate
 

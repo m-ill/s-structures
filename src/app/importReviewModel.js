@@ -80,6 +80,7 @@ function buildReviewState(entry, candidate, validation, warnings) {
       generatedSegmentCount: planAssembly.generatedSegmentCount || 0,
       recognitionQuality: planAssembly.recognitionQuality || null,
       columnContinuity: planAssembly.columnContinuity || null,
+      overlayEvidence: planAssembly.overlayEvidence || null,
       review: planAssembly.review || null,
     } : null,
   };

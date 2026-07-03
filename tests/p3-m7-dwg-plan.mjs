@@ -239,6 +239,14 @@ assert.equal(candidate.audit.planAssembly.labelEvidence.agentDecision, 'story-la
 assert.equal(candidate.audit.planAssembly.review.status, 'ready-for-human-confirmation');
 assert.equal(candidate.audit.planAssembly.review.confirmable, true);
 assert.equal(candidate.audit.planAssembly.review.agentDecision, 'candidate-ready-for-import-review-ui');
+assert.equal(candidate.audit.planAssembly.overlayEvidence.reviewMode, 'source-plan-plus-import-candidate-overlay');
+assert.equal(candidate.audit.planAssembly.overlayEvidence.rows.length, 2);
+assert.equal(candidate.audit.planAssembly.overlayEvidence.rows[0].candidateCounts.columns, 2);
+assert.equal(candidate.audit.planAssembly.overlayEvidence.rows[0].candidateCounts.beams, 1);
+assert.ok(candidate.audit.planAssembly.overlayEvidence.rows[0].sourceLayers.includes('S-TEXT'));
+assert.ok(candidate.audit.planAssembly.overlayEvidence.rows[0].unusedLayers.includes('S-TEXT'));
+assert.equal(candidate.audit.planAssembly.overlayEvidence.candidateMemberCount, 4);
+assert.equal(candidate.audit.planAssembly.overlayEvidence.agentDecision, 'review-unused-source-layers-before-confirmation');
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'column').length, 2);
 assert.equal(candidate.candidates.members.filter((member) => member.kind === 'beam').length, 2);
 assert.deepEqual(candidate.candidates.stories.map((story) => story.z), [0, 3]);
@@ -257,6 +265,8 @@ assert.equal(reviewSummary.review.planAssembly.recognitionQuality.ok, true);
 assert.equal(reviewSummary.review.planAssembly.columnContinuity.ok, true);
 assert.equal(reviewSummary.review.planAssembly.review.confirmable, true);
 assert.equal(reviewSummary.review.planAssembly.review.agentDecision, 'candidate-ready-for-import-review-ui');
+assert.equal(reviewSummary.review.planAssembly.overlayEvidence.candidateMemberCount, 4);
+assert.equal(reviewSummary.review.planAssembly.overlayEvidence.rows[1].storyId, '2F');
 
 const rejectedReview = summarizeImportEntry({ id: 'plan-2story-import', status: 'rejected', candidate });
 assert.equal(rejectedReview.review.confirmable, false);

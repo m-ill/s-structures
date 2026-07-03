@@ -56,6 +56,7 @@ export function assemblePlansToImportCandidate(plans = [], options = {}) {
       labelEvidence: summarizePlanLabels(ordered),
       recognitionQuality,
       columnContinuity,
+      overlayEvidence: buildPlanOverlayEvidence(ordered, candidate),
       review: buildPlanAssemblyReview({ ordered, recognitionQuality, columnContinuity, segments }),
     },
   };
@@ -76,6 +77,39 @@ function summarizePlanLabels(plans) {
     agentDecision: rows.every((row) => row.primaryLabel)
       ? 'story-labels-available-for-review'
       : 'review-missing-story-labels',
+  };
+}
+
+function buildPlanOverlayEvidence(plans, candidate) {
+  const rows = plans.map((plan) => ({
+    storyId: plan.storyId || null,
+    elevation: plan.elevation,
+    sourceLayers: plan.audit?.layers || [],
+    recognizedLayers: plan.audit?.recognizedLayers || [],
+    unusedLayers: plan.audit?.unusedLayers || [],
+    candidateCounts: {
+      columns: (plan.columns || []).length,
+      beams: (plan.beams || []).length,
+      labels: plan.audit?.labelEvidence?.labelCount || 0,
+    },
+  }));
+  const memberRows = candidate.candidates.members.map((member) => ({
+    id: member.id,
+    kind: member.kind || 'unknown',
+    confidence: member.confidence ?? null,
+    layer: member.layer || member.evidence?.layer || null,
+  }));
+  return {
+    version: PLAN_ASSEMBLY_VERSION,
+    reviewMode: 'source-plan-plus-import-candidate-overlay',
+    rows,
+    memberRows,
+    sourceLayerCount: new Set(rows.flatMap((row) => row.sourceLayers)).size,
+    unusedLayerCount: new Set(rows.flatMap((row) => row.unusedLayers)).size,
+    candidateMemberCount: memberRows.length,
+    agentDecision: rows.some((row) => row.unusedLayers.length)
+      ? 'review-unused-source-layers-before-confirmation'
+      : 'overlay-ready-for-import-review',
   };
 }
 
