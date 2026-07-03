@@ -29,9 +29,10 @@ export function registerFileRoutes(router, ctx) {
     const found = await ctx.projectStore.getFile(params.id, params.fileId);
     if (!found) throw new ApiError(404, 'NOT_FOUND', 'File not found.');
     res.writeHead(200, {
-      'Content-Type': found.entry.contentType,
+      'Content-Type': safeDownloadContentType(found.entry.contentType),
       'Content-Length': found.buffer.length,
       'Content-Disposition': `attachment; filename="${encodeURIComponent(found.entry.originalName)}"`,
+      'X-Content-Type-Options': 'nosniff',
     });
     res.end(found.buffer);
     return { handled: true };
@@ -59,4 +60,17 @@ function readUploadFileName(value) {
     throw new ApiError(400, 'VALIDATION', 'Upload file name is not valid.');
   }
   return name;
+}
+
+const SAFE_DOWNLOAD_TYPES = new Set([
+  'application/dxf',
+  'application/json',
+  'application/octet-stream',
+  'text/plain',
+]);
+
+function safeDownloadContentType(value) {
+  const type = String(value || '').split(';')[0].trim().toLowerCase();
+  if (SAFE_DOWNLOAD_TYPES.has(type)) return type;
+  return 'application/octet-stream';
 }

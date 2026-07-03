@@ -106,6 +106,7 @@
     "test:m89": "node tests/p3-m19-integrated-report.mjs",
     "test:m90": "node tests/p3-launch-gate.mjs",
     "test:m91": "node tests/p3-plan-alignment.mjs",
+    "test:m92": "node tests/p4-security-headers.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",

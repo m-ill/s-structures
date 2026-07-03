@@ -1,7 +1,7 @@
 # WP-05 플랫폼/보안 강화
 
 stage: H / milestone: P4-M5 / tickets: P4-T22~T28 / 크기: M
-status: not-started
+status: in-progress
 
 ## Objective
 
@@ -61,5 +61,11 @@ S1~S12 체크리스트 전수 확인 표를 SECURITY 문서에 기입. TD 레지
 인증 선언화는 전 라우트를 건드림 — 단계 커밋(라우터 확장 → 파일별 이전 → 수동 코드 제거)으로 진행, 각 단계 full suite. 실패 시 파일 단위 revert 가능.
 
 ## Result
+
+2026-07-03 P4-T22 / S1:
+
+- Download responses now force a safe content type allowlist and include `X-Content-Type-Options: nosniff`.
+- Risky stored content types such as `text/html` are returned as `application/octet-stream`.
+- Added `tests/p4-security-headers.mjs` and wired it into `npm test` as `test:m92`.
 
 (완료 시 기입)
