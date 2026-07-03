@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   AGENT_MANIFEST_VERSION,
+  buildImportCandidate,
   buildAgentManifest,
   createPortalFrameSample,
 } from '../src/index.js';
@@ -48,6 +49,10 @@ assert.ok(manifest.executeActions.includes('setViewerSlice'));
 assert.ok(manifest.readApis.includes('getCapabilities'));
 assert.ok(manifest.readApis.includes('getRuntimeDiagnostics'));
 assert.ok(manifest.readApis.includes('getViewerState'));
+assert.ok(manifest.readApis.includes('listImportCandidates'));
+assert.ok(manifest.readApis.includes('resolveImportCandidate'));
+assert.ok(manifest.readApis.includes('confirmImport'));
+assert.ok(manifest.readApis.includes('rejectImport'));
 assert.ok(manifest.readApis.includes('getMaterialSectionRegistry'));
 assert.ok(manifest.readApis.includes('getElasticExpansionTrace'));
 assert.ok(manifest.readApis.includes('getWallSlabEquivalentTrace'));
@@ -102,6 +107,32 @@ assert.equal(agent.getViewerState().slice.enabled, true);
 const snapshot = agent.getSnapshot();
 assert.deepEqual(snapshot.availableActions, manifest.executeActions);
 assert.ok(manifest.milestones.some((item) => item.id === 'M23'));
+const agentCandidate = buildImportCandidate({
+  source: { type: 'agent-fixture', fileId: 'agent-import-1' },
+  nodes: [
+    { id: 'N1', x: 0, y: 0, z: 0 },
+    { id: 'N2', x: 0, y: 0, z: 3 },
+  ],
+  members: [{ id: 'C1', from: 'N1', to: 'N2', kind: 'column' }],
+});
+const resolvedImport = agent.resolveImportCandidate({
+  id: 'agent-import-1',
+  candidate: agentCandidate,
+  note: 'agent fixture resolution',
+});
+assert.equal(resolvedImport.review.validation.ok, true);
+assert.equal(agent.listImportCandidates().count, 1);
+assert.equal(agent.execute('listImportCandidates').importCandidates.imports[0].id, 'agent-import-1');
+const confirmedImport = agent.execute('confirmImport', { importId: 'agent-import-1', applyToModel: true });
+assert.equal(confirmedImport.importCandidate.review.decision.accepted, true);
+assert.equal(agent.getModel().meta.importReview.status, 'confirmed');
+const rejectedImport = agent.resolveImportCandidate({
+  id: 'agent-import-reject',
+  candidate: agentCandidate,
+  note: 'agent reject fixture',
+});
+assert.equal(rejectedImport.review.status, 'pending');
+assert.equal(agent.execute('rejectImport', { importId: 'agent-import-reject', reason: 'fixture reject' }).importCandidate.review.decision.rejected, true);
 const importMilestoneReview = agent.getPhase3ImportMilestoneReview();
 assert.equal(importMilestoneReview.summary.milestoneCount, 4);
 assert.equal(importMilestoneReview.rows[0].milestone, 'P3-M6');

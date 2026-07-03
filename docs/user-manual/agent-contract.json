@@ -166,6 +166,7 @@
     "listImportCandidates",
     "resolveImportCandidate",
     "confirmImport",
+    "rejectImport",
     "listProjectEvidence",
     "submitProjectEvidence",
     "getResultPostprocessing",
@@ -252,7 +253,8 @@
     "phase3ImportReview": [
       "listImportCandidates",
       "resolveImportCandidate",
-      "confirmImport"
+      "confirmImport",
+      "rejectImport"
     ],
     "phase3EvidenceRegister": [
       "listProjectEvidence",

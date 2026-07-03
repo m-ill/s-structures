@@ -92,6 +92,12 @@ import {
   buildAgentSnapshot,
 } from './indexAgentSnapshot.js';
 import {
+  confirmIndexImport,
+  listIndexImportCandidates,
+  rejectIndexImport,
+  resolveIndexImportCandidate,
+} from './indexImportAgentState.js';
+import {
   openNativeCalculationPackage,
   openNativeDetailedReport,
 } from './indexReportHooks.js';
@@ -279,6 +285,18 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     listProjectEvidence() {
       return cloneJson(buildProjectEvidenceView(target));
+    },
+    listImportCandidates() {
+      return cloneJson(listIndexImportCandidates(target));
+    },
+    resolveImportCandidate(payload = {}) {
+      return cloneJson(resolveIndexImportCandidate(target, payload));
+    },
+    confirmImport(payload = {}) {
+      return cloneJson(confirmIndexImport(target, payload));
+    },
+    rejectImport(payload = {}) {
+      return cloneJson(rejectIndexImport(target, payload));
     },
     submitProjectEvidence(evidence = {}) {
       const validation = validatePhase3EvidenceRecord(evidence);
@@ -546,6 +564,14 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
           return { library: api.listLibrary(payload) };
         case 'getLibraryItem':
           return { library: api.getLibraryItem(payload) };
+        case 'listImportCandidates':
+          return { importCandidates: api.listImportCandidates(payload) };
+        case 'resolveImportCandidate':
+          return { importCandidate: api.resolveImportCandidate(payload) };
+        case 'confirmImport':
+          return { importCandidate: api.confirmImport(payload) };
+        case 'rejectImport':
+          return { importCandidate: api.rejectImport(payload) };
         case 'openNativeDetailedReport':
           return openNativeDetailedReport(target, bridge, api, payload);
         case 'openNativeCalculationPackage':

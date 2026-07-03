@@ -47,6 +47,8 @@ The import review model previously showed only generic candidate counts and warn
 
 2026-07-03 server API review contract: `/api/projects/:id/imports` save, list, read, and decision responses now include the same `review` summary returned by `summarizeImportEntry()`. API-driven agents can read source, counts, validation, warnings, confirmable state, and accepted/rejected/pending decision state without opening the browser import review screen.
 
+2026-07-03 in-page agent import contract: `window.SStructuresAgent` now implements `listImportCandidates`, `resolveImportCandidate`, `confirmImport`, and `rejectImport`. Confirmed imports can be applied to the current model only after the shared import review model reports the candidate as confirmable, so browser-control agents follow the same review-before-model rule as the server import API.
+
 2026-07-02 readiness-decision update: DWG conversion plans now include `audit.readiness` with `ready-to-convert` or `external-converter-required` status. 2D plan assemblies now include `planAssembly.review` with `candidate-ready-for-import-review-ui` or `hold-import-for-plan-review`. This lets AI agents branch on explicit import decisions instead of reinterpreting counts and warnings.
 
 2026-07-03 P3-M7 rebuild review update: floor-plan recognition now carries label evidence and full layer-use evidence. `recognizePlanDxf()` exposes `labelEvidence`, `recognizedLayers`, `unusedLayers`, and `layerUsage`, while `assemblePlansToImportCandidate()` summarizes per-story labels under `planAssembly.labelEvidence`. This supports the plan's label-mapping and human-review requirements without auto-confirming drawing interpretation.

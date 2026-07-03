@@ -12,6 +12,7 @@ import { INDEX_NATIVE_AGENT_CONTROLS_VERSION } from './indexNativeAgentControls.
 import { INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION } from './indexNativeAdvancedAnalysis.js';
 import { INDEX_PRODUCT_HARDENING_VERSION } from './indexProductHardening.js';
 import { INDEX_AGENT_COMMAND_BRIDGE_VERSION } from './indexAgentCommandBridge.js';
+import { INDEX_IMPORT_AGENT_STATE_VERSION } from './indexImportAgentState.js';
 import { INDEX_RUNTIME_ADAPTER_VERSION } from './indexRuntimeAdapter.js';
 import { TWO_STORY_ELASTIC_FRAME_VERSION } from '../examples/twoStoryElasticFrame.js';
 import { REPRESENTATIVE_BUILDINGS_VERSION } from '../examples/representativeBuildings.js';
@@ -152,6 +153,7 @@ export function buildAgentManifest(options = {}) {
       nativeAdvancedAnalysis: INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION,
       productHardening: INDEX_PRODUCT_HARDENING_VERSION,
       agentCommandBridge: INDEX_AGENT_COMMAND_BRIDGE_VERSION,
+      importAgentState: INDEX_IMPORT_AGENT_STATE_VERSION,
       runtimeAdapter: INDEX_RUNTIME_ADAPTER_VERSION,
       legacyResultShape: MANIFEST_LEGACY_RESULT_SHAPE_VERSION,
       elastic3dImportWorkflow: TWO_STORY_ELASTIC_FRAME_VERSION,
@@ -328,6 +330,7 @@ export function buildAgentManifest(options = {}) {
       'listImportCandidates',
       'resolveImportCandidate',
       'confirmImport',
+      'rejectImport',
       'listProjectEvidence',
       'submitProjectEvidence',
       'getResultPostprocessing',
@@ -483,6 +486,7 @@ export function buildAgentManifest(options = {}) {
       'phase3CompletionAuditReview',
       'phase3EvidenceRegister',
       'phase3EvidenceClient',
+      'phase3ImportAgentState',
       'steelMemberReviewSchedule',
       'connectionFoundationPreliminaryReview',
       'memberDesignTraceMatrix',
