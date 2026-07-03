@@ -81,3 +81,10 @@ S1~S12 체크리스트 전수 확인 표를 SECURITY 문서에 기입. TD 레지
 - `fileStore.withLock()` is now reusable for read-modify-write critical sections.
 - `userStore.verifyCredentials()` serializes failed-login counter updates for each `users.json`.
 - `tests/p3-auth.mjs` now covers 10 concurrent failed logins and verifies lockout is not bypassed.
+
+2026-07-03 P4-T25 / TD-06:
+
+- Added `server/store/lockfile.mjs` with `data/server.lock` PID, timestamp, and heartbeat ownership.
+- `server/main.mjs` now uses `startServer()` to acquire the data directory lock for real server startup.
+- Stale lock files are reclaimed; live duplicate startup fails with a clear data directory lock error.
+- Added `tests/p4-data-dir-lock.mjs` and wired it into `npm test` as `test:m93`.

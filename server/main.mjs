@@ -5,6 +5,7 @@ import { loadConfig } from './config.mjs';
 import { ApiError, createRouter, errorEnvelope, ok, readJsonBody, sendJson } from './router.mjs';
 import { createUserStore } from './store/userStore.mjs';
 import { createProjectStore } from './store/projectStore.mjs';
+import { acquireDataDirLock, DataDirLockError } from './store/lockfile.mjs';
 import { registerAuthRoutes } from './routes/auth.mjs';
 import { registerProjectRoutes } from './routes/projects.mjs';
 import { registerRevisionRoutes } from './routes/revisions.mjs';
@@ -52,6 +53,27 @@ export function createApp(overrides = {}) {
 
   const server = http.createServer((req, res) => handleRequest(req, res, router, config));
   return { server, config, ctx, router };
+}
+
+export async function startServer(overrides = {}) {
+  const app = createApp(overrides);
+  const lock = await acquireDataDirLock(app.config.dataDir);
+  let released = false;
+
+  async function releaseLock() {
+    if (released) return;
+    released = true;
+    await lock.release();
+  }
+
+  app.server.once('close', () => {
+    releaseLock().catch(() => {});
+  });
+  app.server.once('error', () => {
+    releaseLock().catch(() => {});
+  });
+
+  return { ...app, dataDirLock: lock, releaseDataDirLock: releaseLock };
 }
 
 async function handleRequest(req, res, router, config) {
@@ -123,8 +145,20 @@ function isMain() {
 }
 
 if (isMain()) {
-  const { server, config } = createApp();
-  server.listen(config.port, config.host, () => {
-    console.log(`S-Structures server: http://${config.host}:${config.port}/`);
-  });
+  try {
+    const app = await startServer();
+    app.server.listen(app.config.port, app.config.host, () => {
+      console.log(`S-Structures server: http://${app.config.host}:${app.config.port}/`);
+    });
+    app.server.on('error', (error) => {
+      throw error;
+    });
+  } catch (error) {
+    if (error instanceof DataDirLockError || error?.code === 'EADDRINUSE') {
+      console.error(error.message);
+      process.exitCode = 1;
+    } else {
+      throw error;
+    }
+  }
 }
