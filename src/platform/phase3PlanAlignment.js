@@ -136,7 +136,7 @@ const SERVER_ENDPOINTS = [
   endpoint('GET', '/api/meta', 'public', 'server/main.mjs'),
 ];
 
-const ERROR_CODES = ['UNAUTHORIZED', 'FORBIDDEN', 'NOT_FOUND', 'VALIDATION', 'CONFLICT', 'PAYLOAD_TOO_LARGE', 'RATE_LIMITED', 'INTERNAL'];
+const ERROR_CODES = ['UNAUTHORIZED', 'FORBIDDEN', 'NOT_FOUND', 'VALIDATION', 'CONFLICT', 'PAYLOAD_TOO_LARGE', 'RATE_LIMITED', 'BAD_URI', 'INTERNAL'];
 
 const AUTH_CONTRACT = {
   password: {
@@ -344,7 +344,7 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
     MODULE_BOUNDARIES.length >= 5 &&
     FILE_ROUTING.length >= 8;
   const serverApiOk = SERVER_ENDPOINTS.length >= 31 &&
-    ERROR_CODES.length === 8 &&
+    ERROR_CODES.length === 9 &&
     AUTH_CONTRACT.projectRoles.length === 4 &&
     PERSISTENCE_CONTRACT.layers.length === 3;
   const frontendOk = FRONTEND_CONTRACT.routes.length === 7 &&

@@ -79,7 +79,7 @@ assert.equal(report.architecture.decisions.length, 10);
 assert.equal(report.architecture.ok, true);
 assert.equal(report.serverApi.ok, true);
 assert.equal(report.serverApi.endpoints.length, 31);
-assert.deepEqual(report.serverApi.errorEnvelope.codes, ['UNAUTHORIZED', 'FORBIDDEN', 'NOT_FOUND', 'VALIDATION', 'CONFLICT', 'PAYLOAD_TOO_LARGE', 'RATE_LIMITED', 'INTERNAL']);
+assert.deepEqual(report.serverApi.errorEnvelope.codes, ['UNAUTHORIZED', 'FORBIDDEN', 'NOT_FOUND', 'VALIDATION', 'CONFLICT', 'PAYLOAD_TOO_LARGE', 'RATE_LIMITED', 'BAD_URI', 'INTERNAL']);
 assert.equal(report.serverApi.auth.password.hash, 'node:crypto.scrypt');
 assert.equal(report.serverApi.auth.token.signature, 'HMAC-SHA256');
 assert.deepEqual(report.serverApi.auth.projectRoles.map((row) => row.id), ['owner', 'engineer', 'reviewer', 'viewer']);

@@ -18,7 +18,7 @@ milestones: P3-M1, P3-M2
 | 인증 | `Authorization: Bearer <token>` (`AUTH_ACCOUNT_PLAN.md`) |
 | 성공 | `{ ok: true, data: ... }` |
 | 오류 | `{ ok: false, error: { code, message, details? } }` + HTTP status |
-| 오류 코드 | `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `VALIDATION`, `CONFLICT`, `PAYLOAD_TOO_LARGE`, `RATE_LIMITED`, `INTERNAL` |
+| 오류 코드 | `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `VALIDATION`, `CONFLICT`, `PAYLOAD_TOO_LARGE`, `RATE_LIMITED`, `BAD_URI`, `INTERNAL` |
 | ID | `crypto.randomUUID()` |
 | 본문 제한 | JSON 20MB, 파일 업로드 500MB (설정 가능) |
 
