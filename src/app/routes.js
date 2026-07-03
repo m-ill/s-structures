@@ -1,3 +1,5 @@
+import { compileRoutePattern, matchCompiledRoute } from '../core/routePattern.js';
+
 export const ROUTES_VERSION = 'p3-app-routes-v1';
 
 export const ROUTE_TABLE = [
@@ -12,11 +14,7 @@ export const ROUTE_TABLE = [
 
 const COMPILED = ROUTE_TABLE.map((route) => ({
   ...route,
-  keys: route.pattern.split('/').filter((segment) => segment.startsWith(':')).map((segment) => segment.slice(1)),
-  regex: new RegExp(`^${route.pattern
-    .split('/')
-    .map((segment) => (segment.startsWith(':') ? '([^/]+)' : segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
-    .join('/')}$`),
+  compiled: compileRoutePattern(route.pattern),
 }));
 
 export function parseHash(hash) {
@@ -27,14 +25,9 @@ export function parseHash(hash) {
 export function matchRoute(hash) {
   const path = parseHash(hash);
   for (const route of COMPILED) {
-    const match = route.regex.exec(path);
-    if (!match) continue;
-    const params = {};
-    for (let index = 0; index < route.keys.length; index += 1) {
-      const decoded = safeDecode(match[index + 1]);
-      if (decoded == null) return null;
-      params[route.keys[index]] = decoded;
-    }
+    const params = matchCompiledRoute(route.compiled, path, { decode: safeDecode });
+    if (!params) continue;
+    if (Object.values(params).some((value) => value == null)) return null;
     return { name: route.name, params, path };
   }
   return null;

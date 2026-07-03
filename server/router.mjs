@@ -1,3 +1,5 @@
+import { compileRoutePattern, matchCompiledRoute } from '../src/core/routePattern.js';
+
 export class ApiError extends Error {
   constructor(status, code, message, details) {
     super(message);
@@ -14,22 +16,11 @@ export function createRouter() {
 
   function add(method, pattern, handler, options = {}) {
     const normalizedOptions = normalizeRouteOptions(options);
-    const keys = [];
-    const regexSource = pattern
-      .split('/')
-      .map((segment) => {
-        if (segment.startsWith(':')) {
-          keys.push(segment.slice(1));
-          return '([^/]+)';
-        }
-        return segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      })
-      .join('/');
+    const compiled = compileRoutePattern(pattern);
     routes.push({
       method,
       pattern,
-      regex: new RegExp(`^${regexSource}$`),
-      keys,
+      compiled,
       handler,
       bodyType: normalizedOptions.bodyType,
       auth: normalizedOptions.auth,
@@ -46,12 +37,8 @@ export function createRouter() {
     match(method, pathname) {
       for (const route of routes) {
         if (route.method !== method) continue;
-        const match = route.regex.exec(pathname);
-        if (!match) continue;
-        const params = {};
-        route.keys.forEach((key, index) => {
-          params[key] = decodePathSegment(match[index + 1]);
-        });
+        const params = matchCompiledRoute(route.compiled, pathname, { decode: decodePathSegment });
+        if (!params) continue;
         return { handler: route.handler, params, bodyType: route.bodyType, auth: route.auth, pattern: route.pattern };
       }
       return null;

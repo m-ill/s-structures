@@ -91,4 +91,11 @@ R3 — 스파이크로 선제 완화. iframe 방식이면 통합 리스크는 �
 - Added `tests/p4-shell-route-reentry.mjs` and `npm run test:m101` to prove modeler host is not duplicated.
 - Marked TD-07 fixed in `TECH_DEBT_REGISTER.md`.
 
+2026-07-03 P4-T36 common utilities:
+
+- Added `src/core/routePattern.js` and moved app/server route matching to the same compiler.
+- Moved viewer camera vector math to `src/core/vector.js` helpers.
+- Added `tests/p4-route-pattern-contract.mjs` and `npm run test:m102`.
+- Marked TD-10 and TD-11 fixed in `TECH_DEBT_REGISTER.md`.
+
 (완료 시 기입)

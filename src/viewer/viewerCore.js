@@ -1,3 +1,5 @@
+import { vcross, vdot, vnorm, vsub } from '../core/vector.js';
+
 export const VIEWER_CORE_VERSION = 'p3-viewer-core-v1';
 
 /**
@@ -27,14 +29,14 @@ export function orbitEye(target, distance, azimuthRadians, elevationRadians) {
 }
 
 export function lookAt(eye, target, up = [0, 1, 0]) {
-  const z = normalize(sub(eye, target));
-  const x = normalize(cross(up, z));
-  const y = cross(z, x);
+  const z = vnorm(vsub(eye, target));
+  const x = vnorm(vcross(up, z));
+  const y = vcross(z, x);
   return [
     x[0], y[0], z[0], 0,
     x[1], y[1], z[1], 0,
     x[2], y[2], z[2], 0,
-    -dot(x, eye), -dot(y, eye), -dot(z, eye), 1,
+    -vdot(x, eye), -vdot(y, eye), -vdot(z, eye), 1,
   ];
 }
 
@@ -64,7 +66,7 @@ export function transformPoint(mat, point) {
 /** Screen-space (NDC [-1,1]) to a world-space ray for element picking. */
 export function screenToRay(ndcX, ndcY, viewProjInverse, eye) {
   const far = transformPoint(viewProjInverse, [ndcX, ndcY, 1]);
-  return { origin: eye, direction: normalize(sub(far, eye)) };
+  return { origin: eye, direction: vnorm(vsub(far, eye)) };
 }
 
 export function createOrbitCamera(options = {}) {
@@ -97,15 +99,6 @@ export function createOrbitCamera(options = {}) {
   };
 }
 
-function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
-function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
-function cross(a, b) {
-  return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
-}
-function normalize(v) {
-  const len = Math.hypot(v[0], v[1], v[2]) || 1;
-  return [v[0] / len, v[1] / len, v[2] / len];
-}
 function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
 
 /**
