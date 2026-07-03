@@ -117,6 +117,7 @@
     "test:m98": "node tests/p4-perf-budget.mjs",
     "test:m99": "node tests/p4-scale-limits.mjs",
     "test:m100": "node tests/p4-modeler-save-flow.mjs",
+    "test:m101": "node tests/p4-shell-route-reentry.mjs",
     "test:p2s1": "node tests/p2-mvp-s1-baseline-contract.mjs",
     "test:p2s2": "node tests/p2-mvp-s2-validation-audit.mjs",
     "test:p2s3": "node tests/p2-mvp-s3-benchmark-gate.mjs",

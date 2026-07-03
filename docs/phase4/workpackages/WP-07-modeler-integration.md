@@ -85,4 +85,10 @@ R3 — 스파이크로 선제 완화. iframe 방식이면 통합 리스크는 �
 - Added project save status, a revisions shortcut, and lineage-warning banner support in the modeler host.
 - Added `tests/p4-modeler-save-flow.mjs` and `npm run test:m100` to prove save button/Ctrl+S creates server revisions.
 
+2026-07-03 P4-T35 route reentry guard:
+
+- Added shell routing reentry protection so state changes during mount schedule one deferred reroute instead of nested mounting.
+- Added `tests/p4-shell-route-reentry.mjs` and `npm run test:m101` to prove modeler host is not duplicated.
+- Marked TD-07 fixed in `TECH_DEBT_REGISTER.md`.
+
 (완료 시 기입)

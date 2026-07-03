@@ -45,6 +45,7 @@ try {
 
   window.location.hash = buildHash('modeler', { projectId });
   shell.start();
+  await waitFor(() => shell.getRoutingState().rerouteScheduled === false);
   assert.equal(mountPoint.querySelector('[data-role="modeler-save"]').disabled, false);
 
   const first = await shell.getCurrentView().saveProjectRevision();

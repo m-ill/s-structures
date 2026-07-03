@@ -26,6 +26,9 @@ export function createAppShell(options) {
   const { window, document, api, session, mountPoint, modelerBridgeFactory } = options;
   let current = null;
   let lastResult = null;
+  let routing = false;
+  let reroutePending = false;
+  let rerouteScheduled = false;
 
   function navigate(hash) {
     if (window.location.hash === hash) {
@@ -36,6 +39,21 @@ export function createAppShell(options) {
   }
 
   function route() {
+    if (routing) {
+      reroutePending = true;
+      scheduleReroute();
+      return lastResult;
+    }
+    routing = true;
+    try {
+      return routeNow();
+    } finally {
+      routing = false;
+      if (reroutePending) scheduleReroute();
+    }
+  }
+
+  function routeNow() {
     const match = matchRoute(window.location.hash) || { name: 'localModeler', params: {}, path: '/local/modeler' };
     const state = session.getState();
     const targetName = (!state.authenticated && !PUBLIC_ROUTES.has(match.name)) ? 'login' : match.name;
@@ -57,6 +75,18 @@ export function createAppShell(options) {
     return lastResult;
   }
 
+  function scheduleReroute() {
+    if (rerouteScheduled) return;
+    rerouteScheduled = true;
+    const defer = window.queueMicrotask || globalThis.queueMicrotask || ((callback) => Promise.resolve().then(callback));
+    defer(() => {
+      rerouteScheduled = false;
+      if (!reroutePending) return;
+      reroutePending = false;
+      route();
+    });
+  }
+
   window.addEventListener('hashchange', route);
   if (typeof session.onChange === 'function') {
     session.onChange(() => route());
@@ -75,6 +105,9 @@ export function createAppShell(options) {
     },
     navigate,
     getCurrentView() { return current; },
+    getRoutingState() {
+      return { routing, reroutePending, rerouteScheduled };
+    },
     dispose() {
       window.removeEventListener('hashchange', route);
     },
