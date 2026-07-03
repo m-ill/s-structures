@@ -30,12 +30,32 @@ function buildContract() {
     },
     readApis: manifest.readApis,
     executeActions: manifest.executeActions,
+    readWorkflows: {
+      phase3ImportReview: ['listImportCandidates', 'resolveImportCandidate', 'confirmImport', 'rejectImport'],
+      phase3EvidenceRegister: ['listProjectEvidence', 'submitProjectEvidence', 'getPhase3EvidenceRegister'],
+    },
     qaCommands: manifest.qaCommands,
     reviewGates: manifest.reviewGates,
     dataContracts: manifest.dataContracts,
-    modules: manifest.modules,
+    modules: Object.keys(manifest.modules),
+    moduleVersions: manifest.modules,
     limitations: manifest.limitations,
-    manualReferences: {
+    interpretationRules: unique([
+      ...manifest.interpretationRules,
+      'getPhase3PlanAlignment().status OK means implementation is aligned with the written plan; it does not mean production readiness.',
+      'getLaunchReadinessReport().productionReadiness.status must be checked before treating a launch report as final.',
+      'getLaunchReadinessReport().agentSafeStatus must be checked before final-use automation.',
+      'getLaunchReadinessReport().finalUseReview.requiredReviews lists the remaining accepted fields for final use.',
+      'getPhase3EvidenceRegister().summary.evidenceComplete true means the evidence register is complete for review; it does not mean final production approval.',
+      'submitProjectEvidence accepts only IDs listed by getPhase3EvidenceRegister().rows or a matching required evidence type label.',
+      'getPhase3OwnerSignoffReview().deploymentApprovalGroup lists owner sign-off review aliases.',
+      'summary.readyForAgentReview and related convenience flags must be interpreted through getCapabilities().reviewGates.',
+      'A readyDecision does not set the listed finalApprovalField.',
+      'Milestone review APIs expose exitCriteriaSummary; automated-exit-criteria-covered does not mean production approval.',
+      'Agents must inspect remainingValidation before advancing workflows.',
+    ]),
+    manualReferences: manifest.manualReferences,
+    phase4ManualReferences: {
       install: 'docs/user-manual/00-install.md',
       gettingStarted: 'docs/user-manual/01-getting-started.md',
       modeling: 'docs/user-manual/02-modeling-and-elastic-analysis.md',
@@ -50,4 +70,8 @@ function buildContract() {
       coverage: 'docs/phase4/DOCUMENTATION_COVERAGE.md',
     },
   };
+}
+
+function unique(values) {
+  return [...new Set(values)];
 }
