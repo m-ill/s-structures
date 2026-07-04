@@ -1,7 +1,7 @@
 import { FEATURE_CATALOG_VERSION, FEATURE_CATEGORIES } from './featureCatalog.js';
 import { findGuidePage, guidePageIdFromManualPage } from './guidePages.js';
 
-export const MANUAL_RENDER_VERSION = 'p4-manual-render-v2';
+export const MANUAL_RENDER_VERSION = 'p4-manual-render-v3';
 
 const STATUS_LABEL = {
   stable: { text: '정식', className: 'badge-stable' },
@@ -41,7 +41,7 @@ function renderGuideLink(manualPage) {
     return `<p class="manual-link">자세한 절차: <code>docs/user-manual/${escapeHtml(manualPage)}</code></p>`;
   }
   const page = findGuidePage(guideId);
-  return `<p class="manual-link">자세한 절차: <a href="./guide.html#${escapeHtml(guideId)}" data-guide-link="${escapeHtml(guideId)}">${escapeHtml(page.title)}</a></p>`;
+  return `<p class="manual-link">자세한 절차: <a href="#${escapeHtml(guideId)}" data-guide-link="${escapeHtml(guideId)}">${escapeHtml(page.title)}</a></p>`;
 }
 
 function matchesFilter(item, filter) {

@@ -98,13 +98,14 @@ const evil = renderFeatureArticle(
 );
 assert.ok(!evil.includes('<script>x</script>'), 'feature name must be HTML-escaped');
 
-// 6. manual.html 이 카탈로그/렌더러 모듈을 실제로 로드하는지
+// 6. 기능 설명서는 통합 도움말(help.html)로 서비스된다 — 구버전 주소는 리다이렉트
 const manualHtml = readFileSync(resolve('manual.html'), 'utf8');
-assert.match(manualHtml, /src\/platform\/featureCatalog\.js/);
-assert.match(manualHtml, /src\/platform\/manualRender\.js/);
-assert.match(manualHtml, /id="manualNav"/);
-assert.match(manualHtml, /id="manualContent"/);
-assert.match(manualHtml, /id="manualSearch"/);
+assert.match(manualHtml, /help\.html/, 'manual.html must redirect to help.html');
+const helpHtml = readFileSync(resolve('help.html'), 'utf8');
+for (const item of features) {
+  assert.ok(helpHtml.includes(`data-help-page="${item.id}"`), `help.html missing feature page: ${item.id}`);
+}
+assert.match(helpHtml, /id="helpSearch"/);
 
 console.log(JSON.stringify({
   ok: true,

@@ -1,114 +1,12 @@
 <!DOCTYPE html>
-<!--
-  S-Structures — 기능 설명서 (Feature Manual)
-  © 2026 단국대학교 허석재 박사 (mill@dankook.ac.kr). All rights reserved.
-  데이터 원본: src/platform/featureCatalog.js (기능 제어 키의 단일 출처)
--->
+<!-- 이 페이지는 help.html 로 통합되었다 (tools/build-help.mjs 생성). 기존 링크 호환용 리다이렉트. -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>S-Structures 기능 설명서</title>
-<style>
-:root{ --dku:#00467F; --dku2:#0A5CA8; --gold:#E8A11C; --panel:#f2f6fa; --line:#c9d7e4; --ink:#223; }
-*{ box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI','Malgun Gothic',sans-serif; }
-body{ background:#eef2f7; color:var(--ink); }
-header.app{ position:sticky; top:0; z-index:5; background:var(--dku); color:#fff; padding:10px 18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-header.app .logo{ font-weight:700; letter-spacing:.4px; }
-header.app .logo span{ color:var(--gold); }
-header.app input[type="search"]{ flex:1; min-width:220px; max-width:420px; padding:7px 10px; border:none; border-radius:6px; font-size:14px; }
-header.app .meta{ font-size:12px; opacity:.85; }
-header.app nav.tabs{ display:flex; gap:6px; }
-header.app nav.tabs a{ color:#d7e5f2; font-size:13px; text-decoration:none; padding:5px 12px; border-radius:6px; border:1px solid transparent; }
-header.app nav.tabs a.current{ background:var(--dku2); color:#fff; font-weight:600; }
-header.app nav.tabs a:not(.current){ border-color:rgba(255,255,255,.3); }
-header.app a.home{ color:#d7e5f2; font-size:13px; text-decoration:none; border:1px solid rgba(255,255,255,.35); padding:4px 10px; border-radius:6px; }
-.layout{ display:grid; grid-template-columns:270px 1fr; gap:0; min-height:calc(100vh - 52px); }
-nav.sidebar{ background:var(--panel); border-right:1px solid var(--line); padding:14px 12px 40px; overflow-y:auto; position:sticky; top:52px; height:calc(100vh - 52px); }
-nav.sidebar h3{ font-size:13px; margin:14px 0 4px; }
-nav.sidebar h3 a{ color:var(--dku); text-decoration:none; }
-nav.sidebar ul{ list-style:none; }
-nav.sidebar li a{ display:block; padding:3px 8px; font-size:13px; color:#345; text-decoration:none; border-radius:5px; }
-nav.sidebar li a:hover{ background:#e2ecf5; }
-nav.sidebar li a.active{ background:var(--dku2); color:#fff; }
-main.content{ padding:26px 34px 80px; max-width:900px; }
-section.category{ margin-bottom:38px; }
-section.category > h1{ font-size:22px; color:var(--dku); border-bottom:2px solid var(--dku); padding-bottom:6px; margin-bottom:6px; }
-.category-summary{ color:#456; font-size:13.5px; margin-bottom:18px; }
-article.feature{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:16px; scroll-margin-top:70px; }
-article.feature .crumb{ font-size:11.5px; color:#789; }
-article.feature h2{ font-size:17px; margin:2px 0 4px; }
-article.feature .summary{ color:#345; font-size:13.5px; margin-bottom:10px; }
-article.feature .description{ font-size:13.5px; line-height:1.65; margin-bottom:8px; }
-article.feature h4{ font-size:13px; color:var(--dku); margin:12px 0 4px; }
-article.feature ol, article.feature ul.limits{ padding-left:20px; font-size:13px; line-height:1.7; }
-.api-list code{ display:inline-block; background:#eef4fa; border:1px solid var(--line); border-radius:4px; padding:1px 6px; margin:2px 3px 2px 0; font-size:12px; }
-.manual-link{ font-size:12.5px; color:#567; margin-top:8px; }
-.badge{ font-size:11px; padding:2px 8px; border-radius:10px; vertical-align:middle; font-weight:600; }
-.badge-stable{ background:#e2f3e7; color:#1c7a3d; }
-.badge-preliminary{ background:#fdf1dc; color:#9c6a08; }
-footer.control-key{ margin-top:12px; padding-top:8px; border-top:1px dashed var(--line); font-size:12px; color:#678; }
-footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-radius:4px; padding:1px 6px; }
-.nav-empty{ font-size:13px; color:#789; padding:8px; }
-@media print{
-  header.app, nav.sidebar{ display:none; }
-  .layout{ display:block; }
-  article.feature{ break-inside:avoid; border-color:#bbb; }
-}
-@media (max-width:760px){
-  .layout{ grid-template-columns:1fr; }
-  nav.sidebar{ position:static; height:auto; max-height:280px; }
-}
-</style>
+<title>도움말로 이동 중…</title>
+<script>location.replace('./help.html' + location.hash);</script>
 </head>
 <body>
-<header class="app">
-  <div class="logo">S-<span>Structures</span> 도움말</div>
-  <nav class="tabs">
-    <a href="./guide.html">사용 안내서</a>
-    <a class="current" href="./manual.html">기능 설명서</a>
-  </nav>
-  <input id="manualSearch" type="search" placeholder="기능·액션·API 검색 (예: pushover, 스프링, addLoad)">
-  <div class="meta" id="manualMeta"></div>
-  <a class="home" href="./app.html">앱으로</a>
-</header>
-<div class="layout">
-  <nav class="sidebar" id="manualNav" aria-label="기능 목차"></nav>
-  <main class="content" id="manualContent"></main>
-</div>
-<script type="module">
-import { FEATURE_CATEGORIES } from './src/platform/featureCatalog.js';
-import { renderManualBody, renderManualNav, renderManualMeta } from './src/platform/manualRender.js';
-
-const nav = document.getElementById('manualNav');
-const content = document.getElementById('manualContent');
-const search = document.getElementById('manualSearch');
-const meta = document.getElementById('manualMeta');
-
-content.innerHTML = renderManualBody(FEATURE_CATEGORIES);
-meta.textContent = renderManualMeta(FEATURE_CATEGORIES);
-
-function refreshNav() {
-  nav.innerHTML = renderManualNav(FEATURE_CATEGORIES, search.value || '');
-  highlightActive();
-}
-
-function highlightActive() {
-  const id = decodeURIComponent((location.hash || '').slice(1));
-  for (const link of nav.querySelectorAll('a[data-feature-link]')) {
-    link.classList.toggle('active', link.getAttribute('data-feature-link') === id);
-  }
-}
-
-search.addEventListener('input', refreshNav);
-window.addEventListener('hashchange', highlightActive);
-refreshNav();
-
-// 외부(앱/에이전트)에서 특정 기능 페이지로 딥링크: manual.html#<feature-id>
-if (location.hash) {
-  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  if (target) target.scrollIntoView();
-}
-</script>
+<p>도움말이 통합되었습니다. 자동 이동하지 않으면 <a href="./help.html">여기</a>를 여세요.</p>
 </body>
 </html>

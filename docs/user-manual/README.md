@@ -6,14 +6,20 @@ This folder is the user-facing and AI-readable manual set for the current
 pre-beta product. Development milestone notes stay outside this folder; this
 folder explains how to operate the program as it exists now.
 
-## Feature Reference (HTML)
+## Unified Help (HTML)
 
-`/manual.html` is the categorized feature reference for the whole program —
-13 categories, 75 feature entries, searchable, with deep links
-(`manual.html#<feature-id>`). It renders `src/platform/featureCatalog.js`,
-which is also the single source of feature-control keys (`feature.<id>`)
-for future feature toggling. Every agent execute action and read API is
-mapped to a feature entry, enforced by `tests/p4-feature-manual.mjs`.
+`/help.html` is the unified, self-contained help viewer: a collapsible
+tree menu with two sections — 사용 안내서 (this folder's markdown pages,
+pre-rendered) and 기능 설명서 (13 categories / 75 feature entries from
+`src/platform/featureCatalog.js`, the single source of feature-control
+keys `feature.<id>`). All content is embedded at build time, so it also
+opens by double-clicking the file (no server needed). Deep links:
+`help.html#<page-or-feature-id>`. Legacy `manual.html` / `guide.html`
+redirect here.
+
+Regenerate after editing manuals or the catalog: `npm run build:help`.
+Sync and coverage are enforced by `tests/p4-user-guide.mjs` and
+`tests/p4-feature-manual.mjs`.
 
 ## Manual Map
 
