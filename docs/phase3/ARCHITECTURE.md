@@ -83,7 +83,7 @@ human-in-loop 확정 후에만 `modelFactory`를 거쳐 실제 model이 된다. 
 ## Directory Layout (Target)
 
 ```text
-s-structures-review/
+S-Structures-main/
   index.html            # 모델러 (app shell이 로드)
   app.html              # (신규) 앱 shell 엔트리 — 로그인/프로젝트
   server/

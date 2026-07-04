@@ -24,12 +24,12 @@ M6의 목적은 M4 포락 결과를 사용해 RC 부재의 1차 설계검토 결
 
 ## 3. 주요 파일
 
-- [concrete.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/design/concrete.js>)
-- [steel.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/design/steel.js>)
-- [schema.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/core/schema.js>)
-- [migration.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/core/migration.js>)
-- [m3App.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3App.js>)
-- [m6-rc-design.mjs](</C:/Users/mill/Downloads/dcr/s-structures-review/tests/m6-rc-design.mjs>)
+- [concrete.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/design/concrete.js>)
+- [steel.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/design/steel.js>)
+- [schema.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/core/schema.js>)
+- [migration.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/core/migration.js>)
+- [m3App.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3App.js>)
+- [m6-rc-design.mjs](</C:/Users/mill/Downloads/dcr/S-Structures-main/tests/m6-rc-design.mjs>)
 
 ## 4. 설계검토 데이터 구조
 

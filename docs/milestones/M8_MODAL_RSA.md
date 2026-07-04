@@ -25,12 +25,12 @@ M8의 목적은 선형 3D 프레임 강성행렬 위에 질량행렬, 고유치�
 
 ## 3. 주요 파일
 
-- [modal.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/dynamics/modal.js>)
-- [linear3d.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/solver/linear3d.js>)
-- [schema.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/core/schema.js>)
-- [m3State.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3State.js>)
-- [m3App.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3App.js>)
-- [m8-modal-rsa.mjs](</C:/Users/mill/Downloads/dcr/s-structures-review/tests/m8-modal-rsa.mjs>)
+- [modal.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/dynamics/modal.js>)
+- [linear3d.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/solver/linear3d.js>)
+- [schema.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/core/schema.js>)
+- [m3State.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3State.js>)
+- [m3App.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3App.js>)
+- [m8-modal-rsa.mjs](</C:/Users/mill/Downloads/dcr/S-Structures-main/tests/m8-modal-rsa.mjs>)
 
 ## 4. 질량 모델
 

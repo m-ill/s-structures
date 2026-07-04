@@ -29,7 +29,7 @@
 - 변위: m, UI 표시는 mm 변환 가능
 - 응력/재료 입력: N/mm2를 내부 kN/m2로 변환
 
-검증용 benchmark 재료/단면은 [verification.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/examples/verification.js>)에 정의한다.
+검증용 benchmark 재료/단면은 [verification.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/examples/verification.js>)에 정의한다.
 
 ## 3. 허용오차
 
@@ -47,7 +47,7 @@
 
 ### 4.1 Solver 기본
 
-파일: [m2-linear3d.mjs](</C:/Users/mill/Downloads/dcr/s-structures-review/tests/m2-linear3d.mjs>)
+파일: [m2-linear3d.mjs](</C:/Users/mill/Downloads/dcr/S-Structures-main/tests/m2-linear3d.mjs>)
 
 - `solveLinear`: 2x2 선형방정식 해 검증
 - `localK12`: 12x12 요소강성행렬 대칭성 검증

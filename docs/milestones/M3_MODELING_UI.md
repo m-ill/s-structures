@@ -12,10 +12,10 @@ M3의 목적은 M0-M2에서 분리한 자체 해석 엔진을 실제 브라우�
 
 파일:
 
-- [m3.html](</C:/Users/mill/Downloads/dcr/s-structures-review/m3.html>)
-- [m3App.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3App.js>)
-- [m3State.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3State.js>)
-- [m3.css](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3.css>)
+- [m3.html](</C:/Users/mill/Downloads/dcr/S-Structures-main/m3.html>)
+- [m3App.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3App.js>)
+- [m3State.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3State.js>)
+- [m3.css](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3.css>)
 
 실행:
 
@@ -67,7 +67,7 @@ M3에서 구현한 기능:
 
 파일:
 
-- [m3-ui-state.mjs](</C:/Users/mill/Downloads/dcr/s-structures-review/tests/m3-ui-state.mjs>)
+- [m3-ui-state.mjs](</C:/Users/mill/Downloads/dcr/S-Structures-main/tests/m3-ui-state.mjs>)
 
 검증 내용:
 

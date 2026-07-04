@@ -105,7 +105,7 @@ The correct restart point is P3-M6. Existing implementation should be reviewed a
 
 | Item | Rule |
 | --- | --- |
-| Development repo | `s-structures-review/` is the active source repository |
+| Development repo | `S-Structures-main/` is the active source repository |
 | Generated data | use `data/`, `reports/`, or `output/` according to purpose |
 | Uploaded files | keep outside git-tracked source unless they are compact fixtures |
 | Large point clouds | store real samples outside git and keep deterministic generators/tests in repo |

@@ -23,11 +23,11 @@ M5의 목적은 M4에서 만든 조합/포락 결과를 설계 demand로 받아 
 
 ## 3. 주요 파일
 
-- [steel.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/design/steel.js>)
-- [linear3d.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/solver/linear3d.js>)
-- [m3App.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3App.js>)
-- [m3State.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3State.js>)
-- [m5-steel-design.mjs](</C:/Users/mill/Downloads/dcr/s-structures-review/tests/m5-steel-design.mjs>)
+- [steel.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/design/steel.js>)
+- [linear3d.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/solver/linear3d.js>)
+- [m3App.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3App.js>)
+- [m3State.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3State.js>)
+- [m5-steel-design.mjs](</C:/Users/mill/Downloads/dcr/S-Structures-main/tests/m5-steel-design.mjs>)
 
 ## 4. 설계검토 데이터 구조
 

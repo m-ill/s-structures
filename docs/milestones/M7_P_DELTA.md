@@ -24,12 +24,12 @@ M7의 목적은 선형 3D 프레임 해석 결과 위에 2차효과를 반영하
 
 ## 3. 주요 파일
 
-- [linear3d.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/solver/linear3d.js>)
-- [schema.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/core/schema.js>)
-- [m3State.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3State.js>)
-- [m3App.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3App.js>)
-- [m3.css](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3.css>)
-- [m7-pdelta.mjs](</C:/Users/mill/Downloads/dcr/s-structures-review/tests/m7-pdelta.mjs>)
+- [linear3d.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/solver/linear3d.js>)
+- [schema.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/core/schema.js>)
+- [m3State.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3State.js>)
+- [m3App.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3App.js>)
+- [m3.css](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3.css>)
+- [m7-pdelta.mjs](</C:/Users/mill/Downloads/dcr/S-Structures-main/tests/m7-pdelta.mjs>)
 
 ## 4. 해석 방식
 

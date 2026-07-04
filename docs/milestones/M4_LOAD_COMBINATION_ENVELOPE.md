@@ -24,11 +24,11 @@ M4의 목적은 선형 탄성해석 결과를 단일 하중케이스 수준에�
 
 ## 3. 주요 파일
 
-- [combinations.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/core/combinations.js>)
-- [linear3d.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/solver/linear3d.js>)
-- [m3State.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3State.js>)
-- [m3App.js](</C:/Users/mill/Downloads/dcr/s-structures-review/src/ui/m3App.js>)
-- [m4-combinations.mjs](</C:/Users/mill/Downloads/dcr/s-structures-review/tests/m4-combinations.mjs>)
+- [combinations.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/core/combinations.js>)
+- [linear3d.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/solver/linear3d.js>)
+- [m3State.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3State.js>)
+- [m3App.js](</C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/m3App.js>)
+- [m4-combinations.mjs](</C:/Users/mill/Downloads/dcr/S-Structures-main/tests/m4-combinations.mjs>)
 
 ## 4. 데이터 흐름
 
