@@ -1,6 +1,7 @@
 import { FEATURE_CATALOG_VERSION, FEATURE_CATEGORIES } from './featureCatalog.js';
+import { findGuidePage, guidePageIdFromManualPage } from './guidePages.js';
 
-export const MANUAL_RENDER_VERSION = 'p4-manual-render-v1';
+export const MANUAL_RENDER_VERSION = 'p4-manual-render-v2';
 
 const STATUS_LABEL = {
   stable: { text: '정식', className: 'badge-stable' },
@@ -32,6 +33,17 @@ export function renderManualNav(categories = FEATURE_CATEGORIES, filterText = ''
   return sections || '<p class="nav-empty">검색 결과가 없습니다.</p>';
 }
 
+/** manualPage(md 파일명)를 사용 안내서(guide.html) 링크로 변환. 미등록 파일은 경로 텍스트로 유지. */
+function renderGuideLink(manualPage) {
+  if (!manualPage) return '';
+  const guideId = guidePageIdFromManualPage(manualPage);
+  if (!guideId) {
+    return `<p class="manual-link">자세한 절차: <code>docs/user-manual/${escapeHtml(manualPage)}</code></p>`;
+  }
+  const page = findGuidePage(guideId);
+  return `<p class="manual-link">자세한 절차: <a href="./guide.html#${escapeHtml(guideId)}" data-guide-link="${escapeHtml(guideId)}">${escapeHtml(page.title)}</a></p>`;
+}
+
 function matchesFilter(item, filter) {
   if (!filter) return true;
   const haystack = [item.id, item.name, item.summary, item.description, ...(item.relatedActions || []), ...(item.relatedReadApis || [])]
@@ -54,9 +66,7 @@ export function renderFeatureArticle(item, category) {
   const readApis = item.relatedReadApis?.length
     ? `<h4>관련 읽기 API</h4><p class="api-list">${item.relatedReadApis.map((name) => `<code>${escapeHtml(name)}</code>`).join(' ')}</p>`
     : '';
-  const manualPage = item.manualPage
-    ? `<p class="manual-link">자세한 절차: <code>docs/user-manual/${escapeHtml(item.manualPage)}</code></p>`
-    : '';
+  const manualPage = renderGuideLink(item.manualPage);
   return `
     <article class="feature" id="${escapeHtml(item.id)}" data-feature="${escapeHtml(item.id)}">
       <header>

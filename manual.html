@@ -18,6 +18,10 @@ header.app .logo{ font-weight:700; letter-spacing:.4px; }
 header.app .logo span{ color:var(--gold); }
 header.app input[type="search"]{ flex:1; min-width:220px; max-width:420px; padding:7px 10px; border:none; border-radius:6px; font-size:14px; }
 header.app .meta{ font-size:12px; opacity:.85; }
+header.app nav.tabs{ display:flex; gap:6px; }
+header.app nav.tabs a{ color:#d7e5f2; font-size:13px; text-decoration:none; padding:5px 12px; border-radius:6px; border:1px solid transparent; }
+header.app nav.tabs a.current{ background:var(--dku2); color:#fff; font-weight:600; }
+header.app nav.tabs a:not(.current){ border-color:rgba(255,255,255,.3); }
 header.app a.home{ color:#d7e5f2; font-size:13px; text-decoration:none; border:1px solid rgba(255,255,255,.35); padding:4px 10px; border-radius:6px; }
 .layout{ display:grid; grid-template-columns:270px 1fr; gap:0; min-height:calc(100vh - 52px); }
 nav.sidebar{ background:var(--panel); border-right:1px solid var(--line); padding:14px 12px 40px; overflow-y:auto; position:sticky; top:52px; height:calc(100vh - 52px); }
@@ -59,7 +63,11 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
 </head>
 <body>
 <header class="app">
-  <div class="logo">S-<span>Structures</span> 기능 설명서</div>
+  <div class="logo">S-<span>Structures</span> 도움말</div>
+  <nav class="tabs">
+    <a href="./guide.html">사용 안내서</a>
+    <a class="current" href="./manual.html">기능 설명서</a>
+  </nav>
   <input id="manualSearch" type="search" placeholder="기능·액션·API 검색 (예: pushover, 스프링, addLoad)">
   <div class="meta" id="manualMeta"></div>
   <a class="home" href="./app.html">앱으로</a>
