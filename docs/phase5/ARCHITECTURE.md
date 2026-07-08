@@ -24,7 +24,7 @@ index.html (난독화 모델러, model()/reanalyze() 노출)
 
 ## 2. Analysis Case Data Model
 
-핵심 신규 스키마. `src/core/analysisCase.js`에 정의하고 model에 `analysisCases: []`를 추가, migration으로 구모델에 빈 배열을 채운다.
+핵심 신규 스키마. `src/core/analysisCase.js`에 정의하고 model에 `analysisCases: []`를 추가, migration으로 구모델에 빈 배열을 채운다. (이름의 "Analysis Case"는 우리 데이터 구조이며, OpenSees analysis object와는 개념적 유비일 뿐 그 포맷·엔진과 무관하다. 실행은 아래 표의 우리 엔진 함수가 담당한다.)
 
 ```js
 // model.analysisCases[i]

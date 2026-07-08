@@ -5,9 +5,9 @@ source: 오너 방향 확정 2026-07-04
 
 ## Product Statement
 
-S-Structures를 **구조 엔지니어가 화면에서 해석 종류를 고르고 실행하며 결과를 검토하는 전문 구조해석 프로그램**으로 완성한다. 참조 제품은 OpenSees(명시적 해석 도메인)와 Perform-3D(성능기반 내진 GUI). Phase 5는 신규 해석 이론을 추가하지 않고, 이미 구현된 엔진을 완전한 조작 UI로 노출한다.
+S-Structures를 **구조 엔지니어가 화면에서 해석 종류를 고르고 실행하며 결과를 검토하는 전문 구조해석 프로그램**으로 완성한다. 해석은 전적으로 **자체 엔진**(`src/solver`·`src/dynamics`·`src/nonlinear`, 외부 의존성 0)이 수행한다. OpenSees(명시적 해석 도메인)와 Perform-3D(성능기반 내진 GUI)는 **UI/워크플로를 어떻게 구성할지 참고하는 사례**이지 채택하는 엔진이 아니다. Phase 5는 신규 해석 이론을 추가하지 않고, 이미 구현된 자체 엔진을 완전한 조작 UI로 노출한다.
 
-## Benchmark 대응
+## UI Concept 대응 (엔진 채택 아님, 화면 구성 참고)
 
 | 개념 | OpenSees | Perform-3D | S-Structures Phase 5 |
 | --- | --- | --- | --- |
@@ -18,7 +18,7 @@ S-Structures를 **구조 엔지니어가 화면에서 해석 종류를 고르고
 | 성능 판정 | (사용자 후처리) | Limit State / Usage Ratio / Performance Level | 성능점·사용비·IO/LS/CP 판정 |
 | 하중 | pattern/timeSeries | Load Pattern / Ground Motion | 하중 케이스 매니저 + 지진파 |
 
-완전 명령형(OpenSees tcl)은 채택하지 않는다 — 오너가 "해석 실행 센터(GUI)" 방향을 확정. 단, 각 해석 케이스는 재현 가능한 데이터로 모델에 저장되어 스크립트/에이전트로도 동일 실행이 가능해야 한다.
+위 표의 왼쪽 두 열은 "이런 화면·개념이 있더라"는 참고일 뿐이다. 우리 해석 케이스가 [실행]을 누르면 호출하는 것은 전부 우리 엔진 함수(`analyzeModel`, `analyzeDynamics`, `runResponseSpectrum`, `estimateGlobalBucklingTrace`, `runPushover`, `runNewmarkNlth`)다. 완전 명령형(tcl 콘솔)은 채택하지 않는다 — 오너가 "해석 실행 센터(GUI)" 방향을 확정. 단, 각 해석 케이스는 재현 가능한 데이터로 모델에 저장되어 스크립트/에이전트로도 동일 실행이 가능해야 한다.
 
 ## Target Users
 

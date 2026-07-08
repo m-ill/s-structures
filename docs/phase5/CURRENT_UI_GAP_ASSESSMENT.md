@@ -3,6 +3,10 @@
 snapshot: 2026-07-04 (main HEAD 기준)
 status: 고정 스냅샷 — Phase 5 계획의 근거. 이후 변경은 ROADMAP/BACKLOG에 반영하고 이 문서는 수정하지 않는다.
 
+## 전제: 해석 엔진은 100% 자체 구현
+
+2026-07-04 확인: `package.json`에 dependencies 없음, `node_modules` 없음, OpenSees/OpenSeesPy/tcl/ABAQUS/SAP2000/ETABS/Perform-3D 참조 0건. 선형 풀이(`solveLinear`), 강성 조립(`assembleStiffness3D`), 반력 회복(`recoverReactions`), 스프링 지지(`applyNodeSprings`), 모달/RSA, corotational 비선형, Newmark NLTH가 `src/solver`(2,643줄)·`src/dynamics`(710줄)·`src/nonlinear`(2,728줄)에 직접 작성. **Phase 5는 이 자체 엔진을 UI로 노출하는 작업이며, 외부 엔진 도입이 아니다.**
+
 ## 진단 방법
 
 `src/platform/featureCatalog.js`의 기능별 `relatedActions`에서 native UI 경로(`native*` 접두 = index.html 리본/팔레트, `run*` = 실행 액션)를 가진 기능과, agent/자동 경로로만 접근되는 기능을 분리해 집계했다. UI DOM 구조는 `index.html`의 `#topbar`/`#subbar`/`#palette`에서 직접 확인했다.
