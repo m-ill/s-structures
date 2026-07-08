@@ -1,6 +1,6 @@
 # S-Structures Documentation Index
 
-documentationVersion: 2026-07-03-phase4-prep
+documentationVersion: 2026-07-04-phase5-prep
 
 이 폴더는 Phase 2 개발부터 문서가 코드, 산출물, 임시 패키지와 섞이지 않도록 용도별로 나눈다. 새 문서를 추가할 때는 먼저 아래 분류 중 하나를 고른다.
 
@@ -9,8 +9,9 @@ documentationVersion: 2026-07-03-phase4-prep
 | 폴더 | 용도 | 작성 규칙 |
 | --- | --- | --- |
 | `user-manual/` | 사용자와 AI agent가 현재 프로그램을 사용하는 방법 | 현재 동작 기준만 작성. 오래된 마일스톤 설명은 넣지 않음 |
-| `phase4/` | 현재 active 개발 계획 (제품 완성: 실증, 강화, 출시) | active planning, 작업 패키지(workpackages/), 기술부채 관리 |
-| `phase3/` | Phase 3(전 기능 구현, preliminary 수준 완료) 계획 기록 | 구현 완료. 참조용 유지, 신규 계획은 phase4에 작성 |
+| `phase5/` | 현재 active 개발 계획 (전문 해석 UI 완성: 해석센터·하중·비선형·결과) | active planning, 세부 기능명세(specs/), 작업 패키지 |
+| `phase4/` | Phase 4(제품 완성: 실증·강화·출시) 계획 기록 | pre-beta 완료. 실증 WP 잔여, 참조용 유지 |
+| `phase3/` | Phase 3(전 기능 구현, preliminary 수준 완료) 계획 기록 | 구현 완료. 참조용 유지 |
 | `phase2/` | Phase 2(탄성 실무 검토 MVP, 완료) 계획 기록 | MVP 완료. 참조용 유지 |
 | `product/` | PRD/TRD 같은 제품 요구사항과 기술 요구사항 | 큰 방향성이 바뀔 때만 수정 |
 | `planning/` | UI 재구성, 리팩토링, 생성물 관리 같은 계획 문서 | 계획 단위 문서. 완료 후 archive 성격 유지 |
