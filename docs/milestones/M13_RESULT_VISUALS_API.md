@@ -81,7 +81,7 @@ window.SStructuresAgent.getSnapshot().resultVisuals
 - `reactions`: 지점 반력 벡터와 모멘트 벡터
 - `loads`: 절점/부재 하중 glyph 생성용 데이터
 - `modal.modes`: 모드별 변형 형상 좌표
-- `pDelta.series`: 조합별 반복 단계, 증폭률, 잔차
+- `pDelta.series`: 조합별 Global P-Delta response curve. 각 점은 iteration이 아니라 load factor `λ`별 수렴 결과이며, 1차/2차 roof displacement와 base shear를 포함한다.
 
 ## 5. Result ID 규칙
 
@@ -119,7 +119,7 @@ ratio > 1      red
 
 ## 8. 완료 기준
 
-- `getResultVisuals()`로 변형 형상, 부재 색상, 반력, 하중, 모달 형상, P-Delta series를 읽을 수 있다.
+- `getResultVisuals()`로 변형 형상, 부재 색상, 반력, 하중, 모달 형상, P-Delta load-step series를 읽을 수 있다.
 - M13 테스트에서 결과 데이터 개수와 변형 좌표를 검증한다.
 - M0-M13 전체 테스트 묶음에 포함된다.
 - 금지 문자열 검사를 통과한다.

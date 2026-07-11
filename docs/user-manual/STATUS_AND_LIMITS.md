@@ -35,6 +35,23 @@
 | 풍/지진 하중 | 등가 하중 산정 trace, 세부 code procedure는 미완 |
 | pushover | 화면/API와 curve/hinge state tracking은 있으나 정식 비선형 반복해석은 아님 |
 
+## Phase 7 Elastic Workflow
+
+Phase 7의 M0~M11 코드 구현은 완료되었고 릴리스 상태는 `candidate`다. 세부 구현·검증 근거는 `docs/phase7/IMPLEMENTATION_STATUS.md`, 코드리뷰 결과는 `docs/phase7/CODEBASE_REVIEW.md`를 따른다.
+
+| 영역 | 현재 상태 |
+| --- | --- |
+| 재료·단면 | 현행 KS designation과 legacy alias 분리, SQUARE/RECT/CIRC/H/BOX/PIPE/CUSTOM 지원 |
+| 모델링 | 층·그리드 생성, 역할/단면 배치 지정, transaction, 이동·크기조절·도킹 패널 지원 |
+| 하중 | load case/mass source/design basis 분리, KDS 41 12 00:2022 규칙 팩 preview/apply/audit 지원 |
+| 선형 정적 | 6-resultant 힘·모멘트 평형과 해석기준별 허용치 추적 |
+| Direct P-Delta | 조합별 `Kt = Ke + Kg(N)` 경로와 결과 그래프/표 지원; 미지원 release는 차단 |
+| 모달/RSA | 모드 정규화, CQC, 밑면전단력, 층·부재 응답; condensation 실패는 차단 |
+| sparse/좌굴 | sparse LDLT 자격검사, 검증된 정적 preload 기반 탄성 프레임 좌굴 |
+| 실행 기록 | 모델 hash, 해석기준 snapshot, verification evidence가 있는 model-bound run record |
+
+THA는 계속 `preliminary`이며 설계 전달이 차단된다. 실제 shell FEM, 비탄성 좌굴, 미지원 요소가 섞인 Direct P-Delta/좌굴은 지원 결과로 승격하지 않는다. 프로젝트 최종 사용에는 담당기술자의 설계조건 승인과 독립 검산이 필요하다.
+
 ## Not Yet Complete
 
 | 미완 항목 | 필요한 다음 단계 |
@@ -86,3 +103,37 @@ Current automated scale evidence is recorded in `reports/validation-evidence/sca
 - Long-run validation required: about 4,000 members before production use.
 
 The 2,000 and 4,000 member rows are generated for scale evidence, but full solver validation is intentionally deferred to a longer dedicated run. `reports/validation-evidence/perf-budget.json` records the current automated performance budget; point-cloud and viewer rows are proxy measurements until owner-provided field files and browser frame captures are available.
+
+## Phase 5 Release Gate
+
+Phase 5 adds a case-based analysis workflow on top of the existing in-house solver. The release-gate coverage is:
+
+| Area | Current status | Evidence |
+| --- | --- | --- |
+| Analysis Center | Available | `tests/p5-analysis-center.mjs`, `tests/p5-release-gate.mjs` |
+| Load conditions and KDS load basis | Available / preliminary where code procedure is simplified | `tests/p5-load-conditions.mjs`, `tests/p5-load-case-kds-mass.mjs` |
+| Hinge assignment, pushover, and NLTH | Preliminary but visible in UI and reports | `tests/p5-hinge-assignment.mjs`, `tests/p5-pushover-workflow.mjs`, `tests/p5-nonlinear-performance-nlth.mjs` |
+| Result switching, ratio legend, and charts | Available for current result handles | `tests/p5-result-case-views.mjs`, `tests/p5-result-charts-ratio.mjs` |
+| Calculation package inclusion | Available, including not-run case rows | `tests/p5-calculation-package.mjs` |
+
+Important limits remain unchanged:
+
+- Response-spectrum output currently emphasizes modal/combined displacement and participating-mass traces; full code-level story force postprocessing remains review-required.
+- P-Delta has two explicitly separated paths: the legacy equivalent-load iteration remains labeled as an approximation, and Phase 6 adds a geometric-stiffness Direct Analysis path (`Kt = Ke + Kg(N)`, tension-positive axial convention) for second-order trace review.
+- Wall/slab/shell output is an equivalent frame/link model, not certified shell FEM. Reports and result APIs must show the equivalent-model warning and must not report slab local bending stress, wall-opening local stress, shell local design forces, punching shear, mesh stress contours, plate deflection design values, or collector/chord precision forces.
+- Pushover and NLTH are preliminary workflow traces. They are useful for UI and review workflows but are not final performance-based seismic design evidence without project-specific engineering validation.
+- Calculation packages expose unsupported or not-run checks instead of hiding them.
+- Agents should verify `getAnalysisCaseResult`, the calculation package, and this status page before treating Phase 5 results as submittal evidence.
+
+## Post-Phase 5 Final-Use Gate
+
+Phase 5 completion does not by itself approve production structural-office use. The next milestone is the final-use release review exposed as `getFinalUseReleaseReview()`.
+
+| Gate item | Required source |
+| --- | --- |
+| Practice validation | `getPhase3PracticeValidationReview().summary.productionReady` |
+| Evidence register | `getPhase3EvidenceRegister().summary.evidenceComplete` |
+| Owner sign-off | `getPhase3OwnerSignoffReview().summary.productionDeploymentApproved` |
+| Launch readiness | `getLaunchReadinessReport().agentSafeStatus === "PRODUCTION_APPROVED"` |
+
+Agents must treat `FINAL_USE_BLOCKED` as a hard stop for final-use automation. `FINAL_USE_APPROVED` is valid only when `summary.productionReady` is true and `summary.blockingReviews` is empty.

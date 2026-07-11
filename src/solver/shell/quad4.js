@@ -1,3 +1,5 @@
+import { attachEquivalentShellScope, sanitizeEquivalentShellResult } from './equivalentScope.js';
+
 export const SHELL_QUAD4_VERSION = 'p3-m12-shell-quad4-v1';
 
 export function buildQuad4ShellElement(element = {}) {
@@ -81,7 +83,7 @@ export function buildShellV1Trace(model = {}) {
   const rows = shells.map((shell) => buildQuad4ShellElement(shell));
   const patch = runShellPatchTest();
   const plate = estimateSimplySupportedPlateDeflection();
-  return {
+  const rawTrace = {
     version: SHELL_QUAD4_VERSION,
     status: 'available-preliminary',
     shellCount: rows.length,
@@ -91,6 +93,11 @@ export function buildShellV1Trace(model = {}) {
       'Shell v1 is exposed as an element contract and verification trace.',
       'Shell-to-frame assembly uses preliminary edge and diagonal membrane links; full shell finite-element assembly remains hardening.',
     ],
+  };
+  const sanitized = sanitizeEquivalentShellResult(rawTrace);
+  return {
+    ...attachEquivalentShellScope(sanitized.result, model, { forceActive: rows.length > 0 }),
+    forbiddenFieldGuard: sanitized.guard,
   };
 }
 

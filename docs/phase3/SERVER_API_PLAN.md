@@ -141,7 +141,7 @@ data/
 
 ## Static Serving
 
-`/` → `app.html` (shell), `/modeler` → `index.html`, `/src/*` → ESM 소스 그대로 서빙 (무빌드 유지). MIME 테이블은 기존 `tools/serve.mjs`에서 이관.
+`/` → `app.html` (shell), `/modeler` → `index.html`, `/src/*` → ESM 소스 그대로 서빙 (무빌드 유지). MIME 테이블과 정적 파일 라우팅은 `server/main.mjs`에서 관리한다.
 
 ## Server Structure
 

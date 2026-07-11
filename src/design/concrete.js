@@ -259,6 +259,9 @@ function concreteStrengthMpa(material) {
 }
 
 function isConcreteMember(member, material, section) {
+  const kind = String(material?.kind || material?.category || '').toLowerCase();
+  if (kind === 'concrete' || material?.strength?.concrete) return true;
+  if (kind === 'steel' || kind === 'timber' || material?.strength?.steel) return false;
   const text = `${material?.id || member.matId || ''} ${material?.name || ''}`.toLowerCase();
   return text.includes('concrete') || String(section?.type || '').toUpperCase() === 'RECT';
 }

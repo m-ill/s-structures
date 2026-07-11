@@ -3,11 +3,17 @@ import {
   SCHEMA_VERSION,
   defaultLoadCases,
   defaultLoadCombinations,
+  modernizeLegacyDefaultCombinations,
 } from './schema.js';
 import { normalizeUnits } from './units.js';
 import { normalizeUnitSystem } from './unitSystem.js';
 import { normalizeStories } from './storyModel.js';
 import { normalizeDiaphragms } from './diaphragmContract.js';
+import { normalizeAnalysisCases } from './analysisCase.js';
+import { normalizeAnalysisCriteria } from './analysisCriteria.js';
+import { normalizeDesignBasis, normalizeProjectSetup } from './projectSetup.js';
+import { normalizeSourceRegistry } from './sourceRegistry.js';
+import { stableStringify } from './stableHash.js';
 
 export function migrateModel(inputModel) {
   if (!inputModel) {
@@ -18,8 +24,21 @@ export function migrateModel(inputModel) {
     };
   }
 
+  if (typeof inputModel !== 'object' || Array.isArray(inputModel)) {
+    const error = new TypeError('Model migration input must be an object.');
+    error.code = 'MODEL_MIGRATION_INPUT_INVALID';
+    throw error;
+  }
+
   const source = clone(inputModel);
   const originalVersion = Number.isFinite(Number(source.schemaVersion)) ? Number(source.schemaVersion) : 1;
+  if (originalVersion > SCHEMA_VERSION) {
+    const error = new RangeError(`Model schemaVersion ${originalVersion} is newer than supported version ${SCHEMA_VERSION}.`);
+    error.code = 'FUTURE_SCHEMA_VERSION';
+    error.schemaVersion = originalVersion;
+    error.supportedSchemaVersion = SCHEMA_VERSION;
+    throw error;
+  }
   const migrations = [];
   const base = createModel();
   const units = normalizeUnits(source.units);
@@ -32,6 +51,13 @@ export function migrateModel(inputModel) {
   if (!Array.isArray(source.diaphragms)) {
     migrations.push({ from: 'missing', to: 'diaphragms', note: 'Created empty diaphragm collection.' });
   }
+  if (!source.analysisCriteria) {
+    migrations.push({ from: 'missing', to: 'analysisCriteria', note: 'Created analysis criteria registry settings.' });
+  }
+  if (!Array.isArray(source.massSources)) migrations.push({ from: 'missing', to: 'massSources', note: 'Created empty mass-source collection.' });
+  if (!Array.isArray(source.sourceRegistry)) migrations.push({ from: 'missing', to: 'sourceRegistry', note: 'Created source registry.' });
+  if (!source.designBasis) migrations.push({ from: 'missing', to: 'designBasis', note: 'Created unconfigured design-basis contract.' });
+  if (!source.projectSetup) migrations.push({ from: 'missing', to: 'projectSetup', note: 'Marked legacy project setup for review.' });
 
   let model = {
     ...base,
@@ -39,8 +65,12 @@ export function migrateModel(inputModel) {
     schemaVersion: SCHEMA_VERSION,
     units,
     unitSystem: normalizeUnitSystem(source.unitSystem, units),
-    materials: Array.isArray(source.materials) && source.materials.length ? source.materials.map((item) => ({ ...item })) : base.materials,
-    sections: Array.isArray(source.sections) && source.sections.length ? source.sections.map((item) => ({ ...item })) : base.sections,
+    materials: Array.isArray(source.materials)
+      ? source.materials.map((item) => normalizeLegacyLibraryRecord(item, originalVersion))
+      : base.materials,
+    sections: Array.isArray(source.sections)
+      ? source.sections.map((item) => normalizeLegacyLibraryRecord(item, originalVersion))
+      : base.sections,
     nodes: Array.isArray(source.nodes) ? source.nodes.map((node) => ({ ...node, z: Number(node.z || 0) })) : [],
     members: Array.isArray(source.members) ? source.members.map(normalizeMember) : [],
     loads: Array.isArray(source.loads) ? source.loads.map((load) => ({ ...load })) : [],
@@ -48,10 +78,16 @@ export function migrateModel(inputModel) {
     diaphragms: normalizeDiaphragms(source.diaphragms),
     loadCases: Array.isArray(source.loadCases) ? source.loadCases.map((loadCase) => ({ ...loadCase })) : [],
     loadCombinations: Array.isArray(source.loadCombinations) ? source.loadCombinations.map((combo) => ({ ...combo })) : [],
+    massSources: Array.isArray(source.massSources) ? source.massSources.map((item) => ({ ...item })) : [],
+    sourceRegistry: normalizeSourceRegistry(source.sourceRegistry),
+    designBasis: normalizeDesignBasis(source.designBasis),
+    projectSetup: normalizeProjectSetup(source.projectSetup, originalVersion < SCHEMA_VERSION ? 'legacy-unreviewed' : 'load-setup-required'),
+    analysisCases: normalizeAnalysisCases(source.analysisCases),
     analysisSettings: {
       ...base.analysisSettings,
       ...(source.analysisSettings || {}),
     },
+    analysisCriteria: normalizeAnalysisCriteria(source.analysisCriteria || base.analysisCriteria),
     designParams: normalizeDesignParams(base.designParams, source.designParams),
     designSettings: {
       ...base.designSettings,
@@ -62,19 +98,29 @@ export function migrateModel(inputModel) {
   if (originalVersion !== SCHEMA_VERSION) {
     migrations.push({ from: originalVersion, to: SCHEMA_VERSION, note: 'Normalized model to the current schema.' });
   }
+  if (!Array.isArray(source.analysisCases)) {
+    migrations.push({ from: 'missing', to: 'analysisCases', note: 'Created empty analysis case collection.' });
+  }
 
-  model = normalizeLoadCasesAndCombinations(model, base, migrations);
+  model = normalizeLoadCasesAndCombinations(model, base, migrations, originalVersion, {
+    loadCases: Array.isArray(source.loadCases),
+    loadCombinations: Array.isArray(source.loadCombinations),
+  });
   model.loads = model.loads.map((load) => normalizeLoad(load, model));
   model = normalizeStories(model);
 
   return {
     model,
     migrations,
-    changed: migrations.length > 0 || originalVersion !== SCHEMA_VERSION,
+    changed: stableStringify(source) !== stableStringify(model),
   };
 }
 
 export function migrateToV3(inputModel) {
+  return migrateModel(inputModel).model;
+}
+
+export function migrateToCurrent(inputModel) {
   return migrateModel(inputModel).model;
 }
 
@@ -91,6 +137,12 @@ function normalizeMember(member) {
   };
   if (normalized.releases.i === 'pin') normalized.rel1 = 'pin';
   if (normalized.releases.j === 'pin') normalized.rel2 = 'pin';
+  return normalized;
+}
+
+function normalizeLegacyLibraryRecord(record, originalVersion) {
+  const normalized = { ...record };
+  if (originalVersion < SCHEMA_VERSION && normalized.version == null) normalized.version = 1;
   return normalized;
 }
 
@@ -119,9 +171,9 @@ function normalizeDesignParams(defaults, designParams) {
   };
 }
 
-function normalizeLoadCasesAndCombinations(model, base, migrations) {
-  const isLegacy = !Array.isArray(model.loadCases) || model.loadCases.length === 0;
-  model.loadCases = Array.isArray(model.loadCases) && model.loadCases.length
+function normalizeLoadCasesAndCombinations(model, base, migrations, originalVersion, explicit = {}) {
+  const isLegacy = !explicit.loadCases;
+  model.loadCases = explicit.loadCases
     ? model.loadCases.map((loadCase) => ({ ...loadCase }))
     : model.loads.length
       ? [{ id: 'LC1', name: 'Default load', type: 'other' }]
@@ -141,22 +193,38 @@ function normalizeLoadCasesAndCombinations(model, base, migrations) {
     }
   }
 
-  if (Array.isArray(model.loadCombinations) && model.loadCombinations.length) {
-    model.loadCombinations = model.loadCombinations.map((combo) => ({ ...combo, factors: { ...(combo.factors || {}) } }));
-  } else {
-    const factors = {};
-    model.loadCases.forEach((loadCase) => {
-      factors[loadCase.id] = 1;
+  if (model.loadCombinations.length) {
+    model.loadCombinations = model.loadCombinations.map((combo) => normalizeLegacyCombination(combo, originalVersion));
+    const modernization = modernizeLegacyDefaultCombinations(model.loadCombinations, model.loadCases, {
+      assumeUnmarkedLegacy: originalVersion < SCHEMA_VERSION,
     });
-    model.loadCombinations = defaultLoadCombinations().map((combo, index) => ({
-      ...combo,
-      id: index === 0 ? 'CO1' : 'SLS1',
-      factors: { ...factors },
-    }));
+    if (modernization.changed) {
+      model.loadCombinations = modernization.combinations;
+      migrations.push({
+        from: modernization.removedIds.join(',') || 'legacy-default-combinations',
+        to: modernization.addedIds.join(',') || 'service-baseline',
+        note: 'Replaced obsolete default strength combinations with current KDS project-review candidates.',
+      });
+    }
+  } else if (!explicit.loadCombinations && originalVersion < SCHEMA_VERSION) {
+    model.loadCombinations = defaultLoadCombinations().filter((combo) => Object.keys(combo.factors || {}).every((id) => caseIds.has(id)));
     if (base.loadCombinations !== model.loadCombinations) {
-      migrations.push({ from: 'missing', to: 'loadCombinations', note: 'Created default load combinations.' });
+      migrations.push({ from: 'missing', to: 'loadCombinations', note: 'Created compatible KDS review candidates; incompatible legacy unity combinations were not synthesized.' });
     }
   }
 
   return model;
+}
+
+function normalizeLegacyCombination(combo, originalVersion) {
+  const normalized = { ...combo, factors: { ...(combo.factors || {}) } };
+  const knownLegacyDefault = ['CO1', 'SLS1'].includes(normalized.id)
+    && Number(normalized.factors.D) === 1
+    && Number(normalized.factors.L) === 1;
+  if (originalVersion < SCHEMA_VERSION && (knownLegacyDefault || !normalized.origin)) {
+    normalized.origin ||= 'legacy';
+    normalized.reviewStatus ||= 'legacy-unreviewed';
+    normalized.purpose ||= 'legacy-review';
+  }
+  return normalized;
 }

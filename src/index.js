@@ -1,6 +1,63 @@
-export { createModel, exportModel, migrateModel, migrateToV3, modelToJson, parseModelJson, validateModel } from './core/model.js';
+export { createModel, createPracticeModel, exportModel, migrateModel, migrateToCurrent, migrateToV3, modelToJson, parseModelJson, validateModel } from './core/model.js';
+export {
+  ANALYSIS_CRITERIA_PRESETS,
+  ANALYSIS_CRITERIA_VERSION,
+  ANALYSIS_CRITERIA_WARNING_CODES,
+  DEFAULT_CRITERIA_VALUES,
+  buildAnalysisCriteriaTrace,
+  defaultAnalysisCriteria,
+  listAnalysisCriteriaKeys,
+  normalizeAnalysisCriteria,
+  resolveAnalysisCriteria,
+  resolveCriterion,
+  validateAnalysisCriteria,
+} from './core/analysisCriteria.js';
 export { DEFAULT_UNITS, MATERIALS_CATALOG, SECTIONS_CATALOG, materialOf, sectionOf } from './core/catalogs.js';
-export { SCHEMA_NAME, SCHEMA_VERSION, ERROR_CODES, WARNING_CODES } from './core/schema.js';
+export { SCHEMA_NAME, SCHEMA_VERSION, ERROR_CODES, WARNING_CODES, LOAD_FAMILIES, defaultPracticeLoadCases, defaultPracticeLoadCombinations } from './core/schema.js';
+export {
+  PROJECT_SETUP_STATUSES,
+  PROJECT_SETUP_VERSION,
+  defaultDesignBasis,
+  defaultProjectSetup,
+  normalizeDesignBasis,
+  normalizeProjectSetup,
+} from './core/projectSetup.js';
+export {
+  PUBLICATION_STATUSES,
+  SOURCE_REGISTRY_VERSION,
+  SOURCE_VERIFICATION_STATUSES,
+  normalizeSourceRecord,
+  normalizeSourceRegistry,
+  sourceCanAutoApply,
+  validateSourceRecord,
+} from './core/sourceRegistry.js';
+export {
+  RESULT_DIMENSION_CONTRACT_VERSION,
+  RESULT_DIMENSIONS,
+  assertResultDimension,
+  dimensionedValue,
+  requireForceResult,
+} from './core/resultDimensions.js';
+export {
+  ANALYSIS_CASE_KINDS,
+  ANALYSIS_CASE_STATUSES,
+  ANALYSIS_CASE_VERSION,
+  createAnalysisCase,
+  defaultAnalysisCases,
+  markAnalysisCasesStale,
+  nextAnalysisCaseId,
+  normalizeAnalysisCase,
+  normalizeAnalysisCases,
+  validateAnalysisCases,
+} from './core/analysisCase.js';
+export {
+  ANALYSIS_RUNNER_VERSION,
+  analysisResultView,
+  normalizeAnalysisCaseSettings,
+  runAnalysisCase,
+  runAnalysisCases,
+  summarizeAnalysisResult,
+} from './ui/analysisRunners.js';
 export { SOLVER_UNIT_POLICY, normalizeUnits, validateUnits } from './core/units.js';
 export {
   UNIT_SYSTEM_VERSION,
@@ -64,13 +121,72 @@ export {
   analyzePDelta,
   analyzePDeltaCombinations,
   assembleStiffness3D,
+  buildPDeltaDesignSummary,
+  buildPDeltaLoadStepCurve,
   defaultCombos,
   localK12,
   makePDeltaLoads,
   makeEnvelope,
   memberAxes,
   solveLinear,
+  solveLinearDetailed,
 } from './solver/linear3d.js';
+export {
+  SPARSE_MATRIX_VERSION,
+  cscMatVec,
+  cscToDense,
+  denseToCsc,
+  denseToTriplets,
+  sparseStats,
+  tripletsToCsc,
+} from './solver/sparse/cscMatrix.js';
+export {
+  SPARSE_SYMBOLIC_VERSION,
+  symbolicFactor,
+} from './solver/sparse/symbolicFactor.js';
+export {
+  SPARSE_LDLT_VERSION,
+  factorLdlt,
+  solveLdlt,
+} from './solver/sparse/ldlt.js';
+export {
+  SPARSE_SOLVE_VERSION,
+  solveSparseCg,
+  solveSparseLinear,
+  solveSparseMultiple,
+} from './solver/sparse/solveSparse.js';
+export {
+  SPARSE_DIAGNOSTICS_VERSION,
+  buildSolverWarningDiagnostics,
+  estimateCondition,
+  matrixSymmetryError,
+  residualNorm,
+} from './solver/sparse/diagnostics.js';
+export {
+  GEOMETRIC_STIFFNESS_VERSION,
+  assembleGlobalGeometricStiffness,
+  axialForcesFromDisplacements,
+  averageMemberAxialForce,
+  localCompressionGeometricStiffness12,
+  localTangentGeometricStiffness12,
+} from './solver/geometricStiffness.js';
+export {
+  PDELTA_TANGENT_STIFFNESS_VERSION,
+  buildPDeltaTangentStiffness,
+} from './solver/pdelta/tangentStiffness.js';
+export {
+  PDELTA_SECOND_ORDER_VERSION,
+  runSecondOrderPDelta,
+} from './solver/pdelta/secondOrder.js';
+export {
+  PDELTA_SPLIT_VERSION,
+  buildPDeltaSplitTrace,
+} from './solver/pdelta/split.js';
+export {
+  NONLINEAR_COMBO_GUARD_VERSION,
+  guardNonlinearCombinationSuperposition,
+  nonlinearCombinationFeatures,
+} from './solver/nonlinearCombo.js';
 export { ANALYSIS_AUDIT_VERSION, buildAnalysisAudit } from './solver/analysisAudit.js';
 export {
   checkSteelMember,
@@ -85,6 +201,7 @@ export {
 } from './design/concrete.js';
 export {
   applyDesignBasisLoads,
+  buildDesignBasisValueMetadata,
   buildDesignBasisInputState,
   buildEccentricStoryLoadDistribution,
   buildLoadDerivationTrace,
@@ -93,6 +210,7 @@ export {
   DESIGN_BASIS_NUMERIC_FIELDS,
   estimateModelLoads,
   getDesignBasisInputFields,
+  normalizeDesignBasisFamilyStates,
   DEFAULT_DESIGN_BASIS,
   LOAD_ESTIMATION_VERSION,
   LOAD_DERIVATION_TRACE_VERSION,
@@ -100,6 +218,57 @@ export {
   STORY_ECCENTRIC_DISTRIBUTION_VERSION,
   setDesignBasisInput,
 } from './design/loadEstimation.js';
+export {
+  DESIGN_BASIS_CHANGE_SET_VERSION,
+  DESIGN_BASIS_GENERATOR_SOURCE_ID,
+  applyDesignBasisChangeSet,
+  buildDesignBasisLoadCases,
+  buildDesignBasisMassSource,
+  previewDesignBasisChangeSet,
+} from './design/designBasisChangeSet.js';
+export {
+  LOAD_CASE_METADATA_VERSION,
+  LOAD_FAMILIES as LOAD_CASE_FAMILY_IDS,
+  LOAD_FAMILY_DEFINITIONS,
+  LOAD_INPUT_STATES,
+  getLoadFamilyDefinition,
+  inferLoadCaseFamily,
+  loadCaseGeneratedKey,
+  loadCaseLogicalKey,
+  normalizeDirection,
+  normalizeLoadCaseMetadata,
+  normalizeLoadFamily,
+  normalizeLoadInputState,
+  normalizeSign,
+} from './loads/loadCaseMetadata.js';
+export {
+  MASS_SOURCE_CHANGE_SET_VERSION,
+  MASS_SOURCE_DEFINITION_VERSION,
+  applyMassSourceChangeSet,
+  createMassSourceDefinition,
+  massSourceGeneratedKey,
+  normalizeMassSourceDefinition,
+  previewMassSourceChangeSet,
+  validateMassSourceDefinition,
+} from './loads/massSource.js';
+export {
+  LOAD_COMBINATION_CHANGE_SET_VERSION,
+  applyKdsLoadCombinationChangeSet,
+  applyLoadCombinationChangeSet,
+  evaluateLoadRulePackGuards,
+  normalizeLoadRulePack,
+  previewKdsLoadCombinationChangeSet,
+  previewLoadCombinationChangeSet,
+  selectLoadCombinationsForPurpose,
+  validateLoadRulePack,
+} from './loads/loadCombinationChangeSet.js';
+export {
+  LOAD_AUDIT_CODES,
+  LOAD_AUDIT_VERSION,
+  auditLoads,
+  auditModelLoads,
+  buildLoadAudit,
+} from './loads/loadAudit.js';
 export {
   buildRcDetailingReport,
   detailRcMember,
@@ -189,6 +358,10 @@ export {
   LAUNCH_READINESS_VERSION,
   PERFORMANCE_BUDGETS,
 } from './platform/launchReadiness.js';
+export {
+  buildFinalUseReleaseReview,
+  FINAL_USE_RELEASE_REVIEW_VERSION,
+} from './platform/finalUseReleaseReview.js';
 export {
   buildPhase3PlanAlignmentReport,
   PHASE3_PLAN_ALIGNMENT_VERSION,
@@ -328,15 +501,21 @@ export { COMBINATION_ENVELOPE_CONTRACT_VERSION } from './results/combinationEnve
 export {
   createKdsLoadCombinations,
   createKdsRuleBasedLoadCombinations,
+  createLoadCombinationsFromRulePack,
   buildKdsLoadStandardAudit,
   defaultKdsCombinationLimitations,
   getKdsLoadStandardRegistry,
+  getKdsLoadRulePack,
+  KDS_CANDIDATE_RULE_PACK_ID,
   KDS_LOAD_CASE_TEMPLATES,
   KDS_LOAD_COMBINATION_PRESETS,
   KDS_LOAD_COMBINATION_RULE_VERSION,
   KDS_LOAD_COMBINATION_VERSION,
   KDS_LOAD_STANDARD_REGISTRY,
   KDS_LOAD_STANDARD_REGISTRY_VERSION,
+  KDS_LOAD_RULE_PACK,
+  LOAD_RULE_PACK_CONTRACT_VERSION,
+  LOAD_RULE_PUBLICATION_STATUSES,
   summarizeKdsLoadCombinationCoverage,
   summarizeKdsLoadCombinationRules,
 } from './core/kdsLoadCombinations.js';
@@ -460,6 +639,18 @@ export {
   AGENT_MANIFEST_VERSION,
   buildAgentManifest,
 } from './ui/agentManifest.js';
+export {
+  ELASTIC_RESULT_KINDS,
+  ELASTIC_RESULT_VISUALIZATION_VERSION,
+  buildElasticResultViewModel,
+  buildStructuralResultSvg,
+  isElasticResultKind,
+} from './ui/elasticResultVisualization.js';
+export {
+  ELASTIC_RESULT_POPUP_VERSION,
+  buildElasticResultPopupState,
+  installElasticResultPopup,
+} from './ui/indexElasticResultPopup.js';
 export { createPortalFrameSample } from './examples/sampleFrame.js';
 export {
   INDEX_STARTUP_SAMPLE_VERSION,
@@ -522,6 +713,20 @@ export {
 export { MEMBER_RELEASE_BENCHMARK_VERSION, runMemberReleaseBenchmark } from './verification/memberReleaseBenchmark.js';
 export { RIGID_DIAPHRAGM_BENCHMARK_VERSION, runRigidDiaphragmBenchmark } from './verification/rigidDiaphragmBenchmark.js';
 export {
+  VERIFICATION_MATRIX_RECORD_VERSION,
+  buildVerificationRecord,
+  modelHash,
+  scalarRelativeError,
+  vectorRelativeError,
+  verificationError,
+} from './verification/matrix/record.js';
+export {
+  VERIFICATION_MATRIX_CASES,
+  VERIFICATION_MATRIX_VERSION,
+  runVerificationMatrix,
+  writeVerificationMatrixEvidence,
+} from './verification/matrix/runner.js';
+export {
   IMPORT_CANDIDATE_VERSION,
   buildImportCandidate,
   validateImportCandidate,
@@ -576,6 +781,20 @@ export {
 } from './materials/libraryEdit.js';
 export { SECTION_PROPERTIES_VERSION, computeSectionProperties } from './materials/sectionProperties.js';
 export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elasticExpansion.js';
+export {
+  FIXED_END_LOAD_VERSION,
+  buildFixedEndLoad,
+  buildFixedEndLoads,
+  fixedEndTraceRow,
+  fixedEndUdl,
+  fixedEndPartialUdl,
+  fixedEndTrapezoid,
+  fixedEndPointLoad,
+  fixedEndMemberMoment,
+  fixedEndTemperature,
+  fixedEndTemperatureGradient,
+  springSettlementLoad,
+} from './loads/fixedEnd/index.js';
 export { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION, addWallMidPierToModel, buildWallSlabEquivalentTrace, recoverWallPierForces, summarizeSemiRigidDiaphragm, wallToMidPierMember } from './solver/wallSlabEquivalent.js';
 export { SEMI_RIGID_DIAPHRAGM_VERSION, buildSemiRigidRedistributionReport, expandSemiRigidDiaphragms } from './solver/semiRigidDiaphragm.js';
 export {
@@ -586,6 +805,18 @@ export {
   runShellPatchTest,
 } from './solver/shell/quad4.js';
 export { SHELL_FRAME_ASSEMBLY_VERSION, expandShellsToFrameLinks } from './solver/shell/shellAssembly.js';
+export {
+  EQUIVALENT_SHELL_ALLOWED_RESULTS,
+  EQUIVALENT_SHELL_FORBIDDEN_RESULTS,
+  EQUIVALENT_SHELL_SCOPE_VERSION,
+  EQUIVALENT_SHELL_WARNING,
+  attachEquivalentShellScope,
+  buildEquivalentShellScope,
+  equivalentShellBadge,
+  sanitizeEquivalentShellResult,
+  scanEquivalentShellForbiddenFields,
+  validateEquivalentShellGlobal,
+} from './solver/shell/equivalentScope.js';
 export {
   LOADS_V2_VERSION,
   MASS_SOURCE_TRACE_VERSION,
@@ -610,3 +841,49 @@ export {
   runLinearSdofTha,
   runModalSuperpositionTha,
 } from './dynamics/elasticCompleteness.js';
+export {
+  LANCZOS_EIGEN_VERSION,
+  buildLanczosEigenTrace,
+} from './dynamics/eigen/lanczos.js';
+export {
+  PHASE6_M4_RESULT_TRACE_VERSION,
+  buildPhase6M4ResultTrace,
+} from './results/phase6M4Trace.js';
+export {
+  RSA_MASS_PARTICIPATION_VERSION,
+  buildMassParticipationTrace,
+} from './results/rsa/massParticipation.js';
+export {
+  RSA_BASE_SHEAR_SCALE_VERSION,
+  buildBaseShearScaleTrace,
+} from './results/rsa/baseShearScale.js';
+export {
+  RSA_DIRECTIONAL_COMBINATION_VERSION,
+  buildDirectionalCombinationTrace,
+  combineDirectionalResponses,
+} from './results/rsa/directional.js';
+export {
+  RSA_SIGNED_RESPONSE_VERSION,
+  buildSignedResponseStrategy,
+} from './results/rsa/signedResponse.js';
+export {
+  STORY_DRIFT_TRACE_VERSION,
+  buildStoryDriftTrace,
+} from './results/story/drift.js';
+export {
+  STORY_SHEAR_TRACE_VERSION,
+  buildStoryShearTrace,
+} from './results/story/shear.js';
+export {
+  STORY_OVERTURNING_TRACE_VERSION,
+  buildStoryOverturningTrace,
+} from './results/story/overturning.js';
+export {
+  STORY_CENTERS_TRACE_VERSION,
+  buildStoryCentersTrace,
+} from './results/story/centers.js';
+export {
+  DIAPHRAGM_LOAD_PATH_FORCE_VERSION,
+  DIAPHRAGM_LOAD_PATH_WARNING,
+  buildDiaphragmLoadPathForces,
+} from './results/diaphragm/forces.js';

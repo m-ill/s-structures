@@ -64,7 +64,7 @@ export function buildFrameModel({ baysX = 1, baysY = 1, stories = 1, bayX = 6, b
       type: 'frame',
       n1,
       n2,
-      matId: 'steel',
+      matId: 'SS275',
       secId: 'h300',
       localAxis: { roll: 0, strongAxis: 'z' },
       releases: { i: 'rigid', j: 'rigid' },
@@ -246,17 +246,21 @@ export function setPDeltaEnabled(state, enabled) {
 export function pDeltaSeries(state) {
   const byCombo = state.analysis?.pDelta?.byCombo || {};
   return Object.entries(byCombo)
-    .filter(([, result]) => result?.iterations?.length)
+    .filter(([, result]) => result?.curve?.global?.points?.length)
     .map(([comboId, result]) => ({
       id: comboId,
       label: comboId,
       converged: result.converged,
-      points: result.iterations.map((item) => ({
-        iteration: item.iteration,
+      kind: 'global-pdelta-response',
+      points: result.curve.global.points.map((item, index) => ({
+        index,
+        loadFactor: Number(item.loadFactor) || 0,
         amplification: Number(item.amplification) || 1,
-        displacement: Number(item.maxDisplacement) || 0,
-        secondaryLoad: Number(item.secondaryLoad) || 0,
-        residual: item.residual == null ? null : Number(item.residual),
+        firstOrderRoofDisplacement: Number(item.firstOrder?.roofDisplacement) || 0,
+        secondOrderRoofDisplacement: Number(item.secondOrder?.roofDisplacement) || 0,
+        firstOrderBaseShear: Number(item.firstOrder?.baseShear) || 0,
+        secondOrderBaseShear: Number(item.secondOrder?.baseShear) || 0,
+        roofDriftRatio: Number(item.secondOrder?.roofDriftRatio) || 0,
       })),
     }));
 }

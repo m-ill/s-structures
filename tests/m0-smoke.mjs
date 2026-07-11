@@ -9,9 +9,10 @@ assert.equal(analysis.ok, true, 'sample model should pass validation and analysi
 assert.equal(model.nodes.length, 8, 'sample should contain 8 nodes');
 assert.equal(model.members.length, 8, 'sample should contain 8 frame members');
 
-const combo = analysis.byCombo.CO1;
-assert.equal(combo.ok, true, 'CO1 should solve');
-assert.equal(combo.anyOk, true, 'CO1 should contain at least one solved connected component');
+const combo = analysis.byCombo.SLS1;
+assert.equal(combo.ok, true, 'SLS1 should solve');
+assert.equal(combo.anyOk, true, 'SLS1 should contain at least one solved connected component');
+assert.deepEqual(model.loadCombinations.map((item) => item.id), ['KDS22-ST-01', 'KDS22-ST-02', 'SLS1']);
 assert.ok(combo.summary.equilibriumResidual < 1e-8, `equilibrium residual too high: ${combo.summary.equilibriumResidual}`);
 assert.ok(combo.summary.maxDisplacement > 0, 'sample should have non-zero displacement');
 assert.ok(Number.isFinite(combo.summary.maxUtilization), 'sample should have finite utilization');
@@ -34,4 +35,3 @@ console.log(JSON.stringify({
   maxDisplacement: combo.summary.maxDisplacement,
   maxUtilization: combo.summary.maxUtilization,
 }, null, 2));
-

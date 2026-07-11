@@ -9,18 +9,26 @@ export const MODELING_ACTIONS = [
   'updateNode',
   'deleteNode',
   'setSupport',
+  'setSpringSupport',
+  'setSettlement',
   'setNodeMass',
   'addMember',
   'updateMember',
   'deleteMember',
+  'setMemberBehavior',
+  'assignHinge',
+  'removeHinge',
   'setMemberSection',
   'setMemberMaterial',
   'assignSection',
   'addLoad',
+  'addPartialLoad',
+  'addTemperatureLoad',
   'updateLoad',
   'deleteLoad',
   'addLoadCase',
   'updateLoadCase',
+  'deleteLoadCase',
   'addLoadCombination',
   'updateLoadCombination',
   'createGridFrame',
@@ -61,6 +69,10 @@ function executeModelingActionCore(model, state, action, payload) {
       return deleteNode(model, state, payload);
     case 'setSupport':
       return setSupport(model, state, payload);
+    case 'setSpringSupport':
+      return setSpringSupport(model, state, payload);
+    case 'setSettlement':
+      return setSettlement(model, state, payload);
     case 'setNodeMass':
       return setNodeMass(model, state, payload);
     case 'addMember':
@@ -69,6 +81,12 @@ function executeModelingActionCore(model, state, action, payload) {
       return updateMember(model, state, payload);
     case 'deleteMember':
       return deleteMember(model, state, payload);
+    case 'setMemberBehavior':
+      return setMemberBehavior(model, state, payload);
+    case 'assignHinge':
+      return assignHinge(model, state, payload);
+    case 'removeHinge':
+      return removeHinge(model, state, payload);
     case 'setMemberSection':
       return updateMember(model, state, { id: payload.memberId || payload.id, secId: payload.secId });
     case 'setMemberMaterial':
@@ -77,6 +95,10 @@ function executeModelingActionCore(model, state, action, payload) {
       return assignSection(model, state, payload);
     case 'addLoad':
       return addLoad(model, state, payload);
+    case 'addPartialLoad':
+      return addPartialLoad(model, state, payload);
+    case 'addTemperatureLoad':
+      return addTemperatureLoad(model, state, payload);
     case 'updateLoad':
       return updateLoad(model, state, payload);
     case 'deleteLoad':
@@ -85,6 +107,8 @@ function executeModelingActionCore(model, state, action, payload) {
       return addLoadCase(model, state, payload);
     case 'updateLoadCase':
       return updateLoadCase(model, state, payload);
+    case 'deleteLoadCase':
+      return deleteLoadCase(model, state, payload);
     case 'addLoadCombination':
       return addLoadCombination(model, state, payload);
     case 'updateLoadCombination':
@@ -158,6 +182,8 @@ function addNode(model, state, payload) {
     support: normalizeSupport(payload.support),
   };
   if (payload.fix) node.fix = normalizeFix(payload.fix);
+  if (payload.spring || node.support === 'spring') node.spring = normalizeSpring(payload.spring || payload);
+  if (payload.settlement) node.settlement = normalizeSettlement(payload.settlement);
   if (payload.mass != null) node.mass = normalizeMass(payload.mass);
   model.nodes.push(node);
   state.selection = { type: 'node', id: node.id };
@@ -171,6 +197,9 @@ function updateNode(model, state, payload) {
   if (payload.z != null) node.z = finite(payload.z, node.z || 0);
   if ('support' in payload) node.support = normalizeSupport(payload.support);
   if ('fix' in payload) node.fix = payload.fix == null ? undefined : normalizeFix(payload.fix);
+  if ('spring' in payload) node.spring = payload.spring == null ? undefined : normalizeSpring(payload.spring);
+  if (node.support !== 'spring' && payload.clearSpring !== false) delete node.spring;
+  if ('settlement' in payload) node.settlement = payload.settlement == null ? undefined : normalizeSettlement(payload.settlement);
   if ('mass' in payload) node.mass = payload.mass == null ? undefined : normalizeMass(payload.mass);
   state.selection = { type: 'node', id: node.id };
   return { changed: true, node, selection: summarizeSelection(model, state.selection) };
@@ -196,6 +225,24 @@ function setSupport(model, state, payload) {
     id: payload.nodeId || payload.id,
     support: payload.support,
     fix: payload.fix,
+    spring: payload.spring,
+    clearSpring: payload.clearSpring,
+  });
+}
+
+function setSpringSupport(model, state, payload) {
+  return updateNode(model, state, {
+    id: payload.nodeId || payload.id,
+    support: 'spring',
+    spring: payload.spring || payload,
+    clearSpring: false,
+  });
+}
+
+function setSettlement(model, state, payload) {
+  return updateNode(model, state, {
+    id: payload.nodeId || payload.id,
+    settlement: payload.settlement || payload,
   });
 }
 
@@ -243,6 +290,7 @@ function updateMember(model, state, payload) {
   if (payload.secId != null) member.secId = requiredString(payload.secId, 'secId');
   if (payload.localAxis != null) member.localAxis = normalizeLocalAxis(payload.localAxis);
   if (payload.releases != null) member.releases = normalizeReleases(payload.releases);
+  if (payload.type != null || payload.behavior != null) member.type = normalizeMemberBehavior(payload.type || payload.behavior);
   if (payload.design != null) member.design = { ...(member.design || {}), ...payload.design };
   state.selection = { type: 'member', id: member.id };
   return { changed: true, member, selection: summarizeSelection(model, state.selection) };
@@ -255,6 +303,72 @@ function deleteMember(model, state, payload) {
   model.members = model.members.filter((member) => member.id !== id);
   if (state.selection?.id === id) state.selection = { type: null, id: null };
   return { changed: true, deletedMemberId: id };
+}
+
+function setMemberBehavior(model, state, payload) {
+  return updateMember(model, state, {
+    id: payload.memberId || payload.id,
+    type: payload.type || payload.behavior,
+  });
+}
+
+function assignHinge(model, state, payload) {
+  const member = getById(model.members, requiredString(payload.memberId || payload.id, 'memberId'), 'member');
+  const ends = normalizeHingeEnds(payload.ends || payload.end || (payload.i || payload.endI ? ['i'] : []).concat(payload.j || payload.endJ ? ['j'] : []));
+  const type = normalizeHingeType(payload.type || payload.hingeType);
+  const backbone = requiredString(payload.backbone || payload.backboneId || payload.materialId || member.matId, 'backbone');
+  const backboneProperties = resolveHingeBackbone(model, backbone);
+  member.nonlinear ||= {};
+  member.nonlinear.hinges = (member.nonlinear.hinges || []).filter((hinge) => !ends.includes(hinge.end));
+  for (const end of ends) {
+    member.nonlinear.hinges.push({
+      id: `${member.id}:${end}`,
+      end,
+      type,
+      backbone,
+      ...backboneProperties,
+      source: payload.source || 'ui',
+    });
+  }
+  member.nonlinear.hingeEnds = [...new Set(member.nonlinear.hinges.map((hinge) => hinge.end))].sort();
+  state.selection = { type: 'member', id: member.id };
+  return { changed: true, member, hingeCount: member.nonlinear.hinges.length, selection: summarizeSelection(model, state.selection) };
+}
+
+function removeHinge(model, state, payload) {
+  const member = getById(model.members, requiredString(payload.memberId || payload.id, 'memberId'), 'member');
+  const ends = payload.ends || payload.end || payload.i || payload.j || payload.endI || payload.endJ
+    ? normalizeHingeEnds(payload.ends || payload.end || (payload.i || payload.endI ? ['i'] : []).concat(payload.j || payload.endJ ? ['j'] : []))
+    : ['i', 'j'];
+  member.nonlinear ||= {};
+  member.nonlinear.hinges = (member.nonlinear.hinges || []).filter((hinge) => !ends.includes(hinge.end));
+  member.nonlinear.hingeEnds = [...new Set(member.nonlinear.hinges.map((hinge) => hinge.end))].sort();
+  if (!member.nonlinear.hinges.length) delete member.nonlinear.hinges;
+  if (!member.nonlinear.hingeEnds?.length) delete member.nonlinear.hingeEnds;
+  if (!Object.keys(member.nonlinear).length) delete member.nonlinear;
+  state.selection = { type: 'member', id: member.id };
+  return { changed: true, member, removedEnds: ends, selection: summarizeSelection(model, state.selection) };
+}
+
+function resolveHingeBackbone(model, backboneId) {
+  const material = (model.materials || []).find((item) => {
+    const versionedId = item.version ? `${item.id}@${item.version}` : item.id;
+    return item.id === backboneId || versionedId === backboneId;
+  });
+  const points = material?.nonlinear?.backbone;
+  if (!Array.isArray(points) || points.length < 2) return {};
+  const yieldPoint = points.find((point) => positiveNumber(point.moment) || positiveNumber(point.My) || positiveNumber(point.stress))
+    || points[1];
+  const My = firstPositiveNumber(yieldPoint?.moment, yieldPoint?.My, yieldPoint?.stress);
+  const thetaY = firstPositiveNumber(yieldPoint?.rotation, yieldPoint?.theta, yieldPoint?.thetaY, yieldPoint?.strain);
+  const output = {};
+  if (My != null) output.My = My;
+  if (thetaY != null) output.thetaY = thetaY;
+  const capRatio = firstPositiveNumber(material.nonlinear?.capRatio, material.nonlinear?.capacityRatio);
+  const residualRatio = firstPositiveNumber(material.nonlinear?.residualRatio);
+  if (capRatio != null) output.capRatio = capRatio;
+  if (residualRatio != null) output.residualRatio = residualRatio;
+  return output;
 }
 
 function assignSection(model, state, payload) {
@@ -287,12 +401,22 @@ function addLoad(model, state, payload) {
     getById(model.nodes, load.node, 'node');
     load.M = finite(payload.M, payload.value, 0);
     load.axis = payload.axis || payload.dir || 'z';
-  } else if (type === 'udl') {
+  } else if (type === 'udl' || type === 'udl-partial') {
     load.member = requiredString(payload.member || payload.memberId, 'member');
     getById(model.members, load.member, 'member');
     load.w = finite(payload.w, payload.value, 0);
     load.dir = payload.dir || '-z';
     load.coordinate = payload.coordinate || 'global';
+    if (payload.direction) load.direction = normalizeDirection(payload.direction);
+    if (type === 'udl-partial') Object.assign(load, normalizeLoadRange(payload));
+  } else if (type === 'trapezoid') {
+    load.member = requiredString(payload.member || payload.memberId, 'member');
+    getById(model.members, load.member, 'member');
+    load.w1 = finite(payload.w1, payload.start, payload.value, 0);
+    load.w2 = finite(payload.w2, payload.end, payload.value, load.w1);
+    load.dir = payload.dir || '-z';
+    load.coordinate = payload.coordinate || 'global';
+    Object.assign(load, normalizeLoadRange(payload));
     if (payload.direction) load.direction = normalizeDirection(payload.direction);
   } else if (type === 'point') {
     load.member = requiredString(payload.member || payload.memberId, 'member');
@@ -302,12 +426,40 @@ function addLoad(model, state, payload) {
     load.dir = payload.dir || '-z';
     load.coordinate = payload.coordinate || 'global';
     if (payload.direction) load.direction = normalizeDirection(payload.direction);
+  } else if (type === 'mmoment') {
+    load.member = requiredString(payload.member || payload.memberId, 'member');
+    getById(model.members, load.member, 'member');
+    load.M = finite(payload.M, payload.value, 0);
+    load.at = clamp(finite(payload.at, payload.t, 0.5), 0, 1);
+    load.axis = payload.axis || payload.dir || 'z';
+  } else if (type === 'temperature') {
+    load.member = requiredString(payload.member || payload.memberId, 'member');
+    getById(model.members, load.member, 'member');
+    load.dT = finite(payload.dT, payload.value, 0);
+    if (payload.alpha != null) load.alpha = finite(payload.alpha, 0);
+  } else if (type === 'tgradient') {
+    load.member = requiredString(payload.member || payload.memberId, 'member');
+    getById(model.members, load.member, 'member');
+    load.dTtop = finite(payload.dTtop, payload.top, 0);
+    load.dTbot = finite(payload.dTbot, payload.bottom, 0);
+    load.h = Math.max(1e-9, finite(payload.h, payload.depth, 1));
+    if (payload.alpha != null) load.alpha = finite(payload.alpha, 0);
   } else {
     throw new Error(`Unsupported load type: ${type}`);
   }
   model.loads.push(load);
   state.selection = { type: 'load', id: load.id };
   return { changed: true, load, selection: summarizeSelection(model, state.selection) };
+}
+
+function addPartialLoad(model, state, payload) {
+  const type = payload.type === 'trapezoid' || payload.loadType === 'trapezoid' ? 'trapezoid' : 'udl-partial';
+  return addLoad(model, state, { ...payload, type });
+}
+
+function addTemperatureLoad(model, state, payload) {
+  const type = payload.type === 'tgradient' || payload.loadType === 'tgradient' || payload.gradient ? 'tgradient' : 'temperature';
+  return addLoad(model, state, { ...payload, type });
 }
 
 function updateLoad(model, state, payload) {
@@ -330,7 +482,16 @@ function updateLoad(model, state, payload) {
   if (payload.w != null || (payload.value != null && load.type === 'udl')) {
     load.w = finite(payload.w, payload.value, load.w || 0);
   }
+  if (payload.w1 != null || (payload.value != null && load.type === 'trapezoid')) load.w1 = finite(payload.w1, payload.value, load.w1 || 0);
+  if (payload.w2 != null || (payload.value != null && load.type === 'trapezoid')) load.w2 = finite(payload.w2, payload.value, load.w2 || 0);
+  if (payload.from != null || payload.to != null) Object.assign(load, normalizeLoadRange({ from: payload.from ?? load.from, to: payload.to ?? load.to }));
   if (payload.t != null) load.t = clamp(finite(payload.t, load.t || 0.5), 0, 1);
+  if (payload.at != null) load.at = clamp(finite(payload.at, load.at || 0.5), 0, 1);
+  if (payload.dT != null) load.dT = finite(payload.dT, load.dT || 0);
+  if (payload.dTtop != null) load.dTtop = finite(payload.dTtop, load.dTtop || 0);
+  if (payload.dTbot != null) load.dTbot = finite(payload.dTbot, load.dTbot || 0);
+  if (payload.h != null) load.h = Math.max(1e-9, finite(payload.h, load.h || 1));
+  if (payload.alpha != null) load.alpha = finite(payload.alpha, load.alpha || 0);
   if (payload.dir != null) load.dir = payload.dir;
   if (payload.axis != null) load.axis = payload.axis;
   if (payload.coordinate != null) load.coordinate = payload.coordinate;
@@ -366,12 +527,35 @@ function updateLoadCase(model, state, payload) {
   return { changed: true, loadCase };
 }
 
+function deleteLoadCase(model, state, payload) {
+  const id = requiredString(payload.id || payload.loadCaseId, 'id');
+  getById(model.loadCases, id, 'loadCase');
+  const usedLoadIds = model.loads.filter((load) => load.case === id).map((load) => load.id);
+  const usedComboIds = model.loadCombinations
+    .filter((combo) => combo.factors && Object.prototype.hasOwnProperty.call(combo.factors, id) && Number(combo.factors[id]) !== 0)
+    .map((combo) => combo.id);
+  if ((usedLoadIds.length || usedComboIds.length) && payload.force !== true) {
+    throw new Error(`Load case ${id} is in use by loads/combinations: ${[...usedLoadIds, ...usedComboIds].join(', ')}`);
+  }
+  if (payload.deleteLoads === true || payload.force === true) {
+    model.loads = model.loads.filter((load) => load.case !== id);
+  }
+  for (const combo of model.loadCombinations) {
+    if (combo.factors) delete combo.factors[id];
+  }
+  model.loadCases = model.loadCases.filter((loadCase) => loadCase.id !== id);
+  if (state.selection?.type === 'loadCase' && state.selection.id === id) state.selection = { type: null, id: null };
+  return { changed: true, deletedLoadCaseId: id, deletedLoadIds: payload.deleteLoads === true || payload.force === true ? usedLoadIds : [] };
+}
+
 function addLoadCombination(model, state, payload) {
   const combo = {
     id: uniqueId(model.loadCombinations, payload.id, 'CO'),
     name: payload.name || payload.id || 'Combination',
     type: payload.type || 'strength',
     factors: normalizeFactors(payload.factors, model),
+    origin: payload.origin || 'manual',
+    userModified: payload.userModified !== false,
   };
   model.loadCombinations.push(combo);
   state.selection = { type: 'loadCombination', id: combo.id };
@@ -383,6 +567,8 @@ function updateLoadCombination(model, state, payload) {
   if (payload.name != null) combo.name = String(payload.name);
   if (payload.type != null) combo.type = String(payload.type);
   if (payload.factors != null) combo.factors = normalizeFactors(payload.factors, model);
+  combo.origin = payload.origin || combo.origin || 'manual';
+  combo.userModified = payload.userModified !== false;
   state.selection = { type: 'loadCombination', id: combo.id };
   return { changed: true, combo };
 }
@@ -632,11 +818,50 @@ function requiredString(value, label) {
   return text;
 }
 
+function positiveNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0;
+}
+
+function firstPositiveNumber(...values) {
+  for (const value of values) {
+    const number = Number(value);
+    if (Number.isFinite(number) && number > 0) return number;
+  }
+  return null;
+}
+
 function normalizeSupport(value) {
   if (value == null || value === '') return null;
   const support = String(value);
-  if (!['fixed', 'pin', 'roller', 'custom'].includes(support)) throw new Error(`Unsupported support: ${support}`);
+  if (!['fixed', 'pin', 'roller', 'custom', 'spring'].includes(support)) throw new Error(`Unsupported support: ${support}`);
   return support;
+}
+
+function normalizeSpring(input = {}) {
+  const source = Array.isArray(input)
+    ? { kx: input[0], ky: input[1], kz: input[2], krx: input[3], kry: input[4], krz: input[5] }
+    : input || {};
+  const spring = {};
+  for (const key of ['kx', 'ky', 'kz', 'krx', 'kry', 'krz']) {
+    const value = Number(source[key]);
+    spring[key] = Number.isFinite(value) && value > 0 ? value : 0;
+  }
+  if (!Object.values(spring).some((value) => value > 0)) spring.kz = 1000000;
+  return spring;
+}
+
+function normalizeSettlement(input = {}) {
+  const source = Array.isArray(input)
+    ? { ux: input[0], uy: input[1], uz: input[2], rx: input[3], ry: input[4], rz: input[5] }
+    : input || {};
+  const settlement = {};
+  for (const key of ['ux', 'uy', 'uz', 'rx', 'ry', 'rz', 'kx', 'ky', 'kz', 'krx', 'kry', 'krz']) {
+    if (source[key] == null || source[key] === '') continue;
+    settlement[key] = finite(source[key], 0);
+  }
+  if (!Object.keys(settlement).length) throw new Error('settlement requires at least one finite component.');
+  return settlement;
 }
 
 function normalizeFix(value) {
@@ -672,9 +897,40 @@ function normalizeRelease(value) {
   return release;
 }
 
+function normalizeMemberBehavior(value) {
+  const behavior = String(value || 'frame').trim();
+  if (!['frame', 'truss', 'tensionOnly', 'compressionOnly'].includes(behavior)) {
+    throw new Error(`Unsupported member behavior: ${behavior}`);
+  }
+  return behavior;
+}
+
+function normalizeHingeEnds(value) {
+  const list = Array.isArray(value) ? value : [value || 'i'];
+  const ends = [...new Set(list.map((item) => String(item).toLowerCase()).filter(Boolean))];
+  if (!ends.length) ends.push('i');
+  for (const end of ends) {
+    if (!['i', 'j'].includes(end)) throw new Error(`Unsupported hinge end: ${end}`);
+  }
+  return ends;
+}
+
+function normalizeHingeType(value) {
+  const type = String(value || 'moment').trim();
+  if (!['moment', 'pmm'].includes(type)) throw new Error(`Unsupported hinge type: ${type}`);
+  return type;
+}
+
 function normalizeDirection(value) {
   if (!Array.isArray(value) || value.length < 3) throw new Error('direction must contain three numbers.');
   return value.slice(0, 3).map((item) => finite(item, 0));
+}
+
+function normalizeLoadRange(payload = {}) {
+  const from = clamp(finite(payload.from, 0), 0, 1);
+  const to = clamp(finite(payload.to, 1), 0, 1);
+  if (!(to > from)) throw new Error('load range must satisfy 0 <= from < to <= 1.');
+  return { from, to };
 }
 
 function normalizeFactors(factors, model) {

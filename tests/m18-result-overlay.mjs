@@ -38,7 +38,7 @@ assert.equal(scene.deformedMembers.length, model.members.length);
 assert.equal(scene.modalMembers.length, model.members.length);
 assert.equal(scene.loadArrows.length, model.loads.length);
 assert.ok(scene.reactionArrows.length > 0);
-assert.ok(scene.badges.some((badge) => badge.includes('P-Delta step 1')));
+assert.ok(scene.badges.some((badge) => badge.includes('P-Delta iter 1')));
 assert.ok(scene.legend.some((item) => item.label === 'Mode shape'));
 assert.ok(scene.utilizationMembers.some((line) => line.width > 2));
 

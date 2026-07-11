@@ -11,6 +11,10 @@ import {
   populateNonlinearRibbon,
   summarizeNativePushover,
 } from './indexNativePushoverRibbon.js';
+import {
+  installElasticAnalysisRibbon,
+  summarizeElasticAnalysisRibbon,
+} from './indexElasticAnalysisRibbon.js';
 
 export { LOAD_BASIS_FIELDS, LOAD_BASIS_OCCUPANCIES } from './indexNativeLoadBasisRibbon.js';
 export { PUSHOVER_DIRECTIONS, PUSHOVER_PATTERNS } from './indexNativePushoverRibbon.js';
@@ -172,6 +176,8 @@ export function getNativeUiState(target = globalThis) {
       panels,
     },
     loadBasis: summarizeNativeLoadBasis(target),
+    elasticAnalysis: summarizeElasticAnalysisRibbon(target),
+    elasticSetup: target?.SStructuresElasticSetupWorkflow?.getState?.() || null,
     nonlinear: summarizeNativePushover(target),
   };
 }
@@ -311,6 +317,8 @@ function populateElasticRibbon(target) {
   marker.style.display = 'none';
   panel.appendChild(marker);
 
+  installElasticAnalysisRibbon(target, panel);
+
   for (const group of ELASTIC_RIBBON_GROUPS) {
     const ribbonGroup = createRibbonGroup(doc, group.id, group.label);
     const items = ribbonGroup.querySelector('[data-ss-ribbon-items]');
@@ -330,18 +338,8 @@ function populateNativeElasticResultControls(target, panel) {
   marker.style.display = 'none';
   panel.appendChild(marker);
 
-  const group = createRibbonGroup(doc, 'elastic-native-results', 'Advanced');
+  const group = createRibbonGroup(doc, 'elastic-native-results', '변형 배율');
   const items = group.querySelector('[data-ss-ribbon-items]');
-
-  const pdelta = doc.createElement('button');
-  pdelta.type = 'button';
-  pdelta.id = 'ssNativePDeltaToggle';
-  pdelta.className = 'ss-ribbon-command';
-  pdelta.setAttribute('data-ss-ribbon-item', 'native-pdelta-toggle');
-  pdelta.setAttribute('data-agent-id', 'native-pdelta-toggle');
-  pdelta.setAttribute('aria-pressed', 'false');
-  pdelta.innerHTML = '<span class="ss-ribbon-icon">P</span><span>P-Delta</span>';
-  items.appendChild(pdelta);
 
   const scale = createSelectControl(doc, {
     id: 'ssNativeResultScale',
@@ -558,6 +556,23 @@ function injectNativeRibbonStyle(doc) {
 .ss-ribbon-command.active{background:var(--dku);border-color:var(--dku);color:#fff;}
 .ss-ribbon-command:disabled{opacity:.45;cursor:not-allowed;}
 .ss-ribbon-icon{font-size:13px;line-height:1;}
+.ss-elastic-analysis-command{position:relative;height:34px;padding:0 7px 0 6px;gap:4px;}
+.ss-elastic-analysis-command .ss-elastic-command-status{display:none;position:absolute;right:3px;top:2px;font-size:8px;line-height:1;color:inherit;}
+.ss-elastic-analysis-command[data-status="ok"]{border-color:#64a77e;background:#f2faf5;color:#126b3c;}
+.ss-elastic-analysis-command[data-status="running"]{border-color:#6097c8;background:#eef6ff;color:#1c5e9f;}
+.ss-elastic-analysis-command[data-status="failed"],.ss-elastic-analysis-command[data-status="designBlocked"]{border-color:#d18484;background:#fff5f5;color:#942222;}
+.ss-elastic-analysis-command[data-status="stale"],.ss-elastic-analysis-command[data-status="review-required"],.ss-elastic-analysis-command[data-status="preliminary"]{border-color:#cda859;background:#fff9e9;color:#745200;}
+.ss-elastic-analysis-command[data-status]:not([data-status="not-run"]) .ss-elastic-command-status{display:block;}
+.ss-elastic-analysis-command.active{background:var(--dku);border-color:var(--dku);color:#fff;}
+.ss-elastic-result-shortcut{min-width:48px;justify-content:center;}
+.ss-elastic-run-all{height:34px;padding:0 10px;background:var(--dku);border-color:var(--dku);color:#fff;font-weight:700;}
+.ss-elastic-run-all:hover{background:var(--dku2);color:#fff;}
+.ss-elastic-run-all[data-status="partial"],.ss-elastic-run-all[data-status="review"],.ss-elastic-run-all[data-status="stale"]{background:#a86d00;border-color:#a86d00;}
+.ss-elastic-run-all[data-status="failed"]{background:#a52a2a;border-color:#a52a2a;}
+.ss-elastic-batch-status{max-width:130px;color:#5b7184;font-size:10.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ss-elastic-batch-status[data-status="review"],.ss-elastic-batch-status[data-status="partial"],.ss-elastic-batch-status[data-status="stale"]{color:#805800;}
+.ss-elastic-batch-status[data-status="failed"]{color:#a52a2a;}
+.ss-elastic-center-open{width:30px;height:34px;justify-content:center;padding:0;}
 .ss-ribbon-items #comboSel{max-width:132px;}
 .ss-ribbon-items #reactMode{max-width:132px;}
 .ss-ribbon-items #statusTxt{margin-left:0;max-width:260px;overflow:hidden;text-overflow:ellipsis;}

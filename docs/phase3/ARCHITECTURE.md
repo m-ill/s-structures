@@ -32,7 +32,7 @@ source: user direction 2026-07-02
 | # | 결정 | 선택 | 근거 | 대안(기각 사유) |
 | --- | --- | --- | --- | --- |
 | D1 | 언어 | JavaScript ESM 유지 | 기존 코드베이스 전체가 vanilla ESM, 무빌드 | TypeScript 전환(전환 비용이 Phase 3 일정 침식) |
-| D2 | 서버 프레임워크 | node:http + 자체 라우터 | zero-dependency 정책, `tools/serve.mjs` 확장 경험 | Express/Fastify(의존성, 현 규모에 과함) |
+| D2 | 서버 프레임워크 | node:http + 자체 라우터 | zero-dependency 정책, 현재 `server/main.mjs` 정적/API 서버 구조 | Express/Fastify(의존성, 현 규모에 과함) |
 | D3 | 비밀번호 해시 | node:crypto scrypt | 내장, 검증된 KDF | bcrypt/argon2(외부 native 의존성) |
 | D4 | 세션 | HMAC-SHA256 서명 토큰 (node:crypto) | 내장으로 충분, stateless | JWT 라이브러리(불필요), 서버 세션(파일 저장 복잡) |
 | D5 | 저장 v1 | 파일 기반 JSON + blob (`data/`) | 단순, 백업 용이, 단일 사무소 규모 충분 | SQLite(better-sqlite3) — 동시성 요구 시 v2로 승격 |

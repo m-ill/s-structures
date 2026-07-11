@@ -1,4 +1,5 @@
 import { buildDetailedReportData } from './detailedReport.js';
+import { buildPhase7AnalysisRunSummary } from './phase7AnalysisRuns.js';
 import {
   escapeHtml,
   formatDriftRatio as driftRatio,
@@ -17,6 +18,7 @@ export const CALCULATION_PACKAGE_VERSION = 'm42-calculation-package';
 
 export function buildCalculationPackageData(model, analysis, options = {}) {
   const detailed = buildDetailedReportData(model, analysis, options);
+  const analysisRuns = buildPhase7AnalysisRunSummary(options);
   const sections = [
     { id: 'cover', title: 'Cover' },
     { id: 'toc', title: 'Table of Contents' },
@@ -39,7 +41,9 @@ export function buildCalculationPackageData(model, analysis, options = {}) {
     },
     sections,
     detailed,
-    qualityAudit: auditPackage(detailed),
+    analysisRuns,
+    resultSelection: options.resultSelection || null,
+    qualityAudit: auditPackage(detailed, analysisRuns),
   };
 }
 
@@ -89,6 +93,7 @@ export function renderCalculationPackageHtml(pkg) {
       <tr><th>Package Version</th><td>${escapeHtml(pkg.version)}</td></tr>
     </table>
     <div class="note warn">${escapeHtml(d.scope.statement)}</div>
+    ${renderEquivalentShellPackageNote(d.equivalentShellTrace)}
   </section>
 
   <section id="toc" class="page-break">
@@ -162,6 +167,53 @@ export function renderCalculationPackageHtml(pkg) {
       ['First period', fmt(d.advancedElasticTrace.summary.firstPeriod)],
       ['RSA directions', d.advancedElasticTrace.summary.rsaDirectionCount],
     ]) : '<div class="note">No advanced elastic trace available.</div>'}
+    ${d.advancedElasticTrace?.pDelta?.curves?.combos?.length ? table(['P-Delta combo', 'Load steps', 'Stories', 'Members', 'Max theta'], d.advancedElasticTrace.pDelta.curves.combos.map((row) => [
+      row.comboId,
+      row.globalPointCount,
+      row.storyCount,
+      row.memberCount,
+      ratio(row.summary?.maxStoryStabilityIndex),
+    ])) : ''}
+    ${d.advancedElasticTrace?.pDelta?.design?.rows?.length ? table(['Combo', 'Dir', 'Story', 'Theta', 'BΔ', 'PΔ shear', 'Status'], d.advancedElasticTrace.pDelta.design.rows.map((row) => [
+      row.comboId,
+      row.direction,
+      row.governingStory,
+      ratio(row.maxTheta),
+      ratio(row.maxBDelta),
+      force(row.maxPDeltaShear),
+      row.status,
+    ])) : ''}
+    <h3>Phase 5 Analysis Cases</h3>
+    ${d.analysisCases?.rows?.length ? table(['Case', 'Kind', 'Status', 'Last run', 'Result', 'Summary'], d.analysisCases.rows.map((row) => [
+      row.name === row.id ? row.id : `${row.id} - ${row.name}`,
+      row.kind,
+      row.status,
+      row.lastRunStatus || '-',
+      row.view || '-',
+      row.summaryText,
+    ])) : '<div class="note">No Phase 5 analysis cases defined.</div>'}
+    ${renderAnalysisCaseDetails(d.analysisCases)}
+    <h3>Immutable Analysis Run Records</h3>
+    ${pkg.analysisRuns.rows.length ? table(['Run', 'Case', 'Kind', 'Status', 'Qualification', 'Current model', 'Design transfer', 'Model hash'], pkg.analysisRuns.rows.map((row) => [
+      row.id,
+      row.caseId,
+      row.kind || '-',
+      row.runStatus,
+      row.qualification,
+      row.currentModelMatches ? 'Match' : 'Changed',
+      row.designTransferAllowed ? 'Allowed' : 'Blocked',
+      row.modelHash || '-',
+    ])) : '<div class="note">No Phase 7 analysis run records are attached.</div>'}
+    ${pkg.analysisRuns.rows.length ? table(['Run', 'Schema', 'Combination', 'Materials', 'Sections', 'Sources', 'Solver'], pkg.analysisRuns.rows.map((row) => [
+      row.id,
+      row.provenance.schemaVersion ?? '-',
+      row.provenance.combinationId || '-',
+      row.provenance.materialRefs.join(', ') || '-',
+      row.provenance.sectionRefs.join(', ') || '-',
+      row.provenance.sourceIds.join(', ') || '-',
+      row.provenance.solver || '-',
+    ])) : ''}
+    ${pkg.analysisRuns.summary.preliminaryOrCandidateCount ? '<div class="note warn">Preliminary or unverified successful runs are retained for review but blocked from design transfer.</div>' : ''}
     <h3>Serviceability Drift Review</h3>
     ${d.serviceability?.rows?.length ? table(['Combo', 'Story', 'Height', 'Drift', 'Ratio', 'D/L', 'Status'], d.serviceability.rows.map((row) => [
       row.comboId,
@@ -290,7 +342,29 @@ export function createCalculationPackageHtml(model, analysis, options = {}) {
   };
 }
 
-function auditPackage(detailed) {
+function renderAnalysisCaseDetails(analysisCases) {
+  const rows = analysisCases?.rows || [];
+  if (!rows.length) return '';
+  return `
+    <h3>Analysis Case Result Details</h3>
+    ${rows.map((row) => {
+    const detail = row.detail || { status: 'not-run', headline: 'not run', rows: [['Result', 'not run']], limitations: [] };
+    return `
+      <div class="note">
+        <b>${escapeHtml(row.id)} (${escapeHtml(row.kind)})</b> - ${escapeHtml(detail.status || row.lastRunStatus || row.status || '-')} - ${escapeHtml(detail.headline || '-')}
+        ${table(['Item', 'Value'], (detail.rows || []).map((item) => [item[0], item[1]]))}
+        ${detail.limitations?.length ? `<ul>${detail.limitations.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
+      </div>`;
+  }).join('')}`;
+}
+
+function renderEquivalentShellPackageNote(trace) {
+  const scope = trace?.equivalentShellScope;
+  if (!scope?.active) return '';
+  return `<div class="note warn" data-report-badge="equivalent-shell-scope"><b>${escapeHtml(scope.badge)}</b><br>${escapeHtml(scope.warning)}</div>`;
+}
+
+function auditPackage(detailed, analysisRuns) {
   const items = [
     { name: 'Load derivation attached', status: detailed.loadDerivation ? 'OK' : 'Missing' },
     { name: 'Combination results available', status: detailed.combinationResults.length ? 'OK' : 'Missing' },
@@ -299,6 +373,9 @@ function auditPackage(detailed) {
     { name: 'Steel schedule available', status: detailed.steelDetailing.rows.length ? 'OK' : 'Not applicable' },
     { name: 'Foundation review available', status: detailed.connectionFoundation.foundationRows.length ? 'OK' : 'Missing' },
     { name: 'Phase 3 integrated results available', status: detailed.phase3IntegratedResults ? 'OK' : 'Missing' },
+    { name: 'Phase 5 analysis cases listed', status: detailed.analysisCases ? 'OK' : 'Missing' },
+    { name: 'Analysis run provenance records', status: analysisRuns.rows.length ? 'OK' : 'Not applicable' },
+    { name: 'Verified-only design transfer guard', status: analysisRuns.designTransferGuardOk ? 'OK' : 'Review' },
     { name: 'Phase 3 default not-checked cleanup', status: detailed.phase3IntegratedResults?.summary?.notCheckedCount === 0 ? 'OK' : 'Review' },
   ];
   return {
@@ -308,6 +385,9 @@ function auditPackage(detailed) {
       'Print-ready HTML is intended for browser PDF output.',
       'Final sealed calculation packages require project-specific engineering review.',
       'Unsupported checks remain listed in the appendix rather than hidden.',
+      ...(analysisRuns.summary.preliminaryOrCandidateCount
+        ? ['Preliminary and candidate analysis runs are excluded from design transfer.']
+        : []),
     ],
   };
 }

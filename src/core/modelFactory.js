@@ -6,11 +6,22 @@ import {
   defaultDesignSettings,
   defaultLoadCases,
   defaultLoadCombinations,
+  defaultPracticeLoadCases,
+  defaultPracticeLoadCombinations,
 } from './schema.js';
 import { normalizeUnits } from './units.js';
 import { normalizeUnitSystem } from './unitSystem.js';
 import { normalizeStories } from './storyModel.js';
 import { normalizeDiaphragms } from './diaphragmContract.js';
+import { defaultAnalysisCases, normalizeAnalysisCases } from './analysisCase.js';
+import { defaultAnalysisCriteria, normalizeAnalysisCriteria } from './analysisCriteria.js';
+import {
+  defaultDesignBasis,
+  defaultProjectSetup,
+  normalizeDesignBasis,
+  normalizeProjectSetup,
+} from './projectSetup.js';
+import { normalizeSourceRegistry } from './sourceRegistry.js';
 
 export function createModel(overrides = {}) {
   const units = normalizeUnits(overrides.units);
@@ -28,15 +39,39 @@ export function createModel(overrides = {}) {
     loads: [],
     loadCases: defaultLoadCases(),
     loadCombinations: defaultLoadCombinations(),
+    massSources: [],
+    sourceRegistry: [],
+    designBasis: defaultDesignBasis(),
+    projectSetup: defaultProjectSetup('legacy-unreviewed'),
+    analysisCases: defaultAnalysisCases(),
     analysisSettings: defaultAnalysisSettings(),
+    analysisCriteria: defaultAnalysisCriteria(),
     designParams: defaultDesignParams(),
     designSettings: defaultDesignSettings(),
     ...overrides,
     units,
     unitSystem: normalizeUnitSystem(overrides.unitSystem, units),
     diaphragms: normalizeDiaphragms(overrides.diaphragms),
+    analysisCases: normalizeAnalysisCases(overrides.analysisCases || []),
+    analysisCriteria: normalizeAnalysisCriteria(overrides.analysisCriteria || defaultAnalysisCriteria()),
+    massSources: Array.isArray(overrides.massSources) ? clone(overrides.massSources) : [],
+    sourceRegistry: normalizeSourceRegistry(overrides.sourceRegistry),
+    designBasis: normalizeDesignBasis(overrides.designBasis),
+    projectSetup: normalizeProjectSetup(overrides.projectSetup, 'legacy-unreviewed'),
   };
   return normalizeStories(model);
+}
+
+export function createPracticeModel(overrides = {}) {
+  return createModel({
+    loadCases: defaultPracticeLoadCases(),
+    loadCombinations: defaultPracticeLoadCombinations(),
+    massSources: [],
+    sourceRegistry: [],
+    designBasis: defaultDesignBasis(),
+    projectSetup: defaultProjectSetup('load-setup-required'),
+    ...overrides,
+  });
 }
 
 export function clone(value) {

@@ -285,7 +285,6 @@ function buildCaseChecks(input) {
     tolerances,
   } = input;
   const comboRows = summarizeComboResults(analysis);
-  const maxResidual = Math.max(0, ...comboRows.map((row) => number(row.equilibriumResidual, 0)));
   const required = caseDef.required || {};
   const checks = [
     check(validation.errors.length === 0, 'validation-errors', 'Model validation must have no errors.'),
@@ -293,7 +292,11 @@ function buildCaseChecks(input) {
     check((analysis.combos || []).length >= (required.minCombinations || 1), 'combination-count', 'Required load combinations must be present.'),
     check((caseDef.model.loads || []).length >= (required.minLoads || 0), 'load-count', 'Required model loads must be present.'),
     check(comboRows.length > 0 && comboRows.every((row) => row.ok), 'combo-results', 'Every load combination must solve.'),
-    check(maxResidual < tolerances.equilibriumResidual, 'equilibrium', 'Equilibrium residual must stay within tolerance.'),
+    check(
+      comboRows.every((row) => row.equilibriumResidual < number(row.equilibriumLimit, tolerances.equilibriumResidual)),
+      'equilibrium',
+      'Equilibrium residual must stay within the analysis criterion recorded for each combination.',
+    ),
     check(resultVisuals.nodes.length === caseDef.model.nodes.length, 'visual-nodes', 'Result visuals must include every node.'),
     check(resultVisuals.members.length === caseDef.model.members.length, 'visual-members', 'Result visuals must include every member.'),
     check(resultVisuals.maxDisplacement > 0, 'visual-displacement', 'Result visuals must include a nonzero displacement envelope.'),
@@ -394,6 +397,7 @@ function summarizeComboResults(analysis) {
     maxDisplacement: result.summary?.maxDisplacement ?? result.dmax ?? null,
     maxUtilization: result.maxRatio ?? null,
     equilibriumResidual: result.summary?.equilibriumResidual ?? null,
+    equilibriumLimit: result.summary?.equilibriumLimit ?? null,
     solverResidualNorm: result.summary?.solverResidualNorm ?? null,
     totalLoad: result.summary?.totalLoad || null,
     totalReaction: result.summary?.totalReaction || null,

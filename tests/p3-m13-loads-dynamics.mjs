@@ -313,14 +313,15 @@ const columnMembers = Array.from({ length: 8 }, (_, index) => ({
   buckling: { referenceCompression: 1 },
 }));
 const globalBuckling = estimateGlobalBucklingTrace({ nodes: columnNodes, members: columnMembers });
-const eulerReference = Math.PI ** 2 * 205000000 * 508e-8 / 3 ** 2;
-assert.equal(globalBuckling.status, 'available');
+assert.equal(globalBuckling.status, 'blocked');
+assert.equal(globalBuckling.reasonCode, 'PRELOAD_QUALIFICATION_REQUIRED');
 assert.deepEqual(globalBuckling.contract.tickets, ['P3-T80']);
-assert.ok(Math.abs(globalBuckling.criticalLoadFactor - eulerReference) / eulerReference < 0.02);
+assert.equal(globalBuckling.criticalLoadFactor, null);
 const combinedBuckling = estimateModelBucklingTrace({ nodes: columnNodes, members: columnMembers });
-assert.equal(combinedBuckling.method, 'global-eigenvalue-with-member-euler-screening');
-assert.equal(combinedBuckling.global.status, 'available');
-assert.equal(combinedBuckling.review.status, 'available');
-assert.equal(combinedBuckling.review.agentDecision, 'buckling-trace-ready-for-review');
+assert.equal(combinedBuckling.method, 'member-euler-screening-not-global-eigenvalue');
+assert.equal(combinedBuckling.global.status, 'blocked');
+assert.equal(combinedBuckling.review.status, 'review-required');
+assert.equal(combinedBuckling.review.designBlocked, true);
+assert.equal(combinedBuckling.review.agentDecision, 'review-member-euler-screening-without-global-mode');
 
 console.log(JSON.stringify({ ok: true, version: 'p3-m13-loads-dynamics' }, null, 2));

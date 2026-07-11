@@ -1,5 +1,13 @@
 import { buildShellV1Trace } from './shell/quad4.js';
 import { expandShellsToFrameLinks } from './shell/shellAssembly.js';
+import {
+  attachEquivalentShellScope,
+  buildEquivalentShellScope,
+  EQUIVALENT_SHELL_FORBIDDEN_RESULTS,
+  EQUIVALENT_SHELL_SCOPE_VERSION,
+  EQUIVALENT_SHELL_WARNING,
+  sanitizeEquivalentShellResult,
+} from './shell/equivalentScope.js';
 import { buildSemiRigidRedistributionReport, expandSemiRigidDiaphragms } from './semiRigidDiaphragm.js';
 import { materialOf } from '../core/catalogs.js';
 
@@ -16,7 +24,7 @@ export function wallToMidPierMember(wall) {
     version: WALL_SLAB_EQUIVALENT_VERSION,
     nodes: [{ id: `${wall.id}-b`, x: cx, y: cy, z: z1 }, { id: `${wall.id}-t`, x: cx, y: cy, z: z2 }],
     member: { id: `${wall.id}-pier`, n1: `${wall.id}-b`, n2: `${wall.id}-t`, type: 'frame', secId: wall.secId || `${wall.id}-sec`, matId: wall.matId || 'concrete' },
-    section: { id: wall.secId || `${wall.id}-sec`, type: 'RECT', A: t * length, Iy: length * t ** 3 / 12, Iz: t * length ** 3 / 12, J: t * length * (t ** 2 + length ** 2) / 12, Zy: t * length ** 2 / 6, Zz: length * t ** 2 / 6 },
+    section: { id: wall.secId || `${wall.id}-sec`, version: 1, type: 'RECT', A: t * length, Iy: length * t ** 3 / 12, Iz: t * length ** 3 / 12, J: t * length * (t ** 2 + length ** 2) / 12, Zy: t * length ** 2 / 6, Zz: length * t ** 2 / 6 },
     sourceGeometry: { thickness: t, length, height, center: { x: cx, y: cy }, zRange: [z1, z2] },
   };
 }
@@ -56,6 +64,8 @@ export function recoverWallPierForces(model, analysis) {
       My: maxAbs(member.My),
       Mz: maxAbs(member.Mz),
       source: 'mid-pier-equivalent',
+      warnings: [EQUIVALENT_SHELL_WARNING],
+      limitations: ['Wall pier forces are recovered from a mid-pier equivalent frame member, not shell local stresses.'],
     };
   });
 }
@@ -69,8 +79,15 @@ export function summarizeSemiRigidDiaphragm(model = {}) {
     stiffness: item.inPlaneStiffness || null,
     solverTreatment: item.type === 'semiRigid' ? 'equivalent-truss-brace-grid' : 'rigid-condensed',
     generatedBraceCount: expansion.rows.find((row) => row.id === item.id)?.braceCount || 0,
+    warnings: item.type === 'semiRigid' ? [EQUIVALENT_SHELL_WARNING] : [],
   }));
-  return { version: WALL_SLAB_EQUIVALENT_VERSION, semiRigidCount: rows.filter((row) => row.type === 'semiRigid').length, rows };
+  return {
+    version: WALL_SLAB_EQUIVALENT_VERSION,
+    semiRigidCount: rows.filter((row) => row.type === 'semiRigid').length,
+    rows,
+    warnings: rows.some((row) => row.type === 'semiRigid') ? [EQUIVALENT_SHELL_WARNING] : [],
+    limitations: ['Semi-rigid diaphragm redistribution is an equivalent brace-grid load-path trace, not shell local force recovery.'],
+  };
 }
 
 export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
@@ -93,9 +110,14 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
     slabRedistributionSampleCount: redistribution.sampledRows || 0,
   };
   summary.ticketCoverage = buildTicketCoverage(summary);
-  return {
+  const shellGuard = sanitizeEquivalentShellResult(shell);
+  const equivalentScope = buildEquivalentShellScope(model, {
+    forceActive: summary.wallEquivalentCount > 0 || summary.shellCount > 0 || summary.semiRigidDiaphragmCount > 0,
+  });
+  return attachEquivalentShellScope({
     version: WALL_SLAB_TRACE_VERSION,
     equivalentVersion: WALL_SLAB_EQUIVALENT_VERSION,
+    phase6ScopeVersion: EQUIVALENT_SHELL_SCOPE_VERSION,
     contract: {
       milestone: 'P3-M12',
       tickets: ['P3-T73', 'P3-T74', 'P3-T75'],
@@ -113,6 +135,12 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
         shell: 'preliminary-edge-and-diagonal-frame-links',
         diaphragm: 'equivalent-truss-brace-grid',
       },
+      phase6Scope: {
+        milestone: 'P6-M6',
+        scopeVersion: EQUIVALENT_SHELL_SCOPE_VERSION,
+        warning: EQUIVALENT_SHELL_WARNING,
+        forbiddenResults: EQUIVALENT_SHELL_FORBIDDEN_RESULTS.slice(),
+      },
       reviewFields: ['summary.ticketCoverage', 'wallMidPier.rows', 'wallMidPier.forces', 'shell.rows', 'shell.assembly.rows', 'slab.redistribution'],
       limitations: [
         'full-24-dof-shell-global-stiffness-assembly-not-certified',
@@ -129,13 +157,18 @@ export function buildWallSlabEquivalentTrace(model = {}, analysis = null) {
       forces: pierForces,
     },
     diaphragm,
-    shell,
+    shell: {
+      ...shellGuard.result,
+      assembly: shellAssembly,
+      forbiddenFieldGuard: shellGuard.guard,
+    },
     slab: {
       status: redistribution.status,
       redistribution,
       limitation: 'Semi-rigid diaphragm uses an equivalent truss brace grid for preliminary in-plane redistribution; shell slab membrane assembly remains future hardening.',
+      warnings: [EQUIVALENT_SHELL_WARNING],
     },
-  };
+  }, model, { forceActive: equivalentScope.active });
 }
 
 function buildWallMidPierTraceRow(row, model, pierForces) {
@@ -147,6 +180,8 @@ function buildWallMidPierTraceRow(row, model, pierForces) {
     sourceGeometry: row.sourceGeometry || null,
     section: row.section || null,
     recoveryAvailable: Boolean(force),
+    warnings: [EQUIVALENT_SHELL_WARNING],
+    limitations: ['Wall mid-pier trace is an equivalent frame result; shell local stress around openings is not reported.'],
     cantileverHandcalc: buildCantileverWallHandcalc(row, model, force),
   };
 }

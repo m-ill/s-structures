@@ -107,6 +107,8 @@ export function renderHtmlReport(report) {
     ['Result', report.analysis.resultId || '-'],
     ['Governing', report.analysis.governing || '-'],
     ['P-Delta', report.analysis.pDelta.enabled ? `${formatRatio(report.analysis.pDelta.maxAmplification)} max amp.` : 'Disabled'],
+    ['P-Delta max theta', report.analysis.pDelta.enabled ? formatRatio(report.analysis.pDelta.maxStoryStabilityIndex) : '-'],
+    ['P-Delta max N/Pcr', report.analysis.pDelta.enabled ? formatRatio(report.analysis.pDelta.maxMemberAxialRatio) : '-'],
     ['Modal', report.analysis.modal.ok ? `${report.analysis.modal.modeCount} modes, T1=${format(report.analysis.modal.firstPeriod)}s` : report.analysis.modal.reason || 'Not available'],
   ])}
   <h2>Member Force Envelope</h2>
@@ -215,6 +217,8 @@ function pDeltaSummary(analysis) {
     enabled: !!analysis?.pDelta,
     ok: !!analysis?.pDelta?.ok,
     maxAmplification: number(summary.maxAmplification, 1),
+    maxStoryStabilityIndex: number(summary.maxStoryStabilityIndex),
+    maxMemberAxialRatio: number(summary.maxMemberAxialRatio),
     governingCombo: summary.governing?.comboId || null,
     convergedCount: summary.convergedCount || 0,
     comboCount: summary.comboCount || 0,

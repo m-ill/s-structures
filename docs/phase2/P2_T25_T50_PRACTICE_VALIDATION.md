@@ -6,7 +6,7 @@ This document records the Phase 2 validation layer added after the elastic pract
 
 The goal is not final certified design approval. The goal is to prove that a model can produce a traceable practice review package:
 
-- T25-T26: P-Delta method, settings, convergence, and amplification status.
+- T25-T26: P-Delta method, settings, convergence, amplification status, and load-step curve availability.
 - T30-T31: story result rows, member station rows, foundation reaction rows, and governing member result availability.
 - T41-T42: calculation-package readiness, member design trace coverage, missing load-derivation warning, and result-table linkage.
 - T43: issue registry for validation messages, QA warnings, and member design review items.

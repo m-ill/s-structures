@@ -2,6 +2,7 @@ import { createModel } from '../core/model.js';
 
 export const BENCH_MATERIAL = {
   id: 'bench-steel',
+  version: 1,
   name: 'Benchmark steel',
   E: 200000,
   G: 80000,
@@ -13,6 +14,7 @@ export const BENCH_MATERIAL = {
 
 export const BENCH_SECTION = {
   id: 'bench-rect',
+  version: 1,
   name: 'Benchmark section',
   type: 'BENCH',
   A: 0.02,

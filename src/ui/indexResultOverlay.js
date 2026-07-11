@@ -273,7 +273,7 @@ function buildBadges(visuals, state) {
     const mode = visuals?.modal?.modes?.[state.modeIndex] || visuals?.modal?.modes?.[0];
     badges.push(mode ? `Mode ${mode.index} / ${formatRatio(mode.period)}s` : 'Mode -');
   }
-  if (state.showPDelta) badges.push(`P-Delta step ${state.pDeltaStep}`);
+  if (state.showPDelta) badges.push(`P-Delta iter ${state.pDeltaStep}`);
   return badges;
 }
 

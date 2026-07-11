@@ -1,5 +1,6 @@
 import { buildQuad4ShellElement } from './quad4.js';
 import { materialOf } from '../../core/catalogs.js';
+import { buildEquivalentShellScope, EQUIVALENT_SHELL_WARNING } from './equivalentScope.js';
 
 export const SHELL_FRAME_ASSEMBLY_VERSION = 'p3-t74-shell-frame-assembly';
 
@@ -13,7 +14,7 @@ export function expandShellsToFrameLinks(model = {}) {
     const ids = shellNodeIds(shell);
     const nodes = ids.map((id) => nodeMap[id]).filter(Boolean);
     if (ids.length !== 4 || nodes.length !== 4) {
-      rows.push({ id: shell.id || `SHELL${shellIndex + 1}`, status: 'skipped', reason: 'SHELL_NODE_IDS_REQUIRED', linkCount: 0 });
+      rows.push({ id: shell.id || `SHELL${shellIndex + 1}`, status: 'skipped', reason: 'SHELL_NODE_IDS_REQUIRED', linkCount: 0, warnings: [EQUIVALENT_SHELL_WARNING] });
       return;
     }
     const element = buildQuad4ShellElement({ ...shell, nodes });
@@ -29,9 +30,22 @@ export function expandShellsToFrameLinks(model = {}) {
       sections.push({ id: secId, kind: 'direct', A: Math.max(1e-9, stiffness * L / E), Iy: 1e-12, Iz: 1e-12, J: 1e-12 });
       linkRows.push({ kind, n1: ids[a], n2: ids[b], length: L, materialId: matId, materialE: E, sectionId: secId, area: sections.at(-1).A, targetAxialStiffness: stiffness });
     });
-    rows.push({ id: element.id, status: 'assembled-preliminary', nodeIds: ids, area: element.area, thickness: element.thickness, materialId: shell.matId || 'steel', linkCount: links.length, links: linkRows });
+    rows.push({ id: element.id, status: 'assembled-preliminary', nodeIds: ids, area: element.area, thickness: element.thickness, materialId: shell.matId || 'steel', linkCount: links.length, links: linkRows, warnings: [EQUIVALENT_SHELL_WARNING] });
   });
-  return { version: SHELL_FRAME_ASSEMBLY_VERSION, shellCount: shells.length, linkCount: members.length, rows, members, sections };
+  return {
+    version: SHELL_FRAME_ASSEMBLY_VERSION,
+    shellCount: shells.length,
+    linkCount: members.length,
+    rows,
+    members,
+    sections,
+    equivalentShellScope: buildEquivalentShellScope(model, { forceActive: shells.length > 0 }),
+    warnings: shells.length ? [EQUIVALENT_SHELL_WARNING] : [],
+    limitations: [
+      'Shell frame assembly is an equivalent edge/diagonal link model, not certified shell FEM.',
+      'Generated shell links are solver aids and are not reported as shell local design forces.',
+    ],
+  };
 }
 
 function shellNodeIds(shell = {}) {

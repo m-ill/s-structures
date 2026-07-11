@@ -33,7 +33,8 @@ for (const { spec, model } of items) {
 
   for (const [comboId, combo] of Object.entries(summary.analysis.combos)) {
     assert.equal(combo.ok, true, `${spec.id} ${comboId}`);
-    assert.ok(combo.equilibriumResidual < 1e-8, `${spec.id} ${comboId} residual ${combo.equilibriumResidual}`);
+    assert.equal(combo.equilibriumLimit, 1e-7, `${spec.id} ${comboId} equilibrium limit`);
+    assert.ok(combo.equilibriumResidual < combo.equilibriumLimit, `${spec.id} ${comboId} residual ${combo.equilibriumResidual}`);
     assert.ok(combo.maxDisplacement >= 0, `${spec.id} ${comboId} displacement`);
     assert.ok(Number.isFinite(combo.maxUtilization), `${spec.id} ${comboId} utilization`);
   }

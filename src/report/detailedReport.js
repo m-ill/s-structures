@@ -11,6 +11,7 @@ import { buildNonlinearAnalysisTrace } from '../nonlinear/trace.js';
 import { buildP3IntegratedResults } from '../results/p3IntegratedResults.js';
 import { buildAdvancedElasticTrace } from '../results/advancedElasticTrace.js';
 import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
+import { buildWallSlabEquivalentTrace } from '../solver/wallSlabEquivalent.js';
 import { buildPracticePlatformReadiness } from '../platform/practicePlatformReadiness.js';
 import { buildPracticeValidationReport } from '../platform/practiceValidationReport.js';
 import {
@@ -88,8 +89,10 @@ export function buildDetailedReportData(model, analysis, options = {}) {
       maxUtilization: analysis?.design?.summary?.maxUtilization ?? analysis?.envelope?.maxRatio ?? null,
       governing: analysis?.design?.summary?.governing || analysis?.envelope?.governing?.maxUtilization || null,
     },
+    analysisCases: summarizeAnalysisCases(model, options.analysisResults || options.analysisCaseResults || {}),
     combinationResults,
     advancedElasticTrace: buildAdvancedElasticTrace(model, analysis),
+    equivalentShellTrace: buildWallSlabEquivalentTrace(model, analysis),
     designDemandPackage: analysis?.design?.demandPackage || buildDesignDemandPackage(model, analysis),
     serviceability: buildServiceabilityDriftReport(model, analysis, options.serviceability || {}),
     resultPostprocessing: buildResultPostprocessing(model, analysis, options.resultPostprocessing || {}),
@@ -107,6 +110,132 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     messages: collectMessages(analysis),
     actionItems: buildActionItems(model, analysis, memberChecks),
   };
+}
+
+function summarizeAnalysisCases(model, analysisResults = {}) {
+  const cases = model?.analysisCases || [];
+  const results = analysisResults || {};
+  const rows = cases.map((item) => {
+    const result = results[item.id] || null;
+    const summary = result?.summary || item.lastRun?.summary || {};
+    return {
+      id: item.id,
+      name: item.name || item.id,
+      kind: item.kind,
+      status: item.status || 'not-run',
+      lastRunStatus: result?.status || item.lastRun?.status || null,
+      view: result?.view || null,
+      summaryText: formatAnalysisCaseSummary(item.kind, summary),
+      detail: formatAnalysisCaseDetail(item, result),
+    };
+  });
+  return {
+    caseCount: cases.length,
+    resultCount: Object.keys(results).length,
+    notRunCount: rows.filter((row) => row.detail.status === 'not-run').length,
+    rows,
+  };
+}
+
+function formatAnalysisCaseSummary(kind, summary = {}) {
+  if (!summary || !Object.keys(summary).length) return '-';
+  if (kind === 'static') return `combos ${summary.comboCount ?? '-'}, pDelta ${summary.pDelta ? 'yes' : 'no'}`;
+  if (kind === 'modal') return `modes ${summary.modeCount ?? '-'}, T1 ${format(summary.firstPeriod)}`;
+  if (kind === 'responseSpectrum') return `${summary.method || '-'} ${Array.isArray(summary.directions) ? summary.directions.join('/') : '-'}, mass ${formatRatio(summary.maxParticipatingMassRatio)}`;
+  if (kind === 'buckling') return `CLF ${format(summary.criticalLoadFactor)}, ${summary.status || '-'}`;
+  if (kind === 'linearTha' || kind === 'nlth') return `rows ${summary.rowCount ?? '-'}, max d ${formatLength(summary.maxDisplacement)}`;
+  if (kind === 'pushover') return `steps ${summary.stepCount ?? '-'}, max V ${formatForce(summary.maxBaseShear)}`;
+  return JSON.stringify(summary);
+}
+
+function formatAnalysisCaseDetail(item, result) {
+  if (!result) {
+    return {
+      status: 'not-run',
+      headline: 'not run',
+      rows: [['Result', 'not run']],
+      limitations: ['Analysis case is defined but has not been executed in the current result set.'],
+    };
+  }
+  if (result.status === 'failed' || result.error?.message) {
+    return {
+      status: result.status || 'failed',
+      headline: result.error?.message || result.message || 'failed',
+      rows: [['Message', result.error?.message || result.message || 'failed']],
+      limitations: [],
+    };
+  }
+  const payload = result.payload || {};
+  const summary = result.summary || {};
+  const base = {
+    status: result.status || 'ok',
+    headline: formatAnalysisCaseSummary(item.kind, summary),
+    rows: [],
+    limitations: [],
+  };
+  if (item.kind === 'modal') {
+    const modes = payload.modes || [];
+    base.rows = modes.slice(0, 8).map((mode) => [
+      `Mode ${mode.index ?? mode.id ?? '-'}`,
+      `T ${format(mode.period)} s, Hz ${format(mode.frequencyHz)}, mass X ${formatRatio(mode.participatingMassRatioX ?? mode.participatingMassRatio)}, mass Y ${formatRatio(mode.participatingMassRatioY)}`,
+    ]);
+    if (!base.rows.length) base.rows = [['Modes', 'No modal rows available']];
+    return base;
+  }
+  if (item.kind === 'responseSpectrum') {
+    const combined = Object.entries(payload.combined || {});
+    base.rows = combined.map(([direction, row]) => [
+      direction,
+      `mass ${formatRatio(row.participatingMassRatio)}, max modal d ${formatLength(row.maxModalDisplacement)}, combined d ${formatLength(row.combinedDisplacement ?? row.displacement)}`,
+    ]);
+    if (!base.rows.length) base.rows = [['Response spectrum', payload.review?.missing?.join(', ') || 'No combined response rows available']];
+    if (payload.review?.status) base.limitations.push(`Review status: ${payload.review.status}`);
+    return base;
+  }
+  if (item.kind === 'buckling') {
+    base.rows = [
+      ['Critical load factor', format(payload.criticalLoadFactor)],
+      ['Reference compression rows', String((payload.referenceCompression || []).length)],
+      ['Status', payload.status || result.status || '-'],
+    ];
+    if (!payload.modeShape) base.limitations.push('Buckling mode shape is not available in the current trace.');
+    return base;
+  }
+  if (item.kind === 'pushover') {
+    base.rows = [
+      ['Steps', String(payload.summary?.stepCount || (payload.curve || []).length || 0)],
+      ['Max base shear', formatForce(payload.summary?.maxBaseShear)],
+      ['Max control displacement', formatLength(payload.summary?.maxControlDisplacement)],
+      ['Yielded / ultimate members', `${payload.summary?.yieldedMemberCount || 0} / ${payload.summary?.ultimateMemberCount || 0}`],
+    ];
+    base.limitations.push('Pushover case is preliminary and requires engineering review before design acceptance.');
+    return base;
+  }
+  if (item.kind === 'nlth' || item.kind === 'linearTha') {
+    const rowCount = summary.rowCount ?? ((payload.rows || []).length || 0);
+    const maxDisplacement = summary.maxDisplacement ?? (payload.maxDisplacement ?? payload.summary?.maxAbsDisplacement);
+    base.rows = [
+      ['Rows', String(rowCount)],
+      ['Max displacement', formatLength(maxDisplacement)],
+      ['dt', format(payload.dt)],
+      ['Converged', payload.converged == null ? '-' : payload.converged ? 'yes' : 'review'],
+    ];
+    base.limitations.push(item.kind === 'nlth'
+      ? 'NLTH case uses the current preliminary SDOF/bilinear trace.'
+      : 'Linear THA case uses modal superposition trace rows.');
+    return base;
+  }
+  if (item.kind === 'static') {
+    const comboCount = summary.comboCount ?? (Object.keys(payload.byCombo || {}).length || 0);
+    base.rows = [
+      ['Combos', String(comboCount)],
+      ['P-Delta', summary.pDelta ? 'yes' : 'no'],
+      ['Envelope', payload.envelope ? 'available' : 'not available'],
+    ];
+    return base;
+  }
+  base.rows = [['Summary', base.headline || '-']];
+  return base;
 }
 
 export function renderDetailedReportHtml(report) {
@@ -155,6 +284,7 @@ export function renderDetailedReportHtml(report) {
     ['Errors', report.analysis.errorCount],
   ])}
   <div class="note warn">${escapeHtml(report.scope.statement)}</div>
+  ${renderEquivalentShellScope(report.equivalentShellTrace)}
 
   <h2>1. Model Basis</h2>
   ${renderTable(['Item', 'Value'], [
@@ -547,6 +677,19 @@ function renderServiceability(serviceability) {
   ].join('');
 }
 
+function renderEquivalentShellScope(trace) {
+  const scope = trace?.equivalentShellScope;
+  if (!scope?.active) return '';
+  return `
+    <div class="note warn" data-report-badge="equivalent-shell-scope">
+      <strong>${escapeHtml(scope.badge)}</strong><br>
+      ${escapeHtml(scope.warning)}
+      ${renderTable(['Allowed global result', 'Status'], scope.allowedResults.map((item) => [item, 'allowed']))}
+      ${renderTable(['Forbidden local/shell result', 'Report status'], scope.forbiddenResults.map((item) => [item, 'not reported']))}
+    </div>
+  `;
+}
+
 function renderPhase3Integrated(integrated) {
   if (!integrated) return '<div class="note">No Phase 3 integrated trace is available.</div>';
   return [
@@ -610,6 +753,35 @@ function renderAdvancedElasticTrace(trace) {
       formatRatio(row.amplification),
       row.iterationCount,
       row.reason || '-',
+    ])),
+    renderTable(['Combo', 'Load steps', 'Stories', 'Members', 'Max theta', 'Max N/Pcr'], (trace.pDelta.curves?.combos || []).map((row) => [
+      row.comboId,
+      row.globalPointCount,
+      row.storyCount,
+      row.memberCount,
+      formatRatio(row.summary?.maxStoryStabilityIndex),
+      formatRatio(row.summary?.maxMemberAxialRatio),
+    ])),
+    renderTable(['Combo', 'Dir', 'Story', 'Theta', 'BΔ', 'PΔ shear', 'PΔ moment', 'Status'], (trace.pDelta.design?.rows || []).map((row) => [
+      row.comboId,
+      row.direction,
+      row.governingStory,
+      formatRatio(row.maxTheta),
+      formatRatio(row.maxBDelta),
+      formatForce(row.maxPDeltaShear),
+      formatMoment(row.maxPDeltaMoment),
+      statusLabel(row.status),
+    ])),
+    renderTable(['Combo', 'Dir', 'Story', 'P', 'Drift', 'V', 'PΔ shear', 'Theta', 'BΔ'], (trace.pDelta.design?.storyRows || []).slice(0, 30).map((row) => [
+      row.comboId,
+      row.direction,
+      row.storyId,
+      formatForce(row.gravityLoad),
+      formatLength(row.storyDrift),
+      formatForce(row.storyShear),
+      formatForce(row.pDeltaShear),
+      formatRatio(row.theta),
+      row.bDelta == null ? '-' : formatRatio(row.bDelta),
     ])),
     renderTable(['Mode', 'T', 'Hz', 'Mass X', 'Mass Y'], trace.modal.modes.map((row) => [
       row.id,

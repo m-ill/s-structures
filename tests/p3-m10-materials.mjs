@@ -183,12 +183,12 @@ const scopePriorityAudit = buildLibraryAudit({
 });
 assert.equal(scopePriorityAudit.resolvedReferences.materials[0].source.scope, 'project');
 assert.equal(scopePriorityAudit.resolvedReferences.sections[0].source.scope, 'project');
-assert.equal(resolveSectionRecord(null, 'H-400x200x8x13@1').source.db, 'KS-H-2024');
+assert.equal(resolveSectionRecord(null, 'H-400x200x8x13@1').source.db, 's-structures-parametric-h-seed-v1');
 const builtinReport = buildMaterialLibraryReport({
   members: [{ id: 'M1', matId: 'steel@1', secId: 'H-400x200x8x13@1' }],
 });
 assert.equal(builtinReport.sections[0].sourceTrace.scope, 'builtin');
-assert.equal(builtinReport.sections[0].sourceTrace.db, 'KS-H-2024');
+assert.equal(builtinReport.sections[0].sourceTrace.db, 's-structures-parametric-h-seed-v1');
 assert.equal(builtinReport.sections[0].sourceTrace.resolvedLabel, 'H-400x200x8x13@1');
 assert.equal(builtinReport.sections[0].sourceTrace.referenceStatus, 'active');
 assert.equal(builtinReport.coverage.sectionProvenance.dbCount, 1);

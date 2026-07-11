@@ -22,6 +22,7 @@ assert.equal(parsed.ok, true, JSON.stringify(parsed.validation.errors, null, 2))
 assert.equal(parsed.model.schemaVersion, SCHEMA_VERSION);
 assert.equal(parsed.model.nodes.length, sample.nodes.length);
 assert.equal(parsed.model.members.length, sample.members.length);
+assert.ok(Array.isArray(parsed.model.analysisCases), 'roundtrip should include analysisCases');
 
 const parsedAnalysis = analyzeModel(parsed.model);
 assert.equal(parsedAnalysis.ok, true, JSON.stringify(parsedAnalysis.validation.errors, null, 2));
@@ -42,7 +43,8 @@ const migrated = migrateModel(legacy);
 assert.equal(migrated.model.schemaVersion, SCHEMA_VERSION);
 assert.ok(migrated.migrations.length >= 2, 'legacy migration should report load case and combination changes');
 assert.ok(migrated.model.loadCases.some((loadCase) => loadCase.id === 'W'));
-assert.ok(migrated.model.loadCombinations.some((combo) => combo.factors.W === 1));
+assert.deepEqual(migrated.model.loadCombinations, [], 'migration must not synthesize an unverified unity combination for a W-only legacy model');
+assert.ok(Array.isArray(migrated.model.analysisCases), 'legacy migration should create analysisCases');
 assert.equal(migrated.model.members[0].releases.j, 'pin');
 
 const badJson = parseModelJson('{bad json');
@@ -81,6 +83,8 @@ const invalidCases = [
   ['duplicate combo id', mutateValid((m) => { m.loadCombinations.push({ ...m.loadCombinations[0], factors: { ...m.loadCombinations[0].factors } }); }), ERROR_CODES.DUPLICATE_COMBO_ID],
   ['bad combo factors', mutateValid((m) => { m.loadCombinations[0].factors.D = Number.NaN; }), ERROR_CODES.BAD_COMBO_FACTORS],
   ['blank combo factors', mutateValid((m) => { m.loadCombinations[0].factors.D = ''; }), ERROR_CODES.BAD_COMBO_FACTORS],
+  ['bad analysis case kind', mutateValid((m) => { m.analysisCases = [{ id: 'AC1', kind: 'unknown', status: 'not-run' }]; }), ERROR_CODES.BAD_ANALYSIS_CASE_KIND],
+  ['bad analysis case status', mutateValid((m) => { m.analysisCases = [{ id: 'AC1', kind: 'static', status: 'done' }]; }), ERROR_CODES.BAD_ANALYSIS_CASE_STATUS],
   ['no support', mutateValid((m) => { m.nodes.forEach((node) => { node.support = null; }); }), ERROR_CODES.NO_SUPPORT],
 ];
 

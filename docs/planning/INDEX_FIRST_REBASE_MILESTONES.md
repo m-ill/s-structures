@@ -104,7 +104,7 @@ Scope:
 
 Acceptance:
 - One visible result-control system exists: the original toolbar.
-- P-Delta step playback uses the original player UI.
+- P-Delta internal iteration playback uses the original player UI.
 - Selecting a member shows result/design details in the existing property/result panel.
 
 ### M26 - Existing Modeler E2E
@@ -185,4 +185,3 @@ Acceptance:
 Implement M22 first.
 
 M22 is a cleanup/stabilization milestone, not a new feature milestone. It should make the app usable again by restoring the original `index.html` default UI and moving the new floating panels/overlay controls behind a feature flag.
-

@@ -23,6 +23,8 @@ assert.equal(fixture.members.length, 8);
 assert.equal(fixture.loads.length, 2);
 
 const fixtureSignature = productModelSignature(fixture);
+assert.equal(fixtureSignature.algorithm, 'SHA-256');
+assert.match(fixtureSignature.digest, /^[0-9a-f]{64}$/);
 const book = createProductBook(fixture, {
   savedAt: '2026-06-26T00:00:00.000Z',
   fixtureVersion: 'test-fixture',
@@ -31,6 +33,16 @@ assert.deepEqual(book.signature, fixtureSignature);
 assert.deepEqual(productModelSignature(extractProductModel(book)), fixtureSignature);
 assert.deepEqual(productModelSignature(extractProductModel({ book })), fixtureSignature);
 assert.deepEqual(productModelSignature(extractProductModel(JSON.stringify(fixture))), fixtureSignature);
+
+const changedFixture = structuredClone(fixture);
+changedFixture.sections[0].A *= 2;
+assert.notEqual(productModelSignature(changedFixture).digest, fixtureSignature.digest);
+const tamperedBook = structuredClone(book);
+tamperedBook.pages[0].model.loadCombinations[0].factors.D = 99;
+assert.throws(
+  () => extractProductModel(tamperedBook),
+  (error) => error.code === 'PRODUCT_MODEL_SIGNATURE_MISMATCH',
+);
 
 const autosave = createAutosavePayload(fixture, { savedAt: '2026-06-26T00:00:01.000Z' });
 assert.deepEqual(autosave.signature, fixtureSignature);

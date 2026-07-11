@@ -3,6 +3,7 @@ import { getNativeUiState } from './indexNativeRibbon.js';
 import { listAgentControls } from './indexAgentControlsDom.js';
 import { summarizeAgentModelState } from './indexAgentActions.js';
 import { availableAgentActions } from './indexAgentActionCatalog.js';
+import { buildAnalysisCriteriaTrace } from '../core/analysisCriteria.js';
 
 export function buildAgentSnapshot(target, context) {
   const {
@@ -31,6 +32,8 @@ export function buildAgentSnapshot(target, context) {
     productHardening: target.SStructuresProductHardening?.getState?.() || null,
     agentCommandBridge: target.SStructuresAgentCommandBridge?.getState?.() || null,
     runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
+    analysisCenter: summarizeAnalysisCenter(target, model),
+    elasticResultPopup: target.SStructuresElasticResultPopup?.getState?.() || null,
     agent: model ? summarizeAgentModelState(model, agentState) : { selection: { type: null, id: null, exists: false } },
     controls: target.document ? listAgentControls(target.document) : [],
     availableActions: availableAgentActions(),
@@ -54,6 +57,8 @@ export function buildAgentScreenState(target) {
     productHardening: target.SStructuresProductHardening?.getState?.() || null,
     agentCommandBridge: target.SStructuresAgentCommandBridge?.getState?.() || null,
     runtime: target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null,
+    analysisCenter: summarizeAnalysisCenter(target, typeof target?.model === 'function' ? target.model() : null),
+    elasticResultPopup: target.SStructuresElasticResultPopup?.getState?.() || null,
     controls: target.document ? listAgentControls(target.document) : [],
   };
 }
@@ -69,6 +74,7 @@ function summarizeModel(model) {
       combinationCount: 0,
     };
   }
+  const analysisCriteria = buildAnalysisCriteriaTrace(model);
   return {
     available: true,
     schemaVersion: model.schemaVersion || null,
@@ -82,6 +88,39 @@ function summarizeModel(model) {
       includeGeometricStiffness: !!model.analysisSettings?.includeGeometricStiffness,
       responseSpectrumEnabled: model.analysisSettings?.responseSpectrum?.enabled !== false,
     },
+    analysisCriteria: {
+      version: analysisCriteria.version,
+      preset: analysisCriteria.preset,
+      overrideCount: analysisCriteria.overrideCount,
+      legacyFallbackCount: analysisCriteria.legacyFallbackCount,
+      warningCount: analysisCriteria.warningCount,
+    },
+    analysisCaseCount: model.analysisCases?.length || 0,
+  };
+}
+
+function summarizeAnalysisCenter(target, model) {
+  const cases = model?.analysisCases || [];
+  const results = target.__SStructuresAnalysisResults || {};
+  const resultKeys = Object.keys(results);
+  const latest = resultKeys
+    .map((key) => results[key])
+    .sort((a, b) => String(b.completedAt || '').localeCompare(String(a.completedAt || '')))[0] || null;
+  return {
+    available: !!model,
+    caseCount: cases.length,
+    statuses: cases.reduce((acc, item) => {
+      acc[item.status || 'not-run'] = (acc[item.status || 'not-run'] || 0) + 1;
+      return acc;
+    }, {}),
+    resultCount: resultKeys.length,
+    latestResult: latest ? {
+      caseId: latest.caseId,
+      kind: latest.kind,
+      status: latest.status,
+      view: latest.view,
+      summary: latest.summary,
+    } : null,
   };
 }
 
@@ -140,6 +179,7 @@ function summarizePanels(target) {
   return {
     resultsOpen: getPanelOpen(target.SStructuresResultsPanel),
     pushoverOpen: getPanelOpen(target.SStructuresPushoverPanel),
+    elasticResultsOpen: target.SStructuresElasticResultPopup?.getState?.().open === true,
   };
 }
 

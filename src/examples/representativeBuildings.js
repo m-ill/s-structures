@@ -155,8 +155,16 @@ export const REPRESENTATIVE_BUILDING_SPECS = [
 export function createRepresentativeBuildingModel(specOrId) {
   const spec = resolveSpec(specOrId);
   const model = createModel();
+  model.analysisCriteria = {
+    ...model.analysisCriteria,
+    criteria: {
+      ...(model.analysisCriteria?.criteria || {}),
+      audit: { equilibriumRelative: 1e-7 },
+    },
+  };
   model.sections.push({
     id: 'box400h',
+    version: 1,
     name: 'BOX-400x400x16 equivalent',
     type: 'BOX',
     dims: { H: 400, B: 400, t: 16 },
@@ -273,6 +281,7 @@ export function summarizeRepresentativeBuilding(spec, model, analysis) {
     maxDisplacement: result.summary?.maxDisplacement ?? null,
     maxUtilization: result.maxRatio ?? null,
     equilibriumResidual: result.summary?.equilibriumResidual ?? null,
+    equilibriumLimit: result.summary?.equilibriumLimit ?? null,
     totalLoad: result.summary?.totalLoad || null,
     totalReaction: result.summary?.totalReaction || null,
   }]));

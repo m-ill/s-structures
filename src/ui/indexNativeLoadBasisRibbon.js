@@ -28,6 +28,9 @@ export function populateNativeLoadBasisControls(target, panel) {
   panel.appendChild(marker);
 
   const group = createRibbonGroup(doc, 'elastic-load-basis', 'Load basis');
+  group.id = 'ssKdsPanel';
+  group.setAttribute('id', 'ssKdsPanel');
+  group.setAttribute('data-agent-id', 'native-kds-panel');
   const items = group.querySelector('[data-ss-ribbon-items]');
 
   const occupancy = createSelectControl(doc, {
@@ -36,8 +39,18 @@ export function populateNativeLoadBasisControls(target, panel) {
     values: LOAD_BASIS_OCCUPANCIES,
   });
   occupancy.setAttribute('data-agent-id', 'native-load-basis-occupancy');
-  occupancy.querySelector?.('select')?.addEventListener?.('change', () => fillNativeOccupancyDefaults(target));
+  occupancy.querySelector?.('select')?.addEventListener?.('change', () => {
+    syncLoadBasisToKdsAlias(target);
+    fillNativeOccupancyDefaults(target);
+  });
   items.appendChild(occupancy);
+  items.appendChild(createKdsSelect(doc, 'ssKdsOccupancy', LOAD_BASIS_OCCUPANCIES, 'office', () => {
+    syncKdsAliasToLoadBasis(target);
+    fillNativeOccupancyDefaults(target);
+  }));
+  items.appendChild(createKdsSelect(doc, 'ssKdsRegion', ['seoul', 'central', 'southern', 'coastal'], 'seoul'));
+  items.appendChild(createKdsSelect(doc, 'ssKdsSoil', ['S1', 'S2', 'S3', 'S4', 'S5'], 'S2'));
+  items.appendChild(createKdsSelect(doc, 'ssKdsImportance', ['1.0', '1.2', '1.5'], '1.0'));
 
   for (const field of LOAD_BASIS_FIELDS) {
     const control = createNumberControl(doc, {
@@ -61,6 +74,15 @@ export function populateNativeLoadBasisControls(target, panel) {
   preview.innerHTML = '<span class="ss-ribbon-icon">?</span><span>Preview</span>';
   preview.addEventListener?.('click', () => previewNativeDesignBasis(target));
   items.appendChild(preview);
+  const kdsPreview = doc.createElement('button');
+  kdsPreview.type = 'button';
+  kdsPreview.id = 'ssKdsPreview';
+  kdsPreview.className = 'ss-ribbon-command';
+  kdsPreview.setAttribute('data-ss-ribbon-item', 'kds-preview-design-basis-loads');
+  kdsPreview.setAttribute('data-agent-id', 'native-kds-preview');
+  kdsPreview.innerHTML = '<span class="ss-ribbon-icon">K</span><span>KDS Preview</span>';
+  kdsPreview.addEventListener?.('click', () => previewNativeDesignBasis(target));
+  items.appendChild(kdsPreview);
 
   const apply = doc.createElement('button');
   apply.type = 'button';
@@ -71,6 +93,36 @@ export function populateNativeLoadBasisControls(target, panel) {
   apply.innerHTML = '<span class="ss-ribbon-icon">L</span><span>Apply</span>';
   apply.addEventListener?.('click', () => applyNativeDesignBasisLoads(target));
   items.appendChild(apply);
+  const kdsApply = doc.createElement('button');
+  kdsApply.type = 'button';
+  kdsApply.id = 'ssKdsApply';
+  kdsApply.className = 'ss-ribbon-command';
+  kdsApply.setAttribute('data-ss-ribbon-item', 'kds-apply-design-basis-loads');
+  kdsApply.setAttribute('data-agent-id', 'native-kds-apply');
+  kdsApply.innerHTML = '<span class="ss-ribbon-icon">K</span><span>KDS Apply</span>';
+  kdsApply.addEventListener?.('click', () => applyNativeDesignBasisLoads(target));
+  items.appendChild(kdsApply);
+
+  const massInput = doc.createElement('input');
+  massInput.id = 'ssFloorMassPerFloor';
+  massInput.setAttribute('id', 'ssFloorMassPerFloor');
+  massInput.type = 'number';
+  massInput.value = '10';
+  massInput.min = '0';
+  massInput.step = '0.1';
+  massInput.setAttribute('data-ss-ribbon-item', 'floor-mass-per-floor');
+  massInput.setAttribute('data-agent-id', 'native-floor-mass-per-floor');
+  items.appendChild(massInput);
+
+  const massApply = doc.createElement('button');
+  massApply.type = 'button';
+  massApply.id = 'ssFloorMassGenerate';
+  massApply.className = 'ss-ribbon-command';
+  massApply.setAttribute('data-ss-ribbon-item', 'generate-floor-mass');
+  massApply.setAttribute('data-agent-id', 'native-generate-floor-mass');
+  massApply.innerHTML = '<span class="ss-ribbon-icon">M</span><span>Floor Mass</span>';
+  massApply.addEventListener?.('click', () => generateNativeFloorMass(target));
+  items.appendChild(massApply);
 
   const status = doc.createElement('span');
   status.id = 'ssLoadBasisStatus';
@@ -79,6 +131,14 @@ export function populateNativeLoadBasisControls(target, panel) {
   status.setAttribute('data-ss-ribbon-item', 'load-basis-status');
   status.setAttribute('data-agent-id', 'native-load-basis-status');
   items.appendChild(status);
+  const massStatus = doc.createElement('span');
+  massStatus.id = 'ssFloorMassStatus';
+  massStatus.setAttribute('id', 'ssFloorMassStatus');
+  massStatus.className = 'ss-ribbon-status';
+  massStatus.textContent = 'Mass not generated';
+  massStatus.setAttribute('data-ss-ribbon-item', 'floor-mass-status');
+  massStatus.setAttribute('data-agent-id', 'native-floor-mass-status');
+  items.appendChild(massStatus);
 
   panel.appendChild(group);
   initializeNativeLoadBasisControls(target);
@@ -94,6 +154,7 @@ export function summarizeNativeLoadBasis(target) {
     previewSummary: view.previewSummary || null,
     appliedSummary: view.appliedSummary || null,
     generatedModelLoadCount: view.generatedModelLoadCount || 0,
+    combinationCount: view.combinationCount || 0,
   };
 }
 
@@ -109,7 +170,7 @@ function initializeNativeLoadBasisControls(target) {
 
 function fillNativeOccupancyDefaults(target) {
   const doc = target?.document;
-  const occupancy = doc?.getElementById?.('ssLoadBasisOccupancy')?.value || 'office';
+  const occupancy = doc?.getElementById?.('ssKdsOccupancy')?.value || doc?.getElementById?.('ssLoadBasisOccupancy')?.value || 'office';
   writeNativeDesignBasisControls(doc, defaultNativeDesignBasis(occupancy));
 }
 
@@ -134,8 +195,10 @@ function applyNativeDesignBasisLoads(target) {
   try {
     const designBasis = readNativeDesignBasisInput(target.document);
     const result = agent.execute?.('applyDesignBasisLoads', { designBasis });
+    const combos = agent.execute?.('applyKdsRuleBasedLoadCombinations', { append: false });
     const state = agent.getDesignBasisInput?.({ designBasis }) || { basis: designBasis, applied: result?.loadEstimation };
     target.SStructuresNativeLoadBasisView = buildNativeLoadBasisView(state, 'applied');
+    target.SStructuresNativeLoadBasisView.combinationCount = combos?.kdsLoadCombinations?.appliedCount || combos?.kdsLoadCombinations?.combinationIds?.length || 0;
     updateNativeLoadBasisStatus(target);
     return target.SStructuresNativeLoadBasisView;
   } catch (error) {
@@ -145,7 +208,10 @@ function applyNativeDesignBasisLoads(target) {
 
 function readNativeDesignBasisInput(doc) {
   const basis = {
-    occupancy: doc?.getElementById?.('ssLoadBasisOccupancy')?.value || 'office',
+    occupancy: doc?.getElementById?.('ssKdsOccupancy')?.value || doc?.getElementById?.('ssLoadBasisOccupancy')?.value || 'office',
+    region: doc?.getElementById?.('ssKdsRegion')?.value || 'seoul',
+    soil: doc?.getElementById?.('ssKdsSoil')?.value || 'S2',
+    importance: Number(doc?.getElementById?.('ssKdsImportance')?.value || 1),
   };
   for (const field of LOAD_BASIS_FIELDS) {
     basis[field.id] = readNumber(doc?.getElementById?.(field.controlId), field.value);
@@ -157,6 +223,8 @@ function writeNativeDesignBasisControls(doc, basis = {}) {
   const next = { ...defaultNativeDesignBasis(basis.occupancy), ...basis };
   const occupancy = doc?.getElementById?.('ssLoadBasisOccupancy');
   if (occupancy) occupancy.value = next.occupancy || 'office';
+  const kdsOccupancy = doc?.getElementById?.('ssKdsOccupancy');
+  if (kdsOccupancy) kdsOccupancy.value = next.occupancy || 'office';
   for (const field of LOAD_BASIS_FIELDS) {
     const input = doc?.getElementById?.(field.controlId);
     if (input) input.value = formatControlNumber(next[field.id] ?? field.value);
@@ -188,7 +256,8 @@ function updateNativeLoadBasisStatus(target) {
   const count = view.generatedModelLoadCount || summary.generatedLoadCount || 0;
   const dead = formatNumber(summary.totalDead || 0);
   const wind = formatNumber(summary.totalWindX || 0);
-  status.textContent = `${view.status}: ${count} loads, D=${dead}, WX=${wind}`;
+  const combos = view.combinationCount ? `, combos=${view.combinationCount}` : '';
+  status.textContent = `${view.status}: ${count} loads${combos}, D=${dead}, WX=${wind}`;
 }
 
 function setNativeLoadBasisError(target, message) {
@@ -239,4 +308,50 @@ function formatNumber(value) {
   if (Math.abs(number) >= 100) return number.toFixed(0);
   if (Math.abs(number) >= 10) return number.toFixed(1);
   return number.toFixed(3);
+}
+
+function createKdsSelect(doc, id, values, value, onChange) {
+  const select = doc.createElement('select');
+  select.id = id;
+  select.setAttribute('id', id);
+  select.setAttribute('data-ss-ribbon-item', id);
+  select.setAttribute('data-agent-id', `native-${id}`);
+  for (const item of values) {
+    const option = doc.createElement('option');
+    option.value = item;
+    option.textContent = item;
+    select.appendChild(option);
+  }
+  select.value = value;
+  if (onChange) select.addEventListener?.('change', onChange);
+  return select;
+}
+
+function syncKdsAliasToLoadBasis(target) {
+  const doc = target?.document;
+  const source = doc?.getElementById?.('ssKdsOccupancy');
+  const targetInput = doc?.getElementById?.('ssLoadBasisOccupancy');
+  if (source && targetInput) targetInput.value = source.value;
+}
+
+function syncLoadBasisToKdsAlias(target) {
+  const doc = target?.document;
+  const source = doc?.getElementById?.('ssLoadBasisOccupancy');
+  const targetInput = doc?.getElementById?.('ssKdsOccupancy');
+  if (source && targetInput) targetInput.value = source.value;
+}
+
+function generateNativeFloorMass(target) {
+  const agent = target?.SStructuresAgent;
+  const doc = target?.document;
+  const status = doc?.getElementById?.('ssFloorMassStatus');
+  if (!agent) {
+    if (status) status.textContent = 'Agent unavailable';
+    return null;
+  }
+  const massPerFloor = readNumber(doc?.getElementById?.('ssFloorMassPerFloor'), 10);
+  const result = agent.execute?.('generateFloorMass', { massPerFloor });
+  const action = result?.actionResult || {};
+  if (status) status.textContent = `Mass generated: ${action.updatedNodes || 0} nodes, ${action.floorCount || 0} floors`;
+  return action;
 }

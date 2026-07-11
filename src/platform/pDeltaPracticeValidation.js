@@ -7,7 +7,13 @@ export function buildPDeltaPracticeValidation(model, analysis) {
   const pDelta = trace.pDelta;
   const failed = pDelta.combos.filter((row) => !row.converged);
   const high = pDelta.combos.filter((row) => row.amplification > pDelta.settings.maxAmplification);
-  const status = !pDelta.enabled ? 'WARN' : failed.length ? 'NG' : high.length ? 'WARN' : 'OK';
+  const curveCombos = pDelta.curves?.combos || [];
+  const missingCurves = pDelta.enabled && !curveCombos.length;
+  const designStatus = pDelta.design?.summary?.status || 'N/A';
+  const status = !pDelta.enabled ? 'WARN'
+    : failed.length || designStatus === 'NG' ? 'NG'
+      : high.length || missingCurves || designStatus === 'WARN' ? 'WARN'
+        : 'OK';
   return {
     version: PDELTA_PRACTICE_VALIDATION_VERSION,
     tickets: ['T25', 'T26'],
@@ -17,7 +23,16 @@ export function buildPDeltaPracticeValidation(model, analysis) {
     settings: pDelta.settings,
     comboCount: pDelta.combos.length,
     convergedCount: pDelta.combos.filter((row) => row.converged).length,
+    curveComboCount: curveCombos.length,
+    designStatus,
+    designRowCount: pDelta.design?.rows?.length || 0,
+    designStoryRowCount: pDelta.design?.storyRows?.length || 0,
+    designMaxTheta: pDelta.design?.summary?.maxTheta || 0,
+    designMaxBDelta: pDelta.design?.summary?.maxBDelta || 1,
+    maxStoryStabilityIndex: Math.max(0, ...curveCombos.map((row) => row.summary?.maxStoryStabilityIndex || 0)),
+    maxMemberAxialRatio: Math.max(0, ...curveCombos.map((row) => row.summary?.maxMemberAxialRatio || 0)),
     failedComboIds: failed.map((row) => row.comboId),
     highAmplificationComboIds: high.map((row) => row.comboId),
+    missingCurves,
   };
 }

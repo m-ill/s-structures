@@ -138,7 +138,10 @@ runCase('released simple beam UDL', createReleasedSimpleBeamUdl(), (result, expe
 
 const mechanism = analyzeModel(createMechanismPinnedCantilever().model);
 assert.equal(mechanism.ok, false, 'pinned cantilever mechanism should fail analysis');
-assert.ok(mechanism.validation.errors.some((error) => error.code === 'SINGULAR'), 'mechanism should report SINGULAR');
+assert.ok(
+  mechanism.validation.errors.some((error) => ['SINGULAR', 'UNBOUNDED_DISPLACEMENT'].includes(error.code)),
+  'mechanism should preserve the component stability failure reason',
+);
 assert.equal(mechanism.byCombo.D_ONLY.ok, false, 'mechanism combo should be marked failed');
 assert.equal(mechanism.byCombo.D_ONLY.reason, 'NO_SOLVED_COMPONENT');
 

@@ -1,4 +1,6 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
+import { buildFixedEndLoad, fixedEndTraceRow } from '../loads/fixedEnd/index.js';
+import { memberAxes } from './linear3dElement.js';
 
 export const ELASTIC_EXPANSION_VERSION = 'p3-m11-elastic-expansion';
 
@@ -6,6 +8,7 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
   const segments = Math.max(2, options.segments || 8);
   const lengths = memberLengths(model);
   const expanded = [];
+  const solverLoads = [];
   const warnings = [];
   const loadTrace = [];
   const handcalc = [];
@@ -22,6 +25,7 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
       if (load.type === 'trapezoid') featureCounts.trapezoid += 1;
       const rows = expandDistributed(load, segments, lengths[load.member] || 1);
       expanded.push(...rows);
+      solverLoads.push({ ...load, sourceType: load.type });
       loadTrace.push({
         id: load.id || null,
         type: load.type,
@@ -36,15 +40,21 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
       if (load.type === 'temperature') featureCounts.temperature += 1;
       if (load.type === 'tgradient') featureCounts.temperatureGradient += 1;
       expanded.push({ ...load, sourceType: load.type });
+      solverLoads.push({ ...load, sourceType: load.type });
       handcalc.push(temperatureHandcalc(load, model));
     } else if (load.type === 'mmoment') {
       featureCounts.memberMoment += 1;
       expanded.push({ ...load, sourceType: load.type });
+      solverLoads.push({ ...load, sourceType: load.type });
       loadTrace.push({ id: load.id || null, type: load.type, member: load.member, at: Number(load.at ?? 0.5), axis: load.axis || 'z', moment: Number(load.M || 0) });
       handcalc.push(memberMomentHandcalc(load));
     }
-    else expanded.push(load);
+    else {
+      expanded.push(load);
+      solverLoads.push(load);
+    }
   }
+  const consistentLoads = buildConsistentLoadTrace(solverLoads, model);
   const features = {
     ...featureCounts,
     springSupports: countSpringSupports(model),
@@ -85,18 +95,26 @@ export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
           'cable-sag-and-large-displacement-cable-effects-not-included',
           'construction-sequence-and-prestress-not-included',
         ],
+        phase6: {
+          milestone: 'P6-M2',
+          contract: 'fe/q0/recovery/handcalc',
+          solverLoads: 'advanced member loads are solved with fixed-end force contracts; legacy expanded point loads remain for compatibility',
+        },
       },
       inputCount: loads.length,
       outputCount: expanded.length,
+      solverLoadCount: solverLoads.length,
       warnings,
       modelMembers: model.members?.length || 0,
       features,
       supportTrace,
       memberTrace,
       loadTrace,
+      consistentLoads,
       handcalc: handcalc.filter(Boolean),
       review: buildExpansionReview({ features, warnings, supportTrace, memberTrace, loadTrace, handcalc: handcalc.filter(Boolean) }),
     },
+    solverLoads,
   };
 }
 
@@ -171,6 +189,28 @@ function memberLengths(model = {}) {
     if (a && b) out[member.id] = Math.hypot(b.x - a.x, b.y - a.y, (b.z || 0) - (a.z || 0));
   }
   return out;
+}
+
+function buildConsistentLoadTrace(loads = [], model = {}) {
+  const nodes = Object.fromEntries((model.nodes || []).map((node) => [node.id, node]));
+  const members = Object.fromEntries((model.members || []).map((member) => [member.id, member]));
+  return loads
+    .map((load) => {
+      if (!load.member) return null;
+      const member = members[load.member];
+      if (!member) return null;
+      const a = nodes[member.n1];
+      const b = nodes[member.n2];
+      if (!a || !b) return null;
+      const ax = memberAxes(a, b, member.localAxis);
+      if (!(ax.L > 0)) return null;
+      const needsProperties = load.type === 'temperature' || load.type === 'tgradient';
+      const memberData = needsProperties
+        ? { material: materialOf(model, member.matId), section: sectionOf(model, member.secId) }
+        : {};
+      return fixedEndTraceRow(buildFixedEndLoad(load, ax, memberData));
+    })
+    .filter(Boolean);
 }
 
 function clamp(value) {

@@ -1,4 +1,13 @@
+import {
+  ALL_BUILTIN_MATERIAL_RECORDS,
+  DEFAULT_MATERIAL_RECORDS,
+  LEGACY_STEEL_MATERIALS,
+} from '../materials/db/builtinMaterials.js';
+import { KS_H_SECTIONS } from '../materials/db/ksH.js';
+import { ADDITIONAL_PRACTICAL_SECTIONS } from '../materials/db/practicalSections.js';
+import { normalizeMaterialRecord } from '../materials/materialSchema.js';
 import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
+import { normalizeSectionRecord } from '../materials/sectionSchema.js';
 
 export const DEFAULT_UNITS = {
   length: 'm',
@@ -8,52 +17,16 @@ export const DEFAULT_UNITS = {
   displacement: 'mm',
 };
 
-export const MATERIALS_CATALOG = [
-  {
-    id: 'steel',
-    name: 'Steel SS400',
-    E: 205000,
-    G: 79000,
-    Fy: 235,
-    Fu: 400,
-    density: 7.85,
-    allow: { fb: 156.7, ft: 156.7, fc: 156.7, fv: 90.4 },
-  },
-  {
-    id: 'sm490',
-    name: 'Steel SM490',
-    E: 205000,
-    G: 79000,
-    Fy: 325,
-    Fu: 490,
-    density: 7.85,
-    allow: { fb: 216.7, ft: 216.7, fc: 216.7, fv: 125 },
-  },
-  {
-    id: 'concrete',
-    name: 'Concrete Fc24',
-    E: 22700,
-    G: 9500,
-    Fy: 24,
-    Fu: 24,
-    density: 2.4,
-    allow: { fb: 8, ft: 0.8, fc: 8, fv: 0.73 },
-  },
-  {
-    id: 'wood',
-    name: 'Wood',
-    E: 7000,
-    G: 440,
-    Fy: 22,
-    Fu: 22,
-    density: 0.38,
-    allow: { fb: 8.1, ft: 5.4, fc: 6.5, fv: 0.66 },
-  },
-];
+// New models receive current KS snapshots. Legacy steel records remain resolvable
+// through ALL_MATERIALS_CATALOG without being offered as new defaults.
+export const MATERIALS_CATALOG = DEFAULT_MATERIAL_RECORDS;
+export const LEGACY_MATERIALS_CATALOG = LEGACY_STEEL_MATERIALS;
+export const ALL_MATERIALS_CATALOG = ALL_BUILTIN_MATERIAL_RECORDS;
 
-export const SECTIONS_CATALOG = [
+export const SECTIONS_CATALOG = Object.freeze([
   {
     id: 'h200',
+    version: 1,
     name: 'H-200x100x5.5x8',
     type: 'H',
     dims: { H: 200, B: 100, tw: 5.5, tf: 8 },
@@ -63,9 +36,11 @@ export const SECTIONS_CATALOG = [
     Iy: 134e-8,
     Zy: 26.8e-6,
     J: 5e-8,
+    source: { scope: 'builtin', db: 'legacy-section-catalog-v1' },
   },
   {
     id: 'h300',
+    version: 1,
     name: 'H-300x150x6.5x9',
     type: 'H',
     dims: { H: 300, B: 150, tw: 6.5, tf: 9 },
@@ -75,9 +50,11 @@ export const SECTIONS_CATALOG = [
     Iy: 508e-8,
     Zy: 67.7e-6,
     J: 9e-8,
+    source: { scope: 'builtin', db: 'legacy-section-catalog-v1' },
   },
   {
     id: 'h400',
+    version: 1,
     name: 'H-400x200x8x13',
     type: 'H',
     dims: { H: 400, B: 200, tw: 8, tf: 13 },
@@ -87,9 +64,11 @@ export const SECTIONS_CATALOG = [
     Iy: 1740e-8,
     Zy: 174e-6,
     J: 37e-8,
+    source: { scope: 'builtin', db: 'legacy-section-catalog-v1' },
   },
   {
     id: 'box200',
+    version: 1,
     name: 'BOX-200x200x9',
     type: 'BOX',
     dims: { H: 200, B: 200, t: 9 },
@@ -99,9 +78,11 @@ export const SECTIONS_CATALOG = [
     Iy: 4090e-8,
     Zy: 409e-6,
     J: 6270e-8,
+    source: { scope: 'builtin', db: 'legacy-section-catalog-v1' },
   },
   {
     id: 'rc3060',
+    version: 1,
     name: 'RC 300x600',
     type: 'RECT',
     dims: { B: 300, H: 600 },
@@ -111,47 +92,96 @@ export const SECTIONS_CATALOG = [
     Iy: 1.35e-3,
     Zy: 9e-3,
     J: 3.7e-3,
+    source: { scope: 'builtin', db: 'legacy-section-catalog-v1' },
   },
-];
+  ...ADDITIONAL_PRACTICAL_SECTIONS,
+]);
 
 export function toInternalMaterial(material) {
-  const allow = material.allow || {};
-  const fy = material.Fy || 235;
+  const normalized = normalizeMaterialRecord(material || {});
+  const elastic = normalized.elastic || {};
+  const steel = normalized.strength?.steel || {};
+  const concrete = normalized.strength?.concrete || {};
+  const allow = normalized.allow || steel.allow || {};
+  const fy = firstFinite(steel.Fy, concrete.fck, material?.Fy, material?.fy, 0);
+  const fu = firstFinite(steel.Fu, concrete.fck, material?.Fu, material?.fu, 0);
+  const E = firstFinite(elastic.E, material?.E, 0);
+  const G = firstFinite(elastic.G, material?.G, 0);
+  const density = firstFinite(elastic.rho, material?.density, material?.rho, 0);
+  const defaultAllow = fy > 0 ? fy / 1.5 : 0;
   return {
     ...material,
-    E: material.E * 1000,
-    G: material.G * 1000,
+    ...normalized,
+    E: E * 1000,
+    G: G * 1000,
     Fy: fy * 1000,
-    Fu: (material.Fu || 0) * 1000,
-    density: material.density || 0,
-    fb: (allow.fb ?? fy / 1.5) * 1000,
-    fa: Math.min(allow.ft ?? fy / 1.5, allow.fc ?? allow.ft ?? fy / 1.5) * 1000,
-    fs: (allow.fv ?? fy / (1.5 * Math.sqrt(3))) * 1000,
+    Fu: fu * 1000,
+    density,
+    fb: firstFinite(allow.fb, defaultAllow) * 1000,
+    fa: Math.min(
+      firstFinite(allow.ft, defaultAllow),
+      firstFinite(allow.fc, allow.ft, defaultAllow),
+    ) * 1000,
+    fs: firstFinite(allow.fv, fy > 0 ? fy / (1.5 * Math.sqrt(3)) : 0) * 1000,
   };
 }
 
 export function toInternalSection(section) {
+  const normalized = normalizeSectionRecord(section || {});
+  const properties = normalized.properties || {};
+  const merged = { ...section, ...normalized, ...properties };
   return {
-    ...section,
-    ry: section.ry || (section.Iy && section.A ? Math.sqrt(section.Iy / section.A) : 0),
-    rz: section.rz || (section.Iz && section.A ? Math.sqrt(section.Iz / section.A) : 0),
+    ...merged,
+    ry: positiveFinite(merged.ry) ? Number(merged.ry) : merged.Iy && merged.A ? Math.sqrt(merged.Iy / merged.A) : 0,
+    rz: positiveFinite(merged.rz) ? Number(merged.rz) : merged.Iz && merged.A ? Math.sqrt(merged.Iz / merged.A) : 0,
   };
 }
 
 export const MATERIALS = Object.fromEntries(
-  MATERIALS_CATALOG.map((material) => [material.id, toInternalMaterial(material)]),
+  ALL_MATERIALS_CATALOG.map((material) => [material.id, toInternalMaterial(material)]),
 );
 
 export const SECTIONS = Object.fromEntries(
-  SECTIONS_CATALOG.map((section) => [section.id, toInternalSection(section)]),
+  [...SECTIONS_CATALOG, ...KS_H_SECTIONS].map((section) => [section.id, toInternalSection(section)]),
 );
 
+export function isKnownMaterialReference(model, id) {
+  return resolveMaterialRecord(model, id, ALL_MATERIALS_CATALOG) != null;
+}
+
+export function isKnownSectionReference(model, id) {
+  return resolveSectionRecord(model, id, SECTIONS_CATALOG) != null;
+}
+
 export function materialOf(model, id) {
-  const resolved = resolveMaterialRecord(model, id, MATERIALS_CATALOG);
-  return resolved ? toInternalMaterial(resolved) : MATERIALS.steel;
+  const resolved = resolveMaterialRecord(model, id, ALL_MATERIALS_CATALOG);
+  if (!resolved) throw invalidReferenceError('material', id);
+  return toInternalMaterial(resolved);
 }
 
 export function sectionOf(model, id) {
   const resolved = resolveSectionRecord(model, id, SECTIONS_CATALOG);
-  return resolved ? toInternalSection(resolved) : SECTIONS.h300;
+  if (!resolved) throw invalidReferenceError('section', id);
+  return toInternalSection(resolved);
+}
+
+function invalidReferenceError(kind, reference) {
+  const error = new Error(`Unresolved ${kind} reference: ${String(reference || '')}`);
+  error.code = `invalid-${kind}-reference`;
+  error.kind = kind;
+  error.reference = reference ?? null;
+  return error;
+}
+
+function firstFinite(...values) {
+  for (const value of values) {
+    if (value == null || value === '') continue;
+    const number = Number(value);
+    if (Number.isFinite(number)) return number;
+  }
+  return 0;
+}
+
+function positiveFinite(value) {
+  return Number.isFinite(Number(value)) && Number(value) > 0;
 }

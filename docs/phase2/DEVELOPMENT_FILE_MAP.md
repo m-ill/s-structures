@@ -67,6 +67,14 @@
 | 상단 리본 수정 | `src/ui/indexNativeRibbon.js`, 관련 native module |
 | 안정화 케이스 추가 | `src/verification/stabilizationHarness.js`, `tests/m46-stabilization-harness.mjs` |
 
+## Direct Analysis Routing
+
+| Work | First files to review |
+| --- | --- |
+| Direct Analysis P-Delta implementation | `docs/phase2/P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md`, `src/solver/linear3d*.js`, `src/results/pDeltaTrace.js` |
+| Direct Analysis verification | `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`, `tests/p2-m5-direct-*.mjs`, `src/examples/verification.js` |
+| Direct Analysis UI/report/API exposure | `src/ui/indexNativeResultControls.js`, `src/ui/indexResultsPanel.js`, `src/report/`, `src/ui/indexAgentApi.js` |
+
 ## Documentation Update Rule
 
 | 변경 종류 | 갱신 문서 |

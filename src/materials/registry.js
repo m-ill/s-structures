@@ -1,25 +1,40 @@
-import { computeSectionProperties } from './sectionProperties.js';
+import { ALL_BUILTIN_MATERIAL_RECORDS } from './db/builtinMaterials.js';
+import { KS_H_SECTIONS } from './db/ksH.js';
+import { ADDITIONAL_PRACTICAL_SECTIONS } from './db/practicalSections.js';
 import { normalizeMaterialRecord, validateMaterialRecord } from './materialSchema.js';
 import { normalizeSectionRecord, validateSectionRecord } from './sectionSchema.js';
-import { KS_H_SECTIONS } from './db/ksH.js';
 
 export const MATERIAL_REGISTRY_VERSION = 'p3-m10-material-section-registry';
+export const REGISTRY_SCOPE_PRIORITY = Object.freeze(['project', 'global', 'builtin']);
 
 export function parseVersionedId(ref) {
-  const [id, versionText] = String(ref || '').split('@');
-  return { id, version: versionText ? Number(versionText) : null };
+  const text = String(ref || '').trim();
+  const match = /^(.*)@([1-9]\d*)$/u.exec(text);
+  if (!match) return { id: text, version: null };
+  return { id: match[1], version: Number(match[2]) };
 }
 
 export function resolveMaterialRecord(model, ref, builtins = []) {
   const key = parseVersionedId(ref);
-  const all = [...asVersioned(model?.materials), ...asVersioned(builtins)].map((item) => normalizeMaterialRecord(item));
-  return selectVersion(all.filter((item) => item.id === key.id), key.version) || selectVersion(all.filter((item) => item.id === 'steel'), null);
+  if (!key.id) return null;
+  const all = [
+    ...modelScopeRows(model, 'materials'),
+    ...asVersioned(builtins, 'builtin'),
+    ...asVersioned(ALL_BUILTIN_MATERIAL_RECORDS, 'builtin'),
+  ].map((item) => normalizeMaterialRecord(item));
+  return selectVersion(all.filter((item) => item.id === key.id), key.version);
 }
 
 export function resolveSectionRecord(model, ref, builtins = []) {
   const key = parseVersionedId(ref);
-  const all = [...asVersioned(model?.sections), ...asVersioned(builtins), ...asVersioned(KS_H_SECTIONS)].map(normalizeSection);
-  return selectVersion(all.filter((item) => item.id === key.id), key.version) || selectVersion(all.filter((item) => item.id === 'h300'), null);
+  if (!key.id) return null;
+  const all = [
+    ...modelScopeRows(model, 'sections'),
+    ...asVersioned(builtins, 'builtin'),
+    ...asVersioned(KS_H_SECTIONS, 'builtin'),
+    ...asVersioned(ADDITIONAL_PRACTICAL_SECTIONS, 'builtin'),
+  ].map(normalizeSection);
+  return selectVersion(all.filter((item) => item.id === key.id), key.version);
 }
 
 export function buildLibraryAudit(model = {}) {
@@ -35,9 +50,10 @@ export function buildLibraryAudit(model = {}) {
     registryPolicy: {
       referenceFormat: 'id@version',
       editRule: 'append-only-new-version',
-      scopePriority: ['project', 'global', 'builtin'],
+      scopePriority: [...REGISTRY_SCOPE_PRIORITY],
       deleteRule: 'soft-delete-new-references-blocked-existing-models-retained',
       legacyMigration: 'unversioned-reference-resolves-latest-with-warning',
+      unresolvedPolicy: 'resolver-null-catalog-helper-throws',
     },
     referenceCount: refs.size,
     references: [...refs].sort(),
@@ -49,6 +65,10 @@ export function buildLibraryAudit(model = {}) {
       materials: resolvedMaterials,
       sections: resolvedSections,
     },
+    unresolvedReferences: [
+      ...resolvedMaterials.filter((row) => row.referenceStatus === 'unresolved'),
+      ...resolvedSections.filter((row) => row.referenceStatus === 'unresolved'),
+    ],
     softDeletedReferences: [
       ...resolvedMaterials.filter((row) => row.deleted),
       ...resolvedSections.filter((row) => row.deleted),
@@ -63,35 +83,63 @@ export function buildLibraryAudit(model = {}) {
   };
 }
 
-function asVersioned(items = []) {
-  return (items || []).filter(Boolean).map((item, index) => ({ version: 1, ...item, _priority: index }));
+function modelScopeRows(model, key) {
+  const capitalized = `${key[0].toUpperCase()}${key.slice(1)}`;
+  return [
+    ...asVersioned(model?.[key], 'project'),
+    ...asVersioned(model?.[`global${capitalized}`], 'global'),
+    ...asVersioned(model?.[`office${capitalized}`], 'global'),
+  ];
+}
+
+function asVersioned(items = [], fallbackScope = 'project') {
+  return (items || []).filter(Boolean).map((item, index) => {
+    const source = item.source || {};
+    const scope = source.scope || (source.db ? 'builtin' : fallbackScope);
+    return {
+      version: 1,
+      ...item,
+      source: { ...source, scope },
+      _registryScope: scope,
+      _priority: index,
+    };
+  });
 }
 
 function selectVersion(items, version) {
-  if (version != null) {
-    const exact = items
-      .filter((item) => Number(item.version) === version)
-      .sort(scopePrioritySort);
-    const active = exact.find((item) => !item.deleted);
-    if (active) return active;
-    const deleted = exact[0];
-    return deleted ? { ...deleted, _softDeletedReference: true } : null;
+  for (const scope of REGISTRY_SCOPE_PRIORITY) {
+    const scoped = items.filter((item) => scopeOf(item) === scope);
+    if (version != null) {
+      const exact = scoped
+        .filter((item) => Number(item.version) === version)
+        .sort(prioritySort);
+      if (!exact.length) continue;
+      const active = exact.find((item) => !item.deleted);
+      if (active) return publicRecord(active);
+      return publicRecord({ ...exact[0], _softDeletedReference: true });
+    }
+    const active = scoped
+      .filter((item) => !item.deleted)
+      .sort((a, b) => Number(b.version || 1) - Number(a.version || 1) || prioritySort(a, b));
+    if (active.length) return publicRecord(active[0]);
   }
-  const rows = items.filter((item) => !item.deleted);
-  if (!rows.length) return null;
-  return rows.sort((a, b) => Number(b.version || 1) - Number(a.version || 1) || scopePrioritySort(a, b))[0];
+  return null;
 }
 
-function scopePrioritySort(a, b) {
-  const order = { project: 0, global: 1, builtin: 2 };
-  return (order[scopeOf(a)] ?? 0) - (order[scopeOf(b)] ?? 0) || Number(a._priority || 0) - Number(b._priority || 0);
+function prioritySort(a, b) {
+  return Number(a._priority || 0) - Number(b._priority || 0);
+}
+
+function publicRecord(item) {
+  if (!item) return null;
+  const { _registryScope, _priority, ...record } = item;
+  return record;
 }
 
 function normalizeSection(section) {
   if (!section) return section;
   const normalized = normalizeSectionRecord(section);
-  const properties = normalized.properties || computeSectionProperties(normalized.shape, normalized.params);
-  return { ...normalized, ...(properties || {}) };
+  return { ...normalized, ...(normalized.properties || {}) };
 }
 
 function resolvedRef(ref, record) {
@@ -116,9 +164,8 @@ function buildScopeSummary(materials, sections) {
 }
 
 function scopeOf(item) {
-  if (item.source?.scope) return item.source.scope;
-  if (item.source?.db) return 'builtin';
-  return 'project';
+  const scope = item?._registryScope || item?.source?.scope || (item?.source?.db ? 'builtin' : 'project');
+  return REGISTRY_SCOPE_PRIORITY.includes(scope) ? scope : 'project';
 }
 
 function deletedRows(rows, kind) {

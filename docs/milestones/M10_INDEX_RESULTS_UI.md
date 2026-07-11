@@ -68,11 +68,13 @@ data-agent-id="engine-results-dock"
 - 최대 증폭률
 - 지배 조합
 - 수렴 조합 수
-- 반복 단계별 증폭률 그래프
-- 단계 슬라이더
-- 조합별 현재 단계 증폭률/잔차 표
+- Global P-Delta response curve
+- load step 슬라이더
+- 조합별 현재 load step의 `λ`, roof displacement, base shear, 증폭률 표
 
-P-Delta 단계 슬라이더는 추후 기존 player bar와 더 깊게 연결할 수 있는 중간 계약이다.
+P-Delta 탭의 그래프는 iteration history가 아니라 load step별 수렴 결과를 표시한다. x축은 roof displacement, y축은 base shear이며 1차 해석과 2차 P-Delta 결과를 함께 그린다. 내부 반복 이력은 수렴 진단 trace로 남고, 결과 패널에서는 response curve로 노출하지 않는다.
+
+P-Delta load step 슬라이더는 추후 기존 player bar와 더 깊게 연결할 수 있는 중간 계약이다.
 
 Agent action:
 
@@ -131,8 +133,8 @@ resultView: {
 
 - 기존 `index.html`에서 결과 도크가 자동 생성된다.
 - Summary, P-Delta, Modal, Design 탭이 엔진 결과를 표시한다.
-- P-Delta 반복 이력과 모달 주기 그래프가 SVG로 출력된다.
-- Agent가 결과 탭과 P-Delta 단계를 API로 제어할 수 있다.
+- P-Delta load-step response curve와 모달 주기 그래프가 SVG로 출력된다.
+- Agent가 결과 탭과 P-Delta load step을 API로 제어할 수 있다.
 - M0-M10 테스트가 모두 통과한다.
 - 금지 문자열 검사를 통과한다.
 
@@ -148,6 +150,6 @@ M11에서는 agent 조작 계약을 모델링 동작까지 확장한다.
 M12에서는 기존 3D 캔버스 작도 자체를 더 깊게 정리한다.
 
 - 설계비 컬러맵 캔버스 통합
-- P-Delta 단계별 변형 형상 표시
+- P-Delta load step별 변형 형상 표시
 - Modal shape 표시
 - 부재력도 작도 개선

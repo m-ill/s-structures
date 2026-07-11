@@ -75,6 +75,14 @@ assert.ok(invalidArc.review.warnings.includes('invalid-arc-length-radius'));
 assert.ok(invalidArc.review.warnings.includes('arc-length-constraint-not-satisfied'));
 
 const model = createPortalFrameSample();
+model.loadCombinations = [{
+  id: 'CO1',
+  name: 'Frozen regression D + L',
+  type: 'strength',
+  factors: { D: 1, L: 1 },
+  origin: 'benchmark-fixture',
+  userModified: true,
+}];
 model.materials = [{
   id: 'HINGE_STEEL',
   version: 1,

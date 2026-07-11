@@ -48,32 +48,32 @@ track: P5-A / milestones: P5-M1, P5-M2 / status: spec
 
 ## A.3 해석 종류별 설정·실행·결과
 
-각 종류는 `analysisRunners.js`의 `runners[kind]`로 매핑. 실행은 `bridge`/엔진 함수 호출 → 결과 정규화 → 결과 핸들 저장.
+각 종류는 `analysisRunners.js`의 `runners[kind]`로 매핑한다. 실행은 현재 index 상태가 필요한 경우 `bridge`를 쓰고, 브리지에 없는 순수 core 함수는 `src/index.js` export를 직접 import해서 호출한다. runner 책임은 UI 설정 → 현재 엔진 파라미터 정규화 → 결과 정규화 → 결과 핸들 저장이다.
 
 ### static (정적)
 - 설정: `pDelta`(체크박스), `combo`(현재 조합 또는 전체).
-- 실행: `bridge.analyzeModel(model)` (pDelta 시 analysisSettings.includeGeometricStiffness). 자동 미리보기와 동일 경로, 결과를 케이스에 고정.
+- 실행: `bridge.analyzeModel(caseModel)` 또는 core `analyzeModel(caseModel)`. `pDelta`는 case-scoped clone의 `analysisSettings.includeGeometricStiffness`에만 적용해 자동 미리보기 설정을 오염시키지 않는다.
 - 결과: 조합별 최대 변위/부재력/반력 요약. 3D는 기존 변형 표시 재사용.
 
 ### modal (모달)
-- 설정: `modeCount`(기본 12), `massSource`(층질량 조합).
-- 실행: `analyzeDynamics(model, { modeCount })`.
+- 설정: `modalModeCount`(기본 12, UI 라벨은 modeCount 허용), `massSource`(층질량 조합).
+- 실행: `analyzeDynamics(model, { modalModeCount, massSource, responseSpectrum:{ enabled:false } })`.
 - 결과: 모드별 주기 T·진동수 f·질량참여율(x/y), 참여질량 합계. 표 + (M9에서 3D 형상).
 
 ### responseSpectrum (RSA)
-- 설정: `spectrum`(주기-가속도 점 또는 프리셋), `directions`(x/y), `combination`(SRSS/CQC), `dampingRatio`.
-- 실행: 모달 선행 필요 → `runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum)`. 모달 케이스가 없으면 자동으로 모달 먼저 실행.
-- 결과: 방향별 밑면전단·층응답. 표 + (M10 차트).
+- 설정: `spectrum`(주기-가속도 점 또는 프리셋), `directions`(x/y), `method`(SRSS/CQC), `dampingRatio`, `modalModeCount`.
+- 실행: 모달 선행 필요 → 우선 `analyzeDynamics(model, { modalModeCount, responseSpectrum:{ directions, method, dampingRatio, points, scale } })`로 `dynamics.rsa`를 얻는다. 별도 모달 핸들을 재사용하는 경우에만 `runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum)` 직접 호출을 허용한다.
+- 결과: 현재 엔진 기준 방향별 modal response, `combined`(SRSS/CQC displacement, participatingMassRatio, totalMass). 밑면전단·층응답은 P5-D 후처리에서 가능 범위부터 표시하고, 없으면 limitation으로 표기한다.
 
 ### buckling (좌굴)
-- 설정: `referenceCombo`(축력 상태), `modeCount`.
+- 설정: `referenceCombo`(축력 상태), `modeCount`, `referenceCompression` override(선택).
 - 실행: `estimateGlobalBucklingTrace(model, ...)`.
-- 결과: 좌굴계수 λcr, 좌굴 모드. 표 + (M9 3D 모드).
+- 결과: `criticalLoadFactor`, iterations/residual, referenceCompression. 좌굴 모드 형상은 현재 trace에 없으므로 M9에서 제공 가능 여부를 확인하고 없으면 계수/trace 중심으로 표시한다.
 
 ### linearTha (선형 시간이력)
-- 설정: `record`(지반가속도 배열/프리셋), `dt`, `direction`, `dampingRatio`.
+- 설정: `record`(지반가속도 배열/프리셋), `accelerations`, `dt`, `direction`, `dampingRatio`.
 - 실행: 모달 선행 → `runModalSuperpositionTha({ modes, direction, dampingRatio, dt, accelerations })`.
-- 결과: 최대 응답 + (M10 시간이력 차트).
+- 결과: `rows`, `maxDisplacement`, modal trace + (M10 시간이력 차트).
 
 ### pushover / nlth
 - SPEC-C에서 상세. 해석 센터에서는 케이스로 관리하되 설정·결과 뷰는 비선형 워크플로 화면과 연동.
@@ -98,10 +98,10 @@ runCase(caseId):
 | kind | 엔진 반환 위치 | 정규화 결과 payload |
 | --- | --- | --- |
 | static | `analyzeModel().byCombo`, `.envelope` | `{ byCombo, envelope, maxDisp, reactions }` |
-| modal | `analyzeDynamics().modes` | `{ modes:[{mode,period,frequency,massParticipation}] }` |
-| responseSpectrum | `runResponseSpectrum()` | `{ directions:[{dir,baseShear,story:[…]}] }` |
-| buckling | `estimateGlobalBucklingTrace()` | `{ lambdaCr, modes:[…] }` |
-| linearTha | `runModalSuperpositionTha()` | `{ peak, timeHistory:[…] }` |
+| modal | `analyzeDynamics().modes` | `{ modes:[{id,index,period,frequencyHz,participation}] }` |
+| responseSpectrum | `analyzeDynamics().rsa` 또는 `runResponseSpectrum()` | `{ modal, combined, spectrum, review }` |
+| buckling | `estimateGlobalBucklingTrace()` | `{ criticalLoadFactor, iterations, residual, referenceCompression }` |
+| linearTha | `runModalSuperpositionTha()` | `{ rows, maxDisplacement, modal }` |
 
 runner는 엔진 반환이 기대와 다르면 방어적으로 흡수하고, 근본 불일치는 엔진 티켓으로 분리(엔진 불가침 원칙 예외).
 

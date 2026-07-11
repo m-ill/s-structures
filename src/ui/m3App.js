@@ -268,26 +268,31 @@ function renderPDeltaChart(series) {
     return;
   }
   const allPoints = series.flatMap((item) => item.points);
-  const maxIteration = Math.max(1, ...allPoints.map((point) => point.iteration));
-  const maxAmp = Math.max(1.05, ...allPoints.map((point) => point.amplification));
-  const minAmp = 1;
+  const maxDisp = Math.max(1e-9, ...allPoints.flatMap((point) => [
+    point.firstOrderRoofDisplacement,
+    point.secondOrderRoofDisplacement,
+  ]));
+  const maxShear = Math.max(1e-9, ...allPoints.flatMap((point) => [
+    point.firstOrderBaseShear,
+    point.secondOrderBaseShear,
+  ]));
   const colors = ['#0f5d8f', '#1f8a58', '#b36b00', '#7b61ff'];
-  const x = (iteration) => pad.left + (iteration / maxIteration) * (width - pad.left - pad.right);
-  const y = (amp) => height - pad.bottom - ((amp - minAmp) / (maxAmp - minAmp || 1)) * (height - pad.top - pad.bottom);
+  const x = (disp) => pad.left + (disp / maxDisp) * (width - pad.left - pad.right);
+  const y = (shear) => height - pad.bottom - (shear / maxShear) * (height - pad.top - pad.bottom);
   const lines = series.map((item, index) => {
-    const points = item.points.map((point) => `${x(point.iteration)},${y(point.amplification)}`).join(' ');
     const color = colors[index % colors.length];
-    const circles = item.points.map((point) => `<circle class="chart-point" cx="${x(point.iteration)}" cy="${y(point.amplification)}" r="2.5" fill="${color}"></circle>`).join('');
-    return `<polyline class="chart-line" points="${points}" stroke="${color}"></polyline>${circles}`;
+    const first = item.points.map((point) => `${x(point.firstOrderRoofDisplacement)},${y(point.firstOrderBaseShear)}`).join(' ');
+    const second = item.points.map((point) => `${x(point.secondOrderRoofDisplacement)},${y(point.secondOrderBaseShear)}`).join(' ');
+    const circles = item.points.map((point) => `<circle class="chart-point" cx="${x(point.secondOrderRoofDisplacement)}" cy="${y(point.secondOrderBaseShear)}" r="2.5" fill="${color}"></circle>`).join('');
+    return `<polyline class="chart-line" points="${first}" stroke="${color}" stroke-dasharray="4 3"></polyline><polyline class="chart-line" points="${second}" stroke="${color}"></polyline>${circles}`;
   }).join('');
   svg.innerHTML = `
-    <line class="chart-grid" x1="${pad.left}" y1="${y(1)}" x2="${width - pad.right}" y2="${y(1)}"></line>
     <line class="chart-axis" x1="${pad.left}" y1="${height - pad.bottom}" x2="${width - pad.right}" y2="${height - pad.bottom}"></line>
     <line class="chart-axis" x1="${pad.left}" y1="${pad.top}" x2="${pad.left}" y2="${height - pad.bottom}"></line>
     <text class="chart-label" x="${pad.left}" y="${height - 8}">0</text>
-    <text class="chart-label" x="${width - pad.right - 16}" y="${height - 8}">${maxIteration}</text>
-    <text class="chart-label" x="4" y="${y(1) + 4}">1.0</text>
-    <text class="chart-label" x="4" y="${pad.top + 4}">${format(maxAmp, 2)}</text>
+    <text class="chart-label" x="${width - pad.right - 36}" y="${height - 8}">Roof Δ</text>
+    <text class="chart-label" x="4" y="${pad.top + 4}">${format(maxShear, 2)}</text>
+    <text class="chart-label" x="4" y="${height - pad.bottom - 4}">V</text>
     ${lines}
   `;
 }

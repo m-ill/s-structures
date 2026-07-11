@@ -2,13 +2,16 @@ export function advancedTraceSummary(pDelta, modal, responseSpectrum, unilateral
   return {
     pDeltaStatus: pDelta.status,
     pDeltaComboCount: pDelta.combos.length,
+    pDeltaDesignStatus: pDelta.design?.summary?.status || 'N/A',
+    pDeltaMaxTheta: pDelta.design?.summary?.maxTheta || 0,
     modeCount: modal.summary.modeCount,
     firstPeriod: modal.summary.firstPeriod,
     rsaDirectionCount: responseSpectrum.directions.length,
     unilateralComboCount: unilateral?.comboCount || 0,
     unilateralInactiveMemberCount: unilateral?.inactiveMemberIds?.length || 0,
     limitations: [
-      'P-Delta is iterative secondary load amplification, not a full nonlinear tangent-stiffness solve.',
+      'P-Delta solver currently uses secondary lateral-load iteration; displayed curves are load-step response curves, not iteration-history curves.',
+      'Geometric-stiffness direct P-Delta is available as a separate phase6 direct trace and is not mixed with the legacy equivalent-load path.',
       'Modal analysis uses lumped translational mass from model mass and member self mass.',
       'RSA uses SRSS combination and currently reports displacement trace only.',
       'Tension-only/compression-only member states are combination-specific and must be reviewed with envelope results.',

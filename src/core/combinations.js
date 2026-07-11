@@ -2,6 +2,7 @@ export function normalizeCombination(combo = {}, loadCases = []) {
   const factors = normalizeFactors(combo.factors, loadCases);
   const id = cleanId(combo.id) || nextCombinationId({ loadCombinations: [] });
   return {
+    ...combo,
     id,
     name: String(combo.name || '').trim() || formatCombinationFactors(factors),
     type: combo.type || 'strength',
@@ -16,6 +17,8 @@ export function addLoadCombination(model, combo = {}) {
     name: combo.name,
     type: combo.type,
     factors: combo.factors || defaultFactors(model),
+    origin: combo.origin || 'manual',
+    userModified: combo.userModified !== false,
   }, model.loadCases || []);
   model.loadCombinations.push(normalized);
   return normalized;
@@ -29,6 +32,8 @@ export function updateLoadCombination(model, comboId, patch = {}) {
     ...patch,
     id: patch.id || combo.id,
     factors: patch.factors || combo.factors,
+    origin: patch.origin || combo.origin || 'manual',
+    userModified: patch.userModified !== false,
   }, model.loadCases || []);
   Object.assign(combo, updated);
   return combo;

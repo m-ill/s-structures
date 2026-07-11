@@ -16,6 +16,8 @@ function run() {
 
   const controls = target.SStructuresNativeResultControls;
   assert.equal(controls.version, INDEX_NATIVE_RESULT_CONTROLS_VERSION);
+  assert.equal(target.SStructuresFloatingPanels.getState().propertyPanel.floating, true);
+  assert.equal(document.getElementById('propPanel').getAttribute('data-ss-floating-panel'), '1');
   assert.equal(target.SStructuresResultsPanel, undefined);
   assert.equal(target.SStructuresPushoverPanel, undefined);
   assert.equal(document.querySelector('#engineResultsDock'), null);
@@ -24,9 +26,9 @@ function run() {
 
   const toggle = document.getElementById('ssNativePDeltaToggle');
   const nativeScale = document.getElementById('ssNativeResultScale');
-  assert.ok(toggle, 'elastic ribbon should expose the native P-Delta toggle');
+  assert.equal(toggle, null, 'the legacy P-Delta result toggle should not duplicate the unified result shortcut');
   assert.ok(nativeScale, 'elastic ribbon should expose the native result scale selector');
-  assert.equal(toggle.getAttribute('data-agent-id'), 'native-pdelta-toggle');
+  assert.ok(document.getElementById('ssElasticAnalysis-direct-pdelta'));
   assert.equal(nativeScale.value, 'auto');
 
   let state = controls.getState();
@@ -35,23 +37,6 @@ function run() {
   assert.equal(state.pDelta.enabled, false);
   assert.equal(state.player.visible, false);
   assert.equal(state.resultScale.value, 'auto');
-
-  toggle.click();
-  state = controls.getState();
-  assert.equal(model.analysisSettings.includeGeometricStiffness, true);
-  assert.equal(state.pDelta.enabled, true);
-  assert.ok(state.pDelta.maxStep > 1);
-  assert.equal(state.player.visible, true);
-  assert.equal(document.getElementById('playerBar').style.display, 'flex');
-  assert.equal(toggle.getAttribute('aria-pressed'), 'true');
-  assert.match(document.getElementById('plInfo').textContent, /^P-Delta /);
-
-  toggle.click();
-  state = controls.getState();
-  assert.equal(model.analysisSettings.includeGeometricStiffness, false);
-  assert.equal(state.pDelta.enabled, false);
-  assert.equal(state.player.visible, false);
-  assert.equal(toggle.getAttribute('aria-pressed'), 'false');
 
   const agent = target.SStructuresAgent || createIndexAgentApi(target, bridge);
   const capabilities = agent.getCapabilities();
@@ -82,6 +67,39 @@ function run() {
   assert.equal(target.SStructuresNativeResultScale, '50');
   assert.ok(counters.draw > drawBeforeScale);
 
+  const legacyTitle = document.createElement('h3');
+  legacyTitle.textContent = '부재 M1 (L=3.00m) ✕';
+  document.getElementById('propPanel').appendChild(legacyTitle);
+  document.getElementById('propPanel').style.display = 'block';
+  const legacyResult = document.createElement('div');
+  legacyResult.id = 'propResult';
+  legacyResult.setAttribute('id', 'propResult');
+  legacyResult.style.display = 'block';
+  legacyResult.innerHTML = '<b>해석 결과</b>';
+  document.getElementById('propPanel').appendChild(legacyResult);
+  assert.ok(document.eventHandlers.click?.length, 'legacy member selection sync should be registered');
+  assert.ok(document.eventHandlers.pointerup?.length, 'legacy member pointer sync should be registered');
+  assert.ok(document.getElementById('propPanel').querySelectorAll('h3').some((item) => item.textContent === '부재 M1 (L=3.00m) ✕'));
+  assert.equal(controls.getState().pDelta.enabled, true);
+  for (const handler of document.eventHandlers.click || []) handler({ type: 'click', target: legacyResult });
+  for (const handler of document.eventHandlers.pointerup || []) handler({ type: 'pointerup', target: legacyResult });
+  assert.equal(legacyResult.getAttribute('data-agent-id'), 'native-member-result-detail');
+  assert.equal(legacyResult.getAttribute('data-member-id'), 'M1');
+  assert.doesNotMatch(legacyResult.innerHTML, /native-member-pdelta-review/);
+  const legacyDock = document.getElementById('ssPDeltaMemberDock');
+  assert.ok(legacyDock, 'legacy member selection should show the left P-Delta dock');
+  assert.equal(legacyDock.style.display, 'block');
+  assert.equal(legacyDock.getAttribute('data-agent-id'), 'native-member-pdelta-dock');
+  assert.equal(legacyDock.getAttribute('data-member-id'), 'M1');
+  assert.equal(legacyDock.parentNode.id, 'canvasWrap');
+  assert.equal(legacyDock.getAttribute('data-ss-floating-panel'), '1');
+  assert.ok(legacyDock.querySelector('[data-ss-floating-resize]'), 'P-Delta dock should expose a resize handle');
+  assert.match(legacyDock.innerHTML, /Selected member P-Delta contribution curve/);
+  assert.match(legacyDock.innerHTML, /member diagnostic only/);
+  assert.match(legacyDock.innerHTML, /native-member-pdelta-combo/);
+  assert.match(legacyDock.innerHTML, /All combos/);
+  assert.match(legacyDock.innerHTML, /SLS1/);
+
   snapshot = agent.execute('showNativeMemberResult', { memberId: 'M1' });
   const propResult = document.getElementById('propResult');
   assert.equal(document.getElementById('propPanel').style.display, 'block');
@@ -89,6 +107,15 @@ function run() {
   assert.equal(propResult.getAttribute('data-agent-id'), 'native-member-result-detail');
   assert.equal(propResult.getAttribute('data-member-id'), 'M1');
   assert.match(propResult.innerHTML, /Member M1 result/);
+  assert.doesNotMatch(propResult.innerHTML, /native-member-pdelta-review/);
+  assert.doesNotMatch(propResult.innerHTML, /Selected member P-Delta contribution curve/);
+  assert.doesNotMatch(propResult.innerHTML, /ss-member-pdelta-table/);
+  assert.ok(document.getElementById('ssMemberPDeltaStyles'), 'member P-Delta review should install scoped styles');
+  const pDeltaDock = document.getElementById('ssPDeltaMemberDock');
+  assert.equal(pDeltaDock.style.display, 'block');
+  assert.match(pDeltaDock.innerHTML, /P-Delta M1/);
+  assert.match(pDeltaDock.innerHTML, /Selected member P-Delta contribution curve/);
+  assert.match(pDeltaDock.innerHTML, /native-member-pdelta-combo/);
   assert.match(propResult.innerHTML, /check/);
   assert.equal(snapshot.nativeResultControls.detail.memberId, 'M1');
 
@@ -214,6 +241,9 @@ function buildIndexShell(document) {
   }
   document.body.appendChild(palette);
 
+  const canvasWrap = byId(document, 'canvasWrap');
+  document.body.appendChild(canvasWrap);
+
   const player = byId(document, 'playerBar');
   player.style.display = 'none';
   document.body.appendChild(player);
@@ -279,6 +309,7 @@ function createPDeltaColumnModel() {
   ];
   model.loadCombinations = [
     { id: 'CO1', name: 'D + L', type: 'strength', factors: { D: 1, L: 1 } },
+    { id: 'SLS1', name: 'D + L service', type: 'service', factors: { D: 1, L: 1 } },
   ];
   model.loads = [
     { id: 'P1', type: 'nodal', node: 'N2', P: 800, dir: '-z', case: 'D' },

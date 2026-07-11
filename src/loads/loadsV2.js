@@ -1,4 +1,6 @@
 import { expandAdvancedLoads } from '../solver/elasticExpansion.js';
+import { materialOf, sectionOf } from '../core/catalogs.js';
+import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
 
 export const LOADS_V2_VERSION = 'p3-m13-loads-v2-trace';
 export const MASS_SOURCE_TRACE_VERSION = 'p3-m13-mass-source-trace-v1';
@@ -102,17 +104,42 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
   const skipped = [];
   if (spec.includeNodeMass !== false) {
     for (const node of model.nodes || []) {
-      const mass = nodeMassValue(node.mass);
-      if (mass > 0) addMass(nodeRows, node.id, mass, 'node.mass');
+      const mass = nodeMassVector(node.mass);
+      if (mass.some((value) => value > 0)) addMass(nodeRows, node.id, mass, 'node.mass');
+    }
+  }
+  const memberNodes = Object.fromEntries((model.members || []).map((m) => [m.id, [m.n1, m.n2]]));
+  const memberLengths = buildMemberLengths(model);
+  const loadCaseById = Object.fromEntries((model.loadCases || []).map((item) => [item.id, item]));
+  const includePhysicalMemberMass = spec.includeMemberMass === true || spec.includeSelfWeight === true;
+  if (includePhysicalMemberMass) {
+    for (const member of model.members || []) {
+      const length = memberLengths[member.id] || 0;
+      try {
+        const { section, material } = effectiveSectionMaterial(
+          (id) => sectionOf(model, id),
+          (id) => materialOf(model, id),
+          member,
+        );
+        const memberMass = Math.max(0, Number(material.density || 0) * Number(section.A || 0) * length);
+        if (!(memberMass > 0)) continue;
+        const source = spec.includeMemberMass === true ? 'member.mass' : 'self-weight-derived-member-mass';
+        addMass(nodeRows, member.n1, memberMass / 2, source);
+        addMass(nodeRows, member.n2, memberMass / 2, source);
+      } catch (_error) {
+        ignored.push({ id: member.id || null, type: 'member-mass', reason: 'unresolved-member-mass-properties' });
+      }
     }
   }
   const expanded = expandAdvancedLoads(model.loads || [], model).loads;
-  const memberNodes = Object.fromEntries((model.members || []).map((m) => [m.id, [m.n1, m.n2]]));
-  const memberLengths = buildMemberLengths(model);
   for (const load of expanded) {
     const factor = comboFactor(load.case, combos);
     if (!factor) {
       skipped.push({ id: load.id || null, type: load.type || null, case: load.case || 'LC1', reason: 'outside-mass-source-combo' });
+      continue;
+    }
+    if (includePhysicalMemberMass && isSelfWeightLoadCase(load.case, loadCaseById)) {
+      skipped.push({ id: load.id || null, type: load.type || null, case: load.case || 'D-SW', reason: 'self-weight-physical-mass-already-included' });
       continue;
     }
     const vertical = verticalLoadInfo(load, memberLengths[load.member] || 0);
@@ -136,28 +163,38 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
   }
   const rows = [...nodeRows.values()].sort((a, b) => String(a.node).localeCompare(String(b.node)));
   const totalMass = rows.reduce((sum, row) => sum + row.mass, 0);
+  const totalMassByDirection = [0, 1, 2].map((direction) => rows.reduce(
+    (sum, row) => sum + (row.massVector?.[direction] || 0),
+    0,
+  ));
   return {
     version: MASS_SOURCE_TRACE_VERSION,
     contract: {
       tickets: ['P3-T82'],
       scope: 'Convert selected vertical load cases to lumped nodal mass for elastic dynamics.',
       gravityUnit: 'force divided by acceleration',
-      acceptedLoads: ['node.mass', 'vertical nodal force', 'vertical member point force', 'vertical member uniform load'],
+      acceptedLoads: ['node.mass', 'member mass/self weight', 'vertical nodal force', 'vertical member point force', 'vertical member uniform load'],
       ignoredLoads: 'non-vertical loads',
       skippedLoads: 'loads outside the active mass-source combination and zero vertical loads',
     },
     gravity: g,
     combos,
     includeNodeMass: spec.includeNodeMass !== false,
+    includeMemberMass: spec.includeMemberMass === true,
+    includeSelfWeight: spec.includeSelfWeight === true,
+    physicalMemberMassIncluded: includePhysicalMemberMass,
+    physicalMemberMassDeduplicated: spec.includeMemberMass === true && spec.includeSelfWeight === true,
     totalMass,
+    totalMassByDirection,
     nodeCount: rows.length,
     rows,
     ignored,
     skipped,
     review: buildMassSourceReview({ rows, ignored, skipped, totalMass }),
     limitations: [
-      'Mass source converts vertical nodal/member loads only.',
+      'Mass source converts vertical nodal/member loads and preserves directional node-mass vectors.',
       'Generated mass is an analysis trace and does not mutate node.mass automatically.',
+      'Member mass and self-weight-derived member mass share one physical source and are never counted twice.',
     ],
   };
 }
@@ -389,15 +426,24 @@ function buildMemberLengths(model = {}) {
   return out;
 }
 
-function nodeMassValue(mass) {
-  if (Array.isArray(mass)) return Math.max(0, ...mass.map((value) => finite(value, 0)));
-  return Math.max(0, finite(mass, 0));
+function nodeMassVector(mass) {
+  if (Array.isArray(mass)) return [0, 1, 2].map((index) => Math.max(0, finite(mass[index], 0)));
+  const value = Math.max(0, finite(mass, 0));
+  return [value, value, value];
+}
+
+function isSelfWeightLoadCase(caseId, loadCaseById) {
+  const id = String(caseId || '').toUpperCase();
+  const variant = String(loadCaseById[caseId]?.variant || '').toLowerCase();
+  return id === 'D-SW' || ['selfweight', 'self-weight', 'self_weight'].includes(variant);
 }
 
 function addMass(rows, node, mass, source) {
-  if (!node || !(mass > 0)) return;
-  const row = rows.get(node) || { node, mass: 0, sources: [] };
-  row.mass += mass;
+  const vector = Array.isArray(mass) ? nodeMassVector(mass) : nodeMassVector(Number(mass));
+  if (!node || !vector.some((value) => value > 0)) return;
+  const row = rows.get(node) || { node, mass: 0, massVector: [0, 0, 0], sources: [] };
+  for (let direction = 0; direction < 3; direction += 1) row.massVector[direction] += vector[direction];
+  row.mass = Math.max(...row.massVector);
   if (!row.sources.includes(source)) row.sources.push(source);
   rows.set(node, row);
 }

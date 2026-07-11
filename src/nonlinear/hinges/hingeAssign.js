@@ -39,6 +39,8 @@ function buildAssignedHinge(member, end, material, section, options) {
     id: `${member.id}:${end}`,
     memberId: member.id,
     end,
+    type: override?.type || 'moment',
+    backboneId: override?.backbone || material?.id || null,
     source: override ? 'member.nonlinear.hinge' : material?.nonlinear?.backbone?.length ? 'material.nonlinear.backbone' : 'section-strength-default',
     rotation: Number(options.initialRotation || 0),
     My: backbone.points[1].moment,

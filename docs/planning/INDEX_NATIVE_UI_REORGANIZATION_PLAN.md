@@ -179,7 +179,7 @@ Ribbon groups:
 
 4. Advanced elastic results
    - P-Delta enable
-   - P-Delta step playback
+  - P-Delta internal iteration playback
    - modal result
    - response spectrum summary
 

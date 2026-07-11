@@ -29,13 +29,13 @@ start: 2026-07-04
 
 ### P5-M0 Baseline
 1. `docs/phase5/` 문서 세트(README/진단/PRD/ARCHITECTURE/ROADMAP/BACKLOG/specs A-D) 커밋.
-2. `src/core/analysisCase.js` 스키마·검증·기본값 + migration(구모델에 `analysisCases: []`). 단위 테스트.
+2. `src/core/analysisCase.js` 스키마·검증·기본값 + migration(구모델에 `analysisCases: []`). `createModel`/`migrateModel`/`validateModel`/`schemaContract`/export-import roundtrip 단위 테스트.
 3. full suite green.
 
 ### P5-M1 해석 센터 + 정적/모달/RSA (핵심)
-1. 해석 센터 도크: 케이스 목록, [케이스 추가](종류 선택), [실행], 상태 뱃지(not-run/running/ok/failed).
-2. `analysisRunners.js`: static→`analyzeModel`, modal→`analyzeDynamics`, rsa→`runResponseSpectrum` 매핑 + 결과 정규화.
-3. 정적 명시 실행이 자동 미리보기와 공존(§3 규칙). 모달 실행 시 주기/참여율 결과 표시. RSA 실행 시 층응답.
+1. 해석 센터 도크: 케이스 목록, [케이스 추가](종류 선택), [실행], 상태 뱃지(not-run/running/ok/failed/stale).
+2. `analysisRunners.js`: static→`analyzeModel`, modal→`analyzeDynamics`, rsa→`analyzeDynamics().rsa`/`runResponseSpectrum` 매핑 + 현재 엔진 파라미터 정규화.
+3. 정적 명시 실행이 자동 미리보기와 공존(§3 규칙). 모달 실행 시 주기/참여율 결과 표시. RSA 실행 시 방향별 modal/combined 응답 표시.
 4. **브라우저 실동작**: 3종 케이스 추가·실행·결과 확인, 콘솔 에러 0 (스크린샷 증빙).
 5. agent: addAnalysisCase/runAnalysisCase/listAnalysisCases + 계약 등재. full suite green.
 
@@ -65,15 +65,15 @@ start: 2026-07-04
 2. 실험 플래그 없이 정규 UI로 동작(기존 experimental 경로 대체/흡수). 브라우저 실동작.
 
 ### P5-M8 성능 판정 + NLTH
-1. 성능점·사용비·성능수준(IO/LS/CP) 판정 표시. NLTH 케이스(지진파/scaling/감쇠) 실행.
+1. 성능점·사용비·성능수준(IO/LS/CP) 판정 표시. NLTH 케이스(지진파/scaling/감쇠) 실행은 현재 SDOF/bilinear Newmark trace로 preliminary 표기.
 2. 시간이력 응답 뷰. 브라우저 실동작.
 
 ### P5-M9 결과 3D 전환
-1. 케이스 결과를 3D로 전환: 모드 형상, 좌굴 모드, 힌지 분포, 정적 변형.
+1. 케이스 결과를 3D/trace로 전환: 모드 형상, 힌지 분포, 정적 변형, 좌굴 criticalLoadFactor/trace.
 2. 케이스 선택 ↔ 3D 표시 연동. 브라우저 실동작.
 
 ### P5-M10 색상 맵 + 차트
-1. 부재 검정비 색상 맵(취약 부재 식별). 결과 차트(곡선/시간이력/스펙트럼) 자체 SVG.
+1. 부재 검정비 색상 맵(취약 부재 식별). 결과 차트(곡선/시간이력/스펙트럼 modal/combined 응답) 자체 SVG.
 2. 브라우저 실동작.
 
 ### P5-M11 계산서 편입

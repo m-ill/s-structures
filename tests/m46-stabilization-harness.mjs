@@ -37,7 +37,7 @@ for (const item of result.cases) {
   assert.ok(item.summary.calculationPackage.memberTraceRows > 0, `${item.id} member trace`);
   for (const combo of item.summary.analysis.comboResults) {
     assert.equal(combo.ok, true, `${item.id} ${combo.id}`);
-    assert.ok(combo.equilibriumResidual < 1e-8, `${item.id} ${combo.id} residual`);
+    assert.ok(combo.equilibriumResidual < combo.equilibriumLimit, `${item.id} ${combo.id} residual`);
   }
 }
 

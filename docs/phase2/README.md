@@ -35,12 +35,16 @@ index.html native modeler
 
 ## Active Phase 2 Documents
 
+Direct Analysis addendum: `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md` defines the implementation contract for geometric-stiffness P-Delta (`Kt = Ke + Kg(N)`, tension-positive axial convention). Its verification gate is `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`.
+
 | 문서 | 역할 |
 | --- | --- |
 | `ROADMAP.md` | P2-M0부터 P2-M14까지 전체 개발 로드맵 |
 | `IMPLEMENTATION_BACKLOG.md` | 50개 티켓 단위 실행 백로그 |
 | `ELASTIC_PRACTICE_MVP.md` | 1차 목표인 탄성해석 실무 검토 MVP 범위와 실행 순서 |
 | `STANDARD_ENGINE_PLAN.md` | solver와 기준 엔진 분리, versioned registry 계획 |
+| `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md` | P-Delta Direct Analysis (`Kt = Ke + Kg(N)`) implementation contract |
+| `P2_M5_DIRECT_ANALYSIS_WORKPACKAGES.md` | Direct Analysis implementation work packages and acceptance checklist |
 | `DEVELOPMENT_FILE_MAP.md` | 코드와 문서의 위치 지도 |
 | `DOCUMENTATION_GOVERNANCE.md` | 문서/생성물/계획 파일 분리 규칙 |
 

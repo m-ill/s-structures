@@ -91,22 +91,38 @@ export function runPortalPlasticMechanismBenchmark(options = {}) {
 }
 
 export function runPushoverRegressionBenchmark(options = {}) {
-  const model = options.model || createPortalFrameSample();
+  const model = options.model || createPushoverRegressionModel();
   const current = runFormalPushover(model, { steps: 4, referenceBaseShear: 40, ...options.pushover });
   const baseline = options.baseline || PUSHOVER_REGRESSION_BASELINE;
   const regression = comparePushoverRegression(current, baseline);
-  const ok = !regression.stepCountMismatch && regression.maxBaseShearDiff === 0 && regression.maxRoofDispDiff === 0;
+  const tolerance = Number.isFinite(Number(options.tolerance)) ? Math.max(0, Number(options.tolerance)) : 1e-12;
+  const ok = !regression.stepCountMismatch
+    && regression.maxBaseShearDiff <= tolerance
+    && regression.maxRoofDispDiff <= tolerance;
   return {
     id: 'B5',
     name: 'representative pushover regression',
     reference: 0,
     actual: regression.maxRoofDispDiff,
-    tolerance: 0,
+    tolerance,
     errorRatio: ok ? 0 : 1,
     ok,
     baseline: { id: baseline.id || 'custom-baseline', source: baseline.source || 'caller-supplied' },
     regression,
   };
+}
+
+function createPushoverRegressionModel() {
+  const model = createPortalFrameSample();
+  model.loadCombinations = [{
+    id: 'CO1',
+    name: 'Frozen B5 regression D + L',
+    type: 'strength',
+    factors: { D: 1, L: 1 },
+    origin: 'benchmark-fixture',
+    userModified: true,
+  }];
+  return model;
 }
 
 export function runMomentCurvatureBenchmark(options = {}) {

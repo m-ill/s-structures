@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { createTwoStoryElasticFrameModel } from '../src/index.js';
+import { SCHEMA_VERSION, createTwoStoryElasticFrameModel } from '../src/index.js';
 import { createProductBook, extractProductModel, productModelSignature } from '../src/ui/indexNativePersistence.js';
 import { createApiClient } from '../src/app/apiClient.js';
 import { createPersistenceClient } from '../src/app/persistenceClient.js';
@@ -50,7 +50,7 @@ try {
   const savedLegacy = await persistence.saveToServer(projectId, legacyModel, { parentRev: 1 });
   assert.equal(savedLegacy.rev, 2);
   const loadedLegacy = await persistence.loadFromServer(projectId, 2);
-  assert.equal(loadedLegacy.model.schemaVersion, 3);
+  assert.equal(loadedLegacy.model.schemaVersion, SCHEMA_VERSION);
 
   // lineage warning surfaces through the client
   const savedStale = await persistence.saveToServer(projectId, model, { parentRev: 0 });

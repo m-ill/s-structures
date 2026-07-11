@@ -1,4 +1,9 @@
-import { vadd, vcross, vdot, vlen, vnorm, vscale, vsub } from '../core/vector.js';
+import { vadd, vcross, vlen, vnorm, vscale, vsub } from '../core/vector.js';
+import { resolveCriterion } from '../core/analysisCriteria.js';
+import { buildFixedEndLoad } from '../loads/fixedEnd/index.js';
+import { resolveLoadDirection } from '../loads/fixedEnd/common.js';
+import { buildSolverWarningDiagnostics } from './sparse/diagnostics.js';
+import { solveDenseGaussian, solveSparseLinear } from './sparse/solveSparse.js';
 export { memberReleaseDofs } from '../core/memberReleaseContract.js';
 
 export const AXIS = {
@@ -10,30 +15,55 @@ export const AXIS = {
   '-z': [0, 0, -1],
 };
 
-export function solveLinear(A, b) {
-  const n = b.length;
-  const M = A.map((row, i) => row.concat([b[i]]));
-  for (let c = 0; c < n; c += 1) {
-    let pivot = c;
-    for (let r = c + 1; r < n; r += 1) {
-      if (Math.abs(M[r][c]) > Math.abs(M[pivot][c])) pivot = r;
-    }
-    if (Math.abs(M[pivot][c]) < 1e-10) return null;
-    [M[c], M[pivot]] = [M[pivot], M[c]];
-    for (let r = c + 1; r < n; r += 1) {
-      const factor = M[r][c] / M[c][c];
-      if (!factor) continue;
-      for (let k = c; k <= n; k += 1) M[r][k] -= factor * M[c][k];
-    }
-  }
+export function solveLinear(A, b, options = {}) {
+  const result = solveLinearDetailed(A, b, options);
+  return result.ok ? result.x : null;
+}
 
-  const x = new Array(n).fill(0);
-  for (let r = n - 1; r >= 0; r -= 1) {
-    let sum = M[r][n];
-    for (let k = r + 1; k < n; k += 1) sum -= M[r][k] * x[k];
-    x[r] = sum / M[r][r];
+export function solveLinearDetailed(A, b, options = {}) {
+  const criteriaModel = options.criteriaModel || options.model || options.analysisCriteria || {};
+  const sparseThreshold = Math.max(1, Number(options.sparseThreshold ?? 48));
+  const forceSparse = options.solver === 'sparse' || options.sparse === true;
+  const autoSparse = options.solver === 'auto-sparse' || options.sparse === 'auto';
+  const useSparse = forceSparse || (autoSparse && b.length >= sparseThreshold);
+  const pivotTolerance = positiveNumber(options.pivotTolerance, resolveCriterion(criteriaModel, 'solver.pivotSingular'), 1e-12);
+  if (useSparse) return solveSparseLinear(A, b, { ...options, criteriaModel, pivotTolerance });
+
+  const dense = solveDenseGaussian(A, b, { pivotTolerance });
+  const diagnostics = {
+    version: 'p6-m1-dense-solve-diagnostics-v1',
+    method: 'dense-partial-pivot',
+    sparseAttempted: false,
+    fallback: false,
+    rowCount: A.length,
+    colCount: A[0]?.length || 0,
+    nnz: A.reduce((sum, row) => sum + row.filter((value) => Math.abs(Number(value) || 0) > 0).length, 0),
+    density: A.length && A[0]?.length ? diagnosticsNnz(A) / Math.max(1, A.length * A[0].length) : 0,
+    solveMs: dense.solveMs || 0,
+    totalMs: dense.solveMs || 0,
+    pivotMin: dense.pivotMin || 0,
+    pivotMax: dense.pivotMax || 0,
+    pivotRatio: dense.pivotRatio || 0,
+  };
+  diagnostics.diagnostics = buildSolverWarningDiagnostics(A, dense.x, b, diagnostics, criteriaModel, options.labels || []);
+  return {
+    ok: dense.ok,
+    x: dense.x,
+    reason: dense.reason,
+    diagnostics,
+  };
+}
+
+function diagnosticsNnz(A) {
+  return A.reduce((sum, row) => sum + row.filter((value) => Math.abs(Number(value) || 0) > 0).length, 0);
+}
+
+function positiveNumber(...values) {
+  for (const value of values) {
+    const number = Number(value);
+    if (Number.isFinite(number) && number > 0) return number;
   }
-  return x;
+  return 1;
 }
 
 export function memberAxes(a, b, localAxis) {
@@ -124,12 +154,9 @@ export function localTrussK12(E, A, L) {
   return k;
 }
 
-export function dirVec(load) {
-  if (Array.isArray(load.direction) && load.direction.length === 3) {
-    const l = Math.hypot(load.direction[0], load.direction[1], load.direction[2]) || 1;
-    return [load.direction[0] / l, load.direction[1] / l, load.direction[2] / l];
-  }
-  return AXIS[load.dir || '-z'];
+export function dirVec(load, ax = null) {
+  const resolved = resolveLoadDirection(load, ax);
+  return resolved.ok ? resolved.global : undefined;
 }
 
 export function transform12(ax) {
@@ -144,60 +171,7 @@ export function transform12(ax) {
 }
 
 export function fixedEndForces3D(load, ax, md = {}) {
-  const { L } = ax;
-  const f0 = new Array(12).fill(0);
-  const direction = dirVec(load);
-  const magnitude = load.type === 'udl' ? load.w : load.P;
-  const q = [vdot(ax.x, direction) * magnitude, vdot(ax.y, direction) * magnitude, vdot(ax.z, direction) * magnitude];
-
-  if (load.type === 'point') {
-    const a = load.t * L;
-    const b = L - a;
-    f0[0] -= (q[0] * b) / L;
-    f0[6] -= (q[0] * a) / L;
-    f0[1] -= (q[1] * b * b * (3 * a + b)) / L ** 3;
-    f0[7] -= (q[1] * a * a * (a + 3 * b)) / L ** 3;
-    f0[5] -= (q[1] * a * b * b) / L ** 2;
-    f0[11] += (q[1] * a * a * b) / L ** 2;
-    f0[2] -= (q[2] * b * b * (3 * a + b)) / L ** 3;
-    f0[8] -= (q[2] * a * a * (a + 3 * b)) / L ** 3;
-    f0[4] += (q[2] * a * b * b) / L ** 2;
-    f0[10] -= (q[2] * a * a * b) / L ** 2;
-  } else if (load.type === 'udl') {
-    const coeffs = fixedEndUniformCoefficients(load.shape || 'uniform', L);
-    f0[0] -= q[0] * coeffs.a1;
-    f0[6] -= q[0] * coeffs.a2;
-    f0[1] -= q[1] * coeffs.sh1;
-    f0[7] -= q[1] * coeffs.sh2;
-    f0[5] -= q[1] * coeffs.m1;
-    f0[11] += q[1] * coeffs.m2;
-    f0[2] -= q[2] * coeffs.sh1;
-    f0[8] -= q[2] * coeffs.sh2;
-    f0[4] += q[2] * coeffs.m1;
-    f0[10] -= q[2] * coeffs.m2;
-  } else if (load.type === 'temperature') {
-    const alpha = Number(load.alpha ?? md.material?.alpha ?? 1.2e-5);
-    const N = Number(md.material?.E || 0) * Number(md.section?.A || 0) * alpha * Number(load.dT || 0);
-    f0[0] -= N;
-    f0[6] += N;
-  } else if (load.type === 'tgradient') {
-    const alpha = Number(load.alpha ?? md.material?.alpha ?? 1.2e-5);
-    const h = Math.max(1e-9, Number(load.h || md.section?.H || 1));
-    const curvature = alpha * (Number(load.dTtop || 0) - Number(load.dTbot || 0)) / h;
-    const M = Number(md.material?.E || 0) * Number(md.section?.Iz || 0) * curvature;
-    f0[5] -= M;
-    f0[11] += M;
-  } else if (load.type === 'mmoment') {
-    const axis = load.axis || 'z';
-    const i = axis === 'y' ? 4 : axis === 'x' ? 3 : 5;
-    const j = i + 6;
-    const t = Math.max(0, Math.min(1, Number(load.at ?? 0.5)));
-    const M = Number(load.M || 0);
-    f0[i] -= M * (1 - t);
-    f0[j] -= M * t;
-  }
-
-  return f0;
+  return buildFixedEndLoad(load, ax, md)?.q0 || new Array(12).fill(0);
 }
 
 export function fixedEndUniformCoefficients(shape, L) {

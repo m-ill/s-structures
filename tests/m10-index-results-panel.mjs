@@ -8,7 +8,8 @@ import {
 import { createPortalFrameSample } from '../src/index.js';
 
 const model = createPortalFrameSample();
-model.analysisSettings.includeGeometricStiffness = true;
+model.analysisSettings.pDeltaMethod = 'direct';
+model.analysisSettings.includeGeometricStiffness = false;
 for (const node of model.nodes) {
   if (!node.support) node.mass = [5, 5, 5];
 }
@@ -31,6 +32,10 @@ assert.equal(pDeltaView.activeTab, 'pdelta');
 assert.equal(pDeltaView.pDelta.enabled, true);
 assert.ok(pDeltaView.pDelta.maxStep >= 1, 'P-Delta step count should be exposed');
 assert.ok(pDeltaView.pDelta.rows.every((row) => Number(row.amplification) > 0));
+assert.ok(pDeltaView.pDelta.rows.every((row) => Number(row.loadFactor) >= 0));
+assert.equal(pDeltaView.pDelta.design.version, 'pdelta-design-summary-v1');
+assert.ok(pDeltaView.pDelta.design.rows.length > 0, 'P-Delta design summary rows should be exposed');
+assert.ok(Array.isArray(pDeltaView.pDelta.design.storyRows), 'P-Delta story stability rows should be exposed as an array');
 
 const modalView = buildIndexResultViewModel(model, analysis, { activeTab: 'modal' });
 assert.equal(modalView.activeTab, 'modal');
@@ -45,7 +50,9 @@ const markup = renderIndexResultsMarkup(pDeltaView);
 assert.match(markup, /engine-tab-pdelta/);
 assert.match(markup, /engine-results-close/);
 assert.match(markup, /data-pdelta-step/);
-assert.match(markup, /P-Delta amplification chart/);
+assert.match(markup, /Global P-Delta response curve/);
+assert.match(markup, /Design P-Delta Summary/);
+assert.match(markup, /Story Stability Table/);
 
 const pDeltaOffModel = createPortalFrameSample();
 const pDeltaOffAnalysis = analyzeForIndex(pDeltaOffModel);

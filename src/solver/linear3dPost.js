@@ -1,5 +1,8 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
-import { dirVec, maxAbs } from './linear3dElement.js';
+import { resolveLoadDirection } from '../loads/fixedEnd/common.js';
+import { maxAbs, memberAxes } from './linear3dElement.js';
+
+const DEFAULT_EQUILIBRIUM_LIMIT = 1e-8;
 
 export function defaultCombos(model) {
   const loadCaseId = model.loadCases?.[0]?.id || 'LC1';
@@ -10,15 +13,43 @@ export function defaultCombos(model) {
 }
 
 export function makeEnvelope(byCombo, combos) {
-  const pairs = combos
-    .map((combo) => ({ combo: comboSnapshot(combo), result: byCombo[combo.id] }))
-    .filter(({ result }) => result?.ok && result.anyOk);
-  if (!pairs.length) return null;
+  const requested = combos.map((combo) => {
+    const snapshot = comboSnapshot(combo);
+    const result = byCombo[combo.id];
+    return { combo: snapshot, result, ...combinationEnvelopeStatus(snapshot, result) };
+  });
+  const pairs = requested.filter((item) => item.included);
+  const failed = requested.filter((item) => !item.included);
+  const complete = requested.length > 0 && failed.length === 0;
+  const provenance = requested.map(({ combo, result, status, included, reason }) => ({
+    comboId: combo.id,
+    comboName: combo.name,
+    comboType: combo.type,
+    factors: { ...combo.factors },
+    status,
+    included,
+    reason,
+    resultOk: !!result?.ok,
+    anyOk: !!result?.anyOk,
+    unstableMemberIds: [...(result?.unstableMembers || [])],
+  }));
 
   const env = {
-    ok: true,
-    anyOk: true,
+    ok: complete && pairs.length > 0,
+    anyOk: pairs.length > 0,
     isEnvelope: true,
+    status: complete ? 'COMPLETE' : 'INCOMPLETE',
+    complete,
+    incomplete: !complete,
+    designBlocked: !complete,
+    designBlockers: failed.map(({ combo, status, reason }) => ({ comboId: combo.id, status, reason })),
+    requestedComboCount: requested.length,
+    successfulComboCount: pairs.length,
+    failedComboCount: failed.length,
+    requestedSources: requested.map(({ combo }) => combo),
+    successfulSources: pairs.map(({ combo }) => combo),
+    failedSources: failed.map(({ combo, status, reason }) => ({ ...combo, status, reason })),
+    combinationStatus: provenance,
     sources: pairs.map(({ combo }) => combo),
     disp: {},
     reactions: {},
@@ -34,12 +65,26 @@ export function makeEnvelope(byCombo, combos) {
     okCount: 0,
   };
 
+  if (!pairs.length) {
+    env.summary = {
+      totalLoad: null,
+      totalReaction: null,
+      equilibriumResidual: null,
+      maxDisplacement: null,
+      maxUtilization: null,
+      note: 'no-successful-combinations',
+      complete: false,
+      designBlocked: true,
+    };
+    return env;
+  }
+
   for (const { combo, result } of pairs) {
     env.dmax = Math.max(env.dmax, result.dmax);
     if (!env.governing.maxDisplacement || result.dmax > env.governing.maxDisplacement.value) {
       env.governing.maxDisplacement = { comboId: combo.id, comboName: combo.name, value: result.dmax };
     }
-    result.unstableMembers.forEach((id) => env.unstableMembers.add(id));
+    (result.unstableMembers || []).forEach((id) => env.unstableMembers.add(id));
   }
 
   const nodeIds = new Set();
@@ -170,9 +215,50 @@ export function makeEnvelope(byCombo, combos) {
     equilibriumResidual: null,
     maxDisplacement: env.dmax,
     maxUtilization: env.maxRatio,
-    note: 'envelope',
+    note: complete ? 'envelope' : 'incomplete-envelope',
+    complete,
+    designBlocked: !complete,
   };
   return env;
+}
+
+function combinationEnvelopeStatus(combo, result) {
+  if (!result) return { status: 'MISSING', included: false, reason: 'COMBINATION_RESULT_MISSING' };
+  if (!result.ok || !result.anyOk) {
+    return { status: 'NOT_SOLVED', included: false, reason: result.reason || 'COMBINATION_NOT_SOLVED' };
+  }
+  const integrityIssue = resultIntegrityIssue(result);
+  if (integrityIssue) return { status: 'INVALID_RESULTS', included: false, reason: integrityIssue.code, issue: integrityIssue };
+  const equilibriumStatus = result.summary?.equilibriumStatus;
+  if (['FAIL', 'NOT_AVAILABLE', 'NOT_SOLVED'].includes(equilibriumStatus)
+    || (result.summary?.designBlocked && equilibriumStatus !== 'PASS')) {
+    return {
+      status: 'INVALID_RESULTS',
+      included: false,
+      reason: result.summary?.equilibriumFailureReason || result.summary?.equilibriumStatus || 'EQUILIBRIUM_RESULTS_BLOCKED',
+    };
+  }
+  return { status: 'SOLVED', included: true, reason: null };
+}
+
+function resultIntegrityIssue(result) {
+  for (const [nodeId, reaction] of Object.entries(result.reactions || {})) {
+    for (const key of ['rx', 'ry', 'rz', 'rmx', 'rmy', 'rmz']) {
+      if (finiteNumber(reaction?.[key]) == null) {
+        return { code: 'NONFINITE_REACTION_COMPONENT', nodeId, component: key, value: reaction?.[key] };
+      }
+    }
+  }
+  for (const field of ['totalLoadResultant', 'totalReactionResultant', 'residualResultant']) {
+    const resultant = result.summary?.[field];
+    if (resultant == null) continue;
+    if (!Array.isArray(resultant) || resultant.length !== 6) {
+      return { code: 'INVALID_EQUILIBRIUM_RESULTANT', component: field, value: resultant };
+    }
+    const index = resultant.findIndex((value) => finiteNumber(value) == null);
+    if (index >= 0) return { code: 'NONFINITE_EQUILIBRIUM_RESULTANT', component: `${field}[${index}]`, value: resultant[index] };
+  }
+  return null;
 }
 
 export function comboSnapshot(combo = {}) {
@@ -345,61 +431,304 @@ export function connectedComponentGroups(nodes, members, nodeGroups = []) {
   return groups;
 }
 
-export function buildEquilibriumSummary(nodes, members, loads, out) {
+export function buildEquilibriumSummary(nodes, members, loads, out, options = {}) {
+  const requestedLimit = Number(options.equilibriumLimit);
+  const equilibriumLimit = Number.isFinite(requestedLimit) && requestedLimit > 0
+    ? requestedLimit
+    : DEFAULT_EQUILIBRIUM_LIMIT;
+  const referencePoint = [0, 0, 0];
+  const nodeMap = Object.fromEntries(nodes.map((node) => [node.id, node]));
+  const memberMap = Object.fromEntries(members.map((member) => [member.id, member]));
   const totalLoad = [0, 0, 0];
-  const nodeIds = new Set(nodes.map((node) => node.id));
+  const totalLoadMoment = [0, 0, 0];
+  let loadForceScale = 0;
+  let loadMomentScale = 0;
+  const equilibriumIssues = [];
+
   for (const load of loads) {
-    if (load.type === 'nmoment') continue;
-    const direction = dirVec(load);
-    let magnitude = 0;
-    if (load.type === 'udl') {
-      const member = members.find((m) => m.id === load.member);
-      if (!member) continue;
-      const a = nodes.find((node) => node.id === member.n1);
-      const b = nodes.find((node) => node.id === member.n2);
-      if (!a || !b) continue;
-      const loadIntensity = Number(load.w);
-      if (!Number.isFinite(loadIntensity)) continue;
-      magnitude = loadIntensity * Math.hypot(b.x - a.x, b.y - a.y, (b.z || 0) - (a.z || 0));
-      if (load.shape && load.shape !== 'uniform') magnitude *= 0.5;
-    } else if (load.member) {
-      const member = members.find((m) => m.id === load.member);
-      if (!member || !nodeIds.has(member.n1) || !nodeIds.has(member.n2)) continue;
-      magnitude = Number(load.P);
-    } else {
-      if (load.type === 'nodal' && !nodeIds.has(load.node)) continue;
-      if (load.node && !nodeIds.has(load.node)) continue;
-      magnitude = Number(load.P);
+    const resultant = loadResultant(load, nodeMap, memberMap, referencePoint);
+    if (!resultant) continue;
+    if (resultant.issue) {
+      equilibriumIssues.push(resultant.issue);
+      continue;
     }
-    if (!Number.isFinite(magnitude)) continue;
-    totalLoad[0] += direction[0] * magnitude;
-    totalLoad[1] += direction[1] * magnitude;
-    totalLoad[2] += direction[2] * magnitude;
+    if (!finiteVector(resultant.force) || !finiteVector(resultant.moment)) {
+      equilibriumIssues.push(equilibriumIssue('NONFINITE_LOAD_RESULTANT', load.id || null, null, { force: resultant.force, moment: resultant.moment }));
+      continue;
+    }
+    addInto(totalLoad, resultant.force);
+    addInto(totalLoadMoment, resultant.moment);
+    loadForceScale += maxAbs3(resultant.force);
+    loadMomentScale += maxAbs3(resultant.moment);
   }
 
   const totalReaction = [0, 0, 0];
-  for (const reaction of Object.values(out.reactions)) {
-    totalReaction[0] += reaction.rx;
-    totalReaction[1] += reaction.ry;
-    totalReaction[2] += reaction.rz;
+  const totalReactionMoment = [0, 0, 0];
+  let reactionForceScale = 0;
+  let reactionMomentScale = 0;
+  for (const [nodeId, reaction] of Object.entries(out.reactions || {})) {
+    const node = nodeMap[nodeId];
+    const point = pointOf(node);
+    if (!node || !point) {
+      equilibriumIssues.push(equilibriumIssue('REACTION_NODE_NOT_AVAILABLE', nodeId, null, node));
+      continue;
+    }
+    const force = strictComponents(reaction, ['rx', 'ry', 'rz']);
+    const couple = strictComponents(reaction, ['rmx', 'rmy', 'rmz']);
+    if (!force || !couple) {
+      const component = [...['rx', 'ry', 'rz', 'rmx', 'rmy', 'rmz']]
+        .find((key) => finiteNumber(reaction?.[key]) == null);
+      equilibriumIssues.push(equilibriumIssue('NONFINITE_REACTION_COMPONENT', nodeId, component, reaction?.[component]));
+      continue;
+    }
+    const arm = subtract(point, referencePoint);
+    const moment = add(cross(arm, force), couple);
+    addInto(totalReaction, force);
+    addInto(totalReactionMoment, moment);
+    reactionForceScale += maxAbs3(force);
+    reactionMomentScale += maxAbs3(moment);
   }
 
-  const denom = Math.max(1, Math.abs(totalLoad[0]), Math.abs(totalLoad[1]), Math.abs(totalLoad[2]));
-  const equilibriumResidual = out.anyOk && !out.unstableMembers.size
-    ? Math.max(
-      Math.abs(totalLoad[0] + totalReaction[0]),
-      Math.abs(totalLoad[1] + totalReaction[1]),
-      Math.abs(totalLoad[2] + totalReaction[2]),
-    ) / denom
-    : null;
+  const available = !!out.anyOk && !(out.unstableMembers?.size > 0) && equilibriumIssues.length === 0;
+  const forceResidual = available ? add(totalLoad, totalReaction) : null;
+  const momentResidual = available ? add(totalLoadMoment, totalReactionMoment) : null;
+  const forceScale = Math.max(1, loadForceScale, reactionForceScale);
+  const momentScale = Math.max(1, loadMomentScale, reactionMomentScale);
+  const forceResidualNorm = forceResidual ? maxAbs3(forceResidual) / forceScale : null;
+  const momentResidualNorm = momentResidual ? maxAbs3(momentResidual) / momentScale : null;
+  const equilibriumResidual = available ? Math.max(forceResidualNorm, momentResidualNorm) : null;
+  const equilibriumStatus = equilibriumResidual == null
+    ? 'NOT_AVAILABLE'
+    : equilibriumResidual <= equilibriumLimit ? 'PASS' : 'FAIL';
+  const equilibriumFailureReason = !out.anyOk
+    ? 'COMBINATION_NOT_SOLVED'
+    : out.unstableMembers?.size > 0
+      ? 'UNSTABLE_COMPONENT'
+      : equilibriumIssues[0]?.code || (equilibriumStatus === 'FAIL' ? 'EQUILIBRIUM_LIMIT_EXCEEDED' : null);
+  const loadResultantsAvailable = !equilibriumIssues.some((issue) => issue.source === 'load');
+  const reactionResultantsAvailable = !equilibriumIssues.some((issue) => issue.source === 'reaction');
 
   return {
-    totalLoad,
-    totalReaction,
+    equilibriumVersion: 'p7-m7-six-resultant-equilibrium-v1',
+    referencePoint,
+    totalLoad: loadResultantsAvailable ? totalLoad : null,
+    totalReaction: reactionResultantsAvailable ? totalReaction : null,
+    totalLoadMoment: loadResultantsAvailable ? totalLoadMoment : null,
+    totalReactionMoment: reactionResultantsAvailable ? totalReactionMoment : null,
+    totalLoadResultant: loadResultantsAvailable ? [...totalLoad, ...totalLoadMoment] : null,
+    totalReactionResultant: reactionResultantsAvailable ? [...totalReaction, ...totalReactionMoment] : null,
+    forceResidual,
+    momentResidual,
+    residualResultant: available ? [...forceResidual, ...momentResidual] : null,
+    forceScale,
+    momentScale,
+    forceResidualNorm,
+    momentResidualNorm,
+    forceEquilibriumResidual: forceResidualNorm,
+    momentEquilibriumResidual: momentResidualNorm,
     equilibriumResidual,
+    equilibriumLimit,
+    equilibriumStatus,
+    equilibriumOk: equilibriumStatus === 'PASS',
+    equilibriumFailureReason,
+    equilibriumIssues,
+    designBlocked: equilibriumStatus !== 'PASS',
     solverResidualNorm: out.solver?.residualNorm ?? null,
     solverResidualMax: out.solver?.residualMax ?? null,
     maxDisplacement: out.dmax,
     maxUtilization: out.maxRatio,
+  };
+}
+
+function loadResultant(load, nodeMap, memberMap, referencePoint) {
+  if (load.type === 'nodal') {
+    const node = nodeMap[load.node];
+    const magnitude = Number(load.P);
+    const point = pointOf(node);
+    const direction = resolvedDirection(load);
+    if (!node || !point) return loadResultantFailure(load, 'LOAD_NODE_NOT_AVAILABLE', 'node', load.node);
+    if (!Number.isFinite(magnitude)) return loadResultantFailure(load, 'NONFINITE_LOAD_COMPONENT', 'P', load.P);
+    if (!direction.ok) return { issue: { ...direction.issue, source: 'load' } };
+    return forceAtPoint(scale(direction.global, magnitude), point, referencePoint);
+  }
+  if (load.type === 'nmoment') {
+    if (!nodeMap[load.node]) return loadResultantFailure(load, 'LOAD_NODE_NOT_AVAILABLE', 'node', load.node);
+    const magnitude = Number(load.M);
+    const axis = globalAxis(load.axis || 'z');
+    if (!Number.isFinite(magnitude)) return loadResultantFailure(load, 'NONFINITE_LOAD_COMPONENT', 'M', load.M);
+    if (!axis) return loadResultantFailure(load, 'UNSUPPORTED_NODAL_MOMENT_AXIS', 'axis', load.axis);
+    return { force: [0, 0, 0], moment: scale(axis, magnitude) };
+  }
+  if (['temperature', 'tgradient'].includes(load.type)) return null;
+
+  const member = memberMap[load.member];
+  const geometry = memberLoadGeometry(member, nodeMap);
+  if (!geometry) return loadResultantFailure(load, 'MEMBER_LOAD_GEOMETRY_NOT_AVAILABLE', 'member', load.member);
+
+  if (load.type === 'mmoment') {
+    const magnitude = Number(load.M);
+    const axis = localAxis(geometry.ax, load.axis || 'z');
+    const position = finiteNumber(load.at ?? load.t ?? 0.5);
+    if (!Number.isFinite(magnitude)) return loadResultantFailure(load, 'NONFINITE_LOAD_COMPONENT', 'M', load.M);
+    if (!axis) return loadResultantFailure(load, 'UNSUPPORTED_MEMBER_MOMENT_AXIS', 'axis', load.axis);
+    if (position == null || position < 0 || position > 1) return loadResultantFailure(load, 'INVALID_MEMBER_LOAD_POSITION', 'at', load.at ?? load.t);
+    return { force: [0, 0, 0], moment: scale(axis, magnitude) };
+  }
+
+  const direction = resolvedDirection(load, geometry.ax);
+  if (!direction.ok) return { issue: { ...direction.issue, source: 'load' } };
+  if (load.type === 'point') {
+    const magnitude = Number(load.P);
+    if (!Number.isFinite(magnitude)) return loadResultantFailure(load, 'NONFINITE_LOAD_COMPONENT', 'P', load.P);
+    const inputRatio = finiteNumber(load.t ?? load.at ?? 0.5);
+    if (inputRatio == null || inputRatio < 0 || inputRatio > 1) {
+      return loadResultantFailure(load, 'INVALID_MEMBER_LOAD_POSITION', 't', load.t ?? load.at);
+    }
+    const ratio = inputRatio;
+    const point = add(geometry.start, scale(geometry.ax.x, ratio * geometry.ax.L));
+    return forceAtPoint(scale(direction.global, magnitude), point, referencePoint);
+  }
+  if (['udl', 'udl-partial', 'trapezoid'].includes(load.type)) {
+    const integrals = distributedLoadIntegrals(load, geometry.ax.L);
+    if (!integrals) return loadResultantFailure(load, 'DISTRIBUTED_LOAD_RESULTANT_NOT_AVAILABLE', 'magnitude/range', load);
+    const force = scale(direction.global, integrals.force);
+    const startArm = subtract(geometry.start, referencePoint);
+    const moment = add(
+      scale(cross(startArm, direction.global), integrals.force),
+      scale(cross(geometry.ax.x, direction.global), integrals.firstMoment),
+    );
+    return { force, moment };
+  }
+  return loadResultantFailure(load, 'UNSUPPORTED_LOAD_RESULTANT', 'type', load.type);
+}
+
+function distributedLoadIntegrals(load, L) {
+  if (!(L > 0)) return null;
+  if (load.type === 'udl') {
+    const w = Number(load.w);
+    if (!Number.isFinite(w)) return null;
+    if (load.shape === 'asc') return { force: w * L / 2, firstMoment: w * L ** 2 / 3 };
+    if (load.shape === 'desc') return { force: w * L / 2, firstMoment: w * L ** 2 / 6 };
+    return { force: w * L, firstMoment: w * L ** 2 / 2 };
+  }
+
+  const from = finiteNumber(load.from);
+  const to = finiteNumber(load.to);
+  if (from == null || to == null || from < 0 || to > 1 || !(to > from)) return null;
+  if (load.type === 'udl-partial') {
+    const w = Number(load.w);
+    if (!Number.isFinite(w)) return null;
+    return {
+      force: w * L * (to - from),
+      firstMoment: w * L ** 2 * (to ** 2 - from ** 2) / 2,
+    };
+  }
+
+  const w1 = Number(load.w1);
+  const w2 = Number(load.w2);
+  if (!Number.isFinite(w1) || !Number.isFinite(w2)) return null;
+  const span = to - from;
+  return {
+    force: L * span * (w1 + w2) / 2,
+    firstMoment: L ** 2 * (
+      from * span * (w1 + w2) / 2 + span ** 2 * (w1 + 2 * w2) / 6
+    ),
+  };
+}
+
+function memberLoadGeometry(member, nodeMap) {
+  if (!member) return null;
+  const a = nodeMap[member.n1];
+  const b = nodeMap[member.n2];
+  const startNode = pointOf(a);
+  const endNode = pointOf(b);
+  if (!a || !b || !startNode || !endNode) return null;
+  const base = memberAxes(a, b, member.localAxis);
+  if (!(base.L > 0) || !finiteVector(base.x) || !finiteVector(base.y) || !finiteVector(base.z)) return null;
+  const oi = Number(member.endOffset?.i ?? 0);
+  const oj = Number(member.endOffset?.j ?? 0);
+  if (!Number.isFinite(oi) || !Number.isFinite(oj) || oi < 0 || oj < 0 || oi + oj >= base.L) return null;
+  return {
+    ax: { ...base, L: base.L - oi - oj },
+    start: add(startNode, scale(base.x, oi)),
+  };
+}
+
+function forceAtPoint(force, point, referencePoint) {
+  return { force, moment: cross(subtract(point, referencePoint), force) };
+}
+
+function resolvedDirection(load, ax = null) {
+  return resolveLoadDirection(load, ax);
+}
+
+function globalAxis(axis) {
+  return { x: [1, 0, 0], y: [0, 1, 0], z: [0, 0, 1] }[axis] || null;
+}
+
+function localAxis(ax, axis) {
+  return { x: ax.x, y: ax.y, z: ax.z }[axis] || null;
+}
+
+function pointOf(node) {
+  if (!node) return null;
+  const point = [finiteNumber(node.x), finiteNumber(node.y), finiteNumber(node.z ?? 0)];
+  return point.every((value) => value != null) ? point : null;
+}
+
+function add(a, b) {
+  return [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+}
+
+function addInto(target, values) {
+  for (let i = 0; i < 3; i += 1) target[i] += values[i];
+}
+
+function subtract(a, b) {
+  return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+}
+
+function scale(vector, factor) {
+  return vector.map((value) => value * factor);
+}
+
+function cross(a, b) {
+  return [
+    a[1] * b[2] - a[2] * b[1],
+    a[2] * b[0] - a[0] * b[2],
+    a[0] * b[1] - a[1] * b[0],
+  ];
+}
+
+function maxAbs3(values) {
+  return Math.max(Math.abs(values[0]), Math.abs(values[1]), Math.abs(values[2]));
+}
+
+function finiteNumber(value) {
+  if (value == null || value === '') return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function finiteVector(value, length = 3) {
+  return Array.isArray(value) && value.length === length && value.every((component) => finiteNumber(component) != null);
+}
+
+function strictComponents(source, keys) {
+  const values = keys.map((key) => finiteNumber(source?.[key]));
+  return values.every((value) => value != null) ? values : null;
+}
+
+function loadResultantFailure(load, code, component, value) {
+  return { issue: equilibriumIssue(code, load.id || null, component, value, 'load') };
+}
+
+function equilibriumIssue(code, entityId, component, value, source = null) {
+  return {
+    code,
+    source: source || (String(code).includes('REACTION') ? 'reaction' : 'load'),
+    entityId,
+    component,
+    value,
   };
 }

@@ -15,6 +15,12 @@ import { validateUnitSystem } from './unitSystemValidation.js';
 import { summarizeValidationHealth } from './validationHealth.js';
 import { MEMBER_RELEASE_ENDS } from './memberReleaseContract.js';
 import { DIAPHRAGM_TYPES } from './diaphragmContract.js';
+import { validateAnalysisCases } from './analysisCase.js';
+import { validateAnalysisCriteria } from './analysisCriteria.js';
+import { PROJECT_SETUP_STATUSES } from './projectSetup.js';
+import { validateSourceRecord, validateSourceRegistry } from './sourceRegistry.js';
+import { validateMaterialRecord } from '../materials/materialSchema.js';
+import { validateSectionRecord } from '../materials/sectionSchema.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -43,12 +49,15 @@ export function validateModel(model) {
 
   const nodeIds = validateNodes(model, error, warning);
   validateDiaphragms(model, nodeIds, error);
+  validateLibraryCollections(model, error, warning);
   const sectionIds = knownIds(model.sections, SECTIONS);
   const materialIds = knownIds(model.materials, MATERIALS);
   validateShells(model, nodeIds, materialIds, error);
   const memberIds = validateMembers(model, nodeIds, sectionIds, materialIds, error);
   validateLoads(model, nodeIds, memberIds, error, warning);
   validateLoadCasesAndCombinations(model, error, warning);
+  validatePhase7Contracts(model, error, warning);
+  validateAnalysisCases(model.analysisCases).forEach((item) => error(ERROR_CODES[item.code] || item.code, item.message, item.target));
 
   if ((model.members || []).length && !(model.nodes || []).some((node) => node.support)) {
     error(ERROR_CODES.NO_SUPPORT, 'Model has members but no support.', 'model');
@@ -57,13 +66,34 @@ export function validateModel(model) {
   if (model.analysisSettings?.includeShearDeformation) {
     warning(WARNING_CODES.NOT_SUPPORTED, 'Shear deformation is not implemented yet.', 'analysisSettings.includeShearDeformation');
   }
+  warnings.push(...validateAnalysisCriteria(model.analysisCriteria));
   return finish(errors, warnings);
 }
 
 function validateCollections(model, error) {
-  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'stories', 'diaphragms']) {
+  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'analysisCases', 'massSources', 'sourceRegistry', 'stories', 'diaphragms']) {
     if (!Array.isArray(model[key])) {
       error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array.`, key);
+    }
+  }
+}
+
+function validatePhase7Contracts(model, error, warning) {
+  if (!model.projectSetup || !PROJECT_SETUP_STATUSES.has(model.projectSetup.status)) {
+    error(ERROR_CODES.BAD_PROJECT_SETUP, 'projectSetup must declare a supported status.', 'projectSetup');
+  }
+  const registry = validateSourceRegistry(model.sourceRegistry);
+  if (!registry.ok) {
+    error(ERROR_CODES.BAD_SOURCE_REGISTRY, `Invalid source registry: ${registry.errors.join(', ')}.`, 'sourceRegistry');
+  }
+  for (const source of model.sourceRegistry || []) {
+    const result = validateSourceRecord(source);
+    if (!result.ok) error(ERROR_CODES.BAD_SOURCE_RECORD, `Invalid source record ${source.id || '?'}.`, source.id || 'sourceRegistry');
+    result.warnings.forEach((item) => warning(WARNING_CODES.NOT_SUPPORTED, `Source ${source.id || '?'} is missing ${item}.`, source.id || 'sourceRegistry'));
+  }
+  for (const source of model.massSources || []) {
+    if (!source?.id || !Array.isArray(source.components)) {
+      error(ERROR_CODES.BAD_MASS_SOURCE, 'Mass source requires id and components.', source?.id || 'massSources');
     }
   }
 }
@@ -101,15 +131,15 @@ function validateNodes(model, error, warning) {
     if (node.support === 'custom' && (!Array.isArray(node.fix) || node.fix.length !== 6 || !node.fix.every((value) => typeof value === 'boolean'))) {
       error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Custom support requires a six-item boolean fix array.', node.id);
     }
-    if (node.support === 'spring' && !hasSpring(node.spring)) {
-      error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Spring support requires at least one finite positive stiffness.', node.id);
+    if (node.support === 'spring' && !hasValidSpring(node.spring)) {
+      error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Spring support requires finite nonnegative stiffness values and at least one positive stiffness.', node.id);
     }
     if (node.settlement) {
       if (!['fixed', 'spring'].includes(node.support)) {
         error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Settlement requires fixed or spring support.', node.id);
       }
       if (!hasValidSettlement(node.settlement)) {
-        error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Settlement values must include at least one finite imposed displacement or rotation.', node.id);
+        error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Settlement must contain only finite displacement/rotation values and at least one nonzero value.', node.id);
       }
     }
     if (!usedNodes.has(node.id)) warning(WARNING_CODES.FREE_NODE, 'Node is not connected to any member.', node.id);
@@ -168,6 +198,35 @@ function validateShells(model, nodeIds, materialIds, error) {
   }
 }
 
+function validateLibraryCollections(model, error, warning) {
+  validateLibraryCollection(model.materials, 'material', validateMaterialRecord, ERROR_CODES.BAD_MATERIAL_PROPS, error, warning);
+  validateLibraryCollection(model.sections, 'section', validateSectionRecord, ERROR_CODES.BAD_SECTION_PROPS, error, warning);
+}
+
+function validateLibraryCollection(rows, kind, validator, code, error, warning) {
+  const seen = new Set();
+  for (const row of rows || []) {
+    const id = String(row?.id || '').trim();
+    const version = row?.version ?? 1;
+    const reference = `${id}@${version}`;
+    if (!id) error(code, `${kind} record is missing id.`, `${kind}s`);
+    else if (seen.has(reference)) error(code, `Duplicate ${kind} record: ${reference}.`, reference);
+    seen.add(reference);
+    const checked = validator(row);
+    if (!checked.ok) error(code, `Invalid ${kind} record ${reference}: ${checked.errors.join(', ')}.`, reference);
+    for (const item of checked.warnings || []) warning(WARNING_CODES.NOT_SUPPORTED, `${kind} ${reference}: ${item}.`, reference);
+    if (!strictLibraryNumbers(checked.normalized, kind)) error(code, `${kind} ${reference} contains nonnumeric or non-finite property values.`, reference);
+  }
+}
+
+function strictLibraryNumbers(row, kind) {
+  const source = kind === 'material' ? (row?.elastic || row) : (row?.properties || row);
+  const required = kind === 'material' ? ['E', 'G'] : ['A', 'Iy', 'Iz'];
+  const optional = kind === 'material' ? ['nu', 'rho', 'density', 'alpha'] : ['J', 'Ay', 'Az', 'Cw', 'Iyz'];
+  return required.every((key) => typeof source?.[key] === 'number' && Number.isFinite(source[key]) && source[key] > 0)
+    && optional.every((key) => source?.[key] == null || (typeof source[key] === 'number' && Number.isFinite(source[key])));
+}
+
 function shellNodeIds(shell = {}) {
   if (Array.isArray(shell.nodeIds)) return shell.nodeIds.filter(Boolean);
   if (Array.isArray(shell.nodes)) return shell.nodes.map((node) => node?.id).filter(Boolean);
@@ -200,7 +259,7 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
     if (!member.secId || !sectionIds.has(member.secId)) error(ERROR_CODES.NO_SECTION, `Missing section: ${member.secId}`, member.id);
     else {
       const section = sectionOf(model, member.secId);
-      if (!(section.A > 0 && section.Iy > 0 && section.Iz > 0 && section.J > 0)) {
+      if (![section.A, section.Iy, section.Iz, section.J].every(positiveFiniteNumber)) {
         error(ERROR_CODES.BAD_SECTION_PROPS, `Section properties are incomplete: ${member.secId}`, member.id);
       }
     }
@@ -208,7 +267,7 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
     if (!member.matId || !materialIds.has(member.matId)) error(ERROR_CODES.NO_MATERIAL, `Missing material: ${member.matId}`, member.id);
     else {
       const material = materialOf(model, member.matId);
-      if (!(material.E > 0 && material.G > 0)) {
+      if (![material.E, material.G].every(positiveFiniteNumber)) {
         error(ERROR_CODES.BAD_MATERIAL_PROPS, `Material properties are incomplete: ${member.matId}`, member.id);
       }
     }
@@ -240,8 +299,9 @@ function validateMemberOffset(member, length, error) {
     error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member end offsets must be finite nonnegative lengths.', member.id);
     return;
   }
-  if (!Number.isFinite(rigidFactor) || rigidFactor <= 0) {
-    error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member offset rigidFactor must be positive when provided.', member.id);
+  if ((member.endOffset.rigidFactor != null && typeof member.endOffset.rigidFactor !== 'number')
+    || !Number.isFinite(rigidFactor) || Math.abs(rigidFactor - 1) > 1e-12) {
+    error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member offset rigidFactor must be exactly 1 for the supported rigid-offset formulation.', member.id);
   }
   if (Number.isFinite(length) && length > 0 && i + j >= length) {
     error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member end offsets must leave positive clear length.', member.id);
@@ -370,11 +430,26 @@ function isFiniteNumber(value) {
   return false;
 }
 
-function hasSpring(spring = {}) {
-  return ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'].some((key) => isFiniteNumber(spring[key]) && Number(spring[key]) > 0);
+function hasValidSpring(spring = {}) {
+  const keys = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
+  if (!spring || typeof spring !== 'object' || Array.isArray(spring)) return false;
+  if (Object.keys(spring).some((key) => !keys.includes(key))) return false;
+  const supplied = keys.filter((key) => spring[key] != null);
+  return supplied.length > 0
+    && supplied.every((key) => typeof spring[key] === 'number' && Number.isFinite(spring[key]) && spring[key] >= 0)
+    && supplied.some((key) => spring[key] > 0);
 }
 
 function hasValidSettlement(settlement = {}) {
-  return ['ux', 'uy', 'uz', 'rx', 'ry', 'rz', 'kx', 'ky', 'kz', 'krx', 'kry', 'krz']
-    .some((key) => isFiniteNumber(settlement[key]));
+  const keys = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
+  if (!settlement || typeof settlement !== 'object' || Array.isArray(settlement)) return false;
+  if (Object.keys(settlement).some((key) => !keys.includes(key))) return false;
+  const supplied = keys.filter((key) => settlement[key] != null);
+  return supplied.length > 0
+    && supplied.every((key) => typeof settlement[key] === 'number' && Number.isFinite(settlement[key]))
+    && supplied.some((key) => settlement[key] !== 0);
+}
+
+function positiveFiniteNumber(value) {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0;
 }

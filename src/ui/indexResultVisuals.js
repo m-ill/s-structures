@@ -195,17 +195,21 @@ function pDeltaVisuals(analysis) {
   return {
     enabled: !!analysis?.pDelta,
     series: Object.entries(analysis?.pDelta?.byCombo || {})
-      .filter(([, item]) => item?.iterations?.length)
+      .filter(([, item]) => item?.curve?.global?.points?.length)
       .map(([comboId, item]) => ({
         comboId,
         converged: !!item.converged,
         amplification: number(item.amplification, 1),
-        points: item.iterations.map((step) => ({
-          iteration: number(step.iteration),
+        kind: 'global-pdelta-response',
+        points: item.curve.global.points.map((step, index) => ({
+          index,
+          loadFactor: number(step.loadFactor),
           amplification: number(step.amplification, 1),
-          maxDisplacement: number(step.maxDisplacement),
-          secondaryLoad: number(step.secondaryLoad),
-          residual: step.residual == null ? null : number(step.residual),
+          firstOrderRoofDisplacement: number(step.firstOrder?.roofDisplacement),
+          secondOrderRoofDisplacement: number(step.secondOrder?.roofDisplacement),
+          firstOrderBaseShear: number(step.firstOrder?.baseShear),
+          secondOrderBaseShear: number(step.secondOrder?.baseShear),
+          roofDriftRatio: number(step.secondOrder?.roofDriftRatio),
         })),
       })),
   };

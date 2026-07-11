@@ -239,6 +239,9 @@ function ratioCheck(id, name, demand, capacity, expression) {
 }
 
 function isSteelMember(member, material, section) {
+  const kind = String(material?.kind || material?.category || '').toLowerCase();
+  if (kind === 'steel' || material?.strength?.steel) return true;
+  if (kind === 'concrete' || kind === 'timber' || material?.strength?.concrete) return false;
   const materialText = `${material?.id || member.matId || ''} ${material?.name || ''}`.toLowerCase();
   const sectionType = String(section?.type || '').toUpperCase();
   return materialText.includes('steel') || ['H', 'BOX', 'PIPE', 'TUBE'].includes(sectionType);

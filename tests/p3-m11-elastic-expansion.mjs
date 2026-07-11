@@ -54,10 +54,10 @@ assert.equal(expanded.trace.review.agentDecision, 'elastic-expansion-ready-for-e
 
 const result = analyzeModel(model);
 assert.equal(result.ok, true);
-assert.equal(result.byCombo.CO1.elasticExpansion.version, ELASTIC_EXPANSION_VERSION);
-assert.equal(result.byCombo.CO1.elasticExpansion.features.springSupports, 1);
-assert.ok(result.byCombo.CO1.reactions.B);
-const partialXs = result.byCombo.CO1.memberResults.M1.xs;
+assert.equal(result.byCombo.SLS1.elasticExpansion.version, ELASTIC_EXPANSION_VERSION);
+assert.equal(result.byCombo.SLS1.elasticExpansion.features.springSupports, 1);
+assert.ok(result.byCombo.SLS1.reactions.B);
+const partialXs = result.byCombo.SLS1.memberResults.M1.xs;
 assert.ok(partialXs.some((x) => Math.abs(x - 1) < 1e-6));
 assert.ok(partialXs.some((x) => Math.abs(x - 3) < 1e-6));
 
@@ -75,7 +75,7 @@ assert.equal(settlementExpanded.trace.supportTrace[0].settlementForce.kz, -10000
 assert.equal(settlementExpanded.trace.review.settlementForceTraceReady, true);
 const settlementResult = analyzeModel(settlementModel);
 assert.equal(settlementResult.ok, true);
-assert.ok(Number.isFinite(settlementResult.byCombo.CO1.reactions.B.rz));
+assert.ok(Number.isFinite(settlementResult.byCombo.SLS1.reactions.B.rz));
 const invalidSettlementSupport = createModel({
   nodes: [
     { id: 'A', x: 0, y: 0, z: 0, support: 'fixed' },
@@ -119,8 +119,8 @@ const unsupportedEffect = createModel({
 assert.equal(validateModel(unsupportedEffect).ok, true);
 const thermalResult = analyzeModel(unsupportedEffect);
 assert.equal(thermalResult.ok, true);
-assert.ok(Math.abs(thermalResult.byCombo.CO1.reactions.A.rx) > 0);
-const thermalCalc = thermalResult.byCombo.CO1.elasticExpansion.handcalc.find((row) => row.type === 'temperature');
+assert.ok(Math.abs(thermalResult.byCombo.SLS1.reactions.A.rx) > 0);
+const thermalCalc = thermalResult.byCombo.SLS1.elasticExpansion.handcalc.find((row) => row.type === 'temperature');
 assert.equal(thermalCalc.method, 'N=E*A*alpha*dT');
 assert.ok(thermalCalc.axialForce > 0);
 
@@ -134,7 +134,7 @@ const gradientModel = createModel({
 });
 const gradientResult = analyzeModel(gradientModel);
 assert.equal(gradientResult.ok, true);
-const gradientCalc = gradientResult.byCombo.CO1.elasticExpansion.handcalc.find((row) => row.type === 'tgradient');
+const gradientCalc = gradientResult.byCombo.SLS1.elasticExpansion.handcalc.find((row) => row.type === 'tgradient');
 assert.equal(gradientCalc.method, 'M=E*Iz*alpha*(dTtop-dTbot)/h');
 assert.ok(Number.isFinite(gradientCalc.moment));
 
@@ -148,16 +148,16 @@ const memberMomentModel = createModel({
 });
 const memberMomentResult = analyzeModel(memberMomentModel);
 assert.equal(memberMomentResult.ok, true);
-const momentMember = memberMomentResult.byCombo.CO1.memberResults.M1;
+const momentMember = memberMomentResult.byCombo.SLS1.memberResults.M1;
 assert.ok(momentMember.Mz.every(Number.isFinite));
 assert.ok(momentMember.xs.some((x) => Math.abs(x - 2) < 1e-6));
-assert.ok(memberMomentResult.byCombo.CO1.elasticExpansion.loadTrace.some((row) => row.type === 'mmoment'));
-const memberMomentCalc = memberMomentResult.byCombo.CO1.elasticExpansion.handcalc.find((row) => row.type === 'mmoment');
+assert.ok(memberMomentResult.byCombo.SLS1.elasticExpansion.loadTrace.some((row) => row.type === 'mmoment'));
+const memberMomentCalc = memberMomentResult.byCombo.SLS1.elasticExpansion.handcalc.find((row) => row.type === 'mmoment');
 assert.equal(memberMomentCalc.method, 'fixed-end-member-moment-split');
 assert.equal(memberMomentCalc.axis, 'z');
 assert.equal(memberMomentCalc.endMoments.i, 6);
 assert.equal(memberMomentCalc.endMoments.j, 6);
-assert.equal(memberMomentResult.byCombo.CO1.elasticExpansion.review.advancedLoadHandcalcReady, true);
+assert.equal(memberMomentResult.byCombo.SLS1.elasticExpansion.review.advancedLoadHandcalcReady, true);
 
 const trussModel = createModel({
   nodes: [
@@ -169,8 +169,8 @@ const trussModel = createModel({
 });
 const trussResult = analyzeModel(trussModel);
 assert.equal(trussResult.ok, true);
-assert.equal(trussResult.byCombo.CO1.elasticExpansion.features.trussMembers, 1);
-assert.ok(trussResult.byCombo.CO1.memberResults.T1.Nmax > 0);
+assert.equal(trussResult.byCombo.SLS1.elasticExpansion.features.trussMembers, 1);
+assert.ok(trussResult.byCombo.SLS1.memberResults.T1.Nmax > 0);
 
 const braceModel = createModel({
   nodes: [
@@ -190,12 +190,12 @@ const braceModel = createModel({
 });
 const braceResult = analyzeModel(braceModel);
 assert.equal(braceResult.ok, true);
-const unilateral = braceResult.byCombo.CO1.unilateral;
+const unilateral = braceResult.byCombo.SLS1.unilateral;
 assert.equal(unilateral.version, 'p3-m11-unilateral-member-iteration');
 assert.equal(unilateral.converged, true);
 assert.ok(unilateral.iterationCount >= 2);
 assert.ok(unilateral.inactiveMemberIds.includes('X2'));
-assert.equal(braceResult.byCombo.CO1.memberResults.X2, undefined);
+assert.equal(braceResult.byCombo.SLS1.memberResults.X2, undefined);
 const braceTrace = buildAdvancedElasticTrace(braceModel, braceResult);
 assert.equal(braceTrace.unilateral.version, UNILATERAL_MEMBER_TRACE_VERSION);
 assert.equal(braceTrace.unilateral.comboCount, braceModel.loadCombinations.length);
@@ -205,8 +205,8 @@ const limitedBraceResult = analyzeModel(createModel({
   ...braceModel,
   analysisSettings: { ...braceModel.analysisSettings, unilateralMaxIterations: 1 },
 }));
-assert.equal(limitedBraceResult.byCombo.CO1.unilateral.converged, false);
-assert.equal(limitedBraceResult.byCombo.CO1.memberResults.X2, undefined);
+assert.equal(limitedBraceResult.byCombo.SLS1.unilateral.converged, false);
+assert.equal(limitedBraceResult.byCombo.SLS1.memberResults.X2, undefined);
 assert.ok(limitedBraceResult.audit.warnings.some((warning) => warning.code === 'UNILATERAL_NOT_CONVERGED'));
 
 const cantilever = createModel({
@@ -228,7 +228,7 @@ assert.equal(clearTrace.memberTrace[0].grossLength, 4);
 assert.equal(clearTrace.memberTrace[0].clearLength, 3);
 assert.deepEqual(clearTrace.memberTrace[0].offset, { i: 0.5, j: 0.5, rigidFactor: 1 });
 assert.equal(clearTrace.review.memberOffsetReviewRequired, true);
-assert.ok(clearSpanResult.byCombo.CO1.summary.maxDisplacement < cantileverResult.byCombo.CO1.summary.maxDisplacement);
+assert.ok(clearSpanResult.byCombo.SLS1.summary.maxDisplacement < cantileverResult.byCombo.SLS1.summary.maxDisplacement);
 
 const invalidOffsetModel = createModel({
   ...cantilever,

@@ -1,4 +1,5 @@
 import { buildDesignWorkflow, renderDesignWorkflowMarkup } from './indexDesignWorkflow.js';
+import { equivalentShellBadge } from '../solver/shell/equivalentScope.js';
 
 export const INDEX_RESULTS_PANEL_VERSION = 'm10-index-results-panel';
 
@@ -27,6 +28,7 @@ export function buildIndexResultViewModel(model, analysis, uiState = {}) {
         metric('Warnings', analysis?.validation?.warnings?.length ?? 0),
       ],
       memberForces,
+      equivalentShellBadge: equivalentShellBadge(model),
     },
     pDelta,
     modal,
@@ -211,6 +213,7 @@ function renderTab(view) {
 function renderSummary(summary) {
   return `
     <div class="sse-panel">
+      ${summary.equivalentShellBadge?.active ? `<div class="sse-scope-badge" data-agent-id="equivalent-shell-scope-badge"><b>${escapeHtml(summary.equivalentShellBadge.label)}</b><span>${escapeHtml(summary.equivalentShellBadge.warning)}</span></div>` : ''}
       <div class="sse-grid">
         ${summary.metrics.map(renderMetric).join('')}
       </div>
@@ -242,19 +245,45 @@ function renderPDelta(pDelta) {
         ${[
           metric('Status', pDelta.ok ? 'OK' : 'Check'),
           metric('Max amp.', formatRatio(pDelta.maxAmplification)),
+          metric('Max theta', formatRatio(pDelta.design.summary?.maxTheta)),
+          metric('Max BΔ', formatRatio(pDelta.design.summary?.maxBDelta)),
           metric('Governing', pDelta.governingCombo || '-'),
           metric('Converged', `${pDelta.convergedCount}/${pDelta.comboCount}`),
         ].map(renderMetric).join('')}
       </div>
       ${renderPDeltaSvg(pDelta.series)}
-      <label class="sse-slider">Step
+      <h4>Design P-Delta Summary</h4>
+      ${renderTable(['Combo', 'Dir', 'Story', 'theta', 'BΔ', 'PΔ shear', 'PΔ moment', 'Status'], pDelta.design.rows.map((row) => [
+        row.comboId,
+        row.direction,
+        row.governingStory,
+        formatRatio(row.maxTheta),
+        formatRatio(row.maxBDelta),
+        formatForce(row.maxPDeltaShear),
+        formatMoment(row.maxPDeltaMoment),
+        statusPill(row.status),
+      ]), { rawColumns: new Set([7]) })}
+      <h4>Story Stability Table</h4>
+      ${renderTable(['Combo', 'Dir', 'Story', 'P', 'Drift', 'V', 'PΔ shear', 'theta', 'BΔ'], pDelta.design.storyRows.slice(0, 12).map((row) => [
+        row.comboId,
+        row.direction,
+        row.storyId,
+        formatForce(row.gravityLoad),
+        formatLength(row.storyDrift),
+        formatForce(row.storyShear),
+        formatForce(row.pDeltaShear),
+        formatRatio(row.theta),
+        row.bDelta == null ? '-' : formatRatio(row.bDelta),
+      ]))}
+      <label class="sse-slider">Load step
         <input type="range" min="0" max="${Math.max(0, pDelta.maxStep)}" value="${Math.min(pDelta.step, pDelta.maxStep)}" data-pdelta-step data-agent-id="engine-pdelta-step">
       </label>
-      ${renderTable(['Combo', 'Iter', 'Amp.', 'Residual'], pDelta.rows.map((row) => [
+      ${renderTable(['Combo', 'lambda', 'Roof d', 'Vbase', 'Amp.'], pDelta.rows.map((row) => [
         row.comboId,
-        row.iteration,
+        format(row.loadFactor, 2),
+        formatLength(row.roofDisplacement),
+        formatForce(row.baseShear),
         formatRatio(row.amplification),
-        row.residual == null ? '-' : Number(row.residual).toExponential(2),
       ]))}
     </div>
   `;
@@ -326,25 +355,39 @@ function renderPDeltaSvg(series) {
   const width = 280;
   const height = 120;
   const pad = { left: 28, right: 8, top: 10, bottom: 22 };
-  if (!series.length) return '<div class="sse-empty">No P-Delta iterations.</div>';
+  if (!series.length) return '<div class="sse-empty">No P-Delta load-step curve.</div>';
   const points = series.flatMap((item) => item.points);
-  const maxIteration = Math.max(1, ...points.map((point) => point.iteration));
-  const maxAmp = Math.max(1.05, ...points.map((point) => point.amplification));
-  const x = (iteration) => pad.left + (iteration / maxIteration) * (width - pad.left - pad.right);
-  const y = (amp) => height - pad.bottom - ((amp - 1) / (maxAmp - 1 || 1)) * (height - pad.top - pad.bottom);
+  const maxDisp = Math.max(1e-9, ...points.flatMap((point) => [
+    point.firstOrderRoofDisplacement,
+    point.secondOrderRoofDisplacement,
+  ]));
+  const maxShear = Math.max(1e-9, ...points.flatMap((point) => [
+    point.firstOrderBaseShear,
+    point.secondOrderBaseShear,
+  ]));
+  const x = (disp) => pad.left + (disp / maxDisp) * (width - pad.left - pad.right);
+  const y = (shear) => height - pad.bottom - (shear / maxShear) * (height - pad.top - pad.bottom);
   const colors = ['#0f5d8f', '#1f8a58', '#b36b00', '#6d5bd0'];
   const lines = series.map((item, index) => {
     const color = colors[index % colors.length];
-    const poly = item.points.map((point) => `${x(point.iteration)},${y(point.amplification)}`).join(' ');
-    return `<polyline points="${poly}" stroke="${color}" fill="none" stroke-width="2"></polyline>`;
+    const first = item.points.map((point) => `${x(point.firstOrderRoofDisplacement)},${y(point.firstOrderBaseShear)}`).join(' ');
+    const second = item.points.map((point) => `${x(point.secondOrderRoofDisplacement)},${y(point.secondOrderBaseShear)}`).join(' ');
+    return `<polyline points="${first}" stroke="${color}" fill="none" stroke-width="2" stroke-dasharray="4 3"></polyline><polyline points="${second}" stroke="${color}" fill="none" stroke-width="2"></polyline>`;
+  }).join('');
+  const legends = series.slice(0, 4).map((item, index) => {
+    const color = colors[index % colors.length];
+    const tx = pad.left + index * 54;
+    return `<rect x="${tx}" y="${height - 13}" width="7" height="7" rx="1.5" fill="${color}"></rect><text x="${tx + 10}" y="${height - 7}">${escapeHtml(item.comboId)}</text>`;
   }).join('');
   return `
-    <svg class="sse-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="P-Delta amplification chart">
+    <svg class="sse-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Global P-Delta response curve">
       <line x1="${pad.left}" y1="${height - pad.bottom}" x2="${width - pad.right}" y2="${height - pad.bottom}" class="axis"></line>
       <line x1="${pad.left}" y1="${pad.top}" x2="${pad.left}" y2="${height - pad.bottom}" class="axis"></line>
-      <text x="2" y="${pad.top + 6}">${format(maxAmp, 2)}</text>
-      <text x="2" y="${y(1) + 4}">1.0</text>
+      <text x="2" y="${pad.top + 6}">${format(maxShear, 2)}</text>
+      <text x="${width - 52}" y="${height - 6}">Roof d</text>
       ${lines}
+      ${legends}
+      <text x="${width - 86}" y="${pad.top + 7}">dash 1st / solid 2nd</text>
     </svg>
   `;
 }
@@ -392,32 +435,30 @@ function buildPDeltaView(analysis, uiState) {
   const summary = analysis?.pDelta?.summary || {};
   const byCombo = analysis?.pDelta?.byCombo || {};
   const series = Object.entries(byCombo)
-    .filter(([, result]) => result?.iterations?.length)
     .map(([comboId, result]) => ({
       comboId,
       converged: !!result.converged,
-      points: result.iterations.map((item) => ({
-        iteration: Number(item.iteration) || 0,
-        amplification: Number(item.amplification) || 1,
-        residual: item.residual == null ? null : Number(item.residual),
-      })),
-    }));
-  const maxStep = Math.max(0, ...series.flatMap((item) => item.points.map((point) => point.iteration)));
+      points: pDeltaResultPoints(result),
+    }))
+    .filter((item) => item.points.length);
+  const maxStep = Math.max(0, ...series.map((item) => item.points.length - 1));
   const step = Math.min(Math.max(0, Number(uiState.pDeltaStep) || 0), maxStep);
   const rows = series.map((item) => {
-    const point = item.points.find((candidate) => candidate.iteration === step)
-      || item.points[Math.min(step, item.points.length - 1)]
+    const point = item.points[Math.min(step, item.points.length - 1)]
       || item.points[item.points.length - 1]
       || {};
     return {
       comboId: item.comboId,
-      iteration: point.iteration ?? '-',
+      loadFactor: point.loadFactor ?? 0,
+      roofDisplacement: point.secondOrderRoofDisplacement ?? 0,
+      baseShear: point.secondOrderBaseShear ?? 0,
       amplification: point.amplification ?? 1,
-      residual: point.residual ?? null,
     };
   });
+  const design = analysis?.pDelta?.design || { summary: {}, rows: [], storyRows: [], memberForceRows: [] };
   return {
     enabled: !!analysis?.pDelta,
+    method: analysis?.pDelta?.method || null,
     ok: !!analysis?.pDelta?.ok,
     maxAmplification: summary.maxAmplification || 1,
     governingCombo: summary.governing?.comboId || null,
@@ -427,7 +468,44 @@ function buildPDeltaView(analysis, uiState) {
     step,
     rows,
     series,
+    design,
   };
+}
+
+function pDeltaResultPoints(result = {}) {
+  if (result.curve?.global?.points?.length) {
+    return result.curve.global.points.map((item, index) => ({
+      index,
+      loadFactor: Number(item.loadFactor) || 0,
+      amplification: Number(item.amplification) || 1,
+      firstOrderRoofDisplacement: Number(item.firstOrder?.roofDisplacement) || 0,
+      secondOrderRoofDisplacement: Number(item.secondOrder?.roofDisplacement) || 0,
+      firstOrderBaseShear: Number(item.firstOrder?.baseShear) || 0,
+      secondOrderBaseShear: Number(item.secondOrder?.baseShear) || 0,
+      roofDriftRatio: Number(item.secondOrder?.roofDriftRatio) || 0,
+    }));
+  }
+  const linearDisplacement = Number(result.linear?.summary?.maxDisplacement) || 0;
+  return (result.steps || []).map((step, index) => {
+    const finalIteration = step.iterations?.[step.iterations.length - 1] || {};
+    const loadFactor = Number(step.lambda) || 0;
+    const firstOrderRoofDisplacement = linearDisplacement * loadFactor;
+    const secondOrderRoofDisplacement = Number(finalIteration.maxDisplacement) || 0;
+    return {
+      index,
+      loadFactor,
+      amplification: firstOrderRoofDisplacement > 0
+        ? secondOrderRoofDisplacement / firstOrderRoofDisplacement
+        : Number(result.amplification) || 1,
+      firstOrderRoofDisplacement,
+      secondOrderRoofDisplacement,
+      firstOrderBaseShear: 0,
+      secondOrderBaseShear: 0,
+      roofDriftRatio: 0,
+      iterationCount: step.iterations?.length || 0,
+      status: step.status || null,
+    };
+  });
 }
 
 function buildModalView(analysis) {
@@ -589,6 +667,7 @@ function injectIndexResultsStyles(doc) {
     .sse-slider{display:flex;align-items:center;gap:8px;color:#596a7b;margin:6px 0 8px}.sse-slider input{flex:1}.sse-run{width:100%;margin-top:8px;border:1px solid #00467f;background:#00467f;color:white;border-radius:6px;padding:7px;cursor:pointer}
     .sse-pill{display:inline-block;border-radius:999px;padding:2px 6px;font-size:10px;background:#eef3f7;color:#506173}.sse-pill.ok,.sse-bar.ok i{background:#1f8a58;color:white}.sse-pill.warn,.sse-bar.warn i{background:#d98a1f;color:white}.sse-pill.ng,.sse-bar.ng i{background:#c43c3c;color:white}
     .sse-bars{display:grid;gap:5px;margin:6px 0 9px}.sse-bar{position:relative;display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:6px;height:20px}.sse-bar span,.sse-bar b{position:relative;z-index:2;font-size:10.5px;color:#405266}.sse-bar i{display:block;height:8px;border-radius:999px;background:#7fa8cf}
+    .sse-scope-badge{border:1px solid #e4c878;background:#fff9e6;color:#684b00;border-radius:6px;padding:7px 8px;margin-bottom:8px}.sse-scope-badge b,.sse-scope-badge span{display:block}.sse-scope-badge span{font-size:10.5px;margin-top:2px}
     .sse-workflow{border:1px solid #e2ebf3;background:#fbfdff;border-radius:7px;padding:8px;margin:0 0 10px}.sse-workflow-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}.sse-workflow-head strong{color:#00467f}.sse-workflow-head span{border-radius:999px;padding:2px 7px;font-size:10px;background:#eef3f7}.sse-workflow-counts{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:7px}.sse-workflow-counts div{background:white;border:1px solid #edf2f7;border-radius:5px;padding:5px}.sse-workflow-counts span{display:block;color:#6f7f90;font-size:9.5px}.sse-workflow-counts b{font-size:12px}.sse-workflow-checks{display:grid;grid-template-columns:1fr 1fr;gap:5px}.sse-workflow-checks div{border-left:3px solid #cfd9e4;background:white;border-radius:5px;padding:5px}.sse-workflow-checks b,.sse-workflow-checks span,.sse-workflow-checks small{display:block}.sse-workflow-checks span{font-size:10px}.sse-workflow-checks small{color:#6f7f90}.sse-workflow .sse-ok{border-color:#1f8a58;color:#17633b}.sse-workflow .sse-warn{border-color:#d98a1f;color:#8a5a00}.sse-workflow .sse-ng{border-color:#c43c3c;color:#9b1c1c}.sse-workflow-actions{margin-top:7px;color:#405266}.sse-workflow-actions b{display:block;color:#00467f;margin-bottom:3px}.sse-workflow-actions div{font-size:10.5px;padding:2px 0}
   `;
   doc.head?.appendChild(style);

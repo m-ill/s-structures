@@ -34,12 +34,12 @@ Analysis Case = {
   종류: static | modal | responseSpectrum | buckling | pushover | nlth
   설정: 해석 종류별 파라미터 (모드 수, 스펙트럼, 힌지 패턴, 지진파, 제어 방식 …)
   입력 참조: 하중조합 또는 하중 케이스, 질량 소스
-  상태: not-run | running | ok | failed
+  상태: not-run | running | ok | failed | stale
   결과: 결과 핸들 (변위/부재력/모드/곡선/시간이력)
 }
 ```
 
-모델은 여러 해석 케이스를 갖고, 사용자는 해석 센터에서 케이스를 만들고 실행하고 결과를 비교한다. 이것이 "버튼을 눌러 해석하는" 경험의 기반이다.
+모델은 여러 해석 케이스를 갖고, 사용자는 해석 센터에서 케이스를 만들고 실행하고 결과를 비교한다. 이것이 "버튼을 눌러 해석하는" 경험의 기반이다. 모델 변경 후 기존 실행 결과는 `stale`로 표시하고, 결과는 보존하되 재실행을 요구한다.
 
 ## Phase 5 Tracks
 
@@ -74,9 +74,17 @@ Analysis Case = {
 
 Phase 4 게이트를 계승하고 추가한다.
 
-1. **엔진 재사용 우선**: Phase 5는 원칙적으로 신규 해석 로직을 만들지 않는다. 이미 있는 엔진 함수(`analyzeModel`, `analyzeDynamics`, `runResponseSpectrum`, `estimateGlobalBucklingTrace`, `runPushover`, `runNewmarkNlth` 등)를 UI로 노출한다. 엔진 결함 발견 시 별도 티켓·커밋.
+1. **엔진 재사용 우선**: Phase 5는 원칙적으로 신규 해석 이론을 만들지 않는다. 이미 있는 엔진 함수(`analyzeModel`, `analyzeDynamics`, `runResponseSpectrum`, `estimateGlobalBucklingTrace`, `runPushover`, `runNewmarkNlth` 등)를 UI로 노출하되, 브리지에 직접 없는 함수는 `analysisRunners.js`가 core export를 import해 호출하고 현재 파라미터명으로 정규화한다. 엔진 결함 발견 시 별도 티켓·커밋.
 2. **난독화 모델러 불가침**: `index.html`의 난독화 인라인 모델러는 수정하지 않는다. 모든 신규 UI는 ESM native 모듈(`src/ui/index*.js`)로 주입한다 — 기존 `installIndexEngineBridge` 패턴 계승.
 3. **명세 우선**: 각 화면은 `specs/`에 요소·동작·엔진 연결·수용 기준이 정의된 뒤 구현한다.
 4. **agent 계약 동기**: 새 UI action/read API는 `agent-contract.json`·capability manifest에 등재, 기능 설명서(featureCatalog)에 반영.
 5. **브라우저 실검증 필수**: 각 화면은 fake DOM 테스트 + 프리뷰 브라우저 실동작(콘솔 에러 0) 증빙.
 6. **회귀 불변**: `npm test` full green이 merge 조건. 기존 native 모듈 테스트(m22·m25·m29 등) 무수정 통과.
+
+## Current Engine Boundaries
+
+Phase 5는 "상용 수준으로 보이는 UI"를 만들되 현재 엔진의 검증 수준을 숨기지 않는다.
+
+- RSA 현재 반환은 방향별 modal response와 `combined` 변위/참여율 중심이다. 밑면전단·층응답은 Phase 5 result layer에서 후처리하거나 limitation으로 표기한다.
+- Pushover 현재 엔진은 load-factor 기반 preliminary 경로와 목표변위 중단을 제공한다. displacement/arc-length는 기존 control trace를 UI에 연결하는 범위부터 시작한다.
+- NLTH 현재 엔진은 SDOF/bilinear Newmark trace다. 전체 frame NLTH처럼 표기하지 않고 preliminary NLTH trace로 노출한다.

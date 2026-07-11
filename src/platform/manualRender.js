@@ -67,6 +67,10 @@ export function renderFeatureArticle(item, category) {
     ? `<h4>관련 읽기 API</h4><p class="api-list">${item.relatedReadApis.map((name) => `<code>${escapeHtml(name)}</code>`).join(' ')}</p>`
     : '';
   const manualPage = renderGuideLink(item.manualPage);
+  const blocks = [howTo, limits, actions, readApis, manualPage]
+    .filter(Boolean)
+    .map((block) => `      ${block}`)
+    .join('\n');
   return `
     <article class="feature" id="${escapeHtml(item.id)}" data-feature="${escapeHtml(item.id)}">
       <header>
@@ -75,11 +79,7 @@ export function renderFeatureArticle(item, category) {
         <p class="summary">${escapeHtml(item.summary)}</p>
       </header>
       <p class="description">${escapeHtml(item.description)}</p>
-      ${howTo}
-      ${limits}
-      ${actions}
-      ${readApis}
-      ${manualPage}
+${blocks}
       <footer class="control-key">기능 제어 키: <code>${escapeHtml(item.control.key)}</code>${item.control.toggleable ? ' (토글 가능)' : ' (기본 상시)'} </footer>
     </article>`;
 }

@@ -7,6 +7,8 @@ milestones: P3-M14(기하 v1), P3-M15(재료+control v2), P3-M16(fiber/NLTH v3)
 
 pushover preliminary(`m15-pushover-preliminary`: 선형 재해석 반복)를 **정식 비선형 엔진**으로 대체한다. rev 2: Phase 4 폐지에 따라 fiber 단면과 비선형 시간이력(NLTH)까지 Phase 3 범위다. 성능기반 내진설계 검토(pushover + NLTH)가 사무소 실무 요구의 종착점이다.
 
+Direct Analysis boundary: the P2-M5 Direct Analysis plan (`docs/phase2/P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md`) covers elastic small-displacement second-order P-Delta using `Kt = Ke + Kg(N)` with the project tension-positive axial convention. It is not the full Phase 3 corotational/full Newton nonlinear engine.
+
 ## Scope Ladder
 
 | 단계 | 내용 | 마일스톤 |

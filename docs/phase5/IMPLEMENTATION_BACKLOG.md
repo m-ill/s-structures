@@ -9,18 +9,18 @@ ticket format: P5-T## / 우선순위 P0(핵심)·P1(중요)·P2(후순위) / 크
 | Ticket | P | 크기 | 작업 | 수용 기준 |
 | --- | --- | --- | --- | --- |
 | P5-T01 | P0 | S | docs/phase5 문서 세트 (README/진단/PRD/ARCH/ROADMAP/BACKLOG/specs A-D) | 커밋 + docs 인덱스 반영 |
-| P5-T02 | P0 | M | `src/core/analysisCase.js` 스키마·검증·기본값 | 단위 테스트 `tests/p5-analysis-case.mjs` |
-| P5-T03 | P0 | S | migration: 구모델에 `analysisCases:[]` | 구모델 로드→배열 존재 테스트 |
+| P5-T02 | P0 | M | `src/core/analysisCase.js` 스키마·검증·기본값 | 단위 테스트 `tests/p5-analysis-case.mjs` + 상태(not-run/running/ok/failed/stale) 검증 |
+| P5-T03 | P0 | S | migration: 구모델에 `analysisCases:[]`, schemaContract/roundtrip 반영 | 구모델 로드→배열 존재 + `m1-schema`/export-import green |
 
 ## P5-M1 해석 센터 + 정적/모달/RSA (Track A)
 
 | Ticket | P | 크기 | 작업 | 수용 기준 |
 | --- | --- | --- | --- | --- |
-| P5-T04 | P0 | M | `src/ui/analysisRunners.js` — kind→엔진 매핑, 결과 정규화 | static/modal/rsa runner 단위 테스트 (실엔진) |
+| P5-T04 | P0 | M | `src/ui/analysisRunners.js` — kind→엔진 매핑, 현재 파라미터 정규화, 결과 정규화 | static/modal/rsa runner 단위 테스트 (실엔진, bridge 없는 core import 경로 포함) |
 | P5-T05 | P0 | L | `src/ui/indexAnalysisCenter.js` — 도크 UI, 케이스 CRUD, 실행 오케스트레이션 | fake DOM: 케이스 추가·실행·상태 전이 |
 | P5-T06 | P0 | S | indexBridge에 installIndexAnalysisCenter 연결 | 주입 후 `#ssAnalysisCenter` 존재 |
 | P5-T07 | P0 | M | 정적 명시 실행 ↔ 자동 미리보기 공존 (stale 로직) | 기존 m2/m26 green + stale 전이 테스트 |
-| P5-T08 | P0 | M | RSA 모달 자동 선행 + 층응답 결과 | RSA 실행 시 모달 선행 확인 |
+| P5-T08 | P0 | M | RSA 모달 자동 선행 + modal/combined 응답 결과 | RSA 실행 시 모달 선행, 참여율/조합변위 표시 확인 |
 | P5-T09 | P0 | S | agent action: addAnalysisCase/runAnalysisCase/listAnalysisCases | 계약 등재 + 액션 테스트 |
 | P5-T10 | P0 | S | 브라우저 실검증 (3종 실행, 콘솔 0) | 스크린샷 증빙 |
 
@@ -28,7 +28,7 @@ ticket format: P5-T## / 우선순위 P0(핵심)·P1(중요)·P2(후순위) / 크
 
 | Ticket | P | 크기 | 작업 | 수용 기준 |
 | --- | --- | --- | --- | --- |
-| P5-T11 | P1 | M | buckling/linearTha runner + 케이스 설정 | runner 테스트 + 실행 |
+| P5-T11 | P1 | M | buckling/linearTha runner + 케이스 설정 | criticalLoadFactor/THA rows 정규화 테스트 + 실행 |
 | P5-T12 | P1 | S | 정적 케이스 P-Delta 토글 | P-Delta on/off 결과 차이 |
 | P5-T13 | P1 | S | 실패 사유·수렴 로그 표시 | failed 케이스 message 렌더 |
 
@@ -50,11 +50,11 @@ ticket format: P5-T## / 우선순위 P0(핵심)·P1(중요)·P2(후순위) / 크
 
 | Ticket | P | 크기 | 작업 | 수용 기준 |
 | --- | --- | --- | --- | --- |
-| P5-T23 | P0 | M | 힌지 배정 UI (backbone 참조, i/j) | member.hinges 배정 + 3D 마커 |
+| P5-T23 | P0 | M | 힌지 배정 UI (backbone 참조, i/j) | `member.nonlinear.hinges` 배정 + 3D 마커 |
 | P5-T24 | P0 | L | pushover 케이스 정규 UI (실험 플래그 흡수) | 실행→capacity curve |
 | P5-T25 | P0 | M | capacity curve SVG + 힌지 진전 슬라이더 | 스텝별 힌지 상태 표시 |
 | P5-T26 | P1 | M | 성능점·사용비·IO/LS/CP 판정 | 판정 표·뱃지 |
-| P5-T27 | P1 | M | NLTH 케이스 (지진파/scaling/감쇠) | 실행→시간이력 응답 |
+| P5-T27 | P1 | M | NLTH 케이스 (지진파/scaling/감쇠, SDOF/bilinear Newmark preliminary) | 실행→시간이력 응답 + limitation 표기 |
 | P5-T28 | P0 | S | 비선형 action 계약 등재 | assignHinge 등 등재 |
 
 ## P5-M9~M11 결과 (Track D)
@@ -74,7 +74,7 @@ ticket format: P5-T## / 우선순위 P0(핵심)·P1(중요)·P2(후순위) / 크
 | --- | --- | --- | --- | --- |
 | P5-T35 | P0 | S | 통합 시나리오 S1~S4 브라우저 실검증 | 콘솔 0 + 증빙 |
 | P5-T36 | P0 | S | featureCatalog·help.html·agent-contract 동기 | 빌드 동기 테스트 green |
-| P5-T37 | P0 | S | STATUS_AND_LIMITS 갱신 + full suite | 114+ green |
+| P5-T37 | P0 | S | STATUS_AND_LIMITS 갱신 + full suite | full suite green |
 
 ## Out Of Scope (기능 동결 기록)
 

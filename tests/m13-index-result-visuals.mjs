@@ -32,6 +32,9 @@ assert.ok(visuals.members.every((member) => /^#[0-9a-f]{6}$/i.test(member.color)
 assert.ok(visuals.modal.modes.length > 0);
 assert.equal(visuals.modal.modes[0].shape.length, model.nodes.length);
 assert.ok(visuals.pDelta.series.length > 0);
+assert.equal(visuals.pDelta.series[0].kind, 'global-pdelta-response');
+assert.equal(visuals.pDelta.series[0].points.at(-1).loadFactor, 1);
+assert.ok(visuals.pDelta.series[0].points.at(-1).secondOrderRoofDisplacement >= visuals.pDelta.series[0].points.at(-1).firstOrderRoofDisplacement);
 
 const moved = visuals.deformedNodes.some((node) => {
   const base = visuals.nodes.find((item) => item.id === node.id);

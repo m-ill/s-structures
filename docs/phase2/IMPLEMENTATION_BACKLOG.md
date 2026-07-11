@@ -57,10 +57,13 @@ status: active backlog
 
 ## Phase 5. Advanced Elastic Analysis
 
+Direct Analysis addendum: add ticket `T26A` for geometric-stiffness P-Delta direct analysis (`Kt = Ke + Kg(N)`, tension-positive axial convention). Implementation details live in `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md`; verification gate lives in `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`.
+
 | Ticket | Priority | 작업 | 파일/영역 | 완료 기준 |
 | --- | --- | --- | --- | --- |
 | T25 | P0 | P-Delta method 명확화 | `src/solver/`, report | method와 limitation 표시 |
 | T26 | P0 | P-Delta benchmark | verification/tests | 1차/2차 결과 비교 |
+| T26A | P0 | Direct Analysis P-Delta mode | `src/solver/`, `src/results/`, UI, report | `Kt = Ke + Kg(N)` direct solve, convergence trace, design summary, verification gate |
 | T27 | P1 | modal analysis 고도화 | `src/dynamics/` | mass participation 출력 |
 | T28 | P1 | RSA v1 | `src/dynamics/` | RSA story response |
 | T29 | P1 | RSA v2 | dynamics, seismic trace | base shear scaling과 우발편심 trace |

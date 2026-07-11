@@ -38,6 +38,7 @@ import {
   buildPhase3EvidenceRegister,
   buildPhase3FinalApprovalReview,
   buildPhase3FinalApprovals,
+  buildFinalUseReleaseReview,
   validatePhase3EvidenceRecord,
   buildRcDetailedDesignReport,
   buildRcDetailingReport,
@@ -64,6 +65,7 @@ import {
   runModalSuperpositionTha,
   runRigidDiaphragmBenchmark,
   runPushover as runCorePushover,
+  assignMemberHinges,
   setDesignBasisInput,
   summarizeSemiRigidDiaphragm,
   summarizeKdsLoadCombinationCoverage,
@@ -73,6 +75,17 @@ import {
   getViewerState as getCoreViewerState,
   setViewerSlice as setCoreViewerSlice,
 } from '../index.js';
+import {
+  createAnalysisCase,
+  normalizeAnalysisCase,
+} from '../core/analysisCase.js';
+import {
+  runAnalysisCase as runCoreAnalysisCase,
+  runAnalysisCases as runCoreAnalysisCases,
+} from './analysisRunners.js';
+import {
+  markAnalysisCenterCasesStale,
+} from './indexAnalysisCenter.js';
 import { buildAgentManifest } from './agentManifest.js';
 import {
   executeModelingAction,
@@ -171,12 +184,12 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     getDetailedReport(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
-      return cloneJson(createDetailedHtmlReport(model, getAnalysis(model), options));
+      return cloneJson(createDetailedHtmlReport(model, getAnalysis(model), withAnalysisResults(target, options)));
     },
     getCalculationPackage(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
-      return cloneJson(createCalculationPackageHtml(model, getAnalysis(model), options));
+      return cloneJson(createCalculationPackageHtml(model, getAnalysis(model), withAnalysisResults(target, options)));
     },
     getKdsLoadCombinationCoverage(options = {}) {
       const model = getCurrentModel(target);
@@ -238,6 +251,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getLaunchReadinessReport(options = {}) {
       return cloneJson(buildLaunchReadinessReport(buildLaunchEvidence(target, options)));
+    },
+    getFinalUseReleaseReview(options = {}) {
+      return cloneJson(buildFinalUseReleaseReview(buildLaunchEvidence(target, options)));
     },
     getPhase3PlanAlignment() {
       return cloneJson(buildPhase3PlanAlignmentReport(buildAgentManifest({
@@ -438,6 +454,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       if (!model) return null;
       return cloneJson(buildNonlinearAnalysisTrace(model, options));
     },
+    getHingeAssignments(options = {}) {
+      const model = getCurrentModel(target);
+      if (!model) return null;
+      return cloneJson(buildHingeAssignmentView(model, options));
+    },
     getResultPostprocessing(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
@@ -486,6 +507,76 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const result = target.SStructuresPushoverPanel?.run?.(options) || runCorePushover(model, options);
       return cloneJson(result);
     },
+    getAnalysisCases() {
+      const model = getCurrentModel(target);
+      return cloneJson(model?.analysisCases || []);
+    },
+    listAnalysisCases() {
+      return api.getAnalysisCases();
+    },
+    addAnalysisCase(input = {}) {
+      const model = getCurrentModel(target);
+      if (!model) throw new Error('Current UI model is not available.');
+      model.analysisCases ||= [];
+      const analysisCase = createAnalysisCase(input, model.analysisCases);
+      model.analysisCases.push(analysisCase);
+      return cloneJson(analysisCase);
+    },
+    updateAnalysisCase(id, patch = {}) {
+      const model = getCurrentModel(target);
+      if (!model) throw new Error('Current UI model is not available.');
+      model.analysisCases ||= [];
+      const index = model.analysisCases.findIndex((item) => item.id === id);
+      if (index < 0) throw new Error(`Analysis case not found: ${id}`);
+      model.analysisCases[index] = normalizeAnalysisCase({ ...model.analysisCases[index], ...patch }, index);
+      return cloneJson(model.analysisCases[index]);
+    },
+    deleteAnalysisCase(id) {
+      const model = getCurrentModel(target);
+      if (!model) throw new Error('Current UI model is not available.');
+      model.analysisCases ||= [];
+      const index = model.analysisCases.findIndex((item) => item.id === id);
+      if (index < 0) throw new Error(`Analysis case not found: ${id}`);
+      const [removed] = model.analysisCases.splice(index, 1);
+      if (target.__SStructuresAnalysisResults) delete target.__SStructuresAnalysisResults[id];
+      target.SStructuresAnalysisCenter?.refresh?.();
+      return cloneJson(removed);
+    },
+    runAnalysisCase(input = {}) {
+      const model = getCurrentModel(target);
+      if (!model) throw new Error('Current UI model is not available.');
+      const analysisCase = resolveAnalysisCase(model, input);
+      const result = runCoreAnalysisCase(model, analysisCase, { bridge });
+      storeAnalysisResult(target, model, analysisCase, result);
+      target.SStructuresAnalysisCenter?.refresh?.();
+      return cloneJson(result);
+    },
+    runAnalysisCases(input = {}) {
+      const model = getCurrentModel(target);
+      if (!model) throw new Error('Current UI model is not available.');
+      const cases = Array.isArray(input) ? input : (input.cases || model.analysisCases || []);
+      const results = runCoreAnalysisCases(model, cases, { bridge });
+      results.forEach((result) => {
+        const analysisCase = (model.analysisCases || []).find((item) => item.id === result.caseId) || { id: result.caseId, kind: result.kind };
+        storeAnalysisResult(target, model, analysisCase, result);
+      });
+      target.SStructuresAnalysisCenter?.refresh?.();
+      return cloneJson(results);
+    },
+    runAllAnalysisCases(input = {}) {
+      return api.runAnalysisCases(input);
+    },
+    getAnalysisResults() {
+      return cloneJson(target.__SStructuresAnalysisResults || {});
+    },
+    getAnalysisCaseResult(id) {
+      return cloneJson((target.__SStructuresAnalysisResults || {})[id] || null);
+    },
+    markAnalysisCasesStale(reason = 'model-changed') {
+      const changed = markAnalysisCenterCasesStale(target, bridge, reason);
+      target.SStructuresAnalysisCenter?.refresh?.();
+      return cloneJson(changed);
+    },
     getCapabilities() {
       return cloneJson(buildAgentManifest({
         bridgeVersion,
@@ -516,6 +607,54 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
             pushover,
           };
         }
+        case 'addAnalysisCase': {
+          const analysisCase = api.addAnalysisCase(payload.analysisCase || payload);
+          target.SStructuresAnalysisCenter?.refresh?.();
+          return {
+            ...api.getSnapshot(),
+            analysisCase,
+          };
+        }
+        case 'updateAnalysisCase': {
+          const analysisCase = api.updateAnalysisCase(payload.id || payload.caseId, payload.patch || payload);
+          target.SStructuresAnalysisCenter?.refresh?.();
+          return {
+            ...api.getSnapshot(),
+            analysisCase,
+          };
+        }
+        case 'deleteAnalysisCase': {
+          const analysisCase = api.deleteAnalysisCase(payload.id || payload.caseId);
+          return {
+            ...api.getSnapshot(),
+            analysisCase,
+          };
+        }
+        case 'listAnalysisCases':
+          return { analysisCases: api.listAnalysisCases() };
+        case 'runAnalysisCase': {
+          const analysisResult = api.runAnalysisCase(payload);
+          return {
+            ...api.getSnapshot(),
+            analysisResult,
+          };
+        }
+        case 'runAnalysisCases': {
+          const analysisResults = api.runAnalysisCases(payload);
+          return {
+            ...api.getSnapshot(),
+            analysisResults,
+          };
+        }
+        case 'runAllAnalysisCases': {
+          const analysisResults = api.runAllAnalysisCases(payload);
+          return {
+            ...api.getSnapshot(),
+            analysisResults,
+          };
+        }
+        case 'getAnalysisCaseResult':
+          return { analysisResult: api.getAnalysisCaseResult(payload.id || payload.caseId || payload) };
         case 'applyKdsLoadCombinations': {
           const model = getCurrentModel(target);
           if (!model) throw new Error('Current UI model is not available.');
@@ -591,8 +730,13 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         case 'nativeDrawMember':
         case 'nativeAddColumn':
         case 'nativeSetSupport':
+        case 'nativeSetSpringSupport':
+        case 'nativeSetSettlement':
         case 'nativeAddUdl':
+        case 'nativeAddPartialLoad':
+        case 'nativeAddTemperatureLoad':
         case 'nativeAddNodalLoad':
+        case 'nativeSetMemberBehavior':
         case 'nativeMoveNode':
         case 'nativeSelectMember':
         case 'nativeDeleteElement':
@@ -881,7 +1025,86 @@ function setNativeMode(target, mode, api) {
   return api.getSnapshot();
 }
 
+function buildHingeAssignmentView(model, options = {}) {
+  const assignment = assignMemberHinges(model, options);
+  const members = (model.members || []).map((member) => ({
+    memberId: member.id,
+    matId: member.matId || null,
+    nonlinear: member.nonlinear ? cloneJson(member.nonlinear) : null,
+    hingeCount: member.nonlinear?.hinges?.length || 0,
+  }));
+  return {
+    version: 'p5-m6-hinge-assignment-view',
+    assignment,
+    members,
+    summary: {
+      memberCount: members.length,
+      assignedMemberCount: members.filter((member) => member.hingeCount > 0).length,
+      explicitHingeCount: members.reduce((sum, member) => sum + member.hingeCount, 0),
+      engineHingeCount: assignment.summary?.hingeCount || 0,
+    },
+  };
+}
+
+function resolveAnalysisCase(model, input = {}) {
+  if (typeof input === 'string') {
+    const found = (model.analysisCases || []).find((item) => item.id === input);
+    if (!found) throw new Error(`Analysis case not found: ${input}`);
+    return found;
+  }
+  const id = input.id || input.caseId;
+  if (id) {
+    const found = (model.analysisCases || []).find((item) => item.id === id);
+    if (found) return { ...found, ...(input.patch || {}) };
+  }
+  return normalizeAnalysisCase(input.analysisCase || input);
+}
+
+function storeAnalysisResult(target, model, analysisCase, result) {
+  target.__SStructuresAnalysisResults ||= {};
+  target.__SStructuresAnalysisResults[result.caseId] = result;
+  const row = (model.analysisCases || []).find((item) => item.id === result.caseId);
+  const lastRun = {
+    at: result.completedAt,
+    status: result.status,
+    summary: result.summary,
+    resultKey: result.caseId,
+  };
+  const status = analysisCaseStatus(result);
+  if (row) {
+    row.status = status;
+    row.lastRun = lastRun;
+  } else if (analysisCase?.id) {
+    model.analysisCases ||= [];
+    model.analysisCases.push({
+      ...analysisCase,
+      status,
+      lastRun,
+    });
+  }
+  return result;
+}
+
+function analysisCaseStatus(result = {}) {
+  if (result.status === 'failed') return 'failed';
+  if (['review-required', 'preliminary', 'designBlocked'].includes(result.status)) return result.status;
+  if (result.designBlocked === true || result.payload?.designBlocked === true) return 'designBlocked';
+  if (result.qualification === 'preliminary') return 'preliminary';
+  if (result.qualification === 'review-required') return 'review-required';
+  return 'ok';
+}
+
+function withAnalysisResults(target, options = {}) {
+  if (options.analysisResults || options.analysisCaseResults) return options;
+  return {
+    ...options,
+    analysisResults: target.__SStructuresAnalysisResults || {},
+  };
+}
+
 function runUiAnalysis(target) {
+  markAnalysisCenterCasesStale(target, target?.SStructuresEngine, 'model-changed');
+  target.SStructuresAnalysisCenter?.refresh?.();
   if (typeof target?.reanalyze === 'function') target.reanalyze(true);
 }
 
@@ -912,21 +1135,29 @@ function buildProjectEvidenceView(target) {
 }
 
 function buildLaunchEvidence(target, options = {}) {
-  const supplied = options.evidence || options;
+  const supplied = isEvidenceWrapperOnly(options) ? options.evidence : options;
   const projectEvidence = getProjectEvidenceState(target);
+  const reviewInput = hasEvidenceInput(options)
+    ? options
+    : {
+        evidence: projectEvidence.evidence,
+        finalApprovals: projectEvidence.finalApprovals,
+      };
   return {
-    practiceValidationReview: buildPhase3PracticeValidationReview({
-      evidence: projectEvidence.evidence,
-      finalApprovals: projectEvidence.finalApprovals,
-    }),
-    ownerSignoffReview: buildPhase3OwnerSignoffReview({
-      evidence: projectEvidence.evidence,
-      finalApprovals: projectEvidence.finalApprovals,
-    }),
-    evidenceRegister: projectEvidence.register,
-    finalApprovals: projectEvidence.finalApprovals,
+    practiceValidationReview: buildPhase3PracticeValidationReview(reviewInput),
+    ownerSignoffReview: buildPhase3OwnerSignoffReview(reviewInput),
+    evidenceRegister: hasEvidenceInput(options)
+      ? buildPhase3EvidenceRegister(reviewInput)
+      : projectEvidence.register,
+    finalApprovals: reviewInput.finalApprovals || reviewInput.approvals || projectEvidence.finalApprovals,
     ...supplied,
   };
+}
+
+function isEvidenceWrapperOnly(options = {}) {
+  return Object.hasOwn(options, 'evidence') &&
+    Object.keys(options).length === 1 &&
+    !Array.isArray(options.evidence);
 }
 
 function withProjectEvidence(target, options = {}) {

@@ -15,16 +15,19 @@ import { signedAccidentalLoadCases } from './signedAccidentalLoadCases.js';
 import { shouldGenerateSignedAccidental } from './signedAccidentalEligibility.js';
 import { signedAccidentalVariants } from './signedAccidentalVariants.js';
 import { finite } from './loadMath.js';
+import { normalizeLoadCaseMetadata } from '../loads/loadCaseMetadata.js';
 
 import { LOAD_ESTIMATION_VERSION } from './loadEstimationConstants.js';
 
 export { LOAD_ESTIMATION_VERSION } from './loadEstimationConstants.js';
 export {
   createDesignBasis,
+  buildDesignBasisValueMetadata,
   DESIGN_BASIS_INPUT_VERSION,
   DESIGN_BASIS_NUMERIC_FIELDS,
   DEFAULT_DESIGN_BASIS,
   getDesignBasisInputFields,
+  normalizeDesignBasisFamilyStates,
   OCCUPANCY_LOAD_PRESETS,
 } from './designBasisInput.js';
 export {
@@ -201,17 +204,26 @@ export function estimateModelLoads(model, designBasis = {}, options = {}) {
 }
 
 export function applyDesignBasisLoads(model, designBasis = {}, options = {}) {
+  if (!model || typeof model !== 'object') throw new Error('applyDesignBasisLoads requires a model.');
   const estimation = estimateModelLoads(model, designBasis, options);
   const replaceGenerated = options.replaceGenerated !== false;
-  if (replaceGenerated) {
-    model.loads = (model.loads || []).filter((load) => load.generatedBy !== LOAD_ESTIMATION_VERSION);
-  }
-  model.loadCases = mergeLoadCases(model.loadCases || [], estimation.loadCases);
-  model.loads = [...(model.loads || []), ...estimation.loads];
-  model.designBasis = estimation.basis;
-  model.loadEstimation = {
+  const loadMerge = mergeGeneratedLoads(model.loads || [], estimation.loads, { replaceGenerated });
+  const caseMerge = mergeLoadCases(model.loadCases || [], estimation.loadCases);
+  const application = {
+    mode: replaceGenerated ? 'replace-generated' : 'merge',
+    created: loadMerge.created,
+    updated: loadMerge.updated,
+    unchanged: loadMerge.unchanged,
+    removed: loadMerge.removed,
+    preserved: loadMerge.preserved,
+    conflicts: [...loadMerge.conflicts, ...caseMerge.conflicts],
+  };
+  const loadEstimation = {
     ...estimation,
-    loads: estimation.loads.map((load) => ({
+    application,
+    loads: loadMerge.loads
+      .filter((load) => load.generatedBy === LOAD_ESTIMATION_VERSION || load.sourceId === LOAD_ESTIMATION_VERSION)
+      .map((load) => ({
       id: load.id,
       type: load.type,
       case: load.case,
@@ -220,21 +232,58 @@ export function applyDesignBasisLoads(model, designBasis = {}, options = {}) {
       value: load.w ?? load.P ?? load.M ?? null,
       direction: load.dir || null,
       derivation: load.derivation || null,
+      generatedKey: load.generatedKey || null,
+      userModified: load.userModified === true,
     })),
   };
-  return estimation;
+  const previous = {
+    loads: model.loads,
+    loadCases: model.loadCases,
+    designBasis: model.designBasis,
+    loadEstimation: model.loadEstimation,
+  };
+  try {
+    model.loads = loadMerge.loads;
+    model.loadCases = caseMerge.loadCases;
+    model.designBasis = estimation.basis;
+    model.loadEstimation = loadEstimation;
+  } catch (error) {
+    try {
+      model.loads = previous.loads;
+      model.loadCases = previous.loadCases;
+      model.designBasis = previous.designBasis;
+      model.loadEstimation = previous.loadEstimation;
+    } catch {
+      // Preserve the original transaction error.
+    }
+    throw error;
+  }
+  return { ...estimation, application };
 }
 
 function defaultDerivedLoadCases(useSignedAccidental = false) {
   const base = [
-    { id: 'D', name: 'Dead load', type: 'dead' },
-    { id: 'L', name: 'Live load', type: 'live' },
-    { id: 'WX', name: 'Wind X', type: 'wind' },
-    { id: 'WY', name: 'Wind Y', type: 'wind' },
-    { id: 'EX', name: 'Seismic X', type: 'seismic' },
-    { id: 'EY', name: 'Seismic Y', type: 'seismic' },
+    { id: 'D', name: 'Dead load', type: 'dead', family: 'D', variant: 'superimposed' },
+    { id: 'L', name: 'Live load', type: 'live', family: 'L', variant: 'occupancy' },
+    { id: 'WX', name: 'Wind X', type: 'wind', family: 'W', direction: 'x', variant: 'base' },
+    { id: 'WY', name: 'Wind Y', type: 'wind', family: 'W', direction: 'y', variant: 'base' },
+    { id: 'EX', name: 'Seismic X', type: 'seismic', family: 'E', direction: 'x', variant: 'base' },
+    { id: 'EY', name: 'Seismic Y', type: 'seismic', family: 'E', direction: 'y', variant: 'base' },
   ];
-  return useSignedAccidental ? [...base, ...signedAccidentalLoadCases()] : base;
+  const cases = useSignedAccidental ? [...base, ...signedAccidentalLoadCases()] : base;
+  return cases.map((loadCase) => normalizeLoadCaseMetadata({
+    ...loadCase,
+    origin: 'template',
+    sourceId: LOAD_ESTIMATION_VERSION,
+    status: 'candidate',
+    inputState: 'candidate',
+    userModified: false,
+  }, {
+    sourceId: LOAD_ESTIMATION_VERSION,
+    origin: 'template',
+    status: 'candidate',
+    inputState: 'candidate',
+  }));
 }
 
 function summarizeModelGeometry(model) {
@@ -278,6 +327,11 @@ function gravityLoad(id, member, w, loadCase, derivation) {
     unit: 'kN/m',
     case: loadCase,
     generatedBy: LOAD_ESTIMATION_VERSION,
+    origin: 'template',
+    sourceId: LOAD_ESTIMATION_VERSION,
+    generatedKey: generatedLoadKey({ type: 'udl', caseId: loadCase, memberId: member, story: derivation?.story, role: 'gravity-distribution' }),
+    userModified: false,
+    status: 'candidate',
     derivation,
   };
 }
@@ -295,6 +349,17 @@ function addStoryNodalLoads(loads, model, z, totalForce, dir, loadCase, prefix, 
       case: loadCase,
       unit: 'kN',
       generatedBy: LOAD_ESTIMATION_VERSION,
+      origin: 'template',
+      sourceId: LOAD_ESTIMATION_VERSION,
+      generatedKey: generatedLoadKey({
+        type: 'nodal',
+        caseId: loadCase,
+        nodeId: item.nodeId,
+        story: derivation.story,
+        role: derivation.parentCase ? 'signed-lateral-distribution' : 'lateral-distribution',
+      }),
+      userModified: false,
+      status: 'candidate',
       derivation: {
         ...derivation,
         storyZ: z,
@@ -374,10 +439,152 @@ function storyHeightForLevel(geometry, index) {
 }
 
 function mergeLoadCases(existing, generated) {
-  const map = new Map();
-  for (const item of existing) if (item?.id) map.set(item.id, { ...item });
-  for (const item of generated) if (!map.has(item.id)) map.set(item.id, { ...item });
-  return [...map.values()];
+  const loadCases = existing.filter((item) => item?.id).map((item) => clonePlain(item));
+  const conflicts = [];
+  for (const proposed of generated) {
+    const index = loadCases.findIndex((item) => (
+      item.generatedKey && proposed.generatedKey && item.generatedKey === proposed.generatedKey
+    ) || item.id === proposed.id);
+    if (index < 0) {
+      loadCases.push(clonePlain(proposed));
+      continue;
+    }
+    const current = loadCases[index];
+    if (sameGeneratedContent(current, proposed)) continue;
+    if (current.userModified === true || !current.generatedKey || current.origin === 'manual') {
+      conflicts.push(generationConflict('load-case', current, proposed));
+      continue;
+    }
+    loadCases[index] = clonePlain(proposed);
+  }
+  return { loadCases: deduplicateById(loadCases), conflicts };
+}
+
+function mergeGeneratedLoads(existingInput, generatedInput, { replaceGenerated }) {
+  const loads = existingInput.filter(Boolean).map((item) => clonePlain(item));
+  const proposed = generatedInput.filter(Boolean).map((item) => clonePlain(item));
+  const proposedKeys = new Set();
+  const conflicts = [];
+  let created = 0;
+  let updated = 0;
+  let unchanged = 0;
+  let preserved = 0;
+
+  for (const candidate of proposed) {
+    const logicalKey = candidate.generatedKey || candidate.id;
+    proposedKeys.add(logicalKey);
+    const index = loads.findIndex((item) => (
+      item.generatedKey && candidate.generatedKey
+        ? item.generatedKey === candidate.generatedKey
+        : item.id === candidate.id
+    ));
+    if (index < 0) {
+      const usedIds = new Set(loads.map((item) => item.id).filter(Boolean));
+      loads.push({ ...candidate, id: uniqueGeneratedId(candidate.id, usedIds) });
+      created += 1;
+      continue;
+    }
+    const current = loads[index];
+    if (sameGeneratedContent(current, candidate)) {
+      unchanged += 1;
+      continue;
+    }
+    if (current.userModified === true || (!current.generatedKey && current.generatedBy !== LOAD_ESTIMATION_VERSION)) {
+      conflicts.push(generationConflict('load', current, candidate));
+      preserved += 1;
+      continue;
+    }
+    loads[index] = { ...candidate, id: current.id || candidate.id };
+    updated += 1;
+  }
+
+  let removed = 0;
+  const merged = replaceGenerated
+    ? loads.filter((load) => {
+      const owned = load.generatedBy === LOAD_ESTIMATION_VERSION || load.sourceId === LOAD_ESTIMATION_VERSION;
+      const key = load.generatedKey || load.id;
+      const remove = owned && !proposedKeys.has(key) && load.userModified !== true;
+      if (remove) removed += 1;
+      return !remove;
+    })
+    : loads;
+  return {
+    loads: deduplicateById(merged),
+    conflicts,
+    created,
+    updated,
+    unchanged,
+    removed,
+    preserved,
+  };
+}
+
+function generatedLoadKey({ type, caseId, nodeId = null, memberId = null, story = null, role = 'load' }) {
+  return [
+    'load',
+    stableToken(LOAD_ESTIMATION_VERSION),
+    stableToken(role),
+    stableToken(caseId),
+    story == null ? 'story-none' : `story-${stableToken(story)}`,
+    nodeId ? `node-${stableToken(nodeId)}` : `member-${stableToken(memberId || 'none')}`,
+    stableToken(type),
+  ].join(':');
+}
+
+function generationConflict(kind, existing, proposed) {
+  return {
+    code: `${kind}-user-modified-conflict`,
+    id: existing.id || proposed.id || null,
+    generatedKey: existing.generatedKey || proposed.generatedKey || null,
+    existing: clonePlain(existing),
+    proposed: clonePlain(proposed),
+  };
+}
+
+function sameGeneratedContent(a, b) {
+  return stableJson(comparableGenerated(a)) === stableJson(comparableGenerated(b));
+}
+
+function comparableGenerated(value = {}) {
+  const copy = clonePlain(value);
+  delete copy.userModified;
+  delete copy.generatedAt;
+  return copy;
+}
+
+function deduplicateById(items) {
+  const out = [];
+  const seen = new Set();
+  for (const item of items) {
+    if (!item?.id || seen.has(item.id)) continue;
+    seen.add(item.id);
+    out.push(item);
+  }
+  return out;
+}
+
+function uniqueGeneratedId(baseId, usedIds) {
+  let id = baseId || 'LD-GENERATED';
+  let index = 2;
+  while (usedIds.has(id)) id = `${baseId}-${index++}`;
+  return id;
+}
+
+function stableToken(value) {
+  return String(value || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'none';
+}
+
+function stableJson(value) {
+  if (Array.isArray(value)) return `[${value.map(stableJson).join(',')}]`;
+  if (value && typeof value === 'object') {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableJson(value[key])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function clonePlain(value) {
+  if (value == null) return value;
+  return JSON.parse(JSON.stringify(value));
 }
 
 function modelBounds(nodes) {

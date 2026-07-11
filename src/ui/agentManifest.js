@@ -10,6 +10,13 @@ import { INDEX_NATIVE_MODELER_VERSION } from './indexNativeModeler.js';
 import { INDEX_NATIVE_PERSISTENCE_VERSION } from './indexNativePersistence.js';
 import { INDEX_NATIVE_AGENT_CONTROLS_VERSION } from './indexNativeAgentControls.js';
 import { INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION } from './indexNativeAdvancedAnalysis.js';
+import { INDEX_ANALYSIS_CENTER_VERSION } from './indexAnalysisCenter.js';
+import { ELASTIC_SETUP_WORKFLOW_VERSION } from './indexElasticSetupWorkflow.js';
+import { ELASTIC_RESULT_POPUP_VERSION } from './indexElasticResultPopup.js';
+import { ELASTIC_RESULT_VISUALIZATION_VERSION } from './elasticResultVisualization.js';
+import { ANALYSIS_RUNNER_VERSION } from './analysisRunners.js';
+import { INDEX_RESULT_CASE_VIEW_VERSION } from './indexResultViews.js';
+import { RESULT_CHARTS_VERSION } from './resultCharts.js';
 import { INDEX_PRODUCT_HARDENING_VERSION } from './indexProductHardening.js';
 import { INDEX_AGENT_COMMAND_BRIDGE_VERSION } from './indexAgentCommandBridge.js';
 import { INDEX_IMPORT_AGENT_STATE_VERSION } from './indexImportAgentState.js';
@@ -66,6 +73,7 @@ import { PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION } from '../platform/phas
 import { PHASE3_OWNER_SIGNOFF_REVIEW_VERSION } from '../platform/phase3OwnerSignoffReview.js';
 import { PHASE3_COMPLETION_AUDIT_REVIEW_VERSION } from '../platform/phase3CompletionAuditReview.js';
 import { PHASE3_EVIDENCE_REGISTER_VERSION } from '../platform/phase3EvidenceRegister.js';
+import { FINAL_USE_RELEASE_REVIEW_VERSION } from '../platform/finalUseReleaseReview.js';
 import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
 import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
@@ -119,6 +127,7 @@ import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../solver
 import { SEMI_RIGID_DIAPHRAGM_VERSION } from '../solver/semiRigidDiaphragm.js';
 import { SHELL_QUAD4_VERSION } from '../solver/shell/quad4.js';
 import { SHELL_FRAME_ASSEMBLY_VERSION } from '../solver/shell/shellAssembly.js';
+import { EQUIVALENT_SHELL_SCOPE_VERSION } from '../solver/shell/equivalentScope.js';
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
 import { GLOBAL_BUCKLING_TRACE_VERSION } from '../dynamics/globalBuckling.js';
@@ -151,6 +160,13 @@ export function buildAgentManifest(options = {}) {
       nativePersistence: INDEX_NATIVE_PERSISTENCE_VERSION,
       nativeAgentControls: INDEX_NATIVE_AGENT_CONTROLS_VERSION,
       nativeAdvancedAnalysis: INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION,
+      phase5AnalysisCenter: INDEX_ANALYSIS_CENTER_VERSION,
+      phase7ElasticSetupWorkflow: ELASTIC_SETUP_WORKFLOW_VERSION,
+      phase7ElasticResultPopup: ELASTIC_RESULT_POPUP_VERSION,
+      phase7ElasticResultVisualization: ELASTIC_RESULT_VISUALIZATION_VERSION,
+      phase5AnalysisRunners: ANALYSIS_RUNNER_VERSION,
+      phase5ResultCaseViews: INDEX_RESULT_CASE_VIEW_VERSION,
+      phase5ResultCharts: RESULT_CHARTS_VERSION,
       productHardening: INDEX_PRODUCT_HARDENING_VERSION,
       agentCommandBridge: INDEX_AGENT_COMMAND_BRIDGE_VERSION,
       importAgentState: INDEX_IMPORT_AGENT_STATE_VERSION,
@@ -205,6 +221,7 @@ export function buildAgentManifest(options = {}) {
       phase3OwnerSignoffReview: PHASE3_OWNER_SIGNOFF_REVIEW_VERSION,
       phase3CompletionAuditReview: PHASE3_COMPLETION_AUDIT_REVIEW_VERSION,
       phase3EvidenceRegister: PHASE3_EVIDENCE_REGISTER_VERSION,
+      finalUseReleaseReview: FINAL_USE_RELEASE_REVIEW_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       benchmarkGate: BENCHMARK_GATE_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
@@ -259,6 +276,7 @@ export function buildAgentManifest(options = {}) {
       semiRigidDiaphragmRedistribution: SEMI_RIGID_DIAPHRAGM_VERSION,
       phase3ShellQuad4: SHELL_QUAD4_VERSION,
       shellFrameAssembly: SHELL_FRAME_ASSEMBLY_VERSION,
+      phase6EquivalentShellScope: EQUIVALENT_SHELL_SCOPE_VERSION,
       phase3LoadsV2: LOADS_V2_VERSION,
       phase3DynamicCompleteness: DYNAMIC_COMPLETENESS_VERSION,
       globalBucklingTrace: GLOBAL_BUCKLING_TRACE_VERSION,
@@ -296,6 +314,7 @@ export function buildAgentManifest(options = {}) {
       'getP3DetailedDesignReport',
       'getP3IntegratedResults',
       'getLaunchReadinessReport',
+      'getFinalUseReleaseReview',
       'getPhase3DesignMilestoneReview',
       'getPhase3DrawingImportValidationReview',
       'getPhase3EngineeringValidationReview',
@@ -327,6 +346,7 @@ export function buildAgentManifest(options = {}) {
       'getLoadsV2Trace',
       'getDynamicCompletenessTrace',
       'getNonlinearAnalysisTrace',
+      'getHingeAssignments',
       'listImportCandidates',
       'resolveImportCandidate',
       'confirmImport',
@@ -343,6 +363,10 @@ export function buildAgentManifest(options = {}) {
       'getRigidDiaphragmBenchmark',
       'getBaselineContract',
       'runPushover',
+      'getAnalysisCases',
+      'listAnalysisCases',
+      'getAnalysisResults',
+      'getAnalysisCaseResult',
       'getRuntimeDiagnostics',
       'getCapabilities',
       'DOM event: sstructures:agent-command',
@@ -374,6 +398,7 @@ export function buildAgentManifest(options = {}) {
       phase3OwnerSignoffReview: 'node tests/p3-owner-signoff-review.mjs',
       phase3CompletionAuditReview: 'node tests/p3-completion-audit-review.mjs',
       phase3EvidenceRegister: 'node tests/p3-evidence-register.mjs',
+      finalUseReleaseReview: 'node tests/final-use-release-review.mjs',
       phase3EvidenceClient: 'node tests/p3-evidence-client.mjs',
       phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
     },
@@ -439,6 +464,7 @@ export function buildAgentManifest(options = {}) {
       'createEvidenceClient().listProjectEvidence().ownerSignoffReview and in-page listProjectEvidence().ownerSignoffReview expose the same owner sign-off deployment decision contract.',
       'getPhase3PracticeValidationReview().summary.finalApprovalCoverage uses the same required approval groups as finalApprovalReview; owner alias approval fields satisfy their group without requiring every allowed field.',
       'getPhase3OwnerSignoffReview().deploymentApprovalGroup lists the accepted deployment approval aliases; owner checklist evidence alone does not set productionReady.',
+      'getFinalUseReleaseReview() is the post-Phase 5 final-use gate; Phase 5 completion alone does not approve production use.',
     ],
     dataContracts: [
       'schemaVersionedModel',
@@ -485,6 +511,7 @@ export function buildAgentManifest(options = {}) {
       'phase3OwnerSignoffReview',
       'phase3CompletionAuditReview',
       'phase3EvidenceRegister',
+      'finalUseReleaseReview',
       'phase3EvidenceClient',
       'phase3ImportAgentState',
       'steelMemberReviewSchedule',
@@ -505,6 +532,21 @@ export function buildAgentManifest(options = {}) {
       'nativePersistenceBook',
       'nativeAgentScreenControls',
       'nativeAdvancedAnalysisReport',
+      'phase5AnalysisCase',
+      'phase5AnalysisRunnerHandle',
+      'phase5AnalysisCenterState',
+      'phase7ElasticSetupWorkflowState',
+      'phase7ElasticResultPopupState',
+      'phase7ElasticResultVisualization',
+      'phase5HingeAssignmentView',
+      'phase5PushoverCaseView',
+      'phase5PerformanceReviewView',
+      'phase5NlthCaseView',
+      'phase5ResultCaseView',
+      'phase5MemberRatioMap',
+      'phase5ResultCharts',
+      'phase5AnalysisCaseCalculationPackage',
+      'phase5ReleaseGate',
       'productHardeningAudit',
       'agentCommandBridge',
       'originalIndexRuntimeDiagnostics',
@@ -561,6 +603,7 @@ export function buildAgentManifest(options = {}) {
       'semiRigidDiaphragmRedistribution',
       'phase3ShellQuad4Trace',
       'shellFrameAssembly',
+      'phase6EquivalentShellScope',
       'phase3LoadsV2Trace',
       'phase3DynamicCompletenessTrace',
       'globalBucklingTrace',
@@ -596,6 +639,19 @@ export function buildAgentManifest(options = {}) {
       { id: 'M27', status: 'available', feature: 'index example save import and autosave unification' },
       { id: 'M28', status: 'available', feature: 'agent control on native UI contracts' },
       { id: 'M29', status: 'available', feature: 'advanced analysis native report UX' },
+      { id: 'P5-M1', status: 'available', feature: 'analysis case center for static, modal, and RSA execution' },
+      { id: 'P5-M2', status: 'available', feature: 'buckling, P-Delta, and linear time-history analysis cases with stale and failure status' },
+      { id: 'P5-M3', status: 'available', feature: 'spring support palette, stiffness form, model persistence, and reaction trace' },
+      { id: 'P5-M4', status: 'available', feature: 'settlement, partial/trapezoid distributed load, temperature load, and member behavior input workflow' },
+      { id: 'P5-M5', status: 'available', feature: 'load case manager, KDS design-basis load generation, KDS combinations, and floor mass workflow' },
+      { id: 'P5-M6', status: 'available', feature: 'member-end hinge assignment UI, backbone selection, and nonlinear hinge persistence' },
+      { id: 'P5-M7', status: 'available', feature: 'regular pushover analysis case execution with capacity curve and hinge progression view' },
+      { id: 'P5-M8', status: 'available', feature: 'preliminary performance point review and NLTH case time-history response workflow' },
+      { id: 'P5-M9', status: 'available', feature: 'analysis case result switching for modal, buckling, static, and hinge overlay data' },
+      { id: 'P5-M10', status: 'available', feature: 'member ratio legend and zero-dependency SVG result charts' },
+      { id: 'P5-M11', status: 'available', feature: 'analysis case result details included in calculation package output' },
+      { id: 'P5-M12', status: 'available', feature: 'Phase 5 release-gate documentation, help, contract, and integrated scenario coverage' },
+      { id: 'POST-P5-M1', status: 'available', feature: 'final-use release review gate across practice validation, evidence register, owner sign-off, and launch readiness' },
       { id: 'M30', status: 'available', feature: 'integrated product hardening audit' },
       { id: 'M31', status: 'available', feature: 'DOM event API for AI and browser automation control' },
       { id: 'M32', status: 'available', feature: 'two-story 3D elastic workflow for drawing and MGT import readiness' },
@@ -640,6 +696,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M10', status: 'preliminary', feature: 'versioned material and section registry with parametric properties' },
       { id: 'P3-M11', status: 'preliminary', feature: 'spring supports, settlement, truss axial stiffness, member offsets, member moments, and temperature load paths' },
       { id: 'P3-M12', status: 'preliminary', feature: 'wall mid-pier model merge, pier force recovery, and semi-rigid diaphragm trace' },
+      { id: 'P6-M6', status: 'available', feature: 'equivalent wall/slab/shell scope warnings, forbidden field guard, and global validation trace' },
       { id: 'P3-M13', status: 'preliminary', feature: 'loads v2, CQC, buckling trace, and linear time-history helpers' },
       { id: 'P3-M14', status: 'preliminary', feature: 'nonlinear state snapshot, corotational geometry trace, Newton convergence log, and B1/B2 benchmark gate' },
       { id: 'P3-M15', status: 'preliminary', feature: 'moment hinge state trace, displacement and arc-length control traces, and formal pushover result contract' },

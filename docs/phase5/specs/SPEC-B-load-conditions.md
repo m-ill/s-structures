@@ -58,7 +58,7 @@ track: P5-B / milestones: P5-M3, P5-M4, P5-M5 / status: spec
 
 ## B.6 층 질량·편심 (P5-M5)
 
-- 패널 버튼: [층 질량 생성] → `bridge`의 층질량 생성 경로(`generateFloorMass` 상당).
+- 패널 버튼: [층 질량 생성] → 기존 agent/modeling action `generateFloorMass` 또는 그 core 로직을 UI에서 호출. 브리지 직접 메서드가 없으면 `SStructuresAgent.execute('generateFloorMass', payload)` 경로를 사용한다.
 - 결과: 층별 질량·질량중심·강성중심·편심 표. 모달/RSA/pushover 질량 소스로 사용.
 
 ## B.7 Acceptance Criteria

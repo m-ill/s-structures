@@ -94,9 +94,12 @@ model
 
 ## P2-M5 Advanced Elastic Analysis
 
+Direct Analysis addendum: P2-M5 now includes a separate geometric-stiffness P-Delta path. Implement it from `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md` and verify it with `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`. This is not a replacement for the current equivalent-load P-Delta method.
+
 | Subtask | 구현 범위 | 완료 기준 |
 | --- | --- | --- |
 | M5-1 P-Delta method clarity | P-Delta, small/large displacement, geometric stiffness 범위 명시 | 보고서에 method, limitation, convergence 표시 |
+| M5-1A Direct Analysis mode | `Kt = Ke + Kg(N)` geometric-stiffness elastic second-order analysis | direct-analysis settings, convergence trace, story/member design summary, report/API method trace |
 | M5-2 Modal analysis | eigen period, mode shape, participation mass | 참여질량과 모드별 결과표 출력 |
 | M5-3 Response spectrum | spectrum table/function, SRSS/CQC, base shear scaling | RSA story response와 scaling trace |
 

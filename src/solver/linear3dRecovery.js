@@ -1,6 +1,6 @@
-import { vadd, vdot, vlen, vscale } from '../core/vector.js';
+import { vadd, vlen, vscale } from '../core/vector.js';
+import { resolveLoadComponents } from '../loads/fixedEnd/common.js';
 import {
-  dirVec,
   fixedFixedDeflectionFunction,
   fixedFixedPointDeflectionFunction,
   integratedUniformLoad,
@@ -45,6 +45,8 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     My,
     Mz,
     L,
+    fixedEndLoads: md.fixedEndLoads || [],
+    loadRecoveryIssues: spanLoads.issues || [],
     shape,
     dmaxM,
     Nmax: maxAbs(N),
@@ -60,19 +62,58 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
 
 export function collectMemberSpanLoads(memberId, loads, ax) {
   const spanLoads = [];
+  spanLoads.issues = [];
   for (const load of loads) {
     if (load.member !== memberId) continue;
-    const direction = dirVec(load);
     if (load.type === 'temperature' || load.type === 'tgradient') continue;
     if (load.type === 'mmoment') {
-      spanLoads.push({ type: 'moment', a: Math.max(0, Math.min(1, Number(load.at ?? 0.5))) * ax.L, axis: load.axis || 'z', M: Number(load.M || 0) });
+      const M = Number(load.M);
+      const axis = load.axis || 'z';
+      if (!Number.isFinite(M)) {
+        spanLoads.issues.push(loadIssue(load, 'NONFINITE_LOAD_COMPONENT', 'M', load.M));
+        continue;
+      }
+      if (!['x', 'y', 'z'].includes(axis)) {
+        spanLoads.issues.push(loadIssue(load, 'UNSUPPORTED_MEMBER_MOMENT_AXIS', 'axis', axis));
+        continue;
+      }
+      spanLoads.push({ type: 'moment', a: clamp01(load.at ?? load.t, 0.5) * ax.L, axis, M });
       continue;
     }
-    const magnitude = load.type === 'udl' ? load.w : load.P;
-    if (!Number.isFinite(Number(magnitude))) continue;
-    const q = [vdot(ax.x, direction) * magnitude, vdot(ax.y, direction) * magnitude, vdot(ax.z, direction) * magnitude];
-    if (load.type === 'point') spanLoads.push({ type: 'point', a: load.t * ax.L, q, sourceRange: load.sourceRange || null });
-    else spanLoads.push({ type: 'udl', q, shape: load.shape || 'uniform' });
+    if (load.type === 'point') {
+      const resolved = resolveLoadComponents(load, ax, load.P, 'P');
+      if (!resolved.ok) {
+        spanLoads.issues.push(resolved.issue);
+        continue;
+      }
+      spanLoads.push({ type: 'point', a: clamp01(load.t ?? load.at, 0.5) * ax.L, q: resolved.localComponents, sourceRange: load.sourceRange || null });
+    } else if (load.type === 'udl') {
+      const resolved = resolveLoadComponents(load, ax, load.w, 'w');
+      if (!resolved.ok) {
+        spanLoads.issues.push(resolved.issue);
+        continue;
+      }
+      spanLoads.push({ type: 'udl', q: resolved.localComponents, shape: load.shape || 'uniform' });
+    } else if (load.type === 'udl-partial') {
+      const resolved = resolveLoadComponents(load, ax, load.w, 'w');
+      if (!resolved.ok) {
+        spanLoads.issues.push(resolved.issue);
+        continue;
+      }
+      const from = clamp01(load.from, 0);
+      const to = clamp01(load.to, 1);
+      spanLoads.push({ type: 'distributed-linear', a: from * ax.L, b: to * ax.L, q1: resolved.localComponents, q2: resolved.localComponents, sourceRange: { from, to } });
+    } else if (load.type === 'trapezoid') {
+      const start = resolveLoadComponents(load, ax, load.w1, 'w1');
+      const end = resolveLoadComponents(load, ax, load.w2, 'w2');
+      if (!start.ok || !end.ok) {
+        spanLoads.issues.push(...[start.issue, end.issue].filter(Boolean));
+        continue;
+      }
+      const from = clamp01(load.from, 0);
+      const to = clamp01(load.to, 1);
+      spanLoads.push({ type: 'distributed-linear', a: from * ax.L, b: to * ax.L, q1: start.localComponents, q2: end.localComponents, sourceRange: { from, to } });
+    }
   }
   return spanLoads;
 }
@@ -93,6 +134,11 @@ export function recoverMemberStations(endForces, spanLoads, L, stationCount) {
     } else if (load.type === 'moment') {
       xset.add(Math.max(0, load.a - 1e-9));
       xset.add(Math.min(L, load.a + 1e-9));
+    } else if (load.type === 'distributed-linear') {
+      xset.add(Math.max(0, load.a - 1e-9));
+      xset.add(Math.min(L, load.a + 1e-9));
+      xset.add(Math.max(0, load.b - 1e-9));
+      xset.add(Math.min(L, load.b + 1e-9));
     }
   });
 
@@ -108,6 +154,7 @@ export function recoverMemberStations(endForces, spanLoads, L, stationCount) {
     let n = -endForces[0];
     let vy = endForces[1];
     let vz = endForces[2];
+    let tq = -endForces[3];
     let mz = -endForces[5] + endForces[1] * x;
     let my = endForces[4] + endForces[2] * x;
     for (const load of spanLoads) {
@@ -118,8 +165,9 @@ export function recoverMemberStations(endForces, spanLoads, L, stationCount) {
         mz += load.q[1] * (x - load.a);
         my += load.q[2] * (x - load.a);
       } else if (load.type === 'moment' && load.a <= x) {
-        if (load.axis === 'y') my += load.M;
-        else if (load.axis === 'z' || !load.axis) mz += load.M;
+        if (load.axis === 'x') tq -= load.M;
+        else if (load.axis === 'y') my += load.M;
+        else if (load.axis === 'z') mz -= load.M;
       } else if (load.type === 'udl') {
         const { fI, mI } = integratedUniformLoad(load.shape, x, L);
         n -= load.q[0] * fI;
@@ -127,12 +175,19 @@ export function recoverMemberStations(endForces, spanLoads, L, stationCount) {
         vz += load.q[2] * fI;
         mz += load.q[1] * mI;
         my += load.q[2] * mI;
+      } else if (load.type === 'distributed-linear') {
+        const { f, m } = integrateDistributedLinearTo(load, x);
+        n -= f[0];
+        vy += f[1];
+        vz += f[2];
+        mz += m[1];
+        my += m[2];
       }
     }
     N.push(n);
     Vy.push(-vy);
     Vz.push(-vz);
-    Tq.push(-endForces[3]);
+    Tq.push(tq);
     My.push(my);
     Mz.push(mz);
   }
@@ -166,6 +221,14 @@ export function recoverMemberShape(dl, spanLoads, ax, material, section, L, stat
         const c = fixedFixedPointDeflectionFunction(load.a, x, L);
         v += (load.q[1] * c) / EIz;
         w += (load.q[2] * c) / EIy;
+      } else if (load.type === 'distributed-linear') {
+        const c = integrateDistributedLinearDeflection(load, x, L);
+        v += c[1] / EIz;
+        w += c[2] / EIy;
+      } else if (load.type === 'moment') {
+        const c = fixedFixedPointMomentDeflectionFunction(load.a, x, L);
+        if (load.axis === 'z') v += (load.M * c) / EIz;
+        else if (load.axis === 'y') w -= (load.M * c) / EIy;
       }
     }
 
@@ -175,6 +238,80 @@ export function recoverMemberShape(dl, spanLoads, ax, material, section, L, stat
   }
 
   return { shape, dmaxM };
+}
+
+function clamp01(value, fallback = 0) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(0, Math.min(1, n));
+}
+
+function loadIssue(load, code, component, value) {
+  return { code, entityType: 'load', entityId: load.id || null, memberId: load.member || null, component, value };
+}
+
+function integrateDistributedLinearTo(load, x) {
+  const lo = Math.max(0, Number(load.a) || 0);
+  const hi = Math.min(Number(x) || 0, Number(load.b) || 0);
+  const f = [0, 0, 0];
+  const m = [0, 0, 0];
+  if (!(hi > lo)) return { f, m };
+  integrateGaussPhysical(lo, hi, (s, weight) => {
+    const q = interpolateLoad(load, s);
+    const arm = x - s;
+    for (let i = 0; i < 3; i += 1) {
+      f[i] += q[i] * weight;
+      m[i] += q[i] * arm * weight;
+    }
+  });
+  return { f, m };
+}
+
+function integrateDistributedLinearDeflection(load, x, L) {
+  const lo = Math.max(0, Number(load.a) || 0);
+  const hi = Math.min(Number(load.b) || 0, L);
+  const out = [0, 0, 0];
+  if (!(hi > lo)) return out;
+  integrateGaussPhysical(lo, hi, (s, weight) => {
+    const q = interpolateLoad(load, s);
+    const c = fixedFixedPointDeflectionFunction(s, x, L);
+    out[1] += q[1] * c * weight;
+    out[2] += q[2] * c * weight;
+  });
+  return out;
+}
+
+function fixedFixedPointMomentDeflectionFunction(a, x, L) {
+  if (!(L > 0)) return 0;
+  const position = Math.max(0, Math.min(L, Number(a) || 0));
+  if (x <= position) {
+    const b = L - position;
+    const h = 3 * position * L - (L + 2 * position) * x;
+    return (x ** 2 * (-2 * b * h + b ** 2 * (3 * L - 2 * x))) / (6 * L ** 3);
+  }
+  const x2 = L - x;
+  const h = 3 * (L - position) * L - (3 * L - 2 * position) * x2;
+  return (x2 ** 2 * (2 * position * h + position ** 2 * (-3 * L + 2 * x2))) / (6 * L ** 3);
+}
+
+function interpolateLoad(load, s) {
+  const a = Number(load.a) || 0;
+  const b = Number(load.b) || a;
+  const eta = Math.max(0, Math.min(1, (s - a) / Math.max(1e-12, b - a)));
+  return [0, 1, 2].map((i) => (Number(load.q1?.[i]) || 0) + ((Number(load.q2?.[i]) || 0) - (Number(load.q1?.[i]) || 0)) * eta);
+}
+
+function integrateGaussPhysical(a, b, fn) {
+  const points = [
+    [-0.906179845938664, 0.236926885056189],
+    [-0.538469310105683, 0.478628670499366],
+    [0, 0.568888888888889],
+    [0.538469310105683, 0.478628670499366],
+    [0.906179845938664, 0.236926885056189],
+  ];
+  const mid = (a + b) / 2;
+  const half = (b - a) / 2;
+  for (const [point, weight] of points) fn(mid + half * point, half * weight);
 }
 
 export function sectionCheck(section, material, memberResult, L) {
