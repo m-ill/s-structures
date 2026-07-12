@@ -245,7 +245,7 @@ function analysisModelSnapshot(model = {}) {
 
 function normalizedQualification(value) {
   const qualification = String(value || '').trim().toLowerCase();
-  return ['verified', 'candidate', 'preliminary', 'unsupported', 'invalid'].includes(qualification)
+  return ['verified', 'candidate', 'preliminary', 'legacy-preliminary', 'implemented', 'blocked', 'unsupported', 'invalid'].includes(qualification)
     ? qualification
     : null;
 }

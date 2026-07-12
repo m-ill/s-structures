@@ -15,6 +15,9 @@ export function buildPhase7AnalysisRunSummary(options = {}) {
       kind: record.kind || record.provenance?.analysisCase?.kind || null,
       runStatus: record.runStatus || 'unknown',
       qualification: record.qualification || 'unknown',
+      engineId: record.engine?.id || record.provenance?.engine?.id || record.result?.engine?.id || null,
+      modelBound: record.modelBound ?? record.result?.modelBound ?? null,
+      designBlocked: record.designBlocked === true || record.result?.designBlocked === true,
       recordDesignTransferAllowed,
       recordEligible,
       designTransferAllowed: recordEligible && currentModelMatches,
@@ -63,6 +66,7 @@ function summarizeProvenance(provenance = {}) {
       : (provenance.sections || []).map((item) => `${item.id || '?'}@${item.version || 1}`),
     sourceIds: (provenance.sourceRegistry || []).map((item) => item.id).filter(Boolean),
     solver: provenance.solver?.method || provenance.solver?.name || null,
+    engineId: provenance.engine?.id || null,
     convergence: provenance.convergence || null,
   };
 }

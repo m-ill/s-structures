@@ -22,6 +22,7 @@ import {
   normalizeProjectSetup,
 } from './projectSetup.js';
 import { normalizeSourceRegistry } from './sourceRegistry.js';
+import { defaultNonlinearRegistries, normalizeNonlinearRegistries } from './nonlinearSchema.js';
 
 export function createModel(overrides = {}) {
   const units = normalizeUnits(overrides.units);
@@ -46,6 +47,7 @@ export function createModel(overrides = {}) {
     analysisCases: defaultAnalysisCases(),
     analysisSettings: defaultAnalysisSettings(),
     analysisCriteria: defaultAnalysisCriteria(),
+    ...defaultNonlinearRegistries(),
     designParams: defaultDesignParams(),
     designSettings: defaultDesignSettings(),
     ...overrides,
@@ -56,6 +58,7 @@ export function createModel(overrides = {}) {
     analysisCriteria: normalizeAnalysisCriteria(overrides.analysisCriteria || defaultAnalysisCriteria()),
     massSources: Array.isArray(overrides.massSources) ? clone(overrides.massSources) : [],
     sourceRegistry: normalizeSourceRegistry(overrides.sourceRegistry),
+    ...normalizeNonlinearRegistries(overrides),
     designBasis: normalizeDesignBasis(overrides.designBasis),
     projectSetup: normalizeProjectSetup(overrides.projectSetup, 'legacy-unreviewed'),
   };

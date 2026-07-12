@@ -14,7 +14,7 @@ import {
   validateModel,
 } from '../src/index.js';
 
-assert.equal(ANALYSIS_CASE_VERSION, 'p5-analysis-case-v1');
+assert.equal(ANALYSIS_CASE_VERSION, 'p8-analysis-case-v2');
 assert.ok(ANALYSIS_CASE_STATUSES.has('stale'));
 
 const model = createModel();

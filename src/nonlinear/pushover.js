@@ -1,5 +1,9 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { analyzeAll } from '../solver/linear3d.js';
+import {
+  LEGACY_PUSHOVER_ENGINE_ID,
+  qualifyLegacyNonlinearResult,
+} from './legacy/contract.js';
 
 export const PUSHOVER_VERSION = 'p3-m15-pushover-formal';
 export const PUSHOVER_SOURCE_VERSION = 'm15-pushover-preliminary-source';
@@ -15,14 +19,14 @@ export function runPushover(model, options = {}) {
   const direction = normalizeDirection(options.direction || '+x');
   const controlNodeId = options.controlNodeId || pickControlNode(model, direction);
   if (!controlNodeId) {
-    return {
+    return qualifyPushoverResult({
       ok: false,
       version: PUSHOVER_VERSION,
       sourceVersion: PUSHOVER_SOURCE_VERSION,
       reason: 'NO_CONTROL_NODE',
       curve: [],
       warnings: [{ code: 'PUSHOVER_NO_CONTROL_NODE', message: 'No control node is available.' }],
-    };
+    }, options);
   }
 
   const steps = Math.max(1, Math.trunc(number(options.steps, 12)));
@@ -89,7 +93,7 @@ export function runPushover(model, options = {}) {
   }
 
   const last = curve.at(-1) || {};
-  return {
+  return qualifyPushoverResult({
     ok: curve.some((point) => point.ok),
     version: PUSHOVER_VERSION,
     sourceVersion: PUSHOVER_SOURCE_VERSION,
@@ -124,7 +128,19 @@ export function runPushover(model, options = {}) {
     curve,
     memberStates: finalStates,
     warnings,
-  };
+  }, options);
+}
+
+function qualifyPushoverResult(result, options) {
+  return qualifyLegacyNonlinearResult(result, {
+    engineId: LEGACY_PUSHOVER_ENGINE_ID,
+    engineVersion: PUSHOVER_SOURCE_VERSION,
+    requestedControl: options.requestedControl || options.control || 'load-factor',
+    executedControl: 'load-factor',
+    algorithm: 'stepwise-linear-analysis-with-previous-step-hinge-secant-degradation',
+    api: 'runPushover',
+    resultShapeVersion: PUSHOVER_VERSION,
+  });
 }
 
 export function buildHingeDegradedModel(model = {}, memberStates = {}, options = {}) {

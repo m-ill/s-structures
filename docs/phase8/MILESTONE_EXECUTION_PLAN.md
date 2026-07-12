@@ -3,7 +3,7 @@
 ```yaml
 plan_version: 2026-07-11
 milestones: P8-M0..P8-M11
-current_status: planned
+current_status: active-p8-m1
 execution_rule: one milestone at a time; code, tests, evidence, review, and status update are all required
 ```
 
@@ -75,6 +75,8 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 마일스톤 상태와 결과 qualification은 별개다. 예를 들어 M8이 구현 완료되어도 NLTH 기능은 독립 동적검증 전 `candidate`일 수 있다.
 
 ## P8-M0 - 상태 정직성, 계약, legacy 격리
+
+**상태: complete (2026-07-11).** 완료 증거와 잔여 범위는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) 및 `reports/validation-evidence/phase8/`를 기준으로 한다.
 
 ### 목표
 

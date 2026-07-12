@@ -21,6 +21,7 @@ import { PROJECT_SETUP_STATUSES } from './projectSetup.js';
 import { validateSourceRecord, validateSourceRegistry } from './sourceRegistry.js';
 import { validateMaterialRecord } from '../materials/materialSchema.js';
 import { validateSectionRecord } from '../materials/sectionSchema.js';
+import { NONLINEAR_REGISTRY_COLLECTIONS, validateNonlinearRegistries } from './nonlinearSchema.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -57,6 +58,7 @@ export function validateModel(model) {
   validateLoads(model, nodeIds, memberIds, error, warning);
   validateLoadCasesAndCombinations(model, error, warning);
   validatePhase7Contracts(model, error, warning);
+  validateNonlinearRegistries(model).forEach((item) => error(ERROR_CODES[item.code] || item.code, item.message, item.target));
   validateAnalysisCases(model.analysisCases).forEach((item) => error(ERROR_CODES[item.code] || item.code, item.message, item.target));
 
   if ((model.members || []).length && !(model.nodes || []).some((node) => node.support)) {
@@ -71,7 +73,7 @@ export function validateModel(model) {
 }
 
 function validateCollections(model, error) {
-  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'analysisCases', 'massSources', 'sourceRegistry', 'stories', 'diaphragms']) {
+  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'analysisCases', 'massSources', 'sourceRegistry', 'stories', 'diaphragms', ...NONLINEAR_REGISTRY_COLLECTIONS]) {
     if (!Array.isArray(model[key])) {
       error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array.`, key);
     }

@@ -21,6 +21,8 @@ export const ANALYSIS_CASE_KIND_LABELS = {
   linearTha: '선형 시간이력 (예비)',
   pushover: 'Pushover',
   nlth: '비선형 시간이력 (예비)',
+  nonlinearStatic: '비선형 정적해석 (준비 중)',
+  nonlinearTimeHistory: '비선형 시간이력 (준비 중)',
 };
 
 export function installIndexAnalysisCenter(target = globalThis, options = {}) {
@@ -208,7 +210,7 @@ export function markAnalysisCenterCasesStale(target = globalThis, bridge = targe
   if (!model?.analysisCases?.length) return [];
   const changed = [];
   for (const item of model.analysisCases) {
-    if (['ok', 'failed', 'review-required', 'preliminary', 'designBlocked'].includes(item.status)) {
+    if (['ok', 'failed', 'review-required', 'preliminary', 'designBlocked', 'unsupported'].includes(item.status)) {
       item.status = 'stale';
       item.staleReason = reason;
       changed.push(item.id);
@@ -527,6 +529,9 @@ function resultPane(doc, target, item) {
     ['Latest attempt', latestAttempt?.status || result.status],
     ['Displayed result', result.status],
     ['Qualification', result.qualification || 'candidate'],
+    ['Engine', result.engine?.id || result.payload?.engine?.id || '-'],
+    ['Model bound', String(result.modelBound ?? result.payload?.modelBound ?? '-')],
+    ['Design blocked', (result.designBlocked || result.payload?.designBlocked) ? 'yes' : 'no'],
     ['Design transfer', transferDecision.allowed ? 'Allowed' : `Blocked (${transferDecision.code || 'not-eligible'})`],
     ['Run record', result.runRecordId || '-'],
     ['View', result.view],
@@ -726,10 +731,14 @@ function pushoverSettingsForm(doc, settings = {}) {
   form.appendChild(textField(doc, 'ssPoControlNode', 'Control node', settings.controlNodeId || ''));
   form.appendChild(numberField(doc, 'ssPoMaxLoadFactor', 'Max LF', settings.maxLoadFactor ?? 1, { min: 0, step: 0.1 }));
   form.appendChild(numberField(doc, 'ssPoReferenceBaseShear', 'Ref V', settings.referenceBaseShear ?? 10, { min: 0, step: 1 }));
-  form.appendChild(selectField(doc, 'ssPoControl', 'Control', ['load-factor', 'displacement', 'arcLength'], settings.control || 'load-factor'));
+  form.appendChild(selectField(doc, 'ssPoControl', 'Control', [
+    { value: 'load-factor', label: 'Load factor (legacy)' },
+    { value: 'displacement', label: 'Displacement (unavailable)', disabled: true },
+    { value: 'arcLength', label: 'Arc-length (unavailable)', disabled: true },
+  ], settings.control || 'load-factor'));
   const note = doc.createElement('div');
   note.className = 'ss-ac-note ss-po-note';
-  note.textContent = 'Pushover uses the current preliminary load-factor engine; displacement and arc-length are recorded as control intent.';
+  note.textContent = 'Legacy Pushover executes load-factor steps only. Displacement and arc-length cases are blocked until the Phase 8 production engines are available.';
   form.appendChild(note);
   return form;
 }
@@ -739,6 +748,12 @@ function pushoverResultView(doc, pushover = {}) {
   view.id = 'ssPoResultView';
   view.setAttribute('id', 'ssPoResultView');
   view.className = 'ss-po-result';
+  view.appendChild(keyValueTable(doc, [
+    ['Engine', pushover.engine?.id || '-'],
+    ['Qualification', pushover.qualification || 'legacy-preliminary'],
+    ['Model bound', String(pushover.modelBound ?? true)],
+    ['Design blocked', pushover.designBlocked ? 'yes' : 'no'],
+  ]));
 
   const curve = doc.createElement('div');
   curve.id = 'ssPoCurve';
@@ -858,6 +873,9 @@ function nlthResultView(doc, nlth = {}, settings = {}) {
   caption.textContent = `Record ${settings.record || '-'} | scale ${formatNumber(settings.scale ?? 1)}`;
   summary.appendChild(caption);
   summary.appendChild(keyValueTable(doc, [
+    ['Engine', nlth.engine?.id || '-'],
+    ['Qualification', nlth.qualification || 'legacy-preliminary'],
+    ['Model bound', String(nlth.modelBound ?? false)],
     ['Record', settings.record || '-'],
     ['Scale', formatNumber(settings.scale ?? 1)],
     ['dt', formatNumber(nlth.dt)],
@@ -1117,6 +1135,7 @@ function selectField(doc, id, label, values, selected) {
     const option = doc.createElement('option');
     option.value = value;
     option.textContent = labelText;
+    if (typeof entry === 'object' && entry.disabled) option.disabled = true;
     select.appendChild(option);
   }
   select.value = selected;
@@ -1387,6 +1406,7 @@ function analysisStatusLabel(status) {
     'review-required': '검토 필요',
     preliminary: '예비 결과',
     designBlocked: '설계전달 차단',
+    unsupported: '미지원',
   };
   return labels[status] || status || '미실행';
 }
@@ -1459,7 +1479,7 @@ function injectAnalysisCenterStyle(doc) {
     .ss-ac-item{display:grid;grid-template-columns:minmax(0,1fr) 70px 44px;gap:6px;align-items:center;border:1px solid #dfe8f0;background:white;padding:5px}
     .ss-ac-item.active{border-color:#2f6f9f}.ss-ac-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .ss-ac-status{font-size:11px;text-align:center;border-radius:3px;background:#eef3f8;padding:2px 4px}
-    .status-ok{background:#e8f6ee;color:#126b3c}.status-failed,.status-designBlocked{background:#fff0f0;color:#a32020}.status-stale,.status-review-required,.status-preliminary{background:#fff7df;color:#7a5400}.status-running{background:#e9f2ff;color:#1c5e9f}
+    .status-ok{background:#e8f6ee;color:#126b3c}.status-failed,.status-designBlocked,.status-unsupported{background:#fff0f0;color:#a32020}.status-stale,.status-review-required,.status-preliminary{background:#fff7df;color:#7a5400}.status-running{background:#e9f2ff;color:#1c5e9f}
     .ss-ac-settings,.ss-ac-result{min-width:0;margin-top:8px;border-top:1px solid #dfe8f0;padding-top:8px}.ss-ac-settings h3,.ss-ac-result h3{font-size:12px;margin:0 0 5px;color:#294a62}
     .ss-ac-table{width:100%;table-layout:fixed;border-collapse:collapse}.ss-ac-table th,.ss-ac-table td{border-bottom:1px solid #e6edf3;padding:4px;text-align:left;vertical-align:top;overflow-wrap:anywhere;word-break:break-word}.ss-ac-table th{width:72px;color:#607384}
     .ss-ac-note{color:#607384;background:white;border:1px solid #e3ebf2;padding:6px}.ss-ac-log{white-space:pre-wrap;background:#fff7f7;border:1px solid #f0c8c8;padding:6px;margin:6px 0 0}

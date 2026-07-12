@@ -1,0 +1,33 @@
+{
+  "version": "p8-m0-reference-profile-v1",
+  "capturedAt": "2026-07-11T00:00:00+09:00",
+  "status": "development-reference-profile",
+  "hardware": {
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13700KF",
+    "logicalCores": 24,
+    "memoryBytes": 68558086144,
+    "architecture": "x64"
+  },
+  "os": {
+    "platform": "win32",
+    "release": "10.0.19045"
+  },
+  "browser": {
+    "name": "Codex In-app Browser (Chromium runtime)",
+    "version": "managed-current-2026-07-11",
+    "userAgent": "not-exposed-by-browser-control-runtime"
+  },
+  "powerMode": "Windows high performance",
+  "backend": {
+    "id": "dense-js-reference",
+    "build": "4a21a95",
+    "qualification": "reference-only"
+  },
+  "runtime": {
+    "node": "v24.16.0"
+  },
+  "measurement": {
+    "status": "pending-production-worker-wasm-backend",
+    "reason": "M0 fixes the environment and budgets; absolute production timings begin at P8-M2."
+  }
+}

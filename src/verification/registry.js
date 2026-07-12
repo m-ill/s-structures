@@ -1,0 +1,82 @@
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m0-verification-registry-v1';
+export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
+export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
+
+const TRUSTED_ANALYSIS_AUDIT_VERSIONS = new Set([
+  'p7-m11-run-record-audit-v1',
+  'p7-m11-ui-verification-v1',
+]);
+
+const GOVERNANCE_AUDIT_VERSIONS = new Set([P8_M0_GOVERNANCE_AUDIT_VERSION]);
+
+export const PHASE8_VERIFICATION_SUITES = Object.freeze([
+  Object.freeze({
+    id: 'P8-M0-GOV',
+    milestone: 'P8-M0',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-GOV-01',
+      'NL-GOV-02',
+      'NL-GOV-03',
+      'NL-GOV-04',
+      'NL-GOV-05',
+      'NL-GOV-06',
+    ]),
+  }),
+]);
+
+export function isTrustedVerificationAuditVersion(version, options = {}) {
+  const purpose = options.purpose || 'analysis-result';
+  if (purpose === 'governance') return GOVERNANCE_AUDIT_VERSIONS.has(String(version || ''));
+  return TRUSTED_ANALYSIS_AUDIT_VERSIONS.has(String(version || ''));
+}
+
+export function getPhase8VerificationSuite(id) {
+  const suite = PHASE8_VERIFICATION_SUITES.find((item) => item.id === id);
+  return suite ? clone(suite) : null;
+}
+
+export function validatePhase8EvidenceArtifact(artifact = {}) {
+  const errors = [];
+  if (!record(artifact)) return { ok: false, errors: ['artifact:not-object'] };
+  if (artifact.version !== PHASE8_EVIDENCE_ARTIFACT_VERSION) errors.push('artifact:version');
+  const suite = getPhase8VerificationSuite(artifact.suiteId);
+  if (!suite) errors.push('artifact:suite');
+  if (artifact.milestone !== suite?.milestone) errors.push('artifact:milestone');
+  if (artifact.status !== 'PASS') errors.push('artifact:status');
+  if (!clean(artifact.generatedAt)) errors.push('artifact:generatedAt');
+  if (!clean(artifact.sourceRevision)) errors.push('artifact:sourceRevision');
+  const ids = new Set(Array.isArray(artifact.verificationIds) ? artifact.verificationIds : []);
+  for (const id of suite?.verificationIds || []) {
+    if (!ids.has(id)) errors.push(`artifact:missing:${id}`);
+  }
+  const rows = Array.isArray(artifact.results) ? artifact.results : [];
+  for (const id of suite?.verificationIds || []) {
+    const row = rows.find((item) => item?.id === id);
+    if (!row || row.status !== 'PASS' || !clean(row.test)) errors.push(`artifact:result:${id}`);
+  }
+  if (!record(artifact.environment) || !clean(artifact.environment.profileVersion)) errors.push('artifact:environment');
+  return { ok: errors.length === 0, errors };
+}
+
+export function verificationRegistryManifest() {
+  return {
+    version: VERIFICATION_REGISTRY_VERSION,
+    trustedAuditVersions: [...TRUSTED_ANALYSIS_AUDIT_VERSIONS],
+    trustedAnalysisAuditVersions: [...TRUSTED_ANALYSIS_AUDIT_VERSIONS],
+    governanceAuditVersions: [...GOVERNANCE_AUDIT_VERSIONS],
+    suites: PHASE8_VERIFICATION_SUITES.map(clone),
+  };
+}
+
+function clean(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function record(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function clone(value) {
+  return JSON.parse(JSON.stringify(value));
+}

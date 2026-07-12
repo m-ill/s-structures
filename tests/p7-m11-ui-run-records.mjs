@@ -32,8 +32,11 @@ const analysisCase = bridge.addAnalysisCase({
 const selectionEvents = [];
 bridge.getResultSelectionStore().subscribe((next, previous, source) => selectionEvents.push({ next, previous, source }));
 const first = bridge.runAnalysisCase({ id: 'RUN-1' });
-assert.equal(first.status, 'ok');
-assert.equal(first.qualification, 'candidate');
+assert.equal(first.status, 'preliminary');
+assert.equal(first.qualification, 'legacy-preliminary');
+assert.equal(first.engine.id, 'legacy-sdof-bilinear-newmark');
+assert.equal(first.modelBound, false);
+assert.equal(first.designBlocked, true);
 assert.equal(first.designTransferAllowed, false);
 assert.ok(first.runRecordId);
 assert.equal(bridge.getResultSelection().activeResultId, first.runRecordId);
@@ -53,9 +56,12 @@ assert.equal(Object.isFrozen(target.__SStructuresAnalysisRunStore), true);
 assert.equal(Object.isFrozen(target.__SStructuresAnalysisRunStore.attempts['RUN-1'][0]), true);
 
 const centerState = target.SStructuresAnalysisCenter.getState();
-assert.equal(centerState.latestResult.status, 'ok');
+assert.equal(centerState.latestResult.status, 'preliminary');
 assert.equal(centerState.latestAttempt.status, 'failed');
 assert.equal(centerState.attemptCount, 2);
+const resultCells = document.getElementById('ssAcResult').querySelectorAll('td').map((cell) => cell.textContent);
+assert.ok(resultCells.includes('legacy-sdof-bilinear-newmark'), 'Analysis Center must show the executed engine ID');
+assert.ok(resultCells.includes('legacy-preliminary'), 'Analysis Center must show the result qualification');
 assert.match(document.querySelector('.ss-ac-log').textContent, /PRELOAD_REQUIRED|PRELOAD_RESULT_CONTRACT_INVALID|did not produce|blocked/i);
 assert.equal(document.getElementById('ssAcTransferDesign').disabled, true);
 
@@ -82,7 +88,7 @@ const verified = recordPhase7AnalysisAttempt(target, model, verifiedCase, {
   kind: verifiedCase.kind,
   status: 'ok',
   ok: true,
-  payload: first.payload,
+  payload: { summary: { caseId: verifiedCase.id, solver: 'p7-m11-ui-fixture-v1' } },
   verificationEvidence: {
     modelHash: verifiedModelHash,
     audit: {
@@ -127,7 +133,7 @@ const preliminary = recordPhase7AnalysisAttempt(target, model, analysisCase, {
   completedAt: '2026-07-10T01:10:00.000Z',
 }, { attemptId: 'RUN-1:PRELIMINARY' });
 assert.equal(preliminary.result.status, 'designBlocked');
-assert.equal(preliminary.record.qualification, 'preliminary');
+assert.equal(preliminary.record.qualification, 'legacy-preliminary');
 assert.equal(preliminary.record.designTransferAllowed, false);
 
 const hadMeta = Object.prototype.hasOwnProperty.call(model, 'meta');

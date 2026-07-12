@@ -1,4 +1,8 @@
 import { runPushover } from './pushover.js';
+import {
+  LEGACY_PUSHOVER_ENGINE_ID,
+  qualifyLegacyNonlinearResult,
+} from './legacy/contract.js';
 
 export const FORMAL_PUSHOVER_VERSION = 'p3-m15-pushover-formal';
 
@@ -22,7 +26,7 @@ export function runFormalPushover(model, options = {}) {
     hingeEvents: eventRows.filter((event) => event.step === point.step),
   }));
   const regression = options.baseline ? comparePushoverRegression({ capacityCurve: curve }, options.baseline) : null;
-  return {
+  return qualifyLegacyNonlinearResult({
     ok: !!preliminary.ok && control.stopReason !== 'STEP_FAILED',
     version: FORMAL_PUSHOVER_VERSION,
     sourceVersion: preliminary.sourceVersion || preliminary.version,
@@ -54,7 +58,15 @@ export function runFormalPushover(model, options = {}) {
     regression,
     summary: summarizeFormalPushover(preliminary, curve, eventRows, control),
     warnings: preliminary.warnings || [],
-  };
+  }, {
+    engineId: LEGACY_PUSHOVER_ENGINE_ID,
+    engineVersion: preliminary.sourceVersion || preliminary.engine?.version,
+    requestedControl: options.control || 'load-control',
+    executedControl: 'load-factor',
+    algorithm: 'formal-result-adapter-over-stepwise-secant-pushover',
+    api: 'runFormalPushover',
+    resultShapeVersion: FORMAL_PUSHOVER_VERSION,
+  });
 }
 
 export function buildPushoverControlTrace(preliminary = {}, options = {}) {

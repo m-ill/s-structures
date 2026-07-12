@@ -125,6 +125,10 @@ function summarizeAnalysisCases(model, analysisResults = {}) {
       status: item.status || 'not-run',
       lastRunStatus: result?.status || item.lastRun?.status || null,
       view: result?.view || null,
+      engineId: result?.engine?.id || result?.payload?.engine?.id || item.engineId || item.lastRun?.engineId || null,
+      qualification: result?.qualification || item.lastRun?.qualification || null,
+      modelBound: result?.modelBound ?? result?.payload?.modelBound ?? item.lastRun?.modelBound ?? null,
+      designBlocked: result?.designBlocked === true || result?.payload?.designBlocked === true || item.lastRun?.designBlocked === true,
       summaryText: formatAnalysisCaseSummary(item.kind, summary),
       detail: formatAnalysisCaseDetail(item, result),
     };
@@ -203,6 +207,7 @@ function formatAnalysisCaseDetail(item, result) {
   }
   if (item.kind === 'pushover') {
     base.rows = [
+      ...nonlinearGovernanceRows(result, payload),
       ['Steps', String(payload.summary?.stepCount || (payload.curve || []).length || 0)],
       ['Max base shear', formatForce(payload.summary?.maxBaseShear)],
       ['Max control displacement', formatLength(payload.summary?.maxControlDisplacement)],
@@ -215,6 +220,7 @@ function formatAnalysisCaseDetail(item, result) {
     const rowCount = summary.rowCount ?? ((payload.rows || []).length || 0);
     const maxDisplacement = summary.maxDisplacement ?? (payload.maxDisplacement ?? payload.summary?.maxAbsDisplacement);
     base.rows = [
+      ...(item.kind === 'nlth' ? nonlinearGovernanceRows(result, payload) : []),
       ['Rows', String(rowCount)],
       ['Max displacement', formatLength(maxDisplacement)],
       ['dt', format(payload.dt)],
@@ -236,6 +242,15 @@ function formatAnalysisCaseDetail(item, result) {
   }
   base.rows = [['Summary', base.headline || '-']];
   return base;
+}
+
+function nonlinearGovernanceRows(result = {}, payload = {}) {
+  return [
+    ['Engine', result.engine?.id || payload.engine?.id || '-'],
+    ['Qualification', result.qualification || payload.qualification || 'legacy-preliminary'],
+    ['Model bound', String(result.modelBound ?? payload.modelBound ?? '-')],
+    ['Design blocked', (result.designBlocked || payload.designBlocked) ? 'yes' : 'no'],
+  ];
 }
 
 export function renderDetailedReportHtml(report) {
@@ -360,6 +375,18 @@ export function renderDetailedReportHtml(report) {
 
   <h2>4C. Result Postprocessing Tables</h2>
   ${renderResultPostprocessing(report.resultPostprocessing)}
+
+  <h2>4D. Analysis Case Governance</h2>
+  ${renderTable(['Case', 'Kind', 'Status', 'Engine', 'Qualification', 'Model bound', 'Design blocked', 'Summary'], (report.analysisCases?.rows || []).map((row) => [
+    row.id,
+    row.kind,
+    row.lastRunStatus || row.status,
+    row.engineId || '-',
+    row.qualification || '-',
+    row.modelBound == null ? '-' : row.modelBound ? 'yes' : 'no',
+    row.designBlocked ? 'yes' : 'no',
+    row.summaryText,
+  ]))}
 
   <h2>5. Member Check Trace</h2>
   ${renderDesignDemandPackage(report.designDemandPackage)}

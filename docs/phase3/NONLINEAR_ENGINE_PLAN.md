@@ -1,11 +1,13 @@
 # Phase 3 Nonlinear Engine Plan
 
-status: active
+status: superseded-for-production-by-phase8
 milestones: P3-M14(기하 v1), P3-M15(재료+control v2), P3-M16(fiber/NLTH v3)
+
+> **역사 문서:** 이 문서는 Phase 3 당시의 목표와 prototype 범위를 기록한다. 실제 구현은 full MDOF tangent equilibrium, 정식 displacement/arc-length control, 3D frame NLTH를 완료하지 못했다. 기존 실행 경로는 P8-M0부터 `legacy-preliminary`로 분류되며, 현재 생산 구현·qualification 기준은 [Phase 8 개발 허브](../phase8/README.md)와 [Phase 8 구현 상태](../phase8/IMPLEMENTATION_STATUS.md)가 우선한다.
 
 ## Goal
 
-pushover preliminary(`m15-pushover-preliminary`: 선형 재해석 반복)를 **정식 비선형 엔진**으로 대체한다. rev 2: Phase 4 폐지에 따라 fiber 단면과 비선형 시간이력(NLTH)까지 Phase 3 범위다. 성능기반 내진설계 검토(pushover + NLTH)가 사무소 실무 요구의 종착점이다.
+당시 목표는 pushover preliminary(`m15-pushover-preliminary`: 선형 재해석 반복)를 정식 비선형 엔진으로 대체하는 것이었다. 아래 Scope Ladder와 모듈 배치는 완료 선언이 아니라 당시 설계 목표이며, 미완료 항목은 Phase 8 마일스톤으로 재정의했다.
 
 Direct Analysis boundary: the P2-M5 Direct Analysis plan (`docs/phase2/P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md`) covers elastic small-displacement second-order P-Delta using `Kt = Ke + Kg(N)` with the project tension-positive axial convention. It is not the full Phase 3 corotational/full Newton nonlinear engine.
 
@@ -145,7 +147,9 @@ getNonlinearAnalysisTrace() -> {
 
 계산서 비선형 장(P3-T59)은 method/limitation/수렴 로그를 숨기지 않고 수록한다 (개발 원칙 3). `practiceValidation`에 비선형 게이트를 추가한다: 실패 step 존재 시 WARN, benchmark 미통과 빌드는 merge 불가.
 
-## Migration From Preliminary
+## Historical Migration Target
+
+아래 항목은 Phase 3에서 계획했으나 정식 production migration으로 완료되지 않았다. P8-M0는 기존 API를 호환 어댑터로 보존하면서 engine ID와 qualification을 분리했고, 실제 엔진 교체는 P8-M1 이후에 수행한다.
 
 1. 기존 `runPushover` API 시그니처는 어댑터로 유지 (agent 계약 호환).
 2. `PUSHOVER_VERSION`을 `p3-pushover-formal`로 승격, 이전 버전 결과와 구분.

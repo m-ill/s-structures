@@ -4,10 +4,10 @@ import { normalizePDeltaMethod } from '../solver/pdelta/method.js';
 import { analyzeDynamics } from '../dynamics/modal.js';
 import { estimateGlobalBucklingTrace } from '../dynamics/globalBuckling.js';
 import { runModalSuperpositionTha } from '../dynamics/elasticCompleteness.js';
-import { runPushover } from '../nonlinear/pushover.js';
-import { runNewmarkNlth } from '../nonlinear/dynamics/newmark.js';
+import { NONLINEAR_CASE_KINDS } from '../nonlinear/capabilities.js';
+import { runNonlinearAnalysisCase } from '../nonlinear/analysisRouter.js';
 
-export const ANALYSIS_RUNNER_VERSION = 'p5-analysis-runners-v1';
+export const ANALYSIS_RUNNER_VERSION = 'p8-m0-analysis-runners-v2';
 
 export function runAnalysisCase(model, analysisCase, options = {}) {
   const item = normalizeAnalysisCase(analysisCase || {});
@@ -15,8 +15,12 @@ export function runAnalysisCase(model, analysisCase, options = {}) {
   try {
     const settings = normalizeAnalysisCaseSettings(item.kind, item.settings || {}, item.input || {});
     const runner = RUNNERS[item.kind];
-    if (!runner) return failureHandle(item, startedAt, 'UNSUPPORTED_ANALYSIS_CASE', `Unsupported analysis case kind: ${item.kind}`);
-    const payload = runner(model, settings, options);
+    if (!runner && !NONLINEAR_CASE_KINDS.has(item.kind)) {
+      return failureHandle(item, startedAt, 'UNSUPPORTED_ANALYSIS_CASE', `Unsupported analysis case kind: ${item.kind}`);
+    }
+    const payload = NONLINEAR_CASE_KINDS.has(item.kind)
+      ? runNonlinearAnalysisCase(model, item, settings, options)
+      : runner(model, settings, options);
     return successHandle(item, startedAt, payload, settings);
   } catch (error) {
     return failureHandle(item, startedAt, 'ANALYSIS_CASE_FAILED', error?.message || String(error));
@@ -119,6 +123,9 @@ export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}) {
       energyJumpLimit: merged.energyJumpLimit,
     };
   }
+  if (kind === 'nonlinearStatic' || kind === 'nonlinearTimeHistory') {
+    return { ...merged };
+  }
   return merged;
 }
 
@@ -180,6 +187,10 @@ export function summarizeAnalysisResult(kind, payload = {}) {
   if (kind === 'pushover') {
     return {
       ok: !!payload.ok,
+      engineId: payload.engine?.id || null,
+      qualification: payload.qualification || null,
+      designBlocked: payload.designBlocked === true,
+      modelBound: payload.modelBound === true,
       stepCount: payload.summary?.stepCount || (payload.curve || []).length,
       maxBaseShear: payload.summary?.maxBaseShear || 0,
       maxControlDisplacement: payload.summary?.maxControlDisplacement || 0,
@@ -188,6 +199,10 @@ export function summarizeAnalysisResult(kind, payload = {}) {
   if (kind === 'nlth') {
     return {
       ok: !!payload.converged,
+      engineId: payload.engine?.id || null,
+      qualification: payload.qualification || null,
+      designBlocked: payload.designBlocked === true,
+      modelBound: payload.modelBound === true,
       rowCount: (payload.rows || []).length,
       maxDisplacement: payload.maxDisplacement || 0,
       yielded: !!payload.summary?.yielded,
@@ -201,8 +216,8 @@ export function analysisResultView(kind, payload = {}) {
   if (kind === 'modal') return 'modal-results';
   if (kind === 'responseSpectrum') return 'response-spectrum-results';
   if (kind === 'buckling') return 'buckling-results';
-  if (kind === 'linearTha' || kind === 'nlth') return 'time-history-results';
-  if (kind === 'pushover') return 'pushover-results';
+  if (kind === 'linearTha' || kind === 'nlth' || kind === 'nonlinearTimeHistory') return 'time-history-results';
+  if (kind === 'pushover' || kind === 'nonlinearStatic') return 'pushover-results';
   return payload?.view || 'analysis-results';
 }
 
@@ -331,35 +346,45 @@ const RUNNERS = {
       recordId: settings.recordId,
     });
   },
-  pushover(model, settings) {
-    return runPushover(model, settings);
-  },
-  nlth(_model, settings) {
-    return runNewmarkNlth(settings);
-  },
 };
 
 function successHandle(item, startedAt, payload, settings) {
   const summary = summarizeAnalysisResult(item.kind, payload);
-  const failed = payload?.ok === false || ['failed', 'not-available', 'unsupported'].includes(payload?.status);
+  const unsupported = payload?.status === 'unsupported';
+  const failed = !unsupported && (payload?.ok === false || ['failed', 'not-available'].includes(payload?.status));
+  const legacyPreliminary = payload?.qualification === 'legacy-preliminary';
   const preliminary = !failed
+    && !unsupported
     && payload?.status !== 'blocked'
-    && (payload?.status === 'preliminary' || payload?.maturity === 'preliminary');
+    && (legacyPreliminary || payload?.status === 'preliminary' || payload?.maturity === 'preliminary');
+  const qualification = unsupported
+    ? payload?.qualification || 'unsupported'
+    : failed
+      ? payload?.qualification || 'failed'
+      : payload?.qualification || (preliminary ? 'preliminary' : summary.ok === false ? 'blocked' : 'candidate');
+  const designBlocked = payload?.designBlocked === true || legacyPreliminary || unsupported;
   return {
     version: ANALYSIS_RUNNER_VERSION,
     caseId: item.id,
     kind: item.kind,
-    status: failed ? 'failed' : preliminary ? 'preliminary' : summary.ok === false ? 'review-required' : 'ok',
-    qualification: preliminary ? 'preliminary' : failed ? 'failed' : summary.ok === false ? 'review-required' : 'qualified',
-    designBlocked: payload?.designBlocked === true,
-    designBlockReason: payload?.designTransfer?.reason || payload?.review?.designBlockReason || null,
+    ok: !failed && !unsupported,
+    status: unsupported ? 'unsupported' : failed ? 'failed' : preliminary ? 'preliminary' : summary.ok === false ? 'review-required' : 'ok',
+    qualification,
+    designBlocked,
+    designBlockReason: payload?.designBlockReason || payload?.designTransfer?.reason || payload?.review?.designBlockReason || null,
+    engine: payload?.engine || null,
+    modelBound: payload?.modelBound ?? null,
+    capability: payload?.capability || null,
+    routing: payload?.routing || null,
     provenance: payload?.provenance || null,
     startedAt,
     completedAt: new Date().toISOString(),
     settings,
     summary,
     view: analysisResultView(item.kind, payload),
-    message: failed ? (payload.reason || payload.review?.missing?.join(', ') || 'Analysis case did not produce an available result.') : null,
+    message: failed || unsupported
+      ? (payload.message || payload.reason || payload.review?.missing?.join(', ') || 'Analysis case did not produce an available result.')
+      : null,
     payload,
   };
 }
@@ -369,7 +394,12 @@ function failureHandle(item, startedAt, code, message) {
     version: ANALYSIS_RUNNER_VERSION,
     caseId: item.id,
     kind: item.kind,
+    ok: false,
     status: 'failed',
+    qualification: 'failed',
+    designBlocked: true,
+    designBlockReason: code,
+    engine: item.engineId ? { id: item.engineId, version: null, formulation: item.formulation || null } : null,
     startedAt,
     completedAt: new Date().toISOString(),
     error: { code, message },

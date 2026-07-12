@@ -1,5 +1,5 @@
 export { createModel, createPracticeModel } from './modelFactory.js';
-export { migrateModel, migrateToCurrent, migrateToV3 } from './migration.js';
+export { migrateModel, migrateToCurrent, migrateToV3, migrateToV5 } from './migration.js';
 export { validateModel } from './validation.js';
 export { exportModel, modelToJson, parseModelJson } from './io.js';
 export {

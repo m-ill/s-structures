@@ -517,6 +517,9 @@ function storeAnalysisResult(target, model, analysisCase, result) {
       summary: published.summary,
       resultKey: recorded.record.id,
       qualification: recorded.record.qualification,
+      engineId: recorded.record.engine?.id || published.engine?.id || null,
+      modelBound: recorded.record.modelBound,
+      designBlocked: recorded.record.designBlocked === true,
       designTransferAllowed: recorded.record.designTransferAllowed,
       retainedSuccessfulResult: Boolean(recorded.retainedResult),
     };
@@ -531,6 +534,9 @@ function storeAnalysisResult(target, model, analysisCase, result) {
         summary: published.summary,
         resultKey: recorded.record.id,
         qualification: recorded.record.qualification,
+        engineId: recorded.record.engine?.id || published.engine?.id || null,
+        modelBound: recorded.record.modelBound,
+        designBlocked: recorded.record.designBlocked === true,
         designTransferAllowed: recorded.record.designTransferAllowed,
         retainedSuccessfulResult: Boolean(recorded.retainedResult),
       },
@@ -555,9 +561,9 @@ function withAnalysisResults(target, options = {}) {
 
 function analysisCaseStatus(result = {}) {
   if (result.status === 'failed') return 'failed';
-  if (['review-required', 'preliminary', 'designBlocked'].includes(result.status)) return result.status;
+  if (['review-required', 'preliminary', 'designBlocked', 'unsupported'].includes(result.status)) return result.status;
   if (result.designBlocked === true || result.payload?.designBlocked === true) return 'designBlocked';
-  if (result.qualification === 'preliminary') return 'preliminary';
+  if (['preliminary', 'legacy-preliminary'].includes(result.qualification)) return 'preliminary';
   return 'ok';
 }
 

@@ -14,6 +14,10 @@ import { normalizeAnalysisCriteria } from './analysisCriteria.js';
 import { normalizeDesignBasis, normalizeProjectSetup } from './projectSetup.js';
 import { normalizeSourceRegistry } from './sourceRegistry.js';
 import { stableStringify } from './stableHash.js';
+import { normalizeNonlinearRegistries } from './nonlinearSchema.js';
+import { defaultNonlinearEngineId } from '../nonlinear/capabilities.js';
+
+const LEGACY_NORMALIZATION_CUTOFF = 4;
 
 export function migrateModel(inputModel) {
   if (!inputModel) {
@@ -39,6 +43,7 @@ export function migrateModel(inputModel) {
     error.supportedSchemaVersion = SCHEMA_VERSION;
     throw error;
   }
+  if (originalVersion === 4) return migrateV4ToV5(source);
   const migrations = [];
   const base = createModel();
   const units = normalizeUnits(source.units);
@@ -80,9 +85,10 @@ export function migrateModel(inputModel) {
     loadCombinations: Array.isArray(source.loadCombinations) ? source.loadCombinations.map((combo) => ({ ...combo })) : [],
     massSources: Array.isArray(source.massSources) ? source.massSources.map((item) => ({ ...item })) : [],
     sourceRegistry: normalizeSourceRegistry(source.sourceRegistry),
+    ...normalizeNonlinearRegistries(source),
     designBasis: normalizeDesignBasis(source.designBasis),
-    projectSetup: normalizeProjectSetup(source.projectSetup, originalVersion < SCHEMA_VERSION ? 'legacy-unreviewed' : 'load-setup-required'),
-    analysisCases: normalizeAnalysisCases(source.analysisCases),
+    projectSetup: normalizeProjectSetup(source.projectSetup, originalVersion < LEGACY_NORMALIZATION_CUTOFF ? 'legacy-unreviewed' : 'load-setup-required'),
+    analysisCases: normalizeAnalysisCases(classifyLegacyAnalysisCases(source.analysisCases, originalVersion)),
     analysisSettings: {
       ...base.analysisSettings,
       ...(source.analysisSettings || {}),
@@ -124,6 +130,55 @@ export function migrateToCurrent(inputModel) {
   return migrateModel(inputModel).model;
 }
 
+export function migrateToV5(inputModel) {
+  return migrateModel(inputModel).model;
+}
+
+function migrateV4ToV5(source) {
+  const migrations = [];
+  const registries = normalizeNonlinearRegistries(source);
+  for (const [key, value] of Object.entries(registries)) {
+    if (!Array.isArray(source[key])) {
+      migrations.push({ from: 'missing', to: key, note: `Created empty Phase 8 ${key} registry.` });
+    }
+    registries[key] = value;
+  }
+  const model = {
+    ...source,
+    schemaVersion: SCHEMA_VERSION,
+    ...registries,
+    analysisCases: normalizeAnalysisCases(classifyLegacyAnalysisCases(source.analysisCases, 4)),
+  };
+  migrations.push({
+    from: 4,
+    to: SCHEMA_VERSION,
+    note: 'Added Phase 8 registries and explicit legacy nonlinear engine identities without re-normalizing v4 model data.',
+  });
+  return {
+    model,
+    migrations,
+    changed: stableStringify(source) !== stableStringify(model),
+  };
+}
+
+function classifyLegacyAnalysisCases(cases, sourceSchemaVersion = 4) {
+  if (!Array.isArray(cases)) return cases;
+  return cases.map((item) => {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) return item;
+    if ((typeof item.engineId === 'string' && item.engineId.trim()) || !['pushover', 'nlth'].includes(item.kind)) return item;
+    return {
+      ...item,
+      engineId: defaultNonlinearEngineId(item.kind),
+      migration: {
+        ...(item.migration || {}),
+        sourceSchemaVersion: Number(item.migration?.sourceSchemaVersion || sourceSchemaVersion),
+        nonlinearEngineClassified: true,
+        automaticProductionUpgrade: false,
+      },
+    };
+  });
+}
+
 function normalizeMember(member) {
   const releases = member.releases || {
     i: member.rel1 === 'pin' ? 'pin' : 'rigid',
@@ -142,7 +197,7 @@ function normalizeMember(member) {
 
 function normalizeLegacyLibraryRecord(record, originalVersion) {
   const normalized = { ...record };
-  if (originalVersion < SCHEMA_VERSION && normalized.version == null) normalized.version = 1;
+  if (originalVersion < LEGACY_NORMALIZATION_CUTOFF && normalized.version == null) normalized.version = 1;
   return normalized;
 }
 
@@ -196,7 +251,7 @@ function normalizeLoadCasesAndCombinations(model, base, migrations, originalVers
   if (model.loadCombinations.length) {
     model.loadCombinations = model.loadCombinations.map((combo) => normalizeLegacyCombination(combo, originalVersion));
     const modernization = modernizeLegacyDefaultCombinations(model.loadCombinations, model.loadCases, {
-      assumeUnmarkedLegacy: originalVersion < SCHEMA_VERSION,
+      assumeUnmarkedLegacy: originalVersion < LEGACY_NORMALIZATION_CUTOFF,
     });
     if (modernization.changed) {
       model.loadCombinations = modernization.combinations;
@@ -206,7 +261,7 @@ function normalizeLoadCasesAndCombinations(model, base, migrations, originalVers
         note: 'Replaced obsolete default strength combinations with current KDS project-review candidates.',
       });
     }
-  } else if (!explicit.loadCombinations && originalVersion < SCHEMA_VERSION) {
+  } else if (!explicit.loadCombinations && originalVersion < LEGACY_NORMALIZATION_CUTOFF) {
     model.loadCombinations = defaultLoadCombinations().filter((combo) => Object.keys(combo.factors || {}).every((id) => caseIds.has(id)));
     if (base.loadCombinations !== model.loadCombinations) {
       migrations.push({ from: 'missing', to: 'loadCombinations', note: 'Created compatible KDS review candidates; incompatible legacy unity combinations were not synthesized.' });
@@ -221,7 +276,7 @@ function normalizeLegacyCombination(combo, originalVersion) {
   const knownLegacyDefault = ['CO1', 'SLS1'].includes(normalized.id)
     && Number(normalized.factors.D) === 1
     && Number(normalized.factors.L) === 1;
-  if (originalVersion < SCHEMA_VERSION && (knownLegacyDefault || !normalized.origin)) {
+  if (originalVersion < LEGACY_NORMALIZATION_CUTOFF && (knownLegacyDefault || !normalized.origin)) {
     normalized.origin ||= 'legacy';
     normalized.reviewStatus ||= 'legacy-unreviewed';
     normalized.purpose ||= 'legacy-review';

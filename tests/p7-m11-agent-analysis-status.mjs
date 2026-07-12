@@ -33,8 +33,8 @@ assert.equal(model.analysisCases[0].lastRun.status, 'preliminary');
 const roundTrip = migrateModel(model).model.analysisCases[0];
 assert.equal(roundTrip.status, 'preliminary');
 assert.equal(roundTrip.lastRun.status, 'preliminary');
-assert.equal(roundTrip.lastRun.resultKey, 'THA-PRELIMINARY');
-assert.equal(roundTrip.lastRun.resultRef, 'THA-PRELIMINARY');
+assert.equal(roundTrip.lastRun.resultKey, result.runRecordId);
+assert.equal(roundTrip.lastRun.resultRef, result.runRecordId);
 
 console.log(JSON.stringify({
   ok: true,

@@ -1,4 +1,30 @@
-export { createModel, createPracticeModel, exportModel, migrateModel, migrateToCurrent, migrateToV3, modelToJson, parseModelJson, validateModel } from './core/model.js';
+export { createModel, createPracticeModel, exportModel, migrateModel, migrateToCurrent, migrateToV3, migrateToV5, modelToJson, parseModelJson, validateModel } from './core/model.js';
+export {
+  ANALYSIS_DOMAIN_HASH_CONTRACT_VERSION,
+  buildAnalysisDomainHashes,
+  changedAnalysisDomainHashes,
+} from './core/analysisDomainHashes.js';
+export {
+  NONLINEAR_RUN_RECORD_VERSION,
+  buildNonlinearRunRecordContract,
+  validateNonlinearRunRecord,
+} from './core/nonlinearRunRecord.js';
+export {
+  ANALYSIS_RUN_RECORD_VERSION,
+  analysisRunCanTransferToDesign,
+  analysisRunRecordIntegrityHash,
+  appendAnalysisRun,
+  buildAnalysisProvenance,
+  createAnalysisRunRecord,
+  createAnalysisRunStore,
+} from './core/analysisRunRecord.js';
+export {
+  NONLINEAR_REGISTRY_COLLECTIONS,
+  NONLINEAR_SCHEMA_CONTRACT_VERSION,
+  defaultNonlinearRegistries,
+  normalizeNonlinearRegistries,
+  validateNonlinearRegistries,
+} from './core/nonlinearSchema.js';
 export {
   ANALYSIS_CRITERIA_PRESETS,
   ANALYSIS_CRITERIA_VERSION,
@@ -608,6 +634,53 @@ export {
   runNewmarkNlth,
 } from './nonlinear/dynamics/newmark.js';
 export {
+  NONLINEAR_CAPABILITY_VERSION,
+  NONLINEAR_CASE_KINDS,
+  NONLINEAR_ENGINE_IDS,
+  NONLINEAR_PRODUCT_SCOPE_VERSION,
+  NONLINEAR_QUALIFICATIONS,
+  buildNonlinearProductScopeCatalog,
+  defaultNonlinearEngineId,
+  evaluateNonlinearCapability,
+  getNonlinearCapability,
+  isLegacyNonlinearEngine,
+  listNonlinearCapabilities,
+} from './nonlinear/capabilities.js';
+export {
+  NONLINEAR_ANALYSIS_ROUTER_VERSION,
+  runNonlinearAnalysisCase,
+  validateNonlinearAnalysisCase,
+} from './nonlinear/analysisRouter.js';
+export {
+  LEGACY_NONLINEAR_RESULT_VERSION,
+  LEGACY_PUSHOVER_ENGINE_ID,
+  LEGACY_SDOF_NLTH_ENGINE_ID,
+  qualifyLegacyNonlinearResult,
+} from './nonlinear/legacy/contract.js';
+export {
+  LEGACY_PRELIMINARY_PUSHOVER_ADAPTER_VERSION,
+  runLegacyPreliminaryPushover,
+} from './nonlinear/legacy/preliminaryPushover.js';
+export {
+  LEGACY_SDOF_NEWMARK_ADAPTER_VERSION,
+  runLegacySdofNewmarkTrace,
+} from './nonlinear/legacy/sdofNewmarkTrace.js';
+export {
+  PHASE8_PERFORMANCE_BASELINE_VERSION,
+  PHASE8_REFERENCE_PROFILE_CONTRACT,
+  PHASE8_REFERENCE_PROFILE_VERSION,
+  PHASE8_UX_PERFORMANCE_BUDGET,
+  PHASE8_WORKLOAD_FIXTURE_VERSION,
+  PHASE8_WORKLOAD_FIXTURES,
+  buildPhase8PerformanceBaseline,
+} from './nonlinear/performanceBaseline.js';
+export {
+  PHASE8_REFERENCE_SOURCE_CATALOG_VERSION,
+  PHASE8_REFERENCE_SOURCES,
+  buildPhase8ReferenceSourceCatalog,
+  phase8ReferenceSourceCanQualify,
+} from './nonlinear/referenceSources.js';
+export {
   RAYLEIGH_DAMPING_VERSION,
   dampingRatioAtFrequency,
   solveRayleighDamping,
@@ -711,6 +784,16 @@ export {
   runSnapThroughArcLengthBenchmark,
 } from './verification/nonlinearBenchmarks.js';
 export { MEMBER_RELEASE_BENCHMARK_VERSION, runMemberReleaseBenchmark } from './verification/memberReleaseBenchmark.js';
+export {
+  P8_M0_GOVERNANCE_AUDIT_VERSION,
+  PHASE8_EVIDENCE_ARTIFACT_VERSION,
+  PHASE8_VERIFICATION_SUITES,
+  VERIFICATION_REGISTRY_VERSION,
+  getPhase8VerificationSuite,
+  isTrustedVerificationAuditVersion,
+  validatePhase8EvidenceArtifact,
+  verificationRegistryManifest,
+} from './verification/registry.js';
 export { RIGID_DIAPHRAGM_BENCHMARK_VERSION, runRigidDiaphragmBenchmark } from './verification/rigidDiaphragmBenchmark.js';
 export {
   VERIFICATION_MATRIX_RECORD_VERSION,

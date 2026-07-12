@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "manualVersion": "2026-07-03-phase4-prebeta",
   "product": "S-Structures",
-  "manifestVersion": "m16-agent-capability-manifest",
+  "manifestVersion": "p8-m0-agent-capability-manifest-v2",
   "entrypoint": {
     "recommendedUrl": "http://127.0.0.1:5173/",
     "primaryHtml": "index.html"
@@ -205,6 +205,8 @@
     ]
   },
   "qaCommands": {
+    "phase8": "npm.cmd run test:p8",
+    "phase8List": "npm.cmd run test:p8:list",
     "phase3Full": "npm.cmd run test:p3",
     "phase3List": "npm.cmd run test:p3:list",
     "phase3M6ToM20": "node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20",
@@ -565,6 +567,8 @@
     "phase3NonlinearFiberNlthTrace",
     "phase3NonlinearTrace",
     "phase3NonlinearBenchmark",
+    "phase8NonlinearCapability",
+    "phase8NonlinearRouter",
     "phase3DesignFormulaRegistry"
   ],
   "moduleVersions": {
@@ -577,14 +581,14 @@
     "nativeRibbon": "m22-native-index-ribbon",
     "nativeResultControls": "m25-native-result-controls",
     "nativeModeler": "m26-native-modeler-workflow",
-    "nativePersistence": "m27-native-persistence",
+    "nativePersistence": "p8-m0-native-persistence-v5",
     "nativeAgentControls": "m28-native-agent-controls",
     "nativeAdvancedAnalysis": "m29-native-advanced-analysis",
     "phase5AnalysisCenter": "p7-m11-elastic-analysis-center-v2",
     "phase7ElasticSetupWorkflow": "p7-m11-elastic-setup-workflow-v1",
     "phase7ElasticResultPopup": "p7-m11-elastic-result-popup-v2",
     "phase7ElasticResultVisualization": "p7-m11-elastic-result-visualization-v1",
-    "phase5AnalysisRunners": "p5-analysis-runners-v1",
+    "phase5AnalysisRunners": "p8-m0-analysis-runners-v2",
     "phase5ResultCaseViews": "p5-m9-result-case-view",
     "phase5ResultCharts": "p7-m11-elastic-result-charts-v2",
     "productHardening": "m30-product-hardening",
@@ -708,6 +712,8 @@
     "phase3NonlinearFiberNlthTrace": "p3-m16-fiber-nlth-trace-v1",
     "phase3NonlinearTrace": "p3-m16-nonlinear-trace",
     "phase3NonlinearBenchmark": "p3-m16-nonlinear-benchmarks",
+    "phase8NonlinearCapability": "p8-m0-nonlinear-capability-v1",
+    "phase8NonlinearRouter": "p8-m0-nonlinear-analysis-router-v1",
     "phase3DesignFormulaRegistry": "p3-design-formula-registry"
   },
   "limitations": [

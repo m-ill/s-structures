@@ -115,6 +115,12 @@ import {
   openNativeDetailedReport,
 } from './indexReportHooks.js';
 import { normalizeIndexResult } from './indexResultCompatibility.js';
+import {
+  getPhase7AnalysisRunStore,
+  getPhase7LatestAttempts,
+  phase7ModelHash,
+  recordPhase7AnalysisAttempt,
+} from './phase7AnalysisRecords.js';
 
 const DEFAULT_BRIDGE_VERSION = 'm9-index-engine-bridge';
 
@@ -355,6 +361,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     getDesignDemandPackage(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
+      if (typeof bridge?.getDesignDemandPackage === 'function') return cloneJson(bridge.getDesignDemandPackage(options));
       return cloneJson(buildDesignDemandPackage(model, getAnalysis(model), options));
     },
     getPracticePlatformReadiness(options = {}) {
@@ -545,23 +552,25 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     runAnalysisCase(input = {}) {
       const model = getCurrentModel(target);
       if (!model) throw new Error('Current UI model is not available.');
+      if (typeof bridge?.runAnalysisCase === 'function') return cloneJson(bridge.runAnalysisCase(input));
       const analysisCase = resolveAnalysisCase(model, input);
       const result = runCoreAnalysisCase(model, analysisCase, { bridge });
-      storeAnalysisResult(target, model, analysisCase, result);
+      const stored = storeAnalysisResult(target, model, analysisCase, result);
       target.SStructuresAnalysisCenter?.refresh?.();
-      return cloneJson(result);
+      return cloneJson(stored);
     },
     runAnalysisCases(input = {}) {
       const model = getCurrentModel(target);
       if (!model) throw new Error('Current UI model is not available.');
+      if (typeof bridge?.runAnalysisCases === 'function') return cloneJson(bridge.runAnalysisCases(input));
       const cases = Array.isArray(input) ? input : (input.cases || model.analysisCases || []);
       const results = runCoreAnalysisCases(model, cases, { bridge });
-      results.forEach((result) => {
+      const stored = results.map((result) => {
         const analysisCase = (model.analysisCases || []).find((item) => item.id === result.caseId) || { id: result.caseId, kind: result.kind };
-        storeAnalysisResult(target, model, analysisCase, result);
+        return storeAnalysisResult(target, model, analysisCase, result);
       });
       target.SStructuresAnalysisCenter?.refresh?.();
-      return cloneJson(results);
+      return cloneJson(stored);
     },
     runAllAnalysisCases(input = {}) {
       return api.runAnalysisCases(input);
@@ -1061,14 +1070,20 @@ function resolveAnalysisCase(model, input = {}) {
 }
 
 function storeAnalysisResult(target, model, analysisCase, result) {
-  target.__SStructuresAnalysisResults ||= {};
-  target.__SStructuresAnalysisResults[result.caseId] = result;
+  const recorded = recordPhase7AnalysisAttempt(target, model, analysisCase, result);
+  result = recorded.result;
   const row = (model.analysisCases || []).find((item) => item.id === result.caseId);
   const lastRun = {
     at: result.completedAt,
     status: result.status,
     summary: result.summary,
-    resultKey: result.caseId,
+    resultKey: recorded.record.id,
+    qualification: result.qualification || null,
+    engineId: result.engine?.id || result.payload?.engine?.id || null,
+    modelBound: result.modelBound ?? result.payload?.modelBound ?? null,
+    designBlocked: result.designBlocked === true || result.payload?.designBlocked === true,
+    designTransferAllowed: recorded.record.designTransferAllowed,
+    retainedSuccessfulResult: Boolean(recorded.retainedResult),
   };
   const status = analysisCaseStatus(result);
   if (row) {
@@ -1087,18 +1102,21 @@ function storeAnalysisResult(target, model, analysisCase, result) {
 
 function analysisCaseStatus(result = {}) {
   if (result.status === 'failed') return 'failed';
-  if (['review-required', 'preliminary', 'designBlocked'].includes(result.status)) return result.status;
+  if (['review-required', 'preliminary', 'designBlocked', 'unsupported'].includes(result.status)) return result.status;
   if (result.designBlocked === true || result.payload?.designBlocked === true) return 'designBlocked';
-  if (result.qualification === 'preliminary') return 'preliminary';
+  if (['preliminary', 'legacy-preliminary'].includes(result.qualification)) return 'preliminary';
   if (result.qualification === 'review-required') return 'review-required';
   return 'ok';
 }
 
 function withAnalysisResults(target, options = {}) {
-  if (options.analysisResults || options.analysisCaseResults) return options;
+  const model = getCurrentModel(target);
   return {
     ...options,
-    analysisResults: target.__SStructuresAnalysisResults || {},
+    analysisResults: options.analysisResults || options.analysisCaseResults || target.__SStructuresAnalysisResults || {},
+    analysisRunStore: options.analysisRunStore || getPhase7AnalysisRunStore(target),
+    analysisLatestAttempts: options.analysisLatestAttempts || getPhase7LatestAttempts(target),
+    currentModelHash: options.currentModelHash || (model ? phase7ModelHash(model) : null),
   };
 }
 

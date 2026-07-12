@@ -11,11 +11,11 @@ import {
   validateSourceRecord,
 } from '../src/index.js';
 
-assert.equal(SCHEMA_VERSION, 4);
+assert.equal(SCHEMA_VERSION, 5);
 assert.equal(RESULT_DIMENSION_CONTRACT_VERSION, 'p7-m0-result-dimensions-v1');
 
 const practice = createPracticeModel();
-assert.equal(practice.schemaVersion, 4);
+assert.equal(practice.schemaVersion, 5);
 assert.equal(practice.projectSetup.status, 'load-setup-required');
 assert.deepEqual(practice.loadCombinations, []);
 assert.deepEqual(practice.loadCases.map((item) => item.id), ['D-SW', 'D-SDL', 'L']);
@@ -61,7 +61,7 @@ const legacy = {
   loadCombinations: [{ id: 'CO1', name: '1.0D + 1.0L', type: 'strength', factors: { D: 1, L: 1 } }],
 };
 const first = migrateModel(legacy);
-assert.equal(first.model.schemaVersion, 4);
+assert.equal(first.model.schemaVersion, 5);
 assert.equal(first.model.materials[0].Fy, 235);
 assert.equal(first.model.materials[0].name, 'Steel SS400');
 assert.deepEqual(first.model.loadCombinations.map((combo) => combo.id), ['KDS22-ST-01', 'KDS22-ST-02']);

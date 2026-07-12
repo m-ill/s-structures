@@ -1,3 +1,8 @@
+import {
+  LEGACY_SDOF_NLTH_ENGINE_ID,
+  qualifyLegacyNonlinearResult,
+} from '../legacy/contract.js';
+
 export const NLTH_NEWMARK_VERSION = 'p3-m16-nlth-newmark';
 
 export function runNewmarkNlth(options = {}) {
@@ -99,7 +104,11 @@ export function runNewmarkNlth(options = {}) {
     });
   }
   const unstableRows = rows.filter((row) => !row.stability.ok || row.stability.stepSplitRecommended);
-  return {
+  const analysisConverged = inputReview.status === 'available'
+    && rows.length > 0
+    && rows.every((row) => row.converged);
+  return qualifyLegacyNonlinearResult({
+    ok: analysisConverged,
     version: NLTH_NEWMARK_VERSION,
     contract: {
       milestone: 'P3-M16',
@@ -115,7 +124,12 @@ export function runNewmarkNlth(options = {}) {
     tolerance,
     maxIterations,
     energyJumpLimit,
-    converged: rows.every((row) => row.converged),
+    converged: analysisConverged,
+    warnings: inputReview.missing.map((code) => ({
+      code: 'NLTH_INPUT_REVIEW_REQUIRED',
+      message: `Nonlinear time-history input requires review: ${code}.`,
+      target: code,
+    })),
     rows,
     maxDisplacement: Math.max(0, ...rows.map((row) => Math.abs(row.displacement))),
     energyTrace: {
@@ -137,7 +151,13 @@ export function runNewmarkNlth(options = {}) {
       unstableStepCount: unstableRows.length,
       stepSplitRecommended: unstableRows.some((row) => row.stability.stepSplitRecommended),
     },
-  };
+  }, {
+    engineId: LEGACY_SDOF_NLTH_ENGINE_ID,
+    engineVersion: NLTH_NEWMARK_VERSION,
+    algorithm: 'scalar-newmark-average-acceleration-with-bilinear-spring-newton',
+    api: 'runNewmarkNlth',
+    resultShapeVersion: NLTH_NEWMARK_VERSION,
+  });
 }
 
 function buildNlthInputReview(options, accelerations) {

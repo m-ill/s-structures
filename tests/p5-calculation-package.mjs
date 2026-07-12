@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   analyzeModel,
+  createAnalysisCase,
   createCalculationPackageHtml,
   createTwoStoryElasticFrameModel,
   validateModel,
@@ -22,7 +23,7 @@ model.analysisCases = [
   { id: 'AC_PUSH_PKG', name: 'Pushover package', kind: 'pushover', status: 'not-run', settings: { steps: 3, referenceBaseShear: 50 } },
   { id: 'AC_NLTH_PKG', name: 'NLTH package', kind: 'nlth', status: 'not-run', settings: { record: 'sample-a', scale: 1, dt: 0.02, accelerations: [0, 0.05, -0.05, 0.04], mass: 1, stiffness: 80, yieldForce: 0.08 } },
   { id: 'AC_NOT_RUN_PKG', name: 'Not run package', kind: 'modal', status: 'not-run', settings: { modalModeCount: 2 } },
-];
+].map((item) => createAnalysisCase(item));
 
 const analysisResults = {};
 for (const item of model.analysisCases.filter((row) => row.id !== 'AC_NOT_RUN_PKG')) {
@@ -61,6 +62,9 @@ assert.ok(byId.AC_RSA_PKG.detail.rows.length > 0);
 assert.ok(byId.AC_BUCKLING_PKG.detail.rows.some((row) => row[0] === 'Critical load factor'));
 assert.ok(byId.AC_PUSH_PKG.detail.limitations.some((item) => item.includes('Pushover case is preliminary')));
 assert.ok(byId.AC_NLTH_PKG.detail.limitations.some((item) => item.includes('NLTH case uses')));
+assert.equal(byId.AC_PUSH_PKG.engineId, 'legacy-preliminary-stepwise-secant');
+assert.equal(byId.AC_PUSH_PKG.qualification, 'legacy-preliminary');
+assert.equal(byId.AC_NLTH_PKG.engineId, 'legacy-sdof-bilinear-newmark');
 
 assert.match(pkg.html, /Analysis Case Result Details/);
 assert.match(pkg.html, /AC_NOT_RUN_PKG/);

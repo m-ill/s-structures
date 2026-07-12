@@ -91,7 +91,11 @@ const pushoverResult = runAnalysisCase(model, createAnalysisCase({
   },
 }));
 assert.equal(pushoverResult.kind, 'pushover');
-assert.equal(pushoverResult.status, 'ok');
+assert.equal(pushoverResult.status, 'preliminary');
+assert.equal(pushoverResult.qualification, 'legacy-preliminary');
+assert.equal(pushoverResult.engine.id, 'legacy-preliminary-stepwise-secant');
+assert.equal(pushoverResult.modelBound, true);
+assert.equal(pushoverResult.designBlocked, true);
 assert.equal(pushoverResult.payload.curve.length, 3);
 
 const nlthResult = runAnalysisCase(model, createAnalysisCase({
@@ -106,6 +110,11 @@ const nlthResult = runAnalysisCase(model, createAnalysisCase({
   },
 }));
 assert.equal(nlthResult.kind, 'nlth');
+assert.equal(nlthResult.status, 'preliminary');
+assert.equal(nlthResult.qualification, 'legacy-preliminary');
+assert.equal(nlthResult.engine.id, 'legacy-sdof-bilinear-newmark');
+assert.equal(nlthResult.modelBound, false);
+assert.equal(nlthResult.designBlocked, true);
 assert.equal(nlthResult.payload.rows.length, 4);
 assert.equal(nlthResult.summary.rowCount, 4);
 

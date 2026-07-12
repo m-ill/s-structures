@@ -134,12 +134,18 @@ import { GLOBAL_BUCKLING_TRACE_VERSION } from '../dynamics/globalBuckling.js';
 import { NONLINEAR_ASSEMBLY_VERSION } from '../nonlinear/assembly.js';
 import { GLOBAL_EQUILIBRIUM_VERSION } from '../nonlinear/control/globalEquilibrium.js';
 import { HINGE_ASSIGNMENT_VERSION } from '../nonlinear/hinges/hingeAssign.js';
+import {
+  NONLINEAR_CAPABILITY_VERSION,
+  buildNonlinearProductScopeCatalog,
+  listNonlinearCapabilities,
+} from '../nonlinear/capabilities.js';
+import { NONLINEAR_ANALYSIS_ROUTER_VERSION } from '../nonlinear/analysisRouter.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'm16-agent-capability-manifest';
+export const AGENT_MANIFEST_VERSION = 'p8-m0-agent-capability-manifest-v2';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -288,7 +294,15 @@ export function buildAgentManifest(options = {}) {
       phase3NonlinearFiberNlthTrace: NONLINEAR_FIBER_NLTH_TRACE_VERSION,
       phase3NonlinearTrace: NONLINEAR_TRACE_VERSION,
       phase3NonlinearBenchmark: NONLINEAR_BENCHMARK_VERSION,
+      phase8NonlinearCapability: NONLINEAR_CAPABILITY_VERSION,
+      phase8NonlinearRouter: NONLINEAR_ANALYSIS_ROUTER_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
+    },
+    nonlinear: {
+      scope: buildNonlinearProductScopeCatalog(),
+      capabilities: listNonlinearCapabilities(),
+      routingPolicy: 'explicit-engine-id-no-silent-fallback',
+      designTransferPolicy: 'verified-only',
     },
     readApis: [
       'getSnapshot',
@@ -380,6 +394,8 @@ export function buildAgentManifest(options = {}) {
       controls: options.controls || [],
     },
     qaCommands: {
+      phase8: 'npm.cmd run test:p8',
+      phase8List: 'npm.cmd run test:p8:list',
       phase3Full: 'npm.cmd run test:p3',
       phase3List: 'npm.cmd run test:p3:list',
       phase3M6ToM20: 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20',
@@ -705,6 +721,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },
       { id: 'P3-M19', status: 'preliminary', feature: 'integrated nonlinear and detailed-design result package with workflow lock trace' },
       { id: 'P3-M20', status: 'preliminary', feature: 'launch readiness gate, packaging, manual, agent contract, and pilot report evidence' },
+      { id: 'P8-M0', status: 'available', feature: 'truthful legacy engine isolation, schema v5 contracts, capability gate, and verification registry' },
     ],
     limitations: [
       'Pushover is preliminary: previous-step hinge secant stiffness degradation is traced, but a simultaneous hinge-controlled global equilibrium loop is not production-certified.',

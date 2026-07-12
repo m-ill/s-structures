@@ -71,7 +71,11 @@ target.SStructuresAnalysisCenter.run('AC_NLTH_M8');
 
 const nlthResult = bridge.getAnalysisCaseResult('AC_NLTH_M8');
 assert.equal(nlthResult.kind, 'nlth');
-assert.equal(nlthResult.status, 'ok');
+assert.equal(nlthResult.status, 'preliminary');
+assert.equal(nlthResult.qualification, 'legacy-preliminary');
+assert.equal(nlthResult.engine.id, 'legacy-sdof-bilinear-newmark');
+assert.equal(nlthResult.modelBound, false);
+assert.equal(nlthResult.designBlocked, true);
 assert.equal(nlthResult.settings.record, 'sample-b');
 assert.equal(nlthResult.settings.scale, 1.5);
 assert.equal(nlthResult.settings.dt, 0.01);

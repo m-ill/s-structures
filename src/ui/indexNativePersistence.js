@@ -3,9 +3,9 @@ import { validateModel } from '../core/validation.js';
 import { stableHash } from '../core/stableHash.js';
 import { createIndexStartupSampleModel, INDEX_STARTUP_SAMPLE_VERSION } from '../examples/indexStartupSample.js';
 
-export const INDEX_NATIVE_PERSISTENCE_VERSION = 'm27-native-persistence';
-export const INDEX_AUTOSAVE_KEY = 's-structures-autosave-v4';
-export const INDEX_LEGACY_AUTOSAVE_KEYS = Object.freeze(['s-structures-autosave-v3']);
+export const INDEX_NATIVE_PERSISTENCE_VERSION = 'p8-m0-native-persistence-v5';
+export const INDEX_AUTOSAVE_KEY = 's-structures-autosave-v5';
+export const INDEX_LEGACY_AUTOSAVE_KEYS = Object.freeze(['s-structures-autosave-v4', 's-structures-autosave-v3']);
 export const PRODUCT_BOOK_FORMAT = 's-structures-product-book';
 
 export function installIndexNativePersistence(target = globalThis, options = {}) {

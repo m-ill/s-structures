@@ -184,33 +184,39 @@ export function renderCalculationPackageHtml(pkg) {
       row.status,
     ])) : ''}
     <h3>Phase 5 Analysis Cases</h3>
-    ${d.analysisCases?.rows?.length ? table(['Case', 'Kind', 'Status', 'Last run', 'Result', 'Summary'], d.analysisCases.rows.map((row) => [
+    ${d.analysisCases?.rows?.length ? table(['Case', 'Kind', 'Status', 'Engine', 'Qualification', 'Blocked', 'Result', 'Summary'], d.analysisCases.rows.map((row) => [
       row.name === row.id ? row.id : `${row.id} - ${row.name}`,
       row.kind,
       row.status,
-      row.lastRunStatus || '-',
+      row.engineId || '-',
+      row.qualification || '-',
+      row.designBlocked ? 'Yes' : 'No',
       row.view || '-',
       row.summaryText,
     ])) : '<div class="note">No Phase 5 analysis cases defined.</div>'}
     ${renderAnalysisCaseDetails(d.analysisCases)}
     <h3>Immutable Analysis Run Records</h3>
-    ${pkg.analysisRuns.rows.length ? table(['Run', 'Case', 'Kind', 'Status', 'Qualification', 'Current model', 'Design transfer', 'Model hash'], pkg.analysisRuns.rows.map((row) => [
+    ${pkg.analysisRuns.rows.length ? table(['Run', 'Case', 'Kind', 'Status', 'Engine', 'Qualification', 'Model bound', 'Design blocked', 'Current model', 'Design transfer', 'Model hash'], pkg.analysisRuns.rows.map((row) => [
       row.id,
       row.caseId,
       row.kind || '-',
       row.runStatus,
+      row.engineId || '-',
       row.qualification,
+      row.modelBound == null ? '-' : row.modelBound ? 'Yes' : 'No',
+      row.designBlocked ? 'Yes' : 'No',
       row.currentModelMatches ? 'Match' : 'Changed',
       row.designTransferAllowed ? 'Allowed' : 'Blocked',
       row.modelHash || '-',
     ])) : '<div class="note">No Phase 7 analysis run records are attached.</div>'}
-    ${pkg.analysisRuns.rows.length ? table(['Run', 'Schema', 'Combination', 'Materials', 'Sections', 'Sources', 'Solver'], pkg.analysisRuns.rows.map((row) => [
+    ${pkg.analysisRuns.rows.length ? table(['Run', 'Schema', 'Combination', 'Materials', 'Sections', 'Sources', 'Engine', 'Solver'], pkg.analysisRuns.rows.map((row) => [
       row.id,
       row.provenance.schemaVersion ?? '-',
       row.provenance.combinationId || '-',
       row.provenance.materialRefs.join(', ') || '-',
       row.provenance.sectionRefs.join(', ') || '-',
       row.provenance.sourceIds.join(', ') || '-',
+      row.provenance.engineId || row.engineId || '-',
       row.provenance.solver || '-',
     ])) : ''}
     ${pkg.analysisRuns.summary.preliminaryOrCandidateCount ? '<div class="note warn">Preliminary or unverified successful runs are retained for review but blocked from design transfer.</div>' : ''}

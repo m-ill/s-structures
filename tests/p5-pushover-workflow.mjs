@@ -54,6 +54,7 @@ for (const id of [
   'ssPoControlNode',
   'ssPoMaxLoadFactor',
   'ssPoReferenceBaseShear',
+  'ssPoControl',
 ]) {
   assert.ok(document.getElementById(id), `${id} should exist`);
 }
@@ -65,19 +66,32 @@ document.getElementById('ssPoTarget').value = '';
 document.getElementById('ssPoControlNode').value = '';
 document.getElementById('ssPoMaxLoadFactor').value = '1.2';
 document.getElementById('ssPoReferenceBaseShear').value = '75';
+const controlOptions = document.getElementById('ssPoControl').children;
+assert.equal(controlOptions.find((item) => item.value === 'displacement').disabled, true);
+assert.equal(controlOptions.find((item) => item.value === 'arcLength').disabled, true);
 document.getElementById('ssPoControl').value = 'displacement';
 
+target.SStructuresAnalysisCenter.run('AC_PUSH');
+const blocked = bridge.getAnalysisLatestAttempt('AC_PUSH');
+assert.equal(blocked.status, 'unsupported');
+assert.equal(blocked.designBlockReason, 'NONLINEAR_CAPABILITY_UNSUPPORTED');
+assert.equal(blocked.routing.fallbackUsed, false);
+
+document.getElementById('ssPoControl').value = 'load-factor';
 target.SStructuresAnalysisCenter.run('AC_PUSH');
 
 const result = bridge.getAnalysisCaseResult('AC_PUSH');
 assert.equal(result.kind, 'pushover');
-assert.equal(result.status, 'ok');
+assert.equal(result.status, 'preliminary');
+assert.equal(result.qualification, 'legacy-preliminary');
+assert.equal(result.engine.id, 'legacy-preliminary-stepwise-secant');
+assert.equal(result.designBlocked, true);
 assert.equal(result.settings.direction, '+y');
 assert.equal(result.settings.pattern, 'uniform');
 assert.equal(result.settings.steps, 4);
 assert.equal(result.settings.maxLoadFactor, 1.2);
 assert.equal(result.settings.referenceBaseShear, 75);
-assert.equal(result.settings.control, 'displacement');
+assert.equal(result.settings.control, 'load-factor');
 assert.equal(result.view, 'pushover-results');
 assert.equal(result.payload.curve.length, 5);
 assert.equal(result.summary.stepCount, 5);
