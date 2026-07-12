@@ -31,7 +31,12 @@ const LEGACY_SETTLEMENT_KEYS = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
 const SPRING_KEYS = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
 
 export function runSecondOrderPDelta(model = {}, factors = null, options = {}) {
-  const domain = options.domain || buildExpandedAnalysisDomain(model, factors, options);
+  const domain = options.domain || buildExpandedAnalysisDomain(model, factors, { ...options, domainAdapter: 'direct-pdelta' });
+  if (!domain.ok) return failedDirectResult(domain.reason || 'CANONICAL_DOMAIN_INVALID', {
+    domain,
+    message: 'The canonical analysis domain is invalid.',
+    status: 'blocked',
+  });
   const compatibility = directCompatibility(model, domain);
   if (!compatibility.supported) return blockedDirectResult(compatibility, domain);
 
@@ -314,6 +319,7 @@ export function runSecondOrderPDelta(model = {}, factors = null, options = {}) {
   const provenance = directProvenance(domain, loadState);
   result.provenance = provenance;
   result.designEligibility = designEligibility;
+  result.analysisDomain = domain.adapterIdentity || null;
 
   return {
     version: PDELTA_SECOND_ORDER_VERSION,
@@ -340,6 +346,7 @@ export function runSecondOrderPDelta(model = {}, factors = null, options = {}) {
     prescribedDisplacements: prescribed.trace,
     designEligibility,
     provenance,
+    analysisDomain: domain.adapterIdentity || null,
     split: buildPDeltaSplitTrace(model, linear, result),
     notes: [
       'Direct analysis assembles Kt = Ke + Kg(N) with the project tension-positive axial sign convention.',
@@ -617,6 +624,7 @@ function buildDirectResult({
     elasticExpansion: domain.expansion.trace,
     semiRigidDiaphragm: domain.semiRigid,
     shellFrameAssembly: domain.shellAssembly,
+    analysisDomain: domain.adapterIdentity || null,
   };
   for (const memberResult of Object.values(memberResults)) {
     out.dmax = Math.max(out.dmax, memberResult.dmaxM || 0);
@@ -969,6 +977,7 @@ function failedDirectResult(reason, details = {}) {
     compatibility: details.compatibility || null,
     designEligibility,
     provenance: directProvenance(details.domain),
+    analysisDomain: details.domain?.adapterIdentity || null,
   };
 }
 
@@ -1010,6 +1019,7 @@ function directProvenance(domain, loadState = null) {
     solverVersion: PDELTA_SECOND_ORDER_VERSION,
     productVersion: PDELTA_DIRECT_PRODUCT_VERSION,
     analysisDomainVersion: domain?.version || null,
+    canonicalDomain: domain?.adapterIdentity || null,
     loadVectorSource: loadState ? 'expanded-factored-load-domain' : null,
     recovery: 'consistent-elastic-plus-geometric-member-end-force-recovery',
   };

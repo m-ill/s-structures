@@ -10,6 +10,8 @@ import {
   summarizeRsaMemberForces,
 } from '../results/rsa/memberForces.js';
 import { buildModalConstraintDomain } from './modalDiaphragm.js';
+import { buildCanonicalAnalysisDomain } from '../solver/domain/canonicalDomain.js';
+import { buildDomainAdapterIdentity } from '../solver/domain/compatibility.js';
 
 const DOF_DIR = ['x', 'y', 'z'];
 
@@ -43,13 +45,20 @@ const RSA_DIMENSIONS = Object.freeze({
 });
 
 export function analyzeDynamics(model, options = {}) {
+  const domain = buildCanonicalAnalysisDomain(model, {
+    analysisCase: options.analysisCase || null,
+    strictCapabilities: false,
+  });
+  const domainIdentity = buildDomainAdapterIdentity(domain, 'modal');
+  if (!domain.ok) return { ok: false, reason: domain.reason || 'CANONICAL_DOMAIN_INVALID', analysisDomain: domainIdentity };
+  model = domain.solverModel;
   const settings = { ...(model.analysisSettings || {}), ...(options || {}) };
   const modeCount = Math.max(1, settings.modalModeCount | 0 || 6);
   const system = assembleStiffness3D(model.nodes || [], model.members || [], {
     mat: (id) => materialOf(model, id),
     sec: (id) => sectionOf(model, id),
   });
-  if (!system.ok) return { ok: false, reason: system.reason || 'NO_STIFFNESS' };
+  if (!system.ok) return { ok: false, reason: system.reason || 'NO_STIFFNESS', analysisDomain: domainIdentity };
 
   const massSourceSpec = settings.massSource || null;
   const massSourceTrace = massSourceSpec ? buildMassSourceTrace(model, massSourceSpec) : null;
@@ -60,7 +69,7 @@ export function analyzeDynamics(model, options = {}) {
   const modalDofs = modalSystem.free.filter((dof) => (
     constraintDomain.applied ? constraintDomain.massMatrix[dof]?.[dof] > 0 : mass[dof] > 0
   ));
-  if (!modalDofs.length) return { ok: false, reason: 'NO_MASS', modes: [], rsa: null };
+  if (!modalDofs.length) return { ok: false, reason: 'NO_MASS', modes: [], rsa: null, analysisDomain: domainIdentity };
 
   const residualDofs = modalSystem.free.filter((dof) => !modalDofs.includes(dof));
   const condensation = condenseToModalDofs(modalSystem.K, modalDofs, residualDofs);
@@ -73,6 +82,7 @@ export function analyzeDynamics(model, options = {}) {
       condensation,
       modes: [],
       reason: condensation.reason || 'RESIDUAL_DOF_CONDENSATION_FAILED',
+      analysisDomain: domainIdentity,
     });
   }
   const K = condensation.K;
@@ -89,6 +99,7 @@ export function analyzeDynamics(model, options = {}) {
       condensation,
       modes: [],
       reason: eig.reason,
+      analysisDomain: domainIdentity,
     });
   }
   const modes = eig.values
@@ -136,6 +147,7 @@ export function analyzeDynamics(model, options = {}) {
       condensationReport,
       modes,
       reason: condensationReport.reason || 'RESIDUAL_DOF_RECOVERY_FAILED',
+      analysisDomain: domainIdentity,
     });
   }
 
@@ -163,9 +175,11 @@ export function analyzeDynamics(model, options = {}) {
       normalization: 'mass-normalized',
       staticCaseReferences: [],
       diaphragmAssembly: constraintDomain.summary,
+      analysisDomain: domainIdentity,
     },
     condensation: condensationReport,
     diaphragmAssembly: constraintDomain.summary,
+    analysisDomain: domainIdentity,
     modes,
     mass: {
       total: totalMass,
@@ -190,6 +204,7 @@ function failedModalAnalysis({
   condensationReport = null,
   modes = [],
   reason,
+  analysisDomain = null,
 }) {
   const report = condensationReport || condensationSummary(condensation, modes);
   return {
@@ -197,6 +212,7 @@ function failedModalAnalysis({
     ok: false,
     status: 'failed',
     reason,
+    analysisDomain,
     designBlocked: true,
     designBlockers: [reason],
     type: 'modal_lumped_mass',
@@ -206,6 +222,7 @@ function failedModalAnalysis({
       source: 'assembled-elastic-stiffness-and-lumped-mass',
       normalization: 'mass-normalized',
       staticCaseReferences: [],
+      analysisDomain,
     },
     condensation: report,
     modes,
@@ -238,6 +255,7 @@ export function buildLumpedMass(model, system, massSource = null, preparedTrace 
     }
   } else {
     for (const member of model.members || []) {
+      if (member.generated === true || member.massless === true) continue;
       const md = system.memData?.[member.id];
       if (!md) continue;
       const { section, material } = effectiveSectionMaterial((id) => sectionOf(model, id), (id) => materialOf(model, id), member);

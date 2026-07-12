@@ -16,5 +16,10 @@ export function buildDiaphragmDofMap(nodes, groups = []) {
       rows[ni * 6 + dof] = row || [[add(`n:${node.id}:${dof}`), 1]];
     }
   });
-  return { rows, ncols: col.size, diaphragmCount: groups.length };
+  return {
+    rows,
+    ncols: col.size,
+    diaphragmCount: groups.length,
+    columnKeys: [...col.keys()],
+  };
 }

@@ -3,16 +3,16 @@
 ```yaml
 reviewed_at: 2026-07-11
 phase_status: active
-implementation_status: p8-m0-complete
+implementation_status: p8-m1-complete
 release_status: unavailable
-production_equivalence: Q0-governance-baseline
-completed_milestones: [P8-M0]
-active_milestone: P8-M1
+production_equivalence: Q0-domain-foundation
+completed_milestones: [P8-M0, P8-M1]
+active_milestone: P8-M2
 ```
 
 ## 현재 판정
 
-P8-M0는 완료되었다. 이 마일스톤은 비선형 수치 코어를 상용 수준으로 승격한 작업이 아니라, 기존 preliminary 경로를 정직하게 격리하고 이후 구현이 따라야 할 schema, case, run-record, capability, evidence 계약을 고정한 작업이다.
+P8-M0와 P8-M1은 완료되었다. M0는 기존 preliminary 경로를 격리하고 schema·case·run-record·capability·evidence 계약을 고정했다. M1은 immutable canonical analysis domain, 공통 affine constraint, 요소 descriptor, committed/trial 상태와 checkpoint/restart를 구현하고 기존 선형·Direct P-Delta·modal adapter의 구조 identity를 연결했다.
 
 현재 제품 등급은 여전히 Q0다. `commercial-grade within supported scope` 판정은 [PRODUCTION_REQUIREMENTS.md](PRODUCTION_REQUIREMENTS.md)의 Q1~Q5를 모두 통과한 기능 범위에만 부여한다.
 
@@ -24,7 +24,11 @@ P8-M0는 완료되었다. 이 마일스톤은 비선형 수치 코어를 상용 
 | production nonlinear engine ID | 예약됨 | backend 미구현, legacy fallback 금지 |
 | schema v5 nonlinear registry | 구현 및 migration 검증 | P8-M0 완료 |
 | nonlinear case/run-record 계약 | 구현 및 UI/report/Agent 전파 | P8-M0 완료 |
-| domain 분리 hash | 계약 구현 | P8-M1 canonical domain의 선행 계약 |
+| canonical analysis domain | 구현 및 adapter 연결 | P8-M1 완료 |
+| support·지정변위·rigid diaphragm constraint | `u = Tq + u_bar` 공통 계약 구현 | P8-M1 완료 |
+| immutable element descriptor·origin map | local axis·offset·release·property snapshot 연결 | P8-M1 완료 |
+| committed/trial/line-search branch | atomic commit·rollback·cutback 구현 | P8-M1 완료 |
+| checkpoint/restart·element state serializer | 무결성 hash와 deterministic event 구현 | P8-M1 완료 |
 | source/evidence registry | governance 계약 구현 | 수치 qualification과 분리 |
 | reference profile/workload/budget | versioned artifact 고정 | 실제 production backend 측정은 후속 마일스톤 |
 | 전역 MDOF 비선형 평형 | 미구현 | blocked |
@@ -33,7 +37,7 @@ P8-M0는 완료되었다. 이 마일스톤은 비선형 수치 코어를 상용 
 | 3D frame MDOF NLTH | 미구현 | blocked |
 | Worker/WASM sparse runtime | 미구현 | blocked |
 
-## M0 완료 증거
+## M0·M1 완료 증거
 
 - 코드: `src/nonlinear/capabilities.js`, `src/nonlinear/analysisRouter.js`, `src/nonlinear/legacy/`
 - schema: `src/core/nonlinearSchema.js`, `src/core/analysisCase.js`, `src/core/nonlinearRunRecord.js`
@@ -50,6 +54,17 @@ P8-M0는 완료되었다. 이 마일스톤은 비선형 수치 코어를 상용 
 
 `p8-m0-governance.json`은 M0 계약 통과 증거다. 비선형 수치 결과를 `verified`로 승격하는 독립 기준해 증거가 아니며, 검증 registry에서도 analysis-result audit와 분리한다.
 
+M1 증거:
+
+- domain: `src/solver/domain/` 및 기존 `buildExpandedAnalysisDomain` 호환 adapter
+- state: `src/nonlinear/core/stateStore.js`, `elementStateRegistry.js`, `elementContract.js`
+- adapter identity: 선형·Direct P-Delta·modal·nonlinear topology/property/constraint/mass hash 일치
+- 검증: `NL-DOM-01~08`, `NL-STATE-01~07`, `NL-MEI-01~08`
+- evidence: [p8-m1-domain-state.json](../../reports/validation-evidence/phase8/p8-m1-domain-state.json)
+- 코드 리뷰: [p8-m1-code-review.md](../../reports/validation-evidence/phase8/p8-m1-code-review.md)
+
+M1 역시 전역 비선형 잔차·접선의 수치 정확도를 qualification하지 않는다. 해당 범위는 P8-M2 이후다.
+
 ## Production 등급 현황
 
 | 등급 | 상태 | 미충족 핵심 |
@@ -65,8 +80,8 @@ P8-M0는 완료되었다. 이 마일스톤은 비선형 수치 코어를 상용 
 | 마일스톤 | 상태 | 완료 증거 |
 | --- | --- | --- |
 | P8-M0 상태·계약·격리 | complete | NL-GOV-01~06, schema v5 migration, M0 code review |
-| P8-M1 해석영역·상태관리 | active | 없음 |
-| P8-M2 MDOF 평형 코어 | planned | 없음 |
+| P8-M1 해석영역·상태관리 | complete | NL-DOM-01~08, NL-STATE-01~07, NL-MEI-01~08, M1 code review |
+| P8-M2 MDOF 평형 코어 | active | 없음 |
 | P8-M3 3D corotational 요소 | planned | 없음 |
 | P8-M4 집중소성 힌지 | planned | 없음 |
 | P8-M5 정식 Pushover | planned | 없음 |
@@ -81,4 +96,4 @@ P8-M0는 완료되었다. 이 마일스톤은 비선형 수치 코어를 상용 
 
 ## 다음 작업
 
-P8-M1은 schema v5 위에서 immutable canonical analysis domain과 committed/trial 상태 저장소를 구현한다. Phase 7 선형·Direct P-Delta·modal 경로는 compatibility harness가 통과하기 전까지 기존 domain을 유지하며, 한 번에 교체하지 않는다.
+P8-M2는 M1 element contract와 state store 위에서 현재 trial state의 `Pint`와 `Kt`를 반복마다 조립하는 MDOF Newton 평형 코어를 구현한다. production sparse backend가 준비되지 않은 상태에서 대형 모델을 dense fallback으로 실행하지 않는다.

@@ -12,7 +12,7 @@ import {
 } from '../src/index.js';
 
 assert.equal(SCHEMA_VERSION, 5);
-assert.equal(RESULT_DIMENSION_CONTRACT_VERSION, 'p7-m0-result-dimensions-v1');
+assert.equal(RESULT_DIMENSION_CONTRACT_VERSION, 'p8-m1-result-dimensions-v2');
 
 const practice = createPracticeModel();
 assert.equal(practice.schemaVersion, 5);

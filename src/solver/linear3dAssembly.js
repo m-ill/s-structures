@@ -22,13 +22,16 @@ import { effectiveSectionMaterial } from './linear3dPost.js';
 import { recoverMemberResult } from './linear3dRecovery.js';
 import { buildSolverWarningDiagnostics } from './sparse/diagnostics.js';
 import { cscMatVec, SPARSE_MATRIX_VERSION } from './sparse/cscMatrix.js';
+import { buildFixedDofs } from './domain/supportConstraints.js';
+
+export { buildFixedDofs } from './domain/supportConstraints.js';
 
 function memberBehavior(member = {}) {
   const value = member.behavior || member.type;
   return ['truss', 'tensionOnly', 'compressionOnly'].includes(value) ? 'truss' : 'frame';
 }
 
-function memberKinematics(member, a, b) {
+export function memberKinematics(member, a, b) {
   const base = memberAxes(a, b, member.localAxis);
   const oi = Number(member.endOffset?.i ?? 0);
   const oj = Number(member.endOffset?.j ?? 0);
@@ -414,27 +417,6 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     if (!fixedDofs.has(i)) free.push(i);
   }
   return { ok: true, K, free, fixedDofs, nodeMap, idx, memData, ndof };
-}
-
-export function buildFixedDofs(nodes) {
-  const fixedDofs = new Set();
-  nodes.forEach((node, i) => {
-    const b = i * 6;
-    if (node.support === 'fixed') {
-      for (let k = 0; k < 6; k += 1) fixedDofs.add(b + k);
-    } else if (node.support === 'pin') {
-      fixedDofs.add(b);
-      fixedDofs.add(b + 1);
-      fixedDofs.add(b + 2);
-    } else if (node.support === 'roller') {
-      fixedDofs.add(b + 2);
-    } else if (node.support === 'custom' && node.fix) {
-      node.fix.forEach((isFixed, k) => {
-        if (isFixed) fixedDofs.add(b + k);
-      });
-    }
-  });
-  return fixedDofs;
 }
 
 function buildPrescribedDisplacements(nodes, restrainedDofs, fullFixedDofs, map, reducedFixedDofs) {

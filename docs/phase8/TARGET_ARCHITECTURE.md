@@ -2,6 +2,7 @@
 
 ```yaml
 architecture_status: proposed
+implemented_through: P8-M1 canonical-domain-and-state-foundation
 primary_scope: nonlinear 3D frame analysis
 core_rule: one stateful element kernel shared by static and dynamic workflows
 ```

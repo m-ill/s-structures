@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "manualVersion": "2026-07-03-phase4-prebeta",
   "product": "S-Structures",
-  "manifestVersion": "p8-m0-agent-capability-manifest-v2",
+  "manifestVersion": "p8-m1-agent-capability-manifest-v3",
   "entrypoint": {
     "recommendedUrl": "http://127.0.0.1:5173/",
     "primaryHtml": "index.html"
@@ -354,6 +354,13 @@
     "phase5ResultCharts",
     "phase5AnalysisCaseCalculationPackage",
     "phase5ReleaseGate",
+    "phase8CanonicalAnalysisDomain",
+    "phase8CanonicalConstraintSystem",
+    "phase8DomainAdapterIdentity",
+    "phase8NonlinearStateStore",
+    "phase8NonlinearCheckpoint",
+    "phase8ElementStateRegistry",
+    "phase8NonlinearElementContract",
     "productHardeningAudit",
     "agentCommandBridge",
     "originalIndexRuntimeDiagnostics",
@@ -569,6 +576,13 @@
     "phase3NonlinearBenchmark",
     "phase8NonlinearCapability",
     "phase8NonlinearRouter",
+    "phase8CanonicalDomain",
+    "phase8CanonicalConstraint",
+    "phase8DomainAdapterCompatibility",
+    "phase8NonlinearStateStore",
+    "phase8NonlinearCheckpoint",
+    "phase8ElementStateRegistry",
+    "phase8NonlinearElementContract",
     "phase3DesignFormulaRegistry"
   ],
   "moduleVersions": {
@@ -714,6 +728,13 @@
     "phase3NonlinearBenchmark": "p3-m16-nonlinear-benchmarks",
     "phase8NonlinearCapability": "p8-m0-nonlinear-capability-v1",
     "phase8NonlinearRouter": "p8-m0-nonlinear-analysis-router-v1",
+    "phase8CanonicalDomain": "p8-m1-canonical-analysis-domain-v1",
+    "phase8CanonicalConstraint": "p8-m1-canonical-constraint-v1",
+    "phase8DomainAdapterCompatibility": "p8-m1-domain-adapter-compatibility-v1",
+    "phase8NonlinearStateStore": "p8-m1-nonlinear-state-store-v1",
+    "phase8NonlinearCheckpoint": "p8-m1-nonlinear-checkpoint-v1",
+    "phase8ElementStateRegistry": "p8-m1-element-state-registry-v1",
+    "phase8NonlinearElementContract": "p8-m1-nonlinear-element-contract-v1",
     "phase3DesignFormulaRegistry": "p3-design-formula-registry"
   },
   "limitations": [

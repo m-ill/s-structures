@@ -23,6 +23,7 @@ import {
   makeEnvelope,
 } from './linear3dPost.js';
 import { buildExpandedAnalysisDomain } from './pdelta/analysisDomain.js';
+import { buildCanonicalAnalysisDomain } from './domain/canonicalDomain.js';
 import { normalizePDeltaMethod, pDeltaMethodTrace } from './pdelta/method.js';
 import { PDELTA_SECOND_ORDER_VERSION, runSecondOrderPDelta } from './pdelta/secondOrder.js';
 
@@ -80,10 +81,13 @@ export function analyzeModel(inputModel) {
   }
 
   const combos = combinationSelection.combos;
+  const canonicalBase = buildCanonicalAnalysisDomain(model, {
+    allowInvalidReferences: model.analysisSettings?.validateBeforeSolve === false,
+  });
   output.combos = combos;
   output.byCombo = {};
   for (const combo of combos) {
-    const result = analyzeAll(model, combo.factors);
+    const result = analyzeAll(model, combo.factors, { canonicalBase });
     result.combo = comboSnapshot(combo);
     appendSolverDiagnosticWarnings(validation.warnings, combo.id, result);
     appendComponentFailureErrors(validation.errors, combo.id, result);
@@ -407,8 +411,17 @@ export function analyzeAll(model, factors = null, options = {}) {
 }
 
 function analyzeAllOnce(model, factors = null, options = {}) {
-  const domain = buildExpandedAnalysisDomain(model, factors, options);
+  const domain = options.expandedDomain || buildExpandedAnalysisDomain(model, factors, options);
   const { nodes, members, loads, solverModel } = domain;
+  if (!domain.ok) return {
+    ok: false,
+    anyOk: false,
+    reason: domain.reason || 'CANONICAL_DOMAIN_INVALID',
+    analysisDomain: domain.adapterIdentity || null,
+    domainErrors: [...(domain.elementErrors || []), ...(domain.constraint?.errors || []), ...(domain.capabilities?.blocking || [])],
+    unstableMembers: new Set(),
+    failedComponents: [],
+  };
   if (!members.length) return {
     ok: false,
     empty: true,
@@ -416,6 +429,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     reason: 'NO_SOLVED_COMPONENT',
     unstableMembers: new Set(),
     failedComponents: [],
+    analysisDomain: domain.adapterIdentity,
   };
 
   const analysisSettings = model.analysisSettings || {};
@@ -443,6 +457,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
       components: [],
     },
     elasticExpansion: domain.expansion.trace,
+    analysisDomain: domain.adapterIdentity,
     unstableMembers: new Set(),
     failedComponents: [],
     dmax: 0,

@@ -3,7 +3,7 @@
 ```yaml
 plan_version: 2026-07-11
 milestones: P8-M0..P8-M11
-current_status: active-p8-m1
+current_status: active-p8-m2
 execution_rule: one milestone at a time; code, tests, evidence, review, and status update are all required
 ```
 
@@ -115,6 +115,8 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 - `NL-GOV-01`~`NL-GOV-06` 통과
 
 ## P8-M1 - Immutable domain과 committed/trial 상태
+
+**상태: complete (2026-07-11).** `NL-DOM-01~08`, `NL-STATE-01~07`, `NL-MEI-01~08`과 M1 code review가 완료되었다.
 
 ### 목표
 

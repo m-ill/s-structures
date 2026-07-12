@@ -140,12 +140,23 @@ import {
   listNonlinearCapabilities,
 } from '../nonlinear/capabilities.js';
 import { NONLINEAR_ANALYSIS_ROUTER_VERSION } from '../nonlinear/analysisRouter.js';
+import {
+  CANONICAL_ANALYSIS_DOMAIN_VERSION,
+  CANONICAL_CONSTRAINT_VERSION,
+  DOMAIN_ADAPTER_COMPATIBILITY_VERSION,
+} from '../solver/domain/index.js';
+import {
+  ELEMENT_STATE_REGISTRY_VERSION,
+  NONLINEAR_CHECKPOINT_VERSION,
+  NONLINEAR_ELEMENT_CONTRACT_VERSION,
+  NONLINEAR_STATE_STORE_VERSION,
+} from '../nonlinear/core/index.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m0-agent-capability-manifest-v2';
+export const AGENT_MANIFEST_VERSION = 'p8-m1-agent-capability-manifest-v3';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -296,6 +307,13 @@ export function buildAgentManifest(options = {}) {
       phase3NonlinearBenchmark: NONLINEAR_BENCHMARK_VERSION,
       phase8NonlinearCapability: NONLINEAR_CAPABILITY_VERSION,
       phase8NonlinearRouter: NONLINEAR_ANALYSIS_ROUTER_VERSION,
+      phase8CanonicalDomain: CANONICAL_ANALYSIS_DOMAIN_VERSION,
+      phase8CanonicalConstraint: CANONICAL_CONSTRAINT_VERSION,
+      phase8DomainAdapterCompatibility: DOMAIN_ADAPTER_COMPATIBILITY_VERSION,
+      phase8NonlinearStateStore: NONLINEAR_STATE_STORE_VERSION,
+      phase8NonlinearCheckpoint: NONLINEAR_CHECKPOINT_VERSION,
+      phase8ElementStateRegistry: ELEMENT_STATE_REGISTRY_VERSION,
+      phase8NonlinearElementContract: NONLINEAR_ELEMENT_CONTRACT_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
     },
     nonlinear: {
@@ -303,6 +321,15 @@ export function buildAgentManifest(options = {}) {
       capabilities: listNonlinearCapabilities(),
       routingPolicy: 'explicit-engine-id-no-silent-fallback',
       designTransferPolicy: 'verified-only',
+      infrastructure: {
+        canonicalDomain: CANONICAL_ANALYSIS_DOMAIN_VERSION,
+        canonicalConstraint: CANONICAL_CONSTRAINT_VERSION,
+        adapterCompatibility: DOMAIN_ADAPTER_COMPATIBILITY_VERSION,
+        stateStore: NONLINEAR_STATE_STORE_VERSION,
+        checkpoint: NONLINEAR_CHECKPOINT_VERSION,
+        elementStateRegistry: ELEMENT_STATE_REGISTRY_VERSION,
+        elementContract: NONLINEAR_ELEMENT_CONTRACT_VERSION,
+      },
     },
     readApis: [
       'getSnapshot',
@@ -563,6 +590,13 @@ export function buildAgentManifest(options = {}) {
       'phase5ResultCharts',
       'phase5AnalysisCaseCalculationPackage',
       'phase5ReleaseGate',
+      'phase8CanonicalAnalysisDomain',
+      'phase8CanonicalConstraintSystem',
+      'phase8DomainAdapterIdentity',
+      'phase8NonlinearStateStore',
+      'phase8NonlinearCheckpoint',
+      'phase8ElementStateRegistry',
+      'phase8NonlinearElementContract',
       'productHardeningAudit',
       'agentCommandBridge',
       'originalIndexRuntimeDiagnostics',
@@ -722,6 +756,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M19', status: 'preliminary', feature: 'integrated nonlinear and detailed-design result package with workflow lock trace' },
       { id: 'P3-M20', status: 'preliminary', feature: 'launch readiness gate, packaging, manual, agent contract, and pilot report evidence' },
       { id: 'P8-M0', status: 'available', feature: 'truthful legacy engine isolation, schema v5 contracts, capability gate, and verification registry' },
+      { id: 'P8-M1', status: 'available', feature: 'immutable canonical domain, affine constraints, solver adapter identity, committed/trial state, and checkpoint restart' },
     ],
     limitations: [
       'Pushover is preliminary: previous-step hinge secant stiffness degradation is traced, but a simultaneous hinge-controlled global equilibrium loop is not production-certified.',

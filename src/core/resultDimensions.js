@@ -1,4 +1,4 @@
-export const RESULT_DIMENSION_CONTRACT_VERSION = 'p7-m0-result-dimensions-v1';
+export const RESULT_DIMENSION_CONTRACT_VERSION = 'p8-m1-result-dimensions-v2';
 
 export const RESULT_DIMENSIONS = Object.freeze({
   displacement: 'length',
@@ -12,6 +12,11 @@ export const RESULT_DIMENSIONS = Object.freeze({
   overturningMoment: 'moment',
   mass: 'mass',
   acceleration: 'acceleration',
+  velocity: 'velocity',
+  curvature: 'curvature',
+  strain: 'dimensionless',
+  stress: 'stress',
+  energy: 'energy',
   period: 'time',
   frequency: 'frequency',
   ratio: 'dimensionless',

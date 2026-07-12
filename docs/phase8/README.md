@@ -3,14 +3,14 @@
 ```yaml
 phase: 8
 status: active
-implementation_status: p8-m0-complete
+implementation_status: p8-m1-complete
 reviewed_at: 2026-07-11
-current_milestone: P8-M1
+current_milestone: P8-M2
 mission: Phase 7 모델링·탄성해석과 동일한 analysis domain 위에서 상용 수준의 정적·동적 비선형 3D 건축골조해석을 구현한다.
 governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 ```
 
-> P8-M0는 완료되었으며 현재 제품 등급은 Q0다. 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리되어 설계값 전달이 차단된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
+> P8-M0와 P8-M1은 완료되었으며 현재 제품 등급은 Q0다. canonical domain과 상태 기반은 구현됐지만 MDOF 비선형 평형 코어는 아직 없다. 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리되어 설계값 전달이 차단된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
 
 ## 1. 결론
 
