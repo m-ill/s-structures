@@ -620,6 +620,25 @@ export {
   geometricStiffnessTrace,
 } from './nonlinear/elements/corotationalBeam.js';
 export {
+  COROTATIONAL_FRAME_3D_STATE_VERSION,
+  COROTATIONAL_FRAME_3D_VERSION,
+  buildCorotationalFrame3dEntries,
+  createCorotationalFrame3dKernel,
+} from './nonlinear/elements/corotationalFrame3d.js';
+export {
+  COROTATIONAL_TRUSS_3D_VERSION,
+  createCorotationalTruss3dKernel,
+} from './nonlinear/elements/corotationalTruss3d.js';
+export {
+  ROTATION_COORDINATE_VERSION,
+  ROTATION_VECTOR_LIMIT,
+  pullBackSpatialMoment,
+  pushForwardGeneralizedMoment,
+  requirePrincipalRotationVector,
+  rotationCoordinateIncrementToSpatial,
+  spatialRotationIncrementToCoordinates,
+} from './nonlinear/math/rotationCoordinates.js';
+export {
   NONLINEAR_CONVERGENCE_VERSION,
   appendConvergenceIteration,
   createConvergenceLog,
@@ -917,6 +936,7 @@ export { SECTION_PROPERTIES_VERSION, computeSectionProperties } from './material
 export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elasticExpansion.js';
 export {
   FIXED_END_LOAD_VERSION,
+  FIXED_END_TEMPERATURE_VERSION,
   buildFixedEndLoad,
   buildFixedEndLoads,
   fixedEndTraceRow,

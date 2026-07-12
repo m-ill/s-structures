@@ -5,8 +5,8 @@ const E = 1e6;
 const INTERNAL_E = E * 1000;
 const A = 1;
 const alpha = 1e-5;
-const dT = -10;
-const expectedAxial = INTERNAL_E * A * alpha * dT;
+const dT = 10;
+const expectedAxial = -INTERNAL_E * A * alpha * dT;
 
 const direct = runSecondOrderPDelta(restrainedTemperatureModel(), { T: 1 }, { loadSteps: 2 });
 

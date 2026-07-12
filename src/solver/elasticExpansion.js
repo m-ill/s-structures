@@ -154,11 +154,17 @@ function temperatureHandcalc(load, model) {
   if (!member) return null;
   const material = materialOf(model, member.matId);
   const section = sectionOf(model, member.secId);
-  const alpha = Number(load.alpha ?? material.alpha ?? 1.2e-5);
-  if (load.type === 'temperature') {
-    return { id: load.id || null, type: load.type, member: load.member, method: 'N=E*A*alpha*dT', axialForce: Number(material.E || 0) * Number(section.A || 0) * alpha * Number(load.dT || 0), E: material.E, A: section.A, alpha, dT: Number(load.dT || 0) };
+  const alpha = Number(load.alpha ?? material.alpha);
+  if (!(Number.isFinite(alpha) && alpha > 0)) {
+    return { id: load.id || null, type: load.type, member: load.member, status: 'invalid', reason: 'TEMPERATURE_ALPHA_REQUIRED' };
   }
-  const h = Math.max(1e-9, Number(load.h || section.H || 1));
+  if (load.type === 'temperature') {
+    return { id: load.id || null, type: load.type, member: load.member, method: 'N=-E*A*alpha*dT', axialForce: -Number(material.E || 0) * Number(section.A || 0) * alpha * Number(load.dT || 0), E: material.E, A: section.A, alpha, dT: Number(load.dT || 0) };
+  }
+  const h = Number(load.h ?? section.H);
+  if (!(Number.isFinite(h) && h > 0)) {
+    return { id: load.id || null, type: load.type, member: load.member, status: 'invalid', reason: 'TEMPERATURE_GRADIENT_DEPTH_REQUIRED', alpha };
+  }
   const curvature = alpha * (Number(load.dTtop || 0) - Number(load.dTbot || 0)) / h;
   return { id: load.id || null, type: load.type, member: load.member, method: 'M=E*Iz*alpha*(dTtop-dTbot)/h', moment: Number(material.E || 0) * Number(section.Iz || 0) * curvature, E: material.E, Iz: section.Iz, alpha, h, curvature };
 }

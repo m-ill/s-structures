@@ -83,5 +83,5 @@ export { fixedEndPartialUdl } from './udlPartial.js';
 export { fixedEndTrapezoid } from './trapezoid.js';
 export { fixedEndPointLoad } from './pointLoad.js';
 export { fixedEndMemberMoment } from './memberMoment.js';
-export { fixedEndTemperature, fixedEndTemperatureGradient } from './temperature.js';
+export { FIXED_END_TEMPERATURE_VERSION, fixedEndTemperature, fixedEndTemperatureGradient } from './temperature.js';
 export { springSettlementLoad } from './settlement.js';

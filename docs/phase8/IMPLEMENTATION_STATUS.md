@@ -3,16 +3,16 @@
 ```yaml
 reviewed_at: 2026-07-12
 phase_status: active
-implementation_status: p8-m2-complete
+implementation_status: p8-m3-complete
 release_status: unavailable
-production_equivalence: Q0-equilibrium-infrastructure
-completed_milestones: [P8-M0, P8-M1, P8-M2]
-active_milestone: P8-M3
+production_equivalence: Q1-corotational-candidate
+completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3]
+active_milestone: P8-M4
 ```
 
 ## 현재 판정
 
-P8-M0~P8-M2는 완료되었다. M0는 기존 preliminary 경로를 격리하고 schema·case·run-record·capability·evidence 계약을 고정했다. M1은 immutable canonical analysis domain, 공통 affine constraint, 요소 descriptor, committed/trial 상태와 checkpoint/restart를 구현했다. M2는 요소별 `Pint`·`Kt` 반복 재조립, full MDOF Newton/line search, adaptive load control, rollback, typed sparse 조립, Worker 및 자체 Rust/WASM sparse backend를 구현하고 Phase 7 선형극한과 대조했다.
+P8-M0~P8-M3는 완료되었다. M0는 preliminary 경로를 격리했고, M1은 canonical domain과 committed/trial 상태를, M2는 MDOF Newton·sparse/Worker/WASM 기반을 구현했다. M3는 objective 3D corotational frame/truss, SO(3) 물리모멘트 변환, 온도 초기응력, rigid offset, 물리축 release 내부평형, local/global/station 회복을 구현하고 Phase 7 선형극한·Euler·elastica·skew frame과 대조했다.
 
 현재 제품 등급은 여전히 Q0다. `commercial-grade within supported scope` 판정은 [PRODUCTION_REQUIREMENTS.md](PRODUCTION_REQUIREMENTS.md)의 Q1~Q5를 모두 통과한 기능 범위에만 부여한다.
 
@@ -21,7 +21,7 @@ P8-M0~P8-M2는 완료되었다. M0는 기존 preliminary 경로를 격리하고 
 | 기존 Pushover | 실행 가능 | `legacy-preliminary`, 설계전달 차단 |
 | 기존 SDOF Newmark NLTH | 실행 가능 | `legacy-preliminary`, model-bound 아님, 설계전달 차단 |
 | displacement/arc-length UI | 비활성 및 실행 차단 | `unsupported` |
-| production nonlinear engine ID | 예약됨 | M2 backend는 구현됐으나 M3 이후 production 요소·workflow 미구현, legacy fallback 금지 |
+| production nonlinear engine ID | 예약됨 | M3 기하비선형 요소까지 구현, M4 이후 재료비선형·workflow 미구현, legacy fallback 금지 |
 | schema v5 nonlinear registry | 구현 및 migration 검증 | P8-M0 완료 |
 | nonlinear case/run-record 계약 | 구현 및 UI/report/Agent 전파 | P8-M0 완료 |
 | canonical analysis domain | 구현 및 adapter 연결 | P8-M1 완료 |
@@ -32,12 +32,13 @@ P8-M0~P8-M2는 완료되었다. M0는 기존 preliminary 경로를 격리하고 
 | source/evidence registry | governance 계약 구현 | 수치 qualification과 분리 |
 | reference profile/workload/budget | versioned artifact 고정 | 실제 production backend 측정은 후속 마일스톤 |
 | 전역 MDOF 비선형 평형 | 반복별 `Pint`·`Kt` 조립, Newton/line search/load control 구현 | P8-M2 수치코어 완료 |
-| 3D corotational frame | 미구현 | blocked |
+| 3D corotational frame/truss | 구현 | P8-M3 static candidate, principal rotation chart |
+| finite 2축 release | 물리축 0모멘트·general tangent 구현 | static-only, `energyConservative:false`, cyclic/NLTH 차단 |
 | 정식 변위제어/arc-length | 미구현 | blocked |
 | 3D frame MDOF NLTH | 미구현 | blocked |
 | Worker/WASM sparse runtime | 자체 Rust/WASM, zero import, Worker/preflight/cancel 구현 | P8-M2 기반 완료, 대형모델 성능 미검증 |
 
-## M0~M2 완료 증거
+## M0~M3 완료 증거
 
 - 코드: `src/nonlinear/capabilities.js`, `src/nonlinear/analysisRouter.js`, `src/nonlinear/legacy/`
 - schema: `src/core/nonlinearSchema.js`, `src/core/analysisCase.js`, `src/core/nonlinearRunRecord.js`
@@ -78,6 +79,20 @@ M2 증거:
 
 M2는 평형 수치코어와 실행 기반을 qualification한다. 실제 3D 기하비선형 요소, 소성힌지/fiber, 정식 Pushover, MDOF NLTH 및 대형모델 상용 성능은 qualification하지 않는다.
 
+M3 증거:
+
+- 요소: `src/nonlinear/elements/corotationalFrame3d.js`, `corotationalTruss3d.js`
+- 회전좌표: `src/nonlinear/math/rotationCoordinates.js`, `secondOrderJet.js`
+- 연계: 물리/일반화 모멘트, 초기응력, reference dead member load, release null mode, offset force/moment transfer
+- 검증: `NL-COR-01~12`, Euler 임계비 1.0167, 근임계 변위증폭 6.006, elastica tip 오차 0.0276%
+- evidence: [p8-m3-corotational.json](../../reports/validation-evidence/phase8/p8-m3-corotational.json)
+- tangent qualification: unreleased relative error `1.183e-6`, released implicit-condensation relative error `4.214e-7`
+- release gauge qualification: finite-rotation null mode and `1e-6` weak rotational restraint preservation regression PASS
+- ADR: [ADR-002-FINITE-ROTATION-COROTATIONAL.md](adr/ADR-002-FINITE-ROTATION-COROTATIONAL.md)
+- 코드 리뷰: [p8-m3-code-review.md](../../reports/validation-evidence/phase8/p8-m3-code-review.md)
+
+M3는 principal rotation-vector chart 안의 탄성 기하비선형 정적 범위를 qualification한다. finite 2축 release는 물리 단력과 접선만 qualification하며 에너지 기반 cyclic/NLTH에는 전달하지 않는다. 외부 상용 solver 비교, 대형모델 성능, 재료비선형은 아직 qualification하지 않는다.
+
 ## Production 등급 현황
 
 | 등급 | 상태 | 미충족 핵심 |
@@ -95,8 +110,8 @@ M2는 평형 수치코어와 실행 기반을 qualification한다. 실제 3D 기
 | P8-M0 상태·계약·격리 | complete | NL-GOV-01~06, schema v5 migration, M0 code review |
 | P8-M1 해석영역·상태관리 | complete | NL-DOM-01~08, NL-STATE-01~07, NL-MEI-01~08, M1 code review |
 | P8-M2 MDOF 평형 코어 | complete | NL-EQ-01~12, NL-CTRL-01~04, M2 code review |
-| P8-M3 3D corotational 요소 | active | 없음 |
-| P8-M4 집중소성 힌지 | planned | 없음 |
+| P8-M3 3D corotational 요소 | complete | NL-COR-01~12, ADR-002, M3 code review |
+| P8-M4 집중소성 힌지 | active | 없음 |
 | P8-M5 정식 Pushover | planned | 없음 |
 | P8-M6 PMM·fiber 단면 | planned | 없음 |
 | P8-M7 arc-length·cyclic static | planned | 없음 |
@@ -109,4 +124,4 @@ M2는 평형 수치코어와 실행 기반을 qualification한다. 실제 3D 기
 
 ## 다음 작업
 
-P8-M3는 M2 평형코어 위에 강체운동 객관성, finite nodal rotation, current triad, basic deformation, material·geometric tangent를 갖춘 3D corotational frame/truss 요소를 구현한다. M2 linear-elastic adapter는 검증용 선형극한으로 유지하며 production 기하비선형 요소로 표시하지 않는다.
+P8-M4는 M3 요소 위에 실제 내부 회전 spring, A-B-C-D-E backbone, unloading/reloading, 상태 commit/rollback, 자동 속성 및 PMM hook을 갖춘 집중소성 힌지를 구현한다. finite release의 정적·에너지 경계와 충돌하지 않는 별도 보존 힌지 topology를 사용해야 한다.

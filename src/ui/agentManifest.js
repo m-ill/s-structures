@@ -169,12 +169,19 @@ import {
   WORKER_CORE_VERSION,
   WORKER_PROTOCOL_VERSION,
 } from '../nonlinear/runtime/index.js';
+import {
+  COROTATIONAL_FRAME_3D_STATE_VERSION,
+  COROTATIONAL_FRAME_3D_VERSION,
+} from '../nonlinear/elements/corotationalFrame3d.js';
+import { COROTATIONAL_TRUSS_3D_VERSION } from '../nonlinear/elements/corotationalTruss3d.js';
+import { SECOND_ORDER_JET_VERSION } from '../nonlinear/math/secondOrderJet.js';
+import { ROTATION_COORDINATE_VERSION } from '../nonlinear/math/rotationCoordinates.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m2-agent-capability-manifest-v4';
+export const AGENT_MANIFEST_VERSION = 'p8-m3-agent-capability-manifest-v5';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -346,6 +353,11 @@ export function buildAgentManifest(options = {}) {
       phase8WorkerProtocol: WORKER_PROTOCOL_VERSION,
       phase8WorkerCore: WORKER_CORE_VERSION,
       phase8WorkerClient: WORKER_CLIENT_VERSION,
+      phase8CorotationalFrame3d: COROTATIONAL_FRAME_3D_VERSION,
+      phase8CorotationalFrame3dState: COROTATIONAL_FRAME_3D_STATE_VERSION,
+      phase8CorotationalTruss3d: COROTATIONAL_TRUSS_3D_VERSION,
+      phase8SecondOrderJet: SECOND_ORDER_JET_VERSION,
+      phase8RotationCoordinates: ROTATION_COORDINATE_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
     },
     nonlinear: {
@@ -375,6 +387,11 @@ export function buildAgentManifest(options = {}) {
         workerProtocol: WORKER_PROTOCOL_VERSION,
         workerCore: WORKER_CORE_VERSION,
         workerClient: WORKER_CLIENT_VERSION,
+        corotationalFrame3d: COROTATIONAL_FRAME_3D_VERSION,
+        corotationalFrame3dState: COROTATIONAL_FRAME_3D_STATE_VERSION,
+        corotationalTruss3d: COROTATIONAL_TRUSS_3D_VERSION,
+        secondOrderJet: SECOND_ORDER_JET_VERSION,
+        rotationCoordinates: ROTATION_COORDINATE_VERSION,
       },
     },
     readApis: [
@@ -650,6 +667,9 @@ export function buildAgentManifest(options = {}) {
       'phase8WasmSparseDiagnostics',
       'phase8WorkerProtocol',
       'phase8RuntimePreflight',
+      'phase8CorotationalFrame3dResponse',
+      'phase8CorotationalFrame3dState',
+      'phase8CorotationalTruss3dResponse',
       'productHardeningAudit',
       'agentCommandBridge',
       'originalIndexRuntimeDiagnostics',
@@ -810,12 +830,16 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M20', status: 'preliminary', feature: 'launch readiness gate, packaging, manual, agent contract, and pilot report evidence' },
       { id: 'P8-M0', status: 'available', feature: 'truthful legacy engine isolation, schema v5 contracts, capability gate, and verification registry' },
       { id: 'P8-M1', status: 'available', feature: 'immutable canonical domain, affine constraints, solver adapter identity, committed/trial state, and checkpoint restart' },
+      { id: 'P8-M2', status: 'available', feature: 'MDOF residual/tangent assembly, Newton/load control, worker execution, and in-house WASM sparse backend' },
+      { id: 'P8-M3', status: 'available', feature: 'objective 3D corotational frame/truss geometry, exact AD tangent, release/offset, and local/station recovery' },
     ],
     limitations: [
       'Pushover is preliminary: previous-step hinge secant stiffness degradation is traced, but a simultaneous hinge-controlled global equilibrium loop is not production-certified.',
       'Report output is a calculation aid and not a certified final structural calculation package.',
       'Unsupported design checks must be reviewed separately.',
       'Large models still use the current in-browser dense solver path.',
+      'P8-M3 finite rotations use total global rotation vectors and a principal relative-rotation log; relative rotations approaching pi fail closed.',
+      'Follower loads, unilateral truss active sets, and transverse truss member loads are not implemented in P8-M3 and fail closed.',
     ],
   };
 }

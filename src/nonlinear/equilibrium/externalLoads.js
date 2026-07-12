@@ -10,7 +10,7 @@ import {
 } from '../../solver/linear3dElement.js';
 import { CANONICAL_CONSTRAINT_VERSION } from '../../solver/domain/constraintSystem.js';
 
-export const NONLINEAR_EXTERNAL_LOAD_VERSION = 'p8-m2-canonical-external-load-v1';
+export const NONLINEAR_EXTERNAL_LOAD_VERSION = 'p8-m3-canonical-external-load-v2';
 
 const MEMBER_LOAD_TYPES = new Set([
   'udl',
@@ -190,6 +190,12 @@ function validateDomain(domain) {
 }
 
 function assembleOneLoad(load, loadIndex, role, nodeIndex, elementById) {
+  if (load.follower === true || load.loadBehavior === 'follower') {
+    return failure(
+      issue('FOLLOWER_LOAD_UNSUPPORTED', load, true, 'Follower loads are not implemented for the Phase 8 corotational path.'),
+      failedTrace(load, loadIndex, role, 'FOLLOWER_LOAD_UNSUPPORTED'),
+    );
+  }
   if (load.type === 'nodal') return assembleNodalForce(load, loadIndex, role, nodeIndex);
   if (load.type === 'nmoment') return assembleNodalMoment(load, loadIndex, role, nodeIndex);
   if (MEMBER_LOAD_TYPES.has(load.type)) return assembleMemberLoad(load, loadIndex, role, elementById);
@@ -233,6 +239,7 @@ function assembleNodalForce(load, loadIndex, role, nodeIndex) {
       type: load.type,
       case: load.case || null,
       role,
+      source: clone(load),
       target: { nodeId: load.node },
       method: 'canonical-nodal-force',
       coordinate: direction.coordinate,
@@ -298,6 +305,7 @@ function assembleNodalMoment(load, loadIndex, role, nodeIndex) {
       type: load.type,
       case: load.case || null,
       role,
+      source: clone(load),
       target: { nodeId: load.node },
       method: 'canonical-nodal-moment',
       coordinate: direction.coordinate,
@@ -382,6 +390,7 @@ function assembleMemberLoad(load, loadIndex, role, elementById) {
       type: load.type,
       case: load.case || null,
       role,
+      source: clone(load),
       target: { memberId: load.member },
       method: releases.length ? 'fixed-end-release-condensed-offset-transform' : 'fixed-end-offset-transform',
       fixedEnd: fixedEndTraceRow(fixedEnd),
@@ -423,6 +432,12 @@ function validateMemberDescriptor(descriptor) {
   ) {
     return { ok: false, issue: issue('EXTERNAL_LOAD_ELEMENT_RELEASE_INVALID', null, descriptor.id, 'Element release DOFs are invalid.') };
   }
+  const releaseIssue = validateReleaseContract(descriptor.releases?.contract, releases, descriptor.id);
+  if (releaseIssue) return { ok: false, issue: releaseIssue };
+  const behavior = descriptor.behavior || descriptor.type;
+  if (!['frame', 'truss', 'tensionOnly', 'compressionOnly'].includes(behavior)) {
+    return { ok: false, issue: issue('EXTERNAL_LOAD_ELEMENT_BEHAVIOR_UNSUPPORTED', null, descriptor.id, `Element behavior ${behavior || '(missing)'} is unsupported.`) };
+  }
   const material = descriptor.propertySnapshot?.effectiveMaterial || descriptor.propertySnapshot?.material || {};
   const section = descriptor.propertySnapshot?.effectiveSection || descriptor.propertySnapshot?.section || {};
   return {
@@ -434,6 +449,27 @@ function validateMemberDescriptor(descriptor) {
     section,
     releases: releases.slice().sort((a, b) => a - b),
   };
+}
+
+function validateReleaseContract(contract, releases, id) {
+  if (contract == null) return null;
+  if (!contract || typeof contract !== 'object' || Array.isArray(contract)) {
+    return issue('EXTERNAL_LOAD_ELEMENT_RELEASE_CONTRACT_INVALID', null, id, 'Element release contract must be an object.');
+  }
+  if (Object.keys(contract).some((key) => !['i', 'j'].includes(key))) {
+    return issue('EXTERNAL_LOAD_ELEMENT_RELEASE_CONTRACT_INVALID', null, id, 'Element release contract contains unsupported fields.');
+  }
+  if (['i', 'j'].some((end) => contract[end] != null && !['rigid', 'pin'].includes(contract[end]))) {
+    return issue('EXTERNAL_LOAD_ELEMENT_RELEASE_CONTRACT_INVALID', null, id, 'Element releases must be rigid or pin.');
+  }
+  const expected = [];
+  if (contract.i === 'pin') expected.push(4, 5);
+  if (contract.j === 'pin') expected.push(10, 11);
+  const actual = releases.slice().sort((left, right) => left - right);
+  if (expected.length !== actual.length || expected.some((value, index) => value !== actual[index])) {
+    return issue('EXTERNAL_LOAD_ELEMENT_RELEASE_CONTRACT_MISMATCH', null, id, 'Element release contract and local DOFs disagree.');
+  }
+  return null;
 }
 
 function buildDescriptorLocalStiffness(descriptor, material, section, length) {
@@ -652,4 +688,10 @@ function loadError(code, message) {
   const error = new TypeError(message);
   error.code = code;
   return error;
+}
+
+function clone(value) {
+  if (value == null) return value;
+  if (typeof structuredClone === 'function') return structuredClone(value);
+  return JSON.parse(JSON.stringify(value));
 }

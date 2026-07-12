@@ -1,4 +1,4 @@
-export const VERIFICATION_REGISTRY_VERSION = 'p8-m2-verification-registry-v2';
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m3-verification-registry-v3';
 export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
 export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
 
@@ -74,6 +74,25 @@ export const PHASE8_VERIFICATION_SUITES = Object.freeze([
       'NL-CTRL-02',
       'NL-CTRL-03',
       'NL-CTRL-04',
+    ]),
+  }),
+  Object.freeze({
+    id: 'P8-M3-COROTATIONAL',
+    milestone: 'P8-M3',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-COR-01',
+      'NL-COR-02',
+      'NL-COR-03',
+      'NL-COR-04',
+      'NL-COR-05',
+      'NL-COR-06',
+      'NL-COR-07',
+      'NL-COR-08',
+      'NL-COR-09',
+      'NL-COR-10',
+      'NL-COR-11',
+      'NL-COR-12',
     ]),
   }),
 ]);

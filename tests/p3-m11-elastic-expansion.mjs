@@ -114,15 +114,15 @@ const unsupportedEffect = createModel({
     { id: 'B', x: 4, y: 0, z: 0, support: 'fixed' },
   ],
   members: [{ id: 'M1', n1: 'A', n2: 'B', matId: 'steel', secId: 'h300' }],
-  loads: [{ id: 'T1', type: 'temperature', member: 'M1', dT: 20, case: 'D' }],
+  loads: [{ id: 'T1', type: 'temperature', member: 'M1', dT: 20, alpha: 1.2e-5, case: 'D' }],
 });
 assert.equal(validateModel(unsupportedEffect).ok, true);
 const thermalResult = analyzeModel(unsupportedEffect);
 assert.equal(thermalResult.ok, true);
 assert.ok(Math.abs(thermalResult.byCombo.SLS1.reactions.A.rx) > 0);
 const thermalCalc = thermalResult.byCombo.SLS1.elasticExpansion.handcalc.find((row) => row.type === 'temperature');
-assert.equal(thermalCalc.method, 'N=E*A*alpha*dT');
-assert.ok(thermalCalc.axialForce > 0);
+assert.equal(thermalCalc.method, 'N=-E*A*alpha*dT');
+assert.ok(thermalCalc.axialForce < 0);
 
 const gradientModel = createModel({
   nodes: [
@@ -130,7 +130,7 @@ const gradientModel = createModel({
     { id: 'B', x: 4, y: 0, z: 0, support: 'fixed' },
   ],
   members: [{ id: 'M1', n1: 'A', n2: 'B', matId: 'steel', secId: 'h300' }],
-  loads: [{ id: 'TG1', type: 'tgradient', member: 'M1', dTtop: 30, dTbot: 10, h: 0.3, case: 'D' }],
+  loads: [{ id: 'TG1', type: 'tgradient', member: 'M1', dTtop: 30, dTbot: 10, h: 0.3, alpha: 1.2e-5, case: 'D' }],
 });
 const gradientResult = analyzeModel(gradientModel);
 assert.equal(gradientResult.ok, true);

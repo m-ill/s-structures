@@ -1,6 +1,6 @@
 import { solveMdofNewtonStep } from './newton.js';
 
-export const MDOF_LOAD_CONTROL_VERSION = 'p8-m2-mdof-load-control-v1';
+export const MDOF_LOAD_CONTROL_VERSION = 'p8-m3-mdof-load-control-v2';
 
 export async function runMdofLoadControl(input = {}) {
   const options = input.options || {};
@@ -106,6 +106,10 @@ const NON_RETRYABLE_FAILURES = new Set([
   'MDOF_CONVERGENCE_VALUE_INVALID',
   'ELEMENT_RESPONSE_INVALID',
   'ELEMENT_EVALUATION_FAILED',
+  'STRUCTURAL_MECHANISM_DETECTED',
+  'INACTIVE_DOF_RESIDUAL',
+  'INACTIVE_MODE_RESIDUAL',
+  'INACTIVE_MODE_PATTERN_MISSING',
 ]);
 
 function result(ok, reason, stateStore, acceptedSteps, rejectedSteps, targetLambda, status = 'failed') {

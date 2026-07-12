@@ -3,7 +3,7 @@
 ```yaml
 plan_version: 2026-07-11
 milestones: P8-M0..P8-M11
-current_status: active-p8-m2
+current_status: complete-p8-m3-next-p8-m4
 execution_rule: one milestone at a time; code, tests, evidence, review, and status update are all required
 ```
 
@@ -200,6 +200,8 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 - `NL-EQ-01`~`NL-EQ-12`, `NL-CTRL-01`~`NL-CTRL-04` 통과
 
 ## P8-M3 - 완전한 3D corotational frame/truss
+
+**상태: complete (2026-07-12).** 검증 artifact는 `reports/validation-evidence/phase8/p8-m3-corotational.json`, 정식화 결정은 [ADR-002](adr/ADR-002-FINITE-ROTATION-COROTATIONAL.md), 코드 리뷰는 `p8-m3-code-review.md`를 기준으로 한다. 완료 범위는 principal rotation chart의 탄성 기하비선형 정적 frame/truss다. finite 2축 release는 물리 단력·general tangent만 static qualification하며 에너지 기반 cyclic/NLTH는 차단한다.
 
 ### 목표
 

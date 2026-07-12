@@ -90,14 +90,14 @@ function issue(code, elementId, message) {
 }
 
 function materialSnapshot(material = {}) {
-  return pick(material, ['id', 'version', 'name', 'type', 'E', 'G', 'nu', 'density', 'rho', 'Fy', 'Fu', 'fy', 'source']);
+  return pick(material, ['id', 'version', 'name', 'type', 'E', 'G', 'nu', 'density', 'rho', 'alpha', 'Fy', 'Fu', 'fy', 'source']);
 }
 
 function sectionSnapshot(section = {}) {
   const source = section.properties && typeof section.properties === 'object'
     ? { ...section, ...section.properties }
     : section;
-  return pick(source, ['id', 'version', 'name', 'kind', 'shape', 'type', 'A', 'Ay', 'Az', 'Iy', 'Iz', 'J', 'Cw', 'Zy', 'Zz', 'Sy', 'Sz', 'source']);
+  return pick(source, ['id', 'version', 'name', 'kind', 'shape', 'type', 'A', 'Ay', 'Az', 'Iy', 'Iz', 'J', 'Cw', 'H', 'B', 'Zy', 'Zz', 'Sy', 'Sz', 'source']);
 }
 
 function pick(source, keys) {
