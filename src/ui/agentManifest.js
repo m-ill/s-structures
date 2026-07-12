@@ -151,12 +151,30 @@ import {
   NONLINEAR_ELEMENT_CONTRACT_VERSION,
   NONLINEAR_STATE_STORE_VERSION,
 } from '../nonlinear/core/index.js';
+import {
+  LINEAR_ELASTIC_ELEMENT_VERSION,
+  MDOF_CONVERGENCE_VERSION,
+  MDOF_EQUILIBRIUM_ASSEMBLER_VERSION,
+  MDOF_LINEAR_BACKEND_VERSION,
+  MDOF_LOAD_CONTROL_VERSION,
+  MDOF_NEWTON_VERSION,
+  NONLINEAR_EQUILIBRIUM_AUDIT_VERSION,
+  NONLINEAR_EXTERNAL_LOAD_VERSION,
+  TYPED_REDUCED_SPARSE_VERSION,
+  WASM_SPARSE_DIAGNOSTICS_VERSION,
+} from '../nonlinear/equilibrium/index.js';
+import {
+  RUNTIME_PREFLIGHT_VERSION,
+  WORKER_CLIENT_VERSION,
+  WORKER_CORE_VERSION,
+  WORKER_PROTOCOL_VERSION,
+} from '../nonlinear/runtime/index.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m1-agent-capability-manifest-v3';
+export const AGENT_MANIFEST_VERSION = 'p8-m2-agent-capability-manifest-v4';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -314,6 +332,20 @@ export function buildAgentManifest(options = {}) {
       phase8NonlinearCheckpoint: NONLINEAR_CHECKPOINT_VERSION,
       phase8ElementStateRegistry: ELEMENT_STATE_REGISTRY_VERSION,
       phase8NonlinearElementContract: NONLINEAR_ELEMENT_CONTRACT_VERSION,
+      phase8MdofEquilibriumAssembler: MDOF_EQUILIBRIUM_ASSEMBLER_VERSION,
+      phase8MdofNewton: MDOF_NEWTON_VERSION,
+      phase8MdofLoadControl: MDOF_LOAD_CONTROL_VERSION,
+      phase8MdofConvergence: MDOF_CONVERGENCE_VERSION,
+      phase8LinearSystemBackend: MDOF_LINEAR_BACKEND_VERSION,
+      phase8TypedReducedSparse: TYPED_REDUCED_SPARSE_VERSION,
+      phase8WasmSparseDiagnostics: WASM_SPARSE_DIAGNOSTICS_VERSION,
+      phase8CanonicalExternalLoads: NONLINEAR_EXTERNAL_LOAD_VERSION,
+      phase8LinearElasticElement: LINEAR_ELASTIC_ELEMENT_VERSION,
+      phase8EquilibriumAudit: NONLINEAR_EQUILIBRIUM_AUDIT_VERSION,
+      phase8RuntimePreflight: RUNTIME_PREFLIGHT_VERSION,
+      phase8WorkerProtocol: WORKER_PROTOCOL_VERSION,
+      phase8WorkerCore: WORKER_CORE_VERSION,
+      phase8WorkerClient: WORKER_CLIENT_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
     },
     nonlinear: {
@@ -329,6 +361,20 @@ export function buildAgentManifest(options = {}) {
         checkpoint: NONLINEAR_CHECKPOINT_VERSION,
         elementStateRegistry: ELEMENT_STATE_REGISTRY_VERSION,
         elementContract: NONLINEAR_ELEMENT_CONTRACT_VERSION,
+        equilibriumAssembler: MDOF_EQUILIBRIUM_ASSEMBLER_VERSION,
+        newton: MDOF_NEWTON_VERSION,
+        loadControl: MDOF_LOAD_CONTROL_VERSION,
+        convergence: MDOF_CONVERGENCE_VERSION,
+        linearBackend: MDOF_LINEAR_BACKEND_VERSION,
+        sparseMatrix: TYPED_REDUCED_SPARSE_VERSION,
+        wasmBackendDiagnostics: WASM_SPARSE_DIAGNOSTICS_VERSION,
+        externalLoads: NONLINEAR_EXTERNAL_LOAD_VERSION,
+        linearElasticAdapter: LINEAR_ELASTIC_ELEMENT_VERSION,
+        equilibriumAudit: NONLINEAR_EQUILIBRIUM_AUDIT_VERSION,
+        runtimePreflight: RUNTIME_PREFLIGHT_VERSION,
+        workerProtocol: WORKER_PROTOCOL_VERSION,
+        workerCore: WORKER_CORE_VERSION,
+        workerClient: WORKER_CLIENT_VERSION,
       },
     },
     readApis: [
@@ -597,6 +643,13 @@ export function buildAgentManifest(options = {}) {
       'phase8NonlinearCheckpoint',
       'phase8ElementStateRegistry',
       'phase8NonlinearElementContract',
+      'phase8MdofEquilibriumEvaluation',
+      'phase8MdofNewtonResult',
+      'phase8MdofLoadControlResult',
+      'phase8TypedSparseMatrix',
+      'phase8WasmSparseDiagnostics',
+      'phase8WorkerProtocol',
+      'phase8RuntimePreflight',
       'productHardeningAudit',
       'agentCommandBridge',
       'originalIndexRuntimeDiagnostics',

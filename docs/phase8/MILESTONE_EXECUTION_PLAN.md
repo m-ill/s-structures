@@ -155,6 +155,8 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 
 ## P8-M2 - MDOF 잔차·접선 조립과 Newton 평형
 
+**상태: complete (2026-07-12).** 검증 artifact는 `reports/validation-evidence/phase8/p8-m2-equilibrium.json`, 코드 리뷰는 `p8-m2-code-review.md`, sparse backend 결정은 [ADR-005](adr/ADR-005-INHOUSE-WASM-SPARSE.md)를 기준으로 한다. M2 완료는 corotational·소성·Pushover·NLTH qualification을 의미하지 않는다.
+
 ### 목표
 
 요소 내력과 접선을 매 반복 재조립하는 실제 전역 MDOF 비선형 평형 커널을 완성한다.

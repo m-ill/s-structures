@@ -26,6 +26,7 @@ const STATIC_TYPES = {
   '.md': 'text/markdown; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
+  '.wasm': 'application/wasm',
 };
 
 const BOOT_TIME = Date.now();

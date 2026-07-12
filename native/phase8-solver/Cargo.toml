@@ -1,0 +1,16 @@
+[package]
+name = "phase8-solver"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+codegen-units = 1
+incremental = false
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true

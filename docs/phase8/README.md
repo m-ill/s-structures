@@ -3,23 +3,23 @@
 ```yaml
 phase: 8
 status: active
-implementation_status: p8-m1-complete
-reviewed_at: 2026-07-11
-current_milestone: P8-M2
+implementation_status: p8-m2-complete
+reviewed_at: 2026-07-12
+current_milestone: P8-M3
 mission: Phase 7 모델링·탄성해석과 동일한 analysis domain 위에서 상용 수준의 정적·동적 비선형 3D 건축골조해석을 구현한다.
 governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 ```
 
-> P8-M0와 P8-M1은 완료되었으며 현재 제품 등급은 Q0다. canonical domain과 상태 기반은 구현됐지만 MDOF 비선형 평형 코어는 아직 없다. 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리되어 설계값 전달이 차단된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
+> P8-M0~P8-M2는 완료되었으며 현재 제품 등급은 Q0다. canonical domain·state와 MDOF 평형/Worker/WASM 기반은 구현됐지만 production 3D corotational 요소와 비선형 workflow는 아직 없다. 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리되어 설계값 전달이 차단된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
 
 ## 1. 결론
 
-현재 코드에는 Pushover, 힌지 backbone, fiber 적분, Newton-Raphson, 변위제어, arc-length, Newmark NLTH라는 이름의 모듈이 존재한다. 그러나 이 모듈들은 아직 하나의 전역 비선형 평형 루프로 연결되어 있지 않다.
+기존 코드에는 Pushover, 힌지 backbone, fiber 적분, 변위제어, arc-length, Newmark NLTH라는 이름의 preliminary 모듈이 존재한다. P8-M2에서 별도의 전역 MDOF Newton 평형코어를 구현했지만, 이 코어는 아직 M3 이후의 production 요소·Pushover·NLTH workflow와 연결되지 않았다.
 
 현재 상태를 정확히 표현하면 다음과 같다.
 
 - Pushover는 각 스텝에서 선형해석을 한 번 수행하고 이전 스텝의 힌지 상태로 다음 스텝 부재 강성을 낮추는 preliminary 방법이다.
-- 전역 평형 모듈은 고정된 선형 강성으로 `K u`를 계산하므로 상태 의존 내력과 일관접선을 반복 재조립하지 않는다.
+- legacy 전역 평형 모듈은 고정된 선형 강성으로 `K u`를 계산한다. P8-M2 코어는 별도 경로에서 현재 trial state의 요소 `Pint`와 `Kt`를 반복마다 재조립한다.
 - corotational 요소는 완전한 3D 요소가 아니라 방향벡터와 일부 screening 식만 제공한다.
 - 변위제어와 arc-length는 제어식과 trace를 생성하지만 전역 방정식을 실제로 풀지 않는다.
 - NLTH는 모델을 받지 않는 SDOF 이선형 스프링 적분기다.

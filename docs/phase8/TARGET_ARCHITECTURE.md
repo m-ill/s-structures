@@ -1,8 +1,8 @@
 # Phase 8 Target Architecture
 
 ```yaml
-architecture_status: proposed
-implemented_through: P8-M1 canonical-domain-and-state-foundation
+architecture_status: partially-implemented
+implemented_through: P8-M2 mdof-equilibrium-worker-wasm
 primary_scope: nonlinear 3D frame analysis
 core_rule: one stateful element kernel shared by static and dynamic workflows
 ```

@@ -11,6 +11,7 @@
     "test:p7:list": "node tools/run-phase7-tests.mjs --list",
     "test:p8": "node tools/run-phase8-tests.mjs",
     "test:p8:list": "node tools/run-phase8-tests.mjs --list",
+    "build:p8wasm": "node tools/build-phase8-wasm.mjs",
     "test:p3": "node tools/run-milestone-tests.mjs --phase3",
     "test:p3:list": "node tools/run-milestone-tests.mjs --phase3 --list",
     "generate:representative-buildings": "node tools/generate-representative-building-reports.mjs",

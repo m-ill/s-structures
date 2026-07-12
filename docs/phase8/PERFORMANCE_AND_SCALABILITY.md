@@ -54,13 +54,13 @@ flowchart LR
 ### WASM backend 책임
 
 - ordering과 symbolic analysis
-- SPD factorization
+- SPD sparse solve (`P8-M2`: Jacobi-preconditioned CG; direct factorization은 후속 성능 qualification에서 재평가)
 - pivoted symmetric-indefinite 또는 general factorization
-- multi-RHS solve
+- multi-RHS solve (`P8-M2` backend는 single-RHS이며 후속 범위)
 - condition/pivot diagnostics
 - 명시적 memory ownership과 release
 
-특정 library는 P8-M2 착수 시 license, browser/WASM build, pivoting, deterministic behavior, sparse format 지원을 비교해 ADR로 선정한다. 검토 없이 자체 sparse indefinite solver를 새로 작성하지 않는다.
+P8-M2에서는 외부 수치 library를 도입하지 않고 저장소 내부 Rust/WASM 구현을 선택했다. 결정 근거, license 경계, zero-import build, 제한사항은 [ADR-005](adr/ADR-005-INHOUSE-WASM-SPARSE.md)에 고정한다. 외부 수치 solver 추가 또는 교체는 별도 ADR과 사용자 승인을 요구한다.
 
 ## 3. Backend 계층
 
