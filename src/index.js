@@ -622,6 +622,8 @@ export {
 export {
   COROTATIONAL_FRAME_3D_STATE_VERSION,
   COROTATIONAL_FRAME_3D_VERSION,
+  HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION,
+  HINGED_COROTATIONAL_FRAME_3D_VERSION,
   buildCorotationalFrame3dEntries,
   createCorotationalFrame3dKernel,
 } from './nonlinear/elements/corotationalFrame3d.js';
@@ -629,6 +631,54 @@ export {
   COROTATIONAL_TRUSS_3D_VERSION,
   createCorotationalTruss3dKernel,
 } from './nonlinear/elements/corotationalTruss3d.js';
+export {
+  HINGED_FRAME_3D_STATE_VERSION,
+  HINGED_FRAME_3D_VERSION,
+  buildHingedFrame3dEntries,
+  createHingedFrame3dKernel,
+} from './nonlinear/elements/hingedFrame3d.js';
+export {
+  HINGE_BACKBONE_POINT_IDS,
+  HINGE_BACKBONE_VERSION,
+  createHingeBackbone,
+  evaluateHingeEnvelope,
+  hingeBackboneInitialTangent,
+  hingeBackbonePoint,
+  integrateHingeEnvelope,
+  validateHingeBackbone,
+} from './nonlinear/materials/hingeBackbone.js';
+export {
+  HINGE_CYCLIC_STATE_VERSION,
+  HINGE_CYCLIC_VERSION,
+  HINGE_HYSTERESIS_RULES,
+  createHingeCyclicState,
+  evaluateHingeTrial,
+  hingeStateSerializer,
+  normalizeHingeMaterial,
+  runHingeProtocol,
+} from './nonlinear/materials/hingeCyclic.js';
+export {
+  HINGE_PROPERTY_MODEL_ID,
+  HINGE_PROPERTY_QUALIFICATIONS,
+  HINGE_PROPERTY_REGISTRY_VERSION,
+  createHingeProperty,
+  createHingePropertyRegistry,
+  evaluateHingePropertyAtAxialRatio,
+  hingePropertyRequiresGeneralMatrix,
+  resolveHingeProperty,
+  validateHingeProperty,
+} from './nonlinear/properties/hingeRegistry.js';
+export {
+  HINGE_ASSIGNMENT_AXES,
+  HINGE_ASSIGNMENT_CHANGE_SET_VERSION,
+  HINGE_ASSIGNMENT_CONTRACT_VERSION,
+  HINGE_ASSIGNMENT_ENDS,
+  applyHingeAssignmentChangeSet,
+  hingeLocalDof,
+  normalizeHingeAssignment,
+  previewHingeAssignmentChangeSet,
+  resolveDomainHingeAssignments,
+} from './nonlinear/properties/assignments.js';
 export {
   ROTATION_COORDINATE_VERSION,
   ROTATION_VECTOR_LIMIT,

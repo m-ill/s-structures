@@ -1,7 +1,7 @@
 # Phase 8 Verification Matrix
 
 ```yaml
-status: active-m0-through-m3-verified
+status: active-m0-through-m4-verified
 evidence_root: reports/validation-evidence/phase8
 runner: npm.cmd run test:p8
 rule: implementation existence and regression stability are not qualification evidence

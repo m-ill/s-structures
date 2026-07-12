@@ -1,9 +1,9 @@
 # Phase 8 Milestone Execution Plan
 
 ```yaml
-plan_version: 2026-07-11
+plan_version: 2026-07-13
 milestones: P8-M0..P8-M11
-current_status: complete-p8-m3-next-p8-m4
+current_status: complete-p8-m4-next-p8-m5
 execution_rule: one milestone at a time; code, tests, evidence, review, and status update are all required
 ```
 
@@ -264,6 +264,14 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 - rejected iteration과 cutback에서 hinge history가 오염되지 않음
 - auto/user property의 source, qualification, diff, undo가 model transaction에 보존
 - `NL-HNG-01`~`NL-HNG-12` 통과
+
+### 구현 기록 (2026-07-13)
+
+- 완료: 비대칭 A-B-C-D-E, Masing/isotropic 이력, degradation·energy, 순수 committed/trial 상태
+- 완료: i/j·local y/z 내부 spring과 3D corotational elastic member의 일관 직렬 condensation
+- 완료: axis별 steel/RC snapshot 자동배정, PMM hook, release 충돌 차단, preview/apply/undo
+- 증거: `reports/validation-evidence/phase8/p8-m4-concentrated-hinge.json`
+- 결정: `docs/phase8/adr/ADR-003-CONCENTRATED-HINGE-SERIES-COMPATIBILITY.md`
 
 ## P8-M5 - 중력 preload와 정식 변위제어 Pushover
 

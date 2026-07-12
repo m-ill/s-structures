@@ -174,6 +174,11 @@ import {
   COROTATIONAL_FRAME_3D_VERSION,
 } from '../nonlinear/elements/corotationalFrame3d.js';
 import { COROTATIONAL_TRUSS_3D_VERSION } from '../nonlinear/elements/corotationalTruss3d.js';
+import { HINGED_FRAME_3D_STATE_VERSION, HINGED_FRAME_3D_VERSION } from '../nonlinear/elements/hingedFrame3d.js';
+import { HINGE_BACKBONE_VERSION } from '../nonlinear/materials/hingeBackbone.js';
+import { HINGE_CYCLIC_STATE_VERSION, HINGE_CYCLIC_VERSION } from '../nonlinear/materials/hingeCyclic.js';
+import { HINGE_PROPERTY_REGISTRY_VERSION } from '../nonlinear/properties/hingeRegistry.js';
+import { HINGE_ASSIGNMENT_CONTRACT_VERSION } from '../nonlinear/properties/assignments.js';
 import { SECOND_ORDER_JET_VERSION } from '../nonlinear/math/secondOrderJet.js';
 import { ROTATION_COORDINATE_VERSION } from '../nonlinear/math/rotationCoordinates.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
@@ -181,7 +186,7 @@ import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } fro
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m3-agent-capability-manifest-v5';
+export const AGENT_MANIFEST_VERSION = 'p8-m4-agent-capability-manifest-v6';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -356,6 +361,13 @@ export function buildAgentManifest(options = {}) {
       phase8CorotationalFrame3d: COROTATIONAL_FRAME_3D_VERSION,
       phase8CorotationalFrame3dState: COROTATIONAL_FRAME_3D_STATE_VERSION,
       phase8CorotationalTruss3d: COROTATIONAL_TRUSS_3D_VERSION,
+      phase8HingedFrame3d: HINGED_FRAME_3D_VERSION,
+      phase8HingedFrame3dState: HINGED_FRAME_3D_STATE_VERSION,
+      phase8HingeBackbone: HINGE_BACKBONE_VERSION,
+      phase8HingeCyclic: HINGE_CYCLIC_VERSION,
+      phase8HingeCyclicState: HINGE_CYCLIC_STATE_VERSION,
+      phase8HingePropertyRegistry: HINGE_PROPERTY_REGISTRY_VERSION,
+      phase8HingeAssignment: HINGE_ASSIGNMENT_CONTRACT_VERSION,
       phase8SecondOrderJet: SECOND_ORDER_JET_VERSION,
       phase8RotationCoordinates: ROTATION_COORDINATE_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
@@ -390,6 +402,13 @@ export function buildAgentManifest(options = {}) {
         corotationalFrame3d: COROTATIONAL_FRAME_3D_VERSION,
         corotationalFrame3dState: COROTATIONAL_FRAME_3D_STATE_VERSION,
         corotationalTruss3d: COROTATIONAL_TRUSS_3D_VERSION,
+        hingedFrame3d: HINGED_FRAME_3D_VERSION,
+        hingedFrame3dState: HINGED_FRAME_3D_STATE_VERSION,
+        hingeBackbone: HINGE_BACKBONE_VERSION,
+        hingeCyclic: HINGE_CYCLIC_VERSION,
+        hingeCyclicState: HINGE_CYCLIC_STATE_VERSION,
+        hingePropertyRegistry: HINGE_PROPERTY_REGISTRY_VERSION,
+        hingeAssignment: HINGE_ASSIGNMENT_CONTRACT_VERSION,
         secondOrderJet: SECOND_ORDER_JET_VERSION,
         rotationCoordinates: ROTATION_COORDINATE_VERSION,
       },
@@ -670,6 +689,12 @@ export function buildAgentManifest(options = {}) {
       'phase8CorotationalFrame3dResponse',
       'phase8CorotationalFrame3dState',
       'phase8CorotationalTruss3dResponse',
+      'phase8HingedFrame3dResponse',
+      'phase8HingedFrame3dState',
+      'phase8HingeBackbone',
+      'phase8HingeCyclicState',
+      'phase8HingePropertyRegistry',
+      'phase8HingeAssignmentChangeSet',
       'productHardeningAudit',
       'agentCommandBridge',
       'originalIndexRuntimeDiagnostics',

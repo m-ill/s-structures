@@ -15,7 +15,7 @@ import {
   pushForwardGeneralizedMoment,
 } from '../math/rotationCoordinates.js';
 
-export const MDOF_EQUILIBRIUM_ASSEMBLER_VERSION = 'p8-m3-mdof-equilibrium-assembler-v2';
+export const MDOF_EQUILIBRIUM_ASSEMBLER_VERSION = 'p8-m4-mdof-equilibrium-assembler-v3';
 
 export function createEquilibriumAssembler(input = {}) {
   const domain = requireDomain(input.domain);
@@ -50,8 +50,10 @@ export function createEquilibriumAssembler(input = {}) {
   }
   const netLoadPattern = subtractLoadPatterns(physicalLoadPattern, handledMechanical);
   const hasReleasedElement = elements.some((entry) => (entry?.descriptor?.releases?.localDofs || []).length > 0);
+  const hasGeneralElement = elements.some((entry) => entry.requiredMatrixClass === 'general');
   const requiredMatrixClass = (
     hasReleasedElement
+    || hasGeneralElement
     || (usesFiniteRotationCoordinates && loadPatternHasPhysicalMoment(physicalLoadPattern, domain.nodes.length))
   ) ? 'general' : 'spd';
   let evaluationCount = 0;

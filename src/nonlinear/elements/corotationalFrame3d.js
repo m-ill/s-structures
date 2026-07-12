@@ -27,9 +27,12 @@ import {
   rotationCoordinateIncrementToSpatial,
   spatialRotationIncrementToCoordinates,
 } from '../math/rotationCoordinates.js';
+import { evaluateHingeTrial } from '../materials/hingeCyclic.js';
 
 export const COROTATIONAL_FRAME_3D_VERSION = 'p8-m3-corotational-frame-3d-v2';
 export const COROTATIONAL_FRAME_3D_STATE_VERSION = 'p8-m3-corotational-frame-state-v2';
+export const HINGED_COROTATIONAL_FRAME_3D_VERSION = 'p8-m4-hinged-corotational-frame-3d-v1';
+export const HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION = 'p8-m4-hinged-corotational-frame-state-v1';
 
 const DOF_COUNT = 12;
 const ROTATION_LOG_LIMIT = ROTATION_VECTOR_LIMIT;
@@ -37,8 +40,12 @@ const ROTATION_LOG_LIMIT = ROTATION_VECTOR_LIMIT;
 export function createCorotationalFrame3dKernel(descriptor, options = {}) {
   const prepared = prepareDescriptor(descriptor, options);
   return createNonlinearElementContract({
-    type: prepared.behavior === 'truss' ? 'corotational-truss-3d' : 'corotational-frame-3d',
-    stateVersion: COROTATIONAL_FRAME_3D_STATE_VERSION,
+    type: prepared.hingeVariables.length
+      ? 'hinged-corotational-frame-3d'
+      : prepared.behavior === 'truss' ? 'corotational-truss-3d' : 'corotational-frame-3d',
+    stateVersion: prepared.hingeVariables.length
+      ? HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION
+      : COROTATIONAL_FRAME_3D_STATE_VERSION,
     dofCount: DOF_COUNT,
     evaluate(input = {}) {
       const mode = input.mode || 'static';
@@ -96,7 +103,7 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
       const resistingForceGlobal = condensed.resistingForceGlobal;
       const rawTangentSymmetryError = condensed.rawTangentSymmetryError;
       if (
-        prepared.releases.length === 0
+        prepared.internalRotationVariables.length === 0
         && mechanicalFixedEndForce.every((value) => value === 0)
         && rawTangentSymmetryError > prepared.tangentSymmetryTolerance
       ) {
@@ -138,7 +145,20 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
       const basicRotationI = response.rotationI.map((value) => value.value);
       const basicRotationJ = response.rotationJ.map((value) => value.value);
       const currentLength = response.currentLength.value;
-      const strainEnergy = response.elasticEnergy.value;
+      const memberStrainEnergy = response.elasticEnergy.value;
+      const hingeRecoverableEnergy = condensed.hingeResponses.reduce(
+        (sum, item) => sum + Number(item.response.energies.recoverable || 0),
+        0,
+      );
+      const hingeDissipatedEnergy = condensed.hingeResponses.reduce(
+        (sum, item) => sum + Number(item.response.energies.dissipated || 0),
+        0,
+      );
+      const hingeWork = condensed.hingeResponses.reduce(
+        (sum, item) => sum + Number(item.response.energies.work || 0),
+        0,
+      );
+      const strainEnergy = memberStrainEnergy + hingeRecoverableEnergy;
       const initialStrainPotential = response.initialStrainPotential.value;
       const elementPotential = response.energy.value;
       if (strainEnergy < -1e-8 * Math.max(1, Math.abs(strainEnergy))) {
@@ -146,7 +166,9 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
       }
 
       const trialState = {
-        version: COROTATIONAL_FRAME_3D_STATE_VERSION,
+        version: prepared.hingeVariables.length
+          ? HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION
+          : COROTATIONAL_FRAME_3D_STATE_VERSION,
         elementId: descriptor.id,
         descriptorHash: descriptor.descriptorHash || null,
         currentLength,
@@ -157,10 +179,18 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
         axialForce: 0.5 * (recoveredEndForce[6] - recoveredEndForce[0]),
         strainEnergy,
         initialStrainPotential,
-        elementPotential: prepared.releases.length ? null : elementPotential,
-        energyConservative: prepared.releases.length === 0,
+        memberStrainEnergy,
+        hingeRecoverableEnergy,
+        hingeDissipatedEnergy,
+        hingeWork,
+        elementPotential: prepared.internalRotationVariables.length ? null : elementPotential,
+        energyConservative: prepared.internalRotationVariables.length === 0,
+        energyDissipative: prepared.hingeVariables.length > 0,
         releaseRotations: condensed.releaseRotations,
         releaseResidual: condensed.releaseResidual,
+        internalRotations: condensed.internalRotations,
+        internalResidual: condensed.internalResidual,
+        hinges: Object.fromEntries(condensed.hingeResponses.map((item) => [item.assignment.id, item.response.trialState])),
       };
       const scaledLoads = scaleMemberLoads(input.elementLoads?.trace, response.lambda ?? input?.trialKinematics?.lambda ?? 0);
       const stationLoads = collectMemberSpanLoads(descriptor.id, scaledLoads, {
@@ -176,7 +206,9 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
         prepared.stationCount,
       );
       return {
-        version: COROTATIONAL_FRAME_3D_VERSION,
+        version: prepared.hingeVariables.length
+          ? HINGED_COROTATIONAL_FRAME_3D_VERSION
+          : COROTATIONAL_FRAME_3D_VERSION,
         resistingForceGlobal,
         tangentGlobal,
         Pint: resistingForceGlobal.slice(),
@@ -185,8 +217,12 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
         trialState,
         energies: {
           strain: strainEnergy,
+          memberStrain: memberStrainEnergy,
+          hingeRecoverable: hingeRecoverableEnergy,
+          hingeDissipated: hingeDissipatedEnergy,
+          hingeWork,
           initialStrainPotential,
-          ...(prepared.releases.length ? {} : { elementPotential }),
+          ...(prepared.internalRotationVariables.length ? {} : { elementPotential }),
         },
         globalResponse: {
           generalizedResistingForce: resistingForceGlobal.slice(),
@@ -212,13 +248,39 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
           currentAxes,
           referenceAxes: prepared.referenceAxes.map((axis) => axis.slice()),
           releases: prepared.releases.slice(),
+          hinges: condensed.hingeResponses.map((item) => ({
+            id: item.assignment.id,
+            propertyId: item.assignment.propertyId,
+            end: item.assignment.end,
+            axis: item.assignment.axis,
+            localDof: item.assignment.localDof,
+            rotation: item.response.rotation,
+            moment: item.response.moment,
+            tangent: item.response.tangent,
+            constitutiveTangent: item.response.constitutiveTangent,
+            state: item.response.state,
+            point: item.response.point,
+            branch: item.response.branch,
+            events: item.response.events,
+            energies: item.response.energies,
+            diagnostics: item.response.diagnostics,
+            source: item.assignment.source,
+            qualification: item.assignment.property.qualification,
+            axialRatioTrace: item.assignment.axialRatioTrace,
+          })),
           stations,
           stationLoadIssues: stationLoads.issues || [],
         },
         diagnostics: {
-          version: COROTATIONAL_FRAME_3D_VERSION,
-          formulation: 'objective-energy-corotational-3d',
-          tangent: 'exact-second-order-automatic-differentiation',
+          version: prepared.hingeVariables.length
+            ? HINGED_COROTATIONAL_FRAME_3D_VERSION
+            : COROTATIONAL_FRAME_3D_VERSION,
+          formulation: prepared.hingeVariables.length
+            ? 'objective-corotational-3d-series-concentrated-plasticity'
+            : 'objective-energy-corotational-3d',
+          tangent: prepared.hingeVariables.length
+            ? 'exact-member-ad-plus-consistent-hinge-condensation'
+            : 'exact-second-order-automatic-differentiation',
           rawTangentSymmetryError,
           jetVersion: SECOND_ORDER_JET_VERSION,
           behavior: prepared.behavior,
@@ -229,7 +291,13 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
           released: prepared.releases.length > 0,
           releaseIterations: condensed.releaseIterations,
           releaseResidual: condensed.releaseResidual,
-          energyConservative: prepared.releases.length === 0,
+          hinged: prepared.hingeVariables.length > 0,
+          hingeCount: prepared.hingeVariables.length,
+          hingeIterations: condensed.internalIterations,
+          hingeResidual: condensed.hingeResidual,
+          hingeRequiredMatrixClass: prepared.requiredMatrixClass,
+          energyConservative: prepared.internalRotationVariables.length === 0,
+          energyDissipative: prepared.hingeVariables.length > 0,
           releaseFormulation: prepared.releases.length
             ? 'physical-current-axis-zero-moment-internal-newton'
             : null,
@@ -259,6 +327,7 @@ function evaluateEnergy(
   q,
   initialStrainForce = new Array(DOF_COUNT).fill(0),
   mechanicalReferenceJointForce = new Array(DOF_COUNT).fill(0),
+  committedState = {},
 ) {
   const n = q[0].size;
   const zero = () => jetConstant(0, n);
@@ -269,9 +338,9 @@ function evaluateEnergy(
   const baseOrientationJ = matrixMultiplyConstantRight(rotationJ, prepared.referenceMatrix);
   const hingeRotationI = [zero(), zero(), zero()];
   const hingeRotationJ = [zero(), zero(), zero()];
-  for (const release of prepared.releaseVariables) {
-    const value = q[release.variableIndex] || zero();
-    (release.end === 'i' ? hingeRotationI : hingeRotationJ)[release.axis] = value;
+  for (const internal of prepared.internalRotationVariables) {
+    const value = q[internal.variableIndex] || zero();
+    (internal.end === 'i' ? hingeRotationI : hingeRotationJ)[internal.axisIndex] = value;
   }
   const orientationI = matrixMultiply(baseOrientationI, rotationMatrix(hingeRotationI));
   const orientationJ = matrixMultiply(baseOrientationJ, rotationMatrix(hingeRotationJ));
@@ -371,7 +440,32 @@ function evaluateEnergy(
     );
   }
   const energy = jetAdd(elasticEnergy, initialStrainPotential);
-  const releaseResiduals = prepared.releaseVariables.map((release) => physicalTotalEndForce[release.dof]);
+  const hingeResponses = prepared.hingeVariables.map((hinge) => ({
+    assignment: hinge.assignment,
+    response: evaluateHingeTrial(
+      -(q[hinge.variableIndex] || zero()).value,
+      hinge.assignment.property,
+      committedState?.hinges?.[hinge.assignment.id],
+      {
+        elementId: prepared.id,
+        assignmentId: hinge.assignment.id,
+        end: hinge.assignment.end,
+        axis: hinge.assignment.axis,
+      },
+    ),
+  }));
+  const hingeResponseById = new Map(hingeResponses.map((item) => [item.assignment.id, item.response]));
+  const internalResiduals = prepared.internalRotationVariables.map((internal) => {
+    const memberMoment = physicalTotalEndForce[internal.dof];
+    if (internal.kind === 'release') return memberMoment;
+    const response = hingeResponseById.get(internal.assignment.id);
+    const springMoment = jetConstant(response.moment, n);
+    springMoment.gradient[internal.variableIndex] = -response.tangent;
+    return jetSub(memberMoment, springMoment);
+  });
+  const releaseResiduals = prepared.releaseVariables.map((release) => (
+    internalResiduals[release.internalIndex]
+  ));
   return {
     coordinates: q,
     energy,
@@ -381,7 +475,9 @@ function evaluateEnergy(
     physicalInternalEndForce,
     physicalMechanicalEndForce,
     physicalTotalEndForce,
+    internalResiduals,
     releaseResiduals,
+    hingeResponses,
     deformation,
     currentLength,
     currentAxes: [e1, e2, e3],
@@ -397,10 +493,10 @@ function evaluateCondensedElement(
   mechanicalReferenceJointForce,
   committedState,
 ) {
-  const releaseCount = prepared.releaseVariables.length;
-  if (releaseCount === 0) {
+  const internalCount = prepared.internalRotationVariables.length;
+  if (internalCount === 0) {
     const variables = u.map((value, index) => jetVariable(value, index, DOF_COUNT));
-    const response = evaluateEnergy(prepared, variables, initialStrainForce, mechanicalReferenceJointForce);
+    const response = evaluateEnergy(prepared, variables, initialStrainForce, mechanicalReferenceJointForce, committedState);
     const mechanicalJets = mechanicalJointGeneralizedJets(variables, mechanicalReferenceJointForce);
     const tangentGlobal = hessianMatrix(response.energy.hessian, DOF_COUNT);
     for (let row = 0; row < DOF_COUNT; row += 1) {
@@ -418,18 +514,30 @@ function evaluateCondensedElement(
       releaseRotations: [],
       releaseResidual: 0,
       releaseIterations: 0,
+      internalRotations: [],
+      internalResidual: 0,
+      internalIterations: 0,
+      hingeResidual: 0,
+      hingeResponses: [],
       nodalDeformation: response.deformation.map((value) => value.value),
     };
   }
 
-  let releases = optionalReleaseState(committedState?.releaseRotations, releaseCount);
+  let internalRotations = optionalInternalRotationState(prepared, committedState);
   let evaluated;
   let residualNorm = Infinity;
   let iteration = 0;
-  for (; iteration < prepared.releaseMaxIterations; iteration += 1) {
-    evaluated = evaluateReleaseJets(prepared, u, releases, initialStrainForce, mechanicalReferenceJointForce);
-    const releaseIndices = prepared.releaseVariables.map((item) => item.variableIndex);
-    const residual = evaluated.releaseResiduals.map((value) => value.value);
+  for (; iteration < prepared.internalMaxIterations; iteration += 1) {
+    evaluated = evaluateInternalJets(
+      prepared,
+      u,
+      internalRotations,
+      initialStrainForce,
+      mechanicalReferenceJointForce,
+      committedState,
+    );
+    const internalIndices = prepared.internalRotationVariables.map((item) => item.variableIndex);
+    const residual = evaluated.internalResiduals.map((value) => value.value);
     residualNorm = Math.max(0, ...residual.map((value) => Math.abs(Number(value))));
     const internalScaleVector = numericMatrixVector(
       prepared.localStiffness,
@@ -441,48 +549,67 @@ function evaluateCondensedElement(
       ...[3, 4, 5, 9, 10, 11].map((index) => Math.abs(initialStrainForce[index])),
       ...[3, 4, 5, 9, 10, 11].map((index) => Math.abs(evaluated.physicalMechanicalEndForce[index].value)),
     );
-    if (residualNorm <= prepared.releaseAbsoluteTolerance + prepared.releaseTolerance * momentScale) break;
-    const hessian = evaluated.releaseResiduals.map((residualJet) => (
-      releaseIndices.map((column) => residualJet.gradient[column])
+    if (residualNorm <= prepared.internalAbsoluteTolerance + prepared.internalTolerance * momentScale) break;
+    const hessian = evaluated.internalResiduals.map((residualJet) => (
+      internalIndices.map((column) => residualJet.gradient[column])
     ));
     const correction = solveLinear(hessian.map((row) => row.slice()), residual.map((value) => -value));
     if (!correction || correction.some((value) => !Number.isFinite(value))) {
-      throw elementError('COROTATIONAL_RELEASE_INTERNAL_SINGULAR', `Element ${prepared.id} release internal tangent is singular.`);
+      throw elementError(
+        internalErrorCode(prepared, 'SINGULAR'),
+        `Element ${prepared.id} internal rotational tangent is singular.`,
+      );
     }
     let accepted = null;
     for (const alpha of [1, 0.5, 0.25, 0.125, 0.0625, 0.03125]) {
-      const candidate = releases.map((value, index) => value + alpha * correction[index]);
-      const trial = evaluateReleaseJets(prepared, u, candidate, initialStrainForce, mechanicalReferenceJointForce);
-      const norm = Math.max(0, ...trial.releaseResiduals.map((value) => Math.abs(value.value)));
+      const candidate = internalRotations.map((value, index) => value + alpha * correction[index]);
+      const trial = evaluateInternalJets(
+        prepared,
+        u,
+        candidate,
+        initialStrainForce,
+        mechanicalReferenceJointForce,
+        committedState,
+      );
+      const norm = Math.max(0, ...trial.internalResiduals.map((value) => Math.abs(value.value)));
       if (!accepted || norm < accepted.norm) accepted = { values: candidate, response: trial, norm };
       if (norm < residualNorm) break;
     }
     if (!accepted || !(accepted.norm < residualNorm)) {
-      throw elementError('COROTATIONAL_RELEASE_INTERNAL_LINE_SEARCH', `Element ${prepared.id} release equilibrium did not improve.`);
+      throw elementError(
+        internalErrorCode(prepared, 'LINE_SEARCH'),
+        `Element ${prepared.id} internal rotational equilibrium did not improve.`,
+      );
     }
-    releases = accepted.values;
+    internalRotations = accepted.values;
     evaluated = accepted.response;
   }
-  if (!evaluated || iteration >= prepared.releaseMaxIterations) {
-    throw elementError('COROTATIONAL_RELEASE_INTERNAL_NONCONVERGENCE', `Element ${prepared.id} release equilibrium did not converge.`);
+  if (!evaluated || iteration >= prepared.internalMaxIterations) {
+    throw elementError(
+      internalErrorCode(prepared, 'NONCONVERGENCE'),
+      `Element ${prepared.id} internal rotational equilibrium did not converge.`,
+    );
   }
 
   const forceJets = releasedGlobalInternalForceJets(prepared, evaluated);
   const resistingForceGlobal = forceJets.map((value) => value.value);
-  const releaseIndices = prepared.releaseVariables.map((item) => item.variableIndex);
-  const releaseJacobian = evaluated.releaseResiduals.map((residualJet) => (
-    releaseIndices.map((column) => residualJet.gradient[column])
+  const internalIndices = prepared.internalRotationVariables.map((item) => item.variableIndex);
+  const internalJacobian = evaluated.internalResiduals.map((residualJet) => (
+    internalIndices.map((column) => residualJet.gradient[column])
   ));
   const tangentGlobal = forceJets.map((forceJet) => Array.from(forceJet.gradient.slice(0, DOF_COUNT)));
   for (let column = 0; column < DOF_COUNT; column += 1) {
-    const coupling = evaluated.releaseResiduals.map((residualJet) => residualJet.gradient[column]);
-    const releaseDerivative = solveLinear(releaseJacobian.map((row) => row.slice()), coupling);
-    if (!releaseDerivative) {
-      throw elementError('COROTATIONAL_RELEASE_INTERNAL_SINGULAR', `Element ${prepared.id} release tangent condensation failed.`);
+    const coupling = evaluated.internalResiduals.map((residualJet) => residualJet.gradient[column]);
+    const internalDerivative = solveLinear(internalJacobian.map((row) => row.slice()), coupling);
+    if (!internalDerivative) {
+      throw elementError(
+        internalErrorCode(prepared, 'SINGULAR'),
+        `Element ${prepared.id} internal tangent condensation failed.`,
+      );
     }
     for (let row = 0; row < DOF_COUNT; row += 1) {
-      for (let release = 0; release < releaseCount; release += 1) {
-        tangentGlobal[row][column] -= forceJets[row].gradient[releaseIndices[release]] * releaseDerivative[release];
+      for (let internal = 0; internal < internalCount; internal += 1) {
+        tangentGlobal[row][column] -= forceJets[row].gradient[internalIndices[internal]] * internalDerivative[internal];
       }
     }
   }
@@ -492,23 +619,39 @@ function evaluateCondensedElement(
     nodalVariables,
     initialStrainForce,
     mechanicalReferenceJointForce,
+    committedState,
   ).deformation.map((value) => value.value);
+  const releaseRotations = prepared.releaseVariables.map((item) => internalRotations[item.internalIndex]);
+  const releaseResidual = maxResidualForKind(prepared, evaluated, 'release');
+  const hingeResidual = maxResidualForKind(prepared, evaluated, 'hinge');
   return {
     response: evaluated,
     resistingForceGlobal,
     tangentGlobal,
     rawTangentSymmetryError: matrixSymmetryError(tangentGlobal),
-    releaseRotations: releases,
-    releaseResidual: residualNorm,
-    releaseIterations: iteration,
+    releaseRotations,
+    releaseResidual,
+    releaseIterations: prepared.releaseVariables.length ? iteration : 0,
+    internalRotations,
+    internalResidual: residualNorm,
+    internalIterations: iteration,
+    hingeResidual,
+    hingeResponses: evaluated.hingeResponses,
     nodalDeformation,
   };
 }
 
-function evaluateReleaseJets(prepared, u, releases, initialStrainForce, mechanicalReferenceJointForce) {
-  const values = [...u, ...releases];
+function evaluateInternalJets(
+  prepared,
+  u,
+  internalRotations,
+  initialStrainForce,
+  mechanicalReferenceJointForce,
+  committedState,
+) {
+  const values = [...u, ...internalRotations];
   const variables = values.map((value, index) => jetVariable(value, index, values.length));
-  return evaluateEnergy(prepared, variables, initialStrainForce, mechanicalReferenceJointForce);
+  return evaluateEnergy(prepared, variables, initialStrainForce, mechanicalReferenceJointForce, committedState);
 }
 
 function mechanicalJointGeneralizedJets(coordinates, jointForce) {
@@ -620,9 +763,37 @@ function pullBackSpatialMomentJets(rotation, spatialMoment) {
   return matrixVector(transposeJacobian, spatialMoment);
 }
 
-function optionalReleaseState(values, length) {
-  if (values == null) return new Array(length).fill(0);
-  return finiteVector(values, length, 'committedState.releaseRotations');
+function optionalInternalRotationState(prepared, committedState = {}) {
+  const releaseValues = committedState.releaseRotations == null
+    ? new Array(prepared.releaseVariables.length).fill(0)
+    : finiteVector(
+      committedState.releaseRotations,
+      prepared.releaseVariables.length,
+      'committedState.releaseRotations',
+    );
+  let releaseIndex = 0;
+  return prepared.internalRotationVariables.map((internal) => {
+    if (internal.kind === 'release') {
+      const value = releaseValues[releaseIndex];
+      releaseIndex += 1;
+      return value;
+    }
+    const rotation = committedState.hinges?.[internal.assignment.id]?.rotation;
+    return rotation == null ? 0 : -finite(rotation, `committedState.hinges.${internal.assignment.id}.rotation`);
+  });
+}
+
+function maxResidualForKind(prepared, evaluated, kind) {
+  const values = prepared.internalRotationVariables.flatMap((internal, index) => (
+    internal.kind === kind ? [Math.abs(Number(evaluated.internalResiduals[index].value))] : []
+  ));
+  return Math.max(0, ...values);
+}
+
+function internalErrorCode(prepared, suffix) {
+  return prepared.hingeVariables.length
+    ? `HINGE_SERIES_TANGENT_${suffix}`
+    : `COROTATIONAL_RELEASE_INTERNAL_${suffix}`;
 }
 
 function prepareDescriptor(descriptor, options) {
@@ -693,11 +864,44 @@ function prepareDescriptor(descriptor, options) {
   }
   requireFiniteMatrix(localStiffness, 'localStiffness');
   const releaseVariables = releases.map((dof, index) => Object.freeze({
+    kind: 'release',
     dof,
     variableIndex: DOF_COUNT + index,
+    internalIndex: index,
     end: dof < 6 ? 'i' : 'j',
     axis: dof % 6 - 3,
+    axisIndex: dof % 6 - 3,
   }));
+  const hingeAssignments = normalizeHingeAssignments(options.hingeAssignments || [], descriptor.id);
+  if (behavior !== 'frame' && hingeAssignments.length) {
+    throw elementError('HINGED_FRAME_BEHAVIOR_REQUIRED', `Element ${descriptor.id} must use frame behavior for rotational hinges.`);
+  }
+  const releaseSet = new Set(releases);
+  const hingeKeys = new Set();
+  const hingeVariables = hingeAssignments.map((assignment, index) => {
+    const dof = Number(assignment.localDof);
+    if (![4, 5, 10, 11].includes(dof)) {
+      throw elementError('HINGE_ASSIGNMENT_DOF_UNSUPPORTED', `Element ${descriptor.id} hinge ${assignment.id} must use local y/z rotation.`);
+    }
+    if (releaseSet.has(dof)) {
+      throw elementError('HINGE_RELEASE_AXIS_CONFLICT', `Element ${descriptor.id} has a release and hinge on local DOF ${dof}.`);
+    }
+    const key = `${assignment.end}:${assignment.axis}`;
+    if (hingeKeys.has(key)) throw elementError('HINGE_ASSIGNMENT_DUPLICATE', `Element ${descriptor.id} has duplicate hinge ${key}.`);
+    hingeKeys.add(key);
+    const internalIndex = releaseVariables.length + index;
+    return Object.freeze({
+      kind: 'hinge',
+      dof,
+      variableIndex: DOF_COUNT + internalIndex,
+      internalIndex,
+      end: assignment.end,
+      axis: assignment.axis === 'y' ? 1 : 2,
+      axisIndex: assignment.axis === 'y' ? 1 : 2,
+      assignment,
+    });
+  });
+  const internalRotationVariables = Object.freeze([...releaseVariables, ...hingeVariables]);
   const referenceX = referenceAxes[0];
   return Object.freeze({
     id: descriptor.id,
@@ -713,6 +917,9 @@ function prepareDescriptor(descriptor, options) {
     offsets,
     releases,
     releaseVariables,
+    hingeVariables,
+    internalRotationVariables,
+    requiredMatrixClass: hingeAssignments.some((assignment) => assignment.requiredMatrixClass === 'general') ? 'general' : 'spd',
     localStiffness,
     minimumLength: positive(options.minimumLength, Math.max(1e-10, referenceLength * 1e-9)),
     stationCount: Math.max(21, Math.trunc(positive(options.stationCount, 21))),
@@ -720,6 +927,9 @@ function prepareDescriptor(descriptor, options) {
     releaseTolerance: positive(options.releaseTolerance, 1e-11),
     releaseAbsoluteTolerance: positive(options.releaseAbsoluteTolerance, 1e-8),
     releaseMaxIterations: Math.max(4, Math.trunc(positive(options.releaseMaxIterations, 24))),
+    internalTolerance: positive(options.internalTolerance ?? options.releaseTolerance, 1e-11),
+    internalAbsoluteTolerance: positive(options.internalAbsoluteTolerance ?? options.releaseAbsoluteTolerance, 1e-8),
+    internalMaxIterations: Math.max(4, Math.trunc(positive(options.internalMaxIterations ?? options.releaseMaxIterations, 32))),
   });
 }
 
@@ -1154,6 +1364,38 @@ function normalizeReleases(values, id) {
     throw elementError('COROTATIONAL_RELEASE_INVALID', `Element ${id} contains invalid release DOFs.`);
   }
   return [...new Set(values)].sort((a, b) => a - b);
+}
+
+function normalizeHingeAssignments(values, elementId) {
+  if (values == null) return [];
+  if (!Array.isArray(values)) {
+    throw elementError('HINGE_ASSIGNMENTS_INVALID', `Element ${elementId} hinge assignments must be an array.`);
+  }
+  return values.map((input, index) => {
+    const assignment = structuredCloneSafe(input);
+    const end = assignment?.end;
+    const axis = assignment?.axis;
+    const expectedDof = end === 'i'
+      ? axis === 'y' ? 4 : axis === 'z' ? 5 : null
+      : end === 'j' ? axis === 'y' ? 10 : axis === 'z' ? 11 : null : null;
+    if (
+      !assignment
+      || typeof assignment !== 'object'
+      || !assignment.id
+      || assignment.memberId !== elementId
+      || !assignment.propertyId
+      || !assignment.property
+      || assignment.property.id !== assignment.propertyId
+      || expectedDof == null
+      || Number(assignment.localDof) !== expectedDof
+    ) {
+      throw elementError(
+        'HINGE_ASSIGNMENT_INVALID',
+        `Element ${elementId} hinge assignment ${assignment?.id || index} is invalid.`,
+      );
+    }
+    return Object.freeze(assignment);
+  }).sort((a, b) => `${a.end}:${a.axis}:${a.id}`.localeCompare(`${b.end}:${b.axis}:${b.id}`));
 }
 
 function validateReleaseContract(contract, releases, id) {

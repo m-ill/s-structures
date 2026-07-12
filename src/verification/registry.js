@@ -1,4 +1,4 @@
-export const VERIFICATION_REGISTRY_VERSION = 'p8-m3-verification-registry-v3';
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m4-verification-registry-v4';
 export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
 export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
 
@@ -93,6 +93,25 @@ export const PHASE8_VERIFICATION_SUITES = Object.freeze([
       'NL-COR-10',
       'NL-COR-11',
       'NL-COR-12',
+    ]),
+  }),
+  Object.freeze({
+    id: 'P8-M4-CONCENTRATED-HINGE',
+    milestone: 'P8-M4',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-HNG-01',
+      'NL-HNG-02',
+      'NL-HNG-03',
+      'NL-HNG-04',
+      'NL-HNG-05',
+      'NL-HNG-06',
+      'NL-HNG-07',
+      'NL-HNG-08',
+      'NL-HNG-09',
+      'NL-HNG-10',
+      'NL-HNG-11',
+      'NL-HNG-12',
     ]),
   }),
 ]);

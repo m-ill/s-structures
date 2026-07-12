@@ -1,9 +1,10 @@
-export const MODEL_TRANSACTION_VERSION = 'p7-m3-model-transaction-v1';
+export const MODEL_TRANSACTION_VERSION = 'p8-m4-model-transaction-v2';
 
 const COLLECTIONS = new Set([
   'nodes', 'members', 'loads', 'stories', 'diaphragms', 'materials', 'sections',
   'loadCases', 'loadCombinations', 'analysisCases', 'massSources', 'sourceRegistry',
-  'shells', 'slabs',
+  'shells', 'slabs', 'nonlinearMaterials', 'nonlinearSections', 'hingeProperties',
+  'linkProperties', 'timeHistoryFunctions', 'analysisStates',
 ]);
 
 export function applyModelChangeSet(model, changeSet = {}, options = {}) {
