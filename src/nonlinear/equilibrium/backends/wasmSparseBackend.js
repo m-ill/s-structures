@@ -61,6 +61,9 @@ export async function createWasmSparseBackend({ wasmBytes, wasmUrl } = {}) {
   return {
     id: WASM_SPARSE_BACKEND_ID,
     production: true,
+    executionTarget: 'wasm-cpu',
+    numericPrecision: 'f64',
+    deterministic: true,
     matrixClasses: MATRIX_CLASSES,
     matrixFormats: MATRIX_FORMATS,
     preflight() {

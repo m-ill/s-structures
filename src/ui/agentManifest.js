@@ -152,12 +152,18 @@ import {
   NONLINEAR_STATE_STORE_VERSION,
 } from '../nonlinear/core/index.js';
 import {
+  ARC_LENGTH_RESTART_VERSION,
+  ARC_LENGTH_SCALING_VERSION,
+  CYCLIC_STATIC_PROTOCOL_VERSION,
   LINEAR_ELASTIC_ELEMENT_VERSION,
+  MDOF_ARC_LENGTH_VERSION,
   MDOF_CONVERGENCE_VERSION,
+  MDOF_CYCLIC_STATIC_VERSION,
   MDOF_EQUILIBRIUM_ASSEMBLER_VERSION,
   MDOF_LINEAR_BACKEND_VERSION,
   MDOF_LOAD_CONTROL_VERSION,
   MDOF_NEWTON_VERSION,
+  NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION,
   NONLINEAR_EQUILIBRIUM_AUDIT_VERSION,
   NONLINEAR_EXTERNAL_LOAD_VERSION,
   TYPED_REDUCED_SPARSE_VERSION,
@@ -217,7 +223,7 @@ import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } fro
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m6.1-agent-capability-manifest-v9';
+export const AGENT_MANIFEST_VERSION = 'p8-m7-agent-capability-manifest-v10';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -379,6 +385,12 @@ export function buildAgentManifest(options = {}) {
       phase8MdofNewton: MDOF_NEWTON_VERSION,
       phase8MdofLoadControl: MDOF_LOAD_CONTROL_VERSION,
       phase8MdofConvergence: MDOF_CONVERGENCE_VERSION,
+      phase8MdofArcLength: MDOF_ARC_LENGTH_VERSION,
+      phase8ArcLengthScaling: ARC_LENGTH_SCALING_VERSION,
+      phase8ArcLengthRestart: ARC_LENGTH_RESTART_VERSION,
+      phase8MdofCyclicStatic: MDOF_CYCLIC_STATIC_VERSION,
+      phase8CyclicStaticProtocol: CYCLIC_STATIC_PROTOCOL_VERSION,
+      phase8ComputeBackendPolicy: NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION,
       phase8LinearSystemBackend: MDOF_LINEAR_BACKEND_VERSION,
       phase8TypedReducedSparse: TYPED_REDUCED_SPARSE_VERSION,
       phase8WasmSparseDiagnostics: WASM_SPARSE_DIAGNOSTICS_VERSION,
@@ -442,6 +454,12 @@ export function buildAgentManifest(options = {}) {
         newton: MDOF_NEWTON_VERSION,
         loadControl: MDOF_LOAD_CONTROL_VERSION,
         convergence: MDOF_CONVERGENCE_VERSION,
+        arcLength: MDOF_ARC_LENGTH_VERSION,
+        arcLengthScaling: ARC_LENGTH_SCALING_VERSION,
+        arcLengthRestart: ARC_LENGTH_RESTART_VERSION,
+        cyclicStatic: MDOF_CYCLIC_STATIC_VERSION,
+        cyclicStaticProtocol: CYCLIC_STATIC_PROTOCOL_VERSION,
+        computeBackendPolicy: NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION,
         linearBackend: MDOF_LINEAR_BACKEND_VERSION,
         sparseMatrix: TYPED_REDUCED_SPARSE_VERSION,
         wasmBackendDiagnostics: WASM_SPARSE_DIAGNOSTICS_VERSION,
@@ -921,6 +939,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P8-M5', status: 'candidate', feature: 'gravity-preloaded MDOF augmented displacement-control Pushover with accepted-state capacity, story, member, hinge, and handoff results' },
       { id: 'P8-M6', status: 'candidate', feature: 'Phase 7 sourced steel/RC fiber sections, N-My-Mz response, validated PMM surfaces, absolute-strength hinge coupling, and distributed-fiber Pushover members' },
       { id: 'P8-M6.1', status: 'available', feature: 'dedicated PMM Worker preprocessing, full-state numerical parity, validated persistent cache, progress, cancellation, and stale-source protection' },
+      { id: 'P8-M7', status: 'candidate', feature: 'Crisfield spherical arc-length continuation, deterministic branch selection, cyclic static protocols, rollback, checkpoint restart, and GPU-ready backend policy' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },
@@ -933,7 +952,8 @@ export function buildAgentManifest(options = {}) {
     ],
     limitations: [
       'Legacy Pushover uses previous-step hinge secant stiffness degradation and remains preliminary/design-blocked.',
-      'Legacy Pushover remains preliminary and isolated. The production Pushover engine includes supported Phase 7 fiber PMM coupling but remains candidate/design-blocked pending arc-length, external comparison, and pilot qualification.',
+      'Legacy Pushover remains preliminary and isolated. The production Pushover engine includes supported Phase 7 fiber PMM coupling and optional arc-length continuation but remains candidate/design-blocked pending external comparison and pilot qualification.',
+      'GPU execution is not implemented; P8-M7 only defines an opt-in deterministic-f64 backend contract and fails closed when no qualified GPU backend is supplied.',
       'P8-M6.1 PMM preprocessing uses a bounded memory cache and content-addressed IndexedDB records; persistent cache GC/TTL and the general analysis job scheduler remain later milestones.',
       'Report output is a calculation aid and not a certified final structural calculation package.',
       'Unsupported design checks must be reviewed separately.',

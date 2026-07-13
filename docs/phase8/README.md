@@ -3,25 +3,25 @@
 ```yaml
 phase: 8
 status: active
-implementation_status: p8-m6.1-complete
+implementation_status: p8-m7-complete
 reviewed_at: 2026-07-13
-current_milestone: P8-M7
+current_milestone: P8-M8
 mission: Phase 7 모델링·탄성해석과 동일한 analysis domain 위에서 상용 수준의 정적·동적 비선형 3D 건축골조해석을 구현한다.
 governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 ```
 
-> P8-M0~P8-M6.1은 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 정식 증강 변위제어 Pushover, 절대강도 PMM coupling, Gauss 적분 분포소성 fiber 부재와 PMM 전처리 Worker/cache가 구현됐다. arc-length·MDOF NLTH는 아직 없고 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
+> P8-M0~P8-M7은 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 정식 증강 변위제어 Pushover, fiber PMM/분포소성, PMM 전처리 Worker/cache, Crisfield arc-length와 cyclic static이 구현됐다. MDOF NLTH는 아직 없고 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
 
 ## 1. 결론
 
-기존 preliminary 모듈은 계속 격리한다. `productionPushover`는 M2 전역 MDOF Newton, M3 corotational 요소, M4 집중소성 힌지, M5 독립 중력·변위제어, M6 fiber PMM/분포소성 요소와 M6.1 비동기 PMM 전처리를 사용하는 정식 정적 후보 경로다. arc-length·NLTH workflow는 아직 이 경로에 연결되지 않았다.
+기존 preliminary 모듈은 계속 격리한다. `productionPushover`는 M2 전역 MDOF Newton, M3 corotational 요소, M4 집중소성 힌지, M5 독립 중력·변위제어, M6 fiber PMM/분포소성, M6.1 비동기 전처리와 M7 선택적 arc-length continuation을 사용하는 정식 정적 후보 경로다. MDOF NLTH workflow는 아직 연결되지 않았다.
 
 현재 상태를 정확히 표현하면 다음과 같다.
 
 - legacy Pushover는 각 스텝에서 선형해석을 한 번 수행하고 이전 스텝의 힌지 상태로 다음 스텝 부재 강성을 낮추는 preliminary 방법이며 production 경로와 분리된다.
 - legacy 전역 평형 모듈은 고정된 선형 강성으로 `K u`를 계산한다. P8-M2 코어는 별도 경로에서 현재 trial state의 요소 `Pint`와 `Kt`를 반복마다 재조립한다.
 - legacy `corotationalBeam.js`는 screening 식이며 격리된다. production 후보는 M3의 `corotationalFrame3d.js`/`corotationalTruss3d.js`다.
-- production 변위제어는 전역 증강방정식을 풀며, arc-length는 아직 trace 전용이라 실행 차단된다.
+- production 변위제어와 arc-length는 각각 실제 전역 증강방정식을 풀며 M5 checkpoint에서 byte-equivalent하게 연속된다. 사용자 UI workflow는 P8-M10 범위다.
 - NLTH는 모델을 받지 않는 SDOF 이선형 스프링 적분기다.
 - 기존 비선형 벤치마크 중 일부는 자기참조 또는 미리 만든 경로를 검사하므로 제품 검증 근거가 될 수 없다.
 

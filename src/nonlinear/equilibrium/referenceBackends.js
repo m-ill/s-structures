@@ -2,6 +2,8 @@ import { stableHash } from '../../core/stableHash.js';
 import { solveSparseLinear } from '../../solver/sparse/solveSparse.js';
 
 export const MDOF_LINEAR_BACKEND_VERSION = 'p8-m2-linear-backend-v1';
+export const NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION = 'p8-m7-compute-backend-policy-v1';
+export const NONLINEAR_COMPUTE_TARGETS = Object.freeze(['auto', 'cpu', 'wasm', 'gpu']);
 
 export function createDenseReferenceBackend(options = {}) {
   const limit = positiveInteger(options.limit, 300);
@@ -9,6 +11,9 @@ export function createDenseReferenceBackend(options = {}) {
     version: MDOF_LINEAR_BACKEND_VERSION,
     id: 'dense-pivoted-reference',
     production: false,
+    executionTarget: 'cpu-js',
+    numericPrecision: 'f64',
+    deterministic: true,
     matrixClasses: Object.freeze(['spd', 'symmetric-indefinite', 'general']),
     preflight({ dofCount = 0 } = {}) {
       const ok = Number(dofCount) <= limit;
@@ -29,6 +34,9 @@ export function createJsSparseReferenceBackend(options = {}) {
     version: MDOF_LINEAR_BACKEND_VERSION,
     id: 'js-sparse-spd-reference',
     production: false,
+    executionTarget: 'cpu-js',
+    numericPrecision: 'f64',
+    deterministic: true,
     matrixClasses: Object.freeze(['spd']),
     preflight({ dofCount = 0, matrixClass = 'spd' } = {}) {
       const reason = matrixClass !== 'spd'
@@ -78,6 +86,7 @@ export function requireEquilibriumBackend(backend, options = {}) {
     error.code = 'PRODUCTION_BACKEND_UNAVAILABLE';
     throw error;
   }
+  enforceComputeBackendPolicy(backend, options);
   if (!supportsMatrixClass(backend.matrixClasses, matrixClass)) {
     const error = new Error(`Backend ${backend.id || '(unknown)'} does not support ${matrixClass}.`);
     error.code = 'BACKEND_MATRIX_CLASS_UNSUPPORTED';
@@ -91,6 +100,70 @@ export function requireEquilibriumBackend(backend, options = {}) {
     throw error;
   }
   return backend;
+}
+
+export function describeEquilibriumBackend(backend = {}) {
+  const executionTarget = String(backend.executionTarget || 'unknown');
+  return Object.freeze({
+    version: NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION,
+    id: backend.id || null,
+    executionTarget,
+    targetFamily: computeTargetFamily(executionTarget),
+    numericPrecision: backend.numericPrecision || 'unknown',
+    deterministic: backend.deterministic === true,
+    production: backend.production === true,
+    matrixClasses: Object.freeze([...(backend.matrixClasses || [])]),
+  });
+}
+
+function enforceComputeBackendPolicy(backend, options) {
+  const requested = normalizeComputeTarget(options.backendPreference || options.computeTarget || 'auto');
+  const capability = describeEquilibriumBackend(backend);
+  if (requested === 'gpu' && capability.targetFamily !== 'gpu') {
+    throw backendPolicyError(
+      'GPU_BACKEND_UNAVAILABLE',
+      `GPU execution was requested, but backend ${backend.id || '(unknown)'} targets ${capability.executionTarget}.`,
+      { requested, capability },
+    );
+  }
+  if (requested === 'wasm' && capability.targetFamily !== 'wasm') {
+    throw backendPolicyError('WASM_BACKEND_UNAVAILABLE', 'WASM execution was requested but the selected backend is not WASM.', { requested, capability });
+  }
+  if (requested === 'cpu' && capability.targetFamily === 'gpu') {
+    throw backendPolicyError('CPU_BACKEND_REQUIRED', 'CPU execution was requested but the selected backend is GPU.', { requested, capability });
+  }
+  if (capability.targetFamily !== 'gpu') return;
+  if (options.gpuEnabled !== true) {
+    throw backendPolicyError('GPU_BACKEND_NOT_ENABLED', 'A GPU backend was supplied, but GPU execution was not explicitly enabled.', { requested, capability });
+  }
+  if (options.production && (capability.numericPrecision !== 'f64' || !capability.deterministic)) {
+    throw backendPolicyError(
+      'GPU_BACKEND_QUALIFICATION_REQUIRED',
+      'Production nonlinear analysis requires a deterministic f64 GPU backend until an alternative precision policy is qualified.',
+      { requested, capability },
+    );
+  }
+}
+
+function normalizeComputeTarget(value) {
+  const target = String(value || 'auto').trim().toLowerCase();
+  if (NONLINEAR_COMPUTE_TARGETS.includes(target)) return target;
+  throw backendPolicyError('COMPUTE_TARGET_INVALID', `Unsupported nonlinear compute target: ${target || '(missing)'}.`);
+}
+
+function computeTargetFamily(value) {
+  const target = String(value || '').toLowerCase();
+  if (target.includes('gpu')) return 'gpu';
+  if (target.includes('wasm')) return 'wasm';
+  if (target.includes('cpu') || target.includes('js')) return 'cpu';
+  return 'unknown';
+}
+
+function backendPolicyError(code, message, details = null) {
+  const error = new Error(message);
+  error.code = code;
+  error.details = details;
+  return error;
 }
 
 function supportsMatrixClass(classes, requested) {

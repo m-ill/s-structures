@@ -3,16 +3,16 @@
 ```yaml
 reviewed_at: 2026-07-13
 phase_status: active
-implementation_status: p8-m6.1-complete
+implementation_status: p8-m7-complete
 release_status: unavailable
 production_equivalence: Q1-advanced-static-candidate
-completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1]
-active_milestone: P8-M7
+completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1, P8-M7]
+active_milestone: P8-M8
 ```
 
 ## 현재 판정
 
-P8-M0~P8-M6.1은 완료되었다. M6는 Phase 7 단면·재료·철근 snapshot에서 steel/RC fiber section을 만들고 `N-My-Mz` 단면응답, 목표축력 평형, 완전한 P-My-Mz 볼록성 검증, 절대강도 PMM 힌지 coupling 및 Gauss 적분 분포소성 부재를 production 후보 경로에 연결했다. M6.1은 이 수치면을 보존하면서 PMM 전처리를 dedicated Worker, 검증 cache, source-stale 차단 경로로 분리했다.
+P8-M0~P8-M7은 완료되었다. M7은 M5의 exact checkpoint와 M6의 상태기반 요소를 소비하는 Crisfield 구면 arc-length, deterministic branch/radius/cutback/restart 및 cyclic static target history를 production 후보 경로에 연결했다.
 
 현재 제품 등급은 여전히 Q0다. `commercial-grade within supported scope` 판정은 [PRODUCTION_REQUIREMENTS.md](PRODUCTION_REQUIREMENTS.md)의 Q1~Q5를 모두 통과한 기능 범위에만 부여한다.
 
@@ -20,7 +20,7 @@ P8-M0~P8-M6.1은 완료되었다. M6는 Phase 7 단면·재료·철근 snapshot�
 | --- | --- | --- |
 | 기존 Pushover | 실행 가능 | `legacy-preliminary`, 설계전달 차단 |
 | 기존 SDOF Newmark NLTH | 실행 가능 | `legacy-preliminary`, model-bound 아님, 설계전달 차단 |
-| displacement/arc-length UI | 비활성 및 실행 차단 | `unsupported` |
+| displacement/arc-length UI | 변위제어 기존 경로, arc/cyclic 전용 workflow 미구현 | solver/API `candidate`, 통합 UI는 P8-M10 |
 | production nonlinear engine ID | 구현 | M5 정식 정적 Pushover `candidate`, legacy fallback 금지 |
 | schema v5 nonlinear registry | 구현 및 migration 검증 | P8-M0 완료 |
 | nonlinear case/run-record 계약 | 구현 및 UI/report/Agent 전파 | P8-M0 완료 |
@@ -38,7 +38,7 @@ P8-M0~P8-M6.1은 완료되었다. M6는 Phase 7 단면·재료·철근 snapshot�
 | 정식 변위제어 Pushover | 구현 | static `candidate`, 설계전달 차단 |
 | PMM·fiber 단면 | 구현 | H/BOX/PIPE·RC RECT/SQUARE, `N-My-Mz`, same-iteration hinge coupling `candidate` |
 | PMM 전처리 runtime | 구현 | stateless envelope, Worker, content cache, progress/cancel, source-stale guard |
-| arc-length | 미구현 | P8-M7까지 blocked |
+| arc-length·cyclic static | 실제 augmented solve와 상태이력 구현 | P8-M7 `candidate`, 설계전달 차단 |
 | 3D frame MDOF NLTH | 미구현 | blocked |
 | Worker/WASM sparse runtime | 자체 Rust/WASM, zero import, Worker/preflight/cancel 구현 | P8-M2 기반 완료, 대형모델 성능 미검증 |
 
@@ -125,12 +125,21 @@ M5·M6·M6.1 증거:
 - 코드 리뷰: [p8-m6-code-review.md](../../reports/validation-evidence/phase8/p8-m6-code-review.md)
 - M6.1 코드 리뷰: [p8-m6-1-code-review.md](../../reports/validation-evidence/phase8/p8-m6-1-code-review.md)
 
+M7 증거:
+
+- 제어: `src/nonlinear/equilibrium/arcLength.js`, `cyclicStatic.js`
+- 연계: M5 handoff v2, production Pushover opt-in continuation, 공개 API/Agent manifest
+- 검증: `NL-ARC-01~10`, `NL-CYC-01~06`
+- evidence: [p8-m7-arc-cyclic.json](../../reports/validation-evidence/phase8/p8-m7-arc-cyclic.json)
+- 코드 리뷰: [p8-m7-code-review.md](../../reports/validation-evidence/phase8/p8-m7-code-review.md)
+- GPU 경계: 실행정책만 구현. 실제 GPU backend와 CPU/GPU parity는 미구현
+
 ## Production 등급 현황
 
 | 등급 | 상태 | 미충족 핵심 |
 | --- | --- | --- |
 | Q1 Numerically Qualified | in-progress | corotational·집중소성·fiber/PMM component 완료, dynamic·외부 benchmark 미완료 |
-| Q2 Model-Integrated | in-progress | canonical domain과 PMM/fiber Pushover 연결 완료, arc-length·NLTH·전체 기능 통합 미완료 |
+| Q2 Model-Integrated | in-progress | canonical domain과 PMM/fiber/arc 정적경로 연결 완료, NLTH·전체 Phase 7 기능 통합 미완료 |
 | Q3 Workflow-Complete | not-started | initial-state DAG, 실패복구, 결과/보고/API |
 | Q4 Scale-Qualified | in-progress | Worker/WASM 기반 완료, M-tier budget·streaming·pilot 미완료 |
 | Q5 Commercial-Grade in Scope | unavailable | 독립 pilot와 전체 release gate |
@@ -147,7 +156,7 @@ M5·M6·M6.1 증거:
 | P8-M5 정식 Pushover | complete | NL-PUSH-01~14, NL-CTRL-05~08, NL-MEI-09~15, ADR-007, M5 code review |
 | P8-M6 PMM·fiber 단면 | complete | NL-FIB-01~14, NL-PMM-01~08, ADR-004, M6 code review |
 | P8-M6.1 PMM 전처리 runtime | complete | NL-PMM-09~14, runtime evidence, ADR-004 amendment, M6.1 code review |
-| P8-M7 arc-length·cyclic static | planned | 없음 |
+| P8-M7 arc-length·cyclic static | complete | NL-ARC-01~10, NL-CYC-01~06, ADR-007, M7 code review |
 | P8-M8 MDOF NLTH | planned | 없음 |
 | P8-M9 모델 기능 통합·결과회복 | planned | 없음 |
 | P8-M10 UI·보고·Agent 계약 | planned | 없음 |
@@ -157,4 +166,4 @@ M5·M6·M6.1 증거:
 
 ## 다음 작업
 
-P8-M7은 M5 handoff와 M6 PMM/fiber 상태를 소비해 Crisfield arc-length, post-peak, snap-through/snap-back 및 cyclic static 경로를 실제 augmented solver로 구현한다.
+P8-M8은 동일 canonical domain, state kernel, 요소 내력·접선을 사용해 실제 3D 모델의 질량·감쇠와 결합된 MDOF direct-integration NLTH를 구현한다.

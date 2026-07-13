@@ -3,7 +3,7 @@
 ```yaml
 plan_version: 2026-07-13
 milestones: P8-M0..P8-M11 plus P8-M6.1
-current_status: complete-p8-m6.1-next-p8-m7
+current_status: complete-p8-m7-next-p8-m8
 execution_rule: one milestone at a time; code, tests, evidence, review, and status update are all required
 ```
 
@@ -386,6 +386,8 @@ PMM surface 생성을 독립 전처리 단계로 계측하고, UI thread를 차�
 
 ## P8-M7 - Arc-length와 cyclic static 경로
 
+**상태: complete (2026-07-13).** 실제 MDOF Crisfield 구면 arc-length, M5 checkpoint handoff, cyclic static protocol, 경로진단과 deterministic restart를 구현했다. GPU는 실행정책과 backend 주입경계만 준비했으며 실제 GPU 커널은 구현 완료로 보지 않는다.
+
 ### 목표
 
 limit point 이후 post-peak와 cyclic static protocol을 실제 augmented solver로 추적한다.
@@ -411,6 +413,18 @@ limit point 이후 post-peak와 cyclic static protocol을 실제 augmented solve
 - cyclic SDOF/MDOF frame에서 목표 history와 에너지 일치
 - branch 선택이 deterministic하고 checkpoint restart와 동일
 - `NL-ARC-01`~`NL-ARC-10`, `NL-CYC-01`~`NL-CYC-06` 통과
+
+### 구현 기록 (2026-07-13)
+
+- 완료: 현재 `Kt`, reference load derivative, 구면 제약을 결합한 general augmented predictor/corrector
+- 완료: 이전 committed increment 내적 기반 branch 선택, adaptive radius, cutback, rollback, checkpoint restart
+- 완료: 실제 canonical 3D corotational two-bar von Mises truss, cubic limit point, 2DOF snap-back 검증
+- 완료: displacement/load/hold cyclic protocol, reversal/material event, residual deformation, loop energy, degradation history
+- 완료: production Pushover의 opt-in `arcLength.enabled` handoff/결과회복 및 공개 API/Agent manifest
+- 완료: `auto/cpu/wasm/gpu` backend 정책, 명시 GPU enable, deterministic float64 production qualification gate
+- 제한: GPU sparse kernel은 없음. GPU 요청은 qualified backend가 주입되지 않으면 `GPU_BACKEND_UNAVAILABLE`로 차단
+- 증거: `reports/validation-evidence/phase8/p8-m7-arc-cyclic.json`, `p8-m7-code-review.md`
+- 결정: `docs/phase8/adr/ADR-007-DISPLACEMENT-ARC-LENGTH-BRANCH-POLICY.md`
 
 ## P8-M8 - 실제 3D 모델 MDOF NLTH
 

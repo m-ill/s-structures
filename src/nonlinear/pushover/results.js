@@ -1,8 +1,8 @@
 import { stableHash } from '../../core/stableHash.js';
 import { evaluatePhysicalControlCoordinate } from '../equilibrium/displacementControl.js';
 
-export const PRODUCTION_PUSHOVER_RESULT_VERSION = 'p8-m5-production-pushover-result-v1';
-export const PUSHOVER_ARC_LENGTH_HANDOFF_VERSION = 'p8-m5-arc-length-handoff-v1';
+export const PRODUCTION_PUSHOVER_RESULT_VERSION = 'p8-m7-production-pushover-result-v2';
+export const PUSHOVER_ARC_LENGTH_HANDOFF_VERSION = 'p8-m7-arc-length-handoff-v2';
 
 const STATE_RANK = Object.freeze({
   origin: 0,
@@ -75,7 +75,8 @@ export function buildProductionPushoverResult(input = {}) {
   const rows = (input.steps || []).map((row) => clone(row));
   const acceptedRows = rows.filter((row) => row.accepted !== false);
   const events = classifyPushoverEvents(acceptedRows, input.options);
-  const termination = classifyTermination(input.controlResult, events, input.options);
+  const terminalControlResult = input.arcLengthResult || input.controlResult;
+  const termination = classifyTermination(terminalControlResult, events, input.options);
   const final = acceptedRows.at(-1) || null;
   const peak = events.find((event) => event.type === 'peak') || null;
   const firstYield = events.find((event) => event.type === 'first-yield') || null;
@@ -101,13 +102,14 @@ export function buildProductionPushoverResult(input = {}) {
     hingeAssignmentHash: input.hingeResolution?.contentHash || null,
     fiberPmmCatalogHash: input.fiberPmm?.contentHash || null,
     fiberPmmSurfaceHashes: (input.fiberPmm?.members || []).map((row) => row.surfaceHash).filter(Boolean),
-    solver: input.controlResult?.version || null,
+    solver: terminalControlResult?.version || null,
     backend: input.backend?.id || input.controlResult?.acceptedSteps?.at(-1)?.backend || null,
     fallbackUsed: false,
   };
   const summary = {
     stepCount: acceptedRows.length,
-    rejectedStepCount: input.controlResult?.rejectedStepCount || 0,
+    rejectedStepCount: Number(input.controlResult?.rejectedStepCount || 0)
+      + Number(input.arcLengthResult?.rejectedStepCount || 0),
     maxBaseShear: Math.max(0, ...acceptedRows.map((row) => Math.abs(row.baseShear))),
     maxControlDisplacement: Math.max(0, ...acceptedRows.map((row) => Math.abs(row.controlDisplacement))),
     maxRoofDisplacement: Math.max(0, ...acceptedRows.map((row) => Math.abs(row.roofDisplacement))),
@@ -130,7 +132,7 @@ export function buildProductionPushoverResult(input = {}) {
     status: termination.success ? 'ok' : termination.category,
     qualification: 'candidate',
     designBlocked: true,
-    designBlockReason: 'P8-M5_COMPONENT_CANDIDATE_REQUIRES_LATER_QUALIFICATION',
+    designBlockReason: 'P8-M7_COMPONENT_CANDIDATE_REQUIRES_LATER_QUALIFICATION',
     modelBound: true,
     engine: clone(input.engine || null),
     controlNodeId: input.control?.nodeId || null,
@@ -155,6 +157,19 @@ export function buildProductionPushoverResult(input = {}) {
       rejectedStepCount: input.controlResult?.rejectedStepCount || 0,
       rejectedSteps: clone(input.controlResult?.rejectedSteps || []),
     },
+    arcLength: input.arcLengthResult ? {
+      version: input.arcLengthResult.version,
+      status: input.arcLengthResult.status,
+      reason: input.arcLengthResult.reason,
+      source: input.arcLengthResult.source,
+      acceptedStepCount: input.arcLengthResult.acceptedStepCount,
+      rejectedStepCount: input.arcLengthResult.rejectedStepCount,
+      finalLambda: input.arcLengthResult.finalLambda,
+      finalQ: clone(input.arcLengthResult.finalQ),
+      nextRadius: input.arcLengthResult.nextRadius,
+      pathDiagnostics: clone(input.arcLengthResult.pathDiagnostics),
+      restartCheckpointHash: input.arcLengthResult.restartCheckpoint?.integrityHash || null,
+    } : null,
     termination,
     events,
     firstYield,
@@ -178,8 +193,8 @@ export function buildProductionPushoverResult(input = {}) {
     provenance,
     warnings,
     limitations: [
-      'P8-M5 qualifies gravity-preloaded displacement-control static response as a candidate component.',
-      'Arc-length path continuation remains P8-M7 scope.',
+      'P8-M7 qualifies gravity-preloaded displacement and optional arc-length static response as a candidate component.',
+      'Near-bifurcation warnings are pivot-based screening and are not an eigenvalue branch-switching proof.',
       ...(input.fiberPmm?.summary?.interactionCount > 0 || input.fiberPmm?.summary?.distributedMemberCount > 0
         ? ['P8-M6 fiber PMM and distributed-section response are iteration-coupled; design transfer still requires external and pilot qualification.']
         : ['Fiber PMM coupling was unavailable for this model; supported Phase 7 parametric section and material snapshots are required.']),
@@ -266,6 +281,7 @@ function classifyTermination(controlResult = {}, events = [], options = {}) {
   if (explicit === 'MECHANISM_DETECTED' || mechanism) return termination('MECHANISM_DETECTED', 'mechanism', true, 'Plastic mechanism criterion was reached.');
   if (explicit === 'POST_PEAK_THRESHOLD' || postPeak) return termination('POST_PEAK_THRESHOLD', 'post-peak', true, 'Post-peak strength threshold was reached.');
   if (explicit === 'TARGET_REACHED') return termination('TARGET_REACHED', 'target', true, 'Requested control displacement was reached.');
+  if (explicit === 'ARC_LENGTH_STEPS_COMPLETED') return termination(explicit, 'arc-length', true, 'Requested arc-length continuation steps were completed.');
   if (explicit === 'ANALYSIS_CANCELLED') return termination(explicit, 'cancelled', false, 'Analysis was cancelled at a committed boundary.');
   if (/SINGULAR|INSTABILITY|NEGATIVE_PIVOT|MECHANISM/.test(explicit)) return termination(explicit, 'instability', false, 'The tangent path became unstable or singular.');
   if (/MINIMUM|MAX_ITERATIONS|LINE_SEARCH|ATTEMPT_LIMIT/.test(explicit)) return termination(explicit, 'nonconvergence', false, 'The displacement-control path did not converge within the configured limits.');
@@ -274,14 +290,17 @@ function classifyTermination(controlResult = {}, events = [], options = {}) {
 }
 
 function buildArcLengthHandoff(input, termination, final) {
-  const eligible = ['post-peak', 'instability'].includes(termination.category)
+  const consumed = Boolean(input.arcLengthResult);
+  const eligible = consumed
+    || ['post-peak', 'instability'].includes(termination.category)
     || input.options?.prepareArcLengthHandoff === true;
   const core = {
     version: PUSHOVER_ARC_LENGTH_HANDOFF_VERSION,
     eligible,
-    status: eligible ? 'prepared' : 'not-required',
+    status: consumed ? 'consumed' : eligible ? 'prepared' : 'not-required',
     sourceControl: 'augmented-displacement-control',
     sourceStateHash: input.controlResult?.stateStore?.committedHash || null,
+    sourceIncrement: buildSourceIncrement(input),
     sourceCheckpointHash: input.handoffCheckpoint?.integrityHash || null,
     controlCoordinateHash: input.control?.coordinateHash || null,
     lastStepHash: final?.stepHash || null,
@@ -299,6 +318,29 @@ function buildArcLengthHandoff(input, termination, final) {
     } : null,
   };
   return Object.freeze({ ...core, handoffHash: stableHash(core).slice(0, 24) });
+}
+
+function buildSourceIncrement(input) {
+  const accepted = input.controlResult?.acceptedSteps || [];
+  const current = accepted.at(-1)?.stateStore?.committed || input.controlResult?.stateStore?.committed;
+  const previous = accepted.at(-2)?.stateStore?.committed
+    || input.gravity?.stateStore?.committed
+    || null;
+  if (!current?.q || !previous?.q || current.q.length !== previous.q.length) return null;
+  const deltaQ = current.q.map((value, index) => Number(value) - Number(previous.q[index]));
+  const deltaLambda = Number(current.lambda || 0) - Number(previous.lambda || 0);
+  if (![...deltaQ, deltaLambda].every(Number.isFinite)) return null;
+  const core = {
+    deltaQ,
+    deltaLambda,
+    sourcePreviousStateHash: accepted.at(-2)?.stateStore?.committedHash
+      || input.gravity?.stateStore?.committedHash
+      || null,
+    sourceCurrentStateHash: accepted.at(-1)?.stateStore?.committedHash
+      || input.controlResult?.stateStore?.committedHash
+      || null,
+  };
+  return Object.freeze({ ...core, incrementHash: stableHash(core).slice(0, 24) });
 }
 
 function recoverHinges(evaluation) {

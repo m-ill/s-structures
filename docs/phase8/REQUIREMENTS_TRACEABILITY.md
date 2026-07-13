@@ -53,6 +53,8 @@ Requirement
 | P8-M10 | qualified result contracts | production UI/report/agent/MCP | UI/API pass |
 | P8-M11 | integrated product | independent benchmarks, performance, pilots, release manifest | Q5 decision |
 
+P8-M7 구현 증거는 `reports/validation-evidence/phase8/p8-m7-arc-cyclic.json`에 고정한다. `NL-ARC-01~10`, `NL-CYC-01~06`은 `implemented/candidate` 범위를 충족하며, 외부 상용 비교와 pilot 전에는 `verified` 또는 설계전달 가능 상태로 승격하지 않는다. GPU는 backend 정책 requirement만 covered이며 실제 가속 kernel은 uncovered가 아니라 후속 성능 범위로 명시적으로 제외한다.
+
 ## 4. 필수 Architecture Decision Records
 
 | ADR | 결정 | 완료시점 | 검증 영향 |

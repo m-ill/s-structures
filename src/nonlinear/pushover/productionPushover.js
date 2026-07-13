@@ -9,6 +9,10 @@ import {
   evaluatePhysicalControlCoordinate,
   runMdofDisplacementControl,
 } from '../equilibrium/displacementControl.js';
+import {
+  buildArcLengthScaling,
+  runMdofArcLength,
+} from '../equilibrium/arcLength.js';
 import { resolveDomainHingeAssignments } from '../properties/assignments.js';
 import {
   runNonlinearGravityPreload,
@@ -22,8 +26,8 @@ import {
   recoverPushoverStep,
 } from './results.js';
 
-export const PRODUCTION_PUSHOVER_VERSION = 'p8-m5-production-pushover-v1';
-export const PRODUCTION_PUSHOVER_ENGINE_VERSION = 'p8-m5-mdof-gravity-displacement-pushover-v1';
+export const PRODUCTION_PUSHOVER_VERSION = 'p8-m7-production-pushover-v2';
+export const PRODUCTION_PUSHOVER_ENGINE_VERSION = 'p8-m7-mdof-gravity-displacement-arc-pushover-v2';
 
 export async function runProductionPushover(model = {}, analysisCase = {}, options = {}) {
   const engine = Object.freeze({
@@ -33,7 +37,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       geometry: 'objective-corotational-3d',
       material: 'state-dependent-concentrated-or-distributed-fiber-plasticity',
       equilibrium: 'current-step-mdof-consistent-tangent',
-      control: 'augmented-displacement',
+      control: 'augmented-displacement-with-optional-crisfield-arc-length-continuation',
       gravity: 'nonlinear-load-control-predecessor',
     },
   });
@@ -193,6 +197,64 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         terminationReason: displacement.reason,
       })
       : null;
+    let arcLengthResult = null;
+    const arcEnabled = merged.arcLength?.enabled === true;
+    if (arcEnabled) {
+      const displacementResult = buildProductionPushoverResult({
+        model,
+        analysisCase,
+        domain: loadSet.domain,
+        loadSet,
+        gravity,
+        control,
+        controlResult: displacement,
+        steps: recovered,
+        hingeResolution,
+        fiberPmm,
+        backend,
+        engine,
+        handoffCheckpoint,
+        options: { ...merged, prepareArcLengthHandoff: true },
+      });
+      const arcConfiguration = productionArcLengthConfiguration(
+        loadSet.domain,
+        displacementResult.arcLengthHandoff,
+        merged,
+      );
+      arcLengthResult = await runMdofArcLength({
+        assembler,
+        stateStore: displacement.stateStore,
+        checkpoint: handoffCheckpoint,
+        handoff: displacementResult.arcLengthHandoff,
+        backend,
+        production,
+        scaling: arcConfiguration.scaling,
+        signal: options.signal,
+        isCancelled: options.isCancelled,
+        onProgress: options.onProgress,
+        options: arcConfiguration.options,
+        shouldTerminate(accepted) {
+          const summary = hingeSummary(accepted.evaluation);
+          const mechanism = mechanismReached(summary.rows, summary.memberStates, merged);
+          return mechanism
+            ? { stop: true, ok: true, reason: 'MECHANISM_DETECTED', hingeIds: mechanism }
+            : null;
+        },
+      });
+      for (const accepted of arcLengthResult.acceptedSteps || []) {
+        recovered.push(recoverPushoverStep({
+          domain: loadSet.domain,
+          evaluation: accepted.evaluation,
+          loadSet,
+          control,
+          step: recovered.length,
+          targetDisplacement: evaluatePhysicalControlCoordinate(control, accepted.q),
+          convergence: accepted.convergence,
+          hingeEvents: accepted.hingeEvents,
+          gravityBaselineReactions: initialEvaluation.reactionsFull,
+        }));
+      }
+    }
     const result = buildProductionPushoverResult({
       model,
       analysisCase,
@@ -201,13 +263,14 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       gravity,
       control,
       controlResult: displacement,
+      arcLengthResult,
       steps: recovered,
       hingeResolution,
       fiberPmm,
       backend,
       engine,
       handoffCheckpoint,
-      options: merged,
+      options: { ...merged, acceptExplicitTermination: arcEnabled || merged.acceptExplicitTermination === true },
     });
     return Object.freeze({
       ...result,
@@ -216,7 +279,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         available: true,
         production: true,
         qualification: 'candidate',
-        supportedControls: ['displacement'],
+        supportedControls: ['displacement', 'arcLength'],
       },
       routing: {
         requestedEngineId: engine.id,
@@ -230,8 +293,9 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         caseHash: stableHash(analysisCase).slice(0, 24),
       },
       internal: options.includeInternal === true ? {
-        stateStore: displacement.stateStore,
+        stateStore: arcLengthResult?.stateStore || displacement.stateStore,
         handoffCheckpoint,
+        arcLengthRestartCheckpoint: arcLengthResult?.restartCheckpoint || null,
         loadSet,
         fiberPmm,
       } : undefined,
@@ -242,6 +306,48 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
     }
     return failed(engine, error.code || 'PRODUCTION_PUSHOVER_FAILED', error.message, error.details || null);
   }
+}
+
+function productionArcLengthConfiguration(domain, handoff, options) {
+  const source = handoff?.sourceIncrement;
+  if (!source?.deltaQ?.length) {
+    const error = new Error('Arc-length continuation requires a nonzero displacement-control source increment.');
+    error.code = 'ARC_LENGTH_HANDOFF_INCREMENT_REQUIRED';
+    throw error;
+  }
+  const config = options.arcLength || {};
+  const displacementNorm = Math.hypot(...source.deltaQ.map(Number));
+  const lambdaIncrement = Math.abs(Number(source.deltaLambda || 0));
+  const derivedAlpha = displacementNorm / Math.max(lambdaIncrement, 1e-12);
+  const alpha = positive(config.alpha ?? config.scaling?.alpha, Math.max(derivedAlpha, 1e-12));
+  const scaling = buildArcLengthScaling(domain, {
+    ...(config.scaling || {}),
+    alpha,
+  });
+  const weightedDisplacement = source.deltaQ.reduce(
+    (sum, value, index) => sum + Number(scaling.weights[index]) * Number(value) ** 2,
+    0,
+  );
+  const derivedRadius = Math.sqrt(weightedDisplacement + scaling.alpha ** 2 * Number(source.deltaLambda || 0) ** 2);
+  const radius = positive(config.initialRadius ?? config.radius, derivedRadius);
+  if (!(radius > 0)) {
+    const error = new Error('Arc-length radius could not be derived from the displacement-control handoff.');
+    error.code = 'ARC_LENGTH_RADIUS_INVALID';
+    throw error;
+  }
+  return {
+    scaling,
+    options: {
+      ...config,
+      steps: positiveInteger(config.steps, 20),
+      initialRadius: radius,
+      radius,
+      alpha,
+      scaling: { ...(config.scaling || {}), alpha },
+      backendPreference: config.backendPreference || options.backendPreference || options.computeTarget || 'auto',
+      gpuEnabled: config.gpuEnabled === true || options.gpuEnabled === true,
+    },
+  };
 }
 
 function disabledFiberPmm() {

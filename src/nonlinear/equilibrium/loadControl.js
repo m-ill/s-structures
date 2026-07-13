@@ -62,7 +62,11 @@ export async function runMdofLoadControl(input = {}) {
         lambda: stepTarget,
         increment,
         iterationCount: step.iterationCount,
+        convergence: step.convergence,
+        hingeEvents: step.hingeEvents || [],
         responseHash: step.evaluation.responseHash,
+        evaluation: step.evaluation,
+        stateStore: step.stateStore,
         backend: step.backend,
       });
       if (step.iterationCount <= fastIterations) stepSize = direction * Math.min(maxStep, Math.abs(stepSize) * growthFactor);

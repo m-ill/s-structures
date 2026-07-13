@@ -27,7 +27,7 @@ assert.equal(capability.available, true);
 assert.equal(capability.production, true);
 assert.equal(capability.qualification, 'candidate');
 assert.equal(capability.executionMode, 'async');
-assert.deepEqual(capability.supportedControls, ['displacement']);
+assert.deepEqual(capability.supportedControls, ['displacement', 'arcLength']);
 
 assert.equal(typeof buildPushoverLateralPattern, 'function');
 assert.equal(typeof resolvePhysicalControlCoordinate, 'function');
@@ -37,8 +37,8 @@ assert.match(MDOF_DISPLACEMENT_CONTROL_VERSION, /^p8-m5-/);
 assert.match(PUSHOVER_LOAD_PATTERN_VERSION, /^p8-m5-/);
 assert.match(NONLINEAR_INITIAL_STATE_VERSION, /^p8-m5-/);
 assert.match(GRAVITY_PRELOAD_VERSION, /^p8-m5-/);
-assert.match(PRODUCTION_PUSHOVER_RESULT_VERSION, /^p8-m5-/);
-assert.match(PRODUCTION_PUSHOVER_VERSION, /^p8-m5-/);
+assert.match(PRODUCTION_PUSHOVER_RESULT_VERSION, /^p8-m7-/);
+assert.match(PRODUCTION_PUSHOVER_VERSION, /^p8-m7-/);
 
 const directLegacy = runPushover(model, {
   controlNodeId: 'N2', direction: '+x', referenceBaseShear: 20, maxLoadFactor: 1, steps: 1,

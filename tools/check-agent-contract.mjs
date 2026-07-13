@@ -21,7 +21,7 @@ function buildContract() {
   const manifest = buildAgentManifest({ availableActions: availableAgentActions() });
   return {
     schemaVersion: 3,
-    manualVersion: '2026-07-13-phase8-m6.1',
+    manualVersion: '2026-07-13-phase8-m7',
     product: manifest.product,
     manifestVersion: manifest.version,
     entrypoint: {

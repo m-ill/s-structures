@@ -2,6 +2,7 @@
 
 ```yaml
 reviewed_at: 2026-07-11
+implementation_addendum: P8-M7 completed 2026-07-13; findings below describe the pre-Phase-8 legacy path unless marked resolved
 scope:
   - src/nonlinear
   - src/ui/analysisRunners.js
@@ -11,6 +12,8 @@ scope:
   - tests/p5 nonlinear workflows
 verdict: preliminary-components-exist-but-production-nonlinear-kernel-does-not
 ```
+
+> 이 문서는 Phase 8 착수 전 legacy 경로의 기준 감사다. P8-M1~M7은 별도 production domain/state/equilibrium/corotational/hinge/fiber/Pushover/arc-cyclic 경로를 구현했다. 특히 전역 변위제어와 arc-length 부재 지적은 `src/nonlinear/equilibrium/displacementControl.js`, `arcLength.js`, `cyclicStatic.js`에서 해결되었으며 legacy `src/nonlinear/control/*`의 한계를 production 구현 상태로 해석하면 안 된다. MDOF NLTH, 전체 모델 기능, UI와 독립 상용 비교 지적은 아직 유효하다.
 
 ## 1. 감사 방법
 

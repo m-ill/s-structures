@@ -1,4 +1,4 @@
-export const NONLINEAR_CAPABILITY_VERSION = 'p8-m6-nonlinear-capability-v3';
+export const NONLINEAR_CAPABILITY_VERSION = 'p8-m7-nonlinear-capability-v4';
 export const NONLINEAR_PRODUCT_SCOPE_VERSION = 'p8-m0-product-scope-v1';
 
 export const NONLINEAR_ENGINE_IDS = Object.freeze({
@@ -96,17 +96,17 @@ const CAPABILITIES = Object.freeze({
       geometry: 'objective-corotational-3d',
       material: 'state-dependent-concentrated-hinge-or-distributed-fiber-plasticity-with-section-pmm',
       equilibrium: 'current-step-mdof-consistent-tangent',
-      control: 'augmented-displacement',
+      control: 'augmented-displacement-with-optional-crisfield-arc-length',
     },
-    supportedControls: ['displacement'],
-    unsupportedControls: ['load-factor', 'arcLength'],
+    supportedControls: ['displacement', 'arcLength'],
+    unsupportedControls: ['load-factor'],
     limitations: [
       'Candidate Phase 8 engine; design transfer remains blocked pending qualification.',
       'Execution requires the asynchronous nonlinear analysis runner.',
       'Fiber PMM coupling requires supported Phase 7 parametric section and material snapshots.',
       'Distributed fiber members use 2-5 point Gauss section integration and currently reject end releases.',
-      'First generation of a unique RC PMM surface is expensive until Worker execution and persisted caches are added.',
-      'Arc-length continuation is not available before P8-M7.',
+      'Arc-length continuation requires a valid displacement-control checkpoint and a qualified general/indefinite backend.',
+      'GPU execution is an opt-in backend capability and remains unavailable until a deterministic f64 implementation is qualified.',
     ],
   }),
   [NONLINEAR_ENGINE_IDS.productionNlth]: reservedCapability(

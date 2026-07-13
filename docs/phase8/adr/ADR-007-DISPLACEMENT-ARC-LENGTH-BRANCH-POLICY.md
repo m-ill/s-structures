@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-07-13
-- Milestone: P8-M5
+- Milestone: P8-M5 / P8-M7
 
 ## Context
 
@@ -24,7 +24,19 @@ The legacy Pushover path reduces secant stiffness between linear solves. It does
 5. P8-M5 accepts only nodal translational reference-load derivatives. Reference member loads, follower loads, and nodal moments fail closed.
 6. Rejected Newton, line-search, event-localization, or cutback trials are rolled back and never enter the capacity curve.
 7. Canonical base shear is the support-reaction increment from the gravity baseline. Applied lateral shear is retained separately for closure audit.
-8. P8-M5 emits an exact committed `q`, `lambda`, element-state, event cursor, and checkpoint handoff for P8-M7. It does not claim that arc-length continuation is implemented.
+8. P8-M5 emits an exact committed `q`, `lambda`, element-state, event cursor, checkpoint, and the last accepted `deltaQ/deltaLambda` for P8-M7.
+9. P8-M7 solves the Crisfield spherical constraint
+
+   ```text
+   deltaQ^T W deltaQ + alpha^2 deltaLambda^2 = radius^2
+   ```
+
+   together with current-step global equilibrium in a pivoted general augmented system.
+10. The initial predictor selects between positive and negative roots by generalized inner product with the previous committed increment. Ties use a deterministic requested-direction rule.
+11. Radius adaptation is bounded and iteration-count based. A failed corrector rolls the whole trial branch back before radius cutback.
+12. A restart restores the exact checkpoint, previous increment, next radius, element history, and event sequence before another predictor.
+13. Cyclic static uses the same displacement/load controllers and committed element states. A failed target rolls back the entire protocol segment, including accepted substeps and observational events.
+14. Near-bifurcation classification is a pivot-ratio warning only. M7 does not claim eigenvalue branch switching.
 
 ## Branch Policy
 
@@ -32,10 +44,13 @@ The legacy Pushover path reduces secant stiffness between linear solves. It does
 - Localize accepted hinge transitions by displacement-increment cutback.
 - Stop on an explicit mechanism set, requested target, post-peak threshold, cancellation, minimum increment, or nonconvergence.
 - Preserve the last accepted checkpoint for every failed or handoff termination.
-- P8-M7 must consume the handoff checkpoint byte-equivalently before its first predictor. `NL-PUSH-13` in M5 verifies handoff completeness and reproducibility; continuation accuracy remains an M7 gate.
+- P8-M7 consumes the handoff checkpoint byte-equivalently before its first predictor. `NL-ARC-09/10` verify restart and production handoff continuity.
+- Continue the selected branch by increment inner-product continuity across load and displacement sign reversals.
+- Treat alternate-branch selection as a separate eigenvalue/bifurcation feature; never infer it from a small pivot alone.
 
 ## Consequences
 
 - The formal Pushover engine is separate from the legacy secant engine and remains `candidate`/`designBlocked` until later independent qualification.
 - Gravity states can be shared by compatible directional Pushover cases without coupling their identity to a lateral pattern or output policy.
 - The implementation uses the repository's in-house numerical backend and standard JavaScript runtime. No commercial solver or licensed numerical library is introduced.
+- GPU is an optional backend target, not an implemented solver in M7. A request fails closed unless an explicitly enabled backend satisfies the declared precision/determinism policy; production requires deterministic float64 until another policy is independently qualified.

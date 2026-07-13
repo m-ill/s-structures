@@ -70,8 +70,20 @@ P8-M2에서는 외부 수치 library를 도입하지 않고 저장소 내부 Rus
 | js-sparse-reference | worker/API fallback와 deterministic test | 2,000 active DOF 이하 | candidate |
 | wasm-sparse-spd | 안정한 elastic/초기 nonlinear tangent | production | required |
 | wasm-sparse-indefinite | post-peak, arc-length, negative tangent | production | required |
+| gpu-injected-general | future batched assembly/solve acceleration | unset | unavailable until deterministic float64 parity qualification |
 
 production 실행이 dense-reference로 조용히 fallback하는 것을 금지한다. backend가 없으면 실행 전 `PRODUCTION_BACKEND_UNAVAILABLE`로 차단한다.
+
+### 3.1 GPU 준비 경계
+
+P8-M7은 `auto/cpu/wasm/gpu` 실행목표와 backend metadata(`executionTarget`, `numericPrecision`, `deterministic`)를 도입했다. 이는 GPU 가속 구현 완료가 아니다.
+
+- 사용자가 `backendPreference: "gpu"`와 `gpuEnabled: true`를 지정하면 GPU family backend만 허용한다.
+- GPU backend가 없으면 `GPU_BACKEND_UNAVAILABLE`, enable이 꺼져 있으면 `GPU_BACKEND_NOT_ENABLED`로 차단한다.
+- production GPU는 현재 deterministic `f64`만 허용한다. 조건을 만족하지 않으면 `GPU_BACKEND_QUALIFICATION_REQUIRED`다.
+- CPU/WASM으로 silent fallback하지 않는다.
+- 실제 WebGPU sparse assembly/factorization, 데이터 전송비, CPU/GPU parity, 브라우저별 지원성은 별도 ADR과 performance evidence 전에는 제품 capability로 표시하지 않는다.
+- arc-length의 작은 augmented solve만 GPU로 보내는 것은 전송비 때문에 이득이 없을 수 있다. GPU 검토 단위는 요소 batch 평가, assembly, 다중 RHS 또는 반복해석 전체 pipeline이다.
 
 ## 4. Sparse 구조와 cache
 
