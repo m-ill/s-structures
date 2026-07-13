@@ -102,20 +102,7 @@ export async function solveMdofNewtonStep(input = {}) {
     }
     let linearSystem;
     try {
-      const stabilized = stabilizeApprovedNullModes(
-        evaluation.tangentReduced,
-        evaluation.residualReduced,
-        evaluation.inactiveModeGroupsReduced
-          || (evaluation.inactiveModesReduced || []).map((mode) => [mode]),
-        options,
-      );
-      linearSystem = eliminateInactiveDofs(
-        stabilized.matrix,
-        evaluation.residualReduced,
-        options,
-        assembler.allowedInactiveReducedDofs,
-      );
-      linearSystem.gaugeModeCount = stabilized.modeCount;
+      linearSystem = prepareMdofActiveSystem(evaluation, assembler, options);
     } catch (error) {
       return failureResult(originalStore, working, originalSnapshot, error.code || 'INACTIVE_DOF_ELIMINATION_FAILED', iterations, error);
     }
@@ -325,6 +312,29 @@ export async function solveMdofNewtonStep(input = {}) {
     emitProgress(input, { type: 'iteration', lambda: targetLambda, ...row });
   }
   return failureResult(originalStore, working, originalSnapshot, 'MAX_ITERATIONS', iterations);
+}
+
+export function prepareMdofActiveSystem(evaluation, assembler, options = {}) {
+  if (!evaluation?.tangentReduced || !evaluation?.residualReduced || !assembler?.domain?.constraint?.ok) {
+    const error = new TypeError('An equilibrium evaluation and canonical assembler are required.');
+    error.code = 'MDOF_ACTIVE_SYSTEM_INPUT_INVALID';
+    throw error;
+  }
+  const stabilized = stabilizeApprovedNullModes(
+    evaluation.tangentReduced,
+    evaluation.residualReduced,
+    evaluation.inactiveModeGroupsReduced
+      || (evaluation.inactiveModesReduced || []).map((mode) => [mode]),
+    options,
+  );
+  const linearSystem = eliminateInactiveDofs(
+    stabilized.matrix,
+    evaluation.residualReduced,
+    options,
+    assembler.allowedInactiveReducedDofs,
+  );
+  linearSystem.gaugeModeCount = stabilized.modeCount;
+  return linearSystem;
 }
 
 function trialPatch(evaluation, q, correction, iteration, convergence) {

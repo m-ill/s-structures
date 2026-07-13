@@ -1,4 +1,4 @@
-export const NONLINEAR_CAPABILITY_VERSION = 'p8-m0-nonlinear-capability-v1';
+export const NONLINEAR_CAPABILITY_VERSION = 'p8-m5-nonlinear-capability-v2';
 export const NONLINEAR_PRODUCT_SCOPE_VERSION = 'p8-m0-product-scope-v1';
 
 export const NONLINEAR_ENGINE_IDS = Object.freeze({
@@ -81,11 +81,31 @@ const CAPABILITIES = Object.freeze({
     ['nonlinearStatic'],
     ['load'],
   ),
-  [NONLINEAR_ENGINE_IDS.productionPushover]: reservedCapability(
-    NONLINEAR_ENGINE_IDS.productionPushover,
-    ['pushover'],
-    ['load', 'displacement', 'arcLength'],
-  ),
+  [NONLINEAR_ENGINE_IDS.productionPushover]: Object.freeze({
+    version: NONLINEAR_CAPABILITY_VERSION,
+    engineId: NONLINEAR_ENGINE_IDS.productionPushover,
+    caseKinds: ['pushover'],
+    available: true,
+    production: true,
+    qualification: 'candidate',
+    qualificationCeiling: 'candidate',
+    designBlocked: true,
+    modelBound: true,
+    executionMode: 'async',
+    formulation: {
+      geometry: 'objective-corotational-3d',
+      material: 'state-dependent-concentrated-plasticity',
+      equilibrium: 'current-step-mdof-consistent-tangent',
+      control: 'augmented-displacement',
+    },
+    supportedControls: ['displacement'],
+    unsupportedControls: ['load-factor', 'arcLength'],
+    limitations: [
+      'Candidate Phase 8 engine; design transfer remains blocked pending qualification.',
+      'Execution requires the asynchronous nonlinear analysis runner.',
+      'Arc-length continuation is not available in P8-M5.',
+    ],
+  }),
   [NONLINEAR_ENGINE_IDS.productionNlth]: reservedCapability(
     NONLINEAR_ENGINE_IDS.productionNlth,
     ['nonlinearTimeHistory'],

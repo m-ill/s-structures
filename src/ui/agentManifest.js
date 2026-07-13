@@ -179,6 +179,27 @@ import { HINGE_BACKBONE_VERSION } from '../nonlinear/materials/hingeBackbone.js'
 import { HINGE_CYCLIC_STATE_VERSION, HINGE_CYCLIC_VERSION } from '../nonlinear/materials/hingeCyclic.js';
 import { HINGE_PROPERTY_REGISTRY_VERSION } from '../nonlinear/properties/hingeRegistry.js';
 import { HINGE_ASSIGNMENT_CONTRACT_VERSION } from '../nonlinear/properties/assignments.js';
+import {
+  MDOF_DISPLACEMENT_CONTROL_VERSION,
+  PHYSICAL_CONTROL_COORDINATE_VERSION,
+} from '../nonlinear/equilibrium/displacementControl.js';
+import {
+  PRODUCTION_PUSHOVER_ENGINE_VERSION,
+  PRODUCTION_PUSHOVER_VERSION,
+} from '../nonlinear/pushover/productionPushover.js';
+import {
+  PRODUCTION_PUSHOVER_RESULT_VERSION,
+  PUSHOVER_ARC_LENGTH_HANDOFF_VERSION,
+} from '../nonlinear/pushover/results.js';
+import {
+  PUSHOVER_LOAD_PATTERN_VERSION,
+  PUSHOVER_LOAD_SET_VERSION,
+} from '../nonlinear/pushover/loadPatterns.js';
+import {
+  GRAVITY_PRELOAD_VERSION,
+  NONLINEAR_CASE_DAG_VERSION,
+  NONLINEAR_INITIAL_STATE_VERSION,
+} from '../nonlinear/workflow/initialState.js';
 import { SECOND_ORDER_JET_VERSION } from '../nonlinear/math/secondOrderJet.js';
 import { ROTATION_COORDINATE_VERSION } from '../nonlinear/math/rotationCoordinates.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
@@ -186,7 +207,7 @@ import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } fro
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m4-agent-capability-manifest-v6';
+export const AGENT_MANIFEST_VERSION = 'p8-m5-agent-capability-manifest-v7';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -368,6 +389,17 @@ export function buildAgentManifest(options = {}) {
       phase8HingeCyclicState: HINGE_CYCLIC_STATE_VERSION,
       phase8HingePropertyRegistry: HINGE_PROPERTY_REGISTRY_VERSION,
       phase8HingeAssignment: HINGE_ASSIGNMENT_CONTRACT_VERSION,
+      phase8DisplacementControl: MDOF_DISPLACEMENT_CONTROL_VERSION,
+      phase8PhysicalControlCoordinate: PHYSICAL_CONTROL_COORDINATE_VERSION,
+      phase8ProductionPushover: PRODUCTION_PUSHOVER_VERSION,
+      phase8ProductionPushoverEngine: PRODUCTION_PUSHOVER_ENGINE_VERSION,
+      phase8ProductionPushoverResult: PRODUCTION_PUSHOVER_RESULT_VERSION,
+      phase8PushoverArcLengthHandoff: PUSHOVER_ARC_LENGTH_HANDOFF_VERSION,
+      phase8PushoverLoadPattern: PUSHOVER_LOAD_PATTERN_VERSION,
+      phase8PushoverLoadSet: PUSHOVER_LOAD_SET_VERSION,
+      phase8GravityPreload: GRAVITY_PRELOAD_VERSION,
+      phase8NonlinearCaseDag: NONLINEAR_CASE_DAG_VERSION,
+      phase8NonlinearInitialState: NONLINEAR_INITIAL_STATE_VERSION,
       phase8SecondOrderJet: SECOND_ORDER_JET_VERSION,
       phase8RotationCoordinates: ROTATION_COORDINATE_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
@@ -691,6 +723,12 @@ export function buildAgentManifest(options = {}) {
       'phase8CorotationalTruss3dResponse',
       'phase8HingedFrame3dResponse',
       'phase8HingedFrame3dState',
+      'phase8GravityPredecessor',
+      'phase8PhysicalControlCoordinate',
+      'phase8FormalPushoverResult',
+      'phase8PushoverCapacityPoint',
+      'phase8PushoverTermination',
+      'phase8ArcLengthHandoff',
       'phase8HingeBackbone',
       'phase8HingeCyclicState',
       'phase8HingePropertyRegistry',
@@ -848,6 +886,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M13', status: 'preliminary', feature: 'loads v2, CQC, buckling trace, and linear time-history helpers' },
       { id: 'P3-M14', status: 'preliminary', feature: 'nonlinear state snapshot, corotational geometry trace, Newton convergence log, and B1/B2 benchmark gate' },
       { id: 'P3-M15', status: 'preliminary', feature: 'moment hinge state trace, displacement and arc-length control traces, and formal pushover result contract' },
+      { id: 'P8-M5', status: 'candidate', feature: 'gravity-preloaded MDOF augmented displacement-control Pushover with accepted-state capacity, story, member, hinge, and handoff results' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },
@@ -859,7 +898,8 @@ export function buildAgentManifest(options = {}) {
       { id: 'P8-M3', status: 'available', feature: 'objective 3D corotational frame/truss geometry, exact AD tangent, release/offset, and local/station recovery' },
     ],
     limitations: [
-      'Pushover is preliminary: previous-step hinge secant stiffness degradation is traced, but a simultaneous hinge-controlled global equilibrium loop is not production-certified.',
+      'Legacy Pushover uses previous-step hinge secant stiffness degradation and remains preliminary/design-blocked.',
+      'Legacy Pushover remains preliminary and isolated. The P8-M5 productionPushover engine enforces simultaneous MDOF equilibrium and displacement control but remains candidate/design-blocked pending PMM/fiber, arc-length, external comparison, and pilot qualification.',
       'Report output is a calculation aid and not a certified final structural calculation package.',
       'Unsupported design checks must be reviewed separately.',
       'Large models still use the current in-browser dense solver path.',

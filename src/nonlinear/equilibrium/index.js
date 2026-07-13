@@ -12,6 +12,15 @@ export {
   normalizedResidualNorm,
 } from './convergence.js';
 export {
+  MDOF_DISPLACEMENT_CONTROL_VERSION,
+  PHYSICAL_CONTROL_COORDINATE_VERSION,
+  buildAugmentedDisplacementSystem,
+  evaluatePhysicalControlCoordinate,
+  resolvePhysicalControlCoordinate,
+  runMdofDisplacementControl,
+  solveMdofDisplacementStep,
+} from './displacementControl.js';
+export {
   NONLINEAR_EXTERNAL_LOAD_VERSION,
   assembleCanonicalExternalLoads,
   assembleExternalLoads,

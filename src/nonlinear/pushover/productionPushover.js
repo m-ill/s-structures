@@ -1,0 +1,473 @@
+import { stableHash } from '../../core/stableHash.js';
+import { createNonlinearStateStore, createStateCheckpoint, restoreStateCheckpoint } from '../core/stateStore.js';
+import { buildHingedFrame3dEntries } from '../elements/hingedFrame3d.js';
+import { createEquilibriumAssembler } from '../equilibrium/assembler.js';
+import { createWasmSparseBackend } from '../equilibrium/backends/wasmSparseBackend.js';
+import {
+  resolvePhysicalControlCoordinate,
+  evaluatePhysicalControlCoordinate,
+  runMdofDisplacementControl,
+} from '../equilibrium/displacementControl.js';
+import { resolveDomainHingeAssignments } from '../properties/assignments.js';
+import {
+  runNonlinearGravityPreload,
+  validateNonlinearInitialStateDependency,
+} from '../workflow/initialState.js';
+import { NONLINEAR_ENGINE_IDS } from '../capabilities.js';
+import { buildPushoverLoadSet } from './loadPatterns.js';
+import {
+  buildProductionPushoverResult,
+  hingeSummary,
+  recoverPushoverStep,
+} from './results.js';
+
+export const PRODUCTION_PUSHOVER_VERSION = 'p8-m5-production-pushover-v1';
+export const PRODUCTION_PUSHOVER_ENGINE_VERSION = 'p8-m5-mdof-gravity-displacement-pushover-v1';
+
+export async function runProductionPushover(model = {}, analysisCase = {}, options = {}) {
+  const engine = Object.freeze({
+    id: NONLINEAR_ENGINE_IDS.productionPushover,
+    version: PRODUCTION_PUSHOVER_ENGINE_VERSION,
+    formulation: {
+      geometry: 'objective-corotational-3d',
+      material: 'state-dependent-concentrated-plasticity',
+      equilibrium: 'current-step-mdof-consistent-tangent',
+      control: 'augmented-displacement',
+      gravity: 'nonlinear-load-control-predecessor',
+    },
+  });
+  const production = options.production !== false;
+  let backend = options.backend || null;
+  try {
+    if (!backend) backend = await createWasmSparseBackend(options.wasm || {});
+    const merged = mergeOptions(analysisCase, options);
+    const targetDisplacement = Number(merged.targetDisplacement);
+    if (!Number.isFinite(targetDisplacement) || !(targetDisplacement > 0)) {
+      return blocked(engine, 'PUSHOVER_TARGET_DISPLACEMENT_REQUIRED', 'A positive control target is required.');
+    }
+    const loadSet = buildPushoverLoadSet(model, analysisCase, merged);
+    const hingeResolution = resolveDomainHingeAssignments(loadSet.domain, {
+      axialRatios: merged.axialRatios,
+      assumedPolicy: merged.assumedPolicy,
+    });
+    const elements = buildHingedFrame3dEntries(loadSet.domain, {
+      assignmentResolution: hingeResolution,
+      stationCount: merged.stationCount,
+    });
+    const gravityHingeResolution = resolveDomainHingeAssignments(loadSet.gravityDomain, {
+      axialRatios: merged.axialRatios,
+      assumedPolicy: merged.assumedPolicy,
+    });
+    const gravityElements = buildHingedFrame3dEntries(loadSet.gravityDomain, {
+      assignmentResolution: gravityHingeResolution,
+      stationCount: merged.stationCount,
+    });
+    const assembler = createEquilibriumAssembler({
+      domain: loadSet.domain,
+      elements,
+      loadPattern: loadSet.loadPattern,
+    });
+    const gravity = await resolveGravityState({
+      model,
+      analysisCase,
+      merged,
+      loadSet,
+      elements,
+      gravityElements,
+      assembler,
+      backend,
+      production,
+      options,
+    });
+    if (!gravity.ok) return failed(engine, gravity.reason || 'GRAVITY_PRELOAD_FAILED', gravity.message, gravity);
+    const controlNodeId = clean(merged.controlNodeId) || pickControlNode(loadSet.domain, loadSet.lateral.directionVector);
+    const control = resolvePhysicalControlCoordinate(loadSet.domain, {
+      nodeId: controlNodeId,
+      direction: loadSet.lateral.directionVector,
+    });
+    const initialEvaluation = await assembler.evaluate({
+      q: gravity.stateStore.committed.q,
+      lambda: 0,
+      committedElementStates: gravity.stateStore.committed.elementStates,
+      mode: 'static',
+    });
+    if (!initialEvaluation.ok) return failed(engine, initialEvaluation.reason || 'PUSHOVER_INITIAL_EVALUATION_FAILED', initialEvaluation.message);
+    const recovered = [recoverPushoverStep({
+      domain: loadSet.domain,
+      evaluation: initialEvaluation,
+      loadSet,
+      control,
+      step: 0,
+      targetDisplacement: evaluatePhysicalControlCoordinate(control, initialEvaluation.q),
+      convergence: gravity.continuity,
+      hingeEvents: [],
+      gravityBaselineReactions: initialEvaluation.reactionsFull,
+    })];
+    let peakBaseShear = 0;
+    let peakStep = 0;
+    const displacement = await runMdofDisplacementControl({
+      assembler,
+      stateStore: gravity.stateStore,
+      backend,
+      production,
+      control,
+      targetDisplacement,
+      signal: options.signal,
+      isCancelled: options.isCancelled,
+      onProgress: options.onProgress,
+      options: displacementOptions(merged),
+      shouldTerminate(accepted) {
+        const summary = hingeSummary(accepted.evaluation);
+        const mechanism = mechanismReached(summary.rows, merged);
+        if (mechanism) return { stop: true, ok: true, reason: 'MECHANISM_DETECTED', hingeIds: mechanism };
+        const baseShear = Math.abs(reactionBaseShear(
+          accepted.evaluation.reactionsFull,
+          initialEvaluation.reactionsFull,
+          loadSet.lateral.directionVector,
+          loadSet.domain.nodes.length,
+        ));
+        if (baseShear > peakBaseShear) {
+          peakBaseShear = baseShear;
+          peakStep = accepted.step;
+        }
+        const postPeakRatio = bounded(merged.postPeakRatio, 0.8, 0.05, 1);
+        if (
+          merged.stopAtPostPeak !== false
+          && accepted.step > peakStep
+          && peakBaseShear > 0
+          && baseShear <= peakBaseShear * postPeakRatio
+        ) {
+          return { stop: true, ok: true, reason: 'POST_PEAK_THRESHOLD', peakBaseShear, postPeakRatio };
+        }
+        return null;
+      },
+    });
+    for (const accepted of displacement.acceptedSteps || []) {
+      recovered.push(recoverPushoverStep({
+        domain: loadSet.domain,
+        evaluation: accepted.evaluation,
+        loadSet,
+        control,
+        step: accepted.step,
+        targetDisplacement: accepted.targetDisplacement,
+        convergence: accepted.convergence,
+        hingeEvents: accepted.hingeEvents,
+        gravityBaselineReactions: initialEvaluation.reactionsFull,
+      }));
+    }
+    const handoffCheckpoint = displacement.stateStore?.committed
+      ? createStateCheckpoint(displacement.stateStore, {
+        role: 'pushover-displacement-control-handoff',
+        caseId: analysisCase.id || null,
+        terminationReason: displacement.reason,
+      })
+      : null;
+    const result = buildProductionPushoverResult({
+      model,
+      analysisCase,
+      domain: loadSet.domain,
+      loadSet,
+      gravity,
+      control,
+      controlResult: displacement,
+      steps: recovered,
+      hingeResolution,
+      backend,
+      engine,
+      handoffCheckpoint,
+      options: merged,
+    });
+    return Object.freeze({
+      ...result,
+      version: PRODUCTION_PUSHOVER_VERSION,
+      capability: {
+        available: true,
+        production: true,
+        qualification: 'candidate',
+        supportedControls: ['displacement'],
+      },
+      routing: {
+        requestedEngineId: engine.id,
+        executedEngineId: engine.id,
+        fallbackPolicy: 'forbidden',
+        fallbackUsed: false,
+      },
+      provenance: {
+        ...result.provenance,
+        caseId: analysisCase.id || null,
+        caseHash: stableHash(analysisCase).slice(0, 24),
+      },
+      internal: options.includeInternal === true ? {
+        stateStore: displacement.stateStore,
+        handoffCheckpoint,
+        loadSet,
+      } : undefined,
+    });
+  } catch (error) {
+    return failed(engine, error.code || 'PRODUCTION_PUSHOVER_FAILED', error.message, error.details || null);
+  }
+}
+
+export function buildProductionPushoverCompatibilityView(result = {}) {
+  return Object.freeze({
+    version: PRODUCTION_PUSHOVER_VERSION,
+    ok: result.ok === true,
+    controlNodeId: result.controlNodeId || null,
+    direction: result.direction || null,
+    pattern: result.pattern || null,
+    firstYield: clone(result.firstYield || null),
+    curve: clone(result.curve || []),
+    memberStates: clone(result.memberStates || {}),
+    summary: clone(result.summary || {}),
+    warnings: clone(result.warnings || []),
+    productionSource: result.version || null,
+    legacySecantUsed: false,
+  });
+}
+
+async function resolveGravityState(input) {
+  const policy = input.analysisCase.initialState?.policy || 'zero';
+  if (policy === 'nonlinear-case') {
+    const predecessor = input.options.predecessor || input.merged.predecessor;
+    if (!predecessor?.checkpoint) return { ok: false, reason: 'GRAVITY_PREDECESSOR_CHECKPOINT_REQUIRED' };
+    const validation = validateNonlinearInitialStateDependency({
+      analysisCase: input.analysisCase,
+      runRecords: predecessor.runRecords || [predecessor.runRecord].filter(Boolean),
+      analysisStates: predecessor.analysisStates || [predecessor.analysisState].filter(Boolean),
+      checkpoint: predecessor.checkpoint,
+      domain: input.loadSet.domain,
+    });
+    if (!validation.ok) return { ok: false, reason: 'GRAVITY_PREDECESSOR_REJECTED', validation };
+    const predecessorStore = restoreStateCheckpoint(predecessor.checkpoint);
+    const stateStore = predecessorStore.domainHash === input.loadSet.domain.identity.domainHash
+      ? predecessorStore
+      : createNonlinearStateStore({
+        domainHash: input.loadSet.domain.identity.domainHash,
+        revision: predecessorStore.revision,
+        eventSequence: predecessorStore.eventSequence,
+        committed: {
+          ...predecessorStore.committed,
+          predecessorDomainHash: predecessorStore.domainHash,
+          reboundDomainHash: input.loadSet.domain.identity.domainHash,
+        },
+        eventLog: predecessorStore.eventLog,
+      });
+    const continuityEvaluation = await input.assembler.evaluate({
+      q: stateStore.committed.q,
+      lambda: stateStore.committed.lambda,
+      committedElementStates: stateStore.committed.elementStates,
+      mode: 'static',
+    });
+    if (
+      !continuityEvaluation.ok
+      || continuityEvaluation.audit?.ok === false
+      || maxAbs(continuityEvaluation.residualReduced) > positive(input.merged.gravityResidualTolerance, 1e-6)
+    ) {
+      return { ok: false, reason: 'GRAVITY_PREDECESSOR_EQUILIBRIUM_FAILED' };
+    }
+    return {
+      ok: true,
+      status: 'accepted-predecessor',
+      stateStore,
+      checkpoint: predecessor.checkpoint,
+      runRecord: validation.predecessor.runRecord,
+      analysisState: validation.predecessor.analysisState,
+      continuity: {
+        ok: true,
+        residualNorm: maxAbs(continuityEvaluation.residualReduced),
+        responseHash: continuityEvaluation.responseHash,
+      },
+    };
+  }
+  const gravity = await runNonlinearGravityPreload({
+    model: input.model,
+    analysisCase: {
+      id: input.merged.gravityCaseId || `${input.analysisCase.id || 'PUSHOVER'}:GRAVITY`,
+      kind: 'nonlinearStatic',
+      settings: { comboId: input.loadSet.gravity.id },
+      initialState: { policy: 'zero' },
+    },
+    domain: input.loadSet.gravityDomain,
+    elements: input.gravityElements,
+    loadPattern: input.loadSet.gravityLoadPattern,
+    combinedAssembler: input.assembler,
+    backend: input.backend,
+    production: input.production,
+    caseId: input.merged.gravityCaseId || `${input.analysisCase.id || 'PUSHOVER'}:GRAVITY`,
+    runRecordId: input.merged.gravityRunRecordId,
+    combinationId: input.loadSet.gravity.id,
+    linearInitialGuess: input.analysisCase.initialState?.policy === 'verified-linear-import'
+      ? input.options.linearInitialGuess || input.merged.linearInitialGuess
+      : null,
+    signal: input.options.signal,
+    isCancelled: input.options.isCancelled,
+    onProgress: input.options.onProgress,
+    options: input.merged.gravity || input.merged.gravityControl || {},
+  });
+  if (!gravity.ok) return gravity;
+  return {
+    ...gravity,
+    predecessorStateStore: gravity.stateStore,
+    stateStore: rebindStateStore(gravity.stateStore, input.loadSet.domain.identity.domainHash),
+  };
+}
+
+function rebindStateStore(store, domainHash) {
+  if (store.domainHash === domainHash) return store;
+  return createNonlinearStateStore({
+    domainHash,
+    revision: store.revision,
+    eventSequence: store.eventSequence,
+    committed: {
+      ...store.committed,
+      predecessorDomainHash: store.domainHash,
+      reboundDomainHash: domainHash,
+    },
+    eventLog: store.eventLog,
+  });
+}
+
+function mechanismReached(hinges, options) {
+  const plastic = new Set(hinges.filter((row) => ['yielded', 'capping', 'residual', 'failure'].includes(row.state)).map((row) => row.id));
+  const ids = Array.isArray(options.mechanismHingeIds) ? options.mechanismHingeIds.map(String) : [];
+  if (ids.length && ids.every((id) => plastic.has(id))) return ids;
+  const count = Number(options.mechanismHingeCount);
+  return Number.isFinite(count) && count > 0 && plastic.size >= count ? [...plastic].sort() : null;
+}
+
+function reactionBaseShear(reactions, baseline, direction, nodeCount) {
+  let projection = 0;
+  for (let node = 0; node < nodeCount; node += 1) {
+    for (let axis = 0; axis < 3; axis += 1) {
+      projection += (Number(reactions[node * 6 + axis]) - Number(baseline[node * 6 + axis])) * Number(direction[axis]);
+    }
+  }
+  return -projection;
+}
+
+function displacementOptions(options) {
+  return {
+    targetDisplacement: Number(options.targetDisplacement),
+    steps: positiveInteger(options.steps, 20),
+    initialIncrement: options.initialIncrement,
+    minIncrement: options.minIncrement,
+    maxIncrement: options.maxIncrement,
+    cutbackFactor: options.cutbackFactor,
+    growthFactor: options.growthFactor,
+    fastIterations: options.fastIterations,
+    maxAttempts: options.maxAttempts,
+    eventAware: options.eventAware !== false,
+    eventLocalizationTolerance: options.eventLocalizationTolerance,
+    newton: {
+      ...(options.newton || {}),
+      maxIterations: positiveInteger(options.newton?.maxIterations ?? options.maxIterations, 30),
+      convergence: options.newton?.convergence || options.convergence,
+      lineSearch: options.newton?.lineSearch ?? options.lineSearch,
+      lineSearchAlphas: options.newton?.lineSearchAlphas,
+      pivotTolerance: options.newton?.pivotTolerance,
+      linearRelativeTolerance: options.newton?.linearRelativeTolerance,
+      controlAbsolute: options.newton?.controlAbsolute,
+      controlRelative: options.newton?.controlRelative,
+    },
+  };
+}
+
+function mergeOptions(analysisCase, options) {
+  return {
+    ...(analysisCase.settings || {}),
+    ...(analysisCase.input || {}),
+    ...(analysisCase.inputRefs || {}),
+    ...options,
+    gravityCombinationId: options.gravityCombinationId
+      || analysisCase.inputRefs?.gravityCombinationId
+      || analysisCase.settings?.gravityCombinationId,
+    targetDisplacement: options.targetDisplacement
+      ?? analysisCase.control?.targetDisplacement
+      ?? analysisCase.settings?.targetDisplacement,
+    controlNodeId: options.controlNodeId
+      || analysisCase.control?.nodeId
+      || analysisCase.settings?.controlNodeId,
+    direction: options.direction
+      || analysisCase.control?.direction
+      || analysisCase.settings?.direction,
+  };
+}
+
+function pickControlNode(domain, direction) {
+  return domain.nodes.slice().sort((a, b) => {
+    const dz = Number(b.z) - Number(a.z);
+    if (Math.abs(dz) > 1e-9) return dz;
+    const aProjection = Number(a.x) * direction[0] + Number(a.y) * direction[1];
+    const bProjection = Number(b.x) * direction[0] + Number(b.y) * direction[1];
+    return bProjection - aProjection;
+  })[0]?.id || null;
+}
+
+function blocked(engine, reason, message) {
+  return Object.freeze({
+    version: PRODUCTION_PUSHOVER_VERSION,
+    ok: false,
+    status: 'blocked',
+    qualification: 'blocked',
+    designBlocked: true,
+    designBlockReason: reason,
+    modelBound: true,
+    reason,
+    message,
+    engine,
+    routing: { requestedEngineId: engine.id, executedEngineId: null, fallbackPolicy: 'forbidden', fallbackUsed: false },
+  });
+}
+
+function failed(engine, reason, message = null, details = null) {
+  return Object.freeze({
+    version: PRODUCTION_PUSHOVER_VERSION,
+    ok: false,
+    status: 'failed',
+    qualification: 'invalid',
+    designBlocked: true,
+    designBlockReason: reason,
+    modelBound: true,
+    reason,
+    message: message || reason,
+    details: serializable(details),
+    engine,
+    routing: { requestedEngineId: engine.id, executedEngineId: engine.id, fallbackPolicy: 'forbidden', fallbackUsed: false },
+  });
+}
+
+function maxAbs(values) {
+  let maximum = 0;
+  for (const value of values || []) maximum = Math.max(maximum, Math.abs(Number(value)));
+  return maximum;
+}
+
+function positive(value, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number : fallback;
+}
+
+function positiveInteger(value, fallback) {
+  return Math.max(1, Math.trunc(positive(value, fallback)));
+}
+
+function bounded(value, fallback, min, max) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+}
+
+function clean(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function clone(value) {
+  if (value == null) return value;
+  if (typeof structuredClone === 'function') return structuredClone(value);
+  return JSON.parse(JSON.stringify(value));
+}
+
+function serializable(value) {
+  if (!value) return value;
+  if (value instanceof Error) return { name: value.name, code: value.code || null, message: value.message };
+  try { return structuredClone(value); } catch { return { message: String(value) }; }
+}

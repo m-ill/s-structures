@@ -275,6 +275,8 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 
 ## P8-M5 - 중력 preload와 정식 변위제어 Pushover
 
+**상태: complete (2026-07-13).** 독립 중력 canonical domain, 표준 run/checkpoint/state 무결성, 실제 augmented displacement-control Newton, accepted-state 결과회복과 M7 handoff를 구현했다.
+
 ### 목표
 
 중력상태를 보존한 뒤 실제 전역 변위제어로 capacity curve와 힌지 전개를 계산한다.
@@ -308,6 +310,8 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 - `NL-PUSH-01`~`NL-PUSH-14`, `NL-CTRL-05`~`NL-CTRL-08`, `NL-MEI-09`~`NL-MEI-15` 통과
 
 ## P8-M6 - PMM interaction과 검증 가능한 fiber section
+
+**상태: active.**
 
 ### 목표
 

@@ -5,12 +5,18 @@ import {
 } from './capabilities.js';
 import { runLegacyPreliminaryPushover } from './legacy/preliminaryPushover.js';
 import { runLegacySdofNewmarkTrace } from './legacy/sdofNewmarkTrace.js';
+import { runProductionPushover } from './pushover/productionPushover.js';
 
-export const NONLINEAR_ANALYSIS_ROUTER_VERSION = 'p8-m0-nonlinear-analysis-router-v1';
+export const NONLINEAR_ANALYSIS_ROUTER_VERSION = 'p8-m5-nonlinear-analysis-router-v2';
 
 const DEFAULT_ADAPTERS = Object.freeze({
   [NONLINEAR_ENGINE_IDS.legacyPushover]: runLegacyPreliminaryPushover,
   [NONLINEAR_ENGINE_IDS.legacySdofNlth]: (_model, settings) => runLegacySdofNewmarkTrace(settings),
+  [NONLINEAR_ENGINE_IDS.productionPushover]: (model, settings, context) => runProductionPushover(
+    model,
+    context.analysisCase,
+    { ...settings, ...context.options },
+  ),
 });
 
 export function validateNonlinearAnalysisCase(analysisCase = {}, settings = {}) {
@@ -47,8 +53,16 @@ export function validateNonlinearAnalysisCase(analysisCase = {}, settings = {}) 
 export function runNonlinearAnalysisCase(model, analysisCase = {}, settings = {}, options = {}) {
   const validation = validateNonlinearAnalysisCase(analysisCase, settings);
   if (!validation.ok) return blockedResult(analysisCase, validation);
-  const adapters = options.nonlinearAdapters || DEFAULT_ADAPTERS;
-  const adapter = adapters[validation.engineId];
+  if (analysisCase.engineId === NONLINEAR_ENGINE_IDS.productionPushover) {
+    return blockedResult(analysisCase, {
+      ...validation,
+      ok: false,
+      code: 'NONLINEAR_ASYNC_RUNNER_REQUIRED',
+      message: `Engine ${analysisCase.engineId} is available only through runNonlinearAnalysisCaseAsync().`,
+      asyncRequired: true,
+    });
+  }
+  const adapter = resolveAdapter(validation, options);
   if (typeof adapter !== 'function') {
     return blockedResult(analysisCase, {
       ...validation,
@@ -58,20 +72,42 @@ export function runNonlinearAnalysisCase(model, analysisCase = {}, settings = {}
     });
   }
   try {
-    const result = adapter(model, {
-      ...settings,
-      requestedControl: validation.requestedControl,
+    const result = invokeAdapter(adapter, model, analysisCase, settings, options, validation);
+    if (isPromiseLike(result)) {
+      return blockedResult(analysisCase, {
+        ...validation,
+        ok: false,
+        code: 'NONLINEAR_ASYNC_RUNNER_REQUIRED',
+        message: `Engine ${validation.engineId} returned an asynchronous result. Use runNonlinearAnalysisCaseAsync().`,
+        asyncRequired: true,
+      });
+    }
+    return routedResult(result, validation, 'sync');
+  } catch (error) {
+    return blockedResult(analysisCase, {
+      ...validation,
+      ok: false,
+      code: 'NONLINEAR_ENGINE_FAILED',
+      message: error?.message || String(error),
+    }, 'failed');
+  }
+}
+
+export async function runNonlinearAnalysisCaseAsync(model, analysisCase = {}, settings = {}, options = {}) {
+  const validation = validateNonlinearAnalysisCase(analysisCase, settings);
+  if (!validation.ok) return blockedResult(analysisCase, validation);
+  const adapter = resolveAdapter(validation, options);
+  if (typeof adapter !== 'function') {
+    return blockedResult(analysisCase, {
+      ...validation,
+      ok: false,
+      code: validation.capability?.production ? 'PRODUCTION_BACKEND_UNAVAILABLE' : 'NONLINEAR_ENGINE_NOT_AVAILABLE',
+      message: `Execution adapter is unavailable for ${validation.engineId}.`,
     });
-    return {
-      ...result,
-      routing: {
-        requestedEngineId: validation.engineId,
-        executedEngineId: result?.engine?.id || validation.engineId,
-        fallbackPolicy: 'forbidden',
-        fallbackUsed: false,
-        routerVersion: NONLINEAR_ANALYSIS_ROUTER_VERSION,
-      },
-    };
+  }
+  try {
+    const result = await invokeAdapter(adapter, model, analysisCase, settings, options, validation);
+    return routedResult(result, validation, 'async');
   } catch (error) {
     return blockedResult(analysisCase, {
       ...validation,
@@ -101,15 +137,56 @@ function blockedResult(analysisCase, decision, status = 'unsupported') {
       formulation: capability?.formulation || analysisCase.formulation || null,
     },
     capability,
+    asyncRequired: decision.asyncRequired === true,
     routing: {
       requestedEngineId: engineId,
       executedEngineId: null,
       fallbackPolicy: 'forbidden',
       fallbackUsed: false,
       routerVersion: NONLINEAR_ANALYSIS_ROUTER_VERSION,
+      executionMode: decision.asyncRequired === true ? 'async-required' : null,
     },
     limitations: capability?.limitations || [],
   };
+}
+
+function resolveAdapter(validation, options) {
+  const adapters = options.nonlinearAdapters || DEFAULT_ADAPTERS;
+  return adapters[validation.engineId];
+}
+
+function invokeAdapter(adapter, model, analysisCase, settings, options, validation) {
+  return adapter(model, {
+    ...settings,
+    requestedControl: validation.requestedControl,
+  }, {
+    analysisCase,
+    options,
+    validation,
+  });
+}
+
+function routedResult(result, validation, executionMode) {
+  const payload = result && typeof result === 'object' ? result : { ok: true, value: result };
+  const hasExecutedEngineId = Object.prototype.hasOwnProperty.call(payload.routing || {}, 'executedEngineId');
+  return {
+    ...payload,
+    routing: {
+      ...(payload.routing || {}),
+      requestedEngineId: validation.engineId,
+      executedEngineId: hasExecutedEngineId
+        ? payload.routing.executedEngineId
+        : payload?.engine?.id || validation.engineId,
+      fallbackPolicy: 'forbidden',
+      fallbackUsed: false,
+      routerVersion: NONLINEAR_ANALYSIS_ROUTER_VERSION,
+      executionMode,
+    },
+  };
+}
+
+function isPromiseLike(value) {
+  return value != null && typeof value.then === 'function';
 }
 
 function normalizeRequestedControl(kind, analysisCase, settings) {

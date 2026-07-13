@@ -90,7 +90,7 @@ const productionBlocked = runNonlinearAnalysisCase(model, productionCase, produc
   },
 });
 assert.equal(productionBlocked.status, 'unsupported');
-assert.equal(productionBlocked.reason, 'NONLINEAR_ENGINE_NOT_AVAILABLE');
+assert.equal(productionBlocked.reason, 'NONLINEAR_CAPABILITY_UNSUPPORTED');
 assert.equal(productionBlocked.routing.requestedEngineId, NONLINEAR_ENGINE_IDS.productionPushover);
 assert.equal(productionBlocked.routing.executedEngineId, null);
 assert.equal(productionBlocked.routing.fallbackUsed, false);

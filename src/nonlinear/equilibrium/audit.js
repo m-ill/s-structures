@@ -1,11 +1,12 @@
-export const NONLINEAR_EQUILIBRIUM_AUDIT_VERSION = 'p8-m2-six-resultant-audit-v1';
+export const NONLINEAR_EQUILIBRIUM_AUDIT_VERSION = 'p8-m5-current-configuration-six-resultant-audit-v2';
 
 export function buildNonlinearEquilibriumAudit(nodes = [], external = [], reactions = [], options = {}) {
   const expected = nodes.length * 6;
   const p = finiteVector(external, expected, 'external');
   const r = finiteVector(reactions, expected, 'reactions');
-  const load = sixResultants(nodes, p);
-  const reaction = sixResultants(nodes, r);
+  const currentNodes = currentConfiguration(nodes, options.displacements);
+  const load = sixResultants(currentNodes, p);
+  const reaction = sixResultants(currentNodes, r);
   const closure = load.map((value, index) => value + reaction[index]);
   const forceScale = Math.max(1, normInf(load.slice(0, 3)), normInf(reaction.slice(0, 3)));
   const momentScale = Math.max(1, normInf(load.slice(3)), normInf(reaction.slice(3)));
@@ -21,7 +22,33 @@ export function buildNonlinearEquilibriumAudit(nodes = [], external = [], reacti
     forceResidual,
     momentResidual,
     tolerance,
+    configuration: options.displacements == null ? 'reference' : 'current',
   };
+}
+
+function currentConfiguration(nodes, displacements) {
+  if (displacements == null) return nodes;
+  if (displacements.length !== nodes.length * 6) {
+    const error = new RangeError(`displacements vector must contain ${nodes.length * 6} values.`);
+    error.code = 'EQUILIBRIUM_AUDIT_DISPLACEMENT_SIZE';
+    throw error;
+  }
+  return nodes.map((node, index) => ({
+    ...node,
+    x: Number(node.x || 0) + finite(displacements[index * 6], `displacements[${index * 6}]`),
+    y: Number(node.y || 0) + finite(displacements[index * 6 + 1], `displacements[${index * 6 + 1}]`),
+    z: Number(node.z || 0) + finite(displacements[index * 6 + 2], `displacements[${index * 6 + 2}]`),
+  }));
+}
+
+function finite(value, name) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) {
+    const error = new TypeError(`${name} must be finite.`);
+    error.code = 'EQUILIBRIUM_AUDIT_NONFINITE';
+    throw error;
+  }
+  return number;
 }
 
 function sixResultants(nodes, vector) {

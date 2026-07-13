@@ -1,4 +1,4 @@
-export const VERIFICATION_REGISTRY_VERSION = 'p8-m4-verification-registry-v4';
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m5-verification-registry-v5';
 export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
 export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
 
@@ -112,6 +112,20 @@ export const PHASE8_VERIFICATION_SUITES = Object.freeze([
       'NL-HNG-10',
       'NL-HNG-11',
       'NL-HNG-12',
+    ]),
+  }),
+  Object.freeze({
+    id: 'P8-M5-FORMAL-PUSHOVER',
+    milestone: 'P8-M5',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-PUSH-01', 'NL-PUSH-02', 'NL-PUSH-03', 'NL-PUSH-04',
+      'NL-PUSH-05', 'NL-PUSH-06', 'NL-PUSH-07', 'NL-PUSH-08',
+      'NL-PUSH-09', 'NL-PUSH-10', 'NL-PUSH-11', 'NL-PUSH-12',
+      'NL-PUSH-13', 'NL-PUSH-14',
+      'NL-CTRL-05', 'NL-CTRL-06', 'NL-CTRL-07', 'NL-CTRL-08',
+      'NL-MEI-09', 'NL-MEI-10', 'NL-MEI-11', 'NL-MEI-12',
+      'NL-MEI-13', 'NL-MEI-14', 'NL-MEI-15',
     ]),
   }),
 ]);

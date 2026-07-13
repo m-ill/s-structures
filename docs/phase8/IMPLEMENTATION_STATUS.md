@@ -3,16 +3,16 @@
 ```yaml
 reviewed_at: 2026-07-13
 phase_status: active
-implementation_status: p8-m4-complete
+implementation_status: p8-m5-complete
 release_status: unavailable
-production_equivalence: Q1-concentrated-plasticity-candidate
-completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4]
-active_milestone: P8-M5
+production_equivalence: Q1-formal-static-pushover-candidate
+completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5]
+active_milestone: P8-M6
 ```
 
 ## 현재 판정
 
-P8-M0~P8-M4는 완료되었다. M0는 preliminary 경로를 격리했고, M1은 canonical domain과 committed/trial 상태를, M2는 MDOF Newton·sparse/Worker/WASM 기반을 구현했다. M3는 objective 3D corotational frame/truss와 물리축 release를 구현했다. M4는 i/j·local y/z 집중소성 spring, 비대칭 A-B-C-D-E envelope, Masing/isotropic 이력, degradation·energy, 일관 직렬 condensation, 자동배정·PMM hook·transaction undo를 연결했다.
+P8-M0~P8-M5는 완료되었다. M5는 독립 중력 preload와 표준 run/checkpoint 무결성, signed 횡하중 패턴, 물리 제어좌표, 실제 증강 변위제어 Newton, 기준반력 차분 capacity curve, 층·부재·힌지 결과와 M7 handoff를 production 후보 경로로 연결했다.
 
 현재 제품 등급은 여전히 Q0다. `commercial-grade within supported scope` 판정은 [PRODUCTION_REQUIREMENTS.md](PRODUCTION_REQUIREMENTS.md)의 Q1~Q5를 모두 통과한 기능 범위에만 부여한다.
 
@@ -21,7 +21,7 @@ P8-M0~P8-M4는 완료되었다. M0는 preliminary 경로를 격리했고, M1은 
 | 기존 Pushover | 실행 가능 | `legacy-preliminary`, 설계전달 차단 |
 | 기존 SDOF Newmark NLTH | 실행 가능 | `legacy-preliminary`, model-bound 아님, 설계전달 차단 |
 | displacement/arc-length UI | 비활성 및 실행 차단 | `unsupported` |
-| production nonlinear engine ID | 예약됨 | M4 집중소성 요소까지 구현, M5 이후 정식 workflow 미구현, legacy fallback 금지 |
+| production nonlinear engine ID | 구현 | M5 정식 정적 Pushover `candidate`, legacy fallback 금지 |
 | schema v5 nonlinear registry | 구현 및 migration 검증 | P8-M0 완료 |
 | nonlinear case/run-record 계약 | 구현 및 UI/report/Agent 전파 | P8-M0 완료 |
 | canonical analysis domain | 구현 및 adapter 연결 | P8-M1 완료 |
@@ -35,7 +35,8 @@ P8-M0~P8-M4는 완료되었다. M0는 preliminary 경로를 격리했고, M1은 
 | 3D corotational frame/truss | 구현 | P8-M3 static candidate, principal rotation chart |
 | 집중소성 단부 힌지 | 구현 | P8-M4 static candidate, i/j·local y/z, committed/trial history |
 | finite 2축 release | 물리축 0모멘트·general tangent 구현 | static-only, `energyConservative:false`, cyclic/NLTH 차단 |
-| 정식 변위제어/arc-length | 미구현 | blocked |
+| 정식 변위제어 Pushover | 구현 | static `candidate`, 설계전달 차단 |
+| arc-length | 미구현 | P8-M7까지 blocked |
 | 3D frame MDOF NLTH | 미구현 | blocked |
 | Worker/WASM sparse runtime | 자체 Rust/WASM, zero import, Worker/preflight/cancel 구현 | P8-M2 기반 완료, 대형모델 성능 미검증 |
 
@@ -125,8 +126,8 @@ M4는 집중소성 component와 3D frame 직렬호환을 `candidate`로 qualific
 | P8-M2 MDOF 평형 코어 | complete | NL-EQ-01~12, NL-CTRL-01~04, M2 code review |
 | P8-M3 3D corotational 요소 | complete | NL-COR-01~12, ADR-002, M3 code review |
 | P8-M4 집중소성 힌지 | complete | NL-HNG-01~12, ADR-003, M4 code review |
-| P8-M5 정식 Pushover | active | 없음 |
-| P8-M6 PMM·fiber 단면 | planned | 없음 |
+| P8-M5 정식 Pushover | complete | NL-PUSH-01~14, NL-CTRL-05~08, NL-MEI-09~15, ADR-007, M5 code review |
+| P8-M6 PMM·fiber 단면 | active | 없음 |
 | P8-M7 arc-length·cyclic static | planned | 없음 |
 | P8-M8 MDOF NLTH | planned | 없음 |
 | P8-M9 모델 기능 통합·결과회복 | planned | 없음 |
@@ -137,4 +138,4 @@ M4는 집중소성 component와 3D frame 직렬호환을 `candidate`로 qualific
 
 ## 다음 작업
 
-P8-M5는 accepted gravity predecessor를 보존한 뒤 실제 augmented displacement-control Newton으로 lateral pattern을 재하하고, capacity curve·story/member/hinge 결과와 종료사유를 생성한다.
+P8-M6는 Phase 7 단면 geometry와 동일한 source에서 steel/RC fiber mesh를 만들고, `N-My-Mz` 일관접선과 PMM 상호작용을 M5 Pushover 요소 경로에 연결한다.

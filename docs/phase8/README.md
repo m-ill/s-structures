@@ -3,18 +3,18 @@
 ```yaml
 phase: 8
 status: active
-implementation_status: p8-m4-complete
+implementation_status: p8-m5-complete
 reviewed_at: 2026-07-13
-current_milestone: P8-M5
+current_milestone: P8-M6
 mission: Phase 7 모델링·탄성해석과 동일한 analysis domain 위에서 상용 수준의 정적·동적 비선형 3D 건축골조해석을 구현한다.
 governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 ```
 
-> P8-M0~P8-M4는 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지가 구현됐다. 정식 Pushover·PMM/fiber·MDOF NLTH는 아직 없고 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
+> P8-M0~P8-M5는 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 독립 중력 preload와 정식 증강 변위제어 Pushover가 구현됐다. PMM/fiber·arc-length·MDOF NLTH는 아직 없고 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
 
 ## 1. 결론
 
-기존 코드에는 Pushover, 힌지 backbone, fiber 적분, 변위제어, arc-length, Newmark NLTH라는 이름의 preliminary 모듈이 존재한다. P8-M2의 전역 MDOF Newton, P8-M3 corotational 요소, P8-M4 집중소성 힌지는 별도 production 후보 경로로 연결됐지만, 정식 Pushover·fiber·NLTH workflow는 아직 이 경로를 사용하지 않는다.
+기존 preliminary 모듈은 계속 격리한다. P8-M5의 `productionPushover`만 M2 전역 MDOF Newton, M3 corotational 요소, M4 집중소성 힌지와 독립 중력상태를 사용하는 정식 정적 후보 경로다. fiber·arc-length·NLTH workflow는 아직 이 경로에 연결되지 않았다.
 
 현재 상태를 정확히 표현하면 다음과 같다.
 

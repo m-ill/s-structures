@@ -25,6 +25,7 @@ export function createEquilibriumAssembler(input = {}) {
     domain.constraint,
   );
   const memberLoadTraces = indexMemberLoadTraces(loadPattern.trace);
+  const referenceLoadDerivative = buildReferenceLoadDerivative(loadPattern, domain.nodes.length);
   const handledPrestress = buildHandledPrestressPattern(loadPattern.trace, elements, domain.constraint.fullDofCount);
   const physicalLoadPattern = subtractLoadPatterns(loadPattern, handledPrestress);
   const handledMechanical = buildHandledMechanicalPattern(loadPattern.trace, elements, domain.constraint.fullDofCount);
@@ -64,6 +65,7 @@ export function createEquilibriumAssembler(input = {}) {
     domain,
     elements,
     loadPattern,
+    referenceLoadDerivative,
     pattern,
     characteristicLength,
     allowedInactiveReducedDofs,
@@ -158,7 +160,10 @@ export function createEquilibriumAssembler(input = {}) {
       const residualFull = subtract(pEffectiveExternalPhysicalFull, pInternalPhysicalFull);
       const residualReduced = subtract(pExternalReduced, pInternalReduced);
       const reactionsFull = Float64Array.from(residualFull, (value) => -value);
-      const audit = buildNonlinearEquilibriumAudit(domain.nodes || [], pExternalPhysicalFull, reactionsFull, options.auditOptions);
+      const audit = buildNonlinearEquilibriumAudit(domain.nodes || [], pExternalPhysicalFull, reactionsFull, {
+        ...(options.auditOptions || {}),
+        displacements: usesFiniteRotationCoordinates ? u : null,
+      });
       const inactiveModeGroupsReduced = inactiveModeGroupsFull
         .map((group) => group.map((mode) => reduceDisplacementMode(domain.constraint, mode)).filter(Boolean))
         .filter((group) => group.length > 0);
@@ -178,6 +183,8 @@ export function createEquilibriumAssembler(input = {}) {
         pInternalReduced,
         residualFull,
         residualReduced,
+        dResidualDlambdaReduced: referenceLoadDerivative.reduced,
+        referenceLoadDerivative,
         reactionsFull,
         tangentReduced,
         inactiveModesReduced,
@@ -226,6 +233,31 @@ function normalizeEntries(entries) {
       throw error;
     }
     return Object.freeze({ ...entry, id, dofs });
+  });
+}
+
+function buildReferenceLoadDerivative(pattern, nodeCount) {
+  const referenceRows = (pattern.trace || []).filter((row) => row.role === 'reference');
+  const unsupported = referenceRows.filter((row) => (
+    row?.source?.type !== 'nodal'
+    || (row.dofs || []).some((dof) => Number(dof) % 6 >= 3)
+  ));
+  if (!referenceRows.length) {
+    for (let node = 0; node < nodeCount; node += 1) {
+      for (let axis = 3; axis < 6; axis += 1) {
+        if (Number(pattern.referenceFull[node * 6 + axis]) !== 0) {
+          unsupported.push({ id: null, source: { type: 'untraced-rotational-reference' } });
+        }
+      }
+    }
+  }
+  return Object.freeze({
+    version: 'p8-m5-reference-load-derivative-v1',
+    ok: unsupported.length === 0,
+    reason: unsupported.length ? 'REFERENCE_LOAD_DERIVATIVE_UNSUPPORTED' : null,
+    scope: 'nodal-translational-reference-loads',
+    reduced: Float64Array.from(pattern.referenceReduced),
+    unsupported: unsupported.map((row) => ({ id: row.id || null, type: row.source?.type || null })),
   });
 }
 

@@ -5,15 +5,18 @@ import { analyzeDynamics } from '../dynamics/modal.js';
 import { estimateGlobalBucklingTrace } from '../dynamics/globalBuckling.js';
 import { runModalSuperpositionTha } from '../dynamics/elasticCompleteness.js';
 import { NONLINEAR_CASE_KINDS } from '../nonlinear/capabilities.js';
-import { runNonlinearAnalysisCase } from '../nonlinear/analysisRouter.js';
+import {
+  runNonlinearAnalysisCase,
+  runNonlinearAnalysisCaseAsync,
+} from '../nonlinear/analysisRouter.js';
 
-export const ANALYSIS_RUNNER_VERSION = 'p8-m0-analysis-runners-v2';
+export const ANALYSIS_RUNNER_VERSION = 'p8-m5-analysis-runners-v3';
 
 export function runAnalysisCase(model, analysisCase, options = {}) {
   const item = normalizeAnalysisCase(analysisCase || {});
   const startedAt = new Date().toISOString();
   try {
-    const settings = normalizeAnalysisCaseSettings(item.kind, item.settings || {}, item.input || {});
+    const settings = normalizeAnalysisCaseSettings(item.kind, item.settings || {}, item.input || {}, item);
     const runner = RUNNERS[item.kind];
     if (!runner && !NONLINEAR_CASE_KINDS.has(item.kind)) {
       return failureHandle(item, startedAt, 'UNSUPPORTED_ANALYSIS_CASE', `Unsupported analysis case kind: ${item.kind}`);
@@ -31,7 +34,29 @@ export function runAnalysisCases(model, analysisCases = [], options = {}) {
   return (analysisCases || []).map((analysisCase) => runAnalysisCase(model, analysisCase, options));
 }
 
-export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}) {
+export async function runAnalysisCaseAsync(model, analysisCase, options = {}) {
+  const item = normalizeAnalysisCase(analysisCase || {});
+  const startedAt = new Date().toISOString();
+  try {
+    const settings = normalizeAnalysisCaseSettings(item.kind, item.settings || {}, item.input || {}, item);
+    const runner = RUNNERS[item.kind];
+    if (!runner && !NONLINEAR_CASE_KINDS.has(item.kind)) {
+      return failureHandle(item, startedAt, 'UNSUPPORTED_ANALYSIS_CASE', `Unsupported analysis case kind: ${item.kind}`);
+    }
+    const payload = NONLINEAR_CASE_KINDS.has(item.kind)
+      ? await runNonlinearAnalysisCaseAsync(model, item, settings, options)
+      : await runner(model, settings, options);
+    return successHandle(item, startedAt, payload, settings);
+  } catch (error) {
+    return failureHandle(item, startedAt, 'ANALYSIS_CASE_FAILED', error?.message || String(error));
+  }
+}
+
+export function runAnalysisCasesAsync(model, analysisCases = [], options = {}) {
+  return Promise.all((analysisCases || []).map((analysisCase) => runAnalysisCaseAsync(model, analysisCase, options)));
+}
+
+export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}, analysisCase = {}) {
   const merged = { ...(settings || {}), ...(input || {}) };
   if (kind === 'static') {
     const pDeltaMethodExplicit = Object.prototype.hasOwnProperty.call(merged, 'pDeltaMethod')
@@ -92,15 +117,18 @@ export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}) {
     };
   }
   if (kind === 'pushover') {
+    const caseControl = analysisCase.control || {};
+    const lateralPattern = analysisCase.inputRefs?.lateralPattern || {};
     return {
-      direction: merged.direction || '+x',
-      controlNodeId: merged.controlNodeId || null,
+      direction: merged.direction || caseControl.direction || lateralPattern.direction || '+x',
+      controlNodeId: merged.controlNodeId || caseControl.nodeId || caseControl.controlNodeId || null,
       steps: positiveInt(merged.steps, 12),
       maxLoadFactor: finiteNumber(merged.maxLoadFactor, 1),
       referenceBaseShear: finiteNumber(merged.referenceBaseShear, 10),
-      pattern: merged.pattern || 'triangular',
-      control: merged.control || 'load-factor',
-      targetDisplacement: merged.targetDisplacement,
+      pattern: merged.pattern || lateralPattern.type || lateralPattern.pattern || 'triangular',
+      control: merged.control || caseControl.type || 'load-factor',
+      targetDisplacement: merged.targetDisplacement ?? caseControl.targetDisplacement,
+      gravityCombinationId: merged.gravityCombinationId || analysisCase.inputRefs?.gravityCombinationId || null,
       plasticMomentScale: merged.plasticMomentScale,
       hingeDegradation: merged.hingeDegradation,
     };
