@@ -1,0 +1,124 @@
+{
+  "version": "p8-evidence-artifact-v1",
+  "suiteId": "P8-M6-PMM-RUNTIME",
+  "milestone": "P8-M6",
+  "status": "PASS",
+  "generatedAt": "2026-07-13T19:45:00+09:00",
+  "sourceRevision": "4d1bb0e+P8-M6.1-worktree",
+  "verificationIds": [
+    "NL-PMM-09",
+    "NL-PMM-10",
+    "NL-PMM-11",
+    "NL-PMM-12",
+    "NL-PMM-13",
+    "NL-PMM-14"
+  ],
+  "results": [
+    { "id": "NL-PMM-09", "status": "PASS", "test": "tests/p8-m6-pmm-runtime.mjs" },
+    { "id": "NL-PMM-10", "status": "PASS", "test": "tests/p8-m6-pmm-runtime.mjs" },
+    { "id": "NL-PMM-11", "status": "PASS", "test": "tests/p8-m6-pmm-runtime.mjs" },
+    { "id": "NL-PMM-12", "status": "PASS", "test": "tests/p8-m6-pmm-runtime.mjs" },
+    { "id": "NL-PMM-13", "status": "PASS", "test": "tests/p8-m6-pmm-runtime.mjs" },
+    { "id": "NL-PMM-14", "status": "PASS", "test": "tests/p8-m6-pmm-runtime.mjs" }
+  ],
+  "environment": {
+    "profileVersion": "p8-m0-reference-profile-v1",
+    "runtime": "Node.js v24.16.0 win32 x64",
+    "numericCore": "in-house JavaScript fiber integration and safeguarded section equilibrium; no commercial or licensed solver",
+    "measurementCommand": "node tools/measure-p8-m6-pmm.mjs"
+  },
+  "metrics": {
+    "coldBenchmark": {
+      "id": "existing-rc-400x600-cold",
+      "isolatedProcess": true,
+      "coldCache": true,
+      "cacheEnabled": false,
+      "sampleCount": 5,
+      "elapsedMs": 412.752,
+      "maxElapsedMs": 422.258,
+      "commandWallMedianMs": 551.642,
+      "commandWallMaxMs": 563.031,
+      "gateMs": 60000,
+      "elapsedSamplesMs": [403.339, 412.752, 422.258, 419.327, 409.68],
+      "commandWallSamplesMs": [537.712, 548.321, 563.031, 551.642, 554.105],
+      "operations": {
+        "uniqueInteractionCount": 1,
+        "computedInteractionCount": 1,
+        "fiberCount": 192,
+        "sectionEvaluationCount": 23806,
+        "sectionSolveCount": 887,
+        "sectionSolveRequestCount": 908,
+        "sectionSolveCacheHitCount": 21,
+        "axialLevelCount": 3,
+        "angleCount": 8,
+        "curvatureSampleCount": 17,
+        "progressEventCount": 28,
+        "progressStageCount": 5
+      },
+      "hashes": {
+        "sourceHash": "19cc9fdab80176cf0f5a01f1c9a6b45536f2ca5e431dc9ea28b046e36d0da8c4",
+        "surfaceHash": "8f812e1dc37a9edb879c9535da05d4026d06e473846bb1231fcda7ac90de215c",
+        "interactionHash": "30a1e4491d74bc2c8238b7f919aca6f4b931e410dc611ecaf87f1d98b6700fa7"
+      }
+    },
+    "cache": {
+      "memoryHits": 1,
+      "persistentHits": 1,
+      "explicitDefaultsNormalized": true,
+      "sourceIdentityBound": true,
+      "memoryEntryLimit": 64
+    },
+    "determinism": {
+      "sourceHash": "bd5d44c2fb1352cb5a891b7bb4667d59e039c9132a451830067fd624c971620d",
+      "surfaceHash": "1c1aae729c5d719465991de6dedbf129ecf915f073b3b323795fbe5a7152d4ff",
+      "memoizedSolves": 197,
+      "unmemoizedSolves": 218
+    },
+    "worker": {
+      "executionMode": "worker",
+      "uniqueWorkerRuns": 2,
+      "cancellationRequestedDuringInteraction": true,
+      "cancelledCacheWrites": 0,
+      "lateCancellationCacheWrites": 0
+    },
+    "staleProtection": {
+      "changedInputCount": 5,
+      "unrelatedReusable": true,
+      "evictionPolicyClaimed": false
+    },
+    "parity": [
+      {
+        "id": "small-steel",
+        "responseMaxRelativeError": 0,
+        "rootMaxRelativeError": 0,
+        "pmmMaxRelativeError": 0,
+        "comparedPmmNumericValues": 506,
+        "fullSurfaceHash": "9e8bd2a931ffc629f298952c82ee3cf35aa24c119584db1f8129a91508d20cc6",
+        "optimizedSurfaceHash": "9e8bd2a931ffc629f298952c82ee3cf35aa24c119584db1f8129a91508d20cc6"
+      },
+      {
+        "id": "symmetric-rc",
+        "responseMaxRelativeError": 0,
+        "rootMaxRelativeError": 0,
+        "pmmMaxRelativeError": 0,
+        "comparedPmmNumericValues": 506,
+        "fullSurfaceHash": "77bc00ba189f01bd86442be7b5472cc0dc8a9c08c643280c4a80be689ed4eeea",
+        "optimizedSurfaceHash": "77bc00ba189f01bd86442be7b5472cc0dc8a9c08c643280c4a80be689ed4eeea"
+      },
+      {
+        "id": "asymmetric-rc",
+        "responseMaxRelativeError": 0,
+        "rootMaxRelativeError": 0,
+        "pmmMaxRelativeError": 0,
+        "comparedPmmNumericValues": 506,
+        "fullSurfaceHash": "b84f6c481924f0cf749f89396515512e35d9d3f9e5acd80b4592caaf468c2fff",
+        "optimizedSurfaceHash": "b84f6c481924f0cf749f89396515512e35d9d3f9e5acd80b4592caaf468c2fff"
+      }
+    ],
+    "historicalObservation": {
+      "duration": "about 17 minutes",
+      "classification": "unisolated prior wall-time observation, not an accepted performance baseline"
+    }
+  },
+  "qualificationImpact": "candidate"
+}

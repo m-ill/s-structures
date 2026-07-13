@@ -1,5 +1,5 @@
 import { stableHash } from '../../core/stableHash.js';
-import { buildModelFiberPmmInteractions } from '../fiber/memberInteraction.js';
+import { prepareModelFiberPmmInteractions } from '../fiber/fiberPmmPreprocessor.js';
 import { createNonlinearStateStore, createStateCheckpoint, restoreStateCheckpoint } from '../core/stateStore.js';
 import { buildHingedFrame3dEntries } from '../elements/hingedFrame3d.js';
 import { createEquilibriumAssembler } from '../equilibrium/assembler.js';
@@ -40,20 +40,36 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
   const production = options.production !== false;
   let backend = options.backend || null;
   try {
-    if (!backend) backend = await createWasmSparseBackend(options.wasm || {});
     const merged = mergeOptions(analysisCase, options);
     const targetDisplacement = Number(merged.targetDisplacement);
     if (!Number.isFinite(targetDisplacement) || !(targetDisplacement > 0)) {
       return blocked(engine, 'PUSHOVER_TARGET_DISPLACEMENT_REQUIRED', 'A positive control target is required.');
     }
+    const modelHashAtStart = stableHash(model);
     const loadSet = buildPushoverLoadSet(model, analysisCase, merged);
     const fiberPmm = merged.pmmInteractions
       ? externalFiberPmm(merged.pmmInteractions, model)
-      : merged.fiberPmm === false ? disabledFiberPmm() : buildModelFiberPmmInteractions(model, {
+      : merged.fiberPmm === false ? disabledFiberPmm() : await prepareModelFiberPmmInteractions(model, {
         ...(merged.fiberPmm || {}),
         reinforcementSnapshots: merged.reinforcementSnapshots,
         strict: merged.fiberPmm?.strict,
+        cache: options.pmmCache || merged.fiberPmm?.cache,
+        cacheEnabled: merged.fiberPmm?.cacheEnabled,
+        workerClient: options.pmmWorkerClient || merged.fiberPmm?.workerClient,
+        useWorker: merged.fiberPmm?.useWorker,
+        requireWorker: production && typeof document !== 'undefined'
+          ? true
+          : merged.fiberPmm?.requireWorker,
+        signal: options.signal,
+        isCancelled: options.isCancelled,
+        onProgress: options.onProgress,
       });
+    if (stableHash(model) !== modelHashAtStart) {
+      const error = new Error('The nonlinear model changed while fiber PMM preprocessing was running.');
+      error.code = 'PMM_SOURCE_CHANGED_DURING_PREPROCESSING';
+      throw error;
+    }
+    if (!backend) backend = await createWasmSparseBackend(options.wasm || {});
     const pmmInteractions = merged.pmmInteractions || fiberPmm.interactions;
     const hingeResolution = resolveDomainHingeAssignments(loadSet.domain, {
       axialRatios: merged.axialRatios,
@@ -221,6 +237,9 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       } : undefined,
     });
   } catch (error) {
+    if (['CANCELLED', 'PMM_GENERATION_CANCELLED'].includes(error?.code)) {
+      return cancelled(engine, error.code, error.message);
+    }
     return failed(engine, error.code || 'PRODUCTION_PUSHOVER_FAILED', error.message, error.details || null);
   }
 }
@@ -501,6 +520,22 @@ function failed(engine, reason, message = null, details = null) {
     reason,
     message: message || reason,
     details: serializable(details),
+    engine,
+    routing: { requestedEngineId: engine.id, executedEngineId: engine.id, fallbackPolicy: 'forbidden', fallbackUsed: false },
+  });
+}
+
+function cancelled(engine, reason, message = null) {
+  return Object.freeze({
+    version: PRODUCTION_PUSHOVER_VERSION,
+    ok: false,
+    status: 'cancelled',
+    qualification: 'not-evaluated',
+    designBlocked: true,
+    designBlockReason: reason,
+    modelBound: true,
+    reason,
+    message: message || 'Nonlinear analysis was cancelled before PMM preprocessing completed.',
     engine,
     routing: { requestedEngineId: engine.id, executedEngineId: engine.id, fallbackPolicy: 'forbidden', fallbackUsed: false },
   });

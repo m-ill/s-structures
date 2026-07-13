@@ -1,4 +1,4 @@
-export const VERIFICATION_REGISTRY_VERSION = 'p8-m6-verification-registry-v6';
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m6.1-verification-registry-v7';
 export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
 export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
 
@@ -139,6 +139,15 @@ export const PHASE8_VERIFICATION_SUITES = Object.freeze([
       'NL-FIB-13', 'NL-FIB-14',
       'NL-PMM-01', 'NL-PMM-02', 'NL-PMM-03', 'NL-PMM-04',
       'NL-PMM-05', 'NL-PMM-06', 'NL-PMM-07', 'NL-PMM-08',
+    ]),
+  }),
+  Object.freeze({
+    id: 'P8-M6-PMM-RUNTIME',
+    milestone: 'P8-M6',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-PMM-09', 'NL-PMM-10', 'NL-PMM-11',
+      'NL-PMM-12', 'NL-PMM-13', 'NL-PMM-14',
     ]),
   }),
 ]);

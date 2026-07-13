@@ -2,8 +2,8 @@
 
 ```yaml
 plan_version: 2026-07-13
-milestones: P8-M0..P8-M11
-current_status: complete-p8-m4-next-p8-m5
+milestones: P8-M0..P8-M11 plus P8-M6.1
+current_status: complete-p8-m6.1-next-p8-m7
 execution_rule: one milestone at a time; code, tests, evidence, review, and status update are all required
 ```
 
@@ -17,12 +17,13 @@ flowchart LR
   M3 --> M4["P8-M4 Concentrated Plasticity"]
   M4 --> M5["P8-M5 Formal Pushover"]
   M4 --> M6["P8-M6 PMM and Fiber"]
+  M6 --> M61["P8-M6.1 PMM Runtime"]
   M5 --> M7["P8-M7 Arc-Length and Cyclic"]
-  M6 --> M7
+  M61 --> M7
   M2 --> M8["P8-M8 MDOF NLTH"]
   M3 --> M8
   M4 --> M8
-  M6 --> M8
+  M61 --> M8
   M5 --> M9["P8-M9 Integration and Recovery"]
   M7 --> M9
   M8 --> M9
@@ -350,6 +351,39 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 
 완료 증거는 `reports/validation-evidence/phase8/p8-m6-fiber-pmm.json`, `p8-m6-code-review.md`, `ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md`에 고정한다.
 
+## P8-M6.1 - PMM 전처리 성능과 실행 안전성
+
+**상태: complete (2026-07-13).** M6의 수치 표본과 용량 판정을 유지하면서 RC PMM 최초 생성 병목을 제거하고 production 실행 계약을 보강했다.
+
+### 목표
+
+PMM surface 생성을 독립 전처리 단계로 계측하고, UI thread를 차단하지 않는 Worker·cache·취소·stale-result 경계를 제공한다.
+
+### 작업
+
+- full trial history/hash/energy 생성을 생략하는 stateless monotonic section-envelope evaluator
+- 기존 목표축력 bracket, curvature/angle/axial 표본, limit-state 기준 보존
+- 동일 `(N,kappaY,kappaZ)` section solve memoization과 동일 source 조합 member deduplication
+- section/material/reinforcement/단위/수치옵션/알고리즘 버전 기반 content-addressed cache key
+- bounded memory LRU와 검증된 IndexedDB 영속 cache, 손상 payload 자동 폐기
+- 고유 interaction 1개 단위 dedicated Worker 실행, 즉시 cache commit, progress/cancel 계약
+- production browser에서 Worker 미가용 시 명시적 차단, main-thread fallback 금지
+- PMM workload preflight와 실행 중 source 변경 결과 폐기
+- desktop localhost origin 고정으로 재실행 간 IndexedDB namespace 유지
+
+적응형 각도·곡률 표본 축소는 M6 수치면을 바꾸므로 M6.1에 포함하지 않는다. M6.1 최적화는 같은 입력에 대해 같은 numerical surface hash를 유지해야 한다.
+
+### 완료 조건
+
+- 기준 RC 400x600 cold fixture가 격리 process에서 60초 이내 완료
+- memoization on/off numerical surface와 hash 일치
+- full-state와 envelope section/root/PMM 수치가 지정 tolerance 이내 일치
+- 실제 Worker 실행, progress, cancel, partial-cache 경계 검증
+- memory/persistent cache hit, 손상 record, source 변경 miss 검증
+- `NL-PMM-09`~`NL-PMM-14` 통과
+
+완료 증거는 `reports/validation-evidence/phase8/p8-m6-pmm-runtime.json`, `p8-m6-1-code-review.md`, 갱신된 `ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md`로 고정한다. 일반 analysis job scheduler와 cache GC/TTL은 각각 P8-M10/P8-M9 후속 범위다.
+
 ## P8-M7 - Arc-length와 cyclic static 경로
 
 ### 목표
@@ -548,6 +582,7 @@ Phase 7에서 지원하는 실제 모델 기능이 비선형 도메인과 결과
 | P8-M4 | HNG |
 | P8-M5 | PUSH, CTRL-05~08, MEI-09~15 |
 | P8-M6 | FIB, PMM |
+| P8-M6.1 | PMM-09~14 runtime, cache, parity |
 | P8-M7 | ARC, CYC |
 | P8-M8 | DYN |
 | P8-M9 | INT, MEI 전체 |

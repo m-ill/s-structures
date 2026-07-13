@@ -1,6 +1,7 @@
 import { createWorkerCore } from './workerCore.js';
+import { WORKER_TASK_TYPES } from './protocol.js';
 
-export const ANALYSIS_WORKER_VERSION = 'p8-m2-analysis-worker-v1';
+export const ANALYSIS_WORKER_VERSION = 'p8-m6.1-analysis-worker-v2';
 
 export async function createAvailableWasmSparseBackend(options = {}) {
   let factory = options.createWasmSparseBackend
@@ -35,13 +36,23 @@ export async function attachAnalysisWorker(options = {}) {
       endpoint.postMessage(message, transferables);
     },
     backend,
-    taskHandler: options.taskHandler,
+    taskHandler: options.taskHandler || handleBuiltInAnalysisTask,
     preflight: options.preflight,
   });
   endpoint.onMessage((message) => {
     void core.handleMessage(message);
   });
   return core;
+}
+
+export async function handleBuiltInAnalysisTask(task, context) {
+  if (task.type === WORKER_TASK_TYPES.buildFiberPmm) {
+    const module = await import('../fiber/fiberPmmPreprocessor.js');
+    return module.runFiberPmmWorkerTask(task.payload, context);
+  }
+  const error = new Error(`No built-in analysis worker handler is registered for ${task.type}.`);
+  error.code = 'WORKER_TASK_HANDLER_UNAVAILABLE';
+  throw error;
 }
 
 export async function resolveWorkerEndpoint() {
@@ -81,5 +92,9 @@ export async function resolveWorkerEndpoint() {
   return null;
 }
 
-export const analysisWorkerReady = attachAnalysisWorker();
+const workerRole = (() => {
+  try { return new URL(import.meta.url).searchParams.get('role'); }
+  catch { return null; }
+})();
+export const analysisWorkerReady = attachAnalysisWorker(workerRole === 'fiber-pmm' ? { backend: null } : {});
 await analysisWorkerReady;

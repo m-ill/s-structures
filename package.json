@@ -18,6 +18,7 @@
     "generate:m42-representative-packages": "node tools/generate-m42-representative-packages.mjs",
     "generate:stabilization-harness": "node tools/run-stabilization-harness.mjs",
     "measure:perf": "node tools/measure-perf.mjs",
+    "measure:p8:m6": "node tools/measure-p8-m6-pmm.mjs",
     "measure:scale": "node tools/measure-scale-limits.mjs",
     "build:release": "node tools/build-release.mjs",
     "backup:data": "node tools/backup-data.mjs --verify",

@@ -167,6 +167,28 @@ export function evaluateFiberMaterialTrial(material, committedState, strain) {
   return deepFreeze({ ...core, contentHash: stableHash(core) });
 }
 
+/**
+ * Compiles the monotonic material envelope used while generating a PMM surface.
+ * It deliberately omits committed history, hashes, and energy bookkeeping; those
+ * remain mandatory in evaluateFiberMaterialTrial during the actual analysis.
+ */
+export function createFiberMaterialEnvelopeEvaluator(material) {
+  validateMaterial(material);
+  if (material.type === 'steel-bilinear-kinematic') {
+    const parameters = material.parameters;
+    return (strain) => evaluateSteelEnvelopeUnchecked(parameters, finite(strain, 'strain'));
+  }
+  if (material.type === 'concrete-compression-tension-damage') {
+    const parameters = material.parameters;
+    return (strain) => evaluateConcreteEnvelopeUnchecked(parameters, finite(strain, 'strain'));
+  }
+  return unsupportedMaterial(material.type);
+}
+
+export function evaluateFiberMaterialEnvelope(material, strain) {
+  return createFiberMaterialEnvelopeEvaluator(material)(strain);
+}
+
 export function commitFiberMaterialTrial(trial) {
   validateTrial(trial);
   return stateWithHash({
@@ -186,41 +208,62 @@ export function concreteEnvelopeResponse(material, strain) {
   if (material.type !== 'concrete-compression-tension-damage') {
     throw materialError('FIBER_MATERIAL_TYPE_INVALID', 'Concrete envelope evaluation requires a concrete material.');
   }
-  const epsilon = finite(strain, 'strain');
-  const p = material.parameters;
-  if (Math.abs(epsilon) <= 1e-18) return deepFreeze({ stress: 0, tangent: p.E, branch: 'origin' });
+  return deepFreeze(evaluateConcreteEnvelopeUnchecked(material.parameters, finite(strain, 'strain')));
+}
+
+function evaluateSteelEnvelopeUnchecked(p, epsilon) {
+  const elasticPredictor = p.E * epsilon;
+  const yieldFunction = Math.abs(elasticPredictor) - p.Fy;
+  if (yieldFunction <= p.yieldTolerance) {
+    return { stress: elasticPredictor, tangent: p.E, branch: Math.abs(epsilon) <= 1e-18 ? 'origin' : 'elastic', yielded: false };
+  }
+  const sign = Math.sign(elasticPredictor) || 1;
+  const plasticIncrement = yieldFunction / (p.E + p.kinematicModulus);
+  return {
+    stress: elasticPredictor - p.E * plasticIncrement * sign,
+    tangent: p.kinematicModulus === 0 ? 0 : p.E * p.kinematicModulus / (p.E + p.kinematicModulus),
+    branch: sign > 0 ? 'plastic-positive' : 'plastic-negative',
+    yielded: true,
+  };
+}
+
+function evaluateConcreteEnvelopeUnchecked(p, epsilon) {
+  if (Math.abs(epsilon) <= 1e-18) return { stress: 0, tangent: p.E, branch: 'origin', yielded: false };
   if (epsilon > 0) {
-    if (epsilon <= p.tensionCrackStrain) return deepFreeze({ stress: p.E * epsilon, tangent: p.E, branch: 'tension-elastic' });
+    if (epsilon <= p.tensionCrackStrain) return { stress: p.E * epsilon, tangent: p.E, branch: 'tension-elastic', yielded: false };
     if (epsilon < p.tensionUltimateStrain) {
       const span = p.tensionUltimateStrain - p.tensionCrackStrain;
       const ratio = (epsilon - p.tensionCrackStrain) / span;
-      return deepFreeze({ stress: p.ft * (1 - ratio), tangent: -p.ft / span, branch: 'tension-softening' });
+      return { stress: p.ft * (1 - ratio), tangent: -p.ft / span, branch: 'tension-softening', yielded: true };
     }
-    return deepFreeze({ stress: 0, tangent: 0, branch: 'tension-cracked' });
+    return { stress: 0, tangent: 0, branch: 'tension-cracked', yielded: true };
   }
   const magnitude = -epsilon;
   if (magnitude <= p.epsc0) {
     const x = magnitude / p.epsc0;
-    return deepFreeze({
+    return {
       stress: -p.fc * (2 * x - x ** 2),
       tangent: (2 * p.fc / p.epsc0) * (1 - x),
       branch: 'compression-ascending',
-    });
+      yielded: false,
+    };
   }
   if (magnitude < p.epscu) {
     const span = p.epscu - p.epsc0;
     const ratio = (magnitude - p.epsc0) / span;
-    return deepFreeze({
+    return {
       stress: -p.fc * (1 - (1 - p.residualCompressionRatio) * ratio),
       tangent: -p.fc * (1 - p.residualCompressionRatio) / span,
       branch: 'compression-descending',
-    });
+      yielded: true,
+    };
   }
-  return deepFreeze({
+  return {
     stress: -p.fc * p.residualCompressionRatio,
     tangent: 0,
     branch: 'compression-residual',
-  });
+    yielded: true,
+  };
 }
 
 export const trialFiberMaterialState = evaluateFiberMaterialTrial;

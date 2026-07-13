@@ -105,6 +105,23 @@ checkpoint delta
 
 line-search 후보마다 전체 domain deep clone을 만들지 않는다. copy-on-write 또는 preallocated branch buffer를 사용한다.
 
+### 4.4 M6.1 PMM preprocessing
+
+PMM surface 생성은 Pushover 반복과 분리된 source-derived artifact 단계다. 기준 입력은 Phase 7 material/section/reinforcement snapshot과 result-affecting numerical options이며, topology·load·mass 변경만으로 유효한 PMM artifact를 폐기하지 않는다.
+
+- production browser cache miss는 dedicated PMM Worker에서만 계산한다.
+- 동일 source 조합 member는 한 번만 계산하고 member ID에 다시 bind한다.
+- 고유 interaction 1개를 Worker run과 persistent commit의 최소 단위로 사용한다.
+- memory cache는 LRU 64개를 기본 상한으로 사용한다.
+- IndexedDB record는 cache key, payload hash, source hash, surface hash를 모두 검증한다.
+- PMM source가 실행 중 변경되면 결과를 attach하지 않는다.
+- owned Worker는 AbortSignal 수신 시 terminate하고 현재 미완료 interaction을 폐기한다.
+- PMM preflight는 고유 interaction, fiber, section solve, fiber evaluation, result byte를 보수적으로 추정한다. 이 값은 계측값이 아니라 실행 차단용 estimate다.
+
+기준 fixture `existing-rc-400x600-cold`는 격리 Node process, process-memory cache 초기화, persistent cache 비활성 조건으로 측정한다. 합격 gate는 60초이며, evidence에는 명령 전체 wall time과 PMM 함수 elapsed time을 구분해 기록한다. warm cache 검증은 section solve가 0회인지를 우선 판정하고, 최종 UI latency budget은 P8-M11 reference hardware에서 별도 확정한다.
+
+M6.1은 angle/curvature/axial 표본 수를 줄이지 않는다. 적응형 표본은 별도 수치 qualification 없이는 성능 최적화로 사용할 수 없다.
+
 ## 5. Result 저장정책
 
 ### 5.1 Output policy

@@ -181,10 +181,12 @@ import { HINGE_PROPERTY_REGISTRY_VERSION } from '../nonlinear/properties/hingeRe
 import { HINGE_ASSIGNMENT_CONTRACT_VERSION } from '../nonlinear/properties/assignments.js';
 import { FIBER_SECTION_MESH_VERSION } from '../nonlinear/fiber/sectionMesh.js';
 import { FIBER_MATERIAL_MODEL_VERSION } from '../nonlinear/fiber/materialModels.js';
-import { SECTION_RESPONSE_VERSION } from '../nonlinear/fiber/sectionResponse.js';
+import { SECTION_ENVELOPE_VERSION, SECTION_RESPONSE_VERSION } from '../nonlinear/fiber/sectionResponse.js';
 import { MOMENT_CURVATURE_V2_VERSION } from '../nonlinear/fiber/momentCurvatureV2.js';
 import { PMM_SURFACE_VERSION } from '../nonlinear/fiber/pmmSurface.js';
 import { MEMBER_FIBER_INTERACTION_VERSION } from '../nonlinear/fiber/memberInteraction.js';
+import { FIBER_PMM_PREPROCESSOR_VERSION } from '../nonlinear/fiber/fiberPmmPreprocessor.js';
+import { PMM_INTERACTION_CACHE_VERSION } from '../nonlinear/fiber/pmmInteractionCache.js';
 import { FIBER_HINGE_INTERACTION_VERSION } from '../nonlinear/fiber/hingeInteraction.js';
 import { DISTRIBUTED_FIBER_FRAME_3D_VERSION } from '../nonlinear/elements/distributedFiberFrame3d.js';
 import {
@@ -215,7 +217,7 @@ import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } fro
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m6-agent-capability-manifest-v8';
+export const AGENT_MANIFEST_VERSION = 'p8-m6.1-agent-capability-manifest-v9';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -400,9 +402,12 @@ export function buildAgentManifest(options = {}) {
       phase8FiberSectionMesh: FIBER_SECTION_MESH_VERSION,
       phase8FiberMaterialModel: FIBER_MATERIAL_MODEL_VERSION,
       phase8FiberSectionResponse: SECTION_RESPONSE_VERSION,
+      phase8FiberSectionEnvelope: SECTION_ENVELOPE_VERSION,
       phase8MomentCurvature: MOMENT_CURVATURE_V2_VERSION,
       phase8PmmSurface: PMM_SURFACE_VERSION,
       phase8MemberFiberInteraction: MEMBER_FIBER_INTERACTION_VERSION,
+      phase8FiberPmmPreprocessor: FIBER_PMM_PREPROCESSOR_VERSION,
+      phase8PmmInteractionCache: PMM_INTERACTION_CACHE_VERSION,
       phase8FiberHingeInteraction: FIBER_HINGE_INTERACTION_VERSION,
       phase8DistributedFiberFrame3d: DISTRIBUTED_FIBER_FRAME_3D_VERSION,
       phase8DisplacementControl: MDOF_DISPLACEMENT_CONTROL_VERSION,
@@ -460,9 +465,12 @@ export function buildAgentManifest(options = {}) {
         fiberSectionMesh: FIBER_SECTION_MESH_VERSION,
         fiberMaterialModel: FIBER_MATERIAL_MODEL_VERSION,
         fiberSectionResponse: SECTION_RESPONSE_VERSION,
+        fiberSectionEnvelope: SECTION_ENVELOPE_VERSION,
         momentCurvature: MOMENT_CURVATURE_V2_VERSION,
         pmmSurface: PMM_SURFACE_VERSION,
         memberFiberInteraction: MEMBER_FIBER_INTERACTION_VERSION,
+        fiberPmmPreprocessor: FIBER_PMM_PREPROCESSOR_VERSION,
+        pmmInteractionCache: PMM_INTERACTION_CACHE_VERSION,
         fiberHingeInteraction: FIBER_HINGE_INTERACTION_VERSION,
         distributedFiberFrame3d: DISTRIBUTED_FIBER_FRAME_3D_VERSION,
         secondOrderJet: SECOND_ORDER_JET_VERSION,
@@ -912,6 +920,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P3-M15', status: 'preliminary', feature: 'moment hinge state trace, displacement and arc-length control traces, and formal pushover result contract' },
       { id: 'P8-M5', status: 'candidate', feature: 'gravity-preloaded MDOF augmented displacement-control Pushover with accepted-state capacity, story, member, hinge, and handoff results' },
       { id: 'P8-M6', status: 'candidate', feature: 'Phase 7 sourced steel/RC fiber sections, N-My-Mz response, validated PMM surfaces, absolute-strength hinge coupling, and distributed-fiber Pushover members' },
+      { id: 'P8-M6.1', status: 'available', feature: 'dedicated PMM Worker preprocessing, full-state numerical parity, validated persistent cache, progress, cancellation, and stale-source protection' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },
@@ -925,6 +934,7 @@ export function buildAgentManifest(options = {}) {
     limitations: [
       'Legacy Pushover uses previous-step hinge secant stiffness degradation and remains preliminary/design-blocked.',
       'Legacy Pushover remains preliminary and isolated. The production Pushover engine includes supported Phase 7 fiber PMM coupling but remains candidate/design-blocked pending arc-length, external comparison, and pilot qualification.',
+      'P8-M6.1 PMM preprocessing uses a bounded memory cache and content-addressed IndexedDB records; persistent cache GC/TTL and the general analysis job scheduler remain later milestones.',
       'Report output is a calculation aid and not a certified final structural calculation package.',
       'Unsupported design checks must be reviewed separately.',
       'Large models still use the current in-browser dense solver path.',

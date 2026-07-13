@@ -3,16 +3,16 @@
 ```yaml
 reviewed_at: 2026-07-13
 phase_status: active
-implementation_status: p8-m6-complete
+implementation_status: p8-m6.1-complete
 release_status: unavailable
 production_equivalence: Q1-advanced-static-candidate
-completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6]
+completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1]
 active_milestone: P8-M7
 ```
 
 ## 현재 판정
 
-P8-M0~P8-M6는 완료되었다. M6는 Phase 7 단면·재료·철근 snapshot에서 steel/RC fiber section을 만들고 `N-My-Mz` 단면응답, 목표축력 평형, 완전한 P-My-Mz 볼록성 검증, 절대강도 PMM 힌지 coupling 및 Gauss 적분 분포소성 부재를 production 후보 경로에 연결했다.
+P8-M0~P8-M6.1은 완료되었다. M6는 Phase 7 단면·재료·철근 snapshot에서 steel/RC fiber section을 만들고 `N-My-Mz` 단면응답, 목표축력 평형, 완전한 P-My-Mz 볼록성 검증, 절대강도 PMM 힌지 coupling 및 Gauss 적분 분포소성 부재를 production 후보 경로에 연결했다. M6.1은 이 수치면을 보존하면서 PMM 전처리를 dedicated Worker, 검증 cache, source-stale 차단 경로로 분리했다.
 
 현재 제품 등급은 여전히 Q0다. `commercial-grade within supported scope` 판정은 [PRODUCTION_REQUIREMENTS.md](PRODUCTION_REQUIREMENTS.md)의 Q1~Q5를 모두 통과한 기능 범위에만 부여한다.
 
@@ -37,6 +37,7 @@ P8-M0~P8-M6는 완료되었다. M6는 Phase 7 단면·재료·철근 snapshot에
 | finite 2축 release | 물리축 0모멘트·general tangent 구현 | static-only, `energyConservative:false`, cyclic/NLTH 차단 |
 | 정식 변위제어 Pushover | 구현 | static `candidate`, 설계전달 차단 |
 | PMM·fiber 단면 | 구현 | H/BOX/PIPE·RC RECT/SQUARE, `N-My-Mz`, same-iteration hinge coupling `candidate` |
+| PMM 전처리 runtime | 구현 | stateless envelope, Worker, content cache, progress/cancel, source-stale guard |
 | arc-length | 미구현 | P8-M7까지 blocked |
 | 3D frame MDOF NLTH | 미구현 | blocked |
 | Worker/WASM sparse runtime | 자체 Rust/WASM, zero import, Worker/preflight/cancel 구현 | P8-M2 기반 완료, 대형모델 성능 미검증 |
@@ -108,17 +109,21 @@ M4 증거:
 
 M4는 집중소성 component와 3D frame 직렬호환을 `candidate`로 qualification한다. 정식 gravity-preloaded displacement-control Pushover와 coupled PMM/fiber는 각각 M5와 M6에서 후속 qualification하며, 전체 cyclic-static path control과 외부 상용 solver 비교는 아직 qualification하지 않는다.
 
-M5·M6 증거:
+M5·M6·M6.1 증거:
 
 - Pushover: 독립 중력 preload, 실제 증강 변위제어, accepted-state capacity/story/member/hinge 결과
 - fiber: Phase 7 source 기반 H/BOX/PIPE 및 RC cover/core/bar mesh, steel/concrete 상태모델
 - section: `N-My-Mz`와 3x3 접선, 목표축력 평형, biaxial M-phi, commit/rollback·energy
 - PMM: section solve 기반 surface, sign/convexity/bounds 검증, clamp 없는 범위차단
 - 요소연계: 현재 trial `N,My,Mz`와 `dM/dN,dM/dMy,dM/dMz`를 같은 내부 응축 반복에 반영
-- 검증: `NL-FIB-01~14`, `NL-PMM-01~08`
+- runtime: full-state와 수치 동등한 monotonic envelope, exact-state memoization, 고유 source dedup, dedicated Worker, bounded memory/IndexedDB cache
+- 실행 안전성: PMM preflight, 고유 interaction별 cache commit, cancel, source 변경 및 손상 artifact 폐기
+- 검증: `NL-FIB-01~14`, `NL-PMM-01~14`
 - evidence: [p8-m6-fiber-pmm.json](../../reports/validation-evidence/phase8/p8-m6-fiber-pmm.json)
+- runtime evidence: [p8-m6-pmm-runtime.json](../../reports/validation-evidence/phase8/p8-m6-pmm-runtime.json)
 - ADR: [ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md](adr/ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md)
 - 코드 리뷰: [p8-m6-code-review.md](../../reports/validation-evidence/phase8/p8-m6-code-review.md)
+- M6.1 코드 리뷰: [p8-m6-1-code-review.md](../../reports/validation-evidence/phase8/p8-m6-1-code-review.md)
 
 ## Production 등급 현황
 
@@ -141,6 +146,7 @@ M5·M6 증거:
 | P8-M4 집중소성 힌지 | complete | NL-HNG-01~12, ADR-003, M4 code review |
 | P8-M5 정식 Pushover | complete | NL-PUSH-01~14, NL-CTRL-05~08, NL-MEI-09~15, ADR-007, M5 code review |
 | P8-M6 PMM·fiber 단면 | complete | NL-FIB-01~14, NL-PMM-01~08, ADR-004, M6 code review |
+| P8-M6.1 PMM 전처리 runtime | complete | NL-PMM-09~14, runtime evidence, ADR-004 amendment, M6.1 code review |
 | P8-M7 arc-length·cyclic static | planned | 없음 |
 | P8-M8 MDOF NLTH | planned | 없음 |
 | P8-M9 모델 기능 통합·결과회복 | planned | 없음 |

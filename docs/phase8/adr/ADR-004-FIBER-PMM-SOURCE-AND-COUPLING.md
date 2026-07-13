@@ -1,9 +1,9 @@
 # ADR-004: Fiber PMM Source and Same-Iteration Coupling
 
 - Status: accepted for candidate implementation
-- Milestone: P8-M6
+- Milestone: P8-M6, amended by P8-M6.1
 - Date: 2026-07-13
-- Verification: NL-FIB-01..NL-FIB-14, NL-PMM-01..NL-PMM-08
+- Verification: NL-FIB-01..NL-FIB-14, NL-PMM-01..NL-PMM-14
 
 ## Context
 
@@ -24,6 +24,11 @@ The preliminary nonlinear path contained a one-dimensional RC strip model, a thr
 11. Members declared as `distributed-plasticity` use 2-5 point Gauss integration of the same fiber section. Every integration point owns trial/committed material state. Mechanical fixed-end actions enter through the elastic station resultants, and the full global fiber correction is differentiated for the element tangent.
 12. Non-convex axial samples are never expanded. A conservative level-wise concave minorant may reduce capacities; raw capacity and reduction scale remain in every point trace.
 13. Identical section/material/reinforcement/options snapshots share a cached PMM surface. Cache identity includes source content and every result-affecting numerical option, not only record IDs.
+14. PMM preprocessing may use a compiled stateless monotonic material/section envelope. It must reproduce the full trial-state force, tangent, axial root, PMM limit criterion, and numerical surface. Actual nonlinear analysis continues to use full committed/trial history and energy state.
+15. Exact section-state memoization is opt-in inside the built-in PMM generator. Execution counters are excluded from the numerical surface hash; all numerical points, intercepts, limits, and source identity remain hash inputs.
+16. Browser production cache misses run in a dedicated PMM Worker. Main-thread fallback is forbidden. A unique interaction is one execution and persistent-commit unit; completed units are validated and cached before the next unit starts.
+17. Cache keys include normalized numerical defaults and mesh, material, section-response, section-envelope, axial-root, and PMM algorithm versions. Every record stores the canonical source identity, and material/section/reinforcement hashes in the interaction must match that identity before use. Payload, source, surface, and content hashes are also validated. Old content-addressed records are not treated as current when their source key changes.
+18. PMM source assignments are snapshotted at start and rechecked before attachment. A missing precomputed interaction or a changed source fails closed instead of triggering a hidden synchronous rebuild.
 
 ## Consequences
 
@@ -33,6 +38,7 @@ The preliminary nonlinear path contained a one-dimensional RC strip model, a thr
 - Supported fiber-source or PMM-generation failures block production analysis by default. Only explicitly unsupported legacy geometry may remain on the concentrated-hinge path with a structured warning.
 - Distributed fiber members currently reject end releases and cannot be combined with concentrated hinges on the same member.
 - Component qualification is `candidate`. External correlation, large-model performance budgets, and pilot acceptance are still required before design transfer.
+- The desktop server uses a stable localhost origin so IndexedDB PMM records survive application restarts. A bounded in-memory LRU limits process memory; persistent GC/TTL and the general analysis job scheduler remain later integration work.
 
 ## Revisit Conditions
 

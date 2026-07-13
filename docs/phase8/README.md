@@ -3,18 +3,18 @@
 ```yaml
 phase: 8
 status: active
-implementation_status: p8-m6-complete
+implementation_status: p8-m6.1-complete
 reviewed_at: 2026-07-13
 current_milestone: P8-M7
 mission: Phase 7 모델링·탄성해석과 동일한 analysis domain 위에서 상용 수준의 정적·동적 비선형 3D 건축골조해석을 구현한다.
 governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 ```
 
-> P8-M0~P8-M6는 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 정식 증강 변위제어 Pushover, 절대강도 PMM coupling 및 Gauss 적분 분포소성 fiber 부재가 구현됐다. arc-length·MDOF NLTH는 아직 없고 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
+> P8-M0~P8-M6.1은 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 정식 증강 변위제어 Pushover, 절대강도 PMM coupling, Gauss 적분 분포소성 fiber 부재와 PMM 전처리 Worker/cache가 구현됐다. arc-length·MDOF NLTH는 아직 없고 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
 
 ## 1. 결론
 
-기존 preliminary 모듈은 계속 격리한다. `productionPushover`는 M2 전역 MDOF Newton, M3 corotational 요소, M4 집중소성 힌지, M5 독립 중력·변위제어와 M6 fiber PMM/분포소성 요소를 사용하는 정식 정적 후보 경로다. arc-length·NLTH workflow는 아직 이 경로에 연결되지 않았다.
+기존 preliminary 모듈은 계속 격리한다. `productionPushover`는 M2 전역 MDOF Newton, M3 corotational 요소, M4 집중소성 힌지, M5 독립 중력·변위제어, M6 fiber PMM/분포소성 요소와 M6.1 비동기 PMM 전처리를 사용하는 정식 정적 후보 경로다. arc-length·NLTH workflow는 아직 이 경로에 연결되지 않았다.
 
 현재 상태를 정확히 표현하면 다음과 같다.
 

@@ -1,6 +1,6 @@
 import { stableHash } from '../../core/stableHash.js';
 
-export const PMM_SURFACE_VERSION = 'p8-m6-pmm-surface-v1';
+export const PMM_SURFACE_VERSION = 'p8-m6-pmm-surface-v2';
 export const PMM_SIGN_CONVENTION = Object.freeze({
   axialForce: 'tension-positive',
   My: 'positive-about-local-y',
@@ -51,11 +51,23 @@ export function generatePmmSurface(section = {}, options = {}) {
   });
   const sourceHash = stableHash(source);
   let solveCount = 0;
+  let solveRequestCount = 0;
+  let solveCacheHitCount = 0;
+  const memoizeSectionStates = options.memoizeSectionStates === true;
+  const solveCache = new Map();
 
   const solve = (targetAxialForce, curvature, angle, purpose) => {
-    solveCount += 1;
+    throwIfPmmCancelled(options);
+    solveRequestCount += 1;
     const curvatureY = curvature * Math.cos(angle);
     const curvatureZ = curvature * Math.sin(angle);
+    const cacheKey = sectionStateKey(targetAxialForce, curvatureY, curvatureZ);
+    const cachedRaw = memoizeSectionStates ? solveCache.get(cacheKey) : null;
+    if (cachedRaw) {
+      solveCacheHitCount += 1;
+      return normalizeSectionSolve(cachedRaw, targetAxialForce, curvature, angle, axialTolerance, axialAbsoluteTolerance);
+    }
+    solveCount += 1;
     let raw;
     try {
       raw = solveTargetAxial(section, {
@@ -84,7 +96,9 @@ export function generatePmmSurface(section = {}, options = {}) {
     if (raw && typeof raw.then === 'function') {
       throw pmmError('PMM_ASYNC_SECTION_SOLVER_UNSUPPORTED', 'PMM surface generation requires a synchronous target-axial section solver.');
     }
-    return normalizeSectionSolve(raw, targetAxialForce, curvature, angle, axialTolerance, axialAbsoluteTolerance);
+    const normalized = normalizeSectionSolve(raw, targetAxialForce, curvature, angle, axialTolerance, axialAbsoluteTolerance);
+    if (memoizeSectionStates && normalized.ok) solveCache.set(cacheKey, raw);
+    return normalized;
   };
 
   const pureAxial = deepFreeze({
@@ -92,25 +106,46 @@ export function generatePmmSurface(section = {}, options = {}) {
     tension: buildPureAxialIntercept('tension', axialIntercepts.tension, solve),
   });
 
-  const sampledLevels = axialLevels.map((axialForce) => {
-    const points = angles.map((angle) => buildCapacityPoint({
-      axialForce,
-      angle,
-      curvatures,
-      solve,
-      capacityTolerance: positive(options.capacityTolerance, 1e-12),
-      directionTolerance,
-      directionIterations,
-      capacityIterations,
-      capacityCurvatureTolerance,
-    }));
-    return {
+  const sampledLevels = [];
+  const totalCapacityPoints = axialLevels.length * angles.length;
+  let completedCapacityPoints = 0;
+  for (let levelIndex = 0; levelIndex < axialLevels.length; levelIndex += 1) {
+    const axialForce = axialLevels[levelIndex];
+    const points = [];
+    for (let angleIndex = 0; angleIndex < angles.length; angleIndex += 1) {
+      throwIfPmmCancelled(options);
+      const angle = angles[angleIndex];
+      points.push(buildCapacityPoint({
+        axialForce,
+        angle,
+        curvatures,
+        solve,
+        capacityTolerance: positive(options.capacityTolerance, 1e-12),
+        directionTolerance,
+        directionIterations,
+        capacityIterations,
+        capacityCurvatureTolerance,
+      }));
+      completedCapacityPoints += 1;
+      options.onProgress?.(Object.freeze({
+        stage: 'pmm-capacity-surface',
+        completed: completedCapacityPoints,
+        total: totalCapacityPoints,
+        ratio: completedCapacityPoints / totalCapacityPoints,
+        levelIndex,
+        angleIndex,
+        axialForce,
+        angle,
+        sectionSolveCount: solveCount,
+      }));
+    }
+    sampledLevels.push({
       axialForce,
       points,
       maxRadialCapacity: Math.max(...points.map((point) => point.radialCapacity)),
       minRadialCapacity: Math.min(...points.map((point) => point.radialCapacity)),
-    };
-  });
+    });
+  }
   const axialConvexity = enforceConservativeAxialConvexity(sampledLevels, axialIntercepts);
   const levels = deepFreeze(axialConvexity.levels);
 
@@ -136,7 +171,15 @@ export function generatePmmSurface(section = {}, options = {}) {
       angleCount: angles.length,
       curvatureSampleCount: curvatures.length,
       sectionSolveCount: solveCount,
+      sectionSolveRequestCount: solveRequestCount,
+      sectionSolveCacheHitCount: solveCacheHitCount,
       axialConvexityAdjustedLevelCount: axialConvexity.adjustedLevelCount,
+    }),
+    execution: Object.freeze({
+      memoizeSectionStates,
+      sectionSolveCount: solveCount,
+      sectionSolveRequestCount: solveRequestCount,
+      sectionSolveCacheHitCount: solveCacheHitCount,
     }),
   };
   const surfaceHash = stableHash(surfaceHashPayload(core));
@@ -679,11 +722,36 @@ function normalizeSectionSolve(raw, targetAxialForce, curvature, angle, axialTol
   });
 }
 
+function sectionStateKey(axialForce, curvatureY, curvatureZ) {
+  return `${numberKey(axialForce)}|${numberKey(curvatureY)}|${numberKey(curvatureZ)}`;
+}
+
+function numberKey(value) {
+  const number = Object.is(Number(value), -0) ? 0 : Number(value);
+  return Number.isFinite(number) ? number.toPrecision(17) : String(number);
+}
+
+function throwIfPmmCancelled(options) {
+  const cancelled = options.signal?.aborted === true
+    || options.cancellation?.requested === true
+    || options.cancellation?.aborted === true
+    || options.isCancelled?.() === true
+    || options.shouldCancel?.() === true;
+  if (!cancelled) return;
+  throw pmmError('PMM_GENERATION_CANCELLED', 'PMM surface generation was cancelled before the next section solve.');
+}
+
 function extractLimitState(raw, source) {
   const explicit = raw?.limitState || source?.limitState;
   if (explicit != null) {
     const reached = explicit === true || explicit.reached === true;
-    return deepFreeze({ reached, type: clean(explicit.type) || (reached ? 'solver-declared' : null) });
+    return deepFreeze({
+      reached,
+      type: clean(explicit.type) || (reached ? 'solver-declared' : null),
+      fiberId: clean(explicit.fiberId) || null,
+      materialId: clean(explicit.materialId) || null,
+      strain: finiteOrNull(explicit.strain),
+    });
   }
   const fibers = source?.fibers || raw?.response?.fibers || raw?.fibers || [];
   const reachedFiber = fibers.find((fiber) => {
@@ -694,6 +762,8 @@ function extractLimitState(raw, source) {
     reached: Boolean(reachedFiber),
     type: reachedFiber ? clean(reachedFiber.trialState?.branch || reachedFiber.branch) || 'fiber-material-limit' : null,
     fiberId: reachedFiber?.id || null,
+    materialId: reachedFiber?.materialId || null,
+    strain: finiteOrNull(reachedFiber?.strain),
   });
 }
 
@@ -1080,7 +1150,12 @@ function surfaceHashPayload(surface) {
     axialBounds: surface.axialBounds,
     levels: surface.levels,
     intercepts: surface.intercepts,
-    summary: surface.summary,
+    summary: {
+      axialLevelCount: surface.summary?.axialLevelCount,
+      angleCount: surface.summary?.angleCount,
+      curvatureSampleCount: surface.summary?.curvatureSampleCount,
+      axialConvexityAdjustedLevelCount: surface.summary?.axialConvexityAdjustedLevelCount,
+    },
   };
 }
 

@@ -2,6 +2,7 @@ import * as sectionMeshApi from './sectionMesh.js';
 import * as materialModels from './materialModels.js';
 
 export const SECTION_RESPONSE_VERSION = 'p8-m6-section-response-v1';
+export const SECTION_ENVELOPE_VERSION = 'p8-m6.1-section-envelope-v1';
 export const SECTION_STRAIN_CONVENTION = Object.freeze({
   formula: 'epsilon=epsilon0-kappaY*z+kappaZ*y',
   generalizedStrain: Object.freeze(['epsilon0', 'kappaY', 'kappaZ']),
@@ -122,6 +123,127 @@ export function evaluateSectionResponse(section, deformation = {}, options = {})
     },
   };
   return result;
+}
+
+/**
+ * Compiles a stateless monotonic-envelope evaluator for PMM preprocessing.
+ * Actual member analysis continues to use evaluateSectionResponse so committed
+ * history, energy, events, and rollback semantics are unchanged.
+ */
+export function createSectionEnvelopeEvaluator(section = {}, options = {}) {
+  const mesh = normalizeMesh(section, options);
+  const materials = options.materials ?? mesh.materials ?? {};
+  const compiledMaterials = new Map();
+  const fibers = mesh.fibers.map((value, index) => {
+    const fiber = normalizeFiber(value, index);
+    const material = resolveFiberMaterial(fiber, mesh, { ...options, materials });
+    let evaluate = compiledMaterials.get(fiber.materialId);
+    if (!evaluate) {
+      evaluate = materialModels.createFiberMaterialEnvelopeEvaluator(material);
+      compiledMaterials.set(fiber.materialId, evaluate);
+    }
+    return Object.freeze({ ...fiber, material, evaluate });
+  });
+  let evaluationCount = 0;
+
+  return Object.freeze({
+    version: SECTION_ENVELOPE_VERSION,
+    sectionId: mesh.id,
+    fiberCount: fibers.length,
+    get evaluationCount() {
+      return evaluationCount;
+    },
+    evaluate(deformation = {}) {
+      evaluationCount += 1;
+      const generalizedStrain = normalizeDeformation(deformation);
+      const [epsilon0, kappaY, kappaZ] = generalizedStrain.vector;
+      let N = 0;
+      let My = 0;
+      let Mz = 0;
+      let k00 = 0;
+      let k01 = 0;
+      let k02 = 0;
+      let k11 = 0;
+      let k12 = 0;
+      let k22 = 0;
+      let limitState = null;
+      let strengthLimitState = null;
+      for (const fiber of fibers) {
+        const strain = epsilon0 - kappaY * fiber.z + kappaZ * fiber.y;
+        const response = fiber.evaluate(strain);
+        const stressArea = response.stress * fiber.area;
+        const tangentArea = response.tangent * fiber.area;
+        const gy = -fiber.z;
+        const gz = fiber.y;
+        N += stressArea;
+        My += stressArea * gy;
+        Mz += stressArea * gz;
+        k00 += tangentArea;
+        k01 += tangentArea * gy;
+        k02 += tangentArea * gz;
+        k11 += tangentArea * gy * gy;
+        k12 += tangentArea * gy * gz;
+        k22 += tangentArea * gz * gz;
+        if (!limitState && envelopePmmLimitReached(response)) {
+          limitState = {
+            reached: true,
+            type: response.branch || 'fiber-material-limit',
+            fiberId: fiber.id,
+            materialId: fiber.materialId,
+            strain,
+          };
+        }
+        if (!strengthLimitState && envelopeStrengthLimitReached(fiber.material, strain, response)) {
+          strengthLimitState = {
+            reached: true,
+            type: response.branch || 'fiber-material-strength-limit',
+            fiberId: fiber.id,
+            materialId: fiber.materialId,
+            strain,
+          };
+        }
+      }
+      const tangent = [
+        [k00, k01, k02],
+        [k01, k11, k12],
+        [k02, k12, k22],
+      ];
+      return {
+        version: SECTION_ENVELOPE_VERSION,
+        N,
+        My,
+        Mz,
+        force: { N, My, Mz, vector: [N, My, Mz] },
+        tangent,
+        limitState: limitState || { reached: false, type: null, fiberId: null, materialId: null, strain: null },
+        strengthLimitState: strengthLimitState || { reached: false, type: null, fiberId: null, materialId: null, strain: null },
+        diagnostics: {
+          fiberCount: fibers.length,
+          finite: [N, My, Mz, ...tangent.flat()].every(Number.isFinite),
+        },
+      };
+    },
+  });
+}
+
+function envelopePmmLimitReached(response) {
+  const branch = String(response?.branch || '');
+  return branch.startsWith('plastic-')
+    || branch.includes('compression-descending')
+    || branch.includes('compression-residual');
+}
+
+function envelopeStrengthLimitReached(material, strain, response) {
+  if (material.type === 'steel-bilinear-kinematic') {
+    return response.branch?.startsWith('plastic-')
+      || Math.abs(response.stress) >= material.parameters.Fy * (1 - 1e-10);
+  }
+  if (material.type === 'concrete-compression-tension-damage') {
+    return strain <= -material.parameters.epsc0 * (1 - 1e-10)
+      || response.branch?.includes('compression-descending')
+      || response.branch?.includes('compression-residual');
+  }
+  return response.yielded === true;
 }
 
 export function commitSectionResponse(response) {

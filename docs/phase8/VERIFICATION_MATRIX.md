@@ -240,6 +240,12 @@ error <= absTol + relTol * referenceScale
 | NL-PMM-06 | convexity/sign | invalid surface가 validation에서 차단 | L1 |
 | NL-PMM-07 | out-of-range | clamp 없이 blocked와 사유 반환 | L1/L4 |
 | NL-PMM-08 | hinge coupling | axial 변화 시 moment capacity/tangent가 같은 반복에서 갱신 | L3 |
+| NL-PMM-09 | cold runtime | RC 400x600 기준 fixture가 격리 process에서 60초 이내 PMM 생성 | L3 |
+| NL-PMM-10 | cache/dedup | normalized key, memory/persistent hit, 동일 source member dedup 일치 | L2/L3 |
+| NL-PMM-11 | deterministic artifact | memoization on/off numerical surface·hash·progress 순서 일치 | L2 |
+| NL-PMM-12 | Worker/cancel | 실제 Worker 실행, progress, 취소 시 uncommitted artifact 미저장 | L3/L4 |
+| NL-PMM-13 | content stale protection | 재료·단면·철근·수치옵션 변경은 miss, 무관 source는 재사용 | L2/L3 |
+| NL-PMM-14 | full/envelope parity | steel·대칭/비대칭 RC section, root, PMM 수치가 tolerance 이내 일치 | L2/L5 |
 
 ## 12. Arc-length와 cyclic static
 

@@ -1,10 +1,15 @@
 import { stableHash } from '../../core/stableHash.js';
 import { materialOf, sectionOf } from '../../core/catalogs.js';
-import { buildFiberSectionMesh } from './sectionMesh.js';
-import { createConcreteMaterial, createSteelBilinearMaterial } from './materialModels.js';
-import { solveSectionAxialEquilibrium } from './momentCurvatureV2.js';
-import { generatePmmSurface } from './pmmSurface.js';
-import { evaluateSectionResponse } from './sectionResponse.js';
+import { FIBER_SECTION_MESH_VERSION, buildFiberSectionMesh } from './sectionMesh.js';
+import { FIBER_MATERIAL_MODEL_VERSION, createConcreteMaterial, createSteelBilinearMaterial } from './materialModels.js';
+import { MOMENT_CURVATURE_V2_VERSION, solveSectionAxialEquilibrium } from './momentCurvatureV2.js';
+import { PMM_SURFACE_VERSION, generatePmmSurface } from './pmmSurface.js';
+import {
+  SECTION_ENVELOPE_VERSION,
+  SECTION_RESPONSE_VERSION,
+  createSectionEnvelopeEvaluator,
+  evaluateSectionResponse,
+} from './sectionResponse.js';
 
 export const MEMBER_FIBER_INTERACTION_VERSION = 'p8-m6-member-fiber-interaction-v1';
 
@@ -18,6 +23,7 @@ const OPTIONAL_UNSUPPORTED_SOURCE_CODES = new Set([
 ]);
 
 const interactionCache = new Map();
+const MAX_MEMBER_INTERACTION_CACHE_ENTRIES = 64;
 
 export function buildMemberFiberInteraction(model = {}, member = {}, options = {}) {
   const material = materialOf(model, member.matId);
@@ -26,18 +32,26 @@ export function buildMemberFiberInteraction(model = {}, member = {}, options = {
     || options.reinforcementSnapshots?.[member.id]
     || member.nonlinear?.reinforcementSnapshot
     || null;
+  const cacheIdentity = createMemberFiberInteractionCacheIdentity(model, member, {
+    ...options,
+    reinforcementSnapshot,
+  });
+  const cacheKey = stableHash(cacheIdentity);
   const family = materialFamily(material, section, reinforcementSnapshot);
   const mesh = buildFiberSectionMesh(section, {
     kind: family === 'concrete' ? 'rc' : 'steel',
     materialId: 'steel',
     reinforcementSnapshot,
     refinement: options.refinement,
+    maxCellSize: options.maxCellSize,
+    maxCellSizeUnit: options.maxCellSizeUnit,
     inputLengthUnit: options.inputLengthUnit,
     qualification: qualificationOf(section, reinforcementSnapshot),
   });
   requireSourcePropertyConsistency(mesh, options.sourcePropertyTolerance ?? 0.005);
   const materials = buildMaterialModels(material, mesh, reinforcementSnapshot, options);
-  const axialCapacity = scanSectionAxialCapacity(mesh, materials, options);
+  const envelopeEvaluator = createSectionEnvelopeEvaluator(mesh, { materials });
+  const axialCapacity = scanSectionAxialCapacity(mesh, materials, options, envelopeEvaluator);
   const axialIntercepts = axialCapacity.bounds;
   const axialLevels = options.axialLevels || [
     0.5 * axialIntercepts.compression,
@@ -53,19 +67,30 @@ export function buildMemberFiberInteraction(model = {}, member = {}, options = {
   );
   const yieldStrain = minimumYieldStrain(materials);
   const defaultCurvatureMax = 8 * yieldStrain / characteristicDepth;
-  const defaultCurvatures = Array.from({ length: 17 }, (_, index) => defaultCurvatureMax * index / 16);
+  const curvatureMax = Number(options.curvatureMax ?? defaultCurvatureMax);
+  const curvatureSteps = Math.max(2, Math.trunc(Number(options.curvatureSteps ?? 16)));
+  const defaultCurvatures = Array.from({ length: curvatureSteps + 1 }, (_, index) => curvatureMax * index / curvatureSteps);
   const surface = generatePmmSurface(mesh, {
     axialIntercepts,
     axialLevels,
     angles: options.angles,
     angleCount: options.angleCount ?? 8,
     curvatures: options.curvatures || defaultCurvatures,
-    curvatureMax: options.curvatureMax ?? defaultCurvatureMax,
-    curvatureSteps: options.curvatureSteps ?? 5,
+    curvatureMax,
+    curvatureSteps,
     axialTolerance: options.axialTolerance ?? 1e-6,
     axialAbsoluteTolerance: options.axialAbsoluteTolerance ?? options.forceTolerance ?? 1e-3,
     directionTolerance: options.directionTolerance ?? 5e-4,
     directionIterations: options.directionIterations ?? 12,
+    capacityTolerance: options.capacityTolerance,
+    capacityIterations: options.capacityIterations,
+    capacityCurvatureTolerance: options.capacityCurvatureTolerance,
+    memoizeSectionStates: true,
+    signal: options.signal,
+    cancellation: options.cancellation,
+    isCancelled: options.isCancelled,
+    shouldCancel: options.shouldCancel,
+    onProgress: options.onProgress,
     solverId: 'p8-m6-target-axial-fiber-section',
     solverVersion: 'p8-m6-moment-curvature-v2',
     solverOptions: {
@@ -74,6 +99,10 @@ export function buildMemberFiberInteraction(model = {}, member = {}, options = {
       relativeTolerance: options.relativeTolerance ?? 1e-7,
       maxIterations: options.maxIterations ?? 80,
       epsilonBracket: options.epsilonBracket || [-0.05, 0.05],
+      initialBracket: options.initialBracket,
+      bracketExpansion: options.bracketExpansion,
+      maxBracketExpansions: options.maxBracketExpansions,
+      bracketSamples: options.bracketSamples,
     },
     solveTargetAxial(sectionMesh, input) {
       const pureAxial = Math.hypot(Number(input.kappaY || 0), Number(input.kappaZ || 0)) <= 1e-16;
@@ -92,6 +121,9 @@ export function buildMemberFiberInteraction(model = {}, member = {}, options = {
       return solveSectionAxialEquilibrium(sectionMesh, {
         ...input,
         materials,
+        evaluateSection(_section, deformation) {
+          return envelopeEvaluator.evaluate(deformation);
+        },
       });
     },
   });
@@ -101,11 +133,15 @@ export function buildMemberFiberInteraction(model = {}, member = {}, options = {
     materialRef: member.matId || null,
     sectionRef: member.secId || null,
     materialHash: stableHash(material),
+    materialSourceHash: stableHash(cacheIdentity.materialSnapshot),
     sectionHash: mesh.sourceSnapshotHash,
+    sectionSourceHash: stableHash(cacheIdentity.sectionSnapshot),
     reinforcementHash: reinforcementSnapshot ? stableHash(reinforcementSnapshot) : null,
     meshHash: mesh.geometryHash,
     surfaceHash: surface.surfaceHash,
     family,
+    cacheKey,
+    cacheIdentityHash: cacheKey,
   };
   return deepFreeze({
     version: MEMBER_FIBER_INTERACTION_VERSION,
@@ -120,6 +156,11 @@ export function buildMemberFiberInteraction(model = {}, member = {}, options = {
     mesh,
     materials,
     surface,
+    preprocessing: {
+      evaluator: 'stateless-monotonic-section-envelope',
+      sectionEvaluationCount: envelopeEvaluator.evaluationCount,
+      historyStateCreated: false,
+    },
     source,
     contentHash: stableHash(source),
   });
@@ -131,28 +172,57 @@ export function buildModelFiberPmmInteractions(model = {}, options = {}) {
   const members = [];
   const warnings = [];
   const cache = new Map();
+  const precomputed = normalizePrecomputedInteractions(options.precomputedInteractions);
+  const precomputedSkipped = normalizePrecomputedInteractions(options.precomputedSkippedInteractions);
   for (const member of model.members || []) {
+    throwIfInteractionBuildCancelled(options);
     const hinges = Array.isArray(member.nonlinear?.hinges) ? member.nonlinear.hinges : [];
     const distributed = member.nonlinear?.formulation === 'distributed-plasticity';
     if (hinges.length === 0 && !distributed) continue;
     const reinforcementSnapshot = options.reinforcementSnapshots?.[member.id]
       || member.nonlinear?.reinforcementSnapshot
       || null;
-    const cacheKey = stableHash({
-      matId: member.matId,
-      secId: member.secId,
-      materialSnapshot: sourceRecordForCache(model.materials, member.matId),
-      sectionSnapshot: sourceRecordForCache(model.sections, member.secId),
+    const cacheKey = createMemberFiberInteractionCacheKey(model, member, {
+      ...options,
       reinforcementSnapshot,
-      options: interactionOptionSnapshot(options),
     });
-    try {
-      const interaction = cache.get(cacheKey) || interactionCache.get(cacheKey) || buildMemberFiberInteraction(model, member, {
-        ...options,
-        reinforcementSnapshot,
+    const skipped = precomputedSkipped.get(cacheKey);
+    if (skipped) {
+      warnings.push({
+        code: skipped.code || 'FIBER_PMM_BUILD_SKIPPED',
+        memberId: member.id || null,
+        message: skipped.message || 'Fiber PMM preprocessing skipped this unsupported source.',
       });
+      continue;
+    }
+    try {
+      const localCached = cache.get(cacheKey);
+      const precomputedCached = precomputed.get(cacheKey);
+      const processCached = readInteractionCache(cacheKey);
+      const cacheSource = localCached
+        ? 'model-deduplicated'
+        : precomputedCached ? 'precomputed' : processCached ? 'process-memory' : 'computed';
+      const interaction = localCached
+        || precomputedCached
+        || processCached
+        || (options.precomputedOnly === true ? null : buildMemberFiberInteraction(model, member, {
+          ...options,
+          reinforcementSnapshot,
+        }));
+      if (!interaction) {
+        throw interactionError(
+          'FIBER_PMM_PRECOMPUTED_INTERACTION_REQUIRED',
+          `Precomputed fiber PMM interaction ${cacheKey} is unavailable.`,
+        );
+      }
+      if (interaction.source?.cacheKey !== cacheKey || interaction.source?.cacheIdentityHash !== cacheKey) {
+        throw interactionError(
+          'FIBER_PMM_CACHE_IDENTITY_MISMATCH',
+          `Fiber PMM interaction does not belong to cache identity ${cacheKey}.`,
+        );
+      }
       cache.set(cacheKey, interaction);
-      interactionCache.set(cacheKey, interaction);
+      rememberInteraction(cacheKey, interaction);
       const memberInteraction = interaction.source.memberId === member.id
         ? interaction
         : rebindInteractionMember(interaction, member.id);
@@ -165,7 +235,15 @@ export function buildModelFiberPmmInteractions(model = {}, options = {}) {
         meshHash: memberInteraction.mesh.geometryHash,
         hingeCount: hinges.length,
         distributed,
+        cacheKey,
       });
+      options.onInteractionBuilt?.(Object.freeze({
+        memberId: member.id || null,
+        cacheKey,
+        surfaceHash: memberInteraction.surface.surfaceHash,
+        reused: cacheSource !== 'computed',
+        cacheSource,
+      }));
     } catch (error) {
       const warning = {
         code: error?.code || 'FIBER_PMM_BUILD_FAILED',
@@ -201,6 +279,81 @@ export function buildModelFiberPmmInteractions(model = {}, options = {}) {
 
 export function clearMemberFiberInteractionCache() {
   interactionCache.clear();
+}
+
+function readInteractionCache(cacheKey) {
+  if (!interactionCache.has(cacheKey)) return null;
+  const interaction = interactionCache.get(cacheKey);
+  interactionCache.delete(cacheKey);
+  interactionCache.set(cacheKey, interaction);
+  return interaction;
+}
+
+function rememberInteraction(cacheKey, interaction) {
+  if (interactionCache.has(cacheKey)) interactionCache.delete(cacheKey);
+  interactionCache.set(cacheKey, interaction);
+  while (interactionCache.size > MAX_MEMBER_INTERACTION_CACHE_ENTRIES) {
+    interactionCache.delete(interactionCache.keys().next().value);
+  }
+}
+
+export function isOptionalUnsupportedFiberSourceError(code) {
+  return OPTIONAL_UNSUPPORTED_SOURCE_CODES.has(String(code || ''));
+}
+
+export function createMemberFiberInteractionCacheKey(model = {}, member = {}, options = {}) {
+  return stableHash(createMemberFiberInteractionCacheIdentity(model, member, options));
+}
+
+export function createMemberFiberInteractionCacheIdentity(model = {}, member = {}, options = {}) {
+  const reinforcementSnapshot = options.reinforcementSnapshot
+    || options.reinforcementSnapshots?.[member.id]
+    || member.nonlinear?.reinforcementSnapshot
+    || null;
+  return deepFreeze(cloneValue({
+    contract: MEMBER_FIBER_INTERACTION_VERSION,
+    algorithms: {
+      mesh: FIBER_SECTION_MESH_VERSION,
+      material: FIBER_MATERIAL_MODEL_VERSION,
+      sectionResponse: SECTION_RESPONSE_VERSION,
+      sectionEnvelope: SECTION_ENVELOPE_VERSION,
+      axialEquilibrium: MOMENT_CURVATURE_V2_VERSION,
+      pmmSurface: PMM_SURFACE_VERSION,
+    },
+    matId: member.matId,
+    secId: member.secId,
+    materialSnapshot: sourceRecordForCache(model.materials, member.matId),
+    sectionSnapshot: sourceRecordForCache(model.sections, member.secId),
+    reinforcementSnapshot,
+    options: interactionOptionSnapshot(options),
+  }));
+}
+
+export function planModelFiberPmmInteractions(model = {}, options = {}) {
+  const grouped = new Map();
+  for (const member of model.members || []) {
+    const hinges = Array.isArray(member.nonlinear?.hinges) ? member.nonlinear.hinges : [];
+    const distributed = member.nonlinear?.formulation === 'distributed-plasticity';
+    if (hinges.length === 0 && !distributed) continue;
+    const cacheIdentity = createMemberFiberInteractionCacheIdentity(model, member, options);
+    const cacheKey = stableHash(cacheIdentity);
+    const existing = grouped.get(cacheKey);
+    if (existing) {
+      existing.memberIds.push(member.id);
+      continue;
+    }
+    grouped.set(cacheKey, {
+      cacheKey,
+      cacheIdentity,
+      representativeMemberId: member.id,
+      memberIds: [member.id],
+    });
+  }
+  return Object.freeze([...grouped.values()].map((row) => Object.freeze({
+    ...row,
+    cacheIdentity: row.cacheIdentity,
+    memberIds: Object.freeze(row.memberIds.slice()),
+  })));
 }
 
 function buildMaterialModels(material, mesh, reinforcement, options) {
@@ -258,7 +411,10 @@ function buildMaterialModels(material, mesh, reinforcement, options) {
   });
 }
 
-function scanSectionAxialCapacity(mesh, materials, options) {
+function scanSectionAxialCapacity(mesh, materials, options, envelopeEvaluator = null) {
+  const evaluate = envelopeEvaluator
+    ? (deformation) => envelopeEvaluator.evaluate(deformation)
+    : (deformation) => evaluateSectionResponse(mesh, deformation, { materials });
   const materialRows = Object.values(materials);
   const steelYieldStrains = materialRows
     .filter((row) => row.type === 'steel-bilinear-kinematic')
@@ -292,7 +448,7 @@ function scanSectionAxialCapacity(mesh, materials, options) {
   }
   const rows = [...strains].sort((a, b) => a - b).map((epsilon0) => ({
     epsilon0,
-    response: evaluateSectionResponse(mesh, { epsilon0, kappaY: 0, kappaZ: 0 }, { materials }),
+    response: evaluate({ epsilon0, kappaY: 0, kappaZ: 0 }),
   })).map((row) => ({ ...row, N: row.response.N }));
   const zeroIndex = rows.reduce((best, row, index) => (
     Math.abs(row.epsilon0) < Math.abs(rows[best].epsilon0) ? index : best
@@ -302,12 +458,14 @@ function scanSectionAxialCapacity(mesh, materials, options) {
     mesh,
     materials,
     options,
+    envelopeEvaluator,
   );
   const tension = firstAxialLimitState(
     rows.slice(zeroIndex),
     mesh,
     materials,
     options,
+    envelopeEvaluator,
   );
   if (!(compression.N < 0 && tension.N > 0)) {
     throw interactionError('FIBER_AXIAL_INTERCEPTS_INVALID', 'Fiber axial intercepts are invalid.');
@@ -319,7 +477,7 @@ function scanSectionAxialCapacity(mesh, materials, options) {
   };
 }
 
-function firstAxialLimitState(path, mesh, materials, options) {
+function firstAxialLimitState(path, mesh, materials, options, envelopeEvaluator = null) {
   let lower = path[0];
   for (let index = 1; index < path.length; index += 1) {
     let upper = path[index];
@@ -330,7 +488,9 @@ function firstAxialLimitState(path, mesh, materials, options) {
     const iterations = Math.max(12, Math.trunc(Number(options.axialCapacityIterations || 32)));
     for (let iteration = 0; iteration < iterations; iteration += 1) {
       const epsilon0 = 0.5 * (lower.epsilon0 + upper.epsilon0);
-      const response = evaluateSectionResponse(mesh, { epsilon0, kappaY: 0, kappaZ: 0 }, { materials });
+      const response = envelopeEvaluator
+        ? envelopeEvaluator.evaluate({ epsilon0, kappaY: 0, kappaZ: 0 })
+        : evaluateSectionResponse(mesh, { epsilon0, kappaY: 0, kappaZ: 0 }, { materials });
       const candidate = { epsilon0, response, N: response.N };
       if (sectionStrengthLimitReached(response, materials)) upper = candidate;
       else lower = candidate;
@@ -341,6 +501,8 @@ function firstAxialLimitState(path, mesh, materials, options) {
 }
 
 function sectionStrengthLimitReached(response, materials) {
+  if (response?.strengthLimitState?.reached === true) return true;
+  if (response?.limitState?.reached === true) return true;
   return (response?.fibers || []).some((fiber) => {
     const branch = String(fiber?.trialState?.branch || fiber?.branch || '');
     const material = materials?.[fiber.materialId];
@@ -357,16 +519,77 @@ function sectionStrengthLimitReached(response, materials) {
 }
 
 function interactionOptionSnapshot(options) {
-  const keys = [
-    'inputLengthUnit', 'refinement', 'maxCellSize', 'maxCellSizeUnit', 'sourcePropertyTolerance',
-    'angles', 'angleCount', 'curvatures', 'curvatureMax', 'curvatureSteps', 'axialLevels',
-    'axialTolerance', 'axialAbsoluteTolerance', 'directionTolerance', 'directionIterations', 'capacityTolerance',
-    'capacityIterations', 'capacityCurvatureTolerance', 'forceTolerance', 'relativeTolerance',
-    'maxIterations', 'epsilonBracket', 'compressionStrainLimit', 'tensionStrainLimit',
-    'axialCapacitySamples', 'axialCapacityIterations', 'steelHardeningRatio',
-    'rebarHardeningRatio', 'concreteTensionStrength',
-  ];
-  return Object.fromEntries(keys.filter((key) => options[key] !== undefined).map((key) => [key, options[key]]));
+  return {
+    inputLengthUnit: options.inputLengthUnit ?? null,
+    refinement: normalizedRefinementSnapshot(options),
+    sourcePropertyTolerance: options.sourcePropertyTolerance ?? 0.005,
+    angles: options.angles ?? null,
+    angleCount: options.angles ? null : options.angleCount ?? 8,
+    curvatures: options.curvatures ?? null,
+    curvatureMax: options.curvatureMax ?? null,
+    curvatureSteps: options.curvatureSteps ?? 16,
+    axialLevels: options.axialLevels ?? null,
+    axialTolerance: options.axialTolerance ?? 1e-6,
+    axialAbsoluteTolerance: options.axialAbsoluteTolerance ?? options.forceTolerance ?? 1e-3,
+    directionTolerance: options.directionTolerance ?? 5e-4,
+    directionIterations: options.directionIterations ?? 12,
+    capacityTolerance: options.capacityTolerance ?? 1e-12,
+    capacityIterations: options.capacityIterations ?? 18,
+    capacityCurvatureTolerance: options.capacityCurvatureTolerance ?? 1e-6,
+    forceTolerance: options.forceTolerance ?? 1e-3,
+    relativeTolerance: options.relativeTolerance ?? 1e-7,
+    maxIterations: options.maxIterations ?? 80,
+    epsilonBracket: options.epsilonBracket ?? [-0.05, 0.05],
+    initialBracket: options.initialBracket ?? null,
+    bracketExpansion: options.bracketExpansion ?? 2,
+    maxBracketExpansions: options.maxBracketExpansions ?? 40,
+    bracketSamples: options.bracketSamples ?? 64,
+    compressionStrainLimit: options.compressionStrainLimit ?? null,
+    tensionStrainLimit: options.tensionStrainLimit ?? null,
+    axialCapacitySamples: options.axialCapacitySamples ?? 160,
+    axialCapacityIterations: options.axialCapacityIterations ?? 32,
+    steelHardeningRatio: options.steelHardeningRatio ?? 0.01,
+    rebarHardeningRatio: options.rebarHardeningRatio ?? 0.01,
+    concreteTensionStrength: options.concreteTensionStrength ?? null,
+  };
+}
+
+function normalizedRefinementSnapshot(options) {
+  const source = typeof options.refinement === 'number'
+    ? { level: options.refinement }
+    : options.refinement || {};
+  const level = Math.max(1, Math.trunc(Number(source.level ?? 1)));
+  return {
+    level,
+    longitudinal: source.longitudinal ?? 8 * level,
+    thickness: source.thickness ?? 2 * level,
+    sectors: source.sectors ?? 32 * level,
+    radial: source.radial ?? 2 * level,
+    rcDivisions: source.rcDivisions ?? 8 * level,
+    maxCellSize: source.maxCellSize ?? options.maxCellSize ?? null,
+    maxCellSizeUnit: source.units?.length || source.maxCellSizeUnit || options.maxCellSizeUnit || 'm',
+  };
+}
+
+function normalizePrecomputedInteractions(value) {
+  if (value instanceof Map) return value;
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return new Map();
+  return new Map(Object.entries(value));
+}
+
+function cloneValue(value) {
+  if (value == null) return value;
+  if (typeof structuredClone === 'function') return structuredClone(value);
+  return JSON.parse(JSON.stringify(value));
+}
+
+function throwIfInteractionBuildCancelled(options) {
+  const cancelled = options.signal?.aborted === true
+    || options.cancellation?.requested === true
+    || options.isCancelled?.() === true
+    || options.shouldCancel?.() === true;
+  if (!cancelled) return;
+  throw interactionError('PMM_GENERATION_CANCELLED', 'Fiber PMM preprocessing was cancelled.');
 }
 
 function requireSourcePropertyConsistency(mesh, toleranceInput) {

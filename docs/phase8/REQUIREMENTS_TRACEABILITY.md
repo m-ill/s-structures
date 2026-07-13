@@ -46,6 +46,7 @@ Requirement
 | P8-M4 | corotational element, property registry | concentrated hinge/history/assignment | HNG pass |
 | P8-M5 | hinge, gravity case DAG | formal displacement-control Pushover | PUSH/CTRL/MEI-09~15 pass |
 | P8-M6 | material/section/reinforcement source | PMM, fiber section, distributed-plasticity path | FIB/PMM pass |
+| P8-M6.1 | M6 PMM numerical contract, M2 Worker protocol | envelope preprocessor, validated persistent cache, progress/cancel/stale guard | PMM-09~14 pass |
 | P8-M7 | Pushover/fiber | arc-length, post-peak, cyclic static | ARC/CYC pass |
 | P8-M8 | static state kernel, mass domain | MDOF direct-integration NLTH | DYN pass, performance baseline |
 | P8-M9 | all solver paths | Phase 7 feature integration, recovery, run-record v2 | INT/MEI pass |

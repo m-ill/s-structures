@@ -15,8 +15,9 @@ export function solveSectionAxialEquilibrium(section, input = {}) {
   const relativeTolerance = nonnegative(input.relativeTolerance ?? 1e-9, 'relativeTolerance');
   const strainTolerance = positive(input.strainTolerance ?? 1e-13, 'strainTolerance');
   const responseOptions = sectionResponseOptions(input);
+  const evaluateSection = typeof input.evaluateSection === 'function' ? input.evaluateSection : evaluateSectionResponse;
   const evaluate = (epsilon0) => {
-    const response = evaluateSectionResponse(section, { epsilon0, kappaY, kappaZ }, responseOptions);
+    const response = evaluateSection(section, { epsilon0, kappaY, kappaZ }, responseOptions);
     return { epsilon0, response, residual: response.N - targetN };
   };
   const forceScale = Math.max(1, Math.abs(targetN), Math.abs(Number(input.forceScale ?? 0)));

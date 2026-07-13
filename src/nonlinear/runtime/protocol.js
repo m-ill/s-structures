@@ -1,4 +1,4 @@
-export const WORKER_PROTOCOL_VERSION = 'p8-m2-worker-protocol-v1';
+export const WORKER_PROTOCOL_VERSION = 'p8-m6.1-worker-protocol-v2';
 
 export const WORKER_REQUEST_TYPES = Object.freeze({
   run: 'RUN',
@@ -19,6 +19,7 @@ export const WORKER_RESPONSE_TYPES = Object.freeze({
 export const WORKER_TASK_TYPES = Object.freeze({
   echo: 'ECHO',
   solveSystem: 'SOLVE_SYSTEM',
+  buildFiberPmm: 'BUILD_FIBER_PMM',
 });
 
 const REQUEST_TYPE_ALIASES = new Map([
@@ -31,6 +32,8 @@ const TASK_TYPE_ALIASES = new Map([
   ['ECHO', WORKER_TASK_TYPES.echo],
   ['SOLVE_SYSTEM', WORKER_TASK_TYPES.solveSystem],
   ['SOLVE-SYSTEM', WORKER_TASK_TYPES.solveSystem],
+  ['BUILD_FIBER_PMM', WORKER_TASK_TYPES.buildFiberPmm],
+  ['BUILD-FIBER-PMM', WORKER_TASK_TYPES.buildFiberPmm],
 ]);
 
 export function createRunRequest(input = {}) {

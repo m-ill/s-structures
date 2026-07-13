@@ -766,18 +766,22 @@ export {
   commitFiberMaterialTrial,
   concreteEnvelopeResponse,
   createConcreteMaterial,
+  createFiberMaterialEnvelopeEvaluator,
   createFiberMaterialState,
   createSteelBilinearMaterial,
   evaluateFiberMaterialTrial,
+  evaluateFiberMaterialEnvelope,
   rollbackFiberMaterialState,
   rollbackFiberMaterialTrial,
   trialFiberMaterialState,
 } from './nonlinear/fiber/materialModels.js';
 export {
   SECTION_RESPONSE_VERSION,
+  SECTION_ENVELOPE_VERSION,
   SECTION_STRAIN_CONVENTION,
   commitSectionResponse,
   evaluateSectionResponse,
+  createSectionEnvelopeEvaluator,
   finiteDifferenceSectionTangent,
   rollbackSectionResponse,
   sectionStateSnapshot,
@@ -808,7 +812,25 @@ export {
   buildMemberFiberInteraction,
   buildModelFiberPmmInteractions,
   clearMemberFiberInteractionCache,
+  createMemberFiberInteractionCacheIdentity,
+  createMemberFiberInteractionCacheKey,
+  isOptionalUnsupportedFiberSourceError,
+  planModelFiberPmmInteractions,
 } from './nonlinear/fiber/memberInteraction.js';
+export {
+  FIBER_PMM_PREPROCESSOR_VERSION,
+  preflightFiberPmmWorkload,
+  prepareModelFiberPmmInteractions,
+  runFiberPmmWorkerTask,
+} from './nonlinear/fiber/fiberPmmPreprocessor.js';
+export {
+  PMM_INTERACTION_CACHE_DB,
+  PMM_INTERACTION_CACHE_VERSION,
+  createIndexedDbPmmCacheAdapter,
+  createMemoryPmmCacheAdapter,
+  createPmmInteractionCache,
+  validatePmmInteractionCacheRecord,
+} from './nonlinear/fiber/pmmInteractionCache.js';
 export {
   FIBER_HINGE_INTERACTION_VERSION,
   evaluateFiberCoupledHingeTrial,
