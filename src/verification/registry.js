@@ -1,4 +1,4 @@
-export const VERIFICATION_REGISTRY_VERSION = 'p8-m5-verification-registry-v5';
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m6-verification-registry-v6';
 export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
 export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
 
@@ -126,6 +126,19 @@ export const PHASE8_VERIFICATION_SUITES = Object.freeze([
       'NL-CTRL-05', 'NL-CTRL-06', 'NL-CTRL-07', 'NL-CTRL-08',
       'NL-MEI-09', 'NL-MEI-10', 'NL-MEI-11', 'NL-MEI-12',
       'NL-MEI-13', 'NL-MEI-14', 'NL-MEI-15',
+    ]),
+  }),
+  Object.freeze({
+    id: 'P8-M6-FIBER-PMM',
+    milestone: 'P8-M6',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-FIB-01', 'NL-FIB-02', 'NL-FIB-03', 'NL-FIB-04',
+      'NL-FIB-05', 'NL-FIB-06', 'NL-FIB-07', 'NL-FIB-08',
+      'NL-FIB-09', 'NL-FIB-10', 'NL-FIB-11', 'NL-FIB-12',
+      'NL-FIB-13', 'NL-FIB-14',
+      'NL-PMM-01', 'NL-PMM-02', 'NL-PMM-03', 'NL-PMM-04',
+      'NL-PMM-05', 'NL-PMM-06', 'NL-PMM-07', 'NL-PMM-08',
     ]),
   }),
 ]);

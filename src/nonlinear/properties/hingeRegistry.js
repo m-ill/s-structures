@@ -195,6 +195,34 @@ export function evaluateHingePropertyAtAxialRatio(property, axialRatio, options 
   });
 }
 
+export function scaleHingePropertyForInteraction(property, factors = {}, trace = {}) {
+  if (!property?.parameters?.backbone || !clean(property.contentHash)) {
+    throw hingePropertyError('HINGE_INTERACTION_PROPERTY_INVALID', 'A hashed hinge property is required for interaction scaling.');
+  }
+  const momentFactor = requiredPositive(factors.momentFactor, 'interaction.momentFactor');
+  const rotationFactor = requiredPositive(factors.rotationFactor ?? 1, 'interaction.rotationFactor');
+  const backbone = scaleBackbone(property.parameters.backbone, momentFactor, rotationFactor);
+  return deepFreeze({
+    ...clone(property),
+    parameters: {
+      ...clone(property.parameters),
+      backbone,
+      pmm: null,
+    },
+    contentHash: property.contentHash,
+    interactionTrace: {
+      sourceId: clean(trace.sourceId) || null,
+      sourceHash: clean(trace.sourceHash) || null,
+      axialForce: trace.axialForce == null ? null : finite(trace.axialForce, 'interaction.axialForce'),
+      momentY: trace.momentY == null ? null : finite(trace.momentY, 'interaction.momentY'),
+      momentZ: trace.momentZ == null ? null : finite(trace.momentZ, 'interaction.momentZ'),
+      momentFactor,
+      rotationFactor,
+      iterationCoupled: trace.iterationCoupled === true,
+    },
+  });
+}
+
 export function hingePropertyRequiresGeneralMatrix(property) {
   const backbone = property?.parameters?.backbone;
   if (!backbone) return false;

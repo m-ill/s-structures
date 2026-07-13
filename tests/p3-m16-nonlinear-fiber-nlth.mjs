@@ -31,14 +31,19 @@ import {
 } from '../src/index.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
-const pmm = createPmmBackboneSet();
+const pmmLevels = [
+  { axialRatio: 0, My: 120, thetaY: 0.012 },
+  { axialRatio: 0.3, My: 100, thetaY: 0.01 },
+  { axialRatio: 0.6, My: 65, thetaY: 0.007 },
+];
+const pmm = createPmmBackboneSet({ levels: pmmLevels });
 assert.equal(pmm.version, PMM_HINGE_VERSION);
 assert.equal(pmm.contract.milestone, 'P3-M16');
-const fallbackPmm = createPmmBackboneSet({ levels: [] });
-assert.ok(fallbackPmm.levels.length >= 2);
-const fallbackInterpolated = interpolatePmmBackbone(0.2, { levels: [] });
-assert.equal(fallbackInterpolated.review.status, 'available');
-assert.ok(fallbackInterpolated.points.length > 0);
+assert.throws(() => createPmmBackboneSet(), (error) => error?.code === 'PMM_LEVELS_REQUIRED');
+assert.throws(
+  () => interpolatePmmBackbone(0.2, { levels: [] }),
+  (error) => error?.code === 'PMM_LEVELS_REQUIRED',
+);
 const mid = interpolatePmmBackbone(0.45, pmm);
 assert.equal(mid.version, PMM_HINGE_VERSION);
 assert.ok(mid.contract.tickets.includes('P3-T83'));
@@ -46,11 +51,10 @@ assert.deepEqual(mid.source, [0.3, 0.6]);
 assert.equal(mid.summary.pointCount, mid.points.length);
 assert.ok(mid.points[1].moment < pmm.levels[1].backbone.points[1].moment);
 assert.equal(mid.review.status, 'available');
-const clampedPmm = interpolatePmmBackbone(1.2, pmm);
-assert.equal(clampedPmm.requestedAxialRatio, 1.2);
-assert.equal(clampedPmm.axialRatio, 1);
-assert.equal(clampedPmm.clamped, true);
-assert.equal(clampedPmm.review.warning, 'pmm-axial-ratio-out-of-range');
+assert.throws(
+  () => interpolatePmmBackbone(1.2, pmm),
+  (error) => error?.code === 'PMM_AXIAL_RATIO_OUT_OF_RANGE',
+);
 
 const section = buildRectangularFiberSection({ width: 0.4, depth: 0.6, strips: 8 });
 assert.equal(section.version, FIBER_SECTION_VERSION);
@@ -222,8 +226,15 @@ assert.equal(invalidDtGate.fiberNlthReview.status, 'review-required');
 assert.equal(invalidDtGate.fiberNlthReview.groundMotionScalingTrace, false);
 assert.ok(invalidDtGate.fiberNlthReview.missing.includes('ground-motion-scaling'));
 assert.equal(invalidDtGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T86').covered, false);
+const legacyClampedPmm = {
+  ...trace.pmm.interpolated,
+  requestedAxialRatio: 1.2,
+  axialRatio: 1,
+  clamped: true,
+  review: { status: 'review-required', warning: 'pmm-axial-ratio-out-of-range' },
+};
 const clampedPmmGate = buildNonlinearFiberNlthGate({
-  pmm: { ...trace.pmm, interpolated: clampedPmm },
+  pmm: { ...trace.pmm, interpolated: legacyClampedPmm },
   fiber: trace.fiber,
   rayleigh: trace.rayleigh,
   groundMotion: trace.groundMotion,

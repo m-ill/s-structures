@@ -3,7 +3,7 @@
 ```yaml
 document_status: governing
 product_target: commercial-grade nonlinear building-frame analysis within a declared supported domain
-implementation_status: not-started
+implementation_status: p8-m6-complete
 release_rule: numerical correctness, model fidelity, workflow completeness, scale, and independent qualification are all mandatory
 ```
 

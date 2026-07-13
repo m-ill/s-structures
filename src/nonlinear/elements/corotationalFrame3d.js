@@ -27,7 +27,7 @@ import {
   rotationCoordinateIncrementToSpatial,
   spatialRotationIncrementToCoordinates,
 } from '../math/rotationCoordinates.js';
-import { evaluateHingeTrial } from '../materials/hingeCyclic.js';
+import { evaluateFiberCoupledHingeTrial } from '../fiber/hingeInteraction.js';
 
 export const COROTATIONAL_FRAME_3D_VERSION = 'p8-m3-corotational-frame-3d-v2';
 export const COROTATIONAL_FRAME_3D_STATE_VERSION = 'p8-m3-corotational-frame-state-v2';
@@ -191,6 +191,9 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
         internalRotations: condensed.internalRotations,
         internalResidual: condensed.internalResidual,
         hinges: Object.fromEntries(condensed.hingeResponses.map((item) => [item.assignment.id, item.response.trialState])),
+        hingeInteractions: Object.fromEntries(condensed.hingeResponses
+          .filter((item) => item.interaction)
+          .map((item) => [item.assignment.id, item.interaction])),
       };
       const scaledLoads = scaleMemberLoads(input.elementLoads?.trace, response.lambda ?? input?.trialKinematics?.lambda ?? 0);
       const stationLoads = collectMemberSpanLoads(descriptor.id, scaledLoads, {
@@ -265,8 +268,11 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
             energies: item.response.energies,
             diagnostics: item.response.diagnostics,
             source: item.assignment.source,
-            qualification: item.assignment.property.qualification,
-            axialRatioTrace: item.assignment.axialRatioTrace,
+            qualification: item.interactionProperty?.qualification || item.assignment.property.qualification,
+            axialRatioTrace: item.interaction
+              ? { ...item.assignment.axialRatioTrace, iterationCoupled: true, interaction: item.interaction }
+              : item.assignment.axialRatioTrace,
+            pmmInteraction: item.interaction,
           })),
           stations,
           stationLoadIssues: stationLoads.issues || [],
@@ -296,6 +302,7 @@ export function createCorotationalFrame3dKernel(descriptor, options = {}) {
           hingeIterations: condensed.internalIterations,
           hingeResidual: condensed.hingeResidual,
           hingeRequiredMatrixClass: prepared.requiredMatrixClass,
+          fiberPmmCoupledHingeCount: condensed.hingeResponses.filter((item) => item.interaction).length,
           energyConservative: prepared.internalRotationVariables.length === 0,
           energyDissipative: prepared.hingeVariables.length > 0,
           releaseFormulation: prepared.releases.length
@@ -440,27 +447,44 @@ function evaluateEnergy(
     );
   }
   const energy = jetAdd(elasticEnergy, initialStrainPotential);
-  const hingeResponses = prepared.hingeVariables.map((hinge) => ({
-    assignment: hinge.assignment,
-    response: evaluateHingeTrial(
+  const hingeResponses = prepared.hingeVariables.map((hinge) => {
+    const forceState = hingeSectionForceJets(hinge.assignment, physicalTotalEndForce);
+    const coupled = evaluateFiberCoupledHingeTrial(
       -(q[hinge.variableIndex] || zero()).value,
-      hinge.assignment.property,
+      hinge.assignment,
       committedState?.hinges?.[hinge.assignment.id],
+      Object.fromEntries(Object.entries(forceState).map(([key, value]) => [key, value.value])),
       {
         elementId: prepared.id,
         assignmentId: hinge.assignment.id,
         end: hinge.assignment.end,
         axis: hinge.assignment.axis,
       },
-    ),
-  }));
-  const hingeResponseById = new Map(hingeResponses.map((item) => [item.assignment.id, item.response]));
+    );
+    return {
+      assignment: hinge.assignment,
+      response: coupled.response,
+      interaction: coupled.interaction,
+      interactionProperty: coupled.property,
+      sensitivities: coupled.sensitivities,
+      forceState,
+    };
+  });
+  const hingeResponseById = new Map(hingeResponses.map((item) => [item.assignment.id, item]));
   const internalResiduals = prepared.internalRotationVariables.map((internal) => {
     const memberMoment = physicalTotalEndForce[internal.dof];
     if (internal.kind === 'release') return memberMoment;
-    const response = hingeResponseById.get(internal.assignment.id);
+    const coupled = hingeResponseById.get(internal.assignment.id);
+    const response = coupled.response;
     const springMoment = jetConstant(response.moment, n);
-    springMoment.gradient[internal.variableIndex] = -response.tangent;
+    for (let index = 0; index < n; index += 1) {
+      springMoment.gradient[index] = (
+        coupled.sensitivities.axialForce * coupled.forceState.axialForce.gradient[index]
+        + coupled.sensitivities.momentY * coupled.forceState.momentY.gradient[index]
+        + coupled.sensitivities.momentZ * coupled.forceState.momentZ.gradient[index]
+      );
+    }
+    springMoment.gradient[internal.variableIndex] += -response.tangent;
     return jetSub(memberMoment, springMoment);
   });
   const releaseResiduals = prepared.releaseVariables.map((release) => (
@@ -483,6 +507,15 @@ function evaluateEnergy(
     currentAxes: [e1, e2, e3],
     rotationI: localRotationI,
     rotationJ: localRotationJ,
+  };
+}
+
+function hingeSectionForceJets(assignment, endForce) {
+  const base = assignment.end === 'i' ? 0 : 6;
+  return {
+    axialForce: jetScale(jetSub(endForce[6], endForce[0]), 0.5),
+    momentY: endForce[base + 4],
+    momentZ: endForce[base + 5],
   };
 }
 

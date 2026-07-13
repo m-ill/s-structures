@@ -668,6 +668,7 @@ export {
   evaluateHingePropertyAtAxialRatio,
   hingePropertyRequiresGeneralMatrix,
   resolveHingeProperty,
+  scaleHingePropertyForInteraction,
   validateHingeProperty,
 } from './nonlinear/properties/hingeRegistry.js';
 export {
@@ -751,6 +752,73 @@ export {
   compareMomentCurvatureTheory,
   computeMomentCurvature,
 } from './nonlinear/fiber/momentCurvature.js';
+export {
+  FIBER_SECTION_MESH_VERSION,
+  buildFiberSectionMesh,
+  buildRcRectSectionMesh,
+  buildSteelSectionMesh,
+  summarizeFiberMesh,
+  validateFiberSectionMesh,
+} from './nonlinear/fiber/sectionMesh.js';
+export {
+  FIBER_MATERIAL_MODEL_VERSION,
+  commitFiberMaterialState,
+  commitFiberMaterialTrial,
+  concreteEnvelopeResponse,
+  createConcreteMaterial,
+  createFiberMaterialState,
+  createSteelBilinearMaterial,
+  evaluateFiberMaterialTrial,
+  rollbackFiberMaterialState,
+  rollbackFiberMaterialTrial,
+  trialFiberMaterialState,
+} from './nonlinear/fiber/materialModels.js';
+export {
+  SECTION_RESPONSE_VERSION,
+  SECTION_STRAIN_CONVENTION,
+  commitSectionResponse,
+  evaluateSectionResponse,
+  finiteDifferenceSectionTangent,
+  rollbackSectionResponse,
+  sectionStateSnapshot,
+} from './nonlinear/fiber/sectionResponse.js';
+export {
+  MOMENT_CURVATURE_V2_VERSION,
+  checkElementIntegrationPointConvergence,
+  checkFiberMeshConvergence,
+  runAdaptiveMomentCurvature,
+  solveAtTargetAxialForce,
+  solveNeutralAxisForAxialForce,
+  solveSectionAxialEquilibrium,
+  solveTargetAxial,
+  traceBiaxialCurvaturePath,
+} from './nonlinear/fiber/momentCurvatureV2.js';
+export {
+  PMM_SIGN_CONVENTION,
+  PMM_SURFACE_VERSION,
+  buildPmmSurface,
+  createPmmSurfaceEvaluator,
+  evaluatePmmCapacity,
+  generatePmmSurface,
+  interpolatePmmSurface,
+  validatePmmSurface,
+} from './nonlinear/fiber/pmmSurface.js';
+export {
+  MEMBER_FIBER_INTERACTION_VERSION,
+  buildMemberFiberInteraction,
+  buildModelFiberPmmInteractions,
+  clearMemberFiberInteractionCache,
+} from './nonlinear/fiber/memberInteraction.js';
+export {
+  FIBER_HINGE_INTERACTION_VERSION,
+  evaluateFiberCoupledHingeTrial,
+  evaluateInteractionProperty,
+} from './nonlinear/fiber/hingeInteraction.js';
+export {
+  DISTRIBUTED_FIBER_FRAME_3D_STATE_VERSION,
+  DISTRIBUTED_FIBER_FRAME_3D_VERSION,
+  createDistributedFiberFrame3dKernel,
+} from './nonlinear/elements/distributedFiberFrame3d.js';
 export {
   NLTH_NEWMARK_VERSION,
   runNewmarkNlth,

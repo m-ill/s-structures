@@ -1,4 +1,5 @@
 import { stableHash } from '../../core/stableHash.js';
+import { buildModelFiberPmmInteractions } from '../fiber/memberInteraction.js';
 import { createNonlinearStateStore, createStateCheckpoint, restoreStateCheckpoint } from '../core/stateStore.js';
 import { buildHingedFrame3dEntries } from '../elements/hingedFrame3d.js';
 import { createEquilibriumAssembler } from '../equilibrium/assembler.js';
@@ -30,7 +31,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
     version: PRODUCTION_PUSHOVER_ENGINE_VERSION,
     formulation: {
       geometry: 'objective-corotational-3d',
-      material: 'state-dependent-concentrated-plasticity',
+      material: 'state-dependent-concentrated-or-distributed-fiber-plasticity',
       equilibrium: 'current-step-mdof-consistent-tangent',
       control: 'augmented-displacement',
       gravity: 'nonlinear-load-control-predecessor',
@@ -46,21 +47,35 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       return blocked(engine, 'PUSHOVER_TARGET_DISPLACEMENT_REQUIRED', 'A positive control target is required.');
     }
     const loadSet = buildPushoverLoadSet(model, analysisCase, merged);
+    const fiberPmm = merged.pmmInteractions
+      ? externalFiberPmm(merged.pmmInteractions, model)
+      : merged.fiberPmm === false ? disabledFiberPmm() : buildModelFiberPmmInteractions(model, {
+        ...(merged.fiberPmm || {}),
+        reinforcementSnapshots: merged.reinforcementSnapshots,
+        strict: merged.fiberPmm?.strict,
+      });
+    const pmmInteractions = merged.pmmInteractions || fiberPmm.interactions;
     const hingeResolution = resolveDomainHingeAssignments(loadSet.domain, {
       axialRatios: merged.axialRatios,
       assumedPolicy: merged.assumedPolicy,
+      pmmInteractions,
     });
     const elements = buildHingedFrame3dEntries(loadSet.domain, {
       assignmentResolution: hingeResolution,
+      fiberSections: fiberPmm.byMember,
       stationCount: merged.stationCount,
+      integrationPoints: merged.fiberPmm?.integrationPoints,
     });
     const gravityHingeResolution = resolveDomainHingeAssignments(loadSet.gravityDomain, {
       axialRatios: merged.axialRatios,
       assumedPolicy: merged.assumedPolicy,
+      pmmInteractions,
     });
     const gravityElements = buildHingedFrame3dEntries(loadSet.gravityDomain, {
       assignmentResolution: gravityHingeResolution,
+      fiberSections: fiberPmm.byMember,
       stationCount: merged.stationCount,
+      integrationPoints: merged.fiberPmm?.integrationPoints,
     });
     const assembler = createEquilibriumAssembler({
       domain: loadSet.domain,
@@ -118,7 +133,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       options: displacementOptions(merged),
       shouldTerminate(accepted) {
         const summary = hingeSummary(accepted.evaluation);
-        const mechanism = mechanismReached(summary.rows, merged);
+        const mechanism = mechanismReached(summary.rows, summary.memberStates, merged);
         if (mechanism) return { stop: true, ok: true, reason: 'MECHANISM_DETECTED', hingeIds: mechanism };
         const baseShear = Math.abs(reactionBaseShear(
           accepted.evaluation.reactionsFull,
@@ -172,6 +187,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       controlResult: displacement,
       steps: recovered,
       hingeResolution,
+      fiberPmm,
       backend,
       engine,
       handoffCheckpoint,
@@ -201,11 +217,62 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         stateStore: displacement.stateStore,
         handoffCheckpoint,
         loadSet,
+        fiberPmm,
       } : undefined,
     });
   } catch (error) {
     return failed(engine, error.code || 'PRODUCTION_PUSHOVER_FAILED', error.message, error.details || null);
   }
+}
+
+function disabledFiberPmm() {
+  return Object.freeze({
+    version: 'p8-m6-member-fiber-interaction-v1',
+    interactions: Object.freeze({}),
+    byMember: Object.freeze({}),
+    members: Object.freeze([]),
+    warnings: Object.freeze([{ code: 'FIBER_PMM_DISABLED', memberId: null, message: 'Fiber PMM coupling was explicitly disabled.' }]),
+    summary: Object.freeze({ interactionCount: 0, memberCount: 0, skippedMemberCount: 0, strict: false }),
+    contentHash: null,
+  });
+}
+
+function externalFiberPmm(interactions, model = {}) {
+  const entries = interactions instanceof Map ? [...interactions.entries()] : Object.entries(interactions || {});
+  const members = entries.map(([key, interaction]) => ({
+    memberId: interaction?.source?.memberId || String(key).replace(/:[yz]$/, ''),
+    interactionId: interaction?.id || null,
+    surfaceHash: interaction?.surface?.surfaceHash || null,
+    meshHash: interaction?.mesh?.geometryHash || null,
+    hingeCount: 1,
+  }));
+  const uniqueMembers = [...new Map(members.map((row) => [row.memberId, row])).values()];
+  const byMember = Object.fromEntries(entries
+    .map(([key, interaction]) => [interaction?.source?.memberId || String(key).replace(/:[yz]$/, ''), interaction])
+    .filter(([memberId]) => memberId));
+  const distributedMemberIds = new Set((model.members || [])
+    .filter((member) => member.nonlinear?.formulation === 'distributed-plasticity')
+    .map((member) => String(member.id)));
+  return Object.freeze({
+    version: 'p8-m6-member-fiber-interaction-v1',
+    interactions,
+    byMember: Object.freeze(byMember),
+    members: Object.freeze(uniqueMembers),
+    warnings: Object.freeze([]),
+    summary: Object.freeze({
+      interactionCount: entries.length,
+      distributedMemberCount: Object.keys(byMember).filter((memberId) => distributedMemberIds.has(memberId)).length,
+      memberCount: uniqueMembers.length,
+      skippedMemberCount: 0,
+      strict: true,
+      source: 'external-precomputed',
+    }),
+    contentHash: stableHash(entries.map(([key, interaction]) => ({
+      key,
+      contentHash: interaction?.contentHash || null,
+      surfaceHash: interaction?.surface?.surfaceHash || null,
+    }))).slice(0, 24),
+  });
 }
 
 export function buildProductionPushoverCompatibilityView(result = {}) {
@@ -327,8 +394,11 @@ function rebindStateStore(store, domainHash) {
   });
 }
 
-function mechanismReached(hinges, options) {
+function mechanismReached(hinges, memberStates, options) {
   const plastic = new Set(hinges.filter((row) => ['yielded', 'capping', 'residual', 'failure'].includes(row.state)).map((row) => row.id));
+  for (const [memberId, state] of Object.entries(memberStates || {})) {
+    if (state?.distributed?.yielded === true) plastic.add(`${memberId}:distributed`);
+  }
   const ids = Array.isArray(options.mechanismHingeIds) ? options.mechanismHingeIds.map(String) : [];
   if (ids.length && ids.every((id) => plastic.has(id))) return ids;
   const count = Number(options.mechanismHingeCount);

@@ -63,6 +63,7 @@ export function recoverPushoverStep(input = {}) {
     cappingHingeCount: hinges.counts.capping,
     residualHingeCount: hinges.counts.residual,
     failedHingeCount: hinges.counts.failure,
+    distributedYieldedMemberCount: Object.values(hinges.memberStates).filter((row) => row.distributed?.yielded === true).length,
     plasticHingeCount: hinges.rows.filter((row) => stateRank(row.state) >= 1).length,
     hingeEvents: clone(input.hingeEvents || []),
     responseHash: evaluation.responseHash || null,
@@ -84,6 +85,7 @@ export function buildProductionPushoverResult(input = {}) {
   if (termination.category === 'nonconvergence' || termination.category === 'instability') {
     warnings.push({ code: termination.reason, message: termination.message });
   }
+  warnings.push(...clone(input.fiberPmm?.warnings || []));
   const provenance = {
     version: PRODUCTION_PUSHOVER_RESULT_VERSION,
     engineId: input.engine?.id || null,
@@ -97,6 +99,8 @@ export function buildProductionPushoverResult(input = {}) {
     controlCoordinateHash: input.control?.coordinateHash || null,
     hingeRegistryHash: input.hingeResolution?.registryHash || null,
     hingeAssignmentHash: input.hingeResolution?.contentHash || null,
+    fiberPmmCatalogHash: input.fiberPmm?.contentHash || null,
+    fiberPmmSurfaceHashes: (input.fiberPmm?.members || []).map((row) => row.surfaceHash).filter(Boolean),
     solver: input.controlResult?.version || null,
     backend: input.backend?.id || input.controlResult?.acceptedSteps?.at(-1)?.backend || null,
     fallbackUsed: false,
@@ -114,6 +118,10 @@ export function buildProductionPushoverResult(input = {}) {
     yieldedMemberCount: Object.values(final?.memberStates || {}).filter((row) => row.overall === 'yielded').length,
     ultimateMemberCount: Object.values(final?.memberStates || {}).filter((row) => ['capping', 'residual', 'failure'].includes(row.overall)).length,
     terminationReason: termination.reason,
+    fiberPmmMemberCount: input.fiberPmm?.summary?.memberCount || 0,
+    fiberPmmCoupledAssignmentCount: input.fiberPmm?.summary?.interactionCount || 0,
+    distributedFiberMemberCount: input.fiberPmm?.summary?.distributedMemberCount || 0,
+    fiberPmmSkippedMemberCount: input.fiberPmm?.summary?.skippedMemberCount || 0,
   };
   const arcLengthHandoff = buildArcLengthHandoff(input, termination, final);
   const core = {
@@ -159,13 +167,22 @@ export function buildProductionPushoverResult(input = {}) {
     storyResponse: clone(final?.stories || []),
     memberResults: clone(final?.members || {}),
     hingeResults: clone(final?.hinges || []),
+    fiberPmm: {
+      version: input.fiberPmm?.version || null,
+      contentHash: input.fiberPmm?.contentHash || null,
+      members: clone(input.fiberPmm?.members || []),
+      warnings: clone(input.fiberPmm?.warnings || []),
+      summary: clone(input.fiberPmm?.summary || null),
+    },
     arcLengthHandoff,
     provenance,
     warnings,
     limitations: [
       'P8-M5 qualifies gravity-preloaded displacement-control static response as a candidate component.',
       'Arc-length path continuation remains P8-M7 scope.',
-      'Coupled PMM/fiber response remains P8-M6 scope.',
+      ...(input.fiberPmm?.summary?.interactionCount > 0 || input.fiberPmm?.summary?.distributedMemberCount > 0
+        ? ['P8-M6 fiber PMM and distributed-section response are iteration-coupled; design transfer still requires external and pilot qualification.']
+        : ['Fiber PMM coupling was unavailable for this model; supported Phase 7 parametric section and material snapshots are required.']),
       'Independent commercial and pilot qualification remains P8-M11 scope.',
     ],
   };
@@ -179,18 +196,25 @@ export function classifyPushoverEvents(steps = [], options = {}) {
   for (const row of steps) {
     const shear = Math.abs(Number(row.baseShear || 0));
     if (!peak || shear > peak.baseShear) peak = { step: row.step, baseShear: shear, controlDisplacement: row.controlDisplacement };
-    if (!yielded && row.hinges?.some((hinge) => stateRank(hinge.state) >= 1)) {
+    const yieldedHinges = row.hinges?.filter((hinge) => stateRank(hinge.state) >= 1) || [];
+    const yieldedDistributedMembers = Object.entries(row.memberStates || {})
+      .filter(([, state]) => state?.distributed?.yielded === true)
+      .map(([memberId]) => `${memberId}:distributed`);
+    if (!yielded && (yieldedHinges.length > 0 || yieldedDistributedMembers.length > 0)) {
       yielded = true;
       events.push({
         type: 'first-yield',
         step: row.step,
         controlDisplacement: row.controlDisplacement,
         baseShear: row.baseShear,
-        hingeIds: row.hinges.filter((hinge) => stateRank(hinge.state) >= 1).map((hinge) => hinge.id),
+        hingeIds: [...yieldedHinges.map((hinge) => hinge.id), ...yieldedDistributedMembers],
       });
     }
     const mechanismIds = Array.isArray(options.mechanismHingeIds) ? options.mechanismHingeIds : [];
     const plasticIds = new Set((row.hinges || []).filter((hinge) => stateRank(hinge.state) >= 1).map((hinge) => hinge.id));
+    for (const [memberId, state] of Object.entries(row.memberStates || {})) {
+      if (state?.distributed?.yielded === true) plasticIds.add(`${memberId}:distributed`);
+    }
     const countThreshold = Number(options.mechanismHingeCount);
     const mechanism = mechanismIds.length
       ? mechanismIds.every((id) => plasticIds.has(id))
@@ -309,11 +333,20 @@ function recoverHinges(evaluation) {
     const endState = (items) => items.sort((a, b) => stateRank(b.state) - stateRank(a.state))[0] || null;
     const i = endState(byEnd.i);
     const j = endState(byEnd.j);
-    const overall = [i, j].filter(Boolean).sort((a, b) => stateRank(b.state) - stateRank(a.state))[0]?.state || 'elastic';
+    const distributedPoints = response.localResponse?.distributedFiber?.points || [];
+    const yieldedPoints = distributedPoints.filter((point) => Number(point.yieldedFiberCount || 0) > 0);
+    const concentratedState = [i, j].filter(Boolean).sort((a, b) => stateRank(b.state) - stateRank(a.state))[0]?.state || 'elastic';
+    const overall = yieldedPoints.length && stateRank(concentratedState) < stateRank('yielded') ? 'yielded' : concentratedState;
     memberStates[memberId] = {
       overall,
       i: { state: i?.state || 'elastic', ratio: legacyStateRatio(i?.state), hingeId: i?.id || null },
       j: { state: j?.state || 'elastic', ratio: legacyStateRatio(j?.state), hingeId: j?.id || null },
+      distributed: {
+        yielded: yieldedPoints.length > 0,
+        yieldedPointCount: yieldedPoints.length,
+        integrationPointCount: distributedPoints.length,
+        stations: yieldedPoints.map((point) => point.station),
+      },
     };
   }
   rows.sort((a, b) => `${a.memberId}:${a.end}:${a.axis}`.localeCompare(`${b.memberId}:${b.end}:${b.axis}`));

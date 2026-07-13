@@ -1,4 +1,4 @@
-export const NONLINEAR_CAPABILITY_VERSION = 'p8-m5-nonlinear-capability-v2';
+export const NONLINEAR_CAPABILITY_VERSION = 'p8-m6-nonlinear-capability-v3';
 export const NONLINEAR_PRODUCT_SCOPE_VERSION = 'p8-m0-product-scope-v1';
 
 export const NONLINEAR_ENGINE_IDS = Object.freeze({
@@ -94,7 +94,7 @@ const CAPABILITIES = Object.freeze({
     executionMode: 'async',
     formulation: {
       geometry: 'objective-corotational-3d',
-      material: 'state-dependent-concentrated-plasticity',
+      material: 'state-dependent-concentrated-hinge-or-distributed-fiber-plasticity-with-section-pmm',
       equilibrium: 'current-step-mdof-consistent-tangent',
       control: 'augmented-displacement',
     },
@@ -103,7 +103,10 @@ const CAPABILITIES = Object.freeze({
     limitations: [
       'Candidate Phase 8 engine; design transfer remains blocked pending qualification.',
       'Execution requires the asynchronous nonlinear analysis runner.',
-      'Arc-length continuation is not available in P8-M5.',
+      'Fiber PMM coupling requires supported Phase 7 parametric section and material snapshots.',
+      'Distributed fiber members use 2-5 point Gauss section integration and currently reject end releases.',
+      'First generation of a unique RC PMM surface is expensive until Worker execution and persisted caches are added.',
+      'Arc-length continuation is not available before P8-M7.',
     ],
   }),
   [NONLINEAR_ENGINE_IDS.productionNlth]: reservedCapability(

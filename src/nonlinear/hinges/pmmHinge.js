@@ -3,36 +3,37 @@ import { createMomentRotationBackbone } from './momentHinge.js';
 
 export const PMM_HINGE_VERSION = 'p3-m16-pmm-hinge';
 
-const DEFAULT_PMM_LEVELS = [
-  { axialRatio: 0, My: 120, thetaY: 0.012 },
-  { axialRatio: 0.3, My: 100, thetaY: 0.01 },
-  { axialRatio: 0.6, My: 65, thetaY: 0.007 },
-];
-
 export function createPmmBackboneSet(options = {}) {
-  const levels = Array.isArray(options.levels) && options.levels.length >= 2
-    ? options.levels
-    : DEFAULT_PMM_LEVELS;
+  const levels = requirePmmLevels(options.levels);
   return {
     version: PMM_HINGE_VERSION,
     contract: {
       milestone: 'P3-M16',
       tickets: ['P3-T83'],
       model: 'axial-ratio-dependent M-theta backbone interpolation',
-      range: '0 <= axialRatio <= 1',
+      range: `${Number(levels[0].axialRatio)} <= axialRatio <= ${Number(levels.at(-1).axialRatio)}`,
+      qualification: options.qualification || 'explicit-input',
     },
     levels: levels.map((level) => ({
-      axialRatio: clamp(level.axialRatio, 0, 1),
+      axialRatio: Number(level.axialRatio),
       backbone: createMomentRotationBackbone(level),
     })).sort((a, b) => a.axialRatio - b.axialRatio),
   };
 }
 
-export function interpolatePmmBackbone(axialRatio, set = createPmmBackboneSet()) {
-  const requestedAxialRatio = Number(axialRatio);
-  const ratio = clamp(axialRatio, 0, 1);
-  const clamped = Number.isFinite(requestedAxialRatio) && Math.abs(requestedAxialRatio - ratio) > 1e-12;
-  const levels = Array.isArray(set.levels) && set.levels.length >= 2 ? set.levels : createPmmBackboneSet().levels;
+export function interpolatePmmBackbone(axialRatio, set) {
+  const ratio = Number(axialRatio);
+  if (!Number.isFinite(ratio)) throw pmmError('PMM_AXIAL_RATIO_INVALID', 'PMM axial ratio must be finite.');
+  const levels = requirePmmLevels(set?.levels).map((level) => ({
+    ...level,
+    backbone: level.backbone || createMomentRotationBackbone(level),
+  }));
+  if (ratio < levels[0].axialRatio || ratio > levels.at(-1).axialRatio) {
+    throw pmmError(
+      'PMM_AXIAL_RATIO_OUT_OF_RANGE',
+      `PMM axial ratio ${ratio} is outside ${levels[0].axialRatio}..${levels.at(-1).axialRatio}.`,
+    );
+  }
   let lo = levels[0];
   let hi = levels.at(-1);
   for (let i = 0; i < levels.length - 1; i += 1) {
@@ -43,7 +44,7 @@ export function interpolatePmmBackbone(axialRatio, set = createPmmBackboneSet())
     }
   }
   const span = Math.max(1e-12, hi.axialRatio - lo.axialRatio);
-  const t = clamp((ratio - lo.axialRatio) / span, 0, 1);
+  const t = (ratio - lo.axialRatio) / span;
   const points = lo.backbone.points.map((point, i) => ({
     ...point,
     theta: mix(point.theta, hi.backbone.points[i].theta, t),
@@ -56,9 +57,9 @@ export function interpolatePmmBackbone(axialRatio, set = createPmmBackboneSet())
       tickets: ['P3-T83'],
       interpolation: 'linear between adjacent axial-ratio backbone levels',
     },
-    requestedAxialRatio: Number.isFinite(requestedAxialRatio) ? requestedAxialRatio : null,
+    requestedAxialRatio: ratio,
     axialRatio: ratio,
-    clamped,
+    clamped: false,
     points,
     source: [lo.axialRatio, hi.axialRatio],
     summary: {
@@ -67,9 +68,9 @@ export function interpolatePmmBackbone(axialRatio, set = createPmmBackboneSet())
       residualMoment: points.find((point) => point.id === 'E')?.moment || 0,
     },
     review: {
-      status: clamped ? 'review-required' : 'available',
-      warning: clamped ? 'pmm-axial-ratio-out-of-range' : null,
-      agentDecision: clamped ? 'review-pmm-axial-ratio-input' : 'pmm-backbone-ready-for-review',
+      status: 'available',
+      warning: null,
+      agentDecision: 'pmm-backbone-ready-for-review',
     },
   };
 }
@@ -82,7 +83,8 @@ export function createPmmBackboneSetFromMember(model = {}, member = {}, options 
   const z = Math.max(positive(section.Zz, 0), positive(section.Zy, 0), area * positive(section.H, 0.3) / 6);
   const nominalAxial = fy * area;
   const nominalMoment = fy * z;
-  const levels = (options.levels || [0, 0.3, 0.6, 0.85]).map((axialRatio) => {
+  const axialRatioLevels = options.axialRatioLevels || [0, 0.3, 0.6, 0.85];
+  const levels = axialRatioLevels.map((axialRatio) => {
     const reduction = Math.max(0.18, 1 - 0.82 * Number(axialRatio));
     return {
       axialRatio,
@@ -93,13 +95,15 @@ export function createPmmBackboneSetFromMember(model = {}, member = {}, options 
     };
   });
   return {
-    ...createPmmBackboneSet({ levels }),
+    ...createPmmBackboneSet({ levels, qualification: 'legacy-member-screening' }),
     source: {
       memberId: member.id || null,
       materialId: member.matId || null,
       sectionId: member.secId || null,
       nominalAxial,
       nominalMoment,
+      qualification: 'legacy-preliminary',
+      limitation: 'Screening interaction only; P8-M6 fiber PMM surface is required for production analysis.',
     },
   };
 }
@@ -108,12 +112,32 @@ function mix(a, b, t) {
   return Number(a) * (1 - t) + Number(b) * t;
 }
 
-function clamp(value, min, max) {
-  const n = Number(value);
-  return Math.min(max, Math.max(min, Number.isFinite(n) ? n : min));
-}
-
 function positive(value, fallback) {
   const n = Number(value);
   return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
+function requirePmmLevels(input) {
+  if (!Array.isArray(input) || input.length < 2) {
+    throw pmmError('PMM_LEVELS_REQUIRED', 'At least two explicit PMM axial-ratio levels are required.');
+  }
+  const levels = input.map((level, index) => {
+    const axialRatio = Number(level?.axialRatio);
+    if (!Number.isFinite(axialRatio) || axialRatio < 0) {
+      throw pmmError('PMM_AXIAL_RATIO_INVALID', `PMM level ${index} axial ratio must be finite and nonnegative.`);
+    }
+    return { ...level, axialRatio };
+  }).sort((a, b) => a.axialRatio - b.axialRatio);
+  for (let index = 1; index < levels.length; index += 1) {
+    if (!(levels[index].axialRatio > levels[index - 1].axialRatio)) {
+      throw pmmError('PMM_LEVEL_ORDER_INVALID', 'PMM axial-ratio levels must strictly increase.');
+    }
+  }
+  return levels;
+}
+
+function pmmError(code, message) {
+  const error = new RangeError(message);
+  error.code = code;
+  return error;
 }

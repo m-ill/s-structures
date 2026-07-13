@@ -34,8 +34,14 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
   const displacementControl = buildDisplacementControlTrace(options.displacementTargets || [0.01, 0.02], options.displacementControl);
   const arcLength = buildArcLengthTrace(options.arcLengthPath || createSnapThroughBenchmarkPath(), options.arcLength);
   const fiberMember = (model.members || [])[0] || null;
-  const pmmSet = fiberMember && !options.pmm ? createPmmBackboneSetFromMember(model, fiberMember, options.pmmFromMember) : createPmmBackboneSet(options.pmm);
-  const pmm = { set: pmmSet, interpolated: interpolatePmmBackbone(options.axialRatio ?? 0.3, pmmSet) };
+  const pmm = fiberMember || options.pmm
+    ? (() => {
+      const set = fiberMember && !options.pmm
+        ? createPmmBackboneSetFromMember(model, fiberMember, options.pmmFromMember)
+        : createPmmBackboneSet(options.pmm);
+      return { set, interpolated: interpolatePmmBackbone(options.axialRatio ?? 0.3, set) };
+    })()
+    : unavailablePmmTrace();
   const fiberSection = options.fiberSection
     ? buildRectangularFiberSection(options.fiberSection)
     : buildMemberFiberSection(model, fiberMember || {}, options.memberFiberSection);
@@ -98,6 +104,30 @@ export function buildNonlinearAnalysisTrace(model = {}, options = {}) {
       hingeControl: hingeControlBenchmarks,
       fiberNlth: fiberNlthBenchmarks,
       ok: (geometryBenchmarks?.ok ?? true) && (hingeControlBenchmarks?.ok ?? true) && (fiberNlthBenchmarks?.ok ?? true),
+    },
+  };
+}
+
+function unavailablePmmTrace() {
+  return {
+    set: {
+      version: PMM_HINGE_VERSION,
+      contract: { milestone: 'P3-M16', qualification: 'unavailable-no-member-source' },
+      levels: [],
+    },
+    interpolated: {
+      version: PMM_HINGE_VERSION,
+      requestedAxialRatio: null,
+      axialRatio: null,
+      clamped: false,
+      points: [],
+      source: [],
+      summary: { pointCount: 0, yieldMoment: 0, residualMoment: 0 },
+      review: {
+        status: 'review-required',
+        warning: 'pmm-member-source-missing',
+        agentDecision: 'provide-member-before-pmm-review',
+      },
     },
   };
 }

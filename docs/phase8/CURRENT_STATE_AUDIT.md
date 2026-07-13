@@ -36,7 +36,7 @@ verdict: preliminary-components-exist-but-production-nonlinear-kernel-does-not
 | High | 상태에 committed/trial 구분이 없다 | `nonlinear/state.js` | 실패 반복과 cutback에서 소성상태 rollback을 보장할 수 없음 |
 | High | 변위제어와 arc-length가 전역 솔버를 구동하지 않는다 | `control/displacementControl.js`, `control/arcLength.js` | post-peak 경로와 snap-through를 실제 해석할 수 없음 |
 | High | corotational 요소가 완전한 3D 요소가 아니다 | `elements/corotationalBeam.js` 전체 45줄 | 강체회전 객관성, 자연변형, 일관접선, 내력 회복 불가 |
-| High | PMM/fiber 모델이 실무 단면을 대표하지 못한다 | `hinges/pmmHinge.js:6-10`, `fiber/fiberSection.js:29-47` | 축력-2축휨 상호작용과 국부 재료상태를 신뢰할 수 없음 |
+| Resolved in M6 | legacy PMM/fiber 모델이 실무 단면을 대표하지 못한다 | legacy `hinges/pmmHinge.js`, `fiber/fiberSection.js`; production `fiber/sectionMesh.js`, `sectionResponse.js`, `pmmSurface.js` | legacy는 preliminary로 유지하고 production은 Phase 7 source 기반 `N-My-Mz`/PMM 경로 사용 |
 | High | 힌지 배정이 축과 부재 조건을 충분히 반영하지 않는다 | `hinges/hingeAssign.js:71-86` | 강축/약축, 전단경간, 부재길이, 상세조건이 소성회전에 반영되지 않음 |
 | High | solver별 analysis domain이 통합되어 있지 않다 | `linear3dAssembly.js`, `pdelta/analysisDomain.js`, `modalDiaphragm.js`가 별도 전개 | 선형과 비선형이 서로 다른 diaphragm/generated/load domain을 해석할 위험 |
 | High | analysis case가 engine/formulation/initial-state를 표현하지 못한다 | `core/analysisCase.js:3-11,38-75` | legacy와 production Pushover/NLTH를 같은 kind로 구분하기 어려움 |
@@ -272,7 +272,7 @@ Phase 8 M0에서 기능을 삭제할 필요는 없다. 대신 legacy case type�
 3. M2에서 요소가 반환한 `Pint`, `Kt`, trial state를 반복마다 조립하는 MDOF Newton 코어를 완성한다.
 4. M3에서 탄성 3D corotational 요소를 연결하고 선형극한·강체회전·Euler beam-column을 검증한다.
 5. M4~M5에서 집중소성 힌지와 실제 변위제어 Pushover를 먼저 실용화한다.
-6. M6~M7에서 PMM/fiber와 post-peak 경로추적을 추가한다.
+6. M6의 PMM/fiber는 완료되었으며 M7에서 post-peak 경로추적을 추가한다.
 7. 정적 코어가 검증된 뒤 M8에서 같은 요소커널로 MDOF NLTH를 구현한다.
 8. M9에서 기존 모델 기능 조합과 결과회복을 닫고 M10에서 제품 UI를 연결한다.
 9. M11 독립검증과 pilot 전에는 `verified`를 부여하지 않는다.

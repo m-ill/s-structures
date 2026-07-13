@@ -311,7 +311,7 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 
 ## P8-M6 - PMM interaction과 검증 가능한 fiber section
 
-**상태: active.**
+**상태: complete (2026-07-13).**
 
 ### 목표
 
@@ -331,9 +331,11 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 - mesh refinement/convergence 도구
 - fiber state commit/rollback과 energy
 - section response 기반 PMM surface 생성 및 interpolation
-- PMM bounds/convexity/sign validation
-- fiber-section frame integration path와 integration-point convergence
-- concentrated hinge backbone 생성 시 source snapshot
+- PMM bounds/sign 및 My-Mz 단면·축력방향 전체 볼록성 validation
+- first material strength limit 또는 resolved local peak 기반 PMM capacity
+- 절대 fiber capacity 기반 concentrated hinge backbone coupling
+- Gauss 적분 fiber-section frame production path와 integration-point convergence
+- 지원 단면 생성 실패의 기본 fail-closed 처리
 
 ### 완료 조건
 
@@ -345,6 +347,8 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 - hard-coded `My=120/100/65` 기본경로 제거
 - elastic A/I/J와 fiber 면적·도심·관성의 cross-domain 일치
 - `NL-FIB-01`~`NL-FIB-14`, `NL-PMM-01`~`NL-PMM-08` 통과
+
+완료 증거는 `reports/validation-evidence/phase8/p8-m6-fiber-pmm.json`, `p8-m6-code-review.md`, `ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md`에 고정한다.
 
 ## P8-M7 - Arc-length와 cyclic static 경로
 

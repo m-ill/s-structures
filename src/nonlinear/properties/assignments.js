@@ -60,6 +60,7 @@ export function resolveDomainHingeAssignments(domain, options = {}) {
       const baseProperty = resolveHingeProperty(registry, assignment.propertyId, options);
       const requestedAxialRatio = resolveAxialRatio(assignment, descriptor, options);
       const evaluated = evaluateHingePropertyAtAxialRatio(baseProperty, requestedAxialRatio, options);
+      const pmmInteraction = resolvePmmInteraction(options.pmmInteractions, descriptor.id, assignment.axis);
       const row = deepFreeze({
         ...assignment,
         source: {
@@ -68,15 +69,18 @@ export function resolveDomainHingeAssignments(domain, options = {}) {
         },
         qualification: assignment.qualification || evaluated.property.qualification,
         property: evaluated.property,
+        baseProperty,
         basePropertyId: baseProperty.id,
+        pmmInteraction,
         axialRatioTrace: {
           requested: evaluated.requestedAxialRatio,
           applied: evaluated.axialRatioApplied,
           source: evaluated.source,
           interpolation: evaluated.interpolation,
+          iterationCoupled: Boolean(pmmInteraction),
         },
         localDof: hingeLocalDof(assignment.end, assignment.axis),
-        requiredMatrixClass: hingePropertyRequiresGeneralMatrix(evaluated.property) ? 'general' : 'spd',
+        requiredMatrixClass: pmmInteraction || hingePropertyRequiresGeneralMatrix(evaluated.property) ? 'general' : 'spd',
       });
       rows.push(row);
       (byElement[descriptor.id] ||= []).push(row);
@@ -440,6 +444,19 @@ function resolveAxialRatio(assignment, descriptor, options) {
   if (source instanceof Map) return source.get(descriptor.id) ?? 0;
   if (source && typeof source === 'object') return source[descriptor.id] ?? 0;
   return 0;
+}
+
+function resolvePmmInteraction(source, memberId, axis) {
+  if (source == null) return null;
+  const memberAxisKey = `${memberId}:${axis}`;
+  const value = source instanceof Map
+    ? source.get(memberAxisKey) ?? source.get(memberId)
+    : source[memberAxisKey] ?? source[memberId];
+  if (value == null) return null;
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw assignmentError('HINGE_PMM_INTERACTION_INVALID', `PMM interaction ${memberAxisKey} must be an object.`);
+  }
+  return clone(value);
 }
 
 function normalizeAssignmentSource(input) {

@@ -5,7 +5,7 @@ document_status: governing
 requirements_source: PRODUCTION_REQUIREMENTS.md
 milestones_source: MILESTONE_EXECUTION_PLAN.md
 verification_source: VERIFICATION_MATRIX.md
-status: planned
+status: active
 ```
 
 ## 1. 추적 규칙
