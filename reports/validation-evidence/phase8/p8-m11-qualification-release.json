@@ -1,0 +1,204 @@
+{
+  "version": "p8-m11-qualification-evidence-v1",
+  "suiteId": "P8-M11-QUALIFICATION-RELEASE",
+  "milestone": "P8-M11",
+  "status": "BLOCKED",
+  "generatedAt": "2026-07-14T23:30:00+09:00",
+  "sourceRevision": "76323c8+P8-M11-worktree",
+  "verificationIds": [
+    "NL-PERF-01",
+    "NL-PERF-02",
+    "NL-PERF-03",
+    "NL-PERF-04",
+    "NL-PERF-05",
+    "NL-PERF-06",
+    "NL-PERF-07",
+    "NL-PERF-08",
+    "NL-PERF-09",
+    "NL-PERF-10",
+    "NL-PERF-11",
+    "NL-PERF-12",
+    "NL-PERF-13",
+    "NL-PERF-14",
+    "NL-PERF-15",
+    "NL-PERF-16",
+    "NL-PILOT-01",
+    "NL-PILOT-02",
+    "NL-PILOT-03",
+    "NL-PILOT-04",
+    "NL-PILOT-05"
+  ],
+  "results": [
+    {
+      "id": "NL-PERF-01",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Small dense/separate-reference versus WASM sparse cross-check and timing recorded.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-02",
+      "status": "BLOCKED",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Medium 3D frame Pushover with 100 accepted/output steps measured end to end.",
+      "blockerCode": "M_TIER_PUSHOVER_END_TO_END_REQUIRED"
+    },
+    {
+      "id": "NL-PERF-03",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Target-size sparse memory estimate and measured kernel stay within the fixed budget.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-04",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Long NLTH output history is streamed with zero retained chunk payload bytes.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-05",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Cancellation preserves the committed boundary and a fresh run can restart.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-06",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Production backend diagnostics report no dense allocation or fallback.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-07",
+      "status": "BLOCKED",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Browser main-thread input acknowledgement p95 stays within 100 ms during an M-tier Worker run.",
+      "blockerCode": "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED"
+    },
+    {
+      "id": "NL-PERF-08",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Cancellation acknowledgement is returned within two seconds.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-09",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Missing production WASM backend blocks execution without reference fallback.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-10",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Unchanged topology reuses the symbolic pattern and ordering.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-11",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Trial/output buffers and restart state remain bounded by explicit retention contracts.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-12",
+      "status": "BLOCKED",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Reference-hardware M-tier production-frame Pushover satisfies time and memory budgets.",
+      "blockerCode": "M_TIER_PUSHOVER_END_TO_END_REQUIRED"
+    },
+    {
+      "id": "NL-PERF-13",
+      "status": "BLOCKED",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Reference-hardware M-tier production-frame NLTH satisfies time and memory budgets.",
+      "blockerCode": "M_TIER_NLTH_END_TO_END_REQUIRED"
+    },
+    {
+      "id": "NL-PERF-14",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Result streaming keeps analysis-retained history bounded as output count grows.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-15",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Chunk and checkpoint hashes validate and restart reproduces the committed state.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PERF-16",
+      "status": "PASS",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Independent Worker runs preserve result norms and event ordering.",
+      "blockerCode": null
+    },
+    {
+      "id": "NL-PILOT-01",
+      "status": "BLOCKED",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Pilot package PILOT-ST-01 reproducibility and independent qualification.",
+      "blockerCode": "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+    },
+    {
+      "id": "NL-PILOT-02",
+      "status": "BLOCKED",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Pilot package PILOT-ST-02 reproducibility and independent qualification.",
+      "blockerCode": "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+    },
+    {
+      "id": "NL-PILOT-03",
+      "status": "BLOCKED",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Pilot package PILOT-ST-03 reproducibility and independent qualification.",
+      "blockerCode": "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+    },
+    {
+      "id": "NL-PILOT-04",
+      "status": "BLOCKED",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Pilot package PILOT-RC-01 reproducibility and independent qualification.",
+      "blockerCode": "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+    },
+    {
+      "id": "NL-PILOT-05",
+      "status": "BLOCKED",
+      "test": "npm run qualify:p8:m11",
+      "statement": "Pilot package PILOT-DYN-01 reproducibility and independent qualification.",
+      "blockerCode": "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+    }
+  ],
+  "environment": {
+    "referenceProfileVersion": "p8-m0-reference-profile-v1",
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0",
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13700KF",
+    "logicalCores": 24,
+    "memoryBytes": 68558086144,
+    "backend": {
+      "id": "p8-wasm-sparse-v1",
+      "executionTarget": "wasm-cpu",
+      "numericPrecision": "f64",
+      "deterministic": true
+    }
+  },
+  "evidence": {
+    "independentHash": "c8cf7e536c60f40de7c0bee2",
+    "performanceHash": "56e37a98063f8c546ded569d",
+    "pilotSummaryHash": "ceb7795521e359cb8cdc4a6e",
+    "releaseManifestHash": "74cf6bc8f09ba158d9242507"
+  },
+  "qualificationImpact": "candidate-design-transfer-blocked",
+  "artifactHash": "c55b9f0ffed88512db338d56"
+}

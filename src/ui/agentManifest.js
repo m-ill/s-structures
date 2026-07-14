@@ -248,9 +248,15 @@ import {
   NONLINEAR_PRODUCT_SERVICE_VERSION,
   NONLINEAR_RESULT_ACCESS_VERSION,
 } from '../nonlinear/product/index.js';
+import {
+  PHASE8_INDEPENDENT_REFERENCE_VERSION,
+  PHASE8_PERFORMANCE_QUALIFICATION_VERSION,
+  PHASE8_PILOT_PACKAGE_VERSION,
+  PHASE8_RELEASE_MANIFEST_VERSION,
+} from '../nonlinear/qualification/index.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m10-agent-capability-manifest-v13';
+export const AGENT_MANIFEST_VERSION = 'p8-m11-agent-capability-manifest-v14';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -483,6 +489,10 @@ export function buildAgentManifest(options = {}) {
       phase8NonlinearResultAccess: NONLINEAR_RESULT_ACCESS_VERSION,
       phase8NonlinearHistoryExport: NONLINEAR_HISTORY_EXPORT_VERSION,
       phase8NonlinearProductReport: NONLINEAR_PRODUCT_REPORT_VERSION,
+      phase8IndependentReference: PHASE8_INDEPENDENT_REFERENCE_VERSION,
+      phase8PerformanceQualification: PHASE8_PERFORMANCE_QUALIFICATION_VERSION,
+      phase8PilotPackage: PHASE8_PILOT_PACKAGE_VERSION,
+      phase8ReleaseManifest: PHASE8_RELEASE_MANIFEST_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
     },
     nonlinear: {
@@ -532,6 +542,10 @@ export function buildAgentManifest(options = {}) {
         resultAccess: NONLINEAR_RESULT_ACCESS_VERSION,
         historyExport: NONLINEAR_HISTORY_EXPORT_VERSION,
         calculationReport: NONLINEAR_PRODUCT_REPORT_VERSION,
+        independentReference: PHASE8_INDEPENDENT_REFERENCE_VERSION,
+        performanceQualification: PHASE8_PERFORMANCE_QUALIFICATION_VERSION,
+        pilotPackage: PHASE8_PILOT_PACKAGE_VERSION,
+        releaseManifest: PHASE8_RELEASE_MANIFEST_VERSION,
         corotationalFrame3d: COROTATIONAL_FRAME_3D_VERSION,
         corotationalFrame3dState: COROTATIONAL_FRAME_3D_STATE_VERSION,
         corotationalTruss3d: COROTATIONAL_TRUSS_3D_VERSION,
@@ -1022,6 +1036,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P8-M8', status: 'candidate', feature: 'gravity-preloaded 3D MDOF nonlinear time history with model mass, Rayleigh damping, multi-component ground motion, full Newton Newmark integration, substep rollback, streaming history, and restart' },
       { id: 'P8-M9', status: 'candidate', feature: 'canonical Phase 7 feature integration, support spring and settlement assembly, unified node/member/story/origin recovery, stale propagation, and design-transfer guard' },
       { id: 'P8-M10', status: 'candidate', feature: 'shared production workflow, Worker job lifecycle, Pushover/NLTH result popup, calculation report, raw history export, and Agent/MCP parity' },
+      { id: 'P8-M11', status: 'candidate', feature: 'independent references, measured performance harness, five reproducible pilot packages, and fail-closed release manifest; external comparisons and end-to-end M-tier qualification remain blocked' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },
@@ -1039,7 +1054,7 @@ export function buildAgentManifest(options = {}) {
       'P8-M6.1 PMM preprocessing uses a bounded memory cache and content-addressed IndexedDB records; persistent cache GC/TTL and the general analysis job scheduler remain later milestones.',
       'Report output is a calculation aid and not a certified final structural calculation package.',
       'Unsupported design checks must be reviewed separately.',
-      'Production nonlinear Pushover/NLTH uses Worker and sparse backend contracts; representative-building scale and performance qualification remains P8-M11.',
+      'P8-M11 records real sparse-kernel and history-streaming measurements, but production nonlinear Pushover/NLTH remains candidate until external comparison and end-to-end M-tier frame measurements pass.',
       'P8-M3 finite rotations use total global rotation vectors and a principal relative-rotation log; relative rotations approaching pi fail closed.',
       'Follower loads, unilateral truss active sets, and transverse truss member loads are not implemented in P8-M3 and fail closed.',
       'P8-M9 blocks tension-only and compression-only nonlinear members until an active-set solver is implemented, and blocks member releases in NLTH.',

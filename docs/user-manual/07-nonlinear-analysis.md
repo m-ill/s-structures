@@ -9,8 +9,8 @@ scalar SDOF Newmark tools remain available only as `legacy-preliminary` paths.
 
 Production-path results are currently qualified as `candidate` and carry
 `designBlocked: true`. They can be reviewed and exported, but must not be sent
-to final design transfer until the P8-M11 independent numerical qualification
-and project-pilot gates pass.
+to final design transfer until the remaining P8-M11 external numerical,
+approved-scale performance, and project-pilot approval gates pass.
 
 ## Seven-Stage Workflow
 
@@ -71,7 +71,8 @@ When using `SStructuresAgent.execute`, the validation action is named
 
 ## Current Limits
 
-- P8-M11 independent reference solutions, external-program comparisons, representative-scale performance qualification, and project pilot are not complete.
+- P8-M11 independent reference code, production WASM measurement, and five input-to-report pilot runs are complete. External-program comparisons, pilot owner approvals, M-tier end-to-end Pushover/NLTH, and browser latency qualification remain blocked.
+- Unilateral tension/compression-only members are explicitly unsupported in the production nonlinear active-set path and fail closed.
 - Production Pushover pause restarts from its deterministic initial state; NLTH can resume only from a valid committed checkpoint.
 - The GPU backend is an explicit future backend option. No GPU kernel is currently qualified, and the runtime does not silently fall back to another numerical path.
 - Finite two-axis release behavior is restricted to its documented static qualification scope.

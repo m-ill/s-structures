@@ -1,4 +1,4 @@
-export const VERIFICATION_REGISTRY_VERSION = 'p8-m10-verification-registry-v11';
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m11-verification-registry-v12';
 export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
 export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
 
@@ -199,6 +199,18 @@ export const PHASE8_VERIFICATION_SUITES = Object.freeze([
       'NL-API-01', 'NL-API-02', 'NL-API-03', 'NL-API-04',
       'NL-API-05', 'NL-API-06', 'NL-API-07', 'NL-API-08',
       'NL-API-09', 'NL-API-10',
+    ]),
+  }),
+  Object.freeze({
+    id: 'P8-M11-QUALIFICATION-RELEASE',
+    milestone: 'P8-M11',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-PERF-01', 'NL-PERF-02', 'NL-PERF-03', 'NL-PERF-04',
+      'NL-PERF-05', 'NL-PERF-06', 'NL-PERF-07', 'NL-PERF-08',
+      'NL-PERF-09', 'NL-PERF-10', 'NL-PERF-11', 'NL-PERF-12',
+      'NL-PERF-13', 'NL-PERF-14', 'NL-PERF-15', 'NL-PERF-16',
+      'NL-PILOT-01', 'NL-PILOT-02', 'NL-PILOT-03', 'NL-PILOT-04', 'NL-PILOT-05',
     ]),
   }),
 ]);

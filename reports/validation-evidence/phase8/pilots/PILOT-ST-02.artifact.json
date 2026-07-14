@@ -1,0 +1,201 @@
+{
+  "version": "p8-m11-pilot-artifact-v1",
+  "pilotId": "PILOT-ST-02",
+  "verificationId": "NL-PILOT-02",
+  "packageVersion": "p8-m11-pilot-package-v1",
+  "packageHash": "39f8e88e8ebaca44094fcd16",
+  "inputHash": "fd6bb21b3273cf8182218670",
+  "generatedAt": "2026-07-14T23:30:00+09:00",
+  "sourceRevision": "76323c8+P8-M11-worktree",
+  "execution": {
+    "status": "completed",
+    "engineId": "p8-production-mdof-pushover",
+    "terminationReason": "TARGET_REACHED",
+    "resultHash": "5141450f3c49f63b58d18b5d",
+    "runRecordId": "PILOT:PILOT-ST-02:c11ccb1f5033c059",
+    "checkpointHash": "6039c0e5982659e60d79299347a162bacf56a0a8d8cf200db7638dce475868d2",
+    "fallbackUsed": false,
+    "designBlocked": true,
+    "resultChannels": {
+      "resultHash": true,
+      "runRecordId": true,
+      "capacityCurve": true,
+      "hingeEvents": true,
+      "checkpointHash": false,
+      "storyResponse": true,
+      "memberResults": true,
+      "domainIdentityHash": true,
+      "fiberPmmHash": false,
+      "historyManifestHash": false,
+      "energyAudit": false,
+      "reason": true,
+      "designBlocked": true,
+      "capabilityHash": false
+    },
+    "summary": {
+      "durationMs": 50619.8159,
+      "resultCount": 2,
+      "terminationReasons": [
+        "TARGET_REACHED",
+        "TARGET_REACHED"
+      ],
+      "cases": [
+        {
+          "ok": true,
+          "status": "ok",
+          "reason": null,
+          "terminationReason": "TARGET_REACHED",
+          "resultHash": "1392b2466a04a1fc09e0601c",
+          "runRecordId": "PILOT-ST-02-PUSH-X:1392b2466a04a1fc09e0601c",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "fallbackUsed": false,
+          "summary": {
+            "stepCount": 9,
+            "rejectedStepCount": 0,
+            "maxBaseShear": 563947.5298945574,
+            "maxControlDisplacement": 0.02,
+            "maxRoofDisplacement": 0.02,
+            "peakStep": 8,
+            "firstYieldStep": null,
+            "mechanismStep": null,
+            "plasticMemberCount": 0,
+            "yieldedMemberCount": 0,
+            "ultimateMemberCount": 0,
+            "terminationReason": "TARGET_REACHED",
+            "fiberPmmMemberCount": 0,
+            "fiberPmmCoupledAssignmentCount": 0,
+            "distributedFiberMemberCount": 0,
+            "fiberPmmSkippedMemberCount": 0
+          },
+          "convergence": null,
+          "checkpointHash": null,
+          "historyManifestHash": null,
+          "energyAudit": null,
+          "resultChannels": {
+            "resultHash": true,
+            "runRecordId": true,
+            "capacityCurve": true,
+            "hingeEvents": true,
+            "checkpointHash": false,
+            "storyResponse": true,
+            "memberResults": true,
+            "domainIdentityHash": true,
+            "fiberPmmHash": false,
+            "historyManifestHash": false,
+            "energyAudit": false,
+            "reason": true,
+            "designBlocked": true,
+            "capabilityHash": false
+          }
+        },
+        {
+          "ok": true,
+          "status": "ok",
+          "reason": null,
+          "terminationReason": "TARGET_REACHED",
+          "resultHash": "036ce50cff8371ea6460baaf",
+          "runRecordId": "PILOT-ST-02-PUSH-Y:036ce50cff8371ea6460baaf",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "fallbackUsed": false,
+          "summary": {
+            "stepCount": 9,
+            "rejectedStepCount": 0,
+            "maxBaseShear": 448967.85504032753,
+            "maxControlDisplacement": 0.02,
+            "maxRoofDisplacement": 0.02,
+            "peakStep": 8,
+            "firstYieldStep": null,
+            "mechanismStep": null,
+            "plasticMemberCount": 0,
+            "yieldedMemberCount": 0,
+            "ultimateMemberCount": 0,
+            "terminationReason": "TARGET_REACHED",
+            "fiberPmmMemberCount": 0,
+            "fiberPmmCoupledAssignmentCount": 0,
+            "distributedFiberMemberCount": 0,
+            "fiberPmmSkippedMemberCount": 0
+          },
+          "convergence": null,
+          "checkpointHash": null,
+          "historyManifestHash": null,
+          "energyAudit": null,
+          "resultChannels": {
+            "resultHash": true,
+            "runRecordId": true,
+            "capacityCurve": true,
+            "hingeEvents": true,
+            "checkpointHash": false,
+            "storyResponse": true,
+            "memberResults": true,
+            "domainIdentityHash": true,
+            "fiberPmmHash": false,
+            "historyManifestHash": false,
+            "energyAudit": false,
+            "reason": true,
+            "designBlocked": true,
+            "capabilityHash": false
+          }
+        }
+      ]
+    },
+    "outputManifest": {
+      "resultHashes": [
+        "1392b2466a04a1fc09e0601c",
+        "036ce50cff8371ea6460baaf"
+      ],
+      "runRecordIds": [
+        "PILOT-ST-02-PUSH-X:1392b2466a04a1fc09e0601c",
+        "PILOT-ST-02-PUSH-Y:036ce50cff8371ea6460baaf"
+      ]
+    },
+    "requiredResultFields": [
+      "resultHash",
+      "runRecordId",
+      "storyResponse",
+      "memberResults",
+      "domainIdentityHash"
+    ]
+  },
+  "report": {
+    "path": "docs/verification/phase8/pilots/PILOT-ST-02.md",
+    "reportHash": "7009e4eb3603bba40916b6a6",
+    "resultHash": "5141450f3c49f63b58d18b5d",
+    "format": "json+markdown"
+  },
+  "externalComparison": {
+    "status": "MISSING",
+    "solver": null,
+    "solverVersion": null,
+    "sourceHash": null,
+    "channels": [],
+    "tolerance": null,
+    "comparisons": [],
+    "comparisonAudit": {
+      "ok": false,
+      "unexpectedChannels": [],
+      "duplicateChannels": [],
+      "comparisonAuditHash": "98a9382eba9bbfaa9ca0795e"
+    },
+    "conventionAudit": null
+  },
+  "ownerReview": {
+    "status": "PENDING",
+    "reviewerId": null,
+    "reviewedAt": null,
+    "note": null
+  },
+  "reproducibility": {
+    "status": "PASS",
+    "command": "npm run qualify:p8:m11 -- --pilot=PILOT-ST-02",
+    "requiredInputHash": "fd6bb21b3273cf8182218670",
+    "requiredPackageHash": "39f8e88e8ebaca44094fcd16"
+  },
+  "qualification": {
+    "status": "candidate",
+    "designBlocked": true,
+    "reason": "INDEPENDENT_EXTERNAL_COMPARISON_REQUIRED"
+  },
+  "artifactHash": "d8ed1e5ca3d9eb9f4ff028b0"
+}

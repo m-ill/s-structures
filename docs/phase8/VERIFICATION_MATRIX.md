@@ -367,6 +367,8 @@ P8-M10 통과 증거는 `reports/validation-evidence/phase8/p8-m10-ui-api.json`�
 | NL-PILOT-04 | RC moment frame | PMM/fiber Pushover와 detailing input 검토 통과 | L5 |
 | NL-PILOT-05 | 3D frame NLTH | record부터 energy/report까지 독립검토 통과 | L5 |
 
+M11 현재 증거는 `reports/validation-evidence/phase8/p8-m11-qualification-release.json`과 `docs/verification/phase8/release-manifest.json`에 고정한다. `NL-PERF-01/03~06/08~11/14~16`은 실제 기준 프로파일에서 PASS다. `NL-PERF-02/07/12/13`은 M-tier end-to-end 및 browser latency 부재로 BLOCKED다. 파일럿 5종의 입력-보고 재현 artifact는 PASS지만 L5 독립비교와 소유자 승인이 없어 `NL-PILOT-01~05`는 BLOCKED다.
+
 ## 17. Release gate
 
 기능별 release는 다음 조건을 모두 만족해야 한다.

@@ -1,0 +1,419 @@
+{
+  "version": "p8-m11-pilot-package-v1",
+  "id": "PILOT-DYN-01",
+  "verificationId": "NL-PILOT-05",
+  "title": "Gravity-preloaded 3D frame MDOF NLTH",
+  "materialSystem": "steel",
+  "model": {
+    "schemaVersion": 5,
+    "nodes": [
+      {
+        "id": "DB",
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "DT",
+        "x": 0,
+        "y": 0,
+        "z": 3,
+        "mass": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "members": [
+      {
+        "id": "DC",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "DB",
+        "n2": "DT",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        },
+        "nonlinear": {
+          "formulation": "concentrated-plasticity",
+          "hinges": [
+            {
+              "id": "DC:i:z",
+              "memberId": "DC",
+              "end": "i",
+              "axis": "z",
+              "propertyId": "HP-DYN-COL",
+              "source": {
+                "mode": "user"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "materials": [
+      {
+        "id": "MAT-ST",
+        "version": 1,
+        "kind": "steel",
+        "E": 200000000,
+        "G": 77000000,
+        "Fy": 275000,
+        "density": 0
+      }
+    ],
+    "sections": [
+      {
+        "id": "COL",
+        "version": 1,
+        "shape": "H",
+        "A": 0.035,
+        "Iy": 0.00028,
+        "Iz": 0.00052,
+        "J": 0.00006,
+        "Zy": 0.0024,
+        "Zz": 0.0034
+      },
+      {
+        "id": "BEAM",
+        "version": 1,
+        "shape": "H",
+        "A": 0.028,
+        "Iy": 0.0002,
+        "Iz": 0.00045,
+        "J": 0.00005,
+        "Zy": 0.002,
+        "Zz": 0.003
+      },
+      {
+        "id": "BRACE",
+        "version": 1,
+        "shape": "PIPE",
+        "A": 0.009,
+        "Iy": 0.00004,
+        "Iz": 0.00004,
+        "J": 0.00008
+      }
+    ],
+    "loads": [
+      {
+        "id": "G-1",
+        "type": "nodal",
+        "node": "DT",
+        "P": 5,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      }
+    ],
+    "loadCases": [
+      {
+        "id": "D",
+        "name": "Dead",
+        "type": "dead"
+      }
+    ],
+    "loadCombinations": [
+      {
+        "id": "GRAV",
+        "name": "Gravity preload",
+        "type": "service",
+        "purpose": "gravity-preload",
+        "factors": {
+          "D": 1
+        }
+      }
+    ],
+    "massSources": [
+      {
+        "id": "MS",
+        "version": 1,
+        "includeNodeMass": true,
+        "includeMemberMass": false,
+        "components": [
+          {
+            "caseId": "D",
+            "factor": 1
+          }
+        ],
+        "combos": []
+      }
+    ],
+    "diaphragms": [],
+    "hingeProperties": [
+      {
+        "id": "HP-DYN-COL",
+        "modelId": "concentrated-rotational-hinge-v1",
+        "parameters": {
+          "backbone": {
+            "version": "p8-m4-hinge-backbone-v1",
+            "positive": [
+              {
+                "id": "A",
+                "rotation": 0,
+                "moment": 0,
+                "state": "elastic",
+                "acceptance": null
+              },
+              {
+                "id": "B",
+                "rotation": 0.001,
+                "moment": 55,
+                "state": "yielded",
+                "acceptance": null
+              },
+              {
+                "id": "C",
+                "rotation": 0.015,
+                "moment": 60.50000000000001,
+                "state": "capping",
+                "acceptance": null
+              },
+              {
+                "id": "D",
+                "rotation": 0.04,
+                "moment": 11,
+                "state": "residual",
+                "acceptance": null
+              },
+              {
+                "id": "E",
+                "rotation": 0.08,
+                "moment": 11,
+                "state": "failure",
+                "acceptance": null
+              }
+            ],
+            "negative": [
+              {
+                "id": "A",
+                "rotation": 0,
+                "moment": 0,
+                "state": "elastic",
+                "acceptance": null
+              },
+              {
+                "id": "B",
+                "rotation": 0.001,
+                "moment": 55,
+                "state": "yielded",
+                "acceptance": null
+              },
+              {
+                "id": "C",
+                "rotation": 0.015,
+                "moment": 60.50000000000001,
+                "state": "capping",
+                "acceptance": null
+              },
+              {
+                "id": "D",
+                "rotation": 0.04,
+                "moment": 11,
+                "state": "residual",
+                "acceptance": null
+              },
+              {
+                "id": "E",
+                "rotation": 0.08,
+                "moment": 11,
+                "state": "failure",
+                "acceptance": null
+              }
+            ],
+            "rotationDefinition": "joint-relative-to-member-face-local-axis",
+            "units": {
+              "rotation": "rad",
+              "moment": "kN-m"
+            },
+            "contentHash": "90695c6c19b8057cda651182"
+          },
+          "hysteresis": {
+            "rule": "kinematic-masing"
+          },
+          "degradation": {
+            "strength": {
+              "perCycle": 0,
+              "perEnergy": 0,
+              "minimumFactor": 0.05
+            },
+            "stiffness": {
+              "perCycle": 0,
+              "perEnergy": 0,
+              "minimumFactor": 0.05
+            },
+            "referenceEnergy": 1
+          },
+          "regularization": {
+            "strategy": "diagnostic-only",
+            "minimumRatio": 1e-8,
+            "minimumAbsolute": 0
+          },
+          "integration": {
+            "maxSubsteps": 4096,
+            "rotationTolerance": 1e-12,
+            "maxRotationIncrement": 0.0001
+          },
+          "hingeLength": 0.2,
+          "rotationDefinition": "joint-relative-to-member-face-local-axis",
+          "acceptance": [],
+          "pmm": null
+        },
+        "units": {
+          "rotation": "rad",
+          "moment": "kN-m",
+          "length": "m",
+          "energy": "kN-m-rad"
+        },
+        "qualification": "candidate",
+        "source": {
+          "type": "closed-form-test",
+          "reference": "Phase 8 M11 HP-DYN-COL fixture",
+          "edition": null,
+          "clause": null,
+          "assumption": null,
+          "materialSnapshot": null,
+          "sectionSnapshot": null,
+          "reinforcementSnapshot": null,
+          "generatedAt": null,
+          "generatedBy": null,
+          "derivedFromPropertyId": null,
+          "pmmSourceId": null,
+          "axialRatio": null
+        },
+        "calibration": {
+          "status": "not-calibrated",
+          "referenceId": null,
+          "reviewedBy": null,
+          "reviewedAt": null,
+          "notes": null
+        },
+        "contentHash": "08fe76e35ff21aa26ae5e296"
+      }
+    ],
+    "nonlinearMaterials": [],
+    "nonlinearSections": [],
+    "linkProperties": [],
+    "timeHistoryFunctions": [],
+    "analysisStates": [],
+    "analysisCases": [],
+    "analysisSettings": {
+      "includeSelfWeight": false
+    }
+  },
+  "analysisCases": [
+    {
+      "id": "PILOT-DYN-01-NLTH",
+      "kind": "nonlinearTimeHistory",
+      "engineId": "p8-production-mdof-nlth",
+      "inputRefs": {
+        "gravityCombinationId": "GRAV",
+        "massSourceId": "MS"
+      },
+      "initialState": {
+        "policy": "zero"
+      },
+      "settings": {
+        "gravityCombinationId": "GRAV",
+        "massSourceId": "MS",
+        "groundMotionRecords": [
+          {
+            "id": "GM-X",
+            "values": [
+              0,
+              0.5,
+              -0.35,
+              0.2,
+              0
+            ],
+            "dt": 0.02,
+            "unit": "m/s2",
+            "direction": "x",
+            "baseline": "none"
+          }
+        ],
+        "damping": {
+          "type": "rayleigh",
+          "coefficients": {
+            "alpha": 0.05,
+            "beta": 0.0001
+          },
+          "stiffnessPolicy": "initial"
+        },
+        "newmark": {
+          "outputDt": 0.02,
+          "initialDt": 0.02,
+          "minDt": 0.0003125,
+          "checkpointInterval": 2,
+          "maxIterations": 40
+        },
+        "output": {
+          "history": {
+            "chunkSize": 2,
+            "retainChunks": true,
+            "memoryBudgetBytes": 2097152
+          }
+        },
+        "fiberPmm": false
+      },
+      "solver": {
+        "execution": "worker-wasm-sparse",
+        "maxIterations": 40
+      }
+    }
+  ],
+  "workflow": [
+    "gravity-preload",
+    "mass-and-damping",
+    "ground-motion-input",
+    "mdof-newmark",
+    "history-energy-peak-report"
+  ],
+  "expected": {
+    "executionStatus": "completed",
+    "acceptedTermination": [
+      "DYNAMIC_TIME_RANGE_COMPLETED"
+    ]
+  },
+  "requiredResultFields": [
+    "resultHash",
+    "runRecordId",
+    "historyManifestHash",
+    "energyAudit",
+    "checkpointHash"
+  ],
+  "comparison": {
+    "required": true,
+    "minimumLevel": "L5",
+    "channels": [
+      "nodeDisplacement",
+      "baseReaction",
+      "energy",
+      "peakTime"
+    ]
+  },
+  "reproducibility": {
+    "runner": "tools/run-p8-m11-qualification.mjs",
+    "fallbackPolicy": "forbidden",
+    "reportRequired": true,
+    "rawResultRequired": true
+  },
+  "inputHash": "65a3bf95023350c023755f14",
+  "packageHash": "a4ba0175ec6e051bcf0822b2"
+}

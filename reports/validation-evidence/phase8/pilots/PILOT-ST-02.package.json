@@ -1,0 +1,672 @@
+{
+  "version": "p8-m11-pilot-package-v1",
+  "id": "PILOT-ST-02",
+  "verificationId": "NL-PILOT-02",
+  "title": "3D steel moment frame",
+  "materialSystem": "steel",
+  "model": {
+    "schemaVersion": 5,
+    "nodes": [
+      {
+        "id": "N111",
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "N211",
+        "x": 6,
+        "y": 0,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "N121",
+        "x": 0,
+        "y": 5,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "N221",
+        "x": 6,
+        "y": 5,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "N112",
+        "x": 0,
+        "y": 0,
+        "z": 3.3
+      },
+      {
+        "id": "N212",
+        "x": 6,
+        "y": 0,
+        "z": 3.3
+      },
+      {
+        "id": "N122",
+        "x": 0,
+        "y": 5,
+        "z": 3.3
+      },
+      {
+        "id": "N222",
+        "x": 6,
+        "y": 5,
+        "z": 3.3
+      },
+      {
+        "id": "N113",
+        "x": 0,
+        "y": 0,
+        "z": 6.6
+      },
+      {
+        "id": "N213",
+        "x": 6,
+        "y": 0,
+        "z": 6.6
+      },
+      {
+        "id": "N123",
+        "x": 0,
+        "y": 5,
+        "z": 6.6
+      },
+      {
+        "id": "N223",
+        "x": 6,
+        "y": 5,
+        "z": 6.6
+      }
+    ],
+    "members": [
+      {
+        "id": "C-0-0-0",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N111",
+        "n2": "N112",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "C-1-0-0",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N211",
+        "n2": "N212",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "C-0-1-0",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N121",
+        "n2": "N122",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "C-1-1-0",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N221",
+        "n2": "N222",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "C-0-0-1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N112",
+        "n2": "N113",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "C-1-0-1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N212",
+        "n2": "N213",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "C-0-1-1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N122",
+        "n2": "N123",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "C-1-1-1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N222",
+        "n2": "N223",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "BX-0-1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N112",
+        "n2": "N212",
+        "matId": "MAT-ST",
+        "secId": "BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "BX-1-1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N122",
+        "n2": "N222",
+        "matId": "MAT-ST",
+        "secId": "BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "BY-0-1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N112",
+        "n2": "N122",
+        "matId": "MAT-ST",
+        "secId": "BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "BY-1-1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N212",
+        "n2": "N222",
+        "matId": "MAT-ST",
+        "secId": "BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "BX-0-2",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N113",
+        "n2": "N213",
+        "matId": "MAT-ST",
+        "secId": "BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "BX-1-2",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N123",
+        "n2": "N223",
+        "matId": "MAT-ST",
+        "secId": "BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "BY-0-2",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N113",
+        "n2": "N123",
+        "matId": "MAT-ST",
+        "secId": "BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      },
+      {
+        "id": "BY-1-2",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "N213",
+        "n2": "N223",
+        "matId": "MAT-ST",
+        "secId": "BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      }
+    ],
+    "materials": [
+      {
+        "id": "MAT-ST",
+        "version": 1,
+        "kind": "steel",
+        "E": 200000000,
+        "G": 77000000,
+        "Fy": 275000,
+        "density": 0
+      }
+    ],
+    "sections": [
+      {
+        "id": "COL",
+        "version": 1,
+        "shape": "H",
+        "A": 0.035,
+        "Iy": 0.00028,
+        "Iz": 0.00052,
+        "J": 0.00006,
+        "Zy": 0.0024,
+        "Zz": 0.0034
+      },
+      {
+        "id": "BEAM",
+        "version": 1,
+        "shape": "H",
+        "A": 0.028,
+        "Iy": 0.0002,
+        "Iz": 0.00045,
+        "J": 0.00005,
+        "Zy": 0.002,
+        "Zz": 0.003
+      },
+      {
+        "id": "BRACE",
+        "version": 1,
+        "shape": "PIPE",
+        "A": 0.009,
+        "Iy": 0.00004,
+        "Iz": 0.00004,
+        "J": 0.00008
+      }
+    ],
+    "loads": [
+      {
+        "id": "G-0-0-1",
+        "type": "nodal",
+        "node": "N112",
+        "P": 8,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      },
+      {
+        "id": "G-1-0-1",
+        "type": "nodal",
+        "node": "N212",
+        "P": 8,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      },
+      {
+        "id": "G-0-1-1",
+        "type": "nodal",
+        "node": "N122",
+        "P": 8,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      },
+      {
+        "id": "G-1-1-1",
+        "type": "nodal",
+        "node": "N222",
+        "P": 8,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      },
+      {
+        "id": "G-0-0-2",
+        "type": "nodal",
+        "node": "N113",
+        "P": 8,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      },
+      {
+        "id": "G-1-0-2",
+        "type": "nodal",
+        "node": "N213",
+        "P": 8,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      },
+      {
+        "id": "G-0-1-2",
+        "type": "nodal",
+        "node": "N123",
+        "P": 8,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      },
+      {
+        "id": "G-1-1-2",
+        "type": "nodal",
+        "node": "N223",
+        "P": 8,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      }
+    ],
+    "loadCases": [
+      {
+        "id": "D",
+        "name": "Dead",
+        "type": "dead"
+      }
+    ],
+    "loadCombinations": [
+      {
+        "id": "GRAV",
+        "name": "Gravity preload",
+        "type": "service",
+        "purpose": "gravity-preload",
+        "factors": {
+          "D": 1
+        }
+      }
+    ],
+    "massSources": [],
+    "diaphragms": [
+      {
+        "id": "DIA-1",
+        "type": "rigid",
+        "nodeIds": [
+          "N112",
+          "N212",
+          "N122",
+          "N222"
+        ]
+      },
+      {
+        "id": "DIA-2",
+        "type": "rigid",
+        "nodeIds": [
+          "N113",
+          "N213",
+          "N123",
+          "N223"
+        ]
+      }
+    ],
+    "hingeProperties": [],
+    "nonlinearMaterials": [],
+    "nonlinearSections": [],
+    "linkProperties": [],
+    "timeHistoryFunctions": [],
+    "analysisStates": [],
+    "analysisCases": [],
+    "analysisSettings": {
+      "includeSelfWeight": false
+    }
+  },
+  "analysisCases": [
+    {
+      "id": "PILOT-ST-02-PUSH-X",
+      "kind": "pushover",
+      "engineId": "p8-production-mdof-pushover",
+      "inputRefs": {
+        "gravityCombinationId": "GRAV"
+      },
+      "initialState": {
+        "policy": "zero"
+      },
+      "control": {
+        "type": "displacement",
+        "nodeId": "N223",
+        "direction": "+x",
+        "targetDisplacement": 0.02
+      },
+      "settings": {
+        "gravityCombinationId": "GRAV",
+        "controlNodeId": "N223",
+        "direction": "+x",
+        "targetDisplacement": 0.02,
+        "pattern": "triangular",
+        "referenceBaseShear": 20,
+        "steps": 8
+      },
+      "solver": {
+        "execution": "worker-wasm-sparse",
+        "maxIterations": 30
+      }
+    },
+    {
+      "id": "PILOT-ST-02-PUSH-Y",
+      "kind": "pushover",
+      "engineId": "p8-production-mdof-pushover",
+      "inputRefs": {
+        "gravityCombinationId": "GRAV"
+      },
+      "initialState": {
+        "policy": "zero"
+      },
+      "control": {
+        "type": "displacement",
+        "nodeId": "N223",
+        "direction": "+y",
+        "targetDisplacement": 0.02
+      },
+      "settings": {
+        "gravityCombinationId": "GRAV",
+        "controlNodeId": "N223",
+        "direction": "+y",
+        "targetDisplacement": 0.02,
+        "pattern": "triangular",
+        "referenceBaseShear": 20,
+        "steps": 8
+      },
+      "solver": {
+        "execution": "worker-wasm-sparse",
+        "maxIterations": 30
+      }
+    }
+  ],
+  "workflow": [
+    "gravity-preload",
+    "rigid-diaphragm",
+    "bidirectional-pushover",
+    "story-member-origin-recovery",
+    "calculation-report"
+  ],
+  "expected": {
+    "executionStatus": "completed",
+    "acceptedTermination": [
+      "TARGET_REACHED",
+      "MECHANISM_DETECTED"
+    ]
+  },
+  "requiredResultFields": [
+    "resultHash",
+    "runRecordId",
+    "storyResponse",
+    "memberResults",
+    "domainIdentityHash"
+  ],
+  "comparison": {
+    "required": true,
+    "minimumLevel": "L5",
+    "channels": [
+      "roofDisplacement",
+      "baseShear",
+      "storyDrift",
+      "memberEndForce"
+    ]
+  },
+  "reproducibility": {
+    "runner": "tools/run-p8-m11-qualification.mjs",
+    "fallbackPolicy": "forbidden",
+    "reportRequired": true,
+    "rawResultRequired": true
+  },
+  "inputHash": "fd6bb21b3273cf8182218670",
+  "packageHash": "39f8e88e8ebaca44094fcd16"
+}

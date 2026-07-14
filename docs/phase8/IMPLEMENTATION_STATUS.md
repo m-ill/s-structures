@@ -2,19 +2,19 @@
 
 ```yaml
 reviewed_at: 2026-07-14
-phase_status: active
-implementation_status: p8-m10-complete
-release_status: unavailable
-production_equivalence: Q1-static-and-dynamic-component-candidate
-completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1, P8-M7, P8-M8, P8-M9, P8-M10]
-active_milestone: P8-M11
+phase_status: implementation-complete
+implementation_status: p8-m11-complete
+release_status: candidate-design-blocked
+production_equivalence: Q0
+completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1, P8-M7, P8-M8, P8-M9, P8-M10, P8-M11]
+active_milestone: none
 ```
 
 ## 현재 판정
 
-P8-M0~P8-M10은 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상태기반 3D 요소를 실제 모델 질량·감쇠·지진파와 결합해 MDOF Newmark full-Newton NLTH production 후보 경로에 연결했다. M9는 Phase 7 모델 기능을 같은 canonical domain에 결속하고 지점 스프링·침하, 통합 node/member/story 결과, generated-origin, stale 판정, run record와 설계전달 guard를 production Pushover/NLTH에 연결했다. M10은 이 경로를 7단계 실무 workflow, Worker job 제어, Pushover/NLTH 결과 popup, 계산서와 동일한 Agent/MCP 계약으로 연결했다. 지원하지 않는 조합은 stable reason code로 실행 전에 차단한다.
+P8-M0~P8-M11의 로컬 구현 작업은 완료되었다. M11은 생산 WASM 경로의 기준 성능 계측, 독립 Worker 결정성, 취소·재시작·streaming, 5개 대표 파일럿의 입력-실행-보고 재현, 채널별 외부 수치비교 계약과 fail-closed release manifest를 구현했다. 지원하지 않는 unilateral brace는 근사하지 않고 차단된다.
 
-현재 제품 등급은 여전히 Q0다. `commercial-grade within supported scope` 판정은 [PRODUCTION_REQUIREMENTS.md](PRODUCTION_REQUIREMENTS.md)의 Q1~Q5를 모두 통과한 기능 범위에만 부여한다.
+현재 제품 등급은 여전히 Q0이며 release manifest는 `candidate`, `designTransferAllowed:false`다. 외부 독립 solver 비교 2건, 5개 pilot의 독립검토·소유자 승인, 승인 M-tier Pushover/NLTH 전체해석, 브라우저 입력지연 증거가 없으므로 `verified`를 부여하지 않는다.
 
 | 영역 | 현재 상태 | 제품 판정 |
 | --- | --- | --- |
@@ -30,7 +30,7 @@ P8-M0~P8-M10은 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상
 | committed/trial/line-search branch | atomic commit·rollback·cutback 구현 | P8-M1 완료 |
 | checkpoint/restart·element state serializer | 무결성 hash와 deterministic event 구현 | P8-M1 완료 |
 | source/evidence registry | governance 계약 구현 | 수치 qualification과 분리 |
-| reference profile/workload/budget | versioned artifact 고정 | 실제 production backend 측정은 후속 마일스톤 |
+| reference profile/workload/budget | versioned artifact와 실제 WASM kernel 측정 고정 | M-tier 전체 frame 해석과 브라우저 latency는 차단 상태 |
 | 전역 MDOF 비선형 평형 | 반복별 `Pint`·`Kt` 조립, Newton/line search/load control 구현 | P8-M2 수치코어 완료 |
 | 3D corotational frame/truss | 구현 | P8-M3 static candidate, principal rotation chart |
 | 집중소성 단부 힌지 | 구현 | P8-M4 static candidate, i/j·local y/z, committed/trial history |
@@ -42,7 +42,8 @@ P8-M0~P8-M10은 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상
 | 3D frame MDOF NLTH | 구현 | P8-M8 `candidate`, 설계전달 차단, 독립 상용 비교는 P8-M11 |
 | 모델 기능 통합·결과 복구 | 구현 | P8-M9 `candidate`, 지원범위 preflight·origin/stale·설계전달 차단 |
 | 실무 UI·보고·Agent/MCP | 구현 | P8-M10 workflow-complete, 동일 settings/engine/qualification, 설계전달 차단 |
-| Worker/WASM sparse runtime | 자체 Rust/WASM, zero import, Worker/preflight/cancel 구현 | P8-M2 기반 완료, 대형모델 성능 미검증 |
+| M11 자격검증·pilot·release gate | 구현 | 재현 artifact 완료, 독립 외부검토 전 `candidate` |
+| Worker/WASM sparse runtime | 자체 Rust/WASM, zero import, Worker/preflight/cancel 구현 | 10,000 DOF kernel·50,000 DOF memory preflight·병렬결정성 측정, M-tier end-to-end 미검증 |
 
 ## M0~M4 완료 증거
 
@@ -174,15 +175,28 @@ M10 증거:
 - ADR: [ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md](adr/ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md)
 - 코드 리뷰: [p8-m10-code-review.md](../../reports/validation-evidence/phase8/p8-m10-code-review.md)
 
+M11 증거:
+
+- 독립 기준코드: [p8-m11-independent-reference.json](../../reports/validation-evidence/phase8/p8-m11-independent-reference.json)
+- 성능 측정: [p8-m11-reference-measurement.json](../../reports/validation-evidence/phase8/performance/p8-m11-reference-measurement.json)
+- 파일럿 요약: [p8-m11-pilot-summary.json](../../reports/validation-evidence/phase8/pilots/p8-m11-pilot-summary.json)
+- qualification evidence: [p8-m11-qualification-release.json](../../reports/validation-evidence/phase8/p8-m11-qualification-release.json)
+- release manifest: [release-manifest.json](../verification/phase8/release-manifest.json)
+- 판정 보고서: [QUALIFICATION_RELEASE.md](../verification/phase8/QUALIFICATION_RELEASE.md)
+- ADR: [ADR-012-QUALIFICATION-RELEASE-GATE.md](adr/ADR-012-QUALIFICATION-RELEASE-GATE.md)
+- 코드 리뷰: [p8-m11-code-review.md](../../reports/validation-evidence/phase8/p8-m11-code-review.md)
+
+파일럿 5종은 production solver에서 요구 결과 채널까지 생성해 재현성 `PASS`를 받았지만 자격등급은 `candidate`다. `NL-PILOT-01~05`는 외부 수치비교와 소유자 승인이 들어오기 전 `BLOCKED`로 유지한다.
+
 ## Production 등급 현황
 
 | 등급 | 상태 | 미충족 핵심 |
 | --- | --- | --- |
-| Q1 Numerically Qualified | in-progress | corotational·집중소성·fiber/PMM·MDOF dynamic component 완료, 외부 benchmark 미완료 |
-| Q2 Model-Integrated | candidate | 지원 범위의 canonical identity·결과 ID·origin/stale 계약 완료; 외부 비교와 pilot 전 설계전달 차단 |
+| Q1 Numerically Qualified | blocked | 독립 기준코드 PASS, 서로 독립인 외부 수치비교 2건 없음 |
+| Q2 Model-Integrated | complete | M9 통합과 5개 pilot 입력-보고 재현 PASS |
 | Q3 Workflow-Complete | complete | M10 UI/API/보고 workflow 통과; 수치 독립검증은 Q1/Q5와 별도 |
-| Q4 Scale-Qualified | in-progress | Worker/WASM 기반 완료, M-tier budget·streaming·pilot 미완료 |
-| Q5 Commercial-Grade in Scope | unavailable | 독립 pilot와 전체 release gate |
+| Q4 Scale-Qualified | blocked | kernel·streaming·cancel·parallel PASS, M-tier end-to-end와 브라우저 latency 없음 |
+| Q5 Commercial-Grade in Scope | blocked | Q1/Q4 및 독립 pilot 승인 미충족 |
 
 ## 마일스톤 현황
 
@@ -200,10 +214,10 @@ M10 증거:
 | P8-M8 MDOF NLTH | complete | NL-DYN-01~16, ADR-008, M8 evidence/code review |
 | P8-M9 모델 기능 통합·결과회복 | complete | NL-INT-01~16, NL-MEI-01~20, ADR-009, M9 evidence/code review |
 | P8-M10 UI·보고·Agent 계약 | complete | NL-UI-01~14, NL-API-01~10, ADR-011, M10 evidence/code review |
-| P8-M11 독립검증·성능·pilot | planned | 없음 |
+| P8-M11 독립검증·성능·pilot | implementation complete / acceptance blocked | NL-PERF·NL-PILOT evidence, 5 pilot artifact, ADR-012, release manifest, M11 code review |
 
 상태는 코드, 테스트, 검증 artifact, 코드 리뷰가 모두 끝난 뒤에만 `complete`로 변경한다.
 
-## 다음 작업
+## 남은 릴리스 자격 작업
 
-P8-M11은 독립 기준해·외부 비교, 대표 규모 성능과 메모리, 장시간 취소/재시작, 실제 프로젝트 pilot 및 최종 release manifest를 수행한다. M10 완료는 수치 결과의 `verified` 승격을 의미하지 않는다.
+다음 작업은 새 구현 마일스톤이 아니라 release blocker 해소다. 승인된 외부 solver 또는 공개 수치표로 서로 독립인 비교 2건을 작성하고, 5개 pilot별 채널 오차와 검토자 승인을 기록해야 한다. 또한 `PERF-PUSH-M`, `PERF-NLTH-M` 전체 production frame 실행과 브라우저 main-thread p95 입력지연을 기준 장비에서 측정한 뒤 같은 명령 `npm run qualify:p8:m11`로 manifest를 재생성한다.

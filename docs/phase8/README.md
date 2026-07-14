@@ -2,15 +2,15 @@
 
 ```yaml
 phase: 8
-status: active
-implementation_status: p8-m10-complete
+status: implementation-complete-release-blocked
+implementation_status: p8-m11-complete
 reviewed_at: 2026-07-14
-current_milestone: P8-M11
+current_milestone: none
 mission: Phase 7 모델링·탄성해석과 동일한 analysis domain 위에서 상용 수준의 정적·동적 비선형 3D 건축골조해석을 구현한다.
 governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 ```
 
-> P8-M0~P8-M10은 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 정식 증강 변위제어 Pushover, fiber PMM/분포소성, PMM 전처리 Worker/cache, Crisfield arc-length·cyclic static과 실제 3D MDOF NLTH가 구현됐다. M9는 Phase 7 모델 기능 통합과 stale·설계전달 guard를, M10은 공통 product service, 7단계 UI, 결과 popup, 계산서와 Agent/MCP 계약을 production Pushover/NLTH에 연결했다. 기존 stepwise Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
+> P8-M0~P8-M11의 구현은 완료되었다. M11은 실제 WASM 계측, 병렬 결정성, 5개 production pilot, 수치비교 계약과 release manifest를 추가했다. 다만 외부 독립비교, pilot 승인, M-tier 전체해석과 브라우저 latency가 없어 현재 릴리스는 `candidate`, 설계전달은 차단된다. 실제 판정은 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)와 [release manifest](../verification/phase8/release-manifest.json)를 기준으로 한다.
 
 ## 1. 결론
 
@@ -24,6 +24,8 @@ governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 - production 변위제어와 arc-length는 각각 실제 전역 증강방정식을 풀며 M5 checkpoint에서 byte-equivalent하게 연속된다. M10의 사용자 workflow는 같은 case/settings/engine 계약을 사용한다.
 - legacy NLTH는 모델을 받지 않는 SDOF 이선형 스프링 적분기다. production NLTH는 모델-bound 3D MDOF 경로이며 두 결과 계약은 섞이지 않는다.
 - 기존 비선형 벤치마크 중 일부는 자기참조 또는 미리 만든 경로를 검사하므로 제품 검증 근거가 될 수 없다.
+- M11 파일럿 5종은 입력부터 보고서까지 재현되지만 외부 비교와 소유자 승인이 없으므로 `verified`가 아니다.
+- 외부 비교는 채널별 실제값·기준값·절대/상대 오차를 재계산하며, 이름과 해시만으로는 release gate를 통과할 수 없다.
 
 따라서 Phase 8은 기존 파일을 기능별로 덧붙이는 작업이 아니다. **Phase 7 모델을 canonical analysis domain으로 고정하고 상태, 요소 내력, 일관접선, 전역 잔차, 해 제어, 결과 회복을 하나의 production 실행 커널로 다시 묶는 작업**이다.
 
@@ -109,7 +111,7 @@ Phase 8은 ETABS/MIDAS/OpenSees의 전체 기능 수를 복제하는 계획이 �
 | R8.2 Formal Pushover | P8-M4~M5 | 집중소성, 중력 preload, 변위제어 Pushover | 정적 범위만 `candidate` |
 | R8.3 Advanced Static | P8-M6~M7 | PMM/fiber, post-peak arc-length, cyclic static | 기능별 검증등급 부여 |
 | R8.4 Frame NLTH | P8-M8~M9 | 실제 모델 MDOF NLTH와 통합 결과회복 | M8 component `candidate`, M9 통합·M11 독립검증 전 설계전달 차단 |
-| R8.5 Practice Release | P8-M10~M11 | UI, 보고, agent 계약, 독립검증, pilot | 통과한 범위만 `verified` |
+| R8.5 Practice Release | P8-M10~M11 | UI, 보고, agent 계약, 독립검증, pilot | 구현 완료, 외부 자격증거 전 `candidate` |
 
 ## 6. 상태 용어
 
@@ -136,10 +138,13 @@ Phase 8은 ETABS/MIDAS/OpenSees의 전체 기능 수를 복제하는 계획이 �
 8. [REQUIREMENTS_TRACEABILITY.md](REQUIREMENTS_TRACEABILITY.md) - 요구사항·마일스톤·코드·검증·증거 추적
 9. [REFERENCE_BASIS.md](REFERENCE_BASIS.md) - 공식 기준출처와 benchmark governance
 10. [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) - 실제 진행 상태와 증거 링크
+11. [QUALIFICATION_RELEASE.md](../verification/phase8/QUALIFICATION_RELEASE.md) - M11 실측, pilot, 현재 release blocker
 
 기존 [Phase 3 비선형 계획](../phase3/NONLINEAR_ENGINE_PLAN.md)은 역사적 목표와 preliminary trace의 배경 문서로 남긴다. Phase 8 착수 이후 비선형 구현 순서와 완료 판정은 이 디렉터리의 문서가 우선한다.
 
 ## 8. Phase 8 완료 조건
+
+아래는 제품 release 완료 조건이다. 로컬 구현 마일스톤은 끝났지만 현재 release manifest에서 충족되지 않은 항목은 계속 `BLOCKED`다.
 
 - P8-M0~M11의 필수 검증 ID가 모두 증거 artifact를 가진다.
 - 모델링·선형·Direct P-Delta·모달/RSA·Pushover·NLTH가 canonical domain의 동일 topology/property/constraint를 사용한다.

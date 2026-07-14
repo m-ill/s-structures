@@ -1,8 +1,8 @@
 {
   "schemaVersion": 3,
-  "manualVersion": "2026-07-14-phase8-m10",
+  "manualVersion": "2026-07-14-phase8-m11",
   "product": "S-Structures",
-  "manifestVersion": "p8-m10-agent-capability-manifest-v13",
+  "manifestVersion": "p8-m11-agent-capability-manifest-v14",
   "entrypoint": {
     "recommendedUrl": "http://127.0.0.1:5173/",
     "primaryHtml": "index.html"
@@ -714,6 +714,10 @@
     "phase8NonlinearResultAccess",
     "phase8NonlinearHistoryExport",
     "phase8NonlinearProductReport",
+    "phase8IndependentReference",
+    "phase8PerformanceQualification",
+    "phase8PilotPackage",
+    "phase8ReleaseManifest",
     "phase3DesignFormulaRegistry"
   ],
   "moduleVersions": {
@@ -941,6 +945,10 @@
     "phase8NonlinearResultAccess": "p8-m10-result-access-v1",
     "phase8NonlinearHistoryExport": "p8-m10-history-export-v1",
     "phase8NonlinearProductReport": "p8-m10-product-report-v1",
+    "phase8IndependentReference": "p8-m11-independent-reference-v1",
+    "phase8PerformanceQualification": "p8-m11-performance-qualification-v1",
+    "phase8PilotPackage": "p8-m11-pilot-package-v1",
+    "phase8ReleaseManifest": "p8-m11-release-manifest-v1",
     "phase3DesignFormulaRegistry": "p3-design-formula-registry"
   },
   "limitations": [
@@ -950,7 +958,7 @@
     "P8-M6.1 PMM preprocessing uses a bounded memory cache and content-addressed IndexedDB records; persistent cache GC/TTL and the general analysis job scheduler remain later milestones.",
     "Report output is a calculation aid and not a certified final structural calculation package.",
     "Unsupported design checks must be reviewed separately.",
-    "Production nonlinear Pushover/NLTH uses Worker and sparse backend contracts; representative-building scale and performance qualification remains P8-M11.",
+    "P8-M11 records real sparse-kernel and history-streaming measurements, but production nonlinear Pushover/NLTH remains candidate until external comparison and end-to-end M-tier frame measurements pass.",
     "P8-M3 finite rotations use total global rotation vectors and a principal relative-rotation log; relative rotations approaching pi fail closed.",
     "Follower loads, unilateral truss active sets, and transverse truss member loads are not implemented in P8-M3 and fail closed.",
     "P8-M9 blocks tension-only and compression-only nonlinear members until an active-set solver is implemented, and blocks member releases in NLTH.",

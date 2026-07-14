@@ -1,0 +1,752 @@
+{
+  "version": "p8-m11-pilot-package-v1",
+  "id": "PILOT-RC-01",
+  "verificationId": "NL-PILOT-04",
+  "title": "RC moment frame with fiber-generated PMM hinges",
+  "materialSystem": "reinforced-concrete",
+  "model": {
+    "schemaVersion": 5,
+    "nodes": [
+      {
+        "id": "RB1",
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "RB2",
+        "x": 5,
+        "y": 0,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "RT1",
+        "x": 0,
+        "y": 0,
+        "z": 3.2
+      },
+      {
+        "id": "RT2",
+        "x": 5,
+        "y": 0,
+        "z": 3.2
+      }
+    ],
+    "members": [
+      {
+        "id": "RC1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "RB1",
+        "n2": "RT1",
+        "matId": "RC30",
+        "secId": "RC-COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        },
+        "nonlinear": {
+          "formulation": "concentrated-plasticity",
+          "hinges": [
+            {
+              "id": "RC1:i:z",
+              "memberId": "RC1",
+              "end": "i",
+              "axis": "z",
+              "propertyId": "HP-RC-PILOT",
+              "source": {
+                "mode": "user"
+              }
+            },
+            {
+              "id": "RC1:j:z",
+              "memberId": "RC1",
+              "end": "j",
+              "axis": "z",
+              "propertyId": "HP-RC-PILOT",
+              "source": {
+                "mode": "user"
+              }
+            }
+          ],
+          "reinforcementSnapshot": {
+            "id": "RC-PILOT-BARS",
+            "version": 1,
+            "qualification": "candidate",
+            "units": {
+              "length": "mm",
+              "area": "mm2"
+            },
+            "cover": 40,
+            "bars": [
+              {
+                "id": "B1",
+                "y": -140,
+                "z": -140,
+                "area": 491
+              },
+              {
+                "id": "B2",
+                "y": 140,
+                "z": -140,
+                "area": 491
+              },
+              {
+                "id": "B3",
+                "y": -140,
+                "z": 140,
+                "area": 491
+              },
+              {
+                "id": "B4",
+                "y": 140,
+                "z": 140,
+                "area": 491
+              }
+            ],
+            "material": {
+              "E": 200000,
+              "Fy": 400
+            },
+            "confinement": {
+              "enabled": false
+            }
+          }
+        }
+      },
+      {
+        "id": "RC2",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "RB2",
+        "n2": "RT2",
+        "matId": "RC30",
+        "secId": "RC-COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        },
+        "nonlinear": {
+          "formulation": "concentrated-plasticity",
+          "hinges": [
+            {
+              "id": "RC2:i:z",
+              "memberId": "RC2",
+              "end": "i",
+              "axis": "z",
+              "propertyId": "HP-RC-PILOT",
+              "source": {
+                "mode": "user"
+              }
+            },
+            {
+              "id": "RC2:j:z",
+              "memberId": "RC2",
+              "end": "j",
+              "axis": "z",
+              "propertyId": "HP-RC-PILOT",
+              "source": {
+                "mode": "user"
+              }
+            }
+          ],
+          "reinforcementSnapshot": {
+            "id": "RC-PILOT-BARS",
+            "version": 1,
+            "qualification": "candidate",
+            "units": {
+              "length": "mm",
+              "area": "mm2"
+            },
+            "cover": 40,
+            "bars": [
+              {
+                "id": "B1",
+                "y": -140,
+                "z": -140,
+                "area": 491
+              },
+              {
+                "id": "B2",
+                "y": 140,
+                "z": -140,
+                "area": 491
+              },
+              {
+                "id": "B3",
+                "y": -140,
+                "z": 140,
+                "area": 491
+              },
+              {
+                "id": "B4",
+                "y": 140,
+                "z": 140,
+                "area": 491
+              }
+            ],
+            "material": {
+              "E": 200000,
+              "Fy": 400
+            },
+            "confinement": {
+              "enabled": false
+            }
+          }
+        }
+      },
+      {
+        "id": "RBM",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "RT1",
+        "n2": "RT2",
+        "matId": "RC30",
+        "secId": "RC-BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        },
+        "nonlinear": {
+          "formulation": "concentrated-plasticity",
+          "hinges": [
+            {
+              "id": "RBM:i:z",
+              "memberId": "RBM",
+              "end": "i",
+              "axis": "z",
+              "propertyId": "HP-RC-PILOT",
+              "source": {
+                "mode": "user"
+              }
+            },
+            {
+              "id": "RBM:j:z",
+              "memberId": "RBM",
+              "end": "j",
+              "axis": "z",
+              "propertyId": "HP-RC-PILOT",
+              "source": {
+                "mode": "user"
+              }
+            }
+          ],
+          "reinforcementSnapshot": {
+            "id": "RC-PILOT-BARS",
+            "version": 1,
+            "qualification": "candidate",
+            "units": {
+              "length": "mm",
+              "area": "mm2"
+            },
+            "cover": 40,
+            "bars": [
+              {
+                "id": "B1",
+                "y": -140,
+                "z": -140,
+                "area": 491
+              },
+              {
+                "id": "B2",
+                "y": 140,
+                "z": -140,
+                "area": 491
+              },
+              {
+                "id": "B3",
+                "y": -140,
+                "z": 140,
+                "area": 491
+              },
+              {
+                "id": "B4",
+                "y": 140,
+                "z": 140,
+                "area": 491
+              }
+            ],
+            "material": {
+              "E": 200000,
+              "Fy": 400
+            },
+            "confinement": {
+              "enabled": false
+            }
+          }
+        }
+      }
+    ],
+    "materials": [
+      {
+        "id": "RC30",
+        "version": 1,
+        "kind": "concrete",
+        "E": 30000,
+        "G": 12500,
+        "fck": 30,
+        "density": 0
+      }
+    ],
+    "sections": [
+      {
+        "id": "RC-COL",
+        "version": 1,
+        "kind": "parametric",
+        "shape": "RECT",
+        "params": {
+          "B": 500,
+          "H": 500
+        },
+        "properties": {
+          "A": 0.25,
+          "Iy": 0.0052083333,
+          "Iz": 0.0052083333,
+          "J": 0.0088
+        }
+      },
+      {
+        "id": "RC-BEAM",
+        "version": 1,
+        "kind": "parametric",
+        "shape": "RECT",
+        "params": {
+          "B": 400,
+          "H": 600
+        },
+        "properties": {
+          "A": 0.24,
+          "Iy": 0.0032,
+          "Iz": 0.0072,
+          "J": 0.006
+        }
+      }
+    ],
+    "loads": [
+      {
+        "id": "G-1",
+        "type": "nodal",
+        "node": "RT1",
+        "P": 80,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      },
+      {
+        "id": "G-2",
+        "type": "nodal",
+        "node": "RT2",
+        "P": 80,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      }
+    ],
+    "loadCases": [
+      {
+        "id": "D",
+        "name": "Dead",
+        "type": "dead"
+      }
+    ],
+    "loadCombinations": [
+      {
+        "id": "GRAV",
+        "name": "Gravity preload",
+        "type": "service",
+        "purpose": "gravity-preload",
+        "factors": {
+          "D": 1
+        }
+      }
+    ],
+    "massSources": [],
+    "diaphragms": [],
+    "hingeProperties": [
+      {
+        "id": "HP-RC-PILOT",
+        "modelId": "concentrated-rotational-hinge-v1",
+        "parameters": {
+          "backbone": {
+            "version": "p8-m4-hinge-backbone-v1",
+            "positive": [
+              {
+                "id": "A",
+                "rotation": 0,
+                "moment": 0,
+                "state": "elastic",
+                "acceptance": null
+              },
+              {
+                "id": "B",
+                "rotation": 0.001,
+                "moment": 180,
+                "state": "yielded",
+                "acceptance": null
+              },
+              {
+                "id": "C",
+                "rotation": 0.015,
+                "moment": 198.00000000000003,
+                "state": "capping",
+                "acceptance": null
+              },
+              {
+                "id": "D",
+                "rotation": 0.04,
+                "moment": 36,
+                "state": "residual",
+                "acceptance": null
+              },
+              {
+                "id": "E",
+                "rotation": 0.08,
+                "moment": 36,
+                "state": "failure",
+                "acceptance": null
+              }
+            ],
+            "negative": [
+              {
+                "id": "A",
+                "rotation": 0,
+                "moment": 0,
+                "state": "elastic",
+                "acceptance": null
+              },
+              {
+                "id": "B",
+                "rotation": 0.001,
+                "moment": 180,
+                "state": "yielded",
+                "acceptance": null
+              },
+              {
+                "id": "C",
+                "rotation": 0.015,
+                "moment": 198.00000000000003,
+                "state": "capping",
+                "acceptance": null
+              },
+              {
+                "id": "D",
+                "rotation": 0.04,
+                "moment": 36,
+                "state": "residual",
+                "acceptance": null
+              },
+              {
+                "id": "E",
+                "rotation": 0.08,
+                "moment": 36,
+                "state": "failure",
+                "acceptance": null
+              }
+            ],
+            "rotationDefinition": "joint-relative-to-member-face-local-axis",
+            "units": {
+              "rotation": "rad",
+              "moment": "kN-m"
+            },
+            "contentHash": "bdb44d748712cd6a0e26985b"
+          },
+          "hysteresis": {
+            "rule": "kinematic-masing"
+          },
+          "degradation": {
+            "strength": {
+              "perCycle": 0,
+              "perEnergy": 0,
+              "minimumFactor": 0.05
+            },
+            "stiffness": {
+              "perCycle": 0,
+              "perEnergy": 0,
+              "minimumFactor": 0.05
+            },
+            "referenceEnergy": 1
+          },
+          "regularization": {
+            "strategy": "diagnostic-only",
+            "minimumRatio": 1e-8,
+            "minimumAbsolute": 0
+          },
+          "integration": {
+            "maxSubsteps": 4096,
+            "rotationTolerance": 1e-12,
+            "maxRotationIncrement": 0.0001
+          },
+          "hingeLength": 0.2,
+          "rotationDefinition": "joint-relative-to-member-face-local-axis",
+          "acceptance": [],
+          "pmm": null
+        },
+        "units": {
+          "rotation": "rad",
+          "moment": "kN-m",
+          "length": "m",
+          "energy": "kN-m-rad"
+        },
+        "qualification": "candidate",
+        "source": {
+          "type": "closed-form-test",
+          "reference": "Phase 8 M11 HP-RC-PILOT fixture",
+          "edition": null,
+          "clause": null,
+          "assumption": null,
+          "materialSnapshot": null,
+          "sectionSnapshot": null,
+          "reinforcementSnapshot": null,
+          "generatedAt": null,
+          "generatedBy": null,
+          "derivedFromPropertyId": null,
+          "pmmSourceId": null,
+          "axialRatio": null
+        },
+        "calibration": {
+          "status": "not-calibrated",
+          "referenceId": null,
+          "reviewedBy": null,
+          "reviewedAt": null,
+          "notes": null
+        },
+        "contentHash": "2357e8b17f7220c372f5b422"
+      }
+    ],
+    "nonlinearMaterials": [],
+    "nonlinearSections": [],
+    "linkProperties": [],
+    "timeHistoryFunctions": [],
+    "analysisStates": [],
+    "analysisCases": [],
+    "analysisSettings": {
+      "includeSelfWeight": false
+    },
+    "reinforcementSnapshots": {
+      "RC1": {
+        "id": "RC-PILOT-BARS",
+        "version": 1,
+        "qualification": "candidate",
+        "units": {
+          "length": "mm",
+          "area": "mm2"
+        },
+        "cover": 40,
+        "bars": [
+          {
+            "id": "B1",
+            "y": -140,
+            "z": -140,
+            "area": 491
+          },
+          {
+            "id": "B2",
+            "y": 140,
+            "z": -140,
+            "area": 491
+          },
+          {
+            "id": "B3",
+            "y": -140,
+            "z": 140,
+            "area": 491
+          },
+          {
+            "id": "B4",
+            "y": 140,
+            "z": 140,
+            "area": 491
+          }
+        ],
+        "material": {
+          "E": 200000,
+          "Fy": 400
+        },
+        "confinement": {
+          "enabled": false
+        }
+      },
+      "RC2": {
+        "id": "RC-PILOT-BARS",
+        "version": 1,
+        "qualification": "candidate",
+        "units": {
+          "length": "mm",
+          "area": "mm2"
+        },
+        "cover": 40,
+        "bars": [
+          {
+            "id": "B1",
+            "y": -140,
+            "z": -140,
+            "area": 491
+          },
+          {
+            "id": "B2",
+            "y": 140,
+            "z": -140,
+            "area": 491
+          },
+          {
+            "id": "B3",
+            "y": -140,
+            "z": 140,
+            "area": 491
+          },
+          {
+            "id": "B4",
+            "y": 140,
+            "z": 140,
+            "area": 491
+          }
+        ],
+        "material": {
+          "E": 200000,
+          "Fy": 400
+        },
+        "confinement": {
+          "enabled": false
+        }
+      },
+      "RBM": {
+        "id": "RC-PILOT-BARS",
+        "version": 1,
+        "qualification": "candidate",
+        "units": {
+          "length": "mm",
+          "area": "mm2"
+        },
+        "cover": 40,
+        "bars": [
+          {
+            "id": "B1",
+            "y": -140,
+            "z": -140,
+            "area": 491
+          },
+          {
+            "id": "B2",
+            "y": 140,
+            "z": -140,
+            "area": 491
+          },
+          {
+            "id": "B3",
+            "y": -140,
+            "z": 140,
+            "area": 491
+          },
+          {
+            "id": "B4",
+            "y": 140,
+            "z": 140,
+            "area": 491
+          }
+        ],
+        "material": {
+          "E": 200000,
+          "Fy": 400
+        },
+        "confinement": {
+          "enabled": false
+        }
+      }
+    }
+  },
+  "analysisCases": [
+    {
+      "id": "PILOT-RC-01-PUSH",
+      "kind": "pushover",
+      "engineId": "p8-production-mdof-pushover",
+      "inputRefs": {
+        "gravityCombinationId": "GRAV"
+      },
+      "initialState": {
+        "policy": "zero"
+      },
+      "control": {
+        "type": "displacement",
+        "nodeId": "RT2",
+        "direction": "+x",
+        "targetDisplacement": 0.005
+      },
+      "settings": {
+        "gravityCombinationId": "GRAV",
+        "controlNodeId": "RT2",
+        "direction": "+x",
+        "targetDisplacement": 0.005,
+        "pattern": "triangular",
+        "referenceBaseShear": 20,
+        "steps": 4
+      },
+      "solver": {
+        "execution": "worker-wasm-sparse",
+        "maxIterations": 30
+      }
+    }
+  ],
+  "workflow": [
+    "gravity-preload",
+    "reinforcement-snapshot",
+    "fiber-pmm-preprocess",
+    "displacement-pushover",
+    "story-drift-report"
+  ],
+  "expected": {
+    "executionStatus": "completed",
+    "acceptedTermination": [
+      "TARGET_REACHED",
+      "MECHANISM_DETECTED",
+      "POST_PEAK_THRESHOLD"
+    ]
+  },
+  "requiredResultFields": [
+    "resultHash",
+    "runRecordId",
+    "fiberPmmHash",
+    "storyResponse",
+    "memberResults"
+  ],
+  "comparison": {
+    "required": true,
+    "minimumLevel": "L5",
+    "channels": [
+      "baseShear",
+      "roofDisplacement",
+      "storyDrift",
+      "sectionState"
+    ]
+  },
+  "reproducibility": {
+    "runner": "tools/run-p8-m11-qualification.mjs",
+    "fallbackPolicy": "forbidden",
+    "reportRequired": true,
+    "rawResultRequired": true
+  },
+  "inputHash": "3b5beaff8d51e68a7eb83287",
+  "packageHash": "8ad1d8d16bdc5092022254cb"
+}

@@ -577,6 +577,8 @@ Phase 7에서 지원하는 실제 모델 기능이 비선형 도메인과 결과
 
 ## P8-M11 - 독립 검증, 성능, 대표 프로젝트 pilot, 최종 리뷰
 
+**상태: implementation complete / release acceptance BLOCKED (2026-07-14).** 자체 기준코드, 실제 WASM kernel·streaming·cancel/restart·parallel Worker 측정, 5개 production pilot과 fail-closed release manifest는 구현·재현되었다. 외부 독립비교, pilot owner sign-off, M-tier end-to-end Pushover/NLTH 및 브라우저 latency가 없으므로 `NL-PERF-02/07/12/13`, `NL-PILOT-01~05`와 Q1/Q4/Q5는 통과 처리하지 않는다.
+
 ### 목표
 
 구현 존재가 아니라 독립 정확도와 실제 업무 흐름을 근거로 지원범위를 확정한다.
@@ -616,6 +618,8 @@ Phase 7에서 지원하는 실제 모델 기능이 비선형 도메인과 결과
 - pilot 5종의 입력부터 보고서까지 재현 artifact 존재
 - Critical/High finding 0
 - `NL-PERF-01`~`NL-PERF-16`, `NL-PILOT-01`~`NL-PILOT-05` 통과
+
+현재 판정과 재현 명령은 `docs/verification/phase8/QUALIFICATION_RELEASE.md`, `docs/verification/phase8/release-manifest.json`, `reports/validation-evidence/phase8/p8-m11-qualification-release.json`에 고정한다. 구현 완료는 위 release 완료 조건을 완화하지 않으며, 미충족 항목을 `PASS`로 대체하지 않는다.
 
 ## 4. 마일스톤별 필수 검증군
 

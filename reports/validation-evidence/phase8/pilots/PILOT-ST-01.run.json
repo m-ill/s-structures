@@ -1,0 +1,327 @@
+{
+  "version": "p8-m11-pilot-runner-v1",
+  "pilotId": "PILOT-ST-01",
+  "packageHash": "936a564282a477982d52aeed",
+  "execution": {
+    "status": "completed",
+    "engineId": "p8-production-mdof-pushover",
+    "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+    "resultHash": "0f4fc8d15699712aab41cfd7",
+    "runRecordId": "PILOT-ST-01-PUSH:0f4fc8d15699712aab41cfd7",
+    "checkpointHash": "8b6d53d52038ac4cfea55846cf4a29d5d542ebf508307f86f838cd3777ea2c49",
+    "fallbackUsed": false,
+    "designBlocked": true,
+    "resultChannels": {
+      "resultHash": true,
+      "runRecordId": true,
+      "capacityCurve": true,
+      "hingeEvents": true,
+      "checkpointHash": true,
+      "storyResponse": true,
+      "memberResults": true,
+      "domainIdentityHash": true,
+      "fiberPmmHash": false,
+      "historyManifestHash": false,
+      "energyAudit": false,
+      "reason": true,
+      "designBlocked": true,
+      "capabilityHash": false
+    },
+    "summary": {
+      "durationMs": 21621.0684,
+      "resultCount": 1,
+      "terminationReasons": [
+        "ARC_LENGTH_STEPS_COMPLETED"
+      ],
+      "cases": [
+        {
+          "ok": true,
+          "status": "ok",
+          "reason": null,
+          "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+          "resultHash": "0f4fc8d15699712aab41cfd7",
+          "runRecordId": "PILOT-ST-01-PUSH:0f4fc8d15699712aab41cfd7",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "fallbackUsed": false,
+          "summary": {
+            "stepCount": 12,
+            "rejectedStepCount": 0,
+            "maxBaseShear": 44.185163680048376,
+            "maxControlDisplacement": 0.0015937499503727991,
+            "maxRoofDisplacement": 0.001593749947229472,
+            "peakStep": 11,
+            "firstYieldStep": null,
+            "mechanismStep": null,
+            "plasticMemberCount": 0,
+            "yieldedMemberCount": 0,
+            "ultimateMemberCount": 0,
+            "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+            "fiberPmmMemberCount": 0,
+            "fiberPmmCoupledAssignmentCount": 0,
+            "distributedFiberMemberCount": 0,
+            "fiberPmmSkippedMemberCount": 0
+          },
+          "convergence": null,
+          "checkpointHash": "8b6d53d52038ac4cfea55846cf4a29d5d542ebf508307f86f838cd3777ea2c49",
+          "historyManifestHash": null,
+          "energyAudit": null,
+          "resultChannels": {
+            "resultHash": true,
+            "runRecordId": true,
+            "capacityCurve": true,
+            "hingeEvents": true,
+            "checkpointHash": true,
+            "storyResponse": true,
+            "memberResults": true,
+            "domainIdentityHash": true,
+            "fiberPmmHash": false,
+            "historyManifestHash": false,
+            "energyAudit": false,
+            "reason": true,
+            "designBlocked": true,
+            "capabilityHash": false
+          }
+        }
+      ]
+    },
+    "outputManifest": {
+      "resultHashes": [
+        "0f4fc8d15699712aab41cfd7"
+      ],
+      "runRecordIds": [
+        "PILOT-ST-01-PUSH:0f4fc8d15699712aab41cfd7"
+      ]
+    }
+  },
+  "report": {
+    "version": "p8-m11-pilot-report-v1",
+    "pilotId": "PILOT-ST-01",
+    "title": "2D steel portal frame",
+    "packageHash": "936a564282a477982d52aeed",
+    "inputHash": "f4ed2e45227a46b5db4065bb",
+    "materialSystem": "steel",
+    "workflow": [
+      "gravity-preload",
+      "hinge-calibration",
+      "displacement-pushover",
+      "arc-length-continuation",
+      "capacity-and-hinge-report"
+    ],
+    "execution": {
+      "status": "completed",
+      "engineId": "p8-production-mdof-pushover",
+      "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+      "resultHash": "0f4fc8d15699712aab41cfd7",
+      "runRecordId": "PILOT-ST-01-PUSH:0f4fc8d15699712aab41cfd7",
+      "checkpointHash": "8b6d53d52038ac4cfea55846cf4a29d5d542ebf508307f86f838cd3777ea2c49",
+      "fallbackUsed": false,
+      "designBlocked": true,
+      "resultChannels": {
+        "resultHash": true,
+        "runRecordId": true,
+        "capacityCurve": true,
+        "hingeEvents": true,
+        "checkpointHash": true,
+        "storyResponse": true,
+        "memberResults": true,
+        "domainIdentityHash": true,
+        "fiberPmmHash": false,
+        "historyManifestHash": false,
+        "energyAudit": false,
+        "reason": true,
+        "designBlocked": true,
+        "capabilityHash": false
+      },
+      "summary": {
+        "durationMs": 21621.0684,
+        "resultCount": 1,
+        "terminationReasons": [
+          "ARC_LENGTH_STEPS_COMPLETED"
+        ],
+        "cases": [
+          {
+            "ok": true,
+            "status": "ok",
+            "reason": null,
+            "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+            "resultHash": "0f4fc8d15699712aab41cfd7",
+            "runRecordId": "PILOT-ST-01-PUSH:0f4fc8d15699712aab41cfd7",
+            "qualification": "candidate",
+            "designBlocked": true,
+            "fallbackUsed": false,
+            "summary": {
+              "stepCount": 12,
+              "rejectedStepCount": 0,
+              "maxBaseShear": 44.185163680048376,
+              "maxControlDisplacement": 0.0015937499503727991,
+              "maxRoofDisplacement": 0.001593749947229472,
+              "peakStep": 11,
+              "firstYieldStep": null,
+              "mechanismStep": null,
+              "plasticMemberCount": 0,
+              "yieldedMemberCount": 0,
+              "ultimateMemberCount": 0,
+              "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+              "fiberPmmMemberCount": 0,
+              "fiberPmmCoupledAssignmentCount": 0,
+              "distributedFiberMemberCount": 0,
+              "fiberPmmSkippedMemberCount": 0
+            },
+            "convergence": null,
+            "checkpointHash": "8b6d53d52038ac4cfea55846cf4a29d5d542ebf508307f86f838cd3777ea2c49",
+            "historyManifestHash": null,
+            "energyAudit": null,
+            "resultChannels": {
+              "resultHash": true,
+              "runRecordId": true,
+              "capacityCurve": true,
+              "hingeEvents": true,
+              "checkpointHash": true,
+              "storyResponse": true,
+              "memberResults": true,
+              "domainIdentityHash": true,
+              "fiberPmmHash": false,
+              "historyManifestHash": false,
+              "energyAudit": false,
+              "reason": true,
+              "designBlocked": true,
+              "capabilityHash": false
+            }
+          }
+        ]
+      },
+      "outputManifest": {
+        "resultHashes": [
+          "0f4fc8d15699712aab41cfd7"
+        ],
+        "runRecordIds": [
+          "PILOT-ST-01-PUSH:0f4fc8d15699712aab41cfd7"
+        ]
+      }
+    },
+    "resultSummaries": [
+      {
+        "ok": true,
+        "status": "ok",
+        "reason": null,
+        "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+        "resultHash": "0f4fc8d15699712aab41cfd7",
+        "runRecordId": "PILOT-ST-01-PUSH:0f4fc8d15699712aab41cfd7",
+        "qualification": "candidate",
+        "designBlocked": true,
+        "fallbackUsed": false,
+        "summary": {
+          "stepCount": 12,
+          "rejectedStepCount": 0,
+          "maxBaseShear": 44.185163680048376,
+          "maxControlDisplacement": 0.0015937499503727991,
+          "maxRoofDisplacement": 0.001593749947229472,
+          "peakStep": 11,
+          "firstYieldStep": null,
+          "mechanismStep": null,
+          "plasticMemberCount": 0,
+          "yieldedMemberCount": 0,
+          "ultimateMemberCount": 0,
+          "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+          "fiberPmmMemberCount": 0,
+          "fiberPmmCoupledAssignmentCount": 0,
+          "distributedFiberMemberCount": 0,
+          "fiberPmmSkippedMemberCount": 0
+        },
+        "convergence": null,
+        "checkpointHash": "8b6d53d52038ac4cfea55846cf4a29d5d542ebf508307f86f838cd3777ea2c49",
+        "historyManifestHash": null,
+        "energyAudit": null,
+        "resultChannels": {
+          "resultHash": true,
+          "runRecordId": true,
+          "capacityCurve": true,
+          "hingeEvents": true,
+          "checkpointHash": true,
+          "storyResponse": true,
+          "memberResults": true,
+          "domainIdentityHash": true,
+          "fiberPmmHash": false,
+          "historyManifestHash": false,
+          "energyAudit": false,
+          "reason": true,
+          "designBlocked": true,
+          "capabilityHash": false
+        }
+      }
+    ],
+    "qualification": {
+      "value": "candidate",
+      "designBlocked": true,
+      "reason": "INDEPENDENT_EXTERNAL_COMPARISON_REQUIRED"
+    },
+    "externalComparison": {
+      "status": "MISSING",
+      "required": true,
+      "channels": [
+        "controlDisplacement",
+        "baseShear",
+        "hingeState"
+      ]
+    },
+    "limitations": [
+      "This artifact proves deterministic input-to-report execution only.",
+      "It does not substitute for an external numerical comparison or project owner approval.",
+      "Design transfer remains blocked while the Phase 8 release manifest is candidate."
+    ],
+    "reportHash": "ccf2d8fe0a75a7d19a23e8b4"
+  },
+  "resultSummaries": [
+    {
+      "ok": true,
+      "status": "ok",
+      "reason": null,
+      "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+      "resultHash": "0f4fc8d15699712aab41cfd7",
+      "runRecordId": "PILOT-ST-01-PUSH:0f4fc8d15699712aab41cfd7",
+      "qualification": "candidate",
+      "designBlocked": true,
+      "fallbackUsed": false,
+      "summary": {
+        "stepCount": 12,
+        "rejectedStepCount": 0,
+        "maxBaseShear": 44.185163680048376,
+        "maxControlDisplacement": 0.0015937499503727991,
+        "maxRoofDisplacement": 0.001593749947229472,
+        "peakStep": 11,
+        "firstYieldStep": null,
+        "mechanismStep": null,
+        "plasticMemberCount": 0,
+        "yieldedMemberCount": 0,
+        "ultimateMemberCount": 0,
+        "terminationReason": "ARC_LENGTH_STEPS_COMPLETED",
+        "fiberPmmMemberCount": 0,
+        "fiberPmmCoupledAssignmentCount": 0,
+        "distributedFiberMemberCount": 0,
+        "fiberPmmSkippedMemberCount": 0
+      },
+      "convergence": null,
+      "checkpointHash": "8b6d53d52038ac4cfea55846cf4a29d5d542ebf508307f86f838cd3777ea2c49",
+      "historyManifestHash": null,
+      "energyAudit": null,
+      "resultChannels": {
+        "resultHash": true,
+        "runRecordId": true,
+        "capacityCurve": true,
+        "hingeEvents": true,
+        "checkpointHash": true,
+        "storyResponse": true,
+        "memberResults": true,
+        "domainIdentityHash": true,
+        "fiberPmmHash": false,
+        "historyManifestHash": false,
+        "energyAudit": false,
+        "reason": true,
+        "designBlocked": true,
+        "capabilityHash": false
+      }
+    }
+  ],
+  "durationMs": 21621.0684
+}

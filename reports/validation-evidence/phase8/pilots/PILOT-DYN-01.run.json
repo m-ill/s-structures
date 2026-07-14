@@ -1,0 +1,444 @@
+{
+  "version": "p8-m11-pilot-runner-v1",
+  "pilotId": "PILOT-DYN-01",
+  "packageHash": "a4ba0175ec6e051bcf0822b2",
+  "execution": {
+    "status": "completed",
+    "engineId": "p8-production-mdof-nlth",
+    "terminationReason": "DYNAMIC_TIME_RANGE_COMPLETED",
+    "resultHash": "464e6fda8afbf7cb49d504cf",
+    "runRecordId": "PILOT-DYN-01-NLTH:464e6fda8afbf7cb49d504cf",
+    "checkpointHash": "b7ad119f312f0a7801284eafffde410db595386d3b12fde7ed6399e3e2acf618",
+    "fallbackUsed": false,
+    "designBlocked": true,
+    "resultChannels": {
+      "resultHash": true,
+      "runRecordId": true,
+      "capacityCurve": false,
+      "hingeEvents": false,
+      "checkpointHash": true,
+      "storyResponse": false,
+      "memberResults": false,
+      "domainIdentityHash": true,
+      "fiberPmmHash": false,
+      "historyManifestHash": true,
+      "energyAudit": true,
+      "reason": true,
+      "designBlocked": true,
+      "capabilityHash": false
+    },
+    "summary": {
+      "durationMs": 4235.611199999999,
+      "resultCount": 1,
+      "terminationReasons": [
+        "DYNAMIC_TIME_RANGE_COMPLETED"
+      ],
+      "cases": [
+        {
+          "ok": true,
+          "status": "completed",
+          "reason": null,
+          "terminationReason": "DYNAMIC_TIME_RANGE_COMPLETED",
+          "resultHash": "464e6fda8afbf7cb49d504cf",
+          "runRecordId": "PILOT-DYN-01-NLTH:464e6fda8afbf7cb49d504cf",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "fallbackUsed": false,
+          "summary": {
+            "outputStepCount": 5,
+            "internalStepCount": 4,
+            "acceptedStepCount": 4,
+            "rejectedStepCount": 0,
+            "stepTrace": {
+              "retained": true,
+              "limit": 10000,
+              "acceptedRetainedCount": 4,
+              "rejectedRetainedCount": 0,
+              "acceptedTruncated": false,
+              "rejectedTruncated": false
+            },
+            "maximumSubstepLevel": 0,
+            "matrixClass": "general",
+            "matrixClassReason": "assembler-required-general",
+            "completedTime": 0.08,
+            "requestedEndTime": 0.08,
+            "finalEnergy": {
+              "balanceResidual": 3.081548928654315e-12,
+              "baselineKinetic": 0,
+              "baselinePlastic": 0,
+              "baselineStrain": 5.357142157613963e-9,
+              "damping": 2.473510848417717e-7,
+              "dampingIncrement": 8.060094578577504e-8,
+              "dampingPower": 0.000004030047289288752,
+              "externalIncrement": -0.000004936812691113972,
+              "input": 0.000009046315189225073,
+              "kinetic": 4.731271114066963e-8,
+              "plastic": 0,
+              "strain": 0.000008757005453851317
+            },
+            "energyAudit": {
+              "residual": 3.081548928654315e-12,
+              "relativeResidual": 3.081548928654315e-12
+            }
+          },
+          "convergence": {
+            "acceptedSteps": 4,
+            "rejectedSteps": 0,
+            "matrixClass": "general",
+            "matrixClassReason": "assembler-required-general",
+            "substepPolicy": "failed-step-rollback-and-binary-reintegration",
+            "nonconvergedCommitCount": 0
+          },
+          "checkpointHash": "b7ad119f312f0a7801284eafffde410db595386d3b12fde7ed6399e3e2acf618",
+          "historyManifestHash": "d962ee2457e662294f0dcf15",
+          "energyAudit": {
+            "residual": 3.081548928654315e-12,
+            "relativeResidual": 3.081548928654315e-12
+          },
+          "resultChannels": {
+            "resultHash": true,
+            "runRecordId": true,
+            "capacityCurve": false,
+            "hingeEvents": false,
+            "checkpointHash": true,
+            "storyResponse": false,
+            "memberResults": false,
+            "domainIdentityHash": true,
+            "fiberPmmHash": false,
+            "historyManifestHash": true,
+            "energyAudit": true,
+            "reason": true,
+            "designBlocked": true,
+            "capabilityHash": false
+          }
+        }
+      ]
+    },
+    "outputManifest": {
+      "resultHashes": [
+        "464e6fda8afbf7cb49d504cf"
+      ],
+      "runRecordIds": [
+        "PILOT-DYN-01-NLTH:464e6fda8afbf7cb49d504cf"
+      ]
+    }
+  },
+  "report": {
+    "version": "p8-m11-pilot-report-v1",
+    "pilotId": "PILOT-DYN-01",
+    "title": "Gravity-preloaded 3D frame MDOF NLTH",
+    "packageHash": "a4ba0175ec6e051bcf0822b2",
+    "inputHash": "65a3bf95023350c023755f14",
+    "materialSystem": "steel",
+    "workflow": [
+      "gravity-preload",
+      "mass-and-damping",
+      "ground-motion-input",
+      "mdof-newmark",
+      "history-energy-peak-report"
+    ],
+    "execution": {
+      "status": "completed",
+      "engineId": "p8-production-mdof-nlth",
+      "terminationReason": "DYNAMIC_TIME_RANGE_COMPLETED",
+      "resultHash": "464e6fda8afbf7cb49d504cf",
+      "runRecordId": "PILOT-DYN-01-NLTH:464e6fda8afbf7cb49d504cf",
+      "checkpointHash": "b7ad119f312f0a7801284eafffde410db595386d3b12fde7ed6399e3e2acf618",
+      "fallbackUsed": false,
+      "designBlocked": true,
+      "resultChannels": {
+        "resultHash": true,
+        "runRecordId": true,
+        "capacityCurve": false,
+        "hingeEvents": false,
+        "checkpointHash": true,
+        "storyResponse": false,
+        "memberResults": false,
+        "domainIdentityHash": true,
+        "fiberPmmHash": false,
+        "historyManifestHash": true,
+        "energyAudit": true,
+        "reason": true,
+        "designBlocked": true,
+        "capabilityHash": false
+      },
+      "summary": {
+        "durationMs": 4235.611199999999,
+        "resultCount": 1,
+        "terminationReasons": [
+          "DYNAMIC_TIME_RANGE_COMPLETED"
+        ],
+        "cases": [
+          {
+            "ok": true,
+            "status": "completed",
+            "reason": null,
+            "terminationReason": "DYNAMIC_TIME_RANGE_COMPLETED",
+            "resultHash": "464e6fda8afbf7cb49d504cf",
+            "runRecordId": "PILOT-DYN-01-NLTH:464e6fda8afbf7cb49d504cf",
+            "qualification": "candidate",
+            "designBlocked": true,
+            "fallbackUsed": false,
+            "summary": {
+              "outputStepCount": 5,
+              "internalStepCount": 4,
+              "acceptedStepCount": 4,
+              "rejectedStepCount": 0,
+              "stepTrace": {
+                "retained": true,
+                "limit": 10000,
+                "acceptedRetainedCount": 4,
+                "rejectedRetainedCount": 0,
+                "acceptedTruncated": false,
+                "rejectedTruncated": false
+              },
+              "maximumSubstepLevel": 0,
+              "matrixClass": "general",
+              "matrixClassReason": "assembler-required-general",
+              "completedTime": 0.08,
+              "requestedEndTime": 0.08,
+              "finalEnergy": {
+                "balanceResidual": 3.081548928654315e-12,
+                "baselineKinetic": 0,
+                "baselinePlastic": 0,
+                "baselineStrain": 5.357142157613963e-9,
+                "damping": 2.473510848417717e-7,
+                "dampingIncrement": 8.060094578577504e-8,
+                "dampingPower": 0.000004030047289288752,
+                "externalIncrement": -0.000004936812691113972,
+                "input": 0.000009046315189225073,
+                "kinetic": 4.731271114066963e-8,
+                "plastic": 0,
+                "strain": 0.000008757005453851317
+              },
+              "energyAudit": {
+                "residual": 3.081548928654315e-12,
+                "relativeResidual": 3.081548928654315e-12
+              }
+            },
+            "convergence": {
+              "acceptedSteps": 4,
+              "rejectedSteps": 0,
+              "matrixClass": "general",
+              "matrixClassReason": "assembler-required-general",
+              "substepPolicy": "failed-step-rollback-and-binary-reintegration",
+              "nonconvergedCommitCount": 0
+            },
+            "checkpointHash": "b7ad119f312f0a7801284eafffde410db595386d3b12fde7ed6399e3e2acf618",
+            "historyManifestHash": "d962ee2457e662294f0dcf15",
+            "energyAudit": {
+              "residual": 3.081548928654315e-12,
+              "relativeResidual": 3.081548928654315e-12
+            },
+            "resultChannels": {
+              "resultHash": true,
+              "runRecordId": true,
+              "capacityCurve": false,
+              "hingeEvents": false,
+              "checkpointHash": true,
+              "storyResponse": false,
+              "memberResults": false,
+              "domainIdentityHash": true,
+              "fiberPmmHash": false,
+              "historyManifestHash": true,
+              "energyAudit": true,
+              "reason": true,
+              "designBlocked": true,
+              "capabilityHash": false
+            }
+          }
+        ]
+      },
+      "outputManifest": {
+        "resultHashes": [
+          "464e6fda8afbf7cb49d504cf"
+        ],
+        "runRecordIds": [
+          "PILOT-DYN-01-NLTH:464e6fda8afbf7cb49d504cf"
+        ]
+      }
+    },
+    "resultSummaries": [
+      {
+        "ok": true,
+        "status": "completed",
+        "reason": null,
+        "terminationReason": "DYNAMIC_TIME_RANGE_COMPLETED",
+        "resultHash": "464e6fda8afbf7cb49d504cf",
+        "runRecordId": "PILOT-DYN-01-NLTH:464e6fda8afbf7cb49d504cf",
+        "qualification": "candidate",
+        "designBlocked": true,
+        "fallbackUsed": false,
+        "summary": {
+          "outputStepCount": 5,
+          "internalStepCount": 4,
+          "acceptedStepCount": 4,
+          "rejectedStepCount": 0,
+          "stepTrace": {
+            "retained": true,
+            "limit": 10000,
+            "acceptedRetainedCount": 4,
+            "rejectedRetainedCount": 0,
+            "acceptedTruncated": false,
+            "rejectedTruncated": false
+          },
+          "maximumSubstepLevel": 0,
+          "matrixClass": "general",
+          "matrixClassReason": "assembler-required-general",
+          "completedTime": 0.08,
+          "requestedEndTime": 0.08,
+          "finalEnergy": {
+            "balanceResidual": 3.081548928654315e-12,
+            "baselineKinetic": 0,
+            "baselinePlastic": 0,
+            "baselineStrain": 5.357142157613963e-9,
+            "damping": 2.473510848417717e-7,
+            "dampingIncrement": 8.060094578577504e-8,
+            "dampingPower": 0.000004030047289288752,
+            "externalIncrement": -0.000004936812691113972,
+            "input": 0.000009046315189225073,
+            "kinetic": 4.731271114066963e-8,
+            "plastic": 0,
+            "strain": 0.000008757005453851317
+          },
+          "energyAudit": {
+            "residual": 3.081548928654315e-12,
+            "relativeResidual": 3.081548928654315e-12
+          }
+        },
+        "convergence": {
+          "acceptedSteps": 4,
+          "rejectedSteps": 0,
+          "matrixClass": "general",
+          "matrixClassReason": "assembler-required-general",
+          "substepPolicy": "failed-step-rollback-and-binary-reintegration",
+          "nonconvergedCommitCount": 0
+        },
+        "checkpointHash": "b7ad119f312f0a7801284eafffde410db595386d3b12fde7ed6399e3e2acf618",
+        "historyManifestHash": "d962ee2457e662294f0dcf15",
+        "energyAudit": {
+          "residual": 3.081548928654315e-12,
+          "relativeResidual": 3.081548928654315e-12
+        },
+        "resultChannels": {
+          "resultHash": true,
+          "runRecordId": true,
+          "capacityCurve": false,
+          "hingeEvents": false,
+          "checkpointHash": true,
+          "storyResponse": false,
+          "memberResults": false,
+          "domainIdentityHash": true,
+          "fiberPmmHash": false,
+          "historyManifestHash": true,
+          "energyAudit": true,
+          "reason": true,
+          "designBlocked": true,
+          "capabilityHash": false
+        }
+      }
+    ],
+    "qualification": {
+      "value": "candidate",
+      "designBlocked": true,
+      "reason": "INDEPENDENT_EXTERNAL_COMPARISON_REQUIRED"
+    },
+    "externalComparison": {
+      "status": "MISSING",
+      "required": true,
+      "channels": [
+        "nodeDisplacement",
+        "baseReaction",
+        "energy",
+        "peakTime"
+      ]
+    },
+    "limitations": [
+      "This artifact proves deterministic input-to-report execution only.",
+      "It does not substitute for an external numerical comparison or project owner approval.",
+      "Design transfer remains blocked while the Phase 8 release manifest is candidate."
+    ],
+    "reportHash": "878cd68a6ededfd66f399829"
+  },
+  "resultSummaries": [
+    {
+      "ok": true,
+      "status": "completed",
+      "reason": null,
+      "terminationReason": "DYNAMIC_TIME_RANGE_COMPLETED",
+      "resultHash": "464e6fda8afbf7cb49d504cf",
+      "runRecordId": "PILOT-DYN-01-NLTH:464e6fda8afbf7cb49d504cf",
+      "qualification": "candidate",
+      "designBlocked": true,
+      "fallbackUsed": false,
+      "summary": {
+        "outputStepCount": 5,
+        "internalStepCount": 4,
+        "acceptedStepCount": 4,
+        "rejectedStepCount": 0,
+        "stepTrace": {
+          "retained": true,
+          "limit": 10000,
+          "acceptedRetainedCount": 4,
+          "rejectedRetainedCount": 0,
+          "acceptedTruncated": false,
+          "rejectedTruncated": false
+        },
+        "maximumSubstepLevel": 0,
+        "matrixClass": "general",
+        "matrixClassReason": "assembler-required-general",
+        "completedTime": 0.08,
+        "requestedEndTime": 0.08,
+        "finalEnergy": {
+          "balanceResidual": 3.081548928654315e-12,
+          "baselineKinetic": 0,
+          "baselinePlastic": 0,
+          "baselineStrain": 5.357142157613963e-9,
+          "damping": 2.473510848417717e-7,
+          "dampingIncrement": 8.060094578577504e-8,
+          "dampingPower": 0.000004030047289288752,
+          "externalIncrement": -0.000004936812691113972,
+          "input": 0.000009046315189225073,
+          "kinetic": 4.731271114066963e-8,
+          "plastic": 0,
+          "strain": 0.000008757005453851317
+        },
+        "energyAudit": {
+          "residual": 3.081548928654315e-12,
+          "relativeResidual": 3.081548928654315e-12
+        }
+      },
+      "convergence": {
+        "acceptedSteps": 4,
+        "rejectedSteps": 0,
+        "matrixClass": "general",
+        "matrixClassReason": "assembler-required-general",
+        "substepPolicy": "failed-step-rollback-and-binary-reintegration",
+        "nonconvergedCommitCount": 0
+      },
+      "checkpointHash": "b7ad119f312f0a7801284eafffde410db595386d3b12fde7ed6399e3e2acf618",
+      "historyManifestHash": "d962ee2457e662294f0dcf15",
+      "energyAudit": {
+        "residual": 3.081548928654315e-12,
+        "relativeResidual": 3.081548928654315e-12
+      },
+      "resultChannels": {
+        "resultHash": true,
+        "runRecordId": true,
+        "capacityCurve": false,
+        "hingeEvents": false,
+        "checkpointHash": true,
+        "storyResponse": false,
+        "memberResults": false,
+        "domainIdentityHash": true,
+        "fiberPmmHash": false,
+        "historyManifestHash": true,
+        "energyAudit": true,
+        "reason": true,
+        "designBlocked": true,
+        "capabilityHash": false
+      }
+    }
+  ],
+  "durationMs": 4235.611199999999
+}
