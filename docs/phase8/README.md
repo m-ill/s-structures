@@ -3,18 +3,18 @@
 ```yaml
 phase: 8
 status: active
-implementation_status: p8-m7-complete
-reviewed_at: 2026-07-13
-current_milestone: P8-M8
+implementation_status: p8-m8-complete
+reviewed_at: 2026-07-14
+current_milestone: P8-M9
 mission: Phase 7 모델링·탄성해석과 동일한 analysis domain 위에서 상용 수준의 정적·동적 비선형 3D 건축골조해석을 구현한다.
 governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 ```
 
-> P8-M0~P8-M7은 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 정식 증강 변위제어 Pushover, fiber PMM/분포소성, PMM 전처리 Worker/cache, Crisfield arc-length와 cyclic static이 구현됐다. MDOF NLTH는 아직 없고 기존 Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
+> P8-M0~P8-M8은 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 정식 증강 변위제어 Pushover, fiber PMM/분포소성, PMM 전처리 Worker/cache, Crisfield arc-length·cyclic static과 실제 3D MDOF NLTH가 구현됐다. 기존 stepwise Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
 
 ## 1. 결론
 
-기존 preliminary 모듈은 계속 격리한다. `productionPushover`는 M2 전역 MDOF Newton, M3 corotational 요소, M4 집중소성 힌지, M5 독립 중력·변위제어, M6 fiber PMM/분포소성, M6.1 비동기 전처리와 M7 선택적 arc-length continuation을 사용하는 정식 정적 후보 경로다. MDOF NLTH workflow는 아직 연결되지 않았다.
+기존 preliminary 모듈은 계속 격리한다. `productionPushover`는 M2 전역 MDOF Newton, M3 corotational 요소, M4 집중소성 힌지, M5 독립 중력·변위제어, M6 fiber PMM/분포소성, M6.1 비동기 전처리와 M7 선택적 arc-length continuation을 사용하는 정식 정적 후보 경로다. `productionNlth`는 같은 요소·상태·중력 선행상태를 모델 질량, Rayleigh 감쇠, 균일 다성분 지진파 및 Newmark full-Newton과 결합하는 동적 후보 경로다.
 
 현재 상태를 정확히 표현하면 다음과 같다.
 
@@ -22,7 +22,7 @@ governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 - legacy 전역 평형 모듈은 고정된 선형 강성으로 `K u`를 계산한다. P8-M2 코어는 별도 경로에서 현재 trial state의 요소 `Pint`와 `Kt`를 반복마다 재조립한다.
 - legacy `corotationalBeam.js`는 screening 식이며 격리된다. production 후보는 M3의 `corotationalFrame3d.js`/`corotationalTruss3d.js`다.
 - production 변위제어와 arc-length는 각각 실제 전역 증강방정식을 풀며 M5 checkpoint에서 byte-equivalent하게 연속된다. 사용자 UI workflow는 P8-M10 범위다.
-- NLTH는 모델을 받지 않는 SDOF 이선형 스프링 적분기다.
+- legacy NLTH는 모델을 받지 않는 SDOF 이선형 스프링 적분기다. production NLTH는 모델-bound 3D MDOF 경로이며 두 결과 계약은 섞이지 않는다.
 - 기존 비선형 벤치마크 중 일부는 자기참조 또는 미리 만든 경로를 검사하므로 제품 검증 근거가 될 수 없다.
 
 따라서 Phase 8은 기존 파일을 기능별로 덧붙이는 작업이 아니다. **Phase 7 모델을 canonical analysis domain으로 고정하고 상태, 요소 내력, 일관접선, 전역 잔차, 해 제어, 결과 회복을 하나의 production 실행 커널로 다시 묶는 작업**이다.
@@ -108,7 +108,7 @@ Phase 8은 ETABS/MIDAS/OpenSees의 전체 기능 수를 복제하는 계획이 �
 | R8.1 Nonlinear Core | P8-M1~M3 | 상태관리, MDOF 평형, 3D corotational elastic | 독립 검증 전 `candidate` |
 | R8.2 Formal Pushover | P8-M4~M5 | 집중소성, 중력 preload, 변위제어 Pushover | 정적 범위만 `candidate` |
 | R8.3 Advanced Static | P8-M6~M7 | PMM/fiber, post-peak arc-length, cyclic static | 기능별 검증등급 부여 |
-| R8.4 Frame NLTH | P8-M8~M9 | 실제 모델 MDOF NLTH와 통합 결과회복 | 동적 검증 전 `preliminary` |
+| R8.4 Frame NLTH | P8-M8~M9 | 실제 모델 MDOF NLTH와 통합 결과회복 | M8 component `candidate`, M9 통합·M11 독립검증 전 설계전달 차단 |
 | R8.5 Practice Release | P8-M10~M11 | UI, 보고, agent 계약, 독립검증, pilot | 통과한 범위만 `verified` |
 
 ## 6. 상태 용어

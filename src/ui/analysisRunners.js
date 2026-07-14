@@ -10,7 +10,7 @@ import {
   runNonlinearAnalysisCaseAsync,
 } from '../nonlinear/analysisRouter.js';
 
-export const ANALYSIS_RUNNER_VERSION = 'p8-m5-analysis-runners-v3';
+export const ANALYSIS_RUNNER_VERSION = 'p8-m8-analysis-runners-v4';
 
 export function runAnalysisCase(model, analysisCase, options = {}) {
   const item = normalizeAnalysisCase(analysisCase || {});
@@ -234,6 +234,21 @@ export function summarizeAnalysisResult(kind, payload = {}) {
       rowCount: (payload.rows || []).length,
       maxDisplacement: payload.maxDisplacement || 0,
       yielded: !!payload.summary?.yielded,
+    };
+  }
+  if (kind === 'nonlinearTimeHistory') {
+    return {
+      ok: payload.ok === true,
+      engineId: payload.engine?.id || null,
+      qualification: payload.qualification || null,
+      designBlocked: payload.designBlocked === true,
+      modelBound: payload.modelBound === true,
+      outputStepCount: payload.summary?.outputStepCount || 0,
+      internalStepCount: payload.summary?.internalStepCount || 0,
+      rejectedStepCount: payload.summary?.rejectedStepCount || 0,
+      completedTime: payload.summary?.completedTime ?? null,
+      matrixClass: payload.summary?.matrixClass || null,
+      historyManifestHash: payload.history?.manifestHash || null,
     };
   }
   return { ok: !!payload.ok };

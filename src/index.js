@@ -846,6 +846,60 @@ export {
   runNewmarkNlth,
 } from './nonlinear/dynamics/newmark.js';
 export {
+  DYNAMIC_SPARSE_MATRIX_VERSION,
+  combineCscMatrices,
+  createCscFromTriplets as createDynamicCscFromTriplets,
+  cscDiagonal,
+  cscMatVec as dynamicCscMatVec,
+  cscQuadratic,
+  cscRowNorms,
+  cscSymmetryError,
+  cscToDense as dynamicCscToDense,
+  extractCscSubmatrix,
+  validateDynamicCsc,
+} from './nonlinear/dynamics/sparseMatrix.js';
+export {
+  MDOF_MASS_DOMAIN_VERSION,
+  MDOF_MASS_FORMULATIONS,
+  buildMdofMassDomain,
+  combineGroundInfluence,
+  expandReducedKinematics,
+  recoverDynamicInertia,
+} from './nonlinear/dynamics/massDomain.js';
+export {
+  GROUND_MOTION_ACCELERATION_UNITS,
+  MDOF_GROUND_MOTION_VERSION,
+  buildMdofGroundMotionSet,
+  createMdofGroundMotionRecord,
+  parseMdofGroundMotionText,
+} from './nonlinear/dynamics/mdofGroundMotion.js';
+export {
+  MDOF_DAMPING_VERSION,
+  RAYLEIGH_STIFFNESS_POLICIES,
+  buildMdofDampingMatrix,
+  dampingRatioAtOmega,
+  solveMdofRayleighCoefficients,
+} from './nonlinear/dynamics/mdofDamping.js';
+export {
+  MDOF_DYNAMIC_HISTORY_VERSION,
+  createDynamicHistoryCollector,
+} from './nonlinear/dynamics/dynamicHistory.js';
+export {
+  MDOF_NEWMARK_PARAMETERS,
+  MDOF_NEWMARK_VERSION,
+  runMdofNewmark,
+  solveMdofNewmarkStep,
+} from './nonlinear/dynamics/mdofNewmark.js';
+export {
+  NLTH_LOAD_SET_VERSION,
+  PRODUCTION_NLTH_ENGINE_VERSION,
+  PRODUCTION_NLTH_VERSION,
+  buildNlthLoadSet,
+  buildProductionNlthResult,
+  resolveGroundMotionRecords,
+  runProductionNlth,
+} from './nonlinear/dynamics/productionNlth.js';
+export {
   NONLINEAR_CAPABILITY_VERSION,
   NONLINEAR_CASE_KINDS,
   NONLINEAR_ENGINE_IDS,

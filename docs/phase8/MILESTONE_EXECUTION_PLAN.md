@@ -1,9 +1,9 @@
 # Phase 8 Milestone Execution Plan
 
 ```yaml
-plan_version: 2026-07-13
+plan_version: 2026-07-14
 milestones: P8-M0..P8-M11 plus P8-M6.1
-current_status: complete-p8-m7-next-p8-m8
+current_status: complete-p8-m8-next-p8-m9
 execution_rule: one milestone at a time; code, tests, evidence, review, and status update are all required
 ```
 
@@ -428,6 +428,8 @@ limit point 이후 post-peak와 cyclic static protocol을 실제 augmented solve
 
 ## P8-M8 - 실제 3D 모델 MDOF NLTH
 
+**상태: complete (2026-07-14).** 기능 qualification은 `candidate`이며 M9 모델기능 통합과 M11 독립비교 전 설계전달은 차단한다.
+
 ### 목표
 
 정적 비선형 요소커널과 모델의 질량·감쇠를 사용하는 MDOF 비선형 시간이력해석을 구현한다.
@@ -467,6 +469,19 @@ limit point 이후 post-peak와 cyclic static protocol을 실제 augmented solve
 - 현재 model hash와 질량/요소 수가 run record에 남음
 - output step과 internal substep이 분리되고 저장정책이 result manifest에 남음
 - `NL-DYN-01`~`NL-DYN-16` 통과
+
+### 구현 기록 (2026-07-14)
+
+- 완료: Phase 7 mass source ownership을 사용하는 lumped/consistent typed CSC `M`, diaphragm `T^T M T`, 회전관성 및 uniform excitation vector
+- 완료: 단위·부호·baseline·PGA scaling을 검증하는 1~3성분 지진파와 실제 `C=alpha M+beta K` Rayleigh 감쇠
+- 완료: gravity-preloaded 3D MDOF Newmark average-acceleration, step 내 full Newton 및 `Kt+a0M+a1C` effective tangent
+- 완료: concentrated hinge/qualified distributed fiber 상태, general tangent 승격, accepted-state commit, 실패 rollback과 binary substep 재적분
+- 완료: cancel/progress, provenance-checked checkpoint/restart, Worker result chunk와 commit boundary
+- 완료: node/ground/base/member/hinge/fiber/energy history, nested envelope index, bounded retained step trace와 memory budget
+- 검증: linear SDOF/MDOF 독립 구현, nonlinear oscillator, finite-difference tangent, time-step convergence, energy, 실제 3D hardening hinge frame
+- 증거: `reports/validation-evidence/phase8/p8-m8-mdof-nlth.json`, `p8-m8-code-review.md`
+- 결정: `docs/phase8/adr/ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md`
+- 제한: spatially varying support motion, released-member consistent mass, 실제 GPU kernel, 외부 상용 solver 비교는 미포함
 
 ## P8-M9 - 모델 기능 통합과 결과회복
 

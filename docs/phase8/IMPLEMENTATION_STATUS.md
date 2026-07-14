@@ -1,18 +1,18 @@
 # Phase 8 Implementation Status
 
 ```yaml
-reviewed_at: 2026-07-13
+reviewed_at: 2026-07-14
 phase_status: active
-implementation_status: p8-m7-complete
+implementation_status: p8-m8-complete
 release_status: unavailable
-production_equivalence: Q1-advanced-static-candidate
-completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1, P8-M7]
-active_milestone: P8-M8
+production_equivalence: Q1-static-and-dynamic-component-candidate
+completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1, P8-M7, P8-M8]
+active_milestone: P8-M9
 ```
 
 ## 현재 판정
 
-P8-M0~P8-M7은 완료되었다. M7은 M5의 exact checkpoint와 M6의 상태기반 요소를 소비하는 Crisfield 구면 arc-length, deterministic branch/radius/cutback/restart 및 cyclic static target history를 production 후보 경로에 연결했다.
+P8-M0~P8-M8은 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상태기반 3D 요소를 실제 모델 질량·감쇠·지진파와 결합해 MDOF Newmark full-Newton NLTH production 후보 경로에 연결했다. output/internal step 분리, 실제 binary substep 재적분, rollback, checkpoint/restart, Worker chunk, 중첩 결과 envelope와 에너지 audit가 같은 실행 기록에 남는다.
 
 현재 제품 등급은 여전히 Q0다. `commercial-grade within supported scope` 판정은 [PRODUCTION_REQUIREMENTS.md](PRODUCTION_REQUIREMENTS.md)의 Q1~Q5를 모두 통과한 기능 범위에만 부여한다.
 
@@ -39,7 +39,7 @@ P8-M0~P8-M7은 완료되었다. M7은 M5의 exact checkpoint와 M6의 상태기�
 | PMM·fiber 단면 | 구현 | H/BOX/PIPE·RC RECT/SQUARE, `N-My-Mz`, same-iteration hinge coupling `candidate` |
 | PMM 전처리 runtime | 구현 | stateless envelope, Worker, content cache, progress/cancel, source-stale guard |
 | arc-length·cyclic static | 실제 augmented solve와 상태이력 구현 | P8-M7 `candidate`, 설계전달 차단 |
-| 3D frame MDOF NLTH | 미구현 | blocked |
+| 3D frame MDOF NLTH | 구현 | P8-M8 `candidate`, 설계전달 차단, 독립 상용 비교는 P8-M11 |
 | Worker/WASM sparse runtime | 자체 Rust/WASM, zero import, Worker/preflight/cancel 구현 | P8-M2 기반 완료, 대형모델 성능 미검증 |
 
 ## M0~M4 완료 증거
@@ -134,12 +134,27 @@ M7 증거:
 - 코드 리뷰: [p8-m7-code-review.md](../../reports/validation-evidence/phase8/p8-m7-code-review.md)
 - GPU 경계: 실행정책만 구현. 실제 GPU backend와 CPU/GPU parity는 미구현
 
+M8 증거:
+
+- 동적 도메인: `src/nonlinear/dynamics/massDomain.js`, `mdofGroundMotion.js`, `mdofDamping.js`
+- 적분·상태: `src/nonlinear/dynamics/mdofNewmark.js`, `dynamicHistory.js`
+- production 실행: `src/nonlinear/dynamics/productionNlth.js`, `src/nonlinear/runtime/analysisWorker.js`
+- 모델 결속: Phase 7 `massSourceId`, canonical constraint/diaphragm, gravity preload checkpoint, concentrated hinge/qualified fiber 요소를 동일 domain에서 사용
+- 수치 정책: Newmark `beta=0.25`, `gamma=0.5`, step 내 full Newton, `Kt+a0M+a1C`, 상태의존 동적 접선은 general matrix class 사용
+- 운영 정책: accepted-step commit, 실패 step byte-equivalent rollback, binary reintegration, min `dt`, cancel, restart provenance/dynamic-equilibrium 검증
+- 결과: node `q/v/a`, ground acceleration, 6DOF inertia base reaction, member/hinge/fiber history, nested envelope, energy, chunk/checkpoint manifest
+- 검증: `NL-DYN-01~16`
+- evidence: [p8-m8-mdof-nlth.json](../../reports/validation-evidence/phase8/p8-m8-mdof-nlth.json)
+- ADR: [ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md](adr/ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md)
+- 코드 리뷰: [p8-m8-code-review.md](../../reports/validation-evidence/phase8/p8-m8-code-review.md)
+- GPU 경계: M7 backend contract를 전달하되 실제 GPU kernel/parity를 주장하지 않음
+
 ## Production 등급 현황
 
 | 등급 | 상태 | 미충족 핵심 |
 | --- | --- | --- |
-| Q1 Numerically Qualified | in-progress | corotational·집중소성·fiber/PMM component 완료, dynamic·외부 benchmark 미완료 |
-| Q2 Model-Integrated | in-progress | canonical domain과 PMM/fiber/arc 정적경로 연결 완료, NLTH·전체 Phase 7 기능 통합 미완료 |
+| Q1 Numerically Qualified | in-progress | corotational·집중소성·fiber/PMM·MDOF dynamic component 완료, 외부 benchmark 미완료 |
+| Q2 Model-Integrated | in-progress | canonical domain과 정적·NLTH 핵심경로 연결 완료, 전체 Phase 7 기능 통합은 P8-M9 |
 | Q3 Workflow-Complete | not-started | initial-state DAG, 실패복구, 결과/보고/API |
 | Q4 Scale-Qualified | in-progress | Worker/WASM 기반 완료, M-tier budget·streaming·pilot 미완료 |
 | Q5 Commercial-Grade in Scope | unavailable | 독립 pilot와 전체 release gate |
@@ -157,7 +172,7 @@ M7 증거:
 | P8-M6 PMM·fiber 단면 | complete | NL-FIB-01~14, NL-PMM-01~08, ADR-004, M6 code review |
 | P8-M6.1 PMM 전처리 runtime | complete | NL-PMM-09~14, runtime evidence, ADR-004 amendment, M6.1 code review |
 | P8-M7 arc-length·cyclic static | complete | NL-ARC-01~10, NL-CYC-01~06, ADR-007, M7 code review |
-| P8-M8 MDOF NLTH | planned | 없음 |
+| P8-M8 MDOF NLTH | complete | NL-DYN-01~16, ADR-008, M8 evidence/code review |
 | P8-M9 모델 기능 통합·결과회복 | planned | 없음 |
 | P8-M10 UI·보고·Agent 계약 | planned | 없음 |
 | P8-M11 독립검증·성능·pilot | planned | 없음 |
@@ -166,4 +181,4 @@ M7 증거:
 
 ## 다음 작업
 
-P8-M8은 동일 canonical domain, state kernel, 요소 내력·접선을 사용해 실제 3D 모델의 질량·감쇠와 결합된 MDOF direct-integration NLTH를 구현한다.
+P8-M9는 rigid/semi-rigid diaphragm, spring·지정변위, release·offset, generated wall/slab, unilateral 부재와 결과 원본 매핑을 정적·NLTH production 경로에서 동일하게 통합하고 fail-closed 조합표를 완성한다.

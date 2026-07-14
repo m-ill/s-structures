@@ -1,7 +1,7 @@
 import { createWorkerCore } from './workerCore.js';
 import { WORKER_TASK_TYPES } from './protocol.js';
 
-export const ANALYSIS_WORKER_VERSION = 'p8-m6.1-analysis-worker-v2';
+export const ANALYSIS_WORKER_VERSION = 'p8-m8-analysis-worker-v3';
 
 export async function createAvailableWasmSparseBackend(options = {}) {
   let factory = options.createWasmSparseBackend
@@ -49,6 +49,36 @@ export async function handleBuiltInAnalysisTask(task, context) {
   if (task.type === WORKER_TASK_TYPES.buildFiberPmm) {
     const module = await import('../fiber/fiberPmmPreprocessor.js');
     return module.runFiberPmmWorkerTask(task.payload, context);
+  }
+  if (task.type === WORKER_TASK_TYPES.runMdofNlth) {
+    const module = await import('../dynamics/productionNlth.js');
+    const payload = task.payload && typeof task.payload === 'object' ? task.payload : {};
+    return module.runProductionNlth(payload.model || {}, payload.analysisCase || {}, {
+      ...(payload.options || {}),
+      backend: context.backend,
+      signal: context.signal,
+      isCancelled: context.isCancellationRequested,
+      onProgress: context.reportProgress,
+      onChunk(chunk) {
+        context.reportProgress({ type: 'result-chunk', chunk });
+      },
+      onCheckpoint(checkpoint) {
+        context.reportProgress({
+          type: 'checkpoint',
+          integrityHash: checkpoint.integrityHash,
+          committedHash: checkpoint.committedHash,
+          time: checkpoint.committed?.time || 0,
+        });
+      },
+      onCommit(detail) {
+        context.commitBoundary({
+          task: WORKER_TASK_TYPES.runMdofNlth,
+          time: detail.time,
+          dt: detail.dt,
+          stateHash: detail.stateHash,
+        });
+      },
+    });
   }
   const error = new Error(`No built-in analysis worker handler is registered for ${task.type}.`);
   error.code = 'WORKER_TASK_HANDLER_UNAVAILABLE';

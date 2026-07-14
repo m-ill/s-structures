@@ -1,4 +1,4 @@
-export const NONLINEAR_CAPABILITY_VERSION = 'p8-m7-nonlinear-capability-v4';
+export const NONLINEAR_CAPABILITY_VERSION = 'p8-m8-nonlinear-capability-v5';
 export const NONLINEAR_PRODUCT_SCOPE_VERSION = 'p8-m0-product-scope-v1';
 
 export const NONLINEAR_ENGINE_IDS = Object.freeze({
@@ -109,11 +109,33 @@ const CAPABILITIES = Object.freeze({
       'GPU execution is an opt-in backend capability and remains unavailable until a deterministic f64 implementation is qualified.',
     ],
   }),
-  [NONLINEAR_ENGINE_IDS.productionNlth]: reservedCapability(
-    NONLINEAR_ENGINE_IDS.productionNlth,
-    ['nonlinearTimeHistory'],
-    ['time-step'],
-  ),
+  [NONLINEAR_ENGINE_IDS.productionNlth]: Object.freeze({
+    version: NONLINEAR_CAPABILITY_VERSION,
+    engineId: NONLINEAR_ENGINE_IDS.productionNlth,
+    caseKinds: ['nonlinearTimeHistory'],
+    available: true,
+    production: true,
+    qualification: 'candidate',
+    qualificationCeiling: 'candidate',
+    designBlocked: true,
+    modelBound: true,
+    executionMode: 'async',
+    formulation: {
+      geometry: 'objective-corotational-3d',
+      material: 'state-dependent-concentrated-hinge-or-distributed-fiber-plasticity-with-section-pmm',
+      equilibrium: 'current-step-mdof-effective-tangent',
+      control: 'newmark-average-acceleration-full-newton-with-substep-reintegration',
+    },
+    supportedControls: ['time-step'],
+    unsupportedControls: [],
+    limitations: [
+      'Candidate Phase 8 engine; design transfer remains blocked pending independent qualification.',
+      'Execution requires the asynchronous nonlinear analysis runner or RUN_MDOF_NLTH Worker task.',
+      'Uniform one-to-three-component support excitation is included; spatially varying support motion is not.',
+      'Consistent mass with released frame ends is blocked until release mass condensation is qualified.',
+      'GPU execution is opt-in and requires a deterministic f64 qualified backend.',
+    ],
+  }),
 });
 
 export function listNonlinearCapabilities() {

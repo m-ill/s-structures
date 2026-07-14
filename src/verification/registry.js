@@ -1,4 +1,4 @@
-export const VERIFICATION_REGISTRY_VERSION = 'p8-m7-verification-registry-v8';
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m8-verification-registry-v9';
 export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
 export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
 
@@ -158,6 +158,17 @@ export const PHASE8_VERIFICATION_SUITES = Object.freeze([
       'NL-ARC-01', 'NL-ARC-02', 'NL-ARC-03', 'NL-ARC-04', 'NL-ARC-05',
       'NL-ARC-06', 'NL-ARC-07', 'NL-ARC-08', 'NL-ARC-09', 'NL-ARC-10',
       'NL-CYC-01', 'NL-CYC-02', 'NL-CYC-03', 'NL-CYC-04', 'NL-CYC-05', 'NL-CYC-06',
+    ]),
+  }),
+  Object.freeze({
+    id: 'P8-M8-MDOF-NLTH',
+    milestone: 'P8-M8',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-DYN-01', 'NL-DYN-02', 'NL-DYN-03', 'NL-DYN-04',
+      'NL-DYN-05', 'NL-DYN-06', 'NL-DYN-07', 'NL-DYN-08',
+      'NL-DYN-09', 'NL-DYN-10', 'NL-DYN-11', 'NL-DYN-12',
+      'NL-DYN-13', 'NL-DYN-14', 'NL-DYN-15', 'NL-DYN-16',
     ]),
   }),
 ]);

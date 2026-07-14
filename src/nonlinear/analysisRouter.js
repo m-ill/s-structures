@@ -6,13 +6,19 @@ import {
 import { runLegacyPreliminaryPushover } from './legacy/preliminaryPushover.js';
 import { runLegacySdofNewmarkTrace } from './legacy/sdofNewmarkTrace.js';
 import { runProductionPushover } from './pushover/productionPushover.js';
+import { runProductionNlth } from './dynamics/productionNlth.js';
 
-export const NONLINEAR_ANALYSIS_ROUTER_VERSION = 'p8-m5-nonlinear-analysis-router-v2';
+export const NONLINEAR_ANALYSIS_ROUTER_VERSION = 'p8-m8-nonlinear-analysis-router-v3';
 
 const DEFAULT_ADAPTERS = Object.freeze({
   [NONLINEAR_ENGINE_IDS.legacyPushover]: runLegacyPreliminaryPushover,
   [NONLINEAR_ENGINE_IDS.legacySdofNlth]: (_model, settings) => runLegacySdofNewmarkTrace(settings),
   [NONLINEAR_ENGINE_IDS.productionPushover]: (model, settings, context) => runProductionPushover(
+    model,
+    context.analysisCase,
+    { ...settings, ...context.options },
+  ),
+  [NONLINEAR_ENGINE_IDS.productionNlth]: (model, settings, context) => runProductionNlth(
     model,
     context.analysisCase,
     { ...settings, ...context.options },
@@ -53,7 +59,7 @@ export function validateNonlinearAnalysisCase(analysisCase = {}, settings = {}) 
 export function runNonlinearAnalysisCase(model, analysisCase = {}, settings = {}, options = {}) {
   const validation = validateNonlinearAnalysisCase(analysisCase, settings);
   if (!validation.ok) return blockedResult(analysisCase, validation);
-  if (analysisCase.engineId === NONLINEAR_ENGINE_IDS.productionPushover) {
+  if ([NONLINEAR_ENGINE_IDS.productionPushover, NONLINEAR_ENGINE_IDS.productionNlth].includes(analysisCase.engineId)) {
     return blockedResult(analysisCase, {
       ...validation,
       ok: false,
