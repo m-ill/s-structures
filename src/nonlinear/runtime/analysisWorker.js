@@ -1,7 +1,7 @@
 import { createWorkerCore } from './workerCore.js';
 import { WORKER_TASK_TYPES } from './protocol.js';
 
-export const ANALYSIS_WORKER_VERSION = 'p8-m8-analysis-worker-v3';
+export const ANALYSIS_WORKER_VERSION = 'p8-m10-analysis-worker-v4';
 
 export async function createAvailableWasmSparseBackend(options = {}) {
   let factory = options.createWasmSparseBackend
@@ -50,6 +50,26 @@ export async function handleBuiltInAnalysisTask(task, context) {
     const module = await import('../fiber/fiberPmmPreprocessor.js');
     return module.runFiberPmmWorkerTask(task.payload, context);
   }
+  if (task.type === WORKER_TASK_TYPES.runProductionPushover) {
+    const module = await import('../pushover/productionPushover.js');
+    const payload = task.payload && typeof task.payload === 'object' ? task.payload : {};
+    return module.runProductionPushover(payload.model || {}, payload.analysisCase || {}, {
+      ...(payload.options || {}),
+      backend: context.backend,
+      signal: context.signal,
+      isCancelled: context.isCancellationRequested,
+      onProgress(progress) {
+        if (['displacement-step-accepted', 'arc-length-step-accepted'].includes(progress?.type)) {
+          context.commitBoundary({
+            task: WORKER_TASK_TYPES.runProductionPushover,
+            step: progress.step,
+            lambda: progress.lambda,
+          });
+        }
+        context.reportProgress(progress);
+      },
+    });
+  }
   if (task.type === WORKER_TASK_TYPES.runMdofNlth) {
     const module = await import('../dynamics/productionNlth.js');
     const payload = task.payload && typeof task.payload === 'object' ? task.payload : {};
@@ -68,6 +88,7 @@ export async function handleBuiltInAnalysisTask(task, context) {
           integrityHash: checkpoint.integrityHash,
           committedHash: checkpoint.committedHash,
           time: checkpoint.committed?.time || 0,
+          checkpoint,
         });
       },
       onCommit(detail) {

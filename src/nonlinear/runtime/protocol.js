@@ -1,4 +1,4 @@
-export const WORKER_PROTOCOL_VERSION = 'p8-m8-worker-protocol-v3';
+export const WORKER_PROTOCOL_VERSION = 'p8-m10-worker-protocol-v4';
 
 export const WORKER_REQUEST_TYPES = Object.freeze({
   run: 'RUN',
@@ -20,6 +20,7 @@ export const WORKER_TASK_TYPES = Object.freeze({
   echo: 'ECHO',
   solveSystem: 'SOLVE_SYSTEM',
   buildFiberPmm: 'BUILD_FIBER_PMM',
+  runProductionPushover: 'RUN_PRODUCTION_PUSHOVER',
   runMdofNlth: 'RUN_MDOF_NLTH',
 });
 
@@ -35,6 +36,9 @@ const TASK_TYPE_ALIASES = new Map([
   ['SOLVE-SYSTEM', WORKER_TASK_TYPES.solveSystem],
   ['BUILD_FIBER_PMM', WORKER_TASK_TYPES.buildFiberPmm],
   ['BUILD-FIBER-PMM', WORKER_TASK_TYPES.buildFiberPmm],
+  ['RUN_PRODUCTION_PUSHOVER', WORKER_TASK_TYPES.runProductionPushover],
+  ['RUN-PRODUCTION-PUSHOVER', WORKER_TASK_TYPES.runProductionPushover],
+  ['RUN_PUSHOVER', WORKER_TASK_TYPES.runProductionPushover],
   ['RUN_MDOF_NLTH', WORKER_TASK_TYPES.runMdofNlth],
   ['RUN-MDOF-NLTH', WORKER_TASK_TYPES.runMdofNlth],
 ]);

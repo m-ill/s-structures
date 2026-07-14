@@ -1,4 +1,4 @@
-export const INDEX_AGENT_COMMAND_BRIDGE_VERSION = 'm31-agent-command-bridge';
+export const INDEX_AGENT_COMMAND_BRIDGE_VERSION = 'p8-m10-agent-command-bridge';
 export const AGENT_COMMAND_EVENT = 'sstructures:agent-command';
 export const AGENT_RESPONSE_EVENT = 'sstructures:agent-response';
 export const AGENT_COMMAND_MESSAGE_TYPE = 'sstructures:agent-command';
@@ -70,6 +70,27 @@ const READ_METHODS = new Set([
   'getRigidDiaphragmBenchmark',
   'getBaselineContract',
   'getRuntimeDiagnostics',
+  'validateProductionNonlinearCase',
+  'getNonlinearRunStatus',
+  'listNonlinearRuns',
+  'getNonlinearRunGraph',
+  'getNonlinearResult',
+  'getNonlinearResultSlice',
+  'explainNonlinearFailure',
+  'exportNonlinearHistory',
+  'getNonlinearReport',
+]);
+
+const MUTATING_METHODS = new Set([
+  'validateNonlinearCase',
+  'createProductionNonlinearCase',
+  'previewNonlinearAssignments',
+  'applyNonlinearAssignments',
+  'startNonlinearRun',
+  'pauseNonlinearRun',
+  'cancelNonlinearRun',
+  'resumeNonlinearRun',
+  'retryNonlinearRun',
 ]);
 
 export function installIndexAgentCommandBridge(target = globalThis, agent = target?.SStructuresAgent) {
@@ -107,6 +128,7 @@ export function installIndexAgentCommandBridge(target = globalThis, agent = targ
         ready: true,
         availableMethods: [
           ...READ_METHODS,
+          ...MUTATING_METHODS,
           'execute',
           'runAnalysis',
           'runPushover',
@@ -195,6 +217,7 @@ function runAgentCommand(agent, command) {
   if (command.method === 'runAnalysis') return agent.runAnalysis();
   if (command.method === 'runPushover') return agent.runPushover(command.payload || {});
   if (READ_METHODS.has(command.method)) return agent[command.method](command.payload || {});
+  if (MUTATING_METHODS.has(command.method)) return agent[command.method](command.payload || {});
   throw new Error(`Unsupported agent API method: ${command.method}`);
 }
 

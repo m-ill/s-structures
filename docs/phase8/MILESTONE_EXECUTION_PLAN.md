@@ -531,6 +531,8 @@ Phase 7에서 지원하는 실제 모델 기능이 비선형 도메인과 결과
 
 ## P8-M10 - 실무 UI, 결과 시각화, 보고서, agent/MCP 계약
 
+**상태: complete (2026-07-14).** 구현·검증 범위는 workflow/API `candidate`이며 P8-M11 독립검증 전 설계전달은 계속 차단한다.
+
 ### 목표
 
 사용자가 비선형 해석의 준비, 실행, 실패 수정, 결과판독을 한 흐름에서 수행하게 한다.
@@ -570,6 +572,8 @@ Phase 7에서 지원하는 실제 모델 기능이 비선형 도메인과 결과
 - 실패 이유와 수정 가능한 입력이 사용자에게 연결됨
 - 1366x768, 1920x1080, 2560x1440, tablet viewport에서 겹침과 잘림 없음
 - `NL-UI-01`~`NL-UI-14`, `NL-API-01`~`NL-API-10` 통과
+
+완료 증거는 `reports/validation-evidence/phase8/p8-m10-ui-api.json`, `reports/validation-evidence/phase8/p8-m10-code-review.md`, `docs/phase8/adr/ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md`에 고정한다. 공통 application service가 UI와 Agent/MCP의 case/settings/engine/qualification을 통일하고, 실제 브라우저 viewport 검토와 전체 Phase 8 회귀를 함께 통과해야 한다.
 
 ## P8-M11 - 독립 검증, 성능, 대표 프로젝트 pilot, 최종 리뷰
 

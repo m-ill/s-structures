@@ -13,6 +13,8 @@ import { INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION } from './indexNativeAdvancedAna
 import { INDEX_ANALYSIS_CENTER_VERSION } from './indexAnalysisCenter.js';
 import { ELASTIC_SETUP_WORKFLOW_VERSION } from './indexElasticSetupWorkflow.js';
 import { ELASTIC_RESULT_POPUP_VERSION } from './indexElasticResultPopup.js';
+import { NONLINEAR_WORKFLOW_UI_VERSION } from './indexNonlinearWorkflow.js';
+import { NONLINEAR_RESULT_POPUP_VERSION } from './indexNonlinearResultPopup.js';
 import { ELASTIC_RESULT_VISUALIZATION_VERSION } from './elasticResultVisualization.js';
 import { ANALYSIS_RUNNER_VERSION } from './analysisRunners.js';
 import { INDEX_RESULT_CASE_VIEW_VERSION } from './indexResultViews.js';
@@ -237,9 +239,18 @@ import {
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
+import {
+  NONLINEAR_HISTORY_EXPORT_VERSION,
+  NONLINEAR_PRODUCT_CASE_VERSION,
+  NONLINEAR_PRODUCT_JOB_VERSION,
+  NONLINEAR_PRODUCT_PREFLIGHT_VERSION,
+  NONLINEAR_PRODUCT_REPORT_VERSION,
+  NONLINEAR_PRODUCT_SERVICE_VERSION,
+  NONLINEAR_RESULT_ACCESS_VERSION,
+} from '../nonlinear/product/index.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m9-agent-capability-manifest-v12';
+export const AGENT_MANIFEST_VERSION = 'p8-m10-agent-capability-manifest-v13';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -264,6 +275,8 @@ export function buildAgentManifest(options = {}) {
       phase7ElasticSetupWorkflow: ELASTIC_SETUP_WORKFLOW_VERSION,
       phase7ElasticResultPopup: ELASTIC_RESULT_POPUP_VERSION,
       phase7ElasticResultVisualization: ELASTIC_RESULT_VISUALIZATION_VERSION,
+      phase8NonlinearWorkflow: NONLINEAR_WORKFLOW_UI_VERSION,
+      phase8NonlinearResultPopup: NONLINEAR_RESULT_POPUP_VERSION,
       phase5AnalysisRunners: ANALYSIS_RUNNER_VERSION,
       phase5ResultCaseViews: INDEX_RESULT_CASE_VIEW_VERSION,
       phase5ResultCharts: RESULT_CHARTS_VERSION,
@@ -463,6 +476,13 @@ export function buildAgentManifest(options = {}) {
       phase8IntegratedResult: NONLINEAR_INTEGRATED_RESULT_VERSION,
       phase8ResultAdapter: NONLINEAR_RESULT_ADAPTER_VERSION,
       phase8IntegrationGovernance: NONLINEAR_INTEGRATION_GOVERNANCE_VERSION,
+      phase8NonlinearProductCase: NONLINEAR_PRODUCT_CASE_VERSION,
+      phase8NonlinearProductPreflight: NONLINEAR_PRODUCT_PREFLIGHT_VERSION,
+      phase8NonlinearProductJob: NONLINEAR_PRODUCT_JOB_VERSION,
+      phase8NonlinearProductService: NONLINEAR_PRODUCT_SERVICE_VERSION,
+      phase8NonlinearResultAccess: NONLINEAR_RESULT_ACCESS_VERSION,
+      phase8NonlinearHistoryExport: NONLINEAR_HISTORY_EXPORT_VERSION,
+      phase8NonlinearProductReport: NONLINEAR_PRODUCT_REPORT_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
     },
     nonlinear: {
@@ -505,6 +525,13 @@ export function buildAgentManifest(options = {}) {
         mdofNewmark: MDOF_NEWMARK_VERSION,
         productionNlth: PRODUCTION_NLTH_VERSION,
         productionNlthEngine: PRODUCTION_NLTH_ENGINE_VERSION,
+        productCase: NONLINEAR_PRODUCT_CASE_VERSION,
+        productPreflight: NONLINEAR_PRODUCT_PREFLIGHT_VERSION,
+        productJob: NONLINEAR_PRODUCT_JOB_VERSION,
+        productService: NONLINEAR_PRODUCT_SERVICE_VERSION,
+        resultAccess: NONLINEAR_RESULT_ACCESS_VERSION,
+        historyExport: NONLINEAR_HISTORY_EXPORT_VERSION,
+        calculationReport: NONLINEAR_PRODUCT_REPORT_VERSION,
         corotationalFrame3d: COROTATIONAL_FRAME_3D_VERSION,
         corotationalFrame3dState: COROTATIONAL_FRAME_3D_STATE_VERSION,
         corotationalTruss3d: COROTATIONAL_TRUSS_3D_VERSION,
@@ -609,6 +636,17 @@ export function buildAgentManifest(options = {}) {
       'getAnalysisCaseResult',
       'getRuntimeDiagnostics',
       'getCapabilities',
+      'validateProductionNonlinearCase',
+      'createProductionNonlinearCase',
+      'previewNonlinearAssignments',
+      'getNonlinearRunStatus',
+      'listNonlinearRuns',
+      'getNonlinearRunGraph',
+      'getNonlinearResult',
+      'getNonlinearResultSlice',
+      'exportNonlinearHistory',
+      'explainNonlinearFailure',
+      'getNonlinearReport',
       'DOM event: sstructures:agent-command',
       'window.postMessage: sstructures:agent-command',
       'URL hash: #sstructures-command=',
@@ -983,6 +1021,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P8-M7', status: 'candidate', feature: 'Crisfield spherical arc-length continuation, deterministic branch selection, cyclic static protocols, rollback, checkpoint restart, and GPU-ready backend policy' },
       { id: 'P8-M8', status: 'candidate', feature: 'gravity-preloaded 3D MDOF nonlinear time history with model mass, Rayleigh damping, multi-component ground motion, full Newton Newmark integration, substep rollback, streaming history, and restart' },
       { id: 'P8-M9', status: 'candidate', feature: 'canonical Phase 7 feature integration, support spring and settlement assembly, unified node/member/story/origin recovery, stale propagation, and design-transfer guard' },
+      { id: 'P8-M10', status: 'candidate', feature: 'shared production workflow, Worker job lifecycle, Pushover/NLTH result popup, calculation report, raw history export, and Agent/MCP parity' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },

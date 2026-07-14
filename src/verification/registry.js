@@ -1,4 +1,4 @@
-export const VERIFICATION_REGISTRY_VERSION = 'p8-m9-verification-registry-v10';
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m10-verification-registry-v11';
 export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
 export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
 
@@ -185,6 +185,20 @@ export const PHASE8_VERIFICATION_SUITES = Object.freeze([
       'NL-MEI-09', 'NL-MEI-10', 'NL-MEI-11', 'NL-MEI-12',
       'NL-MEI-13', 'NL-MEI-14', 'NL-MEI-15', 'NL-MEI-16',
       'NL-MEI-17', 'NL-MEI-18', 'NL-MEI-19', 'NL-MEI-20',
+    ]),
+  }),
+  Object.freeze({
+    id: 'P8-M10-UI-API',
+    milestone: 'P8-M10',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-UI-01', 'NL-UI-02', 'NL-UI-03', 'NL-UI-04',
+      'NL-UI-05', 'NL-UI-06', 'NL-UI-07', 'NL-UI-08',
+      'NL-UI-09', 'NL-UI-10', 'NL-UI-11', 'NL-UI-12',
+      'NL-UI-13', 'NL-UI-14',
+      'NL-API-01', 'NL-API-02', 'NL-API-03', 'NL-API-04',
+      'NL-API-05', 'NL-API-06', 'NL-API-07', 'NL-API-08',
+      'NL-API-09', 'NL-API-10',
     ]),
   }),
 ]);

@@ -35,7 +35,7 @@ try {
   assert.match(rootHtml, /S-Structures/);
   assert.match(rootHtml, /src\/ui\/indexBridge\.js/);
   assert.match(rootHtml, /SStructuresNativeRuntime/);
-  assert.match(rootHtml, /src\/ui\/indexBridge\.js\?runtime=p7-final-2/);
+  assert.match(rootHtml, /src\/ui\/indexBridge\.js\?runtime=p8-m10-\d+/);
   assert.match(rootHtml, /id="canvasWrap"/);
 
   const bridgeResponse = await fetch(`${baseUrl}/src/ui/indexBridge.js`);
@@ -43,6 +43,7 @@ try {
   assert.match(bridgeResponse.headers.get('content-type') || '', /javascript/);
   const bridgeText = await bridgeResponse.text();
   assert.match(bridgeText, /installIndexEngineBridge/);
+  assert.match(bridgeText, /p8-m10-index-engine-bridge/);
 
   assert.match(stdout, /S-Structures server/);
 

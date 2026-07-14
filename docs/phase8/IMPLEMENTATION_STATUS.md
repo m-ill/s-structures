@@ -3,16 +3,16 @@
 ```yaml
 reviewed_at: 2026-07-14
 phase_status: active
-implementation_status: p8-m9-complete
+implementation_status: p8-m10-complete
 release_status: unavailable
 production_equivalence: Q1-static-and-dynamic-component-candidate
-completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1, P8-M7, P8-M8, P8-M9]
-active_milestone: P8-M10
+completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1, P8-M7, P8-M8, P8-M9, P8-M10]
+active_milestone: P8-M11
 ```
 
 ## 현재 판정
 
-P8-M0~P8-M9는 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상태기반 3D 요소를 실제 모델 질량·감쇠·지진파와 결합해 MDOF Newmark full-Newton NLTH production 후보 경로에 연결했다. M9는 Phase 7 모델 기능을 같은 canonical domain에 결속하고 지점 스프링·침하, 통합 node/member/story 결과, generated-origin, stale 판정, run record와 설계전달 guard를 production Pushover/NLTH에 연결했다. 지원하지 않는 조합은 stable reason code로 실행 전에 차단한다.
+P8-M0~P8-M10은 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상태기반 3D 요소를 실제 모델 질량·감쇠·지진파와 결합해 MDOF Newmark full-Newton NLTH production 후보 경로에 연결했다. M9는 Phase 7 모델 기능을 같은 canonical domain에 결속하고 지점 스프링·침하, 통합 node/member/story 결과, generated-origin, stale 판정, run record와 설계전달 guard를 production Pushover/NLTH에 연결했다. M10은 이 경로를 7단계 실무 workflow, Worker job 제어, Pushover/NLTH 결과 popup, 계산서와 동일한 Agent/MCP 계약으로 연결했다. 지원하지 않는 조합은 stable reason code로 실행 전에 차단한다.
 
 현재 제품 등급은 여전히 Q0다. `commercial-grade within supported scope` 판정은 [PRODUCTION_REQUIREMENTS.md](PRODUCTION_REQUIREMENTS.md)의 Q1~Q5를 모두 통과한 기능 범위에만 부여한다.
 
@@ -20,7 +20,7 @@ P8-M0~P8-M9는 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상�
 | --- | --- | --- |
 | 기존 Pushover | 실행 가능 | `legacy-preliminary`, 설계전달 차단 |
 | 기존 SDOF Newmark NLTH | 실행 가능 | `legacy-preliminary`, model-bound 아님, 설계전달 차단 |
-| displacement/arc-length UI | 변위제어 기존 경로, arc/cyclic 전용 workflow 미구현 | solver/API `candidate`, 통합 UI는 P8-M10 |
+| displacement/arc-length UI | 7단계 production workflow와 Pushover/NLTH 결과 popup 구현 | workflow/API `candidate`, 설계전달 차단 |
 | production nonlinear engine ID | 구현 | M5 정식 정적 Pushover `candidate`, legacy fallback 금지 |
 | schema v5 nonlinear registry | 구현 및 migration 검증 | P8-M0 완료 |
 | nonlinear case/run-record 계약 | 구현 및 UI/report/Agent 전파 | P8-M0 완료 |
@@ -41,6 +41,7 @@ P8-M0~P8-M9는 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상�
 | arc-length·cyclic static | 실제 augmented solve와 상태이력 구현 | P8-M7 `candidate`, 설계전달 차단 |
 | 3D frame MDOF NLTH | 구현 | P8-M8 `candidate`, 설계전달 차단, 독립 상용 비교는 P8-M11 |
 | 모델 기능 통합·결과 복구 | 구현 | P8-M9 `candidate`, 지원범위 preflight·origin/stale·설계전달 차단 |
+| 실무 UI·보고·Agent/MCP | 구현 | P8-M10 workflow-complete, 동일 settings/engine/qualification, 설계전달 차단 |
 | Worker/WASM sparse runtime | 자체 Rust/WASM, zero import, Worker/preflight/cancel 구현 | P8-M2 기반 완료, 대형모델 성능 미검증 |
 
 ## M0~M4 완료 증거
@@ -161,13 +162,25 @@ M9 증거:
 - ADR: [ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md](adr/ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md)
 - 코드 리뷰: [p8-m9-code-review.md](../../reports/validation-evidence/phase8/p8-m9-code-review.md)
 
+M10 증거:
+
+- 제품 서비스: `src/nonlinear/product/`의 case/preflight/job/result/report 공통 계약
+- 실행 표면: `src/ui/indexNonlinearWorkflow.js`, `indexNonlinearResultPopup.js`, Worker Pushover/NLTH routing
+- 실무 흐름: 기존 재료·단면·하중·질량 편집기 재사용, 7단계 setup, 진행·pause/cancel/retry, 실패 조치 연결
+- 결과: Pushover 용량곡선·step·층/부재/힌지, NLTH 시간이력·에너지·수렴, raw CSV/JSON, stale/current/history 계보
+- 자동화: Index bridge, Agent API와 command bridge가 동일 product service 사용
+- 검증: `NL-UI-01~14`, `NL-API-01~10`
+- evidence: [p8-m10-ui-api.json](../../reports/validation-evidence/phase8/p8-m10-ui-api.json)
+- ADR: [ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md](adr/ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md)
+- 코드 리뷰: [p8-m10-code-review.md](../../reports/validation-evidence/phase8/p8-m10-code-review.md)
+
 ## Production 등급 현황
 
 | 등급 | 상태 | 미충족 핵심 |
 | --- | --- | --- |
 | Q1 Numerically Qualified | in-progress | corotational·집중소성·fiber/PMM·MDOF dynamic component 완료, 외부 benchmark 미완료 |
 | Q2 Model-Integrated | candidate | 지원 범위의 canonical identity·결과 ID·origin/stale 계약 완료; 외부 비교와 pilot 전 설계전달 차단 |
-| Q3 Workflow-Complete | not-started | initial-state DAG, 실패복구, 결과/보고/API |
+| Q3 Workflow-Complete | complete | M10 UI/API/보고 workflow 통과; 수치 독립검증은 Q1/Q5와 별도 |
 | Q4 Scale-Qualified | in-progress | Worker/WASM 기반 완료, M-tier budget·streaming·pilot 미완료 |
 | Q5 Commercial-Grade in Scope | unavailable | 독립 pilot와 전체 release gate |
 
@@ -186,11 +199,11 @@ M9 증거:
 | P8-M7 arc-length·cyclic static | complete | NL-ARC-01~10, NL-CYC-01~06, ADR-007, M7 code review |
 | P8-M8 MDOF NLTH | complete | NL-DYN-01~16, ADR-008, M8 evidence/code review |
 | P8-M9 모델 기능 통합·결과회복 | complete | NL-INT-01~16, NL-MEI-01~20, ADR-009, M9 evidence/code review |
-| P8-M10 UI·보고·Agent 계약 | planned | 없음 |
+| P8-M10 UI·보고·Agent 계약 | complete | NL-UI-01~14, NL-API-01~10, ADR-011, M10 evidence/code review |
 | P8-M11 독립검증·성능·pilot | planned | 없음 |
 
 상태는 코드, 테스트, 검증 artifact, 코드 리뷰가 모두 끝난 뒤에만 `complete`로 변경한다.
 
 ## 다음 작업
 
-P8-M10은 M9 capability, integrated-result, provenance, stale-result 계약을 사용하여 production UI, 보고서, agent/MCP workflow를 완성한다.
+P8-M11은 독립 기준해·외부 비교, 대표 규모 성능과 메모리, 장시간 취소/재시작, 실제 프로젝트 pilot 및 최종 release manifest를 수행한다. M10 완료는 수치 결과의 `verified` 승격을 의미하지 않는다.

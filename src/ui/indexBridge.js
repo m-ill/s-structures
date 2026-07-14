@@ -25,6 +25,7 @@ import {
   createHtmlReport,
   estimateModelLoads,
   getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
+  migrateToCurrent,
   migrateToV3,
   runMemberReleaseBenchmark,
   runRigidDiaphragmBenchmark,
@@ -39,8 +40,12 @@ import {
 } from '../core/analysisCase.js';
 import {
   runAnalysisCase as runCoreAnalysisCase,
+  runAnalysisCaseAsync as runCoreAnalysisCaseAsync,
   runAnalysisCases as runCoreAnalysisCases,
+  runAnalysisCasesAsync as runCoreAnalysisCasesAsync,
 } from './analysisRunners.js';
+import { createNonlinearProductService } from '../nonlinear/product/jobManager.js';
+import { nonlinearProductModelHash } from '../nonlinear/product/preflight.js';
 import {
   ensurePhase7AnalysisState,
   findPhase7AnalysisRun,
@@ -70,6 +75,8 @@ import { installIndexAgentCommandBridge } from './indexAgentCommandBridge.js';
 import { installIndexRuntimeAdapter } from './indexRuntimeAdapter.js';
 import { installElasticSetupWorkflow } from './indexElasticSetupWorkflow.js';
 import { installElasticResultPopup } from './indexElasticResultPopup.js';
+import { installNonlinearWorkflow } from './indexNonlinearWorkflow.js';
+import { installNonlinearResultPopup } from './indexNonlinearResultPopup.js';
 import { buildAgentManifest } from './agentManifest.js';
 import { normalizeIndexResult } from './indexResultCompatibility.js';
 import { decorateAgentControls, listAgentControls } from './indexAgentControlsDom.js';
@@ -83,7 +90,7 @@ import {
   installDetailedReportMenuHook,
 } from './indexReportHooks.js';
 
-export const INDEX_BRIDGE_VERSION = 'm9-index-engine-bridge';
+export const INDEX_BRIDGE_VERSION = 'p8-m10-index-engine-bridge';
 export { INDEX_LEGACY_RESULT_SHAPE_VERSION, normalizeIndexResult } from './indexResultCompatibility.js';
 export { decorateAgentControls, listAgentControls } from './indexAgentControlsDom.js';
 export { createIndexAgentApi } from './indexAgentApi.js';
@@ -115,6 +122,7 @@ export function installIndexEngineBridge(target = globalThis) {
 
   ensurePhase7AnalysisState(target);
   let lastResult = null;
+  let nonlinearProductService = null;
   const bridge = {
     version: INDEX_BRIDGE_VERSION,
     legacy,
@@ -328,6 +336,13 @@ export function installIndexEngineBridge(target = globalThis) {
       const result = runCoreAnalysisCase(model, analysisCase, { bridge });
       return storeAnalysisResult(target, model, analysisCase, result);
     },
+    async runAnalysisCaseAsync(input = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      const analysisCase = resolveAnalysisCase(model, input);
+      const result = await runCoreAnalysisCaseAsync(model, analysisCase, { bridge, ...(input.options || {}) });
+      return storeAnalysisResult(target, model, analysisCase, result);
+    },
     runAnalysisCases(input = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return [];
@@ -337,6 +352,112 @@ export function installIndexEngineBridge(target = globalThis) {
         const analysisCase = (model.analysisCases || []).find((item) => item.id === result.caseId) || { id: result.caseId, kind: result.kind };
         return storeAnalysisResult(target, model, analysisCase, result);
       });
+    },
+    async runAnalysisCasesAsync(input = {}) {
+      const model = bridge.getCurrentModel();
+      if (!model) return [];
+      const cases = Array.isArray(input) ? input : (input.cases || model.analysisCases || []);
+      const results = await runCoreAnalysisCasesAsync(model, cases, { bridge, ...(input.options || {}) });
+      return results.map((result) => {
+        const analysisCase = (model.analysisCases || []).find((item) => item.id === result.caseId) || { id: result.caseId, kind: result.kind };
+        return storeAnalysisResult(target, model, analysisCase, result);
+      });
+    },
+    getNonlinearProductService() {
+      if (!nonlinearProductService) {
+        nonlinearProductService = createNonlinearProductService({
+          getModel: () => prepareNonlinearProductModel(bridge.getCurrentModel()),
+          getRunRecords: () => getPhase7AnalysisRunStore(target),
+          requireWorker: Boolean(target.document),
+          onReplaceModel(nextModel, currentModel) {
+            replaceModelContents(bridge.getCurrentModel() || currentModel, nextModel);
+            bridge.markAnalysisCasesStale('nonlinear-properties-changed');
+            bridge.reanalyze();
+          },
+          onPublishResult({ job, model, analysisCase, result }) {
+            const currentModel = bridge.getCurrentModel();
+            const recordModel = currentModel && nonlinearProductModelHash(currentModel) === job.modelHash
+              ? currentModel
+              : model;
+            const published = storeAnalysisResult(target, recordModel, analysisCase, result);
+            return {
+              ok: true,
+              caseId: published.caseId || analysisCase.id,
+              runRecordId: published.runRecordId || null,
+              status: published.status || null,
+              qualification: published.qualification || null,
+              designBlocked: published.designBlocked === true,
+            };
+          },
+        });
+        target.SStructuresNonlinearProductService = nonlinearProductService;
+      }
+      return nonlinearProductService;
+    },
+    validateProductionNonlinearCase(input = {}) {
+      const model = prepareNonlinearProductModel(bridge.getCurrentModel());
+      return bridge.getNonlinearProductService().validate({ ...input, model });
+    },
+    createProductionNonlinearCase(input = {}) {
+      const model = prepareNonlinearProductModel(bridge.getCurrentModel());
+      if (!model) return null;
+      const analysisCase = bridge.getNonlinearProductService().createCase({ ...input, model });
+      upsertAnalysisCase(model, analysisCase);
+      target.SStructuresAnalysisCenter?.refresh?.();
+      return analysisCase;
+    },
+    previewNonlinearAssignments(input = {}) {
+      const model = prepareNonlinearProductModel(bridge.getCurrentModel());
+      return bridge.getNonlinearProductService().previewAssignments({ ...input, model });
+    },
+    applyNonlinearAssignments(changeSet, input = {}) {
+      const model = prepareNonlinearProductModel(bridge.getCurrentModel());
+      return bridge.getNonlinearProductService().applyAssignments(changeSet, { ...input, model });
+    },
+    startNonlinearRun(input = {}) {
+      const model = prepareNonlinearProductModel(bridge.getCurrentModel());
+      if (!model) return null;
+      let analysisCase = input.analysisCase || null;
+      if (!analysisCase && input.caseId) analysisCase = (model.analysisCases || []).find((row) => row.id === input.caseId) || null;
+      if (!analysisCase) analysisCase = bridge.createProductionNonlinearCase(input);
+      else upsertAnalysisCase(model, analysisCase);
+      return bridge.getNonlinearProductService().start({ ...input, model, analysisCase });
+    },
+    pauseNonlinearRun(jobId) {
+      return bridge.getNonlinearProductService().pause(jobId);
+    },
+    cancelNonlinearRun(jobId) {
+      return bridge.getNonlinearProductService().cancel(jobId);
+    },
+    resumeNonlinearRun(jobId, input = {}) {
+      return bridge.getNonlinearProductService().resume(jobId, input);
+    },
+    retryNonlinearRun(jobId, input = {}) {
+      return bridge.getNonlinearProductService().retry(jobId, input);
+    },
+    getNonlinearRunStatus(jobId, input = {}) {
+      return bridge.getNonlinearProductService().getStatus(jobId, input);
+    },
+    listNonlinearRuns(input = {}) {
+      return bridge.getNonlinearProductService().listJobs(input);
+    },
+    getNonlinearRunGraph(input = {}) {
+      return bridge.getNonlinearProductService().getRunGraph(input);
+    },
+    getNonlinearResult(jobId) {
+      return bridge.getNonlinearProductService().getResult(jobId);
+    },
+    getNonlinearResultSlice(jobId, query = {}) {
+      return bridge.getNonlinearProductService().getResultSlice(jobId, query);
+    },
+    exportNonlinearHistory(jobId, input = {}) {
+      return bridge.getNonlinearProductService().exportHistory(jobId, input);
+    },
+    explainNonlinearFailure(jobId) {
+      return bridge.getNonlinearProductService().explainFailure(jobId);
+    },
+    getNonlinearReport(jobId, input = {}) {
+      return bridge.getNonlinearProductService().getReport(jobId, input);
     },
     getAnalysisResults() {
       return target.__SStructuresAnalysisResults || {};
@@ -451,6 +572,8 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.elasticSetupWorkflow = installElasticSetupWorkflow(target, { bridge });
     bridge.floatingPanels = installIndexFloatingPanels(target);
     bridge.elasticResultPopup = installElasticResultPopup(target, { bridge });
+    bridge.nonlinearResultPopup = installNonlinearResultPopup(target, { bridge });
+    bridge.nonlinearWorkflow = installNonlinearWorkflow(target, { bridge });
     bridge.productHardening = installIndexProductHardening(target, { bridge });
     bridge.agentCommandBridge = installIndexAgentCommandBridge(target, target.SStructuresAgent);
     bridge.detailedReportMenu = installDetailedReportMenuHook(target, bridge);
@@ -503,6 +626,43 @@ function resolveAnalysisCase(model, input = {}) {
   }
   return normalizeAnalysisCase(input.analysisCase || input);
 }
+
+function upsertAnalysisCase(model, analysisCase) {
+  model.analysisCases ||= [];
+  const index = model.analysisCases.findIndex((row) => row.id === analysisCase.id);
+  if (index >= 0) model.analysisCases[index] = normalizeAnalysisCase(analysisCase, index);
+  else model.analysisCases.push(normalizeAnalysisCase(analysisCase, model.analysisCases.length));
+  return model.analysisCases[index >= 0 ? index : model.analysisCases.length - 1];
+}
+
+function replaceModelContents(target, source) {
+  for (const key of Object.keys(target || {})) delete target[key];
+  Object.assign(target, typeof structuredClone === 'function' ? structuredClone(source) : JSON.parse(JSON.stringify(source)));
+  return target;
+}
+
+function prepareNonlinearProductModel(model) {
+  if (!model || typeof model !== 'object') return null;
+  const migrated = migrateToCurrent(model);
+  const missingCollection = NONLINEAR_PRODUCT_MODEL_COLLECTIONS.some((key) => !Array.isArray(model[key]));
+  if (model.schemaVersion !== migrated.schemaVersion || !model.unitSystem || missingCollection) {
+    replaceModelContents(model, migrated);
+  }
+  return model;
+}
+
+const NONLINEAR_PRODUCT_MODEL_COLLECTIONS = Object.freeze([
+  'analysisCases',
+  'analysisStates',
+  'diaphragms',
+  'hingeProperties',
+  'linkProperties',
+  'massSources',
+  'nonlinearMaterials',
+  'nonlinearSections',
+  'sourceRegistry',
+  'timeHistoryFunctions',
+]);
 
 function storeAnalysisResult(target, model, analysisCase, result) {
   const recorded = recordPhase7AnalysisAttempt(target, model, analysisCase, result);

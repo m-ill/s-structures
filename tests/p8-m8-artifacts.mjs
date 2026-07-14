@@ -39,9 +39,9 @@ for (const version of [
   PRODUCTION_NLTH_VERSION,
   PRODUCTION_NLTH_ENGINE_VERSION,
 ]) assert.match(version, /^p8-m8-/);
-assert.match(ANALYSIS_RUNNER_VERSION, /^p8-m8-/);
+assertPhase8VersionAtLeast(ANALYSIS_RUNNER_VERSION, 8, 'analysis runner');
 assert.match(VERIFICATION_REGISTRY_VERSION, /^p8-m\d+-verification-registry-v\d+$/);
-assert.match(WORKER_PROTOCOL_VERSION, /^p8-m8-/);
+assertPhase8VersionAtLeast(WORKER_PROTOCOL_VERSION, 8, 'worker protocol');
 assert.equal(typeof buildMdofMassDomain, 'function');
 assert.equal(typeof runMdofNewmark, 'function');
 assert.equal(typeof runProductionNlth, 'function');
@@ -84,3 +84,9 @@ console.log(JSON.stringify({
   qualification: capability.qualification,
   nextMilestone: 'P8-M9',
 }, null, 2));
+
+function assertPhase8VersionAtLeast(version, milestone, label) {
+  const match = String(version).match(/^p8-m(\d+)-/);
+  assert.ok(match, `${label} must use a Phase 8 milestone version: ${version}`);
+  assert.ok(Number(match[1]) >= milestone, `${label} version cannot predate M${milestone}: ${version}`);
+}

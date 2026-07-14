@@ -1395,3 +1395,35 @@ export {
   recoverIntegratedNonlinearState,
   recoverNonlinearHistoryEnvelope,
 } from './nonlinear/integration/index.js';
+export {
+  NONLINEAR_HISTORY_EXPORT_VERSION,
+  NONLINEAR_PRODUCT_CASE_VERSION,
+  NONLINEAR_PRODUCT_DEFAULT_HINGE_RULE_VERSION,
+  NONLINEAR_PRODUCT_DEFAULT_HINGE_RULES,
+  NONLINEAR_PRODUCT_MODEL_HASH_VERSION,
+  NONLINEAR_PRODUCT_JOB_VERSION,
+  NONLINEAR_PRODUCT_PREFLIGHT_VERSION,
+  NONLINEAR_PRODUCT_REPORT_VERSION,
+  NONLINEAR_PRODUCT_SERVICE_VERSION,
+  NONLINEAR_PRODUCT_STAGES,
+  NONLINEAR_RESULT_ACCESS_VERSION,
+  buildNonlinearCalculationReport,
+  createNonlinearCalculationReportHtml,
+  createNonlinearProductService,
+  createProductionNonlinearCase,
+  downsampleNonlinearHistory,
+  explainNonlinearFailure,
+  exportNonlinearHistory,
+  getNonlinearResultSlice,
+  nonlinearProductModelHash,
+  paginateNonlinearHistory,
+  preflightProductionNonlinearCase,
+} from './nonlinear/product/index.js';
+export {
+  NONLINEAR_WORKFLOW_UI_VERSION,
+  installNonlinearWorkflow,
+} from './ui/indexNonlinearWorkflow.js';
+export {
+  NONLINEAR_RESULT_POPUP_VERSION,
+  installNonlinearResultPopup,
+} from './ui/indexNonlinearResultPopup.js';

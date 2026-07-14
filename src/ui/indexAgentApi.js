@@ -581,6 +581,74 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     getAnalysisCaseResult(id) {
       return cloneJson((target.__SStructuresAnalysisResults || {})[id] || null);
     },
+    validateNonlinearCase(input = {}) {
+      if (typeof bridge?.validateProductionNonlinearCase !== 'function') throw new Error('Production nonlinear service is unavailable.');
+      return cloneJson(bridge.validateProductionNonlinearCase(input));
+    },
+    validateProductionNonlinearCase(input = {}) {
+      return api.validateNonlinearCase(input);
+    },
+    createProductionNonlinearCase(input = {}) {
+      if (typeof bridge?.createProductionNonlinearCase !== 'function') throw new Error('Production nonlinear service is unavailable.');
+      return cloneJson(bridge.createProductionNonlinearCase(input));
+    },
+    previewNonlinearAssignments(input = {}) {
+      if (typeof bridge?.previewNonlinearAssignments !== 'function') throw new Error('Production nonlinear service is unavailable.');
+      return cloneJson(bridge.previewNonlinearAssignments(input));
+    },
+    applyNonlinearAssignments(input = {}) {
+      if (typeof bridge?.applyNonlinearAssignments !== 'function') throw new Error('Production nonlinear service is unavailable.');
+      const changeSet = input.changeSet || input.preview || input;
+      return cloneJson(bridge.applyNonlinearAssignments(changeSet, input.options || {}));
+    },
+    startNonlinearRun(input = {}) {
+      if (typeof bridge?.startNonlinearRun !== 'function') throw new Error('Production nonlinear service is unavailable.');
+      return cloneJson(bridge.startNonlinearRun(input));
+    },
+    pauseNonlinearRun(input = {}) {
+      const jobId = typeof input === 'string' ? input : input.jobId || input.id;
+      return cloneJson(bridge.pauseNonlinearRun(jobId));
+    },
+    cancelNonlinearRun(input = {}) {
+      const jobId = typeof input === 'string' ? input : input.jobId || input.id;
+      return cloneJson(bridge.cancelNonlinearRun(jobId));
+    },
+    resumeNonlinearRun(input = {}) {
+      const jobId = typeof input === 'string' ? input : input.jobId || input.id;
+      return cloneJson(bridge.resumeNonlinearRun(jobId, typeof input === 'object' ? input : {}));
+    },
+    retryNonlinearRun(input = {}) {
+      const jobId = typeof input === 'string' ? input : input.jobId || input.id;
+      return cloneJson(bridge.retryNonlinearRun(jobId, typeof input === 'object' ? input : {}));
+    },
+    getNonlinearRunStatus(input = {}) {
+      const jobId = typeof input === 'string' ? input : input.jobId || input.id;
+      return cloneJson(bridge.getNonlinearRunStatus(jobId, typeof input === 'object' ? input : {}));
+    },
+    listNonlinearRuns(input = {}) {
+      return cloneJson(bridge.listNonlinearRuns(input));
+    },
+    getNonlinearRunGraph(input = {}) {
+      return cloneJson(bridge.getNonlinearRunGraph(input));
+    },
+    getNonlinearResult(input = {}) {
+      const jobId = typeof input === 'string' ? input : input.jobId || input.id;
+      return cloneJson(bridge.getNonlinearResult(jobId));
+    },
+    getNonlinearResultSlice(input = {}) {
+      const jobId = input.jobId || input.id;
+      return cloneJson(bridge.getNonlinearResultSlice(jobId, input.query || input));
+    },
+    explainNonlinearFailure(input = {}) {
+      const jobId = typeof input === 'string' ? input : input.jobId || input.id;
+      return cloneJson(bridge.explainNonlinearFailure(jobId));
+    },
+    exportNonlinearHistory(input = {}) {
+      return cloneJson(bridge.exportNonlinearHistory(input.jobId || input.id, input));
+    },
+    getNonlinearReport(input = {}) {
+      return cloneJson(bridge.getNonlinearReport(input.jobId || input.id, input));
+    },
     markAnalysisCasesStale(reason = 'model-changed') {
       const changed = markAnalysisCenterCasesStale(target, bridge, reason);
       target.SStructuresAnalysisCenter?.refresh?.();
@@ -664,6 +732,40 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         }
         case 'getAnalysisCaseResult':
           return { analysisResult: api.getAnalysisCaseResult(payload.id || payload.caseId || payload) };
+        case 'validateNonlinearCase':
+          return { preflight: api.validateNonlinearCase(payload) };
+        case 'createProductionNonlinearCase':
+          return { analysisCase: api.createProductionNonlinearCase(payload) };
+        case 'previewNonlinearAssignments':
+          return { assignmentPreview: api.previewNonlinearAssignments(payload) };
+        case 'applyNonlinearAssignments':
+          return { assignmentResult: api.applyNonlinearAssignments(payload) };
+        case 'startNonlinearRun':
+          return { job: api.startNonlinearRun(payload) };
+        case 'pauseNonlinearRun':
+          return { job: api.pauseNonlinearRun(payload) };
+        case 'cancelNonlinearRun':
+          return { job: api.cancelNonlinearRun(payload) };
+        case 'resumeNonlinearRun':
+          return { job: api.resumeNonlinearRun(payload) };
+        case 'retryNonlinearRun':
+          return { job: api.retryNonlinearRun(payload) };
+        case 'getNonlinearRunStatus':
+          return { job: api.getNonlinearRunStatus(payload) };
+        case 'listNonlinearRuns':
+          return { jobs: api.listNonlinearRuns(payload) };
+        case 'getNonlinearRunGraph':
+          return { graph: api.getNonlinearRunGraph(payload) };
+        case 'getNonlinearResult':
+          return { result: api.getNonlinearResult(payload) };
+        case 'getNonlinearResultSlice':
+          return { resultSlice: api.getNonlinearResultSlice(payload) };
+        case 'explainNonlinearFailure':
+          return { failure: api.explainNonlinearFailure(payload) };
+        case 'exportNonlinearHistory':
+          return { export: api.exportNonlinearHistory(payload) };
+        case 'getNonlinearReport':
+          return { report: api.getNonlinearReport(payload) };
         case 'applyKdsLoadCombinations': {
           const model = getCurrentModel(target);
           if (!model) throw new Error('Current UI model is not available.');

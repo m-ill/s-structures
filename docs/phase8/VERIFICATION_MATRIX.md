@@ -339,6 +339,8 @@ error <= absTol + relTol * referenceScale
 | NL-API-09 | stale protection | model hash mismatch 실행/조회 차단 | L4 |
 | NL-API-10 | deterministic automation | 같은 case 반복실행 주요결과 일치 | L4 |
 
+P8-M10 통과 증거는 `reports/validation-evidence/phase8/p8-m10-ui-api.json`에 고정한다. UI와 Agent/MCP는 `src/nonlinear/product/`의 동일 case/preflight/job/result/report 계약을 사용하며, M10 통과 후에도 P8-M11 독립 수치검증 전 결과는 `candidate`, `designBlocked:true`다.
+
 ## 16. 성능과 pilot
 
 | ID | 검증내용 | 합격기준 | 등급 |

@@ -10,7 +10,7 @@ import {
   runNonlinearAnalysisCaseAsync,
 } from '../nonlinear/analysisRouter.js';
 
-export const ANALYSIS_RUNNER_VERSION = 'p8-m8-analysis-runners-v4';
+export const ANALYSIS_RUNNER_VERSION = 'p8-m10-analysis-runners-v5';
 
 export function runAnalysisCase(model, analysisCase, options = {}) {
   const item = normalizeAnalysisCase(analysisCase || {});
@@ -120,6 +120,7 @@ export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}, a
     const caseControl = analysisCase.control || {};
     const lateralPattern = analysisCase.inputRefs?.lateralPattern || {};
     return {
+      ...merged,
       direction: merged.direction || caseControl.direction || lateralPattern.direction || '+x',
       controlNodeId: merged.controlNodeId || caseControl.nodeId || caseControl.controlNodeId || null,
       steps: positiveInt(merged.steps, 12),
