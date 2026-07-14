@@ -3,16 +3,16 @@
 ```yaml
 reviewed_at: 2026-07-14
 phase_status: active
-implementation_status: p8-m8-complete
+implementation_status: p8-m9-complete
 release_status: unavailable
 production_equivalence: Q1-static-and-dynamic-component-candidate
-completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1, P8-M7, P8-M8]
-active_milestone: P8-M9
+completed_milestones: [P8-M0, P8-M1, P8-M2, P8-M3, P8-M4, P8-M5, P8-M6, P8-M6.1, P8-M7, P8-M8, P8-M9]
+active_milestone: P8-M10
 ```
 
 ## 현재 판정
 
-P8-M0~P8-M8은 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상태기반 3D 요소를 실제 모델 질량·감쇠·지진파와 결합해 MDOF Newmark full-Newton NLTH production 후보 경로에 연결했다. output/internal step 분리, 실제 binary substep 재적분, rollback, checkpoint/restart, Worker chunk, 중첩 결과 envelope와 에너지 audit가 같은 실행 기록에 남는다.
+P8-M0~P8-M9는 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상태기반 3D 요소를 실제 모델 질량·감쇠·지진파와 결합해 MDOF Newmark full-Newton NLTH production 후보 경로에 연결했다. M9는 Phase 7 모델 기능을 같은 canonical domain에 결속하고 지점 스프링·침하, 통합 node/member/story 결과, generated-origin, stale 판정, run record와 설계전달 guard를 production Pushover/NLTH에 연결했다. 지원하지 않는 조합은 stable reason code로 실행 전에 차단한다.
 
 현재 제품 등급은 여전히 Q0다. `commercial-grade within supported scope` 판정은 [PRODUCTION_REQUIREMENTS.md](PRODUCTION_REQUIREMENTS.md)의 Q1~Q5를 모두 통과한 기능 범위에만 부여한다.
 
@@ -40,6 +40,7 @@ P8-M0~P8-M8은 완료되었다. M8은 M5의 중력 선행상태와 M3~M6의 상�
 | PMM 전처리 runtime | 구현 | stateless envelope, Worker, content cache, progress/cancel, source-stale guard |
 | arc-length·cyclic static | 실제 augmented solve와 상태이력 구현 | P8-M7 `candidate`, 설계전달 차단 |
 | 3D frame MDOF NLTH | 구현 | P8-M8 `candidate`, 설계전달 차단, 독립 상용 비교는 P8-M11 |
+| 모델 기능 통합·결과 복구 | 구현 | P8-M9 `candidate`, 지원범위 preflight·origin/stale·설계전달 차단 |
 | Worker/WASM sparse runtime | 자체 Rust/WASM, zero import, Worker/preflight/cancel 구현 | P8-M2 기반 완료, 대형모델 성능 미검증 |
 
 ## M0~M4 완료 증거
@@ -149,12 +150,23 @@ M8 증거:
 - 코드 리뷰: [p8-m8-code-review.md](../../reports/validation-evidence/phase8/p8-m8-code-review.md)
 - GPU 경계: M7 backend contract를 전달하되 실제 GPU kernel/parity를 주장하지 않음
 
+M9 증거:
+
+- 지원성 계약: rigid/semi-rigid diaphragm, rigid offset, local axis, 하중, 지점 스프링·침하, truss와 preliminary equivalent의 지원/경고/차단 매트릭스
+- production 연계: Pushover/NLTH 필수 preflight, 6DOF support spring tangent·내력·반력·에너지 조립
+- 결과 복구: node/member/story, 단부·station, hinge/fiber, 원본 wall/shell/diaphragm, NLTH 절대관성 층전단·history envelope와 event provenance
+- 감사·governance: global/reduced/element-node/station/release closure, 7개 canonical adapter identity, granular stale, run record와 설계전달 guard
+- 검증: `NL-INT-01~16`, `NL-MEI-01~20`
+- evidence: [p8-m9-integration-recovery.json](../../reports/validation-evidence/phase8/p8-m9-integration-recovery.json)
+- ADR: [ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md](adr/ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md)
+- 코드 리뷰: [p8-m9-code-review.md](../../reports/validation-evidence/phase8/p8-m9-code-review.md)
+
 ## Production 등급 현황
 
 | 등급 | 상태 | 미충족 핵심 |
 | --- | --- | --- |
 | Q1 Numerically Qualified | in-progress | corotational·집중소성·fiber/PMM·MDOF dynamic component 완료, 외부 benchmark 미완료 |
-| Q2 Model-Integrated | in-progress | canonical domain과 정적·NLTH 핵심경로 연결 완료, 전체 Phase 7 기능 통합은 P8-M9 |
+| Q2 Model-Integrated | candidate | 지원 범위의 canonical identity·결과 ID·origin/stale 계약 완료; 외부 비교와 pilot 전 설계전달 차단 |
 | Q3 Workflow-Complete | not-started | initial-state DAG, 실패복구, 결과/보고/API |
 | Q4 Scale-Qualified | in-progress | Worker/WASM 기반 완료, M-tier budget·streaming·pilot 미완료 |
 | Q5 Commercial-Grade in Scope | unavailable | 독립 pilot와 전체 release gate |
@@ -173,7 +185,7 @@ M8 증거:
 | P8-M6.1 PMM 전처리 runtime | complete | NL-PMM-09~14, runtime evidence, ADR-004 amendment, M6.1 code review |
 | P8-M7 arc-length·cyclic static | complete | NL-ARC-01~10, NL-CYC-01~06, ADR-007, M7 code review |
 | P8-M8 MDOF NLTH | complete | NL-DYN-01~16, ADR-008, M8 evidence/code review |
-| P8-M9 모델 기능 통합·결과회복 | planned | 없음 |
+| P8-M9 모델 기능 통합·결과회복 | complete | NL-INT-01~16, NL-MEI-01~20, ADR-009, M9 evidence/code review |
 | P8-M10 UI·보고·Agent 계약 | planned | 없음 |
 | P8-M11 독립검증·성능·pilot | planned | 없음 |
 
@@ -181,4 +193,4 @@ M8 증거:
 
 ## 다음 작업
 
-P8-M9는 rigid/semi-rigid diaphragm, spring·지정변위, release·offset, generated wall/slab, unilateral 부재와 결과 원본 매핑을 정적·NLTH production 경로에서 동일하게 통합하고 fail-closed 조합표를 완성한다.
+P8-M10은 M9 capability, integrated-result, provenance, stale-result 계약을 사용하여 production UI, 보고서, agent/MCP workflow를 완성한다.

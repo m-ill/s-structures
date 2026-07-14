@@ -49,7 +49,7 @@ Requirement
 | P8-M6.1 | M6 PMM numerical contract, M2 Worker protocol | envelope preprocessor, validated persistent cache, progress/cancel/stale guard | PMM-09~14 pass |
 | P8-M7 | Pushover/fiber | arc-length, post-peak, cyclic static | ARC/CYC pass |
 | P8-M8 | static state kernel, mass domain | MDOF direct-integration NLTH | DYN pass, performance baseline |
-| P8-M9 | all solver paths | Phase 7 feature integration, recovery, run-record v2 | INT/MEI pass |
+| P8-M9 | all solver paths | canonical capability matrix, support spring/settlement, integrated recovery, origin/stale/run-record guard | INT-01~16 and MEI-01~20 pass; `p8-m9-integration-recovery.json` |
 | P8-M10 | qualified result contracts | production UI/report/agent/MCP | UI/API pass |
 | P8-M11 | integrated product | independent benchmarks, performance, pilots, release manifest | Q5 decision |
 
@@ -67,7 +67,7 @@ P8-M7 구현 증거는 `reports/validation-evidence/phase8/p8-m7-arc-cyclic.json
 | P8-ADR-006 | committed/trial storage, branch, checkpoint format | M1 전 | STATE, DYN |
 | P8-ADR-007 | displacement/arc-length augmented solve와 branch policy | M5/M7 전 | CTRL, ARC |
 | P8-ADR-008 | Newmark parameters, damping stiffness source, substep policy | M8 전 | DYN |
-| P8-ADR-009 | result chunk format, storage quota, downsampling | M8 전 | PERF, UI, API |
+| P8-ADR-009 | model integration capability, result origin, granular stale and design-transfer policy | M9 완료 | INT, MEI |
 | P8-ADR-010 | qualification registry와 design-transfer policy | M0 전 | GOV, MEI-20 |
 
 ADR에는 후보안, 선택, 기각 이유, 수치·성능 영향, migration 영향, 재검토 조건을 기록한다.

@@ -76,7 +76,17 @@ assert.ok(result.arcLengthHandoff.sourceIncrement?.incrementHash);
 assert.equal(result.internal.stateStore.committedHash, result.internal.arcLengthRestartCheckpoint.committedHash);
 assert.ok(result.steps.length >= 8, 'origin + displacement-control + arc-length rows must be recovered');
 assert.ok(result.steps.slice(-3).every((row) => row.forceResidualNorm < 1e-6));
+assert.ok(result.steps.slice(0, -1).every((row) => row.integrationRef && !row.integration));
+assert.equal(result.steps.at(-1).integration.integrationHash, result.integration.integrationHash);
 assert.equal(result.routing.fallbackUsed, false);
+assert.equal(result.integration.analysisType, 'pushover');
+assert.equal(result.integration.ok, true, JSON.stringify(result.integration.audits, null, 2));
+assert.equal(result.integration.audits.reducedResidual.mode, 'static');
+assert.equal(result.integration.dependencies.canonical.identityHash, result.dependencies.canonical.identityHash);
+assert.equal(result.designTransferGuard.allowed, false);
+assert.equal(result.designTransferGuard.freshness.ok, true);
+assert.ok(result.runRecord.id);
+assert.equal(result.runRecord.result.designTransferGuard.allowed, false);
 
 console.log(JSON.stringify({
   ok: true,

@@ -1,8 +1,8 @@
 # Phase 8 Current-State Audit
 
 ```yaml
-reviewed_at: 2026-07-11
-implementation_addendum: P8-M7 completed 2026-07-13; findings below describe the pre-Phase-8 legacy path unless marked resolved
+reviewed_at: 2026-07-14
+implementation_addendum: P8-M9 completed 2026-07-14; findings below describe the pre-Phase-8 legacy path unless marked resolved
 scope:
   - src/nonlinear
   - src/ui/analysisRunners.js

@@ -1,4 +1,5 @@
 import { stableHash } from '../../core/stableHash.js';
+import { createAnalysisRunRecord } from '../../core/analysisRunRecord.js';
 import { prepareModelFiberPmmInteractions } from '../fiber/fiberPmmPreprocessor.js';
 import { createNonlinearStateStore, createStateCheckpoint, restoreStateCheckpoint } from '../core/stateStore.js';
 import { buildHingedFrame3dEntries } from '../elements/hingedFrame3d.js';
@@ -19,9 +20,14 @@ import {
   validateNonlinearInitialStateDependency,
 } from '../workflow/initialState.js';
 import { NONLINEAR_ENGINE_IDS } from '../capabilities.js';
+import {
+  buildNonlinearDesignTransferGuard,
+  evaluateNonlinearIntegrationCapabilities,
+} from '../integration/index.js';
 import { buildPushoverLoadSet } from './loadPatterns.js';
 import {
   buildProductionPushoverResult,
+  compactPushoverStepIntegration,
   hingeSummary,
   recoverPushoverStep,
 } from './results.js';
@@ -51,6 +57,11 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
     }
     const modelHashAtStart = stableHash(model);
     const loadSet = buildPushoverLoadSet(model, analysisCase, merged);
+    const integrationCapability = evaluateNonlinearIntegrationCapabilities(loadSet.domain, { mode: 'static' });
+    if (!integrationCapability.ok) {
+      const first = integrationCapability.blocking[0];
+      return blocked(engine, first.code, first.message, integrationCapability);
+    }
     const fiberPmm = merged.pmmInteractions
       ? externalFiberPmm(merged.pmmInteractions, model)
       : merged.fiberPmm === false ? disabledFiberPmm() : await prepareModelFiberPmmInteractions(model, {
@@ -137,6 +148,9 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       convergence: gravity.continuity,
       hingeEvents: [],
       gravityBaselineReactions: initialEvaluation.reactionsFull,
+      model,
+      analysisCase,
+      capability: integrationCapability,
     })];
     let peakBaseShear = 0;
     let peakStep = 0;
@@ -178,7 +192,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       },
     });
     for (const accepted of displacement.acceptedSteps || []) {
-      recovered.push(recoverPushoverStep({
+      appendRecoveredStep(recovered, recoverPushoverStep({
         domain: loadSet.domain,
         evaluation: accepted.evaluation,
         loadSet,
@@ -188,6 +202,9 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         convergence: accepted.convergence,
         hingeEvents: accepted.hingeEvents,
         gravityBaselineReactions: initialEvaluation.reactionsFull,
+        model,
+        analysisCase,
+        capability: integrationCapability,
       }));
     }
     const handoffCheckpoint = displacement.stateStore?.committed
@@ -242,7 +259,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         },
       });
       for (const accepted of arcLengthResult.acceptedSteps || []) {
-        recovered.push(recoverPushoverStep({
+        appendRecoveredStep(recovered, recoverPushoverStep({
           domain: loadSet.domain,
           evaluation: accepted.evaluation,
           loadSet,
@@ -252,6 +269,9 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
           convergence: accepted.convergence,
           hingeEvents: accepted.hingeEvents,
           gravityBaselineReactions: initialEvaluation.reactionsFull,
+          model,
+          analysisCase,
+          capability: integrationCapability,
         }));
       }
     }
@@ -272,7 +292,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       handoffCheckpoint,
       options: { ...merged, acceptExplicitTermination: arcEnabled || merged.acceptExplicitTermination === true },
     });
-    return Object.freeze({
+    const governedResult = Object.freeze({
       ...result,
       version: PRODUCTION_PUSHOVER_VERSION,
       capability: {
@@ -281,6 +301,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         qualification: 'candidate',
         supportedControls: ['displacement', 'arcLength'],
       },
+      integrationCapability,
       routing: {
         requestedEngineId: engine.id,
         executedEngineId: engine.id,
@@ -300,6 +321,19 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         fiberPmm,
       } : undefined,
     });
+    const designTransferGuard = buildNonlinearDesignTransferGuard(
+      governedResult,
+      { model, domain: loadSet.domain, analysisCase, loadSetHash: loadSet.loadSetHash },
+      analysisCase,
+    );
+    const finalResult = Object.freeze({ ...governedResult, designTransferGuard });
+    const runRecord = Object.freeze(createAnalysisRunRecord({
+      model,
+      analysisCase,
+      result: finalResult,
+      attemptId: clean(options.runRecordId) || `${analysisCase.id || 'PUSHOVER'}:${result.resultHash}`,
+    }));
+    return Object.freeze({ ...finalResult, runRecord });
   } catch (error) {
     if (['CANCELLED', 'PMM_GENERATION_CANCELLED'].includes(error?.code)) {
       return cancelled(engine, error.code, error.message);
@@ -598,7 +632,12 @@ function pickControlNode(domain, direction) {
   })[0]?.id || null;
 }
 
-function blocked(engine, reason, message) {
+function appendRecoveredStep(rows, row) {
+  if (rows.length) rows[rows.length - 1] = compactPushoverStepIntegration(rows.at(-1));
+  rows.push(row);
+}
+
+function blocked(engine, reason, message, details = null) {
   return Object.freeze({
     version: PRODUCTION_PUSHOVER_VERSION,
     ok: false,
@@ -609,6 +648,7 @@ function blocked(engine, reason, message) {
     modelBound: true,
     reason,
     message,
+    details: serializable(details),
     engine,
     routing: { requestedEngineId: engine.id, executedEngineId: null, fallbackPolicy: 'forbidden', fallbackUsed: false },
   });

@@ -227,12 +227,19 @@ import {
 } from '../nonlinear/workflow/initialState.js';
 import { SECOND_ORDER_JET_VERSION } from '../nonlinear/math/secondOrderJet.js';
 import { ROTATION_COORDINATE_VERSION } from '../nonlinear/math/rotationCoordinates.js';
+import {
+  NONLINEAR_INTEGRATED_RESULT_VERSION,
+  NONLINEAR_INTEGRATION_CAPABILITY_VERSION,
+  NONLINEAR_INTEGRATION_GOVERNANCE_VERSION,
+  NONLINEAR_RESULT_ADAPTER_VERSION,
+  NONLINEAR_SUPPORT_SPRING_VERSION,
+} from '../nonlinear/integration/index.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
 import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m8-agent-capability-manifest-v11';
+export const AGENT_MANIFEST_VERSION = 'p8-m9-agent-capability-manifest-v12';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -451,6 +458,11 @@ export function buildAgentManifest(options = {}) {
       phase8NonlinearInitialState: NONLINEAR_INITIAL_STATE_VERSION,
       phase8SecondOrderJet: SECOND_ORDER_JET_VERSION,
       phase8RotationCoordinates: ROTATION_COORDINATE_VERSION,
+      phase8IntegrationCapability: NONLINEAR_INTEGRATION_CAPABILITY_VERSION,
+      phase8SupportSpring: NONLINEAR_SUPPORT_SPRING_VERSION,
+      phase8IntegratedResult: NONLINEAR_INTEGRATED_RESULT_VERSION,
+      phase8ResultAdapter: NONLINEAR_RESULT_ADAPTER_VERSION,
+      phase8IntegrationGovernance: NONLINEAR_INTEGRATION_GOVERNANCE_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
     },
     nonlinear: {
@@ -806,6 +818,12 @@ export function buildAgentManifest(options = {}) {
       'phase8HingeCyclicState',
       'phase8HingePropertyRegistry',
       'phase8HingeAssignmentChangeSet',
+      'phase8IntegrationCapabilityMatrix',
+      'phase8SupportSpringResponse',
+      'phase8IntegratedNonlinearResult',
+      'phase8NonlinearHistoryEnvelope',
+      'phase8NonlinearResultDependencies',
+      'phase8NonlinearDesignTransferGuard',
       'productHardeningAudit',
       'agentCommandBridge',
       'originalIndexRuntimeDiagnostics',
@@ -964,6 +982,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P8-M6.1', status: 'available', feature: 'dedicated PMM Worker preprocessing, full-state numerical parity, validated persistent cache, progress, cancellation, and stale-source protection' },
       { id: 'P8-M7', status: 'candidate', feature: 'Crisfield spherical arc-length continuation, deterministic branch selection, cyclic static protocols, rollback, checkpoint restart, and GPU-ready backend policy' },
       { id: 'P8-M8', status: 'candidate', feature: 'gravity-preloaded 3D MDOF nonlinear time history with model mass, Rayleigh damping, multi-component ground motion, full Newton Newmark integration, substep rollback, streaming history, and restart' },
+      { id: 'P8-M9', status: 'candidate', feature: 'canonical Phase 7 feature integration, support spring and settlement assembly, unified node/member/story/origin recovery, stale propagation, and design-transfer guard' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },
@@ -984,6 +1003,8 @@ export function buildAgentManifest(options = {}) {
       'Production nonlinear Pushover/NLTH uses Worker and sparse backend contracts; representative-building scale and performance qualification remains P8-M11.',
       'P8-M3 finite rotations use total global rotation vectors and a principal relative-rotation log; relative rotations approaching pi fail closed.',
       'Follower loads, unilateral truss active sets, and transverse truss member loads are not implemented in P8-M3 and fail closed.',
+      'P8-M9 blocks tension-only and compression-only nonlinear members until an active-set solver is implemented, and blocks member releases in NLTH.',
+      'Wall, shell, and semi-rigid diaphragm nonlinear results are preliminary equivalent-frame forces; shell stress and strain are unavailable.',
     ],
   };
 }

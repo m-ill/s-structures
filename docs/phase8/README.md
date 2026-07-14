@@ -3,14 +3,14 @@
 ```yaml
 phase: 8
 status: active
-implementation_status: p8-m8-complete
+implementation_status: p8-m9-complete
 reviewed_at: 2026-07-14
-current_milestone: P8-M9
+current_milestone: P8-M10
 mission: Phase 7 모델링·탄성해석과 동일한 analysis domain 위에서 상용 수준의 정적·동적 비선형 3D 건축골조해석을 구현한다.
 governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 ```
 
-> P8-M0~P8-M8은 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 정식 증강 변위제어 Pushover, fiber PMM/분포소성, PMM 전처리 Worker/cache, Crisfield arc-length·cyclic static과 실제 3D MDOF NLTH가 구현됐다. 기존 stepwise Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
+> P8-M0~P8-M9는 완료되었다. canonical domain·state, MDOF 평형/Worker/WASM, objective 3D corotational frame/truss, 상태기반 집중소성 단부힌지, 정식 증강 변위제어 Pushover, fiber PMM/분포소성, PMM 전처리 Worker/cache, Crisfield arc-length·cyclic static과 실제 3D MDOF NLTH가 구현됐다. M9는 Phase 7 모델 기능의 지원/차단 매트릭스, 지점 스프링·침하, 통합 결과 복구, 원본 객체 추적, stale·설계전달 guard를 production Pushover/NLTH에 연결했다. 기존 stepwise Pushover와 SDOF NLTH는 `legacy-preliminary`로 격리된다. 실제 진행 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 기준으로 한다.
 
 ## 1. 결론
 

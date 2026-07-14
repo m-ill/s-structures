@@ -2,6 +2,12 @@ import { createAnalysisRunRecord } from '../../core/analysisRunRecord.js';
 import { stableHash } from '../../core/stableHash.js';
 import { buildCanonicalAnalysisDomain } from '../../solver/domain/canonicalDomain.js';
 import { NONLINEAR_ENGINE_IDS } from '../capabilities.js';
+import {
+  buildNonlinearDesignTransferGuard,
+  evaluateNonlinearIntegrationCapabilities,
+  recoverIntegratedNonlinearState,
+  recoverNonlinearHistoryEnvelope,
+} from '../integration/index.js';
 import { createNonlinearStateStore, restoreStateCheckpoint } from '../core/stateStore.js';
 import { buildHingedFrame3dEntries } from '../elements/hingedFrame3d.js';
 import { createEquilibriumAssembler } from '../equilibrium/assembler.js';
@@ -46,6 +52,16 @@ export async function runProductionNlth(model = {}, analysisCase = {}, options =
     const merged = mergeOptions(analysisCase, options);
     const modelHashAtStart = stableHash(model);
     const loadSet = buildNlthLoadSet(model, analysisCase, merged);
+    const gravityCapability = evaluateNonlinearIntegrationCapabilities(loadSet.gravityDomain, { mode: 'static' });
+    if (!gravityCapability.ok) {
+      const first = gravityCapability.blocking[0];
+      throw nlthError(first.code, first.message, gravityCapability);
+    }
+    const integrationCapability = evaluateNonlinearIntegrationCapabilities(loadSet.domain, { mode: 'dynamic' });
+    if (!integrationCapability.ok) {
+      const first = integrationCapability.blocking[0];
+      throw nlthError(first.code, first.message, integrationCapability);
+    }
     const massSourceId = clean(merged.massSourceId);
     if (!massSourceId) throw nlthError('NLTH_MASS_SOURCE_REQUIRED', 'Production NLTH requires an explicit Phase 7 massSourceId.');
     if (!(model.massSources || []).some((row) => String(row.id) === massSourceId)) {
@@ -192,15 +208,29 @@ export async function runProductionNlth(model = {}, analysisCase = {}, options =
       hingeResolution,
       fiberPmm,
       backend,
+      integrationCapability,
+      gravityCapability,
     });
+    const designTransferGuard = buildNonlinearDesignTransferGuard(
+      result,
+      {
+        model,
+        domain: loadSet.domain,
+        analysisCase,
+        massDomain,
+        loadSetHash: loadSet.loadSetHash,
+      },
+      analysisCase,
+    );
+    const governedResult = Object.freeze({ ...result, designTransferGuard });
     const runRecord = Object.freeze(createAnalysisRunRecord({
       model,
       analysisCase,
-      result,
+      result: governedResult,
       attemptId: clean(options.runRecordId) || `${analysisCase.id || 'NLTH'}:${result.resultHash}`,
     }));
     return Object.freeze({
-      ...result,
+      ...governedResult,
       runRecord,
       routing: {
         requestedEngineId: engine.id,
@@ -361,6 +391,24 @@ export function buildProductionNlthResult(input = {}) {
     dynamicMatrixClassReason: input.dynamic.matrixClassReason,
     fallbackUsed: false,
   });
+  const integration = recoverIntegratedNonlinearState({
+    model: input.model,
+    analysisCase: input.analysisCase,
+    domain: input.loadSet.domain,
+    evaluation: input.dynamic.finalEvaluation,
+    massDomain: input.massDomain,
+    analysisType: 'nonlinear-time-history',
+    time: input.dynamic.endTime,
+    groundAcceleration: input.groundMotion.vectorAt(input.dynamic.endTime),
+    capability: input.integrationCapability,
+    loadSetHash: input.loadSet.loadSetHash,
+    convergence: input.dynamic.stateStore.committed.norms,
+  });
+  const historyEnvelope = recoverNonlinearHistoryEnvelope({
+    domain: input.loadSet.domain,
+    history: input.dynamic.history,
+    massDomain: input.massDomain,
+  });
   const core = {
     version: PRODUCTION_NLTH_VERSION,
     ok: true,
@@ -399,6 +447,12 @@ export function buildProductionNlthResult(input = {}) {
       setHash: input.groundMotion.setHash,
     }),
     history: input.dynamic.history,
+    historyEnvelope,
+    integration,
+    dependencies: integration.dependencies,
+    dimensions: integration.dimensions,
+    integrationCapability: input.integrationCapability,
+    gravityCapability: input.gravityCapability,
     checkpoint: Object.freeze({
       version: input.dynamic.checkpoint?.version || null,
       integrityHash: input.dynamic.checkpoint?.integrityHash || null,

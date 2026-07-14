@@ -14,12 +14,24 @@ import {
   pullBackSpatialMoment,
   pushForwardGeneralizedMoment,
 } from '../math/rotationCoordinates.js';
+import {
+  buildNonlinearSupportSprings,
+  evaluateNonlinearSupportSprings,
+} from '../integration/supportSprings.js';
 
 export const MDOF_EQUILIBRIUM_ASSEMBLER_VERSION = 'p8-m4-mdof-equilibrium-assembler-v3';
 
 export function createEquilibriumAssembler(input = {}) {
   const domain = requireDomain(input.domain);
   const elements = normalizeEntries(input.elements || []);
+  const supportSpringContract = input.supportSpringContract || buildNonlinearSupportSprings(domain);
+  if (!supportSpringContract.ok) {
+    const error = new Error(supportSpringContract.issues[0]?.message || 'Support spring contract is invalid.');
+    error.code = supportSpringContract.reason || 'NONLINEAR_SUPPORT_SPRING_INVALID';
+    error.details = supportSpringContract;
+    throw error;
+  }
+  const supportSprings = supportSpringContract.springs;
   const loadPattern = normalizeLoadPattern(
     input.loadPattern || buildNonlinearLoadPattern(domain, input.loadOptions),
     domain.constraint,
@@ -38,6 +50,7 @@ export function createEquilibriumAssembler(input = {}) {
   }));
   const assemblyDofLists = [
     ...elements.map((entry) => entry.dofs),
+    ...supportSprings.map((spring) => [spring.fullDof]),
     ...externalMomentBlocks,
   ];
   const pattern = input.pattern || buildReducedSparsePattern(
@@ -45,8 +58,8 @@ export function createEquilibriumAssembler(input = {}) {
     assemblyDofLists,
   );
   if (pattern.elementCount !== assemblyDofLists.length) {
-    const error = new TypeError('Custom tangent pattern does not contain the external moment blocks.');
-    error.code = 'MDOF_PATTERN_EXTERNAL_MOMENT_BLOCKS_REQUIRED';
+    const error = new TypeError('Custom tangent pattern does not contain all element, support spring, and external moment blocks.');
+    error.code = 'MDOF_PATTERN_INTEGRATION_BLOCKS_REQUIRED';
     throw error;
   }
   const netLoadPattern = subtractLoadPatterns(physicalLoadPattern, handledMechanical);
@@ -64,6 +77,8 @@ export function createEquilibriumAssembler(input = {}) {
     version: MDOF_EQUILIBRIUM_ASSEMBLER_VERSION,
     domain,
     elements,
+    supportSpringContract,
+    supportSprings,
     loadPattern,
     referenceLoadDerivative,
     pattern,
@@ -142,6 +157,12 @@ export function createEquilibriumAssembler(input = {}) {
         }
       }
       evaluationCount += elements.length;
+      const support = evaluateNonlinearSupportSprings(supportSpringContract, u);
+      for (const spring of supportSprings) {
+        pInternalFull[spring.fullDof] += support.internalFull[spring.fullDof];
+        elementMatrices.push([[spring.stiffness]]);
+      }
+      energies.supportSpringStrain = Number(energies.supportSpringStrain || 0) + support.strainEnergy;
       const pExternalPhysicalFull = combineLoads(physicalLoadPattern.constantFull, physicalLoadPattern.referenceFull, lambda);
       const pEffectiveExternalPhysicalFull = combineLoads(netLoadPattern.constantFull, netLoadPattern.referenceFull, lambda);
       const external = usesFiniteRotationCoordinates
@@ -154,12 +175,20 @@ export function createEquilibriumAssembler(input = {}) {
       const pInternalPhysicalFull = usesFiniteRotationCoordinates
         ? pushForwardInternalMoments(pInternalGeneralizedFull, u, domain.nodes.length)
         : Float64Array.from(pInternalGeneralizedFull);
+      const supportInternalPhysicalFull = usesFiniteRotationCoordinates
+        ? pushForwardInternalMoments(support.internalFull, u, domain.nodes.length)
+        : Float64Array.from(support.internalFull);
       const pInternalReduced = Float64Array.from(reduceConstraintVector(domain.constraint, pInternalGeneralizedFull));
       const pExternalGeneralizedFull = external.generalized;
       const pExternalReduced = Float64Array.from(reduceConstraintVector(domain.constraint, pExternalGeneralizedFull));
       const residualFull = subtract(pEffectiveExternalPhysicalFull, pInternalPhysicalFull);
       const residualReduced = subtract(pExternalReduced, pInternalReduced);
-      const reactionsFull = Float64Array.from(residualFull, (value) => -value);
+      const constraintReactionsFull = Float64Array.from(residualFull, (value) => -value);
+      const supportReactionsFull = Float64Array.from(supportInternalPhysicalFull, (value) => -value);
+      const reactionsFull = Float64Array.from(
+        constraintReactionsFull,
+        (value, index) => Number(value) + Number(supportReactionsFull[index]),
+      );
       const audit = buildNonlinearEquilibriumAudit(domain.nodes || [], pExternalPhysicalFull, reactionsFull, {
         ...(options.auditOptions || {}),
         displacements: usesFiniteRotationCoordinates ? u : null,
@@ -181,10 +210,15 @@ export function createEquilibriumAssembler(input = {}) {
         pInternalFull: pInternalPhysicalFull,
         pInternalGeneralizedFull,
         pInternalReduced,
+        supportInternalFull: supportInternalPhysicalFull,
+        supportInternalGeneralizedFull: support.internalFull,
+        supportResponses: support.responses,
         residualFull,
         residualReduced,
         dResidualDlambdaReduced: referenceLoadDerivative.reduced,
         referenceLoadDerivative,
+        constraintReactionsFull,
+        supportReactionsFull,
         reactionsFull,
         tangentReduced,
         inactiveModesReduced,
@@ -196,6 +230,9 @@ export function createEquilibriumAssembler(input = {}) {
         diagnostics: {
           elementDiagnostics: diagnostics,
           elementEvaluationCount: elements.length,
+          supportSpringCount: supportSprings.length,
+          supportSpringContractHash: supportSpringContract.contractHash,
+          supportSpringResponseHash: support.responseHash,
           cumulativeElementEvaluationCount: evaluationCount,
           tangentAssemblyCount,
           tangentPatternHash: pattern.patternHash,

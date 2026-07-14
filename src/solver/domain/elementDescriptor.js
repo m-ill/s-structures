@@ -9,6 +9,7 @@ export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p8-m1-element-descriptor-v1
 export function buildElementDescriptors(model = {}, nodes = model.nodes || [], members = model.members || []) {
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
   const nodeIndex = new Map(nodes.map((node, index) => [node.id, index]));
+  const wallByMember = new Map((model.wallEquivalents || []).map((row) => [row.memberId, row]));
   const descriptors = [];
   const errors = [];
   for (const member of members) {
@@ -67,7 +68,7 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
       nonlinear: clone(member.nonlinear || null),
       generated: member.generated === true,
       massless: member.massless === true || member.generated === true,
-      origin: originOf(member),
+      origin: originOf(member, wallByMember),
     };
     descriptor.propertyHash = stableHash(descriptor.propertySnapshot).slice(0, 24);
     descriptor.descriptorHash = stableHash(descriptor).slice(0, 24);
@@ -78,7 +79,9 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
   return { version: CANONICAL_ELEMENT_DESCRIPTOR_VERSION, ok: errors.length === 0, descriptors, errors };
 }
 
-function originOf(member = {}) {
+function originOf(member = {}, wallByMember = new Map()) {
+  const wall = wallByMember.get(member.id);
+  if (wall) return { type: 'wall', id: wall.wallId, formulation: 'mid-pier-equivalent', qualification: 'preliminary-equivalent' };
   if (!member.generated) return { type: 'member', id: member.id || null };
   if (member.diaphragmId) return { type: 'diaphragm', id: member.diaphragmId, formulation: member.source || 'semiRigidDiaphragm' };
   if (member.shellId) return { type: 'shell', id: member.shellId, formulation: member.source || 'shellFrameAssembly' };

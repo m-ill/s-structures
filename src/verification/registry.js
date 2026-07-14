@@ -1,4 +1,4 @@
-export const VERIFICATION_REGISTRY_VERSION = 'p8-m8-verification-registry-v9';
+export const VERIFICATION_REGISTRY_VERSION = 'p8-m9-verification-registry-v10';
 export const PHASE8_EVIDENCE_ARTIFACT_VERSION = 'p8-evidence-artifact-v1';
 export const P8_M0_GOVERNANCE_AUDIT_VERSION = 'p8-m0-governance-evidence-v1';
 
@@ -169,6 +169,22 @@ export const PHASE8_VERIFICATION_SUITES = Object.freeze([
       'NL-DYN-05', 'NL-DYN-06', 'NL-DYN-07', 'NL-DYN-08',
       'NL-DYN-09', 'NL-DYN-10', 'NL-DYN-11', 'NL-DYN-12',
       'NL-DYN-13', 'NL-DYN-14', 'NL-DYN-15', 'NL-DYN-16',
+    ]),
+  }),
+  Object.freeze({
+    id: 'P8-M9-INTEGRATION-RECOVERY',
+    milestone: 'P8-M9',
+    required: true,
+    verificationIds: Object.freeze([
+      'NL-INT-01', 'NL-INT-02', 'NL-INT-03', 'NL-INT-04',
+      'NL-INT-05', 'NL-INT-06', 'NL-INT-07', 'NL-INT-08',
+      'NL-INT-09', 'NL-INT-10', 'NL-INT-11', 'NL-INT-12',
+      'NL-INT-13', 'NL-INT-14', 'NL-INT-15', 'NL-INT-16',
+      'NL-MEI-01', 'NL-MEI-02', 'NL-MEI-03', 'NL-MEI-04',
+      'NL-MEI-05', 'NL-MEI-06', 'NL-MEI-07', 'NL-MEI-08',
+      'NL-MEI-09', 'NL-MEI-10', 'NL-MEI-11', 'NL-MEI-12',
+      'NL-MEI-13', 'NL-MEI-14', 'NL-MEI-15', 'NL-MEI-16',
+      'NL-MEI-17', 'NL-MEI-18', 'NL-MEI-19', 'NL-MEI-20',
     ]),
   }),
 ]);

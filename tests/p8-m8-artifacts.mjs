@@ -40,7 +40,7 @@ for (const version of [
   PRODUCTION_NLTH_ENGINE_VERSION,
 ]) assert.match(version, /^p8-m8-/);
 assert.match(ANALYSIS_RUNNER_VERSION, /^p8-m8-/);
-assert.match(VERIFICATION_REGISTRY_VERSION, /^p8-m8-/);
+assert.match(VERIFICATION_REGISTRY_VERSION, /^p8-m\d+-verification-registry-v\d+$/);
 assert.match(WORKER_PROTOCOL_VERSION, /^p8-m8-/);
 assert.equal(typeof buildMdofMassDomain, 'function');
 assert.equal(typeof runMdofNewmark, 'function');
@@ -66,10 +66,10 @@ assert.equal(manifest.milestones.find((row) => row.id === 'P8-M8')?.status, 'can
 const status = readFileSync(new URL('../docs/phase8/IMPLEMENTATION_STATUS.md', import.meta.url), 'utf8');
 const hub = readFileSync(new URL('../docs/phase8/README.md', import.meta.url), 'utf8');
 const plan = readFileSync(new URL('../docs/phase8/MILESTONE_EXECUTION_PLAN.md', import.meta.url), 'utf8');
-assert.match(status, /implementation_status: p8-m8-complete/);
-assert.match(status, /active_milestone: P8-M9/);
-assert.match(hub, /current_milestone: P8-M9/);
-assert.match(plan, /current_status: complete-p8-m8-next-p8-m9/);
+assert.match(status, /completed_milestones: .*P8-M8/);
+assert.match(status, /\| P8-M8 MDOF NLTH \| complete \|/);
+assert.match(hub, /P8-M0~P8-M\d+.*완료/);
+assert.match(plan, /^## P8-M8 - /m);
 for (const path of [
   '../docs/phase8/adr/ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md',
   '../reports/validation-evidence/phase8/p8-m8-code-review.md',

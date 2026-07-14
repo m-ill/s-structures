@@ -1,8 +1,8 @@
 {
   "schemaVersion": 3,
-  "manualVersion": "2026-07-14-phase8-m8",
+  "manualVersion": "2026-07-14-phase8-m9",
   "product": "S-Structures",
-  "manifestVersion": "p8-m8-agent-capability-manifest-v11",
+  "manifestVersion": "p8-m9-agent-capability-manifest-v12",
   "entrypoint": {
     "recommendedUrl": "http://127.0.0.1:5173/",
     "primaryHtml": "index.html"
@@ -383,6 +383,12 @@
     "phase8HingeCyclicState",
     "phase8HingePropertyRegistry",
     "phase8HingeAssignmentChangeSet",
+    "phase8IntegrationCapabilityMatrix",
+    "phase8SupportSpringResponse",
+    "phase8IntegratedNonlinearResult",
+    "phase8NonlinearHistoryEnvelope",
+    "phase8NonlinearResultDependencies",
+    "phase8NonlinearDesignTransferGuard",
     "productHardeningAudit",
     "agentCommandBridge",
     "originalIndexRuntimeDiagnostics",
@@ -666,6 +672,11 @@
     "phase8NonlinearInitialState",
     "phase8SecondOrderJet",
     "phase8RotationCoordinates",
+    "phase8IntegrationCapability",
+    "phase8SupportSpring",
+    "phase8IntegratedResult",
+    "phase8ResultAdapter",
+    "phase8IntegrationGovernance",
     "phase3DesignFormulaRegistry"
   ],
   "moduleVersions": {
@@ -879,6 +890,11 @@
     "phase8NonlinearInitialState": "p8-m5-nonlinear-initial-state-v1",
     "phase8SecondOrderJet": "p8-m3-second-order-jet-v1",
     "phase8RotationCoordinates": "p8-m3-rotation-coordinate-v1",
+    "phase8IntegrationCapability": "p8-m9-integration-capability-v1",
+    "phase8SupportSpring": "p8-m9-support-spring-v1",
+    "phase8IntegratedResult": "p8-m9-integrated-result-v1",
+    "phase8ResultAdapter": "p8-m9-result-adapter-v1",
+    "phase8IntegrationGovernance": "p8-m9-integration-governance-v1",
     "phase3DesignFormulaRegistry": "p3-design-formula-registry"
   },
   "limitations": [
@@ -890,7 +906,9 @@
     "Unsupported design checks must be reviewed separately.",
     "Production nonlinear Pushover/NLTH uses Worker and sparse backend contracts; representative-building scale and performance qualification remains P8-M11.",
     "P8-M3 finite rotations use total global rotation vectors and a principal relative-rotation log; relative rotations approaching pi fail closed.",
-    "Follower loads, unilateral truss active sets, and transverse truss member loads are not implemented in P8-M3 and fail closed."
+    "Follower loads, unilateral truss active sets, and transverse truss member loads are not implemented in P8-M3 and fail closed.",
+    "P8-M9 blocks tension-only and compression-only nonlinear members until an active-set solver is implemented, and blocks member releases in NLTH.",
+    "Wall, shell, and semi-rigid diaphragm nonlinear results are preliminary equivalent-frame forces; shell stress and strain are unavailable."
   ],
   "interpretationRules": [
     "Milestone review APIs expose exitCriteria and exitCriteriaSummary; automated-exit-criteria-covered means written-plan criteria have regression evidence, not production approval.",

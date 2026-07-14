@@ -76,6 +76,29 @@ assert.equal(result.status, 'completed');
 assert.equal(result.modelBound, true);
 assert.equal(result.qualification, 'candidate');
 assert.equal(result.designBlocked, true);
+assert.equal(result.designTransferGuard.allowed, false);
+assert.equal(result.designTransferGuard.freshness.ok, true);
+assert.equal(result.integration.analysisType, 'nonlinear-time-history');
+assert.equal(result.integration.ok, true, JSON.stringify({
+  audits: result.integration.audits,
+  endForces: result.integration.members.C.endForces,
+  stationEnds: Object.fromEntries(['N', 'Vy', 'Vz', 'Tq', 'My', 'Mz'].map((key) => [
+    key,
+    [result.integration.members.C.stations[key][0], result.integration.members.C.stations[key].at(-1)],
+  ])),
+}, null, 2));
+assert.equal(result.integration.audits.reducedResidual.mode, 'dynamic');
+assert.equal(result.integration.audits.reducedResidual.ok, true);
+assert.equal(result.integration.dependencies.canonical.identityHash, result.dependencies.canonical.identityHash);
+assert.equal(result.integration.members.C.origin.originId, 'C');
+assert.equal(result.integration.stories[0].responseSource, 'absolute-inertia-above-story');
+assert.equal(result.historyEnvelope.outputStepCount, result.summary.outputStepCount);
+assert.equal(result.historyEnvelope.complete, true);
+assert.ok(result.historyEnvelope.members.C.localResistingForce.length === 12);
+const storyEnvelope = Object.values(result.historyEnvelope.stories)[0];
+assert.equal(storyEnvelope.responseSource, 'absolute-inertia-above-story');
+assert.ok(storyEnvelope.shear[0].absoluteMaximum > 0);
+assert.ok(result.dimensions.force && result.dimensions.moment && result.dimensions.displacement);
 assert.equal(result.routing.fallbackUsed, false);
 assert.equal(result.gravity.continuity.ok, true);
 assert.equal(result.mass.sourceSnapshot.sourceId, 'MS');
@@ -92,6 +115,7 @@ assert.ok(result.provenance.domainHash);
 assert.ok(result.provenance.massHash);
 assert.ok(result.provenance.groundMotionSetHash);
 assert.ok(result.runRecord.id);
+assert.equal(result.runRecord.result.designTransferGuard.allowed, false);
 assert.equal(result.runRecord.integrityHash, analysisRunRecordIntegrityHash(result.runRecord));
 assert.equal(result.summary.completedTime, result.summary.requestedEndTime);
 assert.equal(result.summary.acceptedStepCount, commits.length);

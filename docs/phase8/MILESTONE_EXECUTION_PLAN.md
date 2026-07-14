@@ -3,7 +3,7 @@
 ```yaml
 plan_version: 2026-07-14
 milestones: P8-M0..P8-M11 plus P8-M6.1
-current_status: complete-p8-m8-next-p8-m9
+current_status: complete-p8-m9-next-p8-m10
 execution_rule: one milestone at a time; code, tests, evidence, review, and status update are all required
 ```
 
@@ -515,6 +515,19 @@ Phase 7에서 지원하는 실제 모델 기능이 비선형 도메인과 결과
 - static/dynamic equilibrium과 결과 station closure 통과
 - modeling/elastic/nonlinear의 object ID, local axis, unit, origin map이 일치
 - `NL-INT-01`~`NL-INT-16`, `NL-MEI-01`~`NL-MEI-20` 통과
+
+### P8-M9 Implementation Record - 2026-07-14
+
+- Status: complete; qualification remains `candidate`, and design transfer remains blocked.
+- Canonical identity now covers linear, Direct P-Delta, modal, RSA, Pushover, and NLTH adapters, including origin, metadata, and unit hashes.
+- Nonlinear capability preflight is mandatory for production Pushover/NLTH. Unilateral members and dynamic releases fail closed with stable reason codes.
+- Six-DOF support springs and constant settlement are assembled into tangent, internal force, reaction, and energy recovery.
+- One integrated result adapter recovers node, reaction, member end/station, hinge/fiber, story, generated-origin, and event/history envelope data, including full-mass absolute-inertia story shear for NLTH.
+- Pushover keeps only the latest full integrated step during execution and rolls prior steps into immutable audit references.
+- Global equilibrium, element-node closure, released-force, station closure, granular stale, run-record provenance, and design-transfer guards are versioned and tested.
+- Evidence: `reports/validation-evidence/phase8/p8-m9-integration-recovery.json`.
+- ADR: `docs/phase8/adr/ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md`.
+- Review: `reports/validation-evidence/phase8/p8-m9-code-review.md`.
 
 ## P8-M10 - 실무 UI, 결과 시각화, 보고서, agent/MCP 계약
 

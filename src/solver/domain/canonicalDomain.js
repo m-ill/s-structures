@@ -1,6 +1,7 @@
 import { buildAnalysisDomainHashes } from '../../core/analysisDomainHashes.js';
 import { resolveRigidDiaphragms } from '../../core/diaphragmGroups.js';
 import { stableHash } from '../../core/stableHash.js';
+import { deriveStories } from '../../core/storyModel.js';
 import { expandAdvancedLoads } from '../elasticExpansion.js';
 import { createSelfWeightLoads } from '../linear3dPost.js';
 import { expandSemiRigidDiaphragms } from '../semiRigidDiaphragm.js';
@@ -89,7 +90,8 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     ? constraint.reason
     : referenceErrors.length && !allowInvalidReferences ? 'DOMAIN_REFERENCE_INVALID'
       : !elements.ok ? 'ELEMENT_DESCRIPTOR_INVALID' : strictBlocked ? 'DOMAIN_CAPABILITY_UNSUPPORTED' : null;
-  const originMap = buildOriginMap(allMembers, allSections);
+  const originMap = buildOriginMap(allMembers, allSections, source);
+  const metadata = buildDomainMetadata(solverModel, originMap, rigidDiaphragms);
   const hashes = buildAnalysisDomainHashes(solverModel, analysisCase);
   const snapshot = {
     nodes: allNodes,
@@ -114,6 +116,9 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     elementIds: allMembers.map((member) => member.id),
     descriptorHashes: elements.descriptors.map((item) => [item.id, item.descriptorHash]),
     constraintContractHash: constraint.hash || null,
+    originMapHash: stableHash(originMap).slice(0, 24),
+    metadataHash: stableHash(metadata).slice(0, 24),
+    unitSystemHash: stableHash(metadata.unitSystem).slice(0, 24),
   };
   identity.identityHash = stableHash(identity).slice(0, 24);
   const domain = {
@@ -138,6 +143,7 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     referenceErrors,
     referencePolicy: allowInvalidReferences ? 'skip-invalid' : 'fail',
     originMap,
+    metadata,
     capabilities,
     expansion: loadExpansion,
     semiRigid,
@@ -223,20 +229,59 @@ export function deriveCanonicalAnalysisDomain(baseDomain, options = {}) {
   return deepFreeze(derived);
 }
 
-function buildOriginMap(members, sections) {
+function buildOriginMap(members, sections, source = {}) {
+  const wallByMember = new Map((source.wallEquivalents || []).map((row) => [row.memberId, row]));
   return {
-    members: members.map((member) => ({
-      generatedId: member.id,
-      generated: member.generated === true,
-      originType: member.diaphragmId ? 'diaphragm' : member.shellId ? 'shell' : 'member',
-      originId: member.diaphragmId || member.shellId || member.id,
-      formulation: member.source || (member.generated ? 'generated' : 'native-frame'),
-    })),
+    members: members.map((member) => {
+      const wall = wallByMember.get(member.id);
+      return {
+        generatedId: member.id,
+        generated: member.generated === true || Boolean(wall),
+        originType: wall ? 'wall' : member.diaphragmId ? 'diaphragm' : member.shellId ? 'shell' : 'member',
+        originId: wall?.wallId || member.diaphragmId || member.shellId || member.id,
+        formulation: wall ? 'mid-pier-equivalent' : member.source || (member.generated ? 'generated' : 'native-frame'),
+        qualification: wall || member.shellId || member.diaphragmId ? 'preliminary-equivalent' : 'production-frame',
+      };
+    }),
     sections: sections.map((section) => ({
       generatedId: section.id,
       generated: String(section.id || '').startsWith('__'),
       originId: section.sourceSection || section.id,
     })),
+  };
+}
+
+function buildDomainMetadata(model, originMap, rigidDiaphragms) {
+  const stories = deriveStories(model).map((story) => ({
+    id: story.id,
+    index: story.index,
+    baseZ: story.baseZ,
+    topZ: story.topZ,
+    height: story.height,
+    nodeIds: [...story.nodeIds],
+  }));
+  const nodeStory = Object.fromEntries(stories.flatMap((story) => story.nodeIds.map((nodeId) => [nodeId, story.id])));
+  const unitSystem = clone(
+    model.unitSystem
+    || model.units
+    || model.analysisSettings?.unitSystem
+    || model.analysisSettings?.units
+    || { length: 'm', force: 'kN', mass: 'tonne', time: 's' },
+  );
+  return {
+    version: 'p8-m9-canonical-domain-metadata-v1',
+    unitSystem,
+    stories,
+    nodeStory,
+    diaphragms: (model.diaphragms || []).map((item) => ({
+      id: item.id,
+      type: item.type,
+      nodeIds: [...(item.nodeIds || [])].sort(),
+      masterNodeId: item.masterNodeId || null,
+    })),
+    rigidDiaphragmIds: (rigidDiaphragms || []).map((item) => item.id).sort(),
+    massSourceIds: (model.massSources || []).map((item) => item.id).filter(Boolean).sort(),
+    originTypes: [...new Set((originMap.members || []).map((item) => item.originType))].sort(),
   };
 }
 

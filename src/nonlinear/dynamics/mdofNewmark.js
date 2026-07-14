@@ -619,6 +619,7 @@ export async function runMdofNewmark(input = {}) {
       endTime: Number(store?.committed?.time ?? startTime),
       requestedEndTime: endTime,
       finalEnergy,
+      finalEvaluation: lastEvaluation || null,
       energyAudit: Object.freeze({
         residual: Number(finalEnergy.balanceResidual || 0),
         relativeResidual: Math.abs(Number(finalEnergy.balanceResidual || 0)) / Math.max(1, Math.abs(Number(finalEnergy.input || 0))),

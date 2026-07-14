@@ -1,5 +1,6 @@
 import { stableHash } from '../../core/stableHash.js';
 import { evaluatePhysicalControlCoordinate } from '../equilibrium/displacementControl.js';
+import { recoverIntegratedNonlinearState } from '../integration/resultRecovery.js';
 
 export const PRODUCTION_PUSHOVER_RESULT_VERSION = 'p8-m7-production-pushover-result-v2';
 export const PUSHOVER_ARC_LENGTH_HANDOFF_VERSION = 'p8-m7-arc-length-handoff-v2';
@@ -36,6 +37,17 @@ export function recoverPushoverStep(input = {}) {
   const stories = recoverStoryResponse(domain, evaluation, loadSet, direction);
   const roofDisplacement = recoverRoofDisplacement(domain, evaluation.u, direction);
   const overturning = recoverOverturning(domain, loadSet.loadPattern.referenceFull, direction, lambda, loadSet.lateral.baseElevation);
+  const integration = recoverIntegratedNonlinearState({
+    model: input.model,
+    analysisCase: input.analysisCase,
+    domain,
+    evaluation,
+    analysisType: 'pushover',
+    step: input.step,
+    capability: input.capability,
+    loadSetHash: loadSet.loadSetHash,
+    convergence: input.convergence,
+  });
   const core = {
     version: PRODUCTION_PUSHOVER_RESULT_VERSION,
     step: Number(input.step || 0),
@@ -67,12 +79,18 @@ export function recoverPushoverStep(input = {}) {
     plasticHingeCount: hinges.rows.filter((row) => stateRank(row.state) >= 1).length,
     hingeEvents: clone(input.hingeEvents || []),
     responseHash: evaluation.responseHash || null,
+    integration,
   };
   return Object.freeze({ ...core, stepHash: stableHash(core).slice(0, 24) });
 }
 
 export function buildProductionPushoverResult(input = {}) {
-  const rows = (input.steps || []).map((row) => clone(row));
+  const sourceRows = (input.steps || []).map((row) => clone(row));
+  const rows = sourceRows.map((row, index) => (
+    index === sourceRows.length - 1 || !row.integration
+      ? row
+      : compactPushoverStepIntegration(row)
+  ));
   const acceptedRows = rows.filter((row) => row.accepted !== false);
   const events = classifyPushoverEvents(acceptedRows, input.options);
   const terminalControlResult = input.arcLengthResult || input.controlResult;
@@ -190,6 +208,9 @@ export function buildProductionPushoverResult(input = {}) {
       summary: clone(input.fiberPmm?.summary || null),
     },
     arcLengthHandoff,
+    integration: clone(final?.integration || null),
+    dependencies: clone(final?.integration?.dependencies || null),
+    dimensions: clone(final?.integration?.dimensions || null),
     provenance,
     warnings,
     limitations: [
@@ -202,6 +223,21 @@ export function buildProductionPushoverResult(input = {}) {
     ],
   };
   return Object.freeze({ ...core, resultHash: stableHash(core).slice(0, 24) });
+}
+
+export function compactPushoverStepIntegration(row) {
+  const integration = row.integration;
+  if (!integration) return row;
+  const compact = {
+    version: integration.version,
+    integrationHash: integration.integrationHash,
+    ok: integration.ok,
+    provenance: clone(integration.provenance || null),
+    auditHash: integration.audits?.auditHash || null,
+    dependencyHash: integration.dependencies?.dependencyHash || null,
+  };
+  const { integration: _discarded, ...rest } = row;
+  return Object.freeze({ ...rest, integrationRef: compact });
 }
 
 export function classifyPushoverEvents(steps = [], options = {}) {
