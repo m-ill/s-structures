@@ -222,6 +222,233 @@ export function makeEnvelope(byCombo, combos) {
   return env;
 }
 
+export function createEnvelopeAccumulator(combos = []) {
+  const requestedCombos = combos.map(comboSnapshot);
+  const successful = [];
+  const failed = [];
+  const provenance = [];
+  const env = {
+    ok: false,
+    anyOk: false,
+    isEnvelope: true,
+    status: 'INCOMPLETE',
+    complete: false,
+    incomplete: true,
+    designBlocked: true,
+    designBlockers: [],
+    requestedComboCount: requestedCombos.length,
+    successfulComboCount: 0,
+    failedComboCount: 0,
+    requestedSources: requestedCombos,
+    successfulSources: successful,
+    failedSources: failed,
+    combinationStatus: provenance,
+    sources: successful,
+    disp: {},
+    reactions: {},
+    memberResults: {},
+    governing: { maxDisplacement: null, maxUtilization: null },
+    unstableMembers: new Set(),
+    dmax: 0,
+    maxRatio: 0,
+    ngCount: 0,
+    okCount: 0,
+  };
+  let addedCount = 0;
+
+  return Object.freeze({ add, finalize });
+
+  function add(comboInput, result) {
+    const combo = comboSnapshot(comboInput);
+    const status = combinationEnvelopeStatus(combo, result);
+    provenance.push({
+      comboId: combo.id,
+      comboName: combo.name,
+      comboType: combo.type,
+      factors: { ...combo.factors },
+      status: status.status,
+      included: status.included,
+      reason: status.reason,
+      resultOk: !!result?.ok,
+      anyOk: !!result?.anyOk,
+      unstableMemberIds: [...(result?.unstableMembers || [])],
+    });
+    addedCount += 1;
+    if (!status.included) {
+      failed.push({ ...combo, status: status.status, reason: status.reason });
+      return status;
+    }
+
+    successful.push(combo);
+    env.anyOk = true;
+    env.dmax = Math.max(env.dmax, Number(result.dmax || 0));
+    if (!env.governing.maxDisplacement || result.dmax > env.governing.maxDisplacement.value) {
+      env.governing.maxDisplacement = { comboId: combo.id, comboName: combo.name, value: result.dmax };
+    }
+    (result.unstableMembers || []).forEach((id) => env.unstableMembers.add(id));
+    mergeDisplacements(env.disp, result.disp || {});
+    mergeReactions(env.reactions, result.reactions || {});
+    for (const [memberId, member] of Object.entries(result.memberResults || {})) {
+      const current = env.memberResults[memberId];
+      env.memberResults[memberId] = current
+        ? mergeEnvelopeMember(current, combo, member)
+        : initialEnvelopeMember(combo, member);
+    }
+    return status;
+  }
+
+  function finalize() {
+    const complete = requestedCombos.length > 0
+      && addedCount === requestedCombos.length
+      && failed.length === 0
+      && successful.length === requestedCombos.length;
+    env.ok = complete && env.anyOk;
+    env.status = complete ? 'COMPLETE' : 'INCOMPLETE';
+    env.complete = complete;
+    env.incomplete = !complete;
+    env.designBlocked = !complete;
+    env.designBlockers = failed.map((item) => ({ comboId: item.id, status: item.status, reason: item.reason }));
+    env.successfulComboCount = successful.length;
+    env.failedComboCount = failed.length;
+    env.maxRatio = 0;
+    env.ngCount = 0;
+    env.okCount = 0;
+    env.governing.maxUtilization = null;
+    for (const [memberId, memberResult] of Object.entries(env.memberResults)) {
+      const check = memberResult.check;
+      env.maxRatio = Math.max(env.maxRatio, Number(check?.ratio || 0));
+      if (!env.governing.maxUtilization || check.ratio > env.governing.maxUtilization.ratio) {
+        env.governing.maxUtilization = {
+          memberId,
+          comboId: check.comboId || null,
+          comboName: check.comboName || null,
+          ratio: check.ratio,
+        };
+      }
+      if (check.ok) env.okCount += 1;
+      else env.ngCount += 1;
+    }
+    env.summary = {
+      totalLoad: null,
+      totalReaction: null,
+      equilibriumResidual: null,
+      maxDisplacement: env.dmax,
+      maxUtilization: env.maxRatio,
+      note: complete ? 'envelope' : 'incomplete-envelope',
+      complete,
+      designBlocked: !complete,
+    };
+    return env;
+  }
+}
+
+function mergeDisplacements(target, source) {
+  for (const [nodeId, values] of Object.entries(source)) {
+    const current = target[nodeId] || [0, 0, 0, 0, 0, 0];
+    for (let index = 0; index < 6; index += 1) {
+      if (Math.abs(values[index]) > Math.abs(current[index])) current[index] = values[index];
+    }
+    target[nodeId] = current;
+  }
+}
+
+function mergeReactions(target, source) {
+  for (const [nodeId, values] of Object.entries(source)) {
+    const current = target[nodeId] || { rx: 0, ry: 0, rz: 0, rmx: 0, rmy: 0, rmz: 0 };
+    for (const key of Object.keys(current)) {
+      if (Math.abs(values[key]) > Math.abs(current[key])) current[key] = values[key];
+    }
+    target[nodeId] = current;
+  }
+}
+
+function initialEnvelopeMember(combo, member) {
+  const result = {
+    ax: member.ax,
+    L: member.L,
+    xs: [...member.xs],
+    end: [...member.end],
+    dl: member.dl,
+    shape: member.shape,
+    dmaxM: member.dmaxM,
+    check: { ...member.check, comboId: combo.id, comboName: combo.name, source: 'envelope' },
+    governing: {
+      quantities: {},
+      deformation: { comboId: combo.id, comboName: combo.name, value: member.dmaxM },
+      utilization: null,
+    },
+  };
+  for (const quantity of ['N', 'Vy', 'Vz', 'Tq', 'My', 'Mz']) {
+    result[quantity] = [...member[quantity]];
+    result.governing.quantities[`${quantity}max`] = envelopeQuantity([{ combo, member }], quantity, result.xs).governing;
+  }
+  attachEnvelopeExtrema(result);
+  const peak = governingPeakForCheck(member);
+  result.governing.utilization = {
+    comboId: combo.id,
+    comboName: combo.name,
+    ratio: member.check.ratio,
+    status: member.check.status,
+    quantity: member.check.governing,
+    x: peak.x,
+    value: peak.value,
+  };
+  return result;
+}
+
+function mergeEnvelopeMember(current, combo, member) {
+  const priorXs = current.xs;
+  const xs = unionStations([priorXs, member.xs]);
+  current.end = current.end.map((value, index) => (
+    Math.abs(member.end[index]) > Math.abs(value) ? member.end[index] : value
+  ));
+  for (const quantity of ['N', 'Vy', 'Vz', 'Tq', 'My', 'Mz']) {
+    const priorValues = current[quantity];
+    const values = xs.map((x) => {
+      const prior = stationValue(priorXs, priorValues, x);
+      const candidate = stationValue(member.xs, member[quantity], x);
+      return Math.abs(candidate) > Math.abs(prior) ? candidate : prior;
+    });
+    const candidate = envelopeQuantity([{ combo, member }], quantity, xs).governing;
+    const existing = current.governing.quantities[`${quantity}max`];
+    if (candidate && (!existing || Math.abs(candidate.value) > Math.abs(existing.value))) {
+      current.governing.quantities[`${quantity}max`] = candidate;
+    }
+    current[quantity] = values;
+  }
+  current.xs = xs;
+  if (member.dmaxM > current.dmaxM) {
+    current.dmaxM = member.dmaxM;
+    current.shape = member.shape;
+    current.dl = member.dl;
+    current.governing.deformation = { comboId: combo.id, comboName: combo.name, value: member.dmaxM };
+  }
+  if (member.check.ratio > current.check.ratio) {
+    const peak = governingPeakForCheck(member);
+    current.check = { ...member.check, comboId: combo.id, comboName: combo.name, source: 'envelope' };
+    current.governing.utilization = {
+      comboId: combo.id,
+      comboName: combo.name,
+      ratio: member.check.ratio,
+      status: member.check.status,
+      quantity: member.check.governing,
+      x: peak.x,
+      value: peak.value,
+    };
+  }
+  attachEnvelopeExtrema(current);
+  return current;
+}
+
+function attachEnvelopeExtrema(member) {
+  member.Nmax = maxAbs(member.N);
+  member.Vymax = maxAbs(member.Vy);
+  member.Vzmax = maxAbs(member.Vz);
+  member.Tmax = maxAbs(member.Tq);
+  member.Mymax = maxAbs(member.My);
+  member.Mzmax = maxAbs(member.Mz);
+}
+
 function combinationEnvelopeStatus(combo, result) {
   if (!result) return { status: 'MISSING', included: false, reason: 'COMBINATION_RESULT_MISSING' };
   if (!result.ok || !result.anyOk) {

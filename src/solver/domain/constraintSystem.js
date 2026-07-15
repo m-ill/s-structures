@@ -11,10 +11,15 @@ export const CANONICAL_CONSTRAINT_VERSION = 'p8-m1-canonical-constraint-v1';
 export function buildConstraintSystem(nodes = [], rigidDiaphragms = [], options = {}) {
   const tolerance = positive(options.tolerance, 1e-11);
   const map = buildDiaphragmDofMap(nodes, rigidDiaphragms);
-  const baseTransform = sparseRowsToDense(map.rows, map.ncols);
   const fixedDofs = buildFixedDofs(nodes);
   const prescribed = collectPrescribedDofs(nodes, fixedDofs);
   if (!prescribed.ok) return failed('PRESCRIBED_DISPLACEMENT_INVALID', prescribed.errors, nodes, map);
+  const sparseThreshold = Math.max(1, Number(options.sparseThreshold ?? 512));
+  if (!rigidDiaphragms.length && map.ncols >= sparseThreshold) {
+    return buildSparseUncoupledConstraint(nodes, map, fixedDofs, prescribed);
+  }
+
+  const baseTransform = sparseRowsToDense(map.rows, map.ncols);
 
   const valueByDof = new Map(prescribed.entries.map((entry) => [entry.fullDof, entry.value]));
   const constraintRows = [...fixedDofs]
@@ -61,6 +66,7 @@ export function buildConstraintSystem(nodes = [], rigidDiaphragms = [], options 
     reducedDofs,
     rows,
     transform,
+    storage: 'dense-transform-and-sparse-rows',
     prescribed: prescribedVector,
     constrainedFullDofs: constraintRows.map((row) => row.fullDof),
     prescribedEntries: prescribed.entries,
@@ -79,6 +85,12 @@ export function expandConstraintDisplacements(constraint, reduced = []) {
     throw error;
   }
   const values = finiteVector(reduced, 'reduced displacement');
+  if (constraint.storage === 'sparse-rows') {
+    return constraint.rows.map((row, index) => (
+      row.reduce((sum, [column, coefficient]) => sum + coefficient * values[column], 0)
+        + Number(constraint.prescribed[index] || 0)
+    ));
+  }
   return constraint.transform.map((row, index) => (
     row.reduce((sum, coefficient, column) => sum + coefficient * values[column], 0)
       + Number(constraint.prescribed[index] || 0)
@@ -88,6 +100,14 @@ export function expandConstraintDisplacements(constraint, reduced = []) {
 export function reduceConstraintVector(constraint, full = []) {
   requireConstraint(constraint);
   if (full.length !== constraint.fullDofCount) throw sizeError('vector', constraint.fullDofCount, full.length);
+  if (constraint.storage === 'sparse-rows') {
+    const values = finiteVector(full, 'full vector');
+    const reduced = new Array(constraint.reducedDofCount).fill(0);
+    constraint.rows.forEach((row, fullIndex) => row.forEach(([reducedIndex, coefficient]) => {
+      reduced[reducedIndex] += coefficient * values[fullIndex];
+    }));
+    return reduced;
+  }
   return transposeMatrixVector(constraint.transform, finiteVector(full, 'full vector'));
 }
 
@@ -97,7 +117,74 @@ export function reduceConstraintMatrix(constraint, full = []) {
     throw sizeError('matrix', constraint.fullDofCount, full.length);
   }
   const finite = full.map((row, index) => finiteVector(row, `full matrix row ${index}`));
+  if (constraint.storage === 'sparse-rows') {
+    const reduced = Array.from({ length: constraint.reducedDofCount }, () => new Array(constraint.reducedDofCount).fill(0));
+    for (let fullRow = 0; fullRow < finite.length; fullRow += 1) {
+      for (let fullColumn = 0; fullColumn < finite.length; fullColumn += 1) {
+        const value = finite[fullRow][fullColumn];
+        if (!value) continue;
+        for (const [reducedRow, rowCoefficient] of constraint.rows[fullRow]) {
+          for (const [reducedColumn, columnCoefficient] of constraint.rows[fullColumn]) {
+            reduced[reducedRow][reducedColumn] += rowCoefficient * value * columnCoefficient;
+          }
+        }
+      }
+    }
+    return reduced;
+  }
   return multiply(transpose(constraint.transform), multiply(finite, constraint.transform));
+}
+
+export function constraintRowEntries(constraint, fullDof) {
+  requireConstraint(constraint);
+  const index = Number(fullDof);
+  if (!Number.isInteger(index) || index < 0 || index >= constraint.fullDofCount) {
+    throw sizeError('constraint row', constraint.fullDofCount, fullDof);
+  }
+  if (Array.isArray(constraint.rows?.[index])) return constraint.rows[index];
+  return (constraint.transform?.[index] || [])
+    .map((coefficient, reducedDof) => [reducedDof, Number(coefficient)])
+    .filter((entry) => entry[1] !== 0);
+}
+
+function buildSparseUncoupledConstraint(nodes, map, fixedDofs, prescribed) {
+  const valueByDof = new Map(prescribed.entries.map((entry) => [entry.fullDof, entry.value]));
+  const freeColumns = Array.from({ length: map.ncols }, (_value, index) => index).filter((index) => !fixedDofs.has(index));
+  const reducedIndexByFull = new Map(freeColumns.map((fullDof, index) => [fullDof, index]));
+  const rows = Array.from({ length: nodes.length * 6 }, (_value, fullDof) => (
+    fixedDofs.has(fullDof) ? [] : [[reducedIndexByFull.get(fullDof), 1]]
+  ));
+  const prescribedVector = Array.from({ length: nodes.length * 6 }, (_value, fullDof) => Number(valueByDof.get(fullDof) || 0));
+  const fullDofs = nodes.flatMap((node, nodeIndex) => STRUCTURAL_DOF_KEYS.map((component, componentIndex) => ({
+    index: nodeIndex * 6 + componentIndex,
+    nodeId: node.id,
+    component,
+  })));
+  const reducedDofs = freeColumns.map((baseColumn, index) => ({
+    index,
+    baseColumn,
+    key: map.columnKeys?.[baseColumn] || `q:${baseColumn}`,
+  }));
+  const contract = {
+    version: CANONICAL_CONSTRAINT_VERSION,
+    ok: true,
+    fullDofCount: nodes.length * 6,
+    baseDofCount: map.ncols,
+    reducedDofCount: freeColumns.length,
+    diaphragmCount: 0,
+    fullDofs,
+    reducedDofs,
+    rows,
+    transform: null,
+    storage: 'sparse-rows',
+    prescribed: prescribedVector,
+    constrainedFullDofs: [...fixedDofs].sort((a, b) => a - b),
+    prescribedEntries: prescribed.entries,
+    pivotColumns: [...fixedDofs].sort((a, b) => a - b),
+    freeColumns,
+    baseColumnKeys: map.columnKeys || [],
+  };
+  return { ...contract, hash: stableHash(contract).slice(0, 24) };
 }
 
 function solveAffineConstraints(coefficients, values, columnCount, tolerance) {

@@ -1,4 +1,5 @@
 import { stableHash } from '../../core/stableHash.js';
+import { constraintRowEntries } from '../../solver/domain/constraintSystem.js';
 import {
   acceptTrialBranch,
   beginStateStep,
@@ -56,9 +57,9 @@ export function resolvePhysicalControlCoordinate(domain, input = {}) {
     const coefficient = fullVector[fullDof];
     if (coefficient === 0) continue;
     offset += coefficient * Number(domain.constraint.prescribed?.[fullDof] || 0);
-    domain.constraint.transform[fullDof].forEach((value, reducedDof) => {
+    for (const [reducedDof, value] of constraintRowEntries(domain.constraint, fullDof)) {
       reduced[reducedDof] += coefficient * Number(value);
-    });
+    }
   }
   const norm = maxAbs(reduced);
   if (!(norm > 0)) {

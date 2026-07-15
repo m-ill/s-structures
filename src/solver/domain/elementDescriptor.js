@@ -10,6 +10,10 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
   const nodeIndex = new Map(nodes.map((node, index) => [node.id, index]));
   const wallByMember = new Map((model.wallEquivalents || []).map((row) => [row.memberId, row]));
+  const materialCache = new Map();
+  const sectionCache = new Map();
+  const getMaterial = (id) => cachedCatalogValue(materialCache, id, () => materialOf(model, id));
+  const getSection = (id) => cachedCatalogValue(sectionCache, id, () => sectionOf(model, id));
   const descriptors = [];
   const errors = [];
   for (const member of members) {
@@ -24,11 +28,11 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
       errors.push(issue(kinematics.reason || 'ELEMENT_KINEMATICS_INVALID', member.id, kinematics.message));
       continue;
     }
-    const materialSource = clone(materialOf(model, member.matId));
-    const sectionSource = clone(sectionOf(model, member.secId));
+    const materialSource = getMaterial(member.matId);
+    const sectionSource = getSection(member.secId);
     const effective = effectiveSectionMaterial(
-      (id) => sectionOf(model, id),
-      (id) => materialOf(model, id),
+      getSection,
+      getMaterial,
       member,
     );
     const i = nodeIndex.get(member.n1) * 6;
@@ -77,6 +81,11 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
   descriptors.sort((a, b) => String(a.id).localeCompare(String(b.id)));
   errors.sort((a, b) => `${a.code}:${a.elementId}`.localeCompare(`${b.code}:${b.elementId}`));
   return { version: CANONICAL_ELEMENT_DESCRIPTOR_VERSION, ok: errors.length === 0, descriptors, errors };
+}
+
+function cachedCatalogValue(cache, id, resolve) {
+  if (!cache.has(id)) cache.set(id, resolve());
+  return cache.get(id);
 }
 
 function originOf(member = {}, wallByMember = new Map()) {

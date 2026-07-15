@@ -31,7 +31,17 @@ export { analyzeComponent3D, assembleStiffness3D } from './linear3dAssembly.js';
 export { AXIS, localK12, memberAxes, solveLinear, solveLinearDetailed } from './linear3dElement.js';
 export { defaultCombos, makeEnvelope } from './linear3dPost.js';
 
-export function analyzeModel(inputModel) {
+export function analyzeModel(inputModel, options = {}) {
+  const prepared = prepareElasticAnalysis(inputModel);
+  if (prepared.terminal) return finalizeElasticAnalysis(prepared, {});
+  const byCombo = {};
+  for (const combo of prepared.combos) {
+    byCombo[combo.id] = solveElasticCombination(prepared, combo, options);
+  }
+  return finalizeElasticAnalysis(prepared, byCombo);
+}
+
+export function prepareElasticAnalysis(inputModel) {
   const model = migrateToV3(inputModel);
   const validation = model.analysisSettings?.validateBeforeSolve === false
     ? { errors: [], warnings: [] }
@@ -54,9 +64,9 @@ export function analyzeModel(inputModel) {
   if (!model.members?.length) {
     output.ok = false;
     output.empty = true;
-    return withAudit(output);
+    return { terminal: true, output, model, validation, pDeltaMethod, combos: [], canonicalBase: null };
   }
-  if (!output.ok) return withAudit(output);
+  if (!output.ok) return { terminal: true, output, model, validation, pDeltaMethod, combos: [], canonicalBase: null };
 
   const combinationSelection = resolveRequestedCombinations(model);
   output.combinationSelection = combinationSelection.trace;
@@ -77,7 +87,7 @@ export function analyzeModel(inputModel) {
       reason: combinationSelection.reason,
     };
     output.designEligibility = { ...output.analysisEligibility };
-    return withAudit(output);
+    return { terminal: true, output, model, validation, pDeltaMethod, combos: [], canonicalBase: null };
   }
 
   const combos = combinationSelection.combos;
@@ -85,15 +95,31 @@ export function analyzeModel(inputModel) {
     allowInvalidReferences: model.analysisSettings?.validateBeforeSolve === false,
   });
   output.combos = combos;
-  output.byCombo = {};
-  for (const combo of combos) {
-    const result = analyzeAll(model, combo.factors, { canonicalBase });
-    result.combo = comboSnapshot(combo);
-    appendSolverDiagnosticWarnings(validation.warnings, combo.id, result);
-    appendComponentFailureErrors(validation.errors, combo.id, result);
-    output.byCombo[combo.id] = result;
-  }
-  output.envelope = makeEnvelope(output.byCombo, combos);
+  return { terminal: false, output, model, validation, pDeltaMethod, combos, canonicalBase };
+}
+
+export function solveElasticCombination(prepared, combo, options = {}) {
+  if (prepared?.terminal) throw elasticStageError('ELASTIC_ANALYSIS_TERMINAL', 'A terminal elastic analysis cannot solve combinations.');
+  if (!combo?.id) throw elasticStageError('ELASTIC_COMBINATION_INVALID', 'Elastic combination id is required.');
+  const result = analyzeAll(prepared.model, combo.factors, {
+    canonicalBase: prepared.canonicalBase,
+    componentCache: options.componentCache,
+    factorSession: options.factorSession,
+    factorGroupKey: options.factorGroupKey,
+    signal: options.signal,
+  });
+  result.combo = comboSnapshot(combo);
+  appendSolverDiagnosticWarnings(prepared.validation.warnings, combo.id, result);
+  appendComponentFailureErrors(prepared.validation.errors, combo.id, result);
+  return result;
+}
+
+export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
+  const { output, model, validation, pDeltaMethod, combos } = prepared;
+  if (prepared.terminal) return withAudit(output);
+  output.byCombo = byCombo;
+  output.envelope = options.envelopeOverride || makeEnvelope(output.byCombo, combos);
+  if (options.combinationStorage) output.combinationStorage = options.combinationStorage;
   output.combinationCompleteness = buildCombinationCompleteness(output.byCombo, combos, output.envelope);
   if (pDeltaMethod !== 'off') {
     output.pDelta = analyzePDeltaCombinations(model, combos, { pDeltaMethod });
@@ -186,6 +212,10 @@ export function analyzeModel(inputModel) {
   };
 
   return withAudit(output);
+}
+
+function elasticStageError(code, message) {
+  return Object.assign(new Error(message), { code });
 }
 
 function withAudit(output) {
@@ -433,15 +463,21 @@ function analyzeAllOnce(model, factors = null, options = {}) {
   };
 
   const analysisSettings = model.analysisSettings || {};
+  const materialCache = new Map();
+  const sectionCache = new Map();
 
   const ctx = {
-    mat: (id) => materialOf(solverModel, id),
-    sec: (id) => sectionOf(solverModel, id),
+    mat: (id) => cachedCatalogValue(materialCache, id, () => materialOf(solverModel, id)),
+    sec: (id) => cachedCatalogValue(sectionCache, id, () => sectionOf(solverModel, id)),
     stations: Math.max(21, analysisSettings.memberStations | 0 || 21),
     criteriaModel: model,
     solver: analysisSettings.solver || analysisSettings.linearSolver,
     sparse: analysisSettings.useSparseSolver,
     sparseThreshold: analysisSettings.sparseThreshold,
+    componentCache: options.componentCache,
+    factorSession: options.factorSession,
+    factorGroupKey: options.factorGroupKey,
+    signal: options.signal,
   };
   const diaphragms = resolveRigidDiaphragms(model, nodes);
   ctx.diaphragms = diaphragms;
@@ -474,7 +510,11 @@ function analyzeAllOnce(model, factors = null, options = {}) {
       (load.node && group.nids.has(load.node)) ||
       (load.member && group.mids.has(load.member))
     ));
-    const result = analyzeComponent3D(ns, ms, ls, ctx);
+    const componentKey = [
+      [...group.nids].map(String).sort().join(','),
+      [...group.mids].map(String).sort().join(','),
+    ].join('::');
+    const result = analyzeComponent3D(ns, ms, ls, { ...ctx, componentKey });
     if (!result.ok) {
       group.mids.forEach((id) => out.unstableMembers.add(id));
       out.failedComponents.push({
@@ -519,6 +559,11 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     equilibriumLimit: resolveCriterion(model, 'audit.equilibriumRelative', 1e-8),
   });
   return out;
+}
+
+function cachedCatalogValue(cache, id, resolve) {
+  if (!cache.has(id)) cache.set(id, resolve());
+  return cache.get(id);
 }
 
 function analyzeUnilateralMembers(model, factors = null, options = {}) {

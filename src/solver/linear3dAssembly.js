@@ -81,9 +81,12 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   const nodeMap = Object.fromEntries(nodes.map((node) => [node.id, node]));
   const idx = Object.fromEntries(nodes.map((node, i) => [node.id, i]));
   const ndof = nodes.length * 6;
-  const sparseDecision = sparseAssemblyDecision(ctx, ndof);
-  const sparseAccumulator = sparseDecision.useSparse ? createSparseAccumulator(ndof, ndof) : null;
-  let K = sparseDecision.useSparse ? null : Array.from({ length: ndof }, () => new Array(ndof).fill(0));
+  const cacheKey = elasticComponentCacheKey(ctx);
+  const cached = cacheKey ? ctx.componentCache?.get(cacheKey) : null;
+  const assembleStiffness = !cached;
+  const sparseDecision = cached?.sparseDecision || sparseAssemblyDecision(ctx, ndof);
+  const sparseAccumulator = assembleStiffness && sparseDecision.useSparse ? createSparseAccumulator(ndof, ndof) : null;
+  let K = cached?.K || (sparseDecision.useSparse ? null : Array.from({ length: ndof }, () => new Array(ndof).fill(0)));
   const F = new Array(ndof).fill(0);
   const memData = {};
 
@@ -162,11 +165,13 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       }
     }
 
-    const kg = matMul(matTrans(md.T), matMul(klA, md.T));
-    for (let i = 0; i < 12; i += 1) {
-      for (let j = 0; j < 12; j += 1) {
-        if (sparseDecision.useSparse) addSparseValue(sparseAccumulator, md.dof[i], md.dof[j], kg[i][j]);
-        else K[md.dof[i]][md.dof[j]] += kg[i][j];
+    if (assembleStiffness) {
+      const kg = matMul(matTrans(md.T), matMul(klA, md.T));
+      for (let i = 0; i < 12; i += 1) {
+        for (let j = 0; j < 12; j += 1) {
+          if (sparseDecision.useSparse) addSparseValue(sparseAccumulator, md.dof[i], md.dof[j], kg[i][j]);
+          else K[md.dof[i]][md.dof[j]] += kg[i][j];
+        }
       }
     }
 
@@ -175,33 +180,39 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   }
 
   const restrainedDofs = buildFixedDofs(nodes);
-  const fixedDofs = new Set(restrainedDofs);
+  const fixedDofs = new Set(cached?.fixedDofs || restrainedDofs);
   const springValidation = validateNodeSpringInputs(nodes);
   if (!springValidation.ok) return springValidation;
-  if (sparseDecision.useSparse) applyNodeSpringsSparse(nodes, idx, sparseAccumulator, F);
-  else applyNodeSprings(nodes, idx, K, F);
-  if (!fixedDofs.size && !nodes.some((node) => node.support === 'spring')) return { ok: false, reason: 'NO_SUPPORT' };
+  if (assembleStiffness) {
+    if (sparseDecision.useSparse) applyNodeSpringsSparse(nodes, idx, sparseAccumulator, F);
+    else applyNodeSprings(nodes, idx, K, F);
+  } else {
+    applyNodeSpringForces(nodes, idx, F);
+  }
+  if (!restrainedDofs.size && !nodes.some((node) => node.support === 'spring')) return { ok: false, reason: 'NO_SUPPORT' };
 
-  if (sparseDecision.useSparse) {
+  if (assembleStiffness && sparseDecision.useSparse) {
     stabilizeUnsupportedRotationsSparse(sparseAccumulator, nodes, fixedDofs);
     K = sparseAccumulatorToCsc(sparseAccumulator);
     autoFixIsolatedDofsSparse(K, fixedDofs);
-  } else {
+  } else if (assembleStiffness) {
     stabilizeUnsupportedRotations(K, nodes, fixedDofs);
     autoFixIsolatedDofs(K, fixedDofs);
   }
   const diaphragmGroups = activeDiaphragmGroups(nodes, ctx.diaphragms);
-  const reduced = diaphragmGroups.length
-    ? sparseDecision.useSparse
-      ? reduceWithDiaphragmsSparse(K, F, nodes, fixedDofs, diaphragmGroups)
-      : reduceWithDiaphragms(K, F, nodes, fixedDofs, diaphragmGroups)
-    : null;
+  const reduced = cached?.reduced
+    ? { ...cached.reduced, F: reduceForceWithMap(F, cached.reduced.map) }
+    : diaphragmGroups.length
+      ? sparseDecision.useSparse
+        ? reduceWithDiaphragmsSparse(K, F, nodes, fixedDofs, diaphragmGroups)
+        : reduceWithDiaphragms(K, F, nodes, fixedDofs, diaphragmGroups)
+      : null;
   const Ks = reduced?.K || K;
   const Fs = reduced?.F || F;
   const assembledValidation = validateAssembledSystem(Ks, Fs);
   if (!assembledValidation.ok) return assembledValidation;
   const fixed = new Set(reduced?.fixedDofs || fixedDofs);
-  if (reduced) {
+  if (reduced && assembleStiffness) {
     if (sparseDecision.useSparse) autoFixIsolatedDofsSparse(Ks, fixed);
     else autoFixIsolatedDofs(Ks, fixed);
   }
@@ -211,9 +222,11 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   const systemDofCount = matrixSize(Ks);
   const dofLabels = solverDofLabels(nodes, reduced?.map, systemDofCount);
 
-  const free = [];
-  for (let i = 0; i < systemDofCount; i += 1) {
-    if (!fixed.has(i)) free.push(i);
+  const free = cached?.free ? [...cached.free] : [];
+  if (!cached?.free) {
+    for (let i = 0; i < systemDofCount; i += 1) {
+      if (!fixed.has(i)) free.push(i);
+    }
   }
 
   let df = [];
@@ -221,26 +234,38 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   let Kff = null;
   let assemblyTelemetry = null;
   if (free.length) {
-    Kff = sparseDecision.useSparse
+    Kff = cached?.Kff || (sparseDecision.useSparse
       ? extractCscSubmatrix(Ks, free, free)
-      : free.map((i) => free.map((j) => Ks[i][j]));
+      : free.map((i) => free.map((j) => Ks[i][j])));
     const prescribedForces = matrixMatVec(Ks, prescribed.values);
     const Ff = free.map((i) => Fs[i] - prescribedForces[i]);
-    assemblyTelemetry = buildAssemblyTelemetry({
+    assemblyTelemetry = cached?.assemblyTelemetry
+      ? { ...cached.assemblyTelemetry, stiffnessReused: true }
+      : {
+          ...buildAssemblyTelemetry({
+            sparseDecision,
+            globalK: K,
+            systemK: Ks,
+            freeK: Kff,
+            reduced: !!reduced,
+            accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
+            freeDofCount: free.length,
+          }),
+          stiffnessReused: false,
+        };
+    if (cacheKey && assembleStiffness) cacheElasticComponent(ctx.componentCache, cacheKey, {
+      K,
+      fixedDofs: [...fixedDofs],
       sparseDecision,
-      globalK: K,
-      systemK: Ks,
-      freeK: Kff,
-      reduced: !!reduced,
-      accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
-      freeDofCount: free.length,
+      reduced: reduced ? { K: reduced.K, fixedDofs: [...reduced.fixedDofs], map: reduced.map } : null,
+      free: [...free],
+      Kff,
+      assemblyTelemetry,
     });
-    solve = solveLinearDetailed(Kff, Ff, {
+    solve = solveElasticSystem(Kff, Ff, {
+      ...ctx,
       criteriaModel,
       labels: free.map((index) => dofLabels[index] || `dof:${index}`),
-      solver: sparseDecision.useSparse ? 'sparse' : ctx.solver,
-      sparse: sparseDecision.useSparse ? true : ctx.sparse,
-      sparseThreshold: ctx.sparseThreshold,
     });
     df = solve.x || [];
     if (!solve.ok) {
@@ -258,14 +283,28 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       return { ok: false, reason: 'SINGULAR', solver: failed };
     }
   } else {
-    assemblyTelemetry = buildAssemblyTelemetry({
+    assemblyTelemetry = cached?.assemblyTelemetry
+      ? { ...cached.assemblyTelemetry, stiffnessReused: true }
+      : {
+          ...buildAssemblyTelemetry({
+            sparseDecision,
+            globalK: K,
+            systemK: Ks,
+            freeK: null,
+            reduced: !!reduced,
+            accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
+            freeDofCount: 0,
+          }),
+          stiffnessReused: false,
+        };
+    if (cacheKey && assembleStiffness) cacheElasticComponent(ctx.componentCache, cacheKey, {
+      K,
+      fixedDofs: [...fixedDofs],
       sparseDecision,
-      globalK: K,
-      systemK: Ks,
-      freeK: null,
-      reduced: !!reduced,
-      accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
-      freeDofCount: 0,
+      reduced: reduced ? { K: reduced.K, fixedDofs: [...reduced.fixedDofs], map: reduced.map } : null,
+      free: [],
+      Kff: null,
+      assemblyTelemetry,
     });
   }
 
@@ -354,6 +393,50 @@ function reduceWithDiaphragmsSparse(K, F, nodes, fixedDofs, groups) {
     fixedDofs: reducedFixedDofs(fixedDofs, map),
     map,
   };
+}
+
+function reduceForceWithMap(F, map) {
+  const reduced = new Array(map.ncols).fill(0);
+  for (let row = 0; row < map.rows.length; row += 1) {
+    for (const [column, coefficient] of map.rows[row]) reduced[column] += coefficient * F[row];
+  }
+  return reduced;
+}
+
+function elasticComponentCacheKey(ctx) {
+  if (!ctx.componentCache || typeof ctx.componentCache.get !== 'function' || typeof ctx.componentCache.set !== 'function') return null;
+  if (!ctx.factorGroupKey || !ctx.componentKey) return null;
+  return `${ctx.factorGroupKey}::${ctx.componentKey}`;
+}
+
+function cacheElasticComponent(cache, key, value) {
+  cache.set(key, Object.freeze(value));
+}
+
+function solveElasticSystem(Kff, Ff, ctx) {
+  if (!ctx.factorSession) {
+    return solveLinearDetailed(Kff, Ff, {
+      criteriaModel: ctx.criteriaModel,
+      labels: ctx.labels,
+      solver: Kff?.format === 'csc' ? 'sparse' : ctx.solver,
+      sparse: Kff?.format === 'csc' ? true : ctx.sparse,
+      sparseThreshold: ctx.sparseThreshold,
+    });
+  }
+  const result = ctx.factorSession.solve(Kff, Ff, {
+    groupKey: ctx.factorGroupKey,
+    componentKey: ctx.componentKey,
+    matrixClass: 'spd',
+    signal: ctx.signal,
+  });
+  const x = result.x ? Array.from(result.x) : null;
+  const diagnostics = {
+    ...(result.diagnostics || {}),
+    diagnostics: result.ok
+      ? buildSolverWarningDiagnostics(Kff, x, Ff, result.diagnostics || {}, ctx.criteriaModel, ctx.labels || [])
+      : result.diagnostics?.diagnostics,
+  };
+  return { ok: result.ok, x, reason: result.reason, diagnostics };
 }
 
 export function assembleStiffness3D(nodes, members, ctx = {}) {
@@ -498,6 +581,21 @@ export function applyNodeSprings(nodes, idx, K, F) {
       K[base + i][base + i] += k;
       const imposed = Number(node.settlement?.[key] ?? node.settlement?.[dispKeys[i]] ?? 0);
       if (Number.isFinite(imposed)) F[base + i] += k * imposed;
+    });
+  }
+}
+
+function applyNodeSpringForces(nodes, idx, F) {
+  const keys = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
+  const dispKeys = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
+  for (const node of nodes) {
+    if (node.support !== 'spring') continue;
+    const base = idx[node.id] * 6;
+    keys.forEach((key, index) => {
+      const stiffness = Number(node.spring?.[key] || 0);
+      if (!(stiffness > 0)) return;
+      const imposed = Number(node.settlement?.[key] ?? node.settlement?.[dispKeys[index]] ?? 0);
+      if (Number.isFinite(imposed)) F[base + index] += stiffness * imposed;
     });
   }
 }

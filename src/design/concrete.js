@@ -14,6 +14,8 @@ export function runConcreteDesign(model, analysis, options = {}) {
     maxUtilization: 0,
     governing: null,
   };
+  const getMaterial = options.materialOf || ((id) => materialOf(model, id));
+  const getSection = options.sectionOf || ((id) => sectionOf(model, id));
 
   if (!resultSet?.memberResults) {
     return {
@@ -31,8 +33,8 @@ export function runConcreteDesign(model, analysis, options = {}) {
       summary.skippedMembers += 1;
       continue;
     }
-    const material = materialOf(model, member.matId);
-    const section = sectionOf(model, member.secId);
+    const material = getMaterial(member.matId);
+    const section = getSection(member.secId);
     if (!isConcreteMember(member, material, section)) {
       summary.skippedMembers += 1;
       continue;

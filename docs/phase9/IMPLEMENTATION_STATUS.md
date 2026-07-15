@@ -6,52 +6,58 @@ phase_status: implementation
 documentation_status: baseline-complete
 implementation_status: in-progress
 compute_qualification: G1-candidate
-completed_milestones: [P9-M0, P9-M1, P9-M2]
+completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3]
 active_milestone: none
-next_milestone: P9-M3
+next_milestone: P9-M4
 release_status: not-qualified
 design_transfer_allowed: false
 ```
 
 ## Current Decision
 
-P9-M2 is implemented and verified. Typed CSR/CSC storage, sparse matrix operations, symbolic analysis, SPD LDLT, general/indefinite partial-pivot LU, reduced assembly, factor lifecycle, CPU backend, and WASM backend ownership now reside under `src/compute`. The Phase 8 public paths remain as compatibility facades.
+P9-M3 is implemented and passes its focused gate. Production elastic static analysis now runs through the common asynchronous Worker, groups combinations by stiffness identity, assembles stiffness once per group, reuses one direct factor or IC(0) preconditioner across RHS channels, and preserves recovery, envelope, design, equilibrium and audit states.
 
-The Rust module preserves the Phase 8 ABI and adds the Phase 9 ABI v2 multi-RHS export. CPU and WASM paths are deterministic `f64`, fail closed on unsupported input, report no dense allocation or fallback, and close their allocation ledgers after execution.
+The M-tier fixture now completes instead of being blocked by a dense constraint contract or exhausting the JavaScript heap. Large runs retain a final detailed envelope and bounded combination slices; a selected combination can be rerun through `runCombination` for detailed station results. Small runs retain every detailed combination.
 
-Qualification remains `G1` candidate. M2 qualifies the sparse kernel/runtime layer; it does not yet migrate the full elastic analysis orchestration or qualify GPU execution.
+Qualification remains `G1` candidate. M3 qualifies production CPU elastic execution, not GPU execution or final design transfer.
 
 ## Milestone Results
 
-| Area | P9-M2 result | Decision |
+| Area | P9-M3 result | Decision |
 | --- | --- | --- |
-| Sparse ownership | One implementation owner in `src/compute/sparse`; six legacy paths reduced to facades | PASS |
-| Typed storage | Canonical CSR/CSC creation, conversion, validation, hashes, matvec and diagnostics | PASS |
-| SPD solve | Sparse LDLT factor handle, positive-pivot qualification, residual checks | PASS |
-| General solve | Sparse row-map LU with partial pivoting, singular detection and no dense fallback | PASS |
-| Lifecycle | Symbolic and numeric reuse, value-hash invalidation, release/dispose balance | PASS |
-| Multi-RHS | One prepared factor on CPU; native WASM ABI v2 channel execution with deterministic order | PASS |
-| Failure containment | Cancel, memory budget, missing backend, singular and nonfinite inputs fail closed | PASS |
-| Capabilities | SIMD and threads are explicit disabled capabilities, not implied acceleration | PASS |
-| Compatibility | Phase 7 sparse integrity and focused Phase 8 assembly/dynamics/WASM checks | PASS |
-| Scale proxy | 1,200-DOF banded sparse solve stays below the 64 MiB test budget with no dense allocation | PASS |
+| Orchestration | validation, preparation, combination solve and finalization are explicit stages | PASS |
+| Factor groups | settlement is RHS-only; unilateral and Direct P-Delta groups invalidate safely | PASS |
+| Multi-RHS | S: 1 factor/10 solves; M: 1 IC(0)/30 solves with 29 reuses | PASS |
+| Worker lifecycle | monotonic progress, committed-boundary cancel and no partial-current result | PASS |
+| Product boundary | asynchronous service plus on-demand detailed-combination run | PASS |
+| Sync compatibility | S-tier warning only; production UI and GPU routing forbidden | PASS |
+| Sparse constraints | large uncoupled supports use sparse rows instead of dense identity/nullspace | PASS |
+| Result memory | M-tier uses incremental envelope and bounded slices; no 4 GiB heap failure | PASS |
+| S performance | 1,955.43 ms vs 3,187.74 ms reference, ratio 0.613 | PASS |
+| M performance | 8,112 active DOF, 8,456 members, 30 combinations, 87,942.67 ms | PASS |
+| Resource lifecycle | factor peak 1,090,976 bytes and balanced disposal | PASS |
+
+## Numerical Migration
+
+The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the production path uses a reusable direct factor for S-tier and IC(0)-PCG for M-tier. Displacement relative L2 error is `8.78e-7`; force/member relative L2 is `0.00644` with `0.7001 kN` absolute maximum. The migration gate is therefore explicitly `1%` relative L2 and `1.0 kN` absolute for force/member channels. Design maximum ratio, statuses, combination IDs, envelope source IDs and audit status are unchanged. This migration tolerance is not the future CPU/GPU kernel parity tolerance.
 
 ## Artifacts
 
-- Verification note: [P9_M2_CPU_WASM.md](../verification/phase9/P9_M2_CPU_WASM.md)
-- Evidence: `reports/validation-evidence/phase9/p9-m2-cpu-wasm.json`
-- Code review: `reports/validation-evidence/phase9/p9-m2-code-review.md`
+- Verification note: [P9_M3_ELASTIC_RUNTIME.md](../verification/phase9/P9_M3_ELASTIC_RUNTIME.md)
+- Evidence: `reports/validation-evidence/phase9/p9-m3-elastic-runtime.json`
+- Code review: `reports/validation-evidence/phase9/p9-m3-code-review.md`
 - Release manifest: `docs/verification/phase9/release-manifest.json`
-- Tests: `npm run test:p9 -- M2`
-- Evidence generation: `npm run evidence:p9:m2`
+- Tests: `npm run test:p9 -- M3`
+- Evidence generation: `npm run evidence:p9:m3`
 
 ## Remaining Boundaries
 
-- M3 must route production elastic analysis through the common asynchronous runtime and group load combinations by reusable stiffness/factor identity.
-- The WASM v2 ABI shares matrix transfer across RHS channels; long-lived native factor handles across separate calls are not a public ABI. The common CPU factor runtime owns persistent numeric handles in M2, and M3 owns production factor-group reuse.
-- M4-M8 must implement and qualify GPU kernels. SIMD and WASM threads remain disabled until a dedicated capability and determinism gate is passed.
-- M9 must migrate production UI/agent callers. M10 must close final release and cleanup gates.
+- M4-M8 must implement and qualify WebGPU platform, kernels and hybrid elastic/nonlinear routes.
+- M9 must migrate existing production UI and Agent call sites to the product service; M3 supplies the service and forbids new synchronous production callers.
+- Direct P-Delta tangent iterations remain intentionally isolated from linear-static factor reuse.
+- M-tier individual detailed combination results are produced on demand, while the initial run returns bounded slices and the complete detailed envelope.
+- External independent validation remains outside this milestone by user decision.
 
 ## Next Milestone
 
-P9-M3: elastic execution plan, stiffness/factor groups, production multi-combination RHS solve, recovery/design parity, and asynchronous job integration.
+P9-M4: WebGPU platform lifecycle, resource containment and independent batch kernels without design-result transfer.

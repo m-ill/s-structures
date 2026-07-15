@@ -33,6 +33,16 @@ export {
   prepareAnalysisContracts,
 } from './adapters/analysisAdapters.js';
 export {
+  PRODUCTION_ELASTIC_ADAPTER_VERSION,
+  PRODUCTION_ELASTIC_BACKEND_ID,
+  PRODUCTION_ELASTIC_OPERATION,
+  createProductionElasticComputeBackend,
+  createProductionElasticExecutor,
+  describeProductionElasticAdapter,
+  elasticPhysicalParityHash,
+  executeProductionElastic,
+} from './adapters/elasticProductionAdapter.js';
+export {
   COMPUTE_WORKER_PROTOCOL_VERSION,
   COMPUTE_JOB_EVENT_TYPES,
   COMPUTE_JOB_REQUEST_TYPES,
@@ -44,6 +54,7 @@ export {
 } from './runtime/protocol.js';
 export { COMPUTE_WORKER_CORE_VERSION, ComputeCancellationError, createComputeWorkerCore } from './runtime/workerCore.js';
 export { COMPUTE_WORKER_CLIENT_VERSION, ComputeJobCancelledError, ComputeJobError, ComputeWorkerClient, createComputeWorkerClient } from './runtime/workerClient.js';
+export { COMPUTE_ANALYSIS_WORKER_VERSION, attachComputeAnalysisWorker, createComputeAnalysisExecutor } from './runtime/analysisWorker.js';
 export { RESOURCE_LEDGER_VERSION, createResourceLedger } from './telemetry/resourceLedger.js';
 export { COMPUTE_TELEMETRY_VERSION, createComputeTelemetry } from './telemetry/telemetry.js';
 export {
@@ -70,6 +81,7 @@ export {
 export { SPARSE_SYMBOLIC_VERSION, symbolicFactor } from './sparse/symbolic.js';
 export { SPARSE_LDLT_VERSION, factorLdlt, solveLdlt } from './sparse/ldlt.js';
 export { SPARSE_LU_VERSION, factorSparseLu, solveSparseLu } from './sparse/lu.js';
+export { SPARSE_ICCG_VERSION, factorIncompleteCholesky, solveIccg } from './sparse/iccg.js';
 export { SPARSE_FACTOR_RUNTIME_VERSION, createSparseFactorRuntime } from './sparse/factorRuntime.js';
 export { CPU_SPARSE_BACKEND_ID, createCpuSparseBackend, resolveCpuWasmSparseBackend } from './backends/cpuSparseBackend.js';
 export {
@@ -77,6 +89,9 @@ export {
   WASM_SPARSE_DIAGNOSTICS_VERSION,
   createWasmSparseBackend,
 } from './backends/wasmCpuBackend.js';
+export { ELASTIC_FACTOR_GROUP_VERSION, classifyElasticFactorGroups, elasticFactorKeyForCombo } from './elastic/factorGroups.js';
+export { ELASTIC_FACTOR_SESSION_VERSION, createElasticFactorSession } from './elastic/factorSession.js';
+export { ELASTIC_ANALYSIS_SERVICE_VERSION, createElasticAnalysisService } from './product/elasticAnalysisService.js';
 export {
   SYNC_ANALYSIS_COMPATIBILITY_POLICY,
   SYNC_ANALYSIS_COMPATIBILITY_VERSION,

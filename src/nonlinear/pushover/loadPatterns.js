@@ -1,6 +1,7 @@
 import { stableHash } from '../../core/stableHash.js';
 import { buildLoadAudit } from '../../loads/loadAudit.js';
 import { buildCanonicalAnalysisDomain } from '../../solver/domain/canonicalDomain.js';
+import { constraintRowEntries } from '../../solver/domain/constraintSystem.js';
 import { buildNonlinearLoadPattern } from '../equilibrium/externalLoads.js';
 
 export const PUSHOVER_LOAD_PATTERN_VERSION = 'p8-m5-pushover-load-pattern-v1';
@@ -287,9 +288,9 @@ function hasActiveDirectionalRow(constraint, nodeId, fallbackIndex, direction, c
   for (let axis = 0; axis < 3; axis += 1) {
     const coefficient = Number(direction[axis] || 0);
     if (coefficient === 0) continue;
-    constraint.transform[nodeIndex * 6 + axis].forEach((value, reducedDof) => {
+    for (const [reducedDof, value] of constraintRowEntries(constraint, nodeIndex * 6 + axis)) {
       reduced[reducedDof] += coefficient * Number(value);
-    });
+    }
   }
   return reduced.some((value) => Math.abs(value) > 1e-14);
 }

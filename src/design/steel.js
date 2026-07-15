@@ -6,8 +6,24 @@ import { attachMemberDemandTrace } from './designDemandTraceAttach.js';
 export function runDesignChecks(model, analysis, options = {}) {
   const resultSet = options.resultSet;
   const demandPackage = options.demandPackage || buildDesignDemandPackage(model, analysis, { resultSet });
-  const steel = runSteelDesign(model, analysis, { ...(options.steel || {}), resultSet, demandPackage });
-  const concrete = runConcreteDesign(model, analysis, { ...(options.concrete || {}), resultSet, demandPackage });
+  const materialCache = new Map();
+  const sectionCache = new Map();
+  const getMaterial = (id) => cachedCatalogValue(materialCache, id, () => materialOf(model, id));
+  const getSection = (id) => cachedCatalogValue(sectionCache, id, () => sectionOf(model, id));
+  const steel = runSteelDesign(model, analysis, {
+    ...(options.steel || {}),
+    resultSet,
+    demandPackage,
+    materialOf: getMaterial,
+    sectionOf: getSection,
+  });
+  const concrete = runConcreteDesign(model, analysis, {
+    ...(options.concrete || {}),
+    resultSet,
+    demandPackage,
+    materialOf: getMaterial,
+    sectionOf: getSection,
+  });
   const governing = [steel.summary.governing, concrete.summary.governing]
     .filter(Boolean)
     .reduce((best, item) => (!best || item.ratio > best.ratio ? item : best), null);
@@ -41,6 +57,8 @@ export function runSteelDesign(model, analysis, options = {}) {
     maxUtilization: 0,
     governing: null,
   };
+  const getMaterial = options.materialOf || ((id) => materialOf(model, id));
+  const getSection = options.sectionOf || ((id) => sectionOf(model, id));
 
   if (!resultSet?.memberResults) {
     return {
@@ -58,8 +76,8 @@ export function runSteelDesign(model, analysis, options = {}) {
       summary.skippedMembers += 1;
       continue;
     }
-    const material = materialOf(model, member.matId);
-    const section = sectionOf(model, member.secId);
+    const material = getMaterial(member.matId);
+    const section = getSection(member.secId);
     if (!isSteelMember(member, material, section)) {
       summary.skippedMembers += 1;
       continue;
@@ -97,6 +115,11 @@ export function runSteelDesign(model, analysis, options = {}) {
     summary,
     warnings,
   };
+}
+
+function cachedCatalogValue(cache, id, resolve) {
+  if (!cache.has(id)) cache.set(id, resolve());
+  return cache.get(id);
 }
 
 export function checkSteelMember(member, demand, section, material, designParams = {}, resultSet = {}) {

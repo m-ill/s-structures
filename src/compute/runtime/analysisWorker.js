@@ -1,4 +1,8 @@
 import { createCurrentAnalysisExecutor } from '../adapters/analysisAdapters.js';
+import {
+  PRODUCTION_ELASTIC_BACKEND_ID,
+  createProductionElasticExecutor,
+} from '../adapters/elasticProductionAdapter.js';
 import { createComputeWorkerCore } from './workerCore.js';
 
 export const COMPUTE_ANALYSIS_WORKER_VERSION = 'p9-compute-analysis-worker-v1';
@@ -6,7 +10,7 @@ export const COMPUTE_ANALYSIS_WORKER_VERSION = 'p9-compute-analysis-worker-v1';
 export function attachComputeAnalysisWorker(endpoint, options = {}) {
   if (!endpoint) return null;
   const core = createComputeWorkerCore({
-    executor: options.executor || createCurrentAnalysisExecutor(),
+    executor: options.executor || createComputeAnalysisExecutor(),
     postMessage: (message, transferables) => endpoint.postMessage(message, transferables),
     yieldControl: options.yieldControl,
   });
@@ -15,6 +19,16 @@ export function attachComputeAnalysisWorker(endpoint, options = {}) {
   else if (typeof endpoint.on === 'function') endpoint.on('message', handle);
   else endpoint.onmessage = handle;
   return Object.freeze({ core, handle });
+}
+
+export function createComputeAnalysisExecutor() {
+  const current = createCurrentAnalysisExecutor();
+  const productionElastic = createProductionElasticExecutor();
+  return function executeAnalysisJob(job, context) {
+    return job.operation?.backendId === PRODUCTION_ELASTIC_BACKEND_ID
+      ? productionElastic(job, context)
+      : current(job, context);
+  };
 }
 
 export async function resolveComputeWorkerEndpoint() {
