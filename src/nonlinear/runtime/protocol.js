@@ -1,3 +1,5 @@
+import { collectComputeTransferables, postComputeMessage } from '../../compute/runtime/transferables.js';
+
 export const WORKER_PROTOCOL_VERSION = 'p8-m10-worker-protocol-v4';
 
 export const WORKER_REQUEST_TYPES = Object.freeze({
@@ -145,51 +147,11 @@ export function serializeProtocolError(error, fallbackCode = 'WORKER_RUNTIME_ERR
 }
 
 export function collectTransferables(value, initial = []) {
-  const transferables = [];
-  const included = new Set();
-  const visited = new Set();
-
-  for (const item of initial || []) addTransferable(item, transferables, included);
-  visit(value);
-  return transferables;
-
-  function visit(item) {
-    if (item == null || (typeof item !== 'object' && typeof item !== 'function')) return;
-    if (isArrayBuffer(item)) {
-      addTransferable(item, transferables, included);
-      return;
-    }
-    if (ArrayBuffer.isView(item)) {
-      addTransferable(item.buffer, transferables, included);
-      return;
-    }
-    if (visited.has(item)) return;
-    visited.add(item);
-    if (Array.isArray(item)) {
-      for (const entry of item) visit(entry);
-      return;
-    }
-    if (item instanceof Map) {
-      for (const [key, entry] of item) {
-        visit(key);
-        visit(entry);
-      }
-      return;
-    }
-    if (item instanceof Set) {
-      for (const entry of item) visit(entry);
-      return;
-    }
-    for (const key of Object.keys(item).sort()) visit(item[key]);
-  }
+  return collectComputeTransferables(value, initial);
 }
 
 export function postProtocolMessage(target, message, transferables = null) {
-  const post = typeof target === 'function' ? target : target?.postMessage?.bind(target);
-  if (typeof post !== 'function') throw Object.assign(new Error('Worker postMessage target is unavailable.'), { code: 'POST_MESSAGE_UNAVAILABLE' });
-  const transfer = transferables || collectTransferables(message);
-  post(message, transfer);
-  return transfer;
+  return postComputeMessage(target, message, transferables);
 }
 
 export function normalizeRequestType(value) {
@@ -218,17 +180,4 @@ function normalizeIdentifier(value) {
   return typeof value === 'string' || typeof value === 'number'
     ? String(value).trim()
     : '';
-}
-
-function addTransferable(value, target, included) {
-  const transferable = ArrayBuffer.isView(value) ? value.buffer : value;
-  if (!isArrayBuffer(transferable) || included.has(transferable)) return;
-  // Detached and zero-length buffers do not benefit from transfer and can fail in older runtimes.
-  if (transferable.byteLength === 0) return;
-  included.add(transferable);
-  target.push(transferable);
-}
-
-function isArrayBuffer(value) {
-  return typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer;
 }

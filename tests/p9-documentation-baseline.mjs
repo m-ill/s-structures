@@ -42,11 +42,11 @@ const rootIndex = readFileSync('docs/README.md', 'utf8');
 
 assert.match(hub, /status:\s*implementation/);
 assert.match(hub, /implementation_status:\s*in-progress/);
-assert.match(hub, /completed_milestones:\s*\[P9-M0\]/);
+assert.match(hub, /completed_milestones:\s*\[P9-M0, P9-M1\]/);
 assert.match(status, /phase_status:\s*implementation/);
 assert.match(status, /implementation_status:\s*in-progress/);
-assert.match(status, /completed_milestones:\s*\[P9-M0\]/);
-assert.match(status, /compute_qualification:\s*G0/);
+assert.match(status, /completed_milestones:\s*\[P9-M0, P9-M1\]/);
+assert.match(status, /compute_qualification:\s*G1-candidate/);
 assert.match(status, /release_status:\s*not-qualified/);
 assert.match(status, /design_transfer_allowed:\s*false/);
 assert.doesNotMatch(status, /implementation_status:\s*(complete|qualified)/);
@@ -96,7 +96,7 @@ console.log(JSON.stringify({
   milestones: milestoneIds.length,
   checkedLocalLinks: [...documents.values()]
     .flatMap((text) => extractLocalMarkdownLinks(text)).length,
-  status: 'implementation/in-progress/G0',
+  status: 'implementation/in-progress/G1-candidate',
 }, null, 2));
 
 function assertRequirementSeries(text, prefix, first, last) {

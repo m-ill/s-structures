@@ -1468,3 +1468,4 @@ export {
   validatePhase8PilotArtifact,
   validatePhase8ReleaseManifest,
 } from './nonlinear/qualification/index.js';
+export * from './compute/index.js';
