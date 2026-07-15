@@ -1,0 +1,46 @@
+{
+  "version": "p9-release-manifest-v1",
+  "generatedAt": "2026-07-15T03:45:34.400Z",
+  "sourceRevision": "658a868+worktree",
+  "phase": "Phase 9",
+  "implementation": {
+    "status": "in-progress",
+    "completedMilestones": [
+      "P9-M0"
+    ],
+    "requiredMilestones": [
+      "P9-M0",
+      "P9-M1",
+      "P9-M2",
+      "P9-M3",
+      "P9-M4",
+      "P9-M5",
+      "P9-M6",
+      "P9-M7",
+      "P9-M8",
+      "P9-M9",
+      "P9-M10"
+    ]
+  },
+  "computeQualification": {
+    "grade": "G0",
+    "status": "baseline-only",
+    "gpuImplemented": false
+  },
+  "release": {
+    "status": "not-qualified",
+    "allowed": false,
+    "designTransferAllowed": false
+  },
+  "evidence": {
+    "baseline": "351c200ac632dad388c590cd7d542e98c2b99b497d91bb65ba109109402778a2",
+    "debtRegistry": "1de838c5262a06ed0d5cf112c8c8916b3f1ee0e2785610133cb6ae104b9c3cff"
+  },
+  "blockers": [
+    "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+    "M_TIER_ELASTIC_CURRENT_DENSE_PATH_NOT_EXECUTED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED"
+  ],
+  "manifestHash": "e34c650e97addf740a4000cc4b52fa7a93e203f586c9bcc68643c4b60b106dcb"
+}

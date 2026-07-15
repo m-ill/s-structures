@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, sep } from 'node:path';
 
-const roots = ['docs/phase3', 'docs/verification', 'docs/user-manual'];
+const roots = ['docs/phase3', 'docs/phase9', 'docs/verification', 'docs/user-manual'];
 const docs = roots.flatMap((root) => listFiles(root).filter((file) => /\.(md|json)$/.test(file)));
 const refs = docs.flatMap((file) => extractRefs(file, readFileSync(file, 'utf8')));
 const missing = refs.filter((item) => !referenceExists(item.ref));
