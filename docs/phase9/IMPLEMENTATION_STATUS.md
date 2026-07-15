@@ -6,52 +6,52 @@ phase_status: implementation
 documentation_status: baseline-complete
 implementation_status: in-progress
 compute_qualification: G1-candidate
-completed_milestones: [P9-M0, P9-M1]
+completed_milestones: [P9-M0, P9-M1, P9-M2]
 active_milestone: none
-next_milestone: P9-M2
+next_milestone: P9-M3
 release_status: not-qualified
 design_transfer_allowed: false
 ```
 
 ## Current Decision
 
-P9-M1 is implemented and verified as the common compute-contract integration milestone. The common binary, sparse pattern, state, result, backend, execution-plan, Worker, resource-ledger, and telemetry contracts now exist under `src/compute`. Current elastic, production pushover, and production NLTH entry points are connected through adapters without changing their public result payloads.
+P9-M2 is implemented and verified. Typed CSR/CSC storage, sparse matrix operations, symbolic analysis, SPD LDLT, general/indefinite partial-pivot LU, reduced assembly, factor lifecycle, CPU backend, and WASM backend ownership now reside under `src/compute`. The Phase 8 public paths remain as compatibility facades.
 
-This is a `G1 Contract-Integrated` candidate, not a production GPU qualification. The release gate remains closed and design transfer remains prohibited until the remaining milestones and external qualification are complete.
+The Rust module preserves the Phase 8 ABI and adds the Phase 9 ABI v2 multi-RHS export. CPU and WASM paths are deterministic `f64`, fail closed on unsupported input, report no dense allocation or fallback, and close their allocation ledgers after execution.
+
+Qualification remains `G1` candidate. M2 qualifies the sparse kernel/runtime layer; it does not yet migrate the full elastic analysis orchestration or qualify GPU execution.
 
 ## Milestone Results
 
-| Area | P9-M1 result | Decision |
+| Area | P9-M2 result | Decision |
 | --- | --- | --- |
-| DomainBinary | Typed structural fields plus canonical full-model UTF-8 payload, units, IDs, hashes, transfer list | PASS |
-| SparsePattern | Deterministic CSR/CSC contract and 12x12 member scatter map | PASS |
-| StateArena | Run ownership, isolated committed/trial buffers, commit/rollback/dispose | PASS |
-| ResultChunk | Typed values, extrema, provenance, reproducible hash | PASS |
-| Backend policy | Shared descriptor, capability, preflight, session, fail-closed target policy | PASS |
-| Execution plan | Immutable settings bytes/hash and backend build binding | PASS |
-| Worker | Versioned start/progress/cancel/result/error protocol, monotonic sequence, single terminal state | PASS |
-| Resources/telemetry | Balanced resource ledger and bounded stage telemetry | PASS |
-| Current engines | Elastic/Pushover/NLTH compatibility adapters; physical-result parity hash | PASS |
-| Legacy containment | Old Worker transfer logic delegates to common owner; sync facade is small-model/test only and expires at P9-M9 | PASS |
-| Phase 8 nonlinear regression | Existing qualified evidence reused; no long nonlinear solve rerun | PASS - evidence reuse |
+| Sparse ownership | One implementation owner in `src/compute/sparse`; six legacy paths reduced to facades | PASS |
+| Typed storage | Canonical CSR/CSC creation, conversion, validation, hashes, matvec and diagnostics | PASS |
+| SPD solve | Sparse LDLT factor handle, positive-pivot qualification, residual checks | PASS |
+| General solve | Sparse row-map LU with partial pivoting, singular detection and no dense fallback | PASS |
+| Lifecycle | Symbolic and numeric reuse, value-hash invalidation, release/dispose balance | PASS |
+| Multi-RHS | One prepared factor on CPU; native WASM ABI v2 channel execution with deterministic order | PASS |
+| Failure containment | Cancel, memory budget, missing backend, singular and nonfinite inputs fail closed | PASS |
+| Capabilities | SIMD and threads are explicit disabled capabilities, not implied acceleration | PASS |
+| Compatibility | Phase 7 sparse integrity and focused Phase 8 assembly/dynamics/WASM checks | PASS |
+| Scale proxy | 1,200-DOF banded sparse solve stays below the 64 MiB test budget with no dense allocation | PASS |
 
 ## Artifacts
 
-- Verification note: [P9_M1_COMMON_COMPUTE.md](../verification/phase9/P9_M1_COMMON_COMPUTE.md)
-- Evidence: `reports/validation-evidence/phase9/p9-m1-common-compute.json`
-- Code review: `reports/validation-evidence/phase9/p9-m1-code-review.md`
+- Verification note: [P9_M2_CPU_WASM.md](../verification/phase9/P9_M2_CPU_WASM.md)
+- Evidence: `reports/validation-evidence/phase9/p9-m2-cpu-wasm.json`
+- Code review: `reports/validation-evidence/phase9/p9-m2-code-review.md`
 - Release manifest: `docs/verification/phase9/release-manifest.json`
-- Tests: `npm run test:p9 -- M1`
-- Evidence generation: `npm run evidence:p9:m1`
+- Tests: `npm run test:p9 -- M2`
+- Evidence generation: `npm run evidence:p9:m2`
 
 ## Remaining Boundaries
 
-- M2 must replace duplicate sparse ownership with the unified CPU/WASM f64 runtime and persistent factor handles.
-- M3 must move elastic production execution from the compatibility adapter to the common asynchronous runtime.
-- M4-M8 must implement and qualify GPU kernels; no GPU backend is currently claimed.
-- M9 must migrate production UI/agent callers and remove synchronous product calls.
-- M10 must close release, cleanup, and final qualification gates.
+- M3 must route production elastic analysis through the common asynchronous runtime and group load combinations by reusable stiffness/factor identity.
+- The WASM v2 ABI shares matrix transfer across RHS channels; long-lived native factor handles across separate calls are not a public ABI. The common CPU factor runtime owns persistent numeric handles in M2, and M3 owns production factor-group reuse.
+- M4-M8 must implement and qualify GPU kernels. SIMD and WASM threads remain disabled until a dedicated capability and determinism gate is passed.
+- M9 must migrate production UI/agent callers. M10 must close final release and cleanup gates.
 
 ## Next Milestone
 
-P9-M2: unified CPU/WASM f64 runtime, common typed sparse ownership, persistent symbolic/numeric handles, multi-RHS ABI, bounded copies, cancellation, and allocation/free balance.
+P9-M3: elastic execution plan, stiffness/factor groups, production multi-combination RHS solve, recovery/design parity, and asynchronous job integration.

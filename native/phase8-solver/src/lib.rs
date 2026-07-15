@@ -3,6 +3,7 @@ use std::mem::{align_of, size_of};
 use std::slice;
 
 const ABI_VERSION: u32 = 1;
+const P9_ABI_VERSION: u32 = 2;
 const MATRIX_CLASS_SPD: u32 = 0;
 const MATRIX_CLASS_GENERAL: u32 = 1;
 const DIAGNOSTICS_LEN: usize = 14;
@@ -119,6 +120,17 @@ pub extern "C" fn p8_solver_capabilities() -> u32 {
 }
 
 #[no_mangle]
+pub extern "C" fn p9_solver_abi_version() -> u32 {
+    P9_ABI_VERSION
+}
+
+#[no_mangle]
+pub extern "C" fn p9_solver_capabilities() -> u32 {
+    // Bit 0: SPD, bit 1: general, bit 2: CSR, bit 3: multi-RHS, bit 4: deterministic order.
+    0b1_1111
+}
+
+#[no_mangle]
 pub extern "C" fn p8_diagnostics_len() -> u32 {
     DIAGNOSTICS_LEN as u32
 }
@@ -193,6 +205,82 @@ pub unsafe extern "C" fn p8_solve_csr(
     diagnostics.status = status;
     unsafe { write_diagnostics(diagnostics_output, &diagnostics) };
     status
+}
+
+#[no_mangle]
+/// Solves RHS-major channels against one canonical CSR matrix.
+///
+/// The Phase 8 single-RHS ABI remains stable. This Phase 9 ABI bounds all pointer arithmetic,
+/// writes one diagnostics row per channel, and returns on the first failed channel.
+#[allow(clippy::too_many_arguments)]
+pub unsafe extern "C" fn p9_solve_csr_multi(
+    matrix_class: u32,
+    dimension: u32,
+    nonzeros: u32,
+    row_pointer: *const u32,
+    column_index: *const u32,
+    values: *const f64,
+    rhs_count: u32,
+    rhs: *const f64,
+    rhs_stride: u32,
+    solution: *mut f64,
+    solution_stride: u32,
+    pivot_tolerance: f64,
+    relative_tolerance: f64,
+    max_iterations: u32,
+    diagnostics_output: *mut f64,
+    diagnostics_stride: u32,
+) -> u32 {
+    let dimension = dimension as usize;
+    let rhs_count = rhs_count as usize;
+    let rhs_stride = rhs_stride as usize;
+    let solution_stride = solution_stride as usize;
+    let diagnostics_stride = diagnostics_stride as usize;
+    if rhs_count == 0
+        || rhs_stride < dimension
+        || solution_stride < dimension
+        || diagnostics_stride < DIAGNOSTICS_LEN
+        || rhs.is_null()
+        || solution.is_null()
+        || diagnostics_output.is_null()
+        || !(rhs as usize).is_multiple_of(align_of::<f64>())
+        || !(solution as usize).is_multiple_of(align_of::<f64>())
+        || !(diagnostics_output as usize).is_multiple_of(align_of::<f64>())
+        || rhs_count.checked_mul(rhs_stride).is_none()
+        || rhs_count.checked_mul(solution_stride).is_none()
+        || rhs_count.checked_mul(diagnostics_stride).is_none()
+    {
+        return STATUS_INVALID_OPTIONS;
+    }
+
+    for channel in 0..rhs_count {
+        let mut diagnostics = Diagnostics::new();
+        let channel_rhs = unsafe { rhs.add(channel * rhs_stride) };
+        let channel_solution = unsafe { solution.add(channel * solution_stride) };
+        let channel_diagnostics = unsafe { diagnostics_output.add(channel * diagnostics_stride) };
+        let status = unsafe {
+            solve_checked(
+                matrix_class,
+                dimension,
+                nonzeros as usize,
+                row_pointer,
+                column_index,
+                values,
+                channel_rhs,
+                channel_solution,
+                pivot_tolerance,
+                relative_tolerance,
+                max_iterations as usize,
+                &mut diagnostics,
+            )
+        };
+        diagnostics.status = status;
+        unsafe { write_diagnostics(channel_diagnostics, &diagnostics) };
+        if status != STATUS_OK {
+            return status;
+        }
+    }
+    STATUS_OK
 }
 
 #[allow(clippy::too_many_arguments)]

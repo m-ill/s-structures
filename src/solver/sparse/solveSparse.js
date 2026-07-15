@@ -933,9 +933,13 @@ function validRhs(rhs, n) {
 
 function isCsc(value) {
   return value?.format === 'csc'
-    && Array.isArray(value.colPtr)
-    && Array.isArray(value.rowIdx)
-    && Array.isArray(value.values);
+    && arrayLike(value.colPtr)
+    && arrayLike(value.rowIdx)
+    && arrayLike(value.values);
+}
+
+function arrayLike(value) {
+  return Array.isArray(value) || (ArrayBuffer.isView(value) && !(value instanceof DataView));
 }
 
 function cscDiagonal(matrix) {

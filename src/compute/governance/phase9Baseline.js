@@ -247,7 +247,7 @@ export function validatePhase9ReleaseManifestSkeleton(manifest = {}) {
   if (manifest.version !== PHASE9_RELEASE_MANIFEST_VERSION) errors.push('manifest:version');
   if (!text(manifest.generatedAt)) errors.push('manifest:generatedAt');
   if (!text(manifest.sourceRevision)) errors.push('manifest:sourceRevision');
-  if (manifest.computeQualification?.grade !== 'G0') errors.push('manifest:grade');
+  if (!/^G[0-3]$/.test(manifest.computeQualification?.grade || '')) errors.push('manifest:grade');
   if (manifest.computeQualification?.gpuImplemented !== false) errors.push('manifest:gpu');
   if (manifest.implementation?.status !== 'in-progress'
     || !Array.isArray(manifest.implementation?.completedMilestones)

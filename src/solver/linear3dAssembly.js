@@ -972,9 +972,13 @@ function dofFailure(reason, nodes, dof, value, message) {
 
 function isCscMatrix(matrix) {
   return matrix?.format === 'csc'
-    && Array.isArray(matrix.colPtr)
-    && Array.isArray(matrix.rowIdx)
-    && Array.isArray(matrix.values);
+    && arrayLike(matrix.colPtr)
+    && arrayLike(matrix.rowIdx)
+    && arrayLike(matrix.values);
+}
+
+function arrayLike(value) {
+  return Array.isArray(value) || (ArrayBuffer.isView(value) && !(value instanceof DataView));
 }
 
 function matrixSize(matrix) {

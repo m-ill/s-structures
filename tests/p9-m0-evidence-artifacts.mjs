@@ -51,7 +51,7 @@ assert.equal(debt.rows.every((row) => row.owner && row.targetMilestone && row.re
 assert.equal(debt.rows.every((row) => Array.isArray(row.inventory)), true);
 assert.equal(debt.retention.forbidden.includes('manually edited generated evidence'), true);
 assert.equal(manifest.implementation.completedMilestones.includes('P9-M0'), true);
-assert.equal(manifest.computeQualification.grade, 'G0');
+assert.ok(['G0', 'G1', 'G2', 'G3'].includes(manifest.computeQualification.grade));
 assert.equal(manifest.release.allowed, false);
 assert.equal(manifest.release.designTransferAllowed, false);
 assert.equal(manifest.evidence.baseline, baseline.artifactHash);

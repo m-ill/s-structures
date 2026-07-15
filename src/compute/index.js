@@ -47,6 +47,37 @@ export { COMPUTE_WORKER_CLIENT_VERSION, ComputeJobCancelledError, ComputeJobErro
 export { RESOURCE_LEDGER_VERSION, createResourceLedger } from './telemetry/resourceLedger.js';
 export { COMPUTE_TELEMETRY_VERSION, createComputeTelemetry } from './telemetry/telemetry.js';
 export {
+  COMMON_SPARSE_MATRIX_VERSION,
+  combineCscMatrices,
+  createCscFromTriplets,
+  cscDiagonal,
+  cscMatVec,
+  cscQuadratic,
+  cscRowNorms,
+  cscSymmetryError,
+  cscToCsr,
+  cscToDense,
+  csrToCsc,
+  denseToCsc,
+  denseToTriplets,
+  extractCscSubmatrix,
+  sparsePatternHash,
+  sparseStats,
+  sparseValueHash,
+  tripletsToCsc,
+  validateCommonSparseMatrix,
+} from './sparse/matrix.js';
+export { SPARSE_SYMBOLIC_VERSION, symbolicFactor } from './sparse/symbolic.js';
+export { SPARSE_LDLT_VERSION, factorLdlt, solveLdlt } from './sparse/ldlt.js';
+export { SPARSE_LU_VERSION, factorSparseLu, solveSparseLu } from './sparse/lu.js';
+export { SPARSE_FACTOR_RUNTIME_VERSION, createSparseFactorRuntime } from './sparse/factorRuntime.js';
+export { CPU_SPARSE_BACKEND_ID, createCpuSparseBackend, resolveCpuWasmSparseBackend } from './backends/cpuSparseBackend.js';
+export {
+  WASM_SPARSE_BACKEND_ID,
+  WASM_SPARSE_DIAGNOSTICS_VERSION,
+  createWasmSparseBackend,
+} from './backends/wasmCpuBackend.js';
+export {
   SYNC_ANALYSIS_COMPATIBILITY_POLICY,
   SYNC_ANALYSIS_COMPATIBILITY_VERSION,
   SYNC_ANALYSIS_DEPRECATION_INVENTORY,

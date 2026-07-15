@@ -15,6 +15,7 @@
     "test:p9:list": "node tools/run-phase9-tests.mjs --list",
     "test:p9docs": "node tests/p9-documentation-baseline.mjs",
     "evidence:p9:m1": "node tools/run-p9-m1-evidence.mjs",
+    "evidence:p9:m2": "node tools/run-p9-m2-evidence.mjs",
     "baseline:p9:m0": "node tools/run-p9-m0-baseline.mjs",
     "build:p8wasm": "node tools/build-phase8-wasm.mjs",
     "test:p3": "node tools/run-milestone-tests.mjs --phase3",
