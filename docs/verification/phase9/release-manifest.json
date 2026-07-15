@@ -1,7 +1,7 @@
 {
   "version": "p9-release-manifest-v1",
-  "generatedAt": "2026-07-15T11:40:01.907Z",
-  "sourceRevision": "1a46953+worktree",
+  "generatedAt": "2026-07-15T13:45:47.558Z",
+  "sourceRevision": "fc9b93d+worktree",
   "phase": "Phase 9",
   "implementation": {
     "status": "in-progress",
@@ -9,7 +9,8 @@
       "P9-M0",
       "P9-M1",
       "P9-M2",
-      "P9-M3"
+      "P9-M3",
+      "P9-M4"
     ],
     "requiredMilestones": [
       "P9-M0",
@@ -26,10 +27,12 @@
     ]
   },
   "computeQualification": {
-    "grade": "G1",
-    "status": "candidate-production-elastic-worker-integrated",
+    "grade": "G2",
+    "status": "kernel-qualified-local-primary-profile",
     "candidate": true,
-    "gpuImplemented": false
+    "gpuImplemented": true,
+    "qualifiedProfileCount": 1,
+    "fullProfileMatrixQualified": false
   },
   "release": {
     "status": "not-qualified",
@@ -41,15 +44,17 @@
     "debtRegistry": "1de838c5262a06ed0d5cf112c8c8916b3f1ee0e2785610133cb6ae104b9c3cff",
     "m1CommonCompute": "c97ae53aac9f182eedae44a3314423ac5c521da23b678e8146037319d1e75803",
     "m2CpuWasm": "49c5c9ccf63ba2b4b6ef4c3c5383a7571e840998e4fc77d2b4a5e23ff20c48c7",
-    "m3ElasticRuntime": "897ab273596507afe3ab2d7d5967f3416450f24c8adc62c1c99f550a13f339e9"
+    "m3ElasticRuntime": "897ab273596507afe3ab2d7d5967f3416450f24c8adc62c1c99f550a13f339e9",
+    "m4WebGpuFoundation": "45286be5c46b9e30588171c2ec9dd16886f5e61723a1ebe87b75fa1c90e3a3f1"
   },
   "blockers": [
     "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
     "M_TIER_NLTH_END_TO_END_REQUIRED",
     "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
     "P9_M10_RELEASE_GATE_REQUIRED",
-    "P9_M4_TO_M8_GPU_QUALIFICATION_REQUIRED",
+    "P9_M4_EXTERNAL_BROWSER_VENDOR_MATRIX_REQUIRED",
+    "P9_M5_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED",
     "P9_M9_PRODUCT_MIGRATION_REQUIRED"
   ],
-  "manifestHash": "27f60368fff89e9b5f1c3cbe81642d49cb99c3a711ed6e95869f9267c9af8ac2"
+  "manifestHash": "4865dca7349e7b6bab915f4d804577e4f958379a949064d0df7fe4df6897097b"
 }

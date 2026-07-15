@@ -1,0 +1,880 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteVersion": "p9-m4-webgpu-foundation-evidence-v1",
+  "suiteId": "P9-M4-WEBGPU-FOUNDATION",
+  "milestone": "P9-M4",
+  "generatedAt": "2026-07-15T13:45:47.558Z",
+  "sourceRevision": "fc9b93d+worktree",
+  "verificationIds": [
+    "P9-GPU-PLT-01",
+    "P9-GPU-PLT-02",
+    "P9-GPU-PLT-03",
+    "P9-GPU-PLT-04",
+    "P9-GPU-PLT-05",
+    "P9-GPU-PLT-06",
+    "P9-GPU-PLT-07",
+    "P9-GPU-PLT-08",
+    "P9-GPU-PLT-09",
+    "P9-GPU-PLT-10",
+    "P9-GPU-PLT-11",
+    "P9-GPU-PLT-12",
+    "P9-GPU-NUM-01",
+    "P9-GPU-NUM-02",
+    "P9-GPU-NUM-03",
+    "P9-GPU-NUM-04",
+    "P9-GPU-NUM-05",
+    "P9-GPU-NUM-06",
+    "P9-GPU-NUM-07",
+    "P9-GPU-NUM-08",
+    "P9-GPU-NUM-09",
+    "P9-GPU-NUM-10",
+    "P9-GPU-NUM-11",
+    "P9-GPU-NUM-12",
+    "P9-GPU-NUM-13",
+    "P9-GPU-NUM-14",
+    "P9-PERF-05",
+    "P9-PERF-06",
+    "P9-PERF-07"
+  ],
+  "status": "PASS-WITH-EXTERNAL-MATRIX-DEFERRED",
+  "backend": {
+    "id": "p9-webgpu-independent-kernels-v1",
+    "operations": [
+      "vectorScale",
+      "vectorAxpy",
+      "deterministicReduction",
+      "csrSpmv",
+      "jacobiPrecondition",
+      "fiberSampleBatch",
+      "frameMatrixBatch"
+    ],
+    "shaderCatalogHash": "d312f75fcf3da54be3f4a558f65085a36b9d377bec738b378982cfdc36bcbf56",
+    "precision": "f32",
+    "production": false,
+    "designTransferAllowed": false
+  },
+  "browser": {
+    "version": "p9-m4-browser-raw-v1",
+    "status": "PASS",
+    "available": true,
+    "generatedAt": "2026-07-15T13:37:21.618Z",
+    "browser": {
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+      "language": "ko",
+      "platform": "Win32",
+      "crossOriginIsolated": false
+    },
+    "capability": {
+      "version": "p9-m4-webgpu-capability-v1",
+      "ok": true,
+      "available": true,
+      "reason": null,
+      "adapterInfo": {
+        "vendor": "nvidia",
+        "architecture": "ampere",
+        "device": "unknown",
+        "description": "unknown",
+        "isFallbackAdapter": false
+      },
+      "features": [
+        "bgra8unorm-storage",
+        "clip-distances",
+        "core-features-and-limits",
+        "depth-clip-control",
+        "depth32float-stencil8",
+        "dual-source-blending",
+        "float32-blendable",
+        "float32-filterable",
+        "indirect-first-instance",
+        "primitive-index",
+        "rg11b10ufloat-renderable",
+        "shader-f16",
+        "subgroups",
+        "texture-component-swizzle",
+        "texture-compression-bc",
+        "texture-compression-bc-sliced-3d",
+        "texture-formats-tier1",
+        "texture-formats-tier2",
+        "timestamp-query"
+      ],
+      "limits": {
+        "maxBufferSize": 2147483648,
+        "maxStorageBufferBindingSize": 2147483644,
+        "maxStorageBuffersPerShaderStage": 16,
+        "maxComputeWorkgroupsPerDimension": 65535,
+        "maxComputeInvocationsPerWorkgroup": 1024,
+        "maxComputeWorkgroupSizeX": 1024,
+        "maxComputeWorkgroupStorageSize": 32768,
+        "minStorageBufferOffsetAlignment": 256
+      },
+      "requiredFeatures": [],
+      "requiredLimits": {},
+      "missingFeatures": [],
+      "limitFailures": [],
+      "fallbackUsed": false,
+      "designTransferAllowed": false,
+      "capabilityHash": "93f5a2b9a899711b9a662bdbe422ba59ac93198958803ffa9a3f2d4569a53b95"
+    },
+    "backend": {
+      "id": "p9-webgpu-independent-kernels-v1",
+      "buildHash": "029eac42b8fd7202f052e57fbe37f86b8b9b33d18498512250e77eee3aa21b95",
+      "qualification": "G2-kernel-candidate-no-design-transfer",
+      "precision": "f32",
+      "shaderCatalogHash": "d312f75fcf3da54be3f4a558f65085a36b9d377bec738b378982cfdc36bcbf56",
+      "operations": [
+        "vectorScale",
+        "vectorAxpy",
+        "deterministicReduction",
+        "csrSpmv",
+        "jacobiPrecondition",
+        "fiberSampleBatch",
+        "frameMatrixBatch"
+      ],
+      "designTransferAllowed": false
+    },
+    "checks": [
+      {
+        "operation": "vectorScale",
+        "status": "PASS",
+        "resultHash": "bff4db5e3d1c235578d0cfee91ff6dda89f112e573468d44653833062dd142a0",
+        "ok": true,
+        "finite": true,
+        "valueCount": 3,
+        "absoluteMax": 0,
+        "relativeMax": 0,
+        "absoluteTolerance": 0.00001,
+        "relativeTolerance": 0.000002
+      },
+      {
+        "operation": "vectorAxpy",
+        "status": "PASS",
+        "resultHash": "c32a0256a0ac643b11e7bb0da50b9f5fcbb9caded9a6b886a68bfa8e32e9bc42",
+        "ok": true,
+        "finite": true,
+        "valueCount": 2,
+        "absoluteMax": 0,
+        "relativeMax": 0,
+        "absoluteTolerance": 0.00001,
+        "relativeTolerance": 0.000002
+      },
+      {
+        "operation": "deterministicReduction",
+        "status": "PASS",
+        "resultHash": "277169e591eb25b7c5e5775b1c80a397ef7f3ae479a3af4571f2db52452156cc",
+        "ok": true,
+        "finite": true,
+        "valueCount": 5,
+        "absoluteMax": 0,
+        "relativeMax": 0,
+        "absoluteTolerance": 0.00001,
+        "relativeTolerance": 0.000002
+      },
+      {
+        "operation": "csrSpmv",
+        "status": "PASS",
+        "resultHash": "4487bf4fe3c6f731c85916fbe097b86fa9e5c8e44bea06530ebddd98e0c7aaff",
+        "ok": true,
+        "finite": true,
+        "valueCount": 3,
+        "absoluteMax": 0,
+        "relativeMax": 0,
+        "absoluteTolerance": 0.00001,
+        "relativeTolerance": 0.000002
+      },
+      {
+        "operation": "jacobiPrecondition",
+        "status": "PASS",
+        "resultHash": "4bbc9cb3f89393add7aa391b1462a707c1928f4715de6d2a9ec9c30d776ac2ec",
+        "ok": true,
+        "finite": true,
+        "valueCount": 3,
+        "absoluteMax": 0,
+        "relativeMax": 0,
+        "absoluteTolerance": 0.00001,
+        "relativeTolerance": 0.000002
+      },
+      {
+        "operation": "fiberSampleBatch",
+        "status": "PASS",
+        "resultHash": "b25a7d35be336b1f776291e32fbccd437b0e3ade2fa8e1b977891877c2078c56",
+        "ok": true,
+        "finite": true,
+        "valueCount": 8,
+        "absoluteMax": 0,
+        "relativeMax": 0,
+        "absoluteTolerance": 0.125,
+        "relativeTolerance": 0.000002
+      },
+      {
+        "operation": "frameMatrixBatch",
+        "status": "PASS",
+        "resultHash": "58a85d9902576cce80a29af66abbdf473e828479e6055041507c25d2e9538b5a",
+        "ok": true,
+        "finite": true,
+        "valueCount": 144,
+        "absoluteMax": 0.125,
+        "relativeMax": 1.1901855868287398e-7,
+        "absoluteTolerance": 0.125,
+        "relativeTolerance": 0.000004
+      },
+      {
+        "operation": "deterministicReduction-repeat",
+        "status": "PASS",
+        "uniqueResultHashes": 1,
+        "samples": 5
+      }
+    ],
+    "performance": {
+      "vectorScale": {
+        "gpu": {
+          "measurement": "host-write-dispatch-queue-wait-map-readback",
+          "warmupCount": 1,
+          "sampleCount": 5,
+          "samplesMs": [
+            57.4,
+            64.2,
+            62.1,
+            56.3,
+            58.1
+          ],
+          "medianMs": 58.1,
+          "p95Ms": 64.2
+        },
+        "cpu": {
+          "measurement": "browser-main-thread-f32-reference",
+          "warmupCount": 1,
+          "sampleCount": 5,
+          "samplesMs": [
+            4.4,
+            4.3,
+            6.8,
+            4.3,
+            4.4
+          ],
+          "medianMs": 4.4,
+          "p95Ms": 6.8
+        },
+        "gpuToCpuMedianRatio": 13.204545454545453
+      },
+      "csrSpmv": {
+        "gpu": {
+          "measurement": "host-write-dispatch-queue-wait-map-readback",
+          "warmupCount": 1,
+          "sampleCount": 5,
+          "samplesMs": [
+            7.5,
+            7.5,
+            7.1,
+            7.2,
+            7
+          ],
+          "medianMs": 7.2,
+          "p95Ms": 7.5
+        },
+        "cpu": {
+          "measurement": "browser-main-thread-f32-reference",
+          "warmupCount": 1,
+          "sampleCount": 5,
+          "samplesMs": [
+            2,
+            1.4,
+            2.9,
+            1.3,
+            1.3
+          ],
+          "medianMs": 1.4,
+          "p95Ms": 2.9
+        },
+        "gpuToCpuMedianRatio": 5.142857142857143
+      }
+    },
+    "lifecycle": {
+      "beforeDispose": {
+        "version": "p9-m4-webgpu-platform-v1",
+        "state": "ready",
+        "disposed": false,
+        "capability": {
+          "version": "p9-m4-webgpu-capability-v1",
+          "ok": true,
+          "available": true,
+          "reason": null,
+          "adapterInfo": {
+            "vendor": "nvidia",
+            "architecture": "ampere",
+            "device": "unknown",
+            "description": "unknown",
+            "isFallbackAdapter": false
+          },
+          "features": [
+            "bgra8unorm-storage",
+            "clip-distances",
+            "core-features-and-limits",
+            "depth-clip-control",
+            "depth32float-stencil8",
+            "dual-source-blending",
+            "float32-blendable",
+            "float32-filterable",
+            "indirect-first-instance",
+            "primitive-index",
+            "rg11b10ufloat-renderable",
+            "shader-f16",
+            "subgroups",
+            "texture-component-swizzle",
+            "texture-compression-bc",
+            "texture-compression-bc-sliced-3d",
+            "texture-formats-tier1",
+            "texture-formats-tier2",
+            "timestamp-query"
+          ],
+          "limits": {
+            "maxBufferSize": 2147483648,
+            "maxStorageBufferBindingSize": 2147483644,
+            "maxStorageBuffersPerShaderStage": 16,
+            "maxComputeWorkgroupsPerDimension": 65535,
+            "maxComputeInvocationsPerWorkgroup": 1024,
+            "maxComputeWorkgroupSizeX": 1024,
+            "maxComputeWorkgroupStorageSize": 32768,
+            "minStorageBufferOffsetAlignment": 256
+          },
+          "requiredFeatures": [],
+          "requiredLimits": {},
+          "missingFeatures": [],
+          "limitFailures": [],
+          "fallbackUsed": false,
+          "designTransferAllowed": false,
+          "capabilityHash": "93f5a2b9a899711b9a662bdbe422ba59ac93198958803ffa9a3f2d4569a53b95"
+        },
+        "loss": null,
+        "submissionCount": 24,
+        "completedSubmissionCount": 24,
+        "pipelineCount": 7,
+        "pool": {
+          "version": "p9-m4-webgpu-buffer-pool-v1",
+          "disposed": false,
+          "alignment": 4,
+          "maxCachedBytes": 67108864,
+          "maxBuffersPerKey": 4,
+          "createdCount": 34,
+          "destroyedCount": 3,
+          "createdBytes": 952308,
+          "activeCount": 0,
+          "activeBytes": 0,
+          "cachedCount": 31,
+          "cachedBytes": 952284,
+          "peakBytes": 952284,
+          "allocationBalanced": null
+        },
+        "designTransferAllowed": false,
+        "platformHash": "28b7449cf159096f7d259e812df284a8a205fadf73cb96191b47b001c2ed1438"
+      },
+      "afterDispose": {
+        "version": "p9-m4-webgpu-platform-v1",
+        "state": "disposed",
+        "disposed": true,
+        "capability": {
+          "version": "p9-m4-webgpu-capability-v1",
+          "ok": true,
+          "available": true,
+          "reason": null,
+          "adapterInfo": {
+            "vendor": "nvidia",
+            "architecture": "ampere",
+            "device": "unknown",
+            "description": "unknown",
+            "isFallbackAdapter": false
+          },
+          "features": [
+            "bgra8unorm-storage",
+            "clip-distances",
+            "core-features-and-limits",
+            "depth-clip-control",
+            "depth32float-stencil8",
+            "dual-source-blending",
+            "float32-blendable",
+            "float32-filterable",
+            "indirect-first-instance",
+            "primitive-index",
+            "rg11b10ufloat-renderable",
+            "shader-f16",
+            "subgroups",
+            "texture-component-swizzle",
+            "texture-compression-bc",
+            "texture-compression-bc-sliced-3d",
+            "texture-formats-tier1",
+            "texture-formats-tier2",
+            "timestamp-query"
+          ],
+          "limits": {
+            "maxBufferSize": 2147483648,
+            "maxStorageBufferBindingSize": 2147483644,
+            "maxStorageBuffersPerShaderStage": 16,
+            "maxComputeWorkgroupsPerDimension": 65535,
+            "maxComputeInvocationsPerWorkgroup": 1024,
+            "maxComputeWorkgroupSizeX": 1024,
+            "maxComputeWorkgroupStorageSize": 32768,
+            "minStorageBufferOffsetAlignment": 256
+          },
+          "requiredFeatures": [],
+          "requiredLimits": {},
+          "missingFeatures": [],
+          "limitFailures": [],
+          "fallbackUsed": false,
+          "designTransferAllowed": false,
+          "capabilityHash": "93f5a2b9a899711b9a662bdbe422ba59ac93198958803ffa9a3f2d4569a53b95"
+        },
+        "loss": null,
+        "submissionCount": 24,
+        "completedSubmissionCount": 24,
+        "pipelineCount": 0,
+        "pool": {
+          "version": "p9-m4-webgpu-buffer-pool-v1",
+          "disposed": true,
+          "alignment": 4,
+          "maxCachedBytes": 67108864,
+          "maxBuffersPerKey": 4,
+          "createdCount": 34,
+          "destroyedCount": 34,
+          "createdBytes": 952308,
+          "activeCount": 0,
+          "activeBytes": 0,
+          "cachedCount": 0,
+          "cachedBytes": 0,
+          "peakBytes": 952284,
+          "allocationBalanced": true
+        },
+        "designTransferAllowed": false,
+        "platformHash": "1a7cb41a9b2ac791f8a6d6594f6fab4c391653edd29a75fbd932f2bc0e8ad1c9"
+      },
+      "allocationBalanced": true
+    }
+  },
+  "platformTests": {
+    "ok": true,
+    "verificationIds": [
+      "P9-GPU-PLT-01~08"
+    ],
+    "capabilityHash": "2c966d17e895e40f1d5272e34e17248fa7f8af9733d448ea1d76de4b48d79cd6",
+    "segmentCount": 4,
+    "createdBuffers": 1,
+    "disposalBalanced": true
+  },
+  "routingTests": {
+    "ok": true,
+    "verificationIds": [
+      "P9-GPU-PLT-09~10",
+      "P9-REF-03"
+    ],
+    "gpuBackendId": "p9-webgpu-independent-kernels-v1",
+    "explicitRoute": "gpu",
+    "autoRoute": "cpu",
+    "directGpuApiOutsideOwner": 0
+  },
+  "numericTests": {
+    "ok": true,
+    "verificationIds": [
+      "P9-GPU-NUM-01~12"
+    ],
+    "shaderCount": 7,
+    "randomCsrRows": 40,
+    "frameValueCount": 144
+  },
+  "profileMatrix": {
+    "qualifiedProfileCount": 1,
+    "localPrimaryProfile": {
+      "vendor": "nvidia",
+      "architecture": "ampere",
+      "device": "unknown",
+      "description": "unknown",
+      "isFallbackAdapter": false
+    },
+    "primaryBrowserBuild": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "fullRequiredMatrixQualified": false,
+    "deferredVerificationId": "P9-GPU-PLT-12"
+  },
+  "performance": {
+    "vectorScale": {
+      "gpu": {
+        "measurement": "host-write-dispatch-queue-wait-map-readback",
+        "warmupCount": 1,
+        "sampleCount": 5,
+        "samplesMs": [
+          57.4,
+          64.2,
+          62.1,
+          56.3,
+          58.1
+        ],
+        "medianMs": 58.1,
+        "p95Ms": 64.2
+      },
+      "cpu": {
+        "measurement": "browser-main-thread-f32-reference",
+        "warmupCount": 1,
+        "sampleCount": 5,
+        "samplesMs": [
+          4.4,
+          4.3,
+          6.8,
+          4.3,
+          4.4
+        ],
+        "medianMs": 4.4,
+        "p95Ms": 6.8
+      },
+      "gpuToCpuMedianRatio": 13.204545454545453
+    },
+    "csrSpmv": {
+      "gpu": {
+        "measurement": "host-write-dispatch-queue-wait-map-readback",
+        "warmupCount": 1,
+        "sampleCount": 5,
+        "samplesMs": [
+          7.5,
+          7.5,
+          7.1,
+          7.2,
+          7
+        ],
+        "medianMs": 7.2,
+        "p95Ms": 7.5
+      },
+      "cpu": {
+        "measurement": "browser-main-thread-f32-reference",
+        "warmupCount": 1,
+        "sampleCount": 5,
+        "samplesMs": [
+          2,
+          1.4,
+          2.9,
+          1.3,
+          1.3
+        ],
+        "medianMs": 1.4,
+        "p95Ms": 2.9
+      },
+      "gpuToCpuMedianRatio": 5.142857142857143
+    }
+  },
+  "resourceLifecycle": {
+    "beforeDispose": {
+      "version": "p9-m4-webgpu-platform-v1",
+      "state": "ready",
+      "disposed": false,
+      "capability": {
+        "version": "p9-m4-webgpu-capability-v1",
+        "ok": true,
+        "available": true,
+        "reason": null,
+        "adapterInfo": {
+          "vendor": "nvidia",
+          "architecture": "ampere",
+          "device": "unknown",
+          "description": "unknown",
+          "isFallbackAdapter": false
+        },
+        "features": [
+          "bgra8unorm-storage",
+          "clip-distances",
+          "core-features-and-limits",
+          "depth-clip-control",
+          "depth32float-stencil8",
+          "dual-source-blending",
+          "float32-blendable",
+          "float32-filterable",
+          "indirect-first-instance",
+          "primitive-index",
+          "rg11b10ufloat-renderable",
+          "shader-f16",
+          "subgroups",
+          "texture-component-swizzle",
+          "texture-compression-bc",
+          "texture-compression-bc-sliced-3d",
+          "texture-formats-tier1",
+          "texture-formats-tier2",
+          "timestamp-query"
+        ],
+        "limits": {
+          "maxBufferSize": 2147483648,
+          "maxStorageBufferBindingSize": 2147483644,
+          "maxStorageBuffersPerShaderStage": 16,
+          "maxComputeWorkgroupsPerDimension": 65535,
+          "maxComputeInvocationsPerWorkgroup": 1024,
+          "maxComputeWorkgroupSizeX": 1024,
+          "maxComputeWorkgroupStorageSize": 32768,
+          "minStorageBufferOffsetAlignment": 256
+        },
+        "requiredFeatures": [],
+        "requiredLimits": {},
+        "missingFeatures": [],
+        "limitFailures": [],
+        "fallbackUsed": false,
+        "designTransferAllowed": false,
+        "capabilityHash": "93f5a2b9a899711b9a662bdbe422ba59ac93198958803ffa9a3f2d4569a53b95"
+      },
+      "loss": null,
+      "submissionCount": 24,
+      "completedSubmissionCount": 24,
+      "pipelineCount": 7,
+      "pool": {
+        "version": "p9-m4-webgpu-buffer-pool-v1",
+        "disposed": false,
+        "alignment": 4,
+        "maxCachedBytes": 67108864,
+        "maxBuffersPerKey": 4,
+        "createdCount": 34,
+        "destroyedCount": 3,
+        "createdBytes": 952308,
+        "activeCount": 0,
+        "activeBytes": 0,
+        "cachedCount": 31,
+        "cachedBytes": 952284,
+        "peakBytes": 952284,
+        "allocationBalanced": null
+      },
+      "designTransferAllowed": false,
+      "platformHash": "28b7449cf159096f7d259e812df284a8a205fadf73cb96191b47b001c2ed1438"
+    },
+    "afterDispose": {
+      "version": "p9-m4-webgpu-platform-v1",
+      "state": "disposed",
+      "disposed": true,
+      "capability": {
+        "version": "p9-m4-webgpu-capability-v1",
+        "ok": true,
+        "available": true,
+        "reason": null,
+        "adapterInfo": {
+          "vendor": "nvidia",
+          "architecture": "ampere",
+          "device": "unknown",
+          "description": "unknown",
+          "isFallbackAdapter": false
+        },
+        "features": [
+          "bgra8unorm-storage",
+          "clip-distances",
+          "core-features-and-limits",
+          "depth-clip-control",
+          "depth32float-stencil8",
+          "dual-source-blending",
+          "float32-blendable",
+          "float32-filterable",
+          "indirect-first-instance",
+          "primitive-index",
+          "rg11b10ufloat-renderable",
+          "shader-f16",
+          "subgroups",
+          "texture-component-swizzle",
+          "texture-compression-bc",
+          "texture-compression-bc-sliced-3d",
+          "texture-formats-tier1",
+          "texture-formats-tier2",
+          "timestamp-query"
+        ],
+        "limits": {
+          "maxBufferSize": 2147483648,
+          "maxStorageBufferBindingSize": 2147483644,
+          "maxStorageBuffersPerShaderStage": 16,
+          "maxComputeWorkgroupsPerDimension": 65535,
+          "maxComputeInvocationsPerWorkgroup": 1024,
+          "maxComputeWorkgroupSizeX": 1024,
+          "maxComputeWorkgroupStorageSize": 32768,
+          "minStorageBufferOffsetAlignment": 256
+        },
+        "requiredFeatures": [],
+        "requiredLimits": {},
+        "missingFeatures": [],
+        "limitFailures": [],
+        "fallbackUsed": false,
+        "designTransferAllowed": false,
+        "capabilityHash": "93f5a2b9a899711b9a662bdbe422ba59ac93198958803ffa9a3f2d4569a53b95"
+      },
+      "loss": null,
+      "submissionCount": 24,
+      "completedSubmissionCount": 24,
+      "pipelineCount": 0,
+      "pool": {
+        "version": "p9-m4-webgpu-buffer-pool-v1",
+        "disposed": true,
+        "alignment": 4,
+        "maxCachedBytes": 67108864,
+        "maxBuffersPerKey": 4,
+        "createdCount": 34,
+        "destroyedCount": 34,
+        "createdBytes": 952308,
+        "activeCount": 0,
+        "activeBytes": 0,
+        "cachedCount": 0,
+        "cachedBytes": 0,
+        "peakBytes": 952284,
+        "allocationBalanced": true
+      },
+      "designTransferAllowed": false,
+      "platformHash": "1a7cb41a9b2ac791f8a6d6594f6fab4c391653edd29a75fbd932f2bc0e8ad1c9"
+    },
+    "allocationBalanced": true
+  },
+  "regressionPolicy": {
+    "focused": [
+      "p9-m4-platform",
+      "p9-m4-numeric",
+      "p9-m4-routing-architecture",
+      "p9-m4-evidence-contract"
+    ],
+    "browser": "tests/browser/p9-m4-webgpu.html",
+    "nonlinearSolve": "not-rerun-reuse-phase8-qualified-evidence"
+  },
+  "priorEvidenceHash": "897ab273596507afe3ab2d7d5967f3416450f24c8adc62c1c99f550a13f339e9",
+  "results": [
+    {
+      "id": "P9-GPU-PLT-01",
+      "status": "PASS",
+      "test": "tests/p9-m4-platform.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-02",
+      "status": "PASS",
+      "test": "tests/p9-m4-platform.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-03",
+      "status": "PASS",
+      "test": "tests/p9-m4-platform.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-04",
+      "status": "PASS",
+      "test": "tests/p9-m4-platform.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-05",
+      "status": "PASS",
+      "test": "tests/p9-m4-platform.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-06",
+      "status": "PASS",
+      "test": "tests/p9-m4-platform.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-07",
+      "status": "PASS",
+      "test": "tests/p9-m4-platform.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-08",
+      "status": "PASS",
+      "test": "tests/p9-m4-platform.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-09",
+      "status": "PASS",
+      "test": "tests/p9-m4-routing-architecture.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-10",
+      "status": "PASS",
+      "test": "tests/p9-m4-routing-architecture.mjs"
+    },
+    {
+      "id": "P9-GPU-PLT-11",
+      "status": "PASS",
+      "test": "tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-PLT-12",
+      "status": "DEFERRED",
+      "test": "external-browser-vendor-matrix"
+    },
+    {
+      "id": "P9-GPU-NUM-01",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-02",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-03",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-04",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-05",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-06",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-07",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-08",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-09",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-10",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-11",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-12",
+      "status": "PASS",
+      "test": "tests/p9-m4-numeric.mjs + tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-13",
+      "status": "PASS",
+      "test": "tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-NUM-14",
+      "status": "PASS",
+      "test": "tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-PERF-05",
+      "status": "PASS",
+      "test": "tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-PERF-06",
+      "status": "PASS",
+      "test": "tests/browser/p9-m4-webgpu.html"
+    },
+    {
+      "id": "P9-PERF-07",
+      "status": "PASS",
+      "test": "tests/browser/p9-m4-webgpu.html"
+    }
+  ],
+  "blockers": [
+    "P9_M4_EXTERNAL_BROWSER_VENDOR_MATRIX_REQUIRED"
+  ],
+  "qualificationImpact": "G2-kernel-qualified-local-profile-no-design-transfer",
+  "artifactHash": "45286be5c46b9e30588171c2ec9dd16886f5e61723a1ebe87b75fa1c90e3a3f1"
+}

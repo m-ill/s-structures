@@ -1,6 +1,6 @@
 # S-Structures Documentation Index
 
-documentationVersion: 2026-07-15-phase9-m3
+documentationVersion: 2026-07-15-phase9-m4
 
 이 폴더는 Phase 2 개발부터 문서가 코드, 산출물, 임시 패키지와 섞이지 않도록 용도별로 나눈다. 새 문서를 추가할 때는 먼저 아래 분류 중 하나를 고른다.
 

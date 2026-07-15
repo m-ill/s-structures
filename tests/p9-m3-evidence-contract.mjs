@@ -26,7 +26,11 @@ assert.equal(evidence.execution.medium.resourceBalanced, true);
 assert.equal(evidence.resultStorage.medium.mode, 'bounded-slices');
 assert.equal(evidence.resultStorage.mediumEnvelopeMemberCount, 8456);
 assert.equal(manifest.evidence.m3ElasticRuntime, evidence.artifactHash);
-assert.equal(manifest.computeQualification.grade, 'G1');
+assert.equal(
+  manifest.computeQualification.grade,
+  manifest.implementation.completedMilestones.includes('P9-M4') ? 'G2' : 'G1',
+  'the cumulative manifest may advance beyond the M3 qualification grade',
+);
 assert.equal(manifest.release.allowed, false);
 assert.equal(manifest.release.designTransferAllowed, false);
 

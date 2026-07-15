@@ -89,6 +89,7 @@ export {
   WASM_SPARSE_DIAGNOSTICS_VERSION,
   createWasmSparseBackend,
 } from './backends/wasmCpuBackend.js';
+export * from './backends/webgpu/index.js';
 export { ELASTIC_FACTOR_GROUP_VERSION, classifyElasticFactorGroups, elasticFactorKeyForCombo } from './elastic/factorGroups.js';
 export { ELASTIC_FACTOR_SESSION_VERSION, createElasticFactorSession } from './elastic/factorSession.js';
 export { ELASTIC_ANALYSIS_SERVICE_VERSION, createElasticAnalysisService } from './product/elasticAnalysisService.js';
