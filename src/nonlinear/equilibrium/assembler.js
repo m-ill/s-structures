@@ -3,13 +3,14 @@ import {
   expandConstraintDisplacements,
   reduceConstraintVector,
 } from '../../solver/domain/constraintSystem.js';
-import { validateNonlinearElementResponse } from '../core/elementContract.js';
+import {
+  assembleNonlinearBatchTangent,
+  createCpuNonlinearBatchEvaluator,
+  createNonlinearElementBatch,
+} from '../../compute/nonlinear/index.js';
 import { buildNonlinearEquilibriumAudit } from './audit.js';
 import { buildNonlinearLoadPattern } from './externalLoads.js';
-import {
-  assembleReducedTangent,
-  buildReducedSparsePattern,
-} from './typedSparse.js';
+import { buildReducedSparsePattern } from './typedSparse.js';
 import {
   pullBackSpatialMoment,
   pushForwardGeneralizedMoment,
@@ -19,7 +20,7 @@ import {
   evaluateNonlinearSupportSprings,
 } from '../integration/supportSprings.js';
 
-export const MDOF_EQUILIBRIUM_ASSEMBLER_VERSION = 'p8-m4-mdof-equilibrium-assembler-v3';
+export const MDOF_EQUILIBRIUM_ASSEMBLER_VERSION = 'p9-m7-mdof-equilibrium-assembler-v4';
 
 export function createEquilibriumAssembler(input = {}) {
   const domain = requireDomain(input.domain);
@@ -62,6 +63,11 @@ export function createEquilibriumAssembler(input = {}) {
     error.code = 'MDOF_PATTERN_INTEGRATION_BLOCKS_REQUIRED';
     throw error;
   }
+  const elementBatch = input.elementBatch || createNonlinearElementBatch(elements, {
+    owner: 'nonlinear-equilibrium-assembler',
+    adapterExpiry: 'P9-M10',
+  });
+  const elementBatchEvaluator = input.elementBatchEvaluator || createCpuNonlinearBatchEvaluator(elementBatch);
   const netLoadPattern = subtractLoadPatterns(physicalLoadPattern, handledMechanical);
   const hasReleasedElement = elements.some((entry) => (entry?.descriptor?.releases?.localDofs || []).length > 0);
   const hasGeneralElement = elements.some((entry) => entry.requiredMatrixClass === 'general');
@@ -82,85 +88,88 @@ export function createEquilibriumAssembler(input = {}) {
     loadPattern,
     referenceLoadDerivative,
     pattern,
+    elementBatch,
+    elementBatchEvaluator,
     characteristicLength,
     allowedInactiveReducedDofs,
     requiredMatrixClass,
     usesFiniteRotationCoordinates,
     get telemetry() {
-      return Object.freeze({ evaluationCount, tangentAssemblyCount, patternHash: pattern.patternHash });
+      return Object.freeze({
+        evaluationCount,
+        tangentAssemblyCount,
+        patternHash: pattern.patternHash,
+        elementBatchHash: elementBatch.batchHash,
+        elementBatch: elementBatchEvaluator.telemetry,
+      });
     },
     async evaluate(options = {}) {
       const q = finiteVector(options.q, domain.constraint.reducedDofCount, 'q');
       const lambda = finite(options.lambda, 0, 'lambda');
       const u = Float64Array.from(expandConstraintDisplacements(domain.constraint, q));
       const pInternalFull = new Float64Array(domain.constraint.fullDofCount);
-      const elementMatrices = [];
+      const extraMatrices = [];
       const elementStates = {};
       const elementResponses = {};
       const diagnostics = [];
       const energies = {};
       const inactiveModeGroupsFull = [];
       const committedElementStates = options.committedElementStates || {};
-
-      for (const entry of elements) {
-        const uElement = Array.from(entry.dofs, (dof) => u[dof]);
-        const memberLoad = resolveMemberLoadState(memberLoadTraces.get(entry.id), entry.id, lambda, entry.dofs.length);
-        let response;
-        try {
-          response = await entry.kernel.evaluate({
-            element: entry.descriptor || entry.element || { id: entry.id },
-            committedState: clone(committedElementStates[entry.id]?.data ?? committedElementStates[entry.id] ?? {}),
-            elementLoads: memberLoad,
-            trialKinematics: {
-              uGlobal: uElement,
-              fullDisplacement: u,
-              reducedDisplacement: q,
-              lambda,
-              memberFixedEndLocal: memberLoad.fixedEndLocal,
-            },
-            dt: options.dt ?? null,
-            mode: options.mode || 'static',
-          });
-        } catch (error) {
-          return failedEvaluation('ELEMENT_EVALUATION_FAILED', entry.id, error);
-        }
-        const validation = validateNonlinearElementResponse(response, entry.dofs.length);
-        if (!validation.ok) {
-          return failedEvaluation('ELEMENT_RESPONSE_INVALID', entry.id, null, validation.errors);
-        }
-        response.resistingForceGlobal.forEach((value, index) => {
-          pInternalFull[entry.dofs[index]] += Number(value);
+      let batchResult;
+      try {
+        batchResult = await elementBatchEvaluator.evaluate({
+          fullDisplacement: u,
+          fullDofCount: domain.constraint.fullDofCount,
+          reducedDisplacement: q,
+          lambda,
+          committedElementStates,
+          dt: options.dt ?? null,
+          mode: options.mode || 'static',
+          prepareElementInput(entry) {
+            const memberLoad = resolveMemberLoadState(memberLoadTraces.get(entry.id), entry.id, lambda, entry.dofs.length);
+            return { elementLoads: memberLoad, memberFixedEndLocal: memberLoad.fixedEndLocal };
+          },
         });
+      } catch (error) {
+        return failedEvaluation(error.code || 'ELEMENT_BATCH_EVALUATION_FAILED', null, error);
+      }
+      if (!batchResult.ok) {
+        return failedEvaluation(batchResult.reason, batchResult.elementId, null, batchResult.errors);
+      }
+      for (let elementIndex = 0; elementIndex < elements.length; elementIndex += 1) {
+        const entry = elements[elementIndex];
+        const response = batchResult.responses[elementIndex];
+        const forceStart = elementBatch.dofOffsets[elementIndex];
+        for (let local = 0; local < entry.dofs.length; local += 1) {
+          pInternalFull[entry.dofs[local]] += batchResult.resistingForces[forceStart + local];
+        }
         const inactiveModeGroup = [];
-        for (const localMode of Array.isArray(response.inactiveModesGlobal) ? response.inactiveModesGlobal : []) {
+        for (const localMode of batchResult.inactiveModes[elementIndex]) {
           if (localMode?.length !== entry.dofs.length) continue;
           const fullMode = new Float64Array(domain.constraint.fullDofCount);
           entry.dofs.forEach((fullDof, index) => { fullMode[fullDof] += Number(localMode[index]); });
           inactiveModeGroup.push(fullMode);
         }
         if (inactiveModeGroup.length) inactiveModeGroupsFull.push(inactiveModeGroup);
-        elementMatrices.push(response.tangentGlobal);
-        elementStates[entry.id] = clone(response.trialState);
+        elementStates[entry.id] = batchResult.trialStates[elementIndex];
         elementResponses[entry.id] = {
-          globalResponse: clone(response.globalResponse || {
+          globalResponse: response.globalResponse || {
             resistingForce: response.resistingForceGlobal,
-          }),
-          localResponse: clone(response.localResponse || null),
-          diagnostics: clone(response.diagnostics || null),
-          energies: clone(response.energies || {}),
+          },
+          localResponse: response.localResponse || null,
+          diagnostics: response.diagnostics || null,
+          energies: response.energies || {},
         };
-        diagnostics.push({ elementId: entry.id, diagnostics: clone(response.diagnostics || null) });
-        for (const [key, value] of Object.entries(response.energies || {})) {
-          const number = Number(value);
-          if (!Number.isFinite(number)) return failedEvaluation('ELEMENT_ENERGY_NONFINITE', entry.id);
-          energies[key] = Number(energies[key] || 0) + number;
+        diagnostics.push({ elementId: entry.id, diagnostics: response.diagnostics || null });
+        for (const [key, value] of Object.entries(batchResult.energyRows[elementIndex])) {
+          energies[key] = Number(energies[key] || 0) + value;
         }
       }
       evaluationCount += elements.length;
       const support = evaluateNonlinearSupportSprings(supportSpringContract, u);
       for (const spring of supportSprings) {
         pInternalFull[spring.fullDof] += support.internalFull[spring.fullDof];
-        elementMatrices.push([[spring.stiffness]]);
+        extraMatrices.push([[spring.stiffness]]);
       }
       energies.supportSpringStrain = Number(energies.supportSpringStrain || 0) + support.strainEnergy;
       const pExternalPhysicalFull = combineLoads(physicalLoadPattern.constantFull, physicalLoadPattern.referenceFull, lambda);
@@ -168,8 +177,8 @@ export function createEquilibriumAssembler(input = {}) {
       const external = usesFiniteRotationCoordinates
         ? pullBackExternalMoments(pEffectiveExternalPhysicalFull, u, domain.nodes.length)
         : unchangedExternalMoments(pEffectiveExternalPhysicalFull, domain.nodes.length);
-      external.tangents.forEach((matrix) => elementMatrices.push(matrix.map((row) => row.map((value) => -value))));
-      const tangentReduced = assembleReducedTangent(pattern, elementMatrices);
+      external.tangents.forEach((matrix) => extraMatrices.push(matrix.map((row) => row.map((value) => -value))));
+      const tangentReduced = assembleNonlinearBatchTangent(pattern, elementBatch, batchResult.tangents, extraMatrices);
       tangentAssemblyCount += 1;
       const pInternalGeneralizedFull = pInternalFull;
       const pInternalPhysicalFull = usesFiniteRotationCoordinates
@@ -237,6 +246,13 @@ export function createEquilibriumAssembler(input = {}) {
           tangentAssemblyCount,
           tangentPatternHash: pattern.patternHash,
           tangentValueHash: stableHash(Array.from(tangentReduced.values)).slice(0, 24),
+          tangentReductionHash: tangentReduced.reductionHash,
+          elementBatchHash: elementBatch.batchHash,
+          elementBatchBackend: batchResult.backendId,
+          elementBatchDurationMs: batchResult.diagnostics.durationMs,
+          elementBatchGroupCount: batchResult.diagnostics.groupCount,
+          reusableElementWorkspaceBytes: batchResult.diagnostics.reusableWorkspaceBytes,
+          perElementCommittedStateCloneCount: batchResult.diagnostics.perElementCommittedStateCloneCount,
           tangentSymmetryError: typedSymmetryError(tangentReduced),
           externalMomentPullbackCount: external.activeCount,
           inactiveModeCount: inactiveModesReduced.length,

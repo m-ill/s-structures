@@ -155,7 +155,7 @@ export function validatePhase9M6Manifest(manifest = {}) {
   if (manifest.version !== PHASE9_RELEASE_MANIFEST_VERSION) errors.push('manifest:version');
   if (!manifest.implementation?.completedMilestones?.includes('P9-M6')
     || !manifest.implementation?.implementedMilestones?.includes('P9-M6')
-    || manifest.implementation?.activeMilestone !== 'P9-M7') errors.push('manifest:implementation');
+    || activeMilestoneNumber(manifest.implementation?.activeMilestone) < 7) errors.push('manifest:implementation');
   if (!/^[a-f0-9]{64}$/.test(manifest.evidence?.m6SparseEigen || '')) errors.push('manifest:evidence');
   if (manifest.computeQualification?.grade !== 'G2'
     || manifest.computeQualification?.sparseEigenCpuQualified !== true
@@ -164,6 +164,11 @@ export function validatePhase9M6Manifest(manifest = {}) {
   if (manifest.release?.allowed !== false || manifest.release?.designTransferAllowed !== false) errors.push('manifest:release');
   if (manifest.manifestHash !== phase9ManifestHash(manifest)) errors.push('manifest:hash');
   return { ok: errors.length === 0, errors };
+}
+
+function activeMilestoneNumber(value) {
+  const match = /^P9-M(\d+)$/.exec(String(value || ''));
+  return match ? Number(match[1]) : -1;
 }
 
 function series(prefix, count) {

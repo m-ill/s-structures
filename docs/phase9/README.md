@@ -5,8 +5,8 @@ phase: 9
 status: implementation
 documentation_status: baseline-complete
 implementation_status: in-progress
-completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6]
-implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6]
+completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7]
+implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7]
 compute_qualification: G2-kernel-qualified-local-profile
 reviewed_at: 2026-07-16
 mission: 탄성설계부터 비선형해석까지 공통 계산계약을 구축하고 CPU/WASM f64 기준경로와 선택적 GPU 가속경로를 production 수준으로 통합한다.

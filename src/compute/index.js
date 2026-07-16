@@ -9,6 +9,7 @@ export {
 export { SPARSE_PATTERN_VERSION, createSparsePattern, createSparsePatternFromDomain, validateSparsePattern } from './contracts/sparsePattern.js';
 export { STATE_ARENA_VERSION, createStateArena } from './contracts/stateArena.js';
 export { RESULT_CHUNK_VERSION, createResultChunk, validateResultChunk } from './contracts/resultChunk.js';
+export * from './nonlinear/index.js';
 export {
   COMPUTE_BACKEND_CONTRACT_VERSION,
   COMPUTE_BACKEND_TARGETS,

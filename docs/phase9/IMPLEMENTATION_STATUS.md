@@ -6,15 +6,19 @@ phase_status: implementation
 documentation_status: baseline-complete
 implementation_status: in-progress
 compute_qualification: G2-kernel-qualified-local-profile
-completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6]
-implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6]
-active_milestone: P9-M7
-next_milestone: P9-M7
+completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7]
+implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7]
+active_milestone: P9-M8
+next_milestone: P9-M8
 release_status: not-qualified
 design_transfer_allowed: false
 ```
 
 ## Current Decision
+
+P9-M7 is complete for the production CPU f64 nonlinear element route. The equilibrium assembler now compiles versioned type/property SoA batches, reuses typed kinematic/force/tangent workspaces, reads committed state without per-element deep cloning, and scatters flat tangent blocks in a fixed deterministic order. The existing nonlinear result schema is unchanged.
+
+Committed and trial element state now have a fixed-offset byte/numeric arena contract with owner isolation, commit and rejected-trial rollback byte parity. Current WebGPU frame and monotonic EPP fiber kernels are qualified only as G2 shadow candidates. Corotational, hinge-history and distributed-fiber production elements remain CPU f64, and explicit production GPU requests fail closed.
 
 P9-M6 is complete for the production CPU f64 route. Modal/RSA and global buckling share a typed-CSC requested-mode eigen core, deterministic sign/order, MAC, original-operator residual audit, and Worker product service. Dense full eigen formation and duplicated modal/buckling Cholesky/Jacobi helpers are removed.
 
@@ -24,7 +28,22 @@ P9-M5 implementation remains complete but its qualification gate remains blocked
 
 Qualification remains `G2`. The 990-DOF end-to-end diagnostic measured CPU 684.10 ms versus GPU 1,131.70 ms, a 0.604 speedup against the required 1.2. The run also does not close the required five-sample S/M profile matrix. `auto` GPU remains disabled and global design transfer remains blocked.
 
-M7 may proceed on the common compute contracts, but M5 cannot be marked G3 until the performance and profile blockers are closed.
+M8 may proceed with resident Pushover/NLTH session integration, but M5 cannot be marked G3 until the performance and profile blockers are closed.
+
+## P9-M7 Results
+
+| Area | P9-M7 result | Decision |
+| --- | --- | --- |
+| Element packaging | versioned type/property SoA with fixed offsets and bounded integrity hash | PASS |
+| CPU element loop | f64 batch evaluation with reusable typed workspace | PASS |
+| Result parity | force, tangent, state, energy and existing result schema | PASS |
+| State isolation | separate committed/trial byte and numeric arenas | PASS |
+| Rollback | rejected trial restores exact byte hash | PASS |
+| Assembly | fixed element/local-row-major sparse reduction and hash | PASS |
+| Hot-loop cleanup | committed-state deep clones reduced to zero | PASS |
+| GPU partition | raw frame/fiber shadow candidates only; production types fail closed | PASS |
+| Focused diagnostic | 128 elements with element/state/assembly stage accounting | PASS |
+| Pushover/NLTH resident session | not part of M7 | DEFERRED TO M8 |
 
 ## P9-M6 Results
 
@@ -99,6 +118,9 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 - M6 verification note: [P9_M6_SPARSE_EIGEN.md](../verification/phase9/P9_M6_SPARSE_EIGEN.md)
 - M6 evidence: `reports/validation-evidence/phase9/p9-m6-sparse-eigen.json`
 - M6 code review: `reports/validation-evidence/phase9/p9-m6-code-review.md`
+- M7 verification note: [P9_M7_NONLINEAR_BATCH.md](../verification/phase9/P9_M7_NONLINEAR_BATCH.md)
+- M7 evidence: `reports/validation-evidence/phase9/p9-m7-nonlinear-batch.json`
+- M7 code review: `reports/validation-evidence/phase9/p9-m7-code-review.md`
 - Evidence: `reports/validation-evidence/phase9/p9-m4-webgpu-foundation.json`
 - Raw browser evidence: `reports/validation-evidence/phase9/p9-m4-browser-raw.json`
 - Code review: `reports/validation-evidence/phase9/p9-m4-code-review.md`
@@ -107,12 +129,13 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 - Evidence generation: `npm run evidence:p9:m4`
 - M5 evidence generation: `npm run evidence:p9:m5`
 - M6 evidence generation: `npm run evidence:p9:m6`
+- M7 evidence generation: `npm run evidence:p9:m7`
 
 ## Remaining Boundaries
 
 - M5 performance and S/M profile blockers must close before G3 Elastic-Candidate or automatic GPU routing.
 - M6 CPU sparse dynamics is complete; optional eigen GPU acceleration remains unqualified.
-- M7-M8 must qualify nonlinear batch/state and hybrid Pushover/NLTH routes.
+- M7 CPU nonlinear batch/state is complete; M8 must qualify hybrid Pushover/NLTH resident routes.
 - The external browser/vendor matrix must close `P9-GPU-PLT-12` before Phase 9 release.
 - M9 must migrate existing production UI and Agent call sites to the product service; M3 supplies the service and forbids new synchronous production callers.
 - Direct P-Delta tangent iterations remain intentionally isolated from linear-static factor reuse.
@@ -121,4 +144,4 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 
 ## Next Milestone
 
-P9-M7: nonlinear SoA element/fiber batches, deterministic assembly, committed/trial state arena, and capability partition. M5 qualification debt remains open in parallel.
+P9-M8: connect the M7 batch/state contracts to production Pushover and MDOF NLTH sessions, then verify checkpoint, device-loss, transfer, event and energy parity. M5 qualification debt remains open in parallel.

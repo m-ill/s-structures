@@ -1,7 +1,7 @@
 {
   "version": "p9-release-manifest-v1",
-  "generatedAt": "2026-07-16T01:00:43.645Z",
-  "sourceRevision": "c8da2ec+worktree",
+  "generatedAt": "2026-07-16T02:12:40.787Z",
+  "sourceRevision": "755da33+worktree",
   "phase": "Phase 9",
   "implementation": {
     "status": "in-progress",
@@ -11,7 +11,8 @@
       "P9-M2",
       "P9-M3",
       "P9-M4",
-      "P9-M6"
+      "P9-M6",
+      "P9-M7"
     ],
     "requiredMilestones": [
       "P9-M0",
@@ -33,9 +34,10 @@
       "P9-M3",
       "P9-M4",
       "P9-M5",
-      "P9-M6"
+      "P9-M6",
+      "P9-M7"
     ],
-    "activeMilestone": "P9-M7"
+    "activeMilestone": "P9-M8"
   },
   "computeQualification": {
     "grade": "G2",
@@ -52,7 +54,11 @@
     "elasticQualifiedProfileCount": 0,
     "sparseEigenCpuQualified": true,
     "eigenGpuQualified": false,
-    "eigenAutoGpuAllowed": false
+    "eigenAutoGpuAllowed": false,
+    "nonlinearBatchCpuQualified": true,
+    "nonlinearGpuShadowQualified": true,
+    "nonlinearGpuProductionQualified": false,
+    "nonlinearAutoGpuAllowed": false
   },
   "release": {
     "status": "not-qualified",
@@ -67,7 +73,8 @@
     "m3ElasticRuntime": "897ab273596507afe3ab2d7d5967f3416450f24c8adc62c1c99f550a13f339e9",
     "m4WebGpuFoundation": "45286be5c46b9e30588171c2ec9dd16886f5e61723a1ebe87b75fa1c90e3a3f1",
     "m5HybridElastic": "d39fb4ba7b541326b5bb5969891bacd2a8379aca82978591b949f83088b24964",
-    "m6SparseEigen": "6cc61b78529e693ba201c42678ded0fb4e3949cdd3a846ec4a25c2d35cd52190"
+    "m6SparseEigen": "6cc61b78529e693ba201c42678ded0fb4e3949cdd3a846ec4a25c2d35cd52190",
+    "m7NonlinearBatch": "241595c470865f6cce6139f9021dc5c7aa15e842a56bc8d17e799de97e58d0ea"
   },
   "blockers": [
     "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
@@ -80,5 +87,5 @@
     "P9_M6_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED",
     "P9_M9_PRODUCT_MIGRATION_REQUIRED"
   ],
-  "manifestHash": "c3a65f6eaa87873ace7c6d23de06a49997713aa5bce04b528de277929ac5ae94"
+  "manifestHash": "c373e7c33444535f4d40a1a86a08ded6fa12771d652e580f34f292df47c43623"
 }
