@@ -2,7 +2,7 @@
 
 ```yaml
 version: p9-risk-register-v1
-status: active-planning
+status: qualification-active
 review_cycle: every-milestone
 ```
 

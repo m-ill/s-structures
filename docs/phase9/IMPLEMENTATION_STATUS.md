@@ -2,23 +2,28 @@
 
 ```yaml
 reviewed_at: 2026-07-16
-phase_status: implementation
-documentation_status: baseline-complete
-implementation_status: in-progress
+phase_status: implementation-complete-qualification-blocked
+documentation_status: implementation-complete
+implementation_status: complete
 compute_qualification: G2-kernel-qualified-local-profile
 completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7, P9-M9]
-implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7, P9-M8, P9-M9]
-active_milestone: P9-M10
-next_milestone: P9-M10
-release_status: not-qualified
+implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7, P9-M8, P9-M9, P9-M10]
+active_milestone: external-qualification
+next_milestone: none
+next_gate: external-qualification
+release_status: blocked-missing-qualification-evidence
 design_transfer_allowed: false
 ```
 
 ## Current Decision
 
+P9-M10 implementation is complete. Compatibility/export ownership, dependency direction, evidence hygiene, final debt status, focused CPU/product regression and release packaging pass. Eleven implementation debts are closed; one public compatibility debt is approved and retained because removal requires explicit breaking-change approval.
+
+The Phase 9 release decision is `BLOCKED` and compute grade remains `G2`. CPU-only full regression, multi-vendor browser/hardware qualification, M-tier Pushover/NLTH budgets and the elastic GPU end-to-end speed threshold are missing. `Auto` remains CPU f64, production GPU selection and design transfer remain disabled, and the next gate is external qualification rather than another implementation milestone.
+
 P9-M9 is complete. Elastic and nonlinear product execution now shares one versioned service for capability, validation, planning, asynchronous jobs, progress, cancel/retry, bounded results, reports and telemetry. The Analysis Center, elastic ribbon, nonlinear workflow and Agent API use the same settings bytes and plan hash.
 
-Production UI direct numeric solver calls are zero. Legacy synchronous compatibility is isolated with a P9-M10 expiry. `Auto` and `CPU precise` route to qualified CPU f64; `GPU accelerated` is visibly disabled with a stable unsupported reason and remediation. Qualification remains `G2`, automatic GPU routing and design transfer remain blocked, and P9-M10 is the active milestone.
+Production UI direct numeric solver calls are zero. Legacy synchronous compatibility is isolated in the P9-M10 approved registry and can be removed only through an explicit public breaking-change decision. It cannot route GPU execution or authorize design transfer. `Auto` and `CPU precise` route to qualified CPU f64; `GPU accelerated` is visibly disabled with a stable unsupported reason and remediation. Qualification remains `G2`, automatic GPU routing and design transfer remain blocked, and external qualification is the active gate.
 
 P9-M8 implementation is complete. Production Pushover and MDOF NLTH now share a versioned resident-session contract for accepted state commits, rejected-trial rollback, canonical checkpoints, bounded history transfer, CPU f64 residual/energy audits, and device-loss/OOM/cancel recovery. Focused Pushover, arc-length and NLTH regressions pass without changing the existing engineering result schemas.
 
@@ -36,7 +41,20 @@ P9-M5 implementation remains complete but its qualification gate remains blocked
 
 Qualification remains `G2`. The 990-DOF end-to-end diagnostic measured CPU 684.10 ms versus GPU 1,131.70 ms, a 0.604 speedup against the required 1.2. The run also does not close the required five-sample S/M profile matrix. `auto` GPU remains disabled and global design transfer remains blocked.
 
-M10 may proceed with cleanup and release-gate consolidation, but M5 and M8 qualification blockers remain open.
+M10 cleanup and release-gate consolidation are complete, but M5 and M8 qualification blockers remain open under the external qualification gate.
+
+## P9-M10 Results
+
+| Area | P9-M10 result | Decision |
+| --- | --- | --- |
+| Compatibility | 5 approved callers; expired/unexpected callers 0 | PASS |
+| Architecture | compute cycles and dependency violations 0 | PASS |
+| Evidence/debt | M0~M9 hashes valid; ownerless debt 0 | PASS |
+| Focused regression | 8 CPU/product tests, long nonlinear excluded | PASS |
+| Release build | package and SHA-256 generated | PASS |
+| External profile matrix | not run | BLOCKED |
+| Full regression | not run under current test policy | BLOCKED |
+| Release/design transfer | missing qualification evidence | BLOCKED / G2 |
 
 ## P9-M9 Results
 
@@ -47,7 +65,7 @@ M10 may proceed with cleanup and release-gate consolidation, but M5 and M8 quali
 | Agent parity | validate/plan/run/status/result settings and plan hash parity | PASS |
 | GPU disclosure | unavailable path disabled with visible reason and remediation | PASS |
 | Solver ownership | direct production UI numeric solver calls reduced to zero | PASS |
-| Sync compatibility | isolated and marked for P9-M10 removal | PASS WITH DEPRECATION |
+| Sync compatibility | isolated in the approved registry; removal requires explicit breaking-change approval | PASS WITH RETAINED COMPATIBILITY |
 | Responsive browser | desktop/mobile panel bounds and console errors | PASS |
 | Qualification | G2 retained; auto GPU and design transfer blocked | BLOCKED |
 
@@ -172,6 +190,11 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 - M9 evidence: `reports/validation-evidence/phase9/p9-m9-product-workflow.json`
 - M9 code review: `reports/validation-evidence/phase9/p9-m9-code-review.md`
 - M9 evidence generation: `npm run evidence:p9:m9`
+- M10 verification note: [P9_M10_RELEASE_GATE.md](../verification/phase9/P9_M10_RELEASE_GATE.md)
+- M10 release evidence: `reports/validation-evidence/phase9/p9-m10-release-gate.json`
+- M10 final debt: `reports/validation-evidence/phase9/p9-m10-final-debt.json`
+- M10 code review: `reports/validation-evidence/phase9/p9-m10-code-review.md`
+- M10 evidence generation: `npm run evidence:p9:m10`
 
 ## Remaining Boundaries
 
@@ -179,11 +202,11 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 - M6 CPU sparse dynamics is complete; optional eigen GPU acceleration remains unqualified.
 - M8 CPU nonlinear resident integration is implemented; M-tier and production GPU qualification remain blocked.
 - The external browser/vendor matrix must close `P9-GPU-PLT-12` before Phase 9 release.
-- M9 product UI and Agent migration is complete; P9-M10 must remove or freeze the remaining isolated synchronous compatibility boundary.
+- M10 compatibility cleanup is complete; retained public sync paths require explicit breaking-change approval before removal.
 - Direct P-Delta tangent iterations remain intentionally isolated from linear-static factor reuse.
 - M-tier individual detailed combination results are produced on demand, while the initial run returns bounded slices and the complete detailed envelope.
 - External independent validation remains outside this milestone by user decision.
 
-## Next Milestone
+## Next Gate
 
-P9-M10: consolidate release gates, remove expired compatibility paths, run the permitted qualification matrix, freeze evidence hashes and complete the final code review. M5 and M8 qualification debt remains open until qualifying evidence is supplied.
+External qualification: run the approved CPU-only full regression, multi-vendor browser/hardware matrix, M-tier Pushover/NLTH performance/UX/cancel suite and elastic GPU end-to-end threshold. Passing evidence may upgrade the manifest; no P9-M11 implementation milestone is planned.

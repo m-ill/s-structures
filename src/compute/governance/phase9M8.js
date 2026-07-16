@@ -3,6 +3,7 @@ import {
   PHASE9_RELEASE_MANIFEST_VERSION,
   phase9ArtifactHash,
   phase9ManifestHash,
+  phase9MilestoneAtOrBeyond,
 } from './phase9Baseline.js';
 
 export const PHASE9_M8_EVIDENCE_VERSION = 'p9-m8-hybrid-nonlinear-evidence-v1';
@@ -174,7 +175,7 @@ export function validatePhase9M8Manifest(manifest = {}) {
   if (manifest.version !== PHASE9_RELEASE_MANIFEST_VERSION) errors.push('manifest:version');
   if (!manifest.implementation?.implementedMilestones?.includes('P9-M8')
     || manifest.implementation?.completedMilestones?.includes('P9-M8')
-    || manifest.implementation?.activeMilestone !== 'P9-M9') errors.push('manifest:implementation');
+    || !phase9MilestoneAtOrBeyond(manifest.implementation?.activeMilestone, 9)) errors.push('manifest:implementation');
   if (!/^[a-f0-9]{64}$/.test(manifest.evidence?.m8HybridNonlinear || '')) errors.push('manifest:evidence');
   if (manifest.computeQualification?.grade !== 'G2'
     || manifest.computeQualification?.nonlinearResidentCpuQualified !== true
@@ -186,7 +187,6 @@ export function validatePhase9M8Manifest(manifest = {}) {
   if (manifest.manifestHash !== phase9ManifestHash(manifest)) errors.push('manifest:hash');
   return { ok: errors.length === 0, errors };
 }
-
 function testFor(id) {
   if (/^P9-GPU-NL-(?:1[1-2]|2[1-2])$/.test(id) || /^P9-FAIL-/.test(id)) return 'tests/p9-m8-resident-session.mjs';
   if (/^P9-GPU-NL-(?:1[3-9]|20)$/.test(id)) return 'tests/p9-m8-hybrid-nonlinear.mjs';

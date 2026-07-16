@@ -98,13 +98,14 @@ For Phase 4 pre-beta documentation and release checks, use:
 
 | group | actions |
 | --- | --- |
-| 해석 | `runAnalysis`, `setAnalysisSetting` |
+| 공통 해석 | `getAnalysisCapabilities`, `validateAnalysisRun`, `planAnalysisRun`, `startAnalysisRun`, `getAnalysisRunStatus`, `getAnalysisRunResult`, `getAnalysisResultSlice`, `getAnalysisRunReport`, `exportAnalysisTelemetry` |
+| 레거시 동기 해석 | `runAnalysis`, `runPushover` - 호환 전용, GPU·설계전달 불가 |
 | 화면 모드 | `setNativeMode`, `setNativeResultScale`, `setNativePDeltaEnabled`, `setNativePDeltaStep` |
 | native 모델링 | `nativeClearPage`, `nativeDrawMember`, `nativeAddColumn`, `nativeSetSupport`, `nativeAddUdl`, `nativeAddNodalLoad`, `nativeMoveNode`, `nativeSelectMember`, `nativeDeleteElement` |
 | 생산성 모델링 | `createGridFrame`, `copyStory`, `autoAssignMemberRoles`, `applyLoadTemplate`, `generateFloorMass` |
 | 하중/조합 | `setDesignBasisInput`, `applyDesignBasisLoads`, `applyKdsLoadCombinations`, `applyKdsRuleBasedLoadCombinations` |
 | 보고서 | `openNativeDetailedReport`, `openNativeCalculationPackage`, `openNativeDesignReport`, `runNativeValidation` |
-| 예비 비선형 | `runPushover`, `setPushoverOption`, `setPushoverPanelOpen`, `runNativePushoverReport` |
+| 예비 비선형 UI | `setPushoverOption`, `setPushoverPanelOpen`, `runNativePushoverReport` |
 | 저장 | `loadNativeExample`, `exportNativeBook`, `importNativeBook`, `saveNativeAutosave`, `restoreNativeAutosave` |
 
 ## Direct API Pattern

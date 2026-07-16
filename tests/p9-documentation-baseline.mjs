@@ -40,19 +40,22 @@ const requirements = documents.get(`${phaseRoot}/PRODUCTION_REQUIREMENTS.md`);
 const traceability = documents.get(`${phaseRoot}/REQUIREMENTS_TRACEABILITY.md`);
 const rootIndex = readFileSync('docs/README.md', 'utf8');
 
-assert.match(hub, /status:\s*implementation/);
-assert.match(hub, /implementation_status:\s*in-progress/);
-assert.match(hub, /completed_milestones:\s*\[P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7\]/);
-assert.match(status, /phase_status:\s*implementation/);
-assert.match(status, /implementation_status:\s*in-progress/);
-assert.match(status, /completed_milestones:\s*\[P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7\]/);
+assert.match(hub, /status:\s*implementation-complete-qualification-blocked/);
+assert.match(hub, /implementation_status:\s*complete/);
+assert.match(hub, /completed_milestones:\s*\[P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7, P9-M9\]/);
+assert.match(hub, /implemented_milestones:\s*\[P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7, P9-M8, P9-M9, P9-M10\]/);
+assert.match(hub, /next_gate:\s*external-qualification/);
+assert.match(status, /phase_status:\s*implementation-complete-qualification-blocked/);
+assert.match(status, /implementation_status:\s*complete/);
+assert.match(status, /completed_milestones:\s*\[P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7, P9-M9\]/);
+assert.match(status, /implemented_milestones:\s*\[P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7, P9-M8, P9-M9, P9-M10\]/);
 assert.match(status, /compute_qualification:\s*G2-kernel-qualified-local-profile/);
-assert.match(status, /release_status:\s*not-qualified/);
+assert.match(status, /release_status:\s*blocked-missing-qualification-evidence/);
 assert.match(status, /design_transfer_allowed:\s*false/);
-assert.doesNotMatch(status, /implementation_status:\s*(complete|qualified)/);
+assert.match(status, /next_gate:\s*external-qualification/);
 assert.match(requirements, /status:\s*planned/);
-assert.match(traceability, /status:\s*planned/);
-assert.match(rootIndex, /documentationVersion:\s*2026-07-16-phase9-m7/);
+assert.match(traceability, /status:\s*implementation-complete-qualification-blocked/);
+assert.match(rootIndex, /documentationVersion:\s*2026-07-16-phase9-m10/);
 assert.match(rootIndex, /## Phase 9 Reading Order \(current\)/);
 
 const milestoneIds = [...milestones.matchAll(/^## P9-M(\d+)\s+-/gm)].map((match) => Number(match[1]));
@@ -96,7 +99,7 @@ console.log(JSON.stringify({
   milestones: milestoneIds.length,
   checkedLocalLinks: [...documents.values()]
     .flatMap((text) => extractLocalMarkdownLinks(text)).length,
-  status: 'implementation/in-progress/G2-kernel-qualified-local-profile',
+  status: 'implementation-complete/qualification-blocked/G2-kernel-qualified-local-profile',
 }, null, 2));
 
 function assertRequirementSeries(text, prefix, first, last) {

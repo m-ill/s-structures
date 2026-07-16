@@ -96,10 +96,12 @@ import {
   installDetailedReportMenuHook,
 } from './indexReportHooks.js';
 
-export const INDEX_BRIDGE_VERSION = 'p9-m9-index-engine-bridge';
+export const INDEX_BRIDGE_VERSION = 'p9-m10-index-engine-bridge';
 export const INDEX_SYNC_ANALYSIS_DEPRECATION = Object.freeze({
   code: 'SYNC_PRODUCT_ANALYSIS_DEPRECATED',
-  expires: 'P9-M10',
+  status: 'retained-approved-compatibility',
+  reviewedAtMilestone: 'P9-M10',
+  removalGate: 'PUBLIC_API_BREAK_APPROVAL_REQUIRED',
   message: 'Synchronous analysis execution is compatibility-only. Use startAnalysisRun/status/result.',
 });
 export { INDEX_LEGACY_RESULT_SHAPE_VERSION, normalizeIndexResult } from './indexResultCompatibility.js';

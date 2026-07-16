@@ -1,6 +1,6 @@
 # S-Structures Documentation Index
 
-documentationVersion: 2026-07-16-phase9-m7
+documentationVersion: 2026-07-16-phase9-m10
 
 이 폴더는 Phase 2 개발부터 문서가 코드, 산출물, 임시 패키지와 섞이지 않도록 용도별로 나눈다. 새 문서를 추가할 때는 먼저 아래 분류 중 하나를 고른다.
 
@@ -35,7 +35,7 @@ documentationVersion: 2026-07-16-phase9-m7
 
 ## Phase 9 Reading Order (current)
 
-Phase 9 개발과 코드 정리를 시작할 때는 아래 순서로 읽는다. P9-M0 기준선은 구현됐으며 이후 마일스톤의 실제 구현·통합·검증 상태는 `IMPLEMENTATION_STATUS.md`에서 확인한다.
+Phase 9 개발과 코드 정리를 검토할 때는 아래 순서로 읽는다. P9-M0~M10 구현은 완료됐으며 외부 장치·브라우저 검증 전까지 릴리스는 차단된다. 상세 상태는 `IMPLEMENTATION_STATUS.md`에서 확인한다.
 
 1. `docs/phase9/README.md`
 2. `docs/phase9/CURRENT_STATE_AUDIT.md`

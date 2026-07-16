@@ -1,0 +1,209 @@
+{
+  "version": "p9-m10-final-debt-status-v1",
+  "generatedAt": "2026-07-16T08:22:11.897Z",
+  "sourceRevision": "a645f5a+worktree",
+  "status": "implementation-debt-closed-qualification-debt-open",
+  "rows": [
+    {
+      "id": "P9-DEBT-01",
+      "currentPaths": [
+        "src/solver/linear3d.js"
+      ],
+      "problem": "Monolithic elastic orchestrator",
+      "owner": "elastic-orchestration",
+      "targetMilestone": "P9-M3",
+      "replacement": "Split validation, planning, solve, recovery and design orchestration.",
+      "status": "closed",
+      "closedAt": "P9-M3",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-02",
+      "currentPaths": [
+        "src/solver/sparse"
+      ],
+      "problem": "Linear-only Array-based CSC ownership",
+      "owner": "shared-sparse",
+      "targetMilestone": "P9-M2",
+      "replacement": "Move canonical sparse schema and operations to src/compute/sparse.",
+      "status": "closed",
+      "closedAt": "P9-M2",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-03",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/typedSparse.js"
+      ],
+      "problem": "Duplicate nonlinear typed sparse schema",
+      "owner": "shared-sparse",
+      "targetMilestone": "P9-M2",
+      "replacement": "Adopt the common sparse schema and delete the duplicate implementation.",
+      "status": "closed",
+      "closedAt": "P9-M2",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-04",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/referenceBackends.js"
+      ],
+      "problem": "Nonlinear-only backend policy",
+      "owner": "backend-policy",
+      "targetMilestone": "P9-M1",
+      "replacement": "Replace with the common capability and execution-plan policy.",
+      "status": "closed",
+      "closedAt": "P9-M1",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-05",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/backends/wasmSparseBackend.js"
+      ],
+      "problem": "Single-RHS and repeated-copy WASM ABI",
+      "owner": "wasm-cpu",
+      "targetMilestone": "P9-M2",
+      "replacement": "Introduce persistent handles and a multi-RHS ABI.",
+      "status": "closed",
+      "closedAt": "P9-M2",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-06",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/assembler.js"
+      ],
+      "problem": "Object cloning and sequential element evaluation",
+      "owner": "nonlinear-batch",
+      "targetMilestone": "P9-M7",
+      "replacement": "Use versioned SoA element batches with parity coverage.",
+      "status": "closed",
+      "closedAt": "P9-M7",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-07",
+      "currentPaths": [
+        "src/dynamics/modal.js"
+      ],
+      "problem": "Dense matrix and eigen responsibilities mixed with recovery",
+      "owner": "modal-eigen",
+      "targetMilestone": "P9-M6",
+      "replacement": "Extract sparse requested-mode operators from solver recovery.",
+      "status": "closed",
+      "closedAt": "P9-M6",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-08",
+      "currentPaths": [
+        "src/dynamics/globalBuckling.js"
+      ],
+      "problem": "Assembly, eigen solve and recovery mixed together",
+      "owner": "buckling-eigen",
+      "targetMilestone": "P9-M6",
+      "replacement": "Share eigen operators and retain buckling-specific recovery.",
+      "status": "closed",
+      "closedAt": "P9-M6",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-09",
+      "currentPaths": [
+        "src/ui",
+        "src/solver"
+      ],
+      "problem": "Synchronous analyzeModel call sites",
+      "owner": "product-analysis-service",
+      "targetMilestone": "P9-M9",
+      "replacement": "Migrate production callers to the async product analysis service.",
+      "status": "closed",
+      "closedAt": "P9-M9",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-10",
+      "currentPaths": [
+        "src/index.js",
+        "src/nonlinear"
+      ],
+      "problem": "Legacy and preliminary engines remain publicly reachable",
+      "owner": "product-analysis-service",
+      "targetMilestone": "P9-M10",
+      "replacement": "Move compatibility routes to an explicit expiring legacy registry.",
+      "status": "mitigated-retained-approved",
+      "closedAt": null,
+      "retention": {
+        "reason": "Public API removal requires explicit approval.",
+        "registry": "p9-m10-compatibility-registry-v1",
+        "nextReview": "Phase10",
+        "designTransferAllowed": false
+      }
+    },
+    {
+      "id": "P9-DEBT-11",
+      "currentPaths": [
+        "src/nonlinear/runtime"
+      ],
+      "problem": "Worker protocols and lifecycle are solver-specific",
+      "owner": "worker-runtime",
+      "targetMilestone": "P9-M1",
+      "replacement": "Adopt one versioned compute job protocol and lifecycle.",
+      "status": "closed",
+      "closedAt": "P9-M1",
+      "retention": null
+    },
+    {
+      "id": "P9-DEBT-12",
+      "currentPaths": [
+        "src/nonlinear/performanceBaseline.js",
+        "src/ui/analysisRunners.js"
+      ],
+      "problem": "Backend timing and result fields are inconsistent",
+      "owner": "compute-telemetry",
+      "targetMilestone": "P9-M1",
+      "replacement": "Adopt a shared bounded stage telemetry schema.",
+      "status": "closed",
+      "closedAt": "P9-M1",
+      "retention": null
+    }
+  ],
+  "qualification": [
+    {
+      "id": "P9-QUAL-01",
+      "topic": "elastic-gpu-performance",
+      "owner": "compute-qualification",
+      "nextGate": "external-qualification",
+      "status": "blocked-external-evidence-required"
+    },
+    {
+      "id": "P9-QUAL-02",
+      "topic": "multi-vendor-browser-matrix",
+      "owner": "compute-qualification",
+      "nextGate": "external-qualification",
+      "status": "blocked-external-evidence-required"
+    },
+    {
+      "id": "P9-QUAL-03",
+      "topic": "m-tier-pushover-nlth-performance",
+      "owner": "nonlinear-product",
+      "nextGate": "external-qualification",
+      "status": "blocked-external-evidence-required"
+    },
+    {
+      "id": "P9-QUAL-04",
+      "topic": "cpu-only-full-regression",
+      "owner": "release-engineering",
+      "nextGate": "external-qualification",
+      "status": "blocked-external-evidence-required"
+    }
+  ],
+  "summary": {
+    "closed": 11,
+    "retainedApproved": 1,
+    "ownerless": 0,
+    "openQualification": 4
+  },
+  "artifactHash": "5aaf66c5db64bdc501745bdcd3b3d3091a5bc9c14702bd5261d04feef25281ff"
+}

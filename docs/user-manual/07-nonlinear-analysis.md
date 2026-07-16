@@ -45,6 +45,14 @@ qualification, hashes, warnings, convergence trace, and stale status.
 Automation uses the same product service as the UI. Read capabilities first,
 then prefer these stable methods/actions:
 
+The shared Phase 9 route is `getAnalysisCapabilities` ->
+`validateAnalysisRun` -> `planAnalysisRun` -> `startAnalysisRun` ->
+`getAnalysisRunStatus` -> `getAnalysisRunResult`. Use
+`getAnalysisResultSlice`, `getAnalysisRunReport`, and
+`exportAnalysisTelemetry` for bounded results and provenance. The older
+`runPushover` action is retained only for compatibility and cannot enable GPU
+or design transfer.
+
 | Contract | Purpose |
 | --- | --- |
 | `validateProductionNonlinearCase` | Run product preflight without starting a job |

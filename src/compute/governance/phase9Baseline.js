@@ -5,6 +5,16 @@ export const PHASE9_EVIDENCE_SCHEMA_VERSION = 'p9-evidence-artifact-v1';
 export const PHASE9_DEBT_REGISTRY_VERSION = 'p9-m0-debt-registry-v1';
 export const PHASE9_RELEASE_MANIFEST_VERSION = 'p9-release-manifest-v1';
 
+export function phase9MilestoneRank(value) {
+  if (value === 'external-qualification') return Number.POSITIVE_INFINITY;
+  const match = /^P9-M(\d+)$/.exec(String(value || ''));
+  return match ? Number(match[1]) : -1;
+}
+
+export function phase9MilestoneAtOrBeyond(value, milestone) {
+  return phase9MilestoneRank(value) >= milestone;
+}
+
 export const PHASE9_BASELINE_VERIFICATION_IDS = Object.freeze([
   'P9-BASE-01',
   'P9-BASE-02',

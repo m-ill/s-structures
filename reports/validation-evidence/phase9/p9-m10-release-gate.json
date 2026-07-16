@@ -1,0 +1,258 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteVersion": "p9-m10-release-gate-evidence-v1",
+  "suiteId": "P9-M10-RELEASE-GATE",
+  "milestone": "P9-M10",
+  "generatedAt": "2026-07-16T08:22:11.897Z",
+  "sourceRevision": "a645f5a+worktree",
+  "priorEvidenceHash": "d6d289b2fad540bafed0bfbadd88f5cb88e6f25bff28529850875cba1145705c",
+  "status": "BLOCKED",
+  "implementationStatus": "complete",
+  "verificationIds": [
+    "P9-REF-11",
+    "P9-REF-12",
+    "P9-REF-13",
+    "P9-REF-14",
+    "P9-PERF-19",
+    "P9-PERF-20",
+    "P9-REL-01",
+    "P9-REL-03",
+    "P9-REL-07",
+    "P9-REL-08",
+    "P9-REL-09",
+    "P9-REL-10",
+    "P9-REL-11",
+    "P9-REL-12",
+    "P9-PERF-16",
+    "P9-PERF-17",
+    "P9-PERF-18",
+    "P9-REL-02",
+    "P9-REL-04",
+    "P9-REL-05",
+    "P9-REL-06"
+  ],
+  "cleanup": {
+    "compatibilityRegistryVersion": "p9-m10-compatibility-registry-v1",
+    "finalDebtHash": "5aaf66c5db64bdc501745bdcd3b3d3091a5bc9c14702bd5261d04feef25281ff",
+    "expiredProductionCompatibilityCallers": 0,
+    "unexpectedCompatibilityCallers": 0,
+    "unregisteredLegacyExports": 0,
+    "ownerlessDebt": 0,
+    "dependencyCycles": 0,
+    "dependencyViolations": 0,
+    "staleArtifacts": 0,
+    "unapprovedDependencies": 0,
+    "criticalHighFindings": 0
+  },
+  "qualification": {
+    "grade": "G2",
+    "focusedCpuRegressionPassed": true,
+    "releaseBuildPassed": true,
+    "fullRegressionPassed": false,
+    "externalHardwareMatrixPassed": false,
+    "multiVendorPerformancePassed": false,
+    "automaticGpuRoutingAllowed": false,
+    "designTransferAllowed": false
+  },
+  "releaseDecision": {
+    "status": "BLOCKED",
+    "reason": "REQUIRED_EXTERNAL_AND_FULL_REGRESSION_EVIDENCE_MISSING",
+    "nextGate": "external-qualification",
+    "missingEvidence": [
+      "CPU_ONLY_FULL_REGRESSION",
+      "MULTI_VENDOR_BROWSER_HARDWARE_MATRIX",
+      "M_TIER_PUSHOVER_NLTH_PERFORMANCE_UI_CANCEL",
+      "ELASTIC_GPU_END_TO_END_SPEED_THRESHOLD"
+    ]
+  },
+  "results": [
+    {
+      "id": "P9-REF-11",
+      "status": "PASS",
+      "test": "tests/p9-m10-cleanup-audit.mjs"
+    },
+    {
+      "id": "P9-REF-12",
+      "status": "PASS",
+      "test": "tests/p9-m10-cleanup-audit.mjs"
+    },
+    {
+      "id": "P9-REF-13",
+      "status": "PASS",
+      "test": "tests/p9-m10-cleanup-audit.mjs"
+    },
+    {
+      "id": "P9-REF-14",
+      "status": "PASS",
+      "test": "tests/p9-m10-cleanup-audit.mjs"
+    },
+    {
+      "id": "P9-PERF-19",
+      "status": "PASS",
+      "test": "tests/p9-m10-focused-regression.mjs"
+    },
+    {
+      "id": "P9-PERF-20",
+      "status": "PASS",
+      "test": "tests/p9-m10-focused-regression.mjs"
+    },
+    {
+      "id": "P9-REL-01",
+      "status": "PASS",
+      "test": "tests/p9-m10-cleanup-audit.mjs"
+    },
+    {
+      "id": "P9-REL-03",
+      "status": "PASS",
+      "test": "tests/p9-m10-focused-regression.mjs"
+    },
+    {
+      "id": "P9-REL-07",
+      "status": "PASS",
+      "test": "tests/p9-m10-cleanup-audit.mjs"
+    },
+    {
+      "id": "P9-REL-08",
+      "status": "PASS",
+      "test": "tests/p9-m10-release-policy.mjs"
+    },
+    {
+      "id": "P9-REL-09",
+      "status": "PASS",
+      "test": "tests/p9-m10-cleanup-audit.mjs"
+    },
+    {
+      "id": "P9-REL-10",
+      "status": "PASS",
+      "test": "tests/p9-m10-cleanup-audit.mjs"
+    },
+    {
+      "id": "P9-REL-11",
+      "status": "PASS",
+      "test": "tests/p9-m10-release-policy.mjs"
+    },
+    {
+      "id": "P9-REL-12",
+      "status": "PASS",
+      "test": "tests/p9-m10-release-policy.mjs"
+    },
+    {
+      "id": "P9-PERF-16",
+      "status": "BLOCKED",
+      "test": "tests/p9-m10-release-policy.mjs",
+      "reason": "EXTERNAL_HARDWARE_BROWSER_MATRIX_NOT_RUN"
+    },
+    {
+      "id": "P9-PERF-17",
+      "status": "BLOCKED",
+      "test": "tests/p9-m10-release-policy.mjs",
+      "reason": "EXTERNAL_HARDWARE_BROWSER_MATRIX_NOT_RUN"
+    },
+    {
+      "id": "P9-PERF-18",
+      "status": "BLOCKED",
+      "test": "tests/p9-m10-release-policy.mjs",
+      "reason": "EXTERNAL_HARDWARE_BROWSER_MATRIX_NOT_RUN"
+    },
+    {
+      "id": "P9-REL-02",
+      "status": "BLOCKED",
+      "test": "tests/p9-m10-release-policy.mjs",
+      "reason": "REQUIRED_QUALIFICATION_EVIDENCE_INCOMPLETE"
+    },
+    {
+      "id": "P9-REL-04",
+      "status": "BLOCKED",
+      "test": "tests/p9-m10-release-policy.mjs",
+      "reason": "FULL_REGRESSION_NOT_RUN_BY_USER_TEST_POLICY"
+    },
+    {
+      "id": "P9-REL-05",
+      "status": "BLOCKED",
+      "test": "tests/p9-m10-release-policy.mjs",
+      "reason": "EXTERNAL_HARDWARE_BROWSER_MATRIX_NOT_RUN"
+    },
+    {
+      "id": "P9-REL-06",
+      "status": "BLOCKED",
+      "test": "tests/p9-m10-release-policy.mjs",
+      "reason": "EXTERNAL_HARDWARE_BROWSER_MATRIX_NOT_RUN"
+    }
+  ],
+  "tests": {
+    "cleanup": {
+      "ok": true,
+      "requirements": [
+        "P9-REF-11~14",
+        "P9-REL-09~10"
+      ],
+      "registryVersion": "p9-m10-compatibility-registry-v1",
+      "approvedCompatibilityCallers": 5,
+      "expiredProductionCompatibilityCallers": 0,
+      "unexpectedCompatibilityCallers": 0,
+      "unregisteredLegacyExports": 0,
+      "ownerlessDebt": 0,
+      "dependencyCycles": 0,
+      "dependencyViolations": 0,
+      "staleArtifacts": 0,
+      "evidenceArtifactsChecked": 11,
+      "unapprovedDependencies": 0,
+      "finalDebtHash": "5aaf66c5db64bdc501745bdcd3b3d3091a5bc9c14702bd5261d04feef25281ff"
+    },
+    "releasePolicy": {
+      "ok": true,
+      "requirements": [
+        "P9-PERF-16~18",
+        "P9-REL-01~12"
+      ],
+      "decision": {
+        "status": "BLOCKED",
+        "reason": "REQUIRED_EXTERNAL_AND_FULL_REGRESSION_EVIDENCE_MISSING",
+        "nextGate": "external-qualification",
+        "missingEvidence": [
+          "CPU_ONLY_FULL_REGRESSION",
+          "MULTI_VENDOR_BROWSER_HARDWARE_MATRIX",
+          "M_TIER_PUSHOVER_NLTH_PERFORMANCE_UI_CANCEL",
+          "ELASTIC_GPU_END_TO_END_SPEED_THRESHOLD"
+        ]
+      },
+      "grade": "G2",
+      "implementedMilestone": "P9-M10"
+    },
+    "focusedRegression": {
+      "ok": true,
+      "requirements": [
+        "P9-REL-03",
+        "P9-PERF-19~20"
+      ],
+      "policy": "focused-cpu-and-product-regression-full-nonlinear-excluded",
+      "tests": [
+        "tests/m0-smoke.mjs",
+        "tests/m4-combinations.mjs",
+        "tests/p5-analysis-center.mjs",
+        "tests/p9-m3-worker-product.mjs",
+        "tests/p9-m6-worker-product.mjs",
+        "tests/p9-m9-product-workflow.mjs",
+        "tests/p8-m10-product-ui.mjs",
+        "tests/p8-m10-job-agent-api.mjs"
+      ]
+    },
+    "releaseBuild": {
+      "ok": true,
+      "version": "0.1.0",
+      "out": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\release\\s-structures-0.1.0",
+      "zip": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\release\\s-structures-0.1.0.zip",
+      "sha256": "8afdf999dcb7c137cc3dde64032272778f104fe7c5ddd32fbd5088f58d795718"
+    }
+  },
+  "blockersRetained": [
+    "P9_M5_ELASTIC_END_TO_END_SPEED_THRESHOLD_NOT_MET",
+    "P9_M5_S_M_PROFILE_MATRIX_REQUIRED",
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "P9_M10_EXTERNAL_HARDWARE_MATRIX_REQUIRED",
+    "P9_M10_FULL_REGRESSION_REQUIRED"
+  ],
+  "qualificationImpact": "M10-implementation-complete-release-blocked-G2-retained",
+  "artifactHash": "05133a91e6ed7f1bc1ba8398b40f112ec23b87d2d462d849e9c5d9aef2570b9b"
+}

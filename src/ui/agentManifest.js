@@ -260,9 +260,14 @@ import {
   PRODUCT_ANALYSIS_REPORT_VERSION,
   PRODUCT_ANALYSIS_SERVICE_VERSION,
 } from '../compute/product/analysisProductService.js';
+import {
+  LEGACY_UI_ANALYSIS_COMPATIBILITY_INVENTORY,
+  LEGACY_UI_ANALYSIS_COMPATIBILITY_POLICY,
+  LEGACY_UI_ANALYSIS_COMPATIBILITY_VERSION,
+} from '../compute/product/legacyUiCompatibility.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p9-m9-agent-capability-manifest-v15';
+export const AGENT_MANIFEST_VERSION = 'p9-m10-agent-capability-manifest-v16';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -499,11 +504,21 @@ export function buildAgentManifest(options = {}) {
       phase9ProductAnalysisCapability: PRODUCT_ANALYSIS_CAPABILITY_VERSION,
       phase9ProductAnalysisJob: PRODUCT_ANALYSIS_JOB_VERSION,
       phase9ProductAnalysisReport: PRODUCT_ANALYSIS_REPORT_VERSION,
+      phase9LegacyUiCompatibility: LEGACY_UI_ANALYSIS_COMPATIBILITY_VERSION,
       phase8IndependentReference: PHASE8_INDEPENDENT_REFERENCE_VERSION,
       phase8PerformanceQualification: PHASE8_PERFORMANCE_QUALIFICATION_VERSION,
       phase8PilotPackage: PHASE8_PILOT_PACKAGE_VERSION,
       phase8ReleaseManifest: PHASE8_RELEASE_MANIFEST_VERSION,
       phase3DesignFormulaRegistry: DESIGN_FORMULA_REGISTRY_VERSION,
+    },
+    compatibility: {
+      defaultProductionPath: 'validateAnalysisRun/planAnalysisRun/startAnalysisRun/getAnalysisRunStatus/getAnalysisRunResult',
+      policy: { ...LEGACY_UI_ANALYSIS_COMPATIBILITY_POLICY },
+      retained: LEGACY_UI_ANALYSIS_COMPATIBILITY_INVENTORY.map((row) => ({
+        ...row,
+        symbols: [...row.symbols],
+        allowedCallers: [...row.allowedCallers],
+      })),
     },
     nonlinear: {
       scope: buildNonlinearProductScopeCatalog(),

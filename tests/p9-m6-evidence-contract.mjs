@@ -23,7 +23,8 @@ assert.equal(evidence.backend.optionalGpuSpmvQualified, false);
 assert.equal(evidence.performance.budgetMet, true);
 assert.equal(manifest.computeQualification.sparseEigenCpuQualified, true);
 assert.equal(manifest.computeQualification.eigenGpuQualified, false);
-assert.ok(Number(manifest.implementation.activeMilestone.split('M').at(-1)) >= 7);
+assert.ok(manifest.implementation.activeMilestone === 'external-qualification'
+  || Number(manifest.implementation.activeMilestone.split('M').at(-1)) >= 7);
 assert.equal(manifest.evidence.m6SparseEigen, evidence.artifactHash);
 
 console.log(JSON.stringify({

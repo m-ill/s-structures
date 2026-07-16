@@ -20,7 +20,8 @@ assert.deepEqual(validatePhase9M9Manifest(manifest), { ok: true, errors: [] });
 assert.equal(evidence.results.filter((row) => row.status === 'PASS').length, PHASE9_M9_VERIFICATION_IDS.length);
 assert.equal(manifest.implementation.implementedMilestones.includes('P9-M9'), true);
 assert.equal(manifest.implementation.completedMilestones.includes('P9-M9'), true);
-assert.equal(manifest.implementation.activeMilestone, 'P9-M10');
+assert.ok(manifest.implementation.activeMilestone === 'external-qualification'
+  || Number(manifest.implementation.activeMilestone.split('M').at(-1)) >= 10);
 assert.equal(manifest.computeQualification.grade, 'G2');
 assert.equal(manifest.computeQualification.productWorkflowIntegrated, true);
 assert.equal(manifest.computeQualification.automaticGpuRoutingAllowed, false);

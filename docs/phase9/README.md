@@ -2,18 +2,22 @@
 
 ```yaml
 phase: 9
-status: implementation
-documentation_status: baseline-complete
-implementation_status: in-progress
-completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7]
-implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7]
+status: implementation-complete-qualification-blocked
+documentation_status: implementation-complete
+implementation_status: complete
+completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7, P9-M9]
+implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7, P9-M8, P9-M9, P9-M10]
 compute_qualification: G2-kernel-qualified-local-profile
+release_gate: BLOCKED
+next_gate: external-qualification
 reviewed_at: 2026-07-16
 mission: 탄성설계부터 비선형해석까지 공통 계산계약을 구축하고 CPU/WASM f64 기준경로와 선택적 GPU 가속경로를 production 수준으로 통합한다.
 governing_plan: docs/phase9/MILESTONE_EXECUTION_PLAN.md
 ```
 
 > Phase 9는 GPU 버튼을 추가하는 작업이 아니다. 기존 탄성 JavaScript solver와 Phase 8 비선형 Worker/WASM solver를 공통 compute architecture로 통합하고, 중복 조립·분해·상태복사를 제거한 다음 GPU에 적합한 batch 연산만 검증된 경로로 가속하는 작업이다.
+
+P9-M10 구현은 완료됐지만 릴리스는 차단돼 있다. 외부 다중 벤더 행렬, 전체 CPU 회귀, M급 비선형 성능과 탄성 GPU 속도 기준이 없으므로 `Auto`는 CPU f64만 선택하고 설계전달은 허용하지 않는다.
 
 ## 1. 결론
 

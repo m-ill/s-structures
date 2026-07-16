@@ -3,6 +3,7 @@ import {
   PHASE9_RELEASE_MANIFEST_VERSION,
   phase9ArtifactHash,
   phase9ManifestHash,
+  phase9MilestoneAtOrBeyond,
 } from './phase9Baseline.js';
 
 export const PHASE9_M9_EVIDENCE_VERSION = 'p9-m9-product-workflow-evidence-v1';
@@ -125,7 +126,7 @@ export function validatePhase9M9Manifest(manifest = {}) {
   if (manifest.version !== PHASE9_RELEASE_MANIFEST_VERSION) errors.push('manifest:version');
   if (!manifest.implementation?.implementedMilestones?.includes('P9-M9')
     || !manifest.implementation?.completedMilestones?.includes('P9-M9')
-    || manifest.implementation?.activeMilestone !== 'P9-M10') errors.push('manifest:implementation');
+    || !phase9MilestoneAtOrBeyond(manifest.implementation?.activeMilestone, 10)) errors.push('manifest:implementation');
   if (!/^[a-f0-9]{64}$/.test(manifest.evidence?.m9ProductWorkflow || '')) errors.push('manifest:evidence');
   if (manifest.computeQualification?.grade !== 'G2'
     || manifest.computeQualification?.productWorkflowIntegrated !== true
@@ -135,7 +136,6 @@ export function validatePhase9M9Manifest(manifest = {}) {
   if (manifest.manifestHash !== phase9ManifestHash(manifest)) errors.push('manifest:hash');
   return { ok: errors.length === 0, errors };
 }
-
 function testFor(id) {
   if (/^P9-UI-(?:0[1-7])$/.test(id) || /^P9-API-/.test(id)) return 'tests/p9-m9-product-workflow.mjs';
   return 'tests/p9-m9-ui-agent.mjs';

@@ -2,7 +2,7 @@
 
 ```yaml
 version: p9-traceability-v1
-status: planned
+status: implementation-complete-qualification-blocked
 requirement_source: docs/phase9/PRODUCTION_REQUIREMENTS.md
 verification_source: docs/phase9/VERIFICATION_MATRIX.md
 ```
@@ -55,7 +55,7 @@ requirement -> architecture/ADR -> milestone -> code owner
 | P9-M7 | nonlinear SoA/GPU state | p9-m7-nonlinear-batch, review | migration/status |
 | P9-M8 | hybrid Pushover/NLTH | p9-m8-hybrid-nonlinear, review | qualification/status |
 | P9-M9 | shared product service, UI/API/report/Agent | p9-m9-product-workflow, p9-m9-code-review | P9_M9_PRODUCT_WORKFLOW/status |
-| P9-M10 | hardware qualification/cleanup | p9-m10-release, final review, manifest | final status |
+| P9-M10 | qualification gate and cleanup | p9-m10-release-gate, p9-m10-final-debt, final review | P9_M10_RELEASE_GATE/final status |
 
 실제 evidence filename에는 source revision과 artifact hash가 포함될 수 있다. generator와 registry가 canonical path를 관리한다.
 

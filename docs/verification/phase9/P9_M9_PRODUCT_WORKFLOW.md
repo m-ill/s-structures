@@ -4,7 +4,7 @@
 
 P9-M9 implementation is complete. Elastic and nonlinear product execution now share one versioned analysis service for capability discovery, validation, planning, asynchronous job execution, progress, cancel, retry, bounded results, reports and telemetry.
 
-The Analysis Center, elastic ribbon, nonlinear workflow and Agent API use the same canonical settings bytes and plan hash. Legacy synchronous calls remain only in an isolated compatibility module with an explicit P9-M10 removal boundary; they are not a production compute route.
+The Analysis Center, elastic ribbon, nonlinear workflow and Agent API use the same canonical settings bytes and plan hash. Legacy synchronous calls remain only in an isolated compatibility module; P9-M10 records them as approved retained compatibility whose removal requires explicit public breaking-change approval. They are not a production compute route and cannot authorize GPU execution or design transfer.
 
 Qualification remains `G2`. `Auto` and `CPU precise` resolve to the qualified CPU f64 path. `GPU accelerated` is disabled and displays its unsupported reason and remediation until the required hardware/browser matrix and release gates pass. There is no silent GPU-to-CPU fallback.
 

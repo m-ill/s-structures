@@ -22,7 +22,8 @@ assert.equal(evidence.results.filter((row) => row.status === 'PASS').length, PHA
 assert.equal(evidence.results.filter((row) => row.status === 'BLOCKED').length, PHASE9_M8_BLOCKED_IDS.length);
 assert.equal(manifest.implementation.implementedMilestones.includes('P9-M8'), true);
 assert.equal(manifest.implementation.completedMilestones.includes('P9-M8'), false);
-assert.equal(manifest.implementation.activeMilestone, 'P9-M9');
+assert.ok(manifest.implementation.activeMilestone === 'external-qualification'
+  || Number(manifest.implementation.activeMilestone.split('M').at(-1)) >= 9);
 assert.equal(manifest.computeQualification.grade, 'G2');
 assert.equal(manifest.computeQualification.nonlinearResidentCpuQualified, true);
 assert.equal(manifest.computeQualification.nonlinearGpuProductionQualified, false);

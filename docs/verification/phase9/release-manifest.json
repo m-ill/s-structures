@@ -1,10 +1,10 @@
 {
   "version": "p9-release-manifest-v1",
-  "generatedAt": "2026-07-16T06:05:30.072Z",
-  "sourceRevision": "dd7c974+worktree",
+  "generatedAt": "2026-07-16T08:22:11.897Z",
+  "sourceRevision": "a645f5a+worktree",
   "phase": "Phase 9",
   "implementation": {
-    "status": "in-progress",
+    "status": "implementation-complete-qualification-blocked",
     "completedMilestones": [
       "P9-M0",
       "P9-M1",
@@ -38,13 +38,14 @@
       "P9-M6",
       "P9-M7",
       "P9-M8",
-      "P9-M9"
+      "P9-M9",
+      "P9-M10"
     ],
-    "activeMilestone": "P9-M10"
+    "activeMilestone": "external-qualification"
   },
   "computeQualification": {
     "grade": "G2",
-    "status": "hybrid-elastic-implemented-performance-not-qualified",
+    "status": "release-gate-evaluated-external-qualification-blocked",
     "candidate": true,
     "gpuImplemented": true,
     "qualifiedProfileCount": 1,
@@ -69,9 +70,17 @@
     "automaticGpuRoutingAllowed": false
   },
   "release": {
-    "status": "not-qualified",
+    "status": "blocked-missing-qualification-evidence",
     "allowed": false,
-    "designTransferAllowed": false
+    "designTransferAllowed": false,
+    "gate": "P9-M10",
+    "decision": "REQUIRED_EXTERNAL_AND_FULL_REGRESSION_EVIDENCE_MISSING",
+    "missingEvidence": [
+      "CPU_ONLY_FULL_REGRESSION",
+      "MULTI_VENDOR_BROWSER_HARDWARE_MATRIX",
+      "M_TIER_PUSHOVER_NLTH_PERFORMANCE_UI_CANCEL",
+      "ELASTIC_GPU_END_TO_END_SPEED_THRESHOLD"
+    ]
   },
   "evidence": {
     "baseline": "351c200ac632dad388c590cd7d542e98c2b99b497d91bb65ba109109402778a2",
@@ -84,18 +93,21 @@
     "m6SparseEigen": "6cc61b78529e693ba201c42678ded0fb4e3949cdd3a846ec4a25c2d35cd52190",
     "m7NonlinearBatch": "241595c470865f6cce6139f9021dc5c7aa15e842a56bc8d17e799de97e58d0ea",
     "m8HybridNonlinear": "414610214f30511b2517a74d7099ba8fd3e1b80037fd205b063ff1b5e8114f92",
-    "m9ProductWorkflow": "d6d289b2fad540bafed0bfbadd88f5cb88e6f25bff28529850875cba1145705c"
+    "m9ProductWorkflow": "d6d289b2fad540bafed0bfbadd88f5cb88e6f25bff28529850875cba1145705c",
+    "m10ReleaseGate": "05133a91e6ed7f1bc1ba8398b40f112ec23b87d2d462d849e9c5d9aef2570b9b",
+    "m10FinalDebt": "5aaf66c5db64bdc501745bdcd3b3d3091a5bc9c14702bd5261d04feef25281ff"
   },
   "blockers": [
     "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
     "M_TIER_NLTH_END_TO_END_REQUIRED",
     "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
     "NONLINEAR_GPU_PRODUCTION_KERNELS_NOT_QUALIFIED",
-    "P9_M10_RELEASE_GATE_REQUIRED",
+    "P9_M10_EXTERNAL_HARDWARE_MATRIX_REQUIRED",
+    "P9_M10_FULL_REGRESSION_REQUIRED",
     "P9_M4_EXTERNAL_BROWSER_VENDOR_MATRIX_REQUIRED",
     "P9_M5_ELASTIC_END_TO_END_SPEED_THRESHOLD_NOT_MET",
     "P9_M5_S_M_PROFILE_MATRIX_REQUIRED",
     "P9_M6_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED"
   ],
-  "manifestHash": "2c8863c5e68abcc5de84ce5e97f394ff253670393563716eed389a19e9d57509"
+  "manifestHash": "095614c1ae7f8d808f8ae9e7dd406984a46c4755889c2933b2b886b168da3bd8"
 }

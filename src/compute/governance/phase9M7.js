@@ -3,6 +3,7 @@ import {
   PHASE9_RELEASE_MANIFEST_VERSION,
   phase9ArtifactHash,
   phase9ManifestHash,
+  phase9MilestoneAtOrBeyond,
 } from './phase9Baseline.js';
 
 export const PHASE9_M7_EVIDENCE_VERSION = 'p9-m7-nonlinear-batch-evidence-v1';
@@ -151,7 +152,7 @@ export function validatePhase9M7Manifest(manifest = {}) {
   if (manifest.version !== PHASE9_RELEASE_MANIFEST_VERSION) errors.push('manifest:version');
   if (!manifest.implementation?.completedMilestones?.includes('P9-M7')
     || !manifest.implementation?.implementedMilestones?.includes('P9-M7')
-    || manifest.implementation?.activeMilestone !== 'P9-M8') errors.push('manifest:implementation');
+    || !phase9MilestoneAtOrBeyond(manifest.implementation?.activeMilestone, 8)) errors.push('manifest:implementation');
   if (!/^[a-f0-9]{64}$/.test(manifest.evidence?.m7NonlinearBatch || '')) errors.push('manifest:evidence');
   if (manifest.computeQualification?.grade !== 'G2'
     || manifest.computeQualification?.nonlinearBatchCpuQualified !== true
@@ -162,7 +163,6 @@ export function validatePhase9M7Manifest(manifest = {}) {
   if (manifest.manifestHash !== phase9ManifestHash(manifest)) errors.push('manifest:hash');
   return { ok: errors.length === 0, errors };
 }
-
 function series(prefix, count) { return Array.from({ length: count }, (_item, index) => `${prefix}${String(index + 1).padStart(2, '0')}`); }
 function milestoneSort(left, right) { return Number(left.split('M').at(-1)) - Number(right.split('M').at(-1)); }
 function requiredText(value, field) { const text = String(value || '').trim(); if (!text) throw Object.assign(new Error(`${field} is required.`), { code: 'P9_M7_FIELD_REQUIRED' }); return text; }

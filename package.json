@@ -23,6 +23,7 @@
     "evidence:p9:m7": "node tools/run-p9-m7-evidence.mjs",
     "evidence:p9:m8": "node tools/run-p9-m8-evidence.mjs",
     "evidence:p9:m9": "node tools/run-p9-m9-evidence.mjs",
+    "evidence:p9:m10": "node tools/run-p9-m10-evidence.mjs",
     "baseline:p9:m0": "node tools/run-p9-m0-baseline.mjs",
     "build:p8wasm": "node tools/build-phase8-wasm.mjs",
     "test:p3": "node tools/run-milestone-tests.mjs --phase3",

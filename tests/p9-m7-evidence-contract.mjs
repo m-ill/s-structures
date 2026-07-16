@@ -23,7 +23,8 @@ assert.equal(evidence.performance.perElementCommittedStateCloneCount, 0);
 assert.equal(evidence.backend.gpuProductionQualified, false);
 assert.equal(manifest.computeQualification.nonlinearBatchCpuQualified, true);
 assert.equal(manifest.computeQualification.nonlinearGpuProductionQualified, false);
-assert.equal(manifest.implementation.activeMilestone, 'P9-M8');
+assert.ok(manifest.implementation.activeMilestone === 'external-qualification'
+  || Number(manifest.implementation.activeMilestone.split('M').at(-1)) >= 8);
 assert.equal(manifest.evidence.m7NonlinearBatch, evidence.artifactHash);
 
 console.log(JSON.stringify({

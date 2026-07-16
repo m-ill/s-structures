@@ -127,7 +127,9 @@ import {
 const DEFAULT_BRIDGE_VERSION = 'm9-index-engine-bridge';
 const SYNC_ANALYSIS_DEPRECATION = Object.freeze({
   code: 'SYNC_PRODUCT_ANALYSIS_DEPRECATED',
-  expires: 'P9-M10',
+  status: 'retained-approved-compatibility',
+  reviewedAtMilestone: 'P9-M10',
+  removalGate: 'PUBLIC_API_BREAK_APPROVAL_REQUIRED',
   replacement: 'validateAnalysisRun/planAnalysisRun/startAnalysisRun/getAnalysisRunStatus/getAnalysisRunResult',
 });
 
