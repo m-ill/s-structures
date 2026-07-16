@@ -27,3 +27,7 @@ export {
   NONLINEAR_GPU_CANDIDATE_VERSION,
   executeNonlinearGpuCandidate,
 } from './gpuCandidate.js';
+export {
+  NONLINEAR_RESIDENT_SESSION_VERSION,
+  createNonlinearResidentSession,
+} from './residentSession.js';

@@ -1,7 +1,7 @@
 {
   "version": "p9-release-manifest-v1",
-  "generatedAt": "2026-07-16T02:12:40.787Z",
-  "sourceRevision": "755da33+worktree",
+  "generatedAt": "2026-07-16T03:23:30.787Z",
+  "sourceRevision": "06983cb+worktree",
   "phase": "Phase 9",
   "implementation": {
     "status": "in-progress",
@@ -35,9 +35,10 @@
       "P9-M4",
       "P9-M5",
       "P9-M6",
-      "P9-M7"
+      "P9-M7",
+      "P9-M8"
     ],
-    "activeMilestone": "P9-M8"
+    "activeMilestone": "P9-M9"
   },
   "computeQualification": {
     "grade": "G2",
@@ -58,7 +59,10 @@
     "nonlinearBatchCpuQualified": true,
     "nonlinearGpuShadowQualified": true,
     "nonlinearGpuProductionQualified": false,
-    "nonlinearAutoGpuAllowed": false
+    "nonlinearAutoGpuAllowed": false,
+    "nonlinearResidentCpuQualified": true,
+    "nonlinearPushoverNlthImplemented": true,
+    "nonlinearMSizeQualified": false
   },
   "release": {
     "status": "not-qualified",
@@ -74,12 +78,14 @@
     "m4WebGpuFoundation": "45286be5c46b9e30588171c2ec9dd16886f5e61723a1ebe87b75fa1c90e3a3f1",
     "m5HybridElastic": "d39fb4ba7b541326b5bb5969891bacd2a8379aca82978591b949f83088b24964",
     "m6SparseEigen": "6cc61b78529e693ba201c42678ded0fb4e3949cdd3a846ec4a25c2d35cd52190",
-    "m7NonlinearBatch": "241595c470865f6cce6139f9021dc5c7aa15e842a56bc8d17e799de97e58d0ea"
+    "m7NonlinearBatch": "241595c470865f6cce6139f9021dc5c7aa15e842a56bc8d17e799de97e58d0ea",
+    "m8HybridNonlinear": "414610214f30511b2517a74d7099ba8fd3e1b80037fd205b063ff1b5e8114f92"
   },
   "blockers": [
     "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
     "M_TIER_NLTH_END_TO_END_REQUIRED",
     "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "NONLINEAR_GPU_PRODUCTION_KERNELS_NOT_QUALIFIED",
     "P9_M10_RELEASE_GATE_REQUIRED",
     "P9_M4_EXTERNAL_BROWSER_VENDOR_MATRIX_REQUIRED",
     "P9_M5_ELASTIC_END_TO_END_SPEED_THRESHOLD_NOT_MET",
@@ -87,5 +93,5 @@
     "P9_M6_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED",
     "P9_M9_PRODUCT_MIGRATION_REQUIRED"
   ],
-  "manifestHash": "c373e7c33444535f4d40a1a86a08ded6fa12771d652e580f34f292df47c43623"
+  "manifestHash": "02ea44fbdf2a902503f95402f911ef3419326e9b1cfeeb2f120cb29c5e1b1a5d"
 }

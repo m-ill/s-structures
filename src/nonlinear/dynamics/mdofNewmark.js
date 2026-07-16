@@ -491,6 +491,8 @@ export async function runMdofNewmark(input = {}) {
           version: MDOF_NEWMARK_VERSION,
           ...row,
           stateStore: step.stateStore,
+          evaluation: step.evaluation,
+          energies: step.energies || step.stateStore.committed.energies?.dynamic || {},
         }));
       } catch (error) {
         return acceptedBoundaryFailure('DYNAMIC_COMMIT_CALLBACK_FAILED', error);
@@ -522,6 +524,19 @@ export async function runMdofNewmark(input = {}) {
     });
     rejectedStepCount += 1;
     if (rejectedSteps.length < stepTraceLimit) rejectedSteps.push(rejectedRow);
+    try {
+      input.onReject?.(Object.freeze({ ...rejectedRow, stateStore: startStore }));
+    } catch (error) {
+      return {
+        ok: false,
+        reason: 'DYNAMIC_REJECT_CALLBACK_FAILED',
+        status: 'failed',
+        stateStore: startStore,
+        evaluation: startEvaluation,
+        message: error?.message || 'DYNAMIC_REJECT_CALLBACK_FAILED',
+        details: serializable(error),
+      };
+    }
     if (step.status === 'cancelled' || step.reason === 'ANALYSIS_CANCELLED') {
       return {
         ok: false,

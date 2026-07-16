@@ -1,0 +1,297 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteVersion": "p9-m8-hybrid-nonlinear-evidence-v1",
+  "suiteId": "P9-M8-HYBRID-PUSHOVER-NLTH",
+  "milestone": "P9-M8",
+  "generatedAt": "2026-07-16T03:23:30.787Z",
+  "sourceRevision": "06983cb+worktree",
+  "priorEvidenceHash": "241595c470865f6cce6139f9021dc5c7aa15e842a56bc8d17e799de97e58d0ea",
+  "status": "IMPLEMENTED_WITH_QUALIFICATION_BLOCKERS",
+  "verificationIds": [
+    "P9-GPU-NL-11",
+    "P9-GPU-NL-12",
+    "P9-GPU-NL-13",
+    "P9-GPU-NL-14",
+    "P9-GPU-NL-15",
+    "P9-GPU-NL-16",
+    "P9-GPU-NL-17",
+    "P9-GPU-NL-18",
+    "P9-GPU-NL-19",
+    "P9-GPU-NL-20",
+    "P9-GPU-NL-21",
+    "P9-GPU-NL-22",
+    "P9-FAIL-05",
+    "P9-FAIL-06",
+    "P9-FAIL-07",
+    "P9-FAIL-08",
+    "P9-FAIL-09",
+    "P9-FAIL-10",
+    "P9-GPU-NL-23",
+    "P9-GPU-NL-24",
+    "P9-PERF-13",
+    "P9-PERF-14",
+    "P9-PERF-15"
+  ],
+  "backend": {
+    "productionId": "cpu-f64-nonlinear-resident-session",
+    "requestedTarget": "auto",
+    "executedTarget": "cpu",
+    "precision": "f64",
+    "gpuQualification": "G2-shadow-candidate-no-design-transfer",
+    "gpuProductionQualified": false,
+    "autoGpuAllowed": false,
+    "fallbackUsed": false,
+    "designTransferAllowed": false
+  },
+  "contracts": {
+    "residentSession": "p9-m8-nonlinear-resident-session-v1",
+    "batch": "p9-m7-nonlinear-soa-batch-v1",
+    "stateArena": "p9-m7-nonlinear-batch-state-arena-v1",
+    "canonicalCheckpoint": "p8-m1-nonlinear-checkpoint-v1",
+    "engineeringResultSchemaChanged": false,
+    "additiveComputeProvenance": true
+  },
+  "numeric": {
+    "gravityCheckpointParity": true,
+    "pushoverStateEventResultParity": true,
+    "nlthHistoryStateParity": true,
+    "nlthEnergyRelativeResidual": 0.00008176968305890261,
+    "cpuF64AuditPassed": true,
+    "checkpointFailureContainment": true,
+    "gpuProductionBlocked": true
+  },
+  "performance": {
+    "scope": "focused-regression-only",
+    "pushoverDurationMs": 1627.6973,
+    "nlthDurationMs": 7298.591699999999,
+    "nlthTransferBytes": 5365,
+    "residentBytes": 8224,
+    "mTierExecuted": false,
+    "mTierQualified": false,
+    "reason": "blocked-not-run-by-user-test-policy"
+  },
+  "architecture": {
+    "sessionOwner": "src/compute/nonlinear/residentSession.js",
+    "formulationOwner": "src/nonlinear",
+    "committedBoundaryPolicy": "solver-accepted-step-only",
+    "rejectedTrialPolicy": "arena-rollback-and-canonical-state-hash-audit",
+    "checkpointPolicy": "existing-state-store-checkpoint-is-canonical",
+    "transferPolicy": "bounded-hashed-descriptors-without-session-payload-retention",
+    "generalSolvePolicy": "cpu-f64-authoritative",
+    "deviceFailurePolicy": "no-silent-fallback-last-committed-checkpoint"
+  },
+  "tests": {
+    "resident": {
+      "ok": true,
+      "verificationIds": [
+        "P9-GPU-NL-11",
+        "P9-GPU-NL-12",
+        "P9-GPU-NL-21",
+        "P9-GPU-NL-22",
+        "P9-FAIL-05",
+        "P9-FAIL-06",
+        "P9-FAIL-07",
+        "P9-FAIL-08",
+        "P9-FAIL-09",
+        "P9-FAIL-10"
+      ],
+      "initialCheckpointHash": "7c5256600127e212e3f9e081f9f1556344061c19e31d454258982ff92cb03e02",
+      "recoveryCheckpointHash": "e384cd77866949a53208112dc8fc2d65c33d95d6be4d313f7f8eefa6dd86e5b5",
+      "sessionHash": "013babcc62abcf2d13af7e7c",
+      "residentBytes": 8224,
+      "transferBytes": 128
+    },
+    "hybrid": {
+      "ok": true,
+      "verificationIds": [
+        "P9-GPU-NL-13",
+        "P9-GPU-NL-14",
+        "P9-GPU-NL-15",
+        "P9-GPU-NL-16",
+        "P9-GPU-NL-17",
+        "P9-GPU-NL-18",
+        "P9-GPU-NL-19",
+        "P9-GPU-NL-20"
+      ],
+      "pushover": {
+        "durationMs": 1627.6973,
+        "displacementStepCount": 4,
+        "arcStepCount": 3,
+        "residentCommitCount": 7,
+        "residentAuditCount": 8,
+        "sessionHash": "2b8edd624707f93d20e278e2"
+      },
+      "nlth": {
+        "durationMs": 7298.591699999999,
+        "outputStepCount": 3,
+        "internalStepCount": 2,
+        "residentCommitCount": 2,
+        "residentAuditCount": 3,
+        "residentTransferCount": 2,
+        "residentTransferBytes": 5365,
+        "finalEnergyRelativeResidual": 0.00008176968305890261,
+        "hingeStates": [
+          "elastic",
+          "yielded"
+        ],
+        "sessionHash": "618902c16559bea3dd5feb78"
+      },
+      "performanceScope": "focused-regression-only",
+      "mTierQualification": "blocked-not-run-by-user-test-policy"
+    }
+  },
+  "results": [
+    {
+      "id": "P9-GPU-NL-11",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-12",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-13",
+      "status": "PASS",
+      "test": "tests/p9-m8-hybrid-nonlinear.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-14",
+      "status": "PASS",
+      "test": "tests/p9-m8-hybrid-nonlinear.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-15",
+      "status": "PASS",
+      "test": "tests/p9-m8-hybrid-nonlinear.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-16",
+      "status": "PASS",
+      "test": "tests/p9-m8-hybrid-nonlinear.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-17",
+      "status": "PASS",
+      "test": "tests/p9-m8-hybrid-nonlinear.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-18",
+      "status": "PASS",
+      "test": "tests/p9-m8-hybrid-nonlinear.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-19",
+      "status": "PASS",
+      "test": "tests/p9-m8-hybrid-nonlinear.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-20",
+      "status": "PASS",
+      "test": "tests/p9-m8-hybrid-nonlinear.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-21",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-22",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-FAIL-05",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-FAIL-06",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-FAIL-07",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-FAIL-08",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-FAIL-09",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-FAIL-10",
+      "status": "PASS",
+      "test": "tests/p9-m8-resident-session.mjs",
+      "reason": null
+    },
+    {
+      "id": "P9-GPU-NL-23",
+      "status": "BLOCKED",
+      "test": "external:M-tier-nonlinear-browser-performance",
+      "reason": "M-tier nonlinear performance/UI run omitted under the user-requested minimal nonlinear test policy."
+    },
+    {
+      "id": "P9-GPU-NL-24",
+      "status": "BLOCKED",
+      "test": "external:M-tier-nonlinear-browser-performance",
+      "reason": "M-tier nonlinear performance/UI run omitted under the user-requested minimal nonlinear test policy."
+    },
+    {
+      "id": "P9-PERF-13",
+      "status": "BLOCKED",
+      "test": "external:M-tier-nonlinear-browser-performance",
+      "reason": "M-tier nonlinear performance/UI run omitted under the user-requested minimal nonlinear test policy."
+    },
+    {
+      "id": "P9-PERF-14",
+      "status": "BLOCKED",
+      "test": "external:M-tier-nonlinear-browser-performance",
+      "reason": "M-tier nonlinear performance/UI run omitted under the user-requested minimal nonlinear test policy."
+    },
+    {
+      "id": "P9-PERF-15",
+      "status": "BLOCKED",
+      "test": "external:M-tier-nonlinear-browser-performance",
+      "reason": "M-tier nonlinear performance/UI run omitted under the user-requested minimal nonlinear test policy."
+    }
+  ],
+  "blockers": [
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+    "NONLINEAR_GPU_PRODUCTION_KERNELS_NOT_QUALIFIED"
+  ],
+  "limitations": [
+    "Production Pushover and MDOF NLTH remain CPU f64; WebGPU nonlinear kernels are shadow candidates only.",
+    "The resident session owns state/checkpoint/transfer integrity but does not replace Phase 8 formulation kernels.",
+    "M-tier performance, memory and browser UI budgets were not run under the requested minimal nonlinear test policy.",
+    "External independent validation remains outside this local milestone."
+  ],
+  "qualificationImpact": "M8-implemented-cpu-resident-G2-retained",
+  "artifactHash": "414610214f30511b2517a74d7099ba8fd3e1b80037fd205b063ff1b5e8114f92"
+}

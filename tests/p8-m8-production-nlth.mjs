@@ -117,6 +117,13 @@ assert.ok(result.provenance.groundMotionSetHash);
 assert.ok(result.runRecord.id);
 assert.equal(result.runRecord.result.designTransferGuard.allowed, false);
 assert.equal(result.runRecord.integrityHash, analysisRunRecordIntegrityHash(result.runRecord));
+assert.equal(result.compute.route.executedTarget, 'cpu');
+assert.equal(result.compute.route.fallbackUsed, false);
+assert.equal(result.compute.route.solveOperation, 'cpu-f64-general');
+assert.equal(result.compute.state.commitCount, result.summary.acceptedStepCount);
+assert.equal(result.compute.state.checkpointCommittedHash, result.checkpoint.committedHash);
+assert.equal(result.compute.transfers.length, result.history.chunkCount);
+assert.equal(result.compute.qualification.gpuProductionQualified, false);
 assert.equal(result.summary.completedTime, result.summary.requestedEndTime);
 assert.equal(result.summary.acceptedStepCount, commits.length);
 assert.equal(result.summary.outputStepCount, 3);
@@ -181,6 +188,12 @@ console.log(JSON.stringify({
   finalEnergyRelativeResidual: result.summary.energyAudit.relativeResidual,
   hingeStates: [...new Set(hingeRows.map((row) => row.state))],
   runRecordId: result.runRecord.id,
+  residentCommitCount: result.compute.state.commitCount,
+  residentAuditCount: result.compute.auditCount,
+  residentTransferCount: result.compute.transferCount,
+  residentTransferBytes: result.compute.transferBytes,
+  residentSessionHash: result.compute.sessionHash,
+  solveOperation: result.compute.route.solveOperation,
 }, null, 2));
 
 function modelWithHardeningHinge() {

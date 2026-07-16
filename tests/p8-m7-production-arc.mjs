@@ -87,6 +87,12 @@ assert.equal(result.designTransferGuard.allowed, false);
 assert.equal(result.designTransferGuard.freshness.ok, true);
 assert.ok(result.runRecord.id);
 assert.equal(result.runRecord.result.designTransferGuard.allowed, false);
+assert.equal(result.compute.route.executedTarget, 'cpu');
+assert.equal(result.compute.route.fallbackUsed, false);
+assert.equal(result.compute.route.solveOperation, 'cpu-f64-spd');
+assert.equal(result.compute.state.commitCount, result.control.acceptedStepCount + result.arcLength.acceptedStepCount);
+assert.equal(result.compute.state.checkpointCommittedHash, result.internal.stateStore.committedHash);
+assert.equal(result.compute.qualification.gpuProductionQualified, false);
 
 console.log(JSON.stringify({
   ok: true,
@@ -96,6 +102,10 @@ console.log(JSON.stringify({
   finalLambda: result.arcLength.finalLambda,
   handoffStatus: result.arcLengthHandoff.status,
   restartCheckpointHash: result.arcLength.restartCheckpointHash,
+  residentCommitCount: result.compute.state.commitCount,
+  residentAuditCount: result.compute.auditCount,
+  residentSessionHash: result.compute.sessionHash,
+  solveOperation: result.compute.route.solveOperation,
 }, null, 2));
 
 function strictNewton() {

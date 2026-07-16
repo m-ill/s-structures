@@ -1,5 +1,6 @@
 import { stableHash } from '../../core/stableHash.js';
 import { createAnalysisRunRecord } from '../../core/analysisRunRecord.js';
+import { createNonlinearResidentSession } from '../../compute/nonlinear/index.js';
 import { prepareModelFiberPmmInteractions } from '../fiber/fiberPmmPreprocessor.js';
 import { createNonlinearStateStore, createStateCheckpoint, restoreStateCheckpoint } from '../core/stateStore.js';
 import { buildHingedFrame3dEntries } from '../elements/hingedFrame3d.js';
@@ -49,6 +50,8 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
   });
   const production = options.production !== false;
   let backend = options.backend || null;
+  let residentSession = null;
+  let residentFinalized = false;
   try {
     const merged = mergeOptions(analysisCase, options);
     const targetDisplacement = Number(merged.targetDisplacement);
@@ -126,6 +129,21 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       options,
     });
     if (!gravity.ok) return failed(engine, gravity.reason || 'GRAVITY_PRELOAD_FAILED', gravity.message, gravity);
+    const residentInitialCheckpoint = createStateCheckpoint(gravity.stateStore, {
+      role: 'p9-m8-pushover-resident-initial',
+      caseId: analysisCase.id || null,
+      gravityCheckpointHash: gravity.checkpoint?.integrityHash || null,
+    });
+    residentSession = createNonlinearResidentSession({
+      runId: clean(options.runId || options.runRecordId) || `${analysisCase.id || 'PUSHOVER'}:resident`,
+      kind: 'pushover',
+      assembler,
+      stateStore: gravity.stateStore,
+      checkpoint: residentInitialCheckpoint,
+      production,
+      computeTarget: merged.computeTarget || merged.backendPreference || 'auto',
+      ...(merged.residentSession || {}),
+    });
     const controlNodeId = clean(merged.controlNodeId) || pickControlNode(loadSet.domain, loadSet.lateral.directionVector);
     const control = resolvePhysicalControlCoordinate(loadSet.domain, {
       nodeId: controlNodeId,
@@ -137,7 +155,12 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       committedElementStates: gravity.stateStore.committed.elementStates,
       mode: 'static',
     });
-    if (!initialEvaluation.ok) return failed(engine, initialEvaluation.reason || 'PUSHOVER_INITIAL_EVALUATION_FAILED', initialEvaluation.message);
+    if (!initialEvaluation.ok) {
+      const error = new Error(initialEvaluation.message || 'Pushover initial evaluation failed.');
+      error.code = initialEvaluation.reason || 'PUSHOVER_INITIAL_EVALUATION_FAILED';
+      throw error;
+    }
+    residentSession.auditEvaluation(initialEvaluation, { mode: 'pushover-initial' });
     const recovered = [recoverPushoverStep({
       domain: loadSet.domain,
       evaluation: initialEvaluation,
@@ -164,6 +187,19 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       signal: options.signal,
       isCancelled: options.isCancelled,
       onProgress: options.onProgress,
+      onCommit(accepted) {
+        residentSession.acceptBoundary(accepted.stateStore, {
+          source: 'pushover-displacement',
+          evaluation: accepted.evaluation,
+          hingeEvents: accepted.hingeEvents,
+          mode: 'pushover',
+        });
+        options.onCommit?.(accepted);
+      },
+      onReject(rejected) {
+        residentSession.rejectBoundary(rejected.reason, { source: 'pushover-displacement', attempt: rejected.attempt });
+        options.onReject?.(rejected);
+      },
       options: displacementOptions(merged),
       shouldTerminate(accepted) {
         const summary = hingeSummary(accepted.evaluation);
@@ -191,6 +227,12 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         return null;
       },
     });
+    if (displacement.status === 'cancelled' || /_CALLBACK_FAILED$/.test(displacement.reason || '')) {
+      const error = new Error(displacement.reason || 'Pushover displacement-control run failed.');
+      error.code = displacement.reason || 'ANALYSIS_CANCELLED';
+      error.details = displacement;
+      throw error;
+    }
     for (const accepted of displacement.acceptedSteps || []) {
       appendRecoveredStep(recovered, recoverPushoverStep({
         domain: loadSet.domain,
@@ -214,6 +256,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         terminationReason: displacement.reason,
       })
       : null;
+    if (handoffCheckpoint) residentSession.recordCheckpoint(handoffCheckpoint, { source: 'pushover-displacement-handoff' });
     let arcLengthResult = null;
     const arcEnabled = merged.arcLength?.enabled === true;
     if (arcEnabled) {
@@ -249,6 +292,19 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         signal: options.signal,
         isCancelled: options.isCancelled,
         onProgress: options.onProgress,
+        onCommit(accepted) {
+          residentSession.acceptBoundary(accepted.stateStore, {
+            source: 'pushover-arc-length',
+            evaluation: accepted.evaluation,
+            hingeEvents: accepted.hingeEvents,
+            mode: 'pushover',
+          });
+          options.onCommit?.(accepted);
+        },
+        onReject(rejected) {
+          residentSession.rejectBoundary(rejected.reason, { source: 'pushover-arc-length', attempt: rejected.attempt });
+          options.onReject?.(rejected);
+        },
         options: arcConfiguration.options,
         shouldTerminate(accepted) {
           const summary = hingeSummary(accepted.evaluation);
@@ -258,6 +314,12 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
             : null;
         },
       });
+      if (arcLengthResult.status === 'cancelled' || /_CALLBACK_FAILED$/.test(arcLengthResult.reason || '')) {
+        const error = new Error(arcLengthResult.reason || 'Pushover arc-length run failed.');
+        error.code = arcLengthResult.reason || 'ANALYSIS_CANCELLED';
+        error.details = arcLengthResult;
+        throw error;
+      }
       for (const accepted of arcLengthResult.acceptedSteps || []) {
         appendRecoveredStep(recovered, recoverPushoverStep({
           domain: loadSet.domain,
@@ -273,6 +335,9 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
           analysisCase,
           capability: integrationCapability,
         }));
+      }
+      if (arcLengthResult.restartCheckpoint) {
+        residentSession.recordCheckpoint(arcLengthResult.restartCheckpoint, { source: 'pushover-arc-length-restart' });
       }
     }
     const result = buildProductionPushoverResult({
@@ -326,7 +391,13 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       { model, domain: loadSet.domain, analysisCase, loadSetHash: loadSet.loadSetHash },
       analysisCase,
     );
-    const finalResult = Object.freeze({ ...governedResult, designTransferGuard });
+    const compute = residentSession.finalize(result.ok === false ? 'terminated' : 'completed', {
+      caseId: analysisCase.id || null,
+      reason: result.reason || null,
+      acceptedStepCount: displacement.acceptedStepCount + Number(arcLengthResult?.acceptedStepCount || 0),
+    });
+    residentFinalized = true;
+    const finalResult = Object.freeze({ ...governedResult, compute, designTransferGuard });
     const runRecord = Object.freeze(createAnalysisRunRecord({
       model,
       analysisCase,
@@ -335,10 +406,29 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
     }));
     return Object.freeze({ ...finalResult, runRecord });
   } catch (error) {
-    if (['CANCELLED', 'PMM_GENERATION_CANCELLED'].includes(error?.code)) {
-      return cancelled(engine, error.code, error.message);
+    let residentRecovery = null;
+    let compute = null;
+    if (residentSession && !residentFinalized) {
+      try {
+        residentRecovery = residentSession.handleFailure(error.code || 'PRODUCTION_PUSHOVER_FAILED', {
+          cancelled: ['CANCELLED', 'PMM_GENERATION_CANCELLED', 'ANALYSIS_CANCELLED'].includes(error?.code),
+          deviceLost: /DEVICE_LOST/.test(error?.code || ''),
+          oom: /OUT_OF_MEMORY|\bOOM\b/.test(error?.code || ''),
+        });
+        compute = residentSession.finalize('failed', { reason: error.code || 'PRODUCTION_PUSHOVER_FAILED' });
+        residentFinalized = true;
+      } catch (residentError) {
+        residentRecovery = { reason: residentError.code || 'NONLINEAR_RESIDENT_FAILURE', message: residentError.message };
+      }
     }
-    return failed(engine, error.code || 'PRODUCTION_PUSHOVER_FAILED', error.message, error.details || null);
+    if (['ANALYSIS_CANCELLED', 'CANCELLED', 'PMM_GENERATION_CANCELLED'].includes(error?.code)) {
+      return cancelled(engine, error.code, { message: error.message, compute, residentRecovery });
+    }
+    return failed(engine, error.code || 'PRODUCTION_PUSHOVER_FAILED', error.message, {
+      ...(error.details || {}),
+      compute,
+      residentRecovery,
+    });
   }
 }
 
@@ -671,7 +761,8 @@ function failed(engine, reason, message = null, details = null) {
   });
 }
 
-function cancelled(engine, reason, message = null) {
+function cancelled(engine, reason, details = null) {
+  const message = typeof details === 'string' ? details : details?.message;
   return Object.freeze({
     version: PRODUCTION_PUSHOVER_VERSION,
     ok: false,
@@ -682,6 +773,7 @@ function cancelled(engine, reason, message = null) {
     modelBound: true,
     reason,
     message: message || 'Nonlinear analysis was cancelled before PMM preprocessing completed.',
+    details: typeof details === 'object' ? serializable(details) : null,
     engine,
     routing: { requestedEngineId: engine.id, executedEngineId: engine.id, fallbackPolicy: 'forbidden', fallbackUsed: false },
   });

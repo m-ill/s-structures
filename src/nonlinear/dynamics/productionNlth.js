@@ -1,5 +1,6 @@
 import { createAnalysisRunRecord } from '../../core/analysisRunRecord.js';
 import { stableHash } from '../../core/stableHash.js';
+import { createNonlinearResidentSession } from '../../compute/nonlinear/index.js';
 import { buildCanonicalAnalysisDomain } from '../../solver/domain/canonicalDomain.js';
 import { NONLINEAR_ENGINE_IDS } from '../capabilities.js';
 import {
@@ -8,7 +9,7 @@ import {
   recoverIntegratedNonlinearState,
   recoverNonlinearHistoryEnvelope,
 } from '../integration/index.js';
-import { createNonlinearStateStore, restoreStateCheckpoint } from '../core/stateStore.js';
+import { createNonlinearStateStore, createStateCheckpoint, restoreStateCheckpoint } from '../core/stateStore.js';
 import { buildHingedFrame3dEntries } from '../elements/hingedFrame3d.js';
 import { createEquilibriumAssembler } from '../equilibrium/assembler.js';
 import { createWasmSparseBackend } from '../equilibrium/backends/wasmSparseBackend.js';
@@ -48,6 +49,8 @@ export async function runProductionNlth(model = {}, analysisCase = {}, options =
   });
   const production = options.production !== false;
   let backend = options.backend || null;
+  let residentSession = null;
+  let residentFinalized = false;
   try {
     const merged = mergeOptions(analysisCase, options);
     const modelHashAtStart = stableHash(model);
@@ -164,21 +167,79 @@ export async function runProductionNlth(model = {}, analysisCase = {}, options =
         : initialEvaluation.tangentReduced,
       specification: merged.damping,
     });
+    const restartCheckpoint = merged.restartCheckpoint || options.restartCheckpoint || null;
+    const residentStateStore = restartCheckpoint
+      ? restoreStateCheckpoint(restartCheckpoint, { domainHash: loadSet.domain.identity.domainHash })
+      : gravity.stateStore;
+    const residentInitialCheckpoint = restartCheckpoint || createStateCheckpoint(residentStateStore, {
+      role: 'p9-m8-nlth-resident-initial',
+      caseId: analysisCase.id || null,
+      gravityCheckpointHash: gravity.checkpoint?.integrityHash || null,
+    });
+    residentSession = createNonlinearResidentSession({
+      runId: clean(options.runId || options.runRecordId) || `${analysisCase.id || 'NLTH'}:resident`,
+      kind: 'nlth',
+      assembler,
+      stateStore: residentStateStore,
+      checkpoint: residentInitialCheckpoint,
+      production,
+      computeTarget: merged.computeTarget || merged.backendPreference || 'auto',
+      ...(merged.residentSession || {}),
+    });
+    const residentInitialEvaluation = restartCheckpoint
+      ? await assembler.evaluate({
+        q: residentStateStore.committed.q,
+        lambda: 0,
+        committedElementStates: residentStateStore.committed.elementStates,
+        mode: 'dynamic-restart',
+        dt: 0,
+      })
+      : committedEvaluation;
+    if (!residentInitialEvaluation.ok) {
+      throw nlthError(residentInitialEvaluation.reason || 'NLTH_RESIDENT_INITIAL_EVALUATION_FAILED', residentInitialEvaluation.message || 'Resident NLTH initial evaluation failed.');
+    }
+    residentSession.auditEvaluation(residentInitialEvaluation, {
+      mode: restartCheckpoint ? 'nlth-restart' : 'nlth-gravity',
+      energies: residentStateStore.committed.energies?.dynamic,
+    });
     const dynamic = await runMdofNewmark({
       assembler,
       massDomain,
       damping,
       groundMotion,
       stateStore: gravity.stateStore,
-      checkpoint: merged.restartCheckpoint || options.restartCheckpoint,
+      checkpoint: restartCheckpoint,
       backend,
       production,
       signal: options.signal,
       isCancelled: options.isCancelled,
       onProgress: options.onProgress,
-      onChunk: options.onChunk,
-      onCheckpoint: options.onCheckpoint,
-      onCommit: options.onCommit,
+      onChunk(chunk) {
+        residentSession.recordTransfer('nlth-history-chunk', chunk);
+        options.onChunk?.(chunk);
+      },
+      onCheckpoint(checkpoint) {
+        residentSession.recordCheckpoint(checkpoint, { source: 'nlth-periodic-checkpoint' });
+        options.onCheckpoint?.(checkpoint);
+      },
+      onCommit(accepted) {
+        residentSession.acceptBoundary(accepted.stateStore, {
+          source: 'nlth-internal-step',
+          evaluation: accepted.evaluation,
+          energies: accepted.energies,
+          matrixClass: accepted.matrixClass,
+          mode: 'nlth',
+        });
+        options.onCommit?.(accepted);
+      },
+      onReject(rejected) {
+        residentSession.rejectBoundary(rejected.reason, {
+          source: 'nlth-substep',
+          substepLevel: rejected.substepLevel,
+          attemptedDt: rejected.attemptedDt,
+        });
+        options.onReject?.(rejected);
+      },
       options: {
         ...(merged.integrator || {}),
         ...(merged.newmark || {}),
@@ -188,9 +249,18 @@ export async function runProductionNlth(model = {}, analysisCase = {}, options =
       },
     });
     if (!dynamic.ok) {
-      if (dynamic.status === 'cancelled') return cancelled(engine, dynamic.reason, dynamic);
-      return failed(engine, dynamic.reason || 'MDOF_NLTH_FAILED', dynamic.message, dynamic);
+      const residentRecovery = residentSession.handleFailure(dynamic.reason || 'MDOF_NLTH_FAILED', {
+        cancelled: dynamic.status === 'cancelled',
+        deviceLost: /DEVICE_LOST/.test(dynamic.reason || ''),
+        oom: /OUT_OF_MEMORY|\bOOM\b/.test(dynamic.reason || ''),
+      });
+      const compute = residentSession.finalize(dynamic.status || 'failed', { reason: dynamic.reason || 'MDOF_NLTH_FAILED' });
+      residentFinalized = true;
+      const details = { ...dynamic, compute, residentRecovery };
+      if (dynamic.status === 'cancelled') return cancelled(engine, dynamic.reason, details);
+      return failed(engine, dynamic.reason || 'MDOF_NLTH_FAILED', dynamic.message, details);
     }
+    residentSession.recordCheckpoint(dynamic.checkpoint, { source: 'nlth-final-checkpoint' });
     if (stableHash(model) !== modelHashAtStart) {
       throw nlthError('NLTH_MODEL_CHANGED_DURING_RUN', 'The model changed while nonlinear time-history analysis was running.');
     }
@@ -222,7 +292,13 @@ export async function runProductionNlth(model = {}, analysisCase = {}, options =
       },
       analysisCase,
     );
-    const governedResult = Object.freeze({ ...result, designTransferGuard });
+    const compute = residentSession.finalize('completed', {
+      caseId: analysisCase.id || null,
+      outputStepCount: dynamic.outputStepCount,
+      internalStepCount: dynamic.internalStepCount,
+    });
+    residentFinalized = true;
+    const governedResult = Object.freeze({ ...result, compute, designTransferGuard });
     const runRecord = Object.freeze(createAnalysisRunRecord({
       model,
       analysisCase,
@@ -250,10 +326,29 @@ export async function runProductionNlth(model = {}, analysisCase = {}, options =
       }) : undefined,
     });
   } catch (error) {
-    if (['ANALYSIS_CANCELLED', 'CANCELLED', 'PMM_GENERATION_CANCELLED'].includes(error?.code)) {
-      return cancelled(engine, error.code, error);
+    let residentRecovery = null;
+    let compute = null;
+    if (residentSession && !residentFinalized) {
+      try {
+        residentRecovery = residentSession.handleFailure(error.code || 'PRODUCTION_NLTH_FAILED', {
+          cancelled: ['ANALYSIS_CANCELLED', 'CANCELLED', 'PMM_GENERATION_CANCELLED'].includes(error?.code),
+          deviceLost: /DEVICE_LOST/.test(error?.code || ''),
+          oom: /OUT_OF_MEMORY|\bOOM\b/.test(error?.code || ''),
+        });
+        compute = residentSession.finalize('failed', { reason: error.code || 'PRODUCTION_NLTH_FAILED' });
+        residentFinalized = true;
+      } catch (residentError) {
+        residentRecovery = { reason: residentError.code || 'NONLINEAR_RESIDENT_FAILURE', message: residentError.message };
+      }
     }
-    return failed(engine, error.code || 'PRODUCTION_NLTH_FAILED', error.message, error.details || error);
+    if (['ANALYSIS_CANCELLED', 'CANCELLED', 'PMM_GENERATION_CANCELLED'].includes(error?.code)) {
+      return cancelled(engine, error.code, { error, compute, residentRecovery });
+    }
+    return failed(engine, error.code || 'PRODUCTION_NLTH_FAILED', error.message, {
+      ...(error.details || {}),
+      compute,
+      residentRecovery,
+    });
   }
 }
 

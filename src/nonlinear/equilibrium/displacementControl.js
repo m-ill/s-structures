@@ -484,7 +484,7 @@ export async function runMdofDisplacementControl(input = {}) {
       onProgress: (row) => emit(input, { ...row, attempt: attempts, stepTarget }),
     });
     if (!step.ok) {
-      rejectedSteps.push({
+      const rejected = {
         attempt: attempts,
         fromDisplacement: from,
         targetDisplacement: stepTarget,
@@ -492,7 +492,16 @@ export async function runMdofDisplacementControl(input = {}) {
         reason: step.reason,
         rollbackEquivalent: step.rollbackEquivalent,
         details: step.details || null,
-      });
+      };
+      rejectedSteps.push(rejected);
+      try {
+        input.onReject?.(Object.freeze({ ...rejected, stateStore: store }));
+      } catch (error) {
+        return runResult(false, 'DISPLACEMENT_REJECT_CALLBACK_FAILED', store, acceptedSteps, rejectedSteps, target, 'failed', {
+          control,
+          callbackError: serialize(error),
+        });
+      }
       if (step.status === 'cancelled' || step.reason === 'ANALYSIS_CANCELLED') {
         return runResult(false, 'ANALYSIS_CANCELLED', store, acceptedSteps, rejectedSteps, target, 'cancelled', { control });
       }
@@ -512,7 +521,7 @@ export async function runMdofDisplacementControl(input = {}) {
       && Math.abs(stepIncrement) > eventTolerance + scalarTolerance(eventTolerance)
       && Math.abs(stepIncrement) > minStep + scalarTolerance(minStep)
     ) {
-      rejectedSteps.push({
+      const rejected = {
         attempt: attempts,
         fromDisplacement: from,
         targetDisplacement: stepTarget,
@@ -520,7 +529,16 @@ export async function runMdofDisplacementControl(input = {}) {
         reason: 'HINGE_EVENT_CUTBACK',
         eventTypes: [...new Set(eventTypes.map((event) => event.type))],
         rollbackEquivalent: true,
-      });
+      };
+      rejectedSteps.push(rejected);
+      try {
+        input.onReject?.(Object.freeze({ ...rejected, stateStore: store }));
+      } catch (error) {
+        return runResult(false, 'DISPLACEMENT_REJECT_CALLBACK_FAILED', store, acceptedSteps, rejectedSteps, target, 'failed', {
+          control,
+          callbackError: serialize(error),
+        });
+      }
       increment = direction * Math.max(minStep, Math.abs(increment) * cutbackFactor);
       continue;
     }
@@ -540,6 +558,14 @@ export async function runMdofDisplacementControl(input = {}) {
       backend: step.backend,
     };
     acceptedSteps.push(accepted);
+    try {
+      input.onCommit?.(Object.freeze(accepted));
+    } catch (error) {
+      return runResult(false, 'DISPLACEMENT_COMMIT_CALLBACK_FAILED', store, acceptedSteps, rejectedSteps, target, 'failed', {
+        control,
+        callbackError: serialize(error),
+      });
+    }
     emit(input, { type: 'displacement-step-accepted', step: accepted.step, controlValue: step.controlValue, lambda: step.lambda });
     if (typeof input.shouldTerminate === 'function') {
       const decision = input.shouldTerminate(accepted, { acceptedSteps, rejectedSteps, target, control });

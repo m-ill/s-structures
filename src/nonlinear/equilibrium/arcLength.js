@@ -828,14 +828,23 @@ export async function runMdofArcLength(input = {}) {
       onProgress: (row) => emit(input, { ...row, attempt: attempts, acceptedStep: acceptedSteps.length + 1 }),
     });
     if (!step.ok) {
-      rejectedSteps.push({
+      const rejected = {
         attempt: attempts,
         radius,
         reason: step.reason,
         status: step.status,
         rollbackEquivalent: step.rollbackEquivalent,
         details: step.details || null,
-      });
+      };
+      rejectedSteps.push(rejected);
+      try {
+        input.onReject?.(Object.freeze({ ...rejected, stateStore: store }));
+      } catch (error) {
+        return runResult(false, 'ARC_LENGTH_REJECT_CALLBACK_FAILED', store, acceptedSteps, rejectedSteps, radius, 'failed', {
+          source: resolved.source,
+          callbackError: serialize(error),
+        });
+      }
       if (step.status === 'cancelled' || step.reason === 'ANALYSIS_CANCELLED') {
         return runResult(false, 'ANALYSIS_CANCELLED', store, acceptedSteps, rejectedSteps, radius, 'cancelled', {
           source: resolved.source,
@@ -879,6 +888,14 @@ export async function runMdofArcLength(input = {}) {
       diagnostics: step.pathDiagnostics,
     };
     acceptedSteps.push(accepted);
+    try {
+      input.onCommit?.(Object.freeze(accepted));
+    } catch (error) {
+      return runResult(false, 'ARC_LENGTH_COMMIT_CALLBACK_FAILED', store, acceptedSteps, rejectedSteps, radius, 'failed', {
+        source: resolved.source,
+        callbackError: serialize(error),
+      });
+    }
     emit(input, { type: 'arc-length-step-accepted', step: accepted.step, lambda: step.lambda, radius: step.radius });
     if (typeof input.shouldTerminate === 'function') {
       const decision = input.shouldTerminate(accepted, {
