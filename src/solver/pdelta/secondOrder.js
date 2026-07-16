@@ -31,6 +31,33 @@ const LEGACY_SETTLEMENT_KEYS = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
 const SPRING_KEYS = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
 
 export function runSecondOrderPDelta(model = {}, factors = null, options = {}) {
+  const machine = runSecondOrderPDeltaMachine(model, factors, options);
+  let state = machine.next();
+  while (!state.done) {
+    const request = state.value;
+    state = machine.next(solvePartitionedTangent(
+      request.K,
+      request.F,
+      request.Dc,
+      request.free,
+      request.fixedDofs,
+      request.model,
+    ));
+  }
+  return state.value;
+}
+
+export async function runSecondOrderPDeltaAsync(model = {}, factors = null, options = {}) {
+  if (typeof options.tangentSolver !== 'function') {
+    throw Object.assign(new Error('An async Direct P-Delta tangent solver is required.'), { code: 'PDELTA_ASYNC_TANGENT_SOLVER_REQUIRED' });
+  }
+  const machine = runSecondOrderPDeltaMachine(model, factors, options);
+  let state = machine.next();
+  while (!state.done) state = machine.next(await options.tangentSolver(state.value));
+  return state.value;
+}
+
+function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) {
   const domain = options.domain || buildExpandedAnalysisDomain(model, factors, { ...options, domainAdapter: 'direct-pdelta' });
   if (!domain.ok) return failedDirectResult(domain.reason || 'CANONICAL_DOMAIN_INVALID', {
     domain,
@@ -151,14 +178,17 @@ export function runSecondOrderPDelta(model = {}, factors = null, options = {}) {
         break;
       }
 
-      const solved = solvePartitionedTangent(
-        tangent.Kt,
-        targetF,
-        targetDc,
-        assembly.free,
-        assembly.fixedDofs,
-        directModel,
-      );
+      const solved = yield {
+        K: tangent.Kt,
+        F: targetF,
+        Dc: targetDc,
+        free: assembly.free,
+        fixedDofs: assembly.fixedDofs,
+        model: directModel,
+        step,
+        iteration,
+        lambda,
+      };
       if (!solved.ok) {
         converged = false;
         reason = solved.reason || 'TANGENT_SOLVE_FAILED';
@@ -516,27 +546,47 @@ function buildPrescribedDisplacementState(nodes, assembly) {
 }
 
 function solvePartitionedTangent(K, F, Dc, free, fixedDofs, model) {
-  const constrained = [...fixedDofs].filter((dof) => Math.abs(Dc[dof] || 0) > 0);
-  const Kff = free.map((i) => free.map((j) => K[i][j]));
-  const Ff = free.map((i) => F[i] - constrained.reduce(
-    (sum, dof) => sum + K[i][dof] * Dc[dof],
-    0,
-  ));
-  if (!free.length) return { ok: true, x: [], D: Dc.slice(), diagnostics: null };
+  const system = buildPartitionedTangentSystem(K, F, Dc, free, fixedDofs);
+  if (!system.free.length) return assemblePartitionedTangentSolution(system, [], null);
   const settings = model.analysisSettings || {};
-  const solved = solveLinearDetailed(Kff, Ff, {
+  const solved = solveLinearDetailed(system.Kff, system.Ff, {
     criteriaModel: model,
-    labels: free.map((dof) => `dof:${dof}`),
+    labels: system.free.map((dof) => `dof:${dof}`),
     solver: settings.solver || settings.linearSolver,
     sparse: settings.useSparseSolver,
     sparseThreshold: settings.sparseThreshold,
   });
   if (!solved.ok) return { ok: false, reason: solved.reason, diagnostics: solved.diagnostics };
-  const D = Dc.slice();
-  free.forEach((dof, index) => {
-    D[dof] = solved.x[index] || 0;
+  return assemblePartitionedTangentSolution(system, solved.x, solved.diagnostics);
+}
+
+export function buildPartitionedTangentSystem(K, F, Dc, free, fixedDofs) {
+  const freeDofs = Array.from(free || [], Number);
+  const constrained = [...(fixedDofs || [])].filter((dof) => Math.abs(Dc[dof] || 0) > 0);
+  const Kff = freeDofs.map((i) => freeDofs.map((j) => K[i][j]));
+  const Ff = freeDofs.map((i) => F[i] - constrained.reduce(
+    (sum, dof) => sum + K[i][dof] * Dc[dof],
+    0,
+  ));
+  return Object.freeze({
+    Kff,
+    Ff: Object.freeze(Ff),
+    Dc: Object.freeze(Array.from(Dc || [], Number)),
+    free: Object.freeze(freeDofs),
+    constrained: Object.freeze(constrained),
   });
-  return { ok: true, x: solved.x, D, diagnostics: solved.diagnostics };
+}
+
+export function assemblePartitionedTangentSolution(system, solution, diagnostics = null) {
+  const x = Array.from(solution || [], Number);
+  if (x.length !== system.free.length || x.some((value) => !Number.isFinite(value))) {
+    return { ok: false, reason: 'PDELTA_TANGENT_SOLUTION_INVALID', diagnostics };
+  }
+  const D = Array.from(system.Dc);
+  system.free.forEach((dof, index) => {
+    D[dof] = x[index] || 0;
+  });
+  return { ok: true, x, D, diagnostics };
 }
 
 function buildDirectResult({

@@ -1,0 +1,566 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteVersion": "p9-m5-hybrid-elastic-evidence-v1",
+  "suiteId": "P9-M5-HYBRID-ELASTIC",
+  "milestone": "P9-M5",
+  "generatedAt": "2026-07-15T17:59:01.968Z",
+  "sourceRevision": "343b626+worktree",
+  "verificationIds": [
+    "P9-GPU-ELA-01",
+    "P9-GPU-ELA-02",
+    "P9-GPU-ELA-03",
+    "P9-GPU-ELA-04",
+    "P9-GPU-ELA-05",
+    "P9-GPU-ELA-06",
+    "P9-GPU-ELA-07",
+    "P9-GPU-ELA-08",
+    "P9-GPU-ELA-09",
+    "P9-GPU-ELA-10",
+    "P9-GPU-ELA-11",
+    "P9-GPU-ELA-12",
+    "P9-GPU-ELA-13",
+    "P9-GPU-ELA-14",
+    "P9-GPU-ELA-15",
+    "P9-GPU-ELA-16",
+    "P9-PERF-08",
+    "P9-PERF-09",
+    "P9-PERF-10",
+    "P9-FAIL-01",
+    "P9-FAIL-02",
+    "P9-FAIL-03",
+    "P9-FAIL-04"
+  ],
+  "status": "IMPLEMENTED-WITH-QUALIFICATION-BLOCKED",
+  "backend": {
+    "cpuId": "p9-elastic-cpu-production-v1",
+    "hybridId": "p9-elastic-webgpu-hybrid-candidate-v1",
+    "precision": "gpu-f32-solve-cpu-f64-residual-correction",
+    "productionExplicitRoute": true,
+    "autoGpuAllowed": false,
+    "silentFallbackAllowed": false,
+    "perRunDesignTransfer": "only-after-original-system-f64-audit"
+  },
+  "browser": {
+    "version": "p9-m5-browser-raw-v1",
+    "status": "PASS",
+    "available": true,
+    "verificationIds": [
+      "P9-GPU-ELA-01~16",
+      "P9-PERF-08~10",
+      "P9-FAIL-01~04"
+    ],
+    "capability": {
+      "version": "p9-m4-webgpu-capability-v1",
+      "ok": true,
+      "available": true,
+      "reason": null,
+      "adapterInfo": {
+        "vendor": "nvidia",
+        "architecture": "ampere",
+        "device": "unknown",
+        "description": "unknown",
+        "isFallbackAdapter": false
+      },
+      "features": [
+        "bgra8unorm-storage",
+        "clip-distances",
+        "core-features-and-limits",
+        "depth-clip-control",
+        "depth32float-stencil8",
+        "dual-source-blending",
+        "float32-blendable",
+        "float32-filterable",
+        "indirect-first-instance",
+        "primitive-index",
+        "rg11b10ufloat-renderable",
+        "shader-f16",
+        "subgroups",
+        "texture-component-swizzle",
+        "texture-compression-bc",
+        "texture-compression-bc-sliced-3d",
+        "texture-formats-tier1",
+        "texture-formats-tier2",
+        "timestamp-query"
+      ],
+      "limits": {
+        "maxBufferSize": 2147483648,
+        "maxStorageBufferBindingSize": 2147483644,
+        "maxStorageBuffersPerShaderStage": 16,
+        "maxComputeWorkgroupsPerDimension": 65535,
+        "maxComputeInvocationsPerWorkgroup": 1024,
+        "maxComputeWorkgroupSizeX": 1024,
+        "maxComputeWorkgroupStorageSize": 32768,
+        "minStorageBufferOffsetAlignment": 256
+      },
+      "requiredFeatures": [],
+      "requiredLimits": {},
+      "missingFeatures": [],
+      "limitFailures": [],
+      "fallbackUsed": false,
+      "designTransferAllowed": false,
+      "capabilityHash": "93f5a2b9a899711b9a662bdbe422ba59ac93198958803ffa9a3f2d4569a53b95"
+    },
+    "matrix": {
+      "rowCount": 512,
+      "nnz": 1534
+    },
+    "numeric": {
+      "maxBackwardError": 1.821529442017995e-11,
+      "maxLoadRelativeResidual": 5.4591317300606236e-11,
+      "correctionCount": 1,
+      "gpuIterations": 9,
+      "designTransferAllowed": true,
+      "qualified": true,
+      "checks": {
+        "backwardError": true,
+        "loadRelativeResidual": true,
+        "elasticDisplacementParity": true,
+        "directAmplificationParity": true,
+        "elasticDesignStatusParity": true,
+        "directDesignStatusParity": true
+      }
+    },
+    "product": {
+      "elastic": {
+        "ok": true,
+        "displacementDelta": 1.0796832178305849e-13,
+        "designStatus": "qualified",
+        "target": "gpu",
+        "fallbackUsed": false,
+        "resourceBalanced": true
+      },
+      "directPDelta": {
+        "ok": true,
+        "amplificationDelta": 2.1316282072803006e-14,
+        "designStatus": "qualified",
+        "matrixSessionCount": 11,
+        "reusedMatrixSessionCount": 0,
+        "resourceBalanced": true
+      }
+    },
+    "performance": {
+      "residentSpd": {
+        "unit": "ms",
+        "sampleCount": 6,
+        "median": 11.099999904632568,
+        "min": 10.400000095367432,
+        "max": 12.299999952316284,
+        "samples": [
+          11.100000143051147,
+          10.5,
+          12.299999952316284,
+          10.400000095367432,
+          11.099999904632568,
+          10.400000095367432
+        ]
+      },
+      "endToEnd": {
+        "workload": {
+          "bays": 10,
+          "stories": 14,
+          "nodeCount": 165,
+          "dofCount": 990
+        },
+        "cpu": {
+          "unit": "ms",
+          "sampleCount": 3,
+          "median": 684.1000001430511,
+          "min": 671.6000001430511,
+          "max": 685.5999999046326,
+          "samples": [
+            684.1000001430511,
+            685.5999999046326,
+            671.6000001430511
+          ]
+        },
+        "gpu": {
+          "unit": "ms",
+          "sampleCount": 3,
+          "median": 1131.7000000476837,
+          "min": 1081.8999998569489,
+          "max": 1168.2999999523163,
+          "samples": [
+            1168.2999999523163,
+            1131.7000000476837,
+            1081.8999998569489
+          ]
+        },
+        "speedup": 0.604488822226939,
+        "threshold": 1.2,
+        "thresholdMet": false
+      }
+    },
+    "sessionBeforeDispose": {
+      "version": "p9-m5-mixed-precision-spd-v1",
+      "disposed": false,
+      "solveCount": 7,
+      "correctionSolveCount": 7,
+      "failedSolveCount": 0,
+      "eligibilityHash": "4d3c5c9e00935da986de66bed8e43e5b97ee9171083ff81ee1a45b6d335d6943",
+      "gpu": {
+        "version": "p9-m5-webgpu-spd-session-v1",
+        "matrixHash": "6f063594bf2c3e13deb144d19c22a049040a76c02ed6566e089aa8b3e866b0c3",
+        "rowCount": 512,
+        "nnz": 1534,
+        "solveCount": 14,
+        "failedSolveCount": 0,
+        "busy": false,
+        "disposed": false,
+        "allocatedBytes": 30788,
+        "resourceBalanced": null
+      },
+      "designTransferAllowed": false
+    },
+    "resource": {
+      "beforePlatformDispose": {
+        "version": "p9-m4-webgpu-buffer-pool-v1",
+        "disposed": false,
+        "alignment": 4,
+        "maxCachedBytes": 67108864,
+        "maxBuffersPerKey": 4,
+        "createdCount": 38,
+        "destroyedCount": 0,
+        "createdBytes": 127668,
+        "activeCount": 0,
+        "activeBytes": 0,
+        "cachedCount": 38,
+        "cachedBytes": 127668,
+        "peakBytes": 127668,
+        "allocationBalanced": null
+      },
+      "afterPlatformDispose": {
+        "version": "p9-m4-webgpu-buffer-pool-v1",
+        "disposed": true,
+        "alignment": 4,
+        "maxCachedBytes": 67108864,
+        "maxBuffersPerKey": 4,
+        "createdCount": 38,
+        "destroyedCount": 38,
+        "createdBytes": 127668,
+        "activeCount": 0,
+        "activeBytes": 0,
+        "cachedCount": 0,
+        "cachedBytes": 0,
+        "peakBytes": 127668,
+        "allocationBalanced": true
+      },
+      "allocationBalanced": true
+    }
+  },
+  "tests": {
+    "spdMixed": {
+      "ok": true,
+      "verificationIds": [
+        "P9-GPU-ELA-01~06",
+        "P9-FAIL-03~04"
+      ],
+      "eligibilityHash": "e0185d8d35f8120bb30952f53d86abba52f4342a0b7b0c41b35257c427e124af",
+      "correctionCount": 1,
+      "backwardError": 2.189344056716488e-15,
+      "rejectedReason": "HYBRID_SPD_F64_CORRECTION_NOT_CONVERGED"
+    },
+    "elasticHybrid": {
+      "ok": true,
+      "verificationIds": [
+        "P9-GPU-ELA-07~10",
+        "P9-GPU-ELA-13~14",
+        "P9-PERF-09",
+        "P9-FAIL-01~02"
+      ],
+      "factorizationCount": 1,
+      "solveCount": 2,
+      "correctionSolveCount": 2,
+      "resultHash": "b8f4fc2e92116d7a9a9b0c1241c0cbe6dc6ea655a790c84d03db6f31ec15771f"
+    },
+    "pDeltaHybrid": {
+      "ok": true,
+      "verificationIds": [
+        "P9-GPU-ELA-11~12",
+        "P9-PERF-09",
+        "P9-FAIL-04"
+      ],
+      "amplification": 1.0358899650477247,
+      "iterationCount": 11,
+      "matrixSessionCount": 11,
+      "correctionSolveCount": 11
+    }
+  },
+  "numeric": {
+    "maxBackwardError": 1.821529442017995e-11,
+    "maxLoadRelativeResidual": 5.4591317300606236e-11,
+    "correctionCount": 1,
+    "gpuIterations": 9,
+    "designTransferAllowed": true,
+    "qualified": true,
+    "checks": {
+      "backwardError": true,
+      "loadRelativeResidual": true,
+      "elasticDisplacementParity": true,
+      "directAmplificationParity": true,
+      "elasticDesignStatusParity": true,
+      "directDesignStatusParity": true
+    }
+  },
+  "product": {
+    "elastic": {
+      "ok": true,
+      "displacementDelta": 1.0796832178305849e-13,
+      "designStatus": "qualified",
+      "target": "gpu",
+      "fallbackUsed": false,
+      "resourceBalanced": true
+    },
+    "directPDelta": {
+      "ok": true,
+      "amplificationDelta": 2.1316282072803006e-14,
+      "designStatus": "qualified",
+      "matrixSessionCount": 11,
+      "reusedMatrixSessionCount": 0,
+      "resourceBalanced": true
+    }
+  },
+  "performance": {
+    "residentSpd": {
+      "unit": "ms",
+      "sampleCount": 6,
+      "median": 11.099999904632568,
+      "min": 10.400000095367432,
+      "max": 12.299999952316284,
+      "samples": [
+        11.100000143051147,
+        10.5,
+        12.299999952316284,
+        10.400000095367432,
+        11.099999904632568,
+        10.400000095367432
+      ]
+    },
+    "endToEnd": {
+      "workload": {
+        "bays": 10,
+        "stories": 14,
+        "nodeCount": 165,
+        "dofCount": 990
+      },
+      "cpu": {
+        "unit": "ms",
+        "sampleCount": 3,
+        "median": 684.1000001430511,
+        "min": 671.6000001430511,
+        "max": 685.5999999046326,
+        "samples": [
+          684.1000001430511,
+          685.5999999046326,
+          671.6000001430511
+        ]
+      },
+      "gpu": {
+        "unit": "ms",
+        "sampleCount": 3,
+        "median": 1131.7000000476837,
+        "min": 1081.8999998569489,
+        "max": 1168.2999999523163,
+        "samples": [
+          1168.2999999523163,
+          1131.7000000476837,
+          1081.8999998569489
+        ]
+      },
+      "speedup": 0.604488822226939,
+      "threshold": 1.2,
+      "thresholdMet": false
+    }
+  },
+  "resources": {
+    "beforePlatformDispose": {
+      "version": "p9-m4-webgpu-buffer-pool-v1",
+      "disposed": false,
+      "alignment": 4,
+      "maxCachedBytes": 67108864,
+      "maxBuffersPerKey": 4,
+      "createdCount": 38,
+      "destroyedCount": 0,
+      "createdBytes": 127668,
+      "activeCount": 0,
+      "activeBytes": 0,
+      "cachedCount": 38,
+      "cachedBytes": 127668,
+      "peakBytes": 127668,
+      "allocationBalanced": null
+    },
+    "afterPlatformDispose": {
+      "version": "p9-m4-webgpu-buffer-pool-v1",
+      "disposed": true,
+      "alignment": 4,
+      "maxCachedBytes": 67108864,
+      "maxBuffersPerKey": 4,
+      "createdCount": 38,
+      "destroyedCount": 38,
+      "createdBytes": 127668,
+      "activeCount": 0,
+      "activeBytes": 0,
+      "cachedCount": 0,
+      "cachedBytes": 0,
+      "peakBytes": 127668,
+      "allocationBalanced": true
+    },
+    "allocationBalanced": true
+  },
+  "profileMatrix": {
+    "localProfile": {
+      "vendor": "nvidia",
+      "architecture": "ampere",
+      "device": "unknown",
+      "description": "unknown",
+      "isFallbackAdapter": false
+    },
+    "localNumericQualified": true,
+    "localPerformanceQualified": false,
+    "elasticQualifiedProfileCount": 0,
+    "fullRequiredMatrixQualified": false,
+    "autoGpuAllowed": false
+  },
+  "operationPlan": {
+    "assembly": "cpu-f64-canonical",
+    "supportedSolve": "resident-webgpu-f32-spd-pcg",
+    "correction": "cpu-f64-original-system-residual",
+    "recoveryEnvelopeDesign": "existing-cpu-f64-production-path",
+    "directPDelta": "fresh-gpu-session-per-changing-tangent",
+    "frameMatrixBatch": "qualified-shadow-kernel-not-production-design-input"
+  },
+  "regressionPolicy": {
+    "focused": [
+      "p9-m5-spd-mixed",
+      "p9-m5-elastic-hybrid",
+      "p9-m5-pdelta-hybrid",
+      "p9-m5-evidence-contract"
+    ],
+    "browser": "tests/browser/p9-m5-webgpu.html",
+    "nonlinearSolve": "not-rerun-reuse-phase8-qualified-evidence"
+  },
+  "priorEvidenceHash": "45286be5c46b9e30588171c2ec9dd16886f5e61723a1ebe87b75fa1c90e3a3f1",
+  "results": [
+    {
+      "id": "P9-GPU-ELA-01",
+      "status": "PASS",
+      "test": "tests/p9-m5-spd-mixed.mjs"
+    },
+    {
+      "id": "P9-GPU-ELA-02",
+      "status": "PASS",
+      "test": "tests/p9-m5-spd-mixed.mjs"
+    },
+    {
+      "id": "P9-GPU-ELA-03",
+      "status": "PASS",
+      "test": "tests/p9-m5-spd-mixed.mjs"
+    },
+    {
+      "id": "P9-GPU-ELA-04",
+      "status": "PASS",
+      "test": "tests/p9-m5-spd-mixed.mjs"
+    },
+    {
+      "id": "P9-GPU-ELA-05",
+      "status": "PASS",
+      "test": "tests/p9-m5-spd-mixed.mjs"
+    },
+    {
+      "id": "P9-GPU-ELA-06",
+      "status": "PASS",
+      "test": "tests/p9-m5-spd-mixed.mjs"
+    },
+    {
+      "id": "P9-GPU-ELA-07",
+      "status": "PASS",
+      "test": "tests/p9-m5-elastic-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-ELA-08",
+      "status": "PASS",
+      "test": "tests/p9-m5-elastic-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-ELA-09",
+      "status": "PASS",
+      "test": "tests/p9-m5-elastic-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-ELA-10",
+      "status": "PASS",
+      "test": "tests/p9-m5-elastic-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-ELA-11",
+      "status": "PASS",
+      "test": "tests/p9-m5-pdelta-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-ELA-12",
+      "status": "PASS",
+      "test": "tests/p9-m5-pdelta-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-ELA-13",
+      "status": "PASS",
+      "test": "tests/p9-m5-elastic-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-ELA-14",
+      "status": "PASS",
+      "test": "tests/p9-m5-elastic-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-ELA-15",
+      "status": "FAIL",
+      "test": "tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-GPU-ELA-16",
+      "status": "BLOCKED",
+      "test": "tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-PERF-08",
+      "status": "FAIL",
+      "test": "tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-PERF-09",
+      "status": "PASS",
+      "test": "tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-PERF-10",
+      "status": "FAIL",
+      "test": "tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-FAIL-01",
+      "status": "PASS",
+      "test": "tests/p9-m5-elastic-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-FAIL-02",
+      "status": "PASS",
+      "test": "tests/p9-m5-elastic-hybrid.mjs + tests/browser/p9-m5-webgpu.html"
+    },
+    {
+      "id": "P9-FAIL-03",
+      "status": "PASS",
+      "test": "tests/p9-m5-spd-mixed.mjs"
+    },
+    {
+      "id": "P9-FAIL-04",
+      "status": "PASS",
+      "test": "tests/p9-m5-spd-mixed.mjs"
+    }
+  ],
+  "blockers": [
+    "P9_M4_EXTERNAL_BROWSER_VENDOR_MATRIX_REQUIRED",
+    "P9_M5_ELASTIC_END_TO_END_SPEED_THRESHOLD_NOT_MET",
+    "P9_M5_S_M_PROFILE_MATRIX_REQUIRED"
+  ],
+  "qualificationImpact": "G2-retained-hybrid-elastic-implemented-auto-gpu-blocked",
+  "artifactHash": "d39fb4ba7b541326b5bb5969891bacd2a8379aca82978591b949f83088b24964"
+}

@@ -52,7 +52,7 @@ assert.match(status, /design_transfer_allowed:\s*false/);
 assert.doesNotMatch(status, /implementation_status:\s*(complete|qualified)/);
 assert.match(requirements, /status:\s*planned/);
 assert.match(traceability, /status:\s*planned/);
-assert.match(rootIndex, /documentationVersion:\s*2026-07-15-phase9-m4/);
+assert.match(rootIndex, /documentationVersion:\s*2026-07-16-phase9-m5/);
 assert.match(rootIndex, /## Phase 9 Reading Order \(current\)/);
 
 const milestoneIds = [...milestones.matchAll(/^## P9-M(\d+)\s+-/gm)].map((match) => Number(match[1]));

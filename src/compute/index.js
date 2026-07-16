@@ -35,12 +35,14 @@ export {
 export {
   PRODUCTION_ELASTIC_ADAPTER_VERSION,
   PRODUCTION_ELASTIC_BACKEND_ID,
+  PRODUCTION_ELASTIC_HYBRID_BACKEND_ID,
   PRODUCTION_ELASTIC_OPERATION,
   createProductionElasticComputeBackend,
   createProductionElasticExecutor,
   describeProductionElasticAdapter,
   elasticPhysicalParityHash,
   executeProductionElastic,
+  isProductionElasticBackendId,
 } from './adapters/elasticProductionAdapter.js';
 export {
   COMPUTE_WORKER_PROTOCOL_VERSION,
@@ -90,8 +92,18 @@ export {
   createWasmSparseBackend,
 } from './backends/wasmCpuBackend.js';
 export * from './backends/webgpu/index.js';
+export * from './hybrid/index.js';
 export { ELASTIC_FACTOR_GROUP_VERSION, classifyElasticFactorGroups, elasticFactorKeyForCombo } from './elastic/factorGroups.js';
 export { ELASTIC_FACTOR_SESSION_VERSION, createElasticFactorSession } from './elastic/factorSession.js';
+export {
+  HYBRID_ELASTIC_SESSION_VERSION,
+  createHybridElasticSession,
+  solveElasticCombinationHybrid,
+} from './elastic/hybridElasticSession.js';
+export {
+  HYBRID_PDELTA_TANGENT_VERSION,
+  createHybridPDeltaTangentSolver,
+} from './elastic/hybridPDelta.js';
 export { ELASTIC_ANALYSIS_SERVICE_VERSION, createElasticAnalysisService } from './product/elasticAnalysisService.js';
 export {
   SYNC_ANALYSIS_COMPATIBILITY_POLICY,

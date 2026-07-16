@@ -1,4 +1,5 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
+import { stableHash } from '../core/stableHash.js';
 import {
   condenseReleasedDofs,
   dirVec,
@@ -25,6 +26,8 @@ import { cscMatVec, SPARSE_MATRIX_VERSION } from './sparse/cscMatrix.js';
 import { buildFixedDofs } from './domain/supportConstraints.js';
 
 export { buildFixedDofs } from './domain/supportConstraints.js';
+
+export const ELASTIC_COMPONENT_SYSTEM_VERSION = 'p9-m5-elastic-component-system-v1';
 
 function memberBehavior(member = {}) {
   const value = member.behavior || member.type;
@@ -232,13 +235,14 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   let df = [];
   let solve = null;
   let Kff = null;
+  let Ff = [];
   let assemblyTelemetry = null;
   if (free.length) {
     Kff = cached?.Kff || (sparseDecision.useSparse
       ? extractCscSubmatrix(Ks, free, free)
       : free.map((i) => free.map((j) => Ks[i][j])));
     const prescribedForces = matrixMatVec(Ks, prescribed.values);
-    const Ff = free.map((i) => Fs[i] - prescribedForces[i]);
+    Ff = free.map((i) => Fs[i] - prescribedForces[i]);
     assemblyTelemetry = cached?.assemblyTelemetry
       ? { ...cached.assemblyTelemetry, stiffnessReused: true }
       : {
@@ -262,25 +266,27 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       Kff,
       assemblyTelemetry,
     });
-    solve = solveElasticSystem(Kff, Ff, {
-      ...ctx,
-      criteriaModel,
-      labels: free.map((index) => dofLabels[index] || `dof:${index}`),
-    });
-    df = solve.x || [];
-    if (!solve.ok) {
-      const failed = buildSolverDiagnostics(
-        Ks,
-        Fs,
-        prescribed.values,
-        free,
-        fixed,
-        solve.diagnostics,
+    if (!ctx.captureSystemsOnly) {
+      solve = solveElasticSystem(Kff, Ff, {
+        ...ctx,
         criteriaModel,
-        dofLabels,
-        assemblyTelemetry,
-      );
-      return { ok: false, reason: 'SINGULAR', solver: failed };
+        labels: free.map((index) => dofLabels[index] || `dof:${index}`),
+      });
+      df = solve.x || [];
+      if (!solve.ok) {
+        const failed = buildSolverDiagnostics(
+          Ks,
+          Fs,
+          prescribed.values,
+          free,
+          fixed,
+          solve.diagnostics,
+          criteriaModel,
+          dofLabels,
+          assemblyTelemetry,
+        );
+        return { ok: false, reason: 'SINGULAR', solver: failed };
+      }
     }
   } else {
     assemblyTelemetry = cached?.assemblyTelemetry
@@ -308,53 +314,87 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     });
   }
 
-  const Q = prescribed.values.slice();
-  free.forEach((globalIndex, i) => {
-    Q[globalIndex] = df[i];
-  });
-  const D = reduced ? expandReducedDisplacements(Q, reduced.map) : Q;
-  const solver = buildSolverDiagnostics(
-    Ks,
-    Fs,
-    Q,
-    free,
-    fixed,
-    solve?.diagnostics,
-    criteriaModel,
-    dofLabels,
-    assemblyTelemetry,
-  );
-  solver.diaphragmCount = diaphragmGroups.length;
-  solver.reducedDofCount = systemDofCount;
-  solver.prescribedDofCount = prescribed.dofs.length;
-  solver.prescribedDofs = prescribed.dofs;
-
-  for (let i = 0; i < ndof; i += 1) {
-    const limit = i % 6 < 3 ? 1e4 : 50;
-    if (!Number.isFinite(D[i])) {
-      return dofFailure('NONFINITE_DISPLACEMENT', nodes, i, D[i], 'Solved displacement is not finite.');
-    }
-    if (Math.abs(D[i]) > limit) {
-      return dofFailure('UNBOUNDED_DISPLACEMENT', nodes, i, D[i], `Solved displacement exceeds ${limit}.`);
-    }
+  if (ctx.captureSystemsOnly) {
+    const capture = {
+      version: ELASTIC_COMPONENT_SYSTEM_VERSION,
+      componentKey: String(ctx.componentKey || 'component'),
+      factorGroupKey: String(ctx.factorGroupKey || 'ungrouped'),
+      matrixClass: 'spd',
+      matrix: Kff,
+      rhs: Float64Array.from(Ff),
+      freeDofCount: free.length,
+      systemDofCount,
+      labels: free.map((index) => dofLabels[index] || `dof:${index}`),
+      assemblyTelemetry,
+    };
+    capture.systemHash = elasticComponentSystemHash(capture.matrix, capture.rhs, capture.componentKey);
+    return {
+      ok: true,
+      capture,
+      resume(replay) {
+        const resumed = replayElasticSolution(Kff, Ff, {
+          ...ctx,
+          criteriaModel,
+          labels: capture.labels,
+        }, replay);
+        if (!resumed.ok) return { ok: false, reason: resumed.reason, solver: resumed.diagnostics };
+        return finishSolvedComponent(resumed);
+      },
+    };
   }
 
-  const disp = {};
-  nodes.forEach((node, i) => {
-    disp[node.id] = D.slice(i * 6, i * 6 + 6);
-  });
+  return finishSolvedComponent(solve);
 
-  const recoveredReactions = recoverReactionsDetailed(nodes, K, F, D, fixedDofs);
-  if (!recoveredReactions.ok) return recoveredReactions;
-  const reactions = recoveredReactions.reactions;
-  const memberResults = {};
-  for (const member of members) {
-    const md = memData[member.id];
-    if (!md) continue;
-    memberResults[member.id] = recoverMemberResult(member, md, D, loads, stationCount);
+  function finishSolvedComponent(solved) {
+    const solvedDf = solved?.x || [];
+    const Q = prescribed.values.slice();
+    free.forEach((globalIndex, i) => {
+      Q[globalIndex] = solvedDf[i];
+    });
+    const D = reduced ? expandReducedDisplacements(Q, reduced.map) : Q;
+    const solver = buildSolverDiagnostics(
+      Ks,
+      Fs,
+      Q,
+      free,
+      fixed,
+      solved?.diagnostics,
+      criteriaModel,
+      dofLabels,
+      assemblyTelemetry,
+    );
+    solver.diaphragmCount = diaphragmGroups.length;
+    solver.reducedDofCount = systemDofCount;
+    solver.prescribedDofCount = prescribed.dofs.length;
+    solver.prescribedDofs = prescribed.dofs;
+
+    for (let i = 0; i < ndof; i += 1) {
+      const limit = i % 6 < 3 ? 1e4 : 50;
+      if (!Number.isFinite(D[i])) {
+        return dofFailure('NONFINITE_DISPLACEMENT', nodes, i, D[i], 'Solved displacement is not finite.');
+      }
+      if (Math.abs(D[i]) > limit) {
+        return dofFailure('UNBOUNDED_DISPLACEMENT', nodes, i, D[i], `Solved displacement exceeds ${limit}.`);
+      }
+    }
+
+    const disp = {};
+    nodes.forEach((node, i) => {
+      disp[node.id] = D.slice(i * 6, i * 6 + 6);
+    });
+
+    const recoveredReactions = recoverReactionsDetailed(nodes, K, F, D, fixedDofs);
+    if (!recoveredReactions.ok) return recoveredReactions;
+    const reactions = recoveredReactions.reactions;
+    const memberResults = {};
+    for (const member of members) {
+      const md = memData[member.id];
+      if (!md) continue;
+      memberResults[member.id] = recoverMemberResult(member, md, D, loads, stationCount);
+    }
+
+    return { ok: true, disp, reactions, memberResults, solver };
   }
-
-  return { ok: true, disp, reactions, memberResults, solver };
 }
 
 function activeDiaphragmGroups(nodes, groups = []) {
@@ -414,6 +454,8 @@ function cacheElasticComponent(cache, key, value) {
 }
 
 function solveElasticSystem(Kff, Ff, ctx) {
+  const replay = resolvePrecomputedSolution(ctx.precomputedSolutions, ctx.componentKey);
+  if (replay) return replayElasticSolution(Kff, Ff, ctx, replay);
   if (!ctx.factorSession) {
     return solveLinearDetailed(Kff, Ff, {
       criteriaModel: ctx.criteriaModel,
@@ -437,6 +479,69 @@ function solveElasticSystem(Kff, Ff, ctx) {
       : result.diagnostics?.diagnostics,
   };
   return { ok: result.ok, x, reason: result.reason, diagnostics };
+}
+
+export function elasticComponentSystemHash(matrix, rhs, componentKey = 'component') {
+  return stableHash({
+    version: ELASTIC_COMPONENT_SYSTEM_VERSION,
+    componentKey: String(componentKey),
+    matrix: serializableMatrix(matrix),
+    rhs: Array.from(rhs || [], Number),
+  });
+}
+
+function resolvePrecomputedSolution(solutions, componentKey) {
+  if (!solutions) return null;
+  if (typeof solutions.get === 'function') return solutions.get(componentKey) || null;
+  return solutions[componentKey] || null;
+}
+
+function replayElasticSolution(Kff, Ff, ctx, replay) {
+  const systemHash = elasticComponentSystemHash(Kff, Ff, ctx.componentKey);
+  if (replay.systemHash !== systemHash) {
+    return { ok: false, x: null, reason: 'HYBRID_ELASTIC_SYSTEM_HASH_MISMATCH', diagnostics: { systemHash, replaySystemHash: replay.systemHash || null } };
+  }
+  const x = Array.from(replay.x || [], Number);
+  if (x.length !== Ff.length || x.some((value) => !Number.isFinite(value))) {
+    return { ok: false, x: null, reason: 'HYBRID_ELASTIC_SOLUTION_INVALID', diagnostics: { expectedLength: Ff.length, actualLength: x.length } };
+  }
+  if (replay.designTransferAllowed !== true || replay.f64Residual?.ok !== true) {
+    return {
+      ok: false,
+      x: null,
+      reason: replay.reason || 'HYBRID_ELASTIC_F64_AUDIT_REQUIRED',
+      diagnostics: { f64Residual: replay.f64Residual || null, designTransferAllowed: replay.designTransferAllowed === true },
+    };
+  }
+  return {
+    ok: true,
+    x,
+    diagnostics: {
+      version: ELASTIC_COMPONENT_SYSTEM_VERSION,
+      method: 'p9-m5-hybrid-mixed-f32-f64-replay',
+      systemHash,
+      fallback: false,
+      denseConversionCount: 0,
+      mixedPrecision: replay.diagnostics || null,
+      f64Residual: replay.f64Residual,
+      designTransferAllowed: true,
+    },
+  };
+}
+
+function serializableMatrix(matrix) {
+  if (Array.isArray(matrix)) return matrix;
+  if (matrix?.format === 'csc') {
+    return {
+      format: 'csc',
+      rowCount: matrix.rowCount,
+      colCount: matrix.colCount,
+      colPtr: Array.from(matrix.colPtr || []),
+      rowIdx: Array.from(matrix.rowIdx || []),
+      values: Array.from(matrix.values || []),
+    };
+  }
+  return matrix || null;
 }
 
 export function assembleStiffness3D(nodes, members, ctx = {}) {
@@ -780,6 +885,7 @@ export function summarizeSolverDiagnostics(components) {
       reducedDofCount: 0,
     };
   }
+  const executionMethods = [...new Set(finite.map((item) => item.sparse?.method).filter(Boolean))].sort();
   return {
     type: 'linear_static_3d_frame',
     componentCount: finite.length,
@@ -807,6 +913,8 @@ export function summarizeSolverDiagnostics(components) {
     pivotRatio: Math.min(...finite.map((item) => Number(item.pivotRatio) || 1)),
     warningCount: finite.reduce((sum, item) => sum + (item.warnings?.length || 0), 0),
     warnings: finite.flatMap((item) => item.warnings || []),
+    executionMethods,
+    mixedPrecisionComponentCount: finite.filter((item) => item.sparse?.method === 'p9-m5-hybrid-mixed-f32-f64-replay').length,
   };
 }
 

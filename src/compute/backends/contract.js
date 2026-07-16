@@ -107,7 +107,9 @@ export function assertComputeBackendPolicy(backend, options = {}) {
   }
   if (capability.targetFamily === 'gpu'
     && options.production
-    && (capability.numericPrecision !== 'f64' || capability.deterministic !== true)) {
+    && (capability.numericPrecision !== 'f64'
+      && !capability.precisionModes.includes('f64-audited')
+      || capability.deterministic !== true)) {
     throw policyError('GPU_BACKEND_QUALIFICATION_REQUIRED', 'Production GPU execution is not qualified by the current precision policy.', {
       requested,
       capability,

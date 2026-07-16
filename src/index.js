@@ -255,7 +255,10 @@ export {
 } from './solver/pdelta/tangentStiffness.js';
 export {
   PDELTA_SECOND_ORDER_VERSION,
+  assemblePartitionedTangentSolution,
+  buildPartitionedTangentSystem,
   runSecondOrderPDelta,
+  runSecondOrderPDeltaAsync,
 } from './solver/pdelta/secondOrder.js';
 export {
   PDELTA_SPLIT_VERSION,

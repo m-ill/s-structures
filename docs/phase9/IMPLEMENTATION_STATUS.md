@@ -7,19 +7,35 @@ documentation_status: baseline-complete
 implementation_status: in-progress
 compute_qualification: G2-kernel-qualified-local-profile
 completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4]
-active_milestone: none
-next_milestone: P9-M5
+implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5]
+active_milestone: P9-M5-qualification-blocked
+next_milestone: P9-M6
 release_status: not-qualified
 design_transfer_allowed: false
 ```
 
 ## Current Decision
 
-P9-M4 is implemented and passes the local primary-profile WebGPU kernel gate. Seven independent f32 kernels compile and execute on the recorded Chrome/NVIDIA Ampere profile, match the CPU f32 references, repeat deterministically and dispose all GPU resources.
+P9-M5 implementation is complete. Static elastic and Direct P-Delta now have an explicit production-adapter WebGPU route using resident f32 SPD-PCG, original-system CPU f64 residual correction, and the existing CPU recovery, envelope, equilibrium and design path. Numeric parity, per-run design eligibility and GPU resource disposal pass on the recorded Chrome/NVIDIA Ampere profile.
 
-Qualification advances to `G2` for independent kernels only. WebGPU is not connected to the production analysis Worker and cannot transfer analysis, envelope, design or report values. `P9-GPU-PLT-12` remains deferred for the external cross-vendor/browser matrix.
+Qualification remains `G2`. The 990-DOF end-to-end diagnostic measured CPU 684.10 ms versus GPU 1,131.70 ms, a 0.604 speedup against the required 1.2. The run also does not close the required five-sample S/M profile matrix. `auto` GPU remains disabled and global design transfer remains blocked.
 
-The measured raw fixtures are transfer-bound and slower than CPU, so `auto` correctly remains on CPU. M5 must demonstrate resident-buffer reuse, CPU f64 audit and end-to-end elastic benefit before a production GPU route can be considered.
+M6 may proceed on the common compute contracts, but M5 cannot be marked G3 until the performance and profile blockers are closed.
+
+## P9-M5 Results
+
+| Area | P9-M5 result | Decision |
+| --- | --- | --- |
+| SPD eligibility | symmetry/scaling/conditioning/IC(0) checks | PASS |
+| Mixed precision | GPU f32 solve plus CPU f64 residual/correction | PASS |
+| Static elastic | combo/recovery/envelope/audit/design parity | PASS |
+| Factor reuse | 1 matrix session, 2 RHS solves in focused fixture | PASS |
+| Direct P-Delta | 11 tangent sessions, 0 invalid reuse | PASS |
+| Failure policy | explicit failure terminal, no silent fallback | PASS |
+| Resources | 38 GPU buffers created and destroyed | PASS |
+| End-to-end performance | 0.604 speedup vs 1.2 threshold | FAIL |
+| S/M profile matrix | local diagnostic only | BLOCKED |
+| Auto GPU | disabled | PASS |
 
 ## P9-M4 Results
 
@@ -58,16 +74,22 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 ## Artifacts
 
 - Verification note: [P9_M4_WEBGPU_FOUNDATION.md](../verification/phase9/P9_M4_WEBGPU_FOUNDATION.md)
+- M5 verification note: [P9_M5_HYBRID_ELASTIC.md](../verification/phase9/P9_M5_HYBRID_ELASTIC.md)
+- M5 evidence: `reports/validation-evidence/phase9/p9-m5-hybrid-elastic.json`
+- M5 raw browser evidence: `reports/validation-evidence/phase9/p9-m5-browser-raw.json`
+- M5 code review: `reports/validation-evidence/phase9/p9-m5-code-review.md`
 - Evidence: `reports/validation-evidence/phase9/p9-m4-webgpu-foundation.json`
 - Raw browser evidence: `reports/validation-evidence/phase9/p9-m4-browser-raw.json`
 - Code review: `reports/validation-evidence/phase9/p9-m4-code-review.md`
 - Release manifest: `docs/verification/phase9/release-manifest.json`
 - Tests: `npm run test:p9 -- M4`
 - Evidence generation: `npm run evidence:p9:m4`
+- M5 evidence generation: `npm run evidence:p9:m5`
 
 ## Remaining Boundaries
 
-- M5-M8 must qualify hybrid elastic, dynamics and nonlinear GPU routes.
+- M5 performance and S/M profile blockers must close before G3 Elastic-Candidate or automatic GPU routing.
+- M6-M8 must qualify dynamics and nonlinear GPU routes.
 - The external browser/vendor matrix must close `P9-GPU-PLT-12` before Phase 9 release.
 - M9 must migrate existing production UI and Agent call sites to the product service; M3 supplies the service and forbids new synchronous production callers.
 - Direct P-Delta tangent iterations remain intentionally isolated from linear-static factor reuse.
@@ -76,4 +98,4 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 
 ## Next Milestone
 
-P9-M5: hybrid elastic static and Direct P-Delta with CPU f64 residual/audit and fail-closed design transfer.
+P9-M6: sparse requested-mode modal, RSA and buckling operators with CPU f64 audit. M5 qualification debt remains open in parallel.

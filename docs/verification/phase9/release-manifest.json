@@ -1,7 +1,7 @@
 {
   "version": "p9-release-manifest-v1",
-  "generatedAt": "2026-07-15T13:45:47.558Z",
-  "sourceRevision": "fc9b93d+worktree",
+  "generatedAt": "2026-07-15T17:59:01.968Z",
+  "sourceRevision": "343b626+worktree",
   "phase": "Phase 9",
   "implementation": {
     "status": "in-progress",
@@ -24,15 +24,30 @@
       "P9-M8",
       "P9-M9",
       "P9-M10"
-    ]
+    ],
+    "implementedMilestones": [
+      "P9-M0",
+      "P9-M1",
+      "P9-M2",
+      "P9-M3",
+      "P9-M4",
+      "P9-M5"
+    ],
+    "activeMilestone": "P9-M5-qualification-blocked"
   },
   "computeQualification": {
     "grade": "G2",
-    "status": "kernel-qualified-local-primary-profile",
+    "status": "hybrid-elastic-implemented-performance-not-qualified",
     "candidate": true,
     "gpuImplemented": true,
     "qualifiedProfileCount": 1,
-    "fullProfileMatrixQualified": false
+    "fullProfileMatrixQualified": false,
+    "hybridElasticImplemented": true,
+    "elasticCandidateQualified": false,
+    "autoGpuAllowed": false,
+    "localNumericQualified": true,
+    "localPerformanceQualified": false,
+    "elasticQualifiedProfileCount": 0
   },
   "release": {
     "status": "not-qualified",
@@ -45,7 +60,8 @@
     "m1CommonCompute": "c97ae53aac9f182eedae44a3314423ac5c521da23b678e8146037319d1e75803",
     "m2CpuWasm": "49c5c9ccf63ba2b4b6ef4c3c5383a7571e840998e4fc77d2b4a5e23ff20c48c7",
     "m3ElasticRuntime": "897ab273596507afe3ab2d7d5967f3416450f24c8adc62c1c99f550a13f339e9",
-    "m4WebGpuFoundation": "45286be5c46b9e30588171c2ec9dd16886f5e61723a1ebe87b75fa1c90e3a3f1"
+    "m4WebGpuFoundation": "45286be5c46b9e30588171c2ec9dd16886f5e61723a1ebe87b75fa1c90e3a3f1",
+    "m5HybridElastic": "d39fb4ba7b541326b5bb5969891bacd2a8379aca82978591b949f83088b24964"
   },
   "blockers": [
     "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
@@ -53,8 +69,10 @@
     "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
     "P9_M10_RELEASE_GATE_REQUIRED",
     "P9_M4_EXTERNAL_BROWSER_VENDOR_MATRIX_REQUIRED",
-    "P9_M5_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED",
+    "P9_M5_ELASTIC_END_TO_END_SPEED_THRESHOLD_NOT_MET",
+    "P9_M5_S_M_PROFILE_MATRIX_REQUIRED",
+    "P9_M6_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED",
     "P9_M9_PRODUCT_MIGRATION_REQUIRED"
   ],
-  "manifestHash": "4865dca7349e7b6bab915f4d804577e4f958379a949064d0df7fe4df6897097b"
+  "manifestHash": "20160fd0cbde2fcf9b5da0ddabc57441771d9f46dde397798ef59fab97c61906"
 }

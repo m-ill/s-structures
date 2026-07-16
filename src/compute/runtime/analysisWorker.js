@@ -1,7 +1,7 @@
 import { createCurrentAnalysisExecutor } from '../adapters/analysisAdapters.js';
 import {
-  PRODUCTION_ELASTIC_BACKEND_ID,
   createProductionElasticExecutor,
+  isProductionElasticBackendId,
 } from '../adapters/elasticProductionAdapter.js';
 import { createComputeWorkerCore } from './workerCore.js';
 
@@ -25,7 +25,7 @@ export function createComputeAnalysisExecutor() {
   const current = createCurrentAnalysisExecutor();
   const productionElastic = createProductionElasticExecutor();
   return function executeAnalysisJob(job, context) {
-    return job.operation?.backendId === PRODUCTION_ELASTIC_BACKEND_ID
+    return isProductionElasticBackendId(job.operation?.backendId)
       ? productionElastic(job, context)
       : current(job, context);
   };

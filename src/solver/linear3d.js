@@ -106,8 +106,36 @@ export function solveElasticCombination(prepared, combo, options = {}) {
     componentCache: options.componentCache,
     factorSession: options.factorSession,
     factorGroupKey: options.factorGroupKey,
+    captureSystemsOnly: options.captureSystemsOnly === true,
+    precomputedSolutions: options.precomputedSolutions,
     signal: options.signal,
   });
+  result.combo = comboSnapshot(combo);
+  appendSolverDiagnosticWarnings(prepared.validation.warnings, combo.id, result);
+  appendComponentFailureErrors(prepared.validation.errors, combo.id, result);
+  return result;
+}
+
+export function captureElasticCombinationSystems(prepared, combo, options = {}) {
+  if (prepared?.terminal) throw elasticStageError('ELASTIC_ANALYSIS_TERMINAL', 'A terminal elastic analysis cannot capture systems.');
+  if (!combo?.id) throw elasticStageError('ELASTIC_COMBINATION_INVALID', 'Elastic combination id is required.');
+  const result = analyzeAll(prepared.model, combo.factors, {
+    canonicalBase: prepared.canonicalBase,
+    componentCache: options.componentCache,
+    factorGroupKey: options.factorGroupKey,
+    captureSystemsOnly: true,
+    signal: options.signal,
+  });
+  result.combo = comboSnapshot(combo);
+  return result;
+}
+
+export function resumeElasticCombinationSystems(prepared, combo, capture, precomputedSolutions) {
+  if (prepared?.terminal) throw elasticStageError('ELASTIC_ANALYSIS_TERMINAL', 'A terminal elastic analysis cannot resume combinations.');
+  if (typeof capture?.resume !== 'function') {
+    throw elasticStageError('ELASTIC_CAPTURE_CONTINUATION_MISSING', 'Elastic capture continuation is unavailable.');
+  }
+  const result = capture.resume(precomputedSolutions);
   result.combo = comboSnapshot(combo);
   appendSolverDiagnosticWarnings(prepared.validation.warnings, combo.id, result);
   appendComponentFailureErrors(prepared.validation.errors, combo.id, result);
@@ -122,7 +150,9 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
   if (options.combinationStorage) output.combinationStorage = options.combinationStorage;
   output.combinationCompleteness = buildCombinationCompleteness(output.byCombo, combos, output.envelope);
   if (pDeltaMethod !== 'off') {
-    output.pDelta = analyzePDeltaCombinations(model, combos, { pDeltaMethod });
+    output.pDelta = options.pDeltaOverride
+      ? validateDirectPDeltaOverride(options.pDeltaOverride, pDeltaMethod, combos)
+      : analyzePDeltaCombinations(model, combos, { pDeltaMethod });
   }
   if (model.analysisSettings?.responseSpectrum?.enabled !== false) {
     output.dynamics = analyzeDynamics(model);
@@ -212,6 +242,29 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
   };
 
   return withAudit(output);
+}
+
+function validateDirectPDeltaOverride(override, pDeltaMethod, combos) {
+  if (pDeltaMethod !== 'direct'
+    || override?.method !== 'direct'
+    || override?.provenance?.solverVersion !== PDELTA_SECOND_ORDER_VERSION) {
+    throw elasticStageError('ELASTIC_PDELTA_OVERRIDE_INVALID', 'Only a versioned Direct P-Delta result may override finalization.');
+  }
+  const expectedIds = combos.map((combo) => combo.id).sort();
+  const actualIds = Object.keys(override.byCombo || {}).sort();
+  if (expectedIds.length !== actualIds.length || expectedIds.some((id, index) => id !== actualIds[index])) {
+    throw elasticStageError('ELASTIC_PDELTA_OVERRIDE_COMBINATIONS_INVALID', 'Direct P-Delta override combinations do not match the prepared analysis.');
+  }
+  for (const comboId of expectedIds) {
+    const run = override.byCombo[comboId];
+    if (run?.version !== PDELTA_SECOND_ORDER_VERSION
+      || run?.requestedMethod !== 'direct'
+      || run?.provenance?.comboId !== comboId
+      || run?.provenance?.solverVersion !== PDELTA_SECOND_ORDER_VERSION) {
+      throw elasticStageError('ELASTIC_PDELTA_OVERRIDE_PROVENANCE_INVALID', `Direct P-Delta override provenance is invalid for ${comboId}.`);
+    }
+  }
+  return override;
 }
 
 function elasticStageError(code, message) {
@@ -477,6 +530,8 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     componentCache: options.componentCache,
     factorSession: options.factorSession,
     factorGroupKey: options.factorGroupKey,
+    captureSystemsOnly: options.captureSystemsOnly === true,
+    precomputedSolutions: options.precomputedSolutions,
     signal: options.signal,
   };
   const diaphragms = resolveRigidDiaphragms(model, nodes);
@@ -502,6 +557,8 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     ngCount: 0,
     okCount: 0,
   };
+  if (options.captureSystemsOnly) out.systemCaptures = [];
+  const capturedComponents = [];
 
   for (const group of Object.values(groups)) {
     const ns = nodes.filter((node) => group.nids.has(node.id));
@@ -515,6 +572,12 @@ function analyzeAllOnce(model, factors = null, options = {}) {
       [...group.mids].map(String).sort().join(','),
     ].join('::');
     const result = analyzeComponent3D(ns, ms, ls, { ...ctx, componentKey });
+    if (result.capture) {
+      out.anyOk = true;
+      out.systemCaptures.push(result.capture);
+      capturedComponents.push({ group, ms, capture: result.capture, resume: result.resume });
+      continue;
+    }
     if (!result.ok) {
       group.mids.forEach((id) => out.unstableMembers.add(id));
       out.failedComponents.push({
@@ -534,31 +597,89 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     });
   }
 
-  for (const id of Object.keys(out.disp)) {
-    out.dmax = Math.max(out.dmax, vlen(out.disp[id].slice(0, 3)));
-  }
-  for (const id of Object.keys(out.memberResults)) {
-    const memberResult = out.memberResults[id];
-    out.dmax = Math.max(out.dmax, memberResult.dmaxM);
-    out.maxRatio = Math.max(out.maxRatio, memberResult.check.ratio);
-    if (memberResult.check.ok) out.okCount += 1;
-    else out.ngCount += 1;
+  if (options.captureSystemsOnly) {
+    out.ok = out.failedComponents.length === 0 && out.systemCaptures.length > 0;
+    out.reason = out.ok ? null : out.failedComponents[0]?.reason || 'NO_CAPTURED_COMPONENT_SYSTEM';
+    out.resume = (precomputedSolutions) => {
+      out.ok = true;
+      out.anyOk = false;
+      out.reason = null;
+      out.disp = {};
+      out.reactions = {};
+      out.memberResults = {};
+      out.unstableMembers = new Set();
+      out.failedComponents = [];
+      out.solver = { type: 'linear_static_3d_frame', components: [] };
+      for (const row of capturedComponents) {
+        const replay = typeof precomputedSolutions?.get === 'function'
+          ? precomputedSolutions.get(row.capture.componentKey)
+          : precomputedSolutions?.[row.capture.componentKey];
+        const result = replay
+          ? row.resume(replay)
+          : { ok: false, reason: 'HYBRID_ELASTIC_PRECOMPUTED_SOLUTION_MISSING' };
+        if (!result.ok) {
+          row.group.mids.forEach((id) => out.unstableMembers.add(id));
+          out.failedComponents.push({
+            reason: result.reason || 'COMPONENT_SOLVE_FAILED',
+            memberIds: [...row.group.mids],
+            nodeIds: [...row.group.nids],
+            solver: result.solver || null,
+          });
+          continue;
+        }
+        out.anyOk = true;
+        out.solver.components.push(result.solver);
+        Object.assign(out.disp, result.disp);
+        Object.assign(out.reactions, result.reactions);
+        Object.entries(result.memberResults).forEach(([id, memberResult]) => {
+          if (!row.ms.find((member) => member.id === id)?.generated) out.memberResults[id] = memberResult;
+        });
+      }
+      delete out.systemCaptures;
+      delete out.resume;
+      return finalizeSolvedOutput();
+    };
+    out.solver = {
+      type: 'elastic-component-system-capture',
+      componentCount: out.systemCaptures.length,
+      solved: false,
+    };
+    return out;
   }
 
-  if (!out.anyOk) {
-    out.ok = false;
-    out.reason = 'NO_SOLVED_COMPONENT';
-  } else if (out.unstableMembers.size) {
-    out.ok = false;
-    out.reason = 'UNSTABLE_COMPONENT';
+  return finalizeSolvedOutput();
+
+  function finalizeSolvedOutput() {
+    out.dmax = 0;
+    out.maxRatio = 0;
+    out.ngCount = 0;
+    out.okCount = 0;
+    for (const id of Object.keys(out.disp)) {
+      out.dmax = Math.max(out.dmax, vlen(out.disp[id].slice(0, 3)));
+    }
+    for (const id of Object.keys(out.memberResults)) {
+      const memberResult = out.memberResults[id];
+      out.dmax = Math.max(out.dmax, memberResult.dmaxM);
+      out.maxRatio = Math.max(out.maxRatio, memberResult.check.ratio);
+      if (memberResult.check.ok) out.okCount += 1;
+      else out.ngCount += 1;
+    }
+
+    if (!out.anyOk) {
+      out.ok = false;
+      out.reason = 'NO_SOLVED_COMPONENT';
+    } else if (out.unstableMembers.size) {
+      out.ok = false;
+      out.reason = 'UNSTABLE_COMPONENT';
+    }
+    out.solver = summarizeSolverDiagnostics(out.solver.components);
+    out.semiRigidDiaphragm = domain.semiRigid;
+    out.shellFrameAssembly = domain.shellAssembly;
+    out.summary = buildEquilibriumSummary(nodes, members, loads, out, {
+      equilibriumLimit: resolveCriterion(model, 'audit.equilibriumRelative', 1e-8),
+    });
+    return out;
   }
-  out.solver = summarizeSolverDiagnostics(out.solver.components);
-  out.semiRigidDiaphragm = domain.semiRigid;
-  out.shellFrameAssembly = domain.shellAssembly;
-  out.summary = buildEquilibriumSummary(nodes, members, loads, out, {
-    equilibriumLimit: resolveCriterion(model, 'audit.equilibriumRelative', 1e-8),
-  });
-  return out;
 }
 
 function cachedCatalogValue(cache, id, resolve) {
@@ -723,13 +844,17 @@ export function analyzePDeltaCombinations(model, combos, options = {}) {
   };
 }
 
+export function buildDirectPDeltaAnalysis(model, combos, runByCombo, options = {}) {
+  return analyzeDirectPDeltaCombinations(model, combos, { ...options, runByCombo });
+}
+
 function analyzeDirectPDeltaCombinations(model, combos, options = {}) {
   const byCombo = {};
   const finalByCombo = {};
   const settings = { ...(model.analysisSettings || {}), ...options, pDeltaMethod: 'direct' };
   for (const combo of combos) {
     const comboInfo = comboSnapshot(combo);
-    const run = runSecondOrderPDelta(model, combo.factors, settings);
+    const run = options.runByCombo?.[combo.id] || runSecondOrderPDelta(model, combo.factors, settings);
     run.combo = comboInfo;
     run.requestedMethod = 'direct';
     run.provenance = {

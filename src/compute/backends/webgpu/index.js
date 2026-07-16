@@ -16,3 +16,5 @@ export {
 } from './cpuReference.js';
 export { WEBGPU_KERNEL_OPERATIONS, WEBGPU_KERNEL_RUNTIME_VERSION, executeWebGpuKernel } from './kernels.js';
 export { WEBGPU_KERNEL_BACKEND_ID, WEBGPU_KERNEL_BACKEND_VERSION, createWebGpuKernelBackend, describeWebGpuKernelBackend } from './backend.js';
+export { WEBGPU_SPD_PCG_SHADER, WEBGPU_SPD_PCG_SHADER_VERSION } from './spdPcgShader.js';
+export { WEBGPU_SPD_SESSION_VERSION, createWebGpuSpdSession } from './spdSession.js';
