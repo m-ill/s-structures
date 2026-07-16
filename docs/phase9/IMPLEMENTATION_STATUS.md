@@ -1,26 +1,44 @@
 # Phase 9 Implementation Status
 
 ```yaml
-reviewed_at: 2026-07-15
+reviewed_at: 2026-07-16
 phase_status: implementation
 documentation_status: baseline-complete
 implementation_status: in-progress
 compute_qualification: G2-kernel-qualified-local-profile
-completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4]
-implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5]
-active_milestone: P9-M5-qualification-blocked
-next_milestone: P9-M6
+completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6]
+implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6]
+active_milestone: P9-M7
+next_milestone: P9-M7
 release_status: not-qualified
 design_transfer_allowed: false
 ```
 
 ## Current Decision
 
-P9-M5 implementation is complete. Static elastic and Direct P-Delta now have an explicit production-adapter WebGPU route using resident f32 SPD-PCG, original-system CPU f64 residual correction, and the existing CPU recovery, envelope, equilibrium and design path. Numeric parity, per-run design eligibility and GPU resource disposal pass on the recorded Chrome/NVIDIA Ampere profile.
+P9-M6 is complete for the production CPU f64 route. Modal/RSA and global buckling share a typed-CSC requested-mode eigen core, deterministic sign/order, MAC, original-operator residual audit, and Worker product service. Dense full eigen formation and duplicated modal/buckling Cholesky/Jacobi helpers are removed.
+
+The optional GPU SpMV/block-vector route is not qualified or exposed. Existing frame and rigid-diaphragm assembly still originates in the legacy dense owner before CSC extraction. These limits are explicit and do not change M6 CPU completion.
+
+P9-M5 implementation remains complete but its qualification gate remains blocked. Static elastic and Direct P-Delta have an explicit production-adapter WebGPU route using resident f32 SPD-PCG, original-system CPU f64 residual correction, and the existing CPU recovery, envelope, equilibrium and design path. Numeric parity, per-run design eligibility and GPU resource disposal pass on the recorded Chrome/NVIDIA Ampere profile.
 
 Qualification remains `G2`. The 990-DOF end-to-end diagnostic measured CPU 684.10 ms versus GPU 1,131.70 ms, a 0.604 speedup against the required 1.2. The run also does not close the required five-sample S/M profile matrix. `auto` GPU remains disabled and global design transfer remains blocked.
 
-M6 may proceed on the common compute contracts, but M5 cannot be marked G3 until the performance and profile blockers are closed.
+M7 may proceed on the common compute contracts, but M5 cannot be marked G3 until the performance and profile blockers are closed.
+
+## P9-M6 Results
+
+| Area | P9-M6 result | Decision |
+| --- | --- | --- |
+| K/M/Kg operator | symmetric typed CSC with matvec parity | PASS |
+| Requested modes | shared shift-invert block subspace and bounded Rayleigh-Ritz | PASS |
+| Canonicalization | sign/order/repeated-mode determinism and MAC | PASS |
+| Modal/RSA | mass normalization, participation, SRSS/CQC and member recovery | PASS |
+| Buckling | preload/eligibility retained; factors and mode residuals match | PASS |
+| Failure policy | singular/mechanism/nonconvergence and GPU request fail closed | PASS |
+| Product path | dedicated CPU f64 backend, Worker route and async service | PASS |
+| M-tier diagnostic | 240 DOF, six modes, 12-vector projection, ~192 ms | PASS |
+| Optional GPU eigen | not qualified or routed | DEFERRED |
 
 ## P9-M5 Results
 
@@ -78,6 +96,9 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 - M5 evidence: `reports/validation-evidence/phase9/p9-m5-hybrid-elastic.json`
 - M5 raw browser evidence: `reports/validation-evidence/phase9/p9-m5-browser-raw.json`
 - M5 code review: `reports/validation-evidence/phase9/p9-m5-code-review.md`
+- M6 verification note: [P9_M6_SPARSE_EIGEN.md](../verification/phase9/P9_M6_SPARSE_EIGEN.md)
+- M6 evidence: `reports/validation-evidence/phase9/p9-m6-sparse-eigen.json`
+- M6 code review: `reports/validation-evidence/phase9/p9-m6-code-review.md`
 - Evidence: `reports/validation-evidence/phase9/p9-m4-webgpu-foundation.json`
 - Raw browser evidence: `reports/validation-evidence/phase9/p9-m4-browser-raw.json`
 - Code review: `reports/validation-evidence/phase9/p9-m4-code-review.md`
@@ -85,11 +106,13 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 - Tests: `npm run test:p9 -- M4`
 - Evidence generation: `npm run evidence:p9:m4`
 - M5 evidence generation: `npm run evidence:p9:m5`
+- M6 evidence generation: `npm run evidence:p9:m6`
 
 ## Remaining Boundaries
 
 - M5 performance and S/M profile blockers must close before G3 Elastic-Candidate or automatic GPU routing.
-- M6-M8 must qualify dynamics and nonlinear GPU routes.
+- M6 CPU sparse dynamics is complete; optional eigen GPU acceleration remains unqualified.
+- M7-M8 must qualify nonlinear batch/state and hybrid Pushover/NLTH routes.
 - The external browser/vendor matrix must close `P9-GPU-PLT-12` before Phase 9 release.
 - M9 must migrate existing production UI and Agent call sites to the product service; M3 supplies the service and forbids new synchronous production callers.
 - Direct P-Delta tangent iterations remain intentionally isolated from linear-static factor reuse.
@@ -98,4 +121,4 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 
 ## Next Milestone
 
-P9-M6: sparse requested-mode modal, RSA and buckling operators with CPU f64 audit. M5 qualification debt remains open in parallel.
+P9-M7: nonlinear SoA element/fiber batches, deterministic assembly, committed/trial state arena, and capability partition. M5 qualification debt remains open in parallel.

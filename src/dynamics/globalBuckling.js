@@ -2,6 +2,8 @@ import { assembleStiffness3D } from '../solver/linear3dAssembly.js';
 import { assembleGlobalGeometricStiffness } from '../solver/geometricStiffness.js';
 import { matMul, matTrans, solveLinear } from '../solver/linear3dElement.js';
 import { materialOf, sectionOf } from '../core/catalogs.js';
+import { createSymmetricSparseOperatorFromDense } from '../compute/eigen/sparseOperator.js';
+import { solveRequestedGeneralizedEigen } from '../compute/eigen/requestedModes.js';
 
 export const GLOBAL_BUCKLING_TRACE_VERSION = 'p7-m10-global-buckling-v3';
 
@@ -107,12 +109,27 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
   }
 
   const free = assembly.free || [];
-  const Kf = submatrix(assembly.K, free);
-  const Gf = submatrix(geometric.KG, free);
-  const eigen = solveGeneralizedBucklingModes(Kf, Gf, {
-    ...options,
-    modeCount: requestedModeCount,
-  });
+  let eigen;
+  try {
+    const elasticOperator = createSymmetricSparseOperatorFromDense(assembly.K, {
+      id: 'buckling-elastic-stiffness',
+      matrixClass: 'spd',
+      indices: free,
+    });
+    const geometricOperator = createSymmetricSparseOperatorFromDense(geometric.KG, {
+      id: 'buckling-geometric-stiffness',
+      matrixClass: 'positive-semidefinite',
+      indices: free,
+    });
+    eigen = solveGeneralizedBucklingOperators(elasticOperator, geometricOperator, {
+      ...options,
+      modeCount: requestedModeCount,
+    });
+  } catch (error) {
+    eigen = eigenFailure(error.code || 'INVALID_EIGEN_MATRICES', requestedModeCount, positiveNumber(options.residualTolerance, 1e-7), {
+      message: error.message || null,
+    });
+  }
   const modes = (eigen.modes || []).map((mode, index) => withModeDofs(mode, index, free, assembly.ndof, model.nodes || []));
   const status = eigen.ok ? 'available' : 'blocked';
   const firstMode = modes[0] || null;
@@ -120,7 +137,7 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
   return {
     version: GLOBAL_BUCKLING_TRACE_VERSION,
     contract: buildGlobalBucklingContract(),
-    method: 'global-frame-geometric-stiffness-symmetric-generalized-eigen',
+    method: 'global-frame-sparse-requested-mode-geometric-eigen',
     ok: eigen.ok,
     blocked: !eigen.ok,
     status,
@@ -135,14 +152,15 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
     rotations: eigen.rotations || 0,
     residual: firstMode?.residual ?? null,
     residualTolerance: eigen.residualTolerance,
+    eigen: eigen.eigen || null,
     reason: eigen.reason || null,
     reasonCode: eigen.reason || null,
     freeDofCount: free.length,
     domain: {
       ...domainGuard.domain,
       freeDofCount: free.length,
-      elasticMatrixSize: Kf.length,
-      geometricMatrixSize: Gf.length,
+      elasticMatrixSize: free.length,
+      geometricMatrixSize: free.length,
       releaseCompatibility: geometric.releaseCompatibility,
     },
     preload,
@@ -424,70 +442,68 @@ export function solveGeneralizedBucklingModes(K, G, options = {}) {
   if (!Array.isArray(K) || !K.length || K.length !== G?.length) {
     return eigenFailure('NO_FREE_DOF', requestedModeCount, residualTolerance);
   }
-  if (!squareFinite(K) || !squareFinite(G) || K.length !== G.length) {
-    return eigenFailure('INVALID_EIGEN_MATRICES', requestedModeCount, residualTolerance);
-  }
-
-  const cholesky = factorCholesky(K, options.stiffnessPivotTolerance);
-  if (!cholesky.ok) {
-    return eigenFailure('SINGULAR_STIFFNESS', requestedModeCount, residualTolerance, {
-      pivotIndex: cholesky.pivotIndex,
-      pivot: cholesky.pivot,
+  try {
+    return solveGeneralizedBucklingOperators(
+      createSymmetricSparseOperatorFromDense(K, {
+        id: 'buckling-elastic-stiffness',
+        matrixClass: 'spd',
+      }),
+      createSymmetricSparseOperatorFromDense(G, {
+        id: 'buckling-geometric-stiffness',
+        matrixClass: 'positive-semidefinite',
+      }),
+      options,
+    );
+  } catch (error) {
+    return eigenFailure(error.code || 'INVALID_EIGEN_MATRICES', requestedModeCount, residualTolerance, {
+      message: error.message || null,
     });
   }
+}
 
-  const inverseLower = invertLower(cholesky.L);
-  const transformed = symmetrize(multiply(multiply(inverseLower, G), transpose(inverseLower)));
-  const decomposition = jacobiSymmetric(transformed, {
-    tolerance: options.eigenTolerance,
-    maxSweeps: options.maxIterations,
+function solveGeneralizedBucklingOperators(elasticOperator, geometricOperator, options = {}) {
+  const requestedModeCount = positiveInteger(options.modeCount, 3);
+  const residualTolerance = positiveNumber(options.residualTolerance, 1e-7);
+  const result = solveRequestedGeneralizedEigen({
+    primary: elasticOperator,
+    secondary: geometricOperator,
+    modeCount: requestedModeCount,
+    residualTolerance,
+    eigenTolerance: options.eigenTolerance,
+    maxIterations: options.maxIterations,
+    positiveEigenTolerance: options.positiveEigenTolerance,
+    stiffnessPivotTolerance: options.stiffnessPivotTolerance,
+    maximumProjectionDimension: options.projectionDimension,
+    signal: options.signal,
+    onProgress: options.onEigenProgress,
   });
-  if (!decomposition.converged) {
-    return eigenFailure('EIGENSOLVER_NOT_CONVERGED', requestedModeCount, residualTolerance, decomposition);
-  }
-
-  const maxMu = Math.max(0, ...decomposition.values);
-  const positiveTolerance = positiveNumber(options.positiveEigenTolerance, Math.max(1e-18, maxMu * 1e-12));
-  const candidates = decomposition.values
-    .map((mu, index) => ({ mu, vector: decomposition.vectors.map((row) => row[index]) }))
-    .filter((item) => Number.isFinite(item.mu) && item.mu > positiveTolerance)
-    .sort((a, b) => b.mu - a.mu);
-
-  const modes = candidates.slice(0, requestedModeCount).map((candidate, index) => {
-    const rawMode = multiplyTransposeVector(inverseLower, candidate.vector);
-    const modeShape = normalizeModeShape(rawMode);
-    const loadFactor = 1 / candidate.mu;
-    const residual = generalizedResidual(K, G, modeShape, loadFactor);
-    return {
-      mode: index + 1,
-      loadFactor,
-      eigenvalue: loadFactor,
-      inverseEigenvalue: candidate.mu,
-      modeShape,
-      normalization: 'max-absolute-free-dof-equals-one',
-      residual: residual.normalized,
-      residualAbsolute: residual.absolute,
-      converged: residual.normalized <= residualTolerance,
-    };
-  });
-
-  if (modes.length < requestedModeCount) {
-    return eigenFailure('INSUFFICIENT_BUCKLING_MODES', requestedModeCount, residualTolerance, {
+  const modes = (result.modes || []).map((mode, index) => ({
+    mode: index + 1,
+    loadFactor: mode.eigenvalue,
+    eigenvalue: mode.eigenvalue,
+    inverseEigenvalue: mode.inverseEigenvalue,
+    modeShape: Array.from(mode.vector),
+    normalization: 'max-absolute-free-dof-equals-one',
+    residual: mode.residual,
+    residualAbsolute: mode.residualAbsolute,
+    converged: mode.residual <= residualTolerance,
+  }));
+  if (!result.ok) {
+    const reason = result.reason === 'PRIMARY_OPERATOR_NOT_POSITIVE_DEFINITE'
+      ? 'SINGULAR_STIFFNESS'
+      : result.reason === 'INSUFFICIENT_POSITIVE_EIGENMODES'
+        || result.reason === 'EIGEN_SUBSPACE_RANK_DEFICIENT'
+        ? 'INSUFFICIENT_BUCKLING_MODES'
+        : result.reason === 'EIGENSOLVER_NOT_CONVERGED'
+          ? 'BUCKLING_RESIDUAL_NOT_CONVERGED'
+          : result.reason;
+    return eigenFailure(reason, requestedModeCount, residualTolerance, {
       modes,
       availableModeCount: modes.length,
-      sweeps: decomposition.sweeps,
-      rotations: decomposition.rotations,
-      message: `Requested ${requestedModeCount} positive buckling modes but only ${modes.length} are available.`,
-    });
-  }
-  const failedMode = modes.find((mode) => !mode.converged);
-  if (failedMode) {
-    return eigenFailure('BUCKLING_RESIDUAL_NOT_CONVERGED', requestedModeCount, residualTolerance, {
-      modes,
-      availableModeCount: modes.length,
-      sweeps: decomposition.sweeps,
-      rotations: decomposition.rotations,
-      message: `Buckling mode ${failedMode.mode} residual ${failedMode.residual} exceeds ${residualTolerance}.`,
+      sweeps: result.convergenceTrace?.length || 0,
+      rotations: 0,
+      message: result.message || null,
+      eigen: bucklingEigenSummary(result),
     });
   }
   return {
@@ -497,8 +513,21 @@ export function solveGeneralizedBucklingModes(K, G, options = {}) {
     requestedModeCount,
     availableModeCount: modes.length,
     residualTolerance,
-    sweeps: decomposition.sweeps,
-    rotations: decomposition.rotations,
+    sweeps: result.convergenceTrace.length,
+    rotations: 0,
+    eigen: bucklingEigenSummary(result),
+  };
+}
+
+function bucklingEigenSummary(result) {
+  return {
+    version: result?.version || null,
+    status: result?.ok ? 'available' : 'failed',
+    reason: result?.reason || null,
+    requestedModeCount: result?.requestedModeCount || 0,
+    availableModeCount: result?.availableModeCount || 0,
+    convergenceTrace: result?.convergenceTrace || [],
+    diagnostics: result?.diagnostics || null,
   };
 }
 
@@ -884,164 +913,12 @@ function eigenFailure(reason, requestedModeCount, residualTolerance, detail = {}
     message: detail.message || null,
     pivotIndex: detail.pivotIndex ?? null,
     pivot: detail.pivot ?? null,
+    eigen: detail.eigen || null,
   };
-}
-
-function factorCholesky(A, toleranceInput) {
-  const n = A.length;
-  const L = Array.from({ length: n }, () => new Array(n).fill(0));
-  const scale = Math.max(1, ...A.map((row, index) => Math.abs(Number(row[index]) || 0)));
-  const tolerance = positiveNumber(toleranceInput, 1e-12) * scale;
-  for (let i = 0; i < n; i += 1) {
-    for (let j = 0; j <= i; j += 1) {
-      let value = 0.5 * ((Number(A[i][j]) || 0) + (Number(A[j][i]) || 0));
-      for (let k = 0; k < j; k += 1) value -= L[i][k] * L[j][k];
-      if (i === j) {
-        if (!Number.isFinite(value) || value <= tolerance) return { ok: false, pivotIndex: i, pivot: value };
-        L[i][j] = Math.sqrt(value);
-      } else {
-        L[i][j] = value / L[j][j];
-      }
-    }
-  }
-  return { ok: true, L };
-}
-
-function invertLower(L) {
-  const n = L.length;
-  const inverse = Array.from({ length: n }, () => new Array(n).fill(0));
-  for (let col = 0; col < n; col += 1) {
-    for (let row = 0; row < n; row += 1) {
-      let value = row === col ? 1 : 0;
-      for (let k = 0; k < row; k += 1) value -= L[row][k] * inverse[k][col];
-      inverse[row][col] = value / L[row][row];
-    }
-  }
-  return inverse;
-}
-
-function jacobiSymmetric(input, options = {}) {
-  const A = input.map((row) => row.slice());
-  const n = A.length;
-  const vectors = identity(n);
-  const tolerance = positiveNumber(options.tolerance, 1e-12);
-  const maxSweeps = positiveInteger(options.maxSweeps, 30);
-  let rotations = 0;
-  let sweeps = 0;
-  let converged = n <= 1;
-  for (let sweep = 1; sweep <= maxSweeps && !converged; sweep += 1) {
-    sweeps = sweep;
-    const scale = Math.max(Number.EPSILON, ...A.map((row, index) => Math.abs(row[index])));
-    const threshold = tolerance * scale;
-    for (let p = 0; p < n - 1; p += 1) {
-      for (let q = p + 1; q < n; q += 1) {
-        const apq = A[p][q];
-        if (Math.abs(apq) <= threshold) continue;
-        const angle = 0.5 * Math.atan2(2 * apq, A[q][q] - A[p][p]);
-        const c = Math.cos(angle);
-        const s = Math.sin(angle);
-        const app = A[p][p];
-        const aqq = A[q][q];
-        A[p][p] = c * c * app - 2 * s * c * apq + s * s * aqq;
-        A[q][q] = s * s * app + 2 * s * c * apq + c * c * aqq;
-        A[p][q] = 0;
-        A[q][p] = 0;
-        for (let k = 0; k < n; k += 1) {
-          if (k !== p && k !== q) {
-            const akp = A[k][p];
-            const akq = A[k][q];
-            A[k][p] = c * akp - s * akq;
-            A[p][k] = A[k][p];
-            A[k][q] = s * akp + c * akq;
-            A[q][k] = A[k][q];
-          }
-          const vkp = vectors[k][p];
-          const vkq = vectors[k][q];
-          vectors[k][p] = c * vkp - s * vkq;
-          vectors[k][q] = s * vkp + c * vkq;
-        }
-        rotations += 1;
-      }
-    }
-    converged = maxOffDiagonal(A) <= threshold;
-  }
-  return {
-    converged,
-    values: A.map((row, index) => row[index]),
-    vectors,
-    sweeps,
-    rotations,
-  };
-}
-
-function generalizedResidual(K, G, modeShape, loadFactor) {
-  const kx = matVec(K, modeShape);
-  const gx = matVec(G, modeShape);
-  const difference = kx.map((value, index) => value - loadFactor * gx[index]);
-  const absolute = norm(difference);
-  const denominator = Math.max(norm(kx), Math.abs(loadFactor) * norm(gx), Number.EPSILON);
-  return { absolute, normalized: absolute / denominator };
-}
-
-function normalizeModeShape(vector) {
-  const max = Math.max(0, ...vector.map((value) => Math.abs(value)));
-  if (!(max > 0)) return vector.slice();
-  const output = vector.map((value) => value / max);
-  const anchor = output.find((value) => Math.abs(value) >= 1 - 1e-12);
-  return anchor < 0 ? output.map((value) => -value) : output;
-}
-
-function submatrix(A, ids) {
-  return ids.map((i) => ids.map((j) => A[i][j]));
-}
-
-function multiply(A, B) {
-  const output = Array.from({ length: A.length }, () => new Array(B[0]?.length || 0).fill(0));
-  for (let i = 0; i < A.length; i += 1) {
-    for (let k = 0; k < B.length; k += 1) {
-      const scale = A[i][k];
-      if (!scale) continue;
-      for (let j = 0; j < B[k].length; j += 1) output[i][j] += scale * B[k][j];
-    }
-  }
-  return output;
-}
-
-function transpose(A) {
-  return A[0].map((_value, col) => A.map((row) => row[col]));
-}
-
-function symmetrize(A) {
-  return A.map((row, i) => row.map((value, j) => 0.5 * (value + A[j][i])));
-}
-
-function multiplyTransposeVector(A, vector) {
-  return A[0].map((_value, col) => A.reduce((sum, row, index) => sum + row[col] * vector[index], 0));
-}
-
-function matVec(A, x) {
-  return A.map((row) => row.reduce((sum, value, index) => sum + value * x[index], 0));
-}
-
-function maxOffDiagonal(A) {
-  let max = 0;
-  for (let i = 0; i < A.length; i += 1) {
-    for (let j = i + 1; j < A.length; j += 1) max = Math.max(max, Math.abs(A[i][j]));
-  }
-  return max;
 }
 
 function identity(n) {
   return Array.from({ length: n }, (_row, i) => Array.from({ length: n }, (_col, j) => (i === j ? 1 : 0)));
-}
-
-function squareFinite(A) {
-  return Array.isArray(A)
-    && A.every((row) => Array.isArray(row) && row.length === A.length && row.every((value) => Number.isFinite(Number(value))));
-}
-
-function norm(vector) {
-  return Math.sqrt(vector.reduce((sum, value) => sum + value * value, 0));
 }
 
 function positiveInteger(value, fallback) {

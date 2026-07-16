@@ -1,0 +1,220 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteVersion": "p9-m6-sparse-eigen-evidence-v1",
+  "suiteId": "P9-M6-SPARSE-EIGEN-DYNAMICS",
+  "milestone": "P9-M6",
+  "generatedAt": "2026-07-16T01:00:43.645Z",
+  "sourceRevision": "c8da2ec+worktree",
+  "priorEvidenceHash": "d39fb4ba7b541326b5bb5969891bacd2a8379aca82978591b949f83088b24964",
+  "status": "PASS",
+  "verificationIds": [
+    "P9-GPU-EIG-01",
+    "P9-GPU-EIG-02",
+    "P9-GPU-EIG-03",
+    "P9-GPU-EIG-04",
+    "P9-GPU-EIG-05",
+    "P9-GPU-EIG-06",
+    "P9-GPU-EIG-07",
+    "P9-GPU-EIG-08",
+    "P9-GPU-EIG-09",
+    "P9-GPU-EIG-10",
+    "P9-GPU-EIG-11",
+    "P9-GPU-EIG-12",
+    "P9-GPU-EIG-13",
+    "P9-GPU-EIG-14",
+    "P9-PERF-11",
+    "P9-REF-06"
+  ],
+  "backend": {
+    "id": "p9-eigen-cpu-f64-production-v1",
+    "executionTarget": "cpu",
+    "precision": "f64",
+    "algorithm": "sparse-shift-invert-block-subspace-rayleigh-ritz",
+    "fullDenseEigenMatrixAllocated": false,
+    "optionalGpuSpmvQualified": false,
+    "autoGpuAllowed": false
+  },
+  "tests": {
+    "dynamics": {
+      "ok": true,
+      "verificationIds": [
+        "P9-GPU-EIG-01",
+        "P9-GPU-EIG-02",
+        "P9-GPU-EIG-03",
+        "P9-GPU-EIG-04",
+        "P9-GPU-EIG-05",
+        "P9-GPU-EIG-06",
+        "P9-GPU-EIG-07",
+        "P9-GPU-EIG-08",
+        "P9-GPU-EIG-09",
+        "P9-GPU-EIG-10",
+        "P9-GPU-EIG-11",
+        "P9-GPU-EIG-12",
+        "P9-GPU-EIG-13",
+        "P9-GPU-EIG-14",
+        "P9-PERF-11"
+      ],
+      "exactEigenvalues": [
+        1.9999999999999996,
+        3.000000000000001,
+        3.999999999999999
+      ],
+      "modalPeriod": 0.07255197456936871,
+      "bucklingFactors": [
+        2,
+        3,
+        4
+      ],
+      "scale": {
+        "dimension": 240,
+        "requestedModes": 6,
+        "projectionDimension": 12,
+        "durationMs": 191.89780000000002,
+        "operatorDurationMs": 105.2133,
+        "stiffnessNnz": 1024,
+        "massNnz": 80
+      }
+    },
+    "product": {
+      "ok": true,
+      "verificationIds": [
+        "P9-REF-06",
+        "P9-FR-ELA-06"
+      ],
+      "backendId": "p9-eigen-cpu-f64-production-v1",
+      "workerOperation": "modalRsa",
+      "resultHash": "744718ddefe4103552978469b374b1a09ab4336b6a02bc0b1d8cd0ea1e9c1482",
+      "gpuFailClosed": true
+    }
+  },
+  "numeric": {
+    "exactEigenvalues": [
+      1.9999999999999996,
+      3.000000000000001,
+      3.999999999999999
+    ],
+    "bucklingFactors": [
+      2,
+      3,
+      4
+    ],
+    "modalPeriod": 0.07255197456936871,
+    "signOrderMacCanonical": true,
+    "massNormalizationAudited": true,
+    "rsaRecoveryAudited": true,
+    "bucklingRecoveryAudited": true
+  },
+  "performance": {
+    "tier": "M-diagnostic",
+    "dimension": 240,
+    "requestedModes": 6,
+    "projectionDimension": 12,
+    "durationMs": 191.89780000000002,
+    "budgetMs": 5000,
+    "budgetMet": true
+  },
+  "product": {
+    "backendId": "p9-eigen-cpu-f64-production-v1",
+    "workerOperation": "modalRsa",
+    "resultHash": "744718ddefe4103552978469b374b1a09ab4336b6a02bc0b1d8cd0ea1e9c1482",
+    "gpuFailClosed": true
+  },
+  "architecture": {
+    "operatorStorage": "typed-csc",
+    "requestedModeOnly": true,
+    "denseReferencePolicy": "small-projected-problem-only-max-32",
+    "recoveryAuthority": "cpu-f64",
+    "sharedModalBucklingCore": true,
+    "duplicatedDenseEigenHelpersRemoved": true,
+    "productExecution": "worker-service"
+  },
+  "results": [
+    {
+      "id": "P9-GPU-EIG-01",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-02",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-03",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-04",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-05",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-06",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-07",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-08",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-09",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-10",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-11",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-12",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-13",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-GPU-EIG-14",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-PERF-11",
+      "status": "PASS",
+      "test": "tests/p9-m6-eigen-dynamics.mjs"
+    },
+    {
+      "id": "P9-REF-06",
+      "status": "PASS",
+      "test": "tests/p9-m6-worker-product.mjs"
+    }
+  ],
+  "limitations": [
+    "Structural frame and rigid-diaphragm assembly still originates in the existing dense assembly owner before CSC extraction.",
+    "GPU SpMV and block-vector execution are optional in M6 and are not qualified or automatically routed.",
+    "External application and vendor validation remains outside this local milestone."
+  ],
+  "qualificationImpact": "M6-complete-cpu-f64-sparse-eigen-G2-retained",
+  "artifactHash": "6cc61b78529e693ba201c42678ded0fb4e3949cdd3a846ec4a25c2d35cd52190"
+}

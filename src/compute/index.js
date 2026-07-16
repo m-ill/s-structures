@@ -45,6 +45,16 @@ export {
   isProductionElasticBackendId,
 } from './adapters/elasticProductionAdapter.js';
 export {
+  PRODUCTION_EIGEN_ADAPTER_VERSION,
+  PRODUCTION_EIGEN_BACKEND_ID,
+  PRODUCTION_EIGEN_OPERATIONS,
+  createProductionEigenComputeBackend,
+  createProductionEigenExecutor,
+  describeProductionEigenAdapter,
+  executeProductionEigen,
+  isProductionEigenBackendId,
+} from './adapters/eigenProductionAdapter.js';
+export {
   COMPUTE_WORKER_PROTOCOL_VERSION,
   COMPUTE_JOB_EVENT_TYPES,
   COMPUTE_JOB_REQUEST_TYPES,
@@ -87,6 +97,19 @@ export { SPARSE_ICCG_VERSION, factorIncompleteCholesky, solveIccg } from './spar
 export { SPARSE_FACTOR_RUNTIME_VERSION, createSparseFactorRuntime } from './sparse/factorRuntime.js';
 export { CPU_SPARSE_BACKEND_ID, createCpuSparseBackend, resolveCpuWasmSparseBackend } from './backends/cpuSparseBackend.js';
 export {
+  SYMMETRIC_SPARSE_OPERATOR_VERSION,
+  createSymmetricSparseOperator,
+  createSymmetricSparseOperatorFromDense,
+  sparseOperatorMatvecParity,
+} from './eigen/sparseOperator.js';
+export {
+  SMALL_DENSE_REFERENCE_LIMIT,
+  SMALL_SYMMETRIC_EIGEN_VERSION,
+  modalAssuranceCriterion,
+  solveSmallSymmetricEigen,
+} from './eigen/smallSymmetric.js';
+export { REQUESTED_MODE_EIGEN_VERSION, solveRequestedGeneralizedEigen } from './eigen/requestedModes.js';
+export {
   WASM_SPARSE_BACKEND_ID,
   WASM_SPARSE_DIAGNOSTICS_VERSION,
   createWasmSparseBackend,
@@ -105,6 +128,7 @@ export {
   createHybridPDeltaTangentSolver,
 } from './elastic/hybridPDelta.js';
 export { ELASTIC_ANALYSIS_SERVICE_VERSION, createElasticAnalysisService } from './product/elasticAnalysisService.js';
+export { EIGEN_ANALYSIS_SERVICE_VERSION, createEigenAnalysisService } from './product/eigenAnalysisService.js';
 export {
   SYNC_ANALYSIS_COMPATIBILITY_POLICY,
   SYNC_ANALYSIS_COMPATIBILITY_VERSION,

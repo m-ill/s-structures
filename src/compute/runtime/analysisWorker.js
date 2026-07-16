@@ -3,6 +3,10 @@ import {
   createProductionElasticExecutor,
   isProductionElasticBackendId,
 } from '../adapters/elasticProductionAdapter.js';
+import {
+  createProductionEigenExecutor,
+  isProductionEigenBackendId,
+} from '../adapters/eigenProductionAdapter.js';
 import { createComputeWorkerCore } from './workerCore.js';
 
 export const COMPUTE_ANALYSIS_WORKER_VERSION = 'p9-compute-analysis-worker-v1';
@@ -24,10 +28,11 @@ export function attachComputeAnalysisWorker(endpoint, options = {}) {
 export function createComputeAnalysisExecutor() {
   const current = createCurrentAnalysisExecutor();
   const productionElastic = createProductionElasticExecutor();
+  const productionEigen = createProductionEigenExecutor();
   return function executeAnalysisJob(job, context) {
-    return isProductionElasticBackendId(job.operation?.backendId)
-      ? productionElastic(job, context)
-      : current(job, context);
+    if (isProductionElasticBackendId(job.operation?.backendId)) return productionElastic(job, context);
+    if (isProductionEigenBackendId(job.operation?.backendId)) return productionEigen(job, context);
+    return current(job, context);
   };
 }
 

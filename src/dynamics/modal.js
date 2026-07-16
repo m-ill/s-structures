@@ -1,6 +1,6 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { buildMassSourceTrace } from '../loads/loadsV2.js';
-import { assembleStiffness3D, solveLinear } from '../solver/linear3d.js';
+import { assembleStiffness3D } from '../solver/linear3d.js';
 import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from './elasticCompleteness.js';
 import {
@@ -12,6 +12,12 @@ import {
 import { buildModalConstraintDomain } from './modalDiaphragm.js';
 import { buildCanonicalAnalysisDomain } from '../solver/domain/canonicalDomain.js';
 import { buildDomainAdapterIdentity } from '../solver/domain/compatibility.js';
+import { createCscFromTriplets } from '../compute/sparse/matrix.js';
+import {
+  createSymmetricSparseOperator,
+  createSymmetricSparseOperatorFromDense,
+} from '../compute/eigen/sparseOperator.js';
+import { solveRequestedGeneralizedEigen } from '../compute/eigen/requestedModes.js';
 
 const DOF_DIR = ['x', 'y', 'z'];
 
@@ -71,26 +77,56 @@ export function analyzeDynamics(model, options = {}) {
   ));
   if (!modalDofs.length) return { ok: false, reason: 'NO_MASS', modes: [], rsa: null, analysisDomain: domainIdentity };
 
-  const residualDofs = modalSystem.free.filter((dof) => !modalDofs.includes(dof));
-  const condensation = condenseToModalDofs(modalSystem.K, modalDofs, residualDofs);
-  if (condensation.status !== 'available') {
+  const coordinateDofs = modalSystem.free.slice();
+  const residualDofs = coordinateDofs.filter((dof) => !modalDofs.includes(dof));
+  let condensation = implicitSparseCondensation(modalDofs, residualDofs);
+  let stiffnessOperator;
+  let massOperator;
+  try {
+    stiffnessOperator = createSymmetricSparseOperatorFromDense(modalSystem.K, {
+      id: 'modal-elastic-stiffness',
+      matrixClass: 'spd',
+      indices: coordinateDofs,
+    });
+    massOperator = constraintDomain.applied
+      ? createSymmetricSparseOperatorFromDense(constraintDomain.massMatrix, {
+          id: 'modal-generalized-mass',
+          matrixClass: 'positive-semidefinite',
+          indices: coordinateDofs,
+        })
+      : diagonalMassOperator(coordinateDofs.map((dof) => mass[dof]));
+  } catch (error) {
     return failedModalAnalysis({
       model,
       system,
       mass,
       massSourceTrace,
-      condensation,
+      condensation: { ...condensation, status: 'failed', reason: error.code || 'MODAL_OPERATOR_ASSEMBLY_FAILED' },
       modes: [],
-      reason: condensation.reason || 'RESIDUAL_DOF_CONDENSATION_FAILED',
+      reason: error.code || 'MODAL_OPERATOR_ASSEMBLY_FAILED',
       analysisDomain: domainIdentity,
     });
   }
-  const K = condensation.K;
-  const M = constraintDomain.applied
-    ? submatrix(constraintDomain.massMatrix, modalDofs, modalDofs)
-    : modalDofs.map((dof, row) => modalDofs.map((_item, column) => (row === column ? mass[dof] : 0)));
-  const eig = solveGeneralizedSymmetricEigen(K, M);
+  const eig = solveRequestedGeneralizedEigen({
+    primary: stiffnessOperator,
+    secondary: massOperator,
+    modeCount: Math.min(modeCount, modalDofs.length),
+    residualTolerance: settings.modalResidualTolerance || settings.eigenResidualTolerance || 1e-8,
+    eigenTolerance: settings.modalEigenTolerance || settings.eigenTolerance,
+    maxIterations: settings.modalMaxIterations || settings.eigenMaxIterations,
+    maximumProjectionDimension: settings.modalProjectionDimension,
+    signal: settings.signal,
+    onProgress: settings.onEigenProgress,
+  });
   if (!eig.ok) {
+    const singularResidualDomain = eig.reason === 'PRIMARY_OPERATOR_NOT_POSITIVE_DEFINITE' && residualDofs.length > 0;
+    const reason = singularResidualDomain ? 'RESIDUAL_DOF_BACK_SUBSTITUTION_FAILED' : eig.reason;
+    condensation = {
+      ...condensation,
+      status: 'failed',
+      reason,
+      transformationPreserved: false,
+    };
     return failedModalAnalysis({
       model,
       system,
@@ -98,14 +134,16 @@ export function analyzeDynamics(model, options = {}) {
       massSourceTrace,
       condensation,
       modes: [],
-      reason: eig.reason,
+      reason,
       analysisDomain: domainIdentity,
+      eigen: eigenSummary(eig),
     });
   }
-  const modes = eig.values
-    .map((value, i) => modeFromEigen({
-      lambda: value,
-      eigenvector: eig.vectors.map((row) => row[i]),
+  const modes = eig.modes
+    .map((eigenMode) => modeFromEigen({
+      lambda: eigenMode.eigenvalue,
+      eigenvector: eigenMode.vector,
+      coordinateDofs,
       modalDofs,
       physicalModalDofs,
       physicalMass: mass,
@@ -124,7 +162,7 @@ export function analyzeDynamics(model, options = {}) {
       index: index + 1,
       units: modalUnits(model.units),
       provenance: {
-        source: 'symmetric-generalized-eigen-solution',
+        source: 'sparse-requested-mode-generalized-eigen-solution',
         modeId: `MODE${index + 1}`,
         normalization: 'mass-normalized',
         staticCaseReferences: [],
@@ -180,6 +218,7 @@ export function analyzeDynamics(model, options = {}) {
     condensation: condensationReport,
     diaphragmAssembly: constraintDomain.summary,
     analysisDomain: domainIdentity,
+    eigen: eigenSummary(eig),
     modes,
     mass: {
       total: totalMass,
@@ -205,6 +244,7 @@ function failedModalAnalysis({
   modes = [],
   reason,
   analysisDomain = null,
+  eigen = null,
 }) {
   const report = condensationReport || condensationSummary(condensation, modes);
   return {
@@ -213,6 +253,7 @@ function failedModalAnalysis({
     status: 'failed',
     reason,
     analysisDomain,
+    eigen,
     designBlocked: true,
     designBlockers: [reason],
     type: 'modal_lumped_mass',
@@ -802,82 +843,47 @@ function buildResponseSpectrumReview({ method, modal, combined }) {
   };
 }
 
-function condenseToModalDofs(K, modalDofs, residualDofs) {
-  const Ktt = submatrix(K, modalDofs, modalDofs);
-  if (!residualDofs.length) {
-    return {
-      K: Ktt,
-      status: 'available',
-      method: 'no-residual-dofs',
-      modalDofs: modalDofs.slice(),
-      residualDofs: [],
-      residualSolutions: [],
-      reason: null,
-    };
-  }
-  const Ktr = submatrix(K, modalDofs, residualDofs);
-  const Krt = submatrix(K, residualDofs, modalDofs);
-  const Krr = submatrix(K, residualDofs, residualDofs);
-  const solved = [];
-  for (let j = 0; j < modalDofs.length; j += 1) {
-    const rhs = Krt.map((row) => row[j]);
-    const x = solveLinear(Krr.map((row) => row.slice()), rhs);
-    if (!x) {
-      return {
-        K: Ktt,
-        status: 'failed',
-        method: 'schur-complement-back-substitution',
-        modalDofs: modalDofs.slice(),
-        residualDofs: residualDofs.slice(),
-        residualSolutions: [],
-        reason: 'RESIDUAL_DOF_BACK_SUBSTITUTION_FAILED',
-      };
-    }
-    solved.push(x);
-  }
-  const out = Ktt.map((row) => row.slice());
-  for (let i = 0; i < modalDofs.length; i += 1) {
-    for (let j = 0; j < modalDofs.length; j += 1) {
-      let correction = 0;
-      for (let r = 0; r < residualDofs.length; r += 1) correction += Ktr[i][r] * solved[j][r];
-      out[i][j] -= correction;
-    }
-  }
+function implicitSparseCondensation(modalDofs, residualDofs) {
   return {
-    K: symmetrize(out),
     status: 'available',
-    method: 'schur-complement-back-substitution',
+    method: residualDofs.length
+      ? 'implicit-sparse-shift-invert-no-dense-schur'
+      : 'no-residual-dofs',
     modalDofs: modalDofs.slice(),
     residualDofs: residualDofs.slice(),
-    residualSolutions: solved,
+    residualSolutions: [],
     reason: null,
+    transformationPreserved: true,
   };
 }
 
-function solveGeneralizedSymmetricEigen(K, M) {
-  if (!K.length || K.length !== M.length) return { ok: false, reason: 'MASS_MATRIX_DIMENSION_MISMATCH' };
-  const L = choleskyLower(symmetrize(M));
-  if (!L) return { ok: false, reason: 'MASS_MATRIX_NOT_POSITIVE_DEFINITE' };
-  const inverseL = inverseLowerTriangular(L);
-  const normalized = symmetrize(multiplyMatrices(multiplyMatrices(inverseL, K), transpose(inverseL)));
-  const eig = jacobiEigen(normalized);
-  const vectors = Array.from({ length: K.length }, () => new Array(K.length).fill(0));
-  for (let column = 0; column < K.length; column += 1) {
-    const normalizedVector = eig.vectors.map((row) => row[column]);
-    const vector = solveLowerTranspose(L, normalizedVector);
-    const generalizedMass = quadraticForm(vector, M);
-    if (!(generalizedMass > 0) || !Number.isFinite(generalizedMass)) {
-      return { ok: false, reason: 'MASS_NORMALIZATION_FAILED' };
-    }
-    const scale = 1 / Math.sqrt(generalizedMass);
-    for (let row = 0; row < K.length; row += 1) vectors[row][column] = vector[row] * scale;
-  }
-  return { ok: true, values: eig.values, vectors };
+function diagonalMassOperator(values) {
+  const triplets = values
+    .map((value, index) => ({ row: index, column: index, value: Number(value) || 0 }))
+    .filter((entry) => entry.value > 0);
+  return createSymmetricSparseOperator(
+    createCscFromTriplets(values.length, values.length, triplets),
+    { id: 'modal-lumped-mass', matrixClass: 'positive-semidefinite' },
+  );
+}
+
+function eigenSummary(result) {
+  return {
+    version: result?.version || null,
+    status: result?.ok ? 'available' : 'failed',
+    reason: result?.reason || null,
+    method: result?.diagnostics?.algorithm || 'sparse-shift-invert-block-subspace-rayleigh-ritz',
+    requestedModeCount: result?.requestedModeCount || 0,
+    availableModeCount: result?.availableModeCount || 0,
+    convergenceTrace: result?.convergenceTrace || [],
+    diagnostics: result?.diagnostics || null,
+  };
 }
 
 function modeFromEigen({
   lambda,
   eigenvector,
+  coordinateDofs,
   modalDofs,
   physicalModalDofs,
   physicalMass,
@@ -890,16 +896,7 @@ function modeFromEigen({
   if (!(lambda > 1e-9)) return null;
   const omega = Math.sqrt(lambda);
   const coordinateVector = new Array(coordinateDofCount).fill(0);
-  for (let i = 0; i < modalDofs.length; i += 1) {
-    coordinateVector[modalDofs[i]] = eigenvector[i];
-  }
-  if (condensation.status === 'available' && condensation.residualDofs.length) {
-    for (let residualIndex = 0; residualIndex < condensation.residualDofs.length; residualIndex += 1) {
-      coordinateVector[condensation.residualDofs[residualIndex]] = -modalDofs.reduce((sum, _dof, modalIndex) => (
-        sum + condensation.residualSolutions[modalIndex][residualIndex] * coordinateVector[modalDofs[modalIndex]]
-      ), 0);
-    }
-  }
+  for (let i = 0; i < coordinateDofs.length; i += 1) coordinateVector[coordinateDofs[i]] = eigenvector[i];
   const residualCheck = residualEquilibriumCheck(coordinateStiffness, coordinateVector, condensation);
   const vector = expandVector(coordinateVector);
   const initialModalMass = physicalModalDofs.reduce(
@@ -995,10 +992,12 @@ function condensationSummary(condensation, modes) {
   return {
     status: condensation.status === 'available' && modeChecksPassed ? 'available' : 'failed',
     method: condensation.method,
-    equation: 'u_residual=-inverse(Krr)*Krt*u_modal',
+    equation: condensation.method === 'implicit-sparse-shift-invert-no-dense-schur'
+      ? 'K*u=lambda*M*u; massless residual rows are satisfied in the shared sparse solve'
+      : 'no residual-dof transformation required',
     modalDofCount: condensation.modalDofs.length,
     residualDofCount: condensation.residualDofs.length,
-    transformationPreserved: condensation.status === 'available',
+    transformationPreserved: condensation.status === 'available' && condensation.transformationPreserved !== false,
     modeChecksPassed,
     maxAbsoluteEquilibriumResidual: Math.max(0, ...modes.map((mode) => (
       finiteNumber(mode.residualRecovery?.maxAbsoluteEquilibriumResidual, 0)
@@ -1067,152 +1066,6 @@ function spectralAcceleration(period, spectrum = {}) {
     }
   }
   return points[0].sa * scale;
-}
-
-function choleskyLower(matrix) {
-  const n = matrix.length;
-  const out = Array.from({ length: n }, () => new Array(n).fill(0));
-  const scale = Math.max(1, ...matrix.map((row, index) => Math.abs(row[index] || 0)));
-  const tolerance = scale * 1e-12;
-  for (let row = 0; row < n; row += 1) {
-    for (let column = 0; column <= row; column += 1) {
-      let value = matrix[row][column];
-      for (let k = 0; k < column; k += 1) value -= out[row][k] * out[column][k];
-      if (row === column) {
-        if (!(value > tolerance)) return null;
-        out[row][column] = Math.sqrt(value);
-      } else {
-        out[row][column] = value / out[column][column];
-      }
-    }
-  }
-  return out;
-}
-
-function inverseLowerTriangular(matrix) {
-  const n = matrix.length;
-  const out = Array.from({ length: n }, () => new Array(n).fill(0));
-  for (let column = 0; column < n; column += 1) {
-    const rhs = new Array(n).fill(0);
-    rhs[column] = 1;
-    const solution = solveLower(matrix, rhs);
-    for (let row = 0; row < n; row += 1) out[row][column] = solution[row];
-  }
-  return out;
-}
-
-function solveLower(matrix, rhs) {
-  const out = new Array(rhs.length).fill(0);
-  for (let row = 0; row < rhs.length; row += 1) {
-    let value = rhs[row];
-    for (let column = 0; column < row; column += 1) value -= matrix[row][column] * out[column];
-    out[row] = value / matrix[row][row];
-  }
-  return out;
-}
-
-function solveLowerTranspose(matrix, rhs) {
-  const out = new Array(rhs.length).fill(0);
-  for (let row = rhs.length - 1; row >= 0; row -= 1) {
-    let value = rhs[row];
-    for (let column = row + 1; column < rhs.length; column += 1) value -= matrix[column][row] * out[column];
-    out[row] = value / matrix[row][row];
-  }
-  return out;
-}
-
-function multiplyMatrices(left, right) {
-  const rows = left.length;
-  const columns = right[0]?.length || 0;
-  const inner = right.length;
-  const out = Array.from({ length: rows }, () => new Array(columns).fill(0));
-  for (let row = 0; row < rows; row += 1) {
-    for (let k = 0; k < inner; k += 1) {
-      const value = left[row][k];
-      if (!value) continue;
-      for (let column = 0; column < columns; column += 1) out[row][column] += value * right[k][column];
-    }
-  }
-  return out;
-}
-
-function transpose(matrix) {
-  return matrix[0].map((_value, column) => matrix.map((row) => row[column]));
-}
-
-function quadraticForm(vector, matrix) {
-  let total = 0;
-  for (let row = 0; row < vector.length; row += 1) {
-    for (let column = 0; column < vector.length; column += 1) {
-      total += vector[row] * matrix[row][column] * vector[column];
-    }
-  }
-  return total;
-}
-
-function jacobiEigen(A) {
-  const n = A.length;
-  const a = A.map((row) => row.slice());
-  const v = Array.from({ length: n }, (_, i) => Array.from({ length: n }, (__, j) => (i === j ? 1 : 0)));
-  const maxIter = Math.max(50, n * n * 50);
-  for (let iter = 0; iter < maxIter; iter += 1) {
-    let p = 0;
-    let q = 1;
-    let max = 0;
-    for (let i = 0; i < n; i += 1) {
-      for (let j = i + 1; j < n; j += 1) {
-        if (Math.abs(a[i][j]) > max) {
-          max = Math.abs(a[i][j]);
-          p = i;
-          q = j;
-        }
-      }
-    }
-    if (max < 1e-8) break;
-    const theta = (a[q][q] - a[p][p]) / (2 * a[p][q]);
-    const t = Math.sign(theta || 1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
-    const c = 1 / Math.sqrt(t * t + 1);
-    const s = t * c;
-    const app = a[p][p];
-    const aqq = a[q][q];
-    const apq = a[p][q];
-    a[p][p] = app - t * apq;
-    a[q][q] = aqq + t * apq;
-    a[p][q] = 0;
-    a[q][p] = 0;
-    for (let k = 0; k < n; k += 1) {
-      if (k === p || k === q) continue;
-      const akp = a[k][p];
-      const akq = a[k][q];
-      a[k][p] = c * akp - s * akq;
-      a[p][k] = a[k][p];
-      a[k][q] = s * akp + c * akq;
-      a[q][k] = a[k][q];
-    }
-    for (let k = 0; k < n; k += 1) {
-      const vkp = v[k][p];
-      const vkq = v[k][q];
-      v[k][p] = c * vkp - s * vkq;
-      v[k][q] = s * vkp + c * vkq;
-    }
-  }
-  return { values: a.map((row, i) => row[i]), vectors: v };
-}
-
-function submatrix(A, rows, cols) {
-  return rows.map((row) => cols.map((col) => A[row][col]));
-}
-
-function symmetrize(A) {
-  const out = A.map((row) => row.slice());
-  for (let i = 0; i < out.length; i += 1) {
-    for (let j = i + 1; j < out.length; j += 1) {
-      const value = (out[i][j] + out[j][i]) / 2;
-      out[i][j] = value;
-      out[j][i] = value;
-    }
-  }
-  return out;
 }
 
 function orientModeVector(vector, modalDofs) {
