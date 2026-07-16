@@ -2,7 +2,7 @@ import { createProductionNonlinearCase, NONLINEAR_PRODUCT_STAGES } from '../nonl
 import { installFloatingPanel } from './floatingPanel.js';
 import { createRibbonGroup } from './indexNativeRibbonDom.js';
 
-export const NONLINEAR_WORKFLOW_UI_VERSION = 'p8-m10-nonlinear-workflow-ui-v1';
+export const NONLINEAR_WORKFLOW_UI_VERSION = 'p9-m9-nonlinear-workflow-ui-v2';
 
 const PANEL_STORAGE_KEY = 's-structures:nonlinear-workflow:p8-m10';
 const PURPOSES = Object.freeze({
@@ -18,11 +18,11 @@ const PURPOSES = Object.freeze({
 export function installNonlinearWorkflow(target = globalThis, options = {}) {
   const doc = target?.document;
   const bridge = options.bridge || target?.SStructuresEngine;
-  if (!doc?.createElement || !bridge?.getNonlinearProductService) return null;
+  if (!doc?.createElement || (!bridge?.getProductAnalysisService && !bridge?.getNonlinearProductService)) return null;
   if (target.SStructuresNonlinearWorkflow) return target.SStructuresNonlinearWorkflow;
 
   injectStyles(doc);
-  const service = bridge.getNonlinearProductService();
+  const service = bridge.getProductAnalysisService?.() || bridge.getNonlinearProductService();
   const host = doc.getElementById?.(options.hostId || 'canvasWrap') || doc.getElementById?.('main') || doc.body;
   const root = ensureRoot(doc, host);
   const state = {
@@ -36,6 +36,7 @@ export function installNonlinearWorkflow(target = globalThis, options = {}) {
     message: null,
     messageTone: 'info',
     renderingQueued: false,
+    computeTarget: readComputeTarget(target),
   };
 
   const api = {
@@ -86,6 +87,7 @@ export function installNonlinearWorkflow(target = globalThis, options = {}) {
       state.preflight = service.validate({
         analysisCase: draft,
         requireWorker: true,
+        computeTarget: state.computeTarget,
         previousDomainHashes: latestDomainHashes(bridge, draft.id),
       });
       if (!state.preflight.ok) {
@@ -96,9 +98,10 @@ export function installNonlinearWorkflow(target = globalThis, options = {}) {
         render(target, bridge, service, state, root, api);
         return api.getState();
       }
-      const job = bridge.startNonlinearRun({
+      const job = (bridge.startAnalysisRun || bridge.startNonlinearRun).call(bridge, {
         analysisCase: draft,
         requireWorker: true,
+        computeTarget: state.computeTarget,
         previousDomainHashes: latestDomainHashes(bridge, draft.id),
       });
       state.currentJobId = job.id;
@@ -112,19 +115,19 @@ export function installNonlinearWorkflow(target = globalThis, options = {}) {
     },
     pause() {
       if (!state.currentJobId) return api.getState();
-      state.currentJob = bridge.pauseNonlinearRun(state.currentJobId);
+      state.currentJob = (bridge.pauseAnalysisRun || bridge.pauseNonlinearRun).call(bridge, state.currentJobId);
       render(target, bridge, service, state, root, api);
       return api.getState();
     },
     cancel() {
       if (!state.currentJobId) return api.getState();
-      state.currentJob = bridge.cancelNonlinearRun(state.currentJobId);
+      state.currentJob = (bridge.cancelAnalysisRun || bridge.cancelNonlinearRun).call(bridge, state.currentJobId);
       render(target, bridge, service, state, root, api);
       return api.getState();
     },
     resume() {
       if (!state.currentJobId) return api.getState();
-      const job = bridge.resumeNonlinearRun(state.currentJobId);
+      const job = (bridge.resumeAnalysisRun || bridge.resumeNonlinearRun).call(bridge, state.currentJobId, { computeTarget: state.computeTarget });
       state.currentJobId = job.id;
       state.currentJob = job;
       render(target, bridge, service, state, root, api);
@@ -132,7 +135,7 @@ export function installNonlinearWorkflow(target = globalThis, options = {}) {
     },
     retry() {
       if (!state.currentJobId) return api.run();
-      const job = bridge.retryNonlinearRun(state.currentJobId);
+      const job = (bridge.retryAnalysisRun || bridge.retryNonlinearRun).call(bridge, state.currentJobId, { computeTarget: state.computeTarget });
       state.currentJobId = job.id;
       state.currentJob = job;
       render(target, bridge, service, state, root, api);
@@ -162,6 +165,12 @@ export function installNonlinearWorkflow(target = globalThis, options = {}) {
       else target.SStructuresNonlinearResultPopup?.open?.();
       return api.getState();
     },
+    setComputeTarget(computeTarget) {
+      state.computeTarget = ['auto', 'cpu', 'gpu'].includes(computeTarget) ? computeTarget : 'auto';
+      target.localStorage?.setItem?.('s-structures:compute-target', state.computeTarget);
+      render(target, bridge, service, state, root, api);
+      return api.getState();
+    },
     getState() {
       return {
         version: NONLINEAR_WORKFLOW_UI_VERSION,
@@ -174,6 +183,7 @@ export function installNonlinearWorkflow(target = globalThis, options = {}) {
         currentJobId: state.currentJobId,
         currentJobStatus: state.currentJob?.status || null,
         resultAvailable: state.currentJob?.resultAvailable === true,
+        computeTarget: state.computeTarget,
       };
     },
   };
@@ -205,6 +215,7 @@ function render(target, bridge, service, state, root, api) {
   state.preflight = service.validate({
     analysisCase: draft,
     requireWorker: true,
+    computeTarget: state.computeTarget,
     previousDomainHashes: latestDomainHashes(bridge, draft.id),
   });
   clear(root);
@@ -295,7 +306,7 @@ function renderStage(doc, target, bridge, state, stage, api) {
   if (stage === 'model') return renderModelStage(doc, target, state);
   if (stage === 'gravity') return renderGravityStage(doc, target, state);
   if (stage === 'properties') return renderPropertyStage(doc, target, state, api);
-  if (stage === 'control') return renderControlStage(doc, state);
+  if (stage === 'control') return renderControlStage(doc, bridge, state, api);
   if (stage === 'groundMotion') return renderGroundMotionStage(doc, target, state);
   if (stage === 'run') return renderRunStage(doc, state, api);
   return renderResultStage(doc, bridge, state, api);
@@ -353,9 +364,10 @@ function renderPropertyStage(doc, target, state, api) {
   return section;
 }
 
-function renderControlStage(doc, state) {
+function renderControlStage(doc, bridge, state, api) {
   const section = band(doc);
   const settings = state.drafts[state.mode].settings;
+  section.appendChild(renderComputeTargets(doc, bridge, state, api));
   if (state.mode === 'pushover') {
     section.appendChild(selectValuesField(doc, 'ssNlDirection', '방향', ['+x', '-x', '+y', '-y'], settings.direction));
     section.appendChild(selectValuesField(doc, 'ssNlPattern', '횡하중 패턴', ['triangular', 'uniform', 'modal', 'user'], settings.pattern));
@@ -370,9 +382,30 @@ function renderControlStage(doc, state) {
     section.appendChild(numberField(doc, 'ssNlMaxIterations', '스텝당 최대 Newton 반복', settings.newmark?.maxIterations, 1));
     section.appendChild(numberField(doc, 'ssNlDampingAlpha', 'Rayleigh α', settings.damping?.coefficients?.alpha, 0.0001));
     section.appendChild(numberField(doc, 'ssNlDampingBeta', 'Rayleigh β', settings.damping?.coefficients?.beta, 0.000001));
-    section.appendChild(checkboxField(doc, 'ssNlGpuEnabled', '검증된 GPU backend가 있을 때만 사용', settings.gpuEnabled === true));
   }
   return section;
+}
+
+function renderComputeTargets(doc, bridge, state, api) {
+  const kind = state.mode === 'nlth' ? 'nonlinearTimeHistory' : 'nonlinearStatic';
+  const capability = bridge.getAnalysisCapabilities?.({ kind });
+  const wrap = doc.createElement('div');
+  wrap.className = 'ss-nl-compute-control';
+  const segments = doc.createElement('div');
+  segments.className = 'ss-nl-compute-segments';
+  for (const target of capability?.targets || []) {
+    const control = segmentButton(doc, `ssNlCompute-${target.id}`, target.label, state.computeTarget === target.id, () => api.setComputeTarget(target.id));
+    control.disabled = target.available !== true;
+    control.title = target.available ? target.message : `${target.message} ${target.remediation || ''}`.trim();
+    segments.appendChild(control);
+  }
+  wrap.appendChild(segments);
+  const active = (capability?.targets || []).find((row) => row.id === state.computeTarget);
+  wrap.appendChild(note(doc, active?.available ? active.message : `${active?.message || ''} ${active?.remediation || ''}`.trim(), active?.available ? 'info' : 'warning'));
+  for (const unavailable of (capability?.targets || []).filter((row) => row.available !== true)) {
+    wrap.appendChild(note(doc, `${unavailable.label} 사용 불가: ${unavailable.message || '지원되지 않는 계산 경로입니다.'} ${unavailable.remediation || ''}`.trim(), 'warning'));
+  }
+  return wrap;
 }
 
 function renderGroundMotionStage(doc, target, state) {
@@ -583,7 +616,7 @@ function readVisibleForm(target, state, root) {
         beta: numberValue(value('ssNlDampingBeta', settings.damping?.coefficients?.beta), settings.damping?.coefficients?.beta),
       },
     };
-    settings.gpuEnabled = checked('ssNlGpuEnabled', settings.gpuEnabled === true);
+    settings.gpuEnabled = false;
     const values = parseNumbers(value('ssNlGroundValues', (settings.groundMotionRecords?.[0]?.values || []).join(' ')));
     if (values.length) {
       settings.groundMotionRecords = [{
@@ -857,6 +890,7 @@ function injectStyles(doc) {
     .ss-nl-workflow-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:54px;padding:9px 9px 8px 13px;border-bottom:1px solid #ccdae4;background:#f5f9fb;flex:none}.ss-nl-workflow-header h2{margin:0;color:#034f77;font-size:15px;line-height:1.3}.ss-nl-workflow-header span{display:block;margin-top:2px;color:#657b8c;font-size:10.5px}.ss-nl-head-actions{display:flex;align-items:center;gap:3px}.ss-nl-button{min-height:30px;padding:0 10px;border:1px solid #b8c9d5;border-radius:5px;background:#fff;color:#294c64;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}.ss-nl-button:hover{background:#edf4f8}.ss-nl-button:disabled{opacity:.45;cursor:not-allowed}.ss-nl-button.tone-primary,.ss-nl-button.tone-ribbon-primary{border-color:#00618f;background:#00618f;color:#fff}.ss-nl-button.tone-danger{border-color:#c75454;color:#a42727}.ss-nl-button.tone-small{min-height:25px;padding:0 7px;font-size:10px}.ss-nl-button.tone-icon{width:30px;padding:0;font-size:18px}.ss-nl-button.tone-segment{min-width:56px;padding:0 7px}.ss-nl-button.tone-segment.active{border-color:#00618f;background:#e4f2f8;color:#00537b}
     .ss-nl-steps{display:flex;gap:3px;padding:6px 7px;border-bottom:1px solid #dce5eb;overflow-x:auto;background:#fff;flex:none}.ss-nl-steps button{height:29px;padding:0 8px;border:1px solid #c8d5de;border-radius:4px;background:#f8fafb;color:#4a6578;font-size:10.5px;white-space:nowrap}.ss-nl-steps button.active{border-color:#00618f;background:#00618f;color:#fff}.ss-nl-steps button[data-stage-status="blocked"]:not(.active){border-color:#d89696;color:#a12e2e}.ss-nl-steps button[data-stage-status="warning"]:not(.active){border-color:#d8b56c;color:#835a00}.ss-nl-steps button[data-stage-status="ready"]:not(.active){border-color:#98c1a6;color:#19643a}
     .ss-nl-workflow-body{min-height:0;overflow:auto;padding:11px 13px 18px;overscroll-behavior:contain}.ss-nl-workflow-body h3{margin:0 0 3px;color:#174d6b;font-size:14px}.ss-nl-purpose{margin:0 0 10px;padding-left:9px;border-left:3px solid #6d9cb8;color:#586f80;font-size:11px}.ss-nl-stage-band{display:grid;gap:8px;padding:2px 0}.ss-nl-field{display:grid;grid-template-columns:minmax(120px,38%) minmax(0,1fr);align-items:center;gap:9px}.ss-nl-field>span,.ss-nl-check>span{color:#526b7c;font-size:11px;font-weight:600}.ss-nl-field input,.ss-nl-field select,.ss-nl-field textarea{width:100%;min-width:0;border:1px solid #b9c9d4;border-radius:5px;background:#fff;color:#233f52;font:12px/1.35 inherit}.ss-nl-field input,.ss-nl-field select{height:32px;padding:4px 7px}.ss-nl-field textarea{padding:7px;resize:vertical}.ss-nl-field-stack{grid-template-columns:1fr}.ss-nl-check{display:flex;align-items:center;gap:7px;min-height:30px}.ss-nl-check input{accent-color:#00618f}.ss-nl-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:3px}
+    .ss-nl-compute-control{display:grid;gap:6px;padding:7px;border:1px solid #d4e0e7;background:#f9fbfc}.ss-nl-compute-segments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}.ss-nl-compute-segments button{min-width:0;width:100%;overflow:hidden;text-overflow:ellipsis}.ss-nl-compute-segments button:disabled{opacity:.45;cursor:not-allowed}
     .ss-nl-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid #d4e0e7}.ss-nl-metrics>div{min-width:0;padding:7px;border-right:1px solid #e0e8ed;background:#f9fbfc}.ss-nl-metrics>div:last-child{border-right:0}.ss-nl-metrics span,.ss-nl-metrics strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ss-nl-metrics span{color:#728593;font-size:9.5px}.ss-nl-metrics strong{margin-top:2px;color:#28495f;font-size:11px}.ss-nl-note{padding:7px 9px;border-left:3px solid #7b9bae;background:#f3f7f9;color:#536b7b;font-size:10.5px}.ss-nl-note.tone-ok{border-color:#419062;background:#edf8f1;color:#276543}.ss-nl-note.tone-warning{border-color:#d39a31;background:#fff8e7;color:#765400}.ss-nl-note.tone-error{border-color:#c65151;background:#fff1f1;color:#902d2d}
     .ss-nl-issues{display:grid;gap:4px;margin:0 0 9px}.ss-nl-issues>div{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:6px 7px;border-left:3px solid #c54c4c;background:#fff2f2;color:#862d2d;font-size:10.5px}.ss-nl-issues>div.tone-warning{border-color:#d39a31;background:#fff8e7;color:#765400}.ss-nl-table-wrap{max-height:220px;overflow:auto;border:1px solid #d5e0e7}.ss-nl-table-wrap table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:10.5px}.ss-nl-table-wrap th,.ss-nl-table-wrap td{padding:5px 6px;border-bottom:1px solid #e3eaef;text-align:left}.ss-nl-table-wrap th{position:sticky;top:0;background:#eef4f7;color:#50697b}.ss-nl-progress{display:grid;gap:5px;padding:8px;border:1px solid #ccd9e2;background:#f8fbfc}.ss-nl-progress>div:first-child{display:flex;justify-content:space-between}.ss-nl-progress p{margin:0;color:#5e7382;font-size:10.5px}.ss-nl-progress-track{height:8px;overflow:hidden;background:#dce6ec}.ss-nl-progress-track span{display:block;height:100%;background:#16836a;transition:width .18s ease}
     .ss-nl-workflow-footer{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;padding:8px 10px;border-top:1px solid #d8e2e9;background:#f8fafb;flex:none}.ss-nl-workflow-footer span{text-align:center;color:#6f8290;font-size:10.5px}.ss-nl-ribbon-segments{display:flex;gap:2px}
@@ -867,6 +901,11 @@ function injectStyles(doc) {
 
 function currentModel(target) {
   return target.SStructuresEngine?.getCurrentModel?.() || (typeof target.model === 'function' ? target.model() : {});
+}
+
+function readComputeTarget(target) {
+  const value = target?.localStorage?.getItem?.('s-structures:compute-target');
+  return ['auto', 'cpu', 'gpu'].includes(value) ? value : 'auto';
 }
 
 function normalizeMode(value) {

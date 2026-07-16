@@ -130,6 +130,15 @@ export {
 } from './elastic/hybridPDelta.js';
 export { ELASTIC_ANALYSIS_SERVICE_VERSION, createElasticAnalysisService } from './product/elasticAnalysisService.js';
 export { EIGEN_ANALYSIS_SERVICE_VERSION, createEigenAnalysisService } from './product/eigenAnalysisService.js';
+export { ANALYSIS_CASE_ENGINE_VERSION, executeAnalysisCase, executeAnalysisCaseAsync, hasAnalysisCaseEngine } from './product/analysisCaseEngine.js';
+export {
+  PRODUCT_ANALYSIS_SERVICE_VERSION,
+  PRODUCT_ANALYSIS_CAPABILITY_VERSION,
+  PRODUCT_ANALYSIS_JOB_VERSION,
+  PRODUCT_ANALYSIS_REPORT_VERSION,
+  PRODUCT_COMPUTE_TARGETS,
+  createAnalysisProductService,
+} from './product/analysisProductService.js';
 export {
   SYNC_ANALYSIS_COMPATIBILITY_POLICY,
   SYNC_ANALYSIS_COMPATIBILITY_VERSION,

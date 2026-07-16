@@ -546,6 +546,14 @@ export {
 } from './results/resultPostprocessing.js';
 export { RESULT_POSTPROCESSING_VERSION } from './results/resultUtils.js';
 export { buildAdvancedElasticTrace } from './results/advancedElasticTrace.js';
+export {
+  PRODUCT_ANALYSIS_SERVICE_VERSION,
+  PRODUCT_ANALYSIS_CAPABILITY_VERSION,
+  PRODUCT_ANALYSIS_JOB_VERSION,
+  PRODUCT_ANALYSIS_REPORT_VERSION,
+  PRODUCT_COMPUTE_TARGETS,
+  createAnalysisProductService,
+} from './compute/product/analysisProductService.js';
 export { ADVANCED_ELASTIC_TRACE_VERSION } from './results/advancedTraceUtils.js';
 export { UNILATERAL_MEMBER_TRACE_VERSION, buildUnilateralMemberTrace } from './results/unilateralTrace.js';
 export {

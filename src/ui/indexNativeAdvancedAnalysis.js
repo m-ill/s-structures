@@ -1,7 +1,4 @@
-import { analyzeModel as analyzeCoreModel } from '../solver/linear3d.js';
-import { runPushover as runCorePushover } from '../nonlinear/pushover.js';
-
-export const INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION = 'm29-native-advanced-analysis';
+export const INDEX_NATIVE_ADVANCED_ANALYSIS_VERSION = 'p9-m9-native-advanced-analysis-v2';
 
 export const NATIVE_ADVANCED_ACTIONS = [
   'runNativePushoverReport',
@@ -25,7 +22,8 @@ export function installIndexNativeAdvancedAnalysis(target = globalThis, options 
     runPushoverReport(runOptions = {}) {
       const model = getCurrentModel(target, options.bridge);
       if (!model) throw new Error('Current UI model is not available.');
-      const result = target.SStructuresEngine?.runPushover?.(runOptions) || runCorePushover(model, runOptions);
+      const result = target.SStructuresEngine?.runPushover?.(runOptions);
+      if (!result) throw new Error('Legacy Pushover compatibility route is unavailable. Use the production nonlinear workflow.');
       const view = buildNativePushoverReportView(result, runOptions);
       state.lastView = view;
       target.SStructuresNativeAdvancedView = view;
@@ -43,7 +41,8 @@ export function installIndexNativeAdvancedAnalysis(target = globalThis, options 
     showModalReport(reportOptions = {}) {
       const model = getCurrentModel(target, options.bridge);
       if (!model) throw new Error('Current UI model is not available.');
-      const analysis = options.bridge?.getLastResult?.() || analyzeCoreModel(model);
+      const analysis = options.bridge?.getLastResult?.();
+      if (!analysis) throw new Error('Modal result is unavailable. Run elastic analysis first.');
       const view = buildNativeModalReportView(analysis, reportOptions);
       state.lastView = view;
       target.SStructuresNativeAdvancedView = view;

@@ -1,14 +1,11 @@
 import { normalizeAnalysisCase } from '../core/analysisCase.js';
-import { analyzeModel, defaultCombos } from '../solver/linear3d.js';
-import { normalizePDeltaMethod } from '../solver/pdelta/method.js';
-import { analyzeDynamics } from '../dynamics/modal.js';
-import { estimateGlobalBucklingTrace } from '../dynamics/globalBuckling.js';
-import { runModalSuperpositionTha } from '../dynamics/elasticCompleteness.js';
 import { NONLINEAR_CASE_KINDS } from '../nonlinear/capabilities.js';
 import {
-  runNonlinearAnalysisCase,
-  runNonlinearAnalysisCaseAsync,
-} from '../nonlinear/analysisRouter.js';
+  executeAnalysisCase,
+  executeAnalysisCaseAsync,
+  hasAnalysisCaseEngine,
+  normalizeAnalysisPDeltaMethod as normalizePDeltaMethod,
+} from '../compute/product/analysisCaseEngine.js';
 
 export const ANALYSIS_RUNNER_VERSION = 'p8-m10-analysis-runners-v5';
 
@@ -17,13 +14,10 @@ export function runAnalysisCase(model, analysisCase, options = {}) {
   const startedAt = new Date().toISOString();
   try {
     const settings = normalizeAnalysisCaseSettings(item.kind, item.settings || {}, item.input || {}, item);
-    const runner = RUNNERS[item.kind];
-    if (!runner && !NONLINEAR_CASE_KINDS.has(item.kind)) {
+    if (!hasAnalysisCaseEngine(item.kind, NONLINEAR_CASE_KINDS)) {
       return failureHandle(item, startedAt, 'UNSUPPORTED_ANALYSIS_CASE', `Unsupported analysis case kind: ${item.kind}`);
     }
-    const payload = NONLINEAR_CASE_KINDS.has(item.kind)
-      ? runNonlinearAnalysisCase(model, item, settings, options)
-      : runner(model, settings, options);
+    const payload = executeAnalysisCase(model, item, settings, options, NONLINEAR_CASE_KINDS);
     return successHandle(item, startedAt, payload, settings);
   } catch (error) {
     return failureHandle(item, startedAt, 'ANALYSIS_CASE_FAILED', error?.message || String(error));
@@ -39,13 +33,10 @@ export async function runAnalysisCaseAsync(model, analysisCase, options = {}) {
   const startedAt = new Date().toISOString();
   try {
     const settings = normalizeAnalysisCaseSettings(item.kind, item.settings || {}, item.input || {}, item);
-    const runner = RUNNERS[item.kind];
-    if (!runner && !NONLINEAR_CASE_KINDS.has(item.kind)) {
+    if (!hasAnalysisCaseEngine(item.kind, NONLINEAR_CASE_KINDS)) {
       return failureHandle(item, startedAt, 'UNSUPPORTED_ANALYSIS_CASE', `Unsupported analysis case kind: ${item.kind}`);
     }
-    const payload = NONLINEAR_CASE_KINDS.has(item.kind)
-      ? await runNonlinearAnalysisCaseAsync(model, item, settings, options)
-      : await runner(model, settings, options);
+    const payload = await executeAnalysisCaseAsync(model, item, settings, options, NONLINEAR_CASE_KINDS);
     return successHandle(item, startedAt, payload, settings);
   } catch (error) {
     return failureHandle(item, startedAt, 'ANALYSIS_CASE_FAILED', error?.message || String(error));
@@ -54,6 +45,12 @@ export async function runAnalysisCaseAsync(model, analysisCase, options = {}) {
 
 export function runAnalysisCasesAsync(model, analysisCases = [], options = {}) {
   return Promise.all((analysisCases || []).map((analysisCase) => runAnalysisCaseAsync(model, analysisCase, options)));
+}
+
+export function createAnalysisCaseResult(analysisCase, payload, settings = {}, options = {}) {
+  const item = normalizeAnalysisCase(analysisCase || {});
+  const startedAt = options.startedAt || new Date().toISOString();
+  return successHandle(item, startedAt, payload, settings);
 }
 
 export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}, analysisCase = {}) {
@@ -264,133 +261,6 @@ export function analysisResultView(kind, payload = {}) {
   if (kind === 'pushover' || kind === 'nonlinearStatic') return 'pushover-results';
   return payload?.view || 'analysis-results';
 }
-
-const RUNNERS = {
-  static(model, settings, options) {
-    const modelMethod = normalizePDeltaMethod(model?.analysisSettings?.pDeltaMethod, {
-      legacyEnabled: model?.analysisSettings?.includeGeometricStiffness === true,
-    });
-    const pDeltaMethod = settings.pDeltaMethodExplicit ? settings.pDeltaMethod : modelMethod;
-    settings.pDeltaMethod = pDeltaMethod;
-    settings.pDelta = pDeltaMethod !== 'off';
-    const availableCombos = model?.loadCombinations?.length ? model.loadCombinations : defaultCombos(model || {});
-    const selectedCombo = settings.comboId
-      ? availableCombos.find((combo) => combo.id === settings.comboId)
-      : null;
-    if (settings.comboId && !selectedCombo) {
-      return {
-        ok: false,
-        reason: 'STATIC_COMBINATION_NOT_FOUND',
-        pDeltaMethod,
-        byCombo: {},
-        envelope: null,
-        selection: {
-          requestedComboId: settings.comboId,
-          selectedComboId: null,
-          availableComboIds: availableCombos.map((combo) => combo.id),
-        },
-        methodTrace: {
-          analysisCase: {
-            requestedPDeltaMethod: pDeltaMethod,
-            routedPDeltaMethod: pDeltaMethod,
-          },
-        },
-      };
-    }
-    const target = {
-      ...(model || {}),
-      loadCombinations: selectedCombo ? [selectedCombo] : (model?.loadCombinations || []),
-      analysisSettings: {
-        ...((model || {}).analysisSettings || {}),
-        pDeltaMethod,
-        includeGeometricStiffness: pDeltaMethod !== 'off',
-      },
-    };
-    const payload = options.bridge?.analyzeModel
-      ? options.bridge.analyzeModel(target)
-      : analyzeModel(target);
-    if (payload && typeof payload === 'object') {
-      payload.selection = {
-        requestedComboId: settings.comboId,
-        selectedComboId: selectedCombo?.id || null,
-        availableComboIds: availableCombos.map((combo) => combo.id),
-      };
-      payload.methodTrace = {
-        ...(payload.methodTrace || {}),
-        analysisCase: {
-          requestedPDeltaMethod: pDeltaMethod,
-          routedPDeltaMethod: payload.pDelta?.method || payload.pDeltaMethod || 'off',
-          requestedComboId: settings.comboId,
-          selectedComboId: selectedCombo?.id || null,
-        },
-      };
-    }
-    return payload;
-  },
-  modal(model, settings) {
-    return analyzeDynamics(model, {
-      modalModeCount: settings.modalModeCount,
-      massSource: settings.massSource,
-      responseSpectrum: { enabled: false },
-    });
-  },
-  responseSpectrum(model, settings) {
-    const dynamics = analyzeDynamics(model, {
-      modalModeCount: settings.modalModeCount,
-      massSource: settings.massSource,
-      responseSpectrum: settings.spectrum,
-    });
-    return dynamics.rsa || {
-      ok: false,
-      status: 'not-available',
-      designBlocked: true,
-      reason: dynamics.reason || 'RSA_RESULT_UNAVAILABLE',
-      method: settings.spectrum.method,
-      combined: {},
-      modal: [],
-      review: { status: 'review-required', missing: [dynamics.reason || 'rsa-result'] },
-    };
-  },
-  buckling(model, settings) {
-    const preloadResult = settings.preloadResult || analyzeModel({
-      ...model,
-      analysisSettings: {
-        ...(model.analysisSettings || {}),
-        pDeltaMethod: 'off',
-        includeGeometricStiffness: false,
-      },
-    });
-    const preloadCombinationId = settings.preloadCombinationId
-      || model.loadCombinations?.[0]?.id
-      || null;
-    return estimateGlobalBucklingTrace(model, {
-      ...settings,
-      preloadResult,
-      preloadCombinationId,
-      referenceAxialForces: null,
-      results: null,
-    });
-  },
-  linearTha(model, settings) {
-    const modal = analyzeDynamics(model, {
-      modalModeCount: settings.modalModeCount,
-      massSource: settings.massSource,
-      responseSpectrum: { enabled: false },
-    });
-    return runModalSuperpositionTha({
-      modes: modal.modes || [],
-      direction: settings.direction,
-      dampingRatio: settings.dampingRatio,
-      dt: settings.dt,
-      accelerations: settings.accelerations,
-      accelerationUnit: settings.accelerationUnit,
-      accelerationScale: settings.accelerationScale,
-      timeUnit: settings.timeUnit,
-      displacementUnit: model?.unitSystem?.internal?.length || model?.units?.length || 'm',
-      recordId: settings.recordId,
-    });
-  },
-};
 
 function successHandle(item, startedAt, payload, settings) {
   const summary = summarizeAnalysisResult(item.kind, payload);

@@ -1,5 +1,4 @@
 import {
-  analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildAdvancedElasticTrace,
   buildBaselineContract,
@@ -64,7 +63,6 @@ import {
   runLinearSdofTha,
   runModalSuperpositionTha,
   runRigidDiaphragmBenchmark,
-  runPushover as runCorePushover,
   assignMemberHinges,
   setDesignBasisInput,
   summarizeSemiRigidDiaphragm,
@@ -75,6 +73,10 @@ import {
   getViewerState as getCoreViewerState,
   setViewerSlice as setCoreViewerSlice,
 } from '../index.js';
+import {
+  analyzeLegacyUiSnapshot,
+  runLegacyUiPushover,
+} from '../compute/product/legacyUiCompatibility.js';
 import {
   createAnalysisCase,
   normalizeAnalysisCase,
@@ -123,11 +125,16 @@ import {
 } from './phase7AnalysisRecords.js';
 
 const DEFAULT_BRIDGE_VERSION = 'm9-index-engine-bridge';
+const SYNC_ANALYSIS_DEPRECATION = Object.freeze({
+  code: 'SYNC_PRODUCT_ANALYSIS_DEPRECATED',
+  expires: 'P9-M10',
+  replacement: 'validateAnalysisRun/planAnalysisRun/startAnalysisRun/getAnalysisRunStatus/getAnalysisRunResult',
+});
 
 export function createIndexAgentApi(target = globalThis, bridge = target?.SStructuresEngine, options = {}) {
   const bridgeVersion = options.bridgeVersion || DEFAULT_BRIDGE_VERSION;
   const analyzeForIndex = options.analyzeForIndex || ((model) => normalizeIndexResult(
-    analyzeCoreModel(migrateToV3(model)),
+    analyzeLegacyUiSnapshot(migrateToV3(model)),
     { requestedAt: new Date().toISOString() },
     { bridgeVersion },
   ));
@@ -511,7 +518,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     runPushover(options = {}) {
       const model = getCurrentModel(target);
       if (!model) throw new Error('Current UI model is not available.');
-      const result = target.SStructuresPushoverPanel?.run?.(options) || runCorePushover(model, options);
+      const result = target.SStructuresPushoverPanel?.run?.(options) || runLegacyUiPushover(model, options);
       return cloneJson(result);
     },
     getAnalysisCases() {
@@ -557,7 +564,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const result = runCoreAnalysisCase(model, analysisCase, { bridge });
       const stored = storeAnalysisResult(target, model, analysisCase, result);
       target.SStructuresAnalysisCenter?.refresh?.();
-      return cloneJson(stored);
+      return cloneJson({ ...stored, deprecation: SYNC_ANALYSIS_DEPRECATION });
     },
     runAnalysisCases(input = {}) {
       const model = getCurrentModel(target);
@@ -570,7 +577,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         return storeAnalysisResult(target, model, analysisCase, result);
       });
       target.SStructuresAnalysisCenter?.refresh?.();
-      return cloneJson(stored);
+      return cloneJson(stored.map((row) => ({ ...row, deprecation: SYNC_ANALYSIS_DEPRECATION })));
     },
     runAllAnalysisCases(input = {}) {
       return api.runAnalysisCases(input);
@@ -580,6 +587,54 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getAnalysisCaseResult(id) {
       return cloneJson((target.__SStructuresAnalysisResults || {})[id] || null);
+    },
+    getAnalysisCapabilities(input = {}) {
+      requireProductBridge(bridge, 'getAnalysisCapabilities');
+      return cloneJson(bridge.getAnalysisCapabilities(input));
+    },
+    validateAnalysisRun(input = {}) {
+      requireProductBridge(bridge, 'validateAnalysisRun');
+      return cloneJson(bridge.validateAnalysisRun(input));
+    },
+    planAnalysisRun(input = {}) {
+      requireProductBridge(bridge, 'planAnalysisRun');
+      return cloneJson(bridge.planAnalysisRun(input));
+    },
+    startAnalysisRun(input = {}) {
+      requireProductBridge(bridge, 'startAnalysisRun');
+      return cloneJson(bridge.startAnalysisRun(input));
+    },
+    getAnalysisRunStatus(input = {}) {
+      requireProductBridge(bridge, 'getAnalysisRunStatus');
+      return cloneJson(bridge.getAnalysisRunStatus(productJobId(input)));
+    },
+    listAnalysisRuns(input = {}) {
+      requireProductBridge(bridge, 'listAnalysisRuns');
+      return cloneJson(bridge.listAnalysisRuns(input));
+    },
+    getAnalysisRunResult(input = {}) {
+      requireProductBridge(bridge, 'getAnalysisRunResult');
+      return cloneJson(bridge.getAnalysisRunResult(productJobId(input)));
+    },
+    getAnalysisResultSlice(input = {}) {
+      requireProductBridge(bridge, 'getAnalysisResultSlice');
+      return cloneJson(bridge.getAnalysisResultSlice(productJobId(input), input.query || input));
+    },
+    cancelAnalysisRun(input = {}) {
+      requireProductBridge(bridge, 'cancelAnalysisRun');
+      return cloneJson(bridge.cancelAnalysisRun(productJobId(input)));
+    },
+    retryAnalysisRun(input = {}) {
+      requireProductBridge(bridge, 'retryAnalysisRun');
+      return cloneJson(bridge.retryAnalysisRun(productJobId(input), typeof input === 'object' ? input : {}));
+    },
+    getAnalysisRunReport(input = {}) {
+      requireProductBridge(bridge, 'getAnalysisRunReport');
+      return cloneJson(bridge.getAnalysisRunReport(productJobId(input), input));
+    },
+    exportAnalysisTelemetry(input = {}) {
+      requireProductBridge(bridge, 'exportAnalysisTelemetry');
+      return cloneJson(bridge.exportAnalysisTelemetry(productJobId(input), input));
     },
     validateNonlinearCase(input = {}) {
       if (typeof bridge?.validateProductionNonlinearCase !== 'function') throw new Error('Production nonlinear service is unavailable.');
@@ -732,6 +787,30 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         }
         case 'getAnalysisCaseResult':
           return { analysisResult: api.getAnalysisCaseResult(payload.id || payload.caseId || payload) };
+        case 'getAnalysisCapabilities':
+          return { capability: api.getAnalysisCapabilities(payload) };
+        case 'validateAnalysisRun':
+          return { preflight: api.validateAnalysisRun(payload) };
+        case 'planAnalysisRun':
+          return { plan: api.planAnalysisRun(payload) };
+        case 'startAnalysisRun':
+          return { job: api.startAnalysisRun(payload) };
+        case 'getAnalysisRunStatus':
+          return { job: api.getAnalysisRunStatus(payload) };
+        case 'listAnalysisRuns':
+          return { jobs: api.listAnalysisRuns(payload) };
+        case 'getAnalysisRunResult':
+          return { result: api.getAnalysisRunResult(payload) };
+        case 'getAnalysisResultSlice':
+          return { resultSlice: api.getAnalysisResultSlice(payload) };
+        case 'cancelAnalysisRun':
+          return { job: api.cancelAnalysisRun(payload) };
+        case 'retryAnalysisRun':
+          return { job: api.retryAnalysisRun(payload) };
+        case 'getAnalysisRunReport':
+          return { report: api.getAnalysisRunReport(payload) };
+        case 'exportAnalysisTelemetry':
+          return { export: api.exportAnalysisTelemetry(payload) };
         case 'validateNonlinearCase':
           return { preflight: api.validateNonlinearCase(payload) };
         case 'createProductionNonlinearCase':
@@ -1230,6 +1309,24 @@ function runUiAnalysis(target) {
 
 function getCurrentModel(target) {
   return typeof target?.model === 'function' ? target.model() : null;
+}
+
+function requireProductBridge(bridge, method) {
+  if (typeof bridge?.[method] !== 'function') {
+    const error = new Error(`Product analysis API ${method} is unavailable.`);
+    error.code = 'PRODUCT_ANALYSIS_API_UNAVAILABLE';
+    throw error;
+  }
+}
+
+function productJobId(input) {
+  const value = typeof input === 'string' ? input : input?.jobId || input?.id;
+  if (!value) {
+    const error = new Error('Product analysis jobId is required.');
+    error.code = 'PRODUCT_ANALYSIS_JOB_ID_REQUIRED';
+    throw error;
+  }
+  return value;
 }
 
 function getProjectEvidenceState(target) {

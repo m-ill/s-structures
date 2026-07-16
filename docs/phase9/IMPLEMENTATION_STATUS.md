@@ -6,15 +6,19 @@ phase_status: implementation
 documentation_status: baseline-complete
 implementation_status: in-progress
 compute_qualification: G2-kernel-qualified-local-profile
-completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7]
-implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7, P9-M8]
-active_milestone: P9-M9
-next_milestone: P9-M9
+completed_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M6, P9-M7, P9-M9]
+implemented_milestones: [P9-M0, P9-M1, P9-M2, P9-M3, P9-M4, P9-M5, P9-M6, P9-M7, P9-M8, P9-M9]
+active_milestone: P9-M10
+next_milestone: P9-M10
 release_status: not-qualified
 design_transfer_allowed: false
 ```
 
 ## Current Decision
+
+P9-M9 is complete. Elastic and nonlinear product execution now shares one versioned service for capability, validation, planning, asynchronous jobs, progress, cancel/retry, bounded results, reports and telemetry. The Analysis Center, elastic ribbon, nonlinear workflow and Agent API use the same settings bytes and plan hash.
+
+Production UI direct numeric solver calls are zero. Legacy synchronous compatibility is isolated with a P9-M10 expiry. `Auto` and `CPU precise` route to qualified CPU f64; `GPU accelerated` is visibly disabled with a stable unsupported reason and remediation. Qualification remains `G2`, automatic GPU routing and design transfer remain blocked, and P9-M10 is the active milestone.
 
 P9-M8 implementation is complete. Production Pushover and MDOF NLTH now share a versioned resident-session contract for accepted state commits, rejected-trial rollback, canonical checkpoints, bounded history transfer, CPU f64 residual/energy audits, and device-loss/OOM/cancel recovery. Focused Pushover, arc-length and NLTH regressions pass without changing the existing engineering result schemas.
 
@@ -32,7 +36,20 @@ P9-M5 implementation remains complete but its qualification gate remains blocked
 
 Qualification remains `G2`. The 990-DOF end-to-end diagnostic measured CPU 684.10 ms versus GPU 1,131.70 ms, a 0.604 speedup against the required 1.2. The run also does not close the required five-sample S/M profile matrix. `auto` GPU remains disabled and global design transfer remains blocked.
 
-M9 may proceed with product workflow migration, but M5 and M8 qualification blockers remain open.
+M10 may proceed with cleanup and release-gate consolidation, but M5 and M8 qualification blockers remain open.
+
+## P9-M9 Results
+
+| Area | P9-M9 result | Decision |
+| --- | --- | --- |
+| Product service | elastic/nonlinear capability, plan, job, result, report and telemetry facade | PASS |
+| UI workflow | shared target control, progress, cancel, retry, history and provenance | PASS |
+| Agent parity | validate/plan/run/status/result settings and plan hash parity | PASS |
+| GPU disclosure | unavailable path disabled with visible reason and remediation | PASS |
+| Solver ownership | direct production UI numeric solver calls reduced to zero | PASS |
+| Sync compatibility | isolated and marked for P9-M10 removal | PASS WITH DEPRECATION |
+| Responsive browser | desktop/mobile panel bounds and console errors | PASS |
+| Qualification | G2 retained; auto GPU and design transfer blocked | BLOCKED |
 
 ## P9-M8 Results
 
@@ -151,6 +168,10 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 - M8 evidence: `reports/validation-evidence/phase9/p9-m8-hybrid-nonlinear.json`
 - M8 code review: `reports/validation-evidence/phase9/p9-m8-code-review.md`
 - M8 evidence generation: `npm run evidence:p9:m8`
+- M9 verification note: [P9_M9_PRODUCT_WORKFLOW.md](../verification/phase9/P9_M9_PRODUCT_WORKFLOW.md)
+- M9 evidence: `reports/validation-evidence/phase9/p9-m9-product-workflow.json`
+- M9 code review: `reports/validation-evidence/phase9/p9-m9-code-review.md`
+- M9 evidence generation: `npm run evidence:p9:m9`
 
 ## Remaining Boundaries
 
@@ -158,11 +179,11 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 - M6 CPU sparse dynamics is complete; optional eigen GPU acceleration remains unqualified.
 - M8 CPU nonlinear resident integration is implemented; M-tier and production GPU qualification remain blocked.
 - The external browser/vendor matrix must close `P9-GPU-PLT-12` before Phase 9 release.
-- M9 must migrate existing production UI and Agent call sites to the product service; M3 supplies the service and forbids new synchronous production callers.
+- M9 product UI and Agent migration is complete; P9-M10 must remove or freeze the remaining isolated synchronous compatibility boundary.
 - Direct P-Delta tangent iterations remain intentionally isolated from linear-static factor reuse.
 - M-tier individual detailed combination results are produced on demand, while the initial run returns bounded slices and the complete detailed envelope.
 - External independent validation remains outside this milestone by user decision.
 
 ## Next Milestone
 
-P9-M9: migrate product UI, Agent and API workflows to the shared compute service and expose truthful CPU/GPU capability, progress, cancel, retry and result provenance. M5 and M8 qualification debt remains open in parallel.
+P9-M10: consolidate release gates, remove expired compatibility paths, run the permitted qualification matrix, freeze evidence hashes and complete the final code review. M5 and M8 qualification debt remains open until qualifying evidence is supplied.

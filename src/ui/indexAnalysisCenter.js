@@ -11,7 +11,7 @@ import {
 import { installFloatingPanel } from './floatingPanel.js';
 import { createResultSelectionStore } from './resultSelectionStore.js';
 
-export const INDEX_ANALYSIS_CENTER_VERSION = 'p7-m11-elastic-analysis-center-v2';
+export const INDEX_ANALYSIS_CENTER_VERSION = 'p9-m9-analysis-center-v3';
 
 export const ANALYSIS_CASE_KIND_LABELS = {
   static: '정적 / P-Delta',
@@ -44,6 +44,11 @@ export function installIndexAnalysisCenter(target = globalThis, options = {}) {
     selectedCaseId: initialSelection.activeCaseId || null,
     resultViewIndex: Math.max(0, Math.trunc(Number(initialSelection.modeOrStep) || 0)),
     open: false,
+    computeTarget: readComputeTarget(target),
+    currentJobId: null,
+    currentJob: null,
+    preflight: null,
+    message: null,
   };
 
   const root = ensureAnalysisCenterRoot(doc);
@@ -116,12 +121,33 @@ export function installIndexAnalysisCenter(target = globalThis, options = {}) {
       renderAnalysisCenter(target, bridge, state, root);
       return api.getState();
     },
-    run(caseId = state.selectedCaseId) {
+    setComputeTarget(computeTarget) {
+      state.computeTarget = ['auto', 'cpu', 'gpu'].includes(computeTarget) ? computeTarget : 'auto';
+      target.localStorage?.setItem?.('s-structures:compute-target', state.computeTarget);
+      state.preflight = null;
+      renderAnalysisCenter(target, bridge, state, root);
+      return api.getState();
+    },
+    async run(caseId = state.selectedCaseId) {
       if (!caseId) return api.getState();
       applyCaseSettingsFromPanel(root, bridge, caseId);
+      const analysisCase = bridge.getAnalysisCases?.().find((item) => item.id === caseId);
+      state.preflight = bridge.validateAnalysisRun?.({ analysisCase, computeTarget: state.computeTarget }) || null;
+      if (state.preflight && !state.preflight.ok) {
+        state.message = state.preflight.blocking?.[0]?.message || '해석 실행 전 검토가 필요합니다.';
+        renderAnalysisCenter(target, bridge, state, root);
+        return api.getState();
+      }
       setCaseStatus(target, caseId, 'running');
       renderAnalysisCenter(target, bridge, state, root);
-      const result = bridge.runAnalysisCase?.({ id: caseId });
+      const job = bridge.startAnalysisRun?.({ analysisCase, computeTarget: state.computeTarget });
+      state.currentJobId = job?.id || null;
+      state.currentJob = job || null;
+      state.message = null;
+      renderAnalysisCenter(target, bridge, state, root);
+      if (job?.id) await bridge.getProductAnalysisService?.().wait?.(job.id);
+      state.currentJob = job?.id ? bridge.getAnalysisRunStatus?.(job.id) : null;
+      const result = job?.id ? bridge.getAnalysisCaseResult?.(caseId) || bridge.getAnalysisRunResult?.(job.id) : null;
       state.selectedCaseId = result?.caseId || caseId;
       state.resultViewIndex = 0;
       selectionStore.set?.({
@@ -134,14 +160,25 @@ export function installIndexAnalysisCenter(target = globalThis, options = {}) {
       renderAnalysisCenter(target, bridge, state, root);
       return api.getState();
     },
-    runAll() {
+    async runAll() {
       const cases = bridge.getAnalysisCases?.() || [];
-      cases.forEach((item) => setCaseStatus(target, item.id, 'running'));
-      renderAnalysisCenter(target, bridge, state, root);
-      bridge.runAnalysisCases?.();
+      for (const item of cases) await api.run(item.id);
       const selected = selectionStore.getState?.() || {};
       state.selectedCaseId = selected.activeCaseId || state.selectedCaseId;
       state.resultViewIndex = Math.max(0, Math.trunc(Number(selected.modeOrStep) || 0));
+      renderAnalysisCenter(target, bridge, state, root);
+      return api.getState();
+    },
+    cancel() {
+      if (!state.currentJobId) return api.getState();
+      state.currentJob = bridge.cancelAnalysisRun?.(state.currentJobId) || state.currentJob;
+      renderAnalysisCenter(target, bridge, state, root);
+      return api.getState();
+    },
+    retry() {
+      if (!state.currentJobId) return api.getState();
+      state.currentJob = bridge.retryAnalysisRun?.(state.currentJobId, { computeTarget: state.computeTarget }) || state.currentJob;
+      state.currentJobId = state.currentJob?.id || state.currentJobId;
       renderAnalysisCenter(target, bridge, state, root);
       return api.getState();
     },
@@ -161,6 +198,11 @@ export function installIndexAnalysisCenter(target = globalThis, options = {}) {
   }) || (() => {});
   bindAnalysisCenter(root, api);
   bindAnalysisCenterToggle(toggle, api);
+  api.unsubscribeProduct = bridge.getProductAnalysisService?.().subscribe?.((job) => {
+    if (job.id !== state.currentJobId) return;
+    state.currentJob = job;
+    renderAnalysisCenter(target, bridge, state, root);
+  }) || (() => {});
   renderAnalysisCenter(target, bridge, state, root);
   syncAnalysisCenterToggle(toggle, state);
   return api;
@@ -188,6 +230,9 @@ export function buildAnalysisCenterState(target = globalThis, state = {}) {
     caseCount: cases.length,
     resultCount: Object.keys(results).length,
     attemptCount: Object.values(runStore.attempts || {}).reduce((sum, rows) => sum + rows.length, 0),
+    computeTarget: state.computeTarget || 'auto',
+    currentJob: clonePlain(state.currentJob),
+    preflight: clonePlain(state.preflight),
     resultSelection: selection,
     cases: cases.map((item) => ({
       id: item.id,
@@ -276,6 +321,12 @@ function bindAnalysisCenter(root, api) {
     if (add) return api.add();
     const runAll = target?.closest?.('#ssAcRunAll');
     if (runAll) return api.runAll();
+    const cancel = target?.closest?.('#ssAcCancel');
+    if (cancel) return api.cancel();
+    const retry = target?.closest?.('#ssAcRetry');
+    if (retry) return api.retry();
+    const computeTarget = target?.closest?.('[data-ss-compute-target]');
+    if (computeTarget) return api.setComputeTarget(computeTarget.getAttribute?.('data-ss-compute-target'));
     const remove = target?.closest?.('#ssAcDelete');
     if (remove) return api.delete();
     const save = target?.closest?.('#ssAcSave');
@@ -319,6 +370,7 @@ function renderAnalysisCenter(target, bridge, state, root) {
 
   root.appendChild(header(doc));
   root.appendChild(toolbar(doc));
+  root.appendChild(computeControl(doc, bridge, state, selected));
   root.appendChild(caseList(doc, cases, selected));
   root.appendChild(resultSwitchPane(doc, target, state, cases, selected));
   root.appendChild(settingsPane(doc, selected, currentModel(target)));
@@ -379,6 +431,55 @@ function toolbar(doc) {
   wrap.appendChild(button(doc, 'ssAcRunAll', '전체 실행'));
   wrap.appendChild(button(doc, 'ssAcSave', '설정 저장'));
   wrap.appendChild(button(doc, 'ssAcDelete', '삭제'));
+  return wrap;
+}
+
+function computeControl(doc, bridge, state, selected) {
+  const wrap = doc.createElement('section');
+  wrap.className = 'ss-ac-compute';
+  wrap.setAttribute('data-agent-id', 'ssAnalysisComputeControl');
+  const capability = bridge.getAnalysisCapabilities?.({ kind: selected?.kind || 'static' });
+  const profile = capability?.profile || {};
+  const segments = doc.createElement('div');
+  segments.className = 'ss-ac-compute-segments';
+  for (const target of capability?.targets || []) {
+    const control = button(doc, `ssAcCompute${target.id}`, target.label);
+    control.setAttribute('data-ss-compute-target', target.id);
+    control.className = target.id === state.computeTarget ? 'active' : '';
+    control.disabled = target.available !== true;
+    control.title = target.available ? target.message : `${target.message} ${target.remediation || ''}`.trim();
+    segments.appendChild(control);
+  }
+  wrap.appendChild(segments);
+  const status = doc.createElement('div');
+  status.className = 'ss-ac-compute-status';
+  const active = (capability?.targets || []).find((row) => row.id === state.computeTarget);
+  status.textContent = active?.available
+    ? `${active.message} · Worker ${profile.workerSupported ? 'ON' : 'OFF'} · WebGPU ${profile.webgpuSupported ? '감지' : '미감지'}`
+    : `${active?.message || '계산 경로를 확인할 수 없습니다.'} ${active?.remediation || ''}`.trim();
+  wrap.appendChild(status);
+  for (const unavailable of (capability?.targets || []).filter((row) => row.available !== true)) {
+    const notice = doc.createElement('div');
+    notice.className = 'ss-ac-compute-unavailable';
+    notice.textContent = `${unavailable.label} 사용 불가: ${unavailable.message || '지원되지 않는 계산 경로입니다.'} ${unavailable.remediation || ''}`.trim();
+    wrap.appendChild(notice);
+  }
+  if (state.currentJob) {
+    const progress = doc.createElement('div');
+    progress.className = 'ss-ac-job';
+    const meter = doc.createElement('progress');
+    meter.max = 1;
+    meter.value = Number(state.currentJob.progress || 0);
+    progress.appendChild(meter);
+    const label = doc.createElement('span');
+    label.textContent = `${state.currentJob.status} · ${state.currentJob.progressMessage || state.currentJob.stage || ''}`;
+    progress.appendChild(label);
+    if (['queued', 'running', 'cancelling'].includes(state.currentJob.status)) progress.appendChild(button(doc, 'ssAcCancel', '취소'));
+    if (['failed', 'blocked', 'cancelled'].includes(state.currentJob.status)) progress.appendChild(button(doc, 'ssAcRetry', '재시도'));
+    wrap.appendChild(progress);
+  }
+  if (state.preflight?.blocking?.length) wrap.appendChild(note(doc, state.preflight.blocking.map((row) => `${row.code}: ${row.message}`).join('\n')));
+  if (state.message) wrap.appendChild(note(doc, state.message));
   return wrap;
 }
 
@@ -520,6 +621,7 @@ function resultPane(doc, target, item) {
     return pane;
   }
   const retainedAfterFailure = latestAttempt?.status === 'failed' && latestAttempt !== result;
+  const product = result.productProvenance || result.provenance?.product || {};
   const transferDecision = target.SStructuresEngine?.canTransferAnalysisResultToDesign?.({ runRecordId: result.runRecordId }) || {
     allowed: result.designTransferAllowed === true,
     code: result.designTransferAllowed === true ? null : 'ANALYSIS_RESULT_NOT_VERIFIED',
@@ -534,6 +636,10 @@ function resultPane(doc, target, item) {
     ['Design blocked', (result.designBlocked || result.payload?.designBlocked) ? 'yes' : 'no'],
     ['Design transfer', transferDecision.allowed ? 'Allowed' : `Blocked (${transferDecision.code || 'not-eligible'})`],
     ['Run record', result.runRecordId || '-'],
+    ['Compute route', product.operationRoute?.backendId || result.routing?.operationRoute?.backendId || '-'],
+    ['Requested / actual', product.requestedTarget ? `${product.requestedTarget} / ${product.executedTarget || '-'}` : '-'],
+    ['Plan hash', result.planHash || product.planHash || '-'],
+    ['Audit', typeof product.audit === 'string' ? product.audit : compactSettings(product.audit || {})],
     ['View', result.view],
     ['Completed', result.completedAt || '-'],
     ['Summary', compactSettings(result.summary || {})],
@@ -1445,6 +1551,11 @@ function currentModel(target) {
   return target?.SStructuresEngine?.getCurrentModel?.() || (typeof target?.model === 'function' ? target.model() : null);
 }
 
+function readComputeTarget(target) {
+  const value = target?.localStorage?.getItem?.('s-structures:compute-target');
+  return ['auto', 'cpu', 'gpu'].includes(value) ? value : 'auto';
+}
+
 function formatNumber(value) {
   const number = Number(value);
   if (!Number.isFinite(number)) return '-';
@@ -1475,6 +1586,7 @@ function injectAnalysisCenterStyle(doc) {
     .ss-ac-header h2{font-size:14px;margin:0;color:#173b57}.ss-ac-caption{color:#65798a}
     .ss-ac-close{border:1px solid #cfdbe6;background:white;color:#294a62;border-radius:4px;padding:3px 7px}
     .ss-ac-toolbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:8px 0}.ss-ac-toolbar select{min-width:120px;flex:1 1 150px}.ss-ac-toolbar button{white-space:nowrap}
+    .ss-ac-compute{display:grid;gap:6px;border:1px solid #d9e4ed;background:#fff;padding:7px;margin:0 0 8px}.ss-ac-compute-segments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}.ss-ac-compute-segments button{min-width:0;padding:5px 3px;border:1px solid #cbd8e3;background:#f7fafc;color:#294a62;border-radius:3px}.ss-ac-compute-segments button.active{background:#12659a;color:#fff;border-color:#12659a}.ss-ac-compute-segments button:disabled{color:#93a1ad;background:#eef2f5;cursor:not-allowed}.ss-ac-compute-status{font-size:11px;color:#536b7d;overflow-wrap:anywhere}.ss-ac-compute-unavailable{font-size:11px;line-height:1.4;color:#805500;background:#fff7df;border-left:3px solid #d89a18;padding:5px 6px;overflow-wrap:anywhere}.ss-ac-job{display:grid;grid-template-columns:minmax(80px,1fr) minmax(0,2fr) auto;gap:6px;align-items:center}.ss-ac-job progress{width:100%;height:8px}.ss-ac-job span{overflow-wrap:anywhere}
     .ss-ac-list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
     .ss-ac-item{display:grid;grid-template-columns:minmax(0,1fr) 70px 44px;gap:6px;align-items:center;border:1px solid #dfe8f0;background:white;padding:5px}
     .ss-ac-item.active{border-color:#2f6f9f}.ss-ac-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

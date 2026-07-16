@@ -1,6 +1,5 @@
 import {
   addLoadCombination,
-  analyzeModel,
   createModel,
   createPortalFrameSample,
   factorText,
@@ -11,6 +10,7 @@ import {
   normalizeStories,
   updateLoadCombination,
 } from '../index.js';
+import { analyzeLegacyUiSnapshot } from '../compute/product/legacyUiCompatibility.js';
 
 export function createM3State(initialModel = createPortalFrameSample()) {
   const state = {
@@ -29,7 +29,7 @@ export function createM3State(initialModel = createPortalFrameSample()) {
 }
 
 export function analyzeState(state) {
-  state.analysis = analyzeModel(state.model);
+  state.analysis = analyzeLegacyUiSnapshot(state.model);
   ensureActiveIds(state);
   state.messages = collectMessages(state.analysis);
   return state.analysis;

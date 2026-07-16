@@ -254,9 +254,15 @@ import {
   PHASE8_PILOT_PACKAGE_VERSION,
   PHASE8_RELEASE_MANIFEST_VERSION,
 } from '../nonlinear/qualification/index.js';
+import {
+  PRODUCT_ANALYSIS_CAPABILITY_VERSION,
+  PRODUCT_ANALYSIS_JOB_VERSION,
+  PRODUCT_ANALYSIS_REPORT_VERSION,
+  PRODUCT_ANALYSIS_SERVICE_VERSION,
+} from '../compute/product/analysisProductService.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
 
-export const AGENT_MANIFEST_VERSION = 'p8-m11-agent-capability-manifest-v14';
+export const AGENT_MANIFEST_VERSION = 'p9-m9-agent-capability-manifest-v15';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -489,6 +495,10 @@ export function buildAgentManifest(options = {}) {
       phase8NonlinearResultAccess: NONLINEAR_RESULT_ACCESS_VERSION,
       phase8NonlinearHistoryExport: NONLINEAR_HISTORY_EXPORT_VERSION,
       phase8NonlinearProductReport: NONLINEAR_PRODUCT_REPORT_VERSION,
+      phase9ProductAnalysisService: PRODUCT_ANALYSIS_SERVICE_VERSION,
+      phase9ProductAnalysisCapability: PRODUCT_ANALYSIS_CAPABILITY_VERSION,
+      phase9ProductAnalysisJob: PRODUCT_ANALYSIS_JOB_VERSION,
+      phase9ProductAnalysisReport: PRODUCT_ANALYSIS_REPORT_VERSION,
       phase8IndependentReference: PHASE8_INDEPENDENT_REFERENCE_VERSION,
       phase8PerformanceQualification: PHASE8_PERFORMANCE_QUALIFICATION_VERSION,
       phase8PilotPackage: PHASE8_PILOT_PACKAGE_VERSION,
@@ -648,6 +658,18 @@ export function buildAgentManifest(options = {}) {
       'listAnalysisCases',
       'getAnalysisResults',
       'getAnalysisCaseResult',
+      'getAnalysisCapabilities',
+      'validateAnalysisRun',
+      'planAnalysisRun',
+      'startAnalysisRun',
+      'getAnalysisRunStatus',
+      'listAnalysisRuns',
+      'getAnalysisRunResult',
+      'getAnalysisResultSlice',
+      'cancelAnalysisRun',
+      'retryAnalysisRun',
+      'getAnalysisRunReport',
+      'exportAnalysisTelemetry',
       'getRuntimeDiagnostics',
       'getCapabilities',
       'validateProductionNonlinearCase',
@@ -876,6 +898,12 @@ export function buildAgentManifest(options = {}) {
       'phase8NonlinearHistoryEnvelope',
       'phase8NonlinearResultDependencies',
       'phase8NonlinearDesignTransferGuard',
+      'phase9ProductAnalysisCapability',
+      'phase9ProductAnalysisPlan',
+      'phase9ProductAnalysisJob',
+      'phase9ProductAnalysisResultSlice',
+      'phase9ProductAnalysisReport',
+      'phase9ProductAnalysisTelemetry',
       'productHardeningAudit',
       'agentCommandBridge',
       'originalIndexRuntimeDiagnostics',

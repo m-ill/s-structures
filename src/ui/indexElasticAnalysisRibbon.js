@@ -1,6 +1,6 @@
 import { createRibbonGroup } from './indexNativeRibbonDom.js';
 
-export const ELASTIC_ANALYSIS_RIBBON_VERSION = 'p7-m11-elastic-analysis-ribbon-v3';
+export const ELASTIC_ANALYSIS_RIBBON_VERSION = 'p9-m9-elastic-analysis-ribbon-v4';
 
 export const ELASTIC_ANALYSIS_COMMANDS = [
   {
@@ -128,10 +128,10 @@ export function installElasticAnalysisRibbon(target = globalThis, panel = null) 
       api.refresh();
       return api.getState();
     },
-    runSelected() {
+    async runSelected() {
       const selected = selectedAnalysisCase(target);
       if (!selected || !ELASTIC_KINDS.has(selected.kind)) return api.getState();
-      target.SStructuresAnalysisCenter?.run?.(selected.id);
+      await target.SStructuresAnalysisCenter?.run?.(selected.id);
       target.SStructuresAnalysisCenter?.close?.();
       target.SStructuresElasticResultPopup?.openForCase?.(selected.id);
       api.refresh();
@@ -158,10 +158,11 @@ export function installElasticAnalysisRibbon(target = globalThis, panel = null) 
       target.SStructuresAnalysisCenter?.close?.();
       api.refresh();
 
-      const execute = () => {
+      const execute = async () => {
         let results = [];
         try {
-          results = bridge.runAnalysisCases?.({ cases }) || [];
+          const computeTarget = target.SStructuresAnalysisCenter?.getState?.().computeTarget || 'auto';
+          results = await bridge.runAnalysisCasesAsync?.({ cases, computeTarget }) || [];
         } catch (error) {
           for (const item of cases) {
             if (item.status === 'running') item.status = previousStatuses.get(item.id) || 'not-run';

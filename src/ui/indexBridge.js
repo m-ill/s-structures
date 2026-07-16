@@ -1,5 +1,4 @@
 import {
-  analyzeModel as analyzeCoreModel,
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
   buildAdvancedElasticTrace,
   buildCombinationEnvelopeContract,
@@ -29,11 +28,14 @@ import {
   migrateToV3,
   runMemberReleaseBenchmark,
   runRigidDiaphragmBenchmark,
-  runPushover as runCorePushover,
   summarizeKdsLoadCombinationCoverage,
   summarizeKdsLoadCombinationRules,
   validateModel as validateCoreModel,
 } from '../index.js';
+import {
+  analyzeLegacyUiSnapshot,
+  runLegacyUiPushover,
+} from '../compute/product/legacyUiCompatibility.js';
 import {
   createAnalysisCase,
   normalizeAnalysisCase,
@@ -42,8 +44,12 @@ import {
   runAnalysisCase as runCoreAnalysisCase,
   runAnalysisCaseAsync as runCoreAnalysisCaseAsync,
   runAnalysisCases as runCoreAnalysisCases,
-  runAnalysisCasesAsync as runCoreAnalysisCasesAsync,
+  normalizeAnalysisCaseSettings,
+  createAnalysisCaseResult,
 } from './analysisRunners.js';
+import { createAnalysisProductService } from '../compute/product/analysisProductService.js';
+import { createElasticAnalysisService } from '../compute/product/elasticAnalysisService.js';
+import { createEigenAnalysisService } from '../compute/product/eigenAnalysisService.js';
 import { createNonlinearProductService } from '../nonlinear/product/jobManager.js';
 import { nonlinearProductModelHash } from '../nonlinear/product/preflight.js';
 import {
@@ -90,14 +96,19 @@ import {
   installDetailedReportMenuHook,
 } from './indexReportHooks.js';
 
-export const INDEX_BRIDGE_VERSION = 'p8-m10-index-engine-bridge';
+export const INDEX_BRIDGE_VERSION = 'p9-m9-index-engine-bridge';
+export const INDEX_SYNC_ANALYSIS_DEPRECATION = Object.freeze({
+  code: 'SYNC_PRODUCT_ANALYSIS_DEPRECATED',
+  expires: 'P9-M10',
+  message: 'Synchronous analysis execution is compatibility-only. Use startAnalysisRun/status/result.',
+});
 export { INDEX_LEGACY_RESULT_SHAPE_VERSION, normalizeIndexResult } from './indexResultCompatibility.js';
 export { decorateAgentControls, listAgentControls } from './indexAgentControlsDom.js';
 export { createIndexAgentApi } from './indexAgentApi.js';
 
 export function analyzeForIndex(inputModel, options = {}) {
   const model = migrateToV3(inputModel);
-  const result = analyzeCoreModel(model);
+  const result = analyzeLegacyUiSnapshot(model);
   return normalizeIndexResult(
     result,
     { requestedAt: options.requestedAt || new Date().toISOString() },
@@ -123,6 +134,9 @@ export function installIndexEngineBridge(target = globalThis) {
   ensurePhase7AnalysisState(target);
   let lastResult = null;
   let nonlinearProductService = null;
+  let analysisProductService = null;
+  let elasticProductService = null;
+  let eigenProductService = null;
   const bridge = {
     version: INDEX_BRIDGE_VERSION,
     legacy,
@@ -294,7 +308,7 @@ export function installIndexEngineBridge(target = globalThis) {
     runPushover(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return target.SStructuresPushoverPanel?.run?.(options) || runCorePushover(model, options);
+      return target.SStructuresPushoverPanel?.run?.(options) || runLegacyUiPushover(model, options);
     },
     getAnalysisCases() {
       const model = bridge.getCurrentModel();
@@ -334,14 +348,15 @@ export function installIndexEngineBridge(target = globalThis) {
       if (!model) return null;
       const analysisCase = resolveAnalysisCase(model, input);
       const result = runCoreAnalysisCase(model, analysisCase, { bridge });
-      return storeAnalysisResult(target, model, analysisCase, result);
+      return { ...storeAnalysisResult(target, model, analysisCase, result), deprecation: INDEX_SYNC_ANALYSIS_DEPRECATION };
     },
     async runAnalysisCaseAsync(input = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       const analysisCase = resolveAnalysisCase(model, input);
-      const result = await runCoreAnalysisCaseAsync(model, analysisCase, { bridge, ...(input.options || {}) });
-      return storeAnalysisResult(target, model, analysisCase, result);
+      const job = bridge.startAnalysisRun({ ...input, model, analysisCase });
+      await bridge.getProductAnalysisService().wait(job.id);
+      return bridge.getAnalysisCaseResult(analysisCase.id) || bridge.getAnalysisRunResult(job.id);
     },
     runAnalysisCases(input = {}) {
       const model = bridge.getCurrentModel();
@@ -350,18 +365,122 @@ export function installIndexEngineBridge(target = globalThis) {
       const results = runCoreAnalysisCases(model, cases, { bridge });
       return results.map((result) => {
         const analysisCase = (model.analysisCases || []).find((item) => item.id === result.caseId) || { id: result.caseId, kind: result.kind };
-        return storeAnalysisResult(target, model, analysisCase, result);
+        return { ...storeAnalysisResult(target, model, analysisCase, result), deprecation: INDEX_SYNC_ANALYSIS_DEPRECATION };
       });
     },
     async runAnalysisCasesAsync(input = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return [];
       const cases = Array.isArray(input) ? input : (input.cases || model.analysisCases || []);
-      const results = await runCoreAnalysisCasesAsync(model, cases, { bridge, ...(input.options || {}) });
-      return results.map((result) => {
-        const analysisCase = (model.analysisCases || []).find((item) => item.id === result.caseId) || { id: result.caseId, kind: result.kind };
-        return storeAnalysisResult(target, model, analysisCase, result);
-      });
+      const jobs = [];
+      for (const analysisCase of cases) {
+        const job = bridge.startAnalysisRun({ ...input, model, analysisCase });
+        jobs.push(job);
+        await bridge.getProductAnalysisService().wait(job.id);
+      }
+      return jobs.map((job) => bridge.getAnalysisCaseResult(job.caseId) || bridge.getAnalysisRunResult(job.id));
+    },
+    getProductAnalysisService() {
+      if (!analysisProductService) {
+        analysisProductService = createAnalysisProductService({
+          getModel: () => bridge.getCurrentModel(),
+          nonlinearService: bridge.getNonlinearProductService(),
+          normalizeSettings: normalizeAnalysisCaseSettings,
+          caseRunner: async (model, analysisCase, executionOptions = {}) => {
+            if (analysisCase.kind === 'static' && typeof Worker !== 'undefined') {
+              elasticProductService ||= createElasticAnalysisService();
+              const settings = normalizeAnalysisCaseSettings(analysisCase.kind, analysisCase.settings, analysisCase.input, analysisCase);
+              const runId = executionOptions.plan?.runId;
+              const cancel = () => elasticProductService.cancel(runId).catch(() => {});
+              executionOptions.signal?.addEventListener?.('abort', cancel, { once: true });
+              try {
+                const completed = await elasticProductService.run(model, {
+                  runId,
+                  caseId: analysisCase.id,
+                  computeTarget: executionOptions.computeTarget,
+                  settings,
+                  onProgress: executionOptions.onProgress,
+                });
+                return createAnalysisCaseResult(analysisCase, completed.result, settings);
+              } finally {
+                executionOptions.signal?.removeEventListener?.('abort', cancel);
+              }
+            }
+            if (['modal', 'responseSpectrum'].includes(analysisCase.kind) && typeof Worker !== 'undefined') {
+              eigenProductService ||= createEigenAnalysisService();
+              const settings = normalizeAnalysisCaseSettings(analysisCase.kind, analysisCase.settings, analysisCase.input, analysisCase);
+              const workerSettings = analysisCase.kind === 'responseSpectrum'
+                ? { ...settings, responseSpectrum: settings.spectrum }
+                : { ...settings, responseSpectrum: { enabled: false } };
+              const runId = executionOptions.plan?.runId;
+              const cancel = () => eigenProductService.cancel(runId).catch(() => {});
+              executionOptions.signal?.addEventListener?.('abort', cancel, { once: true });
+              try {
+                const completed = await eigenProductService.runModalRsa(model, {
+                  runId,
+                  caseId: analysisCase.id,
+                  computeTarget: executionOptions.computeTarget,
+                  settings: workerSettings,
+                  onProgress: executionOptions.onProgress,
+                });
+                const payload = analysisCase.kind === 'responseSpectrum' ? completed.result.rsa : completed.result;
+                return createAnalysisCaseResult(analysisCase, payload, settings);
+              } finally {
+                executionOptions.signal?.removeEventListener?.('abort', cancel);
+              }
+            }
+            return runCoreAnalysisCaseAsync(model, analysisCase, { bridge, ...executionOptions });
+          },
+          async onPublishResult({ model, analysisCase, result }) {
+            const currentModel = bridge.getCurrentModel() || model;
+            return storeAnalysisResult(target, currentModel, analysisCase, result);
+          },
+        });
+        target.SStructuresAnalysisProductService = analysisProductService;
+      }
+      return analysisProductService;
+    },
+    getAnalysisCapabilities(input = {}) {
+      return bridge.getProductAnalysisService().getCapabilities(input);
+    },
+    validateAnalysisRun(input = {}) {
+      return bridge.getProductAnalysisService().validate(input);
+    },
+    planAnalysisRun(input = {}) {
+      return bridge.getProductAnalysisService().plan(input);
+    },
+    startAnalysisRun(input = {}) {
+      return bridge.getProductAnalysisService().start(input);
+    },
+    cancelAnalysisRun(jobId) {
+      return bridge.getProductAnalysisService().cancel(jobId);
+    },
+    pauseAnalysisRun(jobId) {
+      return bridge.getProductAnalysisService().pause(jobId);
+    },
+    resumeAnalysisRun(jobId, input = {}) {
+      return bridge.getProductAnalysisService().resume(jobId, input);
+    },
+    retryAnalysisRun(jobId, input = {}) {
+      return bridge.getProductAnalysisService().retry(jobId, input);
+    },
+    getAnalysisRunStatus(jobId) {
+      return bridge.getProductAnalysisService().getStatus(jobId);
+    },
+    listAnalysisRuns(input = {}) {
+      return bridge.getProductAnalysisService().listJobs(input);
+    },
+    getAnalysisRunResult(jobId) {
+      return bridge.getProductAnalysisService().getResult(jobId);
+    },
+    getAnalysisResultSlice(jobId, query = {}) {
+      return bridge.getProductAnalysisService().getResultSlice(jobId, query);
+    },
+    getAnalysisRunReport(jobId, input = {}) {
+      return bridge.getProductAnalysisService().getReport(jobId, input);
+    },
+    exportAnalysisTelemetry(jobId, input = {}) {
+      return bridge.getProductAnalysisService().exportTelemetry(jobId, input);
     },
     getNonlinearProductService() {
       if (!nonlinearProductService) {
@@ -583,7 +702,7 @@ export function installIndexEngineBridge(target = globalThis) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
       bridge.resultOverlay = installIndexResultOverlay(target, bridge);
       bridge.pushoverPanel = installIndexPushoverPanel(target, bridge, {
-        runPushover: (model, options) => runCorePushover(model, options),
+        runPushover: (model, options) => runLegacyUiPushover(model, options),
       });
     } else {
       bridge.resultsPanel = null;
