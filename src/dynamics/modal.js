@@ -1,4 +1,5 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
+import { resolveCriterion } from '../core/analysisCriteria.js';
 import { buildMassSourceTrace } from '../loads/loadsV2.js';
 import { assembleStiffness3D } from '../solver/linear3d.js';
 import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
@@ -9,6 +10,7 @@ import {
   recoverModalMemberForces,
   summarizeRsaMemberForces,
 } from '../results/rsa/memberForces.js';
+import { applyBaseShearScaling } from '../results/rsa/baseShearScale.js';
 import { buildModalConstraintDomain } from './modalDiaphragm.js';
 import { buildCanonicalAnalysisDomain } from '../solver/domain/canonicalDomain.js';
 import { buildDomainAdapterIdentity } from '../solver/domain/compatibility.js';
@@ -189,6 +191,12 @@ export function analyzeDynamics(model, options = {}) {
     });
   }
 
+  const rsaScalingPolicy = {
+    enabled: resolveCriterion(model, 'rsa.applyBaseShearScaling', true),
+    minimumBaseShear: settings.rsa?.minimumBaseShear
+      ?? settings.responseSpectrum?.minimumBaseShear
+      ?? {},
+  };
   const rsa = settings.responseSpectrum?.enabled === false
     ? null
     : runResponseSpectrum(modes, physicalModalDofs, mass, totalMass, settings.responseSpectrum || {}, {
@@ -200,6 +208,7 @@ export function analyzeDynamics(model, options = {}) {
       diaphragmAssembly: constraintDomain.summary,
       members: model.members || [],
       stationCount: Math.max(21, settings.memberStations | 0 || settings.rsaMemberStations | 0 || 21),
+      baseShearScaling: rsaScalingPolicy,
     });
 
   return {
@@ -340,7 +349,7 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
   };
   const memberRecoveryContext = createRsaMemberRecoveryContext(context);
   const modal = [];
-  const combined = {};
+  let combined = {};
 
   for (const direction of directions) {
     const dirIndex = DOF_DIR.indexOf(direction);
@@ -380,6 +389,24 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
     });
   }
 
+  const scalingPolicy = context.baseShearScaling || {
+    enabled: spectrum.applyBaseShearScaling !== false,
+    minimumBaseShear: spectrum.minimumBaseShear || {},
+  };
+  const scaling = applyBaseShearScaling({
+    method,
+    units,
+    provenance,
+    spectrum: { dampingRatio },
+    modal,
+    combined,
+  }, {
+    enabled: scalingPolicy.enabled,
+    directionMinima: scalingPolicy.minimumBaseShear,
+    analysisCaseId: provenance.analysisCaseId,
+  });
+  combined = scaling.combined;
+
   const nodalAvailable = modal.length > 0 && modal.every((row) => (
     row.responses.length > 0
     && row.responses.every((response) => response.recoveryStatus === 'available')
@@ -402,7 +429,18 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
     provenance,
     units,
   });
-  const designBlocked = !nodalAvailable || memberForces.designBlocked;
+  const designBlocked = !nodalAvailable || memberForces.designBlocked || scaling.trace.designBlocked;
+  const scalingBlocker = scaling.trace.rows.find((row) => row.designBlocked)?.reason || null;
+  const designTransferQualification = {
+    ...(memberForces.designTransferQualification || {}),
+    status: designBlocked ? 'blocked' : 'qualified',
+    eligible: !designBlocked && memberForces.designTransferQualification?.eligible === true,
+    reason: !nodalAvailable
+      ? nodalRecovery.reason
+      : memberForces.designBlocked
+        ? memberForces.designTransferQualification?.reason || 'RSA_MEMBER_FORCE_RECOVERY_UNQUALIFIED'
+        : scalingBlocker,
+  };
 
   return {
     version: DYNAMIC_COMPLETENESS_VERSION,
@@ -413,12 +451,18 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
     designBlockers: [...new Set([
       ...(!nodalAvailable ? ['RSA_NODAL_RECOVERY_UNSUPPORTED'] : []),
       ...(memberForces.designBlocked ? memberForces.blockers.map((item) => item.code) : []),
+      ...(scaling.trace.designBlocked
+        ? scaling.trace.rows.filter((row) => row.designBlocked).map((row) => row.reason)
+        : []),
     ])],
-    designTransferQualification: memberForces.designTransferQualification,
+    designTransferQualification,
     method,
     dimensions: RSA_DIMENSIONS,
     units,
-    provenance,
+    provenance: {
+      ...provenance,
+      baseShearScaling: scaling.trace.application,
+    },
     review: buildResponseSpectrumReview({ method, modal, combined }),
     spectrum: {
       dampingRatio,
@@ -429,6 +473,7 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
     },
     nodalRecovery,
     memberForces,
+    baseShearScaling: scaling.trace,
     modal,
     combined,
   };

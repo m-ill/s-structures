@@ -652,8 +652,13 @@ export function connectedComponentGroups(nodes, members, nodeGroups = []) {
     const root = find(member.n1);
     groups[root] ||= { mids: new Set(), nids: new Set() };
     groups[root].mids.add(member.id);
-    groups[root].nids.add(member.n1);
-    groups[root].nids.add(member.n2);
+  });
+  // A node group (for example, a rigid diaphragm) can join a memberless
+  // master/support node to a component.  Populate component nodes from the
+  // completed union-find topology rather than only from member endpoints.
+  nodes.forEach((node) => {
+    const group = groups[find(node.id)];
+    if (group) group.nids.add(node.id);
   });
   return groups;
 }

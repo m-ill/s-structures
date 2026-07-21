@@ -1,7 +1,7 @@
 import { resolveCriterion } from '../../core/analysisCriteria.js';
 import { cscMatVec } from './cscMatrix.js';
 
-export const SPARSE_DIAGNOSTICS_VERSION = 'p7-m10-sparse-diagnostics-v2';
+export const SPARSE_DIAGNOSTICS_VERSION = 'p10-m1-sparse-diagnostics-v3';
 
 export function matrixSymmetryError(A) {
   if (isCsc(A)) return cscSymmetryError(A);
@@ -46,17 +46,28 @@ export function buildSolverWarningDiagnostics(A, x, b, solveDiagnostics = {}, cr
   const conditionEstimate = estimateCondition(A);
   const pivotRatio = Number(solveDiagnostics.pivotRatio ?? 1);
   const pivotSingular = positiveNumber(resolveCriterion(criteriaModel, 'solver.pivotSingular'), 1e-12);
+  const pivotWarn = Math.max(
+    pivotSingular,
+    positiveNumber(resolveCriterion(criteriaModel, 'solver.pivotWarn'), 1e-8),
+  );
+  const diagonalMechanismDofs = suspectedMechanismDofs(A, pivotWarn, labels);
+  const pivotDof = pivotDofLabel(solveDiagnostics, labels);
+  const mechanismDofs = pivotRatio > 0 && pivotRatio < pivotWarn
+    ? uniqueStrings([pivotDof, ...diagonalMechanismDofs])
+    : diagonalMechanismDofs;
   const warnings = [];
   pushLimitWarning(warnings, 'SOLVER_SYMMETRY', sym, resolveCriterion(criteriaModel, 'solver.symWarn'), resolveCriterion(criteriaModel, 'solver.symFail'), 'solver.symmetryError');
   pushLimitWarning(warnings, 'SOLVER_RESIDUAL', residual.residualNorm, resolveCriterion(criteriaModel, 'solver.resWarn'), resolveCriterion(criteriaModel, 'solver.resFail'), 'solver.residualNorm');
   pushLimitWarning(warnings, 'SOLVER_CONDITION', conditionEstimate, resolveCriterion(criteriaModel, 'solver.condWarn'), resolveCriterion(criteriaModel, 'solver.condSingular'), 'solver.conditionEstimate');
-  if (pivotRatio > 0 && pivotRatio < pivotSingular) {
+  if (pivotRatio > 0 && pivotRatio < pivotWarn) {
     warnings.push({
       code: 'SOLVER_PIVOT_NEAR_SINGULAR',
-      message: `Solver pivot ratio ${format(pivotRatio)} is below ${format(pivotSingular)}.`,
+      message: `Solver pivot ratio ${format(pivotRatio)} is below warning limit ${format(pivotWarn)}.`,
       target: 'solver.pivotRatio',
       value: pivotRatio,
-      limit: pivotSingular,
+      limit: pivotWarn,
+      singularLimit: pivotSingular,
+      dofs: mechanismDofs,
     });
   }
 
@@ -70,7 +81,8 @@ export function buildSolverWarningDiagnostics(A, x, b, solveDiagnostics = {}, cr
     loadNorm: residual.loadNorm,
     conditionEstimate,
     pivotRatio,
-    suspectedMechanismDofs: suspectedMechanismDofs(A, pivotSingular, labels),
+    pivotMinDof: pivotDof,
+    suspectedMechanismDofs: mechanismDofs,
     warnings,
   };
 }
@@ -109,9 +121,22 @@ function suspectedMechanismDofs(A, pivotSingular, labels) {
   const max = Math.max(0, ...diagonal.map((item) => item.value));
   if (!(max > 0)) return diagonal.slice(0, 20).map((item) => labels[item.index] || `dof:${item.index}`);
   return diagonal
-    .filter((item) => item.value / max <= pivotSingular * 10)
+    .filter((item) => item.value / max <= pivotSingular)
     .slice(0, 20)
     .map((item) => labels[item.index] || `dof:${item.index}`);
+}
+
+function pivotDofLabel(solveDiagnostics, labels) {
+  const rawIndex = solveDiagnostics?.pivotMinOriginalIndex
+    ?? solveDiagnostics?.pivotMinIndex;
+  if (rawIndex == null) return null;
+  const index = Number(rawIndex);
+  if (!Number.isInteger(index) || index < 0) return null;
+  return labels[index] || `dof:${index}`;
+}
+
+function uniqueStrings(values) {
+  return [...new Set(values.filter((value) => typeof value === 'string' && value.length > 0))];
 }
 
 function matrixDiagonal(A) {

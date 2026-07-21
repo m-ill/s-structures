@@ -26,10 +26,14 @@ import { buildExpandedAnalysisDomain } from './pdelta/analysisDomain.js';
 import { buildCanonicalAnalysisDomain } from './domain/canonicalDomain.js';
 import { normalizePDeltaMethod, pDeltaMethodTrace } from './pdelta/method.js';
 import { PDELTA_SECOND_ORDER_VERSION, runSecondOrderPDelta } from './pdelta/secondOrder.js';
+import { summarizeValidationHealth } from '../core/validationHealth.js';
+import { stableHash } from '../core/stableHash.js';
 
 export { analyzeComponent3D, assembleStiffness3D } from './linear3dAssembly.js';
 export { AXIS, localK12, memberAxes, solveLinear, solveLinearDetailed } from './linear3dElement.js';
 export { defaultCombos, makeEnvelope } from './linear3dPost.js';
+
+export const PDELTA_DESIGN_SUMMARY_CORRECTNESS_VERSION = 'p10-m0-pdelta-design-summary-v1';
 
 export function analyzeModel(inputModel, options = {}) {
   const prepared = prepareElasticAnalysis(inputModel);
@@ -113,6 +117,7 @@ export function solveElasticCombination(prepared, combo, options = {}) {
   result.combo = comboSnapshot(combo);
   appendSolverDiagnosticWarnings(prepared.validation.warnings, combo.id, result);
   appendComponentFailureErrors(prepared.validation.errors, combo.id, result);
+  refreshValidationHealth(prepared.validation);
   return result;
 }
 
@@ -139,6 +144,7 @@ export function resumeElasticCombinationSystems(prepared, combo, capture, precom
   result.combo = comboSnapshot(combo);
   appendSolverDiagnosticWarnings(prepared.validation.warnings, combo.id, result);
   appendComponentFailureErrors(prepared.validation.errors, combo.id, result);
+  refreshValidationHealth(prepared.validation);
   return result;
 }
 
@@ -157,12 +163,23 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
   if (model.analysisSettings?.responseSpectrum?.enabled !== false) {
     output.dynamics = analyzeDynamics(model);
   }
-  const directDesignEligible = output.pDelta?.method === 'direct'
-    && output.pDelta?.designEligibility?.eligible === true
+  if (pDeltaMethod === 'off') {
+    output.pDeltaDesignScreening = buildPDeltaDesignSummary(
+      model,
+      combos,
+      firstOrderPDeltaDesignInputs(options.pDeltaScreeningByCombo || byCombo),
+      { ...(model.analysisSettings || {}), pDeltaMethod: 'off' },
+    );
+  }
+  const directAnalysisQualified = output.pDelta?.method === 'direct'
     && output.pDelta?.ok === true
     && output.combinationCompleteness.allComplete
-    && envelopeCompleteFor(output.pDelta.envelope, combos).complete;
-  const linearDesignEligible = output.combinationCompleteness.allComplete;
+    && (output.pDelta?.summary?.envelope?.complete
+      ?? envelopeCompleteFor(output.pDelta.envelope, combos).complete);
+  const directDesignEligible = directAnalysisQualified
+    && output.pDelta?.designEligibility?.eligible === true;
+  const linearDesignEligible = output.combinationCompleteness.allComplete
+    && output.pDeltaDesignScreening?.designEligibility?.eligible !== false;
   const designEligible = pDeltaMethod === 'direct'
     ? directDesignEligible
     : pDeltaMethod === 'off'
@@ -176,10 +193,14 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
   output.design = runDesignChecks(model, output, {
     resultSet: designResultSet,
   });
-  output.design.analysisSource = directDesignEligible
-    ? 'direct-pdelta-envelope'
-    : pDeltaMethod === 'off' && designEligible
-      ? 'linear-static-envelope'
+  output.design.analysisSource = directAnalysisQualified
+    ? directDesignEligible
+      ? 'direct-pdelta-envelope'
+      : 'blocked-direct-pdelta-design-gate'
+    : pDeltaMethod === 'off' && output.combinationCompleteness.allComplete
+      ? designEligible
+        ? 'linear-static-envelope'
+        : 'blocked-first-order-pdelta-screening'
       : pDeltaMethod === 'legacy'
         ? 'blocked-legacy-pdelta-comparison-only'
         : 'blocked-incomplete-analysis';
@@ -196,11 +217,12 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
     : {
         eligible: false,
         status: 'blocked',
+        source: output.design.analysisSource,
         reason: pDeltaMethod === 'direct' && !directDesignEligible
           ? output.pDelta?.designEligibility?.reason || 'DIRECT_PDELTA_COMBINATIONS_INCOMPLETE'
           : pDeltaMethod === 'legacy'
-            ? 'LEGACY_PDELTA_DESIGN_BLOCKED'
-            : 'STATIC_COMBINATIONS_INCOMPLETE',
+            ? output.pDelta?.designEligibility?.reason || 'LEGACY_PDELTA_DESIGN_BLOCKED'
+            : output.pDeltaDesignScreening?.designEligibility?.reason || 'STATIC_COMBINATIONS_INCOMPLETE',
       };
   output.design.eligibility = output.designEligibility;
   output.design.designBlocked = !designEligible;
@@ -230,11 +252,11 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
   }
 
   output.analysisEligibility = {
-    eligible: output.ok && (pDeltaMethod !== 'direct' || directDesignEligible),
-    status: output.ok && (pDeltaMethod !== 'direct' || directDesignEligible) ? 'qualified' : 'blocked',
+    eligible: output.ok && (pDeltaMethod !== 'direct' || directAnalysisQualified),
+    status: output.ok && (pDeltaMethod !== 'direct' || directAnalysisQualified) ? 'qualified' : 'blocked',
     reason: output.ok
       ? null
-      : pDeltaMethod === 'direct' && !directDesignEligible
+      : pDeltaMethod === 'direct' && !directAnalysisQualified
         ? output.pDelta?.designEligibility?.reason || 'DIRECT_PDELTA_COMBINATIONS_INCOMPLETE'
         : output.combinationCompleteness.allComplete
           ? validation.errors.at(-1)?.code || 'ANALYSIS_NOT_QUALIFIED'
@@ -272,15 +294,26 @@ function elasticStageError(code, message) {
 }
 
 function withAudit(output) {
+  if (output.validation) {
+    refreshValidationHealth(output.validation);
+    if (!output.validation.ok) output.ok = false;
+  }
   output.audit = buildAnalysisAudit(output, {
     equilibriumLimit: resolveCriterion(output.model, 'audit.equilibriumRelative', 1e-8),
   });
   return output;
 }
 
+function refreshValidationHealth(validation) {
+  validation.ok = (validation.errors || []).length === 0;
+  Object.assign(validation, summarizeValidationHealth(validation));
+  return validation;
+}
+
 function appendSolverDiagnosticWarnings(warnings, comboId, result) {
   for (const item of result?.solver?.warnings || []) {
     warnings.push({
+      ...item,
       level: 'WARNING',
       code: item.code,
       message: `${comboId}: ${item.message}`,
@@ -298,6 +331,9 @@ function appendComponentFailureErrors(errors, comboId, result) {
       code,
       message: `${comboId}: component analysis failed (${code})${memberIds.length ? ` for members ${memberIds.join(', ')}` : ''}.`,
       target: memberIds.join(',') || comboId,
+      nodeIds: [...(failure.nodeIds || [])],
+      location: failure.location || null,
+      solver: failure.solver || null,
     });
   }
 }
@@ -396,6 +432,16 @@ function buildCombinationCompleteness(byCombo, combos, envelope) {
       && rows.every((row) => row.complete)
       && envelopeState.complete,
   };
+}
+
+function firstOrderPDeltaDesignInputs(byCombo = {}) {
+  return Object.fromEntries(Object.entries(byCombo).map(([comboId, result]) => [comboId, {
+    result,
+    linear: result,
+    converged: !!result && result.ok !== false && result.anyOk !== false,
+    iterations: [],
+    reason: result?.reason || null,
+  }]));
 }
 
 function resultCompletenessReasons(result) {
@@ -567,10 +613,10 @@ function analyzeAllOnce(model, factors = null, options = {}) {
       (load.node && group.nids.has(load.node)) ||
       (load.member && group.mids.has(load.member))
     ));
-    const componentKey = [
-      [...group.nids].map(String).sort().join(','),
-      [...group.mids].map(String).sort().join(','),
-    ].join('::');
+    const componentKey = stableHash({
+      nodeIds: [...group.nids].map(String).sort(),
+      memberIds: [...group.mids].map(String).sort(),
+    });
     const result = analyzeComponent3D(ns, ms, ls, { ...ctx, componentKey });
     if (result.capture) {
       out.anyOk = true;
@@ -585,6 +631,15 @@ function analyzeAllOnce(model, factors = null, options = {}) {
         memberIds: [...group.mids],
         nodeIds: [...group.nids],
         solver: result.solver || null,
+        location: result.entityType === 'dof'
+          ? {
+              entityType: result.entityType,
+              nodeId: result.nodeId || null,
+              component: result.component ?? null,
+              dof: result.dof ?? null,
+              value: result.value ?? null,
+            }
+          : null,
       });
       continue;
     }
@@ -624,6 +679,15 @@ function analyzeAllOnce(model, factors = null, options = {}) {
             memberIds: [...row.group.mids],
             nodeIds: [...row.group.nids],
             solver: result.solver || null,
+            location: result.entityType === 'dof'
+              ? {
+                  entityType: result.entityType,
+                  nodeId: result.nodeId || null,
+                  component: result.component ?? null,
+                  dof: result.dof ?? null,
+                  value: result.value ?? null,
+                }
+              : null,
           });
           continue;
         }
@@ -795,7 +859,11 @@ export function analyzePDeltaCombinations(model, combos, options = {}) {
   }
   const envelope = makeEnvelope(finalByCombo, combos);
   const summary = summarizePDelta(byCombo);
-  const design = buildPDeltaDesignSummary(model, combos, byCombo, model.analysisSettings || {});
+  const design = buildPDeltaDesignSummary(model, combos, byCombo, {
+    ...(model.analysisSettings || {}),
+    pDeltaMethod: 'legacy',
+  });
+  const thetaEligibility = design.designEligibility;
   const allCompared = combos.length > 0
     && combos.every((combo) => byCombo[combo.id]?.ok === true && byCombo[combo.id]?.converged === true);
   if (envelope) {
@@ -809,7 +877,15 @@ export function analyzePDeltaCombinations(model, combos, options = {}) {
   }
   design.designBlocked = true;
   design.designQualified = false;
-  design.reason = 'LEGACY_PDELTA_DESIGN_BLOCKED';
+  design.reason = thetaEligibility.reason === 'PDELTA_SECOND_ORDER_REQUIRED'
+    ? thetaEligibility.reason
+    : 'LEGACY_PDELTA_DESIGN_BLOCKED';
+  design.designEligibility = {
+    eligible: false,
+    status: 'blocked',
+    reason: design.reason,
+    source: 'legacy-pdelta-envelope',
+  };
   return {
     enabled: true,
     method: 'legacy',
@@ -837,7 +913,7 @@ export function analyzePDeltaCombinations(model, combos, options = {}) {
     designEligibility: {
       eligible: false,
       status: 'preliminary',
-      reason: 'LEGACY_PDELTA_DESIGN_BLOCKED',
+      reason: design.reason,
       source: 'legacy-pdelta-envelope',
       message: 'Legacy equivalent-load P-Delta is available for comparison only; use converged Direct P-Delta for design transfer.',
     },
@@ -898,21 +974,33 @@ function analyzeDirectPDeltaCombinations(model, combos, options = {}) {
     };
   }
   const envelopeState = envelopeCompleteFor(envelope, combos);
-  const fullyQualified = allQualified && envelopeState.complete;
+  const analysisQualified = allQualified && envelopeState.complete;
   const design = buildPDeltaDesignSummary(model, combos, byCombo, settings);
-  design.designBlocked = !fullyQualified;
-  design.designQualified = fullyQualified;
-  design.reason = fullyQualified
-    ? null
-    : failed?.designEligibility?.reason || failed?.reason || envelopeState.reasons[0] || 'DIRECT_PDELTA_NOT_QUALIFIED';
+  const designQualified = analysisQualified && design.designEligibility.eligible;
+  const designReason = !analysisQualified
+    ? failed?.designEligibility?.reason || failed?.reason || envelopeState.reasons[0] || 'DIRECT_PDELTA_NOT_QUALIFIED'
+    : design.designEligibility.reason;
+  design.designBlocked = !designQualified;
+  design.designQualified = designQualified;
+  design.reason = designQualified ? null : designReason;
+  design.designEligibility = designQualified
+    ? { eligible: true, status: 'qualified', reason: null, source: 'direct-pdelta-envelope' }
+    : { eligible: false, status: 'blocked', reason: designReason, source: 'direct-pdelta-envelope' };
+  if (envelope) {
+    envelope.designBlocked = !designQualified;
+    envelope.designQualified = designQualified;
+    envelope.designBlockers = designQualified
+      ? []
+      : [{ comboId: null, status: 'BLOCKED', reason: designReason }];
+  }
 
   return {
     enabled: true,
     method: 'direct',
     solverMethod: 'geometric-stiffness-second-order-direct',
     curveMethod: 'direct-load-step-tangent-response',
-    ok: fullyQualified,
-    reason: fullyQualified
+    ok: analysisQualified,
+    reason: analysisQualified
       ? 'CONVERGED'
       : failed?.reason || envelopeState.reasons[0] || 'NO_DIRECT_RESULTS',
     byCombo,
@@ -942,13 +1030,17 @@ function analyzeDirectPDeltaCombinations(model, combos, options = {}) {
       solverMethod: 'geometric-stiffness-second-order-direct',
       solverVersion: PDELTA_SECOND_ORDER_VERSION,
     },
-    designEligibility: fullyQualified
+    designEligibility: designQualified
       ? { eligible: true, status: 'qualified', reason: null, source: 'direct-pdelta-envelope' }
       : {
           eligible: false,
           status: 'blocked',
-          reason: failed?.designEligibility?.reason || failed?.reason || 'DIRECT_PDELTA_NOT_QUALIFIED',
-          message: failed?.designEligibility?.message || 'Direct P-Delta results are incomplete or not converged.',
+          reason: designReason,
+          message: !analysisQualified
+            ? failed?.designEligibility?.message || 'Direct P-Delta results are incomplete or not converged.'
+            : designReason === 'PDELTA_THETA_LIMIT_EXCEEDED'
+              ? 'The governing stability coefficient reached or exceeded thetaStrong.'
+              : 'Direct P-Delta design transfer is not qualified.',
         },
   };
 }
@@ -1007,9 +1099,9 @@ function buildDirectPDeltaGraphs(byCombo = {}) {
 
 export function buildPDeltaDesignSummary(model, combos = [], byCombo = {}, settings = {}) {
   const direct = normalizePDeltaMethod(settings.pDeltaMethod, { fallback: 'legacy' }) === 'direct';
-  const thetaCaution = positiveNumber(resolveCriterion(model, 'pdelta.thetaCaution'), settings.pDeltaThetaNegligible, 0.05);
-  const thetaRequire = positiveNumber(resolveCriterion(model, 'pdelta.thetaRequire'), 0.1);
-  const thetaStrong = positiveNumber(resolveCriterion(model, 'pdelta.thetaStrong'), settings.pDeltaThetaLimit, 0.2);
+  const thetaCaution = nonnegativeNumber(resolveCriterion(model, 'pdelta.thetaCaution'), settings.pDeltaThetaNegligible, 0.05);
+  const thetaRequire = nonnegativeNumber(resolveCriterion(model, 'pdelta.thetaRequire'), 0.1);
+  const thetaStrong = nonnegativeNumber(resolveCriterion(model, 'pdelta.thetaStrong'), settings.pDeltaThetaLimit, 0.2);
   const rows = [];
   const storyRows = [];
   const memberForceRows = [];
@@ -1036,6 +1128,7 @@ export function buildPDeltaDesignSummary(model, combos = [], byCombo = {}, setti
         converged: !!item?.converged,
         iterationCount: item?.iterations?.length || 0,
         status: item?.converged ? 'N/A' : 'NG',
+        statusLegacy: item?.converged ? 'N/A' : 'NG',
         reason: item?.converged ? 'NO_LATERAL_STORY_SHEAR' : item?.reason || 'PDELTA_NOT_CONVERGED',
       });
     }
@@ -1044,7 +1137,9 @@ export function buildPDeltaDesignSummary(model, combos = [], byCombo = {}, setti
       const governing = directionalRows.reduce((best, row) => (
         !best || row.theta > best.theta ? row : best
       ), null);
-      const status = !item?.converged ? 'NG' : pDeltaDesignStatus(governing?.theta || 0, thetaCaution, thetaStrong);
+      const status = !item?.converged
+        ? 'NG'
+        : pDeltaDesignStatus(governing?.theta || 0, thetaCaution, thetaRequire, thetaStrong);
       rows.push({
         comboId: combo.id,
         comboName: combo.name || combo.id,
@@ -1057,6 +1152,7 @@ export function buildPDeltaDesignSummary(model, combos = [], byCombo = {}, setti
         converged: !!item?.converged,
         iterationCount: item?.iterations?.length || 0,
         status,
+        statusLegacy: pDeltaLegacyStatus(status),
       });
     }
   }
@@ -1064,8 +1160,12 @@ export function buildPDeltaDesignSummary(model, combos = [], byCombo = {}, setti
   const governing = rows.reduce((best, row) => (
     !best || row.maxTheta > best.maxTheta ? row : best
   ), null);
+  const status = worstStatus(rows.map((row) => row.status));
+  const statusLegacy = pDeltaLegacyStatus(status);
+  const designEligibility = pDeltaThetaDesignEligibility(rows, status, direct);
   return {
     version: 'pdelta-design-summary-v1',
+    correctnessVersion: PDELTA_DESIGN_SUMMARY_CORRECTNESS_VERSION,
     method: direct
       ? 'direct-geometric-stiffness-combination-final'
       : 'legacy-equivalent-load-iteration-diagnostic',
@@ -1086,8 +1186,10 @@ export function buildPDeltaDesignSummary(model, combos = [], byCombo = {}, setti
       maxPDeltaShear: Math.max(0, ...rows.map((row) => row.maxPDeltaShear)),
       maxPDeltaMoment: Math.max(0, ...rows.map((row) => row.maxPDeltaMoment)),
       governing,
-      status: worstStatus(rows.map((row) => row.status)),
+      status,
+      statusLegacy,
     },
+    designEligibility,
     rows,
     storyRows,
     memberForceRows,
@@ -1489,6 +1591,7 @@ function pDeltaDesignStoryRows(model, result, combo, options = {}) {
       const pDeltaShear = pDeltaMoment / height;
       const theta = storyShear > 1e-12 ? pDeltaShear / storyShear : 0;
       if (!(storyDrift > 1e-12 || storyShear > 1e-12 || pDeltaShear > 1e-12)) continue;
+      const status = pDeltaDesignStatus(theta, options.thetaCaution, options.thetaRequire, options.thetaStrong);
       rows.push({
         comboId: combo.id,
         comboName: combo.name || combo.id,
@@ -1507,8 +1610,9 @@ function pDeltaDesignStoryRows(model, result, combo, options = {}) {
         pDeltaShear,
         theta,
         bDelta: theta < 1 ? 1 / (1 - theta) : null,
-        requiresSecondOrder: theta >= positiveNumber(options.thetaRequire, 0.1),
-        status: pDeltaDesignStatus(theta, options.thetaCaution, options.thetaStrong),
+        requiresSecondOrder: theta >= nonnegativeNumber(options.thetaRequire, 0.1),
+        status,
+        statusLegacy: pDeltaLegacyStatus(status),
       });
     }
   }
@@ -1715,18 +1819,61 @@ function compressionAxialForce(memberResult) {
   return Math.max(0, ...values.map((value) => -value));
 }
 
-function pDeltaDesignStatus(theta, negligible = 0.1, limit = 0.25) {
+export function pDeltaDesignStatus(theta, caution = 0.05, require = 0.1, strong = 0.2) {
   const value = Number(theta) || 0;
-  if (value >= limit || value >= 1) return 'NG';
-  if (value >= negligible) return 'WARN';
+  if (value >= strong || value >= 1) return 'NG';
+  if (value >= require) return 'REQUIRE-2ND';
+  if (value >= caution) return 'CAUTION';
   return 'OK';
 }
 
 function worstStatus(statuses = []) {
   if (statuses.includes('NG')) return 'NG';
-  if (statuses.includes('WARN')) return 'WARN';
+  if (statuses.includes('REQUIRE-2ND')) return 'REQUIRE-2ND';
+  if (statuses.includes('CAUTION') || statuses.includes('WARN')) return 'CAUTION';
   if (statuses.includes('OK')) return 'OK';
   return 'N/A';
+}
+
+function pDeltaLegacyStatus(status) {
+  if (status === 'NG') return 'NG';
+  if (status === 'CAUTION' || status === 'REQUIRE-2ND' || status === 'WARN') return 'WARN';
+  if (status === 'OK') return 'OK';
+  return 'N/A';
+}
+
+function pDeltaThetaDesignEligibility(rows, status, direct) {
+  const failed = rows.find((row) => row.converged === false);
+  if (failed) {
+    return {
+      eligible: false,
+      status: 'blocked',
+      reason: failed.reason || 'PDELTA_NOT_CONVERGED',
+      source: 'pdelta-theta-screening',
+    };
+  }
+  if (status === 'NG') {
+    return {
+      eligible: false,
+      status: 'blocked',
+      reason: 'PDELTA_THETA_LIMIT_EXCEEDED',
+      source: 'pdelta-theta-screening',
+    };
+  }
+  if (status === 'REQUIRE-2ND' && !direct) {
+    return {
+      eligible: false,
+      status: 'blocked',
+      reason: 'PDELTA_SECOND_ORDER_REQUIRED',
+      source: 'pdelta-theta-screening',
+    };
+  }
+  return {
+    eligible: true,
+    status: 'qualified',
+    reason: null,
+    source: 'pdelta-theta-screening',
+  };
 }
 
 function memberEulerCriticalLoad(model, member, length) {
@@ -1800,6 +1947,14 @@ function positiveNumber(...values) {
     if (Number.isFinite(number) && number > 0) return number;
   }
   return 1;
+}
+
+function nonnegativeNumber(...values) {
+  for (const value of values) {
+    const number = Number(value);
+    if (Number.isFinite(number) && number >= 0) return number;
+  }
+  return 0;
 }
 
 function summarizePDelta(byCombo) {

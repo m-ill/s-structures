@@ -222,6 +222,10 @@ export function solvePreparedFactorization(prepared, rhs, options = {}) {
     solveMs: Number(solved.solveMs || 0),
     totalMs: elapsed(startedAt),
     pivotMin: finiteOr(pivotSource.pivotMin, Math.abs(Number(pivotSource.pivot) || 0)),
+    pivotMinIndex: integerOrNull(pivotSource.pivotMinIndex),
+    pivotMinOriginalIndex: integerOrNull(
+      pivotSource.pivotMinOriginalIndex ?? pivotSource.pivotMinIndex,
+    ),
     pivotMax: finiteOr(pivotSource.pivotMax, Math.abs(Number(pivotSource.pivot) || 0)),
     pivotRatio: finiteOr(pivotSource.pivotRatio, 0),
     reason: prepared.sparseFailure?.reason || solved.reason || prepared.reason || null,
@@ -315,6 +319,7 @@ export function factorDenseGaussian(A, options = {}) {
   const permutation = Array.from({ length: n }, (_row, index) => index);
   const pivotTolerance = positiveNumber(options.pivotTolerance, 1e-12);
   let pivotMin = Infinity;
+  let pivotMinIndex = null;
   let pivotMax = 0;
 
   for (let col = 0; col < n; col += 1) {
@@ -324,7 +329,10 @@ export function factorDenseGaussian(A, options = {}) {
     }
     const pivotAbs = Math.abs(LU[pivot][col]);
     pivotMax = Math.max(pivotMax, pivotAbs);
-    pivotMin = Math.min(pivotMin, pivotAbs);
+    if (pivotAbs < pivotMin) {
+      pivotMin = pivotAbs;
+      pivotMinIndex = col;
+    }
     if (!Number.isFinite(pivotAbs) || pivotAbs <= Math.max(pivotTolerance, pivotMax * pivotTolerance)) {
       return {
         ok: false,
@@ -333,6 +341,8 @@ export function factorDenseGaussian(A, options = {}) {
         pivotOriginalIndex: permutation[pivot],
         pivot: LU[pivot][col],
         pivotMin: pivotMin === Infinity ? 0 : pivotMin,
+        pivotMinIndex,
+        pivotMinOriginalIndex: pivotMinIndex,
         pivotMax,
         pivotRatio: pivotMax > 0 && pivotMin !== Infinity ? pivotMin / pivotMax : 0,
         factorizationMs: elapsed(startedAt),
@@ -356,6 +366,8 @@ export function factorDenseGaussian(A, options = {}) {
     LU,
     permutation,
     pivotMin: pivotMin === Infinity ? 0 : pivotMin,
+    pivotMinIndex,
+    pivotMinOriginalIndex: pivotMinIndex,
     pivotMax,
     pivotRatio: pivotMax > 0 && pivotMin !== Infinity ? pivotMin / pivotMax : 0,
     factorizationMs: elapsed(startedAt),
@@ -405,6 +417,8 @@ export function solveDenseGaussian(A, b, options = {}) {
     ...solved,
     method: 'dense-partial-pivot',
     pivotMin: factor.pivotMin,
+    pivotMinIndex: factor.pivotMinIndex ?? null,
+    pivotMinOriginalIndex: factor.pivotMinOriginalIndex ?? factor.pivotMinIndex ?? null,
     pivotMax: factor.pivotMax,
     pivotRatio: factor.pivotRatio,
     factorizationMs: factor.factorizationMs,
@@ -458,8 +472,21 @@ export function solveSparseCg(matrix, b, options = {}) {
   const ok = residual <= tolerance && !breakdown;
   const stats = sparseStats(matrix);
   const conditionEstimate = estimateDiagonalCondition(diagonal);
-  const positiveDiagonal = diagonal.map((value) => Math.abs(value)).filter((value) => value > 0);
+  const pivot = cgPivotDiagnostic(diagonal, qualification);
   const reason = ok ? null : breakdown || 'CG_NOT_CONVERGED';
+  const pivotDiagnostics = buildSolverWarningDiagnostics(
+    matrix,
+    x,
+    b,
+    {
+      pivotRatio: pivot.ratio,
+      pivotMinIndex: pivot.dof,
+      pivotMinOriginalIndex: pivot.dof,
+    },
+    criteriaModel,
+    options.labels || [],
+  );
+  const pivotWarning = pivotDiagnostics.warnings.find((item) => item.code === 'SOLVER_PIVOT_NEAR_SINGULAR');
   const warningDiagnostics = {
     version: 'p7-m10-sparse-cg-diagnostics-v2',
     matrixStorage: 'csc',
@@ -469,15 +496,19 @@ export function solveSparseCg(matrix, b, options = {}) {
     residualNorm: residual,
     loadNorm,
     conditionEstimate,
-    pivotRatio: 1 / Math.max(1, conditionEstimate),
-    suspectedMechanismDofs: suspectedFromDiagonal(diagonal, options.labels || []),
-    warnings: residual > tolerance ? [{
-      code: 'SOLVER_RESIDUAL_WARN',
-      message: `solver.residualNorm ${residual.toExponential(3)} exceeds warning limit ${tolerance.toExponential(3)}.`,
-      target: 'solver.residualNorm',
-      value: residual,
-      limit: tolerance,
-    }] : [],
+    pivotRatio: pivot.ratio,
+    pivotMinDof: pivotDiagnostics.pivotMinDof,
+    suspectedMechanismDofs: pivotDiagnostics.suspectedMechanismDofs,
+    warnings: [
+      ...(residual > tolerance ? [{
+        code: 'SOLVER_RESIDUAL_WARN',
+        message: `solver.residualNorm ${residual.toExponential(3)} exceeds warning limit ${tolerance.toExponential(3)}.`,
+        target: 'solver.residualNorm',
+        value: residual,
+        limit: tolerance,
+      }] : []),
+      ...(pivotWarning ? [pivotWarning] : []),
+    ],
   };
   const diagnostics = {
     ...stats,
@@ -503,9 +534,12 @@ export function solveSparseCg(matrix, b, options = {}) {
     factorizationMs: 0,
     solveMs: elapsed(solveStartedAt),
     totalMs: elapsed(startedAt),
-    pivotMin: positiveDiagonal.length ? Math.min(...positiveDiagonal) : 0,
-    pivotMax: positiveDiagonal.length ? Math.max(...positiveDiagonal) : 0,
-    pivotRatio: 1 / Math.max(1, conditionEstimate),
+    pivotMin: pivot.min,
+    pivotMinIndex: pivot.dof,
+    pivotMinOriginalIndex: pivot.dof,
+    pivotMax: pivot.max,
+    pivotRatio: pivot.ratio,
+    pivotMetric: pivot.metric,
     iterations,
     reason,
     qualification,
@@ -531,6 +565,7 @@ export function qualifyCgMatrix(matrix, options = {}) {
   const diagonalMin = diagonalAbs.length
     ? diagonalAbs.reduce((min, value) => Math.min(min, value), Infinity)
     : 0;
+  const diagonalMinDof = diagonalAbs.indexOf(diagonalMin);
   const diagonalRatio = diagonalMax > 0 ? diagonalMin / diagonalMax : 0;
   const minDiagonalRatio = positiveNumber(options.cgMinDiagonalRatio, 1e-14);
   if (!Number.isFinite(symmetryError) || symmetryError > symmetryTolerance) {
@@ -567,6 +602,7 @@ export function qualifyCgMatrix(matrix, options = {}) {
     diagonalMin,
     diagonalMax,
     diagonalRatio,
+    diagonalMinDof,
   });
 }
 
@@ -580,6 +616,9 @@ function certifyCgSpdByComponents(matrix, options, baseDetail) {
   const ordering = options.ordering || 'approximate-minimum-degree';
   let factorizedComponentCount = 0;
   let minimumPivotRatio = Infinity;
+  let minimumPivotMin = null;
+  let minimumPivotMax = null;
+  let minimumPivotDof = null;
   let largestComponentDofs = 0;
 
   for (let componentIndex = 0; componentIndex < components.length; componentIndex += 1) {
@@ -623,7 +662,13 @@ function certifyCgSpdByComponents(matrix, options, baseDetail) {
           method: 'sparse-ldlt-positive-pivot-certification',
         });
       }
-      minimumPivotRatio = Math.min(minimumPivotRatio, factor.pivotRatio);
+      if (factor.pivotRatio < minimumPivotRatio) {
+        minimumPivotRatio = factor.pivotRatio;
+        minimumPivotMin = factor.pivotMin;
+        minimumPivotMax = factor.pivotMax;
+        const localDof = factor.pivotMinOriginalIndex ?? factor.pivotMinIndex;
+        minimumPivotDof = Number.isInteger(localDof) ? component[localDof] : null;
+      }
     } catch (error) {
       return cgQualificationBlocked('CG_SPD_CERTIFICATION_FAILED', {
         ...baseDetail,
@@ -647,6 +692,38 @@ function certifyCgSpdByComponents(matrix, options, baseDetail) {
     largestComponentDofs,
     componentLimit,
     minimumPivotRatio: minimumPivotRatio === Infinity ? 1 : minimumPivotRatio,
+    minimumPivotMin,
+    minimumPivotMax,
+    minimumPivotDof,
+  };
+}
+
+function cgPivotDiagnostic(diagonal, qualification = {}) {
+  const absolute = diagonal.map((value) => Math.abs(Number(value) || 0));
+  const max = Math.max(0, ...absolute);
+  const min = absolute.length ? Math.min(...absolute) : 0;
+  const diagonalRatio = max > 0 ? min / max : 0;
+  const diagonalDof = absolute.indexOf(min);
+  const factorRatio = Number(qualification.minimumPivotRatio);
+  if (Number.isFinite(factorRatio)
+    && factorRatio >= 0
+    && factorRatio < diagonalRatio
+    && Number.isFinite(Number(qualification.minimumPivotMin))
+    && Number.isFinite(Number(qualification.minimumPivotMax))) {
+    return {
+      min: Number(qualification.minimumPivotMin),
+      max: Number(qualification.minimumPivotMax),
+      ratio: factorRatio,
+      dof: integerOrNull(qualification.minimumPivotDof),
+      metric: 'component-ldlt-pivot-ratio',
+    };
+  }
+  return {
+    min,
+    max,
+    ratio: diagonalRatio,
+    dof: integerOrNull(qualification.diagonalMinDof ?? diagonalDof),
+    metric: 'global-diagonal-ratio',
   };
 }
 
@@ -837,6 +914,8 @@ function factorFailureDetail(factor) {
     pivotOriginalIndex: factor.pivotOriginalIndex ?? null,
     pivot: factor.pivot ?? null,
     pivotMin: factor.pivotMin ?? null,
+    pivotMinIndex: factor.pivotMinIndex ?? null,
+    pivotMinOriginalIndex: factor.pivotMinOriginalIndex ?? factor.pivotMinIndex ?? null,
     pivotMax: factor.pivotMax ?? null,
     pivotRatio: factor.pivotRatio ?? null,
   };
@@ -996,6 +1075,11 @@ function nonnegativeNumber(value, fallback) {
 function finiteOr(value, fallback) {
   const number = Number(value);
   return Number.isFinite(number) ? number : fallback;
+}
+
+function integerOrNull(value) {
+  const number = Number(value);
+  return Number.isInteger(number) && number >= 0 ? number : null;
 }
 
 function now() {

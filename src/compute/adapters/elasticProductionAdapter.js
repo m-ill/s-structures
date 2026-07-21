@@ -18,6 +18,7 @@ export const PRODUCTION_ELASTIC_ADAPTER_VERSION = 'p9-m5-production-elastic-adap
 export const PRODUCTION_ELASTIC_BACKEND_ID = 'p9-elastic-cpu-production-v1';
 export const PRODUCTION_ELASTIC_HYBRID_BACKEND_ID = 'p9-elastic-webgpu-hybrid-candidate-v1';
 export const PRODUCTION_ELASTIC_OPERATION = 'elasticStatic';
+export const PDELTA_BOUNDED_SCREENING_VERSION = 'p10-m0-bounded-pdelta-screening-v1';
 
 const PHYSICAL_OMIT_FIELDS = new Set([
   'completedAt',
@@ -67,6 +68,7 @@ export async function executeProductionElastic(payload = {}, context = {}) {
   const retainDetailedCombinations = shouldRetainDetailedCombinations(prepared, payload);
   const envelopeAccumulator = retainDetailedCombinations ? null : createEnvelopeAccumulator(prepared.combos);
   const byCombo = {};
+  const pDeltaScreeningByCombo = {};
   const linearSeeds = {};
   const resultSlices = [];
   let result;
@@ -103,6 +105,9 @@ export async function executeProductionElastic(payload = {}, context = {}) {
             });
         envelopeAccumulator?.add(combo, comboResult);
         if (route.target === 'gpu' && prepared.pDeltaMethod === 'direct') linearSeeds[combo.id] = comboResult;
+        if (prepared.pDeltaMethod === 'off') {
+          pDeltaScreeningByCombo[combo.id] = compactPDeltaScreeningResult(comboResult);
+        }
         byCombo[combo.id] = retainDetailedCombinations ? comboResult : compactElasticCombinationResult(comboResult);
         const slice = elasticResultSlice(combo.id, comboResult, index);
         resultSlices.push(slice);
@@ -159,6 +164,7 @@ export async function executeProductionElastic(payload = {}, context = {}) {
     result = finalizeElasticAnalysis(prepared, byCombo, {
       envelopeOverride: envelopeAccumulator?.finalize(),
       pDeltaOverride,
+      pDeltaScreeningByCombo,
       combinationStorage: retainDetailedCombinations
         ? { mode: 'detailed', detailedCombinationCount: prepared.combos.length, sliceCombinationCount: 0 }
         : {
@@ -166,6 +172,7 @@ export async function executeProductionElastic(payload = {}, context = {}) {
             detailedCombinationCount: 0,
             sliceCombinationCount: prepared.combos.length,
             detailAccess: 'result-slice-and-final-envelope',
+            pDeltaScreeningVersion: PDELTA_BOUNDED_SCREENING_VERSION,
           },
     });
     sessionBeforeDispose = factorSession.snapshot();
@@ -425,6 +432,29 @@ function compactElasticCombinationResult(result) {
     disp: {},
     reactions: {},
     memberResults: {},
+  };
+}
+
+function compactPDeltaScreeningResult(result) {
+  return {
+    ok: result?.ok === true,
+    anyOk: result?.anyOk === true,
+    reason: result?.reason || null,
+    disp: Object.fromEntries(Object.entries(result?.disp || {}).map(([nodeId, value]) => [
+      nodeId,
+      [Number(value?.[0]) || 0, Number(value?.[1]) || 0, Number(value?.[2]) || 0],
+    ])),
+    memberResults: Object.fromEntries(Object.entries(result?.memberResults || {}).map(([memberId, value]) => {
+      const axial = (value?.N || []).map(Number).filter(Number.isFinite);
+      return [memberId, {
+        N: axial.length ? [Math.min(...axial)] : [],
+        Nmax: finiteOrNull(value?.Nmax),
+        Vymax: finiteOrNull(value?.Vymax),
+        Vzmax: finiteOrNull(value?.Vzmax),
+        Mymax: finiteOrNull(value?.Mymax),
+        Mzmax: finiteOrNull(value?.Mzmax),
+      }];
+    })),
   };
 }
 

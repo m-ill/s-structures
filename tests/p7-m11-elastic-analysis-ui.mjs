@@ -54,6 +54,7 @@ const nonlinearCase = target.SStructuresEngine.addAnalysisCase({
   settings: { direction: '+x', steps: 3 },
 });
 document.getElementById('ssElasticRunAll').click();
+await waitFor(() => target.SStructuresElasticAnalysisRibbon.getState().running === false);
 let batchState = target.SStructuresElasticAnalysisRibbon.getState();
 assert.equal(batchState.lastBatch.total, ELASTIC_ANALYSIS_COMMANDS.length);
 assert.equal(batchState.resultCount, ELASTIC_ANALYSIS_COMMANDS.length);
@@ -81,7 +82,7 @@ assert.equal(document.getElementById('ssElasticRunAll').disabled, true);
 assert.equal(document.getElementById('ssElasticBatchStatus').textContent, '실행 중');
 deferredFrame();
 assert.equal(typeof deferredTask, 'function');
-deferredTask();
+await deferredTask();
 assert.equal(target.SStructuresElasticAnalysisRibbon.getState().running, false);
 assert.match(document.getElementById('ssElasticBatchStatus').textContent, /완료/);
 delete target.requestAnimationFrame;
@@ -114,7 +115,7 @@ assert.ok(document.getElementById('ssModalMassSource'));
 document.getElementById('ssModalModeCount').value = '2';
 target.SStructuresAnalysisCenter.save();
 assert.equal(selectedCase(target).settings.modalModeCount, 2);
-target.SStructuresElasticAnalysisRibbon.runSelected();
+await target.SStructuresElasticAnalysisRibbon.runSelected();
 assert.equal(model.analysisCases.find((item) => item.id === 'EL-MODAL').status, 'ok');
 assert.equal(document.getElementById('ssElasticAnalysis-modal').getAttribute('data-status'), 'ok');
 assert.ok(document.getElementById('ssChartModal'));
@@ -202,4 +203,12 @@ function createMemoryStorage() {
     setItem: (key, value) => values.set(key, String(value)),
     removeItem: (key) => values.delete(key),
   };
+}
+
+async function waitFor(predicate, attempts = 100) {
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    if (predicate()) return;
+    await new Promise((resolve) => globalThis.setTimeout(resolve, 0));
+  }
+  throw new Error('Timed out waiting for async elastic analysis UI state.');
 }

@@ -148,7 +148,10 @@ export function validatePhase9M4Manifest(manifest = {}) {
   if (manifest.computeQualification?.grade !== 'G2' || manifest.computeQualification?.gpuImplemented !== true) errors.push('manifest:grade');
   if (manifest.computeQualification?.fullProfileMatrixQualified !== false) errors.push('manifest:profileMatrix');
   if (!manifest.blockers?.includes(PHASE9_M4_EXTERNAL_MATRIX_BLOCKER)) errors.push('manifest:matrixBlocker');
-  if (!manifest.blockers?.includes('P9_M5_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED')) errors.push('manifest:hybridBlocker');
+  const hasM4HybridBlocker = manifest.blockers?.includes('P9_M5_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED');
+  const hasEvolvedHybridBlocker = manifest.implementation?.implementedMilestones?.includes('P9-M5')
+    && manifest.blockers?.includes('P9_M6_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED');
+  if (!hasM4HybridBlocker && !hasEvolvedHybridBlocker) errors.push('manifest:hybridBlocker');
   if (manifest.blockers?.includes('P9_M4_TO_M8_GPU_QUALIFICATION_REQUIRED')) errors.push('manifest:staleBlocker');
   if (manifest.release?.allowed !== false || manifest.release?.designTransferAllowed !== false) errors.push('manifest:release');
   if (manifest.manifestHash !== phase9ManifestHash(manifest)) errors.push('manifest:hash');

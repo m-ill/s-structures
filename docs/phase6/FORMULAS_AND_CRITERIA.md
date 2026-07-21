@@ -170,17 +170,18 @@ Newton-Raphson: Kt Δu = R,  u(k+1)=u(k)+Δu
 ```
 > **부호 주의**: 압축을 양수 P로 두는 문헌은 `Kt = Ke − Kg(P)`로 쓴다. 본 프로젝트는 `SIGN_CONVENTION`이 **인장 양수**이므로 `Kt = Ke + Kg(N)` 하나로 통일한다. KG 정식화는 중복 조립하지 말고 공용 `src/solver/geometricStiffness*` 모듈로 추출해 좌굴/P-Delta 양쪽에서 재사용한다.
 
-**2D beam-column 기하강성** (bending DOF [v_i,θ_i,v_j,θ_j], 압축 양수 P 표기의 정준형 — 코드는 인장양수로 부호전환)
+**2D beam-column 기하강성** (bending DOF [v_i,θ_i,v_j,θ_j], **인장 양수 N 정식형** — 아래 행렬을 부호전환 없이 그대로 `Kt = Ke + Kg(N)`에 사용, 압축은 N<0으로 자동 반영)
 ```text
-Kg = P/(30L) ×
+Kg = N/(30L) ×          (N: 인장 양수 축력, 코드의 axialForceTensionPositive)
 [[ 36,  3L, −36,  3L],
  [ 3L, 4L², −3L, −L²],
  [−36, −3L,  36, −3L],
  [ 3L, −L², −3L, 4L²]]
-일반형: Kg = ∫₀ᴸ N_axial Gᵀ G dx,  G = dN_bending/dx
-3D: 두 횡방향(v-rz, w-ry) 블록에 각각 삽입
+일반형: Kg = ∫₀ᴸ N_axial Gᵀ G dx,  G = dN_bending/dx   (N_axial 인장 양수 → 위 행렬, 부호전환 없음)
+3D: 두 횡방향(v-rz, w-ry) 블록에 각각 삽입 (w-ry 블록은 국부축 부호규약상 L-결합항 부호가 반전 — `localGeometricBlock` 참조)
 축력 업데이트: u_local=T u_global, δ=uj−ui, N=EA/L·δ → 매 iteration Kg(k)→Kt(k)
 ```
+> **코드 정합(2026-07-13 재검증)**: `src/solver/geometricStiffness.js`의 `localTangentGeometricStiffness12(axialForceTensionPositive, L)`가 위 행렬을 인장양수 N에 직접 적용하고, `src/solver/pdelta/tangentStiffness.js`가 `Kt = Ke + KG`로 **덧셈**한다(부호전환 없음). 즉 "압축 양수 표기 후 코드에서 반전"이 아니라 처음부터 인장양수 정식형이다.
 
 **좌굴 연결**
 ```text
@@ -204,7 +205,7 @@ load step: Fext=λFtotal (λ:0→1), Δλ=1/n_step, 실패 Δλ/2, 여유 min(2�
 ```
 > 현행 기본값(0.1/0.25)과 위 tier가 다르다 — **정확히 이래서 config로 뺀다.** 기준셋(KDS/ASCE)마다 θ 한계가 다르므로 preset으로 교체.
 
-현행 자산: `dynamics/globalBuckling.js`의 좌굴 전용 `buildGlobalGeometricStiffness` 정식화(현재 내부 함수), `nonlinear/elements/corotationalBeam.js`, `nonlinear/control/*`(NR/arc-length), `results/unilateralTrace.js`. Phase 6 구현 시 KG 정식화는 공용 `src/solver/geometricStiffness*` 모듈로 추출한 뒤 좌굴/P-Delta 양쪽에서 재사용한다.
+현행 자산(**추출 완료**): 공용 기하강성 모듈 `src/solver/geometricStiffness.js`(`assembleGlobalGeometricStiffness`, `mode: tangent | buckling`)로 통합됨. `dynamics/globalBuckling.js`(좌굴, `mode:buckling`, 압축 참조하중)와 `solver/pdelta/tangentStiffness.js`·`secondOrder.js`(Direct P-Delta, `mode:tangent`, 인장양수)가 **동일 모듈을 재사용**한다 — KG 중복 조립 없음. corotational 계열은 `nonlinear/elements/corotationalBeam.js`(별도 대변위 정식), NR/arc-length는 `nonlinear/control/*`, 인장/압축전용은 `linear3d.js`의 unilateral iteration.
 
 ---
 

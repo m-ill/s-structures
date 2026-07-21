@@ -941,6 +941,24 @@ function prescribedCompatibilityIssues(nodes) {
   const issues = [];
   const restrained = buildFixedDofs(nodes);
   for (const [nodeIndex, node] of nodes.entries()) {
+    const explicit = node.prescribedDisplacement && typeof node.prescribedDisplacement === 'object' && !Array.isArray(node.prescribedDisplacement)
+      ? node.prescribedDisplacement
+      : node.prescribed && typeof node.prescribed === 'object' && !Array.isArray(node.prescribed)
+        ? node.prescribed
+        : null;
+    if (explicit) {
+      for (let dofIndex = 0; dofIndex < 6; dofIndex += 1) {
+        const key = DISPLACEMENT_KEYS[dofIndex];
+        const legacyKey = LEGACY_SETTLEMENT_KEYS[dofIndex];
+        if (!Object.hasOwn(explicit, key) && !Object.hasOwn(explicit, legacyKey)) continue;
+        issues.push({
+          code: 'DIRECT_PDELTA_EXPLICIT_PRESCRIBED_UNSUPPORTED',
+          message: `Direct P-Delta does not yet apply explicit prescribed displacement ${node.id}.${key}.`,
+          nodeId: node.id,
+          dof: key,
+        });
+      }
+    }
     if (!node.settlement) continue;
     for (let dofIndex = 0; dofIndex < 6; dofIndex += 1) {
       const key = DISPLACEMENT_KEYS[dofIndex];

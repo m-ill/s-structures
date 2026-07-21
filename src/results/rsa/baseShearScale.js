@@ -2,6 +2,7 @@ import { combineModalResponseValues } from '../../dynamics/modal.js';
 
 export const RSA_BASE_SHEAR_SCALE_VERSION = 'p6-m4-rsa-base-shear-scale-v1';
 export const RSA_BASE_SHEAR_SCALE_CORRECTNESS_VERSION = 'p7-m9-rsa-base-shear-scale-v1';
+export const RSA_BASE_SHEAR_SCALE_APPLICATION_VERSION = 'p10-m0-rsa-base-shear-scale-application-v1';
 
 export function buildBaseShearScaleTrace(input = {}) {
   const rsa = input.rsa || input.analysis?.dynamics?.rsa || null;
@@ -84,6 +85,238 @@ export function buildBaseShearScaleTrace(input = {}) {
       status: designBlocked ? 'unsupported' : rows.some((row) => row.status === 'NG') ? 'NG' : 'OK',
     },
   };
+}
+
+export function applyBaseShearScaling(rsa = {}, input = {}) {
+  if (rsa?.baseShearScaling?.application?.resolved) {
+    return { combined: rsa.combined || {}, trace: rsa.baseShearScaling };
+  }
+  const enabled = input.enabled !== false;
+  const rawTrace = buildBaseShearScaleTrace({
+    ...input,
+    rsa,
+  });
+  const appliedRows = rawTrace.rows.map((row) => {
+    const calculated = finiteOrNull(row.scaleFactor);
+    const beforeBaseShear = finiteOrNull(row.baseShear);
+    const appliedScaleFactor = enabled && calculated != null && calculated > 0 ? calculated : 1;
+    const scaling = scalingMetadata(row.baseShear, appliedScaleFactor);
+    return {
+      ...row,
+      appliedScaleFactor,
+      appliedBaseShear: beforeBaseShear != null
+        ? beforeBaseShear * appliedScaleFactor
+        : null,
+      provenance: withScalingProvenance(row.provenance, row.baseShear, appliedScaleFactor),
+      application: {
+        enabled,
+        calculatedScaleFactor: calculated,
+        ...scaling,
+      },
+    };
+  });
+  const factorByDirection = Object.fromEntries(appliedRows.map((row) => [row.direction, row.appliedScaleFactor]));
+  const combined = Object.fromEntries(Object.entries(rsa?.combined || {}).map(([direction, row]) => [
+    direction,
+    scaleCombinedDirection(row, factorByDirection[direction] || 1),
+  ]));
+  const appliedDirections = appliedRows.filter((row) => row.application.scaled).map((row) => row.direction);
+  const trace = {
+    ...rawTrace,
+    rows: appliedRows,
+    application: {
+      version: RSA_BASE_SHEAR_SCALE_APPLICATION_VERSION,
+      resolved: true,
+      enabled,
+      applied: appliedDirections.length > 0,
+      appliedDirections,
+      factorByDirection,
+      source: 'analysisCriteria.criteria.rsa.applyBaseShearScaling',
+    },
+  };
+  return { combined, trace };
+}
+
+function scaleCombinedDirection(row = {}, factor = 1) {
+  const scalarKeys = [
+    'displacement',
+    'combinedDisplacement',
+    'maxModalDisplacement',
+    'srssDisplacement',
+    'cqcDisplacement',
+    'baseShear',
+    'rsaBaseShear',
+    'srssBaseShear',
+    'cqcBaseShear',
+  ];
+  const arrayKeys = ['displacementVector', 'inertiaForceVector'];
+  const componentKeys = ['baseShearComponents', 'srssBaseShearComponents', 'cqcBaseShearComponents'];
+  const beforeValue = Object.fromEntries([
+    ...scalarKeys,
+    ...arrayKeys,
+    ...componentKeys,
+  ].filter((key) => row[key] != null).map((key) => [key, cloneValue(row[key])]));
+  const scaled = { ...row };
+  for (const key of scalarKeys) scaled[key] = scaleFinite(row[key], factor);
+  for (const key of arrayKeys) scaled[key] = scaleArray(row[key], factor);
+  for (const key of componentKeys) scaled[key] = scaleNumericObject(row[key], factor);
+  scaled.nodalDisplacements = scaleVectorRows(row.nodalDisplacements, factor);
+  scaled.nodalDisplacementsByMethod = scaleRowsByMethod(row.nodalDisplacementsByMethod, factor);
+  scaled.nodeDisplacements = scaleNodeVectorMap(row.nodeDisplacements, factor);
+  scaled.nodalInertiaForces = scaleVectorRows(row.nodalInertiaForces, factor);
+  scaled.inertiaForces = scaleVectorRows(row.inertiaForces, factor);
+  scaled.nodalInertiaForcesByMethod = scaleRowsByMethod(row.nodalInertiaForcesByMethod, factor);
+  scaled.nodeInertiaForces = scaleNodeVectorMap(row.nodeInertiaForces, factor);
+  scaled.memberForces = scaleMemberForceBlock(row.memberForces, factor);
+  scaled.provenance = withScalingProvenance(
+    row.provenance,
+    beforeValue,
+    factor,
+    scalarKeys.filter((key) => row[key] != null),
+  );
+  return scaled;
+}
+
+function scaleVectorRows(rows, factor) {
+  if (!Array.isArray(rows)) return rows;
+  return rows.map((row) => {
+    const beforeValue = {
+      vector: cloneValue(row?.vector),
+      x: row?.x,
+      y: row?.y,
+      z: row?.z,
+    };
+    return {
+      ...row,
+      vector: scaleArray(row?.vector, factor),
+      x: scaleFinite(row?.x, factor),
+      y: scaleFinite(row?.y, factor),
+      z: scaleFinite(row?.z, factor),
+      provenance: withScalingProvenance(row?.provenance, beforeValue, factor, ['x', 'y', 'z']),
+    };
+  });
+}
+
+function scaleRowsByMethod(rowsByMethod, factor) {
+  if (!rowsByMethod || typeof rowsByMethod !== 'object') return rowsByMethod;
+  return Object.fromEntries(Object.entries(rowsByMethod).map(([method, rows]) => [
+    method,
+    scaleVectorRows(rows, factor),
+  ]));
+}
+
+function scaleNodeVectorMap(rowsByNode, factor) {
+  if (!rowsByNode || typeof rowsByNode !== 'object') return rowsByNode;
+  return Object.fromEntries(Object.entries(rowsByNode).map(([nodeId, vector]) => [
+    nodeId,
+    scaleArray(vector, factor),
+  ]));
+}
+
+function scaleMemberForceBlock(block, factor) {
+  if (!block || typeof block !== 'object' || block.status === 'unsupported') return block;
+  const sourceRows = block.members || block.rows || [];
+  const members = sourceRows.map((row) => scaleMemberForceRow(row, factor));
+  return {
+    ...block,
+    members,
+    rows: members,
+    byMember: Object.fromEntries(members.map((row) => [row.memberId, row])),
+    provenance: withScalingProvenance(
+      block.provenance,
+      { memberCount: sourceRows.length },
+      factor,
+    ),
+  };
+}
+
+function scaleMemberForceRow(row = {}, factor) {
+  const quantityKeys = ['N', 'Vy', 'Vz', 'Tq', 'T', 'My', 'Mz'];
+  const beforeValue = {
+    endForces: cloneValue(row.endForces),
+    end: cloneValue(row.end),
+    ...Object.fromEntries(quantityKeys.filter((key) => row[key] != null).map((key) => [key, cloneValue(row[key])])),
+    peaks: cloneValue(row.peaks),
+  };
+  const scaled = {
+    ...row,
+    endForces: scaleArray(row.endForces, factor),
+    end: scaleMemberEnd(row.end, factor),
+    stations: (row.stations || []).map((station) => scaleMemberStation(station, factor)),
+    peaks: scaleNumericObject(row.peaks, factor),
+    provenance: withScalingProvenance(row.provenance, beforeValue, factor),
+  };
+  for (const key of quantityKeys) scaled[key] = scaleArray(row[key], factor);
+  return scaled;
+}
+
+function scaleMemberEnd(end, factor) {
+  if (!end || typeof end !== 'object') return end;
+  return Object.fromEntries(Object.entries(end).map(([key, row]) => [key, scaleNumericObject(row, factor)]));
+}
+
+function scaleMemberStation(station = {}, factor) {
+  const forceKeys = ['N', 'Vy', 'Vz', 'Tq', 'T', 'My', 'Mz'];
+  const beforeValue = Object.fromEntries(forceKeys
+    .filter((key) => station[key] != null)
+    .map((key) => [key, station[key]]));
+  const scaled = { ...station };
+  for (const key of forceKeys) scaled[key] = scaleFinite(station[key], factor);
+  scaled.provenance = withScalingProvenance(station.provenance, beforeValue, factor, Object.keys(beforeValue));
+  return scaled;
+}
+
+function withScalingProvenance(provenance, beforeValue, factor, valueKeys = []) {
+  const metadata = scalingMetadata(beforeValue, factor);
+  return {
+    ...(provenance || {}),
+    scaling: {
+      ...(provenance?.scaling || {}),
+      applied: metadata.scaled,
+      factor,
+      ...metadata,
+      values: Object.fromEntries(valueKeys.map((key) => [key, scalingMetadata(
+        beforeValue && typeof beforeValue === 'object' ? beforeValue[key] : beforeValue,
+        factor,
+      )])),
+    },
+  };
+}
+
+function scalingMetadata(beforeValue, factor) {
+  const scaleFactor = Number.isFinite(Number(factor)) && Number(factor) > 0 ? Number(factor) : 1;
+  return {
+    scaled: scaleFactor !== 1,
+    scaleFactor,
+    beforeValue: cloneValue(beforeValue),
+  };
+}
+
+function scaleArray(values, factor) {
+  if (!Array.isArray(values)) return values;
+  return values.map((value) => scaleFinite(value, factor));
+}
+
+function scaleNumericObject(value, factor) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return value;
+  return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, scaleFinite(item, factor)]));
+}
+
+function scaleFinite(value, factor) {
+  const number = Number(value);
+  return value != null && value !== '' && Number.isFinite(number) ? number * factor : value;
+}
+
+function finiteOrNull(value) {
+  if (value == null || value === '') return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function cloneValue(value) {
+  if (value == null || typeof value !== 'object') return value;
+  if (typeof structuredClone === 'function') return structuredClone(value);
+  return JSON.parse(JSON.stringify(value));
 }
 
 function recoverBaseShear(rsa, combined, modalRows) {

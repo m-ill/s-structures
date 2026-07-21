@@ -17,13 +17,13 @@ import {
 } from './linear3dElement.js';
 import { buildFixedEndLoad, fixedEndTraceRow } from '../loads/fixedEnd/index.js';
 import { buildDiaphragmDofMap } from './diaphragmDofMap.js';
-import { reducedFixedDofs } from './diaphragmFixedDofs.js';
+import { resolveReducedDofConstraints } from './diaphragmFixedDofs.js';
 import { expandReducedDisplacements, reduceSystem } from './diaphragmReduce.js';
 import { effectiveSectionMaterial } from './linear3dPost.js';
 import { recoverMemberResult } from './linear3dRecovery.js';
 import { buildSolverWarningDiagnostics } from './sparse/diagnostics.js';
 import { cscMatVec, SPARSE_MATRIX_VERSION } from './sparse/cscMatrix.js';
-import { buildFixedDofs } from './domain/supportConstraints.js';
+import { buildFixedDofs, collectPrescribedDofs } from './domain/supportConstraints.js';
 
 export { buildFixedDofs } from './domain/supportConstraints.js';
 
@@ -183,7 +183,15 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   }
 
   const restrainedDofs = buildFixedDofs(nodes);
+  const prescribedConstraints = collectPrescribedDofs(nodes, restrainedDofs);
+  if (!prescribedConstraints.ok) return prescribedConstraintFailure(prescribedConstraints.errors[0]);
+  // Cache only load-independent constraints.  Isolated DOFs are classified for
+  // every RHS below because an unloaded mechanism may become loaded in a later
+  // combination that reuses this stiffness matrix.
   const fixedDofs = new Set(cached?.fixedDofs || restrainedDofs);
+  const structuralFixedDofs = [...fixedDofs];
+  const autoFixedDofs = [];
+  const autoFixedReducedDofs = [];
   const springValidation = validateNodeSpringInputs(nodes);
   if (!springValidation.ok) return springValidation;
   if (assembleStiffness) {
@@ -197,10 +205,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   if (assembleStiffness && sparseDecision.useSparse) {
     stabilizeUnsupportedRotationsSparse(sparseAccumulator, nodes, fixedDofs);
     K = sparseAccumulatorToCsc(sparseAccumulator);
-    autoFixIsolatedDofsSparse(K, fixedDofs);
   } else if (assembleStiffness) {
     stabilizeUnsupportedRotations(K, nodes, fixedDofs);
-    autoFixIsolatedDofs(K, fixedDofs);
   }
   const diaphragmGroups = activeDiaphragmGroups(nodes, ctx.diaphragms);
   const reduced = cached?.reduced
@@ -210,26 +216,50 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
         ? reduceWithDiaphragmsSparse(K, F, nodes, fixedDofs, diaphragmGroups)
         : reduceWithDiaphragms(K, F, nodes, fixedDofs, diaphragmGroups)
       : null;
+  if (reduced?.constraintResolution?.ok === false) {
+    return reducedConstraintFailure(reduced.constraintResolution, nodes);
+  }
   const Ks = reduced?.K || K;
   const Fs = reduced?.F || F;
   const assembledValidation = validateAssembledSystem(Ks, Fs);
   if (!assembledValidation.ok) return assembledValidation;
-  const fixed = new Set(reduced?.fixedDofs || fixedDofs);
-  if (reduced && assembleStiffness) {
-    if (sparseDecision.useSparse) autoFixIsolatedDofsSparse(Ks, fixed);
-    else autoFixIsolatedDofs(Ks, fixed);
+  const fixed = reduced ? new Set(reduced.fixedDofs) : fixedDofs;
+
+  // Diaphragm slave loads are meaningful only after T'F reduction.  Checking
+  // the unreduced vector incorrectly labels a valid slave load as a mechanism.
+  const loadedMechanismDof = firstLoadedIsolatedDof(Ks, Fs, fixed);
+  if (loadedMechanismDof != null) {
+    return reducedDofFailure(
+      'MECHANISM_DOF',
+      nodes,
+      loadedMechanismDof,
+      reduced?.map,
+      Fs[loadedMechanismDof],
+      'A loaded degree of freedom has no assembled stiffness.',
+    );
   }
-  const prescribed = buildPrescribedDisplacements(nodes, restrainedDofs, fixedDofs, reduced?.map, fixed);
+  if (sparseDecision.useSparse) {
+    const added = autoFixIsolatedDofsSparse(Ks, fixed);
+    (reduced ? autoFixedReducedDofs : autoFixedDofs).push(...added);
+  } else {
+    const added = autoFixIsolatedDofs(Ks, fixed);
+    (reduced ? autoFixedReducedDofs : autoFixedDofs).push(...added);
+  }
+  const prescribed = buildPrescribedDisplacements(
+    nodes,
+    prescribedConstraints.entries,
+    fixedDofs,
+    reduced?.map,
+    fixed,
+  );
   if (!prescribed.ok) return prescribed;
   const criteriaModel = ctx.criteriaModel || ctx.model || ctx.analysisCriteria || {};
   const systemDofCount = matrixSize(Ks);
   const dofLabels = solverDofLabels(nodes, reduced?.map, systemDofCount);
 
-  const free = cached?.free ? [...cached.free] : [];
-  if (!cached?.free) {
-    for (let i = 0; i < systemDofCount; i += 1) {
-      if (!fixed.has(i)) free.push(i);
-    }
+  const free = [];
+  for (let i = 0; i < systemDofCount; i += 1) {
+    if (!fixed.has(i)) free.push(i);
   }
 
   let df = [];
@@ -238,33 +268,34 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   let Ff = [];
   let assemblyTelemetry = null;
   if (free.length) {
-    Kff = cached?.Kff || (sparseDecision.useSparse
+    Kff = sparseDecision.useSparse
       ? extractCscSubmatrix(Ks, free, free)
-      : free.map((i) => free.map((j) => Ks[i][j])));
+      : free.map((i) => free.map((j) => Ks[i][j]));
     const prescribedForces = matrixMatVec(Ks, prescribed.values);
     Ff = free.map((i) => Fs[i] - prescribedForces[i]);
-    assemblyTelemetry = cached?.assemblyTelemetry
-      ? { ...cached.assemblyTelemetry, stiffnessReused: true }
-      : {
-          ...buildAssemblyTelemetry({
-            sparseDecision,
-            globalK: K,
-            systemK: Ks,
-            freeK: Kff,
-            reduced: !!reduced,
-            accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
-            freeDofCount: free.length,
-          }),
-          stiffnessReused: false,
-        };
+    assemblyTelemetry = {
+      ...buildAssemblyTelemetry({
+        sparseDecision,
+        globalK: K,
+        systemK: Ks,
+        freeK: Kff,
+        reduced: !!reduced,
+        accumulatorPeakEntries: sparseAccumulator?.peakEntries || cached?.accumulatorPeakEntries || 0,
+        freeDofCount: free.length,
+      }),
+      stiffnessReused: !!cached,
+    };
     if (cacheKey && assembleStiffness) cacheElasticComponent(ctx.componentCache, cacheKey, {
       K,
-      fixedDofs: [...fixedDofs],
+      fixedDofs: structuralFixedDofs,
       sparseDecision,
-      reduced: reduced ? { K: reduced.K, fixedDofs: [...reduced.fixedDofs], map: reduced.map } : null,
-      free: [...free],
-      Kff,
-      assemblyTelemetry,
+      reduced: reduced ? {
+        K: reduced.K,
+        fixedDofs: [...reduced.fixedDofs],
+        map: reduced.map,
+        constraintResolution: reduced.constraintResolution,
+      } : null,
+      accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
     });
     if (!ctx.captureSystemsOnly) {
       solve = solveElasticSystem(Kff, Ff, {
@@ -289,28 +320,29 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       }
     }
   } else {
-    assemblyTelemetry = cached?.assemblyTelemetry
-      ? { ...cached.assemblyTelemetry, stiffnessReused: true }
-      : {
-          ...buildAssemblyTelemetry({
-            sparseDecision,
-            globalK: K,
-            systemK: Ks,
-            freeK: null,
-            reduced: !!reduced,
-            accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
-            freeDofCount: 0,
-          }),
-          stiffnessReused: false,
-        };
+    assemblyTelemetry = {
+      ...buildAssemblyTelemetry({
+        sparseDecision,
+        globalK: K,
+        systemK: Ks,
+        freeK: null,
+        reduced: !!reduced,
+        accumulatorPeakEntries: sparseAccumulator?.peakEntries || cached?.accumulatorPeakEntries || 0,
+        freeDofCount: 0,
+      }),
+      stiffnessReused: !!cached,
+    };
     if (cacheKey && assembleStiffness) cacheElasticComponent(ctx.componentCache, cacheKey, {
       K,
-      fixedDofs: [...fixedDofs],
+      fixedDofs: structuralFixedDofs,
       sparseDecision,
-      reduced: reduced ? { K: reduced.K, fixedDofs: [...reduced.fixedDofs], map: reduced.map } : null,
-      free: [],
-      Kff: null,
-      assemblyTelemetry,
+      reduced: reduced ? {
+        K: reduced.K,
+        fixedDofs: [...reduced.fixedDofs],
+        map: reduced.map,
+        constraintResolution: reduced.constraintResolution,
+      } : null,
+      accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
     });
   }
 
@@ -367,6 +399,10 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     solver.reducedDofCount = systemDofCount;
     solver.prescribedDofCount = prescribed.dofs.length;
     solver.prescribedDofs = prescribed.dofs;
+    solver.autoFixedDofs = [...new Set(autoFixedDofs)]
+      .map((index) => fullDofLabel(nodes, index));
+    solver.autoFixedReducedDofs = [...new Set(autoFixedReducedDofs)]
+      .map((index) => dofLabels[index] || `reduced:${index}`);
 
     for (let i = 0; i < ndof; i += 1) {
       const limit = i % 6 < 3 ? 1e4 : 50;
@@ -383,7 +419,24 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       disp[node.id] = D.slice(i * 6, i * 6 + 6);
     });
 
-    const recoveredReactions = recoverReactionsDetailed(nodes, K, F, D, fixedDofs);
+    const reactionRecovery = reduced
+      ? buildReducedReactionRecovery(Ks, Fs, Q, fixedDofs, reduced.map)
+      : null;
+    if (reactionRecovery?.ok === false) return reactionRecovery;
+    solver.reactionRecovery = reactionRecovery?.trace || {
+      applied: false,
+      method: 'full-system-residual',
+      ambiguousCoordinateCount: 0,
+    };
+    const recoveredReactions = recoverReactionsDetailed(
+      nodes,
+      K,
+      F,
+      D,
+      fixedDofs,
+      reactionRecovery?.overrides,
+      new Set(prescribedConstraints.entries.map((entry) => entry.fullDof)),
+    );
     if (!recoveredReactions.ok) return recoveredReactions;
     const reactions = recoveredReactions.reactions;
     const memberResults = {};
@@ -406,7 +459,8 @@ function activeDiaphragmGroups(nodes, groups = []) {
 function reduceWithDiaphragms(K, F, nodes, fixedDofs, groups) {
   const map = buildDiaphragmDofMap(nodes, groups);
   const reduced = reduceSystem(K, F, map);
-  return { ...reduced, fixedDofs: reducedFixedDofs(fixedDofs, map), map };
+  const constraintResolution = resolveReducedDofConstraints(fixedDofs, map);
+  return { ...reduced, fixedDofs: constraintResolution.fixedDofs, constraintResolution, map };
 }
 
 function reduceWithDiaphragmsSparse(K, F, nodes, fixedDofs, groups) {
@@ -427,10 +481,12 @@ function reduceWithDiaphragmsSparse(K, F, nodes, fixedDofs, groups) {
       }
     }
   }
+  const constraintResolution = resolveReducedDofConstraints(fixedDofs, map);
   return {
     K: sparseAccumulatorToCsc(accumulator),
     F: Fr,
-    fixedDofs: reducedFixedDofs(fixedDofs, map),
+    fixedDofs: constraintResolution.fixedDofs,
+    constraintResolution,
     map,
   };
 }
@@ -599,79 +655,81 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
   applyNodeSprings(nodes, idx, K, F);
   if (!fixedDofs.size && !nodes.some((node) => node.support === 'spring')) return { ok: false, reason: 'NO_SUPPORT', K, free: [], fixedDofs, nodeMap, idx, memData };
   stabilizeUnsupportedRotations(K, nodes, fixedDofs);
-  autoFixIsolatedDofs(K, fixedDofs);
+  const autoFixedDofs = autoFixIsolatedDofs(K, fixedDofs);
   const free = [];
   for (let i = 0; i < ndof; i += 1) {
     if (!fixedDofs.has(i)) free.push(i);
   }
-  return { ok: true, K, free, fixedDofs, nodeMap, idx, memData, ndof };
+  return {
+    ok: true,
+    K,
+    free,
+    fixedDofs,
+    autoFixedDofs: autoFixedDofs.map((index) => fullDofLabel(nodes, index)),
+    nodeMap,
+    idx,
+    memData,
+    ndof,
+  };
 }
 
-function buildPrescribedDisplacements(nodes, restrainedDofs, fullFixedDofs, map, reducedFixedDofs) {
-  const displacementKeys = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
-  const legacyKeys = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
+function buildPrescribedDisplacements(nodes, entries, fullFixedDofs, map, reducedFixedDofs) {
   const full = new Array(nodes.length * 6).fill(0);
-  const explicit = new Set();
-  const dofs = [];
-
-  nodes.forEach((node, nodeIndex) => {
-    if (!node.settlement || node.support === 'spring') return;
-    displacementKeys.forEach((key, dofIndex) => {
-      const legacyKey = legacyKeys[dofIndex];
-      const hasValue = Object.hasOwn(node.settlement, key) || Object.hasOwn(node.settlement, legacyKey);
-      if (!hasValue) return;
-      const value = Number(node.settlement[legacyKey] ?? node.settlement[key]);
-      const globalDof = nodeIndex * 6 + dofIndex;
-      if (!Number.isFinite(value)) {
-        dofs.push({ error: true, reason: 'INVALID_PRESCRIBED_DISPLACEMENT', nodeId: node.id, dof: key });
-        return;
-      }
-      if (!restrainedDofs.has(globalDof)) {
-        dofs.push({ error: true, reason: 'PRESCRIBED_DOF_NOT_RESTRAINED', nodeId: node.id, dof: key, value });
-        return;
-      }
-      full[globalDof] = value;
-      explicit.add(globalDof);
-      dofs.push({ nodeId: node.id, dof: key, value });
-    });
-  });
-
-  const invalid = dofs.find((row) => row.error);
-  if (invalid) return { ok: false, ...invalid, message: `Cannot apply prescribed displacement at ${invalid.nodeId}.${invalid.dof}.` };
+  const dofs = entries.map((entry) => ({
+    nodeId: entry.nodeId,
+    dof: entry.component,
+    value: entry.value,
+  }));
+  for (const entry of entries) full[entry.fullDof] = entry.value;
   if (!map) return { ok: true, values: full, dofs };
 
   const values = new Array(map.ncols).fill(0);
-  const assigned = new Map();
-  for (const fullDof of fullFixedDofs) {
-    const row = map.rows[fullDof] || [];
-    if (row.length !== 1 || Math.abs(row[0][1]) <= 1e-12) {
-      if (explicit.has(fullDof)) {
-        const nodeIndex = Math.floor(fullDof / 6);
-        const dofIndex = fullDof % 6;
-        return {
-          ok: false,
-          reason: 'UNSUPPORTED_PRESCRIBED_DIAPHRAGM_CONSTRAINT',
-          nodeId: nodes[nodeIndex]?.id || null,
-          dof: displacementKeys[dofIndex],
-          message: 'Prescribed displacement coupled to multiple rigid-diaphragm coordinates is unsupported.',
-        };
-      }
-      continue;
-    }
-    const [column, coefficient] = row[0];
-    const value = full[fullDof] / coefficient;
-    if (assigned.has(column) && Math.abs(assigned.get(column) - value) > 1e-10) {
-      return {
-        ok: false,
-        reason: 'INCONSISTENT_PRESCRIBED_DIAPHRAGM_CONSTRAINT',
-        message: 'Rigid-diaphragm constraints prescribe incompatible values to one reduced DOF.',
-      };
-    }
-    assigned.set(column, value);
+  const resolved = resolveReducedDofConstraints(
+    fullFixedDofs,
+    map,
+    new Map(entries.map((entry) => [entry.fullDof, entry.value])),
+  );
+  if (!resolved.ok) return reducedConstraintFailure(resolved, nodes);
+  for (const [column, value] of resolved.values) {
     values[column] = value;
     reducedFixedDofs.add(column);
   }
   return { ok: true, values, dofs };
+}
+
+function prescribedConstraintFailure(issue = {}) {
+  const reason = issue.code === 'NONFINITE_PRESCRIBED_DISPLACEMENT'
+    ? 'INVALID_PRESCRIBED_DISPLACEMENT'
+    : issue.code === 'PRESCRIBED_DISPLACEMENT_DOF_NOT_RESTRAINED'
+      ? 'PRESCRIBED_DOF_NOT_RESTRAINED'
+      : 'PRESCRIBED_DISPLACEMENT_INVALID';
+  return {
+    ok: false,
+    reason,
+    nodeId: issue.nodeId || null,
+    dof: issue.component || null,
+    value: issue.value,
+    message: `Cannot apply prescribed displacement at ${issue.nodeId || 'unknown'}.${issue.component || 'unknown'}.`,
+  };
+}
+
+function reducedConstraintFailure(resolution = {}, nodes = []) {
+  const fullDof = resolution.fullDof ?? resolution.unresolvedFullDofs?.[0] ?? null;
+  const node = fullDof == null ? null : nodes[Math.floor(fullDof / 6)];
+  const component = fullDof == null ? null : ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'][fullDof % 6];
+  return {
+    ok: false,
+    reason: resolution.reason || 'UNSUPPORTED_COUPLED_DIAPHRAGM_CONSTRAINT',
+    entityType: fullDof == null ? null : 'dof',
+    entityId: node?.id || null,
+    nodeId: node?.id || null,
+    dof: fullDof,
+    component,
+    unresolvedFullDofs: [...(resolution.unresolvedFullDofs || [])],
+    message: resolution.reason === 'INCONSISTENT_PRESCRIBED_DIAPHRAGM_CONSTRAINT'
+      ? 'Rigid-diaphragm support and prescribed-displacement constraints are inconsistent.'
+      : 'Coupled rigid-diaphragm restraint cannot be represented safely by the reduced solver.',
+  };
 }
 
 export function applyNodeSprings(nodes, idx, K, F) {
@@ -721,11 +779,16 @@ export function stabilizeUnsupportedRotations(K, nodes, fixedDofs) {
 
 export function autoFixIsolatedDofs(K, fixedDofs) {
   const ndof = K.length;
-  const tr = K.reduce((sum, row, i) => sum + row[i], 0);
-  const eps0 = (tr / ndof) * 1e-8;
+  const diagonal = K.map((row, index) => Math.abs(Number(row[index]) || 0));
+  const eps0 = numericalZeroThreshold(diagonal);
+  const added = [];
   for (let i = 0; i < ndof; i += 1) {
-    if (!fixedDofs.has(i) && Math.abs(K[i][i]) < eps0) fixedDofs.add(i);
+    if (!fixedDofs.has(i) && Math.abs(K[i][i]) < eps0) {
+      fixedDofs.add(i);
+      added.push(i);
+    }
   }
+  return added;
 }
 
 export function recoverReactions(nodes, K, F, D, fixedDofs) {
@@ -736,23 +799,44 @@ export function recoverReactions(nodes, K, F, D, fixedDofs) {
   throw error;
 }
 
-function recoverReactionsDetailed(nodes, K, F, D, fixedDofs) {
+function recoverReactionsDetailed(
+  nodes,
+  K,
+  F,
+  D,
+  fixedDofs,
+  overrides = null,
+  prescribedDofs = new Set(),
+) {
   const reactions = {};
   const internalForces = matrixMatVec(K, D);
+  const reactionKeys = ['rx', 'ry', 'rz', 'rmx', 'rmy', 'rmz'];
   nodes.forEach((node, i) => {
-    if (!node.support) return;
+    const base = i * 6;
+    const hasExplicitConstraint = Array.from({ length: 6 }, (_value, component) => base + component)
+      .some((dof) => prescribedDofs.has(dof));
+    if (!node.support && !hasExplicitConstraint) return;
     if (node.support === 'spring') {
-      reactions[node.id] = springReaction(node, D.slice(i * 6, i * 6 + 6));
+      const reaction = springReaction(node, D.slice(i * 6, i * 6 + 6));
+      for (let component = 0; component < 6; component += 1) {
+        const gi = base + component;
+        if (!prescribedDofs.has(gi)) continue;
+        reaction[reactionKeys[component]] += overrides?.has(gi)
+          ? overrides.get(gi)
+          : internalForces[gi] - F[gi];
+      }
+      reactions[node.id] = reaction;
       return;
     }
     const r = [];
     for (let k = 0; k < 6; k += 1) {
       const gi = i * 6 + k;
-      if (!fixedDofs.has(gi)) {
+      const reportable = node.support ? fixedDofs.has(gi) : prescribedDofs.has(gi);
+      if (!reportable) {
         r.push(0);
         continue;
       }
-      r.push(internalForces[gi] - F[gi]);
+      r.push(overrides?.has(gi) ? overrides.get(gi) : internalForces[gi] - F[gi]);
     }
     reactions[node.id] = {
       rx: r[0],
@@ -763,7 +847,6 @@ function recoverReactionsDetailed(nodes, K, F, D, fixedDofs) {
       rmz: r[5],
     };
   });
-  const reactionKeys = ['rx', 'ry', 'rz', 'rmx', 'rmy', 'rmz'];
   for (const [nodeId, reaction] of Object.entries(reactions)) {
     for (const key of reactionKeys) {
       if (!Number.isFinite(reaction[key])) {
@@ -781,6 +864,114 @@ function recoverReactionsDetailed(nodes, K, F, D, fixedDofs) {
     }
   }
   return { ok: true, reactions };
+}
+
+function buildReducedReactionRecovery(K, F, Q, fullFixedDofs, map) {
+  const reducedResidual = matrixMatVec(K, Q).map((value, index) => value - F[index]);
+  const candidates = [];
+  for (const fullDof of [...fullFixedDofs].sort((a, b) => a - b)) {
+    const terms = (map.rows[fullDof] || []).filter(([, coefficient]) => Math.abs(coefficient) > 1e-12);
+    if (terms.length) candidates.push({ fullDof, terms });
+  }
+
+  const overrides = new Map();
+  const rowsByColumn = new Map();
+  candidates.forEach((candidate, rowIndex) => candidate.terms.forEach(([column]) => {
+    if (!rowsByColumn.has(column)) rowsByColumn.set(column, []);
+    rowsByColumn.get(column).push(rowIndex);
+  }));
+  const visited = new Set();
+  let ambiguousCoordinateCount = 0;
+  let maximumClosureResidual = 0;
+  let componentCount = 0;
+  for (let seed = 0; seed < candidates.length; seed += 1) {
+    if (visited.has(seed)) continue;
+    const rowIndices = [];
+    const columns = new Set();
+    const queue = [seed];
+    visited.add(seed);
+    while (queue.length) {
+      const rowIndex = queue.shift();
+      rowIndices.push(rowIndex);
+      for (const [column] of candidates[rowIndex].terms) {
+        if (!columns.has(column)) columns.add(column);
+        for (const neighbor of rowsByColumn.get(column) || []) {
+          if (visited.has(neighbor)) continue;
+          visited.add(neighbor);
+          queue.push(neighbor);
+        }
+      }
+    }
+
+    const orderedColumns = [...columns].sort((a, b) => a - b);
+    const columnIndex = new Map(orderedColumns.map((column, index) => [column, index]));
+    const columnScales = orderedColumns.map((column) => Math.sqrt(rowIndices.reduce((sum, rowIndex) => {
+      const coefficient = candidates[rowIndex].terms.find(([candidateColumn]) => candidateColumn === column)?.[1] || 0;
+      return sum + coefficient * coefficient;
+    }, 0)));
+    const normal = Array.from({ length: orderedColumns.length }, () => new Array(orderedColumns.length).fill(0));
+    for (const rowIndex of rowIndices) {
+      const terms = candidates[rowIndex].terms;
+      for (const [leftColumn, leftCoefficient] of terms) {
+        for (const [rightColumn, rightCoefficient] of terms) {
+          const left = columnIndex.get(leftColumn);
+          const right = columnIndex.get(rightColumn);
+          normal[left][right] += (leftCoefficient / columnScales[left]) * (rightCoefficient / columnScales[right]);
+        }
+      }
+    }
+    const rhs = orderedColumns.map((column, index) => reducedResidual[column] / columnScales[index]);
+    const dual = solveLinear(normal, rhs, { pivotTolerance: 1e-12 });
+    if (!dual) {
+      return {
+        ok: false,
+        reason: 'REDUCED_REACTION_RECOVERY_SINGULAR',
+        message: 'Rigid-diaphragm support reactions could not be recovered from the reduced residual.',
+      };
+    }
+    for (const rowIndex of rowIndices) {
+      const candidate = candidates[rowIndex];
+      const reaction = candidate.terms.reduce(
+        (sum, [column, coefficient]) => {
+          const index = columnIndex.get(column);
+          return sum + (coefficient / columnScales[index]) * dual[index];
+        },
+        0,
+      );
+      overrides.set(candidate.fullDof, reaction);
+    }
+    for (const column of orderedColumns) {
+      const recovered = rowIndices.reduce((sum, rowIndex) => {
+        const coefficient = candidates[rowIndex].terms.find(([candidateColumn]) => candidateColumn === column)?.[1] || 0;
+        return sum + coefficient * overrides.get(candidates[rowIndex].fullDof);
+      }, 0);
+      maximumClosureResidual = Math.max(maximumClosureResidual, Math.abs(recovered - reducedResidual[column]));
+    }
+    if (rowIndices.length > orderedColumns.length) ambiguousCoordinateCount += 1;
+    componentCount += 1;
+  }
+  const residualScale = Math.max(1, ...reducedResidual.map((value) => Math.abs(value)));
+  if (maximumClosureResidual > residualScale * 1e-8) {
+    return {
+      ok: false,
+      reason: 'REDUCED_REACTION_RECOVERY_RESIDUAL',
+      value: maximumClosureResidual / residualScale,
+      message: 'Rigid-diaphragm reaction recovery does not close the reduced residual.',
+    };
+  }
+  return {
+    ok: true,
+    overrides,
+    trace: {
+      applied: overrides.size > 0,
+      method: 'reduced-residual-minimum-norm-restraint-allocation',
+      recoveredDofCount: overrides.size,
+      ambiguousCoordinateCount,
+      ambiguousDistribution: ambiguousCoordinateCount > 0 ? 'minimum-norm' : null,
+      componentCount,
+      maximumClosureResidual,
+    },
+  };
 }
 
 function springReaction(node, d) {
@@ -913,6 +1104,9 @@ export function summarizeSolverDiagnostics(components) {
     pivotRatio: Math.min(...finite.map((item) => Number(item.pivotRatio) || 1)),
     warningCount: finite.reduce((sum, item) => sum + (item.warnings?.length || 0), 0),
     warnings: finite.flatMap((item) => item.warnings || []),
+    suspectedMechanismDofs: [...new Set(finite.flatMap((item) => item.suspectedMechanismDofs || []))],
+    autoFixedDofs: [...new Set(finite.flatMap((item) => item.autoFixedDofs || []))],
+    autoFixedReducedDofs: [...new Set(finite.flatMap((item) => item.autoFixedReducedDofs || []))],
     executionMethods,
     mixedPrecisionComponentCount: finite.filter((item) => item.sparse?.method === 'p9-m5-hybrid-mixed-f32-f64-replay').length,
   };
@@ -1042,11 +1236,38 @@ function stabilizeUnsupportedRotationsSparse(accumulator, nodes, fixedDofs) {
 
 function autoFixIsolatedDofsSparse(matrix, fixedDofs) {
   const diagonal = matrixDiagonal(matrix);
-  const trace = diagonal.reduce((sum, value) => sum + value, 0);
-  const threshold = (trace / Math.max(1, matrix.rowCount)) * 1e-8;
+  const threshold = numericalZeroThreshold(diagonal);
+  const added = [];
   for (let i = 0; i < matrix.rowCount; i += 1) {
-    if (!fixedDofs.has(i) && Math.abs(diagonal[i]) < threshold) fixedDofs.add(i);
+    if (!fixedDofs.has(i) && Math.abs(diagonal[i]) < threshold) {
+      fixedDofs.add(i);
+      added.push(i);
+    }
   }
+  return added;
+}
+
+function firstLoadedIsolatedDof(matrix, loads, fixedDofs) {
+  const diagonal = matrixDiagonal(matrix);
+  const stiffnessThreshold = numericalZeroThreshold(diagonal);
+  const loadScale = Math.max(1, maxAbs(loads));
+  for (let index = 0; index < diagonal.length; index += 1) {
+    if (fixedDofs.has(index)) continue;
+    if (Math.abs(diagonal[index]) >= stiffnessThreshold) continue;
+    if (Math.abs(Number(loads[index]) || 0) > loadScale * 1e-14) return index;
+  }
+  return null;
+}
+
+function numericalZeroThreshold(diagonal) {
+  const scale = Math.max(1, ...diagonal.map((value) => Math.abs(Number(value) || 0)));
+  return scale * Number.EPSILON * Math.max(10, diagonal.length * 4);
+}
+
+function fullDofLabel(nodes, index) {
+  const components = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
+  const node = nodes[Math.floor(Number(index) / 6)];
+  return node ? `${node.id}.${components[Number(index) % 6]}` : `dof:${index}`;
 }
 
 function validateNodeSpringInputs(nodes) {
@@ -1171,6 +1392,33 @@ function dofFailure(reason, nodes, dof, value, message) {
     nodeId: node?.id || null,
     dof,
     component: components[dof % 6],
+    value,
+    message,
+  };
+}
+
+function reducedDofFailure(reason, nodes, dof, map, value, message) {
+  if (!map) return dofFailure(reason, nodes, dof, value, message);
+  const fullDof = map.rows.findIndex((row) => (
+    row.some(([column, coefficient]) => column === dof && Math.abs(coefficient) > 1e-12)
+  ));
+  if (fullDof >= 0) {
+    return {
+      ...dofFailure(reason, nodes, fullDof, value, message),
+      reducedDof: dof,
+      solverLabel: `reduced:${dof}`,
+    };
+  }
+  return {
+    ok: false,
+    reason,
+    entityType: 'dof',
+    entityId: null,
+    nodeId: null,
+    dof,
+    reducedDof: dof,
+    component: null,
+    solverLabel: `reduced:${dof}`,
     value,
     message,
   };

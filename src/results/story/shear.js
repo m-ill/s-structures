@@ -5,7 +5,10 @@ export const STORY_SHEAR_RSA_VERSION = 'p7-m9-rsa-story-shear-v1';
 
 export function buildStoryShearTrace(model, analysis, options = {}) {
   const response = buildRsaStoryResponse(model, analysis, options);
-  const rows = response.rows.map((row) => ({
+  const rows = response.rows.map((row) => {
+    const before = row.provenance?.scaling?.beforeValue || {};
+    const beforeStoryShear = Math.hypot(before.cumulativeShearX || 0, before.cumulativeShearY || 0);
+    return {
     responseId: row.responseId,
     comboId: row.comboId,
     analysisCaseId: row.analysisCaseId,
@@ -43,8 +46,16 @@ export function buildStoryShearTrace(model, analysis, options = {}) {
       scaleFactor: 'dimensionless',
     },
     units: response.units,
-    provenance: row.provenance,
-  }));
+    provenance: withDerivedScalingValues(row.provenance, {
+      storyShearX: before.cumulativeShearX,
+      storyShearY: before.cumulativeShearY,
+      storyShearZ: before.cumulativeShearZ,
+      storyShear: beforeStoryShear,
+      storyTorsionMz: before.storyTorsionMz,
+      torsionMz: before.storyTorsionMz,
+    }),
+  };
+  });
   return {
     version: STORY_SHEAR_TRACE_VERSION,
     recoveryVersion: STORY_SHEAR_RSA_VERSION,
@@ -69,6 +80,25 @@ export function buildStoryShearTrace(model, analysis, options = {}) {
       responseIds: [...new Set(rows.map((row) => row.responseId))],
       staticReferenceCount: 0,
       status: response.status,
+    },
+  };
+}
+
+function withDerivedScalingValues(provenance, beforeValues) {
+  const scaling = provenance?.scaling;
+  if (!scaling) return provenance;
+  return {
+    ...provenance,
+    scaling: {
+      ...scaling,
+      values: {
+        ...(scaling.values || {}),
+        ...Object.fromEntries(Object.entries(beforeValues).map(([key, beforeValue]) => [key, {
+          scaled: scaling.scaled,
+          scaleFactor: scaling.scaleFactor,
+          beforeValue,
+        }])),
+      },
     },
   };
 }

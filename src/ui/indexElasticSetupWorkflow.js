@@ -220,10 +220,10 @@ export function installElasticSetupWorkflow(target = globalThis, options = {}) {
       render(target, bridge, state, panel, api);
       return api.getState();
     },
-    runFirstOrder() {
+    async runFirstOrder() {
       target.SStructuresElasticAnalysisRibbon?.select?.('static');
       target.SStructuresAnalysisCenter?.close?.();
-      target.SStructuresElasticAnalysisRibbon?.runSelected?.();
+      await target.SStructuresElasticAnalysisRibbon?.runSelected?.();
       const model = currentModel(target);
       const firstOrder = (model.analysisCases || []).find((item) => (
         item.settings?._elasticCommand === 'static' || item.id === 'EL-STATIC'

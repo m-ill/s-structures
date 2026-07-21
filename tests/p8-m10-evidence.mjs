@@ -27,9 +27,9 @@ const manifest = buildAgentManifest({
   availableActions: availableAgentActions(),
   controls: [],
 });
-assert.equal(manifest.version, 'p8-m11-agent-capability-manifest-v14');
+assert.equal(manifest.version, 'p9-m10-agent-capability-manifest-v16');
 assert.equal(manifest.modules.phase8NonlinearProductService, 'p8-m10-product-service-v1');
-assert.equal(manifest.modules.phase8NonlinearWorkflow, 'p8-m10-nonlinear-workflow-ui-v1');
+assert.equal(manifest.modules.phase8NonlinearWorkflow, 'p9-m9-nonlinear-workflow-ui-v2');
 assert.equal(manifest.modules.phase8NonlinearResultPopup, 'p8-m10-nonlinear-result-popup-v1');
 for (const action of [
   'validateNonlinearCase',

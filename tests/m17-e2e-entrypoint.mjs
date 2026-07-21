@@ -43,7 +43,7 @@ try {
   assert.match(bridgeResponse.headers.get('content-type') || '', /javascript/);
   const bridgeText = await bridgeResponse.text();
   assert.match(bridgeText, /installIndexEngineBridge/);
-  assert.match(bridgeText, /p8-m10-index-engine-bridge/);
+  assert.match(bridgeText, /p9-m10-index-engine-bridge/);
 
   assert.match(stdout, /S-Structures server/);
 

@@ -207,6 +207,7 @@ export {
   makePDeltaLoads,
   makeEnvelope,
   memberAxes,
+  pDeltaDesignStatus,
   solveLinear,
   solveLinearDetailed,
 } from './solver/linear3d.js';
@@ -1249,7 +1250,9 @@ export {
   buildMassParticipationTrace,
 } from './results/rsa/massParticipation.js';
 export {
+  RSA_BASE_SHEAR_SCALE_APPLICATION_VERSION,
   RSA_BASE_SHEAR_SCALE_VERSION,
+  applyBaseShearScaling,
   buildBaseShearScaleTrace,
 } from './results/rsa/baseShearScale.js';
 export {
@@ -1480,3 +1483,8 @@ export {
   validatePhase8ReleaseManifest,
 } from './nonlinear/qualification/index.js';
 export * from './compute/index.js';
+export * from './verification/xval/referenceArtifact.js';
+export * from './verification/xval/cases.js';
+export * from './verification/xval/runner.js';
+export * from './verification/xval/pathologicalBattery.js';
+export * from './verification/xval/m1Artifacts.js';

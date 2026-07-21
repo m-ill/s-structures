@@ -42,6 +42,8 @@ export function solveLinearDetailed(A, b, options = {}) {
     solveMs: dense.solveMs || 0,
     totalMs: dense.solveMs || 0,
     pivotMin: dense.pivotMin || 0,
+    pivotMinIndex: dense.pivotMinIndex ?? null,
+    pivotMinOriginalIndex: dense.pivotMinOriginalIndex ?? dense.pivotMinIndex ?? null,
     pivotMax: dense.pivotMax || 0,
     pivotRatio: dense.pivotRatio || 0,
   };

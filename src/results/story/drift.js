@@ -9,6 +9,8 @@ export function buildStoryDriftTrace(model, analysis, options = {}) {
   const warnRatio = positive(options.warnRatio, 0.8);
   const rows = response.rows.map((row) => {
     const demandToLimit = driftLimitRatio > 0 ? row.driftRatio / driftLimitRatio : 0;
+    const beforeDriftRatio = row.provenance?.scaling?.beforeValue?.driftRatio ?? row.driftRatio;
+    const beforeDemandToLimit = driftLimitRatio > 0 ? beforeDriftRatio / driftLimitRatio : 0;
     return {
       responseId: row.responseId,
       comboId: row.comboId,
@@ -45,7 +47,9 @@ export function buildStoryDriftTrace(model, analysis, options = {}) {
         scaleFactor: 'dimensionless',
       },
       units: response.units,
-      provenance: row.provenance,
+      provenance: withDerivedScalingValues(row.provenance, {
+        demandToLimit: beforeDemandToLimit,
+      }),
     };
   });
   const governing = rows.reduce((best, row) => (!best || row.driftRatio > best.driftRatio ? row : best), null);
@@ -79,6 +83,25 @@ export function buildStoryDriftTrace(model, analysis, options = {}) {
       governing,
       staticReferenceCount: 0,
       status: governing ? driftStatus(governing.driftRatio, driftLimitRatio, warnRatio) : response.status,
+    },
+  };
+}
+
+function withDerivedScalingValues(provenance, beforeValues) {
+  const scaling = provenance?.scaling;
+  if (!scaling) return provenance;
+  return {
+    ...provenance,
+    scaling: {
+      ...scaling,
+      values: {
+        ...(scaling.values || {}),
+        ...Object.fromEntries(Object.entries(beforeValues).map(([key, beforeValue]) => [key, {
+          scaled: scaling.scaled,
+          scaleFactor: scaling.scaleFactor,
+          beforeValue,
+        }])),
+      },
     },
   };
 }

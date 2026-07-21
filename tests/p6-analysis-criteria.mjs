@@ -43,6 +43,7 @@ const expectedKeys = [
   'criteria.rsa.cqcPeriodRatio.max',
   'criteria.rsa.dirFactor',
   'criteria.rsa.eccentricity',
+  'criteria.rsa.applyBaseShearScaling',
   'criteria.pdelta.eR',
   'criteria.pdelta.eU',
   'criteria.pdelta.eE',
@@ -67,6 +68,7 @@ assert.equal(model.analysisCriteria.preset, 'kds');
 assert.equal(resolveCriterion(model, 'pdelta.maxIter'), 30);
 assert.equal(resolveCriterion(model, 'criteria.pdelta.eR'), 1e-6);
 assert.equal(resolveCriterion(model, 'rsa.dirFactor'), 0.3);
+assert.equal(resolveCriterion(model, 'rsa.applyBaseShearScaling'), true);
 assert.equal(resolveCriterion(model, 'rsa.cqcPeriodRatio').min, 0.9);
 assert.equal(resolveCriterion(model, 'equivalentShell.shearErr'), 0.05);
 assert.equal(resolveCriterion(model, 'audit.equilibriumRelative'), 1e-8);
@@ -83,7 +85,7 @@ const overrideModel = createModel({
     preset: 'custom',
     criteria: {
       pdelta: { maxIter: 44, thetaStrong: 0.18 },
-      rsa: { dirFactor: 0.4, cqcPeriodRatio: { min: 0.85, max: 1.15 } },
+      rsa: { dirFactor: 0.4, cqcPeriodRatio: { min: 0.85, max: 1.15 }, applyBaseShearScaling: false },
       equivalentShell: { shearErr: 0.04 },
       audit: { equilibriumRelative: 1e-7 },
     },
@@ -93,6 +95,7 @@ const override = resolveAnalysisCriteria(overrideModel);
 assert.equal(override.preset, 'custom');
 assert.equal(resolveCriterion(overrideModel, 'pdelta.maxIter'), 44);
 assert.equal(resolveCriterion(overrideModel, 'rsa.dirFactor'), 0.4);
+assert.equal(resolveCriterion(overrideModel, 'rsa.applyBaseShearScaling'), false);
 assert.equal(resolveCriterion(overrideModel, 'rsa.cqcPeriodRatio.max'), 1.15);
 assert.equal(resolveCriterion(overrideModel, 'equivalentShell.shearErr'), 0.04);
 assert.equal(resolveCriterion(overrideModel, 'audit.equilibriumRelative'), 1e-7);

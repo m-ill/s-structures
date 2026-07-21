@@ -16,6 +16,7 @@ export const DEFAULT_CRITERIA_VALUES = {
     resFail: null,
     condWarn: 1e12,
     condSingular: 1e15,
+    pivotWarn: 1e-8,
     pivotSingular: 1e-12,
   },
   load: {
@@ -40,6 +41,7 @@ export const DEFAULT_CRITERIA_VALUES = {
     cqcPeriodRatio: { min: 0.9, max: 1.1 },
     dirFactor: 0.3,
     eccentricity: 0.05,
+    applyBaseShearScaling: true,
   },
   pdelta: {
     eR: 1e-6,
@@ -59,6 +61,15 @@ export const DEFAULT_CRITERIA_VALUES = {
     driftErr: 0.1,
     shearErr: 0.05,
     momentErr: 0.1,
+  },
+  xval: {
+    displacementReaction: 1e-4,
+    memberForce: 1e-3,
+    period: 1e-3,
+    massParticipation: 1e-3,
+    rsaBaseShear: 5e-3,
+    pdelta: 5e-3,
+    buckling: 5e-3,
   },
 };
 
@@ -92,6 +103,7 @@ const CRITERION_RULES = {
   'solver.resFail': { kind: 'number', min: 0, exclusiveMin: true, allowNull: true },
   'solver.condWarn': { kind: 'number', min: 0, exclusiveMin: true },
   'solver.condSingular': { kind: 'number', min: 0, exclusiveMin: true },
+  'solver.pivotWarn': { kind: 'number', min: 0, exclusiveMin: true },
   'solver.pivotSingular': { kind: 'number', min: 0, exclusiveMin: true },
   'load.equilTol': { kind: 'number', min: 0, exclusiveMin: true },
   'audit.equilibriumRelative': { kind: 'number', min: 0, exclusiveMin: true },
@@ -116,6 +128,7 @@ const CRITERION_RULES = {
   'rsa.cqcPeriodRatio.max': { kind: 'number', min: 0, exclusiveMin: true },
   'rsa.dirFactor': { kind: 'number', min: 0, max: 1 },
   'rsa.eccentricity': { kind: 'number', min: 0, max: 1 },
+  'rsa.applyBaseShearScaling': { kind: 'boolean' },
   'pdelta.eR': { kind: 'number', min: 0, exclusiveMin: true },
   'pdelta.eU': { kind: 'number', min: 0, exclusiveMin: true },
   'pdelta.eE': { kind: 'number', min: 0, exclusiveMin: true },
@@ -131,6 +144,13 @@ const CRITERION_RULES = {
   'equivalentShell.driftErr': { kind: 'number', min: 0, max: 1 },
   'equivalentShell.shearErr': { kind: 'number', min: 0, max: 1 },
   'equivalentShell.momentErr': { kind: 'number', min: 0, max: 1 },
+  'xval.displacementReaction': { kind: 'number', min: 0, exclusiveMin: true },
+  'xval.memberForce': { kind: 'number', min: 0, exclusiveMin: true },
+  'xval.period': { kind: 'number', min: 0, exclusiveMin: true },
+  'xval.massParticipation': { kind: 'number', min: 0, exclusiveMin: true },
+  'xval.rsaBaseShear': { kind: 'number', min: 0, exclusiveMin: true },
+  'xval.pdelta': { kind: 'number', min: 0, exclusiveMin: true },
+  'xval.buckling': { kind: 'number', min: 0, exclusiveMin: true },
 };
 
 const RANGE_PAIRS = [
@@ -144,6 +164,7 @@ const RANGE_PAIRS = [
   ['rsa.cqcPeriodRatio.min', 'rsa.cqcPeriodRatio.max'],
   ['pdelta.thetaCaution', 'pdelta.thetaRequire'],
   ['pdelta.thetaRequire', 'pdelta.thetaStrong'],
+  ['solver.pivotSingular', 'solver.pivotWarn'],
 ];
 
 const KNOWN_CRITERIA_PATHS = Object.keys(CRITERION_RULES).sort();

@@ -26,8 +26,8 @@ import { NONLINEAR_REGISTRY_COLLECTIONS, validateNonlinearRegistries } from './n
 export function validateModel(model) {
   const errors = [];
   const warnings = [];
-  const error = (code, message, target = null) => errors.push(issue('ERROR', code, message, target));
-  const warning = (code, message, target = null) => warnings.push(issue('WARNING', code, message, target));
+  const error = (code, message, target = null, details = null) => errors.push(issue('ERROR', code, message, target, details));
+  const warning = (code, message, target = null, details = null) => warnings.push(issue('WARNING', code, message, target, details));
 
   if (!model) {
     error(ERROR_CODES.NO_MODEL, 'Model is missing.', 'model');
@@ -237,6 +237,7 @@ function shellNodeIds(shell = {}) {
 
 function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
   const memberIds = new Set();
+  const topology = new Map();
   for (const member of model.members || []) {
     if (!member.id) error(ERROR_CODES.MEMBER_MISSING_ID, 'A member is missing id.', 'members');
     else if (memberIds.has(member.id)) error(ERROR_CODES.DUPLICATE_MEMBER_ID, `Duplicate member id: ${member.id}`, member.id);
@@ -250,11 +251,29 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
       continue;
     }
 
+    const topologyKey = JSON.stringify([String(member.n1), String(member.n2)].sort());
+    const duplicate = topology.get(topologyKey);
+    if (duplicate) {
+      const memberIdsForPair = [...duplicate.memberIds, member.id];
+      error(
+        ERROR_CODES.DUPLICATE_MEMBER,
+        `Duplicate members share the same node pair: ${memberIdsForPair.join(', ')}.`,
+        member.id,
+        { memberIds: memberIdsForPair, nodeIds: [...duplicate.nodeIds] },
+      );
+      duplicate.memberIds.push(member.id);
+    } else {
+      topology.set(topologyKey, { memberIds: [member.id], nodeIds: [member.n1, member.n2] });
+    }
+
     const a = model.nodes.find((node) => node.id === member.n1);
     const b = model.nodes.find((node) => node.id === member.n2);
     const length = Math.hypot(b.x - a.x, b.y - a.y, (b.z || 0) - (a.z || 0));
     if (length < 1e-9) {
-      error(ERROR_CODES.ZERO_LENGTH_MEMBER, 'Member length is zero.', member.id);
+      error(ERROR_CODES.ZERO_LENGTH_MEMBER, 'Member length is zero.', member.id, {
+        memberIds: [member.id],
+        nodeIds: [member.n1, member.n2],
+      });
     }
     validateMemberOffset(member, length, error);
 
@@ -417,8 +436,14 @@ function knownIds(customItems, catalogMap) {
   return ids;
 }
 
-function issue(level, code, message, target) {
-  return { level, code, message, target };
+function issue(level, code, message, target, details = null) {
+  return {
+    level,
+    code,
+    message,
+    target,
+    ...(details && typeof details === 'object' ? details : {}),
+  };
 }
 
 function finish(errors, warnings) {

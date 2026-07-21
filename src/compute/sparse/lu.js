@@ -22,6 +22,7 @@ export function factorSparseLu(input, options = {}) {
   const pivotTolerance = positive(options.pivotTolerance, 1e-12);
   const dropTolerance = nonnegative(options.factorDropTolerance, 0);
   let pivotMin = Infinity;
+  let pivotMinIndex = null;
   let pivotMax = 0;
   let fillInCount = 0;
 
@@ -37,13 +38,18 @@ export function factorSparseLu(input, options = {}) {
       }
     }
     pivotMax = Math.max(pivotMax, pivotAbs);
-    pivotMin = Math.min(pivotMin, pivotAbs);
+    if (pivotAbs < pivotMin) {
+      pivotMin = pivotAbs;
+      pivotMinIndex = column;
+    }
     if (!Number.isFinite(pivotAbs) || pivotAbs <= Math.max(pivotTolerance, pivotMax * pivotTolerance)) {
       return failed('SINGULAR_PIVOT', startedAt, {
         pivotIndex: column,
         pivotOriginalIndex: permutation[pivotRow],
         pivot: rows[pivotRow].get(column) || 0,
         pivotMin: pivotMin === Infinity ? 0 : pivotMin,
+        pivotMinIndex,
+        pivotMinOriginalIndex: pivotMinIndex,
         pivotMax,
       });
     }
@@ -80,6 +86,8 @@ export function factorSparseLu(input, options = {}) {
     permutation,
     dimension: n,
     pivotMin: pivotMin === Infinity ? 0 : pivotMin,
+    pivotMinIndex,
+    pivotMinOriginalIndex: pivotMinIndex,
     pivotMax,
     pivotRatio: pivotMax > 0 ? pivotMin / pivotMax : 0,
     factorNonzeros,

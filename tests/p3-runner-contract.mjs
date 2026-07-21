@@ -6,6 +6,8 @@ import { buildAgentManifest } from '../src/index.js';
 const manifest = buildAgentManifest();
 const agentContract = JSON.parse(readFileSync('docs/user-manual/agent-contract.json', 'utf8'));
 const expectedQaCommands = {
+  phase8: 'npm.cmd run test:p8',
+  phase8List: 'npm.cmd run test:p8:list',
   phase3Full: 'npm.cmd run test:p3',
   phase3List: 'npm.cmd run test:p3:list',
   phase3M6ToM20: 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20',
@@ -24,6 +26,7 @@ const expectedQaCommands = {
   phase3OwnerSignoffReview: 'node tests/p3-owner-signoff-review.mjs',
   phase3CompletionAuditReview: 'node tests/p3-completion-audit-review.mjs',
   phase3EvidenceRegister: 'node tests/p3-evidence-register.mjs',
+  finalUseReleaseReview: 'node tests/final-use-release-review.mjs',
   phase3EvidenceClient: 'node tests/p3-evidence-client.mjs',
   phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
 };

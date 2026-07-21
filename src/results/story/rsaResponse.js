@@ -44,7 +44,7 @@ export function buildRsaStoryResponse(model = {}, analysis = {}, options = {}) {
       if (direction) blockedDirections.push(direction);
       continue;
     }
-    const scaleFactor = directionScaleFactor(direction, options);
+    const scaleFactor = directionScaleFactor(direction, options, rsa);
     const responseMaps = responses.map((response) => ({
       response,
       displacement: rowsToMap(response.nodalDisplacements),
@@ -56,54 +56,79 @@ export function buildRsaStoryResponse(model = {}, analysis = {}, options = {}) {
 
     for (let storyIndex = 0; storyIndex < stories.length; storyIndex += 1) {
       const story = stories[storyIndex];
-      const drift = combinedStoryDrift({
+      const beforeDrift = combinedStoryDrift({
         story,
         model,
         nodeById,
         responseMaps,
         method,
         dampingRatio,
-        scaleFactor,
+        scaleFactor: 1,
       });
-      const floorForce = combineVectorQuantity(
+      const beforeFloorForce = combineVectorQuantity(
         responses,
         (responseIndex, component) => floorEffects[responseIndex][storyIndex].force[component],
         method,
         dampingRatio,
-      ).map((value) => value * scaleFactor);
-      const cumulativeShear = combineVectorQuantity(
+      );
+      const beforeCumulativeShear = combineVectorQuantity(
         responses,
         (responseIndex, component) => floorEffects[responseIndex]
           .slice(storyIndex)
           .reduce((sum, item) => sum + item.force[component], 0),
         method,
         dampingRatio,
-      ).map((value) => value * scaleFactor);
-      const floorTorsionMz = combineQuantity(
+      );
+      const beforeFloorTorsionMz = combineQuantity(
         responses,
         (responseIndex) => floorEffects[responseIndex][storyIndex].torsionMz,
         method,
         dampingRatio,
-      ) * scaleFactor;
-      const storyTorsionMz = combineQuantity(
+      );
+      const beforeStoryTorsionMz = combineQuantity(
         responses,
         (responseIndex) => modalStoryTorsion(floorEffects[responseIndex], storyIndex),
         method,
         dampingRatio,
-      ) * scaleFactor;
-      const overturningX = combineQuantity(
+      );
+      const beforeOverturningX = combineQuantity(
         responses,
         (responseIndex) => modalOverturning(stories, floorEffects[responseIndex], storyIndex)[0],
         method,
         dampingRatio,
-      ) * scaleFactor;
-      const overturningY = combineQuantity(
+      );
+      const beforeOverturningY = combineQuantity(
         responses,
         (responseIndex) => modalOverturning(stories, floorEffects[responseIndex], storyIndex)[1],
         method,
         dampingRatio,
-      ) * scaleFactor;
+      );
+      const drift = scaleDrift(beforeDrift, scaleFactor);
+      const floorForce = beforeFloorForce.map((value) => value * scaleFactor);
+      const cumulativeShear = beforeCumulativeShear.map((value) => value * scaleFactor);
+      const floorTorsionMz = beforeFloorTorsionMz * scaleFactor;
+      const storyTorsionMz = beforeStoryTorsionMz * scaleFactor;
+      const overturningX = beforeOverturningX * scaleFactor;
+      const overturningY = beforeOverturningY * scaleFactor;
       const responseId = `${analysisCaseId || 'RSA'}:${direction.toUpperCase()}`;
+      const beforeValue = {
+        driftX: beforeDrift.driftX,
+        driftY: beforeDrift.driftY,
+        driftZ: beforeDrift.driftZ,
+        drift: beforeDrift.drift,
+        driftRatio: story.height > 0 ? beforeDrift.drift / story.height : 0,
+        forceX: beforeFloorForce[0],
+        forceY: beforeFloorForce[1],
+        forceZ: beforeFloorForce[2],
+        cumulativeShearX: beforeCumulativeShear[0],
+        cumulativeShearY: beforeCumulativeShear[1],
+        cumulativeShearZ: beforeCumulativeShear[2],
+        floorTorsionMz: beforeFloorTorsionMz,
+        storyTorsionMz: beforeStoryTorsionMz,
+        overturningX: beforeOverturningX,
+        overturningY: beforeOverturningY,
+      };
+      const scaled = scaleFactor !== 1;
       const provenance = {
         ...baseProvenance,
         direction,
@@ -112,8 +137,16 @@ export function buildRsaStoryResponse(model = {}, analysis = {}, options = {}) {
         dampingRatio,
         modeIds: responses.map((response) => response.mode),
         scaling: {
-          applied: Math.abs(scaleFactor - 1) > 1e-12,
+          applied: scaled,
           factor: scaleFactor,
+          scaled,
+          scaleFactor,
+          beforeValue,
+          values: Object.fromEntries(Object.entries(beforeValue).map(([key, value]) => [key, {
+            scaled,
+            scaleFactor,
+            beforeValue: value,
+          }])),
           source: 'rsa-base-shear-scale-trace',
         },
         torsionReference: 'story-level geometric center',
@@ -185,6 +218,7 @@ export function buildRsaStoryResponse(model = {}, analysis = {}, options = {}) {
     provenance: {
       ...baseProvenance,
       responseMethod: method,
+      baseShearScaling: rsa?.baseShearScaling?.application || null,
       staticCaseReferences: [],
     },
     summary: {
@@ -358,11 +392,26 @@ function averageComponent(map, ids, component) {
   return ids.reduce((sum, id) => sum + finite(map.get(id)?.[component]), 0) / ids.length;
 }
 
-function directionScaleFactor(direction, options) {
+function directionScaleFactor(direction, options, rsa = null) {
   const direct = options.rsaScaleFactors?.[direction] ?? options.scaleFactors?.[direction];
   if (Number.isFinite(Number(direct)) && Number(direct) > 0) return Number(direct);
-  const row = options.baseShearScaling?.rows?.find((item) => item.direction === direction);
+  const trace = options.baseShearScaling || rsa?.baseShearScaling;
+  const row = trace?.rows?.find((item) => item.direction === direction);
+  if (Number.isFinite(Number(row?.appliedScaleFactor)) && Number(row.appliedScaleFactor) > 0) {
+    return Number(row.appliedScaleFactor);
+  }
+  if (trace?.application?.enabled === false) return 1;
   return Number.isFinite(Number(row?.scaleFactor)) && Number(row.scaleFactor) > 0 ? Number(row.scaleFactor) : 1;
+}
+
+function scaleDrift(drift, factor) {
+  return {
+    ...drift,
+    driftX: drift.driftX * factor,
+    driftY: drift.driftY * factor,
+    driftZ: drift.driftZ * factor,
+    drift: drift.drift * factor,
+  };
 }
 
 function resolveRsa(analysis) {

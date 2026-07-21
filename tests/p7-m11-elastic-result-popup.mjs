@@ -52,12 +52,12 @@ assert.equal(target.SStructuresElasticResultPopup.visualizationVersion, ELASTIC_
 assert.equal(document.getElementById('ssElasticResultPopup').parentNode, canvasWrap);
 assert.ok(document.getElementById('ssElasticRunAll'));
 
-runCommand('static');
+await runCommand('static');
 assertPopup('static', 'ssElasticStaticShapeSvgWrap');
 assert.equal(target.SStructuresAnalysisCenter.getState().open, false);
 assert.equal(document.getElementById('ssElasticResultPopup').style.height, 'auto');
 
-runCommand('direct-pdelta');
+await runCommand('direct-pdelta');
 let popupState = assertPopup('pdelta', 'ssElasticPDeltaGlobalChart');
 assert.equal(popupState.method, 'direct');
 const directGraph = bridge.getAnalysisCaseResult('EL-PDELTA').payload.pDelta.graphs.global[0].points.at(-1);
@@ -71,19 +71,19 @@ popupState = target.SStructuresElasticResultPopup.getState();
 assert.equal(popupState.selectedMemberId, 'M1');
 assert.equal(popupState.activeView, 'member');
 
-runCommand('modal');
+await runCommand('modal');
 assertPopup('modal', 'ssElasticModalShapeSvgWrap');
 document.querySelector('[data-result-view="participation"]').click();
 assert.ok(document.getElementById('ssElasticModalParticipationChart'));
 assert.match(document.getElementById('ssElasticModalParticipationChart').querySelector('.ss-elastic-result-svg').innerHTML, /rect/);
 
-runCommand('rsa');
+await runCommand('rsa');
 assertPopup('rsa', 'ssElasticRsaBaseShearChart');
 assert.ok(document.getElementById('ssElasticRsaDisplacementChart'));
 document.querySelector('[data-result-view="spectrum"]').click();
 assert.ok(document.getElementById('ssElasticRsaSpectrumChart'));
 
-runCommand('buckling');
+await runCommand('buckling');
 popupState = assertPopup('buckling', 'ssElasticBucklingShapeSvgWrap');
 const bucklingResult = bridge.getAnalysisCaseResult('EL-BUCKLING');
 assert.ok(bucklingResult.payload.modes.length > 1);
@@ -91,7 +91,7 @@ assert.equal(target.SStructuresAnalysisCenter.getState().resultView.sliderMax, b
 document.querySelector('[data-result-view="factors"]').click();
 assert.ok(document.getElementById('ssElasticBucklingFactorChart'));
 
-runCommand('linear-tha');
+await runCommand('linear-tha');
 popupState = assertPopup('tha', 'ssElasticThaChart');
 assert.equal(popupState.method, 'linear-modal-superposition-newmark');
 document.querySelector('[data-result-view="velocity"]').click();
@@ -121,9 +121,9 @@ console.log(JSON.stringify({
   responsivePlacementPreserved: true,
 }, null, 2));
 
-function runCommand(command) {
+async function runCommand(command) {
   target.SStructuresElasticAnalysisRibbon.select(command);
-  target.SStructuresElasticAnalysisRibbon.runSelected();
+  await target.SStructuresElasticAnalysisRibbon.runSelected();
 }
 
 function assertPopup(kind, elementId) {

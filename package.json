@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server/main.mjs 5173",
     "dev:public": "node server/main.mjs 5173 0.0.0.0",
-    "test": "node tools/run-milestone-tests.mjs && node tools/run-phase7-tests.mjs && node tools/run-phase8-tests.mjs && node tools/run-phase9-tests.mjs && node tests/p9-documentation-baseline.mjs",
+    "test": "node tools/run-milestone-tests.mjs && node tools/run-phase7-tests.mjs && node tools/run-phase8-tests.mjs && node tools/run-phase9-tests.mjs && node tests/p9-documentation-baseline.mjs && node tools/run-phase10-tests.mjs",
     "test:p7": "node tools/run-phase7-tests.mjs",
     "test:p7:list": "node tools/run-phase7-tests.mjs --list",
     "test:p8": "node tools/run-phase8-tests.mjs",
@@ -14,6 +14,9 @@
     "test:p9": "node tools/run-phase9-tests.mjs",
     "test:p9:list": "node tools/run-phase9-tests.mjs --list",
     "test:p9docs": "node tests/p9-documentation-baseline.mjs",
+    "test:p10": "node tools/run-phase10-tests.mjs",
+    "test:p10:list": "node tools/run-phase10-tests.mjs --list",
+    "evidence:p10:m1": "node tools/run-p10-m1-evidence.mjs",
     "evidence:p9:m1": "node tools/run-p9-m1-evidence.mjs",
     "evidence:p9:m2": "node tools/run-p9-m2-evidence.mjs",
     "evidence:p9:m3": "node tools/run-p9-m3-evidence.mjs",

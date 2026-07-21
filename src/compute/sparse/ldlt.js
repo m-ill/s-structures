@@ -24,6 +24,7 @@ export function factorLdlt(input, options = {}) {
   const pivotTolerance = positiveNumber(options.pivotTolerance, 1e-12);
   const dropTolerance = nonnegativeNumber(options.factorDropTolerance, 0);
   let minPivot = Infinity;
+  let minPivotIndex = null;
   let maxPivot = 0;
 
   for (let i = 0; i < n; i += 1) {
@@ -34,7 +35,10 @@ export function factorLdlt(input, options = {}) {
     for (const [k, lik] of LRows[i]) d -= lik * lik * D[k];
     const absD = Math.abs(d);
     maxPivot = Math.max(maxPivot, absD);
-    minPivot = Math.min(minPivot, absD);
+    if (absD < minPivot) {
+      minPivot = absD;
+      minPivotIndex = i;
+    }
     if (!Number.isFinite(d) || absD <= Math.max(pivotTolerance, maxPivot * pivotTolerance)) {
       return factorFailure('SINGULAR_PIVOT', startedAt, {
         pivotIndex: i,
@@ -42,6 +46,8 @@ export function factorLdlt(input, options = {}) {
         pivot: d,
         pivotTolerance,
         pivotMin: minPivot === Infinity ? 0 : minPivot,
+        pivotMinIndex: minPivotIndex,
+        pivotMinOriginalIndex: minPivotIndex == null ? null : permutation[minPivotIndex],
         pivotMax: maxPivot,
       });
     }
@@ -61,6 +67,8 @@ export function factorLdlt(input, options = {}) {
           pivot: d,
           pivotTolerance,
           pivotMin: minPivot === Infinity ? 0 : minPivot,
+          pivotMinIndex: minPivotIndex,
+          pivotMinOriginalIndex: minPivotIndex == null ? null : permutation[minPivotIndex],
           pivotMax: maxPivot,
         });
       }
@@ -82,6 +90,8 @@ export function factorLdlt(input, options = {}) {
     inversePermutation,
     nonzerosL,
     pivotMin: minPivot === Infinity ? 0 : minPivot,
+    pivotMinIndex: minPivotIndex,
+    pivotMinOriginalIndex: minPivotIndex == null ? null : permutation[minPivotIndex],
     pivotMax: maxPivot,
     pivotRatio: maxPivot > 0 && minPivot !== Infinity ? minPivot / maxPivot : 0,
     factorizationMs: elapsed(startedAt),

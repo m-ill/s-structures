@@ -2,7 +2,8 @@ export function advancedTraceSummary(pDelta, modal, responseSpectrum, unilateral
   return {
     pDeltaStatus: pDelta.status,
     pDeltaComboCount: pDelta.combos.length,
-    pDeltaDesignStatus: pDelta.design?.summary?.status || 'N/A',
+    pDeltaDesignStatus: pDelta.design?.summary?.statusLegacy || pDelta.design?.summary?.status || 'N/A',
+    pDeltaDesignTier: pDelta.design?.summary?.status || 'N/A',
     pDeltaMaxTheta: pDelta.design?.summary?.maxTheta || 0,
     modeCount: modal.summary.modeCount,
     firstPeriod: modal.summary.firstPeriod,

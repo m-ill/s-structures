@@ -606,7 +606,7 @@ function statusPill(status) {
 function statusClass(status) {
   const value = String(status || '').toLowerCase();
   if (value === 'ok') return 'ok';
-  if (value === 'warn') return 'warn';
+  if (value === 'warn' || value === 'caution' || value === 'require-2nd') return 'warn';
   if (value === 'ng') return 'ng';
   return 'check';
 }

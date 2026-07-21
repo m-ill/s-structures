@@ -258,8 +258,8 @@ export function validatePhase9ReleaseManifestSkeleton(manifest = {}) {
   if (!text(manifest.generatedAt)) errors.push('manifest:generatedAt');
   if (!text(manifest.sourceRevision)) errors.push('manifest:sourceRevision');
   if (!/^G[0-3]$/.test(manifest.computeQualification?.grade || '')) errors.push('manifest:grade');
-  if (manifest.computeQualification?.gpuImplemented !== false) errors.push('manifest:gpu');
-  if (manifest.implementation?.status !== 'in-progress'
+  if (typeof manifest.computeQualification?.gpuImplemented !== 'boolean') errors.push('manifest:gpu');
+  if (!['in-progress', 'implementation-complete-qualification-blocked'].includes(manifest.implementation?.status)
     || !Array.isArray(manifest.implementation?.completedMilestones)
     || !manifest.implementation.completedMilestones.includes('P9-M0')) {
     errors.push('manifest:implementation');

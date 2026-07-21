@@ -9,7 +9,8 @@ export function buildPDeltaPracticeValidation(model, analysis) {
   const high = pDelta.combos.filter((row) => row.amplification > pDelta.settings.maxAmplification);
   const curveCombos = pDelta.curves?.combos || [];
   const missingCurves = pDelta.enabled && !curveCombos.length;
-  const designStatus = pDelta.design?.summary?.status || 'N/A';
+  const designTier = pDelta.design?.summary?.status || 'N/A';
+  const designStatus = pDelta.design?.summary?.statusLegacy || designTier;
   const status = !pDelta.enabled ? 'WARN'
     : failed.length || designStatus === 'NG' ? 'NG'
       : high.length || missingCurves || designStatus === 'WARN' ? 'WARN'
@@ -25,6 +26,7 @@ export function buildPDeltaPracticeValidation(model, analysis) {
     convergedCount: pDelta.combos.filter((row) => row.converged).length,
     curveComboCount: curveCombos.length,
     designStatus,
+    designTier,
     designRowCount: pDelta.design?.rows?.length || 0,
     designStoryRowCount: pDelta.design?.storyRows?.length || 0,
     designMaxTheta: pDelta.design?.summary?.maxTheta || 0,

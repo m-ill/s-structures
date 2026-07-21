@@ -15,15 +15,31 @@ export function buildPhase6M4ResultTrace(model = {}, analysis = {}, options = {}
   const rsa = dynamics.rsa || null;
   const analysisCaseId = options.analysisCaseId || rsa?.provenance?.analysisCaseId || null;
   const massParticipation = buildMassParticipationTrace(dynamics, model);
-  const baseShearScaling = buildBaseShearScaleTrace({
-    rsa,
-    directionMinima: options.directionMinima || options.minimumBaseShear || {},
-    designBaseShear: options.designBaseShear,
-    analysisCaseId,
-  });
+  const hasExplicitScalingInput = options.directionMinima != null
+    || options.minimumBaseShear != null
+    || Object.hasOwn(options, 'designBaseShear');
+  const hasEmbeddedScaling = Boolean(rsa?.baseShearScaling);
+  const scalingOverrideConflict = hasExplicitScalingInput && hasEmbeddedScaling;
+  const baseShearScaling = scalingOverrideConflict
+    ? withScalingOverrideConflict(rsa.baseShearScaling)
+    : !hasExplicitScalingInput && rsa?.baseShearScaling
+      ? rsa.baseShearScaling
+      : buildBaseShearScaleTrace({
+          rsa: hasExplicitScalingInput ? withUnscaledBaseShear(rsa) : rsa,
+          directionMinima: options.directionMinima || options.minimumBaseShear || {},
+          designBaseShear: options.designBaseShear,
+          analysisCaseId,
+        });
+  const scalingEnabled = baseShearScaling.application?.enabled !== false;
   const rsaScaleFactors = Object.fromEntries(baseShearScaling.rows
-    .filter((row) => Number.isFinite(Number(row.scaleFactor)) && Number(row.scaleFactor) > 0)
-    .map((row) => [row.direction, Number(row.scaleFactor)]));
+    .map((row) => [
+      row.direction,
+      Number.isFinite(Number(row.appliedScaleFactor)) && Number(row.appliedScaleFactor) > 0
+        ? Number(row.appliedScaleFactor)
+        : scalingEnabled && Number.isFinite(Number(row.scaleFactor)) && Number(row.scaleFactor) > 0
+          ? Number(row.scaleFactor)
+          : 1,
+    ]));
   const directional = buildDirectionalCombinationTrace({
     method: options.directionalMethod || '100-30',
     criteriaModel: model,
@@ -169,4 +185,37 @@ function traceStatus(statuses) {
   if (statuses.includes('partial')) return 'review-required';
   if (statuses.includes('WARNING')) return 'warning';
   return 'available';
+}
+
+function withUnscaledBaseShear(rsa) {
+  if (!rsa?.baseShearScaling?.rows?.length) return rsa;
+  const beforeByDirection = Object.fromEntries(rsa.baseShearScaling.rows.map((row) => [
+    row.direction,
+    row.beforeBaseShear,
+  ]));
+  return {
+    ...rsa,
+    combined: Object.fromEntries(Object.entries(rsa.combined || {}).map(([direction, row]) => {
+      const before = beforeByDirection[direction];
+      if (!Number.isFinite(Number(before))) return [direction, row];
+      return [direction, {
+        ...row,
+        baseShear: Number(before),
+        rsaBaseShear: Number(before),
+      }];
+    })),
+  };
+}
+
+function withScalingOverrideConflict(trace) {
+  const warning = 'RSA_SCALING_OVERRIDE_CONFLICT';
+  return {
+    ...trace,
+    warnings: [...new Set([...(trace?.warnings || []), warning])],
+    override: {
+      requested: true,
+      applied: false,
+      reason: warning,
+    },
+  };
 }

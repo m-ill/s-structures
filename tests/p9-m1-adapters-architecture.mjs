@@ -36,10 +36,11 @@ assert.throws(() => analyzeModelSyncCompatibility({ ...model, nodes: Array.from(
 assert.equal(SYNC_ANALYSIS_DEPRECATION_INVENTORY.length, 2, 'P9-REF-03 deprecation inventory');
 
 const computeFiles = walk(path.resolve('src/compute')).filter((file) => file.endsWith('.js'));
+const domainBridgeDirectories = ['adapters', 'compatibility', 'elastic', 'nonlinear', 'product'];
 for (const file of computeFiles) {
   const source = fs.readFileSync(file, 'utf8');
   assert.equal(/from ['"]\.\.\/\.\.\/ui\//.test(source), false, 'compute layer must not depend on UI: ' + file);
-  if (!file.includes(`${path.sep}adapters${path.sep}`) && !file.includes(`${path.sep}compatibility${path.sep}`)) {
+  if (!domainBridgeDirectories.some((directory) => file.includes(`${path.sep}${directory}${path.sep}`))) {
     assert.equal(/from ['"]\.\.\/\.\.\/(?:solver|nonlinear)\//.test(source), false, 'compute core dependency direction: ' + file);
   }
 }

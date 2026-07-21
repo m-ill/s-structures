@@ -5,7 +5,9 @@ export const STORY_OVERTURNING_RSA_VERSION = 'p7-m9-rsa-story-overturning-v1';
 
 export function buildStoryOverturningTrace(model, analysis, options = {}) {
   const response = buildRsaStoryResponse(model, analysis, options);
-  const rows = response.rows.map((row) => ({
+  const rows = response.rows.map((row) => {
+    const before = row.provenance?.scaling?.beforeValue || {};
+    return {
     responseId: row.responseId,
     comboId: row.comboId,
     analysisCaseId: row.analysisCaseId,
@@ -28,8 +30,11 @@ export function buildStoryOverturningTrace(model, analysis, options = {}) {
       scaleFactor: 'dimensionless',
     },
     units: response.units,
-    provenance: row.provenance,
-  }));
+    provenance: withDerivedScalingValues(row.provenance, {
+      overturning: Math.hypot(before.overturningX || 0, before.overturningY || 0),
+    }),
+  };
+  });
   return {
     version: STORY_OVERTURNING_TRACE_VERSION,
     recoveryVersion: STORY_OVERTURNING_RSA_VERSION,
@@ -53,6 +58,25 @@ export function buildStoryOverturningTrace(model, analysis, options = {}) {
       responseIds: [...new Set(rows.map((row) => row.responseId))],
       staticReferenceCount: 0,
       status: response.status,
+    },
+  };
+}
+
+function withDerivedScalingValues(provenance, beforeValues) {
+  const scaling = provenance?.scaling;
+  if (!scaling) return provenance;
+  return {
+    ...provenance,
+    scaling: {
+      ...scaling,
+      values: {
+        ...(scaling.values || {}),
+        ...Object.fromEntries(Object.entries(beforeValues).map(([key, beforeValue]) => [key, {
+          scaled: scaling.scaled,
+          scaleFactor: scaling.scaleFactor,
+          beforeValue,
+        }])),
+      },
     },
   };
 }

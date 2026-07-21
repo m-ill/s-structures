@@ -4,7 +4,11 @@
 doc: roadmap
 phase: 6
 date: 2026-07-09
+updated: 2026-07-13
+status: Phase 6 완료 — P6-M0~M6 전부 구현·검증 (tests/p6-*.mjs 7/7 PASS)
 ```
+
+> **현황(2026-07-13)**: 아래 마일스톤 M0~M6은 **전부 완료**됐다(`p6-analysis-criteria`·`p6-sparse-solver`·`p6-consistent-loads`·`p6-verification-matrix`·`p6-rsa-diaphragm-story`·`p6-pdelta-tangent`·`p6-equivalent-shell-scope` PASS). 완료 산출물 매핑은 [ENGINE_ASSESSMENT §1·§2](ENGINE_ASSESSMENT.md) 참조.
 
 추천 개발 순서(외부 검토 판정)를 그대로 마일스톤화한다. 각 마일스톤은 **착수 → 구현(마이크로 모듈) → `/code-review high` → 수정 → 검증표 갱신 → merge(npm test green)**을 1사이클로 하며, 이전 게이트를 통과하지 못하면 다음으로 넘어가지 않는다. 각 마일스톤의 **정준 식·판정 임계값은 [FORMULAS_AND_CRITERIA.md](FORMULAS_AND_CRITERIA.md)의 대응 §**를 단일 출처로 인용하고, 임계값은 `analysisCriteria` config로 읽는다.
 

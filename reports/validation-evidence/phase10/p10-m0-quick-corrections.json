@@ -1,0 +1,117 @@
+{
+  "version": "p10-evidence-artifact-v1",
+  "suiteId": "P10-M0-QUICK-CORRECTIONS",
+  "milestone": "P10-M0",
+  "status": "OK",
+  "generatedAt": "2026-07-20T00:00:00.000+09:00",
+  "sourceRevision": "00c73e7+worktree",
+  "test": "tests/p10-m0-quick-corrections.mjs",
+  "solverVersion": "p10-m0-pdelta-design-summary-v1+p10-m0-bounded-pdelta-screening-v1+p10-m0-rsa-base-shear-scale-application-v1",
+  "results": {
+    "thetaCaseCount": 6,
+    "rawBaseShear": 10.000000000000002,
+    "scaledBaseShear": 20.000000000000004,
+    "scaleFactor": 2,
+    "rawDisplacement": 0.13333333333333336,
+    "scaledDisplacement": 0.2666666666666667,
+    "rawStoryShear": 10.000000000000002,
+    "scaledStoryShear": 20.000000000000004,
+    "noMinimumMaxError": 0,
+    "analyticalBaseShear": 10,
+    "analyticalDisplacement": 0.13333333333333333,
+    "analyticalMaxRelError": 1.7763568394002506e-16,
+    "boundedTheta": 0.02886686287112524
+  },
+  "records": [
+    {
+      "caseId": "P10-M0-THETA-BOUNDARY",
+      "reference": [0, 1, 1, 2, 2, 3],
+      "computed": [0, 1, 1, 2, 2, 3],
+      "relError": 0,
+      "tolerance": 0,
+      "modelHash": "ab09403fa135ad4e",
+      "solverVersion": "p10-m0-pdelta-design-summary-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "P10-M0-LEGACY-STATUS",
+      "reference": [0, 1, 1, 1, 1, 2],
+      "computed": [0, 1, 1, 1, 1, 2],
+      "relError": 0,
+      "tolerance": 0,
+      "modelHash": "ab09403fa135ad4e",
+      "solverVersion": "p10-m0-pdelta-design-summary-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "P10-M0-DESIGN-ELIGIBILITY",
+      "reference": [0, 0, 1, 0],
+      "computed": [0, 0, 1, 0],
+      "relError": 0,
+      "tolerance": 0,
+      "modelHash": "ab09403fa135ad4e",
+      "solverVersion": "p10-m0-pdelta-design-summary-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "P10-M0-RSA-ALL-RESPONSES",
+      "reference": [2, 2, 2, 2, 2],
+      "computed": [2, 2, 2, 2, 2],
+      "relError": 0,
+      "tolerance": 1e-12,
+      "modelHash": "6d782f652266672a",
+      "solverVersion": "p10-m0-rsa-base-shear-scale-application-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "P10-M0-PDELTA-INTEGRATION",
+      "reference": [1, 0, 0],
+      "computed": [1, 0, 0],
+      "relError": 0,
+      "tolerance": 0,
+      "modelHash": "7f49fd2e41b64cf6",
+      "solverVersion": "p10-m0-pdelta-design-summary-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "P10-M0-PDELTA-BOUNDED-PARITY",
+      "reference": 0.02886686287112524,
+      "computed": 0.02886686287112524,
+      "relError": 0,
+      "tolerance": 1e-12,
+      "modelHash": "4e5384fcdc755861",
+      "solverVersion": "p10-m0-bounded-pdelta-screening-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "P10-M0-RSA-ANALYTIC-BASELINE",
+      "reference": [10, 0.13333333333333333],
+      "computed": [10.000000000000002, 0.13333333333333336],
+      "relError": 1.7763568394002506e-16,
+      "tolerance": 1e-12,
+      "modelHash": "6e40d1d5953fbada",
+      "solverVersion": "p10-m0-rsa-base-shear-scale-application-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "P10-M0-RSA-NO-MINIMUM",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-15,
+      "modelHash": "6e40d1d5953fbada",
+      "solverVersion": "p10-m0-rsa-base-shear-scale-application-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "P10-M0-RSA-TOGGLE-OFF",
+      "reference": [2, 1, 1],
+      "computed": [2, 1, 1],
+      "relError": 0,
+      "tolerance": 1e-15,
+      "modelHash": "003e2ed931055161",
+      "solverVersion": "p10-m0-rsa-base-shear-scale-application-v1",
+      "status": "OK"
+    }
+  ]
+}

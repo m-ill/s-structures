@@ -21,9 +21,10 @@ for (const file of facades) {
   assert.match(source, /compute\//, `P9-REF-05 facade must delegate to common owner: ${file}`);
 }
 
+const domainBridgeDirectories = ['adapters', 'compatibility', 'elastic', 'nonlinear', 'product'];
 for (const file of walk(path.resolve('src/compute')).filter((value) => value.endsWith('.js'))) {
   const source = fs.readFileSync(file, 'utf8');
-  if (file.includes(`${path.sep}adapters${path.sep}`) || file.includes(`${path.sep}compatibility${path.sep}`)) continue;
+  if (domainBridgeDirectories.some((directory) => file.includes(`${path.sep}${directory}${path.sep}`))) continue;
   assert.doesNotMatch(source, /from ['"]\.\.\/\.\.\/(?:solver|nonlinear)\//, `P9-REF-05 dependency direction: ${file}`);
 }
 

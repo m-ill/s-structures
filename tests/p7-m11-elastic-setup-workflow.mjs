@@ -95,7 +95,7 @@ assert.ok(document.getElementById('ssEwRunValidation'));
 assert.equal(workflow.state.validation.errors.length, 0);
 
 workflow.go(4);
-workflow.runFirstOrder();
+await workflow.runFirstOrder();
 const firstOrder = model.analysisCases.find((item) => item.id === 'EL-STATIC');
 assert.ok(firstOrder);
 assert.equal(firstOrder.settings.pDeltaMethod, 'off');
@@ -110,7 +110,7 @@ assert.equal(target.SStructuresAnalysisCenter.getState().open, true);
 
 model.nodes[0].support = null;
 workflow.open(4);
-workflow.runFirstOrder();
+await workflow.runFirstOrder();
 assert.equal(target.SStructuresEngine.getAnalysisLatestAttempt('EL-STATIC').status, 'failed');
 assert.equal(workflow.state.messageKind, 'error');
 assert.match(workflow.state.message, /실패/);
