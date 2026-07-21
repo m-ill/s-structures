@@ -1,11 +1,13 @@
 import { materialOf, sectionOf } from '../../core/catalogs.js';
+import { memberReleaseState } from '../../core/memberReleaseContract.js';
 import { stableHash } from '../../core/stableHash.js';
 import { memberReleaseDofs } from '../linear3dElement.js';
 import { memberKinematics } from '../linear3dAssembly.js';
 import { effectiveSectionMaterial } from '../linear3dPost.js';
+import { resolveMemberPartialFixity } from '../partialFixity.js';
 import { resolveMemberTimoshenko } from '../timoshenko.js';
 
-export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p8-m1-element-descriptor-v1';
+export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p10-m3-element-descriptor-v2';
 
 export function buildElementDescriptors(model = {}, nodes = model.nodes || [], members = model.members || []) {
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
@@ -45,6 +47,17 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
       effective.material,
       kinematics.ax.L,
     );
+    const partialFixity = resolveMemberPartialFixity(
+      model,
+      member,
+      effective.section,
+      effective.material,
+      kinematics.ax.L,
+    );
+    if (partialFixity.ok === false) {
+      errors.push(issue(partialFixity.reason || 'PARTIAL_FIXITY_INVALID', member.id, 'Member partial-fixity data is invalid.'));
+      continue;
+    }
     const descriptor = {
       version: CANONICAL_ELEMENT_DESCRIPTOR_VERSION,
       id: member.id,
@@ -61,9 +74,10 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
         offsets: clone(kinematics.ax.offset || { i: 0, j: 0, rigidFactor: 1 }),
       },
       releases: {
-        contract: clone(member.releases || null),
+        contract: clone(memberReleaseState(member)),
         localDofs: memberReleaseDofs(member),
       },
+      partialFixity: clone(partialFixity),
       propertyRefs: {
         materialId: materialSource.id || member.matId || null,
         sectionId: sectionSource.id || member.secId || null,

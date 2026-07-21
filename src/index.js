@@ -173,8 +173,13 @@ export {
   MEMBER_RELEASE_ENDS,
   MEMBER_RELEASE_TYPES,
   MEMBER_RELEASE_VERSION,
+  MEMBER_ROTATIONAL_SPRING_DOFS,
+  MEMBER_ROTATIONAL_SPRING_KEYS,
+  memberHasPartialFixity,
   memberReleaseDofs,
   memberReleaseState,
+  memberRotationalSpringEntries,
+  memberRotationalSpringState,
   normalizeMemberReleases,
 } from './core/memberReleaseContract.js';
 export { MEMBER_RELEASE_SUMMARY_VERSION, buildMemberReleaseSummary } from './core/memberReleaseSummary.js';
@@ -220,6 +225,15 @@ export {
   resolveMemberTimoshenko,
   timoshenkoPhi,
 } from './solver/timoshenko.js';
+export {
+  PARTIAL_FIXITY_DOF_ORDER,
+  PARTIAL_FIXITY_LIMITATION_CODES,
+  PARTIAL_FIXITY_VERSION,
+  buildPartialFixityRecoveryTrace,
+  condensePartialFixity,
+  recoverPartialFixityDisplacements,
+  resolveMemberPartialFixity,
+} from './solver/partialFixity.js';
 export {
   SPARSE_MATRIX_VERSION,
   cscMatVec,

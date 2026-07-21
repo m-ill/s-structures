@@ -42,6 +42,28 @@ export function buildPDeltaTangentStiffness(model = {}, options = {}) {
       },
     };
   }
+  const partialFixityRows = Object.entries(assembly.memData || {})
+    .filter(([, data]) => data.partialFixity?.enabled)
+    .map(([memberId, data]) => ({ memberId, entries: data.partialFixity.entries || [] }));
+  const releaseLimitMemberIds = partialFixityRows
+    .filter((row) => row.entries.some((entry) => Number(entry.stiffness) === 0))
+    .map((row) => row.memberId);
+  if (releaseLimitMemberIds.length) {
+    return {
+      version: PDELTA_TANGENT_STIFFNESS_VERSION,
+      ok: false,
+      reason: 'DIRECT_PDELTA_PARTIAL_FIXITY_RELEASE_LIMIT_UNSUPPORTED',
+      method: 'geometric-stiffness-second-order-direct',
+      assembly,
+      releaseLimitMemberIds,
+      designEligibility: {
+        eligible: false,
+        status: 'blocked',
+        reason: 'DIRECT_PDELTA_PARTIAL_FIXITY_RELEASE_LIMIT_UNSUPPORTED',
+        message: 'A zero-stiffness connection spring requires the same elastic-geometric transformation as a binary release.',
+      },
+    };
+  }
   const axialForces = options.axialForces || axialForcesFromResults(options.results || {});
   const geometric = assembleGlobalGeometricStiffness(model, assembly, {
     mode: 'tangent',
@@ -49,6 +71,7 @@ export function buildPDeltaTangentStiffness(model = {}, options = {}) {
     includeTension: options.includeTensionKg !== false,
   });
   const Kt = addMatrices(assembly.K, geometric.KG);
+  const limitationCodes = Array.from(new Set(geometric.summary.limitationCodes || []));
   return {
     version: PDELTA_TANGENT_STIFFNESS_VERSION,
     ok: true,
@@ -67,7 +90,14 @@ export function buildPDeltaTangentStiffness(model = {}, options = {}) {
       tensionMemberCount: geometric.summary.tensionMemberCount,
       maxAbsAxialForce: geometric.summary.maxAbsAxialForce,
       timoshenkoApproximationCount: geometric.summary.timoshenkoApproximationCount,
-      limitationCodes: geometric.summary.limitationCodes,
+      partialFixityApproximationCount: geometric.summary.partialFixityApproximationCount,
+      partialFixityMemberIds: partialFixityRows.map((row) => row.memberId),
+      limitationCodes,
+    },
+    designEligibility: {
+      eligible: true,
+      status: limitationCodes.length ? 'qualified-with-limitation' : 'qualified',
+      limitationCodes,
     },
   };
 }

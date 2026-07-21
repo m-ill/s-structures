@@ -837,6 +837,12 @@ function prepareDescriptor(descriptor, options) {
   ) {
     throw elementError('COROTATIONAL_DESCRIPTOR_INVALID', 'A canonical 12-DOF element descriptor is required.');
   }
+  if (descriptor.partialFixity?.enabled) {
+    throw elementError(
+      'NONLINEAR_PARTIAL_FIXITY_UNSUPPORTED',
+      `Element ${descriptor.id} uses rotational connection springs that are not implemented in the corotational formulation.`,
+    );
+  }
   const referenceLength = positive(descriptor.geometry?.length, 'geometry.length');
   const grossLength = positive(descriptor.geometry?.grossLength ?? referenceLength, 'geometry.grossLength');
   const axes = descriptor.geometry?.axes;

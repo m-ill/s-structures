@@ -244,6 +244,14 @@ function scaleMemberForceRow(row = {}, factor) {
     end: scaleMemberEnd(row.end, factor),
     stations: (row.stations || []).map((station) => scaleMemberStation(station, factor)),
     peaks: scaleNumericObject(row.peaks, factor),
+    partialFixity: row.partialFixity
+      ? {
+          ...row.partialFixity,
+          baseShearScalingApplied: false,
+          finalDemandScaleFactor: factor,
+          finalDemandScaledSeparately: true,
+        }
+      : null,
     provenance: withScalingProvenance(row.provenance, beforeValue, factor),
   };
   for (const key of quantityKeys) scaled[key] = scaleArray(row[key], factor);

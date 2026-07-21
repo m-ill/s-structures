@@ -99,6 +99,12 @@ function prepareDescriptor(descriptor) {
   ) {
     throw elementError('LINEAR_ELASTIC_DESCRIPTOR_INVALID', 'A valid M1 element descriptor with 12 full DOFs is required.');
   }
+  if (descriptor.partialFixity?.enabled) {
+    throw elementError(
+      'NONLINEAR_PARTIAL_FIXITY_UNSUPPORTED',
+      `Element ${descriptor.id} uses rotational connection springs outside the nonlinear element contract.`,
+    );
+  }
   const length = Number(descriptor.geometry?.length);
   const transform = descriptor.geometry?.transform;
   if (!(length > 0) || !finiteMatrix(transform, 12)) {

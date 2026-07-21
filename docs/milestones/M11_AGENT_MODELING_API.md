@@ -81,6 +81,9 @@ execute('setMemberMaterial', { memberId: 'M1', matId: 'steel' })
 execute('assignSection', { memberIds: ['M1', 'M2'], secId: 'h300' })
 ```
 
+`updateMember`의 `releases`는 중첩 patch다. `releases.spring.{ryI,rzI,ryJ,rzJ}`는 기존 i/j 및
+다른 spring 축을 보존하며, `spring:null`은 전체 회전스프링 삭제, `spring.{축}:null`은 해당 축만 삭제한다.
+
 하중:
 
 ```js

@@ -1,5 +1,11 @@
 import assert from 'node:assert/strict';
-import { DOMAIN_BINARY_VERSION, packDomainBinary, validateDomainBinary } from '../src/compute/contracts/domainBinary.js';
+import {
+  DOMAIN_BINARY_VERSION,
+  domainBinaryTransferables,
+  packDomainBinary,
+  unpackDomainBinary,
+  validateDomainBinary,
+} from '../src/compute/contracts/domainBinary.js';
 import { classifyElasticFactorGroups } from '../src/compute/elastic/factorGroups.js';
 import { buildAnalysisDomainHashes, changedAnalysisDomainHashes } from '../src/core/analysisDomainHashes.js';
 import { buildElementDescriptors } from '../src/solver/domain/elementDescriptor.js';
@@ -39,12 +45,73 @@ const model = {
 
 const domain = packDomainBinary(model);
 assert.equal(validateDomainBinary(domain).ok, true, 'P10-M2 DomainBinary must validate');
-assert.equal(DOMAIN_BINARY_VERSION, 'p10-domain-binary-v2');
+assert.equal(DOMAIN_BINARY_VERSION, 'p10-domain-binary-v3');
 assert.equal(domain.buffers.sectionProperties.length, 4, 'legacy four-wide section properties stay compatible');
 assert.deepEqual([...domain.buffers.sectionShearAreas], [0.15, 0.12]);
 assert.deepEqual([...domain.buffers.analysisFlags], [1]);
 assert.deepEqual([...domain.buffers.memberShearDeformation], [1]);
+assert.deepEqual([...domain.buffers.memberRotationalSprings], [0, 0, 0, 0]);
+assert.deepEqual([...domain.buffers.memberRotationalSpringMask], [0]);
 assert.deepEqual(domain.metadata.bufferLayouts.sectionShearAreas, ['Ay', 'Az']);
+assert.deepEqual(domain.metadata.bufferLayouts.memberReleaseCodes, ['i', 'j']);
+assert.deepEqual(domain.metadata.bufferLayouts.memberRotationalSprings, ['ryI', 'rzI', 'ryJ', 'rzJ']);
+assert.deepEqual(domain.metadata.bufferLayouts.memberRotationalSpringMask, {
+  encoding: 'presence-bitmask',
+  bits: { ryI: 0, rzI: 1, ryJ: 2, rzJ: 3 },
+  absent: 'rigid',
+  presentZero: 'release',
+});
+
+const explicitZeroModel = structuredClone(model);
+explicitZeroModel.members[0].releases.spring = { ryI: 0 };
+const explicitZeroDomain = packDomainBinary(explicitZeroModel);
+assert.deepEqual([...explicitZeroDomain.buffers.memberRotationalSprings], [0, 0, 0, 0]);
+assert.deepEqual([...explicitZeroDomain.buffers.memberRotationalSpringMask], [0b0001]);
+assert.notEqual(
+  explicitZeroDomain.domainHash,
+  domain.domainHash,
+  'an explicit zero release hashes differently from an absent rigid connection',
+);
+
+const partialFixityModel = structuredClone(model);
+partialFixityModel.members[0].releases.spring = { ryI: 0, rzI: 1250, rzJ: 4800 };
+const partialFixityDomain = packDomainBinary(partialFixityModel);
+assert.equal(validateDomainBinary(partialFixityDomain).ok, true, 'partial-fixity DomainBinary must validate');
+assert.deepEqual([...partialFixityDomain.buffers.memberRotationalSprings], [0, 1250, 0, 4800]);
+assert.deepEqual(
+  [...partialFixityDomain.buffers.memberRotationalSpringMask],
+  [0b1011],
+  'presence mask distinguishes an explicit zero spring from an absent component',
+);
+assert.deepEqual(unpackDomainBinary(partialFixityDomain).members[0].releases, {
+  i: 'rigid',
+  j: 'rigid',
+  spring: { ryI: 0, rzI: 1250, rzJ: 4800 },
+});
+assert.notEqual(partialFixityDomain.domainHash, domain.domainHash, 'partial fixity participates in the domain hash');
+assert.ok(
+  domainBinaryTransferables(partialFixityDomain).includes(partialFixityDomain.buffers.memberRotationalSprings.buffer),
+  'rotational spring values are transferable',
+);
+assert.ok(
+  domainBinaryTransferables(partialFixityDomain).includes(partialFixityDomain.buffers.memberRotationalSpringMask.buffer),
+  'rotational spring presence mask is transferable',
+);
+const corruptPartialFixityDomain = {
+  ...partialFixityDomain,
+  buffers: {
+    ...partialFixityDomain.buffers,
+    memberRotationalSpringMask: new Uint8Array([0b10000]),
+  },
+};
+assert.ok(
+  validateDomainBinary(corruptPartialFixityDomain).errors.includes('domain:member-rotational-spring-mask'),
+  'unknown presence bits fail closed',
+);
+assert.throws(() => packDomainBinary({
+  ...partialFixityModel,
+  members: [{ ...partialFixityModel.members[0], releases: { spring: { ryI: -1 } } }],
+}), { code: 'DOMAIN_ROTATIONAL_SPRING_INVALID' }, 'negative rotational stiffness fails closed');
 
 const inferredModel = structuredClone(model);
 delete inferredModel.sections[0].Ay;

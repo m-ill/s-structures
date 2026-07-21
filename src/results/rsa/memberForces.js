@@ -1,7 +1,8 @@
+import { memberHasPartialFixity } from '../../core/memberReleaseContract.js';
 import { recoverMemberResult } from '../../solver/linear3dRecovery.js';
 import { condenseReleasedDofs, matVec } from '../../solver/linear3dElement.js';
 
-export const RSA_MEMBER_FORCE_RECOVERY_VERSION = 'p7-m9-rsa-member-force-recovery-v1';
+export const RSA_MEMBER_FORCE_RECOVERY_VERSION = 'p10-m3-rsa-member-force-recovery-v2';
 
 const FORCE_KEYS = ['N', 'Vy', 'Vz'];
 const MOMENT_KEYS = ['Tq', 'My', 'Mz'];
@@ -26,12 +27,14 @@ export function createRsaMemberRecoveryContext(input = {}) {
   const members = input.members || model.members || [];
   const stationCount = Math.max(21, Number(input.stationCount) | 0 || 21);
   const blockers = scopeBlockers(model, system, members, input.diaphragmAssembly);
+  const partialFixityMemberIds = members.filter(memberHasPartialFixity).map((member) => member.id);
   return {
     model,
     system,
     members,
     stationCount,
     blockers,
+    partialFixityMemberIds,
     status: blockers.length ? 'unsupported' : 'available',
     scope: 'linear-elastic-frame-truss-modal-member-force-recovery',
   };
@@ -121,6 +124,7 @@ export function recoverModalMemberForces({
     rows,
     byMember,
     blockers,
+    partialFixityMemberIds: recoveryContext.partialFixityMemberIds || [],
     warnings: blockers.map((item) => `${item.code}: ${item.message}`),
     dimensions: MEMBER_FORCE_DIMENSIONS,
     units: memberForceUnits(units),
@@ -130,6 +134,7 @@ export function recoverModalMemberForces({
       residualBackSubstitutionPassed: mode?.residualRecovery?.passed === true,
       memberAssemblyChecksPassed: rows.length > 0 && rows.every((row) => row.checks.assembly.passed),
       releaseChecksPassed: rows.length > 0 && rows.every((row) => row.checks.release.passed),
+      partialFixityChecksPassed: rows.length > 0 && rows.every((row) => row.checks.partialFixity.passed),
       stationChecksPassed: rows.length > 0 && rows.every((row) => row.checks.stations.passed),
     },
     provenance: {
@@ -232,6 +237,7 @@ export function combineRsaMemberForces({
           period: response.period,
           endForces: row.endForces.slice(),
           peaks: row.peaks,
+          partialFixity: row.partialFixity,
           qualified: row.qualification.qualified,
           responsePath: `rsa.modal.${direction}.${response.mode}.memberForces.${memberId}`,
         };
@@ -245,6 +251,20 @@ export function combineRsaMemberForces({
         allContributorsQualified: true,
         stationGridMatched: true,
       },
+      partialFixity: contributors.some((row) => row.partialFixity?.enabled)
+        ? {
+            enabled: true,
+            combination: 'modal-contributor-trace-only',
+            responseMethod: method,
+            responseScaleDomain: 'signed-modal-contributors-before-global-base-shear-scaling',
+            baseShearScalingApplied: false,
+            combinedClosure: 'not-applicable-to-unsigned-modal-combination',
+            modalContributors: contributors.map((row) => ({
+              mode: row.mode,
+              partialFixity: row.partialFixity,
+            })),
+          }
+        : null,
       provenance: {
         ...provenance,
         source: 'response-method-consistent-modal-member-force-combination',
@@ -345,6 +365,8 @@ export function summarizeRsaMemberForces({ combined, modal, recoveryContext, pro
         && modalRecoveries.every((row) => row.qualification?.memberAssemblyChecksPassed),
       releaseChecksPassed: modalRecoveries.length > 0
         && modalRecoveries.every((row) => row.qualification?.releaseChecksPassed),
+      partialFixityChecksPassed: modalRecoveries.length > 0
+        && modalRecoveries.every((row) => row.qualification?.partialFixityChecksPassed),
       stationChecksPassed: modalRecoveries.length > 0
         && modalRecoveries.every((row) => row.qualification?.stationChecksPassed),
       responseMethodConsistent: directions.length > 0
@@ -357,6 +379,7 @@ export function summarizeRsaMemberForces({ combined, modal, recoveryContext, pro
       'Qualification covers linear-elastic frame and truss member demand recovery from the assembled modal model.',
       'No static result, fixed-end force, or static member load is substituted into RSA member demand.',
       'Combined SRSS/CQC member demands are unsigned magnitudes; signed modal contributors remain traceable.',
+      'Partial-fixity spring closure is qualified per signed modal contributor; it is not recomputed from unsigned SRSS/CQC magnitudes.',
       'Qualification does not perform seismic code combinations, capacity design, or nonlinear acceptance checks.',
     ],
     provenance: {
@@ -408,7 +431,7 @@ function scopeBlockers(model, system, members, diaphragmAssembly = null) {
     blockers.push(blocker(
       'RSA_MEMBER_RELEASE_TYPE_UNSUPPORTED',
       invalidReleases.join(','),
-      'RSA member recovery supports only the linear solver rigid/pin release contract.',
+      'RSA member recovery supports the linear solver rigid/pin and rotational-spring connection contracts.',
     ));
   }
   const activeDiaphragms = (model.diaphragms || []).filter((item) => item && item.type !== 'none');
@@ -448,13 +471,15 @@ function scopeBlockers(model, system, members, diaphragmAssembly = null) {
 function memberRecoveryChecks(md, displacementVector, recovered) {
   const tolerance = 1e-8;
   const rawLocal = matVec(md.T, md.dof.map((dof) => displacementVector[dof] || 0));
-  let assemblyStiffness = md.kl;
+  let assemblyStiffness = md.klA || md.kl;
   let releaseCondensation = md.rel.length ? 'required' : 'not-applicable';
   let releaseCondensationPassed = true;
   if (md.rel.length) {
     const condensed = condenseReleasedDofs(md.kl, new Array(12).fill(0), md.rel);
     if (condensed) {
-      assemblyStiffness = condensed.klC;
+      assemblyStiffness = md.partialFixityApplication?.applied
+        ? md.klA
+        : condensed.klC;
       releaseCondensation = 'condensed';
     } else if (releasedRowsInactive(md.kl, md.rel)) {
       releaseCondensation = 'not-required-zero-release-stiffness';
@@ -476,11 +501,31 @@ function memberRecoveryChecks(md, displacementVector, recovered) {
   const localDisplacementsPassed = Array.isArray(recovered.dl)
     && recovered.dl.length === 12
     && recovered.dl.every(Number.isFinite);
+  const partialRows = recovered.partialFixity?.rows || [];
+  const partialScale = Math.max(
+    1,
+    ...partialRows.flatMap((row) => [Math.abs(row.springMoment), Math.abs(row.memberEndMoment)]),
+  );
+  const maxPartialClosureResidual = Math.max(
+    0,
+    ...partialRows.map((row) => Math.abs(row.closureResidual)),
+  );
+  const maxPartialCompatibilityResidual = Math.max(
+    0,
+    ...partialRows.map((row) => Math.abs(row.compatibilityResidual)),
+  );
+  const partialFixityPassed = !recovered.partialFixity?.enabled || (
+    partialRows.length > 0
+    && partialRows.every((row) => Number.isFinite(row.closureResidual) && Number.isFinite(row.compatibilityResidual))
+    && maxPartialClosureResidual <= tolerance * partialScale
+    && maxPartialCompatibilityResidual <= tolerance
+  );
   const reasons = [];
   if (!assemblyPassed) reasons.push('CONDENSED_LOCAL_STIFFNESS_FORCE_RESIDUAL');
   if (!releasePassed) reasons.push('RELEASE_FORCE_RESIDUAL');
   if (!stationsPassed) reasons.push('MEMBER_STATION_RECOVERY');
   if (!localDisplacementsPassed) reasons.push('LOCAL_DISPLACEMENT_RECOVERY');
+  if (!partialFixityPassed) reasons.push('PARTIAL_FIXITY_SPRING_CLOSURE');
   return {
     passed: !reasons.length,
     reasons,
@@ -497,6 +542,15 @@ function memberRecoveryChecks(md, displacementVector, recovered) {
       condensation: releaseCondensation,
       maxReleasedForceResidual: releasedForceResidual,
       relativeResidual: releasedForceResidual / endScale,
+    },
+    partialFixity: {
+      enabled: recovered.partialFixity?.enabled === true,
+      passed: partialFixityPassed,
+      rowCount: partialRows.length,
+      maxClosureResidual: maxPartialClosureResidual,
+      relativeClosureResidual: maxPartialClosureResidual / partialScale,
+      maxCompatibilityResidual: maxPartialCompatibilityResidual,
+      method: recovered.partialFixity?.method || null,
     },
     stations: {
       passed: stationsPassed,
@@ -532,6 +586,14 @@ function memberRecoveryRow({ member, mode, direction, recovered, checks, provena
     })),
     peaks: memberPeaks(quantities),
     releaseDofs: checks.release.releaseDofs,
+    partialFixity: recovered.partialFixity
+      ? {
+          ...recovered.partialFixity,
+          responseScaleDomain: 'signed-modal-contributor',
+          baseShearScalingApplied: false,
+          rows: recovered.partialFixity.rows.map((row) => ({ ...row })),
+        }
+      : null,
     checks,
     dimensions: MEMBER_FORCE_DIMENSIONS,
     units: memberForceUnits(units),
@@ -548,6 +610,9 @@ function memberRecoveryRow({ member, mode, direction, recovered, checks, provena
       direction,
       appliedMemberLoads: [],
       fixedEndForceSource: 'zero-modal-vector',
+      connectionRecovery: recovered.partialFixity?.enabled
+        ? 'internal-rotation-static-condensation-with-spring-closure'
+        : 'rigid-or-binary-release',
       staticCaseReferences: [],
     },
   };

@@ -158,7 +158,7 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
           <a class="leaf" href="#members" data-leaf="members" data-search="부재 (보/기둥/가새) members 두 절점을 잇는 3d 프레임 부재. 단면·재료 배정, 로컬축 지정. addmember updatemember deletemember nativedrawmember nativeaddcolumn setmembersection setmembermaterial assignsection setmemberbehavior nativesetmemberbehavior">부재 (보/기둥/가새)</a>
           <a class="leaf" href="#member-behavior" data-leaf="member-behavior" data-search="부재 거동 타입 member-behavior 프레임 외에 트러스/인장전담/압축전담 부재를 지원 — x-brace, 케이블 모델링.">부재 거동 타입</a>
           <a class="leaf" href="#supports" data-leaf="supports" data-search="지지 조건 supports 고정/힌지/롤러/사용자 정의 dof에 더해 6-자유도 스프링 지지와 지점 침하를 지원. setsupport setspringsupport setsettlement nativesetsupport nativesetspringsupport nativesetsettlement">지지 조건</a>
-          <a class="leaf" href="#releases-offsets" data-leaf="releases-offsets" data-search="단부 해제와 강역(offset) releases-offsets 부재 단부 모멘트 해제(핀), 단부 강역 길이 지정으로 clear span 설계 길이 반영. getmemberreleasesummary getmemberreleasebenchmark">단부 해제와 강역(offset)</a>
+          <a class="leaf" href="#releases-offsets" data-leaf="releases-offsets" data-search="단부 해제·부분강절과 강역(offset) releases-offsets pin/rigid 및 4축 회전스프링 단부, 단부 강역 길이 지정으로 clear span 설계 길이 반영. getmemberreleasesummary getmemberreleasebenchmark">단부 해제·부분강절과 강역(offset)</a>
           <a class="leaf" href="#walls-midpier" data-leaf="walls-midpier" data-search="전단벽 (mid-pier) walls-midpier 벽 패널을 등가 기둥+강체 보로 모델링하고 pier 단면력을 회복해 벽체 설계에 전달. getwallslabequivalenttrace">전단벽 (mid-pier)</a>
           <a class="leaf" href="#stories-diaphragms" data-leaf="stories-diaphragms" data-search="층과 다이어프램 stories-diaphragms z좌표 기반 층 자동 인식, 강막(rigid diaphragm) 구속과 층 질량중심/편심 관리. copystory getstorysummary getdiaphragmsummary getrigiddiaphragmbenchmark">층과 다이어프램</a>
           <a class="leaf" href="#grid-generation" data-leaf="grid-generation" data-search="그리드 골조 생성 grid-generation x/y 간격과 층고 입력으로 정형 골조를 일괄 생성 — 빠른 초기 모델링. creategridframe">그리드 골조 생성</a>
@@ -795,17 +795,17 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
       <footer class="control-key">기능 제어 키: <code>feature.supports</code> (기본 상시) </footer>
     </article>
 </template>
-<template data-help-page="releases-offsets" data-title="단부 해제와 강역(offset)" data-crumb="기능 설명서 · 모델링">
+<template data-help-page="releases-offsets" data-title="단부 해제·부분강절과 강역(offset)" data-crumb="기능 설명서 · 모델링">
 
     <article class="feature" id="releases-offsets" data-feature="releases-offsets">
       <header>
         <span class="crumb">모델링</span>
-        <h2>단부 해제와 강역(offset) <span class="badge badge-stable">정식</span></h2>
-        <p class="summary">부재 단부 모멘트 해제(핀), 단부 강역 길이 지정으로 clear span 설계 길이 반영.</p>
+        <h2>단부 해제·부분강절과 강역(offset) <span class="badge badge-stable">정식</span></h2>
+        <p class="summary">pin/rigid 및 4축 회전스프링 단부, 단부 강역 길이 지정으로 clear span 설계 길이 반영.</p>
       </header>
-      <p class="description">단부 해제는 부재 i/j단의 모멘트 전달을 끊어 힌지 접합을 모델링한다(거셋 단순접합 보 등). 강역(end offset)은 보-기둥 접합부 크기만큼 단부를 강체로 처리해 유연 길이(clear span)를 줄이고, 설계 모듈에는 clear length가 전달된다.</p>
-      <h4>사용 방법</h4><ol><li>부재 속성에서 releases(i/j: pin|rigid)를 지정하거나 updateMember 액션을 사용한다</li><li>강역은 부재 속성 endOffset({ i, j })에 접합부 치수(m)를 입력한다</li><li>적용 결과는 부재 해제 요약(getMemberReleaseSummary)과 해제 benchmark로 교차 확인한다</li></ol>
-      <h4>한계</h4><ul class="limits"><li>부분 고정(회전 스프링 단부)은 미지원 — pin/rigid 2단</li></ul>
+      <p class="description">단부 해제는 부재 i/j단의 모멘트 전달을 끊고, releases.spring의 local y/z 회전스프링은 유한 접합 강성을 모델링한다. 강역(end offset)은 보-기둥 접합부 크기만큼 단부를 강체로 처리해 유연 길이(clear span)를 줄이고, 설계 모듈에는 clear length가 전달된다.</p>
+      <h4>사용 방법</h4><ol><li>부재 속성에서 releases(i/j: pin|rigid)를 지정하거나 updateMember 액션을 사용한다</li><li>부분강절은 releases.spring.{ryI,rzI,ryJ,rzJ}에 유한 비음수 회전강성을 지정한다. 키 미지정은 강접, 명시적 0은 release 극한이다</li><li>updateMember의 spring patch는 기존 축을 보존한다. spring:null은 전체 삭제, spring.{축}:null은 해당 축만 삭제한다</li><li>강역은 부재 속성 endOffset({ i, j })에 접합부 치수(m)를 입력한다</li><li>적용 결과는 부재 해제 요약(getMemberReleaseSummary)과 해제 benchmark로 교차 확인한다</li></ol>
+      <h4>한계</h4><ul class="limits"><li>유한 회전스프링 Direct P-Delta는 raw prismatic KG 근사이며 PARTIAL_FIXITY_PRISMATIC_KG_APPROXIMATION을 표시한다</li><li>명시적 zero spring Direct P-Delta, global buckling, nonlinear/corotational 해석은 canonical reason code로 차단된다</li></ul>
       <h4>관련 읽기 API</h4><p class="api-list"><code>getMemberReleaseSummary</code> <code>getMemberReleaseBenchmark</code></p>
       <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
       <footer class="control-key">기능 제어 키: <code>feature.releases-offsets</code> (기본 상시) </footer>

@@ -13,7 +13,11 @@ import {
 import { validateUnits } from './units.js';
 import { validateUnitSystem } from './unitSystemValidation.js';
 import { summarizeValidationHealth } from './validationHealth.js';
-import { MEMBER_RELEASE_ENDS } from './memberReleaseContract.js';
+import {
+  MEMBER_RELEASE_ENDS,
+  MEMBER_ROTATIONAL_SPRING_KEYS,
+  memberReleaseState,
+} from './memberReleaseContract.js';
 import { DIAPHRAGM_TYPES } from './diaphragmContract.js';
 import { validateAnalysisCases } from './analysisCase.js';
 import { validateAnalysisCriteria } from './analysisCriteria.js';
@@ -336,13 +340,54 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
 function validateMemberReleases(member, error) {
   const releases = member.releases || {};
   for (const end of Object.keys(releases)) {
-    if (!MEMBER_RELEASE_ENDS.includes(end)) error(ERROR_CODES.BAD_RELEASE_END, `Unsupported release end: ${end}`, member.id);
+    if (![...MEMBER_RELEASE_ENDS, 'spring'].includes(end)) {
+      error(ERROR_CODES.BAD_RELEASE_END, `Unsupported release end: ${end}`, member.id);
+    }
   }
   for (const end of MEMBER_RELEASE_ENDS) {
     if (!RELEASE_TYPES.has(releases[end])) error(ERROR_CODES.BAD_RELEASE_TYPE, `Unsupported ${end}-end release: ${releases[end]}`, member.id);
   }
   for (const [field, end] of [['rel1', 'i'], ['rel2', 'j']]) {
     if (member[field] != null && !RELEASE_TYPES.has(member[field])) error(ERROR_CODES.BAD_RELEASE_TYPE, `Unsupported ${end}-end release: ${member[field]}`, member.id);
+  }
+  if (!Object.prototype.hasOwnProperty.call(releases, 'spring')) return;
+  const spring = releases.spring;
+  if (!spring || typeof spring !== 'object' || Array.isArray(spring)) {
+    error(ERROR_CODES.BAD_RELEASE_SPRING, 'Member rotational spring must be an object.', member.id);
+    return;
+  }
+  const keys = Object.keys(spring);
+  for (const key of keys) {
+    if (!MEMBER_ROTATIONAL_SPRING_KEYS.includes(key)) {
+      error(ERROR_CODES.BAD_RELEASE_SPRING, `Unsupported rotational spring key: ${key}`, member.id);
+      continue;
+    }
+    const stiffness = spring[key];
+    if (typeof stiffness !== 'number' || !Number.isFinite(stiffness) || stiffness < 0) {
+      error(
+        ERROR_CODES.BAD_RELEASE_SPRING,
+        `Rotational spring ${key} must be a finite nonnegative number.`,
+        member.id,
+      );
+    }
+  }
+  if (keys.some((key) => MEMBER_ROTATIONAL_SPRING_KEYS.includes(key))
+    && ['truss', 'tensionOnly', 'compressionOnly'].includes(member.behavior || member.type)) {
+    error(
+      ERROR_CODES.RELEASE_SPRING_FRAME_REQUIRED,
+      'Rotational connection springs require frame member behavior.',
+      member.id,
+    );
+  }
+  const releaseState = memberReleaseState(member);
+  const iConflict = releaseState.i === 'pin' && keys.some((key) => key.endsWith('I'));
+  const jConflict = releaseState.j === 'pin' && keys.some((key) => key.endsWith('J'));
+  if (iConflict || jConflict) {
+    error(
+      ERROR_CODES.RELEASE_SPRING_CONFLICT,
+      'A binary pin and a rotational spring cannot be assigned at the same member end.',
+      member.id,
+    );
   }
 }
 

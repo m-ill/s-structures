@@ -2,6 +2,7 @@ import { assembleStiffness3D } from '../solver/linear3dAssembly.js';
 import { assembleGlobalGeometricStiffness } from '../solver/geometricStiffness.js';
 import { matMul, matTrans, solveLinear } from '../solver/linear3dElement.js';
 import { materialOf, sectionOf } from '../core/catalogs.js';
+import { memberHasPartialFixity } from '../core/memberReleaseContract.js';
 import { createSymmetricSparseOperatorFromDense } from '../compute/eigen/sparseOperator.js';
 import { solveRequestedGeneralizedEigen } from '../compute/eigen/requestedModes.js';
 
@@ -306,6 +307,21 @@ function validateBucklingModelDomain(model) {
       'REMOVE_OR_IMPLEMENT_BUCKLING_EQUIVALENT_MEMBER_DOMAIN',
       'Global buckling is blocked because generated shell, wall, or semi-rigid members are not qualified for the shared Ke/Kg domain.',
     );
+  }
+  const partialFixityMembers = (model.members || []).filter(memberHasPartialFixity);
+  if (partialFixityMembers.length) {
+    return {
+      ok: false,
+      reason: 'BUCKLING_PARTIAL_FIXITY_UNSUPPORTED',
+      domain: {
+        type: 'unavailable-partial-fixity-geometric-domain',
+        memberIds: partialFixityMembers.map((member) => member.id || null),
+      },
+      guidance: {
+        code: 'REMOVE_OR_IMPLEMENT_BUCKLING_PARTIAL_FIXITY',
+        message: 'Global buckling is blocked because the rotational-spring transformation is not yet shared by Ke and Kg.',
+      },
+    };
   }
   const unsupportedRelease = (model.members || []).find((member) => {
     const releases = member.releases || {};

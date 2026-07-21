@@ -1,8 +1,9 @@
 import { resolveCriterion } from '../../core/analysisCriteria.js';
+import { memberRotationalSpringEntries } from '../../core/memberReleaseContract.js';
 import { buildFixedEndLoad, fixedEndTraceRow } from '../../loads/fixedEnd/index.js';
 import { axialForcesFromDisplacements } from '../geometricStiffness.js';
 import { analyzeAll } from '../linear3d.js';
-import { buildFixedDofs } from '../linear3dAssembly.js';
+import { buildFixedDofs, conditionMemberLocalSystem } from '../linear3dAssembly.js';
 import {
   dirVec,
   matTrans,
@@ -12,6 +13,7 @@ import {
 } from '../linear3dElement.js';
 import { buildEquilibriumSummary } from '../linear3dPost.js';
 import { recoverMemberResult, sectionCheck } from '../linear3dRecovery.js';
+import { PARTIAL_FIXITY_LIMITATION_CODES } from '../partialFixity.js';
 import { buildExpandedAnalysisDomain } from './analysisDomain.js';
 import { buildPDeltaSplitTrace } from './split.js';
 import {
@@ -93,6 +95,16 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
   const loadStepCount = Math.max(1, Math.trunc(Number(options.loadSteps ?? options.pDeltaLoadSteps) || 4));
   const assembly = seedTangent.assembly;
   const loadState = buildFactoredLoadState(domain, assembly);
+  if (!loadState.ok) {
+    return failedDirectResult(loadState.reason || 'PARTIAL_FIXITY_LOAD_CONDENSATION_FAILED', {
+      linear,
+      compatibility,
+      domain,
+      tangent: seedTangent,
+      memberId: loadState.memberId || null,
+      message: 'The factored member-load vector could not be conditioned for the connection springs.',
+    });
+  }
   const prescribed = buildPrescribedDisplacementState(domain.nodes, assembly);
   if (!prescribed.ok) {
     return failedDirectResult(prescribed.reason, {
@@ -259,6 +271,7 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
           geometricMemberCount: updatedTangent.summary.geometricMemberCount,
           compressionMemberCount: updatedTangent.summary.compressionMemberCount,
           maxAbsAxialForce: updatedTangent.summary.maxAbsAxialForce,
+          limitationCodes: updatedTangent.summary.limitationCodes || [],
         },
       });
       currentD = nextD;
@@ -344,9 +357,20 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
     stability,
   };
 
+  const limitationCodes = Array.from(new Set([
+    ...(compatibility.limitationCodes || []),
+    ...(seedTangent.summary?.limitationCodes || []),
+    ...(finalTangent.summary?.limitationCodes || []),
+  ]));
+  const finalCompatibility = {
+    ...compatibility,
+    status: limitationCodes.length ? 'supported-with-limitation' : 'supported',
+    limitationCodes,
+  };
   const amplificationTrace = translationalAmplification(domain.nodes, assembly, linearD, currentD);
-  const designEligibility = directDesignEligibility(converged, stability, result.recovery);
-  const provenance = directProvenance(domain, loadState);
+  const designEligibility = directDesignEligibility(converged, stability, result.recovery, finalCompatibility);
+  const provenance = { ...directProvenance(domain, loadState), limitationCodes };
+  result.pDelta.limitationCodes = limitationCodes;
   result.provenance = provenance;
   result.designEligibility = designEligibility;
   result.analysisDomain = domain.adapterIdentity || null;
@@ -372,7 +396,7 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
     iterations: steps.flatMap((step) => step.iterations.map((iteration) => ({ step: step.step, ...iteration }))),
     convergence,
     stability,
-    compatibility,
+    compatibility: finalCompatibility,
     prescribedDisplacements: prescribed.trace,
     designEligibility,
     provenance,
@@ -382,6 +406,7 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
       'Direct analysis assembles Kt = Ke + Kg(N) with the project tension-positive axial sign convention.',
       'The constrained free tangent must remain positive definite at every trial and updated iteration.',
       'Reactions and member stations use the same elastic-plus-geometric member end-force formulation.',
+      ...(limitationCodes.length ? [`Solver limitations: ${limitationCodes.join(', ')}.`] : []),
       'Legacy equivalent-load iteration is a separate diagnostic method and is not used by this route.',
     ],
   };
@@ -476,8 +501,10 @@ function buildFactoredLoadState(domain, assembly) {
     for (let i = 0; i < 12; i += 1) md.f0[i] += fixedEnd.q0[i];
   }
 
-  for (const md of Object.values(assembly.memData || {})) {
-    const equivalent = matVec(matTrans(md.T), md.f0).map((value) => -value);
+  for (const [memberId, md] of Object.entries(assembly.memData || {})) {
+    const conditioned = conditionMemberLocalSystem(md, memberId);
+    if (!conditioned.ok) return conditioned;
+    const equivalent = matVec(matTrans(md.T), conditioned.f0A).map((value) => -value);
     for (let i = 0; i < 12; i += 1) F[md.dof[i]] += equivalent[i];
   }
   addSpringSettlementLoads(domain.nodes, assembly.idx, F);
@@ -641,7 +668,16 @@ function buildDirectResult({
     qualified: missingMemberIds.length === 0 && reactionState.closure.qualified,
     status: missingMemberIds.length || !reactionState.closure.qualified ? 'blocked' : 'qualified',
     method: 'consistent-elastic-plus-geometric-member-end-force-recovery',
-    resistingForceEquation: 'q_total = (Ke_local + Kg_local(N)) * d_local + f0_local',
+    resistingForceEquation: tangent.summary?.partialFixityApproximationCount > 0
+      ? 'q_total = q_elastic(d_member_face, Ke_raw, f0_raw) + Kg_prismatic(N) * d_joint_local'
+      : 'q_total = (Ke_local + Kg_local(N)) * d_local + f0_local',
+    connectionKinematics: tangent.summary?.partialFixityApproximationCount > 0
+      ? {
+          elastic: 'recovered-member-face-rotation',
+          geometric: 'joint-local-rotation',
+          limitationCode: PARTIAL_FIXITY_LIMITATION_CODES.PRISMATIC_KG_APPROXIMATION,
+        }
+      : null,
     memberCount: Object.keys(memberResults).length,
     generatedMemberCount: Object.keys(allMemberResults).length - Object.keys(memberResults).length,
     reactionNodeCount: Object.keys(reactionState.reactions).length,
@@ -694,9 +730,9 @@ function buildDirectResult({
 function recoverConsistentMemberResult(member, md, D, loads, stationCount, geometricData) {
   const recovered = recoverMemberResult(member, md, D, loads, stationCount);
   const elasticEnd = recovered.end.slice();
-  const localDisplacement = recovered.dl;
+  const jointLocalDisplacement = matVec(md.T, md.dof.map((dof) => Number(D[dof]) || 0));
   const geometricEnd = geometricData?.local
-    ? matVec(geometricData.local, localDisplacement)
+    ? matVec(geometricData.local, jointLocalDisplacement)
     : new Array(12).fill(0);
   const totalEnd = elasticEnd.map((value, index) => value + geometricEnd[index]);
   const quantities = ['N', 'Vy', 'Vz', 'Tq', 'My', 'Mz'];
@@ -713,6 +749,31 @@ function recoverConsistentMemberResult(member, md, D, loads, stationCount, geome
   recovered.geometricStations = geometricStations;
   recovered.globalEnd = matVec(matTrans(md.T), totalEnd);
   recovered.recoveryMethod = 'elastic-shared-recovery-plus-end-consistent-geometric-recovery';
+  recovered.geometricRecoveryKinematics = md.partialFixity?.enabled
+    ? 'joint-rotation-prismatic-kg-approximation'
+    : 'member-joint-local-displacement';
+  if (recovered.partialFixity?.enabled) {
+    for (const row of recovered.partialFixity.rows || []) {
+      row.elasticMemberEndMoment = row.memberEndMoment;
+      row.geometricJointEndMoment = Number(geometricEnd[row.dof]) || 0;
+      row.totalReportedEndMoment = Number(totalEnd[row.dof]) || 0;
+      row.elasticClosureResidual = row.closureResidual;
+      row.closureBasis = 'elastic-condensed-ke';
+      row.geometricContributionAppliedToSpring = false;
+      row.totalEndClosure = 'not-applicable-under-prismatic-kg-approximation';
+      row.limitationCode = PARTIAL_FIXITY_LIMITATION_CODES.PRISMATIC_KG_APPROXIMATION;
+    }
+    recovered.partialFixity.maxElasticClosureResidual = Math.max(
+      0,
+      ...(recovered.partialFixity.rows || []).map((row) => Math.abs(row.elasticClosureResidual)),
+    );
+    recovered.partialFixity.secondOrderApproximation = {
+      code: PARTIAL_FIXITY_LIMITATION_CODES.PRISMATIC_KG_APPROXIMATION,
+      elasticClosurePreserved: true,
+      totalEndClosure: 'not-applicable-under-prismatic-kg-approximation',
+      message: 'Connection closure is exact for condensed elastic Ke; raw prismatic Kg is recovered separately at joint rotations.',
+    };
+  }
   recovered.Nmax = maxAbsValues(recovered.N);
   recovered.Vymax = maxAbsValues(recovered.Vy);
   recovered.Vzmax = maxAbsValues(recovered.Vz);
@@ -903,6 +964,13 @@ function directCompatibility(model, domain) {
     .filter((member) => ['tensionOnly', 'compressionOnly'].includes(member.behavior || member.type))
     .map((member) => member.id);
   const prescribedIssues = prescribedCompatibilityIssues(domain.nodes);
+  const partialFixityRows = domain.members
+    .map((member) => ({ memberId: member.id, entries: memberRotationalSpringEntries(member) }))
+    .filter((row) => row.entries.length);
+  const partialFixityMemberIds = partialFixityRows.map((row) => row.memberId);
+  const partialFixityReleaseLimitMemberIds = partialFixityRows
+    .filter((row) => row.entries.some((entry) => entry.stiffness === 0))
+    .map((row) => row.memberId);
   const blockers = [];
   if (releaseMemberIds.length) blockers.push({
     code: 'DIRECT_PDELTA_RELEASE_UNSUPPORTED',
@@ -919,14 +987,25 @@ function directCompatibility(model, domain) {
     message: 'Direct P-Delta does not yet combine tangent iteration with unilateral active-set iteration.',
     memberIds: unilateralMemberIds,
   });
+  if (partialFixityReleaseLimitMemberIds.length) blockers.push({
+    code: 'DIRECT_PDELTA_PARTIAL_FIXITY_RELEASE_LIMIT_UNSUPPORTED',
+    message: 'A zero-stiffness connection spring requires combined elastic-geometric release condensation.',
+    memberIds: partialFixityReleaseLimitMemberIds,
+  });
   blockers.push(...prescribedIssues);
+  const limitationCodes = partialFixityMemberIds.length
+    ? ['PARTIAL_FIXITY_PRISMATIC_KG_APPROXIMATION']
+    : [];
   return {
     supported: blockers.length === 0,
-    status: blockers.length ? 'blocked' : 'supported',
+    status: blockers.length ? 'blocked' : limitationCodes.length ? 'supported-with-limitation' : 'supported',
     blockers,
     releaseMemberIds,
     rigidDiaphragmIds,
     unilateralMemberIds,
+    partialFixityMemberIds,
+    partialFixityReleaseLimitMemberIds,
+    limitationCodes,
     prescribedIssues,
     expandedDomain: {
       version: domain.version,
@@ -1049,7 +1128,7 @@ function failedDirectResult(reason, details = {}) {
   };
 }
 
-function directDesignEligibility(converged, stability, recovery) {
+function directDesignEligibility(converged, stability, recovery, compatibility = null) {
   if (stability.status === 'unstable') {
     return {
       eligible: false,
@@ -1074,7 +1153,14 @@ function directDesignEligibility(converged, stability, recovery) {
       message: 'Element-node closure or global equilibrium did not qualify.',
     };
   }
-  return { eligible: true, status: 'qualified', reason: null, source: 'direct-pdelta-recovered-result' };
+  const limitationCodes = Array.from(new Set(compatibility?.limitationCodes || []));
+  return {
+    eligible: true,
+    status: limitationCodes.length ? 'qualified-with-limitation' : 'qualified',
+    reason: null,
+    limitationCodes,
+    source: 'direct-pdelta-recovered-result',
+  };
 }
 
 function directProvenance(domain, loadState = null) {

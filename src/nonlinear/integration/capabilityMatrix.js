@@ -13,6 +13,14 @@ export function evaluateNonlinearIntegrationCapabilities(input = {}, options = {
 
   for (const descriptor of descriptors) {
     const behavior = descriptor.behavior || descriptor.type || 'frame';
+    if (descriptor.partialFixity?.enabled) {
+      issues.push(blocking(
+        'NONLINEAR_PARTIAL_FIXITY_UNSUPPORTED',
+        'member',
+        descriptor.id,
+        'Rotational connection springs are not yet implemented in the corotational tangent and recovery path.',
+      ));
+    }
     if (['tensionOnly', 'compressionOnly'].includes(behavior)) {
       issues.push(blocking(
         'NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED',
@@ -57,6 +65,14 @@ export function evaluateNonlinearIntegrationCapabilities(input = {}, options = {
   }
 
   for (const member of model.members || []) {
+    if (member.releases?.spring && Object.keys(member.releases.spring).length) {
+      issues.push(blocking(
+        'NONLINEAR_PARTIAL_FIXITY_UNSUPPORTED',
+        'member',
+        member.id,
+        'Rotational connection springs are not yet implemented in the corotational tangent and recovery path.',
+      ));
+    }
     if (['plate', 'shell', 'solid'].includes(member.type)) {
       issues.push(blocking(
         'NONLINEAR_ELEMENT_TYPE_UNSUPPORTED',
@@ -158,6 +174,7 @@ function featureRows() {
     row('linear-support-spring', true, true, 'six-DOF tangent and reaction recovery'),
     row('constant-support-settlement', true, true, 'spring reference or affine constraint'),
     row('member-release', true, false, 'static condensation and released-force audit'),
+    row('member-partial-fixity', false, false, 'corotational spring tangent and recovery required'),
     row('truss', true, true, 'axial-only corotational kernel'),
     row('unilateral-member', false, false, 'active-set solver required'),
     row('wall-shell-equivalent', true, true, 'preliminary elastic equivalent only'),

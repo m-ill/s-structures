@@ -3,7 +3,7 @@
 ```yaml
 doc: formulas-and-criteria
 phase: 10
-date: 2026-07-20
+date: 2026-07-21
 status: canonical reference (WP-00~11 공통 인용)
 inherits: docs/phase6/FORMULAS_AND_CRITERIA.md (§0 전역평형·§2 consistent load·§5 기하강성 규약은 그대로 유효)
 ```
@@ -84,23 +84,79 @@ compute의 9-wide WebGPU shadow kernel/CPU reference 계약은 구현됐고, NVI
 
 ## §3. 부분강접 — 회전스프링 단부 (WP-03)
 
-**모델**: 부재 단부와 절점 사이 회전스프링 k_θ (국부 y·z 휨 각각, i/j단 독립).
-release(이진)의 일반화 — k_θ→∞가 강접, k_θ→0이 release와 등가.
+**모델·스키마**: 부재 단부와 절점 사이 회전스프링 k_θ를 국부 y·z 휨 및 i/j단별로 독립 지정한다.
+release(이진)의 일반화이며 k_θ→∞가 강접, k_θ=0이 해당 축 release와 등가다.
 
-**고정도 계수(fixity factor)와 수정 강성** (Monforton–Wu 보정 계열):
 ```text
-r = 1 / (1 + 3EI/(k_θ L))        (r=1 강접, r=0 힌지)
-수정 강성 k̄ = C(r_i, r_j)ᵀ k C(r_i, r_j)   — 보정행렬 C는 r_i, r_j의 유리식
-고정단력도 동일 보정: q̄0 = Cᵀ q0
+member.releases.spring = { ryI?, rzI?, ryJ?, rzJ? }
+local DOF                 ryI=4, rzI=5, ryJ=10, rzJ=11
+축별 기준강성             ry*=E·Iy/L, rz*=E·Iz/L
 ```
-구현은 명시적 보정행렬 대신 **내부 스프링 DOF 정적 응축**(기존 `condenseReleasedDofs`와 동일한 Schur 패턴)으로 해도 된다 —
-어느 쪽이든 극한 검증(§ 판정)을 만족해야 하며, 채택안은 WP-03 Review Log에 기록.
+
+- 키 **미지정(absent)**은 강접이다. 명시적 숫자 `0`은 해당 축 release다. 따라서 `0`을 falsy 기본값으로
+  치환하지 않으며 DomainBinary도 presence mask로 둘을 구분한다.
+- 값은 유한한 비음수 number만 허용한다. `Infinity`·`NaN`·문자열·음수와 미등록 키는 fail-closed한다.
+- 이진 `pin`과 같은 단부의 spring 지정은 충돌이다. 반대 단부의 spring은 독립적으로 허용한다.
+- frame 휨 요소에만 적용하며 truss·tensionOnly·compressionOnly 지정은 차단한다.
+
+**고정도 계수**는 보고·경고용 Monforton–Wu 계열 trace이며 강성 계산에는 직접 사용하지 않는다.
+
+```text
+ρ = k_θ L/(EI)
+r = 1 / (1 + 3/ρ)                 (r=1 강접, r=0 힌지)
+```
+
+**정준 구현 — 내부 회전 DOF 정적 응축**: 원 국부 부재 강성·고정단력을 `K`, `f0`, 절점 국부변위를
+`u`, 실제 부재단 국부변위를 `d`라 한다. spring 축 집합을 `S`, 나머지를 `R`,
+`D=diag(k_θ)`, `A=K_SS+D`로 두면 다음 안정 Schur block을 사용한다.
+
+```text
+Z = A⁻¹ K_SR,       Q = A⁻¹ D,       P = A⁻¹ K_SS
+
+K̄_RR = K_RR − K_RS Z
+K̄_RS = K_RS Q,     K̄_SR = K̄_RSᵀ
+K̄_SS = D P                         (수치 대칭화)
+
+ȳ = A⁻¹ f0_S
+f̄0_R = f0_R − K_RS ȳ
+f̄0_S = D ȳ
+```
+
+`A`는 단부별 강성 차가 커도 거짓 singular가 나지 않도록 대각 평형화한 좌표에서 푼다. 특히 `K̄_SS`를
+`K_SS−K_SS A⁻¹K_SS`로 직접 빼지 않아 k_θ→∞ cancellation을 피하고, k_θ=0인 행·열과 고정단력은 정확히
+release 극한으로 보낸다. 응축 실패나 비유한 결과는 원 강접 K로 되돌리지 않고 fail-closed한다.
+
+**복구·평형 폐합**:
+
+```text
+d_R = u_R
+A d_S = D u_S − K_SR u_R − f0_S
+p = K d + f0
+p_s = k_s (u_s − d_s)              (각 spring축 모멘트 폐합)
+```
+
+`d_S`와 `u_S`가 거의 같은 강접 극한에서는 두 회전을 직접 빼지 않고 `A⁻¹[K_SR,K_SS]` 기반 상대회전
+연산자로 slip과 spring moment를 복구한다. 강성, equivalent nodal load, 실제 부재단 회전, 단부력 및
+station 복원이 모두 같은 `K/f0` 계약을 사용한다.
+
+Timoshenko가 활성화되면 §2의 Φ 보정 `K`와 consistent `f0`가 위 식에 그대로 들어가므로 별도 경험식 없이
+전단변형과 부분강접이 결합된다. DomainBinary v3는 `[ryI,rzI,ryJ,rzJ]` Float64 값과 4-bit presence mask를
+전달하며, mask 0은 강접·present zero는 release로 해석한다.
+
+**기하비선형 한계**:
+
+- 유한 spring의 Direct P-Delta는 응축된 Ke에 기존 비응축 프리즘 KG를 더하는 1차 근사이며
+  `PARTIAL_FIXITY_PRISMATIC_KG_APPROXIMATION`을 summary/designEligibility에 노출한다.
+- 명시적 zero spring은 release와 같은 Ke/KG 공통변환이 필요하므로
+  `DIRECT_PDELTA_PARTIAL_FIXITY_RELEASE_LIMIT_UNSUPPORTED`로 차단한다.
+- global buckling은 `BUCKLING_PARTIAL_FIXITY_UNSUPPORTED`, corotational/nonlinear 경로는
+  `NONLINEAR_PARTIAL_FIXITY_UNSUPPORTED`로 fail-closed한다. 이 경로들은 silent ignore하지 않는다.
 
 **판정 기준** (config: `criteria.connection.*`)
 ```text
-k_θ→∞ (r>0.999...): 강접 결과 대비 < 1e-9
-k_θ→0  (r<1e-6):    release 결과 대비 < 1e-9
-중간값: 단순 골조 폐형해(단부 스프링 보) 대비 < 1e-7
+k_θ→∞: 강접 결과 대비 < rigidLimitTol (기본 1e-9)
+k_θ=0:  release 결과 대비 < releaseLimitTol (기본 1e-9)
+중간값: 단부 스프링 보 EB/Timoshenko 폐형해 대비 < closedFormTol (기본 1e-7)
 경고: k_θ가 stiffRatioWarn(기본 1e4·EI/L) 초과 → "강접으로 모델링 권장" / releaseRatioWarn(기본 1e-4·EI/L) 미만 → "release 권장"
 ```
 
@@ -394,6 +450,9 @@ dense / sparse LDLT / CG 세 경로의 pivot localization 일치를 고정하는
 | `criteria.element.shearReleaseTol` | Timoshenko+release 변위·잔류력 허용차 | 1e-8 |
 | `criteria.connection.stiffRatioWarn` | 강접 권장 경고 k_θL/EI | 1e4 |
 | `criteria.connection.releaseRatioWarn` | release 권장 경고 k_θL/EI | 1e-4 |
+| `criteria.connection.rigidLimitTol` | CN-F01 강접 극한 허용차 | 1e-9 |
+| `criteria.connection.releaseLimitTol` | CN-F02 release 극한 허용차 | 1e-9 |
+| `criteria.connection.closedFormTol` | CN-F03 부분강접 폐형해 허용차 | 1e-7 |
 | `criteria.offset.equilibriumTol` | 강체팔 평형 오차 | 1e-10 |
 | `criteria.constraint.consistencyTol` | MPC 등가/평형 검증 | 1e-10 |
 | `criteria.taper.gaussPoints` | 변단면 적분점 | 5 |

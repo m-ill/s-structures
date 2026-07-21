@@ -1,6 +1,8 @@
 import { normalizeStories } from '../core/storyModel.js';
 
-export const INDEX_AGENT_ACTIONS_VERSION = 'm12-agent-modeling-productivity';
+export const INDEX_AGENT_ACTIONS_VERSION = 'p10-m3-agent-modeling-actions-v2';
+
+const MEMBER_ROTATIONAL_SPRING_KEYS = new Set(['ryI', 'rzI', 'ryJ', 'rzJ']);
 
 export const MODELING_ACTIONS = [
   'selectEntity',
@@ -289,7 +291,9 @@ function updateMember(model, state, payload) {
   if (payload.matId != null) member.matId = requiredString(payload.matId, 'matId');
   if (payload.secId != null) member.secId = requiredString(payload.secId, 'secId');
   if (payload.localAxis != null) member.localAxis = normalizeLocalAxis(payload.localAxis);
-  if (payload.releases != null) member.releases = normalizeReleases(payload.releases);
+  if (payload.releases != null) {
+    member.releases = normalizeReleases(mergeReleasePatch(member.releases, payload.releases));
+  }
   if (payload.type != null || payload.behavior != null) member.type = normalizeMemberBehavior(payload.type || payload.behavior);
   if (payload.design != null) member.design = { ...(member.design || {}), ...payload.design };
   state.selection = { type: 'member', id: member.id };
@@ -882,13 +886,53 @@ function normalizeLocalAxis(value = {}) {
 }
 
 function normalizeReleases(value = {}) {
-  if (value.i || value.j) {
-    return {
-      i: normalizeRelease(value.i),
-      j: normalizeRelease(value.j),
-    };
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error('Member releases must be an object.');
   }
-  return { i: 'rigid', j: 'rigid' };
+  const normalized = {
+    i: normalizeRelease(value.i),
+    j: normalizeRelease(value.j),
+  };
+  if (Object.prototype.hasOwnProperty.call(value, 'spring')) {
+    if (!value.spring || typeof value.spring !== 'object' || Array.isArray(value.spring)) {
+      throw new Error('Member rotational springs must be an object.');
+    }
+    const spring = {};
+    for (const [key, stiffness] of Object.entries(value.spring)) {
+      if (!MEMBER_ROTATIONAL_SPRING_KEYS.has(key)) throw new Error(`Unsupported rotational spring: ${key}`);
+      if (typeof stiffness !== 'number' || !Number.isFinite(stiffness) || stiffness < 0) {
+        throw new Error(`Rotational spring ${key} must be a finite nonnegative number.`);
+      }
+      spring[key] = stiffness;
+    }
+    if (Object.keys(spring).length) normalized.spring = spring;
+  }
+  return normalized;
+}
+
+function mergeReleasePatch(current = {}, patch = {}) {
+  if (!patch || typeof patch !== 'object' || Array.isArray(patch)) {
+    throw new Error('Member releases must be an object.');
+  }
+  const merged = { ...(current || {}), ...patch };
+  if (Object.prototype.hasOwnProperty.call(patch, 'spring')) {
+    if (patch.spring === null) {
+      delete merged.spring;
+      return merged;
+    }
+    if (typeof patch.spring !== 'object' || Array.isArray(patch.spring)) {
+      throw new Error('Member rotational springs must be an object.');
+    }
+    const spring = { ...(current?.spring || {}) };
+    for (const [key, stiffness] of Object.entries(patch.spring)) {
+      if (!MEMBER_ROTATIONAL_SPRING_KEYS.has(key)) throw new Error(`Unsupported rotational spring: ${key}`);
+      if (stiffness === null) delete spring[key];
+      else spring[key] = stiffness;
+    }
+    if (Object.keys(spring).length) merged.spring = spring;
+    else delete merged.spring;
+  }
+  return merged;
 }
 
 function normalizeRelease(value) {

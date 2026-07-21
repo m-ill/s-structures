@@ -24,6 +24,7 @@ import { recoverMemberResult } from './linear3dRecovery.js';
 import { buildSolverWarningDiagnostics } from './sparse/diagnostics.js';
 import { cscMatVec, SPARSE_MATRIX_VERSION } from './sparse/cscMatrix.js';
 import { buildFixedDofs, collectPrescribedDofs } from './domain/supportConstraints.js';
+import { condensePartialFixity, resolveMemberPartialFixity } from './partialFixity.js';
 import { resolveMemberTimoshenko } from './timoshenko.js';
 
 export { buildFixedDofs } from './domain/supportConstraints.js';
@@ -105,6 +106,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
     const behavior = memberBehavior(member);
     const timoshenko = resolveMemberTimoshenko(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
+    const partialFixity = resolveMemberPartialFixity(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
     const kl = behavior === 'truss'
       ? localTrussK12(material.E, section.A, ax.L)
       : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L, timoshenko.phiY, timoshenko.phiZ);
@@ -122,6 +124,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       material,
       timoshenko,
       rel: memberReleaseDofs(member),
+      partialFixity,
     };
   }
 
@@ -162,15 +165,9 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   for (const member of members) {
     const md = memData[member.id];
     if (!md) continue;
-    let klA = md.kl;
-    let f0A = md.f0;
-    if (md.rel.length) {
-      const condensed = condenseReleasedDofs(md.kl, md.f0, md.rel);
-      if (condensed) {
-        klA = condensed.klC;
-        f0A = condensed.f0C;
-      }
-    }
+    const conditioned = conditionMemberLocalSystem(md, member.id);
+    if (!conditioned.ok) return conditioned;
+    const { klA, f0A } = conditioned;
 
     if (assembleStiffness) {
       const kg = matMul(matTrans(md.T), matMul(klA, md.T));
@@ -407,6 +404,11 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       .map((index) => fullDofLabel(nodes, index));
     solver.autoFixedReducedDofs = [...new Set(autoFixedReducedDofs)]
       .map((index) => dofLabels[index] || `reduced:${index}`);
+    solver.partialFixity = summarizePartialFixity(memData);
+    solver.warnings = [
+      ...(solver.warnings || []),
+      ...solver.partialFixity.warnings,
+    ];
 
     for (let i = 0; i < ndof; i += 1) {
       const limit = i % 6 < 3 ? 1e4 : 50;
@@ -624,6 +626,7 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
     const behavior = memberBehavior(member);
     const timoshenko = resolveMemberTimoshenko(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
+    const partialFixity = resolveMemberPartialFixity(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
     const kl = behavior === 'truss'
       ? localTrussK12(material.E, section.A, ax.L)
       : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L, timoshenko.phiY, timoshenko.phiZ);
@@ -640,17 +643,16 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
       material,
       timoshenko,
       rel: memberReleaseDofs(member),
+      partialFixity,
     };
   }
 
   for (const member of members) {
     const md = memData[member.id];
     if (!md) continue;
-    let klA = md.kl;
-    if (md.rel.length) {
-      const condensed = condenseReleasedDofs(md.kl, md.f0, md.rel);
-      if (condensed) klA = condensed.klC;
-    }
+    const conditioned = conditionMemberLocalSystem(md, member.id);
+    if (!conditioned.ok) return { ...conditioned, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, ndof };
+    const { klA } = conditioned;
     const kg = matMul(matTrans(md.T), matMul(klA, md.T));
     for (let i = 0; i < 12; i += 1) {
       for (let j = 0; j < 12; j += 1) K[md.dof[i]][md.dof[j]] += kg[i][j];
@@ -677,6 +679,57 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     idx,
     memData,
     ndof,
+    partialFixity: summarizePartialFixity(memData),
+  };
+}
+
+export function conditionMemberLocalSystem(md, memberId) {
+  let klA = md.kl;
+  let f0A = md.f0;
+  md.releaseCondensation = null;
+  if (md.rel.length) {
+    const condensed = condenseReleasedDofs(klA, f0A, md.rel);
+    if (!condensed) {
+      return {
+        ok: false,
+        reason: 'MEMBER_RELEASE_CONDENSATION_FAILED',
+        memberId,
+      };
+    }
+    md.releaseCondensation = condensed;
+    klA = condensed.klC;
+    f0A = condensed.f0C;
+  }
+  const partialApplication = condensePartialFixity(klA, f0A, md.partialFixity);
+  if (!partialApplication.ok) {
+    return {
+      ok: false,
+      reason: partialApplication.reason || 'PARTIAL_FIXITY_CONDENSATION_FAILED',
+      memberId,
+      partialFixity: md.partialFixity,
+    };
+  }
+  md.partialFixityApplication = partialApplication;
+  md.klA = partialApplication.klC;
+  md.f0A = partialApplication.f0C;
+  return { ok: true, klA: md.klA, f0A: md.f0A };
+}
+
+function summarizePartialFixity(memData = {}) {
+  const members = Object.entries(memData)
+    .filter(([, md]) => md.partialFixity?.enabled)
+    .map(([memberId, md]) => ({
+      memberId,
+      method: md.partialFixityApplication?.method || null,
+      entries: (md.partialFixity.entries || []).map((entry) => ({ ...entry })),
+      warnings: (md.partialFixity.warnings || []).map((item) => ({ ...item })),
+    }));
+  return {
+    enabled: members.length > 0,
+    memberCount: members.length,
+    springCount: members.reduce((sum, row) => sum + row.entries.length, 0),
+    members,
+    warnings: members.flatMap((row) => row.warnings),
   };
 }
 

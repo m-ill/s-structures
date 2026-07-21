@@ -33,6 +33,12 @@ export function assembleGlobalGeometricStiffness(model = {}, assembly = {}, opti
     for (let i = 0; i < 12; i += 1) {
       for (let j = 0; j < 12; j += 1) KG[md.dof[i]][md.dof[j]] += global[i][j];
     }
+    const partialFixity = md.partialFixity?.enabled ? {
+      method: 'uncondensed-prismatic-geometric-stiffness',
+      elasticStiffnessCondensed: md.partialFixityApplication?.applied === true,
+      geometricStiffnessCondensed: false,
+      limitationCode: 'PARTIAL_FIXITY_PRISMATIC_KG_APPROXIMATION',
+    } : null;
     rows.push({
       memberId: member.id,
       mode,
@@ -43,6 +49,7 @@ export function assembleGlobalGeometricStiffness(model = {}, assembly = {}, opti
       applied: true,
       elasticFormulation: md.timoshenko?.formulation || 'euler-bernoulli',
       consistency: md.timoshenko?.geometricStiffness || null,
+      partialFixity,
     });
     memberData[member.id] = {
       memberId: member.id,
@@ -52,6 +59,7 @@ export function assembleGlobalGeometricStiffness(model = {}, assembly = {}, opti
       global,
       dof: md.dof,
       timoshenko: md.timoshenko || null,
+      partialFixity,
     };
   }
   return {
@@ -67,7 +75,11 @@ export function assembleGlobalGeometricStiffness(model = {}, assembly = {}, opti
       tensionMemberCount: rows.filter((row) => row.mode === 'tangent' && row.axialForce > 0).length,
       maxAbsAxialForce: Math.max(0, ...rows.map((row) => Math.abs(row.axialForce))),
       timoshenkoApproximationCount: rows.filter((row) => row.consistency?.consistent === false).length,
-      limitationCodes: [...new Set(rows.map((row) => row.consistency?.limitationCode).filter(Boolean))],
+      partialFixityApproximationCount: rows.filter((row) => row.partialFixity != null).length,
+      limitationCodes: [...new Set(rows.flatMap((row) => [
+        row.consistency?.limitationCode,
+        row.partialFixity?.limitationCode,
+      ]).filter(Boolean))],
     },
   };
 }

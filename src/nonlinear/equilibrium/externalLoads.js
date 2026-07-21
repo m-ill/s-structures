@@ -406,6 +406,17 @@ function assembleMemberLoad(load, loadIndex, role, elementById) {
 }
 
 function validateMemberDescriptor(descriptor) {
+  if (descriptor.partialFixity?.enabled) {
+    return {
+      ok: false,
+      issue: issue(
+        'NONLINEAR_PARTIAL_FIXITY_UNSUPPORTED',
+        null,
+        descriptor.id,
+        'Rotational connection springs are not implemented in the nonlinear external-load path.',
+      ),
+    };
+  }
   const geometry = descriptor.geometry;
   const axes = {
     L: Number(geometry?.length),

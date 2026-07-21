@@ -4,8 +4,8 @@
 reviewed_at: 2026-07-21
 phase_status: active
 implementation_status: in-progress
-completed_milestones: [P10-M0, P10-M1, P10-M2]
-active_milestone: null
+completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3]
+active_milestone: P10-M4
 decision_gates_pending: [ADR-001(warping/LTB 방식), ADR-002(shell 옵션 B 번복 — 오너 승인)]
 owner_inputs_pending: [XV-02~08 외부 기준해 artifact (OpenSees/SAP2000/ETABS), XV-09 SAP2000 기준해 artifact, RSA V_min 기준값 정책]
 ```
@@ -33,6 +33,17 @@ PASS했다. 9-wide WebGPU kernel은 NVIDIA Ampere/Chrome 149 실제 장치에서
 PASS했으며, 다중 vendor/browser 행렬과 XV-09 외부 기준해는 M11 release 차단 항목으로 유지한다. 이번
 변경을 포함한 최종 통합 `npm.cmd test`도 2026-07-21 KST 종료 코드 0으로 PASS했다.
 
+P10-M3는 `member.releases.spring.{ryI,rzI,ryJ,rzJ}` 4축 회전스프링, absent 강접과 explicit-zero
+release 구분, 안정 Schur 강성·fixed-end load·실제 부재단 회전 복구를 구현했다. DomainBinary v3는
+4-wide Float64 강성과 presence mask로 zero를 보존한다. CN-F01 강접 극한 최대 상대오차는 약 `4.00e-12`,
+CN-F02 zero-vs-pin은 약 `3.39e-16`이고 release moment residual은 `7.1054e-15`, CN-F03 EB/Timoshenko
+폐형해는 각각 약 `1.9e-15`/`2.9e-15`로 기준을 통과했다. M3 전용 runner는 4/4 PASS했고 evidence
+7/7 records의 artifact hash는 `aa4180cd16d91d6904a2db22`다. 외부 solver 기준해가 아니므로
+`externallyCrossValidated=false`, `releaseQualified=false`다.
+유한 spring Direct P-Delta는 `PARTIAL_FIXITY_PRISMATIC_KG_APPROXIMATION`을 명시하며 zero-spring
+P-Delta, global buckling, nonlinear 경로는 검증되지 않은 spring을 무시하지 않고 fail-closed한다.
+이는 M3 기능 게이트 완료 판정이며 외부 XV release 자격을 부여하지 않는다.
+
 ## 마일스톤 현황
 
 | 마일스톤 | 상태 | 완료 증거 |
@@ -40,7 +51,7 @@ PASS했으며, 다중 vendor/browser 행렬과 XV-09 외부 기준해는 M11 rel
 | P10-M0 즉시 보정 (θ 3-tier · RSA scaling) | complete | [전용 테스트](../../tests/p10-m0-quick-corrections.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m0-quick-corrections.json) · [code review](reviews/P10-M0-CODE-REVIEW.md) · [WP-00 Review Log](workpackages/WP-00-quick-corrections.md#review-log) · 전체 회귀 PASS |
 | P10-M1 교차검증 + 병적 모델 배터리 | complete — harness/evidence/review/full regression PASS | [artifact 테스트](../../tests/p10-m1-xval-artifacts.mjs) · [runner 테스트](../../tests/p10-m1-xval-runner.mjs) · [BM 테스트](../../tests/p10-m1-bm-battery.mjs) · [solver 안전 회귀](../../tests/p10-m1-solver-safety.mjs) · [topology/P-Delta 안전 회귀](../../tests/p10-m1-topology-pdelta-safety.mjs) · [evidence 계약 테스트](../../tests/p10-m1-evidence-contract.mjs) · [교차검증 evidence](../../reports/validation-evidence/phase10/p10-m1-cross-validation.json) · [hand-calc evidence](../../reports/validation-evidence/phase10/p10-m1-hand-calculations.json) · [BM evidence](../../reports/validation-evidence/phase10/p10-m1-pathological-battery.json) · [code review](reviews/P10-M1-CODE-REVIEW.md) · [WP-01 Review Log](workpackages/WP-01-cross-validation.md#review-log) · 전체 회귀 PASS |
 | P10-M2 Timoshenko 전단변형 | complete — 전용 gate/evidence/review/full regression PASS | [요소 테스트](../../tests/p10-m2-timoshenko.mjs) · [schema 계약](../../tests/p10-m2-schema-contract.mjs) · [compute 계약](../../tests/p10-m2-compute-domain-contract.mjs) · [evidence 계약](../../tests/p10-m2-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m2-timoshenko.json) · [XV-09 pending artifact](../../reports/validation-evidence/phase10/xv/XV-09-pending-reference.json) · [code review](reviews/P10-M2-CODE-REVIEW.md) · [WP-02 Review Log](workpackages/WP-02-timoshenko.md#review-log) |
-| P10-M3 부분강접 | planned | 없음 |
+| P10-M3 부분강접 | complete — 4/4 dedicated gate, evidence 7/7 PASS | [부분강접 요소·폐형해](../../tests/p10-m3-partial-fixity.mjs) · [schema/DomainBinary v3 계약](../../tests/p10-m3-schema-contract.mjs) · [domain/solver route 계약](../../tests/p10-m3-domain-route-contract.mjs) · [evidence 계약](../../tests/p10-m3-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m3-partial-fixity.json) · [code review](reviews/P10-M3-CODE-REVIEW.md) · [WP-03 Review Log](workpackages/WP-03-partial-fixity.md#review-log) |
 | P10-M4 3D 오프셋·삽입점·패널존 | planned | 없음 |
 | P10-M5 일반 MPC·rigid link | planned | 없음 |
 | P10-M6 변단면 부재 | planned | 없음 |
@@ -58,6 +69,7 @@ PASS했으며, 다중 vendor/browser 행렬과 XV-09 외부 기준해는 M11 rel
 
 ## 다음 작업
 
-P10-M3 부분강접(회전스프링 단부)이 다음 구현 순서다. 동시에 오너에게 XV-02~08 및 XV-09 SAP2000
+P10-M4 3D 단부 오프셋·삽입점·패널존이 다음 구현 순서다. M3 회전스프링 메커니즘은 M4의 패널존
+탄성 근사에 재사용한다. 동시에 오너에게 XV-02~08 및 XV-09 SAP2000
 외부 기준해 입력 일정과 ADR-002 승인 여부를 확인한다. XV-09는 내부 폐형해 green/외부 기준해 pending,
 XV-10은 M9 구현 뒤 추가하며, XV-01~10 required-source green 전에는 M11 release를 열지 않는다.

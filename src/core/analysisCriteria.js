@@ -29,6 +29,13 @@ export const DEFAULT_CRITERIA_VALUES = {
     shearDeepBeamTol: 1e-9,
     shearReleaseTol: 1e-8,
   },
+  connection: {
+    stiffRatioWarn: 1e4,
+    releaseRatioWarn: 1e-4,
+    rigidLimitTol: 1e-9,
+    releaseLimitTol: 1e-9,
+    closedFormTol: 1e-7,
+  },
   audit: {
     equilibriumRelative: 1e-8,
   },
@@ -118,6 +125,11 @@ const CRITERION_RULES = {
   'element.shearPhiZeroTol': { kind: 'number', min: 0, exclusiveMin: true },
   'element.shearDeepBeamTol': { kind: 'number', min: 0, exclusiveMin: true },
   'element.shearReleaseTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'connection.stiffRatioWarn': { kind: 'number', min: 0, exclusiveMin: true },
+  'connection.releaseRatioWarn': { kind: 'number', min: 0, exclusiveMin: true },
+  'connection.rigidLimitTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'connection.releaseLimitTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'connection.closedFormTol': { kind: 'number', min: 0, exclusiveMin: true },
   'audit.equilibriumRelative': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.min': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.max': { kind: 'number', min: 0, exclusiveMin: true },
@@ -177,6 +189,7 @@ const RANGE_PAIRS = [
   ['pdelta.thetaCaution', 'pdelta.thetaRequire'],
   ['pdelta.thetaRequire', 'pdelta.thetaStrong'],
   ['solver.pivotSingular', 'solver.pivotWarn'],
+  ['connection.releaseRatioWarn', 'connection.stiffRatioWarn'],
 ];
 
 const KNOWN_CRITERIA_PATHS = Object.keys(CRITERION_RULES).sort();

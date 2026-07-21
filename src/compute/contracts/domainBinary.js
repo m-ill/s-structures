@@ -3,8 +3,16 @@ import { resolveGlobalShearDeformation, resolveMemberShearDeformationSetting } f
 import { resolveSectionShearAreas } from '../../materials/sectionProperties.js';
 import { normalizeSectionRecord } from '../../materials/sectionSchema.js';
 
-export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v2';
+export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v3';
 export const DOMAIN_BINARY_ENDIANNESS = detectEndianness();
+
+const MEMBER_ROTATIONAL_SPRING_COMPONENTS = Object.freeze(['ryI', 'rzI', 'ryJ', 'rzJ']);
+const MEMBER_ROTATIONAL_SPRING_MASK_LAYOUT = Object.freeze({
+  encoding: 'presence-bitmask',
+  bits: Object.freeze({ ryI: 0, rzI: 1, ryJ: 2, rzJ: 3 }),
+  absent: 'rigid',
+  presentZero: 'release',
+});
 
 export function packDomainBinary(model = {}) {
   const nodes = array(model.nodes);
@@ -50,6 +58,8 @@ export function packDomainBinary(model = {}) {
   const memberRoll = new Float64Array(members.length);
   const memberOffsets = new Float64Array(members.length * 6);
   const memberReleaseCodes = new Uint8Array(members.length * 2);
+  const memberRotationalSprings = new Float64Array(members.length * MEMBER_ROTATIONAL_SPRING_COMPONENTS.length);
+  const memberRotationalSpringMask = new Uint8Array(members.length);
   const globalShearDeformation = resolveGlobalShearDeformation(model);
   const analysisFlags = new Uint8Array([globalShearDeformation.enabled ? 1 : 0]);
   const memberShearDeformation = new Uint8Array(members.length);
@@ -63,6 +73,9 @@ export function packDomainBinary(model = {}) {
     memberOffsets.set(offsetValues(member), index * 6);
     memberReleaseCodes[index * 2] = releaseCode(member.releases?.i);
     memberReleaseCodes[index * 2 + 1] = releaseCode(member.releases?.j);
+    const rotationalSprings = packMemberRotationalSprings(member);
+    memberRotationalSprings.set(rotationalSprings.values, index * MEMBER_ROTATIONAL_SPRING_COMPONENTS.length);
+    memberRotationalSpringMask[index] = rotationalSprings.mask;
     const behavior = member.behavior || member.type || 'frame';
     const shearApplicable = !['truss', 'tensionOnly', 'compressionOnly'].includes(behavior);
     memberShearDeformation[index] = shearApplicable
@@ -154,6 +167,8 @@ export function packDomainBinary(model = {}) {
     memberRoll,
     memberOffsets,
     memberReleaseCodes,
+    memberRotationalSprings,
+    memberRotationalSpringMask,
     analysisFlags,
     memberShearDeformation,
     materialProperties,
@@ -176,6 +191,9 @@ export function packDomainBinary(model = {}) {
     bufferLayouts: {
       analysisFlags: ['shearDeformation'],
       memberShearDeformation: 'effective-requested-boolean',
+      memberReleaseCodes: ['i', 'j'],
+      memberRotationalSprings: [...MEMBER_ROTATIONAL_SPRING_COMPONENTS],
+      memberRotationalSpringMask: MEMBER_ROTATIONAL_SPRING_MASK_LAYOUT,
       sectionShearAreas: ['Ay', 'Az'],
     },
     counts: {
@@ -207,6 +225,7 @@ export function validateDomainBinary(domain) {
   const errors = [];
   if (!domain || typeof domain !== 'object') return { ok: false, errors: ['domain:not-object'] };
   if (domain.version !== DOMAIN_BINARY_VERSION) errors.push('domain:version');
+  if (domain.metadata?.version !== DOMAIN_BINARY_VERSION) errors.push('domain:metadata-version');
   if (domain.metadata?.endianness !== DOMAIN_BINARY_ENDIANNESS) errors.push('domain:endianness');
   const buffers = domain.buffers && typeof domain.buffers === 'object' ? domain.buffers : {};
   const byteLength = Object.values(buffers).reduce((sum, value) => sum + (ArrayBuffer.isView(value) ? value.byteLength : 0), 0);
@@ -215,6 +234,23 @@ export function validateDomainBinary(domain) {
   if (!ArrayBuffer.isView(buffers.connectivity) || !ArrayBuffer.isView(buffers.memberType)) errors.push('domain:member-buffers');
   if (domain.metadata?.counts?.nodes * 3 !== buffers.coordinates?.length) errors.push('domain:node-count');
   if (domain.metadata?.counts?.members * 2 !== buffers.connectivity?.length) errors.push('domain:member-count');
+  if (!(buffers.memberReleaseCodes instanceof Uint8Array)
+    || domain.metadata?.counts?.members * 2 !== buffers.memberReleaseCodes.length
+    || [...buffers.memberReleaseCodes].some((value) => value > 2)) errors.push('domain:member-release-codes');
+  const rotationalSpringsValid = buffers.memberRotationalSprings instanceof Float64Array
+    && domain.metadata?.counts?.members * MEMBER_ROTATIONAL_SPRING_COMPONENTS.length === buffers.memberRotationalSprings.length;
+  const rotationalSpringMaskValid = buffers.memberRotationalSpringMask instanceof Uint8Array
+    && domain.metadata?.counts?.members === buffers.memberRotationalSpringMask.length
+    && [...buffers.memberRotationalSpringMask].every((value) => (value & 0xf0) === 0);
+  if (!rotationalSpringsValid) errors.push('domain:member-rotational-springs');
+  if (!rotationalSpringMaskValid) errors.push('domain:member-rotational-spring-mask');
+  if (rotationalSpringsValid && rotationalSpringMaskValid
+    && !validMemberRotationalSpringValues(buffers.memberRotationalSprings, buffers.memberRotationalSpringMask)) {
+    errors.push('domain:member-rotational-spring-values');
+  }
+  if (!validMemberRotationalSpringLayout(domain.metadata?.bufferLayouts)) {
+    errors.push('domain:member-rotational-spring-layout');
+  }
   if (!(buffers.analysisFlags instanceof Uint8Array) || buffers.analysisFlags.length !== 1) errors.push('domain:analysis-flags');
   if (!(buffers.memberShearDeformation instanceof Uint8Array)
     || domain.metadata?.counts?.members !== buffers.memberShearDeformation.length) errors.push('domain:member-shear-deformation');
@@ -235,14 +271,23 @@ export function unpackDomainBinary(domain) {
     z: buffers.coordinates[index * 3 + 2],
     dof: Array.from(buffers.dofMap.slice(index * 6, index * 6 + 6)),
   }));
-  const members = dictionaries.memberIds.map((id, index) => ({
-    id,
-    n1: dictionaries.nodeIds[buffers.connectivity[index * 2]],
-    n2: dictionaries.nodeIds[buffers.connectivity[index * 2 + 1]],
-    type: dictionaries.memberTypeIds[buffers.memberType[index]],
-    matId: dictionaries.materialIds[buffers.memberMaterial[index]],
-    secId: dictionaries.sectionIds[buffers.memberSection[index]],
-  }));
+  const members = dictionaries.memberIds.map((id, index) => {
+    const releases = {
+      i: releaseValue(buffers.memberReleaseCodes[index * 2]),
+      j: releaseValue(buffers.memberReleaseCodes[index * 2 + 1]),
+    };
+    const spring = unpackMemberRotationalSprings(buffers, index);
+    if (spring) releases.spring = spring;
+    return {
+      id,
+      n1: dictionaries.nodeIds[buffers.connectivity[index * 2]],
+      n2: dictionaries.nodeIds[buffers.connectivity[index * 2 + 1]],
+      type: dictionaries.memberTypeIds[buffers.memberType[index]],
+      matId: dictionaries.materialIds[buffers.memberMaterial[index]],
+      secId: dictionaries.sectionIds[buffers.memberSection[index]],
+      releases,
+    };
+  });
   return {
     version: domain.version,
     units: { ...domain.metadata.units },
@@ -287,6 +332,89 @@ function releaseCode(value) {
   if (normalized === 'pin' || normalized === 'pinned') return 1;
   if (normalized === 'custom') return 2;
   return 0;
+}
+
+function releaseValue(code) {
+  if (code === 1) return 'pin';
+  if (code === 2) return 'custom';
+  return 'rigid';
+}
+
+function packMemberRotationalSprings(member = {}) {
+  const releases = member.releases;
+  if (!releases || typeof releases !== 'object'
+    || !Object.prototype.hasOwnProperty.call(releases, 'spring')) {
+    return { values: [0, 0, 0, 0], mask: 0 };
+  }
+  const spring = releases.spring;
+  if (!spring || typeof spring !== 'object' || Array.isArray(spring)) {
+    throw contractError('DOMAIN_ROTATIONAL_SPRING_INVALID', `member ${text(member.id) || '?'} releases.spring must be an object.`);
+  }
+  const unknown = Object.keys(spring).filter((key) => !MEMBER_ROTATIONAL_SPRING_COMPONENTS.includes(key));
+  if (unknown.length > 0) {
+    throw contractError(
+      'DOMAIN_ROTATIONAL_SPRING_INVALID',
+      `member ${text(member.id) || '?'} releases.spring contains unsupported component ${unknown[0]}.`,
+    );
+  }
+  const values = [0, 0, 0, 0];
+  let mask = 0;
+  MEMBER_ROTATIONAL_SPRING_COMPONENTS.forEach((component, componentIndex) => {
+    if (!Object.prototype.hasOwnProperty.call(spring, component)) return;
+    const value = spring[component];
+    if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) {
+      throw contractError(
+        'DOMAIN_ROTATIONAL_SPRING_INVALID',
+        `member ${text(member.id) || '?'} releases.spring.${component} must be a finite nonnegative number.`,
+      );
+    }
+    values[componentIndex] = value;
+    mask |= 1 << componentIndex;
+  });
+  return { values, mask };
+}
+
+function unpackMemberRotationalSprings(buffers, memberIndex) {
+  const mask = buffers.memberRotationalSpringMask[memberIndex];
+  if (mask === 0) return null;
+  const spring = {};
+  MEMBER_ROTATIONAL_SPRING_COMPONENTS.forEach((component, componentIndex) => {
+    if ((mask & (1 << componentIndex)) === 0) return;
+    spring[component] = buffers.memberRotationalSprings[
+      memberIndex * MEMBER_ROTATIONAL_SPRING_COMPONENTS.length + componentIndex
+    ];
+  });
+  return spring;
+}
+
+function validMemberRotationalSpringValues(values, masks) {
+  for (let memberIndex = 0; memberIndex < masks.length; memberIndex += 1) {
+    for (let componentIndex = 0; componentIndex < MEMBER_ROTATIONAL_SPRING_COMPONENTS.length; componentIndex += 1) {
+      const value = values[memberIndex * MEMBER_ROTATIONAL_SPRING_COMPONENTS.length + componentIndex];
+      const present = (masks[memberIndex] & (1 << componentIndex)) !== 0;
+      if (!Number.isFinite(value) || value < 0 || (!present && value !== 0)) return false;
+    }
+  }
+  return true;
+}
+
+function validMemberRotationalSpringLayout(layouts) {
+  const releaseCodes = layouts?.memberReleaseCodes;
+  const components = layouts?.memberRotationalSprings;
+  const mask = layouts?.memberRotationalSpringMask;
+  return Array.isArray(releaseCodes)
+    && releaseCodes.length === 2
+    && releaseCodes[0] === 'i'
+    && releaseCodes[1] === 'j'
+    && Array.isArray(components)
+    && components.length === MEMBER_ROTATIONAL_SPRING_COMPONENTS.length
+    && components.every((component, index) => component === MEMBER_ROTATIONAL_SPRING_COMPONENTS[index])
+    && mask?.encoding === MEMBER_ROTATIONAL_SPRING_MASK_LAYOUT.encoding
+    && mask?.absent === MEMBER_ROTATIONAL_SPRING_MASK_LAYOUT.absent
+    && mask?.presentZero === MEMBER_ROTATIONAL_SPRING_MASK_LAYOUT.presentZero
+    && MEMBER_ROTATIONAL_SPRING_COMPONENTS.every(
+      (component) => mask?.bits?.[component] === MEMBER_ROTATIONAL_SPRING_MASK_LAYOUT.bits[component],
+    );
 }
 
 function directionCode(value) {

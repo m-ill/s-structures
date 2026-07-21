@@ -68,6 +68,36 @@ M11 release 조건에는 아직 포함할 수 없다. 9-wide WebGPU frame matrix
 EL-T03과 EL-T04는 변위와 힘을 하나의 norm으로 합치지 않는다. 변위 record와 단부력/release 잔류력
 record를 분리해 큰 힘 scale이 작은 변위 오차를 가리는 것을 방지한다.
 
+## M3 — 부분강접 회전스프링 단부 (WP-03)
+
+Evidence: [p10-m3-partial-fixity.json](../../reports/validation-evidence/phase10/p10-m3-partial-fixity.json)
+
+M3 전용 게이트는 `tests/p10-m3-partial-fixity.mjs`, `tests/p10-m3-schema-contract.mjs`,
+`tests/p10-m3-domain-route-contract.mjs`, `tests/p10-m3-evidence-contract.mjs`로 구성한다. 네 spring축의
+schema/DOF 계약, absent-vs-zero
+DomainBinary v3 mask, 안정 Schur `K/f0`, 실제 부재단 회전·spring moment closure, Timoshenko 조합과
+solver별 limitation/fail-closed를 한 묶음으로 검증한다.
+
+전용 runner는 4/4 PASS했고 evidence는 7/7 records PASS, artifact hash
+`aa4180cd16d91d6904a2db22`다. 외부 solver 기준해가 아니므로 artifact는
+`externallyCrossValidated=false`, `releaseQualified=false`를 유지한다.
+
+| Record | 검증 | 기준 | 결과 |
+| --- | --- | --- | --- |
+| CN-F01 | `k_θ=10¹²·EI/L` 유한 spring → 강접 tip 변위·단부력 | `criteria.connection.rigidLimitTol=1e-9` | PASS — 최대 상대오차 약 `4.00e-12` |
+| CN-F02 | explicit-zero 4축 → binary pin-pin 변위·반력·q0·단부모멘트 | `criteria.connection.releaseLimitTol=1e-9` | PASS — 최대 상대오차 약 `3.39e-16`, moment residual `7.1054e-15` |
+| CN-F03-EB | 2축 단부 spring 캔틸레버 UDL EB tip 변위·회전·전단·모멘트 | `criteria.connection.closedFormTol=1e-7` | PASS — 최대 상대오차 약 `1.9e-15` |
+| CN-F03-TIMO | 같은 모델의 전단처짐 포함 폐형해와 Φ 보정 복구 | `criteria.connection.closedFormTol=1e-7` | PASS — 최대 상대오차 약 `2.9e-15` |
+| CN-F03-CLOSURE | `p_s=k_s(u_s-d_s)` 및 안정 상대회전 compatibility | moment 상대잔차 ≤1e-10, 회전 절대잔차 ≤1e-12 | PASS |
+| M3-SCHEMA | 4키·유한 비음수·frame-only·same-end pin conflict | canonical code 정확 일치 | PASS |
+| M3-DOMAIN-V3 | Float64 4-wide + presence mask pack/validate/unpack/hash | absent mask=0, explicit `ryI:0` mask=1 | PASS |
+| M3-ROUTE | Direct P-Delta limitation, zero-spring P-Delta·buckling·nonlinear 차단 | canonical limitation/reason code 정확 일치 | PASS |
+
+레거시 게이트는 기존 `condenseReleasedDofs`와 explicit-zero spring의 `K/f0` 일치, member release
+벤치마크, M2 Timoshenko 및 DomainBinary/compute 회귀를 포함한다. 미지원 경로는 spring을 제거하거나
+강접으로 되돌리지 않고 명시적으로 실패해야 한다. M3 기능 완료는 외부 교차검증 release 자격을 뜻하지
+않으며 XV-01~10 required-source 조건은 그대로 유지한다.
+
 ## XV — 독립 교차검증 (WP-01, M11 release 조건)
 
 | ID | 모델 | 기준해 소스 | 대조 응답량 |
@@ -132,9 +162,9 @@ sparse LDLT / CG 검사는 backend별 pivot localization을 고정하는 kernel-
 
 | ID | 케이스 | 기준 | § |
 | --- | --- | --- | --- |
-| CN-F01 | k_θ→∞ = 강접 | <1e-9 | §3 |
-| CN-F02 | k_θ→0 = release | <1e-9 | §3 |
-| CN-F03 | 단부 스프링 보 폐형해 | <1e-7 | §3 |
+| CN-F01 | 유한 큰 k_θ→강접 — 변위·단부력과 강접 권장 경고 | < rigidLimitTol(1e-9) | §3 |
+| CN-F02 | explicit `k_θ=0`→binary release — K/f0·변위·반력·잔류모멘트 | < releaseLimitTol(1e-9) | §3 |
+| CN-F03 | 2축 단부 스프링 보 EB/Timoshenko 폐형해 + 모멘트/회전 closure | < closedFormTol(1e-7) | §3 |
 | CN-M01 | rigid link 2절점 = 단일절점 등가 | <1e-10 | §5 |
 | CN-M02 | MPC 평형감사 (반력합=외력합) | <1e-10 | §5 |
 | CN-M03 | 다이어프램 = T-행 표현 회귀 | <1e-10 | §5 |

@@ -185,6 +185,9 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
     : pDeltaMethod === 'off'
       ? linearDesignEligible
       : false;
+  const designLimitationCodes = pDeltaMethod === 'direct'
+    ? Array.from(new Set(output.pDelta?.designEligibility?.limitationCodes || []))
+    : [];
   const designResultSet = directDesignEligible
     ? output.pDelta.envelope
     : pDeltaMethod === 'off' && designEligible
@@ -210,8 +213,9 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
   output.designEligibility = designEligible
     ? {
         eligible: true,
-        status: 'qualified',
+        status: designLimitationCodes.length ? 'qualified-with-limitation' : 'qualified',
         reason: null,
+        limitationCodes: designLimitationCodes,
         source: output.design.analysisSource,
       }
     : {
@@ -957,6 +961,9 @@ function analyzeDirectPDeltaCombinations(model, combos, options = {}) {
   const runs = Object.values(byCombo);
   const convergedCount = runs.filter((item) => item.converged).length;
   const qualifiedCount = runs.filter((item) => item.designEligibility?.eligible).length;
+  const limitationCodes = Array.from(new Set(runs.flatMap(
+    (item) => item.designEligibility?.limitationCodes || [],
+  )));
   const allQualified = combos.length > 0
     && runs.length === combos.length
     && qualifiedCount === combos.length;
@@ -971,7 +978,9 @@ function analyzeDirectPDeltaCombinations(model, combos, options = {}) {
       solver: 'runSecondOrderPDelta',
       solverVersion: PDELTA_SECOND_ORDER_VERSION,
       comboIds: combos.map((combo) => combo.id),
+      limitationCodes,
     };
+    envelope.limitationCodes = limitationCodes;
   }
   const envelopeState = envelopeCompleteFor(envelope, combos);
   const analysisQualified = allQualified && envelopeState.complete;
@@ -984,14 +993,27 @@ function analyzeDirectPDeltaCombinations(model, combos, options = {}) {
   design.designQualified = designQualified;
   design.reason = designQualified ? null : designReason;
   design.designEligibility = designQualified
-    ? { eligible: true, status: 'qualified', reason: null, source: 'direct-pdelta-envelope' }
-    : { eligible: false, status: 'blocked', reason: designReason, source: 'direct-pdelta-envelope' };
+    ? {
+        eligible: true,
+        status: limitationCodes.length ? 'qualified-with-limitation' : 'qualified',
+        reason: null,
+        limitationCodes,
+        source: 'direct-pdelta-envelope',
+      }
+    : {
+        eligible: false,
+        status: 'blocked',
+        reason: designReason,
+        limitationCodes,
+        source: 'direct-pdelta-envelope',
+      };
   if (envelope) {
     envelope.designBlocked = !designQualified;
     envelope.designQualified = designQualified;
     envelope.designBlockers = designQualified
       ? []
       : [{ comboId: null, status: 'BLOCKED', reason: designReason }];
+    envelope.designEligibility = { ...design.designEligibility };
   }
 
   return {
@@ -1015,6 +1037,7 @@ function analyzeDirectPDeltaCombinations(model, combos, options = {}) {
       qualifiedCount,
       comboCount: runs.length,
       envelope: envelopeState,
+      limitationCodes,
     },
     convergence: {
       converged: runs.length > 0 && convergedCount === runs.length,
@@ -1031,11 +1054,18 @@ function analyzeDirectPDeltaCombinations(model, combos, options = {}) {
       solverVersion: PDELTA_SECOND_ORDER_VERSION,
     },
     designEligibility: designQualified
-      ? { eligible: true, status: 'qualified', reason: null, source: 'direct-pdelta-envelope' }
+      ? {
+          eligible: true,
+          status: limitationCodes.length ? 'qualified-with-limitation' : 'qualified',
+          reason: null,
+          limitationCodes,
+          source: 'direct-pdelta-envelope',
+        }
       : {
           eligible: false,
           status: 'blocked',
           reason: designReason,
+          limitationCodes,
           message: !analysisQualified
             ? failed?.designEligibility?.message || 'Direct P-Delta results are incomplete or not converged.'
             : designReason === 'PDELTA_THETA_LIMIT_EXCEEDED'

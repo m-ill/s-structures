@@ -756,7 +756,7 @@
     "phase3DesignFormulaRegistry"
   ],
   "moduleVersions": {
-    "agentActions": "m12-agent-modeling-productivity",
+    "agentActions": "p10-m3-agent-modeling-actions-v2",
     "resultPanel": "m10-index-results-panel",
     "resultVisuals": "m13-index-result-visuals",
     "resultOverlay": "m18-result-overlay",
@@ -844,8 +844,8 @@
     "diaphragm": "p2-t11-rigid-diaphragm",
     "diaphragmSummary": "p2-t11-rigid-diaphragm-summary",
     "rigidDiaphragmBenchmark": "p2-t11-rigid-diaphragm-benchmark",
-    "memberRelease": "p2-t09-member-release",
-    "memberReleaseSummary": "p2-t09-member-release-summary",
+    "memberRelease": "p10-m3-member-release-v2",
+    "memberReleaseSummary": "p10-m3-member-release-summary-v2",
     "memberReleaseBenchmark": "p2-t09-member-release-benchmark",
     "calculationPackageUi": "m43-calculation-package-ui",
     "phase3Baseline": "p3-m0-baseline",

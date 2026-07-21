@@ -8,11 +8,22 @@ import {
   maxAbs,
   solveLinear,
 } from './linear3dElement.js';
+import {
+  buildPartialFixityRecoveryTrace,
+  recoverPartialFixityDisplacements,
+} from './partialFixity.js';
 
 export function recoverMemberResult(member, md, D, loads, stationCount) {
   const { ax, section, material } = md;
   const L = ax.L;
-  const dl = matVec(md.T, md.dof.map((dof) => D[dof]));
+  const jointDl = matVec(md.T, md.dof.map((dof) => D[dof]));
+  const recoveredPartial = recoverPartialFixityDisplacements(jointDl, md.partialFixityApplication);
+  if (!recoveredPartial) {
+    const error = new Error(`Partial-fixity displacement recovery failed for member ${member.id}.`);
+    error.code = 'PARTIAL_FIXITY_RECOVERY_FAILED';
+    throw error;
+  }
+  const dl = recoveredPartial;
 
   if (md.rel.length) {
     const retained = [...Array(12).keys()].filter((i) => !md.rel.includes(i));
@@ -29,6 +40,13 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
   }
 
   const endForces = matVec(md.kl, dl).map((value, i) => value + md.f0[i]);
+  const partialFixity = buildPartialFixityRecoveryTrace(
+    md.partialFixity,
+    md.partialFixityApplication,
+    jointDl,
+    dl,
+    endForces,
+  );
   const spanLoads = collectMemberSpanLoads(member.id, loads, ax);
   const { xs, N, Vy, Vz, Tq, My, Mz } = recoverMemberStations(endForces, spanLoads, L, stationCount);
   const { shape, dmaxM, recoveryTrace } = recoverMemberShape(
@@ -57,6 +75,7 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     L,
     fixedEndLoads: md.fixedEndLoads || [],
     timoshenko: md.timoshenko || null,
+    partialFixity,
     deformationRecovery: recoveryTrace,
     loadRecoveryIssues: spanLoads.issues || [],
     shape,
