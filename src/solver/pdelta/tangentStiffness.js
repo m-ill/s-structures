@@ -10,6 +10,7 @@ export const PDELTA_TANGENT_STIFFNESS_VERSION = 'p6-m5-pdelta-tangent-stiffness-
 
 export function buildPDeltaTangentStiffness(model = {}, options = {}) {
   const assembly = options.assembly || assembleStiffness3D(model.nodes || [], model.members || [], {
+    model,
     mat: (id) => materialOf(model, id),
     sec: (id) => sectionOf(model, id),
   });
@@ -65,6 +66,8 @@ export function buildPDeltaTangentStiffness(model = {}, options = {}) {
       compressionMemberCount: geometric.summary.compressionMemberCount,
       tensionMemberCount: geometric.summary.tensionMemberCount,
       maxAbsAxialForce: geometric.summary.maxAbsAxialForce,
+      timoshenkoApproximationCount: geometric.summary.timoshenkoApproximationCount,
+      limitationCodes: geometric.summary.limitationCodes,
     },
   };
 }

@@ -45,6 +45,7 @@ export function validateModel(model) {
   warnings.push(...validateUnitSystem(model.unitSystem));
   validateCollections(model, error);
   validateOptionalCollections(model, error);
+  validateShearDeformationSettings(model, error);
 
   if (errors.length) return finish(errors, warnings);
 
@@ -65,9 +66,6 @@ export function validateModel(model) {
     error(ERROR_CODES.NO_SUPPORT, 'Model has members but no support.', 'model');
   }
 
-  if (model.analysisSettings?.includeShearDeformation) {
-    warning(WARNING_CODES.NOT_SUPPORTED, 'Shear deformation is not implemented yet.', 'analysisSettings.includeShearDeformation');
-  }
   warnings.push(...validateAnalysisCriteria(model.analysisCriteria));
   return finish(errors, warnings);
 }
@@ -105,6 +103,32 @@ function validateOptionalCollections(model, error) {
     if (model[key] != null && !Array.isArray(model[key])) {
       error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array when provided.`, key);
     }
+  }
+}
+
+function validateShearDeformationSettings(model, error) {
+  const settings = model.analysisSettings;
+  if (settings != null && (typeof settings !== 'object' || Array.isArray(settings))) {
+    error(ERROR_CODES.BAD_SHEAR_DEFORMATION_SETTING, 'analysisSettings must be an object when provided.', 'analysisSettings');
+    return;
+  }
+  validateBooleanSetting(settings, 'shearDeformation', 'analysisSettings.shearDeformation', error);
+  validateBooleanSetting(settings, 'includeShearDeformation', 'analysisSettings.includeShearDeformation', error);
+  if (typeof settings?.shearDeformation === 'boolean'
+    && typeof settings?.includeShearDeformation === 'boolean'
+    && settings.shearDeformation !== settings.includeShearDeformation) {
+    error(
+      ERROR_CODES.BAD_SHEAR_DEFORMATION_SETTING,
+      'Conflicting canonical and legacy shear-deformation settings are not allowed.',
+      'analysisSettings.shearDeformation',
+    );
+  }
+}
+
+function validateBooleanSetting(holder, key, target, error) {
+  if (!holder || !Object.prototype.hasOwnProperty.call(holder, key)) return;
+  if (typeof holder[key] !== 'boolean') {
+    error(ERROR_CODES.BAD_SHEAR_DEFORMATION_SETTING, `${target} must be a boolean.`, target);
   }
 }
 
@@ -242,6 +266,17 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
     if (!member.id) error(ERROR_CODES.MEMBER_MISSING_ID, 'A member is missing id.', 'members');
     else if (memberIds.has(member.id)) error(ERROR_CODES.DUPLICATE_MEMBER_ID, `Duplicate member id: ${member.id}`, member.id);
     memberIds.add(member.id);
+    validateBooleanSetting(member, 'shearDeformation', `${member.id || 'members'}.shearDeformation`, error);
+    validateBooleanSetting(member, 'includeShearDeformation', `${member.id || 'members'}.includeShearDeformation`, error);
+    if (typeof member.shearDeformation === 'boolean'
+      && typeof member.includeShearDeformation === 'boolean'
+      && member.shearDeformation !== member.includeShearDeformation) {
+      error(
+        ERROR_CODES.BAD_SHEAR_DEFORMATION_SETTING,
+        'Conflicting canonical and legacy member shear-deformation settings are not allowed.',
+        `${member.id || 'members'}.shearDeformation`,
+      );
+    }
 
     if (!MEMBER_TYPES.has(member.type)) {
       error(ERROR_CODES.BAD_MEMBER_TYPE, `Unsupported member type: ${member.type}`, member.id);

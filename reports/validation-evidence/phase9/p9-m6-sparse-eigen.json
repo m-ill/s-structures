@@ -3,9 +3,9 @@
   "suiteVersion": "p9-m6-sparse-eigen-evidence-v1",
   "suiteId": "P9-M6-SPARSE-EIGEN-DYNAMICS",
   "milestone": "P9-M6",
-  "generatedAt": "2026-07-16T01:00:43.645Z",
-  "sourceRevision": "c8da2ec+worktree",
-  "priorEvidenceHash": "d39fb4ba7b541326b5bb5969891bacd2a8379aca82978591b949f83088b24964",
+  "generatedAt": "2026-07-21T06:23:32.174Z",
+  "sourceRevision": "1f3cf1d+worktree",
+  "priorEvidenceHash": "882c05b227069827ce37a94e9522b233aacc7d6ca1f2154b4163111e160c6d77",
   "status": "PASS",
   "verificationIds": [
     "P9-GPU-EIG-01",
@@ -69,8 +69,8 @@
         "dimension": 240,
         "requestedModes": 6,
         "projectionDimension": 12,
-        "durationMs": 191.89780000000002,
-        "operatorDurationMs": 105.2133,
+        "durationMs": 175.95890000000003,
+        "operatorDurationMs": 97.20419999999996,
         "stiffnessNnz": 1024,
         "massNnz": 80
       }
@@ -83,7 +83,7 @@
       ],
       "backendId": "p9-eigen-cpu-f64-production-v1",
       "workerOperation": "modalRsa",
-      "resultHash": "744718ddefe4103552978469b374b1a09ab4336b6a02bc0b1d8cd0ea1e9c1482",
+      "resultHash": "27bc0c83a4de2ee21c4d5e4ebeb269e4aa306b34c360c84cef00ce19e8d63449",
       "gpuFailClosed": true
     }
   },
@@ -109,14 +109,14 @@
     "dimension": 240,
     "requestedModes": 6,
     "projectionDimension": 12,
-    "durationMs": 191.89780000000002,
+    "durationMs": 175.95890000000003,
     "budgetMs": 5000,
     "budgetMet": true
   },
   "product": {
     "backendId": "p9-eigen-cpu-f64-production-v1",
     "workerOperation": "modalRsa",
-    "resultHash": "744718ddefe4103552978469b374b1a09ab4336b6a02bc0b1d8cd0ea1e9c1482",
+    "resultHash": "27bc0c83a4de2ee21c4d5e4ebeb269e4aa306b34c360c84cef00ce19e8d63449",
     "gpuFailClosed": true
   },
   "architecture": {
@@ -216,5 +216,5 @@
     "External application and vendor validation remains outside this local milestone."
   ],
   "qualificationImpact": "M6-complete-cpu-f64-sparse-eigen-G2-retained",
-  "artifactHash": "6cc61b78529e693ba201c42678ded0fb4e3949cdd3a846ec4a25c2d35cd52190"
+  "artifactHash": "1f7596f6c2df8e7e766e99a6b310742c833d03a79ba9fecda23d504ef7d8ef55"
 }

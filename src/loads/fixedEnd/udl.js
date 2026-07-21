@@ -7,7 +7,7 @@ import {
 
 export const FIXED_END_UDL_VERSION = 'p6-m2-fixed-end-udl-v1';
 
-export function fixedEndUdl(load, ax) {
+export function fixedEndUdl(load, ax, md = {}) {
   const inputLength = Number(ax?.L);
   const L = Number.isFinite(inputLength) ? inputLength : 0;
   const resolved = resolveLoadComponents(load, ax, load.w, 'w');
@@ -20,7 +20,7 @@ export function fixedEndUdl(load, ax) {
     else if (load.shape === 'desc') scale = 1 - r;
     return resolved.ok ? resolved.localComponents.map((value) => value * scale) : [0, 0, 0];
   };
-  addConsistentDistributed(fe, L, 0, 1, qAtRatio);
+  addConsistentDistributed(fe, L, 0, 1, qAtRatio, md.timoshenko);
   const q0 = negateVector(fe);
   return {
     ok: issues.length === 0,
@@ -29,6 +29,7 @@ export function fixedEndUdl(load, ax) {
     version: FIXED_END_UDL_VERSION,
     source: loadSource(load),
     method: load.shape && load.shape !== 'uniform' ? 'consistent-triangular-udl' : 'consistent-uniform-udl',
+    timoshenko: md.timoshenko || null,
     fe,
     q0,
     recovery: {

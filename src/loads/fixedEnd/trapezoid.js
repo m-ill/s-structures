@@ -8,7 +8,7 @@ import {
 
 export const FIXED_END_TRAPEZOID_VERSION = 'p6-m2-fixed-end-trapezoid-v1';
 
-export function fixedEndTrapezoid(load, ax) {
+export function fixedEndTrapezoid(load, ax, md = {}) {
   const inputLength = Number(ax?.L);
   const L = Number.isFinite(inputLength) ? inputLength : 0;
   const inputFrom = Number(load.from);
@@ -31,7 +31,7 @@ export function fixedEndTrapezoid(load, ax) {
     if (!start.ok || !end.ok) return [0, 0, 0];
     return start.local.map((component) => component * (w1 + (w2 - w1) * eta));
   };
-  addConsistentDistributed(fe, L, from, to, qAtRatio);
+  addConsistentDistributed(fe, L, from, to, qAtRatio, md.timoshenko);
   const q0 = negateVector(fe);
   return {
     ok: issues.length === 0,
@@ -40,6 +40,7 @@ export function fixedEndTrapezoid(load, ax) {
     version: FIXED_END_TRAPEZOID_VERSION,
     source: loadSource(load),
     method: 'consistent-trapezoid-load',
+    timoshenko: md.timoshenko || null,
     fe,
     q0,
     recovery: {

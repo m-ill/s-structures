@@ -75,6 +75,10 @@ assert.ok(invalidArc.review.warnings.includes('invalid-arc-length-radius'));
 assert.ok(invalidArc.review.warnings.includes('arc-length-constraint-not-satisfied'));
 
 const model = createPortalFrameSample();
+model.analysisSettings = {
+  ...(model.analysisSettings ?? {}),
+  shearDeformation: false,
+};
 model.loadCombinations = [{
   id: 'CO1',
   name: 'Frozen regression D + L',
@@ -156,7 +160,10 @@ assert.equal(brokenB5.ok, false);
 assert.equal(brokenB5.cases[2].ok, false);
 assert.equal(brokenB5.cases[2].regression.stepCountMismatch, true);
 
-const trace = buildNonlinearAnalysisTrace(model, { pushover: { steps: 3, referenceBaseShear: 20 } });
+const trace = buildNonlinearAnalysisTrace(model, {
+  benchmarks: { b5: { model } },
+  pushover: { steps: 3, referenceBaseShear: 20 },
+});
 assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
 assert.equal(trace.hingeControlGate.version, NONLINEAR_HINGE_CONTROL_TRACE_VERSION);
 assert.deepEqual(trace.hingeControlGate.tickets, ['P3-T54', 'P3-T55', 'P3-T56']);
@@ -185,6 +192,7 @@ assert.equal(trace.benchmarks.hingeControl.ok, true);
 assert.ok(trace.hingeStates.length > 0);
 assert.ok(trace.capacityCurve.length > 0);
 const invalidControlTrace = buildNonlinearAnalysisTrace(model, {
+  benchmarks: { b5: { model } },
   displacementControl: { influence: 0 },
   pushover: { steps: 3, referenceBaseShear: 20 },
 });
@@ -222,7 +230,7 @@ assert.ok(failedPushoverGate.controlReview.missing.includes('formal-pushover-ste
 assert.equal(failedPushoverGate.controlReview.agentDecision, 'hold-before-m16');
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
-const apiTrace = agent.getNonlinearAnalysisTrace();
+const apiTrace = agent.getNonlinearAnalysisTrace({ benchmarks: { b5: { model } } });
 assert.equal(apiTrace.version, NONLINEAR_TRACE_VERSION);
 assert.equal(apiTrace.hingeControlGate.milestone, 'P3-M15');
 assert.equal(apiTrace.benchmarks.hingeControl.ok, true);

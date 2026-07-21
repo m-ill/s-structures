@@ -2,10 +2,10 @@
   "version": "p9-m4-browser-raw-v1",
   "status": "PASS",
   "available": true,
-  "generatedAt": "2026-07-15T13:37:21.618Z",
+  "generatedAt": "2026-07-21T06:16:42.287Z",
   "browser": {
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
-    "language": "ko",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+    "language": "ko-KR",
     "platform": "Win32",
     "crossOriginIsolated": false
   },
@@ -62,10 +62,10 @@
   },
   "backend": {
     "id": "p9-webgpu-independent-kernels-v1",
-    "buildHash": "029eac42b8fd7202f052e57fbe37f86b8b9b33d18498512250e77eee3aa21b95",
+    "buildHash": "c8e25abb6825563378d48b52c1ab888c97a13d7c2e92517836c88fa50dced518",
     "qualification": "G2-kernel-candidate-no-design-transfer",
     "precision": "f32",
-    "shaderCatalogHash": "d312f75fcf3da54be3f4a558f65085a36b9d377bec738b378982cfdc36bcbf56",
+    "shaderCatalogHash": "3090cdb88799a8279916c2cd5b50829d648e7d2eefc09aa639c5d9df5f7184a4",
     "operations": [
       "vectorScale",
       "vectorAxpy",
@@ -153,12 +153,24 @@
     {
       "operation": "frameMatrixBatch",
       "status": "PASS",
-      "resultHash": "58a85d9902576cce80a29af66abbdf473e828479e6055041507c25d2e9538b5a",
+      "resultHash": "f90715b1100c3beb43e0b5470ebe3a89141caa2bc21fde17c35fea0d62947f4f",
       "ok": true,
       "finite": true,
       "valueCount": 144,
       "absoluteMax": 0.125,
       "relativeMax": 1.1901855868287398e-7,
+      "absoluteTolerance": 0.125,
+      "relativeTolerance": 0.000004
+    },
+    {
+      "operation": "frameMatrixBatch",
+      "status": "PASS",
+      "resultHash": "6fb0be5bd7d39c0ab70d7038141842de7cc663458afebc32b770ca7aac08d438",
+      "ok": true,
+      "finite": true,
+      "valueCount": 144,
+      "absoluteMax": 0.00390625,
+      "relativeMax": 9.780092660509903e-8,
       "absoluteTolerance": 0.125,
       "relativeTolerance": 0.000004
     },
@@ -176,30 +188,30 @@
         "warmupCount": 1,
         "sampleCount": 5,
         "samplesMs": [
-          57.4,
-          64.2,
-          62.1,
-          56.3,
-          58.1
+          55.8,
+          53.5,
+          46.7,
+          46.9,
+          47.3
         ],
-        "medianMs": 58.1,
-        "p95Ms": 64.2
+        "medianMs": 47.3,
+        "p95Ms": 55.8
       },
       "cpu": {
         "measurement": "browser-main-thread-f32-reference",
         "warmupCount": 1,
         "sampleCount": 5,
         "samplesMs": [
-          4.4,
-          4.3,
-          6.8,
-          4.3,
-          4.4
+          3.1,
+          3.4,
+          3.8,
+          5.9,
+          3.5
         ],
-        "medianMs": 4.4,
-        "p95Ms": 6.8
+        "medianMs": 3.5,
+        "p95Ms": 5.9
       },
-      "gpuToCpuMedianRatio": 13.204545454545453
+      "gpuToCpuMedianRatio": 13.514285714285714
     },
     "csrSpmv": {
       "gpu": {
@@ -207,30 +219,30 @@
         "warmupCount": 1,
         "sampleCount": 5,
         "samplesMs": [
-          7.5,
-          7.5,
-          7.1,
-          7.2,
-          7
+          7.6,
+          7.9,
+          8.1,
+          5.2,
+          5.5
         ],
-        "medianMs": 7.2,
-        "p95Ms": 7.5
+        "medianMs": 7.6,
+        "p95Ms": 8.1
       },
       "cpu": {
         "measurement": "browser-main-thread-f32-reference",
         "warmupCount": 1,
         "sampleCount": 5,
         "samplesMs": [
-          2,
-          1.4,
-          2.9,
           1.3,
-          1.3
+          1.2,
+          0.9,
+          1,
+          0.9
         ],
-        "medianMs": 1.4,
-        "p95Ms": 2.9
+        "medianMs": 1,
+        "p95Ms": 1.3
       },
-      "gpuToCpuMedianRatio": 5.142857142857143
+      "gpuToCpuMedianRatio": 7.6
     }
   },
   "lifecycle": {
@@ -290,8 +302,8 @@
         "capabilityHash": "93f5a2b9a899711b9a662bdbe422ba59ac93198958803ffa9a3f2d4569a53b95"
       },
       "loss": null,
-      "submissionCount": 24,
-      "completedSubmissionCount": 24,
+      "submissionCount": 25,
+      "completedSubmissionCount": 25,
       "pipelineCount": 7,
       "pool": {
         "version": "p9-m4-webgpu-buffer-pool-v1",
@@ -299,18 +311,18 @@
         "alignment": 4,
         "maxCachedBytes": 67108864,
         "maxBuffersPerKey": 4,
-        "createdCount": 34,
+        "createdCount": 35,
         "destroyedCount": 3,
-        "createdBytes": 952308,
+        "createdBytes": 952344,
         "activeCount": 0,
         "activeBytes": 0,
-        "cachedCount": 31,
-        "cachedBytes": 952284,
-        "peakBytes": 952284,
+        "cachedCount": 32,
+        "cachedBytes": 952320,
+        "peakBytes": 952320,
         "allocationBalanced": null
       },
       "designTransferAllowed": false,
-      "platformHash": "28b7449cf159096f7d259e812df284a8a205fadf73cb96191b47b001c2ed1438"
+      "platformHash": "d7cfae49b564bc9d38274e98c384b1c8e161ecebe863df1cee4ced8aedc7379c"
     },
     "afterDispose": {
       "version": "p9-m4-webgpu-platform-v1",
@@ -368,8 +380,8 @@
         "capabilityHash": "93f5a2b9a899711b9a662bdbe422ba59ac93198958803ffa9a3f2d4569a53b95"
       },
       "loss": null,
-      "submissionCount": 24,
-      "completedSubmissionCount": 24,
+      "submissionCount": 25,
+      "completedSubmissionCount": 25,
       "pipelineCount": 0,
       "pool": {
         "version": "p9-m4-webgpu-buffer-pool-v1",
@@ -377,18 +389,18 @@
         "alignment": 4,
         "maxCachedBytes": 67108864,
         "maxBuffersPerKey": 4,
-        "createdCount": 34,
-        "destroyedCount": 34,
-        "createdBytes": 952308,
+        "createdCount": 35,
+        "destroyedCount": 35,
+        "createdBytes": 952344,
         "activeCount": 0,
         "activeBytes": 0,
         "cachedCount": 0,
         "cachedBytes": 0,
-        "peakBytes": 952284,
+        "peakBytes": 952320,
         "allocationBalanced": true
       },
       "designTransferAllowed": false,
-      "platformHash": "1a7cb41a9b2ac791f8a6d6594f6fab4c391653edd29a75fbd932f2bc0e8ad1c9"
+      "platformHash": "4e64a252857303fd2e385b96fb2a8b4b003d9ab3740bbe64f4aa567a6bf7a168"
     },
     "allocationBalanced": true
   }

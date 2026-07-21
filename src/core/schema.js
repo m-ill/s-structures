@@ -88,6 +88,7 @@ export const ERROR_CODES = {
   BAD_ANALYSIS_CASE_SETTINGS: 'BAD_ANALYSIS_CASE_SETTINGS',
   BAD_ANALYSIS_CASE_INPUT: 'BAD_ANALYSIS_CASE_INPUT',
   BAD_ANALYSIS_CASE_LAST_RUN: 'BAD_ANALYSIS_CASE_LAST_RUN',
+  BAD_SHEAR_DEFORMATION_SETTING: 'BAD_SHEAR_DEFORMATION_SETTING',
   BAD_NONLINEAR_REGISTRY: 'BAD_NONLINEAR_REGISTRY',
   BAD_NONLINEAR_RECORD: 'BAD_NONLINEAR_RECORD',
   DUPLICATE_NONLINEAR_RECORD_ID: 'DUPLICATE_NONLINEAR_RECORD_ID',
@@ -256,7 +257,7 @@ export function defaultAnalysisSettings() {
   return {
     analysisType: 'linear_static',
     elementType: '3d_frame',
-    includeShearDeformation: false,
+    shearDeformation: true,
     includeGeometricStiffness: false,
     includeSelfWeight: false,
     solverTolerance: 1e-10,

@@ -344,6 +344,7 @@ function assembleMemberLoad(load, loadIndex, role, elementById) {
       dof: dofs,
       material,
       section,
+      timoshenko: descriptor.formulation?.shearDeformation || null,
       rel: releases,
     });
   } catch (error) {
@@ -492,7 +493,8 @@ function buildDescriptorLocalStiffness(descriptor, material, section, length) {
       issue: issue('EXTERNAL_LOAD_ELEMENT_PROPERTY_INVALID', null, descriptor.id, 'G, Iy, Iz, and J must be finite elastic properties.'),
     };
   }
-  return { ok: true, matrix: localK12(E, G, A, Iy, Iz, J, length) };
+  const shear = descriptor.formulation?.shearDeformation || {};
+  return { ok: true, matrix: localK12(E, G, A, Iy, Iz, J, length, shear.phiY, shear.phiZ) };
 }
 
 function validateMemberLoadInput(load) {

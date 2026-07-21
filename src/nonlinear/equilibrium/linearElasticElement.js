@@ -124,7 +124,8 @@ function prepareDescriptor(descriptor) {
     if (G == null || Iy == null || Iz == null || J == null) {
       throw elementError('LINEAR_ELASTIC_PROPERTY_INVALID', `Element ${descriptor.id} requires finite G, Iy, Iz, and J.`);
     }
-    localStiffness = localK12(E, G, A, Iy, Iz, J, length);
+    const shear = descriptor.formulation?.shearDeformation || {};
+    localStiffness = localK12(E, G, A, Iy, Iz, J, length, shear.phiY, shear.phiZ);
   }
   const releases = normalizeReleases(descriptor.releases?.localDofs, descriptor.id);
   if (releases.length) {

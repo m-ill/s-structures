@@ -55,6 +55,7 @@ export function createModel(overrides = {}) {
     unitSystem: normalizeUnitSystem(overrides.unitSystem, units),
     diaphragms: normalizeDiaphragms(overrides.diaphragms),
     analysisCases: normalizeAnalysisCases(overrides.analysisCases || []),
+    analysisSettings: createAnalysisSettings(overrides.analysisSettings),
     analysisCriteria: normalizeAnalysisCriteria(overrides.analysisCriteria || defaultAnalysisCriteria()),
     massSources: Array.isArray(overrides.massSources) ? clone(overrides.massSources) : [],
     sourceRegistry: normalizeSourceRegistry(overrides.sourceRegistry),
@@ -63,6 +64,19 @@ export function createModel(overrides = {}) {
     projectSetup: normalizeProjectSetup(overrides.projectSetup, 'legacy-unreviewed'),
   };
   return normalizeStories(model);
+}
+
+function createAnalysisSettings(input) {
+  const source = input && typeof input === 'object' && !Array.isArray(input) ? input : {};
+  const settings = { ...defaultAnalysisSettings(), ...source };
+  if (Object.prototype.hasOwnProperty.call(source, 'shearDeformation')) {
+    settings.shearDeformation = source.shearDeformation;
+  } else if (typeof source.includeShearDeformation === 'boolean') {
+    settings.shearDeformation = source.includeShearDeformation;
+  } else if (Object.prototype.hasOwnProperty.call(source, 'includeShearDeformation')) {
+    settings.shearDeformation = false;
+  }
+  return settings;
 }
 
 export function createPracticeModel(overrides = {}) {

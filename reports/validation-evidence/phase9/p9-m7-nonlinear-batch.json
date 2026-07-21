@@ -3,9 +3,9 @@
   "suiteVersion": "p9-m7-nonlinear-batch-evidence-v1",
   "suiteId": "P9-M7-NONLINEAR-SOA-BATCH",
   "milestone": "P9-M7",
-  "generatedAt": "2026-07-16T02:12:40.787Z",
-  "sourceRevision": "755da33+worktree",
-  "priorEvidenceHash": "6cc61b78529e693ba201c42678ded0fb4e3949cdd3a846ec4a25c2d35cd52190",
+  "generatedAt": "2026-07-21T06:23:43.211Z",
+  "sourceRevision": "1f3cf1d+worktree",
+  "priorEvidenceHash": "1f7596f6c2df8e7e766e99a6b310742c833d03a79ba9fecda23d504ef7d8ef55",
   "status": "PASS",
   "verificationIds": [
     "P9-GPU-NL-01",
@@ -51,9 +51,9 @@
   "performance": {
     "tier": "focused-diagnostic",
     "elementCount": 128,
-    "elementDurationMs": 1.0883000000000038,
-    "stateDurationMs": 29.77170000000001,
-    "assemblyDurationMs": 0.13339999999999463,
+    "elementDurationMs": 0.757000000000005,
+    "stateDurationMs": 20.826699999999988,
+    "assemblyDurationMs": 0.09719999999998663,
     "reusableWorkspaceBytes": 3072,
     "perElementCommittedStateCloneCount": 0,
     "diagnosticBudgetMs": 1000,
@@ -97,9 +97,9 @@
       "performance": {
         "tier": "focused-diagnostic",
         "elementCount": 128,
-        "elementDurationMs": 1.0883000000000038,
-        "stateDurationMs": 29.77170000000001,
-        "assemblyDurationMs": 0.13339999999999463,
+        "elementDurationMs": 0.757000000000005,
+        "stateDurationMs": 20.826699999999988,
+        "assemblyDurationMs": 0.09719999999998663,
         "reusableWorkspaceBytes": 3072,
         "perElementCommittedStateCloneCount": 0
       }
@@ -184,5 +184,5 @@
     "External independent validation remains outside this local milestone."
   ],
   "qualificationImpact": "M7-complete-cpu-f64-nonlinear-batch-G2-retained",
-  "artifactHash": "241595c470865f6cce6139f9021dc5c7aa15e842a56bc8d17e799de97e58d0ea"
+  "artifactHash": "b9158695b8549685023e46263ba4d9ca7539b9295fe90a2210fb01e9e37d382a"
 }

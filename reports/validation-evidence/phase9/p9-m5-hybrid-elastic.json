@@ -3,8 +3,8 @@
   "suiteVersion": "p9-m5-hybrid-elastic-evidence-v1",
   "suiteId": "P9-M5-HYBRID-ELASTIC",
   "milestone": "P9-M5",
-  "generatedAt": "2026-07-15T17:59:01.968Z",
-  "sourceRevision": "343b626+worktree",
+  "generatedAt": "2026-07-21T06:22:59.387Z",
+  "sourceRevision": "1f3cf1d+worktree",
   "verificationIds": [
     "P9-GPU-ELA-01",
     "P9-GPU-ELA-02",
@@ -270,7 +270,7 @@
       "factorizationCount": 1,
       "solveCount": 2,
       "correctionSolveCount": 2,
-      "resultHash": "b8f4fc2e92116d7a9a9b0c1241c0cbe6dc6ea655a790c84d03db6f31ec15771f"
+      "resultHash": "01285d41aca3c063601af20af8d2b7ab897fbc243e93b81180da37edba38d3a3"
     },
     "pDeltaHybrid": {
       "ok": true,
@@ -279,7 +279,7 @@
         "P9-PERF-09",
         "P9-FAIL-04"
       ],
-      "amplification": 1.0358899650477247,
+      "amplification": 1.0364271094440942,
       "iterationCount": 11,
       "matrixSessionCount": 11,
       "correctionSolveCount": 11
@@ -438,7 +438,7 @@
     "browser": "tests/browser/p9-m5-webgpu.html",
     "nonlinearSolve": "not-rerun-reuse-phase8-qualified-evidence"
   },
-  "priorEvidenceHash": "45286be5c46b9e30588171c2ec9dd16886f5e61723a1ebe87b75fa1c90e3a3f1",
+  "priorEvidenceHash": "2f7db8e0882bf4ef062c54a38cee6c263ff83e3fb51cdd6a8077f7c4f4dce6a5",
   "results": [
     {
       "id": "P9-GPU-ELA-01",
@@ -562,5 +562,5 @@
     "P9_M5_S_M_PROFILE_MATRIX_REQUIRED"
   ],
   "qualificationImpact": "G2-retained-hybrid-elastic-implemented-auto-gpu-blocked",
-  "artifactHash": "d39fb4ba7b541326b5bb5969891bacd2a8379aca82978591b949f83088b24964"
+  "artifactHash": "882c05b227069827ce37a94e9522b233aacc7d6ca1f2154b4163111e160c6d77"
 }

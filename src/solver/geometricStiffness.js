@@ -41,6 +41,8 @@ export function assembleGlobalGeometricStiffness(model = {}, assembly = {}, opti
       behavior,
       length: md.ax.L,
       applied: true,
+      elasticFormulation: md.timoshenko?.formulation || 'euler-bernoulli',
+      consistency: md.timoshenko?.geometricStiffness || null,
     });
     memberData[member.id] = {
       memberId: member.id,
@@ -49,6 +51,7 @@ export function assembleGlobalGeometricStiffness(model = {}, assembly = {}, opti
       local,
       global,
       dof: md.dof,
+      timoshenko: md.timoshenko || null,
     };
   }
   return {
@@ -63,6 +66,8 @@ export function assembleGlobalGeometricStiffness(model = {}, assembly = {}, opti
       compressionMemberCount: rows.filter((row) => row.mode === 'buckling' || row.axialForce < 0).length,
       tensionMemberCount: rows.filter((row) => row.mode === 'tangent' && row.axialForce > 0).length,
       maxAbsAxialForce: Math.max(0, ...rows.map((row) => Math.abs(row.axialForce))),
+      timoshenkoApproximationCount: rows.filter((row) => row.consistency?.consistent === false).length,
+      limitationCodes: [...new Set(rows.map((row) => row.consistency?.limitationCode).filter(Boolean))],
     },
   };
 }

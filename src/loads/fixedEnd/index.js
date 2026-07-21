@@ -49,6 +49,7 @@ export function fixedEndTraceRow(contract) {
     type: contract.source?.type || null,
     member: contract.source?.member || null,
     method: contract.method,
+    timoshenko: contract.timoshenko || null,
     fe: contract.fe,
     q0: contract.q0,
     recovery: contract.recovery,

@@ -89,10 +89,7 @@ export function migrateModel(inputModel) {
     designBasis: normalizeDesignBasis(source.designBasis),
     projectSetup: normalizeProjectSetup(source.projectSetup, originalVersion < LEGACY_NORMALIZATION_CUTOFF ? 'legacy-unreviewed' : 'load-setup-required'),
     analysisCases: normalizeAnalysisCases(classifyLegacyAnalysisCases(source.analysisCases, originalVersion)),
-    analysisSettings: {
-      ...base.analysisSettings,
-      ...(source.analysisSettings || {}),
-    },
+    analysisSettings: normalizeMigratedAnalysisSettings(source.analysisSettings, base.analysisSettings),
     analysisCriteria: normalizeAnalysisCriteria(source.analysisCriteria || base.analysisCriteria),
     designParams: normalizeDesignParams(base.designParams, source.designParams),
     designSettings: {
@@ -147,6 +144,7 @@ function migrateV4ToV5(source) {
     ...source,
     schemaVersion: SCHEMA_VERSION,
     ...registries,
+    analysisSettings: normalizeMigratedAnalysisSettings(source.analysisSettings),
     analysisCases: normalizeAnalysisCases(classifyLegacyAnalysisCases(source.analysisCases, 4)),
   };
   migrations.push({
@@ -192,7 +190,27 @@ function normalizeMember(member) {
   };
   if (normalized.releases.i === 'pin') normalized.rel1 = 'pin';
   if (normalized.releases.j === 'pin') normalized.rel2 = 'pin';
+  if (!hasOwn(normalized, 'shearDeformation') && typeof normalized.includeShearDeformation === 'boolean') {
+    normalized.shearDeformation = normalized.includeShearDeformation;
+  }
   return normalized;
+}
+
+function normalizeMigratedAnalysisSettings(input, defaults = {}) {
+  const source = input && typeof input === 'object' && !Array.isArray(input) ? input : {};
+  const normalized = { ...defaults, ...source };
+  if (typeof source.shearDeformation === 'boolean') {
+    normalized.shearDeformation = source.shearDeformation;
+  } else if (!hasOwn(source, 'shearDeformation') && typeof source.includeShearDeformation === 'boolean') {
+    normalized.shearDeformation = source.includeShearDeformation;
+  } else if (!hasOwn(source, 'shearDeformation')) {
+    normalized.shearDeformation = false;
+  }
+  return normalized;
+}
+
+function hasOwn(value, key) {
+  return Object.prototype.hasOwnProperty.call(value || {}, key);
 }
 
 function normalizeLegacyLibraryRecord(record, originalVersion) {

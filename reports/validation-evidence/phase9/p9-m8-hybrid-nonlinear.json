@@ -3,9 +3,9 @@
   "suiteVersion": "p9-m8-hybrid-nonlinear-evidence-v1",
   "suiteId": "P9-M8-HYBRID-PUSHOVER-NLTH",
   "milestone": "P9-M8",
-  "generatedAt": "2026-07-16T03:23:30.787Z",
-  "sourceRevision": "06983cb+worktree",
-  "priorEvidenceHash": "241595c470865f6cce6139f9021dc5c7aa15e842a56bc8d17e799de97e58d0ea",
+  "generatedAt": "2026-07-21T06:24:23.136Z",
+  "sourceRevision": "1f3cf1d+worktree",
+  "priorEvidenceHash": "b9158695b8549685023e46263ba4d9ca7539b9295fe90a2210fb01e9e37d382a",
   "status": "IMPLEMENTED_WITH_QUALIFICATION_BLOCKERS",
   "verificationIds": [
     "P9-GPU-NL-11",
@@ -62,8 +62,8 @@
   },
   "performance": {
     "scope": "focused-regression-only",
-    "pushoverDurationMs": 1627.6973,
-    "nlthDurationMs": 7298.591699999999,
+    "pushoverDurationMs": 1469.8316000000002,
+    "nlthDurationMs": 6395.5668000000005,
     "nlthTransferBytes": 5365,
     "residentBytes": 8224,
     "mTierExecuted": false,
@@ -114,15 +114,15 @@
         "P9-GPU-NL-20"
       ],
       "pushover": {
-        "durationMs": 1627.6973,
+        "durationMs": 1469.8316000000002,
         "displacementStepCount": 4,
         "arcStepCount": 3,
         "residentCommitCount": 7,
         "residentAuditCount": 8,
-        "sessionHash": "2b8edd624707f93d20e278e2"
+        "sessionHash": "35248d320d2df5f19a25fc47"
       },
       "nlth": {
-        "durationMs": 7298.591699999999,
+        "durationMs": 6395.5668000000005,
         "outputStepCount": 3,
         "internalStepCount": 2,
         "residentCommitCount": 2,
@@ -134,7 +134,7 @@
           "elastic",
           "yielded"
         ],
-        "sessionHash": "618902c16559bea3dd5feb78"
+        "sessionHash": "0e4774ec3c820fa1d3832cbc"
       },
       "performanceScope": "focused-regression-only",
       "mTierQualification": "blocked-not-run-by-user-test-policy"
@@ -293,5 +293,5 @@
     "External independent validation remains outside this local milestone."
   ],
   "qualificationImpact": "M8-implemented-cpu-resident-G2-retained",
-  "artifactHash": "414610214f30511b2517a74d7099ba8fd3e1b80037fd205b063ff1b5e8114f92"
+  "artifactHash": "2ce7cef750d04bbae2a56069f51c96f11a10ffb01be1f0b2d640f7de352ece18"
 }

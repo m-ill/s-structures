@@ -22,6 +22,13 @@ export const DEFAULT_CRITERIA_VALUES = {
   load: {
     equilTol: 1e-10,
   },
+  element: {
+    shearSlenderCutoff: 60,
+    shearShallowTol: 1e-3,
+    shearPhiZeroTol: 1e-12,
+    shearDeepBeamTol: 1e-9,
+    shearReleaseTol: 1e-8,
+  },
   audit: {
     equilibriumRelative: 1e-8,
   },
@@ -106,6 +113,11 @@ const CRITERION_RULES = {
   'solver.pivotWarn': { kind: 'number', min: 0, exclusiveMin: true },
   'solver.pivotSingular': { kind: 'number', min: 0, exclusiveMin: true },
   'load.equilTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'element.shearSlenderCutoff': { kind: 'number', min: 0, exclusiveMin: true },
+  'element.shearShallowTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'element.shearPhiZeroTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'element.shearDeepBeamTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'element.shearReleaseTol': { kind: 'number', min: 0, exclusiveMin: true },
   'audit.equilibriumRelative': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.min': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.max': { kind: 'number', min: 0, exclusiveMin: true },

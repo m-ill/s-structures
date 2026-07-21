@@ -48,7 +48,8 @@ const missingHybridBlocker = rehash({
 assert.ok(validatePhase9M4Manifest(missingHybridBlocker).errors.includes('manifest:hybridBlocker'));
 assert.equal(evidence.browser.status, 'PASS');
 assert.match(evidence.browser.capability.adapterInfo.vendor, /\S+/, 'recorded local profile vendor');
-assert.equal(evidence.browser.checks.filter((row) => row.status === 'PASS').length, 8);
+assert.equal(evidence.browser.checks.filter((row) => row.status === 'PASS').length, 9);
+assert.equal(evidence.browser.checks.filter((row) => row.operation === 'frameMatrixBatch' && row.status === 'PASS').length, 2);
 assert.equal(evidence.resourceLifecycle.allocationBalanced, true);
 assert.equal(evidence.profileMatrix.fullRequiredMatrixQualified, false);
 assert.equal(evidence.results.find((row) => row.id === 'P9-GPU-PLT-12').status, 'DEFERRED');

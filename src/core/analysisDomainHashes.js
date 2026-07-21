@@ -1,4 +1,5 @@
 import { stableHash } from './stableHash.js';
+import { resolveGlobalShearDeformation } from './shearDeformation.js';
 
 export const ANALYSIS_DOMAIN_HASH_CONTRACT_VERSION = 'p8-m1-analysis-domain-hashes-v2';
 
@@ -14,7 +15,10 @@ export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
     propertyHash: hash({
       materials: sortedRecords(model.materials || []),
       sections: sortedRecords(model.sections || []),
-      memberAssignments: rows(model.members, ['id', 'matId', 'secId', 'modifiers', 'role']),
+      memberAssignments: rows(model.members, [
+        'id', 'matId', 'secId', 'modifiers', 'customProps', 'role', 'shearDeformation', 'includeShearDeformation',
+      ]),
+      shearDeformation: resolveGlobalShearDeformation(model),
     }),
     constraintHash: hash({
       supports: rows(model.nodes, ['id', 'support', 'fix', 'spring', 'settlement', 'prescribed', 'prescribedDisplacement']),

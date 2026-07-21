@@ -47,6 +47,7 @@ console.log(JSON.stringify({
 
 function createModalColumnModel() {
   const model = createModel();
+  model.analysisSettings.shearDeformation = false;
   model.nodes = [
     { id: 'N1', x: 0, y: 0, z: 0, support: 'fixed' },
     { id: 'N2', x: 0, y: 0, z: 4, support: null, mass: [10, 10, 10] },

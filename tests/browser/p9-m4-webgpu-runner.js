@@ -122,6 +122,11 @@ function fixtures() {
     properties: Float32Array.of(200000000, 76923076.923, 0.02, 8e-5, 4e-5, 1e-5, 3),
     responseTransforms: identity,
   };
+  const timoshenkoFramePayload = {
+    properties: Float32Array.of(30000000, 12500000, 0.18, 0.00135, 0.0054, 0.0037, 2.4, 0.05625, 0.18),
+    propertyStride: 9,
+    responseTransforms: identity,
+  };
   const fiberPayload = {
     positions: [-0.1, 0.1], areas: [0.01, 0.01],
     moduli: [200000000, 200000000], yieldStress: [250000, 250000],
@@ -139,6 +144,7 @@ function fixtures() {
     { operation: 'jacobiPrecondition', payload: { diagonal: [2, 4, 8], rhs: [4, 8, 16] }, expected: () => referenceJacobi([2, 4, 8], [4, 8, 16]) },
     { operation: 'fiberSampleBatch', payload: fiberPayload, expected: () => referenceFiberSampleBatch(fiberPayload), absoluteTolerance: 0.125, relativeTolerance: 2e-6 },
     { operation: 'frameMatrixBatch', payload: framePayload, expected: () => referenceFrameMatrixBatch(framePayload), absoluteTolerance: 0.125, relativeTolerance: 4e-6 },
+    { operation: 'frameMatrixBatch', payload: timoshenkoFramePayload, expected: () => referenceFrameMatrixBatch(timoshenkoFramePayload), absoluteTolerance: 0.125, relativeTolerance: 4e-6 },
   ];
 }
 

@@ -1,6 +1,8 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { buildFixedEndLoad, fixedEndTraceRow } from '../loads/fixedEnd/index.js';
 import { memberAxes } from './linear3dElement.js';
+import { effectiveSectionMaterial } from './linear3dPost.js';
+import { resolveMemberTimoshenko } from './timoshenko.js';
 
 export const ELASTIC_EXPANSION_VERSION = 'p3-m11-elastic-expansion';
 
@@ -211,9 +213,23 @@ function buildConsistentLoadTrace(loads = [], model = {}) {
       const ax = memberAxes(a, b, member.localAxis);
       if (!(ax.L > 0)) return null;
       const needsProperties = load.type === 'temperature' || load.type === 'tgradient';
-      const memberData = needsProperties
-        ? { material: materialOf(model, member.matId), section: sectionOf(model, member.secId) }
-        : {};
+      let memberData = {};
+      if (member.matId && member.secId) {
+        memberData = effectiveSectionMaterial(
+          (id) => sectionOf(model, id),
+          (id) => materialOf(model, id),
+          member,
+        );
+        memberData.timoshenko = resolveMemberTimoshenko(
+          model,
+          member,
+          memberData.section,
+          memberData.material,
+          ax.L,
+        );
+      } else if (needsProperties) {
+        memberData = { material: materialOf(model, member.matId), section: sectionOf(model, member.secId) };
+      }
       return fixedEndTraceRow(buildFixedEndLoad(load, ax, memberData));
     })
     .filter(Boolean);

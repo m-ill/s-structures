@@ -94,9 +94,10 @@ export function dot(a = [], b = []) {
     + (Number(a[2]) || 0) * (Number(b[2]) || 0);
 }
 
-export function addConsistentPoint(fe, localForce, r, L) {
+export function addConsistentPoint(fe, localForce, r, L, timoshenko = {}) {
   const xi = clamp01(r);
-  const [N1, N2, N3, N4] = beamShapes(xi, L);
+  const [N1, N2, N3, N4] = beamShapes(xi, L, bendingPhi(timoshenko, 'z'));
+  const zShapes = beamShapes(xi, L, bendingPhi(timoshenko, 'y'));
   const [qx, qy, qz] = localForce;
   fe[0] += (1 - xi) * qx;
   fe[6] += xi * qx;
@@ -104,18 +105,19 @@ export function addConsistentPoint(fe, localForce, r, L) {
   fe[5] += N2 * qy;
   fe[7] += N3 * qy;
   fe[11] += N4 * qy;
-  fe[2] += N1 * qz;
-  fe[4] += -N2 * qz;
-  fe[8] += N3 * qz;
-  fe[10] += -N4 * qz;
+  fe[2] += zShapes[0] * qz;
+  fe[4] += -zShapes[1] * qz;
+  fe[8] += zShapes[2] * qz;
+  fe[10] += -zShapes[3] * qz;
 }
 
-export function addConsistentDistributed(fe, L, aRatio, bRatio, qAtRatio) {
+export function addConsistentDistributed(fe, L, aRatio, bRatio, qAtRatio, timoshenko = {}) {
   const a = clamp01(aRatio, 0);
   const b = clamp01(bRatio, 1);
   if (!(b > a) || !(L > 0)) return;
   integrateGauss(a, b, (r, weight) => {
-    const [N1, N2, N3, N4] = beamShapes(r, L);
+    const [N1, N2, N3, N4] = beamShapes(r, L, bendingPhi(timoshenko, 'z'));
+    const zShapes = beamShapes(r, L, bendingPhi(timoshenko, 'y'));
     const [qx, qy, qz] = qAtRatio(r);
     const dx = L * weight;
     fe[0] += (1 - r) * qx * dx;
@@ -124,22 +126,59 @@ export function addConsistentDistributed(fe, L, aRatio, bRatio, qAtRatio) {
     fe[5] += N2 * qy * dx;
     fe[7] += N3 * qy * dx;
     fe[11] += N4 * qy * dx;
-    fe[2] += N1 * qz * dx;
-    fe[4] += -N2 * qz * dx;
-    fe[8] += N3 * qz * dx;
-    fe[10] += -N4 * qz * dx;
+    fe[2] += zShapes[0] * qz * dx;
+    fe[4] += -zShapes[1] * qz * dx;
+    fe[8] += zShapes[2] * qz * dx;
+    fe[10] += -zShapes[3] * qz * dx;
   });
 }
 
-export function beamShapes(r, L) {
+export function beamShapes(r, L, phi = 0) {
   const r2 = r * r;
   const r3 = r2 * r;
+  const normalizedPhi = positivePhi(phi);
+  if (normalizedPhi > 0) {
+    const denominator = 1 + normalizedPhi;
+    const shearTerm = (normalizedPhi / 2) * r * (1 - r);
+    return [
+      (1 - 3 * r2 + 2 * r3 + normalizedPhi * (1 - r)) / denominator,
+      (L * (r - 2 * r2 + r3 + shearTerm)) / denominator,
+      (3 * r2 - 2 * r3 + normalizedPhi * r) / denominator,
+      (L * (r3 - r2 - shearTerm)) / denominator,
+    ];
+  }
   return [
     1 - 3 * r2 + 2 * r3,
     L * (r - 2 * r2 + r3),
     3 * r2 - 2 * r3,
     L * (r3 - r2),
   ];
+}
+
+export function beamRotationShapes(r, L, phi = 0) {
+  if (!(L > 0)) return [0, 0, 0, 0];
+  const normalizedPhi = positivePhi(phi);
+  if (!(normalizedPhi > 0)) {
+    return [
+      (-6 * r + 6 * r * r) / L,
+      1 - 4 * r + 3 * r * r,
+      (6 * r - 6 * r * r) / L,
+      3 * r * r - 2 * r,
+    ];
+  }
+  const denominator = 1 + normalizedPhi;
+  const parabolic = (3 * r * (1 - r)) / denominator;
+  return [
+    (-6 * r * (1 - r)) / (denominator * L),
+    (1 - r) - parabolic,
+    (6 * r * (1 - r)) / (denominator * L),
+    r - parabolic,
+  ];
+}
+
+export function bendingPhi(timoshenko = {}, plane = 'z') {
+  if (timoshenko?.enabled !== true) return 0;
+  return positivePhi(plane === 'y' ? timoshenko.phiY : timoshenko.phiZ);
 }
 
 export function integrateGauss(a, b, fn) {
@@ -217,6 +256,11 @@ function finiteNumber(value) {
   if (value == null || value === '') return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
+}
+
+function positivePhi(value) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number : 0;
 }
 
 function directionFailure(code, load, component, value) {

@@ -1,8 +1,8 @@
-import { clamp01, loadSource, negateVector } from './common.js';
+import { beamRotationShapes, bendingPhi, clamp01, loadSource, negateVector } from './common.js';
 
 export const FIXED_END_MEMBER_MOMENT_VERSION = 'p7-m7-consistent-member-moment-v1';
 
-export function fixedEndMemberMoment(load, ax) {
+export function fixedEndMemberMoment(load, ax, md = {}) {
   const inputLength = Number(ax?.L);
   const L = Number.isFinite(inputLength) ? inputLength : 0;
   const inputPosition = Number(load.at ?? load.t ?? 0.5);
@@ -11,7 +11,8 @@ export function fixedEndMemberMoment(load, ax) {
   const inputMoment = Number(load.M);
   const M = Number.isFinite(inputMoment) ? inputMoment : 0;
   const fe = new Array(12).fill(0);
-  const derivatives = beamShapeDerivatives(r, L);
+  const phi = bendingPhi(md.timoshenko, axis === 'y' ? 'y' : 'z');
+  const derivatives = beamRotationShapes(r, L, phi);
 
   if (axis === 'z') {
     fe[1] = M * derivatives[0];
@@ -43,6 +44,7 @@ export function fixedEndMemberMoment(load, ax) {
     version: FIXED_END_MEMBER_MOMENT_VERSION,
     source: loadSource(load),
     method: axis === 'x' ? 'consistent-member-torsional-moment' : 'consistent-member-point-couple',
+    timoshenko: md.timoshenko || null,
     fe,
     q0,
     recovery: {
@@ -54,12 +56,15 @@ export function fixedEndMemberMoment(load, ax) {
     handcalc: {
       expression: axis === 'x'
         ? 'fe = M [1-a/L, a/L] on torsional rotation DOFs'
-        : 'fe = M times the derivative of the cubic Hermite displacement interpolation at x=a',
+        : phi > 0
+          ? 'fe = M times the exact-static Timoshenko cross-section rotation interpolation at x=a'
+          : 'fe = M times the derivative of the cubic Hermite displacement interpolation at x=a',
       axis,
       position: r,
       moment: M,
       coordinate: 'local',
       shapeDerivatives: derivatives,
+      phi,
       equivalentNodalVector: fe.slice(),
       endMoments: {
         i: fe[axis === 'x' ? 3 : axis === 'y' ? 4 : 5],
@@ -67,16 +72,6 @@ export function fixedEndMemberMoment(load, ax) {
       },
     },
   };
-}
-
-function beamShapeDerivatives(r, L) {
-  if (!(L > 0)) return [0, 0, 0, 0];
-  return [
-    (-6 * r + 6 * r * r) / L,
-    1 - 4 * r + 3 * r * r,
-    (6 * r - 6 * r * r) / L,
-    3 * r * r - 2 * r,
-  ];
 }
 
 function loadIssue(load, code, component, value) {

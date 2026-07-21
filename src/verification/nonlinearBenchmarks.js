@@ -114,6 +114,12 @@ export function runPushoverRegressionBenchmark(options = {}) {
 
 function createPushoverRegressionModel() {
   const model = createPortalFrameSample();
+  model.analysisSettings = {
+    ...(model.analysisSettings || {}),
+    // B5 is a frozen Euler-Bernoulli regression baseline. Keep its formulation
+    // explicit so new-project defaults cannot silently invalidate the fixture.
+    shearDeformation: false,
+  };
   model.loadCombinations = [{
     id: 'CO1',
     name: 'Frozen B5 regression D + L',

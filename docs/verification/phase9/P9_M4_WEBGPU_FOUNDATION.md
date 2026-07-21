@@ -19,16 +19,16 @@ P9-M4 is implemented and qualifies the independent WebGPU kernel backend as `G2`
 
 | Item | Recorded result |
 | --- | --- |
-| Browser | Chrome 150 on Windows |
+| Browser | Chrome 149 on Windows |
 | Adapter | NVIDIA, Ampere architecture |
-| Kernels | 7/7 compile, dispatch and CPU f32 parity PASS |
+| Kernels | 7/7 operations, 8 fixtures compile, dispatch and CPU f32 parity PASS |
 | Reduction repeat | 5 runs, one result hash |
-| Queue | 24 submitted, 24 completed |
-| Pool | 34 buffers created, 34 destroyed |
-| Peak pooled bytes | 952,284 |
+| Queue | 25 submitted, 25 completed |
+| Pool | 35 buffers created, 35 destroyed |
+| Peak pooled bytes | 952,320 |
 | Design transfer | blocked |
 
-The frame matrix comparison had `0.125` maximum absolute difference and `1.19e-7` maximum relative difference because large stiffness terms are represented in f32. All other recorded fixture channels matched the f32 CPU reference exactly.
+The Euler–Bernoulli frame matrix comparison had `0.125` maximum absolute difference and `1.19e-7` maximum relative difference because large stiffness terms are represented in f32. The 9-wide Timoshenko frame matrix fixture also passed with `0.00390625` maximum absolute difference and `9.78e-8` maximum relative difference.
 
 ## Performance Evidence
 
@@ -36,8 +36,8 @@ The measurements include host writes, dispatch, queue completion, mapping and re
 
 | Operation | GPU median | CPU f32 median | GPU/CPU |
 | --- | ---: | ---: | ---: |
-| 65,536-value scale | 58.1 ms | 4.4 ms | 13.20 |
-| 4,096-row CSR SpMV | 7.2 ms | 1.4 ms | 5.14 |
+| 65,536-value scale | 47.3 ms | 3.5 ms | 13.51 |
+| 4,096-row CSR SpMV | 7.6 ms | 1.0 ms | 7.60 |
 
 GPU is slower for these transfer-bound fixtures, so the current `auto` route correctly selects CPU. M5 must prove reuse and end-to-end benefit before any elastic analysis route can select GPU.
 

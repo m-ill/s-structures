@@ -212,6 +212,15 @@ export {
   solveLinearDetailed,
 } from './solver/linear3d.js';
 export {
+  TIMOSHENKO_ELEMENT_VERSION,
+  TIMOSHENKO_KG_LIMITATION_CODE,
+  normalizedTimoshenkoPhi,
+  resolveGlobalShearDeformation,
+  resolveMemberShearDeformationSetting,
+  resolveMemberTimoshenko,
+  timoshenkoPhi,
+} from './solver/timoshenko.js';
+export {
   SPARSE_MATRIX_VERSION,
   cscMatVec,
   cscToDense,
@@ -1174,7 +1183,7 @@ export {
   upsertMaterial,
   upsertSection,
 } from './materials/libraryEdit.js';
-export { SECTION_PROPERTIES_VERSION, computeSectionProperties } from './materials/sectionProperties.js';
+export { SECTION_PROPERTIES_VERSION, computeSectionProperties, resolveSectionShearAreas } from './materials/sectionProperties.js';
 export { ELASTIC_EXPANSION_VERSION, expandAdvancedLoads } from './solver/elasticExpansion.js';
 export {
   FIXED_END_LOAD_VERSION,

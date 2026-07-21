@@ -1,6 +1,6 @@
 import { stableHash } from '../../../core/stableHash.js';
 
-export const WEBGPU_SHADER_CATALOG_VERSION = 'p9-m4-webgpu-shader-catalog-v1';
+export const WEBGPU_SHADER_CATALOG_VERSION = 'p10-m2-webgpu-shader-catalog-v2';
 
 const vectorScale = `
 @group(0) @binding(0) var<storage, read> inputValues: array<f32>;
@@ -134,7 +134,8 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
   let element = gid.x;
   let count = u32(params[0]);
   if (element >= count) { return; }
-  let propertyBase = element * 7u;
+  let propertyStride = u32(params[1]);
+  let propertyBase = element * propertyStride;
   let e = properties[propertyBase];
   let g = properties[propertyBase + 1u];
   let a = properties[propertyBase + 2u];
@@ -142,6 +143,12 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
   let iz = properties[propertyBase + 4u];
   let j = properties[propertyBase + 5u];
   let length = properties[propertyBase + 6u];
+  var phiY = 0.0;
+  var phiZ = 0.0;
+  if (propertyStride >= 9u) {
+    phiY = max(0.0, properties[propertyBase + 7u]);
+    phiZ = max(0.0, properties[propertyBase + 8u]);
+  }
   var k: array<f32, 144>;
   var temp: array<f32, 144>;
   for (var index = 0u; index < 144u; index = index + 1u) { k[index] = 0.0; temp[index] = 0.0; }
@@ -149,17 +156,19 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
   let gj = g * j / length;
   setSymmetric(&k, 0u, 0u, ea); setSymmetric(&k, 6u, 6u, ea); setSymmetric(&k, 0u, 6u, -ea);
   setSymmetric(&k, 3u, 3u, gj); setSymmetric(&k, 9u, 9u, gj); setSymmetric(&k, 3u, 9u, -gj);
-  let az = 12.0 * e * iz / (length * length * length);
-  let bz = 6.0 * e * iz / (length * length);
-  let cz = 4.0 * e * iz / length;
-  let dz = 2.0 * e * iz / length;
+  let denominatorZ = 1.0 + phiZ;
+  let az = 12.0 * e * iz / (denominatorZ * length * length * length);
+  let bz = 6.0 * e * iz / (denominatorZ * length * length);
+  let cz = (4.0 + phiZ) * e * iz / (denominatorZ * length);
+  let dz = (2.0 - phiZ) * e * iz / (denominatorZ * length);
   setSymmetric(&k, 1u, 1u, az); setSymmetric(&k, 7u, 7u, az); setSymmetric(&k, 1u, 7u, -az);
   setSymmetric(&k, 1u, 5u, bz); setSymmetric(&k, 1u, 11u, bz); setSymmetric(&k, 5u, 7u, -bz); setSymmetric(&k, 7u, 11u, -bz);
   setSymmetric(&k, 5u, 5u, cz); setSymmetric(&k, 11u, 11u, cz); setSymmetric(&k, 5u, 11u, dz);
-  let ay = 12.0 * e * iy / (length * length * length);
-  let by = 6.0 * e * iy / (length * length);
-  let cy = 4.0 * e * iy / length;
-  let dy = 2.0 * e * iy / length;
+  let denominatorY = 1.0 + phiY;
+  let ay = 12.0 * e * iy / (denominatorY * length * length * length);
+  let by = 6.0 * e * iy / (denominatorY * length * length);
+  let cy = (4.0 + phiY) * e * iy / (denominatorY * length);
+  let dy = (2.0 - phiY) * e * iy / (denominatorY * length);
   setSymmetric(&k, 2u, 2u, ay); setSymmetric(&k, 8u, 8u, ay); setSymmetric(&k, 2u, 8u, -ay);
   setSymmetric(&k, 2u, 4u, -by); setSymmetric(&k, 2u, 10u, -by); setSymmetric(&k, 4u, 8u, by); setSymmetric(&k, 8u, 10u, by);
   setSymmetric(&k, 4u, 4u, cy); setSymmetric(&k, 10u, 10u, cy); setSymmetric(&k, 4u, 10u, dy);

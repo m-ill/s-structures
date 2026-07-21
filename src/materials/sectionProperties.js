@@ -23,6 +23,88 @@ export function computeSectionProperties(shape, params = {}) {
   return null;
 }
 
+/**
+ * Resolve the effective shear areas used by the two local bending planes.
+ *
+ * Explicit positive Ay/Az values always win.  When an older section record
+ * does not carry them, this function applies a documented engineering
+ * approximation so the solver never invents a hidden zero-shear-area branch.
+ */
+export function resolveSectionShearAreas(section = {}) {
+  const properties = section?.properties && typeof section.properties === 'object'
+    ? section.properties
+    : {};
+  const merged = { ...section, ...properties };
+  const A = positiveNumber(merged.A);
+  const explicitAy = positiveNumber(merged.Ay ?? merged.As_y ?? merged.AsY);
+  const explicitAz = positiveNumber(merged.Az ?? merged.As_z ?? merged.AsZ);
+  const shape = String(
+    merged.shape
+      || merged.type
+      || merged.propertyProvenance?.shape
+      || merged.provenance?.shape
+      || '',
+  ).trim().toUpperCase();
+
+  let inferredAy = 0;
+  let inferredAz = 0;
+  let methodY = null;
+  let methodZ = null;
+  let fallback = false;
+
+  if (shape === 'RECT' || shape === 'SQUARE') {
+    inferredAy = A ? 5 * A / 6 : 0;
+    inferredAz = inferredAy;
+    methodY = '5A/6-solid-rectangle';
+    methodZ = methodY;
+  } else if (shape === 'CIRC') {
+    inferredAy = A ? 0.9 * A : 0;
+    inferredAz = inferredAy;
+    methodY = '0.9A-solid-circle';
+    methodZ = methodY;
+  } else if (shape === 'H') {
+    const geometry = hShearGeometry(merged);
+    inferredAy = geometry?.webArea || 0;
+    inferredAz = geometry?.flangeArea || 0;
+    methodY = inferredAy ? 'H-clear-web-area' : null;
+    methodZ = inferredAz ? 'H-two-flange-area' : null;
+    if ((!inferredAy || !inferredAz) && A) {
+      inferredAy ||= 0.9 * A;
+      inferredAz ||= 0.9 * A;
+      methodY ||= '0.9A-engineering-fallback';
+      methodZ ||= '0.9A-engineering-fallback';
+      fallback = true;
+    }
+  } else if (A) {
+    inferredAy = 0.9 * A;
+    inferredAz = 0.9 * A;
+    methodY = '0.9A-engineering-fallback';
+    methodZ = '0.9A-engineering-fallback';
+    fallback = true;
+  }
+
+  const Ay = explicitAy || inferredAy || null;
+  const Az = explicitAz || inferredAz || null;
+  return {
+    Ay,
+    Az,
+    provenance: {
+      version: 'p10-m2-section-shear-area-v1',
+      shape: shape || 'GENERAL',
+      sourceY: explicitAy ? 'explicit' : (Ay ? 'derived' : 'missing'),
+      sourceZ: explicitAz ? 'explicit' : (Az ? 'derived' : 'missing'),
+      methodY: explicitAy ? explicitShearAreaMethod(merged, 'y') : methodY,
+      methodZ: explicitAz ? explicitShearAreaMethod(merged, 'z') : methodZ,
+      fallback,
+    },
+  };
+}
+
+function explicitShearAreaMethod(section, axis) {
+  const keys = axis === 'y' ? ['Ay', 'As_y', 'AsY'] : ['Az', 'As_z', 'AsZ'];
+  return `section.${keys.find((key) => positiveNumber(section[key])) || keys[0]}`;
+}
+
 export function validateSectionGeometry(shape, params = {}) {
   const s = String(shape || '').trim().toUpperCase();
   const normalized = normalizeParams(s, params);
@@ -89,11 +171,16 @@ function hSection({ H, B, tw, tf }) {
   const fl = tf / 1000;
   const clearWeb = h - 2 * fl;
   const A = 2 * b * fl + web * clearWeb;
+  const Ay = web * clearWeb;
+  const Az = 2 * b * fl;
   const Iz = (b * h ** 3 - (b - web) * clearWeb ** 3) / 12;
   const Iy = (2 * fl * b ** 3 + clearWeb * web ** 3) / 12;
   const J = (2 * b * fl ** 3 + clearWeb * web ** 3) / 3;
   const Cw = fl * b ** 3 * (h - fl) ** 2 / 24;
-  return finish({ A, Iy, Iz, J, Cw, H: h, B: b }, 'H', 'composite-rectangles-open-section');
+  return finish({ A, Ay, Az, Iy, Iz, J, Cw, H: h, B: b, tw: web, tf: fl }, 'H', 'composite-rectangles-open-section', {
+    shearAreaMethod: 'H-web-flange-geometric',
+    shearAreaFallback: false,
+  });
 }
 
 function boxSection({ H, B, t }) {
@@ -106,7 +193,10 @@ function boxSection({ H, B, t }) {
   const Iy = (h * b ** 3 - hi * bi ** 3) / 12;
   const Iz = (b * h ** 3 - bi * hi ** 3) / 12;
   const J = 2 * th * (b - th) ** 2 * (h - th) ** 2 / (b + h - 2 * th);
-  return finish({ A, Iy, Iz, J, H: h, B: b }, 'BOX', 'uniform-thickness-bredt-batho');
+  return finish({ A, Ay: 0.9 * A, Az: 0.9 * A, Iy, Iz, J, H: h, B: b }, 'BOX', 'uniform-thickness-bredt-batho', {
+    shearAreaMethod: '0.9A-engineering-fallback',
+    shearAreaFallback: true,
+  });
 }
 
 function pipeSection({ D, t }) {
@@ -114,7 +204,10 @@ function pipeSection({ D, t }) {
   const di = d - 2 * t / 1000;
   const A = Math.PI * (d ** 2 - di ** 2) / 4;
   const I = Math.PI * (d ** 4 - di ** 4) / 64;
-  return finish({ A, Iy: I, Iz: I, J: 2 * I, H: d, B: d }, 'PIPE', 'annulus-closed-form');
+  return finish({ A, Ay: 0.9 * A, Az: 0.9 * A, Iy: I, Iz: I, J: 2 * I, H: d, B: d }, 'PIPE', 'annulus-closed-form', {
+    shearAreaMethod: '0.9A-engineering-fallback',
+    shearAreaFallback: true,
+  });
 }
 
 function rectSection({ B, H }, shape) {
@@ -190,4 +283,26 @@ function numberOrNull(value) {
 
 function positive(value) {
   return Number.isFinite(Number(value)) && Number(value) > 0;
+}
+
+function positiveNumber(value) {
+  return positive(value) ? Number(value) : 0;
+}
+
+function hShearGeometry(section) {
+  const params = section.params || section.dims || {};
+  const H = millimetresToMetres(params.H);
+  const B = millimetresToMetres(params.B);
+  const tw = millimetresToMetres(params.tw);
+  const tf = millimetresToMetres(params.tf);
+  if (![H, B, tw, tf].every((value) => value > 0) || 2 * tf >= H || tw >= B) return null;
+  return {
+    webArea: tw * (H - 2 * tf),
+    flangeArea: 2 * B * tf,
+  };
+}
+
+function millimetresToMetres(value) {
+  const number = positiveNumber(value);
+  return number ? number / 1000 : 0;
 }

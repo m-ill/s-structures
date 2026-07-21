@@ -36,6 +36,10 @@ export const BENCH_INTERNAL = {
 
 export function createBenchmarkModel() {
   const model = createModel();
+  // Historic closed-form fixtures are Euler-Bernoulli references. New project
+  // models default to Timoshenko, so the benchmark suite opts out explicitly.
+  delete model.analysisSettings.shearDeformation;
+  model.analysisSettings.includeShearDeformation = false;
   model.materials = [{ ...BENCH_MATERIAL }];
   model.sections = [{ ...BENCH_SECTION }];
   model.loadCases = [{ id: 'D', name: 'Benchmark load', type: 'dead' }];

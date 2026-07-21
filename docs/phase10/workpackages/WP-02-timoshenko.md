@@ -31,3 +31,9 @@ depends: [WP-00, WP-01]
 
 | 날짜 | 지적 | 조치 | 상태 |
 | --- | --- | --- | --- |
+| 2026-07-21 | global canonical 설정·legacy alias·부재 override가 해석 경로마다 달라질 위험 | 공통 resolver로 통합하고 canonical/alias 충돌과 잘못된 타입은 fail-closed로 검증했다. 신규 모델 기본은 true, 필드가 없던 migration 모델은 EB(false)로 보존했다. | PASS |
+| 2026-07-21 | 강성만 Φ를 반영하면 fixed-end/recovery/release가 서로 다른 요소를 표현 | point load와 partial UDL q0를 소스 shape 함수와 독립인 폐형 적분으로 대조하고, 복원 전단항 및 Schur release 응축을 EL-T02~04에서 함께 검증했다. | PASS |
+| 2026-07-21 | 변위와 힘을 한 벡터 metric으로 합치면 작은 변위 오차가 큰 힘 scale에 가려짐 | EL-T03은 변위/단부력, EL-T04는 변위/release 잔류력을 각각 별도 record와 tolerance로 분리했다. | PASS |
+| 2026-07-21 | legacy 조립 경로에만 구현되거나 compute hash가 설정 변경을 누락할 위험 | `elasticProductionAdapter`, DomainBinary v2, CPU reference 및 backend shadow route를 통과시키고 global/member shear 설정과 Φ를 descriptor/hash에 결속했다. | PASS |
+| 2026-07-21 | 기존 Euler–Bernoulli KG가 Timoshenko Ke와 완전 일관하지 않음 | 1차 범위에서 기존 KG를 유지하되 `TIMOSHENKO_CONSISTENT_KG_NOT_IMPLEMENTED` limitation code와 summary trace를 노출했다. | PASS |
+| 2026-07-21 | 실제 WebGPU 장치의 9-wide kernel 자격 증거와 XV-09 상용해가 아직 없음 | NVIDIA Ampere/Chrome 149 실제 장치에서 9-wide frame matrix를 최대 상대오차 `9.78e-8`로 검증했다. XV-09 SAP2000 artifact와 다중 vendor/browser 행렬은 pending으로 유지해 M11 release를 계속 차단한다. | PASS (M2) |

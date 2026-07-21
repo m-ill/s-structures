@@ -18,7 +18,7 @@ export const XVAL_REFERENCE_SOURCES = Object.freeze([
 ]);
 
 export const XVAL_REFERENCE_CASE_IDS = Object.freeze(
-  Array.from({ length: 8 }, (_value, index) => `XV-${String(index + 1).padStart(2, '0')}`),
+  Array.from({ length: 10 }, (_value, index) => `XV-${String(index + 1).padStart(2, '0')}`),
 );
 
 const ARTIFACT_KEYS = Object.freeze([

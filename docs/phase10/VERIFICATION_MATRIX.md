@@ -42,6 +42,32 @@ M1 전용 게이트는 PASS(XV-01/02, BM-01~10)했다. 최종 통합 `npm.cmd te
 | P10-M1-TOPOLOGY-PDELTA | memberless diaphragm master의 component topology 보존, Direct P-Delta explicit prescribed displacement 차단(`DIRECT_PDELTA_EXPLICIT_PRESCRIBED_UNSUPPORTED`) | PASS |
 | P10-M1-XVAL-SNAPSHOT | executor가 artifact를 변조해도 validation 시점 snapshot으로 대조하여 forged PASS 방지(TOCTOU) | PASS |
 
+## M2 — Timoshenko 전단변형 (WP-02)
+
+Evidence: [p10-m2-timoshenko.json](../../reports/validation-evidence/phase10/p10-m2-timoshenko.json) ·
+[XV-09 pending artifact](../../reports/validation-evidence/phase10/xv/XV-09-pending-reference.json)
+
+M2 전용 게이트는 8/8 records PASS이며 artifact hash는 `cf570a5579da4a3093dedb8c`다. XV-09는
+깊은 보 폐형해 내부 대조가 green이고 모델·artifact 결속이 준비됐으나 SAP2000 shear-deformation-on
+기준값은 `pending-reference`다. 따라서 M2 기능 게이트는 complete지만 `externallyCrossValidated=false`이며
+M11 release 조건에는 아직 포함할 수 없다. 9-wide WebGPU frame matrix는 NVIDIA Ampere/Chrome 149 실제
+장치에서 최대 상대오차 `9.78e-8`로 PASS했지만 다중 vendor/browser 행렬은 별도 release 조건으로 남는다.
+최종 통합 `npm.cmd test`도 2026-07-21 KST 종료 코드 0으로 PASS했다.
+
+| Record | 검증 | 상대오차 | tolerance | 결과 |
+| --- | --- | ---: | ---: | --- |
+| EL-T01 | Φ=0 → Euler–Bernoulli 정확 회귀 | 0 | 1e-12 | PASS |
+| Q0-POINT-TIMOSHENKO | 비대칭 집중하중 consistent q0 독립식 | 1.5620e-16 | 1e-12 | PASS |
+| Q0-PARTIAL-UDL-TIMOSHENKO | 부분 UDL consistent q0 독립 폐형 적분 | 5.8993e-16 | 1e-12 | PASS |
+| EL-T02 | 깊은 단순보 중앙집중 변위 | 1.1586e-16 | 1e-9 | PASS |
+| EL-T03 | 깊은 고정단보 UDL 변위 | 3.8469e-16 | 1e-9 | PASS |
+| EL-T03-FORCE | UDL 대칭 단부력 앵커 | 1.2336e-16 | 1e-9 | PASS |
+| EL-T04 | Timoshenko+release 변위 | 1.6232e-16 | 1e-8 | PASS |
+| EL-T04-RELEASE | 해제 DOF 잔류력 | 7.1054e-15 | 1e-8 | PASS |
+
+EL-T03과 EL-T04는 변위와 힘을 하나의 norm으로 합치지 않는다. 변위 record와 단부력/release 잔류력
+record를 분리해 큰 힘 scale이 작은 변위 오차를 가리는 것을 방지한다.
+
 ## XV — 독립 교차검증 (WP-01, M11 release 조건)
 
 | ID | 모델 | 기준해 소스 | 대조 응답량 |
@@ -54,11 +80,12 @@ M1 전용 게이트는 PASS(XV-01/02, BM-01~10)했다. 최종 통합 `npm.cmd te
 | XV-06 | 좌굴 (기둥군 + sway) | OpenSees + Euler 폐형해 | λcr 1~5모드 |
 | XV-07 | 스프링지지·침하 모델 | SAP2000 | 반력·변위 |
 | XV-08 | 다이어프램(강체·반강체) 건물 | ETABS | 층전단·CoM 변위 |
-| XV-09 | (M2 후) 깊은 보 전단변형 | 폐형해 + SAP2000(shear def on) | 처짐·단부력 |
+| XV-09 | 깊은 보 전단변형 — 내부 폐형해 ready/green, 외부 `pending-reference` | 폐형해 + SAP2000(shear def on) | 처짐·단부력 |
 | XV-10 | (M9 후) 전단벽 실 shell | SAP2000/ETABS shell | drift·벽 base moment·응력 대표점 |
 
 > 외부 solver 실행·기준값 추출은 **오너 입력물**. 저장소는 §11 artifact(JSON, modelHash 결속)로 수입해 자동 대조만 한다.
-> 현재 M1 상태는 XV-01/02 hand-calc PASS, XV-03~08 `pending-reference`, XV-09/10 후속 마일스톤 대기다.
+> 현재 상태는 XV-01/02 hand-calc PASS, XV-03~08 `pending-reference`, XV-09 내부 폐형해 green/SAP2000
+> `pending-reference`, XV-10 후속 마일스톤 대기다.
 > XV-02 hand-calc는 M1 하네스 검증에는 유효하지만 M11의 외부-source 요건에는 부적격이다. 따라서
 > `externallyCrossValidated=false`; XV-01~10 required-source green 및 pending 0 전까지 M11 release는 차단된다.
 

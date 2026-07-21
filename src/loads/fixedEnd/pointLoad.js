@@ -8,7 +8,7 @@ import {
 
 export const FIXED_END_POINT_LOAD_VERSION = 'p6-m2-fixed-end-point-load-v1';
 
-export function fixedEndPointLoad(load, ax) {
+export function fixedEndPointLoad(load, ax, md = {}) {
   const inputLength = Number(ax?.L);
   const L = Number.isFinite(inputLength) ? inputLength : 0;
   const inputPosition = Number(load.t ?? load.at ?? 0.5);
@@ -21,7 +21,7 @@ export function fixedEndPointLoad(load, ax) {
   }
   if (!(L > 0)) issues.push(loadIssue(load, 'INVALID_MEMBER_LENGTH', 'L', ax?.L));
   const fe = new Array(12).fill(0);
-  addConsistentPoint(fe, force, r, L);
+  addConsistentPoint(fe, force, r, L, md.timoshenko);
   const q0 = negateVector(fe);
   return {
     ok: issues.length === 0,
@@ -30,6 +30,7 @@ export function fixedEndPointLoad(load, ax) {
     version: FIXED_END_POINT_LOAD_VERSION,
     source: loadSource(load),
     method: 'consistent-point-load',
+    timoshenko: md.timoshenko || null,
     fe,
     q0,
     recovery: {

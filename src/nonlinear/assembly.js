@@ -10,6 +10,7 @@ export function buildNonlinearTangentAssembly(model = {}, state = {}, options = 
   const nodes = model.nodes || [];
   const members = model.members || [];
   const elastic = assembleStiffness3D(nodes, members, {
+    model,
     mat: (id) => materialOf(model, id),
     sec: (id) => sectionOf(model, id),
   });
@@ -51,24 +52,34 @@ export function buildNonlinearTangentAssembly(model = {}, state = {}, options = 
       geometricMemberCount,
       hingeCorrectionCount,
       maxAbsTangent: maxAbs(K),
+      timoshenkoApproximationCount: traces.filter(
+        (row) => row.geometric?.consistency?.consistent === false,
+      ).length,
+      limitationCodes: [...new Set(traces
+        .map((row) => row.geometric?.consistency?.limitationCode)
+        .filter(Boolean))],
     },
     limitations: [
       'Tangent assembly records KE plus KG plus concentrated hinge tangent corrections.',
       'It is a Phase 3 trace contract and does not yet perform global nonlinear equilibrium iterations.',
+      ...new Set(traces
+        .map((row) => row.geometric?.consistency?.limitationCode)
+        .filter(Boolean)),
     ],
   };
 }
 
 function addGeometricTangent(K, md, axialForce) {
   const trace = geometricStiffnessTrace({ axialForce, length: md.ax.L });
+  const consistency = md.timoshenko?.geometricStiffness || null;
   if (!Number.isFinite(axialForce) || Math.abs(axialForce) < 1e-12) {
-    return { ...trace, applied: false };
+    return { ...trace, consistency, applied: false };
   }
   const kgLocal = zero12();
   addPair(kgLocal, 1, 7, trace.kg);
   addPair(kgLocal, 2, 8, trace.kg);
   assembleMemberMatrix(K, md, kgLocal);
-  return { ...trace, applied: true, localDofs: ['uy', 'uz'] };
+  return { ...trace, consistency, applied: true, localDofs: ['uy', 'uz'] };
 }
 
 function addHingeTangent(K, md, hinge = {}) {

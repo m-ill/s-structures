@@ -3,9 +3,9 @@
   "suiteVersion": "p9-m10-release-gate-evidence-v1",
   "suiteId": "P9-M10-RELEASE-GATE",
   "milestone": "P9-M10",
-  "generatedAt": "2026-07-16T08:22:11.897Z",
-  "sourceRevision": "a645f5a+worktree",
-  "priorEvidenceHash": "d6d289b2fad540bafed0bfbadd88f5cb88e6f25bff28529850875cba1145705c",
+  "generatedAt": "2026-07-21T06:26:03.282Z",
+  "sourceRevision": "1f3cf1d+worktree",
+  "priorEvidenceHash": "846b848ca05ab5d8549117e65886a39348bbe9e75fe38b4d175696d30b1d6aea",
   "status": "BLOCKED",
   "implementationStatus": "complete",
   "verificationIds": [
@@ -33,7 +33,7 @@
   ],
   "cleanup": {
     "compatibilityRegistryVersion": "p9-m10-compatibility-registry-v1",
-    "finalDebtHash": "5aaf66c5db64bdc501745bdcd3b3d3091a5bc9c14702bd5261d04feef25281ff",
+    "finalDebtHash": "5971b971428f3fe939fe36b3bad4fa70460b565b00f67c0e90f38ed61f955198",
     "expiredProductionCompatibilityCallers": 0,
     "unexpectedCompatibilityCallers": 0,
     "unregisteredLegacyExports": 0,
@@ -197,7 +197,7 @@
       "staleArtifacts": 0,
       "evidenceArtifactsChecked": 11,
       "unapprovedDependencies": 0,
-      "finalDebtHash": "5aaf66c5db64bdc501745bdcd3b3d3091a5bc9c14702bd5261d04feef25281ff"
+      "finalDebtHash": "5971b971428f3fe939fe36b3bad4fa70460b565b00f67c0e90f38ed61f955198"
     },
     "releasePolicy": {
       "ok": true,
@@ -242,7 +242,7 @@
       "version": "0.1.0",
       "out": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\release\\s-structures-0.1.0",
       "zip": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\release\\s-structures-0.1.0.zip",
-      "sha256": "8afdf999dcb7c137cc3dde64032272778f104fe7c5ddd32fbd5088f58d795718"
+      "sha256": "854cbb6f26b59c717044633baaaa9275b959482e1344ab078e6adfda336308ec"
     }
   },
   "blockersRetained": [
@@ -254,5 +254,5 @@
     "P9_M10_FULL_REGRESSION_REQUIRED"
   ],
   "qualificationImpact": "M10-implementation-complete-release-blocked-G2-retained",
-  "artifactHash": "05133a91e6ed7f1bc1ba8398b40f112ec23b87d2d462d849e9c5d9aef2570b9b"
+  "artifactHash": "db27672b42a4d27831b31916a7acde8a4cd6cf272bd719d7db31fcd44c6390b0"
 }

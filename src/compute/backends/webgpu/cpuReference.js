@@ -89,12 +89,13 @@ export function referenceFiberSampleBatch(input = {}) {
 export function referenceFrameMatrixBatch(input = {}) {
   const properties = finiteF32(input.properties, 'properties');
   const transforms = finiteF32(input.responseTransforms, 'responseTransforms');
-  if (properties.length % 7 !== 0) throw referenceError('WEBGPU_FRAME_PROPERTY_SHAPE_INVALID', 'Frame properties require seven values per element.');
-  const count = properties.length / 7;
+  const propertyStride = framePropertyStride(input.propertyStride, properties.length);
+  if (properties.length % propertyStride !== 0) throw referenceError('WEBGPU_FRAME_PROPERTY_SHAPE_INVALID', 'Frame properties require seven EB values or nine values including phiY and phiZ per element.');
+  const count = properties.length / propertyStride;
   if (transforms.length !== count * 144) throw referenceError('WEBGPU_FRAME_TRANSFORM_SHAPE_INVALID', 'Frame response transforms require 144 values per element.');
   const output = new Float32Array(count * 144);
   for (let element = 0; element < count; element += 1) {
-    const p = properties.subarray(element * 7, element * 7 + 7);
+    const p = properties.subarray(element * propertyStride, element * propertyStride + propertyStride);
     const k = localFrameF32(...p);
     const t = transforms.subarray(element * 144, element * 144 + 144);
     const temp = multiply12F32(k, t);
@@ -104,9 +105,12 @@ export function referenceFrameMatrixBatch(input = {}) {
   return output;
 }
 
-function localFrameF32(e, g, a, iy, iz, j, length) {
+function localFrameF32(e, g, a, iy, iz, j, length, phiY = 0, phiZ = 0) {
   if (![e, g, a, iy, iz, j, length].every((value) => Number.isFinite(value) && value > 0)) {
     throw referenceError('WEBGPU_FRAME_PROPERTY_INVALID', 'Frame properties must be finite and positive.');
+  }
+  if (phiY < 0 || phiZ < 0) {
+    throw referenceError('WEBGPU_FRAME_PHI_INVALID', 'Frame phiY and phiZ must be nonnegative.');
   }
   const k = new Float32Array(144);
   const set = (i, q, value) => { k[i * 12 + q] = Math.fround(value); k[q * 12 + i] = Math.fround(value); };
@@ -114,17 +118,30 @@ function localFrameF32(e, g, a, iy, iz, j, length) {
   const gj = Math.fround(g * j / length);
   set(0, 0, ea); set(6, 6, ea); set(0, 6, -ea);
   set(3, 3, gj); set(9, 9, gj); set(3, 9, -gj);
-  const az = Math.fround(12 * e * iz / (length * length * length));
-  const bz = Math.fround(6 * e * iz / (length * length));
-  const cz = Math.fround(4 * e * iz / length);
-  const dz = Math.fround(2 * e * iz / length);
+  const denominatorZ = Math.fround(1 + Math.max(0, phiZ));
+  const az = Math.fround(12 * e * iz / (denominatorZ * length * length * length));
+  const bz = Math.fround(6 * e * iz / (denominatorZ * length * length));
+  const cz = Math.fround((4 + Math.max(0, phiZ)) * e * iz / (denominatorZ * length));
+  const dz = Math.fround((2 - Math.max(0, phiZ)) * e * iz / (denominatorZ * length));
   set(1, 1, az); set(7, 7, az); set(1, 7, -az); set(1, 5, bz); set(1, 11, bz); set(5, 7, -bz); set(7, 11, -bz); set(5, 5, cz); set(11, 11, cz); set(5, 11, dz);
-  const ay = Math.fround(12 * e * iy / (length * length * length));
-  const by = Math.fround(6 * e * iy / (length * length));
-  const cy = Math.fround(4 * e * iy / length);
-  const dy = Math.fround(2 * e * iy / length);
+  const denominatorY = Math.fround(1 + Math.max(0, phiY));
+  const ay = Math.fround(12 * e * iy / (denominatorY * length * length * length));
+  const by = Math.fround(6 * e * iy / (denominatorY * length * length));
+  const cy = Math.fround((4 + Math.max(0, phiY)) * e * iy / (denominatorY * length));
+  const dy = Math.fround((2 - Math.max(0, phiY)) * e * iy / (denominatorY * length));
   set(2, 2, ay); set(8, 8, ay); set(2, 8, -ay); set(2, 4, -by); set(2, 10, -by); set(4, 8, by); set(8, 10, by); set(4, 4, cy); set(10, 10, cy); set(4, 10, dy);
   return k;
+}
+
+function framePropertyStride(value, length) {
+  if (value != null) {
+    const stride = Number(value);
+    if (stride === 7 || stride === 9) return stride;
+    throw referenceError('WEBGPU_FRAME_PROPERTY_STRIDE_INVALID', 'Frame propertyStride must be 7 or 9.');
+  }
+  if (length % 7 === 0) return 7;
+  if (length % 9 === 0) return 9;
+  return 7;
 }
 
 function multiply12F32(left, right) {

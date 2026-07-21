@@ -24,6 +24,7 @@ import { recoverMemberResult } from './linear3dRecovery.js';
 import { buildSolverWarningDiagnostics } from './sparse/diagnostics.js';
 import { cscMatVec, SPARSE_MATRIX_VERSION } from './sparse/cscMatrix.js';
 import { buildFixedDofs, collectPrescribedDofs } from './domain/supportConstraints.js';
+import { resolveMemberTimoshenko } from './timoshenko.js';
 
 export { buildFixedDofs } from './domain/supportConstraints.js';
 
@@ -102,9 +103,11 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     const { ax, T } = kinematics;
     if (ax.L < 1e-9) continue;
     const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
-    const kl = memberBehavior(member) === 'truss'
+    const behavior = memberBehavior(member);
+    const timoshenko = resolveMemberTimoshenko(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
+    const kl = behavior === 'truss'
       ? localTrussK12(material.E, section.A, ax.L)
-      : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L);
+      : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L, timoshenko.phiY, timoshenko.phiZ);
     const i1 = idx[member.n1] * 6;
     const i2 = idx[member.n2] * 6;
     const dof = [i1, i1 + 1, i1 + 2, i1 + 3, i1 + 4, i1 + 5, i2, i2 + 1, i2 + 2, i2 + 3, i2 + 4, i2 + 5];
@@ -117,6 +120,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       fixedEndLoads: [],
       section,
       material,
+      timoshenko,
       rel: memberReleaseDofs(member),
     };
   }
@@ -618,9 +622,11 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     const { ax, T } = kinematics;
     if (ax.L < 1e-9) continue;
     const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
-    const kl = memberBehavior(member) === 'truss'
+    const behavior = memberBehavior(member);
+    const timoshenko = resolveMemberTimoshenko(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
+    const kl = behavior === 'truss'
       ? localTrussK12(material.E, section.A, ax.L)
-      : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L);
+      : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L, timoshenko.phiY, timoshenko.phiZ);
     const i1 = idx[member.n1] * 6;
     const i2 = idx[member.n2] * 6;
     const dof = [i1, i1 + 1, i1 + 2, i1 + 3, i1 + 4, i1 + 5, i2, i2 + 1, i2 + 2, i2 + 3, i2 + 4, i2 + 5];
@@ -632,6 +638,7 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
       f0: new Array(12).fill(0),
       section,
       material,
+      timoshenko,
       rel: memberReleaseDofs(member),
     };
   }

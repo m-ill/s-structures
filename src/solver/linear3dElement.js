@@ -97,7 +97,7 @@ export function memberAxes(a, b, localAxis) {
   return { L, x, y, z };
 }
 
-export function localK12(E, G, A, Iy, Iz, J, L) {
+export function localK12(E, G, A, Iy, Iz, J, L, phiY = 0, phiZ = 0) {
   const k = Array.from({ length: 12 }, () => new Array(12).fill(0));
   const set = (i, j, value) => {
     k[i][j] = value;
@@ -113,10 +113,12 @@ export function localK12(E, G, A, Iy, Iz, J, L) {
   set(9, 9, GJ);
   set(3, 9, -GJ);
 
-  const az = (12 * E * Iz) / L ** 3;
-  const bz = (6 * E * Iz) / L ** 2;
-  const cz = (4 * E * Iz) / L;
-  const dz = (2 * E * Iz) / L;
+  const normalizedPhiZ = Number.isFinite(Number(phiZ)) && Number(phiZ) > 0 ? Number(phiZ) : 0;
+  const denominatorZ = 1 + normalizedPhiZ;
+  const az = (12 * E * Iz) / (denominatorZ * L ** 3);
+  const bz = (6 * E * Iz) / (denominatorZ * L ** 2);
+  const cz = ((4 + normalizedPhiZ) * E * Iz) / (denominatorZ * L);
+  const dz = ((2 - normalizedPhiZ) * E * Iz) / (denominatorZ * L);
   set(1, 1, az);
   set(7, 7, az);
   set(1, 7, -az);
@@ -128,10 +130,12 @@ export function localK12(E, G, A, Iy, Iz, J, L) {
   set(11, 11, cz);
   set(5, 11, dz);
 
-  const ay = (12 * E * Iy) / L ** 3;
-  const by = (6 * E * Iy) / L ** 2;
-  const cy = (4 * E * Iy) / L;
-  const dy = (2 * E * Iy) / L;
+  const normalizedPhiY = Number.isFinite(Number(phiY)) && Number(phiY) > 0 ? Number(phiY) : 0;
+  const denominatorY = 1 + normalizedPhiY;
+  const ay = (12 * E * Iy) / (denominatorY * L ** 3);
+  const by = (6 * E * Iy) / (denominatorY * L ** 2);
+  const cy = ((4 + normalizedPhiY) * E * Iy) / (denominatorY * L);
+  const dy = ((2 - normalizedPhiY) * E * Iy) / (denominatorY * L);
   set(2, 2, ay);
   set(8, 8, ay);
   set(2, 8, -ay);

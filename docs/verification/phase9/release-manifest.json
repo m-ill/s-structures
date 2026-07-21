@@ -1,7 +1,7 @@
 {
   "version": "p9-release-manifest-v1",
-  "generatedAt": "2026-07-16T08:22:11.897Z",
-  "sourceRevision": "a645f5a+worktree",
+  "generatedAt": "2026-07-21T06:26:03.282Z",
+  "sourceRevision": "1f3cf1d+worktree",
   "phase": "Phase 9",
   "implementation": {
     "status": "implementation-complete-qualification-blocked",
@@ -88,14 +88,14 @@
     "m1CommonCompute": "c97ae53aac9f182eedae44a3314423ac5c521da23b678e8146037319d1e75803",
     "m2CpuWasm": "49c5c9ccf63ba2b4b6ef4c3c5383a7571e840998e4fc77d2b4a5e23ff20c48c7",
     "m3ElasticRuntime": "897ab273596507afe3ab2d7d5967f3416450f24c8adc62c1c99f550a13f339e9",
-    "m4WebGpuFoundation": "45286be5c46b9e30588171c2ec9dd16886f5e61723a1ebe87b75fa1c90e3a3f1",
-    "m5HybridElastic": "d39fb4ba7b541326b5bb5969891bacd2a8379aca82978591b949f83088b24964",
-    "m6SparseEigen": "6cc61b78529e693ba201c42678ded0fb4e3949cdd3a846ec4a25c2d35cd52190",
-    "m7NonlinearBatch": "241595c470865f6cce6139f9021dc5c7aa15e842a56bc8d17e799de97e58d0ea",
-    "m8HybridNonlinear": "414610214f30511b2517a74d7099ba8fd3e1b80037fd205b063ff1b5e8114f92",
-    "m9ProductWorkflow": "d6d289b2fad540bafed0bfbadd88f5cb88e6f25bff28529850875cba1145705c",
-    "m10ReleaseGate": "05133a91e6ed7f1bc1ba8398b40f112ec23b87d2d462d849e9c5d9aef2570b9b",
-    "m10FinalDebt": "5aaf66c5db64bdc501745bdcd3b3d3091a5bc9c14702bd5261d04feef25281ff"
+    "m4WebGpuFoundation": "2f7db8e0882bf4ef062c54a38cee6c263ff83e3fb51cdd6a8077f7c4f4dce6a5",
+    "m5HybridElastic": "882c05b227069827ce37a94e9522b233aacc7d6ca1f2154b4163111e160c6d77",
+    "m6SparseEigen": "1f7596f6c2df8e7e766e99a6b310742c833d03a79ba9fecda23d504ef7d8ef55",
+    "m7NonlinearBatch": "b9158695b8549685023e46263ba4d9ca7539b9295fe90a2210fb01e9e37d382a",
+    "m8HybridNonlinear": "2ce7cef750d04bbae2a56069f51c96f11a10ffb01be1f0b2d640f7de352ece18",
+    "m9ProductWorkflow": "846b848ca05ab5d8549117e65886a39348bbe9e75fe38b4d175696d30b1d6aea",
+    "m10ReleaseGate": "db27672b42a4d27831b31916a7acde8a4cd6cf272bd719d7db31fcd44c6390b0",
+    "m10FinalDebt": "5971b971428f3fe939fe36b3bad4fa70460b565b00f67c0e90f38ed61f955198"
   },
   "blockers": [
     "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
@@ -109,5 +109,5 @@
     "P9_M5_S_M_PROFILE_MATRIX_REQUIRED",
     "P9_M6_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED"
   ],
-  "manifestHash": "095614c1ae7f8d808f8ae9e7dd406984a46c4755889c2933b2b886b168da3bd8"
+  "manifestHash": "a8e25a8291dec98bccf966e3a0d00ef533d19091e5713e240f081ea9a3e4ef02"
 }

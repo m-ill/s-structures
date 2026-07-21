@@ -31,7 +31,17 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
   const endForces = matVec(md.kl, dl).map((value, i) => value + md.f0[i]);
   const spanLoads = collectMemberSpanLoads(member.id, loads, ax);
   const { xs, N, Vy, Vz, Tq, My, Mz } = recoverMemberStations(endForces, spanLoads, L, stationCount);
-  const { shape, dmaxM } = recoverMemberShape(dl, spanLoads, ax, material, section, L, stationCount);
+  const { shape, dmaxM, recoveryTrace } = recoverMemberShape(
+    dl,
+    spanLoads,
+    ax,
+    material,
+    section,
+    L,
+    stationCount,
+    endForces,
+    md.timoshenko,
+  );
 
   const memberResult = {
     end: endForces,
@@ -46,6 +56,8 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     Mz,
     L,
     fixedEndLoads: md.fixedEndLoads || [],
+    timoshenko: md.timoshenko || null,
+    deformationRecovery: recoveryTrace,
     loadRecoveryIssues: spanLoads.issues || [],
     shape,
     dmaxM,
@@ -151,51 +163,32 @@ export function recoverMemberStations(endForces, spanLoads, L, stationCount) {
   const Mz = [];
 
   for (const x of xs) {
-    let n = -endForces[0];
-    let vy = endForces[1];
-    let vz = endForces[2];
-    let tq = -endForces[3];
-    let mz = -endForces[5] + endForces[1] * x;
-    let my = endForces[4] + endForces[2] * x;
-    for (const load of spanLoads) {
-      if (load.type === 'point' && load.a <= x) {
-        n -= load.q[0];
-        vy += load.q[1];
-        vz += load.q[2];
-        mz += load.q[1] * (x - load.a);
-        my += load.q[2] * (x - load.a);
-      } else if (load.type === 'moment' && load.a <= x) {
-        if (load.axis === 'x') tq -= load.M;
-        else if (load.axis === 'y') my += load.M;
-        else if (load.axis === 'z') mz -= load.M;
-      } else if (load.type === 'udl') {
-        const { fI, mI } = integratedUniformLoad(load.shape, x, L);
-        n -= load.q[0] * fI;
-        vy += load.q[1] * fI;
-        vz += load.q[2] * fI;
-        mz += load.q[1] * mI;
-        my += load.q[2] * mI;
-      } else if (load.type === 'distributed-linear') {
-        const { f, m } = integrateDistributedLinearTo(load, x);
-        n -= f[0];
-        vy += f[1];
-        vz += f[2];
-        mz += m[1];
-        my += m[2];
-      }
-    }
-    N.push(n);
-    Vy.push(-vy);
-    Vz.push(-vz);
-    Tq.push(tq);
-    My.push(my);
-    Mz.push(mz);
+    const force = memberForceAt(endForces, spanLoads, L, x);
+    N.push(force.N);
+    Vy.push(force.Vy);
+    Vz.push(force.Vz);
+    Tq.push(force.Tq);
+    My.push(force.My);
+    Mz.push(force.Mz);
   }
 
   return { xs, N, Vy, Vz, Tq, My, Mz };
 }
 
-export function recoverMemberShape(dl, spanLoads, ax, material, section, L, stationCount) {
+export function recoverMemberShape(
+  dl,
+  spanLoads,
+  ax,
+  material,
+  section,
+  L,
+  stationCount,
+  endForces = null,
+  timoshenko = null,
+) {
+  if (timoshenko?.enabled === true && Array.isArray(endForces)) {
+    return recoverTimoshenkoShape(dl, endForces, spanLoads, ax, material, section, L, stationCount, timoshenko);
+  }
   const EIz = material.E * section.Iz;
   const EIy = material.E * section.Iy;
   const shape = [];
@@ -237,7 +230,109 @@ export function recoverMemberShape(dl, spanLoads, ax, material, section, L, stat
     dmaxM = Math.max(dmaxM, vlen(global));
   }
 
-  return { shape, dmaxM };
+  return {
+    shape,
+    dmaxM,
+    recoveryTrace: {
+      formulation: 'euler-bernoulli',
+      method: 'cubic-hermite-plus-fixed-end-bubble',
+      shearStrainIncluded: false,
+    },
+  };
+}
+
+function recoverTimoshenkoShape(dl, endForces, spanLoads, ax, material, section, L, stationCount, timoshenko) {
+  const EIz = material.E * section.Iz;
+  const EIy = material.E * section.Iy;
+  const GAy = material.G * section.Ay;
+  const GAz = material.G * section.Az;
+  const invGAy = GAy > 0 && Number.isFinite(GAy) ? 1 / GAy : 0;
+  const invGAz = GAz > 0 && Number.isFinite(GAz) ? 1 / GAz : 0;
+  const shape = [];
+  let dmaxM = 0;
+
+  for (let i = 0; i < stationCount; i += 1) {
+    const xi = i / (stationCount - 1);
+    const x = xi * L;
+    const u = dl[0] * (1 - xi) + dl[6] * xi;
+    let v = dl[1] + dl[5] * x;
+    let w = dl[2] - dl[4] * x;
+    forEachRecoveryInterval(spanLoads, x, (a, b) => {
+      integrateGaussPhysical(a, b, (s, weight) => {
+        const force = memberForceAt(endForces, spanLoads, L, s);
+        v += (((x - s) * force.Mz) / EIz + force.Vy * invGAy) * weight;
+        w += (((x - s) * force.My) / EIy + force.Vz * invGAz) * weight;
+      });
+    });
+    const global = vadd(vadd(vscale(ax.x, u), vscale(ax.y, v)), vscale(ax.z, w));
+    shape.push(global);
+    dmaxM = Math.max(dmaxM, vlen(global));
+  }
+
+  return {
+    shape,
+    dmaxM,
+    recoveryTrace: {
+      formulation: 'timoshenko',
+      method: 'moment-curvature-plus-shear-strain-force-integration',
+      shearStrainIncluded: true,
+      phiY: timoshenko.phiY,
+      phiZ: timoshenko.phiZ,
+      shearAreaY: timoshenko.shearAreaY,
+      shearAreaZ: timoshenko.shearAreaZ,
+    },
+  };
+}
+
+function memberForceAt(endForces, spanLoads, L, x) {
+  let n = -endForces[0];
+  let vy = endForces[1];
+  let vz = endForces[2];
+  let tq = -endForces[3];
+  let mz = -endForces[5] + endForces[1] * x;
+  let my = endForces[4] + endForces[2] * x;
+  for (const load of spanLoads) {
+    if (load.type === 'point' && load.a <= x) {
+      n -= load.q[0];
+      vy += load.q[1];
+      vz += load.q[2];
+      mz += load.q[1] * (x - load.a);
+      my += load.q[2] * (x - load.a);
+    } else if (load.type === 'moment' && load.a <= x) {
+      if (load.axis === 'x') tq -= load.M;
+      else if (load.axis === 'y') my += load.M;
+      else if (load.axis === 'z') mz -= load.M;
+    } else if (load.type === 'udl') {
+      const { fI, mI } = integratedUniformLoad(load.shape, x, L);
+      n -= load.q[0] * fI;
+      vy += load.q[1] * fI;
+      vz += load.q[2] * fI;
+      mz += load.q[1] * mI;
+      my += load.q[2] * mI;
+    } else if (load.type === 'distributed-linear') {
+      const { f, m } = integrateDistributedLinearTo(load, x);
+      n -= f[0];
+      vy += f[1];
+      vz += f[2];
+      mz += m[1];
+      my += m[2];
+    }
+  }
+  return { N: n, Vy: -vy, Vz: -vz, Tq: tq, My: my, Mz: mz };
+}
+
+function forEachRecoveryInterval(spanLoads, x, fn) {
+  if (!(x > 0)) return;
+  const points = new Set([0, x]);
+  for (const load of spanLoads) {
+    if ((load.type === 'point' || load.type === 'moment') && load.a > 0 && load.a < x) points.add(load.a);
+    if (load.type === 'distributed-linear') {
+      if (load.a > 0 && load.a < x) points.add(load.a);
+      if (load.b > 0 && load.b < x) points.add(load.b);
+    }
+  }
+  const sorted = [...points].sort((a, b) => a - b);
+  for (let i = 0; i < sorted.length - 1; i += 1) fn(sorted[i], sorted[i + 1]);
 }
 
 function clamp01(value, fallback = 0) {

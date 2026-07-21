@@ -143,19 +143,35 @@ async function fiberSampleBatch(platform, payload, context) {
 async function frameMatrixBatch(platform, payload, context) {
   const properties = finiteF32(payload.properties, 'properties');
   const responseTransforms = finiteF32(payload.responseTransforms, 'responseTransforms');
-  if (properties.length % 7 !== 0) throw kernelError('WEBGPU_FRAME_PROPERTY_SHAPE_INVALID', 'Frame properties require seven values per element.');
-  const count = properties.length / 7;
+  const propertyStride = framePropertyStride(payload.propertyStride, properties.length);
+  if (properties.length % propertyStride !== 0) throw kernelError('WEBGPU_FRAME_PROPERTY_SHAPE_INVALID', 'Frame properties require seven EB values or nine values including phiY and phiZ per element.');
+  const count = properties.length / propertyStride;
   if (responseTransforms.length !== count * 144) throw kernelError('WEBGPU_FRAME_TRANSFORM_SHAPE_INVALID', 'Frame transforms require 144 values per element.');
-  if (properties.some((value) => !(value > 0))) throw kernelError('WEBGPU_FRAME_PROPERTY_INVALID', 'Frame properties must be positive.');
+  for (let element = 0; element < count; element += 1) {
+    const base = element * propertyStride;
+    if (properties.subarray(base, base + 7).some((value) => !(value > 0))) throw kernelError('WEBGPU_FRAME_PROPERTY_INVALID', 'The seven base frame properties must be positive.');
+    if (propertyStride === 9 && properties.subarray(base + 7, base + 9).some((value) => value < 0)) throw kernelError('WEBGPU_FRAME_PHI_INVALID', 'Frame phiY and phiZ must be nonnegative.');
+  }
   assertSingleBindingLimit(platform, properties.byteLength, 'frame properties');
   assertSingleBindingLimit(platform, responseTransforms.byteLength, 'frame transforms');
   assertSingleBindingLimit(platform, count * 144 * 4, 'frame output');
   const output = await dispatchKernel(platform, {
-    shader: 'frameMatrixBatch', inputs: [properties, responseTransforms, Float32Array.of(count)],
+    shader: 'frameMatrixBatch', inputs: [properties, responseTransforms, Float32Array.of(count, propertyStride)],
     outputLength: count * 144, dispatchCount: count, outputBinding: 2,
     bindingOrder: [0, 1, 3], signal: context.signal,
   });
-  return { values: output, elementCount: count, responseTransformApplied: true };
+  return { values: output, elementCount: count, propertyStride, responseTransformApplied: true };
+}
+
+function framePropertyStride(value, length) {
+  if (value != null) {
+    const stride = Number(value);
+    if (stride === 7 || stride === 9) return stride;
+    throw kernelError('WEBGPU_FRAME_PROPERTY_STRIDE_INVALID', 'Frame propertyStride must be 7 or 9.');
+  }
+  if (length % 7 === 0) return 7;
+  if (length % 9 === 0) return 9;
+  return 7;
 }
 
 async function dispatchKernel(platform, spec) {

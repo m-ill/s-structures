@@ -159,7 +159,7 @@ assertRejected('nonpositive scale', {
   quantities: [{ ...readyInput.quantities[0], scale: 0 }],
 }, 'artifact:quantity:0:scale');
 assertRejected('bad source', { ...readyInput, source: 'spreadsheet' }, 'artifact:source');
-assertRejected('bad case', { ...readyInput, caseId: 'XV-09' }, 'artifact:case-id');
+assertRejected('bad case', { ...readyInput, caseId: 'XV-11' }, 'artifact:case-id');
 assertRejected('bad date', { ...readyInput, date: 'today' }, 'artifact:date');
 assertRejected('invalid calendar date', { ...readyInput, date: '2026-02-30' }, 'artifact:date');
 

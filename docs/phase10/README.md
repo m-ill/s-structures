@@ -4,7 +4,7 @@
 doc: readme
 phase: 10
 date: 2026-07-21
-status: active, P10-M0-M1-complete, full-regression-pass
+status: active, P10-M0-M2-complete, full-regression-pass
 owner-inputs-required: [외부 solver 기준해(XV 계층), ADR-002 shell 옵션 B 번복 승인]
 ```
 
@@ -73,6 +73,6 @@ Phase 10의 모든 작업은 **기존 자산의 확장**이며 재작성이 아�
 **착수 → 구현(마이크로 모듈, 단일책임) → `/code-review high` → 수정 → 검증표·evidence 갱신 → merge(npm test green)**.
 이전 게이트 미통과 시 다음 마일스톤 착수 금지. 상태 변경은 코드·테스트·evidence·코드리뷰 완료 후에만 `complete`.
 
-P10-M0·M1은 전용 게이트, evidence, 코드리뷰와 최종 통합 `npm.cmd test`가 모두 PASS하여 `complete`다.
+P10-M0·M1·M2는 전용 게이트, evidence, 코드리뷰와 최종 통합 `npm.cmd test`가 모두 PASS하여 `complete`다.
 다만 XV-02~10의 외부 기준해 요건이 충족되지 않았으므로 제품의 `externally-cross-validated` 배지는
 `false`이며 M11 release gate는 차단 상태다.

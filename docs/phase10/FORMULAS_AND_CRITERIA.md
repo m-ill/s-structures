@@ -57,16 +57,28 @@ k_θθ = (4+Φ) EI / ((1+Φ) L)      k_θθ' = (2−Φ) EI / ((1+Φ) L)
 고정단력: 집중하중 P@a 의 fixed-end (Φ 반영식). UDL 대칭 케이스는 Φ 무관(±qL²/12 유지) — 회귀 앵커
 복원함수: 처짐 v(x) = 휨성분 + 전단성분(V(x)/(G·As) 적분)
 응축:     condenseReleasedDofs는 수정 k에 그대로 적용 (Schur 일반형이므로 코드 변경 없음 — 검증만)
-KG:       기하강성도 Timoshenko 일관형 사용 시 Φ 보정 — 1차 범위에서는 기존 KG 유지 허용, 차이는 진단 필드로 노출
+KG:       기하강성도 Timoshenko 일관형 사용 시 Φ 보정 — 1차 범위에서는 기존 KG 유지 허용,
+          차이는 limitation code `TIMOSHENKO_CONSISTENT_KG_NOT_IMPLEMENTED`와 summary trace로 노출
 ```
 
 **판정 기준** (config: `criteria.element.*`)
 ```text
 Φ=0 회귀:   기존 EB 결과 대비 상대오차 < 1e-12 (해석적으로 동일해야 함)
 깊은 보:    단순보 중앙집중 폐형해 δ = PL³/(48EI) + PL/(4GAs) 대비 < 1e-9
-얕은 보:    L/h ≥ slenderCutoff(기본 20)에서 EB 대비 차이 < shallowTol(기본 1e-3) — sanity
+얕은 보:    L/h ≥ slenderCutoff(기본 60) 사각형 보에서 max(Φ_y,Φ_z) < shallowTol(기본 1e-3) — sanity gate
 활성화:     analysisSettings.shearDeformation (기본 true), 요소별 override 허용
 ```
+
+얕은 보 sanity 기준 fixture는 `L/h=60` 사각형 보이며 두 평면의 Φ를 config tolerance로 검증한다. 신규 모델은 canonical
+`analysisSettings.shearDeformation=true`가 기본이다. 이 필드가 없던 기존 모델은 migration에서 false(EB)로
+고정해 과거 결과를 보존하고, legacy `includeShearDeformation` alias는 읽기 호환만 제공한다. canonical과
+alias가 충돌하거나 값 타입이 boolean이 아니면 임의 우선순위를 택하지 않고 fail-closed한다.
+
+compute의 9-wide WebGPU shadow kernel/CPU reference 계약은 구현됐고, NVIDIA Ampere/Chrome 149 실제
+장치에서도 144개 행렬값이 최대 상대오차 `9.78e-8`로 PASS했다. 원시 증거는
+[P9-M4 browser artifact](../../reports/validation-evidence/phase9/p9-m4-browser-raw.json)에 결속한다. 다만
+다중 vendor/browser 행렬(`P9-GPU-PLT-12`)과 XV-09 SAP2000 기준해는 여전히 pending이므로 M11 release
+판정은 계속 차단한다.
 
 ---
 
@@ -375,8 +387,11 @@ dense / sparse LDLT / CG 세 경로의 pivot localization 일치를 고정하는
 
 | Config 키 | 의미 | 초기 기본값 |
 | --- | --- | --- |
-| `criteria.element.shearSlenderCutoff` | Timoshenko sanity 세장비 | 20 |
+| `criteria.element.shearSlenderCutoff` | Timoshenko diagnostic sanity 세장비 | 60 |
 | `criteria.element.shearShallowTol` | 얕은 보 EB 대비 허용차 | 1e-3 |
+| `criteria.element.shearPhiZeroTol` | Φ=0 Euler–Bernoulli 회귀 허용차 | 1e-12 |
+| `criteria.element.shearDeepBeamTol` | 깊은 보 폐형해 허용차 | 1e-9 |
+| `criteria.element.shearReleaseTol` | Timoshenko+release 변위·잔류력 허용차 | 1e-8 |
 | `criteria.connection.stiffRatioWarn` | 강접 권장 경고 k_θL/EI | 1e4 |
 | `criteria.connection.releaseRatioWarn` | release 권장 경고 k_θL/EI | 1e-4 |
 | `criteria.offset.equilibriumTol` | 강체팔 평형 오차 | 1e-10 |

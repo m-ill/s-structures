@@ -63,6 +63,7 @@ export function analyzeDynamics(model, options = {}) {
   const settings = { ...(model.analysisSettings || {}), ...(options || {}) };
   const modeCount = Math.max(1, settings.modalModeCount | 0 || 6);
   const system = assembleStiffness3D(model.nodes || [], model.members || [], {
+    model,
     mat: (id) => materialOf(model, id),
     sec: (id) => sectionOf(model, id),
   });

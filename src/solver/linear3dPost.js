@@ -581,10 +581,22 @@ export function effectiveSectionMaterial(getSec, getMat, member) {
   let material = getMat(member.matId);
   const custom = member.customProps;
   if (custom) {
-    if (Number(custom.E) > 0) material = { ...material, E: Number(custom.E) * 1000 };
+    if (Number(custom.E) > 0 || Number(custom.G) > 0) {
+      material = {
+        ...material,
+        E: Number(custom.E) > 0 ? Number(custom.E) * 1000 : material.E,
+        G: Number(custom.G) > 0 ? Number(custom.G) * 1000 : material.G,
+      };
+    }
+    const customArea = Number(custom.A) > 0 ? Number(custom.A) * 1e-4 : section.A;
+    const areaScale = Number(section.A) > 0 ? customArea / section.A : 1;
+    const customAy = Number(custom.Ay ?? custom.As_y ?? custom.AsY);
+    const customAz = Number(custom.Az ?? custom.As_z ?? custom.AsZ);
     section = {
       ...section,
-      A: Number(custom.A) > 0 ? Number(custom.A) * 1e-4 : section.A,
+      A: customArea,
+      Ay: customAy > 0 ? customAy * 1e-4 : Number(section.Ay) > 0 ? section.Ay * areaScale : undefined,
+      Az: customAz > 0 ? customAz * 1e-4 : Number(section.Az) > 0 ? section.Az * areaScale : undefined,
       Iz: Number(custom.Iz) > 0 ? Number(custom.Iz) * 1e-8 : section.Iz,
       Iy: Number(custom.Iy) > 0 ? Number(custom.Iy) * 1e-8 : section.Iy,
       J: Number(custom.J) > 0 ? Number(custom.J) * 1e-8 : section.J,

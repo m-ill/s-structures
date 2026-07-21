@@ -3,9 +3,9 @@
   "suiteVersion": "p9-m9-product-workflow-evidence-v1",
   "suiteId": "P9-M9-PRODUCT-WORKFLOW",
   "milestone": "P9-M9",
-  "generatedAt": "2026-07-16T06:05:30.072Z",
-  "sourceRevision": "dd7c974+worktree",
-  "priorEvidenceHash": "414610214f30511b2517a74d7099ba8fd3e1b80037fd205b063ff1b5e8114f92",
+  "generatedAt": "2026-07-21T06:24:35.578Z",
+  "sourceRevision": "1f3cf1d+worktree",
+  "priorEvidenceHash": "2ce7cef750d04bbae2a56069f51c96f11a10ffb01be1f0b2d640f7de352ece18",
   "status": "PASS",
   "verificationIds": [
     "P9-UI-01",
@@ -184,10 +184,10 @@
         "P9-REF-10"
       ],
       "jobId": "AGENT-STATIC",
-      "planHash": "59390fd52d7fd2e3c21f517274c3cb508ca8a8b1f032f0c3a4214d4bec5c81b0",
+      "planHash": "5c73f527ac84c35595b15d6c3f3d6b32f15a4e9b3181fde155b9ff95c6651993",
       "settingsByteParity": true,
       "planHashParity": true,
-      "resultRecord": "EL-STATIC:2026-07-16T06:05:29.932Z:2",
+      "resultRecord": "EL-STATIC:2026-07-21T06:24:35.435Z:2",
       "gpuReason": "WEBGPU_UNAVAILABLE"
     }
   },
@@ -198,5 +198,5 @@
     "P9_M10_RELEASE_GATE_REQUIRED"
   ],
   "qualificationImpact": "M9-product-workflow-complete-G2-retained",
-  "artifactHash": "d6d289b2fad540bafed0bfbadd88f5cb88e6f25bff28529850875cba1145705c"
+  "artifactHash": "846b848ca05ab5d8549117e65886a39348bbe9e75fe38b4d175696d30b1d6aea"
 }

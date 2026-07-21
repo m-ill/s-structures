@@ -1,7 +1,7 @@
 {
   "version": "p9-m10-final-debt-status-v1",
-  "generatedAt": "2026-07-16T08:22:11.897Z",
-  "sourceRevision": "a645f5a+worktree",
+  "generatedAt": "2026-07-21T06:26:03.282Z",
+  "sourceRevision": "1f3cf1d+worktree",
   "status": "implementation-debt-closed-qualification-debt-open",
   "rows": [
     {
@@ -205,5 +205,5 @@
     "ownerless": 0,
     "openQualification": 4
   },
-  "artifactHash": "5aaf66c5db64bdc501745bdcd3b3d3091a5bc9c14702bd5261d04feef25281ff"
+  "artifactHash": "5971b971428f3fe939fe36b3bad4fa70460b565b00f67c0e90f38ed61f955198"
 }

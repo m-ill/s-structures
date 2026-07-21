@@ -3,7 +3,7 @@
 ```yaml
 doc: roadmap
 phase: 10
-date: 2026-07-20
+date: 2026-07-21
 cycle: 착수 → 구현 → /code-review high → 수정 → 검증표·evidence 갱신 → merge (npm test green)
 ```
 
@@ -16,7 +16,7 @@ cycle: 착수 → 구현 → /code-review high → 수정 → 검증표·evidenc
 | --- | --- | --- | --- | --- | --- |
 | **P10-M0** | 즉시 보정 (θ 3-tier · RSA scaling 적용) | [WP-00](workpackages/WP-00-quick-corrections.md) | §1 | — | θ 4상태 분기 + REQUIRE-2ND 설계차단 배선, scaling 전 응답 적용 + provenance, 기존 292 스위트 green |
 | **P10-M1** | 독립 교차검증 + 병적 모델 배터리 | [WP-01](workpackages/WP-01-cross-validation.md) | §11 | M0 | XV artifact 계약·러너, XV-01·02 hand-calc green, XV-03~08 모델·executor·`pending-reference` artifact, BM-01~10 case-specific code·behavior·location pass |
-| **P10-M2** | Timoshenko 전단변형 | [WP-02](workpackages/WP-02-timoshenko.md) | §2 | M0, M1 | Φ=0 회귀 <1e-12, 깊은 보 폐형해 <1e-9, q0·복원 동반 갱신, compute 계약 통과 |
+| **P10-M2** ✅ complete | Timoshenko 전단변형 | [WP-02](workpackages/WP-02-timoshenko.md) | §2 | M0, M1 | Φ=0 회귀 <1e-12, 깊은 보 폐형해 <1e-9, 독립 point/partial-UDL q0·복원·release·compute 계약 PASS — [evidence 8/8](../../reports/validation-evidence/phase10/p10-m2-timoshenko.json) · [review](reviews/P10-M2-CODE-REVIEW.md) |
 | **P10-M3** | 부분강접 (회전스프링 단부) | [WP-03](workpackages/WP-03-partial-fixity.md) | §3 | M2 | k_θ 양극한 = 강접/release <1e-9, 폐형해 <1e-7 |
 | **P10-M4** | 3D 오프셋 · 삽입점 · 패널존 | [WP-04](workpackages/WP-04-offsets-panelzone.md) | §4 | M0, M1 | r=0 회귀 <1e-12, 편심 벤치마크 <1e-8, 평형감사 확장 |
 | **P10-M5** | 일반 MPC · rigid link | [WP-05](workpackages/WP-05-mpc-rigidlink.md) | §5 | M0, M1 | u=Tq+ubar 행 확장(신규 엔진 금지), 충돌검출 3코드, 다이어프램 회귀 <1e-10 |

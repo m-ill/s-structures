@@ -8,6 +8,7 @@ import { ADDITIONAL_PRACTICAL_SECTIONS } from '../materials/db/practicalSections
 import { normalizeMaterialRecord } from '../materials/materialSchema.js';
 import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
 import { normalizeSectionRecord } from '../materials/sectionSchema.js';
+import { resolveSectionShearAreas } from '../materials/sectionProperties.js';
 
 export const DEFAULT_UNITS = {
   length: 'm',
@@ -130,8 +131,12 @@ export function toInternalSection(section) {
   const normalized = normalizeSectionRecord(section || {});
   const properties = normalized.properties || {};
   const merged = { ...section, ...normalized, ...properties };
+  const shearAreas = resolveSectionShearAreas(merged);
   return {
     ...merged,
+    Ay: shearAreas.Ay,
+    Az: shearAreas.Az,
+    shearAreaProvenance: shearAreas.provenance,
     ry: positiveFinite(merged.ry) ? Number(merged.ry) : merged.Iy && merged.A ? Math.sqrt(merged.Iy / merged.A) : 0,
     rz: positiveFinite(merged.rz) ? Number(merged.rz) : merged.Iz && merged.A ? Math.sqrt(merged.Iz / merged.A) : 0,
   };

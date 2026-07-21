@@ -1,0 +1,236 @@
+{
+  "version": "p10-evidence-artifact-v1",
+  "suiteId": "P10-M2-TIMOSHENKO",
+  "milestone": "P10-M2",
+  "status": "OK",
+  "generatedAt": "2026-07-21T12:00:00.000+09:00",
+  "sourceRevision": "1f3cf1d+p10-m2-worktree",
+  "test": "tests/p10-m2-timoshenko.mjs",
+  "solverVersion": "p10-m2-timoshenko-frame-v1",
+  "results": {
+    "ok": true,
+    "version": "p10-m2-timoshenko",
+    "phiY": 0.05625,
+    "phiZ": 0.18,
+    "zeroPhiMaxError": 0,
+    "pointReference": [
+      -92.54237288135593,
+      -40.490847457627126,
+      -93.54319526627219,
+      41.69183431952662
+    ],
+    "pointComputed": [
+      -92.54237288135594,
+      -40.49084745762712,
+      -93.5431952662722,
+      41.69183431952663
+    ],
+    "partialReference": [
+      40.72881355932203,
+      20.93857627118646,
+      31.271186440677955,
+      -18.229423728813558,
+      40.86106508875739,
+      -21.09727810650888,
+      31.138934911242597,
+      18.070721893491115
+    ],
+    "partialComputed": [
+      40.72881355932201,
+      20.938576271186427,
+      31.27118644067794,
+      -18.229423728813547,
+      40.86106508875738,
+      -21.097278106508863,
+      31.13893491124258,
+      18.070721893491115
+    ],
+    "deepSimpleReference": [
+      0.0002517333333333333,
+      0.0009013333333333331
+    ],
+    "deepSimple": [
+      0.0002517333333333333,
+      0.000901333333333333
+    ],
+    "fixedReference": [
+      0.000055039999999999995,
+      0.0001568,
+      28.799999999999997,
+      28.799999999999997
+    ],
+    "fixedComputed": [
+      0.00005503999999999996,
+      0.00015679999999999994,
+      28.799999999999994,
+      28.799999999999994
+    ],
+    "releasedReference": [
+      0.00018278399999999996,
+      0.0006424319999999999,
+      0,
+      0,
+      0,
+      0
+    ],
+    "releasedComputed": [
+      0.00018278399999999996,
+      0.0006424319999999997,
+      -7.105427357601002e-15,
+      -7.105427357601002e-15,
+      0,
+      -7.105427357601002e-15
+    ],
+    "modelHashes": {
+      "simple": "4c4ec60a5ea1a380",
+      "fixed": "b44ef67a965b12d5",
+      "released": "5e7de7a568ed7660"
+    },
+    "tolerances": {
+      "phiZero": 1e-12,
+      "deepBeam": 1e-9,
+      "release": 1e-8
+    }
+  },
+  "records": [
+    {
+      "caseId": "EL-T01",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-12,
+      "modelHash": "4c4ec60a5ea1a380",
+      "solverVersion": "p10-m2-timoshenko-frame-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "Q0-POINT-TIMOSHENKO",
+      "reference": [
+        -92.54237288135593,
+        -40.490847457627126,
+        -93.54319526627219,
+        41.69183431952662
+      ],
+      "computed": [
+        -92.54237288135594,
+        -40.49084745762712,
+        -93.5431952662722,
+        41.69183431952663
+      ],
+      "relError": 1.5620233490178004e-16,
+      "tolerance": 1e-12,
+      "modelHash": "4c4ec60a5ea1a380",
+      "solverVersion": "p10-m2-timoshenko-frame-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "Q0-PARTIAL-UDL-TIMOSHENKO",
+      "reference": [
+        40.72881355932203,
+        20.93857627118646,
+        31.271186440677955,
+        -18.229423728813558,
+        40.86106508875739,
+        -21.09727810650888,
+        31.138934911242597,
+        18.070721893491115
+      ],
+      "computed": [
+        40.72881355932201,
+        20.938576271186427,
+        31.27118644067794,
+        -18.229423728813547,
+        40.86106508875738,
+        -21.097278106508863,
+        31.13893491124258,
+        18.070721893491115
+      ],
+      "relError": 5.899279885867715e-16,
+      "tolerance": 1e-12,
+      "modelHash": "4c4ec60a5ea1a380",
+      "solverVersion": "p10-m2-timoshenko-frame-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-T02",
+      "reference": [
+        0.0002517333333333333,
+        0.0009013333333333331
+      ],
+      "computed": [
+        0.0002517333333333333,
+        0.000901333333333333
+      ],
+      "relError": 1.1585502676072051e-16,
+      "tolerance": 1e-9,
+      "modelHash": "4c4ec60a5ea1a380",
+      "solverVersion": "p10-m2-timoshenko-frame-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-T03",
+      "reference": [
+        0.000055039999999999995,
+        0.0001568
+      ],
+      "computed": [
+        0.00005503999999999996,
+        0.00015679999999999994
+      ],
+      "relError": 3.8468719029609565e-16,
+      "tolerance": 1e-9,
+      "modelHash": "b44ef67a965b12d5",
+      "solverVersion": "p10-m2-timoshenko-frame-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-T03-FORCE",
+      "reference": [
+        28.799999999999997,
+        28.799999999999997
+      ],
+      "computed": [
+        28.799999999999994,
+        28.799999999999994
+      ],
+      "relError": 1.2335811384723962e-16,
+      "tolerance": 1e-9,
+      "modelHash": "b44ef67a965b12d5",
+      "solverVersion": "p10-m2-timoshenko-frame-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-T04",
+      "reference": [
+        0.00018278399999999996,
+        0.0006424319999999999
+      ],
+      "computed": [
+        0.00018278399999999996,
+        0.0006424319999999997
+      ],
+      "relError": 1.6232301895706567e-16,
+      "tolerance": 1e-8,
+      "modelHash": "5e7de7a568ed7660",
+      "solverVersion": "p10-m2-timoshenko-frame-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-T04-RELEASE",
+      "reference": 0,
+      "computed": 7.105427357601002e-15,
+      "relError": 7.105427357601002e-15,
+      "tolerance": 1e-8,
+      "modelHash": "5e7de7a568ed7660",
+      "solverVersion": "p10-m2-timoshenko-frame-v1",
+      "status": "OK"
+    }
+  ],
+  "crossValidation": {
+    "caseId": "XV-09",
+    "internalClosedFormStatus": "OK",
+    "externalReferenceStatus": "pending-reference",
+    "externallyCrossValidated": false
+  },
+  "artifactHash": "cf570a5579da4a3093dedb8c"
+}

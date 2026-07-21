@@ -1,6 +1,9 @@
 import { stableHash, stableStringify } from '../../core/stableHash.js';
+import { resolveGlobalShearDeformation, resolveMemberShearDeformationSetting } from '../../core/shearDeformation.js';
+import { resolveSectionShearAreas } from '../../materials/sectionProperties.js';
+import { normalizeSectionRecord } from '../../materials/sectionSchema.js';
 
-export const DOMAIN_BINARY_VERSION = 'p9-domain-binary-v1';
+export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v2';
 export const DOMAIN_BINARY_ENDIANNESS = detectEndianness();
 
 export function packDomainBinary(model = {}) {
@@ -47,6 +50,9 @@ export function packDomainBinary(model = {}) {
   const memberRoll = new Float64Array(members.length);
   const memberOffsets = new Float64Array(members.length * 6);
   const memberReleaseCodes = new Uint8Array(members.length * 2);
+  const globalShearDeformation = resolveGlobalShearDeformation(model);
+  const analysisFlags = new Uint8Array([globalShearDeformation.enabled ? 1 : 0]);
+  const memberShearDeformation = new Uint8Array(members.length);
   members.forEach((member, index) => {
     connectivity[index * 2] = requiredIndex(nodeIndex, member.n1, 'member.n1');
     connectivity[index * 2 + 1] = requiredIndex(nodeIndex, member.n2, 'member.n2');
@@ -57,6 +63,10 @@ export function packDomainBinary(model = {}) {
     memberOffsets.set(offsetValues(member), index * 6);
     memberReleaseCodes[index * 2] = releaseCode(member.releases?.i);
     memberReleaseCodes[index * 2 + 1] = releaseCode(member.releases?.j);
+    const behavior = member.behavior || member.type || 'frame';
+    const shearApplicable = !['truss', 'tensionOnly', 'compressionOnly'].includes(behavior);
+    memberShearDeformation[index] = shearApplicable
+      && resolveMemberShearDeformationSetting(model, member).requested ? 1 : 0;
   });
 
   const materialProperties = new Float64Array(materialIds.length * 5);
@@ -71,14 +81,25 @@ export function packDomainBinary(model = {}) {
     ], index * 5);
   });
   const sectionProperties = new Float64Array(sectionIds.length * 4);
+  const sectionShearAreas = new Float64Array(sectionIds.length * 2);
   sectionIds.forEach((id, index) => {
     const row = sections.find((item) => item.id === id) || {};
+    const normalized = normalizeSectionRecord(row);
+    const properties = normalized.properties && typeof normalized.properties === 'object'
+      ? normalized.properties
+      : {};
+    const effective = { ...row, ...normalized, ...properties };
+    const shearAreas = resolveSectionShearAreas(effective);
     sectionProperties.set([
-      numberOr(row.A ?? row.properties?.A, 0),
-      numberOr(row.Iy ?? row.properties?.Iy, 0),
-      numberOr(row.Iz ?? row.properties?.Iz, 0),
-      numberOr(row.J ?? row.properties?.J, 0),
+      numberOr(effective.A, 0),
+      numberOr(effective.Iy, 0),
+      numberOr(effective.Iz, 0),
+      numberOr(effective.J, 0),
     ], index * 4);
+    sectionShearAreas.set([
+      positiveOr(shearAreas.Ay, 0),
+      positiveOr(shearAreas.Az, 0),
+    ], index * 2);
   });
 
   const loadCase = new Int32Array(loads.length);
@@ -133,8 +154,11 @@ export function packDomainBinary(model = {}) {
     memberRoll,
     memberOffsets,
     memberReleaseCodes,
+    analysisFlags,
+    memberShearDeformation,
     materialProperties,
     sectionProperties,
+    sectionShearAreas,
     loadCase,
     loadTargetKind,
     loadTargetIndex,
@@ -149,6 +173,11 @@ export function packDomainBinary(model = {}) {
     units: canonicalUnits(model),
     schemaVersion: model.schemaVersion ?? null,
     payloadEncoding: 'utf8-stable-json',
+    bufferLayouts: {
+      analysisFlags: ['shearDeformation'],
+      memberShearDeformation: 'effective-requested-boolean',
+      sectionShearAreas: ['Ay', 'Az'],
+    },
     counts: {
       nodes: nodes.length,
       activeDof,
@@ -186,6 +215,11 @@ export function validateDomainBinary(domain) {
   if (!ArrayBuffer.isView(buffers.connectivity) || !ArrayBuffer.isView(buffers.memberType)) errors.push('domain:member-buffers');
   if (domain.metadata?.counts?.nodes * 3 !== buffers.coordinates?.length) errors.push('domain:node-count');
   if (domain.metadata?.counts?.members * 2 !== buffers.connectivity?.length) errors.push('domain:member-count');
+  if (!(buffers.analysisFlags instanceof Uint8Array) || buffers.analysisFlags.length !== 1) errors.push('domain:analysis-flags');
+  if (!(buffers.memberShearDeformation instanceof Uint8Array)
+    || domain.metadata?.counts?.members !== buffers.memberShearDeformation.length) errors.push('domain:member-shear-deformation');
+  if (!(buffers.sectionShearAreas instanceof Float64Array)
+    || domain.metadata?.counts?.sections * 2 !== buffers.sectionShearAreas.length) errors.push('domain:section-shear-areas');
   if (domain.domainHash !== hashDomain(domain.metadata, domain.dictionaries, buffers, byteLength)) errors.push('domain:hash');
   return { ok: errors.length === 0, errors };
 }
@@ -301,6 +335,11 @@ function finite(value, field) {
 function numberOr(value, fallback) {
   const number = Number(value);
   return Number.isFinite(number) ? number : fallback;
+}
+
+function positiveOr(value, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number : fallback;
 }
 
 function text(value) {

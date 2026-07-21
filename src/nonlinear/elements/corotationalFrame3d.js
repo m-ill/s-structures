@@ -885,7 +885,8 @@ function prepareDescriptor(descriptor, options) {
     const Iy = nonnegative(section.Iy, 'section.Iy');
     const Iz = nonnegative(section.Iz, 'section.Iz');
     const J = nonnegative(section.J, 'section.J');
-    localStiffness = localK12(E, G, A, Iy, Iz, J, referenceLength);
+    const shear = descriptor.formulation?.shearDeformation || {};
+    localStiffness = localK12(E, G, A, Iy, Iz, J, referenceLength, shear.phiY, shear.phiZ);
   }
   const releases = normalizeReleases(descriptor.releases?.localDofs, descriptor.id);
   validateReleaseContract(descriptor.releases?.contract, releases, descriptor.id);

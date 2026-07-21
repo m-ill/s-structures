@@ -31,6 +31,7 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
   let assembly;
   try {
     assembly = assembleStiffness3D(model.nodes || [], model.members || [], {
+      model,
       mat: options.mat || ((id) => materialOf(model, id)),
       sec: options.sec || ((id) => sectionOf(model, id)),
     });
@@ -170,6 +171,11 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
       source: preload.source,
       combinationId: preload.combinationId,
     })),
+    geometricStiffness: {
+      version: geometric.version,
+      formulation: 'euler-bernoulli-small-displacement',
+      ...geometric.summary,
+    },
     guidance: eigen.ok ? null : {
       code: eigen.reason || 'BUCKLING_EIGENSOLUTION_BLOCKED',
       message: eigen.message || 'Buckling modes did not satisfy the requested count and residual contract.',
@@ -177,6 +183,7 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
     limitations: [
       'Uses elastic small-displacement frame stiffness and compression-positive member preload forces.',
       'Shells, follower loads, construction sequence, and material nonlinearity are not included.',
+      ...geometric.summary.limitationCodes,
     ],
   };
 }

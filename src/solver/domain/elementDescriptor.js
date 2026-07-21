@@ -3,6 +3,7 @@ import { stableHash } from '../../core/stableHash.js';
 import { memberReleaseDofs } from '../linear3dElement.js';
 import { memberKinematics } from '../linear3dAssembly.js';
 import { effectiveSectionMaterial } from '../linear3dPost.js';
+import { resolveMemberTimoshenko } from '../timoshenko.js';
 
 export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p8-m1-element-descriptor-v1';
 
@@ -37,6 +38,13 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
     );
     const i = nodeIndex.get(member.n1) * 6;
     const j = nodeIndex.get(member.n2) * 6;
+    const timoshenko = resolveMemberTimoshenko(
+      model,
+      member,
+      effective.section,
+      effective.material,
+      kinematics.ax.L,
+    );
     const descriptor = {
       version: CANONICAL_ELEMENT_DESCRIPTOR_VERSION,
       id: member.id,
@@ -69,12 +77,20 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
         effectiveSection: sectionSnapshot(effective.section),
         modifiers: clone(member.modifiers || null),
       },
+      formulation: {
+        family: 'frame-3d',
+        bending: timoshenko.formulation,
+        shearDeformation: clone(timoshenko),
+      },
       nonlinear: clone(member.nonlinear || null),
       generated: member.generated === true,
       massless: member.massless === true || member.generated === true,
       origin: originOf(member, wallByMember),
     };
-    descriptor.propertyHash = stableHash(descriptor.propertySnapshot).slice(0, 24);
+    descriptor.propertyHash = stableHash({
+      propertySnapshot: descriptor.propertySnapshot,
+      formulation: descriptor.formulation,
+    }).slice(0, 24);
     descriptor.descriptorHash = stableHash(descriptor).slice(0, 24);
     descriptors.push(descriptor);
   }

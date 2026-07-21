@@ -8,7 +8,7 @@ import {
 
 export const FIXED_END_PARTIAL_UDL_VERSION = 'p6-m2-fixed-end-partial-udl-v1';
 
-export function fixedEndPartialUdl(load, ax) {
+export function fixedEndPartialUdl(load, ax, md = {}) {
   const inputLength = Number(ax?.L);
   const L = Number.isFinite(inputLength) ? inputLength : 0;
   const inputFrom = Number(load.from);
@@ -23,7 +23,7 @@ export function fixedEndPartialUdl(load, ax) {
   if (!(L > 0)) issues.push(loadIssue(load, 'INVALID_MEMBER_LENGTH', 'L', ax?.L));
   const fe = new Array(12).fill(0);
   const q = resolved.ok ? resolved.localComponents : [0, 0, 0];
-  addConsistentDistributed(fe, L, from, to, () => q);
+  addConsistentDistributed(fe, L, from, to, () => q, md.timoshenko);
   const q0 = negateVector(fe);
   return {
     ok: issues.length === 0,
@@ -32,6 +32,7 @@ export function fixedEndPartialUdl(load, ax) {
     version: FIXED_END_PARTIAL_UDL_VERSION,
     source: loadSource(load),
     method: 'consistent-partial-udl',
+    timoshenko: md.timoshenko || null,
     fe,
     q0,
     recovery: {
