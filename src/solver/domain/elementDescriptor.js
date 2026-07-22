@@ -7,8 +7,9 @@ import { effectiveSectionMaterial } from '../linear3dPost.js';
 import { resolveMemberPartialFixity } from '../partialFixity.js';
 import { resolveMemberTimoshenko } from '../timoshenko.js';
 import { applyPanelZoneConnectionSprings, attachPanelZoneSources } from '../panelZone.js';
+import { resolveMemberTaper } from '../taperedMember.js';
 
-export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p10-m4-element-descriptor-v3';
+export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p10-m6-element-descriptor-v4';
 
 export function buildElementDescriptors(model = {}, nodes = model.nodes || [], members = model.members || []) {
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
@@ -64,6 +65,11 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
       errors.push(issue(partialFixity.reason || 'PARTIAL_FIXITY_INVALID', member.id, 'Member partial-fixity data is invalid.'));
       continue;
     }
+    const taper = resolveMemberTaper(model, member, effective.section, { section: getSection });
+    if (taper?.ok === false) {
+      errors.push(issue(taper.reason || 'BAD_MEMBER_TAPER', member.id, taper.message));
+      continue;
+    }
     const descriptor = {
       version: CANONICAL_ELEMENT_DESCRIPTOR_VERSION,
       id: member.id,
@@ -102,6 +108,7 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
         family: 'frame-3d',
         bending: timoshenko.formulation,
         shearDeformation: clone(timoshenko),
+        taper: clone(taper),
       },
       nonlinear: clone(member.nonlinear || null),
       generated: member.generated === true,

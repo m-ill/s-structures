@@ -29,6 +29,7 @@ import { NONLINEAR_REGISTRY_COLLECTIONS, validateNonlinearRegistries } from './n
 import { resolveMemberOffsetKinematics } from '../solver/memberOffsets.js';
 import { validatePanelZoneInput } from '../solver/panelZone.js';
 import { normalizeGeneralConstraints } from './constraintDefinitions.js';
+import { resolveMemberTaper } from '../solver/taperedMember.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -361,10 +362,19 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
     }
 
     validateMemberOffset(member, a, b, resolvedSection || {}, error);
+    validateMemberTaper(model, member, resolvedSection || {}, error);
     validateMemberPanelZones(member, a, b, error);
     validateMemberReleases(member, error);
   }
   return memberIds;
+}
+
+function validateMemberTaper(model, member, section, error) {
+  if (member.taper == null) return;
+  const taper = resolveMemberTaper(model, member, section);
+  if (taper?.ok) return;
+  const code = ERROR_CODES[taper?.reason] || ERROR_CODES.BAD_MEMBER_TAPER;
+  error(code, taper?.message || 'Member taper is invalid.', member.id);
 }
 
 function validateMemberReleases(member, error) {

@@ -28,3 +28,4 @@ depends: [WP-02]
 
 | 날짜 | 지적 | 조치 | 상태 |
 | --- | --- | --- | --- |
+| 2026-07-22 | 프리즘 무회귀, 변단면 폐형해, 적분 수렴과 질량·KG·compute 계약을 함께 고정해야 함 | force-based Gauss 적분, station/fixed-end trace, lumped mass, KG provenance, DomainBinary v6 및 EL-P01~03 evidence를 구현 | PASS_FOR_P10_M6_GATE / NOT_RELEASE_QUALIFIED |

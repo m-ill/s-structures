@@ -4,7 +4,7 @@ import { resolveSectionShearAreas } from '../../materials/sectionProperties.js';
 import { normalizeSectionRecord } from '../../materials/sectionSchema.js';
 import { normalizeGeneralConstraints } from '../../core/constraintDefinitions.js';
 
-export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v5';
+export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v6';
 export const DOMAIN_BINARY_ENDIANNESS = detectEndianness();
 
 const MEMBER_ROTATIONAL_SPRING_COMPONENTS = Object.freeze(['ryI', 'rzI', 'ryJ', 'rzJ']);
@@ -30,7 +30,12 @@ export function packDomainBinary(model = {}) {
   const nodeIds = uniqueIds(nodes, 'node');
   const memberIds = uniqueIds(members, 'member');
   const materialIds = dictionaryIds(materials, members.map((row) => row.matId), 'material');
-  const sectionIds = dictionaryIds(sections, members.map((row) => row.secId), 'section');
+  const taperSectionRefs = members.flatMap((row) => [
+    row.secId,
+    row.taper?.sectionIdJ,
+    ...(row.taper?.segments || []).map((segment) => segment.sectionId || segment.secId),
+  ]).filter(Boolean);
+  const sectionIds = dictionaryIds(sections, taperSectionRefs, 'section');
   const loadCaseIds = dictionaryIds(loadCases, loads.map((row) => row.case), 'load case');
   const loadIds = loads.map((row, index) => text(row.id) || 'L' + (index + 1));
   const combinationIds = combinations.map((row, index) => text(row.id) || 'C' + (index + 1));
@@ -104,6 +109,14 @@ export function packDomainBinary(model = {}) {
   const globalShearDeformation = resolveGlobalShearDeformation(model);
   const analysisFlags = new Uint8Array([globalShearDeformation.enabled ? 1 : 0]);
   const memberShearDeformation = new Uint8Array(members.length);
+  const memberTaperProfiles = new Uint8Array(members.length);
+  const memberTaperGaussPoints = new Uint8Array(members.length);
+  const memberTaperEndSections = new Int32Array(members.length).fill(-1);
+  const taperSegmentCount = members.reduce((sum, member) => sum + (Array.isArray(member.taper?.segments) ? member.taper.segments.length : 0), 0);
+  const memberTaperSegmentOffsets = new Int32Array(members.length + 1);
+  const memberTaperSegmentBounds = new Float64Array(taperSegmentCount * 2);
+  const memberTaperSegmentSections = new Int32Array(taperSegmentCount);
+  let taperSegmentIndex = 0;
   members.forEach((member, index) => {
     connectivity[index * 2] = requiredIndex(nodeIndex, member.n1, 'member.n1');
     connectivity[index * 2 + 1] = requiredIndex(nodeIndex, member.n2, 'member.n2');
@@ -126,6 +139,20 @@ export function packDomainBinary(model = {}) {
     const shearApplicable = !['truss', 'tensionOnly', 'compressionOnly'].includes(behavior);
     memberShearDeformation[index] = shearApplicable
       && resolveMemberShearDeformationSetting(model, member).requested ? 1 : 0;
+    const taper = member.taper;
+    if (taper && typeof taper === 'object' && !Array.isArray(taper)) {
+      memberTaperProfiles[index] = taper.profile === 'segments' ? 3 : taper.profile === 'parabolic-depth' ? 2 : 1;
+      memberTaperGaussPoints[index] = Number(taper.gaussPoints || 5);
+      memberTaperEndSections[index] = requiredIndex(sectionIndex, taper.sectionIdJ || member.secId, 'member.taper.sectionIdJ');
+      for (const [segmentIndex, segment] of (taper.segments || []).entries()) {
+        const start = Number(segment.start ?? segment.xi0 ?? (segmentIndex / taper.segments.length));
+        const end = Number(segment.end ?? segment.xi1 ?? ((segmentIndex + 1) / taper.segments.length));
+        memberTaperSegmentBounds.set([start, end], taperSegmentIndex * 2);
+        memberTaperSegmentSections[taperSegmentIndex] = requiredIndex(sectionIndex, segment.sectionId || segment.secId, 'member.taper.segments.sectionId');
+        taperSegmentIndex += 1;
+      }
+    }
+    memberTaperSegmentOffsets[index + 1] = taperSegmentIndex;
   });
 
   const materialProperties = new Float64Array(materialIds.length * 5);
@@ -224,6 +251,12 @@ export function packDomainBinary(model = {}) {
     memberRotationalSpringMask,
     analysisFlags,
     memberShearDeformation,
+    memberTaperProfiles,
+    memberTaperGaussPoints,
+    memberTaperEndSections,
+    memberTaperSegmentOffsets,
+    memberTaperSegmentBounds,
+    memberTaperSegmentSections,
     materialProperties,
     sectionProperties,
     sectionShearAreas,
@@ -250,6 +283,9 @@ export function packDomainBinary(model = {}) {
     bufferLayouts: {
       analysisFlags: ['shearDeformation'],
       memberShearDeformation: 'effective-requested-boolean',
+      memberTaperProfiles: { 0: 'absent', 1: 'linear', 2: 'parabolic-depth', 3: 'segments' },
+      memberTaperGaussPoints: 'gauss-legendre-point-count',
+      memberTaperSegmentBounds: ['start-xi', 'end-xi'],
       memberReleaseCodes: ['i', 'j'],
       nodePanelZones: ['tp', 'db', 'dc'],
       nodePanelZoneAxis: { 0: 'absent', 1: 'strong-axis-default', 2: 'local-y', 3: 'local-z' },
@@ -278,6 +314,7 @@ export function packDomainBinary(model = {}) {
       constraints: normalizedConstraints.constraintCount,
       constraintEquations: normalizedConstraints.equationCount,
       constraintTerms: constraintTermDofs.length,
+      taperSegments: taperSegmentCount,
     },
     dictionaryHash: stableHash(dictionaries),
     sourceHash: stableHash(model),
@@ -350,6 +387,24 @@ export function validateDomainBinary(domain) {
   if (!(buffers.analysisFlags instanceof Uint8Array) || buffers.analysisFlags.length !== 1) errors.push('domain:analysis-flags');
   if (!(buffers.memberShearDeformation instanceof Uint8Array)
     || domain.metadata?.counts?.members !== buffers.memberShearDeformation.length) errors.push('domain:member-shear-deformation');
+  if (!(buffers.memberTaperProfiles instanceof Uint8Array)
+    || domain.metadata?.counts?.members !== buffers.memberTaperProfiles.length
+    || [...(buffers.memberTaperProfiles || [])].some((value) => value > 3)) errors.push('domain:member-taper-profiles');
+  if (!(buffers.memberTaperGaussPoints instanceof Uint8Array)
+    || domain.metadata?.counts?.members !== buffers.memberTaperGaussPoints.length
+    || [...(buffers.memberTaperGaussPoints || [])].some((value, index) => buffers.memberTaperProfiles?.[index] && ![5, 10].includes(value))) errors.push('domain:member-taper-gauss-points');
+  if (!(buffers.memberTaperEndSections instanceof Int32Array)
+    || domain.metadata?.counts?.members !== buffers.memberTaperEndSections.length) errors.push('domain:member-taper-end-sections');
+  const taperSegmentCount = domain.metadata?.counts?.taperSegments;
+  if (!(buffers.memberTaperSegmentOffsets instanceof Int32Array)
+    || buffers.memberTaperSegmentOffsets.length !== domain.metadata?.counts?.members + 1
+    || buffers.memberTaperSegmentOffsets[0] !== 0
+    || buffers.memberTaperSegmentOffsets.at(-1) !== taperSegmentCount) errors.push('domain:member-taper-segment-offsets');
+  if (!(buffers.memberTaperSegmentBounds instanceof Float64Array)
+    || buffers.memberTaperSegmentBounds.length !== taperSegmentCount * 2
+    || [...(buffers.memberTaperSegmentBounds || [])].some((value) => !Number.isFinite(value))) errors.push('domain:member-taper-segment-bounds');
+  if (!(buffers.memberTaperSegmentSections instanceof Int32Array)
+    || buffers.memberTaperSegmentSections.length !== taperSegmentCount) errors.push('domain:member-taper-segment-sections');
   if (!(buffers.sectionShearAreas instanceof Float64Array)
     || domain.metadata?.counts?.sections * 2 !== buffers.sectionShearAreas.length) errors.push('domain:section-shear-areas');
   const equationCount = domain.metadata?.counts?.constraintEquations;
@@ -429,6 +484,27 @@ export function unpackDomainBinary(domain) {
     }
     const insertionPoint = INSERTION_POINTS[buffers.memberInsertionPoints[index]];
     if (insertionPoint !== 'centroid') member.insertionPoint = insertionPoint;
+    const taperProfile = buffers.memberTaperProfiles[index];
+    if (taperProfile) {
+      const profile = taperProfile === 3 ? 'segments' : taperProfile === 2 ? 'parabolic-depth' : 'linear';
+      member.taper = {
+        profile,
+        sectionIdJ: dictionaries.sectionIds[buffers.memberTaperEndSections[index]],
+        gaussPoints: buffers.memberTaperGaussPoints[index],
+      };
+      if (profile === 'segments') {
+        const start = buffers.memberTaperSegmentOffsets[index];
+        const end = buffers.memberTaperSegmentOffsets[index + 1];
+        member.taper.segments = Array.from({ length: end - start }, (_value, offset) => {
+          const segment = start + offset;
+          return {
+            start: buffers.memberTaperSegmentBounds[segment * 2],
+            end: buffers.memberTaperSegmentBounds[segment * 2 + 1],
+            sectionId: dictionaries.sectionIds[buffers.memberTaperSegmentSections[segment]],
+          };
+        });
+      }
+    }
     return member;
   });
   return {

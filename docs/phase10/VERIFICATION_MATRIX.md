@@ -206,6 +206,19 @@ Evidence: [p10-m5-mpc-rigidlink.json](../../reports/validation-evidence/phase10/
 DomainBinary v5는 slave DOF, term offset/DOF/계수, 상수, source type을 typed buffer로 보존한다.
 전용 runner 3/3, evidence 5/5가 PASS했으며 외부 solver 교차검증 전이므로 release qualification은 부여하지 않는다.
 
+## M6 변단면 부재 (WP-06)
+
+Evidence: [p10-m6-tapered.json](../../reports/validation-evidence/phase10/p10-m6-tapered.json)
+
+| Record | 검증 | tolerance | 결과 |
+| --- | --- | ---: | --- |
+| EL-P01 | 상수 taper와 기존 프리즘의 변위·단부력·반력 | 1e-12 | PASS — 5.9212e-16 |
+| EL-P02 | 선형 I(x) 캔틸레버 팁하중 폐형해 | 1e-6 | PASS — 4.0464e-9 |
+| EL-P03 | 5점→10점 Gauss 적분 수렴 | 1e-8 | PASS — 4.0464e-9 |
+
+같은 gate에서 선형 `∫ρA dx` lumped mass, taper KG trace, fixed-end load trace, 21 station 단면,
+DomainBinary v6 왕복, element descriptor v4와 Agent taper 편집 계약을 확인한다.
+
 ## DY — 동적 확장 (M7)
 
 | ID | 케이스 | 기준 | § |

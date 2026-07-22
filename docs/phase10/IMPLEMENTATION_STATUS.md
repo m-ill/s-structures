@@ -4,8 +4,8 @@
 reviewed_at: 2026-07-22
 phase_status: active
 implementation_status: in-progress
-completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4, P10-M5]
-active_milestone: P10-M6
+completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4, P10-M5, P10-M6]
+active_milestone: P10-M7
 decision_gates_pending: [ADR-001(warping/LTB 방식), ADR-002(shell 옵션 B 번복 — 오너 승인)]
 owner_inputs_pending: [XV-02~08 외부 기준해 artifact (OpenSees/SAP2000/ETABS), XV-09 SAP2000 기준해 artifact, RSA V_min 기준값 정책]
 ```
@@ -60,7 +60,7 @@ Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0
 | P10-M3 부분강접 | complete — 4/4 dedicated gate, evidence 7/7 PASS | [부분강접 요소·폐형해](../../tests/p10-m3-partial-fixity.mjs) · [schema/DomainBinary v3 계약](../../tests/p10-m3-schema-contract.mjs) · [domain/solver route 계약](../../tests/p10-m3-domain-route-contract.mjs) · [evidence 계약](../../tests/p10-m3-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m3-partial-fixity.json) · [code review](reviews/P10-M3-CODE-REVIEW.md) · [WP-03 Review Log](workpackages/WP-03-partial-fixity.md#review-log) |
 | P10-M4 3D 오프셋·삽입점·패널존 | complete — 전용 gate/evidence/review/full regression PASS | [요소·평형](../../tests/p10-m4-offsets-panelzone.mjs) · [schema/DomainBinary v4](../../tests/p10-m4-schema-domain-contract.mjs) · [evidence 계약](../../tests/p10-m4-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m4-offsets-panelzone.json) · [code review](reviews/P10-M4-CODE-REVIEW.md) |
 | P10-M5 일반 MPC·rigid link | complete — 전용 gate/evidence/review PASS | [solver gate](../../tests/p10-m5-mpc-rigidlink.mjs) · [schema/DomainBinary v5](../../tests/p10-m5-schema-domain-contract.mjs) · [evidence contract](../../tests/p10-m5-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m5-mpc-rigidlink.json) · [code review](reviews/P10-M5-CODE-REVIEW.md) |
-| P10-M6 변단면 부재 | planned | 없음 |
+| P10-M6 변단면 부재 | complete — EL-P01~03/evidence/review PASS | [요소·계약 테스트](../../tests/p10-m6-tapered.mjs) · [evidence contract](../../tests/p10-m6-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m6-tapered.json) · [code review](reviews/P10-M6-CODE-REVIEW.md) |
 | P10-M7 동적 확장 (prestressed·다중모드 좌굴·직접적분) | planned | 없음 |
 | P10-M8 warping·LTB | planned (ADR-001 대기) | 없음 |
 | P10-M9 벽·슬래브 FEM (M9a membrane / M9b plate / M9c flat shell / M9d GPU 배치) | planned (ADR-002 옵션 C-full 승인 대기) | 없음 |
@@ -75,8 +75,8 @@ Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0
 
 ## 다음 작업
 
-P10-M6 변단면 부재를 다음 구현 순서로 진행한다. M5에서 확정한 일반 구속 변환은 선형 K/F, 모달 K/M,
-Direct P-Delta K/KG 및 반력·구속력 복원에 공통 적용된다. 외부 XV-02~09 기준값과 ADR-002 입력은 계속 pending이며,
+P10-M7 동적 확장을 다음 구현 순서로 진행한다. M6에서 확정한 변단면 강성·질량·KG 스냅샷은 prestressed 모달,
+RSA, 다중모드 좌굴 및 직접적분 THA에서도 동일 domain identity를 사용한다. 외부 XV-02~09 기준값과 ADR-002 입력은 계속 pending이며,
 XV-01~10 required-source가 모두 green이 되기 전에는 M11 release를 열지 않는다.
 
 ## P10-M5 완료 기록
@@ -85,3 +85,11 @@ XV-01~10 required-source가 모두 green이 되기 전에는 M11 release를 열�
 계약을 재사용해 별도 구속 엔진을 만들지 않았으며, 선형·모달·Direct P-Delta와 DomainBinary v5를 같은 식으로 연결했다.
 전용 gate 3/3과 evidence 5/5가 PASS했고 artifact hash는 `9cb8470ec77fd50f7a7ac138`다.
 내부 기능 gate만 완료한 상태이므로 `externallyCrossValidated=false`, `releaseQualified=false`는 유지한다.
+
+## P10-M6 완료 기록
+
+`member.taper`에 `linear`, `parabolic-depth`, `segments` 프로파일과 5/10점 Gauss 설정을 additive로 도입했다.
+force-based 유연도 적분으로 축·비틀림·2축 휨과 선택적 Timoshenko 전단을 조립하고, 21개 station 단면,
+consistent fixed-end trace, `∫ρA dx` 질량, KG provenance, DomainBinary v6 및 element descriptor v4를 연결했다.
+EL-P01~03 최대 오차는 각각 `5.9212e-16`, `4.0464e-9`, `4.0464e-9`이며 evidence artifact hash는
+`bf73a838dd2c01d200741dae`다. 외부 상용 solver 교차검증 전이므로 release qualification은 부여하지 않는다.

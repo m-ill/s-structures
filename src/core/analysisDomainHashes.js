@@ -16,7 +16,7 @@ export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
       materials: sortedRecords(model.materials || []),
       sections: sortedRecords(model.sections || []),
       memberAssignments: rows(model.members, [
-        'id', 'matId', 'secId', 'modifiers', 'customProps', 'role', 'shearDeformation', 'includeShearDeformation',
+        'id', 'matId', 'secId', 'modifiers', 'customProps', 'role', 'shearDeformation', 'includeShearDeformation', 'taper',
       ]),
       shearDeformation: resolveGlobalShearDeformation(model),
     }),
@@ -46,6 +46,7 @@ export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
         version: item.version ?? 1,
         A: item.A ?? item.properties?.A ?? null,
       }))),
+      memberTapers: rows(model.members, ['id', 'taper']),
     }),
     nonlinearHash: hash({
       nonlinearMaterials: sortedRecords(model.nonlinearMaterials || []),

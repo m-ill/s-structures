@@ -1,7 +1,7 @@
 import { normalizeStories } from '../core/storyModel.js';
 import { normalizeGeneralConstraints } from '../core/constraintDefinitions.js';
 
-export const INDEX_AGENT_ACTIONS_VERSION = 'p10-m5-agent-modeling-actions-v4';
+export const INDEX_AGENT_ACTIONS_VERSION = 'p10-m6-agent-modeling-actions-v5';
 
 const MEMBER_ROTATIONAL_SPRING_KEYS = new Set(['ryI', 'rzI', 'ryJ', 'rzJ']);
 
@@ -352,6 +352,7 @@ function addMember(model, state, payload) {
   if (payload.design) member.design = { ...payload.design };
   if (payload.endOffset != null) member.endOffset = normalizeEndOffset(payload.endOffset);
   if (payload.insertionPoint != null) member.insertionPoint = normalizeInsertionPoint(payload.insertionPoint);
+  if (payload.taper != null) member.taper = normalizeTaper(payload.taper);
   model.members.push(member);
   state.selection = { type: 'member', id: member.id };
   return { changed: true, member, selection: summarizeSelection(model, state.selection) };
@@ -378,6 +379,7 @@ function updateMember(model, state, payload) {
   if ('insertionPoint' in payload) {
     member.insertionPoint = payload.insertionPoint == null ? undefined : normalizeInsertionPoint(payload.insertionPoint);
   }
+  if ('taper' in payload) member.taper = payload.taper == null ? undefined : normalizeTaper(payload.taper);
   if (payload.type != null || payload.behavior != null) member.type = normalizeMemberBehavior(payload.type || payload.behavior);
   if (payload.design != null) member.design = { ...(member.design || {}), ...payload.design };
   state.selection = { type: 'member', id: member.id };
@@ -1016,6 +1018,25 @@ function normalizeInsertionPoint(value) {
   ]);
   if (!allowed.has(name)) throw new Error(`Unsupported insertionPoint: ${name}`);
   return name;
+}
+
+function normalizeTaper(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('taper must be an object.');
+  const profile = value.profile || 'linear';
+  if (!['linear', 'parabolic-depth', 'segments'].includes(profile)) throw new Error(`Unsupported taper profile: ${profile}`);
+  const gaussPoints = value.gaussPoints ?? 5;
+  if (![5, 10].includes(gaussPoints)) throw new Error('taper.gaussPoints must be 5 or 10.');
+  const normalized = { profile, gaussPoints };
+  if (value.sectionIdJ != null) normalized.sectionIdJ = requiredString(value.sectionIdJ, 'taper.sectionIdJ');
+  if (profile === 'segments') {
+    if (!Array.isArray(value.segments) || !value.segments.length) throw new Error('Segmented taper requires segments.');
+    normalized.segments = value.segments.map((segment, index) => ({
+      start: finite(segment.start ?? segment.xi0 ?? index / value.segments.length, 0),
+      end: finite(segment.end ?? segment.xi1 ?? (index + 1) / value.segments.length, 1),
+      sectionId: requiredString(segment.sectionId || segment.secId, 'taper.segments.sectionId'),
+    }));
+  }
+  return normalized;
 }
 
 function normalizePanelZone(value) {

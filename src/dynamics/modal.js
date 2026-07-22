@@ -3,6 +3,7 @@ import { resolveCriterion } from '../core/analysisCriteria.js';
 import { buildMassSourceTrace } from '../loads/loadsV2.js';
 import { assembleStiffness3D } from '../solver/linear3d.js';
 import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
+import { taperedMemberMass } from '../solver/taperedMember.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from './elasticCompleteness.js';
 import {
   combineRsaMemberForces,
@@ -310,7 +311,9 @@ export function buildLumpedMass(model, system, massSource = null, preparedTrace 
       const md = system.memData?.[member.id];
       if (!md) continue;
       const { section, material } = effectiveSectionMaterial((id) => sectionOf(model, id), (id) => materialOf(model, id), member);
-      const m = Math.max(0, Number(material.density || 0) * Number(section.A || 0) * Number(md.ax.L || 0));
+      const m = md.taper
+        ? taperedMemberMass(material, md.taper, md.ax.L)
+        : Math.max(0, Number(material.density || 0) * Number(section.A || 0) * Number(md.ax.L || 0));
       if (!(m > 0)) continue;
       for (const nodeId of [member.n1, member.n2]) {
         const base = idx[nodeId] * 6;

@@ -26,6 +26,7 @@ import { condensePartialFixity, resolveMemberPartialFixity } from './partialFixi
 import { resolveMemberTimoshenko } from './timoshenko.js';
 import { resolveMemberOffsetKinematics } from './memberOffsets.js';
 import { applyPanelZoneConnectionSprings, attachPanelZoneSources } from './panelZone.js';
+import { localTaperedK12, resolveMemberTaper } from './taperedMember.js';
 import {
   buildConstraintSystem,
   expandConstraintDisplacements,
@@ -40,6 +41,25 @@ export const ELASTIC_COMPONENT_SYSTEM_VERSION = 'p9-m5-elastic-component-system-
 function memberBehavior(member = {}) {
   const value = member.behavior || member.type;
   return ['truss', 'tensionOnly', 'compressionOnly'].includes(value) ? 'truss' : 'frame';
+}
+
+function resolveMemberElasticStiffness(model, member, section, material, length, timoshenko, behavior) {
+  const taper = resolveMemberTaper(model || {}, member, section);
+  if (taper?.ok === false) return taper;
+  if (taper) {
+    return localTaperedK12(material, taper, length, {
+      axialOnly: behavior === 'truss',
+      shearDeformation: timoshenko.enabled === true,
+    });
+  }
+  return {
+    ok: true,
+    kl: behavior === 'truss'
+      ? localTrussK12(material.E, section.A, length)
+      : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, length, timoshenko.phiY, timoshenko.phiZ),
+    taper: null,
+    integratedProperties: null,
+  };
 }
 
 export function memberKinematics(member, a, b, section = {}) {
@@ -79,9 +99,9 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       resolveMemberPartialFixity(ctx.model || ctx.criteriaModel || {}, connection.member, section, material, ax.L),
       connection,
     );
-    const kl = behavior === 'truss'
-      ? localTrussK12(material.E, section.A, ax.L)
-      : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L, timoshenko.phiY, timoshenko.phiZ);
+    const elastic = resolveMemberElasticStiffness(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L, timoshenko, behavior);
+    if (!elastic.ok) return { ...elastic, memberId: member.id };
+    const kl = elastic.kl;
     const i1 = idx[member.n1] * 6;
     const i2 = idx[member.n2] * 6;
     const dof = [i1, i1 + 1, i1 + 2, i1 + 3, i1 + 4, i1 + 5, i2, i2 + 1, i2 + 2, i2 + 3, i2 + 4, i2 + 5];
@@ -99,6 +119,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       partialFixity,
       panelZone: connection,
       offsetKinematics: kinematics,
+      taper: elastic.taper,
+      integratedProperties: elastic.integratedProperties,
     };
   }
 
@@ -131,6 +153,13 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
           memberId: load.member || null,
         };
       }
+      if (md.taper) fixedEnd.taper = {
+        version: md.taper.version,
+        profile: md.taper.profile,
+        gaussPoints: md.taper.gaussPoints,
+        hash: md.taper.hash,
+        loadInterpolation: 'consistent-member-shape-integration',
+      };
       md.fixedEndLoads.push(fixedEndTraceRow(fixedEnd));
       for (let i = 0; i < 12; i += 1) md.f0[i] += fixedEnd.q0[i];
     }
@@ -695,9 +724,9 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
       resolveMemberPartialFixity(ctx.model || ctx.criteriaModel || {}, connection.member, section, material, ax.L),
       connection,
     );
-    const kl = behavior === 'truss'
-      ? localTrussK12(material.E, section.A, ax.L)
-      : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L, timoshenko.phiY, timoshenko.phiZ);
+    const elastic = resolveMemberElasticStiffness(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L, timoshenko, behavior);
+    if (!elastic.ok) return { ...elastic, memberId: member.id, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, ndof };
+    const kl = elastic.kl;
     const i1 = idx[member.n1] * 6;
     const i2 = idx[member.n2] * 6;
     const dof = [i1, i1 + 1, i1 + 2, i1 + 3, i1 + 4, i1 + 5, i2, i2 + 1, i2 + 2, i2 + 3, i2 + 4, i2 + 5];
@@ -714,6 +743,8 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
       partialFixity,
       panelZone: connection,
       offsetKinematics: kinematics,
+      taper: elastic.taper,
+      integratedProperties: elastic.integratedProperties,
     };
   }
 

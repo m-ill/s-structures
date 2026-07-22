@@ -42,6 +42,12 @@ export const DEFAULT_CRITERIA_VALUES = {
   constraint: {
     consistencyTol: 1e-10,
   },
+  taper: {
+    prismaticRegressionTol: 1e-12,
+    closedFormTol: 1e-6,
+    integrationConvergenceTol: 1e-8,
+    gaussPoints: 5,
+  },
   audit: {
     equilibriumRelative: 1e-8,
   },
@@ -138,6 +144,10 @@ const CRITERION_RULES = {
   'connection.closedFormTol': { kind: 'number', min: 0, exclusiveMin: true },
   'offset.equilibriumTol': { kind: 'number', min: 0, exclusiveMin: true },
   'constraint.consistencyTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'taper.prismaticRegressionTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'taper.closedFormTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'taper.integrationConvergenceTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'taper.gaussPoints': { kind: 'integer', min: 5, max: 10, values: [5, 10] },
   'audit.equilibriumRelative': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.min': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.max': { kind: 'number', min: 0, exclusiveMin: true },
@@ -419,6 +429,13 @@ function coerceValue(path, value) {
       ok: false,
       code: ANALYSIS_CRITERIA_WARNING_CODES.BAD_ANALYSIS_CRITERIA_TYPE,
       message: `criteria.${path} must be an integer.`,
+    };
+  }
+  if (Array.isArray(rule.values) && !rule.values.includes(value)) {
+    return {
+      ok: false,
+      code: ANALYSIS_CRITERIA_WARNING_CODES.ANALYSIS_CRITERIA_OUT_OF_RANGE,
+      message: `criteria.${path} must be one of: ${rule.values.join(', ')}.`,
     };
   }
   const tooSmall = rule.min != null && (rule.exclusiveMin ? value <= rule.min : value < rule.min);

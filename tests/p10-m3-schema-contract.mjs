@@ -74,7 +74,7 @@ assert.equal(memberRotationalSpringEntries(absent.members[0]).length, 0);
 assert.equal(memberRotationalSpringEntries(explicitZero.members[0]).length, 1);
 const absentDomain = packDomainBinary(absent);
 const zeroDomain = packDomainBinary(explicitZero);
-assert.equal(DOMAIN_BINARY_VERSION, 'p10-domain-binary-v5');
+assert.equal(DOMAIN_BINARY_VERSION, 'p10-domain-binary-v6');
 assert.equal(validateDomainBinary(absentDomain).ok, true);
 assert.equal(validateDomainBinary(zeroDomain).ok, true);
 assert.deepEqual([...absentDomain.buffers.memberRotationalSprings], [0, 0, 0, 0]);

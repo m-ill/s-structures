@@ -13,6 +13,7 @@ import {
   recoverPartialFixityDisplacements,
 } from './partialFixity.js';
 import { buildMemberOffsetRecoveryTrace } from './memberOffsets.js';
+import { taperedSectionAt } from './taperedMember.js';
 
 export function recoverMemberResult(member, md, D, loads, stationCount) {
   const { ax, section, material } = md;
@@ -77,6 +78,10 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     L,
     fixedEndLoads: md.fixedEndLoads || [],
     timoshenko: md.timoshenko || null,
+    taper: md.taper ? {
+      ...md.taper,
+      stationSections: xs.map((x) => ({ x, xi: L > 0 ? x / L : 0, ...taperedSectionAt(md.taper, L > 0 ? x / L : 0) })),
+    } : null,
     partialFixity,
     offset,
     deformationRecovery: recoveryTrace,

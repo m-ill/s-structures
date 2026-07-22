@@ -1,0 +1,74 @@
+{
+  "version": "p10-evidence-artifact-v1",
+  "suiteId": "P10-M6-TAPERED-MEMBER",
+  "milestone": "P10-M6",
+  "status": "OK",
+  "generatedAt": "2026-07-22T21:00:00.000+09:00",
+  "sourceRevision": "716638c+p10-m6-worktree",
+  "test": "tests/p10-m6-tapered.mjs",
+  "solverVersion": "p10-m6-tapered-force-based-v1",
+  "results": {
+    "ok": true,
+    "version": "p10-m6-tapered-v1",
+    "solverVersion": "p10-m6-tapered-force-based-v1",
+    "metrics": {
+      "prismaticRegressionError": 5.921189464667505e-16,
+      "closedFormError": 4.0463617462577446e-9,
+      "integrationConvergence": 4.046360080799579e-9
+    },
+    "tolerances": {
+      "prismaticRegression": 1e-12,
+      "closedForm": 0.000001,
+      "integrationConvergence": 1e-8
+    },
+    "modelHashes": {
+      "prismatic": "e2a9633255cc44e8",
+      "tapered5": "2179228af09dd298",
+      "tapered10": "1ca8b1213de19a73"
+    },
+    "contracts": {
+      "domainBinary": "p10-domain-binary-v6",
+      "elementDescriptor": "p10-m6-element-descriptor-v4",
+      "agent": "p10-m6-agent-modeling-actions-v5"
+    }
+  },
+  "records": [
+    {
+      "caseId": "EL-P01-PRISMATIC-REGRESSION",
+      "reference": 0,
+      "computed": 5.921189464667505e-16,
+      "relError": 5.921189464667505e-16,
+      "tolerance": 1e-12,
+      "modelHash": "e2a9633255cc44e8",
+      "solverVersion": "p10-m6-tapered-force-based-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-P02-LINEAR-TAPER-CLOSED-FORM",
+      "reference": 0,
+      "computed": 4.0463617462577446e-9,
+      "relError": 4.0463617462577446e-9,
+      "tolerance": 0.000001,
+      "modelHash": "2179228af09dd298",
+      "solverVersion": "p10-m6-tapered-force-based-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-P03-GAUSS-INTEGRATION-CONVERGENCE",
+      "reference": 0,
+      "computed": 4.046360080799579e-9,
+      "relError": 4.046360080799579e-9,
+      "tolerance": 1e-8,
+      "modelHash": "1ca8b1213de19a73",
+      "solverVersion": "p10-m6-tapered-force-based-v1",
+      "status": "OK"
+    }
+  ],
+  "qualification": {
+    "internalClosedFormStatus": "OK",
+    "externallyCrossValidated": false,
+    "releaseQualified": false,
+    "releaseGate": "P10-M11"
+  },
+  "artifactHash": "bf73a838dd2c01d200741dae"
+}

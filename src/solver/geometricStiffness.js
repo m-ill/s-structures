@@ -50,6 +50,12 @@ export function assembleGlobalGeometricStiffness(model = {}, assembly = {}, opti
       elasticFormulation: md.timoshenko?.formulation || 'euler-bernoulli',
       consistency: md.timoshenko?.geometricStiffness || null,
       partialFixity,
+      taper: md.taper ? {
+        version: md.taper.version,
+        profile: md.taper.profile,
+        gaussPoints: md.taper.gaussPoints,
+        hash: md.taper.hash,
+      } : null,
     });
     memberData[member.id] = {
       memberId: member.id,
@@ -60,6 +66,7 @@ export function assembleGlobalGeometricStiffness(model = {}, assembly = {}, opti
       dof: md.dof,
       timoshenko: md.timoshenko || null,
       partialFixity,
+      taper: md.taper || null,
     };
   }
   return {
@@ -111,9 +118,10 @@ export function axialForcesFromDisplacements(assembly = {}, displacement = [], o
   for (const [memberId, md] of Object.entries(assembly.memData || {})) {
     const global = md.dof.map((dof) => Number(displacement[dof]) || 0);
     const local = matMul(md.T, global.map((value) => [value])).map((row) => row[0]);
-    const EA = (Number(md.material?.E) || 0) * (Number(md.section?.A) || 0);
+    const axialStiffness = Number(md.kl?.[0]?.[0])
+      || ((Number(md.material?.E) || 0) * (Number(md.section?.A) || 0)) / Number(md.ax.L || 1);
     const displacementForce = md.ax.L > 0
-      ? (EA / md.ax.L) * ((local[6] || 0) - (local[0] || 0))
+      ? axialStiffness * ((local[6] || 0) - (local[0] || 0))
       : 0;
     const fixedEndForce = options.includeFixedEnd === false
       ? 0

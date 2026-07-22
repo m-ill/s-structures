@@ -97,6 +97,7 @@ function stiffnessIdentity(model) {
       releases: member.releases || member.release || null,
       endOffset: member.endOffset || null,
       insertionPoint: member.insertionPoint || null,
+      taper: member.taper || null,
       localAxis: member.localAxis || null,
       customProps: member.customProps || null,
       shearDeformation: memberShearDeformationIdentity(model, member),
