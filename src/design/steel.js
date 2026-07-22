@@ -2,6 +2,8 @@ import { materialOf, sectionOf } from '../core/catalogs.js';
 import { runConcreteDesign } from './concrete.js';
 import { buildDesignDemandPackage } from './designDemandPackage.js';
 import { attachMemberDemandTrace } from './designDemandTraceAttach.js';
+import { resolveCriterion } from '../core/analysisCriteria.js';
+import { checkSteelFlexureLtb } from './steel/flexureLTB.js';
 
 export function runDesignChecks(model, analysis, options = {}) {
   const resultSet = options.resultSet;
@@ -84,7 +86,12 @@ export function runSteelDesign(model, analysis, options = {}) {
     }
 
     const check = attachMemberDemandTrace(
-      checkSteelMember(member, demand, section, material, model.designParams || {}, resultSet),
+      checkSteelMember(member, demand, section, material, model.designParams || {}, resultSet, {
+        ltbCriteria: {
+          c1Default: resolveCriterion(model, 'ltb.c1Default', 1),
+          closedFormTol: resolveCriterion(model, 'ltb.closedFormTol', 1e-6),
+        },
+      }),
       options.demandPackage,
       member.id,
     );
@@ -122,7 +129,7 @@ function cachedCatalogValue(cache, id, resolve) {
   return cache.get(id);
 }
 
-export function checkSteelMember(member, demand, section, material, designParams = {}, resultSet = {}) {
+export function checkSteelMember(member, demand, section, material, designParams = {}, resultSet = {}, options = {}) {
   const global = designParams.global || {};
   const local = designParams.members?.[member.id] || {};
   const warnAt = finite(local.warnAtRatio, global.warnAtRatio, 0.7);
@@ -135,6 +142,20 @@ export function checkSteelMember(member, demand, section, material, designParams
   const allow = steelAllowables(material, section);
   const combo = demand.governing?.utilization || {};
   const x = finite(combo.x, 0);
+  const comboId = combo.comboId || demand.check?.comboId || resultSet.combo?.id || null;
+  const ltb = checkSteelFlexureLtb({
+    memberId: member.id,
+    material,
+    section,
+    length: L,
+    demandMoment: Math.max(Math.abs(Number(demand.Mzmax) || 0), Math.abs(Number(demand.Mymax) || 0)),
+    comboId,
+    Lb: firstPositive(local.Lb, local.LbZ, local.unbracedLength, global.defaultLbZ, global.defaultLbY, L),
+    C1: firstPositive(local.C1, local.Cb, global.ltbC1Default, options.ltbCriteria?.c1Default, 1),
+    k: firstPositive(local.ltbK, global.ltbK, 1),
+    kw: firstPositive(local.ltbKw, global.ltbKw, 1),
+    warnAt,
+  });
 
   const checks = [
     ratioCheck('steel-axial', 'Axial', demand.Nmax, allow.Pa, 'max |N| / Pa'),
@@ -154,6 +175,15 @@ export function checkSteelMember(member, demand, section, material, designParams
     capacity: 1,
     ratio: axial.ratio + flexureZ.ratio + flexureY.ratio,
     expression: 'N/Pa + Mz/Maz + My/May',
+  });
+  checks.push({
+    id: 'steel-ltb-mcr',
+    name: 'Elastic lateral-torsional buckling',
+    demand: ltb.Mmax,
+    capacity: ltb.Mcr,
+    ratio: ltb.ratio,
+    expression: ltb.formula,
+    designCheckLayer: true,
   });
 
   const slenderness = {
@@ -187,18 +217,19 @@ export function checkSteelMember(member, demand, section, material, designParams
   const normalizedChecks = checks.map((item) => ({
     ...item,
     ratio: cleanRatio(item.ratio),
-    status: statusForRatio(item.ratio, warnAt),
-    comboId: combo.comboId || demand.check?.comboId || resultSet.combo?.id || null,
+    status: item.id === 'steel-ltb-mcr' && !ltb.ok ? 'WARN' : statusForRatio(item.ratio, warnAt),
+    comboId,
     x,
   }));
 
   const governing = normalizedChecks.reduce((best, item) => (
     !best || item.ratio > best.ratio ? item : best
   ), null);
-  const status = governing?.status || 'OK';
+  const status = !ltb.ok && (governing?.status || 'OK') === 'OK' ? 'WARN' : (governing?.status || 'OK');
   const messages = normalizedChecks
     .filter((item) => item.id === 'steel-slenderness' && item.status !== 'OK')
     .map((item) => ({ code: 'STEEL_SLENDERNESS', level: item.status === 'NG' ? 'error' : 'warning', message: `Slenderness ratio ${item.ratio.toFixed(3)}.` }));
+  if (!ltb.ok) messages.push({ code: 'STEEL_LTB_INPUT_REQUIRED', level: 'warning', message: `LTB check inputs required: ${ltb.inputReview.missing.join(', ')}.` });
 
   return {
     memberId: member.id,
@@ -229,6 +260,7 @@ export function checkSteelMember(member, demand, section, material, designParams
       allowable: deflectionAllow,
       demand: demand.dmaxM || 0,
     },
+    ltb,
     messages,
   };
 }
@@ -293,6 +325,11 @@ function finite(...values) {
     if (Number.isFinite(Number(value))) return Number(value);
   }
   return 0;
+}
+
+function firstPositive(...values) {
+  for (const value of values) if (Number(value) > 0) return Number(value);
+  return null;
 }
 
 function firstSolvedResult(analysis) {

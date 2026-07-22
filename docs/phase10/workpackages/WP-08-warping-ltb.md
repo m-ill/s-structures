@@ -5,13 +5,13 @@ wp: WP-08
 milestone: P10-M8
 formulas: FORMULAS_AND_CRITERIA.md §8
 depends: [WP-02, ADR-001]
-gate: ADR-001 확정 전 착수 금지
+gate: ADR-001 accepted — 옵션 B 설계 검토 계층
 ```
 
 ## 배경 (기존 자산)
 
 - Cw는 단면 스냅샷(`sectionSnapshot`)에 이미 저장·전파된다 — 소비자만 없다.
-- ADR-001이 옵션 A(7DOF Vlasov 요소) vs 옵션 B(설계식 M_cr 검토)를 결정한다. 권고안: **B 선행, A 후속**.
+- ADR-001은 옵션 B(설계식 M_cr 검토)를 accepted로 결정했다. **B는 M8 완료, A는 별도 승인 후속 범위**다.
 
 ## 작업 (옵션 B 기준 — ADR 확정 시 갱신)
 
@@ -29,3 +29,7 @@ gate: ADR-001 확정 전 착수 금지
 
 | 날짜 | 지적 | 조치 | 상태 |
 | --- | --- | --- | --- |
+| 2026-07-22 | ADR-001 결정 필요 | 오너의 M8 진행 요청으로 권고 옵션 B 승인 기록, 7DOF 확장 제외 | closed |
+| 2026-07-22 | Cw 소비자와 LTB 검토값 부재 | 폐형식 M_cr·C1·Lb·지배모멘트·ratio를 steel design/report에 연결 | closed |
+| 2026-07-22 | 검토값과 해석결과 혼동 위험 | `design-check-not-analysis-result`, 6DOF 불변 및 limitations 계약 추가 | closed |
+| 2026-07-22 | 폐형식·회귀 증거 필요 | EL-W01~03과 evidence contract 및 전체 회귀 수행 | closed |

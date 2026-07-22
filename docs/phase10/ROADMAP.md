@@ -22,7 +22,7 @@ cycle: 착수 → 구현 → /code-review high → 수정 → 검증표·evidenc
 | **P10-M5** | 일반 MPC · rigid link | [WP-05](workpackages/WP-05-mpc-rigidlink.md) | §5 | M0, M1 | u=Tq+ubar 행 확장(신규 엔진 금지), 충돌검출 3코드, 다이어프램 회귀 <1e-10 |
 | **P10-M6** | 변단면 부재 | [WP-06](workpackages/WP-06-tapered.md) | §6 | M2 | 프리즘 회귀 <1e-12, 변단면 폐형해 <1e-6, 적분 수렴 <1e-8 |
 | **P10-M7** | prestressed 모달·RSA / 좌굴 다중모드 / 직접적분 THA | [WP-07](workpackages/WP-07-dynamics-extension.md) | §7 | M2, M5 | N_G=0 회귀 <1e-10, 압축→주기증가 방향성, λcr 폐형해 <1e-6, P9 eigen·P8 Newmark 재사용 |
-| **P10-M8** | warping · LTB | [WP-08](workpackages/WP-08-warping-ltb.md) | §8 | M2, **ADR-001** | ADR 확정안 게이트 (옵션 B: M_cr 폐형해 <1e-6 / 옵션 A: 14×14 검증) |
+| **P10-M8** | warping · LTB | [WP-08](workpackages/WP-08-warping-ltb.md) | §8 | M2, **ADR-001 accepted** | **complete** — 옵션 B M_cr 폐형해 <1e-6, 6DOF 불변 |
 | **P10-M9** | 벽·슬래브 FEM — 2D 분해 전 단계 (M9a membrane · M9b plate · M9c flat shell · M9d GPU 배치) | [WP-09](workpackages/WP-09-shell-fem.md) | §9a~§9d | M5, **ADR-002 옵션 C-full 승인** | M9a: patch+캔틸레버 벽 보이론 · M9b: 판 폐형해 · M9c: §6A 전체+warped patch+기생모드 · M9d: CPU↔GPU 일치·혼합정밀도·성능 예산. 전 단계 SoA 배치 규약·등가모델 병행 |
 | **P10-M10** | 하중 생성·전달 완성 | [WP-10](workpackages/WP-10-load-generation.md) | §10 | M0 | 슬래브 1/2방향 분배 평형 <1e-10, 질량원 통합 dedup |
 | **P10-M11** | 통합·성능·release gate | [WP-11](workpackages/WP-11-integration-release.md) | 전체 | M1~M10 | XV-01~10 required-source green, `pending-reference` 0, `externallyCrossValidated=true` + 신규 기능 UI/보고/Agent 계약 전파 + 대형모델 성능 예산 + release 판정 |
@@ -44,7 +44,7 @@ M0 ──┬── M1 ──────────────┬────�
 - **M1을 요소 확장(M2~)보다 먼저 두는 이유**: 리뷰 결론 "기능보다 검증" — 교차검증 하네스가 있어야
   이후 모든 요소 확장이 즉시 외부 기준해 회귀망에 얹힌다.
 - M4/M5/M10은 M2와 독립 — 병렬 가능.
-- **M8·M9는 결정 게이트가 선행**: ADR-001(방식), ADR-002(오너의 옵션 B 번복 승인). 승인 전 착수 금지.
+- **결정 게이트**: M8은 ADR-001 옵션 B 승인·완료. M9는 ADR-002(오너의 옵션 B 번복 승인) 전 착수 금지.
 
 ## 마일스톤 공통 게이트 (모든 M)
 

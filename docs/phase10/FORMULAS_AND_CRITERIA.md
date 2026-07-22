@@ -264,7 +264,7 @@ prestressed 회귀: N_G=0 → elastic 모달과 < 1e-10
 
 ---
 
-## §8. Warping torsion · LTB (WP-08, ADR-001로 방식 확정)
+## §8. Warping torsion · LTB (WP-08, ADR-001 옵션 B accepted)
 
 **옵션 A — 7번째 DOF(Vlasov) 요소**: 절점당 7DOF(뒤틀림 θ'), 부재 14×14:
 ```text
@@ -276,10 +276,14 @@ prestressed 회귀: N_G=0 → elastic 모달과 < 1e-10
 M_cr = C1 (π²EIz/(kL)²) √( (k/kw)² Cw/Iz + (kL)² GJ/(π² EIz) )   (+ 하중고 보정)
 C1: 모멘트 구배 계수(config), 결과는 검토(check) 계층에 배치 — 해석 결과 아님을 명시
 ```
-> ADR-001 권고안: **옵션 B 선행(즉시 실무가치) → 옵션 A는 후속 마일스톤**. 확정 시 이 § 갱신.
+> ADR-001 결정(2026-07-22): **옵션 B를 P10-M8로 구현**. 옵션 A는 별도 승인·영향평가가 필요한 후속 범위다.
+
+구현 계약은 `type=design-check-not-analysis-result`, `analysisDofChanged=false`이며 결과에
+`{Mcr, Mmax, ratio, C1, Lb, k, kw, governingCombinationId, limitations}`를 포함한다. 적용식은
+등단면 이중대칭 부재를 전제로 하며 하중고 보정, warping 변위·bimoment·warping 응력은 제공하지 않는다.
 
 **판정 기준** (config: `criteria.ltb.*`): 단순보 균일모멘트 M_cr 폐형해 < 1e-6 (옵션 B) /
-warping 고정 캔틸레버 비틀림 폐형해 < 1e-6 (옵션 A).
+warping 고정 캔틸레버 비틀림 폐형해 < 1e-6 (옵션 A, 후속 범위).
 
 ---
 

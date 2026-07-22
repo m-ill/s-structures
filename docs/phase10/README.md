@@ -3,8 +3,8 @@
 ```yaml
 doc: readme
 phase: 10
-date: 2026-07-21
-status: active, P10-M0-M2-complete, full-regression-pass
+date: 2026-07-22
+status: active, P10-M0-M8-complete
 owner-inputs-required: [외부 solver 기준해(XV 계층), ADR-002 shell 옵션 B 번복 승인]
 ```
 
@@ -30,7 +30,7 @@ Phase 10은 **② 잔여(모델링 세부) + ③(실무 검증) + ④(요소·sh
 | 일반 MPC·rigid link·master-slave | 다이어프램 구속만 | **M5** |
 | 변단면(비프리즘) 부재 | 프리즘만 | **M6** |
 | prestressed 모달/RSA·좌굴 다중모드 | elastic Ke만, 좌굴 최저모드 중심 | **M7** |
-| warping torsion·정밀 LTB | 없음 (Cw 저장만) | **M8** (ADR-001) |
+| warping torsion·정밀 LTB | ADR-001 옵션 B: Cw 기반 M_cr 설계 검토 완료, 6DOF 불변 | **M8 complete** |
 | 실제 shell FEM | 등가모델(옵션 B, 2026-07-09 오너 확정) | **M9** (ADR-002, 오너 재승인 필요) |
 | 하중 생성·전달 완성 | 질량원·풍 부담폭·우발편심 有, 슬래브 전달 부분 | **M10** |
 | — 통합·성능·release | — | **M11** |

@@ -178,6 +178,19 @@ sparse LDLT / CG 검사는 backend별 pivot localization을 고정하는 kernel-
 | EL-P03 | 적분점 5→10 수렴 | <1e-8 | §6 |
 | EL-W01 | (옵션별) M_cr 폐형해 / warping 캔틸레버 | <1e-6 | §8 |
 
+## M8 Warping · LTB 설계 검토 (WP-08 옵션 B)
+
+Evidence: [p10-m8-warping-ltb.json](../../reports/validation-evidence/phase10/p10-m8-warping-ltb.json)
+
+| Record | 검증 | tolerance | 결과 |
+| --- | --- | ---: | --- |
+| EL-W01 | 균일모멘트 탄성 M_cr 독립 폐형식 | 1e-6 | PASS — 0 |
+| EL-W02 | C1=1.25 모멘트구배 배율 | 1e-12 | PASS — 1.7764e-16 |
+| EL-W03 | steel member 설계 통합 ratio·조합 trace | 1e-12 | PASS — 0 |
+
+모든 결과는 설계 검토 계층이며 `analysisDofChanged=false`다. 옵션 A의 7DOF·warping 응력 복구는
+검증 범위가 아니고 외부 상용 solver 교차검증은 M11 release gate에 남는다.
+
 ## CN — 접합·구속 (M3·M5)
 
 | ID | 케이스 | 기준 | § |

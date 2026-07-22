@@ -69,8 +69,9 @@ Ay/Az가 스냅샷·어댑터로 흐르지만, `localK12(E,G,A,Iy,Iz,J,L)` 시�
 `dynamics/modal.js`는 elastic Ke 고정. 중력 Kt 모달·RSA 없음. 좌굴은 inverse iteration 최저모드 중심.
 선형 직접적분 THA 없음(모드중첩만).
 
-### (11) warping/LTB 없음 — M8
-Cw는 단면 스냅샷에 저장만. 7번째 DOF·설계식 LTB 검토 모두 없음.
+### (11) warping/LTB 설계 검토 — M8 완료
+Cw는 단면 스냅샷에서 steel design의 폐형식 M_cr 검토로 소비된다. C1·횡지지 길이·지배 모멘트와
+ratio를 제공하며 기존 6DOF는 불변이다. 7번째 DOF, warping 변위·bimoment·warping 응력은 비지원 한계로 명시한다.
 
 ### (12) 실 shell 없음 (의도적) — M9
 옵션 B(2026-07-09 오너 확정). `solver/shell/quad4.js`는 계약/patch 수준, `expandShellsToFrameLinks`로 등가 전개.

@@ -423,7 +423,7 @@ export {
 } from './design/steel/detailedReport.js';
 export { STEEL_CLASSIFY_VERSION, classifySteelSection } from './design/steel/classify.js';
 export { STEEL_COMPRESSION_VERSION, checkSteelCompression } from './design/steel/compression.js';
-export { STEEL_FLEXURE_LTB_VERSION, checkSteelFlexureLtb } from './design/steel/flexureLTB.js';
+export { STEEL_FLEXURE_LTB_VERSION, calculateElasticCriticalMoment, checkSteelFlexureLtb } from './design/steel/flexureLTB.js';
 export { STEEL_INTERACTION_VERSION, checkSteelInteraction } from './design/steel/interaction.js';
 export { STEEL_BRACE_VERSION, checkSteelBrace } from './design/steel/brace.js';
 export {

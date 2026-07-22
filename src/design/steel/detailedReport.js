@@ -24,6 +24,7 @@ export function buildSteelDetailedDesignReport(model, analysis, options = {}) {
     formulaTrace: rows.flatMap((row) => collectFormula(row)),
     limitations: [
       'P3-M18 steel member checks are traceable detailed-review rows based on current elastic design demand.',
+      'P10-M8 elastic Mcr is a design-check value; it does not add a warping DOF or produce warping stress analysis results.',
       'Local buckling tables, bracing plans, fabrication details, and final seismic detailing remain engineer review items.',
     ],
   };
@@ -32,7 +33,7 @@ export function buildSteelDetailedDesignReport(model, analysis, options = {}) {
 export function detailSteelMemberP3(check = {}, options = {}) {
   const classification = classifySteelSection(check);
   const compression = checkSteelCompression(check);
-  const flexureLtb = checkSteelFlexureLtb(check, options);
+  const flexureLtb = check.ltb || checkSteelFlexureLtb(check, options);
   const interaction = checkSteelInteraction(check);
   const brace = check.role === 'brace' ? checkSteelBrace(check) : null;
   const status = worst([check.status, compression.status, flexureLtb.status, interaction.status, brace?.status]);
@@ -74,6 +75,6 @@ function collectFormula(row) {
 
 function worst(values) {
   if (values.includes('NG')) return 'NG';
-  if (values.includes('WARN')) return 'WARN';
+  if (values.includes('WARN') || values.includes('BLOCKED')) return 'WARN';
   return 'OK';
 }

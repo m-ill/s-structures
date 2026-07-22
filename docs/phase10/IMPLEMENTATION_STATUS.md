@@ -4,9 +4,9 @@
 reviewed_at: 2026-07-22
 phase_status: active
 implementation_status: in-progress
-completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4, P10-M5, P10-M6, P10-M7]
-active_milestone: P10-M8
-decision_gates_pending: [ADR-001(warping/LTB 방식), ADR-002(shell 옵션 B 번복 — 오너 승인)]
+completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4, P10-M5, P10-M6, P10-M7, P10-M8]
+active_milestone: P10-M9
+decision_gates_pending: [ADR-002(shell 옵션 B 번복 — 오너 승인)]
 owner_inputs_pending: [XV-02~08 외부 기준해 artifact (OpenSees/SAP2000/ETABS), XV-09 SAP2000 기준해 artifact, RSA V_min 기준값 정책]
 ```
 
@@ -62,7 +62,7 @@ Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0
 | P10-M5 일반 MPC·rigid link | complete — 전용 gate/evidence/review PASS | [solver gate](../../tests/p10-m5-mpc-rigidlink.mjs) · [schema/DomainBinary v5](../../tests/p10-m5-schema-domain-contract.mjs) · [evidence contract](../../tests/p10-m5-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m5-mpc-rigidlink.json) · [code review](reviews/P10-M5-CODE-REVIEW.md) |
 | P10-M6 변단면 부재 | complete — EL-P01~03/evidence/review PASS | [요소·계약 테스트](../../tests/p10-m6-tapered.mjs) · [evidence contract](../../tests/p10-m6-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m6-tapered.json) · [code review](reviews/P10-M6-CODE-REVIEW.md) |
 | P10-M7 동적 확장 (prestressed·다중모드 좌굴·직접적분) | complete — DY-01~06/evidence/review PASS | [동적 gate](../../tests/p10-m7-dynamics-extension.mjs) · [evidence contract](../../tests/p10-m7-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m7-dynamics-extension.json) · [code review](reviews/P10-M7-CODE-REVIEW.md) |
-| P10-M8 warping·LTB | planned (ADR-001 대기) | 없음 |
+| P10-M8 warping·LTB | complete — ADR-001 옵션 B, EL-W01~03/evidence/review PASS | [폐형식·설계 통합](../../tests/p10-m8-warping-ltb.mjs) · [evidence contract](../../tests/p10-m8-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m8-warping-ltb.json) · [code review](reviews/P10-M8-CODE-REVIEW.md) |
 | P10-M9 벽·슬래브 FEM (M9a membrane / M9b plate / M9c flat shell / M9d GPU 배치) | planned (ADR-002 옵션 C-full 승인 대기) | 없음 |
 | P10-M10 하중 생성·전달 | planned | 없음 |
 | P10-M11 통합·성능·release gate | planned | 없음 |
@@ -75,7 +75,7 @@ Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0
 
 ## 다음 작업
 
-P10-M8 warping·LTB는 ADR-001 승인 범위를 먼저 확인한 뒤 진행한다. 외부 XV-02~09 기준값과 ADR-002 입력은 계속 pending이며,
+P10-M8 warping·LTB 옵션 B를 완료했다. 다음 P10-M9는 ADR-002 승인 전 착수하지 않는다. 외부 XV-02~09 기준값과 ADR-002 입력은 계속 pending이며,
 XV-01~10 required-source가 모두 green이 되기 전에는 M11 release를 열지 않는다.
 
 ## P10-M5 완료 기록
@@ -102,3 +102,11 @@ EL-P01~03 최대 오차는 각각 `5.9212e-16`, `4.0464e-9`, `4.0464e-9`이며 e
 direct 경로는 Rayleigh 감쇠, Newmark β=1/4·γ=1/2, P9 factorSession의 단일 K_eff 분해 재사용과 에너지 감사를 제공한다.
 DY-01~06은 6/6 PASS했고 artifact hash는 `8d018a9af8d2a1bdc48b9175`다. 외부 상용 solver 교차검증 전이므로
 `externallyCrossValidated=false`, `releaseQualified=false`를 유지한다.
+
+## P10-M8 완료 기록
+
+ADR-001 옵션 B를 승인 기록하고 기존 6DOF를 보존한 채 `E·G·Iz·J·Cw·Lb·C1·k·kw` 폐형식 M_cr을
+steel design 및 상세보고서에 연결했다. 결과는 `{Mcr, Mmax, ratio, C1, Lb, governingCombinationId}`와
+식·provenance·limitations를 제공하는 `design-check-not-analysis-result`다. 7DOF, warping 변위·bimoment·
+warping 응력은 지원하지 않는다. EL-W01~03은 3/3 PASS했고 artifact hash는
+`c4635024b9fea3c0a27786d7`다. 외부 기준해가 없으므로 release qualification은 부여하지 않는다.

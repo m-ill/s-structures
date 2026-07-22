@@ -48,6 +48,10 @@ export const DEFAULT_CRITERIA_VALUES = {
     integrationConvergenceTol: 1e-8,
     gaussPoints: 5,
   },
+  ltb: {
+    c1Default: 1,
+    closedFormTol: 1e-6,
+  },
   audit: {
     equilibriumRelative: 1e-8,
   },
@@ -148,6 +152,8 @@ const CRITERION_RULES = {
   'taper.closedFormTol': { kind: 'number', min: 0, exclusiveMin: true },
   'taper.integrationConvergenceTol': { kind: 'number', min: 0, exclusiveMin: true },
   'taper.gaussPoints': { kind: 'integer', min: 5, max: 10, values: [5, 10] },
+  'ltb.c1Default': { kind: 'number', min: 0, exclusiveMin: true },
+  'ltb.closedFormTol': { kind: 'number', min: 0, exclusiveMin: true },
   'audit.equilibriumRelative': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.min': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.max': { kind: 'number', min: 0, exclusiveMin: true },

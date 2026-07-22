@@ -1,0 +1,72 @@
+{
+  "version": "p10-evidence-artifact-v1",
+  "suiteId": "P10-M8-WARPING-LTB",
+  "milestone": "P10-M8",
+  "status": "OK",
+  "generatedAt": "2026-07-22T23:45:00.000+09:00",
+  "sourceRevision": "2e72514+p10-m8-worktree",
+  "test": "tests/p10-m8-warping-ltb.mjs",
+  "solverVersion": "p10-m8-elastic-mcr-ltb-check-v2",
+  "results": {
+    "ok": true,
+    "version": "p10-m8-warping-ltb-v1",
+    "solverVersion": "p10-m8-elastic-mcr-ltb-check-v2",
+    "metrics": {
+      "closedFormError": 0,
+      "c1Error": 1.7763568394002506e-16,
+      "integratedRatioError": 0
+    },
+    "tolerances": {
+      "closedForm": 0.000001,
+      "c1": 1e-12,
+      "integratedRatio": 1e-12
+    },
+    "modelHash": "6b9d651bda08935e58570f9a",
+    "contracts": {
+      "analysisDofChanged": false,
+      "option": "B-design-check",
+      "criteriaC1Default": 1
+    }
+  },
+  "records": [
+    {
+      "caseId": "EL-W01-CLOSED-FORM-MCR",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 0.000001,
+      "modelHash": "6b9d651bda08935e58570f9a",
+      "solverVersion": "p10-m8-elastic-mcr-ltb-check-v2",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-W02-C1-SCALING",
+      "reference": 0,
+      "computed": 1.7763568394002506e-16,
+      "relError": 1.7763568394002506e-16,
+      "tolerance": 1e-12,
+      "modelHash": "6b9d651bda08935e58570f9a",
+      "solverVersion": "p10-m8-elastic-mcr-ltb-check-v2",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-W03-STEEL-DESIGN-INTEGRATION",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-12,
+      "modelHash": "6b9d651bda08935e58570f9a",
+      "solverVersion": "p10-m8-elastic-mcr-ltb-check-v2",
+      "status": "OK"
+    }
+  ],
+  "qualification": {
+    "implementationOption": "B-design-check",
+    "analysisDofChanged": false,
+    "internalClosedFormStatus": "OK",
+    "externallyCrossValidated": false,
+    "releaseQualified": false,
+    "releaseGate": "P10-M11"
+  },
+  "artifactHash": "c4635024b9fea3c0a27786d7"
+}
