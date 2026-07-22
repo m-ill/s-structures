@@ -37,6 +37,7 @@ export function buildLoadDerivationTrace(estimation) {
     storyLateralLoads: estimation.storyLoads?.lateral || [],
     seismicSummary: computeSeismicBaseShear(estimation.storyLoads?.lateral || [], estimation.basis || {}),
     storyMassSummary: estimation.storyMassSummary,
+    slabTransfer: estimation.slabTransfer || null,
   });
 }
 
@@ -49,6 +50,7 @@ export function buildLoadDerivationTraceFromParts(parts) {
     storyLateralLoads,
     seismicSummary,
     storyMassSummary,
+    slabTransfer,
   } = parts;
   const rows = [
     traceRow('basis-occupancy', 'basis', null, null, 'Occupancy preset', 'occupancy preset lookup', [
@@ -87,6 +89,37 @@ export function buildLoadDerivationTraceFromParts(parts) {
       inputValue('Bx', 'Model width X', geometry.size?.x || 0, 'm'),
       inputValue('h', 'Story height', storyHeight, 'm'),
     ], windY, 'kN'));
+  }
+
+  for (const panel of slabTransfer?.trace?.panels || []) {
+    rows.push(traceRow(
+      `SLAB-${panel.panelId}-TOTAL`,
+      'slab-distribution',
+      null,
+      panel.caseId,
+      `${panel.distribution} slab panel transfer`,
+      'sum(edge resultants) = area * pressure',
+      [
+        inputValue('A', 'Panel area', panel.area, 'm2'),
+        inputValue('q', 'Panel area load', panel.intensity, 'kN/m2'),
+      ],
+      panel.transferredLoad,
+      'kN',
+    ));
+    for (const edge of panel.edgeTrace || []) rows.push(traceRow(
+      `SLAB-${panel.panelId}-EDGE-${edge.edgeIndex}`,
+      'slab-distribution',
+      null,
+      panel.caseId,
+      `Slab edge ${edge.edgeIndex} ${edge.shape} transfer to ${edge.recipientType}`,
+      edge.shape === 'uniform' ? 'q * tributaryWidth / 2' : 'integral(edge line-load shape)',
+      [
+        inputValue('L', 'Support edge length', edge.length, 'm'),
+        inputValue('nSegments', 'Distributed load segments', edge.segments?.length || 0, ''),
+      ],
+      edge.resultant,
+      'kN',
+    ));
   }
 
   rows.push(traceRow('EX-BASE', 'seismic', null, 'EX', 'Seismic base shear X', 'CsX * sum(Wi)', [
@@ -169,6 +202,7 @@ export function buildLoadDerivationTraceFromParts(parts) {
       storyCount: storyDeadLoads.length,
       distributionRowCount: rows.filter((row) => row.group === 'distribution').length,
       storyMassVersion: storyMassSummary?.version || null,
+      slabDistributionRowCount: rows.filter((row) => row.group === 'slab-distribution').length,
     },
   };
 }

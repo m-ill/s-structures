@@ -76,8 +76,8 @@ ratio를 제공하며 기존 6DOF는 불변이다. 7번째 DOF, warping 변위·
 ### (12) 실 shell CPU·native GPU 커널 도입 — M9 완료
 ADR-002 Option C-full 승인 후 QM6 계열 membrane, DKQ 호환 plate, 24×24 flat-shell과 공용 6자유도 전역 조립을 도입했다. `equivalent` formulation은 기존 프레임 링크 경로를 유지한다. native WebGPU K1 tangent·K2 fixed-order gather·K3 stress recovery와 CPU 자동 강등까지 구현했으며, 실장치·외부 XV-10 qualification은 M11 release gate에 남겨 둔다.
 
-### (13) 슬래브 하중 전달 자동화 부분 — M10
-질량원·풍 부담폭·우발편심은 있으나 슬래브 면하중→보/벽 부담면적(1방향/2방향) 자동 전달의 전 경로 자동화·검증 미비.
+### (13) 슬래브 하중 전달 자동화 — M10 완료
+`slabPanels[]`에서 1방향 부담폭 및 2방향 45° 삼각·사다리꼴 분포하중을 생성해 fixed-end 경로로 전달한다. 보 없는 변은 벽/직접 기둥으로 분류하고, 패널 평형·질량원 dedup·풍상/풍하 기하 trace까지 LG-01~04에서 검증했다. 외부 교차검증과 제품 표면 통합은 M11 release gate에 남는다.
 
 ## 3. 리스크 메모
 

@@ -22,6 +22,9 @@ export const DEFAULT_CRITERIA_VALUES = {
   load: {
     equilTol: 1e-10,
   },
+  loadgen: {
+    equilTol: 1e-10,
+  },
   element: {
     shearSlenderCutoff: 60,
     shearShallowTol: 1e-3,
@@ -144,6 +147,7 @@ const CRITERION_RULES = {
   'solver.pivotWarn': { kind: 'number', min: 0, exclusiveMin: true },
   'solver.pivotSingular': { kind: 'number', min: 0, exclusiveMin: true },
   'load.equilTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'loadgen.equilTol': { kind: 'number', min: 0, exclusiveMin: true },
   'element.shearSlenderCutoff': { kind: 'number', min: 0, exclusiveMin: true },
   'element.shearShallowTol': { kind: 'number', min: 0, exclusiveMin: true },
   'element.shearPhiZeroTol': { kind: 'number', min: 0, exclusiveMin: true },

@@ -4,8 +4,8 @@
 doc: readme
 phase: 10
 date: 2026-07-22
-status: active, P10-M0-M8-complete
-owner-inputs-required: [외부 solver 기준해(XV 계층), ADR-002 shell 옵션 B 번복 승인]
+status: active, P10-M0-M10-complete
+owner-inputs-required: [외부 solver 기준해(XV 계층)]
 ```
 
 ## 1. 목표
@@ -32,7 +32,7 @@ Phase 10은 **② 잔여(모델링 세부) + ③(실무 검증) + ④(요소·sh
 | prestressed 모달/RSA·좌굴 다중모드 | elastic Ke만, 좌굴 최저모드 중심 | **M7** |
 | warping torsion·정밀 LTB | ADR-001 옵션 B: Cw 기반 M_cr 설계 검토 완료, 6DOF 불변 | **M8 complete** |
 | 실제 shell FEM | 등가모델(옵션 B, 2026-07-09 오너 확정) | **M9** (ADR-002, 오너 재승인 필요) |
-| 하중 생성·전달 완성 | 질량원·풍 부담폭·우발편심 有, 슬래브 전달 부분 | **M10** |
+| 하중 생성·전달 완성 | 1/2방향 슬래브 분배·평형·질량 dedup·풍 기하 trace 완료 | **M10 complete** |
 | — 통합·성능·release | — | **M11** |
 
 ## 3. 절대 원칙 — 앞선 개발의 계승 (위반 시 코드리뷰 반려)

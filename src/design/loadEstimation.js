@@ -32,6 +32,7 @@ export {
 } from './designBasisInput.js';
 export {
   buildLoadDerivationTrace,
+  buildLoadDerivationTraceFromParts,
   LOAD_DERIVATION_TRACE_VERSION,
 } from './loadDerivationTrace.js';
 export {

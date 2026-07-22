@@ -4,8 +4,8 @@
 reviewed_at: 2026-07-22
 phase_status: active
 implementation_status: in-progress
-completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4, P10-M5, P10-M6, P10-M7, P10-M8, P10-M9]
-active_milestone: P10-M10
+completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4, P10-M5, P10-M6, P10-M7, P10-M8, P10-M9, P10-M10]
+active_milestone: P10-M11
 decision_gates_pending: []
 owner_inputs_pending: [XV-02~08 외부 기준해 artifact (OpenSees/SAP2000/ETABS), XV-09 SAP2000 기준해 artifact, RSA V_min 기준값 정책]
 ```
@@ -64,7 +64,7 @@ Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0
 | P10-M7 동적 확장 (prestressed·다중모드 좌굴·직접적분) | complete — DY-01~06/evidence/review PASS | [동적 gate](../../tests/p10-m7-dynamics-extension.mjs) · [evidence contract](../../tests/p10-m7-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m7-dynamics-extension.json) · [code review](reviews/P10-M7-CODE-REVIEW.md) |
 | P10-M8 warping·LTB | complete — ADR-001 옵션 B, EL-W01~03/evidence/review PASS | [폐형식·설계 통합](../../tests/p10-m8-warping-ltb.mjs) · [evidence contract](../../tests/p10-m8-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m8-warping-ltb.json) · [code review](reviews/P10-M8-CODE-REVIEW.md) |
 | P10-M9 벽·슬래브 FEM (M9a membrane / M9b plate / M9c flat shell / M9d GPU 배치) | complete — CPU FEM, native WebGPU K1~K3 구현, 내부 evidence 9/9 PASS; 장치 qualification은 M11 gate | [M9 tests](../../tests/p10-m9a-wall-membrane.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m9-shell-fem.json) · [code review](reviews/P10-M9-CODE-REVIEW.md) |
-| P10-M10 하중 생성·전달 | planned | 없음 |
+| P10-M10 하중 생성·전달 | complete — LG-01~04/evidence/review/full regression PASS | [하중 생성 테스트](../../tests/p10-m10-load-generation.mjs) · [evidence contract](../../tests/p10-m10-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m10-load-generation.json) · [code review](reviews/P10-M10-CODE-REVIEW.md) |
 | P10-M11 통합·성능·release gate | planned | 없음 |
 
 ## 완료 시 제품 판정 변화
@@ -75,7 +75,7 @@ Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0
 
 ## 다음 작업
 
-P10-M9 구현을 완료했다. 다음은 P10-M10 슬래브 면하중 생성·전달 자동화다. 실제 다중 장치 WebGPU qualification과 XV-10 외부 기준 비교는 P10-M11 release gate에서 닫는다.
+P10-M10 구현을 완료했다. 다음은 P10-M11 통합·성능·release gate다. 실제 다중 장치 WebGPU qualification, XV-01~10 외부 기준 비교, 제품 UI·보고·Agent 계약을 이 gate에서 닫는다.
 
 ## P10-M5 완료 기록
 
@@ -113,3 +113,7 @@ warping 응력은 지원하지 않는다. EL-W01~03은 3/3 PASS했고 artifact h
 ## P10-M9 완료 기록
 
 ADR-002 Option C-full 승인을 기록하고 QM6 계열 membrane, DKQ 호환 plate, 24×24 flat-shell 조립을 추가했다. 기존 equivalent 셸 경로는 유지하며 formulation을 명시한 경우에만 FEM을 사용한다. 전역 정적 해석, 압력하중, 응력/resultant 복원, DomainBinary 셸 배열과 modal/RSA 공용 lumped mass 조립을 연결했다. M9d는 native WebGPU K1 tangent, K2 fixed-order gather, K3 stress recovery 셰이더와 CPU 기준·자동 강등을 구현했다. 내부 evidence 9/9은 PASS이고 artifact hash는 `183414da147bffc2282d2768`이다. 브라우저 제어 런타임 오류로 이번 환경의 실장치 실행은 BLOCKED이며 다중 장치 qualification과 release qualification은 M11에서 수행한다.
+
+## P10-M10 완료 기록
+
+`slabPanels[]`를 additive 모델 컬렉션으로 추가하고 1방향 부담폭 UDL과 2방향 45° 삼각·사다리꼴 분포를 P6-M2 fixed-end 계약으로 생성한다. 보가 없는 변은 벽 또는 직접 기둥 전달로 trace하며, 패널별 `Σ전달=qA`를 `criteria.loadgen.equilTol`로 강제한다. 생성 하중의 `generatedKey` dedup을 기존 질량원 변환 앞단에 연결했고, 풍 부담폭은 모델 기하에서 유도해 풍상 양·풍하 음 trace를 제공한다. LG-01~04는 4/4 PASS이고 artifact hash는 `f6669543d901b07f38c088b1`이다. 전체 `npm.cmd test`도 종료 코드 0으로 완주했다. 외부 교차검증과 최종 제품 통합 전이므로 `releaseQualified=false`를 유지한다.

@@ -43,7 +43,7 @@ export function planModelRepairs(model, options = {}) {
     const n2 = replacement.get(member.n2) || member.n2;
     if (n1 !== member.n1 || n2 !== member.n2) changes.push({ op: 'update', collection: 'members', id: member.id, patch: { n1, n2 } });
   }
-  for (const collection of ['loads', 'diaphragms', 'stories', 'shells', 'slabs', 'massSources', 'analysisCases']) {
+  for (const collection of ['loads', 'diaphragms', 'stories', 'shells', 'slabs', 'slabPanels', 'massSources', 'analysisCases']) {
     for (const row of model[collection] || []) {
       const remapped = remapNodeReferences(row, replacement);
       if (JSON.stringify(remapped) !== JSON.stringify(row)) {
@@ -112,7 +112,7 @@ function distance(a, b) {
 
 function referencedNodeIds(model) {
   const ids = new Set((model.members || []).flatMap((member) => [member.n1, member.n2]).filter(Boolean));
-  for (const collection of ['loads', 'diaphragms', 'stories', 'shells', 'slabs', 'massSources', 'analysisCases']) {
+  for (const collection of ['loads', 'diaphragms', 'stories', 'shells', 'slabs', 'slabPanels', 'massSources', 'analysisCases']) {
     for (const row of model[collection] || []) collectNodeReferences(row, ids);
   }
   return ids;

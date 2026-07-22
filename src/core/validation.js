@@ -108,7 +108,7 @@ function validatePhase7Contracts(model, error, warning) {
 }
 
 function validateOptionalCollections(model, error) {
-  for (const key of ['shells', 'slabs']) {
+  for (const key of ['shells', 'slabs', 'slabPanels']) {
     if (model[key] != null && !Array.isArray(model[key])) {
       error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array when provided.`, key);
     }

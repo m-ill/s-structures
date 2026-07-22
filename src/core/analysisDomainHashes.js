@@ -30,6 +30,7 @@ export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
       loadCases: sortedRecords(model.loadCases || []),
       loadCombinations: sortedRecords(model.loadCombinations || []),
       loads: sortedRecords(model.loads || []),
+      slabPanels: sortedRecords(model.slabPanels || []),
       prescribed: rows(model.nodes, ['id', 'settlement']),
       selfWeight: model.analysisSettings?.includeSelfWeight ?? null,
     }),

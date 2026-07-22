@@ -1,12 +1,17 @@
 import { expandAdvancedLoads } from '../solver/elasticExpansion.js';
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
+import { deriveWindStoryTransfers, generateSlabPanelLoads } from './slabLoadGeneration.js';
 
 export const LOADS_V2_VERSION = 'p3-m13-loads-v2-trace';
 export const MASS_SOURCE_TRACE_VERSION = 'p3-m13-mass-source-trace-v1';
 
 export function buildLoadsV2Trace(model = {}, basis = {}) {
   const stories = model.stories?.length ? model.stories : inferStories(model.nodes || []);
+  const slabTransfer = generateSlabPanelLoads(model, { equilTol: basis.loadgen?.equilTol });
+  const generatedModel = slabTransfer.loads.length
+    ? { ...model, loads: [...(model.loads || []), ...slabTransfer.loads] }
+    : model;
   const basisInputs = buildBasisInputTrace(basis, model);
   const windBase = finite(basis.windPressure, 0);
   const seismicBase = finite(basis.seismicBaseShear, 0);
@@ -16,8 +21,13 @@ export function buildLoadsV2Trace(model = {}, basis = {}) {
     : null;
   const torsionAx = basis.torsion ? computeTorsionAmplificationAx(basis.torsion) : null;
   const environmental = generateEnvironmentalLoadsV2(model, basis.environmental || basis);
-  const massSource = buildMassSourceTrace(model, basis.massSource || model.analysisSettings?.massSource || null);
+  const massSource = buildMassSourceTrace(generatedModel, basis.massSource || model.analysisSettings?.massSource || null);
   const wind = buildWindRows(stories, windBase, basis);
+  const windTransfer = deriveWindStoryTransfers(model, {
+    pressure: windBase,
+    direction: basis.windDirection || 'x',
+    leewardRatio: basis.leewardRatio || 0,
+  });
   const seismic = seismicRows.map((row) => ({ ...row, rsaScale: rsaScaling?.scaleFactor ?? 1, torsionAx: torsionAx?.Ax ?? 1 }));
   const summary = summarizeLoadsV2({ wind, seismic, environmental, massSource, basisInputs });
   return {
@@ -27,10 +37,12 @@ export function buildLoadsV2Trace(model = {}, basis = {}) {
     review: buildLoadsV2Review(summary, massSource),
     basisInputs,
     wind,
+    windTransfer,
     seismic,
     rsaScaling,
     torsionAx,
     environmental,
+    slabTransfer,
     massSource,
     other: environmental.summary,
   };
@@ -131,7 +143,18 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
       }
     }
   }
-  const expanded = expandAdvancedLoads(model.loads || [], model).loads;
+  const uniqueLoads = [];
+  const generatedKeys = new Set();
+  for (const load of model.loads || []) {
+    const key = String(load?.generatedKey || '').trim();
+    if (key && generatedKeys.has(key)) {
+      skipped.push({ id: load.id || null, type: load.type || null, case: load.case || 'LC1', reason: 'duplicate-generated-load' });
+      continue;
+    }
+    if (key) generatedKeys.add(key);
+    uniqueLoads.push(load);
+  }
+  const expanded = expandAdvancedLoads(uniqueLoads, model).loads;
   for (const load of expanded) {
     const factor = comboFactor(load.case, combos);
     if (!factor) {
@@ -195,6 +218,7 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
       'Mass source converts vertical nodal/member loads and preserves directional node-mass vectors.',
       'Generated mass is an analysis trace and does not mutate node.mass automatically.',
       'Member mass and self-weight-derived member mass share one physical source and are never counted twice.',
+      'Generated slab transfer loads are deduplicated by generatedKey before load-to-mass conversion.',
     ],
   };
 }

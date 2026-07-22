@@ -327,6 +327,7 @@ export {
   buildDesignBasisInputState,
   buildEccentricStoryLoadDistribution,
   buildLoadDerivationTrace,
+  buildLoadDerivationTraceFromParts,
   createDesignBasis,
   DESIGN_BASIS_INPUT_VERSION,
   DESIGN_BASIS_NUMERIC_FIELDS,
@@ -1274,6 +1275,12 @@ export {
   generateEnvironmentalLoadsV2,
   scaleRsaBaseShear,
 } from './loads/loadsV2.js';
+export {
+  DEFAULT_LOAD_GENERATION_EQUIL_TOL,
+  SLAB_LOAD_GENERATION_VERSION,
+  deriveWindStoryTransfers,
+  generateSlabPanelLoads,
+} from './loads/slabLoadGeneration.js';
 export {
   estimateGlobalBucklingTrace,
   GLOBAL_BUCKLING_TRACE_VERSION,
