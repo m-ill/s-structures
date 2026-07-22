@@ -1277,6 +1277,12 @@ export {
   runModalSuperpositionTha,
 } from './dynamics/elasticCompleteness.js';
 export {
+  LINEAR_DIRECT_NEWMARK,
+  LINEAR_DIRECT_THA_VERSION,
+  rayleighDampingFromModes,
+  runLinearDirectTha,
+} from './dynamics/linearDirectIntegration.js';
+export {
   LANCZOS_EIGEN_VERSION,
   buildLanczosEigenTrace,
 } from './dynamics/eigen/lanczos.js';

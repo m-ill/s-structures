@@ -7,12 +7,15 @@ import { createSymmetricSparseOperatorFromDense } from '../compute/eigen/sparseO
 import { solveRequestedGeneralizedEigen } from '../compute/eigen/requestedModes.js';
 import { buildConstraintSystem, reduceConstraintMatrix } from '../solver/domain/constraintSystem.js';
 
-export const GLOBAL_BUCKLING_TRACE_VERSION = 'p10-m5-global-buckling-v4';
+export const GLOBAL_BUCKLING_TRACE_VERSION = 'p10-m7-global-buckling-v5';
 
 const DOF_COMPONENTS = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
 
 export function estimateGlobalBucklingTrace(model = {}, options = {}) {
-  const requestedModeCount = positiveInteger(options.modeCount ?? options.numberOfModes, 3);
+  const requestedModeCount = positiveInteger(
+    options.modeCount ?? options.numberOfModes ?? model.analysisSettings?.dynamics?.bucklingModes,
+    6,
+  );
   const domainGuard = validateBucklingModelDomain(model);
   if (!domainGuard.ok) {
     return baseTrace('blocked', domainGuard.reason, {

@@ -701,7 +701,12 @@ function bucklingDisplacementMap(model, mode) {
 
 function combinedThaRows(payload, component) {
   if (component === 'displacement') return (payload.rows || []).map((row, index) => ({
-    step: row.step ?? index, time: finite(row.time ?? index * payload.time?.dt), value: finite(row.displacement),
+    step: row.step ?? index, time: finite(row.time ?? index * payload.time?.dt), value: representativeDynamicValue(row.displacement),
+  }));
+  if (payload.integration === 'direct') return (payload.rows || []).map((row, index) => ({
+    step: row.step ?? index,
+    time: finite(row.time ?? index * payload.time?.dt),
+    value: representativeDynamicValue(component === 'groundAcceleration' ? row.groundAcceleration : row[component]),
   }));
   const modal = payload.modal || [];
   const count = Math.max(payload.rows?.length || 0, ...modal.map((item) => item.trace?.rows?.length || 0));
@@ -713,6 +718,11 @@ function combinedThaRows(payload, component) {
     const value = modal.reduce((sum, item) => sum + finite(item.gamma, 1) * finite(item.trace?.rows?.[index]?.[component]), 0);
     return { step: index, time: finite(payload.rows?.[index]?.time ?? index * payload.time?.dt), value };
   });
+}
+
+function representativeDynamicValue(value) {
+  if (!Array.isArray(value)) return finite(value);
+  return value.reduce((selected, item) => Math.abs(finite(item)) > Math.abs(selected) ? finite(item) : selected, 0);
 }
 
 function reactionRows(reactions) {

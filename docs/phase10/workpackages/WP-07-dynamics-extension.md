@@ -30,3 +30,4 @@ depends: [WP-02, WP-05]
 
 | 날짜 | 지적 | 조치 | 상태 |
 | --- | --- | --- | --- |
+| 2026-07-22 | prestress 기준강성 추적, 좌굴 다중모드 회귀, direct THA factor 재사용과 에너지 감사를 함께 고정해야 함 | Direct P-Delta→Kt→sparse eigen 경로, stiffnessBasis fail-closed, 6-mode 기본 계약, Rayleigh/Newmark/factorSession 및 DY-01~06 evidence 구현 | PASS_FOR_P10_M7_GATE / NOT_RELEASE_QUALIFIED |

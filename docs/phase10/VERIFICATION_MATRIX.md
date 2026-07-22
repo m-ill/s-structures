@@ -230,6 +230,19 @@ DomainBinary v6 왕복, element descriptor v4와 Agent taper 편집 계약을 �
 | DY-05 | 직접적분 vs 모드중첩 (선형 SDOF) | <1e-6 | §7 |
 | DY-06 | 직접적분 에너지 보존 | < energyTol | §7 |
 
+Evidence: [p10-m7-dynamics-extension.json](../../reports/validation-evidence/phase10/p10-m7-dynamics-extension.json)
+
+| Record | 검증 | tolerance | 결과 |
+| --- | --- | ---: | --- |
+| DY-01 | zero-prestress 모달 회귀 | 1e-10 | PASS — 0 |
+| DY-02 | 압축 시 주기 증가 | positive | PASS — +29.099% |
+| DY-03 | Euler 좌굴 폐형해 | 1e-6 | PASS — 3.6860e-16 |
+| DY-04 | 기존 최저 좌굴모드 회귀 | 1e-8 | PASS — 0 |
+| DY-05 | direct/modal SDOF THA | 1e-6 | PASS — 4.9023e-15 |
+| DY-06 | 무감쇠 에너지 보존 | 1e-8 | PASS — 1.9235e-14 |
+
+299개 증분에서 K_eff factorization 1회, 재사용 solve 298회를 확인했다.
+
 ## SH — 벽·슬래브 FEM (M9 단계별, ADR-002 옵션 C)
 
 | ID | 단계 | 케이스 | 기준 | § |

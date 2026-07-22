@@ -708,11 +708,13 @@ function keyValueTable(doc, rows) {
 function defaultSettingsForKind(kind, model = {}) {
   const massSource = clonePlain(model.analysisSettings?.massSource || model.massSources?.[0] || null);
   if (kind === 'static') return { pDeltaMethod: 'off' };
-  if (kind === 'modal') return { modalModeCount: 12, massSource };
+  if (kind === 'modal') return { modalModeCount: 12, massSource, prestressed: false, gravityCombinationId: null };
   if (kind === 'responseSpectrum') {
     return {
       modalModeCount: 12,
       massSource,
+      prestressed: false,
+      gravityCombinationId: null,
       spectrum: {
         method: 'SRSS',
         directions: ['x', 'y'],
@@ -732,6 +734,7 @@ function defaultSettingsForKind(kind, model = {}) {
   if (kind === 'linearTha') {
     return {
       modalModeCount: 12,
+      integration: 'modal',
       massSource,
       direction: 'x',
       dampingRatio: 0.05,
@@ -739,6 +742,7 @@ function defaultSettingsForKind(kind, model = {}) {
       accelerationUnit: 'g',
       accelerationScale: 1,
       recordId: 'sample-a',
+      energyTol: 1e-8,
       accelerations: [0, 0.05, -0.05, 0.08, -0.04, 0],
     };
   }
@@ -767,6 +771,7 @@ function staticSettingsForm(doc, settings = {}, model = {}) {
 
 function modalSettingsForm(doc, settings = {}, model = {}) {
   const form = analysisSettingsForm(doc, 'ssModalCaseSettings');
+  form.appendChild(selectField(doc, 'ssModalPrestressCombo', 'Prestress gravity combination', combinationOptions(model, true), settings.gravityCombinationId || ''));
   form.appendChild(numberField(doc, 'ssModalModeCount', '모드 수', settings.modalModeCount ?? 12, { min: 1, max: 200, step: 1 }));
   form.appendChild(selectField(doc, 'ssModalMassSource', '질량원', massSourceOptions(model), settings.massSource?.id || ''));
   return form;
@@ -775,6 +780,7 @@ function modalSettingsForm(doc, settings = {}, model = {}) {
 function responseSpectrumSettingsForm(doc, settings = {}, model = {}) {
   const spectrum = settings.spectrum || {};
   const form = analysisSettingsForm(doc, 'ssRsaCaseSettings');
+  form.appendChild(selectField(doc, 'ssRsaPrestressCombo', 'Prestress gravity combination', combinationOptions(model, true), settings.gravityCombinationId || ''));
   form.appendChild(numberField(doc, 'ssRsaModeCount', '모드 수', settings.modalModeCount ?? 12, { min: 1, max: 200, step: 1 }));
   form.appendChild(selectField(doc, 'ssRsaMassSource', '질량원', massSourceOptions(model), settings.massSource?.id || ''));
   form.appendChild(selectField(doc, 'ssRsaMethod', '모드 조합', ['SRSS', 'CQC'], spectrum.method || 'SRSS'));
@@ -800,6 +806,11 @@ function bucklingSettingsForm(doc, settings = {}, model = {}) {
 
 function linearThaSettingsForm(doc, settings = {}, model = {}) {
   const form = analysisSettingsForm(doc, 'ssLinearThaCaseSettings');
+  form.appendChild(selectField(doc, 'ssLthaIntegration', 'Integration', [
+    { value: 'modal', label: 'Modal superposition' },
+    { value: 'direct', label: 'Direct Newmark' },
+  ], settings.integration || 'modal'));
+  form.appendChild(numberField(doc, 'ssLthaEnergyTol', 'Energy tolerance', settings.energyTol ?? 1e-8, { min: 0, step: 1e-9 }));
   form.appendChild(numberField(doc, 'ssLthaModeCount', '모드 수', settings.modalModeCount ?? 12, { min: 1, max: 200, step: 1 }));
   form.appendChild(selectField(doc, 'ssLthaMassSource', '질량원', massSourceOptions(model), settings.massSource?.id || ''));
   form.appendChild(selectField(doc, 'ssLthaDirection', '방향', ['x', 'y', 'z'], settings.direction || 'x'));
@@ -1149,19 +1160,25 @@ function readStaticSettings(root, previous = {}) {
 }
 
 function readModalSettings(root, previous = {}, model = {}) {
+  const gravityCombinationId = cleanOptionalString(root.querySelector?.('#ssModalPrestressCombo')?.value, null);
   return {
     ...previous,
     modalModeCount: positiveInt(root.querySelector?.('#ssModalModeCount')?.value, previous.modalModeCount || 12),
     massSource: readMassSource(root.querySelector?.('#ssModalMassSource')?.value, model, previous.massSource),
+    prestressed: !!gravityCombinationId,
+    gravityCombinationId,
   };
 }
 
 function readResponseSpectrumSettings(root, previous = {}, model = {}) {
   const spectrum = previous.spectrum || {};
+  const gravityCombinationId = cleanOptionalString(root.querySelector?.('#ssRsaPrestressCombo')?.value, null);
   return {
     ...previous,
     modalModeCount: positiveInt(root.querySelector?.('#ssRsaModeCount')?.value, previous.modalModeCount || 12),
     massSource: readMassSource(root.querySelector?.('#ssRsaMassSource')?.value, model, previous.massSource),
+    prestressed: !!gravityCombinationId,
+    gravityCombinationId,
     spectrum: {
       ...spectrum,
       method: root.querySelector?.('#ssRsaMethod')?.value || spectrum.method || 'SRSS',
@@ -1186,6 +1203,8 @@ function readLinearThaSettings(root, previous = {}, model = {}) {
   return {
     ...previous,
     modalModeCount: positiveInt(root.querySelector?.('#ssLthaModeCount')?.value, previous.modalModeCount || 12),
+    integration: root.querySelector?.('#ssLthaIntegration')?.value === 'direct' ? 'direct' : 'modal',
+    energyTol: nonNegativeNumber(root.querySelector?.('#ssLthaEnergyTol')?.value, previous.energyTol ?? 1e-8),
     massSource: readMassSource(root.querySelector?.('#ssLthaMassSource')?.value, model, previous.massSource),
     direction: root.querySelector?.('#ssLthaDirection')?.value || previous.direction || 'x',
     dampingRatio: nonNegativeNumber(root.querySelector?.('#ssLthaDamping')?.value, previous.dampingRatio ?? 0.05),

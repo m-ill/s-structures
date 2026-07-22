@@ -7,7 +7,7 @@ import {
   normalizeAnalysisPDeltaMethod as normalizePDeltaMethod,
 } from '../compute/product/analysisCaseEngine.js';
 
-export const ANALYSIS_RUNNER_VERSION = 'p8-m10-analysis-runners-v5';
+export const ANALYSIS_RUNNER_VERSION = 'p8-m10-analysis-runners-v6-p10-m7';
 
 export function runAnalysisCase(model, analysisCase, options = {}) {
   const item = normalizeAnalysisCase(analysisCase || {});
@@ -71,6 +71,8 @@ export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}, a
     return {
       modalModeCount: positiveInt(merged.modalModeCount ?? merged.modeCount, 12),
       massSource: merged.massSource || null,
+      prestressed: merged.prestressed === true || merged.gravityCombinationId != null,
+      gravityCombinationId: merged.gravityCombinationId || merged.gravityComboId || null,
     };
   }
   if (kind === 'responseSpectrum') {
@@ -78,6 +80,8 @@ export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}, a
     return {
       modalModeCount: positiveInt(merged.modalModeCount ?? merged.modeCount, 12),
       massSource: merged.massSource || null,
+      prestressed: merged.prestressed === true || merged.gravityCombinationId != null,
+      gravityCombinationId: merged.gravityCombinationId || merged.gravityComboId || null,
       spectrum: {
         enabled: true,
         method: spectrum.method || merged.method || 'SRSS',
@@ -101,6 +105,7 @@ export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}, a
   if (kind === 'linearTha') {
     const record = merged.record && typeof merged.record === 'object' ? merged.record : {};
     return {
+      integration: merged.integration === 'direct' ? 'direct' : 'modal',
       modalModeCount: positiveInt(merged.modalModeCount ?? merged.modeCount, 12),
       direction: merged.direction || 'x',
       dampingRatio: finiteNumber(merged.dampingRatio, 0.05),
@@ -111,6 +116,7 @@ export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}, a
       timeUnit: merged.timeUnit || record.timeUnit || 's',
       recordId: merged.recordId || record.id || (typeof merged.record === 'string' ? merged.record : null),
       massSource: merged.massSource || null,
+      energyTol: finiteNumber(merged.energyTol, 1e-8),
     };
   }
   if (kind === 'pushover') {
@@ -208,6 +214,8 @@ export function summarizeAnalysisResult(kind, payload = {}) {
       rowCount: (payload.rows || []).length,
       maxDisplacement: payload.maxDisplacement || 0,
       modeCount: (payload.modal || []).length,
+      integration: payload.integration || 'modal',
+      energyQualified: payload.energy?.qualified ?? null,
     };
   }
   if (kind === 'pushover') {

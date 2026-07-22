@@ -3,6 +3,9 @@ import { normalizePDeltaMethod } from '../../solver/pdelta/method.js';
 import { analyzeDynamics } from '../../dynamics/modal.js';
 import { estimateGlobalBucklingTrace } from '../../dynamics/globalBuckling.js';
 import { runModalSuperpositionTha } from '../../dynamics/elasticCompleteness.js';
+import { runLinearDirectTha } from '../../dynamics/linearDirectIntegration.js';
+import { runSecondOrderPDelta } from '../../solver/pdelta/secondOrder.js';
+import { buildPDeltaTangentStiffness } from '../../solver/pdelta/tangentStiffness.js';
 import {
   runNonlinearAnalysisCase,
   runNonlinearAnalysisCaseAsync,
@@ -34,17 +37,23 @@ export async function executeAnalysisCaseAsync(model, analysisCase, settings, op
 function executeLinearCase(model, kind, settings, options) {
   if (kind === 'static') return runStatic(model, settings, options);
   if (kind === 'modal') {
+    const prestress = resolvePrestress(model, settings);
+    if (prestress.blocked) return prestress.blocked;
     return analyzeDynamics(model, {
       modalModeCount: settings.modalModeCount,
       massSource: settings.massSource,
       responseSpectrum: { enabled: false },
+      ...prestress.options,
     });
   }
   if (kind === 'responseSpectrum') {
+    const prestress = resolvePrestress(model, settings);
+    if (prestress.blocked) return prestress.blocked;
     const dynamics = analyzeDynamics(model, {
       modalModeCount: settings.modalModeCount,
       massSource: settings.massSource,
       responseSpectrum: settings.spectrum,
+      ...prestress.options,
     });
     return dynamics.rsa || {
       ok: false,
@@ -83,7 +92,29 @@ function executeLinearCase(model, kind, settings, options) {
       massSource: settings.massSource,
       responseSpectrum: { enabled: false },
     });
-    return runModalSuperpositionTha({
+    if (settings.integration === 'direct') {
+      const system = modal.dynamicSystem;
+      if (!modal.ok || !system) return { ok: false, status: 'blocked', reason: modal.reason || 'DIRECT_THA_DYNAMIC_SYSTEM_UNAVAILABLE', designBlocked: true };
+      const direct = runLinearDirectTha({
+        mass: system.mass,
+        stiffness: system.stiffness,
+        modes: modal.modes || [],
+        dampingRatio: settings.dampingRatio,
+        forceVector: system.forceVectors[settings.direction] || system.forceVectors.x,
+        dt: settings.dt,
+        accelerations: settings.accelerations,
+        accelerationUnit: settings.accelerationUnit,
+        accelerationScale: settings.accelerationScale,
+        displacementUnit: model?.unitSystem?.internal?.length || model?.units?.length || 'm',
+        energyTol: settings.energyTol,
+        recordId: settings.recordId,
+      });
+      direct.direction = settings.direction;
+      direct.modalBasis = { modeCount: modal.modes?.length || 0, stiffnessBasis: modal.provenance?.stiffnessBasis || null };
+      direct.rows = direct.rows.map((row) => ({ ...row, fullDisplacement: system.expandVector(row.displacement) }));
+      return direct;
+    }
+    const result = runModalSuperpositionTha({
       modes: modal.modes || [],
       direction: settings.direction,
       dampingRatio: settings.dampingRatio,
@@ -95,8 +126,49 @@ function executeLinearCase(model, kind, settings, options) {
       displacementUnit: model?.unitSystem?.internal?.length || model?.units?.length || 'm',
       recordId: settings.recordId,
     });
+    result.integration = 'modal';
+    return result;
   }
   throw engineError('UNSUPPORTED_ANALYSIS_CASE', `Unsupported analysis case kind: ${kind}`);
+}
+
+function resolvePrestress(model, settings) {
+  if (settings.prestressed !== true && !settings.gravityCombinationId) return { options: {} };
+  const combinationId = settings.gravityCombinationId;
+  const combination = (model.loadCombinations || []).find((item) => item.id === combinationId);
+  if (!combination) return { blocked: prestressBlocked('PRESTRESS_GRAVITY_COMBINATION_NOT_FOUND', combinationId) };
+  const direct = runSecondOrderPDelta(model, combination.factors || {}, {
+    loadSteps: settings.pDeltaLoadSteps,
+    maxIterations: settings.maxIterations,
+  });
+  if (!direct.ok || direct.convergence?.converged === false) {
+    return { blocked: prestressBlocked(direct.reason || 'PRESTRESS_DIRECT_PDELTA_NOT_CONVERGED', combinationId, direct) };
+  }
+  const tangent = buildPDeltaTangentStiffness(model, { axialForces: direct.result?.axialForces || {} });
+  if (!tangent.ok) return { blocked: prestressBlocked(tangent.reason || 'PRESTRESS_TANGENT_ASSEMBLY_FAILED', combinationId, direct) };
+  return {
+    options: {
+      prestressed: true,
+      stiffnessBasis: 'gravity-tangent-Kt',
+      gravityCombinationId: combinationId,
+      tangentStiffness: tangent.Kt,
+      prestressTrace: { direct, tangent: tangent.summary },
+    },
+  };
+}
+
+function prestressBlocked(reason, gravityCombinationId, direct = null) {
+  return {
+    ok: false,
+    status: 'blocked',
+    reason,
+    designBlocked: true,
+    designBlockers: [reason],
+    provenance: { stiffnessBasis: null, gravityCombinationId },
+    prestress: direct,
+    modes: [],
+    rsa: null,
+  };
 }
 
 function runStatic(model, settings, options) {

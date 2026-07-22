@@ -25,6 +25,7 @@ import { solveRequestedGeneralizedEigen } from '../compute/eigen/requestedModes.
 const DOF_DIR = ['x', 'y', 'z'];
 
 export const MODAL_RSA_RECOVERY_VERSION = 'p7-m9-modal-rsa-recovery-v1';
+export const PRESTRESSED_MODAL_VERSION = 'p10-m7-prestressed-modal-v1';
 
 const MODAL_DIMENSIONS = Object.freeze({
   eigenvalue: 'inverse-time-squared',
@@ -63,12 +64,44 @@ export function analyzeDynamics(model, options = {}) {
   model = domain.solverModel;
   const settings = { ...(model.analysisSettings || {}), ...(options || {}) };
   const modeCount = Math.max(1, settings.modalModeCount | 0 || 6);
-  const system = assembleStiffness3D(model.nodes || [], model.members || [], {
+  const elasticSystem = assembleStiffness3D(model.nodes || [], model.members || [], {
     model,
     mat: (id) => materialOf(model, id),
     sec: (id) => sectionOf(model, id),
   });
-  if (!system.ok) return { ok: false, reason: system.reason || 'NO_STIFFNESS', analysisDomain: domainIdentity };
+  if (!elasticSystem.ok) return { ok: false, reason: elasticSystem.reason || 'NO_STIFFNESS', analysisDomain: domainIdentity };
+  const stiffnessBasis = settings.stiffnessBasis || (settings.prestressed ? null : 'elastic-Ke');
+  const prestressRequested = settings.prestressed === true || settings.tangentStiffness != null || settings.gravityCombinationId != null;
+  if (prestressRequested && stiffnessBasis !== 'gravity-tangent-Kt') {
+    return {
+      version: PRESTRESSED_MODAL_VERSION,
+      ok: false,
+      status: 'blocked',
+      reason: 'PRESTRESSED_STIFFNESS_BASIS_REQUIRED',
+      designBlocked: true,
+      designBlockers: ['PRESTRESSED_STIFFNESS_BASIS_REQUIRED'],
+      provenance: { stiffnessBasis: stiffnessBasis || null, gravityCombinationId: settings.gravityCombinationId || null },
+      modes: [],
+      rsa: null,
+      analysisDomain: domainIdentity,
+    };
+  }
+  const tangentStiffness = settings.tangentStiffness;
+  if (prestressRequested && (!Array.isArray(tangentStiffness) || tangentStiffness.length !== elasticSystem.ndof)) {
+    return {
+      version: PRESTRESSED_MODAL_VERSION,
+      ok: false,
+      status: 'blocked',
+      reason: 'PRESTRESSED_TANGENT_STIFFNESS_REQUIRED',
+      designBlocked: true,
+      designBlockers: ['PRESTRESSED_TANGENT_STIFFNESS_REQUIRED'],
+      provenance: { stiffnessBasis, gravityCombinationId: settings.gravityCombinationId || null },
+      modes: [],
+      rsa: null,
+      analysisDomain: domainIdentity,
+    };
+  }
+  const system = tangentStiffness ? { ...elasticSystem, K: tangentStiffness } : elasticSystem;
 
   const massSourceSpec = settings.massSource || null;
   const massSourceTrace = massSourceSpec ? buildMassSourceTrace(model, massSourceSpec) : null;
@@ -102,7 +135,7 @@ export function analyzeDynamics(model, options = {}) {
   } catch (error) {
     return failedModalAnalysis({
       model,
-      system,
+      system: elasticSystem,
       mass,
       massSourceTrace,
       condensation: { ...condensation, status: 'failed', reason: error.code || 'MODAL_OPERATOR_ASSEMBLY_FAILED' },
@@ -169,7 +202,8 @@ export function analyzeDynamics(model, options = {}) {
         source: 'sparse-requested-mode-generalized-eigen-solution',
         modeId: `MODE${index + 1}`,
         normalization: 'mass-normalized',
-        staticCaseReferences: [],
+        stiffnessBasis: prestressRequested ? 'gravity-tangent-Kt' : 'elastic-Ke',
+        staticCaseReferences: prestressRequested && settings.gravityCombinationId ? [settings.gravityCombinationId] : [],
       },
     }));
 
@@ -204,25 +238,29 @@ export function analyzeDynamics(model, options = {}) {
     : runResponseSpectrum(modes, physicalModalDofs, mass, totalMass, settings.responseSpectrum || {}, {
       nodes: model.nodes || [],
       units: model.units || {},
-      modalAnalysisType: 'modal_lumped_mass',
+      modalAnalysisType: prestressRequested ? 'prestressed_modal_lumped_mass' : 'modal_lumped_mass',
       model,
       system,
       diaphragmAssembly: constraintDomain.summary,
       members: model.members || [],
       stationCount: Math.max(21, settings.memberStations | 0 || settings.rsaMemberStations | 0 || 21),
       baseShearScaling: rsaScalingPolicy,
+      stiffnessBasis: prestressRequested ? 'gravity-tangent-Kt' : 'elastic-Ke',
+      gravityCombinationId: prestressRequested ? settings.gravityCombinationId || null : null,
     });
 
-  return {
-    version: MODAL_RSA_RECOVERY_VERSION,
+  const result = {
+    version: prestressRequested ? PRESTRESSED_MODAL_VERSION : MODAL_RSA_RECOVERY_VERSION,
     ok: modes.length > 0,
-    type: 'modal_lumped_mass',
+    type: prestressRequested ? 'prestressed_modal_lumped_mass' : 'modal_lumped_mass',
     dimensions: MODAL_DIMENSIONS,
     units: modalUnits(model.units),
     provenance: {
-      source: 'assembled-elastic-stiffness-and-lumped-mass',
+      source: prestressRequested ? 'direct-pdelta-gravity-tangent-and-lumped-mass' : 'assembled-elastic-stiffness-and-lumped-mass',
+      stiffnessBasis: prestressRequested ? 'gravity-tangent-Kt' : 'elastic-Ke',
+      gravityCombinationId: prestressRequested ? settings.gravityCombinationId || null : null,
       normalization: 'mass-normalized',
-      staticCaseReferences: [],
+      staticCaseReferences: prestressRequested && settings.gravityCombinationId ? [settings.gravityCombinationId] : [],
       diaphragmAssembly: constraintDomain.summary,
       analysisDomain: domainIdentity,
     },
@@ -242,6 +280,46 @@ export function analyzeDynamics(model, options = {}) {
       unit: modalUnits(model.units).mass,
     },
     rsa,
+    prestress: prestressRequested ? settings.prestressTrace || null : null,
+  };
+  Object.defineProperty(result, 'dynamicSystem', {
+    enumerable: false,
+    value: buildDirectDynamicSystem(model, elasticSystem, modalSystem, constraintDomain, mass),
+  });
+  return result;
+}
+
+function buildDirectDynamicSystem(model, elasticSystem, modalSystem, constraintDomain, physicalMass) {
+  const free = modalSystem.free.slice();
+  const stiffness = free.map((row) => free.map((column) => modalSystem.K[row][column]));
+  const fullMass = constraintDomain.applied
+    ? constraintDomain.massMatrix
+    : physicalMass.map((value, index) => physicalMass.map((_other, column) => index === column ? value : 0));
+  const mass = free.map((row) => free.map((column) => fullMass[row][column]));
+  const forces = {};
+  for (let direction = 0; direction < 3; direction += 1) {
+    const physicalForce = physicalMass.map((value, dof) => dof % 6 === direction ? value : 0);
+    const reducedForce = constraintDomain.applied
+      ? Array.from({ length: modalSystem.ndof }, (_, column) => constraintDomain.map.rows.reduce(
+          (sum, entries, fullDof) => sum + (entries.find(([item]) => item === column)?.[1] || 0) * physicalForce[fullDof],
+          0,
+        ))
+      : physicalForce;
+    forces[DOF_DIR[direction]] = free.map((dof) => reducedForce[dof] || 0);
+  }
+  return {
+    stiffness,
+    mass,
+    freeDofs: free,
+    forceVectors: forces,
+    expandVector: (values) => {
+      const coordinate = new Array(modalSystem.ndof).fill(0);
+      free.forEach((dof, index) => { coordinate[dof] = Number(values[index]) || 0; });
+      return constraintDomain.expandVector(coordinate);
+    },
+    fullDofCount: elasticSystem.ndof,
+    reducedDofCount: free.length,
+    units: modalUnits(model.units),
   };
 }
 
@@ -349,7 +427,9 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
     modalNormalization: 'mass-normalized',
     responseMethod: method,
     modeIds: (modes || []).map((mode) => mode.id),
-    staticCaseReferences: [],
+    stiffnessBasis: context.stiffnessBasis || 'elastic-Ke',
+    gravityCombinationId: context.gravityCombinationId || null,
+    staticCaseReferences: context.gravityCombinationId ? [context.gravityCombinationId] : [],
   };
   const memberRecoveryContext = createRsaMemberRecoveryContext(context);
   const modal = [];

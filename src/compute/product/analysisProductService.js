@@ -686,7 +686,7 @@ function backendForKind(kind, target) {
   if (target === 'gpu') return 'webgpu-hybrid-elastic';
   if (kind === 'static') return 'cpu-f64-linear3d';
   if (['modal', 'responseSpectrum', 'buckling'].includes(kind)) return 'cpu-f64-sparse-eigen';
-  if (kind === 'linearTha') return 'cpu-f64-modal-superposition';
+  if (kind === 'linearTha') return 'cpu-f64-newmark-modal-or-direct';
   return 'production-wasm-sparse-nonlinear';
 }
 
