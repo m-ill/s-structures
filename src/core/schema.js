@@ -12,7 +12,7 @@ export const FORCE_KEYS = ['fx', 'fy', 'fz', 'mx', 'my', 'mz'];
 export const SUPPORT_TYPES = new Set(['fixed', 'pin', 'roller', 'custom', 'spring', null, undefined]);
 export const MEMBER_TYPES = new Set(['frame', 'truss', 'tensionOnly', 'compressionOnly', undefined, null]);
 export const RELEASE_TYPES = new Set(['rigid', 'pin', undefined, null]);
-export const LOAD_TYPES = new Set(['nodal', 'nmoment', 'udl', 'point', 'udl-partial', 'trapezoid', 'mmoment', 'temperature', 'tgradient']);
+export const LOAD_TYPES = new Set(['nodal', 'nmoment', 'udl', 'point', 'udl-partial', 'trapezoid', 'mmoment', 'temperature', 'tgradient', 'pressure', 'shellPressure']);
 export const LOAD_CASE_TYPES = new Set([
   'dead',
   'live',

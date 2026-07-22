@@ -66,7 +66,7 @@ export function prepareElasticAnalysis(inputModel) {
     },
   };
 
-  if (!model.members?.length) {
+  if (!model.members?.length && !(model.shells || []).some((shell) => ['membrane', 'plate', 'shell', 'fem'].includes(shell?.formulation))) {
     output.ok = false;
     output.empty = true;
     return { terminal: true, output, model, validation, pDeltaMethod, combos: [], canonicalBase: null };
@@ -584,6 +584,11 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     captureSystemsOnly: options.captureSystemsOnly === true,
     precomputedSolutions: options.precomputedSolutions,
     signal: options.signal,
+    shells: domain.shellAssembly?.femElements || [],
+    shellCriteria: {
+      drillingAlpha: resolveCriterion(model, 'shell.drillingAlpha', 1e-5),
+      warpTol: resolveCriterion(model, 'shell.warpTol', 1e-2),
+    },
   };
   const diaphragms = resolveRigidDiaphragms(model, nodes);
   ctx.diaphragms = diaphragms;
@@ -599,6 +604,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     disp: {},
     reactions: {},
     memberResults: {},
+    shellResults: {},
     solver: {
       type: 'linear_static_3d_frame',
       components: [],
@@ -619,9 +625,11 @@ function analyzeAllOnce(model, factors = null, options = {}) {
   for (const group of Object.values(groups)) {
     const ns = nodes.filter((node) => group.nids.has(node.id));
     const ms = members.filter((member) => group.mids.has(member.id));
+    const groupShellIds = new Set(ctx.shells.filter((shell) => (shell.nodeIds || []).every((id) => group.nids.has(id))).map((shell) => shell.id));
     const ls = loads.filter((load) => (
       (load.node && group.nids.has(load.node)) ||
-      (load.member && group.mids.has(load.member))
+      (load.member && group.mids.has(load.member)) ||
+      ((load.shell || load.panel || load.target) && groupShellIds.has(load.shell || load.panel || load.target))
     ));
     const componentKey = stableHash({
       nodeIds: [...group.nids].map(String).sort(),
@@ -658,6 +666,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     out.solver.components.push(result.solver);
     Object.assign(out.disp, result.disp);
     Object.assign(out.reactions, result.reactions);
+    Object.assign(out.shellResults, result.shellResults || {});
     Object.entries(result.memberResults).forEach(([id, row]) => {
       if (!ms.find((member) => member.id === id)?.generated) out.memberResults[id] = row;
     });
@@ -673,6 +682,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
       out.disp = {};
       out.reactions = {};
       out.memberResults = {};
+      out.shellResults = {};
       out.unstableMembers = new Set();
       out.failedComponents = [];
       out.solver = { type: 'linear_static_3d_frame', components: [] };
@@ -706,6 +716,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
         out.solver.components.push(result.solver);
         Object.assign(out.disp, result.disp);
         Object.assign(out.reactions, result.reactions);
+        Object.assign(out.shellResults, result.shellResults || {});
         Object.entries(result.memberResults).forEach(([id, memberResult]) => {
           if (!row.ms.find((member) => member.id === id)?.generated) out.memberResults[id] = memberResult;
         });

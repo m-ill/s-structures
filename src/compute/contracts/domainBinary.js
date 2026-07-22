@@ -27,6 +27,8 @@ export function packDomainBinary(model = {}) {
   const loads = array(model.loads);
   const loadCases = array(model.loadCases);
   const combinations = array(model.loadCombinations);
+  const shells = [...array(model.shells), ...array(model.slabs).filter((item) => item?.type === 'shell')]
+    .filter((item) => ['membrane', 'plate', 'shell', 'fem'].includes(item?.formulation));
   const nodeIds = uniqueIds(nodes, 'node');
   const memberIds = uniqueIds(members, 'member');
   const materialIds = dictionaryIds(materials, members.map((row) => row.matId), 'material');
@@ -45,6 +47,7 @@ export function packDomainBinary(model = {}) {
   const sectionIndex = indexMap(sectionIds);
   const loadCaseIndex = indexMap(loadCaseIds);
   const memberTypeIndex = indexMap(memberTypeIds);
+  const shellIds = shells.map((row, index) => text(row.id) || `SHELL${index + 1}`);
 
   const coordinates = new Float64Array(nodes.length * 3);
   const dofMap = new Int32Array(nodes.length * 6);
@@ -67,6 +70,22 @@ export function packDomainBinary(model = {}) {
       nodePanelZones.set([panelZone.tp, panelZone.db, panelZone.dc], index * 3);
       nodePanelZoneAxis[index] = panelZone.axis === 'y' ? 2 : panelZone.axis === 'z' ? 3 : 1;
     }
+  });
+  const shellConnectivity = new Int32Array(shells.length * 4);
+  const shellTypeCodes = new Uint8Array(shells.length);
+  const shellProperties = new Float64Array(shells.length * 4);
+  shells.forEach((shell, index) => {
+    const ids = Array.isArray(shell.nodeIds) ? shell.nodeIds : array(shell.nodes).map((node) => node.id);
+    if (ids.length !== 4) throw contractError('BAD_SHELL_PROPS', `Shell ${shellIds[index]} requires four nodes.`);
+    for (let local = 0; local < 4; local += 1) shellConnectivity[index * 4 + local] = requiredIndex(nodeIndex, ids[local], 'shell.nodeIds');
+    shellTypeCodes[index] = shell.formulation === 'membrane' ? 1 : shell.formulation === 'plate' ? 2 : 3;
+    const material = shell.material || materials.find((row) => row.id === shell.matId) || {};
+    shellProperties.set([
+      positiveOr(shell.thickness ?? shell.t, 0),
+      numberOr(material.E ?? material.elastic?.E, 0),
+      numberOr(material.nu ?? material.elastic?.nu, 0.2),
+      numberOr(material.density ?? material.rho ?? material.elastic?.rho, 0),
+    ], index * 4);
   });
   const fixedDofSet = new Set([...dofMap].map((value, index) => (value < 0 ? index : null)).filter((value) => value != null));
   const normalizedConstraints = normalizeGeneralConstraints(array(model.constraints), nodes, { fixedDofs: fixedDofSet });
@@ -230,6 +249,7 @@ export function packDomainBinary(model = {}) {
     combinationIds,
     memberTypeIds,
     constraintIds,
+    shellIds,
   };
   const buffers = {
     coordinates,
@@ -273,6 +293,9 @@ export function packDomainBinary(model = {}) {
     constraintTermCoefficients,
     constraintConstants,
     constraintTypes,
+    shellConnectivity,
+    shellTypeCodes,
+    shellProperties,
   };
   const metadata = {
     version: DOMAIN_BINARY_VERSION,
@@ -301,6 +324,8 @@ export function packDomainBinary(model = {}) {
         equation: 'slave=sum(c*term)+d',
         types: { 1: 'mpc', 2: 'rigidLink', 3: 'masterSlave' },
       },
+      shellTypeCodes: { 1: 'membrane-qm6', 2: 'plate-dkq', 3: 'flat-shell-allman-dkq' },
+      shellProperties: ['thickness', 'E', 'nu', 'density'],
     },
     counts: {
       nodes: nodes.length,
@@ -315,6 +340,7 @@ export function packDomainBinary(model = {}) {
       constraintEquations: normalizedConstraints.equationCount,
       constraintTerms: constraintTermDofs.length,
       taperSegments: taperSegmentCount,
+      shells: shells.length,
     },
     dictionaryHash: stableHash(dictionaries),
     sourceHash: stableHash(model),
@@ -344,6 +370,14 @@ export function validateDomainBinary(domain) {
   if (!ArrayBuffer.isView(buffers.connectivity) || !ArrayBuffer.isView(buffers.memberType)) errors.push('domain:member-buffers');
   if (domain.metadata?.counts?.nodes * 3 !== buffers.coordinates?.length) errors.push('domain:node-count');
   if (domain.metadata?.counts?.members * 2 !== buffers.connectivity?.length) errors.push('domain:member-count');
+  if (!(buffers.shellConnectivity instanceof Int32Array)
+    || domain.metadata?.counts?.shells * 4 !== buffers.shellConnectivity.length) errors.push('domain:shell-connectivity');
+  if (!(buffers.shellTypeCodes instanceof Uint8Array)
+    || domain.metadata?.counts?.shells !== buffers.shellTypeCodes.length
+    || [...buffers.shellTypeCodes].some((value) => value < 1 || value > 3)) errors.push('domain:shell-types');
+  if (!(buffers.shellProperties instanceof Float64Array)
+    || domain.metadata?.counts?.shells * 4 !== buffers.shellProperties.length
+    || [...buffers.shellProperties].some((value) => !Number.isFinite(value))) errors.push('domain:shell-properties');
   if (!(buffers.nodePanelZones instanceof Float64Array)
     || domain.metadata?.counts?.nodes * 3 !== buffers.nodePanelZones.length
     || [...buffers.nodePanelZones].some((value) => !Number.isFinite(value) || value < 0)) errors.push('domain:node-panel-zones');

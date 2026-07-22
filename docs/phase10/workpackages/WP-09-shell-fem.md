@@ -5,7 +5,7 @@ wp: WP-09
 milestone: P10-M9 (M9a → M9b → M9c → M9d, 전부 정식 개발 범위)
 formulas: FORMULAS_AND_CRITERIA.md §9a~§9d
 depends: [WP-05, ADR-002(옵션 C-full)]
-gate: ADR-002 오너 승인 전 착수 금지 (2026-07-09 옵션 B 결정의 번복)
+gate: ADR-002 accepted — 옵션 C-full (2026-07-09 옵션 B 결정의 공식 번복)
 ```
 
 ## 배경 (기존 자산)
@@ -85,3 +85,5 @@ gate: ADR-002 오너 승인 전 착수 금지 (2026-07-09 옵션 B 결정의 번
 | --- | --- | --- | --- |
 | 2026-07-20 | 오너: full shell 부담 — 2D 재검토 | 옵션 C(단계 도입)로 재구성 | 반영 |
 | 2026-07-20 | 오너: 어려운 부분(M9c)도 계획 포함 + GPU 처리 코드 구성 | M9c 정식 범위 승격(Allman⊕DKQ·warped 보정), M9d GPU 배치 단계 신설(P9-M7 SoA·결정론 scatter·혼합정밀도 재사용), "CPU부터 GPU 모양으로" 설계 원칙 추가 | 반영 |
+| 2026-07-22 | M9 진행 요청 | ADR-002 옵션 C-full 오너 승인 기록, M9a→M9d 착수 | closed |
+| 2026-07-22 | 구현·검증 감사 | M9a~c CPU/전역 조립 및 M9d f32 shadow·fallback evidence 완료. native WebGPU K1~K3와 XV-10은 미완료로 유지 | in progress |

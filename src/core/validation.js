@@ -243,6 +243,9 @@ function validateShells(model, nodeIds, materialIds, error) {
     if (!(isFiniteNumber(shell.thickness) && Number(shell.thickness) > 0)) {
       error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell thickness must be positive.', id);
     }
+    if (shell.formulation != null && !['equivalent', 'membrane', 'plate', 'shell', 'fem'].includes(shell.formulation)) {
+      error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell formulation must be equivalent, membrane, plate, shell, or fem.', id);
+    }
     if (shell.matId && !materialIds.has(shell.matId)) {
       error(ERROR_CODES.NO_MATERIAL, `Missing material: ${shell.matId}`, id);
     }
@@ -483,6 +486,10 @@ function validateLoads(model, nodeIds, memberIds, error, warning) {
     }
     if (load.type === 'nmoment' && (!load.node || !isFiniteNumber(load.M))) {
       error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Nodal moment requires node and finite M.', load.id);
+    }
+    if ((load.type === 'pressure' || load.type === 'shellPressure')
+      && (!(load.shell || load.panel || load.target) || !isFiniteNumber(load.q ?? load.pressure ?? load.w))) {
+      error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Shell pressure requires a shell target and finite q/pressure/w.', load.id);
     }
     if ((load.type === 'udl' || load.type === 'udl-partial') && (!load.member || !isFiniteNumber(load.w))) {
       error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'UDL requires member and finite w.', load.id);

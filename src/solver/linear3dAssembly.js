@@ -33,6 +33,9 @@ import {
   reduceConstraintMatrix,
   reduceConstraintVector,
 } from './domain/constraintSystem.js';
+import { buildFlatShellAllmanDkq } from './shell/flatShellAllmanDkq.js';
+import { buildSlabPlateDkq, buildSlabPressureLoad } from './shell/slabPlateDkq.js';
+import { buildWallMembraneQm6, recoverWallMembraneQm6 } from './shell/wallMembraneQm6.js';
 
 export { buildFixedDofs } from './domain/supportConstraints.js';
 
@@ -81,8 +84,10 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   let K = cached?.K || (sparseDecision.useSparse ? null : Array.from({ length: ndof }, () => new Array(ndof).fill(0)));
   const F = new Array(ndof).fill(0);
   const memData = {};
+  const shellData = [];
 
   for (const member of members) {
+    if (member.source === 'shellFemConnectivity') continue;
     const a = nodeMap[member.n1];
     const b = nodeMap[member.n2];
     if (!a || !b || idx[member.n1] == null || idx[member.n2] == null) continue;
@@ -124,7 +129,22 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     };
   }
 
-  if (!Object.keys(memData).length) return { ok: false, reason: 'NO_VALID_MEMBERS' };
+  for (const shell of ctx.shells || []) {
+    const nodeIds = shell.nodeIds || [];
+    if (nodeIds.length !== 4 || !nodeIds.every((id) => idx[id] != null)) continue;
+    const input = { ...shell, nodes: nodeIds.map((id) => nodeMap[id]), material: shell.material || getMat(shell.matId) };
+    const formulation = shell.formulation === 'membrane' ? 'membrane' : shell.formulation === 'plate' ? 'plate' : 'shell';
+    const built = formulation === 'membrane'
+      ? buildWallMembraneQm6(input, { drillingAlpha: ctx.shellCriteria?.drillingAlpha })
+      : formulation === 'plate' ? buildSlabPlateDkq(input) : buildFlatShellAllmanDkq(input, ctx.shellCriteria);
+    if (!built.ok) return { ...built, shellId: shell.id || null };
+    shellData.push({ id: shell.id, formulation, built, dof: nodeIds.flatMap((id) => {
+      const offset = idx[id] * 6;
+      return [offset, offset + 1, offset + 2, offset + 3, offset + 4, offset + 5];
+    }) });
+  }
+
+  if (!Object.keys(memData).length && !shellData.length) return { ok: false, reason: 'NO_VALID_MEMBERS' };
 
   for (const load of loads) {
     if (load.type === 'nodal') {
@@ -140,6 +160,13 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       const axisIndex = { x: 0, y: 1, z: 2 }[load.axis || 'z'];
       if (axisIndex == null) continue;
       F[idx[load.node] * 6 + 3 + axisIndex] += Number(load.M);
+    } else if (load.type === 'pressure' || load.type === 'shellPressure') {
+      const sd = shellData.find((item) => item.id === (load.shell || load.panel || load.target));
+      if (!sd || sd.formulation === 'membrane') continue;
+      const pressure = Number(load.q ?? load.pressure ?? load.w);
+      if (!Number.isFinite(pressure)) continue;
+      const vector = buildSlabPressureLoad(sd.built.plate || sd.built, pressure);
+      for (let i = 0; i < 24; i += 1) F[sd.dof[i]] += vector[i];
     } else {
       const md = memData[load.member];
       if (!md) continue;
@@ -184,6 +211,13 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
 
     const feq = matVec(matTrans(md.T), f0A).map((v) => -v);
     for (let i = 0; i < 12; i += 1) F[md.dof[i]] += feq[i];
+  }
+
+  if (assembleStiffness) for (const shell of shellData) {
+    for (let i = 0; i < 24; i += 1) for (let j = 0; j < 24; j += 1) {
+      if (sparseDecision.useSparse) addSparseValue(sparseAccumulator, shell.dof[i], shell.dof[j], shell.built.matrix[i][j]);
+      else K[shell.dof[i]][shell.dof[j]] += shell.built.matrix[i][j];
+    }
   }
 
   const restrainedDofs = buildFixedDofs(nodes);
@@ -469,7 +503,26 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       memberResults[member.id] = recoverMemberResult(member, md, D, loads, stationCount);
     }
 
-    return { ok: true, disp, reactions, memberResults, solver };
+    const shellResults = {};
+    for (const shell of shellData) {
+      const displacements = shell.dof.map((dof) => D[dof]);
+      shellResults[shell.id] = shell.formulation === 'membrane'
+        ? recoverWallMembraneQm6(shell.built, displacements)
+        : {
+            ok: true,
+            formulation: shell.formulation,
+            displacement: displacements,
+            pressureLoadSupported: true,
+            limitations: shell.built.limitations || [],
+          };
+    }
+
+    solver.shellFem = {
+      elementCount: shellData.length,
+      formulations: [...new Set(shellData.map((item) => item.formulation))],
+    };
+
+    return { ok: true, disp, reactions, memberResults, shellResults, solver };
   }
 }
 
@@ -706,8 +759,10 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
   const ndof = nodes.length * 6;
   const K = Array.from({ length: ndof }, () => new Array(ndof).fill(0));
   const memData = {};
+  const shellData = [];
 
   for (const member of members) {
+    if (member.source === 'shellFemConnectivity') continue;
     const a = nodeMap[member.n1];
     const b = nodeMap[member.n2];
     if (!a || !b) continue;
@@ -748,6 +803,27 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     };
   }
 
+  for (const shell of ctx.shells || []) {
+    const nodeIds = shell.nodeIds || [];
+    if (nodeIds.length !== 4 || !nodeIds.every((id) => idx[id] != null)) continue;
+    const input = { ...shell, nodes: nodeIds.map((id) => nodeMap[id]), material: shell.material || getMat(shell.matId) };
+    const formulation = shell.formulation === 'membrane' ? 'membrane' : shell.formulation === 'plate' ? 'plate' : 'shell';
+    const built = formulation === 'membrane'
+      ? buildWallMembraneQm6(input, { drillingAlpha: ctx.shellCriteria?.drillingAlpha })
+      : formulation === 'plate' ? buildSlabPlateDkq(input) : buildFlatShellAllmanDkq(input, ctx.shellCriteria);
+    if (!built.ok) return { ...built, shellId: shell.id || null, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, ndof };
+    shellData.push({
+      id: shell.id,
+      formulation,
+      built,
+      nodeIds,
+      dof: nodeIds.flatMap((id) => {
+        const offset = idx[id] * 6;
+        return [offset, offset + 1, offset + 2, offset + 3, offset + 4, offset + 5];
+      }),
+    });
+  }
+
   for (const member of members) {
     const md = memData[member.id];
     if (!md) continue;
@@ -757,6 +833,12 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     const kg = matMul(matTrans(md.T), matMul(klA, md.T));
     for (let i = 0; i < 12; i += 1) {
       for (let j = 0; j < 12; j += 1) K[md.dof[i]][md.dof[j]] += kg[i][j];
+    }
+  }
+
+  for (const shell of shellData) {
+    for (let i = 0; i < 24; i += 1) {
+      for (let j = 0; j < 24; j += 1) K[shell.dof[i]][shell.dof[j]] += shell.built.matrix[i][j];
     }
   }
 
@@ -779,6 +861,7 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     nodeMap,
     idx,
     memData,
+    shellData,
     ndof,
     partialFixity: summarizePartialFixity(memData),
   };

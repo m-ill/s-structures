@@ -3,8 +3,8 @@
 ```yaml
 adr: ADR-002
 phase: 10
-date: 2026-07-20
-status: proposed        # 오너 승인 시 accepted, WP-09 착수 가능
+date: 2026-07-22
+status: accepted
 decision-owner: 프로젝트 오너 (2026-07-09 옵션 B 결정 주체)
 supersedes-if-accepted: docs/phase6/workpackages/WP-06-shell-scope.md 의 "실 FEM 미개발" 결정
 ```
@@ -59,7 +59,7 @@ full shell = 면내 2D(membrane) + 면외 2D(plate) + 결합(drilling)의 합성
 
 ## 결정
 
-- [ ] **옵션 C-full 승인 — M9a→M9b→M9c→M9d 전 단계 정식 범위** (2026-07-20 오너 발의안)
+- [x] **옵션 C-full 승인 — M9a→M9b→M9c→M9d 전 단계 정식 범위** (2026-07-20 오너 발의안)
 - [ ] 옵션 A 승인 (full shell 일괄)
 - [ ] 보류 (Phase 10에서 제외, 옵션 B 등가모델 유지)
-- 결정일: ______  서명: ______
+- 결정일: 2026-07-22  서명: 프로젝트 오너 — P10-M9 진행 요청

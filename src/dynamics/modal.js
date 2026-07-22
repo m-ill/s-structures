@@ -68,6 +68,11 @@ export function analyzeDynamics(model, options = {}) {
     model,
     mat: (id) => materialOf(model, id),
     sec: (id) => sectionOf(model, id),
+    shells: domain.shellAssembly?.femElements || [],
+    shellCriteria: {
+      drillingAlpha: resolveCriterion(model, 'shell.drillingAlpha', 1e-5),
+      warpTol: resolveCriterion(model, 'shell.warpTol', 1e-2),
+    },
   });
   if (!elasticSystem.ok) return { ok: false, reason: elasticSystem.reason || 'NO_STIFFNESS', analysisDomain: domainIdentity };
   const stiffnessBasis = settings.stiffnessBasis || (settings.prestressed ? null : 'elastic-Ke');
@@ -274,7 +279,7 @@ export function analyzeDynamics(model, options = {}) {
       modalDofCount: modalDofs.length,
       freeDofCount: modalSystem.free.length,
       fullFreeDofCount: system.free.length,
-      source: massSourceTrace ? 'analysisSettings.massSource' : 'node-and-member-mass',
+      source: massSourceTrace ? 'analysisSettings.massSource' : 'node-member-and-shell-mass',
       massSource: massSourceTrace,
       dimension: 'mass',
       unit: modalUnits(model.units).mass,
@@ -396,6 +401,19 @@ export function buildLumpedMass(model, system, massSource = null, preparedTrace 
       for (const nodeId of [member.n1, member.n2]) {
         const base = idx[nodeId] * 6;
         for (let i = 0; i < 3; i += 1) mass[base + i] += m / 2;
+      }
+    }
+    for (const shell of system.shellData || []) {
+      const density = Math.max(0, Number(shell.built?.material?.density) || 0);
+      const thickness = Math.max(0, Number(shell.built?.thickness) || 0);
+      const area = Math.max(0, Number(shell.built?.area) || 0);
+      const elementMass = density * thickness * area;
+      if (!(elementMass > 0)) continue;
+      const perNode = elementMass / shell.nodeIds.length;
+      for (const nodeId of shell.nodeIds) {
+        const base = idx[nodeId] * 6;
+        if (!Number.isFinite(base)) continue;
+        for (let i = 0; i < 3; i += 1) mass[base + i] += perNode;
       }
     }
     for (const node of model.nodes || []) {

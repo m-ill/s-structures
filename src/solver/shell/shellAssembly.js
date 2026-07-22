@@ -10,6 +10,8 @@ export function expandShellsToFrameLinks(model = {}) {
   const members = [];
   const sections = [];
   const rows = [];
+  const femElements = [];
+  let equivalentShellCount = 0;
   shells.forEach((shell, shellIndex) => {
     const ids = shellNodeIds(shell);
     const nodes = ids.map((id) => nodeMap[id]).filter(Boolean);
@@ -18,6 +20,20 @@ export function expandShellsToFrameLinks(model = {}) {
       return;
     }
     const element = buildQuad4ShellElement({ ...shell, nodes });
+    const formulation = normalizeFormulation(shell.formulation);
+    if (formulation !== 'equivalent') {
+      const matId = shell.matId || 'steel';
+      const material = materialOf(model, matId);
+      femElements.push({ ...shell, nodeIds: ids, nodes, material, formulation });
+      const secId = `__shell_${element.id}_connectivity_sec`;
+      sections.push({ id: secId, kind: 'direct', A: 1e-12, Iy: 1e-12, Iz: 1e-12, J: 1e-12 });
+      for (let edge = 0; edge < 4; edge += 1) {
+        members.push({ id: `__shell_${element.id}_connectivity_${edge + 1}`, type: 'frame', n1: ids[edge], n2: ids[(edge + 1) % 4], matId, secId, generated: true, source: 'shellFemConnectivity', shellId: element.id });
+      }
+      rows.push({ id: element.id, status: 'assembled-fem', formulation, nodeIds: ids, area: element.area, thickness: element.thickness, materialId: matId, linkCount: 0, warnings: [] });
+      return;
+    }
+    equivalentShellCount += 1;
     const links = [[0, 1, 'edge'], [1, 2, 'edge'], [2, 3, 'edge'], [3, 0, 'edge'], [0, 2, 'diagonal'], [1, 3, 'diagonal']];
     const linkRows = [];
     links.forEach(([a, b, kind], index) => {
@@ -35,17 +51,23 @@ export function expandShellsToFrameLinks(model = {}) {
   return {
     version: SHELL_FRAME_ASSEMBLY_VERSION,
     shellCount: shells.length,
-    linkCount: members.length,
+    linkCount: members.filter((member) => member.source !== 'shellFemConnectivity').length,
     rows,
     members,
     sections,
-    equivalentShellScope: buildEquivalentShellScope(model, { forceActive: shells.length > 0 }),
-    warnings: shells.length ? [EQUIVALENT_SHELL_WARNING] : [],
+    femElements,
+    femElementCount: femElements.length,
+    equivalentShellScope: buildEquivalentShellScope(model, { forceActive: equivalentShellCount > 0 }),
+    warnings: equivalentShellCount ? [EQUIVALENT_SHELL_WARNING] : [],
     limitations: [
       'Shell frame assembly is an equivalent edge/diagonal link model, not certified shell FEM.',
       'Generated shell links are solver aids and are not reported as shell local design forces.',
     ],
   };
+}
+
+function normalizeFormulation(value) {
+  return ['membrane', 'plate', 'shell', 'fem'].includes(value) ? value : 'equivalent';
 }
 
 function shellNodeIds(shell = {}) {
