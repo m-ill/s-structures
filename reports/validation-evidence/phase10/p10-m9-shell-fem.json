@@ -17,7 +17,7 @@
     "m9b": { "version": "p10-m9b-verification-v1", "simple": { "computed": 0.00046936443012617947, "reference": 0.0004729087999999999, "relativeError": 0.00749482748855688, "divisions": 6 }, "pressureResidual": 0, "massTotal": 1920, "fixedToSimple": 0.3103448275862069 },
     "m9c": { "version": "p10-m9c-verification-v1", "rigidEnergyRatio": 3.877569937974512e-16, "symmetryError": 1.7742773051103082e-16, "spuriousEnergyRatio": 0.00001, "warpedWarningRatio": 0.011248734588534183 },
     "global": { "version": "p10-m9c-global-assembly-v1", "displacement": 1.8e-7, "shearError": 4.3655745685100557e-16, "femElementCount": 1, "equivalentLinkCount": 6, "productRouteShellCount": 1, "modalDirectionalMass": 1920 },
-    "m9d": { "version": "p10-m9d-verification-v1", "elementCount": 3, "valueCount": 1728, "gpuRelativeError": 4.3489307068422886e-8, "gpuResidual": 4.348930706842289e-13, "fallbackBackend": "cpu-f64-fallback", "deterministicAssembly": true, "domainShellCount": 1, "domainHash": "de47c4e8d135000a32c84625" }
+    "m9d": { "version": "p10-m9d-verification-v2", "elementCount": 3, "valueCount": 1728, "gpuRelativeError": 4.3489307068422886e-8, "gpuResidual": 4.348930706842289e-13, "fallbackBackend": "cpu-f64-fallback", "deterministicAssembly": true, "nativeKernelOperations": 3, "nativeReferenceAssemblySlots": 576, "nativeStressValueCount": 9, "nativeFallbackReason": "WEBGPU_DEVICE_UNAVAILABLE", "domainShellCount": 1, "domainHash": "de47c4e8d135000a32c84625" }
   },
   "records": [
     { "caseId": "SH-A01-MEMBRANE-PATCH", "reference": 0, "computed": 2.1684043449710089e-16, "relError": 2.1684043449710089e-16, "tolerance": 1e-10, "status": "OK" },
@@ -27,7 +27,8 @@
     { "caseId": "SH-C02-SPURIOUS-ENERGY", "reference": 0, "computed": 0.00001, "relError": 0.00001, "tolerance": 0.0001, "status": "OK" },
     { "caseId": "SH-C03-GLOBAL-EQUILIBRIUM", "reference": 0, "computed": 4.3655745685100557e-16, "relError": 4.3655745685100557e-16, "tolerance": 1e-10, "status": "OK" },
     { "caseId": "SH-G01-F32-BATCH-PARITY", "reference": 0, "computed": 4.3489307068422886e-8, "relError": 4.3489307068422886e-8, "tolerance": 0.000001, "status": "OK" },
-    { "caseId": "SH-G02-REFINEMENT-RESIDUAL", "reference": 0, "computed": 4.348930706842289e-13, "relError": 4.348930706842289e-13, "tolerance": 1e-10, "status": "OK" }
+    { "caseId": "SH-G02-REFINEMENT-RESIDUAL", "reference": 0, "computed": 4.348930706842289e-13, "relError": 4.348930706842289e-13, "tolerance": 1e-10, "status": "OK" },
+    { "caseId": "SH-G03-DETERMINISTIC-GATHER", "reference": 0, "computed": 0, "relError": 0, "tolerance": 0, "status": "OK" }
   ],
   "qualification": {
     "implementationOption": "C-full",
@@ -36,11 +37,13 @@
     "shellLumpedMassConnected": true,
     "cpuF64Qualified": true,
     "gpuBatchShadowQualified": true,
+    "nativeWebGpuKernelsImplemented": true,
     "nativeWebGpuKernelsQualified": false,
+    "browserQualificationStatus": "BLOCKED_BROWSER_CONTROL_RUNTIME",
     "externallyCrossValidated": false,
     "releaseQualified": false,
     "releaseGate": "P10-M11",
-    "remainingGates": ["XV-10-external-reference", "native-WebGPU-K1-K3-device-validation"]
+    "remainingGates": ["XV-10-external-reference", "native-WebGPU-K1-K3-device-validation-at-P10-M11"]
   },
-  "artifactHash": "ab151f4a13affa7081c48d30"
+  "artifactHash": "183414da147bffc2282d2768"
 }

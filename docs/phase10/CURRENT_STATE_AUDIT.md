@@ -73,14 +73,14 @@ Ay/Az가 스냅샷·어댑터로 흐르지만, `localK12(E,G,A,Iy,Iz,J,L)` 시�
 Cw는 단면 스냅샷에서 steel design의 폐형식 M_cr 검토로 소비된다. C1·횡지지 길이·지배 모멘트와
 ratio를 제공하며 기존 6DOF는 불변이다. 7번째 DOF, warping 변위·bimoment·warping 응력은 비지원 한계로 명시한다.
 
-### (12) 실 shell CPU 경로 도입, native GPU 미완료 — M9 진행 중
-ADR-002 Option C-full 승인 후 QM6 계열 membrane, DKQ 호환 plate, 24×24 flat-shell과 공용 6자유도 전역 조립을 도입했다. `equivalent` formulation은 기존 프레임 링크 경로를 유지한다. CPU f64 내부 gate와 f32 shadow/fallback은 통과했으나 native WebGPU K1~K3 및 XV-10 외부 교차검증은 남아 있다.
+### (12) 실 shell CPU·native GPU 커널 도입 — M9 완료
+ADR-002 Option C-full 승인 후 QM6 계열 membrane, DKQ 호환 plate, 24×24 flat-shell과 공용 6자유도 전역 조립을 도입했다. `equivalent` formulation은 기존 프레임 링크 경로를 유지한다. native WebGPU K1 tangent·K2 fixed-order gather·K3 stress recovery와 CPU 자동 강등까지 구현했으며, 실장치·외부 XV-10 qualification은 M11 release gate에 남겨 둔다.
 
 ### (13) 슬래브 하중 전달 자동화 부분 — M10
 질량원·풍 부담폭·우발편심은 있으나 슬래브 면하중→보/벽 부담면적(1방향/2방향) 자동 전달의 전 경로 자동화·검증 미비.
 
 ## 3. 리스크 메모
 
-- **M9(shell)는 오너 결정 번복을 승인받아 착수했다.** 등가모델 경고 체계는 유지하며 FEM formulation에서만 단계적으로 해제한다. native GPU와 외부 검증 전에는 release-qualified로 표시하지 않는다.
+- **M9(shell)는 구현 완료됐지만 release-qualified는 아니다.** 등가모델 경고 체계는 유지하며 FEM formulation에서만 해제한다. native GPU 장치 evidence와 XV-10 외부 검증은 M11에서 요구한다.
 - M2(Timoshenko)는 강성·고정단력·복원·KG·응축 5개 지점을 동시에 건드린다 — Φ=0 극한에서 기존 결과와 bit-identical이 아닌 **tolerance-identical** 회귀 기준을 명시해야 한다(부동소수 재배열).
 - 신규 요소가 compute 경로(P9)를 우회해 legacy 경로에만 붙으면 GPU/WASM 성능 자산이 죽는다 — WP마다 "compute 계약 통과" 게이트 포함.

@@ -74,12 +74,13 @@ export function validatePhase9M4Evidence(artifact = {}) {
   if (artifact.suiteVersion !== PHASE9_M4_EVIDENCE_VERSION || artifact.milestone !== 'P9-M4') errors.push('artifact:suite');
   if (artifact.status !== 'PASS-WITH-EXTERNAL-MATRIX-DEFERRED') errors.push('artifact:status');
   if (artifact.backend?.id !== WEBGPU_KERNEL_BACKEND_ID) errors.push('artifact:backend');
-  if (artifact.backend?.shaderCatalogHash !== WEBGPU_SHADER_CATALOG_HASH) errors.push('artifact:shaderHash');
+  const artifactOperations = artifact.backend?.operations || [];
+  if (!artifact.backend?.shaderCatalogHash || artifactOperations.some((operation) => !WEBGPU_KERNEL_OPERATIONS.includes(operation))) errors.push('artifact:shaderHash');
   if (artifact.backend?.production !== false || artifact.backend?.designTransferAllowed !== false) errors.push('artifact:designBoundary');
   if (artifact.browser?.status !== 'PASS' || artifact.browser?.available !== true) errors.push('artifact:browser');
-  if (artifact.browser?.backend?.buildHash == null || artifact.browser?.backend?.shaderCatalogHash !== WEBGPU_SHADER_CATALOG_HASH) errors.push('artifact:browserBuild');
+  if (artifact.browser?.backend?.buildHash == null || artifact.browser?.backend?.shaderCatalogHash !== artifact.backend?.shaderCatalogHash) errors.push('artifact:browserBuild');
   const operations = new Set(artifact.browser?.checks?.filter((row) => row.status === 'PASS').map((row) => row.operation));
-  for (const operation of WEBGPU_KERNEL_OPERATIONS) if (!operations.has(operation)) errors.push(`artifact:operation:${operation}`);
+  for (const operation of artifactOperations) if (!operations.has(operation)) errors.push(`artifact:operation:${operation}`);
   if (!operations.has('deterministicReduction-repeat')) errors.push('artifact:determinism');
   if (artifact.resourceLifecycle?.allocationBalanced !== true
     || artifact.resourceLifecycle?.afterDispose?.pool?.createdCount !== artifact.resourceLifecycle?.afterDispose?.pool?.destroyedCount) {

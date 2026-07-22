@@ -1,6 +1,6 @@
 import { stableHash } from '../../../core/stableHash.js';
 
-export const WEBGPU_SHADER_CATALOG_VERSION = 'p10-m2-webgpu-shader-catalog-v2';
+export const WEBGPU_SHADER_CATALOG_VERSION = 'p10-m9d-webgpu-shader-catalog-v3';
 
 const vectorScale = `
 @group(0) @binding(0) var<storage, read> inputValues: array<f32>;
@@ -193,6 +193,63 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
   }
 }`;
 
+const shellTangentBatch = `
+@group(0) @binding(0) var<storage, read> normalizedValues: array<f32>;
+@group(0) @binding(1) var<storage, read> elementScales: array<f32>;
+@group(0) @binding(2) var<storage, read_write> outputValues: array<f32>;
+@group(0) @binding(3) var<storage, read> params: array<f32>;
+@compute @workgroup_size(64)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
+  let index = gid.x;
+  let valueCount = u32(params[0]);
+  let matrixStride = u32(params[1]);
+  if (index >= valueCount) { return; }
+  let element = index / matrixStride;
+  outputValues[index] = normalizedValues[index] * elementScales[element];
+}`;
+
+const shellDeterministicGather = `
+@group(0) @binding(0) var<storage, read> gatherOffsets: array<u32>;
+@group(0) @binding(1) var<storage, read> gatherEntries: array<u32>;
+@group(0) @binding(2) var<storage, read> elementValues: array<f32>;
+@group(0) @binding(3) var<storage, read_write> outputValues: array<f32>;
+@group(0) @binding(4) var<storage, read> params: array<f32>;
+@compute @workgroup_size(64)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
+  let slot = gid.x;
+  let slotCount = u32(params[0]);
+  if (slot >= slotCount) { return; }
+  var sum = 0.0;
+  for (var pointer = gatherOffsets[slot]; pointer < gatherOffsets[slot + 1u]; pointer = pointer + 1u) {
+    sum = sum + elementValues[gatherEntries[pointer]];
+  }
+  outputValues[slot] = sum;
+}`;
+
+const shellStressRecovery = `
+@group(0) @binding(0) var<storage, read> operators: array<f32>;
+@group(0) @binding(1) var<storage, read> displacements: array<f32>;
+@group(0) @binding(2) var<storage, read_write> outputValues: array<f32>;
+@group(0) @binding(3) var<storage, read> params: array<f32>;
+@compute @workgroup_size(64)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
+  let index = gid.x;
+  let elementCount = u32(params[0]);
+  let responseStride = u32(params[1]);
+  let dofStride = u32(params[2]);
+  let valueCount = elementCount * responseStride;
+  if (index >= valueCount) { return; }
+  let element = index / responseStride;
+  let response = index % responseStride;
+  let operatorBase = (element * responseStride + response) * dofStride;
+  let displacementBase = element * dofStride;
+  var sum = 0.0;
+  for (var dof = 0u; dof < dofStride; dof = dof + 1u) {
+    sum = sum + operators[operatorBase + dof] * displacements[displacementBase + dof];
+  }
+  outputValues[index] = sum;
+}`;
+
 const SOURCES = Object.freeze({
   vectorScale,
   vectorAxpy,
@@ -201,6 +258,9 @@ const SOURCES = Object.freeze({
   jacobi,
   fiberSampleBatch,
   frameMatrixBatch,
+  shellTangentBatch,
+  shellDeterministicGather,
+  shellStressRecovery,
 });
 
 export const WEBGPU_SHADER_CATALOG_HASH = stableHash({ version: WEBGPU_SHADER_CATALOG_VERSION, sources: SOURCES });

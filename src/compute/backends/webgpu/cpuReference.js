@@ -105,6 +105,57 @@ export function referenceFrameMatrixBatch(input = {}) {
   return output;
 }
 
+export function referenceShellTangentBatch(input = {}) {
+  const normalizedValues = finiteF32(input.normalizedValues, 'normalizedValues');
+  const elementScales = finiteF32(input.elementScales, 'elementScales');
+  const matrixStride = positiveInteger(input.matrixStride, 'matrixStride');
+  if (normalizedValues.length !== elementScales.length * matrixStride) {
+    throw referenceError('WEBGPU_SHELL_TANGENT_SHAPE_INVALID', 'Shell tangent values must match elementScales × matrixStride.');
+  }
+  return Float32Array.from(normalizedValues, (value, index) => Math.fround(value * elementScales[Math.floor(index / matrixStride)]));
+}
+
+export function referenceShellDeterministicGather(input = {}) {
+  const gatherOffsets = Uint32Array.from(input.gatherOffsets || []);
+  const gatherEntries = Uint32Array.from(input.gatherEntries || []);
+  const elementValues = finiteF32(input.elementValues, 'elementValues');
+  const slotCount = gatherOffsets.length - 1;
+  if (slotCount < 0 || gatherOffsets[slotCount] !== gatherEntries.length) {
+    throw referenceError('WEBGPU_SHELL_GATHER_SHAPE_INVALID', 'Shell gather offsets and entries are inconsistent.');
+  }
+  const output = new Float32Array(slotCount);
+  for (let slot = 0; slot < slotCount; slot += 1) {
+    let sum = Math.fround(0);
+    for (let pointer = gatherOffsets[slot]; pointer < gatherOffsets[slot + 1]; pointer += 1) {
+      const entry = gatherEntries[pointer];
+      if (entry >= elementValues.length) throw referenceError('WEBGPU_SHELL_GATHER_ENTRY_INVALID', 'Shell gather entry is outside element values.');
+      sum = Math.fround(sum + elementValues[entry]);
+    }
+    output[slot] = sum;
+  }
+  return output;
+}
+
+export function referenceShellStressRecovery(input = {}) {
+  const operators = finiteF32(input.operators, 'operators');
+  const displacements = finiteF32(input.displacements, 'displacements');
+  const elementCount = positiveInteger(input.elementCount, 'elementCount');
+  const responseStride = positiveInteger(input.responseStride, 'responseStride');
+  const dofStride = positiveInteger(input.dofStride, 'dofStride');
+  if (operators.length !== elementCount * responseStride * dofStride || displacements.length !== elementCount * dofStride) {
+    throw referenceError('WEBGPU_SHELL_RECOVERY_SHAPE_INVALID', 'Shell recovery operator or displacement shape is inconsistent.');
+  }
+  const output = new Float32Array(elementCount * responseStride);
+  for (let element = 0; element < elementCount; element += 1) for (let response = 0; response < responseStride; response += 1) {
+    let sum = Math.fround(0);
+    const operatorBase = (element * responseStride + response) * dofStride;
+    const displacementBase = element * dofStride;
+    for (let dof = 0; dof < dofStride; dof += 1) sum = Math.fround(sum + Math.fround(operators[operatorBase + dof] * displacements[displacementBase + dof]));
+    output[element * responseStride + response] = sum;
+  }
+  return output;
+}
+
 function localFrameF32(e, g, a, iy, iz, j, length, phiY = 0, phiZ = 0) {
   if (![e, g, a, iy, iz, j, length].every((value) => Number.isFinite(value) && value > 0)) {
     throw referenceError('WEBGPU_FRAME_PROPERTY_INVALID', 'Frame properties must be finite and positive.');
@@ -169,6 +220,12 @@ function finiteF32(values, field) {
   const output = Float32Array.from(values, Number);
   if (output.some((value) => !Number.isFinite(value))) throw referenceError('WEBGPU_REFERENCE_NONFINITE', `${field} must be finite.`);
   return output;
+}
+
+function positiveInteger(value, field) {
+  const number = Number(value);
+  if (!Number.isInteger(number) || number <= 0) throw referenceError('WEBGPU_REFERENCE_SHAPE_INVALID', `${field} must be a positive integer.`);
+  return number;
 }
 
 function requireSameLength(left, right, field) {

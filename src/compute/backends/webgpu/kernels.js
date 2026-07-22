@@ -7,6 +7,7 @@ export const WEBGPU_KERNEL_RUNTIME_VERSION = 'p9-m4-webgpu-kernel-runtime-v1';
 export const WEBGPU_KERNEL_OPERATIONS = Object.freeze([
   'vectorScale', 'vectorAxpy', 'deterministicReduction', 'csrSpmv',
   'jacobiPrecondition', 'fiberSampleBatch', 'frameMatrixBatch',
+  'shellTangentBatch', 'shellDeterministicGather', 'shellStressRecovery',
 ]);
 
 export async function executeWebGpuKernel(platform, operation, payload = {}, context = {}) {
@@ -20,6 +21,9 @@ export async function executeWebGpuKernel(platform, operation, payload = {}, con
   else if (operation === 'jacobiPrecondition') result = await jacobiPrecondition(platform, payload, context);
   else if (operation === 'fiberSampleBatch') result = await fiberSampleBatch(platform, payload, context);
   else if (operation === 'frameMatrixBatch') result = await frameMatrixBatch(platform, payload, context);
+  else if (operation === 'shellTangentBatch') result = await shellTangentBatch(platform, payload, context);
+  else if (operation === 'shellDeterministicGather') result = await shellDeterministicGather(platform, payload, context);
+  else if (operation === 'shellStressRecovery') result = await shellStressRecovery(platform, payload, context);
   else throw kernelError('WEBGPU_KERNEL_UNSUPPORTED', `Unsupported WebGPU kernel operation: ${operation}.`);
   const core = {
     version: WEBGPU_KERNEL_RUNTIME_VERSION,
@@ -163,6 +167,56 @@ async function frameMatrixBatch(platform, payload, context) {
   return { values: output, elementCount: count, propertyStride, responseTransformApplied: true };
 }
 
+async function shellTangentBatch(platform, payload, context) {
+  const normalizedValues = finiteF32(payload.normalizedValues, 'normalizedValues');
+  const elementScales = finiteF32(payload.elementScales, 'elementScales');
+  const matrixStride = positiveInteger(payload.matrixStride, 'matrixStride');
+  if (normalizedValues.length !== elementScales.length * matrixStride) throw kernelError('WEBGPU_SHELL_TANGENT_SHAPE_INVALID', 'Shell tangent values must match elementScales × matrixStride.');
+  const inputs = [normalizedValues, elementScales, Float32Array.of(normalizedValues.length, matrixStride)];
+  for (const data of inputs) assertSingleBindingLimit(platform, data.byteLength, 'shell tangent input');
+  const output = await dispatchKernel(platform, {
+    shader: 'shellTangentBatch', inputs, outputLength: normalizedValues.length,
+    dispatchCount: workgroups(normalizedValues.length, 64), outputBinding: 2,
+    bindingOrder: [0, 1, 3], signal: context.signal,
+  });
+  return { values: output, elementCount: elementScales.length, matrixStride };
+}
+
+async function shellDeterministicGather(platform, payload, context) {
+  const gatherOffsets = uint32(payload.gatherOffsets, 'gatherOffsets');
+  const gatherEntries = uint32(payload.gatherEntries, 'gatherEntries');
+  const elementValues = finiteF32(payload.elementValues, 'elementValues');
+  const slotCount = gatherOffsets.length - 1;
+  if (slotCount < 0 || gatherOffsets[slotCount] !== gatherEntries.length) throw kernelError('WEBGPU_SHELL_GATHER_SHAPE_INVALID', 'Shell gather offsets and entries are inconsistent.');
+  if (gatherEntries.some((entry) => entry >= elementValues.length)) throw kernelError('WEBGPU_SHELL_GATHER_ENTRY_INVALID', 'Shell gather entry is outside element values.');
+  const inputs = [gatherOffsets, gatherEntries, elementValues, Float32Array.of(slotCount)];
+  for (const data of inputs) assertSingleBindingLimit(platform, data.byteLength, 'shell gather input');
+  const output = await dispatchKernel(platform, {
+    shader: 'shellDeterministicGather', inputs, outputLength: slotCount,
+    dispatchCount: workgroups(slotCount, 64), outputBinding: 3,
+    bindingOrder: [0, 1, 2, 4], signal: context.signal,
+  });
+  return { values: output, slotCount, contributionCount: gatherEntries.length, policy: 'one-invocation-per-slot-fixed-entry-order' };
+}
+
+async function shellStressRecovery(platform, payload, context) {
+  const operators = finiteF32(payload.operators, 'operators');
+  const displacements = finiteF32(payload.displacements, 'displacements');
+  const elementCount = positiveInteger(payload.elementCount, 'elementCount');
+  const responseStride = positiveInteger(payload.responseStride, 'responseStride');
+  const dofStride = positiveInteger(payload.dofStride, 'dofStride');
+  if (operators.length !== elementCount * responseStride * dofStride || displacements.length !== elementCount * dofStride) throw kernelError('WEBGPU_SHELL_RECOVERY_SHAPE_INVALID', 'Shell recovery operator or displacement shape is inconsistent.');
+  const inputs = [operators, displacements, Float32Array.of(elementCount, responseStride, dofStride)];
+  for (const data of inputs) assertSingleBindingLimit(platform, data.byteLength, 'shell recovery input');
+  const outputLength = elementCount * responseStride;
+  const output = await dispatchKernel(platform, {
+    shader: 'shellStressRecovery', inputs, outputLength,
+    dispatchCount: workgroups(outputLength, 64), outputBinding: 2,
+    bindingOrder: [0, 1, 3], signal: context.signal,
+  });
+  return { values: output, elementCount, responseStride, dofStride };
+}
+
 function framePropertyStride(value, length) {
   if (value != null) {
     const stride = Number(value);
@@ -172,6 +226,12 @@ function framePropertyStride(value, length) {
   if (length % 7 === 0) return 7;
   if (length % 9 === 0) return 9;
   return 7;
+}
+
+function positiveInteger(value, field) {
+  const number = Number(value);
+  if (!Number.isInteger(number) || number <= 0) throw kernelError('WEBGPU_SHELL_SHAPE_INVALID', `${field} must be a positive integer.`);
+  return number;
 }
 
 async function dispatchKernel(platform, spec) {

@@ -56,7 +56,7 @@ for (let index = 0; index < 12; index += 1) {
 }
 
 const shaders = webGpuShaderCatalog();
-assert.equal(shaders.length, 7);
+assert.equal(shaders.length, 10);
 assert.equal(new Set(shaders.map((row) => row.shaderHash)).size, shaders.length, 'single shader owner with unique hashes');
 assert.ok(shaders.every((row) => !/atomic/i.test(row.source)), 'M4 kernels do not use nondeterministic float atomics');
 assert.ok(shaders.find((row) => row.name === 'deterministicReduction').source.includes('@workgroup_size(1)'));

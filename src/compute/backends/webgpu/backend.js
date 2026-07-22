@@ -120,6 +120,9 @@ function estimateKernelWorkingSet(operation, payload) {
     return input + (payload.axialStrains?.length || 0) * 32 + 8;
   }
   if (operation === 'frameMatrixBatch') return bytes('properties') + bytes('responseTransforms') * 3 + 4;
+  if (operation === 'shellTangentBatch') return bytes('normalizedValues') * 2 + bytes('elementScales') + 8;
+  if (operation === 'shellDeterministicGather') return bytes('gatherOffsets') + bytes('gatherEntries') + bytes('elementValues') + Math.max(0, (payload.gatherOffsets?.length || 1) - 1) * 4 + 4;
+  if (operation === 'shellStressRecovery') return bytes('operators') + bytes('displacements') + (Number(payload.elementCount) || 0) * (Number(payload.responseStride) || 0) * 4 + 12;
   return Object.values(payload || {}).reduce((sum, value) => sum + numericArrayBytes(value), 0);
 }
 function numericArrayBytes(value) {

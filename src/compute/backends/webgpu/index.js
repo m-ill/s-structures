@@ -11,6 +11,9 @@ export {
   referenceFiberSampleBatch,
   referenceFrameMatrixBatch,
   referenceJacobi,
+  referenceShellDeterministicGather,
+  referenceShellStressRecovery,
+  referenceShellTangentBatch,
   referenceVectorAxpy,
   referenceVectorScale,
 } from './cpuReference.js';

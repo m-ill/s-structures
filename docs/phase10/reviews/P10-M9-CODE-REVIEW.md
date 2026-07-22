@@ -3,15 +3,15 @@
 ```yaml
 review: P10-M9
 date: 2026-07-22
-verdict: PASS_WITH_LIMITATIONS_FOR_P10_M9_CPU_GATE
+verdict: PASS_FOR_P10_M9_IMPLEMENTATION_GATE
 milestone_status: complete-with-open-release-gates
 dedicated_gate: PASS
 externally_cross_validated: false
 native_webgpu_kernels_qualified: false
 release_qualified: false
 evidence_artifact: reports/validation-evidence/phase10/p10-m9-shell-fem.json
-evidence_records: 8/8 PASS
-artifact_hash: ab151f4a13affa7081c48d30
+evidence_records: 9/9 PASS
+artifact_hash: 183414da147bffc2282d2768
 ```
 
 ## 결론
@@ -28,7 +28,7 @@ ADR-002 Option C-full 승인에 따라 4절점 membrane, plate, flat-shell 요�
 
 ## 남은 제한
 
-- 현재 M9d는 CPU가 생성한 배치에 대한 f32 shadow qualification이다. 실제 WebGPU 장치에서 K1 요소 생성, K2 gather, K3 응력 복원을 실행한 것으로 간주하지 않는다.
+- M9d는 native WGSL K1 tangent materialization, K2 fixed-order gather, K3 stress recovery와 브라우저 qualification harness를 구현했다. 이번 작업 환경에서는 브라우저 제어 런타임 초기화 오류로 실장치 dispatch evidence가 BLOCKED이므로 장치 qualification은 M11에 남긴다.
 - flat-shell membrane은 QM6 기반 drilling 안정화 결합이며 완전한 독립 Allman 보간의 외부 교차검증은 아직 없다.
 - 셸 초기응력 기하강성 `Kg`는 포함하지 않는다. P-Delta/좌굴은 기존 프레임 `Kg` 범위에 한정한다.
 - punching shear, 철근설계, 자동 메싱, XV-10 외부 기준 비교는 M9 release qualification 범위 밖이다.

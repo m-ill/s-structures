@@ -86,4 +86,4 @@ gate: ADR-002 accepted — 옵션 C-full (2026-07-09 옵션 B 결정의 공식 �
 | 2026-07-20 | 오너: full shell 부담 — 2D 재검토 | 옵션 C(단계 도입)로 재구성 | 반영 |
 | 2026-07-20 | 오너: 어려운 부분(M9c)도 계획 포함 + GPU 처리 코드 구성 | M9c 정식 범위 승격(Allman⊕DKQ·warped 보정), M9d GPU 배치 단계 신설(P9-M7 SoA·결정론 scatter·혼합정밀도 재사용), "CPU부터 GPU 모양으로" 설계 원칙 추가 | 반영 |
 | 2026-07-22 | M9 진행 요청 | ADR-002 옵션 C-full 오너 승인 기록, M9a→M9d 착수 | closed |
-| 2026-07-22 | 구현·검증 감사 | M9a~c CPU/전역 조립 및 M9d f32 shadow·fallback evidence 완료. native WebGPU K1~K3와 XV-10은 미완료로 유지 | in progress |
+| 2026-07-22 | M9d 마무리 | native WebGPU K1 tangent·K2 fixed-order gather·K3 stress recovery, CPU 기준, 자동 강등, browser harness 구현. 장치 qualification·XV-10은 M11 release gate로 이관 | complete |

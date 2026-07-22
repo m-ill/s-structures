@@ -17,6 +17,7 @@ const records = [
   record('SH-C03-GLOBAL-EQUILIBRIUM', global.shearError, 1e-10),
   record('SH-G01-F32-BATCH-PARITY', m9d.gpuRelativeError, 1e-6),
   record('SH-G02-REFINEMENT-RESIDUAL', m9d.gpuResidual, 1e-10),
+  record('SH-G03-DETERMINISTIC-GATHER', m9d.deterministicAssembly ? 0 : 1, 0),
 ];
 const core = {
   version: 'p10-evidence-artifact-v1',
@@ -41,11 +42,13 @@ const core = {
     shellLumpedMassConnected: true,
     cpuF64Qualified: true,
     gpuBatchShadowQualified: true,
+    nativeWebGpuKernelsImplemented: true,
     nativeWebGpuKernelsQualified: false,
+    browserQualificationStatus: 'BLOCKED_BROWSER_CONTROL_RUNTIME',
     externallyCrossValidated: false,
     releaseQualified: false,
     releaseGate: 'P10-M11',
-    remainingGates: ['XV-10-external-reference', 'native-WebGPU-K1-K3-device-validation'],
+    remainingGates: ['XV-10-external-reference', 'native-WebGPU-K1-K3-device-validation-at-P10-M11'],
   },
 };
 export const LIVE_P10_M9_EVIDENCE = Object.freeze({ ...core, artifactHash: stableHash(core).slice(0, 24) });
@@ -58,7 +61,8 @@ if (process.argv.includes('--print')) {
   ), 'utf8'));
   assert.deepEqual(committed, LIVE_P10_M9_EVIDENCE, 'P10-M9 committed evidence is stale');
   assert.equal(committed.status, 'OK');
-  assert.equal(committed.records.length, 8);
+  assert.equal(committed.records.length, 9);
+  assert.equal(committed.qualification.nativeWebGpuKernelsImplemented, true);
   assert.equal(committed.qualification.nativeWebGpuKernelsQualified, false);
   assert.equal(committed.qualification.releaseQualified, false);
   console.log(JSON.stringify({ ok: true, artifactHash: committed.artifactHash, recordCount: committed.records.length }, null, 2));
