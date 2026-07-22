@@ -78,7 +78,10 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     diaphragms: sorted(source.diaphragms || []),
   };
   const rigidDiaphragms = resolveRigidDiaphragms(solverModel, allNodes);
-  const constraint = buildConstraintSystem(allNodes, rigidDiaphragms, options.constraintOptions);
+  const constraint = buildConstraintSystem(allNodes, rigidDiaphragms, {
+    ...(options.constraintOptions || {}),
+    constraints: solverModel.constraints || [],
+  });
   const elements = buildElementDescriptors(solverModel, allNodes, allMembers);
   const elementErrors = [...referenceErrors, ...elements.errors]
     .sort((a, b) => `${a.code}:${a.entityId || a.elementId || ''}`.localeCompare(`${b.code}:${b.entityId || b.elementId || ''}`));

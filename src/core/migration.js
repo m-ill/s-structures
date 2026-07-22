@@ -81,6 +81,7 @@ export function migrateModel(inputModel) {
     loads: Array.isArray(source.loads) ? source.loads.map((load) => ({ ...load })) : [],
     stories: Array.isArray(source.stories) ? source.stories.map((story) => ({ ...story })) : [],
     diaphragms: normalizeDiaphragms(source.diaphragms),
+    ...(Array.isArray(source.constraints) ? { constraints: source.constraints.map((item) => clone(item)) } : {}),
     loadCases: Array.isArray(source.loadCases) ? source.loadCases.map((loadCase) => ({ ...loadCase })) : [],
     loadCombinations: Array.isArray(source.loadCombinations) ? source.loadCombinations.map((combo) => ({ ...combo })) : [],
     massSources: Array.isArray(source.massSources) ? source.massSources.map((item) => ({ ...item })) : [],
@@ -143,6 +144,7 @@ function migrateV4ToV5(source) {
   const model = {
     ...source,
     schemaVersion: SCHEMA_VERSION,
+    ...(Array.isArray(source.constraints) ? { constraints: source.constraints.map((item) => clone(item)) } : {}),
     ...registries,
     analysisSettings: normalizeMigratedAnalysisSettings(source.analysisSettings),
     analysisCases: normalizeAnalysisCases(classifyLegacyAnalysisCases(source.analysisCases, 4)),

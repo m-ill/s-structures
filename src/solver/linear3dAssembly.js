@@ -26,6 +26,12 @@ import { condensePartialFixity, resolveMemberPartialFixity } from './partialFixi
 import { resolveMemberTimoshenko } from './timoshenko.js';
 import { resolveMemberOffsetKinematics } from './memberOffsets.js';
 import { applyPanelZoneConnectionSprings, attachPanelZoneSources } from './panelZone.js';
+import {
+  buildConstraintSystem,
+  expandConstraintDisplacements,
+  reduceConstraintMatrix,
+  reduceConstraintVector,
+} from './domain/constraintSystem.js';
 
 export { buildFixedDofs } from './domain/supportConstraints.js';
 
@@ -47,7 +53,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   const nodeMap = Object.fromEntries(nodes.map((node) => [node.id, node]));
   const idx = Object.fromEntries(nodes.map((node, i) => [node.id, i]));
   const ndof = nodes.length * 6;
-  const cacheKey = elasticComponentCacheKey(ctx);
+  const cacheKey = (ctx.constraints || []).length ? null : elasticComponentCacheKey(ctx);
   const cached = cacheKey ? ctx.componentCache?.get(cacheKey) : null;
   const assembleStiffness = !cached;
   const sparseDecision = cached?.sparseDecision || sparseAssemblyDecision(ctx, ndof);
@@ -178,9 +184,14 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     stabilizeUnsupportedRotations(K, nodes, fixedDofs);
   }
   const diaphragmGroups = activeDiaphragmGroups(nodes, ctx.diaphragms);
+  const generalConstraints = activeGeneralConstraints(nodes, ctx.constraints);
   const reduced = cached?.reduced
     ? { ...cached.reduced, F: reduceForceWithMap(F, cached.reduced.map) }
-    : diaphragmGroups.length
+    : generalConstraints.length
+      ? sparseDecision.useSparse
+        ? reduceWithCanonicalConstraintsSparse(K, F, nodes, diaphragmGroups, generalConstraints)
+        : reduceWithCanonicalConstraints(K, F, nodes, diaphragmGroups, generalConstraints)
+      : diaphragmGroups.length
       ? sparseDecision.useSparse
         ? reduceWithDiaphragmsSparse(K, F, nodes, fixedDofs, diaphragmGroups)
         : reduceWithDiaphragms(K, F, nodes, fixedDofs, diaphragmGroups)
@@ -214,13 +225,15 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     const added = autoFixIsolatedDofs(Ks, fixed);
     (reduced ? autoFixedReducedDofs : autoFixedDofs).push(...added);
   }
-  const prescribed = buildPrescribedDisplacements(
-    nodes,
-    prescribedConstraints.entries,
-    fixedDofs,
-    reduced?.map,
-    fixed,
-  );
+  const prescribed = reduced?.constraintContract
+    ? { ok: true, values: new Array(matrixSize(Ks)).fill(0), dofs: reduced.constraintContract.prescribedEntries || [] }
+    : buildPrescribedDisplacements(
+      nodes,
+      prescribedConstraints.entries,
+      fixedDofs,
+      reduced?.map,
+      fixed,
+    );
   if (!prescribed.ok) return prescribed;
   const criteriaModel = ctx.criteriaModel || ctx.model || ctx.analysisCriteria || {};
   const systemDofCount = matrixSize(Ks);
@@ -352,7 +365,9 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     free.forEach((globalIndex, i) => {
       Q[globalIndex] = solvedDf[i];
     });
-    const D = reduced ? expandReducedDisplacements(Q, reduced.map) : Q;
+    const D = reduced?.constraintContract
+      ? expandConstraintDisplacements(reduced.constraintContract, Q)
+      : reduced ? expandReducedDisplacements(Q, reduced.map) : Q;
     const solver = buildSolverDiagnostics(
       Ks,
       Fs,
@@ -365,6 +380,11 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       assemblyTelemetry,
     );
     solver.diaphragmCount = diaphragmGroups.length;
+    solver.generalConstraintCount = generalConstraints.length;
+    solver.generalConstraintEquationCount = reduced?.constraintContract?.generalConstraintEquationCount || 0;
+    solver.constraintForces = reduced?.constraintContract
+      ? recoverGeneralConstraintForces(nodes, K, F, D, fixedDofs, reduced.constraintContract)
+      : { applied: false, method: 'not-applicable', rows: [] };
     solver.reducedDofCount = systemDofCount;
     solver.prescribedDofCount = prescribed.dofs.length;
     solver.prescribedDofs = prescribed.dofs;
@@ -393,7 +413,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       disp[node.id] = D.slice(i * 6, i * 6 + 6);
     });
 
-    const reactionRecovery = reduced
+    const reactionRecovery = reduced && !reduced.constraintContract
       ? buildReducedReactionRecovery(Ks, Fs, Q, fixedDofs, reduced.map)
       : null;
     if (reactionRecovery?.ok === false) return reactionRecovery;
@@ -428,6 +448,81 @@ function activeDiaphragmGroups(nodes, groups = []) {
   const ids = new Set(nodes.map((node) => node.id));
   return groups.map((group) => ({ ...group, nodeIds: group.nodeIds.filter((id) => ids.has(id)) }))
     .filter((group) => group.nodeIds.length > 1);
+}
+
+function activeGeneralConstraints(nodes, constraints = []) {
+  const ids = new Set(nodes.map((node) => node.id));
+  return (constraints || []).filter((constraint) => constraintNodeIds(constraint).every((id) => ids.has(id)));
+}
+
+function constraintNodeIds(constraint = {}) {
+  const ids = [constraint.master?.node, constraint.slave?.node];
+  for (const term of constraint.terms || []) ids.push(term?.node);
+  return [...new Set(ids.filter((id) => id != null))];
+}
+
+function reduceWithCanonicalConstraints(K, F, nodes, groups, constraints) {
+  const contract = buildConstraintSystem(nodes, groups, { constraints });
+  if (!contract.ok) return { constraintResolution: contract };
+  const KuBar = matrixMatVec(K, contract.prescribed);
+  const shifted = F.map((value, index) => value - KuBar[index]);
+  return {
+    K: reduceConstraintMatrix(contract, K),
+    F: reduceConstraintVector(contract, shifted),
+    fixedDofs: new Set(),
+    constraintResolution: { ok: true },
+    constraintContract: contract,
+    map: { rows: contract.rows, ncols: contract.reducedDofCount, columnKeys: contract.reducedDofs.map((row) => row.key) },
+  };
+}
+
+function reduceWithCanonicalConstraintsSparse(K, F, nodes, groups, constraints) {
+  const contract = buildConstraintSystem(nodes, groups, { constraints });
+  if (!contract.ok) return { constraintResolution: contract };
+  const KuBar = cscMatVec(K, contract.prescribed);
+  const shifted = F.map((value, index) => value - KuBar[index]);
+  const accumulator = createSparseAccumulator(contract.reducedDofCount, contract.reducedDofCount);
+  for (let col = 0; col < K.colCount; col += 1) {
+    for (let p = K.colPtr[col]; p < K.colPtr[col + 1]; p += 1) {
+      const row = K.rowIdx[p];
+      const value = K.values[p];
+      for (const [reducedRow, rowCoefficient] of contract.rows[row]) {
+        for (const [reducedCol, colCoefficient] of contract.rows[col]) {
+          addSparseValue(accumulator, reducedRow, reducedCol, rowCoefficient * value * colCoefficient);
+        }
+      }
+    }
+  }
+  return {
+    K: sparseAccumulatorToCsc(accumulator),
+    F: reduceConstraintVector(contract, shifted),
+    fixedDofs: new Set(),
+    constraintResolution: { ok: true },
+    constraintContract: contract,
+    map: { rows: contract.rows, ncols: contract.reducedDofCount, columnKeys: contract.reducedDofs.map((row) => row.key) },
+  };
+}
+
+function recoverGeneralConstraintForces(nodes, K, F, D, fixedDofs, contract) {
+  const residual = matrixMatVec(K, D).map((value, index) => value - F[index]);
+  const dofs = new Set();
+  for (const equation of contract.generalConstraintEquations || []) {
+    dofs.add(equation.slave.fullDof);
+    for (const term of equation.terms || []) dofs.add(term.fullDof);
+  }
+  const rows = [...dofs].sort((a, b) => a - b).map((fullDof) => ({
+    nodeId: nodes[Math.floor(fullDof / 6)]?.id || null,
+    dof: ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'][fullDof % 6],
+    fullDof,
+    force: -residual[fullDof],
+    supportCoupled: fixedDofs.has(fullDof),
+  }));
+  return {
+    applied: rows.length > 0,
+    method: 'negative-full-system-residual-on-constraint-participating-dofs',
+    signConvention: 'force applied by constraint to structural DOF',
+    rows,
+  };
 }
 
 function reduceWithDiaphragms(K, F, nodes, fixedDofs, groups) {
@@ -1108,6 +1203,9 @@ export function summarizeSolverDiagnostics(components) {
       loadNorm: null,
       displacementNorm: null,
       diaphragmCount: 0,
+      generalConstraintCount: 0,
+      generalConstraintEquationCount: 0,
+      constraintForces: [],
       reducedDofCount: 0,
     };
   }
@@ -1125,6 +1223,9 @@ export function summarizeSolverDiagnostics(components) {
     diagonalMin: Math.min(...finite.map((item) => item.diagonalMin)),
     diagonalMax: Math.max(...finite.map((item) => item.diagonalMax)),
     diaphragmCount: finite.reduce((sum, item) => sum + (item.diaphragmCount || 0), 0),
+    generalConstraintCount: finite.reduce((sum, item) => sum + (item.generalConstraintCount || 0), 0),
+    generalConstraintEquationCount: finite.reduce((sum, item) => sum + (item.generalConstraintEquationCount || 0), 0),
+    constraintForces: finite.map((item) => item.constraintForces).filter((item) => item?.applied),
     reducedDofCount: finite.reduce((sum, item) => sum + (item.reducedDofCount || item.dofCount || 0), 0),
     sparse: {
       componentCount: finite.filter((item) => item.sparse).length,

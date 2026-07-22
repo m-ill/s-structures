@@ -221,6 +221,9 @@
     "addMember",
     "updateMember",
     "deleteMember",
+    "addConstraint",
+    "updateConstraint",
+    "deleteConstraint",
     "setMemberBehavior",
     "assignHinge",
     "removeHinge",
@@ -756,7 +759,7 @@
     "phase3DesignFormulaRegistry"
   ],
   "moduleVersions": {
-    "agentActions": "p10-m4-agent-modeling-actions-v3",
+    "agentActions": "p10-m5-agent-modeling-actions-v4",
     "resultPanel": "m10-index-results-panel",
     "resultVisuals": "m13-index-result-visuals",
     "resultOverlay": "m18-result-overlay",
@@ -889,7 +892,7 @@
     "phase6EquivalentShellScope": "p6-m6-equivalent-shell-scope-v1",
     "phase3LoadsV2": "p3-m13-loads-v2-trace",
     "phase3DynamicCompleteness": "p3-m13-dynamic-completeness",
-    "globalBucklingTrace": "p7-m10-global-buckling-v3",
+    "globalBucklingTrace": "p10-m5-global-buckling-v4",
     "phase3NonlinearAssembly": "p3-m14-nonlinear-assembly",
     "phase3NonlinearGlobalEquilibrium": "p3-m14-global-equilibrium-trace-v1",
     "phase3NonlinearHingeAssignment": "p3-m15-hinge-assignment",

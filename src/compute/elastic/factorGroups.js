@@ -104,6 +104,7 @@ function stiffnessIdentity(model) {
     materials: model.materials || [],
     sections: model.sections || [],
     rigidDiaphragms: model.rigidDiaphragms || [],
+    constraints: model.constraints || [],
     semiRigidDiaphragms: model.semiRigidDiaphragms || [],
     walls: model.walls || [],
     slabs: model.slabs || [],

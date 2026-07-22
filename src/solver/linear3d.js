@@ -28,6 +28,7 @@ import { normalizePDeltaMethod, pDeltaMethodTrace } from './pdelta/method.js';
 import { PDELTA_SECOND_ORDER_VERSION, runSecondOrderPDelta } from './pdelta/secondOrder.js';
 import { summarizeValidationHealth } from '../core/validationHealth.js';
 import { stableHash } from '../core/stableHash.js';
+import { constraintConnectivityGroups } from '../core/constraintDefinitions.js';
 
 export { analyzeComponent3D, assembleStiffness3D } from './linear3dAssembly.js';
 export { AXIS, localK12, memberAxes, solveLinear, solveLinearDetailed } from './linear3dElement.js';
@@ -586,8 +587,13 @@ function analyzeAllOnce(model, factors = null, options = {}) {
   };
   const diaphragms = resolveRigidDiaphragms(model, nodes);
   ctx.diaphragms = diaphragms;
+  ctx.constraints = model.constraints || [];
 
-  const groups = connectedComponentGroups(nodes, members, diaphragms.map((group) => group.nodeIds));
+  const constraintGroups = constraintConnectivityGroups(ctx.constraints);
+  const groups = connectedComponentGroups(nodes, members, [
+    ...diaphragms.map((group) => group.nodeIds),
+    ...constraintGroups,
+  ]);
   const out = {
     ok: true,
     disp: {},
@@ -621,7 +627,8 @@ function analyzeAllOnce(model, factors = null, options = {}) {
       nodeIds: [...group.nids].map(String).sort(),
       memberIds: [...group.mids].map(String).sort(),
     });
-    const result = analyzeComponent3D(ns, ms, ls, { ...ctx, componentKey });
+    const constraints = ctx.constraints.filter((constraint) => constraintNodeIds(constraint).every((id) => group.nids.has(id)));
+    const result = analyzeComponent3D(ns, ms, ls, { ...ctx, constraints, componentKey });
     if (result.capture) {
       out.anyOk = true;
       out.systemCaptures.push(result.capture);
@@ -1964,6 +1971,14 @@ function uniqueSorted(values) {
 
 function uniqueStrings(values) {
   return [...new Set(values.filter(Boolean).map((value) => String(value)))];
+}
+
+function constraintNodeIds(constraint = {}) {
+  return [...new Set([
+    constraint.master?.node,
+    constraint.slave?.node,
+    ...(constraint.terms || []).map((term) => term?.node),
+  ].filter((id) => id != null))];
 }
 
 function dot3(a, b) {

@@ -30,3 +30,4 @@ depends: [WP-00, WP-01]
 
 | 날짜 | 지적 | 조치 | 상태 |
 | --- | --- | --- | --- |
+| 2026-07-22 | Codex | 일반 MPC/rigidLink/masterSlave, 충돌 3코드, K/F/M/KG 공통 변환, DomainBinary v5, Agent action, 전용 evidence를 검토함 | PASS_FOR_P10_M5_GATE / NOT_RELEASE_QUALIFIED |

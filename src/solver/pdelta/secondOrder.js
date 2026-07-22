@@ -22,6 +22,13 @@ import {
   evaluateConstrainedTangentStability,
 } from './stability.js';
 import { buildPDeltaTangentStiffness } from './tangentStiffness.js';
+import {
+  buildConstraintSystem,
+  expandConstraintDisplacements,
+  reduceConstraintMatrix,
+  reduceConstraintVector,
+} from '../domain/constraintSystem.js';
+import { resolveRigidDiaphragms } from '../../core/diaphragmGroups.js';
 
 export const PDELTA_SECOND_ORDER_VERSION = 'p6-m5-pdelta-second-order-v1';
 export const PDELTA_DIRECT_PRODUCT_VERSION = 'p7-m8-direct-pdelta-product-v3';
@@ -127,9 +134,9 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
     criteria.stabilityTolerance,
     seedTangent.Kt,
   );
-  const initialStability = evaluateConstrainedTangentStability(seedTangent.Kt, assembly.free, {
+  const initialStability = evaluateConstrainedTangentStability(tangentMatrix(seedTangent), tangentFreeDofs(seedTangent, assembly), {
     tolerance: criteria.stabilityTolerance,
-    referenceMatrix: seedTangent.Kt,
+    referenceMatrix: tangentMatrix(seedTangent),
   });
   if (!initialStability.stable) {
     return failedDirectResult('ELASTIC_TANGENT_NOT_POSITIVE_DEFINITE', {
@@ -170,9 +177,9 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
         axialForces,
         includeTensionKg: criteria.includeTensionKg,
       });
-      const trialStability = evaluateConstrainedTangentStability(tangent.Kt, assembly.free, {
+      const trialStability = evaluateConstrainedTangentStability(tangentMatrix(tangent), tangentFreeDofs(tangent, assembly), {
         tolerance: criteria.stabilityTolerance,
-        referenceMatrix: seedTangent.Kt,
+        referenceMatrix: tangentMatrix(seedTangent),
       });
       if (!trialStability.stable) {
         converged = false;
@@ -225,17 +232,19 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
         axialForces: nextAxial,
         includeTensionKg: criteria.includeTensionKg,
       });
-      const updatedStability = evaluateConstrainedTangentStability(updatedTangent.Kt, assembly.free, {
+      const updatedStability = evaluateConstrainedTangentStability(tangentMatrix(updatedTangent), tangentFreeDofs(updatedTangent, assembly), {
         tolerance: criteria.stabilityTolerance,
-        referenceMatrix: seedTangent.Kt,
+        referenceMatrix: tangentMatrix(seedTangent),
       });
       const incrementNorms = scaledIncrementNorms(nextD, currentD, assembly.free, characteristicLength);
-      const residualNorms = scaledResidualNorms(
-        updatedTangent.Kt,
-        nextD,
-        targetF,
-        assembly.free,
-      );
+      const residualNorms = updatedTangent.constraint
+        ? scaledResidualNorms(
+          updatedTangent.constrainedKt,
+          solved.constraintCoordinates,
+          reduceConstraintVector(updatedTangent.constraint, targetF),
+          updatedTangent.constrainedFreeDofs,
+        )
+        : scaledResidualNorms(updatedTangent.Kt, nextD, targetF, assembly.free);
       const convergenceNorms = {
         translationIncrement: incrementNorms.translationIncrement,
         rotationIncrement: incrementNorms.rotationIncrement,
@@ -573,6 +582,34 @@ function buildPrescribedDisplacementState(nodes, assembly) {
 }
 
 function solvePartitionedTangent(K, F, Dc, free, fixedDofs, model) {
+  if ((model.constraints || []).length) {
+    const constraint = buildConstraintSystem(
+      model.nodes || [],
+      resolveRigidDiaphragms(model, model.nodes || []),
+      { constraints: model.constraints },
+    );
+    if (!constraint.ok) return { ok: false, reason: constraint.reason, diagnostics: constraint };
+    const Kr = reduceConstraintMatrix(constraint, K);
+    const KuBar = K.map((row) => row.reduce((sum, value, column) => sum + value * constraint.prescribed[column], 0));
+    const Fr = reduceConstraintVector(constraint, F.map((value, index) => value - KuBar[index]));
+    const settings = model.analysisSettings || {};
+    const solved = solveLinearDetailed(Kr, Fr, {
+      criteriaModel: model,
+      labels: constraint.reducedDofs.map((row) => row.key),
+      solver: settings.solver || settings.linearSolver,
+      sparse: settings.useSparseSolver,
+      sparseThreshold: settings.sparseThreshold,
+    });
+    if (!solved.ok) return { ok: false, reason: solved.reason, diagnostics: solved.diagnostics };
+    return {
+      ok: true,
+      x: solved.x,
+      D: expandConstraintDisplacements(constraint, solved.x),
+      constraintCoordinates: solved.x,
+      constraint,
+      diagnostics: solved.diagnostics,
+    };
+  }
   const system = buildPartitionedTangentSystem(K, F, Dc, free, fixedDofs);
   if (!system.free.length) return assemblePartitionedTangentSolution(system, [], null);
   const settings = model.analysisSettings || {};
@@ -699,6 +736,7 @@ function buildDirectResult({
       memberNodal: reactionState.memberNodal,
       nodalExternal: reactionState.nodalExternal,
       reactionVector: reactionState.reactionVector,
+      constraintForces: reactionState.constraintForces,
       closureResidual: reactionState.closureResidual,
     },
     unstableMembers: new Set(),
@@ -706,7 +744,7 @@ function buildDirectResult({
     maxRatio: 0,
     ngCount: 0,
     okCount: 0,
-    solver: directSolverSummary(tangent.Kt, D, F, assembly.free, diagnostics),
+    solver: directSolverSummary(tangent, D, F, assembly.free, diagnostics),
     elasticExpansion: domain.expansion.trace,
     semiRigidDiaphragm: domain.semiRigid,
     shellFrameAssembly: domain.shellAssembly,
@@ -831,6 +869,11 @@ function buildConsistentReactionState(domain, assembly, D, allMemberResults, nod
   const restrained = buildFixedDofs(domain.nodes);
   const reactions = {};
   const reactionVector = new Array(assembly.ndof).fill(0);
+  const constraintDofs = directConstraintDofs(domain);
+  const constraintForces = new Array(assembly.ndof).fill(0);
+  for (const dof of constraintDofs) {
+    if (!restrained.has(dof)) constraintForces[dof] = memberNodal[dof] - nodalExternal[dof];
+  }
   for (const [nodeIndex, node] of domain.nodes.entries()) {
     if (!node.support) continue;
     const base = nodeIndex * 6;
@@ -844,7 +887,9 @@ function buildConsistentReactionState(domain, assembly, D, allMemberResults, nod
     reactions[node.id] = reactionObject(values);
   }
 
-  const closureResidual = memberNodal.map((value, dof) => value - nodalExternal[dof] - reactionVector[dof]);
+  const closureResidual = memberNodal.map((value, dof) => (
+    value - nodalExternal[dof] - reactionVector[dof] - constraintForces[dof]
+  ));
   const forceIndices = closureResidual.map((_value, dof) => dof).filter((dof) => dof % 6 < 3);
   const momentIndices = closureResidual.map((_value, dof) => dof).filter((dof) => dof % 6 >= 3);
   const forceScale = Math.max(
@@ -863,7 +908,9 @@ function buildConsistentReactionState(domain, assembly, D, allMemberResults, nod
   const momentResidualNorm = vectorNorm(momentIndices.map((dof) => closureResidual[dof])) / momentScale;
   const closure = {
     version: 'p7-m8-element-node-closure-v1',
-    method: 'assembled-total-member-end-forces-minus-nodal-loads-minus-reactions',
+    method: constraintDofs.size
+      ? 'assembled-member-forces-minus-nodal-loads-minus-reactions-minus-constraint-forces'
+      : 'assembled-total-member-end-forces-minus-nodal-loads-minus-reactions',
     qualified: forceResidualNorm <= tolerance && momentResidualNorm <= tolerance,
     status: forceResidualNorm <= tolerance && momentResidualNorm <= tolerance ? 'PASS' : 'FAIL',
     tolerance,
@@ -874,7 +921,35 @@ function buildConsistentReactionState(domain, assembly, D, allMemberResults, nod
     maximumForceResidual: Math.max(0, ...forceIndices.map((dof) => Math.abs(closureResidual[dof]))),
     maximumMomentResidual: Math.max(0, ...momentIndices.map((dof) => Math.abs(closureResidual[dof]))),
   };
-  return { reactions, reactionVector, memberNodal, nodalExternal, closureResidual, closure };
+  return { reactions, reactionVector, memberNodal, nodalExternal, constraintForces, closureResidual, closure };
+}
+
+function directConstraintDofs(domain) {
+  const nodes = domain.nodes || [];
+  const index = new Map(nodes.map((node, nodeIndex) => [String(node.id), nodeIndex]));
+  const out = new Set();
+  for (const constraint of domain.solverModel?.constraints || []) {
+    const endpoints = [constraint.slave, constraint.master, ...(constraint.terms || [])];
+    for (const endpoint of endpoints) {
+      const nodeIndex = index.get(String(endpoint?.node));
+      if (nodeIndex == null) continue;
+      if (endpoint?.dof) {
+        const component = DISPLACEMENT_KEYS.indexOf(endpoint.dof);
+        if (component >= 0) out.add(nodeIndex * 6 + component);
+      } else {
+        for (let component = 0; component < 6; component += 1) out.add(nodeIndex * 6 + component);
+      }
+    }
+  }
+  return out;
+}
+
+function tangentMatrix(tangent) {
+  return tangent.constrainedKt || tangent.Kt;
+}
+
+function tangentFreeDofs(tangent, assembly) {
+  return tangent.constrainedFreeDofs || assembly.free;
 }
 
 function springReactionValues(node, displacement) {
@@ -1310,8 +1385,11 @@ function maxVerticalDisplacement(nodes, D, assembly) {
   }));
 }
 
-function directSolverSummary(K, D, F, free, diagnostics) {
-  const residuals = scaledResidualNorms(K, D, F, free);
+function directSolverSummary(tangent, D, F, free, diagnostics) {
+  const K = tangent.Kt;
+  const residuals = tangent.constraint
+    ? constrainedResidualNorms(tangent.constraint, K, D, F)
+    : scaledResidualNorms(K, D, F, free);
   return {
     type: 'pdelta-direct-geometric-tangent',
     method: DIRECT_METHOD,
@@ -1321,6 +1399,22 @@ function directSolverSummary(K, D, F, free, diagnostics) {
     forceScale: residuals.forceScale,
     momentScale: residuals.momentScale,
     diagnostics,
+  };
+}
+
+function constrainedResidualNorms(constraint, K, D, F) {
+  const residual = K.map((row, rowIndex) => (
+    row.reduce((sum, value, column) => sum + value * D[column], 0) - F[rowIndex]
+  ));
+  const reducedResidual = reduceConstraintVector(constraint, residual);
+  const reducedLoad = reduceConstraintVector(constraint, F);
+  const scale = Math.max(1, vectorNorm(reducedLoad));
+  const normalized = vectorNorm(reducedResidual) / scale;
+  return {
+    forceResidual: normalized,
+    momentResidual: normalized,
+    forceScale: scale,
+    momentScale: scale,
   };
 }
 

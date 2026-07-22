@@ -5,8 +5,9 @@ import { materialOf, sectionOf } from '../core/catalogs.js';
 import { memberHasPartialFixity } from '../core/memberReleaseContract.js';
 import { createSymmetricSparseOperatorFromDense } from '../compute/eigen/sparseOperator.js';
 import { solveRequestedGeneralizedEigen } from '../compute/eigen/requestedModes.js';
+import { buildConstraintSystem, reduceConstraintMatrix } from '../solver/domain/constraintSystem.js';
 
-export const GLOBAL_BUCKLING_TRACE_VERSION = 'p7-m10-global-buckling-v3';
+export const GLOBAL_BUCKLING_TRACE_VERSION = 'p10-m5-global-buckling-v4';
 
 const DOF_COMPONENTS = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
 
@@ -110,15 +111,38 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
     });
   }
 
-  const free = assembly.free || [];
+  const hasGeneralConstraints = Array.isArray(model.constraints) && model.constraints.length > 0;
+  const constraint = hasGeneralConstraints
+    ? buildConstraintSystem(model.nodes || [], [], { constraints: model.constraints })
+    : null;
+  if (constraint && !constraint.ok) {
+    return baseTrace('blocked', constraint.reason || 'CONSTRAINT_SYSTEM_INCONSISTENT', {
+      preload,
+      requestedModeCount,
+      freeDofCount: 0,
+      domain: {
+        ...domainGuard.domain,
+        constraintTransformation: constraint,
+      },
+      guidance: {
+        code: 'REPAIR_BUCKLING_CONSTRAINTS',
+        message: 'Resolve invalid or inconsistent MPC/rigid-link constraints before buckling analysis.',
+      },
+    });
+  }
+  const elasticMatrix = constraint ? reduceConstraintMatrix(constraint, assembly.K) : assembly.K;
+  const geometricMatrix = constraint ? reduceConstraintMatrix(constraint, geometric.KG) : geometric.KG;
+  const free = constraint
+    ? Array.from({ length: constraint.reducedDofCount }, (_value, index) => index)
+    : (assembly.free || []);
   let eigen;
   try {
-    const elasticOperator = createSymmetricSparseOperatorFromDense(assembly.K, {
+    const elasticOperator = createSymmetricSparseOperatorFromDense(elasticMatrix, {
       id: 'buckling-elastic-stiffness',
       matrixClass: 'spd',
       indices: free,
     });
-    const geometricOperator = createSymmetricSparseOperatorFromDense(geometric.KG, {
+    const geometricOperator = createSymmetricSparseOperatorFromDense(geometricMatrix, {
       id: 'buckling-geometric-stiffness',
       matrixClass: 'positive-semidefinite',
       indices: free,
@@ -132,7 +156,11 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
       message: error.message || null,
     });
   }
-  const modes = (eigen.modes || []).map((mode, index) => withModeDofs(mode, index, free, assembly.ndof, model.nodes || []));
+  const modes = (eigen.modes || []).map((mode, index) => (
+    constraint
+      ? withConstraintModeDofs(mode, index, constraint, model.nodes || [])
+      : withModeDofs(mode, index, free, assembly.ndof, model.nodes || [])
+  ));
   const status = eigen.ok ? 'available' : 'blocked';
   const firstMode = modes[0] || null;
   const exposePrimaryMode = options.modeCount !== undefined || options.numberOfModes !== undefined;
@@ -164,6 +192,14 @@ export function estimateGlobalBucklingTrace(model = {}, options = {}) {
       elasticMatrixSize: free.length,
       geometricMatrixSize: free.length,
       releaseCompatibility: geometric.releaseCompatibility,
+      constraintTransformation: constraint ? {
+        version: constraint.version,
+        hash: constraint.hash,
+        fullDofCount: constraint.fullDofCount,
+        reducedDofCount: constraint.reducedDofCount,
+        generalConstraintCount: constraint.generalConstraintCount,
+        generalConstraintEquationCount: constraint.generalConstraintEquationCount,
+      } : null,
     },
     preload,
     referenceCompression: geometric.rows.map((row) => ({
@@ -870,6 +906,25 @@ function withModeDofs(mode, index, free, ndof, nodes) {
       nodeId: nodes[Math.floor(globalDof / 6)]?.id || null,
       component: DOF_COMPONENTS[globalDof % 6],
       value: mode.modeShape[freeIndex],
+    })),
+  };
+}
+
+function withConstraintModeDofs(mode, index, constraint, nodes) {
+  const reducedModeShape = mode.modeShape || [];
+  const fullModeShape = constraint.rows.map((row) => row.reduce(
+    (sum, [reducedDof, coefficient]) => sum + coefficient * Number(reducedModeShape[reducedDof] || 0),
+    0,
+  ));
+  return {
+    ...mode,
+    mode: index + 1,
+    fullModeShape,
+    dofValues: fullModeShape.map((value, globalDof) => ({
+      dof: globalDof,
+      nodeId: nodes[Math.floor(globalDof / 6)]?.id || null,
+      component: DOF_COMPONENTS[globalDof % 6],
+      value,
     })),
   };
 }

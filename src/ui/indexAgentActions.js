@@ -1,6 +1,7 @@
 import { normalizeStories } from '../core/storyModel.js';
+import { normalizeGeneralConstraints } from '../core/constraintDefinitions.js';
 
-export const INDEX_AGENT_ACTIONS_VERSION = 'p10-m4-agent-modeling-actions-v3';
+export const INDEX_AGENT_ACTIONS_VERSION = 'p10-m5-agent-modeling-actions-v4';
 
 const MEMBER_ROTATIONAL_SPRING_KEYS = new Set(['ryI', 'rzI', 'ryJ', 'rzJ']);
 
@@ -17,6 +18,9 @@ export const MODELING_ACTIONS = [
   'addMember',
   'updateMember',
   'deleteMember',
+  'addConstraint',
+  'updateConstraint',
+  'deleteConstraint',
   'setMemberBehavior',
   'assignHinge',
   'removeHinge',
@@ -83,6 +87,12 @@ function executeModelingActionCore(model, state, action, payload) {
       return updateMember(model, state, payload);
     case 'deleteMember':
       return deleteMember(model, state, payload);
+    case 'addConstraint':
+      return addConstraint(model, state, payload);
+    case 'updateConstraint':
+      return updateConstraint(model, state, payload);
+    case 'deleteConstraint':
+      return deleteConstraint(model, state, payload);
     case 'setMemberBehavior':
       return setMemberBehavior(model, state, payload);
     case 'assignHinge':
@@ -142,6 +152,7 @@ export function summarizeAgentModelState(model, state) {
       combinationIds: model.loadCombinations.map((combo) => combo.id),
       sectionIds: model.sections.map((section) => section.id),
       materialIds: model.materials.map((material) => material.id),
+      constraintIds: (model.constraints || []).map((constraint) => constraint.id),
     },
   };
 }
@@ -167,7 +178,7 @@ export function summarizeSelection(model, selection = { type: null, id: null }) 
 function selectEntity(model, state, payload) {
   const type = requiredString(payload.type, 'type');
   const id = requiredString(payload.id, 'id');
-  if (!['node', 'member', 'load', 'loadCase', 'loadCombination'].includes(type)) {
+  if (!['node', 'member', 'load', 'loadCase', 'loadCombination', 'constraint'].includes(type)) {
     throw new Error(`Unsupported selection type: ${type}`);
   }
   if (!findEntity(model, type, id)) throw new Error(`Cannot select missing ${type}: ${id}`);
@@ -220,6 +231,9 @@ function deleteNode(model, state, payload) {
   model.loads = model.loads.filter((load) => load.node !== id && !connectedSet.has(load.member));
   model.members = model.members.filter((member) => !connectedSet.has(member.id));
   model.nodes = model.nodes.filter((node) => node.id !== id);
+  if (Array.isArray(model.constraints)) {
+    model.constraints = model.constraints.filter((constraint) => !constraintReferencesNode(constraint, id));
+  }
   if (state.selection?.id === id || connectedSet.has(state.selection?.id)) state.selection = { type: null, id: null };
   return { changed: true, deletedNodeId: id, deletedMemberIds: connectedMembers };
 }
@@ -232,6 +246,68 @@ function setSupport(model, state, payload) {
     spring: payload.spring,
     clearSpring: payload.clearSpring,
   });
+}
+
+function addConstraint(model, state, payload) {
+  model.constraints ||= [];
+  const constraint = cloneRecord(payload.constraint || payload);
+  constraint.id = uniqueId(model.constraints, constraint.id, 'C');
+  assertValidConstraints(model, [...model.constraints, constraint]);
+  model.constraints.push(constraint);
+  state.selection = { type: 'constraint', id: constraint.id };
+  return { changed: true, constraint, selection: summarizeSelection(model, state.selection) };
+}
+
+function updateConstraint(model, state, payload) {
+  model.constraints ||= [];
+  const id = requiredString(payload.id || payload.constraintId, 'id');
+  const current = getById(model.constraints, id, 'constraint');
+  const patch = cloneRecord(payload.constraint || payload);
+  delete patch.constraintId;
+  const next = { ...current, ...patch, id };
+  const constraints = model.constraints.map((row) => (row.id === id ? next : row));
+  assertValidConstraints(model, constraints);
+  Object.keys(current).forEach((key) => delete current[key]);
+  Object.assign(current, next);
+  state.selection = { type: 'constraint', id };
+  return { changed: true, constraint: current, selection: summarizeSelection(model, state.selection) };
+}
+
+function deleteConstraint(model, state, payload) {
+  model.constraints ||= [];
+  const id = requiredString(payload.id || payload.constraintId, 'id');
+  getById(model.constraints, id, 'constraint');
+  model.constraints = model.constraints.filter((row) => row.id !== id);
+  if (state.selection?.type === 'constraint' && state.selection.id === id) state.selection = { type: null, id: null };
+  return { changed: true, deletedConstraintId: id };
+}
+
+function assertValidConstraints(model, constraints) {
+  const fixedDofs = new Set();
+  model.nodes.forEach((node, nodeIndex) => normalizeFixForConstraint(node).forEach((fixed, dof) => {
+    if (fixed) fixedDofs.add(nodeIndex * 6 + dof);
+  }));
+  const result = normalizeGeneralConstraints(constraints, model.nodes, { fixedDofs });
+  if (!result.ok) {
+    const error = new Error(result.errors[0]?.message || result.reason);
+    error.code = result.reason;
+    throw error;
+  }
+}
+
+function normalizeFixForConstraint(node) {
+  if (node.support === 'fixed') return [true, true, true, true, true, true];
+  if (node.support === 'pin' || node.support === 'pinned') return [true, true, true, false, false, false];
+  return Array.isArray(node.fix) ? Array.from({ length: 6 }, (_row, index) => node.fix[index] === true) : new Array(6).fill(false);
+}
+
+function constraintReferencesNode(constraint, nodeId) {
+  return constraint.master?.node === nodeId || constraint.slave?.node === nodeId
+    || (constraint.terms || []).some((term) => term?.node === nodeId);
+}
+
+function cloneRecord(value) {
+  return JSON.parse(JSON.stringify(value || {}));
 }
 
 function setSpringSupport(model, state, payload) {
@@ -778,6 +854,7 @@ function findEntity(model, type, id) {
     load: model.loads,
     loadCase: model.loadCases,
     loadCombination: model.loadCombinations,
+    constraint: model.constraints || [],
   }[type];
   return collection?.find((item) => item.id === id) || null;
 }

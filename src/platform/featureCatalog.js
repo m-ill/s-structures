@@ -171,6 +171,7 @@ export const FEATURE_CATEGORIES = [
           '벡터 오프셋과 비도심 삽입점의 nonlinear/corotational 해석은 NONLINEAR_3D_OFFSET_UNSUPPORTED로 차단된다',
           'rigidFactor<1과 패널존·명시 spring의 동일 축 중복은 지원하지 않는다',
         ],
+        relatedActions: ['addConstraint', 'updateConstraint', 'deleteConstraint'],
         relatedReadApis: ['getMemberReleaseSummary', 'getMemberReleaseBenchmark'],
         manualPage: '02-modeling-and-elastic-analysis.md',
       }),

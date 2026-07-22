@@ -28,6 +28,7 @@ import { validateSectionRecord } from '../materials/sectionSchema.js';
 import { NONLINEAR_REGISTRY_COLLECTIONS, validateNonlinearRegistries } from './nonlinearSchema.js';
 import { resolveMemberOffsetKinematics } from '../solver/memberOffsets.js';
 import { validatePanelZoneInput } from '../solver/panelZone.js';
+import { normalizeGeneralConstraints } from './constraintDefinitions.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -57,6 +58,7 @@ export function validateModel(model) {
 
   const nodeIds = validateNodes(model, error, warning);
   validateDiaphragms(model, nodeIds, error);
+  validateGeneralConstraints(model, error);
   validateLibraryCollections(model, error, warning);
   const sectionIds = knownIds(model.sections, SECTIONS);
   const materialIds = knownIds(model.materials, MATERIALS);
@@ -199,6 +201,28 @@ function validateDiaphragms(model, nodeIds, error) {
       if (!nodeIds.has(nodeId)) error(ERROR_CODES.BAD_DIAPHRAGM_NODE_REF, 'Diaphragm references a missing node.', item.id || nodeId);
     }
   }
+}
+
+function validateGeneralConstraints(model, error) {
+  const fixedDofs = validationFixedDofs(model.nodes || []);
+  const normalized = normalizeGeneralConstraints(model.constraints || [], model.nodes || [], { fixedDofs });
+  for (const item of normalized.errors) {
+    error(ERROR_CODES[item.code] || item.code, item.message, item.constraintId || 'constraints', item.location);
+  }
+}
+
+function validationFixedDofs(nodes) {
+  const fixed = new Set();
+  nodes.forEach((node, nodeIndex) => {
+    const flags = node.support === 'fixed' ? [1, 1, 1, 1, 1, 1]
+      : node.support === 'pin' ? [1, 1, 1, 0, 0, 0]
+        : node.support === 'roller' ? [0, 0, 1, 0, 0, 0]
+          : node.support === 'custom' && Array.isArray(node.fix) ? node.fix : [];
+    flags.slice(0, 6).forEach((value, component) => {
+      if (value === true || value === 1) fixed.add(nodeIndex * 6 + component);
+    });
+  });
+  return fixed;
 }
 
 function validateShells(model, nodeIds, materialIds, error) {

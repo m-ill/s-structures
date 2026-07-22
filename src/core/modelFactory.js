@@ -54,6 +54,7 @@ export function createModel(overrides = {}) {
     units,
     unitSystem: normalizeUnitSystem(overrides.unitSystem, units),
     diaphragms: normalizeDiaphragms(overrides.diaphragms),
+    ...(Array.isArray(overrides.constraints) ? { constraints: clone(overrides.constraints) } : {}),
     analysisCases: normalizeAnalysisCases(overrides.analysisCases || []),
     analysisSettings: createAnalysisSettings(overrides.analysisSettings),
     analysisCriteria: normalizeAnalysisCriteria(overrides.analysisCriteria || defaultAnalysisCriteria()),

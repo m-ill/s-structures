@@ -27,7 +27,7 @@ const modelValidation = validateModel(model);
 assert.equal(modelValidation.ok, true, '3D offsets, insertion point, and panel-zone input must validate');
 
 const domain = packDomainBinary(model);
-assert.equal(DOMAIN_BINARY_VERSION, 'p10-domain-binary-v4');
+assert.equal(DOMAIN_BINARY_VERSION, 'p10-domain-binary-v5');
 assert.equal(validateDomainBinary(domain).ok, true);
 assert.deepEqual([...domain.buffers.memberOffsets], [0.1, 0.2, 0.3, -0.2, -0.1, 0]);
 assert.deepEqual([...domain.buffers.memberOffsetFrames], [1]);
@@ -94,7 +94,7 @@ executeModelingAction(actionModel, state, 'updateNode', { id: 'N2', panelZone: n
 assert.equal(actionModel.members[0].endOffset, undefined);
 assert.equal(actionModel.members[0].insertionPoint, undefined);
 assert.equal(actionModel.nodes[1].panelZone, undefined);
-assert.equal(INDEX_AGENT_ACTIONS_VERSION, 'p10-m4-agent-modeling-actions-v3');
+assert.equal(INDEX_AGENT_ACTIONS_VERSION, 'p10-m5-agent-modeling-actions-v4');
 
 console.log(JSON.stringify({
   ok: true,

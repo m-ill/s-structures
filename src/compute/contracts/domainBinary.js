@@ -2,8 +2,9 @@ import { stableHash, stableStringify } from '../../core/stableHash.js';
 import { resolveGlobalShearDeformation, resolveMemberShearDeformationSetting } from '../../core/shearDeformation.js';
 import { resolveSectionShearAreas } from '../../materials/sectionProperties.js';
 import { normalizeSectionRecord } from '../../materials/sectionSchema.js';
+import { normalizeGeneralConstraints } from '../../core/constraintDefinitions.js';
 
-export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v4';
+export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v5';
 export const DOMAIN_BINARY_ENDIANNESS = detectEndianness();
 
 const MEMBER_ROTATIONAL_SPRING_COMPONENTS = Object.freeze(['ryI', 'rzI', 'ryJ', 'rzJ']);
@@ -62,6 +63,30 @@ export function packDomainBinary(model = {}) {
       nodePanelZoneAxis[index] = panelZone.axis === 'y' ? 2 : panelZone.axis === 'z' ? 3 : 1;
     }
   });
+  const fixedDofSet = new Set([...dofMap].map((value, index) => (value < 0 ? index : null)).filter((value) => value != null));
+  const normalizedConstraints = normalizeGeneralConstraints(array(model.constraints), nodes, { fixedDofs: fixedDofSet });
+  if (!normalizedConstraints.ok) {
+    throw contractError(normalizedConstraints.reason || 'BAD_CONSTRAINT', normalizedConstraints.errors[0]?.message || 'Invalid constraint.');
+  }
+  const constraintIds = normalizedConstraints.equations.map((row) => row.constraintId);
+  const constraintSlaveDofs = Int32Array.from(normalizedConstraints.equations.map((row) => row.slave.fullDof));
+  const constraintTermOffsets = new Int32Array(normalizedConstraints.equationCount + 1);
+  const constraintTermDofs = new Int32Array(normalizedConstraints.equations.reduce((sum, row) => sum + row.terms.length, 0));
+  const constraintTermCoefficients = new Float64Array(constraintTermDofs.length);
+  const constraintConstants = Float64Array.from(normalizedConstraints.equations.map((row) => row.d));
+  const constraintTypes = Uint8Array.from(normalizedConstraints.equations.map((row) => (
+    row.sourceType === 'rigidLink' ? 2 : row.sourceType === 'masterSlave' ? 3 : 1
+  )));
+  let constraintTermIndex = 0;
+  normalizedConstraints.equations.forEach((row, equationIndex) => {
+    constraintTermOffsets[equationIndex] = constraintTermIndex;
+    row.terms.forEach((term) => {
+      constraintTermDofs[constraintTermIndex] = term.fullDof;
+      constraintTermCoefficients[constraintTermIndex] = term.coefficient;
+      constraintTermIndex += 1;
+    });
+  });
+  constraintTermOffsets[normalizedConstraints.equationCount] = constraintTermIndex;
 
   const connectivity = new Int32Array(members.length * 2);
   const memberType = new Uint16Array(members.length);
@@ -177,6 +202,7 @@ export function packDomainBinary(model = {}) {
     loadCaseIds,
     combinationIds,
     memberTypeIds,
+    constraintIds,
   };
   const buffers = {
     coordinates,
@@ -208,6 +234,12 @@ export function packDomainBinary(model = {}) {
     loadValues,
     combinationFactors,
     modelPayload,
+    constraintSlaveDofs,
+    constraintTermOffsets,
+    constraintTermDofs,
+    constraintTermCoefficients,
+    constraintConstants,
+    constraintTypes,
   };
   const metadata = {
     version: DOMAIN_BINARY_VERSION,
@@ -229,6 +261,10 @@ export function packDomainBinary(model = {}) {
       memberRotationalSprings: [...MEMBER_ROTATIONAL_SPRING_COMPONENTS],
       memberRotationalSpringMask: MEMBER_ROTATIONAL_SPRING_MASK_LAYOUT,
       sectionShearAreas: ['Ay', 'Az'],
+      generalConstraints: {
+        equation: 'slave=sum(c*term)+d',
+        types: { 1: 'mpc', 2: 'rigidLink', 3: 'masterSlave' },
+      },
     },
     counts: {
       nodes: nodes.length,
@@ -239,6 +275,9 @@ export function packDomainBinary(model = {}) {
       loads: loads.length,
       loadCases: loadCaseIds.length,
       combinations: combinations.length,
+      constraints: normalizedConstraints.constraintCount,
+      constraintEquations: normalizedConstraints.equationCount,
+      constraintTerms: constraintTermDofs.length,
     },
     dictionaryHash: stableHash(dictionaries),
     sourceHash: stableHash(model),
@@ -313,6 +352,22 @@ export function validateDomainBinary(domain) {
     || domain.metadata?.counts?.members !== buffers.memberShearDeformation.length) errors.push('domain:member-shear-deformation');
   if (!(buffers.sectionShearAreas instanceof Float64Array)
     || domain.metadata?.counts?.sections * 2 !== buffers.sectionShearAreas.length) errors.push('domain:section-shear-areas');
+  const equationCount = domain.metadata?.counts?.constraintEquations;
+  const termCount = domain.metadata?.counts?.constraintTerms;
+  if (!(buffers.constraintSlaveDofs instanceof Int32Array) || buffers.constraintSlaveDofs.length !== equationCount) errors.push('domain:constraint-slaves');
+  if (!(buffers.constraintTermOffsets instanceof Int32Array) || buffers.constraintTermOffsets.length !== equationCount + 1) errors.push('domain:constraint-offsets');
+  if (!(buffers.constraintTermDofs instanceof Int32Array) || buffers.constraintTermDofs.length !== termCount) errors.push('domain:constraint-terms');
+  if (!(buffers.constraintTermCoefficients instanceof Float64Array) || buffers.constraintTermCoefficients.length !== termCount
+    || [...(buffers.constraintTermCoefficients || [])].some((value) => !Number.isFinite(value))) errors.push('domain:constraint-coefficients');
+  if (!(buffers.constraintConstants instanceof Float64Array) || buffers.constraintConstants.length !== equationCount
+    || [...(buffers.constraintConstants || [])].some((value) => !Number.isFinite(value))) errors.push('domain:constraint-constants');
+  if (!(buffers.constraintTypes instanceof Uint8Array) || buffers.constraintTypes.length !== equationCount
+    || [...(buffers.constraintTypes || [])].some((value) => value < 1 || value > 3)) errors.push('domain:constraint-types');
+  if (buffers.constraintTermOffsets instanceof Int32Array
+    && (buffers.constraintTermOffsets[0] !== 0 || buffers.constraintTermOffsets[equationCount] !== termCount
+      || [...buffers.constraintTermOffsets].some((value, index, rows) => value < 0 || value > termCount || (index && value < rows[index - 1])))) {
+    errors.push('domain:constraint-offset-range');
+  }
   if (domain.domainHash !== hashDomain(domain.metadata, domain.dictionaries, buffers, byteLength)) errors.push('domain:hash');
   return { ok: errors.length === 0, errors };
 }

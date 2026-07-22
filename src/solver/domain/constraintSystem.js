@@ -5,6 +5,7 @@ import {
   buildFixedDofs,
   collectPrescribedDofs,
 } from './supportConstraints.js';
+import { normalizeGeneralConstraints } from '../../core/constraintDefinitions.js';
 
 export const CANONICAL_CONSTRAINT_VERSION = 'p8-m1-canonical-constraint-v1';
 
@@ -12,23 +13,33 @@ export function buildConstraintSystem(nodes = [], rigidDiaphragms = [], options 
   const tolerance = positive(options.tolerance, 1e-11);
   const map = buildDiaphragmDofMap(nodes, rigidDiaphragms);
   const fixedDofs = buildFixedDofs(nodes);
+  const general = normalizeGeneralConstraints(options.constraints || [], nodes, { fixedDofs });
+  if (!general.ok) return failed(general.reason, general.errors, nodes, map, general);
   const prescribed = collectPrescribedDofs(nodes, fixedDofs);
   if (!prescribed.ok) return failed('PRESCRIBED_DISPLACEMENT_INVALID', prescribed.errors, nodes, map);
   const sparseThreshold = Math.max(1, Number(options.sparseThreshold ?? 512));
-  if (!rigidDiaphragms.length && map.ncols >= sparseThreshold) {
+  if (!rigidDiaphragms.length && !general.equationCount && map.ncols >= sparseThreshold) {
     return buildSparseUncoupledConstraint(nodes, map, fixedDofs, prescribed);
   }
 
   const baseTransform = sparseRowsToDense(map.rows, map.ncols);
 
   const valueByDof = new Map(prescribed.entries.map((entry) => [entry.fullDof, entry.value]));
-  const constraintRows = [...fixedDofs]
+  const generalRows = general.equations.map((equation) => ({
+    fullDof: equation.slave.fullDof,
+    coefficients: combineEquation(baseTransform, equation),
+    value: equation.d,
+    constraintId: equation.constraintId,
+    sourceType: equation.sourceType,
+  }));
+  const supportRows = [...fixedDofs]
     .sort((a, b) => a - b)
     .map((fullDof) => ({
       fullDof,
       coefficients: baseTransform[fullDof].slice(),
       value: valueByDof.get(fullDof) || 0,
     }));
+  const constraintRows = [...generalRows, ...supportRows];
   const affine = solveAffineConstraints(
     constraintRows.map((row) => row.coefficients),
     constraintRows.map((row) => row.value),
@@ -62,6 +73,8 @@ export function buildConstraintSystem(nodes = [], rigidDiaphragms = [], options 
     baseDofCount: map.ncols,
     reducedDofCount: affine.freeColumns.length,
     diaphragmCount: rigidDiaphragms.length,
+    generalConstraintCount: general.constraintCount,
+    generalConstraintEquationCount: general.equationCount,
     fullDofs,
     reducedDofs,
     rows,
@@ -73,6 +86,7 @@ export function buildConstraintSystem(nodes = [], rigidDiaphragms = [], options 
     pivotColumns: affine.pivotColumns,
     freeColumns: affine.freeColumns,
     baseColumnKeys: map.columnKeys || [],
+    generalConstraintEquations: general.equations,
   };
   return { ...contract, hash: stableHash(contract).slice(0, 24) };
 }
@@ -236,7 +250,7 @@ function solveAffineConstraints(coefficients, values, columnCount, tolerance) {
   return { ok: true, particular, nullspace, pivotColumns, freeColumns };
 }
 
-function failed(reason, errors, nodes, map) {
+function failed(reason, errors, nodes, map, general = null) {
   return {
     version: CANONICAL_CONSTRAINT_VERSION,
     ok: false,
@@ -246,7 +260,20 @@ function failed(reason, errors, nodes, map) {
     baseDofCount: map.ncols,
     reducedDofCount: 0,
     diaphragmCount: map.diaphragmCount || 0,
+    generalConstraintCount: general?.constraintCount || 0,
+    generalConstraintEquationCount: general?.equationCount || 0,
   };
+}
+
+function combineEquation(baseTransform, equation) {
+  const coefficients = baseTransform[equation.slave.fullDof].slice();
+  for (const term of equation.terms) {
+    const row = baseTransform[term.fullDof];
+    for (let column = 0; column < coefficients.length; column += 1) {
+      coefficients[column] -= term.coefficient * row[column];
+    }
+  }
+  return coefficients;
 }
 
 function sparseRowsToDense(rows, columnCount) {

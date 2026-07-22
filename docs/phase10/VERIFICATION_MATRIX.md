@@ -190,6 +190,22 @@ sparse LDLT / CG 검사는 backend별 pivot localization을 고정하는 kernel-
 | CN-M03 | 다이어프램 = T-행 표현 회귀 | <1e-10 | §5 |
 | CN-M04 | 충돌검출 3종 (재정의·순환·지지충돌) | 코드 정확 반환 | §5 |
 
+## M5 일반 MPC·rigid link (WP-05)
+
+Evidence: [p10-m5-mpc-rigidlink.json](../../reports/validation-evidence/phase10/p10-m5-mpc-rigidlink.json)
+
+| Record | 검증 | tolerance | 결과 |
+| --- | --- | ---: | --- |
+| CN-M01 | 편심 rigid link와 기준절점 등가 힘·모멘트 모델 | 1e-10 | PASS — 1.4211e-14 |
+| CN-M02 | MPC 힘·모멘트 평형 | 1e-10 | PASS — 1.4803e-16 |
+| CN-M03 | 기존 rigid diaphragm 무회귀 | 1e-10 | PASS — 0 |
+| CN-M04 | slave 재정의·cycle·support 충돌 코드 | 정확한 코드 | PASS — 3/3 |
+| CN-M05 | 모달 `T'KT`, `T'MT` 등가 | 1e-10 | PASS — 0 |
+| CN-M06 | Direct P-Delta `T'(K+KG)T` 투영 잔차 | 1e-10 | PASS — 2.0512e-15 |
+
+DomainBinary v5는 slave DOF, term offset/DOF/계수, 상수, source type을 typed buffer로 보존한다.
+전용 runner 3/3, evidence 5/5가 PASS했으며 외부 solver 교차검증 전이므로 release qualification은 부여하지 않는다.
+
 ## DY — 동적 확장 (M7)
 
 | ID | 케이스 | 기준 | § |

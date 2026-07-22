@@ -2,12 +2,14 @@ import { resolveRigidDiaphragms } from '../core/diaphragmGroups.js';
 import { buildDiaphragmDofMap } from '../solver/diaphragmDofMap.js';
 import { reducedFixedDofs } from '../solver/diaphragmFixedDofs.js';
 import { reduceSystem } from '../solver/diaphragmReduce.js';
+import { buildConstraintSystem, reduceConstraintMatrix } from '../solver/domain/constraintSystem.js';
 
 export const MODAL_DIAPHRAGM_VERSION = 'p7-modal-rigid-diaphragm-v1';
 
 export function buildModalConstraintDomain(model, system, mass) {
   const groups = resolveRigidDiaphragms(model, model.nodes || []);
-  if (!groups.length) {
+  const constraints = model.constraints || [];
+  if (!groups.length && !constraints.length) {
     return {
       version: MODAL_DIAPHRAGM_VERSION,
       applied: false,
@@ -22,6 +24,60 @@ export function buildModalConstraintDomain(model, system, mass) {
         diaphragmCount: 0,
         fullDofCount: system.ndof,
         reducedDofCount: system.ndof,
+      },
+    };
+  }
+
+
+  if (constraints.length) {
+    const contract = buildConstraintSystem(model.nodes || [], groups, { constraints });
+    if (!contract.ok) {
+      return {
+        version: MODAL_DIAPHRAGM_VERSION,
+        applied: false,
+        ok: false,
+        reason: contract.reason,
+        errors: contract.errors || [],
+      };
+    }
+    const fixedDofs = new Set();
+    const K = reduceConstraintMatrix(contract, system.K);
+    fixIsolatedDofs(K, fixedDofs);
+    const free = [];
+    for (let dof = 0; dof < contract.reducedDofCount; dof += 1) {
+      if (!fixedDofs.has(dof)) free.push(dof);
+    }
+    const map = {
+      rows: contract.rows,
+      ncols: contract.reducedDofCount,
+      columnKeys: contract.reducedDofs.map((row) => row.key),
+    };
+    return {
+      version: MODAL_DIAPHRAGM_VERSION,
+      applied: true,
+      groups,
+      map,
+      constraintContract: contract,
+      system: { ...system, K, free, fixedDofs, ndof: contract.reducedDofCount, diaphragmMap: map },
+      massMatrix: reduceDiagonalMass(mass, map),
+      expandVector: (vector) => map.rows.map((row) => row.reduce(
+        (sum, [column, coefficient]) => sum + coefficient * (vector[column] || 0),
+        0,
+      )),
+      summary: {
+        version: MODAL_DIAPHRAGM_VERSION,
+        status: 'available',
+        applied: true,
+        method: 'exact-affine-constraint-transformation',
+        diaphragmCount: groups.length,
+        diaphragmIds: groups.map((group) => group.id),
+        generalConstraintCount: constraints.length,
+        generalConstraintEquationCount: contract.generalConstraintEquationCount,
+        fullDofCount: system.ndof,
+        reducedDofCount: contract.reducedDofCount,
+        freeDofCount: free.length,
+        massReduction: 'transpose(T)-M-T',
+        stiffnessReduction: 'transpose(T)-K-T',
       },
     };
   }

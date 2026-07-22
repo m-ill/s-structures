@@ -1,5 +1,7 @@
 import { materialOf, sectionOf } from '../../core/catalogs.js';
 import { assembleStiffness3D } from '../linear3dAssembly.js';
+import { resolveRigidDiaphragms } from '../../core/diaphragmGroups.js';
+import { buildConstraintSystem, reduceConstraintMatrix } from '../domain/constraintSystem.js';
 import {
   GEOMETRIC_STIFFNESS_VERSION,
   assembleGlobalGeometricStiffness,
@@ -71,6 +73,13 @@ export function buildPDeltaTangentStiffness(model = {}, options = {}) {
     includeTension: options.includeTensionKg !== false,
   });
   const Kt = addMatrices(assembly.K, geometric.KG);
+  const constraint = (model.constraints || []).length
+    ? buildConstraintSystem(model.nodes || [], resolveRigidDiaphragms(model, model.nodes || []), { constraints: model.constraints })
+    : null;
+  if (constraint && !constraint.ok) {
+    return { version: PDELTA_TANGENT_STIFFNESS_VERSION, ok: false, reason: constraint.reason, assembly, constraint };
+  }
+  const constrainedKt = constraint ? reduceConstraintMatrix(constraint, Kt) : null;
   const limitationCodes = Array.from(new Set(geometric.summary.limitationCodes || []));
   return {
     version: PDELTA_TANGENT_STIFFNESS_VERSION,
@@ -81,9 +90,13 @@ export function buildPDeltaTangentStiffness(model = {}, options = {}) {
     assembly,
     axialForces,
     Kt,
+    constrainedKt,
+    constraint,
+    constrainedFreeDofs: constraint ? Array.from({ length: constraint.reducedDofCount }, (_row, index) => index) : null,
     geometric,
     summary: {
       dofCount: Kt.length,
+      constrainedDofCount: constraint?.reducedDofCount || Kt.length,
       freeDofCount: assembly.free?.length || 0,
       geometricMemberCount: geometric.summary.memberCount,
       compressionMemberCount: geometric.summary.compressionMemberCount,

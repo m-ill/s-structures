@@ -23,6 +23,7 @@ export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
     constraintHash: hash({
       supports: rows(model.nodes, ['id', 'support', 'fix', 'spring', 'settlement', 'prescribed', 'prescribedDisplacement', 'panelZone']),
       diaphragms: sortedRecords(model.diaphragms || []),
+      constraints: sortedRecords(model.constraints || []),
       memberKinematics: rows(model.members, ['id', 'localAxis', 'releases', 'rel1', 'rel2', 'endOffset', 'insertionPoint', 'offsets', 'offsetI', 'offsetJ']),
     }),
     loadHash: hash({
