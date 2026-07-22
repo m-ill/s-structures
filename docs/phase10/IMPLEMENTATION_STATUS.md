@@ -1,11 +1,11 @@
 # Phase 10 Implementation Status
 
 ```yaml
-reviewed_at: 2026-07-21
+reviewed_at: 2026-07-22
 phase_status: active
 implementation_status: in-progress
-completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3]
-active_milestone: P10-M4
+completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4]
+active_milestone: P10-M5
 decision_gates_pending: [ADR-001(warping/LTB 방식), ADR-002(shell 옵션 B 번복 — 오너 승인)]
 owner_inputs_pending: [XV-02~08 외부 기준해 artifact (OpenSees/SAP2000/ETABS), XV-09 SAP2000 기준해 artifact, RSA V_min 기준값 정책]
 ```
@@ -44,6 +44,12 @@ CN-F02 zero-vs-pin은 약 `3.39e-16`이고 release moment residual은 `7.1054e-1
 P-Delta, global buckling, nonlinear 경로는 검증되지 않은 spring을 무시하지 않고 fail-closed한다.
 이는 M3 기능 게이트 완료 판정이며 외부 XV release 자격을 부여하지 않는다.
 
+P10-M4는 숫자형 축방향 오프셋을 보존하면서 local/global 3D 강체팔, 9종 삽입점 및 절점 패널존을
+공통 `T_off` 요소 변환으로 구현했다. DomainBinary v4와 hash, Agent action, 선형 복원·평형 audit 및
+Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0이며 evidence artifact hash는
+`9052baa9bcd0cdf092b4db0d`다. 미검증 nonlinear corotational 경로는 fail-closed한다.
+이는 M4 기능 게이트 완료이며 `externallyCrossValidated=false`, `releaseQualified=false`를 유지한다.
+
 ## 마일스톤 현황
 
 | 마일스톤 | 상태 | 완료 증거 |
@@ -52,7 +58,7 @@ P-Delta, global buckling, nonlinear 경로는 검증되지 않은 spring을 무�
 | P10-M1 교차검증 + 병적 모델 배터리 | complete — harness/evidence/review/full regression PASS | [artifact 테스트](../../tests/p10-m1-xval-artifacts.mjs) · [runner 테스트](../../tests/p10-m1-xval-runner.mjs) · [BM 테스트](../../tests/p10-m1-bm-battery.mjs) · [solver 안전 회귀](../../tests/p10-m1-solver-safety.mjs) · [topology/P-Delta 안전 회귀](../../tests/p10-m1-topology-pdelta-safety.mjs) · [evidence 계약 테스트](../../tests/p10-m1-evidence-contract.mjs) · [교차검증 evidence](../../reports/validation-evidence/phase10/p10-m1-cross-validation.json) · [hand-calc evidence](../../reports/validation-evidence/phase10/p10-m1-hand-calculations.json) · [BM evidence](../../reports/validation-evidence/phase10/p10-m1-pathological-battery.json) · [code review](reviews/P10-M1-CODE-REVIEW.md) · [WP-01 Review Log](workpackages/WP-01-cross-validation.md#review-log) · 전체 회귀 PASS |
 | P10-M2 Timoshenko 전단변형 | complete — 전용 gate/evidence/review/full regression PASS | [요소 테스트](../../tests/p10-m2-timoshenko.mjs) · [schema 계약](../../tests/p10-m2-schema-contract.mjs) · [compute 계약](../../tests/p10-m2-compute-domain-contract.mjs) · [evidence 계약](../../tests/p10-m2-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m2-timoshenko.json) · [XV-09 pending artifact](../../reports/validation-evidence/phase10/xv/XV-09-pending-reference.json) · [code review](reviews/P10-M2-CODE-REVIEW.md) · [WP-02 Review Log](workpackages/WP-02-timoshenko.md#review-log) |
 | P10-M3 부분강접 | complete — 4/4 dedicated gate, evidence 7/7 PASS | [부분강접 요소·폐형해](../../tests/p10-m3-partial-fixity.mjs) · [schema/DomainBinary v3 계약](../../tests/p10-m3-schema-contract.mjs) · [domain/solver route 계약](../../tests/p10-m3-domain-route-contract.mjs) · [evidence 계약](../../tests/p10-m3-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m3-partial-fixity.json) · [code review](reviews/P10-M3-CODE-REVIEW.md) · [WP-03 Review Log](workpackages/WP-03-partial-fixity.md#review-log) |
-| P10-M4 3D 오프셋·삽입점·패널존 | planned | 없음 |
+| P10-M4 3D 오프셋·삽입점·패널존 | complete — 전용 gate/evidence/review/full regression PASS | [요소·평형](../../tests/p10-m4-offsets-panelzone.mjs) · [schema/DomainBinary v4](../../tests/p10-m4-schema-domain-contract.mjs) · [evidence 계약](../../tests/p10-m4-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m4-offsets-panelzone.json) · [code review](reviews/P10-M4-CODE-REVIEW.md) |
 | P10-M5 일반 MPC·rigid link | planned | 없음 |
 | P10-M6 변단면 부재 | planned | 없음 |
 | P10-M7 동적 확장 (prestressed·다중모드 좌굴·직접적분) | planned | 없음 |
@@ -69,7 +75,7 @@ P-Delta, global buckling, nonlinear 경로는 검증되지 않은 spring을 무�
 
 ## 다음 작업
 
-P10-M4 3D 단부 오프셋·삽입점·패널존이 다음 구현 순서다. M3 회전스프링 메커니즘은 M4의 패널존
-탄성 근사에 재사용한다. 동시에 오너에게 XV-02~08 및 XV-09 SAP2000
+P10-M5 일반 MPC·rigid link가 다음 구현 순서다. 기존 P8 구속 변환에 일반 MPC 행과 6DOF rigid-link
+특수형을 추가한다. 동시에 오너에게 XV-02~08 및 XV-09 SAP2000
 외부 기준해 입력 일정과 ADR-002 승인 여부를 확인한다. XV-09는 내부 폐형해 green/외부 기준해 pending,
 XV-10은 M9 구현 뒤 추가하며, XV-01~10 required-source green 전에는 M11 release를 열지 않는다.

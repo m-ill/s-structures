@@ -56,6 +56,14 @@
 
 ## Elastic Analysis Pipeline
 
+### 단부 오프셋·삽입점·패널존
+
+- 기존 축방향 강역은 `endOffset:{i:0.3,j:0.2}`처럼 m 단위 길이로 입력한다.
+- 3D 편심은 `endOffset:{i:{dx,dy,dz},j:{dx,dy,dz},frame:'local'|'global'}`로 입력한다. 벡터는 절점에서 유연 부재단으로 향한다.
+- `insertionPoint`는 `centroid`, 상·하·좌·우 중심 또는 네 모서리를 선택한다.
+- 절점의 `panelZone:{tp,db,dc,axis?}`는 탄성 회전스프링 근사다. 같은 부재단 축의 명시 spring과 중복할 수 없다.
+- 선형·Direct P-Delta 경로는 지원하지만 벡터 오프셋/비도심 삽입점의 비선형 corotational 해석은 현재 명시적으로 차단된다.
+
 현재 탄성해석은 아래 흐름으로 동작한다.
 
 ```text

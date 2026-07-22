@@ -21,9 +21,9 @@ export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
       shearDeformation: resolveGlobalShearDeformation(model),
     }),
     constraintHash: hash({
-      supports: rows(model.nodes, ['id', 'support', 'fix', 'spring', 'settlement', 'prescribed', 'prescribedDisplacement']),
+      supports: rows(model.nodes, ['id', 'support', 'fix', 'spring', 'settlement', 'prescribed', 'prescribedDisplacement', 'panelZone']),
       diaphragms: sortedRecords(model.diaphragms || []),
-      memberKinematics: rows(model.members, ['id', 'localAxis', 'releases', 'rel1', 'rel2', 'endOffset', 'offsets', 'offsetI', 'offsetJ']),
+      memberKinematics: rows(model.members, ['id', 'localAxis', 'releases', 'rel1', 'rel2', 'endOffset', 'insertionPoint', 'offsets', 'offsetI', 'offsetJ']),
     }),
     loadHash: hash({
       loadCases: sortedRecords(model.loadCases || []),

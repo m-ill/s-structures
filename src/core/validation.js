@@ -26,6 +26,8 @@ import { validateSourceRecord, validateSourceRegistry } from './sourceRegistry.j
 import { validateMaterialRecord } from '../materials/materialSchema.js';
 import { validateSectionRecord } from '../materials/sectionSchema.js';
 import { NONLINEAR_REGISTRY_COLLECTIONS, validateNonlinearRegistries } from './nonlinearSchema.js';
+import { resolveMemberOffsetKinematics } from '../solver/memberOffsets.js';
+import { validatePanelZoneInput } from '../solver/panelZone.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -172,6 +174,8 @@ function validateNodes(model, error, warning) {
         error(ERROR_CODES.BAD_CUSTOM_SUPPORT, 'Settlement must contain only finite displacement/rotation values and at least one nonzero value.', node.id);
       }
     }
+    const panelZone = validatePanelZoneInput(node.panelZone, node.id || null);
+    if (!panelZone.ok) error(ERROR_CODES.BAD_PANEL_ZONE, panelZone.message, node.id || 'nodes');
     if (!usedNodes.has(node.id)) warning(WARNING_CODES.FREE_NODE, 'Node is not connected to any member.', node.id);
   }
 
@@ -314,11 +318,11 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
         nodeIds: [member.n1, member.n2],
       });
     }
-    validateMemberOffset(member, length, error);
-
+    let resolvedSection = null;
     if (!member.secId || !sectionIds.has(member.secId)) error(ERROR_CODES.NO_SECTION, `Missing section: ${member.secId}`, member.id);
     else {
       const section = sectionOf(model, member.secId);
+      resolvedSection = section;
       if (![section.A, section.Iy, section.Iz, section.J].every(positiveFiniteNumber)) {
         error(ERROR_CODES.BAD_SECTION_PROPS, `Section properties are incomplete: ${member.secId}`, member.id);
       }
@@ -332,6 +336,8 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
       }
     }
 
+    validateMemberOffset(member, a, b, resolvedSection || {}, error);
+    validateMemberPanelZones(member, a, b, error);
     validateMemberReleases(member, error);
   }
   return memberIds;
@@ -391,21 +397,35 @@ function validateMemberReleases(member, error) {
   }
 }
 
-function validateMemberOffset(member, length, error) {
-  if (!member.endOffset) return;
-  const i = Number(member.endOffset.i || 0);
-  const j = Number(member.endOffset.j || 0);
-  const rigidFactor = Number(member.endOffset.rigidFactor ?? 1);
-  if (!Number.isFinite(i) || !Number.isFinite(j) || i < 0 || j < 0) {
-    error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member end offsets must be finite nonnegative lengths.', member.id);
-    return;
-  }
-  if ((member.endOffset.rigidFactor != null && typeof member.endOffset.rigidFactor !== 'number')
-    || !Number.isFinite(rigidFactor) || Math.abs(rigidFactor - 1) > 1e-12) {
-    error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member offset rigidFactor must be exactly 1 for the supported rigid-offset formulation.', member.id);
-  }
-  if (Number.isFinite(length) && length > 0 && i + j >= length) {
-    error(ERROR_CODES.BAD_MEMBER_OFFSET, 'Member end offsets must leave positive clear length.', member.id);
+function validateMemberOffset(member, a, b, section, error) {
+  if (!member.endOffset && member.insertionPoint == null) return;
+  const resolved = resolveMemberOffsetKinematics(member, a, b, section);
+  if (resolved.ok) return;
+  const code = resolved.reason === 'INVALID_MEMBER_INSERTION_POINT'
+    || resolved.reason === 'MEMBER_INSERTION_POINT_SECTION_DIMENSIONS_REQUIRED'
+    ? ERROR_CODES.BAD_MEMBER_INSERTION_POINT
+    : ERROR_CODES.BAD_MEMBER_OFFSET;
+  error(code, resolved.message, member.id);
+}
+
+function validateMemberPanelZones(member, a, b, error) {
+  const ends = [['i', a], ['j', b]];
+  const behavior = member.behavior || member.type || 'frame';
+  for (const [end, node] of ends) {
+    if (!node?.panelZone) continue;
+    if (['truss', 'tensionOnly', 'compressionOnly'].includes(behavior)) {
+      error(ERROR_CODES.PANEL_ZONE_FRAME_REQUIRED, 'Panel-zone rotational springs require frame member behavior.', member.id);
+      continue;
+    }
+    const axis = node.panelZone.axis || (member.localAxis?.strongAxis === 'y' ? 'y' : 'z');
+    const key = `r${axis}${end === 'i' ? 'I' : 'J'}`;
+    if (Object.prototype.hasOwnProperty.call(member.releases?.spring || {}, key)) {
+      error(
+        ERROR_CODES.PANEL_ZONE_SPRING_CONFLICT,
+        `Panel zone and explicit member spring both assign ${key}.`,
+        member.id,
+      );
+    }
   }
 }
 

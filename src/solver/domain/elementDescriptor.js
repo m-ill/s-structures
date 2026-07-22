@@ -6,8 +6,9 @@ import { memberKinematics } from '../linear3dAssembly.js';
 import { effectiveSectionMaterial } from '../linear3dPost.js';
 import { resolveMemberPartialFixity } from '../partialFixity.js';
 import { resolveMemberTimoshenko } from '../timoshenko.js';
+import { applyPanelZoneConnectionSprings, attachPanelZoneSources } from '../panelZone.js';
 
-export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p10-m3-element-descriptor-v2';
+export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p10-m4-element-descriptor-v3';
 
 export function buildElementDescriptors(model = {}, nodes = model.nodes || [], members = model.members || []) {
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
@@ -26,11 +27,6 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
       errors.push(issue('ELEMENT_NODE_REFERENCE_INVALID', member.id, 'Element references a missing node.'));
       continue;
     }
-    const kinematics = memberKinematics(member, a, b);
-    if (!kinematics.ok) {
-      errors.push(issue(kinematics.reason || 'ELEMENT_KINEMATICS_INVALID', member.id, kinematics.message));
-      continue;
-    }
     const materialSource = getMaterial(member.matId);
     const sectionSource = getSection(member.secId);
     const effective = effectiveSectionMaterial(
@@ -38,6 +34,11 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
       getMaterial,
       member,
     );
+    const kinematics = memberKinematics(member, a, b, effective.section);
+    if (!kinematics.ok) {
+      errors.push(issue(kinematics.reason || 'ELEMENT_KINEMATICS_INVALID', member.id, kinematics.message));
+      continue;
+    }
     const i = nodeIndex.get(member.n1) * 6;
     const j = nodeIndex.get(member.n2) * 6;
     const timoshenko = resolveMemberTimoshenko(
@@ -47,13 +48,18 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
       effective.material,
       kinematics.ax.L,
     );
-    const partialFixity = resolveMemberPartialFixity(
+    const connection = applyPanelZoneConnectionSprings(member, { i: a, j: b }, effective.material);
+    if (!connection.ok) {
+      errors.push(issue(connection.reason || 'PANEL_ZONE_INVALID', member.id, connection.message));
+      continue;
+    }
+    const partialFixity = attachPanelZoneSources(resolveMemberPartialFixity(
       model,
-      member,
+      connection.member,
       effective.section,
       effective.material,
       kinematics.ax.L,
-    );
+    ), connection);
     if (partialFixity.ok === false) {
       errors.push(issue(partialFixity.reason || 'PARTIAL_FIXITY_INVALID', member.id, 'Member partial-fixity data is invalid.'));
       continue;
@@ -78,6 +84,7 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
         localDofs: memberReleaseDofs(member),
       },
       partialFixity: clone(partialFixity),
+      panelZone: clone(connection.applied ? { version: connection.rows[0]?.version, rows: connection.rows } : null),
       propertyRefs: {
         materialId: materialSource.id || member.matId || null,
         sectionId: sectionSource.id || member.secId || null,

@@ -173,6 +173,8 @@ k̄ = T_offᵀ k T_off,   q̄0 = T_offᵀ q0
 - 삽입점(insertion point): 단면 도심과 배치 기준점(상단/모서리 등)의 y/z 편심을 동일 r 메커니즘으로 처리.
 - 현행 `endOffset.{i,j}`(축방향)는 r의 축방향 성분 특수경우로 흡수 — 기존 모델 하위호환 유지.
 - `rigidFactor<1`(부분 강체)은 이번에도 **비지원 유지** — 지원하려면 별도 유연구간 요소가 필요하므로 명시 차단.
+- 구현 부호계약: 벡터 `r`은 **절점에서 유연 부재단으로 향하는 벡터**다. 숫자형 i/j는 기존대로 i단 `+x`, j단 `-x`의 축방향 길이로 해석한다.
+- 삽입점 이름은 `centroid`, 상·하·좌·우 중심 및 네 모서리 9종이다. catalog `dims/params`의 단면 치수는 mm→m로 정규화한다.
 
 **패널존** (옵션, 보-기둥 접합): 회전스프링 근사(탄성 1차 분기)
 ```text
@@ -180,6 +182,11 @@ K_pz = G · t_p · d_b · d_c          (Krawinkler 탄성 분기)
        t_p: 패널 두께, d_b: 보 깊이, d_c: 기둥 깊이
 모델: 접합 절점에 회전스프링(§3 메커니즘 재사용) 자동 부여, 소스='panelZone'
 ```
+
+`joint`는 제품 schema의 `node`와 동의어다. `axis`는 `y|z`이고 생략 시 연결 부재의
+`localAxis.strongAxis`를 사용한다. 같은 단부·축의 명시 spring은 `PANEL_ZONE_SPRING_CONFLICT`로
+차단한다. 벡터 오프셋/비도심 삽입점의 nonlinear corotational 해석은 검증 전까지
+`NONLINEAR_3D_OFFSET_UNSUPPORTED`로 차단한다.
 
 **판정 기준** (config: `criteria.offset.*`)
 ```text

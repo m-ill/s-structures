@@ -98,6 +98,26 @@ solver별 limitation/fail-closed를 한 묶음으로 검증한다.
 강접으로 되돌리지 않고 명시적으로 실패해야 한다. M3 기능 완료는 외부 교차검증 release 자격을 뜻하지
 않으며 XV-01~10 required-source 조건은 그대로 유지한다.
 
+## M4 — 3D 단부 오프셋·삽입점·패널존 (WP-04)
+
+Evidence: [p10-m4-offsets-panelzone.json](../../reports/validation-evidence/phase10/p10-m4-offsets-panelzone.json)
+
+전용 runner는 요소/평형, schema·DomainBinary v4, evidence 계약 3개 테스트로 구성되며 3/3 PASS했다.
+벡터 오프셋과 삽입점은 선형·Direct P-Delta 공통 `T_off`를 사용하고, 미검증 nonlinear 경로는
+`NONLINEAR_3D_OFFSET_UNSUPPORTED`로 차단한다.
+
+| Record | 검증 | tolerance | 결과 |
+| --- | --- | ---: | --- |
+| EL-O01 | zero-vector → 기존 무오프셋 변환 회귀 | 1e-12 | PASS — 0 |
+| EL-O02 | 편심 강체팔의 축력 `N·e` 모멘트 전달 | 1e-8 | PASS — 0 |
+| EL-O03 | 자동 패널존 → 동일 M3 수동 spring 강성 등가 | 1e-9 | PASS — 0 |
+| EL-O04 | face→joint 강체팔 힘·모멘트 평형 audit | 1e-10 | PASS — 0 |
+| M4-DOMAIN-V4 | offset·frame·kind·insertion·panel-zone pack/unpack/hash | 이산값 정확 일치 | PASS |
+| M4-ROUTE | Direct P-Delta KG 유한값 및 nonlinear fail-closed | canonical code 정확 일치 | PASS |
+
+Evidence는 4/4 records PASS, artifact hash `9052baa9bcd0cdf092b4db0d`다. 이는 내부 기능 게이트이며
+`externallyCrossValidated=false`, `releaseQualified=false`를 유지한다.
+
 ## XV — 독립 교차검증 (WP-01, M11 release 조건)
 
 | ID | 모델 | 기준해 소스 | 대조 응답량 |

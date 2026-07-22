@@ -683,6 +683,7 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const referencePoint = [0, 0, 0];
   const nodeMap = Object.fromEntries(nodes.map((node) => [node.id, node]));
   const memberMap = Object.fromEntries(members.map((member) => [member.id, member]));
+  const memberResultMap = out.memberResults || {};
   const totalLoad = [0, 0, 0];
   const totalLoadMoment = [0, 0, 0];
   let loadForceScale = 0;
@@ -690,7 +691,7 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const equilibriumIssues = [];
 
   for (const load of loads) {
-    const resultant = loadResultant(load, nodeMap, memberMap, referencePoint);
+    const resultant = loadResultant(load, nodeMap, memberMap, referencePoint, memberResultMap);
     if (!resultant) continue;
     if (resultant.issue) {
       equilibriumIssues.push(resultant.issue);
@@ -733,7 +734,25 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
     reactionMomentScale += maxAbs3(moment);
   }
 
-  const available = !!out.anyOk && !(out.unstableMembers?.size > 0) && equilibriumIssues.length === 0;
+  const offsetRows = Object.entries(memberResultMap)
+    .filter(([, result]) => result?.offset?.applied)
+    .map(([memberId, result]) => ({
+      memberId,
+      residual: Number(result.offset.maxEquilibriumResidual),
+      vector3d: result.offset.vector3d === true,
+    }));
+  const requestedOffsetTolerance = Number(options.offsetEquilibriumTol);
+  const offsetEquilibriumTol = Number.isFinite(requestedOffsetTolerance) && requestedOffsetTolerance > 0
+    ? requestedOffsetTolerance
+    : 1e-10;
+  const maximumOffsetEquilibriumResidual = Math.max(0, ...offsetRows.map((row) => row.residual));
+  const offsetEquilibriumStatus = offsetRows.length === 0
+    ? 'NOT_APPLICABLE'
+    : offsetRows.every((row) => Number.isFinite(row.residual))
+      && maximumOffsetEquilibriumResidual <= offsetEquilibriumTol ? 'PASS' : 'FAIL';
+  const available = !!out.anyOk
+    && !(out.unstableMembers?.size > 0)
+    && equilibriumIssues.length === 0;
   const forceResidual = available ? add(totalLoad, totalReaction) : null;
   const momentResidual = available ? add(totalLoadMoment, totalReactionMoment) : null;
   const forceScale = Math.max(1, loadForceScale, reactionForceScale);
@@ -743,12 +762,14 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const equilibriumResidual = available ? Math.max(forceResidualNorm, momentResidualNorm) : null;
   const equilibriumStatus = equilibriumResidual == null
     ? 'NOT_AVAILABLE'
-    : equilibriumResidual <= equilibriumLimit ? 'PASS' : 'FAIL';
+    : equilibriumResidual <= equilibriumLimit && offsetEquilibriumStatus !== 'FAIL' ? 'PASS' : 'FAIL';
   const equilibriumFailureReason = !out.anyOk
     ? 'COMBINATION_NOT_SOLVED'
     : out.unstableMembers?.size > 0
       ? 'UNSTABLE_COMPONENT'
-      : equilibriumIssues[0]?.code || (equilibriumStatus === 'FAIL' ? 'EQUILIBRIUM_LIMIT_EXCEEDED' : null);
+      : equilibriumIssues[0]?.code
+        || (offsetEquilibriumStatus === 'FAIL' ? 'OFFSET_EQUILIBRIUM_LIMIT_EXCEEDED' : null)
+        || (equilibriumStatus === 'FAIL' ? 'EQUILIBRIUM_LIMIT_EXCEEDED' : null);
   const loadResultantsAvailable = !equilibriumIssues.some((issue) => issue.source === 'load');
   const reactionResultantsAvailable = !equilibriumIssues.some((issue) => issue.source === 'reaction');
 
@@ -776,6 +797,16 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
     equilibriumOk: equilibriumStatus === 'PASS',
     equilibriumFailureReason,
     equilibriumIssues,
+    offsetEquilibrium: {
+      version: 'p10-m4-rigid-arm-equilibrium-audit-v1',
+      status: offsetEquilibriumStatus,
+      passed: offsetEquilibriumStatus !== 'FAIL',
+      tolerance: offsetEquilibriumTol,
+      memberCount: offsetRows.length,
+      vector3dMemberCount: offsetRows.filter((row) => row.vector3d).length,
+      maximumResidual: maximumOffsetEquilibriumResidual,
+      rows: offsetRows,
+    },
     designBlocked: equilibriumStatus !== 'PASS',
     solverResidualNorm: out.solver?.residualNorm ?? null,
     solverResidualMax: out.solver?.residualMax ?? null,
@@ -784,7 +815,7 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   };
 }
 
-function loadResultant(load, nodeMap, memberMap, referencePoint) {
+function loadResultant(load, nodeMap, memberMap, referencePoint, memberResultMap = {}) {
   if (load.type === 'nodal') {
     const node = nodeMap[load.node];
     const magnitude = Number(load.P);
@@ -806,7 +837,7 @@ function loadResultant(load, nodeMap, memberMap, referencePoint) {
   if (['temperature', 'tgradient'].includes(load.type)) return null;
 
   const member = memberMap[load.member];
-  const geometry = memberLoadGeometry(member, nodeMap);
+  const geometry = memberLoadGeometry(member, nodeMap, memberResultMap[member?.id]);
   if (!geometry) return loadResultantFailure(load, 'MEMBER_LOAD_GEOMETRY_NOT_AVAILABLE', 'member', load.member);
 
   if (load.type === 'mmoment') {
@@ -880,13 +911,19 @@ function distributedLoadIntegrals(load, L) {
   };
 }
 
-function memberLoadGeometry(member, nodeMap) {
+function memberLoadGeometry(member, nodeMap, memberResult = null) {
   if (!member) return null;
   const a = nodeMap[member.n1];
   const b = nodeMap[member.n2];
   const startNode = pointOf(a);
   const endNode = pointOf(b);
   if (!a || !b || !startNode || !endNode) return null;
+  if (memberResult?.ax?.flexibleStart && memberResult?.ax?.L > 0) {
+    return {
+      ax: memberResult.ax,
+      start: pointOf(memberResult.ax.flexibleStart),
+    };
+  }
   const base = memberAxes(a, b, member.localAxis);
   if (!(base.L > 0) || !finiteVector(base.x) || !finiteVector(base.y) || !finiteVector(base.z)) return null;
   const oi = Number(member.endOffset?.i ?? 0);

@@ -85,6 +85,7 @@ function stiffnessIdentity(model) {
       z: node.z || 0,
       support: node.support || null,
       spring: node.spring || null,
+      panelZone: node.panelZone || null,
     })),
     members: (model.members || []).map((member) => ({
       id: member.id,
@@ -95,6 +96,7 @@ function stiffnessIdentity(model) {
       behavior: member.behavior || member.type || 'frame',
       releases: member.releases || member.release || null,
       endOffset: member.endOffset || null,
+      insertionPoint: member.insertionPoint || null,
       localAxis: member.localAxis || null,
       customProps: member.customProps || null,
       shearDeformation: memberShearDeformationIdentity(model, member),

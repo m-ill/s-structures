@@ -1,6 +1,6 @@
 import { normalizeStories } from '../core/storyModel.js';
 
-export const INDEX_AGENT_ACTIONS_VERSION = 'p10-m3-agent-modeling-actions-v2';
+export const INDEX_AGENT_ACTIONS_VERSION = 'p10-m4-agent-modeling-actions-v3';
 
 const MEMBER_ROTATIONAL_SPRING_KEYS = new Set(['ryI', 'rzI', 'ryJ', 'rzJ']);
 
@@ -187,6 +187,7 @@ function addNode(model, state, payload) {
   if (payload.spring || node.support === 'spring') node.spring = normalizeSpring(payload.spring || payload);
   if (payload.settlement) node.settlement = normalizeSettlement(payload.settlement);
   if (payload.mass != null) node.mass = normalizeMass(payload.mass);
+  if (payload.panelZone != null) node.panelZone = normalizePanelZone(payload.panelZone);
   model.nodes.push(node);
   state.selection = { type: 'node', id: node.id };
   return { changed: true, node, selection: summarizeSelection(model, state.selection) };
@@ -203,6 +204,7 @@ function updateNode(model, state, payload) {
   if (node.support !== 'spring' && payload.clearSpring !== false) delete node.spring;
   if ('settlement' in payload) node.settlement = payload.settlement == null ? undefined : normalizeSettlement(payload.settlement);
   if ('mass' in payload) node.mass = payload.mass == null ? undefined : normalizeMass(payload.mass);
+  if ('panelZone' in payload) node.panelZone = payload.panelZone == null ? undefined : normalizePanelZone(payload.panelZone);
   state.selection = { type: 'node', id: node.id };
   return { changed: true, node, selection: summarizeSelection(model, state.selection) };
 }
@@ -272,6 +274,8 @@ function addMember(model, state, payload) {
     releases: normalizeReleases(payload.releases),
   };
   if (payload.design) member.design = { ...payload.design };
+  if (payload.endOffset != null) member.endOffset = normalizeEndOffset(payload.endOffset);
+  if (payload.insertionPoint != null) member.insertionPoint = normalizeInsertionPoint(payload.insertionPoint);
   model.members.push(member);
   state.selection = { type: 'member', id: member.id };
   return { changed: true, member, selection: summarizeSelection(model, state.selection) };
@@ -293,6 +297,10 @@ function updateMember(model, state, payload) {
   if (payload.localAxis != null) member.localAxis = normalizeLocalAxis(payload.localAxis);
   if (payload.releases != null) {
     member.releases = normalizeReleases(mergeReleasePatch(member.releases, payload.releases));
+  }
+  if ('endOffset' in payload) member.endOffset = payload.endOffset == null ? undefined : normalizeEndOffset(payload.endOffset);
+  if ('insertionPoint' in payload) {
+    member.insertionPoint = payload.insertionPoint == null ? undefined : normalizeInsertionPoint(payload.insertionPoint);
   }
   if (payload.type != null || payload.behavior != null) member.type = normalizeMemberBehavior(payload.type || payload.behavior);
   if (payload.design != null) member.design = { ...(member.design || {}), ...payload.design };
@@ -883,6 +891,72 @@ function normalizeLocalAxis(value = {}) {
     roll: finite(value.roll, 0),
     strongAxis: value.strongAxis || 'z',
   };
+}
+
+function normalizeEndOffset(value = {}) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('endOffset must be an object.');
+  const unknown = Object.keys(value).filter((key) => !['i', 'j', 'frame', 'rigidFactor'].includes(key));
+  if (unknown.length) throw new Error(`Unsupported endOffset field: ${unknown[0]}`);
+  const frame = value.frame ?? 'local';
+  if (!['local', 'global'].includes(frame)) throw new Error('endOffset.frame must be local or global.');
+  const rigidFactor = value.rigidFactor ?? 1;
+  if (typeof rigidFactor !== 'number' || !Number.isFinite(rigidFactor) || Math.abs(rigidFactor - 1) > 1e-12) {
+    throw new Error('endOffset.rigidFactor must be exactly 1.');
+  }
+  return {
+    i: normalizeOffsetEnd(value.i, 'i'),
+    j: normalizeOffsetEnd(value.j, 'j'),
+    rigidFactor,
+    ...(frame !== 'local' ? { frame } : {}),
+  };
+}
+
+function normalizeOffsetEnd(value, end) {
+  if (value == null) return 0;
+  if (typeof value === 'number') {
+    if (!Number.isFinite(value) || value < 0) throw new Error(`endOffset.${end} must be finite and nonnegative.`);
+    return value;
+  }
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error(`endOffset.${end} must be a number or {dx,dy,dz}.`);
+  }
+  const unknown = Object.keys(value).filter((key) => !['dx', 'dy', 'dz'].includes(key));
+  if (unknown.length) throw new Error(`Unsupported endOffset.${end} field: ${unknown[0]}`);
+  return Object.fromEntries(['dx', 'dy', 'dz'].map((key) => {
+    const component = value[key] ?? 0;
+    if (typeof component !== 'number' || !Number.isFinite(component)) {
+      throw new Error(`endOffset.${end}.${key} must be a finite number.`);
+    }
+    return [key, component];
+  }));
+}
+
+function normalizeInsertionPoint(value) {
+  const name = typeof value === 'string' ? value : value?.position;
+  const allowed = new Set([
+    'centroid', 'top-center', 'bottom-center', 'center-left', 'center-right',
+    'top-left', 'top-right', 'bottom-left', 'bottom-right',
+  ]);
+  if (!allowed.has(name)) throw new Error(`Unsupported insertionPoint: ${name}`);
+  return name;
+}
+
+function normalizePanelZone(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('panelZone must be an object.');
+  const unknown = Object.keys(value).filter((key) => !['tp', 'db', 'dc', 'axis'].includes(key));
+  if (unknown.length) throw new Error(`Unsupported panelZone field: ${unknown[0]}`);
+  const normalized = {};
+  for (const key of ['tp', 'db', 'dc']) {
+    if (typeof value[key] !== 'number' || !Number.isFinite(value[key]) || !(value[key] > 0)) {
+      throw new Error(`panelZone.${key} must be a positive finite number.`);
+    }
+    normalized[key] = value[key];
+  }
+  if (value.axis != null) {
+    if (!['y', 'z'].includes(value.axis)) throw new Error('panelZone.axis must be y or z.');
+    normalized.axis = value.axis;
+  }
+  return normalized;
 }
 
 function normalizeReleases(value = {}) {

@@ -154,18 +154,22 @@ export const FEATURE_CATEGORIES = [
         relatedActions: ['setSupport', 'setSpringSupport', 'setSettlement', 'nativeSetSupport', 'nativeSetSpringSupport', 'nativeSetSettlement'],
         manualPage: '02-modeling-and-elastic-analysis.md',
       }),
-      feature('releases-offsets', '단부 해제·부분강절과 강역(offset)', 'pin/rigid 및 4축 회전스프링 단부, 단부 강역 길이 지정으로 clear span 설계 길이 반영.', {
-        description: '단부 해제는 부재 i/j단의 모멘트 전달을 끊고, releases.spring의 local y/z 회전스프링은 유한 접합 강성을 모델링한다. 강역(end offset)은 보-기둥 접합부 크기만큼 단부를 강체로 처리해 유연 길이(clear span)를 줄이고, 설계 모듈에는 clear length가 전달된다.',
+      feature('releases-offsets', '단부 해제·부분강절과 3D 강역(offset)', 'pin/rigid, 4축 회전스프링, 3D 강체팔·삽입점·패널존으로 접합부 강역과 편심을 반영.', {
+        description: '단부 해제와 local y/z 회전스프링에 더해 숫자형 축방향 또는 local/global 3D 강체팔을 지정한다. 삽입점은 단면 기준점 편심을 같은 강체팔로 변환하며, 절점 panelZone은 G·tp·db·dc 회전스프링으로 자동 모델링한다.',
         howTo: [
           '부재 속성에서 releases(i/j: pin|rigid)를 지정하거나 updateMember 액션을 사용한다',
           '부분강절은 releases.spring.{ryI,rzI,ryJ,rzJ}에 유한 비음수 회전강성을 지정한다. 키 미지정은 강접, 명시적 0은 release 극한이다',
           'updateMember의 spring patch는 기존 축을 보존한다. spring:null은 전체 삭제, spring.{축}:null은 해당 축만 삭제한다',
-          '강역은 부재 속성 endOffset({ i, j })에 접합부 치수(m)를 입력한다',
+          '축방향 강역은 endOffset({i,j})에 길이(m)를 입력한다. 3D 편심은 각 단부를 {dx,dy,dz}로 쓰고 frame을 local 또는 global로 지정한다',
+          'insertionPoint는 centroid/top-center/bottom-center/좌우 중심/네 모서리 중 선택한다',
+          '패널존은 절점 panelZone:{tp,db,dc,axis?}로 지정하며 axis 생략 시 부재 strongAxis를 따른다',
           '적용 결과는 부재 해제 요약(getMemberReleaseSummary)과 해제 benchmark로 교차 확인한다',
         ],
         limits: [
           '유한 회전스프링 Direct P-Delta는 raw prismatic KG 근사이며 PARTIAL_FIXITY_PRISMATIC_KG_APPROXIMATION을 표시한다',
           '명시적 zero spring Direct P-Delta, global buckling, nonlinear/corotational 해석은 canonical reason code로 차단된다',
+          '벡터 오프셋과 비도심 삽입점의 nonlinear/corotational 해석은 NONLINEAR_3D_OFFSET_UNSUPPORTED로 차단된다',
+          'rigidFactor<1과 패널존·명시 spring의 동일 축 중복은 지원하지 않는다',
         ],
         relatedReadApis: ['getMemberReleaseSummary', 'getMemberReleaseBenchmark'],
         manualPage: '02-modeling-and-elastic-analysis.md',

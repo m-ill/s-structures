@@ -46,6 +46,14 @@ export function evaluateNonlinearIntegrationCapabilities(input = {}, options = {
         'Only fully rigid member end offsets are supported.',
       ));
     }
+    if (descriptor.geometry?.offsets?.vector3d === true) {
+      issues.push(blocking(
+        'NONLINEAR_3D_OFFSET_UNSUPPORTED',
+        'member',
+        descriptor.id,
+        'Three-dimensional rigid-arm offsets require a finite-rotation vector-offset formulation.',
+      ));
+    }
     if (descriptor.origin?.type === 'shell') {
       issues.push(warning(
         'NONLINEAR_SHELL_EQUIVALENT_ONLY',
@@ -88,6 +96,14 @@ export function evaluateNonlinearIntegrationCapabilities(input = {}, options = {
         'member',
         member.id,
         'Only fully rigid member end offsets are supported.',
+      ));
+    }
+    if (hasVectorOffset(member) || (member.insertionPoint != null && member.insertionPoint !== 'centroid')) {
+      issues.push(blocking(
+        'NONLINEAR_3D_OFFSET_UNSUPPORTED',
+        'member',
+        member.id,
+        'Three-dimensional rigid-arm offsets and non-centroid insertion points are not yet supported by nonlinear analysis.',
       ));
     }
   }
@@ -153,6 +169,10 @@ export function evaluateNonlinearIntegrationCapabilities(input = {}, options = {
   };
   result.capabilityHash = stableHash(result).slice(0, 24);
   return deepFreeze(result);
+}
+
+function hasVectorOffset(member = {}) {
+  return ['i', 'j'].some((end) => member.endOffset?.[end] != null && typeof member.endOffset[end] === 'object');
 }
 
 export function requireNonlinearIntegrationCapabilities(input = {}, options = {}) {

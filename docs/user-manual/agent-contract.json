@@ -756,7 +756,7 @@
     "phase3DesignFormulaRegistry"
   ],
   "moduleVersions": {
-    "agentActions": "p10-m3-agent-modeling-actions-v2",
+    "agentActions": "p10-m4-agent-modeling-actions-v3",
     "resultPanel": "m10-index-results-panel",
     "resultVisuals": "m13-index-result-visuals",
     "resultOverlay": "m18-result-overlay",

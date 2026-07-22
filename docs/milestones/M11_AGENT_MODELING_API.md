@@ -68,6 +68,7 @@ execute('updateNode', { id: 'N1', x: 1 })
 execute('deleteNode', { id: 'N1' })
 execute('setSupport', { nodeId: 'N1', support: 'custom', fix: [true, true, true, false, false, false] })
 execute('setNodeMass', { nodeId: 'N2', mass: [5, 5, 5] })
+execute('updateNode', { id: 'N2', panelZone: { tp: 0.012, db: 0.55, dc: 0.6, axis: 'z' } })
 ```
 
 부재:
@@ -79,10 +80,17 @@ execute('deleteMember', { id: 'M1' })
 execute('setMemberSection', { memberId: 'M1', secId: 'h300' })
 execute('setMemberMaterial', { memberId: 'M1', matId: 'steel' })
 execute('assignSection', { memberIds: ['M1', 'M2'], secId: 'h300' })
+execute('updateMember', {
+  id: 'M1',
+  endOffset: { i: { dx: 0, dy: 0.2, dz: 0 }, j: 0.25, frame: 'global' },
+  insertionPoint: 'top-center'
+})
 ```
 
 `updateMember`의 `releases`는 중첩 patch다. `releases.spring.{ryI,rzI,ryJ,rzJ}`는 기존 i/j 및
 다른 spring 축을 보존하며, `spring:null`은 전체 회전스프링 삭제, `spring.{축}:null`은 해당 축만 삭제한다.
+`endOffset:null`, `insertionPoint:null`, `panelZone:null`은 각각 M4 입력을 삭제한다. 벡터 오프셋은
+`local|global` frame과 유한 숫자 성분만 허용하며 `rigidFactor<1`은 차단한다.
 
 하중:
 

@@ -3,10 +3,14 @@ import { resolveGlobalShearDeformation, resolveMemberShearDeformationSetting } f
 import { resolveSectionShearAreas } from '../../materials/sectionProperties.js';
 import { normalizeSectionRecord } from '../../materials/sectionSchema.js';
 
-export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v3';
+export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v4';
 export const DOMAIN_BINARY_ENDIANNESS = detectEndianness();
 
 const MEMBER_ROTATIONAL_SPRING_COMPONENTS = Object.freeze(['ryI', 'rzI', 'ryJ', 'rzJ']);
+const INSERTION_POINTS = Object.freeze([
+  'centroid', 'top-center', 'bottom-center', 'center-left', 'center-right',
+  'top-left', 'top-right', 'bottom-left', 'bottom-right',
+]);
 const MEMBER_ROTATIONAL_SPRING_MASK_LAYOUT = Object.freeze({
   encoding: 'presence-bitmask',
   bits: Object.freeze({ ryI: 0, rzI: 1, ryJ: 2, rzJ: 3 }),
@@ -38,6 +42,8 @@ export function packDomainBinary(model = {}) {
 
   const coordinates = new Float64Array(nodes.length * 3);
   const dofMap = new Int32Array(nodes.length * 6);
+  const nodePanelZones = new Float64Array(nodes.length * 3);
+  const nodePanelZoneAxis = new Uint8Array(nodes.length);
   let activeDof = 0;
   nodes.forEach((node, index) => {
     coordinates.set([
@@ -49,6 +55,12 @@ export function packDomainBinary(model = {}) {
     for (let component = 0; component < 6; component += 1) {
       dofMap[index * 6 + component] = fixed[component] ? -1 : activeDof++;
     }
+    const panelZone = validatePanelZoneInput(node.panelZone, node.id || null);
+    if (!panelZone.ok) throw contractError(panelZone.reason, panelZone.message);
+    if (panelZone.enabled) {
+      nodePanelZones.set([panelZone.tp, panelZone.db, panelZone.dc], index * 3);
+      nodePanelZoneAxis[index] = panelZone.axis === 'y' ? 2 : panelZone.axis === 'z' ? 3 : 1;
+    }
   });
 
   const connectivity = new Int32Array(members.length * 2);
@@ -57,6 +69,10 @@ export function packDomainBinary(model = {}) {
   const memberSection = new Int32Array(members.length);
   const memberRoll = new Float64Array(members.length);
   const memberOffsets = new Float64Array(members.length * 6);
+  const memberOffsetFrames = new Uint8Array(members.length);
+  const memberOffsetKinds = new Uint8Array(members.length);
+  const memberOffsetRigidFactors = new Float64Array(members.length);
+  const memberInsertionPoints = new Uint8Array(members.length);
   const memberReleaseCodes = new Uint8Array(members.length * 2);
   const memberRotationalSprings = new Float64Array(members.length * MEMBER_ROTATIONAL_SPRING_COMPONENTS.length);
   const memberRotationalSpringMask = new Uint8Array(members.length);
@@ -70,7 +86,12 @@ export function packDomainBinary(model = {}) {
     memberMaterial[index] = requiredIndex(materialIndex, member.matId, 'member.matId');
     memberSection[index] = requiredIndex(sectionIndex, member.secId, 'member.secId');
     memberRoll[index] = numberOr(member.localAxis?.roll, 0);
-    memberOffsets.set(offsetValues(member), index * 6);
+    const offset = memberOffsetInputValues(member);
+    memberOffsets.set(offset.values, index * 6);
+    memberOffsetFrames[index] = offset.frame === 'global' ? 1 : 0;
+    memberOffsetKinds[index] = offset.kindMask;
+    memberOffsetRigidFactors[index] = offset.rigidFactor;
+    memberInsertionPoints[index] = insertionPointCode(member.insertionPoint);
     memberReleaseCodes[index * 2] = releaseCode(member.releases?.i);
     memberReleaseCodes[index * 2 + 1] = releaseCode(member.releases?.j);
     const rotationalSprings = packMemberRotationalSprings(member);
@@ -160,12 +181,18 @@ export function packDomainBinary(model = {}) {
   const buffers = {
     coordinates,
     dofMap,
+    nodePanelZones,
+    nodePanelZoneAxis,
     connectivity,
     memberType,
     memberMaterial,
     memberSection,
     memberRoll,
     memberOffsets,
+    memberOffsetFrames,
+    memberOffsetKinds,
+    memberOffsetRigidFactors,
+    memberInsertionPoints,
     memberReleaseCodes,
     memberRotationalSprings,
     memberRotationalSpringMask,
@@ -192,6 +219,13 @@ export function packDomainBinary(model = {}) {
       analysisFlags: ['shearDeformation'],
       memberShearDeformation: 'effective-requested-boolean',
       memberReleaseCodes: ['i', 'j'],
+      nodePanelZones: ['tp', 'db', 'dc'],
+      nodePanelZoneAxis: { 0: 'absent', 1: 'strong-axis-default', 2: 'local-y', 3: 'local-z' },
+      memberOffsets: ['i.dx', 'i.dy', 'i.dz', 'j.dx', 'j.dy', 'j.dz'],
+      memberOffsetFrames: { 0: 'local', 1: 'global' },
+      memberOffsetKinds: { bits: { iVector: 0, jVector: 1 }, numeric: 'legacy-axial-length' },
+      memberOffsetRigidFactors: 'fully-rigid-must-equal-one',
+      memberInsertionPoints: [...INSERTION_POINTS],
       memberRotationalSprings: [...MEMBER_ROTATIONAL_SPRING_COMPONENTS],
       memberRotationalSpringMask: MEMBER_ROTATIONAL_SPRING_MASK_LAYOUT,
       sectionShearAreas: ['Ay', 'Az'],
@@ -234,6 +268,29 @@ export function validateDomainBinary(domain) {
   if (!ArrayBuffer.isView(buffers.connectivity) || !ArrayBuffer.isView(buffers.memberType)) errors.push('domain:member-buffers');
   if (domain.metadata?.counts?.nodes * 3 !== buffers.coordinates?.length) errors.push('domain:node-count');
   if (domain.metadata?.counts?.members * 2 !== buffers.connectivity?.length) errors.push('domain:member-count');
+  if (!(buffers.nodePanelZones instanceof Float64Array)
+    || domain.metadata?.counts?.nodes * 3 !== buffers.nodePanelZones.length
+    || [...buffers.nodePanelZones].some((value) => !Number.isFinite(value) || value < 0)) errors.push('domain:node-panel-zones');
+  if (!(buffers.nodePanelZoneAxis instanceof Uint8Array)
+    || domain.metadata?.counts?.nodes !== buffers.nodePanelZoneAxis.length
+    || [...buffers.nodePanelZoneAxis].some((value) => value > 3)) errors.push('domain:node-panel-zone-axis');
+  if (!(buffers.memberOffsets instanceof Float64Array)
+    || domain.metadata?.counts?.members * 6 !== buffers.memberOffsets.length
+    || [...buffers.memberOffsets].some((value) => !Number.isFinite(value))) errors.push('domain:member-offsets');
+  if (!(buffers.memberOffsetFrames instanceof Uint8Array)
+    || domain.metadata?.counts?.members !== buffers.memberOffsetFrames.length
+    || [...buffers.memberOffsetFrames].some((value) => value > 1)) errors.push('domain:member-offset-frames');
+  if (!(buffers.memberOffsetKinds instanceof Uint8Array)
+    || domain.metadata?.counts?.members !== buffers.memberOffsetKinds.length
+    || [...buffers.memberOffsetKinds].some((value) => (value & 0xfc) !== 0)) errors.push('domain:member-offset-kinds');
+  if (!(buffers.memberOffsetRigidFactors instanceof Float64Array)
+    || domain.metadata?.counts?.members !== buffers.memberOffsetRigidFactors.length
+    || [...buffers.memberOffsetRigidFactors].some((value) => !Number.isFinite(value) || Math.abs(value - 1) > 1e-12)) {
+    errors.push('domain:member-offset-rigid-factors');
+  }
+  if (!(buffers.memberInsertionPoints instanceof Uint8Array)
+    || domain.metadata?.counts?.members !== buffers.memberInsertionPoints.length
+    || [...buffers.memberInsertionPoints].some((value) => value >= INSERTION_POINTS.length)) errors.push('domain:member-insertion-points');
   if (!(buffers.memberReleaseCodes instanceof Uint8Array)
     || domain.metadata?.counts?.members * 2 !== buffers.memberReleaseCodes.length
     || [...buffers.memberReleaseCodes].some((value) => value > 2)) errors.push('domain:member-release-codes');
@@ -264,13 +321,25 @@ export function unpackDomainBinary(domain) {
   const validation = validateDomainBinary(domain);
   if (!validation.ok) throw contractError('DOMAIN_BINARY_INVALID', validation.errors.join(', '));
   const { dictionaries, buffers } = domain;
-  const nodes = dictionaries.nodeIds.map((id, index) => ({
-    id,
-    x: buffers.coordinates[index * 3],
-    y: buffers.coordinates[index * 3 + 1],
-    z: buffers.coordinates[index * 3 + 2],
-    dof: Array.from(buffers.dofMap.slice(index * 6, index * 6 + 6)),
-  }));
+  const nodes = dictionaries.nodeIds.map((id, index) => {
+    const node = {
+      id,
+      x: buffers.coordinates[index * 3],
+      y: buffers.coordinates[index * 3 + 1],
+      z: buffers.coordinates[index * 3 + 2],
+      dof: Array.from(buffers.dofMap.slice(index * 6, index * 6 + 6)),
+    };
+    const axisCode = buffers.nodePanelZoneAxis[index];
+    if (axisCode) {
+      node.panelZone = {
+        tp: buffers.nodePanelZones[index * 3],
+        db: buffers.nodePanelZones[index * 3 + 1],
+        dc: buffers.nodePanelZones[index * 3 + 2],
+        ...(axisCode > 1 ? { axis: axisCode === 2 ? 'y' : 'z' } : {}),
+      };
+    }
+    return node;
+  });
   const members = dictionaries.memberIds.map((id, index) => {
     const releases = {
       i: releaseValue(buffers.memberReleaseCodes[index * 2]),
@@ -278,7 +347,7 @@ export function unpackDomainBinary(domain) {
     };
     const spring = unpackMemberRotationalSprings(buffers, index);
     if (spring) releases.spring = spring;
-    return {
+    const member = {
       id,
       n1: dictionaries.nodeIds[buffers.connectivity[index * 2]],
       n2: dictionaries.nodeIds[buffers.connectivity[index * 2 + 1]],
@@ -287,6 +356,25 @@ export function unpackDomainBinary(domain) {
       secId: dictionaries.sectionIds[buffers.memberSection[index]],
       releases,
     };
+    const offsetStart = index * 6;
+    const values = Array.from(buffers.memberOffsets.slice(offsetStart, offsetStart + 6));
+    const kind = buffers.memberOffsetKinds[index];
+    const endValue = (endIndex) => {
+      const vector = values.slice(endIndex * 3, endIndex * 3 + 3);
+      if (kind & (1 << endIndex)) return { dx: vector[0], dy: vector[1], dz: vector[2] };
+      return endIndex === 0 ? vector[0] : -vector[0];
+    };
+    if (values.some((value) => value !== 0) || buffers.memberOffsetFrames[index] || kind) {
+      member.endOffset = {
+        i: endValue(0),
+        j: endValue(1),
+        rigidFactor: buffers.memberOffsetRigidFactors[index],
+        ...(buffers.memberOffsetFrames[index] ? { frame: 'global' } : {}),
+      };
+    }
+    const insertionPoint = INSERTION_POINTS[buffers.memberInsertionPoints[index]];
+    if (insertionPoint !== 'centroid') member.insertionPoint = insertionPoint;
+    return member;
   });
   return {
     version: domain.version,
@@ -321,10 +409,77 @@ function fixedDofs(node) {
   return [false, false, false, false, false, false];
 }
 
-function offsetValues(member) {
-  const i = member.offset?.i || member.offsetI || {};
-  const j = member.offset?.j || member.offsetJ || {};
-  return [numberOr(i.x, 0), numberOr(i.y, 0), numberOr(i.z, 0), numberOr(j.x, 0), numberOr(j.y, 0), numberOr(j.z, 0)];
+function validatePanelZoneInput(value) {
+  if (value == null) return { ok: true, enabled: false };
+  if (typeof value !== 'object' || Array.isArray(value)) {
+    return { ok: false, reason: 'BAD_PANEL_ZONE', message: 'joint.panelZone must be an object.' };
+  }
+  const unknown = Object.keys(value).filter((key) => !['tp', 'db', 'dc', 'axis'].includes(key));
+  if (unknown.length) {
+    return { ok: false, reason: 'BAD_PANEL_ZONE', message: `Unsupported panel-zone field: ${unknown[0]}.` };
+  }
+  for (const key of ['tp', 'db', 'dc']) {
+    if (typeof value[key] !== 'number' || !Number.isFinite(value[key]) || !(value[key] > 0)) {
+      return { ok: false, reason: 'BAD_PANEL_ZONE', message: `joint.panelZone.${key} must be a positive finite number.` };
+    }
+  }
+  if (value.axis != null && !['y', 'z'].includes(value.axis)) {
+    return { ok: false, reason: 'BAD_PANEL_ZONE', message: 'joint.panelZone.axis must be y or z when specified.' };
+  }
+  return { ok: true, enabled: true, tp: value.tp, db: value.db, dc: value.dc, axis: value.axis || null };
+}
+
+function memberOffsetInputValues(member = {}) {
+  const value = member.endOffset;
+  if (value == null) {
+    return { values: [0, 0, 0, 0, 0, 0], frame: 'local', rigidFactor: 1, kindMask: 0 };
+  }
+  if (typeof value !== 'object' || Array.isArray(value)) {
+    throw contractError('INVALID_MEMBER_OFFSET', 'member.endOffset must be an object.');
+  }
+  const frame = value.frame ?? 'local';
+  if (!['local', 'global'].includes(frame)) {
+    throw contractError('INVALID_MEMBER_OFFSET_FRAME', 'Member offset frame must be local or global.');
+  }
+  const rigidFactor = value.rigidFactor ?? 1;
+  if (typeof rigidFactor !== 'number' || !Number.isFinite(rigidFactor) || Math.abs(rigidFactor - 1) > 1e-12) {
+    throw contractError('UNSUPPORTED_MEMBER_OFFSET_RIGID_FACTOR', 'Only rigidFactor=1 is supported.');
+  }
+  const i = domainOffsetEnd(value.i, 'i');
+  const j = domainOffsetEnd(value.j, 'j');
+  return {
+    values: [...i.vector, ...j.vector],
+    frame,
+    rigidFactor,
+    kindMask: (i.vectorInput ? 1 : 0) | (j.vectorInput ? 2 : 0),
+  };
+}
+
+function domainOffsetEnd(value, end) {
+  if (value == null) return { vector: [0, 0, 0], vectorInput: false };
+  if (typeof value === 'number') {
+    if (!Number.isFinite(value) || value < 0) {
+      throw contractError('INVALID_MEMBER_OFFSET', `Member ${end}-end offset must be finite and nonnegative.`);
+    }
+    return { vector: [end === 'i' ? value : -value, 0, 0], vectorInput: false };
+  }
+  if (typeof value !== 'object' || Array.isArray(value)) {
+    throw contractError('INVALID_MEMBER_OFFSET', `Member ${end}-end offset must be a number or vector.`);
+  }
+  const unknown = Object.keys(value).filter((key) => !['dx', 'dy', 'dz'].includes(key));
+  if (unknown.length) throw contractError('INVALID_MEMBER_OFFSET', `Unsupported offset component: ${unknown[0]}.`);
+  const vector = ['dx', 'dy', 'dz'].map((key) => value[key] ?? 0);
+  if (vector.some((component) => typeof component !== 'number' || !Number.isFinite(component))) {
+    throw contractError('INVALID_MEMBER_OFFSET', 'Member offset components must be finite numbers.');
+  }
+  return { vector, vectorInput: true };
+}
+
+function insertionPointCode(value) {
+  const name = value == null ? 'centroid' : typeof value === 'string' ? value : value?.position;
+  const index = INSERTION_POINTS.indexOf(name);
+  if (index < 0) throw contractError('DOMAIN_MEMBER_INSERTION_POINT_INVALID', `Unsupported insertion point: ${name}.`);
+  return index;
 }
 
 function releaseCode(value) {

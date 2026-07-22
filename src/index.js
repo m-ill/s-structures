@@ -235,6 +235,22 @@ export {
   resolveMemberPartialFixity,
 } from './solver/partialFixity.js';
 export {
+  INSERTION_POINTS,
+  MEMBER_OFFSET_FRAMES,
+  MEMBER_OFFSET_VERSION,
+  buildMemberOffsetRecoveryTrace,
+  memberOffsetInputValues,
+  resolveMemberOffsetKinematics,
+  rigidArmTransform12,
+} from './solver/memberOffsets.js';
+export {
+  PANEL_ZONE_AXES,
+  PANEL_ZONE_VERSION,
+  applyPanelZoneConnectionSprings,
+  attachPanelZoneSources,
+  validatePanelZoneInput,
+} from './solver/panelZone.js';
+export {
   SPARSE_MATRIX_VERSION,
   cscMatVec,
   cscToDense,

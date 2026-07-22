@@ -859,6 +859,12 @@ function prepareDescriptor(descriptor, options) {
     j: nonnegative(descriptor.geometry?.offsets?.j ?? 0, 'geometry.offsets.j'),
     rigidFactor: finite(descriptor.geometry?.offsets?.rigidFactor ?? 1, 'geometry.offsets.rigidFactor'),
   };
+  if (descriptor.geometry?.offsets?.vector3d === true) {
+    throw elementError(
+      'COROTATIONAL_3D_OFFSET_UNSUPPORTED',
+      'Corotational analysis does not yet support three-dimensional rigid-arm offsets.',
+    );
+  }
   if (Math.abs(offsets.rigidFactor - 1) > 1e-12) {
     throw elementError('COROTATIONAL_OFFSET_RIGID_FACTOR_UNSUPPORTED', 'Corotational rigid offsets require rigidFactor=1.');
   }

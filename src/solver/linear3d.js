@@ -745,6 +745,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     out.shellFrameAssembly = domain.shellAssembly;
     out.summary = buildEquilibriumSummary(nodes, members, loads, out, {
       equilibriumLimit: resolveCriterion(model, 'audit.equilibriumRelative', 1e-8),
+      offsetEquilibriumTol: resolveCriterion(model, 'offset.equilibriumTol', 1e-10),
     });
     return out;
   }

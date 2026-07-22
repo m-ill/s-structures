@@ -9,11 +9,9 @@ import {
   matTrans,
   matVec,
   maxAbs,
-  memberAxes,
   memberReleaseDofs,
   solveLinear,
   solveLinearDetailed,
-  transform12,
 } from './linear3dElement.js';
 import { buildFixedEndLoad, fixedEndTraceRow } from '../loads/fixedEnd/index.js';
 import { buildDiaphragmDofMap } from './diaphragmDofMap.js';
@@ -26,6 +24,8 @@ import { cscMatVec, SPARSE_MATRIX_VERSION } from './sparse/cscMatrix.js';
 import { buildFixedDofs, collectPrescribedDofs } from './domain/supportConstraints.js';
 import { condensePartialFixity, resolveMemberPartialFixity } from './partialFixity.js';
 import { resolveMemberTimoshenko } from './timoshenko.js';
+import { resolveMemberOffsetKinematics } from './memberOffsets.js';
+import { applyPanelZoneConnectionSprings, attachPanelZoneSources } from './panelZone.js';
 
 export { buildFixedDofs } from './domain/supportConstraints.js';
 
@@ -36,47 +36,8 @@ function memberBehavior(member = {}) {
   return ['truss', 'tensionOnly', 'compressionOnly'].includes(value) ? 'truss' : 'frame';
 }
 
-export function memberKinematics(member, a, b) {
-  const base = memberAxes(a, b, member.localAxis);
-  const oi = Number(member.endOffset?.i ?? 0);
-  const oj = Number(member.endOffset?.j ?? 0);
-  if (!Number.isFinite(oi) || !Number.isFinite(oj) || oi < 0 || oj < 0) {
-    return offsetFailure('INVALID_MEMBER_OFFSET', member, 'Member end offsets must be finite nonnegative lengths.');
-  }
-  if (oi + oj >= base.L - 1e-9 && (oi || oj)) {
-    return offsetFailure('INVALID_MEMBER_OFFSET_CLEAR_LENGTH', member, 'Member end offsets must leave a positive clear length.');
-  }
-  if (!(oi || oj)) return { ok: true, ax: base, T: transform12(base) };
-
-  const rigidFactor = Number(member.endOffset?.rigidFactor ?? 1);
-  if (!Number.isFinite(rigidFactor) || Math.abs(rigidFactor - 1) > 1e-12) {
-    return offsetFailure(
-      'UNSUPPORTED_MEMBER_OFFSET_RIGID_FACTOR',
-      member,
-      'Only fully rigid axial end offsets with rigidFactor=1 are supported.',
-    );
-  }
-
-  const ae = { ...a, x: a.x + base.x[0] * oi, y: a.y + base.x[1] * oi, z: (a.z || 0) + base.x[2] * oi };
-  const be = { ...b, x: b.x - base.x[0] * oj, y: b.y - base.x[1] * oj, z: (b.z || 0) - base.x[2] * oj };
-  const ax = { ...memberAxes(ae, be, member.localAxis), grossL: base.L, offset: { i: oi, j: oj, rigidFactor: 1 } };
-  const rigidArm = rigidArmTransform(oi, oj);
-  return { ok: true, ax, T: matMul(rigidArm, transform12(ax)) };
-}
-
-function rigidArmTransform(oi, oj) {
-  const transform = Array.from({ length: 12 }, (_row, i) => (
-    Array.from({ length: 12 }, (_column, j) => (i === j ? 1 : 0))
-  ));
-  for (const [base, arm] of [[0, oi], [6, -oj]]) {
-    transform[base + 1][base + 5] = arm;
-    transform[base + 2][base + 4] = -arm;
-  }
-  return transform;
-}
-
-function offsetFailure(reason, member, message) {
-  return { ok: false, reason, memberId: member.id, message };
+export function memberKinematics(member, a, b, section = {}) {
+  return resolveMemberOffsetKinematics(member, a, b, section);
 }
 
 export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
@@ -99,14 +60,19 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     const a = nodeMap[member.n1];
     const b = nodeMap[member.n2];
     if (!a || !b || idx[member.n1] == null || idx[member.n2] == null) continue;
-    const kinematics = memberKinematics(member, a, b);
+    const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
+    const kinematics = memberKinematics(member, a, b, section);
     if (!kinematics.ok) return kinematics;
     const { ax, T } = kinematics;
     if (ax.L < 1e-9) continue;
-    const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
     const behavior = memberBehavior(member);
     const timoshenko = resolveMemberTimoshenko(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
-    const partialFixity = resolveMemberPartialFixity(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
+    const connection = applyPanelZoneConnectionSprings(member, { i: a, j: b }, material);
+    if (!connection.ok) return connection;
+    const partialFixity = attachPanelZoneSources(
+      resolveMemberPartialFixity(ctx.model || ctx.criteriaModel || {}, connection.member, section, material, ax.L),
+      connection,
+    );
     const kl = behavior === 'truss'
       ? localTrussK12(material.E, section.A, ax.L)
       : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L, timoshenko.phiY, timoshenko.phiZ);
@@ -125,6 +91,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       timoshenko,
       rel: memberReleaseDofs(member),
       partialFixity,
+      panelZone: connection,
+      offsetKinematics: kinematics,
     };
   }
 
@@ -619,14 +587,19 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     const a = nodeMap[member.n1];
     const b = nodeMap[member.n2];
     if (!a || !b) continue;
-    const kinematics = memberKinematics(member, a, b);
+    const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
+    const kinematics = memberKinematics(member, a, b, section);
     if (!kinematics.ok) return { ...kinematics, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, ndof };
     const { ax, T } = kinematics;
     if (ax.L < 1e-9) continue;
-    const { section, material } = effectiveSectionMaterial(getSec, getMat, member);
     const behavior = memberBehavior(member);
     const timoshenko = resolveMemberTimoshenko(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
-    const partialFixity = resolveMemberPartialFixity(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L);
+    const connection = applyPanelZoneConnectionSprings(member, { i: a, j: b }, material);
+    if (!connection.ok) return { ...connection, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, ndof };
+    const partialFixity = attachPanelZoneSources(
+      resolveMemberPartialFixity(ctx.model || ctx.criteriaModel || {}, connection.member, section, material, ax.L),
+      connection,
+    );
     const kl = behavior === 'truss'
       ? localTrussK12(material.E, section.A, ax.L)
       : localK12(material.E, material.G, section.A, section.Iy, section.Iz, section.J, ax.L, timoshenko.phiY, timoshenko.phiZ);
@@ -644,6 +617,8 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
       timoshenko,
       rel: memberReleaseDofs(member),
       partialFixity,
+      panelZone: connection,
+      offsetKinematics: kinematics,
     };
   }
 

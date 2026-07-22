@@ -12,6 +12,7 @@ import {
   buildPartialFixityRecoveryTrace,
   recoverPartialFixityDisplacements,
 } from './partialFixity.js';
+import { buildMemberOffsetRecoveryTrace } from './memberOffsets.js';
 
 export function recoverMemberResult(member, md, D, loads, stationCount) {
   const { ax, section, material } = md;
@@ -47,6 +48,7 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     dl,
     endForces,
   );
+  const offset = buildMemberOffsetRecoveryTrace(md.offsetKinematics, endForces);
   const spanLoads = collectMemberSpanLoads(member.id, loads, ax);
   const { xs, N, Vy, Vz, Tq, My, Mz } = recoverMemberStations(endForces, spanLoads, L, stationCount);
   const { shape, dmaxM, recoveryTrace } = recoverMemberShape(
@@ -76,6 +78,7 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     fixedEndLoads: md.fixedEndLoads || [],
     timoshenko: md.timoshenko || null,
     partialFixity,
+    offset,
     deformationRecovery: recoveryTrace,
     loadRecoveryIssues: spanLoads.issues || [],
     shape,

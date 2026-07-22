@@ -18,7 +18,7 @@ cycle: 착수 → 구현 → /code-review high → 수정 → 검증표·evidenc
 | **P10-M1** | 독립 교차검증 + 병적 모델 배터리 | [WP-01](workpackages/WP-01-cross-validation.md) | §11 | M0 | XV artifact 계약·러너, XV-01·02 hand-calc green, XV-03~08 모델·executor·`pending-reference` artifact, BM-01~10 case-specific code·behavior·location pass |
 | **P10-M2** ✅ complete | Timoshenko 전단변형 | [WP-02](workpackages/WP-02-timoshenko.md) | §2 | M0, M1 | Φ=0 회귀 <1e-12, 깊은 보 폐형해 <1e-9, 독립 point/partial-UDL q0·복원·release·compute 계약 PASS — [evidence 8/8](../../reports/validation-evidence/phase10/p10-m2-timoshenko.json) · [review](reviews/P10-M2-CODE-REVIEW.md) |
 | **P10-M3** ✅ complete | 부분강접 (회전스프링 단부) | [WP-03](workpackages/WP-03-partial-fixity.md) | §3 | M2 | 4축·absent/zero 계약, 안정 Schur K/f0/복구, k_θ 양극한 <1e-9, EB/Timo 폐형해 <1e-7, solver limitation/fail-closed PASS — [evidence 7/7](../../reports/validation-evidence/phase10/p10-m3-partial-fixity.json) · [review](reviews/P10-M3-CODE-REVIEW.md) |
-| **P10-M4** | 3D 오프셋 · 삽입점 · 패널존 | [WP-04](workpackages/WP-04-offsets-panelzone.md) | §4 | M0, M1 | r=0 회귀 <1e-12, 편심 벤치마크 <1e-8, 평형감사 확장 |
+| **P10-M4** ✅ complete | 3D 오프셋 · 삽입점 · 패널존 | [WP-04](workpackages/WP-04-offsets-panelzone.md) | §4 | M0, M1 | r=0·N·e·패널존 등가·평형잔차 모두 오차 0 — [evidence 4/4](../../reports/validation-evidence/phase10/p10-m4-offsets-panelzone.json) · [review](reviews/P10-M4-CODE-REVIEW.md) |
 | **P10-M5** | 일반 MPC · rigid link | [WP-05](workpackages/WP-05-mpc-rigidlink.md) | §5 | M0, M1 | u=Tq+ubar 행 확장(신규 엔진 금지), 충돌검출 3코드, 다이어프램 회귀 <1e-10 |
 | **P10-M6** | 변단면 부재 | [WP-06](workpackages/WP-06-tapered.md) | §6 | M2 | 프리즘 회귀 <1e-12, 변단면 폐형해 <1e-6, 적분 수렴 <1e-8 |
 | **P10-M7** | prestressed 모달·RSA / 좌굴 다중모드 / 직접적분 THA | [WP-07](workpackages/WP-07-dynamics-extension.md) | §7 | M2, M5 | N_G=0 회귀 <1e-10, 압축→주기증가 방향성, λcr 폐형해 <1e-6, P9 eigen·P8 Newmark 재사용 |
@@ -67,3 +67,5 @@ topology/P-Delta 안전 회귀 `tests/p10-m1-topology-pdelta-safety.mjs`.
 M3 부분강접 `tests/p10-m3-partial-fixity.mjs`, schema/DomainBinary v3 계약
 `tests/p10-m3-schema-contract.mjs`, solver domain/route 계약 `tests/p10-m3-domain-route-contract.mjs`,
 evidence 계약 `tests/p10-m3-evidence-contract.mjs`.
+M4 3D 오프셋·패널존 `tests/p10-m4-offsets-panelzone.mjs`, schema/DomainBinary v4 계약
+`tests/p10-m4-schema-domain-contract.mjs`, evidence 계약 `tests/p10-m4-evidence-contract.mjs`.

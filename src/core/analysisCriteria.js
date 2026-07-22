@@ -36,6 +36,9 @@ export const DEFAULT_CRITERIA_VALUES = {
     releaseLimitTol: 1e-9,
     closedFormTol: 1e-7,
   },
+  offset: {
+    equilibriumTol: 1e-10,
+  },
   audit: {
     equilibriumRelative: 1e-8,
   },
@@ -130,6 +133,7 @@ const CRITERION_RULES = {
   'connection.rigidLimitTol': { kind: 'number', min: 0, exclusiveMin: true },
   'connection.releaseLimitTol': { kind: 'number', min: 0, exclusiveMin: true },
   'connection.closedFormTol': { kind: 'number', min: 0, exclusiveMin: true },
+  'offset.equilibriumTol': { kind: 'number', min: 0, exclusiveMin: true },
   'audit.equilibriumRelative': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.min': { kind: 'number', min: 0, exclusiveMin: true },
   'tolerance.element.max': { kind: 'number', min: 0, exclusiveMin: true },

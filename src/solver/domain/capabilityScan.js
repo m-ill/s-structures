@@ -10,6 +10,10 @@ export function scanAnalysisDomainCapabilities(model = {}, analysisCase = {}, op
     if (!Number.isFinite(rigidFactor) || Math.abs(rigidFactor - 1) > 1e-12) {
       issues.push(issue('NONLINEAR_OFFSET_RIGID_FACTOR_UNSUPPORTED', 'member', member.id, 'Only fully rigid end offsets are supported.'));
     }
+    if (['i', 'j'].some((end) => member.endOffset?.[end] != null && typeof member.endOffset[end] === 'object')
+      || (member.insertionPoint != null && member.insertionPoint !== 'centroid')) {
+      issues.push(issue('NONLINEAR_3D_OFFSET_UNSUPPORTED', 'member', member.id, 'Nonlinear analysis does not yet support 3D vector offsets.'));
+    }
   }
   for (const load of model.loads || []) {
     if (load.follower === true || load.type === 'follower') {
