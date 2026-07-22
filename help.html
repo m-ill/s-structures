@@ -77,7 +77,7 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
 <header class="app">
   <div class="logo">S-<span>Structures</span> 도움말</div>
   <input id="helpSearch" type="search" placeholder="검색 — 기능·페이지·액션 (예: pushover, 스프링, addLoad)">
-  <div class="meta">안내서 14 · 기능 78</div>
+  <div class="meta">안내서 14 · 기능 79</div>
   <a class="home" href="./app.html">앱으로</a>
 </header>
 <div class="layout">
@@ -204,7 +204,7 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
       </div>
 
       <div class="tree-group">
-        <button type="button" class="node-toggle"><span class="twisty"></span>탄성해석 (9)</button>
+        <button type="button" class="node-toggle"><span class="twisty"></span>탄성해석 (10)</button>
         <div class="children">
           <a class="leaf" href="#linear-static" data-leaf="linear-static" data-search="선형 정적해석 linear-static 3d 강성법 해석 — 조합별 변위/부재력/반력. 해석 전 validation, 해석 후 평형 audit. runanalysis setanalysissetting addanalysiscase updateanalysiscase deleteanalysiscase listanalysiscases runanalysiscase runanalysiscases runallanalysiscases getanalysiscaseresult getresults getanalysiscases listanalysiscases getanalysisresults getanalysiscaseresult">선형 정적해석</a>
           <a class="leaf" href="#analysis-center" data-leaf="analysis-center" data-search="analysis center analysis-center phase 5 analysis case workflow for static, modal, rsa, buckling, tha, pushover, and nlth. addanalysiscase updateanalysiscase deleteanalysiscase listanalysiscases runanalysiscase runanalysiscases runallanalysiscases getanalysiscapabilities validateanalysisrun plananalysisrun startanalysisrun getanalysisrunstatus listanalysisruns getanalysisrunresult getanalysisresultslice cancelanalysisrun retryanalysisrun getanalysisrunreport exportanalysistelemetry getanalysiscases listanalysiscases getanalysisresults getanalysiscaseresult getcalculationpackage getanalysiscapabilities validateanalysisrun plananalysisrun startanalysisrun getanalysisrunstatus listanalysisruns getanalysisrunresult getanalysisresultslice cancelanalysisrun retryanalysisrun getanalysisrunreport exportanalysistelemetry">Analysis Center</a>
@@ -215,6 +215,7 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
           <a class="leaf" href="#linear-tha" data-leaf="linear-tha" data-search="선형 시간이력 linear-tha 모드중첩 기반 선형 시간이력 응답 (지반가속도 입력).">선형 시간이력</a>
           <a class="leaf" href="#buckling" data-leaf="buckling" data-search="선형 좌굴해석 buckling k·φ=λ·kg·φ 고유치 좌굴 — 좌굴계수와 모드.">선형 좌굴해석</a>
           <a class="leaf" href="#elastic-expansion-trace" data-leaf="elastic-expansion-trace" data-search="탄성 확장 trace elastic-expansion-trace 스프링/침하/트러스/offset/부분하중/온도 등 확장 기능의 적용 내역 추적. getelasticexpansiontrace getdynamiccompletenesstrace getadvancedelastictrace">탄성 확장 trace</a>
+          <a class="leaf" href="#phase10-advanced-elastic" data-leaf="phase10-advanced-elastic" data-search="phase 10 고급 탄성해석 phase10-advanced-elastic timoshenko·부분강접·offset/mpc·변단면·prestress·ltb·shell fem·슬래브 하중생성을 하나의 추적 가능한 제품 계약으로 제공한다. getphase10releasestatus getresults getdetailedreport getcalculationpackage">Phase 10 고급 탄성해석</a>
         </div>
       </div>
 
@@ -515,6 +516,9 @@ window.SStructuresAgent.execute('applyDesignBasisLoads', {
 <p>Phase 7의 M0~M11 코드 구현은 완료되었고 릴리스 상태는 <code>candidate</code>다. 세부 구현·검증 근거는 <code>docs/phase7/IMPLEMENTATION_STATUS.md</code>, 코드리뷰 결과는 <code>docs/phase7/CODEBASE_REVIEW.md</code>를 따른다.</p>
 <table><thead><tr><th>영역</th><th>현재 상태</th></tr></thead><tbody><tr><td>재료·단면</td><td>현행 KS designation과 legacy alias 분리, SQUARE/RECT/CIRC/H/BOX/PIPE/CUSTOM 지원</td></tr><tr><td>모델링</td><td>층·그리드 생성, 역할/단면 배치 지정, transaction, 이동·크기조절·도킹 패널 지원</td></tr><tr><td>하중</td><td>load case/mass source/design basis 분리, KDS 41 12 00:2022 규칙 팩 preview/apply/audit 지원</td></tr><tr><td>선형 정적</td><td>6-resultant 힘·모멘트 평형과 해석기준별 허용치 추적</td></tr><tr><td>Direct P-Delta</td><td>조합별 <code>Kt = Ke + Kg(N)</code> 경로와 결과 그래프/표 지원; 미지원 release는 차단</td></tr><tr><td>모달/RSA</td><td>모드 정규화, CQC, 밑면전단력, 층·부재 응답; condensation 실패는 차단</td></tr><tr><td>sparse/좌굴</td><td>sparse LDLT 자격검사, 검증된 정적 preload 기반 탄성 프레임 좌굴</td></tr><tr><td>실행 기록</td><td>모델 hash, 해석기준 snapshot, verification evidence가 있는 model-bound run record</td></tr></tbody></table>
 <p>THA는 계속 <code>preliminary</code>이며 설계 전달이 차단된다. 실제 shell FEM, 비탄성 좌굴, 미지원 요소가 섞인 Direct P-Delta/좌굴은 지원 결과로 승격하지 않는다. 프로젝트 최종 사용에는 담당기술자의 설계조건 승인과 독립 검산이 필요하다.</p>
+<h2>Phase 10 Advanced Elastic Workflow</h2>
+<p>Phase 10 M0~M11 코드 구현은 완료되었다. Timoshenko 보, 부분강접, 3D offset·패널존, MPC·rigid link, 변단면, prestressed 동적해석, LTB 검토, flat-shell FEM, 슬래브·풍 하중생성은 제품 통합 계약과 Agent API <code>getPhase10ReleaseStatus</code>에 연결된다.</p>
+<p>현재 릴리스 상태는 <code>blocked</code>다. XV-01/02만 green이고 XV-03~10 required-source 기준자료가 없으며, native WebGPU K1~K3는 실제 브라우저·GPU 장치 qualification이 완료되지 않았다. 따라서 <code>externallyCrossValidated=false</code>, <code>release.allowed=false</code>, <code>designTransferAllowed=false</code>를 유지한다. CPU f64 및 GPU f32 shadow 경로는 성능·일치도 gate를 통과했지만 native WebGPU 자격을 대신하지 않는다.</p>
 <h2>Not Yet Complete</h2>
 <table><thead><tr><th>미완 항목</th><th>필요한 다음 단계</th></tr></thead><tbody><tr><td>도면 이미지 import</td><td>agentic vision이 도면을 읽고 schema-versioned model JSON 생성</td></tr><tr><td>MGT import</td><td>외부 모델 파일 parser와 mapping audit</td></tr><tr><td>KDS 풍하중 상세 절차</td><td>노출, 지형, 중요도, 내압, 외압, 동적계수</td></tr><tr><td>KDS 지진 상세 절차</td><td>지반, 중요도, 반응수정계수, 주기, 모드조합, 우발편심</td></tr><tr><td>활하중 저감/적설/토압/수압/시공하중</td><td>load standard registry 확장</td></tr><tr><td>RC 상세 설계</td><td>전단, 정착, 이음, 기둥-보 접합부, 내진 상세</td></tr><tr><td>철골 상세 설계</td><td>폭두께비, LTB, 전단좌굴, 접합부, 베이스플레이트</td></tr><tr><td>기초 상세 설계</td><td>지내력, 침하, 전도/활동, 말뚝/매트/독립기초</td></tr><tr><td>정식 비선형</td><td>tangent stiffness, hinge degradation, convergence, load/displacement control</td></tr><tr><td>사용자 검토 workflow</td><td>issue/action item closure, 승인 기록, PDF revision history</td></tr></tbody></table>
 <h2>Current Validation Command Set</h2>
@@ -1304,6 +1308,22 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
       <h4>관련 읽기 API</h4><p class="api-list"><code>getElasticExpansionTrace</code> <code>getDynamicCompletenessTrace</code> <code>getAdvancedElasticTrace</code></p>
       <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
       <footer class="control-key">기능 제어 키: <code>feature.elastic-expansion-trace</code> (기본 상시) </footer>
+    </article>
+</template>
+<template data-help-page="phase10-advanced-elastic" data-title="Phase 10 고급 탄성해석" data-crumb="기능 설명서 · 탄성해석">
+
+    <article class="feature" id="phase10-advanced-elastic" data-feature="phase10-advanced-elastic">
+      <header>
+        <span class="crumb">탄성해석</span>
+        <h2>Phase 10 고급 탄성해석 <span class="badge badge-preliminary">예비</span></h2>
+        <p class="summary">Timoshenko·부분강접·offset/MPC·변단면·prestress·LTB·shell FEM·슬래브 하중생성을 하나의 추적 가능한 제품 계약으로 제공한다.</p>
+      </header>
+      <p class="description">Phase 10에서 추가된 보·구속·동적·shell·하중생성 기능을 Analysis Center, 결과, 보고서, 계산서와 Agent API에 같은 기능명·제한사항으로 노출한다. getPhase10ReleaseStatus는 내부 구현 완료와 외부 교차검증·실장 WebGPU 자격을 분리해 반환하므로, 차단된 기능을 최종 검증 완료로 오인하지 않게 한다.</p>
+      <h4>사용 방법</h4><ol><li>모델에서 필요한 Phase 10 요소·구속·하중 옵션을 켜고 Analysis Center에서 해석한다</li><li>결과와 계산서의 limitations 및 적용 trace를 확인한다</li><li>자동화에서는 getPhase10ReleaseStatus의 release.allowed와 blockers를 반드시 확인한다</li></ol>
+      <h4>한계</h4><ul class="limits"><li>XV-01~10 외부 기준자료가 모두 green이 될 때까지 externally-cross-validated 표시는 금지</li><li>네이티브 WebGPU는 실제 브라우저·GPU 장치 자격이 완료될 때까지 CPU fallback을 유지</li></ul>
+      <h4>관련 읽기 API</h4><p class="api-list"><code>getPhase10ReleaseStatus</code> <code>getResults</code> <code>getDetailedReport</code> <code>getCalculationPackage</code></p>
+      <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
+      <footer class="control-key">기능 제어 키: <code>feature.phase10-advanced-elastic</code> (토글 가능) </footer>
     </article>
 </template>
 <template data-help-page="pushover" data-title="Pushover 해석" data-crumb="기능 설명서 · 비선형해석">

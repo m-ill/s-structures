@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "manualVersion": "2026-07-20-phase9-m10",
+  "manualVersion": "2026-07-22-phase10-m11",
   "product": "S-Structures",
   "manifestVersion": "p9-m10-agent-capability-manifest-v16",
   "entrypoint": {
@@ -98,6 +98,7 @@
     "exportAnalysisTelemetry",
     "getRuntimeDiagnostics",
     "getCapabilities",
+    "getPhase10ReleaseStatus",
     "validateProductionNonlinearCase",
     "createProductionNonlinearCase",
     "previewNonlinearAssignments",
@@ -601,6 +602,8 @@
     "finalUseReleaseReview",
     "stabilizationHarness",
     "benchmarkGate",
+    "phase10ProductIntegration",
+    "phase10ReleaseGate",
     "baselineContract",
     "validationHealth",
     "analysisAudit",
@@ -837,6 +840,8 @@
     "finalUseReleaseReview": "post-p5-final-use-review-v1",
     "stabilizationHarness": "m46-stabilization-harness",
     "benchmarkGate": "p2-t05-benchmark-gate",
+    "phase10ProductIntegration": "p10-m11-product-integration-v1",
+    "phase10ReleaseGate": "p10-m11-release-gate-v1",
     "baselineContract": "p2-mvp-s1-baseline-contract",
     "validationHealth": "p2-t04-validation-health",
     "analysisAudit": "p7-m7-six-resultant-analysis-audit-v1",
@@ -1005,7 +1010,8 @@
     "P8-M3 finite rotations use total global rotation vectors and a principal relative-rotation log; relative rotations approaching pi fail closed.",
     "Follower loads, unilateral truss active sets, and transverse truss member loads are not implemented in P8-M3 and fail closed.",
     "P8-M9 blocks tension-only and compression-only nonlinear members until an active-set solver is implemented, and blocks member releases in NLTH.",
-    "Wall, shell, and semi-rigid diaphragm nonlinear results are preliminary equivalent-frame forces; shell stress and strain are unavailable."
+    "Wall, shell, and semi-rigid diaphragm nonlinear results are preliminary equivalent-frame forces; shell stress and strain are unavailable.",
+    "Phase 10 implementation is complete, but release remains blocked until XV-01~10 required-source references and native WebGPU device qualification are green."
   ],
   "interpretationRules": [
     "Milestone review APIs expose exitCriteria and exitCriteriaSummary; automated-exit-criteria-covered means written-plan criteria have regression evidence, not production approval.",

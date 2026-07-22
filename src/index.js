@@ -1552,3 +1552,4 @@ export * from './verification/xval/cases.js';
 export * from './verification/xval/runner.js';
 export * from './verification/xval/pathologicalBattery.js';
 export * from './verification/xval/m1Artifacts.js';
+export * from './verification/phase10ReleaseGate.js';

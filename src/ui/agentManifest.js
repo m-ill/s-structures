@@ -266,6 +266,7 @@ import {
   LEGACY_UI_ANALYSIS_COMPATIBILITY_VERSION,
 } from '../compute/product/legacyUiCompatibility.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
+import { PHASE10_INTEGRATION_CONTRACT_VERSION, PHASE10_RELEASE_GATE_VERSION } from '../verification/phase10ReleaseGate.js';
 
 export const AGENT_MANIFEST_VERSION = 'p9-m10-agent-capability-manifest-v16';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
@@ -354,6 +355,8 @@ export function buildAgentManifest(options = {}) {
       finalUseReleaseReview: FINAL_USE_RELEASE_REVIEW_VERSION,
       stabilizationHarness: STABILIZATION_HARNESS_VERSION,
       benchmarkGate: BENCHMARK_GATE_VERSION,
+      phase10ProductIntegration: PHASE10_INTEGRATION_CONTRACT_VERSION,
+      phase10ReleaseGate: PHASE10_RELEASE_GATE_VERSION,
       baselineContract: BASELINE_CONTRACT_VERSION,
       validationHealth: VALIDATION_HEALTH_VERSION,
       analysisAudit: ANALYSIS_AUDIT_VERSION,
@@ -687,6 +690,7 @@ export function buildAgentManifest(options = {}) {
       'exportAnalysisTelemetry',
       'getRuntimeDiagnostics',
       'getCapabilities',
+      'getPhase10ReleaseStatus',
       'validateProductionNonlinearCase',
       'createProductionNonlinearCase',
       'previewNonlinearAssignments',
@@ -1080,6 +1084,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P8-M9', status: 'candidate', feature: 'canonical Phase 7 feature integration, support spring and settlement assembly, unified node/member/story/origin recovery, stale propagation, and design-transfer guard' },
       { id: 'P8-M10', status: 'candidate', feature: 'shared production workflow, Worker job lifecycle, Pushover/NLTH result popup, calculation report, raw history export, and Agent/MCP parity' },
       { id: 'P8-M11', status: 'candidate', feature: 'independent references, measured performance harness, five reproducible pilot packages, and fail-closed release manifest; external comparisons and end-to-end M-tier qualification remain blocked' },
+      { id: 'P10-M11', status: 'blocked', feature: 'Phase 10 product integration and release gate; external XV-03~10 and native WebGPU device qualification remain required' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },
@@ -1102,6 +1107,7 @@ export function buildAgentManifest(options = {}) {
       'Follower loads, unilateral truss active sets, and transverse truss member loads are not implemented in P8-M3 and fail closed.',
       'P8-M9 blocks tension-only and compression-only nonlinear members until an active-set solver is implemented, and blocks member releases in NLTH.',
       'Wall, shell, and semi-rigid diaphragm nonlinear results are preliminary equivalent-frame forces; shell stress and strain are unavailable.',
+      'Phase 10 implementation is complete, but release remains blocked until XV-01~10 required-source references and native WebGPU device qualification are green.',
     ],
   };
 }

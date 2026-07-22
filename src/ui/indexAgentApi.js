@@ -72,6 +72,8 @@ import {
   upsertSection as upsertCoreSection,
   getViewerState as getCoreViewerState,
   setViewerSlice as setCoreViewerSlice,
+  buildPhase10ProductIntegrationContract,
+  buildPhase10ReleaseGate,
 } from '../index.js';
 import {
   analyzeLegacyUiSnapshot,
@@ -716,6 +718,12 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
         bridgeVersion,
         availableActions: availableAgentActions(),
         controls: target.document ? listAgentControls(target.document) : [],
+      }));
+    },
+    getPhase10ReleaseStatus(options = {}) {
+      return cloneJson(buildPhase10ReleaseGate({
+        ...options,
+        integration: options.integration || buildPhase10ProductIntegrationContract(options),
       }));
     },
     runAnalysis() {

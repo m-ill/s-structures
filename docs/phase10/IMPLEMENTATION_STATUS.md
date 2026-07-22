@@ -2,12 +2,12 @@
 
 ```yaml
 reviewed_at: 2026-07-22
-phase_status: active
-implementation_status: in-progress
-completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4, P10-M5, P10-M6, P10-M7, P10-M8, P10-M9, P10-M10]
-active_milestone: P10-M11
+phase_status: implementation-complete-release-blocked
+implementation_status: complete
+completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4, P10-M5, P10-M6, P10-M7, P10-M8, P10-M9, P10-M10, P10-M11]
+active_milestone: external-qualification
 decision_gates_pending: []
-owner_inputs_pending: [XV-02~08 외부 기준해 artifact (OpenSees/SAP2000/ETABS), XV-09 SAP2000 기준해 artifact, RSA V_min 기준값 정책]
+owner_inputs_pending: [XV-03~08 외부 기준해 artifact (OpenSees/SAP2000/ETABS), XV-09 SAP2000 기준해 artifact, XV-10 외부 shell 기준해 artifact, 실제 브라우저·GPU 장치 qualification]
 ```
 
 ## 현재 판정
@@ -65,7 +65,7 @@ Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0
 | P10-M8 warping·LTB | complete — ADR-001 옵션 B, EL-W01~03/evidence/review PASS | [폐형식·설계 통합](../../tests/p10-m8-warping-ltb.mjs) · [evidence contract](../../tests/p10-m8-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m8-warping-ltb.json) · [code review](reviews/P10-M8-CODE-REVIEW.md) |
 | P10-M9 벽·슬래브 FEM (M9a membrane / M9b plate / M9c flat shell / M9d GPU 배치) | complete — CPU FEM, native WebGPU K1~K3 구현, 내부 evidence 9/9 PASS; 장치 qualification은 M11 gate | [M9 tests](../../tests/p10-m9a-wall-membrane.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m9-shell-fem.json) · [code review](reviews/P10-M9-CODE-REVIEW.md) |
 | P10-M10 하중 생성·전달 | complete — LG-01~04/evidence/review/full regression PASS | [하중 생성 테스트](../../tests/p10-m10-load-generation.mjs) · [evidence contract](../../tests/p10-m10-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m10-load-generation.json) · [code review](reviews/P10-M10-CODE-REVIEW.md) |
-| P10-M11 통합·성능·release gate | planned | 없음 |
+| P10-M11 통합·성능·release gate | implementation complete / release blocked | [release gate test](../../tests/p10-m11-release-gate.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m11-release-gate.json) · [code review](reviews/P10-M11-CODE-REVIEW.md) |
 
 ## 완료 시 제품 판정 변화
 
@@ -75,7 +75,7 @@ Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0
 
 ## 다음 작업
 
-P10-M10 구현을 완료했다. 다음은 P10-M11 통합·성능·release gate다. 실제 다중 장치 WebGPU qualification, XV-01~10 외부 기준 비교, 제품 UI·보고·Agent 계약을 이 gate에서 닫는다.
+P10-M11 구현은 완료했다. 내부 마일스톤 evidence, 제품 UI·보고·계산서·Agent 계약, 120-shell 성능 예산, 전체 회귀를 gate에 연결했다. 다음 작업은 코드 구현이 아니라 외부 qualification이다. XV-03~10 required-source artifact와 실제 브라우저·GPU 장치 검증이 모두 green이 되기 전까지 `release.allowed=false`, `externallyCrossValidated=false`, 설계 전달 차단을 유지한다.
 
 ## P10-M5 완료 기록
 

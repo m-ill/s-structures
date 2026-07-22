@@ -555,6 +555,19 @@ export const FEATURE_CATEGORIES = [
         relatedReadApis: ['getElasticExpansionTrace', 'getDynamicCompletenessTrace', 'getAdvancedElasticTrace'],
         manualPage: '02-modeling-and-elastic-analysis.md',
       }),
+      feature('phase10-advanced-elastic', 'Phase 10 고급 탄성해석', 'Timoshenko·부분강접·offset/MPC·변단면·prestress·LTB·shell FEM·슬래브 하중생성을 하나의 추적 가능한 제품 계약으로 제공한다.', {
+        description: 'Phase 10에서 추가된 보·구속·동적·shell·하중생성 기능을 Analysis Center, 결과, 보고서, 계산서와 Agent API에 같은 기능명·제한사항으로 노출한다. getPhase10ReleaseStatus는 내부 구현 완료와 외부 교차검증·실장 WebGPU 자격을 분리해 반환하므로, 차단된 기능을 최종 검증 완료로 오인하지 않게 한다.',
+        howTo: [
+          '모델에서 필요한 Phase 10 요소·구속·하중 옵션을 켜고 Analysis Center에서 해석한다',
+          '결과와 계산서의 limitations 및 적용 trace를 확인한다',
+          '자동화에서는 getPhase10ReleaseStatus의 release.allowed와 blockers를 반드시 확인한다',
+        ],
+        status: 'preliminary',
+        limits: ['XV-01~10 외부 기준자료가 모두 green이 될 때까지 externally-cross-validated 표시는 금지', '네이티브 WebGPU는 실제 브라우저·GPU 장치 자격이 완료될 때까지 CPU fallback을 유지'],
+        relatedReadApis: ['getPhase10ReleaseStatus', 'getResults', 'getDetailedReport', 'getCalculationPackage'],
+        manualPage: '02-modeling-and-elastic-analysis.md',
+        toggleable: true,
+      }),
     ],
   },
   {

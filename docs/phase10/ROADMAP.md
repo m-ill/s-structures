@@ -25,7 +25,7 @@ cycle: 착수 → 구현 → /code-review high → 수정 → 검증표·evidenc
 | **P10-M8** | warping · LTB | [WP-08](workpackages/WP-08-warping-ltb.md) | §8 | M2, **ADR-001 accepted** | **complete** — 옵션 B M_cr 폐형해 <1e-6, 6DOF 불변 |
 | **P10-M9** | 벽·슬래브 FEM — 2D 분해 전 단계 (M9a membrane · M9b plate · M9c flat shell · M9d GPU 배치) | [WP-09](workpackages/WP-09-shell-fem.md) | §9a~§9d | M5, **ADR-002 옵션 C-full 승인** | M9a: patch+캔틸레버 벽 보이론 · M9b: 판 폐형해 · M9c: §6A 전체+warped patch+기생모드 · M9d: CPU↔GPU 일치·혼합정밀도·성능 예산. 전 단계 SoA 배치 규약·등가모델 병행 |
 | **P10-M10** | 하중 생성·전달 완성 | [WP-10](workpackages/WP-10-load-generation.md) | §10 | M0 | 슬래브 1/2방향 분배 평형 <1e-10, 질량원 통합 dedup |
-| **P10-M11** | 통합·성능·release gate | [WP-11](workpackages/WP-11-integration-release.md) | 전체 | M1~M10 | XV-01~10 required-source green, `pending-reference` 0, `externallyCrossValidated=true` + 신규 기능 UI/보고/Agent 계약 전파 + 대형모델 성능 예산 + release 판정 |
+| **P10-M11** — implementation complete / release blocked | 통합·성능·release gate | [WP-11](workpackages/WP-11-integration-release.md) | 전체 | M1~M10 | 제품/Agent/보고 계약과 120-shell 성능 gate 완료. XV-03~10 required-source 및 실장 WebGPU가 미완이므로 `externallyCrossValidated=false`, release 차단 유지 |
 
 ## 의존 그래프
 

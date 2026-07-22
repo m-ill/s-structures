@@ -4,8 +4,8 @@
 doc: readme
 phase: 10
 date: 2026-07-22
-status: active, P10-M0-M10-complete
-owner-inputs-required: [외부 solver 기준해(XV 계층)]
+status: implementation-complete, release-blocked
+owner-inputs-required: [외부 solver 기준해(XV-03~10), 실제 WebGPU 장치 qualification]
 ```
 
 ## 1. 목표
@@ -33,7 +33,7 @@ Phase 10은 **② 잔여(모델링 세부) + ③(실무 검증) + ④(요소·sh
 | warping torsion·정밀 LTB | ADR-001 옵션 B: Cw 기반 M_cr 설계 검토 완료, 6DOF 불변 | **M8 complete** |
 | 실제 shell FEM | 등가모델(옵션 B, 2026-07-09 오너 확정) | **M9** (ADR-002, 오너 재승인 필요) |
 | 하중 생성·전달 완성 | 1/2방향 슬래브 분배·평형·질량 dedup·풍 기하 trace 완료 | **M10 complete** |
-| — 통합·성능·release | — | **M11** |
+| 통합·성능·release | 제품 계약·기능 토글·120-shell 성능·fail-closed gate 완료; 외부 XV/WebGPU 자격 대기 | **M11 implementation complete / release blocked** |
 
 ## 3. 절대 원칙 — 앞선 개발의 계승 (위반 시 코드리뷰 반려)
 
