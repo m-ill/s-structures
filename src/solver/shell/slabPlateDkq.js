@@ -7,7 +7,8 @@ import {
   symmetryError,
 } from './shellElementMath.js';
 
-export const SLAB_PLATE_DKQ_VERSION = 'p10-m9b-slab-plate-dkq-v1';
+export const SLAB_PLATE_DKQ_VERSION = 'p10-m9b-slab-plate-dkq-v2-qualification-blocked';
+export const SLAB_PLATE_NUMERICAL_QUALIFICATION_VERSION = 'p10-m9b-plate-numerical-qualification-v1';
 
 export function buildSlabPlateDkq(input = {}) {
   const nodes = input.nodes || [];
@@ -38,7 +39,21 @@ export function buildSlabPlateDkq(input = {}) {
     bendingMatrix: local.Db,
     integration: local.integration,
     diagnostics: { symmetryError: symmetryError(embedded.matrix), maxWarpRatio: frame.maxWarpRatio },
-    limitations: ['Thin-plate bending and pressure response are provided; punching shear and reinforcement design are outside M9.'],
+    qualification: {
+      version: SLAB_PLATE_NUMERICAL_QUALIFICATION_VERSION,
+      status: 'blocked',
+      reason: 'SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED',
+      allowedUse: 'diagnostic-only',
+      designTransferAllowed: false,
+    },
+    designEligibility: {
+      allowed: false,
+      reasonCodes: ['SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED'],
+    },
+    limitations: [
+      'Plate bending is not numerically qualified for rectangular, high-aspect-ratio, thick, or thin panels; use diagnostic results only.',
+      'Thin-plate pressure response excludes punching shear and reinforcement design.',
+    ],
   };
 }
 

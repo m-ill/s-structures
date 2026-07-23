@@ -23,26 +23,95 @@ export function wallCantileverBenchmark({ E = 30e9, nu = 0.2, t = 0.2, width = 2
 }
 
 export function squarePlateBenchmark({ E = 30e9, nu = 0.3, t = 0.2, a = 4, q = 1e4, divisions = 6 } = {}) {
-  const node = (i, j) => j * (divisions + 1) + i;
-  const dofCount = (divisions + 1) ** 2 * 3;
-  const K = matrix(dofCount); const F = new Array(dofCount).fill(0); const h = a / divisions;
-  for (let j = 0; j < divisions; j += 1) for (let i = 0; i < divisions; i += 1) {
+  return rectangularPlateBenchmark({ E, nu, t, a, b: a, q, divisionsX: divisions, divisionsY: divisions });
+}
+
+export function rectangularPlateBenchmark({
+  E = 30e9, nu = 0.3, t = 0.2, a = 4, b = 4, q = 1e4,
+  divisionsX = 6, divisionsY = 6, navierTerms = 81,
+  referenceTheory = 'kirchhoff', shearFactor = 5 / 6,
+} = {}) {
+  if (divisionsX % 2 !== 0 || divisionsY % 2 !== 0) throw new RangeError('Plate benchmark divisions must be even so the center node exists.');
+  const node = (i, j) => j * (divisionsX + 1) + i;
+  const dofCount = (divisionsX + 1) * (divisionsY + 1) * 3;
+  const K = matrix(dofCount); const F = new Array(dofCount).fill(0);
+  const hx = a / divisionsX; const hy = b / divisionsY;
+  for (let j = 0; j < divisionsY; j += 1) for (let i = 0; i < divisionsX; i += 1) {
     const element = buildSlabPlateDkq({
-      nodes: [{ x: i * h, y: j * h, z: 0 }, { x: (i + 1) * h, y: j * h, z: 0 }, { x: (i + 1) * h, y: (j + 1) * h, z: 0 }, { x: i * h, y: (j + 1) * h, z: 0 }],
+      nodes: [{ x: i * hx, y: j * hy, z: 0 }, { x: (i + 1) * hx, y: j * hy, z: 0 }, { x: (i + 1) * hx, y: (j + 1) * hy, z: 0 }, { x: i * hx, y: (j + 1) * hy, z: 0 }],
       material: { E, nu }, t,
     });
     const ids = [node(i, j), node(i + 1, j), node(i + 1, j + 1), node(i, j + 1)];
     assemble(K, element.localMatrix, ids.flatMap((id) => [id * 3, id * 3 + 1, id * 3 + 2]));
-    for (const id of ids) F[id * 3] += q * h * h / 4;
+    for (const id of ids) F[id * 3] += q * hx * hy / 4;
   }
   const fixed = [];
-  for (let j = 0; j <= divisions; j += 1) for (let i = 0; i <= divisions; i += 1) {
-    if (i === 0 || j === 0 || i === divisions || j === divisions) fixed.push(node(i, j) * 3);
+  for (let j = 0; j <= divisionsY; j += 1) for (let i = 0; i <= divisionsX; i += 1) {
+    if (i === 0 || j === 0 || i === divisionsX || j === divisionsY) fixed.push(node(i, j) * 3);
   }
   const displacement = solve(K, F, fixed);
-  const computed = displacement[node(divisions / 2, divisions / 2) * 3];
-  const D = E * t ** 3 / (12 * (1 - nu ** 2)); const reference = 0.00406 * q * a ** 4 / D;
-  return { computed, reference, relativeError: relativeError(computed, reference), divisions };
+  const computed = displacement[node(divisionsX / 2, divisionsY / 2) * 3];
+  const navier = referenceTheory === 'mindlin'
+    ? rectangularMindlinPlateNavierReference({ E, nu, t, a, b, q, terms: navierTerms, shearFactor })
+    : rectangularPlateNavierReference({ E, nu, t, a, b, q, terms: navierTerms });
+  return {
+    computed,
+    reference: navier.wCenter,
+    relativeError: relativeError(computed, navier.wCenter),
+    divisions: divisionsX === divisionsY ? divisionsX : null,
+    divisionsX,
+    divisionsY,
+    aspectRatio: Math.max(a, b) / Math.min(a, b),
+    shortSideThicknessRatio: Math.min(a, b) / t,
+    referenceKind: navier.referenceKind,
+    navierTerms,
+  };
+}
+
+export function rectangularMindlinPlateNavierReference({
+  E = 30e9, nu = 0.3, t = 0.2, a = 4, b = 4, q = 1e4, terms = 81, shearFactor = 5 / 6,
+} = {}) {
+  if (![E, t, a, b, shearFactor].every((value) => Number.isFinite(Number(value)) && Number(value) > 0)) throw new RangeError('Mindlin plate reference requires positive E, t, a, b, and shearFactor.');
+  const maximumTerm = Math.max(1, Math.floor(Number(terms)));
+  const D = E * t ** 3 / (12 * (1 - nu ** 2));
+  const G = E / (2 * (1 + nu));
+  let bendingSeries = 0;
+  let shearSeries = 0;
+  for (let m = 1; m <= maximumTerm; m += 2) for (let n = 1; n <= maximumTerm; n += 2) {
+    const centerSign = Math.sin(m * Math.PI / 2) * Math.sin(n * Math.PI / 2);
+    const loadCoefficient = 16 * q / (Math.PI ** 2 * m * n);
+    const lambda = Math.PI ** 2 * ((m / a) ** 2 + (n / b) ** 2);
+    bendingSeries += centerSign * loadCoefficient / (D * lambda ** 2);
+    shearSeries += centerSign * loadCoefficient / (shearFactor * G * t * lambda);
+  }
+  return {
+    D,
+    G,
+    shearFactor,
+    bendingCenter: bendingSeries,
+    shearCenter: shearSeries,
+    wCenter: bendingSeries + shearSeries,
+    terms: maximumTerm,
+    referenceKind: 'reissner-mindlin-navier-simply-supported-udl',
+  };
+}
+
+export function rectangularPlateNavierReference({ E = 30e9, nu = 0.3, t = 0.2, a = 4, b = 4, q = 1e4, terms = 81 } = {}) {
+  if (![E, t, a, b].every((value) => Number.isFinite(Number(value)) && Number(value) > 0)) throw new RangeError('Navier plate reference requires positive E, t, a, and b.');
+  const maximumTerm = Math.max(1, Math.floor(Number(terms)));
+  const D = E * t ** 3 / (12 * (1 - nu ** 2));
+  let series = 0;
+  for (let m = 1; m <= maximumTerm; m += 2) for (let n = 1; n <= maximumTerm; n += 2) {
+    const centerSign = Math.sin(m * Math.PI / 2) * Math.sin(n * Math.PI / 2);
+    const waveNumber = (m / a) ** 2 + (n / b) ** 2;
+    series += centerSign / (m * n * waveNumber ** 2);
+  }
+  return {
+    D,
+    wCenter: 16 * q * series / (Math.PI ** 6 * D),
+    terms: maximumTerm,
+    referenceKind: 'kirchhoff-navier-simply-supported-udl',
+  };
 }
 
 export function quadraticEnergy(K, vector) {

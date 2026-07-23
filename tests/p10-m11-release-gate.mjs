@@ -37,15 +37,27 @@ assert.equal(candidate.release.allowed, false);
 assert.equal(candidate.release.externallyCrossValidated, false);
 assert.ok(candidate.blockers.includes('P10_M11_EXTERNAL_CROSS_VALIDATION_REQUIRED'));
 assert.ok(candidate.blockers.includes('P10_M11_NATIVE_WEBGPU_DEVICE_REQUIRED'));
+assert.ok(candidate.blockers.includes('P10_M11_SHELL_NUMERICAL_QUALIFICATION_REQUIRED'));
+assert.equal(candidate.evidence.shellNumericalQualification.status, 'BLOCKED');
 assert.deepEqual(candidate.xval.missingGreenCaseIds, ['XV-03', 'XV-04', 'XV-05', 'XV-06', 'XV-07', 'XV-08', 'XV-09', 'XV-10']);
 
 const greenXval = {
   cases: Array.from({ length: 10 }, (_, index) => ({ caseId: `XV-${String(index + 1).padStart(2, '0')}`, status: 'PASS', referenceSource: index ? 'independent-solver' : 'hand-calc' })),
   releaseQualification: { externallyCrossValidated: true },
 };
+const qualifiedMilestoneEvidence = milestoneEvidence.map((row) => row.milestone === 'P10-M9' ? {
+  ...row,
+  status: 'PASS',
+  qualification: {
+    ...row.qualification,
+    cpuF64Qualified: true,
+    plateNumericalQualificationStatus: 'PASS',
+    plateNumericalQualificationBlocker: null,
+  },
+} : row);
 const releasable = buildPhase10ReleaseGate({
   generatedAt: candidate.generatedAt, sourceRevision: candidate.sourceRevision,
-  xval: greenXval, milestoneEvidence, integration, performance,
+  xval: greenXval, milestoneEvidence: qualifiedMilestoneEvidence, integration, performance,
   fullRegressionPassed: true, p3DocsPassed: true, agentContractPassed: true, documentationComplete: true,
   nativeWebGpuQualified: true,
 });

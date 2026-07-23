@@ -513,6 +513,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
             formulation: shell.formulation,
             displacement: displacements,
             pressureLoadSupported: true,
+            qualification: shell.built.qualification || null,
+            designEligibility: shell.built.designEligibility || { allowed: false, reasonCodes: ['SHELL_NUMERICAL_QUALIFICATION_REQUIRED'] },
             limitations: shell.built.limitations || [],
           };
     }
@@ -520,6 +522,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     solver.shellFem = {
       elementCount: shellData.length,
       formulations: [...new Set(shellData.map((item) => item.formulation))],
+      qualificationStatus: shellData.some((item) => item.built.qualification?.status === 'blocked') ? 'blocked' : 'qualified',
+      blockers: [...new Set(shellData.flatMap((item) => item.built.designEligibility?.reasonCodes || []))],
     };
 
     return { ok: true, disp, reactions, memberResults, shellResults, solver };

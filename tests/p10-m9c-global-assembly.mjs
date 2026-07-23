@@ -50,6 +50,25 @@ const product = analyzeModel(createModel({
 assert.equal(product.ok, true);
 assert.equal(product.byCombo.C.shellResults.S1.formulation, 'membrane');
 
+const plateProduct = analyzeModel(createModel({
+  nodes: [
+    { id: 'P1', x: 0, y: 0, z: 0, support: 'custom', fix: [true, true, true, false, false, true] },
+    { id: 'P2', x: 2, y: 0, z: 0, support: 'custom', fix: [true, true, true, false, false, true] },
+    { id: 'P3', x: 2, y: 2, z: 0, support: 'custom', fix: [true, true, true, false, false, true] },
+    { id: 'P4', x: 0, y: 2, z: 0, support: 'custom', fix: [true, true, true, false, false, true] },
+  ],
+  members: [],
+  shells: [{ id: 'PLATE-1', nodeIds: ['P1', 'P2', 'P3', 'P4'], formulation: 'plate', matId: 'concrete', thickness: 0.2 }],
+  loads: [{ id: 'QP', type: 'shellPressure', shell: 'PLATE-1', q: 1e3, case: 'D' }],
+  loadCases: [{ id: 'D', type: 'dead' }],
+  loadCombinations: [{ id: 'PC', type: 'strength', factors: { D: 1 } }],
+}));
+assert.equal(plateProduct.byCombo.PC.shellFem.qualificationStatus, 'blocked');
+assert.equal(plateProduct.byCombo.PC.shellFem.designTransferAllowed, false);
+assert.equal(plateProduct.shellFemQualification.status, 'blocked');
+assert.equal(plateProduct.designEligibility.eligible, false);
+assert.equal(plateProduct.designEligibility.reason, 'SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED');
+
 const modalSystem = assembleStiffness3D(nodes, assembly.members, {
   model: { nodes, members: assembly.members },
   shells: assembly.femElements,

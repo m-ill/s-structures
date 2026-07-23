@@ -2,7 +2,7 @@ import { addMatrices, maxAbs, removeRigidBodyEnergy24, symmetryError } from './s
 import { buildSlabPlateDkq } from './slabPlateDkq.js';
 import { buildWallMembraneQm6 } from './wallMembraneQm6.js';
 
-export const FLAT_SHELL_ALLMAN_DKQ_VERSION = 'p10-m9c-flat-shell-allman-dkq-v1';
+export const FLAT_SHELL_ALLMAN_DKQ_VERSION = 'p10-m9c-flat-shell-allman-dkq-v2-qualification-blocked';
 
 export function buildFlatShellAllmanDkq(input = {}, options = {}) {
   const membrane = buildWallMembraneQm6(input, { drillingAlpha: options.drillingAlpha ?? input.drillingAlpha ?? 1e-5 });
@@ -33,7 +33,20 @@ export function buildFlatShellAllmanDkq(input = {}, options = {}) {
     warp: { ratio: warpRatio, tolerance: warpTol, status: warpStatus, correction: 'mean-plane-projection-rigid-arm-compatible' },
     drilling: { method: 'allman-compatible-corner-coupling', spuriousEnergyRatio },
     diagnostics: { symmetryError: symmetryError(matrix), spuriousEnergyRatio },
-    limitations: ['Shell initial-stress geometric stiffness is not included in M9c; frame Kg remains the P-Delta basis.'],
+    qualification: {
+      status: 'blocked',
+      reason: plate.qualification?.reason || 'SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED',
+      allowedUse: 'diagnostic-only',
+      designTransferAllowed: false,
+    },
+    designEligibility: {
+      allowed: false,
+      reasonCodes: [plate.qualification?.reason || 'SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED'],
+    },
+    limitations: [
+      ...(plate.limitations || []),
+      'Shell initial-stress geometric stiffness is not included in M9c; frame Kg remains the P-Delta basis.',
+    ],
   };
 }
 

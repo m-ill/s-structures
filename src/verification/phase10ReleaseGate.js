@@ -2,7 +2,7 @@ import { stableHash } from '../core/stableHash.js';
 import { buildShellSoaBatch } from '../solver/shell/shellBatch.js';
 import { runShellGpuBatch } from '../compute/backends/webgpu/shellKernels.js';
 
-export const PHASE10_RELEASE_GATE_VERSION = 'p10-m11-release-gate-v1';
+export const PHASE10_RELEASE_GATE_VERSION = 'p10-m11-release-gate-v2';
 export const PHASE10_INTEGRATION_CONTRACT_VERSION = 'p10-m11-product-integration-v1';
 export const PHASE10_PERFORMANCE_VERSION = 'p10-m11-large-model-performance-v1';
 
@@ -14,7 +14,7 @@ export const PHASE10_PRODUCT_FEATURES = Object.freeze([
   feature('tapered-members', 'P10-M6', ['model', 'analysis', 'report', 'calculation-package', 'agent']),
   feature('prestressed-dynamics', 'P10-M7', ['analysis-center', 'report', 'calculation-package', 'agent'], 'Qualification is limited to the implemented prestressed modal/RSA/direct-integration scope.'),
   feature('warping-ltb', 'P10-M8', ['analysis', 'report', 'calculation-package', 'agent'], 'LTB option B is a verification check; it does not add a seventh frame DOF.'),
-  feature('shell-fem', 'P10-M9', ['model', 'analysis-center', 'results', 'report', 'calculation-package', 'agent'], 'Native WebGPU remains opt-in and falls back to CPU until device qualification passes.'),
+  feature('shell-fem', 'P10-M9', ['model', 'analysis-center', 'results', 'report', 'calculation-package', 'agent'], 'Plate design transfer is fail-closed until aspect-ratio, thickness, and mesh-convergence qualification passes; native WebGPU remains opt-in until device qualification passes.'),
   feature('slab-load-generation', 'P10-M10', ['model', 'analysis', 'report', 'calculation-package', 'agent'], 'Missing supporting beams use the traced fallback path.'),
 ]);
 
@@ -76,6 +76,7 @@ export function buildPhase10ReleaseGate(input = {}) {
     check('p3-docs', input.p3DocsPassed === true, 'test:p3docs evidence is required.'),
     check('agent-contract', input.agentContractPassed === true, 'Agent contract synchronization is required.'),
     check('documentation', input.documentationComplete === true, 'M11 status, review, and user documentation are required.'),
+    check('shell-numerical-qualification', evidence.shellNumericalQualification.status === 'PASS', 'P10-M9 plate aspect-ratio, thickness, and mesh-convergence qualification is not green.'),
     check('external-cross-validation', xval.externallyCrossValidated, `Required external references are not green: ${xval.missingGreenCaseIds.join(', ')}`),
     check('native-webgpu-device', input.nativeWebGpuQualified === true, 'Native WebGPU K1-K3 device qualification is required.'),
   ];
@@ -108,7 +109,7 @@ export function buildPhase10ReleaseGate(input = {}) {
 export function validatePhase10ReleaseGate(artifact = {}) {
   const errors = [];
   if (artifact.version !== PHASE10_RELEASE_GATE_VERSION || artifact.milestone !== 'P10-M11') errors.push('gate:version-scope');
-  if (!Array.isArray(artifact.checks) || artifact.checks.length !== 9) errors.push('gate:checks');
+  if (!Array.isArray(artifact.checks) || artifact.checks.length !== 10) errors.push('gate:checks');
   if (artifact.release?.allowed === true && artifact.checks?.some((row) => row.status !== 'PASS')) errors.push('gate:unsafe-release');
   if (artifact.release?.externallyCrossValidated === true && artifact.xval?.missingGreenCaseIds?.length) errors.push('gate:xval');
   if (artifact.implementation?.status === 'complete' && artifact.checks?.slice(0, 7).some((row) => row.status !== 'PASS')) errors.push('gate:implementation');
@@ -135,8 +136,23 @@ function summarizeXval(input) {
 function summarizeEvidence(rows) {
   const byMilestone = new Map(rows.map((row) => [row.milestone, row]));
   const required = Array.from({ length: 11 }, (_, index) => `P10-M${index}`);
-  const missing = required.filter((id) => !['OK', 'PASS'].includes(byMilestone.get(id)?.status));
-  return { requiredMilestones: required, greenCount: required.length - missing.length, missing, complete: missing.length === 0 };
+  const missing = required.filter((id) => {
+    const row = byMilestone.get(id);
+    return !['OK', 'PASS'].includes(row?.status) && row?.implementationStatus !== 'complete';
+  });
+  const shell = byMilestone.get('P10-M9');
+  const shellPassed = shell?.qualification?.cpuF64Qualified === true
+    && shell?.qualification?.plateNumericalQualificationStatus === 'PASS';
+  return {
+    requiredMilestones: required,
+    greenCount: required.length - missing.length,
+    missing,
+    complete: missing.length === 0,
+    shellNumericalQualification: {
+      status: shellPassed ? 'PASS' : 'BLOCKED',
+      blocker: shellPassed ? null : (shell?.qualification?.plateNumericalQualificationBlocker || 'SHELL_PLATE_NUMERICAL_QUALIFICATION_MISSING'),
+    },
+  };
 }
 
 function compactPerformance(row) { return { version: row.version || null, status: row.status || 'MISSING', elementCount: row.elementCount || 0, elapsedMs: row.elapsedMs ?? null, memoryBytes: row.memoryBytes ?? null, nativeWebGpuQualified: row.nativeWebGpuQualified === true, measurementHash: row.measurementHash || null }; }

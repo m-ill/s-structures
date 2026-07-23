@@ -172,15 +172,20 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
       { ...(model.analysisSettings || {}), pDeltaMethod: 'off' },
     );
   }
+  const shellNumericalQualification = summarizeShellNumericalQualification(output.byCombo);
+  output.shellFemQualification = shellNumericalQualification;
+  const shellDesignEligible = shellNumericalQualification.status !== 'blocked';
   const directAnalysisQualified = output.pDelta?.method === 'direct'
     && output.pDelta?.ok === true
     && output.combinationCompleteness.allComplete
     && (output.pDelta?.summary?.envelope?.complete
       ?? envelopeCompleteFor(output.pDelta.envelope, combos).complete);
   const directDesignEligible = directAnalysisQualified
-    && output.pDelta?.designEligibility?.eligible === true;
+    && output.pDelta?.designEligibility?.eligible === true
+    && shellDesignEligible;
   const linearDesignEligible = output.combinationCompleteness.allComplete
-    && output.pDeltaDesignScreening?.designEligibility?.eligible !== false;
+    && output.pDeltaDesignScreening?.designEligibility?.eligible !== false
+    && shellDesignEligible;
   const designEligible = pDeltaMethod === 'direct'
     ? directDesignEligible
     : pDeltaMethod === 'off'
@@ -223,7 +228,9 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
         eligible: false,
         status: 'blocked',
         source: output.design.analysisSource,
-        reason: pDeltaMethod === 'direct' && !directDesignEligible
+        reason: !shellDesignEligible
+          ? shellNumericalQualification.blockers[0]
+          : pDeltaMethod === 'direct' && !directDesignEligible
           ? output.pDelta?.designEligibility?.reason || 'DIRECT_PDELTA_COMBINATIONS_INCOMPLETE'
           : pDeltaMethod === 'legacy'
             ? output.pDelta?.designEligibility?.reason || 'LEGACY_PDELTA_DESIGN_BLOCKED'
@@ -759,6 +766,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
       out.reason = 'UNSTABLE_COMPONENT';
     }
     out.solver = summarizeSolverDiagnostics(out.solver.components);
+    out.shellFem = summarizeShellResultQualification(out.shellResults);
     out.semiRigidDiaphragm = domain.semiRigid;
     out.shellFrameAssembly = domain.shellAssembly;
     out.summary = buildEquilibriumSummary(nodes, members, loads, out, {
@@ -767,6 +775,31 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     });
     return out;
   }
+}
+
+function summarizeShellNumericalQualification(byCombo = {}) {
+  const rows = Object.entries(byCombo).map(([comboId, result]) => ({
+    comboId,
+    ...summarizeShellResultQualification(result?.shellResults || {}),
+  }));
+  const blockers = [...new Set(rows.flatMap((row) => row.blockers))];
+  return {
+    status: blockers.length ? 'blocked' : 'qualified',
+    designTransferAllowed: blockers.length === 0,
+    blockers,
+    byCombo: rows,
+  };
+}
+
+function summarizeShellResultQualification(shellResults = {}) {
+  const results = Object.values(shellResults || {});
+  const blockers = [...new Set(results.flatMap((row) => row?.designEligibility?.reasonCodes || []))];
+  return {
+    elementCount: results.length,
+    qualificationStatus: blockers.length ? 'blocked' : 'qualified',
+    designTransferAllowed: blockers.length === 0,
+    blockers,
+  };
 }
 
 function cachedCatalogValue(cache, id, resolve) {

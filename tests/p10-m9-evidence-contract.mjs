@@ -4,6 +4,8 @@ import path from 'node:path';
 import { stableHash } from '../src/core/stableHash.js';
 import { M9A_SNAPSHOT as m9a } from './p10-m9a-wall-membrane.mjs';
 import { M9B_SNAPSHOT as m9b } from './p10-m9b-slab-plate.mjs';
+import { M9B_QUALIFICATION_SNAPSHOT as m9bQualification } from './p10-m9b-plate-qualification.mjs';
+import { M9B_SHELL_INVARIANT_SNAPSHOT as m9bInvariants } from './p10-m9b-shell-invariants.mjs';
 import { M9C_SNAPSHOT as m9c } from './p10-m9c-flat-shell.mjs';
 import { M9_GLOBAL_SNAPSHOT as global } from './p10-m9c-global-assembly.mjs';
 import { M9D_SNAPSHOT as m9d } from './p10-m9d-shell-gpu.mjs';
@@ -18,29 +20,71 @@ const records = [
   record('SH-G01-F32-BATCH-PARITY', m9d.gpuRelativeError, 1e-6),
   record('SH-G02-REFINEMENT-RESIDUAL', m9d.gpuResidual, 1e-10),
   record('SH-G03-DETERMINISTIC-GATHER', m9d.deterministicAssembly ? 0 : 1, 0),
+  ...m9bQualification.cases.map((row) => ({
+    caseId: row.caseId,
+    reference: row.reference,
+    computed: row.computed,
+    relError: row.relativeError,
+    tolerance: row.tolerance,
+    status: row.status === 'PASS' ? 'OK' : 'NG',
+  })),
+  ...m9bInvariants.qualification.checks.map((row) => ({
+    caseId: `SH-BI-${row.id.toUpperCase()}`,
+    reference: 0,
+    computed: row.normalizedResidual ?? row.relativeError,
+    relError: row.normalizedResidual ?? row.relativeError,
+    tolerance: row.tolerance,
+    status: row.pass ? 'OK' : 'NG',
+  })),
 ];
+const plateNumericalQualified = m9bQualification.status === 'PASS'
+  && m9bInvariants.qualification.status === 'PASS';
+const m9bQualificationSummary = {
+  version: m9bQualification.version,
+  status: m9bQualification.status,
+  referenceKind: m9bQualification.referenceKind,
+  referenceConvergence: m9bQualification.referenceConvergence,
+  failedCaseIds: m9bQualification.failedCaseIds,
+};
+const m9bInvariantSummary = {
+  version: m9bInvariants.version,
+  status: m9bInvariants.qualification.status,
+  failedCheckIds: m9bInvariants.qualification.failedCheckIds,
+};
 const core = {
-  version: 'p10-evidence-artifact-v1',
+  version: 'p10-evidence-artifact-v2',
   suiteId: 'P10-M9-SHELL-FEM',
   milestone: 'P10-M9',
-  status: records.every((row) => row.status === 'OK') ? 'OK' : 'NG',
+  status: records.every((row) => row.status === 'OK') ? 'PASS' : 'BLOCKED',
+  implementationStatus: 'complete',
   generatedAt: '2026-07-22T23:59:00.000+09:00',
   sourceRevision: 'f969f84+p10-m9-worktree',
   tests: [
     'tests/p10-m9a-wall-membrane.mjs',
     'tests/p10-m9b-slab-plate.mjs',
+    'tests/p10-m9b-plate-qualification.mjs',
+    'tests/p10-m9b-shell-invariants.mjs',
     'tests/p10-m9c-flat-shell.mjs',
     'tests/p10-m9c-global-assembly.mjs',
     'tests/p10-m9d-shell-gpu.mjs',
   ],
-  results: { m9a, m9b, m9c, global, m9d },
+  results: { m9a, m9b, m9bQualification: m9bQualificationSummary, m9bInvariants: m9bInvariantSummary, m9c, global, m9d },
   records,
   qualification: {
     implementationOption: 'C-full',
     ownerApprovalRecorded: true,
     sharedSixDofAssembly: true,
     shellLumpedMassConnected: true,
-    cpuF64Qualified: true,
+    cpuF64ExecutionAvailable: true,
+    cpuF64Qualified: plateNumericalQualified,
+    plateNumericalQualificationStatus: plateNumericalQualified ? 'PASS' : 'BLOCKED',
+    plateInvariantQualificationStatus: m9bInvariants.qualification.status,
+    plateNumericalQualificationBlocker: plateNumericalQualified ? null : 'SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED',
+    plateNumericalQualificationBlockers: [
+      ...(m9bInvariants.qualification.status === 'PASS' ? [] : ['SHELL_PLATE_INVARIANTS_FAILED']),
+      ...(m9bQualification.status === 'PASS' ? [] : [m9bQualification.blocker]),
+    ],
+    designTransferAllowed: false,
     gpuBatchShadowQualified: true,
     nativeWebGpuKernelsImplemented: true,
     nativeWebGpuKernelsQualified: false,
@@ -48,7 +92,11 @@ const core = {
     externallyCrossValidated: false,
     releaseQualified: false,
     releaseGate: 'P10-M11',
-    remainingGates: ['XV-10-external-reference', 'native-WebGPU-K1-K3-device-validation-at-P10-M11'],
+    remainingGates: [
+      'shell-plate-aspect-thickness-qualification',
+      'XV-10-external-reference',
+      'native-WebGPU-K1-K3-device-validation-at-P10-M11',
+    ],
   },
 };
 export const LIVE_P10_M9_EVIDENCE = Object.freeze({ ...core, artifactHash: stableHash(core).slice(0, 24) });
@@ -60,8 +108,14 @@ if (process.argv.includes('--print')) {
     'reports', 'validation-evidence', 'phase10', 'p10-m9-shell-fem.json',
   ), 'utf8'));
   assert.deepEqual(committed, LIVE_P10_M9_EVIDENCE, 'P10-M9 committed evidence is stale');
-  assert.equal(committed.status, 'OK');
-  assert.equal(committed.records.length, 9);
+  assert.equal(committed.status, 'BLOCKED');
+  assert.equal(committed.implementationStatus, 'complete');
+  assert.equal(committed.records.length, 17);
+  assert.equal(committed.qualification.cpuF64ExecutionAvailable, true);
+  assert.equal(committed.qualification.cpuF64Qualified, false);
+  assert.equal(committed.qualification.plateNumericalQualificationStatus, 'BLOCKED');
+  assert.equal(committed.qualification.plateInvariantQualificationStatus, 'BLOCKED');
+  assert.equal(committed.qualification.designTransferAllowed, false);
   assert.equal(committed.qualification.nativeWebGpuKernelsImplemented, true);
   assert.equal(committed.qualification.nativeWebGpuKernelsQualified, false);
   assert.equal(committed.qualification.releaseQualified, false);
