@@ -63,11 +63,14 @@ const plateProduct = analyzeModel(createModel({
   loadCases: [{ id: 'D', type: 'dead' }],
   loadCombinations: [{ id: 'PC', type: 'strength', factors: { D: 1 } }],
 }));
-assert.equal(plateProduct.byCombo.PC.shellFem.qualificationStatus, 'blocked');
-assert.equal(plateProduct.byCombo.PC.shellFem.designTransferAllowed, false);
-assert.equal(plateProduct.shellFemQualification.status, 'blocked');
+assert.equal(plateProduct.byCombo.PC.shellFem.qualificationStatus, 'qualified');
+assert.equal(plateProduct.byCombo.PC.shellFem.designTransferAllowed, true);
+assert.deepEqual(plateProduct.byCombo.PC.shellFem.blockers, []);
+assert.equal(plateProduct.shellFemQualification.status, 'qualified');
+assert.equal(plateProduct.shellFemQualification.designTransferAllowed, true);
+assert.equal(plateProduct.byCombo.PC.shellResults['PLATE-1'].designEligibility.allowed, true);
 assert.equal(plateProduct.designEligibility.eligible, false);
-assert.equal(plateProduct.designEligibility.reason, 'SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED');
+assert.equal(plateProduct.designEligibility.reason, 'STATIC_COMBINATIONS_INCOMPLETE');
 
 const modalSystem = assembleStiffness3D(nodes, assembly.members, {
   model: { nodes, members: assembly.members },

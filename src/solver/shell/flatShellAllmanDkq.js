@@ -35,13 +35,14 @@ export function buildFlatShellAllmanDkq(input = {}, options = {}) {
     diagnostics: { symmetryError: symmetryError(matrix), spuriousEnergyRatio },
     qualification: {
       status: 'blocked',
-      reason: plate.qualification?.reason || 'SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED',
+      reason: 'SHELL_FLAT_SHELL_DRILLING_QUALIFICATION_REQUIRED',
       allowedUse: 'diagnostic-only',
       designTransferAllowed: false,
+      plateStatus: plate.qualification?.status || 'unknown',
     },
     designEligibility: {
       allowed: false,
-      reasonCodes: [plate.qualification?.reason || 'SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED'],
+      reasonCodes: ['SHELL_FLAT_SHELL_DRILLING_QUALIFICATION_REQUIRED'],
     },
     limitations: [
       ...(plate.limitations || []),

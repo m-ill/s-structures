@@ -1,9 +1,7 @@
 import assert from 'node:assert/strict';
 import { buildSlabPlateDkq } from '../src/solver/shell/slabPlateDkq.js';
 
-// Flip this single expectation to PASS when the plate kernel is replaced by a
-// formulation that satisfies the physical [w, rx, ry] invariant checks below.
-const EXPECTED_QUALIFICATION_STATUS = 'BLOCKED';
+const EXPECTED_QUALIFICATION_STATUS = 'PASS';
 const RIGID_RESIDUAL_TOLERANCE = 1e-12;
 const CONSTANT_CURVATURE_ENERGY_TOLERANCE = 1e-8;
 
@@ -80,17 +78,10 @@ const qualification = {
 
 assert.equal(qualification.status, EXPECTED_QUALIFICATION_STATUS);
 assert.equal(element.qualification.status.toUpperCase(), EXPECTED_QUALIFICATION_STATUS);
-if (EXPECTED_QUALIFICATION_STATUS === 'BLOCKED') {
-  assert.deepEqual(failedCheckIds, [
-    'rigid-normal-translation',
-    'rigid-rotation-rx',
-    'rigid-rotation-ry',
-    'constant-curvature-kappa-x',
-  ]);
-}
+assert.deepEqual(failedCheckIds, []);
 
 export const M9B_SHELL_INVARIANT_SNAPSHOT = Object.freeze({
-  version: 'p10-m9b-shell-invariants-v1',
+  version: 'p10-m9b-shell-invariants-v2-mitc4',
   expectedQualificationStatus: EXPECTED_QUALIFICATION_STATUS,
   qualification,
 });

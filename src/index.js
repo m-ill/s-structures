@@ -426,7 +426,15 @@ export { STEEL_CLASSIFY_VERSION, classifySteelSection } from './design/steel/cla
 export { STEEL_COMPRESSION_VERSION, checkSteelCompression } from './design/steel/compression.js';
 export { STEEL_FLEXURE_LTB_VERSION, calculateElasticCriticalMoment, checkSteelFlexureLtb } from './design/steel/flexureLTB.js';
 export { WALL_MEMBRANE_QM6_VERSION, buildWallMembraneQm6, recoverWallMembraneQm6 } from './solver/shell/wallMembraneQm6.js';
-export { SLAB_PLATE_DKQ_VERSION, buildSlabPlateDkq, buildSlabPressureLoad, plateClosedForm, lumpedPlateMass } from './solver/shell/slabPlateDkq.js';
+export {
+  SLAB_PLATE_MITC4_VERSION,
+  SLAB_PLATE_DKQ_VERSION,
+  buildSlabPlateMitc4,
+  buildSlabPlateDkq,
+  buildSlabPressureLoad,
+  plateClosedForm,
+  lumpedPlateMass,
+} from './solver/shell/slabPlateDkq.js';
 export { FLAT_SHELL_ALLMAN_DKQ_VERSION, buildFlatShellAllmanDkq } from './solver/shell/flatShellAllmanDkq.js';
 export { SHELL_BATCH_VERSION, SHELL_TYPE, buildShellSoaBatch, buildShellElementScatters } from './solver/shell/shellBatch.js';
 export {

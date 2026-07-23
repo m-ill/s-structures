@@ -1,5 +1,5 @@
 {
-  "version": "p10-evidence-artifact-v2",
+  "version": "p10-evidence-artifact-v3",
   "suiteId": "P10-M9-SHELL-FEM",
   "milestone": "P10-M9",
   "status": "BLOCKED",
@@ -11,6 +11,7 @@
     "tests/p10-m9b-slab-plate.mjs",
     "tests/p10-m9b-plate-qualification.mjs",
     "tests/p10-m9b-shell-invariants.mjs",
+    "tests/p10-m9b-plate-dynamics.mjs",
     "tests/p10-m9c-flat-shell.mjs",
     "tests/p10-m9c-global-assembly.mjs",
     "tests/p10-m9d-shell-gpu.mjs"
@@ -31,15 +32,15 @@
     "m9b": {
       "version": "p10-m9b-verification-v1",
       "simple": {
-        "computed": 0.00046936443012617947,
-        "reference": 0.0004731828383255842,
-        "relativeError": 0.008069625290969194,
+        "computed": 0.0004811707866171275,
+        "reference": 0.00047931231440571454,
+        "relativeError": 0.003877372134110994,
         "divisions": 6,
         "divisionsX": 6,
         "divisionsY": 6,
         "aspectRatio": 1,
         "shortSideThicknessRatio": 20,
-        "referenceKind": "kirchhoff-navier-simply-supported-udl",
+        "referenceKind": "reissner-mindlin-navier-simply-supported-udl",
         "navierTerms": 81
       },
       "pressureResidual": 0,
@@ -47,25 +48,28 @@
       "fixedToSimple": 0.3103448275862069
     },
     "m9bQualification": {
-      "version": "p10-m9b-plate-numerical-qualification-v1",
-      "status": "BLOCKED",
+      "version": "p10-m9b-plate-numerical-qualification-v2-mitc4",
+      "status": "PASS",
       "referenceKind": "reissner-mindlin-navier-simply-supported-udl",
       "referenceConvergence": 1.358307539699717e-8,
-      "failedCaseIds": [
-        "SH-BQ-02-RECT-2TO1-R15",
-        "SH-BQ-03-RECT-4TO1-R20",
-        "SH-BQ-04-RECT-4TO1-R40"
-      ]
+      "convergenceCaseCount": 2,
+      "failedCaseIds": []
     },
     "m9bInvariants": {
-      "version": "p10-m9b-shell-invariants-v1",
-      "status": "BLOCKED",
-      "failedCheckIds": [
-        "rigid-normal-translation",
-        "rigid-rotation-rx",
-        "rigid-rotation-ry",
-        "constant-curvature-kappa-x"
-      ]
+      "version": "p10-m9b-shell-invariants-v2-mitc4",
+      "status": "PASS",
+      "failedCheckIds": []
+    },
+    "m9bDynamics": {
+      "version": "p10-m9b-mitc4-modal-rsa-v1",
+      "divisions": 4,
+      "computedOmega": 849.0318910113441,
+      "referenceOmega": 893.6799249768774,
+      "modalRelativeError": 0.04995975932511685,
+      "participatingMassRatio": 0.9438136720139801,
+      "rsaDisplacement": 0.000007924852516758151,
+      "rsaBaseShear": 3.9984409497553477,
+      "memberForceRecoveryStatus": "unsupported"
     },
     "m9c": {
       "version": "p10-m9c-verification-v1",
@@ -87,8 +91,8 @@
       "version": "p10-m9d-verification-v2",
       "elementCount": 3,
       "valueCount": 1728,
-      "gpuRelativeError": 4.3489307068422886e-8,
-      "gpuResidual": 4.348930706842289e-13,
+      "gpuRelativeError": 4.096000099182125e-8,
+      "gpuResidual": 4.0960000991821254e-13,
       "fallbackBackend": "cpu-f64-fallback",
       "deterministicAssembly": true,
       "nativeKernelOperations": 3,
@@ -119,8 +123,8 @@
     {
       "caseId": "SH-B01-SQUARE-PLATE",
       "reference": 0,
-      "computed": 0.008069625290969194,
-      "relError": 0.008069625290969194,
+      "computed": 0.003877372134110994,
+      "relError": 0.003877372134110994,
       "tolerance": 0.01,
       "status": "OK"
     },
@@ -151,16 +155,16 @@
     {
       "caseId": "SH-G01-F32-BATCH-PARITY",
       "reference": 0,
-      "computed": 4.3489307068422886e-8,
-      "relError": 4.3489307068422886e-8,
+      "computed": 4.096000099182125e-8,
+      "relError": 4.096000099182125e-8,
       "tolerance": 0.000001,
       "status": "OK"
     },
     {
       "caseId": "SH-G02-REFINEMENT-RESIDUAL",
       "reference": 0,
-      "computed": 4.348930706842289e-13,
-      "relError": 4.348930706842289e-13,
+      "computed": 4.0960000991821254e-13,
+      "relError": 4.0960000991821254e-13,
       "tolerance": 1e-10,
       "status": "OK"
     },
@@ -175,66 +179,98 @@
     {
       "caseId": "SH-BQ-01-SQUARE-R20",
       "reference": 0.00047931229704857635,
-      "computed": 0.00046936443012617947,
-      "relError": 0.020754457967492347,
+      "computed": 0.0004811707866171275,
+      "relError": 0.0038774084871075246,
       "tolerance": 0.03,
       "status": "OK"
     },
     {
       "caseId": "SH-BQ-02-RECT-2TO1-R15",
       "reference": 0.00037862108223145883,
-      "computed": 0.00040220801328691707,
-      "relError": 0.06229692999778354,
+      "computed": 0.0003783078648188404,
+      "relError": 0.0008272582466154699,
       "tolerance": 0.05,
-      "status": "NG"
+      "status": "OK"
     },
     {
       "caseId": "SH-BQ-03-RECT-4TO1-R20",
       "reference": 0.0007517379779763214,
-      "computed": 0.0004979490722599804,
-      "relError": 0.3376028791302267,
+      "computed": 0.0007256618099929348,
+      "relError": 0.03468784170461052,
       "tolerance": 0.05,
-      "status": "NG"
+      "status": "OK"
     },
     {
       "caseId": "SH-BQ-04-RECT-4TO1-R40",
       "reference": 0.005982824022057499,
-      "computed": 0.0011928043839833152,
-      "relError": 0.8006285360248473,
+      "computed": 0.005771932218842298,
+      "relError": 0.03524954142687209,
       "tolerance": 0.05,
-      "status": "NG"
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-BQ-05-RECT-4TO1-R100",
+      "reference": 0.09334565121197921,
+      "computed": 0.09004024309574701,
+      "relError": 0.035410413589872854,
+      "tolerance": 0.05,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-BQ-06-SQUARE-MESH-CONVERGENCE",
+      "reference": 0,
+      "computed": 0.005048960064247538,
+      "relError": 0.005048960064247538,
+      "tolerance": 0.01,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-BQ-07-RECT-4TO1-MESH-CONVERGENCE",
+      "reference": 0,
+      "computed": 0.0066708720780929215,
+      "relError": 0.0066708720780929215,
+      "tolerance": 0.01,
+      "status": "OK"
     },
     {
       "caseId": "SH-BI-RIGID-NORMAL-TRANSLATION",
       "reference": 0,
-      "computed": 9.999999573127868e-11,
-      "relError": 9.999999573127868e-11,
+      "computed": 9.298324584960939e-17,
+      "relError": 9.298324584960939e-17,
       "tolerance": 1e-12,
-      "status": "NG"
+      "status": "OK"
     },
     {
       "caseId": "SH-BI-RIGID-ROTATION-RX",
       "reference": 0,
-      "computed": 3.513909223760322,
-      "relError": 3.513909223760322,
+      "computed": 3.7193298339843755e-16,
+      "relError": 3.7193298339843755e-16,
       "tolerance": 1e-12,
-      "status": "NG"
+      "status": "OK"
     },
     {
       "caseId": "SH-BI-RIGID-ROTATION-RY",
       "reference": 0,
-      "computed": 3.513909223760323,
-      "relError": 3.513909223760323,
+      "computed": 1.8596649169921877e-16,
+      "relError": 1.8596649169921877e-16,
       "tolerance": 1e-12,
-      "status": "NG"
+      "status": "OK"
     },
     {
       "caseId": "SH-BI-CONSTANT-CURVATURE-KAPPA-X",
       "reference": 0,
-      "computed": 11.454166667911716,
-      "relError": 11.454166667911716,
+      "computed": 1.8645077943801876e-15,
+      "relError": 1.8645077943801876e-15,
       "tolerance": 1e-8,
-      "status": "NG"
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-BD-01-MODAL-FREQUENCY",
+      "reference": 0,
+      "computed": 0.04995975932511685,
+      "relError": 0.04995975932511685,
+      "tolerance": 0.1,
+      "status": "OK"
     }
   ],
   "qualification": {
@@ -244,13 +280,17 @@
     "shellLumpedMassConnected": true,
     "cpuF64ExecutionAvailable": true,
     "cpuF64Qualified": false,
-    "plateNumericalQualificationStatus": "BLOCKED",
-    "plateInvariantQualificationStatus": "BLOCKED",
-    "plateNumericalQualificationBlocker": "SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED",
-    "plateNumericalQualificationBlockers": [
-      "SHELL_PLATE_INVARIANTS_FAILED",
-      "SHELL_PLATE_ASPECT_THICKNESS_QUALIFICATION_FAILED"
+    "plateNumericalQualificationStatus": "PASS",
+    "plateInvariantQualificationStatus": "PASS",
+    "plateDynamicsQualificationStatus": "PASS",
+    "plateDesignTransferAllowed": true,
+    "cpuF64QualificationBlocker": "SHELL_MEMBRANE_FLAT_SHELL_NUMERICAL_QUALIFICATION_REQUIRED",
+    "cpuF64QualificationBlockers": [
+      "QM6_DISTORTION_PATCH_REQUIRED",
+      "FLAT_SHELL_DRILLING_QUALIFICATION_REQUIRED"
     ],
+    "plateNumericalQualificationBlocker": null,
+    "plateNumericalQualificationBlockers": [],
     "designTransferAllowed": false,
     "gpuBatchShadowQualified": true,
     "nativeWebGpuKernelsImplemented": true,
@@ -260,10 +300,11 @@
     "releaseQualified": false,
     "releaseGate": "P10-M11",
     "remainingGates": [
-      "shell-plate-aspect-thickness-qualification",
+      "QM6-distortion-patch-qualification",
+      "flat-shell-drilling-qualification",
       "XV-10-external-reference",
       "native-WebGPU-K1-K3-device-validation-at-P10-M11"
     ]
   },
-  "artifactHash": "28d01aaed747aea0b841eb53"
+  "artifactHash": "3fb4de0eb13b36058747f204"
 }

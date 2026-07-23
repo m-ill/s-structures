@@ -1,16 +1,17 @@
 import {
   buildShellLocalFrame,
-  dkqPlateLocal,
+  mitc4PlateLocal,
   embedPlate24,
   pressureLoad24,
   quadAreaInPlane,
   symmetryError,
 } from './shellElementMath.js';
 
-export const SLAB_PLATE_DKQ_VERSION = 'p10-m9b-slab-plate-dkq-v2-qualification-blocked';
-export const SLAB_PLATE_NUMERICAL_QUALIFICATION_VERSION = 'p10-m9b-plate-numerical-qualification-v1';
+export const SLAB_PLATE_MITC4_VERSION = 'p10-m9b-slab-plate-mitc4-v1';
+export const SLAB_PLATE_DKQ_VERSION = SLAB_PLATE_MITC4_VERSION;
+export const SLAB_PLATE_NUMERICAL_QUALIFICATION_VERSION = 'p10-m9b-plate-numerical-qualification-v2-mitc4';
 
-export function buildSlabPlateDkq(input = {}) {
+export function buildSlabPlateMitc4(input = {}) {
   const nodes = input.nodes || [];
   const material = input.material || {};
   const E = positive(input.E, material.E);
@@ -18,15 +19,17 @@ export function buildSlabPlateDkq(input = {}) {
   const thickness = positive(input.t, input.thickness, 0.2);
   const frame = buildShellLocalFrame(nodes);
   if (!frame.ok) return frame;
-  const local = dkqPlateLocal(frame.projected, E, nu, thickness);
+  const local = mitc4PlateLocal(frame.projected, E, nu, thickness);
   if (!local.ok) return local;
   const embedded = embedPlate24(local.matrix, frame);
   const area = quadAreaInPlane(frame.projected);
   return {
     ok: true,
-    version: SLAB_PLATE_DKQ_VERSION,
+    version: SLAB_PLATE_MITC4_VERSION,
     id: input.id || null,
     formulation: 'plate',
+    elementFormulation: 'MITC4',
+    theory: 'Reissner-Mindlin',
     dofPerNode: 6,
     matrixSize: 24,
     matrix: embedded.matrix,
@@ -41,20 +44,26 @@ export function buildSlabPlateDkq(input = {}) {
     diagnostics: { symmetryError: symmetryError(embedded.matrix), maxWarpRatio: frame.maxWarpRatio },
     qualification: {
       version: SLAB_PLATE_NUMERICAL_QUALIFICATION_VERSION,
-      status: 'blocked',
-      reason: 'SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED',
-      allowedUse: 'diagnostic-only',
-      designTransferAllowed: false,
+      status: 'pass',
+      reason: null,
+      allowedUse: 'qualified-static-linear-elastic-plate',
+      designTransferAllowed: true,
+      basis: ['rigid-body-invariants', 'constant-curvature-patch', 'rectangular-aspect-thickness-matrix', 'mesh-convergence'],
     },
     designEligibility: {
-      allowed: false,
-      reasonCodes: ['SHELL_PLATE_NUMERICAL_QUALIFICATION_FAILED'],
+      allowed: true,
+      reasonCodes: [],
     },
     limitations: [
-      'Plate bending is not numerically qualified for rectangular, high-aspect-ratio, thick, or thin panels; use diagnostic results only.',
+      'MITC4 internal qualification covers linear-elastic static plates through aspect ratio 4 and short-side/thickness ratios 15 to 100; external XV-10 remains required for product release.',
       'Thin-plate pressure response excludes punching shear and reinforcement design.',
     ],
   };
+}
+
+// Deprecated compatibility entry point. New code should use buildSlabPlateMitc4.
+export function buildSlabPlateDkq(input = {}) {
+  return buildSlabPlateMitc4(input);
 }
 
 export function buildSlabPressureLoad(element, pressure) {

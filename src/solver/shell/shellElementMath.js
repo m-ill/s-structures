@@ -1,4 +1,15 @@
-export const SHELL_ELEMENT_MATH_VERSION = 'p10-m9-shell-element-math-v1';
+export const SHELL_ELEMENT_MATH_VERSION = 'p10-m9-shell-element-math-v2-mitc4';
+
+export const MITC4_FORMULATION = Object.freeze({
+  name: 'MITC4',
+  dofOrder: Object.freeze(['w', 'rx', 'ry']),
+  shearFactor: 5 / 6,
+  reference: Object.freeze({
+    authors: 'K.J. Bathe and E.N. Dvorkin',
+    year: 1985,
+    doi: '10.1002/nme.1620210213',
+  }),
+});
 
 const GAUSS = [-1 / Math.sqrt(3), 1 / Math.sqrt(3)];
 
@@ -53,35 +64,41 @@ export function qm6MembraneLocal(projected, E, nu, thickness) {
   return { ok: true, matrix: subtractMatrices(Kuu, correction), internalModeCount: 4, D };
 }
 
-export function dkqPlateLocal(projected, E, nu, thickness, shearFactor = 5 / 6) {
+// Four-node mixed-interpolation plate kernel following Bathe-Dvorkin (1985),
+// DOI 10.1002/nme.1620210213. Rotations are physical local-frame rotations:
+// [w, rx, ry], kappa=[ry,x, -rx,y, ry,y-rx,x],
+// gamma=[w,x+ry, w,y-rx].
+export function mitc4PlateLocal(projected, E, nu, thickness, shearFactor = MITC4_FORMULATION.shearFactor) {
   const Db = plateBendingMatrix(E, nu, thickness);
   const K = zeros(12, 12);
-  for (const xi of GAUSS) for (const eta of GAUSS) {
-    const shape = q4Shape(projected, xi, eta);
-    if (!shape.ok) return shape;
-    const B = bendingB(shape.dNdx, shape.dNdy);
-    addProduct(K, B, Db, B, shape.detJ);
-  }
   const G = E / (2 * (1 + nu));
   const Ds = [[shearFactor * G * thickness, 0], [0, shearFactor * G * thickness]];
-  const reducedShear = zeros(12, 12);
-  const fullShear = zeros(12, 12);
-  const center = q4Shape(projected, 0, 0);
-  if (!center.ok) return center;
-  addProduct(reducedShear, shearB(center.N, center.dNdx, center.dNdy), Ds, shearB(center.N, center.dNdx, center.dNdy), center.detJ * 4);
+
   for (const xi of GAUSS) for (const eta of GAUSS) {
     const shape = q4Shape(projected, xi, eta);
     if (!shape.ok) return shape;
-    const Bs = shearB(shape.N, shape.dNdx, shape.dNdy);
-    addProduct(fullShear, Bs, Ds, Bs, shape.detJ);
+    const Bb = mitc4BendingB(shape.dNdx, shape.dNdy);
+    const Bs = mitc4ShearB(projected, shape, xi, eta);
+    if (!Bs.ok) return Bs;
+    addProduct(K, Bb, Db, Bb, shape.detJ);
+    addProduct(K, Bs.matrix, Ds, Bs.matrix, shape.detJ);
   }
-  const stabilization = 0.415;
-  for (let i = 0; i < 12; i += 1) for (let j = 0; j < 12; j += 1) {
-    K[i][j] += reducedShear[i][j] + stabilization * (fullShear[i][j] - reducedShear[i][j]);
-  }
-  const bendingScale = Math.max(1, maxAbs(K));
-  for (let node = 0; node < 4; node += 1) K[node * 3][node * 3] += bendingScale * 1e-10;
-  return { ok: true, matrix: K, Db, integration: 'discrete-kirchhoff-compatible-assumed-shear', shearStabilization: stabilization };
+
+  return {
+    ok: true,
+    matrix: K,
+    Db,
+    Ds,
+    formulation: MITC4_FORMULATION.name,
+    integration: 'mitc4-mixed-covariant-shear-2x2',
+    shearFactor,
+    reference: MITC4_FORMULATION.reference,
+  };
+}
+
+// Compatibility alias retained while callers migrate from the former DKQ label.
+export function dkqPlateLocal(projected, E, nu, thickness, shearFactor = MITC4_FORMULATION.shearFactor) {
+  return mitc4PlateLocal(projected, E, nu, thickness, shearFactor);
 }
 
 export function embedMembrane24(local, frame, drillingAlpha = 1e-5) {
@@ -136,7 +153,17 @@ export function q4Shape(projected, xi, eta) {
     dNdx[i] = inverseJacobian[0][0] * dXi[i] + inverseJacobian[0][1] * dEta[i];
     dNdy[i] = inverseJacobian[1][0] * dXi[i] + inverseJacobian[1][1] * dEta[i];
   }
-  return { ok: true, N, dNdx, dNdy, detJ, inverseJacobian };
+  return {
+    ok: true,
+    N,
+    dNdx,
+    dNdy,
+    dNdxi: dXi,
+    dNdeta: dEta,
+    jacobian: J,
+    detJ,
+    inverseJacobian,
+  };
 }
 
 export function recoverMembraneStress(projected, localDisplacements, E, nu, xi = 0, eta = 0) {
@@ -214,15 +241,55 @@ function incompatibleB(invJ, xi, eta) {
   for (let i = 0; i < 2; i += 1) { B[0][i] = gradients[i][0]; B[2][i] = gradients[i][1]; B[1][i + 2] = gradients[i][1]; B[2][i + 2] = gradients[i][0]; }
   return B;
 }
-function bendingB(dx, dy) {
+function mitc4BendingB(dx, dy) {
   const B = zeros(3, 12);
-  for (let i = 0; i < 4; i += 1) { B[0][i * 3 + 1] = dx[i]; B[1][i * 3 + 2] = dy[i]; B[2][i * 3 + 1] = dy[i]; B[2][i * 3 + 2] = dx[i]; }
+  for (let i = 0; i < 4; i += 1) {
+    B[0][i * 3 + 2] = dx[i];
+    B[1][i * 3 + 1] = -dy[i];
+    B[2][i * 3 + 1] = -dx[i];
+    B[2][i * 3 + 2] = dy[i];
+  }
   return B;
 }
-function shearB(N, dx, dy) {
-  const B = zeros(2, 12);
-  for (let i = 0; i < 4; i += 1) { B[0][i * 3] = dx[i]; B[0][i * 3 + 2] = -N[i]; B[1][i * 3] = dy[i]; B[1][i * 3 + 1] = N[i]; }
-  return B;
+
+function mitc4ShearB(projected, shape, xi, eta) {
+  const xiBottom = q4Shape(projected, 0, -1);
+  if (!xiBottom.ok) return xiBottom;
+  const xiTop = q4Shape(projected, 0, 1);
+  if (!xiTop.ok) return xiTop;
+  const etaLeft = q4Shape(projected, -1, 0);
+  if (!etaLeft.ok) return etaLeft;
+  const etaRight = q4Shape(projected, 1, 0);
+  if (!etaRight.ok) return etaRight;
+
+  const covariant = zeros(2, 12);
+  const bottom = covariantShearRow(xiBottom, projected, 'xi');
+  const top = covariantShearRow(xiTop, projected, 'xi');
+  const left = covariantShearRow(etaLeft, projected, 'eta');
+  const right = covariantShearRow(etaRight, projected, 'eta');
+  for (let column = 0; column < 12; column += 1) {
+    covariant[0][column] = (1 - eta) * bottom[column] / 2 + (1 + eta) * top[column] / 2;
+    covariant[1][column] = (1 - xi) * left[column] / 2 + (1 + xi) * right[column] / 2;
+  }
+
+  return { ok: true, matrix: multiply(shape.inverseJacobian, covariant) };
+}
+
+function covariantShearRow(shape, projected, direction) {
+  const row = new Array(12).fill(0);
+  const naturalDerivative = direction === 'xi' ? shape.dNdxi : shape.dNdeta;
+  let dx = 0;
+  let dy = 0;
+  for (let i = 0; i < 4; i += 1) {
+    dx += naturalDerivative[i] * projected[i].x;
+    dy += naturalDerivative[i] * projected[i].y;
+  }
+  for (let i = 0; i < 4; i += 1) {
+    row[i * 3] = naturalDerivative[i];
+    row[i * 3 + 1] = -dy * shape.N[i];
+    row[i * 3 + 2] = dx * shape.N[i];
+  }
+  return row;
 }
 function addProduct(target, B, D, right, scale) {
   const value = multiply(transpose(B), multiply(D, right));

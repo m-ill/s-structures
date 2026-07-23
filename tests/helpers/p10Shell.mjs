@@ -23,7 +23,10 @@ export function wallCantileverBenchmark({ E = 30e9, nu = 0.2, t = 0.2, width = 2
 }
 
 export function squarePlateBenchmark({ E = 30e9, nu = 0.3, t = 0.2, a = 4, q = 1e4, divisions = 6 } = {}) {
-  return rectangularPlateBenchmark({ E, nu, t, a, b: a, q, divisionsX: divisions, divisionsY: divisions });
+  return rectangularPlateBenchmark({
+    E, nu, t, a, b: a, q, divisionsX: divisions, divisionsY: divisions,
+    referenceTheory: 'mindlin',
+  });
 }
 
 export function rectangularPlateBenchmark({

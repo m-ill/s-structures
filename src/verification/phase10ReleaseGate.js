@@ -150,7 +150,11 @@ function summarizeEvidence(rows) {
     complete: missing.length === 0,
     shellNumericalQualification: {
       status: shellPassed ? 'PASS' : 'BLOCKED',
-      blocker: shellPassed ? null : (shell?.qualification?.plateNumericalQualificationBlocker || 'SHELL_PLATE_NUMERICAL_QUALIFICATION_MISSING'),
+      blocker: shellPassed ? null : (
+        shell?.qualification?.cpuF64QualificationBlocker
+        || shell?.qualification?.plateNumericalQualificationBlocker
+        || 'SHELL_NUMERICAL_QUALIFICATION_MISSING'
+      ),
     },
   };
 }
