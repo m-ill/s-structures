@@ -9,6 +9,12 @@ decision-owner: 프로젝트 오너 (2026-07-09 옵션 B 결정 주체)
 supersedes-if-accepted: docs/phase6/workpackages/WP-06-shell-scope.md 의 "실 FEM 미개발" 결정
 ```
 
+> **2026-07-23 superseded implementation note:** 옵션 C-full이라는 범위 결정은 유효하지만 아래 DKQ·Allman·
+> formulation-native GPU 계획 표현은 실제 구현 설명으로 대체되었다. canonical CPU 정식은
+> QM6-EAS + MITC4 + Hughes–Brezzi curl drilling + warped rigid arm + Q4 consistent pressure이며,
+> WebGPU는 precomputed matrix transport만 구현됐다. 최신 기술·qualification 상태는
+> `FORMULAS_AND_CRITERIA.md` §9 및 `IMPLEMENTATION_STATUS.md`가 우선한다.
+
 ## 문맥
 
 2026-07-09 오너 결정(옵션 B): 실 shell FEM 미개발, 등가모델 유지 + scope 경고 강제.

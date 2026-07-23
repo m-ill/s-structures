@@ -295,66 +295,75 @@ full shell을 한 번에 만들지 않고 **면내 2D(membrane) → 면외 2D(pl
 **§9a. 벽 membrane (평면응력, M9a)**
 ```text
 평면응력: Dm = E·t/(1−ν²) · [[1,ν,0],[ν,1,0],[0,0,(1−ν)/2]]
-요소: Q4 쌍선형 + 비적합모드 2×2 (Wilson Q6 → Taylor QM6, patch-test 정합형)
-      내부모드는 정적 응축 (기존 Schur 패턴 재사용)
+요소: Q4 compatible 변위 + QM6-EAS enhanced strain 4모드, 2×2 적분
+      H_a(ξ,η) = det(J0)/det(J) · H_a(J0⁻¹,ξ,η)
+      J0는 요소 중심 Jacobian이며, enhanced 4DOF는 Schur 정적응축
 국부 DOF: 면내 u,v (절점당 2) — 임의 평면 배치는 평면변환 T로 전역 6DOF에 사상
-drilling: 벽 평면 전용 절점은 §6A 안정화 강성 α·k_ref (α: config shell.drillingAlpha, 1e-6~1e-4)
-          — 프레임 요소 공존 절점은 자연 해소
+drilling: c_d = θn − 0.5·(v,x − u,y)
+          k_d = ∫ B_dᵀ·(αGt)·B_d dA,  B_d,i=[0.5N_i,y, −0.5N_i,x, N_i]
+          α = criteria.shell.drillingAlpha (1e-6~1e-4), 2×2 적분
 ```
-판정: 상수응력 patch 정확(오차<1e-10) · 캔틸레버 벽 vs 보이론 `δ=PH³/(3EI)+1.2PH/(GA)` 상대오차 < shell.wallBeamTol(기본 5e-2, 메시수렴 시 감소 확인) · 개구부 모델 평형감사.
+중심 Jacobian과 `det(J0)/det(J)` 스케일은 왜곡된 쌍선형 사변형에서도 enhanced strain의 가중 평균을 0으로 유지한다.
+Hughes–Brezzi curl penalty는 독립 drilling 회전을 변위장의 연속체 회전에 연결하며, 독립 절점 회전에만 대각 스프링을
+넣지 않는다. 판정은 상수응력 patch 오차 <1e-10, 3×3 네 요소 왜곡 patch의 중심 변위 <1e-8·자유절점 잔차 <1e-10,
+캔틸레버 벽 보이론 `δ=PH³/(3EI)+1.2PH/(GA)` 상대오차 < `shell.wallBeamTol`, 그리고 개구부 평형감사다.
 
-**§9b. 슬래브 plate (얇은 판 휨, M9b)**
+**§9b. 슬래브 plate (Mindlin–Reissner MITC4, M9b)**
 ```text
-Kirchhoff 곡률: κ = [−w,xx; −w,yy; −2w,xy],  Db = E·t³/(12(1−ν²))·(Dm 동형)
-요소: DKQ (Discrete Kirchhoff Quad, 절점당 w,θx,θy — 얇은 판 전단잠금 없음)
-하중: 면압 → consistent 절점하중
+국부 DOF: [w, rx, ry] (물리 회전)
+κ = [ry,x; −rx,y; ry,y−rx,x]
+γ = [w,x+ry; w,y−rx]
+Db = E·t³/[12(1−ν²)]·[[1,ν,0],[ν,1,0],[0,0,(1−ν)/2]]
+Ds = (5/6)·G·t·I
+요소: Bathe–Dvorkin MITC4 mixed covariant shear, bending·shear 모두 2×2 적분
+      γξ는 (0,−1)/(0,+1), γη는 (−1,0)/(+1,0) tying 값을 보간하고 J⁻¹로 물리 전단 복원
+하중: f_i = ∫ N_i·p·n·det(J)dξdη (Q4 2×2 consistent pressure)
 ```
-판정: 단순지지 정사각판 UDL `w_c = 0.00406·qa⁴/D` · 고정단 `0.00126·qa⁴/D` (ν=0.3) 상대오차 < shell.plateTol(기본 1e-2, 메시수렴) · 상수 bending patch.
+양의 압력은 초기 기준면의 절점 순서 오른손 normal 방향인 선형 dead load다. 판정은 raw 강체모드와 상수곡률 patch,
+Reissner–Mindlin Navier 기준의 정사각·2:1·4:1, 단변/두께비 15~100 행렬, 8×8→10×10 메시수렴, 그리고
+정적/모달/RSA 회귀다. 과거 Kirchhoff 정사각판 단일 anchor와 `DKQ` 호환 이름은 정식 qualification 근거로 쓰지 않는다.
 
 **§9c. flat shell 통합 (M9c — 정식 개발 범위)**
 ```text
-요소: 절점당 6DOF flat shell = membrane(drilling 포함) ⊕ plate 결합
-  k_e(24×24) = T_pᵀ [ k_m(Allman) ⊕ k_b(DKQ) ] T_p
-membrane: Allman형 사변형 — 꼭짓점 drilling DOF(θn)를 변 중간 변위로 보간해
-  면내 회전이 **실제 강성**으로 참여 (§9a의 안정화 스프링 근사를 대체)
-  Allman 고유의 기생(spurious) 회전모드 1개 → 안정화 항 k_stab (에너지비 §6A 규칙 준수)
-plate: §9b DKQ 그대로 결합 (w, θx, θy)
-비평면(warped) 4절점: 절점을 최소자승 평균평면에 사영 + 사영거리 d를 강체팔(§4 T_off 재사용)로 보정
-  |d|/L_char > shell.warpTol → 경고, > 3·warpTol → 요소 분할 요구
-벽-프레임 결합: 보·기둥이 벽 절점에 붙을 때 drilling DOF가 프레임 회전과 직접 호환
-  (M9a 안정화 스프링 시절의 "참고값" 한계 해소 — 이것이 M9c의 실무 가치)
+요소: 절점당 6DOF flat shell = QM6-EAS membrane + Hughes–Brezzi drilling + MITC4 plate
+  k_e(24×24) = k_m + k_d + k_b
+  사후 강체모드 projector는 사용하지 않으며 raw k_e 자체가 강체 6모드를 소거해야 한다.
+비평면 기준면 이격 d의 강체팔:
+  U_plane = U + d·(n×R)
+  u_plane = e1·U − d·ry,  v_plane = e2·U + d·rx,  θn = n·R
+  |d|/L_char > shell.warpTol → 경고·공학검토, > 3·warpTol → 요소 분할 요구
+벽-프레임 결합: 동일 전역 회전 DOF의 θn과 연속체 curl을 penalty로 연결
 ```
-판정: §6A 전체 게이트 — 강체 6모드(λ_rigid/λ_elastic<1e-8) · 상수 membrane/bending patch ·
-warped patch(사영 보정 후 상수응력 유지) · locking(t/L 1/20·1/100) · mesh 수렴(변위<1~5%, 응력<5~10%) ·
-기생모드 에너지비 < 1e-4 · XV-10 상용 대조.
+판정: raw 강체 6모드 정규화 잔차 <1e-12, planar/경고수준 warped 불변량, compatible affine drilling 에너지 0,
+독립 drilling mode 양의 에너지, 상수 membrane/bending patch, locking·mesh 수렴, Q4 압력 총력·도심모멘트 평형,
+그리고 XV-10 상용 대조다. 기존 `criteria.shell.spuriousEnergyMax` 키는 하위호환을 위해 유지하되 현재 의미는
+Allman 기생모드 에너지비가 아니라 `max|k_d|/max|k_m| < 1e-4`인 drilling stiffness 영향도다. 실제 해석 에너지비는
+변위가 있을 때 `uᵀk_du/uᵀk_eu`로 별도 감사한다.
 
-**§9d. GPU 실행 계획 (M9d) — P9 compute 자산 위 셸 배치 계층**
+**§9d. GPU 실행 범위 (M9d) — precomputed transport만 구현**
 
-셸은 "요소 수가 많고 요소당 연산이 균일"해서 GPU 적합성이 프레임보다 오히려 높다.
-solve는 이미 GPU(P9 SPD PCG 세션)가 있으므로, **요소 강성 배치 생성·조립·응력 회복** 3개를 GPU화한다.
+CPU f64가 QM6-EAS·MITC4·drilling 정식과 24×24 행렬 생성의 유일한 formulation owner다. 현재 WebGPU 셸 범위는
+CPU가 미리 계산한 행렬과 복원 연산자를 전달·재구성하는 계층이며, 정식 자체를 GPU에서 생성하지 않는다.
 
 ```text
-데이터 계층 (CPU/GPU 공용 — M9a부터 이 형태로 작성해야 M9d에서 재작업이 없다):
-  셸 SoA 배치: P9-M7 batchContract 패턴 확장 —
-    typeCodes(membrane|plate|shell) · nodeIndices(Int32) · t·E·ν·α(Float64/32) ·
-    localAxes(9f) · dofOffsets/matrixOffsets(prefix) — stableHash로 배치 재현성 고정
-  scatter: P9-M7 deterministicAssembly의 elementScatters(사전계산 nnz 인덱스) 재사용
-    → GPU 조립도 원자연산 없이 per-nnz gather(색칠 불필요, 순서 독립 = 결정론 유지)
+구현된 범위:
+  K1 precomputed matrix reconstruction:
+    CPU 24×24 행렬을 element scale로 정규화한 f32 payload를 GPU에서 복원
+  K2 deterministic gather:
+    사전계산 gatherOffsets/gatherEntries로 fixed-order 합산
+  K3 generic operator recovery:
+    CPU가 만든 복원 operator와 변위의 일반 행렬-벡터 연산
 
-커널 구성 (backends/webgpu/ 확장):
-  K1 요소강성 배치: 타입 그룹별 워크그룹 — QM6 내부모드 4×4 응축·DKQ·Allman 24×24를
-    요소당 1스레드(소형 행렬은 레지스터 상주). 출력 = tangentValues flat 배열(matrixOffsets 규약)
-  K2 조립 gather: nnz당 1스레드가 elementScatters 역맵으로 합산 → CSC values
-  K3 응력 회복: 가우스점 응력 배치 + 절점 평활은 segmentedBuffer 세그먼트 합산 재사용
-  solve: 기존 spdSession(PCG) — 셸 K는 구속·안정화 후 SPD 유지가 전제 (spdEligibility 게이트)
-
-정밀도 (P9 COMPUTE_PRECISION_POLICY 준수):
-  휨(∝Et³/12)·막(∝Et) 강성 스케일 격차 ~t²/12 + drilling α 소강성 → 조건수 열화
-  → 요소강성 생성 f32 허용하되 조립·잔차는 f64 누적(hybrid mixedPrecisionSpd),
-    반복개선(iterative refinement) 잔차 게이트 통과 못 하면 CPU f64 경로 자동 강등
-CPU reference: backends/webgpu/cpuReference 패턴 — 동일 배치 입력에 대해
-  CPU 조립 결과와 GPU 결과 상대오차 < xval 계층 게이트, 실패 시 GPU 경로 차단
+구현되지 않은 범위:
+  QM6-EAS 중심-J/정적응축, MITC4 tying shear, Hughes–Brezzi drilling을
+  E·ν·t·geometry에서 직접 생성하는 formulation-native GPU stiffness kernel
 ```
+
+따라서 precomputed f32 reconstruction/gather/recovery parity는 내부 transport 검증일 뿐
+`nativeFormulationKernelsImplemented`나 `nativeWebGpuKernelsQualified`를 뜻하지 않는다. 자동 설계 라우팅은 CPU f64로
+고정하고, formulation-native 구현·다중 장치 검증 전에는 GPU 결과를 release 근거로 사용할 수 없다. 내부 CPU f64
+qualification artifact는 35개 record 전부 PASS하는 계약이며, 현재 artifact hash는
+`45389db66c1633dc99e11566`이다. 이 요소/커널 적격은 사용자 모델 메시수렴 증거를 대신하지 않는다.
 
 **통합 규칙 (전 단계 공통)**:
 ```text
@@ -471,11 +480,11 @@ dense / sparse LDLT / CG 세 경로의 pivot localization 일치를 고정하는
 | `criteria.dynamics.energyTol` | 직접적분 에너지 오차 | 1e-8 |
 | `criteria.dynamics.bucklingModes` | 좌굴 요청 모드 수 | 6 |
 | `criteria.ltb.c1Default` | LTB 모멘트구배 계수 | 1.0 |
-| `criteria.shell.drillingAlpha` | membrane drilling 안정화 계수 (M9a) | 1e-5 |
+| `criteria.shell.drillingAlpha` | Hughes–Brezzi curl penalty 계수 α (`αGt`) | 1e-5 |
 | `criteria.shell.wallBeamTol` | 캔틸레버 벽 vs 보이론 허용오차 | 5e-2 |
 | `criteria.shell.plateTol` | 판 폐형해 허용오차 | 1e-2 |
 | `criteria.shell.warpTol` | 비평면 사영거리 경고비 \|d\|/L_char | 1e-2 |
-| `criteria.shell.spuriousEnergyMax` | Allman 기생모드 에너지비 상한 | 1e-4 |
+| `criteria.shell.spuriousEnergyMax` | 하위호환 키: drilling stiffness 영향도 `max\|k_d\|/max\|k_m\|` 상한 | 1e-4 |
 | `criteria.shell.gpuResidualRefine` | GPU 반복개선 잔차 게이트 | 1e-10 |
 | `criteria.shell.*` (기타) | phase6 §6A 게이트 키 승격 (M9c) | §6A 표 |
 | `criteria.loadgen.equilTol` | 슬래브 전달 평형 | 1e-10 |

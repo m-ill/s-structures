@@ -3,7 +3,8 @@
 ```yaml
 doc: roadmap
 phase: 10
-date: 2026-07-21
+date: 2026-07-23
+status: implementation-complete-release-blocked
 cycle: 착수 → 구현 → /code-review high → 수정 → 검증표·evidence 갱신 → merge (npm test green)
 ```
 
@@ -14,18 +15,18 @@ cycle: 착수 → 구현 → /code-review high → 수정 → 검증표·evidenc
 
 | M | 이름 | WP | § | 선행 | 핵심 수용 게이트 |
 | --- | --- | --- | --- | --- | --- |
-| **P10-M0** | 즉시 보정 (θ 3-tier · RSA scaling 적용) | [WP-00](workpackages/WP-00-quick-corrections.md) | §1 | — | θ 4상태 분기 + REQUIRE-2ND 설계차단 배선, scaling 전 응답 적용 + provenance, 기존 292 스위트 green |
-| **P10-M1** | 독립 교차검증 + 병적 모델 배터리 | [WP-01](workpackages/WP-01-cross-validation.md) | §11 | M0 | XV artifact 계약·러너, XV-01·02 hand-calc green, XV-03~08 모델·executor·`pending-reference` artifact, BM-01~10 case-specific code·behavior·location pass |
+| **P10-M0** ✅ complete | 즉시 보정 (θ 3-tier · RSA scaling 적용) | [WP-00](workpackages/WP-00-quick-corrections.md) | §1 | — | θ 4상태 분기 + REQUIRE-2ND 설계차단 배선, scaling 전 응답 적용 + provenance, 기존 회귀 green |
+| **P10-M1** ✅ implementation complete / release inputs pending | 독립 교차검증 + 병적 모델 배터리 | [WP-01](workpackages/WP-01-cross-validation.md) | §11 | M0 | XV artifact 계약·러너, XV-01 required-source green, XV-02 hand-calc source-ineligible, XV-03~08 `pending-reference`, BM-01~10 pass |
 | **P10-M2** ✅ complete | Timoshenko 전단변형 | [WP-02](workpackages/WP-02-timoshenko.md) | §2 | M0, M1 | Φ=0 회귀 <1e-12, 깊은 보 폐형해 <1e-9, 독립 point/partial-UDL q0·복원·release·compute 계약 PASS — [evidence 8/8](../../reports/validation-evidence/phase10/p10-m2-timoshenko.json) · [review](reviews/P10-M2-CODE-REVIEW.md) |
 | **P10-M3** ✅ complete | 부분강접 (회전스프링 단부) | [WP-03](workpackages/WP-03-partial-fixity.md) | §3 | M2 | 4축·absent/zero 계약, 안정 Schur K/f0/복구, k_θ 양극한 <1e-9, EB/Timo 폐형해 <1e-7, solver limitation/fail-closed PASS — [evidence 7/7](../../reports/validation-evidence/phase10/p10-m3-partial-fixity.json) · [review](reviews/P10-M3-CODE-REVIEW.md) |
 | **P10-M4** ✅ complete | 3D 오프셋 · 삽입점 · 패널존 | [WP-04](workpackages/WP-04-offsets-panelzone.md) | §4 | M0, M1 | r=0·N·e·패널존 등가·평형잔차 모두 오차 0 — [evidence 4/4](../../reports/validation-evidence/phase10/p10-m4-offsets-panelzone.json) · [review](reviews/P10-M4-CODE-REVIEW.md) |
-| **P10-M5** | 일반 MPC · rigid link | [WP-05](workpackages/WP-05-mpc-rigidlink.md) | §5 | M0, M1 | u=Tq+ubar 행 확장(신규 엔진 금지), 충돌검출 3코드, 다이어프램 회귀 <1e-10 |
-| **P10-M6** | 변단면 부재 | [WP-06](workpackages/WP-06-tapered.md) | §6 | M2 | 프리즘 회귀 <1e-12, 변단면 폐형해 <1e-6, 적분 수렴 <1e-8 |
-| **P10-M7** | prestressed 모달·RSA / 좌굴 다중모드 / 직접적분 THA | [WP-07](workpackages/WP-07-dynamics-extension.md) | §7 | M2, M5 | N_G=0 회귀 <1e-10, 압축→주기증가 방향성, λcr 폐형해 <1e-6, P9 eigen·P8 Newmark 재사용 |
-| **P10-M8** | warping · LTB | [WP-08](workpackages/WP-08-warping-ltb.md) | §8 | M2, **ADR-001 accepted** | **complete** — 옵션 B M_cr 폐형해 <1e-6, 6DOF 불변 |
-| **P10-M9** | 벽·슬래브 FEM — 2D 분해 전 단계 (M9a membrane · M9b plate · M9c flat shell · M9d GPU 배치) | [WP-09](workpackages/WP-09-shell-fem.md) | §9a~§9d | M5, **ADR-002 옵션 C-full 승인** | M9a: patch+캔틸레버 벽 보이론 · M9b: 판 폐형해 · M9c: §6A 전체+warped patch+기생모드 · M9d: CPU↔GPU 일치·혼합정밀도·성능 예산. 전 단계 SoA 배치 규약·등가모델 병행 |
-| **P10-M10** | 하중 생성·전달 완성 | [WP-10](workpackages/WP-10-load-generation.md) | §10 | M0 | 슬래브 1/2방향 분배 평형 <1e-10, 질량원 통합 dedup |
-| **P10-M11** — implementation complete / release blocked | 통합·성능·release gate | [WP-11](workpackages/WP-11-integration-release.md) | 전체 | M1~M10 | 제품/Agent/보고 계약과 120-shell 성능 gate 완료. XV-03~10 required-source 및 실장 WebGPU가 미완이므로 `externallyCrossValidated=false`, release 차단 유지 |
+| **P10-M5** ✅ complete | 일반 MPC · rigid link | [WP-05](workpackages/WP-05-mpc-rigidlink.md) | §5 | M0, M1 | u=Tq+ubar 행 확장(신규 엔진 금지), 충돌검출 3코드, 다이어프램 회귀 <1e-10 |
+| **P10-M6** ✅ complete | 변단면 부재 | [WP-06](workpackages/WP-06-tapered.md) | §6 | M2 | 프리즘 회귀 <1e-12, 변단면 폐형해 <1e-6, 적분 수렴 <1e-8 |
+| **P10-M7** ✅ complete | prestressed 모달·RSA / 좌굴 다중모드 / 직접적분 THA | [WP-07](workpackages/WP-07-dynamics-extension.md) | §7 | M2, M5 | N_G=0 회귀 <1e-10, 압축→주기증가 방향성, λcr 폐형해 <1e-6, P9 eigen·P8 Newmark 재사용 |
+| **P10-M8** ✅ complete | warping · LTB | [WP-08](workpackages/WP-08-warping-ltb.md) | §8 | M2, **ADR-001 accepted** | 옵션 B M_cr 폐형해 <1e-6, 6DOF 불변 |
+| **P10-M9** ✅ implementation complete / release blocked | 벽·슬래브 FEM (QM6-EAS · MITC4 · flat shell · GPU transport) | [WP-09](workpackages/WP-09-shell-fem.md) | §9a~§9d | M5, **ADR-002 옵션 C-full 승인** | CPU f64 35/35 PASS. 사용자 메시수렴, XV-10, formulation-native WebGPU 구현·실장치 qualification은 차단 유지 |
+| **P10-M10** ✅ complete | 하중 생성·전달 완성 | [WP-10](workpackages/WP-10-load-generation.md) | §10 | M0 | 슬래브 1/2방향 분배 평형 <1e-10, 질량원 통합 dedup |
+| **P10-M11** ✅ implementation complete / release blocked | 통합·성능·release gate | [WP-11](workpackages/WP-11-integration-release.md) | 전체 | M1~M10 | 제품/Agent/보고 계약과 120-shell 성능 gate 완료. XV-02~10 required-source 및 formulation-native WebGPU 장치 qualification이 미완이므로 release 차단 유지 |
 
 ## 의존 그래프
 
@@ -37,14 +38,14 @@ M0 ──┬── M1 ──────────────┬────�
      │        └── M8 (ADR-001)
      ├── M4               │
      ├── M5 ──┬── M7      │
-     │        └── M9 (ADR-002 오너 승인)
+     │        └── M9 (ADR-002 accepted)
      └── M10
 ```
 
 - **M1을 요소 확장(M2~)보다 먼저 두는 이유**: 리뷰 결론 "기능보다 검증" — 교차검증 하네스가 있어야
   이후 모든 요소 확장이 즉시 외부 기준해 회귀망에 얹힌다.
 - M4/M5/M10은 M2와 독립 — 병렬 가능.
-- **결정 게이트**: M8은 ADR-001 옵션 B 승인·완료. M9는 ADR-002(오너의 옵션 B 번복 승인) 전 착수 금지.
+- **결정 게이트**: M8은 ADR-001 옵션 B, M9는 ADR-002 옵션 C-full이 승인되어 구현 완료됐다.
 
 ## 마일스톤 공통 게이트 (모든 M)
 

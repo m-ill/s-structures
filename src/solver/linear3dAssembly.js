@@ -1,5 +1,6 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { stableHash } from '../core/stableHash.js';
+import { resolveShellPressureLoad } from '../core/shellPressureLoad.js';
 import {
   condenseReleasedDofs,
   dirVec,
@@ -33,8 +34,8 @@ import {
   reduceConstraintMatrix,
   reduceConstraintVector,
 } from './domain/constraintSystem.js';
-import { buildFlatShellAllmanDkq } from './shell/flatShellAllmanDkq.js';
-import { buildSlabPlateDkq, buildSlabPressureLoad } from './shell/slabPlateDkq.js';
+import { buildFlatShellQm6Mitc4 } from './shell/flatShellQm6Mitc4.js';
+import { buildSlabPlateMitc4, buildSlabPressureLoad } from './shell/slabPlateMitc4.js';
 import { buildWallMembraneQm6, recoverWallMembraneQm6 } from './shell/wallMembraneQm6.js';
 
 export { buildFixedDofs } from './domain/supportConstraints.js';
@@ -85,6 +86,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   const F = new Array(ndof).fill(0);
   const memData = {};
   const shellData = [];
+  const shellIdentity = validateShellElementIds(ctx.shells || []);
+  if (!shellIdentity.ok) return shellIdentity;
 
   for (const member of members) {
     if (member.source === 'shellFemConnectivity') continue;
@@ -131,12 +134,19 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
 
   for (const shell of ctx.shells || []) {
     const nodeIds = shell.nodeIds || [];
-    if (nodeIds.length !== 4 || !nodeIds.every((id) => idx[id] != null)) continue;
+    if (nodeIds.length !== 4) return { ok: false, reason: 'SHELL_NODE_COUNT_INVALID', shellId: shell.id || null };
+    if (new Set(nodeIds).size !== 4) return { ok: false, reason: 'SHELL_NODE_IDS_DUPLICATE', shellId: shell.id || null };
+    const missingNodeId = nodeIds.find((id) => idx[id] == null);
+    if (missingNodeId != null) return { ok: false, reason: 'SHELL_NODE_REFERENCE_MISSING', shellId: shell.id || null, nodeId: missingNodeId };
     const input = { ...shell, nodes: nodeIds.map((id) => nodeMap[id]), material: shell.material || getMat(shell.matId) };
-    const formulation = shell.formulation === 'membrane' ? 'membrane' : shell.formulation === 'plate' ? 'plate' : 'shell';
+    const formulation = resolveShellFormulation(shell.formulation);
+    if (!formulation) return { ok: false, reason: 'SHELL_FORMULATION_UNSUPPORTED', shellId: shell.id || null };
     const built = formulation === 'membrane'
-      ? buildWallMembraneQm6(input, { drillingAlpha: ctx.shellCriteria?.drillingAlpha })
-      : formulation === 'plate' ? buildSlabPlateDkq(input) : buildFlatShellAllmanDkq(input, ctx.shellCriteria);
+      ? buildWallMembraneQm6(input, {
+          drillingAlpha: ctx.shellCriteria?.drillingAlpha,
+          drillingStiffnessRatioMax: ctx.shellCriteria?.drillingStiffnessRatioMax,
+        })
+      : formulation === 'plate' ? buildSlabPlateMitc4(input) : buildFlatShellQm6Mitc4(input, ctx.shellCriteria);
     if (!built.ok) return { ...built, shellId: shell.id || null };
     shellData.push({ id: shell.id, formulation, built, dof: nodeIds.flatMap((id) => {
       const offset = idx[id] * 6;
@@ -161,11 +171,20 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       if (axisIndex == null) continue;
       F[idx[load.node] * 6 + 3 + axisIndex] += Number(load.M);
     } else if (load.type === 'pressure' || load.type === 'shellPressure') {
-      const sd = shellData.find((item) => item.id === (load.shell || load.panel || load.target));
-      if (!sd || sd.formulation === 'membrane') continue;
-      const pressure = Number(load.q ?? load.pressure ?? load.w);
-      if (!Number.isFinite(pressure)) continue;
-      const vector = buildSlabPressureLoad(sd.built.plate || sd.built, pressure);
+      const pressure = resolveShellPressureLoad(load);
+      if (!pressure.ok) return { ok: false, reason: pressure.reason, loadId: load.id || null, shellId: null };
+      const target = pressure.target;
+      const sd = shellData.find((item) => item.id === target);
+      if (!sd) return { ok: false, reason: 'SHELL_PRESSURE_TARGET_INVALID', loadId: load.id || null, shellId: target || null };
+      if (sd.formulation === 'membrane') {
+        return { ok: false, reason: 'SHELL_PRESSURE_FORMULATION_UNSUPPORTED', loadId: load.id || null, shellId: target };
+      }
+      let vector;
+      try {
+        vector = buildSlabPressureLoad(sd.built.plate || sd.built, pressure.q);
+      } catch (error) {
+        return { ok: false, reason: error.code || 'SHELL_PRESSURE_INVALID', loadId: load.id || null, shellId: target };
+      }
       for (let i = 0; i < 24; i += 1) F[sd.dof[i]] += vector[i];
     } else {
       const md = memData[load.member];
@@ -503,7 +522,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       memberResults[member.id] = recoverMemberResult(member, md, D, loads, stationCount);
     }
 
-    const shellResults = {};
+    const shellResults = Object.create(null);
     for (const shell of shellData) {
       const displacements = shell.dof.map((dof) => D[dof]);
       shellResults[shell.id] = shell.formulation === 'membrane'
@@ -511,6 +530,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
         : {
             ok: true,
             formulation: shell.formulation,
+            elementFormulation: shell.built.elementFormulation || null,
             displacement: displacements,
             pressureLoadSupported: true,
             qualification: shell.built.qualification || null,
@@ -519,15 +539,25 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
           };
     }
 
+    const shellBlockers = [...new Set(shellData.flatMap((item) => shellElementQualificationBlockers(item.built)))];
     solver.shellFem = {
       elementCount: shellData.length,
       formulations: [...new Set(shellData.map((item) => item.formulation))],
-      qualificationStatus: shellData.some((item) => item.built.qualification?.status === 'blocked') ? 'blocked' : 'qualified',
-      blockers: [...new Set(shellData.flatMap((item) => item.built.designEligibility?.reasonCodes || []))],
+      qualificationStatus: shellBlockers.length ? 'blocked' : 'qualified',
+      designTransferAllowed: shellBlockers.length === 0,
+      blockers: shellBlockers,
     };
 
     return { ok: true, disp, reactions, memberResults, shellResults, solver };
   }
+}
+
+function shellElementQualificationBlockers(element = {}) {
+  const explicit = element.designEligibility?.reasonCodes || [];
+  const status = String(element.qualification?.status || '').toLowerCase();
+  if (status === 'pass' && element.designEligibility?.allowed === true && explicit.length === 0) return [];
+  if (explicit.length) return explicit;
+  return [element.qualification?.reason || 'SHELL_NUMERICAL_QUALIFICATION_REQUIRED'];
 }
 
 function activeDiaphragmGroups(nodes, groups = []) {
@@ -764,6 +794,10 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
   const K = Array.from({ length: ndof }, () => new Array(ndof).fill(0));
   const memData = {};
   const shellData = [];
+  const shellIdentity = validateShellElementIds(ctx.shells || []);
+  if (!shellIdentity.ok) {
+    return { ...shellIdentity, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, ndof };
+  }
 
   for (const member of members) {
     if (member.source === 'shellFemConnectivity') continue;
@@ -809,12 +843,19 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
 
   for (const shell of ctx.shells || []) {
     const nodeIds = shell.nodeIds || [];
-    if (nodeIds.length !== 4 || !nodeIds.every((id) => idx[id] != null)) continue;
+    if (nodeIds.length !== 4) return { ok: false, reason: 'SHELL_NODE_COUNT_INVALID', shellId: shell.id || null, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, ndof };
+    if (new Set(nodeIds).size !== 4) return { ok: false, reason: 'SHELL_NODE_IDS_DUPLICATE', shellId: shell.id || null, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, ndof };
+    const missingNodeId = nodeIds.find((id) => idx[id] == null);
+    if (missingNodeId != null) return { ok: false, reason: 'SHELL_NODE_REFERENCE_MISSING', shellId: shell.id || null, nodeId: missingNodeId, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, ndof };
     const input = { ...shell, nodes: nodeIds.map((id) => nodeMap[id]), material: shell.material || getMat(shell.matId) };
-    const formulation = shell.formulation === 'membrane' ? 'membrane' : shell.formulation === 'plate' ? 'plate' : 'shell';
+    const formulation = resolveShellFormulation(shell.formulation);
+    if (!formulation) return { ok: false, reason: 'SHELL_FORMULATION_UNSUPPORTED', shellId: shell.id || null, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, ndof };
     const built = formulation === 'membrane'
-      ? buildWallMembraneQm6(input, { drillingAlpha: ctx.shellCriteria?.drillingAlpha })
-      : formulation === 'plate' ? buildSlabPlateDkq(input) : buildFlatShellAllmanDkq(input, ctx.shellCriteria);
+      ? buildWallMembraneQm6(input, {
+          drillingAlpha: ctx.shellCriteria?.drillingAlpha,
+          drillingStiffnessRatioMax: ctx.shellCriteria?.drillingStiffnessRatioMax,
+        })
+      : formulation === 'plate' ? buildSlabPlateMitc4(input) : buildFlatShellQm6Mitc4(input, ctx.shellCriteria);
     if (!built.ok) return { ...built, shellId: shell.id || null, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, ndof };
     shellData.push({
       id: shell.id,
@@ -869,6 +910,23 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     ndof,
     partialFixity: summarizePartialFixity(memData),
   };
+}
+
+function resolveShellFormulation(value) {
+  if (value === 'membrane' || value === 'plate') return value;
+  if (value == null || value === 'shell' || value === 'fem') return 'shell';
+  return null;
+}
+
+function validateShellElementIds(shells = []) {
+  const seen = new Set();
+  for (const shell of shells) {
+    const id = typeof shell?.id === 'string' ? shell.id.trim() : '';
+    if (!id) return { ok: false, reason: 'SHELL_ID_REQUIRED', shellId: null };
+    if (seen.has(id)) return { ok: false, reason: 'SHELL_ID_DUPLICATE', shellId: id };
+    seen.add(id);
+  }
+  return { ok: true };
 }
 
 export function conditionMemberLocalSystem(md, memberId) {

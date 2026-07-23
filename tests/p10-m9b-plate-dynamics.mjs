@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { analyzeDynamics, createModel } from '../src/index.js';
+import { analyzeDynamics, createModel, runAnalysisCase } from '../src/index.js';
 
 const E = 22.7e3;
 const nu = 0.3;
@@ -19,6 +19,10 @@ model.analysisSettings.responseSpectrum = {
 
 const result = analyzeDynamics(model);
 assert.equal(result.ok, true, result.reason);
+assert.equal(result.designBlocked, true);
+assert.equal(result.shellFemQualification.numericalQualificationStatus, 'PASS');
+assert.equal(result.shellFemQualification.designTransferAllowed, false);
+assert.ok(result.designBlockers.includes('SHELL_MODEL_MESH_CONVERGENCE_REQUIRED'));
 assert.equal(result.condensation.status, 'available');
 assert.ok(result.condensation.maxRelativeEquilibriumResidual < 1e-12);
 assert.equal(result.modes.length, 1);
@@ -41,6 +45,58 @@ assert.ok(rsa.participatingMassRatio > 0.9);
 // Shell modal forces are intentionally not promoted to member-design forces.
 assert.equal(rsa.memberForceRecoveryStatus, 'unsupported');
 assert.equal(rsa.memberForces.designBlocked, true);
+
+const selfWeightMassModel = plateModel();
+selfWeightMassModel.analysisSettings.modalModeCount = 1;
+selfWeightMassModel.analysisSettings.responseSpectrum = { enabled: false };
+selfWeightMassModel.analysisSettings.massSource = {
+  combos: [],
+  includeNodeMass: true,
+  includeSelfWeight: true,
+};
+const selfWeightMassResult = analyzeDynamics(selfWeightMassModel);
+assert.equal(selfWeightMassResult.ok, true, selfWeightMassResult.reason);
+assert.equal(selfWeightMassResult.mass.massSource.physicalShellMassIncluded, true);
+assert.ok(Math.abs(selfWeightMassResult.mass.massSource.totalMass - density * thickness * span ** 2) < 1e-12);
+assert.ok(Math.abs(selfWeightMassResult.mass.total[2] - result.mass.total[2]) < 1e-12);
+assert.ok(Math.abs(selfWeightMassResult.modes[0].omega - result.modes[0].omega) / result.modes[0].omega < 1e-12);
+assert.equal(
+  selfWeightMassResult.mass.massSource.rows.some((row) => row.sources.some((source) => source.includes('shellFemConnectivity'))),
+  false,
+);
+assert.ok(selfWeightMassResult.mass.massSource.skipped.some((row) => row.reason === 'generated-or-massless-member'));
+
+const strictCriteriaModel = plateModel();
+strictCriteriaModel.shells = strictCriteriaModel.shells.map((shell) => ({ ...shell, formulation: 'shell' }));
+strictCriteriaModel.analysisSettings.responseSpectrum = { enabled: false };
+strictCriteriaModel.analysisSettings.modalModeCount = 1;
+strictCriteriaModel.analysisCriteria = {
+  ...strictCriteriaModel.analysisCriteria,
+  criteria: {
+    ...strictCriteriaModel.analysisCriteria.criteria,
+    shell: {
+      ...strictCriteriaModel.analysisCriteria.criteria.shell,
+      drillingStiffnessRatioMax: 1e-10,
+    },
+  },
+};
+const strictCriteriaResult = analyzeDynamics(strictCriteriaModel);
+assert.equal(strictCriteriaResult.ok, true);
+assert.equal(strictCriteriaResult.designBlocked, true);
+assert.equal(strictCriteriaResult.shellFemQualification.numericalQualificationStatus, 'BLOCKED');
+assert.ok(strictCriteriaResult.shellFemQualification.blockers.includes('SHELL_DRILLING_STIFFNESS_RATIO_EXCEEDED'));
+
+const routedModal = runAnalysisCase(model, {
+  id: 'P10-M9B-SHELL-MODAL',
+  kind: 'modal',
+  settings: { modalModeCount: 1 },
+});
+assert.equal(routedModal.ok, true);
+assert.equal(routedModal.status, 'review-required');
+assert.equal(routedModal.qualification, 'blocked');
+assert.equal(routedModal.designBlocked, true);
+assert.equal(routedModal.summary.ok, false);
+assert.equal(routedModal.summary.shellFemQualification.designTransferAllowed, false);
 
 export const M9B_DYNAMICS_SNAPSHOT = Object.freeze({
   version: 'p10-m9b-mitc4-modal-rsa-v1',

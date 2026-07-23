@@ -1,6 +1,8 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { resolveLoadDirection } from '../loads/fixedEnd/common.js';
 import { maxAbs, memberAxes } from './linear3dElement.js';
+import { buildShellLocalFrame, pressureLoad24, quadAreaInPlane } from './shell/shellElementMath.js';
+import { resolveShellPressureLoad } from '../core/shellPressureLoad.js';
 
 const DEFAULT_EQUILIBRIUM_LIMIT = 1e-8;
 
@@ -683,6 +685,7 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const referencePoint = [0, 0, 0];
   const nodeMap = Object.fromEntries(nodes.map((node) => [node.id, node]));
   const memberMap = Object.fromEntries(members.map((member) => [member.id, member]));
+  const shellMap = new Map((out.shellFrameAssembly?.femElements || []).map((shell) => [shell.id, shell]));
   const memberResultMap = out.memberResults || {};
   const totalLoad = [0, 0, 0];
   const totalLoadMoment = [0, 0, 0];
@@ -691,7 +694,7 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const equilibriumIssues = [];
 
   for (const load of loads) {
-    const resultant = loadResultant(load, nodeMap, memberMap, referencePoint, memberResultMap);
+    const resultant = loadResultant(load, nodeMap, memberMap, referencePoint, memberResultMap, shellMap);
     if (!resultant) continue;
     if (resultant.issue) {
       equilibriumIssues.push(resultant.issue);
@@ -774,7 +777,7 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const reactionResultantsAvailable = !equilibriumIssues.some((issue) => issue.source === 'reaction');
 
   return {
-    equilibriumVersion: 'p7-m7-six-resultant-equilibrium-v1',
+    equilibriumVersion: 'p10-m9-six-resultant-equilibrium-v2-shell-pressure',
     referencePoint,
     totalLoad: loadResultantsAvailable ? totalLoad : null,
     totalReaction: reactionResultantsAvailable ? totalReaction : null,
@@ -815,7 +818,7 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   };
 }
 
-function loadResultant(load, nodeMap, memberMap, referencePoint, memberResultMap = {}) {
+function loadResultant(load, nodeMap, memberMap, referencePoint, memberResultMap = {}, shellMap = new Map()) {
   if (load.type === 'nodal') {
     const node = nodeMap[load.node];
     const magnitude = Number(load.P);
@@ -835,6 +838,34 @@ function loadResultant(load, nodeMap, memberMap, referencePoint, memberResultMap
     return { force: [0, 0, 0], moment: scale(axis, magnitude) };
   }
   if (['temperature', 'tgradient'].includes(load.type)) return null;
+  if (load.type === 'pressure' || load.type === 'shellPressure') {
+    const pressureLoad = resolveShellPressureLoad(load);
+    if (!pressureLoad.ok) return loadResultantFailure(load, pressureLoad.reason, 'shell', null);
+    const target = pressureLoad.target;
+    const shell = shellMap.get(target);
+    if (!shell) return loadResultantFailure(load, 'SHELL_LOAD_GEOMETRY_NOT_AVAILABLE', 'shell', target);
+    const nodes = (shell.nodeIds || []).map((id) => nodeMap[id]);
+    const frame = buildShellLocalFrame(nodes);
+    if (!frame.ok) return loadResultantFailure(load, frame.reason || 'SHELL_LOAD_GEOMETRY_NOT_AVAILABLE', 'shell', target);
+    const pressure = pressureLoad.q;
+    const area = quadAreaInPlane(frame.projected);
+    let vector;
+    try {
+      vector = pressureLoad24(frame, area, pressure);
+    } catch (error) {
+      return loadResultantFailure(load, error.code || 'SHELL_PRESSURE_RESULTANT_NOT_AVAILABLE', 'shell', target);
+    }
+    const force = [0, 0, 0];
+    const moment = [0, 0, 0];
+    for (let local = 0; local < 4; local += 1) {
+      const nodalForce = vector.slice(local * 6, local * 6 + 3);
+      const point = pointOf(nodes[local]);
+      if (!point || !finiteVector(nodalForce)) return loadResultantFailure(load, 'NONFINITE_LOAD_RESULTANT', 'shell', target);
+      addInto(force, nodalForce);
+      addInto(moment, cross(subtract(point, referencePoint), nodalForce));
+    }
+    return { force, moment };
+  }
 
   const member = memberMap[load.member];
   const geometry = memberLoadGeometry(member, nodeMap, memberResultMap[member?.id]);

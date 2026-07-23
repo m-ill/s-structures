@@ -6,7 +6,11 @@ import {
   referenceShellTangentBatch,
 } from './cpuReference.js';
 
-export const SHELL_GPU_KERNEL_VERSION = 'p10-m9d-shell-batch-kernels-v1';
+export const SHELL_GPU_KERNEL_VERSION = 'p10-m9d-shell-precomputed-transport-v3-hard-qualified';
+export const SHELL_GPU_QUALIFICATION_SCOPE = 'precomputed-matrix-reconstruction-deterministic-gather-generic-recovery';
+export const SHELL_GPU_SHADOW_QUALIFICATION_SCOPE = 'precomputed-matrix-reconstruction';
+export const SHELL_GPU_NATIVE_BASE_QUALIFICATION_SCOPE = 'precomputed-matrix-reconstruction-deterministic-gather';
+export const SHELL_GPU_TRANSPORT_RELATIVE_ERROR_MAX = 1e-6;
 
 export function runShellCpuReference(batch, options = {}) {
   const precision = options.precision === 'f32' ? 'f32' : 'f64';
@@ -21,25 +25,46 @@ export function runShellCpuReference(batch, options = {}) {
 
 export function runShellGpuBatch(batch, options = {}) {
   const cpu = runShellCpuReference(batch, { precision: 'f64' });
-  const candidate = runShellCpuReference(batch, { precision: options.precision || 'f32' });
+  const candidate = runShellCpuReference(batch, { precision: 'f32' });
   const relativeError = maxRelativeError(candidate.tangentValues, cpu.tangentValues);
-  const tolerance = Number(options.tolerance ?? 1e-6);
-  const residualGate = Number(options.gpuResidualRefine ?? 1e-10);
-  const residual = relativeError * Number(options.refinementFactor ?? 1e-5);
-  const qualified = relativeError <= tolerance && residual <= residualGate;
+  const requestedTolerance = Number(options.tolerance ?? SHELL_GPU_TRANSPORT_RELATIVE_ERROR_MAX);
+  const tolerance = qualifiedTransportTolerance(requestedTolerance);
+  // This path reconstructs precomputed matrices; it does not perform an
+  // iterative solve. The only honest residual is the measured reconstruction
+  // difference itself, not a caller-scaled proxy for solver refinement.
+  const residual = relativeError;
+  const residualGate = tolerance;
+  const kernelParityQualified = Number.isFinite(relativeError) && relativeError <= tolerance;
+  const elementDesignTransferAllowed = batch.designTransferAllowed === true;
+  const qualified = kernelParityQualified && elementDesignTransferAllowed;
+  const blockers = qualificationBlockers(batch, kernelParityQualified);
   return {
-    ...(qualified ? candidate : cpu),
-    backend: qualified ? 'f32-shell-batch-shadow' : 'cpu-f64-fallback',
-    requestedBackend: 'webgpu-planned',
+    ...(kernelParityQualified ? candidate : cpu),
+    backend: kernelParityQualified ? 'f32-shell-batch-shadow' : 'cpu-f64-fallback',
+    requestedBackend: 'webgpu-precomputed-matrix-transport',
+    requestedPrecision: options.precision || 'f32',
+    qualificationPrecision: 'f32',
     qualified,
-    fallbackUsed: !qualified,
+    kernelParityQualified,
+    elementDesignTransferAllowed,
+    designTransferAllowed: qualified,
+    blockers,
+    fallbackUsed: !kernelParityQualified,
+    fallbackReason: !kernelParityQualified
+      ? 'SHELL_GPU_PARITY_FAILED'
+      : elementDesignTransferAllowed ? null : 'SHELL_ELEMENT_DESIGN_QUALIFICATION_BLOCKED',
     relativeError,
+    requestedTolerance,
     tolerance,
     residual,
     residualGate,
-    plannedKernels: ['K1-element-stiffness', 'K2-deterministic-gather', 'K3-stress-recovery'],
+    residualKind: 'matrix-reconstruction-relative-error',
+    operations: ['K1-precomputed-matrix-reconstruction'],
+    qualificationScope: SHELL_GPU_SHADOW_QUALIFICATION_SCOPE,
+    maximumQualificationScope: SHELL_GPU_QUALIFICATION_SCOPE,
+    formulationNativeStiffnessGeneration: false,
     nativeDispatch: false,
-    deterministicAssembly: true,
+    deterministicAssembly: false,
     telemetry: { elementCount: batch.elementCount, generatedValueCount: candidate.tangentValues.length, referenceScale: maxAbs(batch.rows[0]?.matrix || [[0]]) },
   };
 }
@@ -111,22 +136,34 @@ export async function executeNativeShellGpuBatch(platform, batch, options = {}) 
     const assemblyError = maxRelativeError(assembly.values, cpuAssembly);
     const stressError = stress ? maxRelativeError(stress.values, cpuStress) : 0;
     const relativeError = Math.max(tangentError, assemblyError, stressError);
-    const tolerance = Number(options.tolerance ?? 1e-6);
+    const requestedTolerance = Number(options.tolerance ?? SHELL_GPU_TRANSPORT_RELATIVE_ERROR_MAX);
+    const tolerance = qualifiedTransportTolerance(requestedTolerance);
     if (relativeError > tolerance) throw shellGpuError('SHELL_GPU_PARITY_FAILED', `Native shell GPU parity ${relativeError} exceeds ${tolerance}.`);
+    const kernelParityQualified = true;
+    const elementDesignTransferAllowed = batch.designTransferAllowed === true;
+    const qualified = kernelParityQualified && elementDesignTransferAllowed;
     return {
       ok: true,
       version: SHELL_GPU_KERNEL_VERSION,
       backend: 'webgpu-shell-native',
       nativeDispatch: true,
-      qualified: true,
+      qualified,
+      kernelParityQualified,
+      elementDesignTransferAllowed,
+      designTransferAllowed: qualified,
+      blockers: qualificationBlockers(batch, kernelParityQualified),
       fallbackUsed: false,
+      fallbackReason: qualified ? null : 'SHELL_ELEMENT_DESIGN_QUALIFICATION_BLOCKED',
       tangentValues: tangent.values,
       assembledValues: assembly.values,
       stressValues: stress?.values || null,
       slotKeys: gather.slotKeys,
       relativeError,
-      parity: { tangentError, assemblyError, stressError, tolerance },
-      kernels: ['K1-element-tangent', 'K2-deterministic-gather', ...(stress ? ['K3-stress-recovery'] : [])],
+      parity: { tangentError, assemblyError, stressError, requestedTolerance, tolerance },
+      kernels: ['K1-precomputed-matrix-reconstruction', 'K2-deterministic-gather', ...(stress ? ['K3-generic-operator-recovery'] : [])],
+      qualificationScope: recovery ? SHELL_GPU_QUALIFICATION_SCOPE : SHELL_GPU_NATIVE_BASE_QUALIFICATION_SCOPE,
+      maximumQualificationScope: SHELL_GPU_QUALIFICATION_SCOPE,
+      formulationNativeStiffnessGeneration: false,
       telemetry: { elementCount: batch.elementCount, slotCount: gather.slotKeys.length, durationMs: now() - startedAt },
     };
   } catch (error) {
@@ -140,8 +177,16 @@ export async function executeNativeShellGpuBatch(platform, batch, options = {}) 
       backend: 'cpu-f64-fallback',
       nativeDispatch: false,
       qualified: false,
+      kernelParityQualified: false,
+      elementDesignTransferAllowed: batch.designTransferAllowed === true,
+      designTransferAllowed: false,
+      blockers: qualificationBlockers(batch, false),
       fallbackUsed: true,
       fallbackReason: error.code || error.message || 'SHELL_GPU_EXECUTION_FAILED',
+      qualificationScope: 'none',
+      attemptedQualificationScope: recovery ? SHELL_GPU_QUALIFICATION_SCOPE : SHELL_GPU_NATIVE_BASE_QUALIFICATION_SCOPE,
+      maximumQualificationScope: SHELL_GPU_QUALIFICATION_SCOPE,
+      formulationNativeStiffnessGeneration: false,
       tangentValues: cpuTangent,
       assembledValues: cpuAssembly,
       stressValues: cpuStress,
@@ -152,9 +197,30 @@ export async function executeNativeShellGpuBatch(platform, batch, options = {}) 
 }
 
 function maxRelativeError(a, b) {
-  let error = 0;
-  for (let i = 0; i < a.length; i += 1) error = Math.max(error, Math.abs(a[i] - b[i]) / Math.max(1, Math.abs(b[i])));
-  return error;
+  if (a?.length !== b?.length) return Infinity;
+  let referenceScale = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    if (!Number.isFinite(a[i]) || !Number.isFinite(b[i])) return Infinity;
+    referenceScale = Math.max(referenceScale, Math.abs(b[i]));
+  }
+  if (!(referenceScale > 0)) return a.every((value) => value === 0) ? 0 : Infinity;
+  let differenceSquares = 0;
+  let referenceSquares = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    const difference = (a[i] - b[i]) / referenceScale;
+    const reference = b[i] / referenceScale;
+    if (!Number.isFinite(difference)) return Infinity;
+    differenceSquares += difference * difference;
+    referenceSquares += reference * reference;
+  }
+  return Math.sqrt(differenceSquares / referenceSquares);
+}
+
+function qualifiedTransportTolerance(requested) {
+  return Math.min(
+    Number.isFinite(requested) && requested > 0 ? requested : SHELL_GPU_TRANSPORT_RELATIVE_ERROR_MAX,
+    SHELL_GPU_TRANSPORT_RELATIVE_ERROR_MAX,
+  );
 }
 
 function defaultScatters(batch) {
@@ -190,6 +256,12 @@ function stressRecoveryF64(input) {
     output[element * input.responseStride + response] = sum;
   }
   return output;
+}
+function qualificationBlockers(batch, kernelParityQualified) {
+  const blockers = [...(Array.isArray(batch?.blockers) ? batch.blockers : [])];
+  if (batch?.designTransferAllowed !== true && blockers.length === 0) blockers.push('SHELL_ELEMENT_DESIGN_QUALIFICATION_BLOCKED');
+  if (!kernelParityQualified) blockers.push('SHELL_GPU_PARITY_FAILED');
+  return [...new Set(blockers)];
 }
 function now() { return globalThis.performance?.now?.() ?? Date.now(); }
 function shellGpuError(code, message) { return Object.assign(new Error(message), { code }); }

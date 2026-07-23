@@ -69,16 +69,28 @@ assert.equal(unilateral.ok, false);
 assert.ok(unilateral.blocking.some((row) => row.code === 'NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED'));
 
 const shellModel = structuredClone(model);
+const shellNodeIds = [roofNodes[0], roofNodes[1], roofNodes[4], roofNodes[3]];
 shellModel.shells = [{
   id: 'S1',
-  nodeIds: roofNodes.slice(0, 4),
+  nodeIds: shellNodeIds,
   thickness: 0.18,
   matId: shellModel.materials[0].id,
 }];
 const shellDomain = buildCanonicalAnalysisDomain(shellModel);
+assert.equal(shellDomain.ok, true, shellDomain.reason);
 const shellCapability = evaluateNonlinearIntegrationCapabilities(shellDomain, { mode: 'static' });
 assert.equal(shellCapability.ok, true);
 assert.ok(shellCapability.warnings.some((row) => row.code === 'NONLINEAR_SHELL_EQUIVALENT_ONLY'));
+
+const femShellModel = structuredClone(shellModel);
+femShellModel.shells[0].formulation = 'shell';
+const femShellDomain = buildCanonicalAnalysisDomain(femShellModel);
+assert.equal(femShellDomain.ok, true, femShellDomain.reason);
+const femShellCapability = evaluateNonlinearIntegrationCapabilities(femShellDomain, { mode: 'static' });
+assert.equal(femShellCapability.ok, false);
+assert.ok(femShellCapability.blocking.some((row) => row.code === 'NONLINEAR_SHELL_FEM_UNSUPPORTED'));
+assert.ok(!femShellCapability.warnings.some((row) => row.code === 'NONLINEAR_SHELL_EQUIVALENT_ONLY'));
+assert.ok(femShellDomain.capabilities.issues.some((row) => row.code === 'NONLINEAR_SHELL_FEM_UNSUPPORTED'));
 
 console.log(JSON.stringify({
   ok: true,
@@ -89,4 +101,5 @@ console.log(JSON.stringify({
   dynamicReleaseReason: dynamicRelease.blocking[0].code,
   unilateralReason: unilateral.blocking[0].code,
   shellWarningCount: shellCapability.warnings.length,
+  femShellReason: femShellCapability.blocking[0].code,
 }, null, 2));

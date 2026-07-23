@@ -1,6 +1,6 @@
 import { stableHash } from '../../core/stableHash.js';
 
-export const NONLINEAR_INTEGRATION_CAPABILITY_VERSION = 'p8-m9-integration-capability-v1';
+export const NONLINEAR_INTEGRATION_CAPABILITY_VERSION = 'p10-m9-integration-capability-v2-shell-formulation';
 export const NONLINEAR_INTEGRATION_MODES = Object.freeze(['static', 'dynamic']);
 
 export function evaluateNonlinearIntegrationCapabilities(input = {}, options = {}) {
@@ -54,7 +54,7 @@ export function evaluateNonlinearIntegrationCapabilities(input = {}, options = {
         'Three-dimensional rigid-arm offsets require a finite-rotation vector-offset formulation.',
       ));
     }
-    if (descriptor.origin?.type === 'shell') {
+    if (descriptor.origin?.type === 'shell' && descriptor.origin?.formulation === 'shellFrameAssembly') {
       issues.push(warning(
         'NONLINEAR_SHELL_EQUIVALENT_ONLY',
         'shell',
@@ -70,6 +70,15 @@ export function evaluateNonlinearIntegrationCapabilities(input = {}, options = {
         'Wall behavior is represented by a preliminary mid-pier equivalent member.',
       ));
     }
+  }
+
+  for (const shell of domain?.shellAssembly?.femElements || []) {
+    issues.push(blocking(
+      'NONLINEAR_SHELL_FEM_UNSUPPORTED',
+      'shell',
+      shell.id,
+      'Shell FEM elements are not supported by the current nonlinear frame integration path.',
+    ));
   }
 
   for (const member of model.members || []) {

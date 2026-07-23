@@ -60,7 +60,9 @@ export function analyzeDynamics(model, options = {}) {
     strictCapabilities: false,
   });
   const domainIdentity = buildDomainAdapterIdentity(domain, 'modal');
-  if (!domain.ok) return { ok: false, reason: domain.reason || 'CANONICAL_DOMAIN_INVALID', analysisDomain: domainIdentity };
+  if (!domain.ok) return blockedModalResult(domain.reason || 'CANONICAL_DOMAIN_INVALID', {
+    analysisDomain: domainIdentity,
+  });
   model = domain.solverModel;
   const settings = { ...(model.analysisSettings || {}), ...(options || {}) };
   const modeCount = Math.max(1, settings.modalModeCount | 0 || 6);
@@ -71,10 +73,14 @@ export function analyzeDynamics(model, options = {}) {
     shells: domain.shellAssembly?.femElements || [],
     shellCriteria: {
       drillingAlpha: resolveCriterion(model, 'shell.drillingAlpha', 1e-5),
+      drillingStiffnessRatioMax: resolveCriterion(model, 'shell.drillingStiffnessRatioMax', 1e-4),
       warpTol: resolveCriterion(model, 'shell.warpTol', 1e-2),
     },
   });
-  if (!elasticSystem.ok) return { ok: false, reason: elasticSystem.reason || 'NO_STIFFNESS', analysisDomain: domainIdentity };
+  if (!elasticSystem.ok) return blockedModalResult(elasticSystem.reason || 'NO_STIFFNESS', {
+    analysisDomain: domainIdentity,
+  });
+  const shellFemQualification = summarizeModalShellQualification(elasticSystem.shellData || []);
   const stiffnessBasis = settings.stiffnessBasis || (settings.prestressed ? null : 'elastic-Ke');
   const prestressRequested = settings.prestressed === true || settings.tangentStiffness != null || settings.gravityCombinationId != null;
   if (prestressRequested && stiffnessBasis !== 'gravity-tangent-Kt') {
@@ -109,7 +115,9 @@ export function analyzeDynamics(model, options = {}) {
   const system = tangentStiffness ? { ...elasticSystem, K: tangentStiffness } : elasticSystem;
 
   const massSourceSpec = settings.massSource || null;
-  const massSourceTrace = massSourceSpec ? buildMassSourceTrace(model, massSourceSpec) : null;
+  const massSourceTrace = massSourceSpec
+    ? buildMassSourceTrace(model, massSourceSpec, { shellData: elasticSystem.shellData || [] })
+    : null;
   const mass = buildLumpedMass(model, system, massSourceSpec, massSourceTrace);
   const constraintDomain = buildModalConstraintDomain(model, system, mass);
   const modalSystem = constraintDomain.system;
@@ -117,7 +125,10 @@ export function analyzeDynamics(model, options = {}) {
   const modalDofs = modalSystem.free.filter((dof) => (
     constraintDomain.applied ? constraintDomain.massMatrix[dof]?.[dof] > 0 : mass[dof] > 0
   ));
-  if (!modalDofs.length) return { ok: false, reason: 'NO_MASS', modes: [], rsa: null, analysisDomain: domainIdentity };
+  if (!modalDofs.length) return blockedModalResult('NO_MASS', {
+    analysisDomain: domainIdentity,
+    shellFemQualification,
+  });
 
   const coordinateDofs = modalSystem.free.slice();
   const residualDofs = coordinateDofs.filter((dof) => !modalDofs.includes(dof));
@@ -273,6 +284,11 @@ export function analyzeDynamics(model, options = {}) {
     diaphragmAssembly: constraintDomain.summary,
     analysisDomain: domainIdentity,
     eigen: eigenSummary(eig),
+    shellFemQualification,
+    qualification: shellFemQualification?.designTransferAllowed === false ? 'blocked' : 'candidate',
+    designBlocked: shellFemQualification?.designTransferAllowed === false,
+    designBlockReason: shellFemQualification?.blockers?.[0] || null,
+    designBlockers: shellFemQualification?.blockers || [],
     modes,
     mass: {
       total: totalMass,
@@ -292,6 +308,55 @@ export function analyzeDynamics(model, options = {}) {
     value: buildDirectDynamicSystem(model, elasticSystem, modalSystem, constraintDomain, mass),
   });
   return result;
+}
+
+function summarizeModalShellQualification(shellData = []) {
+  if (!shellData.length) return null;
+  const numericalBlockers = [];
+  const designBlockers = [];
+  const failedElementIds = [];
+  for (const item of shellData) {
+    const qualification = item.built?.qualification || {};
+    const status = String(qualification.status || '').toLowerCase();
+    const explicit = Array.isArray(item.built?.designEligibility?.reasonCodes)
+      ? item.built.designEligibility.reasonCodes.filter(Boolean)
+      : [];
+    if (status !== 'pass') {
+      failedElementIds.push(item.id);
+      numericalBlockers.push(qualification.reason || 'SHELL_NUMERICAL_QUALIFICATION_REQUIRED');
+    }
+    if (item.built?.designEligibility?.allowed !== true || explicit.length > 0) {
+      designBlockers.push(...(explicit.length
+        ? explicit
+        : [qualification.reason || 'SHELL_DESIGN_TRANSFER_QUALIFICATION_REQUIRED']));
+    }
+  }
+  const blockers = [...new Set([...numericalBlockers, ...designBlockers])];
+  return {
+    version: 'p10-m9-modal-shell-qualification-v1',
+    elementCount: shellData.length,
+    formulations: [...new Set(shellData.map((item) => item.formulation))],
+    numericalQualificationStatus: numericalBlockers.length ? 'BLOCKED' : 'PASS',
+    designTransferAllowed: blockers.length === 0,
+    failedElementIds,
+    blockers,
+  };
+}
+
+function blockedModalResult(reason, extras = {}) {
+  return {
+    version: MODAL_RSA_RECOVERY_VERSION,
+    ok: false,
+    status: 'blocked',
+    reason,
+    qualification: 'blocked',
+    designBlocked: true,
+    designBlockReason: reason,
+    designBlockers: [reason],
+    modes: [],
+    rsa: null,
+    ...extras,
+  };
 }
 
 function buildDirectDynamicSystem(model, elasticSystem, modalSystem, constraintDomain, physicalMass) {
@@ -349,7 +414,9 @@ function failedModalAnalysis({
     analysisDomain,
     eigen,
     designBlocked: true,
+    designBlockReason: reason,
     designBlockers: [reason],
+    qualification: 'blocked',
     type: 'modal_lumped_mass',
     dimensions: MODAL_DIMENSIONS,
     units: modalUnits(model.units),
@@ -379,7 +446,7 @@ export function buildLumpedMass(model, system, massSource = null, preparedTrace 
   const idx = system.idx || Object.fromEntries((model.nodes || []).map((node, i) => [node.id, i]));
 
   if (massSource) {
-    const trace = preparedTrace || buildMassSourceTrace(model, massSource);
+    const trace = preparedTrace || buildMassSourceTrace(model, massSource, { shellData: system.shellData || [] });
     for (const row of trace.rows || []) {
       const base = idx[row.node] * 6;
       if (!Number.isFinite(base)) continue;

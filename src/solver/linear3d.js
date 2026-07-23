@@ -66,7 +66,11 @@ export function prepareElasticAnalysis(inputModel) {
     },
   };
 
-  if (!model.members?.length && !(model.shells || []).some((shell) => ['membrane', 'plate', 'shell', 'fem'].includes(shell?.formulation))) {
+  const analysisShells = [
+    ...(Array.isArray(model.shells) ? model.shells : []),
+    ...(Array.isArray(model.slabs) ? model.slabs.filter((item) => item?.type === 'shell') : []),
+  ];
+  if (!model.members?.length && analysisShells.length === 0) {
     output.ok = false;
     output.empty = true;
     return { terminal: true, output, model, validation, pDeltaMethod, combos: [], canonicalBase: null };
@@ -172,9 +176,22 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
       { ...(model.analysisSettings || {}), pDeltaMethod: 'off' },
     );
   }
-  const shellNumericalQualification = summarizeShellNumericalQualification(output.byCombo);
+  const femQualification = summarizeShellNumericalQualification(output.byCombo);
+  const equivalentShellCount = Number(prepared.canonicalBase?.shellAssembly?.equivalentShellCount) || 0;
+  const shellBlockers = [...new Set([
+    ...femQualification.blockers,
+    ...(equivalentShellCount > 0 ? ['EQUIVALENT_SHELL_PRELIMINARY_ONLY'] : []),
+  ])];
+  const shellNumericalQualification = {
+    ...femQualification,
+    status: shellBlockers.length ? 'blocked' : 'qualified',
+    designTransferAllowed: shellBlockers.length === 0,
+    blockers: shellBlockers,
+    equivalentShellCount,
+  };
   output.shellFemQualification = shellNumericalQualification;
-  const shellDesignEligible = shellNumericalQualification.status !== 'blocked';
+  output.equivalentShellScope = prepared.canonicalBase?.shellAssembly?.equivalentShellScope || null;
+  const shellDesignEligible = shellNumericalQualification.designTransferAllowed === true;
   const directAnalysisQualified = output.pDelta?.method === 'direct'
     && output.pDelta?.ok === true
     && output.combinationCompleteness.allComplete
@@ -554,15 +571,26 @@ export function analyzeAll(model, factors = null, options = {}) {
 function analyzeAllOnce(model, factors = null, options = {}) {
   const domain = options.expandedDomain || buildExpandedAnalysisDomain(model, factors, options);
   const { nodes, members, loads, solverModel } = domain;
-  if (!domain.ok) return {
-    ok: false,
-    anyOk: false,
-    reason: domain.reason || 'CANONICAL_DOMAIN_INVALID',
-    analysisDomain: domain.adapterIdentity || null,
-    domainErrors: [...(domain.elementErrors || []), ...(domain.constraint?.errors || []), ...(domain.capabilities?.blocking || [])],
-    unstableMembers: new Set(),
-    failedComponents: [],
-  };
+  if (!domain.ok) {
+    const shellDomainBlockers = [
+      ...(domain.shellAssembly?.errors || []).map((error) => error.code || 'SHELL_ASSEMBLY_INVALID'),
+      ...(domain.shellLoadErrors || []).map((error) => error.code || 'SHELL_LOAD_INVALID'),
+    ];
+    return {
+      ok: false,
+      anyOk: false,
+      reason: domain.reason || 'CANONICAL_DOMAIN_INVALID',
+      analysisDomain: domain.adapterIdentity || null,
+      domainErrors: [...(domain.elementErrors || []), ...(domain.constraint?.errors || []), ...(domain.capabilities?.blocking || [])],
+      unstableMembers: new Set(),
+      failedComponents: [],
+      shellResults: Object.create(null),
+      shellFem: summarizeShellResultQualification(Object.create(null), {
+        expectedElementCount: domain.shellAssembly?.femElementCount || 0,
+        inheritedBlockers: shellDomainBlockers,
+      }),
+    };
+  }
   if (!members.length) return {
     ok: false,
     empty: true,
@@ -594,6 +622,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     shells: domain.shellAssembly?.femElements || [],
     shellCriteria: {
       drillingAlpha: resolveCriterion(model, 'shell.drillingAlpha', 1e-5),
+      drillingStiffnessRatioMax: resolveCriterion(model, 'shell.drillingStiffnessRatioMax', 1e-4),
       warpTol: resolveCriterion(model, 'shell.warpTol', 1e-2),
     },
   };
@@ -611,7 +640,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     disp: {},
     reactions: {},
     memberResults: {},
-    shellResults: {},
+    shellResults: Object.create(null),
     solver: {
       type: 'linear_static_3d_frame',
       components: [],
@@ -689,7 +718,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
       out.disp = {};
       out.reactions = {};
       out.memberResults = {};
-      out.shellResults = {};
+      out.shellResults = Object.create(null);
       out.unstableMembers = new Set();
       out.failedComponents = [];
       out.solver = { type: 'linear_static_3d_frame', components: [] };
@@ -765,8 +794,12 @@ function analyzeAllOnce(model, factors = null, options = {}) {
       out.ok = false;
       out.reason = 'UNSTABLE_COMPONENT';
     }
+    const componentShellBlockers = out.solver.components.flatMap((component) => component?.shellFem?.blockers || []);
     out.solver = summarizeSolverDiagnostics(out.solver.components);
-    out.shellFem = summarizeShellResultQualification(out.shellResults);
+    out.shellFem = summarizeShellResultQualification(out.shellResults, {
+      expectedElementCount: domain.shellAssembly?.femElementCount || 0,
+      inheritedBlockers: componentShellBlockers,
+    });
     out.semiRigidDiaphragm = domain.semiRigid;
     out.shellFrameAssembly = domain.shellAssembly;
     out.summary = buildEquilibriumSummary(nodes, members, loads, out, {
@@ -780,7 +813,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
 function summarizeShellNumericalQualification(byCombo = {}) {
   const rows = Object.entries(byCombo).map(([comboId, result]) => ({
     comboId,
-    ...summarizeShellResultQualification(result?.shellResults || {}),
+    ...(result?.shellFem || summarizeShellResultQualification(result?.shellResults || {})),
   }));
   const blockers = [...new Set(rows.flatMap((row) => row.blockers))];
   return {
@@ -791,15 +824,31 @@ function summarizeShellNumericalQualification(byCombo = {}) {
   };
 }
 
-function summarizeShellResultQualification(shellResults = {}) {
+function summarizeShellResultQualification(shellResults = {}, options = {}) {
   const results = Object.values(shellResults || {});
-  const blockers = [...new Set(results.flatMap((row) => row?.designEligibility?.reasonCodes || []))];
+  const expectedElementCount = options.expectedElementCount == null
+    ? results.length
+    : Math.max(0, Number(options.expectedElementCount) || 0);
+  const blockers = [...new Set([
+    ...(options.inheritedBlockers || []),
+    ...results.flatMap(shellResultQualificationBlockers),
+    ...(results.length === expectedElementCount ? [] : ['SHELL_RESULTS_INCOMPLETE']),
+  ])];
   return {
     elementCount: results.length,
+    expectedElementCount,
     qualificationStatus: blockers.length ? 'blocked' : 'qualified',
     designTransferAllowed: blockers.length === 0,
     blockers,
   };
+}
+
+function shellResultQualificationBlockers(result = {}) {
+  const explicit = result.designEligibility?.reasonCodes || [];
+  const status = String(result.qualification?.status || '').toLowerCase();
+  if (status === 'pass' && result.designEligibility?.allowed === true && explicit.length === 0) return [];
+  if (explicit.length) return explicit;
+  return [result.qualification?.reason || 'SHELL_NUMERICAL_QUALIFICATION_REQUIRED'];
 }
 
 function cachedCatalogValue(cache, id, resolve) {

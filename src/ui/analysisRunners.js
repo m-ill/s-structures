@@ -163,8 +163,19 @@ export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}, a
 
 export function summarizeAnalysisResult(kind, payload = {}) {
   if (kind === 'static') {
+    const designBlocked = payload.designBlocked === true
+      || payload.shellFemQualification?.designTransferAllowed === false;
     return {
-      ok: !!payload.ok,
+      ok: !!payload.ok && !designBlocked,
+      designBlocked,
+      designBlockReason: designBlocked
+        ? payload.designBlockReason
+          || payload.designEligibility?.reason
+          || payload.shellFemQualification?.blockers?.[0]
+          || null
+        : null,
+      designEligibility: payload.designEligibility || null,
+      shellFemQualification: payload.shellFemQualification || null,
       comboCount: Object.keys(payload.byCombo || {}).length,
       comboIds: Object.keys(payload.byCombo || {}),
       hasEnvelope: !!payload.envelope,
@@ -174,7 +185,10 @@ export function summarizeAnalysisResult(kind, payload = {}) {
   }
   if (kind === 'modal') {
     return {
-      ok: !!payload.ok,
+      ok: !!payload.ok && payload.designBlocked !== true,
+      designBlocked: payload.designBlocked === true,
+      designBlockReason: payload.designBlockReason || payload.designBlockers?.[0] || null,
+      shellFemQualification: payload.shellFemQualification || null,
       modeCount: (payload.modes || []).length,
       firstPeriod: payload.modes?.[0]?.period ?? null,
       modalDofCount: payload.mass?.modalDofCount || 0,
@@ -284,7 +298,18 @@ function successHandle(item, startedAt, payload, settings) {
     : failed
       ? payload?.qualification || 'failed'
       : payload?.qualification || (preliminary ? 'preliminary' : summary.ok === false ? 'blocked' : 'candidate');
-  const designBlocked = payload?.designBlocked === true || legacyPreliminary || unsupported;
+  const designBlocked = payload?.designBlocked === true
+    || payload?.shellFemQualification?.designTransferAllowed === false
+    || legacyPreliminary
+    || unsupported;
+  const designBlockReason = designBlocked
+    ? payload?.designBlockReason
+      || payload?.designEligibility?.reason
+      || payload?.shellFemQualification?.blockers?.[0]
+      || payload?.designTransfer?.reason
+      || payload?.review?.designBlockReason
+      || null
+    : null;
   return {
     version: ANALYSIS_RUNNER_VERSION,
     caseId: item.id,
@@ -293,7 +318,7 @@ function successHandle(item, startedAt, payload, settings) {
     status: unsupported ? 'unsupported' : failed ? 'failed' : preliminary ? 'preliminary' : summary.ok === false ? 'review-required' : 'ok',
     qualification,
     designBlocked,
-    designBlockReason: payload?.designBlockReason || payload?.designTransfer?.reason || payload?.review?.designBlockReason || null,
+    designBlockReason,
     engine: payload?.engine || null,
     modelBound: payload?.modelBound ?? null,
     capability: payload?.capability || null,

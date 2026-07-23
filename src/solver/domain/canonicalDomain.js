@@ -1,6 +1,7 @@
 import { buildAnalysisDomainHashes } from '../../core/analysisDomainHashes.js';
 import { resolveRigidDiaphragms } from '../../core/diaphragmGroups.js';
 import { stableHash } from '../../core/stableHash.js';
+import { resolveShellPressureLoad } from '../../core/shellPressureLoad.js';
 import { deriveStories } from '../../core/storyModel.js';
 import { expandAdvancedLoads } from '../elasticExpansion.js';
 import { createSelfWeightLoads } from '../linear3dPost.js';
@@ -18,6 +19,10 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
   const analysisCase = clone(options.analysisCase || null);
   const semiRigid = options.includeGenerated === false ? emptySemiRigid() : expandSemiRigidDiaphragms(source);
   const shellAssembly = options.includeGenerated === false ? emptyShellAssembly() : expandShellsToFrameLinks(source);
+  const shellCandidates = [
+    ...(Array.isArray(source.shells) ? source.shells : []),
+    ...(Array.isArray(source.slabs) ? source.slabs.filter((item) => item?.type === 'shell') : []),
+  ];
   const generatedMembers = [...semiRigid.members, ...shellAssembly.members].map((member) => ({
     ...member,
     generated: true,
@@ -51,6 +56,7 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
   }
   if (options.factors || options.scale) loads = loads.map((load) => scaleLoad(load, options.factors, options.scale)).filter(Boolean);
   if (Array.isArray(options.extraLoads)) loads.push(...clone(options.extraLoads));
+  const shellLoadErrors = validateShellPressureLoads(loads, shellCandidates);
   referenceErrors.push(...loads.flatMap((load) => {
     if (load.node && !nodeIds.has(load.node)) {
       return [domainIssue('LOAD_NODE_REFERENCE_INVALID', 'load', load.id, `Load ${load.id || '(unnamed)'} references missing node ${load.node}.`)];
@@ -83,16 +89,25 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     constraints: solverModel.constraints || [],
   });
   const elements = buildElementDescriptors(solverModel, allNodes, allMembers);
-  const elementErrors = [...referenceErrors, ...elements.errors]
+  const shellErrors = (shellAssembly.errors || []).map((error) => domainIssue(
+    error.code || 'SHELL_ASSEMBLY_INVALID',
+    'shell',
+    error.shellId || null,
+    `Shell ${error.shellId || '(unnamed)'} cannot enter the canonical analysis domain.`,
+  ));
+  const elementErrors = [...referenceErrors, ...elements.errors, ...shellErrors, ...shellLoadErrors]
     .sort((a, b) => `${a.code}:${a.entityId || a.elementId || ''}`.localeCompare(`${b.code}:${b.entityId || b.elementId || ''}`));
   const capabilities = scanAnalysisDomainCapabilities(source, analysisCase, options.capabilityOptions);
   const strictBlocked = options.strictCapabilities === true && !capabilities.ok;
   const allowInvalidReferences = options.allowInvalidReferences === true;
-  const ok = constraint.ok && elements.errors.length === 0 && (allowInvalidReferences || referenceErrors.length === 0) && !strictBlocked;
+  const ok = constraint.ok && elements.errors.length === 0 && shellErrors.length === 0 && shellLoadErrors.length === 0
+    && (allowInvalidReferences || referenceErrors.length === 0) && !strictBlocked;
   const reason = !constraint.ok
     ? constraint.reason
     : referenceErrors.length && !allowInvalidReferences ? 'DOMAIN_REFERENCE_INVALID'
-      : !elements.ok ? 'ELEMENT_DESCRIPTOR_INVALID' : strictBlocked ? 'DOMAIN_CAPABILITY_UNSUPPORTED' : null;
+      : shellErrors.length ? 'SHELL_ASSEMBLY_INVALID'
+        : shellLoadErrors.length ? 'SHELL_LOAD_INVALID'
+          : !elements.ok ? 'ELEMENT_DESCRIPTOR_INVALID' : strictBlocked ? 'DOMAIN_CAPABILITY_UNSUPPORTED' : null;
   const originMap = buildOriginMap(allMembers, allSections, source);
   const metadata = buildDomainMetadata(solverModel, originMap, rigidDiaphragms);
   const hashes = buildAnalysisDomainHashes(solverModel, analysisCase);
@@ -143,6 +158,7 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     elements: elements.descriptors,
     elementErrors,
     descriptorErrors: elements.errors,
+    shellLoadErrors,
     referenceErrors,
     referencePolicy: allowInvalidReferences ? 'skip-invalid' : 'fail',
     originMap,
@@ -189,10 +205,16 @@ export function deriveCanonicalAnalysisDomain(baseDomain, options = {}) {
     && (!load.member || memberIds.has(load.member))
   )));
   const solverModel = { ...baseDomain.solverModel, loads };
+  const shellLoadErrors = validateShellPressureLoads(loads, [
+    ...(Array.isArray(solverModel.shells) ? solverModel.shells : []),
+    ...(Array.isArray(solverModel.slabs) ? solverModel.slabs.filter((item) => item?.type === 'shell') : []),
+  ]);
   const capabilities = scanAnalysisDomainCapabilities(solverModel, analysisCase, options.capabilityOptions);
   const strictBlocked = options.strictCapabilities === true && !capabilities.ok;
   const structuralReason = !baseDomain.constraint.ok
     ? baseDomain.constraint.reason
+    : baseDomain.shellAssembly?.errors?.length ? 'SHELL_ASSEMBLY_INVALID'
+    : shellLoadErrors.length ? 'SHELL_LOAD_INVALID'
     : baseDomain.referenceErrors?.length && baseDomain.referencePolicy !== 'skip-invalid' ? 'DOMAIN_REFERENCE_INVALID'
       : baseDomain.descriptorErrors?.length ? 'ELEMENT_DESCRIPTOR_INVALID' : null;
   const hashes = buildAnalysisDomainHashes(solverModel, analysisCase);
@@ -221,6 +243,7 @@ export function deriveCanonicalAnalysisDomain(baseDomain, options = {}) {
     snapshotHash: stableHash(snapshot).slice(0, 24),
     loads,
     solverModel,
+    shellLoadErrors,
     capabilities,
     loadDerivation: {
       factored: Boolean(options.factors || options.scale),
@@ -346,7 +369,44 @@ function emptySemiRigid() {
 }
 
 function emptyShellAssembly() {
-  return { version: 'disabled', shellCount: 0, linkCount: 0, rows: [], members: [], sections: [], warnings: [], limitations: [] };
+  return {
+    ok: true,
+    reason: null,
+    version: 'disabled',
+    shellCount: 0,
+    linkCount: 0,
+    femElements: [],
+    femElementCount: 0,
+    equivalentShellCount: 0,
+    rows: [],
+    members: [],
+    sections: [],
+    errors: [],
+    warnings: [],
+    limitations: [],
+  };
+}
+
+function validateShellPressureLoads(loads = [], shells = []) {
+  const shellById = new Map(shells
+    .filter((shell) => typeof shell?.id === 'string' && shell.id.trim())
+    .map((shell) => [shell.id.trim(), shell]));
+  return loads.flatMap((load) => {
+    if (load?.type !== 'pressure' && load?.type !== 'shellPressure') return [];
+    const resolved = resolveShellPressureLoad(load);
+    if (!resolved.ok) {
+      return [domainIssue(resolved.reason, 'load', load.id || null, `Shell pressure ${load.id || '(unnamed)'} is invalid: ${resolved.message}`)];
+    }
+    const target = resolved.target;
+    const shell = shellById.get(target);
+    if (!shell) {
+      return [domainIssue('SHELL_PRESSURE_TARGET_INVALID', 'load', load.id || null, `Shell pressure ${load.id || '(unnamed)'} references missing shell ${target}.`)];
+    }
+    if (!['plate', 'shell', 'fem'].includes(shell.formulation)) {
+      return [domainIssue('SHELL_PRESSURE_FORMULATION_UNSUPPORTED', 'load', load.id || null, `Shell ${target} does not support transverse pressure.`)];
+    }
+    return [];
+  });
 }
 
 function clone(value) {

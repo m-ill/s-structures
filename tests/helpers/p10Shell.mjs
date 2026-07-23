@@ -1,5 +1,5 @@
 import { solveLinear } from '../../src/solver/linear3dElement.js';
-import { buildSlabPlateDkq } from '../../src/solver/shell/slabPlateDkq.js';
+import { buildSlabPlateMitc4 } from '../../src/solver/shell/slabPlateMitc4.js';
 import { buildWallMembraneQm6 } from '../../src/solver/shell/wallMembraneQm6.js';
 
 export function wallCantileverBenchmark({ E = 30e9, nu = 0.2, t = 0.2, width = 2, height = 4, P = 1e6, divisions = 8 } = {}) {
@@ -40,7 +40,7 @@ export function rectangularPlateBenchmark({
   const K = matrix(dofCount); const F = new Array(dofCount).fill(0);
   const hx = a / divisionsX; const hy = b / divisionsY;
   for (let j = 0; j < divisionsY; j += 1) for (let i = 0; i < divisionsX; i += 1) {
-    const element = buildSlabPlateDkq({
+    const element = buildSlabPlateMitc4({
       nodes: [{ x: i * hx, y: j * hy, z: 0 }, { x: (i + 1) * hx, y: j * hy, z: 0 }, { x: (i + 1) * hx, y: (j + 1) * hy, z: 0 }, { x: i * hx, y: (j + 1) * hy, z: 0 }],
       material: { E, nu }, t,
     });

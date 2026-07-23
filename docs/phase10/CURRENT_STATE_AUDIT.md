@@ -73,14 +73,26 @@ Ay/Az가 스냅샷·어댑터로 흐르지만, `localK12(E,G,A,Iy,Iz,J,L)` 시�
 Cw는 단면 스냅샷에서 steel design의 폐형식 M_cr 검토로 소비된다. C1·횡지지 길이·지배 모멘트와
 ratio를 제공하며 기존 6DOF는 불변이다. 7번째 DOF, warping 변위·bimoment·warping 응력은 비지원 한계로 명시한다.
 
-### (12) 실 shell CPU·native GPU 커널 도입 — M9 완료
-ADR-002 Option C-full 승인 후 QM6 계열 membrane, DKQ 호환 plate, 24×24 flat-shell과 공용 6자유도 전역 조립을 도입했다. `equivalent` formulation은 기존 프레임 링크 경로를 유지한다. native WebGPU K1 tangent·K2 fixed-order gather·K3 stress recovery와 CPU 자동 강등까지 구현했으며, 실장치·외부 XV-10 qualification은 M11 release gate에 남겨 둔다.
+### (12) 실 shell CPU 정식화·수치 정정 — M9 내부 CPU qualification 완료
+ADR-002 Option C-full 승인 후 공용 6자유도 전역 조립과 `equivalent` 하위호환 경로를 유지하면서 CPU 셸 정식을
+QM6-EAS membrane(중심 Jacobian 및 `detJ0/detJ` 보정), MITC4 plate, Hughes–Brezzi curl-compatible drilling,
+warped 기준면 강체팔, Q4 consistent pressure로 정정했다. raw 강체모드·왜곡 membrane patch·직사각판 종횡비/두께·
+메시수렴·모달·drilling·압력 평형을 포함한 내부 CPU f64 evidence 계약은 35개 record 전부 PASS를 요구한다.
+
+M9d의 실제 구현 범위는 CPU가 미리 계산한 24×24 행렬의 f32 reconstruction, fixed-order gather, generic recovery
+operator 적용이다. QM6-EAS·MITC4·drilling을 재료·기하에서 직접 만드는 formulation-native WebGPU stiffness
+generation은 구현되지 않았고 qualification도 없다. 따라서 transport parity를 “native shell formulation kernel”
+완료로 해석하면 안 된다.
 
 ### (13) 슬래브 하중 전달 자동화 — M10 완료
 `slabPanels[]`에서 1방향 부담폭 및 2방향 45° 삼각·사다리꼴 분포하중을 생성해 fixed-end 경로로 전달한다. 보 없는 변은 벽/직접 기둥으로 분류하고, 패널 평형·질량원 dedup·풍상/풍하 기하 trace까지 LG-01~04에서 검증했다. 외부 교차검증과 제품 표면 통합은 M11 release gate에 남는다.
 
 ## 3. 리스크 메모
 
-- **M9(shell)는 구현 완료됐지만 release-qualified는 아니다.** 등가모델 경고 체계는 유지하며 FEM formulation에서만 해제한다. native GPU 장치 evidence와 XV-10 외부 검증은 M11에서 요구한다.
+- **M9(shell)의 내부 CPU 요소 수치 결함은 정식 교체와 35-record 계약으로 닫았지만 release-qualified는 아니다.**
+  요소/커널 qualification은 사용자 모델의 메시 적절성을 증명하지 않으므로 현재 모든 FEM 셸 결과의 설계 전이는
+  `SHELL_MODEL_MESH_CONVERGENCE_REQUIRED`로 차단한다. warning-warped 요소에는 별도 공학검토도 필요하다.
+  XV-10 외부 검증과 formulation-native WebGPU 구현·실장치 qualification은 M11에서 계속 요구한다.
 - M2(Timoshenko)는 강성·고정단력·복원·KG·응축 5개 지점을 동시에 건드린다 — Φ=0 극한에서 기존 결과와 bit-identical이 아닌 **tolerance-identical** 회귀 기준을 명시해야 한다(부동소수 재배열).
-- 신규 요소가 compute 경로(P9)를 우회해 legacy 경로에만 붙으면 GPU/WASM 성능 자산이 죽는다 — WP마다 "compute 계약 통과" 게이트 포함.
+- 현재 셸 WebGPU는 precomputed transport 계층뿐이다. formulation-native 생성이 추가되기 전까지 CPU f64가
+  유일한 셸 정식 owner이며 GPU 자동 설계 라우팅을 허용하지 않는다.

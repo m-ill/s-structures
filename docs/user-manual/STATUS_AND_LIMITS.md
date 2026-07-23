@@ -56,7 +56,7 @@ THA는 계속 `preliminary`이며 설계 전달이 차단된다. 실제 shell FE
 
 Phase 10 M0~M11 코드 구현은 완료되었다. Timoshenko 보, 부분강접, 3D offset·패널존, MPC·rigid link, 변단면, prestressed 동적해석, LTB 검토, flat-shell FEM, 슬래브·풍 하중생성은 제품 통합 계약과 Agent API `getPhase10ReleaseStatus`에 연결된다.
 
-현재 릴리스 상태는 `blocked`다. XV-01/02만 green이고 XV-03~10 required-source 기준자료가 없으며, native WebGPU K1~K3는 실제 브라우저·GPU 장치 qualification이 완료되지 않았다. 따라서 `externallyCrossValidated=false`, `release.allowed=false`, `designTransferAllowed=false`를 유지한다. CPU f64 및 GPU f32 shadow 경로는 성능·일치도 gate를 통과했지만 native WebGPU 자격을 대신하지 않는다.
+현재 릴리스 상태는 `blocked`다. 엄격한 required-source 정책에서는 XV-01만 green이며, XV-02 hand-calc는 source-ineligible이고 XV-03~10 외부 기준자료는 pending이다. 또한 formulation-native QM6-EAS·MITC4·drilling WebGPU stiffness generation과 실제 장치 qualification이 완료되지 않았다. 따라서 `externallyCrossValidated=false`, `release.allowed=false`, `designTransferAllowed=false`를 유지한다. CPU f64 요소 qualification과 precomputed GPU f32 transport parity는 이 외부·native 자격을 대신하지 않는다.
 
 ## Not Yet Complete
 

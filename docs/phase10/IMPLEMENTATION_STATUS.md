@@ -1,14 +1,37 @@
 # Phase 10 Implementation Status
 
 ```yaml
-reviewed_at: 2026-07-22
+reviewed_at: 2026-07-23
 phase_status: implementation-complete-release-blocked
 implementation_status: complete
 completed_milestones: [P10-M0, P10-M1, P10-M2, P10-M3, P10-M4, P10-M5, P10-M6, P10-M7, P10-M8, P10-M9, P10-M10, P10-M11]
-active_milestone: external-qualification
+active_milestone: external-xv-and-formulation-native-webgpu-qualification
 decision_gates_pending: []
-owner_inputs_pending: [XV-03~08 외부 기준해 artifact (OpenSees/SAP2000/ETABS), XV-09 SAP2000 기준해 artifact, XV-10 외부 shell 기준해 artifact, 실제 브라우저·GPU 장치 qualification]
+owner_inputs_pending: [XV-02 적격 외부 기준해 artifact, XV-03~08 외부 기준해 artifact (OpenSees/SAP2000/ETABS), XV-09 SAP2000 기준해 artifact, XV-10 외부 shell 기준해 artifact, 실제 브라우저·GPU 장치 qualification]
+internal_blockers: []
+release_blockers: [external-cross-validation, native-webgpu-formulation-kernels-and-device-qualification]
+feature_limitations: [shell-model-mesh-convergence-provenance-required-for-design-transfer]
 ```
+
+## 2026-07-23 독립 검증 정정 및 remediation
+
+2026-07-22의 M9 구현 완료 기록은 최초 코드 경로와 조립 계약에 대한 역사 기록으로 유지한다. 독립 검증이 찾아낸
+plate 종횡비/두께 결함, raw 강체모드 위반, QM6 왜곡 민감도, drilling 대각 스프링, 왜곡 Q4 압력 균등분배 문제를
+재현한 뒤 CPU 정식을 다음과 같이 교체했다.
+
+- membrane: 중심 Jacobian과 `detJ0/detJ` 보정을 쓰는 QM6-EAS
+- plate: 물리 회전 DOF와 covariant tying shear를 쓰는 MITC4
+- flat shell: Hughes–Brezzi curl-compatible drilling과 warped 기준면 강체팔
+- 하중: Q4 shape function 2×2 consistent pressure
+
+확대된 M9 CPU f64 artifact 계약은 35개 record를 모두 PASS해야 하며, raw 불변량·왜곡 patch·Reissner–Mindlin
+직사각판·메시수렴·모달·drilling·압력 평형을 포함한다. 이로써 내부 `shell-numerical-qualification` blocker는
+닫혔다. 다만 이는 요소 벤치마크이며 사용자 모델의 메시수렴 provenance가 아니므로 설계 전이는 계속 차단한다.
+현재 evidence artifact hash는 `45389db66c1633dc99e11566`이다.
+
+다만 M9d는 CPU precomputed 행렬의 f32 reconstruction, fixed-order gather, generic recovery만 구현했다.
+formulation-native WebGPU stiffness generation은 미구현·미적격이며, XV-10을 포함한 외부 기준해도 pending이다.
+따라서 `releaseQualified=false`, `externallyCrossValidated=false`와 M11 release 차단은 그대로다.
 
 ## 현재 판정
 
@@ -63,19 +86,22 @@ Direct P-Delta KG가 같은 계약을 사용한다. EL-O01~04는 모두 오차 0
 | P10-M6 변단면 부재 | complete — EL-P01~03/evidence/review PASS | [요소·계약 테스트](../../tests/p10-m6-tapered.mjs) · [evidence contract](../../tests/p10-m6-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m6-tapered.json) · [code review](reviews/P10-M6-CODE-REVIEW.md) |
 | P10-M7 동적 확장 (prestressed·다중모드 좌굴·직접적분) | complete — DY-01~06/evidence/review PASS | [동적 gate](../../tests/p10-m7-dynamics-extension.mjs) · [evidence contract](../../tests/p10-m7-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m7-dynamics-extension.json) · [code review](reviews/P10-M7-CODE-REVIEW.md) |
 | P10-M8 warping·LTB | complete — ADR-001 옵션 B, EL-W01~03/evidence/review PASS | [폐형식·설계 통합](../../tests/p10-m8-warping-ltb.mjs) · [evidence contract](../../tests/p10-m8-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m8-warping-ltb.json) · [code review](reviews/P10-M8-CODE-REVIEW.md) |
-| P10-M9 벽·슬래브 FEM (M9a membrane / M9b plate / M9c flat shell / M9d GPU 배치) | complete — CPU FEM, native WebGPU K1~K3 구현, 내부 evidence 9/9 PASS; 장치 qualification은 M11 gate | [M9 tests](../../tests/p10-m9a-wall-membrane.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m9-shell-fem.json) · [code review](reviews/P10-M9-CODE-REVIEW.md) |
+| P10-M9 벽·슬래브 FEM (QM6-EAS / MITC4 / curl drilling / precomputed GPU transport) | CPU f64 implementation + internal numerical qualification complete — 35-record PASS 계약; XV-10 및 formulation-native WebGPU는 미완료 | [M9 tests](../../tests/p10-m9a-wall-membrane.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m9-shell-fem.json) · [code review](reviews/P10-M9-CODE-REVIEW.md) |
 | P10-M10 하중 생성·전달 | complete — LG-01~04/evidence/review/full regression PASS | [하중 생성 테스트](../../tests/p10-m10-load-generation.mjs) · [evidence contract](../../tests/p10-m10-evidence-contract.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m10-load-generation.json) · [code review](reviews/P10-M10-CODE-REVIEW.md) |
-| P10-M11 통합·성능·release gate | implementation complete / release blocked | [release gate test](../../tests/p10-m11-release-gate.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m11-release-gate.json) · [code review](reviews/P10-M11-CODE-REVIEW.md) |
+| P10-M11 통합·성능·release gate | implementation complete / release blocked — external XV 및 formulation-native WebGPU qualification 필요 | [release gate test](../../tests/p10-m11-release-gate.mjs) · [evidence](../../reports/validation-evidence/phase10/p10-m11-release-gate.json) · [code review](reviews/P10-M11-CODE-REVIEW.md) |
 
 ## 완료 시 제품 판정 변화
 
 - 탄성 트랙: "3D 건축 프레임 전역 탄성해석 엔진" → **"외부 교차검증 완료(externally-cross-validated) 건축 구조 탄성해석 엔진"**
 - 리뷰 4단계: ① 완료 유지 · ② 완료(M2~M6·M10) · ③ 완료(M1·M11) · ④ 완료(M7~M9, ADR 범위 내)
-- 등가셸 경고: M9 완료 모델에서만 'fem' formulation으로 해제, 등가 경로는 영구 유지
+- 등가셸 경고: 평면 CPU f64 FEM에서만 내부 수치 경고를 해제한다. warning-warped는 공학검토, 등가 경로는 영구 유지
 
 ## 다음 작업
 
-P10-M11 구현은 완료했다. 내부 마일스톤 evidence, 제품 UI·보고·계산서·Agent 계약, 120-shell 성능 예산, 전체 회귀를 gate에 연결했다. 다음 작업은 코드 구현이 아니라 외부 qualification이다. XV-03~10 required-source artifact와 실제 브라우저·GPU 장치 검증이 모두 green이 되기 전까지 `release.allowed=false`, `externallyCrossValidated=false`, 설계 전달 차단을 유지한다.
+P10-M11 구현과 내부 CPU shell remediation은 완료했다. 다음 작업은 XV-02~10 required-source artifact와
+formulation-native WebGPU stiffness generation 구현, 실제 브라우저·다중 GPU 장치 qualification이다. 현재 GPU의
+precomputed transport parity는 이 요건을 대체하지 않는다. 이 조건들이 닫히기 전까지
+`release.allowed=false`, `externallyCrossValidated=false`와 자동 GPU 설계 라우팅 차단을 유지한다.
 
 ## P10-M5 완료 기록
 
@@ -112,7 +138,16 @@ warping 응력은 지원하지 않는다. EL-W01~03은 3/3 PASS했고 artifact h
 
 ## P10-M9 완료 기록
 
-ADR-002 Option C-full 승인을 기록하고 QM6 계열 membrane, DKQ 호환 plate, 24×24 flat-shell 조립을 추가했다. 기존 equivalent 셸 경로는 유지하며 formulation을 명시한 경우에만 FEM을 사용한다. 전역 정적 해석, 압력하중, 응력/resultant 복원, DomainBinary 셸 배열과 modal/RSA 공용 lumped mass 조립을 연결했다. M9d는 native WebGPU K1 tangent, K2 fixed-order gather, K3 stress recovery 셰이더와 CPU 기준·자동 강등을 구현했다. 내부 evidence 9/9은 PASS이고 artifact hash는 `183414da147bffc2282d2768`이다. 브라우저 제어 런타임 오류로 이번 환경의 실장치 실행은 BLOCKED이며 다중 장치 qualification과 release qualification은 M11에서 수행한다.
+ADR-002 Option C-full 승인을 기록하고 최초 QM6 계열 membrane, DKQ 호환 plate, 24×24 flat-shell 조립을 추가했다.
+기존 equivalent 셸 경로는 유지하며 formulation을 명시한 경우에만 FEM을 사용한다. 전역 정적 해석, 압력하중,
+응력/resultant 복원, DomainBinary 셸 배열과 modal/RSA 공용 lumped mass 조립을 연결했다. 당시 9-record
+evidence와 `native K1-K3` 표현은 최초 구현 게이트의 역사 기록이며 현재 정식·qualification 설명으로 사용하지 않는다.
+
+> **2026-07-23 correction and resolution:** 독립 검증의 17-record 재현 단계에서는 CPU plate/flat-shell이
+> `BLOCKED`였으나, QM6-EAS·MITC4·curl drilling·warped rigid arm·consistent pressure 교체 후 35-record
+> CPU f64 PASS 계약으로 닫았다. M9d의 정확한 범위는 precomputed f32 matrix reconstruction/gather/generic
+> recovery이며 formulation-native stiffness generation은 아직 미구현이다. 최종 evidence hash는
+> `45389db66c1633dc99e11566`이다. 사용자 모델 설계 전이는 메시수렴 provenance가 생길 때까지 차단한다.
 
 ## P10-M10 완료 기록
 

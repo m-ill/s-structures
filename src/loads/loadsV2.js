@@ -4,7 +4,7 @@ import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
 import { deriveWindStoryTransfers, generateSlabPanelLoads } from './slabLoadGeneration.js';
 
 export const LOADS_V2_VERSION = 'p3-m13-loads-v2-trace';
-export const MASS_SOURCE_TRACE_VERSION = 'p3-m13-mass-source-trace-v1';
+export const MASS_SOURCE_TRACE_VERSION = 'p10-m9-mass-source-trace-v2-shell-physical-mass';
 
 export function buildLoadsV2Trace(model = {}, basis = {}) {
   const stories = model.stories?.length ? model.stories : inferStories(model.nodes || []);
@@ -107,7 +107,7 @@ export function generateEnvironmentalLoadsV2(model = {}, basis = {}) {
   };
 }
 
-export function buildMassSourceTrace(model = {}, massSource = null) {
+export function buildMassSourceTrace(model = {}, massSource = null, options = {}) {
   const spec = massSource || { combos: [], includeNodeMass: true };
   const combos = Array.isArray(spec.combos) ? spec.combos : [];
   const g = finite(spec.gravity, 9.80665);
@@ -126,6 +126,10 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
   const includePhysicalMemberMass = spec.includeMemberMass === true || spec.includeSelfWeight === true;
   if (includePhysicalMemberMass) {
     for (const member of model.members || []) {
+      if (member.generated === true || member.massless === true || member.source === 'shellFemConnectivity') {
+        skipped.push({ id: member.id || null, type: 'member-mass', reason: 'generated-or-massless-member' });
+        continue;
+      }
       const length = memberLengths[member.id] || 0;
       try {
         const { section, material } = effectiveSectionMaterial(
@@ -141,6 +145,18 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
       } catch (_error) {
         ignored.push({ id: member.id || null, type: 'member-mass', reason: 'unresolved-member-mass-properties' });
       }
+    }
+  }
+  const includePhysicalShellMass = spec.includeShellMass === true || spec.includeSelfWeight === true;
+  if (includePhysicalShellMass) {
+    for (const shell of physicalShellMassRows(model, options.shellData || [])) {
+      if (!shell.ok) {
+        ignored.push({ id: shell.id || null, type: 'shell-mass', reason: shell.reason });
+        continue;
+      }
+      const source = spec.includeShellMass === true ? 'shell.mass' : 'self-weight-derived-shell-mass';
+      const perNode = shell.mass / shell.nodeIds.length;
+      for (const nodeId of shell.nodeIds) addMass(nodeRows, nodeId, perNode, source);
     }
   }
   const uniqueLoads = [];
@@ -196,7 +212,7 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
       tickets: ['P3-T82'],
       scope: 'Convert selected vertical load cases to lumped nodal mass for elastic dynamics.',
       gravityUnit: 'force divided by acceleration',
-      acceptedLoads: ['node.mass', 'member mass/self weight', 'vertical nodal force', 'vertical member point force', 'vertical member uniform load'],
+      acceptedLoads: ['node.mass', 'member/shell mass or self weight', 'vertical nodal force', 'vertical member point force', 'vertical member uniform load'],
       ignoredLoads: 'non-vertical loads',
       skippedLoads: 'loads outside the active mass-source combination and zero vertical loads',
     },
@@ -204,9 +220,12 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
     combos,
     includeNodeMass: spec.includeNodeMass !== false,
     includeMemberMass: spec.includeMemberMass === true,
+    includeShellMass: spec.includeShellMass === true,
     includeSelfWeight: spec.includeSelfWeight === true,
     physicalMemberMassIncluded: includePhysicalMemberMass,
+    physicalShellMassIncluded: includePhysicalShellMass,
     physicalMemberMassDeduplicated: spec.includeMemberMass === true && spec.includeSelfWeight === true,
+    physicalShellMassDeduplicated: spec.includeShellMass === true && spec.includeSelfWeight === true,
     totalMass,
     totalMassByDirection,
     nodeCount: rows.length,
@@ -218,6 +237,8 @@ export function buildMassSourceTrace(model = {}, massSource = null) {
       'Mass source converts vertical nodal/member loads and preserves directional node-mass vectors.',
       'Generated mass is an analysis trace and does not mutate node.mass automatically.',
       'Member mass and self-weight-derived member mass share one physical source and are never counted twice.',
+      'Shell area mass is distributed equally to its four nodes and is deduplicated from shell self weight.',
+      'Generated and massless analysis-connectivity members never contribute physical mass.',
       'Generated slab transfer loads are deduplicated by generatedKey before load-to-mass conversion.',
     ],
   };
@@ -448,6 +469,78 @@ function buildMemberLengths(model = {}) {
     );
   }
   return out;
+}
+
+function physicalShellMassRows(model = {}, shellData = []) {
+  const rows = [];
+  const seen = new Set();
+  for (const item of shellData || []) {
+    const id = String(item?.id || '').trim();
+    if (id) seen.add(id);
+    const built = item?.built || {};
+    const material = built.material || built.membrane?.material || built.plate?.material || {};
+    rows.push(shellMassRow({
+      id: id || null,
+      nodeIds: item?.nodeIds,
+      density: material.density,
+      thickness: built.thickness,
+      area: built.area,
+    }));
+  }
+
+  const nodeMap = new Map((model.nodes || []).map((node) => [node.id, node]));
+  const candidates = [
+    ...(model.shells || []),
+    ...(model.slabs || []).filter((item) => item?.type === 'shell'),
+  ];
+  for (const shell of candidates) {
+    const id = String(shell?.id || '').trim();
+    if (id && seen.has(id)) continue;
+    if (id) seen.add(id);
+    const nodeIds = Array.isArray(shell?.nodeIds) ? shell.nodeIds : [];
+    const nodes = nodeIds.map((nodeId) => nodeMap.get(nodeId));
+    const material = shell?.material || materialOf(model, shell?.matId) || {};
+    rows.push(shellMassRow({
+      id: id || null,
+      nodeIds,
+      density: material.density,
+      thickness: shell?.thickness ?? shell?.t,
+      area: quadSurfaceArea(nodes),
+    }));
+  }
+  return rows;
+}
+
+function shellMassRow({ id, nodeIds, density, thickness, area }) {
+  const normalizedNodes = Array.isArray(nodeIds) ? nodeIds : [];
+  const values = [density, thickness, area].map(Number);
+  if (normalizedNodes.length !== 4 || new Set(normalizedNodes).size !== 4) {
+    return { ok: false, id, reason: 'unresolved-shell-mass-connectivity' };
+  }
+  if (!values.every(Number.isFinite) || values.some((value) => value <= 0)) {
+    return { ok: false, id, reason: 'unresolved-shell-mass-properties' };
+  }
+  const mass = values[0] * values[1] * values[2];
+  return Number.isFinite(mass) && mass > 0
+    ? { ok: true, id, nodeIds: normalizedNodes, mass }
+    : { ok: false, id, reason: 'unresolved-shell-mass-properties' };
+}
+
+function quadSurfaceArea(nodes = []) {
+  if (nodes.length !== 4 || nodes.some((node) => !node)) return NaN;
+  return triangleArea(nodes[0], nodes[1], nodes[2]) + triangleArea(nodes[0], nodes[2], nodes[3]);
+}
+
+function triangleArea(a, b, c) {
+  const ab = [Number(b.x) - Number(a.x), Number(b.y) - Number(a.y), Number(b.z || 0) - Number(a.z || 0)];
+  const ac = [Number(c.x) - Number(a.x), Number(c.y) - Number(a.y), Number(c.z || 0) - Number(a.z || 0)];
+  if (![...ab, ...ac].every(Number.isFinite)) return NaN;
+  const cross = [
+    ab[1] * ac[2] - ab[2] * ac[1],
+    ab[2] * ac[0] - ab[0] * ac[2],
+    ab[0] * ac[1] - ab[1] * ac[0],
+  ];
+  return Math.hypot(...cross) / 2;
 }
 
 function nodeMassVector(mass) {

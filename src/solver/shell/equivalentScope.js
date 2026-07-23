@@ -47,7 +47,12 @@ const FORBIDDEN_FIELD_NAMES = new Set([
 
 export function buildEquivalentShellScope(model = {}, options = {}) {
   const counts = countEquivalentShellSources(model);
-  const active = options.forceActive === true || Object.values(counts).some((value) => value > 0);
+  const active = options.forceActive === true
+    || counts.wallEquivalentCount > 0
+    || counts.wallInputCount > 0
+    || counts.equivalentShellCount > 0
+    || counts.equivalentSlabCount > 0
+    || counts.semiRigidDiaphragmCount > 0;
   return {
     version: EQUIVALENT_SHELL_SCOPE_VERSION,
     active,
@@ -136,12 +141,20 @@ export function validateEquivalentShellGlobal(reference = {}, computed = {}, mod
 }
 
 function countEquivalentShellSources(model = {}) {
-  const shells = model.shells || (model.slabs || []).filter((item) => item.type === 'shell');
+  const slabs = Array.isArray(model.slabs) ? model.slabs : [];
+  const shells = [
+    ...(Array.isArray(model.shells) ? model.shells : []),
+    ...slabs.filter((item) => item?.type === 'shell'),
+  ];
+  const equivalentShellCount = shells.filter((shell) => shell?.formulation == null || shell.formulation === 'equivalent').length;
   return {
     wallEquivalentCount: (model.wallEquivalents || []).length,
     wallInputCount: (model.walls || []).length,
     shellCount: shells.length,
+    equivalentShellCount,
     slabCount: (model.slabs || []).length,
+    equivalentSlabCount: slabs.filter((item) => item?.type !== 'shell'
+      || item?.formulation == null || item.formulation === 'equivalent').length,
     semiRigidDiaphragmCount: (model.diaphragms || []).filter((item) => item.type === 'semiRigid').length,
   };
 }

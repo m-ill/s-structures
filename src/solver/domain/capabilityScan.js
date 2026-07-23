@@ -1,4 +1,4 @@
-export const DOMAIN_CAPABILITY_SCAN_VERSION = 'p8-m1-domain-capability-scan-v1';
+export const DOMAIN_CAPABILITY_SCAN_VERSION = 'p10-m9-domain-capability-scan-v2-shell-formulation';
 
 export function scanAnalysisDomainCapabilities(model = {}, analysisCase = {}, options = {}) {
   const issues = [];
@@ -20,8 +20,17 @@ export function scanAnalysisDomainCapabilities(model = {}, analysisCase = {}, op
       issues.push(issue('NONLINEAR_FOLLOWER_LOAD_UNSUPPORTED', 'load', load.id, 'Follower loads are not supported.'));
     }
   }
-  for (const shell of model.shells || []) {
-    issues.push(issue('NONLINEAR_SHELL_EQUIVALENT_ONLY', 'shell', shell.id, 'Shells are equivalent frame links and are not nonlinear shell FEM.'));
+  const shells = [
+    ...(Array.isArray(model.shells) ? model.shells : []),
+    ...(Array.isArray(model.slabs) ? model.slabs.filter((item) => item?.type === 'shell') : []),
+  ];
+  for (const shell of shells) {
+    const formulation = shell?.formulation ?? 'equivalent';
+    if (formulation === 'equivalent') {
+      issues.push(issue('NONLINEAR_SHELL_EQUIVALENT_ONLY', 'shell', shell.id, 'Shells are equivalent frame links and are not nonlinear shell FEM.'));
+    } else {
+      issues.push(issue('NONLINEAR_SHELL_FEM_UNSUPPORTED', 'shell', shell.id, `Shell FEM formulation ${formulation} is outside the nonlinear frame integration scope.`));
+    }
   }
   const ownerByNode = new Map();
   for (const diaphragm of (model.diaphragms || []).filter((item) => item.type === 'rigid')) {

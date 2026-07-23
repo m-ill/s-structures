@@ -7,7 +7,7 @@ import {
   solveSmallSymmetricEigen,
 } from './smallSymmetric.js';
 
-export const REQUESTED_MODE_EIGEN_VERSION = 'p9-m6-requested-mode-eigen-v1';
+export const REQUESTED_MODE_EIGEN_VERSION = 'p9-m6-requested-mode-eigen-v2-relative-metric-rank';
 
 export function solveRequestedGeneralizedEigen(input = {}, options = {}) {
   const startedAt = now();
@@ -286,6 +286,9 @@ function kOrthonormalize(inputVectors, metric, tolerance) {
   for (const input of inputVectors) {
     const vector = Float64Array.from(input || [], Number);
     if (vector.length !== metric.dimension || vector.some((value) => !Number.isFinite(value))) continue;
+    const inputMetricVector = metric.matvec(vector);
+    const inputNormSquared = dot(vector, inputMetricVector);
+    if (!(inputNormSquared > 0) || !Number.isFinite(inputNormSquared)) continue;
     for (let pass = 0; pass < 2; pass += 1) {
       let metricVector = metric.matvec(vector);
       for (let column = 0; column < basis.length; column += 1) {
@@ -297,7 +300,8 @@ function kOrthonormalize(inputVectors, metric, tolerance) {
     }
     const metricVector = metric.matvec(vector);
     const normSquared = dot(vector, metricVector);
-    if (!(normSquared > tolerance) || !Number.isFinite(normSquared)) continue;
+    const relativeRankThreshold = Math.max(Number.MIN_VALUE, inputNormSquared * tolerance);
+    if (!(normSquared > relativeRankThreshold) || !Number.isFinite(normSquared)) continue;
     const scale = 1 / Math.sqrt(normSquared);
     scaleVector(vector, scale);
     scaleVector(metricVector, scale);

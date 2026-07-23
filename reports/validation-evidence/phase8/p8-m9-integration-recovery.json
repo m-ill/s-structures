@@ -57,7 +57,7 @@
   "environment": {
     "profileVersion": "p8-m0-reference-profile-v1",
     "runtime": "Node.js",
-    "capabilityMatrix": "p8-m9-integration-capability-v1",
+    "capabilityMatrix": "p10-m9-integration-capability-v2-shell-formulation",
     "supportSpring": "p8-m9-support-spring-v1",
     "integratedResult": "p8-m9-integrated-result-v1",
     "governance": "p8-m9-integration-governance-v1",

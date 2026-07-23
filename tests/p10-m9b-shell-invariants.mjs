@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
-import { buildSlabPlateDkq } from '../src/solver/shell/slabPlateDkq.js';
+import { buildSlabPlateMitc4 } from '../src/solver/shell/slabPlateMitc4.js';
 
 const EXPECTED_QUALIFICATION_STATUS = 'PASS';
 const RIGID_RESIDUAL_TOLERANCE = 1e-12;
 const CONSTANT_CURVATURE_ENERGY_TOLERANCE = 1e-8;
 
-const element = buildSlabPlateDkq({
+const element = buildSlabPlateMitc4({
   id: 'P10-M9B-INVARIANTS',
   nodes: [
     { x: 0, y: 0, z: 0 },

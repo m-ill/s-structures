@@ -428,17 +428,25 @@ export { STEEL_FLEXURE_LTB_VERSION, calculateElasticCriticalMoment, checkSteelFl
 export { WALL_MEMBRANE_QM6_VERSION, buildWallMembraneQm6, recoverWallMembraneQm6 } from './solver/shell/wallMembraneQm6.js';
 export {
   SLAB_PLATE_MITC4_VERSION,
-  SLAB_PLATE_DKQ_VERSION,
+  SLAB_PLATE_NUMERICAL_QUALIFICATION_VERSION,
   buildSlabPlateMitc4,
-  buildSlabPlateDkq,
   buildSlabPressureLoad,
   plateClosedForm,
   lumpedPlateMass,
+} from './solver/shell/slabPlateMitc4.js';
+export {
+  SLAB_PLATE_DKQ_VERSION,
+  buildSlabPlateDkq,
 } from './solver/shell/slabPlateDkq.js';
+export { FLAT_SHELL_QM6_MITC4_VERSION, buildFlatShellQm6Mitc4 } from './solver/shell/flatShellQm6Mitc4.js';
 export { FLAT_SHELL_ALLMAN_DKQ_VERSION, buildFlatShellAllmanDkq } from './solver/shell/flatShellAllmanDkq.js';
 export { SHELL_BATCH_VERSION, SHELL_TYPE, buildShellSoaBatch, buildShellElementScatters } from './solver/shell/shellBatch.js';
 export {
   SHELL_GPU_KERNEL_VERSION,
+  SHELL_GPU_QUALIFICATION_SCOPE,
+  SHELL_GPU_SHADOW_QUALIFICATION_SCOPE,
+  SHELL_GPU_NATIVE_BASE_QUALIFICATION_SCOPE,
+  SHELL_GPU_TRANSPORT_RELATIVE_ERROR_MAX,
   buildShellDeterministicGatherPayload,
   executeNativeShellGpuBatch,
   prepareShellTangentPayload,

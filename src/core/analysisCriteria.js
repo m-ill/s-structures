@@ -60,6 +60,8 @@ export const DEFAULT_CRITERIA_VALUES = {
     wallBeamTol: 5e-2,
     plateTol: 1e-2,
     warpTol: 1e-2,
+    drillingStiffnessRatioMax: 1e-4,
+    // Deprecated compatibility alias for pre-remediation models.
     spuriousEnergyMax: 1e-4,
     gpuResidualRefine: 1e-10,
   },
@@ -170,6 +172,7 @@ const CRITERION_RULES = {
   'shell.wallBeamTol': { kind: 'number', min: 0, max: 1, exclusiveMin: true },
   'shell.plateTol': { kind: 'number', min: 0, max: 1, exclusiveMin: true },
   'shell.warpTol': { kind: 'number', min: 0, max: 1, exclusiveMin: true },
+  'shell.drillingStiffnessRatioMax': { kind: 'number', min: 0, max: 1, exclusiveMin: true },
   'shell.spuriousEnergyMax': { kind: 'number', min: 0, max: 1, exclusiveMin: true },
   'shell.gpuResidualRefine': { kind: 'number', min: 0, exclusiveMin: true },
   'audit.equilibriumRelative': { kind: 'number', min: 0, exclusiveMin: true },

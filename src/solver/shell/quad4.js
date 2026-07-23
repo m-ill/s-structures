@@ -79,7 +79,10 @@ export function estimateSimplySupportedPlateDeflection(options = {}) {
 }
 
 export function buildShellV1Trace(model = {}) {
-  const shells = model.shells || model.slabs?.filter((item) => item.type === 'shell') || [];
+  const shells = [
+    ...(Array.isArray(model.shells) ? model.shells : []),
+    ...(Array.isArray(model.slabs) ? model.slabs.filter((item) => item?.type === 'shell') : []),
+  ];
   const rows = shells.map((shell) => buildQuad4ShellElement(shell));
   const patch = runShellPatchTest();
   const plate = estimateSimplySupportedPlateDeflection();

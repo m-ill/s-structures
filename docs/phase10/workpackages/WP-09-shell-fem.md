@@ -8,6 +8,12 @@ depends: [WP-05, ADR-002(옵션 C-full)]
 gate: ADR-002 accepted — 옵션 C-full (2026-07-09 옵션 B 결정의 공식 번복)
 ```
 
+> **2026-07-23 superseded implementation note:** 이 문서는 승인 당시의 작업계획을 역사 기록으로 보존한다.
+> 실제 canonical CPU 구현은 QM6-EAS(중심 Jacobian·`detJ0/detJ`) + MITC4 + Hughes–Brezzi curl drilling +
+> warped rigid arm + Q4 consistent pressure다. M9d의 실제 범위는 precomputed f32 matrix
+> reconstruction/gather/generic recovery이며 formulation-native GPU stiffness generation은 미구현·미적격이다.
+> 현재 정식과 판정은 `FORMULAS_AND_CRITERIA.md` §9 및 `IMPLEMENTATION_STATUS.md`가 우선한다.
+
 ## 배경 (기존 자산)
 
 - **2026-07-20 오너 결정 방향**: 2D 분해 단계로 도입하되 **어려운 결합(M9c)까지 정식 범위** — 이연하지 않는다.
@@ -29,7 +35,7 @@ gate: ADR-002 accepted — 옵션 C-full (2026-07-09 옵션 B 결정의 공식 �
 3. **강성 커널은 순수 함수**: 배치 입력 → flat tangentValues 출력(부작용 없음). CPU 구현이 곧 GPU 커널의 reference.
 4. domainBinary 계약에 셸 배열 additive — domain hash 재현성 테스트 필수.
 
-## M9a — 벽 membrane (평면응력 QM6)
+## M9a — 벽 membrane (승인 당시 계획, superseded)
 
 1. 요소 `solver/shell/wallMembraneQm6.js`: Q4+비적합모드(§9a, patch 정합형 QM6), 내부 4DOF 응축, 평면변환 T.
 2. drilling: 벽 평면 전용 절점에 `shell.drillingAlpha` 안정화(프레임 공존 절점 자동 판별). **M9c에서 Allman 실강성으로 대체 예정임을 limitations에 명시.**
@@ -40,7 +46,7 @@ gate: ADR-002 accepted — 옵션 C-full (2026-07-09 옵션 B 결정의 공식 �
 
 **게이트**: SH-A01~04 (`tests/p10-m9a-wall-membrane.mjs`).
 
-## M9b — 슬래브 plate (DKQ)
+## M9b — 슬래브 plate (승인 당시 DKQ 계획, superseded)
 
 1. 요소 `solver/shell/slabPlateDkq.js`: DKQ(w,θx,θy), 면압 consistent 하중, WP-10 분배와 연결(직접 모델 시 분배 생략 옵션).
 2. 결과: Mx·My·Mxy·처짐. formulation='plate'. lumped 질량 → 모달·RSA.
@@ -48,7 +54,7 @@ gate: ADR-002 accepted — 옵션 C-full (2026-07-09 옵션 B 결정의 공식 �
 
 **게이트**: SH-B01~03 (`tests/p10-m9b-slab-plate.mjs`).
 
-## M9c — flat shell 통합 (정식 범위)
+## M9c — flat shell 통합 (승인 당시 Allman·DKQ 계획, superseded)
 
 1. 요소 `solver/shell/flatShellAllmanDkq.js`(§9c): **Allman membrane(꼭짓점 drilling 실강성) ⊕ DKQ**, 24×24.
    기생모드 안정화 항 + 에너지비 게이트(`shell.spuriousEnergyMax`).
@@ -60,7 +66,7 @@ gate: ADR-002 accepted — 옵션 C-full (2026-07-09 옵션 B 결정의 공식 �
 
 **게이트**: SH-C01(§6A 전체: 강체 6모드·patch·warped patch·locking·수렴·기생모드) + SH-C02(XV-10) (`tests/p10-m9c-flat-shell.mjs`).
 
-## M9d — GPU 배치 실행 (§9d)
+## M9d — GPU 배치 실행 (승인 당시 formulation-native 계획, superseded)
 
 1. **K1 요소강성 배치 커널**(`backends/webgpu/shellKernels.js`): 타입 그룹별 디스패치, 요소당 QM6 응축·DKQ·Allman 24×24 생성
    → tangentValues flat(matrixOffsets 규약). bufferPool·segmentedBuffer 재사용.
@@ -86,4 +92,4 @@ gate: ADR-002 accepted — 옵션 C-full (2026-07-09 옵션 B 결정의 공식 �
 | 2026-07-20 | 오너: full shell 부담 — 2D 재검토 | 옵션 C(단계 도입)로 재구성 | 반영 |
 | 2026-07-20 | 오너: 어려운 부분(M9c)도 계획 포함 + GPU 처리 코드 구성 | M9c 정식 범위 승격(Allman⊕DKQ·warped 보정), M9d GPU 배치 단계 신설(P9-M7 SoA·결정론 scatter·혼합정밀도 재사용), "CPU부터 GPU 모양으로" 설계 원칙 추가 | 반영 |
 | 2026-07-22 | M9 진행 요청 | ADR-002 옵션 C-full 오너 승인 기록, M9a→M9d 착수 | closed |
-| 2026-07-22 | M9d 마무리 | native WebGPU K1 tangent·K2 fixed-order gather·K3 stress recovery, CPU 기준, 자동 강등, browser harness 구현. 장치 qualification·XV-10은 M11 release gate로 이관 | complete |
+| 2026-07-22 | M9d 최초 마무리 기록 | 당시 native K1-K3로 표현했으나 독립 검증 후 precomputed f32 reconstruction·fixed-order gather·generic recovery 범위로 정정. formulation-native stiffness generation·장치 qualification·XV-10은 release blocker | superseded/정정 |

@@ -62,6 +62,19 @@ assert.ok(exact.modes.every((mode) => mode.residual <= 1e-12));
 assert.equal(exact.diagnostics.fullDenseEigenMatrixAllocated, false);
 assert.equal(exact.diagnostics.numericPrecision, 'f64');
 assert.ok(modalAssuranceCriterion(exact.modes[0].vector, exact.modes[1].vector, (vector) => diagonalM.matvec(vector)) <= 1e-14);
+const stiffnessScaled = solveRequestedGeneralizedEigen({
+  primary: createSymmetricSparseOperatorFromDense([
+    [2e16, 0],
+    [0, 6e16],
+  ], { id: 'stiffness-scaled-K', matrixClass: 'spd' }),
+  secondary: createSymmetricSparseOperatorFromDense([
+    [1, 0],
+    [0, 2],
+  ], { id: 'stiffness-scaled-M' }),
+  modeCount: 1,
+});
+assert.equal(stiffnessScaled.ok, true);
+assert.ok(Math.abs(stiffnessScaled.modes[0].eigenvalue / 2e16 - 1) < 1e-12);
 const repeatedFirst = solveRequestedGeneralizedEigen({
   primary: createSymmetricSparseOperatorFromDense([[2, 0], [0, 2]], { id: 'repeat-K', matrixClass: 'spd' }),
   secondary: createSymmetricSparseOperatorFromDense([[1, 0], [0, 1]], { id: 'repeat-M' }),

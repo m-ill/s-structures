@@ -3,9 +3,9 @@
 ```yaml
 doc: readme
 phase: 10
-date: 2026-07-22
+date: 2026-07-23
 status: implementation-complete, release-blocked
-owner-inputs-required: [외부 solver 기준해(XV-03~10), 실제 WebGPU 장치 qualification]
+owner-inputs-required: [XV-02~10 required-source 외부 기준해, 실제 formulation-native WebGPU 장치 qualification]
 ```
 
 ## 1. 목표
@@ -31,7 +31,7 @@ Phase 10은 **② 잔여(모델링 세부) + ③(실무 검증) + ④(요소·sh
 | 변단면(비프리즘) 부재 | 프리즘만 | **M6** |
 | prestressed 모달/RSA·좌굴 다중모드 | elastic Ke만, 좌굴 최저모드 중심 | **M7** |
 | warping torsion·정밀 LTB | ADR-001 옵션 B: Cw 기반 M_cr 설계 검토 완료, 6DOF 불변 | **M8 complete** |
-| 실제 shell FEM | 등가모델(옵션 B, 2026-07-09 오너 확정) | **M9** (ADR-002, 오너 재승인 필요) |
+| 실제 shell FEM | QM6-EAS·MITC4·curl drilling CPU f64 내부 qualification PASS, 사용자 모델 메시수렴 설계 전이 차단 | **M9 implementation complete / release blocked** |
 | 하중 생성·전달 완성 | 1/2방향 슬래브 분배·평형·질량 dedup·풍 기하 trace 완료 | **M10 complete** |
 | 통합·성능·release | 제품 계약·기능 토글·120-shell 성능·fail-closed gate 완료; 외부 XV/WebGPU 자격 대기 | **M11 implementation complete / release blocked** |
 
@@ -51,7 +51,7 @@ Phase 10의 모든 작업은 **기존 자산의 확장**이며 재작성이 아�
 | 설계 적격성 게이트 | `linear3d.js` designEligibility, combination completeness | 신규 결과 전부 동일 게이트 경유. 미검증 경로는 `designBlocked` + 사유 코드 |
 | Newmark 시간적분 | P8 `nonlinear/dynamics/` · P9 resident session | 선형 직접적분 THA(M7 부속)는 이 적분기 재사용 (선형 요소 + 상수 K) |
 | 검증 체계 | P6-M3 `verification/matrix/` + evidence artifacts (`reports/validation-evidence/`) | 신규 케이스는 기존 record 스키마({reference, computed, relError, tolerance, modelHash, solverVersion}) 준수 |
-| 등가셸 scope 경고 | P6-M6 옵션 B | 실 shell(M9) 완료 **전까지** 경고 체계 유지. 번복은 ADR-002 오너 승인 후에만 |
+| 등가셸 scope 경고 | P6-M6 옵션 B | 등가 경로는 영구 유지. 실 shell도 사용자 모델 메시수렴 provenance와 warning-warped 공학검토 없이는 설계 전이 차단 |
 | 테스트·머지 규칙 | `npm test` green(착수 기준선 292 스위트), `p10-mN-*.mjs` 네이밍, `/code-review high` 사이클 | 전 마일스톤 공통 |
 
 ## 4. 문서 맵
@@ -65,7 +65,7 @@ Phase 10의 모든 작업은 **기존 자산의 확장**이며 재작성이 아�
 | [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) | 마일스톤 상태 추적 (구현 진행하며 갱신) |
 | [workpackages/WP-00~WP-11](workpackages/) | 마일스톤별 작업 명세 |
 | [adr/ADR-001](adr/ADR-001-WARPING-LTB-SCOPE.md) | warping/LTB 구현 방식 결정 |
-| [adr/ADR-002](adr/ADR-002-SHELL-FEM-OPTION-B-REVERSAL.md) | shell 옵션 B 번복 (오너 승인 대기) |
+| [adr/ADR-002](adr/ADR-002-SHELL-FEM-OPTION-B-REVERSAL.md) | shell 옵션 C-full 승인 기록, 등가 경로 병행 및 현재 qualification 범위 |
 
 ## 5. 진행 규칙
 
@@ -73,6 +73,7 @@ Phase 10의 모든 작업은 **기존 자산의 확장**이며 재작성이 아�
 **착수 → 구현(마이크로 모듈, 단일책임) → `/code-review high` → 수정 → 검증표·evidence 갱신 → merge(npm test green)**.
 이전 게이트 미통과 시 다음 마일스톤 착수 금지. 상태 변경은 코드·테스트·evidence·코드리뷰 완료 후에만 `complete`.
 
-P10-M0·M1·M2는 전용 게이트, evidence, 코드리뷰와 최종 통합 `npm.cmd test`가 모두 PASS하여 `complete`다.
-다만 XV-02~10의 외부 기준해 요건이 충족되지 않았으므로 제품의 `externally-cross-validated` 배지는
+P10-M0~M11 구현은 전용 게이트, evidence와 코드리뷰를 통과해 모두 `complete`다.
+다만 XV-02~10의 required-source 외부 기준해 요건이 충족되지 않았고 formulation-native WebGPU 장치
+qualification도 남았으므로 제품의 `externally-cross-validated` 배지는
 `false`이며 M11 release gate는 차단 상태다.

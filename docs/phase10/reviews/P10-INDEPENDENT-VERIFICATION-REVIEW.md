@@ -5,10 +5,16 @@ review: P10-INDEPENDENT-VERIFICATION
 date: 2026-07-23
 reviewer: independent code+numeric verification pass
 scope: Phase 10 신규 소스 (00c73e7..HEAD, src/ +9,443 lines)
-head: 5fb3993 (feat: complete phase 10 milestone 11 release gate)
-verdict: 1 HIGH 결함(수치) + 1 HIGH 테스트 커버리지 공백 + 2 MEDIUM, 나머지 PASS
-release_impact: none-added (shell FEM은 이미 release-blocked; 결함은 그 게이트 범위 안)
+original_head: 5fb3993 (feat: complete phase 10 milestone 11 release gate)
+original_verdict: 1 HIGH 결함(수치) + 1 HIGH 테스트 커버리지 공백 + 2 MEDIUM, 나머지 PASS
+current_verdict: REMEDIATED — CPU f64 수치·통합 지적 해결, 외부 XV·formulation-native WebGPU release 차단 유지
+review_state: superseded-by-appendix-a-remediation
+release_impact: release 차단 유지 (XV-02~10 required-source 및 formulation-native WebGPU 장치 qualification 필요)
 ```
+
+> **현재 상태 안내:** §0~§8은 `5fb3993` 시점의 원 리뷰를 변경하지 않고 보존한 역사 기록이다.
+> 현재 판정은 [Appendix A](#appendix-a--2026-07-23-remediation--resolution)가 우선하며,
+> CPU f64 지적은 해결됐지만 제품 release와 사용자 모델 설계 전이는 계속 차단된다.
 
 ## 0. 요약 (TL;DR)
 
@@ -144,3 +150,42 @@ Phase 10은 **범위(무엇을 지원/미지원하는지)를 정직하게 라벨
 5. 프레임 계열 기능(§7)과 release gate 구조는 **그대로 유지**.
 
 > 재현 스크립트는 `tests/helpers/p10Shell.mjs`를 종횡비/두께 파라미터화하면 그대로 얻을 수 있다(리뷰 중 임시 프로브로 실행·확인).
+
+---
+
+## Appendix A — 2026-07-23 remediation / resolution
+
+이 appendix는 위 독립 리뷰 원문과 당시 측정값을 수정하지 않고, 지적별 후속조치와 현재 판정을 기록한다.
+원문의 thick-plate Kirchhoff 비교는 결함 탐지 프로브로는 유효했지만 최종 합격 기준으로는 횡전단 변형을 포함하지
+않는다. remediation qualification은 이를 Reissner–Mindlin Navier 기준으로 교체하고 종횡비·두께·메시수렴을 함께
+검사한다.
+
+| 원문 지적 | 조치 | 현재 내부 판정 |
+| --- | --- | --- |
+| §3 plate 종횡비/두께 결함 | 경험계수 `0.415`, reduced/full shear 혼합, 임의 `w` 대각항을 제거하고 Bathe–Dvorkin MITC4 covariant tying shear로 교체 | RESOLVED — CPU f64 |
+| §4 테스트 공백 | 정사각·2:1·4:1, 단변/t=15~100, 8×8→10×10 수렴, raw 강체/곡률, 모달 시험 추가 | RESOLVED — CPU f64 |
+| §5 QM6 왜곡 민감도 | 중심 Jacobian과 `det(J0)/det(J)` mapping을 쓰는 QM6-EAS, 내부 4모드 정적응축, 왜곡 3×3 patch 추가 | RESOLVED — CPU f64 |
+| §6 명칭 불일치 | canonical `slabPlateMitc4`와 `flatShellQm6Mitc4`를 추가하고 과거 DKQ/Allman 이름은 deprecated facade로 한정 | RESOLVED |
+| 독립 후속감사: drilling | 절점별 독립 대각 스프링을 `θn−0.5(v,x−u,y)` Hughes–Brezzi curl-compatible penalty로 교체 | RESOLVED — CPU f64 |
+| 독립 후속감사: warped rigid mode | `U_plane=U+d(n×R)` 기준면 강체팔을 넣고 flat-shell의 사후 rigid-energy projection 제거 | RESOLVED — CPU f64 |
+| 독립 후속감사: 왜곡 Q4 압력 | `f_i=∫N_i p n detJ` 2×2 consistent load로 교체해 총력과 도심모멘트 보존 | RESOLVED — CPU f64 |
+| 통합 후속감사: 셸 입력 계약 | 셸 ID 중복, 잘못된 결과 집계, 압력 target/value alias 충돌 및 binary round-trip을 공통 typed resolver로 fail-closed 처리 | RESOLVED |
+| 통합 후속감사: 해석 결과 전파 | 정적·모달 UI/API 결과에 수치 qualification과 사용자 모델 mesh-convergence 차단 사유를 전파 | RESOLVED |
+| 통합 후속감사: 평형·질량원 | 셸 압력을 6성분 평형 감사에 포함하고 물리 셸 면적질량을 modal mass source에 포함; 생성/massless 연결부재는 제외 | RESOLVED |
+| 증거 후속감사: M11 무결성 | exact case/version/hash/source hash, 중복, 수치 재계산, 성능 측정 계약을 검증해 forged PASS를 차단 | RESOLVED |
+
+확대된 M9 CPU f64 evidence 계약은 35개 record 전부 PASS를 요구하며 committed hash는
+`45389db66c1633dc99e11566`이다. CPU 요소/커널은 내부 수치 qualification을 통과했지만, 사용자 모델 설계 전이는
+메시수렴 provenance가 없으므로 차단한다. warning-warped 요소는 reference-plane 근사에 대한 공학검토도 필요하다.
+
+### 남은 release blocker
+
+- 엄격한 외부-source 기준에서는 XV-01만 green이다. XV-02 손계산은 외부 검증원으로 부적격이고 XV-03~10의
+  required-source artifact가 아직 green이 아니다.
+- 현재 WebGPU 셸 구현은 CPU가 미리 계산한 f32 행렬의 reconstruction, fixed-order gather, generic recovery
+  operator 적용이다.
+- QM6-EAS·MITC4·drilling을 재료·기하에서 직접 만드는 formulation-native WebGPU stiffness generation은
+  미구현·미적격이며, precomputed transport parity는 이를 대체하지 않는다.
+
+따라서 독립 리뷰의 CPU 수치 결함은 해소됐지만 M11의 `release.allowed=false`와
+`externallyCrossValidated=false`는 XV 및 formulation-native GPU qualification이 끝날 때까지 유지한다.

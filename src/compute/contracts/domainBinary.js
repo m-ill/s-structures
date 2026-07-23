@@ -3,6 +3,7 @@ import { resolveGlobalShearDeformation, resolveMemberShearDeformationSetting } f
 import { resolveSectionShearAreas } from '../../materials/sectionProperties.js';
 import { normalizeSectionRecord } from '../../materials/sectionSchema.js';
 import { normalizeGeneralConstraints } from '../../core/constraintDefinitions.js';
+import { resolveShellPressureLoad as resolveShellPressureDefinition } from '../../core/shellPressureLoad.js';
 
 export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v6';
 export const DOMAIN_BINARY_ENDIANNESS = detectEndianness();
@@ -27,8 +28,13 @@ export function packDomainBinary(model = {}) {
   const loads = array(model.loads);
   const loadCases = array(model.loadCases);
   const combinations = array(model.loadCombinations);
-  const shells = [...array(model.shells), ...array(model.slabs).filter((item) => item?.type === 'shell')]
-    .filter((item) => ['membrane', 'plate', 'shell', 'fem'].includes(item?.formulation));
+  const shellCandidates = [...array(model.shells), ...array(model.slabs).filter((item) => item?.type === 'shell')];
+  const shellCandidateIds = uniqueShellIds(shellCandidates);
+  const shells = shellCandidates.filter((item) => item?.formulation != null && item.formulation !== 'equivalent');
+  const unsupportedShell = shells.find((item) => !['membrane', 'plate', 'shell', 'fem'].includes(item?.formulation));
+  if (unsupportedShell) {
+    throw contractError('UNSUPPORTED_SHELL_FORMULATION', `Shell ${unsupportedShell.id || '<unknown>'} has unsupported formulation ${unsupportedShell.formulation}.`);
+  }
   const nodeIds = uniqueIds(nodes, 'node');
   const memberIds = uniqueIds(members, 'member');
   const materialIds = dictionaryIds(materials, members.map((row) => row.matId), 'material');
@@ -47,7 +53,8 @@ export function packDomainBinary(model = {}) {
   const sectionIndex = indexMap(sectionIds);
   const loadCaseIndex = indexMap(loadCaseIds);
   const memberTypeIndex = indexMap(memberTypeIds);
-  const shellIds = shells.map((row, index) => text(row.id) || `SHELL${index + 1}`);
+  const shellIdByRecord = new Map(shellCandidates.map((row, index) => [row, shellCandidateIds[index]]));
+  const shellIds = shells.map((row) => shellIdByRecord.get(row));
 
   const coordinates = new Float64Array(nodes.length * 3);
   const dofMap = new Int32Array(nodes.length * 6);
@@ -77,15 +84,23 @@ export function packDomainBinary(model = {}) {
   shells.forEach((shell, index) => {
     const ids = Array.isArray(shell.nodeIds) ? shell.nodeIds : array(shell.nodes).map((node) => node.id);
     if (ids.length !== 4) throw contractError('BAD_SHELL_PROPS', `Shell ${shellIds[index]} requires four nodes.`);
-    for (let local = 0; local < 4; local += 1) shellConnectivity[index * 4 + local] = requiredIndex(nodeIndex, ids[local], 'shell.nodeIds');
+    const connectivityRow = ids.map((id) => requiredIndex(nodeIndex, id, 'shell.nodeIds'));
+    if (new Set(connectivityRow).size !== 4) throw contractError('BAD_SHELL_CONNECTIVITY', `Shell ${shellIds[index]} requires four distinct nodes.`);
+    for (let local = 0; local < 4; local += 1) shellConnectivity[index * 4 + local] = connectivityRow[local];
     shellTypeCodes[index] = shell.formulation === 'membrane' ? 1 : shell.formulation === 'plate' ? 2 : 3;
-    const material = shell.material || materials.find((row) => row.id === shell.matId) || {};
-    shellProperties.set([
-      positiveOr(shell.thickness ?? shell.t, 0),
-      numberOr(material.E ?? material.elastic?.E, 0),
-      numberOr(material.nu ?? material.elastic?.nu, 0.2),
-      numberOr(material.density ?? material.rho ?? material.elastic?.rho, 0),
-    ], index * 4);
+    const material = shell.material || materials.find((row) => row.id === (shell.matId || 'steel')) || {};
+    const thickness = strictNumber(shell.thickness ?? shell.t);
+    const elasticModulus = strictNumber(shell.E ?? material.E ?? material.elastic?.E);
+    const poisson = strictNumber(shell.nu ?? material.nu ?? material.elastic?.nu ?? 0.2);
+    const suppliedDensity = shell.density ?? material.density ?? material.rho ?? material.elastic?.rho;
+    const density = suppliedDensity == null ? 0 : strictNumber(suppliedDensity);
+    if (!Number.isFinite(thickness) || thickness <= 0
+      || !Number.isFinite(elasticModulus) || elasticModulus <= 0
+      || !Number.isFinite(poisson) || poisson < 0 || poisson >= 0.5
+      || !Number.isFinite(density) || density < 0) {
+      throw contractError('BAD_SHELL_PROPS', `Shell ${shellIds[index]} has invalid thickness or material properties.`);
+    }
+    shellProperties.set([thickness, elasticModulus, poisson, density], index * 4);
   });
   const fixedDofSet = new Set([...dofMap].map((value, index) => (value < 0 ? index : null)).filter((value) => value != null));
   const normalizedConstraints = normalizeGeneralConstraints(array(model.constraints), nodes, { fixedDofs: fixedDofSet });
@@ -213,8 +228,18 @@ export function packDomainBinary(model = {}) {
   const loadDirection = new Int8Array(loads.length);
   const loadValues = new Float64Array(loads.length * 6);
   const memberIndex = indexMap(memberIds);
+  const shellIndex = indexMap(shellIds);
   loads.forEach((load, index) => {
     loadCase[index] = requiredIndex(loadCaseIndex, load.case, 'load.case');
+    const shellPressure = load.type === 'pressure' || load.type === 'shellPressure';
+    if (shellPressure) {
+      const pressure = resolveShellPressureLoad(load, shellIndex, shells);
+      loadTargetKind[index] = 3;
+      loadTargetIndex[index] = pressure.shellIndex;
+      loadDirection[index] = 0;
+      loadValues.set([pressure.q, 0, 0, 0, 0, 0], index * 6);
+      return;
+    }
     const nodal = load.node != null;
     loadTargetKind[index] = nodal ? 1 : load.member != null ? 2 : 0;
     loadTargetIndex[index] = nodal
@@ -324,7 +349,15 @@ export function packDomainBinary(model = {}) {
         equation: 'slave=sum(c*term)+d',
         types: { 1: 'mpc', 2: 'rigidLink', 3: 'masterSlave' },
       },
-      shellTypeCodes: { 1: 'membrane-qm6', 2: 'plate-dkq', 3: 'flat-shell-allman-dkq' },
+      loadTargetKind: { 0: 'none', 1: 'node', 2: 'member', 3: 'shell' },
+      loadValues: {
+        stride: 6,
+        slots: ['P-or-shell-pressure-q', 'w', 'M', 'position-or-x', 'a', 'b'],
+        shellPressure: { q: 0 },
+      },
+      // Numeric wire codes and layout remain v6-compatible; only the
+      // human-readable formulation labels are corrected.
+      shellTypeCodes: { 1: 'membrane-qm6-eas', 2: 'plate-mitc4', 3: 'flat-shell-qm6-eas-mitc4' },
       shellProperties: ['thickness', 'E', 'nu', 'density'],
     },
     counts: {
@@ -378,6 +411,58 @@ export function validateDomainBinary(domain) {
   if (!(buffers.shellProperties instanceof Float64Array)
     || domain.metadata?.counts?.shells * 4 !== buffers.shellProperties.length
     || [...buffers.shellProperties].some((value) => !Number.isFinite(value))) errors.push('domain:shell-properties');
+  const shellCount = Number(domain.metadata?.counts?.shells) || 0;
+  const nodeCount = Number(domain.metadata?.counts?.nodes) || 0;
+  if (buffers.shellConnectivity instanceof Int32Array && buffers.shellConnectivity.length === shellCount * 4) {
+    for (let element = 0; element < shellCount; element += 1) {
+      const row = Array.from(buffers.shellConnectivity.slice(element * 4, element * 4 + 4));
+      if (row.some((value) => value < 0 || value >= nodeCount) || new Set(row).size !== 4) {
+        errors.push('domain:shell-connectivity-values');
+        break;
+      }
+    }
+  }
+  if (buffers.shellProperties instanceof Float64Array && buffers.shellProperties.length === shellCount * 4) {
+    for (let element = 0; element < shellCount; element += 1) {
+      const [thickness, elasticModulus, poisson, density] = buffers.shellProperties.slice(element * 4, element * 4 + 4);
+      if (!(thickness > 0) || !(elasticModulus > 0) || poisson < 0 || poisson >= 0.5 || density < 0) {
+        errors.push('domain:shell-property-ranges');
+        break;
+      }
+    }
+  }
+  const loadCount = Number(domain.metadata?.counts?.loads) || 0;
+  const memberCount = Number(domain.metadata?.counts?.members) || 0;
+  const loadCaseCount = Number(domain.metadata?.counts?.loadCases) || 0;
+  const loadCasesValid = buffers.loadCase instanceof Int32Array && buffers.loadCase.length === loadCount;
+  const loadTargetKindsValid = buffers.loadTargetKind instanceof Uint8Array
+    && buffers.loadTargetKind.length === loadCount
+    && [...buffers.loadTargetKind].every((value) => value >= 0 && value <= 3);
+  const loadTargetIndicesValid = buffers.loadTargetIndex instanceof Int32Array
+    && buffers.loadTargetIndex.length === loadCount;
+  if (!loadCasesValid
+    || [...(buffers.loadCase || [])].some((value) => value < 0 || value >= loadCaseCount)) errors.push('domain:load-cases');
+  if (!loadTargetKindsValid) errors.push('domain:load-target-kinds');
+  if (!loadTargetIndicesValid) errors.push('domain:load-target-indices');
+  if (!(buffers.loadDirection instanceof Int8Array)
+    || buffers.loadDirection.length !== loadCount
+    || [...(buffers.loadDirection || [])].some((value) => ![-3, -2, -1, 0, 1, 2, 3].includes(value))) {
+    errors.push('domain:load-directions');
+  }
+  if (!(buffers.loadValues instanceof Float64Array)
+    || buffers.loadValues.length !== loadCount * 6
+    || [...(buffers.loadValues || [])].some((value) => !Number.isFinite(value))) errors.push('domain:load-values');
+  if (loadTargetKindsValid && loadTargetIndicesValid) {
+    for (let loadIndex = 0; loadIndex < loadCount; loadIndex += 1) {
+      const kind = buffers.loadTargetKind[loadIndex];
+      const target = buffers.loadTargetIndex[loadIndex];
+      const upperBound = kind === 1 ? nodeCount : kind === 2 ? memberCount : kind === 3 ? shellCount : 0;
+      if ((kind === 0 && target !== -1) || (kind !== 0 && (target < 0 || target >= upperBound))) {
+        errors.push('domain:load-target-range');
+        break;
+      }
+    }
+  }
   if (!(buffers.nodePanelZones instanceof Float64Array)
     || domain.metadata?.counts?.nodes * 3 !== buffers.nodePanelZones.length
     || [...buffers.nodePanelZones].some((value) => !Number.isFinite(value) || value < 0)) errors.push('domain:node-panel-zones');
@@ -541,11 +626,13 @@ export function unpackDomainBinary(domain) {
     }
     return member;
   });
+  const loads = dictionaries.loadIds.map((id, index) => unpackTypedLoad(dictionaries, buffers, id, index));
   return {
     version: domain.version,
     units: { ...domain.metadata.units },
     nodes,
     members,
+    loads,
     sourceHash: domain.metadata.sourceHash,
     domainHash: domain.domainHash,
     model: JSON.parse(new TextDecoder().decode(buffers.modelPayload)),
@@ -741,6 +828,71 @@ function directionCode(value) {
   return ({ '+x': 1, '-x': -1, '+y': 2, '-y': -2, '+z': 3, '-z': -3 })[String(value || '').toLowerCase()] || 0;
 }
 
+function directionValue(code) {
+  return ({ 1: '+x', '-1': '-x', 2: '+y', '-2': '-y', 3: '+z', '-3': '-z' })[code] || null;
+}
+
+function resolveShellPressureLoad(load, shellIndex, shells) {
+  const resolved = resolveShellPressureDefinition(load);
+  if (!resolved.ok) {
+    const code = resolved.reason === 'SHELL_PRESSURE_TARGET_INVALID'
+      ? 'DOMAIN_SHELL_PRESSURE_TARGET_INVALID'
+      : 'DOMAIN_SHELL_PRESSURE_VALUE_INVALID';
+    throw contractError(
+      code,
+      `Shell pressure ${text(load.id) || '?'} is invalid: ${resolved.message}`,
+    );
+  }
+  const target = resolved.target;
+  const targetIndex = shellIndex.get(target);
+  if (!Number.isInteger(targetIndex)) {
+    throw contractError(
+      'DOMAIN_SHELL_PRESSURE_TARGET_INVALID',
+      `Shell pressure ${text(load.id) || '?'} references unknown or non-FEM shell ${target}.`,
+    );
+  }
+  if (!['plate', 'shell', 'fem'].includes(shells[targetIndex]?.formulation)) {
+    throw contractError(
+      'DOMAIN_SHELL_PRESSURE_TARGET_UNSUPPORTED',
+      `Shell pressure ${text(load.id) || '?'} targets formulation ${shells[targetIndex]?.formulation || 'unknown'}.`,
+    );
+  }
+  return { shellIndex: targetIndex, q: resolved.q };
+}
+
+function unpackTypedLoad(dictionaries, buffers, id, index) {
+  const kind = buffers.loadTargetKind[index];
+  const target = buffers.loadTargetIndex[index];
+  const offset = index * 6;
+  const values = buffers.loadValues.slice(offset, offset + 6);
+  const base = {
+    id,
+    case: dictionaries.loadCaseIds[buffers.loadCase[index]],
+  };
+  if (kind === 3) {
+    return {
+      ...base,
+      type: 'shellPressure',
+      shell: dictionaries.shellIds[target],
+      q: values[0],
+    };
+  }
+  const direction = directionValue(buffers.loadDirection[index]);
+  const decoded = {
+    ...base,
+    ...(kind === 1 ? { node: dictionaries.nodeIds[target] } : {}),
+    ...(kind === 2 ? { member: dictionaries.memberIds[target] } : {}),
+    ...(direction ? { dir: direction } : {}),
+    P: values[0],
+    w: values[1],
+    M: values[2],
+    position: values[3],
+    a: values[4],
+    b: values[5],
+  };
+  return decoded;
+}
+
 function canonicalUnits(model) {
   const source = model.unitSystem?.internal || model.units || {};
   return {
@@ -764,6 +916,13 @@ function uniqueIds(records, label) {
   return ids;
 }
 
+function uniqueShellIds(records) {
+  const ids = records.map((row) => (typeof row?.id === 'string' ? row.id.trim() : ''));
+  if (ids.some((id) => !id)) throw contractError('DOMAIN_ID_REQUIRED', 'shell ID is required.');
+  if (new Set(ids).size !== ids.length) throw contractError('DOMAIN_ID_DUPLICATE', 'Duplicate shell ID.');
+  return ids;
+}
+
 function indexMap(ids) {
   return new Map(ids.map((id, index) => [id, index]));
 }
@@ -775,9 +934,15 @@ function requiredIndex(map, value, field) {
 }
 
 function finite(value, field) {
-  const number = Number(value);
+  const number = strictNumber(value);
   if (!Number.isFinite(number)) throw contractError('DOMAIN_NONFINITE', field + ' must be finite.');
   return number;
+}
+
+function strictNumber(value) {
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string' && value.trim() !== '') return Number(value);
+  return NaN;
 }
 
 function numberOr(value, fallback) {

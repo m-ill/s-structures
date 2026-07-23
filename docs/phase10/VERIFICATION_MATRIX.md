@@ -131,11 +131,12 @@ Evidence는 4/4 records PASS, artifact hash `9052baa9bcd0cdf092b4db0d`다. 이�
 | XV-07 | 스프링지지·침하 모델 | SAP2000 | 반력·변위 |
 | XV-08 | 다이어프램(강체·반강체) 건물 | ETABS | 층전단·CoM 변위 |
 | XV-09 | 깊은 보 전단변형 — 내부 폐형해 ready/green, 외부 `pending-reference` | 폐형해 + SAP2000(shear def on) | 처짐·단부력 |
-| XV-10 | (M9 후) 전단벽 실 shell | SAP2000/ETABS shell | drift·벽 base moment·응력 대표점 |
+| XV-10 | 전단벽 실 shell 외부 대조 — `pending-reference` | SAP2000/ETABS shell | drift·벽 base moment·응력 대표점 |
 
 > 외부 solver 실행·기준값 추출은 **오너 입력물**. 저장소는 §11 artifact(JSON, modelHash 결속)로 수입해 자동 대조만 한다.
-> 현재 상태는 XV-01/02 hand-calc PASS, XV-03~08 `pending-reference`, XV-09 내부 폐형해 green/SAP2000
-> `pending-reference`, XV-10 후속 마일스톤 대기다.
+> 현재 상태는 XV-01 required-source green, XV-02 hand-calc 하네스 PASS/source-ineligible, XV-03~08
+> `pending-reference`, XV-09 내부 폐형해 green/SAP2000 `pending-reference`, XV-10 외부 shell 기준해
+> `pending-reference`다.
 > XV-02 hand-calc는 M1 하네스 검증에는 유효하지만 M11의 외부-source 요건에는 부적격이다. 따라서
 > `externallyCrossValidated=false`; XV-01~10 required-source green 및 pending 0 전까지 M11 release는 차단된다.
 
@@ -260,23 +261,29 @@ Evidence: [p10-m7-dynamics-extension.json](../../reports/validation-evidence/pha
 
 | ID | 단계 | 케이스 | 기준 | § |
 | --- | --- | --- | --- | --- |
-| SH-A01 | M9a | 상수응력 membrane patch | <1e-10 | §9a |
+| SH-A01 | M9a | QM6-EAS regular 상수응력 membrane patch | 중심 변위 <1e-8, 자유절점 잔차 <1e-10 | §9a |
 | SH-A02 | M9a | 캔틸레버 벽 vs 보이론 δ=PH³/3EI+1.2PH/GA (메시수렴) | < shell.wallBeamTol | §9a |
-| SH-A03 | M9a | 개구부 벽 평형감사 + drilling 안정화 에너지비 | §6A 규칙 | §9a |
-| SH-A04 | M9a | 등가모델 대비 global drift 대조 (진단) | 보고 | §9a |
-| SH-B01 | M9b | 단순지지 정사각판 UDL w_c=0.00406qa⁴/D | < shell.plateTol | §9b |
-| SH-B02 | M9b | 고정단 정사각판 0.00126qa⁴/D | < shell.plateTol | §9b |
-| SH-B03 | M9b | 상수 bending patch | <1e-4~1e-3 | §9b |
-| SH-C01 | M9c | §6A 전체 게이트: 강체 6모드(λ비<1e-8)·locking·mesh 수렴(변위<1~5%, 응력<5~10%) | §6A | §9c |
-| SH-C02 | M9c | XV-10 상용 shell 대조 | criteria.xval | §11 |
-| SH-C03 | M9c | warped(비평면) patch — 사영·강체팔 보정 후 상수응력 유지 | <1e-6 | §9c |
-| SH-C04 | M9c | Allman 기생모드 에너지비 | < shell.spuriousEnergyMax | §9c |
-| SH-C05 | M9c | 벽-프레임 drilling 결합: 보 접합 벽 모델 vs 세분 프레임 등가 | 수렴 대조 | §9c |
-| SH-G01 | M9d | CPU↔GPU 요소강성 배치 일치 (동일 SoA 입력) | 상대오차 게이트 | §9d |
-| SH-G02 | M9d | CPU↔GPU 조립(CSC values)·응력 회복 일치 | 상대오차 게이트 | §9d |
-| SH-G03 | M9d | 결정론: scatter 순서 독립 — 반복 실행 해시 동일 | bit-identical | §9d |
-| SH-G04 | M9d | 혼합정밀도 반복개선 잔차 | < shell.gpuResidualRefine (실패 시 CPU 강등 동작 확인) | §9d |
-| SH-G05 | M9d | 대형 벽식 모델 성능 예산 (생성+조립+solve, CPU 대비) | telemetry 기록 | §9d |
+| SH-A03 | M9a | 3×3 네 요소 patch의 중심절점 3종 왜곡 | 각 중심 변위 <1e-8, affine 자유잔차 <1e-10 | §9a |
+| SH-A04 | M9a | corner detJ≤0 fail-closed + 응력복원 enhanced mode 일치 | 명시 오류 / patch 일치 | §9a |
+| SH-B01 | M9b | MITC4 단순지지 Reissner–Mindlin UDL: 정사각·2:1·4:1, 단변/t=15~100 | 각 상대오차 <3~5% | §9b |
+| SH-B02 | M9b | 정사각·4:1 판 8×8→10×10 메시수렴 | 변위 변화 <1% | §9b |
+| SH-B03 | M9b | raw `[w,rx,ry]` 강체 3모드 + 상수곡률 patch | residual <1e-12, 에너지오차 <1e-8 | §9b |
+| SH-B04 | M9b | MITC4 모달 주파수 및 RSA 공용 경로 | 주파수 상대오차 <10%, 유한 응답 | §9b |
+| SH-C01 | M9c | planar 및 warning-warped raw 전역 강체 6모드 | 정규화 residual <1e-12 | §9c |
+| SH-C02 | M9c | Hughes–Brezzi compatible affine curl / 독립 θn 모드 | compatible 에너지 <1e-12, 독립모드 >1e-8 | §9c |
+| SH-C03 | M9c | Q4 consistent pressure: 직사각형·왜곡 사다리꼴 절점력/총력/도심모멘트 | 상대오차 <1e-12 | §9c |
+| SH-C04 | M9c | drilling 안정화 영향도 | `max|k_d|/max|k_m| < shell.spuriousEnergyMax` | §9c |
+| SH-C05 | M9c | 벽-프레임 drilling 결합 및 XV-10 상용 shell 대조 | 수렴 대조 / criteria.xval | §9c·§11 |
+| SH-G01 | M9d | precomputed CPU 행렬의 f32 scale-normalized reconstruction | CPU f64 대비 상대오차 게이트 | §9d |
+| SH-G02 | M9d | fixed-order deterministic gather | CPU reference 일치 | §9d |
+| SH-G03 | M9d | generic recovery operator 적용 | CPU reference 일치 | §9d |
+| SH-G04 | M9d | transport parity 실패 시 CPU f64 강등 | < shell.gpuResidualRefine / fail-closed | §9d |
+| SH-G05 | M9d | formulation-native QM6-EAS·MITC4·drilling GPU 생성 | **미구현·미적격 — release blocker** | §9d |
+
+내부 CPU f64 M9 artifact는 위 membrane/plate/flat-shell 검증을 35개 record로 고정하며 전부 PASS해야 한다
+(artifact hash `45389db66c1633dc99e11566`). 이 내부 PASS는 사용자 모델 메시수렴 provenance,
+SH-C05의 XV-10과 SH-G05의
+formulation-native WebGPU 구현·실장치 qualification을 대체하지 않으므로 M11 release는 계속 차단된다.
 
 ## LG — 하중 생성 (M10)
 

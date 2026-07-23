@@ -13,6 +13,7 @@ import {
 import { validateUnits } from './units.js';
 import { validateUnitSystem } from './unitSystemValidation.js';
 import { summarizeValidationHealth } from './validationHealth.js';
+import { resolveShellPressureLoad } from './shellPressureLoad.js';
 import {
   MEMBER_RELEASE_ENDS,
   MEMBER_ROTATIONAL_SPRING_KEYS,
@@ -30,6 +31,7 @@ import { resolveMemberOffsetKinematics } from '../solver/memberOffsets.js';
 import { validatePanelZoneInput } from '../solver/panelZone.js';
 import { normalizeGeneralConstraints } from './constraintDefinitions.js';
 import { resolveMemberTaper } from '../solver/taperedMember.js';
+import { buildShellLocalFrame, q4GeometryQuality } from '../solver/shell/shellElementMath.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -231,16 +233,34 @@ function validateShells(model, nodeIds, materialIds, error) {
     ...(model.shells || []),
     ...(model.slabs || []).filter((item) => item?.type === 'shell'),
   ];
+  const nodeMap = new Map((model.nodes || []).map((node) => [node.id, node]));
+  const shellIds = new Set();
   for (const shell of shells) {
-    const id = shell.id || 'shells';
+    const normalizedId = typeof shell?.id === 'string' ? shell.id.trim() : '';
+    const id = normalizedId || 'shells';
+    if (!normalizedId) error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell id is required.', 'shells');
+    else if (shellIds.has(normalizedId)) error(ERROR_CODES.BAD_SHELL_PROPS, `Duplicate shell id: ${normalizedId}`, normalizedId);
+    if (normalizedId) shellIds.add(normalizedId);
     const ids = shellNodeIds(shell);
     if (ids.length !== 4) {
       error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell v1 requires exactly four node references.', id);
     }
+    if (ids.length === 4 && new Set(ids).size !== 4) {
+      error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell requires four distinct node references.', id);
+    }
     for (const nodeId of ids) {
       if (!nodeIds.has(nodeId)) error(ERROR_CODES.BAD_SHELL_NODE_REF, 'Shell references a missing node.', id);
     }
-    if (!(isFiniteNumber(shell.thickness) && Number(shell.thickness) > 0)) {
+    if (ids.length === 4 && new Set(ids).size === 4 && ids.every((nodeId) => nodeMap.has(nodeId))) {
+      const frame = buildShellLocalFrame(ids.map((nodeId) => nodeMap.get(nodeId)));
+      const quality = frame.ok ? q4GeometryQuality(frame.projected) : null;
+      if (!frame.ok || !quality?.jacobianSamples?.every((sample) => Number.isFinite(sample.determinant) && sample.determinant > 1e-14)
+        || !Number.isFinite(quality?.shortestEdge) || !(quality.shortestEdge > 1e-12)) {
+        error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell geometry must be a nondegenerate positively oriented quadrilateral.', id);
+      }
+    }
+    const thickness = shell.t ?? shell.thickness;
+    if (!(isFiniteNumber(thickness) && Number(thickness) > 0)) {
       error(ERROR_CODES.BAD_SHELL_PROPS, 'Shell thickness must be positive.', id);
     }
     if (shell.formulation != null && !['equivalent', 'membrane', 'plate', 'shell', 'fem'].includes(shell.formulation)) {
@@ -469,6 +489,11 @@ function validateMemberPanelZones(member, a, b, error) {
 function validateLoads(model, nodeIds, memberIds, error, warning) {
   const loadIds = new Set();
   const loadCaseIds = new Set((model.loadCases || []).map((loadCase) => loadCase.id));
+  const shellById = new Map([
+    ...(model.shells || []),
+    ...(model.slabs || []).filter((item) => item?.type === 'shell'),
+  ].filter((shell) => typeof shell?.id === 'string' && shell.id.trim())
+    .map((shell) => [shell.id.trim(), shell]));
   for (const load of model.loads || []) {
     if (!load.id) error(ERROR_CODES.LOAD_MISSING_ID, 'A load is missing id.', 'loads');
     else if (loadIds.has(load.id)) error(ERROR_CODES.DUPLICATE_LOAD_ID, `Duplicate load id: ${load.id}`, load.id);
@@ -487,9 +512,20 @@ function validateLoads(model, nodeIds, memberIds, error, warning) {
     if (load.type === 'nmoment' && (!load.node || !isFiniteNumber(load.M))) {
       error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Nodal moment requires node and finite M.', load.id);
     }
-    if ((load.type === 'pressure' || load.type === 'shellPressure')
-      && (!(load.shell || load.panel || load.target) || !isFiniteNumber(load.q ?? load.pressure ?? load.w))) {
-      error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'Shell pressure requires a shell target and finite q/pressure/w.', load.id);
+    if (load.type === 'pressure' || load.type === 'shellPressure') {
+      const resolved = resolveShellPressureLoad(load);
+      if (!resolved.ok) {
+        const code = resolved.reason === 'SHELL_PRESSURE_TARGET_INVALID'
+          ? ERROR_CODES.BAD_LOAD_SHELL_TARGET
+          : ERROR_CODES.BAD_LOAD_MAGNITUDE;
+        error(code, resolved.message, load.id);
+      } else if (!shellById.has(resolved.target)) {
+        const target = resolved.target;
+        error(ERROR_CODES.BAD_LOAD_SHELL_REF, `Shell pressure references missing shell ${target}.`, load.id);
+      } else if (!['plate', 'shell', 'fem'].includes(shellById.get(resolved.target)?.formulation)) {
+        const target = resolved.target;
+        error(ERROR_CODES.BAD_LOAD_SHELL_TARGET, `Shell pressure target ${target} does not support transverse pressure.`, load.id);
+      }
     }
     if ((load.type === 'udl' || load.type === 'udl-partial') && (!load.member || !isFiniteNumber(load.w))) {
       error(ERROR_CODES.BAD_LOAD_MAGNITUDE, 'UDL requires member and finite w.', load.id);

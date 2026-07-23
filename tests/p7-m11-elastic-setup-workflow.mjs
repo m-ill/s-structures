@@ -100,6 +100,11 @@ const firstOrder = model.analysisCases.find((item) => item.id === 'EL-STATIC');
 assert.ok(firstOrder);
 assert.equal(firstOrder.settings.pDeltaMethod, 'off');
 assert.equal(firstOrder.status, 'ok');
+const firstOrderAttempt = target.SStructuresEngine.getAnalysisLatestAttempt('EL-STATIC');
+assert.equal(firstOrderAttempt.status, 'ok');
+assert.equal(firstOrderAttempt.designBlocked, false);
+assert.equal(firstOrderAttempt.summary.designEligibility.eligible, false);
+assert.equal(firstOrderAttempt.summary.designEligibility.reason, 'PDELTA_THETA_LIMIT_EXCEEDED');
 
 workflow.go(5);
 assert.equal(document.querySelectorAll('.ss-ew-advanced-row').length, 5);

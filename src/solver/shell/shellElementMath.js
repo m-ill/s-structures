@@ -22,10 +22,24 @@ export const QM6_FORMULATION = Object.freeze({
   }),
 });
 
+export const DRILLING_FORMULATION = Object.freeze({
+  name: 'Hughes-Brezzi curl-compatible penalty',
+  method: 'hughes-brezzi-curl-penalty',
+  constraint: 'theta_n-0.5*(v,x-u,y)',
+  reference: Object.freeze({
+    authors: 'T.J.R. Hughes and F. Brezzi',
+    year: 1989,
+    doi: '10.1016/0045-7825(89)90124-2',
+  }),
+});
+
 const GAUSS = [-1 / Math.sqrt(3), 1 / Math.sqrt(3)];
 
 export function buildShellLocalFrame(nodes = []) {
   if (nodes.length !== 4) return { ok: false, reason: 'SHELL_FOUR_NODES_REQUIRED' };
+  if (nodes.some((node) => [0, 1, 2].some((axis) => !Number.isFinite(coordinate(node, axis))))) {
+    return { ok: false, reason: 'SHELL_NODE_COORDINATE_INVALID' };
+  }
   const origin = average(nodes);
   const e1 = unit(sub(nodes[1], nodes[0]));
   const diagonal = sub(nodes[3], nodes[0]);
@@ -62,10 +76,8 @@ export function qm6MembraneLocal(projected, E, nu, thickness) {
   const Kaa = zeros(4, 4);
   const center = q4Shape(projected, 0, 0);
   if (!center.ok) return center;
-  const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
-    .map(([xi, eta]) => q4Shape(projected, xi, eta));
-  const invalidCorner = corners.find((shape) => !shape.ok);
-  if (invalidCorner) return { ...invalidCorner, reason: 'SHELL_CORNER_JACOBIAN_NONPOSITIVE' };
+  const cornerQuality = q4CornerJacobianQuality(projected);
+  if (!cornerQuality.ok) return cornerQuality;
   for (const xi of GAUSS) for (const eta of GAUSS) {
     const shape = q4Shape(projected, xi, eta);
     if (!shape.ok) return shape;
@@ -87,7 +99,7 @@ export function qm6MembraneLocal(projected, E, nu, thickness) {
   if (!inverse) return { ok: false, reason: 'SHELL_INTERNAL_MODE_CONDENSATION_FAILED' };
   const correction = multiply(multiply(Kua, inverse), transpose(Kua));
   const internalDisplacementOperator = scaleMatrix(multiply(inverse, transpose(Kua)), -1);
-  const cornerDeterminants = corners.map((shape) => shape.detJ);
+  const cornerDeterminants = cornerQuality.determinants;
   return {
     ok: true,
     matrix: subtractMatrices(Kuu, correction),
@@ -114,6 +126,8 @@ export function mitc4PlateLocal(projected, E, nu, thickness, shearFactor = MITC4
   const K = zeros(12, 12);
   const G = E / (2 * (1 + nu));
   const Ds = [[shearFactor * G * thickness, 0], [0, shearFactor * G * thickness]];
+  const cornerQuality = q4CornerJacobianQuality(projected);
+  if (!cornerQuality.ok) return cornerQuality;
 
   for (const xi of GAUSS) for (const eta of GAUSS) {
     const shape = q4Shape(projected, xi, eta);
@@ -142,22 +156,68 @@ export function dkqPlateLocal(projected, E, nu, thickness, shearFactor = MITC4_F
   return mitc4PlateLocal(projected, E, nu, thickness, shearFactor);
 }
 
-export function embedMembrane24(local, frame, drillingAlpha = 1e-5) {
+export function embedMembrane24(local, frame, drillingAlpha = 1e-5, properties = {}) {
   const T = zeros(8, 24);
+  const drillingTransform = zeros(12, 24);
   for (let node = 0; node < 4; node += 1) {
+    const offset = Number(frame.projected?.[node]?.d || 0);
     for (let axis = 0; axis < 3; axis += 1) {
       T[node * 2][node * 6 + axis] = frame.e1[axis];
       T[node * 2 + 1][node * 6 + axis] = frame.e2[axis];
+      T[node * 2][node * 6 + 3 + axis] = -offset * frame.e2[axis];
+      T[node * 2 + 1][node * 6 + 3 + axis] = offset * frame.e1[axis];
+
+      drillingTransform[node * 3][node * 6 + axis] = frame.e1[axis];
+      drillingTransform[node * 3 + 1][node * 6 + axis] = frame.e2[axis];
+      drillingTransform[node * 3][node * 6 + 3 + axis] = -offset * frame.e2[axis];
+      drillingTransform[node * 3 + 1][node * 6 + 3 + axis] = offset * frame.e1[axis];
+      drillingTransform[node * 3 + 2][node * 6 + 3 + axis] = frame.normal[axis];
     }
   }
-  const global = multiply(transpose(T), multiply(local, T));
-  const kref = Math.max(1, maxAbs(local));
-  for (let node = 0; node < 4; node += 1) {
-    for (let a = 0; a < 3; a += 1) for (let b = 0; b < 3; b += 1) {
-      global[node * 6 + 3 + a][node * 6 + 3 + b] += drillingAlpha * kref * frame.normal[a] * frame.normal[b];
-    }
+  const membraneMatrix = multiply(transpose(T), multiply(local, T));
+  const localDrilling = zeros(12, 12);
+  const E = Number(properties.E);
+  const nu = Number(properties.nu);
+  const thickness = Number(properties.thickness);
+  const shearMembraneStiffness = Number.isFinite(E) && E > 0
+    && Number.isFinite(nu) && nu > -1
+    && Number.isFinite(thickness) && thickness > 0
+    ? E * thickness / (2 * (1 + nu))
+    : Math.max(1, maxAbs(local));
+  const alpha = Number.isFinite(Number(drillingAlpha)) && Number(drillingAlpha) > 0
+    ? Number(drillingAlpha)
+    : 1e-5;
+  const penaltyModulus = alpha * shearMembraneStiffness;
+  for (const xi of GAUSS) for (const eta of GAUSS) {
+    const shape = q4Shape(frame.projected, xi, eta);
+    if (!shape.ok) return shape;
+    const B = drillingB(shape);
+    addProduct(localDrilling, B, [[penaltyModulus]], B, shape.detJ);
   }
-  return { matrix: global, transform: T, drillingStiffness: drillingAlpha * kref };
+  const drillingMatrix = multiply(
+    transpose(drillingTransform),
+    multiply(localDrilling, drillingTransform),
+  );
+  const matrix = addMatrices(membraneMatrix, drillingMatrix);
+  const membraneScale = dofLengthScaledFrobeniusNorm24(membraneMatrix, frame.characteristicLength);
+  const drillingScale = dofLengthScaledFrobeniusNorm24(drillingMatrix, frame.characteristicLength);
+  if (!matrixIsFinite(matrix) || !Number.isFinite(membraneScale) || !Number.isFinite(drillingScale)) {
+    return { ok: false, reason: 'SHELL_STIFFNESS_NONFINITE' };
+  }
+  if (!(membraneScale > 0)) return { ok: false, reason: 'SHELL_STIFFNESS_DEGENERATE' };
+  return {
+    ok: true,
+    matrix,
+    membraneMatrix,
+    drillingMatrix,
+    transform: T,
+    drillingTransform,
+    drillingStiffness: maxAbs(drillingMatrix),
+    drillingStiffnessRatio: drillingScale / membraneScale,
+    dofScalingCharacteristicLength: frame.characteristicLength,
+    drillingPenaltyModulus: penaltyModulus,
+    drillingMethod: DRILLING_FORMULATION.method,
+  };
 }
 
 export function embedPlate24(local, frame) {
@@ -207,6 +267,70 @@ export function q4Shape(projected, xi, eta) {
   };
 }
 
+export function q4CornerJacobianQuality(projected) {
+  const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
+    .map(([xi, eta]) => q4Shape(projected, xi, eta));
+  const invalid = corners.find((shape) => !shape.ok);
+  if (invalid) return { ...invalid, reason: 'SHELL_CORNER_JACOBIAN_NONPOSITIVE' };
+  const determinants = corners.map((shape) => shape.detJ);
+  return {
+    ok: true,
+    determinants,
+    minCornerDetJ: Math.min(...determinants),
+    maxCornerDetJ: Math.max(...determinants),
+    minMaxRatio: Math.min(...determinants) / Math.max(...determinants),
+  };
+}
+
+export function q4GeometryQuality(projected) {
+  const edgeLengths = projected.map((point, index) => {
+    const next = projected[(index + 1) % projected.length];
+    return Math.hypot(next.x - point.x, next.y - point.y);
+  });
+  const jacobianSamples = [
+    { id: 'center', xi: 0, eta: 0 },
+    { id: 'corner-1', xi: -1, eta: -1 },
+    { id: 'corner-2', xi: 1, eta: -1 },
+    { id: 'corner-3', xi: 1, eta: 1 },
+    { id: 'corner-4', xi: -1, eta: 1 },
+  ].map(({ id, xi, eta }) => {
+    const shape = q4Shape(projected, xi, eta);
+    return {
+      id,
+      xi,
+      eta,
+      determinant: shape.detJ,
+      reciprocalCondition: shape.ok ? jacobianReciprocalCondition(shape.jacobian) : 0,
+    };
+  });
+  const shortestEdge = Math.min(...edgeLengths);
+  const longestEdge = Math.max(...edgeLengths);
+  return {
+    edgeLengths,
+    shortestEdge,
+    longestEdge,
+    aspectRatio: longestEdge / Math.max(1e-12, shortestEdge),
+    jacobianSamples,
+    minimumJacobianReciprocalCondition: Math.min(
+      ...jacobianSamples.map((sample) => sample.reciprocalCondition),
+    ),
+  };
+}
+
+function jacobianReciprocalCondition(jacobian) {
+  const [a, b] = jacobian[0];
+  const [c, d] = jacobian[1];
+  const frobeniusSquared = a * a + b * b + c * c + d * d;
+  const determinant = Math.abs(a * d - b * c);
+  const discriminant = Math.sqrt(Math.max(
+    0,
+    frobeniusSquared * frobeniusSquared - 4 * determinant * determinant,
+  ));
+  const largestSingularValueSquared = (frobeniusSquared + discriminant) / 2;
+  if (!(largestSingularValueSquared > 0)) return 0;
+  return Math.min(1, determinant / largestSingularValueSquared);
+}
+
 export function recoverMembraneStress(projected, localDisplacements, E, nu, xi = 0, eta = 0, options = {}) {
   const shape = q4Shape(projected, xi, eta);
   if (!shape.ok) return shape;
@@ -235,8 +359,18 @@ export function recoverMembraneStress(projected, localDisplacements, E, nu, xi =
 
 export function pressureLoad24(frame, area, pressure) {
   const load = new Array(24).fill(0);
+  const nodalAreas = new Array(4).fill(0);
+  if (Array.isArray(frame.projected) && frame.projected.length === 4) {
+    for (const xi of GAUSS) for (const eta of GAUSS) {
+      const shape = q4Shape(frame.projected, xi, eta);
+      if (!shape.ok) throw new Error(shape.reason);
+      for (let node = 0; node < 4; node += 1) nodalAreas[node] += shape.N[node] * shape.detJ;
+    }
+  } else {
+    nodalAreas.fill(Number(area) / 4);
+  }
   for (let node = 0; node < 4; node += 1) for (let axis = 0; axis < 3; axis += 1) {
-    load[node * 6 + axis] = frame.normal[axis] * pressure * area / 4;
+    load[node * 6 + axis] = frame.normal[axis] * pressure * nodalAreas[node];
   }
   return load;
 }
@@ -281,12 +415,29 @@ export function multiply(A, B) {
   }
   return out;
 }
-export function multiplyVector(A, vector) { return A.map((row) => row.reduce((sum, value, index) => sum + value * (vector[index] || 0), 0)); }
+export function multiplyVector(A, vector) { return A.map((row) => row.reduce((sum, value, index) => sum + value * Number(vector[index] ?? 0), 0)); }
 export function addMatrices(A, B) { return A.map((row, i) => row.map((value, j) => value + B[i][j])); }
 export function maxAbs(A) { return Math.max(0, ...A.flat().map((value) => Math.abs(value))); }
+export function matrixIsFinite(A) {
+  return Array.isArray(A) && A.every((row) => Array.isArray(row) && row.every(Number.isFinite));
+}
 export function symmetryError(A) {
   let error = 0; for (let i = 0; i < A.length; i += 1) for (let j = 0; j < A.length; j += 1) error = Math.max(error, Math.abs(A[i][j] - A[j][i]));
   return error / Math.max(1, maxAbs(A));
+}
+
+function dofLengthScaledFrobeniusNorm24(matrix, characteristicLength) {
+  const length = Math.max(1e-12, Number(characteristicLength) || 0);
+  let sumSquares = 0;
+  for (let row = 0; row < matrix.length; row += 1) {
+    const rowScale = row % 6 < 3 ? 1 : 1 / length;
+    for (let column = 0; column < matrix[row].length; column += 1) {
+      const columnScale = column % 6 < 3 ? 1 : 1 / length;
+      const value = matrix[row][column] * rowScale * columnScale;
+      sumSquares += value * value;
+    }
+  }
+  return Math.sqrt(sumSquares);
 }
 
 function membraneB(dx, dy) {
@@ -299,6 +450,15 @@ function incompatibleB(invJ, xi, eta, scale = 1) {
   const B = zeros(3, 4);
   for (let i = 0; i < 2; i += 1) { B[0][i] = gradients[i][0]; B[2][i] = gradients[i][1]; B[1][i + 2] = gradients[i][1]; B[2][i + 2] = gradients[i][0]; }
   for (let row = 0; row < B.length; row += 1) for (let column = 0; column < B[row].length; column += 1) B[row][column] *= scale;
+  return B;
+}
+function drillingB(shape) {
+  const B = zeros(1, 12);
+  for (let node = 0; node < 4; node += 1) {
+    B[0][node * 3] = 0.5 * shape.dNdy[node];
+    B[0][node * 3 + 1] = -0.5 * shape.dNdx[node];
+    B[0][node * 3 + 2] = shape.N[node];
+  }
   return B;
 }
 function mitc4BendingB(dx, dy) {
@@ -370,7 +530,13 @@ function invert(A) {
   return augmented.map((row) => row.slice(n));
 }
 function average(nodes) { return [0, 1, 2].map((axis) => nodes.reduce((sum, node) => sum + coordinate(node, axis), 0) / nodes.length); }
-function coordinate(node, axis) { return Number((Array.isArray(node) ? node[axis] : node[['x', 'y', 'z'][axis]]) || 0); }
+function coordinate(node, axis) {
+  const value = Array.isArray(node) ? node[axis] : node?.[['x', 'y', 'z'][axis]];
+  if (value == null) return axis === 2 ? 0 : NaN;
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string' && value.trim() !== '') return Number(value);
+  return NaN;
+}
 function sub(a, b) { return [0, 1, 2].map((axis) => coordinate(a, axis) - coordinate(b, axis)); }
 function dot(a, b) { return a.reduce((sum, value, index) => sum + value * b[index], 0); }
 function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
