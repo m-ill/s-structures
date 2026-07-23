@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "p11-release-manifest-v1",
+  "status": "blocked",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-23T11:19:50.923Z",
+  "sourceRevision": "5062591+worktree",
+  "requiredLocales": [
+    "ko-KR",
+    "en-US"
+  ],
+  "requiredMilestones": [
+    "P11-M0",
+    "P11-M1",
+    "P11-M2",
+    "P11-M3",
+    "P11-M4",
+    "P11-M5",
+    "P11-M6",
+    "P11-M7",
+    "P11-M8",
+    "P11-M9"
+  ],
+  "completedMilestones": [
+    "P11-M0"
+  ],
+  "evidence": {
+    "P11-M0": "c9850840c85e162467ab86021be853a73a2c7b42c4dd33d87140aaa0ce8cf33c"
+  },
+  "artifactPairs": [],
+  "blockers": [
+    "P11_M1_TO_M9_NOT_QUALIFIED",
+    "BILINGUAL_PDF_PAIR_NOT_AVAILABLE",
+    "DETERMINISTIC_VISUAL_EVIDENCE_NOT_AVAILABLE",
+    "INDEPENDENT_ENGINEERING_REFERENCE_NOT_AVAILABLE"
+  ],
+  "phase10EligibilityPreserved": true,
+  "manifestHash": "9660f235de4843573abc984f4adebd2c2e0eb7d38940d0b10abf8326036d9c2d"
+}

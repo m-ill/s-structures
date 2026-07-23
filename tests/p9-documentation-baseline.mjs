@@ -55,8 +55,8 @@ assert.match(status, /design_transfer_allowed:\s*false/);
 assert.match(status, /next_gate:\s*external-qualification/);
 assert.match(requirements, /status:\s*planned/);
 assert.match(traceability, /status:\s*implementation-complete-qualification-blocked/);
-assert.match(rootIndex, /documentationVersion:\s*2026-07-16-phase9-m10/);
-assert.match(rootIndex, /## Phase 9 Reading Order \(current\)/);
+assert.match(rootIndex, /documentationVersion:\s*2026-07-23-phase11-plan-v1/);
+assert.match(rootIndex, /## Phase 9 Reading Order \(compute baseline\)/);
 
 const milestoneIds = [...milestones.matchAll(/^## P9-M(\d+)\s+-/gm)].map((match) => Number(match[1]));
 assert.deepEqual(milestoneIds, Array.from({ length: 11 }, (_, index) => index));

@@ -13,3 +13,8 @@ data/
 
 # Release build output is regenerable via `npm run build:release`.
 output/release/
+
+# Phase 11 raw qualification artifacts and generated bilingual deliverables.
+reports/phase11/
+output/pdf/phase11/
+tmp/pdfs/phase11/

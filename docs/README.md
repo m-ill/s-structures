@@ -1,6 +1,6 @@
 # S-Structures Documentation Index
 
-documentationVersion: 2026-07-16-phase9-m10
+documentationVersion: 2026-07-23-phase11-plan-v1
 
 이 폴더는 Phase 2 개발부터 문서가 코드, 산출물, 임시 패키지와 섞이지 않도록 용도별로 나눈다. 새 문서를 추가할 때는 먼저 아래 분류 중 하나를 고른다.
 
@@ -9,7 +9,9 @@ documentationVersion: 2026-07-16-phase9-m10
 | 폴더 | 용도 | 작성 규칙 |
 | --- | --- | --- |
 | `user-manual/` | 사용자와 AI agent가 현재 프로그램을 사용하는 방법 | 현재 동작 기준만 작성. 오래된 마일스톤 설명은 넣지 않음 |
-| `phase9/` | 현재 active 개발 계획 (CPU/WASM/WebGPU 계산 확장, 프로덕션 리팩토링·정리) | 계획과 구현 상태를 분리하고 요구사항-검증-evidence 추적성을 유지 |
+| `phase11/` | 현재 active 계획 (한·영 시각 증거 구조해석 보고서 프로덕션화) | 공통 snapshot, 현지화, capture, PDF pair, 검증·evidence를 M0~M9로 추적 |
+| `phase10/` | 탄성해석 실무 완성 구현 기준선 | 구현 완료와 외부 검증·release blocker를 분리해 참조 |
+| `phase9/` | CPU/WASM/WebGPU 계산 확장과 프로덕션 리팩토링 기준선 | 계획과 구현 상태를 분리하고 요구사항-검증-evidence 추적성을 유지 |
 | `phase8/` | 비선형해석 프로덕션 구현 기준선 | 구현 상태와 외부 검증 잔여 범위를 Phase 9에서 재사용하며 완료를 과장하지 않음 |
 | `phase7/` | 실무형 모델링·하중 설정·탄성해석 완성 기준선 | 제품 사용성 및 탄성설계 기능의 이전 계획·검증 근거 |
 | `phase6/` | 탄성해석 엔진 보강 계획과 구현 기준선 | Phase 7 해석 마감의 기술 참조. 실제 완료 여부는 코드와 검증 증빙으로 재판정 |
@@ -33,7 +35,36 @@ documentationVersion: 2026-07-16-phase9-m10
 | 생성 PDF | `output/pdf/` |
 | 압축 패키지, 임시 공유 파일 | git 추적 제외. 필요하면 외부 저장 또는 release artifact |
 
-## Phase 9 Reading Order (current)
+## Phase 11 Reading Order (current)
+
+Phase 11은 하나의 해석 스냅샷에서 한국어·영어 PDF와 결정론적 화면 증거를 만드는 현재 계획이다.
+authoritative 실행계획은 `MILESTONE_EXECUTION_PLAN.md`이며 실제 evidence가 생기기 전 상태는 모두 `planned`다.
+
+1. `docs/phase11/README.md`
+2. `docs/phase11/CURRENT_STATE_AUDIT.md`
+3. `docs/phase11/PRODUCTION_REQUIREMENTS.md`
+4. `docs/phase11/TARGET_ARCHITECTURE.md`
+5. `docs/phase11/MILESTONE_EXECUTION_PLAN.md`
+6. `docs/phase11/ROADMAP.md`
+7. `docs/phase11/VERIFICATION_MATRIX.md`
+8. `docs/phase11/REQUIREMENTS_TRACEABILITY.md`
+9. `docs/phase11/RISK_REGISTER.md`
+10. `docs/phase11/IMPLEMENTATION_STATUS.md`
+11. 착수할 `docs/phase11/workpackages/WP-*.md`
+12. 결정 gate의 `docs/phase11/adr/ADR-*.md`
+
+## Phase 10 Reading Order (implementation baseline)
+
+Phase 11 보고서가 표시해야 할 탄성해석 기능·제한·release eligibility의 기준선이다.
+
+1. `docs/phase10/README.md`
+2. `docs/phase10/CURRENT_STATE_AUDIT.md`
+3. `docs/phase10/FORMULAS_AND_CRITERIA.md`
+4. `docs/phase10/ROADMAP.md`
+5. `docs/phase10/VERIFICATION_MATRIX.md`
+6. `docs/phase10/IMPLEMENTATION_STATUS.md`
+
+## Phase 9 Reading Order (compute baseline)
 
 Phase 9 개발과 코드 정리를 검토할 때는 아래 순서로 읽는다. P9-M0~M10 구현은 완료됐으며 외부 장치·브라우저 검증 전까지 릴리스는 차단된다. 상세 상태는 `IMPLEMENTATION_STATUS.md`에서 확인한다.
 
@@ -151,6 +182,9 @@ Phase 2(완료된 탄성 실무 검토 MVP) 근거를 볼 때는 아래 순서�
 | public API/action 변경 | `user-manual/AI_AGENT_GUIDE.md`, `user-manual/agent-contract.json` |
 | 화면 사용 흐름 변경 | `user-manual/01-getting-started.md`, `user-manual/02-modeling-and-elastic-analysis.md` |
 | 하중/조합/보고서 변경 | `user-manual/03-loads-design-and-reports.md` |
+| Phase 11 보고서 snapshot·현지화·capture·PDF 변경 | `phase11/README.md`, `phase11/PRODUCTION_REQUIREMENTS.md`, `phase11/TARGET_ARCHITECTURE.md`, `phase11/MILESTONE_EXECUTION_PLAN.md`, `phase11/VERIFICATION_MATRIX.md`, `phase11/REQUIREMENTS_TRACEABILITY.md` |
+| Phase 11 상태·위험·release gate 변경 | `phase11/IMPLEMENTATION_STATUS.md`, `phase11/RISK_REGISTER.md`, 대응 `phase11/workpackages/WP-*.md` |
+| Phase 10 해석·eligibility 상태 변경 | `phase10/README.md`, `phase10/ROADMAP.md`, `phase10/VERIFICATION_MATRIX.md`, `phase10/IMPLEMENTATION_STATUS.md` |
 | Phase 9 요구사항·백엔드·정밀도 변경 | `phase9/README.md`, `phase9/PRODUCTION_REQUIREMENTS.md`, `phase9/TARGET_ARCHITECTURE.md`, `phase9/COMPUTE_PRECISION_POLICY.md`, `phase9/VERIFICATION_MATRIX.md`, `phase9/REQUIREMENTS_TRACEABILITY.md` |
 | Phase 9 리팩토링·레거시 제거 | `phase9/REFACTORING_AND_CODE_CLEANUP.md`, `phase9/MILESTONE_EXECUTION_PLAN.md`, `phase9/IMPLEMENTATION_STATUS.md` |
 | Phase 7 요구사항·마일스톤 변경 | `phase7/README.md`, `phase7/PRODUCT_REQUIREMENTS.md`, `phase7/MILESTONE_EXECUTION_PLAN.md`, `phase7/VERIFICATION_MATRIX.md` |
