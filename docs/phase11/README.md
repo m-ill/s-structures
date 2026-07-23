@@ -91,6 +91,7 @@ reports/phase11/PILOT-OFFICE-01/
 11. [adr/ADR-001](adr/ADR-001-SHARED-SNAPSHOT-DUAL-LOCALE.md) — 공통 스냅샷·분리 PDF 결정
 12. [adr/ADR-002](adr/ADR-002-DETERMINISTIC-VISUAL-CAPTURE.md) — 결정론적 화면 증거 결정
 13. [M0 review](reviews/P11-M0-CODE-REVIEW.md) — 기준선·governance 완료 검토
+14. [M1 review](reviews/P11-M1-CODE-REVIEW.md) — snapshot·verdict 완료 검토
 
 ## 6. 공통 마일스톤 사이클
 

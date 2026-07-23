@@ -4,14 +4,14 @@
 reviewed_at: 2026-07-23
 phase_status: in-progress
 implementation_status: qualification-in-progress
-completed_milestones: [P11-M0]
+completed_milestones: [P11-M0, P11-M1]
 active_milestone: none
 decision_gates_pending: []
 owner_inputs_pending:
   - bundled Korean font/license decision if system-font qualification is insufficient
 internal_blockers: []
 release_blockers:
-  - P11-M1 through P11-M9 are not qualified
+  - P11-M2 through P11-M9 are not qualified
   - no dual-language PDF pair qualification
   - no deterministic visual capture qualification
 feature_limitations:
@@ -27,7 +27,7 @@ release_qualified: false
 | M | 상태 | WP | 전용 test | Evidence | Review |
 | --- | --- | --- | --- | --- | --- |
 | P11-M0 | qualification-complete | [WP-00](workpackages/WP-00-baseline-governance.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m0-baseline-governance.json) | [PASS](reviews/P11-M0-CODE-REVIEW.md) |
-| P11-M1 | planned | [WP-01](workpackages/WP-01-report-snapshot-verdict.md) | 미작성 | 미생성 | 미작성 |
+| P11-M1 | qualification-complete | [WP-01](workpackages/WP-01-report-snapshot-verdict.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m1-report-snapshot-verdict.json) | [PASS](reviews/P11-M1-CODE-REVIEW.md) |
 | P11-M2 | planned | [WP-02](workpackages/WP-02-i18n-dual-render.md) | 미작성 | 미생성 | 미작성 |
 | P11-M3 | planned | [WP-03](workpackages/WP-03-visual-capture-core.md) | 미작성 | 미생성 | 미작성 |
 | P11-M4 | planned | [WP-04](workpackages/WP-04-scene-evidence-embedding.md) | 미작성 | 미생성 | 미작성 |
@@ -61,5 +61,5 @@ release_qualified: false
 
 ## 4. 다음 착수
 
-다음 허용 작업은 **P11-M1 / WP-01**이다. M0 baseline·ADR·retention gate는 완료됐으며,
-M1에서 language-neutral `ReportSnapshot`과 4축 verdict를 구현한다.
+다음 허용 작업은 **P11-M2 / WP-02** 또는 **P11-M3 / WP-03**이다. 계획 순서에 따라
+M2의 한국어·영어 catalog와 dual HTML renderer를 먼저 구현한다.

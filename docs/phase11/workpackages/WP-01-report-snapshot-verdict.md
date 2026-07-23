@@ -3,7 +3,7 @@
 ```yaml
 wp: WP-01
 milestone: P11-M1
-status: planned
+status: qualification-complete
 contracts: [ReportSnapshot, ReportVerdict, canonical hash]
 depends: [WP-00]
 ```
@@ -43,5 +43,12 @@ depends: [WP-00]
 
 ## Review Log
 
-구현 착수 후 기록한다.
+[P11-M1 Code Review](../reviews/P11-M1-CODE-REVIEW.md): PASS, Critical/High 0.
 
+완료 산출물:
+
+- `src/report/phase11/reportSnapshot.js`
+- `src/report/calculationPackage.js` compatibility facade
+- `tests/p11-m1-report-snapshot-verdict.mjs`
+- `tools/run-p11-m1-evidence.mjs`
+- `reports/validation-evidence/phase11/p11-m1-report-snapshot-verdict.json`

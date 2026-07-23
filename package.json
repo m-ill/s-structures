@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server/main.mjs 5173",
     "dev:public": "node server/main.mjs 5173 0.0.0.0",
-    "test": "node tools/run-milestone-tests.mjs && node tools/run-phase7-tests.mjs && node tools/run-phase8-tests.mjs && node tools/run-phase9-tests.mjs && node tests/p9-documentation-baseline.mjs && node tools/run-phase10-tests.mjs && node tests/p11-documentation-plan.mjs && node tests/p11-m0-baseline-governance.mjs",
+    "test": "node tools/run-milestone-tests.mjs && node tools/run-phase7-tests.mjs && node tools/run-phase8-tests.mjs && node tools/run-phase9-tests.mjs && node tests/p9-documentation-baseline.mjs && node tools/run-phase10-tests.mjs && node tests/p11-documentation-plan.mjs && node tests/p11-m0-baseline-governance.mjs && node tests/p11-m1-report-snapshot-verdict.mjs",
     "test:p7": "node tools/run-phase7-tests.mjs",
     "test:p7:list": "node tools/run-phase7-tests.mjs --list",
     "test:p8": "node tools/run-phase8-tests.mjs",
@@ -17,6 +17,8 @@
     "test:p11docs": "node tests/p11-documentation-plan.mjs",
     "test:p11:m0": "node tests/p11-m0-baseline-governance.mjs",
     "baseline:p11:m0": "node tools/run-p11-m0-baseline.mjs",
+    "test:p11:m1": "node tests/p11-m1-report-snapshot-verdict.mjs",
+    "evidence:p11:m1": "node tools/run-p11-m1-evidence.mjs",
     "test:p10": "node tools/run-phase10-tests.mjs",
     "test:p10:list": "node tools/run-phase10-tests.mjs --list",
     "evidence:p10:m1": "node tools/run-p10-m1-evidence.mjs",

@@ -1,5 +1,6 @@
 import { buildDetailedReportData } from './detailedReport.js';
 import { buildPhase7AnalysisRunSummary } from './phase7AnalysisRuns.js';
+import { createReportSnapshot } from './phase11/reportSnapshot.js';
 import {
   escapeHtml,
   formatDriftRatio as driftRatio,
@@ -19,6 +20,19 @@ export const CALCULATION_PACKAGE_VERSION = 'm42-calculation-package';
 export function buildCalculationPackageData(model, analysis, options = {}) {
   const detailed = buildDetailedReportData(model, analysis, options);
   const analysisRuns = buildPhase7AnalysisRunSummary(options);
+  const qualityAudit = auditPackage(detailed, analysisRuns);
+  const reportSnapshot = createReportSnapshot(model, analysis, {
+    detailed,
+    qualityAudit,
+    analysisRuns,
+    calculationPackageVersion: CALCULATION_PACKAGE_VERSION,
+    projectId: options.projectId,
+    sourceRevision: options.sourceRevision,
+    buildId: options.buildId,
+    externalValidation: options.externalValidation,
+    phase10Eligibility: options.phase10Eligibility,
+    limitationCodes: options.limitationCodes,
+  });
   const sections = [
     { id: 'cover', title: 'Cover' },
     { id: 'toc', title: 'Table of Contents' },
@@ -43,7 +57,9 @@ export function buildCalculationPackageData(model, analysis, options = {}) {
     detailed,
     analysisRuns,
     resultSelection: options.resultSelection || null,
-    qualityAudit: auditPackage(detailed, analysisRuns),
+    qualityAudit,
+    reportSnapshot,
+    reportVerdict: reportSnapshot.verdict,
   };
 }
 

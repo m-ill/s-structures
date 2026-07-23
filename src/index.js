@@ -611,6 +611,15 @@ export {
   renderCalculationPackageHtml,
 } from './report/calculationPackage.js';
 export {
+  REPORT_SNAPSHOT_VERSION,
+  REPORT_VERDICT_VERSION,
+  REPORT_VERDICT_STATES,
+  createReportSnapshot,
+  buildReportVerdict,
+  validateReportSnapshot,
+  assertReportSnapshotCurrent,
+} from './report/phase11/reportSnapshot.js';
+export {
   buildResultPostprocessing,
 } from './results/resultPostprocessing.js';
 export { RESULT_POSTPROCESSING_VERSION } from './results/resultUtils.js';

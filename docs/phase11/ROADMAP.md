@@ -14,7 +14,7 @@ cycle: 착수 → 구현 → focused test → /code-review high → 수정 → �
 | M | 이름 | WP | 선행 | 핵심 수용 게이트 |
 | --- | --- | --- | --- | --- |
 | **P11-M0** qualification-complete | Baseline·범위·governance | [WP-00](workpackages/WP-00-baseline-governance.md) | — | current pilot·22쪽 PDF baseline 재현, GAP owner 100%, ADR·retention·evidence schema |
-| **P11-M1** planned | ReportSnapshot·verdict | [WP-01](workpackages/WP-01-report-snapshot-verdict.md) | M0 | 불변·언어중립 snapshot, hash 결정성, 독립검증 없음→최대 CONDITIONAL_PASS |
+| **P11-M1** qualification-complete | ReportSnapshot·verdict | [WP-01](workpackages/WP-01-report-snapshot-verdict.md) | M0 | 불변·언어중립 snapshot, hash 결정성, 독립검증 없음→최대 CONDITIONAL_PASS |
 | **P11-M2** planned | 한·영 현지화·dual HTML | [WP-02](workpackages/WP-02-i18n-dual-render.md) | M1 | catalog/placeholder 100%, numeric parity 100%, 미번역 0 |
 | **P11-M3** planned | 결정론적 visual capture core | [WP-03](workpackages/WP-03-visual-capture-core.md) | M1 | CaptureSpec·compositor·manifest, 1600×900, blank/stale 검출 100% |
 | **P11-M4** planned | 필수 scene·본문 embedding | [WP-04](workpackages/WP-04-scene-evidence-embedding.md) | M2, M3 | required scene 7/7, figure/hash/caption 연결, ko/en asset parity |
