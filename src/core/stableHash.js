@@ -34,7 +34,11 @@ function canonicalStringify(value, stack, arrayItem) {
 }
 
 export function sha256(value) {
-  const bytes = utf8Bytes(String(value));
+  return sha256Bytes(utf8Bytes(String(value)));
+}
+
+export function sha256Bytes(value) {
+  const bytes = value instanceof Uint8Array ? value : new Uint8Array(value);
   const paddedLength = Math.ceil((bytes.length + 9) / 64) * 64;
   const data = new Uint8Array(paddedLength);
   data.set(bytes);

@@ -4,16 +4,16 @@
 reviewed_at: 2026-07-23
 phase_status: in-progress
 implementation_status: qualification-in-progress
-completed_milestones: [P11-M0, P11-M1, P11-M2]
+completed_milestones: [P11-M0, P11-M1, P11-M2, P11-M3]
 active_milestone: none
 decision_gates_pending: []
 owner_inputs_pending:
   - bundled Korean font/license decision if system-font qualification is insufficient
 internal_blockers: []
 release_blockers:
-  - P11-M3 through P11-M9 are not qualified
+  - P11-M4 through P11-M9 are not qualified
   - no dual-language PDF pair qualification
-  - no deterministic visual capture qualification
+  - no seven-scene report embedding qualification
 feature_limitations:
   - current calculation package is English-first
   - current PDF path is browser print/prototype tooling
@@ -29,7 +29,7 @@ release_qualified: false
 | P11-M0 | qualification-complete | [WP-00](workpackages/WP-00-baseline-governance.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m0-baseline-governance.json) | [PASS](reviews/P11-M0-CODE-REVIEW.md) |
 | P11-M1 | qualification-complete | [WP-01](workpackages/WP-01-report-snapshot-verdict.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m1-report-snapshot-verdict.json) | [PASS](reviews/P11-M1-CODE-REVIEW.md) |
 | P11-M2 | qualification-complete | [WP-02](workpackages/WP-02-i18n-dual-render.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m2-bilingual-rendering.json) | [PASS](reviews/P11-M2-CODE-REVIEW.md) |
-| P11-M3 | planned | [WP-03](workpackages/WP-03-visual-capture-core.md) | 미작성 | 미생성 | 미작성 |
+| P11-M3 | qualification-complete | [WP-03](workpackages/WP-03-visual-capture-core.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m3-visual-capture-core.json) | [PASS](reviews/P11-M3-CODE-REVIEW.md) |
 | P11-M4 | planned | [WP-04](workpackages/WP-04-scene-evidence-embedding.md) | 미작성 | 미생성 | 미작성 |
 | P11-M5 | planned | [WP-05](workpackages/WP-05-executive-report-layout.md) | 미작성 | 미생성 | 미작성 |
 | P11-M6 | planned | [WP-06](workpackages/WP-06-pdf-export-service.md) | 미작성 | 미생성 | 미작성 |
@@ -61,5 +61,5 @@ release_qualified: false
 
 ## 4. 다음 착수
 
-다음 허용 작업은 **P11-M3 / WP-03**이다. 결정론적 `CaptureSpec`, canvas compositor와
-`EvidenceManifest`를 구현한다.
+다음 허용 작업은 **P11-M4 / WP-04**이다. 필수 scene 7개를 생성하고 동일 evidence asset을
+한·영 보고서 본문에 hash·caption과 함께 삽입한다.

@@ -3,7 +3,7 @@
 ```yaml
 wp: WP-03
 milestone: P11-M3
-status: planned
+status: qualification-complete
 contracts: [CaptureSpec, canvas compositor, EvidenceManifest]
 depends: [WP-01, ADR-002]
 ```
@@ -42,5 +42,11 @@ depends: [WP-01, ADR-002]
 
 ## Review Log
 
-구현 착수 후 기록한다.
+2026-07-23 구현·focused test·증적 검토를 완료했다.
 
+- 구현: `src/report/phase11/visualCapture.js`, `src/core/stableHash.js`
+- 테스트: `tests/p11-m3-visual-capture-core.mjs`
+- 증적: `reports/validation-evidence/phase11/p11-m3-visual-capture-core.json`
+- 리뷰: [P11-M3-CODE-REVIEW.md](../reviews/P11-M3-CODE-REVIEW.md)
+- 판정: `P11-CAP-01~14`, `P11-SEC-01~03` PASS
+- 범위 제한: 실제 제품 scene producer와 보고서 삽입은 P11-M4 소유

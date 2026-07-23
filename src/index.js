@@ -633,6 +633,19 @@ export {
   renderBilingualReportPair,
 } from './report/phase11/bilingualReport.js';
 export {
+  P11_CAPTURE_SPEC_VERSION,
+  P11_EVIDENCE_MANIFEST_VERSION,
+  P11_CAPTURE_PROFILE,
+  P11_CAPTURE_FAILURE_CODES,
+  createCaptureSpec,
+  validateCaptureSpec,
+  captureVisualEvidence,
+  composeCanvasFrame,
+  analyzeCanvasContent,
+  validatePng,
+  buildEvidenceManifest,
+} from './report/phase11/visualCapture.js';
+export {
   buildResultPostprocessing,
 } from './results/resultPostprocessing.js';
 export { RESULT_POSTPROCESSING_VERSION } from './results/resultUtils.js';
