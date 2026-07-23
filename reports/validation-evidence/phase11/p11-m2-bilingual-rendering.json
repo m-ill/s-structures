@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "p11-m2-bilingual-rendering-v1",
+  "milestone": "P11-M2",
+  "status": "PASS",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-23T13:05:59.781Z",
+  "sourceRevision": "50861b6+worktree",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0"
+  },
+  "reportSnapshotHash": "566b1907741ff6daacef4e802caf0add7d644e93b5b353f3b9c880e8722d649e",
+  "pairManifest": {
+    "version": "p11-bilingual-html-v1",
+    "status": "complete",
+    "reportSnapshotHash": "566b1907741ff6daacef4e802caf0add7d644e93b5b353f3b9c880e8722d649e",
+    "locales": [
+      "ko-KR",
+      "en-US"
+    ],
+    "semanticHash": "3222830aa8dbdbeaa23f2cadf17ff37a40b2c1878ab5ba731a7053ed99fe05cf",
+    "numericParity": true,
+    "technicalIdParity": true,
+    "pairHash": "07c2a58c83a934a7b5e795d1522bdd43088af60e02d1e6d62f97bcfc392710fe"
+  },
+  "catalogs": {
+    "locales": [
+      "en-US",
+      "ko-KR"
+    ],
+    "keyCount": 46,
+    "keyDifference": 0,
+    "placeholderDifference": 0,
+    "missing": 0,
+    "unused": 0
+  },
+  "parity": {
+    "snapshotHash": true,
+    "semanticHash": true,
+    "numericValues": true,
+    "technicalIds": true,
+    "numericValueCount": 18,
+    "technicalIdCount": 7
+  },
+  "localeQuality": {
+    "koreanGlyphProbe": true,
+    "koreanUntranslatedGeneralText": 0,
+    "englishHangulText": 0,
+    "htmlInjectionFindings": 0
+  },
+  "htmlArtifacts": {
+    "ko-KR": {
+      "path": "reports/phase11/PILOT-OFFICE-01/m2/report-ko.html",
+      "bytes": 4167,
+      "sha256": "61ca83b82e9bce4f837498ce7130609651ce0d03c51ca0f26da152d4478c42c8",
+      "semanticHash": "3222830aa8dbdbeaa23f2cadf17ff37a40b2c1878ab5ba731a7053ed99fe05cf"
+    },
+    "en-US": {
+      "path": "reports/phase11/PILOT-OFFICE-01/m2/report-en.html",
+      "bytes": 4161,
+      "sha256": "a0c9a71cbe53c4c7e3c0413813c32eb2dd4a369cf745090404220a280a4e8380",
+      "semanticHash": "3222830aa8dbdbeaa23f2cadf17ff37a40b2c1878ab5ba731a7053ed99fe05cf"
+    }
+  },
+  "verification": [
+    {
+      "id": "P11-I18N-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-I18N-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-PAR-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-PAR-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-PAR-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-PAR-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-PAR-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-PAR-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m2",
+      "statement": "Bilingual catalog, rendering and parity contract verified."
+    },
+    {
+      "id": "P11-RPT-04",
+      "status": "BLOCKED",
+      "test": "npm run test:p11:m2",
+      "statement": "Contextual figure placement is owned and qualified by P11-M4.",
+      "deferredTo": "P11-M4"
+    }
+  ],
+  "passedVerificationCount": 18,
+  "deferredVerification": [
+    "P11-RPT-04"
+  ],
+  "limitations": [
+    "HTML is qualified at M2; PDF font embedding and searchable-copy qualification remain P11-M8.",
+    "Visual evidence assets are not part of M2 and begin at P11-M3."
+  ],
+  "artifactHash": "494b82c82f1b8a08f4729457e9a30c05cc920e1d4950fe35602191f3d2aad232"
+}

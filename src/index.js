@@ -620,6 +620,19 @@ export {
   assertReportSnapshotCurrent,
 } from './report/phase11/reportSnapshot.js';
 export {
+  P11_REPORT_LOCALES,
+  P11_KOREAN_FONT_STACK,
+  P11_REPORT_CATALOGS,
+  createReportTranslator,
+  formatReportNumber,
+  validateReportCatalogs,
+} from './report/phase11/i18n.js';
+export {
+  P11_BILINGUAL_REPORT_VERSION,
+  renderLocalizedReportHtml,
+  renderBilingualReportPair,
+} from './report/phase11/bilingualReport.js';
+export {
   buildResultPostprocessing,
 } from './results/resultPostprocessing.js';
 export { RESULT_POSTPROCESSING_VERSION } from './results/resultUtils.js';
