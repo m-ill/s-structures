@@ -1,5 +1,5 @@
 {
-  "version": "p10-evidence-artifact-v3",
+  "version": "p10-evidence-artifact-v4",
   "suiteId": "P10-M9-SHELL-FEM",
   "milestone": "P10-M9",
   "status": "BLOCKED",
@@ -8,6 +8,7 @@
   "sourceRevision": "f969f84+p10-m9-worktree",
   "tests": [
     "tests/p10-m9a-wall-membrane.mjs",
+    "tests/p10-m9a-membrane-qualification.mjs",
     "tests/p10-m9b-slab-plate.mjs",
     "tests/p10-m9b-plate-qualification.mjs",
     "tests/p10-m9b-shell-invariants.mjs",
@@ -21,13 +22,109 @@
       "version": "p10-m9a-verification-v1",
       "patchError": 2.1684043449710089e-16,
       "cantilever": {
-        "computed": 0.0061125,
+        "computed": 0.006112500000000055,
         "reference": 0.006293333333333333,
-        "relativeError": 0.028734110169491504,
+        "relativeError": 0.028734110169482685,
         "divisions": 8
       },
       "symmetryError": 2.6864065250880277e-17,
       "modelHash": "a04abb6a6de2d1c9ed9c687c"
+    },
+    "m9aMembraneQualification": {
+      "version": "p10-m9a-membrane-qualification-v2-qm6-eas",
+      "benchmark": "qm6-affine-constant-strain-3x3-four-quad-patch",
+      "sourceElementMatrixSize": 24,
+      "assembledActiveMatrixSize": 18,
+      "strain": {
+        "ex": 0.001,
+        "ey": 0.0004,
+        "gxy": 0.0002
+      },
+      "cases": [
+        {
+          "id": "regular",
+          "center": [
+            2,
+            1
+          ],
+          "solvedCenter": [
+            0.0021,
+            0.0006
+          ],
+          "exactCenter": [
+            0.0021,
+            0.0006000000000000001
+          ],
+          "centerDisplacementRelativeError": 4.9642207282334234e-17,
+          "affineFreeResidualRelativeError": 2.062729954851558e-17,
+          "freeResidualRelativeError": 9.282284796832012e-18,
+          "pass": true
+        },
+        {
+          "id": "distorted-2p2-0p9",
+          "center": [
+            2.2,
+            0.9
+          ],
+          "solvedCenter": [
+            0.0022899999999999995,
+            0.0005800000000000001
+          ],
+          "exactCenter": [
+            0.00229,
+            0.00058
+          ],
+          "centerDisplacementRelativeError": 1.8923356780514562e-16,
+          "affineFreeResidualRelativeError": 1.4142999504760925e-17,
+          "freeResidualRelativeError": 8.081714002720529e-18,
+          "pass": true
+        },
+        {
+          "id": "distorted-2p4-0p7",
+          "center": [
+            2.4,
+            0.7
+          ],
+          "solvedCenter": [
+            0.00247,
+            0.0005200000000000001
+          ],
+          "exactCenter": [
+            0.00247,
+            0.00052
+          ],
+          "centerDisplacementRelativeError": 4.29532713671197e-17,
+          "affineFreeResidualRelativeError": 1.2319038777017879e-17,
+          "freeResidualRelativeError": 1.2319038777017879e-17,
+          "pass": true
+        },
+        {
+          "id": "distorted-1p3-1p4",
+          "center": [
+            1.3,
+            1.4
+          ],
+          "solvedCenter": [
+            0.0014399999999999997,
+            0.0006899999999999999
+          ],
+          "exactCenter": [
+            0.00144,
+            0.00069
+          ],
+          "centerDisplacementRelativeError": 2.7995626569722845e-16,
+          "affineFreeResidualRelativeError": 7.173333539721375e-18,
+          "freeResidualRelativeError": 1.6140000464373093e-17,
+          "pass": true
+        }
+      ],
+      "qualification": {
+        "status": "PASS",
+        "reason": null,
+        "failedCaseIds": [],
+        "centerDisplacementRelativeTolerance": 1e-8,
+        "affineFreeResidualRelativeTolerance": 1e-10
+      }
     },
     "m9b": {
       "version": "p10-m9b-verification-v1",
@@ -73,7 +170,7 @@
     },
     "m9c": {
       "version": "p10-m9c-verification-v1",
-      "rigidEnergyRatio": 3.877569937974512e-16,
+      "rigidEnergyRatio": 2.6614159576654623e-16,
       "symmetryError": 1.7742773051103082e-16,
       "spuriousEnergyRatio": 0.00001,
       "warpedWarningRatio": 0.011248734588534183
@@ -115,8 +212,8 @@
     {
       "caseId": "SH-A02-WALL-CANTILEVER",
       "reference": 0,
-      "computed": 0.028734110169491504,
-      "relError": 0.028734110169491504,
+      "computed": 0.028734110169482685,
+      "relError": 0.028734110169482685,
       "tolerance": 0.05,
       "status": "OK"
     },
@@ -131,8 +228,8 @@
     {
       "caseId": "SH-C01-RIGID-BODY-ENERGY",
       "reference": 0,
-      "computed": 3.877569937974512e-16,
-      "relError": 3.877569937974512e-16,
+      "computed": 2.6614159576654623e-16,
+      "relError": 2.6614159576654623e-16,
       "tolerance": 1e-8,
       "status": "OK"
     },
@@ -174,6 +271,70 @@
       "computed": 0,
       "relError": 0,
       "tolerance": 0,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-AQ-REGULAR-CENTER-DISPLACEMENT",
+      "reference": 0,
+      "computed": 4.9642207282334234e-17,
+      "relError": 4.9642207282334234e-17,
+      "tolerance": 1e-8,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-AQ-REGULAR-FREE-RESIDUAL",
+      "reference": 0,
+      "computed": 2.062729954851558e-17,
+      "relError": 2.062729954851558e-17,
+      "tolerance": 1e-10,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-AQ-DISTORTED-2P2-0P9-CENTER-DISPLACEMENT",
+      "reference": 0,
+      "computed": 1.8923356780514562e-16,
+      "relError": 1.8923356780514562e-16,
+      "tolerance": 1e-8,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-AQ-DISTORTED-2P2-0P9-FREE-RESIDUAL",
+      "reference": 0,
+      "computed": 1.4142999504760925e-17,
+      "relError": 1.4142999504760925e-17,
+      "tolerance": 1e-10,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-AQ-DISTORTED-2P4-0P7-CENTER-DISPLACEMENT",
+      "reference": 0,
+      "computed": 4.29532713671197e-17,
+      "relError": 4.29532713671197e-17,
+      "tolerance": 1e-8,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-AQ-DISTORTED-2P4-0P7-FREE-RESIDUAL",
+      "reference": 0,
+      "computed": 1.2319038777017879e-17,
+      "relError": 1.2319038777017879e-17,
+      "tolerance": 1e-10,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-AQ-DISTORTED-1P3-1P4-CENTER-DISPLACEMENT",
+      "reference": 0,
+      "computed": 2.7995626569722845e-16,
+      "relError": 2.7995626569722845e-16,
+      "tolerance": 1e-8,
+      "status": "OK"
+    },
+    {
+      "caseId": "SH-AQ-DISTORTED-1P3-1P4-FREE-RESIDUAL",
+      "reference": 0,
+      "computed": 7.173333539721375e-18,
+      "relError": 7.173333539721375e-18,
+      "tolerance": 1e-10,
       "status": "OK"
     },
     {
@@ -280,13 +441,13 @@
     "shellLumpedMassConnected": true,
     "cpuF64ExecutionAvailable": true,
     "cpuF64Qualified": false,
+    "membranePatchQualificationStatus": "PASS",
     "plateNumericalQualificationStatus": "PASS",
     "plateInvariantQualificationStatus": "PASS",
     "plateDynamicsQualificationStatus": "PASS",
     "plateDesignTransferAllowed": true,
-    "cpuF64QualificationBlocker": "SHELL_MEMBRANE_FLAT_SHELL_NUMERICAL_QUALIFICATION_REQUIRED",
+    "cpuF64QualificationBlocker": "SHELL_DRILLING_ROTATION_QUALIFICATION_REQUIRED",
     "cpuF64QualificationBlockers": [
-      "QM6_DISTORTION_PATCH_REQUIRED",
       "FLAT_SHELL_DRILLING_QUALIFICATION_REQUIRED"
     ],
     "plateNumericalQualificationBlocker": null,
@@ -300,11 +461,10 @@
     "releaseQualified": false,
     "releaseGate": "P10-M11",
     "remainingGates": [
-      "QM6-distortion-patch-qualification",
       "flat-shell-drilling-qualification",
       "XV-10-external-reference",
       "native-WebGPU-K1-K3-device-validation-at-P10-M11"
     ]
   },
-  "artifactHash": "3fb4de0eb13b36058747f204"
+  "artifactHash": "7d1400af13e4793801c4189d"
 }

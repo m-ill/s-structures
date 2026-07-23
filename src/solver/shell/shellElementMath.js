@@ -1,4 +1,4 @@
-export const SHELL_ELEMENT_MATH_VERSION = 'p10-m9-shell-element-math-v2-mitc4';
+export const SHELL_ELEMENT_MATH_VERSION = 'p10-m9-shell-element-math-v3-mitc4-qm6-eas';
 
 export const MITC4_FORMULATION = Object.freeze({
   name: 'MITC4',
@@ -8,6 +8,17 @@ export const MITC4_FORMULATION = Object.freeze({
     authors: 'K.J. Bathe and E.N. Dvorkin',
     year: 1985,
     doi: '10.1002/nme.1620210213',
+  }),
+});
+
+export const QM6_FORMULATION = Object.freeze({
+  name: 'QM6-EAS',
+  enhancedModeCount: 4,
+  mapping: 'center-jacobian-determinant-scaled',
+  reference: Object.freeze({
+    authors: 'J.C. Simo and M.S. Rifai',
+    year: 1990,
+    doi: '10.1002/nme.1620290802',
   }),
 });
 
@@ -49,11 +60,25 @@ export function qm6MembraneLocal(projected, E, nu, thickness) {
   const Kuu = zeros(8, 8);
   const Kua = zeros(8, 4);
   const Kaa = zeros(4, 4);
+  const center = q4Shape(projected, 0, 0);
+  if (!center.ok) return center;
+  const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
+    .map(([xi, eta]) => q4Shape(projected, xi, eta));
+  const invalidCorner = corners.find((shape) => !shape.ok);
+  if (invalidCorner) return { ...invalidCorner, reason: 'SHELL_CORNER_JACOBIAN_NONPOSITIVE' };
   for (const xi of GAUSS) for (const eta of GAUSS) {
     const shape = q4Shape(projected, xi, eta);
     if (!shape.ok) return shape;
     const B = membraneB(shape.dNdx, shape.dNdy);
-    const Ba = incompatibleB(shape.inverseJacobian, xi, eta);
+    // The enhanced modes are mapped with the element-center Jacobian and the
+    // det(J0)/det(J) factor. This makes their weighted mean zero, preserving an
+    // affine constant-strain field on distorted bilinear quadrilaterals.
+    const Ba = incompatibleB(
+      center.inverseJacobian,
+      xi,
+      eta,
+      center.detJ / shape.detJ,
+    );
     addProduct(Kuu, B, D, B, thickness * shape.detJ);
     addMixedProduct(Kua, B, D, Ba, thickness * shape.detJ);
     addProduct(Kaa, Ba, D, Ba, thickness * shape.detJ);
@@ -61,7 +86,23 @@ export function qm6MembraneLocal(projected, E, nu, thickness) {
   const inverse = invert(Kaa);
   if (!inverse) return { ok: false, reason: 'SHELL_INTERNAL_MODE_CONDENSATION_FAILED' };
   const correction = multiply(multiply(Kua, inverse), transpose(Kua));
-  return { ok: true, matrix: subtractMatrices(Kuu, correction), internalModeCount: 4, D };
+  const internalDisplacementOperator = scaleMatrix(multiply(inverse, transpose(Kua)), -1);
+  const cornerDeterminants = corners.map((shape) => shape.detJ);
+  return {
+    ok: true,
+    matrix: subtractMatrices(Kuu, correction),
+    internalModeCount: QM6_FORMULATION.enhancedModeCount,
+    formulation: QM6_FORMULATION.name,
+    enhancedStrainMapping: QM6_FORMULATION.mapping,
+    internalDisplacementOperator,
+    jacobianQuality: {
+      minCornerDetJ: Math.min(...cornerDeterminants),
+      maxCornerDetJ: Math.max(...cornerDeterminants),
+      minMaxRatio: Math.min(...cornerDeterminants) / Math.max(...cornerDeterminants),
+    },
+    reference: QM6_FORMULATION.reference,
+    D,
+  };
 }
 
 // Four-node mixed-interpolation plate kernel following Bathe-Dvorkin (1985),
@@ -166,12 +207,30 @@ export function q4Shape(projected, xi, eta) {
   };
 }
 
-export function recoverMembraneStress(projected, localDisplacements, E, nu, xi = 0, eta = 0) {
+export function recoverMembraneStress(projected, localDisplacements, E, nu, xi = 0, eta = 0, options = {}) {
   const shape = q4Shape(projected, xi, eta);
   if (!shape.ok) return shape;
   const strain = multiplyVector(membraneB(shape.dNdx, shape.dNdy), localDisplacements);
+  let enhancedParameters = null;
+  if (options.internalDisplacementOperator) {
+    const center = q4Shape(projected, 0, 0);
+    if (!center.ok) return center;
+    enhancedParameters = multiplyVector(options.internalDisplacementOperator, localDisplacements);
+    const enhanced = multiplyVector(incompatibleB(
+      center.inverseJacobian,
+      xi,
+      eta,
+      center.detJ / shape.detJ,
+    ), enhancedParameters);
+    for (let component = 0; component < strain.length; component += 1) strain[component] += enhanced[component];
+  }
   const stress = multiplyVector(planeStressMatrix(E, nu), strain);
-  return { ok: true, strain: { ex: strain[0], ey: strain[1], gxy: strain[2] }, stress: { sx: stress[0], sy: stress[1], txy: stress[2] } };
+  return {
+    ok: true,
+    strain: { ex: strain[0], ey: strain[1], gxy: strain[2] },
+    stress: { sx: stress[0], sy: stress[1], txy: stress[2] },
+    enhancedParameters,
+  };
 }
 
 export function pressureLoad24(frame, area, pressure) {
@@ -235,10 +294,11 @@ function membraneB(dx, dy) {
   for (let i = 0; i < 4; i += 1) { B[0][i * 2] = dx[i]; B[1][i * 2 + 1] = dy[i]; B[2][i * 2] = dy[i]; B[2][i * 2 + 1] = dx[i]; }
   return B;
 }
-function incompatibleB(invJ, xi, eta) {
+function incompatibleB(invJ, xi, eta, scale = 1) {
   const gradients = [[-2 * xi, 0], [0, -2 * eta]].map(([a, b]) => [invJ[0][0] * a + invJ[0][1] * b, invJ[1][0] * a + invJ[1][1] * b]);
   const B = zeros(3, 4);
   for (let i = 0; i < 2; i += 1) { B[0][i] = gradients[i][0]; B[2][i] = gradients[i][1]; B[1][i + 2] = gradients[i][1]; B[2][i + 2] = gradients[i][0]; }
+  for (let row = 0; row < B.length; row += 1) for (let column = 0; column < B[row].length; column += 1) B[row][column] *= scale;
   return B;
 }
 function mitc4BendingB(dx, dy) {

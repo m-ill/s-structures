@@ -2,13 +2,14 @@ import {
   buildShellLocalFrame,
   embedMembrane24,
   multiplyVector,
+  QM6_FORMULATION,
   qm6MembraneLocal,
   quadAreaInPlane,
   recoverMembraneStress,
   symmetryError,
 } from './shellElementMath.js';
 
-export const WALL_MEMBRANE_QM6_VERSION = 'p10-m9a-wall-membrane-qm6-v1';
+export const WALL_MEMBRANE_QM6_VERSION = 'p10-m9a-wall-membrane-qm6-eas-v2-patch-qualified';
 
 export function buildWallMembraneQm6(input = {}, options = {}) {
   const nodes = input.nodes || [];
@@ -28,6 +29,8 @@ export function buildWallMembraneQm6(input = {}, options = {}) {
     version: WALL_MEMBRANE_QM6_VERSION,
     id: input.id || null,
     formulation: 'membrane',
+    elementFormulation: local.formulation,
+    enhancedStrainMapping: local.enhancedStrainMapping,
     dofPerNode: 6,
     matrixSize: 24,
     matrix: embedded.matrix,
@@ -38,8 +41,22 @@ export function buildWallMembraneQm6(input = {}, options = {}) {
     thickness,
     material: { E, nu, density: nonnegative(input.density, material.density, material.rho, 0) },
     internalModeCount: local.internalModeCount,
+    internalDisplacementOperator: local.internalDisplacementOperator,
+    jacobianQuality: local.jacobianQuality,
+    reference: QM6_FORMULATION.reference,
     drilling: { method: 'stabilization', alpha: drillingAlpha, stiffness: embedded.drillingStiffness },
     diagnostics: { symmetryError: symmetryError(embedded.matrix), maxWarpRatio: frame.maxWarpRatio },
+    qualification: {
+      status: 'blocked',
+      reason: 'SHELL_DRILLING_ROTATION_QUALIFICATION_REQUIRED',
+      membranePatchStatus: 'PASS',
+      allowedUse: 'diagnostic-only',
+      designTransferAllowed: false,
+    },
+    designEligibility: {
+      allowed: false,
+      reasonCodes: ['SHELL_DRILLING_ROTATION_QUALIFICATION_REQUIRED'],
+    },
     limitations: [
       'M9a covers in-plane membrane response only.',
       'Drilling rotation uses stabilization in membrane-only form; the current flat-shell path retains a projected drilling stabilization.',
@@ -54,6 +71,9 @@ export function recoverWallMembraneQm6(element, globalDisplacements = []) {
     local,
     element.material.E,
     element.material.nu,
+    0,
+    0,
+    { internalDisplacementOperator: element.internalDisplacementOperator },
   );
   if (!recovered.ok) return recovered;
   const resultants = {

@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { stableHash } from '../src/core/stableHash.js';
 import { M9A_SNAPSHOT as m9a } from './p10-m9a-wall-membrane.mjs';
+import { M9A_MEMBRANE_QUALIFICATION_SNAPSHOT as m9aMembraneQualification } from './p10-m9a-membrane-qualification.mjs';
 import { M9B_SNAPSHOT as m9b } from './p10-m9b-slab-plate.mjs';
 import { M9B_QUALIFICATION_SNAPSHOT as m9bQualification } from './p10-m9b-plate-qualification.mjs';
 import { M9B_SHELL_INVARIANT_SNAPSHOT as m9bInvariants } from './p10-m9b-shell-invariants.mjs';
@@ -21,6 +22,18 @@ const records = [
   record('SH-G01-F32-BATCH-PARITY', m9d.gpuRelativeError, 1e-6),
   record('SH-G02-REFINEMENT-RESIDUAL', m9d.gpuResidual, 1e-10),
   record('SH-G03-DETERMINISTIC-GATHER', m9d.deterministicAssembly ? 0 : 1, 0),
+  ...m9aMembraneQualification.cases.flatMap((row) => [
+    record(
+      `SH-AQ-${row.id.toUpperCase()}-CENTER-DISPLACEMENT`,
+      row.centerDisplacementRelativeError,
+      m9aMembraneQualification.qualification.centerDisplacementRelativeTolerance,
+    ),
+    record(
+      `SH-AQ-${row.id.toUpperCase()}-FREE-RESIDUAL`,
+      row.affineFreeResidualRelativeError,
+      m9aMembraneQualification.qualification.affineFreeResidualRelativeTolerance,
+    ),
+  ]),
   ...m9bQualification.cases.map((row) => ({
     caseId: row.caseId,
     reference: row.reference,
@@ -63,13 +76,12 @@ const m9bInvariantSummary = {
   status: m9bInvariants.qualification.status,
   failedCheckIds: m9bInvariants.qualification.failedCheckIds,
 };
-const cpuF64QualificationBlocker = 'SHELL_MEMBRANE_FLAT_SHELL_NUMERICAL_QUALIFICATION_REQUIRED';
+const cpuF64QualificationBlocker = 'SHELL_DRILLING_ROTATION_QUALIFICATION_REQUIRED';
 const cpuF64QualificationBlockers = [
-  'QM6_DISTORTION_PATCH_REQUIRED',
   'FLAT_SHELL_DRILLING_QUALIFICATION_REQUIRED',
 ];
 const core = {
-  version: 'p10-evidence-artifact-v3',
+  version: 'p10-evidence-artifact-v4',
   suiteId: 'P10-M9-SHELL-FEM',
   milestone: 'P10-M9',
   status: 'BLOCKED',
@@ -78,6 +90,7 @@ const core = {
   sourceRevision: 'f969f84+p10-m9-worktree',
   tests: [
     'tests/p10-m9a-wall-membrane.mjs',
+    'tests/p10-m9a-membrane-qualification.mjs',
     'tests/p10-m9b-slab-plate.mjs',
     'tests/p10-m9b-plate-qualification.mjs',
     'tests/p10-m9b-shell-invariants.mjs',
@@ -88,6 +101,7 @@ const core = {
   ],
   results: {
     m9a,
+    m9aMembraneQualification,
     m9b,
     m9bQualification: m9bQualificationSummary,
     m9bInvariants: m9bInvariantSummary,
@@ -104,6 +118,7 @@ const core = {
     shellLumpedMassConnected: true,
     cpuF64ExecutionAvailable: true,
     cpuF64Qualified: false,
+    membranePatchQualificationStatus: m9aMembraneQualification.qualification.status,
     plateNumericalQualificationStatus: plateNumericalQualified ? 'PASS' : 'BLOCKED',
     plateInvariantQualificationStatus: m9bInvariants.qualification.status,
     plateDynamicsQualificationStatus: m9bDynamics.modalRelativeError <= 0.1 ? 'PASS' : 'BLOCKED',
@@ -121,7 +136,6 @@ const core = {
     releaseQualified: false,
     releaseGate: 'P10-M11',
     remainingGates: [
-      'QM6-distortion-patch-qualification',
       'flat-shell-drilling-qualification',
       'XV-10-external-reference',
       'native-WebGPU-K1-K3-device-validation-at-P10-M11',
@@ -139,10 +153,11 @@ if (process.argv.includes('--print')) {
   assert.deepEqual(committed, LIVE_P10_M9_EVIDENCE, 'P10-M9 committed evidence is stale');
   assert.equal(committed.status, 'BLOCKED');
   assert.equal(committed.implementationStatus, 'complete');
-  assert.equal(committed.records.length, 21);
+  assert.equal(committed.records.length, 29);
   assert.equal(committed.records.every((row) => row.status === 'OK'), true);
   assert.equal(committed.qualification.cpuF64ExecutionAvailable, true);
   assert.equal(committed.qualification.cpuF64Qualified, false);
+  assert.equal(committed.qualification.membranePatchQualificationStatus, 'PASS');
   assert.equal(committed.qualification.plateNumericalQualificationStatus, 'PASS');
   assert.equal(committed.qualification.plateInvariantQualificationStatus, 'PASS');
   assert.equal(committed.qualification.plateDynamicsQualificationStatus, 'PASS');
