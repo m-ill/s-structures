@@ -656,6 +656,11 @@ export {
   assertFigureManifestComplete,
 } from './report/phase11/sceneEvidence.js';
 export {
+  P11_PRODUCTION_REPORT_VERSION,
+  renderProductionReport,
+  renderProductionReportPair,
+} from './report/phase11/productionReport.js';
+export {
   buildResultPostprocessing,
 } from './results/resultPostprocessing.js';
 export { RESULT_POSTPROCESSING_VERSION } from './results/resultUtils.js';

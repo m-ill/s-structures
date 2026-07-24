@@ -31,6 +31,18 @@ export function renderLocalizedReportHtml(snapshot, locale, options = {}) {
     'label.cases',
     'label.scale',
     'label.assetHash',
+    'report.toc',
+    'section.scope',
+    'section.audit',
+    'section.appendix',
+    'section.combinations',
+    'label.page',
+    'label.of',
+    'label.independentReference',
+    'label.phase10Eligibility',
+    'label.audit',
+    'label.modelHash',
+    'label.resultHash',
     ...P11_REQUIRED_SCENES.map((row) => `figure.caption.${row.kind}`),
   ]) used.add(key);
   const n = (value, digits = 6) => formatReportNumber(value, locale, { maximumFractionDigits: digits });

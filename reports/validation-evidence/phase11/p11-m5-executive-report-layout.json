@@ -1,0 +1,611 @@
+{
+  "schemaVersion": "p11-m5-executive-report-layout-v1",
+  "milestone": "P11-M5",
+  "status": "PASS",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-24T01:53:19.296Z",
+  "sourceRevision": "3f5ee46+worktree",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0",
+    "browser": "chrome.exe",
+    "rasterizer": "pdftoppm"
+  },
+  "reportSnapshotHash": "176d0b742366e5edab3c29e810b60c14676d215579a40699b1d0e6fd756bb406",
+  "figureManifestHash": "232afb27f5902f1ac6d94ba384f936ab9b47607dce581e74d7c668167e075bfa",
+  "layoutManifest": {
+    "version": "p11-production-report-v1",
+    "status": "complete",
+    "reportSnapshotHash": "176d0b742366e5edab3c29e810b60c14676d215579a40699b1d0e6fd756bb406",
+    "locales": [
+      "ko-KR",
+      "en-US"
+    ],
+    "semanticHash": "11e999a26a4cafe3d31c103e2f580243f14349dc914c21395a2fca160440ac35",
+    "numericParity": true,
+    "technicalIdParity": true,
+    "figureAssetParity": true,
+    "figureManifestHash": "232afb27f5902f1ac6d94ba384f936ab9b47607dce581e74d7c668167e075bfa",
+    "figureCount": 7,
+    "pairHash": "647873638148376baea4dd3c06ae5170c4ed3515200bbf813a48f0d2d255108b",
+    "layoutVersion": "p11-production-report-v1",
+    "pageCount": 14,
+    "sectionOrder": [
+      "executive",
+      "toc",
+      "model-summary",
+      "figure-1",
+      "figure-2",
+      "figure-3",
+      "figure-4",
+      "analysis-summary",
+      "figure-5",
+      "figure-6",
+      "figure-7",
+      "qualification",
+      "appendix-1",
+      "appendix-2"
+    ],
+    "firstPageMarkers": [
+      "overall-verdict",
+      "four-axis-verdict",
+      "key-metrics",
+      "governing-result",
+      "audit-status",
+      "scope-notice",
+      "independent-reference-status"
+    ]
+  },
+  "qualification": {
+    "pageCount": 14,
+    "firstPageMarkerCoverage": 1,
+    "sectionOrderParity": true,
+    "figurePages": 7,
+    "footerNumberingErrors": 0,
+    "repeatedTableHeaderCoverage": 1,
+    "structuralOverflowFindings": 0,
+    "clippingFindings": 0,
+    "overlapFindings": 0,
+    "tofuFindings": 0,
+    "blackSquareFindings": 0,
+    "blankPages": 0,
+    "qaByLocale": {
+      "ko-KR": {
+        "ok": true,
+        "pdfPages": 14,
+        "rasterPages": 14,
+        "blankPages": 0,
+        "edgeInkPages": 0,
+        "replacementCharacters": 0,
+        "textCharacters": 4208,
+        "pages": [
+          {
+            "page": 1,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 18.859481,
+            "nonwhiteRatio": 0.03795734664910292,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 471
+          },
+          {
+            "page": 2,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 11.998644,
+            "nonwhiteRatio": 0.015524002083141869,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 242
+          },
+          {
+            "page": 3,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 9.547971,
+            "nonwhiteRatio": 0.016016705980863688,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 153
+          },
+          {
+            "page": 4,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 11.848092,
+            "nonwhiteRatio": 0.023994424532058942,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 180
+          },
+          {
+            "page": 5,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 13.727199,
+            "nonwhiteRatio": 0.02280989288157747,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 174
+          },
+          {
+            "page": 6,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 13.042162,
+            "nonwhiteRatio": 0.027630987756435785,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 192
+          },
+          {
+            "page": 7,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 11.284718,
+            "nonwhiteRatio": 0.02495047432323418,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 199
+          },
+          {
+            "page": 8,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 12.027016,
+            "nonwhiteRatio": 0.016588548846613364,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 212
+          },
+          {
+            "page": 9,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 13.139594,
+            "nonwhiteRatio": 0.034136976789306536,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 229
+          },
+          {
+            "page": 10,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 11.929757,
+            "nonwhiteRatio": 0.02577249844274934,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 216
+          },
+          {
+            "page": 11,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 15.478036,
+            "nonwhiteRatio": 0.030194069172563797,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 218
+          },
+          {
+            "page": 12,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 14.878436,
+            "nonwhiteRatio": 0.027147218903491303,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 393
+          },
+          {
+            "page": 13,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 17.405819,
+            "nonwhiteRatio": 0.03983370605234404,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 820
+          },
+          {
+            "page": 14,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 14.618893,
+            "nonwhiteRatio": 0.025706123824403394,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 509
+          }
+        ],
+        "contactSheet": "tmp/pdfs/p11-m5/contact-ko.png",
+        "pdfPath": "tmp/pdfs/p11-m5/PILOT-OFFICE-01-report-ko-preview.pdf",
+        "pdfBytes": 559401
+      },
+      "en-US": {
+        "ok": true,
+        "pdfPages": 14,
+        "rasterPages": 14,
+        "blankPages": 0,
+        "edgeInkPages": 0,
+        "replacementCharacters": 0,
+        "textCharacters": 6070,
+        "pages": [
+          {
+            "page": 1,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 20.239506,
+            "nonwhiteRatio": 0.0423036077157941,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 818
+          },
+          {
+            "page": 2,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 14.531065,
+            "nonwhiteRatio": 0.019441381000520785,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 525
+          },
+          {
+            "page": 3,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 11.040333,
+            "nonwhiteRatio": 0.01734419834778258,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 234
+          },
+          {
+            "page": 4,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 12.766126,
+            "nonwhiteRatio": 0.025081947124957878,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 257
+          },
+          {
+            "page": 5,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 14.984132,
+            "nonwhiteRatio": 0.02464285349590009,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 253
+          },
+          {
+            "page": 6,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 13.350361,
+            "nonwhiteRatio": 0.028280693155245125,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 265
+          },
+          {
+            "page": 7,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 12.329586,
+            "nonwhiteRatio": 0.02623839720613914,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 281
+          },
+          {
+            "page": 8,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 13.550365,
+            "nonwhiteRatio": 0.01844959103023619,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 341
+          },
+          {
+            "page": 9,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 15.848624,
+            "nonwhiteRatio": 0.03768163669597362,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 344
+          },
+          {
+            "page": 10,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 15.033847,
+            "nonwhiteRatio": 0.029687324490191874,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 334
+          },
+          {
+            "page": 11,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 17.221887,
+            "nonwhiteRatio": 0.03290138774009742,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 318
+          },
+          {
+            "page": 12,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 16.045874,
+            "nonwhiteRatio": 0.029566063168213707,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 583
+          },
+          {
+            "page": 13,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 18.850239,
+            "nonwhiteRatio": 0.04238912885866291,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 914
+          },
+          {
+            "page": 14,
+            "width": 744,
+            "height": 1053,
+            "standardDeviation": 16.318894,
+            "nonwhiteRatio": 0.02827431098040417,
+            "blackPixelRatio": 0,
+            "edgeInkRatio": 0,
+            "blank": false,
+            "replacementCharacters": 0,
+            "textCharacters": 603
+          }
+        ],
+        "contactSheet": "tmp/pdfs/p11-m5/contact-en.png",
+        "pdfPath": "tmp/pdfs/p11-m5/PILOT-OFFICE-01-report-en-preview.pdf",
+        "pdfBytes": 519686
+      }
+    }
+  },
+  "artifacts": {
+    "root": "reports/phase11/PILOT-OFFICE-01/m5",
+    "koreanHtml": "reports/phase11/PILOT-OFFICE-01/m5/report-ko.html",
+    "englishHtml": "reports/phase11/PILOT-OFFICE-01/m5/report-en.html",
+    "layoutManifest": "reports/phase11/PILOT-OFFICE-01/m5/layout-manifest.json"
+  },
+  "verification": [
+    {
+      "id": "P11-RPT-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-13",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-14",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-15",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-16",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-17",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-18",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-19",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-20",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-21",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-RPT-22",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-VIS-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-VIS-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-VIS-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-VIS-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-VIS-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-VIS-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-VIS-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-VIS-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-A11Y-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-A11Y-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-A11Y-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-A11Y-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    },
+    {
+      "id": "P11-A11Y-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m5",
+      "statement": "Executive first-page coverage, production pagination, semantics and full-page raster quality verified."
+    }
+  ],
+  "passedVerificationCount": 26,
+  "limitations": [
+    "Preview PDFs under tmp/pdfs are M5 visual-QA intermediates, not atomically published product artifacts.",
+    "Atomic bilingual PDF publication and final artifact manifest are owned by P11-M6."
+  ],
+  "artifactHash": "5688bf3cb2ecc6ac6689876cb59dff4e4e54543adea1b1bfe97c81154299731f"
+}

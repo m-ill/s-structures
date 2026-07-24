@@ -3,7 +3,7 @@
 ```yaml
 wp: WP-05
 milestone: P11-M5
-status: planned
+status: qualification-complete
 contracts: [executive summary, report information architecture, print CSS]
 depends: [WP-02, WP-04]
 ```
@@ -41,5 +41,7 @@ production report preview를 우선 표시하고 기존 detailed report는 migra
 
 ## Review Log
 
-구현 착수 후 기록한다.
-
+- 2026-07-23: 한·영 각 14쪽 실제 PDF를 90 dpi 전 페이지 raster 검토했다.
+- 첫 페이지 필수 marker 7/7, 필수 figure 7/7, footer·페이지 번호 오류 0을 확인했다.
+- 빈 페이지, clipping, overlap, tofu, replacement character, edge ink는 모두 0이다.
+- PDF pair의 원자적 최종 배포와 artifact manifest는 WP-06 범위로 유지한다.

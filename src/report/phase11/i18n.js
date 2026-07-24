@@ -63,6 +63,18 @@ const EN = Object.freeze({
   'figure.caption.deformed-governing': 'Deformed shape for the governing combination',
   'figure.caption.reactions-governing': 'Support reactions for the governing combination',
   'figure.caption.utilization-governing': 'Member utilization and governing member',
+  'report.toc': 'Table of contents',
+  'section.scope': 'Scope and validation boundary',
+  'section.audit': 'Quality audit',
+  'section.appendix': 'Detailed result appendix',
+  'section.combinations': 'Load combination results',
+  'label.page': 'Page',
+  'label.of': 'of',
+  'label.independentReference': 'Independent engineering reference',
+  'label.phase10Eligibility': 'Phase 10 eligibility',
+  'label.audit': 'Required quality audit',
+  'label.modelHash': 'Model domain hash',
+  'label.resultHash': 'Analysis result hash',
 });
 
 const KO = Object.freeze({
@@ -125,6 +137,18 @@ const KO = Object.freeze({
   'figure.caption.deformed-governing': '지배 조합의 변형 형상',
   'figure.caption.reactions-governing': '지배 조합의 지점 반력',
   'figure.caption.utilization-governing': '부재 이용률과 지배 부재',
+  'report.toc': '목차',
+  'section.scope': '범위 및 검증 경계',
+  'section.audit': '품질 감사',
+  'section.appendix': '상세 결과 부록',
+  'section.combinations': '하중조합 결과',
+  'label.page': '페이지',
+  'label.of': '중',
+  'label.independentReference': '독립 구조공학 기준',
+  'label.phase10Eligibility': 'Phase 10 적격 상태',
+  'label.audit': '필수 품질 감사',
+  'label.modelHash': '모델 도메인 해시',
+  'label.resultHash': '해석 결과 해시',
 });
 
 export const P11_REPORT_CATALOGS = Object.freeze({ 'en-US': EN, 'ko-KR': KO });

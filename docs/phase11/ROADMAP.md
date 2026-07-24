@@ -18,7 +18,7 @@ cycle: 착수 → 구현 → focused test → /code-review high → 수정 → �
 | **P11-M2** qualification-complete | 한·영 현지화·dual HTML | [WP-02](workpackages/WP-02-i18n-dual-render.md) | M1 | catalog/placeholder 100%, numeric parity 100%, 미번역 0 |
 | **P11-M3** qualification-complete | 결정론적 visual capture core | [WP-03](workpackages/WP-03-visual-capture-core.md) | M1 | CaptureSpec·compositor·manifest, 1600×900, blank/stale 검출 100% |
 | **P11-M4** qualification-complete | 필수 scene·본문 embedding | [WP-04](workpackages/WP-04-scene-evidence-embedding.md) | M2, M3 | required scene 7/7, figure/hash/caption 연결, ko/en asset parity |
-| **P11-M5** planned | 첫 페이지 결론·production layout | [WP-05](workpackages/WP-05-executive-report-layout.md) | M2, M4 | page 1 verdict·근거·제한, page raster defect 0 |
+| **P11-M5** qualification-complete | 첫 페이지 결론·production layout | [WP-05](workpackages/WP-05-executive-report-layout.md) | M2, M4 | page 1 verdict·근거·제한, page raster defect 0 |
 | **P11-M6** planned | 원자적 dual-PDF service | [WP-06](workpackages/WP-06-pdf-export-service.md) | M5 | ko/en PDF+manifest 동시 성공, metadata/font/footer/privacy/failure gate |
 | **P11-M7** planned | UI·Agent·export history | [WP-07](workpackages/WP-07-product-agent-workflow.md) | M6 | UI/Agent plan hash·status·artifact 동일, progress/cancel/reason |
 | **P11-M8** planned | 시각·성능·보안 qualification | [WP-08](workpackages/WP-08-qualification-hardening.md) | M4, M6, M7 | p95≤30초, memory≤1GiB, visual/font/privacy/failure matrix PASS |

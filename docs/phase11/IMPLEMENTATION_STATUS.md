@@ -4,20 +4,17 @@
 reviewed_at: 2026-07-23
 phase_status: in-progress
 implementation_status: qualification-in-progress
-completed_milestones: [P11-M0, P11-M1, P11-M2, P11-M3, P11-M4]
+completed_milestones: [P11-M0, P11-M1, P11-M2, P11-M3, P11-M4, P11-M5]
 active_milestone: none
 decision_gates_pending: []
 owner_inputs_pending:
   - bundled Korean font/license decision if system-font qualification is insufficient
 internal_blockers: []
 release_blockers:
-  - P11-M5 through P11-M9 are not qualified
-  - no dual-language PDF pair qualification
-  - no production page-layout qualification
+  - P11-M6 through P11-M9 are not qualified
+  - no atomic dual-language PDF pair publication
 feature_limitations:
-  - current calculation package is English-first
-  - current PDF path is browser print/prototype tooling
-  - current report has no contextual screen evidence
+  - current PDF pair is visual-QA output, not atomically published product output
   - independent reference model is not attached
 release_qualified: false
 ```
@@ -31,7 +28,7 @@ release_qualified: false
 | P11-M2 | qualification-complete | [WP-02](workpackages/WP-02-i18n-dual-render.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m2-bilingual-rendering.json) | [PASS](reviews/P11-M2-CODE-REVIEW.md) |
 | P11-M3 | qualification-complete | [WP-03](workpackages/WP-03-visual-capture-core.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m3-visual-capture-core.json) | [PASS](reviews/P11-M3-CODE-REVIEW.md) |
 | P11-M4 | qualification-complete | [WP-04](workpackages/WP-04-scene-evidence-embedding.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m4-scene-evidence-report.json) | [PASS](reviews/P11-M4-CODE-REVIEW.md) |
-| P11-M5 | planned | [WP-05](workpackages/WP-05-executive-report-layout.md) | 미작성 | 미생성 | 미작성 |
+| P11-M5 | qualification-complete | [WP-05](workpackages/WP-05-executive-report-layout.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m5-executive-report-layout.json) | [PASS](reviews/P11-M5-CODE-REVIEW.md) |
 | P11-M6 | planned | [WP-06](workpackages/WP-06-pdf-export-service.md) | 미작성 | 미생성 | 미작성 |
 | P11-M7 | planned | [WP-07](workpackages/WP-07-product-agent-workflow.md) | 미작성 | 미생성 | 미작성 |
 | P11-M8 | planned | [WP-08](workpackages/WP-08-qualification-hardening.md) | 미작성 | 미생성 | 미작성 |
@@ -46,8 +43,8 @@ release_qualified: false
 - dmax: 5.749 mm
 - max utilization: 0.394
 - report audit: PASS
-- visual evidence in report: 없음
-- bilingual pair: 없음
+- visual evidence in report: 필수 scene 7/7
+- bilingual pair: ko/en 각 14쪽 visual-QA PDF PASS
 
 ## 3. 상태 변경 규칙
 
@@ -61,5 +58,5 @@ release_qualified: false
 
 ## 4. 다음 착수
 
-다음 허용 작업은 **P11-M5 / WP-05**이다. 첫 페이지에 최종 결론·핵심 수치·제한사항을
-우선 배치하고 실제 figure를 포함한 production pagination을 확정한다.
+다음 허용 작업은 **P11-M6 / WP-06**이다. 동일 snapshot의 한국어·영어 PDF와 manifest를
+한 트랜잭션으로 게시하고 파일명·metadata·font·footer·privacy·rollback gate를 확정한다.
