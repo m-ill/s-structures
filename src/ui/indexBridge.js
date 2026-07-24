@@ -99,6 +99,7 @@ import {
   createReportExportWorkflow,
   installReportExportUi,
 } from './indexReportExportWorkflow.js';
+import { PHASE11_REPORT_RELEASE_QUALIFICATION } from '../report/phase11/releaseGate.js';
 
 export const INDEX_BRIDGE_VERSION = 'p9-m10-index-engine-bridge';
 export const INDEX_SYNC_ANALYSIS_DEPRECATION = Object.freeze({
@@ -722,7 +723,16 @@ export function installIndexEngineBridge(target = globalThis) {
           snapshot,
           currentReportSnapshotHash: snapshot?.reportSnapshotHash || null,
           figureManifest: target.SStructuresFigureManifest || null,
-          qualification: target.SStructuresReportQualification || null,
+          qualification: target.SStructuresReportQualification || (
+            /windows|win32|win64/iu.test(`${target.navigator?.platform || ''} ${target.navigator?.userAgent || ''}`)
+              ? PHASE11_REPORT_RELEASE_QUALIFICATION
+              : {
+                ...PHASE11_REPORT_RELEASE_QUALIFICATION,
+                status: 'BLOCKED',
+                releaseQualified: false,
+                reason: 'P11_REPORT_PROFILE_UNQUALIFIED',
+              }
+          ),
           sourceRevision: target.SStructuresSourceRevision || null,
         };
       },

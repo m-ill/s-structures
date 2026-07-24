@@ -46,7 +46,7 @@ qualification 상태와 blocker를 preflight·도움말에 표시한다.
 2026-07-23 구현 완료:
 
 - Windows Chromium·Poppler·pypdf profile에서 실제 dual export 5회와 전 페이지 28장 raster를 검증했다.
-- p95 3.51초, 관측 peak working set 1GiB 미만, 각 PDF 25MiB 미만을 확인했다.
+- p95 6.14초, 관측 peak working set 507.7MiB, 각 PDF 25MiB 미만을 확인했다.
 - blank·edge clipping signal·replacement glyph·privacy finding·false success가 모두 0이다.
 - corrupt PDF/asset, font missing, permission, disk full, browser crash, cancel/timeout, path traversal을 fail-closed로 검증했다.
 - 관리 샌드박스의 CLI browser에는 `--no-sandbox`가 필요하지만 제품 Electron의 sandbox·context isolation 계약은 유지한다.

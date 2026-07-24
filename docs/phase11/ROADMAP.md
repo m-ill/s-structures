@@ -4,7 +4,7 @@
 doc: roadmap
 phase: 11
 date: 2026-07-23
-status: in-progress
+status: release-qualified
 governing_plan: MILESTONE_EXECUTION_PLAN.md
 cycle: 착수 → 구현 → focused test → /code-review high → 수정 → 전용 gate → 전체 회귀 → evidence → milestone commit
 ```
@@ -22,7 +22,7 @@ cycle: 착수 → 구현 → focused test → /code-review high → 수정 → �
 | **P11-M6** qualification-complete | 원자적 dual-PDF service | [WP-06](workpackages/WP-06-pdf-export-service.md) | M5 | ko/en PDF+manifest 동시 성공, metadata/font/footer/privacy/failure gate |
 | **P11-M7** qualification-complete | UI·Agent·export history | [WP-07](workpackages/WP-07-product-agent-workflow.md) | M6 | UI/Agent plan hash·status·artifact 동일, progress/cancel/reason |
 | **P11-M8** qualification-complete | 시각·성능·보안 qualification | [WP-08](workpackages/WP-08-qualification-hardening.md) | M4, M6, M7 | p95≤30초, memory≤1GiB, visual/font/privacy/failure matrix PASS |
-| **P11-M9** planned | Office pilot·release gate | [WP-09](workpackages/WP-09-pilot-release.md) | M8 | 3회 parity, PDF pair·manifest hash, full regression, Critical/High 0 |
+| **P11-M9** qualification-complete | Office pilot·release gate | [WP-09](workpackages/WP-09-pilot-release.md) | M8 | 3회 parity, PDF pair·manifest hash, full regression, Critical/High 0 |
 
 ## 의존 그래프
 

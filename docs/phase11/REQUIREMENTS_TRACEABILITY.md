@@ -67,7 +67,8 @@ requirement
 | `blocked` | 외부입력·환경·결정 미충족 |
 | `rejected` | ADR로 제외 |
 
-현재 P11 요구사항은 모두 `planned`다.
+P11 요구사항은 M9 release manifest 기준으로 모두 `qualified`다. 보고서 기능 qualification은
+구조공학적 독립 교차검증을 대신하지 않으며 `CONDITIONAL_PASS` 제한을 유지한다.
 
 ## 5. Evidence registry 요구사항
 
@@ -122,4 +123,3 @@ test gap, 잔여 위험과 해결 commit을 포함한다.
 - stale documentation/API manifest
 - release manifest와 실제 파일 hash 불일치
 - Phase 10 eligibility를 근거 없이 승격한 report
-

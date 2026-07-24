@@ -841,7 +841,7 @@ export const FEATURE_CATEGORIES = [
         manualPage: '03-loads-design-and-reports.md',
       }),
       feature('bilingual-pdf-export', '한·영 PDF 보고서', '동일 snapshot에서 자격검증된 한국어·영어 PDF와 hash manifest를 원자적으로 내보낸다.', {
-        description: '첫 페이지 결론과 필수 화면 증거가 포함된 한국어·영어 보고서를 하나의 export job으로 생성한다. 두 PDF의 snapshot·plan hash가 같고 시각·폰트·성능·보안 qualification 및 전 산출물 검사가 통과한 경우에만 완료 이력과 artifact manifest를 게시한다.',
+        description: '첫 페이지 결론과 필수 화면 증거가 포함된 한국어·영어 보고서를 하나의 export job으로 생성한다. PILOT-OFFICE-01 3회 parity와 실제 artifact hash까지 release-qualified 됐으며, 두 PDF의 snapshot·plan hash와 품질 검사가 모두 통과한 경우에만 완료 이력과 manifest를 게시한다.',
         howTo: [
           '해석, 필수 화면 캡처와 보고서 qualification이 완료된 뒤 한·영 보고서 내보내기(preflightReportExport)를 확인한다',
           'planReportExport와 runReportExport를 실행하고 getReportExportStatus로 진행률과 실패 사유를 확인한다',

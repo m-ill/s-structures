@@ -1,0 +1,310 @@
+{
+  "schemaVersion": "p11-m9-release-gate-evidence-v1",
+  "milestone": "P11-M9",
+  "status": "PASS",
+  "releaseQualified": true,
+  "generatedAt": "2026-07-24T06:27:28.704Z",
+  "sourceRevision": "0a4ed84+worktree",
+  "reportVerdict": "CONDITIONAL_PASS",
+  "independentReferenceAvailable": false,
+  "releaseManifestHash": "c183e7f3dc72e6c2245074c262c4ae57ccf1d4504b710c8536724a11229a6df7",
+  "m8QualificationHash": "a1b297f54dd2ca49f1182013bc91c4f632c51e72e055f550ec54fa1d23ca9af8",
+  "parity": {
+    "runCount": 3,
+    "model": true,
+    "snapshot": true,
+    "numeric": true,
+    "sceneSelection": true,
+    "figureManifest": true,
+    "plan": true,
+    "uiAgentArtifact": true
+  },
+  "artifactIntegrity": true,
+  "coverage": {
+    "requiredSections": 14,
+    "coveredSections": 14,
+    "requiredFigures": 7,
+    "coveredFigures": 7,
+    "verdict": true,
+    "limitations": true
+  },
+  "selectedRunId": "P11-M9-R03",
+  "selectedArtifacts": [
+    {
+      "locale": "ko-KR",
+      "path": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R03/report-ko.pdf",
+      "bytes": 460785,
+      "pages": 14,
+      "sha256": "10092aa24bcf1970ded3fa6e9c13072dd842fb1c84edcf2123102b90cebad5ff",
+      "hashVerified": true
+    },
+    {
+      "locale": "en-US",
+      "path": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R03/report-en.pdf",
+      "bytes": 421199,
+      "pages": 14,
+      "sha256": "9f3d98a119a3f72dde86496a62637ec9e07d4cb1fd7b368bb156b50752ddff0d",
+      "hashVerified": true
+    }
+  ],
+  "runs": [
+    {
+      "runId": "P11-M9-R01",
+      "modelDomainHash": "5caf54924a7726f008fce3f5",
+      "reportSnapshotHash": "734fb217c356134bb1ffc7e45a6dc54e6f3a64bfa804ea4b8274786e2da117b7",
+      "numericHash": "7d372dee2910ed380458292dbe19a0b4f9e13ee835b392137344235c8df0daa0",
+      "sceneSelectionHash": "0f5a65c0c7d6964056861d037f473ea4d4aa6e6410032a9e7b95110dec9f5ec3",
+      "figureManifestHash": "e51a5d166d1ad130effec7c71ba26153f644ee20759e718d3a040175b624eb0e",
+      "planHash": "c674a7059fd9fc7b932b64652e66f988933e1afd085f571e6b07ce79f7fe9366",
+      "artifactManifestHash": "169230faf01f5088a5f7756d19d360e0c2fa44f29cc9748f7f834663d443eba1",
+      "manifestPath": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R01/artifact-manifest.json",
+      "manifestValid": true,
+      "pairComplete": true,
+      "pageParity": true,
+      "artifacts": [
+        {
+          "locale": "ko-KR",
+          "path": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R01/report-ko.pdf",
+          "bytes": 460785,
+          "pages": 14,
+          "sha256": "0eba5989a7311236bc3b1728f0503bd38050f101274d94b0f1775474a22178ca",
+          "hashVerified": true
+        },
+        {
+          "locale": "en-US",
+          "path": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R01/report-en.pdf",
+          "bytes": 421199,
+          "pages": 14,
+          "sha256": "4708f3830846271df074bdef32ae1d6360ff7df7df7d753a09ad84b050a9fb23",
+          "hashVerified": true
+        }
+      ]
+    },
+    {
+      "runId": "P11-M9-R02",
+      "modelDomainHash": "5caf54924a7726f008fce3f5",
+      "reportSnapshotHash": "734fb217c356134bb1ffc7e45a6dc54e6f3a64bfa804ea4b8274786e2da117b7",
+      "numericHash": "7d372dee2910ed380458292dbe19a0b4f9e13ee835b392137344235c8df0daa0",
+      "sceneSelectionHash": "0f5a65c0c7d6964056861d037f473ea4d4aa6e6410032a9e7b95110dec9f5ec3",
+      "figureManifestHash": "e51a5d166d1ad130effec7c71ba26153f644ee20759e718d3a040175b624eb0e",
+      "planHash": "c674a7059fd9fc7b932b64652e66f988933e1afd085f571e6b07ce79f7fe9366",
+      "artifactManifestHash": "eaad216d41f0366ee5e078115749ca9c9503c34ce9dc2794477332c9a0a51c14",
+      "manifestPath": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R02/artifact-manifest.json",
+      "manifestValid": true,
+      "pairComplete": true,
+      "pageParity": true,
+      "artifacts": [
+        {
+          "locale": "ko-KR",
+          "path": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R02/report-ko.pdf",
+          "bytes": 460785,
+          "pages": 14,
+          "sha256": "6da9c6902164e4b4661c56334a1ab0003804fe38cd5cefb2fc6a4bdde7c352eb",
+          "hashVerified": true
+        },
+        {
+          "locale": "en-US",
+          "path": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R02/report-en.pdf",
+          "bytes": 421199,
+          "pages": 14,
+          "sha256": "18c6a56187796cec07b2d0c0626d2413c1c2adfc4c3e9591a7ee470962983db1",
+          "hashVerified": true
+        }
+      ]
+    },
+    {
+      "runId": "P11-M9-R03",
+      "modelDomainHash": "5caf54924a7726f008fce3f5",
+      "reportSnapshotHash": "734fb217c356134bb1ffc7e45a6dc54e6f3a64bfa804ea4b8274786e2da117b7",
+      "numericHash": "7d372dee2910ed380458292dbe19a0b4f9e13ee835b392137344235c8df0daa0",
+      "sceneSelectionHash": "0f5a65c0c7d6964056861d037f473ea4d4aa6e6410032a9e7b95110dec9f5ec3",
+      "figureManifestHash": "e51a5d166d1ad130effec7c71ba26153f644ee20759e718d3a040175b624eb0e",
+      "planHash": "c674a7059fd9fc7b932b64652e66f988933e1afd085f571e6b07ce79f7fe9366",
+      "artifactManifestHash": "da6bcf2be0bd00592ceb2e6c16b3292eb784bde21985ce8b4d8b16e341febf8a",
+      "manifestPath": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R03/artifact-manifest.json",
+      "manifestValid": true,
+      "pairComplete": true,
+      "pageParity": true,
+      "artifacts": [
+        {
+          "locale": "ko-KR",
+          "path": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R03/report-ko.pdf",
+          "bytes": 460785,
+          "pages": 14,
+          "sha256": "10092aa24bcf1970ded3fa6e9c13072dd842fb1c84edcf2123102b90cebad5ff",
+          "hashVerified": true
+        },
+        {
+          "locale": "en-US",
+          "path": "output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R03/report-en.pdf",
+          "bytes": 421199,
+          "pages": 14,
+          "sha256": "9f3d98a119a3f72dde86496a62637ec9e07d4cb1fd7b368bb156b50752ddff0d",
+          "hashVerified": true
+        }
+      ]
+    }
+  ],
+  "packageInstallSmoke": true,
+  "fullRegression": true,
+  "openCriticalHigh": 0,
+  "ownerlessDebt": 0,
+  "verification": [
+    {
+      "id": "P11-E2E-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-E2E-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-13",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    },
+    {
+      "id": "P11-REL-14",
+      "status": "PASS",
+      "test": "npm run test:p11:m9",
+      "statement": "Three-run office pilot parity, artifact integrity and fail-closed release gate verified."
+    }
+  ],
+  "limitations": [
+    "Independent engineering reference is unavailable; report verdict is CONDITIONAL_PASS.",
+    "Phase 10 external cross-validation blockers remain unchanged.",
+    "Native PDF qualification is limited to the Windows Chromium/Poppler/pypdf profile."
+  ],
+  "artifactHash": "7355dfc8e4f85dbab64c5962319610dffc41f839df5a337aabb155d8d584cde2"
+}

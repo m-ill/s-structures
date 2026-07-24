@@ -2,7 +2,7 @@
 
 ```yaml
 version: p11-risk-register-v1
-status: planned
+status: qualified-with-declared-engineering-limitation
 reviewed_at: 2026-07-23
 ```
 
@@ -64,3 +64,6 @@ reviewed_at: 2026-07-23
 - final release manifest가 risk gate 결과 hash를 포함
 - 알려진 잔여 위험이 한국어·영어 보고서에 동일하게 노출
 
+M9 결과: 보고서 기능의 Critical/High open risk는 0이며 위 수용기준을 통과했다. 독립 정답
+부재와 Phase 10 외부 교차검증은 숨기지 않고 양 언어 보고서의 `CONDITIONAL_PASS` 제한으로
+유지한다.

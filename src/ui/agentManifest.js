@@ -1092,6 +1092,7 @@ export function buildAgentManifest(options = {}) {
       { id: 'P8-M9', status: 'candidate', feature: 'canonical Phase 7 feature integration, support spring and settlement assembly, unified node/member/story/origin recovery, stale propagation, and design-transfer guard' },
       { id: 'P8-M10', status: 'candidate', feature: 'shared production workflow, Worker job lifecycle, Pushover/NLTH result popup, calculation report, raw history export, and Agent/MCP parity' },
       { id: 'P11-M7', status: 'available', feature: 'shared bilingual PDF export workflow, progress, cancellation, artifact manifest and history for UI and Agent' },
+      { id: 'P11-M9', status: 'release-qualified', feature: 'three-run PILOT-OFFICE-01 parity, artifact integrity and Windows Chromium report release gate' },
       { id: 'P8-M11', status: 'candidate', feature: 'independent references, measured performance harness, five reproducible pilot packages, and fail-closed release manifest; external comparisons and end-to-end M-tier qualification remain blocked' },
       { id: 'P10-M11', status: 'blocked', feature: 'Phase 10 product integration and release gate; external XV-03~10 and native WebGPU device qualification remain required' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },

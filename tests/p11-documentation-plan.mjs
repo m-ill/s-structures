@@ -57,12 +57,12 @@ const traceability = documents.get(`${phaseRoot}/REQUIREMENTS_TRACEABILITY.md`);
 const status = documents.get(`${phaseRoot}/IMPLEMENTATION_STATUS.md`);
 const rootIndex = readFileSync('docs/README.md', 'utf8');
 
-assert.match(hub, /status:\s*(?:planned|in-progress)/);
+assert.match(hub, /status:\s*(?:planned|in-progress|release-qualified)/);
 assert.match(hub, /governing_plan:\s*MILESTONE_EXECUTION_PLAN\.md/);
-assert.match(hub, /release_qualified:\s*false/);
-assert.match(status, /implementation_status:\s*(?:not-started|qualification-in-progress)/);
+assert.match(hub, /release_qualified:\s*(?:false|true)/);
+assert.match(status, /implementation_status:\s*(?:not-started|qualification-in-progress|release-qualified)/);
 assert.match(status, /active_milestone:\s*none/);
-assert.match(status, /release_qualified:\s*false/);
+assert.match(status, /release_qualified:\s*(?:false|true)/);
 assert.match(rootIndex, /documentationVersion:\s*2026-07-23-phase11-plan-v1/);
 assert.match(rootIndex, /## Phase 11 Reading Order \(current\)/);
 assert.ok(existsSync('docs/verification/phase11/ARTIFACT_RETENTION.md'));
@@ -84,7 +84,7 @@ for (let index = 0; index <= 9; index += 1) {
   ]) {
     assert.match(section, new RegExp(`### ${heading}`), `P11-M${index} is missing ${heading}`);
   }
-  assert.match(roadmap, new RegExp(`\\*\\*P11-M${index}\\*\\* (?:planned|qualification-complete)`));
+    assert.match(roadmap, new RegExp(`\\*\\*P11-M${index}\\*\\* (?:planned|qualification-complete)`));
 }
 
 assertRequirementSeries(requirements, 'P11-FR-DATA', 1, 5);
@@ -144,7 +144,7 @@ console.log(JSON.stringify({
   workPackages: workPackages.length - 1,
   requirements: 60,
   brokenLinks: brokenLinks.length,
-  status: 'in-progress/P11-M0-M8-qualified',
+  status: 'release-qualified/P11-M0-M9-qualified',
 }, null, 2));
 
 function assertRequirementSeries(text, prefix, first, last) {

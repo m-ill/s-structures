@@ -5,11 +5,11 @@ doc: readme
 phase: 11
 version: p11-plan-v1
 date: 2026-07-23
-status: in-progress
+status: release-qualified
 governing_plan: MILESTONE_EXECUTION_PLAN.md
 milestones: [P11-M0, P11-M1, P11-M2, P11-M3, P11-M4, P11-M5, P11-M6, P11-M7, P11-M8, P11-M9]
 active_milestone: none
-release_qualified: false
+release_qualified: true
 ```
 
 ## 1. 제품 목표
@@ -99,6 +99,7 @@ reports/phase11/PILOT-OFFICE-01/
 19. [M6 review](reviews/P11-M6-CODE-REVIEW.md) — 원자적 dual-PDF·Electron 격리·PDF 내부 검사 검토
 20. [M7 review](reviews/P11-M7-CODE-REVIEW.md) — UI·Agent 동일 workflow·history·fallback 검토
 21. [M8 review](reviews/P11-M8-CODE-REVIEW.md) — 실제 PDF 시각·성능·보안·실패 matrix 검토
+22. [M9 review](reviews/P11-M9-CODE-REVIEW.md) — 3회 office pilot·artifact integrity·최종 release gate 검토
 
 ## 6. 공통 마일스톤 사이클
 

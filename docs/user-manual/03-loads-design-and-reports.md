@@ -121,6 +121,12 @@ PASS여도 최종 결론을 `CONDITIONAL_PASS`로 유지한다.
 개인정보·경로 누출과 실패 정리를 검사한다. `BLOCKED` qualification이 전달되면 preflight는
 `P11_REPORT_EXPORT_QUALIFICATION_BLOCKED`와 해결 안내를 표시하고 실행하지 않는다.
 
+Phase 11 보고서 출력은 `PILOT-OFFICE-01`을 세 번 독립 실행해 model/snapshot/numeric/scene
+선택 parity와 각 PDF의 실제 SHA-256을 재검증한 Windows profile에서 release-qualified 됐다.
+최종 검증 산출물은 `output/pdf/phase11/PILOT-OFFICE-01/P11-M9-R03/`에 있다. 이 판정은
+보고서 생성 기능에 대한 것이며, 독립 구조공학 정답이 없으므로 보고서 결론은
+`CONDITIONAL_PASS`이고 Phase 10 외부 교차검증 blocker도 그대로 유지된다.
+
 자동 생성된 기존 대표 건물 검토 PDF는 `output/pdf/m42-representative-packages/`에 위치한다.
 
 ## Generated Review Folders
