@@ -6,7 +6,7 @@
 | [WP-01](WP-01-report-snapshot-verdict.md) | P11-M1 | ReportSnapshot·verdict | qualification-complete |
 | [WP-02](WP-02-i18n-dual-render.md) | P11-M2 | 한·영 현지화·dual HTML | qualification-complete |
 | [WP-03](WP-03-visual-capture-core.md) | P11-M3 | 결정론적 visual capture core | qualification-complete |
-| [WP-04](WP-04-scene-evidence-embedding.md) | P11-M4 | 필수 scene·본문 embedding | planned |
+| [WP-04](WP-04-scene-evidence-embedding.md) | P11-M4 | 필수 scene·본문 embedding | qualification-complete |
 | [WP-05](WP-05-executive-report-layout.md) | P11-M5 | 첫 페이지 결론·production layout | planned |
 | [WP-06](WP-06-pdf-export-service.md) | P11-M6 | 원자적 dual-PDF service | planned |
 | [WP-07](WP-07-product-agent-workflow.md) | P11-M7 | UI·Agent·export history | planned |

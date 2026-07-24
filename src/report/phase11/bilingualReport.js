@@ -9,6 +9,7 @@ import {
   validateReportCatalogs,
 } from './i18n.js';
 import { validateReportSnapshot } from './reportSnapshot.js';
+import { P11_REQUIRED_SCENES, assertFigureManifestComplete } from './sceneEvidence.js';
 
 export const P11_BILINGUAL_REPORT_VERSION = 'p11-bilingual-html-v1';
 
@@ -23,6 +24,15 @@ export function renderLocalizedReportHtml(snapshot, locale, options = {}) {
   };
   for (const code of P11_VERDICT_REASON_CODES) used.add(`reason.${code}`);
   used.add('label.notAvailable');
+  for (const key of [
+    'section.evidence.loads',
+    'label.figure',
+    'label.combo',
+    'label.cases',
+    'label.scale',
+    'label.assetHash',
+    ...P11_REQUIRED_SCENES.map((row) => `figure.caption.${row.kind}`),
+  ]) used.add(key);
   const n = (value, digits = 6) => formatReportNumber(value, locale, { maximumFractionDigits: digits });
   const a = snapshot.analysis;
   const g = a.governing || {};
@@ -42,11 +52,17 @@ export function renderLocalizedReportHtml(snapshot, locale, options = {}) {
   ];
   const axisRows = Object.entries(snapshot.verdict.axes);
   const reasonRows = snapshot.verdict.reasonCodes.map((code) => [code, `reason.${code}`]);
+  const figureManifest = options.figureManifest || null;
+  if (figureManifest) assertFigureManifestComplete(figureManifest, snapshot);
+  else if (options.requireFigures === true) throw reportError('P11_REPORT_FIGURES_REQUIRED', 'Required figure manifest is missing.');
+  const figures = figureManifest?.figures || [];
   const semantic = {
     reportSnapshotHash: snapshot.reportSnapshotHash,
     verdict: snapshot.verdict,
     model: snapshot.model,
     analysis: snapshot.analysis,
+    figureManifestHash: figureManifest?.figureManifestHash || null,
+    figureAssetHashes: figures.map((row) => row.sha256),
   };
   const html = `<!doctype html>
 <html lang="${locale}">
@@ -65,6 +81,9 @@ export function renderLocalizedReportHtml(snapshot, locale, options = {}) {
     .card{border:1px solid #dbe5ed;border-radius:5px;padding:9px}.card span{display:block;color:#60778a}.card b{font-size:15px}
     table{width:100%;border-collapse:collapse;margin:8px 0 16px}th,td{padding:6px;border-bottom:1px solid #e1e8ee;text-align:left}
     td:last-child{text-align:right}.code{font-family:Consolas,monospace}.probe{font-size:1px;color:#fff}
+    figure{margin:14px 0 20px;break-inside:avoid;border:1px solid #dbe5ed;border-radius:6px;overflow:hidden;background:#fff}
+    figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;background:#fff}
+    figcaption{padding:8px 10px;color:#294056}.figure-meta{display:block;margin-top:3px;color:#60778a;font-size:10px}
     @media print{body{background:#fff}main{max-width:none;padding:0}}
   </style>
 </head>
@@ -80,7 +99,10 @@ export function renderLocalizedReportHtml(snapshot, locale, options = {}) {
   <h2>${t('section.verdict')}</h2>
   <table>${axisRows.map(([key, row]) => `<tr><th>${t(`axis.${key}`)}</th><td class="code">${row.status}</td></tr>`).join('')}</table>
   <h2>${t('section.model')}</h2><div class="grid">${metricRows.map(([key, value]) => `<div class="card"><span>${t(key)}</span><b data-value="${value}">${n(value, 0)}</b></div>`).join('')}</div>
+  ${renderFigures(figures, 'model', t)}
+  ${figures.some((row) => row.placement === 'loads') ? `<h2>${t('section.evidence.loads')}</h2>${renderFigures(figures, 'loads', t)}` : ''}
   <h2>${t('section.analysis')}</h2><table>${analysisRows.map(([key, value, unit]) => `<tr><th>${t(key)}</th><td data-value="${value ?? ''}">${n(value)} ${t(unit)}</td></tr>`).join('')}</table>
+  ${renderFigures(figures, 'analysis', t)}
   <h2>${t('section.governing')}</h2><table>
     <tr><th>${t('metric.memberId')}</th><td class="code">${escapeHtml(g.memberId || t('label.notAvailable'))}</td></tr>
     <tr><th>${t('metric.comboId')}</th><td class="code">${escapeHtml(g.comboId || t('label.notAvailable'))}</td></tr>
@@ -100,6 +122,7 @@ export function renderLocalizedReportHtml(snapshot, locale, options = {}) {
     semanticHash: stableHash(semantic),
     numericValues: numericValuesOf(snapshot),
     technicalIds: technicalIdsOf(snapshot),
+    figureAssets: figures.map((row) => ({ sceneKind: row.sceneKind, sha256: row.sha256, assetPath: row.assetPath })),
     usedMessageKeys: [...used].sort(),
   });
 }
@@ -114,7 +137,8 @@ export function renderBilingualReportPair(snapshot, options = {}) {
   if (ko.reportSnapshotHash !== en.reportSnapshotHash
     || ko.semanticHash !== en.semanticHash
     || JSON.stringify(ko.numericValues) !== JSON.stringify(en.numericValues)
-    || JSON.stringify(ko.technicalIds) !== JSON.stringify(en.technicalIds)) {
+    || JSON.stringify(ko.technicalIds) !== JSON.stringify(en.technicalIds)
+    || JSON.stringify(ko.figureAssets) !== JSON.stringify(en.figureAssets)) {
     throw reportError('P11_REPORT_LOCALE_PARITY_FAILED', 'Bilingual report semantic parity failed.');
   }
   const manifest = {
@@ -125,8 +149,27 @@ export function renderBilingualReportPair(snapshot, options = {}) {
     semanticHash: ko.semanticHash,
     numericParity: true,
     technicalIdParity: true,
+    figureAssetParity: true,
+    figureManifestHash: options.figureManifest?.figureManifestHash || null,
+    figureCount: ko.figureAssets.length,
   };
   return Object.freeze({ reports, manifest: Object.freeze({ ...manifest, pairHash: stableHash(manifest) }) });
+}
+
+function renderFigures(figures, placement, t) {
+  return figures.filter((row) => row.placement === placement).map((row) => {
+    const caption = t(row.captionKey);
+    const details = [
+      row.comboId ? `${t('label.combo')}: ${escapeHtml(row.comboId)}` : null,
+      row.sourceIds?.length ? `${t('label.cases')}: ${row.sourceIds.map((id) => escapeHtml(id)).join(', ')}` : null,
+      row.deformScale !== 1 ? `${t('label.scale')}: ${escapeHtml(row.deformScale)}` : null,
+      `${t('label.assetHash')}: ${row.sha256}`,
+    ].filter(Boolean).join(' · ');
+    return `<figure id="${row.figureId}" data-scene-kind="${row.sceneKind}" data-asset-sha256="${row.sha256}">
+      <img src="${escapeHtml(row.assetPath)}" alt="${caption}" width="${row.width}" height="${row.height}">
+      <figcaption><b>${t('label.figure')} ${row.number}.</b> ${caption}<span class="figure-meta">${details}</span></figcaption>
+    </figure>`;
+  }).join('');
 }
 
 function numericValuesOf(snapshot) {

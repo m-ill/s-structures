@@ -3,7 +3,7 @@
 ```yaml
 wp: WP-04
 milestone: P11-M4
-status: planned
+status: qualification-complete
 contracts: [required scene registry, figure manifest, report asset binding]
 depends: [WP-02, WP-03]
 ```
@@ -42,5 +42,12 @@ depends: [WP-02, WP-03]
 
 ## Review Log
 
-구현 착수 후 기록한다.
+2026-07-24 구현·실제 PILOT-OFFICE-01 capture·focused test·증적 검토를 완료했다.
 
+- 구현: `src/report/phase11/sceneEvidence.js`, `src/report/phase11/bilingualReport.js`
+- 테스트: `tests/p11-m4-scene-evidence-report.mjs`
+- 증적: `reports/validation-evidence/phase11/p11-m4-scene-evidence-report.json`
+- raw artifact: `reports/phase11/PILOT-OFFICE-01/m4/`
+- 리뷰: [P11-M4-CODE-REVIEW.md](../reviews/P11-M4-CODE-REVIEW.md)
+- 판정: `P11-CAP-15~24`, `P11-RPT-05~09`, `P11-PAR-07` PASS
+- 범위 제한: 최종 pagination과 PDF 출력은 P11-M5·M6 소유

@@ -646,6 +646,16 @@ export {
   buildEvidenceManifest,
 } from './report/phase11/visualCapture.js';
 export {
+  P11_SCENE_PLAN_VERSION,
+  P11_FIGURE_MANIFEST_VERSION,
+  P11_REQUIRED_SCENES,
+  createRequiredScenePlan,
+  buildRequiredSceneFrames,
+  createFigureManifest,
+  validateFigureManifest,
+  assertFigureManifestComplete,
+} from './report/phase11/sceneEvidence.js';
+export {
   buildResultPostprocessing,
 } from './results/resultPostprocessing.js';
 export { RESULT_POSTPROCESSING_VERSION } from './results/resultUtils.js';

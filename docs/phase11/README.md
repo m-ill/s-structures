@@ -94,6 +94,7 @@ reports/phase11/PILOT-OFFICE-01/
 14. [M1 review](reviews/P11-M1-CODE-REVIEW.md) — snapshot·verdict 완료 검토
 15. [M2 review](reviews/P11-M2-CODE-REVIEW.md) — 한·영 catalog·dual HTML 완료 검토
 16. [M3 review](reviews/P11-M3-CODE-REVIEW.md) — 결정론적 캡처·복원·실패 모드 완료 검토
+17. [M4 review](reviews/P11-M4-CODE-REVIEW.md) — 필수 7 scene·본문 figure binding 완료 검토
 
 ## 6. 공통 마일스톤 사이클
 

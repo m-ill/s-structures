@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "p11-m4-scene-evidence-report-v1",
+  "milestone": "P11-M4",
+  "status": "PASS",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-24T00:49:12.637Z",
+  "sourceRevision": "4d77b1d+worktree",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0",
+    "browser": "chrome.exe"
+  },
+  "reportSnapshotHash": "176d0b742366e5edab3c29e810b60c14676d215579a40699b1d0e6fd756bb406",
+  "scenePlanHash": "df84f3c8d3682fbf026dbf6faaf3a2434f42ba1728cf1fe248747ded5c6f2af8",
+  "evidenceManifestHash": "5904207ae946e90f5b8048bc09b824b193fd495a803aa946b946ac29186eef28",
+  "figureManifestHash": "232afb27f5902f1ac6d94ba384f936ab9b47607dce581e74d7c668167e075bfa",
+  "qualification": {
+    "requiredScenes": 7,
+    "capturedScenes": 7,
+    "dimensions": [
+      "1600x900"
+    ],
+    "assetHashParity": true,
+    "brokenReferences": 0,
+    "duplicateFigures": 0,
+    "missingCaptions": 0,
+    "comboScaleMetadataDrift": 0,
+    "totalPngBytes": 341716
+  },
+  "artifacts": {
+    "root": "reports/phase11/PILOT-OFFICE-01/m4",
+    "koreanHtml": "reports/phase11/PILOT-OFFICE-01/m4/report-ko.html",
+    "englishHtml": "reports/phase11/PILOT-OFFICE-01/m4/report-en.html",
+    "figureManifest": "reports/phase11/PILOT-OFFICE-01/m4/figure-manifest.json",
+    "figures": [
+      {
+        "path": "reports/phase11/PILOT-OFFICE-01/m4/assets/model-isometric-0280ec013b80ceda.png",
+        "sha256": "0280ec013b80ceda487a11eac77711bc37a458391b1ff0c42874b59be8fb7bbf",
+        "bytes": 31071
+      },
+      {
+        "path": "reports/phase11/PILOT-OFFICE-01/m4/assets/model-plan-elevation-0d1a2473256e2719.png",
+        "sha256": "0d1a2473256e271902ae678185eb6da5ea459c54e6de3c3cc3710253fb9164e3",
+        "bytes": 14299
+      },
+      {
+        "path": "reports/phase11/PILOT-OFFICE-01/m4/assets/load-gravity-83730e7894ba64fe.png",
+        "sha256": "83730e7894ba64fe252259ea6639a82412dae6b34c72507d40adae3be7f704ec",
+        "bytes": 47404
+      },
+      {
+        "path": "reports/phase11/PILOT-OFFICE-01/m4/assets/load-lateral-fc141f4af4bae0aa.png",
+        "sha256": "fc141f4af4bae0aa04277e400c31ad201156192645dd2280e922ef78e3a471aa",
+        "bytes": 43253
+      },
+      {
+        "path": "reports/phase11/PILOT-OFFICE-01/m4/assets/deformed-governing-62a16e7b209067c2.png",
+        "sha256": "62a16e7b209067c2eb4bcd1cd353aaae7286d24f8cf5509def8f83146ea545ae",
+        "bytes": 115430
+      },
+      {
+        "path": "reports/phase11/PILOT-OFFICE-01/m4/assets/reactions-governing-074dd4719ce5843b.png",
+        "sha256": "074dd4719ce5843b18a1a266dbfb89456ab6c628a268d604db26f2a7011473d8",
+        "bytes": 42556
+      },
+      {
+        "path": "reports/phase11/PILOT-OFFICE-01/m4/assets/utilization-governing-0b87d2fee634ce62.png",
+        "sha256": "0b87d2fee634ce62556e7f2e1ddea96bdac989f5609e1577e81e0acc09a8060a",
+        "bytes": 47703
+      }
+    ]
+  },
+  "verification": [
+    {
+      "id": "P11-CAP-15",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-CAP-16",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-CAP-17",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-CAP-18",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-CAP-19",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-CAP-20",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-CAP-21",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-CAP-22",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-CAP-23",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-CAP-24",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-RPT-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-RPT-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-RPT-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-RPT-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-RPT-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    },
+    {
+      "id": "P11-PAR-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m4",
+      "statement": "Required scene selection, PNG binding, bilingual figure parity and contextual report reference verified."
+    }
+  ],
+  "passedVerificationCount": 16,
+  "limitations": [
+    "M4 qualifies HTML scene evidence embedding; final pagination and PDF rendering are owned by P11-M5 and P11-M6.",
+    "Engineering correctness remains conditional because an independent reference model is not attached."
+  ],
+  "artifactHash": "99932c11462fd2733be3a38e105c4809b93037334b6709f92a201434af741769"
+}

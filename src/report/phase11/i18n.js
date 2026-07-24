@@ -50,6 +50,19 @@ const EN = Object.freeze({
   'reason.FEATURE_NOT_IN_SCOPE': 'Feature is outside the current scope',
   'reason.FEATURE_NOT_VERIFIED': 'Feature is not verified',
   'reason.OPERATIONAL_CHECKS_PASSED': 'Operational checks passed',
+  'section.evidence.loads': 'Load evidence',
+  'label.figure': 'Figure',
+  'label.combo': 'Combination',
+  'label.cases': 'Cases',
+  'label.scale': 'Scale',
+  'label.assetHash': 'Asset SHA-256',
+  'figure.caption.model-isometric': 'Isometric view of the analysis model',
+  'figure.caption.model-plan-elevation': 'Plan and elevation geometry review',
+  'figure.caption.load-gravity': 'Gravity load cases and load paths',
+  'figure.caption.load-lateral': 'Governing lateral load case',
+  'figure.caption.deformed-governing': 'Deformed shape for the governing combination',
+  'figure.caption.reactions-governing': 'Support reactions for the governing combination',
+  'figure.caption.utilization-governing': 'Member utilization and governing member',
 });
 
 const KO = Object.freeze({
@@ -99,6 +112,19 @@ const KO = Object.freeze({
   'reason.FEATURE_NOT_IN_SCOPE': '현재 범위에 포함되지 않은 기능',
   'reason.FEATURE_NOT_VERIFIED': '검증되지 않은 기능',
   'reason.OPERATIONAL_CHECKS_PASSED': '프로그램 동작 점검 통과',
+  'section.evidence.loads': '하중 증거',
+  'label.figure': '그림',
+  'label.combo': '조합',
+  'label.cases': '케이스',
+  'label.scale': '배율',
+  'label.assetHash': '자산 SHA-256',
+  'figure.caption.model-isometric': '해석 모델의 3차원 등각 보기',
+  'figure.caption.model-plan-elevation': '평면 및 입면 형상 검토',
+  'figure.caption.load-gravity': '중력 하중 케이스와 하중 경로',
+  'figure.caption.load-lateral': '지배 횡하중 케이스',
+  'figure.caption.deformed-governing': '지배 조합의 변형 형상',
+  'figure.caption.reactions-governing': '지배 조합의 지점 반력',
+  'figure.caption.utilization-governing': '부재 이용률과 지배 부재',
 });
 
 export const P11_REPORT_CATALOGS = Object.freeze({ 'en-US': EN, 'ko-KR': KO });
