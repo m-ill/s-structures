@@ -1,0 +1,500 @@
+{
+  "schemaVersion": "p11-m8-qualification-hardening-v1",
+  "milestone": "P11-M8",
+  "status": "PASS",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-24T05:12:00.965Z",
+  "sourceRevision": "f89a32b+worktree",
+  "environment": "windows-chromium-poppler-pypdf-v1",
+  "planHash": "216681f9454e5c0abb81dbcfe250df2688cf2b80539b7c9aaeeed6ae448aa188",
+  "reportSnapshotHash": "176d0b742366e5edab3c29e810b60c14676d215579a40699b1d0e6fd756bb406",
+  "figureManifestHash": "232afb27f5902f1ac6d94ba384f936ab9b47607dce581e74d7c668167e075bfa",
+  "selectedArtifactManifestHash": "beda11158d9c46b721febbfa1535ecfb9ff0f5112b4752a43403a7800ab7dd09",
+  "qualification": {
+    "version": "p11-report-qualification-v1",
+    "status": "PASS",
+    "qualified": true,
+    "profile": "windows-chromium-poppler-pypdf-v1",
+    "budgets": {
+      "dualExportP95Ms": 30000,
+      "peakWorkingSetBytes": 1073741824,
+      "firstProgressMs": 500,
+      "cancelAcknowledgementMs": 2000,
+      "pdfBytes": 26214400
+    },
+    "metrics": {
+      "sampleCount": 5,
+      "dualExportP95Ms": 6140.012,
+      "peakWorkingSetBytes": 532398080,
+      "firstProgressMs": 1.763400000000047,
+      "cancelAcknowledgementMs": 0,
+      "maximumPdfBytes": 460787,
+      "rasterPages": 28,
+      "expectedRasterPages": 28,
+      "blankPages": 0,
+      "edgeInkPages": 0,
+      "replacementCharacters": 0,
+      "privacyFindings": 0,
+      "injectionFindings": 0,
+      "networkRequests": 0,
+      "falseSuccesses": 0,
+      "cleanupFailures": 0
+    },
+    "checks": [
+      {
+        "id": "P11-M8-ENV",
+        "status": "PASS",
+        "statement": "Windows Chrome/Chromium, PDF inspector and rasterizer profile"
+      },
+      {
+        "id": "P11-M8-PERF-SAMPLES",
+        "status": "PASS",
+        "statement": "At least five actual dual-export timing samples"
+      },
+      {
+        "id": "P11-M8-PERF-P95",
+        "status": "PASS",
+        "statement": "Dual-export p95 budget"
+      },
+      {
+        "id": "P11-M8-PERF-MEMORY",
+        "status": "PASS",
+        "statement": "Peak working-set budget"
+      },
+      {
+        "id": "P11-M8-PERF-PROGRESS",
+        "status": "PASS",
+        "statement": "First progress budget"
+      },
+      {
+        "id": "P11-M8-PERF-CANCEL",
+        "status": "PASS",
+        "statement": "Cancel acknowledgement budget"
+      },
+      {
+        "id": "P11-M8-PERF-SIZE",
+        "status": "PASS",
+        "statement": "Per-PDF size budget"
+      },
+      {
+        "id": "P11-M8-VIS-PAGES",
+        "status": "PASS",
+        "statement": "All pages rasterized"
+      },
+      {
+        "id": "P11-M8-VIS-BLANK",
+        "status": "PASS",
+        "statement": "No blank page"
+      },
+      {
+        "id": "P11-M8-VIS-EDGE",
+        "status": "PASS",
+        "statement": "No edge clipping signal"
+      },
+      {
+        "id": "P11-M8-VIS-GLYPH",
+        "status": "PASS",
+        "statement": "Korean searchable text and no replacement glyph"
+      },
+      {
+        "id": "P11-M8-VIS-FONT",
+        "status": "PASS",
+        "statement": "Embedded fonts, A4 and footer"
+      },
+      {
+        "id": "P11-M8-SEC-PRIVACY",
+        "status": "PASS",
+        "statement": "No secret or local-path disclosure"
+      },
+      {
+        "id": "P11-M8-SEC-INJECTION",
+        "status": "PASS",
+        "statement": "HTML/script injection escaped"
+      },
+      {
+        "id": "P11-M8-SEC-OFFLINE",
+        "status": "PASS",
+        "statement": "Offline rendering without network requests"
+      },
+      {
+        "id": "P11-M8-FAIL-MATRIX",
+        "status": "PASS",
+        "statement": "Failure matrix complete"
+      },
+      {
+        "id": "P11-M8-FAIL-CLEANUP",
+        "status": "PASS",
+        "statement": "No false success or residual staging artifacts"
+      },
+      {
+        "id": "P11-M8-SMOKE",
+        "status": "PASS",
+        "statement": "Package/install and product adapter smoke"
+      }
+    ],
+    "blockers": [],
+    "visualGolden": {
+      "policy": "source-revision-and-reason-required",
+      "sourceRevision": "f89a32b+worktree",
+      "approvalReason": "P11-M8 production Windows/Chromium visual qualification baseline",
+      "contactSheets": [
+        "reports/phase11/PILOT-OFFICE-01/m8/contact-sheet-ko.png",
+        "reports/phase11/PILOT-OFFICE-01/m8/contact-sheet-en.png"
+      ]
+    },
+    "qualificationHash": "a1b297f54dd2ca49f1182013bc91c4f632c51e72e055f550ec54fa1d23ca9af8"
+  },
+  "performanceSamples": [
+    {
+      "run": 1,
+      "jobId": "P11-M8-Q01",
+      "durationMs": 6140.012,
+      "manifestHash": "c8c575e6a98bba587ef07250f4b1313541351841b04726c97ba44b789ce522ce"
+    },
+    {
+      "run": 2,
+      "jobId": "P11-M8-Q02",
+      "durationMs": 5705.146,
+      "manifestHash": "0935a468d2367592b0e07296770f4691b7eff29e8d5d519b0a868fa33b2527b1"
+    },
+    {
+      "run": 3,
+      "jobId": "P11-M8-Q03",
+      "durationMs": 5180.373,
+      "manifestHash": "a5386fd0079ef3e74b1a84827746f53d339c34a74d73e566bb58cb3428b2393f"
+    },
+    {
+      "run": 4,
+      "jobId": "P11-M8-Q04",
+      "durationMs": 5205.322,
+      "manifestHash": "bf1a263c6a0bd58d7765df7620d245c5c9a423c6e583f3a20d6d706ba5aa561b"
+    },
+    {
+      "run": 5,
+      "jobId": "P11-M8-Q05",
+      "durationMs": 5149.555,
+      "manifestHash": "beda11158d9c46b721febbfa1535ecfb9ff0f5112b4752a43403a7800ab7dd09"
+    }
+  ],
+  "visual": [
+    {
+      "locale": "ko-KR",
+      "pdf": "output/pdf/phase11/PILOT-OFFICE-01/P11-M8-Q05/report-ko.pdf",
+      "pdfSha256": "449c8dc3080feecd143ab7244f38d289c01573b53962a31b99ee5c79c4d62182",
+      "pages": 14,
+      "blankPages": 0,
+      "edgeInkPages": 0,
+      "replacementCharacters": 0,
+      "contactSheet": "reports/phase11/PILOT-OFFICE-01/m8/contact-sheet-ko.png"
+    },
+    {
+      "locale": "en-US",
+      "pdf": "output/pdf/phase11/PILOT-OFFICE-01/P11-M8-Q05/report-en.pdf",
+      "pdfSha256": "224fd252b1d86029d52117cdbbe501a208988da6cb3eeeba70ffe51a61ebcc80",
+      "pages": 14,
+      "blankPages": 0,
+      "edgeInkPages": 0,
+      "replacementCharacters": 0,
+      "contactSheet": "reports/phase11/PILOT-OFFICE-01/m8/contact-sheet-en.png"
+    }
+  ],
+  "failureMatrix": [
+    {
+      "id": "corrupt-pdf",
+      "status": "PASS",
+      "falseSuccess": false,
+      "cleanup": "PASS"
+    },
+    {
+      "id": "font-missing",
+      "status": "PASS",
+      "falseSuccess": false,
+      "cleanup": "PASS"
+    },
+    {
+      "id": "corrupt-asset",
+      "status": "PASS",
+      "falseSuccess": false,
+      "cleanup": "PASS"
+    },
+    {
+      "id": "permission-denied",
+      "status": "PASS",
+      "falseSuccess": false,
+      "cleanup": "PASS"
+    },
+    {
+      "id": "disk-full",
+      "status": "PASS",
+      "falseSuccess": false,
+      "cleanup": "PASS"
+    },
+    {
+      "id": "hidden-window-crash",
+      "status": "PASS",
+      "falseSuccess": false,
+      "cleanup": "PASS"
+    },
+    {
+      "id": "cancel-timeout",
+      "status": "PASS",
+      "falseSuccess": false,
+      "cleanup": "PASS"
+    },
+    {
+      "id": "path-traversal",
+      "status": "PASS",
+      "falseSuccess": false,
+      "cleanup": "PASS"
+    }
+  ],
+  "verification": [
+    {
+      "id": "P11-VIS-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-13",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-14",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-15",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-16",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-17",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-18",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-19",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-VIS-20",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-PERF-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-13",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-14",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-15",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-16",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-17",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-18",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-19",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-SEC-20",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-FAIL-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-FAIL-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-FAIL-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-FAIL-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-FAIL-13",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-FAIL-14",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-FAIL-15",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    },
+    {
+      "id": "P11-FAIL-16",
+      "status": "PASS",
+      "test": "npm run test:p11:m8",
+      "statement": "Production report qualification gate verified."
+    }
+  ],
+  "openCriticalHigh": 0,
+  "limitations": [
+    "Qualified native profile is Windows Chrome/Chromium with Poppler and pypdf.",
+    "macOS/Linux native PDF output is outside this qualification claim.",
+    "Independent engineering reference remains unavailable; report verdict remains CONDITIONAL_PASS."
+  ],
+  "artifactHash": "68c0f50b96734047b17c1715539e1f4b1f76010d891d8e2d440a749c63cd55ad"
+}

@@ -104,7 +104,7 @@ artifact manifest가 모두 검사된 경우에만 완료된다.
 
 ### 한·영 PDF 내보내기
 
-1. `preflightReportExport`에서 해석 snapshot, 최종 결론, 필수 화면 7개가 준비됐는지 확인한다.
+1. `preflightReportExport`에서 해석 snapshot, 최종 결론, 필수 화면 7개와 보고서 qualification 상태를 확인한다.
 2. `planReportExport`로 plan hash를 고정하고 `runReportExport`를 실행한다.
 3. `getReportExportStatus`에서 진행률·실패 reason·remediation을 확인한다. 실행 중에는
    `cancelReportExport`를 사용할 수 있다.
@@ -115,6 +115,11 @@ artifact manifest가 모두 검사된 경우에만 완료된다.
 일반 브라우저에서는 한·영 print-ready HTML을 각각 수동 인쇄할 수 있지만, 프로그램은 이를
 자동 PDF 저장 성공으로 표시하지 않는다. 독립 구조공학 기준이 없는 보고서는 프로그램 검사가
 PASS여도 최종 결론을 `CONDITIONAL_PASS`로 유지한다.
+
+현재 native qualification profile은 Windows Chromium·Poppler·pypdf다. 실제 한·영 PDF 5회
+출력의 p95, 작업집합, 파일 크기, 전 페이지 raster, 한글 검색/복사, 내장 font, A4/footer,
+개인정보·경로 누출과 실패 정리를 검사한다. `BLOCKED` qualification이 전달되면 preflight는
+`P11_REPORT_EXPORT_QUALIFICATION_BLOCKED`와 해결 안내를 표시하고 실행하지 않는다.
 
 자동 생성된 기존 대표 건물 검토 PDF는 `output/pdf/m42-representative-packages/`에 위치한다.
 

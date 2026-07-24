@@ -98,6 +98,7 @@ reports/phase11/PILOT-OFFICE-01/
 18. [M5 review](reviews/P11-M5-CODE-REVIEW.md) — 첫 페이지 결론·production pagination·전 페이지 raster 검토
 19. [M6 review](reviews/P11-M6-CODE-REVIEW.md) — 원자적 dual-PDF·Electron 격리·PDF 내부 검사 검토
 20. [M7 review](reviews/P11-M7-CODE-REVIEW.md) — UI·Agent 동일 workflow·history·fallback 검토
+21. [M8 review](reviews/P11-M8-CODE-REVIEW.md) — 실제 PDF 시각·성능·보안·실패 matrix 검토
 
 ## 6. 공통 마일스톤 사이클
 

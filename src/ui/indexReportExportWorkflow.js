@@ -20,6 +20,7 @@ const REMEDIATION = Object.freeze({
   P11_PDF_EXPORT_CANCELLED: '취소된 작업은 산출물을 게시하지 않습니다. 필요하면 새 작업을 시작하세요.',
   P11_PDF_EXPORT_TIMEOUT: '출력 장치 상태와 디스크 여유 공간을 확인한 뒤 다시 시도하세요.',
   P11_PDF_INSPECTION_FAILED: 'PDF 품질 검사 항목을 확인하고 보고서를 다시 생성하세요.',
+  P11_REPORT_EXPORT_QUALIFICATION_BLOCKED: '보고서 자격검증 blocker를 해결한 뒤 다시 내보내세요.',
 });
 
 export function createReportExportWorkflow(options = {}) {
@@ -59,6 +60,9 @@ export function createReportExportWorkflow(options = {}) {
       || input.figureManifest?.figureCount !== 7) {
       issues.push(issue('P11_REPORT_EXPORT_FIGURES_INCOMPLETE'));
     }
+    if (input.qualification && input.qualification.status !== 'PASS') {
+      issues.push(issue('P11_REPORT_EXPORT_QUALIFICATION_BLOCKED'));
+    }
     return Object.freeze({
       version: P11_REPORT_EXPORT_WORKFLOW_VERSION,
       ready: issues.length === 0,
@@ -66,6 +70,7 @@ export function createReportExportWorkflow(options = {}) {
       figureManifestHash: input.figureManifest?.figureManifestHash || null,
       verdict: input.snapshot?.verdict?.overall || null,
       sceneCoverage: input.figureManifest?.figureCount || 0,
+      qualificationStatus: input.qualification?.status || 'not-provided',
       issues,
       browserFallbackAvailable: !!input.reports?.['ko-KR'] && !!input.reports?.['en-US'],
     });
@@ -253,6 +258,7 @@ export function buildReportExportView(job = null, history = [], preflight = null
     historyCount: history.length,
     snapshotHash: job?.reportSnapshotHash || preflight?.reportSnapshotHash || null,
     planHash: job?.planHash || null,
+    qualificationStatus: preflight?.qualificationStatus || null,
   });
 }
 

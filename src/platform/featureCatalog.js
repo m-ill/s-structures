@@ -840,14 +840,14 @@ export const FEATURE_CATEGORIES = [
         relatedReadApis: ['getCalculationPackage'],
         manualPage: '03-loads-design-and-reports.md',
       }),
-      feature('bilingual-pdf-export', '한·영 PDF 보고서', '동일 snapshot에서 한국어·영어 PDF와 hash manifest를 원자적으로 내보낸다.', {
-        description: '첫 페이지 결론과 필수 화면 증거가 포함된 한국어·영어 보고서를 하나의 export job으로 생성한다. 두 PDF의 snapshot·plan hash가 같고 전 산출물이 검증된 경우에만 완료 이력과 artifact manifest를 게시한다.',
+      feature('bilingual-pdf-export', '한·영 PDF 보고서', '동일 snapshot에서 자격검증된 한국어·영어 PDF와 hash manifest를 원자적으로 내보낸다.', {
+        description: '첫 페이지 결론과 필수 화면 증거가 포함된 한국어·영어 보고서를 하나의 export job으로 생성한다. 두 PDF의 snapshot·plan hash가 같고 시각·폰트·성능·보안 qualification 및 전 산출물 검사가 통과한 경우에만 완료 이력과 artifact manifest를 게시한다.',
         howTo: [
-          '해석과 필수 화면 캡처가 완료된 뒤 한·영 보고서 내보내기(preflightReportExport)를 확인한다',
+          '해석, 필수 화면 캡처와 보고서 qualification이 완료된 뒤 한·영 보고서 내보내기(preflightReportExport)를 확인한다',
           'planReportExport와 runReportExport를 실행하고 getReportExportStatus로 진행률과 실패 사유를 확인한다',
           '완료 후 getReportExportArtifacts 또는 openReportExportArtifact로 locale별 PDF와 manifest를 연다',
         ],
-        limits: ['일반 브라우저는 무음 PDF 저장을 성공으로 보고하지 않으며 수동 print-ready fallback만 제공한다', '독립 구조공학 기준이 없으면 보고서 결론은 CONDITIONAL_PASS다'],
+        limits: ['현재 native qualification profile은 Windows Chromium·Poppler·pypdf다', '일반 브라우저는 무음 PDF 저장을 성공으로 보고하지 않으며 수동 print-ready fallback만 제공한다', '독립 구조공학 기준이 없으면 보고서 결론은 CONDITIONAL_PASS다'],
         relatedActions: [
           'preflightReportExport',
           'planReportExport',

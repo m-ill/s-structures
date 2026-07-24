@@ -722,6 +722,7 @@ export function installIndexEngineBridge(target = globalThis) {
           snapshot,
           currentReportSnapshotHash: snapshot?.reportSnapshotHash || null,
           figureManifest: target.SStructuresFigureManifest || null,
+          qualification: target.SStructuresReportQualification || null,
           sourceRevision: target.SStructuresSourceRevision || null,
         };
       },
