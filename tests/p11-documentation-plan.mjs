@@ -144,7 +144,7 @@ console.log(JSON.stringify({
   workPackages: workPackages.length - 1,
   requirements: 60,
   brokenLinks: brokenLinks.length,
-  status: 'in-progress/P11-M0-M5-qualified',
+  status: 'in-progress/P11-M0-M6-qualified',
 }, null, 2));
 
 function assertRequirementSeries(text, prefix, first, last) {

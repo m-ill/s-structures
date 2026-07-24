@@ -96,6 +96,7 @@ reports/phase11/PILOT-OFFICE-01/
 16. [M3 review](reviews/P11-M3-CODE-REVIEW.md) — 결정론적 캡처·복원·실패 모드 완료 검토
 17. [M4 review](reviews/P11-M4-CODE-REVIEW.md) — 필수 7 scene·본문 figure binding 완료 검토
 18. [M5 review](reviews/P11-M5-CODE-REVIEW.md) — 첫 페이지 결론·production pagination·전 페이지 raster 검토
+19. [M6 review](reviews/P11-M6-CODE-REVIEW.md) — 원자적 dual-PDF·Electron 격리·PDF 내부 검사 검토
 
 ## 6. 공통 마일스톤 사이클
 

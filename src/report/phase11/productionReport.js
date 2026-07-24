@@ -91,7 +91,7 @@ export function renderProductionReport(snapshot, locale, options = {}) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="report-snapshot-hash" content="${snapshot.reportSnapshotHash}">
   <meta name="report-layout-version" content="${P11_PRODUCTION_REPORT_VERSION}">
-  <title>${t('report.title')} - ${projectName}</title>
+  <title>S-Structures Report [${locale}] - ${projectName}</title>
   <style>${productionCss()}</style>
 </head>
 <body data-report-version="${P11_PRODUCTION_REPORT_VERSION}" data-semantic-hash="${semanticHash}">

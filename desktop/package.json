@@ -11,7 +11,7 @@
   "build": {
     "appId": "com.sstructures.app",
     "productName": "S-Structures",
-    "files": ["main.mjs", "../src/**", "../server/**", "../index.html", "../app.html", "../package.json"],
+    "files": ["main.mjs", "preload.mjs", "reportExportIpc.mjs", "../src/**", "../server/**", "../index.html", "../app.html", "../package.json"],
     "directories": {
       "output": "../output/desktop"
     },

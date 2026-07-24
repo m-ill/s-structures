@@ -3,7 +3,7 @@
 ```yaml
 wp: WP-06
 milestone: P11-M6
-status: planned
+status: qualification-complete
 contracts: [export job, Electron PDF adapter, artifact manifest]
 depends: [WP-05]
 ```
@@ -43,5 +43,8 @@ depends: [WP-05]
 
 ## Review Log
 
-구현 착수 후 기록한다.
-
+- 2026-07-23: temp 생성·양 언어 PDF 검사·directory rename 기반 atomic publish를 구현했다.
+- 실제 PILOT-OFFICE-01 PDF를 한·영 각 14쪽으로 게시하고 A4·검색 text·CID font embedding·footer를 확인했다.
+- locale 한쪽 실패, inspection 실패, timeout, cancel, path traversal에서 final partial artifact 0을 확인했다.
+- Electron은 context isolation·sandbox·Node 비노출 preload와 allowlist IPC만 사용한다.
+- UI·Agent action과 export history 연결은 WP-07 범위로 유지한다.

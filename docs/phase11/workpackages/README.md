@@ -8,7 +8,7 @@
 | [WP-03](WP-03-visual-capture-core.md) | P11-M3 | 결정론적 visual capture core | qualification-complete |
 | [WP-04](WP-04-scene-evidence-embedding.md) | P11-M4 | 필수 scene·본문 embedding | qualification-complete |
 | [WP-05](WP-05-executive-report-layout.md) | P11-M5 | 첫 페이지 결론·production layout | qualification-complete |
-| [WP-06](WP-06-pdf-export-service.md) | P11-M6 | 원자적 dual-PDF service | planned |
+| [WP-06](WP-06-pdf-export-service.md) | P11-M6 | 원자적 dual-PDF service | qualification-complete |
 | [WP-07](WP-07-product-agent-workflow.md) | P11-M7 | UI·Agent·export history | planned |
 | [WP-08](WP-08-qualification-hardening.md) | P11-M8 | 시각·성능·보안 qualification | planned |
 | [WP-09](WP-09-pilot-release.md) | P11-M9 | Office pilot·release gate | planned |
