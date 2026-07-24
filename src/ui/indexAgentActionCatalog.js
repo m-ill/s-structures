@@ -3,6 +3,7 @@ import { NATIVE_ADVANCED_ACTIONS } from './indexNativeAdvancedAnalysis.js';
 import { NATIVE_AGENT_CONTROL_ACTIONS } from './indexNativeAgentControls.js';
 import { NATIVE_MODELER_ACTIONS } from './indexNativeModeler.js';
 import { MATERIAL_LIBRARY_ACTIONS } from '../materials/libraryEdit.js';
+import { P11_REPORT_EXPORT_ACTIONS } from './indexReportExportWorkflow.js';
 
 export function availableAgentActions() {
   return [
@@ -64,6 +65,7 @@ export function availableAgentActions() {
     ...MATERIAL_LIBRARY_ACTIONS,
     'openNativeDetailedReport',
     'openNativeCalculationPackage',
+    ...P11_REPORT_EXPORT_ACTIONS,
     'setNativeMode',
     'setNativePDeltaEnabled',
     'setNativePDeltaStep',

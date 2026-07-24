@@ -96,8 +96,27 @@ window.SStructuresAgent.execute('applyDesignBasisLoads', {
 | 계산서 패키지 | `getCalculationPackage()` | 표지, 목차, 상세 trace, appendix 포함 HTML |
 | 층간변위 보고 | `getServiceabilityDriftReport()` | 사용성 drift 검토 |
 | 부재 설계 trace | `getMemberDesignTraceReport()` | 부재별 검토식과 action matrix |
+| 한·영 PDF 보고서 | `planReportExport()` → `runReportExport()` | 동일 snapshot의 결론·화면 증거·상세표를 한국어/영어 PDF로 원자 게시 |
 
-계산서 패키지는 HTML 기준이며, PDF는 브라우저 인쇄 기능으로 만든다. 자동 생성된 대표 건물 검토 PDF는 `output/pdf/m42-representative-packages/`에 위치한다.
+기존 계산서 패키지는 HTML과 브라우저 수동 인쇄 fallback으로 유지한다. 이 경로는 PDF 자동 저장
+성공으로 판정하지 않는다. Phase 11 한·영 보고서는 데스크톱 export service에서 두 PDF와
+artifact manifest가 모두 검사된 경우에만 완료된다.
+
+### 한·영 PDF 내보내기
+
+1. `preflightReportExport`에서 해석 snapshot, 최종 결론, 필수 화면 7개가 준비됐는지 확인한다.
+2. `planReportExport`로 plan hash를 고정하고 `runReportExport`를 실행한다.
+3. `getReportExportStatus`에서 진행률·실패 reason·remediation을 확인한다. 실행 중에는
+   `cancelReportExport`를 사용할 수 있다.
+4. 완료 후 `getReportExportArtifacts`로 한국어/영어 PDF의 SHA-256·쪽수·크기와 manifest를
+   확인하고 `openReportExportArtifact`로 연다.
+5. `listReportExports`는 동일 프로젝트의 완료·실패·취소 이력을 반환한다.
+
+일반 브라우저에서는 한·영 print-ready HTML을 각각 수동 인쇄할 수 있지만, 프로그램은 이를
+자동 PDF 저장 성공으로 표시하지 않는다. 독립 구조공학 기준이 없는 보고서는 프로그램 검사가
+PASS여도 최종 결론을 `CONDITIONAL_PASS`로 유지한다.
+
+자동 생성된 기존 대표 건물 검토 PDF는 `output/pdf/m42-representative-packages/`에 위치한다.
 
 ## Generated Review Folders
 

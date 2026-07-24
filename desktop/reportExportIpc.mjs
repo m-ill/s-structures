@@ -5,6 +5,7 @@ export const P11_REPORT_EXPORT_IPC_CHANNELS = Object.freeze({
   run: 'report-export:run',
   status: 'report-export:status',
   cancel: 'report-export:cancel',
+  list: 'report-export:list',
 });
 
 export function createElectronPdfAdapter({ BrowserWindow, tempRoot }) {
@@ -61,6 +62,7 @@ export function registerReportExportIpc({ ipcMain, service }) {
     [P11_REPORT_EXPORT_IPC_CHANNELS.run]: (_event, jobId) => service.run(safeJobId(jobId)),
     [P11_REPORT_EXPORT_IPC_CHANNELS.status]: (_event, jobId) => service.status(safeJobId(jobId)),
     [P11_REPORT_EXPORT_IPC_CHANNELS.cancel]: (_event, jobId) => service.cancel(safeJobId(jobId)),
+    [P11_REPORT_EXPORT_IPC_CHANNELS.list]: (_event, filter) => service.listPublished(sanitizeListFilter(filter)),
   };
   for (const [channel, handler] of Object.entries(handlers)) ipcMain.handle(channel, handler);
   return () => {
@@ -99,6 +101,10 @@ function sanitizePlanRequest(value = {}) {
   result.snapshot = value.snapshot;
   result.figureManifest = value.figureManifest;
   return result;
+}
+
+function sanitizeListFilter(value = {}) {
+  return value?.projectId == null ? {} : { projectId: String(value.projectId) };
 }
 
 function safeJobId(value) {

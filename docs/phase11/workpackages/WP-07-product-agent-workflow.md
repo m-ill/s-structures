@@ -3,7 +3,7 @@
 ```yaml
 wp: WP-07
 milestone: P11-M7
-status: planned
+status: qualification-complete
 contracts: [report export workflow, Agent/API parity, artifact history]
 depends: [WP-06]
 ```
@@ -43,5 +43,8 @@ UI와 Agent가 renderer·print를 각자 호출하면 같은 요청에서도 sna
 
 ## Review Log
 
-구현 착수 후 기록한다.
-
+- 2026-07-23: UI와 Agent가 동일 workflow와 M6 transport를 사용하도록 연결했다.
+- preflight·plan·run·status·cancel·history·artifacts·open action 8개를 Agent contract에 동기화했다.
+- 동일 요청의 UI/Agent job·plan hash parity와 idempotent plan 1회를 확인했다.
+- stale snapshot, 필수 scene 누락, unsupported adapter는 reason·remediation과 함께 fail-closed 처리한다.
+- 일반 browser fallback은 print-ready HTML만 제공하고 silent PDF success를 주장하지 않는다.

@@ -56,6 +56,16 @@ for (const locale of result.manifest.locales) {
   assert.ok(row.metadata.title.includes(locale));
 }
 assert.equal((await readdir(tempRoot)).length, 0);
+const publishedReader = createPdfExportService({
+  outputRoot,
+  tempRoot,
+  adapter: fakeAdapter(),
+  inspectPdf: fakeInspector,
+});
+const published = await publishedReader.listPublished({ projectId: 'PILOT-OFFICE-01' });
+assert.equal(published.length, 1);
+assert.equal(published[0].jobId, 'M6-SUCCESS');
+assert.equal(published[0].artifacts['ko-KR'].sha256, result.manifest.artifacts['ko-KR'].sha256);
 
 const existingMarker = path.join(outputRoot, 'PILOT-OFFICE-01', 'EXISTING');
 await mkdir(existingMarker, { recursive: true });
@@ -146,6 +156,7 @@ console.log(JSON.stringify({
   partialFinalArtifacts: 0,
   privacyFindings: 0,
   failureModes: 8,
+  persistentHistoryRows: published.length,
 }, null, 2));
 
 await rm(sandbox, { recursive: true, force: true });

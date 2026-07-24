@@ -840,6 +840,36 @@ export const FEATURE_CATEGORIES = [
         relatedReadApis: ['getCalculationPackage'],
         manualPage: '03-loads-design-and-reports.md',
       }),
+      feature('bilingual-pdf-export', '한·영 PDF 보고서', '동일 snapshot에서 한국어·영어 PDF와 hash manifest를 원자적으로 내보낸다.', {
+        description: '첫 페이지 결론과 필수 화면 증거가 포함된 한국어·영어 보고서를 하나의 export job으로 생성한다. 두 PDF의 snapshot·plan hash가 같고 전 산출물이 검증된 경우에만 완료 이력과 artifact manifest를 게시한다.',
+        howTo: [
+          '해석과 필수 화면 캡처가 완료된 뒤 한·영 보고서 내보내기(preflightReportExport)를 확인한다',
+          'planReportExport와 runReportExport를 실행하고 getReportExportStatus로 진행률과 실패 사유를 확인한다',
+          '완료 후 getReportExportArtifacts 또는 openReportExportArtifact로 locale별 PDF와 manifest를 연다',
+        ],
+        limits: ['일반 브라우저는 무음 PDF 저장을 성공으로 보고하지 않으며 수동 print-ready fallback만 제공한다', '독립 구조공학 기준이 없으면 보고서 결론은 CONDITIONAL_PASS다'],
+        relatedActions: [
+          'preflightReportExport',
+          'planReportExport',
+          'runReportExport',
+          'getReportExportStatus',
+          'cancelReportExport',
+          'listReportExports',
+          'getReportExportArtifacts',
+          'openReportExportArtifact',
+        ],
+        relatedReadApis: [
+          'preflightReportExport',
+          'planReportExport',
+          'runReportExport',
+          'getReportExportStatus',
+          'cancelReportExport',
+          'listReportExports',
+          'getReportExportArtifacts',
+          'openReportExportArtifact',
+        ],
+        manualPage: '03-loads-design-and-reports.md',
+      }),
       feature('practice-validation', '실무 검증 리포트', 'P-Delta/결과표/계산서 준비 상태를 점검하고 warning/NG를 이슈로 남긴다.', {
         description: '해석·설계 결과가 검토 가능한 상태인지(P-Delta 수렴, 결과표 생성, trace 연결, 설계 NG 존재 여부)를 자동 점검하고 상태(OK/WARN/NG)를 준다. 발견된 warning/NG는 이슈 레지스트리에 open 상태로 쌓여 resolve/accept 처리 전까지 남는다. 리본의 [제품 감사]로 수동 실행할 수 있다.',
         howTo: [

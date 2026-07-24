@@ -20,7 +20,7 @@ cycle: 착수 → 구현 → focused test → /code-review high → 수정 → �
 | **P11-M4** qualification-complete | 필수 scene·본문 embedding | [WP-04](workpackages/WP-04-scene-evidence-embedding.md) | M2, M3 | required scene 7/7, figure/hash/caption 연결, ko/en asset parity |
 | **P11-M5** qualification-complete | 첫 페이지 결론·production layout | [WP-05](workpackages/WP-05-executive-report-layout.md) | M2, M4 | page 1 verdict·근거·제한, page raster defect 0 |
 | **P11-M6** qualification-complete | 원자적 dual-PDF service | [WP-06](workpackages/WP-06-pdf-export-service.md) | M5 | ko/en PDF+manifest 동시 성공, metadata/font/footer/privacy/failure gate |
-| **P11-M7** planned | UI·Agent·export history | [WP-07](workpackages/WP-07-product-agent-workflow.md) | M6 | UI/Agent plan hash·status·artifact 동일, progress/cancel/reason |
+| **P11-M7** qualification-complete | UI·Agent·export history | [WP-07](workpackages/WP-07-product-agent-workflow.md) | M6 | UI/Agent plan hash·status·artifact 동일, progress/cancel/reason |
 | **P11-M8** planned | 시각·성능·보안 qualification | [WP-08](workpackages/WP-08-qualification-hardening.md) | M4, M6, M7 | p95≤30초, memory≤1GiB, visual/font/privacy/failure matrix PASS |
 | **P11-M9** planned | Office pilot·release gate | [WP-09](workpackages/WP-09-pilot-release.md) | M8 | 3회 parity, PDF pair·manifest hash, full regression, Critical/High 0 |
 

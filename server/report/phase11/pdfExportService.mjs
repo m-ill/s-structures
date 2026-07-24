@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { mkdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { stableHash } from '../../../src/core/stableHash.js';
 import { renderProductionReportPair } from '../../../src/report/phase11/productionReport.js';
@@ -181,7 +181,7 @@ export async function exportDualPdfPair(plan, options = {}) {
 
 export function createPdfExportService(options = {}) {
   const jobs = new Map();
-  return Object.freeze({ plan, run, status, cancel, list });
+  return Object.freeze({ plan, run, status, cancel, list, listPublished });
 
   function plan(input) {
     const exportPlan = createDualPdfExportPlan({
@@ -249,6 +249,37 @@ export function createPdfExportService(options = {}) {
 
   function list() {
     return [...jobs.values()].map(snapshot);
+  }
+
+  async function listPublished(filter = {}) {
+    const outputRoot = requireAbsoluteRoot(options.outputRoot, 'P11_PDF_OUTPUT_ROOT_INVALID');
+    const requestedProject = filter.projectId ? safeSegment(filter.projectId, 'P11_PDF_PROJECT_ID_INVALID') : null;
+    const projectIds = requestedProject ? [requestedProject] : await directoryNames(outputRoot);
+    const rows = [];
+    for (const projectId of projectIds) {
+      const projectRoot = inside(outputRoot, path.join(outputRoot, projectId), 'P11_PDF_OUTPUT_PATH_INVALID');
+      for (const jobId of await directoryNames(projectRoot)) {
+        const manifestPath = path.join(projectRoot, jobId, 'artifact-manifest.json');
+        const manifest = await readFile(manifestPath, 'utf8').then(JSON.parse).catch(() => null);
+        if (!manifest || !validateArtifactManifest(manifest).ok) continue;
+        rows.push(Object.freeze({
+          version: P11_PDF_EXPORT_JOB_VERSION,
+          jobId: manifest.jobId,
+          projectId: manifest.projectId,
+          status: 'completed',
+          stage: 'completed',
+          progress: 1,
+          planHash: manifest.planHash,
+          reportSnapshotHash: manifest.reportSnapshotHash,
+          artifacts: manifest.artifacts,
+          manifestPath,
+          createdAt: manifest.generatedAt,
+          updatedAt: manifest.generatedAt,
+          error: null,
+        }));
+      }
+    }
+    return rows.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
 
   function requireJob(jobId) {
@@ -384,6 +415,12 @@ async function assertMissing(target, code) {
   if (await stat(target).then(() => true).catch((error) => error?.code !== 'ENOENT')) {
     throw exportError(code, 'Final artifact directory already exists.');
   }
+}
+
+async function directoryNames(root) {
+  return readdir(root, { withFileTypes: true })
+    .then((rows) => rows.filter((row) => row.isDirectory()).map((row) => row.name))
+    .catch((error) => (error?.code === 'ENOENT' ? [] : Promise.reject(error)));
 }
 
 function sha256(bytes) {

@@ -118,6 +118,7 @@ import {
   openNativeCalculationPackage,
   openNativeDetailedReport,
 } from './indexReportHooks.js';
+import { createReportExportWorkflow } from './indexReportExportWorkflow.js';
 import { normalizeIndexResult } from './indexResultCompatibility.js';
 import {
   getPhase7AnalysisRunStore,
@@ -143,6 +144,18 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     { bridgeVersion },
   ));
   const getAnalysis = (model) => bridge?.getLastResult?.() || analyzeForIndex(model);
+  const reportExport = options.reportExportWorkflow
+    || target.SStructuresReportExportWorkflow
+    || (target.sStructuresReportExport ? createReportExportWorkflow({ transport: target.sStructuresReportExport }) : null);
+  if (reportExport && !target.SStructuresReportExportWorkflow) target.SStructuresReportExportWorkflow = reportExport;
+  const requireReportExport = () => {
+    if (!reportExport) {
+      const error = new Error('Product report export workflow is unavailable.');
+      error.code = 'P11_REPORT_EXPORT_ADAPTER_UNAVAILABLE';
+      throw error;
+    }
+    return reportExport;
+  };
   const api = {
     version: bridgeVersion,
     getModel() {
@@ -207,6 +220,30 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(createCalculationPackageHtml(model, getAnalysis(model), withAnalysisResults(target, options)));
+    },
+    preflightReportExport(input = {}) {
+      return cloneJson(requireReportExport().preflight(input));
+    },
+    planReportExport(input = {}) {
+      return requireReportExport().plan({ ...input, source: input.source || 'agent' });
+    },
+    runReportExport(input = {}) {
+      return requireReportExport().run(input);
+    },
+    getReportExportStatus(input = {}) {
+      return requireReportExport().status(input);
+    },
+    cancelReportExport(input = {}) {
+      return requireReportExport().cancel(input);
+    },
+    listReportExports(input = {}) {
+      return requireReportExport().refreshHistory(input).then(cloneJson);
+    },
+    getReportExportArtifacts(input = {}) {
+      return cloneJson(requireReportExport().artifacts(input));
+    },
+    openReportExportArtifact(input = {}) {
+      return requireReportExport().openArtifact(input);
     },
     getKdsLoadCombinationCoverage(options = {}) {
       const model = getCurrentModel(target);
@@ -915,6 +952,22 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
           return openNativeDetailedReport(target, bridge, api, payload);
         case 'openNativeCalculationPackage':
           return openNativeCalculationPackage(target, bridge, api, payload);
+        case 'preflightReportExport':
+          return { preflight: api.preflightReportExport(payload) };
+        case 'planReportExport':
+          return api.planReportExport(payload).then((job) => ({ job }));
+        case 'runReportExport':
+          return api.runReportExport(payload).then((job) => ({ job }));
+        case 'getReportExportStatus':
+          return api.getReportExportStatus(payload).then((job) => ({ job }));
+        case 'cancelReportExport':
+          return api.cancelReportExport(payload).then((job) => ({ job }));
+        case 'listReportExports':
+          return api.listReportExports(payload).then((jobs) => ({ jobs }));
+        case 'getReportExportArtifacts':
+          return { artifacts: api.getReportExportArtifacts(payload) };
+        case 'openReportExportArtifact':
+          return api.openReportExportArtifact(payload).then((artifact) => ({ artifact }));
         case 'setNativeMode':
           return setNativeMode(target, payload.mode || payload.value || payload, api);
         case 'setNativePDeltaEnabled':

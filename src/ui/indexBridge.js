@@ -95,6 +95,10 @@ import {
   installCalculationPackageMenuHook,
   installDetailedReportMenuHook,
 } from './indexReportHooks.js';
+import {
+  createReportExportWorkflow,
+  installReportExportUi,
+} from './indexReportExportWorkflow.js';
 
 export const INDEX_BRIDGE_VERSION = 'p9-m10-index-engine-bridge';
 export const INDEX_SYNC_ANALYSIS_DEPRECATION = Object.freeze({
@@ -674,9 +678,14 @@ export function installIndexEngineBridge(target = globalThis) {
   target.analyzeModel = bridge.analyzeModel;
   target.validateModel = bridge.validateModel;
   target.SStructuresEngine = bridge;
+  target.SStructuresReportExportWorkflow ||= createReportExportWorkflow({
+    transport: target.sStructuresReportExport,
+    openArtifact: target.SStructuresOpenReportArtifact,
+  });
   target.SStructuresAgent = createIndexAgentApi(target, bridge, {
     bridgeVersion: INDEX_BRIDGE_VERSION,
     analyzeForIndex,
+    reportExportWorkflow: target.SStructuresReportExportWorkflow,
   });
   target.__SStructuresIndexBridgeInstalled = true;
   bridge.experimentalUi = isExperimentalIndexUiEnabled(target);
@@ -699,6 +708,24 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.agentCommandBridge = installIndexAgentCommandBridge(target, target.SStructuresAgent);
     bridge.detailedReportMenu = installDetailedReportMenuHook(target, bridge);
     bridge.calculationPackageMenu = installCalculationPackageMenuHook(target, bridge);
+    bridge.reportExportUi = installReportExportUi(
+      target,
+      target.SStructuresReportExportWorkflow,
+      () => {
+        if (target.SStructuresReportExportInputProvider) return target.SStructuresReportExportInputProvider();
+        const model = bridge.getCurrentModel();
+        const calculationPackage = model ? bridge.getCalculationPackage() : null;
+        const snapshot = calculationPackage?.data?.reportSnapshot || null;
+        return {
+          projectId: model?.meta?.id || model?.id || 'PROJECT',
+          projectName: model?.meta?.name || model?.meta?.id || model?.id || 'PROJECT',
+          snapshot,
+          currentReportSnapshotHash: snapshot?.reportSnapshotHash || null,
+          figureManifest: target.SStructuresFigureManifest || null,
+          sourceRevision: target.SStructuresSourceRevision || null,
+        };
+      },
+    );
     decorateAgentControls(target.document);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);

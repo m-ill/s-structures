@@ -14,4 +14,7 @@ contextBridge.exposeInMainWorld('sStructuresReportExport', Object.freeze({
   cancel(jobId) {
     return ipcRenderer.invoke(P11_REPORT_EXPORT_IPC_CHANNELS.cancel, jobId);
   },
+  list(filter = {}) {
+    return ipcRenderer.invoke(P11_REPORT_EXPORT_IPC_CHANNELS.list, filter);
+  },
 }));
