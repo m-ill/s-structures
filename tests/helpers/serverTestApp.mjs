@@ -4,15 +4,17 @@ import { join } from 'node:path';
 import { createApp } from '../../server/main.mjs';
 
 export async function bootTestApp(overrides = {}) {
-  const dataDir = await mkdtemp(join(tmpdir(), 's-structures-test-'));
-  const { server, config, ctx } = createApp({ dataDir, port: 0, allowRegistration: true, ...overrides });
+  const stateRoot = await mkdtemp(join(tmpdir(), 's-structures-test-'));
+  const dataDir = join(stateRoot, 'data');
+  const secretsDir = join(stateRoot, 'secrets');
+  const { server, config, ctx } = createApp({ dataDir, secretsDir, port: 0, allowRegistration: true, ...overrides });
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   const address = server.address();
   const baseUrl = `http://127.0.0.1:${address.port}`;
 
   async function close() {
     await new Promise((resolve) => server.close(resolve));
-    await rm(dataDir, { recursive: true, force: true });
+    await rm(stateRoot, { recursive: true, force: true });
   }
 
   async function api(method, path, { body, token, raw, headers } = {}) {

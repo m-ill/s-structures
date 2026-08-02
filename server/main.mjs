@@ -1,7 +1,7 @@
 import http from 'node:http';
-import { createReadStream, statSync } from 'node:fs';
-import { extname, join, normalize, resolve } from 'node:path';
-import { loadConfig } from './config.mjs';
+import { createReadStream } from 'node:fs';
+import { resolve } from 'node:path';
+import { loadConfig, validatePathLayout } from './config.mjs';
 import { ApiError, createRouter, errorEnvelope, ok, readJsonBody, sendJson } from './router.mjs';
 import { createUserStore } from './store/userStore.mjs';
 import { createProjectStore, withProjectStoreRequestCache } from './store/projectStore.mjs';
@@ -16,24 +16,14 @@ import { registerApprovalRoutes } from './routes/approval.mjs';
 import { registerLibraryRoutes } from './routes/libraries.mjs';
 import { registerEvidenceRoutes } from './routes/evidence.mjs';
 import { SERVER_API_VERSION } from '../src/platform/platformVersion.js';
-
-const STATIC_TYPES = {
-  '.html': 'text/html; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8',
-  '.mjs': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.md': 'text/markdown; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.wasm': 'application/wasm',
-};
+import { resolvePublicAsset } from './staticAssets.mjs';
 
 const BOOT_TIME = Date.now();
 
 export function createApp(overrides = {}) {
   const config = loadConfig(overrides);
-  const userStore = createUserStore(config.dataDir);
+  validatePathLayout(config);
+  const userStore = createUserStore(config.dataDir, { secretsDir: config.secretsDir });
   const projectStore = createProjectStore(config.dataDir);
   const auditLog = createAuditLog(config.dataDir);
   const ctx = { config, userStore, projectStore, auditLog };
@@ -109,38 +99,44 @@ async function handleApi(req, res, router, pathname, config) {
   }
 }
 
-function serveStatic(req, res, pathname, config) {
-  try {
-    const decodedPathname = decodeStaticPath(pathname);
-    const safePath = normalize(decodedPathname).replace(/^(\.\.[/\\])+/, '');
-    let filePath = resolve(join(config.staticRoot, safePath));
-    if (!filePath.startsWith(config.staticRoot)) {
-      res.writeHead(403);
-      res.end('Forbidden');
-      return;
-    }
-    if (decodedPathname === '/') filePath = join(config.staticRoot, 'index.html');
-    const stat = statSync(filePath);
-    if (stat.isDirectory()) filePath = join(filePath, 'index.html');
-    res.writeHead(200, { 'Content-Type': STATIC_TYPES[extname(filePath)] || 'application/octet-stream' });
-    createReadStream(filePath).pipe(res);
-  } catch (error) {
-    if (error instanceof ApiError) {
-      res.writeHead(error.status, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end(error.message);
-      return;
-    }
-    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end('Not found');
+export function serveStatic(req, res, pathname, config) {
+  if (!['GET', 'HEAD'].includes(req.method)) {
+    res.writeHead(405, staticHeaders({ Allow: 'GET, HEAD', 'Cache-Control': 'no-store' }));
+    res.end('Method not allowed');
+    return;
   }
+  try {
+    decodeURIComponent(pathname);
+  } catch {
+    res.writeHead(400, staticHeaders({ 'Cache-Control': 'no-store' }));
+    res.end('Bad request');
+    return;
+  }
+  const asset = resolvePublicAsset(config.staticRoot, pathname);
+  if (!asset) {
+    res.writeHead(404, staticHeaders({ 'Cache-Control': 'no-store' }));
+    res.end('Not found');
+    return;
+  }
+  const headers = staticHeaders({
+    'Content-Type': asset.contentType,
+    'Cache-Control': asset.cacheControl,
+  });
+  res.writeHead(200, headers);
+  if (req.method === 'HEAD') {
+    res.end();
+    return;
+  }
+  createReadStream(asset.filePath).pipe(res);
 }
 
-function decodeStaticPath(pathname) {
-  try {
-    return decodeURIComponent(pathname);
-  } catch {
-    throw new ApiError(400, 'BAD_URI', 'Static path contains invalid percent encoding.');
-  }
+function staticHeaders(extra = {}) {
+  return {
+    'X-Content-Type-Options': 'nosniff',
+    'Referrer-Policy': 'no-referrer',
+    'Cross-Origin-Resource-Policy': 'same-origin',
+    ...extra,
+  };
 }
 
 export function isMainEntry(entry = process.argv[1] || '') {

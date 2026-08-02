@@ -1,0 +1,33 @@
+{
+  "version": "p12-m1-static-private-boundary-v1",
+  "milestone": "P12-M1",
+  "generatedAt": "2026-08-03T00:00:00.000Z",
+  "status": "PASS",
+  "sourceRevision": "328ae02566c0638c8dd99ca1444eff2324899c96",
+  "sourceTreeState": "milestone worktree on recorded parent revision",
+  "environmentProfile": {
+    "os": "Windows",
+    "node": "v24.16.0",
+    "productProfile": "source-loopback",
+    "staticMode": "explicit-top-level-and-src-allowlist"
+  },
+  "testCommand": "node tests/p12-m1-static-private-boundary.mjs",
+  "summary": {
+    "allowedAssetChecks": 6,
+    "forbiddenAttackCases": 18,
+    "privateContentExposures": 0,
+    "pathOverlapAccepted": 0,
+    "relatedRegressionFailures": 0
+  },
+  "verificationRecords": [
+    { "verificationId": "P12-BOUNDARY-01", "status": "PASS" },
+    { "verificationId": "P12-BOUNDARY-02", "status": "PASS" },
+    { "verificationId": "P12-BOUNDARY-03", "status": "PASS" },
+    { "verificationId": "P12-BOUNDARY-04", "status": "PASS" },
+    { "verificationId": "P12-BOUNDARY-05", "status": "PASS" },
+    { "verificationId": "P12-BOUNDARY-06", "status": "PASS" },
+    { "verificationId": "P12-BOUNDARY-07", "status": "PASS" },
+    { "verificationId": "P12-BOUNDARY-08", "status": "PASS" }
+  ]
+}
+
