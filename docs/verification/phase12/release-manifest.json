@@ -1,0 +1,14 @@
+{
+  "version": "p12-release-manifest-v1",
+  "status": "blocked",
+  "releaseQualified": false,
+  "productReleaseAllowed": false,
+  "localPilotAllowed": false,
+  "lanAllowed": false,
+  "publicInternetAllowed": false,
+  "designTransferAllowed": false,
+  "completedMilestones": ["P12-M0"],
+  "requiredMilestones": ["P12-M0", "P12-M1", "P12-M2", "P12-M3", "P12-M4", "P12-M5", "P12-M6", "P12-M7"],
+  "blockers": ["P12-M1 through P12-M7 are not complete"]
+}
+
