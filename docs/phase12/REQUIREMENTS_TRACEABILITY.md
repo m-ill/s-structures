@@ -12,6 +12,6 @@
 | P12-FR-APR-01 | rev-bound 승인·릴리스 | M4 | P12-APR-01~08 | qualified |
 | P12-FR-PKG-01 | 안전한 설치·backup/restore | M5 | P12-PKG-01~03, P12-INSTALL-01~02 | qualified |
 | P12-FR-TEST-01 | Windows release gate 완결성 | M6 | P12-TEST-01~08 | qualified |
-| P12-FR-REL-01 | local pilot fail-closed release | M7 | P12-E2E-01~03, P12-REL-01~03 | planned |
+| P12-FR-REL-01 | local pilot fail-closed release | M7 | P12-E2E-01~03, P12-REL-01~03 | qualified |
 
 요구사항 상태는 proposed, planned, implemented, integrated, qualified, blocked, rejected 중 하나를 사용한다.

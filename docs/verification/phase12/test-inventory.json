@@ -1,8 +1,8 @@
 {
   "version": "p12-test-inventory-v1",
-  "generatedAt": "2026-08-02T16:17:22.807Z",
-  "total": 350,
-  "defaultCount": 311,
+  "generatedAt": "2026-08-02T17:29:53.839Z",
+  "total": 351,
+  "defaultCount": 312,
   "releaseLongCount": 39,
   "unclassifiedCount": 0,
   "records": [
@@ -799,6 +799,13 @@
     },
     {
       "file": "p12-m6-windows-regression-release-gates.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase12",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p12-m7-local-pilot-release-gate.mjs",
       "classification": "default",
       "runner": "npm test",
       "owner": "phase12",

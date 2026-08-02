@@ -540,11 +540,18 @@ window.SStructuresAgent.execute('applyDesignBasisLoads', {
 <h2>Current Validation Command Set</h2>
 <p>개발자가 현재 상태를 다시 검증할 때 쓰는 기본 명령은 다음과 같다.</p>
 <pre><code data-lang="powershell">npm.cmd test
+npm.cmd run test:uncovered
+npm.cmd run test:release
 npm.cmd run generate:stabilization-harness
 npm.cmd run generate:m42-representative-packages
 npm.cmd run export:m42-representative-pdfs
 git diff --check</code></pre>
 <p>금지 문자열 검사는 <code>src</code>, <code>tests</code>, <code>tools</code>, <code>package.json</code>, <code>index.html</code>, <code>docs</code>를 대상으로 별도로 수행한다.</p>
+<h2>Phase 12 Local Pilot Profile</h2>
+<p>Phase 12 M0~M7의 운영 보안·데이터 무결성 gate는 지정 Windows 환경에서 완료됐다. portable ZIP 신규 설치 3회와 레거시 이전 3회가 독립 상태 루트에서 재현됐고, 정적 공개 allowlist, 외부 data/secrets 경로, 키 교체, rev-bound 승인, backup/restore와 Windows 전체 회귀가 통과했다.</p>
+<p>허용되는 범위는 <strong>단일 PC의 loopback-only 내부 파일럿</strong>이다. 설치 폴더와 사용자 상태 폴더를 분리하고, 운영자가 backup을 유지해야 한다. 기본 가입 차단을 유지하며 필요한 bootstrap 기간에만 명시적으로 허용한다.</p>
+<p>다음 범위는 계속 차단된다.</p>
+<ul><li>사내 LAN 또는 외부 주소 bind: 별도 TLS 종단, Origin 정책과 환경별 보안 evidence가 필요하다.</li><li>공개 인터넷·다중 조직 SaaS: WAF, 관제, 운영 DB, tenant 격리와 외부 보안검토가 필요하다.</li><li>최종 구조설계·인허가 전이: Phase 10 외부 상용 해석기·수계산 교차검증 gate가 별도로 필요하다.</li><li>정식 Windows installer·코드서명·자동 업데이트: 현재 산출물은 portable ZIP이다.</li></ul>
 <h2>Engineering Interpretation</h2>
 <p>현재 결과가 “해석은 잘 된다”는 말은 다음 뜻이다.</p>
 <ol><li>모델이 schema validation을 통과한다.</li><li>선형 탄성해석 solver가 수렴이 아니라 직접 풀이로 결과를 만든다.</li><li>총하중과 총반력의 평형 검사가 통과한다.</li><li>조합별 결과와 포락이 생성된다.</li><li>보고서가 같은 model/analysis 객체에서 생성된다.</li><li>하중 산정과 설계검토 trace가 보고서에 붙는다.</li></ol>

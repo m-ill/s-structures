@@ -34,8 +34,13 @@ assert.deepEqual(
 );
 
 const releaseManifest = JSON.parse(await readFile('docs/verification/phase12/release-manifest.json', 'utf8'));
-assert.equal(releaseManifest.releaseQualified, false);
-assert.equal(releaseManifest.localPilotAllowed, false);
+const phaseComplete = releaseManifest.completedMilestones?.includes('P12-M7') === true;
+assert.equal(releaseManifest.releaseQualified, phaseComplete);
+assert.equal(releaseManifest.localPilotAllowed, phaseComplete);
+assert.equal(releaseManifest.productReleaseAllowed, false);
+assert.equal(releaseManifest.lanAllowed, false);
+assert.equal(releaseManifest.publicInternetAllowed, false);
+assert.equal(releaseManifest.designTransferAllowed, false);
 
 console.log(JSON.stringify({
   ok: true,

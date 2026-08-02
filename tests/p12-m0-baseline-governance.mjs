@@ -32,10 +32,12 @@ assert.equal(evidence.baselineExposure.rawSensitiveBodiesStored, false);
 assert.deepEqual(evidence.verificationRecords.map((row) => row.status), Array(6).fill('PASS'));
 
 const release = JSON.parse(readFileSync('docs/verification/phase12/release-manifest.json', 'utf8'));
-assert.equal(release.releaseQualified, false);
-assert.equal(release.localPilotAllowed, false);
+const phaseComplete = release.completedMilestones?.includes('P12-M7') === true;
+assert.equal(release.releaseQualified, phaseComplete);
+assert.equal(release.localPilotAllowed, phaseComplete);
+assert.equal(release.productReleaseAllowed, false);
+assert.equal(release.lanAllowed, false);
 assert.equal(release.publicInternetAllowed, false);
 assert.equal(release.designTransferAllowed, false);
 
 console.log(JSON.stringify({ ok: true, version: evidence.version, milestone: evidence.milestone }, null, 2));
-

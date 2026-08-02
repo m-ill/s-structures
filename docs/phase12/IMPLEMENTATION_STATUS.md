@@ -1,10 +1,11 @@
 # Phase 12 Implementation Status
 
     version: p12-implementation-status-v1
-    phase_status: in-progress
-    active_milestone: P12-M7
-    completed_milestones: [P12-M0, P12-M1, P12-M2, P12-M3, P12-M4, P12-M5, P12-M6]
-    release_qualified: false
+    phase_status: release-qualified
+    active_milestone: none
+    completed_milestones: [P12-M0, P12-M1, P12-M2, P12-M3, P12-M4, P12-M5, P12-M6, P12-M7]
+    release_qualified: true
+    local_pilot_allowed: true
     product_release_allowed: false
     design_transfer_allowed: false
 
@@ -16,11 +17,11 @@
 | P12-M3 | qualification-complete | PASS | p12-m3-http-auth-resource-hardening.json | P12-M3-CODE-REVIEW.md | 1cb09a9 |
 | P12-M4 | qualification-complete | PASS | p12-m4-approval-revision-integrity.json | P12-M4-CODE-REVIEW.md | 91d2807 |
 | P12-M5 | qualification-complete | PASS | p12-m5-release-package-install-recovery.json | P12-M5-CODE-REVIEW.md | db6c09f |
-| P12-M6 | qualification-complete | PASS | p12-m6-windows-regression-release-gates.json | P12-M6-CODE-REVIEW.md | pending intentional commit |
-| P12-M7 | in-progress | pending | pending | pending | pending |
+| P12-M6 | qualification-complete | PASS | p12-m6-windows-regression-release-gates.json | P12-M6-CODE-REVIEW.md | 887d860 |
+| P12-M7 | release-qualified | PASS | p12-m7-local-pilot-release-gate.json | P12-M7-CODE-REVIEW.md | this release commit |
 
 ## 제한
 
 - P12-M1 전까지 기밀 data와 network bind를 금지한다.
-- P12-M7 전까지 local pilot release도 blocked다.
+- local pilot 허용은 Windows 단일 PC loopback-only와 외부 상태 경로·백업 운영 조건에 한정한다.
 - LAN, public internet, design transfer는 Phase 12 완료 후에도 별도 근거 없이는 false다.

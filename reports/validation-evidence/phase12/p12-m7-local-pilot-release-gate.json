@@ -1,0 +1,103 @@
+{
+  "version": "p12-m7-local-pilot-release-gate-v1",
+  "milestone": "P12-M7",
+  "generatedAt": "2026-08-03T00:00:00.000Z",
+  "status": "PASS",
+  "sourceRevision": "887d8604b13d45bf2e7670c6076ad22806640df8",
+  "sourceTreeState": "P12-M7 milestone worktree on recorded parent revision",
+  "environmentProfile": {
+    "os": "Windows",
+    "node": "v24.16.0",
+    "productProfile": "portable-zip-loopback-local-pilot",
+    "bind": "127.0.0.1",
+    "installer": false
+  },
+  "testCommand": "node tests/p12-m7-local-pilot-release-gate.mjs",
+  "releaseGate": {
+    "command": "npm.cmd run test:release",
+    "status": "PASS",
+    "exitCode": 0,
+    "elapsedSeconds": 1349.0,
+    "inventoryTotal": 351,
+    "defaultCount": 312,
+    "releaseLongCount": 39,
+    "unclassifiedCount": 0,
+    "failures": 0,
+    "timeouts": 0
+  },
+  "artifact": {
+    "path": "output/release/s-structures-0.1.0.zip",
+    "bytes": 12127427,
+    "sha256": "abbce564362ac28f5a22a10e087ddb23754cfb1a7ba275e168c819f4055e5791",
+    "publicFileCount": 618,
+    "releaseFileCount": 1293,
+    "reproducibleBuilds": 2,
+    "reproducibleSha256Parity": true
+  },
+  "fixtures": {
+    "LOCAL-PILOT-01": {
+      "runs": 3,
+      "passed": 3,
+      "parity": {
+        "userCount": 2,
+        "projectCount": 1,
+        "revisionCount": 2,
+        "uploadCount": 1,
+        "approvalState": "stale",
+        "releasedHistoryCount": 1
+      },
+      "backupRestoreHashParity": true
+    },
+    "LEGACY-MIGRATION-01": {
+      "runs": 3,
+      "passed": 3,
+      "parity": {
+        "userCount": 1,
+        "projectCount": 1,
+        "revisionCount": 2,
+        "uploadCount": 1,
+        "approvalState": "stale",
+        "releasedHistoryCount": 1,
+        "sourceFileCount": 10
+      },
+      "sourceUnchanged": true,
+      "oldTokenAccepted": 0
+    }
+  },
+  "failureMatrix": {
+    "duplicateLockBlocked": true,
+    "storageQuotaBlocked": true,
+    "orphanUploadCount": 0,
+    "partialMigrationPublished": false,
+    "invalidTargetPublished": false,
+    "liveLegacyMigrationBlocked": true,
+    "falseSuccesses": 0
+  },
+  "securitySummary": {
+    "sourceSensitiveUrlHttp200": 0,
+    "releaseSensitiveUrlHttp200": 0,
+    "packageManifestHashMismatches": 0,
+    "publicManifestHashMismatches": 0,
+    "rawSyntheticSecretOrPiiFindings": 0,
+    "staleReleaseShownCurrent": 0,
+    "criticalFindingsOpen": 0,
+    "highFindingsOpen": 0
+  },
+  "releaseClaims": {
+    "localPilotAllowed": true,
+    "productReleaseAllowed": false,
+    "lanAllowed": false,
+    "publicInternetAllowed": false,
+    "designTransferAllowed": false
+  },
+  "verificationRecords": [
+    { "verificationId": "P12-E2E-01", "status": "PASS", "actual": "3/3" },
+    { "verificationId": "P12-E2E-02", "status": "PASS", "actual": "3/3" },
+    { "verificationId": "P12-E2E-03", "status": "PASS", "actual": "restart, old token, stale approval, backup restore" },
+    { "verificationId": "P12-SEC-01", "status": "PASS", "actual": "source/release HTTP and package scan" },
+    { "verificationId": "P12-FAIL-01", "status": "PASS", "actual": "lock, quota, partial publish, target path, live migration" },
+    { "verificationId": "P12-REL-01", "status": "PASS", "actual": "review, risk, docs and release regression" },
+    { "verificationId": "P12-REL-02", "status": "PASS", "actual": "artifact and M0-M6 evidence hashes" },
+    { "verificationId": "P12-REL-03", "status": "PASS", "actual": "loopback-only claim matrix" }
+  ]
+}

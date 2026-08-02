@@ -79,6 +79,8 @@ Phase 10 M0~M11 코드 구현은 완료되었다. Timoshenko 보, 부분강접, 
 
 ```powershell
 npm.cmd test
+npm.cmd run test:uncovered
+npm.cmd run test:release
 npm.cmd run generate:stabilization-harness
 npm.cmd run generate:m42-representative-packages
 npm.cmd run export:m42-representative-pdfs
@@ -86,6 +88,22 @@ git diff --check
 ```
 
 금지 문자열 검사는 `src`, `tests`, `tools`, `package.json`, `index.html`, `docs`를 대상으로 별도로 수행한다.
+
+## Phase 12 Local Pilot Profile
+
+Phase 12 M0~M7의 운영 보안·데이터 무결성 gate는 지정 Windows 환경에서 완료됐다.
+portable ZIP 신규 설치 3회와 레거시 이전 3회가 독립 상태 루트에서 재현됐고, 정적 공개 allowlist,
+외부 data/secrets 경로, 키 교체, rev-bound 승인, backup/restore와 Windows 전체 회귀가 통과했다.
+
+허용되는 범위는 **단일 PC의 loopback-only 내부 파일럿**이다. 설치 폴더와 사용자 상태 폴더를 분리하고,
+운영자가 backup을 유지해야 한다. 기본 가입 차단을 유지하며 필요한 bootstrap 기간에만 명시적으로 허용한다.
+
+다음 범위는 계속 차단된다.
+
+- 사내 LAN 또는 외부 주소 bind: 별도 TLS 종단, Origin 정책과 환경별 보안 evidence가 필요하다.
+- 공개 인터넷·다중 조직 SaaS: WAF, 관제, 운영 DB, tenant 격리와 외부 보안검토가 필요하다.
+- 최종 구조설계·인허가 전이: Phase 10 외부 상용 해석기·수계산 교차검증 gate가 별도로 필요하다.
+- 정식 Windows installer·코드서명·자동 업데이트: 현재 산출물은 portable ZIP이다.
 
 ## Engineering Interpretation
 
