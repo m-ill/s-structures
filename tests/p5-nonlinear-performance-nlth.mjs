@@ -37,9 +37,12 @@ agent.execute('addAnalysisCase', {
   settings: { direction: '+x', pattern: 'triangular', steps: 4, referenceBaseShear: 70, maxLoadFactor: 1.1 },
 });
 target.SStructuresAnalysisCenter.select('AC_PUSH_PERF');
-target.SStructuresAnalysisCenter.run('AC_PUSH_PERF');
+target.SStructuresAnalysisCenter.save('AC_PUSH_PERF');
+bridge.runAnalysisCase({ caseId: 'AC_PUSH_PERF' });
+target.SStructuresAnalysisCenter.refresh();
 
 const perfResult = bridge.getAnalysisCaseResult('AC_PUSH_PERF');
+assert.ok(perfResult, JSON.stringify(target.SStructuresAnalysisCenter.getState(), null, 2));
 assert.equal(perfResult.kind, 'pushover');
 assert.ok(document.getElementById('ssPerfPoint'), 'performance point panel should exist');
 assert.ok(document.getElementById('ssPerfLevel'), 'performance level badge should exist');
@@ -67,9 +70,12 @@ document.getElementById('ssNlthDt').value = '0.01';
 document.getElementById('ssNlthMass').value = '1.2';
 document.getElementById('ssNlthStiffness').value = '130';
 document.getElementById('ssNlthYieldForce').value = '0.05';
-target.SStructuresAnalysisCenter.run('AC_NLTH_M8');
+target.SStructuresAnalysisCenter.save('AC_NLTH_M8');
+bridge.runAnalysisCase({ caseId: 'AC_NLTH_M8' });
+target.SStructuresAnalysisCenter.refresh();
 
 const nlthResult = bridge.getAnalysisCaseResult('AC_NLTH_M8');
+assert.ok(nlthResult, JSON.stringify(target.SStructuresAnalysisCenter.getState(), null, 2));
 assert.equal(nlthResult.kind, 'nlth');
 assert.equal(nlthResult.status, 'preliminary');
 assert.equal(nlthResult.qualification, 'legacy-preliminary');

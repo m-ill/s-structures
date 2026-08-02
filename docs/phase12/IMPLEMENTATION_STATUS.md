@@ -2,8 +2,8 @@
 
     version: p12-implementation-status-v1
     phase_status: in-progress
-    active_milestone: P12-M6
-    completed_milestones: [P12-M0, P12-M1, P12-M2, P12-M3, P12-M4, P12-M5]
+    active_milestone: P12-M7
+    completed_milestones: [P12-M0, P12-M1, P12-M2, P12-M3, P12-M4, P12-M5, P12-M6]
     release_qualified: false
     product_release_allowed: false
     design_transfer_allowed: false
@@ -15,9 +15,9 @@
 | P12-M2 | qualification-complete | PASS | p12-m2-config-migration-secret-lifecycle.json | P12-M2-CODE-REVIEW.md | 3293426 |
 | P12-M3 | qualification-complete | PASS | p12-m3-http-auth-resource-hardening.json | P12-M3-CODE-REVIEW.md | 1cb09a9 |
 | P12-M4 | qualification-complete | PASS | p12-m4-approval-revision-integrity.json | P12-M4-CODE-REVIEW.md | 91d2807 |
-| P12-M5 | qualification-complete | PASS | p12-m5-release-package-install-recovery.json | P12-M5-CODE-REVIEW.md | pending intentional commit |
-| P12-M6 | in-progress | pending | pending | pending | pending |
-| P12-M7 | planned | pending | pending | pending | pending |
+| P12-M5 | qualification-complete | PASS | p12-m5-release-package-install-recovery.json | P12-M5-CODE-REVIEW.md | db6c09f |
+| P12-M6 | qualification-complete | PASS | p12-m6-windows-regression-release-gates.json | P12-M6-CODE-REVIEW.md | pending intentional commit |
+| P12-M7 | in-progress | pending | pending | pending | pending |
 
 ## 제한
 

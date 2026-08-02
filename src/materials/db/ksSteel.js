@@ -5,6 +5,7 @@ const ELASTIC_STEEL = Object.freeze({
   G: 79000,
   nu: 0.3,
   rho: 7.85,
+  alpha: 1.2e-5,
 });
 
 const SS275_RANGES = Object.freeze([

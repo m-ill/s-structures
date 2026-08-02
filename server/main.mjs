@@ -213,5 +213,6 @@ function parseCliOverrides(argv) {
   return {
     ...(Number.isFinite(port) && port > 0 ? { port } : {}),
     ...(host ? { host } : {}),
+    ...(argv.includes('--allow-network-bind') ? { allowNetworkBind: true } : {}),
   };
 }

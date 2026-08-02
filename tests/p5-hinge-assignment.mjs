@@ -17,6 +17,10 @@ model.materials.push({
   E: 205000,
   G: 79000,
   Fy: 275,
+  Fu: 410,
+  kind: 'steel',
+  elastic: { E: 205000, G: 79000 },
+  strength: { steel: { Fy: 275, Fu: 410 } },
   nonlinear: {
     backbone: [
       { rotation: 0, moment: 0 },

@@ -308,12 +308,17 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
 <template data-help-page="00-install" data-title="설치와 서버 실행" data-crumb="사용 안내서 · 시작하기">
 <h1>00 Install</h1>
 <h2>Web Distribution</h2>
-<ol><li>Install Node.js LTS.</li><li>Extract <code>s-structures-0.1.0.zip</code>.</li><li>Copy <code>config.sample.json</code> to <code>config.json</code> and set <code>port</code>, <code>host</code>, and <code>dataDir</code>.</li><li>Start with <code>node server/main.mjs</code>.</li><li>Open <code>http://127.0.0.1:5173/</code>.</li></ol>
-<p>Environment variables override <code>config.json</code>: <code>PORT</code>, <code>HOST</code>, <code>S_STRUCTURES_DATA_DIR</code>, <code>S_STRUCTURES_CONFIG</code>, and <code>S_STRUCTURES_ALLOW_REGISTRATION</code>.</p>
+<ol><li>Install Node.js LTS.</li><li>Extract <code>s-structures-0.1.0.zip</code>.</li><li>Optionally copy <code>config.sample.json</code> to <code>config.json</code>. The package automatically serves only <code>public/</code>.</li><li>Start with <code>node server/main.mjs</code>.</li><li>Open <code>http://127.0.0.1:5173/</code>.</li></ol>
+<p>Environment variables override <code>config.json</code>: <code>PORT</code>, <code>HOST</code>, <code>S_STRUCTURES_STATE_DIR</code>, <code>S_STRUCTURES_DATA_DIR</code>, <code>S_STRUCTURES_SECRETS_DIR</code>, <code>S_STRUCTURES_STATIC_ROOT</code>, <code>S_STRUCTURES_CONFIG</code>, <code>S_STRUCTURES_ALLOW_REGISTRATION</code>, and <code>S_STRUCTURES_ALLOW_NETWORK_BIND</code>.</p>
+<p>By default data and session secrets are stored in separate directories under the operating-system user state location, outside the installation folder. A non-loopback host requires <code>S_STRUCTURES_ALLOW_NETWORK_BIND=true</code> and a separately qualified LAN profile. Registration is disabled by default.</p>
+<p>If a previous installation has <code>data/secret.key</code>, stop the server and run:</p>
+<p>node tools/migrate-state.mjs --source=OLD_DATA --data=NEW_DATA --secrets=NEW_SECRETS --dry-run node tools/migrate-state.mjs --source=OLD_DATA --data=NEW_DATA --secrets=NEW_SECRETS --rotate-secret</p>
+<p>The migration never merges into a non-empty target. Secret rotation invalidates all old sessions.</p>
 <h2>Desktop Scaffold</h2>
 <p>The desktop target is scaffolded under <code>desktop/</code>. It starts the same local server and opens the app window. Installer generation is deferred until Electron dependencies and a clean-machine smoke are approved.</p>
 <h2>Backup</h2>
-<p>Run <code>node tools/backup-data.mjs --dataDir=./data --out=./backup --verify</code>. The backup manifest records SHA256 hashes for every copied file.</p>
+<p>Run <code>node tools/backup-data.mjs --dataDir=DATA --out=BACKUP --verify</code>. The backup manifest records SHA256 hashes for every copied file and excludes session secrets by default. Restore only to an empty location:</p>
+<p>node tools/restore-data.mjs --backup=BACKUP --dataDir=RESTORED_DATA</p>
 </template>
 <template data-help-page="01-getting-started" data-title="첫걸음 — 화면과 기본 흐름" data-crumb="사용 안내서 · 시작하기">
 <h1>01 Getting Started</h1>

@@ -21,6 +21,10 @@ model.materials.push({
   E: 205000,
   G: 79000,
   Fy: 275,
+  Fu: 410,
+  kind: 'steel',
+  elastic: { E: 205000, G: 79000, alpha: 1.2e-5 },
+  strength: { steel: { Fy: 275, Fu: 410 } },
   nonlinear: {
     backbone: [
       { rotation: 0, moment: 0 },
@@ -96,10 +100,16 @@ agent.execute('assignHinge', {
 });
 agent.execute('addAnalysisCase', { id: 'S3_PUSH', kind: 'pushover', settings: { steps: 3, referenceBaseShear: 50 } });
 agent.execute('addAnalysisCase', { id: 'S3_NLTH', kind: 'nlth', settings: { record: 'sample-a', scale: 1, dt: 0.02, accelerations: [0, 0.05, -0.05, 0.04], mass: 1, stiffness: 80, yieldForce: 0.08 } });
-target.SStructuresAnalysisCenter.run('S3_PUSH');
+target.SStructuresAnalysisCenter.select('S3_PUSH');
+target.SStructuresAnalysisCenter.save('S3_PUSH');
+bridge.runAnalysisCase({ caseId: 'S3_PUSH' });
+target.SStructuresAnalysisCenter.refresh();
 assert.ok(document.getElementById('ssPerfPoint'));
 assert.ok(document.getElementById('ssChartCapacity'));
-target.SStructuresAnalysisCenter.run('S3_NLTH');
+target.SStructuresAnalysisCenter.select('S3_NLTH');
+target.SStructuresAnalysisCenter.save('S3_NLTH');
+bridge.runAnalysisCase({ caseId: 'S3_NLTH' });
+target.SStructuresAnalysisCenter.refresh();
 assert.ok(document.getElementById('ssChartTimeHistory'));
 assert.ok(bridge.getAnalysisCaseResult('S3_NLTH').summary.rowCount > 0);
 

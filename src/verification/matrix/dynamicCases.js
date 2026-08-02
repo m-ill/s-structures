@@ -158,6 +158,9 @@ function createModalColumnModel() {
     releases: { i: 'rigid', j: 'rigid' },
   }];
   model.loads = [];
+  // D02 is compared with the Euler-Bernoulli closed form k = 3EI/L^3.
+  // Keep shear deformation off so the numerical model matches that reference.
+  model.analysisSettings.shearDeformation = false;
   model.analysisSettings.modalModeCount = 4;
   model.analysisSettings.responseSpectrum = {
     enabled: true,

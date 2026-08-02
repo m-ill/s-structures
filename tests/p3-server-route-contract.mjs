@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { buildAgentManifest, buildPhase3PlanAlignmentReport } from '../src/index.js';
 import { requireProjectRole } from '../server/auth/guard.mjs';
 import { createApp } from '../server/main.mjs';
@@ -23,9 +25,13 @@ const planned = buildPhase3PlanAlignmentReport(buildAgentManifest()).serverApi.e
   .sort();
 
 assert.deepEqual(actual.map((row) => `${row.method} ${row.path}`).sort(), planned);
-assert.equal(actual.length, 31);
+assert.equal(actual.length, 32);
 
-const app = createApp({ port: 0, dataDir: 'tmp/p3-route-contract' });
+const app = createApp({
+  port: 0,
+  dataDir: join(tmpdir(), 's-structures-p3-route-contract-data'),
+  secretsDir: join(tmpdir(), 's-structures-p3-route-contract-secrets'),
+});
 const registered = app.router.listRoutes();
 const projectRoutes = registered.filter((row) => row.path === '/api/projects' || row.path.startsWith('/api/projects/'));
 assert.equal(projectRoutes.length, 25);

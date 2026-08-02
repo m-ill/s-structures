@@ -55,9 +55,9 @@ assert.ok(rendered.includes('&lt;script&gt;alert(1)&lt;/script&gt;'), 'fence bod
 assert.equal(typeof HELP_BUILD_VERSION, 'string');
 const artifacts = buildHelpArtifacts();
 assert.equal(artifacts.pageCount, pages.length + listAllFeatures().length, 'help must embed every guide page and feature');
-assert.equal(readFileSync(resolve('help.html'), 'utf8'), artifacts.helpHtml, 'help.html is stale — run `npm run build:help`');
-assert.equal(readFileSync(resolve('manual.html'), 'utf8'), artifacts.redirectHtml, 'manual.html redirect is stale — run `npm run build:help`');
-assert.equal(readFileSync(resolve('guide.html'), 'utf8'), artifacts.redirectHtml, 'guide.html redirect is stale — run `npm run build:help`');
+assert.equal(normalizeText(readFileSync(resolve('help.html'), 'utf8')), normalizeText(artifacts.helpHtml), 'help.html is stale — run `npm run build:help`');
+assert.equal(normalizeText(readFileSync(resolve('manual.html'), 'utf8')), normalizeText(artifacts.redirectHtml), 'manual.html redirect is stale — run `npm run build:help`');
+assert.equal(normalizeText(readFileSync(resolve('guide.html'), 'utf8')), normalizeText(artifacts.redirectHtml), 'guide.html redirect is stale — run `npm run build:help`');
 
 // 5. help.html 구조 — 트리, 템플릿 전수, file:// 안전성
 const helpHtml = artifacts.helpHtml;
@@ -73,6 +73,10 @@ for (const page of pages) {
 for (const feature of listAllFeatures()) {
   assert.ok(helpHtml.includes(`data-help-page="${feature.id}"`), `help missing feature template: ${feature.id}`);
   assert.ok(helpHtml.includes(`data-leaf="${feature.id}"`), `help tree missing feature leaf: ${feature.id}`);
+}
+
+function normalizeText(value) {
+  return String(value).replace(/\r\n?/g, '\n');
 }
 // file:// 안전: 모듈 스크립트/fetch 금지, 인라인 스크립트 1개
 assert.ok(!helpHtml.includes('type="module"'), 'help must not use module scripts (file:// support)');

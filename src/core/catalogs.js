@@ -115,6 +115,7 @@ export function toInternalMaterial(material) {
     ...normalized,
     E: E * 1000,
     G: G * 1000,
+    alpha: firstFinite(elastic.alpha, material?.alpha, 0),
     Fy: fy * 1000,
     Fu: fu * 1000,
     density,

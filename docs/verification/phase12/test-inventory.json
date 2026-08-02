@@ -1,0 +1,2460 @@
+{
+  "version": "p12-test-inventory-v1",
+  "generatedAt": "2026-08-02T16:17:22.807Z",
+  "total": 350,
+  "defaultCount": 311,
+  "releaseLongCount": 39,
+  "unclassifiedCount": 0,
+  "records": [
+    {
+      "file": "final-use-release-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "release-verification",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "m0-smoke.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m1-schema.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m10-index-results-panel.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m11-agent-modeling.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m12-modeling-productivity.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m13-index-result-visuals.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m14-report-export.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m15-pushover.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m16-agent-capabilities.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m17-e2e-entrypoint.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m18-result-overlay.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m19-agent-screen-control.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m2-linear3d.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m20-pushover-panel.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m21-design-workflow.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m22-native-ribbon.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m23-runtime-adapter.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m24-legacy-result-shape.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m25-native-result-controls.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m26-native-modeler-e2e.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m27-native-persistence.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m28-native-agent-controls.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m29-native-advanced-analysis.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m3-ui-state.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m30-product-hardening.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m31-agent-command-bridge.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m32-elastic-3d-import-workflow.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m33-representative-buildings.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m34-detailed-report.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m35-kds-load-combinations.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m36-detailed-report-ui.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m37-load-estimation.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m38-kds-rule-combinations.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m39-rc-detailing.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m4-combinations.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m40-steel-detailing.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m41-connection-foundation.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m42-calculation-package.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m43-calculation-package-ui.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m44-kds-load-standard-registry.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m45-member-design-trace.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m46-representative-pdf-refresh.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "legacy-milestones",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "m46-stabilization-harness.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m47-design-basis-input-ui.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m48-load-derivation-trace.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m49-serviceability-drift.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m5-steel-design.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m50-representative-pdf-current-traces.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m6-rc-design.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m7-pdelta.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m8-modal-rsa.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "m9-index-bridge.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "legacy-milestones",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m0-quick-corrections.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m1-bm-battery.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m1-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m1-solver-safety.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m1-topology-pdelta-safety.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m1-xval-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m1-xval-runner.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m10-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m10-load-generation.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m11-release-gate.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m2-compute-domain-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m2-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m2-schema-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m2-timoshenko.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m3-domain-route-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m3-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m3-partial-fixity.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m3-schema-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m4-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m4-offsets-panelzone.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m4-schema-domain-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m5-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m5-mpc-rigidlink.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m5-schema-domain-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m6-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m6-tapered.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m7-dynamics-extension.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m7-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m8-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m8-warping-ltb.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9a-membrane-qualification.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9a-wall-membrane.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9b-plate-dynamics.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9b-plate-qualification.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9b-shell-invariants.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9b-slab-plate.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9c-flat-shell-qualification.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9c-flat-shell.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9c-global-assembly.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9c-shell-fail-closed.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9d-shell-contract-hardening.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p10-m9d-shell-gpu.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase10",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-documentation-plan.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m0-baseline-governance.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m1-report-snapshot-verdict.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m2-bilingual-rendering.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m3-visual-capture-core.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m4-scene-evidence-report.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m5-executive-report-layout.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m6-dual-pdf-export.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m7-product-agent-export.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m8-qualification-hardening.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p11-m9-release-gate.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase11",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p12-m0-baseline-governance.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase12",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p12-m1-static-private-boundary.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase12",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p12-m2-config-migration-secret-lifecycle.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase12",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p12-m3-http-auth-resource-hardening.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase12",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p12-m4-approval-revision-integrity.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase12",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p12-m5-release-package-install-recovery.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase12",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p12-m6-windows-regression-release-gates.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase12",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-design-demand-package.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-m4-combination-envelope-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-m5-advanced-elastic-trace.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s1-baseline-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s2-validation-audit.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s3-benchmark-gate.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s4-member-release.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s4-rigid-diaphragm.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s4-story-model.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s5-accidental-eccentricity.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s5-eccentric-load-generation.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s5-signed-accidental-cases.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s5-story-mass-center.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-mvp-s6-result-postprocessing.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-practice-platform-readiness.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-practice-validation-report.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p2-t50-pilot-project-validation.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase2",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-app-shell.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-auth.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-completion-audit-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-design-milestone-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-design-rc.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-design-steel-foundation.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-doc-reference-integrity.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-drawing-import-validation-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-elastic-milestone-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-engineering-validation-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-evidence-client.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-evidence-register.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-import-geometry.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-import-milestone-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-launch-gate.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m10-materials.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m11-elastic-expansion.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m12-wall-slab.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m13-loads-dynamics.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m14-nonlinear-geometry.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m15-nonlinear-hinge-control.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m16-nonlinear-fiber-nlth.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m19-integrated-report.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m6-dxf-import.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m7-dwg-plan.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-m7-import-review-ui.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-nonlinear-milestone-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-owner-signoff-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-persistence.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-plan-alignment.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-pointcloud-e2e.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-pointcloud-extraction.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-pointcloud-load.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-pointcloud-validation-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-practice-validation-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-productization-milestone-review.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-runner-contract.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-section-properties.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-server-api.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p3-server-route-contract.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase3",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p3-viewer-core.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase3",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-approval-route-guards.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-audit-log.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-backup-tool.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-build-release.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-data-dir-lock.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-documentation-coverage.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-feature-manual.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-import-review-overlay.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-independent-io.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-install-smoke-web.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-library-ui.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-modeler-save-flow.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-onboarding-samples.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-perf-budget.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-preview-integrated-validation.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-project-meta-cache.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-release-tools.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-route-pattern-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-scale-limits.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-security-headers.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-shell-route-reentry.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p4-user-guide.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase4",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p5-analysis-case.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-analysis-center.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-analysis-runners.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-calculation-package.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-hinge-assignment.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-load-case-kds-mass.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-load-conditions.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-nonlinear-performance-nlth.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-pushover-workflow.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-release-gate.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-result-case-views.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-result-charts-ratio.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p5-spring-support.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase5",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p6-analysis-criteria.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase6",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p6-consistent-loads.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase6",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p6-equivalent-shell-scope.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase6",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p6-pdelta-tangent.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase6",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p6-rsa-diaphragm-story.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase6",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p6-sparse-solver.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase6",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p6-verification-matrix.mjs",
+      "classification": "release-long",
+      "runner": "npm run test:uncovered",
+      "owner": "phase6",
+      "reason": "not in the historical default graph; mandatory in release extended gate"
+    },
+    {
+      "file": "p7-m0-contracts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m0-core-hardening.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m0-persistence-migration.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m1-material-registry.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m1-section-core.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m10-buckling-tha-integrity.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m10-sparse-integrity.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m11-agent-analysis-status.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m11-elastic-analysis-ui.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m11-elastic-result-popup.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m11-elastic-setup-workflow.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m11-run-record.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m11-ui-run-records.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m2-design-material-routing.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m2-library-ui.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m2-practical-section-palette.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m3-middle-mouse-pan.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m3-modeling-domain.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m3-ui-native-modeling.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m3-workspace.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m4-load-domain.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m5-rule-pack.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m6-load-audit.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m7-equilibrium-audit.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m7-local-axis-reactions.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m7-mixed-combo-audit.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m7-point-couple.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m7-rigid-offset.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m7-settlement.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m8-beam-column-stability.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m8-direct-parity.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m8-fixed-end-axial.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m8-release-guard.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m8-routing-combo.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m8-settlement-load-setup.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m9-condensation-failure.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m9-mass-source-assembly.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m9-member-forces.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m9-modal-normalization.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m9-rsa-cqc-base-shear.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p7-m9-story-response.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase7",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m0-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m0-governance.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m0-schema-migration.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m1-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m1-domain.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m1-integration.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m1-state-store.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m10-evidence.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m10-job-agent-api.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m10-product-preflight.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m10-product-ui.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m10-result-access.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m11-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m11-independent-reference.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m11-performance-qualification.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m11-pilot-packages.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m11-release-gate.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m2-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m2-assembly-primitives.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m2-control.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m2-equilibrium.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m2-linear-parity.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m2-wasm-backend.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m2-worker-runtime.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m3-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m3-corotational-element.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m3-corotational-global.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m4-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m4-assignment.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m4-hinge-material.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m4-hinged-frame.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m5-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m5-displacement-control.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m5-initial-state.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m5-production-pushover.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m5-public-routing.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m6-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m6-distributed-fiber-frame.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m6-fiber-mesh-materials.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m6-pmm-runtime-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m6-pmm-runtime.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m6-pmm-surface.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m6-production-coupling.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m6-section-response.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m7-arc-length.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m7-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m7-cyclic-static.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m7-production-arc.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m8-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m8-dynamic-domain.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m8-fiber-dynamics.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m8-newmark.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m8-production-nlth.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m9-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m9-capability-domain.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m9-history-adapter.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m9-origin-governance.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p8-m9-support-recovery.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase8",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-documentation-baseline.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m0-baseline-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m0-evidence-artifacts.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m1-adapters-architecture.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m1-domain-pattern.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m1-plan-backend.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m1-state-result.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m1-worker-runtime.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m10-cleanup-audit.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m10-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m10-focused-regression.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m10-release-policy.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m2-cpu-wasm.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m2-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m2-sparse-architecture.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m3-elastic-runtime.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m3-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m3-worker-product.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m4-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m4-numeric.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m4-platform.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m4-routing-architecture.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m5-elastic-hybrid.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m5-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m5-pdelta-hybrid.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m5-spd-mixed.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m6-eigen-dynamics.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m6-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m6-worker-product.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m7-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m7-nonlinear-batch.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m8-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m8-hybrid-nonlinear.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m8-resident-session.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m9-evidence-contract.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m9-product-workflow.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    },
+    {
+      "file": "p9-m9-ui-agent.mjs",
+      "classification": "default",
+      "runner": "npm test",
+      "owner": "phase9",
+      "reason": "covered by the default runner graph"
+    }
+  ]
+}

@@ -71,14 +71,18 @@ assert.equal(controlOptions.find((item) => item.value === 'displacement').disabl
 assert.equal(controlOptions.find((item) => item.value === 'arcLength').disabled, true);
 document.getElementById('ssPoControl').value = 'displacement';
 
-target.SStructuresAnalysisCenter.run('AC_PUSH');
+target.SStructuresAnalysisCenter.save('AC_PUSH');
+bridge.runAnalysisCase({ caseId: 'AC_PUSH' });
+target.SStructuresAnalysisCenter.refresh();
 const blocked = bridge.getAnalysisLatestAttempt('AC_PUSH');
 assert.equal(blocked.status, 'unsupported');
 assert.equal(blocked.designBlockReason, 'NONLINEAR_CAPABILITY_UNSUPPORTED');
 assert.equal(blocked.routing.fallbackUsed, false);
 
 document.getElementById('ssPoControl').value = 'load-factor';
-target.SStructuresAnalysisCenter.run('AC_PUSH');
+target.SStructuresAnalysisCenter.save('AC_PUSH');
+bridge.runAnalysisCase({ caseId: 'AC_PUSH' });
+target.SStructuresAnalysisCenter.refresh();
 
 const result = bridge.getAnalysisCaseResult('AC_PUSH');
 assert.equal(result.kind, 'pushover');

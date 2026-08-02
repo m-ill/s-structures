@@ -134,6 +134,7 @@ const SERVER_ENDPOINTS = [
   endpoint('PUT', '/api/projects/:id/library/:kind/:itemId', 'engineer+', 'server/routes/libraries.mjs'),
   endpoint('GET', '/api/health', 'public', 'server/main.mjs'),
   endpoint('GET', '/api/meta', 'public', 'server/main.mjs'),
+  endpoint('GET', '/api/readiness', 'public', 'server/main.mjs'),
 ];
 
 const ERROR_CODES = ['UNAUTHORIZED', 'FORBIDDEN', 'NOT_FOUND', 'VALIDATION', 'CONFLICT', 'PAYLOAD_TOO_LARGE', 'RATE_LIMITED', 'BAD_URI', 'INTERNAL'];
