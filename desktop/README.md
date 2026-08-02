@@ -1,6 +1,6 @@
 # Desktop Packaging Decision
 
-Status: scaffolded for Phase 4.
+Status: Phase 12 runtime path contract qualified; installer generation remains deferred.
 
 The desktop target wraps the existing local server in an Electron main process:
 
@@ -11,3 +11,7 @@ The desktop target wraps the existing local server in an Electron main process:
 
 Electron dependencies and installer generation are intentionally isolated under
 `desktop/` so the core web distribution remains dependency-light.
+
+Phase 12 uses sibling `data/` and `secrets/` directories below Electron's userData
+location. The portable web release uses the same server contract. A portable ZIP is
+qualified before any signed installer claim is made.

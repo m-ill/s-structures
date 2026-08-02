@@ -14,7 +14,7 @@ const includeSecrets = args['include-secrets'] === true || args['include-secrets
 
 await mkdir(outDir, { recursive: true });
 const sourceFiles = await listFiles(dataDir);
-const files = sourceFiles.filter((file) => includeSecrets || !isSecretPath(file));
+const files = sourceFiles.filter((file) => !isExcludedOperationalPath(file, includeSecrets));
 for (const file of files) {
   const target = join(outDir, 'data', file);
   await mkdir(join(target, '..'), { recursive: true });
@@ -37,8 +37,10 @@ if (verify) {
   }
 }
 
-function isSecretPath(path) {
-  return /(^|\/)(secret\.key|session-hmac\.json)$/i.test(path.replace(/\\/g, '/'));
+function isExcludedOperationalPath(path, includeSecrets) {
+  const normalized = path.replace(/\\/g, '/');
+  if (/(^|\/)server\.lock$/i.test(normalized)) return true;
+  return !includeSecrets && /(^|\/)(secret\.key|session-hmac\.json)$/i.test(normalized);
 }
 console.log(JSON.stringify({ ok: true, version: manifest.version, outDir, fileCount: manifest.files.length, verified: verify }, null, 2));
 

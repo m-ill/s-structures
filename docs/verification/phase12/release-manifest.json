@@ -7,7 +7,7 @@
   "lanAllowed": false,
   "publicInternetAllowed": false,
   "designTransferAllowed": false,
-  "completedMilestones": ["P12-M0", "P12-M1", "P12-M2", "P12-M3", "P12-M4"],
+  "completedMilestones": ["P12-M0", "P12-M1", "P12-M2", "P12-M3", "P12-M4", "P12-M5"],
   "requiredMilestones": ["P12-M0", "P12-M1", "P12-M2", "P12-M3", "P12-M4", "P12-M5", "P12-M6", "P12-M7"],
-  "blockers": ["P12-M5 through P12-M7 are not complete"]
+  "blockers": ["P12-M6 and P12-M7 are not complete"]
 }

@@ -9,6 +9,7 @@ const TOP_LEVEL_ASSETS = new Map([
   ['/help.html', 'help.html'],
   ['/manual.html', 'manual.html'],
   ['/guide.html', 'guide.html'],
+  ['/web-asset-manifest.json', 'web-asset-manifest.json'],
 ]);
 
 const SOURCE_EXTENSIONS = new Set(['.js', '.css', '.wasm']);
@@ -18,6 +19,7 @@ export const STATIC_TYPES = {
   '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.wasm': 'application/wasm',
+  '.json': 'application/json; charset=utf-8',
 };
 
 export function resolvePublicAsset(staticRoot, rawPathname) {
@@ -75,4 +77,3 @@ function isContained(root, candidate) {
   const rel = relative(root, candidate);
   return rel === '' || (!rel.startsWith(`..${sep}`) && rel !== '..' && !isAbsolute(rel));
 }
-
