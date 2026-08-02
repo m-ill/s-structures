@@ -175,11 +175,19 @@ export function createProjectStore(dataDir) {
       return (await readJson(join(projectDir(id), 'files', 'index.json'), [])) || [];
     },
 
-    async saveFile(id, { originalName, contentType, buffer }, allowedExtensions) {
+    async storageUsage(id) {
+      const files = await this.listFiles(id);
+      return { fileCount: files.length, totalBytes: files.reduce((sum, file) => sum + Number(file.size || 0), 0) };
+    },
+
+    async saveFile(id, { originalName, contentType, buffer }, allowedExtensions, limits = {}) {
       const ext = extname(originalName || '').toLowerCase();
       if (!allowedExtensions.includes(ext)) {
         return { ok: false, code: 'UNSUPPORTED_EXTENSION' };
       }
+      const usage = await this.storageUsage(id);
+      if (limits.maxFiles && usage.fileCount >= limits.maxFiles) return { ok: false, code: 'FILE_QUOTA' };
+      if (limits.maxBytes && usage.totalBytes + buffer.length > limits.maxBytes) return { ok: false, code: 'STORAGE_QUOTA' };
       const fileId = newId();
       const storedName = `${fileId}${ext}`;
       await writeBufferAtomic(join(projectDir(id), 'files', storedName), buffer);

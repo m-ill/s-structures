@@ -43,6 +43,14 @@ export function createRouter() {
       }
       return null;
     },
+    allowedMethods(pathname) {
+      const methods = new Set();
+      for (const route of routes) {
+        const params = matchCompiledRoute(route.compiled, pathname, { decode: decodePathSegment });
+        if (params) methods.add(route.method);
+      }
+      return [...methods].sort();
+    },
     listRoutes() {
       return routes.map((route) => ({
         method: route.method,

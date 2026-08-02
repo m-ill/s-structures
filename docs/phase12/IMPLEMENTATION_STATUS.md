@@ -2,8 +2,8 @@
 
     version: p12-implementation-status-v1
     phase_status: in-progress
-    active_milestone: P12-M3
-    completed_milestones: [P12-M0, P12-M1, P12-M2]
+    active_milestone: P12-M4
+    completed_milestones: [P12-M0, P12-M1, P12-M2, P12-M3]
     release_qualified: false
     product_release_allowed: false
     design_transfer_allowed: false
@@ -12,9 +12,9 @@
 | --- | --- | --- | --- | --- | --- |
 | P12-M0 | qualification-complete | PASS | p12-m0-baseline-governance.json | P12-M0-CODE-REVIEW.md | 328ae02 |
 | P12-M1 | qualification-complete | PASS | p12-m1-static-private-boundary.json | P12-M1-CODE-REVIEW.md | 7db67ec |
-| P12-M2 | qualification-complete | PASS | p12-m2-config-migration-secret-lifecycle.json | P12-M2-CODE-REVIEW.md | pending intentional commit |
-| P12-M3 | in-progress | pending | pending | pending | pending |
-| P12-M4 | planned | pending | pending | pending | pending |
+| P12-M2 | qualification-complete | PASS | p12-m2-config-migration-secret-lifecycle.json | P12-M2-CODE-REVIEW.md | 3293426 |
+| P12-M3 | qualification-complete | PASS | p12-m3-http-auth-resource-hardening.json | P12-M3-CODE-REVIEW.md | pending intentional commit |
+| P12-M4 | in-progress | pending | pending | pending | pending |
 | P12-M5 | planned | pending | pending | pending | pending |
 | P12-M6 | planned | pending | pending | pending | pending |
 | P12-M7 | planned | pending | pending | pending | pending |

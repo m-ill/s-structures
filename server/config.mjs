@@ -37,6 +37,7 @@ export function loadConfig(overrides = {}) {
     staticRoot,
     maxJsonBytes: Number(overrides.maxJsonBytes || fileConfig.maxJsonBytes || 20 * 1024 * 1024),
     maxUploadBytes: Number(overrides.maxUploadBytes || fileConfig.maxUploadBytes || 500 * 1024 * 1024),
+    authJsonBytes: Number(overrides.authJsonBytes || fileConfig.authJsonBytes || 64 * 1024),
     tokenTtlSeconds: Number(overrides.tokenTtlSeconds || fileConfig.tokenTtlSeconds || 12 * 60 * 60),
     loginFailLimit: Number(overrides.loginFailLimit || fileConfig.loginFailLimit || 10),
     loginLockSeconds: Number(overrides.loginLockSeconds || fileConfig.loginLockSeconds || 15 * 60),
@@ -44,6 +45,20 @@ export function loadConfig(overrides = {}) {
       ?? parseBoolean(env.S_STRUCTURES_ALLOW_REGISTRATION)
       ?? fileConfig.allowRegistration
       ?? false,
+    allowNetworkBind: overrides.allowNetworkBind
+      ?? parseBoolean(env.S_STRUCTURES_ALLOW_NETWORK_BIND)
+      ?? fileConfig.allowNetworkBind
+      ?? false,
+    allowedOrigins: overrides.allowedOrigins || fileConfig.allowedOrigins || [],
+    authRateLimit: Number(overrides.authRateLimit || fileConfig.authRateLimit || 60),
+    apiRateLimit: Number(overrides.apiRateLimit || fileConfig.apiRateLimit || 300),
+    rateLimitWindowSeconds: Number(overrides.rateLimitWindowSeconds || fileConfig.rateLimitWindowSeconds || 60),
+    requestTimeoutMs: Number(overrides.requestTimeoutMs || fileConfig.requestTimeoutMs || 30_000),
+    maxProjectStorageBytes: Number(overrides.maxProjectStorageBytes || fileConfig.maxProjectStorageBytes || 1024 * 1024 * 1024),
+    maxFilesPerProject: Number(overrides.maxFilesPerProject || fileConfig.maxFilesPerProject || 1000),
+    maxConcurrentUploads: Number(overrides.maxConcurrentUploads || fileConfig.maxConcurrentUploads || 1),
+    maxAuditLogBytes: Number(overrides.maxAuditLogBytes || fileConfig.maxAuditLogBytes || 5 * 1024 * 1024),
+    minFreeSpaceBytes: Number(overrides.minFreeSpaceBytes || fileConfig.minFreeSpaceBytes || 100 * 1024 * 1024),
     allowedUploadExtensions: overrides.allowedUploadExtensions || fileConfig.allowedUploadExtensions || [
       '.dxf', '.dwg', '.ply', '.xyz', '.txt', '.pcd', '.las', '.json',
     ],
@@ -64,6 +79,13 @@ export function validatePathLayout(config) {
         throw new Error(`Unsafe path layout: ${leftName} and ${rightName} must not overlap.`);
       }
     }
+  }
+  return true;
+}
+
+export function validateNetworkPolicy(config) {
+  if (!isLoopbackHost(config.host) && !config.allowNetworkBind) {
+    throw new Error('Non-loopback bind requires allowNetworkBind=true and an explicit security profile.');
   }
   return true;
 }
@@ -103,4 +125,8 @@ function pathsOverlap(left, right) {
 function normalizeForCompare(value) {
   const normalized = resolve(value).replace(/\\/g, '/').replace(/\/+$/, '');
   return process.platform === 'win32' ? normalized.toLowerCase() : normalized;
+}
+
+function isLoopbackHost(host) {
+  return ['127.0.0.1', 'localhost', '::1'].includes(String(host || '').toLowerCase());
 }
