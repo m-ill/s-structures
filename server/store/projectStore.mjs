@@ -1,8 +1,9 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { createHash } from 'node:crypto';
 import { extname, join } from 'node:path';
 import {
   ensureDir, isValidId, joinSafe, listDir, newId, readBuffer, readJson,
-  removeDir, writeBufferAtomic, writeJsonAtomic,
+  removeDir, withLock, writeBufferAtomic, writeJsonAtomic, writeJsonAtomicUnlocked,
 } from './fileStore.mjs';
 
 export const PROJECT_ROLES = ['viewer', 'reviewer', 'engineer', 'owner'];
@@ -71,7 +72,10 @@ export function createProjectStore(dataDir) {
         updatedAt: new Date().toISOString(),
         deleted: false,
         members: [{ userId, role: 'owner' }],
-        approval: { state: 'none', rev: null, approvedAt: null, approvedBy: null },
+        approval: {
+          state: 'none', rev: null, modelHash: null, current: false, version: 0,
+          approvedAt: null, approvedBy: null, releasedAt: null, releasedBy: null, history: [],
+        },
         revisionCount: 0,
       };
       await ensureDir(projectDir(id));
@@ -152,14 +156,30 @@ export function createProjectStore(dataDir) {
       const entry = {
         rev, author, savedAt: new Date().toISOString(), note: note || '',
         schemaVersion: model?.schemaVersion ?? null, parentRev: parentRev ?? latest?.rev ?? null,
+        modelHash: hashRevisionModel(model),
       };
       revisions.push(entry);
       await writeJsonAtomic(join(projectDir(id), 'revisions', 'index.json'), revisions);
       await writeJsonAtomic(join(projectDir(id), 'revisions', `${rev}.json`), model);
       meta.revisionCount = revisions.length;
       meta.updatedAt = new Date().toISOString();
-      if (meta.approval.state === 'approved' && meta.approval.rev !== rev) {
-        meta.approval = { state: 'revoked', rev: meta.approval.rev, approvedAt: null, approvedBy: null };
+      const approval = normalizeApproval(meta.approval);
+      if (['approved', 'released'].includes(approval.state) && approval.rev !== rev) {
+        const now = new Date().toISOString();
+        const staleState = approval.state === 'released' ? 'stale' : 'revoked';
+        meta.approval = {
+          ...approval,
+          state: staleState,
+          current: false,
+          version: approval.version + 1,
+          staleAt: now,
+          staleReason: 'NEW_REVISION',
+          supersededByRev: rev,
+          history: [...approval.history, {
+            state: staleState, rev: approval.rev, modelHash: approval.modelHash,
+            at: now, reason: 'NEW_REVISION', supersededByRev: rev,
+          }],
+        };
       }
       await writeProjectMeta(id, meta);
       return { entry, lineageWarning, latestRev: latest?.rev ?? null };
@@ -277,16 +297,54 @@ export function createProjectStore(dataDir) {
       return entry;
     },
 
-    async setApproval(id, { state, rev, approvedBy }) {
-      const meta = await this.get(id);
-      if (!meta) return null;
-      meta.approval = {
-        state, rev: rev ?? meta.approval.rev,
-        approvedAt: state === 'approved' ? new Date().toISOString() : null,
-        approvedBy: state === 'approved' ? approvedBy : null,
-      };
-      await writeProjectMeta(id, meta);
-      return meta.approval;
+    async transitionApproval(id, { state, rev, actorId, expectedVersion }) {
+      if (!isValidId(id)) return { ok: false, code: 'NOT_FOUND' };
+      const metaPath = join(projectDir(id), 'project.json');
+      return withLock(metaPath, async () => {
+        const meta = await readJson(metaPath, null);
+        if (!meta || meta.deleted) return { ok: false, code: 'NOT_FOUND' };
+        const revisions = await this.listRevisions(id);
+        const revNumber = Number(rev);
+        const entry = revisions.find((item) => item.rev === revNumber);
+        if (!entry) return { ok: false, code: 'REV_NOT_FOUND' };
+        const latest = revisions.at(-1) || null;
+        if (!latest || latest.rev !== revNumber) return { ok: false, code: 'STALE_REV', latestRev: latest?.rev ?? null };
+        const model = await this.getRevision(id, revNumber);
+        if (!model) return { ok: false, code: 'REV_NOT_FOUND' };
+        const actualHash = hashRevisionModel(model);
+        if (entry.modelHash && entry.modelHash !== actualHash) return { ok: false, code: 'REV_TAMPERED' };
+        if (!entry.modelHash) {
+          entry.modelHash = actualHash;
+          await writeJsonAtomic(join(projectDir(id), 'revisions', 'index.json'), revisions);
+        }
+
+        const current = normalizeApproval(meta.approval);
+        if (expectedVersion != null && Number(expectedVersion) !== current.version) {
+          return { ok: false, code: 'VERSION_CONFLICT', currentVersion: current.version };
+        }
+        if (state === 'released' && !(current.state === 'approved' && current.current && current.rev === revNumber && current.modelHash === actualHash)) {
+          return { ok: false, code: 'INVALID_TRANSITION' };
+        }
+
+        const now = new Date().toISOString();
+        const event = { state, rev: revNumber, modelHash: actualHash, actorId, at: now };
+        const next = state === 'approved'
+          ? {
+            state, rev: revNumber, modelHash: actualHash, current: true,
+            version: current.version + 1, approvedAt: now, approvedBy: actorId,
+            releasedAt: null, releasedBy: null, staleAt: null, staleReason: null,
+            supersededByRev: null, history: [...current.history, event],
+          }
+          : {
+            ...current, state, current: true, version: current.version + 1,
+            releasedAt: now, releasedBy: actorId, history: [...current.history, event],
+          };
+        meta.approval = next;
+        meta.updatedAt = now;
+        await writeJsonAtomicUnlocked(metaPath, meta);
+        requestCache.getStore()?.set(`${dataDir}:${id}`, meta);
+        return { ok: true, approval: next, latestRev: latest.rev };
+      });
     },
 
     async listLibrary(id, kind) {
@@ -318,6 +376,34 @@ export function createProjectStore(dataDir) {
       debug.metaReads.clear();
     },
   };
+}
+
+export function hashRevisionModel(model) {
+  return createHash('sha256').update(stableStringify(model)).digest('hex');
+}
+
+function normalizeApproval(value = {}) {
+  return {
+    state: value.state || 'none',
+    rev: value.rev ?? null,
+    modelHash: value.modelHash || null,
+    current: value.current === true || ['approved', 'released'].includes(value.state),
+    version: Number(value.version || 0),
+    approvedAt: value.approvedAt || null,
+    approvedBy: value.approvedBy || null,
+    releasedAt: value.releasedAt || null,
+    releasedBy: value.releasedBy || null,
+    staleAt: value.staleAt || null,
+    staleReason: value.staleReason || null,
+    supersededByRev: value.supersededByRev ?? null,
+    history: Array.isArray(value.history) ? value.history : [],
+  };
+}
+
+function stableStringify(value) {
+  if (value == null || typeof value !== 'object') return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
+  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(',')}}`;
 }
 
 function libraryFile(root, kind) {

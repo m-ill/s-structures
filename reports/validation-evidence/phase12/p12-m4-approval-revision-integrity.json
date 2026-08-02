@@ -1,0 +1,35 @@
+{
+  "version": "p12-m4-approval-revision-integrity-v1",
+  "milestone": "P12-M4",
+  "generatedAt": "2026-08-03T00:00:00.000Z",
+  "status": "PASS",
+  "sourceRevision": "1cb09a9d044fe31fc9143116681cdea7b959ecce",
+  "sourceTreeState": "milestone worktree on recorded parent revision",
+  "environmentProfile": {
+    "os": "Windows",
+    "node": "v24.16.0",
+    "productProfile": "source-loopback",
+    "approvalSchema": "rev-hash-version-history"
+  },
+  "testCommand": "node tests/p12-m4-approval-revision-integrity.mjs",
+  "summary": {
+    "nonexistentRevisionApprovals": 0,
+    "reviewerReleases": 0,
+    "staleCurrentReleases": 0,
+    "tamperedRevisionReleases": 0,
+    "lostUpdates": 0,
+    "historyEventsPreserved": true,
+    "relatedRegressionFailures": 0
+  },
+  "verificationRecords": [
+    { "verificationId": "P12-APR-01", "status": "PASS" },
+    { "verificationId": "P12-APR-02", "status": "PASS" },
+    { "verificationId": "P12-APR-03", "status": "PASS" },
+    { "verificationId": "P12-APR-04", "status": "PASS" },
+    { "verificationId": "P12-APR-05", "status": "PASS" },
+    { "verificationId": "P12-APR-06", "status": "PASS" },
+    { "verificationId": "P12-APR-07", "status": "PASS" },
+    { "verificationId": "P12-APR-08", "status": "PASS" }
+  ]
+}
+
