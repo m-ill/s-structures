@@ -5,9 +5,11 @@ import {
   ensureDir, newId, readJson, withLock, writeJsonAtomic, writeJsonAtomicUnlocked,
 } from './fileStore.mjs';
 
-export function createUserStore(dataDir) {
+export function createUserStore(dataDir, options = {}) {
   const usersPath = join(dataDir, 'users.json');
-  const secretPath = join(dataDir, 'secret.key');
+  const secretsDir = options.secretsDir || join(dataDir, 'secrets');
+  const secretPath = join(secretsDir, 'session-hmac.json');
+  const legacySecretPath = join(dataDir, 'secret.key');
 
   async function loadUsers() {
     return (await readJson(usersPath, [])) || [];
@@ -23,11 +25,17 @@ export function createUserStore(dataDir) {
 
   return {
     async getSecret() {
-      await ensureDir(dataDir);
+      await ensureDir(secretsDir);
       const existing = await readJson(secretPath, null);
       if (existing?.secret) return existing.secret;
+      const legacy = await readJson(legacySecretPath, null);
+      if (legacy?.secret) {
+        const error = new Error('Legacy session secret requires explicit state migration.');
+        error.code = 'LEGACY_SECRET_MIGRATION_REQUIRED';
+        throw error;
+      }
       const secret = randomBytes(48).toString('hex');
-      await writeJsonAtomic(secretPath, { secret });
+      await writeJsonAtomic(secretPath, { version: 1, secret, createdAt: new Date().toISOString() });
       return secret;
     },
 
@@ -105,6 +113,15 @@ export function createUserStore(dataDir) {
       await saveUsers(users);
       return users[index];
     },
+
+    async bumpAllTokenVersions() {
+      const users = await loadUsers();
+      for (const user of users) user.tokenVersion = (user.tokenVersion || 1) + 1;
+      await saveUsers(users);
+      return users.length;
+    },
+
+    paths: { usersPath, secretPath, legacySecretPath },
   };
 }
 

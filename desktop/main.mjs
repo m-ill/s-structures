@@ -16,13 +16,14 @@ const desktopDir = fileURLToPath(new URL('.', import.meta.url));
 
 async function createWindow() {
   const dataDir = join(app.getPath('userData'), 'data');
+  const secretsDir = join(app.getPath('userData'), 'secrets');
   const reportTempRoot = join(app.getPath('temp'), 's-structures', 'phase11');
   const reportOutputRoot = join(app.getPath('documents'), 'S-Structures', 'Reports');
   const configuredPort = Number(process.env.S_STRUCTURES_DESKTOP_PORT || DESKTOP_ORIGIN_PORT);
   const port = Number.isInteger(configuredPort) && configuredPort > 0 && configuredPort < 65536
     ? configuredPort
     : DESKTOP_ORIGIN_PORT;
-  serverApp = await startServer({ host: '127.0.0.1', port, dataDir });
+  serverApp = await startServer({ host: '127.0.0.1', port, dataDir, secretsDir });
   await new Promise((resolve, reject) => {
     const onError = (error) => reject(error);
     serverApp.server.once('error', onError);
