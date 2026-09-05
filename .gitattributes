@@ -1,0 +1,2 @@
+# Sealed evidence uses byte hashes, not normalized text hashes.
+verification/** -text
