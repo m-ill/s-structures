@@ -5,7 +5,7 @@ import {
   createAnalysisRunStore,
 } from '../core/analysisRunRecord.js';
 import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
-import { modelHash } from '../verification/matrix/record.js';
+import { modelHash } from '../core/modelHash.js';
 import { createResultSelectionStore } from './resultSelectionStore.js';
 
 export const PHASE7_ANALYSIS_RECORDS_VERSION = 'p7-m11-analysis-record-integration-v1';

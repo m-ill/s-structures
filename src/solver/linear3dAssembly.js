@@ -21,8 +21,12 @@ import { expandReducedDisplacements, reduceSystem } from './diaphragmReduce.js';
 import { effectiveSectionMaterial } from './linear3dPost.js';
 import { recoverMemberResult } from './linear3dRecovery.js';
 import { buildSolverWarningDiagnostics } from './sparse/diagnostics.js';
-import { cscMatVec, SPARSE_MATRIX_VERSION } from './sparse/cscMatrix.js';
+import { cscMatVec } from './sparse/cscMatrix.js';
 import { buildFixedDofs, collectPrescribedDofs } from './domain/supportConstraints.js';
+import {
+  resolveUnloadedRigidRotationGauges,
+  translationFreeRigidRotationComponents,
+} from './domain/rigidModeGauge.js';
 import { condensePartialFixity, resolveMemberPartialFixity } from './partialFixity.js';
 import { resolveMemberTimoshenko } from './timoshenko.js';
 import { resolveMemberOffsetKinematics } from './memberOffsets.js';
@@ -37,6 +41,24 @@ import {
 import { buildFlatShellQm6Mitc4 } from './shell/flatShellQm6Mitc4.js';
 import { buildSlabPlateMitc4, buildSlabPressureLoad } from './shell/slabPlateMitc4.js';
 import { buildWallMembraneQm6, recoverWallMembraneQm6 } from './shell/wallMembraneQm6.js';
+import { buildElasticLink6dofMatrix } from './link/elasticLink6dof.js';
+import {
+  buildUnsupportedRotationFloorPlan,
+  stabilizeUnsupportedRotations,
+  stabilizeUnsupportedRotationSystem,
+} from './shell/unsupportedRotationFloor.js';
+import { createElasticFactorSession } from '../compute/elastic/factorSession.js';
+import {
+  addMutableSparseValue as addSparseValue,
+  createMutableSparseAccumulator as createSparseAccumulator,
+  extractDeterministicCscSubmatrix as extractCscSubmatrix,
+  finalizeMutableSparseAccumulator as sparseAccumulatorToCsc,
+} from '../compute/sparse/assembly.js';
+import {
+  addWinklerToStructuralMatrix,
+  resolveMemberWinklerFoundation,
+  validateWinklerFoundationRegistry,
+} from './foundation/index.js';
 
 export { buildFixedDofs } from './domain/supportConstraints.js';
 
@@ -86,6 +108,9 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   const F = new Array(ndof).fill(0);
   const memData = {};
   const shellData = [];
+  const foundationModel = ctx.model || ctx.criteriaModel || {};
+  const foundationRegistry = validateWinklerFoundationRegistry(foundationModel);
+  if (!foundationRegistry.ok) return { ok: false, reason: foundationRegistry.errors[0].code, foundation: foundationRegistry.errors[0] };
   const shellIdentity = validateShellElementIds(ctx.shells || []);
   if (!shellIdentity.ok) return shellIdentity;
 
@@ -109,13 +134,27 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     );
     const elastic = resolveMemberElasticStiffness(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L, timoshenko, behavior);
     if (!elastic.ok) return { ...elastic, memberId: member.id };
-    const kl = elastic.kl;
+    const foundation = resolveMemberWinklerFoundation(foundationModel, member, {
+      registry: foundationRegistry,
+      memberBehavior: behavior,
+      length: ax.L,
+      timoshenko,
+      taper: elastic.taper,
+    });
+    if (!foundation.ok) return { ...foundation, memberId: member.id };
+    const klStructural = elastic.kl;
+    const klFoundation = foundation.active ? foundation.matrix : null;
+    const kl = addWinklerToStructuralMatrix(klStructural, foundation);
     const i1 = idx[member.n1] * 6;
     const i2 = idx[member.n2] * 6;
     const dof = [i1, i1 + 1, i1 + 2, i1 + 3, i1 + 4, i1 + 5, i2, i2 + 1, i2 + 2, i2 + 3, i2 + 4, i2 + 5];
     memData[member.id] = {
       ax,
       kl,
+      klStructural,
+      klFoundation,
+      klTotal: kl,
+      foundation,
       T,
       dof,
       f0: new Array(12).fill(0),
@@ -249,6 +288,9 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   const structuralFixedDofs = [...fixedDofs];
   const autoFixedDofs = [];
   const autoFixedReducedDofs = [];
+  let rotationStabilization = cached?.rotationStabilization || null;
+  let rotationFloorPlan = cached?.rotationFloorPlan || null;
+  let rigidModeGauge = null;
   const springValidation = validateNodeSpringInputs(nodes);
   if (!springValidation.ok) return springValidation;
   if (assembleStiffness) {
@@ -259,14 +301,26 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
   }
   if (!restrainedDofs.size && !nodes.some((node) => node.support === 'spring')) return { ok: false, reason: 'NO_SUPPORT' };
 
-  if (assembleStiffness && sparseDecision.useSparse) {
-    stabilizeUnsupportedRotationsSparse(sparseAccumulator, nodes, fixedDofs);
-    K = sparseAccumulatorToCsc(sparseAccumulator);
-  } else if (assembleStiffness) {
-    stabilizeUnsupportedRotations(K, nodes, fixedDofs);
-  }
   const diaphragmGroups = activeDiaphragmGroups(nodes, ctx.diaphragms);
   const generalConstraints = activeGeneralConstraints(nodes, ctx.constraints);
+  // A floor in the unreduced basis would be transformed as physical stiffness
+  // by T'KT. For MPC/diaphragm systems, reduce first and let the isolated-DOF
+  // classifier handle any remaining exact null coordinates.
+  const canFloorFullCoordinates = !diaphragmGroups.length && !generalConstraints.length;
+  if (assembleStiffness && sparseDecision.useSparse) {
+    K = sparseAccumulatorToCsc(sparseAccumulator);
+    if (canFloorFullCoordinates) {
+      const stabilized = stabilizeUnsupportedRotationSystem(K, nodes, fixedDofs, ctx.shellCriteria?.unsupportedRotationFloorRatio);
+      K = stabilized.matrix;
+      rotationStabilization = stabilized.audit;
+      rotationFloorPlan = stabilized.plan;
+    }
+  } else if (assembleStiffness && canFloorFullCoordinates) {
+    const stabilized = stabilizeUnsupportedRotationSystem(K, nodes, fixedDofs, ctx.shellCriteria?.unsupportedRotationFloorRatio);
+    K = stabilized.matrix;
+    rotationStabilization = stabilized.audit;
+    rotationFloorPlan = stabilized.plan;
+  }
   const reduced = cached?.reduced
     ? { ...cached.reduced, F: reduceForceWithMap(F, cached.reduced.map) }
     : generalConstraints.length
@@ -300,12 +354,55 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       'A loaded degree of freedom has no assembled stiffness.',
     );
   }
-  if (sparseDecision.useSparse) {
-    const added = autoFixIsolatedDofsSparse(Ks, fixed);
-    (reduced ? autoFixedReducedDofs : autoFixedDofs).push(...added);
-  } else {
-    const added = autoFixIsolatedDofs(Ks, fixed);
-    (reduced ? autoFixedReducedDofs : autoFixedDofs).push(...added);
+  const isolatedDofs = sparseDecision.useSparse
+    ? autoFixIsolatedDofsSparse(Ks, fixed)
+    : autoFixIsolatedDofs(Ks, fixed);
+  (reduced ? autoFixedReducedDofs : autoFixedDofs).push(...isolatedDofs);
+  const rigidModePlan = !reduced && rotationFloorPlan
+    ? buildUnsupportedRotationFloorPlan({
+        matrix: Ks,
+        nodes,
+        fixedDofs: fixed,
+        requestedRatio: ctx.shellCriteria?.unsupportedRotationFloorRatio,
+      })
+    : null;
+  if (rigidModePlan?.rigidMechanismComponents?.length) {
+    const gaugeEligibleComponents = translationFreeRigidRotationComponents(
+      nodes,
+      rigidModePlan.rigidMechanismComponents,
+    );
+    const translationBearingComponents = rigidModePlan.rigidMechanismComponents
+      .filter((component) => !gaugeEligibleComponents.includes(component));
+    if (translationBearingComponents.length) {
+      const component = translationBearingComponents[0];
+      const nodeIndex = nodes.findIndex((_node, index) => !fixed.has(index * 6 + component));
+      const dof = Math.max(0, nodeIndex) * 6 + component;
+      return dofFailure(
+        'MECHANISM_DOF',
+        nodes,
+        dof,
+        0,
+        `Rigid rotation about global ${['x', 'y', 'z'][component - 3]} includes translation and cannot be gauge-fixed.`,
+      );
+    }
+    rigidModeGauge = resolveUnloadedRigidRotationGauges({
+      nodes,
+      fixedDofs: fixed,
+      force: Fs,
+      components: gaugeEligibleComponents,
+    });
+    if (!rigidModeGauge.ok) {
+      const loadedMode = rigidModeGauge.loadedModes?.[0] || rigidModeGauge.rows?.[0];
+      return dofFailure(
+        'MECHANISM_DOF',
+        nodes,
+        loadedMode?.candidateDof ?? 0,
+        loadedMode?.generalizedLoad ?? null,
+        `Rigid rotation about global ${loadedMode?.axis || '?'} is loaded and cannot be gauge-fixed.`,
+      );
+    }
+    for (const dof of rigidModeGauge.gaugeDofs) fixed.add(dof);
+    autoFixedDofs.push(...rigidModeGauge.gaugeDofs);
   }
   const prescribed = reduced?.constraintContract
     ? { ok: true, values: new Array(matrixSize(Ks)).fill(0), dofs: reduced.constraintContract.prescribedEntries || [] }
@@ -360,6 +457,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
         constraintResolution: reduced.constraintResolution,
       } : null,
       accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
+      rotationStabilization,
+      rotationFloorPlan,
     });
     if (!ctx.captureSystemsOnly) {
       solve = solveElasticSystem(Kff, Ff, {
@@ -407,6 +506,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
         constraintResolution: reduced.constraintResolution,
       } : null,
       accumulatorPeakEntries: sparseAccumulator?.peakEntries || 0,
+      rotationStabilization,
+      rotationFloorPlan,
     });
   }
 
@@ -474,6 +575,10 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       .map((index) => fullDofLabel(nodes, index));
     solver.autoFixedReducedDofs = [...new Set(autoFixedReducedDofs)]
       .map((index) => dofLabels[index] || `reduced:${index}`);
+    solver.stabilizedRotationDofs = [...new Set(rotationStabilization?.affectedDofs || [])]
+      .map((index) => fullDofLabel(nodes, index));
+    solver.rotationStabilization = rotationStabilization;
+    solver.rigidModeGauge = rigidModeGauge;
     solver.partialFixity = summarizePartialFixity(memData);
     solver.warnings = [
       ...(solver.warnings || []),
@@ -516,11 +621,14 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     if (!recoveredReactions.ok) return recoveredReactions;
     const reactions = recoveredReactions.reactions;
     const memberResults = {};
+    const foundationResults = {};
     for (const member of members) {
       const md = memData[member.id];
       if (!md) continue;
       memberResults[member.id] = recoverMemberResult(member, md, D, loads, stationCount);
+      if (memberResults[member.id].foundation) foundationResults[member.id] = memberResults[member.id].foundation;
     }
+    solver.foundation = summarizeFoundationResults(foundationResults);
 
     const shellResults = Object.create(null);
     for (const shell of shellData) {
@@ -548,7 +656,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       blockers: shellBlockers,
     };
 
-    return { ok: true, disp, reactions, memberResults, shellResults, solver };
+    return { ok: true, disp, reactions, memberResults, foundationResults, shellResults, solver };
   }
 }
 
@@ -697,6 +805,37 @@ function cacheElasticComponent(cache, key, value) {
 function solveElasticSystem(Kff, Ff, ctx) {
   const replay = resolvePrecomputedSolution(ctx.precomputedSolutions, ctx.componentKey);
   if (replay) return replayElasticSolution(Kff, Ff, ctx, replay);
+  if (!ctx.factorSession && Kff?.format === 'csc') {
+    const factorSession = createElasticFactorSession({
+      iccgThreshold: Math.max(1, Number(ctx.sparseThreshold ?? 256)),
+      iccgTolerance: 1e-10,
+      trueResidualTolerance: 1e-8,
+    });
+    try {
+      const result = solveElasticSystem(Kff, Ff, {
+        ...ctx,
+        factorSession,
+        factorGroupKey: ctx.factorGroupKey || 'linear3d-static',
+        componentKey: ctx.componentKey || 'primary-component',
+      });
+      const activeSnapshot = factorSession.snapshot();
+      const disposedSnapshot = factorSession.dispose();
+      return {
+        ...result,
+        diagnostics: {
+          ...(result.diagnostics || {}),
+          ownedFactorSession: true,
+          factorSession: {
+            active: activeSnapshot,
+            disposed: disposedSnapshot,
+          },
+        },
+      };
+    } catch (error) {
+      factorSession.dispose();
+      throw error;
+    }
+  }
   if (!ctx.factorSession) {
     return solveLinearDetailed(Kff, Ff, {
       criteriaModel: ctx.criteriaModel,
@@ -794,9 +933,54 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
   const K = Array.from({ length: ndof }, () => new Array(ndof).fill(0));
   const memData = {};
   const shellData = [];
+  const linkData = [];
+  const foundationModel = ctx.model || ctx.criteriaModel || {};
+  const foundationRegistry = validateWinklerFoundationRegistry(foundationModel);
+  if (!foundationRegistry.ok) {
+    return { ok: false, reason: foundationRegistry.errors[0].code, foundation: foundationRegistry.errors[0], K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, ndof };
+  }
   const shellIdentity = validateShellElementIds(ctx.shells || []);
   if (!shellIdentity.ok) {
     return { ...shellIdentity, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, ndof };
+  }
+
+  const links = ctx.links || foundationModel.links || [];
+  const linkProperties = new Map((ctx.linkProperties || foundationModel.linkProperties || []).map((item) => [item.id, item]));
+  const linkIds = new Set();
+  for (const link of links) {
+    const id = typeof link?.id === 'string' ? link.id.trim() : '';
+    if (!id) return { ok: false, reason: 'ELASTIC_LINK_ID_REQUIRED', linkId: null, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, linkData, ndof };
+    if (linkIds.has(id)) return { ok: false, reason: 'ELASTIC_LINK_ID_DUPLICATE', linkId: id, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, linkData, ndof };
+    linkIds.add(id);
+    const nodeI = nodeMap[link.n1];
+    const nodeJ = nodeMap[link.n2];
+    if (!nodeI || !nodeJ) return { ok: false, reason: 'ELASTIC_LINK_NODE_REFERENCE_MISSING', linkId: id, nodeId: !nodeI ? link.n1 : link.n2, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, linkData, ndof };
+    const property = link.property || linkProperties.get(link.propertyId || link.linkPropertyId || link.propId) || {};
+    const parameters = property.parameters || property;
+    let built;
+    try {
+      built = buildElasticLink6dofMatrix({
+        nodeI,
+        nodeJ,
+        stiffness: link.stiffness || parameters.stiffness,
+        betaDeg: link.betaDeg ?? parameters.betaDeg ?? 0,
+        shearDist: link.shearDist ?? parameters.shearDist ?? 0.5,
+        nearVerticalTolerance: link.nearVerticalTolerance ?? parameters.nearVerticalTolerance,
+      });
+    } catch (error) {
+      return { ok: false, reason: error?.code || 'ELASTIC_LINK_PROPERTY_INVALID', message: error?.message || null, linkId: id, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, linkData, ndof };
+    }
+    if (!built.ok) return { ...built, linkId: id, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, shellData, linkData, ndof };
+    const i1 = idx[link.n1] * 6;
+    const i2 = idx[link.n2] * 6;
+    linkData.push({
+      id,
+      n1: link.n1,
+      n2: link.n2,
+      propertyId: property.id || link.propertyId || link.linkPropertyId || link.propId || null,
+      dof: [i1, i1 + 1, i1 + 2, i1 + 3, i1 + 4, i1 + 5, i2, i2 + 1, i2 + 2, i2 + 3, i2 + 4, i2 + 5],
+      built,
+    });
   }
 
   for (const member of members) {
@@ -819,13 +1003,27 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     );
     const elastic = resolveMemberElasticStiffness(ctx.model || ctx.criteriaModel || {}, member, section, material, ax.L, timoshenko, behavior);
     if (!elastic.ok) return { ...elastic, memberId: member.id, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, ndof };
-    const kl = elastic.kl;
+    const foundation = resolveMemberWinklerFoundation(foundationModel, member, {
+      registry: foundationRegistry,
+      memberBehavior: behavior,
+      length: ax.L,
+      timoshenko,
+      taper: elastic.taper,
+    });
+    if (!foundation.ok) return { ...foundation, memberId: member.id, K, free: [], fixedDofs: new Set(), nodeMap, idx, memData, ndof };
+    const klStructural = elastic.kl;
+    const klFoundation = foundation.active ? foundation.matrix : null;
+    const kl = addWinklerToStructuralMatrix(klStructural, foundation);
     const i1 = idx[member.n1] * 6;
     const i2 = idx[member.n2] * 6;
     const dof = [i1, i1 + 1, i1 + 2, i1 + 3, i1 + 4, i1 + 5, i2, i2 + 1, i2 + 2, i2 + 3, i2 + 4, i2 + 5];
     memData[member.id] = {
       ax,
       kl,
+      klStructural,
+      klFoundation,
+      klTotal: kl,
+      foundation,
       T,
       dof,
       f0: new Array(12).fill(0),
@@ -887,12 +1085,56 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     }
   }
 
+  for (const link of linkData) {
+    for (let i = 0; i < 12; i += 1) {
+      for (let j = 0; j < 12; j += 1) K[link.dof[i]][link.dof[j]] += link.built.globalStiffness[i][j];
+    }
+  }
+
   const fixedDofs = buildFixedDofs(nodes);
   const F = new Array(ndof).fill(0);
   applyNodeSprings(nodes, idx, K, F);
   if (!fixedDofs.size && !nodes.some((node) => node.support === 'spring')) return { ok: false, reason: 'NO_SUPPORT', K, free: [], fixedDofs, nodeMap, idx, memData };
-  stabilizeUnsupportedRotations(K, nodes, fixedDofs);
-  const autoFixedDofs = autoFixIsolatedDofs(K, fixedDofs);
+  const hasCoordinateReduction = (ctx.model?.constraints || ctx.constraints || []).length
+    || (ctx.model?.diaphragms || ctx.diaphragms || []).length;
+  let rotationStabilization = null;
+  let rigidModeGauge = null;
+  if (!hasCoordinateReduction) {
+    const stabilized = stabilizeUnsupportedRotationSystem(K, nodes, fixedDofs, ctx.shellCriteria?.unsupportedRotationFloorRatio);
+    rotationStabilization = stabilized.audit;
+    const translationFreeComponents = translationFreeRigidRotationComponents(
+      nodes,
+      stabilized.plan.rigidMechanismComponents,
+    );
+    if (translationFreeComponents.length) {
+      rigidModeGauge = resolveUnloadedRigidRotationGauges({
+        nodes,
+        fixedDofs,
+        force: F,
+        components: translationFreeComponents,
+      });
+      if (!rigidModeGauge.ok) {
+        return {
+          ok: false,
+          reason: rigidModeGauge.reason,
+          rigidModeGauge,
+          K,
+          free: [],
+          fixedDofs,
+          nodeMap,
+          idx,
+          memData,
+          shellData,
+          ndof,
+        };
+      }
+      for (const dof of rigidModeGauge.gaugeDofs) fixedDofs.add(dof);
+    }
+  }
+  const autoFixedDofs = [
+    ...(rigidModeGauge?.gaugeDofs || []),
+    ...autoFixIsolatedDofs(K, fixedDofs),
+  ];
   const free = [];
   for (let i = 0; i < ndof; i += 1) {
     if (!fixedDofs.has(i)) free.push(i);
@@ -903,10 +1145,13 @@ export function assembleStiffness3D(nodes, members, ctx = {}) {
     free,
     fixedDofs,
     autoFixedDofs: autoFixedDofs.map((index) => fullDofLabel(nodes, index)),
+    rigidModeGauge,
+    rotationStabilization,
     nodeMap,
     idx,
     memData,
     shellData,
+    linkData,
     ndof,
     partialFixity: summarizePartialFixity(memData),
   };
@@ -976,6 +1221,29 @@ function summarizePartialFixity(memData = {}) {
     springCount: members.reduce((sum, row) => sum + row.entries.length, 0),
     members,
     warnings: members.flatMap((row) => row.warnings),
+  };
+}
+
+function summarizeFoundationResults(results = {}) {
+  const rows = Object.values(results);
+  const globalForce = [0, 0, 0];
+  const globalMoment = [0, 0, 0];
+  let strainEnergy = 0;
+  for (const row of rows) {
+    for (let i = 0; i < 3; i += 1) {
+      globalForce[i] += Number(row.globalForce?.[i]) || 0;
+      globalMoment[i] += Number(row.globalMoment?.[i]) || 0;
+    }
+    strainEnergy += Number(row.strainEnergy) || 0;
+  }
+  return {
+    version: 'p14-m1-foundation-summary-v1',
+    active: rows.length > 0,
+    memberCount: rows.length,
+    globalForce,
+    globalMoment,
+    strainEnergy,
+    actionConvention: 'soil-on-member',
   };
 }
 
@@ -1069,19 +1337,7 @@ function applyNodeSpringForces(nodes, idx, F) {
   }
 }
 
-export function stabilizeUnsupportedRotations(K, nodes, fixedDofs) {
-  const ndof = nodes.length * 6;
-  const tr = K.reduce((sum, row, i) => sum + row[i], 0);
-  const ks = (tr / ndof) * 1e-9;
-  nodes.forEach((node, i) => {
-    if (node.support && node.support !== 'fixed') {
-      for (let k = 3; k < 6; k += 1) {
-        const dof = i * 6 + k;
-        if (!fixedDofs.has(dof)) K[dof][dof] += ks;
-      }
-    }
-  });
-}
+export { stabilizeUnsupportedRotations } from './shell/unsupportedRotationFloor.js';
 
 export function autoFixIsolatedDofs(K, fixedDofs) {
   const ndof = K.length;
@@ -1383,6 +1639,7 @@ export function summarizeSolverDiagnostics(components) {
       generalConstraintEquationCount: 0,
       constraintForces: [],
       reducedDofCount: 0,
+      rigidModeGauges: [],
     };
   }
   const executionMethods = [...new Set(finite.map((item) => item.sparse?.method).filter(Boolean))].sort();
@@ -1419,6 +1676,9 @@ export function summarizeSolverDiagnostics(components) {
     suspectedMechanismDofs: [...new Set(finite.flatMap((item) => item.suspectedMechanismDofs || []))],
     autoFixedDofs: [...new Set(finite.flatMap((item) => item.autoFixedDofs || []))],
     autoFixedReducedDofs: [...new Set(finite.flatMap((item) => item.autoFixedReducedDofs || []))],
+    stabilizedRotationDofs: [...new Set(finite.flatMap((item) => item.stabilizedRotationDofs || []))],
+    rotationStabilizations: finite.map((item) => item.rotationStabilization).filter(Boolean),
+    rigidModeGauges: finite.map((item) => item.rigidModeGauge).filter(Boolean),
     executionMethods,
     mixedPrecisionComponentCount: finite.filter((item) => item.sparse?.method === 'p9-m5-hybrid-mixed-f32-f64-replay').length,
   };
@@ -1445,74 +1705,6 @@ function sparseAssemblyDecision(ctx, ndof) {
   };
 }
 
-function createSparseAccumulator(rowCount, colCount) {
-  return {
-    rowCount,
-    colCount,
-    entries: new Map(),
-    peakEntries: 0,
-  };
-}
-
-function addSparseValue(accumulator, row, col, value) {
-  const number = Number(value);
-  if (!number) return;
-  const key = row * accumulator.colCount + col;
-  const next = (accumulator.entries.get(key) || 0) + number;
-  if (next) accumulator.entries.set(key, next);
-  else accumulator.entries.delete(key);
-  accumulator.peakEntries = Math.max(accumulator.peakEntries, accumulator.entries.size);
-}
-
-function sparseAccumulatorToCsc(accumulator) {
-  const columns = Array.from({ length: accumulator.colCount }, () => []);
-  for (const [key, value] of accumulator.entries) {
-    const col = key % accumulator.colCount;
-    const row = (key - col) / accumulator.colCount;
-    if (value) columns[col].push([row, value]);
-  }
-  const colPtr = [0];
-  const rowIdx = [];
-  const values = [];
-  for (const column of columns) {
-    column.sort((a, b) => a[0] - b[0]);
-    for (const [row, value] of column) {
-      rowIdx.push(row);
-      values.push(value);
-    }
-    colPtr.push(values.length);
-  }
-  accumulator.entries.clear();
-  return {
-    version: SPARSE_MATRIX_VERSION,
-    format: 'csc',
-    rowCount: accumulator.rowCount,
-    colCount: accumulator.colCount,
-    colPtr,
-    rowIdx,
-    values,
-    nnz: values.length,
-  };
-}
-
-function extractCscSubmatrix(matrix, rowIds, colIds) {
-  const rowMap = new Int32Array(matrix.rowCount);
-  const colMap = new Int32Array(matrix.colCount);
-  rowMap.fill(-1);
-  colMap.fill(-1);
-  rowIds.forEach((row, index) => { rowMap[row] = index; });
-  colIds.forEach((col, index) => { colMap[col] = index; });
-  const accumulator = createSparseAccumulator(rowIds.length, colIds.length);
-  for (const sourceCol of colIds) {
-    const targetCol = colMap[sourceCol];
-    for (let p = matrix.colPtr[sourceCol]; p < matrix.colPtr[sourceCol + 1]; p += 1) {
-      const targetRow = rowMap[matrix.rowIdx[p]];
-      if (targetRow >= 0) addSparseValue(accumulator, targetRow, targetCol, matrix.values[p]);
-    }
-  }
-  return sparseAccumulatorToCsc(accumulator);
-}
-
 function applyNodeSpringsSparse(nodes, idx, accumulator, F) {
   const keys = ['kx', 'ky', 'kz', 'krx', 'kry', 'krz'];
   const displacementKeys = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
@@ -1527,23 +1719,6 @@ function applyNodeSpringsSparse(nodes, idx, accumulator, F) {
       F[base + index] += stiffness * imposed;
     });
   }
-}
-
-function stabilizeUnsupportedRotationsSparse(accumulator, nodes, fixedDofs) {
-  let trace = 0;
-  for (let i = 0; i < accumulator.rowCount; i += 1) {
-    trace += accumulator.entries.get(i * accumulator.colCount + i) || 0;
-  }
-  const stiffness = (trace / Math.max(1, accumulator.rowCount)) * 1e-9;
-  if (!stiffness) return;
-  nodes.forEach((node, nodeIndex) => {
-    if (node.support && node.support !== 'fixed') {
-      for (let component = 3; component < 6; component += 1) {
-        const dof = nodeIndex * 6 + component;
-        if (!fixedDofs.has(dof)) addSparseValue(accumulator, dof, dof, stiffness);
-      }
-    }
-  });
 }
 
 function autoFixIsolatedDofsSparse(matrix, fixedDofs) {

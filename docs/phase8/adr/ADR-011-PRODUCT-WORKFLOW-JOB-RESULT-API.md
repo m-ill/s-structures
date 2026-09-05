@@ -45,4 +45,4 @@ Long nonlinear runs also need immediate acknowledgement, progress, safe pause/ca
 - `tests/p8-m10-job-agent-api.mjs`
 - `tests/p8-m10-result-access.mjs`
 - `tests/p8-m10-product-ui.mjs`
-- `reports/validation-evidence/phase8/p8-m10-ui-api.json`
+- `verification/evidence/validation/phase8/p8-m10-ui-api.json`

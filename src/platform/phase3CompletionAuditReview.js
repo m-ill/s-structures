@@ -63,7 +63,7 @@ export function buildPhase3CompletionAuditReview() {
     version: PHASE3_COMPLETION_AUDIT_REVIEW_VERSION,
     scope: 'P3-M0 to P3-M20 completion audit from existing Phase 3 audit documents',
     sourceDocs: [
-      'docs/verification/P3_M6_M20_COMPLETION_AUDIT.md',
+      'verification/specs/P3_M6_M20_COMPLETION_AUDIT.md',
       'docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md',
       'docs/phase3/P3_IMPLEMENTATION_AUDIT_2026-07-02.md',
       'docs/phase3/ROADMAP.md',

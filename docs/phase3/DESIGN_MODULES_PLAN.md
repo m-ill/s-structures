@@ -129,7 +129,7 @@ src/standards/
 | 기초/접합 | 수계산 케이스 (`tests/p3-design-steel-foundation.mjs`) |
 | 통합 | 대표건물 10종 일람표 생성 회귀 + NG→issue 유입 확인 |
 
-수계산 근거는 `docs/verification/DESIGN_MODULE_VERIFICATION.md`에 케이스별로 기록한다.
+수계산 근거는 `verification/specs/DESIGN_MODULE_VERIFICATION.md`에 케이스별로 기록한다.
 
 ## Out Of Scope (명시)
 

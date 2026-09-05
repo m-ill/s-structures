@@ -56,9 +56,9 @@ P8-M0~P8-M11의 로컬 구현 작업은 완료되었다. M11은 생산 WASM 경�
 - 전체 회귀: `npm.cmd test` PASS (기존 milestone + Phase 7 + Phase 8)
 - 문서 참조: `npm.cmd run test:p3docs` PASS (60 files, 413 references)
 - Agent 정합성: `node tools/check-agent-contract.mjs` PASS
-- 환경: [p8-m0-reference-profile.json](../../reports/validation-evidence/phase8/p8-m0-reference-profile.json)
-- governance evidence: [p8-m0-governance.json](../../reports/validation-evidence/phase8/p8-m0-governance.json)
-- 코드 리뷰: [p8-m0-code-review.md](../../reports/validation-evidence/phase8/p8-m0-code-review.md)
+- 환경: [p8-m0-reference-profile.json](../../verification/evidence/validation/phase8/p8-m0-reference-profile.json)
+- governance evidence: [p8-m0-governance.json](../../verification/evidence/validation/phase8/p8-m0-governance.json)
+- 코드 리뷰: [p8-m0-code-review.md](../../verification/evidence/validation/phase8/p8-m0-code-review.md)
 
 `p8-m0-governance.json`은 M0 계약 통과 증거다. 비선형 수치 결과를 `verified`로 승격하는 독립 기준해 증거가 아니며, 검증 registry에서도 analysis-result audit와 분리한다.
 
@@ -68,8 +68,8 @@ M1 증거:
 - state: `src/nonlinear/core/stateStore.js`, `elementStateRegistry.js`, `elementContract.js`
 - adapter identity: 선형·Direct P-Delta·modal·nonlinear topology/property/constraint/mass hash 일치
 - 검증: `NL-DOM-01~08`, `NL-STATE-01~07`, `NL-MEI-01~08`
-- evidence: [p8-m1-domain-state.json](../../reports/validation-evidence/phase8/p8-m1-domain-state.json)
-- 코드 리뷰: [p8-m1-code-review.md](../../reports/validation-evidence/phase8/p8-m1-code-review.md)
+- evidence: [p8-m1-domain-state.json](../../verification/evidence/validation/phase8/p8-m1-domain-state.json)
+- 코드 리뷰: [p8-m1-code-review.md](../../verification/evidence/validation/phase8/p8-m1-code-review.md)
 
 M1 역시 전역 비선형 잔차·접선의 수치 정확도를 qualification하지 않는다. 해당 범위는 P8-M2 이후다.
 
@@ -80,9 +80,9 @@ M2 증거:
 - runtime: Worker protocol/client/core, transferable ownership, memory preflight, stale token과 committed-boundary cancellation
 - 선형연계: Phase 7 fixed-end load·release·offset·elastic stiffness 재사용 및 변위·반력·평형 일치
 - 검증: `NL-EQ-01~12`, `NL-CTRL-01~04`
-- evidence: [p8-m2-equilibrium.json](../../reports/validation-evidence/phase8/p8-m2-equilibrium.json)
+- evidence: [p8-m2-equilibrium.json](../../verification/evidence/validation/phase8/p8-m2-equilibrium.json)
 - ADR: [ADR-005-INHOUSE-WASM-SPARSE.md](adr/ADR-005-INHOUSE-WASM-SPARSE.md)
-- 코드 리뷰: [p8-m2-code-review.md](../../reports/validation-evidence/phase8/p8-m2-code-review.md)
+- 코드 리뷰: [p8-m2-code-review.md](../../verification/evidence/validation/phase8/p8-m2-code-review.md)
 
 M2는 평형 수치코어와 실행 기반을 qualification한다. 실제 3D 기하비선형 요소, 소성힌지/fiber, 정식 Pushover, MDOF NLTH 및 대형모델 상용 성능은 qualification하지 않는다.
 
@@ -92,11 +92,11 @@ M3 증거:
 - 회전좌표: `src/nonlinear/math/rotationCoordinates.js`, `secondOrderJet.js`
 - 연계: 물리/일반화 모멘트, 초기응력, reference dead member load, release null mode, offset force/moment transfer
 - 검증: `NL-COR-01~12`, Euler 임계비 1.0167, 근임계 변위증폭 6.006, elastica tip 오차 0.0276%
-- evidence: [p8-m3-corotational.json](../../reports/validation-evidence/phase8/p8-m3-corotational.json)
+- evidence: [p8-m3-corotational.json](../../verification/evidence/validation/phase8/p8-m3-corotational.json)
 - tangent qualification: unreleased relative error `1.183e-6`, released implicit-condensation relative error `4.214e-7`
 - release gauge qualification: finite-rotation null mode and `1e-6` weak rotational restraint preservation regression PASS
 - ADR: [ADR-002-FINITE-ROTATION-COROTATIONAL.md](adr/ADR-002-FINITE-ROTATION-COROTATIONAL.md)
-- 코드 리뷰: [p8-m3-code-review.md](../../reports/validation-evidence/phase8/p8-m3-code-review.md)
+- 코드 리뷰: [p8-m3-code-review.md](../../verification/evidence/validation/phase8/p8-m3-code-review.md)
 
 M3는 principal rotation-vector chart 안의 탄성 기하비선형 정적 범위를 qualification한다. finite 2축 release는 물리 단력과 접선만 qualification하며 에너지 기반 cyclic/NLTH에는 전달하지 않는다. 외부 상용 solver 비교, 대형모델 성능, 재료비선형은 아직 qualification하지 않는다.
 
@@ -106,9 +106,9 @@ M4 증거:
 - 속성·배정: `src/nonlinear/properties/hingeRegistry.js`, `assignments.js`
 - 요소: `src/nonlinear/elements/hingedFrame3d.js`와 M3 corotational 내부회전 condensation
 - 검증: `NL-HNG-01~12`, envelope tangent 상대오차 `3.947e-11`, 직렬 접선 상대오차 `3.860e-9`, rollback byte-equivalent PASS
-- evidence: [p8-m4-concentrated-hinge.json](../../reports/validation-evidence/phase8/p8-m4-concentrated-hinge.json)
+- evidence: [p8-m4-concentrated-hinge.json](../../verification/evidence/validation/phase8/p8-m4-concentrated-hinge.json)
 - ADR: [ADR-003-CONCENTRATED-HINGE-SERIES-COMPATIBILITY.md](adr/ADR-003-CONCENTRATED-HINGE-SERIES-COMPATIBILITY.md)
-- 코드 리뷰: [p8-m4-code-review.md](../../reports/validation-evidence/phase8/p8-m4-code-review.md)
+- 코드 리뷰: [p8-m4-code-review.md](../../verification/evidence/validation/phase8/p8-m4-code-review.md)
 
 M4는 집중소성 component와 3D frame 직렬호환을 `candidate`로 qualification한다. 정식 gravity-preloaded displacement-control Pushover와 coupled PMM/fiber는 각각 M5와 M6에서 후속 qualification하며, 전체 cyclic-static path control과 외부 상용 solver 비교는 아직 qualification하지 않는다.
 
@@ -122,19 +122,19 @@ M5·M6·M6.1 증거:
 - runtime: full-state와 수치 동등한 monotonic envelope, exact-state memoization, 고유 source dedup, dedicated Worker, bounded memory/IndexedDB cache
 - 실행 안전성: PMM preflight, 고유 interaction별 cache commit, cancel, source 변경 및 손상 artifact 폐기
 - 검증: `NL-FIB-01~14`, `NL-PMM-01~14`
-- evidence: [p8-m6-fiber-pmm.json](../../reports/validation-evidence/phase8/p8-m6-fiber-pmm.json)
-- runtime evidence: [p8-m6-pmm-runtime.json](../../reports/validation-evidence/phase8/p8-m6-pmm-runtime.json)
+- evidence: [p8-m6-fiber-pmm.json](../../verification/evidence/validation/phase8/p8-m6-fiber-pmm.json)
+- runtime evidence: [p8-m6-pmm-runtime.json](../../verification/evidence/validation/phase8/p8-m6-pmm-runtime.json)
 - ADR: [ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md](adr/ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md)
-- 코드 리뷰: [p8-m6-code-review.md](../../reports/validation-evidence/phase8/p8-m6-code-review.md)
-- M6.1 코드 리뷰: [p8-m6-1-code-review.md](../../reports/validation-evidence/phase8/p8-m6-1-code-review.md)
+- 코드 리뷰: [p8-m6-code-review.md](../../verification/evidence/validation/phase8/p8-m6-code-review.md)
+- M6.1 코드 리뷰: [p8-m6-1-code-review.md](../../verification/evidence/validation/phase8/p8-m6-1-code-review.md)
 
 M7 증거:
 
 - 제어: `src/nonlinear/equilibrium/arcLength.js`, `cyclicStatic.js`
 - 연계: M5 handoff v2, production Pushover opt-in continuation, 공개 API/Agent manifest
 - 검증: `NL-ARC-01~10`, `NL-CYC-01~06`
-- evidence: [p8-m7-arc-cyclic.json](../../reports/validation-evidence/phase8/p8-m7-arc-cyclic.json)
-- 코드 리뷰: [p8-m7-code-review.md](../../reports/validation-evidence/phase8/p8-m7-code-review.md)
+- evidence: [p8-m7-arc-cyclic.json](../../verification/evidence/validation/phase8/p8-m7-arc-cyclic.json)
+- 코드 리뷰: [p8-m7-code-review.md](../../verification/evidence/validation/phase8/p8-m7-code-review.md)
 - GPU 경계: 실행정책만 구현. 실제 GPU backend와 CPU/GPU parity는 미구현
 
 M8 증거:
@@ -147,9 +147,9 @@ M8 증거:
 - 운영 정책: accepted-step commit, 실패 step byte-equivalent rollback, binary reintegration, min `dt`, cancel, restart provenance/dynamic-equilibrium 검증
 - 결과: node `q/v/a`, ground acceleration, 6DOF inertia base reaction, member/hinge/fiber history, nested envelope, energy, chunk/checkpoint manifest
 - 검증: `NL-DYN-01~16`
-- evidence: [p8-m8-mdof-nlth.json](../../reports/validation-evidence/phase8/p8-m8-mdof-nlth.json)
+- evidence: [p8-m8-mdof-nlth.json](../../verification/evidence/validation/phase8/p8-m8-mdof-nlth.json)
 - ADR: [ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md](adr/ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md)
-- 코드 리뷰: [p8-m8-code-review.md](../../reports/validation-evidence/phase8/p8-m8-code-review.md)
+- 코드 리뷰: [p8-m8-code-review.md](../../verification/evidence/validation/phase8/p8-m8-code-review.md)
 - GPU 경계: M7 backend contract를 전달하되 실제 GPU kernel/parity를 주장하지 않음
 
 M9 증거:
@@ -159,9 +159,9 @@ M9 증거:
 - 결과 복구: node/member/story, 단부·station, hinge/fiber, 원본 wall/shell/diaphragm, NLTH 절대관성 층전단·history envelope와 event provenance
 - 감사·governance: global/reduced/element-node/station/release closure, 7개 canonical adapter identity, granular stale, run record와 설계전달 guard
 - 검증: `NL-INT-01~16`, `NL-MEI-01~20`
-- evidence: [p8-m9-integration-recovery.json](../../reports/validation-evidence/phase8/p8-m9-integration-recovery.json)
+- evidence: [p8-m9-integration-recovery.json](../../verification/evidence/validation/phase8/p8-m9-integration-recovery.json)
 - ADR: [ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md](adr/ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md)
-- 코드 리뷰: [p8-m9-code-review.md](../../reports/validation-evidence/phase8/p8-m9-code-review.md)
+- 코드 리뷰: [p8-m9-code-review.md](../../verification/evidence/validation/phase8/p8-m9-code-review.md)
 
 M10 증거:
 
@@ -171,20 +171,20 @@ M10 증거:
 - 결과: Pushover 용량곡선·step·층/부재/힌지, NLTH 시간이력·에너지·수렴, raw CSV/JSON, stale/current/history 계보
 - 자동화: Index bridge, Agent API와 command bridge가 동일 product service 사용
 - 검증: `NL-UI-01~14`, `NL-API-01~10`
-- evidence: [p8-m10-ui-api.json](../../reports/validation-evidence/phase8/p8-m10-ui-api.json)
+- evidence: [p8-m10-ui-api.json](../../verification/evidence/validation/phase8/p8-m10-ui-api.json)
 - ADR: [ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md](adr/ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md)
-- 코드 리뷰: [p8-m10-code-review.md](../../reports/validation-evidence/phase8/p8-m10-code-review.md)
+- 코드 리뷰: [p8-m10-code-review.md](../../verification/evidence/validation/phase8/p8-m10-code-review.md)
 
 M11 증거:
 
-- 독립 기준코드: [p8-m11-independent-reference.json](../../reports/validation-evidence/phase8/p8-m11-independent-reference.json)
-- 성능 측정: [p8-m11-reference-measurement.json](../../reports/validation-evidence/phase8/performance/p8-m11-reference-measurement.json)
-- 파일럿 요약: [p8-m11-pilot-summary.json](../../reports/validation-evidence/phase8/pilots/p8-m11-pilot-summary.json)
-- qualification evidence: [p8-m11-qualification-release.json](../../reports/validation-evidence/phase8/p8-m11-qualification-release.json)
-- release manifest: [release-manifest.json](../verification/phase8/release-manifest.json)
-- 판정 보고서: [QUALIFICATION_RELEASE.md](../verification/phase8/QUALIFICATION_RELEASE.md)
+- 독립 기준코드: [p8-m11-independent-reference.json](../../verification/evidence/validation/phase8/p8-m11-independent-reference.json)
+- 성능 측정: [p8-m11-reference-measurement.json](../../verification/evidence/validation/phase8/performance/p8-m11-reference-measurement.json)
+- 파일럿 요약: [p8-m11-pilot-summary.json](../../verification/evidence/validation/phase8/pilots/p8-m11-pilot-summary.json)
+- qualification evidence: [p8-m11-qualification-release.json](../../verification/evidence/validation/phase8/p8-m11-qualification-release.json)
+- release manifest: [release-manifest.json](../../verification/specs/phase8/release-manifest.json)
+- 판정 보고서: [QUALIFICATION_RELEASE.md](../../verification/specs/phase8/QUALIFICATION_RELEASE.md)
 - ADR: [ADR-012-QUALIFICATION-RELEASE-GATE.md](adr/ADR-012-QUALIFICATION-RELEASE-GATE.md)
-- 코드 리뷰: [p8-m11-code-review.md](../../reports/validation-evidence/phase8/p8-m11-code-review.md)
+- 코드 리뷰: [p8-m11-code-review.md](../../verification/evidence/validation/phase8/p8-m11-code-review.md)
 
 파일럿 5종은 production solver에서 요구 결과 채널까지 생성해 재현성 `PASS`를 받았지만 자격등급은 `candidate`다. `NL-PILOT-01~05`는 외부 수치비교와 소유자 승인이 들어오기 전 `BLOCKED`로 유지한다.
 

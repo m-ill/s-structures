@@ -18,7 +18,7 @@ The excluded items are not cancelled. They remain release gates before a real 1.
 | WP | Status | Evidence |
 | --- | --- | --- |
 | WP-05 | complete | `tests/p4-security-headers.mjs`, `tests/p4-data-dir-lock.mjs`, `tests/p4-approval-route-guards.mjs`, `tests/p4-audit-log.mjs`; TD-02..06, TD-09, TD-12, TD-13 fixed in `TECH_DEBT_REGISTER.md`. |
-| WP-06 | complete | `tests/p4-project-meta-cache.mjs`, `tests/p4-independent-io.mjs`, `tests/p4-perf-budget.mjs`, `tests/p4-scale-limits.mjs`; `reports/validation-evidence/perf-budget.json`. |
+| WP-06 | complete | `tests/p4-project-meta-cache.mjs`, `tests/p4-independent-io.mjs`, `tests/p4-perf-budget.mjs`, `tests/p4-scale-limits.mjs`; `verification/evidence/validation/perf-budget.json`. |
 | WP-07 | complete | `tests/p4-modeler-save-flow.mjs`, `tests/p4-shell-route-reentry.mjs`, `tests/p4-route-pattern-contract.mjs`, `tests/p4-import-review-overlay.mjs`, `tests/p4-library-ui.mjs`, `tests/p4-preview-integrated-validation.mjs`; TD-01, TD-07, TD-10, TD-11 fixed. |
 | WP-08 | complete-for-pre-beta | `tools/build-release.mjs`, `tools/backup-data.mjs`, `server/auth/license.mjs`, `tools/issue-license.mjs`, `config.sample.json`, `CHANGELOG.md`, `desktop/`; `tests/p4-release-tools.mjs`, `tests/p4-backup-tool.mjs`, `tests/p4-build-release.mjs`, `tests/p4-install-smoke-web.mjs`. |
 | WP-09 | complete-for-pre-beta | `docs/user-manual/`, `docs/phase4/DOCUMENTATION_COVERAGE.md`, `samples/onboarding/`, `tools/check-agent-contract.mjs`; `tests/p4-documentation-coverage.mjs`, `tests/p4-onboarding-samples.mjs`, `npm run check:agent-contract`. |

@@ -24,7 +24,7 @@ versioned contract for reports and AI automation.
 2. P-Delta design values are final `lambda = 1.0` combination results: story theta, B-delta, P-Delta shear/moment, and second-order member forces.
 3. Displayed P-Delta curves are load-step response curves. Iteration rows remain convergence diagnostics and should not be interpreted as the P-Delta response curve.
 4. The planned direct-analysis mode is separate from the current equivalent-load method and is defined in `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md`.
-5. Direct-analysis mode remains preliminary until `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md` passes.
+5. Direct-analysis mode remains preliminary until `verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md` passes.
 6. Modal mass is lumped translational mass.
 7. RSA reports displacement trace and SRSS combination only.
 

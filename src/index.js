@@ -12,6 +12,7 @@ export {
   DOMAIN_ADAPTER_COMPATIBILITY_VERSION,
   DOMAIN_CAPABILITY_SCAN_VERSION,
   LEGACY_SETTLEMENT_KEYS,
+  RIGID_MODE_GAUGE_VERSION,
   STRUCTURAL_DOF_KEYS,
   SUPPORT_CONSTRAINT_VERSION,
   buildCanonicalAnalysisDomain,
@@ -25,7 +26,9 @@ export {
   expandConstraintDisplacements,
   reduceConstraintMatrix,
   reduceConstraintVector,
+  resolveUnloadedRigidRotationGauges,
   scanAnalysisDomainCapabilities,
+  translationFreeRigidRotationComponents,
 } from './solver/domain/index.js';
 export {
   ELEMENT_STATE_REGISTRY_VERSION,
@@ -69,6 +72,94 @@ export {
   createAnalysisRunRecord,
   createAnalysisRunStore,
 } from './core/analysisRunRecord.js';
+export {
+  ANALYSIS_EVIDENCE_ACCEPTANCE_POLICY,
+  ANALYSIS_EVIDENCE_ACCEPTANCE_VERSION,
+  ANALYSIS_EVIDENCE_TRUSTED_PRODUCER,
+  buildAnalysisEvidenceSubject,
+  createAnalysisEvidenceAcceptance,
+  validateAnalysisEvidenceAcceptance,
+} from './core/analysisEvidenceAcceptance.js';
+export {
+  PHASE13_ANALYSIS_RUN_STORE_VERSION,
+  PHASE13_ANALYSIS_RUN_VERSION,
+  PHASE13_RUN_STATUSES,
+  beginPhase13AnalysisRun,
+  buildPhase13PublishedRunSet,
+  cancelPhase13AnalysisRun,
+  completePhase13AnalysisRun,
+  createPhase13AnalysisRunStore,
+  evaluatePhase13RunFreshness,
+  failPhase13AnalysisRun,
+  getPhase13RunState,
+  migrateLegacyAnalysisRunStore,
+  updatePhase13AnalysisRunProgress,
+} from './core/phase13AnalysisRuns.js';
+export {
+  UNIFIED_ELASTIC_RUN_SERVICE_VERSION,
+  createUnifiedElasticRunService,
+} from './compute/product/unifiedElasticRunService.js';
+export {
+  PHASE13_ELASTIC_WORKSPACE_VERSION,
+  PHASE13_WORKSPACES,
+  buildPhase13WorkspaceViewModel,
+  createPhase13ElasticWorkspace,
+} from './ui/phase13ElasticWorkspace.js';
+export {
+  PHASE13_MODEL_CHECK_VERSION,
+  PHASE13_REPAIR_PREVIEW_VERSION,
+  applyPhase13RepairPreview,
+  buildPhase13IssueCenterView,
+  buildPhase13ModelCheck,
+  createPhase13IssueWaiver,
+  previewPhase13ModelRepair,
+  undoPhase13Repair,
+} from './modeling/phase13ModelCheck.js';
+export {
+  PHASE13_LOAD_WORKSPACE_VERSION,
+  PHASE13_SLAB_PANEL_CHANGE_SET_VERSION,
+  applyPhase13ManualCombinationChangeSet,
+  applyPhase13SlabPanelChangeSet,
+  buildPhase13LoadWorkspace,
+  buildPhase13LoadResultantAudit,
+  buildPhase13MassParityAudit,
+  parsePhase13LoadPaste,
+  previewPhase13ManualCombinationChangeSet,
+  previewPhase13SlabPanelChangeSet,
+} from './loads/phase13LoadWorkspace.js';
+export { PHASE13_KDS_PROCEDURE_VERSION, createPhase13KdsApproval, createPhase13KdsSourceSnapshot, evaluatePhase13KdsApproval, executePhase13KdsProcedure } from './loads/phase13KdsProcedures.js';
+export {
+  PHASE13_PRACTICAL_EDITORS_VERSION,
+  applyPhase13DiaphragmAssignment,
+  applyPhase13StoryGeneration,
+  applyPhase13TableEdit,
+  buildPhase13EditorSelection,
+  previewPhase13DiaphragmAssignment,
+  previewPhase13StoryGeneration,
+  previewPhase13TableEdit,
+  validatePhase13Diaphragms,
+} from './modeling/phase13PracticalEditors.js';
+export { PHASE13_ELASTIC_DASHBOARD_VERSION, buildPhase13ElasticDashboard, buildPhase13ElasticResultQuery, exportPhase13DashboardCsv } from './results/phase13ElasticDashboard.js';
+export { PHASE13_MGT_IMPORT_VERSION, buildPhase13ReviewPackageSnapshot, buildPhase13RevisionDiff, commitPhase13MgtDraftRevision, createPhase13MgtImportCandidate, exportPhase13MgtSubset, importPhase13MgtSubset } from './import/phase13MgtImport.js';
+export { PHASE13_SHELL_LAB_VERSION, buildPhase13ShellContainmentAudit, buildPhase13ShellLab } from './solver/shell/phase13ShellLab.js';
+export { PHASE13_RELEASE_GATE_VERSION, buildPhase13ReleaseGate } from './platform/phase13ReleaseReadiness.js';
+export { PHASE13_RELEASE_CONTRACT_VERSION, PHASE13_RELEASE_INVARIANTS } from './platform/phase13ReleaseContract.js';
+export * from './solver/foundation/index.js';
+export {
+  ELASTIC_LINK_6DOF_VERSION,
+  buildElasticLinkLocalFrame,
+  buildTwoNodeLinkBasicOperator,
+  buildElasticLink6dofMatrix,
+  recoverElasticLink6dofResponse,
+} from './solver/link/elasticLink6dof.js';
+export {
+  FOUNDATION_SCHEMA_VERSION,
+  assignMemberFoundation,
+  createWinklerLineFoundationProperty,
+  normalizeFoundationProperties,
+  previewFoundationDerivation,
+  validateFoundationModel,
+} from './core/foundationSchema.js';
 export {
   NONLINEAR_REGISTRY_COLLECTIONS,
   NONLINEAR_SCHEMA_CONTRACT_VERSION,
@@ -130,6 +221,7 @@ export {
 export {
   ANALYSIS_RUNNER_VERSION,
   analysisResultView,
+  createAnalysisCaseResult,
   normalizeAnalysisCaseSettings,
   runAnalysisCase,
   runAnalysisCaseAsync,
@@ -592,6 +684,92 @@ export {
   buildLumpedMass,
   runResponseSpectrum,
 } from './dynamics/modal.js';
+export { buildModalDampingMatrix, MODAL_DAMPING_VERSION } from './dynamics/modalDamping.js';
+export {
+  MASS_6DOF_COMPONENTS,
+  normalizeNodeMass6Dof,
+  validateNodeMass6Dof,
+} from './core/massSchema.js';
+export {
+  addDirectNodeMass6Dof,
+  buildDiaphragmMassAudit,
+  buildSixDofMassAudit,
+  MASS_6DOF_VERSION,
+} from './dynamics/mass6dof.js';
+export {
+  buildConsistentMembraneEdgeTraction,
+  compareMembraneMeshLevels,
+  createStructuredQuadMesh,
+  MEMBRANE_WORKFLOW_VERSION,
+  probeMembraneStress,
+  recoverMembraneField,
+} from './solver/shell/membraneWorkflow.js';
+export {
+  buildMembraneWorkflowReport,
+  MEMBRANE_WORKFLOW_REPORT_VERSION,
+} from './report/membraneWorkflowReport.js';
+export {
+  assessMembraneDistortion,
+  buildMembraneEnergyTrace,
+  createCookMembraneMesh,
+  MEMBRANE_ROBUSTNESS_VERSION,
+  normalizeMembraneResponse,
+} from './solver/shell/membraneRobustness.js';
+export {
+  buildPlateBoundaryTemplate,
+  comparePlateMeshLevels,
+  createRectangularPlateMesh,
+  PLATE_WORKFLOW_VERSION,
+  solveRectangularPlate,
+} from './solver/shell/plateWorkflow.js';
+export {
+  buildPlateWorkflowReport,
+  PLATE_WORKFLOW_REPORT_VERSION,
+} from './report/plateWorkflowReport.js';
+export {
+  qualifyThickPlateRun,
+  runThickPlateSweep,
+  THICK_PLATE_POLICY,
+  THICK_PLATE_QUALIFICATION_VERSION,
+} from './solver/shell/thickPlateQualification.js';
+export {
+  buildUnsupportedRotationFloorPlan,
+  classifyStabilizedModes,
+  modalAssuranceCriterion,
+  qualifyShellStabilization,
+  runDrillingAlphaSweep,
+  runUnsupportedRotationFloorSweep,
+  SHELL_STABILIZATION_POLICY,
+  SHELL_STABILIZATION_VERSION,
+  traceShellStabilizationEnergy,
+} from './solver/shell/shellStabilization.js';
+export {
+  buildStabilizationParameterContract,
+  createThreeStoryWallStabilizationFixture,
+  REAL_SHELL_STABILIZATION_DEFAULTS,
+  REAL_SHELL_STABILIZATION_QUALIFICATION_VERSION,
+  runRealShellStabilizationQualification,
+} from './solver/shell/realStabilizationQualification.js';
+export {
+  normalizeRotationFloorRatio,
+  rigidRotationVector,
+  stabilizeUnsupportedRotations,
+  UNSUPPORTED_ROTATION_FLOOR_VERSION,
+} from './solver/shell/unsupportedRotationFloor.js';
+export {
+  buildShellStabilizationReport,
+  SHELL_STABILIZATION_REPORT_VERSION,
+} from './report/shellStabilizationReport.js';
+export { createCanonicalAccelerationSeries, GROUND_MOTION_SERIES_VERSION } from './dynamics/groundMotionSeries.js';
+export { condenseMasslessDynamicDofs, DYNAMIC_CONDENSATION_VERSION } from './dynamics/dynamicCondensation.js';
+export {
+  combineModalScalars,
+  cqcCorrelation,
+  MODAL_COMBINATION_METHODS,
+  MODAL_COMBINATION_POLICY,
+  MODAL_COMBINATION_VERSION,
+  normalizeModalCombinationMethod,
+} from './dynamics/modalCombination.js';
 export {
   buildReportData,
   createHtmlReport,
@@ -604,6 +782,22 @@ export {
   renderDetailedReportHtml,
   DETAILED_REPORT_VERSION,
 } from './report/detailedReport.js';
+export {
+  buildFoundationResponseReport,
+  FOUNDATION_RESPONSE_REPORT_VERSION,
+} from './report/foundationResponse.js';
+export { buildLinearThaReport, LINEAR_THA_REPORT_VERSION } from './report/linearThaReport.js';
+export {
+  buildFoundationInspector,
+  FOUNDATION_INSPECTOR_VERSION,
+} from './ui/foundationInspector.js';
+export {
+  assignFoundationTransaction,
+  deleteFoundationPropertyTransaction,
+  FOUNDATION_TRANSACTION_VERSION,
+  removeFoundationTransaction,
+  upsertFoundationPropertyTransaction,
+} from './modeling/foundationTransactions.js';
 export {
   buildCalculationPackageData,
   CALCULATION_PACKAGE_VERSION,
@@ -1064,6 +1258,17 @@ export {
   runProductionPushover,
 } from './nonlinear/pushover/productionPushover.js';
 export {
+  auditPushoverRollback,
+  compareNeutralControlStrategies,
+  createNeutralMomentHingeFixture,
+  evaluateNeutralMomentBackbone,
+  PUSHOVER_QUALIFICATION_FIXTURE_VERSION,
+} from './nonlinear/pushover/qualificationFixture.js';
+export {
+  buildPushoverQualificationReport,
+  PUSHOVER_QUALIFICATION_REPORT_VERSION,
+} from './report/pushoverQualificationReport.js';
+export {
   PRODUCTION_PUSHOVER_RESULT_VERSION,
   PUSHOVER_ARC_LENGTH_HANDOFF_VERSION,
   buildProductionPushoverResult,
@@ -1196,8 +1401,8 @@ export {
   runStabilizationHarness,
   STABILIZATION_HARNESS_TOLERANCES,
   STABILIZATION_HARNESS_VERSION,
-} from './verification/stabilizationHarness.js';
-export { BENCHMARK_GATE_VERSION, runBenchmarkGate } from './verification/benchmarkGate.js';
+} from './diagnostics/stabilizationHarness.js';
+export { BENCHMARK_GATE_VERSION, runBenchmarkGate } from './diagnostics/benchmarkGate.js';
 export {
   NONLINEAR_BENCHMARK_VERSION,
   runCantileverLargeDisplacementBenchmark,
@@ -1212,33 +1417,9 @@ export {
   PUSHOVER_REGRESSION_BASELINE,
   runPushoverRegressionBenchmark,
   runSnapThroughArcLengthBenchmark,
-} from './verification/nonlinearBenchmarks.js';
-export { MEMBER_RELEASE_BENCHMARK_VERSION, runMemberReleaseBenchmark } from './verification/memberReleaseBenchmark.js';
-export {
-  P8_M0_GOVERNANCE_AUDIT_VERSION,
-  PHASE8_EVIDENCE_ARTIFACT_VERSION,
-  PHASE8_VERIFICATION_SUITES,
-  VERIFICATION_REGISTRY_VERSION,
-  getPhase8VerificationSuite,
-  isTrustedVerificationAuditVersion,
-  validatePhase8EvidenceArtifact,
-  verificationRegistryManifest,
-} from './verification/registry.js';
-export { RIGID_DIAPHRAGM_BENCHMARK_VERSION, runRigidDiaphragmBenchmark } from './verification/rigidDiaphragmBenchmark.js';
-export {
-  VERIFICATION_MATRIX_RECORD_VERSION,
-  buildVerificationRecord,
-  modelHash,
-  scalarRelativeError,
-  vectorRelativeError,
-  verificationError,
-} from './verification/matrix/record.js';
-export {
-  VERIFICATION_MATRIX_CASES,
-  VERIFICATION_MATRIX_VERSION,
-  runVerificationMatrix,
-  writeVerificationMatrixEvidence,
-} from './verification/matrix/runner.js';
+} from './nonlinear/qualification/nonlinearBenchmarks.js';
+export { MEMBER_RELEASE_BENCHMARK_VERSION, runMemberReleaseBenchmark } from './diagnostics/memberReleaseBenchmark.js';
+export { RIGID_DIAPHRAGM_BENCHMARK_VERSION, runRigidDiaphragmBenchmark } from './diagnostics/rigidDiaphragmBenchmark.js';
 export {
   IMPORT_CANDIDATE_VERSION,
   buildImportCandidate,
@@ -1613,9 +1794,23 @@ export {
   validatePhase8ReleaseManifest,
 } from './nonlinear/qualification/index.js';
 export * from './compute/index.js';
-export * from './verification/xval/referenceArtifact.js';
-export * from './verification/xval/cases.js';
-export * from './verification/xval/runner.js';
-export * from './verification/xval/pathologicalBattery.js';
-export * from './verification/xval/m1Artifacts.js';
-export * from './verification/phase10ReleaseGate.js';
+export {
+  MONOTONE_PCHIP_VERSION,
+  createMonotonePchip,
+  evaluateMonotonePchip,
+} from './nonlinear/math/monotonePchip.js';
+export {
+  PMM_HINGE_3D_VERSION,
+  createPmmHinge3dProperty,
+  createPmmHinge3dState,
+  evaluateFemaBackbonePlasticRotation,
+  evaluatePmmHinge3d,
+  evaluatePmmHingeElasticUnload,
+  projectBiaxialMoments,
+} from './nonlinear/materials/pmmHinge3d.js';
+export {
+  ZERO_LENGTH_PMM_HINGE_3D_VERSION,
+  assembleZeroLengthPmmHinge3dDomain,
+  evaluateZeroLengthPmmHinge3d,
+} from './nonlinear/elements/zeroLengthPmmHinge3d.js';
+export * from './platform/phase10ReleaseReadiness.js';

@@ -39,7 +39,7 @@ UI와 Agent가 renderer·print를 각자 호출하면 같은 요청에서도 sna
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m7-product-agent-export.json`
+`verification/evidence/validation/phase11/p11-m7-product-agent-export.json`
 
 ## Review Log
 

@@ -1,5 +1,6 @@
 import { buildMassSourceTrace } from '../../loads/loadsV2.js';
 import { stableHash } from '../../core/stableHash.js';
+import { normalizeNodeMass6Dof } from '../../core/massSchema.js';
 import {
   createCscFromTriplets,
   cscDiagonal,
@@ -225,9 +226,7 @@ function addDirectNodeMass(model, nodeIndex, triplets, ownership, includeTransla
   for (const node of model.nodes || []) {
     const index = nodeIndex.get(node.id);
     if (index == null || node.mass == null) continue;
-    const values = Array.isArray(node.mass)
-      ? Array.from({ length: 6 }, (_value, dof) => nonnegativeFinite(node.mass[dof] ?? 0, `${node.id}.mass[${dof}]`))
-      : [0, 1, 2].map(() => nonnegativeFinite(node.mass, `${node.id}.mass`)).concat([0, 0, 0]);
+    const values = normalizeNodeMass6Dof(node.mass, { label: `${node.id}.mass` });
     const start = includeTranslations ? 0 : 3;
     for (let dof = start; dof < 6; dof += 1) addTriplet(triplets, index * 6 + dof, index * 6 + dof, values[dof]);
     const recorded = includeTranslations ? values : [0, 0, 0, values[3], values[4], values[5]];
@@ -441,11 +440,11 @@ function normalizeGroundVector(value) {
 
 function validateExplicitMasses(model) {
   for (const node of model.nodes || []) {
-    const values = Array.isArray(node.mass) ? node.mass : node.mass == null ? [] : [node.mass];
-    values.forEach((value, index) => {
-      const number = Number(value);
-      if (!Number.isFinite(number) || number < 0) throw massError('DYNAMIC_NODE_MASS_INVALID', `${node.id}.mass[${index}] must be finite and nonnegative.`);
-    });
+    try {
+      normalizeNodeMass6Dof(node.mass, { label: `${node.id}.mass` });
+    } catch (error) {
+      throw massError('DYNAMIC_NODE_MASS_INVALID', error.message);
+    }
   }
 }
 

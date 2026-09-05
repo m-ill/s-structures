@@ -67,7 +67,7 @@ server/
 | 비선형 요소/힌지 | `src/nonlinear/`, benchmark gate 등록 |
 | 새 화면/action | `src/app/views/`, `src/ui/agentManifest.js`, `agent-contract.json` |
 
-| import agent review action | `src/ui/indexImportAgentState.js`, `src/ui/indexAgentApi.js`, `src/app/importReviewModel.js`, `docs/verification/P3_M7_IMPORT_REVIEW_VERIFICATION.md` |
+| import agent review action | `src/ui/indexImportAgentState.js`, `src/ui/indexAgentApi.js`, `src/app/importReviewModel.js`, `verification/specs/P3_M7_IMPORT_REVIEW_VERIFICATION.md` |
 
 ## Repository Hygiene
 

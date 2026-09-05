@@ -11,10 +11,10 @@ import {
   buildStoryOverturningTrace,
   buildStoryShearTrace,
   listAnalysisCriteriaKeys,
-  modelHash,
   pDeltaDesignStatus,
   resolveCriterion,
 } from '../src/index.js';
+import { modelHash } from '../verification/index.js';
 import { executeProductionElastic } from '../src/compute/index.js';
 
 const THETA_CASES = [
@@ -94,6 +94,20 @@ const boundedScreening = await executeProductionElastic({
   model: boundedModel,
   retainDetailedCombinations: false,
 }, noOpContext());
+const boundedScreeningRepeat = await executeProductionElastic({
+  model: boundedModel,
+  retainDetailedCombinations: false,
+}, noOpContext());
+assert.equal(
+  boundedScreeningRepeat.resultHash,
+  boundedScreening.resultHash,
+  'same-build bounded screening result hash must be deterministic',
+);
+assert.equal(
+  boundedScreeningRepeat.result.pDeltaDesignScreening.summary.maxTheta,
+  boundedScreening.result.pDeltaDesignScreening.summary.maxTheta,
+  'same-build bounded screening theta must be bit-identical',
+);
 for (const result of [detailedScreening.result, boundedScreening.result]) {
   assert.equal(result.pDeltaDesignScreening.summary.status, 'REQUIRE-2ND');
   assert.equal(result.designEligibility.eligible, false);
@@ -286,7 +300,7 @@ assert.equal(zeroResponse.rsa.designTransferQualification.eligible, false);
 assert.ok(zeroResponse.rsa.designBlockers.includes('ZERO_RSA_BASE_SHEAR_CANNOT_BE_SCALED_TO_POSITIVE_MINIMUM'));
 
 const evidence = JSON.parse(await readFile(
-  new URL('../reports/validation-evidence/phase10/p10-m0-quick-corrections.json', import.meta.url),
+  new URL('../verification/evidence/validation/phase10/p10-m0-quick-corrections.json', import.meta.url),
   'utf8',
 ));
 assert.equal(evidence.milestone, 'P10-M0');
@@ -351,9 +365,20 @@ for (const record of evidence.records) {
   assert.ok(expected, `unexpected evidence case ${record.caseId}`);
   assert.equal(record.modelHash, expected.modelHash, `${record.caseId}.modelHash`);
   assert.equal(record.solverVersion, expected.solverVersion, `${record.caseId}.solverVersion`);
-  assert.deepEqual(record.computed, expected.computed, `${record.caseId}.computed`);
+  const computedComparison = compareFrozenEvidence(record, expected.computed);
+  assert.equal(
+    computedComparison.passed,
+    true,
+    `${record.caseId}.computed drift ${computedComparison.error} exceeds frozen tolerance ${record.tolerance}`,
+  );
 }
 assert.deepEqual(evidence.records.map((record) => record.caseId).sort(), Object.keys(evidenceExpected).sort());
+const boundedEvidenceRecord = evidence.records.find((record) => record.caseId === 'P10-M0-PDELTA-BOUNDED-PARITY');
+const beyondTolerance = compareFrozenEvidence(
+  boundedEvidenceRecord,
+  boundedEvidenceRecord.computed + (2 * boundedEvidenceRecord.tolerance),
+);
+assert.equal(beyondTolerance.passed, false, 'bounded screening evidence must reject drift beyond its frozen tolerance');
 
 console.log(JSON.stringify({
   ok: true,
@@ -523,6 +548,49 @@ function closeRatio(actual, before, factor, label) {
   const expected = before * factor;
   const error = Math.abs(actual - expected) / Math.max(1, Math.abs(expected));
   assert.ok(error < 1e-12, `${label}: expected ${expected}, got ${actual}, relError=${error}`);
+}
+
+// Phase 10 milestone evidence defines scalar error as absolute difference and
+// array error as relative L2 norm. Frozen cross-build values use that approved
+// tolerance; same-build determinism is asserted independently above.
+function compareFrozenEvidence(record, currentComputed) {
+  if (!sameNumericShape(record.computed, currentComputed)) {
+    return { passed: false, error: Number.POSITIVE_INFINITY };
+  }
+  const error = standardEvidenceError(currentComputed, record.computed);
+  return {
+    passed: Number.isFinite(error) && error <= record.tolerance,
+    error,
+  };
+}
+
+function standardEvidenceError(computed, reference) {
+  if (typeof computed === 'number' && typeof reference === 'number') {
+    return Math.abs(computed - reference);
+  }
+  const actual = numericLeaves(computed);
+  const expected = numericLeaves(reference);
+  let differenceSquared = 0;
+  let referenceSquared = 0;
+  for (let index = 0; index < actual.length; index += 1) {
+    differenceSquared += (actual[index] - expected[index]) ** 2;
+    referenceSquared += expected[index] ** 2;
+  }
+  return Math.sqrt(differenceSquared) / Math.max(1e-12, Math.sqrt(referenceSquared));
+}
+
+function sameNumericShape(actual, expected) {
+  if (typeof actual === 'number' || typeof expected === 'number') {
+    return Number.isFinite(actual) && Number.isFinite(expected);
+  }
+  return Array.isArray(actual)
+    && Array.isArray(expected)
+    && actual.length === expected.length
+    && actual.every((value, index) => sameNumericShape(value, expected[index]));
+}
+
+function numericLeaves(value) {
+  return typeof value === 'number' ? [value] : value.flatMap(numericLeaves);
 }
 
 function assertCombinedNumericallyEqual(actual, expected, tolerance) {

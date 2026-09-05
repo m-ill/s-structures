@@ -12,6 +12,12 @@ import { buildP3IntegratedResults } from '../results/p3IntegratedResults.js';
 import { buildAdvancedElasticTrace } from '../results/advancedElasticTrace.js';
 import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
 import { buildWallSlabEquivalentTrace } from '../solver/wallSlabEquivalent.js';
+import { buildFoundationResponseReport } from './foundationResponse.js';
+import { buildLinearThaReport } from './linearThaReport.js';
+import { buildMembraneWorkflowReport } from './membraneWorkflowReport.js';
+import { buildPlateWorkflowReport } from './plateWorkflowReport.js';
+import { buildShellStabilizationReport } from './shellStabilizationReport.js';
+import { buildPushoverQualificationReport } from './pushoverQualificationReport.js';
 import { buildPracticePlatformReadiness } from '../platform/practicePlatformReadiness.js';
 import { buildPracticeValidationReport } from '../platform/practiceValidationReport.js';
 import {
@@ -53,6 +59,7 @@ export function buildDetailedReportData(model, analysis, options = {}) {
     .filter((row) => Number.isFinite(row.utilization))
     .sort((a, b) => b.utilization - a.utilization)
     .slice(0, options.governingLimit || 20);
+  const analysisCaseResults = options.analysisResults || options.analysisCaseResults || {};
 
   return {
     version: DETAILED_REPORT_VERSION,
@@ -89,8 +96,14 @@ export function buildDetailedReportData(model, analysis, options = {}) {
       maxUtilization: analysis?.design?.summary?.maxUtilization ?? analysis?.envelope?.maxRatio ?? null,
       governing: analysis?.design?.summary?.governing || analysis?.envelope?.governing?.maxUtilization || null,
     },
-    analysisCases: summarizeAnalysisCases(model, options.analysisResults || options.analysisCaseResults || {}),
+    analysisCases: summarizeAnalysisCases(model, analysisCaseResults),
+    linearTha: buildLinearThaReport(analysisCaseResults),
+    membraneWorkflow: buildMembraneWorkflowReport(options.membraneWorkflow || {}),
+    plateWorkflow: buildPlateWorkflowReport(options.plateWorkflow || {}),
+    shellStabilization: buildShellStabilizationReport(options.shellStabilization?.qualification || options.shellStabilization || null),
+    pushoverQualification: buildPushoverQualificationReport(options.pushoverQualification || {}),
     combinationResults,
+    foundationResponse: buildFoundationResponseReport(model, activeResult.result, analysis),
     advancedElasticTrace: buildAdvancedElasticTrace(model, analysis),
     equivalentShellTrace: buildWallSlabEquivalentTrace(model, analysis),
     designDemandPackage: analysis?.design?.demandPackage || buildDesignDemandPackage(model, analysis),
@@ -388,6 +401,24 @@ export function renderDetailedReportHtml(report) {
     row.summaryText,
   ]))}
 
+  <h2>4E. Distributed Foundation Response</h2>
+  ${renderFoundationResponse(report.foundationResponse)}
+
+  <h2>4F. Linear Time-History Trace</h2>
+  ${renderLinearTha(report.linearTha)}
+
+  <h2>4G. Membrane Mesh and Stress Trace</h2>
+  ${renderMembraneWorkflow(report.membraneWorkflow)}
+
+  <h2>4H. Plate Bending and Transverse-Shear Trace</h2>
+  ${renderPlateWorkflow(report.plateWorkflow)}
+
+  <h2>4I. Shell Stabilization Qualification Trace</h2>
+  ${renderShellStabilization(report.shellStabilization)}
+
+  <h2>4J. Production Pushover Qualification Trace</h2>
+  ${renderPushoverQualification(report.pushoverQualification)}
+
   <h2>5. Member Check Trace</h2>
   ${renderDesignDemandPackage(report.designDemandPackage)}
   ${renderTable(['Member', 'Role', 'Material', 'Section', 'Status', 'Util.', 'Governing', 'Combo', 'N', 'Vy', 'Vz', 'My', 'Mz'], report.memberChecks.map((row) => [
@@ -544,6 +575,101 @@ function summarizeCombinationResults(model, analysis) {
       equilibriumResidual: result?.summary?.equilibriumResidual ?? null,
     };
   });
+}
+
+function renderFoundationResponse(report) {
+  if (!report?.assignedMemberCount) return '<div class="note">No distributed foundation properties are assigned.</div>';
+  return `${renderMetricGrid([
+    ['Assigned members', report.assignedMemberCount],
+    ['Solved members', report.solvedMemberCount],
+    ['Foundation energy', format(report.totalStrainEnergy)],
+    ['Global force', formatVector(report.totalGlobalForce, formatForce)],
+  ])}${renderTable(
+    ['Member', 'Property', 'Status', 'k local-y', 'k local-z', 'Ry', 'Rz', 'Centroid y', 'Centroid z', 'Energy'],
+    report.rows.map((row) => [
+      row.memberId,
+      row.propertyId,
+      row.status,
+      format(row.lineStiffness.localY),
+      format(row.lineStiffness.localZ),
+      formatForce(row.resultant?.localY),
+      formatForce(row.resultant?.localZ),
+      formatLength(row.centroid?.localY),
+      formatLength(row.centroid?.localZ),
+      format(row.strainEnergy),
+    ]),
+  )}${renderList(report.limitations || [])}`;
+}
+
+function renderLinearTha(report) {
+  if (!report?.caseCount) return '<div class="note">No linear time-history result is attached to this report.</div>';
+  return `${renderTable(['Case', 'Status', 'Integration', 'Damping', 'Samples', 'dt', 'Max displacement', 'Energy error', 'Energy', 'Run hash'], report.rows.map((row) => [
+    row.caseId,
+    row.status,
+    row.integration || '-',
+    row.dampingType || '-',
+    row.sampleCount,
+    format(row.dt),
+    formatLength(row.maxDisplacement),
+    formatRatio(row.energyError),
+    row.energyQualified == null ? '-' : row.energyQualified ? 'PASS' : 'FAIL',
+    row.runHash || '-',
+  ]))}${renderList(report.limitations || [])}`;
+}
+
+function renderMembraneWorkflow(report) {
+  if (!report?.available) return '<div class="note">No membrane workflow result is attached to this report.</div>';
+  return `${renderMetricGrid([
+    ['Mesh', report.mesh.id || '-'],
+    ['Elements', report.mesh.elementCount],
+    ['Integration points', report.result.integrationPointCount],
+    ['Converged', report.comparison?.converged == null ? '-' : report.comparison.converged ? 'PASS' : 'REVIEW'],
+  ])}${renderTable(['Probe', 'Element', 'xi', 'eta', 'Sx', 'Sy', 'Txy', 'Hash'], report.probes.map((row) => [
+    row.id || '-', row.elementId, format(row.xi), format(row.eta), format(row.sx), format(row.sy), format(row.txy), row.probeHash,
+  ]))}${renderTable(['Edge', 'Resultant', 'Moment', 'Residual', 'Hash'], report.loads.map((row) => [
+    row.edge, formatVector(row.resultant, formatForce), formatVector(row.momentAboutOrigin, formatMoment), format(row.equilibriumResidual), row.loadHash,
+  ]))}${renderList(report.limitations || [])}`;
+}
+
+function renderPlateWorkflow(report) {
+  if (!report?.available) return '<div class="note">No plate workflow result is attached to this report.</div>';
+  return `${renderMetricGrid([
+    ['Mesh', report.mesh.id || '-'],
+    ['Elements', report.mesh.elementCount],
+    ['Support', report.analysis.support],
+    ['Center w', formatLength(report.analysis.center?.w)],
+    ['Coefficient', format(report.analysis.dimensionlessCoefficient)],
+    ['Energy closure', report.analysis.energy?.passed ? 'PASS' : 'REVIEW'],
+    ['Qualification', report.qualification?.status || 'not-run'],
+    ['Shear energy ratio', formatRatio(report.qualification?.energy?.transverseShearFraction)],
+  ])}${renderList(report.limitations || [])}`;
+}
+
+function renderShellStabilization(report) {
+  if (!report?.available) return '<div class="note">No shell stabilization qualification is attached to this report.</div>';
+  return `${renderMetricGrid([
+    ['Status', report.status],
+    ['Claim', report.claim?.id || '-'],
+    ['Cross-solver identical', report.claim?.crossSolverEquivalent ? 'yes' : 'no'],
+    ['Physical modes', report.modes?.filter((row) => row.classification === 'physical').length || 0],
+  ])}${renderTable(['Mode', 'MAC', 'Physical energy', 'Stabilization energy', 'Ratio', 'Class'], (report.modes || []).map((row) => [
+    row.id, format(row.mac), format(row.physicalEnergy), format(row.stabilizationEnergy), formatRatio(row.stabilizationEnergyRatio), row.classification,
+  ]))}${renderList(report.limitations || [])}`;
+}
+
+function renderPushoverQualification(report) {
+  if (!report?.available) return '<div class="note">No production pushover qualification result is attached to this report.</div>';
+  const run = report.productionRun || {};
+  return `${renderMetricGrid([
+    ['Control', run.controlStrategy || '-'],
+    ['Termination', run.termination?.reason || '-'],
+    ['Accepted steps', run.stepCount ?? '-'],
+    ['Rejected steps', run.rejectedStepCount ?? '-'],
+    ['Max base shear', formatForce(run.maximumBaseShear)],
+    ['Max control displacement', formatLength(run.maximumControlDisplacement)],
+    ['Rollback', report.rollbackAudit?.status || 'not-run'],
+    ['Benchmark', report.benchmarkExecutionStarted ? 'started' : 'NOT RUN'],
+  ])}${renderList(report.limitations || [])}`;
 }
 
 function summarizeMemberChecks(model, analysis, resultSet) {
@@ -817,13 +943,25 @@ function renderAdvancedElasticTrace(trace) {
       formatRatio(row.massX),
       formatRatio(row.massY),
     ])),
-    renderTable(['Dir', 'SRSS disp.', 'Max modal disp.', 'Mass ratio'], trace.responseSpectrum.directions.map((row) => [
+    renderTable(['Dir', 'Method', 'Combined disp.', 'Max |Rz|', 'Max modal disp.', 'Mass ratio'], trace.responseSpectrum.directions.map((row) => [
       row.direction,
-      formatLength(row.srssDisplacement),
+      row.method || trace.responseSpectrum.method || '-',
+      formatLength(row.displacement ?? selectedModalDisplacement(row, row.method || trace.responseSpectrum.method)),
+      format(row.maxRotationRz),
       formatLength(row.maxModalDisplacement),
       formatRatio(row.participatingMassRatio),
     ])),
   ].join('');
+}
+
+function selectedModalDisplacement(row = {}, method = 'SRSS') {
+  const key = {
+    CQC: 'cqcDisplacement',
+    ABS: 'absDisplacement',
+    NRC10: 'nrc10Displacement',
+    SRSS: 'srssDisplacement',
+  }[String(method || 'SRSS').toUpperCase()] || 'srssDisplacement';
+  return row[key];
 }
 
 function renderResultPostprocessing(post) {

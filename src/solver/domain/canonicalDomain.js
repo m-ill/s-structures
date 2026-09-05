@@ -46,6 +46,16 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     ));
   const allMembers = selectedMembers.filter((member) => nodeIds.has(member.n1) && nodeIds.has(member.n2));
   const memberIds = new Set(allMembers.map((member) => member.id));
+  const candidateLinks = sorted(source.links || []);
+  referenceErrors.push(...candidateLinks
+    .filter((link) => !nodeIds.has(link.n1) || !nodeIds.has(link.n2))
+    .map((link) => domainIssue(
+      'ELASTIC_LINK_NODE_REFERENCE_MISSING',
+      'link',
+      link.id,
+      `Elastic link ${link.id || '(unnamed)'} references missing node ${!nodeIds.has(link.n1) ? link.n1 : link.n2}.`,
+    )));
+  const allLinks = candidateLinks.filter((link) => nodeIds.has(link.n1) && nodeIds.has(link.n2));
   const allSections = sorted([...(source.sections || []), ...generatedSections]);
   const loadExpansion = options.includeLoads === false
     ? { solverLoads: [], loads: [], trace: [], handcalc: [] }
@@ -75,6 +85,7 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     ...source,
     nodes: allNodes,
     members: allMembers,
+    links: allLinks,
     materials: sorted(source.materials || []),
     sections: allSections,
     loads,
@@ -114,6 +125,7 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
   const snapshot = {
     nodes: allNodes,
     members: allMembers,
+    links: allLinks,
     materials: solverModel.materials,
     sections: allSections,
     loads,
@@ -132,6 +144,7 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     outputHash: hashes.outputHash,
     nodeIds: allNodes.map((node) => node.id),
     elementIds: allMembers.map((member) => member.id),
+    linkIds: allLinks.map((link) => link.id),
     descriptorHashes: elements.descriptors.map((item) => [item.id, item.descriptorHash]),
     constraintContractHash: constraint.hash || null,
     originMapHash: stableHash(originMap).slice(0, 24),
@@ -151,6 +164,7 @@ export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
     snapshot,
     nodes: allNodes,
     members: allMembers,
+    links: allLinks,
     loads,
     solverModel,
     rigidDiaphragms,

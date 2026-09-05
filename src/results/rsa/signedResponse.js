@@ -4,13 +4,13 @@ export const RSA_SIGNED_RESPONSE_VERSION = 'p6-m4-rsa-signed-response-v1';
 
 export function buildSignedResponseStrategy(input = {}) {
   const lateralCases = input.lateralCases || input.caseIds || [];
-  const unsignedMethod = /SRSS|CQC/i.test(String(input.method || input.rsa?.method || 'SRSS'));
+  const unsignedMethod = /SRSS|CQC|ABS|NRC(?:10)?/i.test(String(input.method || input.rsa?.method || 'SRSS'));
   const signedCases = lateralCases
     .filter((caseId) => /[+-]$|A[PN]$/i.test(String(caseId)))
     .map((caseId) => ({ caseId, sign: signOf(caseId) }));
   const generatedAccidental = (input.accidentalBaseCases || []).flatMap((caseId) => signedAccidentalVariants(caseId));
   const warnings = [];
-  if (unsignedMethod) warnings.push('RSA SRSS/CQC responses are unsigned; design envelopes require signed lateral cases or explicit ELF sign strategy.');
+  if (unsignedMethod) warnings.push('RSA modal-combination responses are unsigned; design envelopes require signed lateral cases or explicit ELF sign strategy.');
   if (!signedCases.length && !generatedAccidental.length) warnings.push('No signed lateral response cases were provided.');
   return {
     version: RSA_SIGNED_RESPONSE_VERSION,

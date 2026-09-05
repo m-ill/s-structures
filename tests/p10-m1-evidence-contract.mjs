@@ -10,10 +10,10 @@ import {
   runXvalSuite,
   xv01HandCalculation,
   xv02HandCalculation,
-} from '../src/index.js';
+} from '../verification/index.js';
 import { stableHash } from '../src/core/stableHash.js';
 
-const evidenceRoot = path.resolve('reports', 'validation-evidence', 'phase10');
+const evidenceRoot = path.resolve('verification', 'evidence', 'validation', 'phase10');
 const xvalRoot = path.join(evidenceRoot, 'xv');
 const modelRoot = path.resolve('tests', 'fixtures', 'phase10', 'xval');
 const cases = createXvalCaseDefinitions();

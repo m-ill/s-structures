@@ -8,7 +8,7 @@
     release_long_regression: PASS
     critical_findings_open: 0
     high_findings_open: 0
-    evidence_artifact: reports/validation-evidence/phase12/p12-m6-windows-regression-release-gates.json
+    evidence_artifact: verification/evidence/validation/phase12/p12-m6-windows-regression-release-gates.json
 
 ## 검토 결과
 

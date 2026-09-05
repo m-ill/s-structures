@@ -2,7 +2,7 @@
 
 status: implementation-ready draft
 owner: solver / results / UI
-related: `P2_M5_ADVANCED_ELASTIC_TRACE.md`, `P2_T25_T50_PRACTICE_VALIDATION.md`, `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`
+related: `P2_M5_ADVANCED_ELASTIC_TRACE.md`, `P2_T25_T50_PRACTICE_VALIDATION.md`, `verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`
 workpackages: `P2_M5_DIRECT_ANALYSIS_WORKPACKAGES.md`
 
 ## Purpose
@@ -404,7 +404,7 @@ Detailed execution tasks are tracked in `P2_M5_DIRECT_ANALYSIS_WORKPACKAGES.md`.
 | D5 | UI method control and direct result panels | `src/ui/indexNativeResultControls.js`, `src/ui/indexResultsPanel.js` |
 | D6 | reports and calculation package output | `src/report/detailedReport.js`, `src/report/calculationPackage.js`, `src/report/htmlReport.js` |
 | D7 | agent API trace | `src/ui/indexAgentApi.js`, `src/ui/indexAgentActionCatalog.js` |
-| D8 | verification fixtures and benchmarks | `tests/`, `src/examples/verification.js`, `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md` |
+| D8 | verification fixtures and benchmarks | `tests/`, `src/examples/verification.js`, `verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md` |
 | D9 | user-facing status/manual updates | `docs/user-manual/STATUS_AND_LIMITS.md`, `docs/user-manual/02-modeling-and-elastic-analysis.md` |
 
 ## Acceptance Criteria

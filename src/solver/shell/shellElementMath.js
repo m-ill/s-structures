@@ -103,6 +103,9 @@ export function qm6MembraneLocal(projected, E, nu, thickness) {
   return {
     ok: true,
     matrix: subtractMatrices(Kuu, correction),
+    uncondensedCompatibleMatrix: Kuu,
+    enhancedCorrectionMatrix: correction,
+    internalStiffnessMatrix: Kaa,
     internalModeCount: QM6_FORMULATION.enhancedModeCount,
     formulation: QM6_FORMULATION.name,
     enhancedStrainMapping: QM6_FORMULATION.mapping,
@@ -123,7 +126,8 @@ export function qm6MembraneLocal(projected, E, nu, thickness) {
 // gamma=[w,x+ry, w,y-rx].
 export function mitc4PlateLocal(projected, E, nu, thickness, shearFactor = MITC4_FORMULATION.shearFactor) {
   const Db = plateBendingMatrix(E, nu, thickness);
-  const K = zeros(12, 12);
+  const bendingStiffnessMatrix = zeros(12, 12);
+  const shearStiffnessMatrix = zeros(12, 12);
   const G = E / (2 * (1 + nu));
   const Ds = [[shearFactor * G * thickness, 0], [0, shearFactor * G * thickness]];
   const cornerQuality = q4CornerJacobianQuality(projected);
@@ -135,19 +139,51 @@ export function mitc4PlateLocal(projected, E, nu, thickness, shearFactor = MITC4
     const Bb = mitc4BendingB(shape.dNdx, shape.dNdy);
     const Bs = mitc4ShearB(projected, shape, xi, eta);
     if (!Bs.ok) return Bs;
-    addProduct(K, Bb, Db, Bb, shape.detJ);
-    addProduct(K, Bs.matrix, Ds, Bs.matrix, shape.detJ);
+    addProduct(bendingStiffnessMatrix, Bb, Db, Bb, shape.detJ);
+    addProduct(shearStiffnessMatrix, Bs.matrix, Ds, Bs.matrix, shape.detJ);
   }
+
+  const K = addMatrices(bendingStiffnessMatrix, shearStiffnessMatrix);
 
   return {
     ok: true,
     matrix: K,
+    bendingStiffnessMatrix,
+    shearStiffnessMatrix,
     Db,
     Ds,
     formulation: MITC4_FORMULATION.name,
     integration: 'mitc4-mixed-covariant-shear-2x2',
     shearFactor,
     reference: MITC4_FORMULATION.reference,
+  };
+}
+
+export function recoverMitc4PlateResult(projected, localDisplacements, E, nu, thickness, xi = 0, eta = 0, shearFactor = MITC4_FORMULATION.shearFactor) {
+  if (!Array.isArray(localDisplacements) || localDisplacements.length !== 12 || localDisplacements.some((value) => !Number.isFinite(Number(value)))) {
+    return { ok: false, reason: 'SHELL_PLATE_DISPLACEMENT_VECTOR_INVALID' };
+  }
+  const shape = q4Shape(projected, Number(xi), Number(eta));
+  if (!shape.ok) return shape;
+  const bendingB = mitc4BendingB(shape.dNdx, shape.dNdy);
+  const shearB = mitc4ShearB(projected, shape, Number(xi), Number(eta));
+  if (!shearB.ok) return shearB;
+  const curvature = multiplyVector(bendingB, localDisplacements);
+  const shearStrain = multiplyVector(shearB.matrix, localDisplacements);
+  const Db = plateBendingMatrix(E, nu, thickness);
+  const G = E / (2 * (1 + nu));
+  const Ds = [[shearFactor * G * thickness, 0], [0, shearFactor * G * thickness]];
+  const moment = multiplyVector(Db, curvature);
+  const shear = multiplyVector(Ds, shearStrain);
+  return {
+    ok: true,
+    xi: Number(xi),
+    eta: Number(eta),
+    curvature: { kx: curvature[0], ky: curvature[1], kxy: curvature[2] },
+    moment: { Mx: moment[0], My: moment[1], Mxy: moment[2] },
+    shearStrain: { gxz: shearStrain[0], gyz: shearStrain[1] },
+    shear: { Qx: shear[0], Qy: shear[1] },
+    shearFactor,
   };
 }
 

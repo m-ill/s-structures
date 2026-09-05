@@ -1,0 +1,238 @@
+{
+  "schemaVersion": "p17-suite-manifest-v1",
+  "phase": 17,
+  "milestone": "P17-M1",
+  "frameworkStatus": "CONTRACT_READY_NO_BENCHMARK_RUNS",
+  "benchmarkExecutionPolicy": "NO_BENCHMARK_EXECUTION_IN_P17_M1",
+  "officialCaseCount": 21,
+  "officialOrder": [
+    "SB1",
+    "SB2",
+    "SB3",
+    "SB5",
+    "SB6",
+    "SB7",
+    "SB8",
+    "SB9",
+    "SB10",
+    "SB12",
+    "PD1",
+    "SM5",
+    "SM5b",
+    "SM6",
+    "SR1",
+    "SR2",
+    "SR2b",
+    "P3S2",
+    "SP1",
+    "SH1",
+    "TH1"
+  ],
+  "officialDenominator": {
+    "classification": "OFFICIAL_STRIX_21_ONLY",
+    "count": 21,
+    "customIncluded": false
+  },
+  "customExcluded": [
+    {
+      "caseId": "P3S2-SS",
+      "classification": "S_STRUCTURES_CUSTOM_QUALIFICATION",
+      "reasonCode": "CUSTOM_CASE_EXCLUDED_FROM_OFFICIAL_DENOMINATOR"
+    }
+  ],
+  "sourceRegistryBinding": {
+    "path": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+    "registryHash": "de4b442ab56af5b14a907d320b85281a04b3f66ab5f75f9073a3f563df09f79c",
+    "revision": 2
+  },
+  "cases": [
+    {
+      "caseId": "SB1",
+      "ordinal": 1,
+      "folder": "verification/benchmarks/strix21/cases/SB1",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB1/case-manifest.json",
+      "manifestHash": "8fccf491a9fa2f05d66a5aff965ebe1cf8ce424fabf8fce7fa89d0ca5bf8ef21",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SB2",
+      "ordinal": 2,
+      "folder": "verification/benchmarks/strix21/cases/SB2",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB2/case-manifest.json",
+      "manifestHash": "c3d0f05af133cf63905285de3b9b3a23617c77b72dc87cac7da2be1239778694",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SB3",
+      "ordinal": 3,
+      "folder": "verification/benchmarks/strix21/cases/SB3",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB3/case-manifest.json",
+      "manifestHash": "ee21918f5e7aed78d306dd07bd951b2e523065410d84d0807f4ec27862decbc9",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SB5",
+      "ordinal": 4,
+      "folder": "verification/benchmarks/strix21/cases/SB5",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB5/case-manifest.json",
+      "manifestHash": "ffe981af2e055ee9ef3d93189389dd4972c70d117f0e0743db6c7e02a1ea79cc",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SB6",
+      "ordinal": 5,
+      "folder": "verification/benchmarks/strix21/cases/SB6",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB6/case-manifest.json",
+      "manifestHash": "ed22bee26ffdeea872db743194d92d5f172bb6d44345ec1e2410350912aefa2f",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SB7",
+      "ordinal": 6,
+      "folder": "verification/benchmarks/strix21/cases/SB7",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB7/case-manifest.json",
+      "manifestHash": "18cfbec9172df709795e7ac94f3799615d4aba2e25008f3938cad6d32f068c2e",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SB8",
+      "ordinal": 7,
+      "folder": "verification/benchmarks/strix21/cases/SB8",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB8/case-manifest.json",
+      "manifestHash": "bac7654a91b249b7eed5341483cfc52381d786a9dd89aed419ecb4048960c01c",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SB9",
+      "ordinal": 8,
+      "folder": "verification/benchmarks/strix21/cases/SB9",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB9/case-manifest.json",
+      "manifestHash": "b28be759bcb5cca07212d7ad25a88a525cc3a6d83b4f86d9a082d809520cfad6",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SB10",
+      "ordinal": 9,
+      "folder": "verification/benchmarks/strix21/cases/SB10",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB10/case-manifest.json",
+      "manifestHash": "3e7cc040f41ca840ff174b5fe4a57e62932fe672f1464676491a6df7927dea39",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SB12",
+      "ordinal": 10,
+      "folder": "verification/benchmarks/strix21/cases/SB12",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB12/case-manifest.json",
+      "manifestHash": "0a81f1a40ef8987fc1abf9e3fb565ae4ce9465995be08de33a07fd9a750fe675",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "PD1",
+      "ordinal": 11,
+      "folder": "verification/benchmarks/strix21/cases/PD1",
+      "manifestPath": "verification/benchmarks/strix21/cases/PD1/case-manifest.json",
+      "manifestHash": "88018087c3b5a6001f7c43e6d608f6b4b0e7e86075cc630bca3afb4cd23b3b35",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SM5",
+      "ordinal": 12,
+      "folder": "verification/benchmarks/strix21/cases/SM5",
+      "manifestPath": "verification/benchmarks/strix21/cases/SM5/case-manifest.json",
+      "manifestHash": "e16ba609f79107faca4f88fcd57e6d0bb57651630afa30a37ebce4ee39d5b019",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SM5b",
+      "ordinal": 13,
+      "folder": "verification/benchmarks/strix21/cases/SM5b",
+      "manifestPath": "verification/benchmarks/strix21/cases/SM5b/case-manifest.json",
+      "manifestHash": "9ceb1c325e792e0b9d7a514cac8dfa40ebae7265393af352dc1eb053506515cf",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SM6",
+      "ordinal": 14,
+      "folder": "verification/benchmarks/strix21/cases/SM6",
+      "manifestPath": "verification/benchmarks/strix21/cases/SM6/case-manifest.json",
+      "manifestHash": "34ca78311b271493d04a838683af8b55a31e45c8823dd5223bdb8396337c3408",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SR1",
+      "ordinal": 15,
+      "folder": "verification/benchmarks/strix21/cases/SR1",
+      "manifestPath": "verification/benchmarks/strix21/cases/SR1/case-manifest.json",
+      "manifestHash": "73fe90b9d6062c9cf9f1995a1198980b60b28816c047a7b67063b1da9a1bb7f9",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SR2",
+      "ordinal": 16,
+      "folder": "verification/benchmarks/strix21/cases/SR2",
+      "manifestPath": "verification/benchmarks/strix21/cases/SR2/case-manifest.json",
+      "manifestHash": "a6ec9fd84bfca9356d6753eb705a0e6fba2dd23e8727828a5f3a4d9cb7f17da3",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SR2b",
+      "ordinal": 17,
+      "folder": "verification/benchmarks/strix21/cases/SR2b",
+      "manifestPath": "verification/benchmarks/strix21/cases/SR2b/case-manifest.json",
+      "manifestHash": "5be1c64c2a80cb0dcce62df036a7f4582582d939705ffb2ff6a8ade932176278",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "P3S2",
+      "ordinal": 18,
+      "folder": "verification/benchmarks/strix21/cases/P3S2",
+      "manifestPath": "verification/benchmarks/strix21/cases/P3S2/case-manifest.json",
+      "manifestHash": "b0b02cd1823e32d5723877d684e45b7841d64be1fcd3d62f84e7635b39f361a3",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SP1",
+      "ordinal": 19,
+      "folder": "verification/benchmarks/strix21/cases/SP1",
+      "manifestPath": "verification/benchmarks/strix21/cases/SP1/case-manifest.json",
+      "manifestHash": "84b6701e2bec6f3352579f1a5d21db524a1672dc7efd98724572691481aa1815",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "SH1",
+      "ordinal": 20,
+      "folder": "verification/benchmarks/strix21/cases/SH1",
+      "manifestPath": "verification/benchmarks/strix21/cases/SH1/case-manifest.json",
+      "manifestHash": "a855b46e3a694a1ac47be4f3334dc0e6cb8fcc1f86ea5ab4555538d157907a8c",
+      "status": "NOT_STARTED"
+    },
+    {
+      "caseId": "TH1",
+      "ordinal": 21,
+      "folder": "verification/benchmarks/strix21/cases/TH1",
+      "manifestPath": "verification/benchmarks/strix21/cases/TH1/case-manifest.json",
+      "manifestHash": "fed43410edace892865d43e555ea24914bb055d610cd0e0a7e828e185bfa9551",
+      "status": "NOT_STARTED"
+    }
+  ],
+  "customCases": [
+    {
+      "caseId": "P3S2-SS",
+      "folder": "verification/benchmarks/strix21/custom/P3S2-SS",
+      "manifestPath": "verification/benchmarks/strix21/custom/P3S2-SS/case-manifest.json",
+      "manifestHash": "457dc73b1fdeb76edfac4a90e1773830917a7f476d9bc5c226e48b60b83ae93d",
+      "officialSuiteMember": false,
+      "status": "NOT_STARTED"
+    }
+  ],
+  "resultSummary": {
+    "benchmarkExecutionCount": 0,
+    "terminalCaseCount": 0,
+    "passCount": 0,
+    "failCount": 0,
+    "blockedCount": 0
+  },
+  "reasonCodes": [
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION"
+  ]
+}

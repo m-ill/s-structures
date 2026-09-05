@@ -11,7 +11,7 @@ release_qualification: BLOCKED
 release_qualified: false
 critical_findings_open: 0
 high_findings_open: 0
-evidence_artifact: reports/validation-evidence/phase11/p11-m0-baseline-governance.json
+evidence_artifact: verification/evidence/validation/phase11/p11-m0-baseline-governance.json
 evidence_records: 7
 artifact_hash: c9850840c85e162467ab86021be853a73a2c7b42c4dd33d87140aaa0ce8cf33c
 ```

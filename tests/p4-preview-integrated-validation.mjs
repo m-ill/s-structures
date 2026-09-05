@@ -10,7 +10,9 @@ import { createAppShell } from '../src/app/shell.js';
 import { buildHash } from '../src/app/routes.js';
 import { buildImportCandidate, createTwoStoryElasticFrameModel } from '../src/index.js';
 
-const evidencePath = 'reports/validation-evidence/p4-preview-integrated-validation.json';
+// Regression output is intentionally scratch data. Historical evidence under
+// verification/evidence is append-only and must not be rewritten by a test.
+const evidencePath = 'tmp/verification/tests/p4-preview-integrated-validation.json';
 const app = await bootTestApp();
 
 try {

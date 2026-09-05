@@ -19,7 +19,7 @@ WP-01과 독립 — 병렬 착수 가능. full suite green.
 ## Work Breakdown
 
 ### Step 1. 벤치마크 출처 감사 (T07)
-1. `docs/verification/NONLINEAR_BENCHMARK_SOURCES.md` 생성.
+1. `verification/specs/NONLINEAR_BENCHMARK_SOURCES.md` 생성.
 2. B1~B8 각각: 서지(저자/연도/표·식 번호), 프로그램 입력, 기준값, 현재 tolerance, 실제 측정 오차를 표로.
 3. `src/verification/benchmarkGate*.js`에서 기준값이 문헌과 일치하는지 재확인 — 불일치 발견 시 기준 수정 커밋 분리.
 4. elastica(B2)는 Mattiasson 표 원값 인용, snap-through(B3)는 해석해 유도 과정 수록.
@@ -45,7 +45,7 @@ M14~M16 proven 전환 (마일스톤당 1커밋), evidence register 등록, ROADM
 
 ## Deliverables
 
-`docs/verification/NONLINEAR_BENCHMARK_SOURCES.md` / `tests/p4-nonlinear-mechanism.mjs`, `tests/p4-nlth-validation.mjs` / 승격 커밋 3건.
+`verification/specs/NONLINEAR_BENCHMARK_SOURCES.md` / `tests/p4-nonlinear-mechanism.mjs`, `tests/p4-nlth-validation.mjs` / 승격 커밋 3건.
 
 ## Acceptance Criteria
 

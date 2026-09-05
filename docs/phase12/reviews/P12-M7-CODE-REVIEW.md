@@ -9,8 +9,8 @@
     full_release_regression: PASS
     critical_findings_open: 0
     high_findings_open: 0
-    evidence_artifact: reports/validation-evidence/phase12/p12-m7-local-pilot-release-gate.json
-    release_manifest: reports/validation-evidence/phase12/p12-release-manifest.json
+    evidence_artifact: verification/evidence/validation/phase12/p12-m7-local-pilot-release-gate.json
+    release_manifest: verification/evidence/validation/phase12/p12-release-manifest.json
 
 ## 검토 결과
 

@@ -39,7 +39,7 @@ depends: [WP-05]
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m6-dual-pdf-export.json`
+`verification/evidence/validation/phase11/p11-m6-dual-pdf-export.json`
 
 ## Review Log
 

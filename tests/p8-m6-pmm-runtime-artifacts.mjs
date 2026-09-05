@@ -3,11 +3,11 @@ import { readFileSync } from 'node:fs';
 import {
   getPhase8VerificationSuite,
   validatePhase8EvidenceArtifact,
-} from '../src/verification/registry.js';
+} from '../verification/framework/registry.js';
 import { P8_M6_PMM_RUNTIME_GATE_MS } from './fixtures/p8-m6-pmm-runtime-fixture.mjs';
 
 const artifact = JSON.parse(readFileSync(new URL(
-  '../reports/validation-evidence/phase8/p8-m6-pmm-runtime.json',
+  '../verification/evidence/validation/phase8/p8-m6-pmm-runtime.json',
   import.meta.url,
 )));
 const suite = getPhase8VerificationSuite('P8-M6-PMM-RUNTIME');

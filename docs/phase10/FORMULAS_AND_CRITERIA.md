@@ -76,7 +76,7 @@ alias가 충돌하거나 값 타입이 boolean이 아니면 임의 우선순위�
 
 compute의 9-wide WebGPU shadow kernel/CPU reference 계약은 구현됐고, NVIDIA Ampere/Chrome 149 실제
 장치에서도 144개 행렬값이 최대 상대오차 `9.78e-8`로 PASS했다. 원시 증거는
-[P9-M4 browser artifact](../../reports/validation-evidence/phase9/p9-m4-browser-raw.json)에 결속한다. 다만
+[P9-M4 browser artifact](../../verification/evidence/validation/phase9/p9-m4-browser-raw.json)에 결속한다. 다만
 다중 vendor/browser 행렬(`P9-GPU-PLT-12`)과 XV-09 SAP2000 기준해는 여전히 pending이므로 M11 release
 판정은 계속 차단한다.
 
@@ -396,7 +396,7 @@ qualification artifact는 35개 record 전부 PASS하는 계약이며, 현재 ar
 외부 solver 실행은 저장소 밖(오너 입력물)이다. 저장소는 **기준해를 버전 고정 artifact로 수입**해 자동 대조한다.
 
 ```text
-reference artifact (reports/validation-evidence/phase10/xv/*.json):
+reference artifact (verification/evidence/validation/phase10/xv/*.json):
 {
   version, caseId, status: 'ready'|'pending-reference',
   source: 'opensees'|'sap2000'|'etabs'|'hand-calc',

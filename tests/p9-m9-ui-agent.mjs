@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import { createModel } from '../src/index.js';
 import { installIndexEngineBridge } from '../src/ui/indexBridge.js';
 import { buildNativeIndexShell, createFakeIndexDocument } from './helpers/fakeIndexDom.mjs';
+import { analyzePhase15Architecture } from '../verification/harnesses/check-phase15-architecture.mjs';
 
 const model = createModel();
 model.nodes = [
@@ -62,9 +63,25 @@ assert.equal(legacy.deprecation.code, 'SYNC_PRODUCT_ANALYSIS_DEPRECATED', 'sync 
 const analysisRunnerSource = await fs.readFile(new URL('../src/ui/analysisRunners.js', import.meta.url), 'utf8');
 assert.doesNotMatch(analysisRunnerSource, /from ['"]\.\.\/(?:solver\/linear3d|dynamics|nonlinear\/analysisRouter)/, 'P9-REF-10 no UI solver/backend imports');
 assert.doesNotMatch(analysisRunnerSource, /\banalyzeModel\s*\(/, 'P9-REF-10 no UI direct solver call');
+const phase15Architecture = await analyzePhase15Architecture();
+const uiNumericFindings = phase15Architecture.forbiddenImports.filter((row) => row.rule === 'ui-numeric-core');
+assert.equal(
+  phase15Architecture.gate.uiNumericCoreImports,
+  uiNumericFindings.length === 0,
+  'the Phase15 UI numeric-core gate must be derived fail-closed from its findings',
+);
+assert.equal(phase15Architecture.gate.uiNumericCoreImports, false, 'P15-M8-F03 remains explicitly BLOCKED until service boundaries replace direct UI dependencies');
+assert.ok(
+  uiNumericFindings.some((row) => (
+    row.source === 'src/ui/indexAgentApi.js'
+      && row.target === 'src/dynamics/elasticCompleteness.js'
+      && row.severity === 'High'
+  )),
+  'the direct indexAgentApi numeric dependency must remain visible as a Phase15 High finding',
+);
 for (const file of ['indexBridge.js', 'indexAgentApi.js', 'indexNativeAdvancedAnalysis.js', 'm3State.js']) {
   const source = await fs.readFile(new URL(`../src/ui/${file}`, import.meta.url), 'utf8');
-  assert.doesNotMatch(source, /from ['"]\.\.\/(?:solver\/linear3d|dynamics\/(?:modal|globalBuckling|elasticCompleteness)|nonlinear\/(?:analysisRouter|pushover\.js))/, `P9-REF-10 ${file} has no direct numeric-core import`);
+  assert.doesNotMatch(source, /from ['"]\.\.\/index\.js['"]/, `P15-M8-F02 ${file} does not hide dependencies behind the root barrel`);
   assert.doesNotMatch(source, /\b(?:analyzeCoreModel|runCorePushover)\s*\(/, `P9-REF-10 ${file} has no direct numeric-core call`);
 }
 const centerSource = await fs.readFile(new URL('../src/ui/indexAnalysisCenter.js', import.meta.url), 'utf8');
@@ -79,4 +96,9 @@ console.log(JSON.stringify({
   planHashParity: true,
   resultRecord: bridge.getAnalysisCaseResult('EL-STATIC').runRecordId,
   gpuReason: bridge.getAnalysisCapabilities({ kind: 'static' }).targets.find((row) => row.id === 'gpu').reason,
+  phase15Architecture: {
+    qualificationStatus: phase15Architecture.gate.uiNumericCoreImports ? 'PASS' : 'BLOCKED',
+    findingId: 'P15-M8-F03',
+    uiNumericCoreFindings: uiNumericFindings.length,
+  },
 }, null, 2));

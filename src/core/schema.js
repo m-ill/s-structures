@@ -3,7 +3,7 @@ import {
   KDS_41_12_00_2022_RULE_PACK,
 } from './kdsLoadCombinations.js';
 
-export const SCHEMA_VERSION = 5;
+export const SCHEMA_VERSION = 6;
 export const SCHEMA_NAME = 's-structures-model';
 
 export const DOF_KEYS = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
@@ -41,6 +41,7 @@ export const ERROR_CODES = {
   NODE_MISSING_ID: 'NODE_MISSING_ID',
   DUPLICATE_NODE_ID: 'DUPLICATE_NODE_ID',
   BAD_NODE_COORDS: 'BAD_NODE_COORDS',
+  BAD_NODE_MASS: 'BAD_NODE_MASS',
   BAD_SUPPORT_TYPE: 'BAD_SUPPORT_TYPE',
   BAD_CUSTOM_SUPPORT: 'BAD_CUSTOM_SUPPORT',
   MEMBER_MISSING_ID: 'MEMBER_MISSING_ID',

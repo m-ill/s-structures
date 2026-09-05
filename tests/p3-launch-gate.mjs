@@ -109,7 +109,7 @@ assert.equal(existsSync('docs/user-manual/PHASE3_LAUNCH_MANUAL.md'), true);
 assert.equal(existsSync('reports/launch-readiness/performance-security.md'), true);
 assert.equal(existsSync('reports/launch-readiness/backup-restore.md'), true);
 assert.equal(existsSync('reports/launch-readiness/owner-signoff-checklist.md'), true);
-assert.equal(existsSync('docs/verification/DESIGN_MODULE_VERIFICATION.md'), true);
+assert.equal(existsSync('verification/specs/DESIGN_MODULE_VERIFICATION.md'), true);
 
 const evidence = {
   fullSuiteGreen: true,
@@ -135,7 +135,7 @@ const evidence = {
   designVerificationRecorded: true,
   designVerificationEvidence: {
     recorded: true,
-    reportPath: 'docs/verification/DESIGN_MODULE_VERIFICATION.md',
+    reportPath: 'verification/specs/DESIGN_MODULE_VERIFICATION.md',
     items: ['rc', 'steel', 'connection', 'foundation'],
   },
   calculationTraceConnected: true,

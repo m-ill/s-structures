@@ -38,7 +38,7 @@ depends: [WP-01, ADR-002]
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m3-visual-capture-core.json`
+`verification/evidence/validation/phase11/p11-m3-visual-capture-core.json`
 
 ## Review Log
 
@@ -46,7 +46,7 @@ depends: [WP-01, ADR-002]
 
 - 구현: `src/report/phase11/visualCapture.js`, `src/core/stableHash.js`
 - 테스트: `tests/p11-m3-visual-capture-core.mjs`
-- 증적: `reports/validation-evidence/phase11/p11-m3-visual-capture-core.json`
+- 증적: `verification/evidence/validation/phase11/p11-m3-visual-capture-core.json`
 - 리뷰: [P11-M3-CODE-REVIEW.md](../reviews/P11-M3-CODE-REVIEW.md)
 - 판정: `P11-CAP-01~14`, `P11-SEC-01~03` PASS
 - 범위 제한: 실제 제품 scene producer와 보고서 삽입은 P11-M4 소유

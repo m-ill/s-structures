@@ -1,0 +1,61 @@
+{
+  "version": "p17-product-build-lock-v1",
+  "caseId": "SB1",
+  "status": "HASH_LOCKED",
+  "productSchemaVersion": "6",
+  "serviceVersion": "p9-m9-product-analysis-service-v1",
+  "adapterVersion": "p17-m1-product-adapter-v1",
+  "publicEntrypoint": "src/index.js",
+  "codeArtifacts": [
+    {
+      "path": "src/index.js",
+      "byteLength": 59104,
+      "sha256": "4f5980a6d05b49148d6c82937e6c23dd952df8fec2cbc37814490824e5287194",
+      "role": "PUBLIC_ENTRYPOINT"
+    },
+    {
+      "path": "src/compute/product/analysisProductService.js",
+      "byteLength": 34033,
+      "sha256": "cfbf6c9ba7f879745ccb5fbe86c0a77d829fea112443078612cf091d6f23829d",
+      "role": "PRODUCT_ANALYSIS_SERVICE"
+    },
+    {
+      "path": "src/compute/product/analysisCaseEngine.js",
+      "byteLength": 10312,
+      "sha256": "505389381a4709707611568c3499e6c5d8ed82f3a2168fb0c1d79a6a32d4d466",
+      "role": "ANALYSIS_CASE_ENGINE"
+    },
+    {
+      "path": "src/ui/analysisRunners.js",
+      "byteLength": 12695,
+      "sha256": "bee4167e3060f965efc4710bb8cd517337385bda92473bbe97229dd11d1f4f4d",
+      "role": "PUBLIC_ANALYSIS_RUNNER"
+    },
+    {
+      "path": "src/solver/linear3d.js",
+      "byteLength": 67784,
+      "sha256": "b51dcdb83062bfbf09a23f3e91d6a3064c9a7c1ee1bcc0210870308c37301fc1",
+      "role": "IN_HOUSE_LINEAR_STATIC_SOLVER"
+    },
+    {
+      "path": "src/solver/linear3dAssembly.js",
+      "byteLength": 76948,
+      "sha256": "96f398d21303812cd888bc138d3736887605e66aff097b0406c70ab1cfd985c8",
+      "role": "IN_HOUSE_LINEAR_STATIC_ASSEMBLY"
+    },
+    {
+      "path": "package.json",
+      "byteLength": 21272,
+      "sha256": "06a9efd99b752f5b3de187377f9943bb1ca722394b8228b45cc6ec1ee405daba",
+      "role": "PACKAGE_MANIFEST"
+    }
+  ],
+  "aggregateHash": "e2085494bac471046fa950f6b7aeac52234af761afc0b370f5acf9651adea947",
+  "releaseAllowed": false,
+  "reasonCodes": [
+    "P17_EXTERNAL_PRODUCT_BUILD_REVIEW_PENDING",
+    "P17_DIRTY_WORKTREE_CONTENT_HASH_LOCK_ONLY"
+  ],
+  "buildLockHash": "ffe08d74a78d07df7c6defa6b355aa77e8117faf9e57f9cb58693a57a9d75561"
+}
+

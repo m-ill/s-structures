@@ -59,7 +59,7 @@ Detailed evidence is recorded in `docs/phase4/PRE_BETA_EXECUTION_AUDIT.md`.
 3. docs 인덱스/phase3 상태 갱신, full suite green.
 
 ### P4-M1 탄성해석 실증 (WP-01)
-1. 탄성 확장 기능(스프링/침하/트러스/offset/부분하중/온도/벽체/semi-rigid/CQC/좌굴/THA) 각각에 **독립 출처 기준값** 확보: 교과서 해석해 또는 수계산 검증서 (`docs/verification/ELASTIC_EXPANSION_VALIDATION.md`).
+1. 탄성 확장 기능(스프링/침하/트러스/offset/부분하중/온도/벽체/semi-rigid/CQC/좌굴/THA) 각각에 **독립 출처 기준값** 확보: 교과서 해석해 또는 수계산 검증서 (`verification/specs/ELASTIC_EXPANSION_VALIDATION.md`).
 2. 대표 3개 모델에 대해 **상용 프로그램 대조표** (절점변위/반력/부재력, 허용오차 명기) — 사용자 제공 MIDAS/ETABS 결과 또는 문헌 예제.
 3. tension-only 반복해석의 조합별 활성상태 경계 케이스 테스트 5종 추가.
 4. `phase3CompletionAuditReview`에서 M10~M13 proven 전환 + 테스트 갱신.
@@ -72,7 +72,7 @@ Detailed evidence is recorded in `docs/phase4/PRE_BETA_EXECUTION_AUDIT.md`.
 5. M14~M16 proven 전환.
 
 ### P4-M3 설계모듈 실증 (WP-03)
-1. RC 보/기둥/벽/슬래브 × 각 3케이스 이상 **수계산 검증서** (`docs/verification/DESIGN_MODULE_VERIFICATION.md`) — KDS 조항 번호와 예제집 출처 명기.
+1. RC 보/기둥/벽/슬래브 × 각 3케이스 이상 **수계산 검증서** (`verification/specs/DESIGN_MODULE_VERIFICATION.md`) — KDS 조항 번호와 예제집 출처 명기.
 2. 철골 부재/가새/접합, 기초 각 3케이스 수계산 검증서.
 3. 적용 KDS 조항 목록 확정(조항 registry에 버전 표기) + 미적용 조항의 계산서 limitation 문구 확정.
 4. 대표건물 10종 일람표 재생성 회귀 고정. M17~M18 proven 전환.
@@ -80,7 +80,7 @@ Detailed evidence is recorded in `docs/phase4/PRE_BETA_EXECUTION_AUDIT.md`.
 ### P4-M4 도면/점군 import 실증 (WP-04)
 1. **실제 DWG 파일** e2e: ODA File Converter 설치 환경에서 실무 도면 1건 이상 변환→인식→확정→해석. 변환기 부재 환경의 안내 UX 검증.
 2. **실측 점군 1건 이상** (공개 데이터셋 또는 사용자 스캔): 층/기둥 검출 recall/precision 리포트 + 검토 UI로 확정까지.
-3. 대용량 성능: 1e7점 로드/전처리 30초 예산 실측 기록 (`reports/validation-evidence/pointcloud-perf.json`).
+3. 대용량 성능: 1e7점 로드/전처리 30초 예산 실측 기록 (`verification/evidence/validation/pointcloud-perf.json`).
 4. 바이너리 PLY/PCD/LAS 손상 파일 fuzz 20케이스 (crash 0). M7~M9 proven 전환.
 
 ### P4-M5 플랫폼/보안 강화 (WP-05)
@@ -90,7 +90,7 @@ Detailed evidence is recorded in `docs/phase4/PRE_BETA_EXECUTION_AUDIT.md`.
 
 ### P4-M6 성능/규모 실증 (WP-06)
 1. TD-08, TD-15 해소 (요청당 project.json 1회 읽기, 독립 I/O 병렬화).
-2. 성능 예산 6종(점군 로드/뷰어 fps/탄성해석/pushover/NLTH/일람표) 실측값을 `reports/validation-evidence/perf-budget.json`으로 고정, 예산 테스트 게이트화.
+2. 성능 예산 6종(점군 로드/뷰어 fps/탄성해석/pushover/NLTH/일람표) 실측값을 `verification/evidence/validation/perf-budget.json`으로 고정, 예산 테스트 게이트화.
 3. 대형 모델(부재 2,000+) 탄성해석 실측 및 한계 문서화.
 
 ### P4-M7 모델러 통합·프론트 완성 (WP-07)

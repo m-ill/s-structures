@@ -22,7 +22,7 @@ const backupDir = join(root, 'backup');
 try {
   const expand = spawnSync('powershell.exe', [
     '-NoProfile', '-Command',
-    `Expand-Archive -LiteralPath '${release.zip.replace(/'/g, "''")}' -DestinationPath '${unpackRoot.replace(/'/g, "''")}' -Force`,
+    `Import-Module (Join-Path $PSHOME 'Modules\\Microsoft.PowerShell.Archive\\Microsoft.PowerShell.Archive.psd1') -Force; Expand-Archive -LiteralPath '${release.zip.replace(/'/g, "''")}' -DestinationPath '${unpackRoot.replace(/'/g, "''")}' -Force`,
   ], { encoding: 'utf8', timeout: 120_000 });
   assert.equal(expand.status, 0, expand.stderr || expand.stdout);
 
@@ -203,4 +203,3 @@ async function freePort() {
   await once(server, 'close');
   return port;
 }
-

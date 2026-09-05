@@ -22,12 +22,12 @@ Phase 3 테스트의 공통 한계는 "자체 생성 데이터에 대한 자기 
 ## Evidence Storage Contract
 
 ```text
-docs/verification/           # 방법·수계산·출처 (사람이 읽는 근거, git 추적)
+verification/specs/           # 방법·수계산·출처 (사람이 읽는 근거, git 추적)
   ELASTIC_EXPANSION_VALIDATION.md
   NONLINEAR_BENCHMARK_SOURCES.md
   DESIGN_MODULE_VERIFICATION.md
   IMPORT_FIELD_VALIDATION.md
-reports/validation-evidence/ # 생성 산출물 (재생성 가능, 스크립트로 생산)
+verification/evidence/validation/ # 생성 산출물 (재생성 가능, 스크립트로 생산)
   elastic-crosscheck/        # 상용 대조 CSV·오차표
   pointcloud-field/          # 실측 점군 리포트
   pointcloud-perf.json       # 성능 실측

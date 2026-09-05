@@ -1,0 +1,291 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/p17-m0-documentation-qualification-schema.json",
+  "title": "P17-M0 append-only documentation qualification R4",
+  "type": "object",
+  "required": [
+    "version",
+    "qualificationId",
+    "revision",
+    "issuedAt",
+    "status",
+    "scope",
+    "documentationArtifact",
+    "binds",
+    "observations",
+    "correction",
+    "milestoneImpact",
+    "carryForward",
+    "hashPolicy",
+    "correctionHash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": "p17-m0-documentation-qualification-r4-v1" },
+    "qualificationId": { "const": "P17-M0-DOCUMENTATION-QUALIFICATION-R4" },
+    "revision": { "const": 4 },
+    "issuedAt": { "const": "2026-08-28" },
+    "status": { "const": "ACTIVE_APPEND_ONLY_QUALIFICATION" },
+    "scope": {
+      "const": "Narrow correction of the P17-M0 R3 CR-02 documentation claim; sealed M0 evidence, report and source-custody findings are not modified."
+    },
+    "documentationArtifact": {
+      "type": "object",
+      "required": ["path", "relationshipToR3"],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "const": "docs/phase17/reviews/P17-M0-CODE-AND-ARTIFACT-REVIEW-ADDENDUM-R4.md"
+        },
+        "relationshipToR3": { "const": "APPEND_ONLY_QUALIFICATION_DOES_NOT_OVERWRITE_R3" }
+      }
+    },
+    "binds": {
+      "type": "object",
+      "required": ["r3Addendum", "r3Closure", "reviewedImplementation"],
+      "additionalProperties": false,
+      "properties": {
+        "r3Addendum": {
+          "type": "object",
+          "required": ["path", "byteLength", "sha256", "claimLocator"],
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "const": "docs/phase17/reviews/P17-M0-CODE-AND-ARTIFACT-REVIEW-ADDENDUM-R3.md"
+            },
+            "byteLength": { "const": 8723 },
+            "sha256": {
+              "const": "1f0832d30d87dce7c28d5b0ee54243d5ad620a36778a4e9435fb0bdf980d9a71"
+            },
+            "claimLocator": { "const": "Code review finding table, CR-02 row" }
+          }
+        },
+        "r3Closure": {
+          "type": "object",
+          "required": ["path", "byteLength", "sha256", "closureHash"],
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "const": "verification/evidence/validation/phase17/p17-m0-validation-closure-r3.json"
+            },
+            "byteLength": { "const": 32677 },
+            "sha256": {
+              "const": "d7475f8a5140603b0fc6b43d44c81a29b8aedbc301a012c6fba6b51c37e0f0aa"
+            },
+            "closureHash": {
+              "const": "4b0b748eadad0d48b2ffa80f9dbae7d37b2d4c1a808b4390fae1b9bc7abae224"
+            }
+          }
+        },
+        "reviewedImplementation": {
+          "type": "object",
+          "required": ["reportFinalManifestSchema", "validationClosureSchema", "schemaValidator"],
+          "additionalProperties": false,
+          "properties": {
+            "reportFinalManifestSchema": {
+              "type": "object",
+              "required": ["path", "byteLength", "sha256", "typeOnlyNestedPaths"],
+              "additionalProperties": false,
+              "properties": {
+                "path": {
+                  "const": "verification/specs/phase17/p17-m0-report-final-manifest-schema.json"
+                },
+                "byteLength": { "const": 2466 },
+                "sha256": {
+                  "const": "05a50fc4c85ae17af8ea36ef98bf52859eb46efd1ec44abc824be11c03a7e403"
+                },
+                "typeOnlyNestedPaths": {
+                  "const": [
+                    "baselineEvidence",
+                    "claimQualification",
+                    "sourceValuePresenceAudit",
+                    "report",
+                    "qa",
+                    "sourceScreenshots[]",
+                    "renderer"
+                  ]
+                }
+              }
+            },
+            "validationClosureSchema": {
+              "type": "object",
+              "required": ["path", "byteLength", "sha256", "typeOnlyNestedPaths"],
+              "additionalProperties": false,
+              "properties": {
+                "path": {
+                  "const": "verification/specs/phase17/p17-m0-validation-closure-schema.json"
+                },
+                "byteLength": { "const": 3065 },
+                "sha256": {
+                  "const": "f61fdc703f356c4c614c94d3b516e7cf046f6759589e89ca3b25f8da8e0d4234"
+                },
+                "typeOnlyNestedPaths": {
+                  "const": [
+                    "supersedes",
+                    "evidenceChain",
+                    "checks[]",
+                    "semanticGateReview[]",
+                    "blockerClassification",
+                    "ciPolicy"
+                  ]
+                }
+              }
+            },
+            "schemaValidator": {
+              "type": "object",
+              "required": [
+                "path",
+                "byteLength",
+                "sha256",
+                "supportedKeywordSubset",
+                "unsupportedKeywordBehavior"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "path": { "const": "verification/harnesses/json-schema-lite.mjs" },
+                "byteLength": { "const": 5532 },
+                "sha256": {
+                  "const": "728c0edf87841ee2b5788ddccee1266de5c303666413d5e9f8f370c39df979f8"
+                },
+                "supportedKeywordSubset": {
+                  "const": [
+                    "type",
+                    "required",
+                    "properties",
+                    "additionalProperties",
+                    "const",
+                    "enum",
+                    "pattern",
+                    "format(date|uri)",
+                    "minimum/maximum",
+                    "min/maxLength",
+                    "min/maxItems",
+                    "uniqueItems",
+                    "items"
+                  ]
+                },
+                "unsupportedKeywordBehavior": {
+                  "const": "UNKNOWN_OR_UNIMPLEMENTED_SCHEMA_KEYWORDS_ARE_NOT_REJECTED"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "observations": {
+      "type": "object",
+      "required": ["r3Claim", "verifiedFacts", "generatorProtections", "residualLimitations"],
+      "additionalProperties": false,
+      "properties": {
+        "r3Claim": {
+          "const": "R3 described the content audit, claim qualification, final manifest and closure nested records as strictly contracted and marked CR-02 closed for M0 by layered validation."
+        },
+        "verifiedFacts": {
+          "const": [
+            "The content-audit and claim-qualification schemas constrain many nested records with required keys and additionalProperties=false.",
+            "The report-final-manifest schema leaves seven important nested records or item records at type-only validation.",
+            "The validation-closure schema leaves six important nested records or item records at type-only validation.",
+            "The dependency-free validator implements a documented subset and does not fail on unsupported schema keywords."
+          ]
+        },
+        "generatorProtections": {
+          "const": [
+            "The M0 finalizer constructs the R3 artifacts deterministically.",
+            "The M0 finalizer checks selected evidence-chain hashes and immutable report bytes.",
+            "The R3 artifacts carry canonical self-hashes and an implementation inventory."
+          ]
+        },
+        "residualLimitations": {
+          "const": [
+            "A generic independent validator cannot derive complete nested semantics from the two shallow schemas.",
+            "Generator-time assertions do not make every stored nested record schema-strict.",
+            "Unsupported JSON Schema keywords can be silently ignored by json-schema-lite."
+          ]
+        }
+      }
+    },
+    "correction": {
+      "type": "object",
+      "required": ["cr02Status", "residualDebtStatus", "correctedStatement", "unchangedClaims"],
+      "additionalProperties": false,
+      "properties": {
+        "cr02Status": { "const": "PARTIALLY_CLOSED_BY_GENERATOR_ASSERTIONS" },
+        "residualDebtStatus": { "const": "OPEN_SCHEMA_DEBT_CARRIED_TO_M1" },
+        "correctedStatement": {
+          "const": "M0 R3 is protected by deterministic construction, canonical hashes and targeted generator assertions, while complete nested schema validation for the final manifest and validation closure remains open debt for P17-M1."
+        },
+        "unchangedClaims": {
+          "const": [
+            "P17-M0 source custody facts",
+            "P17-M0 report visual and semantic reproduction QA",
+            "P17-M0 COMPLETE_WITH_SOURCE_BLOCKERS status",
+            "P17-M1 entry permission",
+            "release and final-design-transfer prohibition"
+          ]
+        }
+      }
+    },
+    "milestoneImpact": {
+      "type": "object",
+      "required": [
+        "m0Status",
+        "m1EntryAllowed",
+        "releaseAllowed",
+        "finalDesignTransferAllowed",
+        "solverRunsInScope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "m0Status": { "const": "COMPLETE_WITH_SOURCE_BLOCKERS" },
+        "m1EntryAllowed": { "const": true },
+        "releaseAllowed": { "const": false },
+        "finalDesignTransferAllowed": { "const": false },
+        "solverRunsInScope": { "const": 0 }
+      }
+    },
+    "carryForward": {
+      "type": "object",
+      "required": ["targetMilestone", "requiredClosureEvidence"],
+      "additionalProperties": false,
+      "properties": {
+        "targetMilestone": { "const": "P17-M1" },
+        "requiredClosureEvidence": {
+          "const": [
+            "Every M1 authoritative nested record is constrained by a supported schema validator or explicit semantic validator.",
+            "Unknown or unsupported schema keywords fail closed.",
+            "Stored-artifact validation is independently runnable without regenerating the artifact.",
+            "Nested required-key deletion, extra-key, enum, hash, NaN/Infinity, duplicate-ID, cross-field-binding and unknown-keyword mutations are rejected."
+          ]
+        }
+      }
+    },
+    "hashPolicy": {
+      "type": "object",
+      "required": [
+        "algorithm",
+        "canonicalizationVersion",
+        "objectKeyOrder",
+        "arrayOrder",
+        "textEncoding",
+        "whitespace",
+        "excludedTopLevelFields",
+        "rule"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": { "const": "SHA-256" },
+        "canonicalizationVersion": { "const": "p17-recursive-sorted-json-sha256-v1" },
+        "objectKeyOrder": { "const": "RECURSIVE_LEXICOGRAPHIC_ASCENDING" },
+        "arrayOrder": { "const": "PRESERVED" },
+        "textEncoding": { "const": "UTF-8" },
+        "whitespace": { "const": "NONE" },
+        "excludedTopLevelFields": { "const": ["correctionHash"] },
+        "rule": {
+          "const": "correctionHash = lowercase hex SHA-256 of UTF-8 JSON.stringify(document without top-level correctionHash after recursively sorting every object key; array order is preserved and no insignificant whitespace is emitted)."
+        }
+      }
+    },
+    "correctionHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

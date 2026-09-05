@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "p17-expected-values-v1",
+  "caseId": "SB1",
+  "status": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+  "payloadAbsent": false,
+  "releaseAllowed": false,
+  "values": [
+    {
+      "metricId": "tip-uz",
+      "lane": "PRIMARY_INDEPENDENT",
+      "value": -0.00010786516853932584,
+      "unit": "m",
+      "precision": "full double from closed form",
+      "sourceLocator": "closed-form-r1.json#/fullPrecision/tipUzMm",
+      "approvalHash": "9f9ab330fde51ca805dbe2c6cd66a6ae6d6beaa1c5d9e254d46da430f8e0dd8c"
+    },
+    {
+      "metricId": "tip-ry",
+      "lane": "PRIMARY_INDEPENDENT",
+      "value": 0.00005393258426966292,
+      "unit": "rad",
+      "precision": "full double from closed form",
+      "sourceLocator": "closed-form-r1.json#/fullPrecision/tipRyRad",
+      "approvalHash": "9f9ab330fde51ca805dbe2c6cd66a6ae6d6beaa1c5d9e254d46da430f8e0dd8c"
+    },
+    {
+      "metricId": "support-rz",
+      "lane": "PRIMARY_INDEPENDENT",
+      "value": 1,
+      "unit": "kN",
+      "precision": "exact",
+      "sourceLocator": "closed-form-r1.json#/fullPrecision/supportRzN",
+      "approvalHash": "9f9ab330fde51ca805dbe2c6cd66a6ae6d6beaa1c5d9e254d46da430f8e0dd8c"
+    },
+    {
+      "metricId": "support-my",
+      "lane": "PRIMARY_INDEPENDENT",
+      "value": -3,
+      "unit": "kN-m",
+      "precision": "exact",
+      "sourceLocator": "closed-form-r1.json#/fullPrecision/supportMyNmm",
+      "approvalHash": "9f9ab330fde51ca805dbe2c6cd66a6ae6d6beaa1c5d9e254d46da430f8e0dd8c"
+    },
+    {
+      "metricId": "tip-uz",
+      "lane": "STRIX_PUBLISHED",
+      "value": -0.000107865,
+      "unit": "m",
+      "precision": "6 decimals in mm converted exactly to m",
+      "sourceLocator": "SB1.pdf page 2 N2.uz",
+      "approvalHash": "9f9ab330fde51ca805dbe2c6cd66a6ae6d6beaa1c5d9e254d46da430f8e0dd8c"
+    },
+    {
+      "metricId": "tip-ry",
+      "lane": "STRIX_PUBLISHED",
+      "value": 0.000053933,
+      "unit": "rad",
+      "precision": "5 significant digits as displayed",
+      "sourceLocator": "SB1.pdf page 2 N2.ry",
+      "approvalHash": "9f9ab330fde51ca805dbe2c6cd66a6ae6d6beaa1c5d9e254d46da430f8e0dd8c"
+    },
+    {
+      "metricId": "support-rz",
+      "lane": "STRIX_PUBLISHED",
+      "value": 1,
+      "unit": "kN",
+      "precision": "integer N converted exactly to kN",
+      "sourceLocator": "SB1.pdf page 2 N1.Fz",
+      "approvalHash": "9f9ab330fde51ca805dbe2c6cd66a6ae6d6beaa1c5d9e254d46da430f8e0dd8c"
+    },
+    {
+      "metricId": "support-my",
+      "lane": "STRIX_PUBLISHED",
+      "value": -3,
+      "unit": "kN-m",
+      "precision": "integer N-mm converted exactly to kN-m",
+      "sourceLocator": "SB1.pdf page 2 N1.My",
+      "approvalHash": "9f9ab330fde51ca805dbe2c6cd66a6ae6d6beaa1c5d9e254d46da430f8e0dd8c"
+    }
+  ],
+  "reasonCodes": [
+    "P17_EXTERNAL_REFERENCE_REVIEW_PENDING"
+  ]
+}
+

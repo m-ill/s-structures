@@ -52,7 +52,7 @@ export const P11_GAP_ASSIGNMENTS = Object.freeze([
 
 export const P11_ARTIFACT_CLASSES = Object.freeze({
   trackedEvidence: Object.freeze({
-    path: 'reports/validation-evidence/phase11/',
+    path: 'verification/evidence/validation/phase11/',
     git: 'tracked',
     retention: 'repository history',
   }),

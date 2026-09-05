@@ -141,7 +141,7 @@ export function createSimpleBeamUdl({ L = 6, w = 4 } = {}) {
   const model = createBenchmarkModel();
   model.nodes = [
     { id: 'N1', x: 0, y: 0, z: 0, support: 'pin' },
-    { id: 'N2', x: L, y: 0, z: 0, support: 'roller' },
+    { id: 'N2', x: L, y: 0, z: 0, support: 'custom', fix: [false, true, true, false, false, false] },
   ];
   model.members = [frameMember('M1', 'N1', 'N2')];
   model.loads = [{ id: 'W1', type: 'udl', member: 'M1', w, dir: '-z', case: 'D' }];
@@ -161,7 +161,7 @@ export function createSimpleBeamCenterPoint({ L = 6, P = 18 } = {}) {
   const model = createBenchmarkModel();
   model.nodes = [
     { id: 'N1', x: 0, y: 0, z: 0, support: 'pin' },
-    { id: 'N2', x: L, y: 0, z: 0, support: 'roller' },
+    { id: 'N2', x: L, y: 0, z: 0, support: 'custom', fix: [false, true, true, false, false, false] },
   ];
   model.members = [frameMember('M1', 'N1', 'N2')];
   model.loads = [{ id: 'P1', type: 'point', member: 'M1', P, t: 0.5, dir: '-z', case: 'D' }];

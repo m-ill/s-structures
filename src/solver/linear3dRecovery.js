@@ -14,6 +14,13 @@ import {
 } from './partialFixity.js';
 import { buildMemberOffsetRecoveryTrace } from './memberOffsets.js';
 import { taperedSectionAt } from './taperedMember.js';
+import {
+  buildFoundationEndActionContract,
+  evaluateStationEndClosure,
+  foundationSpanLoad,
+  integrateFoundationReactionTo,
+  recoverWinklerLineResult,
+} from './foundation/index.js';
 
 export function recoverMemberResult(member, md, D, loads, stationCount) {
   const { ax, section, material } = md;
@@ -41,17 +48,32 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     });
   }
 
-  const endForces = matVec(md.kl, dl).map((value, i) => value + md.f0[i]);
+  const structuralEnd = matVec(md.klStructural || md.kl, dl).map((value, i) => value + md.f0[i]);
+  const endActionContract = buildFoundationEndActionContract({
+    foundation: md.foundation,
+    localDisplacements: dl,
+    structuralEnd,
+  });
   const partialFixity = buildPartialFixityRecoveryTrace(
     md.partialFixity,
     md.partialFixityApplication,
     jointDl,
     dl,
-    endForces,
+    structuralEnd,
   );
-  const offset = buildMemberOffsetRecoveryTrace(md.offsetKinematics, endForces);
+  const offset = buildMemberOffsetRecoveryTrace(md.offsetKinematics, structuralEnd);
   const spanLoads = collectMemberSpanLoads(member.id, loads, ax);
-  const { xs, N, Vy, Vz, Tq, My, Mz } = recoverMemberStations(endForces, spanLoads, L, stationCount);
+  const constitutiveStations = recoverMemberStations(structuralEnd, spanLoads, L, stationCount);
+  const foundationLoad = foundationSpanLoad(md.foundation, dl);
+  if (foundationLoad) spanLoads.push(foundationLoad);
+  const equilibriumStations = recoverMemberStations(endActionContract.equilibriumEnd, spanLoads, L, stationCount);
+  const { xs, N, Vy, Vz, Tq, My, Mz } = equilibriumStations;
+  const constitutiveStationEndClosure = evaluateStationEndClosure(structuralEnd, constitutiveStations, {
+    basis: 'structuralEnd',
+  });
+  const stationEndClosure = evaluateStationEndClosure(endActionContract.equilibriumEnd, equilibriumStations, {
+    basis: 'equilibriumEnd',
+  });
   const { shape, dmaxM, recoveryTrace } = recoverMemberShape(
     dl,
     spanLoads,
@@ -60,12 +82,18 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     section,
     L,
     stationCount,
-    endForces,
+    endActionContract.equilibriumEnd,
     md.timoshenko,
   );
+  const foundation = recoverWinklerLineResult(md.foundation, dl, stationCount, ax);
 
   const memberResult = {
-    end: endForces,
+    // `end` remains the structural member action for legacy consumers.
+    end: structuralEnd,
+    structuralEnd: endActionContract.structuralEnd,
+    foundationEnd: endActionContract.foundationEnd,
+    equilibriumEnd: endActionContract.equilibriumEnd,
+    endActionContract,
     dl,
     ax,
     xs,
@@ -84,6 +112,20 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     } : null,
     partialFixity,
     offset,
+    foundation,
+    constitutiveStations,
+    equilibriumStations,
+    constitutiveStationEndClosure,
+    stationEndClosure,
+    matrixOwnership: {
+      assembly: 'klTotal',
+      releaseRecovery: 'klTotal',
+      structuralEndForce: 'klStructural*d+f0External',
+      foundationEndForce: foundation ? 'klFoundation*d' : 'zero',
+      equilibriumEndForce: 'structuralEnd+foundationEnd',
+      stationRecoveryStart: 'equilibriumEnd',
+      foundationReaction: foundation ? '-k(x)*N(x)*d' : 'not-applicable',
+    },
     deformationRecovery: recoveryTrace,
     loadRecoveryIssues: spanLoads.issues || [],
     shape,
@@ -343,6 +385,12 @@ function memberForceAt(endForces, spanLoads, L, x) {
       vz += f[2];
       mz += m[1];
       my += m[2];
+    } else if (load.type === 'foundation-distributed') {
+      const integrated = integrateFoundationReactionTo(load.foundation, load.localDisplacements, x);
+      vy += integrated.force.localY;
+      vz += integrated.force.localZ;
+      mz += integrated.moment.localY;
+      my += integrated.moment.localZ;
     }
   }
   return { N: n, Vy: -vy, Vz: -vz, Tq: tq, My: my, Mz: mz };

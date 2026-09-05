@@ -9,10 +9,10 @@ ticket format: P4-T## / 우선순위 P0(출시 차단)·P1(출시 전)·P2(출�
 
 | Ticket | P | 크기 | 작업 | 수용 기준 |
 | --- | --- | --- | --- | --- |
-| P4-T01 | P0 | M | 탄성 확장 기능별 독립 기준값 문서 작성 (스프링/침하/트러스/offset/부분·사다리꼴/온도) | `docs/verification/ELASTIC_EXPANSION_VALIDATION.md`에 케이스별 출처·수계산·tolerance, 테스트가 값 참조 |
+| P4-T01 | P0 | M | 탄성 확장 기능별 독립 기준값 문서 작성 (스프링/침하/트러스/offset/부분·사다리꼴/온도) | `verification/specs/ELASTIC_EXPANSION_VALIDATION.md`에 케이스별 출처·수계산·tolerance, 테스트가 값 참조 |
 | P4-T02 | P0 | M | 벽체(mid-pier)/semi-rigid/쉘 기준값 검증 확충 | coupled wall 문헌 대조 1건 포함, 동일 문서에 기록 |
 | P4-T03 | P0 | M | CQC/좌굴/선형 THA 문헌 대조 | 근접모드 CQC 예제, Euler 좌굴 ±2%, El Centro THA 재현 기록 |
-| P4-T04 | P0 | M | 상용 SW 대조표 3모델 | `reports/validation-evidence/elastic-crosscheck/`에 모델·결과 CSV·오차표. 기준 데이터는 오너 제공 또는 문헌 예제 |
+| P4-T04 | P0 | M | 상용 SW 대조표 3모델 | `verification/evidence/validation/elastic-crosscheck/`에 모델·결과 CSV·오차표. 기준 데이터는 오너 제공 또는 문헌 예제 |
 | P4-T05 | P1 | S | tension-only 경계 케이스 5종 | `tests/p4-elastic-active-state.mjs` green |
 | P4-T06 | P0 | S | M10~M13 proven 전환 | completion audit 갱신 + 관련 review 테스트 green |
 
@@ -20,7 +20,7 @@ ticket format: P4-T## / 우선순위 P0(출시 차단)·P1(출시 전)·P2(출�
 
 | Ticket | P | 크기 | 작업 | 수용 기준 |
 | --- | --- | --- | --- | --- |
-| P4-T07 | P0 | M | B1~B8 원전 출처 명기·tolerance 재점검 | `docs/verification/NONLINEAR_BENCHMARK_SOURCES.md` + gate 테스트 유지 |
+| P4-T07 | P0 | M | B1~B8 원전 출처 명기·tolerance 재점검 | `verification/specs/NONLINEAR_BENCHMARK_SOURCES.md` + gate 테스트 유지 |
 | P4-T08 | P0 | M | 다힌지 메커니즘 순서 수계산 대조 | 2층 포탈 케이스, 힌지 발생 순서·λ 수계산 일치 |
 | P4-T09 | P0 | M | NLTH 실증 (탄성 일치 ±1%, 탄소성 문헌 대조) | `tests/p4-nlth-validation.mjs` green + 증빙 문서 |
 | P4-T10 | P1 | M | pushover 외부 대조 1건 | 문헌/상용 곡선 대조 리포트 |
@@ -30,7 +30,7 @@ ticket format: P4-T## / 우선순위 P0(출시 차단)·P1(출시 전)·P2(출�
 
 | Ticket | P | 크기 | 작업 | 수용 기준 |
 | --- | --- | --- | --- | --- |
-| P4-T12 | P0 | L | RC 수계산 검증서 (보/기둥/벽/슬래브 × 3케이스+) | `docs/verification/DESIGN_MODULE_VERIFICATION.md` RC 장 + `tests/p4-design-rc-handcalc.mjs` |
+| P4-T12 | P0 | L | RC 수계산 검증서 (보/기둥/벽/슬래브 × 3케이스+) | `verification/specs/DESIGN_MODULE_VERIFICATION.md` RC 장 + `tests/p4-design-rc-handcalc.mjs` |
 | P4-T13 | P0 | L | 철골/접합/기초 수계산 검증서 (각 3케이스+) | 동일 문서 철골/기초 장 + 테스트 |
 | P4-T14 | P0 | M | KDS 조항 registry 확정 (조항·버전·적용조건) | `src/standards/` 조항 표 + 계산서 표기 테스트 |
 | P4-T15 | P1 | S | 미검토 항목 limitation 문구 확정 | 계산서 각 장 limitation 스냅샷 테스트 |
@@ -41,7 +41,7 @@ ticket format: P4-T## / 우선순위 P0(출시 차단)·P1(출시 전)·P2(출�
 | Ticket | P | 크기 | 작업 | 수용 기준 |
 | --- | --- | --- | --- | --- |
 | P4-T17 | P0 | M | 실제 DWG e2e (ODA 설치 환경) | 실무 도면 1건 변환→인식→확정→해석 기록. 변환기 부재 UX 스크린샷 증빙 |
-| P4-T18 | P0 | M | 실측 점군 검증 1건+ | 공개셋/실스캔 recall·precision 리포트 `reports/validation-evidence/pointcloud-field/` |
+| P4-T18 | P0 | M | 실측 점군 검증 1건+ | 공개셋/실스캔 recall·precision 리포트 `verification/evidence/validation/pointcloud-field/` |
 | P4-T19 | P0 | S | 1e7점 성능 실측 | perf JSON 증빙 + 예산 테스트 |
 | P4-T20 | P1 | M | 바이너리 로더 fuzz 20케이스 | `tests/p4-pointcloud-fuzz.mjs` crash 0 |
 | P4-T21 | P0 | S | M7~M9 proven 전환 | completion audit 갱신 |
@@ -64,7 +64,7 @@ ticket format: P4-T## / 우선순위 P0(출시 차단)·P1(출시 전)·P2(출�
 | --- | --- | --- | --- | --- |
 | P4-T29 | P2 | M | TD-08: 요청 컨텍스트에 project meta 1회 로드 공유 | 라우트당 project.json 읽기 1회 (계측 테스트) |
 | P4-T30 | P2 | S | TD-15: 독립 I/O Promise.all | 코드 diff + 기존 테스트 green |
-| P4-T31 | P0 | M | 성능 예산 6종 실측·게이트화 | `reports/validation-evidence/perf-budget.json` + `tests/p4-perf-budget.mjs` |
+| P4-T31 | P0 | M | 성능 예산 6종 실측·게이트화 | `verification/evidence/validation/perf-budget.json` + `tests/p4-perf-budget.mjs` |
 | P4-T32 | P1 | M | 대형 모델(부재 2,000+) 실측·한계 문서화 | 실측 기록 + STATUS_AND_LIMITS 갱신 |
 
 ## WP-07 모델러 통합·프론트 완성 (P4-M7)

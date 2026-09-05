@@ -8,7 +8,7 @@ milestone_status: complete-with-open-release-gates
 dedicated_gate: PASS
 externally_cross_validated: false
 release_qualified: false
-evidence_artifact: reports/validation-evidence/phase10/p10-m10-load-generation.json
+evidence_artifact: verification/evidence/validation/phase10/p10-m10-load-generation.json
 evidence_records: 4/4 PASS
 artifact_hash: f6669543d901b07f38c088b1
 ```

@@ -20,16 +20,16 @@ release_qualified: true
 
 | M | 상태 | WP | 전용 test | Evidence | Review |
 | --- | --- | --- | --- | --- | --- |
-| P11-M0 | qualification-complete | [WP-00](workpackages/WP-00-baseline-governance.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m0-baseline-governance.json) | [PASS](reviews/P11-M0-CODE-REVIEW.md) |
-| P11-M1 | qualification-complete | [WP-01](workpackages/WP-01-report-snapshot-verdict.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m1-report-snapshot-verdict.json) | [PASS](reviews/P11-M1-CODE-REVIEW.md) |
-| P11-M2 | qualification-complete | [WP-02](workpackages/WP-02-i18n-dual-render.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m2-bilingual-rendering.json) | [PASS](reviews/P11-M2-CODE-REVIEW.md) |
-| P11-M3 | qualification-complete | [WP-03](workpackages/WP-03-visual-capture-core.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m3-visual-capture-core.json) | [PASS](reviews/P11-M3-CODE-REVIEW.md) |
-| P11-M4 | qualification-complete | [WP-04](workpackages/WP-04-scene-evidence-embedding.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m4-scene-evidence-report.json) | [PASS](reviews/P11-M4-CODE-REVIEW.md) |
-| P11-M5 | qualification-complete | [WP-05](workpackages/WP-05-executive-report-layout.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m5-executive-report-layout.json) | [PASS](reviews/P11-M5-CODE-REVIEW.md) |
-| P11-M6 | qualification-complete | [WP-06](workpackages/WP-06-pdf-export-service.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m6-dual-pdf-export.json) | [PASS](reviews/P11-M6-CODE-REVIEW.md) |
-| P11-M7 | qualification-complete | [WP-07](workpackages/WP-07-product-agent-workflow.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m7-product-agent-export.json) | [PASS](reviews/P11-M7-CODE-REVIEW.md) |
-| P11-M8 | qualification-complete | [WP-08](workpackages/WP-08-qualification-hardening.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m8-qualification-hardening.json) | [PASS](reviews/P11-M8-CODE-REVIEW.md) |
-| P11-M9 | qualification-complete | [WP-09](workpackages/WP-09-pilot-release.md) | PASS | [PASS](../../reports/validation-evidence/phase11/p11-m9-release-gate.json) | [PASS](reviews/P11-M9-CODE-REVIEW.md) |
+| P11-M0 | qualification-complete | [WP-00](workpackages/WP-00-baseline-governance.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m0-baseline-governance.json) | [PASS](reviews/P11-M0-CODE-REVIEW.md) |
+| P11-M1 | qualification-complete | [WP-01](workpackages/WP-01-report-snapshot-verdict.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m1-report-snapshot-verdict.json) | [PASS](reviews/P11-M1-CODE-REVIEW.md) |
+| P11-M2 | qualification-complete | [WP-02](workpackages/WP-02-i18n-dual-render.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m2-bilingual-rendering.json) | [PASS](reviews/P11-M2-CODE-REVIEW.md) |
+| P11-M3 | qualification-complete | [WP-03](workpackages/WP-03-visual-capture-core.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m3-visual-capture-core.json) | [PASS](reviews/P11-M3-CODE-REVIEW.md) |
+| P11-M4 | qualification-complete | [WP-04](workpackages/WP-04-scene-evidence-embedding.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m4-scene-evidence-report.json) | [PASS](reviews/P11-M4-CODE-REVIEW.md) |
+| P11-M5 | qualification-complete | [WP-05](workpackages/WP-05-executive-report-layout.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m5-executive-report-layout.json) | [PASS](reviews/P11-M5-CODE-REVIEW.md) |
+| P11-M6 | qualification-complete | [WP-06](workpackages/WP-06-pdf-export-service.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m6-dual-pdf-export.json) | [PASS](reviews/P11-M6-CODE-REVIEW.md) |
+| P11-M7 | qualification-complete | [WP-07](workpackages/WP-07-product-agent-workflow.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m7-product-agent-export.json) | [PASS](reviews/P11-M7-CODE-REVIEW.md) |
+| P11-M8 | qualification-complete | [WP-08](workpackages/WP-08-qualification-hardening.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m8-qualification-hardening.json) | [PASS](reviews/P11-M8-CODE-REVIEW.md) |
+| P11-M9 | qualification-complete | [WP-09](workpackages/WP-09-pilot-release.md) | PASS | [PASS](../../verification/evidence/validation/phase11/p11-m9-release-gate.json) | [PASS](reviews/P11-M9-CODE-REVIEW.md) |
 
 ## 2. 현재 기준선
 

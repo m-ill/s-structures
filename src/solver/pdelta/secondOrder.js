@@ -2,7 +2,6 @@ import { resolveCriterion } from '../../core/analysisCriteria.js';
 import { memberRotationalSpringEntries } from '../../core/memberReleaseContract.js';
 import { buildFixedEndLoad, fixedEndTraceRow } from '../../loads/fixedEnd/index.js';
 import { axialForcesFromDisplacements } from '../geometricStiffness.js';
-import { analyzeAll } from '../linear3d.js';
 import { buildFixedDofs, conditionMemberLocalSystem } from '../linear3dAssembly.js';
 import {
   dirVec,
@@ -12,6 +11,10 @@ import {
   solveLinearDetailed,
 } from '../linear3dElement.js';
 import { buildEquilibriumSummary } from '../linear3dPost.js';
+import {
+  buildFoundationEndActionContract,
+  evaluateStationEndClosure,
+} from '../foundation/index.js';
 import { recoverMemberResult, sectionCheck } from '../linear3dRecovery.js';
 import { PARTIAL_FIXITY_LIMITATION_CODES } from '../partialFixity.js';
 import { buildExpandedAnalysisDomain } from './analysisDomain.js';
@@ -29,6 +32,7 @@ import {
   reduceConstraintVector,
 } from '../domain/constraintSystem.js';
 import { resolveRigidDiaphragms } from '../../core/diaphragmGroups.js';
+import { resolvePDeltaFirstOrderSeed } from './firstOrderSeed.js';
 
 export const PDELTA_SECOND_ORDER_VERSION = 'p6-m5-pdelta-second-order-v1';
 export const PDELTA_DIRECT_PRODUCT_VERSION = 'p7-m8-direct-pdelta-product-v3';
@@ -76,7 +80,7 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
   const compatibility = directCompatibility(model, domain);
   if (!compatibility.supported) return blockedDirectResult(compatibility, domain);
 
-  const linear = options.linear || analyzeAll(model, factors);
+  const linear = resolvePDeltaFirstOrderSeed(model, factors, options);
   if (!linear.ok) {
     return failedDirectResult(linear.reason || 'LINEAR_FAILED', {
       linear,
@@ -672,6 +676,7 @@ function buildDirectResult({
     return [node.id, D.slice(base, base + 6)];
   }));
   const memberResults = {};
+  const foundationResults = {};
   const allMemberResults = {};
   const missingMemberIds = [];
   const stationCount = Math.max(21, model.analysisSettings?.memberStations | 0 || 21);
@@ -690,7 +695,10 @@ function buildDirectResult({
       tangent.geometric.memberData?.[member.id],
     );
     allMemberResults[member.id] = recovered;
-    if (!member.generated) memberResults[member.id] = recovered;
+    if (!member.generated) {
+      memberResults[member.id] = recovered;
+      if (recovered.foundation) foundationResults[member.id] = recovered.foundation;
+    }
   }
 
   const reactionState = buildConsistentReactionState(
@@ -708,6 +716,9 @@ function buildDirectResult({
     resistingForceEquation: tangent.summary?.partialFixityApproximationCount > 0
       ? 'q_total = q_elastic(d_member_face, Ke_raw, f0_raw) + Kg_prismatic(N) * d_joint_local'
       : 'q_total = (Ke_local + Kg_local(N)) * d_local + f0_local',
+    equilibriumForceEquation: tangent.summary?.partialFixityApproximationCount > 0
+      ? 'q_equilibrium = q_elastic(d_member_face, Ke_raw, f0_raw) + Kg_prismatic(N) * d_joint_local + Kf*d_local'
+      : 'q_equilibrium = (Ke_local + Kg_local(N) + Kf) * d_local + f0_local',
     connectionKinematics: tangent.summary?.partialFixityApproximationCount > 0
       ? {
           elastic: 'recovered-member-face-rotation',
@@ -727,6 +738,7 @@ function buildDirectResult({
     disp,
     reactions: reactionState.reactions,
     memberResults,
+    foundationResults,
     axialForces,
     recovery,
     convergence,
@@ -767,26 +779,71 @@ function buildDirectResult({
 
 function recoverConsistentMemberResult(member, md, D, loads, stationCount, geometricData) {
   const recovered = recoverMemberResult(member, md, D, loads, stationCount);
-  const elasticEnd = recovered.end.slice();
+  const elasticEnd = (recovered.structuralEnd || recovered.end).slice();
   const jointLocalDisplacement = matVec(md.T, md.dof.map((dof) => Number(D[dof]) || 0));
   const geometricEnd = geometricData?.local
     ? matVec(geometricData.local, jointLocalDisplacement)
     : new Array(12).fill(0);
   const totalEnd = elasticEnd.map((value, index) => value + geometricEnd[index]);
+  const endActionContract = buildFoundationEndActionContract({
+    foundation: md.foundation,
+    localDisplacements: recovered.dl,
+    structuralEnd: totalEnd,
+    structuralEquation: 'Ks*d+f0_external+Kg*d',
+  });
+  const foundationEnd = endActionContract.foundationEnd;
+  const equilibriumEnd = endActionContract.equilibriumEnd;
   const quantities = ['N', 'Vy', 'Vz', 'Tq', 'My', 'Mz'];
   const elasticStations = Object.fromEntries(quantities.map((key) => [key, recovered[key].slice()]));
+  const elasticConstitutiveStations = Object.fromEntries(quantities.map((key) => [
+    key,
+    (recovered.constitutiveStations?.[key] || recovered[key]).slice(),
+  ]));
   const geometricStations = geometricStationContributions(geometricEnd, recovered.xs, recovered.L);
   for (const key of quantities) {
     recovered[key] = elasticStations[key].map((value, index) => value + geometricStations[key][index]);
   }
   recovered.elasticEnd = elasticEnd;
   recovered.geometricEnd = geometricEnd;
+  recovered.structuralEnd = endActionContract.structuralEnd;
+  recovered.foundationEnd = foundationEnd;
   recovered.end = totalEnd;
   recovered.secondOrderEnd = totalEnd;
+  recovered.equilibriumEnd = equilibriumEnd;
+  recovered.endActionContract = endActionContract;
   recovered.elasticStations = elasticStations;
   recovered.geometricStations = geometricStations;
+  recovered.constitutiveStations = {
+    xs: recovered.xs,
+    ...Object.fromEntries(quantities.map((key) => [
+      key,
+      elasticConstitutiveStations[key].map((value, index) => value + geometricStations[key][index]),
+    ])),
+  };
+  recovered.equilibriumStations = {
+    xs: recovered.xs,
+    ...Object.fromEntries(quantities.map((key) => [key, recovered[key]])),
+  };
+  recovered.constitutiveStationEndClosure = evaluateStationEndClosure(
+    recovered.structuralEnd,
+    recovered.constitutiveStations,
+    { basis: 'secondOrderStructuralEnd' },
+  );
+  recovered.stationEndClosure = evaluateStationEndClosure(
+    equilibriumEnd,
+    recovered.equilibriumStations,
+    { basis: 'secondOrderEquilibriumEnd' },
+  );
   recovered.globalEnd = matVec(matTrans(md.T), totalEnd);
+  recovered.globalEquilibriumEnd = matVec(matTrans(md.T), equilibriumEnd);
   recovered.recoveryMethod = 'elastic-shared-recovery-plus-end-consistent-geometric-recovery';
+  recovered.matrixOwnership = {
+    ...(recovered.matrixOwnership || {}),
+    structuralEndForce: 'klStructural*d+f0External+kg*d',
+    foundationEndForce: recovered.foundation ? 'klFoundation*d' : 'zero',
+    equilibriumEndForce: 'structuralEnd+foundationEnd',
+    stationRecoveryStart: 'secondOrderEquilibriumEnd',
+  };
   recovered.geometricRecoveryKinematics = md.partialFixity?.enabled
     ? 'joint-rotation-prismatic-kg-approximation'
     : 'member-joint-local-displacement';
@@ -863,8 +920,9 @@ function buildConsistentReactionState(domain, assembly, D, allMemberResults, nod
   const memberNodal = new Array(assembly.ndof).fill(0);
   for (const [memberId, result] of Object.entries(allMemberResults)) {
     const md = assembly.memData[memberId];
-    if (!md || !result.globalEnd) continue;
-    for (let index = 0; index < 12; index += 1) memberNodal[md.dof[index]] += result.globalEnd[index];
+    const equilibriumEnd = result.globalEquilibriumEnd || result.globalEnd;
+    if (!md || !equilibriumEnd) continue;
+    for (let index = 0; index < 12; index += 1) memberNodal[md.dof[index]] += equilibriumEnd[index];
   }
   const restrained = buildFixedDofs(domain.nodes);
   const reactions = {};

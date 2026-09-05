@@ -8,13 +8,15 @@ import {
   HINGE_CYCLIC_VERSION,
   HINGE_PROPERTY_REGISTRY_VERSION,
   MDOF_EQUILIBRIUM_ASSEMBLER_VERSION,
+} from '../src/index.js';
+import {
   getPhase8VerificationSuite,
   validatePhase8EvidenceArtifact,
   verificationRegistryManifest,
-} from '../src/index.js';
+} from '../verification/index.js';
 
 const artifact = JSON.parse(await readFile(
-  new URL('../reports/validation-evidence/phase8/p8-m4-concentrated-hinge.json', import.meta.url),
+  new URL('../verification/evidence/validation/phase8/p8-m4-concentrated-hinge.json', import.meta.url),
   'utf8',
 ));
 const validation = validatePhase8EvidenceArtifact(artifact);
@@ -54,7 +56,7 @@ assert.ok(adr.includes('M_member - M_hinge'));
 assert.ok(adr.includes('diagnostic-only'));
 assert.ok(adr.includes('Rejected Alternatives'));
 const review = await readFile(
-  new URL('../reports/validation-evidence/phase8/p8-m4-code-review.md', import.meta.url),
+  new URL('../verification/evidence/validation/phase8/p8-m4-code-review.md', import.meta.url),
   'utf8',
 );
 assert.ok(review.includes('status: PASS'));
@@ -66,6 +68,6 @@ console.log(JSON.stringify({
   ok: true,
   suite: suite.id,
   verificationIdCount: suite.verificationIds.length,
-  evidence: 'reports/validation-evidence/phase8/p8-m4-concentrated-hinge.json',
-  review: 'reports/validation-evidence/phase8/p8-m4-code-review.md',
+  evidence: 'verification/evidence/validation/phase8/p8-m4-concentrated-hinge.json',
+  review: 'verification/evidence/validation/phase8/p8-m4-code-review.md',
 }, null, 2));

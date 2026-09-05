@@ -1,0 +1,107 @@
+{
+  "version": "p10-evidence-artifact-v1",
+  "suiteId": "P10-M5-MPC-RIGIDLINK",
+  "milestone": "P10-M5",
+  "status": "OK",
+  "generatedAt": "2026-07-22T18:00:00.000+09:00",
+  "sourceRevision": "fd25269+p10-m5-worktree",
+  "test": "tests/p10-m5-mpc-rigidlink.mjs",
+  "solverVersion": "p10-m5-general-constraint-v1",
+  "results": {
+    "ok": true,
+    "version": "p10-m5-mpc-rigidlink-v1",
+    "solverVersion": "p10-m5-general-constraint-v1",
+    "metrics": {
+      "rigidLinkError": 1.4210854715202004e-14,
+      "equilibriumResidual": 1.480297366166875e-16,
+      "diaphragmError": 0,
+      "modalError": 0,
+      "pDeltaResidual": 2.0511601988091347e-15
+    },
+    "tolerances": {
+      "rigidLink": 1e-10,
+      "equilibrium": 1e-10,
+      "diaphragm": 1e-10,
+      "modal": 1e-10,
+      "pDelta": 1e-10
+    },
+    "modelHashes": {
+      "rigidLink": "5f126d12115bb90a",
+      "mpc": "936d760fdf95bffd",
+      "diaphragm": "3d7e1628279f06a9",
+      "modal": "f88144f68646e5dd"
+    },
+    "collisionCodes": [
+      "CONSTRAINT_SLAVE_REDEFINED",
+      "CONSTRAINT_CYCLE",
+      "CONSTRAINT_SUPPORT_CONFLICT"
+    ]
+  },
+  "records": [
+    {
+      "caseId": "CN-M01-RIGID-LINK-EQUIVALENCE",
+      "reference": 0,
+      "computed": 1.4210854715202004e-14,
+      "relError": 1.4210854715202004e-14,
+      "tolerance": 1e-10,
+      "modelHash": "5f126d12115bb90a",
+      "solverVersion": "p10-m5-general-constraint-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "CN-M02-MPC-EQUILIBRIUM",
+      "reference": 0,
+      "computed": 1.480297366166875e-16,
+      "relError": 1.480297366166875e-16,
+      "tolerance": 1e-10,
+      "modelHash": "936d760fdf95bffd",
+      "solverVersion": "p10-m5-general-constraint-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "CN-M03-DIAPHRAGM-REGRESSION",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-10,
+      "modelHash": "3d7e1628279f06a9",
+      "solverVersion": "p10-m5-general-constraint-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "CN-M05-MODAL-KM-TRANSFORM",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-10,
+      "modelHash": "f88144f68646e5dd",
+      "solverVersion": "p10-m5-general-constraint-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "CN-M06-PDELTA-KG-TRANSFORM",
+      "reference": 0,
+      "computed": 2.0511601988091347e-15,
+      "relError": 2.0511601988091347e-15,
+      "tolerance": 1e-10,
+      "modelHash": "5f126d12115bb90a",
+      "solverVersion": "p10-m5-general-constraint-v1",
+      "status": "OK"
+    }
+  ],
+  "collisionGate": {
+    "status": "OK",
+    "codes": [
+      "CONSTRAINT_SLAVE_REDEFINED",
+      "CONSTRAINT_CYCLE",
+      "CONSTRAINT_SUPPORT_CONFLICT"
+    ]
+  },
+  "qualification": {
+    "internalClosedFormStatus": "OK",
+    "externallyCrossValidated": false,
+    "releaseQualified": false,
+    "releaseGate": "P10-M11"
+  },
+  "artifactHash": "1c2aea5d13d66e288bdddb8a"
+}

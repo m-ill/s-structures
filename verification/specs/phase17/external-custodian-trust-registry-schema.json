@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/external-custodian-trust-registry-schema.json",
+  "title": "Phase 17 externally pinned custodian and reviewer trust registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "registryId", "status", "authority", "pin", "keys", "reasonCodes", "registryHash"],
+  "properties": {
+    "version": { "const": "p17-external-custodian-trust-registry-v1" },
+    "registryId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{5,127}$" },
+    "status": { "enum": ["UNPROVISIONED", "PINNED"] },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "governance", "contact"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "governance": { "enum": ["UNPROVISIONED", "EXTERNAL", "TEST_ONLY"] },
+        "contact": { "type": ["string", "null"] }
+      }
+    },
+    "pin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "environmentVariable", "status"],
+      "properties": {
+        "method": { "const": "EXTERNAL_CANONICAL_SHA256" },
+        "environmentVariable": { "const": "P17_EXTERNAL_CUSTODIAN_REGISTRY_SHA256" },
+        "status": { "enum": ["NOT_PROVIDED", "PROVIDED_OUT_OF_BAND"] }
+      }
+    },
+    "keys": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["keyId", "principalId", "role", "algorithm", "publicKeyPem", "validFrom", "validTo", "status"],
+        "properties": {
+          "keyId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{5,127}$" },
+          "principalId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._@:-]{2,127}$" },
+          "role": { "enum": ["executionCustodian", "modelReviewer", "referenceReviewer", "numericalReviewer", "releaseReviewer"] },
+          "algorithm": { "const": "Ed25519" },
+          "publicKeyPem": { "type": "string", "minLength": 32 },
+          "validFrom": { "type": "string", "format": "date-time" },
+          "validTo": { "type": "string", "format": "date-time" },
+          "status": { "enum": ["ACTIVE", "REVOKED"] }
+        }
+      }
+    },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } },
+    "registryHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

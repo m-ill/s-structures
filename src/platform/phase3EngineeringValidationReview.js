@@ -45,7 +45,7 @@ export function buildPhase3EngineeringValidationReview(input = {}) {
     sourceDocs: [
       'docs/phase3/NONLINEAR_ENGINE_PLAN.md',
       'docs/phase3/DESIGN_MODULES_PLAN.md',
-      'docs/verification/DESIGN_MODULE_VERIFICATION.md',
+      'verification/specs/DESIGN_MODULE_VERIFICATION.md',
     ],
     summary: {
       ok: missing.length === 0,

@@ -30,7 +30,7 @@ if (process.argv.includes('--print')) {
   console.log(JSON.stringify(LIVE_P10_M6_EVIDENCE, null, 2));
 } else {
   const committed = JSON.parse(await readFile(path.resolve(
-    'reports', 'validation-evidence', 'phase10', 'p10-m6-tapered.json',
+    'verification', 'evidence', 'validation', 'phase10', 'p10-m6-tapered.json',
   ), 'utf8'));
   assert.deepEqual(committed, LIVE_P10_M6_EVIDENCE, 'P10-M6 committed evidence is stale');
   assert.equal(committed.status, 'OK');

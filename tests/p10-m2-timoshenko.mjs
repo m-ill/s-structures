@@ -6,9 +6,9 @@ import {
   fixedEndPointLoad,
   fixedEndUdl,
   localK12,
-  modelHash,
   resolveCriterion,
 } from '../src/index.js';
+import { modelHash } from '../verification/index.js';
 
 const E = 30e6;
 const G = 12.5e6;

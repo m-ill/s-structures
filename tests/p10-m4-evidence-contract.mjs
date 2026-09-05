@@ -45,7 +45,7 @@ if (process.argv.includes('--print')) {
   console.log(JSON.stringify(LIVE_P10_M4_EVIDENCE, null, 2));
 } else {
   const evidencePath = path.resolve(
-    'reports', 'validation-evidence', 'phase10', 'p10-m4-offsets-panelzone.json',
+    'verification', 'evidence', 'validation', 'phase10', 'p10-m4-offsets-panelzone.json',
   );
   const committed = JSON.parse(await readFile(evidencePath, 'utf8'));
   assert.deepEqual(committed, LIVE_P10_M4_EVIDENCE, 'P10-M4 committed evidence is stale');

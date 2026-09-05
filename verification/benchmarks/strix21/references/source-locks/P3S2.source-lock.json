@@ -1,0 +1,101 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "P3S2",
+  "ordinal": 18,
+  "official": true,
+  "family": "STABILIZATION-SENSITIVITY",
+  "title": "Custom stabilization parameter sensitivity (wall modal periods)",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R5_INTERNAL_SPEC",
+      "locator": "Internal V&V acceptance criterion. The custom artificial stabilizers (-drillingStab, -rotFloor) exist only to remove spurious zero-energy rotational modes; a valid stabilization must leave physical response invariant. Acceptance: the mass-dominant modal periods change by less than the tolerance as each stabilizer is swept over two orders of magnitude about its production value.",
+      "status": "INTERNAL_ONLY"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/P3S2.html",
+        "byteLength": 24513,
+        "sha256": "b1396f8208339334542036b58d15b9deea20d209db71d600a16068637b46e61a"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 49,
+        "printedPageEnd": 51
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/P3S2.pdf",
+        "byteLength": 120818,
+        "sha256": "d14b2efd8f556be526e67ec8f6d94920310c94a3f7d33f7054a466f843479443",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 3
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.5%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Membrane · mode 1 (X 68%) (s)",
+      "probe": "worst: drillingStab 1e-1",
+      "strix": "0.050509",
+      "reference": "0.050529",
+      "delta": "+0.0394%"
+    },
+    "resultRowCount": 4
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_4_OF_4",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-07",
+    "htmlRecordLocator": "records/P3S2.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · P3S2/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R5_INTERNAL_SPEC",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS",
+    "DO_NOT_USE_INTERNAL_SPEC_AS_EXTERNAL_ACCURACY_TRUTH"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "fbb86850a17eb0f5d98b8108dde258456de3a8f5979105e2f0127d5d05411394"
+}

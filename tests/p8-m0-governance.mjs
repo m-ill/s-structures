@@ -3,14 +3,12 @@ import {
   LEGACY_PUSHOVER_ENGINE_ID,
   LEGACY_SDOF_NLTH_ENGINE_ID,
   NONLINEAR_ENGINE_IDS,
-  VERIFICATION_MATRIX_RECORD_VERSION,
   analyzeModel,
   buildAgentManifest,
   buildDetailedReportData,
   createAnalysisCase,
   createAnalysisRunRecord,
   createModel,
-  modelHash,
   runAnalysisCase,
   runFormalPushover,
   runNewmarkNlth,
@@ -18,6 +16,11 @@ import {
   runPushover,
   validateNonlinearRunRecord,
 } from '../src/index.js';
+import {
+  VERIFICATION_MATRIX_RECORD_VERSION,
+  adaptVerificationEvidenceForAnalysis,
+  modelHash,
+} from '../verification/index.js';
 import { createIndexAgentApi } from '../src/ui/indexAgentApi.js';
 
 const model = frameModel();
@@ -121,9 +124,13 @@ const evidence = {
     }],
   },
 };
+const acceptedEvidence = adaptVerificationEvidenceForAnalysis(evidence, {
+  model,
+  analysisCase: { id: 'STATIC-EVIDENCE', kind: 'static' },
+});
 const legacyWithEvidence = createAnalysisRunRecord({
   model, analysisCase: pushoverCase, attemptId: 'PUSH-EVIDENCE',
-  result: { ...pushoverRun, verificationEvidence: evidence },
+  result: { ...pushoverRun, verificationEvidence: acceptedEvidence },
 });
 assert.equal(legacyWithEvidence.qualification, 'legacy-preliminary', 'evidence cannot lift a legacy engine ceiling');
 
@@ -137,13 +144,20 @@ const unrelatedEvidence = structuredClone(evidence);
 unrelatedEvidence.audit.rows[0].caseId = 'UNRELATED-CASE';
 const unrelated = createAnalysisRunRecord({
   model, analysisCase: { id: 'STATIC-TARGET', kind: 'static' }, attemptId: 'STATIC-UNRELATED-EVIDENCE',
-  result: { ok: true, status: 'ok', verificationEvidence: unrelatedEvidence },
+  result: {
+    ok: true,
+    status: 'ok',
+    verificationEvidence: adaptVerificationEvidenceForAnalysis(unrelatedEvidence, {
+      model,
+      analysisCase: { id: 'STATIC-TARGET', kind: 'static' },
+    }),
+  },
 });
 assert.equal(unrelated.qualification, 'candidate', 'evidence from another case must not qualify the target result');
 
 const verified = createAnalysisRunRecord({
   model, analysisCase: { id: 'STATIC-EVIDENCE', kind: 'static' }, attemptId: 'STATIC-EVIDENCE',
-  result: { ok: true, status: 'ok', verificationEvidence: evidence },
+  result: { ok: true, status: 'ok', verificationEvidence: acceptedEvidence },
 });
 assert.equal(verified.qualification, 'verified');
 

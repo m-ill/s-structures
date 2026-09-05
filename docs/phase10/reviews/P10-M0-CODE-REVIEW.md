@@ -25,7 +25,7 @@ P10-M0의 θ 4상태 판정, 2차해석 요구 차단, RSA 전 응답 scaling �
 - `src/results/rsa/baseShearScale.js`: 방향별 scaling, null 처리, fail-closed 차단 및 provenance
 - `src/results/phase6M4Trace.js`: 이미 적용된 scaling의 단일 소유권과 late override 충돌 처리
 - `src/results/story/rsaResponse.js`, `drift.js`, `shear.js`, `overturning.js`: 층 응답 scaling과 파생값 provenance
-- `tests/p10-m0-quick-corrections.mjs` 및 `reports/validation-evidence/phase10/p10-m0-quick-corrections.json`: 경계·통합·근거 artifact 결속
+- `tests/p10-m0-quick-corrections.mjs` 및 `verification/evidence/validation/phase10/p10-m0-quick-corrections.json`: 경계·통합·근거 artifact 결속
 - Phase 3/7/8/9 runner, manifest, architecture 및 historical evidence baseline의 현재 코드 동기화
 
 ## 발견 및 보정사항

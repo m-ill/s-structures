@@ -39,7 +39,7 @@ qualification 상태와 blocker를 preflight·도움말에 표시한다.
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m8-qualification-hardening.json`
+`verification/evidence/validation/phase11/p11-m8-qualification-hardening.json`
 
 ## Review Log
 

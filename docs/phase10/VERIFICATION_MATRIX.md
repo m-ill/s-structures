@@ -5,7 +5,7 @@ doc: verification-matrix
 phase: 10
 date: 2026-07-21
 record-schema: {reference, computed, relError, tolerance, modelHash, solverVersion}  # P6-M3 스키마 준수
-evidence: reports/validation-evidence/phase10/
+evidence: verification/evidence/validation/phase10/
 ```
 
 계층 접두어: **XV**(외부 교차검증) · **BM**(병적 모델) · **EL**(요소) · **CN**(접합·구속) · **DY**(동적) · **SH**(shell) · **LG**(하중생성).
@@ -13,7 +13,7 @@ tolerance는 [FORMULAS_AND_CRITERIA.md](FORMULAS_AND_CRITERIA.md) 해당 § / `c
 
 ## M0 — 즉시 보정 (WP-00)
 
-Evidence: [p10-m0-quick-corrections.json](../../reports/validation-evidence/phase10/p10-m0-quick-corrections.json)
+Evidence: [p10-m0-quick-corrections.json](../../verification/evidence/validation/phase10/p10-m0-quick-corrections.json)
 
 | ID | 검증 | 기준 | 결과 |
 | --- | --- | --- | --- |
@@ -28,9 +28,9 @@ Evidence: [p10-m0-quick-corrections.json](../../reports/validation-evidence/phas
 
 ## M1 — 하네스·배터리 구현 상태 (WP-01)
 
-Evidence: [cross-validation](../../reports/validation-evidence/phase10/p10-m1-cross-validation.json) ·
-[hand-calculations](../../reports/validation-evidence/phase10/p10-m1-hand-calculations.json) ·
-[pathological battery](../../reports/validation-evidence/phase10/p10-m1-pathological-battery.json)
+Evidence: [cross-validation](../../verification/evidence/validation/phase10/p10-m1-cross-validation.json) ·
+[hand-calculations](../../verification/evidence/validation/phase10/p10-m1-hand-calculations.json) ·
+[pathological battery](../../verification/evidence/validation/phase10/p10-m1-pathological-battery.json)
 
 M1 전용 게이트는 PASS(XV-01/02, BM-01~10)했다. 최종 통합 `npm.cmd test`도 2026-07-21
 08:17:52.531~08:47:46.914 KST(29분 54.383초)에 종료 코드 0으로 PASS하여 P10-M1은 `complete`다.
@@ -44,8 +44,8 @@ M1 전용 게이트는 PASS(XV-01/02, BM-01~10)했다. 최종 통합 `npm.cmd te
 
 ## M2 — Timoshenko 전단변형 (WP-02)
 
-Evidence: [p10-m2-timoshenko.json](../../reports/validation-evidence/phase10/p10-m2-timoshenko.json) ·
-[XV-09 pending artifact](../../reports/validation-evidence/phase10/xv/XV-09-pending-reference.json)
+Evidence: [p10-m2-timoshenko.json](../../verification/evidence/validation/phase10/p10-m2-timoshenko.json) ·
+[XV-09 pending artifact](../../verification/evidence/validation/phase10/xv/XV-09-pending-reference.json)
 
 M2 전용 게이트는 8/8 records PASS이며 artifact hash는 `cf570a5579da4a3093dedb8c`다. XV-09는
 깊은 보 폐형해 내부 대조가 green이고 모델·artifact 결속이 준비됐으나 SAP2000 shear-deformation-on
@@ -70,7 +70,7 @@ record를 분리해 큰 힘 scale이 작은 변위 오차를 가리는 것을 �
 
 ## M3 — 부분강접 회전스프링 단부 (WP-03)
 
-Evidence: [p10-m3-partial-fixity.json](../../reports/validation-evidence/phase10/p10-m3-partial-fixity.json)
+Evidence: [p10-m3-partial-fixity.json](../../verification/evidence/validation/phase10/p10-m3-partial-fixity.json)
 
 M3 전용 게이트는 `tests/p10-m3-partial-fixity.mjs`, `tests/p10-m3-schema-contract.mjs`,
 `tests/p10-m3-domain-route-contract.mjs`, `tests/p10-m3-evidence-contract.mjs`로 구성한다. 네 spring축의
@@ -100,7 +100,7 @@ solver별 limitation/fail-closed를 한 묶음으로 검증한다.
 
 ## M4 — 3D 단부 오프셋·삽입점·패널존 (WP-04)
 
-Evidence: [p10-m4-offsets-panelzone.json](../../reports/validation-evidence/phase10/p10-m4-offsets-panelzone.json)
+Evidence: [p10-m4-offsets-panelzone.json](../../verification/evidence/validation/phase10/p10-m4-offsets-panelzone.json)
 
 전용 runner는 요소/평형, schema·DomainBinary v4, evidence 계약 3개 테스트로 구성되며 3/3 PASS했다.
 벡터 오프셋과 삽입점은 선형·Direct P-Delta 공통 `T_off`를 사용하고, 미검증 nonlinear 경로는
@@ -181,7 +181,7 @@ sparse LDLT / CG 검사는 backend별 pivot localization을 고정하는 kernel-
 
 ## M8 Warping · LTB 설계 검토 (WP-08 옵션 B)
 
-Evidence: [p10-m8-warping-ltb.json](../../reports/validation-evidence/phase10/p10-m8-warping-ltb.json)
+Evidence: [p10-m8-warping-ltb.json](../../verification/evidence/validation/phase10/p10-m8-warping-ltb.json)
 
 | Record | 검증 | tolerance | 결과 |
 | --- | --- | ---: | --- |
@@ -206,7 +206,7 @@ Evidence: [p10-m8-warping-ltb.json](../../reports/validation-evidence/phase10/p1
 
 ## M5 일반 MPC·rigid link (WP-05)
 
-Evidence: [p10-m5-mpc-rigidlink.json](../../reports/validation-evidence/phase10/p10-m5-mpc-rigidlink.json)
+Evidence: [p10-m5-mpc-rigidlink.json](../../verification/evidence/validation/phase10/p10-m5-mpc-rigidlink.json)
 
 | Record | 검증 | tolerance | 결과 |
 | --- | --- | ---: | --- |
@@ -222,7 +222,7 @@ DomainBinary v5는 slave DOF, term offset/DOF/계수, 상수, source type을 typ
 
 ## M6 변단면 부재 (WP-06)
 
-Evidence: [p10-m6-tapered.json](../../reports/validation-evidence/phase10/p10-m6-tapered.json)
+Evidence: [p10-m6-tapered.json](../../verification/evidence/validation/phase10/p10-m6-tapered.json)
 
 | Record | 검증 | tolerance | 결과 |
 | --- | --- | ---: | --- |
@@ -244,7 +244,7 @@ DomainBinary v6 왕복, element descriptor v4와 Agent taper 편집 계약을 �
 | DY-05 | 직접적분 vs 모드중첩 (선형 SDOF) | <1e-6 | §7 |
 | DY-06 | 직접적분 에너지 보존 | < energyTol | §7 |
 
-Evidence: [p10-m7-dynamics-extension.json](../../reports/validation-evidence/phase10/p10-m7-dynamics-extension.json)
+Evidence: [p10-m7-dynamics-extension.json](../../verification/evidence/validation/phase10/p10-m7-dynamics-extension.json)
 
 | Record | 검증 | tolerance | 결과 |
 | --- | --- | ---: | --- |

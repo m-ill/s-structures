@@ -1,4 +1,4 @@
-import { combineModalResponseValues } from '../../dynamics/modal.js';
+import { combineModalResponseValues, normalizeModalCombinationMethod } from '../../dynamics/modalCombination.js';
 
 export const RSA_BASE_SHEAR_SCALE_VERSION = 'p6-m4-rsa-base-shear-scale-v1';
 export const RSA_BASE_SHEAR_SCALE_CORRECTNESS_VERSION = 'p7-m9-rsa-base-shear-scale-v1';
@@ -144,13 +144,23 @@ function scaleCombinedDirection(row = {}, factor = 1) {
     'maxModalDisplacement',
     'srssDisplacement',
     'cqcDisplacement',
+    'absDisplacement',
+    'nrc10Displacement',
     'baseShear',
     'rsaBaseShear',
     'srssBaseShear',
     'cqcBaseShear',
+    'absBaseShear',
+    'nrc10BaseShear',
   ];
   const arrayKeys = ['displacementVector', 'inertiaForceVector'];
-  const componentKeys = ['baseShearComponents', 'srssBaseShearComponents', 'cqcBaseShearComponents'];
+  const componentKeys = [
+    'baseShearComponents',
+    'srssBaseShearComponents',
+    'cqcBaseShearComponents',
+    'absBaseShearComponents',
+    'nrc10BaseShearComponents',
+  ];
   const beforeValue = Object.fromEntries([
     ...scalarKeys,
     ...arrayKeys,
@@ -163,10 +173,12 @@ function scaleCombinedDirection(row = {}, factor = 1) {
   scaled.nodalDisplacements = scaleVectorRows(row.nodalDisplacements, factor);
   scaled.nodalDisplacementsByMethod = scaleRowsByMethod(row.nodalDisplacementsByMethod, factor);
   scaled.nodeDisplacements = scaleNodeVectorMap(row.nodeDisplacements, factor);
+  scaled.nodeRotations = scaleNodeVectorMap(row.nodeRotations, factor);
   scaled.nodalInertiaForces = scaleVectorRows(row.nodalInertiaForces, factor);
   scaled.inertiaForces = scaleVectorRows(row.inertiaForces, factor);
   scaled.nodalInertiaForcesByMethod = scaleRowsByMethod(row.nodalInertiaForcesByMethod, factor);
   scaled.nodeInertiaForces = scaleNodeVectorMap(row.nodeInertiaForces, factor);
+  scaled.nodeInertiaMoments = scaleNodeVectorMap(row.nodeInertiaMoments, factor);
   scaled.memberForces = scaleMemberForceBlock(row.memberForces, factor);
   scaled.provenance = withScalingProvenance(
     row.provenance,
@@ -182,6 +194,7 @@ function scaleVectorRows(rows, factor) {
   return rows.map((row) => {
     const beforeValue = {
       vector: cloneValue(row?.vector),
+      rotation: cloneValue(row?.rotation),
       x: row?.x,
       y: row?.y,
       z: row?.z,
@@ -189,9 +202,13 @@ function scaleVectorRows(rows, factor) {
     return {
       ...row,
       vector: scaleArray(row?.vector, factor),
+      rotation: scaleArray(row?.rotation, factor),
       x: scaleFinite(row?.x, factor),
       y: scaleFinite(row?.y, factor),
       z: scaleFinite(row?.z, factor),
+      rx: scaleFinite(row?.rx, factor),
+      ry: scaleFinite(row?.ry, factor),
+      rz: scaleFinite(row?.rz, factor),
       provenance: withScalingProvenance(row?.provenance, beforeValue, factor, ['x', 'y', 'z']),
     };
   });
@@ -332,9 +349,9 @@ function recoverBaseShear(rsa, combined, modalRows) {
   const candidates = [
     ['combined-base-shear', combined.baseShear, dimensionFor(combined, 'baseShear')],
     ['combined-rsa-base-shear', combined.rsaBaseShear, dimensionFor(combined, 'rsaBaseShear')],
-    [method === 'CQC' ? 'combined-cqc-base-shear' : 'combined-srss-base-shear',
-      method === 'CQC' ? combined.cqcBaseShear : combined.srssBaseShear,
-      dimensionFor(combined, method === 'CQC' ? 'cqcBaseShear' : 'srssBaseShear')],
+    [`combined-${method.toLowerCase()}-base-shear`,
+      combined[`${method.toLowerCase()}BaseShear`] ?? combined[method === 'NRC10' ? 'nrc10BaseShear' : method === 'ABS' ? 'absBaseShear' : method === 'CQC' ? 'cqcBaseShear' : 'srssBaseShear'],
+      dimensionFor(combined, method === 'NRC10' ? 'nrc10BaseShear' : method === 'ABS' ? 'absBaseShear' : method === 'CQC' ? 'cqcBaseShear' : 'srssBaseShear')],
   ];
   for (const [source, value, dimension] of candidates) {
     if (value == null || value === '') continue;
@@ -417,7 +434,7 @@ function isForceDimension(value) {
 }
 
 function normalizedMethod(value) {
-  return String(value || 'SRSS').toUpperCase() === 'CQC' ? 'CQC' : 'SRSS';
+  return normalizeModalCombinationMethod(value);
 }
 
 function nonnegativeNumber(...values) {

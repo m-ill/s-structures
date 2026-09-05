@@ -39,7 +39,7 @@ report API에 locale/pair option을 추가한다. 아직 PDF 자동 저장은 �
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m2-bilingual-rendering.json`
+`verification/evidence/validation/phase11/p11-m2-bilingual-rendering.json`
 
 ## Review Log
 
@@ -51,7 +51,7 @@ report API에 locale/pair option을 추가한다. 아직 PDF 자동 저장은 �
 - `src/report/phase11/bilingualReport.js`
 - `tests/p11-m2-bilingual-rendering.mjs`
 - `tools/run-p11-m2-evidence.mjs`
-- `reports/validation-evidence/phase11/p11-m2-bilingual-rendering.json`
+- `verification/evidence/validation/phase11/p11-m2-bilingual-rendering.json`
 
 `P11-RPT-04`의 실제 figure 배치는 M4 범위이므로 M2 evidence에서 거짓 PASS 없이
 `DEFERRED_TO_P11_M4`로 기록했다.

@@ -32,7 +32,7 @@ Phase 9의 플랫폼·정밀도·수치·성능 판단이 임의 가정이나 �
 | [ADR-005](../phase8/adr/ADR-005-INHOUSE-WASM-SPARSE.md) | in-house WASM sparse backend와 license 경계 |
 | [ADR-007](../phase8/adr/ADR-007-DISPLACEMENT-ARC-LENGTH-BRANCH-POLICY.md) | backend target과 GPU fail-closed 정책 |
 | [ADR-008](../phase8/adr/ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md) | NLTH backend, checkpoint와 GPU 제한 |
-| [Phase 8 release gate](../verification/phase8/QUALIFICATION_RELEASE.md) | 현재 qualification blocker와 M11 evidence 해석 |
+| [Phase 8 release gate](../../verification/specs/phase8/QUALIFICATION_RELEASE.md) | 현재 qualification blocker와 M11 evidence 해석 |
 
 Phase 9는 이 기준을 약화하지 않는다. 계산 backend 변경은 Phase 7·8 기능 qualification을 자동 승격하지 않는다.
 

@@ -8,7 +8,7 @@
 ## 기준선
 
 - main은 origin/main보다 465커밋 앞서 있고 tag는 0개였다.
-- 기존 작업트리 변경 reports/validation-evidence/p4-preview-integrated-validation.json과 tmp/는 Phase 12 범위에서 제외한다.
+- 기존 작업트리 변경 verification/evidence/validation/p4-preview-integrated-validation.json과 tmp/는 Phase 12 범위에서 제외한다.
 - 복구본은 C:/Users/mill/Downloads/dcr/.phase12-backup/f6f75bb6d623.bundle에 만들고 git bundle verify를 통과했다.
 - bundle SHA-256은 67512ADCED1BBBC6A8C71BB8CC0706113D5550517274118B12020EB2288712ED다.
 

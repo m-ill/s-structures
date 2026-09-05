@@ -12,6 +12,7 @@ import {
   createM10PushoverCase,
 } from './helpers/p8M10Fixture.mjs';
 import { installIndexEngineBridge } from '../src/ui/indexBridge.js';
+import { SCHEMA_VERSION } from '../src/core/schema.js';
 
 const model = createM10Model();
 const originalHash = stableHash(model);
@@ -95,7 +96,7 @@ const migratedPreflight = legacyBridge.validateProductionNonlinearCase({
   workerSupported: true,
   wasmSupported: true,
 });
-assert.equal(legacyHostedModel.schemaVersion, 5);
+assert.equal(legacyHostedModel.schemaVersion, SCHEMA_VERSION);
 assert.ok(legacyHostedModel.unitSystem);
 assert.ok(['analysisCases', 'analysisStates', 'diaphragms', 'linkProperties', 'massSources', 'sourceRegistry', 'timeHistoryFunctions']
   .every((key) => Array.isArray(legacyHostedModel[key])));

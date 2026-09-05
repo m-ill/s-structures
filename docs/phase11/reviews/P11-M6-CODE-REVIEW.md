@@ -59,7 +59,7 @@ manifest의 locale별 SHA-256·page·bytes가 실제 파일과 일치한다.
 - `output/pdf/phase11/PILOT-OFFICE-01/P11-M6-PILOT/report-ko.pdf`
 - `output/pdf/phase11/PILOT-OFFICE-01/P11-M6-PILOT/report-en.pdf`
 - `output/pdf/phase11/PILOT-OFFICE-01/P11-M6-PILOT/artifact-manifest.json`
-- `reports/validation-evidence/phase11/p11-m6-dual-pdf-export.json`
+- `verification/evidence/validation/phase11/p11-m6-dual-pdf-export.json`
 
 ## 잔여 범위
 

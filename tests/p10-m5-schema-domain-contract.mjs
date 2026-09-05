@@ -17,7 +17,7 @@ const model = createCantileverTipLoad().model;
 model.nodes.push({ id: 'S', x: 4, y: 1, z: 0 });
 model.constraints = [{ id: 'RL1', type: 'rigidLink', master: { node: 'N2' }, slave: { node: 'S' } }];
 const domain = packDomainBinary(model);
-assert.equal(DOMAIN_BINARY_VERSION, 'p10-domain-binary-v6');
+assert.equal(DOMAIN_BINARY_VERSION, 'p14-domain-binary-v7-foundation');
 assert.equal(validateDomainBinary(domain).ok, true);
 assert.equal(domain.metadata.counts.constraints, 1);
 assert.equal(domain.metadata.counts.constraintEquations, 6);
@@ -36,7 +36,7 @@ executeModelingAction(agentModel, state, 'updateConstraint', { id: 'MPC1', d: 0.
 assert.equal(agentModel.constraints[0].d, 0.001);
 executeModelingAction(agentModel, state, 'deleteConstraint', { id: 'MPC1' });
 assert.equal(agentModel.constraints.length, 0);
-assert.equal(INDEX_AGENT_ACTIONS_VERSION, 'p10-m6-agent-modeling-actions-v5');
+assert.equal(INDEX_AGENT_ACTIONS_VERSION, 'p14-m1-agent-modeling-actions-v6-foundation');
 assert.equal(resolveCriterion(model, 'constraint.consistencyTol'), 1e-10);
 
 console.log(JSON.stringify({

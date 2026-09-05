@@ -66,4 +66,4 @@ qualification.
 - `npm.cmd run test:p3docs`
 - `npm.cmd test`
 
-Evidence: `reports/validation-evidence/phase10/p10-m11-release-gate.json`.
+Evidence: `verification/evidence/validation/phase10/p10-m11-release-gate.json`.

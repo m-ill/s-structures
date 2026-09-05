@@ -35,7 +35,7 @@ index.html native modeler
 
 ## Active Phase 2 Documents
 
-Direct Analysis addendum: `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md` defines the implementation contract for geometric-stiffness P-Delta (`Kt = Ke + Kg(N)`, tension-positive axial convention). Its verification gate is `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`.
+Direct Analysis addendum: `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md` defines the implementation contract for geometric-stiffness P-Delta (`Kt = Ke + Kg(N)`, tension-positive axial convention). Its verification gate is `verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`.
 
 | 문서 | 역할 |
 | --- | --- |

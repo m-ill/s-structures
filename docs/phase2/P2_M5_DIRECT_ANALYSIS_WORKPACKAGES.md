@@ -2,7 +2,7 @@
 
 status: implementation checklist
 parent: `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md`
-verification: `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`
+verification: `verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`
 
 ## Goal
 
@@ -211,7 +211,7 @@ P-Delta: Off | Equivalent Load | Direct Analysis
 ### Files
 
 - `tests/p2-m5-direct-*.mjs`
-- `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`
+- `verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`
 - `docs/user-manual/STATUS_AND_LIMITS.md`
 - `docs/user-manual/02-modeling-and-elastic-analysis.md`
 

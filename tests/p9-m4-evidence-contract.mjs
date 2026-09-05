@@ -16,11 +16,11 @@ function rehash(value) {
 }
 
 const evidence = JSON.parse(await readFile(
-  new URL('../reports/validation-evidence/phase9/p9-m4-webgpu-foundation.json', import.meta.url),
+  new URL('../verification/evidence/validation/phase9/p9-m4-webgpu-foundation.json', import.meta.url),
   'utf8',
 ));
 const manifest = JSON.parse(await readFile(
-  new URL('../docs/verification/phase9/release-manifest.json', import.meta.url),
+  new URL('../verification/specs/phase9/release-manifest.json', import.meta.url),
   'utf8',
 ));
 

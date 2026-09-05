@@ -120,13 +120,13 @@ portable ZIP 신규 설치 3회와 레거시 이전 3회가 독립 상태 루트
 
 ## Phase 4 Performance Limits
 
-Current automated scale evidence is recorded in `reports/validation-evidence/scale-limits.json`.
+Current automated scale evidence is recorded in `verification/evidence/validation/scale-limits.json`.
 
 - Routine interactive use: up to about 1,000 frame members.
 - Review-required range: 2,000 members and above.
 - Long-run validation required: about 4,000 members before production use.
 
-The 2,000 and 4,000 member rows are generated for scale evidence, but full solver validation is intentionally deferred to a longer dedicated run. `reports/validation-evidence/perf-budget.json` records the current automated performance budget; point-cloud and viewer rows are proxy measurements until owner-provided field files and browser frame captures are available.
+The 2,000 and 4,000 member rows are generated for scale evidence, but full solver validation is intentionally deferred to a longer dedicated run. `verification/evidence/validation/perf-budget.json` records the current automated performance budget; point-cloud and viewer rows are proxy measurements until owner-provided field files and browser frame captures are available.
 
 ## Phase 5 Release Gate
 

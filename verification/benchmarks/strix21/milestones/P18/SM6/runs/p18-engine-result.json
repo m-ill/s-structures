@@ -1,0 +1,687 @@
+{
+  "schemaVersion": "p18-case-evidence-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "caseId": "SM6",
+  "engineStatus": "PASS",
+  "officialBenchmarkStatus": "NOT_CLAIMED",
+  "officialPassClaimed": false,
+  "verdict": "PASS",
+  "method": "production 3-D Timoshenko frame, 18 pipe elements, 14 explicit translational lumped masses",
+  "source": {
+    "publicPage": "https://dcr-st.com/verification/SM6.html",
+    "suite": "STRIX Verification 21",
+    "sourceLimitations": [
+      "STRIX public package omits the exact intermediate-joint coordinate table used by its private 42-DOF reconstruction."
+    ]
+  },
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/solver/linear3dAssembly.js",
+    "src/solver/timoshenko.js"
+  ],
+  "modeling": {
+    "nodeCount": 18,
+    "memberCount": 18,
+    "massNodeCount": 14,
+    "geometryIn": {
+      "x": 27.25,
+      "y": 17.25,
+      "z": 18.625
+    },
+    "section": {
+      "outsideDiameterIn": 2.375,
+      "thicknessIn": 0.154,
+      "A": 1.0745315016779304,
+      "Iy": 0.6657470795452824,
+      "Iz": 0.6657470795452824,
+      "J": 1.331494159090565,
+      "Ay": 0.9670783515101374,
+      "Az": 0.9670783515101374
+    },
+    "topology": "four columns split at mid-height; long top beams split into thirds; short top beams split at midspan"
+  },
+  "result": {
+    "version": "p18-strix21-completion-v1",
+    "id": "SM6",
+    "status": "PASS",
+    "engineStatus": "PASS",
+    "officialBenchmarkStatus": "NOT_CLAIMED",
+    "officialPassClaimed": false,
+    "formulation": "production 3-D Timoshenko frame, 18 pipe elements, 14 explicit translational lumped masses",
+    "model": {
+      "nodeCount": 18,
+      "memberCount": 18,
+      "massNodeCount": 14,
+      "geometryIn": {
+        "x": 27.25,
+        "y": 17.25,
+        "z": 18.625
+      },
+      "section": {
+        "outsideDiameterIn": 2.375,
+        "thicknessIn": 0.154,
+        "A": 1.0745315016779304,
+        "Iy": 0.6657470795452824,
+        "Iz": 0.6657470795452824,
+        "J": 1.331494159090565,
+        "Ay": 0.9670783515101374,
+        "Az": 0.9670783515101374
+      },
+      "topology": "four columns split at mid-height; long top beams split into thirds; short top beams split at midspan"
+    },
+    "result": {
+      "modeCount": 8,
+      "modalDofCount": 42,
+      "fullFreeDofCount": 84,
+      "condensation": {
+        "status": "available",
+        "method": "implicit-sparse-shift-invert-no-dense-schur",
+        "equation": "K*u=lambda*M*u; massless residual rows are satisfied in the shared sparse solve",
+        "modalDofCount": 42,
+        "residualDofCount": 42,
+        "transformationPreserved": true,
+        "modeChecksPassed": true,
+        "maxAbsoluteEquilibriumResidual": 1.6298145055770874e-9,
+        "maxRelativeEquilibriumResidual": 4.1139985730130507e-13,
+        "reason": null
+      },
+      "diaphragmAssembly": {
+        "version": "p7-modal-rigid-diaphragm-v1",
+        "status": "not-applicable",
+        "applied": false,
+        "diaphragmCount": 0,
+        "fullDofCount": 108,
+        "reducedDofCount": 108
+      },
+      "eigenvalues": [
+        510839.51660644426,
+        558203.7999281303,
+        784327.8584722601,
+        1936264.5103254698,
+        6271478.919166266,
+        6976735.333653748,
+        7944804.316201304,
+        11835440.821096763
+      ],
+      "frequenciesHz": [
+        113.75287301189869,
+        118.90949260085259,
+        140.95125663156517,
+        221.4636606933676,
+        398.57046656704733,
+        420.3840749734456,
+        448.6025460037733,
+        547.535586268684
+      ],
+      "participation": [
+        {
+          "x": {
+            "gamma": 0.4229557467620663,
+            "modalMass": 0.9999999999999997,
+            "generalizedMass": 0.9999999999999997,
+            "effectiveMass": 0.1788915637190571,
+            "effectiveModalMass": 0.1788915637190571,
+            "massRatio": 0.9368566725987509,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 6.902873381243562e-15,
+            "modalMass": 0.9999999999999997,
+            "generalizedMass": 0.9999999999999997,
+            "effectiveMass": 4.764966091748091e-29,
+            "effectiveModalMass": 4.764966091748091e-29,
+            "massRatio": 2.4954168798992043e-28,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": -2.3852447794681105e-18,
+            "modalMass": 0.9999999999999997,
+            "generalizedMass": 0.9999999999999997,
+            "effectiveMass": 5.6893926579798735e-36,
+            "effectiveModalMass": 5.6893926579798735e-36,
+            "massRatio": 2.979539875359128e-35,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": -6.892264397131085e-15,
+            "modalMass": 0.9999999999999994,
+            "generalizedMass": 0.9999999999999994,
+            "effectiveMass": 4.75033085199607e-29,
+            "effectiveModalMass": 4.75033085199607e-29,
+            "massRatio": 2.4877523921325833e-28,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 0.42365260032173757,
+            "modalMass": 0.9999999999999994,
+            "generalizedMass": 0.9999999999999994,
+            "effectiveMass": 0.17948152575936985,
+            "effectiveModalMass": 0.17948152575936985,
+            "massRatio": 0.9399463089267949,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": -1.3933135426641736e-18,
+            "modalMass": 0.9999999999999994,
+            "generalizedMass": 0.9999999999999994,
+            "effectiveMass": 1.9413226281713886e-36,
+            "effectiveModalMass": 1.9413226281713886e-36,
+            "massRatio": 1.0166723461177735e-35,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": 4.961957388055275e-15,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 2.4621021120876324e-29,
+            "effectiveModalMass": 2.4621021120876324e-29,
+            "massRatio": 1.2894050140627472e-28,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 6.356026815979022e-14,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 4.039907688544442e-27,
+            "effectiveModalMass": 4.039907688544442e-27,
+            "massRatio": 2.1157031645381418e-26,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": -1.5506645003560452e-16,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 2.4045603926644628e-32,
+            "effectiveModalMass": 2.4045603926644628e-32,
+            "massRatio": 1.2592703656345727e-31,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": 1.844501205290148e-15,
+            "modalMass": 0.9999999999999998,
+            "generalizedMass": 0.9999999999999998,
+            "effectiveMass": 3.402184696316807e-30,
+            "effectiveModalMass": 3.402184696316807e-30,
+            "massRatio": 1.7817270797427833e-29,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": -1.1986939218999739e-15,
+            "modalMass": 0.9999999999999998,
+            "generalizedMass": 0.9999999999999998,
+            "effectiveMass": 1.4368671183999406e-30,
+            "effectiveModalMass": 1.4368671183999406e-30,
+            "massRatio": 7.524885576073264e-30,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": 6.371277116809063e-15,
+            "modalMass": 0.9999999999999998,
+            "generalizedMass": 0.9999999999999998,
+            "effectiveMass": 4.0593172099174803e-29,
+            "effectiveModalMass": 4.0593172099174803e-29,
+            "massRatio": 2.125867947735429e-28,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": 3.0095370640026426e-13,
+            "modalMass": 1.0000000000000002,
+            "generalizedMass": 1.0000000000000002,
+            "effectiveMass": 9.057313339605647e-26,
+            "effectiveModalMass": 9.057313339605647e-26,
+            "massRatio": 4.743322860855114e-25,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 9.02081785095564e-14,
+            "modalMass": 1.0000000000000002,
+            "generalizedMass": 1.0000000000000002,
+            "effectiveMass": 8.137515470011996e-27,
+            "effectiveModalMass": 8.137515470011996e-27,
+            "massRatio": 4.261623917843901e-26,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": -0.002955064610329431,
+            "modalMass": 1.0000000000000002,
+            "generalizedMass": 1.0000000000000002,
+            "effectiveMass": 0.000008732406851221435,
+            "effectiveModalMass": 0.000008732406851221435,
+            "massRatio": 0.00004573169050756269,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": 2.059486018139364e-12,
+            "modalMass": 1.0000000000000002,
+            "generalizedMass": 1.0000000000000002,
+            "effectiveMass": 4.241482658911533e-24,
+            "effectiveModalMass": 4.241482658911533e-24,
+            "massRatio": 2.2212681515566922e-23,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 6.313841379598708e-13,
+            "modalMass": 1.0000000000000002,
+            "generalizedMass": 1.0000000000000002,
+            "effectiveMass": 3.9864592966732917e-25,
+            "effectiveModalMass": 3.9864592966732917e-25,
+            "massRatio": 2.087712195303394e-24,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": 0.21761933786441204,
+            "modalMass": 1.0000000000000002,
+            "generalizedMass": 1.0000000000000002,
+            "effectiveMass": 0.04735817621254513,
+            "effectiveModalMass": 0.04735817621254513,
+            "massRatio": 0.24801518005906895,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": -1.3373990875083704e-12,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 1.7886363192682214e-24,
+            "effectiveModalMass": 1.7886363192682214e-24,
+            "massRatio": 9.367103935602713e-24,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 0.003725424091524703,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 0.000013878784661712656,
+            "effectiveModalMass": 0.000013878784661712656,
+            "massRatio": 0.0000726833157895951,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": -8.408605151940277e-12,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 7.070464060123657e-23,
+            "effectiveModalMass": 7.070464060123657e-23,
+            "massRatio": 3.7028081679129825e-22,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": 2.4909031739614753e-11,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 6.204598622051352e-22,
+            "effectiveModalMass": 6.204598622051352e-22,
+            "massRatio": 3.2493536861216403e-21,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": -0.02741836217819705,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 0.0007517665845347863,
+            "effectiveModalMass": 0.0007517665845347863,
+            "massRatio": 0.003937008131161859,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": 1.2057440869721985e-10,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 1.4538188032684203e-20,
+            "effectiveModalMass": 1.4538188032684203e-20,
+            "massRatio": 7.613661696929177e-20,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        }
+      ]
+    },
+    "probes": [
+      {
+        "id": "SM6-MODE-1-FREQUENCY",
+        "actual": 113.75287301189869,
+        "reference": 111.52,
+        "errorPct": 2.0022175501243633,
+        "unit": "Hz",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 4
+        },
+        "passed": true
+      },
+      {
+        "id": "SM6-MODE-2-FREQUENCY",
+        "actual": 118.90949260085259,
+        "reference": 115.95,
+        "errorPct": 2.552386891636554,
+        "unit": "Hz",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 4
+        },
+        "passed": true
+      },
+      {
+        "id": "SM6-MODE-3-FREQUENCY",
+        "actual": 140.95125663156517,
+        "reference": 137.6,
+        "errorPct": 2.4355062729398096,
+        "unit": "Hz",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 4
+        },
+        "passed": true
+      },
+      {
+        "id": "SM6-MODE-4-FREQUENCY",
+        "actual": 221.4636606933676,
+        "reference": 218.02,
+        "errorPct": 1.5795159587962464,
+        "unit": "Hz",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 4
+        },
+        "passed": true
+      },
+      {
+        "id": "SM6-MODE-5-FREQUENCY",
+        "actual": 398.57046656704733,
+        "reference": 404.23,
+        "errorPct": -1.4000775382709558,
+        "unit": "Hz",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 4
+        },
+        "passed": true
+      },
+      {
+        "id": "SM6-MODE-6-FREQUENCY",
+        "actual": 420.3840749734456,
+        "reference": 422.7,
+        "errorPct": -0.5478885797384424,
+        "unit": "Hz",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 4
+        },
+        "passed": true
+      },
+      {
+        "id": "SM6-MODE-7-FREQUENCY",
+        "actual": 448.6025460037733,
+        "reference": 451.72,
+        "errorPct": -0.6901297255438641,
+        "unit": "Hz",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 4
+        },
+        "passed": true
+      },
+      {
+        "id": "SM6-MODE-8-FREQUENCY",
+        "actual": 547.535586268684,
+        "reference": 553.99,
+        "errorPct": -1.1650776604841209,
+        "unit": "Hz",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 4
+        },
+        "passed": true
+      }
+    ],
+    "strixPublishedComparison": [
+      {
+        "id": "SM6-STRIX-MODE-1-OMEGA2",
+        "actual": 510839.51660644426,
+        "reference": 506331.91595,
+        "errorPct": 0.890246203024142,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM6-STRIX-MODE-2-OMEGA2",
+        "actual": 558203.7999281303,
+        "reference": 553810.51317,
+        "errorPct": 0.7932833800830571,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM6-STRIX-MODE-3-OMEGA2",
+        "actual": 784327.8584722601,
+        "reference": 771530.32303,
+        "errorPct": 1.6587209938814649,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM6-STRIX-MODE-4-OMEGA2",
+        "actual": 1936264.5103254698,
+        "reference": 1904900,
+        "errorPct": 1.6465174195742442,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM6-STRIX-MODE-5-OMEGA2",
+        "actual": 6271478.919166266,
+        "reference": 6692500,
+        "errorPct": -6.290938824560836,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM6-STRIX-MODE-6-OMEGA2",
+        "actual": 6976735.333653748,
+        "reference": 7435200,
+        "errorPct": -6.166137647222024,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM6-STRIX-MODE-7-OMEGA2",
+        "actual": 7944804.316201304,
+        "reference": 8505600,
+        "errorPct": -6.593252490108821,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM6-STRIX-MODE-8-OMEGA2",
+        "actual": 11835440.821096763,
+        "reference": 12767000,
+        "errorPct": -7.296617677631684,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      }
+    ],
+    "sourceLimitations": [
+      "STRIX public package omits the exact intermediate-joint coordinate table used by its private 42-DOF reconstruction."
+    ],
+    "reference": "LARSA 4D E08 ASME Frame vendor verification frequencies (ANSYS/EASE2/COSMOS comparison), 4% engineering bracket; STRIX values retained as a non-gating source-equivalence lane",
+    "engineeringHash": "cabf3f30f60a83db068b9d6122524125e3f7fa68498d8fe911e823ced0364451"
+  },
+  "audit": {
+    "probeCount": 8,
+    "failedProbeCount": 0,
+    "engineeringHash": "cabf3f30f60a83db068b9d6122524125e3f7fa68498d8fe911e823ced0364451"
+  }
+}

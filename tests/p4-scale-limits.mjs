@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const report = JSON.parse(await readFile('reports/validation-evidence/scale-limits.json', 'utf8'));
+const report = JSON.parse(await readFile('verification/evidence/validation/scale-limits.json', 'utf8'));
 assert.equal(report.version, 'p4-scale-limits-v1');
 assert.equal(report.rows.length, 4);
 assert.ok(report.recommended.routineInteractiveMemberLimit >= 1000);

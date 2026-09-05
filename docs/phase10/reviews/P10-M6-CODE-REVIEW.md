@@ -11,7 +11,7 @@ phase10_regression: PASS
 full_regression: PASS
 externally_cross_validated: false
 release_qualified: false
-evidence_artifact: reports/validation-evidence/phase10/p10-m6-tapered.json
+evidence_artifact: verification/evidence/validation/phase10/p10-m6-tapered.json
 evidence_records: 3/3 PASS
 artifact_hash: bf73a838dd2c01d200741dae
 ```

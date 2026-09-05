@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "p18-case-evidence-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "caseId": "SR1",
+  "engineStatus": "PASS",
+  "officialBenchmarkStatus": "INPUT_BLOCKED",
+  "officialPassClaimed": false,
+  "verdict": "ENGINE_PASS_SOURCE_BLOCKED",
+  "method": "production 2-D rigid-frame modal analysis, mass-normalized mode recovery, SRSS and CQC response-spectrum combination",
+  "source": {
+    "publicPage": "https://dcr-st.com/verification/SR1.html",
+    "suite": "STRIX Verification 21",
+    "sourceLimitations": [
+      "absolute concentrated-mass value m",
+      "complete response-spectrum ordinate table and interpolation rule",
+      "exact member section/area data and eight-element subdivision connectivity"
+    ]
+  },
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/dynamics/modalCombination.js",
+    "src/results/rsa/memberForces.js"
+  ],
+  "modeling": {
+    "fixture": "complete two-storey one-bay engine qualification model",
+    "nodeCount": 6,
+    "memberCount": 6,
+    "activePlane": "Ux-Ry"
+  },
+  "result": {
+    "version": "p18-strix21-completion-v1",
+    "id": "SR1",
+    "status": "ENGINE_PASS_SOURCE_BLOCKED",
+    "engineStatus": "PASS",
+    "officialBenchmarkStatus": "INPUT_BLOCKED",
+    "officialPassClaimed": false,
+    "formulation": "production 2-D rigid-frame modal analysis, mass-normalized mode recovery, SRSS and CQC response-spectrum combination",
+    "model": {
+      "fixture": "complete two-storey one-bay engine qualification model",
+      "nodeCount": 6,
+      "memberCount": 6,
+      "activePlane": "Ux-Ry"
+    },
+    "engineResults": [
+      {
+        "method": "SRSS",
+        "modeCount": 4,
+        "periods": [
+          0.28531950762754116,
+          0.0852826011516918,
+          0.009887843361510464,
+          0.008877082142412788
+        ],
+        "frequenciesHz": [
+          3.504842722865657,
+          11.725721149397218,
+          101.13428817982815,
+          112.64962787966276
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 0.9999999999999994,
+            "displacement": 0.0193513838159732,
+            "baseShear": 118.71597389380852,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "e0036dcd22f112b9dc204e27bac0ad2fc2c6918e0526b297efb2a0f6f3c7ec9a"
+      },
+      {
+        "method": "CQC",
+        "modeCount": 4,
+        "periods": [
+          0.28531950762754116,
+          0.0852826011516918,
+          0.009887843361510464,
+          0.008877082142412788
+        ],
+        "frequenciesHz": [
+          3.504842722865657,
+          11.725721149397218,
+          101.13428817982815,
+          112.64962787966276
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 0.9999999999999994,
+            "displacement": 0.019350094089486194,
+            "baseShear": 118.78197591580606,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "c6678455602462eddd7c5905e3604b1baf9b4d47cd61066fbf845d7d5d8c62d7"
+      }
+    ],
+    "probes": [
+      {
+        "id": "SR1-SRSS-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.0193513838159732,
+        "reference": 0.0193513838159732,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR1-SRSS-X-BASE-SHEAR-CLOSURE",
+        "actual": 118.71597389380852,
+        "reference": 118.71597389380852,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR1-CQC-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.019350094089486194,
+        "reference": 0.019350094089486194,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR1-CQC-X-BASE-SHEAR-CLOSURE",
+        "actual": 118.78197591580606,
+        "reference": 118.78197591580606,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR1-METHOD-INVARIANT-PERIOD-1",
+        "actual": 0.28531950762754116,
+        "reference": 0.28531950762754116,
+        "errorPct": 0,
+        "unit": "s",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      }
+    ],
+    "missingOfficialInputs": [
+      "absolute concentrated-mass value m",
+      "complete response-spectrum ordinate table and interpolation rule",
+      "exact member section/area data and eight-element subdivision connectivity"
+    ],
+    "publicReferenceValues": {
+      "periodsSec": [
+        1.562,
+        0.5868
+      ],
+      "floorUxIn": 7.566,
+      "roofUxIn": 18.81,
+      "memberMomentsKipIn": [
+        12624,
+        6024,
+        9792,
+        5220
+      ]
+    },
+    "engineeringHash": "59347d9707a97b3b3d2e460340ec5ba077d72dbfb90d83acfd4e42ec2ed31246"
+  },
+  "audit": {
+    "probeCount": 5,
+    "failedProbeCount": 0,
+    "engineeringHash": "59347d9707a97b3b3d2e460340ec5ba077d72dbfb90d83acfd4e42ec2ed31246"
+  }
+}

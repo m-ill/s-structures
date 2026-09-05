@@ -11,7 +11,7 @@ phase10_regression: PASS
 full_regression: PASS
 externally_cross_validated: false
 release_qualified: false
-evidence_artifact: reports/validation-evidence/phase10/p10-m8-warping-ltb.json
+evidence_artifact: verification/evidence/validation/phase10/p10-m8-warping-ltb.json
 evidence_records: 3/3 PASS
 artifact_hash: c4635024b9fea3c0a27786d7
 ```

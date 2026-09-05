@@ -53,7 +53,7 @@ Agent가 연속 plan해도 원격 plan은 한 번만 생성된다.
 
 ## 실제 증적
 
-- `reports/validation-evidence/phase11/p11-m7-product-agent-export.json`
+- `verification/evidence/validation/phase11/p11-m7-product-agent-export.json`
 - `output/pdf/phase11/PILOT-OFFICE-01/P11-M6-PILOT/artifact-manifest.json`
 - `docs/user-manual/agent-contract.json`
 - `help.html`

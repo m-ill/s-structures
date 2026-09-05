@@ -41,7 +41,7 @@ qualification 통과 시 production dual-report action을 기본 경로로 승�
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m9-release-gate.json`
+`verification/evidence/validation/phase11/p11-m9-release-gate.json`
 
 ## Review Log
 

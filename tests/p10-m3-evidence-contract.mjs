@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { PARTIAL_FIXITY_VERSION } from '../src/index.js';
 import { stableHash } from '../src/core/stableHash.js';
-import { verificationError } from '../src/verification/matrix/record.js';
+import { verificationError } from '../verification/framework/matrix/record.js';
 import { M3_VERIFICATION_SNAPSHOT as snapshot } from './p10-m3-partial-fixity.mjs';
 
 // Evidence is a JSON artifact; normalize signed zero before hashing and
@@ -54,7 +54,7 @@ if (process.argv.includes('--print')) {
   console.log(JSON.stringify(LIVE_P10_M3_EVIDENCE, null, 2));
 } else {
   const evidencePath = path.resolve(
-    'reports', 'validation-evidence', 'phase10', 'p10-m3-partial-fixity.json',
+    'verification', 'evidence', 'validation', 'phase10', 'p10-m3-partial-fixity.json',
   );
   const committed = JSON.parse(await readFile(evidencePath, 'utf8'));
   assert.deepEqual(committed, LIVE_P10_M3_EVIDENCE, 'P10-M3 committed evidence is stale');

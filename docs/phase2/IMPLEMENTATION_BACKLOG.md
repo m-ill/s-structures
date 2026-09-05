@@ -57,7 +57,7 @@ status: active backlog
 
 ## Phase 5. Advanced Elastic Analysis
 
-Direct Analysis addendum: add ticket `T26A` for geometric-stiffness P-Delta direct analysis (`Kt = Ke + Kg(N)`, tension-positive axial convention). Implementation details live in `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md`; verification gate lives in `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`.
+Direct Analysis addendum: add ticket `T26A` for geometric-stiffness P-Delta direct analysis (`Kt = Ke + Kg(N)`, tension-positive axial convention). Implementation details live in `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md`; verification gate lives in `verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`.
 
 | Ticket | Priority | 작업 | 파일/영역 | 완료 기준 |
 | --- | --- | --- | --- | --- |

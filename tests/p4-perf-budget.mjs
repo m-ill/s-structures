@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const report = JSON.parse(await readFile('reports/validation-evidence/perf-budget.json', 'utf8'));
+const report = JSON.parse(await readFile('verification/evidence/validation/perf-budget.json', 'utf8'));
 const required = [
   'pointcloud-load-proxy',
   'viewer-frame-proxy',

@@ -76,8 +76,8 @@ import { PHASE3_OWNER_SIGNOFF_REVIEW_VERSION } from '../platform/phase3OwnerSign
 import { PHASE3_COMPLETION_AUDIT_REVIEW_VERSION } from '../platform/phase3CompletionAuditReview.js';
 import { PHASE3_EVIDENCE_REGISTER_VERSION } from '../platform/phase3EvidenceRegister.js';
 import { FINAL_USE_RELEASE_REVIEW_VERSION } from '../platform/finalUseReleaseReview.js';
-import { STABILIZATION_HARNESS_VERSION } from '../verification/stabilizationHarness.js';
-import { BENCHMARK_GATE_VERSION } from '../verification/benchmarkGate.js';
+import { STABILIZATION_HARNESS_VERSION } from '../diagnostics/stabilizationHarness.js';
+import { BENCHMARK_GATE_VERSION } from '../diagnostics/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
 import { VALIDATION_HEALTH_VERSION } from '../core/validationHealth.js';
 import { ANALYSIS_AUDIT_VERSION } from '../solver/analysisAudit.js';
@@ -88,8 +88,8 @@ import { DIAPHRAGM_SUMMARY_VERSION } from '../core/diaphragmSummary.js';
 import { DIAPHRAGM_VERSION } from '../core/diaphragmContract.js';
 import { MEMBER_RELEASE_VERSION } from '../core/memberReleaseContract.js';
 import { MEMBER_RELEASE_SUMMARY_VERSION } from '../core/memberReleaseSummary.js';
-import { MEMBER_RELEASE_BENCHMARK_VERSION } from '../verification/memberReleaseBenchmark.js';
-import { RIGID_DIAPHRAGM_BENCHMARK_VERSION } from '../verification/rigidDiaphragmBenchmark.js';
+import { MEMBER_RELEASE_BENCHMARK_VERSION } from '../diagnostics/memberReleaseBenchmark.js';
+import { RIGID_DIAPHRAGM_BENCHMARK_VERSION } from '../diagnostics/rigidDiaphragmBenchmark.js';
 import { STORY_ECCENTRIC_DISTRIBUTION_VERSION } from '../design/storyEccentricDistribution.js';
 import {
   APP_SHELL_VERSION,
@@ -238,7 +238,7 @@ import {
 } from '../nonlinear/integration/index.js';
 import { NONLINEAR_FIBER_NLTH_TRACE_VERSION, NONLINEAR_GEOMETRY_TRACE_VERSION, NONLINEAR_HINGE_CONTROL_TRACE_VERSION, NONLINEAR_TRACE_VERSION } from '../nonlinear/trace.js';
 import { P3_INTEGRATED_RESULTS_GATE_VERSION, P3_INTEGRATED_RESULTS_VERSION } from '../results/p3IntegratedResults.js';
-import { NONLINEAR_BENCHMARK_VERSION } from '../verification/nonlinearBenchmarks.js';
+import { NONLINEAR_BENCHMARK_VERSION } from '../nonlinear/qualification/nonlinearBenchmarks.js';
 import {
   NONLINEAR_HISTORY_EXPORT_VERSION,
   NONLINEAR_PRODUCT_CASE_VERSION,
@@ -266,9 +266,9 @@ import {
   LEGACY_UI_ANALYSIS_COMPATIBILITY_VERSION,
 } from '../compute/product/legacyUiCompatibility.js';
 import { DESIGN_FORMULA_REGISTRY_VERSION } from '../standards/designFormulaRegistry.js';
-import { PHASE10_INTEGRATION_CONTRACT_VERSION, PHASE10_RELEASE_GATE_VERSION } from '../verification/phase10ReleaseGate.js';
+import { PHASE10_INTEGRATION_CONTRACT_VERSION, PHASE10_RELEASE_GATE_VERSION } from '../platform/phase10ReleaseReadiness.js';
 
-export const AGENT_MANIFEST_VERSION = 'p9-m10-agent-capability-manifest-v16';
+export const AGENT_MANIFEST_VERSION = 'p9-m10-agent-capability-manifest-v17-p14';
 export const MANIFEST_LEGACY_RESULT_SHAPE_VERSION = 'm24-legacy-result-shape';
 
 export function buildAgentManifest(options = {}) {
@@ -610,6 +610,9 @@ export function buildAgentManifest(options = {}) {
       'getReport',
       'getDetailedReport',
       'getCalculationPackage',
+      'getPhase13ModelCheck',
+      'getPhase13IssueWaivers',
+      'getPhase13MilestoneSnapshot',
       'getKdsLoadCombinationCoverage',
       'getKdsLoadCombinationRules',
       'getKdsLoadStandardRegistry',
@@ -794,7 +797,7 @@ export function buildAgentManifest(options = {}) {
       remainingReview: 'docs/user-manual/PHASE3_REMAINING_REVIEW.md',
       agentContract: 'docs/user-manual/agent-contract.json',
       completionAudit: 'docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md',
-      planAlignmentVerification: 'docs/verification/P3_PLAN_ALIGNMENT_VERIFICATION.md',
+      planAlignmentVerification: 'verification/specs/P3_PLAN_ALIGNMENT_VERIFICATION.md',
     },
     interpretationRules: [
       'Milestone review APIs expose exitCriteria and exitCriteriaSummary; automated-exit-criteria-covered means written-plan criteria have regression evidence, not production approval.',
@@ -1095,6 +1098,11 @@ export function buildAgentManifest(options = {}) {
       { id: 'P11-M9', status: 'release-qualified', feature: 'three-run PILOT-OFFICE-01 parity, artifact integrity and Windows Chromium report release gate' },
       { id: 'P8-M11', status: 'candidate', feature: 'independent references, measured performance harness, five reproducible pilot packages, and fail-closed release manifest; external comparisons and end-to-end M-tier qualification remain blocked' },
       { id: 'P10-M11', status: 'blocked', feature: 'Phase 10 product integration and release gate; external XV-03~10 and native WebGPU device qualification remain required' },
+      { id: 'P14-M1-M4', status: 'internally-verified', feature: 'Winkler foundation, linear THA, modal combination, and six-DOF mass/RSA modules; independent benchmarks not run' },
+      { id: 'P14-M5-M8', status: 'internally-verified', feature: 'membrane stress, distorted membrane, thin plate, and thick plate transverse-shear workflows with mesh and energy trace; independent benchmarks not run' },
+      { id: 'P14-M9', status: 'internally-verified', feature: 'custom drilling and rigid-null rotational stabilization qualification with MAC classification; not identical to STRIX P3S2' },
+      { id: 'P14-M10', status: 'internally-verified', feature: 'production load, displacement, and arc-length pushover paths with rollback, checkpoint, result, and neutral fixture trace; SP1 not run' },
+      { id: 'P14-M11', status: 'integration', feature: 'Phase 14 modular engine integration, CLI/report surfaces, regression and codebase review' },
       { id: 'P3-M16', status: 'preliminary', feature: 'PMM hinge interpolation, fiber moment-curvature, Newmark NLTH, and ground-motion scaling trace' },
       { id: 'P3-M17', status: 'preliminary', feature: 'RC beam, column, wall, and slab detailed design schedules with formula trace' },
       { id: 'P3-M18', status: 'preliminary', feature: 'steel member, connection, base plate, foundation, and integrated design trace schedules' },

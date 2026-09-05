@@ -1,7 +1,7 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { resolveCriterion } from '../core/analysisCriteria.js';
 import { buildMassSourceTrace } from '../loads/loadsV2.js';
-import { assembleStiffness3D } from '../solver/linear3d.js';
+import { assembleStiffness3D } from '../solver/linear3dAssembly.js';
 import { effectiveSectionMaterial } from '../solver/linear3dPost.js';
 import { taperedMemberMass } from '../solver/taperedMember.js';
 import { DYNAMIC_COMPLETENESS_VERSION } from './elasticCompleteness.js';
@@ -21,6 +21,14 @@ import {
   createSymmetricSparseOperatorFromDense,
 } from '../compute/eigen/sparseOperator.js';
 import { solveRequestedGeneralizedEigen } from '../compute/eigen/requestedModes.js';
+import { condenseMasslessDynamicDofs } from './dynamicCondensation.js';
+import { combineModalResponseValues, combineModalScalars, normalizeModalCombinationMethod } from './modalCombination.js';
+
+export { combineModalResponseValues } from './modalCombination.js';
+import {
+  addDirectNodeMass6Dof,
+  buildSixDofMassAudit,
+} from './mass6dof.js';
 
 const DOF_DIR = ['x', 'y', 'z'];
 
@@ -121,7 +129,7 @@ export function analyzeDynamics(model, options = {}) {
   const mass = buildLumpedMass(model, system, massSourceSpec, massSourceTrace);
   const constraintDomain = buildModalConstraintDomain(model, system, mass);
   const modalSystem = constraintDomain.system;
-  const physicalModalDofs = system.free.filter((dof) => dof % 6 < 3 && mass[dof] > 0);
+  const physicalModalDofs = system.free.filter((dof) => mass[dof] > 0);
   const modalDofs = modalSystem.free.filter((dof) => (
     constraintDomain.applied ? constraintDomain.massMatrix[dof]?.[dof] > 0 : mass[dof] > 0
   ));
@@ -299,13 +307,15 @@ export function analyzeDynamics(model, options = {}) {
       massSource: massSourceTrace,
       dimension: 'mass',
       unit: modalUnits(model.units).mass,
+      sixDof: buildSixDofMassAudit(model, mass, { massSourceUsed: Boolean(massSourceSpec) }),
+      diaphragm: constraintDomain.massAudit,
     },
     rsa,
     prestress: prestressRequested ? settings.prestressTrace || null : null,
   };
   Object.defineProperty(result, 'dynamicSystem', {
     enumerable: false,
-    value: buildDirectDynamicSystem(model, elasticSystem, modalSystem, constraintDomain, mass),
+    value: buildDirectDynamicSystem(model, elasticSystem, modalSystem, constraintDomain, mass, modalDofs, residualDofs),
   });
   return result;
 }
@@ -359,13 +369,19 @@ function blockedModalResult(reason, extras = {}) {
   };
 }
 
-function buildDirectDynamicSystem(model, elasticSystem, modalSystem, constraintDomain, physicalMass) {
+function buildDirectDynamicSystem(model, elasticSystem, modalSystem, constraintDomain, physicalMass, modalDofs, residualDofs) {
   const free = modalSystem.free.slice();
   const stiffness = free.map((row) => free.map((column) => modalSystem.K[row][column]));
   const fullMass = constraintDomain.applied
     ? constraintDomain.massMatrix
     : physicalMass.map((value, index) => physicalMass.map((_other, column) => index === column ? value : 0));
   const mass = free.map((row) => free.map((column) => fullMass[row][column]));
+  const condensation = condenseMasslessDynamicDofs({
+    stiffness: modalSystem.K,
+    mass: fullMass,
+    activeDofs: modalDofs,
+    residualDofs,
+  });
   const forces = {};
   for (let direction = 0; direction < 3; direction += 1) {
     const physicalForce = physicalMass.map((value, dof) => dof % 6 === direction ? value : 0);
@@ -389,6 +405,26 @@ function buildDirectDynamicSystem(model, elasticSystem, modalSystem, constraintD
     },
     fullDofCount: elasticSystem.ndof,
     reducedDofCount: free.length,
+    projectModeVector: (mode) => free.map((dof) => Number(mode?.coordinateVector?.[dof]) || 0),
+    integration: {
+      stiffness: condensation.stiffness,
+      mass: condensation.mass,
+      forceVectors: Object.fromEntries(Object.entries(forces).map(([direction, values]) => {
+        const coordinate = new Array(modalSystem.ndof).fill(0);
+        free.forEach((dof, index) => { coordinate[dof] = Number(values[index]) || 0; });
+        return [direction, condensation.reduceForce(coordinate)];
+      })),
+      expandVector: (values) => constraintDomain.expandVector(condensation.expandVector(values)),
+      projectModeVector: (mode) => condensation.projectCoordinateVector(mode?.coordinateVector),
+      reducedDofCount: modalDofs.length,
+    },
+    condensation: {
+      version: condensation.version,
+      method: condensation.method,
+      activeDofCount: modalDofs.length,
+      residualDofCount: residualDofs.length,
+      condensationHash: condensation.condensationHash,
+    },
     units: modalUnits(model.units),
   };
 }
@@ -455,6 +491,7 @@ export function buildLumpedMass(model, system, massSource = null, preparedTrace 
         : [row.mass, row.mass, row.mass];
       for (let i = 0; i < 3; i += 1) mass[base + i] += Math.max(0, Number(vector[i]) || 0);
     }
+    addDirectNodeMass6Dof(mass, model.nodes || [], idx, { translationOwnedElsewhere: true });
   } else {
     for (const member of model.members || []) {
       if (member.generated === true || member.massless === true) continue;
@@ -483,14 +520,7 @@ export function buildLumpedMass(model, system, massSource = null, preparedTrace 
         for (let i = 0; i < 3; i += 1) mass[base + i] += perNode;
       }
     }
-    for (const node of model.nodes || []) {
-      const base = idx[node.id] * 6;
-      if (Number(node.mass) > 0) {
-        for (let i = 0; i < 3; i += 1) mass[base + i] += Number(node.mass);
-      } else if (Array.isArray(node.mass)) {
-        for (let i = 0; i < 3; i += 1) mass[base + i] += Math.max(0, Number(node.mass[i]) || 0);
-      }
-    }
+    addDirectNodeMass6Dof(mass, model.nodes || [], idx);
   }
   return mass;
 }
@@ -648,44 +678,6 @@ export function runResponseSpectrum(modes, modalDofs, mass, totalMass, spectrum 
   };
 }
 
-export function combineModalResponseValues(responses = [], valueOf = 'displacement', method = 'SRSS', dampingRatio = 0.05) {
-  const getter = typeof valueOf === 'function' ? valueOf : (row) => row?.[valueOf];
-  const rows = (responses || [])
-    .map((row, index) => ({
-      mode: row?.mode,
-      period: Number(row?.period),
-      displacement: Number(getter(row, index)),
-    }))
-    .filter((row) => row.period > 0 && Number.isFinite(row.displacement));
-  if (normalizedCombinationMethod(method) === 'CQC') return combineCqcValues(rows, dampingRatio);
-  return Math.sqrt(rows.reduce((sum, row) => sum + row.displacement ** 2, 0));
-}
-
-function combineCqcValues(rows, dampingRatio) {
-  let sum = 0;
-  for (const first of rows) {
-    for (const second of rows) {
-      sum += cqcCorrelation(first.period, second.period, dampingRatio)
-        * first.displacement
-        * second.displacement;
-    }
-  }
-  return Math.sqrt(Math.max(0, sum));
-}
-
-function cqcCorrelation(firstPeriod, secondPeriod, dampingRatio) {
-  const first = Number(firstPeriod);
-  const second = Number(secondPeriod);
-  const damping = Math.max(0, Number(dampingRatio) || 0);
-  if (!(first > 0) || !(second > 0)) return 0;
-  if (Math.abs(first - second) <= 1e-12 * Math.max(first, second)) return 1;
-  if (!(damping > 0)) return 0;
-  const ratio = Math.max(first, second) / Math.min(first, second);
-  const numerator = 8 * damping ** 2 * (1 + ratio) * ratio ** 1.5;
-  const denominator = (1 - ratio ** 2) ** 2 + 4 * damping ** 2 * ratio * (1 + ratio) ** 2;
-  return denominator > 0 ? numerator / denominator : 0;
-}
-
 function recoverModalResponse({
   mode,
   direction,
@@ -710,9 +702,7 @@ function recoverModalResponse({
     : [];
   const inertiaForceVector = hasModeVector
     ? Array.from({ length: vectorLength }, (_, dof) => (
-      dof % 6 < 3
-        ? finiteNumber(mass?.[dof], 0) * finiteNumber(mode.vector[dof], 0) * gamma * sa
-        : 0
+      finiteNumber(mass?.[dof], 0) * finiteNumber(mode.vector[dof], 0) * gamma * sa
     ))
     : [];
   const directionalDofs = (modalDofs || []).filter((dof) => dof % 6 === dirIndex);
@@ -745,6 +735,7 @@ function recoverModalResponse({
     displacementVector,
     'length',
     units.length,
+    units.angle,
     responseProvenance,
   );
   const nodalInertiaForces = nodalVectorRows(
@@ -752,6 +743,7 @@ function recoverModalResponse({
     inertiaForceVector,
     'force',
     units.force,
+    units.moment,
     responseProvenance,
   );
   const memberForceRecovery = recoverModalMemberForces({
@@ -775,10 +767,12 @@ function recoverModalResponse({
     displacementVector,
     nodalDisplacements,
     nodalDisplacementByNode: vectorRowsByNode(nodalDisplacements),
+    nodalRotationByNode: vectorRowsByNode(nodalDisplacements, 'rotation'),
     inertiaForceVector,
     nodalInertiaForces,
     inertiaForces: nodalInertiaForces,
     nodalInertiaForceByNode: vectorRowsByNode(nodalInertiaForces),
+    nodalInertiaMomentByNode: vectorRowsByNode(nodalInertiaForces, 'rotation'),
     baseShear,
     baseShearComponents: directionComponents(baseShearComponentsVector),
     baseShearSource,
@@ -814,11 +808,23 @@ function combineDirectionResponses({
   const cqcDisplacementVector = hasVectorRecovery
     ? combineResponseVectors(responses, 'displacementVector', 'CQC', dampingRatio)
     : [];
+  const absDisplacementVector = hasVectorRecovery
+    ? combineResponseVectors(responses, 'displacementVector', 'ABS', dampingRatio)
+    : [];
+  const nrc10DisplacementVector = hasVectorRecovery
+    ? combineResponseVectors(responses, 'displacementVector', 'NRC10', dampingRatio)
+    : [];
   const srssInertiaForceVector = hasVectorRecovery
     ? combineResponseVectors(responses, 'inertiaForceVector', 'SRSS', dampingRatio)
     : [];
   const cqcInertiaForceVector = hasVectorRecovery
     ? combineResponseVectors(responses, 'inertiaForceVector', 'CQC', dampingRatio)
+    : [];
+  const absInertiaForceVector = hasVectorRecovery
+    ? combineResponseVectors(responses, 'inertiaForceVector', 'ABS', dampingRatio)
+    : [];
+  const nrc10InertiaForceVector = hasVectorRecovery
+    ? combineResponseVectors(responses, 'inertiaForceVector', 'NRC10', dampingRatio)
     : [];
   const directionalDofs = (modalDofs || []).filter((dof) => dof % 6 === dirIndex);
   const srssDisplacement = hasVectorRecovery
@@ -827,6 +833,12 @@ function combineDirectionResponses({
   const cqcDisplacement = hasVectorRecovery
     ? Math.max(0, ...directionalDofs.map((dof) => Math.abs(cqcDisplacementVector[dof] || 0)))
     : combineModalResponseValues(responses, 'displacement', 'CQC', dampingRatio);
+  const absDisplacement = hasVectorRecovery
+    ? Math.max(0, ...directionalDofs.map((dof) => Math.abs(absDisplacementVector[dof] || 0)))
+    : combineModalResponseValues(responses, 'displacement', 'ABS', dampingRatio);
+  const nrc10Displacement = hasVectorRecovery
+    ? Math.max(0, ...directionalDofs.map((dof) => Math.abs(nrc10DisplacementVector[dof] || 0)))
+    : combineModalResponseValues(responses, 'displacement', 'NRC10', dampingRatio);
   const forceResponses = responses.filter((response) => (
     response.baseShear != null
     && response.baseShear !== ''
@@ -839,13 +851,40 @@ function combineDirectionResponses({
   const cqcBaseShear = hasBaseShearRecovery
     ? combineModalResponseValues(forceResponses, 'baseShear', 'CQC', dampingRatio)
     : null;
+  const absBaseShear = hasBaseShearRecovery
+    ? combineModalResponseValues(forceResponses, 'baseShear', 'ABS', dampingRatio)
+    : null;
+  const nrc10BaseShear = hasBaseShearRecovery
+    ? combineModalResponseValues(forceResponses, 'baseShear', 'NRC10', dampingRatio)
+    : null;
   const srssBaseShearComponents = combineComponentResponses(responses, 'baseShearComponents', 'SRSS', dampingRatio);
   const cqcBaseShearComponents = combineComponentResponses(responses, 'baseShearComponents', 'CQC', dampingRatio);
-  const selectedDisplacementVector = method === 'CQC' ? cqcDisplacementVector : srssDisplacementVector;
-  const selectedInertiaForceVector = method === 'CQC' ? cqcInertiaForceVector : srssInertiaForceVector;
-  const selectedDisplacement = method === 'CQC' ? cqcDisplacement : srssDisplacement;
-  const selectedBaseShear = method === 'CQC' ? cqcBaseShear : srssBaseShear;
-  const selectedBaseShearComponents = method === 'CQC' ? cqcBaseShearComponents : srssBaseShearComponents;
+  const absBaseShearComponents = combineComponentResponses(responses, 'baseShearComponents', 'ABS', dampingRatio);
+  const nrc10BaseShearComponents = combineComponentResponses(responses, 'baseShearComponents', 'NRC10', dampingRatio);
+  const displacementVectors = { SRSS: srssDisplacementVector, CQC: cqcDisplacementVector, ABS: absDisplacementVector, NRC10: nrc10DisplacementVector };
+  const inertiaVectors = { SRSS: srssInertiaForceVector, CQC: cqcInertiaForceVector, ABS: absInertiaForceVector, NRC10: nrc10InertiaForceVector };
+  const displacements = { SRSS: srssDisplacement, CQC: cqcDisplacement, ABS: absDisplacement, NRC10: nrc10Displacement };
+  const baseShears = { SRSS: srssBaseShear, CQC: cqcBaseShear, ABS: absBaseShear, NRC10: nrc10BaseShear };
+  const baseShearComponentSets = { SRSS: srssBaseShearComponents, CQC: cqcBaseShearComponents, ABS: absBaseShearComponents, NRC10: nrc10BaseShearComponents };
+  const selectedDisplacementVector = displacementVectors[method] || srssDisplacementVector;
+  const selectedInertiaForceVector = inertiaVectors[method] || srssInertiaForceVector;
+  const selectedDisplacement = displacements[method] ?? srssDisplacement;
+  const selectedBaseShear = baseShears[method] ?? srssBaseShear;
+  const selectedBaseShearComponents = baseShearComponentSets[method] || srssBaseShearComponents;
+  const displacementCombinationTrace = combineModalScalars(responses.map((response) => ({
+    modeId: response.mode,
+    period: response.period,
+    omega: response.omega,
+    value: response.displacement,
+  })), { method, dampingRatio });
+  const baseShearCombinationTrace = hasBaseShearRecovery
+    ? combineModalScalars(forceResponses.map((response) => ({
+        modeId: response.mode,
+        period: response.period,
+        omega: response.omega,
+        value: response.baseShear,
+      })), { method, dampingRatio })
+    : null;
   const combinedProvenance = {
     ...provenance,
     direction,
@@ -867,12 +906,16 @@ function combineDirectionResponses({
     combineValues: combineModalResponseValues,
   });
   const nodalDisplacementsByMethod = {
-    SRSS: nodalVectorRows(nodes, srssDisplacementVector, 'length', units.length, { ...combinedProvenance, responseMethod: 'SRSS' }),
-    CQC: nodalVectorRows(nodes, cqcDisplacementVector, 'length', units.length, { ...combinedProvenance, responseMethod: 'CQC' }),
+    SRSS: nodalVectorRows(nodes, srssDisplacementVector, 'length', units.length, units.angle, { ...combinedProvenance, responseMethod: 'SRSS' }),
+    CQC: nodalVectorRows(nodes, cqcDisplacementVector, 'length', units.length, units.angle, { ...combinedProvenance, responseMethod: 'CQC' }),
+    ABS: nodalVectorRows(nodes, absDisplacementVector, 'length', units.length, units.angle, { ...combinedProvenance, responseMethod: 'ABS' }),
+    NRC10: nodalVectorRows(nodes, nrc10DisplacementVector, 'length', units.length, units.angle, { ...combinedProvenance, responseMethod: 'NRC10' }),
   };
   const nodalInertiaForcesByMethod = {
-    SRSS: nodalVectorRows(nodes, srssInertiaForceVector, 'force', units.force, { ...combinedProvenance, responseMethod: 'SRSS' }),
-    CQC: nodalVectorRows(nodes, cqcInertiaForceVector, 'force', units.force, { ...combinedProvenance, responseMethod: 'CQC' }),
+    SRSS: nodalVectorRows(nodes, srssInertiaForceVector, 'force', units.force, units.moment, { ...combinedProvenance, responseMethod: 'SRSS' }),
+    CQC: nodalVectorRows(nodes, cqcInertiaForceVector, 'force', units.force, units.moment, { ...combinedProvenance, responseMethod: 'CQC' }),
+    ABS: nodalVectorRows(nodes, absInertiaForceVector, 'force', units.force, units.moment, { ...combinedProvenance, responseMethod: 'ABS' }),
+    NRC10: nodalVectorRows(nodes, nrc10InertiaForceVector, 'force', units.force, units.moment, { ...combinedProvenance, responseMethod: 'NRC10' }),
   };
   const nodalDisplacements = nodalDisplacementsByMethod[method];
   const nodalInertiaForces = nodalInertiaForcesByMethod[method];
@@ -885,26 +928,42 @@ function combineDirectionResponses({
     maxModalDisplacement: Math.max(0, ...responses.map((item) => item.displacement)),
     srssDisplacement,
     cqcDisplacement,
+    absDisplacement,
+    nrc10Displacement,
     displacementVector: selectedDisplacementVector,
     nodalDisplacements,
     nodalDisplacementsByMethod,
     nodeDisplacements: vectorRowsByNode(nodalDisplacements),
+    nodeRotations: vectorRowsByNode(nodalDisplacements, 'rotation'),
     inertiaForceVector: selectedInertiaForceVector,
     nodalInertiaForces,
     inertiaForces: nodalInertiaForces,
     nodalInertiaForcesByMethod,
     nodeInertiaForces: vectorRowsByNode(nodalInertiaForces),
+    nodeInertiaMoments: vectorRowsByNode(nodalInertiaForces, 'rotation'),
     baseShear: selectedBaseShear,
     rsaBaseShear: selectedBaseShear,
     srssBaseShear,
     cqcBaseShear,
+    absBaseShear,
+    nrc10BaseShear,
     baseShearComponents: selectedBaseShearComponents,
     srssBaseShearComponents,
     cqcBaseShearComponents,
+    absBaseShearComponents,
+    nrc10BaseShearComponents,
     baseShearDimension: 'force',
     baseShearRecoveryStatus: hasBaseShearRecovery ? 'available' : 'unsupported',
     memberForces,
     memberForceRecoveryStatus: memberForces.status,
+    combinationTrace: {
+      version: displacementCombinationTrace.version,
+      method,
+      dampingRatio,
+      displacement: displacementCombinationTrace,
+      baseShear: baseShearCombinationTrace,
+      responseFamilies: ['nodal-displacement', 'nodal-inertia-force', 'base-shear', 'member-force'],
+    },
     participatingMassRatio: Math.min(1, responses.reduce((sum, item) => sum + item.massRatio, 0)),
     totalMass: directionMass,
     dimensions: RSA_DIMENSIONS,
@@ -930,25 +989,33 @@ function combineComponentResponses(responses, key, method, dampingRatio) {
   ]));
 }
 
-function nodalVectorRows(nodes, vector, dimension, unit, provenance) {
+function nodalVectorRows(nodes, vector, dimension, unit, rotationalUnit, provenance) {
   if (!Array.isArray(nodes) || !nodes.length || !Array.isArray(vector) || !vector.length) return [];
   return nodes.map((node, index) => {
     const values = [0, 1, 2].map((offset) => finiteNumber(vector[index * 6 + offset], 0));
+    const rotations = [3, 4, 5].map((offset) => finiteNumber(vector[index * 6 + offset], 0));
+    const rotationalDimension = dimension === 'force' ? 'moment' : 'angle';
     return {
       nodeId: node.id,
       vector: values,
       x: values[0],
       y: values[1],
       z: values[2],
+      rotation: rotations,
+      rx: rotations[0],
+      ry: rotations[1],
+      rz: rotations[2],
       dimension,
       unit,
+      rotationalDimension,
+      rotationalUnit,
       provenance,
     };
   });
 }
 
-function vectorRowsByNode(rows) {
-  return Object.fromEntries((rows || []).map((row) => [row.nodeId, row.vector]));
+function vectorRowsByNode(rows, key = 'vector') {
+  return Object.fromEntries((rows || []).map((row) => [row.nodeId, row[key]]));
 }
 
 function directionComponents(values) {
@@ -975,7 +1042,7 @@ function effectiveModalMass(participationItem, directionMass) {
 }
 
 function normalizedCombinationMethod(value) {
-  return String(value || 'SRSS').toUpperCase() === 'CQC' ? 'CQC' : 'SRSS';
+  return normalizeModalCombinationMethod(value);
 }
 
 function finiteNumber(value, fallback = 0) {
@@ -1120,31 +1187,44 @@ function modeFromEigen({
   if (!(initialModalMass > 0)) return null;
   const massScale = 1 / Math.sqrt(initialModalMass);
   for (let i = 0; i < vector.length; i += 1) vector[i] *= massScale;
-  orientModeVector(vector, physicalModalDofs);
+  for (let i = 0; i < coordinateVector.length; i += 1) coordinateVector[i] *= massScale;
+  const orientation = orientModeVector(vector, physicalModalDofs);
+  if (orientation < 0) {
+    for (let i = 0; i < coordinateVector.length; i += 1) coordinateVector[i] *= -1;
+  }
   const generalizedMass = physicalModalDofs.reduce(
     (sum, dof) => sum + physicalMass[dof] * vector[dof] ** 2,
     0,
   );
   const massNormalizedShape = shapeFromVector(nodes, vector);
-  const displayScale = 1 / Math.max(1e-12, ...physicalModalDofs.map((dof) => Math.abs(vector[dof])));
+  const massNormalizedRotationShape = rotationShapeFromVector(nodes, vector);
+  const translationalDisplayDofs = physicalModalDofs.filter((dof) => dof % 6 < 3);
+  const displayDofs = translationalDisplayDofs.length ? translationalDisplayDofs : physicalModalDofs;
+  const displayScale = 1 / Math.max(1e-12, ...displayDofs.map((dof) => Math.abs(vector[dof])));
   const displayVector = vector.map((value) => value * displayScale);
   const displayShape = shapeFromVector(nodes, displayVector);
+  const displayRotationShape = rotationShapeFromVector(nodes, displayVector);
   return {
     eigenvalue: lambda,
     omega,
     frequencyHz: omega / (2 * Math.PI),
     period: (2 * Math.PI) / omega,
     vector,
+    coordinateVector,
     massNormalizedShape,
+    massNormalizedRotationShape,
     displayVector,
     displayShape,
+    displayRotationShape,
     shape: displayShape,
     normalization: {
       analysis: 'mass-normalized',
       generalizedMass,
       massNormalizationResidual: Math.abs(1 - generalizedMass),
       coordinateMassNormalization: 'generalized-symmetric-mass-matrix',
-      display: 'max-absolute-translational-component',
+      display: translationalDisplayDofs.length
+        ? 'max-absolute-translational-component'
+        : 'max-absolute-rotational-component',
       displayScale,
     },
     residualRecovery: {
@@ -1288,9 +1368,15 @@ function orientModeVector(vector, modalDofs) {
   ), null);
   if (pivot != null && vector[pivot] < 0) {
     for (let i = 0; i < vector.length; i += 1) vector[i] *= -1;
+    return -1;
   }
+  return 1;
 }
 
 function shapeFromVector(nodes, vector) {
   return Object.fromEntries(nodes.map((node, i) => [node.id, vector.slice(i * 6, i * 6 + 3)]));
+}
+
+function rotationShapeFromVector(nodes, vector) {
+  return Object.fromEntries(nodes.map((node, i) => [node.id, vector.slice(i * 6 + 3, i * 6 + 6)]));
 }

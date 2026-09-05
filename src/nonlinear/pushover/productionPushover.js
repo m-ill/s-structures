@@ -11,6 +11,7 @@ import {
   evaluatePhysicalControlCoordinate,
   runMdofDisplacementControl,
 } from '../equilibrium/displacementControl.js';
+import { runMdofLoadControl } from '../equilibrium/loadControl.js';
 import {
   buildArcLengthScaling,
   runMdofArcLength,
@@ -33,8 +34,8 @@ import {
   recoverPushoverStep,
 } from './results.js';
 
-export const PRODUCTION_PUSHOVER_VERSION = 'p8-m7-production-pushover-v2';
-export const PRODUCTION_PUSHOVER_ENGINE_VERSION = 'p8-m7-mdof-gravity-displacement-arc-pushover-v2';
+export const PRODUCTION_PUSHOVER_VERSION = 'p8-m7-production-pushover-v3-p14-m10';
+export const PRODUCTION_PUSHOVER_ENGINE_VERSION = 'p8-m7-mdof-gravity-load-displacement-arc-pushover-v3-p14-m10';
 
 export async function runProductionPushover(model = {}, analysisCase = {}, options = {}) {
   const engine = Object.freeze({
@@ -54,9 +55,14 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
   let residentFinalized = false;
   try {
     const merged = mergeOptions(analysisCase, options);
+    const controlStrategy = normalizeControlStrategy(merged.controlStrategy || analysisCase.control?.type);
     const targetDisplacement = Number(merged.targetDisplacement);
-    if (!Number.isFinite(targetDisplacement) || !(targetDisplacement > 0)) {
+    const targetLambda = Number(merged.targetLambda ?? 1);
+    if (controlStrategy !== 'load' && (!Number.isFinite(targetDisplacement) || !(targetDisplacement > 0))) {
       return blocked(engine, 'PUSHOVER_TARGET_DISPLACEMENT_REQUIRED', 'A positive control target is required.');
+    }
+    if (controlStrategy === 'load' && (!Number.isFinite(targetLambda) || !(targetLambda > 0))) {
+      return blocked(engine, 'PUSHOVER_TARGET_LOAD_FACTOR_REQUIRED', 'A positive load-factor target is required for load control.');
     }
     const modelHashAtStart = stableHash(model);
     const loadSet = buildPushoverLoadSet(model, analysisCase, merged);
@@ -177,7 +183,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
     })];
     let peakBaseShear = 0;
     let peakStep = 0;
-    const displacement = await runMdofDisplacementControl({
+    const controlCallbacks = {
       assembler,
       stateStore: gravity.stateStore,
       backend,
@@ -200,7 +206,6 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         residentSession.rejectBoundary(rejected.reason, { source: 'pushover-displacement', attempt: rejected.attempt });
         options.onReject?.(rejected);
       },
-      options: displacementOptions(merged),
       shouldTerminate(accepted) {
         const summary = hingeSummary(accepted.evaluation);
         const mechanism = mechanismReached(summary.rows, summary.memberStates, merged);
@@ -226,7 +231,13 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         }
         return null;
       },
-    });
+    };
+    const rawControlResult = controlStrategy === 'load'
+      ? await runMdofLoadControl({ ...controlCallbacks, options: loadControlOptions(merged, targetLambda) })
+      : await runMdofDisplacementControl({ ...controlCallbacks, control, targetDisplacement, options: displacementOptions(merged) });
+    const displacement = controlStrategy === 'load' && rawControlResult.ok && rawControlResult.reason === 'CONVERGED'
+      ? { ...rawControlResult, reason: 'LOAD_TARGET_REACHED', termination: { ok: true, reason: 'LOAD_TARGET_REACHED' } }
+      : rawControlResult;
     if (displacement.status === 'cancelled' || /_CALLBACK_FAILED$/.test(displacement.reason || '')) {
       const error = new Error(displacement.reason || 'Pushover displacement-control run failed.');
       error.code = displacement.reason || 'ANALYSIS_CANCELLED';
@@ -240,7 +251,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         loadSet,
         control,
         step: accepted.step,
-        targetDisplacement: accepted.targetDisplacement,
+        targetDisplacement: accepted.targetDisplacement ?? evaluatePhysicalControlCoordinate(control, accepted.evaluation.q),
         convergence: accepted.convergence,
         hingeEvents: accepted.hingeEvents,
         gravityBaselineReactions: initialEvaluation.reactionsFull,
@@ -251,12 +262,12 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
     }
     const handoffCheckpoint = displacement.stateStore?.committed
       ? createStateCheckpoint(displacement.stateStore, {
-        role: 'pushover-displacement-control-handoff',
+        role: `pushover-${controlStrategy}-control-handoff`,
         caseId: analysisCase.id || null,
         terminationReason: displacement.reason,
       })
       : null;
-    if (handoffCheckpoint) residentSession.recordCheckpoint(handoffCheckpoint, { source: 'pushover-displacement-handoff' });
+      if (handoffCheckpoint) residentSession.recordCheckpoint(handoffCheckpoint, { source: `pushover-${controlStrategy}-handoff` });
     let arcLengthResult = null;
     const arcEnabled = merged.arcLength?.enabled === true;
     if (arcEnabled) {
@@ -274,7 +285,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         backend,
         engine,
         handoffCheckpoint,
-        options: { ...merged, prepareArcLengthHandoff: true },
+        options: { ...merged, controlStrategy, prepareArcLengthHandoff: true },
       });
       const arcConfiguration = productionArcLengthConfiguration(
         loadSet.domain,
@@ -355,7 +366,7 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
       backend,
       engine,
       handoffCheckpoint,
-      options: { ...merged, acceptExplicitTermination: arcEnabled || merged.acceptExplicitTermination === true },
+      options: { ...merged, controlStrategy, acceptExplicitTermination: arcEnabled || merged.acceptExplicitTermination === true },
     });
     const governedResult = Object.freeze({
       ...result,
@@ -364,7 +375,8 @@ export async function runProductionPushover(model = {}, analysisCase = {}, optio
         available: true,
         production: true,
         qualification: 'candidate',
-        supportedControls: ['displacement', 'arcLength'],
+        supportedControls: ['load', 'displacement', 'arcLength'],
+        executedControl: controlStrategy,
       },
       integrationCapability,
       routing: {
@@ -691,6 +703,36 @@ function displacementOptions(options) {
   };
 }
 
+function loadControlOptions(options, targetLambda) {
+  return {
+    targetLambda,
+    initialStep: options.initialLoadIncrement ?? options.initialStep ?? targetLambda / positiveInteger(options.steps, 20),
+    minStep: options.minLoadIncrement ?? options.minStep,
+    maxStep: options.maxLoadIncrement ?? options.maxStep,
+    cutbackFactor: options.cutbackFactor,
+    growthFactor: options.growthFactor,
+    fastIterations: options.fastIterations,
+    maxAttempts: options.maxAttempts,
+    newton: {
+      ...(options.newton || {}),
+      maxIterations: positiveInteger(options.newton?.maxIterations ?? options.maxIterations, 30),
+      convergence: options.newton?.convergence || options.convergence,
+      lineSearch: options.newton?.lineSearch ?? options.lineSearch,
+      lineSearchAlphas: options.newton?.lineSearchAlphas,
+      pivotTolerance: options.newton?.pivotTolerance,
+      linearRelativeTolerance: options.newton?.linearRelativeTolerance,
+    },
+  };
+}
+
+function normalizeControlStrategy(value) {
+  const key = String(value || 'displacement').trim().toLowerCase().replace(/[_\s-]+/g, '');
+  if (['load', 'loadcontrol'].includes(key)) return 'load';
+  if (['displacement', 'displacementcontrol'].includes(key)) return 'displacement';
+  if (['arclength', 'arc'].includes(key)) return 'displacement';
+  return 'displacement';
+}
+
 function mergeOptions(analysisCase, options) {
   return {
     ...(analysisCase.settings || {}),
@@ -709,6 +751,12 @@ function mergeOptions(analysisCase, options) {
     direction: options.direction
       || analysisCase.control?.direction
       || analysisCase.settings?.direction,
+    controlStrategy: options.controlStrategy
+      || analysisCase.control?.type
+      || analysisCase.settings?.controlStrategy,
+    targetLambda: options.targetLambda
+      ?? analysisCase.control?.targetLambda
+      ?? analysisCase.settings?.targetLambda,
   };
 }
 

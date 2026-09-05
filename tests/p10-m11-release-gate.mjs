@@ -16,7 +16,7 @@ import { stableHash } from '../src/core/stableHash.js';
 import { createIndexAgentApi } from '../src/ui/indexAgentApi.js';
 import { findFeature, resolveFeatureEnabled } from '../src/platform/featureCatalog.js';
 
-const evidenceDir = path.resolve('reports', 'validation-evidence', 'phase10');
+const evidenceDir = path.resolve('verification', 'evidence', 'validation', 'phase10');
 const evidenceFiles = (await readdir(evidenceDir)).filter((name) => /^p10-m(?:[0-9]|10)-.*\.json$/.test(name));
 const milestoneEvidence = await Promise.all(evidenceFiles.map(async (name) => JSON.parse(await readFile(path.join(evidenceDir, name), 'utf8'))));
 const xval = JSON.parse(await readFile(path.join(evidenceDir, 'p10-m1-cross-validation.json'), 'utf8'));

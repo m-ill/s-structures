@@ -27,9 +27,15 @@ export function buildSlabPlateMitc4(input = {}) {
   const { E, nu, thickness, density } = properties;
   const frame = buildShellLocalFrame(nodes);
   if (!frame.ok) return frame;
-  const local = mitc4PlateLocal(frame.projected, E, nu, thickness);
+  const shearFactor = input.shearFactor == null ? 5 / 6 : strictNumeric(input.shearFactor);
+  if (!Number.isFinite(shearFactor) || shearFactor <= 0 || shearFactor > 1) {
+    return { ok: false, reason: 'SHELL_SHEAR_FACTOR_INVALID' };
+  }
+  const local = mitc4PlateLocal(frame.projected, E, nu, thickness, shearFactor);
   if (!local.ok) return local;
   const embedded = embedPlate24(local.matrix, frame);
+  const embeddedBending = embedPlate24(local.bendingStiffnessMatrix, frame);
+  const embeddedShear = embedPlate24(local.shearStiffnessMatrix, frame);
   if (!matrixIsFinite(local.matrix) || !matrixIsFinite(embedded.matrix)) {
     return { ok: false, reason: 'SHELL_STIFFNESS_NONFINITE' };
   }
@@ -60,6 +66,10 @@ export function buildSlabPlateMitc4(input = {}) {
     matrixSize: 24,
     matrix: embedded.matrix,
     localMatrix: local.matrix,
+    localBendingStiffnessMatrix: local.bendingStiffnessMatrix,
+    localShearStiffnessMatrix: local.shearStiffnessMatrix,
+    bendingComponentMatrix: embeddedBending.matrix,
+    shearComponentMatrix: embeddedShear.matrix,
     transform: embedded.transform,
     frame,
     area,
@@ -67,6 +77,14 @@ export function buildSlabPlateMitc4(input = {}) {
     material: { E, nu, density },
     geometry,
     bendingMatrix: local.Db,
+    shearMatrix: local.Ds,
+    shearFactor,
+    constitutiveProvenance: {
+      theory: 'Reissner-Mindlin first-order shear-deformation theory',
+      shearModulusEquation: 'G=E/(2*(1+nu))',
+      transverseShearEquation: 'Ds=kappa*G*t*I2',
+      shearCorrectionFactor: shearFactor,
+    },
     integration: local.integration,
     pressureLoadIntegration: 'q4-consistent-2x2',
     diagnostics: {

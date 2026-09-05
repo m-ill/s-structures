@@ -160,7 +160,13 @@ function directionalResponses(rsa) {
 
 function selectedDisplacement(row, method) {
   if (Number.isFinite(Number(row?.displacement))) return Number(row.displacement);
-  const selected = method === 'CQC' ? row?.cqcDisplacement : row?.srssDisplacement;
+  const key = {
+    CQC: 'cqcDisplacement',
+    ABS: 'absDisplacement',
+    NRC10: 'nrc10Displacement',
+    SRSS: 'srssDisplacement',
+  }[method] || 'srssDisplacement';
+  const selected = row?.[key];
   if (Number.isFinite(Number(selected))) return Number(selected);
   return Number(row?.maxModalDisplacement) || 0;
 }

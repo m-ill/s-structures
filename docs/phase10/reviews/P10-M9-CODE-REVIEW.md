@@ -46,7 +46,7 @@ dedicated_gate: PASS
 externally_cross_validated: false
 native_webgpu_kernels_qualified: false
 release_qualified: false
-evidence_artifact: reports/validation-evidence/phase10/p10-m9-shell-fem.json
+evidence_artifact: verification/evidence/validation/phase10/p10-m9-shell-fem.json
 evidence_records: 9/9 PASS
 artifact_hash: historical-artifact-see-committed-evidence
 ```

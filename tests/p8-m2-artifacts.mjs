@@ -4,10 +4,10 @@ import {
   getPhase8VerificationSuite,
   validatePhase8EvidenceArtifact,
   verificationRegistryManifest,
-} from '../src/index.js';
+} from '../verification/index.js';
 
 const artifact = JSON.parse(await readFile(
-  new URL('../reports/validation-evidence/phase8/p8-m2-equilibrium.json', import.meta.url),
+  new URL('../verification/evidence/validation/phase8/p8-m2-equilibrium.json', import.meta.url),
   'utf8',
 ));
 const validation = validatePhase8EvidenceArtifact(artifact);
@@ -26,5 +26,5 @@ console.log(JSON.stringify({
   ok: true,
   suite: suite.id,
   verificationIdCount: suite.verificationIds.length,
-  evidence: 'reports/validation-evidence/phase8/p8-m2-equilibrium.json',
+  evidence: 'verification/evidence/validation/phase8/p8-m2-equilibrium.json',
 }, null, 2));

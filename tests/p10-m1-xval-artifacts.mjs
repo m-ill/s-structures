@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { normalizeUnitSystem } from '../src/core/unitSystem.js';
-import { modelHash } from '../src/verification/matrix/record.js';
+import { modelHash } from '../verification/framework/matrix/record.js';
 import {
   XVAL_REFERENCE_ARTIFACT_VERSION,
   XVAL_REFERENCE_CASE_IDS,
@@ -10,7 +10,7 @@ import {
   serializeXvalReferenceArtifact,
   validateXvalReferenceArtifact,
   xvalReferenceArtifactHash,
-} from '../src/verification/xval/referenceArtifact.js';
+} from '../verification/framework/xval/referenceArtifact.js';
 
 const repositoryModel = {
   schemaVersion: 5,

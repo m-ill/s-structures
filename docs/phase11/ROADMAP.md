@@ -51,7 +51,7 @@ M0 → M1 ─┬→ M2 ─┬→ M4 → M5 → M6 → M7 ─┐
 ## 테스트·evidence 네이밍
 
 - 테스트: `tests/p11-m0-*.mjs` … `tests/p11-m9-*.mjs`
-- evidence: `reports/validation-evidence/phase11/p11-mN-*.json`
+- evidence: `verification/evidence/validation/phase11/p11-mN-*.json`
 - review: `docs/phase11/reviews/P11-MN-CODE-REVIEW.md`
 - raw qualification artifact: `reports/phase11/<project>/<run>/`
 - PDF: `output/pdf/phase11/`

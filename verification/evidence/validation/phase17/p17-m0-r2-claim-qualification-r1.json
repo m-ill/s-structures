@@ -1,0 +1,56 @@
+{
+  "version": "p17-m0-r2-claim-qualification-v1",
+  "qualificationId": "P17-M0-R2-CLAIM-QUALIFICATION-R1",
+  "auditDate": "2026-08-28",
+  "status": "ACTIVE_APPEND_ONLY_QUALIFICATION",
+  "appliesTo": {
+    "baselinePath": "verification/evidence/validation/phase17/p17-m0-baseline-source-lock-r2.json",
+    "baselineHash": "06aed261d00b98c04317df8a5fd8ea33373229cbf55cc9ca8b7d65d623802e81",
+    "sourceLocksPath": "verification/benchmarks/strix21/references/source-locks-r2/",
+    "sourceLockAggregateHash": "7dff89b608f1d15408f4167d04ef072b89d1b1480fdf1bb05406f21b633bb4cb"
+  },
+  "supersededClaimFields": [
+    {
+      "fieldPattern": "source-locks-r2/*.contentAudit.manualPdfVsHtmlCoreFields",
+      "historicalValue": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+      "disposition": "UNQUALIFIED_NOT_REPRODUCED",
+      "replacementClaim": "Manual title is present at each locked case-start PDF page index, 21/21; other core-field parity is not claimed by M0 R3."
+    },
+    {
+      "fieldPattern": "source-locks-r2/*.contentAudit.casePdfResultRows",
+      "historicalValue": "VISIBLE_n_OF_n (with an SH1 clipping exception)",
+      "disposition": "UNQUALIFIED_NOT_REPRODUCED",
+      "replacementClaim": "Case PDFs have document-global normalized text-value presence 391/393; this is not row-local visibility or parity. SH1 has two final PCHIP rows not fully visible."
+    },
+    {
+      "fieldPattern": "source-locks-r2/*.contentAudit.method",
+      "historicalValue": "checksum verification + HTML parse + PDF text/visual review",
+      "disposition": "SUPERSEDED_METHOD_DESCRIPTION",
+      "replacementClaim": "See the R3 value-presence audit for extractor hash, pinned runtime, normalization, ordered HTML row offsets, locked manual-page locators, PDF text-presence limits and SH1 visual classification."
+    }
+  ],
+  "stillAuthoritativeR2Fields": [
+    "caseId and official ordinal",
+    "source file logical paths, byte lengths and SHA-256 hashes",
+    "manual and case-PDF page counts and locked printed-page locators",
+    "runtime provenance fields extracted from exactly one dl.bm-evidence scope",
+    "reference lane, blockers and claim restrictions except the superseded contentAudit fields above"
+  ],
+  "replacementEvidence": {
+    "path": "verification/evidence/validation/phase17/p17-m0-source-value-presence-audit-r3.json",
+    "sha256": "c08d767712104745075db17d9d2fb05b414c2d5af344fad4ee4b1b161235b97d",
+    "auditHash": "22b669b29f7f1602926418897c769054115c8db06ac4a4976f2ced66ed6b369d",
+    "authoritativeClaims": [
+      "HTML metadata presence 42/42",
+      "HTML scalar presence 393/393",
+      "HTML ordered result-row sequence 131/131",
+      "manual title at locked start page 21/21",
+      "case-PDF document-global text-value presence 391/393",
+      "SH1 two PCHIP rows not fully visible"
+    ]
+  },
+  "interpretation": "Baseline R2 and its source locks remain authoritative for custody hashes and locators. The three identified contentAudit fields are historical, non-authoritative claims and must not be regenerated or cited as current proof without this qualification overlay.",
+  "releaseAllowed": false,
+  "finalDesignTransferAllowed": false,
+  "qualificationHash": "13e71e0c273b28ab77c67c450346248e61fc29dbba2dd9b269b83cb8e69ffd8c"
+}

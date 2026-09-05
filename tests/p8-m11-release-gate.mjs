@@ -18,7 +18,7 @@ const candidateArtifacts = pilots.map((pilot) => pilotArtifact(pilot, false));
 const candidateSummary = summarizePhase8PilotArtifacts(candidateArtifacts);
 const performanceBlocked = performanceQualification('BLOCKED');
 const historical = historicalEvidence();
-const review = { completed: true, reportPath: 'reports/validation-evidence/phase8/p8-m11-code-review.md', findings: [] };
+const review = { completed: true, reportPath: 'verification/evidence/validation/phase8/p8-m11-code-review.md', findings: [] };
 
 const candidate = buildPhase8ReleaseManifest({
   generatedAt: '2026-07-14T22:30:00+09:00',

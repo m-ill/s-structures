@@ -1,0 +1,991 @@
+{
+  "version": "p15-m9-capability-release-manifest-v1",
+  "phase": "Phase 15",
+  "milestone": "P15-M9",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "benchmark": {
+    "version": "strix21-sstructures-phase15-v3-m7-qualification",
+    "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+    "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+    "runRecordHash": "a3032d1d0d4b6b9e58207c2afac66496662419857537cd548b5a5b2d8bfee01f",
+    "artifactHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+    "calculationHashValid": true,
+    "resultHashValid": true,
+    "runRecordHashValid": true,
+    "integrityPassed": true,
+    "externalRuntimeUsed": false,
+    "caseSetPassed": true,
+    "numericMetricPassed": true,
+    "allCapabilityQualificationPassed": false,
+    "r4ClaimBoundaryPassed": true,
+    "summary": {
+      "attempted": 12,
+      "PASS": 9,
+      "CUSTOM_PASS": 1,
+      "REVIEW": 0,
+      "BLOCKED": 2,
+      "metricCount": 52,
+      "metricPassCount": 52
+    },
+    "cases": [
+      {
+        "id": "P3S2-SS",
+        "status": "CUSTOM_PASS",
+        "modelHash": "fd8b779cd823bef2843c480bc78a4fe93f2e0db4a4a3653eace61ace13d45c17",
+        "resultHash": "dbe903cca1f22badefbb86e2cb6bb93deb88f574136ffa24d7835de9930afae3",
+        "metricCount": 5,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_VERIFIED_CUSTOM",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "PD1",
+        "status": "BLOCKED",
+        "modelHash": "404468c056ed785697422d603dd1d72f581da0aafc2dbf50ca55ba9365404ad6",
+        "resultHash": "1ac783e98de64dcc2615bc874917805de61fcfdba676c07ce3c8cae1f4d95fc3",
+        "metricCount": 4,
+        "numericMetricsPassed": true,
+        "internallyQualified": false,
+        "qualificationStatus": "BLOCKED",
+        "qualificationBlockers": [
+          "PD1_STAGE_WORK_BALANCE_NOT_EXPOSED"
+        ]
+      },
+      {
+        "id": "SB1",
+        "status": "PASS",
+        "modelHash": "687a2cfd1895a3b152f5d48d30f4f9dd9ef5bfe0a5fb17d000d1b1891bd338e5",
+        "resultHash": "ff17619abef1150c36a710b68b2cf9cbb0cc5adf0b3a5d586cf7b99b1aaba59f",
+        "metricCount": 4,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_QUALIFIED",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "SB10",
+        "status": "PASS",
+        "modelHash": "3791a838b696765338442607d3db9db766a98ed8c4e49e06ecb889ec291e1e98",
+        "resultHash": "22b00cf7922c37df8ca0625ba40a9878e0164d3910de6b7b1ff50bf0b7b41992",
+        "metricCount": 8,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_QUALIFIED",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "SB2",
+        "status": "PASS",
+        "modelHash": "722ed5998d244e0c3a0fa9e0a098bddedbf97087bb21842efb4c90b9c988037f",
+        "resultHash": "18247dee858aa3c8890b574f8896f13581c1d39327c699c6ea85f594d3173e8a",
+        "metricCount": 1,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_QUALIFIED",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "SB3",
+        "status": "PASS",
+        "modelHash": "4c1c7011010b00b7e58747004b44f6bf7afa3a8d667c0526ad307b93fddf2a94",
+        "resultHash": "367ce55e7a81f57e17128ce544714d06cbffe2a2ddf45ee906845d34d76c47c1",
+        "metricCount": 1,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_QUALIFIED",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "SB5",
+        "status": "PASS",
+        "modelHash": "5a841daf12d704e8c52aa5b797224106f769f5d6a99023381b7001c50cbaf5e3",
+        "resultHash": "e4f655818c51cc4ecef79d3647a89d2e92d27b74db2eca1be4f772926ed4fc3a",
+        "metricCount": 8,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_QUALIFIED",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "SB6",
+        "status": "PASS",
+        "modelHash": "4697291334ebabe8e46949ad225af14bf5bdf38840cf728c5ca6cab31b892e0d",
+        "resultHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "metricCount": 6,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_QUALIFIED",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "SB7",
+        "status": "PASS",
+        "modelHash": "7d9a365d15acf96587b15bffe8fbfac66800b707442fdad6d2cc8c9ca7ec00b5",
+        "resultHash": "0e44c080c4673598974f1e94e0c3eec6f175749af0473e73df56eb9c41029974",
+        "metricCount": 2,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_QUALIFIED",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "SB8",
+        "status": "PASS",
+        "modelHash": "35d61e874f43c15ec2f48daaf3fd6560ecfb191b284a55f484cfb9d46678cfee",
+        "resultHash": "96485a9d9af38a0bb7ef8560b827e62b994c38c3700d82e6b13b93e954bbcf36",
+        "metricCount": 6,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_QUALIFIED",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "SB9",
+        "status": "PASS",
+        "modelHash": "d9ebc8140ea2e406d4453e25b23ea27af21e2b6c1580f0449268daf387b0daf2",
+        "resultHash": "1e132abe5529b53cbcdc3d283cbb43c1f66ad10b3d88e2858abe15351e679116",
+        "metricCount": 4,
+        "numericMetricsPassed": true,
+        "internallyQualified": true,
+        "qualificationStatus": "INTERNALLY_QUALIFIED",
+        "qualificationBlockers": []
+      },
+      {
+        "id": "SM5",
+        "status": "BLOCKED",
+        "modelHash": "261925c3ba6f53fdd3796374a5750d2a80d77de2b24865b35eaf06721c49875e",
+        "resultHash": "b3b7d7a3c985aea866852449b40b2deb59a4928db694c90504e5e6c64b81e137",
+        "metricCount": 3,
+        "numericMetricsPassed": true,
+        "internallyQualified": false,
+        "qualificationStatus": "BLOCKED",
+        "qualificationBlockers": [
+          "SM5_INDEPENDENT_REFERENCE_MODE_VECTORS_UNAVAILABLE"
+        ]
+      }
+    ],
+    "claimBoundary": "STRIX comparison columns are not actual R4 evidence; P3S2-SS is an S-Structures R5 custom stabilization claim and is not STRIX-identical."
+  },
+  "architecture": {
+    "version": "p15-m8-architecture-audit-v1",
+    "auditHash": "6a14c4435a2a198ac932c6c0030ced759671054a06a38aa5cccada9c65db3368",
+    "sourceDigest": "7293013eaea14530412cd88980384f62b2a03da3d20da057e291a9a0a6fc2fc9",
+    "auditHashValid": true,
+    "gates": {
+      "compatibilityGoverned": false,
+      "foundationRecoveryOwner": true,
+      "importCycles": true,
+      "internalRootBarrelImports": true,
+      "plateBoundaryOwner": true,
+      "productionVerificationImports": false,
+      "relativeImportsResolved": true,
+      "reportSolverImports": false,
+      "solverUpwardImports": true,
+      "sparseAssemblerOwner": true,
+      "stabilizationClassifierOwner": true,
+      "uiNumericCoreImports": false
+    },
+    "gatesPassed": false,
+    "reportedOk": false,
+    "openCriticalHighCount": 52,
+    "openCriticalHigh": [
+      {
+        "rule": "report-solver-reexecution-risk",
+        "severity": "HIGH",
+        "source": "src/report/detailedReport.js",
+        "line": 14,
+        "target": "src/solver/wallSlabEquivalent.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 79,
+        "target": "src/verification/stabilizationHarness.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 80,
+        "target": "src/verification/benchmarkGate.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 83,
+        "target": "src/solver/analysisAudit.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 91,
+        "target": "src/verification/memberReleaseBenchmark.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 92,
+        "target": "src/verification/rigidDiaphragmBenchmark.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 127,
+        "target": "src/solver/elasticExpansion.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 128,
+        "target": "src/solver/wallSlabEquivalent.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 129,
+        "target": "src/solver/semiRigidDiaphragm.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 130,
+        "target": "src/solver/shell/quad4.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 131,
+        "target": "src/solver/shell/shellAssembly.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 132,
+        "target": "src/solver/shell/equivalentScope.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 134,
+        "target": "src/dynamics/elasticCompleteness.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 135,
+        "target": "src/dynamics/globalBuckling.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 137,
+        "target": "src/nonlinear/control/globalEquilibrium.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 145,
+        "target": "src/solver/domain/index.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 156,
+        "target": "src/nonlinear/equilibrium/index.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 180,
+        "target": "src/nonlinear/elements/corotationalFrame3d.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 184,
+        "target": "src/nonlinear/elements/corotationalTruss3d.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 185,
+        "target": "src/nonlinear/elements/hingedFrame3d.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 190,
+        "target": "src/nonlinear/fiber/sectionMesh.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 191,
+        "target": "src/nonlinear/fiber/materialModels.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 192,
+        "target": "src/nonlinear/fiber/sectionResponse.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 193,
+        "target": "src/nonlinear/fiber/momentCurvatureV2.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 194,
+        "target": "src/nonlinear/fiber/pmmSurface.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 195,
+        "target": "src/nonlinear/fiber/memberInteraction.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 196,
+        "target": "src/nonlinear/fiber/fiberPmmPreprocessor.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 197,
+        "target": "src/nonlinear/fiber/pmmInteractionCache.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 198,
+        "target": "src/nonlinear/fiber/hingeInteraction.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 199,
+        "target": "src/nonlinear/elements/distributedFiberFrame3d.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 200,
+        "target": "src/nonlinear/equilibrium/displacementControl.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 212,
+        "target": "src/nonlinear/dynamics/massDomain.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 213,
+        "target": "src/nonlinear/dynamics/mdofGroundMotion.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 214,
+        "target": "src/nonlinear/dynamics/mdofDamping.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 215,
+        "target": "src/nonlinear/dynamics/dynamicHistory.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 216,
+        "target": "src/nonlinear/dynamics/mdofNewmark.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 217,
+        "target": "src/nonlinear/dynamics/productionNlth.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 230,
+        "target": "src/nonlinear/math/secondOrderJet.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 231,
+        "target": "src/nonlinear/math/rotationCoordinates.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/agentManifest.js",
+        "line": 269,
+        "target": "src/verification/phase10ReleaseGate.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/indexAgentApi.js",
+        "line": 35,
+        "target": "src/dynamics/elasticCompleteness.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/indexAgentApi.js",
+        "line": 44,
+        "target": "src/solver/elasticExpansion.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/indexAgentApi.js",
+        "line": 45,
+        "target": "src/solver/wallSlabEquivalent.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/indexAgentApi.js",
+        "line": 86,
+        "target": "src/verification/memberReleaseBenchmark.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/indexAgentApi.js",
+        "line": 87,
+        "target": "src/verification/rigidDiaphragmBenchmark.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/indexAgentApi.js",
+        "line": 88,
+        "target": "src/verification/phase10ReleaseGate.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/indexBridge.js",
+        "line": 37,
+        "target": "src/verification/memberReleaseBenchmark.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/indexBridge.js",
+        "line": 38,
+        "target": "src/verification/rigidDiaphragmBenchmark.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/indexPhase13ElasticWorkspace.js",
+        "line": 21,
+        "target": "src/solver/shell/phase13ShellLab.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/indexPhase13ElasticWorkspace.js",
+        "line": 22,
+        "target": "src/solver/shell/phase13ShellLab.js"
+      },
+      {
+        "rule": "production-verification",
+        "severity": "HIGH",
+        "source": "src/ui/indexPhase13ElasticWorkspace.js",
+        "line": 40,
+        "target": "src/verification/phase13ReleaseGate.js"
+      },
+      {
+        "rule": "ui-numeric-core",
+        "severity": "HIGH",
+        "source": "src/ui/indexResultsPanel.js",
+        "line": 2,
+        "target": "src/solver/shell/equivalentScope.js"
+      }
+    ],
+    "passed": false
+  },
+  "governance": {
+    "baselineHash": "38cbe7779c27063fe95310f788d654353f5fa9f69904f2138a6eed571ab3c555",
+    "baselineArtifactHash": "302aef16542d99336195d440d7a8f85c3bcf94858de136573cc3290b97bb55b7",
+    "baselineValidationPassed": true,
+    "baselineStatus": "BLOCKED",
+    "traceabilityComplete": false,
+    "manifestApprovalsComplete": false,
+    "evidenceFresh": false,
+    "staleEvidenceCount": null,
+    "validationErrors": [],
+    "passed": false
+  },
+  "execution": {
+    "determinismRuns": [
+      {
+        "runId": "run-1",
+        "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+        "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd"
+      },
+      {
+        "runId": "run-2",
+        "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+        "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd"
+      },
+      {
+        "runId": "run-3",
+        "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+        "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd"
+      }
+    ],
+    "determinismPassed": true,
+    "fullRegressionEvidenceValid": true,
+    "fullRegressionEvidenceErrors": [],
+    "fullRegressionSourceBound": true,
+    "fullRegressionPassed": true,
+    "fullRegressionHash": "c5ecb34f90de19e255ea4c8c8b424cbd6198181f0cf13664d63a6302b3e0fa21",
+    "fullRegressionCalculationHash": "e34a1e18d3cb65541b33783d526f09757e03cd4c609a0c020b800878229dacf4",
+    "fullRegressionRunRecordHash": "271a8afd9cba1f31babc22d6ce63dbca3cead48ea20a40ea12c3b73ec094b917",
+    "fullRegressionSourceDigest": "7293013eaea14530412cd88980384f62b2a03da3d20da057e291a9a0a6fc2fc9",
+    "fullRegressionTestInventoryHash": "055754ceca981ceccc768dd46ae9b9273c8e4f19cf9103f6695eb318eaa39d0c",
+    "fullRegressionCommandHash": "be6a5b7598ef77ef1eb5ff01ecf340ff510335556aa09b6ba5422597f9d97cc7",
+    "fullRegressionPlannedCount": 364,
+    "cleanEnvironmentPassed": false,
+    "cleanRunHash": null,
+    "mandatoryCounts": {
+      "fail": 0,
+      "skip": 0,
+      "timeout": 0,
+      "flake": 0
+    },
+    "mandatoryCountsPassed": true,
+    "mutationKillRate": null,
+    "productSurfaceParityPassed": false,
+    "mutationAndSurfacePassed": false
+  },
+  "review": {
+    "reviewers": {
+      "numerical": {
+        "reviewer": null,
+        "approvalHash": null,
+        "approved": false,
+        "independent": false
+      },
+      "structural-domain": {
+        "reviewer": null,
+        "approvalHash": null,
+        "approved": false,
+        "independent": false
+      },
+      "verification": {
+        "reviewer": null,
+        "approvalHash": null,
+        "approved": false,
+        "independent": false
+      },
+      "architecture": {
+        "reviewer": null,
+        "approvalHash": null,
+        "approved": false,
+        "independent": false
+      },
+      "release": {
+        "reviewer": null,
+        "approvalHash": null,
+        "approved": false,
+        "independent": false
+      }
+    },
+    "requiredApprovalsPassed": false,
+    "findings": [],
+    "openCriticalHighCount": 0,
+    "openCriticalHigh": [],
+    "structuralOwner": {
+      "owner": null,
+      "professionalRegistration": null,
+      "approvalHash": null,
+      "approved": false,
+      "finalDesignTransferApproved": false
+    }
+  },
+  "crossSolver": {
+    "actualR4Available": false,
+    "providers": {
+      "MIDAS": {
+        "product": null,
+        "version": null,
+        "artifactHash": null,
+        "modelMappingHash": null,
+        "fullPrecisionResults": false,
+        "independentlyGenerated": false
+      },
+      "STRIX": {
+        "product": null,
+        "version": null,
+        "artifactHash": null,
+        "modelMappingHash": null,
+        "fullPrecisionResults": false,
+        "independentlyGenerated": false
+      }
+    },
+    "providersPassed": false,
+    "mappingAuditPassed": false,
+    "mappingAuditHash": null,
+    "actualR4Passed": false,
+    "crossSolverCompared": false,
+    "provisionalStrixColumnsAreR4": false
+  },
+  "capabilities": [
+    {
+      "id": "P3S2-SS",
+      "kind": "R5-custom-stabilization",
+      "benchmarkStatus": "CUSTOM_PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_VERIFIED_CUSTOM",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": false,
+      "claimStatus": "internally-verified-custom",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "PD1",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "BLOCKED",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "BLOCKED",
+      "qualificationBlockers": [
+        "PD1_STAGE_WORK_BALANCE_NOT_EXPOSED"
+      ],
+      "internallyQualified": false,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "blocked",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SB1",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_QUALIFIED",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "internally-qualified",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SB10",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_QUALIFIED",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "internally-qualified",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SB2",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_QUALIFIED",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "internally-qualified",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SB3",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_QUALIFIED",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "internally-qualified",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SB5",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_QUALIFIED",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "internally-qualified",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SB6",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_QUALIFIED",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "internally-qualified",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SB7",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_QUALIFIED",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "internally-qualified",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SB8",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_QUALIFIED",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "internally-qualified",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SB9",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "PASS",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "INTERNALLY_QUALIFIED",
+      "qualificationBlockers": [],
+      "internallyQualified": true,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "internally-qualified",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    },
+    {
+      "id": "SM5",
+      "kind": "published-benchmark",
+      "benchmarkStatus": "BLOCKED",
+      "numericalMetricsPassed": true,
+      "qualificationStatus": "BLOCKED",
+      "qualificationBlockers": [
+        "SM5_INDEPENDENT_REFERENCE_MODE_VECTORS_UNAVAILABLE"
+      ],
+      "internallyQualified": false,
+      "evidenceResultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "crossSolverCompared": false,
+      "identicalToStrixP3S2": null,
+      "claimStatus": "blocked",
+      "releaseAllowed": false,
+      "designTransferAllowed": false
+    }
+  ],
+  "gates": [
+    {
+      "id": "P15-REL-01",
+      "status": "PASS",
+      "label": "source revision is bound"
+    },
+    {
+      "id": "P15-REL-02",
+      "status": "PASS",
+      "label": "benchmark calculation/result/run hashes are valid"
+    },
+    {
+      "id": "P15-REL-03",
+      "status": "PASS",
+      "label": "all 12 cases execute with PASS/CUSTOM_PASS or an explicit capability BLOCKED record"
+    },
+    {
+      "id": "P15-REL-04",
+      "status": "PASS",
+      "label": "all signed numerical benchmark metrics pass"
+    },
+    {
+      "id": "P15-REL-05",
+      "status": "PASS",
+      "label": "no external runtime solver was used"
+    },
+    {
+      "id": "P15-REL-06",
+      "status": "PASS",
+      "label": "R4 and custom stabilization claims are explicit and non-silent"
+    },
+    {
+      "id": "P15-REL-07",
+      "status": "PASS",
+      "label": "three runs reproduce calculation and result hashes"
+    },
+    {
+      "id": "P15-REL-08",
+      "status": "PASS",
+      "label": "full mandatory regression completed without fail, skip, timeout, or flake"
+    },
+    {
+      "id": "P15-REL-09",
+      "status": "BLOCKED",
+      "label": "independent clean-environment rerun passed"
+    },
+    {
+      "id": "P15-REL-10",
+      "status": "BLOCKED",
+      "label": "mutation and product-surface parity gates pass"
+    },
+    {
+      "id": "P15-REL-11",
+      "status": "BLOCKED",
+      "label": "approved M0 governance baseline and fresh trace/evidence are bound"
+    },
+    {
+      "id": "P15-REL-12",
+      "status": "BLOCKED",
+      "label": "M8 architecture audit is valid and all architecture gates pass"
+    },
+    {
+      "id": "P15-REL-13",
+      "status": "BLOCKED",
+      "label": "no unresolved Critical/High findings remain"
+    },
+    {
+      "id": "P15-REL-14",
+      "status": "BLOCKED",
+      "label": "all required independent reviewer approvals are present"
+    },
+    {
+      "id": "P15-REL-15",
+      "status": "BLOCKED",
+      "label": "full-precision MIDAS and STRIX R4 evidence and mapping audit are present"
+    },
+    {
+      "id": "P15-REL-16",
+      "status": "BLOCKED",
+      "label": "every benchmark capability has complete mandatory qualification evidence"
+    }
+  ],
+  "status": "BLOCKED",
+  "releaseAllowed": false,
+  "finalDesignTransferAllowed": false,
+  "blockers": [
+    "P15-REL-09",
+    "P15-REL-10",
+    "P15-REL-11",
+    "P15-REL-12",
+    "P15-REL-13",
+    "P15-REL-14",
+    "P15-REL-15",
+    "P15-REL-16"
+  ],
+  "limitations": [
+    "Actual full-precision MIDAS and STRIX R4 evidence is not qualified.",
+    "M8 architecture/modularization gate is not closed.",
+    "Approved governance baseline, manifests, traceability, or evidence freshness is incomplete.",
+    "Clean-environment rerun evidence is missing or failed.",
+    "Independent reviewer approvals are incomplete.",
+    "One or more benchmark capabilities retain explicit mandatory qualification blockers.",
+    "Final design transfer is not approved by an identified structural owner."
+  ],
+  "manifestHash": "eb2675a834e6dcf3039931dcb1da1ef07122d0199368bbcd2d18e0867c8a7502",
+  "run": {
+    "manifestHash": "eb2675a834e6dcf3039931dcb1da1ef07122d0199368bbcd2d18e0867c8a7502",
+    "generatedAt": "2026-08-27T16:38:08.192Z",
+    "environment": {
+      "runtime": "v24.16.0",
+      "platform": "win32",
+      "release": "10.0.19045",
+      "architecture": "x64",
+      "host": "DESKTOP-5TLKC72"
+    },
+    "invocationId": "P15-M9-ACTUAL-LOCAL-2026-08-28",
+    "runRecordHash": "1a363e99d2ef0d50d6285b3b18aec117e5858b00743398ec3a78468a021f5750"
+  }
+}

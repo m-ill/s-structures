@@ -1,80 +1,94 @@
+import { migrateToV3 } from '../core/model.js';
+import { buildBaselineContract } from '../core/baselineContract.js';
+import { buildStorySummary } from '../core/storySummary.js';
+import { buildStoryMassSummary } from '../core/storyMassSummary.js';
+import { buildDiaphragmSummary } from '../core/diaphragmSummary.js';
+import { buildMemberReleaseSummary } from '../core/memberReleaseSummary.js';
+import {
+  buildKdsLoadStandardAudit,
+  createKdsLoadCombinations,
+  createKdsRuleBasedLoadCombinations,
+  getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
+  summarizeKdsLoadCombinationCoverage,
+  summarizeKdsLoadCombinationRules,
+} from '../core/kdsLoadCombinations.js';
 import {
   applyDesignBasisLoads as applyDesignBasisLoadsToModel,
-  buildAdvancedElasticTrace,
-  buildBaselineContract,
-  buildLibraryAudit,
-  buildCombinationEnvelopeContract,
-  buildDesignDemandPackage,
-  buildEccentricStoryLoadDistribution,
-  buildDiaphragmSummary,
-  buildMemberReleaseSummary,
-  buildNonlinearAnalysisTrace,
-  buildPracticePlatformReadiness,
-  buildPracticeValidationReport,
-  buildPilotProjectValidation,
-  buildStoryMassSummary,
-  buildStorySummary,
   buildDesignBasisInputState,
-  buildKdsLoadStandardAudit,
-  buildConnectionFoundationReport,
-  buildMemberDesignTraceReport,
+  buildEccentricStoryLoadDistribution,
+  estimateModelLoads,
+  setDesignBasisInput,
+} from '../design/loadEstimation.js';
+import { buildConnectionFoundationReport } from '../design/connectionFoundation.js';
+import { buildMemberDesignTraceReport } from '../design/memberDesignTrace.js';
+import { buildDesignDemandPackage } from '../design/designDemandPackage.js';
+import { buildRcDetailedDesignReport } from '../design/rc/detailedReport.js';
+import { buildRcDetailingReport } from '../design/rcDetailing.js';
+import { buildServiceabilityDriftReport } from '../design/serviceability.js';
+import { buildSteelDetailingReport } from '../design/steelDetailing.js';
+import { buildP3DetailedDesignReport } from '../design/p3DetailedDesignReport.js';
+import { buildAdvancedElasticTrace } from '../results/advancedElasticTrace.js';
+import { buildCombinationEnvelopeContract } from '../results/combinationEnvelopeContract.js';
+import { buildP3IntegratedResults } from '../results/p3IntegratedResults.js';
+import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
+import { buildLoadsV2Trace } from '../loads/loadsV2.js';
+import {
+  buildCqcCombinationReport,
+  estimateMemberEulerBuckling,
+  estimateModelBucklingTrace,
+  runLinearSdofTha,
+  runModalSuperpositionTha,
+} from '../dynamics/elasticCompleteness.js';
+import { buildNonlinearAnalysisTrace } from '../nonlinear/trace.js';
+import { assignMemberHinges } from '../nonlinear/hinges/hingeAssign.js';
+import { expandAdvancedLoads } from '../solver/elasticExpansion.js';
+import {
   buildWallSlabEquivalentTrace,
-  buildP3DetailedDesignReport,
-  buildP3IntegratedResults,
-  buildLaunchReadinessReport,
-  buildPhase3DesignMilestoneReview,
-  buildPhase3DrawingImportValidationReview,
-  buildPhase3EngineeringValidationReview,
-  buildPhase3ElasticMilestoneReview,
-  buildPhase3ImportMilestoneReview,
-  buildPhase3NonlinearMilestoneReview,
-  buildPhase3PlanAlignmentReport,
-  buildPhase3PointCloudValidationReview,
-  buildPhase3PracticeValidationReview,
-  buildPhase3ProductizationMilestoneReview,
-  buildPhase3OwnerSignoffReview,
-  buildPhase3CompletionAuditReview,
+  summarizeSemiRigidDiaphragm,
+} from '../solver/wallSlabEquivalent.js';
+import { buildPracticePlatformReadiness } from '../platform/practicePlatformReadiness.js';
+import { buildPracticeValidationReport } from '../platform/practiceValidationReport.js';
+import { buildPilotProjectValidation } from '../platform/pilotProjectValidation.js';
+import { buildLaunchReadinessReport } from '../platform/launchReadiness.js';
+import { buildFinalUseReleaseReview } from '../platform/finalUseReleaseReview.js';
+import { buildPhase3PlanAlignmentReport } from '../platform/phase3PlanAlignment.js';
+import { buildPhase3ImportMilestoneReview } from '../platform/phase3ImportMilestoneReview.js';
+import { buildPhase3ElasticMilestoneReview } from '../platform/phase3ElasticMilestoneReview.js';
+import { buildPhase3NonlinearMilestoneReview } from '../platform/phase3NonlinearMilestoneReview.js';
+import { buildPhase3DesignMilestoneReview } from '../platform/phase3DesignMilestoneReview.js';
+import { buildPhase3DrawingImportValidationReview } from '../platform/phase3DrawingImportValidationReview.js';
+import { buildPhase3EngineeringValidationReview } from '../platform/phase3EngineeringValidationReview.js';
+import { buildPhase3ProductizationMilestoneReview } from '../platform/phase3ProductizationMilestoneReview.js';
+import { buildPhase3OwnerSignoffReview } from '../platform/phase3OwnerSignoffReview.js';
+import { buildPhase3CompletionAuditReview } from '../platform/phase3CompletionAuditReview.js';
+import {
   buildPhase3EvidenceRegister,
   buildPhase3FinalApprovalReview,
   buildPhase3FinalApprovals,
-  buildFinalUseReleaseReview,
   validatePhase3EvidenceRecord,
-  buildRcDetailedDesignReport,
-  buildRcDetailingReport,
+} from '../platform/phase3EvidenceRegister.js';
+import { buildPhase3PracticeValidationReview } from '../platform/phase3PracticeValidationReview.js';
+import { buildPhase3PointCloudValidationReview } from '../platform/phase3PointCloudValidationReview.js';
+import { createCalculationPackageHtml } from '../report/calculationPackage.js';
+import { createDetailedHtmlReport } from '../report/detailedReport.js';
+import { createHtmlReport } from '../report/htmlReport.js';
+import {
   getLibraryItem as getCoreLibraryItem,
-  buildResultPostprocessing,
-  buildServiceabilityDriftReport,
-  buildSteelDetailingReport,
   listLibrary as listCoreLibrary,
-  buildLoadsV2Trace,
-  buildCqcCombinationReport,
-  createCalculationPackageHtml,
-  createDetailedHtmlReport,
-  createHtmlReport,
-  createKdsLoadCombinations,
-  createKdsRuleBasedLoadCombinations,
-  estimateModelLoads,
-  estimateMemberEulerBuckling,
-  estimateModelBucklingTrace,
-  expandAdvancedLoads,
-  getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
-  migrateToV3,
-  runMemberReleaseBenchmark,
-  runLinearSdofTha,
-  runModalSuperpositionTha,
-  runRigidDiaphragmBenchmark,
-  assignMemberHinges,
-  setDesignBasisInput,
-  summarizeSemiRigidDiaphragm,
-  summarizeKdsLoadCombinationCoverage,
-  summarizeKdsLoadCombinationRules,
   upsertMaterial as upsertCoreMaterial,
   upsertSection as upsertCoreSection,
+} from '../materials/libraryEdit.js';
+import { buildLibraryAudit } from '../materials/registry.js';
+import {
   getViewerState as getCoreViewerState,
   setViewerSlice as setCoreViewerSlice,
+} from '../viewer/viewerState.js';
+import { runMemberReleaseBenchmark } from '../diagnostics/memberReleaseBenchmark.js';
+import { runRigidDiaphragmBenchmark } from '../diagnostics/rigidDiaphragmBenchmark.js';
+import {
   buildPhase10ProductIntegrationContract,
   buildPhase10ReleaseGate,
-} from '../index.js';
+} from '../platform/phase10ReleaseReadiness.js';
 import {
   analyzeLegacyUiSnapshot,
   runLegacyUiPushover,
@@ -209,17 +223,26 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     getReport(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
-      return cloneJson(createHtmlReport(model, getAnalysis(model), options));
+      return cloneJson(bridge?.getReport?.(options) || createHtmlReport(model, getAnalysis(model), options));
     },
     getDetailedReport(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
-      return cloneJson(createDetailedHtmlReport(model, getAnalysis(model), withAnalysisResults(target, options)));
+      return cloneJson(bridge?.getDetailedReport?.(options) || createDetailedHtmlReport(model, getAnalysis(model), withAnalysisResults(target, options)));
     },
     getCalculationPackage(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
-      return cloneJson(createCalculationPackageHtml(model, getAnalysis(model), withAnalysisResults(target, options)));
+      return cloneJson(bridge?.getCalculationPackage?.(options) || createCalculationPackageHtml(model, getAnalysis(model), withAnalysisResults(target, options)));
+    },
+    getPhase13ModelCheck() {
+      return cloneJson(bridge?.getPhase13ModelCheck?.() || null);
+    },
+    getPhase13IssueWaivers() {
+      return cloneJson(bridge?.getPhase13IssueWaivers?.() || []);
+    },
+    getPhase13MilestoneSnapshot() {
+      return cloneJson(bridge?.getPhase13MilestoneSnapshot?.() || null);
     },
     preflightReportExport(input = {}) {
       return cloneJson(requireReportExport().preflight(input));

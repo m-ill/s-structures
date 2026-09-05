@@ -1,0 +1,131 @@
+{
+  "version": "p14-p14-m9-implementation-evidence-v1",
+  "phase": "Phase 14",
+  "milestone": "P14-M9",
+  "status": "INTERNALLY_VERIFIED",
+  "generatedAt": "2026-08-27T07:25:10.128Z",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "buildHash": "902e5f917a3a9ef745e6c948f97d3b455736854bd753a24c13548de346f779e5",
+  "benchmarkExecutionStarted": false,
+  "externalSolverRuntimeDependency": false,
+  "capabilityState": "internally-verified",
+  "independentQualification": "NOT_RUN",
+  "crossSolverComparison": "NOT_APPLICABLE-CUSTOM-CRITERION",
+  "releaseAllowed": false,
+  "designTransferAllowed": false,
+  "productionFiles": [
+    "src/solver/shell/shellElementMath.js",
+    "src/solver/shell/wallMembraneQm6.js",
+    "src/solver/shell/membraneWorkflow.js",
+    "src/solver/shell/membraneRobustness.js",
+    "src/solver/shell/slabPlateMitc4.js",
+    "src/solver/shell/plateWorkflow.js",
+    "src/solver/shell/thickPlateQualification.js",
+    "src/solver/shell/unsupportedRotationFloor.js",
+    "src/solver/shell/shellStabilization.js",
+    "src/solver/linear3dAssembly.js",
+    "src/nonlinear/equilibrium/loadControl.js",
+    "src/nonlinear/pushover/productionPushover.js",
+    "src/nonlinear/pushover/qualificationFixture.js",
+    "src/report/membraneWorkflowReport.js",
+    "src/report/plateWorkflowReport.js",
+    "src/report/shellStabilizationReport.js",
+    "src/report/pushoverQualificationReport.js",
+    "tools/sstructures-membrane.mjs",
+    "tools/sstructures-plate.mjs"
+  ],
+  "testCommands": [
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tools/run-phase14-tests.mjs",
+      "--from=5",
+      "--to=10"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/m2-linear3d.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p6-sparse-solver.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p10-m9a-wall-membrane.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p10-m9b-slab-plate.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p10-m9b-plate-qualification.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p8-m5-production-pushover.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p8-m7-production-arc.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/m34-detailed-report.mjs"
+    ]
+  ],
+  "verificationRecords": [
+    {
+      "id": "P14-M9-INT-01",
+      "status": "PASS",
+      "note": "drilling alpha independent sweep"
+    },
+    {
+      "id": "P14-M9-INT-02",
+      "status": "PASS",
+      "note": "rigid-null unsupported rotation floor"
+    },
+    {
+      "id": "P14-M9-INT-03",
+      "status": "PASS",
+      "note": "MAC and physical/stabilization mode classifier"
+    },
+    {
+      "id": "P14-M9-BENCH",
+      "status": "NOT_RUN",
+      "note": "Independent benchmark execution is intentionally deferred until engine development is complete."
+    }
+  ],
+  "qualificationRecord": {
+    "version": "p14-m0-qualification-record-v1",
+    "capabilityId": "P3S2-SS",
+    "milestone": "P14-M9",
+    "implementationOwner": "shell-stabilization-custom",
+    "runtimeOwner": "s-structures-in-house",
+    "implemented": true,
+    "internallyVerified": true,
+    "independentlyQualified": false,
+    "crossSolverCompared": false,
+    "releaseAllowed": false,
+    "designTransferAllowed": false,
+    "state": "internally-verified",
+    "crossSolverStatus": "NOT_APPLICABLE-CUSTOM-CRITERION",
+    "hashes": {
+      "sourceHash": null,
+      "buildHash": "902e5f917a3a9ef745e6c948f97d3b455736854bd753a24c13548de346f779e5",
+      "inputHash": null,
+      "referenceHash": null,
+      "toleranceHash": null,
+      "resultHash": null
+    },
+    "limitations": [
+      "Independent custom stabilization qualification has not been run.",
+      "P3S2-SS is a custom S-Structures criterion and is not an identical STRIX P3S2 claim."
+    ],
+    "invalidated": false,
+    "invalidationReasons": [],
+    "recordHash": "2c4eb506881fe528bcd68ccd48246f64adedf75a1340e6cde8c4d53b8d99dadb"
+  },
+  "releaseManifestHash": "cfdc47deac8b2b34ea8dbd8ae0b910fb8b0e8395517596110fefdd34060eb7e0",
+  "artifactHash": "e6ac4617a180ab277d4e3a04a089affd5d1f4f5add2e6b321e0dbd0f5739aac0"
+}

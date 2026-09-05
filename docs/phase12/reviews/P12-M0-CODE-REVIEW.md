@@ -5,7 +5,7 @@
     milestone_status: qualification-complete
     critical_findings_open: 0
     high_findings_open: 0
-    evidence_artifact: reports/validation-evidence/phase12/p12-m0-baseline-governance.json
+    evidence_artifact: verification/evidence/validation/phase12/p12-m0-baseline-governance.json
 
 ## 검토 결과
 

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/sstructures-input-schema.json",
+  "title": "Phase 17 S-Structures native input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "artifactStatus", "payloadAbsent", "releaseAllowed", "productProjectSchemaVersion", "payload", "reasonCodes"],
+  "properties": {
+    "schemaVersion": { "const": "p17-sstructures-input-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "artifactStatus": { "enum": ["NOT_PREPARED", "MODEL_LOCKED"] },
+    "payloadAbsent": { "type": "boolean" },
+    "releaseAllowed": { "type": "boolean" },
+    "productProjectSchemaVersion": { "type": "string", "minLength": 1 },
+    "payload": { "type": "object", "additionalProperties": true },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+  }
+}

@@ -1,10 +1,10 @@
 import { normalizeAnalysisCase } from '../core/analysisCase.js';
 import { NONLINEAR_CASE_KINDS } from '../nonlinear/capabilities.js';
+import { normalizeProductAnalysisCaseSettings } from '../compute/product/analysisCaseSettings.js';
 import {
   executeAnalysisCase,
   executeAnalysisCaseAsync,
   hasAnalysisCaseEngine,
-  normalizeAnalysisPDeltaMethod as normalizePDeltaMethod,
 } from '../compute/product/analysisCaseEngine.js';
 
 export const ANALYSIS_RUNNER_VERSION = 'p8-m10-analysis-runners-v6-p10-m7';
@@ -18,7 +18,7 @@ export function runAnalysisCase(model, analysisCase, options = {}) {
       return failureHandle(item, startedAt, 'UNSUPPORTED_ANALYSIS_CASE', `Unsupported analysis case kind: ${item.kind}`);
     }
     const payload = executeAnalysisCase(model, item, settings, options, NONLINEAR_CASE_KINDS);
-    return successHandle(item, startedAt, payload, settings);
+    return successHandle(item, startedAt, payload, settings, { ownedInProcessBoundary: true });
   } catch (error) {
     return failureHandle(item, startedAt, 'ANALYSIS_CASE_FAILED', error?.message || String(error));
   }
@@ -37,7 +37,7 @@ export async function runAnalysisCaseAsync(model, analysisCase, options = {}) {
       return failureHandle(item, startedAt, 'UNSUPPORTED_ANALYSIS_CASE', `Unsupported analysis case kind: ${item.kind}`);
     }
     const payload = await executeAnalysisCaseAsync(model, item, settings, options, NONLINEAR_CASE_KINDS);
-    return successHandle(item, startedAt, payload, settings);
+    return successHandle(item, startedAt, payload, settings, { ownedInProcessBoundary: true });
   } catch (error) {
     return failureHandle(item, startedAt, 'ANALYSIS_CASE_FAILED', error?.message || String(error));
   }
@@ -54,111 +54,7 @@ export function createAnalysisCaseResult(analysisCase, payload, settings = {}, o
 }
 
 export function normalizeAnalysisCaseSettings(kind, settings = {}, input = {}, analysisCase = {}) {
-  const merged = { ...(settings || {}), ...(input || {}) };
-  if (kind === 'static') {
-    const pDeltaMethodExplicit = Object.prototype.hasOwnProperty.call(merged, 'pDeltaMethod')
-      || Object.prototype.hasOwnProperty.call(merged, 'pDelta');
-    const pDeltaMethod = normalizePDeltaMethod(merged.pDeltaMethod ?? merged.pDelta, { fallback: 'off' });
-    const normalized = {
-      comboId: merged.comboId || null,
-      pDeltaMethod,
-      pDelta: pDeltaMethod !== 'off',
-    };
-    Object.defineProperty(normalized, 'pDeltaMethodExplicit', { value: pDeltaMethodExplicit });
-    return normalized;
-  }
-  if (kind === 'modal') {
-    return {
-      modalModeCount: positiveInt(merged.modalModeCount ?? merged.modeCount, 12),
-      massSource: merged.massSource || null,
-      prestressed: merged.prestressed === true || merged.gravityCombinationId != null,
-      gravityCombinationId: merged.gravityCombinationId || merged.gravityComboId || null,
-    };
-  }
-  if (kind === 'responseSpectrum') {
-    const spectrum = merged.spectrum || {};
-    return {
-      modalModeCount: positiveInt(merged.modalModeCount ?? merged.modeCount, 12),
-      massSource: merged.massSource || null,
-      prestressed: merged.prestressed === true || merged.gravityCombinationId != null,
-      gravityCombinationId: merged.gravityCombinationId || merged.gravityComboId || null,
-      spectrum: {
-        enabled: true,
-        method: spectrum.method || merged.method || 'SRSS',
-        directions: spectrum.directions || merged.directions || ['x', 'y'],
-        dampingRatio: finiteNumber(spectrum.dampingRatio ?? merged.dampingRatio, 0.05),
-        scale: finiteNumber(spectrum.scale ?? merged.scale, 9.80665),
-        points: Array.isArray(spectrum.points) ? spectrum.points : merged.points,
-      },
-    };
-  }
-  if (kind === 'buckling') {
-    return {
-      maxIterations: positiveInt(merged.maxIterations, 30),
-      modeCount: positiveInt(merged.modeCount ?? merged.numberOfModes, 3),
-      preloadCombinationId: merged.preloadCombinationId || merged.comboId || merged.combinationId || null,
-      preloadResult: merged.preloadResult || null,
-      referenceAxialForces: merged.referenceAxialForces || null,
-      results: merged.results || null,
-    };
-  }
-  if (kind === 'linearTha') {
-    const record = merged.record && typeof merged.record === 'object' ? merged.record : {};
-    return {
-      integration: merged.integration === 'direct' ? 'direct' : 'modal',
-      modalModeCount: positiveInt(merged.modalModeCount ?? merged.modeCount, 12),
-      direction: merged.direction || 'x',
-      dampingRatio: finiteNumber(merged.dampingRatio, 0.05),
-      dt: finiteNumber(merged.dt ?? record.dt, 0.02),
-      accelerations: accelerationArray(merged.accelerations ?? record.accelerations),
-      accelerationUnit: merged.accelerationUnit || record.accelerationUnit || record.unit || 'model',
-      accelerationScale: finiteNumber(merged.accelerationScale ?? merged.scale ?? record.scale, 1),
-      timeUnit: merged.timeUnit || record.timeUnit || 's',
-      recordId: merged.recordId || record.id || (typeof merged.record === 'string' ? merged.record : null),
-      massSource: merged.massSource || null,
-      energyTol: finiteNumber(merged.energyTol, 1e-8),
-    };
-  }
-  if (kind === 'pushover') {
-    const caseControl = analysisCase.control || {};
-    const lateralPattern = analysisCase.inputRefs?.lateralPattern || {};
-    return {
-      ...merged,
-      direction: merged.direction || caseControl.direction || lateralPattern.direction || '+x',
-      controlNodeId: merged.controlNodeId || caseControl.nodeId || caseControl.controlNodeId || null,
-      steps: positiveInt(merged.steps, 12),
-      maxLoadFactor: finiteNumber(merged.maxLoadFactor, 1),
-      referenceBaseShear: finiteNumber(merged.referenceBaseShear, 10),
-      pattern: merged.pattern || lateralPattern.type || lateralPattern.pattern || 'triangular',
-      control: merged.control || caseControl.type || 'load-factor',
-      targetDisplacement: merged.targetDisplacement ?? caseControl.targetDisplacement,
-      gravityCombinationId: merged.gravityCombinationId || analysisCase.inputRefs?.gravityCombinationId || null,
-      plasticMomentScale: merged.plasticMomentScale,
-      hingeDegradation: merged.hingeDegradation,
-    };
-  }
-  if (kind === 'nlth') {
-    const scale = finiteNumber(merged.scale ?? merged.record?.scale, 1);
-    const accelerations = accelerationArray(merged.accelerations ?? merged.record?.accelerations);
-    return {
-      record: merged.record?.id || merged.record || null,
-      scale,
-      accelerations: accelerations.map((value) => value * scale),
-      dt: finiteNumber(merged.dt ?? merged.record?.dt, 0.02),
-      mass: finiteNumber(merged.mass, 1),
-      stiffness: finiteNumber(merged.stiffness, 100),
-      damping: finiteNumber(merged.damping, 0),
-      yieldForce: merged.yieldForce,
-      postYieldRatio: finiteNumber(merged.postYieldRatio, 0.02),
-      tolerance: merged.tolerance,
-      maxIterations: merged.maxIterations,
-      energyJumpLimit: merged.energyJumpLimit,
-    };
-  }
-  if (kind === 'nonlinearStatic' || kind === 'nonlinearTimeHistory') {
-    return { ...merged };
-  }
-  return merged;
+  return normalizeProductAnalysisCaseSettings(kind, settings, input, analysisCase);
 }
 
 export function summarizeAnalysisResult(kind, payload = {}) {
@@ -284,7 +180,8 @@ export function analysisResultView(kind, payload = {}) {
   return payload?.view || 'analysis-results';
 }
 
-function successHandle(item, startedAt, payload, settings) {
+function successHandle(item, startedAt, payload, settings, provenanceOptions = {}) {
+  const executionProvenance = buildPublicAnalysisExecutionProvenance(payload, provenanceOptions);
   const summary = summarizeAnalysisResult(item.kind, payload);
   const unsupported = payload?.status === 'unsupported';
   const failed = !unsupported && (payload?.ok === false || ['failed', 'not-available'].includes(payload?.status));
@@ -312,6 +209,9 @@ function successHandle(item, startedAt, payload, settings) {
     : null;
   return {
     version: ANALYSIS_RUNNER_VERSION,
+    externalRuntimeUsed: executionProvenance.externalRuntimeUsed,
+    networkFallbackUsed: executionProvenance.networkFallbackUsed,
+    executionProvenance,
     caseId: item.id,
     kind: item.kind,
     ok: !failed && !unsupported,
@@ -337,8 +237,12 @@ function successHandle(item, startedAt, payload, settings) {
 }
 
 function failureHandle(item, startedAt, code, message) {
+  const executionProvenance = buildPublicAnalysisExecutionProvenance();
   return {
     version: ANALYSIS_RUNNER_VERSION,
+    externalRuntimeUsed: executionProvenance.externalRuntimeUsed,
+    networkFallbackUsed: executionProvenance.networkFallbackUsed,
+    executionProvenance,
     caseId: item.id,
     kind: item.kind,
     ok: false,
@@ -356,18 +260,34 @@ function failureHandle(item, startedAt, code, message) {
   };
 }
 
-function positiveInt(value, fallback) {
-  const n = Math.trunc(Number(value));
-  return Number.isFinite(n) && n > 0 ? n : fallback;
+function buildPublicAnalysisExecutionProvenance(payload = {}, options = {}) {
+  const ownedInProcessBoundary = options.ownedInProcessBoundary === true;
+  const externalRuntime = observeExecutionBoolean(payload, 'externalRuntimeUsed', ownedInProcessBoundary);
+  const networkFallback = observeExecutionBoolean(payload, 'networkFallbackUsed', ownedInProcessBoundary);
+  return {
+    origin: 'S_STRUCTURES_PUBLIC_ANALYSIS_RUNNER',
+    runnerVersion: ANALYSIS_RUNNER_VERSION,
+    externalRuntimeUsed: externalRuntime.value,
+    networkFallbackUsed: networkFallback.value,
+    observationSource: externalRuntime.malformed || networkFallback.malformed
+      ? 'INVALID_ENGINE_PAYLOAD'
+      : externalRuntime.value || networkFallback.value
+        ? 'ENGINE_PAYLOAD_AND_PUBLIC_RUNNER_BOUNDARY'
+        : ownedInProcessBoundary
+          ? 'OWNED_IN_PROCESS_PUBLIC_RUNNER_BOUNDARY'
+          : 'UNOBSERVED_CALLER_SUPPLIED_RESULT',
+  };
 }
 
-function finiteNumber(value, fallback) {
-  const n = Number(value);
-  return Number.isFinite(n) ? n : fallback;
-}
-
-function accelerationArray(value) {
-  return Array.isArray(value) ? value.map(Number) : [];
+function observeExecutionBoolean(payload, key, ownedInProcessBoundary) {
+  const candidates = [
+    payload?.[key],
+    payload?.executionProvenance?.[key],
+    payload?.provenance?.[key],
+  ].filter((value) => value !== undefined);
+  if (candidates.some((value) => typeof value !== 'boolean')) return { value: null, malformed: true };
+  if (candidates.length) return { value: candidates.some((value) => value), malformed: false };
+  return { value: ownedInProcessBoundary ? false : null, malformed: false };
 }
 
 function max(values) {

@@ -32,6 +32,12 @@ import {
   currentPaletteReferences,
   installIndexSectionLibraryPanel,
 } from './indexSectionLibraryPanel.js';
+import {
+  assignFoundationTransaction,
+  deleteFoundationPropertyTransaction,
+  removeFoundationTransaction,
+  upsertFoundationPropertyTransaction,
+} from '../modeling/foundationTransactions.js';
 
 export const INDEX_NATIVE_MODELER_VERSION = 'm26-native-modeler-workflow';
 
@@ -74,6 +80,10 @@ export const PHASE7_NATIVE_MODELER_COMMANDS = Object.freeze([
   'previewModelRepairs',
   'applyModelRepairs',
   'undoModelChange',
+  'upsertFoundationProperty',
+  'assignMemberFoundation',
+  'removeMemberFoundation',
+  'deleteFoundationProperty',
 ]);
 
 const TOOL_FOR_ACTION = {
@@ -291,6 +301,18 @@ function runPhase7NativeModelerCommand(target, bridge, state, command, payload =
   } else if (command === 'applyModelRepairs') {
     const input = payload.preview || (!phase7PayloadIsEmpty(payload) ? options : null) || phase7PreviewFor(state, 'previewModelRepairs');
     result = applyPhase7ModelRepairs(model, input, options);
+    result = commitPhase7Transaction(target, bridge, state, result);
+  } else if (command === 'upsertFoundationProperty') {
+    result = upsertFoundationPropertyTransaction(model, payload.property || payload, options);
+    result = commitPhase7Transaction(target, bridge, state, result);
+  } else if (command === 'assignMemberFoundation') {
+    result = assignFoundationTransaction(model, payload, options);
+    result = commitPhase7Transaction(target, bridge, state, result);
+  } else if (command === 'removeMemberFoundation') {
+    result = removeFoundationTransaction(model, payload, options);
+    result = commitPhase7Transaction(target, bridge, state, result);
+  } else if (command === 'deleteFoundationProperty') {
+    result = deleteFoundationPropertyTransaction(model, payload, options);
     result = commitPhase7Transaction(target, bridge, state, result);
   } else if (command === 'undoModelChange') result = undoPhase7Transaction(target, bridge, state, model);
   else throw new Error(`Unsupported Phase 7 native modeler command: ${command}`);

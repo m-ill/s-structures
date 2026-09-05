@@ -737,6 +737,23 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
     reactionMomentScale += maxAbs3(moment);
   }
 
+  const totalFoundationReaction = [0, 0, 0];
+  const totalFoundationReactionMoment = [0, 0, 0];
+  for (const [memberId, result] of Object.entries(memberResultMap)) {
+    const foundation = result?.foundation;
+    if (!foundation) continue;
+    if (!finiteVector(foundation.globalForce) || !finiteVector(foundation.globalMoment)) {
+      equilibriumIssues.push(equilibriumIssue('NONFINITE_FOUNDATION_REACTION', memberId, null, foundation, 'reaction'));
+      continue;
+    }
+    addInto(totalFoundationReaction, foundation.globalForce);
+    addInto(totalFoundationReactionMoment, foundation.globalMoment);
+    addInto(totalReaction, foundation.globalForce);
+    addInto(totalReactionMoment, foundation.globalMoment);
+    reactionForceScale += maxAbs3(foundation.globalForce);
+    reactionMomentScale += maxAbs3(foundation.globalMoment);
+  }
+
   const offsetRows = Object.entries(memberResultMap)
     .filter(([, result]) => result?.offset?.applied)
     .map(([memberId, result]) => ({
@@ -777,12 +794,15 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const reactionResultantsAvailable = !equilibriumIssues.some((issue) => issue.source === 'reaction');
 
   return {
-    equilibriumVersion: 'p10-m9-six-resultant-equilibrium-v2-shell-pressure',
+    equilibriumVersion: 'p14-m1-six-resultant-equilibrium-v3-winkler-foundation',
     referencePoint,
     totalLoad: loadResultantsAvailable ? totalLoad : null,
     totalReaction: reactionResultantsAvailable ? totalReaction : null,
     totalLoadMoment: loadResultantsAvailable ? totalLoadMoment : null,
     totalReactionMoment: reactionResultantsAvailable ? totalReactionMoment : null,
+    totalFoundationReaction: reactionResultantsAvailable ? totalFoundationReaction : null,
+    totalFoundationReactionMoment: reactionResultantsAvailable ? totalFoundationReactionMoment : null,
+    totalFoundationReactionResultant: reactionResultantsAvailable ? [...totalFoundationReaction, ...totalFoundationReactionMoment] : null,
     totalLoadResultant: loadResultantsAvailable ? [...totalLoad, ...totalLoadMoment] : null,
     totalReactionResultant: reactionResultantsAvailable ? [...totalReaction, ...totalReactionMoment] : null,
     forceResidual,

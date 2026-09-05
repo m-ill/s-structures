@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "p17-canonical-input-v1",
+  "caseId": "SB1",
+  "artifactStatus": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+  "payloadAbsent": false,
+  "releaseAllowed": false,
+  "canonicalUnitSystem": "SI_KN_M_S_RAD",
+  "entities": {
+    "nodes": [
+      {
+        "id": "N1",
+        "xyzM": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "N2",
+        "xyzM": [
+          3,
+          0,
+          0
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "id": "M1",
+        "type": "EULER_BERNOULLI_3D_FRAME",
+        "nodeIds": [
+          "N1",
+          "N2"
+        ],
+        "localX": "+GLOBAL_X",
+        "localY": "+GLOBAL_Y",
+        "localZ": "+GLOBAL_Z",
+        "strongBendingInertia": "IZ"
+      }
+    ],
+    "materials": [
+      {
+        "id": "SB1-MAT",
+        "model": "LINEAR_ELASTIC_ISOTROPIC",
+        "E_MPa": 26700,
+        "nu": 0.2,
+        "G_MPa": 11125,
+        "density": 0
+      }
+    ],
+    "sections": [
+      {
+        "id": "SB1-SEC",
+        "shape": "RECTANGLE",
+        "bM": 0.3,
+        "hM": 0.5,
+        "areaM2": 0.15,
+        "IyM4": 0.001125,
+        "IzM4": 0.003125,
+        "jM4": 0.0028173708
+      }
+    ],
+    "constraints": [
+      {
+        "nodeId": "N1",
+        "dofs": [
+          "UX",
+          "UY",
+          "UZ",
+          "RX",
+          "RY",
+          "RZ"
+        ],
+        "value": 0
+      }
+    ],
+    "loadCases": [
+      {
+        "id": "D",
+        "type": "STATIC"
+      }
+    ],
+    "loads": [
+      {
+        "id": "P",
+        "caseId": "D",
+        "type": "NODAL_FORCE",
+        "nodeId": "N2",
+        "vectorKn": [
+          0,
+          0,
+          -1
+        ]
+      }
+    ],
+    "masses": [],
+    "analysisCases": [
+      {
+        "id": "SB1-STATIC",
+        "kind": "LINEAR_STATIC",
+        "combinationId": "D_ONLY",
+        "pDelta": false
+      }
+    ]
+  },
+  "silentDefaults": {
+    "status": "LOCKED",
+    "items": [
+      {
+        "id": "SELF_WEIGHT",
+        "value": false,
+        "source": "SB1 PDF page 1 section 4"
+      },
+      {
+        "id": "SHEAR_DEFORMATION",
+        "value": false,
+        "source": "SB1 PDF page 1 section 2: Euler-Bernoulli, no shear area"
+      },
+      {
+        "id": "GEOMETRIC_STIFFNESS",
+        "value": false,
+        "source": "SB1 PDF page 1 section 4: linear static"
+      },
+      {
+        "id": "MEMBER_END_RELEASES",
+        "value": "RIGID_RIGID",
+        "source": "cantilever continuity and fixed N1"
+      },
+      {
+        "id": "LOAD_COMBINATION",
+        "value": "D_ONLY_1_0",
+        "source": "single load case normalization"
+      },
+      {
+        "id": "TORSION_AND_SHEAR_AREAS",
+        "value": "NON_CONTROLLING",
+        "source": "pure strong-axis bending; no torsion or shear deformation"
+      }
+    ]
+  },
+  "reasonCodes": [
+    "P17_EXTERNAL_MODEL_REVIEW_PENDING"
+  ]
+}
+

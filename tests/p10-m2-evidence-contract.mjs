@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { stableHash } from '../src/core/stableHash.js';
-import { verificationError } from '../src/verification/matrix/record.js';
-import { analyzeModel, modelHash, parseXvalReferenceArtifact } from '../src/index.js';
+import { verificationError } from '../verification/framework/matrix/record.js';
+import { analyzeModel } from '../src/index.js';
+import { modelHash, parseXvalReferenceArtifact } from '../verification/index.js';
 import { M2_VERIFICATION_SNAPSHOT as snapshot } from './p10-m2-timoshenko.mjs';
 
 const SOLVER_VERSION = 'p10-m2-timoshenko-frame-v1';
@@ -40,10 +41,14 @@ export const LIVE_P10_M2_EVIDENCE = Object.freeze({
   artifactHash: stableHash(core).slice(0, 24),
 });
 
-if (process.argv.includes('--print')) {
+if (process.argv.includes('--write')) {
+  const evidencePath = path.resolve('verification', 'evidence', 'validation', 'phase10', 'p10-m2-timoshenko.json');
+  await writeFile(evidencePath, `${JSON.stringify(LIVE_P10_M2_EVIDENCE, null, 2)}\n`, 'utf8');
+  console.log(JSON.stringify({ ok: true, evidencePath, artifactHash: LIVE_P10_M2_EVIDENCE.artifactHash }, null, 2));
+} else if (process.argv.includes('--print')) {
   console.log(JSON.stringify(LIVE_P10_M2_EVIDENCE, null, 2));
 } else {
-  const evidencePath = path.resolve('reports', 'validation-evidence', 'phase10', 'p10-m2-timoshenko.json');
+  const evidencePath = path.resolve('verification', 'evidence', 'validation', 'phase10', 'p10-m2-timoshenko.json');
   const committed = JSON.parse(await readFile(evidencePath, 'utf8'));
   assert.deepEqual(committed, LIVE_P10_M2_EVIDENCE, 'P10-M2 committed evidence is stale');
   assert.equal(committed.status, 'OK');
@@ -58,7 +63,7 @@ if (process.argv.includes('--print')) {
   const fixturePath = path.resolve('tests', 'fixtures', 'phase10', 'xval', 'XV-09.model.json');
   const fixture = JSON.parse(await readFile(fixturePath, 'utf8'));
   const reference = parseXvalReferenceArtifact(await readFile(
-    path.resolve('reports', 'validation-evidence', 'phase10', 'xv', 'XV-09-pending-reference.json'),
+    path.resolve('verification', 'evidence', 'validation', 'phase10', 'xv', 'XV-09-pending-reference.json'),
     'utf8',
   ));
   assert.equal(reference.model.modelHash, modelHash(fixture));

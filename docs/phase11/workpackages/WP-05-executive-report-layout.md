@@ -37,7 +37,7 @@ production report preview를 우선 표시하고 기존 detailed report는 migra
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m5-executive-report-layout.json`
+`verification/evidence/validation/phase11/p11-m5-executive-report-layout.json`
 
 ## Review Log
 

@@ -1,4 +1,13 @@
-export const FIXED_END_COMMON_VERSION = 'p7-m7-axis-aware-load-direction-v1';
+import {
+  beamRotationShapes,
+  beamShapes,
+  bendingPhi,
+  integrateGauss,
+} from '../../solver/frame/beamInterpolation.js';
+
+export { beamRotationShapes, beamShapes, bendingPhi, integrateGauss };
+
+export const FIXED_END_COMMON_VERSION = 'p14-m1-shared-beam-interpolation-v2';
 
 export const FIXED_END_AXIS = {
   '+x': [1, 0, 0],
@@ -8,14 +17,6 @@ export const FIXED_END_AXIS = {
   '+z': [0, 0, 1],
   '-z': [0, 0, -1],
 };
-
-const GAUSS5 = [
-  [-0.906179845938664, 0.236926885056189],
-  [-0.538469310105683, 0.478628670499366],
-  [0, 0.568888888888889],
-  [0.538469310105683, 0.478628670499366],
-  [0.906179845938664, 0.236926885056189],
-];
 
 export function clamp01(value, fallback = 0) {
   const n = Number(value);
@@ -133,60 +134,6 @@ export function addConsistentDistributed(fe, L, aRatio, bRatio, qAtRatio, timosh
   });
 }
 
-export function beamShapes(r, L, phi = 0) {
-  const r2 = r * r;
-  const r3 = r2 * r;
-  const normalizedPhi = positivePhi(phi);
-  if (normalizedPhi > 0) {
-    const denominator = 1 + normalizedPhi;
-    const shearTerm = (normalizedPhi / 2) * r * (1 - r);
-    return [
-      (1 - 3 * r2 + 2 * r3 + normalizedPhi * (1 - r)) / denominator,
-      (L * (r - 2 * r2 + r3 + shearTerm)) / denominator,
-      (3 * r2 - 2 * r3 + normalizedPhi * r) / denominator,
-      (L * (r3 - r2 - shearTerm)) / denominator,
-    ];
-  }
-  return [
-    1 - 3 * r2 + 2 * r3,
-    L * (r - 2 * r2 + r3),
-    3 * r2 - 2 * r3,
-    L * (r3 - r2),
-  ];
-}
-
-export function beamRotationShapes(r, L, phi = 0) {
-  if (!(L > 0)) return [0, 0, 0, 0];
-  const normalizedPhi = positivePhi(phi);
-  if (!(normalizedPhi > 0)) {
-    return [
-      (-6 * r + 6 * r * r) / L,
-      1 - 4 * r + 3 * r * r,
-      (6 * r - 6 * r * r) / L,
-      3 * r * r - 2 * r,
-    ];
-  }
-  const denominator = 1 + normalizedPhi;
-  const parabolic = (3 * r * (1 - r)) / denominator;
-  return [
-    (-6 * r * (1 - r)) / (denominator * L),
-    (1 - r) - parabolic,
-    (6 * r * (1 - r)) / (denominator * L),
-    r - parabolic,
-  ];
-}
-
-export function bendingPhi(timoshenko = {}, plane = 'z') {
-  if (timoshenko?.enabled !== true) return 0;
-  return positivePhi(plane === 'y' ? timoshenko.phiY : timoshenko.phiZ);
-}
-
-export function integrateGauss(a, b, fn) {
-  const mid = (a + b) / 2;
-  const half = (b - a) / 2;
-  for (const [point, weight] of GAUSS5) fn(mid + half * point, half * weight);
-}
-
 export function negateVector(vector) {
   return vector.map((value) => -value);
 }
@@ -256,11 +203,6 @@ function finiteNumber(value) {
   if (value == null || value === '') return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
-}
-
-function positivePhi(value) {
-  const number = Number(value);
-  return Number.isFinite(number) && number > 0 ? number : 0;
 }
 
 function directionFailure(code, load, component, value) {

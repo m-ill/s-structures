@@ -23,7 +23,7 @@ import {
   setPDeltaEnabled,
   utilizationClass,
 } from './m3State.js';
-import { createPortalFrameSample } from '../index.js';
+import { createPortalFrameSample } from '../examples/sampleFrame.js';
 
 const state = createM3State();
 const el = {
@@ -307,7 +307,7 @@ function renderDynamics() {
     ['F1', first ? `${format(first.frequencyHz, 3)} Hz` : '-'],
     ['Mass X', rsa.x ? `${format(rsa.x.participatingMassRatio * 100, 1)}%` : '-'],
     ['Mass Y', rsa.y ? `${format(rsa.y.participatingMassRatio * 100, 1)}%` : '-'],
-    ['RSA X', rsa.x ? `${format(rsa.x.srssDisplacement * 1000, 2)} mm` : '-'],
+    ['RSA X', rsa.x ? `${format((rsa.x.displacement ?? rsa.x.srssDisplacement) * 1000, 2)} mm` : '-'],
   ];
   el.dynamicsSummary.innerHTML = metrics
     .map(([label, value]) => `<div class="metric compact"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`)

@@ -3,7 +3,8 @@ import { createModel } from '../src/index.js';
 import { installIndexEngineBridge } from '../src/ui/indexBridge.js';
 import { buildAnalysisCaseResultView } from '../src/ui/indexResultViews.js';
 import { phase7ModelHash, recordPhase7AnalysisAttempt } from '../src/ui/phase7AnalysisRecords.js';
-import { VERIFICATION_MATRIX_RECORD_VERSION } from '../src/verification/matrix/record.js';
+import { VERIFICATION_MATRIX_RECORD_VERSION } from '../verification/framework/matrix/record.js';
+import { adaptVerificationEvidenceForAnalysis } from '../verification/framework/analysisEvidenceAdapter.js';
 import { buildNativeIndexShell, createFakeIndexDocument } from './helpers/fakeIndexDom.mjs';
 
 const model = createModel();
@@ -89,7 +90,7 @@ const verified = recordPhase7AnalysisAttempt(target, model, verifiedCase, {
   status: 'ok',
   ok: true,
   payload: { summary: { caseId: verifiedCase.id, solver: 'p7-m11-ui-fixture-v1' } },
-  verificationEvidence: {
+  verificationEvidence: adaptVerificationEvidenceForAnalysis({
     modelHash: verifiedModelHash,
     audit: {
       version: 'p7-m11-ui-verification-v1',
@@ -108,7 +109,7 @@ const verified = recordPhase7AnalysisAttempt(target, model, verifiedCase, {
         tolerance: 1e-9,
       }],
     },
-  },
+  }, { model, analysisCase: verifiedCase }),
   completedAt: '2026-07-10T01:00:00.000Z',
 }, { attemptId: 'RUN-VERIFIED:VERIFIED' });
 assert.equal(verified.record.qualification, 'verified', JSON.stringify({

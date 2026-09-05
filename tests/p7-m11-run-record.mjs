@@ -10,7 +10,8 @@ import { createResultSelectionStore } from '../src/ui/resultSelectionStore.js';
 import {
   VERIFICATION_MATRIX_RECORD_VERSION,
   modelHash,
-} from '../src/verification/matrix/record.js';
+} from '../verification/framework/matrix/record.js';
+import { adaptVerificationEvidenceForAnalysis } from '../verification/framework/analysisEvidenceAdapter.js';
 
 const model = createPracticeModel({
   sourceRegistry: [{
@@ -27,7 +28,7 @@ const first = createAnalysisRunRecord({
     ok: true,
     solver: { method: 'dense' },
     warnings: [],
-    verificationEvidence: {
+    verificationEvidence: adaptVerificationEvidenceForAnalysis({
       modelHash: verifiedModelHash,
       audit: {
         version: 'p7-m11-run-record-audit-v1',
@@ -46,7 +47,7 @@ const first = createAnalysisRunRecord({
           tolerance: 1e-9,
         }],
       },
-    },
+    }, { model, analysisCase }),
   },
 });
 assert.equal(first.runStatus, 'ok');

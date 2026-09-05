@@ -1,37 +1,41 @@
 import {
-  applyDesignBasisLoads as applyDesignBasisLoadsToModel,
-  buildAdvancedElasticTrace,
-  buildCombinationEnvelopeContract,
-  buildDesignDemandPackage,
-  buildEccentricStoryLoadDistribution,
-  buildDiaphragmSummary,
-  buildMemberReleaseSummary,
-  buildStoryMassSummary,
-  buildStorySummary,
-  buildPracticePlatformReadiness,
-  buildPracticeValidationReport,
-  buildPilotProjectValidation,
-  buildDesignBasisInputState,
-  buildKdsLoadStandardAudit,
-  buildConnectionFoundationReport,
-  buildMemberDesignTraceReport,
-  buildRcDetailingReport,
-  buildResultPostprocessing,
-  buildServiceabilityDriftReport,
-  buildSteelDetailingReport,
-  createCalculationPackageHtml,
-  createDetailedHtmlReport,
-  createHtmlReport,
-  estimateModelLoads,
-  getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
   migrateToCurrent,
   migrateToV3,
-  runMemberReleaseBenchmark,
-  runRigidDiaphragmBenchmark,
+  validateModel as validateCoreModel,
+} from '../core/model.js';
+import { buildStorySummary } from '../core/storySummary.js';
+import { buildStoryMassSummary } from '../core/storyMassSummary.js';
+import { buildDiaphragmSummary } from '../core/diaphragmSummary.js';
+import { buildMemberReleaseSummary } from '../core/memberReleaseSummary.js';
+import {
+  buildKdsLoadStandardAudit,
+  getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
   summarizeKdsLoadCombinationCoverage,
   summarizeKdsLoadCombinationRules,
-  validateModel as validateCoreModel,
-} from '../index.js';
+} from '../core/kdsLoadCombinations.js';
+import {
+  applyDesignBasisLoads as applyDesignBasisLoadsToModel,
+  buildDesignBasisInputState,
+  buildEccentricStoryLoadDistribution,
+  estimateModelLoads,
+} from '../design/loadEstimation.js';
+import { buildConnectionFoundationReport } from '../design/connectionFoundation.js';
+import { buildMemberDesignTraceReport } from '../design/memberDesignTrace.js';
+import { buildDesignDemandPackage } from '../design/designDemandPackage.js';
+import { buildRcDetailingReport } from '../design/rcDetailing.js';
+import { buildServiceabilityDriftReport } from '../design/serviceability.js';
+import { buildSteelDetailingReport } from '../design/steelDetailing.js';
+import { buildAdvancedElasticTrace } from '../results/advancedElasticTrace.js';
+import { buildCombinationEnvelopeContract } from '../results/combinationEnvelopeContract.js';
+import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
+import { buildPracticePlatformReadiness } from '../platform/practicePlatformReadiness.js';
+import { buildPracticeValidationReport } from '../platform/practiceValidationReport.js';
+import { buildPilotProjectValidation } from '../platform/pilotProjectValidation.js';
+import { createCalculationPackageHtml } from '../report/calculationPackage.js';
+import { createDetailedHtmlReport } from '../report/detailedReport.js';
+import { createHtmlReport } from '../report/htmlReport.js';
+import { runMemberReleaseBenchmark } from '../diagnostics/memberReleaseBenchmark.js';
+import { runRigidDiaphragmBenchmark } from '../diagnostics/rigidDiaphragmBenchmark.js';
 import {
   analyzeLegacyUiSnapshot,
   runLegacyUiPushover,
@@ -83,6 +87,8 @@ import { installElasticSetupWorkflow } from './indexElasticSetupWorkflow.js';
 import { installElasticResultPopup } from './indexElasticResultPopup.js';
 import { installNonlinearWorkflow } from './indexNonlinearWorkflow.js';
 import { installNonlinearResultPopup } from './indexNonlinearResultPopup.js';
+import { installIndexPhase13ElasticWorkspace } from './indexPhase13ElasticWorkspace.js';
+import { buildPhase13ModelCheck } from '../modeling/phase13ModelCheck.js';
 import { buildAgentManifest } from './agentManifest.js';
 import { normalizeIndexResult } from './indexResultCompatibility.js';
 import { decorateAgentControls, listAgentControls } from './indexAgentControlsDom.js';
@@ -164,17 +170,40 @@ export function installIndexEngineBridge(target = globalThis) {
     getReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return createHtmlReport(model, lastResult || analyzeForIndex(model), options);
+      return attachPhase13MilestonesToReport(attachPhase13ModelCheckToReport(createHtmlReport(model, lastResult || analyzeForIndex(model), options), bridge.getPhase13ModelCheck()), bridge.getPhase13MilestoneSnapshot());
     },
     getDetailedReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return createDetailedHtmlReport(model, lastResult || analyzeForIndex(model), withAnalysisResults(target, options));
+      return attachPhase13MilestonesToReport(attachPhase13ModelCheckToReport(createDetailedHtmlReport(model, lastResult || analyzeForIndex(model), withAnalysisResults(target, options)), bridge.getPhase13ModelCheck()), bridge.getPhase13MilestoneSnapshot());
     },
     getCalculationPackage(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return createCalculationPackageHtml(model, lastResult || analyzeForIndex(model), withAnalysisResults(target, options));
+      return attachPhase13MilestonesToReport(attachPhase13ModelCheckToReport(createCalculationPackageHtml(model, lastResult || analyzeForIndex(model), withAnalysisResults(target, options)), bridge.getPhase13ModelCheck()), bridge.getPhase13MilestoneSnapshot());
+    },
+    getPhase13ModelCheck() {
+      const model = bridge.getCurrentModel();
+      if (!model) return null;
+      const integrated = target.SStructuresPhase13Workspace?.getModelCheckSnapshot?.();
+      if (integrated) return integrated;
+      const check = buildPhase13ModelCheck(model);
+      return cloneValue({
+        version: 'p13-m2-model-check-surface-v1',
+        projectId: model.meta?.id || model.meta?.projectId || model.id || 'LOCAL-PROJECT',
+        revisionId: model.meta?.revisionId || null,
+        modelHash: check.modelHash,
+        ok: check.ok,
+        summary: check.summary,
+        issues: check.issues,
+        waivers: [],
+      });
+    },
+    getPhase13IssueWaivers() {
+      return cloneValue(bridge.getPhase13ModelCheck()?.waivers || []);
+    },
+    getPhase13MilestoneSnapshot() {
+      return cloneValue(target.SStructuresPhase13Workspace?.getMilestoneSnapshot?.() || null);
     },
     getKdsLoadCombinationCoverage(options = {}) {
       const model = bridge.getCurrentModel();
@@ -705,6 +734,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.elasticResultPopup = installElasticResultPopup(target, { bridge });
     bridge.nonlinearResultPopup = installNonlinearResultPopup(target, { bridge });
     bridge.nonlinearWorkflow = installNonlinearWorkflow(target, { bridge });
+    bridge.phase13ElasticWorkspace = installIndexPhase13ElasticWorkspace(target, { bridge });
     bridge.productHardening = installIndexProductHardening(target, { bridge });
     bridge.agentCommandBridge = installIndexAgentCommandBridge(target, target.SStructuresAgent);
     bridge.detailedReportMenu = installDetailedReportMenuHook(target, bridge);
@@ -863,6 +893,65 @@ function storeAnalysisResult(target, model, analysisCase, result) {
   }
   target.SStructuresAnalysisCenter?.refresh?.();
   return published;
+}
+
+function attachPhase13ModelCheckToReport(report, snapshot) {
+  if (!report || !snapshot) return report;
+  const section = renderPhase13ModelCheckReportSection(snapshot);
+  const html = String(report.html || '');
+  const injected = html.includes('</main>')
+    ? html.replace('</main>', `${section}</main>`)
+    : html.includes('</body>')
+      ? html.replace('</body>', `${section}</body>`)
+      : `${html}${section}`;
+  return {
+    ...report,
+    html: injected,
+    data: {
+      ...(report.data || {}),
+      phase13ModelCheck: cloneValue(snapshot),
+    },
+  };
+}
+
+function attachPhase13MilestonesToReport(report, snapshot) {
+  if (!report || !snapshot) return report;
+  const gate = snapshot.releaseGate || {};
+  const milestoneRows = Object.entries(snapshot.milestones || {}).map(([id, row]) => `<tr><td>${escapeReportHtml(id)}</td><td>${escapeReportHtml(row.status)}</td></tr>`).join('');
+  const gateRows = (gate.checks || []).map((row) => `<tr><td>${escapeReportHtml(row.id)}</td><td>${escapeReportHtml(row.status)}</td><td>${escapeReportHtml(row.label)}</td></tr>`).join('');
+  const section = `<section data-section="phase13-milestones" style="margin:20px 0">
+    <h2>Phase 13 Milestone &amp; Release Gate</h2>
+    <p>Workflow release <strong>${gate.workflowReleaseQualified ? 'PASS' : 'BLOCKED'}</strong> · Final design transfer <strong>${gate.finalDesignTransferAllowed ? 'ALLOWED' : 'BLOCKED'}</strong> · Shell design transfer <strong>BLOCKED</strong></p>
+    <table><thead><tr><th>Milestone</th><th>Status</th></tr></thead><tbody>${milestoneRows}</tbody></table>
+    <table><thead><tr><th>Gate</th><th>Status</th><th>Label</th></tr></thead><tbody>${gateRows}</tbody></table>
+  </section>`;
+  const html = String(report.html || '');
+  const injected = html.includes('</main>') ? html.replace('</main>', `${section}</main>`) : html.includes('</body>') ? html.replace('</body>', `${section}</body>`) : `${html}${section}`;
+  return { ...report, html: injected, data: { ...(report.data || {}), phase13Milestones: cloneValue(snapshot) } };
+}
+
+function renderPhase13ModelCheckReportSection(snapshot) {
+  const rows = (snapshot.issues || []).slice(0, 100).map((issue) => `
+    <tr data-phase13-issue-id="${escapeReportHtml(issue.issueId)}">
+      <td><code>${escapeReportHtml(issue.issueId)}</code></td>
+      <td>${escapeReportHtml(issue.severity)}</td>
+      <td>${escapeReportHtml(issue.code)}</td>
+      <td>${escapeReportHtml(issue.waiverStatus)}</td>
+      <td>${escapeReportHtml(issue.message)}</td>
+    </tr>`).join('');
+  return `<section data-section="phase13-model-check" style="margin:20px 0">
+    <h2>Phase 13 Model Check</h2>
+    <p>Model hash <code>${escapeReportHtml(snapshot.modelHash)}</code> · Blocker ${Number(snapshot.summary?.blockers || 0)} · Warning ${Number(snapshot.summary?.warnings || 0)} · Waived ${Number(snapshot.summary?.waived || 0)}</p>
+    <table><thead><tr><th>Issue ID</th><th>Severity</th><th>Code</th><th>Waiver</th><th>Message</th></tr></thead><tbody>${rows || '<tr><td colspan="5">No model check issues.</td></tr>'}</tbody></table>
+  </section>`;
+}
+
+function escapeReportHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+}
+
+function cloneValue(value) {
+  return value == null ? value : (typeof structuredClone === 'function' ? structuredClone(value) : JSON.parse(JSON.stringify(value)));
 }
 
 function withAnalysisResults(target, options = {}) {

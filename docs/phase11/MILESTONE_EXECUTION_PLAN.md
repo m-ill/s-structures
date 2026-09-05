@@ -37,7 +37,7 @@ M8의 visual/performance fixture 작성은 앞서 시작할 수 있지만 qualif
 
 - 대응 WP 범위의 production code 또는 계획 evidence가 실제 존재
 - 전용 `tests/p11-mN-*.mjs`와 관련 회귀 green
-- `reports/validation-evidence/phase11/p11-mN-*.json`에 명령·환경·source revision·hash 기록
+- `verification/evidence/validation/phase11/p11-mN-*.json`에 명령·환경·source revision·hash 기록
 - open Critical/High code-review finding 0
 - API, Agent manifest, feature catalog, user manual 영향 검토
 - 성능·메모리·산출물 크기 변화 기록
@@ -87,7 +87,7 @@ M8의 visual/performance fixture 작성은 앞서 시작할 수 있지만 qualif
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m0-baseline-governance.json`
+`verification/evidence/validation/phase11/p11-m0-baseline-governance.json`
 
 ### 완료판정
 
@@ -137,7 +137,7 @@ M8의 visual/performance fixture 작성은 앞서 시작할 수 있지만 qualif
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m1-report-snapshot-verdict.json`
+`verification/evidence/validation/phase11/p11-m1-report-snapshot-verdict.json`
 
 ### 완료판정
 
@@ -187,7 +187,7 @@ report API에 명시 locale과 `locales: ['ko-KR','en-US']` 계획 옵션을 추
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m2-bilingual-rendering.json`
+`verification/evidence/validation/phase11/p11-m2-bilingual-rendering.json`
 
 ### 완료판정
 
@@ -239,7 +239,7 @@ PDF pair와 화면 이미지는 후속 마일스톤 범위다.
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m3-visual-capture-core.json`
+`verification/evidence/validation/phase11/p11-m3-visual-capture-core.json`
 
 ### 완료판정
 
@@ -293,7 +293,7 @@ capture 결과가 snapshot/hash에 결속되고 실패를 누락 이미지로 �
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m4-scene-evidence-report.json`
+`verification/evidence/validation/phase11/p11-m4-scene-evidence-report.json`
 
 ### 완료판정
 
@@ -345,7 +345,7 @@ capture 결과가 snapshot/hash에 결속되고 실패를 누락 이미지로 �
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m5-executive-report-layout.json`
+`verification/evidence/validation/phase11/p11-m5-executive-report-layout.json`
 
 ### 완료판정
 
@@ -399,7 +399,7 @@ capture 결과가 snapshot/hash에 결속되고 실패를 누락 이미지로 �
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m6-dual-pdf-export.json`
+`verification/evidence/validation/phase11/p11-m6-dual-pdf-export.json`
 
 ### 완료판정
 
@@ -450,7 +450,7 @@ capture 결과가 snapshot/hash에 결속되고 실패를 누락 이미지로 �
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m7-product-agent-export.json`
+`verification/evidence/validation/phase11/p11-m7-product-agent-export.json`
 
 ### 완료판정
 
@@ -504,7 +504,7 @@ qualification 상태와 blocker를 export preflight와 도움말에 노출한다
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m8-qualification-hardening.json`
+`verification/evidence/validation/phase11/p11-m8-qualification-hardening.json`
 
 ### 완료판정
 
@@ -558,7 +558,7 @@ macOS/Linux native PDF는 별도 환경 qualification 없이는 release claim에
 
 ### 증빙
 
-`reports/validation-evidence/phase11/p11-m9-release-gate.json`
+`verification/evidence/validation/phase11/p11-m9-release-gate.json`
 
 ### 완료판정
 

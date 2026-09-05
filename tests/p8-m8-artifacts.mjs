@@ -11,7 +11,6 @@ import {
   NONLINEAR_ENGINE_IDS,
   PRODUCTION_NLTH_ENGINE_VERSION,
   PRODUCTION_NLTH_VERSION,
-  VERIFICATION_REGISTRY_VERSION,
   WORKER_PROTOCOL_VERSION,
   buildMdofMassDomain,
   getNonlinearCapability,
@@ -19,12 +18,13 @@ import {
   runProductionNlth,
 } from '../src/index.js';
 import {
+  VERIFICATION_REGISTRY_VERSION,
   getPhase8VerificationSuite,
   validatePhase8EvidenceArtifact,
-} from '../src/verification/registry.js';
+} from '../verification/framework/registry.js';
 import { buildAgentManifest } from '../src/ui/agentManifest.js';
 
-const artifact = JSON.parse(readFileSync(new URL('../reports/validation-evidence/phase8/p8-m8-mdof-nlth.json', import.meta.url)));
+const artifact = JSON.parse(readFileSync(new URL('../verification/evidence/validation/phase8/p8-m8-mdof-nlth.json', import.meta.url)));
 const suite = getPhase8VerificationSuite('P8-M8-MDOF-NLTH');
 assert.equal(suite?.verificationIds.length, 16);
 assert.deepEqual(validatePhase8EvidenceArtifact(artifact), { ok: true, errors: [] });
@@ -72,7 +72,7 @@ assert.match(hub, /P8-M0~P8-M\d+.*완료/);
 assert.match(plan, /^## P8-M8 - /m);
 for (const path of [
   '../docs/phase8/adr/ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md',
-  '../reports/validation-evidence/phase8/p8-m8-code-review.md',
+  '../verification/evidence/validation/phase8/p8-m8-code-review.md',
 ]) assert.ok(readFileSync(new URL(path, import.meta.url), 'utf8').length > 500, path);
 
 console.log(JSON.stringify({

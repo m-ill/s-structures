@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/capture-index-schema.json",
+  "title": "Phase 17 Chrome capture index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "runId", "status", "browser", "modelHash", "captures", "parityStatus", "reasonCodes", "captureIndexHash"],
+  "properties": {
+    "schemaVersion": { "const": "p17-capture-index-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "runId": { "type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{5,127}$" },
+    "status": { "enum": ["NOT_RUN_M1_FRAMEWORK_ONLY", "COMPLETE", "BLOCKED_UI"] },
+    "browser": { "enum": ["NOT_RUN_M1", "CHROME"] },
+    "modelHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "captures": {
+      "type": "array", "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["ordinal", "kind", "path", "sha256", "byteLength", "width", "height", "caseIdVisible", "runIdVisible", "modelHashVisible", "unitsVisible", "sourceValueParity"],
+        "properties": {
+          "ordinal": { "type": "integer", "minimum": 1, "maximum": 4 }, "kind": { "enum": ["MODEL", "SUPPORTS_LOADS_AXES", "ANALYSIS_RESULT", "COMPARISON"] },
+          "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "byteLength": { "type": "integer", "minimum": 1 }, "width": { "type": "integer", "minimum": 1 }, "height": { "type": "integer", "minimum": 1 },
+          "caseIdVisible": { "type": "boolean" }, "runIdVisible": { "type": "boolean" }, "modelHashVisible": { "type": "boolean" }, "unitsVisible": { "type": "boolean" },
+          "sourceValueParity": { "enum": ["PASS", "FAIL", "NOT_APPLICABLE_NO_NUMERIC_DISPLAY"] }
+        }
+      }
+    },
+    "parityStatus": { "enum": ["NOT_RUN_M1_FRAMEWORK_ONLY", "PASS", "FAIL", "BLOCKED_UI"] },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } },
+    "captureIndexHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

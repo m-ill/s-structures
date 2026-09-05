@@ -57,6 +57,7 @@ export const DEFAULT_CRITERIA_VALUES = {
   },
   shell: {
     drillingAlpha: 1e-5,
+    unsupportedRotationFloorRatio: 1e-9,
     wallBeamTol: 5e-2,
     plateTol: 1e-2,
     warpTol: 1e-2,
@@ -169,6 +170,7 @@ const CRITERION_RULES = {
   'ltb.c1Default': { kind: 'number', min: 0, exclusiveMin: true },
   'ltb.closedFormTol': { kind: 'number', min: 0, exclusiveMin: true },
   'shell.drillingAlpha': { kind: 'number', min: 1e-6, max: 1e-4 },
+  'shell.unsupportedRotationFloorRatio': { kind: 'number', min: 1e-12, max: 1e-6 },
   'shell.wallBeamTol': { kind: 'number', min: 0, max: 1, exclusiveMin: true },
   'shell.plateTol': { kind: 'number', min: 0, max: 1, exclusiveMin: true },
   'shell.warpTol': { kind: 'number', min: 0, max: 1, exclusiveMin: true },

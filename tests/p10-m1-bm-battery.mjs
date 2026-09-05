@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import {
-  PATHOLOGICAL_MODEL_CASE_IDS,
-  runPathologicalModelBattery,
   solveLinearDetailed,
 } from '../src/index.js';
+import {
+  PATHOLOGICAL_MODEL_CASE_IDS,
+  runPathologicalModelBattery,
+} from '../verification/index.js';
 
 const report = runPathologicalModelBattery();
 assert.equal(report.status, 'OK', JSON.stringify(report.rows.filter((row) => row.status !== 'PASS'), null, 2));

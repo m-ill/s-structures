@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/case-manifest-schema.json",
+  "title": "Phase 17 benchmark case manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion", "phase", "milestone", "caseId", "ordinal", "title", "family",
+    "officialSuiteMember", "classification", "lifecycle", "statuses", "roles", "conventions",
+    "productBinding", "artifactBindings", "currentTerminalReasonCodes", "supersededRunIds",
+    "benchmarkExecutionCount"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "p17-case-manifest-v1" },
+    "phase": { "const": 17 },
+    "milestone": { "type": "string", "pattern": "^P17-M([1-9]|1[0-9]|2[0-3])$" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "ordinal": { "type": "integer", "minimum": 0, "maximum": 21 },
+    "title": { "type": "string", "minLength": 1 },
+    "family": { "type": "string", "pattern": "^[A-Z0-9-]+$" },
+    "officialSuiteMember": { "type": "boolean" },
+    "classification": { "enum": ["OFFICIAL_STRIX_21", "S_STRUCTURES_CUSTOM_QUALIFICATION"] },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "terminalStatus", "wipEligible"],
+      "properties": {
+        "state": {
+          "enum": ["NOT_STARTED", "SOURCE_LOCKED", "MODEL_LOCKED", "RUNNABLE", "EXECUTED", "REVIEWED"]
+        },
+        "terminalStatus": {
+          "enum": [
+            "NOT_STARTED", "PASS", "FAIL", "BLOCKED_SOURCE", "BLOCKED_REFERENCE", "BLOCKED_ENGINE",
+            "BLOCKED_ENGINE_API", "BLOCKED_MODEL_EQUIVALENCE", "BLOCKED_QUALIFICATION", "CROSS_CHECK_ONLY"
+          ]
+        },
+        "wipEligible": { "type": "boolean" }
+      }
+    },
+    "statuses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceStatus", "modelStatus", "sstructuresRunStatus", "independentQualificationStatus",
+        "strixComparisonStatus", "midasComparisonStatus", "performanceComparisonStatus",
+        "reportStatus", "releaseStatus"
+      ],
+      "properties": {
+        "sourceStatus": { "enum": ["NOT_STARTED", "NOT_LOCKED", "LOCKED", "LOCKED_WITH_BLOCKERS", "BLOCKED_SOURCE"] },
+        "modelStatus": { "enum": ["NOT_STARTED", "NOT_LOCKED", "MODEL_LOCKED", "RUNNABLE", "BLOCKED_ENGINE", "BLOCKED_MODEL_EQUIVALENCE"] },
+        "sstructuresRunStatus": { "enum": ["NOT_RUN_M1_FRAMEWORK_ONLY", "NOT_RUN", "RUNNABLE", "EXECUTED", "FAIL", "TIMEOUT", "BLOCKED_ENGINE", "BLOCKED_ENGINE_API"] },
+        "independentQualificationStatus": { "enum": ["NOT_STARTED", "NOT_RUN_M1_FRAMEWORK_ONLY", "PASS", "FAIL", "BLOCKED_REFERENCE", "BLOCKED_QUALIFICATION", "CROSS_CHECK_ONLY"] },
+        "strixComparisonStatus": { "enum": ["NOT_STARTED", "NOT_RUN_M1_FRAMEWORK_ONLY", "COMPARISON_NOT_RUN", "PASS", "FAIL", "BLOCKED_SOURCE", "BLOCKED_MODEL", "BLOCKED_MODEL_EQUIVALENCE"] },
+        "midasComparisonStatus": { "enum": ["NOT_STARTED", "NOT_RUN_M1_FRAMEWORK_ONLY", "COMPARISON_NOT_RUN", "PASS", "FAIL", "BLOCKED_SOURCE", "BLOCKED_MODEL", "BLOCKED_MODEL_EQUIVALENCE"] },
+        "performanceComparisonStatus": { "enum": ["NOT_STARTED", "NOT_RUN_M1_FRAMEWORK_ONLY", "NOT_ELIGIBLE", "PASS", "FAIL"] },
+        "reportStatus": { "enum": ["NOT_STARTED", "NOT_RUN_M1_FRAMEWORK_ONLY", "GENERATED", "REVIEWED", "BLOCKED"] },
+        "releaseStatus": { "enum": ["NOT_STARTED", "NOT_ALLOWED", "APPROVED", "BLOCKED"] }
+      }
+    },
+    "roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "modelReviewer", "referenceReviewer", "numericalReviewer", "releaseReviewer"],
+      "properties": {
+        "owner": { "type": "object", "additionalProperties": false, "required": ["assignment", "status", "approvalHash"], "properties": { "assignment": { "type": "string", "minLength": 1 }, "status": { "enum": ["NOT_STARTED", "ASSIGNED", "APPROVED"] }, "approvalHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" } } },
+        "modelReviewer": { "type": "object", "additionalProperties": false, "required": ["assignment", "status", "approvalHash"], "properties": { "assignment": { "type": "string", "minLength": 1 }, "status": { "enum": ["NOT_STARTED", "ASSIGNED", "APPROVED"] }, "approvalHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" } } },
+        "referenceReviewer": { "type": "object", "additionalProperties": false, "required": ["assignment", "status", "approvalHash"], "properties": { "assignment": { "type": "string", "minLength": 1 }, "status": { "enum": ["NOT_STARTED", "ASSIGNED", "APPROVED"] }, "approvalHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" } } },
+        "numericalReviewer": { "type": "object", "additionalProperties": false, "required": ["assignment", "status", "approvalHash"], "properties": { "assignment": { "type": "string", "minLength": 1 }, "status": { "enum": ["NOT_STARTED", "ASSIGNED", "APPROVED"] }, "approvalHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" } } },
+        "releaseReviewer": { "type": "object", "additionalProperties": false, "required": ["assignment", "status", "approvalHash"], "properties": { "assignment": { "type": "string", "minLength": 1 }, "status": { "enum": ["NOT_STARTED", "ASSIGNED", "APPROVED"] }, "approvalHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" } } }
+      }
+    },
+    "conventions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonicalUnitSystem", "globalAxes", "localAxisConvention", "signConvention"],
+      "properties": {
+        "canonicalUnitSystem": {
+          "type": "object", "additionalProperties": false, "required": ["id", "status", "force", "length", "time", "angle", "reasonCodes"],
+          "properties": {
+            "id": { "const": "SI_KN_M_S_RAD" }, "status": { "enum": ["FRAMEWORK_DEFAULT_NOT_CASE_LOCKED", "LOCKED"] },
+            "force": { "const": "kN" }, "length": { "const": "m" }, "time": { "const": "s" }, "angle": { "const": "rad" },
+            "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+          }
+        },
+        "globalAxes": {
+          "type": "object", "additionalProperties": false, "required": ["status", "handedness", "verticalAxis", "reasonCodes"],
+          "properties": {
+            "status": { "enum": ["FRAMEWORK_DEFAULT_NOT_CASE_LOCKED", "LOCKED"] }, "handedness": { "const": "RIGHT_HANDED" },
+            "verticalAxis": { "const": "+Z" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+          }
+        },
+        "localAxisConvention": {
+          "type": "object", "additionalProperties": false, "required": ["status", "description", "reasonCodes"],
+          "properties": {
+            "status": { "enum": ["NOT_LOCKED", "LOCKED"] }, "description": { "type": "string", "minLength": 1 },
+            "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+          }
+        },
+        "signConvention": {
+          "type": "object", "additionalProperties": false, "required": ["status", "description", "reasonCodes"],
+          "properties": {
+            "status": { "enum": ["NOT_LOCKED", "LOCKED"] }, "description": { "type": "string", "minLength": 1 },
+            "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+          }
+        }
+      }
+    },
+    "productBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["serviceVersion", "adapterVersion", "publicEntrypoint", "solverSettingProfile", "requestedOutputProbes"],
+      "properties": {
+        "serviceVersion": { "const": "p9-m9-product-analysis-service-v1" },
+        "adapterVersion": { "const": "p17-m1-product-adapter-v1" },
+        "publicEntrypoint": { "const": "src/index.js" },
+        "solverSettingProfile": {
+          "type": "object", "additionalProperties": false, "required": ["status", "profileId", "reasonCodes"],
+          "properties": { "status": { "enum": ["NOT_LOCKED", "LOCKED"] }, "profileId": { "type": "string", "minLength": 1 }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } }
+        },
+        "requestedOutputProbes": {
+          "type": "object", "additionalProperties": false, "required": ["status", "manifestPath", "reasonCodes"],
+          "properties": { "status": { "enum": ["NOT_LOCKED", "LOCKED"] }, "manifestPath": { "type": "string", "minLength": 1 }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } }
+        }
+      }
+    },
+    "artifactBindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceLock", "sourceManifest", "referenceManifest", "toleranceManifest", "probeManifest", "canonicalModel", "modelMapping", "nativeModel", "productBuild"],
+      "properties": {
+        "sourceLock": { "type": "object", "additionalProperties": false, "required": ["status", "path", "sha256", "reasonCodes"], "properties": { "status": { "enum": ["LOCKED", "LOCKED_WITH_BLOCKERS", "NOT_LOCKED"] }, "path": { "type": ["string", "null"] }, "sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } } },
+        "sourceManifest": { "type": "object", "additionalProperties": false, "required": ["status", "path", "sha256", "reasonCodes"], "properties": { "status": { "enum": ["LOCKED", "LOCKED_WITH_BLOCKERS", "NOT_LOCKED"] }, "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } } },
+        "referenceManifest": { "type": "object", "additionalProperties": false, "required": ["status", "path", "sha256", "reasonCodes"], "properties": { "status": { "enum": ["NOT_LOCKED", "LOCKED"] }, "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } } },
+        "toleranceManifest": { "type": "object", "additionalProperties": false, "required": ["status", "path", "sha256", "reasonCodes"], "properties": { "status": { "enum": ["NOT_LOCKED", "LOCKED"] }, "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } } },
+        "probeManifest": { "type": "object", "additionalProperties": false, "required": ["status", "path", "sha256", "reasonCodes"], "properties": { "status": { "enum": ["NOT_LOCKED", "LOCKED"] }, "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } } },
+        "canonicalModel": { "type": "object", "additionalProperties": false, "required": ["status", "path", "sha256", "reasonCodes"], "properties": { "status": { "enum": ["NOT_STARTED", "MODEL_LOCKED"] }, "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } } },
+        "modelMapping": { "type": "object", "additionalProperties": false, "required": ["status", "path", "sha256", "reasonCodes"], "properties": { "status": { "enum": ["NOT_STARTED", "LOCKED"] }, "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } } },
+        "nativeModel": { "type": "object", "additionalProperties": false, "required": ["status", "path", "sha256", "reasonCodes"], "properties": { "status": { "enum": ["NOT_STARTED", "LOCKED"] }, "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } } },
+        "productBuild": { "type": "object", "additionalProperties": false, "required": ["status", "path", "sha256", "reasonCodes"], "properties": { "status": { "enum": ["NOT_BOUND", "LOCKED"] }, "path": { "type": ["string", "null"] }, "sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" }, "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } } } }
+      }
+    },
+    "currentTerminalReasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } },
+    "supersededRunIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{5,127}$" } },
+    "benchmarkExecutionCount": { "type": "integer", "minimum": 0 }
+  }
+}

@@ -62,7 +62,7 @@ Fields such as `summary.readyForAgentReview`, `summary.readyForReviewer`, and `s
 | Source | Role |
 | --- | --- |
 | `docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md` | human-readable Phase 3 completion audit |
-| `docs/verification/P3_M6_M20_COMPLETION_AUDIT.md` | verification update log, including full P3-M0 to P3-M20 audit expansion |
-| `docs/verification/P3_M20_LAUNCH_READINESS_VERIFICATION.md` | launch gate and final-use review contract |
+| `verification/specs/P3_M6_M20_COMPLETION_AUDIT.md` | verification update log, including full P3-M0 to P3-M20 audit expansion |
+| `verification/specs/P3_M20_LAUNCH_READINESS_VERIFICATION.md` | launch gate and final-use review contract |
 | `docs/user-manual/agent-contract.json` | canonical AI-agent contract |
 | `docs/user-manual/PHASE3_LAUNCH_MANUAL.md` | launch workflow and interpretation rules |

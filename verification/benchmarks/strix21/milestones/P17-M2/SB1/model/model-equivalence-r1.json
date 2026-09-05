@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "p17-model-equivalence-v1",
+  "caseId": "SB1",
+  "artifactStatus": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+  "payloadAbsent": false,
+  "releaseAllowed": false,
+  "overallStatus": "ENGINEERING_EQUIVALENT",
+  "dimensions": [
+    {
+      "id": "UNIT_SYSTEM_AND_GLOBAL_AXES",
+      "mandatory": true,
+      "status": "IDENTICAL_SPECIFICATION",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "NODE_COORDINATES_AND_CONNECTIVITY",
+      "mandatory": true,
+      "status": "IDENTICAL_SPECIFICATION",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "ELEMENT_TYPE_AND_FORMULATION",
+      "mandatory": true,
+      "status": "ENGINEERING_EQUIVALENT",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "MATERIAL_AND_SECTION_CONSTANTS",
+      "mandatory": true,
+      "status": "IDENTICAL_SPECIFICATION",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "LOCAL_AXES_AND_STRONG_WEAK_ROUTING",
+      "mandatory": true,
+      "status": "ENGINEERING_EQUIVALENT",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "SUPPORT_RELEASE_LINK_DIAPHRAGM_CONSTRAINT",
+      "mandatory": true,
+      "status": "IDENTICAL_SPECIFICATION",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "LOAD_MAGNITUDE_DIRECTION_DISTRIBUTION_RESULTANT_CENTROID_SELF_WEIGHT",
+      "mandatory": true,
+      "status": "IDENTICAL_SPECIFICATION",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "MASS_SOURCE_ROTATIONAL_INERTIA_LUMPED_CONSISTENT",
+      "mandatory": true,
+      "status": "IDENTICAL_SPECIFICATION",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "DAMPING_SPECTRUM_INTERPOLATION_MODAL_COMBINATION",
+      "mandatory": true,
+      "status": "IDENTICAL_SPECIFICATION",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "MESH_INTEGRATION_STABILIZATION_SHEAR_CORRECTION",
+      "mandatory": true,
+      "status": "ENGINEERING_EQUIVALENT",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "PDELTA_STAGE_STEP_CONVERGENCE_HINGE_REGULARIZATION",
+      "mandatory": true,
+      "status": "IDENTICAL_SPECIFICATION",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    },
+    {
+      "id": "OUTPUT_PROBE_LOCATION_COMPONENT_UNIT_SIGN",
+      "mandatory": true,
+      "status": "ENGINEERING_EQUIVALENT",
+      "sstructures": "LOCKED",
+      "strix": "LOCKED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": []
+    }
+  ],
+  "knownDifferences": [
+    {
+      "id": "SB1-EQ-01",
+      "classification": "KNOWN_EQUIVALENT",
+      "description": "STRIX publishes OpenSees elasticBeamColumn while S-Structures uses the in-house 3D frame solver; both are linear Euler-Bernoulli for this no-shear case.",
+      "disposition": "Require signed closed-form, subdivision, equilibrium, energy and load-reversal gates."
+    },
+    {
+      "id": "SB1-EQ-02",
+      "classification": "KNOWN_EQUIVALENT",
+      "description": "Saint-Venant J and shear areas are supplied to satisfy the 3D product schema but no torsion acts and shear deformation is disabled.",
+      "disposition": "Treat as non-controlling and preserve a load-axis mutation gate."
+    },
+    {
+      "id": "SB1-EQ-03",
+      "classification": "KNOWN_EQUIVALENT",
+      "description": "Product results use m, kN and kN-m while STRIX displays mm, N and N-mm.",
+      "disposition": "Convert the locked published reference lane before execution; product extraction remains identity-only."
+    }
+  ],
+  "modelBindings": {
+    "canonicalInputHash": "10657c8d8337c1667a1f528e75fdf802107356b181758df5d7ac5418dbf770ab",
+    "sstructuresInputHash": "0fe8108f3cf9f02d44105fcb9c39d3ab7e6e5548d174444b58819cab0cb212c5"
+  },
+  "approval": {
+    "status": "PENDING",
+    "reviewer": "EXTERNAL_MODEL_REVIEWER_UNASSIGNED",
+    "approvalHash": null
+  },
+  "reasonCodes": [
+    "P17_EXTERNAL_MODEL_REVIEW_PENDING",
+    "P17_MIDAS_MODEL_NOT_AVAILABLE"
+  ]
+}
+

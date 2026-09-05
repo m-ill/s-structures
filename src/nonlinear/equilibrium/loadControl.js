@@ -1,6 +1,6 @@
 import { solveMdofNewtonStep } from './newton.js';
 
-export const MDOF_LOAD_CONTROL_VERSION = 'p8-m3-mdof-load-control-v2';
+export const MDOF_LOAD_CONTROL_VERSION = 'p8-m3-mdof-load-control-v3-p14-m10';
 
 export async function runMdofLoadControl(input = {}) {
   const options = input.options || {};
@@ -69,6 +69,14 @@ export async function runMdofLoadControl(input = {}) {
         stateStore: step.stateStore,
         backend: step.backend,
       });
+      const accepted = acceptedSteps.at(-1);
+      try { input.onCommit?.(Object.freeze(accepted)); } catch (error) {
+        return result(false, 'LOAD_COMMIT_CALLBACK_FAILED', store, acceptedSteps, rejectedSteps, targetLambda, 'failed', { callbackError: serialize(error) });
+      }
+      if (typeof input.shouldTerminate === 'function') {
+        const decision = input.shouldTerminate(accepted, { acceptedSteps, rejectedSteps, targetLambda });
+        if (decision?.stop) return result(decision.ok === true, decision.reason || 'LOAD_CONTROL_EXPLICIT_TERMINATION', store, acceptedSteps, rejectedSteps, targetLambda, decision.ok === true ? 'converged' : 'terminated', { termination: decision });
+      }
       if (step.iterationCount <= fastIterations) stepSize = direction * Math.min(maxStep, Math.abs(stepSize) * growthFactor);
       emit(input, { type: 'load-step-accepted', lambda: stepTarget, increment, attempt: attempts });
       continue;
@@ -81,6 +89,9 @@ export async function runMdofLoadControl(input = {}) {
       reason: step.reason,
       rollbackEquivalent: step.rollbackEquivalent,
     });
+    try { input.onReject?.(Object.freeze({ ...rejectedSteps.at(-1), stateStore: store })); } catch (error) {
+      return result(false, 'LOAD_REJECT_CALLBACK_FAILED', store, acceptedSteps, rejectedSteps, targetLambda, 'failed', { callbackError: serialize(error) });
+    }
     emit(input, { type: 'load-step-rejected', lambda: stepTarget, increment, reason: step.reason, attempt: attempts });
     if (step.status === 'cancelled' || step.reason === 'ANALYSIS_CANCELLED') {
       return result(false, 'ANALYSIS_CANCELLED', store, acceptedSteps, rejectedSteps, targetLambda, 'cancelled');
@@ -116,7 +127,7 @@ const NON_RETRYABLE_FAILURES = new Set([
   'INACTIVE_MODE_PATTERN_MISSING',
 ]);
 
-function result(ok, reason, stateStore, acceptedSteps, rejectedSteps, targetLambda, status = 'failed') {
+function result(ok, reason, stateStore, acceptedSteps, rejectedSteps, targetLambda, status = 'failed', extra = {}) {
   return {
     version: MDOF_LOAD_CONTROL_VERSION,
     ok,
@@ -130,8 +141,11 @@ function result(ok, reason, stateStore, acceptedSteps, rejectedSteps, targetLamb
     acceptedStepCount: acceptedSteps.length,
     rejectedStepCount: rejectedSteps.length,
     cutbackCount: rejectedSteps.length,
+    ...extra,
   };
 }
+
+function serialize(error) { return error ? { code: error.code || null, message: error.message || String(error) } : null; }
 
 function emit(input, payload) {
   if (typeof input.onProgress !== 'function') return;

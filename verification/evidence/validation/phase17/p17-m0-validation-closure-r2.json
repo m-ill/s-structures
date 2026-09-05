@@ -1,0 +1,94 @@
+{
+  "version": "p17-m0-validation-closure-v1",
+  "auditDate": "2026-08-28",
+  "phase": 17,
+  "milestone": "P17-M0",
+  "evidenceRevision": 2,
+  "baselineHash": "06aed261d00b98c04317df8a5fd8ea33373229cbf55cc9ca8b7d65d623802e81",
+  "status": "COMPLETE_WITH_SOURCE_BLOCKERS",
+  "checks": [
+    {
+      "command": "npm.cmd run check:p17:sources",
+      "status": "PASS",
+      "facts": {
+        "officialCases": 21,
+        "manifestVerified": "51/51",
+        "discrepancies": 9,
+        "releaseBlockers": 9
+      }
+    },
+    {
+      "command": "npm.cmd run test:p17:m0",
+      "status": "PASS",
+      "facts": {
+        "sourceLocks": 21,
+        "checksumEntries": 51,
+        "provenanceConflictCases": 6,
+        "negativePaths": ["HASH_MISMATCH", "PATH_ESCAPE"]
+      }
+    },
+    {
+      "command": "npm.cmd run check:verification-layout",
+      "status": "PASS",
+      "facts": {
+        "checkedFiles": 209,
+        "productionVerificationImportCount": 0,
+        "unresolvedVerificationImportCount": 0,
+        "acceptedLegacyHashExceptions": 1
+      }
+    },
+    {
+      "command": "npm.cmd run generate:test-taxonomy && npm.cmd run check:test-taxonomy",
+      "status": "PASS",
+      "facts": {
+        "plannedCount": 414,
+        "e2e": 5,
+        "integration": 30,
+        "qualification": 212,
+        "unit": 167,
+        "taxonomySha256": "fdfb1cf7eed18af9414fcb57e8b98dbf0737724984dbccc7a9f45df114f28a9b"
+      }
+    },
+    {
+      "command": "npm.cmd run check:public-imports",
+      "status": "PASS",
+      "facts": { "findings": 0 }
+    },
+    {
+      "command": "node --check and Python compile()",
+      "status": "PASS",
+      "facts": { "javascriptSyntax": "PASS", "pythonSyntax": "PASS" }
+    },
+    {
+      "command": "PDF text/render/visual QA",
+      "status": "PASS",
+      "facts": {
+        "pageCount": 9,
+        "renderedPagesReviewed": 9,
+        "reportPdfSha256": "dd2324a4f7d9018d8a01a19756cab758a987340d1a6dcf08ded81757fb133eb4",
+        "qaClosureSha256": "01fffaeacd1285ea544a91696d30dc909a5844088781d07a604c5e8eda5fe4c9"
+      }
+    }
+  ],
+  "implementationHashes": {
+    "sourceCustodyRunner": "ab7e6cedd5004a2e6095caec2d70abb81252c69cf9e3bdc14d6593a549897980",
+    "m0ContractTest": "b2307c422838619c82b968911701e05a11182182a4e8020f8f08987cefc7ba57"
+  },
+  "notRun": [
+    "S-Structures solver benchmark execution",
+    "STRIX actual R4 execution",
+    "MIDAS actual R4 execution",
+    "full product regression"
+  ],
+  "knownUnrelatedCheckFinding": {
+    "command": "git diff --check",
+    "status": "PRE_EXISTING_UNRELATED_FINDING",
+    "path": "docs/phase12/MILESTONE_EXECUTION_PLAN.md",
+    "line": 813,
+    "finding": "trailing whitespace",
+    "p17FilesAffected": false
+  },
+  "m1EntryAllowed": true,
+  "releaseAllowed": false,
+  "finalDesignTransferAllowed": false
+}

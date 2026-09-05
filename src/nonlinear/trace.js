@@ -15,7 +15,11 @@ import { GROUND_MOTION_VERSION, buildSpectrumScalingTrace, parseGroundMotionText
 import { NLTH_NEWMARK_VERSION, runNewmarkNlth } from './dynamics/newmark.js';
 import { RAYLEIGH_DAMPING_VERSION, solveRayleighDamping } from './dynamics/rayleigh.js';
 import { runFormalPushover } from './pushoverFormal.js';
-import { runNonlinearFiberNlthBenchmarks, runNonlinearGeometryBenchmarks, runNonlinearHingeControlBenchmarks } from '../verification/nonlinearBenchmarks.js';
+import {
+  runNonlinearFiberNlthBenchmarks,
+  runNonlinearGeometryBenchmarks,
+  runNonlinearHingeControlBenchmarks,
+} from './qualification/nonlinearBenchmarks.js';
 
 export const NONLINEAR_TRACE_VERSION = 'p3-m16-nonlinear-trace';
 export const NONLINEAR_GEOMETRY_TRACE_VERSION = 'p3-m14-nonlinear-geometry-trace-v1';

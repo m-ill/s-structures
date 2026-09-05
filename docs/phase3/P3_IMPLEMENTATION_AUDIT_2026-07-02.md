@@ -97,7 +97,7 @@ P3-M14 to P3-M16 must follow `NONLINEAR_ENGINE_PLAN.md`.
 | P3-T50 | `src/nonlinear/state.js` provides state creation, restart-safe snapshot, and step advance helpers | Preliminary |
 | P3-T51 | `src/nonlinear/elements/corotationalBeam.js` and `src/nonlinear/assembly.js` provide corotational geometry, geometric stiffness, and KE/KG/hinge tangent assembly trace helpers | Preliminary |
 | P3-T52 | `src/nonlinear/control/convergence.js`, `newtonRaphson.js`, and `globalEquilibrium.js` provide tolerance, iteration log, line-search candidate rows, reduced-DOF global residual solve rows, accepted residual norm, and convergence reason contracts | Preliminary |
-| P3-T53 | `src/verification/nonlinearBenchmarks.js` registers B1 Euler buckling and B2 large-displacement cantilever screening gates | Preliminary |
+| P3-T53 | `verification/framework/nonlinearBenchmarks.js` registers B1 Euler buckling and B2 large-displacement cantilever screening gates | Preliminary |
 
 M14 is now exposed through `getNonlinearAnalysisTrace` for browser and agent control, including an AI-readable tangent assembly summary and reduced-DOF global residual Newton trace. This is not yet a production nonlinear frame solver: certified hinge-controlled global iteration, fiber sections, and nonlinear time-history remain in P3-M15 to P3-M16.
 
@@ -261,7 +261,7 @@ Proceed with P3-M14 only as defined by tickets P3-T50 to P3-T53:
 - `src/nonlinear/elements/corotationalBeam.js`
 - `src/nonlinear/control/convergence.js`
 - `src/nonlinear/control/newtonRaphson.js`
-- `src/verification/nonlinearBenchmarks.js`
+- `verification/framework/nonlinearBenchmarks.js`
 - `tests/p3-m14-nonlinear-geometry.mjs`
 
 Exit condition: state snapshot, convergence log, geometric benchmark trace, and agent-readable nonlinear trace contract are present and tested.

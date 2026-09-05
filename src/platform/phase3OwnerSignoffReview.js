@@ -41,8 +41,8 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
     sourceDocs: [
       'reports/launch-readiness/owner-signoff-checklist.md',
       'docs/phase3/QA_RELEASE_PLAN.md',
-      'docs/verification/P3_M20_LAUNCH_READINESS_VERIFICATION.md',
-      'docs/verification/P3_M6_M20_COMPLETION_AUDIT.md',
+      'verification/specs/P3_M20_LAUNCH_READINESS_VERIFICATION.md',
+      'verification/specs/P3_M6_M20_COMPLETION_AUDIT.md',
     ],
     summary: {
       requiredCount: rows.length,

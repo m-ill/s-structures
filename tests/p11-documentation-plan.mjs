@@ -63,9 +63,9 @@ assert.match(hub, /release_qualified:\s*(?:false|true)/);
 assert.match(status, /implementation_status:\s*(?:not-started|qualification-in-progress|release-qualified)/);
 assert.match(status, /active_milestone:\s*none/);
 assert.match(status, /release_qualified:\s*(?:false|true)/);
-assert.match(rootIndex, /documentationVersion:\s*2026-07-23-phase11-plan-v1/);
+assert.match(rootIndex, /documentationVersion:\s*20\d{2}-\d{2}-\d{2}-phase1[1-9]-[a-z0-9-]+/i);
 assert.match(rootIndex, /## Phase 11 Reading Order \(current\)/);
-assert.ok(existsSync('docs/verification/phase11/ARTIFACT_RETENTION.md'));
+assert.ok(existsSync('verification/specs/phase11/ARTIFACT_RETENTION.md'));
 
 const milestoneIds = [...milestones.matchAll(/^## P11-M(\d+)\s+—/gm)].map((match) => Number(match[1]));
 assert.deepEqual(milestoneIds, Array.from({ length: 10 }, (_, index) => index));

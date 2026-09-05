@@ -1,0 +1,101 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "PD1",
+  "ordinal": 11,
+  "official": true,
+  "family": "STATIC-PDELTA",
+  "title": "Tension stiffening via P-Delta analysis (CSI 1-016)",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "CSI SAP2000 Software Verification Example 1-016 'Tension Stiffening Using P-Delta Analysis'; independent reference = Timoshenko, Strength of Materials Part II, 1956, eq. 23 p.28 and eqs. 43/45 p.43. Reproduced from scratch by pd1Theory() to u=1.5, deflWithIn=-0.5433047259, momentWithKin=11.4980793, matching CSI's published -0.54330 in / 11.498 k-in exactly (exact unit conversion of the same physical problem, dimensionless u is unit-invariant).",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/PD1.html",
+        "byteLength": 25997,
+        "sha256": "8db759dcd1ddeb598e6105915bf97e894ae6f9235401d7950da49a4cdbb8009c"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 28,
+        "printedPageEnd": 30
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/PD1.pdf",
+        "byteLength": 119562,
+        "sha256": "54f526436dbfc0bfccbd19c028432277b0a6ca5a8bb6074f66f00f77c50af62f",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 3
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.1%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Uz (no tension) (in)",
+      "probe": "N17.uz",
+      "strix": "−1.041614",
+      "reference": "−1.041667",
+      "delta": "+0.0050%"
+    },
+    "resultRowCount": 4
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_4_OF_4",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": null,
+    "htmlRunDate": "2026-07-11",
+    "htmlRecordLocator": "records/PD1.json",
+    "htmlArchive": "verif-evidence-eng1.0.2-win-x64.zip · PD1/",
+    "htmlArchiveVersion": "1.0.2",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": true
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED",
+    "HTML_ENGINE_V1_0_4_WITH_V1_0_2_RUN_OR_ARCHIVE_METADATA"
+  ],
+  "sourceLockHash": "6c99c4acd0183d7cc674369235b17f75b18ea43ba26e7b5afd5e8757d503d6a5"
+}

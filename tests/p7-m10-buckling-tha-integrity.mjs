@@ -135,12 +135,29 @@ assert.equal(releasedBuckling.domain.releaseCompatibility.ok, true);
 assert.equal(releasedBuckling.domain.releaseCompatibility.releasedMemberCount, 2);
 assert.ok(Math.abs(releasedBuckling.criticalLoadFactor - eulerReference) / eulerReference < 0.02);
 
-const internalReleasedModel = {
+const internalMechanismModel = {
   ...model,
   members: model.members.map((member) => ({
     ...member,
     releases: member.id === 'C4' ? { i: 'rigid', j: 'pin' } : { i: 'rigid', j: 'rigid' },
   })),
+};
+const internalMechanismBuckling = estimateGlobalBucklingTrace(internalMechanismModel, {
+  modeCount: 1,
+  preloadCombinationId: 'PRELOAD',
+  preloadResult: qualifiedPreload(memberResults),
+});
+assert.equal(internalMechanismBuckling.status, 'blocked');
+assert.equal(internalMechanismBuckling.reasonCode, 'SINGULAR_STIFFNESS');
+
+// A pin-pin column plus an internal bending pin is a physical three-hinge
+// mechanism. Fix one end for the release-compatibility positive fixture while
+// retaining the mechanism case above as a strict fail-closed regression.
+const internalReleasedModel = {
+  ...internalMechanismModel,
+  nodes: internalMechanismModel.nodes.map((node) => (
+    node.id === 'N0' ? { ...node, support: 'fixed' } : node
+  )),
 };
 const internalReleasedBuckling = estimateGlobalBucklingTrace(internalReleasedModel, {
   modeCount: 1,

@@ -21,7 +21,7 @@ assert.equal(review.summary.exitCriteriaAutomatedCount, 14);
 assert.equal(review.summary.productionReady, false);
 assert.equal(review.summary.completionClaim, 'phase3-m0-m20-repository-traceability-green-owner-and-engineer-review-required');
 assert.equal(review.summary.agentDecision, 'continue-practical-validation-before-production-use');
-assert.ok(review.sourceDocs.includes('docs/verification/P3_M6_M20_COMPLETION_AUDIT.md'));
+assert.ok(review.sourceDocs.includes('verification/specs/P3_M6_M20_COMPLETION_AUDIT.md'));
 assert.ok(review.rows.find((row) => row.milestone === 'P3-M1').evidence.includes('tests/p3-server-api.mjs'));
 assert.ok(review.rows.find((row) => row.milestone === 'P3-M5').readApis.includes('listImportCandidates'));
 assert.deepEqual(review.rows.slice(0, 6).map((row) => row.exitCriteriaSummary.status), [

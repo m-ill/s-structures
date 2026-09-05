@@ -41,7 +41,7 @@ pagination으로 실제 PDF를 출력해 양 언어 각 14쪽을 전 페이지 �
 
 ## 실제 검토 산출물
 
-- 증적: `reports/validation-evidence/phase11/p11-m5-executive-report-layout.json`
+- 증적: `verification/evidence/validation/phase11/p11-m5-executive-report-layout.json`
 - 원본 HTML: `reports/phase11/PILOT-OFFICE-01/m5/`
 - 임시 PDF·페이지 raster·contact sheet: `tmp/pdfs/p11-m5/`
 

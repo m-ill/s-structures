@@ -7,11 +7,11 @@ import {
 } from '../src/compute/governance/phase9M6.js';
 
 const evidence = JSON.parse(await readFile(
-  new URL('../reports/validation-evidence/phase9/p9-m6-sparse-eigen.json', import.meta.url),
+  new URL('../verification/evidence/validation/phase9/p9-m6-sparse-eigen.json', import.meta.url),
   'utf8',
 ));
 const manifest = JSON.parse(await readFile(
-  new URL('../docs/verification/phase9/release-manifest.json', import.meta.url),
+  new URL('../verification/specs/phase9/release-manifest.json', import.meta.url),
   'utf8',
 ));
 

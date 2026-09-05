@@ -162,38 +162,38 @@ The old S-tier path used a `1e-6` Jacobi-CG stopping criterion while the product
 
 ## Artifacts
 
-- Verification note: [P9_M4_WEBGPU_FOUNDATION.md](../verification/phase9/P9_M4_WEBGPU_FOUNDATION.md)
-- M5 verification note: [P9_M5_HYBRID_ELASTIC.md](../verification/phase9/P9_M5_HYBRID_ELASTIC.md)
-- M5 evidence: `reports/validation-evidence/phase9/p9-m5-hybrid-elastic.json`
-- M5 raw browser evidence: `reports/validation-evidence/phase9/p9-m5-browser-raw.json`
-- M5 code review: `reports/validation-evidence/phase9/p9-m5-code-review.md`
-- M6 verification note: [P9_M6_SPARSE_EIGEN.md](../verification/phase9/P9_M6_SPARSE_EIGEN.md)
-- M6 evidence: `reports/validation-evidence/phase9/p9-m6-sparse-eigen.json`
-- M6 code review: `reports/validation-evidence/phase9/p9-m6-code-review.md`
-- M7 verification note: [P9_M7_NONLINEAR_BATCH.md](../verification/phase9/P9_M7_NONLINEAR_BATCH.md)
-- M7 evidence: `reports/validation-evidence/phase9/p9-m7-nonlinear-batch.json`
-- M7 code review: `reports/validation-evidence/phase9/p9-m7-code-review.md`
-- Evidence: `reports/validation-evidence/phase9/p9-m4-webgpu-foundation.json`
-- Raw browser evidence: `reports/validation-evidence/phase9/p9-m4-browser-raw.json`
-- Code review: `reports/validation-evidence/phase9/p9-m4-code-review.md`
-- Release manifest: `docs/verification/phase9/release-manifest.json`
+- Verification note: [P9_M4_WEBGPU_FOUNDATION.md](../../verification/specs/phase9/P9_M4_WEBGPU_FOUNDATION.md)
+- M5 verification note: [P9_M5_HYBRID_ELASTIC.md](../../verification/specs/phase9/P9_M5_HYBRID_ELASTIC.md)
+- M5 evidence: `verification/evidence/validation/phase9/p9-m5-hybrid-elastic.json`
+- M5 raw browser evidence: `verification/evidence/validation/phase9/p9-m5-browser-raw.json`
+- M5 code review: `verification/evidence/validation/phase9/p9-m5-code-review.md`
+- M6 verification note: [P9_M6_SPARSE_EIGEN.md](../../verification/specs/phase9/P9_M6_SPARSE_EIGEN.md)
+- M6 evidence: `verification/evidence/validation/phase9/p9-m6-sparse-eigen.json`
+- M6 code review: `verification/evidence/validation/phase9/p9-m6-code-review.md`
+- M7 verification note: [P9_M7_NONLINEAR_BATCH.md](../../verification/specs/phase9/P9_M7_NONLINEAR_BATCH.md)
+- M7 evidence: `verification/evidence/validation/phase9/p9-m7-nonlinear-batch.json`
+- M7 code review: `verification/evidence/validation/phase9/p9-m7-code-review.md`
+- Evidence: `verification/evidence/validation/phase9/p9-m4-webgpu-foundation.json`
+- Raw browser evidence: `verification/evidence/validation/phase9/p9-m4-browser-raw.json`
+- Code review: `verification/evidence/validation/phase9/p9-m4-code-review.md`
+- Release manifest: `verification/specs/phase9/release-manifest.json`
 - Tests: `npm run test:p9 -- M4`
 - Evidence generation: `npm run evidence:p9:m4`
 - M5 evidence generation: `npm run evidence:p9:m5`
 - M6 evidence generation: `npm run evidence:p9:m6`
 - M7 evidence generation: `npm run evidence:p9:m7`
-- M8 verification note: [P9_M8_HYBRID_NONLINEAR.md](../verification/phase9/P9_M8_HYBRID_NONLINEAR.md)
-- M8 evidence: `reports/validation-evidence/phase9/p9-m8-hybrid-nonlinear.json`
-- M8 code review: `reports/validation-evidence/phase9/p9-m8-code-review.md`
+- M8 verification note: [P9_M8_HYBRID_NONLINEAR.md](../../verification/specs/phase9/P9_M8_HYBRID_NONLINEAR.md)
+- M8 evidence: `verification/evidence/validation/phase9/p9-m8-hybrid-nonlinear.json`
+- M8 code review: `verification/evidence/validation/phase9/p9-m8-code-review.md`
 - M8 evidence generation: `npm run evidence:p9:m8`
-- M9 verification note: [P9_M9_PRODUCT_WORKFLOW.md](../verification/phase9/P9_M9_PRODUCT_WORKFLOW.md)
-- M9 evidence: `reports/validation-evidence/phase9/p9-m9-product-workflow.json`
-- M9 code review: `reports/validation-evidence/phase9/p9-m9-code-review.md`
+- M9 verification note: [P9_M9_PRODUCT_WORKFLOW.md](../../verification/specs/phase9/P9_M9_PRODUCT_WORKFLOW.md)
+- M9 evidence: `verification/evidence/validation/phase9/p9-m9-product-workflow.json`
+- M9 code review: `verification/evidence/validation/phase9/p9-m9-code-review.md`
 - M9 evidence generation: `npm run evidence:p9:m9`
-- M10 verification note: [P9_M10_RELEASE_GATE.md](../verification/phase9/P9_M10_RELEASE_GATE.md)
-- M10 release evidence: `reports/validation-evidence/phase9/p9-m10-release-gate.json`
-- M10 final debt: `reports/validation-evidence/phase9/p9-m10-final-debt.json`
-- M10 code review: `reports/validation-evidence/phase9/p9-m10-code-review.md`
+- M10 verification note: [P9_M10_RELEASE_GATE.md](../../verification/specs/phase9/P9_M10_RELEASE_GATE.md)
+- M10 release evidence: `verification/evidence/validation/phase9/p9-m10-release-gate.json`
+- M10 final debt: `verification/evidence/validation/phase9/p9-m10-final-debt.json`
+- M10 code review: `verification/evidence/validation/phase9/p9-m10-code-review.md`
 - M10 evidence generation: `npm run evidence:p9:m10`
 
 ## Remaining Boundaries

@@ -49,3 +49,18 @@ export {
   validatePhase8M11EvidenceArtifact,
   validatePhase8ReleaseManifest,
 } from './releaseManifest.js';
+export {
+  NONLINEAR_BENCHMARK_VERSION,
+  PUSHOVER_REGRESSION_BASELINE,
+  runCantileverLargeDisplacementBenchmark,
+  runEulerBucklingBenchmark,
+  runLinearThaCompatibilityBenchmark,
+  runMomentCurvatureBenchmark,
+  runNonlinearFiberNlthBenchmarks,
+  runNonlinearGeometryBenchmarks,
+  runNonlinearHingeControlBenchmarks,
+  runNonlinearThaBenchmark,
+  runPortalPlasticMechanismBenchmark,
+  runPushoverRegressionBenchmark,
+  runSnapThroughArcLengthBenchmark,
+} from './nonlinearBenchmarks.js';

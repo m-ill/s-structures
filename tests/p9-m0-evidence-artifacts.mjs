@@ -8,9 +8,9 @@ import {
   validatePhase9ReleaseManifestSkeleton,
 } from '../src/compute/governance/phase9Baseline.js';
 
-const baseline = await readJson('../reports/validation-evidence/phase9/p9-m0-baseline.json');
-const debt = await readJson('../reports/validation-evidence/phase9/p9-m0-debt-inventory.json');
-const manifest = await readJson('../docs/verification/phase9/release-manifest.json');
+const baseline = await readJson('../verification/evidence/validation/phase9/p9-m0-baseline.json');
+const debt = await readJson('../verification/evidence/validation/phase9/p9-m0-debt-inventory.json');
+const manifest = await readJson('../verification/specs/phase9/release-manifest.json');
 
 assertValidation(validatePhase9BaselineEvidence(baseline), 'baseline');
 assertValidation(validatePhase9DebtRegistry(debt), 'debt registry');

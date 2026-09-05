@@ -11,7 +11,7 @@ phase10_regression: PASS
 full_regression: PASS
 externally_cross_validated: false
 release_qualified: false
-evidence_artifact: reports/validation-evidence/phase10/p10-m7-dynamics-extension.json
+evidence_artifact: verification/evidence/validation/phase10/p10-m7-dynamics-extension.json
 evidence_records: 6/6 PASS
 artifact_hash: 8d018a9af8d2a1bdc48b9175
 ```

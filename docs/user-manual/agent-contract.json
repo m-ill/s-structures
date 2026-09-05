@@ -1,8 +1,8 @@
 {
   "schemaVersion": 3,
-  "manualVersion": "2026-07-22-phase10-m11",
+  "manualVersion": "2026-08-27-phase14-m11",
   "product": "S-Structures",
-  "manifestVersion": "p9-m10-agent-capability-manifest-v16",
+  "manifestVersion": "p9-m10-agent-capability-manifest-v17-p14",
   "entrypoint": {
     "recommendedUrl": "http://127.0.0.1:5173/",
     "primaryHtml": "index.html"
@@ -18,6 +18,9 @@
     "getReport",
     "getDetailedReport",
     "getCalculationPackage",
+    "getPhase13ModelCheck",
+    "getPhase13IssueWaivers",
+    "getPhase13MilestoneSnapshot",
     "getKdsLoadCombinationCoverage",
     "getKdsLoadCombinationRules",
     "getKdsLoadStandardRegistry",
@@ -247,6 +250,11 @@
     "setMemberSection",
     "setMemberMaterial",
     "assignSection",
+    "createFoundationProperty",
+    "updateFoundationProperty",
+    "deleteFoundationProperty",
+    "assignMemberFoundation",
+    "removeMemberFoundation",
     "addLoad",
     "addPartialLoad",
     "addTemperatureLoad",
@@ -778,7 +786,7 @@
     "phase3DesignFormulaRegistry"
   ],
   "moduleVersions": {
-    "agentActions": "p10-m6-agent-modeling-actions-v5",
+    "agentActions": "p14-m1-agent-modeling-actions-v6-foundation",
     "resultPanel": "m10-index-results-panel",
     "resultVisuals": "m13-index-result-visuals",
     "resultOverlay": "m18-result-overlay",
@@ -933,7 +941,7 @@
     "phase8NonlinearElementContract": "p8-m1-nonlinear-element-contract-v1",
     "phase8MdofEquilibriumAssembler": "p9-m7-mdof-equilibrium-assembler-v4",
     "phase8MdofNewton": "p8-m3-full-newton-v2",
-    "phase8MdofLoadControl": "p8-m3-mdof-load-control-v2",
+    "phase8MdofLoadControl": "p8-m3-mdof-load-control-v3-p14-m10",
     "phase8MdofConvergence": "p8-m2-mdof-convergence-v1",
     "phase8MdofArcLength": "p8-m7-mdof-crisfield-arc-length-v1",
     "phase8ArcLengthScaling": "p8-m7-arc-length-scaling-v1",
@@ -974,8 +982,8 @@
     "phase8DistributedFiberFrame3d": "p8-m6-distributed-fiber-frame-3d-v1",
     "phase8DisplacementControl": "p8-m5-mdof-displacement-control-v1",
     "phase8PhysicalControlCoordinate": "p8-m5-physical-control-coordinate-v1",
-    "phase8ProductionPushover": "p8-m7-production-pushover-v2",
-    "phase8ProductionPushoverEngine": "p8-m7-mdof-gravity-displacement-arc-pushover-v2",
+    "phase8ProductionPushover": "p8-m7-production-pushover-v3-p14-m10",
+    "phase8ProductionPushoverEngine": "p8-m7-mdof-gravity-load-displacement-arc-pushover-v3-p14-m10",
     "phase8ProductionPushoverResult": "p8-m7-production-pushover-result-v2",
     "phase8MdofMassDomain": "p8-m8-mdof-mass-domain-v1",
     "phase8MdofGroundMotion": "p8-m8-mdof-ground-motion-v1",
@@ -1058,7 +1066,7 @@
     "remainingReview": "docs/user-manual/PHASE3_REMAINING_REVIEW.md",
     "agentContract": "docs/user-manual/agent-contract.json",
     "completionAudit": "docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md",
-    "planAlignmentVerification": "docs/verification/P3_PLAN_ALIGNMENT_VERIFICATION.md"
+    "planAlignmentVerification": "verification/specs/P3_PLAN_ALIGNMENT_VERIFICATION.md"
   },
   "phase4ManualReferences": {
     "install": "docs/user-manual/00-install.md",

@@ -80,7 +80,7 @@ function candidateArtifact(pilot) {
       summary: { fixture: pilot.id },
     },
     report: {
-      path: `docs/verification/phase8/pilots/${pilot.id}.md`,
+      path: `verification/specs/phase8/pilots/${pilot.id}.md`,
       reportHash: `report-${pilot.id}`,
       resultHash: blocked ? null : `result-${pilot.id}`,
     },

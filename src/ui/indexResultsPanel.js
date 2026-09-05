@@ -521,8 +521,12 @@ function buildModalView(analysis) {
   return {
     ok: !!analysis?.dynamics?.ok,
     modes,
-    rsaX: analysis?.dynamics?.rsa?.combined?.x?.srssDisplacement ?? null,
-    rsaY: analysis?.dynamics?.rsa?.combined?.y?.srssDisplacement ?? null,
+    rsaX: analysis?.dynamics?.rsa?.combined?.x?.displacement
+      ?? analysis?.dynamics?.rsa?.combined?.x?.srssDisplacement
+      ?? null,
+    rsaY: analysis?.dynamics?.rsa?.combined?.y?.displacement
+      ?? analysis?.dynamics?.rsa?.combined?.y?.srssDisplacement
+      ?? null,
   };
 }
 

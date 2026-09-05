@@ -34,7 +34,7 @@ const dependencyViolations = findDependencyViolations(sourceText);
 
 const ownerIds = new Set(PHASE9_CODE_OWNERS.map((row) => row.id));
 const ownerlessDebt = PHASE9_DEBT_ROWS.filter((row) => !row.owner || !ownerIds.has(row.owner) || !row.targetMilestone).map((row) => row.id);
-const manifest = JSON.parse(await readFile(path.join(ROOT, 'docs/verification/phase9/release-manifest.json'), 'utf8'));
+const manifest = JSON.parse(await readFile(path.join(ROOT, 'verification/specs/phase9/release-manifest.json'), 'utf8'));
 const evidenceFiles = [
   ['baseline', 'p9-m0-baseline.json'],
   ['debtRegistry', 'p9-m0-debt-inventory.json'],
@@ -50,7 +50,7 @@ const evidenceFiles = [
 ];
 const staleArtifacts = [];
 for (const [key, file] of evidenceFiles) {
-  const artifact = JSON.parse(await readFile(path.join(ROOT, 'reports/validation-evidence/phase9', file), 'utf8'));
+  const artifact = JSON.parse(await readFile(path.join(ROOT, 'verification/evidence/validation/phase9', file), 'utf8'));
   if (artifact.artifactHash !== phase9ArtifactHash(artifact) || manifest.evidence?.[key] !== artifact.artifactHash) staleArtifacts.push(file);
 }
 if (manifest.manifestHash !== phase9ManifestHash(manifest)) staleArtifacts.push('release-manifest.json');

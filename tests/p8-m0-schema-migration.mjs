@@ -12,7 +12,7 @@ import {
   validateModel,
 } from '../src/index.js';
 
-assert.equal(SCHEMA_VERSION, 5);
+assert.equal(SCHEMA_VERSION, 6);
 assert.equal(ANALYSIS_CASE_VERSION, 'p8-analysis-case-v2');
 
 const v4 = createModel({
@@ -52,9 +52,9 @@ const losslessKeys = [
 ];
 const before = Object.fromEntries(losslessKeys.map((key) => [key, structuredClone(v4[key])]));
 const migrated = migrateModel(v4);
-assert.equal(migrated.model.schemaVersion, 5);
+assert.equal(migrated.model.schemaVersion, 6);
 for (const key of losslessKeys) assert.deepEqual(migrated.model[key], before[key], `v4 ${key} must migrate additively`);
-assert.deepEqual(migrated.model.loadCombinations, v4.loadCombinations, 'unmarked v4 CO1 must not be modernized during v5 migration');
+assert.deepEqual(migrated.model.loadCombinations, v4.loadCombinations, 'unmarked v4 CO1 must not be modernized during v6 migration');
 for (const key of NONLINEAR_REGISTRY_COLLECTIONS) assert.deepEqual(migrated.model[key], [], `${key} default`);
 
 const migratedPushover = migrated.model.analysisCases.find((item) => item.id === 'PO-V4');
@@ -70,10 +70,10 @@ assert.deepEqual(migratedPushover.lastRun.summary, v4.analysisCases[0].lastRun.s
 assert.equal(validateModel(migrated.model).ok, true, JSON.stringify(validateModel(migrated.model).errors, null, 2));
 
 const second = migrateModel(migrated.model);
-assert.equal(second.changed, false, 'v5 migration must be idempotent');
+assert.equal(second.changed, false, 'v6 migration must be idempotent');
 assert.deepEqual(second.model, migrated.model);
 assert.throws(
-  () => migrateModel({ ...migrated.model, schemaVersion: 6 }),
+  () => migrateModel({ ...migrated.model, schemaVersion: SCHEMA_VERSION + 1 }),
   (error) => error.code === 'FUTURE_SCHEMA_VERSION',
 );
 

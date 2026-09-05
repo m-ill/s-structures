@@ -2,7 +2,7 @@
 
 ```yaml
 status: active-m0-through-m4-verified
-evidence_root: reports/validation-evidence/phase8
+evidence_root: verification/evidence/validation/phase8
 runner: npm.cmd run test:p8
 rule: implementation existence and regression stability are not qualification evidence
 ```
@@ -339,7 +339,7 @@ error <= absTol + relTol * referenceScale
 | NL-API-09 | stale protection | model hash mismatch 실행/조회 차단 | L4 |
 | NL-API-10 | deterministic automation | 같은 case 반복실행 주요결과 일치 | L4 |
 
-P8-M10 통과 증거는 `reports/validation-evidence/phase8/p8-m10-ui-api.json`에 고정한다. UI와 Agent/MCP는 `src/nonlinear/product/`의 동일 case/preflight/job/result/report 계약을 사용하며, M10 통과 후에도 P8-M11 독립 수치검증 전 결과는 `candidate`, `designBlocked:true`다.
+P8-M10 통과 증거는 `verification/evidence/validation/phase8/p8-m10-ui-api.json`에 고정한다. UI와 Agent/MCP는 `src/nonlinear/product/`의 동일 case/preflight/job/result/report 계약을 사용하며, M10 통과 후에도 P8-M11 독립 수치검증 전 결과는 `candidate`, `designBlocked:true`다.
 
 ## 16. 성능과 pilot
 
@@ -367,7 +367,7 @@ P8-M10 통과 증거는 `reports/validation-evidence/phase8/p8-m10-ui-api.json`�
 | NL-PILOT-04 | RC moment frame | PMM/fiber Pushover와 detailing input 검토 통과 | L5 |
 | NL-PILOT-05 | 3D frame NLTH | record부터 energy/report까지 독립검토 통과 | L5 |
 
-M11 현재 증거는 `reports/validation-evidence/phase8/p8-m11-qualification-release.json`과 `docs/verification/phase8/release-manifest.json`에 고정한다. `NL-PERF-01/03~06/08~11/14~16`은 실제 기준 프로파일에서 PASS다. `NL-PERF-02/07/12/13`은 M-tier end-to-end 및 browser latency 부재로 BLOCKED다. 파일럿 5종의 입력-보고 재현 artifact는 PASS지만 L5 독립비교와 소유자 승인이 없어 `NL-PILOT-01~05`는 BLOCKED다.
+M11 현재 증거는 `verification/evidence/validation/phase8/p8-m11-qualification-release.json`과 `verification/specs/phase8/release-manifest.json`에 고정한다. `NL-PERF-01/03~06/08~11/14~16`은 실제 기준 프로파일에서 PASS다. `NL-PERF-02/07/12/13`은 M-tier end-to-end 및 browser latency 부재로 BLOCKED다. 파일럿 5종의 입력-보고 재현 artifact는 PASS지만 L5 독립비교와 소유자 승인이 없어 `NL-PILOT-01~05`는 BLOCKED다.
 
 ## 17. Release gate
 

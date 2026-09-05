@@ -13,7 +13,11 @@ import {
 export const WALL_MEMBRANE_QM6_VERSION = 'p10-m9a-wall-membrane-qm6-eas-v5-finite-dimensionless-qualified';
 export const DRILLING_ALPHA_QUALIFIED_RANGE = Object.freeze({ min: 1e-6, max: 1e-4 });
 export const DRILLING_STIFFNESS_RATIO_QUALIFIED_MAX = 1e-4;
-export const WALL_MEMBRANE_QUALIFIED_ELEMENT_ASPECT_RATIO_MAX = 4;
+// The canonical Cook membrane has a maximum element aspect ratio of about
+// 4.069705 on every uniform refinement level. Keep the production envelope
+// narrowly above that published distorted-mesh benchmark instead of silently
+// substituting a less distorted geometry.
+export const WALL_MEMBRANE_QUALIFIED_ELEMENT_ASPECT_RATIO_MAX = 4.1;
 export const WALL_MEMBRANE_QUALIFIED_JACOBIAN_RECIPROCAL_CONDITION_MIN = 0.1;
 export const WALL_MEMBRANE_QUALIFIED_WARP_RATIO_MAX = 1e-2;
 
@@ -90,6 +94,9 @@ export function buildWallMembraneQm6(input = {}, options = {}) {
     compatibleMatrix: embedded.membraneMatrix,
     drillingMatrix: embedded.drillingMatrix,
     localMatrix: local.matrix,
+    uncondensedCompatibleLocalMatrix: local.uncondensedCompatibleMatrix,
+    enhancedCorrectionLocalMatrix: local.enhancedCorrectionMatrix,
+    internalStiffnessMatrix: local.internalStiffnessMatrix,
     transform: embedded.transform,
     frame,
     area,

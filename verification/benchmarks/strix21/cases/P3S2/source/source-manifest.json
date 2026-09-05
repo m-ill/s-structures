@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "p17-source-manifest-v1",
+  "caseId": "P3S2",
+  "officialSuiteMember": true,
+  "status": "LOCKED_WITH_BLOCKERS",
+  "custodyBinding": {
+    "registryPath": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+    "registryHash": "de4b442ab56af5b14a907d320b85281a04b3f66ab5f75f9073a3f563df09f79c",
+    "sourceLockPath": "verification/benchmarks/strix21/references/source-locks-r2/P3S2.source-lock.json",
+    "sourceLockHash": "a36233e614158a574c029c76b4f457a0d214f745aa8bfccd11e8e6fe95c62804"
+  },
+  "extraction": {
+    "status": "BOUND_TO_M0_SOURCE_LOCK",
+    "method": "M0_SOURCE_LOCK_BINDING",
+    "artifacts": []
+  },
+  "transcription": {
+    "status": "NOT_STARTED",
+    "path": "verification/benchmarks/strix21/cases/P3S2/source/transcription.md",
+    "valueCount": 0
+  },
+  "reasonCodes": [
+    "P17_M0_SOURCE_LOCK_HAS_DECLARED_BLOCKERS"
+  ]
+}

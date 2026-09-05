@@ -1,0 +1,106 @@
+{
+  "version": "p17-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-locks/SM6.source-lock.json",
+    "sourceLockHash": "9cd9457239f96afc2d87e1fe7b53b83e8934d1f74343d2e3788e2fcd79776c15",
+    "reason": "R2 selects the final evidence Engine field when an HTML page also contains a descriptive Engine field."
+  },
+  "caseId": "SM6",
+  "ordinal": 14,
+  "official": true,
+  "family": "MODAL-3D",
+  "title": "ASME eigenvalue frame — 3-D fixed-base pipe frame with lumped joint masses",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "locator": "Independent reference: the SAME 42-DOF (six per node) 3-D frame assembled from first principles with the identical pipe Timoshenko element (local 12×12 with shear parameter φ = 12EI/GAsL², Avy=Avz=0.9A, torsion GJ/L, axial EA/L, rotated to global) and the identical eps=1e-8 rotational-mass floor, then solved with the DENSE generalised eigensolver scipy.linalg.eigh — a separate implementation and a different solver from STRIX's OpenSees FE assembly + sparse eigsh. Agreement to machine precision across all 24 modes verifies the eigensolver on a fully 3-D coupled structure with explicit nodal masses. The classical benchmark is Problem No. 1 of the ASME 1972 Program Verification & Qualification Library (CSI SAP2000 Verification Example 1-023); its published 'independent' column (Peterson 1981 / DeSalvo & Swanson 1977) is Guyan-reduced 42→24 DOF and so differs from the full solution by up to ±3% — hence it is used only as a secondary physical bracket, not the primary target.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SM6.html",
+        "byteLength": 29574,
+        "sha256": "d1f1d0f3f546819f2c9e08fc6ec303d338f73cdea28f62b1d9440b9c8a3bb30d"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 36,
+        "printedPageEnd": 38
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SM6.pdf",
+        "byteLength": 136832,
+        "sha256": "4accd47c4dd2ef0c070eccfc604ccabec11974398c433b6362356f13f99bc6ab",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 3
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.05%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Eigenvalue ω² (rad²/s²)",
+      "probe": "Mode 1 (mx95 my0 rmz0)",
+      "strix": "506338.834586",
+      "reference": "506331.91595",
+      "delta": "+0.0014%"
+    },
+    "resultRowCount": 8
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_8_OF_8",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SM6.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SM6/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "32d986cde816a6b64b47404c83250195b7c1a8e1c063f3a283ec8b442ef021bc"
+}

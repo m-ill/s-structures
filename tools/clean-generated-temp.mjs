@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TEMP_TARGETS = [
+  'tmp/verification',
   'tmp/pdfs/m42-representative-package-plots',
   'tmp/pdfs/representative-building-plots',
   'tmp/pdfs/m50-render-checks',
@@ -23,7 +24,7 @@ await removeIfEmpty(path.resolve(ROOT, 'tmp'));
 console.log(JSON.stringify({
   ok: true,
   removed,
-  preserved: ['reports', 'output/pdf'],
+  preserved: ['reports', 'output/pdf', 'output/verification'],
 }, null, 2));
 
 function assertInsideWorkspaceTemp(absolute) {

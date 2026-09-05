@@ -44,7 +44,7 @@ When continuing from P3-M6, each milestone must include:
 1. Code review against its plan document.
 2. Focused tests before moving to the next milestone.
 3. Agent-readable metadata or API exposure when the result affects AI control.
-4. A short verification note under `docs/phase3/` or `docs/verification/`.
+4. A short verification note under `docs/phase3/` or `verification/specs/`.
 5. No claim of final structural design automation unless real fixtures and owner review prove it.
 
 ## 2026-07-02 Contract Review Update

@@ -3,7 +3,7 @@ import {
   VERIFICATION_MATRIX_RECORD_VERSION,
   VERIFICATION_MATRIX_VERSION,
   runVerificationMatrix,
-} from '../src/index.js';
+} from '../verification/index.js';
 
 const expectedCaseIds = [
   'E01', 'E02', 'E03', 'E04', 'E05', 'E06', 'E07', 'E08', 'E09', 'E10', 'E11',

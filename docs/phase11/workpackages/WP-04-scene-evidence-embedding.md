@@ -38,7 +38,7 @@ depends: [WP-02, WP-03]
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m4-scene-evidence-report.json`
+`verification/evidence/validation/phase11/p11-m4-scene-evidence-report.json`
 
 ## Review Log
 
@@ -46,7 +46,7 @@ depends: [WP-02, WP-03]
 
 - 구현: `src/report/phase11/sceneEvidence.js`, `src/report/phase11/bilingualReport.js`
 - 테스트: `tests/p11-m4-scene-evidence-report.mjs`
-- 증적: `reports/validation-evidence/phase11/p11-m4-scene-evidence-report.json`
+- 증적: `verification/evidence/validation/phase11/p11-m4-scene-evidence-report.json`
 - raw artifact: `reports/phase11/PILOT-OFFICE-01/m4/`
 - 리뷰: [P11-M4-CODE-REVIEW.md](../reviews/P11-M4-CODE-REVIEW.md)
 - 판정: `P11-CAP-15~24`, `P11-RPT-05~09`, `P11-PAR-07` PASS

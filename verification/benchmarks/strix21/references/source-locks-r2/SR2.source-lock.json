@@ -1,0 +1,106 @@
+{
+  "version": "p17-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-locks/SR2.source-lock.json",
+    "sourceLockHash": "874566a3917ffc271e1116c1a7fe23a5aabeb9bd8c7983e1a038b60642a63985",
+    "reason": "R2 selects the final evidence Engine field when an HTML page also contains a descriptive Engine field."
+  },
+  "caseId": "SR2",
+  "ordinal": 16,
+  "official": true,
+  "family": "RESPONSE-SPECTRUM-3D-FRAME",
+  "title": "Response-spectrum analysis of a three-dimensional eccentric rigid-diaphragm frame",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "CSI SAP2000 Software Verification, Example 1-024 (Response-Spectrum Analysis of a Three-Dimensional Moment Frame); independent solution = Peterson (1981), reproduced exactly by SAP2000. A two-story, two-bay-by-two-bay fixed-base 3-D moment frame with a plan eccentricity between the geometric centre (35, 25 ft) and the centre of mass (38, 27 ft), excited by a constant 0.4 g response spectrum in the X direction with 4% modal damping. Bending and axial deformations are retained; shear is ignored (shear area 0). Story mass acts in X and Y only (no rotational mass inertia), giving four natural modes. Reference values (Peterson) are the four modal periods and the roof centre-of-mass X-displacement under four modal-combination rules (SRSS, CQC, ABS, NRC-10%).",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SR2.html",
+        "byteLength": 29143,
+        "sha256": "cee27f345d3cc84613429b59d4f29f34ced7cb262e19a881e48d904f1548a857"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 42,
+        "printedPageEnd": 44
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SR2.pdf",
+        "byteLength": 141847,
+        "sha256": "8dedadc1dc750c97c9004d8570b2346992b888e48f175a9a47f22f8f0fe436e7",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 3
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "1%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Period — mode 1 (s)",
+      "probe": "eigen · s",
+      "strix": "0.22705",
+      "reference": "0.2271",
+      "delta": "−0.021%"
+    },
+    "resultRowCount": 8
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_8_OF_8",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SR2.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SR2/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "3b995792e732532afac30616dbd8fd8b50f7b6e81e01a69c3694697a0f5d5910"
+}

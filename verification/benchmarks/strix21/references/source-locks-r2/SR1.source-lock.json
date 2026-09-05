@@ -1,0 +1,106 @@
+{
+  "version": "p17-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-locks/SR1.source-lock.json",
+    "sourceLockHash": "1eca32a74fe8b1d51d281ea562a475e84b98d7a71feac749338e30023a213b45",
+    "reason": "R2 selects the final evidence Engine field when an HTML page also contains a descriptive Engine field."
+  },
+  "caseId": "SR1",
+  "ordinal": 15,
+  "official": true,
+  "family": "RESPONSE-SPECTRUM-FRAME",
+  "title": "Response-spectrum analysis of a two-dimensional rigid frame",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "CSI SAP2000 Software Verification, Example 1-020 (Response-Spectrum Analysis of a Two-Dimensional Rigid Frame); independent solution = Chopra, \"Dynamics of Structures\" (1995), Ex. 13.11, p.521. A single-bay, two-story fixed-base plane frame under a 5%-damped response spectrum, bending deformations only (shear/axial ignored), mass excited in X only. Reference values (Chopra) are the two periods, the SRSS lateral displacements, and the SRSS column/beam bending moments.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SR1.html",
+        "byteLength": 25808,
+        "sha256": "3496801d1c40b07c7925d8c48fa5ac8366140b2cf84de09519ab2ea35b1358ed"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 39,
+        "printedPageEnd": 41
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SR1.pdf",
+        "byteLength": 130873,
+        "sha256": "4e1715f2c191b674620eeedbeef24519dcecc8d96d135f0f2e5baf286969094c",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 3
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "1%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Period — mode 1 (s)",
+      "probe": "SRSS · s",
+      "strix": "1.56213",
+      "reference": "1.562",
+      "delta": "+0.0080%"
+    },
+    "resultRowCount": 8
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_8_OF_8",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SR1.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SR1/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "1a2d0d71f072d0be46ab7cb022b9f743bad319ce46a83e896366c98553687df4"
+}

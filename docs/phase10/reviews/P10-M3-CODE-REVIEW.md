@@ -10,7 +10,7 @@ dedicated_gate: PASS
 full_regression: PASS
 externally_cross_validated: false
 release_qualified: false
-evidence_artifact: reports/validation-evidence/phase10/p10-m3-partial-fixity.json
+evidence_artifact: verification/evidence/validation/phase10/p10-m3-partial-fixity.json
 evidence_records: 7/7 PASS
 artifact_hash: aa4180cd16d91d6904a2db22
 ```
@@ -79,7 +79,7 @@ evidence는 7/7 records PASS했으며 CN-F01~03이 정준 tolerance보다 충분
 - `tests/p10-m3-domain-route-contract.mjs`
 - `tests/p10-m3-evidence-contract.mjs`
 
-Evidence는 [p10-m3-partial-fixity.json](../../../reports/validation-evidence/phase10/p10-m3-partial-fixity.json)에
+Evidence는 [p10-m3-partial-fixity.json](../../../verification/evidence/validation/phase10/p10-m3-partial-fixity.json)에
 기록했다.
 
 ## 비차단 한계와 release 차단 항목

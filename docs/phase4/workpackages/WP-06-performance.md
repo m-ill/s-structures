@@ -15,7 +15,7 @@ status: complete
 ## Work Breakdown
 
 ### Step 1. 계측 인프라 (T31 착수)
-1. `tools/measure-perf.mjs` 신규: 예산 6종(점군 1e7 로드 / 뷰어 2e6 프레임타임 / 대표건물 탄성 조합군 / pushover 방향당 / NLTH 20초 기록 / 일람표 생성)을 각각 3회 실행, 중앙값을 `reports/validation-evidence/perf-budget.json`에 기록 (머신 사양 병기).
+1. `tools/measure-perf.mjs` 신규: 예산 6종(점군 1e7 로드 / 뷰어 2e6 프레임타임 / 대표건물 탄성 조합군 / pushover 방향당 / NLTH 20초 기록 / 일람표 생성)을 각각 3회 실행, 중앙값을 `verification/evidence/validation/perf-budget.json`에 기록 (머신 사양 병기).
 2. 뷰어 fps는 node 측정 불가 — 브라우저 프리뷰에서 frame time 로그로 수집하는 절차 문서화 + 수동 증빙.
 3. `tests/p4-perf-budget.mjs`: perf-budget.json을 읽어 예산 대비 판정 (CI 여유 2배 규칙).
 
@@ -35,7 +35,7 @@ perf-budget 게이트를 launch gate 목록에 연결 (L4). TD-08/15 fixed 처�
 
 ## Deliverables
 
-`tools/measure-perf.mjs` / `reports/validation-evidence/perf-budget.json` / `tests/p4-perf-budget.mjs` / 스케일링 리포트 / TD 2건 fixed.
+`tools/measure-perf.mjs` / `verification/evidence/validation/perf-budget.json` / `tests/p4-perf-budget.mjs` / 스케일링 리포트 / TD 2건 fixed.
 
 ## Acceptance Criteria
 
@@ -70,13 +70,13 @@ perf-budget 게이트를 launch gate 목록에 연결 (L4). TD-08/15 fixed 처�
 2026-07-03 P4-T31 / performance budget:
 
 - Added tools/measure-perf.mjs and npm run measure:perf.
-- Generated reports/validation-evidence/perf-budget.json with six measured budget rows and machine metadata.
+- Generated verification/evidence/validation/perf-budget.json with six measured budget rows and machine metadata.
 - Added tests/p4-perf-budget.mjs and wired it into npm test as test:m98.
 - Point-cloud and viewer rows are marked as automated proxy measurements until owner-provided large files and browser FPS captures are available.
 
 2026-07-03 P4-T32 / scale limits:
 
 - Added tools/measure-scale-limits.mjs and npm run measure:scale.
-- Generated reports/validation-evidence/scale-limits.json for about 500, 1,000, 2,000, and 4,000 member classes.
+- Generated verification/evidence/validation/scale-limits.json for about 500, 1,000, 2,000, and 4,000 member classes.
 - Added docs/user-manual/STATUS_AND_LIMITS.md for users and AI agents.
 - Added tests/p4-scale-limits.mjs and wired it into npm test as test:m99.

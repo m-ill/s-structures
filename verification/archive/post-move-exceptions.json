@@ -1,0 +1,15 @@
+{
+  "version": "p16-post-move-exceptions-v1",
+  "recordedAt": "2026-08-28",
+  "exceptions": [
+    {
+      "path": "verification/evidence/validation/p4-preview-integrated-validation.json",
+      "classification": "LEGACY_MUTABLE_GENERATED_EVIDENCE",
+      "frozenSha256": "caac6dd8e33b826a59a1e43debb7a5caed7717caa05fb88ac745f5bdf9883a12",
+      "currentSha256": "8bec82da5b3a37169ecaf617006654bb189622d6407db77e776ff2ed3bd54dd0",
+      "reason": "The legacy P4 integration test rewrote this generated artifact with a new random projectId during the post-move regression. The frozen bytes cannot be reconstructed from the hash alone.",
+      "containment": "The test output was redirected to tmp/verification/tests so the canonical relocated artifact is no longer mutated by regression runs.",
+      "qualificationEffect": "This file is not accepted as new Phase 16 qualification evidence. The Phase 15 baseline hashes remain historical only."
+    }
+  ]
+}

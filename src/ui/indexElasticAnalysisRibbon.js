@@ -378,7 +378,7 @@ function refreshAnalysisRibbon(target, commandButtons, controls) {
   }
 }
 
-function ensureElasticAnalysisCases(target) {
+export function ensureElasticAnalysisCases(target) {
   return ELASTIC_ANALYSIS_COMMANDS.map((command) => ensureAnalysisCase(target, command)).filter(Boolean);
 }
 

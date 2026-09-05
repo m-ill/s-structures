@@ -1,0 +1,71 @@
+{
+  "version": "p17-external-custodian-trust-registry-v1",
+  "registryId": "sb1-local-20260828t120115355z-registry",
+  "status": "PINNED",
+  "authority": {
+    "name": "S-Structures local self-custodied test authority",
+    "governance": "TEST_ONLY",
+    "contact": null
+  },
+  "pin": {
+    "method": "EXTERNAL_CANONICAL_SHA256",
+    "environmentVariable": "P17_EXTERNAL_CUSTODIAN_REGISTRY_SHA256",
+    "status": "PROVIDED_OUT_OF_BAND"
+  },
+  "keys": [
+    {
+      "keyId": "sb1-local-20260828t120115355z-key-1",
+      "principalId": "sb1-local-20260828t120115355z-principal-1",
+      "role": "executionCustodian",
+      "algorithm": "Ed25519",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAHPirCPKmuI+YS2iXb+wjNNyaCOq7N5/j3fi7ODdEs0s=\n-----END PUBLIC KEY-----\n",
+      "validFrom": "2026-08-28T12:00:15.355Z",
+      "validTo": "2027-08-28T12:01:15.355Z",
+      "status": "ACTIVE"
+    },
+    {
+      "keyId": "sb1-local-20260828t120115355z-key-2",
+      "principalId": "sb1-local-20260828t120115355z-principal-2",
+      "role": "modelReviewer",
+      "algorithm": "Ed25519",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAfptuLQcAoJdYqBuHs7mjtgfFZ9bDQqyNEs8aIqoEVpI=\n-----END PUBLIC KEY-----\n",
+      "validFrom": "2026-08-28T12:00:15.355Z",
+      "validTo": "2027-08-28T12:01:15.355Z",
+      "status": "ACTIVE"
+    },
+    {
+      "keyId": "sb1-local-20260828t120115355z-key-3",
+      "principalId": "sb1-local-20260828t120115355z-principal-3",
+      "role": "referenceReviewer",
+      "algorithm": "Ed25519",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEATm+mB3ywIaJAydkA9LMPBUwRCQLaCIBewd5VubRocXA=\n-----END PUBLIC KEY-----\n",
+      "validFrom": "2026-08-28T12:00:15.355Z",
+      "validTo": "2027-08-28T12:01:15.355Z",
+      "status": "ACTIVE"
+    },
+    {
+      "keyId": "sb1-local-20260828t120115355z-key-4",
+      "principalId": "sb1-local-20260828t120115355z-principal-4",
+      "role": "numericalReviewer",
+      "algorithm": "Ed25519",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAxnRUHMBpe9F1y+xW5V79WOBlpb1E7z0Kg0THibvzb6A=\n-----END PUBLIC KEY-----\n",
+      "validFrom": "2026-08-28T12:00:15.355Z",
+      "validTo": "2027-08-28T12:01:15.355Z",
+      "status": "ACTIVE"
+    },
+    {
+      "keyId": "sb1-local-20260828t120115355z-key-5",
+      "principalId": "sb1-local-20260828t120115355z-principal-5",
+      "role": "releaseReviewer",
+      "algorithm": "Ed25519",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAH4408+K9UNDsc3jZhTIp3ZKQfeQNADCVPnQKq6myjdM=\n-----END PUBLIC KEY-----\n",
+      "validFrom": "2026-08-28T12:00:15.355Z",
+      "validTo": "2027-08-28T12:01:15.355Z",
+      "status": "ACTIVE"
+    }
+  ],
+  "reasonCodes": [
+    "P17_LOCAL_TEST_ONLY_SELF_CUSTODY"
+  ],
+  "registryHash": "a926479b1c75416d97f863bb64ce0c1b20a7d6fc3e224be61e2560a5b067c8a9"
+}

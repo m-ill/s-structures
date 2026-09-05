@@ -1,13 +1,14 @@
 import { stableHash } from './stableHash.js';
 import { resolveGlobalShearDeformation } from './shearDeformation.js';
 
-export const ANALYSIS_DOMAIN_HASH_CONTRACT_VERSION = 'p8-m1-analysis-domain-hashes-v2';
+export const ANALYSIS_DOMAIN_HASH_CONTRACT_VERSION = 'p18-analysis-domain-hashes-v4-elastic-link';
 
 export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
   const hashes = {
     topologyHash: hash({
       nodes: rows(model.nodes, ['id', 'x', 'y', 'z']),
       members: rows(model.members, ['id', 'type', 'n1', 'n2']),
+      links: rows(model.links, ['id', 'n1', 'n2']),
       shells: sortedRecords(model.shells || []),
       slabs: sortedRecords(model.slabs || []),
       walls: sortedRecords(model.walls || []),
@@ -16,8 +17,10 @@ export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
       materials: sortedRecords(model.materials || []),
       sections: sortedRecords(model.sections || []),
       memberAssignments: rows(model.members, [
-        'id', 'matId', 'secId', 'modifiers', 'customProps', 'role', 'shearDeformation', 'includeShearDeformation', 'taper',
+        'id', 'matId', 'secId', 'modifiers', 'customProps', 'role', 'shearDeformation', 'includeShearDeformation', 'taper', 'foundationId',
       ]),
+      foundationProperties: sortedRecords(model.foundationProperties || []),
+      linkAssignments: rows(model.links, ['id', 'propertyId', 'linkPropertyId', 'propId', 'stiffness']),
       shearDeformation: resolveGlobalShearDeformation(model),
     }),
     constraintHash: hash({
@@ -25,6 +28,7 @@ export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
       diaphragms: sortedRecords(model.diaphragms || []),
       constraints: sortedRecords(model.constraints || []),
       memberKinematics: rows(model.members, ['id', 'localAxis', 'releases', 'rel1', 'rel2', 'endOffset', 'insertionPoint', 'offsets', 'offsetI', 'offsetJ']),
+      linkKinematics: rows(model.links, ['id', 'betaDeg', 'shearDist', 'nearVerticalTolerance']),
     }),
     loadHash: hash({
       loadCases: sortedRecords(model.loadCases || []),

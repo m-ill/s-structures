@@ -10,8 +10,8 @@ import {
   validateP11ReleaseManifest,
 } from '../src/report/phase11/governance.js';
 
-const evidence = JSON.parse(readFileSync('reports/validation-evidence/phase11/p11-m0-baseline-governance.json', 'utf8'));
-const manifest = JSON.parse(readFileSync('docs/verification/phase11/release-manifest.json', 'utf8'));
+const evidence = JSON.parse(readFileSync('verification/evidence/validation/phase11/p11-m0-baseline-governance.json', 'utf8'));
+const manifest = JSON.parse(readFileSync('verification/specs/phase11/release-manifest.json', 'utf8'));
 
 assert.deepEqual(validateP11M0Evidence(evidence), { ok: true, errors: [] });
 assert.deepEqual(validateP11ReleaseManifest(manifest), { ok: true, errors: [] });

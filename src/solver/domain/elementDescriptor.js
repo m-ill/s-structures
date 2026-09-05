@@ -9,12 +9,13 @@ import { resolveMemberTimoshenko } from '../timoshenko.js';
 import { applyPanelZoneConnectionSprings, attachPanelZoneSources } from '../panelZone.js';
 import { resolveMemberTaper } from '../taperedMember.js';
 
-export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p10-m6-element-descriptor-v4';
+export const CANONICAL_ELEMENT_DESCRIPTOR_VERSION = 'p14-m1-element-descriptor-v5-foundation';
 
 export function buildElementDescriptors(model = {}, nodes = model.nodes || [], members = model.members || []) {
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
   const nodeIndex = new Map(nodes.map((node, index) => [node.id, index]));
   const wallByMember = new Map((model.wallEquivalents || []).map((row) => [row.memberId, row]));
+  const foundationById = new Map((model.foundationProperties || []).map((row) => [row.id, row]));
   const materialCache = new Map();
   const sectionCache = new Map();
   const getMaterial = (id) => cachedCatalogValue(materialCache, id, () => materialOf(model, id));
@@ -94,6 +95,7 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
       propertyRefs: {
         materialId: materialSource.id || member.matId || null,
         sectionId: sectionSource.id || member.secId || null,
+        foundationId: member.foundationId || null,
         materialVersion: materialSource.version ?? 1,
         sectionVersion: sectionSource.version ?? 1,
       },
@@ -103,12 +105,18 @@ export function buildElementDescriptors(model = {}, nodes = model.nodes || [], m
         effectiveMaterial: materialSnapshot(effective.material),
         effectiveSection: sectionSnapshot(effective.section),
         modifiers: clone(member.modifiers || null),
+        foundation: clone(foundationById.get(member.foundationId) || null),
       },
       formulation: {
         family: 'frame-3d',
         bending: timoshenko.formulation,
         shearDeformation: clone(timoshenko),
         taper: clone(taper),
+        foundation: member.foundationId ? {
+          type: 'winkler-line',
+          propertyId: member.foundationId,
+          behavior: 'linear-bilateral',
+        } : null,
       },
       nonlinear: clone(member.nonlinear || null),
       generated: member.generated === true,

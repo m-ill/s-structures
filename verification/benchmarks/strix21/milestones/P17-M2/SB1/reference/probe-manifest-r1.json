@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "p17-probe-manifest-v1",
+  "caseId": "SB1",
+  "status": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+  "payloadAbsent": false,
+  "releaseAllowed": false,
+  "signConventionStatus": "LOCKED",
+  "probes": [
+    {
+      "probeId": "sb1-tip-uz",
+      "metricId": "tip-uz",
+      "resultKind": "NODE_DISPLACEMENT",
+      "entityId": "N2",
+      "location": "NODE",
+      "component": "GLOBAL_UZ",
+      "unit": "m",
+      "signConvention": "positive global +Z; downward response negative",
+      "mandatory": true,
+      "jsonPointer": "/result/payload/byCombo/D_ONLY/disp/N2/2",
+      "extractionOperation": "IDENTITY_FINITE_NUMBER",
+      "approvalHash": "7efb9b1ab386cc798a43b87f67b63fcb68629d7b62b819b15ef3f30dd9bba2ec"
+    },
+    {
+      "probeId": "sb1-tip-ry",
+      "metricId": "tip-ry",
+      "resultKind": "NODE_ROTATION",
+      "entityId": "N2",
+      "location": "NODE",
+      "component": "GLOBAL_RY",
+      "unit": "rad",
+      "signConvention": "positive global +Y right-hand rotation",
+      "mandatory": true,
+      "jsonPointer": "/result/payload/byCombo/D_ONLY/disp/N2/4",
+      "extractionOperation": "IDENTITY_FINITE_NUMBER",
+      "approvalHash": "7efb9b1ab386cc798a43b87f67b63fcb68629d7b62b819b15ef3f30dd9bba2ec"
+    },
+    {
+      "probeId": "sb1-support-rz",
+      "metricId": "support-rz",
+      "resultKind": "SUPPORT_REACTION",
+      "entityId": "N1",
+      "location": "NODE",
+      "component": "GLOBAL_RZ",
+      "unit": "kN",
+      "signConvention": "positive global +Z reaction",
+      "mandatory": true,
+      "jsonPointer": "/result/payload/byCombo/D_ONLY/reactions/N1/rz",
+      "extractionOperation": "IDENTITY_FINITE_NUMBER",
+      "approvalHash": "7efb9b1ab386cc798a43b87f67b63fcb68629d7b62b819b15ef3f30dd9bba2ec"
+    },
+    {
+      "probeId": "sb1-support-my",
+      "metricId": "support-my",
+      "resultKind": "SUPPORT_REACTION_MOMENT",
+      "entityId": "N1",
+      "location": "NODE",
+      "component": "GLOBAL_MY",
+      "unit": "kN-m",
+      "signConvention": "positive global +Y right-hand moment",
+      "mandatory": true,
+      "jsonPointer": "/result/payload/byCombo/D_ONLY/reactions/N1/rmy",
+      "extractionOperation": "IDENTITY_FINITE_NUMBER",
+      "approvalHash": "7efb9b1ab386cc798a43b87f67b63fcb68629d7b62b819b15ef3f30dd9bba2ec"
+    }
+  ],
+  "approval": {
+    "reviewer": "EXTERNAL_NUMERICAL_REVIEWER_UNASSIGNED",
+    "status": "PENDING",
+    "approvalHash": null
+  },
+  "reasonCodes": [
+    "P17_EXTERNAL_PROBE_REVIEW_PENDING"
+  ]
+}
+

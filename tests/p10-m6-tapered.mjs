@@ -69,14 +69,14 @@ assert.ok(loadedResult.byCombo.D_ONLY.summary.equilibriumResidual < 1e-10);
 
 const domain = packDomainBinary(taper5);
 assert.equal(validateDomainBinary(domain).ok, true);
-assert.equal(domain.version, 'p10-domain-binary-v6');
+assert.equal(domain.version, 'p14-domain-binary-v7-foundation');
 assert.equal(domain.buffers.memberTaperProfiles[0], 1);
 assert.equal(domain.buffers.memberTaperGaussPoints[0], 5);
 assert.equal(unpackDomainBinary(domain).members[0].taper.sectionIdJ, 'bench-rect-j');
 const canonical = buildCanonicalAnalysisDomain(taper5);
 assert.equal(canonical.ok, true);
 assert.equal(canonical.elements[0].formulation.taper.profile, 'linear');
-assert.equal(canonical.elements[0].version, 'p10-m6-element-descriptor-v4');
+assert.equal(canonical.elements[0].version, 'p14-m1-element-descriptor-v5-foundation');
 
 const agentModel = createCantileverTipLoad().model;
 executeModelingAction(agentModel, ensureAgentState({}), 'updateMember', {
@@ -84,7 +84,7 @@ executeModelingAction(agentModel, ensureAgentState({}), 'updateMember', {
   taper: { profile: 'linear', sectionIdJ: 'bench-rect', gaussPoints: 5 },
 });
 assert.equal(agentModel.members[0].taper.profile, 'linear');
-assert.equal(INDEX_AGENT_ACTIONS_VERSION, 'p10-m6-agent-modeling-actions-v5');
+assert.equal(INDEX_AGENT_ACTIONS_VERSION, 'p14-m1-agent-modeling-actions-v6-foundation');
 assert.equal(resolveCriterion(taper5, 'taper.gaussPoints'), 5);
 
 export const M6_VERIFICATION_SNAPSHOT = Object.freeze({

@@ -18,7 +18,7 @@ This folder records P3-M20 launch evidence.
 | G10 agent contract | `docs/user-manual/agent-contract.json` |
 | G11 beta pilot reports | `pilot-01.md` to `pilot-10.md` |
 | G12 backup restore | `backup-restore.md` |
-| G13 design verification | `docs/verification/DESIGN_MODULE_VERIFICATION.md` |
+| G13 design verification | `verification/specs/DESIGN_MODULE_VERIFICATION.md` |
 | G14 calculation completeness | `tests/p3-launch-gate.mjs` |
 
 ## Manual Sign-Off

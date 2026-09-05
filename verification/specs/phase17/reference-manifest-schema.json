@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/reference-manifest-schema.json",
+  "title": "Phase 17 reference-lane manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "artifactStatus", "payloadAbsent", "releaseAllowed", "sourceManifestBinding", "expectedValuesPath", "expectedValuesHash", "lanes", "approval", "reasonCodes"],
+  "properties": {
+    "schemaVersion": { "const": "p17-reference-manifest-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "artifactStatus": { "enum": ["NOT_LOCKED", "LOCKED"] },
+    "payloadAbsent": { "type": "boolean" },
+    "releaseAllowed": { "type": "boolean" },
+    "sourceManifestBinding": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+    },
+    "expectedValuesPath": { "type": "string", "minLength": 1 },
+    "expectedValuesHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "lanes": {
+      "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "referenceClass", "claimEvidenceLevel", "status", "artifacts", "reasonCodes"],
+        "properties": {
+          "id": { "enum": ["PRIMARY_INDEPENDENT", "STRIX_PUBLISHED", "STRIX_R4", "MIDAS_R4"] },
+          "referenceClass": { "enum": ["NOT_ASSIGNED", "R1_R2_EXTERNAL", "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED", "R5_INTERNAL_SPEC", "MIXED_EXTERNAL_INTERNAL_SPEC"] },
+          "claimEvidenceLevel": { "enum": ["NOT_ASSIGNED", "R1", "R2", "R3", "R4", "R5"] },
+          "status": { "enum": ["NOT_LOCKED", "LOCKED", "NOT_AVAILABLE", "BLOCKED_SOURCE"] },
+          "artifacts": {
+            "type": "array", "uniqueItems": true,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["artifactId", "path", "sha256", "byteLength", "mimeType", "sourceLocator", "role"],
+              "properties": {
+                "artifactId": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" }, "path": { "type": "string", "minLength": 1 },
+                "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "byteLength": { "type": "integer", "minimum": 1 },
+                "mimeType": { "type": "string", "minLength": 1 }, "sourceLocator": { "type": "string", "minLength": 1 },
+                "role": { "type": "string", "pattern": "^[A-Z0-9_]+$" }
+              }
+            }
+          },
+          "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+        }
+      }
+    },
+    "approval": {
+      "type": "object", "additionalProperties": false, "required": ["status", "reviewer", "approvalHash"],
+      "properties": { "status": { "enum": ["NOT_STARTED", "PENDING", "APPROVED"] }, "reviewer": { "type": "string", "minLength": 1 }, "approvalHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" } }
+    },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+  }
+}

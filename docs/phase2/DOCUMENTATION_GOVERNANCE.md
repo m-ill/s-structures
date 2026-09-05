@@ -19,7 +19,7 @@ Phase 2부터 문서는 세 종류로 분리한다.
 | Product requirements | `docs/product/` | 큰 요구사항 변경 시 수정 |
 | Planning archive | `docs/planning/` | 계획 근거 보존. 필요한 경우 새 phase2 문서로 요약 |
 | Milestone archive | `docs/milestones/` | append-only. 현재 사용법으로 쓰지 않음 |
-| Verification evidence | `docs/verification/` | 수치 검증 기준과 함께 테스트 링크 유지 |
+| Verification evidence | `verification/specs/` | 수치 검증 기준과 함께 테스트 링크 유지 |
 
 ## File Naming
 
@@ -62,6 +62,6 @@ Phase 2부터 문서는 세 종류로 분리한다.
 | `docs/S-STRUCTURES_*.md` | `docs/product/` |
 | `docs/INDEX_*.md`, `docs/R*.md` | `docs/planning/` |
 | `docs/M*.md`, `docs/m*.md` | `docs/milestones/` |
-| `docs/LINEAR_SOLVER_VERIFICATION.md` | `docs/verification/` |
+| `docs/LINEAR_SOLVER_VERIFICATION.md` | `verification/specs/` |
 
 `docs/user-manual/`은 현재 사용자와 AI agent를 위한 기준 문서로 유지한다.

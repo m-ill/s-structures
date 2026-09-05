@@ -532,6 +532,14 @@ function augmentDelegatedSnapshot(raw, meta) {
 
 function decorateResult(result, plan) {
   if (!result) return null;
+  const reportedFallback = result.routing?.fallbackObservation === 'MALFORMED'
+    ? { status: 'MALFORMED', value: null }
+    : observedBoolean([
+      result.routing?.fallbackUsed,
+      result.fallbackUsed,
+      result.executionProvenance?.fallbackUsed,
+      result.productProvenance?.fallbackUsed,
+    ]);
   return clone({
     ...result,
     settingsHash: result.settingsHash || plan.settingsHash,
@@ -542,11 +550,23 @@ function decorateResult(result, plan) {
       requestedTarget: plan.requestedTarget,
       executedTarget: plan.executedTarget,
       operationRoute: plan.operationRoute,
-      fallbackPolicy: 'forbidden',
-      fallbackUsed: false,
+      fallbackPolicy: result.routing?.fallbackPolicy ?? 'forbidden',
+      fallbackObservation: reportedFallback.status,
+      fallbackUsed: reportedFallback.status === 'MALFORMED'
+        ? null
+        : reportedFallback.status === 'ABSENT'
+          ? false
+          : reportedFallback.value,
     },
     productProvenance: productProvenance(plan, result),
   });
+}
+
+function observedBoolean(values) {
+  const observed = values.filter((value) => value !== undefined && value !== null);
+  if (observed.some((value) => typeof value !== 'boolean')) return { status: 'MALFORMED', value: null };
+  if (!observed.length) return { status: 'ABSENT', value: null };
+  return { status: 'OBSERVED', value: observed.some(Boolean) };
 }
 
 function productProvenance(plan, result = {}) {
@@ -562,6 +582,9 @@ function productProvenance(plan, result = {}) {
     audit: result?.payload?.audit || result?.audit || plan.auditPolicy,
     qualification: result?.qualification || plan.qualification,
     designBlocked: result?.designBlocked ?? plan.designTransfer === 'blocked',
+    externalRuntimeUsed: result?.externalRuntimeUsed ?? result?.executionProvenance?.externalRuntimeUsed ?? null,
+    networkFallbackUsed: result?.networkFallbackUsed ?? result?.executionProvenance?.networkFallbackUsed ?? null,
+    executionProvenance: result?.executionProvenance ? clone(result.executionProvenance) : null,
   };
 }
 

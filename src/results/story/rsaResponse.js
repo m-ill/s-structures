@@ -422,7 +422,11 @@ function resolveRsa(analysis) {
 }
 
 function normalizedMethod(value) {
-  return String(value || 'SRSS').toUpperCase() === 'CQC' ? 'CQC' : 'SRSS';
+  const method = String(value || 'SRSS').trim().toUpperCase().replace(/[\s_%\-]/g, '');
+  if (method === 'CQC') return 'CQC';
+  if (method === 'ABS' || method === 'ABSOLUTE') return 'ABS';
+  if (['NRC', 'NRC10', '10PCT', '10PERCENT'].includes(method)) return 'NRC10';
+  return 'SRSS';
 }
 
 function storyUnits(model, rsa) {

@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/p17-m0-content-audit-schema.json",
+  "title": "P17-M0 source value-presence audit",
+  "type": "object",
+  "required": ["version", "auditId", "supersedes", "auditDate", "scope", "sourceRoot", "extractor", "sources", "summary", "methodLimitations", "knownSourcePresentationDefects", "cases", "verdict", "auditHash"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": "p17-m0-source-value-presence-audit-v3" },
+    "auditId": { "const": "P17-M0-SOURCE-VALUE-PRESENCE-AUDIT-R3" },
+    "supersedes": {
+      "type": "object",
+      "required": ["path", "sha256", "auditHash", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "const": "verification/evidence/validation/phase17/p17-m0-source-value-presence-audit-r2.json" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "auditHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "reason": { "type": "string", "minLength": 40 }
+      }
+    },
+    "auditDate": { "type": "string", "format": "date" },
+    "scope": { "type": "string", "minLength": 20 },
+    "sourceRoot": { "const": "STRIX-verification-21" },
+    "extractor": {
+      "type": "object",
+      "required": ["path", "sha256", "command", "pythonImplementation", "pythonVersion", "pypdfVersion", "normalizationVersion"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "const": "verification/benchmarks/strix21/reporting/audit_p17_m0_sources.py" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "command": { "const": "npm run audit:p17:m0:check" },
+        "pythonImplementation": { "type": "string", "minLength": 3 },
+        "pythonVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "pypdfVersion": { "const": "6.10.0" },
+        "normalizationVersion": { "const": "p17-visible-text-nfkc-no-whitespace-v1" }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "required": ["registry", "catalog", "manual", "caseSourceHashChecks"],
+      "additionalProperties": false,
+      "properties": {
+        "registry": {
+          "type": "object",
+          "required": ["path", "byteLength", "sha256"],
+          "additionalProperties": false,
+          "properties": {
+            "path": { "const": "verification/benchmarks/strix21/suite-source-registry-r2.json" },
+            "byteLength": { "type": "integer", "minimum": 1 },
+            "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          }
+        },
+        "catalog": {
+          "type": "object",
+          "required": ["path", "byteLength", "sha256"],
+          "additionalProperties": false,
+          "properties": {
+            "path": { "const": "STRIX-verification-21/benchmark-catalog.json" },
+            "byteLength": { "type": "integer", "minimum": 1 },
+            "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          }
+        },
+        "manual": {
+          "type": "object",
+          "required": ["path", "byteLength", "sha256", "pageCount"],
+          "additionalProperties": false,
+          "properties": {
+            "path": { "const": "STRIX-verification-21/documents/StrixVerificationManual.pdf" },
+            "byteLength": { "type": "integer", "minimum": 1 },
+            "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+            "pageCount": { "const": 66 }
+          }
+        },
+        "caseSourceHashChecks": {
+          "type": "array",
+          "minItems": 42,
+          "maxItems": 42,
+          "items": {
+            "type": "object",
+            "required": ["caseId", "kind", "expected", "actual", "matched"],
+            "additionalProperties": false,
+            "properties": {
+              "caseId": { "type": "string", "pattern": "^[A-Za-z0-9]+$" },
+              "kind": { "enum": ["HTML", "PDF"] },
+              "expected": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "actual": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "matched": { "const": true }
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["officialCaseCount", "catalogResultRowCount", "htmlMetadataPresenceAssertionCount", "htmlMetadataPresenceMatchedCount", "htmlScalarPresenceAssertionCount", "htmlScalarPresenceMatchedCount", "htmlResultRowOrderedSequenceAssertionCount", "htmlResultRowOrderedSequenceMatchedCount", "casePdfGlobalTextValuePresenceAssertionCount", "casePdfGlobalTextValuePresenceMatchedCount", "casePdfGlobalTextValuePresenceMissingCount", "manualLockedStartPageTitleAssertionCount", "manualLockedStartPageTitleMatchedCount", "sourceHashCheckCount", "sourceHashMatchedCount"],
+      "additionalProperties": false,
+      "properties": {
+        "officialCaseCount": { "const": 21 },
+        "catalogResultRowCount": { "const": 131 },
+        "htmlMetadataPresenceAssertionCount": { "const": 42 },
+        "htmlMetadataPresenceMatchedCount": { "const": 42 },
+        "htmlScalarPresenceAssertionCount": { "const": 393 },
+        "htmlScalarPresenceMatchedCount": { "const": 393 },
+        "htmlResultRowOrderedSequenceAssertionCount": { "const": 131 },
+        "htmlResultRowOrderedSequenceMatchedCount": { "const": 131 },
+        "casePdfGlobalTextValuePresenceAssertionCount": { "const": 393 },
+        "casePdfGlobalTextValuePresenceMatchedCount": { "const": 391 },
+        "casePdfGlobalTextValuePresenceMissingCount": { "const": 2 },
+        "manualLockedStartPageTitleAssertionCount": { "const": 21 },
+        "manualLockedStartPageTitleMatchedCount": { "const": 21 },
+        "sourceHashCheckCount": { "const": 42 },
+        "sourceHashMatchedCount": { "const": 42 }
+      }
+    },
+    "methodLimitations": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "type": "string", "minLength": 20 } },
+    "knownSourcePresentationDefects": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "caseId", "description", "visualClassification", "textExtractionMissingScalarPresenceAssertions", "sourcePdfPageIndex", "sourcePdfDisplayPageNumber", "classification"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "const": "P17-D005" },
+          "caseId": { "const": "SH1" },
+          "description": { "type": "string", "minLength": 80 },
+          "visualClassification": { "const": "TWO_PCHIP_ROWS_NOT_FULLY_VISIBLE" },
+          "textExtractionMissingScalarPresenceAssertions": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "required": ["caseId", "kind", "field", "expected", "matched", "rowIndex"],
+              "additionalProperties": false,
+              "properties": {
+                "caseId": { "const": "SH1" },
+                "kind": { "const": "PDF_GLOBAL_TEXT" },
+                "field": { "enum": ["STRIX", "Reference"] },
+                "expected": { "type": "string", "minLength": 1 },
+                "matched": { "const": false },
+                "rowIndex": { "const": 11 }
+              }
+            }
+          },
+          "sourcePdfPageIndex": { "const": 2 },
+          "sourcePdfDisplayPageNumber": { "const": 3 },
+          "classification": { "const": "SOURCE_PRESENTATION_DEFECT_NOT_SOLVER_RESULT" }
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 21,
+      "maxItems": 21,
+      "items": {
+        "type": "object",
+        "required": ["caseId", "catalogRowCount", "html", "casePdf", "manualTitleLocator"],
+        "additionalProperties": false,
+        "properties": {
+          "caseId": { "type": "string", "pattern": "^[A-Za-z0-9]+$" },
+          "catalogRowCount": { "type": "integer", "minimum": 1 },
+          "html": {
+            "type": "object",
+            "required": ["path", "sha256", "metadataAssertionCount", "metadataMatchedCount", "scalarPresenceAssertionCount", "scalarPresenceMatchedCount", "rowSequenceAssertionCount", "rowSequenceMatchedCount"],
+            "additionalProperties": false,
+            "properties": {
+              "path": { "type": "string", "pattern": "^STRIX-verification-21/html/[A-Za-z0-9]+\\.html$" },
+              "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "metadataAssertionCount": { "const": 2 },
+              "metadataMatchedCount": { "const": 2 },
+              "scalarPresenceAssertionCount": { "type": "integer", "minimum": 3 },
+              "scalarPresenceMatchedCount": { "type": "integer", "minimum": 3 },
+              "rowSequenceAssertionCount": { "type": "integer", "minimum": 1 },
+              "rowSequenceMatchedCount": { "type": "integer", "minimum": 1 }
+            }
+          },
+          "casePdf": {
+            "type": "object",
+            "required": ["path", "sha256", "pageCount", "globalTextValuePresenceAssertionCount", "globalTextValuePresenceMatchedCount", "globalTextValuePresenceMissing"],
+            "additionalProperties": false,
+            "properties": {
+              "path": { "type": "string", "pattern": "^STRIX-verification-21/reports/[A-Za-z0-9]+\\.pdf$" },
+              "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "pageCount": { "type": "integer", "minimum": 1 },
+              "globalTextValuePresenceAssertionCount": { "type": "integer", "minimum": 3 },
+              "globalTextValuePresenceMatchedCount": { "type": "integer", "minimum": 1 },
+              "globalTextValuePresenceMissing": {
+                "type": "array",
+                "maxItems": 2,
+                "items": {
+                  "type": "object",
+                  "required": ["kind", "field", "expected", "matched", "rowIndex"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": { "const": "PDF_GLOBAL_TEXT" },
+                    "field": { "enum": ["STRIX", "Reference", "Δ"] },
+                    "expected": { "type": "string", "minLength": 1 },
+                    "matched": { "const": false },
+                    "rowIndex": { "type": "integer", "minimum": 1 }
+                  }
+                }
+              }
+            }
+          },
+          "manualTitleLocator": {
+            "type": "object",
+            "required": ["kind", "field", "expected", "matched", "expectedPdfPageIndex", "expectedDisplayPageNumber", "lockedPrintedPageStart", "lockedPrintedPageEnd", "pdfPageIndexes", "displayPageNumbers"],
+            "additionalProperties": false,
+            "properties": {
+              "kind": { "const": "MANUAL" },
+              "field": { "const": "titleAtLockedStartPage" },
+              "expected": { "type": "string", "minLength": 5 },
+              "matched": { "const": true },
+              "expectedPdfPageIndex": { "type": "integer", "minimum": 2, "maximum": 61 },
+              "expectedDisplayPageNumber": { "type": "integer", "minimum": 3, "maximum": 62 },
+              "lockedPrintedPageStart": { "type": "integer", "minimum": 1, "maximum": 60 },
+              "lockedPrintedPageEnd": { "type": "integer", "minimum": 2, "maximum": 64 },
+              "pdfPageIndexes": { "type": "array", "minItems": 1, "items": { "type": "integer" } },
+              "displayPageNumbers": { "type": "array", "minItems": 1, "items": { "type": "integer" } }
+            }
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "required": ["status", "htmlMetadataPresence", "htmlScalarPresence", "htmlResultRowOrderedSequence", "casePdfGlobalTextValuePresence", "manualLockedStartPageTitleLocators", "releaseAllowed"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "const": "PASS_SOURCE_CUSTODY_WITH_KNOWN_PRESENTATION_DEFECT" },
+        "htmlMetadataPresence": { "const": "PASS_42_OF_42" },
+        "htmlScalarPresence": { "const": "PASS_393_OF_393" },
+        "htmlResultRowOrderedSequence": { "const": "PASS_131_OF_131" },
+        "casePdfGlobalTextValuePresence": { "const": "OBSERVED_391_OF_393_WITH_SH1_VISUAL_TWO_ROW_CLIPPING" },
+        "manualLockedStartPageTitleLocators": { "const": "PASS_21_OF_21" },
+        "releaseAllowed": { "const": false }
+      }
+    },
+    "auditHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

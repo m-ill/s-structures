@@ -20,7 +20,7 @@ P3-M17~M18(RC/철골/기초/접합 상세설계)을 proven으로 승격한다. �
 ## Work Breakdown
 
 ### Step 1. 검증서 골격 (T12 착수)
-1. `docs/verification/DESIGN_MODULE_VERIFICATION.md` 생성 — 장 구성: RC 보 / RC 기둥 / RC 벽체 / RC 슬래브 / 철골 부재 / 가새·접합·base plate / 기초.
+1. `verification/specs/DESIGN_MODULE_VERIFICATION.md` 생성 — 장 구성: RC 보 / RC 기둥 / RC 벽체 / RC 슬래브 / 철골 부재 / 가새·접합·base plate / 기초.
 2. 케이스 표준 5열: 입력(재료·단면·하중) / 적용 조항(KDS 번호) / 손계산 전개 / 프로그램 값 / 오차.
 3. 결정 대기 표 신설: 조항 해석이 갈리는 지점은 오너 결정 큐로 (R8 대응).
 

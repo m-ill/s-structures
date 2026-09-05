@@ -28,7 +28,7 @@ export async function executePhase8PilotPackage(pilotInput, options = {}) {
     sourceRevision: clean(options.sourceRevision) || 'working-tree',
     execution,
     report: {
-      path: `docs/verification/phase8/pilots/${pilot.id}.md`,
+      path: `verification/specs/phase8/pilots/${pilot.id}.md`,
       reportHash: report.reportHash,
       resultHash: execution.resultHash,
       format: 'json+markdown',

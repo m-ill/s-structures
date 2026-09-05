@@ -3,7 +3,7 @@
 ```yaml
 status: implemented-and-regression-tested
 rule: implementation existence is not verification evidence
-evidence_root: docs/verification/phase7
+evidence_root: verification/specs/phase7
 ```
 
 ## 1. 검증 원칙

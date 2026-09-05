@@ -33,4 +33,4 @@ depends: []
 | --- | --- | --- | --- |
 | 2026-07-20 | `thetaRequire`가 판정 분기에 연결되지 않았고 비-direct REQUIRE-2ND 설계차단이 없었음 | θ 4상태 분기, `PDELTA_SECOND_ORDER_REQUIRED`, `statusLegacy` 및 UI/report 호환 경로를 구현하고 경계 테스트를 추가 | 완료 |
 | 2026-07-20 | RSA 밑면전단 scale이 trace-only였고 최종 응답·파생 층 결과 provenance가 불완전했음 | `rsa.applyBaseShearScaling` 기본 true, 방향별 combined/nodal/member/story 적용, 미지정·비활성 무변화 및 결과별 `{scaled, scaleFactor, beforeValue}`를 구현 | 완료 |
-| 2026-07-20 | 독립 리뷰에서 legacy 옵션 라우팅, late `minimumBaseShear`, 분석/설계 상태 분리 및 파생 story provenance 경로를 재점검 | 지적 경로를 보정하고 M0 전용·관련 회귀, 통합 `npm.cmd test`와 [evidence](../../../reports/validation-evidence/phase10/p10-m0-quick-corrections.json)를 확인 | 완료 |
+| 2026-07-20 | 독립 리뷰에서 legacy 옵션 라우팅, late `minimumBaseShear`, 분석/설계 상태 분리 및 파생 story provenance 경로를 재점검 | 지적 경로를 보정하고 M0 전용·관련 회귀, 통합 `npm.cmd test`와 [evidence](../../../verification/evidence/validation/phase10/p10-m0-quick-corrections.json)를 확인 | 완료 |

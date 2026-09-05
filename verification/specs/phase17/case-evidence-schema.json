@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/case-evidence-schema.json",
+  "title": "Phase 17 immutable pre-report case evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "runId", "status", "runRecordBinding", "runCustodyBinding", "comparison", "hashChain", "qualification", "captures", "reasonCodes", "evidenceHash"],
+  "properties": {
+    "schemaVersion": { "const": "p17-case-evidence-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "runId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{5,127}$" },
+    "status": { "enum": ["QUALIFICATION_CANDIDATE", "FAILED", "BLOCKED_SOURCE", "BLOCKED_REFERENCE", "BLOCKED_ENGINE", "BLOCKED_ENGINE_API", "BLOCKED_MODEL_EQUIVALENCE", "BLOCKED_QUALIFICATION", "CROSS_CHECK_ONLY", "INVALIDATED"] },
+    "runRecordBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "contentSha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "contentSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "runCustodyBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "runDirectoryPath", "integrityManifestPath", "integrityHash", "directoryHash", "custodyPayloadHash", "storagePolicyVersion", "authority", "anchorId", "keyId", "reasonCodes"],
+      "properties": {
+        "status": { "enum": ["NOT_COMMITTED", "EXTERNAL_SIGNED_ANCHOR_VERIFIED"] },
+        "runDirectoryPath": { "type": ["string", "null"], "minLength": 1 },
+        "integrityManifestPath": { "type": ["string", "null"], "minLength": 1 },
+        "integrityHash": { "$ref": "#/$defs/nullableSha256" },
+        "directoryHash": { "$ref": "#/$defs/nullableSha256" },
+        "custodyPayloadHash": { "$ref": "#/$defs/nullableSha256" },
+        "storagePolicyVersion": { "type": ["string", "null"], "pattern": "^p17-m1-append-only-assurance-policy-v1$" },
+        "authority": { "type": ["string", "null"], "minLength": 1 },
+        "anchorId": { "type": ["string", "null"], "minLength": 1 },
+        "keyId": { "type": ["string", "null"], "minLength": 1 },
+        "reasonCodes": { "$ref": "#/$defs/reasonCodes" }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "path", "sha256", "contentSha256", "reasonCodes"],
+      "properties": {
+        "status": { "enum": ["COMPLETE", "NOT_RUN", "BLOCKED"] },
+        "path": { "type": ["string", "null"], "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/nullableSha256" },
+        "contentSha256": { "$ref": "#/$defs/nullableSha256" },
+        "reasonCodes": { "$ref": "#/$defs/reasonCodes" }
+      }
+    },
+    "hashChain": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["ordinal", "role", "sha256"],
+        "properties": { "ordinal": { "type": "integer", "minimum": 1 }, "role": { "type": "string", "pattern": "^[A-Z0-9_]+$" }, "sha256": { "$ref": "#/$defs/sha256" } }
+      }
+    },
+    "qualification": {
+      "type": "object", "additionalProperties": false, "required": ["mandatoryMetricCount", "passedMetricCount", "physicsGates", "mutationGates", "determinismHashes"],
+      "properties": {
+        "mandatoryMetricCount": { "type": "integer", "minimum": 0 }, "passedMetricCount": { "type": "integer", "minimum": 0 },
+        "physicsGates": {
+          "type": "array", "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["gateId", "family", "mandatory", "value", "unit", "limit", "comparison", "status", "reasonCodes"],
+            "properties": {
+              "gateId": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" }, "family": { "type": "string", "pattern": "^[A-Z0-9_-]+$" },
+              "mandatory": { "type": "boolean" }, "value": { "type": ["number", "string", "boolean", "null"] }, "unit": { "type": ["string", "null"] },
+              "limit": { "type": ["number", "string", "boolean", "null"] }, "comparison": { "enum": ["LE", "LT", "GE", "GT", "EQ", "BOOLEAN"] },
+              "status": { "enum": ["PASS", "FAIL", "BLOCKED", "NOT_APPLICABLE"] }, "reasonCodes": { "$ref": "#/$defs/reasonCodes" }
+            }
+          }
+        },
+        "mutationGates": {
+          "type": "array", "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["mutationId", "mandatory", "status", "observedChange", "minimumChange", "reasonCodes"],
+            "properties": {
+              "mutationId": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" }, "mandatory": { "type": "boolean" },
+              "status": { "enum": ["KILLED", "SURVIVED", "BLOCKED", "NOT_APPLICABLE"] }, "observedChange": { "type": ["number", "null"] },
+              "minimumChange": { "type": ["number", "null"] }, "reasonCodes": { "$ref": "#/$defs/reasonCodes" }
+            }
+          }
+        },
+        "determinismHashes": { "type": "array", "items": { "$ref": "#/$defs/sha256" } }
+      }
+    },
+    "captures": {
+      "type": "object", "additionalProperties": false, "required": ["status", "captureIndexPath", "captureIndexHash", "contentSha256", "reasonCodes"],
+      "properties": { "status": { "enum": ["COMPLETE", "BLOCKED_UI"] }, "captureIndexPath": { "type": ["string", "null"], "minLength": 1 }, "captureIndexHash": { "$ref": "#/$defs/nullableSha256" }, "contentSha256": { "$ref": "#/$defs/nullableSha256" }, "reasonCodes": { "$ref": "#/$defs/reasonCodes" } }
+    },
+    "reasonCodes": { "$ref": "#/$defs/reasonCodes" },
+    "evidenceHash": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nullableSha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "binding": { "type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "$ref": "#/$defs/sha256" } } },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+  }
+}

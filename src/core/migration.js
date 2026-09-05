@@ -16,6 +16,7 @@ import { normalizeSourceRegistry } from './sourceRegistry.js';
 import { stableStringify } from './stableHash.js';
 import { normalizeNonlinearRegistries } from './nonlinearSchema.js';
 import { defaultNonlinearEngineId } from '../nonlinear/capabilities.js';
+import { normalizeFoundationProperties } from './foundationSchema.js';
 
 const LEGACY_NORMALIZATION_CUTOFF = 4;
 
@@ -43,7 +44,7 @@ export function migrateModel(inputModel) {
     error.supportedSchemaVersion = SCHEMA_VERSION;
     throw error;
   }
-  if (originalVersion === 4) return migrateV4ToV5(source);
+  if (originalVersion === 4) return migrateV4ToV6(source);
   const migrations = [];
   const base = createModel();
   const units = normalizeUnits(source.units);
@@ -60,6 +61,7 @@ export function migrateModel(inputModel) {
     migrations.push({ from: 'missing', to: 'analysisCriteria', note: 'Created analysis criteria registry settings.' });
   }
   if (!Array.isArray(source.massSources)) migrations.push({ from: 'missing', to: 'massSources', note: 'Created empty mass-source collection.' });
+  if (!Array.isArray(source.foundationProperties)) migrations.push({ from: 'missing', to: 'foundationProperties', note: 'Created empty distributed-foundation property collection.' });
   if (!Array.isArray(source.sourceRegistry)) migrations.push({ from: 'missing', to: 'sourceRegistry', note: 'Created source registry.' });
   if (!source.designBasis) migrations.push({ from: 'missing', to: 'designBasis', note: 'Created unconfigured design-basis contract.' });
   if (!source.projectSetup) migrations.push({ from: 'missing', to: 'projectSetup', note: 'Marked legacy project setup for review.' });
@@ -78,6 +80,8 @@ export function migrateModel(inputModel) {
       : base.sections,
     nodes: Array.isArray(source.nodes) ? source.nodes.map((node) => ({ ...node, z: Number(node.z || 0) })) : [],
     members: Array.isArray(source.members) ? source.members.map(normalizeMember) : [],
+    links: Array.isArray(source.links) ? source.links.map((item) => clone(item)) : [],
+    foundationProperties: normalizeFoundationProperties(source.foundationProperties),
     loads: Array.isArray(source.loads) ? source.loads.map((load) => ({ ...load })) : [],
     stories: Array.isArray(source.stories) ? source.stories.map((story) => ({ ...story })) : [],
     diaphragms: normalizeDiaphragms(source.diaphragms),
@@ -132,7 +136,11 @@ export function migrateToV5(inputModel) {
   return migrateModel(inputModel).model;
 }
 
-function migrateV4ToV5(source) {
+export function migrateToV6(inputModel) {
+  return migrateModel(inputModel).model;
+}
+
+function migrateV4ToV6(source) {
   const migrations = [];
   const registries = normalizeNonlinearRegistries(source);
   for (const [key, value] of Object.entries(registries)) {
@@ -144,6 +152,7 @@ function migrateV4ToV5(source) {
   const model = {
     ...source,
     schemaVersion: SCHEMA_VERSION,
+    foundationProperties: normalizeFoundationProperties(source.foundationProperties),
     ...(Array.isArray(source.constraints) ? { constraints: source.constraints.map((item) => clone(item)) } : {}),
     ...registries,
     analysisSettings: normalizeMigratedAnalysisSettings(source.analysisSettings),
@@ -152,7 +161,7 @@ function migrateV4ToV5(source) {
   migrations.push({
     from: 4,
     to: SCHEMA_VERSION,
-    note: 'Added Phase 8 registries and explicit legacy nonlinear engine identities without re-normalizing v4 model data.',
+    note: 'Added Phase 8 registries, explicit legacy nonlinear engine identities, and the Phase 14 foundation property collection without re-normalizing v4 model data.',
   });
   return {
     model,

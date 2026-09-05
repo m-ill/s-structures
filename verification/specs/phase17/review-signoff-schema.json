@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/review-signoff-schema.json",
+  "title": "Phase 17 case review signoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "status", "releaseAllowed", "reviewerApprovals", "approvedArtifactHashes", "reasonCodes"],
+  "properties": {
+    "schemaVersion": { "const": "p17-review-signoff-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "status": { "enum": ["NOT_STARTED", "IN_REVIEW", "APPROVED", "REJECTED"] },
+    "releaseAllowed": { "type": "boolean" },
+    "runId": { "type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{5,127}$" },
+    "terminalStatus": { "enum": ["NOT_STARTED", "PASS", "FAIL", "BLOCKED_SOURCE", "BLOCKED_REFERENCE", "BLOCKED_ENGINE", "BLOCKED_ENGINE_API", "BLOCKED_MODEL_EQUIVALENCE", "BLOCKED_QUALIFICATION", "CROSS_CHECK_ONLY", "INVALIDATED"] },
+    "reviewerApprovals": {
+      "type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["role", "assignment", "status", "approvalHash"],
+        "properties": { "role": { "enum": ["owner", "modelReviewer", "referenceReviewer", "numericalReviewer", "releaseReviewer"] }, "assignment": { "type": "string", "minLength": 1 }, "status": { "enum": ["NOT_STARTED", "ASSIGNED", "APPROVED", "REJECTED"] }, "approvalHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" } }
+      }
+    },
+    "approvedArtifactHashes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+    "approvedArtifacts": {
+      "type": "array", "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["role", "path", "sha256"],
+        "properties": {
+          "role": { "enum": ["SOURCE_MANIFEST", "CANONICAL_INPUT", "SSTRUCTURES_INPUT", "MODEL_EQUIVALENCE", "REFERENCE_MANIFEST", "EXPECTED_VALUES", "TOLERANCE_MANIFEST", "PROBE_MANIFEST", "PRODUCT_BUILD", "RUN_RECORD", "COMPARISON", "CASE_EVIDENCE", "CAPTURE_INDEX", "REPORT_MANIFEST", "REPORT_MARKDOWN", "REPORT_PDF"] },
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "signoffHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+  }
+}

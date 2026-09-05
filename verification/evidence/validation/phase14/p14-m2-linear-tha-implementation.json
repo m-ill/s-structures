@@ -1,0 +1,119 @@
+{
+  "version": "p14-m2-linear-tha-implementation-evidence-v1",
+  "phase": "Phase 14",
+  "milestone": "P14-M2",
+  "status": "INTERNALLY_VERIFIED",
+  "generatedAt": "2026-08-27T05:57:34.418Z",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "buildHash": "4b7c5fe8f47a181f5c1a9017c08cb8601ec96df325e006902efb40d5bd1b4f92",
+  "benchmarkExecutionStarted": false,
+  "externalSolverRuntimeDependency": false,
+  "capabilityState": "internally-verified",
+  "independentQualification": "NOT_RUN",
+  "crossSolverComparison": "NOT_RUN",
+  "releaseAllowed": false,
+  "designTransferAllowed": false,
+  "productionFiles": [
+    "src/dynamics/groundMotionSeries.js",
+    "src/dynamics/modalDamping.js",
+    "src/dynamics/dynamicCondensation.js",
+    "src/dynamics/linearDirectIntegration.js",
+    "src/dynamics/modal.js",
+    "src/compute/product/analysisCaseEngine.js",
+    "src/ui/analysisRunners.js",
+    "src/report/linearThaReport.js",
+    "tools/sstructures-linear-tha.mjs"
+  ],
+  "testCommands": [
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tools/run-phase14-tests.mjs",
+      "M2"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p10-m7-dynamics-extension.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p3-m13-loads-dynamics.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p7-m10-buckling-tha-integrity.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/m34-detailed-report.mjs"
+    ]
+  ],
+  "verificationRecords": [
+    {
+      "id": "P14-THA-01",
+      "status": "PASS",
+      "note": "canonical ground-motion validation, sign convention and linear resampling"
+    },
+    {
+      "id": "P14-THA-02",
+      "status": "PASS",
+      "note": "Newmark average-acceleration SDOF convergence and zero-response identity"
+    },
+    {
+      "id": "P14-THA-03",
+      "status": "PASS",
+      "note": "Rayleigh and exact modal damping matrix paths"
+    },
+    {
+      "id": "P14-THA-04",
+      "status": "PASS",
+      "note": "massless-DOF static condensation and full analysis-case integration"
+    },
+    {
+      "id": "P14-THA-05",
+      "status": "PASS",
+      "note": "checkpoint/restart parity and cancellation with zero partial publish"
+    },
+    {
+      "id": "P14-THA-06",
+      "status": "PASS",
+      "note": "factor resource disposal, energy trace, CLI and report contracts"
+    },
+    {
+      "id": "P14-TH1-01",
+      "status": "NOT_RUN",
+      "note": "NOT_RUN: benchmark execution is intentionally deferred until engine development is complete"
+    }
+  ],
+  "qualificationRecord": {
+    "version": "p14-m0-qualification-record-v1",
+    "capabilityId": "TH1",
+    "milestone": "P14-M2",
+    "implementationOwner": "linear-tha-modal-damping",
+    "runtimeOwner": "s-structures-in-house",
+    "implemented": true,
+    "internallyVerified": true,
+    "independentlyQualified": false,
+    "crossSolverCompared": false,
+    "releaseAllowed": false,
+    "designTransferAllowed": false,
+    "state": "internally-verified",
+    "crossSolverStatus": "NOT_RUN",
+    "hashes": {
+      "sourceHash": null,
+      "buildHash": "4b7c5fe8f47a181f5c1a9017c08cb8601ec96df325e006902efb40d5bd1b4f92",
+      "inputHash": null,
+      "referenceHash": null,
+      "toleranceHash": null,
+      "resultHash": null
+    },
+    "limitations": [
+      "Current production scope is linear direct Newmark average-acceleration with uniform resampling and Rayleigh or modal damping.",
+      "TH1 independent benchmark and MIDAS/STRIX cross-solver comparison have not been run."
+    ],
+    "invalidated": false,
+    "invalidationReasons": [],
+    "recordHash": "19161b566bb0aac0724490da8d91a8965d3531c688abaaa319ca534c7f6534da"
+  },
+  "releaseManifestHash": "c71a28a58d1c19f7a6413326cfab46e34c97517a54610b5f059e62dc1affccf4",
+  "artifactHash": "e0eee814e502f9088739072e9dd01d8f3622bebacb3cc827eea2f90c36317d26"
+}

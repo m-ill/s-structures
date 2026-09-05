@@ -21,8 +21,8 @@ export function buildPhase3DrawingImportValidationReview(input = {}) {
     tickets: ['P3-T26', 'P3-T27', 'P3-T28', 'P3-T29', 'P3-T30', 'P3-T31', 'P3-T32', 'P3-T33', 'P3-T34', 'P3-T35'],
     sourceDocs: [
       'docs/phase3/IMPORT_DXF_DWG_PLAN.md',
-      'docs/verification/P3_M6_IMPORT_VERIFICATION.md',
-      'docs/verification/P3_M7_IMPORT_REVIEW_VERIFICATION.md',
+      'verification/specs/P3_M6_IMPORT_VERIFICATION.md',
+      'verification/specs/P3_M7_IMPORT_REVIEW_VERIFICATION.md',
     ],
     summary: {
       ok: missing.length === 0,

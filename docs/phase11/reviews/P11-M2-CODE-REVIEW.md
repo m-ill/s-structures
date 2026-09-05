@@ -11,7 +11,7 @@ release_qualification: BLOCKED
 release_qualified: false
 critical_findings_open: 0
 high_findings_open: 0
-evidence_artifact: reports/validation-evidence/phase11/p11-m2-bilingual-rendering.json
+evidence_artifact: verification/evidence/validation/phase11/p11-m2-bilingual-rendering.json
 evidence_records: 19
 artifact_hash: 494b82c82f1b8a08f4729457e9a30c05cc920e1d4950fe35602191f3d2aad232
 ```

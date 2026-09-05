@@ -15,7 +15,7 @@ externally_cross_validated: false
 
 P10-M2의 Timoshenko 3D frame 강성, consistent fixed-end load, 전단 처짐 복원, release 응축,
 schema/migration 및 compute 전달 계약을 승인한다. 전용 Phase 10 M2 게이트와 evidence 계약은 PASS했고,
-[evidence](../../../reports/validation-evidence/phase10/p10-m2-timoshenko.json)는 8/8 records green,
+[evidence](../../../verification/evidence/validation/phase10/p10-m2-timoshenko.json)는 8/8 records green,
 artifact hash `cf570a5579da4a3093dedb8c`다. 이번 변경을 포함한 최종 통합 `npm.cmd test`도
 2026-07-21 KST 종료 코드 0으로 PASS했다.
 

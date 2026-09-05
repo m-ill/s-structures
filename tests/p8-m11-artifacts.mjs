@@ -9,8 +9,8 @@ import {
   validatePhase8ReleaseManifest,
 } from '../src/index.js';
 
-const evidenceRoot = new URL('../reports/validation-evidence/phase8/', import.meta.url);
-const verificationRoot = new URL('../docs/verification/phase8/', import.meta.url);
+const evidenceRoot = new URL('../verification/evidence/validation/phase8/', import.meta.url);
+const verificationRoot = new URL('../verification/specs/phase8/', import.meta.url);
 const independent = await json(new URL('p8-m11-independent-reference.json', evidenceRoot));
 const performance = await json(new URL('performance/p8-m11-reference-measurement.json', evidenceRoot));
 const pilotSummary = await json(new URL('pilots/p8-m11-pilot-summary.json', evidenceRoot));

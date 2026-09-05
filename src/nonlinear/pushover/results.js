@@ -174,6 +174,7 @@ export function buildProductionPushoverResult(input = {}) {
       acceptedStepCount: input.controlResult?.acceptedStepCount || 0,
       rejectedStepCount: input.controlResult?.rejectedStepCount || 0,
       rejectedSteps: clone(input.controlResult?.rejectedSteps || []),
+      strategy: input.options?.controlStrategy || 'displacement',
     },
     arcLength: input.arcLengthResult ? {
       version: input.arcLengthResult.version,
@@ -317,6 +318,7 @@ function classifyTermination(controlResult = {}, events = [], options = {}) {
   if (explicit === 'MECHANISM_DETECTED' || mechanism) return termination('MECHANISM_DETECTED', 'mechanism', true, 'Plastic mechanism criterion was reached.');
   if (explicit === 'POST_PEAK_THRESHOLD' || postPeak) return termination('POST_PEAK_THRESHOLD', 'post-peak', true, 'Post-peak strength threshold was reached.');
   if (explicit === 'TARGET_REACHED') return termination('TARGET_REACHED', 'target', true, 'Requested control displacement was reached.');
+  if (explicit === 'LOAD_TARGET_REACHED') return termination('LOAD_TARGET_REACHED', 'target', true, 'Requested lateral load factor was reached.');
   if (explicit === 'ARC_LENGTH_STEPS_COMPLETED') return termination(explicit, 'arc-length', true, 'Requested arc-length continuation steps were completed.');
   if (explicit === 'ANALYSIS_CANCELLED') return termination(explicit, 'cancelled', false, 'Analysis was cancelled at a committed boundary.');
   if (/SINGULAR|INSTABILITY|NEGATIVE_PIVOT|MECHANISM/.test(explicit)) return termination(explicit, 'instability', false, 'The tangent path became unstable or singular.');
@@ -334,7 +336,7 @@ function buildArcLengthHandoff(input, termination, final) {
     version: PUSHOVER_ARC_LENGTH_HANDOFF_VERSION,
     eligible,
     status: consumed ? 'consumed' : eligible ? 'prepared' : 'not-required',
-    sourceControl: 'augmented-displacement-control',
+    sourceControl: input.options?.controlStrategy === 'load' ? 'load-control' : 'augmented-displacement-control',
     sourceStateHash: input.controlResult?.stateStore?.committedHash || null,
     sourceIncrement: buildSourceIncrement(input),
     sourceCheckpointHash: input.handoffCheckpoint?.integrityHash || null,

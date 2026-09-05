@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
-import { collectTestInventory } from './testInventory.mjs';
+import { collectTestInventory } from '../verification/harnesses/testInventory.mjs';
 
 const inventory = await collectTestInventory();
 let tests = inventory.records.filter((row) => row.classification === 'release-long');
@@ -16,7 +16,10 @@ if (process.argv.includes('--list')) {
 }
 for (const test of tests) {
   console.log(`\n[release-long] ${test.file}`);
-  await runNode(resolve('tests', test.file));
+  const testPath = test.file.startsWith('verification/tests/')
+    ? resolve(test.file)
+    : resolve('tests', test.file);
+  await runNode(testPath);
 }
 
 function runNode(file) {

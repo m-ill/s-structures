@@ -1,0 +1,24 @@
+{
+  "version": "p17-path-base-policy-v1",
+  "bases": {
+    "DCR_VAULT_ROOT": {
+      "logicalPrefix": "STRIX-verification-21/",
+      "usage": "External STRIX source-bundle files; resolve from the DCR vault root or P17_SOURCE_ROOT bundle root."
+    },
+    "REPOSITORY_ROOT": {
+      "logicalPrefixes": [
+        "verification/",
+        "docs/",
+        "output/",
+        "tests/",
+        "tools/"
+      ],
+      "usage": "S-Structures implementation, evidence, archive, documentation and deliverables."
+    }
+  },
+  "rules": [
+    "Never join a DCR_VAULT_ROOT locator directly to REPOSITORY_ROOT.",
+    "P17_SOURCE_ROOT may relocate the physical bundle but must preserve the logical STRIX-verification-21 prefix in evidence.",
+    "All report and evidence artifact paths are REPOSITORY_ROOT-relative."
+  ]
+}

@@ -31,3 +31,8 @@ export {
   buildFixedDofs,
   collectPrescribedDofs,
 } from './supportConstraints.js';
+export {
+  RIGID_MODE_GAUGE_VERSION,
+  resolveUnloadedRigidRotationGauges,
+  translationFreeRigidRotationComponents,
+} from './rigidModeGauge.js';

@@ -3,6 +3,7 @@ import { buildDiaphragmDofMap } from '../solver/diaphragmDofMap.js';
 import { reducedFixedDofs } from '../solver/diaphragmFixedDofs.js';
 import { reduceSystem } from '../solver/diaphragmReduce.js';
 import { buildConstraintSystem, reduceConstraintMatrix } from '../solver/domain/constraintSystem.js';
+import { buildDiaphragmMassAudit } from './mass6dof.js';
 
 export const MODAL_DIAPHRAGM_VERSION = 'p7-modal-rigid-diaphragm-v1';
 
@@ -16,6 +17,7 @@ export function buildModalConstraintDomain(model, system, mass) {
       groups: [],
       system,
       massMatrix: null,
+      massAudit: null,
       expandVector: (vector) => vector.slice(),
       summary: {
         version: MODAL_DIAPHRAGM_VERSION,
@@ -52,6 +54,8 @@ export function buildModalConstraintDomain(model, system, mass) {
       ncols: contract.reducedDofCount,
       columnKeys: contract.reducedDofs.map((row) => row.key),
     };
+    const massMatrix = reduceDiagonalMass(mass, map);
+    const massAudit = buildDiaphragmMassAudit({ nodes: model.nodes || [], groups, mass, map, reducedMass: massMatrix });
     return {
       version: MODAL_DIAPHRAGM_VERSION,
       applied: true,
@@ -59,7 +63,8 @@ export function buildModalConstraintDomain(model, system, mass) {
       map,
       constraintContract: contract,
       system: { ...system, K, free, fixedDofs, ndof: contract.reducedDofCount, diaphragmMap: map },
-      massMatrix: reduceDiagonalMass(mass, map),
+      massMatrix,
+      massAudit,
       expandVector: (vector) => map.rows.map((row) => row.reduce(
         (sum, [column, coefficient]) => sum + coefficient * (vector[column] || 0),
         0,
@@ -77,6 +82,8 @@ export function buildModalConstraintDomain(model, system, mass) {
         reducedDofCount: contract.reducedDofCount,
         freeDofCount: free.length,
         massReduction: 'transpose(T)-M-T',
+        massAuditHash: massAudit.auditHash,
+        massConservationPassed: massAudit.passed,
         stiffnessReduction: 'transpose(T)-K-T',
       },
     };
@@ -99,13 +106,16 @@ export function buildModalConstraintDomain(model, system, mass) {
     diaphragmMap: map,
   };
 
+  const massMatrix = reduceDiagonalMass(mass, map);
+  const massAudit = buildDiaphragmMassAudit({ nodes: model.nodes || [], groups, mass, map, reducedMass: massMatrix });
   return {
     version: MODAL_DIAPHRAGM_VERSION,
     applied: true,
     groups,
     map,
     system: reducedSystem,
-    massMatrix: reduceDiagonalMass(mass, map),
+    massMatrix,
+    massAudit,
     expandVector: (vector) => map.rows.map((row) => row.reduce(
       (sum, [column, coefficient]) => sum + coefficient * (vector[column] || 0),
       0,
@@ -121,6 +131,8 @@ export function buildModalConstraintDomain(model, system, mass) {
       reducedDofCount: map.ncols,
       freeDofCount: free.length,
       massReduction: 'transpose(T)-M-T',
+      massAuditHash: massAudit.auditHash,
+      massConservationPassed: massAudit.passed,
       stiffnessReduction: 'transpose(T)-K-T',
     },
   };

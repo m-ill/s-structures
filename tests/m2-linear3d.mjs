@@ -81,6 +81,9 @@ runCase('vertical axial column', createVerticalAxialColumn(), (result, expected)
 });
 
 runCase('simple beam UDL pin-roller', createSimpleBeamUdl(), (result, expected) => {
+  assert.equal(result.solver.rigidModeGauges.length, 1, 'simple beam should expose one massless torsion gauge');
+  assert.deepEqual(result.solver.rigidModeGauges[0].gaugeLabels, ['N1.rx']);
+  assert.equal(result.solver.rigidModeGauges[0].artificialStiffnessAdded, false);
   close(result.reactions.N1.rz, expected.endReactionZ, EPS.force, 'simple beam left Rz');
   close(result.reactions.N2.rz, expected.endReactionZ, EPS.force, 'simple beam right Rz');
   close(result.summary.totalLoad[2], expected.totalLoadZ, EPS.force, 'simple beam total load Z');
@@ -139,11 +142,30 @@ runCase('released simple beam UDL', createReleasedSimpleBeamUdl(), (result, expe
 const mechanism = analyzeModel(createMechanismPinnedCantilever().model);
 assert.equal(mechanism.ok, false, 'pinned cantilever mechanism should fail analysis');
 assert.ok(
-  mechanism.validation.errors.some((error) => ['SINGULAR', 'UNBOUNDED_DISPLACEMENT'].includes(error.code)),
+  mechanism.validation.errors.some((error) => ['MECHANISM_DOF', 'SINGULAR', 'UNBOUNDED_DISPLACEMENT'].includes(error.code)),
   'mechanism should preserve the component stability failure reason',
 );
 assert.equal(mechanism.byCombo.D_ONLY.ok, false, 'mechanism combo should be marked failed');
 assert.equal(mechanism.byCombo.D_ONLY.reason, 'NO_SOLVED_COMPONENT');
+
+const unloadedSwayFixture = createMechanismPinnedCantilever();
+unloadedSwayFixture.model.loads = [];
+const unloadedSway = analyzeModel(unloadedSwayFixture.model);
+assert.equal(unloadedSway.ok, false, 'translation-bearing unloaded rigid rotation must remain a mechanism');
+assert.ok(unloadedSway.validation.errors.some((error) => error.code === 'MECHANISM_DOF'));
+
+const loadedTorsionFixture = createSimpleBeamUdl();
+loadedTorsionFixture.model.loads.push({
+  id: 'TORSION',
+  type: 'nmoment',
+  node: 'N2',
+  M: 1,
+  axis: 'x',
+  case: 'D',
+});
+const loadedTorsion = analyzeModel(loadedTorsionFixture.model);
+assert.equal(loadedTorsion.ok, false, 'loaded uniform torsion must not be gauge-fixed');
+assert.ok(loadedTorsion.validation.errors.some((error) => error.code === 'MECHANISM_DOF'));
 
 const invalidReferences = createSimpleBeamUdl();
 invalidReferences.model.analysisSettings = {
@@ -200,6 +222,8 @@ console.log(JSON.stringify({
     'triangular loads',
     'member releases',
     'mechanism diagnostics',
+    'unloaded sway fail-closed',
+    'loaded torsion fail-closed',
     'invalid reference guards',
   ],
 }, null, 2));

@@ -10,7 +10,7 @@ mission: Phase 7 모델링·탄성해석과 동일한 analysis domain 위에서 
 governing_plan: docs/phase8/MILESTONE_EXECUTION_PLAN.md
 ```
 
-> P8-M0~P8-M11의 구현은 완료되었다. M11은 실제 WASM 계측, 병렬 결정성, 5개 production pilot, 수치비교 계약과 release manifest를 추가했다. 다만 외부 독립비교, pilot 승인, M-tier 전체해석과 브라우저 latency가 없어 현재 릴리스는 `candidate`, 설계전달은 차단된다. 실제 판정은 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)와 [release manifest](../verification/phase8/release-manifest.json)를 기준으로 한다.
+> P8-M0~P8-M11의 구현은 완료되었다. M11은 실제 WASM 계측, 병렬 결정성, 5개 production pilot, 수치비교 계약과 release manifest를 추가했다. 다만 외부 독립비교, pilot 승인, M-tier 전체해석과 브라우저 latency가 없어 현재 릴리스는 `candidate`, 설계전달은 차단된다. 실제 판정은 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)와 [release manifest](../../verification/specs/phase8/release-manifest.json)를 기준으로 한다.
 
 ## 1. 결론
 
@@ -138,7 +138,7 @@ Phase 8은 ETABS/MIDAS/OpenSees의 전체 기능 수를 복제하는 계획이 �
 8. [REQUIREMENTS_TRACEABILITY.md](REQUIREMENTS_TRACEABILITY.md) - 요구사항·마일스톤·코드·검증·증거 추적
 9. [REFERENCE_BASIS.md](REFERENCE_BASIS.md) - 공식 기준출처와 benchmark governance
 10. [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) - 실제 진행 상태와 증거 링크
-11. [QUALIFICATION_RELEASE.md](../verification/phase8/QUALIFICATION_RELEASE.md) - M11 실측, pilot, 현재 release blocker
+11. [QUALIFICATION_RELEASE.md](../../verification/specs/phase8/QUALIFICATION_RELEASE.md) - M11 실측, pilot, 현재 release blocker
 
 기존 [Phase 3 비선형 계획](../phase3/NONLINEAR_ENGINE_PLAN.md)은 역사적 목표와 preliminary trace의 배경 문서로 남긴다. Phase 8 착수 이후 비선형 구현 순서와 완료 판정은 이 디렉터리의 문서가 우선한다.
 

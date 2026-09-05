@@ -10,9 +10,9 @@ const required = [
   'docs/phase12/REQUIREMENTS_TRACEABILITY.md',
   'docs/phase12/IMPLEMENTATION_STATUS.md',
   'docs/phase12/adr/ADR-001-PUBLIC-PRIVATE-BOUNDARY.md',
-  'docs/verification/phase12/evidence-schema.json',
-  'docs/verification/phase12/release-manifest.json',
-  'reports/validation-evidence/phase12/p12-m0-baseline-governance.json',
+  'verification/specs/phase12/evidence-schema.json',
+  'verification/specs/phase12/release-manifest.json',
+  'verification/evidence/validation/phase12/p12-m0-baseline-governance.json',
 ];
 for (const path of required) assert.equal(existsSync(path), true, `missing ${path}`);
 
@@ -31,7 +31,7 @@ assert.equal(evidence.baselineExposure.syntheticOnly, true);
 assert.equal(evidence.baselineExposure.rawSensitiveBodiesStored, false);
 assert.deepEqual(evidence.verificationRecords.map((row) => row.status), Array(6).fill('PASS'));
 
-const release = JSON.parse(readFileSync('docs/verification/phase12/release-manifest.json', 'utf8'));
+const release = JSON.parse(readFileSync('verification/specs/phase12/release-manifest.json', 'utf8'));
 const phaseComplete = release.completedMilestones?.includes('P12-M7') === true;
 assert.equal(release.releaseQualified, phaseComplete);
 assert.equal(release.localPilotAllowed, phaseComplete);

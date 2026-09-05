@@ -1,13 +1,24 @@
 import { stableHash } from '../../core/stableHash.js';
 import { createCpuSparseBackend } from '../backends/cpuSparseBackend.js';
 import { createCscFromTriplets, denseToCsc, sparsePatternHash, sparseValueHash } from '../sparse/matrix.js';
-import { factorIncompleteCholesky, solveIccg } from '../sparse/iccg.js';
+import { createSpdSolvePolicy } from './spdSolvePolicy.js';
 
-export const ELASTIC_FACTOR_SESSION_VERSION = 'p9-m3-elastic-factor-session-v1';
+export const ELASTIC_FACTOR_SESSION_VERSION = 'p15-m2-elastic-factor-session-v2';
 
 export function createElasticFactorSession(options = {}) {
   const backend = options.backend || createCpuSparseBackend({ maxBytes: options.maxBytes });
   const iccgThreshold = Math.max(1, Number(options.iccgThreshold ?? 512));
+  const spdPolicy = createSpdSolvePolicy({
+    backend,
+    iccgThreshold,
+    tolerance: options.iccgTolerance,
+    maxIterations: options.iccgMaxIterations,
+    trueResidualTolerance: options.trueResidualTolerance,
+    scaling: options.scaling,
+    fallback: options.fallback,
+    symmetryTolerance: options.symmetryTolerance,
+    pivotTolerance: options.pivotTolerance,
+  });
   const factors = new Map();
   const seenGroupKeys = new Set();
   const seenFactorUnitKeys = new Set();
@@ -32,23 +43,59 @@ export function createElasticFactorSession(options = {}) {
     const valueHash = sparseValueHash(matrix);
     const groupKey = requiredText(solveOptions.groupKey, 'groupKey');
     const componentKey = requiredText(solveOptions.componentKey, 'componentKey');
-    const key = stableHash({ groupKey, componentKey, patternHash, valueHash });
+    const matrixClass = String(solveOptions.matrixClass || 'spd').toLowerCase();
+    const policyIdentity = matrixClass === 'spd' ? {
+      scaling: solveOptions.scaling ?? options.scaling ?? 'diagonal',
+      fallback: solveOptions.fallback ?? options.fallback ?? 'sparse-direct',
+      iccgThreshold: solveOptions.iccgThreshold ?? iccgThreshold,
+      preferIterative: solveOptions.preferIterative !== false,
+      symmetryTolerance: solveOptions.symmetryTolerance ?? options.symmetryTolerance ?? 1e-12,
+      iccgBreakdownTolerance: solveOptions.iccgBreakdownTolerance ?? options.iccgBreakdownTolerance ?? null,
+      pivotTolerance: solveOptions.pivotTolerance ?? options.pivotTolerance ?? null,
+    } : null;
+    const key = stableHash({ groupKey, componentKey, patternHash, valueHash, matrixClass, policyIdentity });
     let row = factors.get(key);
     const factorReused = !!row;
     if (!row) {
-      if (matrix.rowCount >= iccgThreshold && (solveOptions.matrixClass || 'spd') === 'spd') {
-        const factor = factorIncompleteCholesky(matrix, { signal: solveOptions.signal });
-        if (!factor.ok) return factor;
-        row = { key, groupKey, componentKey, matrix, mode: 'iccg', factor, rhsCount: 0, patternHash, valueHash };
-        iterativeAllocatedBytes += factor.estimatedBytes;
+      if (matrixClass === 'spd') {
+        const prepared = spdPolicy.prepare(matrix, {
+          ...policyIdentity,
+          signal: solveOptions.signal,
+        });
+        if (!prepared.ok) return sessionResult(prepared, matrixInput, groupKey, componentKey, false, 0);
+        row = {
+          key,
+          groupKey,
+          componentKey,
+          matrix,
+          matrixClass,
+          kind: 'spd-policy',
+          prepared: prepared.prepared,
+          rhsCount: 0,
+          patternHash,
+          valueHash,
+        };
+        const iterativeBytes = Number(prepared.prepared.iccgFactor?.estimatedBytes || 0);
+        iterativeAllocatedBytes += iterativeBytes;
         iterativePeakBytes = Math.max(iterativePeakBytes, iterativeAllocatedBytes);
       } else {
         const prepared = backend.createFactor(matrix, {
-          matrixClass: solveOptions.matrixClass || 'spd',
+          matrixClass,
           signal: solveOptions.signal,
         });
-        if (!prepared.ok) return prepared;
-        row = { key, groupKey, componentKey, matrix, mode: 'direct', handle: prepared.handle, rhsCount: 0, patternHash, valueHash };
+        if (!prepared.ok) return sessionResult(prepared, matrixInput, groupKey, componentKey, false, 0);
+        row = {
+          key,
+          groupKey,
+          componentKey,
+          matrix,
+          matrixClass,
+          kind: 'direct',
+          handle: prepared.handle,
+          rhsCount: 0,
+          patternHash,
+          valueHash,
+        };
       }
       factors.set(key, row);
       seenGroupKeys.add(groupKey);
@@ -57,37 +104,20 @@ export function createElasticFactorSession(options = {}) {
     } else {
       reusedSolveCount += 1;
     }
-    const result = row.mode === 'iccg'
-      ? solveIccg(row.factor, rhs, {
+    const result = row.kind === 'spd-policy'
+      ? spdPolicy.solvePrepared(row.prepared, rhs, {
           signal: solveOptions.signal,
           tolerance: solveOptions.tolerance ?? options.iccgTolerance ?? 1e-9,
+          trueResidualTolerance: solveOptions.trueResidualTolerance ?? options.trueResidualTolerance,
           maxIterations: solveOptions.maxIterations ?? options.iccgMaxIterations,
+          curvatureTolerance: solveOptions.curvatureTolerance ?? options.curvatureTolerance,
+          symmetryTolerance: solveOptions.symmetryTolerance ?? options.symmetryTolerance,
+          pivotTolerance: solveOptions.pivotTolerance ?? options.pivotTolerance,
         })
       : backend.solveFactor(row.handle, rhs, { signal: solveOptions.signal });
     solveCount += 1;
     row.rhsCount += 1;
-    return {
-      ...result,
-      diagnostics: {
-        ...(result.diagnostics || {}),
-        version: ELASTIC_FACTOR_SESSION_VERSION,
-        method: row.mode === 'iccg' ? 'p9-common-sparse-iccg-session' : 'p9-common-sparse-factor-session',
-        sparseAttempted: true,
-        inputStorage: matrixInput?.format === 'csc' ? 'csc' : 'dense',
-        matrixStorage: 'csc',
-        factorStorage: row.mode === 'iccg'
-          ? row.factor.factorStorage
-          : row.handle.matrixClass === 'spd' ? 'sparse-row-column-maps' : 'sparse-row-map-lu',
-        fallback: false,
-        fallbackSucceeded: false,
-        denseConversionCount: 0,
-        factorReused,
-        factorKey: groupKey,
-        componentKey,
-        rhsIndex: row.rhsCount - 1,
-        rhsCount: row.rhsCount,
-      },
-    };
+    return sessionResult(result, matrixInput, groupKey, componentKey, factorReused, row.rhsCount);
   }
 
   function snapshot() {
@@ -95,7 +125,8 @@ export function createElasticFactorSession(options = {}) {
       groupKey: row.groupKey,
       componentKey: row.componentKey,
       rhsCount: row.rhsCount,
-      mode: row.mode,
+      mode: row.kind === 'spd-policy' ? row.prepared.mode : 'direct',
+      matrixClass: row.matrixClass,
       patternHash: row.patternHash,
       valueHash: row.valueHash,
     }));
@@ -117,10 +148,12 @@ export function createElasticFactorSession(options = {}) {
   function dispose() {
     if (disposed) return snapshot();
     for (const row of factors.values()) {
-      if (row.mode === 'direct') backend.releaseFactor(row.handle);
+      if (row.kind === 'spd-policy') spdPolicy.release(row.prepared);
+      else backend.releaseFactor(row.handle);
     }
     factors.clear();
     iterativeAllocatedBytes = 0;
+    spdPolicy.dispose();
     backend.dispose();
     disposed = true;
     return snapshot();
@@ -128,6 +161,8 @@ export function createElasticFactorSession(options = {}) {
 
   function backendSnapshot() {
     const state = backend.snapshot();
+    const policyState = spdPolicy.snapshot();
+    const { backend: _policyBackend, ...policy } = policyState;
     return Object.freeze({
       ...state,
       iterativeMethod: 'incomplete-cholesky-zero-fill-pcg',
@@ -135,7 +170,36 @@ export function createElasticFactorSession(options = {}) {
       iterativePeakBytes,
       peakBytes: Number(state.peakBytes || 0) + iterativePeakBytes,
       allocationBalanced: disposed ? state.allocationBalanced === true && iterativeAllocatedBytes === 0 : null,
+      spdPolicy: policy,
     });
+  }
+
+  function sessionResult(result, matrixInput, groupKey, componentKey, factorReused, rhsCount) {
+    const selectedMethod = result.diagnostics?.selectedMethod || null;
+    return {
+      ...result,
+      diagnostics: {
+        ...(result.diagnostics || {}),
+        version: ELASTIC_FACTOR_SESSION_VERSION,
+        method: result.diagnostics?.method || (selectedMethod === 'iccg'
+          ? 'scaled-ic0-pcg'
+          : 'sparse-factor-session'),
+        sparseAttempted: true,
+        inputStorage: matrixInput?.format === 'csc' ? 'csc' : 'dense',
+        matrixStorage: 'csc',
+        factorStorage: selectedMethod === 'iccg'
+          ? 'incomplete-cholesky-zero-fill'
+          : result.diagnostics?.factorStorage || 'sparse-row-column-maps',
+        fallback: result.diagnostics?.fallback === true,
+        fallbackSucceeded: result.diagnostics?.fallbackSucceeded === true,
+        denseConversionCount: 0,
+        factorReused,
+        factorKey: groupKey,
+        componentKey,
+        rhsIndex: Math.max(0, rhsCount - 1),
+        rhsCount,
+      },
+    };
   }
 }
 

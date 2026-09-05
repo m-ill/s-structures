@@ -7,15 +7,17 @@ import {
   PHASE8_REFERENCE_SOURCES,
   PHASE8_UX_PERFORMANCE_BUDGET,
   PHASE8_WORKLOAD_FIXTURES,
-  P8_M0_GOVERNANCE_AUDIT_VERSION,
-  VERIFICATION_REGISTRY_VERSION,
   buildNonlinearProductScopeCatalog,
   phase8ReferenceSourceCanQualify,
+} from '../src/index.js';
+import {
+  P8_M0_GOVERNANCE_AUDIT_VERSION,
+  VERIFICATION_REGISTRY_VERSION,
   validatePhase8EvidenceArtifact,
   verificationRegistryManifest,
-} from '../src/index.js';
+} from '../verification/index.js';
 
-const profile = JSON.parse(await readFile(new URL('../reports/validation-evidence/phase8/p8-m0-reference-profile.json', import.meta.url), 'utf8'));
+const profile = JSON.parse(await readFile(new URL('../verification/evidence/validation/phase8/p8-m0-reference-profile.json', import.meta.url), 'utf8'));
 assert.equal(profile.version, PHASE8_REFERENCE_PROFILE_VERSION);
 assert.ok(profile.hardware.cpu);
 assert.ok(profile.hardware.logicalCores > 0);
@@ -47,7 +49,7 @@ assert.ok(PHASE8_REFERENCE_SOURCES.length >= 14);
 assert.ok(PHASE8_REFERENCE_SOURCES.every((item) => item.status === 'link-only'));
 assert.ok(PHASE8_REFERENCE_SOURCES.every((item) => phase8ReferenceSourceCanQualify(item) === false));
 
-const governance = JSON.parse(await readFile(new URL('../reports/validation-evidence/phase8/p8-m0-governance.json', import.meta.url), 'utf8'));
+const governance = JSON.parse(await readFile(new URL('../verification/evidence/validation/phase8/p8-m0-governance.json', import.meta.url), 'utf8'));
 const evidenceValidation = validatePhase8EvidenceArtifact(governance);
 assert.equal(evidenceValidation.ok, true, evidenceValidation.errors.join(', '));
 assert.deepEqual(governance.verificationIds, ['NL-GOV-01', 'NL-GOV-02', 'NL-GOV-03', 'NL-GOV-04', 'NL-GOV-05', 'NL-GOV-06']);

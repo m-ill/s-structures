@@ -10,13 +10,13 @@ owner-inputs: 외부 solver 기준해 (OpenSees/SAP2000/ETABS 실행 결과)
 
 ## 배경 (기존 자산)
 
-- P6-M3 검증 매트릭스·record 스키마, evidence artifact 체계(`reports/validation-evidence/`)가 이미 있다 — XV는 그 위의 **새 계층**이다.
+- P6-M3 검증 매트릭스·record 스키마, evidence artifact 체계(`verification/evidence/validation/`)가 이미 있다 — XV는 그 위의 **새 계층**이다.
 - 비선형 pilot 패키지(P8-M11 `nonlinear/qualification/pilotPackages.js`)의 "외부 입력물 수입" 패턴을 탄성으로 이식한다.
 - 병적 모델 진단 원천은 이미 존재: sparse 진단(pivot·기구 DOF), `validateModel`, `modeling/repair.js` — BM은 이를 **하나의 게이트 스위트**로 묶는 작업.
 
 ## 작업
 
-1. XV artifact 스키마(§11) 구현: `src/verification/xval/referenceArtifact.js` — 로드·검증(modelHash 결속·단위계·tolerance).
+1. XV artifact 스키마(§11) 구현: `verification/framework/xval/referenceArtifact.js` — 로드·검증(modelHash 결속·단위계·tolerance).
 2. XV 러너: 모델 실행 → 응답량 추출(path 규약) → e_rel 대조 → record 저장. async thenable은 차단하고,
    throwing `then` accessor·응답 getter 예외는 `XVAL_RESULT_EXTRACTION_FAILED`로 격리한다. validation 직후
    artifact snapshot을 고정해 executor의 사후 변조로 forged PASS가 생기는 TOCTOU를 차단한다.

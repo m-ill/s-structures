@@ -1,0 +1,85 @@
+{
+  "version": "p10-evidence-artifact-v1",
+  "suiteId": "P10-M4-OFFSETS-PANELZONE",
+  "milestone": "P10-M4",
+  "status": "OK",
+  "generatedAt": "2026-07-22T12:00:00.000+09:00",
+  "sourceRevision": "21ef4c6+p10-m4-worktree",
+  "test": "tests/p10-m4-offsets-panelzone.mjs",
+  "solverVersion": "p10-m4-member-offset-v1",
+  "results": {
+    "ok": true,
+    "version": "p10-m4-offsets-panelzone",
+    "metrics": {
+      "zeroRegressionError": 0,
+      "eccentricMomentError": 0,
+      "panelZoneEquivalenceError": 0,
+      "offsetEquilibriumResidual": 0
+    },
+    "panelZone": {
+      "stiffness": 304615384.6153847,
+      "source": "panelZone"
+    },
+    "tolerances": {
+      "zeroRegression": 1e-12,
+      "eccentricMoment": 1e-8,
+      "panelZoneEquivalence": 1e-9,
+      "offsetEquilibrium": 1e-10
+    },
+    "modelHashes": {
+      "zero": "9363cf9ad9e26804",
+      "eccentric": "2531a11add9ac041",
+      "panelZone": "bd168939e9630ffd",
+      "product": "c1e58a35f1565c87"
+    }
+  },
+  "records": [
+    {
+      "caseId": "EL-O01-ZERO-REGRESSION",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-12,
+      "modelHash": "9363cf9ad9e26804",
+      "solverVersion": "p10-m4-member-offset-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-O02-AXIAL-ECCENTRICITY",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-8,
+      "modelHash": "2531a11add9ac041",
+      "solverVersion": "p10-m4-member-offset-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-O03-PANEL-ZONE-EQUIVALENCE",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-9,
+      "modelHash": "bd168939e9630ffd",
+      "solverVersion": "p10-m4-member-offset-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "EL-O04-OFFSET-EQUILIBRIUM",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-10,
+      "modelHash": "c1e58a35f1565c87",
+      "solverVersion": "p10-m4-member-offset-v1",
+      "status": "OK"
+    }
+  ],
+  "qualification": {
+    "internalClosedFormStatus": "OK",
+    "externallyCrossValidated": false,
+    "releaseQualified": false,
+    "releaseGate": "P10-M11"
+  },
+  "artifactHash": "189c3520e73f6d785b42b8ed"
+}

@@ -115,7 +115,7 @@ Goal: 결과가 “나온다”와 “맞다”를 분리하는 자동 검증 �
 | M3-3 | dynamic/stability cases | `dynamicCases.js`, `stabilityCases.js` | D01~D06, S01~S05 등록 |
 | M3-4 | runner | `src/verification/matrix/runner.js` | tolerance 초과 시 fail |
 | M3-5 | CI test | `tests/p6-verification-matrix.mjs` | `npm test`에 통합 |
-| M3-6 | diff/report | `reports/validation-evidence/` | modelHash/solverVersion 변경 diff 산출 |
+| M3-6 | diff/report | `verification/evidence/validation/` | modelHash/solverVersion 변경 diff 산출 |
 
 Gate:
 

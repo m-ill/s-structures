@@ -5,6 +5,7 @@ import { runLinearSdofTha } from '../src/dynamics/elasticCompleteness.js';
 import { runLinearDirectTha } from '../src/dynamics/linearDirectIntegration.js';
 import { runAnalysisCase } from '../src/ui/analysisRunners.js';
 import { stableHash } from '../src/core/stableHash.js';
+import { ELASTIC_FACTOR_SESSION_VERSION } from '../src/compute/elastic/factorSession.js';
 
 const model = columnModel();
 const elastic = analyzeDynamics(model, { modalModeCount: 1, responseSpectrum: { enabled: false } });
@@ -85,6 +86,7 @@ const directTha = runLinearDirectTha({
 assert.equal(directTha.factorization.factorizationCount, 1);
 assert.equal(directTha.factorization.solveCount, accelerations.length - 1);
 assert.equal(directTha.factorization.reusedSolveCount, accelerations.length - 2);
+assert.equal(directTha.factorization.version, ELASTIC_FACTOR_SESSION_VERSION, 'direct THA must use the canonical factor-session owner');
 const directModalError = Math.max(...directTha.rows.map((row, index) => Math.abs(row.displacement[0] - modalTha.rows[index].displacement)));
 assert.ok(directModalError < 1e-6, `DY-05 direct/modal error ${directModalError}`);
 
@@ -100,11 +102,12 @@ const conservative = runLinearDirectTha({
 });
 assert.equal(conservative.energy.qualified, true);
 assert.ok(conservative.energy.maxRelativeError < 1e-8, `DY-06 energy error ${conservative.energy.maxRelativeError}`);
+assert.equal(conservative.factorization.version, ELASTIC_FACTOR_SESSION_VERSION, 'energy run must use the canonical factor-session owner');
 
 export const M7_VERIFICATION_SNAPSHOT = Object.freeze({
   ok: true,
   version: 'p10-m7-dynamics-extension-v1',
-  solverVersion: 'p10-m7-linear-direct-tha-v1',
+  solverVersion: 'p14-m2-linear-direct-tha-v2',
   metrics: {
     zeroPrestressRelativeError: relativeError(zeroPrestress.modes[0].period, elastic.modes[0].period),
     compressionPeriodIncrease: compressed.modes[0].period / elastic.modes[0].period - 1,

@@ -1,13 +1,9 @@
 import { stableHash } from './stableHash.js';
 import {
-  VERIFICATION_MATRIX_RECORD_VERSION,
-  modelHash,
-} from '../verification/matrix/record.js';
-import {
-  PHASE8_EVIDENCE_ARTIFACT_VERSION,
-  isTrustedVerificationAuditVersion,
-  validatePhase8EvidenceArtifact,
-} from '../verification/registry.js';
+  buildAnalysisEvidenceSubject,
+  validateAnalysisEvidenceAcceptance,
+} from './analysisEvidenceAcceptance.js';
+import { modelHash } from './modelHash.js';
 import { NONLINEAR_CASE_KINDS, getNonlinearCapability, isLegacyNonlinearEngine } from '../nonlinear/capabilities.js';
 import { NONLINEAR_RUN_RECORD_VERSION } from './nonlinearRunRecord.js';
 import { buildAnalysisDomainHashes } from './analysisDomainHashes.js';
@@ -153,7 +149,7 @@ function resultQualification(result, expectedModelHash, context = {}) {
   if (capability?.qualificationCeiling && capability.qualificationCeiling !== 'verified') {
     return capability.qualificationCeiling;
   }
-  if (hasTrustedVerificationEvidence(result, expectedModelHash, context)) return 'verified';
+  if (hasAcceptedAnalysisEvidence(result, expectedModelHash, context)) return 'verified';
   return 'candidate';
 }
 
@@ -164,53 +160,21 @@ function isPreliminary(result) {
     || result?.payload?.designBlocked === true;
 }
 
-function hasTrustedVerificationEvidence(result, expectedModelHash, context = {}) {
-  const evidence = result?.verificationEvidence || result?.resultEvidence?.verification || null;
-  if (!evidence || evidence.modelHash !== expectedModelHash) return false;
-  if (evidence.caseId && evidence.caseId !== context.caseId) return false;
-  if (isPhase8AnalysisEvidence(evidence)) {
-    if (evidence.qualificationImpact !== 'verified') return false;
-    if (evidence.caseId !== context.caseId) return false;
-    if (evidence.caseHash !== context.caseHash || evidence.domainHash !== context.domainHash) return false;
-    if (evidence.engineId !== context.engine?.id || evidence.engineVersion !== context.engine?.version) return false;
-    const artifact = evidence.artifact || evidence.audit;
-    if (!validatePhase8EvidenceArtifact(artifact).ok) return false;
-  }
-  return verifiedAudit(evidence.audit, expectedModelHash, context.caseId)
-    || verifiedRecords(evidence.records, expectedModelHash, context.caseId);
-}
-
-function verifiedAudit(audit, expectedModelHash, expectedCaseId) {
-  if (!audit || audit.ok !== true || audit.status !== 'PASS' || !isTrustedVerificationAuditVersion(audit.version)) return false;
-  return verifiedRecords(audit.rows, expectedModelHash, expectedCaseId);
-}
-
-function verifiedRecords(records, expectedModelHash, expectedCaseId) {
-  if (!Array.isArray(records) || records.length === 0) return false;
-  return records.every((record) => {
-    const error = Number(record?.relError);
-    const tolerance = Number(record?.tolerance);
-    return record?.status === 'OK'
-      && record?.version === VERIFICATION_MATRIX_RECORD_VERSION
-      && record?.caseId === expectedCaseId
-      && Boolean(record?.tier)
-      && Boolean(record?.name)
-      && record?.modelHash === expectedModelHash
-      && typeof record?.referenceSource === 'string'
-      && record.referenceSource.trim().length > 0
-      && typeof record?.solverVersion === 'string'
-      && record.solverVersion.trim().length > 0
-      && record.solverVersion !== 'unknown'
-      && Number.isFinite(error)
-      && error >= 0
-      && Number.isFinite(tolerance)
-      && tolerance > 0
-      && error <= tolerance;
+function hasAcceptedAnalysisEvidence(result, expectedModelHash, context = {}) {
+  const evidence = result?.analysisEvidence
+    || result?.verificationEvidence
+    || result?.resultEvidence?.analysis
+    || result?.resultEvidence?.verification
+    || null;
+  if (!evidence) return false;
+  const subject = buildAnalysisEvidenceSubject({
+    modelHash: expectedModelHash,
+    caseId: context.caseId,
+    caseHash: context.caseHash,
+    domainHash: context.domainHash,
+    engine: context.engine,
   });
-}
-
-function isPhase8AnalysisEvidence(evidence) {
-  return evidence?.artifact?.version === PHASE8_EVIDENCE_ARTIFACT_VERSION;
+  return validateAnalysisEvidenceAcceptance(evidence, subject).ok;
 }
 
 function currentModelHash(current) {

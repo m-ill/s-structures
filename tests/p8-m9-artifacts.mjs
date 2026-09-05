@@ -5,13 +5,15 @@ import {
   NONLINEAR_INTEGRATION_CAPABILITY_VERSION,
   NONLINEAR_INTEGRATION_GOVERNANCE_VERSION,
   NONLINEAR_SUPPORT_SPRING_VERSION,
+} from '../src/index.js';
+import {
   getPhase8VerificationSuite,
   validatePhase8EvidenceArtifact,
   verificationRegistryManifest,
-} from '../src/index.js';
+} from '../verification/index.js';
 
 const artifact = JSON.parse(await readFile(
-  new URL('../reports/validation-evidence/phase8/p8-m9-integration-recovery.json', import.meta.url),
+  new URL('../verification/evidence/validation/phase8/p8-m9-integration-recovery.json', import.meta.url),
   'utf8',
 ));
 const validation = validatePhase8EvidenceArtifact(artifact);
@@ -50,7 +52,7 @@ assert.match(adr, /active-set/i);
 assert.match(adr, /shell stress/i);
 assert.match(adr, /stale/i);
 const review = await readFile(
-  new URL('../reports/validation-evidence/phase8/p8-m9-code-review.md', import.meta.url),
+  new URL('../verification/evidence/validation/phase8/p8-m9-code-review.md', import.meta.url),
   'utf8',
 );
 assert.match(review, /P8-M9-INTEGRATION-RECOVERY/);

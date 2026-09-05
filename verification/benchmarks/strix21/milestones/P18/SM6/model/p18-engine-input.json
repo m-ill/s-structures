@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "p18-engine-input-snapshot-v1",
+  "caseId": "SM6",
+  "qualificationScope": "S-Structures production-engine input snapshot; not an assertion of full STRIX model equivalence",
+  "method": "production 3-D Timoshenko frame, 18 pipe elements, 14 explicit translational lumped masses",
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/solver/linear3dAssembly.js",
+    "src/solver/timoshenko.js"
+  ],
+  "input": {
+    "nodeCount": 18,
+    "memberCount": 18,
+    "massNodeCount": 14,
+    "geometryIn": {
+      "x": 27.25,
+      "y": 17.25,
+      "z": 18.625
+    },
+    "section": {
+      "outsideDiameterIn": 2.375,
+      "thicknessIn": 0.154,
+      "A": 1.0745315016779304,
+      "Iy": 0.6657470795452824,
+      "Iz": 0.6657470795452824,
+      "J": 1.331494159090565,
+      "Ay": 0.9670783515101374,
+      "Az": 0.9670783515101374
+    },
+    "topology": "four columns split at mid-height; long top beams split into thirds; short top beams split at midspan"
+  },
+  "publicSourceLimitations": [
+    "STRIX public package omits the exact intermediate-joint coordinate table used by its private 42-DOF reconstruction."
+  ],
+  "engineeringHash": "cabf3f30f60a83db068b9d6122524125e3f7fa68498d8fe911e823ced0364451"
+}

@@ -23,6 +23,7 @@ import {
 } from './projectSetup.js';
 import { normalizeSourceRegistry } from './sourceRegistry.js';
 import { defaultNonlinearRegistries, normalizeNonlinearRegistries } from './nonlinearSchema.js';
+import { normalizeFoundationProperties } from './foundationSchema.js';
 
 export function createModel(overrides = {}) {
   const units = normalizeUnits(overrides.units);
@@ -37,6 +38,7 @@ export function createModel(overrides = {}) {
     sections: clone(SECTIONS_CATALOG),
     nodes: [],
     members: [],
+    foundationProperties: [],
     loads: [],
     loadCases: defaultLoadCases(),
     loadCombinations: defaultLoadCombinations(),
@@ -54,11 +56,13 @@ export function createModel(overrides = {}) {
     units,
     unitSystem: normalizeUnitSystem(overrides.unitSystem, units),
     diaphragms: normalizeDiaphragms(overrides.diaphragms),
+    ...(Array.isArray(overrides.links) ? { links: clone(overrides.links) } : {}),
     ...(Array.isArray(overrides.constraints) ? { constraints: clone(overrides.constraints) } : {}),
     analysisCases: normalizeAnalysisCases(overrides.analysisCases || []),
     analysisSettings: createAnalysisSettings(overrides.analysisSettings),
     analysisCriteria: normalizeAnalysisCriteria(overrides.analysisCriteria || defaultAnalysisCriteria()),
     massSources: Array.isArray(overrides.massSources) ? clone(overrides.massSources) : [],
+    foundationProperties: normalizeFoundationProperties(overrides.foundationProperties),
     sourceRegistry: normalizeSourceRegistry(overrides.sourceRegistry),
     ...normalizeNonlinearRegistries(overrides),
     designBasis: normalizeDesignBasis(overrides.designBasis),

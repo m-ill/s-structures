@@ -783,7 +783,7 @@ function responseSpectrumSettingsForm(doc, settings = {}, model = {}) {
   form.appendChild(selectField(doc, 'ssRsaPrestressCombo', 'Prestress gravity combination', combinationOptions(model, true), settings.gravityCombinationId || ''));
   form.appendChild(numberField(doc, 'ssRsaModeCount', '모드 수', settings.modalModeCount ?? 12, { min: 1, max: 200, step: 1 }));
   form.appendChild(selectField(doc, 'ssRsaMassSource', '질량원', massSourceOptions(model), settings.massSource?.id || ''));
-  form.appendChild(selectField(doc, 'ssRsaMethod', '모드 조합', ['SRSS', 'CQC'], spectrum.method || 'SRSS'));
+  form.appendChild(selectField(doc, 'ssRsaMethod', '모드 조합', ['SRSS', 'CQC', 'ABS', 'NRC10'], spectrum.method || 'SRSS'));
   form.appendChild(selectField(doc, 'ssRsaDirections', '해석 방향', [
     { value: 'x,y', label: 'X + Y' },
     { value: 'x', label: 'X' },
@@ -814,6 +814,10 @@ function linearThaSettingsForm(doc, settings = {}, model = {}) {
   form.appendChild(numberField(doc, 'ssLthaModeCount', '모드 수', settings.modalModeCount ?? 12, { min: 1, max: 200, step: 1 }));
   form.appendChild(selectField(doc, 'ssLthaMassSource', '질량원', massSourceOptions(model), settings.massSource?.id || ''));
   form.appendChild(selectField(doc, 'ssLthaDirection', '방향', ['x', 'y', 'z'], settings.direction || 'x'));
+  form.appendChild(selectField(doc, 'ssLthaDampingType', '감쇠 모델', [
+    { value: 'rayleigh', label: 'Rayleigh (initial K)' },
+    { value: 'modal', label: 'Modal damping' },
+  ], settings.dampingType || 'rayleigh'));
   form.appendChild(numberField(doc, 'ssLthaDamping', '감쇠비', settings.dampingRatio ?? 0.05, { min: 0, max: 1, step: 0.01 }));
   form.appendChild(numberField(doc, 'ssLthaDt', '시간간격 dt', settings.dt ?? 0.02, { min: 0.00001, step: 0.001 }));
   form.appendChild(selectField(doc, 'ssLthaAccelerationUnit', '가속도 단위', ['g', 'm/s2', 'model'], settings.accelerationUnit || 'g'));
@@ -822,7 +826,7 @@ function linearThaSettingsForm(doc, settings = {}, model = {}) {
   form.appendChild(textAreaField(doc, 'ssLthaAccelerations', '가속도 기록', (settings.accelerations || []).join(', '), { rows: 4 }));
   const limitation = doc.createElement('div');
   limitation.className = 'ss-ac-note ss-analysis-method-note';
-  limitation.textContent = '선형 THA는 모드중첩 Newmark 예비 기능이며 현재 설계 전달 대상이 아닙니다.';
+  limitation.textContent = '선형 THA는 canonical 지진파·Newmark 평균가속도·Rayleigh/Modal 감쇠 경로를 제공하며, TH1 독립 자격 전에는 설계 전달이 차단됩니다.';
   form.appendChild(limitation);
   return form;
 }
@@ -1207,6 +1211,7 @@ function readLinearThaSettings(root, previous = {}, model = {}) {
     energyTol: nonNegativeNumber(root.querySelector?.('#ssLthaEnergyTol')?.value, previous.energyTol ?? 1e-8),
     massSource: readMassSource(root.querySelector?.('#ssLthaMassSource')?.value, model, previous.massSource),
     direction: root.querySelector?.('#ssLthaDirection')?.value || previous.direction || 'x',
+    dampingType: root.querySelector?.('#ssLthaDampingType')?.value === 'modal' ? 'modal' : 'rayleigh',
     dampingRatio: nonNegativeNumber(root.querySelector?.('#ssLthaDamping')?.value, previous.dampingRatio ?? 0.05),
     dt: positiveNumber(root.querySelector?.('#ssLthaDt')?.value, previous.dt ?? 0.02),
     accelerationUnit: root.querySelector?.('#ssLthaAccelerationUnit')?.value || previous.accelerationUnit || 'g',

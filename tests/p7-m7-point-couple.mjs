@@ -67,7 +67,7 @@ assert.equal(fixedSummary.equilibriumStatus, 'PASS');
 
 const simpleNodes = [
   { id: 'A', x: 0, y: 0, z: 0, support: 'pin' },
-  { id: 'B', x: L, y: 0, z: 0, support: 'roller' },
+  { id: 'B', x: L, y: 0, z: 0, support: 'custom', fix: [false, true, true, false, false, false] },
 ];
 const simple = solve(simpleNodes, members, loads);
 assert.equal(simple.ok, true, simple.reason);

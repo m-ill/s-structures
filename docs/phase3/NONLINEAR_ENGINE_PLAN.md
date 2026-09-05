@@ -119,7 +119,7 @@ M |     B____C
 
 ## Verification Benchmarks (P3-T53, T55, T56, T83~T85)
 
-benchmark gate(`src/verification/benchmarkGate*.js`)에 등록하고 tolerance로 게이트한다.
+제품 진단 gate(`src/diagnostics/benchmarkGate*.js`)와 독립 검증 framework에 등록하고 tolerance로 게이트한다.
 
 | # | Benchmark | 검증 대상 | 기준 | tolerance |
 | --- | --- | --- | --- | --- |

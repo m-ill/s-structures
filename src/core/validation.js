@@ -32,6 +32,8 @@ import { validatePanelZoneInput } from '../solver/panelZone.js';
 import { normalizeGeneralConstraints } from './constraintDefinitions.js';
 import { resolveMemberTaper } from '../solver/taperedMember.js';
 import { buildShellLocalFrame, q4GeometryQuality } from '../solver/shell/shellElementMath.js';
+import { validateFoundationModel } from './foundationSchema.js';
+import { validateNodeMass6Dof } from './massSchema.js';
 
 export function validateModel(model) {
   const errors = [];
@@ -67,14 +69,24 @@ export function validateModel(model) {
   const materialIds = knownIds(model.materials, MATERIALS);
   validateShells(model, nodeIds, materialIds, error);
   const memberIds = validateMembers(model, nodeIds, sectionIds, materialIds, error);
+  validateLinks(model, nodeIds, error);
   validateLoads(model, nodeIds, memberIds, error, warning);
+  const foundationValidation = validateFoundationModel(model);
+  for (const item of foundationValidation.errors) error(item.code, item.code, item.target);
   validateLoadCasesAndCombinations(model, error, warning);
   validatePhase7Contracts(model, error, warning);
   validateNonlinearRegistries(model).forEach((item) => error(ERROR_CODES[item.code] || item.code, item.message, item.target));
   validateAnalysisCases(model.analysisCases).forEach((item) => error(ERROR_CODES[item.code] || item.code, item.message, item.target));
 
-  if ((model.members || []).length && !(model.nodes || []).some((node) => node.support)) {
-    error(ERROR_CODES.NO_SUPPORT, 'Model has members but no support.', 'model');
+  const memberCount = (model.members || []).length;
+  const linkCount = (model.links || []).length;
+  if ((memberCount || linkCount) && !(model.nodes || []).some((node) => node.support)) {
+    const message = memberCount && !linkCount
+      ? 'Model has members but no support.'
+      : !memberCount && linkCount
+        ? 'Model has elastic links but no support.'
+        : 'Model has structural elements but no support.';
+    error(ERROR_CODES.NO_SUPPORT, message, 'model');
   }
 
   warnings.push(...validateAnalysisCriteria(model.analysisCriteria));
@@ -82,7 +94,7 @@ export function validateModel(model) {
 }
 
 function validateCollections(model, error) {
-  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'analysisCases', 'massSources', 'sourceRegistry', 'stories', 'diaphragms', ...NONLINEAR_REGISTRY_COLLECTIONS]) {
+  for (const key of ['nodes', 'members', 'loads', 'materials', 'sections', 'loadCases', 'loadCombinations', 'analysisCases', 'massSources', 'foundationProperties', 'sourceRegistry', 'stories', 'diaphragms', ...NONLINEAR_REGISTRY_COLLECTIONS]) {
     if (!Array.isArray(model[key])) {
       error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array.`, key);
     }
@@ -110,7 +122,7 @@ function validatePhase7Contracts(model, error, warning) {
 }
 
 function validateOptionalCollections(model, error) {
-  for (const key of ['shells', 'slabs', 'slabPanels']) {
+  for (const key of ['shells', 'slabs', 'slabPanels', 'links']) {
     if (model[key] != null && !Array.isArray(model[key])) {
       error(ERROR_CODES.BAD_COLLECTION, `${key} must be an array when provided.`, key);
     }
@@ -146,7 +158,10 @@ function validateBooleanSetting(holder, key, target, error) {
 function validateNodes(model, error, warning) {
   const nodeIds = new Set();
   const seenCoords = new Map();
-  const usedNodes = new Set((model.members || []).flatMap((member) => [member.n1, member.n2]));
+  const usedNodes = new Set([
+    ...(model.members || []).flatMap((member) => [member.n1, member.n2]),
+    ...(model.links || []).flatMap((link) => [link.n1, link.n2]),
+  ]);
 
   for (const node of model.nodes || []) {
     if (!node.id) error(ERROR_CODES.NODE_MISSING_ID, 'A node is missing id.', 'nodes');
@@ -156,6 +171,10 @@ function validateNodes(model, error, warning) {
     if (!isFiniteNumber(node.x) || !isFiniteNumber(node.y) || !isFiniteNumber(node.z ?? 0)) {
       error(ERROR_CODES.BAD_NODE_COORDS, 'Node coordinates must be finite numbers.', node.id || 'nodes');
       continue;
+    }
+    if (node.mass != null) {
+      const mass = validateNodeMass6Dof(node.mass, { label: `${node.id || 'node'}.mass` });
+      if (!mass.ok) error(ERROR_CODES.BAD_NODE_MASS, mass.message, node.id || 'nodes', { reasonCode: mass.code });
     }
 
     const key = `${Number(node.x).toFixed(6)},${Number(node.y).toFixed(6)},${Number(node.z || 0).toFixed(6)}`;
@@ -390,6 +409,38 @@ function validateMembers(model, nodeIds, sectionIds, materialIds, error) {
     validateMemberReleases(member, error);
   }
   return memberIds;
+}
+
+function validateLinks(model, nodeIds, error) {
+  const ids = new Set();
+  const propertyIds = new Set((model.linkProperties || []).map((item) => item?.id).filter(Boolean));
+  for (const link of model.links || []) {
+    const id = typeof link?.id === 'string' ? link.id.trim() : '';
+    if (!id) error('ELASTIC_LINK_ID_REQUIRED', 'Elastic link requires id.', 'links');
+    else if (ids.has(id)) error('ELASTIC_LINK_ID_DUPLICATE', `Duplicate elastic link id: ${id}.`, id);
+    ids.add(id);
+    if (!nodeIds.has(link?.n1) || !nodeIds.has(link?.n2)) {
+      error('ELASTIC_LINK_NODE_REFERENCE_MISSING', 'Elastic link references a missing node.', id || 'links');
+      continue;
+    }
+    if (link.n1 === link.n2) error('ELASTIC_LINK_ZERO_LENGTH', 'Elastic link end nodes must be distinct.', id || 'links');
+    const propertyId = link.propertyId || link.linkPropertyId || link.propId;
+    if (!link.property && !link.stiffness && (!propertyId || !propertyIds.has(propertyId))) {
+      error('ELASTIC_LINK_PROPERTY_MISSING', 'Elastic link requires a valid propertyId, inline property, or stiffness vector.', id || 'links');
+    }
+    const parameters = link.property?.parameters || link.property || {};
+    const stiffness = link.stiffness || parameters.stiffness;
+    if (stiffness != null && (!Array.isArray(stiffness) || stiffness.length !== 6
+      || stiffness.some((value) => !Number.isFinite(Number(value)) || Number(value) < 0))) {
+      error('ELASTIC_LINK_STIFFNESS_INVALID', 'Elastic link stiffness must contain six finite nonnegative values.', id || 'links');
+    }
+    const betaDeg = link.betaDeg ?? parameters.betaDeg;
+    if (betaDeg != null && !Number.isFinite(Number(betaDeg))) error('ELASTIC_LINK_BETA_INVALID', 'Elastic link betaDeg must be finite.', id || 'links');
+    const shearDist = link.shearDist ?? parameters.shearDist;
+    if (shearDist != null && (!Number.isFinite(Number(shearDist)) || Number(shearDist) < 0 || Number(shearDist) > 1)) {
+      error('ELASTIC_LINK_SHEAR_DISTANCE_INVALID', 'Elastic link shearDist must be between zero and one.', id || 'links');
+    }
+  }
 }
 
 function validateMemberTaper(model, member, section, error) {

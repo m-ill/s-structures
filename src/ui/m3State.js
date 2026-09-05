@@ -1,15 +1,14 @@
 import {
   addLoadCombination,
-  createModel,
-  createPortalFrameSample,
   factorText,
-  modelToJson,
   parseCombinationFactors,
-  parseModelJson,
   removeLoadCombination,
-  normalizeStories,
   updateLoadCombination,
-} from '../index.js';
+} from '../core/combinations.js';
+import { modelToJson, parseModelJson } from '../core/io.js';
+import { createModel } from '../core/modelFactory.js';
+import { normalizeStories } from '../core/storyModel.js';
+import { createPortalFrameSample } from '../examples/sampleFrame.js';
 import { analyzeLegacyUiSnapshot } from '../compute/product/legacyUiCompatibility.js';
 
 export function createM3State(initialModel = createPortalFrameSample()) {

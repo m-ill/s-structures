@@ -55,7 +55,17 @@ function executeLinearCase(model, kind, settings, options) {
       responseSpectrum: settings.spectrum,
       ...prestress.options,
     });
-    return dynamics.rsa || {
+    return dynamics.rsa ? {
+      ...dynamics.rsa,
+      modalAnalysis: {
+        type: dynamics.type,
+        modes: dynamics.modes,
+        mass: dynamics.mass,
+        eigen: dynamics.eigen,
+        condensation: dynamics.condensation,
+        diaphragmAssembly: dynamics.diaphragmAssembly,
+      },
+    } : {
       ok: false,
       status: 'not-available',
       designBlocked: true,
@@ -95,23 +105,33 @@ function executeLinearCase(model, kind, settings, options) {
     if (settings.integration === 'direct') {
       const system = modal.dynamicSystem;
       if (!modal.ok || !system) return { ok: false, status: 'blocked', reason: modal.reason || 'DIRECT_THA_DYNAMIC_SYSTEM_UNAVAILABLE', designBlocked: true };
+      const integrationSystem = system.integration || system;
       const direct = runLinearDirectTha({
-        mass: system.mass,
-        stiffness: system.stiffness,
-        modes: modal.modes || [],
+        mass: integrationSystem.mass,
+        stiffness: integrationSystem.stiffness,
+        modes: (modal.modes || []).map((mode) => ({ ...mode, dynamicVector: integrationSystem.projectModeVector(mode) })),
         dampingRatio: settings.dampingRatio,
-        forceVector: system.forceVectors[settings.direction] || system.forceVectors.x,
+        dampingType: settings.dampingType || settings.damping?.type || 'rayleigh',
+        modalDampingRatios: settings.modalDampingRatios || settings.damping?.ratios || null,
+        forceVector: integrationSystem.forceVectors[settings.direction] || integrationSystem.forceVectors.x,
         dt: settings.dt,
         accelerations: settings.accelerations,
+        times: settings.times,
+        targetDt: settings.targetDt,
+        interpolation: settings.interpolation || 'linear',
         accelerationUnit: settings.accelerationUnit,
         accelerationScale: settings.accelerationScale,
         displacementUnit: model?.unitSystem?.internal?.length || model?.units?.length || 'm',
         energyTol: settings.energyTol,
         recordId: settings.recordId,
+        signal: settings.signal,
+        checkpointEvery: settings.checkpointEvery,
+        onCheckpoint: settings.onCheckpoint,
+        restart: settings.restart,
       });
       direct.direction = settings.direction;
       direct.modalBasis = { modeCount: modal.modes?.length || 0, stiffnessBasis: modal.provenance?.stiffnessBasis || null };
-      direct.rows = direct.rows.map((row) => ({ ...row, fullDisplacement: system.expandVector(row.displacement) }));
+      direct.rows = direct.rows.map((row) => ({ ...row, fullDisplacement: integrationSystem.expandVector(row.displacement) }));
       return direct;
     }
     const result = runModalSuperpositionTha({

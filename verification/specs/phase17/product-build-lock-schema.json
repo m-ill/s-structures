@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/product-build-lock-schema.json",
+  "title": "Phase 17 product source build lock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "caseId", "status", "productSchemaVersion", "serviceVersion", "adapterVersion", "publicEntrypoint", "codeArtifacts", "aggregateHash", "releaseAllowed", "reasonCodes", "buildLockHash"],
+  "properties": {
+    "version": { "const": "p17-product-build-lock-v1" },
+    "caseId": { "const": "SB1" },
+    "status": { "enum": ["HASH_LOCKED", "BLOCKED"] },
+    "productSchemaVersion": { "const": "6" },
+    "serviceVersion": { "const": "p9-m9-product-analysis-service-v1" },
+    "adapterVersion": { "const": "p17-m1-product-adapter-v1" },
+    "publicEntrypoint": { "const": "src/index.js" },
+    "codeArtifacts": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "byteLength", "sha256", "role"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "byteLength": { "type": "integer", "minimum": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "role": { "type": "string", "pattern": "^[A-Z0-9_]+$" }
+        }
+      }
+    },
+    "aggregateHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "releaseAllowed": { "const": false },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } },
+    "buildLockHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

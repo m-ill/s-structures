@@ -49,6 +49,20 @@ const mpcCombo = mpcResult.byCombo.D_ONLY;
 assert.ok(Math.abs(mpcCombo.disp.S[2] - mpcCombo.disp.N2[2]) < tolerance);
 assert.ok(mpcCombo.summary.equilibriumResidual < tolerance, `CN-M02 equilibrium ${mpcCombo.summary.equilibriumResidual}`);
 
+const misroutedMpc = structuredClone(mpc);
+misroutedMpc.constraints = [{
+  id: 'MPC-UNRELATED',
+  type: 'mpc',
+  slave: { node: 'S', dof: 'ux' },
+  terms: [{ node: 'N2', dof: 'ux', c: 1 }],
+  d: 0,
+}];
+const misroutedResult = analyzeModel(misroutedMpc);
+assert.equal(misroutedResult.ok, false, 'an unrelated MPC must not hide the loaded isolated S.uz DOF');
+assert.ok(misroutedResult.validation.errors.some((row) => (
+  row.code === 'MECHANISM_DOF' && row.location?.nodeId === 'S' && row.location?.component === 'uz'
+)));
+
 const diaphragmModel = createCantileverTipLoad().model;
 diaphragmModel.nodes.push({ id: 'N3', x: 4, y: 1, z: 0 });
 diaphragmModel.diaphragms = [{ id: 'D1', type: 'rigid', nodeIds: ['N2', 'N3'] }];

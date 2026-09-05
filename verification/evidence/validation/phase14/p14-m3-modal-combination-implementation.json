@@ -1,0 +1,129 @@
+{
+  "version": "p14-m3-modal-combination-implementation-evidence-v1",
+  "phase": "Phase 14",
+  "milestone": "P14-M3",
+  "status": "INTERNALLY_VERIFIED",
+  "generatedAt": "2026-08-27T05:57:48.279Z",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "buildHash": "9628429a582049faaeacb84f367ed89fa5c7f9031be285888f84f22a1c1e9c36",
+  "benchmarkExecutionStarted": false,
+  "externalSolverRuntimeDependency": false,
+  "capabilityState": "internally-verified",
+  "independentQualification": "NOT_RUN",
+  "crossSolverComparison": "NOT_RUN",
+  "releaseAllowed": false,
+  "designTransferAllowed": false,
+  "productionFiles": [
+    "src/dynamics/modalCombination.js",
+    "src/dynamics/modal.js",
+    "src/results/rsa/baseShearScale.js",
+    "src/results/rsa/memberForces.js",
+    "src/results/rsa/signedResponse.js",
+    "src/results/story/rsaResponse.js",
+    "src/results/rsaTrace.js",
+    "src/ui/analysisRunners.js",
+    "src/ui/indexAnalysisCenter.js",
+    "src/report/detailedReport.js",
+    "tools/sstructures-modal-combination.mjs"
+  ],
+  "testCommands": [
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tools/run-phase14-tests.mjs",
+      "M3"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p7-m9-rsa-cqc-base-shear.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p7-m9-member-forces.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p7-m9-story-response.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p6-rsa-diaphragm-story.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p7-m11-elastic-analysis-ui.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/m34-detailed-report.mjs"
+    ]
+  ],
+  "verificationRecords": [
+    {
+      "id": "P14-MC-01",
+      "status": "PASS",
+      "note": "canonical SRSS/CQC/ABS/NRC10 enum, aliases, formulas and policy trace"
+    },
+    {
+      "id": "P14-MC-02",
+      "status": "PASS",
+      "note": "single-mode identity, exact synthetic values and CQC repeated-frequency behavior"
+    },
+    {
+      "id": "P14-MC-03",
+      "status": "PASS",
+      "note": "NRC inclusive 10 percent close-mode boundary and permutation invariance"
+    },
+    {
+      "id": "P14-MC-04",
+      "status": "PASS",
+      "note": "nodal displacement, inertia force, base shear and member-force propagation"
+    },
+    {
+      "id": "P14-MC-05",
+      "status": "PASS",
+      "note": "base-shear scaling, story trace and signed-response policy integration"
+    },
+    {
+      "id": "P14-MC-06",
+      "status": "PASS",
+      "note": "CLI, Agent analysis settings, UI selector and detailed-report parity"
+    },
+    {
+      "id": "P14-SR2-01",
+      "status": "NOT_RUN",
+      "note": "NOT_RUN: benchmark execution is intentionally deferred until engine development is complete"
+    }
+  ],
+  "qualificationRecord": {
+    "version": "p14-m0-qualification-record-v1",
+    "capabilityId": "SR2",
+    "milestone": "P14-M3",
+    "implementationOwner": "modal-combination",
+    "runtimeOwner": "s-structures-in-house",
+    "implemented": true,
+    "internallyVerified": true,
+    "independentlyQualified": false,
+    "crossSolverCompared": false,
+    "releaseAllowed": false,
+    "designTransferAllowed": false,
+    "state": "internally-verified",
+    "crossSolverStatus": "NOT_RUN",
+    "hashes": {
+      "sourceHash": null,
+      "buildHash": "9628429a582049faaeacb84f367ed89fa5c7f9031be285888f84f22a1c1e9c36",
+      "inputHash": null,
+      "referenceHash": null,
+      "toleranceHash": null,
+      "resultHash": null
+    },
+    "limitations": [
+      "All four modal-combination methods produce unsigned magnitudes; signed design envelopes remain a separate policy.",
+      "SR2 independent benchmark and MIDAS/STRIX cross-solver comparison have not been run."
+    ],
+    "invalidated": false,
+    "invalidationReasons": [],
+    "recordHash": "de936d9b6bb2e5dc3f0b88f630222db0de7d86bdaedd82312fe69bb9731da75c"
+  },
+  "releaseManifestHash": "6af012181b4ec7b2daaf00b47b826d8b7a577733313dd6a914c7ed4e7d357665",
+  "artifactHash": "a462fc80f7d4242adf8b6bcb73a0b54032521f01c0d4788437e8dde55e3da23d"
+}

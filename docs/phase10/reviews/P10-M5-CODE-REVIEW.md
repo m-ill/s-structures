@@ -10,7 +10,7 @@ dedicated_gate: PASS
 full_regression: PASS
 externally_cross_validated: false
 release_qualified: false
-evidence_artifact: reports/validation-evidence/phase10/p10-m5-mpc-rigidlink.json
+evidence_artifact: verification/evidence/validation/phase10/p10-m5-mpc-rigidlink.json
 evidence_records: 5/5 PASS
 artifact_hash: 9cb8470ec77fd50f7a7ac138
 ```

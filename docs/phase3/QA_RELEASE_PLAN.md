@@ -14,7 +14,7 @@ milestone: 전체 (게이트), P3-M20 (출시)
 | workflow | fake dom e2e, 서버 부팅 e2e | login→저장→해석→계산서 |
 | benchmark | 선형(기존 gate + 탄성 확장 handcalc) + 비선형 B1-B8 + 점군 합성 recall | tolerance 게이트 |
 | regression | 대표건물 10종, pushover 회귀, 설계 일람표 회귀 | full suite |
-| design | RC/철골/기초 수계산 검증 케이스 | `docs/verification/DESIGN_MODULE_VERIFICATION.md` 연동 |
+| design | RC/철골/기초 수계산 검증 케이스 | `verification/specs/DESIGN_MODULE_VERIFICATION.md` 연동 |
 
 **Merge 조건: full suite green.** benchmark tolerance 실패는 skip이 아니라 실패다.
 
@@ -87,7 +87,7 @@ milestone: 전체 (게이트), P3-M20 (출시)
 | G10 | agent-contract 최신화 | 자동 | manifest ↔ contract diff 없음 |
 | G11 | 베타 파일럿 리포트 | 수동 | 실무 시나리오 10종 + 이슈 반영 기록 |
 | G12 | 백업/복원 리허설 | 수동 | data/ 복원 성공 기록 |
-| G13 | 설계 모듈 수계산 검증 | 자동 | RC/철골/기초 검증 케이스 전체 통과 + `docs/verification/DESIGN_MODULE_VERIFICATION.md` 기록 |
+| G13 | 설계 모듈 수계산 검증 | 자동 | RC/철골/기초 검증 케이스 전체 통과 + `verification/specs/DESIGN_MODULE_VERIFICATION.md` 기록 |
 | G14 | 계산서 완결성 | 자동 | 기본 목차에 `not checked` 장 없음, 전 장 trace/limitation 연결 |
 
 ## Beta Pilot (M20-5)

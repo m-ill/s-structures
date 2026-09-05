@@ -378,8 +378,8 @@ export function summarizeRsaMemberForces({ combined, modal, recoveryContext, pro
     limitations: [
       'Qualification covers linear-elastic frame and truss member demand recovery from the assembled modal model.',
       'No static result, fixed-end force, or static member load is substituted into RSA member demand.',
-      'Combined SRSS/CQC member demands are unsigned magnitudes; signed modal contributors remain traceable.',
-      'Partial-fixity spring closure is qualified per signed modal contributor; it is not recomputed from unsigned SRSS/CQC magnitudes.',
+      'Combined SRSS/CQC/ABS/NRC10 member demands are unsigned magnitudes; signed modal contributors remain traceable.',
+      'Partial-fixity spring closure is qualified per signed modal contributor; it is not recomputed from unsigned modal-combination magnitudes.',
       'Qualification does not perform seismic code combinations, capacity design, or nonlinear acceptance checks.',
     ],
     provenance: {

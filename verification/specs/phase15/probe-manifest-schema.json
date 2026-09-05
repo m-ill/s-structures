@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s-structures://phase15/probe-manifest-schema-v1",
+  "title": "S-Structures Phase 15 probe manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "caseId", "specVersion", "referenceHash", "probes", "frozenBeforeRun", "approvedBy", "approvalHash", "probeHash"],
+  "properties": {
+    "version": { "const": "p15-probe-manifest-v1" },
+    "caseId": { "type": "string", "minLength": 1 },
+    "specVersion": { "type": "string", "minLength": 1 },
+    "referenceHash": { "$ref": "#/$defs/hash" },
+    "probes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "resultKind", "location", "axis", "signConvention", "unit", "recoveryPolicy", "component"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "resultKind": { "type": "string", "minLength": 1 },
+          "location": {},
+          "axis": { "type": "string", "minLength": 1 },
+          "signConvention": { "type": "string", "minLength": 1 },
+          "unit": { "type": "string", "minLength": 1 },
+          "recoveryPolicy": { "enum": ["raw", "extrapolated", "averaged", "joint", "section-end", "element-end-action", "global-extreme"] },
+          "component": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "frozenBeforeRun": { "type": "boolean" },
+    "approvedBy": { "type": ["string", "null"] },
+    "approvalHash": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/hash" }] },
+    "probeHash": { "$ref": "#/$defs/hash" }
+  },
+  "$defs": { "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+}

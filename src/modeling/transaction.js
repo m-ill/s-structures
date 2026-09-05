@@ -1,10 +1,11 @@
 export const MODEL_TRANSACTION_VERSION = 'p8-m4-model-transaction-v2';
 
 const COLLECTIONS = new Set([
-  'nodes', 'members', 'loads', 'stories', 'diaphragms', 'materials', 'sections',
+  'nodes', 'members', 'links', 'loads', 'stories', 'diaphragms', 'materials', 'sections',
   'loadCases', 'loadCombinations', 'analysisCases', 'massSources', 'sourceRegistry',
   'shells', 'slabs', 'slabPanels', 'nonlinearMaterials', 'nonlinearSections', 'hingeProperties',
   'linkProperties', 'timeHistoryFunctions', 'analysisStates',
+  'foundationProperties',
 ]);
 
 export function applyModelChangeSet(model, changeSet = {}, options = {}) {

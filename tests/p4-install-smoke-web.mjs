@@ -17,11 +17,7 @@ const port = 5193;
 const baseUrl = `http://127.0.0.1:${port}`;
 
 try {
-  const expand = spawnSync('powershell.exe', [
-    '-NoProfile',
-    '-Command',
-    `Expand-Archive -LiteralPath '${release.zip.replace(/'/g, "''")}' -DestinationPath '${unpackRoot.replace(/'/g, "''")}' -Force`,
-  ], { encoding: 'utf8' });
+  const expand = expandReleaseArchive(release.zip, unpackRoot);
   assert.equal(expand.status, 0, expand.stderr || expand.stdout);
 
   const serverPath = join(unpackRoot, 'server', 'main.mjs');
@@ -61,6 +57,28 @@ try {
 } finally {
   await rm(unpackRoot, { recursive: true, force: true });
   await rm(dataDir, { recursive: true, force: true });
+}
+
+function expandReleaseArchive(zipPath, destinationPath) {
+  const powershell = spawnSync('powershell.exe', [
+    '-NoProfile',
+    '-Command',
+    `Expand-Archive -LiteralPath '${zipPath.replace(/'/g, "''")}' -DestinationPath '${destinationPath.replace(/'/g, "''")}' -Force`,
+  ], { encoding: 'utf8' });
+  if (powershell.status === 0) return { ...powershell, extractor: 'powershell-expand-archive' };
+
+  const windowsTar = spawnSync('tar.exe', ['-xf', zipPath, '-C', destinationPath], { encoding: 'utf8' });
+  if (windowsTar.status === 0) return { ...windowsTar, extractor: 'windows-bsdtar' };
+
+  return {
+    ...windowsTar,
+    stderr: [
+      'PowerShell Expand-Archive failed:',
+      powershell.stderr || powershell.stdout,
+      'Windows tar.exe fallback failed:',
+      windowsTar.stderr || windowsTar.stdout,
+    ].filter(Boolean).join('\n'),
+  };
 }
 
 async function waitForHttp(url, server, getStderr) {

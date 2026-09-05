@@ -1,7 +1,7 @@
 import { stableHash } from '../../core/stableHash.js';
 import { resolveGlobalShearDeformation, resolveMemberShearDeformationSetting } from '../../core/shearDeformation.js';
 
-export const ELASTIC_FACTOR_GROUP_VERSION = 'p9-m3-elastic-factor-groups-v1';
+export const ELASTIC_FACTOR_GROUP_VERSION = 'p14-m1-elastic-factor-groups-v2-foundation';
 
 export function classifyElasticFactorGroups(model = {}, combinations = [], options = {}) {
   const combos = Array.isArray(combinations) ? combinations : [];
@@ -100,10 +100,12 @@ function stiffnessIdentity(model) {
       taper: member.taper || null,
       localAxis: member.localAxis || null,
       customProps: member.customProps || null,
+      foundationId: member.foundationId || null,
       shearDeformation: memberShearDeformationIdentity(model, member),
     })),
     materials: model.materials || [],
     sections: model.sections || [],
+    foundationProperties: model.foundationProperties || [],
     rigidDiaphragms: model.rigidDiaphragms || [],
     constraints: model.constraints || [],
     semiRigidDiaphragms: model.semiRigidDiaphragms || [],

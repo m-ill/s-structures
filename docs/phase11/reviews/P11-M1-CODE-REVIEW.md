@@ -11,7 +11,7 @@ release_qualification: BLOCKED
 release_qualified: false
 critical_findings_open: 0
 high_findings_open: 0
-evidence_artifact: reports/validation-evidence/phase11/p11-m1-report-snapshot-verdict.json
+evidence_artifact: verification/evidence/validation/phase11/p11-m1-report-snapshot-verdict.json
 evidence_records: 13
 artifact_hash: fc75e1bd6cdcf321903e7fe68e27a3d7fd3781fc4b7fdc8ec834710e4166dc10
 ```

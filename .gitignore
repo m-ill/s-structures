@@ -18,3 +18,10 @@ output/release/
 reports/phase11/
 output/pdf/phase11/
 tmp/pdfs/phase11/
+
+# Phase 16 verification workspace scratch and TeX intermediates.
+tmp/verification/
+output/verification/**/*.aux
+output/verification/**/*.out
+output/pdf/**/*.aux
+output/pdf/**/*.out

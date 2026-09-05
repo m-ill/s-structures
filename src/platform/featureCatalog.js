@@ -1,4 +1,4 @@
-export const FEATURE_CATALOG_VERSION = 'p4-feature-catalog-v2';
+export const FEATURE_CATALOG_VERSION = 'p4-feature-catalog-v3-p14-foundation';
 
 /**
  * 프로그램 전 기능의 단일 카탈로그.
@@ -152,6 +152,23 @@ export const FEATURE_CATEGORIES = [
         ],
         limits: ['스프링/침하 입력은 속성·에이전트 경로 중심 (팔레트 버튼은 고정/힌지/롤러 3종)'],
         relatedActions: ['setSupport', 'setSpringSupport', 'setSettlement', 'nativeSetSupport', 'nativeSetSpringSupport', 'nativeSetSettlement'],
+        manualPage: '02-modeling-and-elastic-analysis.md',
+      }),
+      feature('distributed-winkler-foundation', '부재 분포 Winkler 탄성지반', '프레임 부재 길이에 걸쳐 local-y/local-z 선형 탄성지반 강성을 배정한다.', {
+        description: 'Winkler 탄성지반 속성은 단위길이당 지반반력 강성을 프레임 부재 전체에 일관 강성으로 적분한다. 속성을 먼저 만들고 하나 이상의 프레임 부재에 배정하며, 해석 결과에서는 보의 구조 단부력과 지반반력·평형 성분을 구분해 확인한다.',
+        howTo: [
+          'createFoundationProperty로 고유 id와 localY/localZ lineStiffness를 가진 winkler-line 속성을 만든다',
+          'assignMemberFoundation에 foundationId와 memberId 또는 memberIds를 전달해 프레임 부재에 배정한다',
+          '속성값을 바꿀 때는 updateFoundationProperty를 사용하고 변경 뒤 결과가 stale 처리됐는지 확인한 후 재해석한다',
+          '배정만 해제하려면 removeMemberFoundation을 사용하고, 사용 중인 속성 삭제는 먼저 배정을 해제하거나 명시적 force 정책을 검토한다',
+        ],
+        status: 'preliminary',
+        limits: [
+          '현재 범위는 uniform·full-member·ground displacement 0의 linear-bilateral foundation이며 uplift/gap·비선형 지반은 지원하지 않는다',
+          'frame 부재만 배정할 수 있고 generated member·taper·비선형 해석은 별도 qualification 전까지 fail-closed다',
+          '내부 검증과 SB7 수치 비교는 수행했지만 독립 구조전문가 자격·상용 프로그램 R4 비교·최종 설계전이는 아직 승인되지 않았다',
+        ],
+        relatedActions: ['createFoundationProperty', 'updateFoundationProperty', 'deleteFoundationProperty', 'assignMemberFoundation', 'removeMemberFoundation'],
         manualPage: '02-modeling-and-elastic-analysis.md',
       }),
       feature('releases-offsets', '단부 해제·부분강절과 3D 강역(offset)', 'pin/rigid, 4축 회전스프링, 3D 강체팔·삽입점·패널존으로 접합부 강역과 편심을 반영.', {
@@ -868,6 +885,21 @@ export const FEATURE_CATEGORIES = [
           'getReportExportArtifacts',
           'openReportExportArtifact',
         ],
+        manualPage: '03-loads-design-and-reports.md',
+      }),
+      feature('phase13-model-check', 'Model Check·이슈 Waiver', '해석 전에 모델 결함을 객체·위치와 함께 찾고 이슈·waiver·마일스톤 상태를 같은 snapshot으로 조회한다.', {
+        description: 'Model Check는 geometry·property·support·constraint·story·load·mass·analysis preflight 문제를 결정적 issue ID로 정리한다. Agent API는 UI와 보고서가 사용하는 동일 snapshot, 현재 model hash에 결속된 waiver, Phase 13 마일스톤 상태를 읽기 전용으로 제공한다.',
+        howTo: [
+          'getPhase13ModelCheck를 읽어 blocker/warning, objectRefs, story와 제안된 조치가 있는지 확인한다',
+          'getPhase13IssueWaivers에서 reviewer·사유·revision·model hash가 현재 모델과 일치하는지 확인하고 stale waiver를 승인으로 간주하지 않는다',
+          'getPhase13MilestoneSnapshot으로 Model Check와 후속 탄성 워크벤치 영역의 구현·자격 상태를 함께 확인한다',
+        ],
+        status: 'preliminary',
+        limits: [
+          '자동 repair는 preview와 원자 transaction 범위에서만 사용하며 구조 시스템·지지조건을 공학 판단 없이 추론해 확정하지 않는다',
+          'packaged restart·접근성·office qualification이 남아 있어 implementation-complete를 최종 설계 승인으로 해석하지 않는다',
+        ],
+        relatedReadApis: ['getPhase13ModelCheck', 'getPhase13IssueWaivers', 'getPhase13MilestoneSnapshot'],
         manualPage: '03-loads-design-and-reports.md',
       }),
       feature('practice-validation', '실무 검증 리포트', 'P-Delta/결과표/계산서 준비 상태를 점검하고 warning/NG를 이슈로 남긴다.', {

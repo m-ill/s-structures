@@ -56,7 +56,7 @@
 | --- | --- |
 | 모델 필드 추가 | `src/core/schema.js`, `src/core/model.js`, `src/core/migration.js` |
 | validation rule 추가 | `src/core/validation.js`, `tests/m1-schema.mjs` |
-| 선형 solver 수정 | `src/solver/linear3d*.js`, `docs/verification/LINEAR_SOLVER_VERIFICATION.md` |
+| 선형 solver 수정 | `src/solver/linear3d*.js`, `verification/specs/LINEAR_SOLVER_VERIFICATION.md` |
 | 하중 산정 수정 | `src/design/loadEstimation.js`, `src/design/loadDerivationTrace.js` |
 | 기준식 registry 추가 | `docs/phase2/STANDARD_ENGINE_PLAN.md`, `src/standards/` 예정 |
 | 하중조합 수정 | `src/core/kdsLoadCombinations.js` |
@@ -72,7 +72,7 @@
 | Work | First files to review |
 | --- | --- |
 | Direct Analysis P-Delta implementation | `docs/phase2/P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md`, `src/solver/linear3d*.js`, `src/results/pDeltaTrace.js` |
-| Direct Analysis verification | `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`, `tests/p2-m5-direct-*.mjs`, `src/examples/verification.js` |
+| Direct Analysis verification | `verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`, `tests/p2-m5-direct-*.mjs`, `src/examples/verification.js` |
 | Direct Analysis UI/report/API exposure | `src/ui/indexNativeResultControls.js`, `src/ui/indexResultsPanel.js`, `src/report/`, `src/ui/indexAgentApi.js` |
 
 ## Documentation Update Rule

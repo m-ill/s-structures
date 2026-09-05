@@ -5,12 +5,14 @@ import {
   buildM1XvalReferenceArtifacts,
   createXvalCaseDefinitions,
   extractXvalResultPath,
-  listAnalysisCriteriaKeys,
   modelHash,
-  resolveCriterion,
   runXvalCase,
   runXvalSuite,
   xvalScalarRelativeError,
+} from '../verification/index.js';
+import {
+  listAnalysisCriteriaKeys,
+  resolveCriterion,
 } from '../src/index.js';
 
 const cases = createXvalCaseDefinitions();

@@ -100,7 +100,7 @@ Agents must also check `getLaunchReadinessReport().productionReadiness.status`. 
 | G10 agent contract current | Proven | `tests/p3-launch-gate.mjs` checks manifest vs contract read APIs, runtime execute actions, import read workflows, Phase 3 gate modules, and Phase 3 data contracts |
 | G11 beta pilot reports | Manual | 10 report shells exist; real user feedback is still needed |
 | G12 backup/restore rehearsal | Manual | checklist exists; physical backup rehearsal requires owner sign-off through `reports/launch-readiness/owner-signoff-checklist.md` |
-| G13 design verification | Proven | `docs/verification/DESIGN_MODULE_VERIFICATION.md` and M17/M18 tests |
+| G13 design verification | Proven | `verification/specs/DESIGN_MODULE_VERIFICATION.md` and M17/M18 tests |
 | G14 calculation completeness | Proven | M19/M20 tests check Phase 3 trace and no default not-checked chapter |
 
 ## Residual Risks

@@ -28,6 +28,11 @@ for (const support of ['fixed', 'custom']) {
   close(result.reactions.C.rx, 10, EPS, `${support} right reaction`);
   assert.equal(result.solver.prescribedDofCount, 1);
   assert.deepEqual(result.solver.prescribedDofs[0], { nodeId: 'C', dof: 'ux', value: 0.01 });
+  if (support === 'custom') {
+    assert.ok(result.solver.autoFixedDofs.includes('B.uy'));
+    assert.ok(result.solver.autoFixedDofs.includes('B.rz'));
+    assert.equal(result.solver.rigidModeGauge, null, 'isolated truss DOFs must be fixed before rigid-mode classification');
+  }
 
   const summary = summarize(nodes, members, [], result);
   close(summary.forceResidualNorm, 0, EPS, `${support} force equilibrium`);

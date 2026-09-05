@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, sep } from 'node:path';
+import { remapLegacyVerificationPath } from '../verification/workspace-paths.mjs';
 
-const roots = ['docs/phase3', 'docs/phase9', 'docs/verification', 'docs/user-manual'];
+const roots = ['docs/phase3', 'docs/phase9', 'verification/specs', 'docs/user-manual'];
 const docs = roots.flatMap((root) => listFiles(root).filter((file) => /\.(md|json)$/.test(file)));
 const refs = docs.flatMap((file) => extractRefs(file, readFileSync(file, 'utf8')));
 const missing = refs.filter((item) => !referenceExists(item.ref));
@@ -19,7 +20,7 @@ function extractRefs(file, text) {
   const refs = [];
   const patterns = [
     /`([^`]+)`/g,
-    /\b((?:docs|tests|src|server|tools|reports|output)\/[A-Za-z0-9_./*:-]+\.(?:md|mjs|js|json|html|txt|dxf|py|pdf))\b/g,
+    /\b((?:docs|tests|src|server|tools|reports|output|verification)\/[A-Za-z0-9_./*:-]+\.(?:md|mjs|js|json|html|txt|dxf|py|pdf))\b/g,
   ];
   for (const pattern of patterns) {
     let match;
@@ -36,15 +37,16 @@ function extractRefs(file, text) {
 }
 
 function isLocalFileRef(value) {
-  return /^(docs|tests|src|server|tools|reports|output)\//.test(value) &&
+  return /^(docs|tests|src|server|tools|reports|output|verification)\//.test(value) &&
     /\.(md|mjs|js|json|html|txt|dxf|py|pdf)$/.test(value);
 }
 
 function referenceExists(ref) {
-  if (!ref.includes('*')) return existsSync(ref);
-  const dir = dirname(ref);
+  const canonical = remapLegacyVerificationPath(ref.replaceAll(sep, '/')).replaceAll('/', sep);
+  if (!canonical.includes('*')) return existsSync(canonical);
+  const dir = dirname(canonical);
   if (!existsSync(dir)) return false;
-  const pattern = new RegExp(`^${ref.slice(dir.length + 1).split('*').map(escapeRegex).join('.*')}$`);
+  const pattern = new RegExp(`^${canonical.slice(dir.length + 1).split('*').map(escapeRegex).join('.*')}$`);
   return readdirSync(dir).some((name) => pattern.test(name));
 }
 

@@ -45,7 +45,7 @@ const model = {
 
 const domain = packDomainBinary(model);
 assert.equal(validateDomainBinary(domain).ok, true, 'P10-M2 DomainBinary must validate');
-assert.equal(DOMAIN_BINARY_VERSION, 'p10-domain-binary-v6');
+assert.equal(DOMAIN_BINARY_VERSION, 'p14-domain-binary-v7-foundation');
 assert.equal(domain.buffers.sectionProperties.length, 4, 'legacy four-wide section properties stay compatible');
 assert.deepEqual([...domain.buffers.sectionShearAreas], [0.15, 0.12]);
 assert.deepEqual([...domain.buffers.analysisFlags], [1]);

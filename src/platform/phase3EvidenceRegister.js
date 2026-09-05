@@ -148,7 +148,7 @@ export function buildPhase3EvidenceRegister(input = {}) {
       'docs/phase3/IMPORT_DXF_DWG_PLAN.md',
       'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md',
       'docs/phase3/QA_RELEASE_PLAN.md',
-      'docs/verification/P3_M6_M20_COMPLETION_AUDIT.md',
+      'verification/specs/P3_M6_M20_COMPLETION_AUDIT.md',
     ],
     rows,
     summary: {

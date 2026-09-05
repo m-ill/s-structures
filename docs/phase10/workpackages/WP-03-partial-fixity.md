@@ -38,7 +38,7 @@ depends: [WP-02]
 - 기존 release·Timoshenko·compute 회귀 green 유지.
 - 테스트: `tests/p10-m3-partial-fixity.mjs` · `tests/p10-m3-schema-contract.mjs` ·
   `tests/p10-m3-domain-route-contract.mjs` · `tests/p10-m3-evidence-contract.mjs`.
-- Evidence: `reports/validation-evidence/phase10/p10-m3-partial-fixity.json` — 7/7 records PASS,
+- Evidence: `verification/evidence/validation/phase10/p10-m3-partial-fixity.json` — 7/7 records PASS,
   artifact hash `aa4180cd16d91d6904a2db22`; `externallyCrossValidated=false`, `releaseQualified=false`.
 
 ## Review Log

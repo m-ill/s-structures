@@ -114,7 +114,7 @@ R3 — 스파이크로 선제 완화. iframe 방식이면 통합 리스크는 �
 
 - Added `tests/p4-preview-integrated-validation.mjs` and `npm run test:m105`.
 - The integrated flow covers project modeler save, revisions list, material library save, and import overlay selection.
-- Wrote `reports/validation-evidence/p4-preview-integrated-validation.json`.
+- Wrote `verification/evidence/validation/p4-preview-integrated-validation.json`.
 - In-app browser control timed out during local navigation/new-tab setup; Chrome headless was available but returned no DOM output in this shell, so this pass records automated app-shell evidence instead of screenshot evidence.
 - Marked TD-01 fixed in `TECH_DEBT_REGISTER.md`.
 

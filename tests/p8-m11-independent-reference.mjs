@@ -5,13 +5,15 @@ import {
   buildPhase8IndependentReferenceCatalog,
   compareReferenceValues,
   eulerBernoulliCantileverReference,
-  getPhase8VerificationSuite,
   integrateLinearSdofNewmarkReference,
   rectangularSteelSectionReference,
   runPhase8IndependentReferenceQualification,
   solveIndependentDenseSystem,
-  verificationRegistryManifest,
 } from '../src/index.js';
+import {
+  getPhase8VerificationSuite,
+  verificationRegistryManifest,
+} from '../verification/index.js';
 
 const qualification = runPhase8IndependentReferenceQualification();
 assert.equal(qualification.status, 'PASS');

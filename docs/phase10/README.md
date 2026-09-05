@@ -50,7 +50,7 @@ Phase 10의 모든 작업은 **기존 자산의 확장**이며 재작성이 아�
 | fixed-end 하중 라이브러리 | P6-M2 `loads/fixedEnd/` | Timoshenko(M2)·변단면(M6)·offset(M4)은 강성만 아니라 **q0/복원함수도 함께** 갱신. 분할수-독립 게이트 유지 |
 | 설계 적격성 게이트 | `linear3d.js` designEligibility, combination completeness | 신규 결과 전부 동일 게이트 경유. 미검증 경로는 `designBlocked` + 사유 코드 |
 | Newmark 시간적분 | P8 `nonlinear/dynamics/` · P9 resident session | 선형 직접적분 THA(M7 부속)는 이 적분기 재사용 (선형 요소 + 상수 K) |
-| 검증 체계 | P6-M3 `verification/matrix/` + evidence artifacts (`reports/validation-evidence/`) | 신규 케이스는 기존 record 스키마({reference, computed, relError, tolerance, modelHash, solverVersion}) 준수 |
+| 검증 체계 | P6-M3 `verification/matrix/` + evidence artifacts (`verification/evidence/validation/`) | 신규 케이스는 기존 record 스키마({reference, computed, relError, tolerance, modelHash, solverVersion}) 준수 |
 | 등가셸 scope 경고 | P6-M6 옵션 B | 등가 경로는 영구 유지. 실 shell도 사용자 모델 메시수렴 provenance와 warning-warped 공학검토 없이는 설계 전이 차단 |
 | 테스트·머지 규칙 | `npm test` green(착수 기준선 292 스위트), `p10-mN-*.mjs` 네이밍, `/code-review high` 사이클 | 전 마일스톤 공통 |
 

@@ -48,9 +48,9 @@ P12 증적에는 실제 secret, 사용자 정보, 프로젝트 내용 또는 응
 ### 0.2 이전 Phase의 판정은 덮어쓰지 않는다
 
 - Phase 11의 release-qualified는 **한·영 보고서 생성 기능**에 한정된다.
-- [Phase 11 release manifest](../../reports/validation-evidence/phase11/p11-release-manifest.json)의
+- [Phase 11 release manifest](../../verification/evidence/validation/phase11/p11-release-manifest.json)의
   공학 판정 상한 CONDITIONAL_PASS는 유지한다.
-- [Phase 10 release gate](../../reports/validation-evidence/phase10/p10-m11-release-gate.json)의
+- [Phase 10 release gate](../../verification/evidence/validation/phase10/p10-m11-release-gate.json)의
   release.allowed=false와 designTransferAllowed=false는 Phase 12가 자동 해제하지 않는다.
 - Phase 12를 완료해도 최종 구조설계·인허가, 공개 인터넷 서비스, 다중 조직 SaaS를 승인한 것으로 해석하지 않는다.
 
@@ -221,13 +221,13 @@ M5는 M2~M4의 계약이 고정된 뒤, M6는 M5의 실제 배포물을 대상�
 
 - 해당 WP 범위의 production code 또는 계획 산출물이 실제로 존재한다.
 - tests/p12-mN-*.mjs 전용 테스트와 관련 회귀가 green이다.
-- reports/validation-evidence/phase12/p12-mN-*.json에 명령, 환경, source revision, artifact hash가 있다.
+- verification/evidence/validation/phase12/p12-mN-*.json에 명령, 환경, source revision, artifact hash가 있다.
 - open Critical/High code-review finding이 0건이다.
 - API, Agent manifest, UI, feature catalog, user manual, backup·설치 경로 영향을 검토했다.
 - 성능, 메모리, 저장공간, 로그, 산출물 크기 변화와 예산을 기록했다.
 - evidence와 로그의 raw secret·token·개인정보·프로젝트 본문 노출이 0건이다.
 - IMPLEMENTATION_STATUS.md가 실제 code·test·evidence·review·commit 상태와 일치한다.
-- 기존 작업트리 변경인 reports/validation-evidence/p4-preview-integrated-validation.json과 tmp/를
+- 기존 작업트리 변경인 verification/evidence/validation/p4-preview-integrated-validation.json과 tmp/를
   Phase 12 commit에 섞지 않는다.
 - 마일스톤 하나마다 의도적인 commit 하나를 만든다.
 
@@ -256,10 +256,10 @@ green이어야 하며, 현재 실패는 owner와 P12-M6 목표가 지정돼야 �
 - 작업 패키지: docs/phase12/workpackages/WP-NN-*.md
 - 전용 테스트: tests/p12-mN-*.mjs
 - 실행기: tools/run-phase12-tests.mjs
-- evidence: reports/validation-evidence/phase12/p12-mN-*.json
+- evidence: verification/evidence/validation/phase12/p12-mN-*.json
 - review: docs/phase12/reviews/P12-MN-CODE-REVIEW.md
 - raw qualification: reports/phase12/PROFILE/RUN-ID/
-- 최종 manifest: reports/validation-evidence/phase12/p12-release-manifest.json
+- 최종 manifest: verification/evidence/validation/phase12/p12-release-manifest.json
 
 계획 단계에서는 PASS evidence나 완료 review를 미리 만들지 않는다.
 
@@ -318,7 +318,7 @@ M0는 짧게 끝내고 M1의 치명적 노출 차단을 지연시키지 않는�
 
 ### 증빙
 
-reports/validation-evidence/phase12/p12-m0-baseline-governance.json
+verification/evidence/validation/phase12/p12-m0-baseline-governance.json
 
 ### 완료판정
 
@@ -388,7 +388,7 @@ manifest에 포함돼 계속 작동해야 한다. 외부에서 저장소 파일 
 
 ### 증빙
 
-reports/validation-evidence/phase12/p12-m1-static-private-boundary.json
+verification/evidence/validation/phase12/p12-m1-static-private-boundary.json
 
 ### 완료판정
 
@@ -462,7 +462,7 @@ reports/validation-evidence/phase12/p12-m1-static-private-boundary.json
 
 ### 증빙
 
-reports/validation-evidence/phase12/p12-m2-config-migration-secret-lifecycle.json
+verification/evidence/validation/phase12/p12-m2-config-migration-secret-lifecycle.json
 
 ### 완료판정
 
@@ -534,7 +534,7 @@ loopback-only·가입 차단의 안전 기본값을 사용한다.
 
 ### 증빙
 
-reports/validation-evidence/phase12/p12-m3-http-auth-resource-hardening.json
+verification/evidence/validation/phase12/p12-m3-http-auth-resource-hardening.json
 
 ### 완료판정
 
@@ -602,7 +602,7 @@ MFA·SSO, WAF, DDoS 방어와 24시간 관제는 비범위다. 이 단계만으�
 
 ### 증빙
 
-reports/validation-evidence/phase12/p12-m4-approval-revision-integrity.json
+verification/evidence/validation/phase12/p12-m4-approval-revision-integrity.json
 
 ### 완료판정
 
@@ -671,7 +671,7 @@ reports/validation-evidence/phase12/p12-m4-approval-revision-integrity.json
 
 ### 증빙
 
-reports/validation-evidence/phase12/p12-m5-release-package-install-recovery.json
+verification/evidence/validation/phase12/p12-m5-release-package-install-recovery.json
 
 ### 완료판정
 
@@ -739,7 +739,7 @@ Windows에서 공식 테스트 명령이 줄바꿈이나 테스트 누락 때문
 
 ### 증빙
 
-reports/validation-evidence/phase12/p12-m6-windows-regression-release-gates.json
+verification/evidence/validation/phase12/p12-m6-windows-regression-release-gates.json
 
 ### 완료판정
 
@@ -810,8 +810,8 @@ design transfer는 조건이 없으면 계속 blocked로 표시한다.
 
 ### 증빙
 
-reports/validation-evidence/phase12/p12-m7-local-pilot-release-gate.json  
-reports/validation-evidence/phase12/p12-release-manifest.json
+verification/evidence/validation/phase12/p12-m7-local-pilot-release-gate.json  
+verification/evidence/validation/phase12/p12-release-manifest.json
 
 ### 완료판정
 

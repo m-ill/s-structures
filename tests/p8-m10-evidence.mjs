@@ -1,14 +1,14 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { buildAgentManifest } from '../src/ui/agentManifest.js';
+import { AGENT_MANIFEST_VERSION, buildAgentManifest } from '../src/ui/agentManifest.js';
 import { availableAgentActions } from '../src/ui/indexAgentApi.js';
 import {
   getPhase8VerificationSuite,
   validatePhase8EvidenceArtifact,
   verificationRegistryManifest,
-} from '../src/verification/registry.js';
+} from '../verification/framework/registry.js';
 
-const artifactPath = new URL('../reports/validation-evidence/phase8/p8-m10-ui-api.json', import.meta.url);
+const artifactPath = new URL('../verification/evidence/validation/phase8/p8-m10-ui-api.json', import.meta.url);
 const artifact = JSON.parse(await readFile(artifactPath, 'utf8'));
 const suite = getPhase8VerificationSuite('P8-M10-UI-API');
 assert.ok(suite);
@@ -27,7 +27,7 @@ const manifest = buildAgentManifest({
   availableActions: availableAgentActions(),
   controls: [],
 });
-assert.equal(manifest.version, 'p9-m10-agent-capability-manifest-v16');
+assert.equal(manifest.version, AGENT_MANIFEST_VERSION);
 assert.equal(manifest.modules.phase8NonlinearProductService, 'p8-m10-product-service-v1');
 assert.equal(manifest.modules.phase8NonlinearWorkflow, 'p9-m9-nonlinear-workflow-ui-v2');
 assert.equal(manifest.modules.phase8NonlinearResultPopup, 'p8-m10-nonlinear-result-popup-v1');

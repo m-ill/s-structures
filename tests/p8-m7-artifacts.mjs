@@ -16,10 +16,10 @@ import {
 import {
   getPhase8VerificationSuite,
   validatePhase8EvidenceArtifact,
-} from '../src/verification/registry.js';
+} from '../verification/framework/registry.js';
 import { buildAgentManifest } from '../src/ui/agentManifest.js';
 
-const artifact = JSON.parse(readFileSync(new URL('../reports/validation-evidence/phase8/p8-m7-arc-cyclic.json', import.meta.url)));
+const artifact = JSON.parse(readFileSync(new URL('../verification/evidence/validation/phase8/p8-m7-arc-cyclic.json', import.meta.url)));
 const suite = getPhase8VerificationSuite('P8-M7-ARC-CYCLIC');
 assert.equal(suite?.verificationIds.length, 16);
 assert.deepEqual(validatePhase8EvidenceArtifact(artifact), { ok: true, errors: [] });
@@ -43,7 +43,7 @@ assert.equal(manifest.modules.phase8ComputeBackendPolicy, NONLINEAR_COMPUTE_BACK
 assert.equal(manifest.milestones.find((row) => row.id === 'P8-M7')?.status, 'candidate');
 for (const path of [
   '../docs/phase8/adr/ADR-007-DISPLACEMENT-ARC-LENGTH-BRANCH-POLICY.md',
-  '../reports/validation-evidence/phase8/p8-m7-code-review.md',
+  '../verification/evidence/validation/phase8/p8-m7-code-review.md',
 ]) assert.ok(readFileSync(new URL(path, import.meta.url), 'utf8').length > 500, path);
 
 console.log(JSON.stringify({

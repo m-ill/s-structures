@@ -91,6 +91,17 @@ export {
   tripletsToCsc,
   validateCommonSparseMatrix,
 } from './sparse/matrix.js';
+export {
+  DETERMINISTIC_SPARSE_ASSEMBLY_VERSION,
+  MUTABLE_SPARSE_ACCUMULATOR_VERSION,
+  SPARSE_ASSEMBLY_BASIS,
+  addMutableSparseValue,
+  assembleSparseBlocks,
+  createDeterministicSparseAssembler,
+  createMutableSparseAccumulator,
+  extractDeterministicCscSubmatrix,
+  finalizeMutableSparseAccumulator,
+} from './sparse/assembly.js';
 export { SPARSE_SYMBOLIC_VERSION, symbolicFactor } from './sparse/symbolic.js';
 export { SPARSE_LDLT_VERSION, factorLdlt, solveLdlt } from './sparse/ldlt.js';
 export { SPARSE_LU_VERSION, factorSparseLu, solveSparseLu } from './sparse/lu.js';
@@ -119,6 +130,12 @@ export * from './backends/webgpu/index.js';
 export * from './hybrid/index.js';
 export { ELASTIC_FACTOR_GROUP_VERSION, classifyElasticFactorGroups, elasticFactorKeyForCombo } from './elastic/factorGroups.js';
 export { ELASTIC_FACTOR_SESSION_VERSION, createElasticFactorSession } from './elastic/factorSession.js';
+export {
+  SPD_SOLVE_POLICY_VERSION,
+  computeSpdTrueResidual,
+  createSpdSolvePolicy,
+  equilibrateSpdSystem,
+} from './elastic/spdSolvePolicy.js';
 export {
   HYBRID_ELASTIC_SESSION_VERSION,
   createHybridElasticSession,

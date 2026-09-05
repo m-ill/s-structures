@@ -1,7 +1,9 @@
 import { normalizeStories } from '../core/storyModel.js';
 import { normalizeGeneralConstraints } from '../core/constraintDefinitions.js';
+import { createWinklerLineFoundationProperty } from '../core/foundationSchema.js';
+import { normalizeNodeMass6Dof } from '../core/massSchema.js';
 
-export const INDEX_AGENT_ACTIONS_VERSION = 'p10-m6-agent-modeling-actions-v5';
+export const INDEX_AGENT_ACTIONS_VERSION = 'p14-m1-agent-modeling-actions-v6-foundation';
 
 const MEMBER_ROTATIONAL_SPRING_KEYS = new Set(['ryI', 'rzI', 'ryJ', 'rzJ']);
 
@@ -27,6 +29,11 @@ export const MODELING_ACTIONS = [
   'setMemberSection',
   'setMemberMaterial',
   'assignSection',
+  'createFoundationProperty',
+  'updateFoundationProperty',
+  'deleteFoundationProperty',
+  'assignMemberFoundation',
+  'removeMemberFoundation',
   'addLoad',
   'addPartialLoad',
   'addTemperatureLoad',
@@ -105,6 +112,16 @@ function executeModelingActionCore(model, state, action, payload) {
       return updateMember(model, state, { id: payload.memberId || payload.id, matId: payload.matId });
     case 'assignSection':
       return assignSection(model, state, payload);
+    case 'createFoundationProperty':
+      return createFoundationProperty(model, state, payload);
+    case 'updateFoundationProperty':
+      return updateFoundationProperty(model, state, payload);
+    case 'deleteFoundationProperty':
+      return deleteFoundationProperty(model, state, payload);
+    case 'assignMemberFoundation':
+      return assignFoundationToMembers(model, state, payload);
+    case 'removeMemberFoundation':
+      return removeFoundationFromMembers(model, state, payload);
     case 'addLoad':
       return addLoad(model, state, payload);
     case 'addPartialLoad':
@@ -153,8 +170,68 @@ export function summarizeAgentModelState(model, state) {
       sectionIds: model.sections.map((section) => section.id),
       materialIds: model.materials.map((material) => material.id),
       constraintIds: (model.constraints || []).map((constraint) => constraint.id),
+      foundationPropertyIds: model.foundationProperties.map((property) => property.id),
     },
   };
+}
+
+function createFoundationProperty(model, state, payload) {
+  const property = createWinklerLineFoundationProperty(payload.property || payload);
+  if (model.foundationProperties.some((row) => row.id === property.id)) {
+    throw new Error(`Duplicate foundation property: ${property.id}`);
+  }
+  model.foundationProperties.push(cloneRecord(property));
+  return { changed: true, property: cloneRecord(property) };
+}
+
+function updateFoundationProperty(model, state, payload) {
+  const id = requiredString(payload.id || payload.foundationId || payload.property?.id, 'id');
+  const current = getById(model.foundationProperties, id, 'foundationProperty');
+  const patch = cloneRecord(payload.property || payload);
+  delete patch.foundationId;
+  const property = createWinklerLineFoundationProperty({ ...current, ...patch, id });
+  Object.keys(current).forEach((key) => delete current[key]);
+  Object.assign(current, cloneRecord(property));
+  return { changed: true, property: cloneRecord(property) };
+}
+
+function deleteFoundationProperty(model, state, payload) {
+  const id = requiredString(payload.id || payload.foundationId, 'id');
+  getById(model.foundationProperties, id, 'foundationProperty');
+  const assigned = model.members.filter((member) => member.foundationId === id);
+  if (assigned.length && payload.force !== true) {
+    throw new Error(`Foundation property ${id} is assigned to members: ${assigned.map((row) => row.id).join(', ')}`);
+  }
+  assigned.forEach((member) => delete member.foundationId);
+  model.foundationProperties = model.foundationProperties.filter((row) => row.id !== id);
+  return { changed: true, deletedFoundationId: id, unassignedMemberIds: assigned.map((row) => row.id) };
+}
+
+function assignFoundationToMembers(model, state, payload) {
+  const foundationId = requiredString(payload.foundationId || payload.propertyId, 'foundationId');
+  getById(model.foundationProperties, foundationId, 'foundationProperty');
+  const ids = normalizeMemberIds(payload);
+  for (const id of ids) {
+    const member = getById(model.members, id, 'member');
+    if ((member.type || member.behavior || 'frame') !== 'frame') {
+      throw new Error(`Foundation assignment requires a frame member: ${id}`);
+    }
+    member.foundationId = foundationId;
+  }
+  return { changed: true, foundationId, memberIds: ids };
+}
+
+function removeFoundationFromMembers(model, state, payload) {
+  const ids = normalizeMemberIds(payload);
+  for (const id of ids) delete getById(model.members, id, 'member').foundationId;
+  return { changed: true, memberIds: ids };
+}
+
+function normalizeMemberIds(payload) {
+  const raw = payload.memberIds || (payload.memberId || payload.id ? [payload.memberId || payload.id] : []);
+  const ids = [...new Set(Array.from(raw || []).map((value) => requiredString(value, 'memberId')))];
+  if (!ids.length) throw new Error('At least one memberId is required.');
+  return ids;
 }
 
 export function summarizeSelection(model, selection = { type: null, id: null }) {
@@ -870,6 +947,7 @@ function ensureCollections(model) {
   model.loadCombinations ||= [];
   model.materials ||= [];
   model.sections ||= [];
+  model.foundationProperties ||= [];
   model.analysisSettings ||= {};
 }
 
@@ -961,8 +1039,9 @@ function normalizeFix(value) {
 }
 
 function normalizeMass(value) {
-  if (Array.isArray(value)) return value.slice(0, 6).map((item) => finite(item, 0));
-  return finite(value, 0);
+  const normalized = normalizeNodeMass6Dof(value, { label: 'node.mass' });
+  if (Array.isArray(value)) return value.length === 3 ? normalized.slice(0, 3) : normalized;
+  return normalized[0];
 }
 
 function normalizeLocalAxis(value = {}) {

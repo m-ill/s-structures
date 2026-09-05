@@ -41,9 +41,9 @@ PASS했으므로 P10-M1 자체는 `complete`다.
 
 | Artifact | Hash | 요약 |
 | --- | --- | --- |
-| [p10-m1-cross-validation.json](../../../reports/validation-evidence/phase10/p10-m1-cross-validation.json) | `01464c3ff4a9a53ffc5f7dd2` | PASS 2, PENDING 6, M1 gate true, badge false |
-| [p10-m1-hand-calculations.json](../../../reports/validation-evidence/phase10/p10-m1-hand-calculations.json) | `038ae92cff6ba0b532aeb5d2` | XV-01/02 폐형식·모달 기준값 |
-| [p10-m1-pathological-battery.json](../../../reports/validation-evidence/phase10/p10-m1-pathological-battery.json) | `1116ab166e3a0df612530d06` | BM-01~10 PASS |
+| [p10-m1-cross-validation.json](../../../verification/evidence/validation/phase10/p10-m1-cross-validation.json) | `01464c3ff4a9a53ffc5f7dd2` | PASS 2, PENDING 6, M1 gate true, badge false |
+| [p10-m1-hand-calculations.json](../../../verification/evidence/validation/phase10/p10-m1-hand-calculations.json) | `038ae92cff6ba0b532aeb5d2` | XV-01/02 폐형식·모달 기준값 |
+| [p10-m1-pathological-battery.json](../../../verification/evidence/validation/phase10/p10-m1-pathological-battery.json) | `1116ab166e3a0df612530d06` | BM-01~10 PASS |
 
 XV 최대 상대오차는 XV-01 `1.8503717077085944e-14`, XV-02 `1.5911563881114252e-9`로
 각 quantity tolerance 이내다. cross-validation evidence의 release 상태는 다음과 같다.

@@ -1,0 +1,138 @@
+{
+  "version": "p14-m1-winkler-implementation-evidence-v1",
+  "phase": "Phase 14",
+  "milestone": "P14-M1",
+  "status": "INTERNALLY_VERIFIED",
+  "generatedAt": "2026-08-27T05:42:32.405Z",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "buildHash": "a2ab5ad6b666fa39b9568d197746e678cc7e0f4f78ff6d9c3cef5aafaf80741c",
+  "benchmarkExecutionStarted": false,
+  "externalSolverRuntimeDependency": false,
+  "capabilityState": "internally-verified",
+  "independentQualification": "NOT_RUN",
+  "crossSolverComparison": "NOT_RUN",
+  "releaseAllowed": false,
+  "designTransferAllowed": false,
+  "productionFiles": [
+    "src/core/foundationSchema.js",
+    "src/solver/foundation/winklerLine.js",
+    "src/solver/frame/beamInterpolation.js",
+    "src/solver/linear3dAssembly.js",
+    "src/solver/linear3dRecovery.js",
+    "src/solver/linear3dPost.js",
+    "src/solver/pdelta/secondOrder.js",
+    "src/modeling/foundationTransactions.js",
+    "src/ui/foundationInspector.js",
+    "src/report/foundationResponse.js"
+  ],
+  "testCommands": [
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tools/run-phase14-tests.mjs",
+      "M1"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p6-pdelta-tangent.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p13-m1-index-workspace-integration.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/m26-native-modeler-e2e.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p10-m4-schema-domain-contract.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p10-m5-schema-domain-contract.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p10-m6-tapered.mjs"
+    ]
+  ],
+  "verificationRecords": [
+    {
+      "id": "P14-FND-01",
+      "status": "PASS",
+      "note": "uniform Winkler Hermite matrix parity, symmetry and PSD invariants"
+    },
+    {
+      "id": "P14-FND-02",
+      "status": "PASS",
+      "note": "k=0 boundary and fail-closed invalid assignments"
+    },
+    {
+      "id": "P14-FND-03",
+      "status": "PASS",
+      "note": "EB/Timoshenko, release, offset, rotation and reversal paths"
+    },
+    {
+      "id": "P14-FND-04",
+      "status": "PASS",
+      "note": "structural force, soil action and equilibrium matrix ownership separated"
+    },
+    {
+      "id": "P14-FND-05",
+      "status": "PASS",
+      "note": "schema migration, transaction/undo, CLI, Agent API, Inspector and report surfaces"
+    },
+    {
+      "id": "P14-FND-06",
+      "status": "PASS",
+      "note": "force/moment equilibrium and strain energy recovery"
+    },
+    {
+      "id": "P14-FND-07",
+      "status": "PASS",
+      "note": "full, stiffness-only/modal, Direct P-Delta, dense/sparse and cache paths"
+    },
+    {
+      "id": "P14-FND-08",
+      "status": "PASS",
+      "note": "property, domain, factor, wire and component-cache invalidation"
+    },
+    {
+      "id": "P14-SB7-01",
+      "status": "NOT_RUN",
+      "note": "NOT_RUN: benchmark execution is intentionally deferred until engine development is complete"
+    }
+  ],
+  "qualificationRecord": {
+    "version": "p14-m0-qualification-record-v1",
+    "capabilityId": "SB7",
+    "milestone": "P14-M1",
+    "implementationOwner": "distributed-winkler-foundation",
+    "runtimeOwner": "s-structures-in-house",
+    "implemented": true,
+    "internallyVerified": true,
+    "independentlyQualified": false,
+    "crossSolverCompared": false,
+    "releaseAllowed": false,
+    "designTransferAllowed": false,
+    "state": "internally-verified",
+    "crossSolverStatus": "NOT_RUN",
+    "hashes": {
+      "sourceHash": null,
+      "buildHash": "a2ab5ad6b666fa39b9568d197746e678cc7e0f4f78ff6d9c3cef5aafaf80741c",
+      "inputHash": null,
+      "referenceHash": null,
+      "toleranceHash": null,
+      "resultHash": null
+    },
+    "limitations": [
+      "Compression-only, gap/uplift, ground settlement, nonlinear and coupled-soil behavior remain out of scope.",
+      "SB7 benchmark, independent continuum comparison and MIDAS/STRIX cross-solver comparison have not been run."
+    ],
+    "invalidated": false,
+    "invalidationReasons": [],
+    "recordHash": "d1d25a232dcc3abe34f61a8199b356a43a8dd284c98e91156152d7483812baf3"
+  },
+  "releaseManifestHash": "2fd9d10f45dc41d531c0a32413b3dc9c2ea5d1079ecc1edd256a8203522830b8",
+  "artifactHash": "e4ff3f5752d81d67b483d4dd9f58b86a6154f2f336154cbbc3d6d542b3fe4773"
+}

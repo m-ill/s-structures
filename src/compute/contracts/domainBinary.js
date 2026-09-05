@@ -5,7 +5,7 @@ import { normalizeSectionRecord } from '../../materials/sectionSchema.js';
 import { normalizeGeneralConstraints } from '../../core/constraintDefinitions.js';
 import { resolveShellPressureLoad as resolveShellPressureDefinition } from '../../core/shellPressureLoad.js';
 
-export const DOMAIN_BINARY_VERSION = 'p10-domain-binary-v6';
+export const DOMAIN_BINARY_VERSION = 'p14-domain-binary-v7-foundation';
 export const DOMAIN_BINARY_ENDIANNESS = detectEndianness();
 
 const MEMBER_ROTATIONAL_SPRING_COMPONENTS = Object.freeze(['ryI', 'rzI', 'ryJ', 'rzJ']);
@@ -28,6 +28,7 @@ export function packDomainBinary(model = {}) {
   const loads = array(model.loads);
   const loadCases = array(model.loadCases);
   const combinations = array(model.loadCombinations);
+  const foundationProperties = array(model.foundationProperties);
   const shellCandidates = [...array(model.shells), ...array(model.slabs).filter((item) => item?.type === 'shell')];
   const shellCandidateIds = uniqueShellIds(shellCandidates);
   const shells = shellCandidates.filter((item) => item?.formulation != null && item.formulation !== 'equivalent');
@@ -48,11 +49,13 @@ export function packDomainBinary(model = {}) {
   const loadIds = loads.map((row, index) => text(row.id) || 'L' + (index + 1));
   const combinationIds = combinations.map((row, index) => text(row.id) || 'C' + (index + 1));
   const memberTypeIds = [...new Set(members.map((row) => text(row.type) || 'frame'))].sort();
+  const foundationIds = uniqueIds(foundationProperties, 'foundation property');
   const nodeIndex = indexMap(nodeIds);
   const materialIndex = indexMap(materialIds);
   const sectionIndex = indexMap(sectionIds);
   const loadCaseIndex = indexMap(loadCaseIds);
   const memberTypeIndex = indexMap(memberTypeIds);
+  const foundationIndex = indexMap(foundationIds);
   const shellIdByRecord = new Map(shellCandidates.map((row, index) => [row, shellCandidateIds[index]]));
   const shellIds = shells.map((row) => shellIdByRecord.get(row));
 
@@ -150,11 +153,23 @@ export function packDomainBinary(model = {}) {
   const memberTaperSegmentOffsets = new Int32Array(members.length + 1);
   const memberTaperSegmentBounds = new Float64Array(taperSegmentCount * 2);
   const memberTaperSegmentSections = new Int32Array(taperSegmentCount);
+  const memberFoundation = new Int32Array(members.length).fill(-1);
+  const foundationLineStiffness = new Float64Array(foundationProperties.length * 2);
+  foundationProperties.forEach((property, index) => {
+    if (property.type !== 'winkler-line' || (property.behavior || 'linear-bilateral') !== 'linear-bilateral') {
+      throw contractError('FOUNDATION_PROPERTY_UNSUPPORTED', `Foundation property ${property.id || '?'} is not a linear-bilateral winkler-line property.`);
+    }
+    foundationLineStiffness.set([
+      domainLineStiffness(property.localY, `${property.id}.localY`),
+      domainLineStiffness(property.localZ, `${property.id}.localZ`),
+    ], index * 2);
+  });
   let taperSegmentIndex = 0;
   members.forEach((member, index) => {
     connectivity[index * 2] = requiredIndex(nodeIndex, member.n1, 'member.n1');
     connectivity[index * 2 + 1] = requiredIndex(nodeIndex, member.n2, 'member.n2');
     memberType[index] = memberTypeIndex.get(text(member.type) || 'frame');
+    if (member.foundationId != null) memberFoundation[index] = requiredIndex(foundationIndex, member.foundationId, 'member.foundationId');
     memberMaterial[index] = requiredIndex(materialIndex, member.matId, 'member.matId');
     memberSection[index] = requiredIndex(sectionIndex, member.secId, 'member.secId');
     memberRoll[index] = numberOr(member.localAxis?.roll, 0);
@@ -275,6 +290,7 @@ export function packDomainBinary(model = {}) {
     memberTypeIds,
     constraintIds,
     shellIds,
+    foundationIds,
   };
   const buffers = {
     coordinates,
@@ -302,6 +318,8 @@ export function packDomainBinary(model = {}) {
     memberTaperSegmentOffsets,
     memberTaperSegmentBounds,
     memberTaperSegmentSections,
+    memberFoundation,
+    foundationLineStiffness,
     materialProperties,
     sectionProperties,
     sectionShearAreas,
@@ -334,6 +352,8 @@ export function packDomainBinary(model = {}) {
       memberTaperProfiles: { 0: 'absent', 1: 'linear', 2: 'parabolic-depth', 3: 'segments' },
       memberTaperGaussPoints: 'gauss-legendre-point-count',
       memberTaperSegmentBounds: ['start-xi', 'end-xi'],
+      memberFoundation: '-1 absent; otherwise foundationIds index',
+      foundationLineStiffness: ['localY-F/L^2', 'localZ-F/L^2'],
       memberReleaseCodes: ['i', 'j'],
       nodePanelZones: ['tp', 'db', 'dc'],
       nodePanelZoneAxis: { 0: 'absent', 1: 'strong-axis-default', 2: 'local-y', 3: 'local-z' },
@@ -373,6 +393,7 @@ export function packDomainBinary(model = {}) {
       constraintEquations: normalizedConstraints.equationCount,
       constraintTerms: constraintTermDofs.length,
       taperSegments: taperSegmentCount,
+      foundationProperties: foundationProperties.length,
       shells: shells.length,
     },
     dictionaryHash: stableHash(dictionaries),
@@ -524,6 +545,13 @@ export function validateDomainBinary(domain) {
     || [...(buffers.memberTaperSegmentBounds || [])].some((value) => !Number.isFinite(value))) errors.push('domain:member-taper-segment-bounds');
   if (!(buffers.memberTaperSegmentSections instanceof Int32Array)
     || buffers.memberTaperSegmentSections.length !== taperSegmentCount) errors.push('domain:member-taper-segment-sections');
+  const foundationCount = Number(domain.metadata?.counts?.foundationProperties) || 0;
+  if (!(buffers.memberFoundation instanceof Int32Array)
+    || buffers.memberFoundation.length !== memberCount
+    || [...(buffers.memberFoundation || [])].some((value) => value < -1 || value >= foundationCount)) errors.push('domain:member-foundation');
+  if (!(buffers.foundationLineStiffness instanceof Float64Array)
+    || buffers.foundationLineStiffness.length !== foundationCount * 2
+    || [...(buffers.foundationLineStiffness || [])].some((value) => !Number.isFinite(value) || value < 0)) errors.push('domain:foundation-line-stiffness');
   if (!(buffers.sectionShearAreas instanceof Float64Array)
     || domain.metadata?.counts?.sections * 2 !== buffers.sectionShearAreas.length) errors.push('domain:section-shear-areas');
   const equationCount = domain.metadata?.counts?.constraintEquations;
@@ -585,6 +613,7 @@ export function unpackDomainBinary(domain) {
       secId: dictionaries.sectionIds[buffers.memberSection[index]],
       releases,
     };
+    if (buffers.memberFoundation[index] >= 0) member.foundationId = dictionaries.foundationIds[buffers.memberFoundation[index]];
     const offsetStart = index * 6;
     const values = Array.from(buffers.memberOffsets.slice(offsetStart, offsetStart + 6));
     const kind = buffers.memberOffsetKinds[index];
@@ -627,11 +656,19 @@ export function unpackDomainBinary(domain) {
     return member;
   });
   const loads = dictionaries.loadIds.map((id, index) => unpackTypedLoad(dictionaries, buffers, id, index));
+  const foundationProperties = dictionaries.foundationIds.map((id, index) => ({
+    id,
+    type: 'winkler-line',
+    behavior: 'linear-bilateral',
+    localY: { lineStiffness: buffers.foundationLineStiffness[index * 2] },
+    localZ: { lineStiffness: buffers.foundationLineStiffness[index * 2 + 1] },
+  }));
   return {
     version: domain.version,
     units: { ...domain.metadata.units },
     nodes,
     members,
+    foundationProperties,
     loads,
     sourceHash: domain.metadata.sourceHash,
     domainHash: domain.domainHash,
@@ -652,6 +689,20 @@ function hashDomain(metadata, dictionaries, buffers, byteLength) {
     byteLength,
     buffers: Object.fromEntries(Object.entries(buffers).map(([key, value]) => [key, Array.from(value)])),
   });
+}
+
+function domainLineStiffness(direction, field) {
+  if (direction == null) return 0;
+  const direct = direction.lineStiffness;
+  const derivation = direction.derivation || direction;
+  const derived = derivation.subgradeModulus != null || derivation.tributaryWidth != null
+    ? finite(derivation.subgradeModulus, `${field}.subgradeModulus`) * finite(derivation.tributaryWidth, `${field}.tributaryWidth`)
+    : null;
+  const value = direct == null ? (derived ?? 0) : finite(direct, `${field}.lineStiffness`);
+  if (value < 0 || (derived != null && Math.abs(value - derived) / Math.max(1, Math.abs(value), Math.abs(derived)) > 1e-9)) {
+    throw contractError('FOUNDATION_PROPERTY_INVALID', `${field} has invalid or inconsistent line stiffness.`);
+  }
+  return value;
 }
 
 function fixedDofs(node) {

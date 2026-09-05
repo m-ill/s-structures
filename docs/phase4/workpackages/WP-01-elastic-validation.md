@@ -20,7 +20,7 @@ P3-M10~M13(재료/탄성 확장/벽체/하중 v2·동적)을 preliminary에서 p
 ## Work Breakdown
 
 ### Step 1. 검증 케이스 목록 확정 (T01 착수)
-1. `docs/verification/ELASTIC_EXPANSION_VALIDATION.md` 생성 — VALIDATION_PLAN의 케이스 그룹 표를 케이스 ID(EV-01…)로 전개.
+1. `verification/specs/ELASTIC_EXPANSION_VALIDATION.md` 생성 — VALIDATION_PLAN의 케이스 그룹 표를 케이스 ID(EV-01…)로 전개.
 2. 케이스별 열: ID / 대상 기능 / 기준 출처(서지) / 입력 / 기준값 / tolerance / 테스트 파일·케이스명.
 3. 기존 관련 테스트(`tests/p3-m11-elastic-expansion.mjs` 등)의 기준값 출처를 역추적 — 자체 생성값이면 케이스를 독립 출처로 교체.
 
@@ -44,7 +44,7 @@ P3-M10~M13(재료/탄성 확장/벽체/하중 v2·동적)을 preliminary에서 p
 
 ### Step 5. 상용 SW 대조 (T04)
 1. 대표 3모델(라멘/벽식/철골) 정의 — 기존 대표건물에서 선정, 모델링 가정 대조표(경계/강역/질량/조합) 먼저 작성.
-2. 오너 제공 상용 결과 도착 시: 절점변위/반력/부재력 CSV 대조 스크립트(`tools/compare-crosscheck.mjs` 신규) → `reports/validation-evidence/elastic-crosscheck/`.
+2. 오너 제공 상용 결과 도착 시: 절점변위/반력/부재력 CSV 대조 스크립트(`tools/compare-crosscheck.mjs` 신규) → `verification/evidence/validation/elastic-crosscheck/`.
 3. ±3% 초과 항목은 가정 차이 규명 문서화 → 해소 불가 시 버그로 TD 등재.
 4. 미도착 시: 문헌의 완전 풀이 예제(프레임 해석 교재)로 대체하고 대체 사실 명기.
 
@@ -57,9 +57,9 @@ P3-M10~M13(재료/탄성 확장/벽체/하중 v2·동적)을 preliminary에서 p
 
 | 산출물 | 위치 |
 | --- | --- |
-| 검증 문서 (케이스 전개+수계산) | `docs/verification/ELASTIC_EXPANSION_VALIDATION.md` |
+| 검증 문서 (케이스 전개+수계산) | `verification/specs/ELASTIC_EXPANSION_VALIDATION.md` |
 | 신규 테스트 | `tests/p4-elastic-validation.mjs`, `tests/p4-elastic-active-state.mjs` |
-| 상용 대조 산출물 | `reports/validation-evidence/elastic-crosscheck/` |
+| 상용 대조 산출물 | `verification/evidence/validation/elastic-crosscheck/` |
 | 승격 커밋 4건 | git |
 
 ## Acceptance Criteria

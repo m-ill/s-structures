@@ -5,9 +5,9 @@ import {
   createModel,
   fixedEndUdl,
   localK12,
-  modelHash,
   resolveMemberPartialFixity,
 } from '../src/index.js';
+import { modelHash } from '../verification/index.js';
 import { condenseReleasedDofs } from '../src/solver/linear3dElement.js';
 
 const E = 30e6;

@@ -1,0 +1,4131 @@
+{
+  "version": "p17-local-engineering-result-v1",
+  "caseId": "SB1",
+  "runId": "SB1-LOCAL-20260828T114933160Z-R3",
+  "mode": "LOCAL_TEST_ONLY",
+  "engineeringResultHash": "bf2b721060ae14bcd381ea140a1b4550a64462af86586c11944c0f41fa57d2a7",
+  "values": {
+    "tipUzM": -0.0001078651685393258,
+    "tipRyRad": 0.00005393258426966291,
+    "supportRzKn": 0.9999999999999996,
+    "supportMyKnm": -2.999999999999999
+  },
+  "rawProductResult": {
+    "version": "p8-m10-analysis-runners-v6-p10-m7",
+    "externalRuntimeUsed": false,
+    "networkFallbackUsed": false,
+    "executionProvenance": {
+      "origin": "S_STRUCTURES_PUBLIC_ANALYSIS_RUNNER",
+      "runnerVersion": "p8-m10-analysis-runners-v6-p10-m7",
+      "externalRuntimeUsed": false,
+      "networkFallbackUsed": false,
+      "observationSource": "OWNED_IN_PROCESS_PUBLIC_RUNNER_BOUNDARY"
+    },
+    "caseId": "SB1-STATIC",
+    "kind": "static",
+    "ok": true,
+    "status": "ok",
+    "qualification": "candidate",
+    "designBlocked": false,
+    "designBlockReason": null,
+    "engine": null,
+    "modelBound": null,
+    "capability": null,
+    "routing": {
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "operationRoute": {
+        "operation": "elasticStatic",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "backendId": "cpu-f64-linear3d",
+        "precision": "f64",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "reason": "Explicit qualified CPU f64 route."
+      },
+      "fallbackPolicy": "forbidden",
+      "fallbackObservation": "OBSERVED",
+      "fallbackUsed": false
+    },
+    "provenance": null,
+    "startedAt": "2026-08-28T11:49:33.432Z",
+    "completedAt": "2026-08-28T11:49:33.438Z",
+    "settings": {
+      "comboId": "D_ONLY",
+      "pDeltaMethod": "off",
+      "pDelta": false
+    },
+    "summary": {
+      "ok": true,
+      "designBlocked": false,
+      "designBlockReason": null,
+      "designEligibility": {
+        "eligible": true,
+        "status": "qualified",
+        "reason": null,
+        "limitationCodes": [],
+        "source": "linear-static-envelope"
+      },
+      "shellFemQualification": {
+        "status": "qualified",
+        "designTransferAllowed": true,
+        "blockers": [],
+        "byCombo": [
+          {
+            "comboId": "D_ONLY",
+            "elementCount": 0,
+            "expectedElementCount": 0,
+            "qualificationStatus": "qualified",
+            "designTransferAllowed": true,
+            "blockers": []
+          }
+        ],
+        "equivalentShellCount": 0
+      },
+      "comboCount": 1,
+      "comboIds": [
+        "D_ONLY"
+      ],
+      "hasEnvelope": true,
+      "pDelta": false,
+      "pDeltaMethod": "off"
+    },
+    "view": "static-results",
+    "message": null,
+    "payload": {
+      "ok": true,
+      "validation": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "healthVersion": "p2-t04-validation-health",
+        "modelHealthScore": 100,
+        "issueCount": 0,
+        "status": "OK"
+      },
+      "model": {
+        "schemaVersion": 6,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "unitSystem": {
+          "version": "p2-t01-unit-system",
+          "internal": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m",
+            "stress": "N/mm2",
+            "displacement": "mm"
+          },
+          "display": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m",
+            "stress": "N/mm2",
+            "displacement": "mm"
+          },
+          "conversionAudit": []
+        },
+        "storyModel": {
+          "version": "p2-s4-story-model",
+          "source": "node-z",
+          "count": 0
+        },
+        "stories": [],
+        "diaphragms": [],
+        "materials": [
+          {
+            "id": "SB1-MAT",
+            "version": 1,
+            "name": "SB1 elastic material",
+            "E": 26700,
+            "G": 11125,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "SB1-SEC",
+            "version": 1,
+            "name": "SB1 300x500 rectangular section",
+            "type": "RECT",
+            "dims": {
+              "B": 300,
+              "H": 500
+            },
+            "A": 0.15,
+            "Iy": 0.001125,
+            "Iz": 0.003125,
+            "J": 0.0028173708,
+            "Ay": 0.125,
+            "Az": 0.125,
+            "Zy": 0.0075,
+            "Zz": 0.0125
+          }
+        ],
+        "nodes": [
+          {
+            "id": "N1",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "N2",
+            "x": 3,
+            "y": 0,
+            "z": 0
+          }
+        ],
+        "members": [
+          {
+            "type": "frame",
+            "id": "M1",
+            "n1": "N1",
+            "n2": "N2",
+            "matId": "SB1-MAT",
+            "secId": "SB1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          }
+        ],
+        "foundationProperties": [],
+        "loads": [
+          {
+            "id": "P",
+            "type": "nodal",
+            "node": "N2",
+            "P": 1,
+            "dir": "-z",
+            "case": "D"
+          }
+        ],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "SB1 tip load",
+            "type": "dead"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "massSources": [],
+        "sourceRegistry": [],
+        "designBasis": {
+          "status": "unconfigured",
+          "codeSourceId": null,
+          "designMethod": null,
+          "unitSystem": null,
+          "fields": {},
+          "floorUsages": [],
+          "confirmedFields": []
+        },
+        "projectSetup": {
+          "version": "p7-m0-project-setup-v1",
+          "status": "legacy-unreviewed",
+          "templateId": null,
+          "configuredAt": null,
+          "reviewedAt": null,
+          "warnings": []
+        },
+        "analysisCases": [
+          {
+            "id": "SB1-STATIC",
+            "name": "SB1 linear static",
+            "kind": "static",
+            "settings": {
+              "comboId": "D_ONLY",
+              "pDeltaMethod": "off"
+            },
+            "input": {},
+            "status": "not-run",
+            "caseVersion": "p8-analysis-case-v2",
+            "lastRun": null
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "linear_static",
+          "elementType": "3d_frame",
+          "shearDeformation": false,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 41,
+          "includeFixedEndDeformation": true,
+          "validateBeforeSolve": true,
+          "pDeltaMaxIterations": 12,
+          "pDeltaTolerance": 0.0001,
+          "pDeltaMaxAmplification": 2.5,
+          "modalModeCount": 6,
+          "responseSpectrum": {
+            "enabled": false,
+            "directions": [
+              "x",
+              "y"
+            ],
+            "dampingRatio": 0.05,
+            "scale": 9.80665,
+            "points": [
+              {
+                "period": 0,
+                "sa": 0.4
+              },
+              {
+                "period": 5,
+                "sa": 0.4
+              }
+            ]
+          },
+          "pDeltaMethod": "off"
+        },
+        "analysisCriteria": {
+          "version": "p6-m0-analysis-criteria-v1",
+          "preset": "kds",
+          "criteria": {}
+        },
+        "nonlinearMaterials": [],
+        "nonlinearSections": [],
+        "hingeProperties": [],
+        "linkProperties": [],
+        "timeHistoryFunctions": [],
+        "analysisStates": [],
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false,
+            "defaultKy": 1,
+            "defaultKz": 1,
+            "defaultLbY": null,
+            "defaultLbZ": null,
+            "defaultDeflectionLimitTotal": 250,
+            "defaultDeflectionLimitLive": 360,
+            "defaultCompressionSlendernessLimit": 200,
+            "defaultTensionSlendernessLimit": 300,
+            "warnAtRatio": 0.7
+          },
+          "rc": {
+            "defaultCover": 0.05,
+            "defaultRebarFy": 400,
+            "defaultBeamRebarRatio": 0.01,
+            "defaultColumnRebarRatio": 0.015,
+            "minBeamRebarRatio": 0.002,
+            "minColumnRebarRatio": 0.01,
+            "maxColumnRebarRatio": 0.04,
+            "phiFlexure": 0.85,
+            "phiShear": 0.75,
+            "phiCompression": 0.65,
+            "warnAtRatio": 0.7
+          },
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        }
+      },
+      "pDeltaMethod": "off",
+      "methodTrace": {
+        "static": "linear-static-3d-frame",
+        "pDelta": {
+          "requested": "off",
+          "resolved": "off",
+          "enabled": false,
+          "legacy": false,
+          "direct": false
+        },
+        "analysisCase": {
+          "requestedPDeltaMethod": "off",
+          "routedPDeltaMethod": "off",
+          "requestedComboId": "D_ONLY",
+          "selectedComboId": "D_ONLY"
+        }
+      },
+      "combinationSelection": {
+        "source": "authored-or-analysis-case",
+        "explicit": true,
+        "comboIds": [
+          "D_ONLY"
+        ]
+      },
+      "combos": [
+        {
+          "id": "D_ONLY",
+          "name": "1.0D",
+          "type": "service",
+          "factors": {
+            "D": 1
+          }
+        }
+      ],
+      "byCombo": {
+        "D_ONLY": {
+          "ok": true,
+          "disp": {
+            "N1": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "N2": [
+              0,
+              0,
+              -0.0001078651685393258,
+              0,
+              0.00005393258426966291,
+              0
+            ]
+          },
+          "reactions": {
+            "N1": {
+              "rx": 0,
+              "ry": 0,
+              "rz": 0.9999999999999996,
+              "rmx": 0,
+              "rmy": -2.999999999999999,
+              "rmz": 0
+            }
+          },
+          "memberResults": {
+            "M1": {
+              "end": [
+                0,
+                0.9999999999999996,
+                0,
+                0,
+                0,
+                2.999999999999999,
+                0,
+                -0.9999999999999996,
+                0,
+                0,
+                0,
+                0
+              ],
+              "structuralEnd": [
+                0,
+                0.9999999999999996,
+                0,
+                0,
+                0,
+                2.999999999999999,
+                0,
+                -0.9999999999999996,
+                0,
+                0,
+                0,
+                0
+              ],
+              "foundationEnd": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "equilibriumEnd": [
+                0,
+                0.9999999999999996,
+                0,
+                0,
+                0,
+                2.999999999999999,
+                0,
+                -0.9999999999999996,
+                0,
+                0,
+                0,
+                0
+              ],
+              "endActionContract": {
+                "version": "p15-m5-foundation-recovery-v1",
+                "coordinateSystem": "member-local",
+                "actionConvention": "assembled-resisting-end-action",
+                "equation": "equilibriumEnd=structuralEnd+foundationEnd",
+                "structuralEquation": "Ks*d+f0_external",
+                "foundationEquation": "Kf*d",
+                "soilEquivalentNodalEquation": "-Kf*d",
+                "foundationActive": false,
+                "structuralEnd": [
+                  0,
+                  0.9999999999999996,
+                  0,
+                  0,
+                  0,
+                  2.999999999999999,
+                  0,
+                  -0.9999999999999996,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "foundationEnd": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "soilEquivalentNodalAction": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "equilibriumEnd": [
+                  0,
+                  0.9999999999999996,
+                  0,
+                  0,
+                  0,
+                  2.999999999999999,
+                  0,
+                  -0.9999999999999996,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "contractHash": "c9ada96931ad270fe354a747e9c5e6c739331fe6468d2eb62a782e8f92450394"
+              },
+              "dl": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -0.0001078651685393258,
+                0,
+                0,
+                0,
+                -0.00005393258426966291
+              ],
+              "ax": {
+                "L": 3,
+                "x": [
+                  1,
+                  0,
+                  0
+                ],
+                "y": [
+                  0,
+                  0,
+                  1
+                ],
+                "z": [
+                  0,
+                  -1,
+                  0
+                ],
+                "grossL": 3,
+                "offset": {
+                  "i": 0,
+                  "j": 0,
+                  "rigidFactor": 1
+                },
+                "flexibleStart": {
+                  "id": "N1",
+                  "x": 0,
+                  "y": 0,
+                  "z": 0,
+                  "support": "fixed"
+                },
+                "flexibleEnd": {
+                  "id": "N2",
+                  "x": 3,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "xs": [
+                0,
+                0.075,
+                0.15,
+                0.225,
+                0.3,
+                0.375,
+                0.45,
+                0.525,
+                0.6,
+                0.675,
+                0.75,
+                0.825,
+                0.9,
+                0.975,
+                1.05,
+                1.125,
+                1.2,
+                1.275,
+                1.35,
+                1.425,
+                1.5,
+                1.575,
+                1.65,
+                1.725,
+                1.8,
+                1.875,
+                1.95,
+                2.025,
+                2.1,
+                2.175,
+                2.25,
+                2.325,
+                2.4,
+                2.475,
+                2.55,
+                2.625,
+                2.7,
+                2.775,
+                2.85,
+                2.925,
+                3
+              ],
+              "N": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "Vy": [
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996,
+                -0.9999999999999996
+              ],
+              "Vz": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "Tq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "My": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "Mz": [
+                -2.999999999999999,
+                -2.924999999999999,
+                -2.849999999999999,
+                -2.774999999999999,
+                -2.6999999999999993,
+                -2.624999999999999,
+                -2.5499999999999994,
+                -2.474999999999999,
+                -2.3999999999999995,
+                -2.3249999999999993,
+                -2.2499999999999996,
+                -2.1749999999999994,
+                -2.0999999999999996,
+                -2.0249999999999995,
+                -1.9499999999999995,
+                -1.8749999999999996,
+                -1.7999999999999996,
+                -1.7249999999999999,
+                -1.6499999999999997,
+                -1.5749999999999997,
+                -1.4999999999999998,
+                -1.4249999999999998,
+                -1.3499999999999999,
+                -1.2749999999999997,
+                -1.2,
+                -1.125,
+                -1.05,
+                -0.9750000000000001,
+                -0.8999999999999999,
+                -0.8250000000000002,
+                -0.75,
+                -0.6749999999999998,
+                -0.6000000000000001,
+                -0.5249999999999999,
+                -0.4500000000000006,
+                -0.37500000000000044,
+                -0.30000000000000027,
+                -0.22500000000000053,
+                -0.15000000000000036,
+                -0.07500000000000062,
+                -4.440892098500626e-16
+              ],
+              "L": 3,
+              "fixedEndLoads": [],
+              "timoshenko": {
+                "version": "p10-m2-timoshenko-frame-v1",
+                "formulation": "euler-bernoulli",
+                "requested": false,
+                "enabled": false,
+                "settingSource": "analysisSettings.shearDeformation",
+                "override": null,
+                "settingValid": true,
+                "phiY": 0,
+                "phiZ": 0,
+                "shearAreaY": 0.125,
+                "shearAreaZ": 0.125,
+                "missingShearAreas": [],
+                "shapeFunctions": "cubic-hermite",
+                "fixedEndLoads": "euler-bernoulli-consistent",
+                "recovery": "cubic-hermite-plus-fixed-end-bubble",
+                "geometricStiffness": {
+                  "formulation": "euler-bernoulli-small-displacement",
+                  "consistent": true,
+                  "limitationCode": null
+                },
+                "limitations": []
+              },
+              "taper": null,
+              "partialFixity": null,
+              "offset": {
+                "version": "p10-m4-member-offset-v1",
+                "applied": false,
+                "vector3d": false,
+                "frame": "local",
+                "insertionPoint": "centroid",
+                "flexibleLength": 3,
+                "grossLength": 3,
+                "vectors": {
+                  "global": {
+                    "i": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "j": [
+                      0,
+                      0,
+                      0
+                    ]
+                  },
+                  "local": {
+                    "i": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "j": [
+                      0,
+                      0,
+                      0
+                    ]
+                  },
+                  "insertionLocal": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "rows": [
+                  {
+                    "end": "i",
+                    "arm": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "faceForce": [
+                      0,
+                      0,
+                      0.9999999999999996
+                    ],
+                    "faceMoment": [
+                      0,
+                      -2.999999999999999,
+                      0
+                    ],
+                    "jointForce": [
+                      0,
+                      0,
+                      0.9999999999999996
+                    ],
+                    "jointMoment": [
+                      0,
+                      -2.999999999999999,
+                      0
+                    ],
+                    "expectedJointMoment": [
+                      0,
+                      -2.999999999999999,
+                      0
+                    ],
+                    "forceResidual": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "momentResidual": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "equilibriumResidual": 0
+                  },
+                  {
+                    "end": "j",
+                    "arm": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "faceForce": [
+                      0,
+                      0,
+                      -0.9999999999999996
+                    ],
+                    "faceMoment": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "jointForce": [
+                      0,
+                      0,
+                      -0.9999999999999996
+                    ],
+                    "jointMoment": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "expectedJointMoment": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "forceResidual": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "momentResidual": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "equilibriumResidual": 0
+                  }
+                ],
+                "faceEndGlobal": [
+                  0,
+                  0,
+                  0.9999999999999996,
+                  0,
+                  -2.999999999999999,
+                  0,
+                  0,
+                  0,
+                  -0.9999999999999996,
+                  0,
+                  0,
+                  0
+                ],
+                "jointEndGlobal": [
+                  0,
+                  0,
+                  0.9999999999999996,
+                  0,
+                  -2.999999999999999,
+                  0,
+                  0,
+                  0,
+                  -0.9999999999999996,
+                  0,
+                  0,
+                  0
+                ],
+                "maxEquilibriumResidual": 0,
+                "transferEquation": "F_joint=F_face; M_joint=M_face+r_cross_F_face"
+              },
+              "foundation": null,
+              "constitutiveStations": {
+                "xs": [
+                  0,
+                  0.075,
+                  0.15,
+                  0.225,
+                  0.3,
+                  0.375,
+                  0.45,
+                  0.525,
+                  0.6,
+                  0.675,
+                  0.75,
+                  0.825,
+                  0.9,
+                  0.975,
+                  1.05,
+                  1.125,
+                  1.2,
+                  1.275,
+                  1.35,
+                  1.425,
+                  1.5,
+                  1.575,
+                  1.65,
+                  1.725,
+                  1.8,
+                  1.875,
+                  1.95,
+                  2.025,
+                  2.1,
+                  2.175,
+                  2.25,
+                  2.325,
+                  2.4,
+                  2.475,
+                  2.55,
+                  2.625,
+                  2.7,
+                  2.775,
+                  2.85,
+                  2.925,
+                  3
+                ],
+                "N": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "Vy": [
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996
+                ],
+                "Vz": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "Tq": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "My": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "Mz": [
+                  -2.999999999999999,
+                  -2.924999999999999,
+                  -2.849999999999999,
+                  -2.774999999999999,
+                  -2.6999999999999993,
+                  -2.624999999999999,
+                  -2.5499999999999994,
+                  -2.474999999999999,
+                  -2.3999999999999995,
+                  -2.3249999999999993,
+                  -2.2499999999999996,
+                  -2.1749999999999994,
+                  -2.0999999999999996,
+                  -2.0249999999999995,
+                  -1.9499999999999995,
+                  -1.8749999999999996,
+                  -1.7999999999999996,
+                  -1.7249999999999999,
+                  -1.6499999999999997,
+                  -1.5749999999999997,
+                  -1.4999999999999998,
+                  -1.4249999999999998,
+                  -1.3499999999999999,
+                  -1.2749999999999997,
+                  -1.2,
+                  -1.125,
+                  -1.05,
+                  -0.9750000000000001,
+                  -0.8999999999999999,
+                  -0.8250000000000002,
+                  -0.75,
+                  -0.6749999999999998,
+                  -0.6000000000000001,
+                  -0.5249999999999999,
+                  -0.4500000000000006,
+                  -0.37500000000000044,
+                  -0.30000000000000027,
+                  -0.22500000000000053,
+                  -0.15000000000000036,
+                  -0.07500000000000062,
+                  -4.440892098500626e-16
+                ]
+              },
+              "equilibriumStations": {
+                "xs": [
+                  0,
+                  0.075,
+                  0.15,
+                  0.225,
+                  0.3,
+                  0.375,
+                  0.45,
+                  0.525,
+                  0.6,
+                  0.675,
+                  0.75,
+                  0.825,
+                  0.9,
+                  0.975,
+                  1.05,
+                  1.125,
+                  1.2,
+                  1.275,
+                  1.35,
+                  1.425,
+                  1.5,
+                  1.575,
+                  1.65,
+                  1.725,
+                  1.8,
+                  1.875,
+                  1.95,
+                  2.025,
+                  2.1,
+                  2.175,
+                  2.25,
+                  2.325,
+                  2.4,
+                  2.475,
+                  2.55,
+                  2.625,
+                  2.7,
+                  2.775,
+                  2.85,
+                  2.925,
+                  3
+                ],
+                "N": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "Vy": [
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996,
+                  -0.9999999999999996
+                ],
+                "Vz": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "Tq": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "My": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "Mz": [
+                  -2.999999999999999,
+                  -2.924999999999999,
+                  -2.849999999999999,
+                  -2.774999999999999,
+                  -2.6999999999999993,
+                  -2.624999999999999,
+                  -2.5499999999999994,
+                  -2.474999999999999,
+                  -2.3999999999999995,
+                  -2.3249999999999993,
+                  -2.2499999999999996,
+                  -2.1749999999999994,
+                  -2.0999999999999996,
+                  -2.0249999999999995,
+                  -1.9499999999999995,
+                  -1.8749999999999996,
+                  -1.7999999999999996,
+                  -1.7249999999999999,
+                  -1.6499999999999997,
+                  -1.5749999999999997,
+                  -1.4999999999999998,
+                  -1.4249999999999998,
+                  -1.3499999999999999,
+                  -1.2749999999999997,
+                  -1.2,
+                  -1.125,
+                  -1.05,
+                  -0.9750000000000001,
+                  -0.8999999999999999,
+                  -0.8250000000000002,
+                  -0.75,
+                  -0.6749999999999998,
+                  -0.6000000000000001,
+                  -0.5249999999999999,
+                  -0.4500000000000006,
+                  -0.37500000000000044,
+                  -0.30000000000000027,
+                  -0.22500000000000053,
+                  -0.15000000000000036,
+                  -0.07500000000000062,
+                  -4.440892098500626e-16
+                ]
+              },
+              "constitutiveStationEndClosure": {
+                "version": "p15-m5-foundation-recovery-v1",
+                "basis": "structuralEnd",
+                "status": "PASS",
+                "available": true,
+                "qualified": true,
+                "tolerance": 1e-10,
+                "maximumAbsoluteResidual": 4.440892098500626e-16,
+                "maximumRelativeResidual": 1.4802973661668758e-16,
+                "residuals": {
+                  "N": {
+                    "available": true,
+                    "expected": [
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      0
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "Vy": {
+                    "available": true,
+                    "expected": [
+                      -0.9999999999999996,
+                      -0.9999999999999996
+                    ],
+                    "actual": [
+                      -0.9999999999999996,
+                      -0.9999999999999996
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "Vz": {
+                    "available": true,
+                    "expected": [
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      0
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "Tq": {
+                    "available": true,
+                    "expected": [
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      0
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "My": {
+                    "available": true,
+                    "expected": [
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      0
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "Mz": {
+                    "available": true,
+                    "expected": [
+                      -2.999999999999999,
+                      0
+                    ],
+                    "actual": [
+                      -2.999999999999999,
+                      -4.440892098500626e-16
+                    ],
+                    "residual": [
+                      0,
+                      -4.440892098500626e-16
+                    ],
+                    "relativeResidual": [
+                      0,
+                      1.4802973661668758e-16
+                    ],
+                    "scale": 2.999999999999999
+                  }
+                }
+              },
+              "stationEndClosure": {
+                "version": "p15-m5-foundation-recovery-v1",
+                "basis": "equilibriumEnd",
+                "status": "PASS",
+                "available": true,
+                "qualified": true,
+                "tolerance": 1e-10,
+                "maximumAbsoluteResidual": 4.440892098500626e-16,
+                "maximumRelativeResidual": 1.4802973661668758e-16,
+                "residuals": {
+                  "N": {
+                    "available": true,
+                    "expected": [
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      0
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "Vy": {
+                    "available": true,
+                    "expected": [
+                      -0.9999999999999996,
+                      -0.9999999999999996
+                    ],
+                    "actual": [
+                      -0.9999999999999996,
+                      -0.9999999999999996
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "Vz": {
+                    "available": true,
+                    "expected": [
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      0
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "Tq": {
+                    "available": true,
+                    "expected": [
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      0
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "My": {
+                    "available": true,
+                    "expected": [
+                      0,
+                      0
+                    ],
+                    "actual": [
+                      0,
+                      0
+                    ],
+                    "residual": [
+                      0,
+                      0
+                    ],
+                    "relativeResidual": [
+                      0,
+                      0
+                    ],
+                    "scale": 1
+                  },
+                  "Mz": {
+                    "available": true,
+                    "expected": [
+                      -2.999999999999999,
+                      0
+                    ],
+                    "actual": [
+                      -2.999999999999999,
+                      -4.440892098500626e-16
+                    ],
+                    "residual": [
+                      0,
+                      -4.440892098500626e-16
+                    ],
+                    "relativeResidual": [
+                      0,
+                      1.4802973661668758e-16
+                    ],
+                    "scale": 2.999999999999999
+                  }
+                }
+              },
+              "matrixOwnership": {
+                "assembly": "klTotal",
+                "releaseRecovery": "klTotal",
+                "structuralEndForce": "klStructural*d+f0External",
+                "foundationEndForce": "zero",
+                "equilibriumEndForce": "structuralEnd+foundationEnd",
+                "stationRecoveryStart": "equilibriumEnd",
+                "foundationReaction": "not-applicable"
+              },
+              "deformationRecovery": {
+                "formulation": "euler-bernoulli",
+                "method": "cubic-hermite-plus-fixed-end-bubble",
+                "shearStrainIncluded": false
+              },
+              "loadRecoveryIssues": [],
+              "shape": [
+                [
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  -1.0028089887640447e-7
+                ],
+                [
+                  0,
+                  0,
+                  -3.9775280898876395e-7
+                ],
+                [
+                  0,
+                  0,
+                  -8.87359550561797e-7
+                ],
+                [
+                  0,
+                  0,
+                  -0.000001564044943820224
+                ],
+                [
+                  0,
+                  0,
+                  -0.0000024227528089887626
+                ],
+                [
+                  0,
+                  0,
+                  -0.0000034584269662921328
+                ],
+                [
+                  0,
+                  0,
+                  -0.000004666011235955053
+                ],
+                [
+                  0,
+                  0,
+                  -0.000006040449438202245
+                ],
+                [
+                  0,
+                  0,
+                  -0.000007576685393258424
+                ],
+                [
+                  0,
+                  0,
+                  -0.000009269662921348311
+                ],
+                [
+                  0,
+                  0,
+                  -0.000011114325842696624
+                ],
+                [
+                  0,
+                  0,
+                  -0.000013105617977528082
+                ],
+                [
+                  0,
+                  0,
+                  -0.00001523848314606741
+                ],
+                [
+                  0,
+                  0,
+                  -0.000017507865168539312
+                ],
+                [
+                  0,
+                  0,
+                  -0.000019908707865168533
+                ],
+                [
+                  0,
+                  0,
+                  -0.000022435955056179772
+                ],
+                [
+                  0,
+                  0,
+                  -0.000025084550561797743
+                ],
+                [
+                  0,
+                  0,
+                  -0.000027849438202247177
+                ],
+                [
+                  0,
+                  0,
+                  -0.00003072556179775279
+                ],
+                [
+                  0,
+                  0,
+                  -0.00003370786516853931
+                ],
+                [
+                  0,
+                  0,
+                  -0.00003679129213483146
+                ],
+                [
+                  0,
+                  0,
+                  -0.00003997078651685392
+                ],
+                [
+                  0,
+                  0,
+                  -0.00004324129213483144
+                ],
+                [
+                  0,
+                  0,
+                  -0.00004659775280898874
+                ],
+                [
+                  0,
+                  0,
+                  -0.00005003511235955055
+                ],
+                [
+                  0,
+                  0,
+                  -0.00005354831460674156
+                ],
+                [
+                  0,
+                  0,
+                  -0.00005713230337078652
+                ],
+                [
+                  0,
+                  0,
+                  -0.00006078202247191008
+                ],
+                [
+                  0,
+                  0,
+                  -0.00006449241573033703
+                ],
+                [
+                  0,
+                  0,
+                  -0.00006825842696629211
+                ],
+                [
+                  0,
+                  0,
+                  -0.00007207499999999998
+                ],
+                [
+                  0,
+                  0,
+                  -0.00007593707865168537
+                ],
+                [
+                  0,
+                  0,
+                  -0.00007983960674157298
+                ],
+                [
+                  0,
+                  0,
+                  -0.00008377752808988762
+                ],
+                [
+                  0,
+                  0,
+                  -0.0000877457865168539
+                ],
+                [
+                  0,
+                  0,
+                  -0.0000917393258426966
+                ],
+                [
+                  0,
+                  0,
+                  -0.00009575308988764045
+                ],
+                [
+                  0,
+                  0,
+                  -0.00009978202247191005
+                ],
+                [
+                  0,
+                  0,
+                  -0.00010382106741573027
+                ],
+                [
+                  0,
+                  0,
+                  -0.0001078651685393258
+                ]
+              ],
+              "dmaxM": 0.0001078651685393258,
+              "Nmax": 0,
+              "Vymax": 0.9999999999999996,
+              "Vzmax": 0,
+              "Tmax": 0,
+              "Mymax": 0,
+              "Mzmax": 2.999999999999999,
+              "check": {
+                "formula": "elastic_stress_interaction",
+                "expression": "|N|/(A*Fa) + |Mz|/(Zz*Fb) + |My|/(Zy*Fb) <= 1, shear 1.5V/(A*Fv) <= 1",
+                "inputs": {
+                  "N": 0,
+                  "Mz": 2.999999999999999,
+                  "My": 0,
+                  "Vmax": 0.9999999999999996,
+                  "A": 0.15,
+                  "Zz": 0.0125,
+                  "Zy": 0.0075,
+                  "Fa": 666666666666.6666,
+                  "Fb": 666666666666.6666,
+                  "Fv": 384900179459.7505,
+                  "KLry": 34.6,
+                  "KLrz": 20.8
+                },
+                "rN": 0,
+                "rM": 3.599999999999999e-10,
+                "rV": 2.598076211353315e-11,
+                "ratio": 3.599999999999999e-10,
+                "limit": 1,
+                "ok": true,
+                "status": "OK",
+                "governing": "axial+bending"
+              }
+            }
+          },
+          "foundationResults": {},
+          "shellResults": {},
+          "solver": {
+            "type": "linear_static_3d_frame",
+            "componentCount": 1,
+            "dofCount": 12,
+            "freeDofCount": 6,
+            "fixedDofCount": 6,
+            "residualMax": 4.440892098500626e-16,
+            "residualNorm": 4.440892098500626e-16,
+            "loadNorm": 1,
+            "displacementNorm": 0.0001078651685393258,
+            "diagonalMin": 10447.75005,
+            "diagonalMax": 1335000,
+            "diaphragmCount": 0,
+            "generalConstraintCount": 0,
+            "generalConstraintEquationCount": 0,
+            "constraintForces": [],
+            "reducedDofCount": 12,
+            "sparse": {
+              "componentCount": 1,
+              "sparseAttemptedCount": 0,
+              "fallbackCount": 0,
+              "maxFillInRatio": 0,
+              "totalFactorizationMs": 0,
+              "totalSolveMs": 0.015600000000063119
+            },
+            "symmetryError": 0,
+            "conditionEstimate": 127.77870772281732,
+            "pivotRatio": 0.004999999999999995,
+            "warningCount": 0,
+            "warnings": [],
+            "suspectedMechanismDofs": [],
+            "autoFixedDofs": [],
+            "autoFixedReducedDofs": [],
+            "stabilizedRotationDofs": [],
+            "rotationStabilizations": [
+              {
+                "version": "p14-m9-unsupported-rotation-floor-v1",
+                "floorRatio": 1e-9,
+                "requestedFloorRatio": 1e-9,
+                "ratioValid": true,
+                "ratioInRange": true,
+                "characteristic": 1335000,
+                "floorStiffness": 0.001335,
+                "nullThreshold": 1.335e-8,
+                "rigidNullComponents": [],
+                "nullModeRotationDofs": [],
+                "rejectedRigidMechanismDofs": [],
+                "affectedDofs": [],
+                "canonicalPlanHash": "038b052b82ad0cc5607ebe6fe9dc3656395ba0d0a984819f681a927cb29af09f"
+              }
+            ],
+            "rigidModeGauges": [],
+            "executionMethods": [
+              "dense-partial-pivot"
+            ],
+            "mixedPrecisionComponentCount": 0
+          },
+          "elasticExpansion": {
+            "version": "p3-m11-elastic-expansion",
+            "contract": {
+              "milestone": "P3-M11",
+              "tickets": [
+                "P3-T68",
+                "P3-T69",
+                "P3-T70",
+                "P3-T71",
+                "P3-T72"
+              ],
+              "scope": [
+                "spring-supports",
+                "settlement",
+                "truss-and-unilateral-members",
+                "member-end-offsets",
+                "advanced-member-loads",
+                "thermal-loads"
+              ],
+              "signConventionRef": "src/core/signConvention.js",
+              "featureTicketMap": {
+                "springSupports": "P3-T68",
+                "settlements": "P3-T68",
+                "trussMembers": "P3-T69",
+                "tensionOnlyMembers": "P3-T69",
+                "compressionOnlyMembers": "P3-T69",
+                "memberOffsets": "P3-T70",
+                "partialDistributed": "P3-T71",
+                "trapezoid": "P3-T71",
+                "memberMoment": "P3-T71",
+                "temperature": "P3-T72",
+                "temperatureGradient": "P3-T72"
+              },
+              "reviewFields": [
+                "features",
+                "supportTrace",
+                "memberTrace",
+                "loadTrace",
+                "handcalc"
+              ],
+              "limitations": [
+                "unilateral-member-state-is-load-combination-specific",
+                "cable-sag-and-large-displacement-cable-effects-not-included",
+                "construction-sequence-and-prestress-not-included"
+              ],
+              "phase6": {
+                "milestone": "P6-M2",
+                "contract": "fe/q0/recovery/handcalc",
+                "solverLoads": "advanced member loads are solved with fixed-end force contracts; legacy expanded point loads remain for compatibility"
+              }
+            },
+            "inputCount": 1,
+            "outputCount": 1,
+            "solverLoadCount": 1,
+            "warnings": [],
+            "modelMembers": 1,
+            "features": {
+              "partialDistributed": 0,
+              "trapezoid": 0,
+              "memberMoment": 0,
+              "temperature": 0,
+              "temperatureGradient": 0,
+              "springSupports": 0,
+              "settlements": 0,
+              "trussMembers": 0,
+              "tensionOnlyMembers": 0,
+              "compressionOnlyMembers": 0,
+              "memberOffsets": 0
+            },
+            "supportTrace": [],
+            "memberTrace": [],
+            "loadTrace": [],
+            "consistentLoads": [],
+            "handcalc": [],
+            "review": {
+              "traceReady": true,
+              "settlementForceTraceReady": true,
+              "advancedLoadHandcalcReady": true,
+              "unilateralEnvelopeReviewRequired": false,
+              "memberOffsetReviewRequired": false,
+              "engineerReviewRequired": true,
+              "productionReady": false,
+              "blockers": [],
+              "agentDecision": "elastic-expansion-ready-for-engineering-review"
+            }
+          },
+          "analysisDomain": {
+            "version": "p8-m1-domain-adapter-compatibility-v1",
+            "adapter": "linear",
+            "domainVersion": "p8-m1-canonical-analysis-domain-v1",
+            "domainHash": "2b186787fe237ac24fb17ecc",
+            "topologyHash": "3dad0cf160f12e72a8bb7dfa",
+            "propertyHash": "b500820d9f4227486956af8e",
+            "constraintHash": "0fbf8d3a274386da298ad381",
+            "constraintContractHash": "cc6654152a18a0edadafaaf1",
+            "massHash": "ef1ddaeaf656110c697ae76e",
+            "nonlinearHash": "14d7e877f801c56352f905bc",
+            "originMapHash": "c6690011903e2a94e17b525f",
+            "metadataHash": "245dc9a75204c743f94a84fe",
+            "unitSystemHash": "661b7910c40a95b03ea9be1a",
+            "nodeIds": [
+              "N1",
+              "N2"
+            ],
+            "elementIds": [
+              "M1"
+            ],
+            "descriptorHashes": [
+              [
+                "M1",
+                "e140ea66ff8679e6bab61721"
+              ]
+            ],
+            "adapterHash": "769b2a745eab1d73ebaa5362"
+          },
+          "unstableMembers": {},
+          "failedComponents": [],
+          "dmax": 0.0001078651685393258,
+          "anyOk": true,
+          "maxRatio": 3.599999999999999e-10,
+          "ngCount": 0,
+          "okCount": 1,
+          "shellFem": {
+            "elementCount": 0,
+            "expectedElementCount": 0,
+            "qualificationStatus": "qualified",
+            "designTransferAllowed": true,
+            "blockers": []
+          },
+          "semiRigidDiaphragm": {
+            "version": "p3-t75-semi-rigid-diaphragm-braces",
+            "braceCount": 0,
+            "rows": [],
+            "members": [],
+            "sections": []
+          },
+          "shellFrameAssembly": {
+            "ok": true,
+            "reason": null,
+            "version": "p10-m9-shell-frame-assembly-v3-identity-geometry-qualified",
+            "shellCount": 0,
+            "linkCount": 0,
+            "rows": [],
+            "members": [],
+            "sections": [],
+            "femElements": [],
+            "femElementCount": 0,
+            "equivalentShellCount": 0,
+            "errors": [],
+            "equivalentShellScope": {
+              "version": "p6-m6-equivalent-shell-scope-v1",
+              "active": false,
+              "badge": "No wall/slab equivalent model",
+              "warning": "This wall/slab result is based on equivalent frame/link model, not shell FEM.",
+              "modelTreatment": {
+                "wall": "mid-pier-equivalent-frame-member",
+                "slab": "semi-rigid-diaphragm-or-shell-frame-link-equivalent",
+                "shell": "edge-and-diagonal-frame-link-equivalent",
+                "excluded": "certified-shell-fem-local-design"
+              },
+              "counts": {
+                "wallEquivalentCount": 0,
+                "wallInputCount": 0,
+                "shellCount": 0,
+                "equivalentShellCount": 0,
+                "slabCount": 0,
+                "equivalentSlabCount": 0,
+                "semiRigidDiaphragmCount": 0
+              },
+              "allowedResults": [
+                "preliminary-global-analysis",
+                "global-drift-approximation",
+                "story-shear-approximation",
+                "wall-mid-pier-force-recovery",
+                "wall-base-moment-approximation",
+                "diaphragm-load-path-preliminary"
+              ],
+              "forbiddenResults": [
+                "slab-local-bending-stress",
+                "wall-opening-local-stress",
+                "shell-local-design-force",
+                "collector-or-chord-precision-force",
+                "punching-shear",
+                "mesh-stress-contour",
+                "plate-deflection-design-value",
+                "slab-strip-design-automation"
+              ],
+              "warnings": [],
+              "limitations": [
+                "Equivalent wall/slab results are valid only for preliminary global behavior review.",
+                "Local shell stress, plate deflection design values, punching shear, and collector/chord precision forces are intentionally not reported."
+              ]
+            },
+            "warnings": [],
+            "limitations": [
+              "Shell frame assembly is an equivalent edge/diagonal link model, not certified shell FEM.",
+              "Generated shell links are solver aids and are not reported as shell local design forces."
+            ]
+          },
+          "summary": {
+            "equilibriumVersion": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation",
+            "referencePoint": [
+              0,
+              0,
+              0
+            ],
+            "totalLoad": [
+              0,
+              0,
+              -1
+            ],
+            "totalReaction": [
+              0,
+              0,
+              0.9999999999999996
+            ],
+            "totalLoadMoment": [
+              0,
+              3,
+              0
+            ],
+            "totalReactionMoment": [
+              0,
+              -2.999999999999999,
+              0
+            ],
+            "totalFoundationReaction": [
+              0,
+              0,
+              0
+            ],
+            "totalFoundationReactionMoment": [
+              0,
+              0,
+              0
+            ],
+            "totalFoundationReactionResultant": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "totalLoadResultant": [
+              0,
+              0,
+              -1,
+              0,
+              3,
+              0
+            ],
+            "totalReactionResultant": [
+              0,
+              0,
+              0.9999999999999996,
+              0,
+              -2.999999999999999,
+              0
+            ],
+            "forceResidual": [
+              0,
+              0,
+              -4.440892098500626e-16
+            ],
+            "momentResidual": [
+              0,
+              8.881784197001252e-16,
+              0
+            ],
+            "residualResultant": [
+              0,
+              0,
+              -4.440892098500626e-16,
+              0,
+              8.881784197001252e-16,
+              0
+            ],
+            "forceScale": 1,
+            "momentScale": 3,
+            "forceResidualNorm": 4.440892098500626e-16,
+            "momentResidualNorm": 2.9605947323337506e-16,
+            "forceEquilibriumResidual": 4.440892098500626e-16,
+            "momentEquilibriumResidual": 2.9605947323337506e-16,
+            "equilibriumResidual": 4.440892098500626e-16,
+            "equilibriumLimit": 1e-8,
+            "equilibriumStatus": "PASS",
+            "equilibriumOk": true,
+            "equilibriumFailureReason": null,
+            "equilibriumIssues": [],
+            "offsetEquilibrium": {
+              "version": "p10-m4-rigid-arm-equilibrium-audit-v1",
+              "status": "NOT_APPLICABLE",
+              "passed": true,
+              "tolerance": 1e-10,
+              "memberCount": 0,
+              "vector3dMemberCount": 0,
+              "maximumResidual": 0,
+              "rows": []
+            },
+            "designBlocked": false,
+            "solverResidualNorm": 4.440892098500626e-16,
+            "solverResidualMax": 4.440892098500626e-16,
+            "maxDisplacement": 0.0001078651685393258,
+            "maxUtilization": 3.599999999999999e-10
+          },
+          "combo": {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        }
+      },
+      "envelope": {
+        "ok": true,
+        "anyOk": true,
+        "isEnvelope": true,
+        "status": "COMPLETE",
+        "complete": true,
+        "incomplete": false,
+        "designBlocked": false,
+        "designBlockers": [],
+        "requestedComboCount": 1,
+        "successfulComboCount": 1,
+        "failedComboCount": 0,
+        "requestedSources": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "successfulSources": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "failedSources": [],
+        "combinationStatus": [
+          {
+            "comboId": "D_ONLY",
+            "comboName": "1.0D",
+            "comboType": "service",
+            "factors": {
+              "D": 1
+            },
+            "status": "SOLVED",
+            "included": true,
+            "reason": null,
+            "resultOk": true,
+            "anyOk": true,
+            "unstableMemberIds": []
+          }
+        ],
+        "sources": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "disp": {
+          "N1": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "N2": [
+            0,
+            0,
+            -0.0001078651685393258,
+            0,
+            0.00005393258426966291,
+            0
+          ]
+        },
+        "reactions": {
+          "N1": {
+            "rx": 0,
+            "ry": 0,
+            "rz": 0.9999999999999996,
+            "rmx": 0,
+            "rmy": -2.999999999999999,
+            "rmz": 0
+          }
+        },
+        "memberResults": {
+          "M1": {
+            "ax": {
+              "L": 3,
+              "x": [
+                1,
+                0,
+                0
+              ],
+              "y": [
+                0,
+                0,
+                1
+              ],
+              "z": [
+                0,
+                -1,
+                0
+              ],
+              "grossL": 3,
+              "offset": {
+                "i": 0,
+                "j": 0,
+                "rigidFactor": 1
+              },
+              "flexibleStart": {
+                "id": "N1",
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "support": "fixed"
+              },
+              "flexibleEnd": {
+                "id": "N2",
+                "x": 3,
+                "y": 0,
+                "z": 0
+              }
+            },
+            "L": 3,
+            "xs": [
+              0,
+              0.075,
+              0.15,
+              0.225,
+              0.3,
+              0.375,
+              0.45,
+              0.525,
+              0.6,
+              0.675,
+              0.75,
+              0.825,
+              0.9,
+              0.975,
+              1.05,
+              1.125,
+              1.2,
+              1.275,
+              1.35,
+              1.425,
+              1.5,
+              1.575,
+              1.65,
+              1.725,
+              1.8,
+              1.875,
+              1.95,
+              2.025,
+              2.1,
+              2.175,
+              2.25,
+              2.325,
+              2.4,
+              2.475,
+              2.55,
+              2.625,
+              2.7,
+              2.775,
+              2.85,
+              2.925,
+              3
+            ],
+            "end": [
+              0,
+              0.9999999999999996,
+              0,
+              0,
+              0,
+              2.999999999999999,
+              0,
+              -0.9999999999999996,
+              0,
+              0,
+              0,
+              0
+            ],
+            "dl": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              -0.0001078651685393258,
+              0,
+              0,
+              0,
+              -0.00005393258426966291
+            ],
+            "shape": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                -1.0028089887640447e-7
+              ],
+              [
+                0,
+                0,
+                -3.9775280898876395e-7
+              ],
+              [
+                0,
+                0,
+                -8.87359550561797e-7
+              ],
+              [
+                0,
+                0,
+                -0.000001564044943820224
+              ],
+              [
+                0,
+                0,
+                -0.0000024227528089887626
+              ],
+              [
+                0,
+                0,
+                -0.0000034584269662921328
+              ],
+              [
+                0,
+                0,
+                -0.000004666011235955053
+              ],
+              [
+                0,
+                0,
+                -0.000006040449438202245
+              ],
+              [
+                0,
+                0,
+                -0.000007576685393258424
+              ],
+              [
+                0,
+                0,
+                -0.000009269662921348311
+              ],
+              [
+                0,
+                0,
+                -0.000011114325842696624
+              ],
+              [
+                0,
+                0,
+                -0.000013105617977528082
+              ],
+              [
+                0,
+                0,
+                -0.00001523848314606741
+              ],
+              [
+                0,
+                0,
+                -0.000017507865168539312
+              ],
+              [
+                0,
+                0,
+                -0.000019908707865168533
+              ],
+              [
+                0,
+                0,
+                -0.000022435955056179772
+              ],
+              [
+                0,
+                0,
+                -0.000025084550561797743
+              ],
+              [
+                0,
+                0,
+                -0.000027849438202247177
+              ],
+              [
+                0,
+                0,
+                -0.00003072556179775279
+              ],
+              [
+                0,
+                0,
+                -0.00003370786516853931
+              ],
+              [
+                0,
+                0,
+                -0.00003679129213483146
+              ],
+              [
+                0,
+                0,
+                -0.00003997078651685392
+              ],
+              [
+                0,
+                0,
+                -0.00004324129213483144
+              ],
+              [
+                0,
+                0,
+                -0.00004659775280898874
+              ],
+              [
+                0,
+                0,
+                -0.00005003511235955055
+              ],
+              [
+                0,
+                0,
+                -0.00005354831460674156
+              ],
+              [
+                0,
+                0,
+                -0.00005713230337078652
+              ],
+              [
+                0,
+                0,
+                -0.00006078202247191008
+              ],
+              [
+                0,
+                0,
+                -0.00006449241573033703
+              ],
+              [
+                0,
+                0,
+                -0.00006825842696629211
+              ],
+              [
+                0,
+                0,
+                -0.00007207499999999998
+              ],
+              [
+                0,
+                0,
+                -0.00007593707865168537
+              ],
+              [
+                0,
+                0,
+                -0.00007983960674157298
+              ],
+              [
+                0,
+                0,
+                -0.00008377752808988762
+              ],
+              [
+                0,
+                0,
+                -0.0000877457865168539
+              ],
+              [
+                0,
+                0,
+                -0.0000917393258426966
+              ],
+              [
+                0,
+                0,
+                -0.00009575308988764045
+              ],
+              [
+                0,
+                0,
+                -0.00009978202247191005
+              ],
+              [
+                0,
+                0,
+                -0.00010382106741573027
+              ],
+              [
+                0,
+                0,
+                -0.0001078651685393258
+              ]
+            ],
+            "dmaxM": 0.0001078651685393258,
+            "N": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "Vy": [
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996,
+              -0.9999999999999996
+            ],
+            "Vz": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "Tq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "My": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "Mz": [
+              -2.999999999999999,
+              -2.924999999999999,
+              -2.849999999999999,
+              -2.774999999999999,
+              -2.6999999999999993,
+              -2.624999999999999,
+              -2.5499999999999994,
+              -2.474999999999999,
+              -2.3999999999999995,
+              -2.3249999999999993,
+              -2.2499999999999996,
+              -2.1749999999999994,
+              -2.0999999999999996,
+              -2.0249999999999995,
+              -1.9499999999999995,
+              -1.8749999999999996,
+              -1.7999999999999996,
+              -1.7249999999999999,
+              -1.6499999999999997,
+              -1.5749999999999997,
+              -1.4999999999999998,
+              -1.4249999999999998,
+              -1.3499999999999999,
+              -1.2749999999999997,
+              -1.2,
+              -1.125,
+              -1.05,
+              -0.9750000000000001,
+              -0.8999999999999999,
+              -0.8250000000000002,
+              -0.75,
+              -0.6749999999999998,
+              -0.6000000000000001,
+              -0.5249999999999999,
+              -0.4500000000000006,
+              -0.37500000000000044,
+              -0.30000000000000027,
+              -0.22500000000000053,
+              -0.15000000000000036,
+              -0.07500000000000062,
+              -4.440892098500626e-16
+            ],
+            "check": {
+              "formula": "elastic_stress_interaction",
+              "expression": "|N|/(A*Fa) + |Mz|/(Zz*Fb) + |My|/(Zy*Fb) <= 1, shear 1.5V/(A*Fv) <= 1",
+              "inputs": {
+                "N": 0,
+                "Mz": 2.999999999999999,
+                "My": 0,
+                "Vmax": 0.9999999999999996,
+                "A": 0.15,
+                "Zz": 0.0125,
+                "Zy": 0.0075,
+                "Fa": 666666666666.6666,
+                "Fb": 666666666666.6666,
+                "Fv": 384900179459.7505,
+                "KLry": 34.6,
+                "KLrz": 20.8
+              },
+              "rN": 0,
+              "rM": 3.599999999999999e-10,
+              "rV": 2.598076211353315e-11,
+              "ratio": 3.599999999999999e-10,
+              "limit": 1,
+              "ok": true,
+              "status": "OK",
+              "governing": "axial+bending",
+              "comboId": "D_ONLY",
+              "comboName": "1.0D",
+              "source": "envelope"
+            },
+            "governing": {
+              "quantities": {
+                "Nmax": {
+                  "comboId": "D_ONLY",
+                  "comboName": "1.0D",
+                  "x": 0,
+                  "value": 0
+                },
+                "Vymax": {
+                  "comboId": "D_ONLY",
+                  "comboName": "1.0D",
+                  "x": 0,
+                  "value": -0.9999999999999996
+                },
+                "Vzmax": {
+                  "comboId": "D_ONLY",
+                  "comboName": "1.0D",
+                  "x": 0,
+                  "value": 0
+                },
+                "Tqmax": {
+                  "comboId": "D_ONLY",
+                  "comboName": "1.0D",
+                  "x": 0,
+                  "value": 0
+                },
+                "Mymax": {
+                  "comboId": "D_ONLY",
+                  "comboName": "1.0D",
+                  "x": 0,
+                  "value": 0
+                },
+                "Mzmax": {
+                  "comboId": "D_ONLY",
+                  "comboName": "1.0D",
+                  "x": 0,
+                  "value": -2.999999999999999
+                }
+              },
+              "deformation": {
+                "comboId": "D_ONLY",
+                "comboName": "1.0D",
+                "value": 0.0001078651685393258
+              },
+              "utilization": {
+                "comboId": "D_ONLY",
+                "comboName": "1.0D",
+                "ratio": 3.599999999999999e-10,
+                "status": "OK",
+                "quantity": "axial+bending",
+                "x": 0,
+                "value": -2.999999999999999
+              }
+            },
+            "Nmax": 0,
+            "Vymax": 0.9999999999999996,
+            "Vzmax": 0,
+            "Tmax": 0,
+            "Mymax": 0,
+            "Mzmax": 2.999999999999999
+          }
+        },
+        "governing": {
+          "maxDisplacement": {
+            "comboId": "D_ONLY",
+            "comboName": "1.0D",
+            "value": 0.0001078651685393258
+          },
+          "maxUtilization": {
+            "memberId": "M1",
+            "comboId": "D_ONLY",
+            "comboName": "1.0D",
+            "ratio": 3.599999999999999e-10
+          }
+        },
+        "unstableMembers": {},
+        "dmax": 0.0001078651685393258,
+        "maxRatio": 3.599999999999999e-10,
+        "ngCount": 0,
+        "okCount": 1,
+        "summary": {
+          "totalLoad": null,
+          "totalReaction": null,
+          "equilibriumResidual": null,
+          "maxDisplacement": 0.0001078651685393258,
+          "maxUtilization": 3.599999999999999e-10,
+          "note": "envelope",
+          "complete": true,
+          "designBlocked": false
+        }
+      },
+      "combinationCompleteness": {
+        "version": "p7-m8-all-requested-combinations-v1",
+        "requestedComboIds": [
+          "D_ONLY"
+        ],
+        "requestedCount": 1,
+        "completeCount": 1,
+        "failedComboIds": [],
+        "rows": [
+          {
+            "comboId": "D_ONLY",
+            "complete": true,
+            "status": "complete",
+            "reasons": []
+          }
+        ],
+        "envelope": {
+          "complete": true,
+          "status": "complete",
+          "reasons": [],
+          "sourceComboIds": [
+            "D_ONLY"
+          ],
+          "missingSources": [],
+          "unexpectedSources": []
+        },
+        "allComplete": true
+      },
+      "pDeltaDesignScreening": {
+        "version": "pdelta-design-summary-v1",
+        "correctnessVersion": "p10-m0-pdelta-design-summary-v1",
+        "method": "legacy-equivalent-load-iteration-diagnostic",
+        "thetaLimits": {
+          "caution": 0.05,
+          "require": 0.1,
+          "strong": 0.2,
+          "negligible": 0.05,
+          "limit": 0.2
+        },
+        "summary": {
+          "comboCount": 1,
+          "rowCount": 1,
+          "storyRowCount": 0,
+          "memberForceRowCount": 1,
+          "maxTheta": 0,
+          "maxBDelta": 1,
+          "maxPDeltaShear": 0,
+          "maxPDeltaMoment": 0,
+          "governing": {
+            "comboId": "D_ONLY",
+            "comboName": "1.0D",
+            "direction": "-",
+            "governingStory": "-",
+            "maxTheta": 0,
+            "maxBDelta": 1,
+            "maxPDeltaShear": 0,
+            "maxPDeltaMoment": 0,
+            "converged": true,
+            "iterationCount": 0,
+            "status": "N/A",
+            "statusLegacy": "N/A",
+            "reason": "NO_LATERAL_STORY_SHEAR"
+          },
+          "status": "N/A",
+          "statusLegacy": "N/A"
+        },
+        "designEligibility": {
+          "eligible": true,
+          "status": "qualified",
+          "reason": null,
+          "source": "pdelta-theta-screening"
+        },
+        "rows": [
+          {
+            "comboId": "D_ONLY",
+            "comboName": "1.0D",
+            "direction": "-",
+            "governingStory": "-",
+            "maxTheta": 0,
+            "maxBDelta": 1,
+            "maxPDeltaShear": 0,
+            "maxPDeltaMoment": 0,
+            "converged": true,
+            "iterationCount": 0,
+            "status": "N/A",
+            "statusLegacy": "N/A",
+            "reason": "NO_LATERAL_STORY_SHEAR"
+          }
+        ],
+        "storyRows": [],
+        "memberForceRows": [
+          {
+            "comboId": "D_ONLY",
+            "comboName": "1.0D",
+            "memberId": "M1",
+            "firstOrder": {
+              "N": 0,
+              "Vy": 0.9999999999999996,
+              "Vz": 0,
+              "My": 0,
+              "Mz": 2.999999999999999
+            },
+            "secondOrder": {
+              "N": 0,
+              "Vy": 0.9999999999999996,
+              "Vz": 0,
+              "My": 0,
+              "Mz": 2.999999999999999
+            },
+            "amplification": {
+              "N": 1,
+              "Vy": 1,
+              "Vz": 1,
+              "My": 1,
+              "Mz": 1
+            }
+          }
+        ],
+        "notes": [
+          "Legacy equivalent-load iteration is retained for compatibility and is explicitly identified as legacy.",
+          "Legacy design transfer uses the legacy combination envelope and never represents the Direct tangent method.",
+          "Member diagnostic N-delta/L curves are not design forces."
+        ]
+      },
+      "shellFemQualification": {
+        "status": "qualified",
+        "designTransferAllowed": true,
+        "blockers": [],
+        "byCombo": [
+          {
+            "comboId": "D_ONLY",
+            "elementCount": 0,
+            "expectedElementCount": 0,
+            "qualificationStatus": "qualified",
+            "designTransferAllowed": true,
+            "blockers": []
+          }
+        ],
+        "equivalentShellCount": 0
+      },
+      "equivalentShellScope": {
+        "version": "p6-m6-equivalent-shell-scope-v1",
+        "active": false,
+        "badge": "No wall/slab equivalent model",
+        "warning": "This wall/slab result is based on equivalent frame/link model, not shell FEM.",
+        "modelTreatment": {
+          "wall": "mid-pier-equivalent-frame-member",
+          "slab": "semi-rigid-diaphragm-or-shell-frame-link-equivalent",
+          "shell": "edge-and-diagonal-frame-link-equivalent",
+          "excluded": "certified-shell-fem-local-design"
+        },
+        "counts": {
+          "wallEquivalentCount": 0,
+          "wallInputCount": 0,
+          "shellCount": 0,
+          "equivalentShellCount": 0,
+          "slabCount": 0,
+          "equivalentSlabCount": 0,
+          "semiRigidDiaphragmCount": 0
+        },
+        "allowedResults": [
+          "preliminary-global-analysis",
+          "global-drift-approximation",
+          "story-shear-approximation",
+          "wall-mid-pier-force-recovery",
+          "wall-base-moment-approximation",
+          "diaphragm-load-path-preliminary"
+        ],
+        "forbiddenResults": [
+          "slab-local-bending-stress",
+          "wall-opening-local-stress",
+          "shell-local-design-force",
+          "collector-or-chord-precision-force",
+          "punching-shear",
+          "mesh-stress-contour",
+          "plate-deflection-design-value",
+          "slab-strip-design-automation"
+        ],
+        "warnings": [],
+        "limitations": [
+          "Equivalent wall/slab results are valid only for preliminary global behavior review.",
+          "Local shell stress, plate deflection design values, punching shear, and collector/chord precision forces are intentionally not reported."
+        ]
+      },
+      "design": {
+        "ok": true,
+        "steel": {
+          "ok": true,
+          "type": "steel_allowable_preliminary",
+          "memberResults": {
+            "M1": {
+              "memberId": "M1",
+              "materialId": "SB1-MAT",
+              "sectionId": "SB1-SEC",
+              "type": "steel",
+              "role": "beam",
+              "method": "allowable_stress_preliminary",
+              "ok": true,
+              "status": "OK",
+              "utilization": 0.008988764044943818,
+              "governingCheck": "steel-deflection",
+              "comboId": "D_ONLY",
+              "x": 0,
+              "checks": [
+                {
+                  "id": "steel-axial",
+                  "name": "Axial",
+                  "demand": 0,
+                  "capacity": 99999999999.99998,
+                  "ratio": 0,
+                  "expression": "max |N| / Pa",
+                  "status": "OK",
+                  "comboId": "D_ONLY",
+                  "x": 0
+                },
+                {
+                  "id": "steel-flexure-z",
+                  "name": "Strong-axis flexure",
+                  "demand": 2.999999999999999,
+                  "capacity": 8333333333.333333,
+                  "ratio": 3.599999999999999e-10,
+                  "expression": "max |Mz| / Maz",
+                  "status": "OK",
+                  "comboId": "D_ONLY",
+                  "x": 0
+                },
+                {
+                  "id": "steel-flexure-y",
+                  "name": "Weak-axis flexure",
+                  "demand": 0,
+                  "capacity": 4999999999.999999,
+                  "ratio": 0,
+                  "expression": "max |My| / May",
+                  "status": "OK",
+                  "comboId": "D_ONLY",
+                  "x": 0
+                },
+                {
+                  "id": "steel-shear-y",
+                  "name": "Shear local-y",
+                  "demand": 0.9999999999999996,
+                  "capacity": 38490017945.975044,
+                  "ratio": 2.5980762113533154e-11,
+                  "expression": "max |Vy| / Vay",
+                  "status": "OK",
+                  "comboId": "D_ONLY",
+                  "x": 0
+                },
+                {
+                  "id": "steel-shear-z",
+                  "name": "Shear local-z",
+                  "demand": 0,
+                  "capacity": 38490017945.975044,
+                  "ratio": 0,
+                  "expression": "max |Vz| / Vaz",
+                  "status": "OK",
+                  "comboId": "D_ONLY",
+                  "x": 0
+                },
+                {
+                  "id": "steel-interaction",
+                  "name": "Axial + flexure",
+                  "demand": 2.999999999999999,
+                  "capacity": 1,
+                  "ratio": 3.599999999999999e-10,
+                  "expression": "N/Pa + Mz/Maz + My/May",
+                  "status": "OK",
+                  "comboId": "D_ONLY",
+                  "x": 0
+                },
+                {
+                  "id": "steel-ltb-mcr",
+                  "name": "Elastic lateral-torsional buckling",
+                  "demand": 2.999999999999999,
+                  "capacity": 32131.612755167647,
+                  "ratio": 0.00009336599512943889,
+                  "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+                  "designCheckLayer": true,
+                  "status": "OK",
+                  "comboId": "D_ONLY",
+                  "x": 0
+                },
+                {
+                  "id": "steel-slenderness",
+                  "name": "Slenderness",
+                  "demand": 34.64101615137755,
+                  "capacity": 200,
+                  "ratio": 0,
+                  "expression": "max(KL/ry, KL/rz) / limit",
+                  "status": "OK",
+                  "comboId": "D_ONLY",
+                  "x": 0
+                },
+                {
+                  "id": "steel-deflection",
+                  "name": "Deflection",
+                  "demand": 0.0001078651685393258,
+                  "capacity": 0.012,
+                  "ratio": 0.008988764044943818,
+                  "expression": "member deformation / (L / limit)",
+                  "status": "OK",
+                  "comboId": "D_ONLY",
+                  "x": 0
+                }
+              ],
+              "demands": {
+                "N": 0,
+                "Vy": 0.9999999999999996,
+                "Vz": 0,
+                "My": 0,
+                "Mz": 2.999999999999999,
+                "dmax": 0.0001078651685393258
+              },
+              "capacities": {
+                "Fa": 666666666666.6666,
+                "Fb": 666666666666.6666,
+                "Fv": 384900179459.7505,
+                "Pa": 99999999999.99998,
+                "Maz": 8333333333.333333,
+                "May": 4999999999.999999,
+                "Vay": 38490017945.975044,
+                "Vaz": 38490017945.975044
+              },
+              "slenderness": {
+                "ky": 1,
+                "kz": 1,
+                "KLry": 34.64101615137755,
+                "KLrz": 20.784609690826525,
+                "limit": 200
+              },
+              "deflection": {
+                "limit": 250,
+                "allowable": 0.012,
+                "demand": 0.0001078651685393258
+              },
+              "ltb": {
+                "version": "p10-m8-elastic-mcr-ltb-check-v2",
+                "type": "design-check-not-analysis-result",
+                "memberId": "M1",
+                "status": "OK",
+                "ok": true,
+                "reason": null,
+                "inputReview": {
+                  "status": "complete",
+                  "missing": []
+                },
+                "Mcr": 32131.612755167647,
+                "Mmax": 2.999999999999999,
+                "ratio": 0.00009336599512943889,
+                "C1": 1,
+                "Lb": 3,
+                "k": 1,
+                "kw": 1,
+                "weakAxisInertia": 0.001125,
+                "terms": {
+                  "warping": 0,
+                  "stVenantTorsion": 0.9515311473845337
+                },
+                "formula": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+                "formulaId": "KDS-ST-FLEXURE-LTB-V1",
+                "governingCombinationId": "D_ONLY",
+                "analysisDofChanged": false,
+                "provenance": {
+                  "source": "p10-m8-closed-form-elastic-critical-moment",
+                  "sectionCwConsumed": false,
+                  "stiffnessBasis": "design-check-only-no-global-stiffness-change"
+                },
+                "limitations": [
+                  "This is a member design check, not a global analysis result.",
+                  "The global frame remains six DOF per node; warping displacement, bimoment, and warping stress are not recovered.",
+                  "The closed form assumes a prismatic doubly-symmetric member and does not include load-height correction.",
+                  "C1 and the unbraced length must be reviewed against the actual moment gradient and bracing layout."
+                ]
+              },
+              "messages": [],
+              "demandTrace": {
+                "version": "p2-design-demand-package",
+                "traceId": "MEM-DEMAND-M1",
+                "governing": {
+                  "key": "Mz",
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": -2.999999999999999
+                },
+                "stationCount": 41
+              }
+            }
+          },
+          "summary": {
+            "checkedMembers": 1,
+            "skippedMembers": 0,
+            "okCount": 1,
+            "warnCount": 0,
+            "ngCount": 0,
+            "maxUtilization": 0.008988764044943818,
+            "governing": {
+              "memberId": "M1",
+              "checkId": "steel-deflection",
+              "status": "OK",
+              "ratio": 0.008988764044943818,
+              "comboId": "D_ONLY",
+              "x": 0
+            }
+          },
+          "warnings": []
+        },
+        "concrete": {
+          "ok": true,
+          "type": "rc_preliminary",
+          "memberResults": {},
+          "summary": {
+            "checkedMembers": 0,
+            "skippedMembers": 1,
+            "okCount": 0,
+            "warnCount": 0,
+            "ngCount": 0,
+            "maxUtilization": 0,
+            "governing": null
+          },
+          "warnings": []
+        },
+        "demandPackage": {
+          "version": "p2-design-demand-package",
+          "source": {
+            "resultPostprocessing": "p2-m6-result-postprocessing",
+            "activeResultId": "ENVELOPE"
+          },
+          "members": {
+            "M1": {
+              "traceId": "MEM-DEMAND-M1",
+              "memberId": "M1",
+              "stationCount": 41,
+              "governing": {
+                "key": "Mz",
+                "comboId": "D_ONLY",
+                "x": 0,
+                "value": -2.999999999999999
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": 0
+                },
+                "Vy": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": -0.9999999999999996
+                },
+                "Vz": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": 0
+                },
+                "My": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": 0
+                },
+                "Mz": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": -2.999999999999999
+                }
+              }
+            }
+          },
+          "foundations": {
+            "N1": {
+              "traceId": "FND-DEMAND-N1",
+              "nodeId": "N1",
+              "reactions": {
+                "rx": {
+                  "min": 0,
+                  "max": 0,
+                  "comboMin": "D_ONLY",
+                  "comboMax": "D_ONLY"
+                },
+                "ry": {
+                  "min": 0,
+                  "max": 0,
+                  "comboMin": "D_ONLY",
+                  "comboMax": "D_ONLY"
+                },
+                "rz": {
+                  "min": 0.9999999999999996,
+                  "max": 0.9999999999999996,
+                  "comboMin": "D_ONLY",
+                  "comboMax": "D_ONLY"
+                },
+                "rmx": {
+                  "min": 0,
+                  "max": 0,
+                  "comboMin": "D_ONLY",
+                  "comboMax": "D_ONLY"
+                },
+                "rmy": {
+                  "min": -2.999999999999999,
+                  "max": -2.999999999999999,
+                  "comboMin": "D_ONLY",
+                  "comboMax": "D_ONLY"
+                },
+                "rmz": {
+                  "min": 0,
+                  "max": 0,
+                  "comboMin": "D_ONLY",
+                  "comboMax": "D_ONLY"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "D_ONLY"
+            }
+          },
+          "summary": {
+            "memberCount": 1,
+            "foundationCount": 1,
+            "upliftNodeCount": 0,
+            "governingMemberDemand": {
+              "traceId": "MEM-DEMAND-M1",
+              "memberId": "M1",
+              "stationCount": 41,
+              "governing": {
+                "key": "Mz",
+                "comboId": "D_ONLY",
+                "x": 0,
+                "value": -2.999999999999999
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": 0
+                },
+                "Vy": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": -0.9999999999999996
+                },
+                "Vz": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": 0
+                },
+                "My": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": 0
+                },
+                "Mz": {
+                  "comboId": "D_ONLY",
+                  "x": 0,
+                  "value": -2.999999999999999
+                }
+              }
+            }
+          }
+        },
+        "summary": {
+          "ok": true,
+          "maxUtilization": 0.008988764044943818,
+          "governing": {
+            "memberId": "M1",
+            "checkId": "steel-deflection",
+            "status": "OK",
+            "ratio": 0.008988764044943818,
+            "comboId": "D_ONLY",
+            "x": 0
+          },
+          "checkedMembers": 1,
+          "skippedMembers": 1,
+          "ngCount": 0,
+          "warnCount": 0
+        },
+        "analysisSource": "linear-static-envelope",
+        "pDeltaTransfer": {
+          "eligible": false,
+          "status": "not-requested",
+          "reason": "PDELTA_OFF"
+        },
+        "eligibility": {
+          "eligible": true,
+          "status": "qualified",
+          "reason": null,
+          "limitationCodes": [],
+          "source": "linear-static-envelope"
+        },
+        "designBlocked": false,
+        "designQualified": true,
+        "comparisonOnly": false
+      },
+      "designEligibility": {
+        "eligible": true,
+        "status": "qualified",
+        "reason": null,
+        "limitationCodes": [],
+        "source": "linear-static-envelope"
+      },
+      "analysisEligibility": {
+        "eligible": true,
+        "status": "qualified",
+        "reason": null
+      },
+      "audit": {
+        "version": "p7-m7-six-resultant-analysis-audit-v1",
+        "ok": true,
+        "status": "PASS",
+        "equilibriumLimit": 1e-8,
+        "comboCount": 1,
+        "solvedComboCount": 1,
+        "notSolvedComboCount": 0,
+        "unavailableEquilibriumComboCount": 0,
+        "failedEquilibriumComboCount": 0,
+        "blockedComboCount": 0,
+        "designBlocked": false,
+        "maxEquilibriumResidual": 4.440892098500626e-16,
+        "maxForceResidualNorm": 4.440892098500626e-16,
+        "maxMomentResidualNorm": 2.9605947323337506e-16,
+        "maxForceEquilibriumResidual": 4.440892098500626e-16,
+        "maxMomentEquilibriumResidual": 2.9605947323337506e-16,
+        "maxSolverResidualNorm": 4.440892098500626e-16,
+        "rows": [
+          {
+            "comboId": "D_ONLY",
+            "ok": true,
+            "equilibriumResidual": 4.440892098500626e-16,
+            "solverResidualNorm": 4.440892098500626e-16,
+            "unilateralConverged": null,
+            "unilateralInactiveMemberCount": 0,
+            "forceResidualNorm": 4.440892098500626e-16,
+            "momentResidualNorm": 2.9605947323337506e-16,
+            "forceEquilibriumResidual": 4.440892098500626e-16,
+            "momentEquilibriumResidual": 2.9605947323337506e-16,
+            "equilibriumStatus": "PASS",
+            "equilibriumOk": true,
+            "designBlocked": false,
+            "blockingReason": null,
+            "nonfiniteIssues": [],
+            "status": "PASS"
+          }
+        ],
+        "warnings": []
+      },
+      "selection": {
+        "requestedComboId": "D_ONLY",
+        "selectedComboId": "D_ONLY",
+        "availableComboIds": [
+          "D_ONLY"
+        ]
+      }
+    },
+    "settingsHash": "6188d1a3ab531737874cff4b78bc97d9c4a60868ec4543c0b8d792203160b175",
+    "settingsBytes": [
+      123,
+      34,
+      99,
+      111,
+      109,
+      98,
+      111,
+      73,
+      100,
+      34,
+      58,
+      34,
+      68,
+      95,
+      79,
+      78,
+      76,
+      89,
+      34,
+      44,
+      34,
+      112,
+      68,
+      101,
+      108,
+      116,
+      97,
+      77,
+      101,
+      116,
+      104,
+      111,
+      100,
+      34,
+      58,
+      34,
+      111,
+      102,
+      102,
+      34,
+      125
+    ],
+    "planHash": "a04d5b4a0bd04634d423cc1e2e922ab0e3acf4e9daf717824df8e7d8c19c27ca",
+    "productProvenance": {
+      "serviceVersion": "p9-m9-product-analysis-service-v1",
+      "planHash": "a04d5b4a0bd04634d423cc1e2e922ab0e3acf4e9daf717824df8e7d8c19c27ca",
+      "settingsHash": "6188d1a3ab531737874cff4b78bc97d9c4a60868ec4543c0b8d792203160b175",
+      "modelHash": "928b457ae6a4fe538eefc9a312a23847ec7f410df9f1345e2a9a643bd455541a",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "operationRoute": {
+        "operation": "elasticStatic",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "backendId": "cpu-f64-linear3d",
+        "precision": "f64",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "reason": "Explicit qualified CPU f64 route."
+      },
+      "correction": "not-required-cpu-f64",
+      "audit": {
+        "version": "p7-m7-six-resultant-analysis-audit-v1",
+        "ok": true,
+        "status": "PASS",
+        "equilibriumLimit": 1e-8,
+        "comboCount": 1,
+        "solvedComboCount": 1,
+        "notSolvedComboCount": 0,
+        "unavailableEquilibriumComboCount": 0,
+        "failedEquilibriumComboCount": 0,
+        "blockedComboCount": 0,
+        "designBlocked": false,
+        "maxEquilibriumResidual": 4.440892098500626e-16,
+        "maxForceResidualNorm": 4.440892098500626e-16,
+        "maxMomentResidualNorm": 2.9605947323337506e-16,
+        "maxForceEquilibriumResidual": 4.440892098500626e-16,
+        "maxMomentEquilibriumResidual": 2.9605947323337506e-16,
+        "maxSolverResidualNorm": 4.440892098500626e-16,
+        "rows": [
+          {
+            "comboId": "D_ONLY",
+            "ok": true,
+            "equilibriumResidual": 4.440892098500626e-16,
+            "solverResidualNorm": 4.440892098500626e-16,
+            "unilateralConverged": null,
+            "unilateralInactiveMemberCount": 0,
+            "forceResidualNorm": 4.440892098500626e-16,
+            "momentResidualNorm": 2.9605947323337506e-16,
+            "forceEquilibriumResidual": 4.440892098500626e-16,
+            "momentEquilibriumResidual": 2.9605947323337506e-16,
+            "equilibriumStatus": "PASS",
+            "equilibriumOk": true,
+            "designBlocked": false,
+            "blockingReason": null,
+            "nonfiniteIssues": [],
+            "status": "PASS"
+          }
+        ],
+        "warnings": []
+      },
+      "qualification": "candidate",
+      "designBlocked": false,
+      "externalRuntimeUsed": false,
+      "networkFallbackUsed": false,
+      "executionProvenance": {
+        "origin": "S_STRUCTURES_PUBLIC_ANALYSIS_RUNNER",
+        "runnerVersion": "p8-m10-analysis-runners-v6-p10-m7",
+        "externalRuntimeUsed": false,
+        "networkFallbackUsed": false,
+        "observationSource": "OWNED_IN_PROCESS_PUBLIC_RUNNER_BOUNDARY"
+      }
+    }
+  },
+  "artifactHash": "0511b93566341df281714f50ed080f4edace331f484f7fa9cb9565df8a0f0b78"
+}

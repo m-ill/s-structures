@@ -1,0 +1,212 @@
+{
+  "version": "p18a-public-comparison-v1",
+  "generatedAt": "2026-08-29",
+  "scope": {
+    "official21": [
+      "SP1",
+      "P3S2"
+    ],
+    "supplementalCrossCode": [
+      "XV1",
+      "XV2"
+    ],
+    "externalOfficialPassClaimed": false
+  },
+  "SP1": {
+    "status": "PASS",
+    "executed": true,
+    "comparisonKind": "EQUIVALENT_PUBLIC_GATE",
+    "quantity": "maximum absolute pre-peak self-consistency error",
+    "unit": "%",
+    "strix": 0.00076916,
+    "referenceLimit": 1,
+    "sStructures": 0.01776645784351998,
+    "limitUtilizationPct": 1.7766457843519978,
+    "point2DirectResultClaimed": false,
+    "reason": "The public SP1 gate is self-consistency at adaptive pre-peak steps; the exact Point 2 displacement is not reused as a displacement-control output.",
+    "productionEvidenceHash": "f6f34c1b3097ffdb94a6188d78c6b90d91985f385d38a0370e7fc2f6ac985822",
+    "comparisonHash": "bbb5d401410bf2c7d1573fb480f30c0655429b11b9c80597389c11deffb5dcb7"
+  },
+  "P3S2": {
+    "status": "PASS",
+    "executed": true,
+    "comparisonKind": "EQUIVALENT_PUBLIC_GATE_MEMBRANE_ONLY",
+    "quantity": "maximum dominant membrane-mode period shift",
+    "unit": "%",
+    "strix": 0.19,
+    "referenceLimit": 0.5,
+    "sStructures": 0.00024054460296532373,
+    "limitUtilizationPct": 0.04810892059306474,
+    "baselineMode1Sec": 0.051114785392191844,
+    "publicBaselineMode1Sec": 0.050529,
+    "baselineDifferencePct": 1.1593053339504975,
+    "meshMode1Sec": [
+      {
+        "multiplier": 1,
+        "period": 0.051114785392191844
+      },
+      {
+        "multiplier": 2,
+        "period": 0.05090243423433114
+      },
+      {
+        "multiplier": 4,
+        "period": 0.05086951577926719
+      }
+    ],
+    "publicModel": {
+      "widthM": 3,
+      "heightM": 9,
+      "thicknessM": 0.2,
+      "mesh": "3 columns x 6 rows at 1x",
+      "material": "E=30 GPa, nu=0.2, density=2400 kg/m3"
+    },
+    "limitation": "S-Structures executed the printed membrane geometry and its own dimensionless stabilizer contract. STRIX plate-mode rows and literal rotFloor/drillingStab parameter units are not claimed equivalent.",
+    "qualificationHash": "4e730e93a458dd0ba1a04ae07d2fed3d3a9b85e2142255cfce7b3fa0ad8640f4",
+    "comparisonHash": "4498f7f675ac3a69577cb57bb5e2cb0398c0e4e404efb5c20fc67ea1965e022d"
+  },
+  "XV1": {
+    "status": "PASS",
+    "executed": true,
+    "comparisonKind": "SUPPLEMENTAL_CROSS_CODE",
+    "publicInput": {
+      "lengthM": 3,
+      "heightM": 8.55,
+      "thicknessM": 0.2,
+      "storyCount": 3,
+      "elasticModulusMpa": 27515,
+      "poisson": 0.167,
+      "topLoadKn": 100,
+      "referenceMm": 1.8277,
+      "strixByMeshMm": {
+        "1": 1.7564,
+        "2": 1.7872,
+        "4": 1.8145,
+        "8": 1.8244,
+        "16": 1.8278
+      },
+      "programAByMeshMm": {
+        "1": 1.756792,
+        "16": 1.825787
+      }
+    },
+    "rows": [
+      {
+        "multiplier": 1,
+        "ok": true,
+        "nodeCount": 8,
+        "shellCount": 3,
+        "displacementMm": 1.7567904233859428,
+        "referenceMm": 1.8277,
+        "strixMm": 1.7564,
+        "programAMm": 1.756792,
+        "errorVsReferencePct": -3.879716398427383,
+        "errorVsStrixPct": 0.022228614549240598,
+        "errorVsProgramAPct": -0.00008974392284835597,
+        "equilibriumResidual": 1.6886816831164016e-14
+      },
+      {
+        "multiplier": 2,
+        "ok": true,
+        "nodeCount": 21,
+        "shellCount": 12,
+        "displacementMm": 1.7881260555003589,
+        "referenceMm": 1.8277,
+        "strixMm": 1.7872,
+        "programAMm": null,
+        "errorVsReferencePct": -2.1652319581792003,
+        "errorVsStrixPct": 0.05181599711050569,
+        "errorVsProgramAPct": null,
+        "equilibriumResidual": 5.1857154048456154e-15
+      },
+      {
+        "multiplier": 4,
+        "ok": true,
+        "nodeCount": 65,
+        "shellCount": 48,
+        "displacementMm": 1.813620996385002,
+        "referenceMm": 1.8277,
+        "strixMm": 1.8145,
+        "programAMm": null,
+        "errorVsReferencePct": -0.7703126122995038,
+        "errorVsStrixPct": -0.0484432965002993,
+        "errorVsProgramAPct": null,
+        "equilibriumResidual": 2.924169028508383e-13
+      },
+      {
+        "multiplier": 8,
+        "ok": true,
+        "nodeCount": 225,
+        "shellCount": 192,
+        "displacementMm": 1.8214606885276794,
+        "referenceMm": 1.8277,
+        "strixMm": 1.8244,
+        "programAMm": null,
+        "errorVsReferencePct": -0.341375032681551,
+        "errorVsStrixPct": -0.16111113090992255,
+        "errorVsProgramAPct": null,
+        "equilibriumResidual": 4.1494708453160916e-13
+      },
+      {
+        "multiplier": 16,
+        "ok": true,
+        "nodeCount": 833,
+        "shellCount": 768,
+        "displacementMm": 1.8234196996099776,
+        "referenceMm": 1.8277,
+        "strixMm": 1.8278,
+        "programAMm": 1.825787,
+        "errorVsReferencePct": -0.2341905340057161,
+        "errorVsStrixPct": -0.23964877940816623,
+        "errorVsProgramAPct": -0.1296591765645401,
+        "equilibriumResidual": 8.270470393461071e-13
+      }
+    ],
+    "practice": {
+      "multiplier": 1,
+      "ok": true,
+      "nodeCount": 8,
+      "shellCount": 3,
+      "displacementMm": 1.7567904233859428,
+      "referenceMm": 1.8277,
+      "strixMm": 1.7564,
+      "programAMm": 1.756792,
+      "errorVsReferencePct": -3.879716398427383,
+      "errorVsStrixPct": 0.022228614549240598,
+      "errorVsProgramAPct": -0.00008974392284835597,
+      "equilibriumResidual": 1.6886816831164016e-14
+    },
+    "finest": {
+      "multiplier": 16,
+      "ok": true,
+      "nodeCount": 833,
+      "shellCount": 768,
+      "displacementMm": 1.8234196996099776,
+      "referenceMm": 1.8277,
+      "strixMm": 1.8278,
+      "programAMm": 1.825787,
+      "errorVsReferencePct": -0.2341905340057161,
+      "errorVsStrixPct": -0.23964877940816623,
+      "errorVsProgramAPct": -0.1296591765645401,
+      "equilibriumResidual": 8.270470393461071e-13
+    },
+    "acceptance": {
+      "quantity": "finest-mesh tip displacement",
+      "tolerancePct": 3
+    },
+    "note": "XV1 is supplemental and does not increase the official STRIX 21-case denominator.",
+    "comparisonHash": "6db39f236fccc287167aeae7d6622168c337c6a4ec73778efc971dac0903b1b7"
+  },
+  "XV2": {
+    "status": "INPUT_BLOCKED",
+    "executed": false,
+    "reason": "SHARED_MGT_AND_EXACT_RECOVERY_MAPPING_NOT_AVAILABLE",
+    "missing": [
+      "DCR_wall_benchmark.mgt shared input file",
+      "exact wall/transfer-beam connectivity and load application mapping",
+      "beam shear recovery station and sign convention source lock"
+    ],
+    "note": "XV2 remains outside the official 21-case denominator and is not inferred from the PDF table alone."
+  },
+  "evidenceHash": "648d4f837b8c699a7552364453d12cc9b9d1deffb3d2a23f48a2e00014dab97f"
+}

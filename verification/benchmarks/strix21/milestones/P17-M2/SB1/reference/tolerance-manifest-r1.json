@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "p17-tolerance-manifest-v1",
+  "caseId": "SB1",
+  "status": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+  "payloadAbsent": false,
+  "releaseAllowed": false,
+  "policy": {
+    "signedComparisonDefault": true,
+    "nearZeroPolicy": "ABSOLUTE_TOLERANCE",
+    "postResultTuningAllowed": false
+  },
+  "criteria": [
+    {
+      "metricId": "tip-uz",
+      "comparisonMode": "SIGNED_RELATIVE",
+      "relativeTolerancePct": 0.01,
+      "absoluteTolerance": 1e-12,
+      "nearZeroThreshold": 1e-15,
+      "unit": "m",
+      "mandatory": true,
+      "approvalHash": "2bda2bdad36fd958313d4c67592002ec5e32a42c1a2134f60d00ae9b2fca0c0e"
+    },
+    {
+      "metricId": "tip-ry",
+      "comparisonMode": "SIGNED_RELATIVE",
+      "relativeTolerancePct": 0.01,
+      "absoluteTolerance": 1e-12,
+      "nearZeroThreshold": 1e-15,
+      "unit": "rad",
+      "mandatory": true,
+      "approvalHash": "2bda2bdad36fd958313d4c67592002ec5e32a42c1a2134f60d00ae9b2fca0c0e"
+    },
+    {
+      "metricId": "support-rz",
+      "comparisonMode": "SIGNED_RELATIVE",
+      "relativeTolerancePct": 0.01,
+      "absoluteTolerance": 1e-10,
+      "nearZeroThreshold": 1e-15,
+      "unit": "kN",
+      "mandatory": true,
+      "approvalHash": "2bda2bdad36fd958313d4c67592002ec5e32a42c1a2134f60d00ae9b2fca0c0e"
+    },
+    {
+      "metricId": "support-my",
+      "comparisonMode": "SIGNED_RELATIVE",
+      "relativeTolerancePct": 0.01,
+      "absoluteTolerance": 1e-10,
+      "nearZeroThreshold": 1e-15,
+      "unit": "kN-m",
+      "mandatory": true,
+      "approvalHash": "2bda2bdad36fd958313d4c67592002ec5e32a42c1a2134f60d00ae9b2fca0c0e"
+    }
+  ],
+  "approval": {
+    "reviewer": "EXTERNAL_NUMERICAL_REVIEWER_UNASSIGNED",
+    "status": "PENDING",
+    "approvalHash": null
+  },
+  "reasonCodes": [
+    "P17_EXTERNAL_TOLERANCE_REVIEW_PENDING"
+  ]
+}
+

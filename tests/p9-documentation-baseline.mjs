@@ -55,7 +55,9 @@ assert.match(status, /design_transfer_allowed:\s*false/);
 assert.match(status, /next_gate:\s*external-qualification/);
 assert.match(requirements, /status:\s*planned/);
 assert.match(traceability, /status:\s*implementation-complete-qualification-blocked/);
-assert.match(rootIndex, /documentationVersion:\s*2026-07-23-phase11-plan-v1/);
+// A Phase 9 regression must accept a newer documentation index while still
+// requiring a dated, phase-scoped version contract.
+assert.match(rootIndex, /documentationVersion:\s*20\d{2}-\d{2}-\d{2}-phase(?:9|1\d)-[a-z0-9-]+/i);
 assert.match(rootIndex, /## Phase 9 Reading Order \(compute baseline\)/);
 
 const milestoneIds = [...milestones.matchAll(/^## P9-M(\d+)\s+-/gm)].map((match) => Number(match[1]));

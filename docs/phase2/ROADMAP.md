@@ -94,7 +94,7 @@ model
 
 ## P2-M5 Advanced Elastic Analysis
 
-Direct Analysis addendum: P2-M5 now includes a separate geometric-stiffness P-Delta path. Implement it from `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md` and verify it with `docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`. This is not a replacement for the current equivalent-load P-Delta method.
+Direct Analysis addendum: P2-M5 now includes a separate geometric-stiffness P-Delta path. Implement it from `P2_M5_DIRECT_ANALYSIS_IMPLEMENTATION_PLAN.md` and verify it with `verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md`. This is not a replacement for the current equivalent-load P-Delta method.
 
 | Subtask | 구현 범위 | 완료 기준 |
 | --- | --- | --- |

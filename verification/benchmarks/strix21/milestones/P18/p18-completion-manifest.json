@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "p18-completion-manifest-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "engineVersion": "p18-strix21-completion-v1",
+  "releaseClaim": "ENGINE_QUALIFICATION_ONLY_NO_THIRD_PARTY_PASS_CLAIM",
+  "counts": {
+    "total": 10,
+    "enginePass": 10,
+    "officialInputBlocked": 3,
+    "officialPassClaimed": 0,
+    "failedProbe": 0
+  },
+  "cases": [
+    {
+      "caseId": "TH1",
+      "verdict": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 4,
+      "engineeringHash": "557d6711876dd844d00228fa991fa844277c34c8cde45880cd6693af85ffb7fe",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/TH1/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/TH1/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/TH1/report/P18-engine-verification.md"
+    },
+    {
+      "caseId": "SP1",
+      "verdict": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 4,
+      "engineeringHash": "f6f34c1b3097ffdb94a6188d78c6b90d91985f385d38a0370e7fc2f6ac985822",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/SP1/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/SP1/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/SP1/report/P18-engine-verification.md"
+    },
+    {
+      "caseId": "SM6",
+      "verdict": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 8,
+      "engineeringHash": "cabf3f30f60a83db068b9d6122524125e3f7fa68498d8fe911e823ced0364451",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/SM6/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/SM6/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/SM6/report/P18-engine-verification.md"
+    },
+    {
+      "caseId": "SM5b",
+      "verdict": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 6,
+      "engineeringHash": "db85729e88c7b19e50cfdbd2f00ae88dd11aa661b8786fcfaf2c06e6c3ca69a1",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/SM5b/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/SM5b/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/SM5b/report/P18-engine-verification.md"
+    },
+    {
+      "caseId": "SR1",
+      "verdict": "ENGINE_PASS_SOURCE_BLOCKED",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "INPUT_BLOCKED",
+      "probeCount": 5,
+      "engineeringHash": "59347d9707a97b3b3d2e460340ec5ba077d72dbfb90d83acfd4e42ec2ed31246",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/SR1/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/SR1/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/SR1/report/P18-engine-verification.md"
+    },
+    {
+      "caseId": "SR2",
+      "verdict": "ENGINE_PASS_SOURCE_BLOCKED",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "INPUT_BLOCKED",
+      "probeCount": 10,
+      "engineeringHash": "13fce0d901d004934c83e208e942f5d9dab1a03d17df4cc359ff8a3035f85a71",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/SR2/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/SR2/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/SR2/report/P18-engine-verification.md"
+    },
+    {
+      "caseId": "SR2b",
+      "verdict": "ENGINE_PASS_SOURCE_BLOCKED",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "INPUT_BLOCKED",
+      "probeCount": 17,
+      "engineeringHash": "0eeaf37b2d06ba1eda893090b634fcb40a4910e1044b22f50b7ce395f4ebaf5f",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/SR2b/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/SR2b/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/SR2b/report/P18-engine-verification.md"
+    },
+    {
+      "caseId": "P3S2",
+      "verdict": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 5,
+      "engineeringHash": "5311b34c14e951b7facf8fcdac774ea1d558f5547ea897d9dc4ee04497253f37",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/P3S2/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/P3S2/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/P3S2/report/P18-engine-verification.md"
+    },
+    {
+      "caseId": "SB12",
+      "verdict": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 14,
+      "engineeringHash": "953231d68d7401340742563fb2f4e818a116edff5ade2beb0ded62c02552a4d2",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/SB12/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/SB12/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/SB12/report/P18-engine-verification.md"
+    },
+    {
+      "caseId": "SH1",
+      "verdict": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 13,
+      "engineeringHash": "370f28f2bdc3eeab9991de7afb3e221e6ebd45ad1a8838fc935bc29738075d86",
+      "evidencePath": "verification/benchmarks/strix21/milestones/P18/SH1/runs/p18-engine-result.json",
+      "modelPath": "verification/benchmarks/strix21/milestones/P18/SH1/model/p18-engine-input.json",
+      "reportPath": "verification/benchmarks/strix21/milestones/P18/SH1/report/P18-engine-verification.md"
+    }
+  ]
+}

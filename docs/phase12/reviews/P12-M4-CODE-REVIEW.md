@@ -7,7 +7,7 @@
     related_regression: PASS
     critical_findings_open: 0
     high_findings_open: 0
-    evidence_artifact: reports/validation-evidence/phase12/p12-m4-approval-revision-integrity.json
+    evidence_artifact: verification/evidence/validation/phase12/p12-m4-approval-revision-integrity.json
 
 ## 검토 결과
 

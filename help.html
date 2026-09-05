@@ -77,7 +77,7 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
 <header class="app">
   <div class="logo">S-<span>Structures</span> 도움말</div>
   <input id="helpSearch" type="search" placeholder="검색 — 기능·페이지·액션 (예: pushover, 스프링, addLoad)">
-  <div class="meta">안내서 14 · 기능 80</div>
+  <div class="meta">안내서 14 · 기능 82</div>
   <a class="home" href="./app.html">앱으로</a>
 </header>
 <div class="layout">
@@ -152,12 +152,13 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
       </div>
 
       <div class="tree-group">
-        <button type="button" class="node-toggle"><span class="twisty"></span>모델링 (12)</button>
+        <button type="button" class="node-toggle"><span class="twisty"></span>모델링 (13)</button>
         <div class="children">
           <a class="leaf" href="#nodes" data-leaf="nodes" data-search="절점 nodes 3d 좌표의 절점 생성/이동/삭제. 모든 요소의 기준. addnode updatenode deletenode nativemovenode">절점</a>
           <a class="leaf" href="#members" data-leaf="members" data-search="부재 (보/기둥/가새) members 두 절점을 잇는 3d 프레임 부재. 단면·재료 배정, 로컬축 지정. addmember updatemember deletemember nativedrawmember nativeaddcolumn setmembersection setmembermaterial assignsection setmemberbehavior nativesetmemberbehavior">부재 (보/기둥/가새)</a>
           <a class="leaf" href="#member-behavior" data-leaf="member-behavior" data-search="부재 거동 타입 member-behavior 프레임 외에 트러스/인장전담/압축전담 부재를 지원 — x-brace, 케이블 모델링.">부재 거동 타입</a>
           <a class="leaf" href="#supports" data-leaf="supports" data-search="지지 조건 supports 고정/힌지/롤러/사용자 정의 dof에 더해 6-자유도 스프링 지지와 지점 침하를 지원. setsupport setspringsupport setsettlement nativesetsupport nativesetspringsupport nativesetsettlement">지지 조건</a>
+          <a class="leaf" href="#distributed-winkler-foundation" data-leaf="distributed-winkler-foundation" data-search="부재 분포 winkler 탄성지반 distributed-winkler-foundation 프레임 부재 길이에 걸쳐 local-y/local-z 선형 탄성지반 강성을 배정한다. createfoundationproperty updatefoundationproperty deletefoundationproperty assignmemberfoundation removememberfoundation">부재 분포 Winkler 탄성지반</a>
           <a class="leaf" href="#releases-offsets" data-leaf="releases-offsets" data-search="단부 해제·부분강절과 3d 강역(offset) releases-offsets pin/rigid, 4축 회전스프링, 3d 강체팔·삽입점·패널존으로 접합부 강역과 편심을 반영. addconstraint updateconstraint deleteconstraint getmemberreleasesummary getmemberreleasebenchmark">단부 해제·부분강절과 3D 강역(offset)</a>
           <a class="leaf" href="#walls-midpier" data-leaf="walls-midpier" data-search="전단벽 (mid-pier) walls-midpier 벽 패널을 등가 기둥+강체 보로 모델링하고 pier 단면력을 회복해 벽체 설계에 전달. getwallslabequivalenttrace">전단벽 (mid-pier)</a>
           <a class="leaf" href="#stories-diaphragms" data-leaf="stories-diaphragms" data-search="층과 다이어프램 stories-diaphragms z좌표 기반 층 자동 인식, 강막(rigid diaphragm) 구속과 층 질량중심/편심 관리. copystory getstorysummary getdiaphragmsummary getrigiddiaphragmbenchmark">층과 다이어프램</a>
@@ -254,11 +255,12 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
       </div>
 
       <div class="tree-group">
-        <button type="button" class="node-toggle"><span class="twisty"></span>계산서·품질 감사 (7)</button>
+        <button type="button" class="node-toggle"><span class="twisty"></span>계산서·품질 감사 (8)</button>
         <div class="children">
           <a class="leaf" href="#detailed-report" data-leaf="detailed-report" data-search="상세 보고서 detailed-report 모델/하중/해석/설계 전 과정을 담은 html 상세 보고서. opennativedetailedreport getreport getdetailedreport">상세 보고서</a>
           <a class="leaf" href="#calculation-package" data-leaf="calculation-package" data-search="계산서 패키지 calculation-package 실무 목차 기반 계산서 — 미검토 장은 숨기지 않고 not checked로 표기. opennativecalculationpackage getcalculationpackage">계산서 패키지</a>
           <a class="leaf" href="#bilingual-pdf-export" data-leaf="bilingual-pdf-export" data-search="한·영 pdf 보고서 bilingual-pdf-export 동일 snapshot에서 자격검증된 한국어·영어 pdf와 hash manifest를 원자적으로 내보낸다. preflightreportexport planreportexport runreportexport getreportexportstatus cancelreportexport listreportexports getreportexportartifacts openreportexportartifact preflightreportexport planreportexport runreportexport getreportexportstatus cancelreportexport listreportexports getreportexportartifacts openreportexportartifact">한·영 PDF 보고서</a>
+          <a class="leaf" href="#phase13-model-check" data-leaf="phase13-model-check" data-search="model check·이슈 waiver phase13-model-check 해석 전에 모델 결함을 객체·위치와 함께 찾고 이슈·waiver·마일스톤 상태를 같은 snapshot으로 조회한다. getphase13modelcheck getphase13issuewaivers getphase13milestonesnapshot">Model Check·이슈 Waiver</a>
           <a class="leaf" href="#practice-validation" data-leaf="practice-validation" data-search="실무 검증 리포트 practice-validation p-delta/결과표/계산서 준비 상태를 점검하고 warning/ng를 이슈로 남긴다. runnativeproductaudit getpracticevalidationreport getpracticeplatformreadiness getpilotprojectvalidation">실무 검증 리포트</a>
           <a class="leaf" href="#quality-audit" data-leaf="quality-audit" data-search="완성도·마일스톤 감사 quality-audit 기능별 proven/preliminary 상태와 exit criteria를 코드가 스스로 보고 — 출시 게이트의 근거. getlaunchreadinessreport getphase3completionauditreview getphase3planalignment getphase3designmilestonereview getphase3drawingimportvalidationreview getphase3engineeringvalidationreview getphase3elasticmilestonereview getphase3importmilestonereview getphase3nonlinearmilestonereview getphase3pointcloudvalidationreview getphase3practicevalidationreview getphase3productizationmilestonereview getphase3ownersignoffreview getphase3evidenceregister">완성도·마일스톤 감사</a>
           <a class="leaf" href="#final-use-release-review" data-leaf="final-use-release-review" data-search="final-use release review final-use-release-review post-phase 5 gate that composes practice validation, evidence register, owner sign-off, and launch readiness. getfinalusereleasereview getlaunchreadinessreport getphase3practicevalidationreview getphase3ownersignoffreview getphase3evidenceregister">Final-use release review</a>
@@ -557,9 +559,9 @@ git diff --check</code></pre>
 <ol><li>모델이 schema validation을 통과한다.</li><li>선형 탄성해석 solver가 수렴이 아니라 직접 풀이로 결과를 만든다.</li><li>총하중과 총반력의 평형 검사가 통과한다.</li><li>조합별 결과와 포락이 생성된다.</li><li>보고서가 같은 model/analysis 객체에서 생성된다.</li><li>하중 산정과 설계검토 trace가 보고서에 붙는다.</li></ol>
 <p>하지만 “최종 구조설계가 자동으로 끝났다”는 뜻은 아니다. 현재 프로그램은 계산을 투명하게 정리하고 검토 포인트를 드러내는 방향으로 완성도를 올리는 단계다.</p>
 <h2>Phase 4 Performance Limits</h2>
-<p>Current automated scale evidence is recorded in <code>reports/validation-evidence/scale-limits.json</code>.</p>
+<p>Current automated scale evidence is recorded in <code>verification/evidence/validation/scale-limits.json</code>.</p>
 <ul><li>Routine interactive use: up to about 1,000 frame members.</li><li>Review-required range: 2,000 members and above.</li><li>Long-run validation required: about 4,000 members before production use.</li></ul>
-<p>The 2,000 and 4,000 member rows are generated for scale evidence, but full solver validation is intentionally deferred to a longer dedicated run. <code>reports/validation-evidence/perf-budget.json</code> records the current automated performance budget; point-cloud and viewer rows are proxy measurements until owner-provided field files and browser frame captures are available.</p>
+<p>The 2,000 and 4,000 member rows are generated for scale evidence, but full solver validation is intentionally deferred to a longer dedicated run. <code>verification/evidence/validation/perf-budget.json</code> records the current automated performance budget; point-cloud and viewer rows are proxy measurements until owner-provided field files and browser frame captures are available.</p>
 <h2>Phase 5 Release Gate</h2>
 <p>Phase 5 adds a case-based analysis workflow on top of the existing in-house solver. The release-gate coverage is:</p>
 <table><thead><tr><th>Area</th><th>Current status</th><th>Evidence</th></tr></thead><tbody><tr><td>Analysis Center</td><td>Available</td><td><code>tests/p5-analysis-center.mjs</code>, <code>tests/p5-release-gate.mjs</code></td></tr><tr><td>Load conditions and KDS load basis</td><td>Available / preliminary where code procedure is simplified</td><td><code>tests/p5-load-conditions.mjs</code>, <code>tests/p5-load-case-kds-mass.mjs</code></td></tr><tr><td>Hinge assignment, pushover, and NLTH</td><td>Preliminary but visible in UI and reports</td><td><code>tests/p5-hinge-assignment.mjs</code>, <code>tests/p5-pushover-workflow.mjs</code>, <code>tests/p5-nonlinear-performance-nlth.mjs</code></td></tr><tr><td>Result switching, ratio legend, and charts</td><td>Available for current result handles</td><td><code>tests/p5-result-case-views.mjs</code>, <code>tests/p5-result-charts-ratio.mjs</code></td></tr><tr><td>Calculation package inclusion</td><td>Available, including not-run case rows</td><td><code>tests/p5-calculation-package.mjs</code></td></tr></tbody></table>
@@ -822,6 +824,22 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
       <h4>관련 실행 액션</h4><p class="api-list"><code>setSupport</code> <code>setSpringSupport</code> <code>setSettlement</code> <code>nativeSetSupport</code> <code>nativeSetSpringSupport</code> <code>nativeSetSettlement</code></p>
       <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
       <footer class="control-key">기능 제어 키: <code>feature.supports</code> (기본 상시) </footer>
+    </article>
+</template>
+<template data-help-page="distributed-winkler-foundation" data-title="부재 분포 Winkler 탄성지반" data-crumb="기능 설명서 · 모델링">
+
+    <article class="feature" id="distributed-winkler-foundation" data-feature="distributed-winkler-foundation">
+      <header>
+        <span class="crumb">모델링</span>
+        <h2>부재 분포 Winkler 탄성지반 <span class="badge badge-preliminary">예비</span></h2>
+        <p class="summary">프레임 부재 길이에 걸쳐 local-y/local-z 선형 탄성지반 강성을 배정한다.</p>
+      </header>
+      <p class="description">Winkler 탄성지반 속성은 단위길이당 지반반력 강성을 프레임 부재 전체에 일관 강성으로 적분한다. 속성을 먼저 만들고 하나 이상의 프레임 부재에 배정하며, 해석 결과에서는 보의 구조 단부력과 지반반력·평형 성분을 구분해 확인한다.</p>
+      <h4>사용 방법</h4><ol><li>createFoundationProperty로 고유 id와 localY/localZ lineStiffness를 가진 winkler-line 속성을 만든다</li><li>assignMemberFoundation에 foundationId와 memberId 또는 memberIds를 전달해 프레임 부재에 배정한다</li><li>속성값을 바꿀 때는 updateFoundationProperty를 사용하고 변경 뒤 결과가 stale 처리됐는지 확인한 후 재해석한다</li><li>배정만 해제하려면 removeMemberFoundation을 사용하고, 사용 중인 속성 삭제는 먼저 배정을 해제하거나 명시적 force 정책을 검토한다</li></ol>
+      <h4>한계</h4><ul class="limits"><li>현재 범위는 uniform·full-member·ground displacement 0의 linear-bilateral foundation이며 uplift/gap·비선형 지반은 지원하지 않는다</li><li>frame 부재만 배정할 수 있고 generated member·taper·비선형 해석은 별도 qualification 전까지 fail-closed다</li><li>내부 검증과 SB7 수치 비교는 수행했지만 독립 구조전문가 자격·상용 프로그램 R4 비교·최종 설계전이는 아직 승인되지 않았다</li></ul>
+      <h4>관련 실행 액션</h4><p class="api-list"><code>createFoundationProperty</code> <code>updateFoundationProperty</code> <code>deleteFoundationProperty</code> <code>assignMemberFoundation</code> <code>removeMemberFoundation</code></p>
+      <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
+      <footer class="control-key">기능 제어 키: <code>feature.distributed-winkler-foundation</code> (기본 상시) </footer>
     </article>
 </template>
 <template data-help-page="releases-offsets" data-title="단부 해제·부분강절과 3D 강역(offset)" data-crumb="기능 설명서 · 모델링">
@@ -1646,6 +1664,22 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
       <h4>관련 읽기 API</h4><p class="api-list"><code>preflightReportExport</code> <code>planReportExport</code> <code>runReportExport</code> <code>getReportExportStatus</code> <code>cancelReportExport</code> <code>listReportExports</code> <code>getReportExportArtifacts</code> <code>openReportExportArtifact</code></p>
       <p class="manual-link">자세한 절차: <a href="#03-loads-design-and-reports" data-guide-link="03-loads-design-and-reports">하중·설계 검토·계산서</a></p>
       <footer class="control-key">기능 제어 키: <code>feature.bilingual-pdf-export</code> (기본 상시) </footer>
+    </article>
+</template>
+<template data-help-page="phase13-model-check" data-title="Model Check·이슈 Waiver" data-crumb="기능 설명서 · 계산서·품질 감사">
+
+    <article class="feature" id="phase13-model-check" data-feature="phase13-model-check">
+      <header>
+        <span class="crumb">계산서·품질 감사</span>
+        <h2>Model Check·이슈 Waiver <span class="badge badge-preliminary">예비</span></h2>
+        <p class="summary">해석 전에 모델 결함을 객체·위치와 함께 찾고 이슈·waiver·마일스톤 상태를 같은 snapshot으로 조회한다.</p>
+      </header>
+      <p class="description">Model Check는 geometry·property·support·constraint·story·load·mass·analysis preflight 문제를 결정적 issue ID로 정리한다. Agent API는 UI와 보고서가 사용하는 동일 snapshot, 현재 model hash에 결속된 waiver, Phase 13 마일스톤 상태를 읽기 전용으로 제공한다.</p>
+      <h4>사용 방법</h4><ol><li>getPhase13ModelCheck를 읽어 blocker/warning, objectRefs, story와 제안된 조치가 있는지 확인한다</li><li>getPhase13IssueWaivers에서 reviewer·사유·revision·model hash가 현재 모델과 일치하는지 확인하고 stale waiver를 승인으로 간주하지 않는다</li><li>getPhase13MilestoneSnapshot으로 Model Check와 후속 탄성 워크벤치 영역의 구현·자격 상태를 함께 확인한다</li></ol>
+      <h4>한계</h4><ul class="limits"><li>자동 repair는 preview와 원자 transaction 범위에서만 사용하며 구조 시스템·지지조건을 공학 판단 없이 추론해 확정하지 않는다</li><li>packaged restart·접근성·office qualification이 남아 있어 implementation-complete를 최종 설계 승인으로 해석하지 않는다</li></ul>
+      <h4>관련 읽기 API</h4><p class="api-list"><code>getPhase13ModelCheck</code> <code>getPhase13IssueWaivers</code> <code>getPhase13MilestoneSnapshot</code></p>
+      <p class="manual-link">자세한 절차: <a href="#03-loads-design-and-reports" data-guide-link="03-loads-design-and-reports">하중·설계 검토·계산서</a></p>
+      <footer class="control-key">기능 제어 키: <code>feature.phase13-model-check</code> (기본 상시) </footer>
     </article>
 </template>
 <template data-help-page="practice-validation" data-title="실무 검증 리포트" data-crumb="기능 설명서 · 계산서·품질 감사">

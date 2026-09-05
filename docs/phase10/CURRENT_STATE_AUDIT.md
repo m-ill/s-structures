@@ -28,7 +28,7 @@ basis: 소스 직접 검토 + 대표 테스트 실행 (p6 7종 · p7-m10 · p9-m
 | compute 런타임 (CPU/WASM/WebGPU, factor session, 탄성 이관) | P9 `src/compute/`, `p9-m3-elastic-runtime` PASS | proven |
 | sparse requested-mode eigen | P9-M6 `compute/eigen/requestedModes.js` | proven (동적 경로) |
 | 질량원(자중 dedup)·풍 부담폭·우발편심 | `loads/loadsV2.js`, `design/accidentalEccentricity.js` | proven |
-| 검증 매트릭스 + evidence 스키마 | `verification/matrix/`, `reports/validation-evidence/` | proven, 292 스위트 green |
+| 검증 매트릭스 + evidence 스키마 | `verification/matrix/`, `verification/evidence/validation/` | proven, 292 스위트 green |
 
 ## 2. 격차 (Phase 10 작업 대상) — 전부 소스 확인 값
 

@@ -135,13 +135,14 @@ const productionResult = analyzeComponent3D(
 );
 assert.equal(productionResult.ok, true, productionResult.reason || JSON.stringify(productionResult.solver));
 assert.ok(productionResult.solver.freeDofCount >= 5000);
-assert.equal(productionResult.solver.sparse.method, 'sparse-cg');
+assert.equal(productionResult.solver.sparse.method, 'scaled-ic0-pcg');
 assert.equal(productionResult.solver.sparse.denseConversionCount, 0);
 assert.equal(
-  productionResult.solver.sparse.qualification.certification,
-  'exact-all-components-positive-pivots',
+  productionResult.solver.sparse.factorStorage,
+  'incomplete-cholesky-zero-fill',
 );
-assert.equal(productionResult.solver.sparse.qualification.probeCount, 0);
+assert.equal(productionResult.solver.sparse.inputStorage, 'csc');
+assert.equal(productionResult.solver.sparse.fallback, false);
 const storage = productionResult.solver.sparse.assembly;
 assert.equal(storage.path, 'sparse-csc');
 assert.equal(storage.denseSquareAllocationCount, 0);

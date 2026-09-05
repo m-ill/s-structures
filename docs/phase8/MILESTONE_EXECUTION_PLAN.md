@@ -77,7 +77,7 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 
 ## P8-M0 - 상태 정직성, 계약, legacy 격리
 
-**상태: complete (2026-07-11).** 완료 증거와 잔여 범위는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) 및 `reports/validation-evidence/phase8/`를 기준으로 한다.
+**상태: complete (2026-07-11).** 완료 증거와 잔여 범위는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) 및 `verification/evidence/validation/phase8/`를 기준으로 한다.
 
 ### 목표
 
@@ -156,7 +156,7 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 
 ## P8-M2 - MDOF 잔차·접선 조립과 Newton 평형
 
-**상태: complete (2026-07-12).** 검증 artifact는 `reports/validation-evidence/phase8/p8-m2-equilibrium.json`, 코드 리뷰는 `p8-m2-code-review.md`, sparse backend 결정은 [ADR-005](adr/ADR-005-INHOUSE-WASM-SPARSE.md)를 기준으로 한다. M2 완료는 corotational·소성·Pushover·NLTH qualification을 의미하지 않는다.
+**상태: complete (2026-07-12).** 검증 artifact는 `verification/evidence/validation/phase8/p8-m2-equilibrium.json`, 코드 리뷰는 `p8-m2-code-review.md`, sparse backend 결정은 [ADR-005](adr/ADR-005-INHOUSE-WASM-SPARSE.md)를 기준으로 한다. M2 완료는 corotational·소성·Pushover·NLTH qualification을 의미하지 않는다.
 
 ### 목표
 
@@ -202,7 +202,7 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 
 ## P8-M3 - 완전한 3D corotational frame/truss
 
-**상태: complete (2026-07-12).** 검증 artifact는 `reports/validation-evidence/phase8/p8-m3-corotational.json`, 정식화 결정은 [ADR-002](adr/ADR-002-FINITE-ROTATION-COROTATIONAL.md), 코드 리뷰는 `p8-m3-code-review.md`를 기준으로 한다. 완료 범위는 principal rotation chart의 탄성 기하비선형 정적 frame/truss다. finite 2축 release는 물리 단력·general tangent만 static qualification하며 에너지 기반 cyclic/NLTH는 차단한다.
+**상태: complete (2026-07-12).** 검증 artifact는 `verification/evidence/validation/phase8/p8-m3-corotational.json`, 정식화 결정은 [ADR-002](adr/ADR-002-FINITE-ROTATION-COROTATIONAL.md), 코드 리뷰는 `p8-m3-code-review.md`를 기준으로 한다. 완료 범위는 principal rotation chart의 탄성 기하비선형 정적 frame/truss다. finite 2축 release는 물리 단력·general tangent만 static qualification하며 에너지 기반 cyclic/NLTH는 차단한다.
 
 ### 목표
 
@@ -271,7 +271,7 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 - 완료: 비대칭 A-B-C-D-E, Masing/isotropic 이력, degradation·energy, 순수 committed/trial 상태
 - 완료: i/j·local y/z 내부 spring과 3D corotational elastic member의 일관 직렬 condensation
 - 완료: axis별 steel/RC snapshot 자동배정, PMM hook, release 충돌 차단, preview/apply/undo
-- 증거: `reports/validation-evidence/phase8/p8-m4-concentrated-hinge.json`
+- 증거: `verification/evidence/validation/phase8/p8-m4-concentrated-hinge.json`
 - 결정: `docs/phase8/adr/ADR-003-CONCENTRATED-HINGE-SERIES-COMPATIBILITY.md`
 
 ## P8-M5 - 중력 preload와 정식 변위제어 Pushover
@@ -349,7 +349,7 @@ P8-M1에서 이 자산을 canonical domain으로 일반화하되 Phase 7 결과�
 - elastic A/I/J와 fiber 면적·도심·관성의 cross-domain 일치
 - `NL-FIB-01`~`NL-FIB-14`, `NL-PMM-01`~`NL-PMM-08` 통과
 
-완료 증거는 `reports/validation-evidence/phase8/p8-m6-fiber-pmm.json`, `p8-m6-code-review.md`, `ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md`에 고정한다.
+완료 증거는 `verification/evidence/validation/phase8/p8-m6-fiber-pmm.json`, `p8-m6-code-review.md`, `ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md`에 고정한다.
 
 ## P8-M6.1 - PMM 전처리 성능과 실행 안전성
 
@@ -382,7 +382,7 @@ PMM surface 생성을 독립 전처리 단계로 계측하고, UI thread를 차�
 - memory/persistent cache hit, 손상 record, source 변경 miss 검증
 - `NL-PMM-09`~`NL-PMM-14` 통과
 
-완료 증거는 `reports/validation-evidence/phase8/p8-m6-pmm-runtime.json`, `p8-m6-1-code-review.md`, 갱신된 `ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md`로 고정한다. 일반 analysis job scheduler와 cache GC/TTL은 각각 P8-M10/P8-M9 후속 범위다.
+완료 증거는 `verification/evidence/validation/phase8/p8-m6-pmm-runtime.json`, `p8-m6-1-code-review.md`, 갱신된 `ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md`로 고정한다. 일반 analysis job scheduler와 cache GC/TTL은 각각 P8-M10/P8-M9 후속 범위다.
 
 ## P8-M7 - Arc-length와 cyclic static 경로
 
@@ -423,7 +423,7 @@ limit point 이후 post-peak와 cyclic static protocol을 실제 augmented solve
 - 완료: production Pushover의 opt-in `arcLength.enabled` handoff/결과회복 및 공개 API/Agent manifest
 - 완료: `auto/cpu/wasm/gpu` backend 정책, 명시 GPU enable, deterministic float64 production qualification gate
 - 제한: GPU sparse kernel은 없음. GPU 요청은 qualified backend가 주입되지 않으면 `GPU_BACKEND_UNAVAILABLE`로 차단
-- 증거: `reports/validation-evidence/phase8/p8-m7-arc-cyclic.json`, `p8-m7-code-review.md`
+- 증거: `verification/evidence/validation/phase8/p8-m7-arc-cyclic.json`, `p8-m7-code-review.md`
 - 결정: `docs/phase8/adr/ADR-007-DISPLACEMENT-ARC-LENGTH-BRANCH-POLICY.md`
 
 ## P8-M8 - 실제 3D 모델 MDOF NLTH
@@ -479,7 +479,7 @@ limit point 이후 post-peak와 cyclic static protocol을 실제 augmented solve
 - 완료: cancel/progress, provenance-checked checkpoint/restart, Worker result chunk와 commit boundary
 - 완료: node/ground/base/member/hinge/fiber/energy history, nested envelope index, bounded retained step trace와 memory budget
 - 검증: linear SDOF/MDOF 독립 구현, nonlinear oscillator, finite-difference tangent, time-step convergence, energy, 실제 3D hardening hinge frame
-- 증거: `reports/validation-evidence/phase8/p8-m8-mdof-nlth.json`, `p8-m8-code-review.md`
+- 증거: `verification/evidence/validation/phase8/p8-m8-mdof-nlth.json`, `p8-m8-code-review.md`
 - 결정: `docs/phase8/adr/ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md`
 - 제한: spatially varying support motion, released-member consistent mass, 실제 GPU kernel, 외부 상용 solver 비교는 미포함
 
@@ -525,9 +525,9 @@ Phase 7에서 지원하는 실제 모델 기능이 비선형 도메인과 결과
 - One integrated result adapter recovers node, reaction, member end/station, hinge/fiber, story, generated-origin, and event/history envelope data, including full-mass absolute-inertia story shear for NLTH.
 - Pushover keeps only the latest full integrated step during execution and rolls prior steps into immutable audit references.
 - Global equilibrium, element-node closure, released-force, station closure, granular stale, run-record provenance, and design-transfer guards are versioned and tested.
-- Evidence: `reports/validation-evidence/phase8/p8-m9-integration-recovery.json`.
+- Evidence: `verification/evidence/validation/phase8/p8-m9-integration-recovery.json`.
 - ADR: `docs/phase8/adr/ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md`.
-- Review: `reports/validation-evidence/phase8/p8-m9-code-review.md`.
+- Review: `verification/evidence/validation/phase8/p8-m9-code-review.md`.
 
 ## P8-M10 - 실무 UI, 결과 시각화, 보고서, agent/MCP 계약
 
@@ -573,7 +573,7 @@ Phase 7에서 지원하는 실제 모델 기능이 비선형 도메인과 결과
 - 1366x768, 1920x1080, 2560x1440, tablet viewport에서 겹침과 잘림 없음
 - `NL-UI-01`~`NL-UI-14`, `NL-API-01`~`NL-API-10` 통과
 
-완료 증거는 `reports/validation-evidence/phase8/p8-m10-ui-api.json`, `reports/validation-evidence/phase8/p8-m10-code-review.md`, `docs/phase8/adr/ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md`에 고정한다. 공통 application service가 UI와 Agent/MCP의 case/settings/engine/qualification을 통일하고, 실제 브라우저 viewport 검토와 전체 Phase 8 회귀를 함께 통과해야 한다.
+완료 증거는 `verification/evidence/validation/phase8/p8-m10-ui-api.json`, `verification/evidence/validation/phase8/p8-m10-code-review.md`, `docs/phase8/adr/ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md`에 고정한다. 공통 application service가 UI와 Agent/MCP의 case/settings/engine/qualification을 통일하고, 실제 브라우저 viewport 검토와 전체 Phase 8 회귀를 함께 통과해야 한다.
 
 ## P8-M11 - 독립 검증, 성능, 대표 프로젝트 pilot, 최종 리뷰
 
@@ -619,7 +619,7 @@ Phase 7에서 지원하는 실제 모델 기능이 비선형 도메인과 결과
 - Critical/High finding 0
 - `NL-PERF-01`~`NL-PERF-16`, `NL-PILOT-01`~`NL-PILOT-05` 통과
 
-현재 판정과 재현 명령은 `docs/verification/phase8/QUALIFICATION_RELEASE.md`, `docs/verification/phase8/release-manifest.json`, `reports/validation-evidence/phase8/p8-m11-qualification-release.json`에 고정한다. 구현 완료는 위 release 완료 조건을 완화하지 않으며, 미충족 항목을 `PASS`로 대체하지 않는다.
+현재 판정과 재현 명령은 `verification/specs/phase8/QUALIFICATION_RELEASE.md`, `verification/specs/phase8/release-manifest.json`, `verification/evidence/validation/phase8/p8-m11-qualification-release.json`에 고정한다. 구현 완료는 위 release 완료 조건을 완화하지 않으며, 미충족 항목을 `PASS`로 대체하지 않는다.
 
 ## 4. 마일스톤별 필수 검증군
 

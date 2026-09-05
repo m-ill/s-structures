@@ -37,7 +37,7 @@ depends: []
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m0-baseline-governance.json`
+`verification/evidence/validation/phase11/p11-m0-baseline-governance.json`
 
 ## Review Log
 
@@ -48,6 +48,6 @@ depends: []
 - `src/report/phase11/governance.js`
 - `tools/run-p11-m0-baseline.mjs`
 - `tests/p11-m0-baseline-governance.mjs`
-- `docs/verification/phase11/evidence-schema.json`
-- `docs/verification/phase11/release-manifest.json`
-- `reports/validation-evidence/phase11/p11-m0-baseline-governance.json`
+- `verification/specs/phase11/evidence-schema.json`
+- `verification/specs/phase11/release-manifest.json`
+- `verification/evidence/validation/phase11/p11-m0-baseline-governance.json`

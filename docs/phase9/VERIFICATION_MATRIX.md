@@ -3,7 +3,7 @@
 ```yaml
 version: p9-verification-matrix-v1
 status: proposed
-evidence_root: reports/validation-evidence/phase9
+evidence_root: verification/evidence/validation/phase9
 ```
 
 ## 1. 검증 등급

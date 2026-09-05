@@ -9,8 +9,8 @@ import {
   validatePhase9M10Manifest,
 } from '../src/compute/governance/phase9M10.js';
 
-const manifest = JSON.parse(await readFile(new URL('../docs/verification/phase9/release-manifest.json', import.meta.url), 'utf8'));
-const prior = JSON.parse(await readFile(new URL('../reports/validation-evidence/phase9/p9-m9-product-workflow.json', import.meta.url), 'utf8'));
+const manifest = JSON.parse(await readFile(new URL('../verification/specs/phase9/release-manifest.json', import.meta.url), 'utf8'));
+const prior = JSON.parse(await readFile(new URL('../verification/evidence/validation/phase9/p9-m9-product-workflow.json', import.meta.url), 'utf8'));
 const cleanup = {
   registryVersion: 'p9-m10-compatibility-registry-v1', expiredProductionCompatibilityCallers: 0,
   finalDebtHash: 'a'.repeat(64),

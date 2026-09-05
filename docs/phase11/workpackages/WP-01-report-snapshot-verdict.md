@@ -39,7 +39,7 @@ depends: [WP-00]
 
 ## Evidence
 
-`reports/validation-evidence/phase11/p11-m1-report-snapshot-verdict.json`
+`verification/evidence/validation/phase11/p11-m1-report-snapshot-verdict.json`
 
 ## Review Log
 
@@ -51,4 +51,4 @@ depends: [WP-00]
 - `src/report/calculationPackage.js` compatibility facade
 - `tests/p11-m1-report-snapshot-verdict.mjs`
 - `tools/run-p11-m1-evidence.mjs`
-- `reports/validation-evidence/phase11/p11-m1-report-snapshot-verdict.json`
+- `verification/evidence/validation/phase11/p11-m1-report-snapshot-verdict.json`

@@ -62,7 +62,7 @@ const launchEvidence = {
   })),
   securityEvidence: { signed: true, reportPath: 'reports/launch-readiness/performance-security.md', items: ['security'] },
   backupRestoreEvidence: { recorded: true, reportPath: 'reports/launch-readiness/backup-restore.md', items: ['backup'] },
-  designVerificationEvidence: { recorded: true, reportPath: 'docs/verification/DESIGN_MODULE_VERIFICATION.md', items: ['design'] },
+  designVerificationEvidence: { recorded: true, reportPath: 'verification/specs/DESIGN_MODULE_VERIFICATION.md', items: ['design'] },
   ownerSignoffChecklistRecorded: true,
   calculationTraceConnected: true,
   notCheckedCount: integrated.summary.notCheckedCount,

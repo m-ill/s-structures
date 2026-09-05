@@ -1,0 +1,341 @@
+{
+  "schemaVersion": "p18-case-evidence-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "caseId": "SR2",
+  "engineStatus": "PASS",
+  "officialBenchmarkStatus": "INPUT_BLOCKED",
+  "officialPassClaimed": false,
+  "verdict": "ENGINE_PASS_SOURCE_BLOCKED",
+  "method": "production 3-D frame with two rigid Ux-Uy-Rz diaphragms, eccentric six-DOF mass, nodal/member recovery, four modal combinations",
+  "source": {
+    "publicPage": "https://dcr-st.com/verification/SR2.html",
+    "suite": "STRIX Verification 21",
+    "sourceLimitations": [
+      "column and beam area values and beam inertias",
+      "absolute storey mass and rotational inertia values",
+      "complete node/member connectivity and all spectrum settings"
+    ]
+  },
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/dynamics/modalDiaphragm.js",
+    "src/results/rsa/memberForces.js"
+  ],
+  "modeling": {
+    "fixture": "complete two-storey eccentric rigid-diaphragm engine qualification model",
+    "nodeCount": 12,
+    "columnCount": 8,
+    "diaphragmCount": 2
+  },
+  "result": {
+    "version": "p18-strix21-completion-v1",
+    "id": "SR2",
+    "status": "ENGINE_PASS_SOURCE_BLOCKED",
+    "engineStatus": "PASS",
+    "officialBenchmarkStatus": "INPUT_BLOCKED",
+    "officialPassClaimed": false,
+    "formulation": "production 3-D frame with two rigid Ux-Uy-Rz diaphragms, eccentric six-DOF mass, nodal/member recovery, four modal combinations",
+    "model": {
+      "fixture": "complete two-storey eccentric rigid-diaphragm engine qualification model",
+      "nodeCount": 12,
+      "columnCount": 8,
+      "diaphragmCount": 2
+    },
+    "engineResults": [
+      {
+        "method": "SRSS",
+        "modeCount": 6,
+        "periods": [
+          0.13048311208969834,
+          0.119991248092784,
+          0.11810430761830658,
+          0.0486136364314795,
+          0.04459873315248696,
+          0.04377901590905155
+        ],
+        "frequenciesHz": [
+          7.663827019335401,
+          8.333941148997331,
+          8.467091676552842,
+          20.57035995259255,
+          22.422161557390268,
+          22.841993572387373
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 1,
+            "displacement": 0.00303294894343188,
+            "baseShear": 66.4267569792026,
+            "memberForceStatus": "available"
+          },
+          "y": {
+            "participatingMassRatio": 0.9999999999999999,
+            "displacement": 0.002656084575724618,
+            "baseShear": 83.11593584232905,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "78a5e11c6dac1af0e3fed43bb8dc462734897ecf739612fd8c2044d522b595bd"
+      },
+      {
+        "method": "CQC",
+        "modeCount": 6,
+        "periods": [
+          0.13048311208969834,
+          0.119991248092784,
+          0.11810430761830658,
+          0.0486136364314795,
+          0.04459873315248696,
+          0.04377901590905155
+        ],
+        "frequenciesHz": [
+          7.663827019335401,
+          8.333941148997331,
+          8.467091676552842,
+          20.57035995259255,
+          22.422161557390268,
+          22.841993572387373
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 1,
+            "displacement": 0.0031169979127598437,
+            "baseShear": 76.31037488031983,
+            "memberForceStatus": "available"
+          },
+          "y": {
+            "participatingMassRatio": 0.9999999999999999,
+            "displacement": 0.0026557633633838167,
+            "baseShear": 83.14651900496834,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "be8b8317800382cd1e3a04401a8c9cac65accaf39d9fc6eba67d5e355259de05"
+      },
+      {
+        "method": "ABS",
+        "modeCount": 6,
+        "periods": [
+          0.13048311208969834,
+          0.119991248092784,
+          0.11810430761830658,
+          0.0486136364314795,
+          0.04459873315248696,
+          0.04377901590905155
+        ],
+        "frequenciesHz": [
+          7.663827019335401,
+          8.333941148997331,
+          8.467091676552842,
+          20.57035995259255,
+          22.422161557390268,
+          22.841993572387373
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 1,
+            "displacement": 0.00324526412860646,
+            "baseShear": 88.61681464989196,
+            "memberForceStatus": "available"
+          },
+          "y": {
+            "participatingMassRatio": 0.9999999999999999,
+            "displacement": 0.002694545908446197,
+            "baseShear": 86.72688049799815,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "a7dc769c369b3560422ce46ea31c11385f5a0d1f99dfd5fe87d0278a9bec3122"
+      },
+      {
+        "method": "NRC10",
+        "modeCount": 6,
+        "periods": [
+          0.13048311208969834,
+          0.119991248092784,
+          0.11810430761830658,
+          0.0486136364314795,
+          0.04459873315248696,
+          0.04377901590905155
+        ],
+        "frequenciesHz": [
+          7.663827019335401,
+          8.333941148997331,
+          8.467091676552842,
+          20.57035995259255,
+          22.422161557390268,
+          22.841993572387373
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 1,
+            "displacement": 0.003199356059790374,
+            "baseShear": 84.96580028502251,
+            "memberForceStatus": "available"
+          },
+          "y": {
+            "participatingMassRatio": 0.9999999999999999,
+            "displacement": 0.002656084575724618,
+            "baseShear": 83.11593584232905,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "a887d860edcdd3bf9d55e6e6d3cda724f87aa0666d085b833077b4bb437df55c"
+      }
+    ],
+    "eccentricResponse": {
+      "maxRz": 0.0003655587171231182,
+      "maxInertiaMoment": 0.21998968113954598
+    },
+    "probes": [
+      {
+        "id": "SR2-SRSS-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.00303294894343188,
+        "reference": 0.00303294894343188,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2-SRSS-X-BASE-SHEAR-CLOSURE",
+        "actual": 66.4267569792026,
+        "reference": 66.4267569792026,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2-CQC-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.0031169979127598437,
+        "reference": 0.0031169979127598432,
+        "errorPct": 1.3913415444356628e-14,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2-CQC-X-BASE-SHEAR-CLOSURE",
+        "actual": 76.31037488031983,
+        "reference": 76.31037488031978,
+        "errorPct": 5.58673236928375e-14,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2-ABS-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.00324526412860646,
+        "reference": 0.00324526412860646,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2-ABS-X-BASE-SHEAR-CLOSURE",
+        "actual": 88.61681464989196,
+        "reference": 88.61681464989196,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2-NRC10-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.003199356059790374,
+        "reference": 0.003199356059790374,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2-NRC10-X-BASE-SHEAR-CLOSURE",
+        "actual": 84.96580028502251,
+        "reference": 84.96580028502251,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2-ECCENTRIC-RZ-RECOVERY",
+        "actual": 0.0003655587171231182,
+        "reference": 0,
+        "unit": "rad",
+        "tolerance": {
+          "type": "minimum-exclusive",
+          "value": 1e-12
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2-DIRECT-JZ-INERTIA-MOMENT",
+        "actual": 0.21998968113954598,
+        "reference": 0,
+        "unit": "force.length",
+        "tolerance": {
+          "type": "minimum-exclusive",
+          "value": 1e-12
+        },
+        "passed": true
+      }
+    ],
+    "missingOfficialInputs": [
+      "column and beam area values and beam inertias",
+      "absolute storey mass and rotational inertia values",
+      "complete node/member connectivity and all spectrum settings"
+    ],
+    "publicReferenceValues": {
+      "periodsSec": [
+        0.2271,
+        0.2156,
+        0.0733,
+        0.072
+      ],
+      "roofCenterOfMassUx": {
+        "SRSS": 0.02012,
+        "CQC": 0.02014,
+        "ABS": 0.0205,
+        "NRC10": 0.02016
+      }
+    },
+    "engineeringHash": "13fce0d901d004934c83e208e942f5d9dab1a03d17df4cc359ff8a3035f85a71"
+  },
+  "audit": {
+    "probeCount": 10,
+    "failedProbeCount": 0,
+    "engineeringHash": "13fce0d901d004934c83e208e942f5d9dab1a03d17df4cc359ff8a3035f85a71"
+  }
+}
