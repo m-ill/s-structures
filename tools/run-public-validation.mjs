@@ -11,6 +11,7 @@ const git = (...args) => execFileSync('git', ['-c', `safe.directory=${root.repla
 let source;
 try { source = { commit: git('rev-parse', 'HEAD'), tree: git('rev-parse', 'HEAD^{tree}'), trackedChanges: git('status', '--porcelain', '--untracked-files=no') }; }
 catch { source = JSON.parse(readFileSync('SOURCE-IDENTITY.json', 'utf8')); }
+if (source.trackedChanges) throw new Error('Validation requires a clean tracked source tree.');
 const tests = [
  'tests/webmcp-integration.mjs', 'tests/webmcp-bridge-security.mjs', 'tests/m31-agent-command-bridge.mjs',
  'verification/harnesses/check-public-import-contracts.mjs', 'verification/harnesses/check-agent-contract.mjs',
