@@ -152,6 +152,7 @@ function migrateV4ToV6(source) {
   const model = {
     ...source,
     schemaVersion: SCHEMA_VERSION,
+    links: Array.isArray(source.links) ? source.links.map((item) => clone(item)) : [],
     foundationProperties: normalizeFoundationProperties(source.foundationProperties),
     ...(Array.isArray(source.constraints) ? { constraints: source.constraints.map((item) => clone(item)) } : {}),
     ...registries,
