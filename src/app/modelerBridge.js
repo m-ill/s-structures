@@ -11,8 +11,17 @@ export function createModelerBridge({ window, iframe, timeoutMs = 3000 } = {}) {
     return createUnavailableBridge('Native modeler frame is not ready.');
   }
   const pending = new Map();
+  let disposed = false;
+  let origin;
+  try {
+    origin = new URL(iframe.src || iframe.getAttribute?.('src'), window.location.href).origin;
+    if (!/^https?:\/\//.test(origin) || origin !== window.location.origin) throw new Error('Cross-origin modeler');
+  } catch {
+    return createUnavailableBridge('Modeler requires a same-origin HTTP(S) frame.');
+  }
 
   function onMessage(event) {
+    if (disposed || event?.origin !== origin || event.source !== target) return;
     const data = event?.data || null;
     if (data?.type !== AGENT_RESPONSE_MESSAGE_TYPE) return;
     const response = data.response || data.detail || data;
@@ -27,7 +36,9 @@ export function createModelerBridge({ window, iframe, timeoutMs = 3000 } = {}) {
   window.addEventListener('message', onMessage);
 
   function request(method, payload = {}, options = {}) {
+    if (disposed) return Promise.reject(new Error('Modeler bridge disposed.'));
     const id = options.id || `modeler-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    if (pending.has(id)) return Promise.reject(new Error('Duplicate modeler request id.'));
     const command = {
       id,
       method: method === 'execute' ? 'execute' : String(method),
@@ -40,7 +51,13 @@ export function createModelerBridge({ window, iframe, timeoutMs = 3000 } = {}) {
         reject(new Error(`Modeler command timed out: ${command.method}`));
       }, timeoutMs);
       pending.set(id, { resolve, reject, timer });
-      target.postMessage({ type: AGENT_COMMAND_MESSAGE_TYPE, command }, '*');
+      try {
+        target.postMessage({ type: AGENT_COMMAND_MESSAGE_TYPE, command }, origin);
+      } catch (error) {
+        pending.delete(id);
+        window.clearTimeout?.(timer);
+        reject(error);
+      }
     });
   }
 
@@ -54,6 +71,7 @@ export function createModelerBridge({ window, iframe, timeoutMs = 3000 } = {}) {
       return request('execute', { model }, { action: 'setModel' });
     },
     dispose() {
+      disposed = true;
       window.removeEventListener?.('message', onMessage);
       for (const item of pending.values()) {
         window.clearTimeout?.(item.timer);

@@ -3,6 +3,7 @@ import {
   migrateToV3,
   validateModel as validateCoreModel,
 } from '../core/model.js';
+import { installWebMcp } from './webmcp/register.js';
 import { buildStorySummary } from '../core/storySummary.js';
 import { buildStoryMassSummary } from '../core/storyMassSummary.js';
 import { buildDiaphragmSummary } from '../core/diaphragmSummary.js';
@@ -737,6 +738,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.phase13ElasticWorkspace = installIndexPhase13ElasticWorkspace(target, { bridge });
     bridge.productHardening = installIndexProductHardening(target, { bridge });
     bridge.agentCommandBridge = installIndexAgentCommandBridge(target, target.SStructuresAgent);
+    bridge.webmcp = installWebMcp(target, bridge);
     bridge.detailedReportMenu = installDetailedReportMenuHook(target, bridge);
     bridge.calculationPackageMenu = installCalculationPackageMenuHook(target, bridge);
     bridge.reportExportUi = installReportExportUi(

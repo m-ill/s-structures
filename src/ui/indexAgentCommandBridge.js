@@ -44,7 +44,6 @@ const READ_METHODS = new Set([
   'getPhase3CompletionAuditReview',
   'getPhase3EvidenceRegister',
   'listProjectEvidence',
-  'submitProjectEvidence',
   'getConnectionFoundationReport',
   'getMemberDesignTraceReport',
   'getServiceabilityDriftReport',
@@ -82,6 +81,7 @@ const READ_METHODS = new Set([
 ]);
 
 const MUTATING_METHODS = new Set([
+  'submitProjectEvidence',
   'validateNonlinearCase',
   'createProductionNonlinearCase',
   'previewNonlinearAssignments',
@@ -136,11 +136,12 @@ export function installIndexAgentCommandBridge(target = globalThis, agent = targ
       };
     },
     run(command = {}) {
-      const normalized = normalizeCommand(command);
+      let normalized = { id: null, method: null, action: null };
       state.commandCount += 1;
-      state.lastCommand = summarizeCommand(normalized);
       let response;
       try {
+        normalized = normalizeCommand(command);
+        state.lastCommand = summarizeCommand(normalized);
         const data = runAgentCommand(agent, normalized);
         response = {
           ok: true,
@@ -186,7 +187,8 @@ export function installIndexAgentCommandBridge(target = globalThis, agent = targ
     target.addEventListener('hashchange', () => {
       const command = readHashCommand(target.location?.hash);
       if (command) {
-        bridge.run(command);
+        // A shared URL is not authorization to change a model or run a solver.
+        if (command.method === 'getCapabilities' && !command.action) bridge.run(command);
         clearCommandHash(target);
       }
     });
@@ -203,7 +205,7 @@ export function installIndexAgentCommandBridge(target = globalThis, agent = targ
   });
   const initialHashCommand = readHashCommand(target.location?.hash);
   if (initialHashCommand) {
-    bridge.run(initialHashCommand);
+    if (initialHashCommand.method === 'getCapabilities' && !initialHashCommand.action) bridge.run(initialHashCommand);
     clearCommandHash(target);
   }
   return bridge;
@@ -232,6 +234,10 @@ function normalizeCommand(command) {
 }
 
 function readMessageCommand(target, event) {
+  const origin = trustedPageOrigin(target);
+  if (!origin || event?.origin !== origin) return null;
+  if (event.source !== target && event.source !== target.parent) return null;
+  if (!event.source) return null;
   const data = event?.data || null;
   if (!data || data.type !== AGENT_COMMAND_MESSAGE_TYPE) return null;
   return data.command || data.detail || data;
@@ -319,11 +325,12 @@ function dispatchResponse(target, response) {
       detail: response,
     }));
   }
-  if (typeof target?.postMessage === 'function') {
+  const origin = trustedPageOrigin(target);
+  if (origin && typeof target?.postMessage === 'function') {
     target.postMessage({
       type: AGENT_RESPONSE_MESSAGE_TYPE,
       response,
-    }, '*');
+    }, origin);
   }
 }
 
@@ -332,7 +339,12 @@ function dispatchMessageResponse(target, event, response) {
   event.source.postMessage({
     type: AGENT_RESPONSE_MESSAGE_TYPE,
     response,
-  }, event.origin || '*');
+  }, event.origin);
+}
+
+function trustedPageOrigin(target) {
+  const origin = target?.location?.origin;
+  return typeof origin === 'string' && /^https?:\/\//.test(origin) ? origin : null;
 }
 
 function summarizeCommand(command) {

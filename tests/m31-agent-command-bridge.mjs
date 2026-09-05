@@ -277,7 +277,7 @@ function createTarget() {
     eventHandlers: {},
     lastPostedMessage: null,
     document,
-    location: { pathname: '/index.html', search: '', hash: '' },
+    location: { origin: 'http://localhost:5173', pathname: '/index.html', search: '', hash: '' },
     history: {
       replacedUrl: null,
       replaceState(_state, _title, url) {
@@ -314,7 +314,7 @@ function createTarget() {
     },
     emitMessage(data) {
       for (const handler of this.eventHandlers.message || []) {
-        handler.call(this, { type: 'message', data, source: this });
+        handler.call(this, { type: 'message', data, source: this, origin: this.location.origin });
       }
     },
     emitHashChange() {

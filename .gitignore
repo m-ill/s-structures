@@ -4,6 +4,16 @@ data/
 # Logs and local scratch
 *.log
 .tmp-*/
+tmp/
+.playwright-cli/
+__pycache__/
+*.py[cod]
+node_modules/
+.env
+.env.*
+!.env.example
+output/publication/
+output/revalidation/
 
 # Large import inputs are never committed; use fixtures or generators.
 *.dwg

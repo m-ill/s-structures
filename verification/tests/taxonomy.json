@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 425,
+  "plannedCount": 429,
   "categoryCounts": {
     "e2e": 5,
-    "integration": 30,
-    "qualification": 223,
-    "unit": 167
+    "integration": 32,
+    "qualification": 224,
+    "unit": 168
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 112
+    "release-long": 116
   },
   "records": [
     {
@@ -1123,6 +1123,12 @@
       "owner": "phase17"
     },
     {
+      "file": "tests/p18-benchmark-engine-report-package.mjs",
+      "taxonomy": "qualification",
+      "execution": "release-long",
+      "owner": "phase18"
+    },
+    {
       "file": "tests/p18-link-pmm.mjs",
       "taxonomy": "qualification",
       "execution": "release-long",
@@ -1145,6 +1151,12 @@
       "taxonomy": "qualification",
       "execution": "release-long",
       "owner": "phase18"
+    },
+    {
+      "file": "tests/p18a-additional-comparisons.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "release-verification"
     },
     {
       "file": "tests/p2-design-demand-package.mjs",
@@ -2565,6 +2577,18 @@
     {
       "file": "verification/tests/phase17/run-case-contract.mjs",
       "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "release-verification"
+    },
+    {
+      "file": "tests/webmcp-bridge-security.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "release-verification"
+    },
+    {
+      "file": "tests/webmcp-integration.mjs",
+      "taxonomy": "integration",
       "execution": "release-long",
       "owner": "release-verification"
     }
