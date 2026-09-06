@@ -1,0 +1,398 @@
+{
+  "schemaVersion": "sstructures-public-comparison-summary-v1",
+  "documentUpdatedAt": "2026-09-06",
+  "comparisonSnapshotDate": "2026-08-29",
+  "publicReferenceSource": "https://dcr-st.com/ko/verification.html",
+  "sourceSummarySha256": "dffac0d5931cad7cd1961ae5dd5357b6f6b3dfebac980b2404f6dd94995d1b87",
+  "claimBoundary": "LOCAL_ENGINE_AND_PUBLIC_CHECKPOINT_COMPARISON_ONLY_NO_EXTERNAL_OFFICIAL_PASS_CLAIM",
+  "counts": {
+    "total": 21,
+    "engineFunctionAvailable": 21,
+    "numericComparable": 15,
+    "directNumericComparable": 13,
+    "localEngineeringPass": 9,
+    "numericQualificationBlocked": 2,
+    "engineCheckpointPass": 2,
+    "equivalentCriterionPass": 2,
+    "sameCasePending": 6,
+    "externalOfficialPassClaimed": 0
+  },
+  "cases": [
+    {
+      "id": "SB1",
+      "benchmark": "Euler-Bernoulli 1D cantilever",
+      "quantity": "Tip deflection u_z",
+      "unit": "mm",
+      "strix": -0.107865,
+      "reference": -0.107865,
+      "compareReference": -0.10786516853932585,
+      "sStructures": -0.1078651685393258,
+      "errorVsReferencePct": 3.859759734048396e-14,
+      "errorVsStrixPct": -0.00015625024410242052,
+      "status": "LOCAL_ENGINEERING_PASS",
+      "note": "제품 API로 3회 결정론적 실행을 확인했다. 외부 독립 custody는 수행하지 않았다.",
+      "evidence": {
+        "sha256": "3185ad730e1de9cbf2e7ff7344932ba19a89f3055476b7df650ec34c3161a4d7",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SB2",
+      "benchmark": "NAFEMS LE1 elliptic membrane",
+      "quantity": "Tangential edge stress at D",
+      "unit": "MPa",
+      "strix": 90.8514,
+      "reference": 92.7,
+      "compareReference": 92.7,
+      "sStructures": 90.85742580778579,
+      "errorVsReferencePct": -1.9876744252580532,
+      "errorVsStrixPct": 0.006632597610812314,
+      "status": "LOCAL_ENGINEERING_PASS",
+      "note": "QM6-EAS mesh 수렴 결과다. S probe는 D점 최근접 Gauss점의 원시 최대주응력으로, 접선응력 probe와의 등가성 검토가 남았다.",
+      "evidence": {
+        "sha256": "c36401f0475feddee72268bc16222158491b936534f20c54ac5e65e69ceb6e46",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SB3",
+      "benchmark": "Cook's membrane",
+      "quantity": "Normalized tip displacement",
+      "unit": "norm.",
+      "strix": 23.9578,
+      "reference": 23.91,
+      "compareReference": 23.91,
+      "sStructures": 23.88327767106306,
+      "errorVsReferencePct": -0.11176214528206255,
+      "errorVsStrixPct": -0.3110566451716764,
+      "status": "LOCAL_ENGINEERING_PASS",
+      "note": "QM6-EAS 평면응력 membrane을 사용한 mesh 수렴 로컬 실행이다.",
+      "evidence": {
+        "sha256": "4113d4637656b5705e9970dd1461820ba7dbd2dc0301fc18e74aefb89b4f9895",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SB5",
+      "benchmark": "Thin rectangular plate",
+      "quantity": "Deflection coefficient alpha",
+      "unit": "-",
+      "strix": 0.00406,
+      "reference": 0.00406,
+      "compareReference": 0.00406,
+      "sStructures": 0.004059252706416979,
+      "errorVsReferencePct": -0.018406245887225014,
+      "errorVsStrixPct": -0.018406245887225014,
+      "status": "LOCAL_ENGINEERING_PASS",
+      "note": "얇은 판 workflow의 공개 대표행 SS-1x1-UDL을 표시했다.",
+      "evidence": {
+        "sha256": "fa8af4cef6500223ef00629b164b02a7da3265b016d7916dc38c0f773013ca7f",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SB6",
+      "benchmark": "Thick rectangular plate",
+      "quantity": "Deflection coefficient alpha, 1x1-R10",
+      "unit": "-",
+      "strix": 0.004271,
+      "reference": 0.004273,
+      "compareReference": 0.004273,
+      "sStructures": 0.004264819447403434,
+      "errorVsReferencePct": -0.19144752156718278,
+      "errorVsStrixPct": -0.14470973066179948,
+      "status": "LOCAL_ENGINEERING_PASS",
+      "note": "두꺼운 판 workflow의 공개 대표행 1x1-R10을 표시했다.",
+      "evidence": {
+        "sha256": "8846aa1437af0713ee5431cc99fc42d2a625ecac49208897a372399dbd0213a8",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SB7",
+      "benchmark": "Beam on Winkler foundation",
+      "quantity": "Center deflection U_z",
+      "unit": "in",
+      "strix": -0.089333,
+      "reference": -0.089333,
+      "compareReference": -0.089333,
+      "sStructures": -0.08933268214995202,
+      "errorVsReferencePct": 0.00035580362013604323,
+      "errorVsStrixPct": 0.00035580362013604323,
+      "status": "LOCAL_ENGINEERING_PASS",
+      "note": "Winkler 탄성지반 kernel과 중앙 응답복원을 확인했다.",
+      "evidence": {
+        "sha256": "84f762bc8c7cba4c465ca776c88eec139eaeb9646cf057ca36defe3a89e629d4",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SB8",
+      "benchmark": "Deep Timoshenko beam",
+      "quantity": "Natural frequency f1",
+      "unit": "Hz",
+      "strix": 102.149374,
+      "reference": 102.149414,
+      "compareReference": 102.149414,
+      "sStructures": 102.14935888763947,
+      "errorVsReferencePct": -5.3952693774324625e-05,
+      "errorVsStrixPct": -1.4794374098857814e-05,
+      "status": "LOCAL_ENGINEERING_PASS",
+      "note": "Timoshenko modal 경로의 6개 주파수 probe 중 1차 주파수를 표시했다.",
+      "evidence": {
+        "sha256": "12605ced4f7504c1c716a10568a5953d918f50ec0fcde80307e0d3b70b74d6e2",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SB9",
+      "benchmark": "Rigid portal frame under UDL",
+      "quantity": "Midspan deflection, combined",
+      "unit": "mm",
+      "strix": -69.3655,
+      "reference": -69.372833,
+      "compareReference": -69.372833,
+      "sStructures": -69.37283313117533,
+      "errorVsReferencePct": -1.890874581998062e-07,
+      "errorVsStrixPct": -0.010571726831536283,
+      "status": "LOCAL_ENGINEERING_PASS",
+      "note": "축변형과 휨을 합한 변위이며 성분합 closure를 확인했다.",
+      "evidence": {
+        "sha256": "cc96251599aa19bd1216ecff4e163e65a63d78cfdcaab93eefb31becc25b4e29",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SB10",
+      "benchmark": "Asymmetric two-bar truss",
+      "quantity": "Brace E1 axial magnitude",
+      "unit": "N",
+      "strix": 10000.0,
+      "reference": 10000.0,
+      "compareReference": 10000,
+      "sStructures": 10000,
+      "errorVsReferencePct": 0.0,
+      "errorVsStrixPct": 0.0,
+      "status": "LOCAL_ENGINEERING_PASS",
+      "note": "공개 페이지는 절댓값을 표시한다. S-Structures 압축력 -10,000 N의 절댓값을 비교했다.",
+      "evidence": {
+        "sha256": "f5a9da24b1f29559c1824604f146feaf8bf650e32c53b25dd95199383356d1f1",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SB12",
+      "benchmark": "Elastic link beta-angle transform",
+      "quantity": "Oblique U_x",
+      "unit": "mm",
+      "strix": 0.152961,
+      "reference": 0.152961,
+      "compareReference": null,
+      "sStructures": null,
+      "errorVsReferencePct": null,
+      "errorVsStrixPct": null,
+      "status": "ENGINE_FUNCTION_PASS_SAME_CASE_PENDING",
+      "note": "6-DOF 링크와 beta-angle 좌표변환은 PASS했다. P18 fixture는 공개 0.152961 mm 모델과 동일하지 않다.",
+      "evidence": {
+        "availability": "NO_SAME_MODEL_RESULT"
+      }
+    },
+    {
+      "id": "PD1",
+      "benchmark": "P-Delta tension stiffening",
+      "quantity": "U_z with tension",
+      "unit": "in",
+      "strix": -0.543496,
+      "reference": -0.543305,
+      "compareReference": -0.543305,
+      "sStructures": -0.5433047564631988,
+      "errorVsReferencePct": 4.482506166535825e-05,
+      "errorVsStrixPct": 0.03518766224612917,
+      "status": "LOCAL_NUMERIC_PASS_QUALIFICATION_BLOCKED",
+      "note": "대표 수치는 통과했지만 단계별 work-balance 증거가 없어 적격성 판정은 보류했다.",
+      "evidence": {
+        "sha256": "afa403ac1aaa02dc58f99f876400fd57f37f7b0cc8e0bcb1e903bcfd122a5e15",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SM5",
+      "benchmark": "Bathe-Wilson eigenvalue frame",
+      "quantity": "Eigenvalue mode 1 omega^2",
+      "unit": "rad^2/s^2",
+      "strix": 0.589538,
+      "reference": 0.589541,
+      "compareReference": 0.589541,
+      "sStructures": 0.5895343109579515,
+      "errorVsReferencePct": -0.001134618635256916,
+      "errorVsStrixPct": -0.0006257513592855306,
+      "status": "LOCAL_NUMERIC_PASS_QUALIFICATION_BLOCKED",
+      "note": "첫 3개 고유값은 통과했지만 독립 mode vector가 없어 적격성 판정은 보류했다.",
+      "evidence": {
+        "sha256": "f92881b6c175fdf97a5c144e45a6c34f0abe3f039f07cb60c9a682a583fe5079",
+        "availability": "LOCAL_EXECUTION_RECORD_NOT_PUBLISHED"
+      }
+    },
+    {
+      "id": "SM5b",
+      "benchmark": "Rigid-diaphragm condensation",
+      "quantity": "Eigenvalue mode 1 omega^2",
+      "unit": "rad^2/s^2",
+      "strix": 2070.118745,
+      "reference": 2070.117026,
+      "compareReference": null,
+      "sStructures": null,
+      "errorVsReferencePct": null,
+      "errorVsStrixPct": null,
+      "status": "ENGINE_FUNCTION_PASS_SAME_CASE_PENDING",
+      "note": "축약 해석엔진은 PASS했다. 공개 질량 / 회전관성 배율 mapping이 미완료이고 P18 값은 독립 합격 기준값이 아니다.",
+      "evidence": {
+        "availability": "NO_SAME_MODEL_RESULT"
+      }
+    },
+    {
+      "id": "SM6",
+      "benchmark": "ASME 3D pipe-frame eigenproblem",
+      "quantity": "Eigenvalue mode 1 omega^2",
+      "unit": "rad^2/s^2",
+      "strix": 506338.834586,
+      "reference": 506331.91595,
+      "compareReference": null,
+      "sStructures": null,
+      "errorVsReferencePct": null,
+      "errorVsStrixPct": null,
+      "status": "ENGINE_FUNCTION_PASS_SAME_CASE_PENDING",
+      "note": "3D Timoshenko pipe-frame 엔진은 LARSA E08 주파수와 비교해 PASS했다. STRIX 모델의 정확한 중간 절점 좌표가 없다.",
+      "evidence": {
+        "availability": "NO_SAME_MODEL_RESULT"
+      }
+    },
+    {
+      "id": "SR1",
+      "benchmark": "2D response-spectrum frame",
+      "quantity": "Period mode 1",
+      "unit": "s",
+      "strix": 1.56213,
+      "reference": 1.562,
+      "compareReference": null,
+      "sStructures": null,
+      "errorVsReferencePct": null,
+      "errorVsStrixPct": null,
+      "status": "ENGINE_FUNCTION_PASS_SAME_CASE_PENDING",
+      "note": "RSA / SRSS / CQC 엔진은 PASS했다. 절대 질량, 전체 스펙트럼, 단면과 8요소 위상정보가 없다.",
+      "evidence": {
+        "availability": "NO_SAME_MODEL_RESULT"
+      }
+    },
+    {
+      "id": "SR2",
+      "benchmark": "3D eccentric rigid diaphragm RSA",
+      "quantity": "Period mode 1",
+      "unit": "s",
+      "strix": 0.22705,
+      "reference": 0.2271,
+      "compareReference": null,
+      "sStructures": null,
+      "errorVsReferencePct": null,
+      "errorVsStrixPct": null,
+      "status": "ENGINE_FUNCTION_PASS_SAME_CASE_PENDING",
+      "note": "3D 강체격막, 6-DOF 질량과 4개 모드조합은 PASS했다. 단면, 질량 / Jz, 위상과 스펙트럼 입력이 미완료다.",
+      "evidence": {
+        "availability": "NO_SAME_MODEL_RESULT"
+      }
+    },
+    {
+      "id": "SR2b",
+      "benchmark": "3D L-shaped braced-frame RSA",
+      "quantity": "Frequency mode 1",
+      "unit": "Hz",
+      "strix": 3.05908,
+      "reference": 3.0592,
+      "compareReference": null,
+      "sStructures": null,
+      "errorVsReferencePct": null,
+      "errorVsStrixPct": null,
+      "status": "ENGINE_FUNCTION_PASS_SAME_CASE_PENDING",
+      "note": "L형 RSA와 가새 축력복원 엔진은 PASS했다. 정확한 평면 / 부재 mapping과 El Centro 스펙트럼이 없다.",
+      "evidence": {
+        "availability": "NO_SAME_MODEL_RESULT"
+      }
+    },
+    {
+      "id": "SP1",
+      "benchmark": "Pushover cantilever moment hinge",
+      "quantity": "Pre-peak self-consistency worst error",
+      "unit": "%",
+      "strix": 0.00076916,
+      "reference": 1.0,
+      "compareReference": 1,
+      "sStructures": 0.01776645784351998,
+      "errorVsReferencePct": null,
+      "errorVsStrixPct": 2209.852026043993,
+      "status": "EQUIVALENT_GATE_PASS",
+      "note": "공개 SP1과 같은 pre-peak self-consistency 판정법을 생산 pushover 엔진에 적용했다. Point 2 목표변위를 결과값으로 재사용하지 않았다.",
+      "evidence": {
+        "sha256": "d7d47b31783bd5419d55989a016f1f8af3c8ad6a504b0712f46a47b6f22196aa",
+        "availability": "PUBLIC_REPOSITORY",
+        "repositoryPath": "verification/benchmarks/strix21/milestones/P18A/p18a-additional-comparison-evidence.json"
+      }
+    },
+    {
+      "id": "SH1",
+      "benchmark": "Custom P-M-M column hinge",
+      "quantity": "Uniaxial cap boundary",
+      "unit": "N-mm",
+      "strix": 125000000.0,
+      "reference": 125000000.0,
+      "compareReference": 125000000,
+      "sStructures": 125000000,
+      "errorVsReferencePct": 0.0,
+      "errorVsStrixPct": 0.0,
+      "status": "ENGINE_CHECKPOINT_PASS",
+      "note": "신규 PMM 재료 / zero-length 요소 경로로 공개 cap-boundary checkpoint를 재현했다.",
+      "evidence": {
+        "sha256": "0b7f7c2a405567586777e859dcb762162f7b669869551d63c8368be9ddf38fcd",
+        "availability": "PUBLIC_REPOSITORY",
+        "repositoryPath": "verification/benchmarks/strix21/milestones/P18/SH1/runs/p18-engine-result.json"
+      }
+    },
+    {
+      "id": "TH1",
+      "benchmark": "SDOF Newmark time integration",
+      "quantity": "Peak relative displacement, zeta=5%",
+      "unit": "mm",
+      "strix": 200.783,
+      "reference": 200.786209,
+      "compareReference": 200.78620883211786,
+      "sStructures": 200.78279833386193,
+      "errorVsReferencePct": -0.0016985719665551903,
+      "errorVsStrixPct": -0.00010043984702575634,
+      "status": "ENGINE_CHECKPOINT_PASS",
+      "note": "Newmark 평균가속도 결과를 독립 RK4와 시간간격 수렴으로 교차확인했다.",
+      "evidence": {
+        "sha256": "4ec7b57161730d3f273f32642645457c3eda7e19548f43efa7467ef359a6da2b",
+        "availability": "PUBLIC_REPOSITORY",
+        "repositoryPath": "verification/benchmarks/strix21/milestones/P18/TH1/runs/p18-engine-result.json"
+      }
+    },
+    {
+      "id": "P3S2",
+      "benchmark": "Stabilization sensitivity",
+      "quantity": "Maximum dominant membrane-mode period shift",
+      "unit": "%",
+      "strix": 0.19,
+      "reference": 0.5,
+      "compareReference": 0.5,
+      "sStructures": 0.00024054460296532373,
+      "errorVsReferencePct": null,
+      "errorVsStrixPct": -99.87339757738667,
+      "status": "EQUIVALENT_GATE_PASS",
+      "note": "공개 3×6 membrane 형상으로 안정화 민감도를 재실행했다. STRIX plate-mode와 literal parameter 단위의 완전 동일성은 주장하지 않는다.",
+      "evidence": {
+        "sha256": "d7d47b31783bd5419d55989a016f1f8af3c8ad6a504b0712f46a47b6f22196aa",
+        "availability": "PUBLIC_REPOSITORY",
+        "repositoryPath": "verification/benchmarks/strix21/milestones/P18A/p18a-additional-comparison-evidence.json"
+      }
+    }
+  ]
+}

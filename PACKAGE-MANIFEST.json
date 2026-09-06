@@ -34,8 +34,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 6327,
-      "sha256": "32f3507f0908f9c5c5e58e626ac81318b8ae571ec53b55f9086df13d7eb4f937"
+      "bytes": 11155,
+      "sha256": "1e7f5c00647f80047670f551182f866d5a5064e3909b326f35c0c2b6f1708faf"
     },
     {
       "path": "SOURCE-IDENTITY.json",
@@ -2181,6 +2181,16 @@
       "path": "docs/user-manual/tutorials/T3-pushover-review.md",
       "bytes": 432,
       "sha256": "00eef334971ed0fc9fd1451aa06a2f1a994501c342b58a6100dbb619a44d9024"
+    },
+    {
+      "path": "docs/verification/STRIX21_COMPARISON.md",
+      "bytes": 8148,
+      "sha256": "5a66f3265034bc7b7b2d0ffd22619d3d8fd6bc5610838ea9f08e819b9fb1e363"
+    },
+    {
+      "path": "docs/verification/strix21-comparison-summary.json",
+      "bytes": 15486,
+      "sha256": "f39907048b4b9fc1b726a127e6c30a4e74f61caaf8884bd9988bf48dd8edbc05"
     },
     {
       "path": "guide.html",
@@ -11368,7 +11378,7 @@
       "sha256": "e507daa81469c76737b75acea1b8352c5998650595de29a18ff61c4ec25b9f58"
     },
     {
-      "path": "verification/benchmarks/strix21/runs/S-Structures_STRIX21_1\ucc28_\ube44\uad50\ubcf4\uace0\uc11c.md",
+      "path": "verification/benchmarks/strix21/runs/S-Structures_STRIX21_1차_비교보고서.md",
       "bytes": 13998,
       "sha256": "11db3298ce6b7463dc8abfd511ed44821db622cf0f610e311a27994667fc90f1"
     },
@@ -13447,6 +13457,15 @@
     {
       "path": "tests/p17-m1-framework-contract.mjs",
       "reason": "POSIX cleanup of test-owned read-only directories; production code unchanged"
+    },
+    {
+      "paths": [
+        "README.md",
+        "docs/verification/STRIX21_COMPARISON.md",
+        "docs/verification/strix21-comparison-summary.json"
+      ],
+      "date": "2026-09-06",
+      "reason": "Refresh README and publish the 2026-08-29 comparison summary with explicit evidence availability and qualification limits; no engine changes"
     }
   ]
 }
