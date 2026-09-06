@@ -328,6 +328,8 @@ async function verifyAppendOnlyRunStore() {
     assert.equal(validAudit.assurance.fixtureAnchorValid, true);
     assert.equal(validAudit.assurance.officialTerminalQualificationAnchorEligible, false);
     await assertRejectCode(() => commit('P17TEST01'), 'P17_RUN_ALREADY_EXISTS');
+    assert.ok(path.resolve(valid.target).startsWith(`${path.resolve(temporaryRoot)}${path.sep}`));
+    await makeTestDirectoriesWritable(valid.target);
     await rm(valid.target, { recursive: true, force: true });
     await assertRejectCode(() => commit('P17TEST01'), 'P17_RUN_ALREADY_EXISTS');
 
@@ -557,7 +559,19 @@ async function verifyAppendOnlyRunStore() {
     assert.ok(chainAudit.errors.includes('P17_INTEGRITY_CHAIN_NAME_INVALID'));
     assert.ok(chainAudit.errors.includes('P17_INTEGRITY_CHAIN_SHA256_INVALID'));
   } finally {
+    // Sealed fixtures use mode 0555 on POSIX. Restore directory write access
+    // only for this test-owned tree, without following the adversarial symlink.
+    await makeTestDirectoriesWritable(temporaryRoot);
     await rm(temporaryRoot, { recursive: true, force: true });
+  }
+}
+
+async function makeTestDirectoriesWritable(directory) {
+  await chmod(directory, 0o755);
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    if (entry.isDirectory() && !entry.isSymbolicLink()) {
+      await makeTestDirectoriesWritable(path.join(directory, entry.name));
+    }
   }
 }
 
