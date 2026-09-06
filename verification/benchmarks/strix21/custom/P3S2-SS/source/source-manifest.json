@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "p17-source-manifest-v1",
+  "caseId": "P3S2-SS",
+  "officialSuiteMember": false,
+  "status": "NOT_LOCKED",
+  "custodyBinding": {
+    "registryPath": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+    "registryHash": "de4b442ab56af5b14a907d320b85281a04b3f66ab5f75f9073a3f563df09f79c",
+    "sourceLockPath": null,
+    "sourceLockHash": null
+  },
+  "extraction": {
+    "status": "NOT_STARTED",
+    "method": "NONE_M1",
+    "artifacts": []
+  },
+  "transcription": {
+    "status": "NOT_STARTED",
+    "path": "verification/benchmarks/strix21/custom/P3S2-SS/source/transcription.md",
+    "valueCount": 0
+  },
+  "reasonCodes": [
+    "P17_CUSTOM_SOURCE_NOT_LOCKED"
+  ]
+}

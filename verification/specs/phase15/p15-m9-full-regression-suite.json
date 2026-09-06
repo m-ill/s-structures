@@ -1,0 +1,9 @@
+{
+  "version": "p15-m9-full-regression-suite-manifest-v1",
+  "suiteId": "P15-M9-FULL-MANDATORY-REGRESSION",
+  "frozenTestInventoryHash": "055754ceca981ceccc768dd46ae9b9273c8e4f19cf9103f6695eb318eaa39d0c",
+  "plannedCount": 364,
+  "commandDisplay": "npm.cmd test",
+  "attemptPolicy": "single-run-no-retry",
+  "manifestHash": "b36da3a5bb987e108261075f4407b1403acf8658e69aaee4da0b1bc0a6556fa6"
+}

@@ -1,0 +1,35 @@
+{
+  "version": "p17-m2-sb1-closed-form-v1",
+  "caseId": "SB1",
+  "source": "Timoshenko & Gere, Mechanics of Materials; cantilever under an end load",
+  "sourceLocator": "STRIX-verification-21/reports/SB1.pdf page 1 section 5",
+  "unitSystem": "N_MM_RAD",
+  "inputs": {
+    "P_N": 1000,
+    "L_mm": 3000,
+    "E_N_per_mm2": 26700,
+    "I_strong_mm4": 3125000000
+  },
+  "formulas": {
+    "tipUzMm": "-P*L^3/(3*E*I)",
+    "tipRyRad": "+P*L^2/(2*E*I)",
+    "supportRzN": "+P",
+    "supportMyNmm": "-P*L",
+    "strainEnergyNmm": "P^2*L^3/(6*E*I)"
+  },
+  "fullPrecision": {
+    "tipUzMm": -0.10786516853932585,
+    "tipRyRad": 0.00005393258426966292,
+    "supportRzN": 1000,
+    "supportMyNmm": -3000000,
+    "strainEnergyNmm": 53.932584269662925
+  },
+  "canonicalProductUnits": {
+    "displacement": "m",
+    "rotation": "rad",
+    "force": "kN",
+    "moment": "kN-m"
+  },
+  "referenceHash": "5e3b962380aab371144d2cb5410347acdba2ec76d269d33f5d2cc42077bf7c1f"
+}
+

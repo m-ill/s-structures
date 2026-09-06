@@ -1,0 +1,75 @@
+{
+  "version": "p10-evidence-artifact-v1",
+  "suiteId": "P10-M10-LOAD-GENERATION",
+  "milestone": "P10-M10",
+  "status": "OK",
+  "generatedAt": "2026-07-22T23:59:30.000+09:00",
+  "sourceRevision": "ef4c066+p10-m10-worktree",
+  "tests": [
+    "tests/p10-m10-load-generation.mjs"
+  ],
+  "results": {
+    "m10": {
+      "version": "p10-m10-load-generation-v1",
+      "oneWayEquilibriumError": 0,
+      "twoWayEquilibriumError": 1.1842378929335003e-16,
+      "twoWayGeneratedLoadCount": 10,
+      "fixedEndConsumed": true,
+      "fallbackRecipient": "direct-column",
+      "slabMass": 24.473189111470273,
+      "massDeduplicated": true,
+      "windward": 24,
+      "leeward": -9.600000000000001,
+      "derivationRows": 5
+    }
+  },
+  "records": [
+    {
+      "caseId": "LG-01-ONE-WAY-EQUILIBRIUM",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-10,
+      "status": "OK"
+    },
+    {
+      "caseId": "LG-02-TWO-WAY-EQUILIBRIUM",
+      "reference": 0,
+      "computed": 1.1842378929335003e-16,
+      "relError": 1.1842378929335003e-16,
+      "tolerance": 1e-10,
+      "status": "OK"
+    },
+    {
+      "caseId": "LG-03-SLAB-MASS-DEDUP",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 0,
+      "status": "OK"
+    },
+    {
+      "caseId": "LG-04-WIND-SIGN-DIRECTION",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 0,
+      "status": "OK"
+    }
+  ],
+  "qualification": {
+    "slabPanelSchemaIntegrated": true,
+    "fixedEndDistributedLoadsConnected": true,
+    "missingBeamFallbackTraced": true,
+    "massSourceDeduplicated": true,
+    "windGeometryAndSignsTraced": true,
+    "externallyCrossValidated": false,
+    "releaseQualified": false,
+    "releaseGate": "P10-M11",
+    "remainingGates": [
+      "full-product-integration",
+      "external-cross-validation"
+    ]
+  },
+  "artifactHash": "f6669543d901b07f38c088b1"
+}

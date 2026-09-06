@@ -1,0 +1,172 @@
+{
+  "version": "p8-m11-pilot-runner-v1",
+  "pilotId": "PILOT-ST-03",
+  "packageHash": "59994da4355da6d87a124a7f",
+  "execution": {
+    "status": "blocked",
+    "engineId": "p8-production-mdof-pushover",
+    "terminationReason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+    "reason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+    "resultHash": null,
+    "runRecordId": null,
+    "checkpointHash": null,
+    "fallbackUsed": false,
+    "designBlocked": true,
+    "resultChannels": {
+      "resultHash": false,
+      "runRecordId": false,
+      "capacityCurve": false,
+      "hingeEvents": false,
+      "checkpointHash": false,
+      "storyResponse": false,
+      "memberResults": false,
+      "domainIdentityHash": false,
+      "fiberPmmHash": false,
+      "historyManifestHash": false,
+      "energyAudit": false,
+      "reason": true,
+      "designBlocked": true,
+      "capabilityHash": true
+    },
+    "summary": {
+      "durationMs": 24.737800000002608,
+      "resultCount": 1,
+      "reason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+      "capabilityHash": "8d2a11b23c5c053f742ea6db"
+    }
+  },
+  "report": {
+    "version": "p8-m11-pilot-report-v1",
+    "pilotId": "PILOT-ST-03",
+    "title": "Steel braced frame unsupported-scope gate",
+    "packageHash": "59994da4355da6d87a124a7f",
+    "inputHash": "edd2ea36f8a44df82d4acdea",
+    "materialSystem": "steel",
+    "workflow": [
+      "gravity-preload",
+      "unilateral-brace-detection",
+      "fail-closed-preflight",
+      "blocked-report"
+    ],
+    "execution": {
+      "status": "blocked",
+      "engineId": "p8-production-mdof-pushover",
+      "terminationReason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+      "reason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+      "resultHash": null,
+      "runRecordId": null,
+      "checkpointHash": null,
+      "fallbackUsed": false,
+      "designBlocked": true,
+      "resultChannels": {
+        "resultHash": false,
+        "runRecordId": false,
+        "capacityCurve": false,
+        "hingeEvents": false,
+        "checkpointHash": false,
+        "storyResponse": false,
+        "memberResults": false,
+        "domainIdentityHash": false,
+        "fiberPmmHash": false,
+        "historyManifestHash": false,
+        "energyAudit": false,
+        "reason": true,
+        "designBlocked": true,
+        "capabilityHash": true
+      },
+      "summary": {
+        "durationMs": 24.737800000002608,
+        "resultCount": 1,
+        "reason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+        "capabilityHash": "8d2a11b23c5c053f742ea6db"
+      }
+    },
+    "resultSummaries": [
+      {
+        "ok": false,
+        "status": "blocked",
+        "reason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+        "terminationReason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+        "resultHash": null,
+        "runRecordId": null,
+        "qualification": "blocked",
+        "designBlocked": true,
+        "fallbackUsed": false,
+        "summary": null,
+        "convergence": null,
+        "checkpointHash": null,
+        "historyManifestHash": null,
+        "energyAudit": null,
+        "resultChannels": {
+          "resultHash": false,
+          "runRecordId": false,
+          "capacityCurve": false,
+          "hingeEvents": false,
+          "checkpointHash": false,
+          "storyResponse": false,
+          "memberResults": false,
+          "domainIdentityHash": false,
+          "fiberPmmHash": false,
+          "historyManifestHash": false,
+          "energyAudit": false,
+          "reason": true,
+          "designBlocked": true,
+          "capabilityHash": true
+        }
+      }
+    ],
+    "qualification": {
+      "value": "candidate",
+      "designBlocked": true,
+      "reason": "INDEPENDENT_EXTERNAL_COMPARISON_REQUIRED"
+    },
+    "externalComparison": {
+      "status": "MISSING",
+      "required": false,
+      "channels": [
+        "blockingCode"
+      ]
+    },
+    "limitations": [
+      "This artifact proves deterministic input-to-report execution only.",
+      "It does not substitute for an external numerical comparison or project owner approval.",
+      "Design transfer remains blocked while the Phase 8 release manifest is candidate."
+    ],
+    "reportHash": "e00474131680cdc27abfe3e5"
+  },
+  "resultSummaries": [
+    {
+      "ok": false,
+      "status": "blocked",
+      "reason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+      "terminationReason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+      "resultHash": null,
+      "runRecordId": null,
+      "qualification": "blocked",
+      "designBlocked": true,
+      "fallbackUsed": false,
+      "summary": null,
+      "convergence": null,
+      "checkpointHash": null,
+      "historyManifestHash": null,
+      "energyAudit": null,
+      "resultChannels": {
+        "resultHash": false,
+        "runRecordId": false,
+        "capacityCurve": false,
+        "hingeEvents": false,
+        "checkpointHash": false,
+        "storyResponse": false,
+        "memberResults": false,
+        "domainIdentityHash": false,
+        "fiberPmmHash": false,
+        "historyManifestHash": false,
+        "energyAudit": false,
+        "reason": true,
+        "designBlocked": true,
+        "capabilityHash": true
+      }
+    }
+  ],
+  "durationMs": 24.737800000002608
+}

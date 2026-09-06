@@ -1,0 +1,103 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "SH1",
+  "ordinal": 20,
+  "official": true,
+  "family": "NONLINEAR-HINGE",
+  "title": "DcrPMMHinge3d custom P-M-M column hinge — element-mechanics defense",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "MIXED_EXTERNAL_INTERNAL_SPEC",
+      "locator": "No third-party published example exists for this DCR-original element (unlike SP1/CSI 1-026) — devplan §12.11 honesty split: (a) the uniaxial FEMA-356/ASCE-41 4-branch backbone (elastic/hardening/post-capping softening/residual) and (b) the Fritsch & Carlson (1980, SIAM J. Numer. Anal. 17(2):238-246) monotone-cubic capacity interpolation are PUBLISHED external models — re-derived from scratch in benchmarks/nonlinear/SH1_pmmHingeBackbone.ts, never by reading DcrPMMHinge3d.cpp. (c) The biaxial Bresler-type capacity-envelope projection (independent per-direction backbones + closed-form radial scale-back beta=min(1,1/Phi)) is DCR's own §5.9 design choice — the interaction SURFACE FORM (normalized power-law) is standard/published, but this specific combination algorithm has no external authority to validate against; quantities C_* verify the implementation is self-consistent with DCR's own stated specification, not that the specification itself reproduces a third-party benchmark.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SH1.html",
+        "byteLength": 32117,
+        "sha256": "5cada32ebdfdaf6c61c44415a9671a9772289c4a909b90e4b0c02af700469c1a"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 56,
+        "printedPageEnd": 59
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SH1.pdf",
+        "byteLength": 136644,
+        "sha256": "2ee851fd60027f973b4d41ad8399ac90efe7d29f035b54364f65d6cfb5c1db2a",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 4
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.01%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Uniaxial backbone, mid-hardening (kappa=0.5*thetaP) (N·mm)",
+      "probe": "A1.Mz",
+      "strix": "1.125×10⁸",
+      "reference": "1.125×10⁸",
+      "delta": "0.00%"
+    },
+    "resultRowCount": 11
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "CLIPPED_2_OF_11_ROWS_NOT_VISIBLE",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": null,
+    "htmlRunDate": "2026-07-11",
+    "htmlRecordLocator": "records/SH1.json",
+    "htmlArchive": "verif-evidence-eng1.0.2-win-x64.zip · SH1/",
+    "htmlArchiveVersion": "1.0.2",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": true
+  },
+  "referenceLane": {
+    "class": "MIXED_EXTERNAL_INTERNAL_SPEC",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS",
+    "SEPARATE_EXTERNAL_SURFACE_FROM_INTERNAL_HINGE_IMPLEMENTATION"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED",
+    "HTML_ENGINE_V1_0_4_WITH_V1_0_2_RUN_OR_ARCHIVE_METADATA",
+    "INDIVIDUAL_PDF_RESULT_TABLE_CLIPPED_TWO_ROWS"
+  ],
+  "sourceLockHash": "f3699d7d36081c6f3e84f725b1833e0873d3107da82387dc974ea0519acbb865"
+}

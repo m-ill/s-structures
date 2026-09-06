@@ -1,0 +1,33 @@
+{
+  "version": "p8-evidence-artifact-v1",
+  "auditVersion": "p8-m0-governance-evidence-v1",
+  "suiteId": "P8-M0-GOV",
+  "milestone": "P8-M0",
+  "status": "PASS",
+  "generatedAt": "2026-07-11T22:00:00+09:00",
+  "sourceRevision": "4a21a95+P8-M0-worktree",
+  "verificationIds": [
+    "NL-GOV-01",
+    "NL-GOV-02",
+    "NL-GOV-03",
+    "NL-GOV-04",
+    "NL-GOV-05",
+    "NL-GOV-06"
+  ],
+  "results": [
+    { "id": "NL-GOV-01", "status": "PASS", "test": "tests/p8-m0-governance.mjs" },
+    { "id": "NL-GOV-02", "status": "PASS", "test": "tests/p8-m0-governance.mjs" },
+    { "id": "NL-GOV-03", "status": "PASS", "test": "tests/p8-m0-governance.mjs" },
+    { "id": "NL-GOV-04", "status": "PASS", "test": "tests/p8-m0-schema-migration.mjs" },
+    { "id": "NL-GOV-05", "status": "PASS", "test": "tests/p8-m0-governance.mjs" },
+    { "id": "NL-GOV-06", "status": "PASS", "test": "tests/p8-m0-governance.mjs" }
+  ],
+  "environment": {
+    "profileVersion": "p8-m0-reference-profile-v1",
+    "profileArtifact": "reports/validation-evidence/phase8/p8-m0-reference-profile.json"
+  },
+  "notes": [
+    "Legacy numerical traces remain regression evidence only.",
+    "This artifact qualifies M0 governance contracts, not nonlinear numerical accuracy."
+  ]
+}

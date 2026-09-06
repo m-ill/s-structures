@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/probe-manifest-schema.json",
+  "title": "Phase 17 output probe manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "status", "payloadAbsent", "releaseAllowed", "signConventionStatus", "probes", "approval", "reasonCodes"],
+  "properties": {
+    "schemaVersion": { "const": "p17-probe-manifest-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "status": { "enum": ["NOT_LOCKED", "LOCKED"] },
+    "payloadAbsent": { "type": "boolean" },
+    "releaseAllowed": { "type": "boolean" },
+    "signConventionStatus": { "enum": ["NOT_LOCKED", "LOCKED"] },
+    "probes": {
+      "type": "array", "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["probeId", "metricId", "resultKind", "entityId", "location", "component", "unit", "signConvention", "mandatory", "approvalHash"],
+        "properties": {
+          "probeId": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" }, "metricId": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" }, "resultKind": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+          "entityId": { "type": "string", "minLength": 1 }, "location": { "type": "string", "minLength": 1 }, "component": { "type": "string", "minLength": 1 },
+          "unit": { "type": "string", "minLength": 1 }, "signConvention": { "type": "string", "minLength": 1 }, "mandatory": { "type": "boolean" },
+          "jsonPointer": { "type": "string", "pattern": "^(?:/(?:[^~/]|~[01])*)*$" },
+          "extractionOperation": { "const": "IDENTITY_FINITE_NUMBER" },
+          "approvalHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "approval": { "type": "object", "additionalProperties": false, "required": ["status", "reviewer", "approvalHash"], "properties": { "status": { "enum": ["NOT_STARTED", "PENDING", "APPROVED"] }, "reviewer": { "type": "string", "minLength": 1 }, "approvalHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" } } },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "LOCKED" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "probes": {
+            "items": { "required": ["jsonPointer", "extractionOperation"] }
+          }
+        }
+      }
+    }
+  ]
+}

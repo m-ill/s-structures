@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "p17-reference-manifest-v1",
+  "caseId": "SB1",
+  "artifactStatus": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+  "payloadAbsent": false,
+  "releaseAllowed": false,
+  "sourceManifestBinding": {
+    "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/source/source-manifest-r1.json",
+    "sha256": "35145b2da4daf9960c48a533b7f976e15ec916015fc780413dca5ae583a44a2c"
+  },
+  "expectedValuesPath": "verification/benchmarks/strix21/milestones/P17-M2/SB1/reference/expected-values-r1.json",
+  "expectedValuesHash": "526293faca68e2a1330946cfa90887611374661a977909a10e2020eecb4c5386",
+  "lanes": [
+    {
+      "id": "PRIMARY_INDEPENDENT",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "claimEvidenceLevel": "R1",
+      "status": "LOCKED",
+      "artifacts": [
+        {
+          "artifactId": "SB1-SOURCE-PDF",
+          "path": "STRIX-verification-21/reports/SB1.pdf",
+          "sha256": "4c96038e5095bab05c8e6d05017b617b78853d4af8fad8f1128d0b219dc2d375",
+          "byteLength": 113944,
+          "mimeType": "application/pdf",
+          "sourceLocator": "page 1 section 5",
+          "role": "PRIMARY_REFERENCE_PUBLICATION"
+        },
+        {
+          "artifactId": "SB1-TRANSCRIPTION-R1",
+          "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/source/transcription-r1.md",
+          "sha256": "4abb45839d8182b5e23aa074595a3eaf58f268b1b555b708495c39b2eda97f77",
+          "byteLength": 1422,
+          "mimeType": "text/markdown",
+          "sourceLocator": "Timoshenko & Gere closed form as transcribed from SB1 PDF page 1 section 5",
+          "role": "PRIMARY_REFERENCE_TRANSCRIPTION"
+        }
+      ],
+      "reasonCodes": []
+    },
+    {
+      "id": "STRIX_PUBLISHED",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "claimEvidenceLevel": "R4",
+      "status": "LOCKED",
+      "artifacts": [
+        {
+          "artifactId": "SB1-PUBLISHED-HTML",
+          "path": "STRIX-verification-21/html/SB1.html",
+          "sha256": "893bd6bde5de6d26335545d4973afb86beea5a8c143d1c2f861c481a6cce424b",
+          "byteLength": 21152,
+          "mimeType": "text/html",
+          "sourceLocator": "results comparison table",
+          "role": "STRIX_PUBLISHED_VALUE"
+        },
+        {
+          "artifactId": "SB1-PUBLISHED-PDF",
+          "path": "STRIX-verification-21/reports/SB1.pdf",
+          "sha256": "4c96038e5095bab05c8e6d05017b617b78853d4af8fad8f1128d0b219dc2d375",
+          "byteLength": 113944,
+          "mimeType": "application/pdf",
+          "sourceLocator": "page 2 section 6",
+          "role": "STRIX_PUBLISHED_VALUE"
+        }
+      ],
+      "reasonCodes": []
+    },
+    {
+      "id": "STRIX_R4",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "claimEvidenceLevel": "R4",
+      "status": "BLOCKED_SOURCE",
+      "artifacts": [],
+      "reasonCodes": [
+        "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+      ]
+    },
+    {
+      "id": "MIDAS_R4",
+      "referenceClass": "NOT_ASSIGNED",
+      "claimEvidenceLevel": "NOT_ASSIGNED",
+      "status": "NOT_AVAILABLE",
+      "artifacts": [],
+      "reasonCodes": [
+        "P17_MIDAS_R4_EXPORT_NOT_AVAILABLE"
+      ]
+    }
+  ],
+  "approval": {
+    "reviewer": "EXTERNAL_REFERENCE_REVIEWER_UNASSIGNED",
+    "status": "PENDING",
+    "approvalHash": null
+  },
+  "reasonCodes": [
+    "P17_EXTERNAL_REFERENCE_REVIEW_PENDING",
+    "STRIX_R4_RAW_EVIDENCE_UNAVAILABLE",
+    "MIDAS_R4_EXPORT_UNAVAILABLE"
+  ]
+}
+

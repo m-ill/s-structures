@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/suite-manifest-schema.json",
+  "title": "Phase 17 STRIX 21 suite manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "phase",
+    "milestone",
+    "frameworkStatus",
+    "benchmarkExecutionPolicy",
+    "officialCaseCount",
+    "officialOrder",
+    "officialDenominator",
+    "customExcluded",
+    "sourceRegistryBinding",
+    "cases",
+    "customCases",
+    "resultSummary",
+    "reasonCodes"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "p17-suite-manifest-v1" },
+    "phase": { "const": 17 },
+    "milestone": { "type": "string", "pattern": "^P17-M([1-9]|1[0-9]|2[0-3])$" },
+    "frameworkStatus": {
+      "enum": ["CONTRACT_READY_NO_BENCHMARK_RUNS", "IN_PROGRESS", "TERMINAL_EVIDENCE_COMPLETE"]
+    },
+    "benchmarkExecutionPolicy": {
+      "enum": ["NO_BENCHMARK_EXECUTION_IN_P17_M1", "ONE_OFFICIAL_CASE_AT_A_TIME"]
+    },
+    "officialCaseCount": { "const": 21 },
+    "officialOrder": {
+      "type": "array",
+      "minItems": 21,
+      "maxItems": 21,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Za-z0-9]+$" }
+    },
+    "officialDenominator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "count", "customIncluded"],
+      "properties": {
+        "classification": { "const": "OFFICIAL_STRIX_21_ONLY" },
+        "count": { "const": 21 },
+        "customIncluded": { "const": false }
+      }
+    },
+    "customExcluded": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["caseId", "classification", "reasonCode"],
+        "properties": {
+          "caseId": { "const": "P3S2-SS" },
+          "classification": { "const": "S_STRUCTURES_CUSTOM_QUALIFICATION" },
+          "reasonCode": { "const": "CUSTOM_CASE_EXCLUDED_FROM_OFFICIAL_DENOMINATOR" }
+        }
+      }
+    },
+    "sourceRegistryBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "registryHash", "revision"],
+      "properties": {
+        "path": { "const": "verification/benchmarks/strix21/suite-source-registry-r2.json" },
+        "registryHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "revision": { "const": 2 }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 21,
+      "maxItems": 21,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["caseId", "ordinal", "folder", "manifestPath", "manifestHash", "status"],
+        "properties": {
+          "caseId": { "type": "string", "pattern": "^[A-Za-z0-9]+$" },
+          "ordinal": { "type": "integer", "minimum": 1, "maximum": 21 },
+          "folder": { "type": "string", "pattern": "^verification/benchmarks/strix21/cases/[A-Za-z0-9]+$" },
+          "manifestPath": { "type": "string", "pattern": "^verification/benchmarks/strix21/cases/[A-Za-z0-9]+/case-manifest\\.json$" },
+          "manifestHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "status": { "enum": ["NOT_STARTED", "SOURCE_LOCKED", "MODEL_LOCKED", "RUNNABLE", "EXECUTED", "REVIEWED", "PASS", "FAIL", "BLOCKED_SOURCE", "BLOCKED_REFERENCE", "BLOCKED_ENGINE", "BLOCKED_ENGINE_API", "BLOCKED_MODEL_EQUIVALENCE", "BLOCKED_QUALIFICATION", "CROSS_CHECK_ONLY"] }
+        }
+      }
+    },
+    "customCases": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["caseId", "folder", "manifestPath", "manifestHash", "officialSuiteMember", "status"],
+        "properties": {
+          "caseId": { "const": "P3S2-SS" },
+          "folder": { "const": "verification/benchmarks/strix21/custom/P3S2-SS" },
+          "manifestPath": { "const": "verification/benchmarks/strix21/custom/P3S2-SS/case-manifest.json" },
+          "manifestHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "officialSuiteMember": { "const": false },
+          "status": { "enum": ["NOT_STARTED", "SOURCE_LOCKED", "MODEL_LOCKED", "RUNNABLE", "EXECUTED", "REVIEWED", "PASS", "FAIL", "BLOCKED_SOURCE", "BLOCKED_REFERENCE", "BLOCKED_ENGINE", "BLOCKED_ENGINE_API", "BLOCKED_MODEL_EQUIVALENCE", "BLOCKED_QUALIFICATION", "CROSS_CHECK_ONLY"] }
+        }
+      }
+    },
+    "resultSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["benchmarkExecutionCount", "terminalCaseCount", "passCount", "failCount", "blockedCount"],
+      "properties": {
+        "benchmarkExecutionCount": { "type": "integer", "minimum": 0 },
+        "terminalCaseCount": { "type": "integer", "minimum": 0, "maximum": 21 },
+        "passCount": { "type": "integer", "minimum": 0, "maximum": 21 },
+        "failCount": { "type": "integer", "minimum": 0, "maximum": 21 },
+        "blockedCount": { "type": "integer", "minimum": 0, "maximum": 21 }
+      }
+    },
+    "reasonCodes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" }
+    }
+  }
+}

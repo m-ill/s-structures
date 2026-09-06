@@ -1,0 +1,186 @@
+{
+  "version": "p17-source-discrepancy-register-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-version-discrepancies.json",
+    "registerHash": "1d0d5a6697320102079b6d1f25afbf2cca90fc75bde9e32692d5f837c80e6eac",
+    "reason": "Rebound to corrected R2 case source locks; source discrepancy content is unchanged."
+  },
+  "phase": 17,
+  "milestone": "P17-M0",
+  "items": [
+    {
+      "id": "P17-D001",
+      "severity": "HIGH",
+      "status": "CONTROLLED_BY_ROLE_PRECEDENCE",
+      "title": "manual/per-case PDF v1.0.2 versus HTML/catalog v1.0.4",
+      "affectedCases": [
+        "SB1",
+        "SB2",
+        "SB3",
+        "SB5",
+        "SB6",
+        "SB7",
+        "SB8",
+        "SB9",
+        "SB10",
+        "SB12",
+        "PD1",
+        "SM5",
+        "SM5b",
+        "SM6",
+        "SR1",
+        "SR2",
+        "SR2b",
+        "P3S2",
+        "SP1",
+        "SH1",
+        "TH1"
+      ],
+      "evidence": "All 21 PDFs identify v1.0.2; all 21 HTML pages identify engine v1.0.4.",
+      "disposition": "Use HTML only for the latest published result, PDF/manual for archival narrative, and independent source for acceptance truth.",
+      "releaseImpact": "Raw STRIX runtime provenance remains blocked."
+    },
+    {
+      "id": "P17-D002",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKER",
+      "title": "HTML engine label conflicts with run/archive v1.0.2 metadata",
+      "affectedCases": [
+        "SB9",
+        "SB12",
+        "PD1",
+        "SP1",
+        "SH1",
+        "TH1"
+      ],
+      "evidence": "SB9, SB12, PD1, SP1, SH1 and TH1 show v1.0.4 engine but v1.0.2 run date/archive provenance.",
+      "disposition": "Do not call these cases v1.0.4 reruns until the raw record and archive are published.",
+      "releaseImpact": "Blocks STRIX actual-run R4 claim."
+    },
+    {
+      "id": "P17-D003",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKER",
+      "title": "Raw record SHA and evidence archives are unavailable",
+      "affectedCases": [
+        "SB1",
+        "SB2",
+        "SB3",
+        "SB5",
+        "SB6",
+        "SB7",
+        "SB8",
+        "SB9",
+        "SB10",
+        "SB12",
+        "PD1",
+        "SM5",
+        "SM5b",
+        "SM6",
+        "SR1",
+        "SR2",
+        "SR2b",
+        "P3S2",
+        "SP1",
+        "SH1",
+        "TH1"
+      ],
+      "evidence": "Every HTML page says sha256=(pending publish); records/*.json and evidence ZIPs are absent.",
+      "disposition": "Retain page hash as publication custody only.",
+      "releaseImpact": "Blocks runtime reproducibility claim."
+    },
+    {
+      "id": "P17-D004",
+      "severity": "MEDIUM",
+      "status": "OPEN_BLOCKER",
+      "title": "SB10 tolerance precision conflict",
+      "affectedCases": [
+        "SB10"
+      ],
+      "evidence": "Badge/conclusion display 0%; detailed section states 10^-6%.",
+      "disposition": "Do not approve a numeric tolerance until owner/raw-record confirmation.",
+      "releaseImpact": "Blocks SB10 acceptance-criteria lock."
+    },
+    {
+      "id": "P17-D005",
+      "severity": "MEDIUM",
+      "status": "CONTROLLED_BY_HTML",
+      "title": "SH1 individual PDF result table is clipped",
+      "affectedCases": [
+        "SH1"
+      ],
+      "evidence": "Two PCHIP rows are not visible in the PDF; HTML/catalog contains all 11 rows.",
+      "disposition": "Use HTML for published rows and retain PDF only as incomplete archival narrative.",
+      "releaseImpact": "Blocks claims that the PDF alone is a complete record."
+    },
+    {
+      "id": "P17-D006",
+      "severity": "LOW",
+      "status": "RESOLVED_BY_REGISTRY",
+      "title": "Catalog array order differs from manual order",
+      "affectedCases": [
+        "P3S2",
+        "SP1",
+        "SH1",
+        "TH1"
+      ],
+      "evidence": "catalog=SB1,SB2,SB3,SB5,SB6,SB7,SB8,SB9,SB10,SB12,PD1,SM5,SM5b,SM6,SR1,SR2,SR2b,SP1,SH1,TH1,P3S2",
+      "disposition": "Official ordinal is frozen to manual order=SB1,SB2,SB3,SB5,SB6,SB7,SB8,SB9,SB10,SB12,PD1,SM5,SM5b,SM6,SR1,SR2,SR2b,P3S2,SP1,SH1,TH1.",
+      "releaseImpact": "None after explicit ordinal lock."
+    },
+    {
+      "id": "P17-D007",
+      "severity": "CRITICAL",
+      "status": "OPEN_HISTORICAL_PROVENANCE_GAP",
+      "title": "P15-M0 recorded PDF binary is missing and current PDF is a later regeneration",
+      "affectedCases": [],
+      "evidence": "recorded=8a25f93ca6e0345b03da8c5923139d288baaefbf16f246ee87b16fcc936cbdc4/95277; current=a4e79daa5ded78f0b21dc97678f84787df5b96df81aef919b3a8cdc013c246ab/95238",
+      "disposition": "Preserve the current PDF as a P17-observed snapshot only; never relabel it as the P15-M0 binary.",
+      "releaseImpact": "Prevents immutable provenance claim for the original Phase15 PDF."
+    },
+    {
+      "id": "P17-D008",
+      "severity": "HIGH",
+      "status": "OPEN_IMPLEMENTATION_DEBT",
+      "title": "Phase15 fixed output paths are writable despite append-only policy",
+      "affectedCases": [],
+      "evidence": "The existing benchmark/report writers use fixed JSON, Markdown and PDF filenames.",
+      "disposition": "P17 snapshots are content-addressed and overwrite-rejecting; legacy writers must not run during M0.",
+      "releaseImpact": "Requires P17-M1 append-only writer before case execution."
+    },
+    {
+      "id": "P17-D009",
+      "severity": "MEDIUM",
+      "status": "USE_RESTRICTED",
+      "title": "STRIX PDFs provide no redistribution license",
+      "affectedCases": [
+        "SB1",
+        "SB2",
+        "SB3",
+        "SB5",
+        "SB6",
+        "SB7",
+        "SB8",
+        "SB9",
+        "SB10",
+        "SB12",
+        "PD1",
+        "SM5",
+        "SM5b",
+        "SM6",
+        "SR1",
+        "SR2",
+        "SR2b",
+        "P3S2",
+        "SP1",
+        "SH1",
+        "TH1"
+      ],
+      "evidence": "PDF marking is Internal / All rights reserved; public download is not redistribution permission.",
+      "disposition": "Keep local custody references and hashes; do not redistribute source PDFs without permission.",
+      "releaseImpact": "No local verification blocker; distribution is restricted."
+    }
+  ],
+  "registerHash": "45cc3d826f39a90a6d7614da58a18b11b817c9c10be271e73d118684a2f0e6a9"
+}

@@ -1,0 +1,101 @@
+{
+  "version": "p15-m9-full-regression-evidence-v1",
+  "suiteId": "P15-M9-FULL-MANDATORY-REGRESSION",
+  "calculationHash": "e34a1e18d3cb65541b33783d526f09757e03cd4c609a0c020b800878229dacf4",
+  "result": {
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "runnerFailed": false,
+    "inputSnapshotStable": true,
+    "suiteInventoryMatched": true,
+    "plannedCount": 364,
+    "mandatoryCounts": {
+      "fail": 0,
+      "skip": 0,
+      "timeout": 0,
+      "flake": 0
+    },
+    "fullRegressionPassed": true,
+    "status": "PASS",
+    "reason": null
+  },
+  "calculation": {
+    "sourceDigest": "7293013eaea14530412cd88980384f62b2a03da3d20da057e291a9a0a6fc2fc9",
+    "suiteManifestHash": "b36da3a5bb987e108261075f4407b1403acf8658e69aaee4da0b1bc0a6556fa6",
+    "frozenTestInventoryHash": "055754ceca981ceccc768dd46ae9b9273c8e4f19cf9103f6695eb318eaa39d0c",
+    "testInventoryHash": "055754ceca981ceccc768dd46ae9b9273c8e4f19cf9103f6695eb318eaa39d0c",
+    "frozenPlannedCount": 364,
+    "testInventory": {
+      "version": "p15-m9-full-regression-inventory-v1",
+      "entryCount": 450,
+      "testFileCount": 439,
+      "runnerFileCount": 11,
+      "plannedCount": 364
+    },
+    "command": {
+      "program": "npm.cmd",
+      "args": [
+        "test"
+      ],
+      "display": "npm.cmd test",
+      "cwdPolicy": "repository-root"
+    },
+    "commandHash": "be6a5b7598ef77ef1eb5ff01ecf340ff510335556aa09b6ba5422597f9d97cc7",
+    "timeoutMs": 7200000,
+    "attemptPolicy": "single-run-no-retry",
+    "mandatoryCountFields": [
+      "fail",
+      "skip",
+      "timeout",
+      "flake"
+    ]
+  },
+  "status": "PASS",
+  "fullRegressionPassed": true,
+  "mandatoryCounts": {
+    "fail": 0,
+    "skip": 0,
+    "timeout": 0,
+    "flake": 0
+  },
+  "fullRegressionHash": "c5ecb34f90de19e255ea4c8c8b424cbd6198181f0cf13664d63a6302b3e0fa21",
+  "evidenceHash": "c5ecb34f90de19e255ea4c8c8b424cbd6198181f0cf13664d63a6302b3e0fa21",
+  "run": {
+    "calculationHash": "e34a1e18d3cb65541b33783d526f09757e03cd4c609a0c020b800878229dacf4",
+    "evidenceHash": "c5ecb34f90de19e255ea4c8c8b424cbd6198181f0cf13664d63a6302b3e0fa21",
+    "startedAt": "2026-08-27T16:15:50.471Z",
+    "completedAt": "2026-08-27T16:37:44.410Z",
+    "durationMs": 1313923.7237,
+    "runtime": {
+      "node": "v24.16.0",
+      "platform": "win32",
+      "release": "10.0.19045",
+      "architecture": "x64",
+      "launcher": "C:/Windows/system32/cmd.exe",
+      "npmUserAgent": "npm/11.4.2 node/v24.16.0 win32 x64 workspaces/false"
+    },
+    "stdout": {
+      "sha256": "4a2f635b6e5516dc870a977e6b3e3c76460351526e10a72bbf686a7ebe6e101a",
+      "bytes": 138696
+    },
+    "stderr": {
+      "sha256": "6795072d1fe9031691fc0f548d4946d1e6a08a7a72fde6581f621c795005bfb5",
+      "bytes": 160
+    },
+    "runnerError": null,
+    "runRecordHash": "271a8afd9cba1f31babc22d6ce63dbca3cead48ea20a40ea12c3b73ec094b917"
+  },
+  "m9ExecutionInputFragment": {
+    "fullRegressionPassed": true,
+    "fullRegressionHash": "c5ecb34f90de19e255ea4c8c8b424cbd6198181f0cf13664d63a6302b3e0fa21",
+    "mandatoryCounts": {
+      "fail": 0,
+      "skip": 0,
+      "timeout": 0,
+      "flake": 0
+    },
+    "cleanEnvironmentPassed": false,
+    "cleanRunHash": null
+  }
+}

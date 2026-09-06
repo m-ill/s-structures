@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/source-manifest-schema.json",
+  "title": "Phase 17 case source manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "officialSuiteMember", "status", "custodyBinding", "extraction", "transcription", "reasonCodes"],
+  "properties": {
+    "schemaVersion": { "const": "p17-source-manifest-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "officialSuiteMember": { "type": "boolean" },
+    "status": { "enum": ["NOT_LOCKED", "LOCKED", "LOCKED_WITH_BLOCKERS", "BLOCKED_SOURCE"] },
+    "custodyBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registryPath", "registryHash", "sourceLockPath", "sourceLockHash"],
+      "properties": {
+        "registryPath": { "const": "verification/benchmarks/strix21/suite-source-registry-r2.json" },
+        "registryHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "sourceLockPath": { "type": ["string", "null"] },
+        "sourceLockHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "extraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "method", "artifacts"],
+      "properties": {
+        "status": { "enum": ["NOT_STARTED", "BOUND_TO_M0_SOURCE_LOCK", "COMPLETE"] },
+        "method": { "enum": ["NONE_M1", "M0_SOURCE_LOCK_BINDING", "MANUAL_TRANSCRIPTION", "HTML_PARSE", "PDF_TEXT_EXTRACTION", "OCR"] },
+        "artifacts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["path", "sha256", "role"],
+            "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "role": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+          }
+        }
+      }
+    },
+    "transcription": {
+      "type": "object", "additionalProperties": false, "required": ["status", "path", "valueCount"],
+      "properties": { "status": { "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"] }, "path": { "type": "string", "minLength": 1 }, "valueCount": { "type": "integer", "minimum": 0 } }
+    },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+  }
+}

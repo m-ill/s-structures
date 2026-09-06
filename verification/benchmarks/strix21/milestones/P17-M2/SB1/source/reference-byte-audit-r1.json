@@ -1,0 +1,31 @@
+{
+  "version": "p17-replay-audit-v1",
+  "caseId": "SB1",
+  "runId": null,
+  "auditKind": "REFERENCE_BYTES",
+  "status": "PASS",
+  "sourceArtifacts": [
+    {
+      "path": "STRIX-verification-21/html/SB1.html",
+      "byteLength": 21152,
+      "sha256": "893bd6bde5de6d26335545d4973afb86beea5a8c143d1c2f861c481a6cce424b",
+      "status": "PASS"
+    },
+    {
+      "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+      "byteLength": 808213,
+      "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+      "status": "PASS"
+    },
+    {
+      "path": "STRIX-verification-21/reports/SB1.pdf",
+      "byteLength": 113944,
+      "sha256": "4c96038e5095bab05c8e6d05017b617b78853d4af8fad8f1128d0b219dc2d375",
+      "status": "PASS"
+    }
+  ],
+  "replayHash": "f851dad2185a3398939380db488672e187de18ea425087cf0d151226c84fae4a",
+  "reasonCodes": [],
+  "auditHash": "169db0b512b555c89de486a53c06dab3d2871e56fbdde25476a7f7e800a59ad9"
+}
+

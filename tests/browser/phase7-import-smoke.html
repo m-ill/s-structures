@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Phase 7 browser import smoke</title>
+<body data-status="running">
+<pre id="result">running</pre>
+<script type="module">
+const result = document.querySelector('#result');
+try {
+  await import('/src/index.js?phase7-browser-smoke=1');
+  result.textContent = 'index:ok';
+  await import('/src/ui/indexBridge.js?phase7-browser-smoke=1');
+  result.textContent += '\nbridge:ok';
+  document.body.dataset.status = 'ok';
+} catch (error) {
+  result.textContent += `\nerror:${error?.stack || error?.message || error}`;
+  document.body.dataset.status = 'failed';
+}
+</script>
+</body>
+</html>

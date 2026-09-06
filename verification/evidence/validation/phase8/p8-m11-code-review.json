@@ -1,0 +1,45 @@
+{
+  "version": "p8-m11-code-review-v1",
+  "completed": true,
+  "generatedAt": "2026-07-14T23:30:00+09:00",
+  "sourceRevision": "76323c8+P8-M11-worktree",
+  "reportPath": "reports/validation-evidence/phase8/p8-m11-code-review.md",
+  "scope": [
+    "src/nonlinear/qualification",
+    "tools/run-p8-m11-qualification.mjs",
+    "tools/p8-m11-parallel-worker.mjs",
+    "Phase 8 public exports, verification registry, agent manifest and tests"
+  ],
+  "findings": [
+    {
+      "id": "P8-M11-REV-01",
+      "severity": "high",
+      "status": "closed",
+      "summary": "Pilot artifacts accepted terminal status without proving required result channels."
+    },
+    {
+      "id": "P8-M11-REV-02",
+      "severity": "high",
+      "status": "closed",
+      "summary": "External comparison metadata could pass without recomputed numerical errors."
+    },
+    {
+      "id": "P8-M11-REV-03",
+      "severity": "high",
+      "status": "closed",
+      "summary": "Q5 did not require a completed review and complete M0-M10 historical evidence."
+    },
+    {
+      "id": "P8-M11-REV-04",
+      "severity": "medium",
+      "status": "closed",
+      "summary": "Target-size memory preflight used the medium kernel size instead of the fixed target fixture."
+    },
+    {
+      "id": "P8-M11-REV-05",
+      "severity": "medium",
+      "status": "closed",
+      "summary": "Candidate pilot reproducibility was reported as independent NL-PILOT qualification PASS."
+    }
+  ]
+}

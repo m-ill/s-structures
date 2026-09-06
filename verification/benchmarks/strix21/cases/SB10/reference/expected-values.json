@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "p17-expected-values-v1",
+  "caseId": "SB10",
+  "status": "NOT_LOCKED",
+  "payloadAbsent": true,
+  "releaseAllowed": false,
+  "values": [],
+  "reasonCodes": [
+    "P17_REFERENCE_NOT_LOCKED",
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION"
+  ]
+}

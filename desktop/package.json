@@ -1,0 +1,26 @@
+{
+  "name": "s-structures-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "main.mjs",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "build": {
+    "appId": "com.sstructures.app",
+    "productName": "S-Structures",
+    "files": ["main.mjs", "preload.mjs", "reportExportIpc.mjs", "../src/**", "../server/**", "../index.html", "../app.html", "../package.json"],
+    "directories": {
+      "output": "../output/desktop"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  }
+}

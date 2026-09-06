@@ -1,0 +1,135 @@
+{
+  "version": "p14-m4-six-dof-mass-rsa-implementation-evidence-v1",
+  "phase": "Phase 14",
+  "milestone": "P14-M4",
+  "status": "INTERNALLY_VERIFIED",
+  "generatedAt": "2026-08-27T05:58:08.377Z",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "buildHash": "e7bb14fbd8afcff23c540e60368db38db76cc7496ccfc6aa059b4025a692d18c",
+  "benchmarkExecutionStarted": false,
+  "externalSolverRuntimeDependency": false,
+  "capabilityState": "internally-verified",
+  "independentQualification": "NOT_RUN",
+  "crossSolverComparison": "NOT_RUN",
+  "releaseAllowed": false,
+  "designTransferAllowed": false,
+  "productionFiles": [
+    "src/core/massSchema.js",
+    "src/core/validation.js",
+    "src/dynamics/mass6dof.js",
+    "src/dynamics/modalDiaphragm.js",
+    "src/dynamics/modal.js",
+    "src/nonlinear/dynamics/massDomain.js",
+    "src/results/rsa/baseShearScale.js",
+    "src/results/rsaTrace.js",
+    "src/compute/product/analysisCaseEngine.js",
+    "src/ui/indexAgentActions.js",
+    "src/report/detailedReport.js",
+    "tools/sstructures-modal-rsa.mjs"
+  ],
+  "testCommands": [
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tools/run-phase14-tests.mjs",
+      "M4"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p8-m8-dynamic-domain.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p7-m9-member-forces.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p7-m9-modal-normalization.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p10-m7-dynamics-extension.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p5-analysis-runners.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/m34-detailed-report.mjs"
+    ]
+  ],
+  "verificationRecords": [
+    {
+      "id": "P14-MASS-01",
+      "status": "PASS",
+      "note": "shared finite nonnegative 3/6-component node-mass schema and Agent validation"
+    },
+    {
+      "id": "P14-MASS-02",
+      "status": "PASS",
+      "note": "full six-DOF diagonal lumped mass and mass-source translation deduplication"
+    },
+    {
+      "id": "P14-MASS-03",
+      "status": "PASS",
+      "note": "rigid-diaphragm transpose(T)-M-T coupling and polar-inertia conservation"
+    },
+    {
+      "id": "P14-MASS-04",
+      "status": "PASS",
+      "note": "direct rotational inertia plus translational offset ownership audit"
+    },
+    {
+      "id": "P14-MASS-05",
+      "status": "PASS",
+      "note": "rotational modal DOFs, mass normalization and coordinate-vector scaling"
+    },
+    {
+      "id": "P14-RSA-6D-01",
+      "status": "PASS",
+      "note": "Ux/Uy/Rz, inertia moment and frame member-force recovery through RSA"
+    },
+    {
+      "id": "P14-MASS-06",
+      "status": "PASS",
+      "note": "CLI, Agent, result trace and detailed-report surface parity"
+    },
+    {
+      "id": "P14-SR2B-01",
+      "status": "NOT_RUN",
+      "note": "NOT_RUN: benchmark execution is intentionally deferred until engine development is complete"
+    }
+  ],
+  "qualificationRecord": {
+    "version": "p14-m0-qualification-record-v1",
+    "capabilityId": "SR2B",
+    "milestone": "P14-M4",
+    "implementationOwner": "six-dof-mass-rsa-recovery",
+    "runtimeOwner": "s-structures-in-house",
+    "implemented": true,
+    "internallyVerified": true,
+    "independentlyQualified": false,
+    "crossSolverCompared": false,
+    "releaseAllowed": false,
+    "designTransferAllowed": false,
+    "state": "internally-verified",
+    "crossSolverStatus": "NOT_RUN",
+    "hashes": {
+      "sourceHash": null,
+      "buildHash": "e7bb14fbd8afcff23c540e60368db38db76cc7496ccfc6aa059b4025a692d18c",
+      "inputHash": null,
+      "referenceHash": null,
+      "toleranceHash": null,
+      "resultHash": null
+    },
+    "limitations": [
+      "Rigid diaphragm implementation constrains Ux, Uy and Rz; out-of-plane rigid-floor kinematics are outside this milestone.",
+      "SR2b independent benchmark and MIDAS/STRIX cross-solver comparison have not been run."
+    ],
+    "invalidated": false,
+    "invalidationReasons": [],
+    "recordHash": "9dd40e18bf55e29e962f5b3baf32325b5c7bd1fe0222d9efdb2524c765c8d83b"
+  },
+  "releaseManifestHash": "0ac41a719e62dede831716ce8e5c7633e858ba0998d1c3d554db6bfb5df4fa98",
+  "artifactHash": "fff87b426979cfe527fbf7446381292091a9abbe237f9d913c3c273c1cd25b95"
+}

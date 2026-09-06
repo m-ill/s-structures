@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "p18-engine-input-snapshot-v1",
+  "caseId": "P3S2",
+  "qualificationScope": "S-Structures production-engine input snapshot; not an assertion of full STRIX model equivalence",
+  "method": "production wall membrane assembly with drilling and unsupported-rotation stabilization sweeps",
+  "productionModules": [
+    "src/solver/shell/realStabilizationQualification.js",
+    "src/solver/shell/wallMembraneQm6.js"
+  ],
+  "input": null,
+  "publicSourceLimitations": [],
+  "engineeringHash": "5311b34c14e951b7facf8fcdac774ea1d558f5547ea897d9dc4ee04497253f37"
+}

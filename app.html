@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+  S-Structures — Practice Platform Shell
+  © 2026 단국대학교 허석재 박사 (mill@dankook.ac.kr). All rights reserved.
+-->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S-Structures — Practice Platform</title>
+<style>
+:root{ --dku:#00467F; --panel:#f2f6fa; --line:#c9d7e4; --ink:#222; }
+*{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI','Malgun Gothic',sans-serif;}
+body{ background:#e7edf4; color:var(--ink); }
+header{ background:var(--dku); color:#fff; padding:10px 16px; font-weight:700; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+header .help-links{ display:flex; gap:6px; }
+header a.manual-link{ color:#d7e5f2; font-size:13px; font-weight:400; text-decoration:none; border:1px solid rgba(255,255,255,.35); padding:3px 10px; border-radius:6px; }
+#app{ padding:16px; max-width:720px; margin:0 auto; }
+input,button{ font-size:14px; padding:6px 8px; margin:4px 4px 4px 0; }
+li{ list-style:none; padding:8px; border:1px solid var(--line); border-radius:6px; margin-bottom:6px; background:#fff; cursor:pointer; }
+[data-role="status"]{ min-height:1.4em; color:#555; }
+</style>
+</head>
+<body>
+<header>S-Structures Practice Platform <span class="help-links"><a class="manual-link" href="./help.html">도움말</a></span></header>
+<div id="app"></div>
+<script type="module">
+import { createApiClient } from './src/app/apiClient.js';
+import { createSessionState } from './src/app/sessionState.js';
+import { createAppShell } from './src/app/shell.js';
+
+const api = createApiClient({ baseUrl: '', onUnauthorized: () => { window.location.hash = '#/login'; } });
+const session = createSessionState({ storage: window.localStorage, api });
+const shell = createAppShell({ window, document, api, session, mountPoint: document.getElementById('app') });
+
+session.restore().then(() => shell.start());
+window.SStructuresAppShell = shell;
+</script>
+</body>
+</html>

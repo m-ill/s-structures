@@ -1,0 +1,52 @@
+{
+  "version": "p8-evidence-artifact-v1",
+  "suiteId": "P8-M5-FORMAL-PUSHOVER",
+  "milestone": "P8-M5",
+  "status": "PASS",
+  "generatedAt": "2026-07-13T18:00:00+09:00",
+  "sourceRevision": "0e4f629+P8-M5-worktree",
+  "verificationIds": [
+    "NL-PUSH-01", "NL-PUSH-02", "NL-PUSH-03", "NL-PUSH-04", "NL-PUSH-05", "NL-PUSH-06", "NL-PUSH-07", "NL-PUSH-08", "NL-PUSH-09", "NL-PUSH-10", "NL-PUSH-11", "NL-PUSH-12", "NL-PUSH-13", "NL-PUSH-14",
+    "NL-CTRL-05", "NL-CTRL-06", "NL-CTRL-07", "NL-CTRL-08",
+    "NL-MEI-09", "NL-MEI-10", "NL-MEI-11", "NL-MEI-12", "NL-MEI-13", "NL-MEI-14", "NL-MEI-15"
+  ],
+  "results": [
+    { "id": "NL-PUSH-01", "status": "PASS", "test": "tests/p8-m5-initial-state.mjs" },
+    { "id": "NL-PUSH-02", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-03", "status": "PASS", "test": "tests/p8-m5-initial-state.mjs" },
+    { "id": "NL-PUSH-04", "status": "PASS", "test": "tests/p8-m5-displacement-control.mjs" },
+    { "id": "NL-PUSH-05", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-06", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-07", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-08", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-09", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-10", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-11", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-12", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-13", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-PUSH-14", "status": "PASS", "test": "tests/p8-m5-production-pushover.mjs" },
+    { "id": "NL-CTRL-05", "status": "PASS", "test": "tests/p8-m5-displacement-control.mjs" },
+    { "id": "NL-CTRL-06", "status": "PASS", "test": "tests/p8-m5-displacement-control.mjs" },
+    { "id": "NL-CTRL-07", "status": "PASS", "test": "tests/p8-m5-displacement-control.mjs" },
+    { "id": "NL-CTRL-08", "status": "PASS", "test": "tests/p8-m5-displacement-control.mjs" },
+    { "id": "NL-MEI-09", "status": "PASS", "test": "tests/p8-m5-initial-state.mjs" },
+    { "id": "NL-MEI-10", "status": "PASS", "test": "tests/p8-m5-initial-state.mjs" },
+    { "id": "NL-MEI-11", "status": "PASS", "test": "tests/p8-m5-initial-state.mjs" },
+    { "id": "NL-MEI-12", "status": "PASS", "test": "tests/p8-m5-initial-state.mjs" },
+    { "id": "NL-MEI-13", "status": "PASS", "test": "tests/p8-m5-initial-state.mjs" },
+    { "id": "NL-MEI-14", "status": "PASS", "test": "tests/p8-m5-initial-state.mjs" },
+    { "id": "NL-MEI-15", "status": "PASS", "test": "tests/p8-m5-initial-state.mjs" }
+  ],
+  "environment": {
+    "profileVersion": "p8-m0-reference-profile-v1",
+    "runtime": "Node.js",
+    "productionBackend": "in-house Rust/WASM sparse; dense reference used only in bounded verification"
+  },
+  "metrics": {
+    "elasticPortalAcceptedSteps": 5,
+    "elasticBaseShearRelativeResidual": 1.9e-16,
+    "multistoryLinearSlopeRelativeError": 1.1e-7,
+    "rollbackByteEquivalent": true
+  },
+  "qualificationImpact": "candidate"
+}

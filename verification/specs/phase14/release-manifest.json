@@ -1,0 +1,245 @@
+{
+  "version": "p14-m0-release-manifest-v1",
+  "phase": "Phase 14",
+  "generatedAt": "2026-08-27T07:31:25.553Z",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "baselineHash": "96c0fb0d8d1badbcf2fd5fe4a988c9dbba0281da239bdc68063020020c833bbf",
+  "releaseInvariants": {
+    "runtimeSolverOwner": "s-structures-in-house",
+    "openSeesRuntimeUsed": false,
+    "externalSolverRuntimeDependency": false,
+    "benchmarkExpectedInProduction": false,
+    "benchmarkExecutionStarted": false,
+    "finalDesignTransferAllowed": false
+  },
+  "capabilities": [
+    {
+      "id": "SB7",
+      "milestone": "P14-M1",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_RUN",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "d1d25a232dcc3abe34f61a8199b356a43a8dd284c98e91156152d7483812baf3",
+      "limitations": [
+        "Compression-only, gap/uplift, ground settlement, nonlinear and coupled-soil behavior remain out of scope.",
+        "SB7 benchmark, independent continuum comparison and MIDAS/STRIX cross-solver comparison have not been run."
+      ]
+    },
+    {
+      "id": "TH1",
+      "milestone": "P14-M2",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_RUN",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "19161b566bb0aac0724490da8d91a8965d3531c688abaaa319ca534c7f6534da",
+      "limitations": [
+        "Current production scope is linear direct Newmark average-acceleration with uniform resampling and Rayleigh or modal damping.",
+        "TH1 independent benchmark and MIDAS/STRIX cross-solver comparison have not been run."
+      ]
+    },
+    {
+      "id": "SR2",
+      "milestone": "P14-M3",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_RUN",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "de936d9b6bb2e5dc3f0b88f630222db0de7d86bdaedd82312fe69bb9731da75c",
+      "limitations": [
+        "All four modal-combination methods produce unsigned magnitudes; signed design envelopes remain a separate policy.",
+        "SR2 independent benchmark and MIDAS/STRIX cross-solver comparison have not been run."
+      ]
+    },
+    {
+      "id": "SR2B",
+      "milestone": "P14-M4",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_RUN",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "9dd40e18bf55e29e962f5b3baf32325b5c7bd1fe0222d9efdb2524c765c8d83b",
+      "limitations": [
+        "Rigid diaphragm implementation constrains Ux, Uy and Rz; out-of-plane rigid-floor kinematics are outside this milestone.",
+        "SR2b independent benchmark and MIDAS/STRIX cross-solver comparison have not been run."
+      ]
+    },
+    {
+      "id": "SB2",
+      "milestone": "P14-M5",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_RUN",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "c6fc0b5c437bd7ae3dc0441d8442cd77eafc87e26c9f8753728df35c8c56a9b3",
+      "limitations": [
+        "Independent benchmark and MIDAS/STRIX cross-solver comparison have not been run.",
+        "Model-level mesh convergence and final design-transfer approval remain blocked."
+      ]
+    },
+    {
+      "id": "SB3",
+      "milestone": "P14-M6",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_RUN",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "f2c29d0901fc0226da9509dc05413b6b2d6f1f8fc277ae4c28311513de16f441",
+      "limitations": [
+        "Independent benchmark and MIDAS/STRIX cross-solver comparison have not been run.",
+        "Model-level mesh convergence and final design-transfer approval remain blocked."
+      ]
+    },
+    {
+      "id": "SB5",
+      "milestone": "P14-M7",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_RUN",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "2aee1bac4f7649c3325b568e806715a75205a705fa135aedc6b6be6e5290f694",
+      "limitations": [
+        "Independent benchmark and MIDAS/STRIX cross-solver comparison have not been run.",
+        "Model-level mesh convergence and final design-transfer approval remain blocked."
+      ]
+    },
+    {
+      "id": "SB6",
+      "milestone": "P14-M8",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_RUN",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "c714571e46c5f057cf3ef57b4e67cffe24ac4dc81663cdec1d0ffc6bc56e418a",
+      "limitations": [
+        "Independent benchmark and MIDAS/STRIX cross-solver comparison have not been run.",
+        "Model-level mesh convergence and final design-transfer approval remain blocked."
+      ]
+    },
+    {
+      "id": "P3S2-SS",
+      "milestone": "P14-M9",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_APPLICABLE-CUSTOM-CRITERION",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "2c4eb506881fe528bcd68ccd48246f64adedf75a1340e6cde8c4d53b8d99dadb",
+      "limitations": [
+        "Independent custom stabilization qualification has not been run.",
+        "P3S2-SS is a custom S-Structures criterion and is not an identical STRIX P3S2 claim."
+      ]
+    },
+    {
+      "id": "SP1",
+      "milestone": "P14-M10",
+      "state": "internally-verified",
+      "implemented": true,
+      "internallyVerified": true,
+      "independentlyQualified": false,
+      "crossSolverCompared": false,
+      "crossSolverStatus": "NOT_RUN",
+      "releaseAllowed": false,
+      "designTransferAllowed": false,
+      "qualificationRecordHash": "09ed53d3d7814c5b77d2258d96df3cb9aec23172aa491e0a2a2f06dd00a666ac",
+      "limitations": [
+        "Independent benchmark and MIDAS/STRIX cross-solver comparison have not been run.",
+        "Post-peak external corpus and final design-transfer approval remain blocked."
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "P14-REL-01",
+      "status": "PASS",
+      "label": "qualification registry complete and unique"
+    },
+    {
+      "id": "P14-REL-02",
+      "status": "PASS",
+      "label": "requirement-test-evidence-review trace complete"
+    },
+    {
+      "id": "P14-REL-03",
+      "status": "PASS",
+      "label": "mandatory regression has no failure or skip"
+    },
+    {
+      "id": "P14-REL-04",
+      "status": "PASS",
+      "label": "no open Critical/High finding"
+    },
+    {
+      "id": "P14-REL-05",
+      "status": "PASS",
+      "label": "no external solver runtime dependency"
+    },
+    {
+      "id": "P14-REL-06",
+      "status": "PASS",
+      "label": "migration and rollback qualified"
+    },
+    {
+      "id": "P14-REL-07",
+      "status": "PASS",
+      "label": "CLI/Agent/UI/report parity"
+    },
+    {
+      "id": "P14-REL-08",
+      "status": "BLOCKED",
+      "label": "NFR budget qualified"
+    }
+  ],
+  "phaseReleaseAllowed": false,
+  "finalDesignTransferAllowed": false,
+  "blockers": [
+    "P14-REL-08",
+    "CAPABILITY:SB7",
+    "CAPABILITY:TH1",
+    "CAPABILITY:SR2",
+    "CAPABILITY:SR2B",
+    "CAPABILITY:SB2",
+    "CAPABILITY:SB3",
+    "CAPABILITY:SB5",
+    "CAPABILITY:SB6",
+    "CAPABILITY:P3S2-SS",
+    "CAPABILITY:SP1"
+  ],
+  "manifestHash": "752a9abf5128f1c8e9fe6b97c9f76a4f2094aeaa81f5965daa5079c2ac96579e"
+}

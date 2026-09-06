@@ -1,0 +1,6 @@
+{
+  "version": "p17-local-registry-pin-v1",
+  "registryHash": "758b9b82d564bbe4b0d2f8268fe54b0b78a1f8a12e43438b4b33c84ead0808c7",
+  "custody": "LOCAL_TEST_ONLY_SAME_PROCESS",
+  "externallyPinned": false
+}

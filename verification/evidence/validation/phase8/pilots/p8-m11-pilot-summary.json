@@ -1,0 +1,60 @@
+{
+  "version": "p8-m11-pilot-artifact-v1",
+  "status": "PASS",
+  "independentlyQualified": false,
+  "releaseReady": false,
+  "pilotCount": 5,
+  "verifiedPilotCount": 0,
+  "results": [
+    {
+      "id": "NL-PILOT-01",
+      "pilotId": "PILOT-ST-01",
+      "status": "PASS",
+      "qualification": "candidate",
+      "designBlocked": true,
+      "artifactHash": "bdaf6fce18f89cb8b0f4ca51",
+      "errors": []
+    },
+    {
+      "id": "NL-PILOT-02",
+      "pilotId": "PILOT-ST-02",
+      "status": "PASS",
+      "qualification": "candidate",
+      "designBlocked": true,
+      "artifactHash": "d8ed1e5ca3d9eb9f4ff028b0",
+      "errors": []
+    },
+    {
+      "id": "NL-PILOT-03",
+      "pilotId": "PILOT-ST-03",
+      "status": "PASS",
+      "qualification": "candidate",
+      "designBlocked": true,
+      "artifactHash": "efe89f08afcf53f2af19ea5a",
+      "errors": []
+    },
+    {
+      "id": "NL-PILOT-04",
+      "pilotId": "PILOT-RC-01",
+      "status": "PASS",
+      "qualification": "candidate",
+      "designBlocked": true,
+      "artifactHash": "94e70f6dcec654d275a4869a",
+      "errors": []
+    },
+    {
+      "id": "NL-PILOT-05",
+      "pilotId": "PILOT-DYN-01",
+      "status": "PASS",
+      "qualification": "candidate",
+      "designBlocked": true,
+      "artifactHash": "05194a678b0211ec7ff9158e",
+      "errors": []
+    }
+  ],
+  "blockers": [
+    "INDEPENDENT_EXTERNAL_COMPARISON_REQUIRED",
+    "PILOT_OWNER_SIGNOFF_REQUIRED"
+  ],
+  "summaryHash": "ceb7795521e359cb8cdc4a6e"
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/source-lock-schema.json",
+  "title": "Phase 17 STRIX case source lock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "caseId",
+    "ordinal",
+    "official",
+    "sourceRoles",
+    "contentAudit",
+    "runtimeProvenance",
+    "referenceLane",
+    "claimRestrictions",
+    "blockers",
+    "sourceLockHash"
+  ],
+  "properties": {
+    "version": { "const": "p17-source-lock-v1" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "supersedes": { "type": ["object", "null"], "additionalProperties": true },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9]+$" },
+    "ordinal": { "type": "integer", "minimum": 1, "maximum": 21 },
+    "official": { "const": true },
+    "family": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "sourceRoles": {
+      "type": "object",
+      "required": ["acceptanceTruth", "strixPublishedResult", "archivalNarrative", "runtimeProvenance", "catalog"],
+      "additionalProperties": true
+    },
+    "contentAudit": { "type": "object", "additionalProperties": true },
+    "publishedAcceptanceDisplay": { "type": "object", "additionalProperties": true },
+    "runtimeProvenance": { "type": "object", "additionalProperties": true },
+    "referenceLane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "strixPublicationLane", "midasLane", "sStructuresLane"],
+      "properties": {
+        "class": {
+          "enum": [
+            "R1_R2_EXTERNAL",
+            "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+            "R5_INTERNAL_SPEC",
+            "MIXED_EXTERNAL_INTERNAL_SPEC"
+          ]
+        },
+        "strixPublicationLane": { "const": "R4_PUBLISHED_VALUE_ONLY" },
+        "midasLane": { "const": "NOT_AVAILABLE" },
+        "sStructuresLane": { "const": "NOT_RUN_IN_P17" }
+      }
+    },
+    "claimRestrictions": { "type": "array", "items": { "type": "string" } },
+    "blockers": { "type": "array", "items": { "type": "string" } },
+    "sourceLockHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

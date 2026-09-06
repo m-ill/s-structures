@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "p11-evidence-schema-v1",
+  "title": "Phase 11 milestone evidence",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "milestone",
+    "status",
+    "releaseQualified",
+    "generatedAt",
+    "sourceRevision",
+    "environment",
+    "verification",
+    "artifactHash"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "pattern": "^p11-" },
+    "milestone": { "type": "string", "pattern": "^P11-M[0-9]$" },
+    "status": { "enum": ["PASS", "FAIL", "BLOCKED"] },
+    "releaseQualified": { "type": "boolean" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "sourceRevision": { "type": "string", "minLength": 1 },
+    "environment": { "type": "object" },
+    "verification": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status", "test", "statement"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^P11-" },
+          "status": { "enum": ["PASS", "FAIL", "BLOCKED"] },
+          "test": { "type": "string" },
+          "statement": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "artifactHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  },
+  "additionalProperties": true
+}

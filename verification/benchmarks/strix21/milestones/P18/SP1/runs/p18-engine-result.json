@@ -1,0 +1,5027 @@
+{
+  "schemaVersion": "p18-case-evidence-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "caseId": "SP1",
+  "engineStatus": "PASS",
+  "officialBenchmarkStatus": "NOT_CLAIMED",
+  "officialPassClaimed": false,
+  "verdict": "PASS",
+  "method": "production corotational 3D frame with concentrated base moment hinge",
+  "source": {
+    "publicPage": "https://dcr-st.com/verification/SP1.html",
+    "suite": "STRIX Verification 21",
+    "sourceLimitations": []
+  },
+  "productionModules": [
+    "src/nonlinear/pushover/productionPushover.js",
+    "src/nonlinear/properties/hingeRegistry.js"
+  ],
+  "modeling": {
+    "lengthIn": 24,
+    "elasticEIKipIn2": 23094720.000000004,
+    "myKipIn": 1440,
+    "mcKipIn": 1920,
+    "mrKipIn": 480
+  },
+  "result": {
+    "version": "p18-strix21-completion-v1",
+    "id": "SP1",
+    "status": "PASS",
+    "engineStatus": "PASS",
+    "officialBenchmarkStatus": "NOT_CLAIMED",
+    "officialPassClaimed": false,
+    "formulation": "production corotational 3D frame with concentrated base moment hinge",
+    "model": {
+      "lengthIn": 24,
+      "elasticEIKipIn2": 23094720.000000004,
+      "myKipIn": 1440,
+      "mcKipIn": 1920,
+      "mrKipIn": 480
+    },
+    "result": {
+      "termination": {
+        "reason": "LOAD_TARGET_REACHED",
+        "category": "target",
+        "success": true,
+        "message": "Requested lateral load factor was reached."
+      },
+      "summary": {
+        "stepCount": 6,
+        "rejectedStepCount": 0,
+        "maxBaseShear": 76,
+        "maxControlDisplacement": 0.8231900539724561,
+        "maxRoofDisplacement": 0.8231900539724561,
+        "peakStep": 5,
+        "firstYieldStep": 4,
+        "mechanismStep": null,
+        "plasticMemberCount": 1,
+        "yieldedMemberCount": 1,
+        "ultimateMemberCount": 0,
+        "terminationReason": "LOAD_TARGET_REACHED",
+        "fiberPmmMemberCount": 0,
+        "fiberPmmCoupledAssignmentCount": 0,
+        "distributedFiberMemberCount": 0,
+        "fiberPmmSkippedMemberCount": 0
+      },
+      "control": {
+        "version": "p8-m3-mdof-load-control-v3-p14-m10",
+        "status": "converged",
+        "reason": "LOAD_TARGET_REACHED",
+        "targetDisplacement": null,
+        "finalDisplacement": null,
+        "finalLambda": 0.95,
+        "acceptedStepCount": 5,
+        "rejectedStepCount": 0,
+        "rejectedSteps": [],
+        "strategy": "load"
+      },
+      "steps": [
+        {
+          "version": "p8-m7-production-pushover-result-v2",
+          "step": 0,
+          "accepted": true,
+          "lambda": 0,
+          "loadFactor": 0,
+          "controlDisplacement": 0,
+          "targetDisplacement": 0,
+          "roofDisplacement": 0,
+          "baseShear": 0,
+          "appliedBaseShear": 0,
+          "reactionBaseShear": 0,
+          "baseShearResidual": 0,
+          "baseShearRelativeResidual": 0,
+          "overturning": {
+            "mx": 0,
+            "my": 0,
+            "mz": 0,
+            "magnitude": 0,
+            "lateralOverturning": 0,
+            "direction": [
+              1,
+              0,
+              0
+            ]
+          },
+          "convergence": {
+            "ok": true,
+            "residualNorm": 2.4394921638304368e-8,
+            "residualLimit": 0.0000010099999999999999,
+            "responseHash": "752aaa807a88d5f9ee2cfba0",
+            "audit": {
+              "version": "p8-m5-current-configuration-six-resultant-audit-v2",
+              "ok": true,
+              "load": [
+                0,
+                0,
+                -10,
+                0,
+                0,
+                0
+              ],
+              "reaction": [
+                0,
+                0,
+                10,
+                0,
+                0,
+                0
+              ],
+              "closure": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "forceResidual": 0,
+              "momentResidual": 0,
+              "tolerance": 1e-7,
+              "configuration": "current"
+            }
+          },
+          "audit": {
+            "version": "p8-m5-current-configuration-six-resultant-audit-v2",
+            "ok": true,
+            "load": [
+              0,
+              0,
+              -10,
+              0,
+              0,
+              0
+            ],
+            "reaction": [
+              0,
+              0,
+              10,
+              0,
+              0,
+              0
+            ],
+            "closure": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "forceResidual": 0,
+            "momentResidual": 0,
+            "tolerance": 1e-7,
+            "configuration": "current"
+          },
+          "forceResidualNorm": 2.4394921638304368e-8,
+          "energies": {
+            "strain": 0.0000014029180627399212,
+            "memberStrain": 0.0000014029180627399212,
+            "hingeRecoverable": 0,
+            "hingeDissipated": 0,
+            "hingeWork": 0,
+            "initialStrainPotential": 0,
+            "supportSpringStrain": 0
+          },
+          "stories": [
+            {
+              "story": 1,
+              "elevation": 24,
+              "height": 24,
+              "displacement": 0,
+              "drift": 0,
+              "driftRatio": 0,
+              "shear": 0,
+              "torsion": 0,
+              "referencePoint": {
+                "x": 0,
+                "y": 0
+              },
+              "nodeIds": [
+                "T"
+              ]
+            }
+          ],
+          "members": {
+            "C": {
+              "memberId": "C",
+              "global": {
+                "generalizedResistingForce": [
+                  0,
+                  0,
+                  9.999999975605078,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -9.999999975605078,
+                  0,
+                  0,
+                  0
+                ],
+                "resistingForce": [
+                  0,
+                  0,
+                  9.999999975605078,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -9.999999975605078,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "local": {
+                "deformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -2.805836132324657e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "nodalBasicDeformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -2.805836132324657e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "basicRotationI": [
+                  0,
+                  0,
+                  0
+                ],
+                "basicRotationJ": [
+                  0,
+                  0,
+                  0
+                ],
+                "generalizedElasticResistingForce": [
+                  9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "elasticResistingForce": [
+                  9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "internalResistingForce": [
+                  9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "fixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "condensedMechanicalFixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "resistingForce": [
+                  9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "currentInternalResistingForce": [
+                  9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -9.99999997560508,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "referenceInternalResistingForce": [
+                  9.999999975605078,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -9.999999975605078,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "referenceResistingForce": [
+                  9.999999975605078,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -9.999999975605078,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "recoveryCoordinate": "reference",
+                "currentLength": 23.999999719416387,
+                "referenceLength": 24,
+                "currentAxes": [
+                  [
+                    0,
+                    0,
+                    0.9999999999999999
+                  ],
+                  [
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "referenceAxes": [
+                  [
+                    0,
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "releases": [],
+                "hinges": [
+                  {
+                    "id": "C:i:z",
+                    "propertyId": "SP1-HINGE",
+                    "end": "i",
+                    "axis": "z",
+                    "localDof": 5,
+                    "rotation": 0,
+                    "moment": 0,
+                    "tangent": 187500,
+                    "constitutiveTangent": 187500,
+                    "state": "elastic",
+                    "point": "A",
+                    "branch": "origin",
+                    "events": [],
+                    "energies": {
+                      "work": 0,
+                      "recoverable": 0,
+                      "dissipated": 0
+                    },
+                    "diagnostics": {
+                      "strategy": "diagnostic-only",
+                      "constitutiveTangent": 187500,
+                      "solverTangent": 187500,
+                      "threshold": 0.0018750000000000001,
+                      "applied": false,
+                      "zeroTangent": false,
+                      "negativeTangent": false,
+                      "requiresGeneralMatrix": false
+                    },
+                    "source": {
+                      "mode": "benchmark-neutral-mapping",
+                      "generator": null,
+                      "propertyHash": "b5404a3c0758dbcee30a3beb",
+                      "assumption": null,
+                      "overrideFields": []
+                    },
+                    "qualification": "candidate",
+                    "axialRatioTrace": {
+                      "requested": 0,
+                      "applied": null,
+                      "source": null,
+                      "interpolation": null,
+                      "iterationCoupled": false
+                    },
+                    "pmmInteraction": null
+                  }
+                ],
+                "stations": {
+                  "xs": [
+                    0,
+                    1.2,
+                    2.4,
+                    3.6,
+                    4.8,
+                    6,
+                    7.2,
+                    8.4,
+                    9.6,
+                    10.8,
+                    12,
+                    13.2,
+                    14.4,
+                    15.6,
+                    16.8,
+                    18,
+                    19.2,
+                    20.4,
+                    21.6,
+                    22.8,
+                    24
+                  ],
+                  "N": [
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078,
+                    -9.999999975605078
+                  ],
+                  "Vy": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Vz": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Tq": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "My": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Mz": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "stationLoadIssues": []
+              },
+              "diagnostics": {
+                "version": "p8-m4-hinged-corotational-frame-3d-v1",
+                "formulation": "objective-corotational-3d-series-concentrated-plasticity",
+                "tangent": "exact-member-ad-plus-consistent-hinge-condensation",
+                "rawTangentSymmetryError": 1.2215199020767644e-9,
+                "jetVersion": "p8-m3-second-order-jet-v1",
+                "behavior": "frame",
+                "finiteRotationCoordinates": "total-global-rotation-vector-principal-branch",
+                "rotationLogLimit": 3.141492653589793,
+                "followerLoads": "unsupported-fail-closed",
+                "rigidOffsets": false,
+                "released": false,
+                "releaseIterations": 0,
+                "releaseResidual": 0,
+                "hinged": true,
+                "hingeCount": 1,
+                "hingeIterations": 0,
+                "hingeResidual": 0,
+                "hingeRequiredMatrixClass": "general",
+                "fiberPmmCoupledHingeCount": 0,
+                "energyConservative": false,
+                "energyDissipative": true,
+                "releaseFormulation": null
+              },
+              "energies": {
+                "strain": 0.0000014029180627399212,
+                "memberStrain": 0.0000014029180627399212,
+                "hingeRecoverable": 0,
+                "hingeDissipated": 0,
+                "hingeWork": 0,
+                "initialStrainPotential": 0
+              }
+            }
+          },
+          "hinges": [
+            {
+              "id": "C:i:z",
+              "memberId": "C",
+              "propertyId": "SP1-HINGE",
+              "end": "i",
+              "axis": "z",
+              "rotation": 0,
+              "moment": 0,
+              "tangent": 187500,
+              "state": "elastic",
+              "point": "A",
+              "branch": "origin",
+              "events": [],
+              "energies": {
+                "work": 0,
+                "recoverable": 0,
+                "dissipated": 0
+              },
+              "source": {
+                "mode": "benchmark-neutral-mapping",
+                "generator": null,
+                "propertyHash": "b5404a3c0758dbcee30a3beb",
+                "assumption": null,
+                "overrideFields": []
+              },
+              "qualification": "candidate"
+            }
+          ],
+          "memberStates": {
+            "C": {
+              "overall": "elastic",
+              "i": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": "C:i:z"
+              },
+              "j": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": null
+              },
+              "distributed": {
+                "yielded": false,
+                "yieldedPointCount": 0,
+                "integrationPointCount": 0,
+                "stations": []
+              }
+            }
+          },
+          "yieldedHingeCount": 0,
+          "cappingHingeCount": 0,
+          "residualHingeCount": 0,
+          "failedHingeCount": 0,
+          "distributedYieldedMemberCount": 0,
+          "plasticHingeCount": 0,
+          "hingeEvents": [],
+          "responseHash": "752aaa807a88d5f9ee2cfba0",
+          "stepHash": "440178742d4173219f3440da",
+          "integrationRef": {
+            "version": "p8-m9-integrated-result-v1",
+            "integrationHash": "2f034c8de002dd7645e0bc0a",
+            "ok": true,
+            "provenance": {
+              "version": "p8-m9-result-adapter-v1",
+              "analysisType": "pushover",
+              "caseId": "SP1-PUSHOVER",
+              "step": 0,
+              "time": null,
+              "loadFactor": 0,
+              "domainIdentityHash": "d6b6ae561b717d19b38c9c08",
+              "responseHash": "752aaa807a88d5f9ee2cfba0",
+              "capabilityHash": "db1a99a81019efc37501678d"
+            },
+            "auditHash": "d4eb23ee8442e6d03873f2c4",
+            "dependencyHash": "e1e19c272a4a3ea315d42ce3"
+          }
+        },
+        {
+          "version": "p8-m7-production-pushover-result-v2",
+          "step": 1,
+          "accepted": true,
+          "lambda": 0.19,
+          "loadFactor": 0.19,
+          "controlDisplacement": 0.04675717221537859,
+          "targetDisplacement": 0.04675717221537859,
+          "roofDisplacement": 0.04675717221537859,
+          "baseShear": 15.2,
+          "appliedBaseShear": 15.2,
+          "reactionBaseShear": 15.2,
+          "baseShearResidual": 0,
+          "baseShearRelativeResidual": 0,
+          "overturning": {
+            "mx": 0,
+            "my": 364.79999999999995,
+            "mz": 0,
+            "magnitude": 364.79999999999995,
+            "lateralOverturning": 364.79999999999995,
+            "direction": [
+              1,
+              0,
+              0
+            ]
+          },
+          "convergence": {
+            "version": "p8-m2-mdof-convergence-v1",
+            "converged": true,
+            "norms": {
+              "force": 0.000001424863137700072,
+              "moment": 0.000005596710622057799,
+              "displacement": 0.00004554573636251405,
+              "rotation": 3.486433766557972e-9,
+              "energy": 4.531363211966829e-13
+            },
+            "scales": {
+              "force": 15.2,
+              "moment": 364.79999999999995,
+              "displacement": 1,
+              "rotation": 1,
+              "energy": 15.2
+            },
+            "ratios": {
+              "force": 0.8795451467284396,
+              "displacement": 4509.478847773668,
+              "energy": 0.0000029792000078677377
+            },
+            "limits": {
+              "force": 0.0000016199999999999997,
+              "moment": 0.00003658,
+              "displacement": 1.01e-8,
+              "rotation": 1.01e-8,
+              "energy": 1.521e-7
+            },
+            "pass": {
+              "force": true,
+              "displacement": false,
+              "energy": true
+            }
+          },
+          "audit": {
+            "version": "p8-m5-current-configuration-six-resultant-audit-v2",
+            "ok": true,
+            "load": [
+              15.2,
+              0,
+              -10,
+              0,
+              365.2668751620901,
+              0
+            ],
+            "reaction": [
+              -15.2,
+              0,
+              10,
+              0,
+              -365.26687941976587,
+              0
+            ],
+            "closure": [
+              0,
+              0,
+              0,
+              0,
+              -0.0000042576757550705224,
+              0
+            ],
+            "forceResidual": 0,
+            "momentResidual": 1.1656342238951229e-8,
+            "tolerance": 1e-7,
+            "configuration": "current"
+          },
+          "forceResidualNorm": 0.000005596710622057799,
+          "energies": {
+            "strain": 0.35581096231206266,
+            "memberStrain": 0.000024502915272896953,
+            "hingeRecoverable": 0.35578645939678977,
+            "hingeDissipated": 1.1102230246251565e-16,
+            "hingeWork": 0.3557864593967899,
+            "initialStrainPotential": 0,
+            "supportSpringStrain": 0
+          },
+          "stories": [
+            {
+              "story": 1,
+              "elevation": 24,
+              "height": 24,
+              "displacement": 0.04675717221537859,
+              "drift": 0.04675717221537859,
+              "driftRatio": 0.001948215508974108,
+              "shear": 15.2,
+              "torsion": 0,
+              "referencePoint": {
+                "x": 0,
+                "y": 0
+              },
+              "nodeIds": [
+                "T"
+              ]
+            }
+          ],
+          "members": {
+            "C": {
+              "memberId": "C",
+              "global": {
+                "generalizedResistingForce": [
+                  -15.200001424863137,
+                  0,
+                  10.000000013920342,
+                  0,
+                  -365.2669192137774,
+                  0,
+                  15.200001424863137,
+                  0,
+                  -10.000000013920342,
+                  0,
+                  0.000005596710622057799,
+                  0
+                ],
+                "resistingForce": [
+                  -15.200001424863137,
+                  0,
+                  10.000000013920342,
+                  0,
+                  -365.2669192137774,
+                  0,
+                  15.200001424863137,
+                  0,
+                  -10.000000013920342,
+                  0,
+                  0.000005596710622057799,
+                  0
+                ]
+              },
+              "local": {
+                "deformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -1.265282876820789e-7,
+                  -2.797521929664981e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  6.326414529506287e-8
+                ],
+                "nodalBasicDeformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -0.001948216764108162,
+                  -2.797521929664981e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  6.326414529506287e-8
+                ],
+                "basicRotationI": [
+                  0,
+                  0,
+                  -1.265282876820789e-7
+                ],
+                "basicRotationJ": [
+                  0,
+                  0,
+                  6.326414529506287e-8
+                ],
+                "generalizedElasticResistingForce": [
+                  9.970368157325995,
+                  -15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  -365.2669192137774,
+                  -9.970368157325995,
+                  15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  0.000005596710622057799
+                ],
+                "elasticResistingForce": [
+                  9.970368157325995,
+                  -15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  -365.2669192137774,
+                  -9.970368157325995,
+                  15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  0.000005596710622057799
+                ],
+                "internalResistingForce": [
+                  9.970368157325995,
+                  -15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  -365.2669192137774,
+                  -9.970368157325995,
+                  15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  0.000005596710622057799
+                ],
+                "fixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "condensedMechanicalFixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "resistingForce": [
+                  9.970368157325995,
+                  -15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  -365.2669192137774,
+                  -9.970368157325995,
+                  15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  0.000005596710622057799
+                ],
+                "currentInternalResistingForce": [
+                  9.970368157325995,
+                  -15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  -365.2669192137774,
+                  -9.970368157325995,
+                  15.21945473404445,
+                  0,
+                  0,
+                  0,
+                  0.000005596710622057799
+                ],
+                "referenceInternalResistingForce": [
+                  10.000000013920342,
+                  -15.200001424863137,
+                  0,
+                  0,
+                  0,
+                  -365.2669192137774,
+                  -10.000000013920342,
+                  15.200001424863137,
+                  0,
+                  0,
+                  0,
+                  0.000005596710622057799
+                ],
+                "referenceResistingForce": [
+                  10.000000013920342,
+                  -15.200001424863137,
+                  0,
+                  0,
+                  0,
+                  -365.2669192137774,
+                  -10.000000013920342,
+                  15.200001424863137,
+                  0,
+                  0,
+                  0,
+                  0.000005596710622057799
+                ],
+                "recoveryCoordinate": "reference",
+                "currentLength": 23.999999720247807,
+                "referenceLength": 24,
+                "currentAxes": [
+                  [
+                    0.0019482155316831733,
+                    0,
+                    0.9999981022263202
+                  ],
+                  [
+                    0.9999981022263205,
+                    0,
+                    -0.0019482155316831737
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "referenceAxes": [
+                  [
+                    0,
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "releases": [],
+                "hinges": [
+                  {
+                    "id": "C:i:z",
+                    "propertyId": "SP1-HINGE",
+                    "end": "i",
+                    "axis": "z",
+                    "localDof": 5,
+                    "rotation": -0.0019480902358204797,
+                    "moment": -365.2669192163399,
+                    "tangent": 187500,
+                    "constitutiveTangent": 187500,
+                    "state": "elastic",
+                    "point": "A",
+                    "branch": "envelope",
+                    "events": [],
+                    "energies": {
+                      "work": 0.3557864593967899,
+                      "recoverable": 0.35578645939678977,
+                      "dissipated": 1.1102230246251565e-16
+                    },
+                    "diagnostics": {
+                      "strategy": "diagnostic-only",
+                      "constitutiveTangent": 187500,
+                      "solverTangent": 187500,
+                      "threshold": 0.0018750000000000001,
+                      "applied": false,
+                      "zeroTangent": false,
+                      "negativeTangent": false,
+                      "requiresGeneralMatrix": false
+                    },
+                    "source": {
+                      "mode": "benchmark-neutral-mapping",
+                      "generator": null,
+                      "propertyHash": "b5404a3c0758dbcee30a3beb",
+                      "assumption": null,
+                      "overrideFields": []
+                    },
+                    "qualification": "candidate",
+                    "axialRatioTrace": {
+                      "requested": 0,
+                      "applied": null,
+                      "source": null,
+                      "interpolation": null,
+                      "iterationCoupled": false
+                    },
+                    "pmmInteraction": null
+                  }
+                ],
+                "stations": {
+                  "xs": [
+                    0,
+                    1.2,
+                    2.4,
+                    3.6,
+                    4.8,
+                    6,
+                    7.2,
+                    8.4,
+                    9.6,
+                    10.8,
+                    12,
+                    13.2,
+                    14.4,
+                    15.6,
+                    16.8,
+                    18,
+                    19.2,
+                    20.4,
+                    21.6,
+                    22.8,
+                    24
+                  ],
+                  "N": [
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342,
+                    -10.000000013920342
+                  ],
+                  "Vy": [
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137,
+                    15.200001424863137
+                  ],
+                  "Vz": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Tq": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "My": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Mz": [
+                    365.2669192137774,
+                    347.0269175039416,
+                    328.7869157941059,
+                    310.5469140842701,
+                    292.3069123744343,
+                    274.0669106645986,
+                    255.8269089547628,
+                    237.58690724492703,
+                    219.34690553509128,
+                    201.1069038252555,
+                    182.86690211541975,
+                    164.626900405584,
+                    146.38689869574822,
+                    128.14689698591246,
+                    109.90689527607668,
+                    91.6668935662409,
+                    73.42689185640518,
+                    55.1868901465694,
+                    36.946888436733616,
+                    18.706886726897835,
+                    0.4668850170621113
+                  ]
+                },
+                "stationLoadIssues": []
+              },
+              "diagnostics": {
+                "version": "p8-m4-hinged-corotational-frame-3d-v1",
+                "formulation": "objective-corotational-3d-series-concentrated-plasticity",
+                "tangent": "exact-member-ad-plus-consistent-hinge-condensation",
+                "rawTangentSymmetryError": 1.330485316490545e-9,
+                "jetVersion": "p8-m3-second-order-jet-v1",
+                "behavior": "frame",
+                "finiteRotationCoordinates": "total-global-rotation-vector-principal-branch",
+                "rotationLogLimit": 3.141492653589793,
+                "followerLoads": "unsupported-fail-closed",
+                "rigidOffsets": false,
+                "released": false,
+                "releaseIterations": 0,
+                "releaseResidual": 0,
+                "hinged": true,
+                "hingeCount": 1,
+                "hingeIterations": 1,
+                "hingeResidual": 2.5625013222452253e-9,
+                "hingeRequiredMatrixClass": "general",
+                "fiberPmmCoupledHingeCount": 0,
+                "energyConservative": false,
+                "energyDissipative": true,
+                "releaseFormulation": null
+              },
+              "energies": {
+                "strain": 0.35581096231206266,
+                "memberStrain": 0.000024502915272896953,
+                "hingeRecoverable": 0.35578645939678977,
+                "hingeDissipated": 1.1102230246251565e-16,
+                "hingeWork": 0.3557864593967899,
+                "initialStrainPotential": 0
+              }
+            }
+          },
+          "hinges": [
+            {
+              "id": "C:i:z",
+              "memberId": "C",
+              "propertyId": "SP1-HINGE",
+              "end": "i",
+              "axis": "z",
+              "rotation": -0.0019480902358204797,
+              "moment": -365.2669192163399,
+              "tangent": 187500,
+              "state": "elastic",
+              "point": "A",
+              "branch": "envelope",
+              "events": [],
+              "energies": {
+                "work": 0.3557864593967899,
+                "recoverable": 0.35578645939678977,
+                "dissipated": 1.1102230246251565e-16
+              },
+              "source": {
+                "mode": "benchmark-neutral-mapping",
+                "generator": null,
+                "propertyHash": "b5404a3c0758dbcee30a3beb",
+                "assumption": null,
+                "overrideFields": []
+              },
+              "qualification": "candidate"
+            }
+          ],
+          "memberStates": {
+            "C": {
+              "overall": "elastic",
+              "i": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": "C:i:z"
+              },
+              "j": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": null
+              },
+              "distributed": {
+                "yielded": false,
+                "yieldedPointCount": 0,
+                "integrationPointCount": 0,
+                "stations": []
+              }
+            }
+          },
+          "yieldedHingeCount": 0,
+          "cappingHingeCount": 0,
+          "residualHingeCount": 0,
+          "failedHingeCount": 0,
+          "distributedYieldedMemberCount": 0,
+          "plasticHingeCount": 0,
+          "hingeEvents": [],
+          "responseHash": "909fb82c72ce1a5be04b5d5c",
+          "stepHash": "712a61074db68e4b2cd37d2c",
+          "integrationRef": {
+            "version": "p8-m9-integrated-result-v1",
+            "integrationHash": "ccb3bb2df49752e88452c9ec",
+            "ok": true,
+            "provenance": {
+              "version": "p8-m9-result-adapter-v1",
+              "analysisType": "pushover",
+              "caseId": "SP1-PUSHOVER",
+              "step": 1,
+              "time": null,
+              "loadFactor": 0.19,
+              "domainIdentityHash": "d6b6ae561b717d19b38c9c08",
+              "responseHash": "909fb82c72ce1a5be04b5d5c",
+              "capabilityHash": "db1a99a81019efc37501678d"
+            },
+            "auditHash": "4fc256e4733e10c16fcb8755",
+            "dependencyHash": "af68a787b85fddf4d909d7ff"
+          }
+        },
+        {
+          "version": "p8-m7-production-pushover-result-v2",
+          "step": 2,
+          "accepted": true,
+          "lambda": 0.38,
+          "loadFactor": 0.38,
+          "controlDisplacement": 0.09351362414671231,
+          "targetDisplacement": 0.09351362414671231,
+          "roofDisplacement": 0.09351362414671231,
+          "baseShear": 30.4,
+          "appliedBaseShear": 30.4,
+          "reactionBaseShear": 30.4,
+          "baseShearResidual": 0,
+          "baseShearRelativeResidual": 0,
+          "overturning": {
+            "mx": 0,
+            "my": 729.5999999999999,
+            "mz": 0,
+            "magnitude": 729.5999999999999,
+            "lateralOverturning": 729.5999999999999,
+            "direction": [
+              1,
+              0,
+              0
+            ]
+          },
+          "convergence": {
+            "version": "p8-m2-mdof-convergence-v1",
+            "converged": true,
+            "norms": {
+              "force": 9.076621054759926e-8,
+              "moment": 2.5000304049171973e-9,
+              "displacement": 5.0963554644824175e-8,
+              "rotation": 2.1235859127182126e-9,
+              "energy": 7.038029431493337e-18
+            },
+            "scales": {
+              "force": 30.4,
+              "moment": 729.5999999999999,
+              "displacement": 1,
+              "rotation": 1,
+              "energy": 30.4
+            },
+            "ratios": {
+              "force": 0.028906436480127157,
+              "displacement": 5.045896499487543,
+              "energy": 2.3143799511651882e-11
+            },
+            "limits": {
+              "force": 0.0000031399999999999996,
+              "moment": 0.00007306,
+              "displacement": 1.01e-8,
+              "rotation": 1.01e-8,
+              "energy": 3.041e-7
+            },
+            "pass": {
+              "force": true,
+              "displacement": false,
+              "energy": true
+            }
+          },
+          "audit": {
+            "version": "p8-m5-current-configuration-six-resultant-audit-v2",
+            "ok": true,
+            "load": [
+              30.4,
+              0,
+              -10,
+              0,
+              730.5295894197363,
+              0
+            ],
+            "reaction": [
+              -30.4,
+              0,
+              10,
+              0,
+              -730.5295978591171,
+              0
+            ],
+            "closure": [
+              0,
+              0,
+              0,
+              0,
+              -0.000008439380735580926,
+              0
+            ],
+            "forceResidual": 0,
+            "momentResidual": 1.1552414522715155e-8,
+            "tolerance": 1e-7,
+            "configuration": "current"
+          },
+          "forceResidualNorm": 9.076621054759926e-8,
+          "energies": {
+            "strain": 1.4232231175722527,
+            "memberStrain": 0.00009380198045066527,
+            "hingeRecoverable": 1.4231293155918021,
+            "hingeDissipated": 1.1102230246251565e-16,
+            "hingeWork": 1.4231293155918021,
+            "initialStrainPotential": 0,
+            "supportSpringStrain": 0
+          },
+          "stories": [
+            {
+              "story": 1,
+              "elevation": 24,
+              "height": 24,
+              "displacement": 0.09351362414671231,
+              "drift": 0.09351362414671231,
+              "driftRatio": 0.003896401006113013,
+              "shear": 30.4,
+              "torsion": 0,
+              "referencePoint": {
+                "x": 0,
+                "y": 0
+              },
+              "nodeIds": [
+                "T"
+              ]
+            }
+          ],
+          "members": {
+            "C": {
+              "memberId": "C",
+              "global": {
+                "generalizedResistingForce": [
+                  -30.39999999940407,
+                  0,
+                  10.00000009076621,
+                  0,
+                  -730.5295978558028,
+                  0,
+                  30.39999999940407,
+                  0,
+                  -10.00000009076621,
+                  0,
+                  2.5000304049171973e-9,
+                  0
+                ],
+                "resistingForce": [
+                  -30.39999999940407,
+                  0,
+                  10.00000009076621,
+                  0,
+                  -730.5295978558028,
+                  0,
+                  30.39999999940407,
+                  0,
+                  -10.00000009076621,
+                  0,
+                  2.5000304049171973e-9,
+                  0
+                ]
+              },
+              "local": {
+                "deformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -2.5305510449385927e-7,
+                  -2.7725795703759104e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1.2652755224757915e-7
+                ],
+                "nodalBasicDeformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -0.003896410910348456,
+                  -2.7725795703759104e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1.2652755224757915e-7
+                ],
+                "basicRotationI": [
+                  0,
+                  0,
+                  -2.5305510449385927e-7
+                ],
+                "basicRotationJ": [
+                  0,
+                  0,
+                  1.2652755224757915e-7
+                ],
+                "generalizedElasticResistingForce": [
+                  9.881473588819746,
+                  -30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  -730.5295978558028,
+                  -9.881473588819746,
+                  30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  2.5000304049171973e-9
+                ],
+                "elasticResistingForce": [
+                  9.881473588819746,
+                  -30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  -730.5295978558028,
+                  -9.881473588819746,
+                  30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  2.5000304049171973e-9
+                ],
+                "internalResistingForce": [
+                  9.881473588819746,
+                  -30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  -730.5295978558028,
+                  -9.881473588819746,
+                  30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  2.5000304049171973e-9
+                ],
+                "fixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "condensedMechanicalFixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "resistingForce": [
+                  9.881473588819746,
+                  -30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  -730.5295978558028,
+                  -9.881473588819746,
+                  30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  2.5000304049171973e-9
+                ],
+                "currentInternalResistingForce": [
+                  9.881473588819746,
+                  -30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  -730.5295978558028,
+                  -9.881473588819746,
+                  30.43873324388762,
+                  0,
+                  0,
+                  0,
+                  2.5000304049171973e-9
+                ],
+                "referenceInternalResistingForce": [
+                  10.00000009076621,
+                  -30.39999999940407,
+                  0,
+                  0,
+                  0,
+                  -730.5295978558028,
+                  -10.00000009076621,
+                  30.39999999940407,
+                  0,
+                  0,
+                  0,
+                  2.5000304049171973e-9
+                ],
+                "referenceResistingForce": [
+                  10.00000009076621,
+                  -30.39999999940407,
+                  0,
+                  0,
+                  0,
+                  -730.5295978558028,
+                  -10.00000009076621,
+                  30.39999999940407,
+                  0,
+                  0,
+                  0,
+                  2.5000304049171973e-9
+                ],
+                "recoveryCoordinate": "reference",
+                "currentLength": 23.999999722742043,
+                "referenceLength": 24,
+                "currentAxes": [
+                  [
+                    0.0038964010511258543,
+                    0,
+                    0.9999924090006127
+                  ],
+                  [
+                    0.9999924090006129,
+                    0,
+                    -0.003896401051125855
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "referenceAxes": [
+                  [
+                    0,
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "releases": [],
+                "hinges": [
+                  {
+                    "id": "C:i:z",
+                    "propertyId": "SP1-HINGE",
+                    "end": "i",
+                    "axis": "z",
+                    "localDof": 5,
+                    "rotation": -0.003896157855243961,
+                    "moment": -730.5295978582427,
+                    "tangent": 187500,
+                    "constitutiveTangent": 187500,
+                    "state": "elastic",
+                    "point": "A",
+                    "branch": "envelope",
+                    "events": [],
+                    "energies": {
+                      "work": 1.4231293155918021,
+                      "recoverable": 1.4231293155918021,
+                      "dissipated": 1.1102230246251565e-16
+                    },
+                    "diagnostics": {
+                      "strategy": "diagnostic-only",
+                      "constitutiveTangent": 187500,
+                      "solverTangent": 187500,
+                      "threshold": 0.0018750000000000001,
+                      "applied": false,
+                      "zeroTangent": false,
+                      "negativeTangent": false,
+                      "requiresGeneralMatrix": false
+                    },
+                    "source": {
+                      "mode": "benchmark-neutral-mapping",
+                      "generator": null,
+                      "propertyHash": "b5404a3c0758dbcee30a3beb",
+                      "assumption": null,
+                      "overrideFields": []
+                    },
+                    "qualification": "candidate",
+                    "axialRatioTrace": {
+                      "requested": 0,
+                      "applied": null,
+                      "source": null,
+                      "interpolation": null,
+                      "iterationCoupled": false
+                    },
+                    "pmmInteraction": null
+                  }
+                ],
+                "stations": {
+                  "xs": [
+                    0,
+                    1.2,
+                    2.4,
+                    3.6,
+                    4.8,
+                    6,
+                    7.2,
+                    8.4,
+                    9.6,
+                    10.8,
+                    12,
+                    13.2,
+                    14.4,
+                    15.6,
+                    16.8,
+                    18,
+                    19.2,
+                    20.4,
+                    21.6,
+                    22.8,
+                    24
+                  ],
+                  "N": [
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621,
+                    -10.00000009076621
+                  ],
+                  "Vy": [
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407,
+                    30.39999999940407
+                  ],
+                  "Vz": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Tq": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "My": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Mz": [
+                    730.5295978558028,
+                    694.0495978565178,
+                    657.569597857233,
+                    621.0895978579481,
+                    584.6095978586632,
+                    548.1295978593784,
+                    511.6495978600934,
+                    475.16959786080855,
+                    438.6895978615237,
+                    402.2095978622388,
+                    365.72959786295394,
+                    329.24959786366907,
+                    292.76959786438414,
+                    256.28959786509927,
+                    219.80959786581434,
+                    183.32959786652953,
+                    146.8495978672446,
+                    110.36959786795978,
+                    73.88959786867485,
+                    37.40959786938993,
+                    0.9295978701051126
+                  ]
+                },
+                "stationLoadIssues": []
+              },
+              "diagnostics": {
+                "version": "p8-m4-hinged-corotational-frame-3d-v1",
+                "formulation": "objective-corotational-3d-series-concentrated-plasticity",
+                "tangent": "exact-member-ad-plus-consistent-hinge-condensation",
+                "rawTangentSymmetryError": 1.613870805625731e-9,
+                "jetVersion": "p8-m3-second-order-jet-v1",
+                "behavior": "frame",
+                "finiteRotationCoordinates": "total-global-rotation-vector-principal-branch",
+                "rotationLogLimit": 3.141492653589793,
+                "followerLoads": "unsupported-fail-closed",
+                "rigidOffsets": false,
+                "released": false,
+                "releaseIterations": 0,
+                "releaseResidual": 0,
+                "hinged": true,
+                "hingeCount": 1,
+                "hingeIterations": 1,
+                "hingeResidual": 2.4399469111813232e-9,
+                "hingeRequiredMatrixClass": "general",
+                "fiberPmmCoupledHingeCount": 0,
+                "energyConservative": false,
+                "energyDissipative": true,
+                "releaseFormulation": null
+              },
+              "energies": {
+                "strain": 1.4232231175722527,
+                "memberStrain": 0.00009380198045066527,
+                "hingeRecoverable": 1.4231293155918021,
+                "hingeDissipated": 1.1102230246251565e-16,
+                "hingeWork": 1.4231293155918021,
+                "initialStrainPotential": 0
+              }
+            }
+          },
+          "hinges": [
+            {
+              "id": "C:i:z",
+              "memberId": "C",
+              "propertyId": "SP1-HINGE",
+              "end": "i",
+              "axis": "z",
+              "rotation": -0.003896157855243961,
+              "moment": -730.5295978582427,
+              "tangent": 187500,
+              "state": "elastic",
+              "point": "A",
+              "branch": "envelope",
+              "events": [],
+              "energies": {
+                "work": 1.4231293155918021,
+                "recoverable": 1.4231293155918021,
+                "dissipated": 1.1102230246251565e-16
+              },
+              "source": {
+                "mode": "benchmark-neutral-mapping",
+                "generator": null,
+                "propertyHash": "b5404a3c0758dbcee30a3beb",
+                "assumption": null,
+                "overrideFields": []
+              },
+              "qualification": "candidate"
+            }
+          ],
+          "memberStates": {
+            "C": {
+              "overall": "elastic",
+              "i": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": "C:i:z"
+              },
+              "j": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": null
+              },
+              "distributed": {
+                "yielded": false,
+                "yieldedPointCount": 0,
+                "integrationPointCount": 0,
+                "stations": []
+              }
+            }
+          },
+          "yieldedHingeCount": 0,
+          "cappingHingeCount": 0,
+          "residualHingeCount": 0,
+          "failedHingeCount": 0,
+          "distributedYieldedMemberCount": 0,
+          "plasticHingeCount": 0,
+          "hingeEvents": [],
+          "responseHash": "c24768842afd1b6d8f097036",
+          "stepHash": "1c27e40ab9ad5facb8b56a71",
+          "integrationRef": {
+            "version": "p8-m9-integrated-result-v1",
+            "integrationHash": "beccb4fbb751b06ed33c723e",
+            "ok": true,
+            "provenance": {
+              "version": "p8-m9-result-adapter-v1",
+              "analysisType": "pushover",
+              "caseId": "SP1-PUSHOVER",
+              "step": 2,
+              "time": null,
+              "loadFactor": 0.38,
+              "domainIdentityHash": "d6b6ae561b717d19b38c9c08",
+              "responseHash": "c24768842afd1b6d8f097036",
+              "capabilityHash": "db1a99a81019efc37501678d"
+            },
+            "auditHash": "682a4d65a0354c38e7f6f281",
+            "dependencyHash": "eb9a9701154284418c52bcce"
+          }
+        },
+        {
+          "version": "p8-m7-production-pushover-result-v2",
+          "step": 3,
+          "accepted": true,
+          "lambda": 0.5700000000000001,
+          "loadFactor": 0.5700000000000001,
+          "controlDisplacement": 0.14026866107903968,
+          "targetDisplacement": 0.14026866107903968,
+          "roofDisplacement": 0.14026866107903968,
+          "baseShear": 45.60000000000001,
+          "appliedBaseShear": 45.60000000000001,
+          "reactionBaseShear": 45.60000000000001,
+          "baseShearResidual": 0,
+          "baseShearRelativeResidual": 0,
+          "overturning": {
+            "mx": 0,
+            "my": 1094.4,
+            "mz": 0,
+            "magnitude": 1094.4,
+            "lateralOverturning": 1094.4,
+            "direction": [
+              1,
+              0,
+              0
+            ]
+          },
+          "convergence": {
+            "version": "p8-m2-mdof-convergence-v1",
+            "converged": true,
+            "norms": {
+              "force": 5.551626891531214e-8,
+              "moment": 1.318767317570746e-11,
+              "displacement": 9.681627924214045e-8,
+              "rotation": 4.0342483749937135e-9,
+              "energy": 2.9463891491928287e-18
+            },
+            "scales": {
+              "force": 45.60000000000001,
+              "moment": 1094.4,
+              "displacement": 1,
+              "rotation": 1,
+              "energy": 45.60000000000001
+            },
+            "ratios": {
+              "force": 0.01191336242817857,
+              "displacement": 9.585770221994105,
+              "energy": 6.459963054577566e-12
+            },
+            "limits": {
+              "force": 0.00000466,
+              "moment": 0.00010954000000000001,
+              "displacement": 1.01e-8,
+              "rotation": 1.01e-8,
+              "energy": 4.561000000000001e-7
+            },
+            "pass": {
+              "force": true,
+              "displacement": false,
+              "energy": true
+            }
+          },
+          "audit": {
+            "version": "p8-m5-current-configuration-six-resultant-audit-v2",
+            "ok": true,
+            "load": [
+              45.60000000000001,
+              0,
+              -10,
+              0,
+              1095.783982465135,
+              0
+            ],
+            "reaction": [
+              -45.60000000000001,
+              0,
+              10,
+              0,
+              -1095.783994934288,
+              0
+            ],
+            "closure": [
+              0,
+              0,
+              0,
+              0,
+              -0.000012469153034544433,
+              0
+            ],
+            "forceResidual": 0,
+            "momentResidual": 1.1379207117632872e-8,
+            "tolerance": 1e-7,
+            "configuration": "current"
+          },
+          "forceResidualNorm": 5.551626891531214e-8,
+          "energies": {
+            "strain": 3.2021894668858355,
+            "memberStrain": 0.00020929741527820584,
+            "hingeRecoverable": 3.2019801694705574,
+            "hingeDissipated": 8.881784197001252e-16,
+            "hingeWork": 3.2019801694705574,
+            "initialStrainPotential": 0,
+            "supportSpringStrain": 0
+          },
+          "stories": [
+            {
+              "story": 1,
+              "elevation": 24,
+              "height": 24,
+              "displacement": 0.14026866107903968,
+              "drift": 0.14026866107903968,
+              "driftRatio": 0.005844527544959986,
+              "shear": 45.60000000000001,
+              "torsion": 0,
+              "referencePoint": {
+                "x": 0,
+                "y": 0
+              },
+              "nodeIds": [
+                "T"
+              ]
+            }
+          ],
+          "members": {
+            "C": {
+              "memberId": "C",
+              "global": {
+                "generalizedResistingForce": [
+                  -45.599999999706526,
+                  0,
+                  10.000000055516269,
+                  0,
+                  -1095.7839949350187,
+                  0,
+                  45.599999999706526,
+                  0,
+                  -10.000000055516269,
+                  0,
+                  -1.318767317570746e-11,
+                  0
+                ],
+                "resistingForce": [
+                  -45.599999999706526,
+                  0,
+                  10.000000055516269,
+                  0,
+                  -1095.7839949350187,
+                  0,
+                  45.599999999706526,
+                  0,
+                  -10.000000055516269,
+                  0,
+                  -1.318767317570746e-11,
+                  0
+                ]
+              },
+              "local": {
+                "deformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -3.7957905354471044e-7,
+                  -2.731009765000181e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1.897895267723518e-7
+                ],
+                "nodalBasicDeformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -0.005844560885363205,
+                  -2.731009765000181e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1.897895267723518e-7
+                ],
+                "basicRotationI": [
+                  0,
+                  0,
+                  -3.7957905354471044e-7
+                ],
+                "basicRotationJ": [
+                  0,
+                  0,
+                  1.897895267723518e-7
+                ],
+                "generalizedElasticResistingForce": [
+                  9.733318802460646,
+                  -45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1095.7839949350187,
+                  -9.733318802460646,
+                  45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1.318767317570746e-11
+                ],
+                "elasticResistingForce": [
+                  9.733318802460646,
+                  -45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1095.7839949350187,
+                  -9.733318802460646,
+                  45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1.318767317570746e-11
+                ],
+                "internalResistingForce": [
+                  9.733318802460646,
+                  -45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1095.7839949350187,
+                  -9.733318802460646,
+                  45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1.318767317570746e-11
+                ],
+                "fixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "condensedMechanicalFixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "resistingForce": [
+                  9.733318802460646,
+                  -45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1095.7839949350187,
+                  -9.733318802460646,
+                  45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1.318767317570746e-11
+                ],
+                "currentInternalResistingForce": [
+                  9.733318802460646,
+                  -45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1095.7839949350187,
+                  -9.733318802460646,
+                  45.657666455626334,
+                  0,
+                  0,
+                  0,
+                  -1.318767317570746e-11
+                ],
+                "referenceInternalResistingForce": [
+                  10.000000055516269,
+                  -45.599999999706526,
+                  0,
+                  0,
+                  0,
+                  -1095.7839949350187,
+                  -10.000000055516269,
+                  45.599999999706526,
+                  0,
+                  0,
+                  0,
+                  -1.318767317570746e-11
+                ],
+                "referenceResistingForce": [
+                  10.000000055516269,
+                  -45.599999999706526,
+                  0,
+                  0,
+                  0,
+                  -1095.7839949350187,
+                  -10.000000055516269,
+                  45.599999999706526,
+                  0,
+                  0,
+                  0,
+                  -1.318767317570746e-11
+                ],
+                "recoveryCoordinate": "reference",
+                "currentLength": 23.999999726899023,
+                "referenceLength": 24,
+                "currentAxes": [
+                  [
+                    0.005844527611466079,
+                    0,
+                    0.9999829206026466
+                  ],
+                  [
+                    0.9999829206026466,
+                    0,
+                    -0.005844527611466079
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "referenceAxes": [
+                  [
+                    0,
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "releases": [],
+                "hinges": [
+                  {
+                    "id": "C:i:z",
+                    "propertyId": "SP1-HINGE",
+                    "end": "i",
+                    "axis": "z",
+                    "localDof": 5,
+                    "rotation": -0.0058441813063096594,
+                    "moment": -1095.7839949330612,
+                    "tangent": 187500,
+                    "constitutiveTangent": 187500,
+                    "state": "elastic",
+                    "point": "A",
+                    "branch": "envelope",
+                    "events": [],
+                    "energies": {
+                      "work": 3.2019801694705574,
+                      "recoverable": 3.2019801694705574,
+                      "dissipated": 8.881784197001252e-16
+                    },
+                    "diagnostics": {
+                      "strategy": "diagnostic-only",
+                      "constitutiveTangent": 187500,
+                      "solverTangent": 187500,
+                      "threshold": 0.0018750000000000001,
+                      "applied": false,
+                      "zeroTangent": false,
+                      "negativeTangent": false,
+                      "requiresGeneralMatrix": false
+                    },
+                    "source": {
+                      "mode": "benchmark-neutral-mapping",
+                      "generator": null,
+                      "propertyHash": "b5404a3c0758dbcee30a3beb",
+                      "assumption": null,
+                      "overrideFields": []
+                    },
+                    "qualification": "candidate",
+                    "axialRatioTrace": {
+                      "requested": 0,
+                      "applied": null,
+                      "source": null,
+                      "interpolation": null,
+                      "iterationCoupled": false
+                    },
+                    "pmmInteraction": null
+                  }
+                ],
+                "stations": {
+                  "xs": [
+                    0,
+                    1.2,
+                    2.4,
+                    3.6,
+                    4.8,
+                    6,
+                    7.2,
+                    8.4,
+                    9.6,
+                    10.8,
+                    12,
+                    13.2,
+                    14.4,
+                    15.6,
+                    16.8,
+                    18,
+                    19.2,
+                    20.4,
+                    21.6,
+                    22.8,
+                    24
+                  ],
+                  "N": [
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269,
+                    -10.000000055516269
+                  ],
+                  "Vy": [
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526,
+                    45.599999999706526
+                  ],
+                  "Vz": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Tq": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "My": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Mz": [
+                    1095.7839949350187,
+                    1041.0639949353708,
+                    986.343994935723,
+                    931.6239949360752,
+                    876.9039949364274,
+                    822.1839949367795,
+                    767.4639949371317,
+                    712.7439949374839,
+                    658.023994937836,
+                    603.3039949381882,
+                    548.5839949385404,
+                    493.8639949388926,
+                    439.14399493924464,
+                    384.4239949395968,
+                    329.703994939949,
+                    274.98399494030116,
+                    220.26399494065333,
+                    165.54399494100562,
+                    110.82399494135768,
+                    56.10399494170974,
+                    1.3839949420621451
+                  ]
+                },
+                "stationLoadIssues": []
+              },
+              "diagnostics": {
+                "version": "p8-m4-hinged-corotational-frame-3d-v1",
+                "formulation": "objective-corotational-3d-series-concentrated-plasticity",
+                "tangent": "exact-member-ad-plus-consistent-hinge-condensation",
+                "rawTangentSymmetryError": 1.9989269534161377e-9,
+                "jetVersion": "p8-m3-second-order-jet-v1",
+                "behavior": "frame",
+                "finiteRotationCoordinates": "total-global-rotation-vector-principal-branch",
+                "rotationLogLimit": 3.141492653589793,
+                "followerLoads": "unsupported-fail-closed",
+                "rigidOffsets": false,
+                "released": false,
+                "releaseIterations": 0,
+                "releaseResidual": 0,
+                "hinged": true,
+                "hingeCount": 1,
+                "hingeIterations": 1,
+                "hingeResidual": 1.957459971890785e-9,
+                "hingeRequiredMatrixClass": "general",
+                "fiberPmmCoupledHingeCount": 0,
+                "energyConservative": false,
+                "energyDissipative": true,
+                "releaseFormulation": null
+              },
+              "energies": {
+                "strain": 3.2021894668858355,
+                "memberStrain": 0.00020929741527820584,
+                "hingeRecoverable": 3.2019801694705574,
+                "hingeDissipated": 8.881784197001252e-16,
+                "hingeWork": 3.2019801694705574,
+                "initialStrainPotential": 0
+              }
+            }
+          },
+          "hinges": [
+            {
+              "id": "C:i:z",
+              "memberId": "C",
+              "propertyId": "SP1-HINGE",
+              "end": "i",
+              "axis": "z",
+              "rotation": -0.0058441813063096594,
+              "moment": -1095.7839949330612,
+              "tangent": 187500,
+              "state": "elastic",
+              "point": "A",
+              "branch": "envelope",
+              "events": [],
+              "energies": {
+                "work": 3.2019801694705574,
+                "recoverable": 3.2019801694705574,
+                "dissipated": 8.881784197001252e-16
+              },
+              "source": {
+                "mode": "benchmark-neutral-mapping",
+                "generator": null,
+                "propertyHash": "b5404a3c0758dbcee30a3beb",
+                "assumption": null,
+                "overrideFields": []
+              },
+              "qualification": "candidate"
+            }
+          ],
+          "memberStates": {
+            "C": {
+              "overall": "elastic",
+              "i": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": "C:i:z"
+              },
+              "j": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": null
+              },
+              "distributed": {
+                "yielded": false,
+                "yieldedPointCount": 0,
+                "integrationPointCount": 0,
+                "stations": []
+              }
+            }
+          },
+          "yieldedHingeCount": 0,
+          "cappingHingeCount": 0,
+          "residualHingeCount": 0,
+          "failedHingeCount": 0,
+          "distributedYieldedMemberCount": 0,
+          "plasticHingeCount": 0,
+          "hingeEvents": [],
+          "responseHash": "a6fabd50922563c648fbfd1a",
+          "stepHash": "8788847bb1feba266a3f6949",
+          "integrationRef": {
+            "version": "p8-m9-integrated-result-v1",
+            "integrationHash": "3532ed74227a3fcf4b8eed34",
+            "ok": true,
+            "provenance": {
+              "version": "p8-m9-result-adapter-v1",
+              "analysisType": "pushover",
+              "caseId": "SP1-PUSHOVER",
+              "step": 3,
+              "time": null,
+              "loadFactor": 0.5700000000000001,
+              "domainIdentityHash": "d6b6ae561b717d19b38c9c08",
+              "responseHash": "a6fabd50922563c648fbfd1a",
+              "capabilityHash": "db1a99a81019efc37501678d"
+            },
+            "auditHash": "247886fb65626d911c9b2e2e",
+            "dependencyHash": "4bd8462dc7b741142b16656a"
+          }
+        },
+        {
+          "version": "p8-m7-production-pushover-result-v2",
+          "step": 4,
+          "accepted": true,
+          "lambda": 0.76,
+          "loadFactor": 0.76,
+          "controlDisplacement": 0.2191763461384209,
+          "targetDisplacement": 0.2191763461384209,
+          "roofDisplacement": 0.2191763461384209,
+          "baseShear": 60.8,
+          "appliedBaseShear": 60.8,
+          "reactionBaseShear": 60.8,
+          "baseShearResidual": 0,
+          "baseShearRelativeResidual": 0,
+          "overturning": {
+            "mx": 0,
+            "my": 1459.1999999999998,
+            "mz": 0,
+            "magnitude": 1459.1999999999998,
+            "lateralOverturning": 1459.1999999999998,
+            "direction": [
+              1,
+              0,
+              0
+            ]
+          },
+          "convergence": {
+            "version": "p8-m2-mdof-convergence-v1",
+            "converged": true,
+            "norms": {
+              "force": 0.0000014873288396444195,
+              "moment": 8.349570634891279e-8,
+              "displacement": 0.000001451502566613908,
+              "rotation": 6.048612369990454e-8,
+              "energy": 5.0201469797175964e-14
+            },
+            "scales": {
+              "force": 60.8,
+              "moment": 1459.1999999999998,
+              "displacement": 1,
+              "rotation": 1,
+              "energy": 60.8
+            },
+            "ratios": {
+              "force": 0.24066809702984138,
+              "displacement": 143.71312540731765,
+              "energy": 8.255462883929611e-8
+            },
+            "limits": {
+              "force": 0.000006179999999999999,
+              "moment": 0.00014602,
+              "displacement": 1.01e-8,
+              "rotation": 1.01e-8,
+              "energy": 6.080999999999999e-7
+            },
+            "pass": {
+              "force": true,
+              "displacement": false,
+              "energy": true
+            }
+          },
+          "audit": {
+            "version": "p8-m5-current-configuration-six-resultant-audit-v2",
+            "ok": true,
+            "load": [
+              60.8,
+              0,
+              -10,
+              0,
+              1461.3308976041963,
+              0
+            ],
+            "reaction": [
+              -60.8,
+              0,
+              10,
+              0,
+              -1461.3309137392714,
+              0
+            ],
+            "closure": [
+              0,
+              0,
+              0,
+              0,
+              -0.000016135075156853418,
+              0
+            ],
+            "forceResidual": 0,
+            "momentResidual": 1.1041356208339417e-8,
+            "tolerance": 1e-7,
+            "configuration": "current"
+          },
+          "forceResidualNorm": 0.0000014873288396444195,
+          "energies": {
+            "strain": 5.695005884844487,
+            "memberStrain": 0.00037111735840245015,
+            "hingeRecoverable": 5.694634767486084,
+            "hingeDissipated": 1.9308381515952515,
+            "hingeWork": 7.625472919081336,
+            "initialStrainPotential": 0,
+            "supportSpringStrain": 0
+          },
+          "stories": [
+            {
+              "story": 1,
+              "elevation": 24,
+              "height": 24,
+              "displacement": 0.2191763461384209,
+              "drift": 0.2191763461384209,
+              "driftRatio": 0.009132347755767538,
+              "shear": 60.8,
+              "torsion": 0,
+              "referencePoint": {
+                "x": 0,
+                "y": 0
+              },
+              "nodeIds": [
+                "T"
+              ]
+            }
+          ],
+          "members": {
+            "C": {
+              "memberId": "C",
+              "global": {
+                "generalizedResistingForce": [
+                  -60.79999999362522,
+                  0,
+                  9.99999851267116,
+                  0,
+                  -1461.3309131768,
+                  0,
+                  60.79999999362522,
+                  0,
+                  -9.99999851267116,
+                  0,
+                  -8.349570634891279e-8,
+                  0
+                ],
+                "resistingForce": [
+                  -60.79999999362522,
+                  0,
+                  9.99999851267116,
+                  0,
+                  -1461.3309131768,
+                  0,
+                  60.79999999362522,
+                  0,
+                  -9.99999851267116,
+                  0,
+                  -8.349570634891279e-8,
+                  0
+                ]
+              },
+              "local": {
+                "deformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -5.062043317728215e-7,
+                  -2.6499255767475915e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2.531021658647186e-7
+                ],
+                "nodalBasicDeformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -0.00913247480066166,
+                  -2.6499255767475915e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2.531021658647186e-7
+                ],
+                "basicRotationI": [
+                  0,
+                  0,
+                  -5.062043317728215e-7
+                ],
+                "basicRotationJ": [
+                  0,
+                  0,
+                  2.531021658647186e-7
+                ],
+                "generalizedElasticResistingForce": [
+                  9.444334755528418,
+                  -60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -1461.3309131768,
+                  -9.444334755528418,
+                  60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -8.349570634891279e-8
+                ],
+                "elasticResistingForce": [
+                  9.444334755528418,
+                  -60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -1461.3309131768,
+                  -9.444334755528418,
+                  60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -8.349570634891279e-8
+                ],
+                "internalResistingForce": [
+                  9.444334755528418,
+                  -60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -1461.3309131768,
+                  -9.444334755528418,
+                  60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -8.349570634891279e-8
+                ],
+                "fixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "condensedMechanicalFixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "resistingForce": [
+                  9.444334755528418,
+                  -60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -1461.3309131768,
+                  -9.444334755528418,
+                  60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -8.349570634891279e-8
+                ],
+                "currentInternalResistingForce": [
+                  9.444334755528418,
+                  -60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -1461.3309131768,
+                  -9.444334755528418,
+                  60.88878805251233,
+                  0,
+                  0,
+                  0,
+                  -8.349570634891279e-8
+                ],
+                "referenceInternalResistingForce": [
+                  9.99999851267116,
+                  -60.79999999362522,
+                  0,
+                  0,
+                  0,
+                  -1461.3309131768,
+                  -9.99999851267116,
+                  60.79999999362522,
+                  0,
+                  0,
+                  0,
+                  -8.349570634891279e-8
+                ],
+                "referenceResistingForce": [
+                  9.99999851267116,
+                  -60.79999999362522,
+                  0,
+                  0,
+                  0,
+                  -1461.3309131768,
+                  -9.99999851267116,
+                  60.79999999362522,
+                  0,
+                  0,
+                  0,
+                  -8.349570634891279e-8
+                ],
+                "recoveryCoordinate": "reference",
+                "currentLength": 23.999999735007442,
+                "referenceLength": 24,
+                "currentAxes": [
+                  [
+                    0.009132347856601048,
+                    0,
+                    0.9999582992418365
+                  ],
+                  [
+                    0.9999582992418365,
+                    0,
+                    -0.009132347856601048
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "referenceAxes": [
+                  [
+                    0,
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "releases": [],
+                "hinges": [
+                  {
+                    "id": "C:i:z",
+                    "propertyId": "SP1-HINGE",
+                    "end": "i",
+                    "axis": "z",
+                    "localDof": 5,
+                    "rotation": -0.009131968596329886,
+                    "moment": -1461.3309131771905,
+                    "tangent": 14691.029290239647,
+                    "constitutiveTangent": 14691.029290239647,
+                    "state": "yielded",
+                    "point": "B",
+                    "branch": "envelope",
+                    "events": [
+                      {
+                        "type": "yield",
+                        "rotation": -0.008310021773824828,
+                        "moment": -1449.2556683327493,
+                        "direction": -1,
+                        "cycleCount": 0,
+                        "protocolStep": null,
+                        "point": "B"
+                      }
+                    ],
+                    "energies": {
+                      "work": 7.625472919081336,
+                      "recoverable": 5.694634767486084,
+                      "dissipated": 1.9308381515952515
+                    },
+                    "diagnostics": {
+                      "strategy": "diagnostic-only",
+                      "constitutiveTangent": 14691.029290239647,
+                      "solverTangent": 14691.029290239647,
+                      "threshold": 0.0018750000000000001,
+                      "applied": false,
+                      "zeroTangent": false,
+                      "negativeTangent": false,
+                      "requiresGeneralMatrix": false
+                    },
+                    "source": {
+                      "mode": "benchmark-neutral-mapping",
+                      "generator": null,
+                      "propertyHash": "b5404a3c0758dbcee30a3beb",
+                      "assumption": null,
+                      "overrideFields": []
+                    },
+                    "qualification": "candidate",
+                    "axialRatioTrace": {
+                      "requested": 0,
+                      "applied": null,
+                      "source": null,
+                      "interpolation": null,
+                      "iterationCoupled": false
+                    },
+                    "pmmInteraction": null
+                  }
+                ],
+                "stations": {
+                  "xs": [
+                    0,
+                    1.2,
+                    2.4,
+                    3.6,
+                    4.8,
+                    6,
+                    7.2,
+                    8.4,
+                    9.6,
+                    10.8,
+                    12,
+                    13.2,
+                    14.4,
+                    15.6,
+                    16.8,
+                    18,
+                    19.2,
+                    20.4,
+                    21.6,
+                    22.8,
+                    24
+                  ],
+                  "N": [
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116,
+                    -9.99999851267116
+                  ],
+                  "Vy": [
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522,
+                    60.79999999362522
+                  ],
+                  "Vz": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Tq": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "My": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Mz": [
+                    1461.3309131768,
+                    1388.3709131844498,
+                    1315.4109131920995,
+                    1242.4509131997493,
+                    1169.490913207399,
+                    1096.5309132150487,
+                    1023.5709132226984,
+                    950.6109132303482,
+                    877.650913237998,
+                    804.6909132456477,
+                    731.7309132532974,
+                    658.7709132609472,
+                    585.8109132685969,
+                    512.8509132762466,
+                    439.89091328389634,
+                    366.9309132915462,
+                    293.9709132991959,
+                    221.01091330684562,
+                    148.05091331449535,
+                    75.09091332214507,
+                    2.1309133297947938
+                  ]
+                },
+                "stationLoadIssues": []
+              },
+              "diagnostics": {
+                "version": "p8-m4-hinged-corotational-frame-3d-v1",
+                "formulation": "objective-corotational-3d-series-concentrated-plasticity",
+                "tangent": "exact-member-ad-plus-consistent-hinge-condensation",
+                "rawTangentSymmetryError": 2.433753313469086e-9,
+                "jetVersion": "p8-m3-second-order-jet-v1",
+                "behavior": "frame",
+                "finiteRotationCoordinates": "total-global-rotation-vector-principal-branch",
+                "rotationLogLimit": 3.141492653589793,
+                "followerLoads": "unsupported-fail-closed",
+                "rigidOffsets": false,
+                "released": false,
+                "releaseIterations": 0,
+                "releaseResidual": 0,
+                "hinged": true,
+                "hingeCount": 1,
+                "hingeIterations": 2,
+                "hingeResidual": 3.9040060073602945e-10,
+                "hingeRequiredMatrixClass": "general",
+                "fiberPmmCoupledHingeCount": 0,
+                "energyConservative": false,
+                "energyDissipative": true,
+                "releaseFormulation": null
+              },
+              "energies": {
+                "strain": 5.695005884844487,
+                "memberStrain": 0.00037111735840245015,
+                "hingeRecoverable": 5.694634767486084,
+                "hingeDissipated": 1.9308381515952515,
+                "hingeWork": 7.625472919081336,
+                "initialStrainPotential": 0
+              }
+            }
+          },
+          "hinges": [
+            {
+              "id": "C:i:z",
+              "memberId": "C",
+              "propertyId": "SP1-HINGE",
+              "end": "i",
+              "axis": "z",
+              "rotation": -0.009131968596329886,
+              "moment": -1461.3309131771905,
+              "tangent": 14691.029290239647,
+              "state": "yielded",
+              "point": "B",
+              "branch": "envelope",
+              "events": [
+                {
+                  "type": "yield",
+                  "rotation": -0.008310021773824828,
+                  "moment": -1449.2556683327493,
+                  "direction": -1,
+                  "cycleCount": 0,
+                  "protocolStep": null,
+                  "point": "B"
+                }
+              ],
+              "energies": {
+                "work": 7.625472919081336,
+                "recoverable": 5.694634767486084,
+                "dissipated": 1.9308381515952515
+              },
+              "source": {
+                "mode": "benchmark-neutral-mapping",
+                "generator": null,
+                "propertyHash": "b5404a3c0758dbcee30a3beb",
+                "assumption": null,
+                "overrideFields": []
+              },
+              "qualification": "candidate"
+            }
+          ],
+          "memberStates": {
+            "C": {
+              "overall": "yielded",
+              "i": {
+                "state": "yielded",
+                "ratio": 1,
+                "hingeId": "C:i:z"
+              },
+              "j": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": null
+              },
+              "distributed": {
+                "yielded": false,
+                "yieldedPointCount": 0,
+                "integrationPointCount": 0,
+                "stations": []
+              }
+            }
+          },
+          "yieldedHingeCount": 1,
+          "cappingHingeCount": 0,
+          "residualHingeCount": 0,
+          "failedHingeCount": 0,
+          "distributedYieldedMemberCount": 0,
+          "plasticHingeCount": 1,
+          "hingeEvents": [],
+          "responseHash": "f049643524e6a75c9543c321",
+          "stepHash": "24b4d44a83f36da7fc53b667",
+          "integrationRef": {
+            "version": "p8-m9-integrated-result-v1",
+            "integrationHash": "72e672bf4c1d7c86d11703af",
+            "ok": true,
+            "provenance": {
+              "version": "p8-m9-result-adapter-v1",
+              "analysisType": "pushover",
+              "caseId": "SP1-PUSHOVER",
+              "step": 4,
+              "time": null,
+              "loadFactor": 0.76,
+              "domainIdentityHash": "d6b6ae561b717d19b38c9c08",
+              "responseHash": "f049643524e6a75c9543c321",
+              "capabilityHash": "db1a99a81019efc37501678d"
+            },
+            "auditHash": "995d123e7f10cfd3d2886551",
+            "dependencyHash": "c4fc5a23853cf83ec47258d9"
+          }
+        },
+        {
+          "version": "p8-m7-production-pushover-result-v2",
+          "step": 5,
+          "accepted": true,
+          "lambda": 0.95,
+          "loadFactor": 0.95,
+          "controlDisplacement": 0.8231900539724561,
+          "targetDisplacement": 0.8231900539724561,
+          "roofDisplacement": 0.8231900539724561,
+          "baseShear": 76,
+          "appliedBaseShear": 76,
+          "reactionBaseShear": 76,
+          "baseShearResidual": 0,
+          "baseShearRelativeResidual": 0,
+          "overturning": {
+            "mx": 0,
+            "my": 1824,
+            "mz": 0,
+            "magnitude": 1824,
+            "lateralOverturning": 1824,
+            "direction": [
+              1,
+              0,
+              0
+            ]
+          },
+          "convergence": {
+            "version": "p8-m2-mdof-convergence-v1",
+            "converged": true,
+            "norms": {
+              "force": 1.9272046536400467e-7,
+              "moment": 2.664705789356958e-8,
+              "displacement": 1.9491873517578655e-8,
+              "rotation": 1.0712671778463683e-10,
+              "energy": 3.778638561824359e-15
+            },
+            "scales": {
+              "force": 76,
+              "moment": 1824,
+              "displacement": 1,
+              "rotation": 1,
+              "energy": 76
+            },
+            "ratios": {
+              "force": 0.025028631865455148,
+              "displacement": 1.9298884670869956,
+              "energy": 4.971238734145979e-9
+            },
+            "limits": {
+              "force": 0.0000077,
+              "moment": 0.0001825,
+              "displacement": 1.01e-8,
+              "rotation": 1.01e-8,
+              "energy": 7.601e-7
+            },
+            "pass": {
+              "force": true,
+              "displacement": false,
+              "energy": true
+            }
+          },
+          "audit": {
+            "version": "p8-m5-current-configuration-six-resultant-audit-v2",
+            "ok": true,
+            "load": [
+              76,
+              0,
+              -10,
+              0,
+              1831.158636072697,
+              0
+            ],
+            "reaction": [
+              -76,
+              0,
+              10,
+              0,
+              -1831.158651887565,
+              0
+            ],
+            "closure": [
+              0,
+              0,
+              0,
+              0,
+              -0.00001581486799295817,
+              0
+            ],
+            "forceResidual": 0,
+            "momentResidual": 8.636536204362275e-9,
+            "tolerance": 1e-7,
+            "configuration": "current"
+          },
+          "forceResidualNorm": 1.9272046536400467e-7,
+          "energies": {
+            "strain": 8.94229355147497,
+            "memberStrain": 0.0005815290098748843,
+            "hingeRecoverable": 8.941712022465095,
+            "hingeDissipated": 40.12585275283859,
+            "hingeWork": 49.06756477530369,
+            "initialStrainPotential": 0,
+            "supportSpringStrain": 0
+          },
+          "stories": [
+            {
+              "story": 1,
+              "elevation": 24,
+              "height": 24,
+              "displacement": 0.8231900539724561,
+              "drift": 0.8231900539724561,
+              "driftRatio": 0.034299585582185675,
+              "shear": 76,
+              "torsion": 0,
+              "referencePoint": {
+                "x": 0,
+                "y": 0
+              },
+              "nodeIds": [
+                "T"
+              ]
+            }
+          ],
+          "members": {
+            "C": {
+              "memberId": "C",
+              "global": {
+                "generalizedResistingForce": [
+                  -75.99999999228562,
+                  0,
+                  10.000000192720465,
+                  0,
+                  -1831.1586518878214,
+                  0,
+                  75.99999999228562,
+                  0,
+                  -10.000000192720465,
+                  0,
+                  2.664705789356958e-8,
+                  0
+                ],
+                "resistingForce": [
+                  -75.99999999228562,
+                  0,
+                  10.000000192720465,
+                  0,
+                  -1831.1586518878214,
+                  0,
+                  75.99999999228562,
+                  0,
+                  -10.000000192720465,
+                  0,
+                  2.664705789356958e-8,
+                  0
+                ]
+              },
+              "local": {
+                "deformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -6.343124842045782e-7,
+                  -2.0727686944610468e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  3.17156242109212e-7
+                ],
+                "nodalBasicDeformation": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -0.03430631479893142,
+                  -2.0727686944610468e-7,
+                  0,
+                  0,
+                  0,
+                  0,
+                  3.17156242109212e-7
+                ],
+                "basicRotationI": [
+                  0,
+                  0,
+                  -6.343124842045782e-7
+                ],
+                "basicRotationJ": [
+                  0,
+                  0,
+                  3.17156242109212e-7
+                ],
+                "generalizedElasticResistingForce": [
+                  7.387347627059173,
+                  -76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  -1831.1586518878214,
+                  -7.387347627059173,
+                  76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  2.664705789356958e-8
+                ],
+                "elasticResistingForce": [
+                  7.387347627059173,
+                  -76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  -1831.1586518878214,
+                  -7.387347627059173,
+                  76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  2.664705789356958e-8
+                ],
+                "internalResistingForce": [
+                  7.387347627059173,
+                  -76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  -1831.1586518878214,
+                  -7.387347627059173,
+                  76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  2.664705789356958e-8
+                ],
+                "fixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "condensedMechanicalFixedEndForce": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "resistingForce": [
+                  7.387347627059173,
+                  -76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  -1831.1586518878214,
+                  -7.387347627059173,
+                  76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  2.664705789356958e-8
+                ],
+                "currentInternalResistingForce": [
+                  7.387347627059173,
+                  -76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  -1831.1586518878214,
+                  -7.387347627059173,
+                  76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  2.664705789356958e-8
+                ],
+                "referenceInternalResistingForce": [
+                  10.000000192720465,
+                  -75.99999999228562,
+                  0,
+                  0,
+                  0,
+                  -1831.1586518878214,
+                  -10.000000192720465,
+                  75.99999999228562,
+                  0,
+                  0,
+                  0,
+                  2.664705789356958e-8
+                ],
+                "referenceResistingForce": [
+                  10.000000192720465,
+                  -75.99999999228562,
+                  0,
+                  0,
+                  0,
+                  -1831.1586518878214,
+                  -10.000000192720465,
+                  75.99999999228562,
+                  0,
+                  0,
+                  0,
+                  2.664705789356958e-8
+                ],
+                "recoveryCoordinate": "reference",
+                "currentLength": 23.99999979272313,
+                "referenceLength": 24,
+                "currentAxes": [
+                  [
+                    0.034299585878415285,
+                    0,
+                    0.9994115960947068
+                  ],
+                  [
+                    0.9994115960947068,
+                    0,
+                    -0.034299585878415285
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "referenceAxes": [
+                  [
+                    0,
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "releases": [],
+                "hinges": [
+                  {
+                    "id": "C:i:z",
+                    "propertyId": "SP1-HINGE",
+                    "end": "i",
+                    "axis": "z",
+                    "localDof": 5,
+                    "rotation": -0.03430568048644722,
+                    "moment": -1831.1586518989584,
+                    "tangent": 14691.029290239647,
+                    "constitutiveTangent": 14691.029290239647,
+                    "state": "yielded",
+                    "point": "B",
+                    "branch": "envelope",
+                    "events": [],
+                    "energies": {
+                      "work": 49.06756477530369,
+                      "recoverable": 8.941712022465095,
+                      "dissipated": 40.12585275283859
+                    },
+                    "diagnostics": {
+                      "strategy": "diagnostic-only",
+                      "constitutiveTangent": 14691.029290239647,
+                      "solverTangent": 14691.029290239647,
+                      "threshold": 0.0018750000000000001,
+                      "applied": false,
+                      "zeroTangent": false,
+                      "negativeTangent": false,
+                      "requiresGeneralMatrix": false
+                    },
+                    "source": {
+                      "mode": "benchmark-neutral-mapping",
+                      "generator": null,
+                      "propertyHash": "b5404a3c0758dbcee30a3beb",
+                      "assumption": null,
+                      "overrideFields": []
+                    },
+                    "qualification": "candidate",
+                    "axialRatioTrace": {
+                      "requested": 0,
+                      "applied": null,
+                      "source": null,
+                      "interpolation": null,
+                      "iterationCoupled": false
+                    },
+                    "pmmInteraction": null
+                  }
+                ],
+                "stations": {
+                  "xs": [
+                    0,
+                    1.2,
+                    2.4,
+                    3.6,
+                    4.8,
+                    6,
+                    7.2,
+                    8.4,
+                    9.6,
+                    10.8,
+                    12,
+                    13.2,
+                    14.4,
+                    15.6,
+                    16.8,
+                    18,
+                    19.2,
+                    20.4,
+                    21.6,
+                    22.8,
+                    24
+                  ],
+                  "N": [
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465
+                  ],
+                  "Vy": [
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562
+                  ],
+                  "Vz": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Tq": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "My": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Mz": [
+                    1831.1586518878214,
+                    1739.9586518970787,
+                    1648.758651906336,
+                    1557.5586519155931,
+                    1466.3586519248504,
+                    1375.1586519341076,
+                    1283.9586519433649,
+                    1192.7586519526221,
+                    1101.5586519618796,
+                    1010.3586519711366,
+                    919.1586519803939,
+                    827.9586519896512,
+                    736.7586519989084,
+                    645.5586520081656,
+                    554.3586520174229,
+                    463.1586520266801,
+                    371.9586520359376,
+                    280.7586520451948,
+                    189.55865205445184,
+                    98.35865206370909,
+                    7.158652072966333
+                  ]
+                },
+                "stationLoadIssues": []
+              },
+              "diagnostics": {
+                "version": "p8-m4-hinged-corotational-frame-3d-v1",
+                "formulation": "objective-corotational-3d-series-concentrated-plasticity",
+                "tangent": "exact-member-ad-plus-consistent-hinge-condensation",
+                "rawTangentSymmetryError": 2.8329080168452913e-9,
+                "jetVersion": "p8-m3-second-order-jet-v1",
+                "behavior": "frame",
+                "finiteRotationCoordinates": "total-global-rotation-vector-principal-branch",
+                "rotationLogLimit": 3.141492653589793,
+                "followerLoads": "unsupported-fail-closed",
+                "rigidOffsets": false,
+                "released": false,
+                "releaseIterations": 0,
+                "releaseResidual": 0,
+                "hinged": true,
+                "hingeCount": 1,
+                "hingeIterations": 1,
+                "hingeResidual": 1.113698999688495e-8,
+                "hingeRequiredMatrixClass": "general",
+                "fiberPmmCoupledHingeCount": 0,
+                "energyConservative": false,
+                "energyDissipative": true,
+                "releaseFormulation": null
+              },
+              "energies": {
+                "strain": 8.94229355147497,
+                "memberStrain": 0.0005815290098748843,
+                "hingeRecoverable": 8.941712022465095,
+                "hingeDissipated": 40.12585275283859,
+                "hingeWork": 49.06756477530369,
+                "initialStrainPotential": 0
+              }
+            }
+          },
+          "hinges": [
+            {
+              "id": "C:i:z",
+              "memberId": "C",
+              "propertyId": "SP1-HINGE",
+              "end": "i",
+              "axis": "z",
+              "rotation": -0.03430568048644722,
+              "moment": -1831.1586518989584,
+              "tangent": 14691.029290239647,
+              "state": "yielded",
+              "point": "B",
+              "branch": "envelope",
+              "events": [],
+              "energies": {
+                "work": 49.06756477530369,
+                "recoverable": 8.941712022465095,
+                "dissipated": 40.12585275283859
+              },
+              "source": {
+                "mode": "benchmark-neutral-mapping",
+                "generator": null,
+                "propertyHash": "b5404a3c0758dbcee30a3beb",
+                "assumption": null,
+                "overrideFields": []
+              },
+              "qualification": "candidate"
+            }
+          ],
+          "memberStates": {
+            "C": {
+              "overall": "yielded",
+              "i": {
+                "state": "yielded",
+                "ratio": 1,
+                "hingeId": "C:i:z"
+              },
+              "j": {
+                "state": "elastic",
+                "ratio": 0,
+                "hingeId": null
+              },
+              "distributed": {
+                "yielded": false,
+                "yieldedPointCount": 0,
+                "integrationPointCount": 0,
+                "stations": []
+              }
+            }
+          },
+          "yieldedHingeCount": 1,
+          "cappingHingeCount": 0,
+          "residualHingeCount": 0,
+          "failedHingeCount": 0,
+          "distributedYieldedMemberCount": 0,
+          "plasticHingeCount": 1,
+          "hingeEvents": [],
+          "responseHash": "5093db0bc07191c1dab3d6d9",
+          "integration": {
+            "version": "p8-m9-integrated-result-v1",
+            "adapterVersion": "p8-m9-result-adapter-v1",
+            "ok": true,
+            "analysisType": "pushover",
+            "dimensions": {
+              "displacement": "length",
+              "rotation": "radian",
+              "force": "force",
+              "moment": "force*length",
+              "stress": "force/length^2",
+              "strain": "dimensionless",
+              "energy": "force*length",
+              "time": "time",
+              "acceleration": "length/time^2"
+            },
+            "unitSystem": {
+              "length": "m",
+              "force": "kN",
+              "mass": "tonne",
+              "time": "s"
+            },
+            "nodes": {
+              "B": {
+                "nodeId": "B",
+                "coordinates": [
+                  0,
+                  0,
+                  0
+                ],
+                "displacement": {
+                  "ux": 0,
+                  "uy": 0,
+                  "uz": 0,
+                  "rx": 0,
+                  "ry": 0,
+                  "rz": 0
+                },
+                "externalLoad": {
+                  "fx": 0,
+                  "fy": 0,
+                  "fz": 0,
+                  "mx": 0,
+                  "my": 0,
+                  "mz": 0
+                },
+                "reaction": {
+                  "fx": -75.99999999228562,
+                  "fy": 0,
+                  "fz": 10.000000192720465,
+                  "mx": 0,
+                  "my": -1831.1586518878214,
+                  "mz": 0
+                },
+                "constraintReaction": {
+                  "fx": -75.99999999228562,
+                  "fy": 0,
+                  "fz": 10.000000192720465,
+                  "mx": 0,
+                  "my": -1831.1586518878214,
+                  "mz": 0
+                },
+                "supportReaction": {
+                  "fx": 0,
+                  "fy": 0,
+                  "fz": 0,
+                  "mx": 0,
+                  "my": 0,
+                  "mz": 0
+                },
+                "storyId": null
+              },
+              "T": {
+                "nodeId": "T",
+                "coordinates": [
+                  0,
+                  0,
+                  24
+                ],
+                "displacement": {
+                  "ux": 0.8231900539724561,
+                  "uy": 0,
+                  "uz": -0.014121900881941157,
+                  "rx": 0,
+                  "ry": 0.03430663195517353,
+                  "rz": 0
+                },
+                "externalLoad": {
+                  "fx": 76,
+                  "fy": 0,
+                  "fz": -10,
+                  "mx": 0,
+                  "my": 0,
+                  "mz": 0
+                },
+                "reaction": {
+                  "fx": -7.714376693002123e-9,
+                  "fy": 0,
+                  "fz": -1.9272046536400467e-7,
+                  "mx": 0,
+                  "my": 2.664705789356958e-8,
+                  "mz": 0
+                },
+                "constraintReaction": {
+                  "fx": -7.714376693002123e-9,
+                  "fy": 0,
+                  "fz": -1.9272046536400467e-7,
+                  "mx": 0,
+                  "my": 2.664705789356958e-8,
+                  "mz": 0
+                },
+                "supportReaction": {
+                  "fx": 0,
+                  "fy": 0,
+                  "fz": 0,
+                  "mx": 0,
+                  "my": 0,
+                  "mz": 0
+                },
+                "storyId": "ST1"
+              }
+            },
+            "members": {
+              "C": {
+                "memberId": "C",
+                "nodeIds": [
+                  "B",
+                  "T"
+                ],
+                "behavior": "frame",
+                "generated": false,
+                "origin": {
+                  "generatedId": "C",
+                  "generated": false,
+                  "originType": "member",
+                  "originId": "C",
+                  "formulation": "native-frame",
+                  "qualification": "production-frame"
+                },
+                "localAxes": [
+                  [
+                    0.034299585878415285,
+                    0,
+                    0.9994115960947068
+                  ],
+                  [
+                    0.9994115960947068,
+                    0,
+                    -0.034299585878415285
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "referenceAxes": [
+                  [
+                    0,
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ]
+                ],
+                "endForces": [
+                  10.000000192720465,
+                  -75.99999999228562,
+                  0,
+                  0,
+                  0,
+                  -1831.1586518878214,
+                  -10.000000192720465,
+                  75.99999999228562,
+                  0,
+                  0,
+                  0,
+                  2.664705789356958e-8
+                ],
+                "currentEndForces": [
+                  7.387347627059173,
+                  -76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  -1831.1586518878214,
+                  -7.387347627059173,
+                  76.29827716088225,
+                  0,
+                  0,
+                  0,
+                  2.664705789356958e-8
+                ],
+                "stations": {
+                  "xs": [
+                    0,
+                    1.2,
+                    2.4,
+                    3.6,
+                    4.8,
+                    6,
+                    7.2,
+                    8.4,
+                    9.6,
+                    10.8,
+                    12,
+                    13.2,
+                    14.4,
+                    15.6,
+                    16.8,
+                    18,
+                    19.2,
+                    20.4,
+                    21.6,
+                    22.8,
+                    24
+                  ],
+                  "N": [
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465,
+                    -10.000000192720465
+                  ],
+                  "Vy": [
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562,
+                    75.99999999228562
+                  ],
+                  "Vz": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Tq": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "My": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "Mz": [
+                    1831.1586518878214,
+                    1739.6007192947627,
+                    1648.042786701704,
+                    1556.4848541086453,
+                    1464.9269215155866,
+                    1373.368988922528,
+                    1281.811056329469,
+                    1190.2531237364103,
+                    1098.6951911433518,
+                    1007.1372585502929,
+                    915.5793259572342,
+                    824.0213933641757,
+                    732.4634607711168,
+                    640.905528178058,
+                    549.3475955849993,
+                    457.78966299194065,
+                    366.2317303988822,
+                    274.6737978058234,
+                    183.1158652127645,
+                    91.55793261970578,
+                    2.664705789356958e-8
+                  ]
+                },
+                "stationRecovery": {
+                  "available": true,
+                  "method": "reference-end-force-linear-geometric-closure-correction",
+                  "maximumCorrection": 7.1586520463192755,
+                  "corrections": {
+                    "N": {
+                      "first": 0,
+                      "last": 0
+                    },
+                    "Vy": {
+                      "first": 0,
+                      "last": 0
+                    },
+                    "Vz": {
+                      "first": 0,
+                      "last": 0
+                    },
+                    "Tq": {
+                      "first": 0,
+                      "last": 0
+                    },
+                    "My": {
+                      "first": 0,
+                      "last": 0
+                    },
+                    "Mz": {
+                      "first": 0,
+                      "last": -7.1586520463192755
+                    }
+                  },
+                  "rawClosure": {
+                    "ok": false,
+                    "available": true,
+                    "maximum": 7.1586520463192755,
+                    "relative": 0.003909356537151551,
+                    "tolerance": 1e-7
+                  }
+                },
+                "releases": {
+                  "contract": {
+                    "i": "rigid",
+                    "j": "rigid"
+                  },
+                  "localDofs": []
+                },
+                "hinges": [
+                  {
+                    "id": "C:i:z",
+                    "propertyId": "SP1-HINGE",
+                    "end": "i",
+                    "axis": "z",
+                    "localDof": 5,
+                    "rotation": -0.03430568048644722,
+                    "moment": -1831.1586518989584,
+                    "tangent": 14691.029290239647,
+                    "constitutiveTangent": 14691.029290239647,
+                    "state": "yielded",
+                    "point": "B",
+                    "branch": "envelope",
+                    "events": [],
+                    "energies": {
+                      "work": 49.06756477530369,
+                      "recoverable": 8.941712022465095,
+                      "dissipated": 40.12585275283859
+                    },
+                    "diagnostics": {
+                      "strategy": "diagnostic-only",
+                      "constitutiveTangent": 14691.029290239647,
+                      "solverTangent": 14691.029290239647,
+                      "threshold": 0.0018750000000000001,
+                      "applied": false,
+                      "zeroTangent": false,
+                      "negativeTangent": false,
+                      "requiresGeneralMatrix": false
+                    },
+                    "source": {
+                      "mode": "benchmark-neutral-mapping",
+                      "generator": null,
+                      "propertyHash": "b5404a3c0758dbcee30a3beb",
+                      "assumption": null,
+                      "overrideFields": []
+                    },
+                    "qualification": "candidate",
+                    "axialRatioTrace": {
+                      "requested": 0,
+                      "applied": null,
+                      "source": null,
+                      "interpolation": null,
+                      "iterationCoupled": false
+                    },
+                    "pmmInteraction": null
+                  }
+                ],
+                "distributedFiber": null,
+                "energies": {
+                  "strain": 8.94229355147497,
+                  "memberStrain": 0.0005815290098748843,
+                  "hingeRecoverable": 8.941712022465095,
+                  "hingeDissipated": 40.12585275283859,
+                  "hingeWork": 49.06756477530369,
+                  "initialStrainPotential": 0
+                },
+                "audits": {
+                  "stationClosure": {
+                    "ok": true,
+                    "available": true,
+                    "maximum": 0,
+                    "relative": 0,
+                    "tolerance": 1e-7
+                  },
+                  "releasedForces": {
+                    "ok": true,
+                    "available": false,
+                    "maximum": 0,
+                    "tolerance": 1e-7
+                  }
+                }
+              }
+            },
+            "stories": [
+              {
+                "storyId": "ST1",
+                "index": 1,
+                "baseZ": 0,
+                "topZ": 24,
+                "height": 24,
+                "nodeIds": [
+                  "T"
+                ],
+                "displacement": [
+                  0.8231900539724561,
+                  0,
+                  -0.014121900881941157
+                ],
+                "drift": [
+                  0.8231900539724561,
+                  0,
+                  -0.014121900881941157
+                ],
+                "driftRatio": [
+                  0.034299585582185675,
+                  0,
+                  -0.0005884125367475482
+                ],
+                "shear": [
+                  76,
+                  0,
+                  -10
+                ],
+                "torsion": 0,
+                "responseSource": "external-loads-above-story",
+                "centerOfMass": {
+                  "x": 0,
+                  "y": 0,
+                  "mass": 0,
+                  "method": "geometric-centroid"
+                }
+              }
+            ],
+            "sources": {
+              "member:C": {
+                "originType": "member",
+                "originId": "C",
+                "formulation": "native-frame",
+                "qualification": "production-frame",
+                "memberIds": [
+                  "C"
+                ],
+                "shellStressAvailable": false,
+                "resultType": "frame-member-forces"
+              }
+            },
+            "supportResponses": {},
+            "audits": {
+              "ok": true,
+              "globalEquilibrium": {
+                "version": "p8-m5-current-configuration-six-resultant-audit-v2",
+                "ok": true,
+                "load": [
+                  76,
+                  0,
+                  -10,
+                  0,
+                  1831.158636072697,
+                  0
+                ],
+                "reaction": [
+                  -76,
+                  0,
+                  10,
+                  0,
+                  -1831.158651887565,
+                  0
+                ],
+                "closure": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  -0.00001581486799295817,
+                  0
+                ],
+                "forceResidual": 0,
+                "momentResidual": 8.636536204362275e-9,
+                "tolerance": 1e-7,
+                "configuration": "current"
+              },
+              "reducedResidual": {
+                "ok": true,
+                "mode": "static",
+                "maximum": 1.9272046536400467e-7,
+                "relative": 2.5357955968947984e-9,
+                "scale": 76,
+                "absoluteTolerance": 0.000001,
+                "relativeTolerance": 1e-7,
+                "acceptanceBasis": "solver-recorded-force-and-moment-limits",
+                "solverConvergence": {
+                  "version": "p8-m2-mdof-convergence-v1",
+                  "converged": true,
+                  "norms": {
+                    "force": 1.9272046536400467e-7,
+                    "moment": 2.664705789356958e-8,
+                    "displacement": 1.9491873517578655e-8,
+                    "rotation": 1.0712671778463683e-10,
+                    "energy": 3.778638561824359e-15
+                  },
+                  "scales": {
+                    "force": 76,
+                    "moment": 1824,
+                    "displacement": 1,
+                    "rotation": 1,
+                    "energy": 76
+                  },
+                  "ratios": {
+                    "force": 0.025028631865455148,
+                    "displacement": 1.9298884670869956,
+                    "energy": 4.971238734145979e-9
+                  },
+                  "limits": {
+                    "force": 0.0000077,
+                    "moment": 0.0001825,
+                    "displacement": 1.01e-8,
+                    "rotation": 1.01e-8,
+                    "energy": 7.601e-7
+                  },
+                  "pass": {
+                    "force": true,
+                    "displacement": false,
+                    "energy": true
+                  }
+                },
+                "vector": [
+                  7.714376693002123e-9,
+                  0,
+                  1.9272046536400467e-7,
+                  0,
+                  -2.664705789356958e-8,
+                  0
+                ]
+              },
+              "elementNodeClosure": {
+                "ok": true,
+                "maximum": 0,
+                "relative": 0,
+                "tolerance": 1e-7
+              },
+              "stationClosure": [
+                {
+                  "memberId": "C",
+                  "ok": true,
+                  "available": true,
+                  "maximum": 0,
+                  "relative": 0,
+                  "tolerance": 1e-7
+                }
+              ],
+              "releasedForces": [
+                {
+                  "memberId": "C",
+                  "ok": true,
+                  "available": false,
+                  "maximum": 0,
+                  "tolerance": 1e-7
+                }
+              ],
+              "auditHash": "b685a5db432ea871f279f5ea"
+            },
+            "provenance": {
+              "version": "p8-m9-result-adapter-v1",
+              "analysisType": "pushover",
+              "caseId": "SP1-PUSHOVER",
+              "step": 5,
+              "time": null,
+              "loadFactor": 0.95,
+              "domainIdentityHash": "d6b6ae561b717d19b38c9c08",
+              "responseHash": "5093db0bc07191c1dab3d6d9",
+              "capabilityHash": "db1a99a81019efc37501678d"
+            },
+            "dependencies": {
+              "version": "p8-m9-integration-governance-v1",
+              "sourceModelHash": "b4e48d8361d9bda3bd3f860d1f36745b2a4a3f86207bf370ad5f921a8b1af6b7",
+              "caseId": "SP1-PUSHOVER",
+              "caseHash": "2cabd65b9dc9128d825a4c80",
+              "sourceHashes": {
+                "version": "p18-analysis-domain-hashes-v4-elastic-link",
+                "topologyHash": "d137832ade42000d5a15d043",
+                "propertyHash": "b28b61734348e088119a5115",
+                "constraintHash": "fde0482f2a28859b832ff6f9",
+                "loadHash": "c670bf761e1ce5b2a1a7422b",
+                "massHash": "12f39c7dcc99046af73f1009",
+                "nonlinearHash": "41d1c19605832492529eb322",
+                "outputHash": "d44c4a3d12aca5034b609c43",
+                "domainHash": "d295cd9726d74c4940b1e542"
+              },
+              "canonical": {
+                "domainHash": "6135da70bcf68a0882850bb1",
+                "identityHash": "d6b6ae561b717d19b38c9c08",
+                "topologyHash": "d137832ade42000d5a15d043",
+                "propertyHash": "b28b61734348e088119a5115",
+                "constraintHash": "fde0482f2a28859b832ff6f9",
+                "loadHash": "a8297316b851ea6a14f69f10",
+                "massHash": "12f39c7dcc99046af73f1009",
+                "nonlinearHash": "41d1c19605832492529eb322",
+                "outputHash": "d44c4a3d12aca5034b609c43",
+                "originMapHash": "1efd54de74a4398ce0a66bca",
+                "metadataHash": "31712f291c6cff69ceb2ef2c",
+                "unitSystemHash": "97b59523a18a7bb25503949e",
+                "constraintContractHash": "1c5755aa9635efc23667ea70"
+              },
+              "nodeIds": [
+                "B",
+                "T"
+              ],
+              "elementIds": [
+                "C"
+              ],
+              "resultDimensions": {
+                "displacement": "length",
+                "rotation": "radian",
+                "force": "force",
+                "moment": "force*length",
+                "stress": "force/length^2",
+                "strain": "dimensionless",
+                "energy": "force*length",
+                "time": "time",
+                "acceleration": "length/time^2"
+              },
+              "massSourceId": null,
+              "massSourceHash": null,
+              "loadSetHash": "b4cf84e48e00ec846e0e6502",
+              "step": 5,
+              "time": null,
+              "dependencyHash": "aa17785d38838adb754fe8ff"
+            },
+            "limitations": [],
+            "integrationHash": "d49ec72587ff1937d30fcec7"
+          },
+          "stepHash": "4465690a1d4ab14d868aba78"
+        }
+      ]
+    },
+    "selfConsistency": [
+      {
+        "step": 0,
+        "baseShear": 0,
+        "baseMoment": 0,
+        "controlDisplacement": 0,
+        "expectedDisplacement": 0,
+        "errorPct": null,
+        "recoveredHingeMoment": 0,
+        "momentEquilibriumErrorPct": null,
+        "recoveredHingeRotation": 0
+      },
+      {
+        "step": 1,
+        "baseShear": 15.2,
+        "baseMoment": 364.79999999999995,
+        "controlDisplacement": 0.04675717221537859,
+        "expectedDisplacement": 0.04675416565969151,
+        "errorPct": 0.0064305621641572545,
+        "recoveredHingeMoment": -365.2669192163399,
+        "momentEquilibriumErrorPct": 0.1279932062335339,
+        "recoveredHingeRotation": -0.0019480902358204797
+      },
+      {
+        "step": 2,
+        "baseShear": 30.4,
+        "baseMoment": 729.5999999999999,
+        "controlDisplacement": 0.09351362414671231,
+        "expectedDisplacement": 0.09350778852585508,
+        "errorPct": 0.006240785873812815,
+        "recoveredHingeMoment": -730.5295978582427,
+        "momentEquilibriumErrorPct": 0.1274119871495067,
+        "recoveredHingeRotation": -0.003896157855243961
+      },
+      {
+        "step": 3,
+        "baseShear": 45.60000000000001,
+        "baseMoment": 1094.4,
+        "controlDisplacement": 0.14026866107903968,
+        "expectedDisplacement": 0.14026035135143183,
+        "errorPct": 0.005924502204494267,
+        "recoveredHingeMoment": -1095.7839949330612,
+        "momentEquilibriumErrorPct": 0.1264615253162558,
+        "recoveredHingeRotation": -0.0058441813063096594
+      },
+      {
+        "step": 4,
+        "baseShear": 60.8,
+        "baseMoment": 1459.1999999999998,
+        "controlDisplacement": 0.2191763461384209,
+        "expectedDisplacement": 0.21916724631191725,
+        "errorPct": 0.0041520011118380785,
+        "recoveredHingeMoment": -1461.3309131771905,
+        "momentEquilibriumErrorPct": 0.14603297541054536,
+        "recoveredHingeRotation": -0.009131968596329886
+      },
+      {
+        "step": 5,
+        "baseShear": 76,
+        "baseMoment": 1824,
+        "controlDisplacement": 0.8231900539724561,
+        "expectedDisplacement": 0.8233363316747335,
+        "errorPct": -0.01776645784351998,
+        "recoveredHingeMoment": -1831.1586518989584,
+        "momentEquilibriumErrorPct": 0.3924699506007893,
+        "recoveredHingeRotation": -0.03430568048644722
+      }
+    ],
+    "probes": [
+      {
+        "id": "SP1-PREPEAK-SELF-CONSISTENCY",
+        "actual": -0.01776645784351998,
+        "reference": 0,
+        "unit": "%",
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "passed": true
+      },
+      {
+        "id": "SP1-LOAD-TARGET",
+        "actual": 76,
+        "reference": 76,
+        "unit": "kip",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1
+        },
+        "passed": true
+      },
+      {
+        "id": "SP1-HARDENING-REACHED",
+        "actual": 1831.1586518989584,
+        "reference": 1440,
+        "unit": "kip-in",
+        "tolerance": {
+          "type": "minimum",
+          "value": 1440
+        },
+        "passed": true
+      },
+      {
+        "id": "SP1-MOMENT-EQUILIBRIUM",
+        "actual": 0.3924699506007893,
+        "reference": 0,
+        "unit": "%",
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "passed": true
+      }
+    ],
+    "engineeringHash": "f6f34c1b3097ffdb94a6188d78c6b90d91985f385d38a0370e7fc2f6ac985822"
+  },
+  "audit": {
+    "probeCount": 4,
+    "failedProbeCount": 0,
+    "engineeringHash": "f6f34c1b3097ffdb94a6188d78c6b90d91985f385d38a0370e7fc2f6ac985822"
+  }
+}

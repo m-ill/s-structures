@@ -1,0 +1,1499 @@
+{
+  "schemaVersion": "p18-case-evidence-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "caseId": "SH1",
+  "engineStatus": "PASS",
+  "officialBenchmarkStatus": "NOT_CLAIMED",
+  "officialPassClaimed": false,
+  "verdict": "PASS",
+  "method": "native modular P-My-Mz hinge: FEMA/ASCE backbone, elastic unload, monotone PCHIP capacity, Bresler radial projection, 12-DOF zero-length wrapper",
+  "source": {
+    "publicPage": "https://dcr-st.com/verification/SH1.html",
+    "suite": "STRIX Verification 21",
+    "sourceLimitations": []
+  },
+  "productionModules": [
+    "src/nonlinear/materials/pmmHinge3d.js",
+    "src/nonlinear/math/monotonePchip.js",
+    "src/nonlinear/elements/zeroLengthPmmHinge3d.js"
+  ],
+  "modeling": null,
+  "result": {
+    "version": "p18-strix21-completion-v1",
+    "id": "SH1",
+    "status": "PASS",
+    "engineStatus": "PASS",
+    "officialBenchmarkStatus": "NOT_CLAIMED",
+    "officialPassClaimed": false,
+    "formulation": "native modular P-My-Mz hinge: FEMA/ASCE backbone, elastic unload, monotone PCHIP capacity, Bresler radial projection, 12-DOF zero-length wrapper",
+    "property": {
+      "version": "p18-pmm-hinge-3d-v1",
+      "id": "SH1-NATIVE-PMM-HINGE",
+      "axialStiffness": 10000000,
+      "rotationalStiffnessY": 10000000000,
+      "rotationalStiffnessZ": 10000000000,
+      "momentY": {
+        "mu": 100000000,
+        "thetaP": 0.02,
+        "thetaPC": 0.04,
+        "rc": 1.25,
+        "rr": 0.2
+      },
+      "momentZ": {
+        "mu": 100000000,
+        "thetaP": 0.02,
+        "thetaPC": 0.04,
+        "rc": 1.25,
+        "rr": 0.2
+      },
+      "interactionExponent": 1.5,
+      "axialCapacityTableY": null,
+      "axialCapacityTableZ": null,
+      "axialReference": 0,
+      "projectionCapacityMode": "current-backbone-ordinate",
+      "propertyHash": "459007a23ed9acdbe2ac598341d774f62cc8c9ae996448f43c4b89bf4e84ae7f"
+    },
+    "responses": {
+      "a1": 112500000,
+      "a2": 125000000,
+      "a3": 72500000,
+      "a4": 20000000,
+      "unload": {
+        "version": "p18-pmm-hinge-3d-v1",
+        "committedRotation": 0.01,
+        "committedMoment": 112500000,
+        "trialRotation": 0.005,
+        "elasticStiffness": 10000000000,
+        "moment": 62500000,
+        "tangent": 10000000000,
+        "branch": "elastic-unload-reload",
+        "responseHash": "029a392d7da8a46579efcda3cecb9b2ce8b7e1e0ad0906a180e0e13fe92533ed"
+      },
+      "symmetric": {
+        "version": "p18-pmm-hinge-3d-v1",
+        "propertyHash": "459007a23ed9acdbe2ac598341d774f62cc8c9ae996448f43c4b89bf4e84ae7f",
+        "deformation": {
+          "axial": 0,
+          "thetaY": 0.01,
+          "thetaZ": 0.01
+        },
+        "force": {
+          "axial": 0,
+          "momentY": 70870559.05658662,
+          "momentZ": 70870559.05658662
+        },
+        "capacity": {
+          "y": {
+            "value": 100000000,
+            "derivative": 0,
+            "source": "constant"
+          },
+          "z": {
+            "value": 100000000,
+            "derivative": 0,
+            "source": "constant"
+          }
+        },
+        "backbone": {
+          "y": {
+            "moment": 112500000,
+            "tangent": 1250000000,
+            "branch": "hardening",
+            "plasticRotation": 0.01
+          },
+          "z": {
+            "moment": 112500000,
+            "tangent": 1250000000,
+            "branch": "hardening",
+            "plasticRotation": 0.01
+          }
+        },
+        "interaction": {
+          "momentY": 70870559.05658662,
+          "momentZ": 70870559.05658662,
+          "phi": 1.5874010519681994,
+          "beta": 0.6299605249474366,
+          "exponent": 1.5,
+          "activeY": true,
+          "activeZ": true
+        },
+        "state": {
+          "committedDeformation": {
+            "axial": 0,
+            "thetaY": 0.01,
+            "thetaZ": 0.01
+          },
+          "plasticRotation": {
+            "y": 0.01,
+            "z": 0.01
+          },
+          "branch": {
+            "y": "hardening",
+            "z": "hardening"
+          }
+        },
+        "tangent": {
+          "method": "one-sided-numerical-algorithmic-difference",
+          "matrix": [
+            [
+              10000000,
+              0,
+              0
+            ],
+            [
+              0,
+              787450656.1458111,
+              0
+            ],
+            [
+              0,
+              0,
+              787450656.1458111
+            ]
+          ],
+          "inputOrder": [
+            "axial",
+            "thetaY",
+            "thetaZ"
+          ],
+          "outputOrder": [
+            "axial",
+            "momentY",
+            "momentZ"
+          ]
+        },
+        "responseHash": "35a0d6efd96ec2dedbb3c0c3ef5d003dac1ad4c73e9d2343d7b8ab0a0e29fdd8"
+      },
+      "asymmetric": {
+        "version": "p18-pmm-hinge-3d-v1",
+        "propertyHash": "459007a23ed9acdbe2ac598341d774f62cc8c9ae996448f43c4b89bf4e84ae7f",
+        "deformation": {
+          "axial": 0,
+          "thetaY": 0.005,
+          "thetaZ": 0.015
+        },
+        "force": {
+          "axial": 0,
+          "momentY": 66933305.77566514,
+          "momentZ": 74807812.3375081
+        },
+        "capacity": {
+          "y": {
+            "value": 100000000,
+            "derivative": 0,
+            "source": "constant"
+          },
+          "z": {
+            "value": 100000000,
+            "derivative": 0,
+            "source": "constant"
+          }
+        },
+        "backbone": {
+          "y": {
+            "moment": 106250000,
+            "tangent": 1250000000,
+            "branch": "hardening",
+            "plasticRotation": 0.005
+          },
+          "z": {
+            "moment": 118750000,
+            "tangent": 1250000000,
+            "branch": "hardening",
+            "plasticRotation": 0.015
+          }
+        },
+        "interaction": {
+          "momentY": 66933305.77566514,
+          "momentZ": 74807812.3375081,
+          "phi": 1.5874010519681994,
+          "beta": 0.6299605249474366,
+          "exponent": 1.5,
+          "activeY": true,
+          "activeZ": true
+        },
+        "state": {
+          "committedDeformation": {
+            "axial": 0,
+            "thetaY": 0.005,
+            "thetaZ": 0.015
+          },
+          "plasticRotation": {
+            "y": 0.005,
+            "z": 0.015
+          },
+          "branch": {
+            "y": "hardening",
+            "z": "hardening"
+          }
+        },
+        "tangent": {
+          "method": "one-sided-numerical-algorithmic-difference",
+          "matrix": [
+            [
+              10000000,
+              0,
+              0
+            ],
+            [
+              0,
+              787450656.1458111,
+              0
+            ],
+            [
+              0,
+              0,
+              787450656.1458111
+            ]
+          ],
+          "inputOrder": [
+            "axial",
+            "thetaY",
+            "thetaZ"
+          ],
+          "outputOrder": [
+            "axial",
+            "momentY",
+            "momentZ"
+          ]
+        },
+        "responseHash": "a8de92c4dfc6a47b290ffe2ab82d53e57e36f0120c9537ed7eb495fb0a7c1a15"
+      },
+      "dNegative": {
+        "version": "p18-pmm-hinge-3d-v1",
+        "propertyHash": "c09f97047373ac9bfccde90f0fff3aebeacb887e910aa98cffbcd628e7c7fb95",
+        "deformation": {
+          "axial": -0.15,
+          "thetaY": 0,
+          "thetaZ": 0.02
+        },
+        "force": {
+          "axial": -1500000,
+          "momentY": 0,
+          "momentZ": 91250000
+        },
+        "capacity": {
+          "y": {
+            "value": 73000000,
+            "derivative": 24.06256115465737,
+            "interval": 0,
+            "clamped": false,
+            "source": "monotone-pchip",
+            "tableHash": "0694bc361d366de4e731216059883c2e0882e76c743d4b3bf687975e9820252d"
+          },
+          "z": {
+            "value": 73000000,
+            "derivative": 24.06256115465737,
+            "interval": 0,
+            "clamped": false,
+            "source": "monotone-pchip",
+            "tableHash": "0694bc361d366de4e731216059883c2e0882e76c743d4b3bf687975e9820252d"
+          }
+        },
+        "backbone": {
+          "y": {
+            "moment": 0,
+            "tangent": 10000000000,
+            "branch": "origin",
+            "plasticRotation": 0
+          },
+          "z": {
+            "moment": 91250000,
+            "tangent": 912500000,
+            "branch": "cap",
+            "plasticRotation": 0.02
+          }
+        },
+        "interaction": {
+          "momentY": 0,
+          "momentZ": 91250000,
+          "phi": 1,
+          "beta": 1,
+          "exponent": 1.5,
+          "activeY": false,
+          "activeZ": true
+        },
+        "state": {
+          "committedDeformation": {
+            "axial": -0.15,
+            "thetaY": 0,
+            "thetaZ": 0.02
+          },
+          "plasticRotation": {
+            "y": 0,
+            "z": 0.02
+          },
+          "branch": {
+            "y": "origin",
+            "z": "cap"
+          }
+        },
+        "tangent": {
+          "method": "one-sided-numerical-algorithmic-difference",
+          "matrix": [
+            [
+              10000000,
+              0,
+              0
+            ],
+            [
+              0,
+              459871758050607.75,
+              0
+            ],
+            [
+              300781961.3814354,
+              -337661020985464.1,
+              -1916250000
+            ]
+          ],
+          "inputOrder": [
+            "axial",
+            "thetaY",
+            "thetaZ"
+          ],
+          "outputOrder": [
+            "axial",
+            "momentY",
+            "momentZ"
+          ]
+        },
+        "responseHash": "844d0253beea275119186f4b2b7c1c01c89a4caa4c9614108a1e820e24970313"
+      },
+      "dPositive": {
+        "version": "p18-pmm-hinge-3d-v1",
+        "propertyHash": "c09f97047373ac9bfccde90f0fff3aebeacb887e910aa98cffbcd628e7c7fb95",
+        "deformation": {
+          "axial": 0.05,
+          "thetaY": 0,
+          "thetaZ": 0.02
+        },
+        "force": {
+          "axial": 500000,
+          "momentY": 0,
+          "momentZ": 133910000.2857221
+        },
+        "capacity": {
+          "y": {
+            "value": 107128000.22857769,
+            "derivative": 13.69212651767333,
+            "interval": 2,
+            "clamped": false,
+            "source": "monotone-pchip",
+            "tableHash": "0694bc361d366de4e731216059883c2e0882e76c743d4b3bf687975e9820252d"
+          },
+          "z": {
+            "value": 107128000.22857769,
+            "derivative": 13.69212651767333,
+            "interval": 2,
+            "clamped": false,
+            "source": "monotone-pchip",
+            "tableHash": "0694bc361d366de4e731216059883c2e0882e76c743d4b3bf687975e9820252d"
+          }
+        },
+        "backbone": {
+          "y": {
+            "moment": 0,
+            "tangent": 10000000000,
+            "branch": "origin",
+            "plasticRotation": 0
+          },
+          "z": {
+            "moment": 133910000.2857221,
+            "tangent": 1339100002.8572211,
+            "branch": "cap",
+            "plasticRotation": 0.02
+          }
+        },
+        "interaction": {
+          "momentY": 0,
+          "momentZ": 133910000.2857221,
+          "phi": 1,
+          "beta": 1,
+          "exponent": 1.5,
+          "activeY": false,
+          "activeZ": true
+        },
+        "state": {
+          "committedDeformation": {
+            "axial": 0.05,
+            "thetaY": 0,
+            "thetaZ": 0.02
+          },
+          "plasticRotation": {
+            "y": 0,
+            "z": 0.02
+          },
+          "branch": {
+            "y": "origin",
+            "z": "cap"
+          }
+        },
+        "tangent": {
+          "method": "one-sided-numerical-algorithmic-difference",
+          "matrix": [
+            [
+              10000000.000582077,
+              0,
+              0
+            ],
+            [
+              0,
+              674864956185779.9,
+              0
+            ],
+            [
+              171151566.80345535,
+              -495519862100172.2,
+              -2812110006.0641766
+            ]
+          ],
+          "inputOrder": [
+            "axial",
+            "thetaY",
+            "thetaZ"
+          ],
+          "outputOrder": [
+            "axial",
+            "momentY",
+            "momentZ"
+          ]
+        },
+        "responseHash": "3ef35d132693cf0e876fa834119f03bf6ffb06f1696239ab7af7d96e0d4a4e0c"
+      },
+      "element": {
+        "version": "p18-zero-length-pmm-hinge-3d-v1",
+        "ok": true,
+        "propertyHash": "459007a23ed9acdbe2ac598341d774f62cc8c9ae996448f43c4b89bf4e84ae7f",
+        "displacement": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.005,
+          0.015
+        ],
+        "relativeDeformation": {
+          "axial": 0,
+          "thetaY": 0.005,
+          "thetaZ": 0.015
+        },
+        "endForce": [
+          0,
+          0,
+          0,
+          0,
+          -66933305.77566514,
+          -74807812.3375081,
+          0,
+          0,
+          0,
+          0,
+          66933305.77566514,
+          74807812.3375081
+        ],
+        "tangent": [
+          [
+            10000000,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -10000000,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            787450656.1458111,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -787450656.1458111,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            787450656.1458111,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -787450656.1458111
+          ],
+          [
+            -10000000,
+            0,
+            0,
+            0,
+            0,
+            0,
+            10000000,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            -787450656.1458111,
+            0,
+            0,
+            0,
+            0,
+            0,
+            787450656.1458111,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            -787450656.1458111,
+            0,
+            0,
+            0,
+            0,
+            0,
+            787450656.1458111
+          ]
+        ],
+        "material": {
+          "version": "p18-pmm-hinge-3d-v1",
+          "propertyHash": "459007a23ed9acdbe2ac598341d774f62cc8c9ae996448f43c4b89bf4e84ae7f",
+          "deformation": {
+            "axial": 0,
+            "thetaY": 0.005,
+            "thetaZ": 0.015
+          },
+          "force": {
+            "axial": 0,
+            "momentY": 66933305.77566514,
+            "momentZ": 74807812.3375081
+          },
+          "capacity": {
+            "y": {
+              "value": 100000000,
+              "derivative": 0,
+              "source": "constant"
+            },
+            "z": {
+              "value": 100000000,
+              "derivative": 0,
+              "source": "constant"
+            }
+          },
+          "backbone": {
+            "y": {
+              "moment": 106250000,
+              "tangent": 1250000000,
+              "branch": "hardening",
+              "plasticRotation": 0.005
+            },
+            "z": {
+              "moment": 118750000,
+              "tangent": 1250000000,
+              "branch": "hardening",
+              "plasticRotation": 0.015
+            }
+          },
+          "interaction": {
+            "momentY": 66933305.77566514,
+            "momentZ": 74807812.3375081,
+            "phi": 1.5874010519681994,
+            "beta": 0.6299605249474366,
+            "exponent": 1.5,
+            "activeY": true,
+            "activeZ": true
+          },
+          "state": {
+            "committedDeformation": {
+              "axial": 0,
+              "thetaY": 0.005,
+              "thetaZ": 0.015
+            },
+            "plasticRotation": {
+              "y": 0.005,
+              "z": 0.015
+            },
+            "branch": {
+              "y": "hardening",
+              "z": "hardening"
+            }
+          },
+          "tangent": {
+            "method": "one-sided-numerical-algorithmic-difference",
+            "matrix": [
+              [
+                10000000,
+                0,
+                0
+              ],
+              [
+                0,
+                787450656.1458111,
+                0
+              ],
+              [
+                0,
+                0,
+                787450656.1458111
+              ]
+            ],
+            "inputOrder": [
+              "axial",
+              "thetaY",
+              "thetaZ"
+            ],
+            "outputOrder": [
+              "axial",
+              "momentY",
+              "momentZ"
+            ]
+          },
+          "responseHash": "a8de92c4dfc6a47b290ffe2ab82d53e57e36f0120c9537ed7eb495fb0a7c1a15"
+        },
+        "equilibriumResidual": 0,
+        "elementResponseHash": "737da35a7887695ff532c23d2dfc254d8b3320cf7759a33b36ab2968f651ed27"
+      },
+      "assembledDomain": {
+        "version": "p18-zero-length-pmm-hinge-3d-v1",
+        "ok": true,
+        "ndof": 12,
+        "elementCount": 1,
+        "displacement": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.005,
+          0.015
+        ],
+        "tangent": [
+          [
+            10000000,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -10000000,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            787450656.1458111,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -787450656.1458111,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            787450656.1458111,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -787450656.1458111
+          ],
+          [
+            -10000000,
+            0,
+            0,
+            0,
+            0,
+            0,
+            10000000,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            -787450656.1458111,
+            0,
+            0,
+            0,
+            0,
+            0,
+            787450656.1458111,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            -787450656.1458111,
+            0,
+            0,
+            0,
+            0,
+            0,
+            787450656.1458111
+          ]
+        ],
+        "internalForce": [
+          0,
+          0,
+          0,
+          0,
+          -66933305.77566514,
+          -74807812.3375081,
+          0,
+          0,
+          0,
+          0,
+          66933305.77566514,
+          74807812.3375081
+        ],
+        "elements": [
+          {
+            "id": "SH1-ELEMENT",
+            "n1": "I",
+            "n2": "J",
+            "dof": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "propertyHash": "459007a23ed9acdbe2ac598341d774f62cc8c9ae996448f43c4b89bf4e84ae7f",
+            "response": {
+              "version": "p18-zero-length-pmm-hinge-3d-v1",
+              "ok": true,
+              "propertyHash": "459007a23ed9acdbe2ac598341d774f62cc8c9ae996448f43c4b89bf4e84ae7f",
+              "displacement": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0.005,
+                0.015
+              ],
+              "relativeDeformation": {
+                "axial": 0,
+                "thetaY": 0.005,
+                "thetaZ": 0.015
+              },
+              "endForce": [
+                0,
+                0,
+                0,
+                0,
+                -66933305.77566514,
+                -74807812.3375081,
+                0,
+                0,
+                0,
+                0,
+                66933305.77566514,
+                74807812.3375081
+              ],
+              "tangent": [
+                [
+                  10000000,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -10000000,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  787450656.1458111,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -787450656.1458111,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  787450656.1458111,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -787450656.1458111
+                ],
+                [
+                  -10000000,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  10000000,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  -787450656.1458111,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  787450656.1458111,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -787450656.1458111,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  787450656.1458111
+                ]
+              ],
+              "material": {
+                "version": "p18-pmm-hinge-3d-v1",
+                "propertyHash": "459007a23ed9acdbe2ac598341d774f62cc8c9ae996448f43c4b89bf4e84ae7f",
+                "deformation": {
+                  "axial": 0,
+                  "thetaY": 0.005,
+                  "thetaZ": 0.015
+                },
+                "force": {
+                  "axial": 0,
+                  "momentY": 66933305.77566514,
+                  "momentZ": 74807812.3375081
+                },
+                "capacity": {
+                  "y": {
+                    "value": 100000000,
+                    "derivative": 0,
+                    "source": "constant"
+                  },
+                  "z": {
+                    "value": 100000000,
+                    "derivative": 0,
+                    "source": "constant"
+                  }
+                },
+                "backbone": {
+                  "y": {
+                    "moment": 106250000,
+                    "tangent": 1250000000,
+                    "branch": "hardening",
+                    "plasticRotation": 0.005
+                  },
+                  "z": {
+                    "moment": 118750000,
+                    "tangent": 1250000000,
+                    "branch": "hardening",
+                    "plasticRotation": 0.015
+                  }
+                },
+                "interaction": {
+                  "momentY": 66933305.77566514,
+                  "momentZ": 74807812.3375081,
+                  "phi": 1.5874010519681994,
+                  "beta": 0.6299605249474366,
+                  "exponent": 1.5,
+                  "activeY": true,
+                  "activeZ": true
+                },
+                "state": {
+                  "committedDeformation": {
+                    "axial": 0,
+                    "thetaY": 0.005,
+                    "thetaZ": 0.015
+                  },
+                  "plasticRotation": {
+                    "y": 0.005,
+                    "z": 0.015
+                  },
+                  "branch": {
+                    "y": "hardening",
+                    "z": "hardening"
+                  }
+                },
+                "tangent": {
+                  "method": "one-sided-numerical-algorithmic-difference",
+                  "matrix": [
+                    [
+                      10000000,
+                      0,
+                      0
+                    ],
+                    [
+                      0,
+                      787450656.1458111,
+                      0
+                    ],
+                    [
+                      0,
+                      0,
+                      787450656.1458111
+                    ]
+                  ],
+                  "inputOrder": [
+                    "axial",
+                    "thetaY",
+                    "thetaZ"
+                  ],
+                  "outputOrder": [
+                    "axial",
+                    "momentY",
+                    "momentZ"
+                  ]
+                },
+                "responseHash": "a8de92c4dfc6a47b290ffe2ab82d53e57e36f0120c9537ed7eb495fb0a7c1a15"
+              },
+              "equilibriumResidual": 0,
+              "elementResponseHash": "737da35a7887695ff532c23d2dfc254d8b3320cf7759a33b36ab2968f651ed27"
+            }
+          }
+        ],
+        "stateByElement": {
+          "SH1-ELEMENT": {
+            "committedDeformation": {
+              "axial": 0,
+              "thetaY": 0.005,
+              "thetaZ": 0.015
+            },
+            "plasticRotation": {
+              "y": 0.005,
+              "z": 0.015
+            },
+            "branch": {
+              "y": "hardening",
+              "z": "hardening"
+            }
+          }
+        },
+        "assemblyHash": "b3e9a144e5713a1bdad391011d4951636f2ab4e73a7fcb1a10dcd94dd3831744"
+      }
+    },
+    "pchipTable": {
+      "axialForces": [
+        -2000000,
+        -1000000,
+        0,
+        1000000
+      ],
+      "moments": [
+        60000000,
+        83874877.69068526,
+        100000000,
+        113666769.37
+      ],
+      "qualification": "table reconstructed to the two public interior PCHIP probes because raw STRIX table is not published"
+    },
+    "probes": [
+      {
+        "id": "SH1-A1-MZ",
+        "actual": 112500000,
+        "reference": 112500000,
+        "errorPct": 0,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-A2-MZ",
+        "actual": 125000000,
+        "reference": 125000000,
+        "errorPct": 0,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-A3-MZ",
+        "actual": 72500000,
+        "reference": 72500000,
+        "errorPct": 0,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-A4-MZ",
+        "actual": 20000000,
+        "reference": 20000000,
+        "errorPct": 0,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-B-UNLOAD-MZ",
+        "actual": 62500000,
+        "reference": 62500000,
+        "errorPct": 0,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-C-SYMMETRIC-MZ",
+        "actual": 70870559.05658662,
+        "reference": 70871000,
+        "errorPct": -0.0006221774962633632,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.01
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-C-SYMMETRIC-MY",
+        "actual": 70870559.05658662,
+        "reference": 70871000,
+        "errorPct": -0.0006221774962633632,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.01
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-C-ASYMMETRIC-MZ",
+        "actual": 74807812.3375081,
+        "reference": 74808000,
+        "errorPct": -0.0002508588545378957,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.01
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-C-ASYMMETRIC-MY",
+        "actual": 66933305.77566514,
+        "reference": 66933000,
+        "errorPct": 0.0004568384281918368,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.01
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-D-NNEG-MZ",
+        "actual": 91250000,
+        "reference": 91250000,
+        "errorPct": 0,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.01
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-D-NPOS-MZ",
+        "actual": 133910000.2857221,
+        "reference": 133910000,
+        "errorPct": 2.1336876013380266e-7,
+        "unit": "N.mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.01
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-ZERO-LENGTH-EQUILIBRIUM",
+        "actual": 0,
+        "reference": 0,
+        "unit": "N-or-N.mm",
+        "tolerance": {
+          "type": "absolute",
+          "value": 1e-8
+        },
+        "passed": true
+      },
+      {
+        "id": "SH1-GLOBAL-ASSEMBLY-ELEMENT-COUNT",
+        "actual": 1,
+        "reference": 1,
+        "unit": "element",
+        "tolerance": {
+          "type": "exact",
+          "value": 1
+        },
+        "passed": true
+      }
+    ],
+    "reference": "public SH1 checkpoints; A/B and PCHIP algorithm have published-model authority, C is DCR/STRIX specification self-consistency",
+    "engineeringHash": "370f28f2bdc3eeab9991de7afb3e221e6ebd45ad1a8838fc935bc29738075d86"
+  },
+  "audit": {
+    "probeCount": 13,
+    "failedProbeCount": 0,
+    "engineeringHash": "370f28f2bdc3eeab9991de7afb3e221e6ebd45ad1a8838fc935bc29738075d86"
+  }
+}

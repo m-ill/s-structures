@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s-structures://phase15/reference-manifest-schema-v1",
+  "title": "S-Structures Phase 15 reference manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "caseId", "specVersion", "claimScope", "source", "definition", "values", "frozenBeforeRun", "approvedBy", "approvalHash", "referenceHash"],
+  "properties": {
+    "version": { "const": "p15-reference-manifest-v1" },
+    "caseId": { "type": "string", "minLength": 1 },
+    "specVersion": { "type": "string", "minLength": 1 },
+    "claimScope": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "title", "revision", "locator", "page", "fileHash", "licenseNote", "displayedPrecision", "independentFromProduction"],
+      "properties": {
+        "level": { "enum": ["R1", "R2", "R3", "R4", "R5"] },
+        "title": { "type": "string", "minLength": 1 },
+        "revision": { "type": "string", "minLength": 1 },
+        "locator": { "type": "string", "minLength": 1 },
+        "page": { "type": "string", "minLength": 1 },
+        "fileHash": { "$ref": "#/$defs/hash" },
+        "licenseNote": { "type": "string", "minLength": 1 },
+        "displayedPrecision": { "type": "string", "minLength": 1 },
+        "independentFromProduction": { "type": "boolean" }
+      }
+    },
+    "definition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["geometry", "materials", "supports", "loads", "mass", "mesh"],
+      "properties": {
+        "geometry": { "type": "object", "minProperties": 1 },
+        "materials": { "type": "object", "minProperties": 1 },
+        "supports": { "type": "object", "minProperties": 1 },
+        "loads": { "type": "object", "minProperties": 1 },
+        "mass": { "type": "object", "minProperties": 1 },
+        "mesh": { "type": "object", "minProperties": 1 }
+      }
+    },
+    "values": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "value", "unit", "resultKind", "displayedPrecision"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "value": { "type": "number" },
+          "unit": { "type": "string", "minLength": 1 },
+          "resultKind": { "type": "string", "minLength": 1 },
+          "displayedPrecision": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "frozenBeforeRun": { "type": "boolean" },
+    "approvedBy": { "type": ["string", "null"] },
+    "approvalHash": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/hash" }] },
+    "referenceHash": { "$ref": "#/$defs/hash" }
+  },
+  "$defs": { "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+}

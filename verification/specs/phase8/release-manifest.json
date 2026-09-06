@@ -1,0 +1,428 @@
+{
+  "version": "p8-m11-release-manifest-v1",
+  "phase": "Phase 8",
+  "milestone": "P8-M11",
+  "generatedAt": "2026-07-14T23:30:00+09:00",
+  "sourceRevision": "76323c8+P8-M11-worktree",
+  "implementation": {
+    "status": "complete",
+    "qualificationHarness": "ready",
+    "pilotPackages": "reproducible",
+    "performanceHarness": "ready"
+  },
+  "release": {
+    "status": "candidate",
+    "allowed": false,
+    "designTransferAllowed": false,
+    "cumulativeGrade": "Q0",
+    "statement": "Phase 8 production nonlinear results remain candidate and design-blocked until every listed blocker is closed."
+  },
+  "grades": [
+    {
+      "id": "Q1",
+      "name": "Numerically Qualified",
+      "status": "BLOCKED",
+      "blockers": [
+        "TWO_INDEPENDENT_EXTERNAL_COMPARISONS_REQUIRED"
+      ]
+    },
+    {
+      "id": "Q2",
+      "name": "Model-Integrated",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "id": "Q3",
+      "name": "Workflow-Complete",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "id": "Q4",
+      "name": "Scale-Qualified",
+      "status": "BLOCKED",
+      "blockers": [
+        "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+        "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+        "M_TIER_NLTH_END_TO_END_REQUIRED"
+      ]
+    },
+    {
+      "id": "Q5",
+      "name": "Commercial-Grade in Scope",
+      "status": "BLOCKED",
+      "blockers": [
+        "Q1_REQUIRED",
+        "Q4_REQUIRED",
+        "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+      ]
+    }
+  ],
+  "featureDecisions": [
+    {
+      "id": "production-pushover",
+      "engineId": "p8-production-mdof-pushover",
+      "qualification": "candidate",
+      "qualificationCeiling": "candidate",
+      "designBlocked": true,
+      "reason": "P8_M11_RELEASE_GATE_NOT_SATISFIED"
+    },
+    {
+      "id": "production-nlth",
+      "engineId": "p8-production-mdof-nlth",
+      "qualification": "candidate",
+      "qualificationCeiling": "candidate",
+      "designBlocked": true,
+      "reason": "P8_M11_RELEASE_GATE_NOT_SATISFIED"
+    },
+    {
+      "id": "unilateral-member-active-set",
+      "qualification": "unsupported",
+      "designBlocked": true,
+      "reason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED"
+    },
+    {
+      "id": "legacy-preliminary-nonlinear-results",
+      "qualification": "legacy-preliminary",
+      "designBlocked": true,
+      "reason": "LEGACY_RESULT_DESIGN_TRANSFER_FORBIDDEN"
+    }
+  ],
+  "evidence": {
+    "independentHash": "c8cf7e536c60f40de7c0bee2",
+    "performanceHash": "56e37a98063f8c546ded569d",
+    "pilotSummaryHash": "ceb7795521e359cb8cdc4a6e",
+    "historicalHash": "025e33f0c607acda3bb8f4dc",
+    "reviewHash": "6b4506883de8273dc7d56dcc",
+    "externalComparisonHashes": []
+  },
+  "qualification": {
+    "independent": {
+      "version": "p8-m11-independent-reference-v1",
+      "status": "PASS",
+      "qualificationLevel": "L2-L3-independent-closed-form-and-separate-reference-code",
+      "externalCommercialComparison": false,
+      "qualificationHash": "c8cf7e536c60f40de7c0bee2",
+      "resultCount": 5
+    },
+    "performance": {
+      "version": "p8-m11-performance-qualification-v1",
+      "status": "BLOCKED",
+      "qualificationHash": "56e37a98063f8c546ded569d",
+      "blockers": [
+        "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+        "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+        "M_TIER_NLTH_END_TO_END_REQUIRED"
+      ],
+      "results": [
+        {
+          "id": "NL-PERF-01",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-02",
+          "status": "BLOCKED",
+          "blockerCode": "M_TIER_PUSHOVER_END_TO_END_REQUIRED"
+        },
+        {
+          "id": "NL-PERF-03",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-04",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-05",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-06",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-07",
+          "status": "BLOCKED",
+          "blockerCode": "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED"
+        },
+        {
+          "id": "NL-PERF-08",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-09",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-10",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-11",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-12",
+          "status": "BLOCKED",
+          "blockerCode": "M_TIER_PUSHOVER_END_TO_END_REQUIRED"
+        },
+        {
+          "id": "NL-PERF-13",
+          "status": "BLOCKED",
+          "blockerCode": "M_TIER_NLTH_END_TO_END_REQUIRED"
+        },
+        {
+          "id": "NL-PERF-14",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-15",
+          "status": "PASS",
+          "blockerCode": null
+        },
+        {
+          "id": "NL-PERF-16",
+          "status": "PASS",
+          "blockerCode": null
+        }
+      ]
+    },
+    "pilots": {
+      "version": "p8-m11-pilot-artifact-v1",
+      "status": "PASS",
+      "independentlyQualified": false,
+      "releaseReady": false,
+      "pilotCount": 5,
+      "verifiedPilotCount": 0,
+      "results": [
+        {
+          "id": "NL-PILOT-01",
+          "pilotId": "PILOT-ST-01",
+          "status": "PASS",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "artifactHash": "bdaf6fce18f89cb8b0f4ca51",
+          "errors": []
+        },
+        {
+          "id": "NL-PILOT-02",
+          "pilotId": "PILOT-ST-02",
+          "status": "PASS",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "artifactHash": "d8ed1e5ca3d9eb9f4ff028b0",
+          "errors": []
+        },
+        {
+          "id": "NL-PILOT-03",
+          "pilotId": "PILOT-ST-03",
+          "status": "PASS",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "artifactHash": "efe89f08afcf53f2af19ea5a",
+          "errors": []
+        },
+        {
+          "id": "NL-PILOT-04",
+          "pilotId": "PILOT-RC-01",
+          "status": "PASS",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "artifactHash": "94e70f6dcec654d275a4869a",
+          "errors": []
+        },
+        {
+          "id": "NL-PILOT-05",
+          "pilotId": "PILOT-DYN-01",
+          "status": "PASS",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "artifactHash": "05194a678b0211ec7ff9158e",
+          "errors": []
+        }
+      ],
+      "blockers": [
+        "INDEPENDENT_EXTERNAL_COMPARISON_REQUIRED",
+        "PILOT_OWNER_SIGNOFF_REQUIRED"
+      ],
+      "summaryHash": "ceb7795521e359cb8cdc4a6e"
+    },
+    "historical": {
+      "rows": [
+        {
+          "milestone": "P8-M0",
+          "suiteId": "P8-M0-GOV",
+          "status": "PASS",
+          "sourceRevision": "4a21a95+P8-M0-worktree",
+          "evidenceHash": "57493dff88dff830e9bf7ce2"
+        },
+        {
+          "milestone": "P8-M1",
+          "suiteId": "P8-M1-DOMAIN-STATE",
+          "status": "PASS",
+          "sourceRevision": "81944ca+P8-M1-worktree",
+          "evidenceHash": "bc8d8be015d56856f733b62e"
+        },
+        {
+          "milestone": "P8-M2",
+          "suiteId": "P8-M2-EQUILIBRIUM",
+          "status": "PASS",
+          "sourceRevision": "0e4f629+P8-M5-revalidated-worktree",
+          "evidenceHash": "f283975428fcc8eb02d05518"
+        },
+        {
+          "milestone": "P8-M3",
+          "suiteId": "P8-M3-COROTATIONAL",
+          "status": "PASS",
+          "sourceRevision": "7d2b2b9+P8-M3-final-reviewed-worktree",
+          "evidenceHash": "2f47c1bc4a5625c4f07a2965"
+        },
+        {
+          "milestone": "P8-M4",
+          "suiteId": "P8-M4-CONCENTRATED-HINGE",
+          "status": "PASS",
+          "sourceRevision": "ff9d04c+P8-M4-reviewed-worktree",
+          "evidenceHash": "795b519a8c1cc251e6a6701b"
+        },
+        {
+          "milestone": "P8-M5",
+          "suiteId": "P8-M5-FORMAL-PUSHOVER",
+          "status": "PASS",
+          "sourceRevision": "0e4f629+P8-M5-worktree",
+          "evidenceHash": "e2fc73e2a1216aedc6530612"
+        },
+        {
+          "milestone": "P8-M6",
+          "suiteId": "P8-M6-FIBER-PMM",
+          "status": "PASS",
+          "sourceRevision": "9e0ec1c+P8-M6-worktree",
+          "evidenceHash": "8a9a0071cc32e7eb9404fd8f"
+        },
+        {
+          "milestone": "P8-M6",
+          "suiteId": "P8-M6-PMM-RUNTIME",
+          "status": "PASS",
+          "sourceRevision": "4d1bb0e+P8-M6.1-worktree",
+          "evidenceHash": "7380d73c02383ef0792571b3"
+        },
+        {
+          "milestone": "P8-M7",
+          "suiteId": "P8-M7-ARC-CYCLIC",
+          "status": "PASS",
+          "sourceRevision": "4ec5fc5+P8-M7-worktree",
+          "evidenceHash": "2b5b00788223d4c5eef082cc"
+        },
+        {
+          "milestone": "P8-M8",
+          "suiteId": "P8-M8-MDOF-NLTH",
+          "status": "PASS",
+          "sourceRevision": "6982e28+P8-M8-worktree",
+          "evidenceHash": "106ba025b30388a7809e610a"
+        },
+        {
+          "milestone": "P8-M9",
+          "suiteId": "P8-M9-INTEGRATION-RECOVERY",
+          "status": "PASS",
+          "sourceRevision": "723eb09+P8-M9-worktree",
+          "evidenceHash": "e3c7d0f519acb77df7c22340"
+        },
+        {
+          "milestone": "P8-M10",
+          "suiteId": "P8-M10-UI-API",
+          "status": "PASS",
+          "sourceRevision": "c6f6021+P8-M10-worktree",
+          "evidenceHash": "ccd6e4d428bd062089d836d3"
+        }
+      ],
+      "byMilestone": {
+        "P8-M0": "PASS",
+        "P8-M1": "PASS",
+        "P8-M2": "PASS",
+        "P8-M3": "PASS",
+        "P8-M4": "PASS",
+        "P8-M5": "PASS",
+        "P8-M6": "PASS",
+        "P8-M7": "PASS",
+        "P8-M8": "PASS",
+        "P8-M9": "PASS",
+        "P8-M10": "PASS"
+      },
+      "requiredMilestones": [
+        "P8-M0",
+        "P8-M1",
+        "P8-M2",
+        "P8-M3",
+        "P8-M4",
+        "P8-M5",
+        "P8-M6",
+        "P8-M7",
+        "P8-M8",
+        "P8-M9",
+        "P8-M10"
+      ],
+      "requiredEvidencePresent": true,
+      "evidenceHash": "025e33f0c607acda3bb8f4dc"
+    },
+    "review": {
+      "completed": true,
+      "criticalCount": 0,
+      "highCount": 0,
+      "findings": [
+        {
+          "severity": "high",
+          "status": "closed",
+          "id": "P8-M11-REV-01"
+        },
+        {
+          "severity": "high",
+          "status": "closed",
+          "id": "P8-M11-REV-02"
+        },
+        {
+          "severity": "high",
+          "status": "closed",
+          "id": "P8-M11-REV-03"
+        },
+        {
+          "severity": "medium",
+          "status": "closed",
+          "id": "P8-M11-REV-04"
+        },
+        {
+          "severity": "medium",
+          "status": "closed",
+          "id": "P8-M11-REV-05"
+        }
+      ],
+      "reportPath": "reports/validation-evidence/phase8/p8-m11-code-review.md",
+      "reviewHash": "6b4506883de8273dc7d56dcc"
+    },
+    "externalComparisons": []
+  },
+  "blockers": [
+    "TWO_INDEPENDENT_EXTERNAL_COMPARISONS_REQUIRED",
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "Q1_REQUIRED",
+    "Q4_REQUIRED",
+    "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+  ],
+  "reproducibility": {
+    "command": "npm run qualify:p8:m11",
+    "hashPolicy": "generatedAt is excluded; source revision and all evidence hashes are included",
+    "fallbackPolicy": "forbidden"
+  },
+  "manifestHash": "74cf6bc8f09ba158d9242507"
+}

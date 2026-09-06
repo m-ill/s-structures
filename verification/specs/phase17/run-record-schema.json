@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/run-record-schema.json",
+  "title": "Phase 17 immutable run record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "runId", "status", "appendOnly", "createdAt", "productBinding", "inputHashes", "execution", "engineeringResultHash", "artifactHashes", "reasonCodes", "runRecordHash"],
+  "properties": {
+    "schemaVersion": { "const": "p17-run-record-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "runId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{5,127}$" },
+    "status": { "enum": ["EXECUTED", "FAIL", "TIMEOUT", "BLOCKED_ENGINE", "BLOCKED_ENGINE_API", "INVALIDATED"] },
+    "appendOnly": { "const": true },
+    "createdAt": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{3})?Z$" },
+    "productBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["serviceVersion", "adapterVersion", "publicEntrypoint", "externalRuntimeUsed", "networkFallbackUsed", "executionProvenance"],
+      "properties": {
+        "serviceVersion": { "const": "p9-m9-product-analysis-service-v1" },
+        "adapterVersion": { "const": "p17-m1-product-adapter-v1" },
+        "publicEntrypoint": { "const": "src/index.js" },
+        "externalRuntimeUsed": { "const": false },
+        "networkFallbackUsed": { "const": false },
+        "executionProvenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "terminalQualificationEligible", "serviceOrigin", "callerServiceInjected", "callerServiceFactoryInjected", "callerCaseRunnerInjected", "caseRunnerBinding", "publicEntrypoint", "testFixtureId", "testProvenance"],
+          "properties": {
+            "mode": { "enum": ["OFFICIAL_PUBLIC_SERVICE", "TEST_ONLY_INJECTED"] },
+            "terminalQualificationEligible": { "type": "boolean" },
+            "serviceOrigin": { "enum": ["PUBLIC_FACTORY", "TEST_ONLY_SERVICE_INSTANCE", "TEST_ONLY_SERVICE_FACTORY"] },
+            "callerServiceInjected": { "type": "boolean" },
+            "callerServiceFactoryInjected": { "type": "boolean" },
+            "callerCaseRunnerInjected": { "type": "boolean" },
+            "caseRunnerBinding": { "enum": ["PUBLIC_RUN_ANALYSIS_CASE_ASYNC", "TEST_ONLY_CALLER_CASE_RUNNER", "TEST_ONLY_SERVICE_OWNED"] },
+            "publicEntrypoint": { "const": "src/index.js" },
+            "testFixtureId": { "type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{3,127}$" },
+            "testProvenance": {
+              "oneOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["fixtureId", "source", "purpose", "solverExecuted", "benchmarkExecuted"],
+                  "properties": {
+                    "fixtureId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{3,127}$" },
+                    "source": { "type": "string", "pattern": "^tests/[A-Za-z0-9._/-]+\\.(mjs|js)$" },
+                    "purpose": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+                    "solverExecuted": { "const": false },
+                    "benchmarkExecuted": { "const": false }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "inputHashes": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sourceArtifactHash", "referenceManifestHash", "toleranceHash", "probeHash", "canonicalCaseHash", "modelMappingHash", "nativeModelHash", "solverSettingsHash", "productSourceHash", "buildHash", "dependencyLockHash"],
+      "properties": {
+        "sourceArtifactHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "referenceManifestHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "toleranceHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "probeHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "canonicalCaseHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "modelMappingHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "nativeModelHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "solverSettingsHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "productSourceHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "buildHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "dependencyLockHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "execution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["isolatedProcess", "timeoutMs", "durationMs", "exitCode", "signal", "stdoutHash", "stderrHash"],
+      "properties": {
+        "isolatedProcess": { "const": true }, "timeoutMs": { "type": "integer", "minimum": 1 }, "durationMs": { "type": "number", "minimum": 0 },
+        "exitCode": { "type": ["integer", "null"] }, "signal": { "type": ["string", "null"] },
+        "stdoutHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "stderrHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "engineeringResultHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "artifactHashes": {
+      "type": "array", "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["path", "sha256", "role"],
+        "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "role": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+      }
+    },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } },
+    "runRecordHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

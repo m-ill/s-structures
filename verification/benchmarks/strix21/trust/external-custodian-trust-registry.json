@@ -1,0 +1,21 @@
+{
+  "version": "p17-external-custodian-trust-registry-v1",
+  "registryId": "p17-external-trust-unprovisioned-v1",
+  "status": "UNPROVISIONED",
+  "authority": {
+    "name": "NOT_PROVISIONED",
+    "governance": "UNPROVISIONED",
+    "contact": null
+  },
+  "pin": {
+    "method": "EXTERNAL_CANONICAL_SHA256",
+    "environmentVariable": "P17_EXTERNAL_CUSTODIAN_REGISTRY_SHA256",
+    "status": "NOT_PROVIDED"
+  },
+  "keys": [],
+  "reasonCodes": [
+    "P17_EXTERNAL_CUSTODIAN_AUTHORITY_NOT_PROVIDED",
+    "P17_EXTERNAL_CUSTODIAN_REGISTRY_PIN_NOT_PROVIDED"
+  ],
+  "registryHash": "a7622916e6d62ed8c7661275fc0aad54e803cf07c50b9356ba0e2fa7b1e0ccfd"
+}

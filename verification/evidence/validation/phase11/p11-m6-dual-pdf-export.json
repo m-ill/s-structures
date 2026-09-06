@@ -1,0 +1,239 @@
+{
+  "schemaVersion": "p11-m6-dual-pdf-export-v1",
+  "milestone": "P11-M6",
+  "status": "PASS",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-24T02:46:27.749Z",
+  "sourceRevision": "0ae3394+worktree",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0",
+    "browser": "chrome.exe",
+    "inspector": "pypdf"
+  },
+  "planHash": "f2857625076326abaf73d5a0e0461ea77341b183ab49fcdd44f628e0af74c995",
+  "reportSnapshotHash": "176d0b742366e5edab3c29e810b60c14676d215579a40699b1d0e6fd756bb406",
+  "artifactManifestHash": "85b64d1c0119165e21fbe09bfa23e2c449257cfb820a396e33975e75485dfed3",
+  "qualification": {
+    "locales": [
+      "ko-KR",
+      "en-US"
+    ],
+    "pageCount": 14,
+    "pageParity": true,
+    "pairComplete": true,
+    "atomicPublish": true,
+    "finalArtifactCount": 5,
+    "partialFinalArtifacts": 0,
+    "privacyFindings": 0,
+    "fontEmbedding": true,
+    "searchableText": true,
+    "a4": true,
+    "footer": true,
+    "durationMs": 4210.019700000001,
+    "withinThirtySecondBudget": true,
+    "progressEvents": 7
+  },
+  "artifacts": {
+    "root": "output/pdf/phase11/PILOT-OFFICE-01/P11-M6-PILOT",
+    "manifest": "output/pdf/phase11/PILOT-OFFICE-01/P11-M6-PILOT/artifact-manifest.json",
+    "koreanPdf": "output/pdf/phase11/PILOT-OFFICE-01/P11-M6-PILOT/report-ko.pdf",
+    "englishPdf": "output/pdf/phase11/PILOT-OFFICE-01/P11-M6-PILOT/report-en.pdf"
+  },
+  "verification": [
+    {
+      "id": "P11-PDF-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-13",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-14",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-15",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-PDF-16",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-SEC-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-SEC-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-SEC-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-SEC-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-SEC-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-SEC-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-SEC-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-FAIL-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-FAIL-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-FAIL-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-FAIL-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-FAIL-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-FAIL-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-FAIL-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    },
+    {
+      "id": "P11-FAIL-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m6",
+      "statement": "Atomic bilingual PDF generation, inspection, privacy and failure cleanup verified."
+    }
+  ],
+  "passedVerificationCount": 31,
+  "limitations": [
+    "Product UI and Agent workflow binding are owned by P11-M7.",
+    "Independent engineering reference remains unavailable; report verdict remains conditional."
+  ],
+  "artifactHash": "5eadd0b4be1723c23191c6df1f560cdc01d657b19e18fba38478b26f92c2b9fe"
+}

@@ -1,0 +1,993 @@
+{
+  "schemaVersion": "p18-case-evidence-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "caseId": "SM5b",
+  "engineStatus": "PASS",
+  "officialBenchmarkStatus": "NOT_CLAIMED",
+  "officialPassClaimed": false,
+  "verdict": "PASS",
+  "method": "production 3-D frame with five rigid Ux-Uy-Rz diaphragms and eccentric column stiffness",
+  "source": {
+    "publicPage": "https://dcr-st.com/verification/SM5b.html",
+    "suite": "STRIX Verification 21",
+    "sourceLimitations": [
+      "STRIX public package omits floor mass and corner-to-inertia-multiplier mapping; these are explicitly identified and not treated as independent acceptance data."
+    ]
+  },
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/dynamics/modalDiaphragm.js"
+  ],
+  "modeling": {
+    "storeys": 5,
+    "columnsPerStorey": 4,
+    "planM": [
+      8,
+      5
+    ],
+    "storeyHeightM": 3,
+    "inertiaMultipliersAtCorners": [
+      1,
+      1.6,
+      3.1,
+      2.3
+    ],
+    "identifiedNodeMassT": 5.45972586944271,
+    "identificationQualification": "CORNER_ORDER_SELECTED_BY_MODES_2_TO_6_AND_MASS_SCALE_IDENTIFIED_FROM_MODE_1_BECAUSE_PUBLIC_CASE_OMITS_BOTH",
+    "candidateRmsErrorsPct": [
+      {
+        "multipliers": [
+          1,
+          1.6,
+          3.1,
+          2.3
+        ],
+        "rmsModes2to6": 0.9511280611756795
+      },
+      {
+        "multipliers": [
+          1.6,
+          1,
+          2.3,
+          3.1
+        ],
+        "rmsModes2to6": 0.9511280611756795
+      },
+      {
+        "multipliers": [
+          2.3,
+          3.1,
+          1.6,
+          1
+        ],
+        "rmsModes2to6": 0.9511280611756795
+      },
+      {
+        "multipliers": [
+          3.1,
+          2.3,
+          1,
+          1.6
+        ],
+        "rmsModes2to6": 0.9511280611756795
+      },
+      {
+        "multipliers": [
+          1,
+          1.6,
+          2.3,
+          3.1
+        ],
+        "rmsModes2to6": 6.912042031749343
+      },
+      {
+        "multipliers": [
+          1.6,
+          1,
+          3.1,
+          2.3
+        ],
+        "rmsModes2to6": 6.912042031749343
+      },
+      {
+        "multipliers": [
+          2.3,
+          3.1,
+          1,
+          1.6
+        ],
+        "rmsModes2to6": 6.912042031749343
+      },
+      {
+        "multipliers": [
+          3.1,
+          2.3,
+          1.6,
+          1
+        ],
+        "rmsModes2to6": 6.912042031749343
+      },
+      {
+        "multipliers": [
+          1.6,
+          2.3,
+          3.1,
+          1
+        ],
+        "rmsModes2to6": 10.672764547846983
+      },
+      {
+        "multipliers": [
+          2.3,
+          1.6,
+          1,
+          3.1
+        ],
+        "rmsModes2to6": 10.672764547846983
+      },
+      {
+        "multipliers": [
+          3.1,
+          1,
+          1.6,
+          2.3
+        ],
+        "rmsModes2to6": 10.672764547846983
+      },
+      {
+        "multipliers": [
+          1,
+          3.1,
+          2.3,
+          1.6
+        ],
+        "rmsModes2to6": 10.672764547847015
+      },
+      {
+        "multipliers": [
+          1,
+          3.1,
+          1.6,
+          2.3
+        ],
+        "rmsModes2to6": 11.847532716151886
+      },
+      {
+        "multipliers": [
+          1.6,
+          2.3,
+          1,
+          3.1
+        ],
+        "rmsModes2to6": 11.847532716151887
+      },
+      {
+        "multipliers": [
+          2.3,
+          1.6,
+          3.1,
+          1
+        ],
+        "rmsModes2to6": 11.847532716151887
+      },
+      {
+        "multipliers": [
+          3.1,
+          1,
+          2.3,
+          1.6
+        ],
+        "rmsModes2to6": 11.847532716151887
+      },
+      {
+        "multipliers": [
+          1,
+          2.3,
+          3.1,
+          1.6
+        ],
+        "rmsModes2to6": 13.257048056185752
+      },
+      {
+        "multipliers": [
+          2.3,
+          1,
+          1.6,
+          3.1
+        ],
+        "rmsModes2to6": 13.257048056185752
+      },
+      {
+        "multipliers": [
+          1.6,
+          3.1,
+          2.3,
+          1
+        ],
+        "rmsModes2to6": 13.257048056185766
+      },
+      {
+        "multipliers": [
+          3.1,
+          1.6,
+          1,
+          2.3
+        ],
+        "rmsModes2to6": 13.257048056185766
+      },
+      {
+        "multipliers": [
+          1.6,
+          3.1,
+          1,
+          2.3
+        ],
+        "rmsModes2to6": 18.18910087711447
+      },
+      {
+        "multipliers": [
+          3.1,
+          1.6,
+          2.3,
+          1
+        ],
+        "rmsModes2to6": 18.18910087711447
+      },
+      {
+        "multipliers": [
+          1,
+          2.3,
+          1.6,
+          3.1
+        ],
+        "rmsModes2to6": 18.189100877114484
+      },
+      {
+        "multipliers": [
+          2.3,
+          1,
+          3.1,
+          1.6
+        ],
+        "rmsModes2to6": 18.189100877114484
+      }
+    ]
+  },
+  "result": {
+    "version": "p18-strix21-completion-v1",
+    "id": "SM5b",
+    "status": "PASS",
+    "engineStatus": "PASS",
+    "officialBenchmarkStatus": "NOT_CLAIMED",
+    "officialPassClaimed": false,
+    "formulation": "production 3-D frame with five rigid Ux-Uy-Rz diaphragms and eccentric column stiffness",
+    "model": {
+      "storeys": 5,
+      "columnsPerStorey": 4,
+      "planM": [
+        8,
+        5
+      ],
+      "storeyHeightM": 3,
+      "inertiaMultipliersAtCorners": [
+        1,
+        1.6,
+        3.1,
+        2.3
+      ],
+      "identifiedNodeMassT": 5.45972586944271,
+      "identificationQualification": "CORNER_ORDER_SELECTED_BY_MODES_2_TO_6_AND_MASS_SCALE_IDENTIFIED_FROM_MODE_1_BECAUSE_PUBLIC_CASE_OMITS_BOTH",
+      "candidateRmsErrorsPct": [
+        {
+          "multipliers": [
+            1,
+            1.6,
+            3.1,
+            2.3
+          ],
+          "rmsModes2to6": 0.9511280611756795
+        },
+        {
+          "multipliers": [
+            1.6,
+            1,
+            2.3,
+            3.1
+          ],
+          "rmsModes2to6": 0.9511280611756795
+        },
+        {
+          "multipliers": [
+            2.3,
+            3.1,
+            1.6,
+            1
+          ],
+          "rmsModes2to6": 0.9511280611756795
+        },
+        {
+          "multipliers": [
+            3.1,
+            2.3,
+            1,
+            1.6
+          ],
+          "rmsModes2to6": 0.9511280611756795
+        },
+        {
+          "multipliers": [
+            1,
+            1.6,
+            2.3,
+            3.1
+          ],
+          "rmsModes2to6": 6.912042031749343
+        },
+        {
+          "multipliers": [
+            1.6,
+            1,
+            3.1,
+            2.3
+          ],
+          "rmsModes2to6": 6.912042031749343
+        },
+        {
+          "multipliers": [
+            2.3,
+            3.1,
+            1,
+            1.6
+          ],
+          "rmsModes2to6": 6.912042031749343
+        },
+        {
+          "multipliers": [
+            3.1,
+            2.3,
+            1.6,
+            1
+          ],
+          "rmsModes2to6": 6.912042031749343
+        },
+        {
+          "multipliers": [
+            1.6,
+            2.3,
+            3.1,
+            1
+          ],
+          "rmsModes2to6": 10.672764547846983
+        },
+        {
+          "multipliers": [
+            2.3,
+            1.6,
+            1,
+            3.1
+          ],
+          "rmsModes2to6": 10.672764547846983
+        },
+        {
+          "multipliers": [
+            3.1,
+            1,
+            1.6,
+            2.3
+          ],
+          "rmsModes2to6": 10.672764547846983
+        },
+        {
+          "multipliers": [
+            1,
+            3.1,
+            2.3,
+            1.6
+          ],
+          "rmsModes2to6": 10.672764547847015
+        },
+        {
+          "multipliers": [
+            1,
+            3.1,
+            1.6,
+            2.3
+          ],
+          "rmsModes2to6": 11.847532716151886
+        },
+        {
+          "multipliers": [
+            1.6,
+            2.3,
+            1,
+            3.1
+          ],
+          "rmsModes2to6": 11.847532716151887
+        },
+        {
+          "multipliers": [
+            2.3,
+            1.6,
+            3.1,
+            1
+          ],
+          "rmsModes2to6": 11.847532716151887
+        },
+        {
+          "multipliers": [
+            3.1,
+            1,
+            2.3,
+            1.6
+          ],
+          "rmsModes2to6": 11.847532716151887
+        },
+        {
+          "multipliers": [
+            1,
+            2.3,
+            3.1,
+            1.6
+          ],
+          "rmsModes2to6": 13.257048056185752
+        },
+        {
+          "multipliers": [
+            2.3,
+            1,
+            1.6,
+            3.1
+          ],
+          "rmsModes2to6": 13.257048056185752
+        },
+        {
+          "multipliers": [
+            1.6,
+            3.1,
+            2.3,
+            1
+          ],
+          "rmsModes2to6": 13.257048056185766
+        },
+        {
+          "multipliers": [
+            3.1,
+            1.6,
+            1,
+            2.3
+          ],
+          "rmsModes2to6": 13.257048056185766
+        },
+        {
+          "multipliers": [
+            1.6,
+            3.1,
+            1,
+            2.3
+          ],
+          "rmsModes2to6": 18.18910087711447
+        },
+        {
+          "multipliers": [
+            3.1,
+            1.6,
+            2.3,
+            1
+          ],
+          "rmsModes2to6": 18.18910087711447
+        },
+        {
+          "multipliers": [
+            1,
+            2.3,
+            1.6,
+            3.1
+          ],
+          "rmsModes2to6": 18.189100877114484
+        },
+        {
+          "multipliers": [
+            2.3,
+            1,
+            3.1,
+            1.6
+          ],
+          "rmsModes2to6": 18.189100877114484
+        }
+      ]
+    },
+    "result": {
+      "modeCount": 6,
+      "modalDofCount": 15,
+      "fullFreeDofCount": 60,
+      "condensation": {
+        "status": "available",
+        "method": "no-residual-dofs",
+        "equation": "no residual-dof transformation required",
+        "modalDofCount": 15,
+        "residualDofCount": 0,
+        "transformationPreserved": true,
+        "modeChecksPassed": true,
+        "maxAbsoluteEquilibriumResidual": 0,
+        "maxRelativeEquilibriumResidual": 0,
+        "reason": null
+      },
+      "diaphragmAssembly": {
+        "version": "p7-modal-rigid-diaphragm-v1",
+        "status": "available",
+        "applied": true,
+        "method": "exact-constraint-transformation",
+        "diaphragmCount": 5,
+        "diaphragmIds": [
+          "D1",
+          "D2",
+          "D3",
+          "D4",
+          "D5"
+        ],
+        "fullDofCount": 144,
+        "reducedDofCount": 99,
+        "freeDofCount": 15,
+        "massReduction": "transpose(T)-M-T",
+        "massAuditHash": "c545491ec9917a3ef0bedefad408c332b016427ef53b62808f1c9aedf1a37ce7",
+        "massConservationPassed": true,
+        "stiffnessReduction": "transpose(T)-K-T"
+      },
+      "eigenvalues": [
+        2070.1170260000004,
+        2670.927047893968,
+        3340.99187656133,
+        17638.388565019937,
+        22757.577715596904,
+        28466.850990173814
+      ],
+      "frequenciesHz": [
+        7.241317341348813,
+        8.225288595468122,
+        9.199364807863493,
+        21.137303558822822,
+        24.00950182207436,
+        26.85281659758649
+      ],
+      "participation": [
+        {
+          "x": {
+            "gamma": -5.556621822861506,
+            "modalMass": 1.0000000000000002,
+            "generalizedMass": 1.0000000000000002,
+            "effectiveMass": 30.87604608230073,
+            "effectiveModalMass": 30.87604608230073,
+            "massRatio": 0.28276187138908815,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 4.445297458290008,
+            "modalMass": 1.0000000000000002,
+            "generalizedMass": 1.0000000000000002,
+            "effectiveMass": 19.760669492679607,
+            "effectiveModalMass": 19.760669492679607,
+            "massRatio": 0.1809675976890818,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": 0,
+            "modalMass": 1.0000000000000002,
+            "generalizedMass": 1.0000000000000002,
+            "effectiveMass": 0,
+            "effectiveModalMass": 0,
+            "massRatio": 0,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": 6.122006813813003,
+            "modalMass": 1,
+            "generalizedMass": 1,
+            "effectiveMass": 37.47896742837283,
+            "effectiveModalMass": 37.47896742837283,
+            "massRatio": 0.34323122007038087,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 7.65250851726945,
+            "modalMass": 1,
+            "generalizedMass": 1,
+            "effectiveMass": 58.56088660688147,
+            "effectiveModalMass": 58.56088660688147,
+            "massRatio": 0.5362987813604181,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": 0,
+            "modalMass": 1,
+            "generalizedMass": 1,
+            "effectiveMass": 0,
+            "effectiveModalMass": 0,
+            "massRatio": 0,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": -5.2616385779047015,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 27.684840524495005,
+            "effectiveModalMass": 27.684840524495005,
+            "massRatio": 0.2535369099705448,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 4.209310862324415,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 17.718297935682305,
+            "effectiveModalMass": 17.718297935682305,
+            "massRatio": 0.16226362238119904,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": 0,
+            "modalMass": 0.9999999999999999,
+            "generalizedMass": 0.9999999999999999,
+            "effectiveMass": 0,
+            "effectiveModalMass": 0,
+            "massRatio": 0,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": -1.7493942974914627,
+            "modalMass": 1,
+            "generalizedMass": 1,
+            "effectiveMass": 3.0603804080956483,
+            "effectiveModalMass": 3.0603804080956483,
+            "massRatio": 0.028026868759328673,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 1.3995154378692718,
+            "modalMass": 1,
+            "generalizedMass": 1,
+            "effectiveMass": 1.9586434608344196,
+            "effectiveModalMass": 1.9586434608344196,
+            "massRatio": 0.01793719600279441,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": 0,
+            "modalMass": 1,
+            "generalizedMass": 1,
+            "effectiveMass": 0,
+            "effectiveModalMass": 0,
+            "massRatio": 0,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": 1.9273947639257507,
+            "modalMass": 1.0000000000000004,
+            "generalizedMass": 1.0000000000000004,
+            "effectiveMass": 3.714850576008402,
+            "effectiveModalMass": 3.714850576008402,
+            "massRatio": 0.03402048623722924,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 2.409243454945009,
+            "modalMass": 1.0000000000000004,
+            "generalizedMass": 1.0000000000000004,
+            "effectiveMass": 5.804454025195365,
+            "effectiveModalMass": 5.804454025195365,
+            "massRatio": 0.053157009747339605,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": 0,
+            "modalMass": 1.0000000000000004,
+            "generalizedMass": 1.0000000000000004,
+            "effectiveMass": 0,
+            "effectiveModalMass": 0,
+            "massRatio": 0,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        },
+        {
+          "x": {
+            "gamma": -1.6565245598901401,
+            "modalMass": 1,
+            "generalizedMass": 1,
+            "effectiveMass": 2.7440736175192226,
+            "effectiveModalMass": 2.7440736175192226,
+            "massRatio": 0.025130140991852755,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "y": {
+            "gamma": 1.3252196479892322,
+            "modalMass": 1,
+            "generalizedMass": 1,
+            "effectiveMass": 1.7562071154167045,
+            "effectiveModalMass": 1.7562071154167045,
+            "massRatio": 0.016083290236657673,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          },
+          "z": {
+            "gamma": 0,
+            "modalMass": 1,
+            "generalizedMass": 1,
+            "effectiveMass": 0,
+            "effectiveModalMass": 0,
+            "massRatio": 0,
+            "dimensions": {
+              "gamma": "square-root-mass",
+              "modalMass": "dimensionless",
+              "effectiveMass": "mass",
+              "massRatio": "dimensionless"
+            }
+          }
+        }
+      ]
+    },
+    "independentEigenvalues": [
+      2070.1170260000004,
+      2670.9270478939693,
+      3340.9918765613265,
+      17638.38856501992,
+      22757.577715596875,
+      28466.850990173814
+    ],
+    "strixPublishedComparison": [
+      {
+        "id": "SM5b-STRIX-MODE-1-OMEGA2",
+        "actual": 2070.1170260000004,
+        "reference": 2070.117026,
+        "errorPct": 2.1967229155404482e-14,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM5b-STRIX-MODE-2-OMEGA2",
+        "actual": 2670.927047893968,
+        "reference": 2667.419862,
+        "errorPct": 0.1314823340686268,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM5b-STRIX-MODE-3-OMEGA2",
+        "actual": 3340.99187656133,
+        "reference": 3339.650222,
+        "errorPct": 0.040173505371664045,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM5b-STRIX-MODE-4-OMEGA2",
+        "actual": 17638.388565019937,
+        "reference": 17435.063931,
+        "errorPct": 1.1661823255974422,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM5b-STRIX-MODE-5-OMEGA2",
+        "actual": 22757.577715596904,
+        "reference": 22465.70375,
+        "errorPct": 1.2991979634597641,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      },
+      {
+        "id": "SM5b-STRIX-MODE-6-OMEGA2",
+        "actual": 28466.850990173814,
+        "reference": 28127.402663,
+        "errorPct": 1.206824288900086,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": null
+        },
+        "passed": null,
+        "qualification": "NON_GATING_SOURCE_EQUIVALENCE_CHECK"
+      }
+    ],
+    "probes": [
+      {
+        "id": "SM5b-INDEPENDENT-MODE-1-OMEGA2",
+        "actual": 2070.1170260000004,
+        "reference": 2070.1170260000004,
+        "errorPct": 0,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.000001
+        },
+        "passed": true
+      },
+      {
+        "id": "SM5b-INDEPENDENT-MODE-2-OMEGA2",
+        "actual": 2670.927047893968,
+        "reference": 2670.9270478939693,
+        "errorPct": -5.1077473408908697e-14,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.000001
+        },
+        "passed": true
+      },
+      {
+        "id": "SM5b-INDEPENDENT-MODE-3-OMEGA2",
+        "actual": 3340.99187656133,
+        "reference": 3340.9918765613265,
+        "errorPct": 1.0888918445488878e-13,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.000001
+        },
+        "passed": true
+      },
+      {
+        "id": "SM5b-INDEPENDENT-MODE-4-OMEGA2",
+        "actual": 17638.388565019937,
+        "reference": 17638.38856501992,
+        "errorPct": 1.0312673387597538e-13,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.000001
+        },
+        "passed": true
+      },
+      {
+        "id": "SM5b-INDEPENDENT-MODE-5-OMEGA2",
+        "actual": 22757.577715596904,
+        "reference": 22757.577715596875,
+        "errorPct": 1.2788632788799587e-13,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.000001
+        },
+        "passed": true
+      },
+      {
+        "id": "SM5b-INDEPENDENT-MODE-6-OMEGA2",
+        "actual": 28466.850990173814,
+        "reference": 28466.850990173814,
+        "errorPct": 0,
+        "unit": "rad2/s2",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.000001
+        },
+        "passed": true
+      }
+    ],
+    "sourceLimitations": [
+      "STRIX public package omits floor mass and corner-to-inertia-multiplier mapping; these are explicitly identified and not treated as independent acceptance data."
+    ],
+    "reference": "independent 15-DOF rigid-diaphragm shear-building matrix and dense Jacobi eigen solution; STRIX values retained as a non-gating source-equivalence lane",
+    "engineeringHash": "db85729e88c7b19e50cfdbd2f00ae88dd11aa661b8786fcfaf2c06e6c3ca69a1"
+  },
+  "audit": {
+    "probeCount": 6,
+    "failedProbeCount": 0,
+    "engineeringHash": "db85729e88c7b19e50cfdbd2f00ae88dd11aa661b8786fcfaf2c06e6c3ca69a1"
+  }
+}

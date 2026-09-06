@@ -1,0 +1,58 @@
+{
+  "version": "p16-m7-repository-separation-evidence-v1",
+  "generatedAt": "2026-08-28",
+  "scope": "repository-separation-and-continuous-regression",
+  "status": "PASS",
+  "productReleaseStatus": "BLOCKED",
+  "cleanEnvironmentClaimed": false,
+  "numericalBehaviorChanged": false,
+  "relocation": {
+    "assetFileCount": 209,
+    "assetByteCount": 2036389,
+    "assetExactHashCount": 208,
+    "registeredLegacyExceptionCount": 1,
+    "moduleFileCount": 111,
+    "moduleByteCount": 773720,
+    "compatibilityWrapperCount": 63,
+    "legacyVerificationSourceFileCount": 0,
+    "legacyLayoutManifestHash": "459d705df9ea9495117820a605bd8409e8349015d51ee356facd8908df61dbf2",
+    "moduleRelocationManifestHash": "eb3aab000102635e07167551560d414b875008e4d09cfde8f9d89fe963c3fbfb"
+  },
+  "tests": {
+    "command": "npm.cmd test",
+    "exitCode": 0,
+    "continuousRun": true,
+    "plannedCount": 413,
+    "defaultCount": 313,
+    "releaseLongCount": 100,
+    "taxonomy": {
+      "unit": 166,
+      "integration": 30,
+      "e2e": 5,
+      "qualification": 212
+    },
+    "taxonomyHash": "f71c379c09c3adb1da464a839b6b119eb2ee3d56549f4715fed98b31bf96f5fe"
+  },
+  "architecture": {
+    "version": "p16-m7-dual-root-architecture-audit-v1",
+    "sourceDigest": "2d79e164994cf49cdd3304853e3c9fa2ce35a74d004f09824127e4abd0b5f4d1",
+    "auditHash": "14b7670edde4a4150f22f6e3af4d3478915f90dbaba045b806329597be35aa89",
+    "productionFileCount": 648,
+    "verificationFileCount": 37,
+    "importEdgeCount": 2312,
+    "importCycleCount": 0,
+    "productionVerificationImportCount": 0,
+    "unresolvedVerificationImportCount": 0,
+    "existingProductDebt": {
+      "uiNumericCore": 40,
+      "reportSolverReexecutionRisk": 1,
+      "undocumentedCompatibilityWrappers": 5,
+      "overdueCompatibilityPolicies": 4
+    }
+  },
+  "interpretation": [
+    "PASS applies to Phase 16 repository separation and the continuous default regression command.",
+    "The run was executed in the existing dirty worktree and is not clean-environment qualification.",
+    "Existing architecture and external qualification blockers keep product release and final design transfer blocked."
+  ]
+}

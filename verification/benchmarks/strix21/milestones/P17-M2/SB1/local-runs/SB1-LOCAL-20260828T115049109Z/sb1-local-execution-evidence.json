@@ -1,0 +1,666 @@
+{
+  "version": "p17-m2-sb1-local-execution-evidence-v1",
+  "phase": 17,
+  "milestone": "P17-M2",
+  "caseId": "SB1",
+  "setId": "SB1-LOCAL-20260828T115049109Z",
+  "mode": "LOCAL_TEST_ONLY",
+  "startedAt": "2026-08-28T11:50:49.109Z",
+  "completedAt": "2026-08-28T11:50:49.456Z",
+  "claimBoundary": {
+    "cryptographicSignaturesVerified": true,
+    "signerCustody": "SELF_CUSTODIED_EPHEMERAL_KEYS",
+    "independentExternalReviewPerformed": false,
+    "officialQualificationPerformed": false,
+    "releaseAllowed": false
+  },
+  "sourceBinding": {
+    "casePackagePath": "verification/benchmarks/strix21/milestones/P17-M2/SB1/m2-case-package-r1.json",
+    "casePackageHash": "a64262e0c2ccf50e3b11639d454417f5cc4c5201f923df1004a459153b555f07",
+    "nativeInputPath": "verification/benchmarks/strix21/milestones/P17-M2/SB1/model/sstructures-input-r1.json",
+    "nativeInputHash": "0fe8108f3cf9f02d44105fcb9c39d3ab7e6e5548d174444b58819cab0cb212c5",
+    "approvedArtifactHashes": [
+      "0d18e8293d1d19abe56a579acc46e3aad53d3812b33a06828c221068c8a768df",
+      "21239725b0b4d5c812241cea7e1002acf47ea3e4f2a5d928c1d3b3c555a813c4",
+      "2c52f07e4098030dfd1c344a400a32cd852abcb4165dd22780666ae3e1b8bd38",
+      "3426f0ca37356abf3b1520bffd45bc590d9cd2ae65943a1a49155e62985b332c",
+      "4577ca39c7cc7dcfa654eee66639b693fa3aeb626add22cf1f0418470f4d905c",
+      "4abb45839d8182b5e23aa074595a3eaf58f268b1b555b708495c39b2eda97f77",
+      "5337a3409be1139671b1b56860ca163d53f0eea8a17b7d98946e6dc2fbe10713",
+      "68056b8068485ff9efb8e318ce11aaf8a706d91132a0e48063f4ac8611d62f8e",
+      "a1caa8bfe21bc59d9f145c3641c934507fe196881e2d2e5edc7423c7e31e664e",
+      "a7e871e91a3e3014a40f02b571030476906f580d6e8b26cf013d3b1294e21a0f",
+      "dc5d3265795c9e600052db99c791c85f93890bc78f736c801452989a7446acf2",
+      "e5e99099c33532ec1fbbae81f18f60a2234584a00d30192fa22090b1a3112fdd",
+      "ea5a392f1ef04ee3cadb67e0d302371f706eab6fe1b78c49c013c171b5b5b70a",
+      "ed0a748a66d4dfdcaa8bdc67664772a6ccdfc9768b350b44fdbad2eaaff699ce",
+      "ff678e5ee287794458f3392f64628f212bc6c32c301d4add66177a554e31855d"
+    ]
+  },
+  "trust": {
+    "registry": {
+      "version": "p17-external-custodian-trust-registry-v1",
+      "registryId": "sb1-local-20260828t115049109z-registry",
+      "status": "PINNED",
+      "authority": {
+        "name": "S-Structures local self-custodied test authority",
+        "governance": "TEST_ONLY",
+        "contact": null
+      },
+      "pin": {
+        "method": "EXTERNAL_CANONICAL_SHA256",
+        "environmentVariable": "P17_EXTERNAL_CUSTODIAN_REGISTRY_SHA256",
+        "status": "PROVIDED_OUT_OF_BAND"
+      },
+      "keys": [
+        {
+          "keyId": "sb1-local-20260828t115049109z-key-1",
+          "principalId": "sb1-local-20260828t115049109z-principal-1",
+          "role": "executionCustodian",
+          "algorithm": "Ed25519",
+          "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEABB2skBV23+Bct8VVnaYtzg58AN/AQibex7699Wa4gM0=\n-----END PUBLIC KEY-----\n",
+          "validFrom": "2026-08-28T11:49:49.109Z",
+          "validTo": "2027-08-28T11:50:49.109Z",
+          "status": "ACTIVE"
+        },
+        {
+          "keyId": "sb1-local-20260828t115049109z-key-2",
+          "principalId": "sb1-local-20260828t115049109z-principal-2",
+          "role": "modelReviewer",
+          "algorithm": "Ed25519",
+          "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEACj0+OBtBU7F0L/IKoCWbc8wh4oW6AXWOamq15EXWuLs=\n-----END PUBLIC KEY-----\n",
+          "validFrom": "2026-08-28T11:49:49.109Z",
+          "validTo": "2027-08-28T11:50:49.109Z",
+          "status": "ACTIVE"
+        },
+        {
+          "keyId": "sb1-local-20260828t115049109z-key-3",
+          "principalId": "sb1-local-20260828t115049109z-principal-3",
+          "role": "referenceReviewer",
+          "algorithm": "Ed25519",
+          "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAUJQok8cNF87LX+hwTWgRFUHTUvVhq7dKrXA2S354s1E=\n-----END PUBLIC KEY-----\n",
+          "validFrom": "2026-08-28T11:49:49.109Z",
+          "validTo": "2027-08-28T11:50:49.109Z",
+          "status": "ACTIVE"
+        },
+        {
+          "keyId": "sb1-local-20260828t115049109z-key-4",
+          "principalId": "sb1-local-20260828t115049109z-principal-4",
+          "role": "numericalReviewer",
+          "algorithm": "Ed25519",
+          "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEACXjbSCeNhgEKuZSh4ocjkaAIeAO8MMnsekIgFKlUIjc=\n-----END PUBLIC KEY-----\n",
+          "validFrom": "2026-08-28T11:49:49.109Z",
+          "validTo": "2027-08-28T11:50:49.109Z",
+          "status": "ACTIVE"
+        },
+        {
+          "keyId": "sb1-local-20260828t115049109z-key-5",
+          "principalId": "sb1-local-20260828t115049109z-principal-5",
+          "role": "releaseReviewer",
+          "algorithm": "Ed25519",
+          "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA8YY50AGG3FpuSWD30H1BFOHewoz/6Aqxy4Al9JqO4c8=\n-----END PUBLIC KEY-----\n",
+          "validFrom": "2026-08-28T11:49:49.109Z",
+          "validTo": "2027-08-28T11:50:49.109Z",
+          "status": "ACTIVE"
+        }
+      ],
+      "reasonCodes": [
+        "P17_LOCAL_TEST_ONLY_SELF_CUSTODY"
+      ],
+      "registryHash": "6f4c5623adcf1e00b3f3f0554ac57b3695b1fb2ca259e25ec97e98ec5a791a13"
+    },
+    "registryAudit": {
+      "version": "p17-external-trust-v1",
+      "registryId": "sb1-local-20260828t115049109z-registry",
+      "status": "READY",
+      "qualificationMode": "TEST_ONLY",
+      "terminalEligible": false,
+      "declaredHash": "6f4c5623adcf1e00b3f3f0554ac57b3695b1fb2ca259e25ec97e98ec5a791a13",
+      "calculatedHash": "6f4c5623adcf1e00b3f3f0554ac57b3695b1fb2ca259e25ec97e98ec5a791a13",
+      "expectedPin": "6f4c5623adcf1e00b3f3f0554ac57b3695b1fb2ca259e25ec97e98ec5a791a13",
+      "activeKeyCount": 5,
+      "distinctPrincipalCount": 5,
+      "reasonCodes": [],
+      "auditHash": "7a8c0e55c8a29c653aa65794116a595cdbefabf4b5db067aa5d7fee1d4855bb6"
+    },
+    "attestationCount": 4,
+    "attestationAudits": [
+      {
+        "version": "p17-external-trust-v1",
+        "attestationId": "sb1-local-20260828t115049109z-modelreviewer-1",
+        "caseId": "SB1",
+        "role": "modelReviewer",
+        "status": "VERIFIED",
+        "terminalEligible": false,
+        "reasonCodes": [],
+        "verificationHash": "3b1f48314443bbc3c026798cda0d0637481827d425afbbf6ffa1829a55db652b"
+      },
+      {
+        "version": "p17-external-trust-v1",
+        "attestationId": "sb1-local-20260828t115049109z-referencereviewer-2",
+        "caseId": "SB1",
+        "role": "referenceReviewer",
+        "status": "VERIFIED",
+        "terminalEligible": false,
+        "reasonCodes": [],
+        "verificationHash": "524a4ac6fb5122a63f71bb73dcc3b9a80ecaf77109178738baed47e3e019a795"
+      },
+      {
+        "version": "p17-external-trust-v1",
+        "attestationId": "sb1-local-20260828t115049109z-numericalreviewer-3",
+        "caseId": "SB1",
+        "role": "numericalReviewer",
+        "status": "VERIFIED",
+        "terminalEligible": false,
+        "reasonCodes": [],
+        "verificationHash": "0a023a654947d03779e608f566e152159eda7f464f0cbf5ba10180041be518ce"
+      },
+      {
+        "version": "p17-external-trust-v1",
+        "attestationId": "sb1-local-20260828t115049109z-releasereviewer-4",
+        "caseId": "SB1",
+        "role": "releaseReviewer",
+        "status": "VERIFIED",
+        "terminalEligible": false,
+        "reasonCodes": [],
+        "verificationHash": "88f91c219cf311202aec1ba2a9da2c3359d300f2973875a3112974d1f88bfdbb"
+      }
+    ]
+  },
+  "productBinding": {
+    "adapterVersion": "p17-m1-product-adapter-v1",
+    "productServiceVersion": "p9-m9-product-analysis-service-v1",
+    "publicEntrypoint": "src/index.js",
+    "executionProvenance": {
+      "mode": "OFFICIAL_PUBLIC_SERVICE",
+      "terminalQualificationEligible": true,
+      "serviceOrigin": "PUBLIC_FACTORY",
+      "callerServiceInjected": false,
+      "callerServiceFactoryInjected": false,
+      "callerCaseRunnerInjected": false,
+      "caseRunnerBinding": "PUBLIC_RUN_ANALYSIS_CASE_ASYNC",
+      "publicEntrypoint": "src/index.js",
+      "testFixtureId": null,
+      "testProvenance": null
+    },
+    "externalRuntimeUsed": false,
+    "networkFallbackUsed": false
+  },
+  "counters": {
+    "primaryRunCount": 3,
+    "meshReplayCount": 12,
+    "loadReversalCount": 3,
+    "solverExecutionCount": 15,
+    "benchmarkExecutionCount": 3
+  },
+  "runs": [
+    {
+      "runId": "SB1-LOCAL-20260828T115049109Z-R1",
+      "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+      "values": {
+        "tipUzM": -0.0001078651685393258,
+        "tipRyRad": 0.00005393258426966291,
+        "supportRzKn": 0.9999999999999996,
+        "supportMyKnm": -2.999999999999999
+      },
+      "energy": {
+        "strainEnergyKnm": 0.0000539325842696629
+      },
+      "meshLevels": [
+        {
+          "elements": 1,
+          "tipUzM": -0.0001078651685393258,
+          "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca"
+        },
+        {
+          "elements": 2,
+          "tipUzM": -0.00010786516853932574,
+          "engineeringResultHash": "2b69da06a116f593a9274594b894781e0986b5353dc9ec47f6af9f0d500ff8c7"
+        },
+        {
+          "elements": 4,
+          "tipUzM": -0.00010786516853932412,
+          "engineeringResultHash": "21f24f7210860ac79b1fcfd6b18aada12ad93bef7a68c2cfbdc8986ae73b7018"
+        },
+        {
+          "elements": 8,
+          "tipUzM": -0.00010786516853933586,
+          "engineeringResultHash": "4c9f197eea0770e51e2f0ab998ad0f690018df4eb865d0e6ab5afcb3519d1eaa"
+        }
+      ],
+      "mutations": {
+        "loadReversal": {
+          "tipUzM": 0.0001078651685393258,
+          "tipRyRad": -0.00005393258426966291,
+          "supportRzKn": -0.9999999999999996,
+          "supportMyKnm": 2.999999999999999
+        }
+      },
+      "execution": {
+        "productStatus": "completed",
+        "externalRuntimeObservation": "EXPLICIT_FALSE",
+        "networkFallbackObservation": "EXPLICIT_FALSE",
+        "requestedComputeTarget": "cpu",
+        "executionProvenance": {
+          "mode": "OFFICIAL_PUBLIC_SERVICE",
+          "terminalQualificationEligible": true,
+          "serviceOrigin": "PUBLIC_FACTORY",
+          "callerServiceInjected": false,
+          "callerServiceFactoryInjected": false,
+          "callerCaseRunnerInjected": false,
+          "caseRunnerBinding": "PUBLIC_RUN_ANALYSIS_CASE_ASYNC",
+          "publicEntrypoint": "src/index.js",
+          "testFixtureId": null,
+          "testProvenance": null
+        }
+      },
+      "resultArtifact": {
+        "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/local-runs/SB1-LOCAL-20260828T115049109Z/runs/run-1-engineering-result.json",
+        "sha256": "14e0eba22439866904e51afaccabe6263115785aeb2ea273972330e400119d46",
+        "byteLength": 165412
+      }
+    },
+    {
+      "runId": "SB1-LOCAL-20260828T115049109Z-R2",
+      "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+      "values": {
+        "tipUzM": -0.0001078651685393258,
+        "tipRyRad": 0.00005393258426966291,
+        "supportRzKn": 0.9999999999999996,
+        "supportMyKnm": -2.999999999999999
+      },
+      "energy": {
+        "strainEnergyKnm": 0.0000539325842696629
+      },
+      "meshLevels": [
+        {
+          "elements": 1,
+          "tipUzM": -0.0001078651685393258,
+          "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca"
+        },
+        {
+          "elements": 2,
+          "tipUzM": -0.00010786516853932574,
+          "engineeringResultHash": "2b69da06a116f593a9274594b894781e0986b5353dc9ec47f6af9f0d500ff8c7"
+        },
+        {
+          "elements": 4,
+          "tipUzM": -0.00010786516853932412,
+          "engineeringResultHash": "21f24f7210860ac79b1fcfd6b18aada12ad93bef7a68c2cfbdc8986ae73b7018"
+        },
+        {
+          "elements": 8,
+          "tipUzM": -0.00010786516853933586,
+          "engineeringResultHash": "4c9f197eea0770e51e2f0ab998ad0f690018df4eb865d0e6ab5afcb3519d1eaa"
+        }
+      ],
+      "mutations": {
+        "loadReversal": {
+          "tipUzM": 0.0001078651685393258,
+          "tipRyRad": -0.00005393258426966291,
+          "supportRzKn": -0.9999999999999996,
+          "supportMyKnm": 2.999999999999999
+        }
+      },
+      "execution": {
+        "productStatus": "completed",
+        "externalRuntimeObservation": "EXPLICIT_FALSE",
+        "networkFallbackObservation": "EXPLICIT_FALSE",
+        "requestedComputeTarget": "cpu",
+        "executionProvenance": {
+          "mode": "OFFICIAL_PUBLIC_SERVICE",
+          "terminalQualificationEligible": true,
+          "serviceOrigin": "PUBLIC_FACTORY",
+          "callerServiceInjected": false,
+          "callerServiceFactoryInjected": false,
+          "callerCaseRunnerInjected": false,
+          "caseRunnerBinding": "PUBLIC_RUN_ANALYSIS_CASE_ASYNC",
+          "publicEntrypoint": "src/index.js",
+          "testFixtureId": null,
+          "testProvenance": null
+        }
+      },
+      "resultArtifact": {
+        "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/local-runs/SB1-LOCAL-20260828T115049109Z/runs/run-2-engineering-result.json",
+        "sha256": "6eada98b941ae7adb26ad554a6f02d68891d0aa239a81b60847918b18126f719",
+        "byteLength": 165413
+      }
+    },
+    {
+      "runId": "SB1-LOCAL-20260828T115049109Z-R3",
+      "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+      "values": {
+        "tipUzM": -0.0001078651685393258,
+        "tipRyRad": 0.00005393258426966291,
+        "supportRzKn": 0.9999999999999996,
+        "supportMyKnm": -2.999999999999999
+      },
+      "energy": {
+        "strainEnergyKnm": 0.0000539325842696629
+      },
+      "meshLevels": [
+        {
+          "elements": 1,
+          "tipUzM": -0.0001078651685393258,
+          "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca"
+        },
+        {
+          "elements": 2,
+          "tipUzM": -0.00010786516853932574,
+          "engineeringResultHash": "2b69da06a116f593a9274594b894781e0986b5353dc9ec47f6af9f0d500ff8c7"
+        },
+        {
+          "elements": 4,
+          "tipUzM": -0.00010786516853932412,
+          "engineeringResultHash": "21f24f7210860ac79b1fcfd6b18aada12ad93bef7a68c2cfbdc8986ae73b7018"
+        },
+        {
+          "elements": 8,
+          "tipUzM": -0.00010786516853933586,
+          "engineeringResultHash": "4c9f197eea0770e51e2f0ab998ad0f690018df4eb865d0e6ab5afcb3519d1eaa"
+        }
+      ],
+      "mutations": {
+        "loadReversal": {
+          "tipUzM": 0.0001078651685393258,
+          "tipRyRad": -0.00005393258426966291,
+          "supportRzKn": -0.9999999999999996,
+          "supportMyKnm": 2.999999999999999
+        }
+      },
+      "execution": {
+        "productStatus": "completed",
+        "externalRuntimeObservation": "EXPLICIT_FALSE",
+        "networkFallbackObservation": "EXPLICIT_FALSE",
+        "requestedComputeTarget": "cpu",
+        "executionProvenance": {
+          "mode": "OFFICIAL_PUBLIC_SERVICE",
+          "terminalQualificationEligible": true,
+          "serviceOrigin": "PUBLIC_FACTORY",
+          "callerServiceInjected": false,
+          "callerServiceFactoryInjected": false,
+          "callerCaseRunnerInjected": false,
+          "caseRunnerBinding": "PUBLIC_RUN_ANALYSIS_CASE_ASYNC",
+          "publicEntrypoint": "src/index.js",
+          "testFixtureId": null,
+          "testProvenance": null
+        }
+      },
+      "resultArtifact": {
+        "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/local-runs/SB1-LOCAL-20260828T115049109Z/runs/run-3-engineering-result.json",
+        "sha256": "aa4f6e4bf4851d48417eccf13de4af5b464db485a1a6fe8d570a97fda3eaeff1",
+        "byteLength": 165413
+      }
+    }
+  ],
+  "signedReceipts": [
+    {
+      "version": "p17-local-signed-execution-receipt-v1",
+      "caseId": "SB1",
+      "runId": "SB1-LOCAL-20260828T115049109Z-R1",
+      "ordinal": 1,
+      "status": "COMPLETED",
+      "mode": "LOCAL_TEST_ONLY",
+      "issuedAt": "2026-08-28T11:50:49.276Z",
+      "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+      "resultArtifactSha256": "14e0eba22439866904e51afaccabe6263115785aeb2ea273972330e400119d46",
+      "productBinding": {
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "adapterVersion": "p17-m1-product-adapter-v1",
+        "publicEntrypoint": "src/index.js",
+        "externalRuntimeUsed": false,
+        "networkFallbackUsed": false
+      },
+      "custody": {
+        "authority": "S-Structures local self-custodied test authority",
+        "governance": "TEST_ONLY",
+        "keyId": "sb1-local-20260828t115049109z-key-1",
+        "principalId": "sb1-local-20260828t115049109z-principal-1",
+        "independentExternalCustody": false
+      },
+      "payloadHash": "392fd499a9536e69404fac383b45026f35889dd64a292b26b10a4b03289a2138",
+      "signatureBase64": "/g53+/mo+oYib5sZA2CMbZ1vHwZ9ScWea4J4at1a6d9vZoJqxd/IJzlkGe7y3eLpD/c1BOCCy6MXkuNNPcuhDw==",
+      "receiptHash": "44a43985ca50d7da3faf77802bb72b76958782dc9e117be16f877b066bda09d8",
+      "artifact": {
+        "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/local-runs/SB1-LOCAL-20260828T115049109Z/runs/run-1-local-signed-receipt.json",
+        "sha256": "7635d04afe7b99c5ef40c64c4b3631051c29c7b9ebb4bb7f33c153c0206583c5",
+        "byteLength": 1227
+      }
+    },
+    {
+      "version": "p17-local-signed-execution-receipt-v1",
+      "caseId": "SB1",
+      "runId": "SB1-LOCAL-20260828T115049109Z-R2",
+      "ordinal": 2,
+      "status": "COMPLETED",
+      "mode": "LOCAL_TEST_ONLY",
+      "issuedAt": "2026-08-28T11:50:49.368Z",
+      "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+      "resultArtifactSha256": "6eada98b941ae7adb26ad554a6f02d68891d0aa239a81b60847918b18126f719",
+      "productBinding": {
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "adapterVersion": "p17-m1-product-adapter-v1",
+        "publicEntrypoint": "src/index.js",
+        "externalRuntimeUsed": false,
+        "networkFallbackUsed": false
+      },
+      "custody": {
+        "authority": "S-Structures local self-custodied test authority",
+        "governance": "TEST_ONLY",
+        "keyId": "sb1-local-20260828t115049109z-key-1",
+        "principalId": "sb1-local-20260828t115049109z-principal-1",
+        "independentExternalCustody": false
+      },
+      "payloadHash": "72215a86569a3b9cba6de983cceb77ecb72a88882a5832835e02976c93a05417",
+      "signatureBase64": "py+iXIF+dmChWrgMI6Dii6AjEWZZDnsgO5jiHOH8PV2G9LOnK1hEY9JDaoAQsYsdqf5vCR3XUQ6AwClXU9XQDA==",
+      "receiptHash": "fe9de9e1a315260b1ebdcfead02eb25145b9a706b220598ea71234458643278e",
+      "artifact": {
+        "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/local-runs/SB1-LOCAL-20260828T115049109Z/runs/run-2-local-signed-receipt.json",
+        "sha256": "df4532a169a55ca3d9df69a398b5407f9cffc1b57e22af7e6af24c13c6ce71ad",
+        "byteLength": 1227
+      }
+    },
+    {
+      "version": "p17-local-signed-execution-receipt-v1",
+      "caseId": "SB1",
+      "runId": "SB1-LOCAL-20260828T115049109Z-R3",
+      "ordinal": 3,
+      "status": "COMPLETED",
+      "mode": "LOCAL_TEST_ONLY",
+      "issuedAt": "2026-08-28T11:50:49.454Z",
+      "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+      "resultArtifactSha256": "aa4f6e4bf4851d48417eccf13de4af5b464db485a1a6fe8d570a97fda3eaeff1",
+      "productBinding": {
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "adapterVersion": "p17-m1-product-adapter-v1",
+        "publicEntrypoint": "src/index.js",
+        "externalRuntimeUsed": false,
+        "networkFallbackUsed": false
+      },
+      "custody": {
+        "authority": "S-Structures local self-custodied test authority",
+        "governance": "TEST_ONLY",
+        "keyId": "sb1-local-20260828t115049109z-key-1",
+        "principalId": "sb1-local-20260828t115049109z-principal-1",
+        "independentExternalCustody": false
+      },
+      "payloadHash": "7d9bb155413cdd20c7bb9f3aeb4f0d36ff07bb740e1b119d302f73e298701061",
+      "signatureBase64": "xCV3lb52jV8v+YfnVXZcdIao0rEAXbf2klAkdhCLE3WJNLG2If2A3S9Wuc0d5QYy9pzXbw3u5DB7GuGPlzYSDg==",
+      "receiptHash": "05f26b159fa002b24c08bb0a5de7f5a7a62dd1d34999acc63865b6ac2f0776a8",
+      "artifact": {
+        "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/local-runs/SB1-LOCAL-20260828T115049109Z/runs/run-3-local-signed-receipt.json",
+        "sha256": "b9fe8eaf0d62bbfefd26c173cf10276c9d87e0b4e0bd1f98969a04a8a3fb092c",
+        "byteLength": 1227
+      }
+    }
+  ],
+  "qualification": {
+    "version": "p17-sb1-qualification-v1",
+    "caseId": "SB1",
+    "status": "PASS",
+    "runAudits": [
+      {
+        "runIndex": 1,
+        "runId": "SB1-LOCAL-20260828T115049109Z-R1",
+        "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+        "status": "PASS",
+        "metricRows": [
+          {
+            "metricId": "tipUzM",
+            "actual": -0.0001078651685393258,
+            "reference": -0.00010786516853932584,
+            "tolerancePct": 0.01,
+            "signedErrorPct": 3.7692966152816365e-14,
+            "status": "PASS"
+          },
+          {
+            "metricId": "tipRyRad",
+            "actual": 0.00005393258426966291,
+            "reference": 0.00005393258426966292,
+            "tolerancePct": 0.01,
+            "signedErrorPct": -2.5128644101877578e-14,
+            "status": "PASS"
+          },
+          {
+            "metricId": "supportRzKn",
+            "actual": 0.9999999999999996,
+            "reference": 1,
+            "tolerancePct": 0.01,
+            "signedErrorPct": -4.440892098500626e-14,
+            "status": "PASS"
+          },
+          {
+            "metricId": "supportMyKnm",
+            "actual": -2.999999999999999,
+            "reference": -3,
+            "tolerancePct": 0.01,
+            "signedErrorPct": 2.960594732333751e-14,
+            "status": "PASS"
+          }
+        ],
+        "physics": {
+          "equilibriumForceResidual": 4.440892098500626e-16,
+          "equilibriumMomentResidual": 8.881784197001252e-16,
+          "energyResidual": 3.7692966152816365e-16,
+          "meshInvariant": true,
+          "reversalPass": true
+        }
+      },
+      {
+        "runIndex": 2,
+        "runId": "SB1-LOCAL-20260828T115049109Z-R2",
+        "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+        "status": "PASS",
+        "metricRows": [
+          {
+            "metricId": "tipUzM",
+            "actual": -0.0001078651685393258,
+            "reference": -0.00010786516853932584,
+            "tolerancePct": 0.01,
+            "signedErrorPct": 3.7692966152816365e-14,
+            "status": "PASS"
+          },
+          {
+            "metricId": "tipRyRad",
+            "actual": 0.00005393258426966291,
+            "reference": 0.00005393258426966292,
+            "tolerancePct": 0.01,
+            "signedErrorPct": -2.5128644101877578e-14,
+            "status": "PASS"
+          },
+          {
+            "metricId": "supportRzKn",
+            "actual": 0.9999999999999996,
+            "reference": 1,
+            "tolerancePct": 0.01,
+            "signedErrorPct": -4.440892098500626e-14,
+            "status": "PASS"
+          },
+          {
+            "metricId": "supportMyKnm",
+            "actual": -2.999999999999999,
+            "reference": -3,
+            "tolerancePct": 0.01,
+            "signedErrorPct": 2.960594732333751e-14,
+            "status": "PASS"
+          }
+        ],
+        "physics": {
+          "equilibriumForceResidual": 4.440892098500626e-16,
+          "equilibriumMomentResidual": 8.881784197001252e-16,
+          "energyResidual": 3.7692966152816365e-16,
+          "meshInvariant": true,
+          "reversalPass": true
+        }
+      },
+      {
+        "runIndex": 3,
+        "runId": "SB1-LOCAL-20260828T115049109Z-R3",
+        "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+        "status": "PASS",
+        "metricRows": [
+          {
+            "metricId": "tipUzM",
+            "actual": -0.0001078651685393258,
+            "reference": -0.00010786516853932584,
+            "tolerancePct": 0.01,
+            "signedErrorPct": 3.7692966152816365e-14,
+            "status": "PASS"
+          },
+          {
+            "metricId": "tipRyRad",
+            "actual": 0.00005393258426966291,
+            "reference": 0.00005393258426966292,
+            "tolerancePct": 0.01,
+            "signedErrorPct": -2.5128644101877578e-14,
+            "status": "PASS"
+          },
+          {
+            "metricId": "supportRzKn",
+            "actual": 0.9999999999999996,
+            "reference": 1,
+            "tolerancePct": 0.01,
+            "signedErrorPct": -4.440892098500626e-14,
+            "status": "PASS"
+          },
+          {
+            "metricId": "supportMyKnm",
+            "actual": -2.999999999999999,
+            "reference": -3,
+            "tolerancePct": 0.01,
+            "signedErrorPct": 2.960594732333751e-14,
+            "status": "PASS"
+          }
+        ],
+        "physics": {
+          "equilibriumForceResidual": 4.440892098500626e-16,
+          "equilibriumMomentResidual": 8.881784197001252e-16,
+          "energyResidual": 3.7692966152816365e-16,
+          "meshInvariant": true,
+          "reversalPass": true
+        }
+      }
+    ],
+    "determinismHashes": [
+      "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+      "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+      "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca"
+    ],
+    "deterministic": true,
+    "reasonCodes": [],
+    "qualificationHash": "ad42c753617a581568dea0a9866693b52088862e65a6e6551b33bf6a09c399ed"
+  },
+  "verdict": {
+    "engineeringStatus": "PASS",
+    "deterministic": true,
+    "localCryptographicEvidenceStatus": "VERIFIED",
+    "externalQualificationStatus": "NOT_PERFORMED",
+    "officialPass": false,
+    "releaseAllowed": false,
+    "reasonCodes": [
+      "P17_LOCAL_TEST_ONLY_NOT_EXTERNAL_VERIFICATION",
+      "P17_OFFICIAL_EXTERNAL_ATTESTATIONS_STILL_REQUIRED"
+    ]
+  },
+  "evidenceHash": "1252aebf4a59854c309f505a1d1533d42fb3ea74defc61c59d1475d5eecb8a93"
+}

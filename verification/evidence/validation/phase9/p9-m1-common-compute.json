@@ -1,0 +1,228 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteVersion": "p9-m1-common-compute-evidence-v1",
+  "suiteId": "P9-M1-COMMON-COMPUTE",
+  "milestone": "P9-M1",
+  "generatedAt": "2026-07-15T05:48:13.852Z",
+  "sourceRevision": "7a7aea0+worktree",
+  "verificationIds": [
+    "P9-CMP-01",
+    "P9-CMP-02",
+    "P9-CMP-03",
+    "P9-CMP-04",
+    "P9-CMP-05",
+    "P9-CMP-06",
+    "P9-CMP-07",
+    "P9-CMP-08",
+    "P9-CMP-09",
+    "P9-CMP-10",
+    "P9-CMP-11",
+    "P9-CMP-12",
+    "P9-API-01",
+    "P9-API-02",
+    "P9-API-03",
+    "P9-REF-02",
+    "P9-REF-03"
+  ],
+  "status": "PASS",
+  "contracts": {
+    "domainBinary": "p9-domain-binary-v1",
+    "sparsePattern": "p9-sparse-pattern-v1",
+    "stateArena": "p9-state-arena-v1",
+    "resultChunk": "p9-result-chunk-v1",
+    "backend": "p9-compute-backend-v1",
+    "executionPlan": "p9-analysis-execution-plan-v1",
+    "workerProtocol": "p9-compute-worker-protocol-v1",
+    "workerCore": "p9-compute-worker-core-v1",
+    "workerClient": "p9-compute-worker-client-v1",
+    "resourceLedger": "p9-resource-ledger-v1",
+    "telemetry": "p9-compute-telemetry-v1",
+    "adapter": "p9-analysis-adapter-v1"
+  },
+  "snapshot": {
+    "domainHash": "4c2ebb0b14b4a04729b2392002547c6b134fb2c4b3de28cda454ad5acde86ef1",
+    "domainBytes": 48016,
+    "patternHash": "2de0192523f9c5eb0e5be38400ee5b99c5bd8a3d96fc40a36d5c512ea0beeca9",
+    "patternBytes": 148612,
+    "activeDof": 288,
+    "nnz": 11808,
+    "scatterEntries": 25056
+  },
+  "adapter": {
+    "version": "p9-analysis-adapter-v1",
+    "id": "current-analysis-engine-adapter",
+    "buildHash": "9cd5d924a584494f7024d69e2890fd75bab6d47b8e25882797b7f5f3d9e18004",
+    "family": "reference",
+    "executionTarget": "cpu-js",
+    "numericPrecision": "f64",
+    "precisionModes": [
+      "f64"
+    ],
+    "deterministic": true,
+    "deterministicScope": "same-model-same-settings-current-engine",
+    "production": false,
+    "qualification": "phase9-m1-compatibility",
+    "matrixClasses": [
+      "spd",
+      "symmetric-indefinite",
+      "general"
+    ],
+    "operations": [
+      "elasticStatic",
+      "productionPushover",
+      "productionNlth"
+    ],
+    "limits": {
+      "execution": "worker-required-for-product-callers"
+    }
+  },
+  "compatibility": {
+    "version": "p9-sync-analysis-compatibility-v1",
+    "policy": {
+      "owner": "product-analysis-service",
+      "introduced": "P9-M1",
+      "expires": "P9-M9",
+      "deleteBy": "P9-M10",
+      "maxNodes": 40,
+      "maxMembers": 80,
+      "productionUiAllowed": false
+    },
+    "deprecations": [
+      {
+        "id": "P9-DEPRECATION-SYNC-ANALYZE-MODEL",
+        "symbol": "analyzeModel",
+        "currentOwner": "src/solver/linear3d.js",
+        "replacement": "ComputeWorkerClient.start(AnalysisExecutionPlan)",
+        "allowedCallers": [
+          "tests",
+          "verification",
+          "compatibility"
+        ],
+        "expires": "P9-M9"
+      },
+      {
+        "id": "P9-DEPRECATION-P8-WORKER-PROTOCOL",
+        "symbol": "p8-m10-worker-protocol-v4",
+        "currentOwner": "src/nonlinear/runtime",
+        "replacement": "p9-compute-worker-protocol-v1",
+        "allowedCallers": [
+          "src/nonlinear/product/jobManager.js",
+          "tests/p8-*"
+        ],
+        "expires": "P9-M10"
+      }
+    ]
+  },
+  "ownership": {
+    "backendPolicy": "src/compute/backends/contract.js",
+    "workerRuntime": "src/compute/runtime",
+    "telemetry": "src/compute/telemetry",
+    "legacyWorkerTransferAdapter": "src/nonlinear/runtime/protocol.js"
+  },
+  "regressionPolicy": {
+    "phase9": "contract-and-worker-smoke",
+    "phase8": "p8-m2-worker-runtime-only",
+    "nonlinearSolve": "not-rerun-reuse-phase8-qualified-evidence"
+  },
+  "baselineEvidenceHash": "351c200ac632dad388c590cd7d542e98c2b99b497d91bb65ba109109402778a2",
+  "results": [
+    {
+      "id": "P9-CMP-01",
+      "status": "PASS",
+      "test": "tests/p9-m1-domain-pattern.mjs"
+    },
+    {
+      "id": "P9-CMP-02",
+      "status": "PASS",
+      "test": "tests/p9-m1-domain-pattern.mjs"
+    },
+    {
+      "id": "P9-CMP-03",
+      "status": "PASS",
+      "test": "tests/p9-m1-domain-pattern.mjs"
+    },
+    {
+      "id": "P9-CMP-04",
+      "status": "PASS",
+      "test": "tests/p9-m1-domain-pattern.mjs"
+    },
+    {
+      "id": "P9-CMP-05",
+      "status": "PASS",
+      "test": "tests/p9-m1-state-result.mjs"
+    },
+    {
+      "id": "P9-CMP-06",
+      "status": "PASS",
+      "test": "tests/p9-m1-state-result.mjs"
+    },
+    {
+      "id": "P9-CMP-07",
+      "status": "PASS",
+      "test": "tests/p9-m1-plan-backend.mjs"
+    },
+    {
+      "id": "P9-CMP-08",
+      "status": "PASS",
+      "test": "tests/p9-m1-plan-backend.mjs"
+    },
+    {
+      "id": "P9-CMP-09",
+      "status": "PASS",
+      "test": "tests/p9-m1-worker-runtime.mjs"
+    },
+    {
+      "id": "P9-CMP-10",
+      "status": "PASS",
+      "test": "tests/p9-m1-worker-runtime.mjs"
+    },
+    {
+      "id": "P9-CMP-11",
+      "status": "PASS",
+      "test": "tests/p9-m1-state-result.mjs"
+    },
+    {
+      "id": "P9-CMP-12",
+      "status": "PASS",
+      "test": "tests/p9-m1-state-result.mjs"
+    },
+    {
+      "id": "P9-API-01",
+      "status": "PASS",
+      "test": "tests/p9-m1-plan-backend.mjs"
+    },
+    {
+      "id": "P9-API-02",
+      "status": "PASS",
+      "test": "tests/p9-m1-worker-runtime.mjs"
+    },
+    {
+      "id": "P9-API-03",
+      "status": "PASS",
+      "test": "tests/p9-m1-adapters-architecture.mjs"
+    },
+    {
+      "id": "P9-REF-02",
+      "status": "PASS",
+      "test": "tests/p9-m1-adapters-architecture.mjs"
+    },
+    {
+      "id": "P9-REF-03",
+      "status": "PASS",
+      "test": "tests/p9-m1-adapters-architecture.mjs"
+    }
+  ],
+  "blockers": [
+    "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+    "M_TIER_ELASTIC_CURRENT_DENSE_PATH_NOT_EXECUTED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "P9_M10_RELEASE_GATE_REQUIRED",
+    "P9_M2_CPU_WASM_RUNTIME_REQUIRED",
+    "P9_M3_ELASTIC_WORKER_MIGRATION_REQUIRED",
+    "P9_M4_TO_M8_GPU_QUALIFICATION_REQUIRED",
+    "P9_M9_PRODUCT_MIGRATION_REQUIRED"
+  ],
+  "qualificationImpact": "G1-candidate-contract-integrated-no-design-transfer",
+  "artifactHash": "c97ae53aac9f182eedae44a3314423ac5c521da23b678e8146037319d1e75803"
+}

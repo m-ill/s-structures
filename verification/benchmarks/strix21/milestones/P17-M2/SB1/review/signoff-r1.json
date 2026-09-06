@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "p17-review-signoff-v1",
+  "caseId": "SB1",
+  "status": "IN_REVIEW",
+  "releaseAllowed": false,
+  "runId": null,
+  "terminalStatus": "BLOCKED_QUALIFICATION",
+  "reviewerApprovals": [
+    {
+      "role": "owner",
+      "assignment": "OWNER_EXTERNAL_ASSIGNMENT_REQUIRED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    {
+      "role": "modelReviewer",
+      "assignment": "MODELREVIEWER_EXTERNAL_ASSIGNMENT_REQUIRED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    {
+      "role": "referenceReviewer",
+      "assignment": "REFERENCEREVIEWER_EXTERNAL_ASSIGNMENT_REQUIRED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    {
+      "role": "numericalReviewer",
+      "assignment": "NUMERICALREVIEWER_EXTERNAL_ASSIGNMENT_REQUIRED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    {
+      "role": "releaseReviewer",
+      "assignment": "RELEASEREVIEWER_EXTERNAL_ASSIGNMENT_REQUIRED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    }
+  ],
+  "approvedArtifactHashes": [],
+  "approvedArtifacts": [],
+  "signoffHash": null,
+  "reasonCodes": [
+    "P17_INDEPENDENT_REVIEWER_ATTESTATIONS_REQUIRED",
+    "P17_OFFICIAL_EXECUTION_NOT_AUTHORIZED"
+  ]
+}
+

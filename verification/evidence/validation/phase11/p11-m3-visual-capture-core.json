@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "p11-m3-visual-capture-core-v1",
+  "milestone": "P11-M3",
+  "status": "PASS",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-23T14:18:37.207Z",
+  "sourceRevision": "3e4521c+worktree",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0"
+  },
+  "captureProfile": {
+    "id": "p11-report-1600x900-v1",
+    "viewport": {
+      "width": 1600,
+      "height": 900
+    },
+    "pixelRatio": 1,
+    "background": "#ffffff",
+    "stabilizationFrames": 2,
+    "timeoutMs": 10000
+  },
+  "qualification": {
+    "deterministicRuns": 10,
+    "dimensions": "1600x900",
+    "identicalPngHashes": true,
+    "viewStateRestored": true,
+    "orphanCanvasBuffers": 0,
+    "failureCodes": [
+      "CAPTURE_SPEC_INVALID",
+      "CAPTURE_STALE_SNAPSHOT",
+      "CAPTURE_CANCELLED",
+      "CAPTURE_TIMEOUT",
+      "CAPTURE_CANVAS_UNAVAILABLE",
+      "CAPTURE_CONTEXT_UNAVAILABLE",
+      "CAPTURE_FONT_NOT_READY",
+      "CAPTURE_IMAGE_NOT_READY",
+      "CAPTURE_ENCODE_FAILED",
+      "CAPTURE_ZERO_BYTE",
+      "CAPTURE_DIMENSION_INVALID",
+      "CAPTURE_BLANK",
+      "CAPTURE_PNG_INVALID",
+      "CAPTURE_VIEW_RESTORE_FAILED"
+    ],
+    "blankDetectionRate": 1,
+    "zeroByteDetectionRate": 1,
+    "staleSnapshotDetectionRate": 1
+  },
+  "verification": [
+    {
+      "id": "P11-CAP-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "CaptureSpec is canonical, immutable and hash-bound."
+    },
+    {
+      "id": "P11-CAP-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Viewport is at least 1600x900 at the declared pixel ratio."
+    },
+    {
+      "id": "P11-CAP-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Camera, combination, layers and deformation scale are explicit."
+    },
+    {
+      "id": "P11-CAP-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Base and overlay canvases are composited in one deterministic frame."
+    },
+    {
+      "id": "P11-CAP-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Font, source-canvas and stabilization readiness are enforced."
+    },
+    {
+      "id": "P11-CAP-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "PNG signature and IHDR dimensions are validated."
+    },
+    {
+      "id": "P11-CAP-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Blank and single-color captures fail closed."
+    },
+    {
+      "id": "P11-CAP-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Zero-byte captures fail closed."
+    },
+    {
+      "id": "P11-CAP-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Stale snapshot/model/result bindings fail closed."
+    },
+    {
+      "id": "P11-CAP-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Timeout and cancellation have stable reason codes."
+    },
+    {
+      "id": "P11-CAP-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Ten identical inputs produce identical PNG hashes."
+    },
+    {
+      "id": "P11-CAP-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Capture restores the prior view state deeply."
+    },
+    {
+      "id": "P11-CAP-13",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Temporary canvas buffers are released after capture."
+    },
+    {
+      "id": "P11-CAP-14",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "EvidenceManifest binds capture, snapshot, model and result hashes."
+    },
+    {
+      "id": "P11-SEC-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Local paths and user identifiers are absent from the capture contract."
+    },
+    {
+      "id": "P11-SEC-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Untrusted labels are not interpreted by the bitmap compositor."
+    },
+    {
+      "id": "P11-SEC-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m3",
+      "statement": "Failure details use enumerated reason codes without exposing local paths."
+    }
+  ],
+  "passedVerificationCount": 17,
+  "limitations": [
+    "M3 qualifies the deterministic compositor contract with controlled canvases; product scene producers are owned by P11-M4.",
+    "PDF embedding and dual-PDF publication are owned by P11-M4 through P11-M6.",
+    "Phase 11 release qualification remains false until P11-M9."
+  ],
+  "artifactHash": "068c1d31484f22c143027f163acfc870a2f33e2d63c07806a8d29e58f8e539b6"
+}

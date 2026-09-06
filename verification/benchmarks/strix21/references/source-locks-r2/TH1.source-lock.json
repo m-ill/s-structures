@@ -1,0 +1,107 @@
+{
+  "version": "p17-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-locks/TH1.source-lock.json",
+    "sourceLockHash": "73f77604361ecf08822f6763bd390ea2d8c55973206f74df30041ab993d05bc8",
+    "reason": "R2 selects the final evidence Engine field when an HTML page also contains a descriptive Engine field."
+  },
+  "caseId": "TH1",
+  "ordinal": 21,
+  "official": true,
+  "family": "DYNAMIC-SDOF",
+  "title": "SDOF anchor for THA time integration (Newmark average-acceleration, dt convergence)",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "locator": "Reference is NOT transcribed from any external table — it is the exact solution of the damped SDOF equation of motion (ü + 2*zeta*omega*u̇ + omega²*u = -üg(t)) for the SAME piecewise-linear-interpolated ground-motion samples OpenSees's `Path -dt` assumes, re-derived from scratch via undetermined coefficients (free-vibration term + forced response to a linear-in-tau interval force, zero IC) in benchmarks/dynamic/TH1_sdofAnchor.ts. De-risked (SH1 lesson, devplan §12.11, 'hand-derivation isn't trustworthy alone') two ways BEFORE any OpenSees run: (1) an internal algebraic identity (d/dtau[unit-ramp response] == unit-step response, a basic LTI fact not assumed anywhere in the derivation) falls out exactly; (2) internal/TH1_closedform_selfcheck.ts cross-validates the closed form against an independent fixed-fine-substep RK4 integrator (completely different numerical method, shares no formula) to ~1e-11% before the Tcl runner was ever written. Because both STRIX and the closed form consume the identical discretized (piecewise-linear) excitation, any difference between them is pure Newmark time-integration error — which the average-acceleration method (unconditionally stable, 2nd-order accurate) must shrink as O(dt²) as dt -> 0.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/TH1.html",
+        "byteLength": 32062,
+        "sha256": "fbe97f61e787663933cbb907562710665fd2a0c4eeccb0b8ba969ff2dbd81ca3"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 60,
+        "printedPageEnd": 64
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/TH1.pdf",
+        "byteLength": 139544,
+        "sha256": "ae141acc08e54d39c0ffc79b9def935e8f56017eec1629f4d8fd4158a659dfd9",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 5
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.01%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Peak relative displacement, zeta=5%, dt=0.003125s (finest) (mm)",
+      "probe": "zeta=0.05, dt=0.003125",
+      "strix": "200.783",
+      "reference": "200.786209",
+      "delta": "−0.0016%"
+    },
+    "resultRowCount": 3
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_3_OF_3",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-07-11",
+    "htmlRecordLocator": "records/TH1.json",
+    "htmlArchive": "verif-evidence-eng1.0.2-win-x64.zip · TH1/",
+    "htmlArchiveVersion": "1.0.2",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": true
+  },
+  "referenceLane": {
+    "class": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED",
+    "HTML_ENGINE_V1_0_4_WITH_V1_0_2_RUN_OR_ARCHIVE_METADATA"
+  ],
+  "sourceLockHash": "1ace93706830137c648a8dcd71d6393960dccd9498c9305bbd946c7799383280"
+}

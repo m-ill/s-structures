@@ -1,0 +1,207 @@
+{
+  "version": "p9-m5-browser-raw-v1",
+  "status": "PASS",
+  "available": true,
+  "verificationIds": [
+    "P9-GPU-ELA-01~16",
+    "P9-PERF-08~10",
+    "P9-FAIL-01~04"
+  ],
+  "capability": {
+    "version": "p9-m4-webgpu-capability-v1",
+    "ok": true,
+    "available": true,
+    "reason": null,
+    "adapterInfo": {
+      "vendor": "nvidia",
+      "architecture": "ampere",
+      "device": "unknown",
+      "description": "unknown",
+      "isFallbackAdapter": false
+    },
+    "features": [
+      "bgra8unorm-storage",
+      "clip-distances",
+      "core-features-and-limits",
+      "depth-clip-control",
+      "depth32float-stencil8",
+      "dual-source-blending",
+      "float32-blendable",
+      "float32-filterable",
+      "indirect-first-instance",
+      "primitive-index",
+      "rg11b10ufloat-renderable",
+      "shader-f16",
+      "subgroups",
+      "texture-component-swizzle",
+      "texture-compression-bc",
+      "texture-compression-bc-sliced-3d",
+      "texture-formats-tier1",
+      "texture-formats-tier2",
+      "timestamp-query"
+    ],
+    "limits": {
+      "maxBufferSize": 2147483648,
+      "maxStorageBufferBindingSize": 2147483644,
+      "maxStorageBuffersPerShaderStage": 16,
+      "maxComputeWorkgroupsPerDimension": 65535,
+      "maxComputeInvocationsPerWorkgroup": 1024,
+      "maxComputeWorkgroupSizeX": 1024,
+      "maxComputeWorkgroupStorageSize": 32768,
+      "minStorageBufferOffsetAlignment": 256
+    },
+    "requiredFeatures": [],
+    "requiredLimits": {},
+    "missingFeatures": [],
+    "limitFailures": [],
+    "fallbackUsed": false,
+    "designTransferAllowed": false,
+    "capabilityHash": "93f5a2b9a899711b9a662bdbe422ba59ac93198958803ffa9a3f2d4569a53b95"
+  },
+  "matrix": {
+    "rowCount": 512,
+    "nnz": 1534
+  },
+  "numeric": {
+    "maxBackwardError": 1.821529442017995e-11,
+    "maxLoadRelativeResidual": 5.4591317300606236e-11,
+    "correctionCount": 1,
+    "gpuIterations": 9,
+    "designTransferAllowed": true,
+    "qualified": true,
+    "checks": {
+      "backwardError": true,
+      "loadRelativeResidual": true,
+      "elasticDisplacementParity": true,
+      "directAmplificationParity": true,
+      "elasticDesignStatusParity": true,
+      "directDesignStatusParity": true
+    }
+  },
+  "product": {
+    "elastic": {
+      "ok": true,
+      "displacementDelta": 1.0796832178305849e-13,
+      "designStatus": "qualified",
+      "target": "gpu",
+      "fallbackUsed": false,
+      "resourceBalanced": true
+    },
+    "directPDelta": {
+      "ok": true,
+      "amplificationDelta": 2.1316282072803006e-14,
+      "designStatus": "qualified",
+      "matrixSessionCount": 11,
+      "reusedMatrixSessionCount": 0,
+      "resourceBalanced": true
+    }
+  },
+  "performance": {
+    "residentSpd": {
+      "unit": "ms",
+      "sampleCount": 6,
+      "median": 11.099999904632568,
+      "min": 10.400000095367432,
+      "max": 12.299999952316284,
+      "samples": [
+        11.100000143051147,
+        10.5,
+        12.299999952316284,
+        10.400000095367432,
+        11.099999904632568,
+        10.400000095367432
+      ]
+    },
+    "endToEnd": {
+      "workload": {
+        "bays": 10,
+        "stories": 14,
+        "nodeCount": 165,
+        "dofCount": 990
+      },
+      "cpu": {
+        "unit": "ms",
+        "sampleCount": 3,
+        "median": 684.1000001430511,
+        "min": 671.6000001430511,
+        "max": 685.5999999046326,
+        "samples": [
+          684.1000001430511,
+          685.5999999046326,
+          671.6000001430511
+        ]
+      },
+      "gpu": {
+        "unit": "ms",
+        "sampleCount": 3,
+        "median": 1131.7000000476837,
+        "min": 1081.8999998569489,
+        "max": 1168.2999999523163,
+        "samples": [
+          1168.2999999523163,
+          1131.7000000476837,
+          1081.8999998569489
+        ]
+      },
+      "speedup": 0.604488822226939,
+      "threshold": 1.2,
+      "thresholdMet": false
+    }
+  },
+  "sessionBeforeDispose": {
+    "version": "p9-m5-mixed-precision-spd-v1",
+    "disposed": false,
+    "solveCount": 7,
+    "correctionSolveCount": 7,
+    "failedSolveCount": 0,
+    "eligibilityHash": "4d3c5c9e00935da986de66bed8e43e5b97ee9171083ff81ee1a45b6d335d6943",
+    "gpu": {
+      "version": "p9-m5-webgpu-spd-session-v1",
+      "matrixHash": "6f063594bf2c3e13deb144d19c22a049040a76c02ed6566e089aa8b3e866b0c3",
+      "rowCount": 512,
+      "nnz": 1534,
+      "solveCount": 14,
+      "failedSolveCount": 0,
+      "busy": false,
+      "disposed": false,
+      "allocatedBytes": 30788,
+      "resourceBalanced": null
+    },
+    "designTransferAllowed": false
+  },
+  "resource": {
+    "beforePlatformDispose": {
+      "version": "p9-m4-webgpu-buffer-pool-v1",
+      "disposed": false,
+      "alignment": 4,
+      "maxCachedBytes": 67108864,
+      "maxBuffersPerKey": 4,
+      "createdCount": 38,
+      "destroyedCount": 0,
+      "createdBytes": 127668,
+      "activeCount": 0,
+      "activeBytes": 0,
+      "cachedCount": 38,
+      "cachedBytes": 127668,
+      "peakBytes": 127668,
+      "allocationBalanced": null
+    },
+    "afterPlatformDispose": {
+      "version": "p9-m4-webgpu-buffer-pool-v1",
+      "disposed": true,
+      "alignment": 4,
+      "maxCachedBytes": 67108864,
+      "maxBuffersPerKey": 4,
+      "createdCount": 38,
+      "destroyedCount": 38,
+      "createdBytes": 127668,
+      "activeCount": 0,
+      "activeBytes": 0,
+      "cachedCount": 0,
+      "cachedBytes": 0,
+      "peakBytes": 127668,
+      "allocationBalanced": true
+    },
+    "allocationBalanced": true
+  }
+}

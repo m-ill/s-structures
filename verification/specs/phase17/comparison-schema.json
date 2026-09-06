@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/comparison-schema.json",
+  "title": "Phase 17 benchmark comparison",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "runId", "status", "actualValuesBinding", "comparisonPolicy", "metrics", "summary", "reasonCodes", "comparisonHash"],
+  "properties": {
+    "schemaVersion": { "const": "p17-comparison-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "runId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{5,127}$" },
+    "status": { "enum": ["PASS", "FAIL", "BLOCKED_SOURCE", "BLOCKED_REFERENCE", "BLOCKED_MODEL", "BLOCKED_MODEL_EQUIVALENCE", "BLOCKED_QUALIFICATION", "COMPARISON_NOT_RUN", "CROSS_CHECK_ONLY"] },
+    "actualValuesBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "contentSha256", "engineeringResultHash", "probeHash", "extractorPath", "extractorHash", "runRecordHash"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "contentSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "engineeringResultHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "probeHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "extractorPath": { "type": "string", "minLength": 1 },
+        "extractorHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "runRecordHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "comparisonPolicy": {
+      "type": "object", "additionalProperties": false, "required": ["signedRelativeFormula", "nearZeroUsesAbsolute", "independentAndCrossSolverSeparated", "toleranceHash", "probeHash"],
+      "properties": {
+        "signedRelativeFormula": { "const": "100*(SStructures-Reference)/abs(Reference)" }, "nearZeroUsesAbsolute": { "const": true }, "independentAndCrossSolverSeparated": { "const": true },
+        "toleranceHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "probeHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "metrics": {
+      "type": "array", "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["metricId", "mandatory", "unit", "sstructuresValue", "primaryReference", "strixPublished", "strixR4", "midasR4", "comparisonMode", "signedDifference", "signedErrorPct", "absoluteError", "tolerance", "status", "reasonCodes"],
+        "properties": {
+          "metricId": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" }, "mandatory": { "type": "boolean" }, "unit": { "type": "string", "minLength": 1 },
+          "sstructuresValue": { "type": "number" }, "primaryReference": { "type": ["number", "null"] }, "strixPublished": { "type": ["number", "null"] }, "strixR4": { "type": ["number", "null"] }, "midasR4": { "type": ["number", "null"] },
+          "comparisonMode": { "enum": ["SIGNED_RELATIVE", "SIGNED_ABSOLUTE", "UNSIGNED_ABSOLUTE"] }, "signedDifference": { "type": ["number", "null"] }, "signedErrorPct": { "type": ["number", "null"] }, "absoluteError": { "type": ["number", "null"] },
+          "tolerance": {
+            "type": "object", "additionalProperties": false, "required": ["relativePct", "absolute", "nearZeroThreshold"],
+            "properties": {
+              "relativePct": { "type": ["number", "null"], "minimum": 0 },
+              "absolute": { "type": ["number", "null"], "minimum": 0 },
+              "nearZeroThreshold": { "type": "number", "minimum": 0 }
+            }
+          },
+          "status": { "enum": ["PASS", "FAIL", "BLOCKED_REFERENCE", "NOT_APPLICABLE"] },
+          "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+        }
+      }
+    },
+    "summary": {
+      "type": "object", "additionalProperties": false, "required": ["mandatoryMetricCount", "passedMetricCount", "failedMetricCount", "blockedMetricCount"],
+      "properties": { "mandatoryMetricCount": { "type": "integer", "minimum": 0 }, "passedMetricCount": { "type": "integer", "minimum": 0 }, "failedMetricCount": { "type": "integer", "minimum": 0 }, "blockedMetricCount": { "type": "integer", "minimum": 0 } }
+    },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } },
+    "comparisonHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

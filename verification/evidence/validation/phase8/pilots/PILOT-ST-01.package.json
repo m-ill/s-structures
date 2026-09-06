@@ -1,0 +1,469 @@
+{
+  "version": "p8-m11-pilot-package-v1",
+  "id": "PILOT-ST-01",
+  "verificationId": "NL-PILOT-01",
+  "title": "2D steel portal frame",
+  "materialSystem": "steel",
+  "model": {
+    "schemaVersion": 5,
+    "nodes": [
+      {
+        "id": "B1",
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "B2",
+        "x": 5,
+        "y": 0,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "T1",
+        "x": 0,
+        "y": 0,
+        "z": 3.5
+      },
+      {
+        "id": "T2",
+        "x": 5,
+        "y": 0,
+        "z": 3.5
+      }
+    ],
+    "members": [
+      {
+        "id": "C1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "B1",
+        "n2": "T1",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        },
+        "nonlinear": {
+          "formulation": "concentrated-plasticity",
+          "hinges": [
+            {
+              "id": "C1:i:z",
+              "memberId": "C1",
+              "end": "i",
+              "axis": "z",
+              "propertyId": "HP-ST-PORTAL",
+              "source": {
+                "mode": "user"
+              }
+            },
+            {
+              "id": "C1:j:z",
+              "memberId": "C1",
+              "end": "j",
+              "axis": "z",
+              "propertyId": "HP-ST-PORTAL",
+              "source": {
+                "mode": "user"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "C2",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "B2",
+        "n2": "T2",
+        "matId": "MAT-ST",
+        "secId": "COL",
+        "localAxis": {
+          "refVector": [
+            1,
+            0,
+            0
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        },
+        "nonlinear": {
+          "formulation": "concentrated-plasticity",
+          "hinges": [
+            {
+              "id": "C2:i:z",
+              "memberId": "C2",
+              "end": "i",
+              "axis": "z",
+              "propertyId": "HP-ST-PORTAL",
+              "source": {
+                "mode": "user"
+              }
+            },
+            {
+              "id": "C2:j:z",
+              "memberId": "C2",
+              "end": "j",
+              "axis": "z",
+              "propertyId": "HP-ST-PORTAL",
+              "source": {
+                "mode": "user"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "G1",
+        "type": "frame",
+        "behavior": "frame",
+        "n1": "T1",
+        "n2": "T2",
+        "matId": "MAT-ST",
+        "secId": "BEAM",
+        "localAxis": {
+          "refVector": [
+            0,
+            0,
+            1
+          ],
+          "roll": 0,
+          "strongAxis": "z"
+        }
+      }
+    ],
+    "materials": [
+      {
+        "id": "MAT-ST",
+        "version": 1,
+        "kind": "steel",
+        "E": 200000000,
+        "G": 77000000,
+        "Fy": 275000,
+        "density": 0
+      }
+    ],
+    "sections": [
+      {
+        "id": "COL",
+        "version": 1,
+        "shape": "H",
+        "A": 0.035,
+        "Iy": 0.00028,
+        "Iz": 0.00052,
+        "J": 0.00006,
+        "Zy": 0.0024,
+        "Zz": 0.0034
+      },
+      {
+        "id": "BEAM",
+        "version": 1,
+        "shape": "H",
+        "A": 0.028,
+        "Iy": 0.0002,
+        "Iz": 0.00045,
+        "J": 0.00005,
+        "Zy": 0.002,
+        "Zz": 0.003
+      },
+      {
+        "id": "BRACE",
+        "version": 1,
+        "shape": "PIPE",
+        "A": 0.009,
+        "Iy": 0.00004,
+        "Iz": 0.00004,
+        "J": 0.00008
+      }
+    ],
+    "loads": [
+      {
+        "id": "G-1",
+        "type": "nodal",
+        "node": "T1",
+        "P": 12,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      },
+      {
+        "id": "G-2",
+        "type": "nodal",
+        "node": "T2",
+        "P": 12,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "case": "D"
+      }
+    ],
+    "loadCases": [
+      {
+        "id": "D",
+        "name": "Dead",
+        "type": "dead"
+      }
+    ],
+    "loadCombinations": [
+      {
+        "id": "GRAV",
+        "name": "Gravity preload",
+        "type": "service",
+        "purpose": "gravity-preload",
+        "factors": {
+          "D": 1
+        }
+      }
+    ],
+    "massSources": [],
+    "diaphragms": [],
+    "hingeProperties": [
+      {
+        "id": "HP-ST-PORTAL",
+        "modelId": "concentrated-rotational-hinge-v1",
+        "parameters": {
+          "backbone": {
+            "version": "p8-m4-hinge-backbone-v1",
+            "positive": [
+              {
+                "id": "A",
+                "rotation": 0,
+                "moment": 0,
+                "state": "elastic",
+                "acceptance": null
+              },
+              {
+                "id": "B",
+                "rotation": 0.001,
+                "moment": 85,
+                "state": "yielded",
+                "acceptance": null
+              },
+              {
+                "id": "C",
+                "rotation": 0.015,
+                "moment": 93.50000000000001,
+                "state": "capping",
+                "acceptance": null
+              },
+              {
+                "id": "D",
+                "rotation": 0.04,
+                "moment": 17,
+                "state": "residual",
+                "acceptance": null
+              },
+              {
+                "id": "E",
+                "rotation": 0.08,
+                "moment": 17,
+                "state": "failure",
+                "acceptance": null
+              }
+            ],
+            "negative": [
+              {
+                "id": "A",
+                "rotation": 0,
+                "moment": 0,
+                "state": "elastic",
+                "acceptance": null
+              },
+              {
+                "id": "B",
+                "rotation": 0.001,
+                "moment": 85,
+                "state": "yielded",
+                "acceptance": null
+              },
+              {
+                "id": "C",
+                "rotation": 0.015,
+                "moment": 93.50000000000001,
+                "state": "capping",
+                "acceptance": null
+              },
+              {
+                "id": "D",
+                "rotation": 0.04,
+                "moment": 17,
+                "state": "residual",
+                "acceptance": null
+              },
+              {
+                "id": "E",
+                "rotation": 0.08,
+                "moment": 17,
+                "state": "failure",
+                "acceptance": null
+              }
+            ],
+            "rotationDefinition": "joint-relative-to-member-face-local-axis",
+            "units": {
+              "rotation": "rad",
+              "moment": "kN-m"
+            },
+            "contentHash": "3aa913e9442e2fa13ed8be8c"
+          },
+          "hysteresis": {
+            "rule": "kinematic-masing"
+          },
+          "degradation": {
+            "strength": {
+              "perCycle": 0,
+              "perEnergy": 0,
+              "minimumFactor": 0.05
+            },
+            "stiffness": {
+              "perCycle": 0,
+              "perEnergy": 0,
+              "minimumFactor": 0.05
+            },
+            "referenceEnergy": 1
+          },
+          "regularization": {
+            "strategy": "diagnostic-only",
+            "minimumRatio": 1e-8,
+            "minimumAbsolute": 0
+          },
+          "integration": {
+            "maxSubsteps": 4096,
+            "rotationTolerance": 1e-12,
+            "maxRotationIncrement": 0.0001
+          },
+          "hingeLength": 0.2,
+          "rotationDefinition": "joint-relative-to-member-face-local-axis",
+          "acceptance": [],
+          "pmm": null
+        },
+        "units": {
+          "rotation": "rad",
+          "moment": "kN-m",
+          "length": "m",
+          "energy": "kN-m-rad"
+        },
+        "qualification": "candidate",
+        "source": {
+          "type": "closed-form-test",
+          "reference": "Phase 8 M11 HP-ST-PORTAL fixture",
+          "edition": null,
+          "clause": null,
+          "assumption": null,
+          "materialSnapshot": null,
+          "sectionSnapshot": null,
+          "reinforcementSnapshot": null,
+          "generatedAt": null,
+          "generatedBy": null,
+          "derivedFromPropertyId": null,
+          "pmmSourceId": null,
+          "axialRatio": null
+        },
+        "calibration": {
+          "status": "not-calibrated",
+          "referenceId": null,
+          "reviewedBy": null,
+          "reviewedAt": null,
+          "notes": null
+        },
+        "contentHash": "fca635848aacf877bd1f2d2c"
+      }
+    ],
+    "nonlinearMaterials": [],
+    "nonlinearSections": [],
+    "linkProperties": [],
+    "timeHistoryFunctions": [],
+    "analysisStates": [],
+    "analysisCases": [],
+    "analysisSettings": {
+      "includeSelfWeight": false
+    }
+  },
+  "analysisCases": [
+    {
+      "id": "PILOT-ST-01-PUSH",
+      "kind": "pushover",
+      "engineId": "p8-production-mdof-pushover",
+      "inputRefs": {
+        "gravityCombinationId": "GRAV"
+      },
+      "initialState": {
+        "policy": "zero"
+      },
+      "control": {
+        "type": "arcLength",
+        "nodeId": "T2",
+        "direction": "+x",
+        "targetDisplacement": 0.001
+      },
+      "settings": {
+        "gravityCombinationId": "GRAV",
+        "controlNodeId": "T2",
+        "direction": "+x",
+        "targetDisplacement": 0.001,
+        "pattern": "triangular",
+        "referenceBaseShear": 20,
+        "steps": 8,
+        "arcLength": {
+          "enabled": true,
+          "steps": 3
+        }
+      },
+      "solver": {
+        "execution": "worker-wasm-sparse",
+        "maxIterations": 30
+      }
+    }
+  ],
+  "workflow": [
+    "gravity-preload",
+    "hinge-calibration",
+    "displacement-pushover",
+    "arc-length-continuation",
+    "capacity-and-hinge-report"
+  ],
+  "expected": {
+    "executionStatus": "completed",
+    "acceptedTermination": [
+      "TARGET_REACHED",
+      "MECHANISM_DETECTED",
+      "ARC_LENGTH_STEPS_COMPLETED"
+    ]
+  },
+  "requiredResultFields": [
+    "resultHash",
+    "runRecordId",
+    "capacityCurve",
+    "hingeEvents",
+    "checkpointHash"
+  ],
+  "comparison": {
+    "required": true,
+    "minimumLevel": "L5",
+    "channels": [
+      "controlDisplacement",
+      "baseShear",
+      "hingeState"
+    ]
+  },
+  "reproducibility": {
+    "runner": "tools/run-p8-m11-qualification.mjs",
+    "fallbackPolicy": "forbidden",
+    "reportRequired": true,
+    "rawResultRequired": true
+  },
+  "inputHash": "f4ed2e45227a46b5db4065bb",
+  "packageHash": "936a564282a477982d52aeed"
+}

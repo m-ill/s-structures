@@ -1,0 +1,11 @@
+{
+  "version": "p17-local-run-interruption-v1",
+  "caseId": "SB1",
+  "setId": "SB1-LOCAL-20260828T114852002Z",
+  "status": "INCOMPLETE",
+  "solverExecutionCountBeforeFailure": 1,
+  "reasonCode": "P17_LOCAL_RESULT_JSON_NORMALIZATION_REQUIRED",
+  "qualificationPerformed": false,
+  "officialPass": false,
+  "releaseAllowed": false
+}

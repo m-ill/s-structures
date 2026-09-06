@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "p11-m1-report-snapshot-verdict-v1",
+  "milestone": "P11-M1",
+  "status": "PASS",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-23T12:02:07.511Z",
+  "sourceRevision": "7a723a4+worktree",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0"
+  },
+  "deterministicRuns": 100,
+  "uniqueSnapshotHashes": 1,
+  "snapshotHash": "b791b133f18eff7d54b97f410a71aae92bf150c2fcab9969c00538369c7c8db7",
+  "verdictMatrix": {
+    "noIndependentReference": "CONDITIONAL_PASS",
+    "verifiedIndependentReference": "PASS",
+    "analysisFailure": "FAIL",
+    "auditFailure": "REVIEW",
+    "staleSnapshot": "FAIL"
+  },
+  "forbiddenHashInputs": [
+    "locale",
+    "generatedAt",
+    "outputPath",
+    "displayPath",
+    "renderedAt"
+  ],
+  "verification": [
+    {
+      "id": "P11-DATA-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-DATA-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-DATA-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-DATA-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-DATA-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-DATA-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-DATA-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-DATA-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-DATA-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-DATA-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-RPT-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-RPT-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    },
+    {
+      "id": "P11-RPT-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m1",
+      "statement": "ReportSnapshot and ReportVerdict contract verified."
+    }
+  ],
+  "artifactHash": "fc75e1bd6cdcf321903e7fe68e27a3d7fd3781fc4b7fdc8ec834710e4166dc10"
+}

@@ -1,0 +1,106 @@
+{
+  "version": "p17-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-locks/SM5b.source-lock.json",
+    "sourceLockHash": "ab19d8d087ac2afd1cb9050f96919e34cbd6a9fd9c0331265313214b415379b6",
+    "reason": "R2 selects the final evidence Engine field when an HTML page also contains a descriptive Engine field."
+  },
+  "caseId": "SM5b",
+  "ordinal": 13,
+  "official": true,
+  "family": "MODAL-CONDENSATION",
+  "title": "Rigid-diaphragm eigenvalue condensation — eccentric multi-storey building",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "locator": "Independent reference: the SAME reduced eigenproblem assembled from first principles as a 3N×3N rigid-diaphragm shear building — per-column lateral springs k = 12EI/L³ at their plan lever arms, per-column torsion GJ/L, and lumped floor masses reduced about a reference point (M_ΘΘ = Σm·r², M_UΘ = −Σm·ay, M_VΘ = +Σm·ax) — solved with the DENSE generalised eigensolver scipy.linalg.eigh, a different solver and a separate implementation from STRIX's sparse eigsh. The rigid-diaphragm kinematics (u = U − dy·Θ, v = V + dx·Θ) follow the standard treatment (A. K. Chopra, Dynamics of Structures — rigid diaphragms with stiffness eccentricity). Since STRIX's condensed system and the numpy reference are the same discrete reduced eigenproblem, agreement is expected across all modes to near machine precision — isolating and verifying the de-Zhu condensation that SM5 left at the identity.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SM5b.html",
+        "byteLength": 27584,
+        "sha256": "9941ccd7dcb28b235916cb6a282f5277f6491d444608f67329fa5f78795830cf"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 33,
+        "printedPageEnd": 35
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SM5b.pdf",
+        "byteLength": 143897,
+        "sha256": "286cc30fdaecdf9b24c4536a3b59fe98f45ec854b9d90fc02edb456c96e18ca1",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 3
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.05%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Eigenvalue ω² (rad²/s²)",
+      "probe": "Mode 1 (mx29 my18 rmz42)",
+      "strix": "2070.118745",
+      "reference": "2070.117026",
+      "delta": "+0.00010%"
+    },
+    "resultRowCount": 6
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_6_OF_6",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SM5b.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SM5b/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "b936235cee051d02b8902c98ff11e609c790d282a79f91c029e4ce4da2b1c0bc"
+}

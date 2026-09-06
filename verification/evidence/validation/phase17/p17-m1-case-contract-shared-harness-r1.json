@@ -1,0 +1,440 @@
+{
+  "version": "p17-m1-case-contract-shared-harness-evidence-v1",
+  "auditDate": "2026-08-28",
+  "phase": 17,
+  "milestone": "P17-M1",
+  "status": "CONTRACT_READY_NO_BENCHMARK_RUNS",
+  "claimBoundary": {
+    "proven": "The canonical Phase 17 case contract and shared harness are ready for case-by-case use.",
+    "notProven": "No structural model, solver result, benchmark value, case PASS, STRIX R4 run, MIDAS R4 run, performance result or release claim is produced by M1."
+  },
+  "predecessorBindings": {
+    "m0Closure": {
+      "path": "verification/evidence/validation/phase17/p17-m0-validation-closure-r3.json",
+      "byteLength": 32677,
+      "sha256": "d7475f8a5140603b0fc6b43d44c81a29b8aedbc301a012c6fba6b51c37e0f0aa",
+      "closureHash": "4b0b748eadad0d48b2ffa80f9dbae7d37b2d4c1a808b4390fae1b9bc7abae224"
+    },
+    "m0R4Qualification": {
+      "path": "verification/evidence/validation/phase17/p17-m0-documentation-qualification-r4.json",
+      "byteLength": 6200,
+      "sha256": "f45b9e2c9e54a6d293a28f6147a4078af14167c227a680ec10707e48b8cafb56",
+      "correctionHash": "9e6ac01fa6f11c9898e82b9dba5c72cd160ecfec4d77a0b6d2f6744d975ccb47"
+    },
+    "m0R4Document": {
+      "path": "docs/phase17/reviews/P17-M0-CODE-AND-ARTIFACT-REVIEW-ADDENDUM-R4.md",
+      "byteLength": 5041,
+      "sha256": "86edc6b0ecbeba74bd398b76667b8013b6e7f4a9aadf3ae7b6f01ef9839cbe7c"
+    },
+    "sourceRegistry": {
+      "path": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+      "byteLength": 15448,
+      "sha256": "b03f71277c7bd24b2bf70603e43fe974e576c09df92a908601eb5c3ece9ce51c",
+      "registryHash": "de4b442ab56af5b14a907d320b85281a04b3f66ab5f75f9073a3f563df09f79c"
+    }
+  },
+  "frameworkInventory": {
+    "officialCaseCount": 21,
+    "customCaseCount": 1,
+    "officialOrder": [
+      "SB1",
+      "SB2",
+      "SB3",
+      "SB5",
+      "SB6",
+      "SB7",
+      "SB8",
+      "SB9",
+      "SB10",
+      "SB12",
+      "PD1",
+      "SM5",
+      "SM5b",
+      "SM6",
+      "SR1",
+      "SR2",
+      "SR2b",
+      "P3S2",
+      "SP1",
+      "SH1",
+      "TH1"
+    ],
+    "customCaseIds": [
+      "P3S2-SS"
+    ],
+    "requiredFilesPerCase": 19,
+    "generatedScaffoldFileCount": 419,
+    "scaffoldAggregateHash": "e2aa8bae4d4a091c107bf289487d6255ba5357e6c264592e59ba927e5f481786",
+    "runtimeManifestSchemaCount": 16,
+    "runtimeManifestSchemas": [
+      "verification/specs/phase17/canonical-input-schema.json",
+      "verification/specs/phase17/capture-index-schema.json",
+      "verification/specs/phase17/case-evidence-schema.json",
+      "verification/specs/phase17/case-manifest-schema.json",
+      "verification/specs/phase17/comparison-schema.json",
+      "verification/specs/phase17/expected-values-schema.json",
+      "verification/specs/phase17/model-equivalence-schema.json",
+      "verification/specs/phase17/probe-manifest-schema.json",
+      "verification/specs/phase17/reference-manifest-schema.json",
+      "verification/specs/phase17/report-manifest-schema.json",
+      "verification/specs/phase17/review-signoff-schema.json",
+      "verification/specs/phase17/run-record-schema.json",
+      "verification/specs/phase17/source-manifest-schema.json",
+      "verification/specs/phase17/sstructures-input-schema.json",
+      "verification/specs/phase17/suite-manifest-schema.json",
+      "verification/specs/phase17/tolerance-manifest-schema.json"
+    ],
+    "implementationFileCount": 36,
+    "implementationAggregateHash": "adfc7e8f9456d88b4624726e02ee573d930f01e66031bd6bf816717cd5a54faa",
+    "implementationFiles": [
+      {
+        "path": "tests/p17-m1-framework-contract.mjs",
+        "byteLength": 20392,
+        "sha256": "49733c6b001d00388800e9e015d92221522ebb92afde39ec8454255aeb366851"
+      },
+      {
+        "path": "tests/p17-m1-json-schema-validator.mjs",
+        "byteLength": 5209,
+        "sha256": "6d6e1a1bbea7070f335d9137b2ef468995e10caf2220b01e8d14944c7f09aa75"
+      },
+      {
+        "path": "verification/framework/phase17/appendOnlyRunStore.mjs",
+        "byteLength": 15986,
+        "sha256": "be14c2f6cc7b67341ee99c5cbcee41a106396edf5971b7937c5ab3ca6333b072"
+      },
+      {
+        "path": "verification/framework/phase17/canonical.mjs",
+        "byteLength": 2677,
+        "sha256": "b89a272e848bc56f02f08331a2d461e5b410b0d203781a8cd16defd74ebca934"
+      },
+      {
+        "path": "verification/framework/phase17/caseModelBuilder.mjs",
+        "byteLength": 3410,
+        "sha256": "a14db016bb22e19b419a83ecc5417a9cb1924b492e6a6c0cb455faeb51b5d32f"
+      },
+      {
+        "path": "verification/framework/phase17/comparisonEvaluator.mjs",
+        "byteLength": 4313,
+        "sha256": "86283e7ed7db30d9f895a51f9456f887630b50b0208b7ebbc36d9abe0212b06c"
+      },
+      {
+        "path": "verification/framework/phase17/constants.mjs",
+        "byteLength": 4574,
+        "sha256": "cd87342fa1551873e0c19e2777ce7002efdada00df2a2ca195fe13f34a9fdc84"
+      },
+      {
+        "path": "verification/framework/phase17/evidenceReport.mjs",
+        "byteLength": 19715,
+        "sha256": "832146d90cf8c6b86d1d10d0f614c759e9814e6c05300e31656c8c92d48e2b47"
+      },
+      {
+        "path": "verification/framework/phase17/index.mjs",
+        "byteLength": 434,
+        "sha256": "d8d32e9140d741939484515fc3fb3a3ee2bf16fc3e8a51a9f4fd680470854195"
+      },
+      {
+        "path": "verification/framework/phase17/isolatedSuiteRunner.mjs",
+        "byteLength": 10762,
+        "sha256": "044f544004444b6442e609e71d79981edc82623fe4fb67ac9184e34e2ab75682"
+      },
+      {
+        "path": "verification/framework/phase17/manifestValidation.mjs",
+        "byteLength": 32204,
+        "sha256": "c0a7ae0ea7eca54abd79f933f541246463cb612384c9ae44112cdcc2ee20d6c8"
+      },
+      {
+        "path": "verification/framework/phase17/productAdapter.mjs",
+        "byteLength": 10154,
+        "sha256": "601f30c6a2096caead524da892cecac6e67dfc176f948624fa217ba643ba6c0d"
+      },
+      {
+        "path": "verification/framework/phase17/referenceRepository.mjs",
+        "byteLength": 5953,
+        "sha256": "1409552f6b53f84a23d8cd86785f228f571692c60d235c1032b69af9da4acf43"
+      },
+      {
+        "path": "verification/framework/phase17/scaffoldBuilder.mjs",
+        "byteLength": 24302,
+        "sha256": "137d8652e56feb0c3f6db8973cb1c00634ce8bd6e985bb7b6128d73727c9f28c"
+      },
+      {
+        "path": "verification/harnesses/check-p17-m1-boundaries.mjs",
+        "byteLength": 11256,
+        "sha256": "40d7d2192dc5c16c3942afd01ebd459ecda9abc36ca541e714b7d8ea1f61a3f5"
+      },
+      {
+        "path": "verification/harnesses/json-schema-strict.mjs",
+        "byteLength": 19821,
+        "sha256": "0447d0c27f7a87ea0168a0a01516316bd151ae7014c8a496e6abd2fd47185422"
+      },
+      {
+        "path": "verification/harnesses/p17-m1-isolation-fixture.mjs",
+        "byteLength": 1064,
+        "sha256": "87c058398867edb9fbebe3167ad9d171a78d3ef07de816846e87d8ed36fabe6d"
+      },
+      {
+        "path": "verification/runners/run-p17-case.mjs",
+        "byteLength": 3488,
+        "sha256": "cd6fe01c828397e2d739869fcbb73303b82121c9b3d80e3dadc71e911d252154"
+      },
+      {
+        "path": "verification/runners/run-p17-suite.mjs",
+        "byteLength": 2031,
+        "sha256": "45787350ee7a7b85c27fac1e3ac81995f997e71707f6263bcf64342dccc038cd"
+      },
+      {
+        "path": "verification/runners/scaffold-p17-m1.mjs",
+        "byteLength": 866,
+        "sha256": "8d251f81dec3f9b87e9d9ed7d100ef085c487ddc7f181417fbe0743da08999d4"
+      },
+      {
+        "path": "verification/specs/phase17/canonical-input-schema.json",
+        "byteLength": 2636,
+        "sha256": "fc28c1725dd2be88121415565c8ad5ce86170c6abc62eafa1472755840da3ac1"
+      },
+      {
+        "path": "verification/specs/phase17/capture-index-schema.json",
+        "byteLength": 2197,
+        "sha256": "c07df61bc7a24c1e4e9d4c89097e884bcd92e1f29e36df7ca13b87277f45766f"
+      },
+      {
+        "path": "verification/specs/phase17/case-evidence-schema.json",
+        "byteLength": 5384,
+        "sha256": "3318fc2a4398bcd290f9769ff36b354ab0a8cef61eaf16a6f181e185f89e3b31"
+      },
+      {
+        "path": "verification/specs/phase17/case-manifest-schema.json",
+        "byteLength": 13346,
+        "sha256": "e9adeccd89df8ac8d45a709822dc3c907eafdfa7b861b67a301b60cf2cd0d82a"
+      },
+      {
+        "path": "verification/specs/phase17/comparison-schema.json",
+        "byteLength": 3262,
+        "sha256": "50a1772c711691f7acae01d28c0a80ef61d8f75f5bbf4e3ccafcbef571ccbf32"
+      },
+      {
+        "path": "verification/specs/phase17/expected-values-schema.json",
+        "byteLength": 1507,
+        "sha256": "819ccdb1cba71149b8b8a887f5fa6fe920952bbc5747d35dd0ccb0d5b1cc8011"
+      },
+      {
+        "path": "verification/specs/phase17/model-equivalence-schema.json",
+        "byteLength": 2404,
+        "sha256": "0bc2b932eca4fe3dfb6a0eeb3972fc9b26257deba23510d9c5dfaef929b13d32"
+      },
+      {
+        "path": "verification/specs/phase17/probe-manifest-schema.json",
+        "byteLength": 2039,
+        "sha256": "8711919859b0c393c416f63bdd499bb02709c97433489a573674fbdf765f362b"
+      },
+      {
+        "path": "verification/specs/phase17/reference-manifest-schema.json",
+        "byteLength": 3291,
+        "sha256": "5d5d9fcbf42cf89ff6d59ea96f61ce1211a749688180e0f14bb20a0b3fc92997"
+      },
+      {
+        "path": "verification/specs/phase17/report-manifest-schema.json",
+        "byteLength": 2309,
+        "sha256": "df0a7a8444e8698752850e9fcbd01ad29cafd8060214e225ad0600f2afb0bbef"
+      },
+      {
+        "path": "verification/specs/phase17/review-signoff-schema.json",
+        "byteLength": 1488,
+        "sha256": "223123ae2fe228c0a46a74e301042d72220d86bad027c258316ef58a6a3ad887"
+      },
+      {
+        "path": "verification/specs/phase17/run-record-schema.json",
+        "byteLength": 3823,
+        "sha256": "92cfcd0f5a75c755bf8f413c14236b8f03554b666ea4f9625a16021b1e5c2a65"
+      },
+      {
+        "path": "verification/specs/phase17/source-manifest-schema.json",
+        "byteLength": 2455,
+        "sha256": "e8928c13bf0a9e4cc11738fecd7de0a577b32db85942c1bce309bdd8c2a2d410"
+      },
+      {
+        "path": "verification/specs/phase17/sstructures-input-schema.json",
+        "byteLength": 970,
+        "sha256": "9cf0bfabf24bd3f6a3533adb79cc8242b9aa0670b1c4820b152e62a9004d446c"
+      },
+      {
+        "path": "verification/specs/phase17/suite-manifest-schema.json",
+        "byteLength": 5241,
+        "sha256": "240c8a910420ceb5f9a6466cf4d8a466f9742c9422a66e774d724db45a88a848"
+      },
+      {
+        "path": "verification/specs/phase17/tolerance-manifest-schema.json",
+        "byteLength": 2348,
+        "sha256": "5b0a472b7400c0dd88ec3a4ef9417b4e88efb3c1e7196925c4b222d189a241fb"
+      }
+    ]
+  },
+  "responsibilitySeparation": {
+    "modelBuilder": "verification/framework/phase17/caseModelBuilder.mjs",
+    "referenceRepository": "verification/framework/phase17/referenceRepository.mjs",
+    "productAdapter": "verification/framework/phase17/productAdapter.mjs",
+    "comparisonEvaluator": "verification/framework/phase17/comparisonEvaluator.mjs",
+    "appendOnlyWriter": "verification/framework/phase17/appendOnlyRunStore.mjs",
+    "isolatedRunner": "verification/framework/phase17/isolatedSuiteRunner.mjs",
+    "evidenceReport": "verification/framework/phase17/evidenceReport.mjs",
+    "productPublicEntrypoint": "src/index.js"
+  },
+  "checks": [
+    {
+      "id": "P17-M1-G01",
+      "purpose": "official/custom scaffold and strict manifests",
+      "commandStatus": "PASS",
+      "resultHash": "0cb36c842b6acea04845cfaba2f08744feaa069ba7f516c2a34cb5101fa2bdf3"
+    },
+    {
+      "id": "P17-M1-G02",
+      "purpose": "strict schema validator and nested mutations",
+      "commandStatus": "PASS",
+      "resultHash": "3e81801bcc2c42b833ee3d13fba1a34fbf473074365d127fdbc60c77ff4ee99c"
+    },
+    {
+      "id": "P17-M1-G03",
+      "purpose": "framework, isolation, append-only, adapter and report negative tests",
+      "commandStatus": "PASS",
+      "resultHash": "7f0c9a1628f28b0a07143de49e77f8ceb0489b720fd2597464ad8f6cd2647820"
+    },
+    {
+      "id": "P17-M1-G04",
+      "purpose": "active Phase 17 import/reference boundary",
+      "commandStatus": "PASS",
+      "resultHash": "e64d517bbabca95d71344bb63c41e1ca192360e4dae93d1543b1c8e18e96bf1f"
+    },
+    {
+      "id": "P17-M1-G05",
+      "purpose": "sealed M0 source-custody regression",
+      "commandStatus": "PASS",
+      "resultHash": "17186109461a14550fd463e69e0dc91f65437782849c9a1bf93ec89b9efc8c64"
+    }
+  ],
+  "contractSmoke": {
+    "processIsolatedCaseCount": 22,
+    "officialCaseCount": 21,
+    "customCaseCount": 1,
+    "contractValidatedCount": 22,
+    "failedCount": 0,
+    "timedOutCount": 0,
+    "spawnBlockedCount": 0,
+    "deterministicOfficialOrder": true,
+    "benchmarkExecuted": false,
+    "solverExecuted": false
+  },
+  "negativeTests": {
+    "isolationSequence": [
+      "CONTRACT_VALIDATED",
+      "FAILED",
+      "CONTRACT_VALIDATED",
+      "TIMED_OUT",
+      "CONTRACT_VALIDATED"
+    ],
+    "isolationPolicyBlocks": [
+      "P17_ENTRYPOINT_PATH_ESCAPE",
+      "P17_CHILD_POLICY_ENV_RESERVED"
+    ],
+    "appendOnlyTamperClasses": [
+      "CONTENT",
+      "UNDECLARED_FILE",
+      "UNDECLARED_DIRECTORY",
+      "SYMLINK_OR_JUNCTION"
+    ],
+    "productPolicyBlocks": [
+      "VERSION",
+      "REFERENCE_PAYLOAD",
+      "FALLBACK",
+      "EXTERNAL_RUNTIME"
+    ],
+    "reportTamperClasses": [
+      "EVIDENCE_HASH",
+      "CAPTURE_INDEX_HASH",
+      "CAPTURE_BINDING"
+    ],
+    "schemaMutations": [
+      "nested deletion",
+      "nested additional property",
+      "oneOf ambiguity",
+      "local $ref",
+      "unknown keyword lint",
+      "date-time",
+      "NaN"
+    ]
+  },
+  "architectureBoundary": {
+    "activePhase17ProductToVerificationImports": 0,
+    "activePhase17DeepProductImports": 0,
+    "activePhase17PublicProductImports": 1,
+    "activePhase17ReferenceLeakage": 0,
+    "evidenceReportSolverImports": 0,
+    "activePhase17ImportCycles": 0,
+    "auditHash": "e703be248b4e8758f7d178492643676be4f26e457ca9a654103557fd039aa658",
+    "claimScope": "M1 proves zero deep imports and zero reference leakage only for the canonical Phase 17 runtime. Historical verification and generic production examples remain explicit release debt."
+  },
+  "historicalReleaseDebt": {
+    "status": "OPEN_RELEASE_DEBT",
+    "legacyVerificationProductImportCount": 141,
+    "legacyVerificationDeepProductImportCount": 133,
+    "legacyVerificationDeepProductFileCount": 54,
+    "genericProductionExpectedValueDebtCount": 2,
+    "genericProductionExpectedValueDebt": [
+      {
+        "path": "src/examples/verification.js",
+        "code": "GENERIC_EXPECTED_VALUES_IN_PRODUCTION",
+        "occurrenceCount": 11
+      },
+      {
+        "path": "src/index.js",
+        "code": "GENERIC_VERIFICATION_EXAMPLE_PUBLICLY_EXPORTED",
+        "occurrenceCount": 1
+      }
+    ]
+  },
+  "m0R4CarryForward": {
+    "priorStatus": "OPEN_SCHEMA_DEBT_CARRIED_TO_M1",
+    "m1AuthoritativeRecordStatus": "CLOSED_FOR_M1_AUTHORITATIVE_RECORDS",
+    "strictSchemaDefinitionCount": 16,
+    "unknownKeywordPolicy": "FAIL_CLOSED",
+    "storedArtifactValidation": "INDEPENDENTLY_RUNNABLE",
+    "mutationCoverage": [
+      "nested deletion",
+      "nested additional property",
+      "oneOf ambiguity",
+      "local $ref",
+      "unknown keyword lint",
+      "date-time",
+      "NaN"
+    ],
+    "historicalM0R3SchemasModified": false
+  },
+  "resultCounters": {
+    "benchmarkExecutionCount": 0,
+    "solverExecutionCount": 0,
+    "engineeringResultCount": 0,
+    "structuralModelCount": 0,
+    "chromeCaptureCount": 0,
+    "caseReportCount": 0,
+    "officialTerminalCaseCount": 0,
+    "officialPassCount": 0,
+    "strixR4RunCount": 0,
+    "midasR4RunCount": 0,
+    "performanceComparisonCount": 0
+  },
+  "releaseAllowed": false,
+  "finalDesignTransferAllowed": false,
+  "nextMilestone": {
+    "id": "P17-M2",
+    "caseId": "SB1",
+    "entryCondition": "M1 framework closure is immutable; SB1 source/reference/probe/tolerance/model locks must still be completed before any product run."
+  },
+  "reasonCodes": [
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION",
+    "FOUR_INDEPENDENT_REVIEWER_APPROVALS_PENDING",
+    "STRIX_RAW_RECORD_ARCHIVE_AND_PUBLISHED_SHA_UNAVAILABLE",
+    "LEGACY_VERIFICATION_DEEP_IMPORT_DEBT_OPEN",
+    "GENERIC_PRODUCTION_EXPECTED_VALUE_DEBT_OPEN"
+  ],
+  "evidencePath": "verification/evidence/validation/phase17/p17-m1-case-contract-shared-harness-r1.json",
+  "evidenceHash": "7d0508ddd33c98a5bbdc67d515f14ff98e2e5e75f7c45ad50ab5febd2b29441e"
+}

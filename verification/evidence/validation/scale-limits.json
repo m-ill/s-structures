@@ -1,0 +1,53 @@
+{
+  "version": "p4-scale-limits-v1",
+  "generatedAt": "2026-07-03T02:40:35.020Z",
+  "recommended": {
+    "routineInteractiveMemberLimit": 1000,
+    "reviewRequiredAboveMembers": 2000,
+    "longRunValidationRequiredAtMembers": 4000
+  },
+  "rows": [
+    {
+      "id": "scale-0500",
+      "targetBays": 8,
+      "stories": 2,
+      "nodeCount": 243,
+      "memberCount": 450,
+      "generationMs": 0.919,
+      "analysisMs": 17.415,
+      "analysisStatus": "ng",
+      "comboCount": 0
+    },
+    {
+      "id": "scale-1000",
+      "targetBays": 12,
+      "stories": 2,
+      "nodeCount": 507,
+      "memberCount": 962,
+      "generationMs": 0.389,
+      "analysisMs": 29.482,
+      "analysisStatus": "ng",
+      "comboCount": 0
+    },
+    {
+      "id": "scale-2000",
+      "targetBays": 18,
+      "stories": 2,
+      "nodeCount": 1083,
+      "memberCount": 2090,
+      "generationMs": 1.356,
+      "analysisMs": null,
+      "analysisStatus": "deferred-long-run"
+    },
+    {
+      "id": "scale-4000",
+      "targetBays": 25,
+      "stories": 2,
+      "nodeCount": 2028,
+      "memberCount": 3952,
+      "generationMs": 0.883,
+      "analysisMs": null,
+      "analysisStatus": "deferred-long-run"
+    }
+  ]
+}

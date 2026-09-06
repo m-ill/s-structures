@@ -1,0 +1,442 @@
+{
+  "schemaVersion": "p18-case-evidence-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "caseId": "SR2b",
+  "engineStatus": "PASS",
+  "officialBenchmarkStatus": "INPUT_BLOCKED",
+  "officialPassClaimed": false,
+  "verdict": "ENGINE_PASS_SOURCE_BLOCKED",
+  "method": "production 3-D L-plan truss-braced frame with three rigid diaphragms, Ux-Uy-Rz mass reduction and signed axial-force RSA recovery",
+  "source": {
+    "publicPage": "https://dcr-st.com/verification/SR2b.html",
+    "suite": "STRIX Verification 21",
+    "sourceLimitations": [
+      "exact L-shaped plan coordinates and four-frame placement/connectivity",
+      "complete El Centro five-percent response-spectrum ordinate table",
+      "member numbering required to map the published brace-force probes"
+    ]
+  },
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/dynamics/modalCombination.js",
+    "src/results/rsa/memberForces.js"
+  ],
+  "modeling": {
+    "fixture": "complete three-storey L-plan braced-frame engine qualification model",
+    "nodeCount": 24,
+    "storeys": 3,
+    "diaphragmCount": 3
+  },
+  "result": {
+    "version": "p18-strix21-completion-v1",
+    "id": "SR2b",
+    "status": "ENGINE_PASS_SOURCE_BLOCKED",
+    "engineStatus": "PASS",
+    "officialBenchmarkStatus": "INPUT_BLOCKED",
+    "officialPassClaimed": false,
+    "formulation": "production 3-D L-plan truss-braced frame with three rigid diaphragms, Ux-Uy-Rz mass reduction and signed axial-force RSA recovery",
+    "model": {
+      "fixture": "complete three-storey L-plan braced-frame engine qualification model",
+      "nodeCount": 24,
+      "storeys": 3,
+      "diaphragmCount": 3
+    },
+    "engineResults": [
+      {
+        "method": "SRSS",
+        "modeCount": 9,
+        "periods": [
+          0.07452912885534121,
+          0.04023461142799107,
+          0.03458263376941934,
+          0.02653957220397041,
+          0.018255354857335458,
+          0.014349409995921499,
+          0.012335582708684484,
+          0.009911507188959097,
+          0.008524025751733616
+        ],
+        "frequenciesHz": [
+          13.417572637149291,
+          24.85422288195143,
+          28.91624757869882,
+          37.67958248589993,
+          54.77844762892544,
+          69.68927644301945,
+          81.06629606528284,
+          100.89282900525441,
+          117.31545975170478
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 0.9999999999924107,
+            "displacement": 0.0006101229207305204,
+            "baseShear": 58.47737559959849,
+            "memberForceStatus": "available"
+          },
+          "y": {
+            "participatingMassRatio": 0.9999999999978837,
+            "displacement": 0.0004676431635766153,
+            "baseShear": 67.52494423748739,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "b9a10d86abe03a221fb730d706f3675e6847eacb1bd89cfe3096fdf98c8b7e60"
+      },
+      {
+        "method": "CQC",
+        "modeCount": 9,
+        "periods": [
+          0.07452912885534121,
+          0.04023461142799107,
+          0.03458263376941934,
+          0.02653957220397041,
+          0.018255354857335458,
+          0.014349409995921499,
+          0.012335582708684484,
+          0.009911507188959097,
+          0.008524025751733616
+        ],
+        "frequenciesHz": [
+          13.417572637149291,
+          24.85422288195143,
+          28.91624757869882,
+          37.67958248589993,
+          54.77844762892544,
+          69.68927644301945,
+          81.06629606528284,
+          100.89282900525441,
+          117.31545975170478
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 0.9999999999924107,
+            "displacement": 0.0006117822152901411,
+            "baseShear": 66.14679238279639,
+            "memberForceStatus": "available"
+          },
+          "y": {
+            "participatingMassRatio": 0.9999999999978837,
+            "displacement": 0.000468577781940148,
+            "baseShear": 74.0674074113899,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "bac4f553fee4118b80dc198d7bf6083abd92744c934cb5511d54198b742ab294"
+      },
+      {
+        "method": "ABS",
+        "modeCount": 9,
+        "periods": [
+          0.07452912885534121,
+          0.04023461142799107,
+          0.03458263376941934,
+          0.02653957220397041,
+          0.018255354857335458,
+          0.014349409995921499,
+          0.012335582708684484,
+          0.009911507188959097,
+          0.008524025751733616
+        ],
+        "frequenciesHz": [
+          13.417572637149291,
+          24.85422288195143,
+          28.91624757869882,
+          37.67958248589993,
+          54.77844762892544,
+          69.68927644301945,
+          81.06629606528284,
+          100.89282900525441,
+          117.31545975170478
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 0.9999999999924107,
+            "displacement": 0.00070950645197428,
+            "baseShear": 107.03719352816856,
+            "memberForceStatus": "available"
+          },
+          "y": {
+            "participatingMassRatio": 0.9999999999978837,
+            "displacement": 0.0006297627909740731,
+            "baseShear": 106.14646700592962,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "9778129828c8ab82c256a9ddb06cf7b4febeaaf0707353d076c2746764b1c3e6"
+      },
+      {
+        "method": "NRC10",
+        "modeCount": 9,
+        "periods": [
+          0.07452912885534121,
+          0.04023461142799107,
+          0.03458263376941934,
+          0.02653957220397041,
+          0.018255354857335458,
+          0.014349409995921499,
+          0.012335582708684484,
+          0.009911507188959097,
+          0.008524025751733616
+        ],
+        "frequenciesHz": [
+          13.417572637149291,
+          24.85422288195143,
+          28.91624757869882,
+          37.67958248589993,
+          54.77844762892544,
+          69.68927644301945,
+          81.06629606528284,
+          100.89282900525441,
+          117.31545975170478
+        ],
+        "massAuditPassed": true,
+        "directions": {
+          "x": {
+            "participatingMassRatio": 0.9999999999924107,
+            "displacement": 0.0006101229207305204,
+            "baseShear": 58.47737559959849,
+            "memberForceStatus": "available"
+          },
+          "y": {
+            "participatingMassRatio": 0.9999999999978837,
+            "displacement": 0.0004676431635766153,
+            "baseShear": 67.52494423748739,
+            "memberForceStatus": "available"
+          }
+        },
+        "runHash": "9c0b090e7d6222eff5ab68803c833569cfb10ff9648d77964613c1ed5f64e2b9"
+      }
+    ],
+    "maximumAxialFamilyResponse": 24.985784532282196,
+    "probes": [
+      {
+        "id": "SR2b-SRSS-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.0006101229207305204,
+        "reference": 0.0006101229207305204,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-SRSS-X-BASE-SHEAR-CLOSURE",
+        "actual": 58.47737559959849,
+        "reference": 58.47737559959849,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-SRSS-Y-DISPLACEMENT-CLOSURE",
+        "actual": 0.0004676431635766153,
+        "reference": 0.0004676431635766153,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-SRSS-Y-BASE-SHEAR-CLOSURE",
+        "actual": 67.52494423748739,
+        "reference": 67.52494423748739,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-CQC-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.0006117822152901411,
+        "reference": 0.0006117822152901411,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-CQC-X-BASE-SHEAR-CLOSURE",
+        "actual": 66.14679238279639,
+        "reference": 66.14679238279638,
+        "errorPct": 2.1483815319362334e-14,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-CQC-Y-DISPLACEMENT-CLOSURE",
+        "actual": 0.000468577781940148,
+        "reference": 0.00046857778194014807,
+        "errorPct": -1.156907363379844e-14,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-CQC-Y-BASE-SHEAR-CLOSURE",
+        "actual": 74.0674074113899,
+        "reference": 74.06740741138988,
+        "errorPct": 1.9186380638748668e-14,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-ABS-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.00070950645197428,
+        "reference": 0.00070950645197428,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-ABS-X-BASE-SHEAR-CLOSURE",
+        "actual": 107.03719352816856,
+        "reference": 107.03719352816856,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-ABS-Y-DISPLACEMENT-CLOSURE",
+        "actual": 0.0006297627909740731,
+        "reference": 0.0006297627909740731,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-ABS-Y-BASE-SHEAR-CLOSURE",
+        "actual": 106.14646700592962,
+        "reference": 106.14646700592962,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-NRC10-X-DISPLACEMENT-CLOSURE",
+        "actual": 0.0006101229207305204,
+        "reference": 0.0006101229207305204,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-NRC10-X-BASE-SHEAR-CLOSURE",
+        "actual": 58.47737559959849,
+        "reference": 58.47737559959849,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-NRC10-Y-DISPLACEMENT-CLOSURE",
+        "actual": 0.0004676431635766153,
+        "reference": 0.0004676431635766153,
+        "errorPct": 0,
+        "unit": "m",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-NRC10-Y-BASE-SHEAR-CLOSURE",
+        "actual": 67.52494423748739,
+        "reference": 67.52494423748739,
+        "errorPct": 0,
+        "unit": "kN",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-9
+        },
+        "passed": true
+      },
+      {
+        "id": "SR2b-TRUSS-MEMBER-FORCE-RECOVERY",
+        "actual": 24.985784532282196,
+        "reference": 0,
+        "unit": "force",
+        "tolerance": {
+          "type": "minimum-exclusive",
+          "value": 1e-12
+        },
+        "passed": true
+      }
+    ],
+    "missingOfficialInputs": [
+      "exact L-shaped plan coordinates and four-frame placement/connectivity",
+      "complete El Centro five-percent response-spectrum ordinate table",
+      "member numbering required to map the published brace-force probes"
+    ],
+    "publicReferenceValues": {
+      "frequenciesHz": [
+        3.0592,
+        3.1188
+      ],
+      "lumpedMassKipS2PerIn": 1.24224,
+      "floorMmiKipInS2": 174907.4,
+      "trussMemberCount": 84
+    },
+    "engineeringHash": "0eeaf37b2d06ba1eda893090b634fcb40a4910e1044b22f50b7ce395f4ebaf5f"
+  },
+  "audit": {
+    "probeCount": 17,
+    "failedProbeCount": 0,
+    "engineeringHash": "0eeaf37b2d06ba1eda893090b634fcb40a4910e1044b22f50b7ce395f4ebaf5f"
+  }
+}

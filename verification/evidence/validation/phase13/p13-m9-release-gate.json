@@ -1,0 +1,25 @@
+{
+  "version": "p13-m9-evidence-v1",
+  "phase": "Phase 13",
+  "milestone": "P13-M9",
+  "status": "BLOCKED",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "blockers": ["full-regression-timeout-after-300s", "office-pilot-evidence-required", "engineering-cross-validation-required-for-final-design-transfer"],
+  "fullRegression": {
+    "status": "INCOMPLETE",
+    "timeoutSeconds": 300,
+    "testFailuresObserved": 0,
+    "note": "The suite remained green through the initial milestone/modeling/analysis/report sequence but did not finish before the bounded timeout."
+  },
+  "release": {
+    "workflowReleaseQualified": false,
+    "frameElasticOfficePilotAllowed": false,
+    "engineeringCrossValidationQualified": false,
+    "finalDesignTransferAllowed": false,
+    "shellDesignTransferAllowed": false,
+    "openSeesRuntimeUsed": false,
+    "externalSolverRuntimeDependency": false,
+    "nonlinearInScope": false
+  },
+  "verificationRecords": [{ "id": "P13-RG-CONTRACT", "status": "PASS" }, { "id": "P13-RG-PILOT", "status": "BLOCKED" }]
+}

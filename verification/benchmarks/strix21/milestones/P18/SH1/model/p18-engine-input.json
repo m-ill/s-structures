@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "p18-engine-input-snapshot-v1",
+  "caseId": "SH1",
+  "qualificationScope": "S-Structures production-engine input snapshot; not an assertion of full STRIX model equivalence",
+  "method": "native modular P-My-Mz hinge: FEMA/ASCE backbone, elastic unload, monotone PCHIP capacity, Bresler radial projection, 12-DOF zero-length wrapper",
+  "productionModules": [
+    "src/nonlinear/materials/pmmHinge3d.js",
+    "src/nonlinear/math/monotonePchip.js",
+    "src/nonlinear/elements/zeroLengthPmmHinge3d.js"
+  ],
+  "input": {
+    "version": "p18-pmm-hinge-3d-v1",
+    "id": "SH1-NATIVE-PMM-HINGE",
+    "axialStiffness": 10000000,
+    "rotationalStiffnessY": 10000000000,
+    "rotationalStiffnessZ": 10000000000,
+    "momentY": {
+      "mu": 100000000,
+      "thetaP": 0.02,
+      "thetaPC": 0.04,
+      "rc": 1.25,
+      "rr": 0.2
+    },
+    "momentZ": {
+      "mu": 100000000,
+      "thetaP": 0.02,
+      "thetaPC": 0.04,
+      "rc": 1.25,
+      "rr": 0.2
+    },
+    "interactionExponent": 1.5,
+    "axialCapacityTableY": null,
+    "axialCapacityTableZ": null,
+    "axialReference": 0,
+    "projectionCapacityMode": "current-backbone-ordinate",
+    "propertyHash": "459007a23ed9acdbe2ac598341d774f62cc8c9ae996448f43c4b89bf4e84ae7f"
+  },
+  "publicSourceLimitations": [],
+  "engineeringHash": "370f28f2bdc3eeab9991de7afb3e221e6ebd45ad1a8838fc935bc29738075d86"
+}

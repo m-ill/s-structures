@@ -1,0 +1,37 @@
+# Server runtime data (users, projects, uploads) — never source.
+data/
+
+# Logs and local scratch
+*.log
+.tmp-*/
+tmp/
+.playwright-cli/
+__pycache__/
+*.py[cod]
+node_modules/
+.env
+.env.*
+!.env.example
+output/publication/
+output/revalidation/
+
+# Large import inputs are never committed; use fixtures or generators.
+*.dwg
+*.las
+*.laz
+*.e57
+
+# Release build output is regenerable via `npm run build:release`.
+output/release/
+
+# Phase 11 raw qualification artifacts and generated bilingual deliverables.
+reports/phase11/
+output/pdf/phase11/
+tmp/pdfs/phase11/
+
+# Phase 16 verification workspace scratch and TeX intermediates.
+tmp/verification/
+output/verification/**/*.aux
+output/verification/**/*.out
+output/pdf/**/*.aux
+output/pdf/**/*.out

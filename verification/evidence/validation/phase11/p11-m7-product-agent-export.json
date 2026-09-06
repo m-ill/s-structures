@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "p11-m7-product-agent-export-v1",
+  "milestone": "P11-M7",
+  "status": "PASS",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-24T03:51:22.833Z",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0"
+  },
+  "reportSnapshotHash": "176d0b742366e5edab3c29e810b60c14676d215579a40699b1d0e6fd756bb406",
+  "figureManifestHash": "232afb27f5902f1ac6d94ba384f936ab9b47607dce581e74d7c668167e075bfa",
+  "artifactManifestHash": "85b64d1c0119165e21fbe09bfa23e2c449257cfb820a396e33975e75485dfed3",
+  "qualification": {
+    "actionCount": 8,
+    "uiAgentPlanHashParity": true,
+    "uiAgentJobParity": true,
+    "snapshotHashParity": true,
+    "artifactHashParity": true,
+    "idempotentPlanCalls": 2,
+    "historyRows": 2,
+    "cancelAcknowledgementMs": 0.03199999999992542,
+    "cancelWithinTwoSeconds": true,
+    "reasonRemediationCoverage": 1,
+    "browserFalseSuccess": 0,
+    "unsupportedAdapterFalseSuccess": 0,
+    "featureCatalogSynchronized": true,
+    "agentContractSynchronized": true
+  },
+  "verification": [
+    {
+      "id": "P11-UI-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-UI-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-01",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-02",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-03",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-04",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-05",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-06",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-07",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-09",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-10",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-11",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-API-12",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    },
+    {
+      "id": "P11-PAR-08",
+      "status": "PASS",
+      "test": "npm run test:p11:m7",
+      "statement": "Shared UI/Agent plan, job status, cancellation, artifact history and explicit fallback behavior verified."
+    }
+  ],
+  "passedVerificationCount": 25,
+  "artifacts": {
+    "productPdfManifest": "output/pdf/phase11/PILOT-OFFICE-01/P11-M6-PILOT/artifact-manifest.json",
+    "agentContract": "docs/user-manual/agent-contract.json",
+    "help": "help.html"
+  },
+  "limitations": [
+    "The product workflow requires a complete seven-scene figure manifest before export can start.",
+    "Independent engineering reference remains unavailable; the pilot verdict remains conditional."
+  ],
+  "artifactHash": "71cfd37bb67e34da07f5cde16355b5a5f0d703d1da7ca65041902d1a9068c238"
+}

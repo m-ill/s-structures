@@ -1,0 +1,1254 @@
+{
+  "version": "p17-m0-source-value-presence-audit-v3",
+  "auditId": "P17-M0-SOURCE-VALUE-PRESENCE-AUDIT-R3",
+  "supersedes": {
+    "path": "verification/evidence/validation/phase17/p17-m0-source-value-presence-audit-r2.json",
+    "sha256": "97642822ae9d474f9f63dc37161afad494655931e7e49a97d72243eb8976c58b",
+    "auditHash": "668f00d23d72c6c32ba7e54002f7a36cf22ce298645c66559d8415e5078ff843",
+    "reason": "R2 checked each concatenated HTML row anywhere in the page but did not enforce catalog order; R3 records increasing match offsets and requires all 131 rows in locked order."
+  },
+  "auditDate": "2026-08-28",
+  "scope": "Published STRIX metadata, HTML result-row sequence and document-global PDF text-value presence only; no solver execution, PDF row-local parity or independent acceptance claim.",
+  "sourceRoot": "STRIX-verification-21",
+  "extractor": {
+    "path": "verification/benchmarks/strix21/reporting/audit_p17_m0_sources.py",
+    "sha256": "6076295ac1d5a9d8ac000b1d7d03ff5ce1dd67fd2c470a3cc6cac72632fd9d66",
+    "command": "npm run audit:p17:m0:check",
+    "pythonImplementation": "CPython",
+    "pythonVersion": "3.12.13",
+    "pypdfVersion": "6.10.0",
+    "normalizationVersion": "p17-visible-text-nfkc-no-whitespace-v1"
+  },
+  "sources": {
+    "registry": {
+      "path": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+      "byteLength": 15448,
+      "sha256": "b03f71277c7bd24b2bf70603e43fe974e576c09df92a908601eb5c3ece9ce51c"
+    },
+    "catalog": {
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    },
+    "manual": {
+      "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+      "byteLength": 808213,
+      "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+      "pageCount": 66
+    },
+    "caseSourceHashChecks": [
+      {
+        "caseId": "SB1",
+        "kind": "HTML",
+        "expected": "893bd6bde5de6d26335545d4973afb86beea5a8c143d1c2f861c481a6cce424b",
+        "actual": "893bd6bde5de6d26335545d4973afb86beea5a8c143d1c2f861c481a6cce424b",
+        "matched": true
+      },
+      {
+        "caseId": "SB1",
+        "kind": "PDF",
+        "expected": "4c96038e5095bab05c8e6d05017b617b78853d4af8fad8f1128d0b219dc2d375",
+        "actual": "4c96038e5095bab05c8e6d05017b617b78853d4af8fad8f1128d0b219dc2d375",
+        "matched": true
+      },
+      {
+        "caseId": "SB2",
+        "kind": "HTML",
+        "expected": "e2c832bf51687e3de36f9ddf92584041c188a14e3ce75cf59b606eb396f3796c",
+        "actual": "e2c832bf51687e3de36f9ddf92584041c188a14e3ce75cf59b606eb396f3796c",
+        "matched": true
+      },
+      {
+        "caseId": "SB2",
+        "kind": "PDF",
+        "expected": "f8bb2c6383d1fdee92670e3bffbd91e33427598f3ab7e7ca2b09b98645dbb236",
+        "actual": "f8bb2c6383d1fdee92670e3bffbd91e33427598f3ab7e7ca2b09b98645dbb236",
+        "matched": true
+      },
+      {
+        "caseId": "SB3",
+        "kind": "HTML",
+        "expected": "cca2b1d4d8bf60101ce69cb9f3f980a3cdfc76c98d4071410273bb4a5bb9e54a",
+        "actual": "cca2b1d4d8bf60101ce69cb9f3f980a3cdfc76c98d4071410273bb4a5bb9e54a",
+        "matched": true
+      },
+      {
+        "caseId": "SB3",
+        "kind": "PDF",
+        "expected": "f14299c36b1976f148d21cb96c44367bcd3a2d32891f23970fd9c292a0ea6779",
+        "actual": "f14299c36b1976f148d21cb96c44367bcd3a2d32891f23970fd9c292a0ea6779",
+        "matched": true
+      },
+      {
+        "caseId": "SB5",
+        "kind": "HTML",
+        "expected": "6ec9046dba5a21f5e17327a4128db4697071f5a1f138a33046bac71d6d498cfe",
+        "actual": "6ec9046dba5a21f5e17327a4128db4697071f5a1f138a33046bac71d6d498cfe",
+        "matched": true
+      },
+      {
+        "caseId": "SB5",
+        "kind": "PDF",
+        "expected": "2fb8c6d25eec0ba9a6d5bb84e9a2832fa9d938f537dd5ed168cc431a1ac2cc2d",
+        "actual": "2fb8c6d25eec0ba9a6d5bb84e9a2832fa9d938f537dd5ed168cc431a1ac2cc2d",
+        "matched": true
+      },
+      {
+        "caseId": "SB6",
+        "kind": "HTML",
+        "expected": "67ebb3a3521a364c3bc87e551d784040dd3896cb57001917257d1bf3805289f5",
+        "actual": "67ebb3a3521a364c3bc87e551d784040dd3896cb57001917257d1bf3805289f5",
+        "matched": true
+      },
+      {
+        "caseId": "SB6",
+        "kind": "PDF",
+        "expected": "1a925c6192731390b57d4c93e67c5170fae2944ccbb1c9a49970dda057c77da5",
+        "actual": "1a925c6192731390b57d4c93e67c5170fae2944ccbb1c9a49970dda057c77da5",
+        "matched": true
+      },
+      {
+        "caseId": "SB7",
+        "kind": "HTML",
+        "expected": "efe15b9fd365cf8665612170928d59239db7ccef9455cf22ea8cde505b16eeb5",
+        "actual": "efe15b9fd365cf8665612170928d59239db7ccef9455cf22ea8cde505b16eeb5",
+        "matched": true
+      },
+      {
+        "caseId": "SB7",
+        "kind": "PDF",
+        "expected": "308128543ed39e1c78ad41fb7fb2d69e965b2df65813c305cb10f45e4fb33d0f",
+        "actual": "308128543ed39e1c78ad41fb7fb2d69e965b2df65813c305cb10f45e4fb33d0f",
+        "matched": true
+      },
+      {
+        "caseId": "SB8",
+        "kind": "HTML",
+        "expected": "c23d5f4ad713d29bc500df3ba39f522b927a5b36bdb0b1a8ddf65c66dc5246bb",
+        "actual": "c23d5f4ad713d29bc500df3ba39f522b927a5b36bdb0b1a8ddf65c66dc5246bb",
+        "matched": true
+      },
+      {
+        "caseId": "SB8",
+        "kind": "PDF",
+        "expected": "63e5eba1d8a2ce8ab495c3d2b840dc27f8c4d4ae827695f4d8f56668fda698d2",
+        "actual": "63e5eba1d8a2ce8ab495c3d2b840dc27f8c4d4ae827695f4d8f56668fda698d2",
+        "matched": true
+      },
+      {
+        "caseId": "SB9",
+        "kind": "HTML",
+        "expected": "21af82e5103e72be0f7d67eb7fb45d8c3f851a86c480c90650a5030f6e0a4c3d",
+        "actual": "21af82e5103e72be0f7d67eb7fb45d8c3f851a86c480c90650a5030f6e0a4c3d",
+        "matched": true
+      },
+      {
+        "caseId": "SB9",
+        "kind": "PDF",
+        "expected": "424539a9fca575bc5a9f2c6f518a92ccce36a05406349652fd6fbcf19fb62a16",
+        "actual": "424539a9fca575bc5a9f2c6f518a92ccce36a05406349652fd6fbcf19fb62a16",
+        "matched": true
+      },
+      {
+        "caseId": "SB10",
+        "kind": "HTML",
+        "expected": "5e8c05036b68a566831337233f2a415942298cef0519efe26d0f7f735d33a611",
+        "actual": "5e8c05036b68a566831337233f2a415942298cef0519efe26d0f7f735d33a611",
+        "matched": true
+      },
+      {
+        "caseId": "SB10",
+        "kind": "PDF",
+        "expected": "9242f92ed9286c80c7d88ec9d5e25a3dd36923f0a4ab1bfc8e38e537279d2a21",
+        "actual": "9242f92ed9286c80c7d88ec9d5e25a3dd36923f0a4ab1bfc8e38e537279d2a21",
+        "matched": true
+      },
+      {
+        "caseId": "SB12",
+        "kind": "HTML",
+        "expected": "471386b3e33449642c8671ead670aa2f8b6ba0bbaecbdd39d153a062d4387058",
+        "actual": "471386b3e33449642c8671ead670aa2f8b6ba0bbaecbdd39d153a062d4387058",
+        "matched": true
+      },
+      {
+        "caseId": "SB12",
+        "kind": "PDF",
+        "expected": "73193b203af3ce02f4d57b445fa45faf1aa3b65d5e23a369004a4f8f3edcfb4b",
+        "actual": "73193b203af3ce02f4d57b445fa45faf1aa3b65d5e23a369004a4f8f3edcfb4b",
+        "matched": true
+      },
+      {
+        "caseId": "PD1",
+        "kind": "HTML",
+        "expected": "8db759dcd1ddeb598e6105915bf97e894ae6f9235401d7950da49a4cdbb8009c",
+        "actual": "8db759dcd1ddeb598e6105915bf97e894ae6f9235401d7950da49a4cdbb8009c",
+        "matched": true
+      },
+      {
+        "caseId": "PD1",
+        "kind": "PDF",
+        "expected": "54f526436dbfc0bfccbd19c028432277b0a6ca5a8bb6074f66f00f77c50af62f",
+        "actual": "54f526436dbfc0bfccbd19c028432277b0a6ca5a8bb6074f66f00f77c50af62f",
+        "matched": true
+      },
+      {
+        "caseId": "SM5",
+        "kind": "HTML",
+        "expected": "ef1983f2b7841dfe400592621076c5f8cfffb6970cde2a16fe26fb867cb52eef",
+        "actual": "ef1983f2b7841dfe400592621076c5f8cfffb6970cde2a16fe26fb867cb52eef",
+        "matched": true
+      },
+      {
+        "caseId": "SM5",
+        "kind": "PDF",
+        "expected": "7fab02c125dde6869d55991a41701dc70b9c5f9ba0ac805f8f81300c9e4baf7a",
+        "actual": "7fab02c125dde6869d55991a41701dc70b9c5f9ba0ac805f8f81300c9e4baf7a",
+        "matched": true
+      },
+      {
+        "caseId": "SM5b",
+        "kind": "HTML",
+        "expected": "9941ccd7dcb28b235916cb6a282f5277f6491d444608f67329fa5f78795830cf",
+        "actual": "9941ccd7dcb28b235916cb6a282f5277f6491d444608f67329fa5f78795830cf",
+        "matched": true
+      },
+      {
+        "caseId": "SM5b",
+        "kind": "PDF",
+        "expected": "286cc30fdaecdf9b24c4536a3b59fe98f45ec854b9d90fc02edb456c96e18ca1",
+        "actual": "286cc30fdaecdf9b24c4536a3b59fe98f45ec854b9d90fc02edb456c96e18ca1",
+        "matched": true
+      },
+      {
+        "caseId": "SM6",
+        "kind": "HTML",
+        "expected": "d1f1d0f3f546819f2c9e08fc6ec303d338f73cdea28f62b1d9440b9c8a3bb30d",
+        "actual": "d1f1d0f3f546819f2c9e08fc6ec303d338f73cdea28f62b1d9440b9c8a3bb30d",
+        "matched": true
+      },
+      {
+        "caseId": "SM6",
+        "kind": "PDF",
+        "expected": "4accd47c4dd2ef0c070eccfc604ccabec11974398c433b6362356f13f99bc6ab",
+        "actual": "4accd47c4dd2ef0c070eccfc604ccabec11974398c433b6362356f13f99bc6ab",
+        "matched": true
+      },
+      {
+        "caseId": "SR1",
+        "kind": "HTML",
+        "expected": "3496801d1c40b07c7925d8c48fa5ac8366140b2cf84de09519ab2ea35b1358ed",
+        "actual": "3496801d1c40b07c7925d8c48fa5ac8366140b2cf84de09519ab2ea35b1358ed",
+        "matched": true
+      },
+      {
+        "caseId": "SR1",
+        "kind": "PDF",
+        "expected": "4e1715f2c191b674620eeedbeef24519dcecc8d96d135f0f2e5baf286969094c",
+        "actual": "4e1715f2c191b674620eeedbeef24519dcecc8d96d135f0f2e5baf286969094c",
+        "matched": true
+      },
+      {
+        "caseId": "SR2",
+        "kind": "HTML",
+        "expected": "cee27f345d3cc84613429b59d4f29f34ced7cb262e19a881e48d904f1548a857",
+        "actual": "cee27f345d3cc84613429b59d4f29f34ced7cb262e19a881e48d904f1548a857",
+        "matched": true
+      },
+      {
+        "caseId": "SR2",
+        "kind": "PDF",
+        "expected": "8dedadc1dc750c97c9004d8570b2346992b888e48f175a9a47f22f8f0fe436e7",
+        "actual": "8dedadc1dc750c97c9004d8570b2346992b888e48f175a9a47f22f8f0fe436e7",
+        "matched": true
+      },
+      {
+        "caseId": "SR2b",
+        "kind": "HTML",
+        "expected": "7a3ce7b7f6d4d8f69b88e2296c5f89539b27e7b728828bca4c02fc8ea80a1291",
+        "actual": "7a3ce7b7f6d4d8f69b88e2296c5f89539b27e7b728828bca4c02fc8ea80a1291",
+        "matched": true
+      },
+      {
+        "caseId": "SR2b",
+        "kind": "PDF",
+        "expected": "e19791efd03319af613c50210f7ae026d0b6c50df63be634dffe444ec6eaeeda",
+        "actual": "e19791efd03319af613c50210f7ae026d0b6c50df63be634dffe444ec6eaeeda",
+        "matched": true
+      },
+      {
+        "caseId": "P3S2",
+        "kind": "HTML",
+        "expected": "b1396f8208339334542036b58d15b9deea20d209db71d600a16068637b46e61a",
+        "actual": "b1396f8208339334542036b58d15b9deea20d209db71d600a16068637b46e61a",
+        "matched": true
+      },
+      {
+        "caseId": "P3S2",
+        "kind": "PDF",
+        "expected": "d14b2efd8f556be526e67ec8f6d94920310c94a3f7d33f7054a466f843479443",
+        "actual": "d14b2efd8f556be526e67ec8f6d94920310c94a3f7d33f7054a466f843479443",
+        "matched": true
+      },
+      {
+        "caseId": "SP1",
+        "kind": "HTML",
+        "expected": "71854ed23f786af5efd41ccda8871dbe6abca9ca6556de73358a2a09905a2625",
+        "actual": "71854ed23f786af5efd41ccda8871dbe6abca9ca6556de73358a2a09905a2625",
+        "matched": true
+      },
+      {
+        "caseId": "SP1",
+        "kind": "PDF",
+        "expected": "4c24181f26b87fcb427300a44b7aa7521fc264daeb1b5826e61df6d92f9a41be",
+        "actual": "4c24181f26b87fcb427300a44b7aa7521fc264daeb1b5826e61df6d92f9a41be",
+        "matched": true
+      },
+      {
+        "caseId": "SH1",
+        "kind": "HTML",
+        "expected": "5cada32ebdfdaf6c61c44415a9671a9772289c4a909b90e4b0c02af700469c1a",
+        "actual": "5cada32ebdfdaf6c61c44415a9671a9772289c4a909b90e4b0c02af700469c1a",
+        "matched": true
+      },
+      {
+        "caseId": "SH1",
+        "kind": "PDF",
+        "expected": "2ee851fd60027f973b4d41ad8399ac90efe7d29f035b54364f65d6cfb5c1db2a",
+        "actual": "2ee851fd60027f973b4d41ad8399ac90efe7d29f035b54364f65d6cfb5c1db2a",
+        "matched": true
+      },
+      {
+        "caseId": "TH1",
+        "kind": "HTML",
+        "expected": "fbe97f61e787663933cbb907562710665fd2a0c4eeccb0b8ba969ff2dbd81ca3",
+        "actual": "fbe97f61e787663933cbb907562710665fd2a0c4eeccb0b8ba969ff2dbd81ca3",
+        "matched": true
+      },
+      {
+        "caseId": "TH1",
+        "kind": "PDF",
+        "expected": "ae141acc08e54d39c0ffc79b9def935e8f56017eec1629f4d8fd4158a659dfd9",
+        "actual": "ae141acc08e54d39c0ffc79b9def935e8f56017eec1629f4d8fd4158a659dfd9",
+        "matched": true
+      }
+    ]
+  },
+  "summary": {
+    "officialCaseCount": 21,
+    "catalogResultRowCount": 131,
+    "htmlMetadataPresenceAssertionCount": 42,
+    "htmlMetadataPresenceMatchedCount": 42,
+    "htmlScalarPresenceAssertionCount": 393,
+    "htmlScalarPresenceMatchedCount": 393,
+    "htmlResultRowOrderedSequenceAssertionCount": 131,
+    "htmlResultRowOrderedSequenceMatchedCount": 131,
+    "casePdfGlobalTextValuePresenceAssertionCount": 393,
+    "casePdfGlobalTextValuePresenceMatchedCount": 391,
+    "casePdfGlobalTextValuePresenceMissingCount": 2,
+    "manualLockedStartPageTitleAssertionCount": 21,
+    "manualLockedStartPageTitleMatchedCount": 21,
+    "sourceHashCheckCount": 42,
+    "sourceHashMatchedCount": 42
+  },
+  "methodLimitations": [
+    "PDF value checks search normalized text document-wide; repeated strings can satisfy multiple scalar presence assertions and are not row-local parity.",
+    "The SH1 two-row clipping classification is a visual source assessment retained separately from text extraction.",
+    "No STRIX, MIDAS or S-Structures solver was executed in this audit."
+  ],
+  "knownSourcePresentationDefects": [
+    {
+      "id": "P17-D005",
+      "caseId": "SH1",
+      "description": "The individual SH1 PDF does not fully display two final PCHIP rows: row 10 has only a visible label and row 11 is absent from the rendered table; HTML/catalog retains both complete rows.",
+      "visualClassification": "TWO_PCHIP_ROWS_NOT_FULLY_VISIBLE",
+      "textExtractionMissingScalarPresenceAssertions": [
+        {
+          "caseId": "SH1",
+          "kind": "PDF_GLOBAL_TEXT",
+          "field": "STRIX",
+          "expected": "1.3391×10⁸",
+          "matched": false,
+          "rowIndex": 11
+        },
+        {
+          "caseId": "SH1",
+          "kind": "PDF_GLOBAL_TEXT",
+          "field": "Reference",
+          "expected": "1.3391×10⁸",
+          "matched": false,
+          "rowIndex": 11
+        }
+      ],
+      "sourcePdfPageIndex": 2,
+      "sourcePdfDisplayPageNumber": 3,
+      "classification": "SOURCE_PRESENTATION_DEFECT_NOT_SOLVER_RESULT"
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "SB1",
+      "catalogRowCount": 4,
+      "html": {
+        "path": "STRIX-verification-21/html/SB1.html",
+        "sha256": "893bd6bde5de6d26335545d4973afb86beea5a8c143d1c2f861c481a6cce424b",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 12,
+        "scalarPresenceMatchedCount": 12,
+        "rowSequenceAssertionCount": 4,
+        "rowSequenceMatchedCount": 4
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB1.pdf",
+        "sha256": "4c96038e5095bab05c8e6d05017b617b78853d4af8fad8f1128d0b219dc2d375",
+        "pageCount": 2,
+        "globalTextValuePresenceAssertionCount": 12,
+        "globalTextValuePresenceMatchedCount": 12,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Euler-Bernoulli 1D cantilever (tip deflection)",
+        "matched": true,
+        "expectedPdfPageIndex": 2,
+        "expectedDisplayPageNumber": 3,
+        "lockedPrintedPageStart": 1,
+        "lockedPrintedPageEnd": 2,
+        "pdfPageIndexes": [
+          1,
+          2
+        ],
+        "displayPageNumbers": [
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "caseId": "SB2",
+      "catalogRowCount": 1,
+      "html": {
+        "path": "STRIX-verification-21/html/SB2.html",
+        "sha256": "e2c832bf51687e3de36f9ddf92584041c188a14e3ce75cf59b606eb396f3796c",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 3,
+        "scalarPresenceMatchedCount": 3,
+        "rowSequenceAssertionCount": 1,
+        "rowSequenceMatchedCount": 1
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB2.pdf",
+        "sha256": "f8bb2c6383d1fdee92670e3bffbd91e33427598f3ab7e7ca2b09b98645dbb236",
+        "pageCount": 2,
+        "globalTextValuePresenceAssertionCount": 3,
+        "globalTextValuePresenceMatchedCount": 3,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "NAFEMS LE1 elliptic membrane (tangential edge stress at D)",
+        "matched": true,
+        "expectedPdfPageIndex": 4,
+        "expectedDisplayPageNumber": 5,
+        "lockedPrintedPageStart": 3,
+        "lockedPrintedPageEnd": 4,
+        "pdfPageIndexes": [
+          1,
+          4
+        ],
+        "displayPageNumbers": [
+          2,
+          5
+        ]
+      }
+    },
+    {
+      "caseId": "SB3",
+      "catalogRowCount": 1,
+      "html": {
+        "path": "STRIX-verification-21/html/SB3.html",
+        "sha256": "cca2b1d4d8bf60101ce69cb9f3f980a3cdfc76c98d4071410273bb4a5bb9e54a",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 3,
+        "scalarPresenceMatchedCount": 3,
+        "rowSequenceAssertionCount": 1,
+        "rowSequenceMatchedCount": 1
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB3.pdf",
+        "sha256": "f14299c36b1976f148d21cb96c44367bcd3a2d32891f23970fd9c292a0ea6779",
+        "pageCount": 2,
+        "globalTextValuePresenceAssertionCount": 3,
+        "globalTextValuePresenceMatchedCount": 3,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Cook's membrane (skew panel, in-plane bending on a distorted mesh)",
+        "matched": true,
+        "expectedPdfPageIndex": 6,
+        "expectedDisplayPageNumber": 7,
+        "lockedPrintedPageStart": 5,
+        "lockedPrintedPageEnd": 6,
+        "pdfPageIndexes": [
+          1,
+          6
+        ],
+        "displayPageNumbers": [
+          2,
+          7
+        ]
+      }
+    },
+    {
+      "caseId": "SB5",
+      "catalogRowCount": 8,
+      "html": {
+        "path": "STRIX-verification-21/html/SB5.html",
+        "sha256": "6ec9046dba5a21f5e17327a4128db4697071f5a1f138a33046bac71d6d498cfe",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 24,
+        "scalarPresenceMatchedCount": 24,
+        "rowSequenceAssertionCount": 8,
+        "rowSequenceMatchedCount": 8
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB5.pdf",
+        "sha256": "2fb8c6d25eec0ba9a6d5bb84e9a2832fa9d938f537dd5ed168cc431a1ac2cc2d",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 24,
+        "globalTextValuePresenceMatchedCount": 24,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Rectangular plate bending — thin plate, uniform & central point load",
+        "matched": true,
+        "expectedPdfPageIndex": 8,
+        "expectedDisplayPageNumber": 9,
+        "lockedPrintedPageStart": 7,
+        "lockedPrintedPageEnd": 9,
+        "pdfPageIndexes": [
+          1,
+          8
+        ],
+        "displayPageNumbers": [
+          2,
+          9
+        ]
+      }
+    },
+    {
+      "caseId": "SB6",
+      "catalogRowCount": 6,
+      "html": {
+        "path": "STRIX-verification-21/html/SB6.html",
+        "sha256": "67ebb3a3521a364c3bc87e551d784040dd3896cb57001917257d1bf3805289f5",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 18,
+        "scalarPresenceMatchedCount": 18,
+        "rowSequenceAssertionCount": 6,
+        "rowSequenceMatchedCount": 6
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB6.pdf",
+        "sha256": "1a925c6192731390b57d4c93e67c5170fae2944ccbb1c9a49970dda057c77da5",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 18,
+        "globalTextValuePresenceMatchedCount": 18,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Thick rectangular plate bending — transverse shear, uniform load",
+        "matched": true,
+        "expectedPdfPageIndex": 11,
+        "expectedDisplayPageNumber": 12,
+        "lockedPrintedPageStart": 10,
+        "lockedPrintedPageEnd": 12,
+        "pdfPageIndexes": [
+          1,
+          11
+        ],
+        "displayPageNumbers": [
+          2,
+          12
+        ]
+      }
+    },
+    {
+      "caseId": "SB7",
+      "catalogRowCount": 2,
+      "html": {
+        "path": "STRIX-verification-21/html/SB7.html",
+        "sha256": "efe15b9fd365cf8665612170928d59239db7ccef9455cf22ea8cde505b16eeb5",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 6,
+        "scalarPresenceMatchedCount": 6,
+        "rowSequenceAssertionCount": 2,
+        "rowSequenceMatchedCount": 2
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB7.pdf",
+        "sha256": "308128543ed39e1c78ad41fb7fb2d69e965b2df65813c305cb10f45e4fb33d0f",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 6,
+        "globalTextValuePresenceMatchedCount": 6,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Simply-supported beam on a Winkler elastic foundation (CSI 1-013)",
+        "matched": true,
+        "expectedPdfPageIndex": 14,
+        "expectedDisplayPageNumber": 15,
+        "lockedPrintedPageStart": 13,
+        "lockedPrintedPageEnd": 15,
+        "pdfPageIndexes": [
+          1,
+          14
+        ],
+        "displayPageNumbers": [
+          2,
+          15
+        ]
+      }
+    },
+    {
+      "caseId": "SB8",
+      "catalogRowCount": 6,
+      "html": {
+        "path": "STRIX-verification-21/html/SB8.html",
+        "sha256": "c23d5f4ad713d29bc500df3ba39f522b927a5b36bdb0b1a8ddf65c66dc5246bb",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 18,
+        "scalarPresenceMatchedCount": 18,
+        "rowSequenceAssertionCount": 6,
+        "rowSequenceMatchedCount": 6
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB8.pdf",
+        "sha256": "63e5eba1d8a2ce8ab495c3d2b840dc27f8c4d4ae827695f4d8f56668fda698d2",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 18,
+        "globalTextValuePresenceMatchedCount": 18,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Deep simply-supported beam — shear-flexible (Timoshenko) natural frequencies",
+        "matched": true,
+        "expectedPdfPageIndex": 17,
+        "expectedDisplayPageNumber": 18,
+        "lockedPrintedPageStart": 16,
+        "lockedPrintedPageEnd": 18,
+        "pdfPageIndexes": [
+          1,
+          17
+        ],
+        "displayPageNumbers": [
+          2,
+          18
+        ]
+      }
+    },
+    {
+      "caseId": "SB9",
+      "catalogRowCount": 3,
+      "html": {
+        "path": "STRIX-verification-21/html/SB9.html",
+        "sha256": "21af82e5103e72be0f7d67eb7fb45d8c3f851a86c480c90650a5030f6e0a4c3d",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 9,
+        "scalarPresenceMatchedCount": 9,
+        "rowSequenceAssertionCount": 3,
+        "rowSequenceMatchedCount": 3
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB9.pdf",
+        "sha256": "424539a9fca575bc5a9f2c6f518a92ccce36a05406349652fd6fbcf19fb62a16",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 9,
+        "globalTextValuePresenceMatchedCount": 9,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Rigid steel portal frame under UDL — bending + axial deformation (CSI 1-018)",
+        "matched": true,
+        "expectedPdfPageIndex": 20,
+        "expectedDisplayPageNumber": 21,
+        "lockedPrintedPageStart": 19,
+        "lockedPrintedPageEnd": 21,
+        "pdfPageIndexes": [
+          1,
+          20
+        ],
+        "displayPageNumbers": [
+          2,
+          21
+        ]
+      }
+    },
+    {
+      "caseId": "SB10",
+      "catalogRowCount": 8,
+      "html": {
+        "path": "STRIX-verification-21/html/SB10.html",
+        "sha256": "5e8c05036b68a566831337233f2a415942298cef0519efe26d0f7f735d33a611",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 24,
+        "scalarPresenceMatchedCount": 24,
+        "rowSequenceAssertionCount": 8,
+        "rowSequenceMatchedCount": 8
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB10.pdf",
+        "sha256": "9242f92ed9286c80c7d88ec9d5e25a3dd36923f0a4ab1bfc8e38e537279d2a21",
+        "pageCount": 2,
+        "globalTextValuePresenceAssertionCount": 24,
+        "globalTextValuePresenceMatchedCount": 24,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Asymmetric determinate two-bar truss (brace axial force)",
+        "matched": true,
+        "expectedPdfPageIndex": 23,
+        "expectedDisplayPageNumber": 24,
+        "lockedPrintedPageStart": 22,
+        "lockedPrintedPageEnd": 23,
+        "pdfPageIndexes": [
+          1,
+          23
+        ],
+        "displayPageNumbers": [
+          2,
+          24
+        ]
+      }
+    },
+    {
+      "caseId": "SB12",
+      "catalogRowCount": 12,
+      "html": {
+        "path": "STRIX-verification-21/html/SB12.html",
+        "sha256": "471386b3e33449642c8671ead670aa2f8b6ba0bbaecbdd39d153a062d4387058",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 36,
+        "scalarPresenceMatchedCount": 36,
+        "rowSequenceAssertionCount": 12,
+        "rowSequenceMatchedCount": 12
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB12.pdf",
+        "sha256": "73193b203af3ce02f4d57b445fa45faf1aa3b65d5e23a369004a4f8f3edcfb4b",
+        "pageCount": 4,
+        "globalTextValuePresenceAssertionCount": 36,
+        "globalTextValuePresenceMatchedCount": 36,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Elastic Link (twoNodeLink) Beta Angle coordinate transformation — inclined 6-DOF spring",
+        "matched": true,
+        "expectedPdfPageIndex": 25,
+        "expectedDisplayPageNumber": 26,
+        "lockedPrintedPageStart": 24,
+        "lockedPrintedPageEnd": 27,
+        "pdfPageIndexes": [
+          1,
+          25
+        ],
+        "displayPageNumbers": [
+          2,
+          26
+        ]
+      }
+    },
+    {
+      "caseId": "PD1",
+      "catalogRowCount": 4,
+      "html": {
+        "path": "STRIX-verification-21/html/PD1.html",
+        "sha256": "8db759dcd1ddeb598e6105915bf97e894ae6f9235401d7950da49a4cdbb8009c",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 12,
+        "scalarPresenceMatchedCount": 12,
+        "rowSequenceAssertionCount": 4,
+        "rowSequenceMatchedCount": 4
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/PD1.pdf",
+        "sha256": "54f526436dbfc0bfccbd19c028432277b0a6ca5a8bb6074f66f00f77c50af62f",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 12,
+        "globalTextValuePresenceMatchedCount": 12,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Tension stiffening via P-Delta analysis (CSI 1-016)",
+        "matched": true,
+        "expectedPdfPageIndex": 29,
+        "expectedDisplayPageNumber": 30,
+        "lockedPrintedPageStart": 28,
+        "lockedPrintedPageEnd": 30,
+        "pdfPageIndexes": [
+          1,
+          29
+        ],
+        "displayPageNumbers": [
+          2,
+          30
+        ]
+      }
+    },
+    {
+      "caseId": "SM5",
+      "catalogRowCount": 3,
+      "html": {
+        "path": "STRIX-verification-21/html/SM5.html",
+        "sha256": "ef1983f2b7841dfe400592621076c5f8cfffb6970cde2a16fe26fb867cb52eef",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 9,
+        "scalarPresenceMatchedCount": 9,
+        "rowSequenceAssertionCount": 3,
+        "rowSequenceMatchedCount": 3
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SM5.pdf",
+        "sha256": "7fab02c125dde6869d55991a41701dc70b9c5f9ba0ac805f8f81300c9e4baf7a",
+        "pageCount": 2,
+        "globalTextValuePresenceAssertionCount": 9,
+        "globalTextValuePresenceMatchedCount": 9,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Bathe & Wilson eigenvalue problem — ten-bay nine-storey plane frame",
+        "matched": true,
+        "expectedPdfPageIndex": 32,
+        "expectedDisplayPageNumber": 33,
+        "lockedPrintedPageStart": 31,
+        "lockedPrintedPageEnd": 32,
+        "pdfPageIndexes": [
+          1,
+          32
+        ],
+        "displayPageNumbers": [
+          2,
+          33
+        ]
+      }
+    },
+    {
+      "caseId": "SM5b",
+      "catalogRowCount": 6,
+      "html": {
+        "path": "STRIX-verification-21/html/SM5b.html",
+        "sha256": "9941ccd7dcb28b235916cb6a282f5277f6491d444608f67329fa5f78795830cf",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 18,
+        "scalarPresenceMatchedCount": 18,
+        "rowSequenceAssertionCount": 6,
+        "rowSequenceMatchedCount": 6
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SM5b.pdf",
+        "sha256": "286cc30fdaecdf9b24c4536a3b59fe98f45ec854b9d90fc02edb456c96e18ca1",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 18,
+        "globalTextValuePresenceMatchedCount": 18,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Rigid-diaphragm eigenvalue condensation — eccentric multi-storey building",
+        "matched": true,
+        "expectedPdfPageIndex": 34,
+        "expectedDisplayPageNumber": 35,
+        "lockedPrintedPageStart": 33,
+        "lockedPrintedPageEnd": 35,
+        "pdfPageIndexes": [
+          1,
+          34
+        ],
+        "displayPageNumbers": [
+          2,
+          35
+        ]
+      }
+    },
+    {
+      "caseId": "SM6",
+      "catalogRowCount": 8,
+      "html": {
+        "path": "STRIX-verification-21/html/SM6.html",
+        "sha256": "d1f1d0f3f546819f2c9e08fc6ec303d338f73cdea28f62b1d9440b9c8a3bb30d",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 24,
+        "scalarPresenceMatchedCount": 24,
+        "rowSequenceAssertionCount": 8,
+        "rowSequenceMatchedCount": 8
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SM6.pdf",
+        "sha256": "4accd47c4dd2ef0c070eccfc604ccabec11974398c433b6362356f13f99bc6ab",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 24,
+        "globalTextValuePresenceMatchedCount": 24,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "ASME eigenvalue frame — 3-D fixed-base pipe frame with lumped joint masses",
+        "matched": true,
+        "expectedPdfPageIndex": 37,
+        "expectedDisplayPageNumber": 38,
+        "lockedPrintedPageStart": 36,
+        "lockedPrintedPageEnd": 38,
+        "pdfPageIndexes": [
+          1,
+          37
+        ],
+        "displayPageNumbers": [
+          2,
+          38
+        ]
+      }
+    },
+    {
+      "caseId": "SR1",
+      "catalogRowCount": 8,
+      "html": {
+        "path": "STRIX-verification-21/html/SR1.html",
+        "sha256": "3496801d1c40b07c7925d8c48fa5ac8366140b2cf84de09519ab2ea35b1358ed",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 24,
+        "scalarPresenceMatchedCount": 24,
+        "rowSequenceAssertionCount": 8,
+        "rowSequenceMatchedCount": 8
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SR1.pdf",
+        "sha256": "4e1715f2c191b674620eeedbeef24519dcecc8d96d135f0f2e5baf286969094c",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 24,
+        "globalTextValuePresenceMatchedCount": 24,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Response-spectrum analysis of a two-dimensional rigid frame",
+        "matched": true,
+        "expectedPdfPageIndex": 40,
+        "expectedDisplayPageNumber": 41,
+        "lockedPrintedPageStart": 39,
+        "lockedPrintedPageEnd": 41,
+        "pdfPageIndexes": [
+          1,
+          40
+        ],
+        "displayPageNumbers": [
+          2,
+          41
+        ]
+      }
+    },
+    {
+      "caseId": "SR2",
+      "catalogRowCount": 8,
+      "html": {
+        "path": "STRIX-verification-21/html/SR2.html",
+        "sha256": "cee27f345d3cc84613429b59d4f29f34ced7cb262e19a881e48d904f1548a857",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 24,
+        "scalarPresenceMatchedCount": 24,
+        "rowSequenceAssertionCount": 8,
+        "rowSequenceMatchedCount": 8
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SR2.pdf",
+        "sha256": "8dedadc1dc750c97c9004d8570b2346992b888e48f175a9a47f22f8f0fe436e7",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 24,
+        "globalTextValuePresenceMatchedCount": 24,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Response-spectrum analysis of a three-dimensional eccentric rigid-diaphragm frame",
+        "matched": true,
+        "expectedPdfPageIndex": 43,
+        "expectedDisplayPageNumber": 44,
+        "lockedPrintedPageStart": 42,
+        "lockedPrintedPageEnd": 44,
+        "pdfPageIndexes": [
+          1,
+          43
+        ],
+        "displayPageNumbers": [
+          2,
+          44
+        ]
+      }
+    },
+    {
+      "caseId": "SR2b",
+      "catalogRowCount": 20,
+      "html": {
+        "path": "STRIX-verification-21/html/SR2b.html",
+        "sha256": "7a3ce7b7f6d4d8f69b88e2296c5f89539b27e7b728828bca4c02fc8ea80a1291",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 60,
+        "scalarPresenceMatchedCount": 60,
+        "rowSequenceAssertionCount": 20,
+        "rowSequenceMatchedCount": 20
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SR2b.pdf",
+        "sha256": "e19791efd03319af613c50210f7ae026d0b6c50df63be634dffe444ec6eaeeda",
+        "pageCount": 4,
+        "globalTextValuePresenceAssertionCount": 60,
+        "globalTextValuePresenceMatchedCount": 60,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Response-spectrum analysis of a three-dimensional L-shaped braced frame",
+        "matched": true,
+        "expectedPdfPageIndex": 46,
+        "expectedDisplayPageNumber": 47,
+        "lockedPrintedPageStart": 45,
+        "lockedPrintedPageEnd": 48,
+        "pdfPageIndexes": [
+          1,
+          46
+        ],
+        "displayPageNumbers": [
+          2,
+          47
+        ]
+      }
+    },
+    {
+      "caseId": "P3S2",
+      "catalogRowCount": 4,
+      "html": {
+        "path": "STRIX-verification-21/html/P3S2.html",
+        "sha256": "b1396f8208339334542036b58d15b9deea20d209db71d600a16068637b46e61a",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 12,
+        "scalarPresenceMatchedCount": 12,
+        "rowSequenceAssertionCount": 4,
+        "rowSequenceMatchedCount": 4
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/P3S2.pdf",
+        "sha256": "d14b2efd8f556be526e67ec8f6d94920310c94a3f7d33f7054a466f843479443",
+        "pageCount": 3,
+        "globalTextValuePresenceAssertionCount": 12,
+        "globalTextValuePresenceMatchedCount": 12,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Custom stabilization parameter sensitivity (wall modal periods)",
+        "matched": true,
+        "expectedPdfPageIndex": 50,
+        "expectedDisplayPageNumber": 51,
+        "lockedPrintedPageStart": 49,
+        "lockedPrintedPageEnd": 51,
+        "pdfPageIndexes": [
+          1,
+          50
+        ],
+        "displayPageNumbers": [
+          2,
+          51
+        ]
+      }
+    },
+    {
+      "caseId": "SP1",
+      "catalogRowCount": 5,
+      "html": {
+        "path": "STRIX-verification-21/html/SP1.html",
+        "sha256": "71854ed23f786af5efd41ccda8871dbe6abca9ca6556de73358a2a09905a2625",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 15,
+        "scalarPresenceMatchedCount": 15,
+        "rowSequenceAssertionCount": 5,
+        "rowSequenceMatchedCount": 5
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SP1.pdf",
+        "sha256": "4c24181f26b87fcb427300a44b7aa7521fc264daeb1b5826e61df6d92f9a41be",
+        "pageCount": 4,
+        "globalTextValuePresenceAssertionCount": 15,
+        "globalTextValuePresenceMatchedCount": 15,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "Pushover cantilever moment hinge (CSI 1-026, moment-hinge scope)",
+        "matched": true,
+        "expectedPdfPageIndex": 53,
+        "expectedDisplayPageNumber": 54,
+        "lockedPrintedPageStart": 52,
+        "lockedPrintedPageEnd": 55,
+        "pdfPageIndexes": [
+          1,
+          53
+        ],
+        "displayPageNumbers": [
+          2,
+          54
+        ]
+      }
+    },
+    {
+      "caseId": "SH1",
+      "catalogRowCount": 11,
+      "html": {
+        "path": "STRIX-verification-21/html/SH1.html",
+        "sha256": "5cada32ebdfdaf6c61c44415a9671a9772289c4a909b90e4b0c02af700469c1a",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 33,
+        "scalarPresenceMatchedCount": 33,
+        "rowSequenceAssertionCount": 11,
+        "rowSequenceMatchedCount": 11
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SH1.pdf",
+        "sha256": "2ee851fd60027f973b4d41ad8399ac90efe7d29f035b54364f65d6cfb5c1db2a",
+        "pageCount": 4,
+        "globalTextValuePresenceAssertionCount": 33,
+        "globalTextValuePresenceMatchedCount": 31,
+        "globalTextValuePresenceMissing": [
+          {
+            "kind": "PDF_GLOBAL_TEXT",
+            "field": "STRIX",
+            "expected": "1.3391×10⁸",
+            "matched": false,
+            "rowIndex": 11
+          },
+          {
+            "kind": "PDF_GLOBAL_TEXT",
+            "field": "Reference",
+            "expected": "1.3391×10⁸",
+            "matched": false,
+            "rowIndex": 11
+          }
+        ]
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "DcrPMMHinge3d custom P-M-M column hinge — element-mechanics defense",
+        "matched": true,
+        "expectedPdfPageIndex": 57,
+        "expectedDisplayPageNumber": 58,
+        "lockedPrintedPageStart": 56,
+        "lockedPrintedPageEnd": 59,
+        "pdfPageIndexes": [
+          1,
+          57
+        ],
+        "displayPageNumbers": [
+          2,
+          58
+        ]
+      }
+    },
+    {
+      "caseId": "TH1",
+      "catalogRowCount": 3,
+      "html": {
+        "path": "STRIX-verification-21/html/TH1.html",
+        "sha256": "fbe97f61e787663933cbb907562710665fd2a0c4eeccb0b8ba969ff2dbd81ca3",
+        "metadataAssertionCount": 2,
+        "metadataMatchedCount": 2,
+        "scalarPresenceAssertionCount": 9,
+        "scalarPresenceMatchedCount": 9,
+        "rowSequenceAssertionCount": 3,
+        "rowSequenceMatchedCount": 3
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/TH1.pdf",
+        "sha256": "ae141acc08e54d39c0ffc79b9def935e8f56017eec1629f4d8fd4158a659dfd9",
+        "pageCount": 5,
+        "globalTextValuePresenceAssertionCount": 9,
+        "globalTextValuePresenceMatchedCount": 9,
+        "globalTextValuePresenceMissing": []
+      },
+      "manualTitleLocator": {
+        "kind": "MANUAL",
+        "field": "titleAtLockedStartPage",
+        "expected": "SDOF anchor for THA time integration (Newmark average-acceleration, dt convergence)",
+        "matched": true,
+        "expectedPdfPageIndex": 61,
+        "expectedDisplayPageNumber": 62,
+        "lockedPrintedPageStart": 60,
+        "lockedPrintedPageEnd": 64,
+        "pdfPageIndexes": [
+          1,
+          61
+        ],
+        "displayPageNumbers": [
+          2,
+          62
+        ]
+      }
+    }
+  ],
+  "verdict": {
+    "status": "PASS_SOURCE_CUSTODY_WITH_KNOWN_PRESENTATION_DEFECT",
+    "htmlMetadataPresence": "PASS_42_OF_42",
+    "htmlScalarPresence": "PASS_393_OF_393",
+    "htmlResultRowOrderedSequence": "PASS_131_OF_131",
+    "casePdfGlobalTextValuePresence": "OBSERVED_391_OF_393_WITH_SH1_VISUAL_TWO_ROW_CLIPPING",
+    "manualLockedStartPageTitleLocators": "PASS_21_OF_21",
+    "releaseAllowed": false
+  },
+  "auditHash": "22b669b29f7f1602926418897c769054115c8db06ac4a4976f2ced66ed6b369d"
+}

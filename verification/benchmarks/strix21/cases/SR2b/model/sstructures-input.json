@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "p17-sstructures-input-v1",
+  "caseId": "SR2b",
+  "artifactStatus": "NOT_PREPARED",
+  "payloadAbsent": true,
+  "releaseAllowed": false,
+  "productProjectSchemaVersion": "NOT_BOUND",
+  "payload": {},
+  "reasonCodes": [
+    "P17_MODEL_NOT_BUILT",
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "p17-review-signoff-v1",
+  "caseId": "SP1",
+  "status": "NOT_STARTED",
+  "releaseAllowed": false,
+  "reviewerApprovals": [
+    {
+      "role": "owner",
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    {
+      "role": "modelReviewer",
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    {
+      "role": "referenceReviewer",
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    {
+      "role": "numericalReviewer",
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    {
+      "role": "releaseReviewer",
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    }
+  ],
+  "approvedArtifactHashes": [],
+  "reasonCodes": [
+    "P17_CASE_REVIEW_NOT_STARTED",
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION"
+  ]
+}

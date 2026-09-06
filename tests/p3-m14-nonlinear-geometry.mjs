@@ -1,0 +1,238 @@
+import assert from 'node:assert/strict';
+import {
+  COROTATIONAL_BEAM_VERSION,
+  GLOBAL_EQUILIBRIUM_VERSION,
+  LOAD_CONTROL_VERSION,
+  NONLINEAR_CONVERGENCE_VERSION,
+  NONLINEAR_ASSEMBLY_VERSION,
+  NEWTON_RAPHSON_VERSION,
+  NONLINEAR_BENCHMARK_VERSION,
+  NONLINEAR_GEOMETRY_TRACE_VERSION,
+  NONLINEAR_STATE_VERSION,
+  NONLINEAR_TRACE_VERSION,
+  advanceAnalysisState,
+  buildCorotationalBeamState,
+  buildLoadControlTrace,
+  buildNonlinearGeometryGate,
+  runGlobalEquilibriumTrace,
+  buildNonlinearTangentAssembly,
+  buildNonlinearAnalysisTrace,
+  chooseLineSearchTrace,
+  createAnalysisState,
+  createPortalFrameSample,
+  evaluateConvergenceNorms,
+  geometricStiffnessTrace,
+  runNonlinearGeometryBenchmarks,
+  snapshotAnalysisState,
+  solveNewtonRaphson,
+} from '../src/index.js';
+import { createIndexAgentApi } from '../src/ui/indexBridge.js';
+
+const state = createAnalysisState({ u: 6, lambda: 0.2 });
+assert.equal(state.version, NONLINEAR_STATE_VERSION);
+const next = advanceAnalysisState(state, { dLambda: 0.1, du: [1, 0, 0, 0, 0, 0], converged: true, iterations: 3 });
+assert.equal(next.step, 1);
+assert.ok(Math.abs(next.lambda - 0.3) < 1e-12);
+assert.equal(snapshotAnalysisState(next).u[0], 1);
+const restored = createAnalysisState({ hinges: [{ id: 'H1', state: 'elastic', rotation: 0.01 }] });
+assert.equal(snapshotAnalysisState(restored).hinges[0].id, 'H1');
+const hingeSharedSource = new Map([['H2', { state: 'elastic', history: ['start'] }]]);
+const isolatedState = createAnalysisState({ hinges: hingeSharedSource, events: [{ step: 0, type: 'seed' }] });
+hingeSharedSource.get('H2').state = 'yielded';
+hingeSharedSource.get('H2').history.push('source-mutated');
+assert.equal(snapshotAnalysisState(isolatedState).hinges[0].state, 'elastic');
+assert.deepEqual(snapshotAnalysisState(isolatedState).hinges[0].history, ['start']);
+const isolatedNext = advanceAnalysisState(isolatedState, { dLambda: 0.1, du: [0], converged: true });
+isolatedState.hinges.get('H2').state = 'residual';
+isolatedState.hinges.get('H2').history.push('state-mutated');
+isolatedState.events[0].type = 'mutated';
+assert.equal(snapshotAnalysisState(isolatedNext).hinges[0].state, 'elastic');
+assert.deepEqual(snapshotAnalysisState(isolatedNext).hinges[0].history, ['start']);
+assert.equal(snapshotAnalysisState(isolatedNext).events[0].type, 'seed');
+
+const beam = buildCorotationalBeamState({ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 3, y: 0, z: 0 }, { N2: [0, 0.4, 0] });
+assert.equal(beam.version, COROTATIONAL_BEAM_VERSION);
+assert.ok(beam.length > 3);
+assert.ok(beam.rotation.e1[0] < 1);
+
+const kg = geometricStiffnessTrace({ axialForce: 100, length: 5 });
+assert.equal(kg.matrix2[0][0], 20);
+assert.equal(kg.matrix2[0][1], -20);
+
+const assemblyModel = createPortalFrameSample();
+const assemblyMemberId = assemblyModel.members[0].id;
+const assembly = buildNonlinearTangentAssembly(assemblyModel, createAnalysisState(), {
+  axialForces: { [assemblyMemberId]: 50 },
+  hinges: [{ memberId: assemblyMemberId, end: 'i', rotation: 0.02, My: 20, thetaY: 0.01 }],
+});
+assert.equal(assembly.version, NONLINEAR_ASSEMBLY_VERSION);
+assert.equal(assembly.ok, true);
+assert.ok(assembly.summary.elasticMemberCount > 0);
+assert.ok(assembly.summary.geometricMemberCount >= 1);
+assert.ok(assembly.summary.hingeCorrectionCount >= 1);
+assert.ok(assembly.summary.maxAbsTangent > 0);
+const globalEquilibrium = runGlobalEquilibriumTrace(assemblyModel, createAnalysisState(), {
+  assembly,
+  loads: [{ dof: assembly.freeDofs[0], value: 1 }],
+});
+assert.equal(globalEquilibrium.version, GLOBAL_EQUILIBRIUM_VERSION);
+assert.equal(globalEquilibrium.contract.milestone, 'P3-M14');
+assert.ok(globalEquilibrium.contract.tickets.includes('P3-T52'));
+assert.equal(globalEquilibrium.converged, true);
+assert.ok(globalEquilibrium.rows.length >= 1);
+assert.ok(globalEquilibrium.rows.every((row) => row.version === NONLINEAR_CONVERGENCE_VERSION));
+assert.ok(globalEquilibrium.summary.finalResidualNorm <= globalEquilibrium.summary.initialResidualNorm);
+const singularEquilibrium = runGlobalEquilibriumTrace({}, createAnalysisState(), {
+  assembly: {
+    version: NONLINEAR_ASSEMBLY_VERSION,
+    ok: true,
+    ndof: 1,
+    K: [[0]],
+    freeDofs: [0],
+    summary: {},
+  },
+  loads: [{ dof: 0, value: 1 }],
+});
+assert.equal(singularEquilibrium.converged, false);
+assert.equal(singularEquilibrium.reason, 'SINGULAR_TANGENT');
+assert.equal(singularEquilibrium.rows[0].solved, false);
+
+const convergence = evaluateConvergenceNorms({ force: 1e-5, displacement: 1e-5, energy: 1e-8 }, { force: 1, displacement: 1, energy: 1 });
+assert.equal(convergence.converged, true);
+
+const nr = solveNewtonRaphson({
+  initial: 1,
+  residual: (x) => x * x - 4,
+  tangent: (x) => 2 * x,
+});
+assert.equal(nr.version, NEWTON_RAPHSON_VERSION);
+assert.equal(nr.converged, true);
+assert.equal(nr.lineSearchEnabled, true);
+assert.equal(nr.convergenceReason, 'CONVERGED');
+assert.ok(nr.log.iterations.every((row) => row.lineSearch && row.lineSearch.candidates.length === 4));
+assert.ok(Math.abs(nr.x - 2) < 1e-6);
+
+const lineSearch = chooseLineSearchTrace((x) => x * x - 4, 1, 1.5, -3);
+assert.equal(lineSearch.acceptedAlpha, 0.5);
+assert.equal(lineSearch.candidates.length, 4);
+assert.equal(lineSearch.improved, true);
+
+const loadControl = buildLoadControlTrace({ increments: [0.2, 0.3] });
+assert.equal(loadControl.version, LOAD_CONTROL_VERSION);
+assert.equal(loadControl.contract.milestone, 'P3-M14');
+assert.ok(loadControl.contract.tickets.includes('P3-T52'));
+assert.equal(loadControl.rows.length, 2);
+assert.equal(loadControl.summary.stepCount, 2);
+assert.equal(loadControl.summary.convergedSteps, 2);
+assert.equal(loadControl.finalState.lambda, 0.5);
+assert.equal(loadControl.finalState.u[0], 0.5);
+assert.equal(loadControl.rows[1].stateSnapshot.u[0], 0.5);
+assert.equal(loadControl.converged, true);
+const failedLoadControl = buildLoadControlTrace({
+  increments: [0.2, 0.3],
+  initial: 1,
+  residual: (x) => x * x - 4,
+  tangent: (x) => 2 * x,
+  maxIterations: 1,
+});
+assert.equal(failedLoadControl.converged, false);
+assert.equal(failedLoadControl.rows.length, 1);
+assert.equal(failedLoadControl.rows[0].converged, false);
+assert.ok(failedLoadControl.rows[0].attemptedValue !== failedLoadControl.rows[0].acceptedValue);
+assert.equal(failedLoadControl.rows[0].acceptedValue, 0);
+assert.equal(failedLoadControl.finalState.lambda, 0);
+assert.equal(failedLoadControl.finalState.u[0], 0);
+assert.equal(failedLoadControl.finalState.events[0].type, 'nonconvergence');
+assert.equal(failedLoadControl.contract.failurePolicy, 'Record the failed step and stop unless continueOnFailure is enabled; one split retry is available when retrySplitOnFailure is true.');
+assert.equal(failedLoadControl.contract.retryPolicy, 'Failed increments expose stepSplitRecommended and can be retried as two half increments once.');
+assert.equal(failedLoadControl.rows[0].failureReview.status, 'review-required');
+assert.equal(failedLoadControl.rows[0].failureReview.stepSplitRecommended, true);
+assert.equal(failedLoadControl.rows[0].failureReview.agentDecision, 'review-load-step-or-enable-split-retry');
+assert.equal(failedLoadControl.summary.failedSteps, 1);
+assert.equal(failedLoadControl.summary.stepSplitRecommended, true);
+const splitRecoveredLoadControl = buildLoadControlTrace({
+  increments: [1],
+  retrySplitOnFailure: true,
+  maxIterations: 1,
+  residualFactory: ({ targetLambda, dLambda }) => (dLambda > 0.5 ? () => 1 : (x) => x - targetLambda),
+  tangentFactory: () => () => 1,
+});
+assert.equal(splitRecoveredLoadControl.converged, true);
+assert.equal(splitRecoveredLoadControl.rows[0].failureReview.status, 'available');
+assert.equal(splitRecoveredLoadControl.rows[0].failureReview.splitRetryAttempted, true);
+assert.equal(splitRecoveredLoadControl.rows[0].failureReview.splitRetryRecovered, true);
+assert.equal(splitRecoveredLoadControl.rows[0].failureReview.agentDecision, 'accept-split-load-step-trace');
+assert.equal(splitRecoveredLoadControl.rows[0].splitRows.length, 2);
+assert.equal(splitRecoveredLoadControl.summary.splitRetryAttempted, true);
+const continuedFailure = buildLoadControlTrace({
+  increments: [0.2, 0.3],
+  initial: 1,
+  residual: (x) => x * x - 4,
+  tangent: (x) => 2 * x,
+  maxIterations: 1,
+  continueOnFailure: true,
+});
+assert.equal(continuedFailure.converged, false);
+assert.equal(continuedFailure.rows.length, 2);
+assert.deepEqual(continuedFailure.rows.map((row) => row.step), [1, 2]);
+assert.equal(continuedFailure.finalState.step, 0);
+assert.equal(continuedFailure.finalState.lambda, 0);
+assert.equal(continuedFailure.finalState.u[0], 0);
+assert.equal(continuedFailure.finalState.events.length, 2);
+assert.equal(continuedFailure.rows[1].stateSnapshot.step, 0);
+
+const benchmarks = runNonlinearGeometryBenchmarks();
+assert.equal(benchmarks.version, NONLINEAR_BENCHMARK_VERSION);
+assert.equal(benchmarks.ok, true);
+assert.equal(benchmarks.cases.length, 2);
+assert.ok(benchmarks.cases.every((item) => ['B1', 'B2'].includes(item.id)));
+
+const model = createPortalFrameSample();
+const trace = buildNonlinearAnalysisTrace(model);
+assert.equal(trace.version, NONLINEAR_TRACE_VERSION);
+assert.ok(trace.method.control.includes('load'));
+assert.equal(trace.geometryGate.version, NONLINEAR_GEOMETRY_TRACE_VERSION);
+assert.equal(trace.geometryGate.contract.milestone, 'P3-M14');
+assert.deepEqual(trace.geometryGate.contract.tickets, ['P3-T50', 'P3-T51', 'P3-T52', 'P3-T53']);
+assert.equal(trace.geometryGate.contract.featureTicketMap.stateSnapshot, 'P3-T50');
+assert.ok(trace.geometryGate.contract.reviewFields.includes('summary.ticketCoverage'));
+assert.equal(trace.geometryGate.contracts.assembly, NONLINEAR_ASSEMBLY_VERSION);
+assert.equal(trace.geometryGate.contracts.convergence, NONLINEAR_CONVERGENCE_VERSION);
+assert.equal(trace.geometryGate.contracts.globalEquilibrium, GLOBAL_EQUILIBRIUM_VERSION);
+assert.equal(trace.geometryGate.contracts.loadControl, LOAD_CONTROL_VERSION);
+assert.equal(trace.geometryGate.summary.readyForAgentReview, true);
+assert.equal(trace.geometryGate.summary.globalEquilibriumOk, true);
+assert.equal(trace.geometryGate.summary.loadControlOk, true);
+assert.equal(trace.geometryGate.contract.maturity, 'preliminary-trace-core');
+assert.equal(trace.geometryGate.solverReview.status, 'trace-ready');
+assert.equal(trace.geometryGate.solverReview.productionEquilibriumSolver, false);
+assert.equal(trace.geometryGate.solverReview.globalResidualAssembly, 'reduced-dof-newton-trace');
+assert.equal(trace.geometryGate.solverReview.globalEquilibriumConverged, true);
+assert.equal(trace.geometryGate.solverReview.agentDecision, 'm14-ready-for-m15-review');
+assert.deepEqual(trace.geometryGate.solverReview.missing, []);
+assert.deepEqual(trace.geometryGate.summary.ticketCoverage.map((row) => row.ticket), ['P3-T50', 'P3-T51', 'P3-T52', 'P3-T53']);
+assert.ok(trace.geometryGate.summary.ticketCoverage.every((row) => row.covered));
+assert.equal(trace.geometryGate.assembly.version, NONLINEAR_ASSEMBLY_VERSION);
+assert.equal(trace.geometryGate.globalEquilibrium.version, GLOBAL_EQUILIBRIUM_VERSION);
+assert.equal(trace.geometryGate.globalEquilibrium.converged, true);
+assert.equal(trace.geometryGate.loadControl.version, LOAD_CONTROL_VERSION);
+assert.ok(trace.geometryGate.loadControl.rows.length > 0);
+assert.deepEqual(trace.geometryGate.benchmarks.requiredCases, ['B1', 'B2']);
+assert.equal(trace.geometryGate.convergence.lineSearchEnabled, true);
+assert.ok(trace.geometryGate.convergence.log.iterations[0].lineSearch.candidates.length === 4);
+assert.equal(trace.benchmarks.geometry.ok, true);
+
+const incompleteGate = buildNonlinearGeometryGate(createAnalysisState(), benchmarks, {});
+assert.equal(incompleteGate.solverReview.status, 'review-required');
+assert.equal(incompleteGate.summary.readyForAgentReview, false);
+assert.ok(incompleteGate.solverReview.missing.includes('tangent-assembly'));
+
+const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
+const apiTrace = agent.getNonlinearAnalysisTrace();
+assert.equal(apiTrace.version, NONLINEAR_TRACE_VERSION);
+assert.equal(apiTrace.benchmarks.geometry.version, NONLINEAR_BENCHMARK_VERSION);
+assert.equal(apiTrace.geometryGate.milestone, 'P3-M14');
+assert.ok(agent.getCapabilities().readApis.includes('getNonlinearAnalysisTrace'));
+assert.ok(agent.getCapabilities().dataContracts.includes('phase3NonlinearGeometryTrace'));
+
+console.log(JSON.stringify({ ok: true, version: 'p3-m14-nonlinear-geometry' }, null, 2));

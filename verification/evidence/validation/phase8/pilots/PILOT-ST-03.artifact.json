@@ -1,0 +1,88 @@
+{
+  "version": "p8-m11-pilot-artifact-v1",
+  "pilotId": "PILOT-ST-03",
+  "verificationId": "NL-PILOT-03",
+  "packageVersion": "p8-m11-pilot-package-v1",
+  "packageHash": "59994da4355da6d87a124a7f",
+  "inputHash": "edd2ea36f8a44df82d4acdea",
+  "generatedAt": "2026-07-14T23:30:00+09:00",
+  "sourceRevision": "76323c8+P8-M11-worktree",
+  "execution": {
+    "status": "blocked",
+    "engineId": "p8-production-mdof-pushover",
+    "terminationReason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+    "resultHash": null,
+    "runRecordId": null,
+    "checkpointHash": null,
+    "fallbackUsed": false,
+    "designBlocked": true,
+    "resultChannels": {
+      "resultHash": false,
+      "runRecordId": false,
+      "capacityCurve": false,
+      "hingeEvents": false,
+      "checkpointHash": false,
+      "storyResponse": false,
+      "memberResults": false,
+      "domainIdentityHash": false,
+      "fiberPmmHash": false,
+      "historyManifestHash": false,
+      "energyAudit": false,
+      "reason": true,
+      "designBlocked": true,
+      "capabilityHash": true
+    },
+    "summary": {
+      "durationMs": 24.737800000002608,
+      "resultCount": 1,
+      "reason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+      "capabilityHash": "8d2a11b23c5c053f742ea6db"
+    },
+    "outputManifest": null,
+    "requiredResultFields": [
+      "reason",
+      "designBlocked",
+      "capabilityHash"
+    ]
+  },
+  "report": {
+    "path": "docs/verification/phase8/pilots/PILOT-ST-03.md",
+    "reportHash": "e00474131680cdc27abfe3e5",
+    "resultHash": null,
+    "format": "json+markdown"
+  },
+  "externalComparison": {
+    "status": "MISSING",
+    "solver": null,
+    "solverVersion": null,
+    "sourceHash": null,
+    "channels": [],
+    "tolerance": null,
+    "comparisons": [],
+    "comparisonAudit": {
+      "ok": false,
+      "unexpectedChannels": [],
+      "duplicateChannels": [],
+      "comparisonAuditHash": "98a9382eba9bbfaa9ca0795e"
+    },
+    "conventionAudit": null
+  },
+  "ownerReview": {
+    "status": "PENDING",
+    "reviewerId": null,
+    "reviewedAt": null,
+    "note": null
+  },
+  "reproducibility": {
+    "status": "PASS",
+    "command": "npm run qualify:p8:m11 -- --pilot=PILOT-ST-03",
+    "requiredInputHash": "edd2ea36f8a44df82d4acdea",
+    "requiredPackageHash": "59994da4355da6d87a124a7f"
+  },
+  "qualification": {
+    "status": "candidate",
+    "designBlocked": true,
+    "reason": "INDEPENDENT_EXTERNAL_COMPARISON_REQUIRED"
+  },
+  "artifactHash": "efe89f08afcf53f2af19ea5a"
+}

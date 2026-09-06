@@ -1,0 +1,113 @@
+{
+  "version": "p9-release-manifest-v1",
+  "generatedAt": "2026-07-21T06:26:03.282Z",
+  "sourceRevision": "1f3cf1d+worktree",
+  "phase": "Phase 9",
+  "implementation": {
+    "status": "implementation-complete-qualification-blocked",
+    "completedMilestones": [
+      "P9-M0",
+      "P9-M1",
+      "P9-M2",
+      "P9-M3",
+      "P9-M4",
+      "P9-M6",
+      "P9-M7",
+      "P9-M9"
+    ],
+    "requiredMilestones": [
+      "P9-M0",
+      "P9-M1",
+      "P9-M2",
+      "P9-M3",
+      "P9-M4",
+      "P9-M5",
+      "P9-M6",
+      "P9-M7",
+      "P9-M8",
+      "P9-M9",
+      "P9-M10"
+    ],
+    "implementedMilestones": [
+      "P9-M0",
+      "P9-M1",
+      "P9-M2",
+      "P9-M3",
+      "P9-M4",
+      "P9-M5",
+      "P9-M6",
+      "P9-M7",
+      "P9-M8",
+      "P9-M9",
+      "P9-M10"
+    ],
+    "activeMilestone": "external-qualification"
+  },
+  "computeQualification": {
+    "grade": "G2",
+    "status": "release-gate-evaluated-external-qualification-blocked",
+    "candidate": true,
+    "gpuImplemented": true,
+    "qualifiedProfileCount": 1,
+    "fullProfileMatrixQualified": false,
+    "hybridElasticImplemented": true,
+    "elasticCandidateQualified": false,
+    "autoGpuAllowed": false,
+    "localNumericQualified": true,
+    "localPerformanceQualified": false,
+    "elasticQualifiedProfileCount": 0,
+    "sparseEigenCpuQualified": true,
+    "eigenGpuQualified": false,
+    "eigenAutoGpuAllowed": false,
+    "nonlinearBatchCpuQualified": true,
+    "nonlinearGpuShadowQualified": true,
+    "nonlinearGpuProductionQualified": false,
+    "nonlinearAutoGpuAllowed": false,
+    "nonlinearResidentCpuQualified": true,
+    "nonlinearPushoverNlthImplemented": true,
+    "nonlinearMSizeQualified": false,
+    "productWorkflowIntegrated": true,
+    "automaticGpuRoutingAllowed": false
+  },
+  "release": {
+    "status": "blocked-missing-qualification-evidence",
+    "allowed": false,
+    "designTransferAllowed": false,
+    "gate": "P9-M10",
+    "decision": "REQUIRED_EXTERNAL_AND_FULL_REGRESSION_EVIDENCE_MISSING",
+    "missingEvidence": [
+      "CPU_ONLY_FULL_REGRESSION",
+      "MULTI_VENDOR_BROWSER_HARDWARE_MATRIX",
+      "M_TIER_PUSHOVER_NLTH_PERFORMANCE_UI_CANCEL",
+      "ELASTIC_GPU_END_TO_END_SPEED_THRESHOLD"
+    ]
+  },
+  "evidence": {
+    "baseline": "351c200ac632dad388c590cd7d542e98c2b99b497d91bb65ba109109402778a2",
+    "debtRegistry": "1de838c5262a06ed0d5cf112c8c8916b3f1ee0e2785610133cb6ae104b9c3cff",
+    "m1CommonCompute": "c97ae53aac9f182eedae44a3314423ac5c521da23b678e8146037319d1e75803",
+    "m2CpuWasm": "49c5c9ccf63ba2b4b6ef4c3c5383a7571e840998e4fc77d2b4a5e23ff20c48c7",
+    "m3ElasticRuntime": "897ab273596507afe3ab2d7d5967f3416450f24c8adc62c1c99f550a13f339e9",
+    "m4WebGpuFoundation": "2f7db8e0882bf4ef062c54a38cee6c263ff83e3fb51cdd6a8077f7c4f4dce6a5",
+    "m5HybridElastic": "882c05b227069827ce37a94e9522b233aacc7d6ca1f2154b4163111e160c6d77",
+    "m6SparseEigen": "1f7596f6c2df8e7e766e99a6b310742c833d03a79ba9fecda23d504ef7d8ef55",
+    "m7NonlinearBatch": "b9158695b8549685023e46263ba4d9ca7539b9295fe90a2210fb01e9e37d382a",
+    "m8HybridNonlinear": "2ce7cef750d04bbae2a56069f51c96f11a10ffb01be1f0b2d640f7de352ece18",
+    "m9ProductWorkflow": "846b848ca05ab5d8549117e65886a39348bbe9e75fe38b4d175696d30b1d6aea",
+    "m10ReleaseGate": "db27672b42a4d27831b31916a7acde8a4cd6cf272bd719d7db31fcd44c6390b0",
+    "m10FinalDebt": "5971b971428f3fe939fe36b3bad4fa70460b565b00f67c0e90f38ed61f955198"
+  },
+  "blockers": [
+    "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "NONLINEAR_GPU_PRODUCTION_KERNELS_NOT_QUALIFIED",
+    "P9_M10_EXTERNAL_HARDWARE_MATRIX_REQUIRED",
+    "P9_M10_FULL_REGRESSION_REQUIRED",
+    "P9_M4_EXTERNAL_BROWSER_VENDOR_MATRIX_REQUIRED",
+    "P9_M5_ELASTIC_END_TO_END_SPEED_THRESHOLD_NOT_MET",
+    "P9_M5_S_M_PROFILE_MATRIX_REQUIRED",
+    "P9_M6_TO_M8_HYBRID_GPU_QUALIFICATION_REQUIRED"
+  ],
+  "manifestHash": "a8e25a8291dec98bccf966e3a0d00ef533d19091e5713e240f081ea9a3e4ef02"
+}

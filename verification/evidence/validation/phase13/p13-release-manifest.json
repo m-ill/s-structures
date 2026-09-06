@@ -1,0 +1,114 @@
+{
+  "version": "p13-m9-release-gate-v2",
+  "phase": "Phase 13",
+  "milestone": "P13-M9",
+  "claimProfile": "LOCAL_LOOPBACK_FRAME_ELASTIC_OFFICE_PILOT",
+  "implementationCompleteMilestones": [
+    "P13-M0",
+    "P13-M1",
+    "P13-M2",
+    "P13-M3",
+    "P13-M4",
+    "P13-M5",
+    "P13-M6",
+    "P13-M7",
+    "P13-M8"
+  ],
+  "qualificationCompleteMilestones": [
+    "P13-M0",
+    "P13-M8"
+  ],
+  "checks": [
+    {
+      "id": "P13-REL-01",
+      "pass": false,
+      "label": "M0~M7 qualification/evidence/review hash",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "P13-REL-02",
+      "pass": false,
+      "label": "Phase 7~12 mandatory regression",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "P13-REL-03",
+      "pass": false,
+      "label": "Core E2E source/release 3회와 office pilot",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "P13-REL-04",
+      "pass": false,
+      "label": "run/status/value/report parity",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "P13-REL-05",
+      "pass": true,
+      "label": "open Critical/High",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-REL-06",
+      "pass": false,
+      "label": "performance/accessibility/security budget",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "P13-REL-07",
+      "pass": false,
+      "label": "install/restart/backup/rollback",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "P13-REL-08",
+      "pass": true,
+      "label": "in-house loopback-only runtime",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-REL-09",
+      "pass": true,
+      "label": "shell containment and design-transfer guard",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-REL-10",
+      "pass": false,
+      "label": "release manifest integrity",
+      "status": "BLOCKED"
+    }
+  ],
+  "workflowReleaseQualified": false,
+  "frameElasticOfficePilotAllowed": false,
+  "engineeringCrossValidationQualified": false,
+  "finalDesignTransferAllowed": false,
+  "shellExperimentalViewAllowed": true,
+  "shellDesignTransferAllowed": false,
+  "releaseQualified": false,
+  "releaseInvariants": {
+    "openSeesRuntimeUsed": false,
+    "externalSolverRuntimeDependency": false,
+    "nonlinearInScope": false,
+    "shellDesignTransferAllowed": false
+  },
+  "blockers": [
+    "P13-REL-01",
+    "P13-REL-02",
+    "P13-REL-03",
+    "P13-REL-04",
+    "P13-REL-06",
+    "P13-REL-07",
+    "P13-REL-10"
+  ],
+  "externalInputsRequired": [
+    "OFFICE_PILOT_REQUIRED",
+    "ENGINEERING_CROSS_VALIDATION_REQUIRED"
+  ],
+  "manifestHash": "919722c0ca5a83e4d81626bc",
+  "status": "BLOCKED",
+  "implementationStatus": "complete",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "generatedAt": "2026-08-05T10:13:58.613Z"
+}

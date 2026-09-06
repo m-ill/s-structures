@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "p17-tolerance-manifest-v1",
+  "caseId": "TH1",
+  "status": "NOT_LOCKED",
+  "payloadAbsent": true,
+  "releaseAllowed": false,
+  "policy": {
+    "signedComparisonDefault": true,
+    "nearZeroPolicy": "NOT_LOCKED",
+    "postResultTuningAllowed": false
+  },
+  "criteria": [],
+  "approval": {
+    "reviewer": "UNASSIGNED",
+    "status": "NOT_STARTED",
+    "approvalHash": null
+  },
+  "reasonCodes": [
+    "P17_TOLERANCE_NOT_LOCKED",
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION"
+  ]
+}

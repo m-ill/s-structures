@@ -1,0 +1,106 @@
+{
+  "version": "p17-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-locks/SB6.source-lock.json",
+    "sourceLockHash": "7263e3fe05a1860d1eb219f9f9460fde699b074820e7ca06f1bdd1235c912b44",
+    "reason": "R2 selects the final evidence Engine field when an HTML page also contains a descriptive Engine field."
+  },
+  "caseId": "SB6",
+  "ordinal": 5,
+  "official": true,
+  "family": "STATIC-PLATE",
+  "title": "Thick rectangular plate bending — transverse shear, uniform load",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "Exact first-order shear-deformation (FSDT / Reissner-Mindlin) Navier series for a hard simply-supported rectangular plate under uniform pressure (Wang relationship, exact for SS plates): w_mn = Q_mn/(D·k⁴)·[1 + D·k²/(κGh)], κ = 5/6, ν = 0.3. The eight-case-style layout and thick-plate/shear focus follow CSI SAP2000 Verification Example 2-012 (Plate Bending with Shear Deformation; Roark & Young). STRIX recovers the scale-invariant deflection coefficient α = w·D/(q·a⁴), a = short side; the shear bracket → 1 as a/t → ∞ (recovers the SB5/Timoshenko thin-plate value) and grows with thickness.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SB6.html",
+        "byteLength": 27850,
+        "sha256": "67ebb3a3521a364c3bc87e551d784040dd3896cb57001917257d1bf3805289f5"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 10,
+        "printedPageEnd": 12
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB6.pdf",
+        "byteLength": 129822,
+        "sha256": "1a925c6192731390b57d4c93e67c5170fae2944ccbb1c9a49970dda057c77da5",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 3
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.5%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Deflection coefficient α",
+      "probe": "1:1 · a/t=50",
+      "strix": "0.004068",
+      "reference": "0.004071",
+      "delta": "−0.068%"
+    },
+    "resultRowCount": 6
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_6_OF_6",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SB6.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SB6/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "6666100df893596967799ee4f46440e039fc37d564b725dfb1a6e8e50296e246"
+}

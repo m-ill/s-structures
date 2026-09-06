@@ -1,0 +1,61 @@
+{
+  "sourceRevision": null,
+  "governance": {
+    "baselineArtifact": null,
+    "traceabilityComplete": false,
+    "manifestApprovalsComplete": false,
+    "evidenceFresh": false,
+    "staleEvidenceCount": null
+  },
+  "execution": {
+    "determinismRuns": [],
+    "fullRegressionArtifact": null,
+    "cleanEnvironmentPassed": false,
+    "cleanRunHash": null,
+    "mutationKillRate": null,
+    "productSurfaceParityPassed": false
+  },
+  "review": {
+    "reviewers": {
+      "numerical": { "reviewer": null, "approvalHash": null, "approved": false, "independent": false },
+      "structural-domain": { "reviewer": null, "approvalHash": null, "approved": false, "independent": false },
+      "verification": { "reviewer": null, "approvalHash": null, "approved": false, "independent": false },
+      "architecture": { "reviewer": null, "approvalHash": null, "approved": false, "independent": false },
+      "release": { "reviewer": null, "approvalHash": null, "approved": false, "independent": false }
+    },
+    "findings": [],
+    "structuralOwner": {
+      "owner": null,
+      "professionalRegistration": null,
+      "approvalHash": null,
+      "approved": false,
+      "finalDesignTransferApproved": false
+    }
+  },
+  "crossSolver": {
+    "actualR4Available": false,
+    "mappingAuditPassed": false,
+    "mappingAuditHash": null,
+    "providers": {
+      "MIDAS": {
+        "product": null,
+        "version": null,
+        "artifactHash": null,
+        "modelMappingHash": null,
+        "fullPrecisionResults": false,
+        "independentlyGenerated": false
+      },
+      "STRIX": {
+        "product": null,
+        "version": null,
+        "artifactHash": null,
+        "modelMappingHash": null,
+        "fullPrecisionResults": false,
+        "independentlyGenerated": false
+      }
+    }
+  },
+  "run": {
+    "invocationId": null
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "SB5",
+  "ordinal": 4,
+  "official": true,
+  "family": "STATIC-PLATE",
+  "title": "Rectangular plate bending — thin plate, uniform & central point load",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "Timoshenko & Woinowsky-Krieger, Theory of Plates and Shells, 2nd ed. (1959): Table 8 (SS, uniform), Eq.147 & Table 23 (SS, central point), Table 35 (clamped, uniform), Table 37 (clamped, central point), ν = 0.3. The eight-case layout follows CSI SAP2000 Verification Example 2-005 (geometry after MacNeal & Harder, 1985). STRIX recovers the scale-invariant deflection coefficient α (= w·D/(q·a⁴) uniform, w·D/(P·a²) point) and compares it to the published table value; a = short side.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SB5.html",
+        "byteLength": 26659,
+        "sha256": "6ec9046dba5a21f5e17327a4128db4697071f5a1f138a33046bac71d6d498cfe"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 7,
+        "printedPageEnd": 9
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB5.pdf",
+        "byteLength": 121691,
+        "sha256": "2fb8c6d25eec0ba9a6d5bb84e9a2832fa9d938f537dd5ed168cc431a1ac2cc2d",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 3
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "2%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Deflection coefficient α",
+      "probe": "SS · 1:1 · uniform",
+      "strix": "0.00406",
+      "reference": "0.00406",
+      "delta": "+0.064%"
+    },
+    "resultRowCount": 8
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_8_OF_8",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SB5.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SB5/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "e74f7f52609907af8bb980901dfcf76cb6c1054c3e28f8819dc2cbc78a0d8d1d"
+}

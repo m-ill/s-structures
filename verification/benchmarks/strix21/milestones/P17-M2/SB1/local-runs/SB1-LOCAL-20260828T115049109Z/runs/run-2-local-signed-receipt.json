@@ -1,0 +1,28 @@
+{
+  "version": "p17-local-signed-execution-receipt-v1",
+  "caseId": "SB1",
+  "runId": "SB1-LOCAL-20260828T115049109Z-R2",
+  "ordinal": 2,
+  "status": "COMPLETED",
+  "mode": "LOCAL_TEST_ONLY",
+  "issuedAt": "2026-08-28T11:50:49.368Z",
+  "engineeringResultHash": "7087f25345d28c435eb71a175442d7ba0fa7372c6dc4c1187b7ea9769d1553ca",
+  "resultArtifactSha256": "6eada98b941ae7adb26ad554a6f02d68891d0aa239a81b60847918b18126f719",
+  "productBinding": {
+    "serviceVersion": "p9-m9-product-analysis-service-v1",
+    "adapterVersion": "p17-m1-product-adapter-v1",
+    "publicEntrypoint": "src/index.js",
+    "externalRuntimeUsed": false,
+    "networkFallbackUsed": false
+  },
+  "custody": {
+    "authority": "S-Structures local self-custodied test authority",
+    "governance": "TEST_ONLY",
+    "keyId": "sb1-local-20260828t115049109z-key-1",
+    "principalId": "sb1-local-20260828t115049109z-principal-1",
+    "independentExternalCustody": false
+  },
+  "payloadHash": "72215a86569a3b9cba6de983cceb77ecb72a88882a5832835e02976c93a05417",
+  "signatureBase64": "py+iXIF+dmChWrgMI6Dii6AjEWZZDnsgO5jiHOH8PV2G9LOnK1hEY9JDaoAQsYsdqf5vCR3XUQ6AwClXU9XQDA==",
+  "receiptHash": "fe9de9e1a315260b1ebdcfead02eb25145b9a706b220598ea71234458643278e"
+}

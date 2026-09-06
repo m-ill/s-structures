@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 5,
+  "units": { "length": "m", "force": "kN", "moment": "kN.m", "stress": "N/mm2", "displacement": "mm" },
+  "analysisSettings": { "shearDeformation": true, "validateBeforeSolve": false, "memberStations": 21 },
+  "materials": [
+    {
+      "id": "MAT", "version": 1, "name": "XV-09 deep-beam material",
+      "E": 30000, "G": 12500, "Fy": 300, "Fu": 400, "density": 0,
+      "allow": { "fb": 200, "ft": 200, "fc": 200, "fv": 120 }
+    }
+  ],
+  "sections": [
+    {
+      "id": "SEC", "version": 1, "name": "XV-09 deep-beam section", "type": "GENERAL",
+      "A": 0.18, "Ay": 0.15, "Az": 0.12, "Iy": 0.00135, "Iz": 0.0054,
+      "J": 0.0037, "Zy": 0.009, "Zz": 0.018
+    }
+  ],
+  "nodes": [
+    { "id": "N1", "x": 0, "y": 0, "z": 0, "support": "custom", "fix": [true, true, true, false, false, false] },
+    { "id": "N2", "x": 2.4, "y": 0, "z": 0, "support": "custom", "fix": [false, true, true, false, false, false] }
+  ],
+  "members": [
+    { "id": "M1", "type": "frame", "n1": "N1", "n2": "N2", "matId": "MAT", "secId": "SEC", "releases": { "i": "pin", "j": "pin" } }
+  ],
+  "loads": [
+    { "id": "PY", "type": "point", "member": "M1", "P": 120, "t": 0.5, "direction": [0, -1, 0], "coordinate": "local", "case": "D" },
+    { "id": "PZ", "type": "point", "member": "M1", "P": 120, "t": 0.5, "direction": [0, 0, -1], "coordinate": "local", "case": "D" }
+  ],
+  "loadCases": [{ "id": "D", "name": "XV-09 load", "type": "dead" }],
+  "loadCombinations": [{ "id": "C1", "name": "1.0D", "type": "strength", "factors": { "D": 1 } }]
+}

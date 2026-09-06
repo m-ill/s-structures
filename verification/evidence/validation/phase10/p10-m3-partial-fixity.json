@@ -1,0 +1,239 @@
+{
+  "version": "p10-evidence-artifact-v1",
+  "suiteId": "P10-M3-PARTIAL-FIXITY",
+  "milestone": "P10-M3",
+  "status": "OK",
+  "generatedAt": "2026-07-21T22:10:00.000+09:00",
+  "sourceRevision": "c54a25b+p10-m3-worktree",
+  "test": "tests/p10-m3-partial-fixity.mjs",
+  "solverVersion": "p10-m3-partial-fixity-v1",
+  "results": {
+    "ok": true,
+    "version": "p10-m3-partial-fixity",
+    "rigidLimit": {
+      "reference": [
+        0.0015359999999999979,
+        0.004607999999999995
+      ],
+      "computed": [
+        0.0015360000000061431,
+        0.00460800000001843
+      ]
+    },
+    "releaseLimit": {
+      "reference": [
+        0.00015999999999999996,
+        0.0004799999999999999
+      ],
+      "computed": [
+        0.00015999999999999996,
+        0.00047999999999999974
+      ],
+      "momentResidual": 7.105427357601002e-15
+    },
+    "closedForm": {
+      "ebReference": [
+        0.0025599999999999998,
+        0.010752
+      ],
+      "ebComputed": [
+        0.002559999999999995,
+        0.010751999999999984
+      ],
+      "timoshenkoReference": [
+        0.0026521599999999998,
+        0.0108384
+      ],
+      "timoshenkoComputed": [
+        0.002652159999999995,
+        0.010838399999999969
+      ],
+      "rotationReference": [
+        0.0025599999999999998,
+        0.0004266666666666666
+      ],
+      "rotationComputed": [
+        0.0025599999999999963,
+        0.00042666666666666596
+      ]
+    },
+    "q0": {
+      "reference": [
+        0,
+        71.99999999999997,
+        53.99999999999997,
+        0,
+        0,
+        0,
+        0,
+        71.99999999999994,
+        53.99999999999998,
+        0,
+        0,
+        0
+      ],
+      "computed": [
+        0,
+        71.99999999999997,
+        53.99999999999997,
+        0,
+        0,
+        0,
+        0,
+        71.99999999999996,
+        53.99999999999997,
+        0,
+        0,
+        0
+      ]
+    },
+    "modelHashes": {
+      "rigid": "7515fd39fd15df41",
+      "nearRigid": "58baac2362170880",
+      "binaryRelease": "a076cd3441d4a205",
+      "springRelease": "5e4cbe292f9ef220",
+      "eb": "76cb652026a6af68",
+      "timoshenko": "d66b7be19dc989b8"
+    },
+    "tolerances": {
+      "rigidLimit": 1e-9,
+      "releaseLimit": 1e-9,
+      "closedForm": 1e-7
+    }
+  },
+  "records": [
+    {
+      "caseId": "CN-F01-DISPLACEMENT",
+      "reference": [
+        0.0015359999999999979,
+        0.004607999999999995
+      ],
+      "computed": [
+        0.0015360000000061431,
+        0.00460800000001843
+      ],
+      "relError": 4.000649548006893e-12,
+      "tolerance": 1e-9,
+      "modelHash": "58baac2362170880",
+      "solverVersion": "p10-m3-partial-fixity-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "CN-F02-DISPLACEMENT",
+      "reference": [
+        0.00015999999999999996,
+        0.0004799999999999999
+      ],
+      "computed": [
+        0.00015999999999999996,
+        0.00047999999999999974
+      ],
+      "relError": 3.214264039834627e-16,
+      "tolerance": 1e-9,
+      "modelHash": "5e4cbe292f9ef220",
+      "solverVersion": "p10-m3-partial-fixity-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "CN-F02-RELEASE-MOMENT",
+      "reference": 0,
+      "computed": 7.105427357601002e-15,
+      "relError": 7.105427357601002e-15,
+      "tolerance": 1e-9,
+      "modelHash": "5e4cbe292f9ef220",
+      "solverVersion": "p10-m3-partial-fixity-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "CN-F03-EB-DISPLACEMENT",
+      "reference": [
+        0.0025599999999999998,
+        0.010752
+      ],
+      "computed": [
+        0.002559999999999995,
+        0.010751999999999984
+      ],
+      "relError": 1.4770400463139995e-15,
+      "tolerance": 1e-7,
+      "modelHash": "76cb652026a6af68",
+      "solverVersion": "p10-m3-partial-fixity-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "CN-F03-TIMOSHENKO-DISPLACEMENT",
+      "reference": [
+        0.0026521599999999998,
+        0.0108384
+      ],
+      "computed": [
+        0.002652159999999995,
+        0.010838399999999969
+      ],
+      "relError": 2.8308691385473863e-15,
+      "tolerance": 1e-7,
+      "modelHash": "d66b7be19dc989b8",
+      "solverVersion": "p10-m3-partial-fixity-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "CN-F03-END-ROTATION",
+      "reference": [
+        0.0025599999999999998,
+        0.0004266666666666666
+      ],
+      "computed": [
+        0.0025599999999999963,
+        0.00042666666666666596
+      ],
+      "relError": 1.3601087320430694e-15,
+      "tolerance": 1e-7,
+      "modelHash": "76cb652026a6af68",
+      "solverVersion": "p10-m3-partial-fixity-v1",
+      "status": "OK"
+    },
+    {
+      "caseId": "Q0-PARTIAL-FIXITY",
+      "reference": [
+        0,
+        71.99999999999997,
+        53.99999999999997,
+        0,
+        0,
+        0,
+        0,
+        71.99999999999994,
+        53.99999999999998,
+        0,
+        0,
+        0
+      ],
+      "computed": [
+        0,
+        71.99999999999997,
+        53.99999999999997,
+        0,
+        0,
+        0,
+        0,
+        71.99999999999996,
+        53.99999999999997,
+        0,
+        0,
+        0
+      ],
+      "relError": 1.2482963443828278e-16,
+      "tolerance": 1e-9,
+      "modelHash": "5e4cbe292f9ef220",
+      "solverVersion": "p10-m3-partial-fixity-v1",
+      "status": "OK"
+    }
+  ],
+  "qualification": {
+    "internalClosedFormStatus": "OK",
+    "externallyCrossValidated": false,
+    "releaseQualified": false,
+    "releaseGate": "P10-M11"
+  },
+  "artifactHash": "735d725868a86d70a57fa930"
+}

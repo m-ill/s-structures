@@ -1,0 +1,7 @@
+{
+  "version": "p4-onboarding-sample-v1",
+  "id": "steel-plant",
+  "tutorial": "T3-pushover-review",
+  "source": "model",
+  "expected": { "pushover": "preliminary", "reviewRequired": true }
+}

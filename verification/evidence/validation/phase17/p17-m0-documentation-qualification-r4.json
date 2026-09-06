@@ -1,0 +1,136 @@
+{
+  "version": "p17-m0-documentation-qualification-r4-v1",
+  "qualificationId": "P17-M0-DOCUMENTATION-QUALIFICATION-R4",
+  "revision": 4,
+  "issuedAt": "2026-08-28",
+  "status": "ACTIVE_APPEND_ONLY_QUALIFICATION",
+  "scope": "Narrow correction of the P17-M0 R3 CR-02 documentation claim; sealed M0 evidence, report and source-custody findings are not modified.",
+  "documentationArtifact": {
+    "path": "docs/phase17/reviews/P17-M0-CODE-AND-ARTIFACT-REVIEW-ADDENDUM-R4.md",
+    "relationshipToR3": "APPEND_ONLY_QUALIFICATION_DOES_NOT_OVERWRITE_R3"
+  },
+  "binds": {
+    "r3Addendum": {
+      "path": "docs/phase17/reviews/P17-M0-CODE-AND-ARTIFACT-REVIEW-ADDENDUM-R3.md",
+      "byteLength": 8723,
+      "sha256": "1f0832d30d87dce7c28d5b0ee54243d5ad620a36778a4e9435fb0bdf980d9a71",
+      "claimLocator": "Code review finding table, CR-02 row"
+    },
+    "r3Closure": {
+      "path": "verification/evidence/validation/phase17/p17-m0-validation-closure-r3.json",
+      "byteLength": 32677,
+      "sha256": "d7475f8a5140603b0fc6b43d44c81a29b8aedbc301a012c6fba6b51c37e0f0aa",
+      "closureHash": "4b0b748eadad0d48b2ffa80f9dbae7d37b2d4c1a808b4390fae1b9bc7abae224"
+    },
+    "reviewedImplementation": {
+      "reportFinalManifestSchema": {
+        "path": "verification/specs/phase17/p17-m0-report-final-manifest-schema.json",
+        "byteLength": 2466,
+        "sha256": "05a50fc4c85ae17af8ea36ef98bf52859eb46efd1ec44abc824be11c03a7e403",
+        "typeOnlyNestedPaths": [
+          "baselineEvidence",
+          "claimQualification",
+          "sourceValuePresenceAudit",
+          "report",
+          "qa",
+          "sourceScreenshots[]",
+          "renderer"
+        ]
+      },
+      "validationClosureSchema": {
+        "path": "verification/specs/phase17/p17-m0-validation-closure-schema.json",
+        "byteLength": 3065,
+        "sha256": "f61fdc703f356c4c614c94d3b516e7cf046f6759589e89ca3b25f8da8e0d4234",
+        "typeOnlyNestedPaths": [
+          "supersedes",
+          "evidenceChain",
+          "checks[]",
+          "semanticGateReview[]",
+          "blockerClassification",
+          "ciPolicy"
+        ]
+      },
+      "schemaValidator": {
+        "path": "verification/harnesses/json-schema-lite.mjs",
+        "byteLength": 5532,
+        "sha256": "728c0edf87841ee2b5788ddccee1266de5c303666413d5e9f8f370c39df979f8",
+        "supportedKeywordSubset": [
+          "type",
+          "required",
+          "properties",
+          "additionalProperties",
+          "const",
+          "enum",
+          "pattern",
+          "format(date|uri)",
+          "minimum/maximum",
+          "min/maxLength",
+          "min/maxItems",
+          "uniqueItems",
+          "items"
+        ],
+        "unsupportedKeywordBehavior": "UNKNOWN_OR_UNIMPLEMENTED_SCHEMA_KEYWORDS_ARE_NOT_REJECTED"
+      }
+    }
+  },
+  "observations": {
+    "r3Claim": "R3 described the content audit, claim qualification, final manifest and closure nested records as strictly contracted and marked CR-02 closed for M0 by layered validation.",
+    "verifiedFacts": [
+      "The content-audit and claim-qualification schemas constrain many nested records with required keys and additionalProperties=false.",
+      "The report-final-manifest schema leaves seven important nested records or item records at type-only validation.",
+      "The validation-closure schema leaves six important nested records or item records at type-only validation.",
+      "The dependency-free validator implements a documented subset and does not fail on unsupported schema keywords."
+    ],
+    "generatorProtections": [
+      "The M0 finalizer constructs the R3 artifacts deterministically.",
+      "The M0 finalizer checks selected evidence-chain hashes and immutable report bytes.",
+      "The R3 artifacts carry canonical self-hashes and an implementation inventory."
+    ],
+    "residualLimitations": [
+      "A generic independent validator cannot derive complete nested semantics from the two shallow schemas.",
+      "Generator-time assertions do not make every stored nested record schema-strict.",
+      "Unsupported JSON Schema keywords can be silently ignored by json-schema-lite."
+    ]
+  },
+  "correction": {
+    "cr02Status": "PARTIALLY_CLOSED_BY_GENERATOR_ASSERTIONS",
+    "residualDebtStatus": "OPEN_SCHEMA_DEBT_CARRIED_TO_M1",
+    "correctedStatement": "M0 R3 is protected by deterministic construction, canonical hashes and targeted generator assertions, while complete nested schema validation for the final manifest and validation closure remains open debt for P17-M1.",
+    "unchangedClaims": [
+      "P17-M0 source custody facts",
+      "P17-M0 report visual and semantic reproduction QA",
+      "P17-M0 COMPLETE_WITH_SOURCE_BLOCKERS status",
+      "P17-M1 entry permission",
+      "release and final-design-transfer prohibition"
+    ]
+  },
+  "milestoneImpact": {
+    "m0Status": "COMPLETE_WITH_SOURCE_BLOCKERS",
+    "m1EntryAllowed": true,
+    "releaseAllowed": false,
+    "finalDesignTransferAllowed": false,
+    "solverRunsInScope": 0
+  },
+  "carryForward": {
+    "targetMilestone": "P17-M1",
+    "requiredClosureEvidence": [
+      "Every M1 authoritative nested record is constrained by a supported schema validator or explicit semantic validator.",
+      "Unknown or unsupported schema keywords fail closed.",
+      "Stored-artifact validation is independently runnable without regenerating the artifact.",
+      "Nested required-key deletion, extra-key, enum, hash, NaN/Infinity, duplicate-ID, cross-field-binding and unknown-keyword mutations are rejected."
+    ]
+  },
+  "hashPolicy": {
+    "algorithm": "SHA-256",
+    "canonicalizationVersion": "p17-recursive-sorted-json-sha256-v1",
+    "objectKeyOrder": "RECURSIVE_LEXICOGRAPHIC_ASCENDING",
+    "arrayOrder": "PRESERVED",
+    "textEncoding": "UTF-8",
+    "whitespace": "NONE",
+    "excludedTopLevelFields": [
+      "correctionHash"
+    ],
+    "rule": "correctionHash = lowercase hex SHA-256 of UTF-8 JSON.stringify(document without top-level correctionHash after recursively sorting every object key; array order is preserved and no insignificant whitespace is emitted)."
+  },
+  "correctionHash": "9e6ac01fa6f11c9898e82b9dba5c72cd160ecfec4d77a0b6d2f6744d975ccb47"
+}

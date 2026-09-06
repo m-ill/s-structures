@@ -1,0 +1,59 @@
+{
+  "version": "p8-evidence-artifact-v1",
+  "suiteId": "P8-M7-ARC-CYCLIC",
+  "milestone": "P8-M7",
+  "status": "PASS",
+  "generatedAt": "2026-07-13T18:30:00+09:00",
+  "sourceRevision": "4ec5fc5+P8-M7-worktree",
+  "verificationIds": [
+    "NL-ARC-01", "NL-ARC-02", "NL-ARC-03", "NL-ARC-04", "NL-ARC-05",
+    "NL-ARC-06", "NL-ARC-07", "NL-ARC-08", "NL-ARC-09", "NL-ARC-10",
+    "NL-CYC-01", "NL-CYC-02", "NL-CYC-03", "NL-CYC-04", "NL-CYC-05", "NL-CYC-06"
+  ],
+  "results": [
+    { "id": "NL-ARC-01", "status": "PASS", "test": "tests/p8-m7-arc-length.mjs" },
+    { "id": "NL-ARC-02", "status": "PASS", "test": "tests/p8-m7-arc-length.mjs" },
+    { "id": "NL-ARC-03", "status": "PASS", "test": "tests/p8-m7-arc-length.mjs" },
+    { "id": "NL-ARC-04", "status": "PASS", "test": "tests/p8-m7-arc-length.mjs" },
+    { "id": "NL-ARC-05", "status": "PASS", "test": "tests/p8-m7-arc-length.mjs" },
+    { "id": "NL-ARC-06", "status": "PASS", "test": "tests/p8-m7-arc-length.mjs" },
+    { "id": "NL-ARC-07", "status": "PASS", "test": "tests/p8-m7-arc-length.mjs" },
+    { "id": "NL-ARC-08", "status": "PASS", "test": "tests/p8-m7-arc-length.mjs" },
+    { "id": "NL-ARC-09", "status": "PASS", "test": "tests/p8-m7-arc-length.mjs" },
+    { "id": "NL-ARC-10", "status": "PASS", "test": "tests/p8-m7-production-arc.mjs" },
+    { "id": "NL-CYC-01", "status": "PASS", "test": "tests/p8-m7-cyclic-static.mjs" },
+    { "id": "NL-CYC-02", "status": "PASS", "test": "tests/p8-m7-cyclic-static.mjs" },
+    { "id": "NL-CYC-03", "status": "PASS", "test": "tests/p8-m7-cyclic-static.mjs" },
+    { "id": "NL-CYC-04", "status": "PASS", "test": "tests/p8-m7-cyclic-static.mjs" },
+    { "id": "NL-CYC-05", "status": "PASS", "test": "tests/p8-m7-cyclic-static.mjs" },
+    { "id": "NL-CYC-06", "status": "PASS", "test": "tests/p8-m7-cyclic-static.mjs" }
+  ],
+  "environment": {
+    "profileVersion": "p8-m0-reference-profile-v1",
+    "runtime": "Node.js",
+    "numericCore": "in-house JavaScript augmented Newton with in-house dense/WASM-compatible backend contract; no commercial or licensed solver"
+  },
+  "metrics": {
+    "cubicPeakLambda": 0.3837624734475317,
+    "cubicClosedFormPeakLambda": 0.3849001794597505,
+    "firstNegativeLoadIncrementStep": 12,
+    "vonMisesBenchmark": "canonical-3d-two-bar-corotational-truss",
+    "vonMisesMaximumForceError": 0.00003950140671804547,
+    "vonMisesMinimumApexDisplacement": -0.41878745216958846,
+    "snapBackPathError": 3.956529548432286e-12,
+    "correctorEquilibriumResidual": 8.799627693178991e-13,
+    "correctorArcConstraintResidual": 1.6599638330561106e-12,
+    "rollbackByteEquivalent": true,
+    "restartByteEquivalent": true,
+    "productionHandoffConsumed": true,
+    "cyclicMaximumTargetError": 0,
+    "cyclicResidualDeformationError": 1.5987211554602254e-14,
+    "cyclicEnergyRelativeResidual": 6.0973063644342256e-9,
+    "cyclicPositivePeakHistory": [110, 101.8, 93.6],
+    "cyclicRestartByteEquivalent": true,
+    "cyclicMalformedEvaluationRollback": true,
+    "gpuImplementation": "not-implemented",
+    "gpuPolicy": "opt-in backend injection; no silent CPU fallback; production requires deterministic f64 qualification"
+  },
+  "qualificationImpact": "candidate"
+}

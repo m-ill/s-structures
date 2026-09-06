@@ -1,0 +1,797 @@
+{
+  "version": "p9-m0-debt-registry-v1",
+  "generatedAt": "2026-07-15T03:45:34.400Z",
+  "sourceRevision": "658a868+worktree",
+  "status": "frozen",
+  "owners": [
+    {
+      "id": "elastic-orchestration",
+      "currentPaths": [
+        "src/solver/linear3d.js"
+      ],
+      "targetOwner": "src/solver/elastic",
+      "targetMilestone": "P9-M3"
+    },
+    {
+      "id": "shared-sparse",
+      "currentPaths": [
+        "src/solver/sparse",
+        "src/nonlinear/equilibrium/typedSparse.js"
+      ],
+      "targetOwner": "src/compute/sparse",
+      "targetMilestone": "P9-M2"
+    },
+    {
+      "id": "backend-policy",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/referenceBackends.js"
+      ],
+      "targetOwner": "src/compute/backends",
+      "targetMilestone": "P9-M1"
+    },
+    {
+      "id": "wasm-cpu",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/backends/wasmSparseBackend.js"
+      ],
+      "targetOwner": "src/compute/backends/wasm-cpu",
+      "targetMilestone": "P9-M2"
+    },
+    {
+      "id": "worker-runtime",
+      "currentPaths": [
+        "src/nonlinear/runtime"
+      ],
+      "targetOwner": "src/compute/runtime",
+      "targetMilestone": "P9-M1"
+    },
+    {
+      "id": "modal-eigen",
+      "currentPaths": [
+        "src/dynamics/modal.js"
+      ],
+      "targetOwner": "src/compute/eigen",
+      "targetMilestone": "P9-M6"
+    },
+    {
+      "id": "buckling-eigen",
+      "currentPaths": [
+        "src/dynamics/globalBuckling.js"
+      ],
+      "targetOwner": "src/compute/eigen",
+      "targetMilestone": "P9-M6"
+    },
+    {
+      "id": "nonlinear-batch",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/assembler.js"
+      ],
+      "targetOwner": "src/nonlinear/batch",
+      "targetMilestone": "P9-M7"
+    },
+    {
+      "id": "product-analysis-service",
+      "currentPaths": [
+        "src/ui/analysisRunners.js"
+      ],
+      "targetOwner": "src/compute/product",
+      "targetMilestone": "P9-M9"
+    },
+    {
+      "id": "compute-telemetry",
+      "currentPaths": [
+        "src/nonlinear/performanceBaseline.js"
+      ],
+      "targetOwner": "src/compute/telemetry",
+      "targetMilestone": "P9-M1"
+    }
+  ],
+  "rows": [
+    {
+      "id": "P9-DEBT-01",
+      "currentPaths": [
+        "src/solver/linear3d.js"
+      ],
+      "problem": "Monolithic elastic orchestrator",
+      "owner": "elastic-orchestration",
+      "targetMilestone": "P9-M3",
+      "replacement": "Split validation, planning, solve, recovery and design orchestration.",
+      "inventory": [
+        {
+          "path": "src/solver/linear3d.js",
+          "type": "file",
+          "bytes": 63060,
+          "contentHash": "109484af4be10ff073224b367ca8e9ef1047c8fc216cd7820b156e7f938c5c73"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-02",
+      "currentPaths": [
+        "src/solver/sparse"
+      ],
+      "problem": "Linear-only Array-based CSC ownership",
+      "owner": "shared-sparse",
+      "targetMilestone": "P9-M2",
+      "replacement": "Move canonical sparse schema and operations to src/compute/sparse.",
+      "inventory": [
+        {
+          "path": "src/solver/sparse",
+          "type": "directory",
+          "fileCount": 5,
+          "contentHash": "3eedbcd21510ac56dece773a323a43a8aac4a755bb457f1e12f1c6fc213537f7"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-03",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/typedSparse.js"
+      ],
+      "problem": "Duplicate nonlinear typed sparse schema",
+      "owner": "shared-sparse",
+      "targetMilestone": "P9-M2",
+      "replacement": "Adopt the common sparse schema and delete the duplicate implementation.",
+      "inventory": [
+        {
+          "path": "src/nonlinear/equilibrium/typedSparse.js",
+          "type": "file",
+          "bytes": 15066,
+          "contentHash": "a5a90442e769530a4f110a1886f4ca64f9447906ca991d9d634fd84421f8543b"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-04",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/referenceBackends.js"
+      ],
+      "problem": "Nonlinear-only backend policy",
+      "owner": "backend-policy",
+      "targetMilestone": "P9-M1",
+      "replacement": "Replace with the common capability and execution-plan policy.",
+      "inventory": [
+        {
+          "path": "src/nonlinear/equilibrium/referenceBackends.js",
+          "type": "file",
+          "bytes": 11849,
+          "contentHash": "c21d35cba60cb4d13769024b5e6a59ab44ce23c88418e5018c0daddb8a16643a"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-05",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/backends/wasmSparseBackend.js"
+      ],
+      "problem": "Single-RHS and repeated-copy WASM ABI",
+      "owner": "wasm-cpu",
+      "targetMilestone": "P9-M2",
+      "replacement": "Introduce persistent handles and a multi-RHS ABI.",
+      "inventory": [
+        {
+          "path": "src/nonlinear/equilibrium/backends/wasmSparseBackend.js",
+          "type": "file",
+          "bytes": 28042,
+          "contentHash": "fe2963edf9391634bc356da46f35ac48d1250f36b97ec5b80dd463907548c106"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-06",
+      "currentPaths": [
+        "src/nonlinear/equilibrium/assembler.js"
+      ],
+      "problem": "Object cloning and sequential element evaluation",
+      "owner": "nonlinear-batch",
+      "targetMilestone": "P9-M7",
+      "replacement": "Use versioned SoA element batches with parity coverage.",
+      "inventory": [
+        {
+          "path": "src/nonlinear/equilibrium/assembler.js",
+          "type": "file",
+          "bytes": 27855,
+          "contentHash": "589497164b2c508db00f184d949555606f0da874141b231a10c6d1c4ca749b3e"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-07",
+      "currentPaths": [
+        "src/dynamics/modal.js"
+      ],
+      "problem": "Dense matrix and eigen responsibilities mixed with recovery",
+      "owner": "modal-eigen",
+      "targetMilestone": "P9-M6",
+      "replacement": "Extract sparse requested-mode operators from solver recovery.",
+      "inventory": [
+        {
+          "path": "src/dynamics/modal.js",
+          "type": "file",
+          "bytes": 44619,
+          "contentHash": "326070ad307f69fc7e956f7e42478367976d1d205d08354e40401b9359b38f48"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-08",
+      "currentPaths": [
+        "src/dynamics/globalBuckling.js"
+      ],
+      "problem": "Assembly, eigen solve and recovery mixed together",
+      "owner": "buckling-eigen",
+      "targetMilestone": "P9-M6",
+      "replacement": "Share eigen operators and retain buckling-specific recovery.",
+      "inventory": [
+        {
+          "path": "src/dynamics/globalBuckling.js",
+          "type": "file",
+          "bytes": 39750,
+          "contentHash": "94d691f36e8185cf5b11d7192064728fd7ac1e5e482732fbac8aba7a6f337fb3"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-09",
+      "currentPaths": [
+        "src/ui",
+        "src/solver"
+      ],
+      "problem": "Synchronous analyzeModel call sites",
+      "owner": "product-analysis-service",
+      "targetMilestone": "P9-M9",
+      "replacement": "Migrate production callers to the async product analysis service.",
+      "inventory": [
+        {
+          "path": "src/platform/pilotProjectRow.js",
+          "occurrences": 1,
+          "scope": "production"
+        },
+        {
+          "path": "src/solver/linear3d.js",
+          "occurrences": 1,
+          "scope": "production"
+        },
+        {
+          "path": "src/ui/analysisRunners.js",
+          "occurrences": 3,
+          "scope": "production"
+        },
+        {
+          "path": "src/ui/indexBridge.js",
+          "occurrences": 1,
+          "scope": "production"
+        },
+        {
+          "path": "src/ui/m3State.js",
+          "occurrences": 1,
+          "scope": "production"
+        },
+        {
+          "path": "src/verification/benchmarkGateRunCase.js",
+          "occurrences": 1,
+          "scope": "production"
+        },
+        {
+          "path": "src/verification/matrix/assemblyCases.js",
+          "occurrences": 2,
+          "scope": "production"
+        },
+        {
+          "path": "src/verification/matrix/elementCases.js",
+          "occurrences": 5,
+          "scope": "production"
+        },
+        {
+          "path": "src/verification/matrix/stabilityCases.js",
+          "occurrences": 2,
+          "scope": "production"
+        },
+        {
+          "path": "src/verification/memberReleaseBenchmarkRunCase.js",
+          "occurrences": 1,
+          "scope": "production"
+        },
+        {
+          "path": "src/verification/rigidDiaphragmBenchmark.js",
+          "occurrences": 1,
+          "scope": "production"
+        },
+        {
+          "path": "src/verification/stabilizationHarness.js",
+          "occurrences": 1,
+          "scope": "production"
+        },
+        {
+          "path": "tests/final-use-release-review.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m0-smoke.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m1-schema.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m2-linear3d.mjs",
+          "occurrences": 4,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m24-legacy-result-shape.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m25-native-result-controls.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m26-native-modeler-e2e.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m27-native-persistence.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m28-native-agent-controls.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m29-native-advanced-analysis.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m30-product-hardening.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m31-agent-command-bridge.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m32-elastic-3d-import-workflow.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m33-representative-buildings.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m36-detailed-report-ui.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m39-rc-detailing.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m4-combinations.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m40-steel-detailing.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m41-connection-foundation.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m42-calculation-package.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m43-calculation-package-ui.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m44-kds-load-standard-registry.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m45-member-design-trace.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m47-design-basis-input-ui.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m49-serviceability-drift.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m5-steel-design.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m6-rc-design.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m7-pdelta.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m8-modal-rsa.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/m9-index-bridge.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-design-demand-package.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-m4-combination-envelope-contract.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-mvp-m5-advanced-elastic-trace.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-mvp-s2-validation-audit.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-mvp-s4-member-release.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-mvp-s4-rigid-diaphragm.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-mvp-s4-story-model.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-mvp-s6-result-postprocessing.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-practice-platform-readiness.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p2-practice-validation-report.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p3-design-rc.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p3-design-steel-foundation.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p3-drawing-import-validation-review.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p3-launch-gate.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p3-m11-elastic-expansion.mjs",
+          "occurrences": 10,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p3-m12-wall-slab.mjs",
+          "occurrences": 4,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p3-m19-integrated-report.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p3-m6-dxf-import.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p3-pointcloud-e2e.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p5-analysis-center.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p5-calculation-package.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p5-load-case-kds-mass.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p5-load-conditions.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p5-release-gate.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p5-spring-support.mjs",
+          "occurrences": 3,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p6-consistent-loads.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p6-equivalent-shell-scope.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p6-pdelta-tangent.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p6-rsa-diaphragm-story.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p6-sparse-solver.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p7-m10-buckling-tha-integrity.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p7-m11-elastic-analysis-ui.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p7-m11-elastic-result-popup.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p7-m11-elastic-setup-workflow.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p7-m7-mixed-combo-audit.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p7-m8-beam-column-stability.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p7-m8-routing-combo.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p7-m8-settlement-load-setup.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tests/p8-m0-governance.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tools/generate-m42-representative-packages.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tools/generate-representative-building-reports.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tools/measure-perf.mjs",
+          "occurrences": 2,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tools/measure-scale-limits.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        },
+        {
+          "path": "tools/run-p9-m0-baseline.mjs",
+          "occurrences": 1,
+          "scope": "verification-tooling"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-10",
+      "currentPaths": [
+        "src/index.js",
+        "src/nonlinear"
+      ],
+      "problem": "Legacy and preliminary engines remain publicly reachable",
+      "owner": "product-analysis-service",
+      "targetMilestone": "P9-M10",
+      "replacement": "Move compatibility routes to an explicit expiring legacy registry.",
+      "inventory": [
+        {
+          "symbol": "analyzePDelta",
+          "publicExport": true,
+          "targetMilestone": "P9-M10"
+        },
+        {
+          "symbol": "runPushover",
+          "publicExport": true,
+          "targetMilestone": "P9-M10"
+        },
+        {
+          "symbol": "runNewmarkNlth",
+          "publicExport": true,
+          "targetMilestone": "P9-M10"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-11",
+      "currentPaths": [
+        "src/nonlinear/runtime"
+      ],
+      "problem": "Worker protocols and lifecycle are solver-specific",
+      "owner": "worker-runtime",
+      "targetMilestone": "P9-M1",
+      "replacement": "Adopt one versioned compute job protocol and lifecycle.",
+      "inventory": [
+        {
+          "path": "src/nonlinear/runtime/protocol.js",
+          "type": "file",
+          "bytes": 7878,
+          "contentHash": "69e5b860b5c9f6bf74093877f7452aa39180f18334e966bc5997e9ebc0085b12"
+        },
+        {
+          "path": "src/nonlinear/runtime/analysisWorker.js",
+          "type": "file",
+          "bytes": 5144,
+          "contentHash": "04641c90b40352caba6fa943c2ffc0198b0528a07d688b34c018afe6c2bf9e3c"
+        },
+        {
+          "path": "src/nonlinear/runtime/workerClient.js",
+          "type": "file",
+          "bytes": 15168,
+          "contentHash": "bfb95bc6faf6c20d02e073cdc91bd4f4dc791171d42647572993699d22bfd4be"
+        },
+        {
+          "path": "src/nonlinear/runtime/workerCore.js",
+          "type": "file",
+          "bytes": 14508,
+          "contentHash": "81bd1b20574d89a220cd1685f9f789f420fe47851894f329b468cfcf1f2d0015"
+        }
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P9-DEBT-12",
+      "currentPaths": [
+        "src/nonlinear/performanceBaseline.js",
+        "src/ui/analysisRunners.js"
+      ],
+      "problem": "Backend timing and result fields are inconsistent",
+      "owner": "compute-telemetry",
+      "targetMilestone": "P9-M1",
+      "replacement": "Adopt a shared bounded stage telemetry schema.",
+      "inventory": [
+        {
+          "path": "src/nonlinear/performanceBaseline.js",
+          "type": "file",
+          "bytes": 2528,
+          "contentHash": "d192d05c6d9737bd4f1c5e6ebc6217901c0f9a10bb8f4af5473b38fb8af00034"
+        },
+        {
+          "path": "src/ui/analysisRunners.js",
+          "type": "file",
+          "bytes": 19007,
+          "contentHash": "42c14a1fffa34afa4b9b073b24c990130205a755629f44d814e9a259ab080fda"
+        }
+      ],
+      "status": "open"
+    }
+  ],
+  "retention": {
+    "committed": [
+      "summary evidence",
+      "fixture descriptors and hashes",
+      "review and release manifests"
+    ],
+    "generatedOnDemand": [
+      "materialized M/L fixture models",
+      "raw profiler traces",
+      "backend binaries"
+    ],
+    "forbidden": [
+      "manually edited generated evidence",
+      "artifact without source revision",
+      "unbounded raw history"
+    ]
+  },
+  "artifactHash": "1de838c5262a06ed0d5cf112c8c8916b3f1ee0e2785610133cb6ae104b9c3cff"
+}

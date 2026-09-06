@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "p17-probe-manifest-v1",
+  "caseId": "SR2b",
+  "status": "NOT_LOCKED",
+  "payloadAbsent": true,
+  "releaseAllowed": false,
+  "signConventionStatus": "NOT_LOCKED",
+  "probes": [],
+  "approval": {
+    "reviewer": "UNASSIGNED",
+    "status": "NOT_STARTED",
+    "approvalHash": null
+  },
+  "reasonCodes": [
+    "P17_PROBES_NOT_LOCKED",
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION"
+  ]
+}

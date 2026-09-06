@@ -1,0 +1,101 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "SB12",
+  "ordinal": 10,
+  "official": true,
+  "family": "STATIC-LINK",
+  "title": "Elastic Link (twoNodeLink) Beta Angle coordinate transformation — inclined 6-DOF spring",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "locator": "Self-designed closed form (no CSI/NAFEMS published example fits — CSI Group 6 Link catalog is dynamic-only, see devplan §12.3 SB12 note). Independent reference = exact linear-algebra congruence transform K_global = (C*T)^T * diag(k_local) * (C*T), solved by an independent Gaussian-elimination linear solve. T = blockdiag(R,R), R = MIDAS Beta-Angle local frame re-derived from scratch (benchmarks/element/SB12_elasticLink.ts, no import from production TclBuilder code) -- this is the transform under test. C = OpenSees TwoNodeLink's own shear/rotation basic-deformation coupling (TwoNodeLink.cpp setTranLocalBasic(), confirmed against OpenSees/OpenSees GitHub source; shearDist fixed 0.5 as DCR always emits) -- real, documented, non-DCR element physics, included only so the closed form matches the engine, not itself under test. Not a FEM discretization/convergence problem -- exact linear algebra, so near-machine-precision agreement with the simulated result is expected.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SB12.html",
+        "byteLength": 30697,
+        "sha256": "471386b3e33449642c8671ead670aa2f8b6ba0bbaecbdd39d153a062d4387058"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 24,
+        "printedPageEnd": 27
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB12.pdf",
+        "byteLength": 133141,
+        "sha256": "73193b203af3ce02f4d57b445fa45faf1aa3b65d5e23a369004a4f8f3edcfb4b",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 4
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.01%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Oblique Ux (mm)",
+      "probe": "N2.ux",
+      "strix": "0.152961",
+      "reference": "0.152961",
+      "delta": "+0.000081%"
+    },
+    "resultRowCount": 12
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_12_OF_12",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": null,
+    "htmlRunDate": "2026-07-11",
+    "htmlRecordLocator": "records/SB12.json",
+    "htmlArchive": "verif-evidence-eng1.0.2-win-x64.zip · SB12/",
+    "htmlArchiveVersion": "1.0.2",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": true
+  },
+  "referenceLane": {
+    "class": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED",
+    "HTML_ENGINE_V1_0_4_WITH_V1_0_2_RUN_OR_ARCHIVE_METADATA"
+  ],
+  "sourceLockHash": "e8e6fdf0a18d9b50d5acca2c081e47a2f9cfc8bbd703862b971acba762e1a9b7"
+}

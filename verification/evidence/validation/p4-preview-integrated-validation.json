@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "version": "p4-preview-integrated-validation",
+  "projectId": "fad4de56-047a-4c65-ab90-d59511b7460e",
+  "checks": [
+    "modeler-save",
+    "revisions",
+    "library",
+    "import-overlay"
+  ]
+}

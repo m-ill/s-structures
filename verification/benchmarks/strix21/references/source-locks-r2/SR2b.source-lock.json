@@ -1,0 +1,106 @@
+{
+  "version": "p17-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-locks/SR2b.source-lock.json",
+    "sourceLockHash": "d5f4809e0fdea1f316e227b8dad1a26691c3d811bbc9941ca28d1fb18d104bff",
+    "reason": "R2 selects the final evidence Engine field when an HTML page also contains a descriptive Engine field."
+  },
+  "caseId": "SR2b",
+  "ordinal": 17,
+  "official": true,
+  "family": "RESPONSE-SPECTRUM-3D-BRACED-FRAME",
+  "title": "Response-spectrum analysis of a three-dimensional L-shaped braced frame",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "CSI SAP2000 Software Verification, Example 1-025 (Response-Spectrum Analysis of a Three-Dimensional Braced Frame); independent solution = Peterson (1981), reproduced exactly (0 %) by SAP2000. A three-story, L-shaped building framed by four identical two-bay, three-story X-braced planar frames whose columns and diagonals carry axial force only (all pinned). The frames are tied by a rigid floor diaphragm at each level. All mass is concentrated at a centre-of-mass joint per level with X and Y translational mass (1.24224 kip-s²/in) and a rotational mass moment of inertia about Z (174,907.4 kip-in-s²), giving nine dynamic DOF; for consistency with Peterson only the first two modes drive the RSA. The excitation is the El-Centro-derived 5%-damped response spectrum applied in X, combined by CQC, SRSS and ABS. Reference values are the two modal frequencies, the roof centre-of-mass (joint 51) X/Y displacement and Z rotation, and the axial forces in three Frame-1 elements (a column and two diagonals) under each combination rule.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SR2b.html",
+        "byteLength": 33917,
+        "sha256": "7a3ce7b7f6d4d8f69b88e2296c5f89539b27e7b728828bca4c02fc8ea80a1291"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 45,
+        "printedPageEnd": 48
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SR2b.pdf",
+        "byteLength": 190124,
+        "sha256": "e19791efd03319af613c50210f7ae026d0b6c50df63be634dffe444ec6eaeeda",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 4
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "1.5%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Frequency — mode 1 (Hz)",
+      "probe": "eigen · Hz",
+      "strix": "3.05908",
+      "reference": "3.0592",
+      "delta": "−0.0040%"
+    },
+    "resultRowCount": 20
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_20_OF_20",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SR2b.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SR2b/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "566535d937ee9e7d7a4705aeb0d92a385b58dafb8edb989b4250470561c3aaac"
+}

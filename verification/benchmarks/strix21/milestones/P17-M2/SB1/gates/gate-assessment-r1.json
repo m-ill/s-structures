@@ -1,0 +1,147 @@
+{
+  "version": "p17-m2-terminal-gate-assessment-v1",
+  "phase": 17,
+  "milestone": "P17-M2",
+  "caseId": "SB1",
+  "status": "BLOCKED_PRE_EXECUTION",
+  "executionAuthorized": false,
+  "terminalAuthorization": false,
+  "requiredGateCount": 8,
+  "readyGateCount": 5,
+  "passedTerminalGateCount": 1,
+  "gates": [
+    {
+      "id": "OFFICIAL_EXECUTION_ORCHESTRATOR_AND_RECEIPT",
+      "readinessStatus": "READY",
+      "terminalEvidenceStatus": "PENDING",
+      "artifactHashes": [
+        "84f68b61c54e68486dd4512eb9b0f129acd6475621622632bd28c700f881d724",
+        "e5c53f645aa73e614af35c00b45ff75db743dca0f01445b5f477fde58abf4b74"
+      ],
+      "reasonCodes": [
+        "P17_OFFICIAL_EXECUTION_RECEIPT_PENDING"
+      ]
+    },
+    {
+      "id": "PINNED_EXTERNAL_EXECUTION_CUSTODIAN_TRUST_REGISTRY",
+      "readinessStatus": "BLOCKED",
+      "terminalEvidenceStatus": "BLOCKED",
+      "artifactHashes": [
+        "4216187322e22d0aa241149791f78f7319bf31dc1f884a0ba04b5d7cb9672fc1",
+        "43ba853426c90cf40e2dc068ea73ee3eea05dc9102c96b87e7d3bce663e95e7c",
+        "5b33cd5066ba9cbb24c4a00f0ecde566e485aa4b3995b192995dd334f9eee5f5"
+      ],
+      "reasonCodes": [
+        "P17_EXTERNAL_TRUST_AUTHORITY_NOT_EXTERNAL",
+        "P17_EXTERNAL_TRUST_EXECUTION_CUSTODIAN_KEY_REQUIRED",
+        "P17_EXTERNAL_TRUST_MODEL_REVIEWER_KEY_REQUIRED",
+        "P17_EXTERNAL_TRUST_NUMERICAL_REVIEWER_KEY_REQUIRED",
+        "P17_EXTERNAL_TRUST_PIN_ENV_MISSING",
+        "P17_EXTERNAL_TRUST_PIN_NOT_DECLARED",
+        "P17_EXTERNAL_TRUST_REFERENCE_REVIEWER_KEY_REQUIRED",
+        "P17_EXTERNAL_TRUST_REGISTRY_UNPROVISIONED",
+        "P17_EXTERNAL_TRUST_RELEASE_REVIEWER_KEY_REQUIRED"
+      ]
+    },
+    {
+      "id": "REFERENCE_ARTIFACT_BYTE_AUDIT",
+      "readinessStatus": "READY",
+      "terminalEvidenceStatus": "PASS",
+      "artifactHashes": [
+        "09250b3b82242c64e3d3f26c8f79761d590c095ea6590b78f4322ca8fe76a9fc",
+        "169db0b512b555c89de486a53c06dab3d2871e56fbdde25476a7f7e800a59ad9"
+      ],
+      "reasonCodes": []
+    },
+    {
+      "id": "EXTRACTION_AND_COMPARISON_REPLAY",
+      "readinessStatus": "READY",
+      "terminalEvidenceStatus": "PENDING",
+      "artifactHashes": [
+        "7f7df649f61bb8294a8f40f78cb0063ea1b0f2c60a5d51e61a8f01b9b9bf92fd",
+        "b3edeb2eea4b087c6ed56750125b37bab3d9fd974e773c2a7c19d8b5c7f3ae8d",
+        "e62f329ff8ccc7c267b094239986f45f381d753c889f40ad83a56a2b5cdb7b03"
+      ],
+      "reasonCodes": [
+        "P17_OFFICIAL_EXTRACTION_COMPARISON_REPLAY_PENDING"
+      ]
+    },
+    {
+      "id": "PHYSICS_AND_MUTATION_REPLAY",
+      "readinessStatus": "READY",
+      "terminalEvidenceStatus": "PENDING",
+      "artifactHashes": [
+        "733bd542ecdd3d3873b388cb208802b2ce8876a4d530a926a8908d38c7b88f22",
+        "9933fb860f88c5016d995418a1e30eebaad168a1a8bfeca2f48e13e048d48e4d"
+      ],
+      "reasonCodes": [
+        "P17_OFFICIAL_PHYSICS_MUTATION_REPLAY_PENDING"
+      ]
+    },
+    {
+      "id": "THREE_INDEPENDENT_EXTERNALLY_CUSTODIED_RUNS",
+      "readinessStatus": "BLOCKED",
+      "terminalEvidenceStatus": "BLOCKED",
+      "artifactHashes": [
+        "4216187322e22d0aa241149791f78f7319bf31dc1f884a0ba04b5d7cb9672fc1",
+        "9b2845e5f5b480ab2ad2c3fe91975d0ede4a8238ba45ee95e337fca39e982441"
+      ],
+      "reasonCodes": [
+        "P17_EXTERNAL_CUSTODIAN_REGISTRY_REQUIRED",
+        "P17_THREE_INDEPENDENT_RUNS_NOT_EXECUTED"
+      ]
+    },
+    {
+      "id": "DETERMINISTIC_PDF_REPRODUCTION_AND_VISUAL_PARITY_AUDIT",
+      "readinessStatus": "READY",
+      "terminalEvidenceStatus": "PENDING",
+      "artifactHashes": [
+        "bcaca373e055ad06334f03be35fc3d0c77e78ff672333c2daca9b077d44af46c",
+        "f278dd6d92ef06266c32a070db9360cff24d3e33732bb7eaf9b8d362c8a79d73"
+      ],
+      "reasonCodes": [
+        "P17_SB1_TERMINAL_CASE_REPORT_PENDING"
+      ]
+    },
+    {
+      "id": "SCOPED_INDEPENDENT_REVIEWER_ATTESTATIONS",
+      "readinessStatus": "BLOCKED",
+      "terminalEvidenceStatus": "BLOCKED",
+      "artifactHashes": [
+        "4216187322e22d0aa241149791f78f7319bf31dc1f884a0ba04b5d7cb9672fc1",
+        "672494cd61d828952a2ffb886a2e02991244aeaa6ce47bbfa630c9db2a391b47"
+      ],
+      "reasonCodes": [
+        "P17_INDEPENDENT_REVIEWER_ATTESTATIONS_REQUIRED"
+      ]
+    }
+  ],
+  "lockSummary": {
+    "source": "APPROVED",
+    "reference": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "probe": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "tolerance": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "canonicalModel": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "nativeModel": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "modelEquivalence": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "productBuild": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL"
+  },
+  "counters": {
+    "officialExecutionCount": 0,
+    "externallyCustodiedRunCount": 0,
+    "officialPassCount": 0,
+    "solverExecutionCount": 0,
+    "benchmarkExecutionCount": 0,
+    "caseReportCount": 0
+  },
+  "externalDependencies": [
+    "P17_EXTERNAL_CUSTODIAN_REGISTRY_AND_OUT_OF_BAND_PIN_REQUIRED",
+    "P17_EXTERNAL_MODEL_REVIEWER_ATTESTATION_REQUIRED",
+    "P17_EXTERNAL_NUMERICAL_REVIEWER_ATTESTATION_REQUIRED",
+    "P17_EXTERNAL_REFERENCE_REVIEWER_ATTESTATION_REQUIRED",
+    "P17_EXTERNAL_RELEASE_REVIEWER_ATTESTATION_REQUIRED"
+  ],
+  "releaseAllowed": false,
+  "assessmentHash": "09e6f23dc19fdbbc2278158ac18d40a4dd0e6d3c52a844e9481e0c671cb6d068"
+}
+

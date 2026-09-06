@@ -1,0 +1,252 @@
+{
+  "schemaVersion": "p17-sstructures-input-v1",
+  "caseId": "SB1",
+  "artifactStatus": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+  "payloadAbsent": false,
+  "releaseAllowed": false,
+  "productProjectSchemaVersion": "6",
+  "payload": {
+    "schemaVersion": 6,
+    "units": {
+      "length": "m",
+      "force": "kN",
+      "moment": "kN.m",
+      "stress": "N/mm2",
+      "displacement": "mm"
+    },
+    "unitSystem": {
+      "version": "p2-t01-unit-system",
+      "internal": {
+        "length": "m",
+        "force": "kN",
+        "moment": "kN.m",
+        "stress": "N/mm2",
+        "displacement": "mm"
+      },
+      "display": {
+        "length": "m",
+        "force": "kN",
+        "moment": "kN.m",
+        "stress": "N/mm2",
+        "displacement": "mm"
+      },
+      "conversionAudit": []
+    },
+    "storyModel": {
+      "version": "p2-s4-story-model",
+      "source": "node-z",
+      "count": 0
+    },
+    "stories": [],
+    "diaphragms": [],
+    "materials": [
+      {
+        "id": "SB1-MAT",
+        "version": 1,
+        "name": "SB1 elastic material",
+        "E": 26700,
+        "G": 11125,
+        "density": 0,
+        "Fy": 1000000000,
+        "Fu": 1000000000
+      }
+    ],
+    "sections": [
+      {
+        "id": "SB1-SEC",
+        "version": 1,
+        "name": "SB1 300x500 rectangular section",
+        "type": "RECT",
+        "dims": {
+          "B": 300,
+          "H": 500
+        },
+        "A": 0.15,
+        "Iy": 0.001125,
+        "Iz": 0.003125,
+        "J": 0.0028173708,
+        "Ay": 0.125,
+        "Az": 0.125,
+        "Zy": 0.0075,
+        "Zz": 0.0125
+      }
+    ],
+    "nodes": [
+      {
+        "id": "N1",
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "support": "fixed"
+      },
+      {
+        "id": "N2",
+        "x": 3,
+        "y": 0,
+        "z": 0
+      }
+    ],
+    "members": [
+      {
+        "id": "M1",
+        "type": "frame",
+        "n1": "N1",
+        "n2": "N2",
+        "matId": "SB1-MAT",
+        "secId": "SB1-SEC",
+        "localAxis": {
+          "roll": 0,
+          "strongAxis": "z"
+        },
+        "releases": {
+          "i": "rigid",
+          "j": "rigid"
+        }
+      }
+    ],
+    "foundationProperties": [],
+    "loads": [
+      {
+        "id": "P",
+        "type": "nodal",
+        "node": "N2",
+        "P": 1,
+        "dir": "-z",
+        "case": "D"
+      }
+    ],
+    "loadCases": [
+      {
+        "id": "D",
+        "name": "SB1 tip load",
+        "type": "dead"
+      }
+    ],
+    "loadCombinations": [
+      {
+        "id": "D_ONLY",
+        "name": "1.0D",
+        "type": "service",
+        "factors": {
+          "D": 1
+        }
+      }
+    ],
+    "massSources": [],
+    "sourceRegistry": [],
+    "designBasis": {
+      "status": "unconfigured",
+      "codeSourceId": null,
+      "designMethod": null,
+      "unitSystem": null,
+      "fields": {},
+      "floorUsages": [],
+      "confirmedFields": []
+    },
+    "projectSetup": {
+      "version": "p7-m0-project-setup-v1",
+      "status": "legacy-unreviewed",
+      "templateId": null,
+      "configuredAt": null,
+      "reviewedAt": null,
+      "warnings": []
+    },
+    "analysisCases": [
+      {
+        "id": "SB1-STATIC",
+        "name": "SB1 linear static",
+        "kind": "static",
+        "settings": {
+          "comboId": "D_ONLY",
+          "pDeltaMethod": "off"
+        },
+        "input": {},
+        "status": "not-run",
+        "caseVersion": "p8-analysis-case-v2",
+        "lastRun": null
+      }
+    ],
+    "analysisSettings": {
+      "analysisType": "linear_static",
+      "elementType": "3d_frame",
+      "shearDeformation": false,
+      "includeGeometricStiffness": false,
+      "includeSelfWeight": false,
+      "solverTolerance": 1e-10,
+      "memberStations": 41,
+      "includeFixedEndDeformation": true,
+      "validateBeforeSolve": true,
+      "pDeltaMaxIterations": 12,
+      "pDeltaTolerance": 0.0001,
+      "pDeltaMaxAmplification": 2.5,
+      "modalModeCount": 6,
+      "responseSpectrum": {
+        "enabled": false,
+        "directions": [
+          "x",
+          "y"
+        ],
+        "dampingRatio": 0.05,
+        "scale": 9.80665,
+        "points": [
+          {
+            "period": 0,
+            "sa": 0.4
+          },
+          {
+            "period": 5,
+            "sa": 0.4
+          }
+        ]
+      }
+    },
+    "analysisCriteria": {
+      "version": "p6-m0-analysis-criteria-v1",
+      "preset": "kds",
+      "criteria": {}
+    },
+    "nonlinearMaterials": [],
+    "nonlinearSections": [],
+    "hingeProperties": [],
+    "linkProperties": [],
+    "timeHistoryFunctions": [],
+    "analysisStates": [],
+    "designParams": {
+      "global": {
+        "mode": "off",
+        "codeCompliance": false,
+        "defaultKy": 1,
+        "defaultKz": 1,
+        "defaultLbY": null,
+        "defaultLbZ": null,
+        "defaultDeflectionLimitTotal": 250,
+        "defaultDeflectionLimitLive": 360,
+        "defaultCompressionSlendernessLimit": 200,
+        "defaultTensionSlendernessLimit": 300,
+        "warnAtRatio": 0.7
+      },
+      "rc": {
+        "defaultCover": 0.05,
+        "defaultRebarFy": 400,
+        "defaultBeamRebarRatio": 0.01,
+        "defaultColumnRebarRatio": 0.015,
+        "minBeamRebarRatio": 0.002,
+        "minColumnRebarRatio": 0.01,
+        "maxColumnRebarRatio": 0.04,
+        "phiFlexure": 0.85,
+        "phiShear": 0.75,
+        "phiCompression": 0.65,
+        "warnAtRatio": 0.7
+      },
+      "members": {}
+    },
+    "designSettings": {
+      "method": "allowable_stress",
+      "defaultCheck": "elastic_stress_interaction"
+    }
+  },
+  "reasonCodes": [
+    "P17_EXTERNAL_MODEL_REVIEW_PENDING"
+  ]
+}
+

@@ -1,0 +1,42 @@
+{
+  "version": "p12-m5-release-package-install-recovery-v1",
+  "milestone": "P12-M5",
+  "generatedAt": "2026-08-03T00:00:00.000Z",
+  "status": "PASS",
+  "sourceRevision": "91d2807845e347cfed4dd89c239b021895bc8a69",
+  "sourceTreeState": "milestone worktree on recorded parent revision",
+  "environmentProfile": {
+    "os": "Windows",
+    "node": "v24.16.0",
+    "productProfile": "unpacked-portable-zip-loopback",
+    "installer": false
+  },
+  "testCommand": "node tests/p12-m5-release-package-install-recovery.mjs",
+  "artifact": {
+    "path": "output/release/s-structures-0.1.0.zip",
+    "sha256": "9af7ebdb8f69f7afa933c55bba1029b83ee948bd7b42b3811caeff5aded2bbd3",
+    "publicFileCount": 618,
+    "releaseFileCount": 1293
+  },
+  "summary": {
+    "forbiddenPackagePaths": 0,
+    "publicAssetHashMismatches": 0,
+    "publicManifestFilesHttpFailures": 0,
+    "forbiddenUrlHttp200": 0,
+    "cleanInstallWorkflow": "PASS",
+    "restartWorkflow": "PASS",
+    "backupRestoreWorkflow": "PASS",
+    "secretsInDefaultBackup": 0
+  },
+  "verificationRecords": [
+    { "verificationId": "P12-PKG-01", "status": "PASS" },
+    { "verificationId": "P12-PKG-02", "status": "PASS" },
+    { "verificationId": "P12-PKG-03", "status": "PASS" },
+    { "verificationId": "P12-INSTALL-01", "status": "PASS" },
+    { "verificationId": "P12-INSTALL-02", "status": "PASS" },
+    { "verificationId": "P12-HELP-01", "status": "PASS" },
+    { "verificationId": "P12-BACKUP-02", "status": "PASS" },
+    { "verificationId": "P12-DESKTOP-01", "status": "PASS" }
+  ]
+}
+

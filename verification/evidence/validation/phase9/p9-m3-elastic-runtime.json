@@ -1,0 +1,323 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteVersion": "p9-m3-elastic-runtime-evidence-v1",
+  "suiteId": "P9-M3-ELASTIC-RUNTIME",
+  "milestone": "P9-M3",
+  "generatedAt": "2026-07-15T11:40:01.907Z",
+  "sourceRevision": "1a46953+worktree",
+  "verificationIds": [
+    "P9-ELA-01",
+    "P9-ELA-02",
+    "P9-ELA-03",
+    "P9-ELA-04",
+    "P9-ELA-05",
+    "P9-ELA-06",
+    "P9-ELA-07",
+    "P9-ELA-08",
+    "P9-ELA-09",
+    "P9-ELA-10",
+    "P9-ELA-11",
+    "P9-ELA-12",
+    "P9-ELA-13",
+    "P9-ELA-14",
+    "P9-ELA-15",
+    "P9-ELA-16",
+    "P9-API-04",
+    "P9-API-05",
+    "P9-API-06",
+    "P9-PERF-01",
+    "P9-PERF-02",
+    "P9-PERF-03",
+    "P9-PERF-04"
+  ],
+  "status": "PASS",
+  "contracts": {
+    "factorGroups": "p9-m3-elastic-factor-groups-v1",
+    "factorSession": "p9-m3-elastic-factor-session-v1",
+    "adapter": "p9-m3-production-elastic-adapter-v1",
+    "backend": "p9-elastic-cpu-production-v1",
+    "productService": "p9-m3-elastic-analysis-service-v1"
+  },
+  "tolerances": {
+    "displacement": {
+      "absoluteMax": 1e-8,
+      "relativeL2": 0.000001
+    },
+    "forceAndMember": {
+      "absoluteMax": 1,
+      "relativeL2": 0.01
+    },
+    "designRatio": {
+      "absoluteMax": 0.000001
+    }
+  },
+  "parity": {
+    "status": "PASS",
+    "displacement": {
+      "absoluteMax": 5.087252664526992e-14,
+      "relativeL2": 8.780319077480176e-7,
+      "valueCount": 4224
+    },
+    "forceAndMember": {
+      "absoluteMax": 0.7000154223766393,
+      "relativeL2": 0.006437664826658848,
+      "valueCount": 276672
+    },
+    "designRatioAbsoluteMax": 0,
+    "statusesEqual": true,
+    "combinationIdsEqual": true,
+    "envelopeSourceIdsEqual": true,
+    "governingTiePolicy": "strict-greater-preserves-first-combination-order"
+  },
+  "performance": {
+    "small": {
+      "referenceSamplesMs": [
+        3187.7414
+      ],
+      "productionSamplesMs": [
+        1955.434
+      ],
+      "referenceMedianMs": 3187.7414,
+      "productionMedianMs": 1955.434,
+      "productionToReferenceRatio": 0.6134230336249986,
+      "approvedRegressionRatio": 1.1
+    },
+    "medium": {
+      "totalMs": 87942.6673,
+      "approvedBudgetMs": 240000,
+      "firstProductionBaseline": true,
+      "stages": [
+        {
+          "comboId": "P9-C01",
+          "elapsedMs": 15218.2086
+        },
+        {
+          "comboId": "P9-C05",
+          "elapsedMs": 25106.2526
+        },
+        {
+          "comboId": "P9-C10",
+          "elapsedMs": 37001.1148
+        },
+        {
+          "comboId": "P9-C15",
+          "elapsedMs": 48115.3326
+        },
+        {
+          "comboId": "P9-C20",
+          "elapsedMs": 59113.7445
+        },
+        {
+          "comboId": "P9-C25",
+          "elapsedMs": 71096.5979
+        },
+        {
+          "comboId": "P9-C30",
+          "elapsedMs": 82181.3825
+        }
+      ],
+      "fixture": {
+        "tier": "M",
+        "nodeCount": 1521,
+        "memberCount": 8456,
+        "loadCount": 338,
+        "combinationCount": 30,
+        "fixedNodeCount": 169,
+        "activeDof": 8112
+      }
+    }
+  },
+  "execution": {
+    "small": {
+      "factorizationCount": 1,
+      "factorGroupCount": 1,
+      "solveCount": 10,
+      "reusedSolveCount": 9,
+      "componentCacheEntryCount": 1,
+      "resourceBalanced": true,
+      "peakFactorBytes": 200916,
+      "factorModes": [
+        "direct"
+      ]
+    },
+    "medium": {
+      "factorizationCount": 1,
+      "factorGroupCount": 1,
+      "solveCount": 30,
+      "reusedSolveCount": 29,
+      "componentCacheEntryCount": 1,
+      "resourceBalanced": true,
+      "peakFactorBytes": 1090976,
+      "factorModes": [
+        "iccg"
+      ]
+    }
+  },
+  "resultStorage": {
+    "small": {
+      "mode": "detailed",
+      "detailedCombinationCount": 10,
+      "sliceCombinationCount": 0
+    },
+    "medium": {
+      "mode": "bounded-slices",
+      "detailedCombinationCount": 0,
+      "sliceCombinationCount": 30,
+      "detailAccess": "result-slice-and-final-envelope"
+    },
+    "mediumEnvelopeMemberCount": 8456
+  },
+  "factorPlan": {
+    "version": "p9-m3-elastic-factor-groups-v1",
+    "combinationCount": 30,
+    "groupCount": 1,
+    "planHash": "19b07068eec4a6a5e88986ae61ccbe4bd5b78732e3a71c7ca1a6844d3c49027f",
+    "rules": {
+      "settlement": "rhs-only-reuse-allowed",
+      "unilateral": "isolate-until-active-set-converges",
+      "directPDelta": "invalidate-on-every-tangent-rebuild"
+    }
+  },
+  "regressionPolicy": {
+    "focused": [
+      "p9-m3-elastic-runtime",
+      "p9-m3-worker-product",
+      "p9-m3-evidence-contract"
+    ],
+    "compatibility": [
+      "m2-linear3d",
+      "m4-combinations",
+      "p8-m1-domain",
+      "p8-m2-assembly-primitives"
+    ],
+    "nonlinearSolve": "not-rerun-reuse-phase8-qualified-evidence"
+  },
+  "priorEvidenceHash": "49c5c9ccf63ba2b4b6ef4c3c5383a7571e840998e4fc77d2b4a5e23ff20c48c7",
+  "results": [
+    {
+      "id": "P9-ELA-01",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-02",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-03",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-04",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-05",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-06",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-07",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-08",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-09",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-10",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-11",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-12",
+      "status": "PASS",
+      "test": "tests/p9-m3-elastic-runtime.mjs"
+    },
+    {
+      "id": "P9-ELA-13",
+      "status": "PASS",
+      "test": "tests/p9-m3-worker-product.mjs"
+    },
+    {
+      "id": "P9-ELA-14",
+      "status": "PASS",
+      "test": "tests/p9-m3-worker-product.mjs"
+    },
+    {
+      "id": "P9-ELA-15",
+      "status": "PASS",
+      "test": "tests/p9-m3-worker-product.mjs"
+    },
+    {
+      "id": "P9-ELA-16",
+      "status": "PASS",
+      "test": "tests/p9-m3-worker-product.mjs"
+    },
+    {
+      "id": "P9-API-04",
+      "status": "PASS",
+      "test": "tests/p9-m3-worker-product.mjs"
+    },
+    {
+      "id": "P9-API-05",
+      "status": "PASS",
+      "test": "tests/p9-m3-worker-product.mjs"
+    },
+    {
+      "id": "P9-API-06",
+      "status": "PASS",
+      "test": "tests/p9-m3-worker-product.mjs"
+    },
+    {
+      "id": "P9-PERF-01",
+      "status": "PASS",
+      "test": "tools/run-p9-m3-evidence.mjs"
+    },
+    {
+      "id": "P9-PERF-02",
+      "status": "PASS",
+      "test": "tools/run-p9-m3-evidence.mjs"
+    },
+    {
+      "id": "P9-PERF-03",
+      "status": "PASS",
+      "test": "tools/run-p9-m3-evidence.mjs"
+    },
+    {
+      "id": "P9-PERF-04",
+      "status": "PASS",
+      "test": "tools/run-p9-m3-evidence.mjs"
+    }
+  ],
+  "blockers": [
+    "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "P9_M10_RELEASE_GATE_REQUIRED",
+    "P9_M4_TO_M8_GPU_QUALIFICATION_REQUIRED",
+    "P9_M9_PRODUCT_MIGRATION_REQUIRED"
+  ],
+  "qualificationImpact": "G1-candidate-production-elastic-worker-integrated-no-gpu-design-transfer",
+  "artifactHash": "897ab273596507afe3ab2d7d5967f3416450f24c8adc62c1c99f550a13f339e9"
+}
