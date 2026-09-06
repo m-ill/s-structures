@@ -6629,8 +6629,8 @@
     },
     {
       "path": "tests/p17-m1-framework-contract.mjs",
-      "bytes": 52366,
-      "sha256": "6d5af40bc39140ea5b282dbd6d56899bfe9d0558cdad74cd76659631a67fd1a9"
+      "bytes": 53036,
+      "sha256": "1166d4f5d5624e39f2c0f6b9aab9827a3c4202d432024a9d5f2e87714c5592a8"
     },
     {
       "path": "tests/p17-m1-json-schema-validator.mjs",
@@ -13441,6 +13441,12 @@
       "path": "verification/workspace-paths.mjs",
       "bytes": 5042,
       "sha256": "fd47a11e0af80df70e8564097905e2edb134a260496bcbe2eaa414186771bcb2"
+    }
+  ],
+  "publicationAdjustments": [
+    {
+      "path": "tests/p17-m1-framework-contract.mjs",
+      "reason": "POSIX cleanup of test-owned read-only directories; production code unchanged"
     }
   ]
 }
