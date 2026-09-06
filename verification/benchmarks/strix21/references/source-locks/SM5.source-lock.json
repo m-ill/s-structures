@@ -1,0 +1,100 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "SM5",
+  "ordinal": 12,
+  "official": true,
+  "family": "MODAL-FRAME",
+  "title": "Bathe & Wilson eigenvalue problem — ten-bay nine-storey plane frame",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "K.-J. Bathe & E. L. Wilson, \"Large Eigenvalue Problems in Dynamic Analysis,\" ASCE J. Eng. Mech. Div. 98(EM6), 1972 (with an independent solution by Peterson, 1981). The canonical multi-DOF frame eigenvalue benchmark, reproduced as CSI SAP2000 Verification Example 1-021, SeismoStruct Verification Ex.10, Tekla Structural Designer and OpenBrIM Frame21. A ten-bay, nine-storey fixed-base 2-D frame; all members identical, one finite element per member, consistent mass from the line mass, shear-rigid (bending + axial only). The published reference values are the first three eigenvalues ω² (rad²/s²).",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SM5.html",
+        "byteLength": 24801,
+        "sha256": "ef1983f2b7841dfe400592621076c5f8cfffb6970cde2a16fe26fb867cb52eef"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 31,
+        "printedPageEnd": 32
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SM5.pdf",
+        "byteLength": 124948,
+        "sha256": "7fab02c125dde6869d55991a41701dc70b9c5f9ba0ac805f8f81300c9e4baf7a",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 2
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.5%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Eigenvalue ω² (rad²/s²)",
+      "probe": "Mode 1 (lateral sway, mx=82%)",
+      "strix": "0.589538",
+      "reference": "0.589541",
+      "delta": "−0.00050%"
+    },
+    "resultRowCount": 3
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_3_OF_3",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SM5.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SM5/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "afc934339929515c8197c6cdb8d197335ea9d422f6a055f8d0a20563a4e37a02"
+}

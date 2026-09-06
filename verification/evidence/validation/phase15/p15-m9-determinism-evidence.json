@@ -1,0 +1,87 @@
+{
+  "version": "p15-m9-determinism-evidence-v1",
+  "expectedRunCount": 3,
+  "runCount": 3,
+  "deterministic": true,
+  "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+  "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+  "summaryHash": "4d4b9e5e2bb80b25b97d7c46393b03aae3126c137cb8e009b30d82689cfa1f4e",
+  "runs": [
+    {
+      "runId": "run-1",
+      "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+      "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "runRecordHash": "de6a504014cb46f79e2f31e56b10a40387632d97dc0f6b719ff160da73665c59",
+      "artifactHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "durationMs": 135600.0208,
+      "summary": {
+        "attempted": 12,
+        "PASS": 9,
+        "CUSTOM_PASS": 1,
+        "REVIEW": 0,
+        "BLOCKED": 2,
+        "metricCount": 52,
+        "metricPassCount": 52,
+        "maximumAbsoluteReferenceErrorPct": 1.987674425258053
+      }
+    },
+    {
+      "runId": "run-2",
+      "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+      "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "runRecordHash": "8a6bf4bece74a6f8a750c64bf83251d568e923fcc41553e209e6dbae831d908e",
+      "artifactHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "durationMs": 141054.72570000004,
+      "summary": {
+        "attempted": 12,
+        "PASS": 9,
+        "CUSTOM_PASS": 1,
+        "REVIEW": 0,
+        "BLOCKED": 2,
+        "metricCount": 52,
+        "metricPassCount": 52,
+        "maximumAbsoluteReferenceErrorPct": 1.987674425258053
+      }
+    },
+    {
+      "runId": "run-3",
+      "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+      "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "runRecordHash": "7fffcd8964b2f841ef6df886d81ad52e632309b48cb9b95c6e7e629c276f1973",
+      "artifactHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd",
+      "durationMs": 137207.60739999998,
+      "summary": {
+        "attempted": 12,
+        "PASS": 9,
+        "CUSTOM_PASS": 1,
+        "REVIEW": 0,
+        "BLOCKED": 2,
+        "metricCount": 52,
+        "metricPassCount": 52,
+        "maximumAbsoluteReferenceErrorPct": 1.987674425258053
+      }
+    }
+  ],
+  "status": "PASS",
+  "evidenceHash": "9f9799fe020e9526d496f9332b21f7042c1848d942761411b5ce09a4b019eb10",
+  "completedAt": "2026-08-27T14:58:05.530Z",
+  "m9ExecutionInputFragment": {
+    "determinismRuns": [
+      {
+        "runId": "run-1",
+        "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+        "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd"
+      },
+      {
+        "runId": "run-2",
+        "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+        "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd"
+      },
+      {
+        "runId": "run-3",
+        "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+        "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd"
+      }
+    ]
+  }
+}

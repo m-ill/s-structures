@@ -1,0 +1,18 @@
+{
+  "version": "p13-release-manifest-v1",
+  "phase": "Phase 13",
+  "completedMilestones": ["P13-M0"],
+  "implementationStartedMilestones": ["P13-M1", "P13-M2", "P13-M3", "P13-M4", "P13-M5", "P13-M6", "P13-M7", "P13-M8", "P13-M9"],
+  "releaseQualified": false,
+  "workflowReleaseQualified": false,
+  "frameElasticOfficePilotAllowed": false,
+  "engineeringCrossValidationQualified": false,
+  "finalDesignTransferAllowed": false,
+  "shellDesignTransferAllowed": false,
+  "releaseInvariants": {
+    "openSeesRuntimeUsed": false,
+    "externalSolverRuntimeDependency": false,
+    "nonlinearInScope": false,
+    "shellDesignTransferAllowed": false
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/canonical-input-schema.json",
+  "title": "Phase 17 canonical case input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "artifactStatus", "payloadAbsent", "releaseAllowed", "canonicalUnitSystem", "entities", "silentDefaults", "reasonCodes"],
+  "properties": {
+    "schemaVersion": { "const": "p17-canonical-input-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "artifactStatus": { "enum": ["NOT_PREPARED", "MODEL_LOCKED"] },
+    "payloadAbsent": { "type": "boolean" },
+    "releaseAllowed": { "type": "boolean" },
+    "canonicalUnitSystem": { "const": "SI_KN_M_S_RAD" },
+    "entities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodes", "elements", "materials", "sections", "constraints", "loadCases", "loads", "masses", "analysisCases"],
+      "properties": {
+        "nodes": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "elements": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "materials": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "sections": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "constraints": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "loadCases": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "loads": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "masses": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+        "analysisCases": { "type": "array", "items": { "type": "object", "additionalProperties": true } }
+      }
+    },
+    "silentDefaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "items"],
+      "properties": {
+        "status": { "enum": ["NOT_LOCKED", "LOCKED"] },
+        "items": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["id", "value", "source"],
+            "properties": { "id": { "type": "string", "pattern": "^[A-Z0-9_]+$" }, "value": {}, "source": { "type": "string", "minLength": 1 } }
+          }
+        }
+      }
+    },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+  }
+}

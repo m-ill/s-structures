@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "p17-reference-manifest-v1",
+  "caseId": "SM5b",
+  "artifactStatus": "NOT_LOCKED",
+  "payloadAbsent": true,
+  "releaseAllowed": false,
+  "sourceManifestBinding": {
+    "path": "verification/benchmarks/strix21/cases/SM5b/source/source-manifest.json",
+    "sha256": "ff7ec8a0d6b96dd10230417342a843133d03d5ead375c70a0377d4024b2f5c70"
+  },
+  "expectedValuesPath": "verification/benchmarks/strix21/cases/SM5b/reference/expected-values.json",
+  "expectedValuesHash": "af54c38e6594569c2d0edbfaeaaf04e0b03e51dca00ad273f92a207b82860f7d",
+  "lanes": [
+    {
+      "id": "PRIMARY_INDEPENDENT",
+      "referenceClass": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "claimEvidenceLevel": "NOT_ASSIGNED",
+      "status": "NOT_LOCKED",
+      "artifacts": [],
+      "reasonCodes": [
+        "P17_REFERENCE_NOT_LOCKED"
+      ]
+    },
+    {
+      "id": "STRIX_PUBLISHED",
+      "referenceClass": "NOT_ASSIGNED",
+      "claimEvidenceLevel": "NOT_ASSIGNED",
+      "status": "NOT_LOCKED",
+      "artifacts": [],
+      "reasonCodes": [
+        "P17_REFERENCE_NOT_LOCKED"
+      ]
+    },
+    {
+      "id": "STRIX_R4",
+      "referenceClass": "NOT_ASSIGNED",
+      "claimEvidenceLevel": "NOT_ASSIGNED",
+      "status": "NOT_LOCKED",
+      "artifacts": [],
+      "reasonCodes": [
+        "P17_REFERENCE_NOT_LOCKED"
+      ]
+    },
+    {
+      "id": "MIDAS_R4",
+      "referenceClass": "NOT_ASSIGNED",
+      "claimEvidenceLevel": "NOT_ASSIGNED",
+      "status": "NOT_LOCKED",
+      "artifacts": [],
+      "reasonCodes": [
+        "P17_REFERENCE_NOT_LOCKED"
+      ]
+    }
+  ],
+  "approval": {
+    "reviewer": "UNASSIGNED",
+    "status": "NOT_STARTED",
+    "approvalHash": null
+  },
+  "reasonCodes": [
+    "P17_REFERENCE_NOT_LOCKED",
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION"
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "version": "p17-m0-baseline-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/evidence/validation/phase17/p17-m0-baseline-source-lock.json",
+    "baselineHash": "43a8282762d40977f52119493bffddd541a149e6485bbd961ade21edd3538a8f",
+    "reason": "The R1 HTML parser selected the first descriptive Engine field in five cases; R2 selects the final evidence field and preserves R1 unchanged."
+  },
+  "phase": 17,
+  "milestone": "P17-M0",
+  "auditDate": "2026-08-28",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "status": "COMPLETE_WITH_SOURCE_BLOCKERS",
+  "m1EntryAllowed": true,
+  "releaseAllowed": false,
+  "finalDesignTransferAllowed": false,
+  "phase17InheritedPassCount": 0,
+  "externalRuntimeUsed": false,
+  "strixActualR4Used": false,
+  "midasActualR4Used": false,
+  "sourceCustody": {
+    "sourceRoot": "STRIX-verification-21",
+    "manifestSha256": "9cda48bab7c0fdb3e28a6407756c872224b571fd8c67927ec63a58105f4c47c9",
+    "declaredCount": 51,
+    "verifiedCount": 51,
+    "failureCount": 0,
+    "registryHash": "de4b442ab56af5b14a907d320b85281a04b3f66ab5f75f9073a3f563df09f79c",
+    "sourceLockCount": 21,
+    "sourceLockAggregateHash": "7dff89b608f1d15408f4167d04ef072b89d1b1480fdf1bb05406f21b633bb4cb",
+    "discrepancyRegisterHash": "45cc3d826f39a90a6d7614da58a18b11b817c9c10be271e73d118684a2f0e6a9"
+  },
+  "phase15HistoricalSnapshot": {
+    "baselineEvidence": {
+      "path": "verification/evidence/validation/phase15/p15-m0-corrective-baseline.json",
+      "byteLength": 32696,
+      "sha256": "7a850f85d8b22bcf34551025eaa160887517b1cb1b336e937005939d6736ef26",
+      "version": "p15-m0-corrective-baseline-v1",
+      "capturedAt": "2026-08-27T16:03:48.929Z",
+      "baselineHash": "38cbe7779c27063fe95310f788d654353f5fa9f69904f2138a6eed571ab3c555",
+      "status": "BLOCKED"
+    },
+    "recorded": {
+      "json": {
+        "id": "first-batch-json",
+        "kind": "benchmark-json",
+        "path": "reports/benchmark-evidence/strix21/first-batch-results.json",
+        "sha256": "b28f19955a7e0d0d5647bafe6f932e907d1a965ef17b295130ea900335854843",
+        "byteLength": 207182
+      },
+      "pdf": {
+        "id": "first-batch-pdf",
+        "kind": "benchmark-pdf",
+        "path": "output/pdf/S-Structures_STRIX21_1차_비교보고서.pdf",
+        "sha256": "8a25f93ca6e0345b03da8c5923139d288baaefbf16f246ee87b16fcc936cbdc4",
+        "byteLength": 95277
+      },
+      "markdown": null
+    },
+    "current": {
+      "json": {
+        "path": "verification/benchmarks/strix21/runs/first-batch-results.json",
+        "byteLength": 207182,
+        "sha256": "b28f19955a7e0d0d5647bafe6f932e907d1a965ef17b295130ea900335854843"
+      },
+      "markdown": {
+        "path": "verification/benchmarks/strix21/runs/S-Structures_STRIX21_1차_비교보고서.md",
+        "byteLength": 13998,
+        "sha256": "11db3298ce6b7463dc8abfd511ed44821db622cf0f610e311a27994667fc90f1"
+      },
+      "pdf": {
+        "path": "output/pdf/S-Structures_STRIX21_1차_비교보고서.pdf",
+        "byteLength": 95238,
+        "sha256": "a4e79daa5ded78f0b21dc97678f84787df5b96df81aef919b3a8cdc013c246ab"
+      }
+    },
+    "temporaryPdf": {
+      "path": "tmp/pdfs/strix21-comparison/S-Structures_STRIX21_1차_비교보고서.pdf",
+      "byteLength": 100245,
+      "sha256": "ad6a89e2daf89e14ad784f343a01b1042cdb00146ea5562b1669c96926445cad",
+      "authoritative": false
+    },
+    "provenance": {
+      "json": "MATCHES_P15_M0_RECORDED_BINARY",
+      "markdown": "P15_M0_MARKDOWN_NOT_CAPTURED",
+      "pdf": "CURRENT_PDF_REGENERATED_AFTER_BASELINE_CAPTURE",
+      "recordedPdfBinaryPresent": false
+    }
+  },
+  "artifacts": {
+    "registry": {
+      "path": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+      "hash": "de4b442ab56af5b14a907d320b85281a04b3f66ab5f75f9073a3f563df09f79c"
+    },
+    "sourceLocks": {
+      "path": "verification/benchmarks/strix21/references/source-locks-r2",
+      "count": 21
+    },
+    "discrepancies": {
+      "path": "verification/benchmarks/strix21/references/source-version-discrepancies-r2.json",
+      "hash": "45cc3d826f39a90a6d7614da58a18b11b817c9c10be271e73d118684a2f0e6a9"
+    },
+    "contentAddressedArchive": {
+      "path": "verification/archive/phase17-m0/phase15-current-snapshot",
+      "overwritePolicy": "REJECT_IF_HASH_DIFFERS"
+    },
+    "contentAddressedSnapshots": {
+      "json": {
+        "path": "verification/archive/phase17-m0/phase15-current-snapshot/b28f19955a7e0d0d5647bafe6f932e907d1a965ef17b295130ea900335854843.json",
+        "byteLength": 207182,
+        "sha256": "b28f19955a7e0d0d5647bafe6f932e907d1a965ef17b295130ea900335854843"
+      },
+      "markdown": {
+        "path": "verification/archive/phase17-m0/phase15-current-snapshot/11db3298ce6b7463dc8abfd511ed44821db622cf0f610e311a27994667fc90f1.md",
+        "byteLength": 13998,
+        "sha256": "11db3298ce6b7463dc8abfd511ed44821db622cf0f610e311a27994667fc90f1"
+      },
+      "pdf": {
+        "path": "verification/archive/phase17-m0/phase15-current-snapshot/a4e79daa5ded78f0b21dc97678f84787df5b96df81aef919b3a8cdc013c246ab.pdf",
+        "byteLength": 95238,
+        "sha256": "a4e79daa5ded78f0b21dc97678f84787df5b96df81aef919b3a8cdc013c246ab"
+      }
+    }
+  },
+  "gates": [
+    {
+      "id": "P17-M0-G01",
+      "description": "official ID/order is exactly 21",
+      "status": "PASS"
+    },
+    {
+      "id": "P17-M0-G02",
+      "description": "custom P3S2-SS excluded",
+      "status": "PASS"
+    },
+    {
+      "id": "P17-M0-G03",
+      "description": "source manifest 51/51 verified",
+      "status": "PASS"
+    },
+    {
+      "id": "P17-M0-G04",
+      "description": "21 per-case source locks hash-valid",
+      "status": "PASS"
+    },
+    {
+      "id": "P17-M0-G05",
+      "description": "version authority precedence is explicit",
+      "status": "PASS"
+    },
+    {
+      "id": "P17-M0-G06",
+      "description": "source discrepancies are registered",
+      "status": "PASS"
+    },
+    {
+      "id": "P17-M0-G07",
+      "description": "Phase15 current artifacts frozen by content hash",
+      "status": "PASS"
+    },
+    {
+      "id": "P17-M0-G08",
+      "description": "roles and claim vocabulary defined",
+      "status": "PASS"
+    },
+    {
+      "id": "P17-M0-G09",
+      "description": "independent approvals complete",
+      "status": "BLOCKED_RELEASE_ONLY"
+    },
+    {
+      "id": "P17-M0-G10",
+      "description": "STRIX raw runtime provenance available",
+      "status": "BLOCKED_RELEASE_ONLY"
+    }
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED",
+    "SIX_HTML_PAGES_HAVE_V1_0_4_ENGINE_WITH_V1_0_2_PROVENANCE",
+    "SB10_TOLERANCE_PRECISION_UNRESOLVED",
+    "SH1_PDF_RESULT_TABLE_CLIPPED",
+    "P15_M0_RECORDED_PDF_BINARY_MISSING",
+    "CURRENT_PDF_REGENERATED_AFTER_BASELINE_CAPTURE",
+    "CURRENT_PDF_NOT_BOUND_TO_P15_M0",
+    "P15_M0_MARKDOWN_NOT_CAPTURED",
+    "INDEPENDENT_REVIEWER_APPROVALS_PENDING"
+  ],
+  "baselineHash": "06aed261d00b98c04317df8a5fd8ea33373229cbf55cc9ca8b7d65d623802e81"
+}

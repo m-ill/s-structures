@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s-structures://phase13/evidence-schema.json",
+  "title": "S-Structures Phase 13 milestone evidence",
+  "type": "object",
+  "required": ["version", "phase", "milestone", "status", "sourceRevision", "verificationRecords"],
+  "properties": {
+    "version": { "type": "string", "minLength": 1 },
+    "phase": { "const": "Phase 13" },
+    "milestone": { "type": "string", "pattern": "^P13-M[0-9]$" },
+    "status": { "enum": ["PASS", "BLOCKED", "FAIL"] },
+    "sourceRevision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "verificationRecords": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "status"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^P13-M[0-9]-" },
+          "status": { "enum": ["PASS", "BLOCKED", "FAIL"] }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "p17-case-manifest-v1",
+  "phase": 17,
+  "milestone": "P17-M1",
+  "caseId": "SB3",
+  "ordinal": 3,
+  "title": "Cook's membrane (skew panel, in-plane bending on a distorted mesh)",
+  "family": "STATIC-MEMBRANE",
+  "officialSuiteMember": true,
+  "classification": "OFFICIAL_STRIX_21",
+  "lifecycle": {
+    "state": "SOURCE_LOCKED",
+    "terminalStatus": "NOT_STARTED",
+    "wipEligible": false
+  },
+  "statuses": {
+    "sourceStatus": "LOCKED_WITH_BLOCKERS",
+    "modelStatus": "NOT_STARTED",
+    "sstructuresRunStatus": "NOT_RUN_M1_FRAMEWORK_ONLY",
+    "independentQualificationStatus": "NOT_STARTED",
+    "strixComparisonStatus": "NOT_RUN_M1_FRAMEWORK_ONLY",
+    "midasComparisonStatus": "NOT_RUN_M1_FRAMEWORK_ONLY",
+    "performanceComparisonStatus": "NOT_RUN_M1_FRAMEWORK_ONLY",
+    "reportStatus": "NOT_STARTED",
+    "releaseStatus": "NOT_STARTED"
+  },
+  "roles": {
+    "owner": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    "modelReviewer": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    "referenceReviewer": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    "numericalReviewer": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    "releaseReviewer": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    }
+  },
+  "conventions": {
+    "canonicalUnitSystem": {
+      "id": "SI_KN_M_S_RAD",
+      "status": "FRAMEWORK_DEFAULT_NOT_CASE_LOCKED",
+      "force": "kN",
+      "length": "m",
+      "time": "s",
+      "angle": "rad",
+      "reasonCodes": [
+        "P17_CASE_UNIT_SYSTEM_NOT_LOCKED"
+      ]
+    },
+    "globalAxes": {
+      "status": "FRAMEWORK_DEFAULT_NOT_CASE_LOCKED",
+      "handedness": "RIGHT_HANDED",
+      "verticalAxis": "+Z",
+      "reasonCodes": [
+        "P17_CASE_GLOBAL_AXES_NOT_LOCKED"
+      ]
+    },
+    "localAxisConvention": {
+      "status": "NOT_LOCKED",
+      "description": "TO_BE_LOCKED_PER_CASE",
+      "reasonCodes": [
+        "P17_CASE_LOCAL_AXIS_NOT_LOCKED"
+      ]
+    },
+    "signConvention": {
+      "status": "NOT_LOCKED",
+      "description": "TO_BE_LOCKED_PER_PROBE",
+      "reasonCodes": [
+        "P17_CASE_SIGN_CONVENTION_NOT_LOCKED"
+      ]
+    }
+  },
+  "productBinding": {
+    "serviceVersion": "p9-m9-product-analysis-service-v1",
+    "adapterVersion": "p17-m1-product-adapter-v1",
+    "publicEntrypoint": "src/index.js",
+    "solverSettingProfile": {
+      "status": "NOT_LOCKED",
+      "profileId": "NOT_ASSIGNED",
+      "reasonCodes": [
+        "P17_SOLVER_PROFILE_NOT_LOCKED"
+      ]
+    },
+    "requestedOutputProbes": {
+      "status": "NOT_LOCKED",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB3/reference/probe-manifest.json",
+      "reasonCodes": [
+        "P17_PROBES_NOT_LOCKED"
+      ]
+    }
+  },
+  "artifactBindings": {
+    "sourceLock": {
+      "status": "LOCKED_WITH_BLOCKERS",
+      "path": "verification/benchmarks/strix21/references/source-locks-r2/SB3.source-lock.json",
+      "sha256": "17d667b47b2cee99d8b3f3f0dc32e2ec79cfcf19ca5d804d9a7d3d633f728cae",
+      "reasonCodes": [
+        "P17_M0_SOURCE_LOCK_HAS_DECLARED_BLOCKERS"
+      ]
+    },
+    "sourceManifest": {
+      "status": "LOCKED_WITH_BLOCKERS",
+      "path": "verification/benchmarks/strix21/cases/SB3/source/source-manifest.json",
+      "sha256": "dd7761123c9c1479c19e5e4e19d37bef449694560b2eb18a35278862d0d89a14",
+      "reasonCodes": [
+        "P17_M0_SOURCE_LOCK_HAS_DECLARED_BLOCKERS"
+      ]
+    },
+    "referenceManifest": {
+      "status": "NOT_LOCKED",
+      "path": "verification/benchmarks/strix21/cases/SB3/reference/reference-manifest.json",
+      "sha256": "f3693b1cfec6b9b6bd14f204997800c002c51bdc1997a2ba19ef0d5b96e85984",
+      "reasonCodes": [
+        "P17_REFERENCE_NOT_LOCKED"
+      ]
+    },
+    "toleranceManifest": {
+      "status": "NOT_LOCKED",
+      "path": "verification/benchmarks/strix21/cases/SB3/reference/tolerance-manifest.json",
+      "sha256": "3fc40b2f73154935ec8863b1914045f90f3e8ee149c02c9715f518bbffe2cb85",
+      "reasonCodes": [
+        "P17_TOLERANCE_NOT_LOCKED"
+      ]
+    },
+    "probeManifest": {
+      "status": "NOT_LOCKED",
+      "path": "verification/benchmarks/strix21/cases/SB3/reference/probe-manifest.json",
+      "sha256": "c100d0b96740ebf592e9d2059b2fef8ce9935b3c1a8c125d813430d47b813dd2",
+      "reasonCodes": [
+        "P17_PROBES_NOT_LOCKED"
+      ]
+    },
+    "canonicalModel": {
+      "status": "NOT_STARTED",
+      "path": "verification/benchmarks/strix21/cases/SB3/model/canonical-input.json",
+      "sha256": "0f94ef2af7770377880bc8fdd6b35b122268cb18072706f61ca70f2571cccf64",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    "modelMapping": {
+      "status": "NOT_STARTED",
+      "path": "verification/benchmarks/strix21/cases/SB3/model/model-equivalence.json",
+      "sha256": "eab12cc0a2e56deae60b033d9d65de53ef5e4ff774f3f7acd59a99d0344a3f8e",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    "nativeModel": {
+      "status": "NOT_STARTED",
+      "path": "verification/benchmarks/strix21/cases/SB3/model/sstructures-input.json",
+      "sha256": "882de79ee3a3c3f593a8563ace599933669f007509bd0e237279f783a224f813",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    "productBuild": {
+      "status": "NOT_BOUND",
+      "path": null,
+      "sha256": null,
+      "reasonCodes": [
+        "P17_PRODUCT_BUILD_NOT_BOUND"
+      ]
+    }
+  },
+  "currentTerminalReasonCodes": [
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION",
+    "P17_MODEL_NOT_BUILT",
+    "P17_REFERENCE_NOT_LOCKED",
+    "P17_TOLERANCE_NOT_LOCKED",
+    "P17_PROBES_NOT_LOCKED"
+  ],
+  "supersededRunIds": [],
+  "benchmarkExecutionCount": 0
+}

@@ -1,0 +1,101 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "SB9",
+  "ordinal": 8,
+  "official": true,
+  "family": "STATIC-FRAME",
+  "title": "Rigid steel portal frame under UDL — bending + axial deformation (CSI 1-018)",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "CSI SAP2000 Software Verification Example 1-018 'Bending, Shear and Axial Deformations in a Rigid Frame'; independent reference = unit-load (virtual-work) method, Cook & Young, Advanced Mechanics of Materials, 1985, p.244. STRIX omits the shear term (elasticBeamColumn has no shear-area argument, TclBuilder.ts:465 — Euler-Bernoulli only, same scope as SB1) and re-derives the axial + bending terms from scratch via sb9Theory(); the result matches CSI's published in-lb values (converted to N·mm) to 6 significant figures: axial 0.0076043 vs CSI 0.00760 in, bending 2.7236096 vs CSI 2.723610 in.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SB9.html",
+        "byteLength": 26141,
+        "sha256": "21af82e5103e72be0f7d67eb7fb45d8c3f851a86c480c90650a5030f6e0a4c3d"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 19,
+        "printedPageEnd": 21
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB9.pdf",
+        "byteLength": 126490,
+        "sha256": "424539a9fca575bc5a9f2c6f518a92ccce36a05406349652fd6fbcf19fb62a16",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 3
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0.05%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Midspan deflection Uz — combined (axial+bending) (mm)",
+      "probe": "N5.uz",
+      "strix": "−69.3655",
+      "reference": "−69.372833",
+      "delta": "+0.0106%"
+    },
+    "resultRowCount": 3
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_3_OF_3",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-07-11",
+    "htmlRecordLocator": "records/SB9.json",
+    "htmlArchive": "verif-evidence-eng1.0.2-win-x64.zip · SB9/",
+    "htmlArchiveVersion": "1.0.2",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": true
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED",
+    "HTML_ENGINE_V1_0_4_WITH_V1_0_2_RUN_OR_ARCHIVE_METADATA"
+  ],
+  "sourceLockHash": "1188e632df08ea9b9ab788e6b5bed3610744d5568f429306f43e183928dd5cb3"
+}

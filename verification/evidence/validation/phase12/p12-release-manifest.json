@@ -1,0 +1,39 @@
+{
+  "version": "p12-release-manifest-v1",
+  "status": "release-qualified",
+  "releaseQualified": true,
+  "releaseProfile": "windows-loopback-local-pilot",
+  "productReleaseAllowed": false,
+  "localPilotAllowed": true,
+  "lanAllowed": false,
+  "publicInternetAllowed": false,
+  "designTransferAllowed": false,
+  "sourceRevision": "887d8604b13d45bf2e7670c6076ad22806640df8",
+  "sourceTreeState": "P12-M7 milestone worktree on recorded parent revision",
+  "completedMilestones": ["P12-M0", "P12-M1", "P12-M2", "P12-M3", "P12-M4", "P12-M5", "P12-M6", "P12-M7"],
+  "requiredMilestones": ["P12-M0", "P12-M1", "P12-M2", "P12-M3", "P12-M4", "P12-M5", "P12-M6", "P12-M7"],
+  "blockers": [],
+  "artifact": {
+    "path": "output/release/s-structures-0.1.0.zip",
+    "bytes": 12127427,
+    "sha256": "abbce564362ac28f5a22a10e087ddb23754cfb1a7ba275e168c819f4055e5791",
+    "publicFileCount": 618,
+    "releaseFileCount": 1293,
+    "distribution": "portable-zip",
+    "installerQualified": false
+  },
+  "evidence": [
+    { "milestone": "P12-M0", "path": "reports/validation-evidence/phase12/p12-m0-baseline-governance.json", "sha256": "7eba163b89cfa535cd758ebff17d3ed448af4dea67b2b5e9191514c2fd6a6c00" },
+    { "milestone": "P12-M1", "path": "reports/validation-evidence/phase12/p12-m1-static-private-boundary.json", "sha256": "bda1fe9dd2de3d81f9ecb327d3796a613f6a192602af14ff214e28d158cdca69" },
+    { "milestone": "P12-M2", "path": "reports/validation-evidence/phase12/p12-m2-config-migration-secret-lifecycle.json", "sha256": "2faa0bcd90008e70ea2290787b8e7fddbf508932394dc32a1f0befce3d81aada" },
+    { "milestone": "P12-M3", "path": "reports/validation-evidence/phase12/p12-m3-http-auth-resource-hardening.json", "sha256": "382323281cd62246cd7d4eed8b1df9a7a9fbbe57ae78ffcffd9a6585e18b3ede" },
+    { "milestone": "P12-M4", "path": "reports/validation-evidence/phase12/p12-m4-approval-revision-integrity.json", "sha256": "4cc64b8732b64f9ba59e89c1edfe18641342212c6e486ad10d5a8b463e0f3a67" },
+    { "milestone": "P12-M5", "path": "reports/validation-evidence/phase12/p12-m5-release-package-install-recovery.json", "sha256": "068b2e6dbb19a812994ad5303ff47ba88cf14970375df90b16b8fb0b0b179f55" },
+    { "milestone": "P12-M6", "path": "reports/validation-evidence/phase12/p12-m6-windows-regression-release-gates.json", "sha256": "3813fbb9bececcd50f43e8582df6a38f8c30269519c64ae2245b38555813f347" }
+  ],
+  "engineeringLimits": {
+    "phase10ExternalCrossValidation": false,
+    "phase10DesignTransferAllowed": false,
+    "phase11ReportVerdictCeiling": "CONDITIONAL_PASS"
+  }
+}

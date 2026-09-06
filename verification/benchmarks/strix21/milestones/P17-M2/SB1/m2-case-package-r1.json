@@ -1,0 +1,148 @@
+{
+  "version": "p17-m2-sb1-case-package-v1",
+  "phase": 17,
+  "milestone": "P17-M2",
+  "caseId": "SB1",
+  "revision": 1,
+  "status": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+  "baseScaffoldBinding": {
+    "path": "verification/benchmarks/strix21/cases/SB1/case-manifest.json",
+    "canonicalHash": "8fccf491a9fa2f05d66a5aff965ebe1cf8ce424fabf8fce7fa89d0ca5bf8ef21",
+    "sha256": "0dd6a70b8f092015c0e92de22330fe9b5bcfb84a9f13e8434b782bba7709b4bd",
+    "byteLength": 5850
+  },
+  "artifacts": [
+    {
+      "role": "TRANSCRIPTION",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/source/transcription-r1.md",
+      "canonicalHash": null,
+      "sha256": "4abb45839d8182b5e23aa074595a3eaf58f268b1b555b708495c39b2eda97f77",
+      "byteLength": 1422
+    },
+    {
+      "role": "SOURCE_MANIFEST",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/source/source-manifest-r1.json",
+      "canonicalHash": "35145b2da4daf9960c48a533b7f976e15ec916015fc780413dca5ae583a44a2c",
+      "sha256": "3426f0ca37356abf3b1520bffd45bc590d9cd2ae65943a1a49155e62985b332c",
+      "byteLength": 1423
+    },
+    {
+      "role": "REFERENCE_BYTE_AUDIT",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/source/reference-byte-audit-r1.json",
+      "canonicalHash": "893ce7cbd58b75771225fe437fa834a28ac22399f03343053db12b6fe987922d",
+      "sha256": "68056b8068485ff9efb8e318ce11aaf8a706d91132a0e48063f4ac8611d62f8e",
+      "byteLength": 973
+    },
+    {
+      "role": "CLOSED_FORM",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/reference/closed-form-r1.json",
+      "canonicalHash": "3b8675ccec22f0e3dec37b16dc3fd23d28c100e2634c03efc9f2cab89102984b",
+      "sha256": "e5e99099c33532ec1fbbae81f18f60a2234584a00d30192fa22090b1a3112fdd",
+      "byteLength": 957
+    },
+    {
+      "role": "EXPECTED_VALUES",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/reference/expected-values-r1.json",
+      "canonicalHash": "526293faca68e2a1330946cfa90887611374661a977909a10e2020eecb4c5386",
+      "sha256": "ff678e5ee287794458f3392f64628f212bc6c32c301d4add66177a554e31855d",
+      "byteLength": 2839
+    },
+    {
+      "role": "TOLERANCE_MANIFEST",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/reference/tolerance-manifest-r1.json",
+      "canonicalHash": "2a59e8bca6deb78bb3f53b8ba856fd1459e603ab964682605d8eb40334da1a9d",
+      "sha256": "2c52f07e4098030dfd1c344a400a32cd852abcb4165dd22780666ae3e1b8bd38",
+      "byteLength": 1832
+    },
+    {
+      "role": "PROBE_MANIFEST",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/reference/probe-manifest-r1.json",
+      "canonicalHash": "115919a275b5895c8880ce847bb3408c33e32beabfaa6299dd2b5f7a9b3a4c26",
+      "sha256": "ed0a748a66d4dfdcaa8bdc67664772a6ccdfc9768b350b44fdbad2eaaff699ce",
+      "byteLength": 2510
+    },
+    {
+      "role": "REFERENCE_MANIFEST",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/reference/reference-manifest-r1.json",
+      "canonicalHash": "6fd2322ae1bcc02c29cb040de8a7709c7b9a856dc452cd06b16413e2a95b3ff2",
+      "sha256": "a7e871e91a3e3014a40f02b571030476906f580d6e8b26cf013d3b1294e21a0f",
+      "byteLength": 3432
+    },
+    {
+      "role": "CANONICAL_INPUT",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/model/canonical-input-r1.json",
+      "canonicalHash": "10657c8d8337c1667a1f528e75fdf802107356b181758df5d7ac5418dbf770ab",
+      "sha256": "4577ca39c7cc7dcfa654eee66639b693fa3aeb626add22cf1f0418470f4d905c",
+      "byteLength": 2884
+    },
+    {
+      "role": "SSTRUCTURES_INPUT",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/model/sstructures-input-r1.json",
+      "canonicalHash": "0fe8108f3cf9f02d44105fcb9c39d3ab7e6e5548d174444b58819cab0cb212c5",
+      "sha256": "a1caa8bfe21bc59d9f145c3641c934507fe196881e2d2e5edc7423c7e31e664e",
+      "byteLength": 5632
+    },
+    {
+      "role": "MODEL_EQUIVALENCE",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/model/model-equivalence-r1.json",
+      "canonicalHash": "54c680d6abcb5bd76ffbe05fbadeae18b83e23e4926e9364a2edcb0f6da29fba",
+      "sha256": "dc5d3265795c9e600052db99c791c85f93890bc78f736c801452989a7446acf2",
+      "byteLength": 4721
+    },
+    {
+      "role": "PRODUCT_BUILD_LOCK",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/model/product-build-lock-r1.json",
+      "canonicalHash": "14488c0a8821c0aa997f9632d6d942fb206e8fc1295090f48f8ec1480c341141",
+      "sha256": "ea5a392f1ef04ee3cadb67e0d302371f706eab6fe1b78c49c013c171b5b5b70a",
+      "byteLength": 2073
+    },
+    {
+      "role": "MODELING_NOTES",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/model/modeling-notes-r1.md",
+      "canonicalHash": null,
+      "sha256": "21239725b0b4d5c812241cea7e1002acf47ea3e4f2a5d928c1d3b3c555a813c4",
+      "byteLength": 1111
+    },
+    {
+      "role": "SIGNOFF",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/review/signoff-r1.json",
+      "canonicalHash": "55367f23e3513d114ccac57c12195f030af3ba3d8dc6e31653e19cbb2284b1ae",
+      "sha256": "0d18e8293d1d19abe56a579acc46e3aad53d3812b33a06828c221068c8a768df",
+      "byteLength": 1258
+    },
+    {
+      "role": "GATE_ASSESSMENT",
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/gates/gate-assessment-r1.json",
+      "canonicalHash": "634f98da62745f4e0b5c20dfaf2ac91b3744160dcbd1c6b4fae0554136c5e883",
+      "sha256": "8217344de352107181cfdc9ff2feb6a9cab3f896ba6b3a093834abc3346163c2",
+      "byteLength": 5386
+    }
+  ],
+  "lockStates": {
+    "source": "APPROVED",
+    "reference": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "probe": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "tolerance": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "canonicalModel": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "nativeModel": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "modelEquivalence": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+    "productBuild": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL"
+  },
+  "gateAssessmentHash": "09e6f23dc19fdbbc2278158ac18d40a4dd0e6d3c52a844e9481e0c671cb6d068",
+  "counters": {
+    "officialExecutionCount": 0,
+    "solverExecutionCount": 0,
+    "benchmarkExecutionCount": 0,
+    "engineeringResultCount": 0,
+    "caseReportCount": 0,
+    "officialPassCount": 0
+  },
+  "reasonCodes": [
+    "P17_M2_EXECUTION_NOT_AUTHORIZED",
+    "P17_EXTERNAL_CUSTODIAN_REGISTRY_REQUIRED",
+    "P17_INDEPENDENT_REVIEWER_ATTESTATIONS_REQUIRED"
+  ],
+  "releaseAllowed": false,
+  "packageHash": "47941d33c5709a7ca0f0e538d75d8c1dcd39aae7e633a9451fcbf90a4874c9a5"
+}
+

@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/p17-m1-validation-closure-schema.json",
+  "title": "P17-M1 append-only validation closure",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version", "closureRevision", "auditDate", "phase", "milestone", "status",
+    "claimBoundary", "terminalQualification", "counters", "bindings", "checks",
+    "nextMilestone", "reasonCodes", "releaseAllowed", "finalDesignTransferAllowed", "closureHash"
+  ],
+  "properties": {
+    "version": { "const": "p17-m1-validation-closure-v1" },
+    "closureRevision": { "const": 1 },
+    "auditDate": { "type": "string", "format": "date" },
+    "phase": { "const": 17 },
+    "milestone": { "const": "P17-M1" },
+    "status": { "const": "CONTRACT_READY_NO_BENCHMARK_RUNS" },
+    "claimBoundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["proven", "notProven"],
+      "properties": {
+        "proven": { "const": "CASE_CONTRACT_AND_SHARED_HARNESS_ONLY" },
+        "notProven": { "const": "NO_MODEL_SOLVER_BENCHMARK_RESULT_CAPTURE_CASE_REPORT_OR_PASS" }
+      }
+    },
+    "terminalQualification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["enabled", "passAllowed", "status"],
+      "properties": {
+        "enabled": { "const": false },
+        "passAllowed": { "const": false },
+        "status": { "const": "DISABLED_NO_BENCHMARK_RUNS" }
+      }
+    },
+    "counters": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "officialCaseExecutionCount", "officialTerminalCaseCount", "officialPassCount",
+        "solverExecutionCount", "benchmarkExecutionCount", "structuralModelCount",
+        "engineeringResultCount", "chromeCaptureCount", "caseReportCount"
+      ],
+      "properties": {
+        "officialCaseExecutionCount": { "const": 0 },
+        "officialTerminalCaseCount": { "const": 0 },
+        "officialPassCount": { "const": 0 },
+        "solverExecutionCount": { "const": 0 },
+        "benchmarkExecutionCount": { "const": 0 },
+        "structuralModelCount": { "const": 0 },
+        "engineeringResultCount": { "const": 0 },
+        "chromeCaptureCount": { "const": 0 },
+        "caseReportCount": { "const": 0 }
+      }
+    },
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence", "report", "reportToolchain", "developmentDocuments", "predecessor", "closureTooling"],
+      "properties": {
+        "evidence": { "$ref": "#/$defs/evidenceBinding" },
+        "report": { "$ref": "#/$defs/reportBinding" },
+        "reportToolchain": { "$ref": "#/$defs/reportToolchainBinding" },
+        "developmentDocuments": { "$ref": "#/$defs/developmentDocumentBinding" },
+        "predecessor": { "$ref": "#/$defs/predecessorBinding" },
+        "closureTooling": { "$ref": "#/$defs/closureToolingBinding" }
+      }
+    },
+    "checks": {
+      "type": "array", "minItems": 12, "maxItems": 12, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "purpose", "command", "status", "exitCode", "outputBinding", "resultHash"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^P17-M1-C[0-9]{2}$" },
+          "purpose": { "type": "string", "minLength": 1 },
+          "command": { "type": "string", "minLength": 1 },
+          "status": { "const": "PASS" },
+          "exitCode": { "const": 0 },
+          "outputBinding": {
+            "type": "object", "additionalProperties": false,
+            "required": ["stdout", "stderr"],
+            "properties": {
+              "stdout": { "$ref": "#/$defs/processStreamBinding" },
+              "stderr": { "$ref": "#/$defs/processStreamBinding" }
+            }
+          },
+          "resultHash": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    "nextMilestone": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "caseId", "entryCondition"],
+      "properties": {
+        "id": { "const": "P17-M2" },
+        "caseId": { "const": "SB1" },
+        "entryCondition": { "const": "SOURCE_REFERENCE_PROBE_TOLERANCE_AND_MODEL_LOCKS_REQUIRED_BEFORE_PRODUCT_RUN" }
+      }
+    },
+    "reasonCodes": {
+      "type": "array", "minItems": 3, "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" }
+    },
+    "releaseAllowed": { "const": false },
+    "finalDesignTransferAllowed": { "const": false },
+    "closureHash": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fileBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "byteLength", "sha256"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$" },
+        "byteLength": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "processStreamBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["byteLength", "sha256"],
+      "properties": {
+        "byteLength": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "evidenceBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "byteLength", "sha256", "version", "evidenceHash"],
+      "properties": {
+        "path": { "const": "verification/evidence/validation/phase17/p17-m1-case-contract-shared-harness-r6.json" },
+        "byteLength": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "version": { "const": "p17-m1-case-contract-shared-harness-evidence-v6" },
+        "evidenceHash": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "reportBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["markdown", "pdf", "permanentQa"],
+      "properties": {
+        "markdown": { "$ref": "#/$defs/fileBinding" },
+        "pdf": {
+          "type": "object", "additionalProperties": false,
+          "required": ["path", "byteLength", "sha256", "pageCount"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "byteLength": { "type": "integer", "minimum": 1 },
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "pageCount": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "permanentQa": {
+          "type": "object", "additionalProperties": false,
+          "required": ["path", "byteLength", "sha256", "qaHash", "status", "artifactScope", "pageCount"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "byteLength": { "type": "integer", "minimum": 1 },
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "qaHash": { "$ref": "#/$defs/sha256" },
+            "status": { "const": "PASS" },
+            "artifactScope": { "const": "FINAL_ARTIFACT" },
+            "pageCount": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    },
+    "reportToolchainBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["renderer", "launcher", "requirements"],
+      "properties": {
+        "renderer": { "$ref": "#/$defs/fileBinding" },
+        "launcher": { "$ref": "#/$defs/fileBinding" },
+        "requirements": { "$ref": "#/$defs/fileBinding" }
+      }
+    },
+    "developmentDocumentBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["workPackage", "codeAndArtifactReview"],
+      "properties": {
+        "workPackage": { "$ref": "#/$defs/fileBinding" },
+        "codeAndArtifactReview": { "$ref": "#/$defs/fileBinding" }
+      }
+    },
+    "predecessorBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["m0R3Closure"],
+      "properties": {
+        "m0R3Closure": {
+          "type": "object", "additionalProperties": false,
+          "required": ["path", "byteLength", "sha256", "closureHash"],
+          "properties": {
+            "path": { "const": "verification/evidence/validation/phase17/p17-m0-validation-closure-r3.json" },
+            "byteLength": { "type": "integer", "minimum": 1 },
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "closureHash": { "const": "4b0b748eadad0d48b2ffa80f9dbae7d37b2d4c1a808b4390fae1b9bc7abae224" }
+          }
+        }
+      }
+    },
+    "closureToolingBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["finalizer", "schema", "checkLayout", "taxonomyGenerator", "publicImportChecker"],
+      "properties": {
+        "finalizer": { "$ref": "#/$defs/fileBinding" },
+        "schema": { "$ref": "#/$defs/fileBinding" },
+        "checkLayout": { "$ref": "#/$defs/fileBinding" },
+        "taxonomyGenerator": { "$ref": "#/$defs/fileBinding" },
+        "publicImportChecker": { "$ref": "#/$defs/fileBinding" }
+      }
+    }
+  }
+}

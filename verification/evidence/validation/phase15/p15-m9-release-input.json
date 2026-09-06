@@ -1,0 +1,52 @@
+{
+  "sourceRevision": null,
+  "governance": {
+    "traceabilityComplete": false,
+    "manifestApprovalsComplete": false,
+    "evidenceFresh": false,
+    "staleEvidenceCount": null
+  },
+  "execution": {
+    "determinismRuns": [
+      {
+        "runId": "run-1",
+        "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+        "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd"
+      },
+      {
+        "runId": "run-2",
+        "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+        "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd"
+      },
+      {
+        "runId": "run-3",
+        "calculationHash": "0ec54af68e176c42f6659e9e51fdc9dc53e2c2e6648b6b0b7f5ca549ed50ede1",
+        "resultHash": "862be01f9bc70ac73add343699bcc102e9a28d34cbb4fa06a76c8464019c61cd"
+      }
+    ],
+    "cleanEnvironmentPassed": false,
+    "cleanRunHash": null,
+    "mutationKillRate": null,
+    "productSurfaceParityPassed": false
+  },
+  "review": {
+    "reviewers": {},
+    "findings": [],
+    "structuralOwner": {
+      "owner": null,
+      "professionalRegistration": null,
+      "approvalHash": null,
+      "approved": false,
+      "finalDesignTransferApproved": false
+    }
+  },
+  "crossSolver": {
+    "actualR4Available": false,
+    "mappingAuditPassed": false,
+    "mappingAuditHash": null,
+    "providers": {}
+  },
+  "run": {
+    "invocationId": "P15-M9-ACTUAL-LOCAL-2026-08-28"
+  }
+}

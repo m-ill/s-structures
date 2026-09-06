@@ -1,0 +1,412 @@
+{
+  "version": "p17-suite-source-registry-v1",
+  "phase": 17,
+  "milestone": "P17-M0",
+  "auditDate": "2026-08-28",
+  "sourceRoot": "STRIX-verification-21",
+  "originalUrl": "https://dcr-st.com/verification.html",
+  "officialCaseCount": 21,
+  "officialOrder": [
+    "SB1",
+    "SB2",
+    "SB3",
+    "SB5",
+    "SB6",
+    "SB7",
+    "SB8",
+    "SB9",
+    "SB10",
+    "SB12",
+    "PD1",
+    "SM5",
+    "SM5b",
+    "SM6",
+    "SR1",
+    "SR2",
+    "SR2b",
+    "P3S2",
+    "SP1",
+    "SH1",
+    "TH1"
+  ],
+  "catalogOrder": [
+    "SB1",
+    "SB2",
+    "SB3",
+    "SB5",
+    "SB6",
+    "SB7",
+    "SB8",
+    "SB9",
+    "SB10",
+    "SB12",
+    "PD1",
+    "SM5",
+    "SM5b",
+    "SM6",
+    "SR1",
+    "SR2",
+    "SR2b",
+    "SP1",
+    "SH1",
+    "TH1",
+    "P3S2"
+  ],
+  "customExcluded": [
+    {
+      "id": "P3S2-SS",
+      "official": false,
+      "classification": "S_STRUCTURES_CUSTOM_QUALIFICATION",
+      "reason": "Does not replace official P3S2 and is excluded from the 21-case denominator."
+    }
+  ],
+  "sourceBundle": {
+    "manifest": {
+      "path": "STRIX-verification-21/checksums.sha256",
+      "byteLength": 4302,
+      "sha256": "9cda48bab7c0fdb3e28a6407756c872224b571fd8c67927ec63a58105f4c47c9",
+      "role": "CUSTODY_MANIFEST"
+    },
+    "declaredCount": 51,
+    "verifiedCount": 51,
+    "declaredByteLength": 4613613,
+    "failures": [],
+    "unlistedFiles": [
+      {
+        "path": "STRIX-verification-21/S-Structures-1차실행결과.md",
+        "byteLength": 1215,
+        "sha256": "59f5839a30d8d57ebfed8e63c4fe5993c328a76c0d4860a842a7ba2436cc33af",
+        "relativePath": "S-Structures-1차실행결과.md",
+        "classification": "LOCAL_PHASE15_RESULT_EXCLUDED_FROM_SOURCE"
+      },
+      {
+        "path": "STRIX-verification-21/__pycache__/extract_benchmark_catalog.cpython-312.pyc",
+        "byteLength": 8159,
+        "sha256": "6eb9e5c558bef994fd112e707cfd8c35c609af604417708ab8c9254521830f86",
+        "relativePath": "__pycache__/extract_benchmark_catalog.cpython-312.pyc",
+        "classification": "GENERATED_CACHE_EXCLUDED"
+      },
+      {
+        "path": "STRIX-verification-21/checksums.sha256",
+        "byteLength": 4302,
+        "sha256": "9cda48bab7c0fdb3e28a6407756c872224b571fd8c67927ec63a58105f4c47c9",
+        "relativePath": "checksums.sha256",
+        "classification": "SOURCE_MANIFEST_SELF"
+      }
+    ],
+    "licenseUseRestriction": "Internal / All rights reserved; retain local hashes and locators, no redistribution assumption."
+  },
+  "authorityPolicy": {
+    "acceptanceTruth": "R1/R2 external source or approved independent R3; never STRIX alone",
+    "strixPublishedResult": "case HTML v1.0.4 publication snapshot",
+    "archivalNarrative": "integrated manual and per-case PDF v1.0.2",
+    "runtimeProvenance": "BLOCKED until records/*.json, archive and published SHA are available",
+    "catalog": "derived HTML index; no additional authority",
+    "midas": "separate lane; NOT_AVAILABLE in M0"
+  },
+  "claimVocabulary": {
+    "milestoneStatus": [
+      "NOT_STARTED",
+      "IN_PROGRESS",
+      "BLOCKED",
+      "COMPLETE",
+      "COMPLETE_WITH_SOURCE_BLOCKERS"
+    ],
+    "terminalCaseStatus": [
+      "PASS",
+      "FAIL",
+      "BLOCKED_SOURCE",
+      "BLOCKED_ENGINE",
+      "CROSS_CHECK_ONLY",
+      "ANALOGOUS_ONLY"
+    ],
+    "sourceStatus": [
+      "LOCKED",
+      "LOCKED_WITH_BLOCKERS",
+      "BLOCKED_SOURCE"
+    ],
+    "approvalStatus": [
+      "APPROVED",
+      "TECHNICALLY_COMPLETE",
+      "PENDING_INDEPENDENT_REVIEW",
+      "NOT_APPLICABLE"
+    ],
+    "claimLevels": [
+      "R1_R2_EXTERNAL_TRUTH",
+      "R3_INDEPENDENT_RECONSTRUCTION",
+      "R4_PROGRAM_EXPORT",
+      "R5_INTERNAL_SPEC"
+    ]
+  },
+  "approvalRoles": [
+    {
+      "role": "sourceCustodian",
+      "assignment": "CODEX_AUTOMATED_LOCAL_AUDIT",
+      "independent": false,
+      "status": "TECHNICALLY_COMPLETE",
+      "approvalHash": null
+    },
+    {
+      "role": "referenceReviewer",
+      "assignment": null,
+      "independent": true,
+      "status": "PENDING_INDEPENDENT_REVIEW",
+      "approvalHash": null
+    },
+    {
+      "role": "modelReviewer",
+      "assignment": null,
+      "independent": true,
+      "status": "PENDING_INDEPENDENT_REVIEW",
+      "approvalHash": null
+    },
+    {
+      "role": "numericalReviewer",
+      "assignment": null,
+      "independent": true,
+      "status": "PENDING_INDEPENDENT_REVIEW",
+      "approvalHash": null
+    },
+    {
+      "role": "structuralReleaseReviewer",
+      "assignment": null,
+      "independent": true,
+      "status": "PENDING_INDEPENDENT_REVIEW",
+      "approvalHash": null
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "SB1",
+      "ordinal": 1,
+      "family": "STATIC-BEAM",
+      "title": "Euler-Bernoulli 1D cantilever (tip deflection)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB1.source-lock.json",
+      "sourceLockHash": "88b139be37b6796cf77e09c99a11ed316bb66eec9299e90ab8882b85ea793ce6",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SB2",
+      "ordinal": 2,
+      "family": "STATIC-MEMBRANE",
+      "title": "NAFEMS LE1 elliptic membrane (tangential edge stress at D)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB2.source-lock.json",
+      "sourceLockHash": "ae646488e3becd1d6ab8d6c4230e776f1c43d6f4a67c8bcd9edf6906f40794c3",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SB3",
+      "ordinal": 3,
+      "family": "STATIC-MEMBRANE",
+      "title": "Cook's membrane (skew panel, in-plane bending on a distorted mesh)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB3.source-lock.json",
+      "sourceLockHash": "16b612e8d2c4c4f63462e539eea6a4d717128f17c20ac27cac9d2466da96a1da",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SB5",
+      "ordinal": 4,
+      "family": "STATIC-PLATE",
+      "title": "Rectangular plate bending — thin plate, uniform & central point load",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB5.source-lock.json",
+      "sourceLockHash": "e74f7f52609907af8bb980901dfcf76cb6c1054c3e28f8819dc2cbc78a0d8d1d",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SB6",
+      "ordinal": 5,
+      "family": "STATIC-PLATE",
+      "title": "Thick rectangular plate bending — transverse shear, uniform load",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB6.source-lock.json",
+      "sourceLockHash": "7263e3fe05a1860d1eb219f9f9460fde699b074820e7ca06f1bdd1235c912b44",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SB7",
+      "ordinal": 6,
+      "family": "STATIC-BEAM",
+      "title": "Simply-supported beam on a Winkler elastic foundation (CSI 1-013)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB7.source-lock.json",
+      "sourceLockHash": "c758e1fc371e8e44016337fb3b10fb2d8c2fa75593e02ff3aeb2e5ed87e3cec9",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SB8",
+      "ordinal": 7,
+      "family": "MODAL-BEAM",
+      "title": "Deep simply-supported beam — shear-flexible (Timoshenko) natural frequencies",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB8.source-lock.json",
+      "sourceLockHash": "ddb683669fc647699743dee58a7eae86636e498531f1ee4ab1d0f73c52f8fd13",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SB9",
+      "ordinal": 8,
+      "family": "STATIC-FRAME",
+      "title": "Rigid steel portal frame under UDL — bending + axial deformation (CSI 1-018)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB9.source-lock.json",
+      "sourceLockHash": "1188e632df08ea9b9ab788e6b5bed3610744d5568f429306f43e183928dd5cb3",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 2
+    },
+    {
+      "caseId": "SB10",
+      "ordinal": 9,
+      "family": "STATIC-TRUSS",
+      "title": "Asymmetric determinate two-bar truss (brace axial force)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB10.source-lock.json",
+      "sourceLockHash": "4a2afc3502e15fe8083e1af922edeabc754da4100b60a17f1a82b2effc500268",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 2
+    },
+    {
+      "caseId": "SB12",
+      "ordinal": 10,
+      "family": "STATIC-LINK",
+      "title": "Elastic Link (twoNodeLink) Beta Angle coordinate transformation — inclined 6-DOF spring",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SB12.source-lock.json",
+      "sourceLockHash": "e8e6fdf0a18d9b50d5acca2c081e47a2f9cfc8bbd703862b971acba762e1a9b7",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "blockerCount": 2
+    },
+    {
+      "caseId": "PD1",
+      "ordinal": 11,
+      "family": "STATIC-PDELTA",
+      "title": "Tension stiffening via P-Delta analysis (CSI 1-016)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/PD1.source-lock.json",
+      "sourceLockHash": "6c99c4acd0183d7cc674369235b17f75b18ea43ba26e7b5afd5e8757d503d6a5",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 2
+    },
+    {
+      "caseId": "SM5",
+      "ordinal": 12,
+      "family": "MODAL-FRAME",
+      "title": "Bathe & Wilson eigenvalue problem — ten-bay nine-storey plane frame",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SM5.source-lock.json",
+      "sourceLockHash": "afc934339929515c8197c6cdb8d197335ea9d422f6a055f8d0a20563a4e37a02",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SM5b",
+      "ordinal": 13,
+      "family": "MODAL-CONDENSATION",
+      "title": "Rigid-diaphragm eigenvalue condensation — eccentric multi-storey building",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SM5b.source-lock.json",
+      "sourceLockHash": "ab19d8d087ac2afd1cb9050f96919e34cbd6a9fd9c0331265313214b415379b6",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SM6",
+      "ordinal": 14,
+      "family": "MODAL-3D",
+      "title": "ASME eigenvalue frame — 3-D fixed-base pipe frame with lumped joint masses",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SM6.source-lock.json",
+      "sourceLockHash": "9cd9457239f96afc2d87e1fe7b53b83e8934d1f74343d2e3788e2fcd79776c15",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SR1",
+      "ordinal": 15,
+      "family": "RESPONSE-SPECTRUM-FRAME",
+      "title": "Response-spectrum analysis of a two-dimensional rigid frame",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SR1.source-lock.json",
+      "sourceLockHash": "1eca32a74fe8b1d51d281ea562a475e84b98d7a71feac749338e30023a213b45",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SR2",
+      "ordinal": 16,
+      "family": "RESPONSE-SPECTRUM-3D-FRAME",
+      "title": "Response-spectrum analysis of a three-dimensional eccentric rigid-diaphragm frame",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SR2.source-lock.json",
+      "sourceLockHash": "874566a3917ffc271e1116c1a7fe23a5aabeb9bd8c7983e1a038b60642a63985",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SR2b",
+      "ordinal": 17,
+      "family": "RESPONSE-SPECTRUM-3D-BRACED-FRAME",
+      "title": "Response-spectrum analysis of a three-dimensional L-shaped braced frame",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SR2b.source-lock.json",
+      "sourceLockHash": "d5f4809e0fdea1f316e227b8dad1a26691c3d811bbc9941ca28d1fb18d104bff",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R1_R2_EXTERNAL",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "P3S2",
+      "ordinal": 18,
+      "family": "STABILIZATION-SENSITIVITY",
+      "title": "Custom stabilization parameter sensitivity (wall modal periods)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/P3S2.source-lock.json",
+      "sourceLockHash": "fbb86850a17eb0f5d98b8108dde258456de3a8f5979105e2f0127d5d05411394",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R5_INTERNAL_SPEC",
+      "blockerCount": 1
+    },
+    {
+      "caseId": "SP1",
+      "ordinal": 19,
+      "family": "NONLINEAR-PUSHOVER",
+      "title": "Pushover cantilever moment hinge (CSI 1-026, moment-hinge scope)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SP1.source-lock.json",
+      "sourceLockHash": "248adc1722c19ad596e3c390d72e5b370b1fe9a19fab674cf99101f005a7aff4",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "blockerCount": 2
+    },
+    {
+      "caseId": "SH1",
+      "ordinal": 20,
+      "family": "NONLINEAR-HINGE",
+      "title": "DcrPMMHinge3d custom P-M-M column hinge — element-mechanics defense",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/SH1.source-lock.json",
+      "sourceLockHash": "f3699d7d36081c6f3e84f725b1833e0873d3107da82387dc974ea0519acbb865",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "MIXED_EXTERNAL_INTERNAL_SPEC",
+      "blockerCount": 3
+    },
+    {
+      "caseId": "TH1",
+      "ordinal": 21,
+      "family": "DYNAMIC-SDOF",
+      "title": "SDOF anchor for THA time integration (Newmark average-acceleration, dt convergence)",
+      "sourceLockPath": "verification/benchmarks/strix21/references/source-locks/TH1.source-lock.json",
+      "sourceLockHash": "73f77604361ecf08822f6763bd390ea2d8c55973206f74df30041ab993d05bc8",
+      "sourceStatus": "LOCKED_WITH_BLOCKERS",
+      "referenceClass": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "blockerCount": 2
+    }
+  ],
+  "registryHash": "737f731209b9be8faf28821608076c12cc53441c8f738b9b20fdf43e72111eb9"
+}

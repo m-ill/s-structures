@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s-structures://phase15/tolerance-manifest-schema-v1",
+  "title": "S-Structures Phase 15 tolerance manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "caseId", "specVersion", "referenceHash", "metrics", "frozenBeforeRun", "rationale", "approvedBy", "approvalHash", "toleranceHash"],
+  "properties": {
+    "version": { "const": "p15-tolerance-manifest-v1" },
+    "caseId": { "type": "string", "minLength": 1 },
+    "specVersion": { "type": "string", "minLength": 1 },
+    "referenceHash": { "$ref": "#/$defs/hash" },
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "unit", "relativeTolerance", "absoluteTolerance", "characteristicFloor", "comparisonPolicy", "metricType", "magnitudeMeaning", "rationale"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "unit": { "type": "string", "minLength": 1 },
+          "relativeTolerance": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+          "absoluteTolerance": { "type": ["number", "null"], "minimum": 0 },
+          "characteristicFloor": { "type": ["number", "null"], "minimum": 0 },
+          "comparisonPolicy": { "enum": ["absolute-or-relative", "absolute-only", "relative-only"] },
+          "metricType": { "enum": ["signed", "magnitude"] },
+          "magnitudeMeaning": { "type": ["string", "null"] },
+          "rationale": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "frozenBeforeRun": { "type": "boolean" },
+    "rationale": { "type": "string", "minLength": 1 },
+    "approvedBy": { "type": ["string", "null"] },
+    "approvalHash": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/hash" }] },
+    "toleranceHash": { "$ref": "#/$defs/hash" }
+  },
+  "$defs": { "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+}

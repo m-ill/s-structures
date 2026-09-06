@@ -1,0 +1,65 @@
+{
+  "version": "p12-m6-windows-regression-release-gates-v1",
+  "milestone": "P12-M6",
+  "generatedAt": "2026-08-03T00:00:00.000Z",
+  "status": "PASS",
+  "sourceRevision": "db6c09fb2b4c54170499931f68e29a206729aaa2",
+  "sourceTreeState": "milestone worktree on recorded parent revision",
+  "environmentProfile": {
+    "os": "Windows",
+    "node": "v24.16.0",
+    "shell": "PowerShell",
+    "bind": "loopback-only",
+    "testInventory": "docs/verification/phase12/test-inventory.json"
+  },
+  "commands": [
+    {
+      "command": "npm.cmd test",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedSeconds": 1278.5
+    },
+    {
+      "command": "npm.cmd run test:uncovered",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedSeconds": 98.0
+    },
+    {
+      "command": "node tests/p12-m6-windows-regression-release-gates.mjs",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "inventory": {
+    "total": 350,
+    "default": 311,
+    "releaseLong": 39,
+    "unclassified": 0
+  },
+  "artifact": {
+    "path": "output/release/s-structures-0.1.0.zip",
+    "bytes": 3437985,
+    "sha256": "e2eea75a8a9c34249b8e54781e88a2570d4199e6a7bdea1295199d6045084e0d"
+  },
+  "summary": {
+    "windowsLineEndingFalseFailures": 0,
+    "requiredSuiteFailures": 0,
+    "requiredSuiteTimeouts": 0,
+    "unclassifiedTests": 0,
+    "phase8FullSuite": "PASS",
+    "phase10EvidenceContracts": "PASS",
+    "phase12M0ThroughM6": "PASS",
+    "preservedUserFileSha256": "ac2a38fceab862fd7a362d8e1322415f5625c5ef8f97ce39071583b8f448a82f"
+  },
+  "verificationRecords": [
+    { "verificationId": "P12-TEST-01", "status": "PASS", "predicate": "all test files classified" },
+    { "verificationId": "P12-TEST-02", "status": "PASS", "predicate": "Windows newline-independent help comparison" },
+    { "verificationId": "P12-TEST-03", "status": "PASS", "predicate": "official npm test exits zero" },
+    { "verificationId": "P12-TEST-04", "status": "PASS", "predicate": "Phase 8 full suite completes" },
+    { "verificationId": "P12-TEST-05", "status": "PASS", "predicate": "39 release-long tests exit zero" },
+    { "verificationId": "P12-TEST-06", "status": "PASS", "predicate": "no missing or duplicate classification" },
+    { "verificationId": "P12-TEST-07", "status": "PASS", "predicate": "release command fails closed on child failure" },
+    { "verificationId": "P12-TEST-08", "status": "PASS", "predicate": "user-owned dirty evidence restored byte-for-byte" }
+  ]
+}

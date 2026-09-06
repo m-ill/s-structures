@@ -1,0 +1,106 @@
+{
+  "version": "p17-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-locks/SB2.source-lock.json",
+    "sourceLockHash": "ae646488e3becd1d6ab8d6c4230e776f1c43d6f4a67c8bcd9edf6906f40794c3",
+    "reason": "R2 selects the final evidence Engine field when an HTML page also contains a descriptive Engine field."
+  },
+  "caseId": "SB2",
+  "ordinal": 2,
+  "official": true,
+  "family": "STATIC-MEMBRANE",
+  "title": "NAFEMS LE1 elliptic membrane (tangential edge stress at D)",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "NAFEMS, The Standard NAFEMS Benchmarks (Linear Elastic), Benchmark LE1 — elliptic membrane; reference tangential edge stress sigma_yy = 92.7 MPa at point D.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SB2.html",
+        "byteLength": 22213,
+        "sha256": "e2c832bf51687e3de36f9ddf92584041c188a14e3ce75cf59b606eb396f3796c"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 3,
+        "printedPageEnd": 4
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB2.pdf",
+        "byteLength": 116084,
+        "sha256": "f8bb2c6383d1fdee92670e3bffbd91e33427598f3ab7e7ca2b09b98645dbb236",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 2
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "3%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Tangential edge stress sigma_yy at D (MPa)",
+      "probe": "mesh 96×48",
+      "strix": "90.8514",
+      "reference": "92.7",
+      "delta": "−1.994%"
+    },
+    "resultRowCount": 1
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_1_OF_1",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SB2.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SB2/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "242a53fda503e1fae32e1f497df6eca7824d38958e14f968f4d559929f72110b"
+}

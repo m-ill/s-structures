@@ -1,0 +1,152 @@
+{
+  "version": "p8-m11-independent-reference-v1",
+  "status": "PASS",
+  "qualificationLevel": "L2-L3-independent-closed-form-and-separate-reference-code",
+  "externalCommercialComparison": false,
+  "catalog": {
+    "version": "p8-m11-independent-reference-v1",
+    "independencePolicy": "No production element, assembly, equilibrium, sparse-solver, or result-recovery implementation is imported.",
+    "sources": [
+      {
+        "version": "p8-m11-independent-reference-v1",
+        "id": "REF-STATIC-01",
+        "sourceClass": "closed-form",
+        "title": "Euler-Bernoulli cantilever tip response",
+        "citation": "Euler-Bernoulli beam theory; prismatic cantilever with a transverse tip force.",
+        "equations": [
+          "delta=P*L^3/(3*E*I)",
+          "theta=P*L^2/(2*E*I)",
+          "Mfix=P*L"
+        ],
+        "implementation": "src/nonlinear/qualification/independentReferences.js",
+        "productionCodeImported": false,
+        "sourceHash": "823cb7ebc083379038a52901"
+      },
+      {
+        "version": "p8-m11-independent-reference-v1",
+        "id": "REF-SECTION-01",
+        "sourceClass": "closed-form",
+        "title": "Rectangular steel section plastic capacity",
+        "citation": "Plastic stress-block integration for a doubly symmetric rectangle.",
+        "equations": [
+          "A=b*h",
+          "I=b*h^3/12",
+          "Zp=b*h^2/4",
+          "My=Fy*Zp"
+        ],
+        "implementation": "src/nonlinear/qualification/independentReferences.js",
+        "productionCodeImported": false,
+        "sourceHash": "3cb66b57be4dceff000f4e77"
+      },
+      {
+        "version": "p8-m11-independent-reference-v1",
+        "id": "REF-DYN-01",
+        "sourceClass": "published-algorithm",
+        "title": "Newmark average-acceleration integration",
+        "citation": "N. M. Newmark, A Method of Computation for Structural Dynamics, 1959.",
+        "equations": [
+          "beta=1/4",
+          "gamma=1/2",
+          "M*u_ddot+C*u_dot+K*u=-M*ag"
+        ],
+        "implementation": "src/nonlinear/qualification/independentReferences.js",
+        "productionCodeImported": false,
+        "sourceHash": "eb8fdfe796897a205d263414"
+      },
+      {
+        "version": "p8-m11-independent-reference-v1",
+        "id": "REF-LINALG-01",
+        "sourceClass": "separate-reference-solver",
+        "title": "Scaled partial-pivot Gaussian elimination",
+        "citation": "Independent dense reference implementation used only for small qualification fixtures.",
+        "equations": [
+          "A*x=b",
+          "row-scaled partial pivoting",
+          "back substitution"
+        ],
+        "implementation": "src/nonlinear/qualification/independentReferences.js",
+        "productionCodeImported": false,
+        "sourceHash": "1d4b4cd5ba04947ad4f39800"
+      }
+    ],
+    "catalogHash": "2351d4d58a31df54acd57290"
+  },
+  "convention": {
+    "version": "p8-m11-reference-convention-v1",
+    "units": {
+      "length": "m",
+      "force": "kN",
+      "moment": "kN-m",
+      "mass": "kN-s2/m",
+      "acceleration": "m/s2",
+      "rotation": "rad"
+    },
+    "axes": {
+      "global": "right-handed XYZ",
+      "vertical": "+Z",
+      "excitation": "relative displacement; positive ground acceleration produces -M*ag"
+    },
+    "signs": {
+      "displacement": "positive with selected global axis",
+      "baseReaction": "support-on-structure",
+      "sectionAxial": "tension-positive",
+      "sectionMoment": "right-hand-rule"
+    },
+    "ok": true,
+    "errors": [],
+    "conventionHash": "b7e13e62022c214c11847ef2"
+  },
+  "results": [
+    {
+      "id": "REF-CONVENTION",
+      "status": "PASS",
+      "metrics": {
+        "conventionHash": "b7e13e62022c214c11847ef2"
+      },
+      "test": "runPhase8IndependentReferenceQualification"
+    },
+    {
+      "id": "REF-LINALG-01",
+      "status": "PASS",
+      "metrics": {
+        "residual": 2.1369706338649628e-16,
+        "relativeError": 1.5817661692931648e-16
+      },
+      "test": "runPhase8IndependentReferenceQualification"
+    },
+    {
+      "id": "REF-STATIC-01",
+      "status": "PASS",
+      "metrics": {
+        "tipDisplacement": 0.0018,
+        "tipRotation": 0.0009,
+        "fixedEndMoment": 30,
+        "fixedEndShear": 10
+      },
+      "test": "runPhase8IndependentReferenceQualification"
+    },
+    {
+      "id": "REF-SECTION-01",
+      "status": "PASS",
+      "metrics": {
+        "area": 0.15,
+        "elasticInertia": 0.0031249999999999997,
+        "elasticSectionModulus": 0.012499999999999999,
+        "plasticSectionModulus": 0.01875,
+        "plasticMoment": 5156.25
+      },
+      "test": "runPhase8IndependentReferenceQualification"
+    },
+    {
+      "id": "REF-DYN-01",
+      "status": "PASS",
+      "metrics": {
+        "coarseError": 0.003991978680104924,
+        "fineError": 0.0009986586408966547,
+        "refinementRatio": 0.25016632625663376
+      },
+      "test": "runPhase8IndependentReferenceQualification"
+    }
+  ],
+  "qualificationHash": "c8cf7e536c60f40de7c0bee2"
+}

@@ -1,0 +1,47 @@
+export {
+  AVAILABLE_MEMORY_LIMIT_FRACTION,
+  DENSE_REFERENCE_MAX_DOF,
+  JS_SPARSE_REFERENCE_MAX_DOF,
+  RUNTIME_BACKEND_MODES,
+  RUNTIME_PREFLIGHT_VERSION,
+  classifyRuntimeBackend,
+  estimateAnalysisMemory,
+  estimateRuntimeMemory,
+  normalizeBackendMode,
+  preflightAnalysisRuntime,
+  resolveRuntimeMemoryLimit,
+  runPreflight,
+  runRuntimePreflight,
+} from './preflight.js';
+export {
+  WORKER_PROTOCOL_VERSION,
+  WORKER_REQUEST_TYPES,
+  WORKER_RESPONSE_TYPES,
+  WORKER_TASK_TYPES,
+  collectTransferables,
+  createCancelRequest,
+  createDisposeRequest,
+  createRunRequest,
+  normalizeRequestType,
+  normalizeTaskType,
+  normalizeWorkerTask,
+  postProtocolMessage,
+  protocolError,
+  serializeProtocolError,
+  validateWorkerRequest,
+} from './protocol.js';
+export {
+  WORKER_CANCELLATION_CODE,
+  WORKER_CORE_VERSION,
+  WorkerCancellationError,
+  createAnalysisWorkerCore,
+  createWorkerCore,
+} from './workerCore.js';
+export {
+  WORKER_CLIENT_VERSION,
+  AnalysisWorkerClient,
+  WorkerRunCancelledError,
+  WorkerRuntimeError,
+  createAnalysisWorkerClient,
+  createWorkerClient,
+} from './workerClient.js';

@@ -1,0 +1,621 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteId": "P9-M0-BASELINE",
+  "milestone": "P9-M0",
+  "verificationIds": [
+    "P9-BASE-01",
+    "P9-BASE-02",
+    "P9-BASE-03",
+    "P9-BASE-04",
+    "P9-BASE-05",
+    "P9-BASE-06",
+    "P9-BASE-07",
+    "P9-BASE-08",
+    "P9-BASE-09",
+    "P9-BASE-10",
+    "P9-REF-01"
+  ],
+  "generatedAt": "2026-07-15T03:45:34.400Z",
+  "sourceRevision": "658a868+worktree",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0",
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13700KF",
+    "logicalCores": 24,
+    "memoryBytes": 68558086144,
+    "powerMode": "not-measured"
+  },
+  "backendBuilds": {
+    "elastic": {
+      "id": "linear-static-3d-frame",
+      "target": "javascript-cpu",
+      "precision": "f64"
+    },
+    "nonlinear": {
+      "id": "p8-wasm-sparse-v1",
+      "target": "wasm-cpu",
+      "precision": "f64",
+      "evidenceMode": "reused"
+    },
+    "gpu": {
+      "id": null,
+      "implemented": false,
+      "qualification": "G0"
+    }
+  },
+  "executionPlan": {
+    "profile": "ci-minimal",
+    "measuredRuns": 1,
+    "elasticDynamicPolicy": "actual-small-reference",
+    "mediumLargePolicy": "materialize-hash-preflight-only",
+    "nonlinearPolicy": "reuse-phase8-evidence-no-rerun"
+  },
+  "fixtureHash": "63d21cbd5a4c5f21d1a89c93db4cf7859b50d10354f1897bf56906124253369b",
+  "actual": {
+    "fixtures": [
+      {
+        "tier": "S",
+        "version": "p9-m0-grid-fixture-v1",
+        "generator": {
+          "version": "p9-m0-grid-fixture-v1",
+          "tier": "S",
+          "baysX": 3,
+          "baysY": 3,
+          "stories": 3,
+          "bracesPerCell": 2,
+          "combinationCount": 10,
+          "execution": "measured-ci"
+        },
+        "inputHash": "6091bfe8584a51a9189cac5d5308b21761cdf00bccd6d277d35670b23b7b4fa2",
+        "nodeCount": 64,
+        "memberCount": 174,
+        "loadCount": 32,
+        "combinationCount": 10,
+        "fixedNodeCount": 16,
+        "activeDof": 288
+      },
+      {
+        "tier": "M",
+        "version": "p9-m0-grid-fixture-v1",
+        "generator": {
+          "version": "p9-m0-grid-fixture-v1",
+          "tier": "M",
+          "baysX": 12,
+          "baysY": 12,
+          "stories": 8,
+          "bracesPerCell": 4,
+          "combinationCount": 30,
+          "execution": "materialize-and-preflight-only"
+        },
+        "inputHash": "45ef9752db6165d495f7a0b4adcabee4722c57531ee7571ec0f56c573b20b34c",
+        "nodeCount": 1521,
+        "memberCount": 8456,
+        "loadCount": 338,
+        "combinationCount": 30,
+        "fixedNodeCount": 169,
+        "activeDof": 8112
+      },
+      {
+        "tier": "L",
+        "version": "p9-m0-grid-fixture-v1",
+        "generator": {
+          "version": "p9-m0-grid-fixture-v1",
+          "tier": "L",
+          "baysX": 20,
+          "baysY": 20,
+          "stories": 11,
+          "bracesPerCell": 6,
+          "combinationCount": 60,
+          "execution": "materialize-and-preflight-only"
+        },
+        "inputHash": "20618a63521890fea9589e75f0e7f955abac7aa207c159e112d0b5ca8d17036b",
+        "nodeCount": 5292,
+        "memberCount": 40491,
+        "loadCount": 882,
+        "combinationCount": 60,
+        "fixedNodeCount": 441,
+        "activeDof": 29106
+      }
+    ],
+    "timings": [
+      {
+        "id": "fixture-s-materialization",
+        "rawSamplesMs": [
+          8.145
+        ],
+        "medianMs": 8.145,
+        "runCount": 1
+      },
+      {
+        "id": "fixture-m-materialization",
+        "rawSamplesMs": [
+          93.4184
+        ],
+        "medianMs": 93.4184,
+        "runCount": 1
+      },
+      {
+        "id": "fixture-l-materialization",
+        "rawSamplesMs": [
+          422.3041
+        ],
+        "medianMs": 422.3041,
+        "runCount": 1
+      },
+      {
+        "id": "elastic-fixture-build",
+        "rawSamplesMs": [
+          0.5725
+        ],
+        "medianMs": 0.5725,
+        "runCount": 1
+      },
+      {
+        "id": "elastic-static-s",
+        "rawSamplesMs": [
+          3491.1727
+        ],
+        "medianMs": 3491.1727,
+        "runCount": 1
+      },
+      {
+        "id": "direct-pdelta-linear-reference-s",
+        "rawSamplesMs": [
+          8.2186
+        ],
+        "medianMs": 8.2186,
+        "runCount": 1
+      },
+      {
+        "id": "direct-pdelta-s",
+        "rawSamplesMs": [
+          37.6736
+        ],
+        "medianMs": 37.6736,
+        "runCount": 1
+      },
+      {
+        "id": "modal-rsa-s",
+        "rawSamplesMs": [
+          13.4353
+        ],
+        "medianMs": 13.4353,
+        "runCount": 1
+      },
+      {
+        "id": "buckling-s",
+        "rawSamplesMs": [
+          26.9394
+        ],
+        "medianMs": 26.9394,
+        "runCount": 1
+      },
+      {
+        "id": "phase8-nonlinear-evidence-freeze",
+        "rawSamplesMs": [
+          4.0547
+        ],
+        "medianMs": 4.0547,
+        "runCount": 1
+      },
+      {
+        "id": "debt-inventory-scan",
+        "rawSamplesMs": [
+          567.2477
+        ],
+        "medianMs": 567.2477,
+        "runCount": 1
+      }
+    ],
+    "timerAccounting": {
+      "stageSumMs": 4673.182,
+      "overheadMs": 6.9006,
+      "totalMs": 4680.0826
+    },
+    "memory": {
+      "snapshots": [
+        {
+          "stage": "start",
+          "rssBytes": 54562816,
+          "heapUsedBytes": 8844440,
+          "heapTotalBytes": 17244160,
+          "externalBytes": 2083449,
+          "arrayBuffersBytes": 23600
+        },
+        {
+          "stage": "fixture-s-materialization",
+          "rssBytes": 57528320,
+          "heapUsedBytes": 8763984,
+          "heapTotalBytes": 18292736,
+          "externalBytes": 2142689,
+          "arrayBuffersBytes": 82271
+        },
+        {
+          "stage": "fixture-m-materialization",
+          "rssBytes": 75354112,
+          "heapUsedBytes": 12540608,
+          "heapTotalBytes": 31076352,
+          "externalBytes": 3259564,
+          "arrayBuffersBytes": 1199675
+        },
+        {
+          "stage": "fixture-l-materialization",
+          "rssBytes": 155197440,
+          "heapUsedBytes": 28646288,
+          "heapTotalBytes": 97935360,
+          "externalBytes": 7649068,
+          "arrayBuffersBytes": 5589179
+        },
+        {
+          "stage": "elastic-fixture-build",
+          "rssBytes": 155254784,
+          "heapUsedBytes": 28789912,
+          "heapTotalBytes": 97935360,
+          "externalBytes": 7649068,
+          "arrayBuffersBytes": 5589179
+        },
+        {
+          "stage": "elastic-static-s",
+          "rssBytes": 266887168,
+          "heapUsedBytes": 138688064,
+          "heapTotalBytes": 213024768,
+          "externalBytes": 7649068,
+          "arrayBuffersBytes": 5589179
+        },
+        {
+          "stage": "direct-pdelta-linear-reference-s",
+          "rssBytes": 267399168,
+          "heapUsedBytes": 78025360,
+          "heapTotalBytes": 213811200,
+          "externalBytes": 7649068,
+          "arrayBuffersBytes": 5589179
+        },
+        {
+          "stage": "direct-pdelta-s",
+          "rssBytes": 254377984,
+          "heapUsedBytes": 38278144,
+          "heapTotalBytes": 201678848,
+          "externalBytes": 2134777,
+          "arrayBuffersBytes": 74888
+        },
+        {
+          "stage": "modal-rsa-s",
+          "rssBytes": 254955520,
+          "heapUsedBytes": 41624968,
+          "heapTotalBytes": 201678848,
+          "externalBytes": 2158249,
+          "arrayBuffersBytes": 98360
+        },
+        {
+          "stage": "buckling-s",
+          "rssBytes": 254312448,
+          "heapUsedBytes": 68535400,
+          "heapTotalBytes": 201678848,
+          "externalBytes": 2158249,
+          "arrayBuffersBytes": 98360
+        },
+        {
+          "stage": "phase8-nonlinear-evidence-freeze",
+          "rssBytes": 254537728,
+          "heapUsedBytes": 68852216,
+          "heapTotalBytes": 201678848,
+          "externalBytes": 2178564,
+          "arrayBuffersBytes": 118675
+        },
+        {
+          "stage": "debt-inventory-scan",
+          "rssBytes": 257503232,
+          "heapUsedBytes": 41813344,
+          "heapTotalBytes": 201678848,
+          "externalBytes": 4721473,
+          "arrayBuffersBytes": 2661584
+        }
+      ],
+      "peakRssBytes": 267399168,
+      "peakHeapUsedBytes": 138688064,
+      "peakArrayBuffersBytes": 5589179
+    },
+    "mainThreadLatency": {
+      "method": "zero-delay timer scheduled immediately before synchronous operation",
+      "rows": [
+        {
+          "operation": "elastic-static-s",
+          "rawSamplesMs": [
+            3491.3637
+          ],
+          "p95Ms": 3491.3637
+        },
+        {
+          "operation": "direct-pdelta-linear-reference-s",
+          "rawSamplesMs": [
+            9.595
+          ],
+          "p95Ms": 9.595
+        },
+        {
+          "operation": "direct-pdelta-s",
+          "rawSamplesMs": [
+            37.7693
+          ],
+          "p95Ms": 37.7693
+        },
+        {
+          "operation": "modal-rsa-s",
+          "rawSamplesMs": [
+            13.5197
+          ],
+          "p95Ms": 13.5197
+        },
+        {
+          "operation": "buckling-s",
+          "rawSamplesMs": [
+            27.0186
+          ],
+          "p95Ms": 27.0186
+        }
+      ],
+      "maximumMs": 3491.3637
+    },
+    "golden": {
+      "elastic": {
+        "ok": true,
+        "comboCount": 10,
+        "complete": true,
+        "auditStatus": "PASS",
+        "combos": [
+          {
+            "id": "P9-C01",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 7.181754533607588e-8,
+            "maxRatio": null
+          },
+          {
+            "id": "P9-C02",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 7.207048481219386e-8,
+            "maxRatio": null
+          },
+          {
+            "id": "P9-C03",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 1.491920291259379e-8,
+            "maxRatio": null
+          },
+          {
+            "id": "P9-C04",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 1.2432669093828169e-8,
+            "maxRatio": null
+          },
+          {
+            "id": "P9-C05",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 7.207048481214463e-8,
+            "maxRatio": null
+          },
+          {
+            "id": "P9-C06",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 7.234391041285103e-8,
+            "maxRatio": null
+          },
+          {
+            "id": "P9-C07",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 1.2432669093828169e-8,
+            "maxRatio": null
+          },
+          {
+            "id": "P9-C08",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 1.367593600321099e-8,
+            "maxRatio": null
+          },
+          {
+            "id": "P9-C09",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 7.234391041284852e-8,
+            "maxRatio": null
+          },
+          {
+            "id": "P9-C10",
+            "ok": true,
+            "equilibriumStatus": "PASS",
+            "maxDisplacement": 7.181754533610124e-8,
+            "maxRatio": null
+          }
+        ],
+        "resultHash": "39bf571733d895384461852b2ffbe06ae8ad357adebb12e4ba71e7da26e2560a"
+      },
+      "directPDelta": {
+        "ok": true,
+        "method": "geometric-stiffness-second-order-direct",
+        "converged": true,
+        "amplification": 1,
+        "displacementX": 0.0056249999999999955,
+        "linearDisplacementX": 0.0056249999999999955,
+        "reactionX": -9.999999999999993,
+        "resultHash": "3817741529a7c06c0c29a2286aeb7659e0c7eb0d9c0e23bea48a20e3a516d399"
+      },
+      "modalRsa": {
+        "ok": true,
+        "modeCount": 1,
+        "periods": [
+          0.6283185307179586
+        ],
+        "rsaBaseShearX": 20.000000000000004,
+        "resultHash": "29307af4db2e1324052a96690ceba1941d4b7c8a250a94fe5c880b9322260c1c"
+      },
+      "buckling": {
+        "status": "available",
+        "criticalLoadFactor": 1142.0628105975418,
+        "modeCount": 3,
+        "residuals": [
+          4.245031090399947e-12,
+          2.4547022731197782e-12,
+          1.7998887010580908e-12
+        ],
+        "resultHash": "6ba3722253776ee5f208106619296bc09a51806b76ae38d230a7c4bf129721ae"
+      }
+    },
+    "operationCounts": {
+      "elasticMembers": 174,
+      "elasticCombinations": 10,
+      "directLoadSteps": 2,
+      "directIterations": 4,
+      "modalModes": 1,
+      "bucklingModes": 3
+    },
+    "syntheticKernelDistinction": {
+      "source": "reports/validation-evidence/phase8/performance/p8-m11-reference-measurement.json",
+      "classification": "synthetic-kernel-not-frame-total",
+      "usedAsPhase9FrameTiming": false
+    },
+    "currentPathPolicy": {
+      "S": "measured actual solver paths",
+      "M": "materialized and hashed; solve blocked before current dense path",
+      "L": "materialized and hashed; solve blocked before current dense path",
+      "nonlinear": "Phase 8 production evidence hash reuse; no nonlinear solver rerun"
+    }
+  },
+  "reference": {
+    "independentSmall": {
+      "directPDelta": {
+        "expectedDisplacement": 0.005624999999999999,
+        "actualDisplacement": 0.0056249999999999955
+      },
+      "modal": {
+        "expectedPeriod": 0.6283185307179586,
+        "actualPeriod": 0.6283185307179586
+      },
+      "buckling": {
+        "expectedCriticalLoad": 1142.022891477162,
+        "actualCriticalLoad": 1142.0628105975418
+      }
+    },
+    "nonlinearEvidence": [
+      {
+        "kind": "pushover",
+        "sourcePath": "reports/validation-evidence/phase8/p8-m5-formal-pushover.json",
+        "sourceRevision": "0e4f629+P8-M5-worktree",
+        "suiteId": "P8-M5-FORMAL-PUSHOVER",
+        "status": "PASS",
+        "evidenceHash": "e2fc73e2a1216aedc653061211e4245bf8ecb0137e0a5b225583b06f1bdda52b",
+        "verificationCount": 25,
+        "rerun": false
+      },
+      {
+        "kind": "nlth",
+        "sourcePath": "reports/validation-evidence/phase8/p8-m8-mdof-nlth.json",
+        "sourceRevision": "6982e28+P8-M8-worktree",
+        "suiteId": "P8-M8-MDOF-NLTH",
+        "status": "PASS",
+        "evidenceHash": "106ba025b30388a7809e610a34f54eb946867f33576cf707bea1a06bb9308f46",
+        "verificationCount": 16,
+        "rerun": false
+      }
+    ],
+    "cpuF64GoldenHash": "e537ac560b36f3e71e1f84b4691d7afba5148c7ddc7ae2921ebc54e2bc8ebc62",
+    "debtRegistryHash": "1de838c5262a06ed0d5cf112c8c8916b3f1ee0e2785610133cb6ae104b9c3cff"
+  },
+  "tolerances": {
+    "directDisplacementAbsolute": 1e-8,
+    "modalPeriodAbsolute": 1e-10,
+    "bucklingRelative": 0.02,
+    "stageAccountingAbsoluteMs": 0.001
+  },
+  "recomputedErrors": {
+    "directDisplacementAbsolute": 3.469446951953614e-18,
+    "modalPeriodAbsolute": 0,
+    "bucklingRelative": 0.000034954746247012485,
+    "stageAccountingMs": 0
+  },
+  "results": [
+    {
+      "id": "P9-BASE-01",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "S/M/L fixture descriptors and generated inputs are present."
+    },
+    {
+      "id": "P9-BASE-02",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "Canonical fixture hashes and counts are recorded."
+    },
+    {
+      "id": "P9-BASE-03",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "CPU f64 elastic and dynamic golden channels are recorded."
+    },
+    {
+      "id": "P9-BASE-04",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "Phase 8 Pushover and MDOF NLTH evidence hashes are frozen without rerunning nonlinear suites."
+    },
+    {
+      "id": "P9-BASE-05",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "Raw operation and total timer samples are recorded."
+    },
+    {
+      "id": "P9-BASE-06",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "Stage, overhead and total accounting is recomputed."
+    },
+    {
+      "id": "P9-BASE-07",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "Synchronous main-thread timer latency samples are recorded."
+    },
+    {
+      "id": "P9-BASE-08",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "Process memory snapshots and peak values are recorded."
+    },
+    {
+      "id": "P9-BASE-09",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "Sync caller, sparse, Worker and legacy inventories are frozen."
+    },
+    {
+      "id": "P9-BASE-10",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "Every debt row has an owner, target milestone and replacement."
+    },
+    {
+      "id": "P9-REF-01",
+      "status": "PASS",
+      "test": "npm run baseline:p9:m0",
+      "statement": "Current and target module ownership is explicit."
+    }
+  ],
+  "status": "PASS",
+  "blockers": [
+    "M_TIER_ELASTIC_CURRENT_DENSE_PATH_NOT_EXECUTED",
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED"
+  ],
+  "qualificationImpact": "G0-baseline-only-no-design-transfer",
+  "artifactHash": "351c200ac632dad388c590cd7d542e98c2b99b497d91bb65ba109109402778a2"
+}

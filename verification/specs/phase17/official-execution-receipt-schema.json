@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/official-execution-receipt-schema.json",
+  "title": "Phase 17 official product execution receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "caseId", "runId", "status", "intentHash", "startedAt", "completedAt", "productBinding", "inputHashes", "engineeringResultHash", "custody", "receiptHash"],
+  "properties": {
+    "version": { "const": "p17-official-execution-receipt-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "runId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{7,127}$" },
+    "status": { "enum": ["COMPLETED", "FAILED", "BLOCKED"] },
+    "intentHash": { "$ref": "#/$defs/sha256" },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": "string", "format": "date-time" },
+    "productBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["serviceVersion", "adapterVersion", "publicEntrypoint", "externalRuntimeUsed", "networkFallbackUsed"],
+      "properties": {
+        "serviceVersion": { "const": "p9-m9-product-analysis-service-v1" },
+        "adapterVersion": { "const": "p17-m1-product-adapter-v1" },
+        "publicEntrypoint": { "const": "src/index.js" },
+        "externalRuntimeUsed": { "const": false },
+        "networkFallbackUsed": { "const": false }
+      }
+    },
+    "inputHashes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/sha256" } },
+    "engineeringResultHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "custody": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anchorType", "authority", "keyId", "payloadHash", "signatureVerified"],
+      "properties": {
+        "anchorType": { "const": "EXTERNAL_SIGNED_ANCHOR" },
+        "authority": { "type": "string", "minLength": 1 },
+        "keyId": { "type": "string", "minLength": 1 },
+        "payloadHash": { "$ref": "#/$defs/sha256" },
+        "signatureVerified": { "const": true }
+      }
+    },
+    "receiptHash": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+}

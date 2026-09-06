@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "p17-source-manifest-v1",
+  "caseId": "SH1",
+  "officialSuiteMember": true,
+  "status": "LOCKED_WITH_BLOCKERS",
+  "custodyBinding": {
+    "registryPath": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+    "registryHash": "de4b442ab56af5b14a907d320b85281a04b3f66ab5f75f9073a3f563df09f79c",
+    "sourceLockPath": "verification/benchmarks/strix21/references/source-locks-r2/SH1.source-lock.json",
+    "sourceLockHash": "5fdc1e62689d5fc265623e5cf7b581393a110ed0b6298ece4d1cc2501f24b3c6"
+  },
+  "extraction": {
+    "status": "BOUND_TO_M0_SOURCE_LOCK",
+    "method": "M0_SOURCE_LOCK_BINDING",
+    "artifacts": []
+  },
+  "transcription": {
+    "status": "NOT_STARTED",
+    "path": "verification/benchmarks/strix21/cases/SH1/source/transcription.md",
+    "valueCount": 0
+  },
+  "reasonCodes": [
+    "P17_M0_SOURCE_LOCK_HAS_DECLARED_BLOCKERS"
+  ]
+}

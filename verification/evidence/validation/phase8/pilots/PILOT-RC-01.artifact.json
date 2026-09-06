@@ -1,0 +1,149 @@
+{
+  "version": "p8-m11-pilot-artifact-v1",
+  "pilotId": "PILOT-RC-01",
+  "verificationId": "NL-PILOT-04",
+  "packageVersion": "p8-m11-pilot-package-v1",
+  "packageHash": "8ad1d8d16bdc5092022254cb",
+  "inputHash": "3b5beaff8d51e68a7eb83287",
+  "generatedAt": "2026-07-14T23:30:00+09:00",
+  "sourceRevision": "76323c8+P8-M11-worktree",
+  "execution": {
+    "status": "completed",
+    "engineId": "p8-production-mdof-pushover",
+    "terminationReason": "TARGET_REACHED",
+    "resultHash": "effed6ec11a2eec7d38071b1",
+    "runRecordId": "PILOT-RC-01-PUSH:effed6ec11a2eec7d38071b1",
+    "checkpointHash": "58ecb7251f5d10d5d6f0b6a44b3d33b47271e2cf78792412a9243d9674bf0c6d",
+    "fallbackUsed": false,
+    "designBlocked": true,
+    "resultChannels": {
+      "resultHash": true,
+      "runRecordId": true,
+      "capacityCurve": true,
+      "hingeEvents": true,
+      "checkpointHash": false,
+      "storyResponse": true,
+      "memberResults": true,
+      "domainIdentityHash": true,
+      "fiberPmmHash": true,
+      "historyManifestHash": false,
+      "energyAudit": false,
+      "reason": true,
+      "designBlocked": true,
+      "capabilityHash": false
+    },
+    "summary": {
+      "durationMs": 12728.151899999997,
+      "resultCount": 1,
+      "terminationReasons": [
+        "TARGET_REACHED"
+      ],
+      "cases": [
+        {
+          "ok": true,
+          "status": "ok",
+          "reason": null,
+          "terminationReason": "TARGET_REACHED",
+          "resultHash": "effed6ec11a2eec7d38071b1",
+          "runRecordId": "PILOT-RC-01-PUSH:effed6ec11a2eec7d38071b1",
+          "qualification": "candidate",
+          "designBlocked": true,
+          "fallbackUsed": false,
+          "summary": {
+            "stepCount": 5,
+            "rejectedStepCount": 0,
+            "maxBaseShear": 111.4727518676893,
+            "maxControlDisplacement": 0.005,
+            "maxRoofDisplacement": 0.005000291827710069,
+            "peakStep": 4,
+            "firstYieldStep": 4,
+            "mechanismStep": null,
+            "plasticMemberCount": 2,
+            "yieldedMemberCount": 2,
+            "ultimateMemberCount": 0,
+            "terminationReason": "TARGET_REACHED",
+            "fiberPmmMemberCount": 3,
+            "fiberPmmCoupledAssignmentCount": 3,
+            "distributedFiberMemberCount": 0,
+            "fiberPmmSkippedMemberCount": 0
+          },
+          "convergence": null,
+          "checkpointHash": null,
+          "historyManifestHash": null,
+          "energyAudit": null,
+          "resultChannels": {
+            "resultHash": true,
+            "runRecordId": true,
+            "capacityCurve": true,
+            "hingeEvents": true,
+            "checkpointHash": false,
+            "storyResponse": true,
+            "memberResults": true,
+            "domainIdentityHash": true,
+            "fiberPmmHash": true,
+            "historyManifestHash": false,
+            "energyAudit": false,
+            "reason": true,
+            "designBlocked": true,
+            "capabilityHash": false
+          }
+        }
+      ]
+    },
+    "outputManifest": {
+      "resultHashes": [
+        "effed6ec11a2eec7d38071b1"
+      ],
+      "runRecordIds": [
+        "PILOT-RC-01-PUSH:effed6ec11a2eec7d38071b1"
+      ]
+    },
+    "requiredResultFields": [
+      "resultHash",
+      "runRecordId",
+      "fiberPmmHash",
+      "storyResponse",
+      "memberResults"
+    ]
+  },
+  "report": {
+    "path": "docs/verification/phase8/pilots/PILOT-RC-01.md",
+    "reportHash": "1463e9f064b4c7cb8a750feb",
+    "resultHash": "effed6ec11a2eec7d38071b1",
+    "format": "json+markdown"
+  },
+  "externalComparison": {
+    "status": "MISSING",
+    "solver": null,
+    "solverVersion": null,
+    "sourceHash": null,
+    "channels": [],
+    "tolerance": null,
+    "comparisons": [],
+    "comparisonAudit": {
+      "ok": false,
+      "unexpectedChannels": [],
+      "duplicateChannels": [],
+      "comparisonAuditHash": "98a9382eba9bbfaa9ca0795e"
+    },
+    "conventionAudit": null
+  },
+  "ownerReview": {
+    "status": "PENDING",
+    "reviewerId": null,
+    "reviewedAt": null,
+    "note": null
+  },
+  "reproducibility": {
+    "status": "PASS",
+    "command": "npm run qualify:p8:m11 -- --pilot=PILOT-RC-01",
+    "requiredInputHash": "3b5beaff8d51e68a7eb83287",
+    "requiredPackageHash": "8ad1d8d16bdc5092022254cb"
+  },
+  "qualification": {
+    "status": "candidate",
+    "designBlocked": true,
+    "reason": "INDEPENDENT_EXTERNAL_COMPARISON_REQUIRED"
+  },
+  "artifactHash": "94e70f6dcec654d275a4869a"
+}

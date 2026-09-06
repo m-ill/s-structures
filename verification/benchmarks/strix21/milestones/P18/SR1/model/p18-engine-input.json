@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "p18-engine-input-snapshot-v1",
+  "caseId": "SR1",
+  "qualificationScope": "S-Structures production-engine input snapshot; not an assertion of full STRIX model equivalence",
+  "method": "production 2-D rigid-frame modal analysis, mass-normalized mode recovery, SRSS and CQC response-spectrum combination",
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/dynamics/modalCombination.js",
+    "src/results/rsa/memberForces.js"
+  ],
+  "input": {
+    "fixture": "complete two-storey one-bay engine qualification model",
+    "nodeCount": 6,
+    "memberCount": 6,
+    "activePlane": "Ux-Ry"
+  },
+  "publicSourceLimitations": [
+    "absolute concentrated-mass value m",
+    "complete response-spectrum ordinate table and interpolation rule",
+    "exact member section/area data and eight-element subdivision connectivity"
+  ],
+  "engineeringHash": "59347d9707a97b3b3d2e460340ec5ba077d72dbfb90d83acfd4e42ec2ed31246"
+}

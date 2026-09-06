@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "p17-model-equivalence-v1",
+  "caseId": "SR1",
+  "artifactStatus": "NOT_PREPARED",
+  "payloadAbsent": true,
+  "releaseAllowed": false,
+  "overallStatus": "NOT_STARTED",
+  "dimensions": [
+    {
+      "id": "UNIT_SYSTEM_AND_GLOBAL_AXES",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "NODE_COORDINATES_AND_CONNECTIVITY",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "ELEMENT_TYPE_AND_FORMULATION",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "MATERIAL_AND_SECTION_CONSTANTS",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "LOCAL_AXES_AND_STRONG_WEAK_ROUTING",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "SUPPORT_RELEASE_LINK_DIAPHRAGM_CONSTRAINT",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "LOAD_MAGNITUDE_DIRECTION_DISTRIBUTION_RESULTANT_CENTROID_SELF_WEIGHT",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "MASS_SOURCE_ROTATIONAL_INERTIA_LUMPED_CONSISTENT",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "DAMPING_SPECTRUM_INTERPOLATION_MODAL_COMBINATION",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "MESH_INTEGRATION_STABILIZATION_SHEAR_CORRECTION",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "PDELTA_STAGE_STEP_CONVERGENCE_HINGE_REGULARIZATION",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    {
+      "id": "OUTPUT_PROBE_LOCATION_COMPONENT_UNIT_SIGN",
+      "mandatory": true,
+      "status": "NOT_STARTED",
+      "sstructures": "NOT_REVIEWED",
+      "strix": "NOT_REVIEWED",
+      "midas": "NOT_AVAILABLE",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    }
+  ],
+  "knownDifferences": [],
+  "reasonCodes": [
+    "P17_MODEL_NOT_BUILT",
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION"
+  ]
+}

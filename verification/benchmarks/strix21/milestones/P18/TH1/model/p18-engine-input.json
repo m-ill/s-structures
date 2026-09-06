@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "p18-engine-input-snapshot-v1",
+  "caseId": "TH1",
+  "qualificationScope": "S-Structures production-engine input snapshot; not an assertion of full STRIX model equivalence",
+  "method": "production Newmark average acceleration beta=0.25 gamma=0.5",
+  "productionModules": [
+    "src/dynamics/linearDirectIntegration.js"
+  ],
+  "input": {
+    "periodSec": 1,
+    "mass": 1,
+    "stiffness": 39.47841760435743,
+    "durationSec": 5,
+    "amplitudeMmPerSec2": 1000
+  },
+  "publicSourceLimitations": [],
+  "engineeringHash": "557d6711876dd844d00228fa991fa844277c34c8cde45880cd6693af85ffb7fe"
+}

@@ -1,0 +1,775 @@
+{
+  "version": "p17-m0-validation-closure-v2",
+  "closureRevision": 3,
+  "auditDate": "2026-08-28",
+  "phase": 17,
+  "milestone": "P17-M0",
+  "status": "COMPLETE_WITH_SOURCE_BLOCKERS",
+  "supersedes": {
+    "path": "verification/evidence/validation/phase17/p17-m0-validation-closure-r2.json",
+    "sha256": "fea2aac5f7d9fa6c8adfd7081028b16bf61ebd141267581663f5a67e615acad1",
+    "reason": "R2 did not bind the dirty P17 implementation inventory or the final report QA/source screenshot chain; R3 adds those controls and semantic blocker classification without changing baseline R2."
+  },
+  "baseRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "repositoryState": {
+    "worktreeDirty": true,
+    "statusEntryCountBeforeClosureWrite": 1263,
+    "statusPorcelainV1ZSha256": "f82cc85d927cd5559bbc53fd5dbe32e387625ac3b4e5cacf5abdeb3335720d64",
+    "capturedBeforeClosureWrite": true
+  },
+  "evidenceChain": {
+    "baseline": {
+      "path": "verification/evidence/validation/phase17/p17-m0-baseline-source-lock-r2.json",
+      "byteLength": 7041,
+      "sha256": "268b790ad87ac356f537e456ade14e461899793add56f6321106f01162d9ed82",
+      "baselineHash": "06aed261d00b98c04317df8a5fd8ea33373229cbf55cc9ca8b7d65d623802e81"
+    },
+    "registry": {
+      "path": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+      "byteLength": 15448,
+      "sha256": "b03f71277c7bd24b2bf70603e43fe974e576c09df92a908601eb5c3ece9ce51c",
+      "registryHash": "de4b442ab56af5b14a907d320b85281a04b3f66ab5f75f9073a3f563df09f79c"
+    },
+    "discrepancyRegister": {
+      "path": "verification/benchmarks/strix21/references/source-version-discrepancies-r2.json",
+      "byteLength": 6240,
+      "sha256": "0be27ebc3845a8eff059c8bb046a2ca94d003980b2ca577e7159cdd5238a9928",
+      "registerHash": "45cc3d826f39a90a6d7614da58a18b11b817c9c10be271e73d118684a2f0e6a9"
+    },
+    "sourceLockCount": 21,
+    "sourceLockAggregateHash": "7dff89b608f1d15408f4167d04ef072b89d1b1480fdf1bb05406f21b633bb4cb",
+    "r2ClaimQualification": {
+      "path": "verification/evidence/validation/phase17/p17-m0-r2-claim-qualification-r1.json",
+      "byteLength": 3278,
+      "sha256": "4361f24027727367bac20335f47a51a753b8dcf7b61e1c47a2f4dc4ad5e639f9",
+      "qualificationHash": "13e71e0c273b28ab77c67c450346248e61fc29dbba2dd9b269b83cb8e69ffd8c"
+    },
+    "sourceValuePresenceAudit": {
+      "path": "verification/evidence/validation/phase17/p17-m0-source-value-presence-audit-r3.json",
+      "byteLength": 43653,
+      "sha256": "c08d767712104745075db17d9d2fb05b414c2d5af344fad4ee4b1b161235b97d",
+      "auditHash": "22b669b29f7f1602926418897c769054115c8db06ac4a4976f2ced66ed6b369d"
+    },
+    "reportFinalManifest": {
+      "path": "output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.manifest-r3.json",
+      "byteLength": 5866,
+      "sha256": "1dc8b37b60ddf34b174c09054c55b2b14f08bf3384e05317facf5512651c4502",
+      "manifestHash": "428c648ea73a35254e70a9f9ec2ee5281722ba053e19be090090058314fbeb6b"
+    }
+  },
+  "checks": [
+    {
+      "command": "npm.cmd run test:p17",
+      "status": "PASS"
+    },
+    {
+      "command": "npm.cmd run check:verification-layout",
+      "status": "PASS"
+    },
+    {
+      "command": "npm.cmd run check:test-taxonomy",
+      "status": "PASS"
+    },
+    {
+      "command": "npm.cmd run check:public-imports",
+      "status": "PASS"
+    },
+    {
+      "command": "npm.cmd run report:p17:m0:final",
+      "status": "PASS"
+    },
+    {
+      "command": "node --check verification/harnesses/finalize-p17-m0.mjs",
+      "status": "PASS"
+    },
+    {
+      "command": "independent source value/order/visual audit",
+      "status": "PASS_WITH_KNOWN_SOURCE_PRESENTATION_DEFECT",
+      "facts": {
+        "officialCaseCount": 21,
+        "catalogResultRowCount": 131,
+        "htmlMetadataPresenceAssertionCount": 42,
+        "htmlMetadataPresenceMatchedCount": 42,
+        "htmlScalarPresenceAssertionCount": 393,
+        "htmlScalarPresenceMatchedCount": 393,
+        "htmlResultRowOrderedSequenceAssertionCount": 131,
+        "htmlResultRowOrderedSequenceMatchedCount": 131,
+        "casePdfGlobalTextValuePresenceAssertionCount": 393,
+        "casePdfGlobalTextValuePresenceMatchedCount": 391,
+        "casePdfGlobalTextValuePresenceMissingCount": 2,
+        "manualLockedStartPageTitleAssertionCount": 21,
+        "manualLockedStartPageTitleMatchedCount": 21,
+        "sourceHashCheckCount": 42,
+        "sourceHashMatchedCount": 42
+      }
+    },
+    {
+      "command": "PDF automated render + nine-page visual review",
+      "status": "PASS",
+      "facts": {
+        "pageCount": 9,
+        "permanentSourceScreenshots": 2
+      }
+    }
+  ],
+  "semanticGateReview": [
+    {
+      "id": "P17-M0-G01",
+      "baselineStatus": "PASS",
+      "reviewedStatus": "PASS",
+      "meaning": "official ID/order is exactly 21"
+    },
+    {
+      "id": "P17-M0-G02",
+      "baselineStatus": "PASS",
+      "reviewedStatus": "PASS",
+      "meaning": "custom P3S2-SS excluded"
+    },
+    {
+      "id": "P17-M0-G03",
+      "baselineStatus": "PASS",
+      "reviewedStatus": "PASS",
+      "meaning": "source manifest 51/51 verified"
+    },
+    {
+      "id": "P17-M0-G04",
+      "baselineStatus": "PASS",
+      "reviewedStatus": "PASS",
+      "meaning": "21 per-case source locks hash-valid"
+    },
+    {
+      "id": "P17-M0-G05",
+      "baselineStatus": "PASS",
+      "reviewedStatus": "PASS",
+      "meaning": "Six authority roles are present and their precedence phrases are validated."
+    },
+    {
+      "id": "P17-M0-G06",
+      "baselineStatus": "PASS",
+      "reviewedStatus": "PASS",
+      "meaning": "Exact ordered IDs P17-D001 through P17-D009 are required."
+    },
+    {
+      "id": "P17-M0-G07",
+      "baselineStatus": "PASS",
+      "reviewedStatus": "PASS",
+      "meaning": "Current Phase15 file hashes and byte lengths are recomputed; content-addressed snapshots are checked separately."
+    },
+    {
+      "id": "P17-M0-G08",
+      "baselineStatus": "PASS",
+      "reviewedStatus": "PASS",
+      "meaning": "Five role slots and exact vocabulary are validated; four independent assignments remain governed by G09."
+    },
+    {
+      "id": "P17-M0-G09",
+      "baselineStatus": "BLOCKED_RELEASE_ONLY",
+      "reviewedStatus": "BLOCKED_RELEASE_ONLY",
+      "meaning": "Four independent reviewer roles remain pending, so release stays blocked."
+    },
+    {
+      "id": "P17-M0-G10",
+      "baselineStatus": "BLOCKED_RELEASE_ONLY",
+      "reviewedStatus": "BLOCKED_RELEASE_ONLY",
+      "meaning": "All raw STRIX record/archive hashes remain unpublished, so STRIX actual R4 claims stay blocked."
+    }
+  ],
+  "blockerClassification": {
+    "activeReleaseBlockers": [
+      "FOUR_INDEPENDENT_REVIEWER_APPROVALS_PENDING",
+      "STRIX_RAW_RECORD_ARCHIVE_AND_PUBLISHED_SHA_UNAVAILABLE"
+    ],
+    "caseSpecificAcceptanceBlockers": [
+      "SB10_TOLERANCE_PRECISION_UNRESOLVED",
+      "CASE_REFERENCE_MODEL_NUMERICAL_TOLERANCE_APPROVALS_NOT_YET_PERFORMED",
+      "CASE_REQUIRED_ENGINE_CAPABILITY_MUST_BE_PROVEN_PER_MILESTONE"
+    ],
+    "claimSpecificHistoricalFindings": [
+      "P15_M0_RECORDED_PDF_BINARY_MISSING",
+      "P15_M0_MARKDOWN_NOT_CAPTURED",
+      "CURRENT_PHASE15_PDF_REGENERATED_AFTER_BASELINE",
+      "SH1_CASE_PDF_TWO_ROWS_NOT_FULLY_VISIBLE"
+    ],
+    "interpretation": "Historical findings restrict claims about the old artifact or the SH1 PDF alone; they do not permanently bar a new P17 rerun completed from first principles with new append-only evidence."
+  },
+  "ciPolicy": {
+    "hermeticRepositoryRegression": "npm test",
+    "externalArtifactVerification": "npm run test:p17",
+    "releaseWithExternalArtifact": "npm run test:release:p17",
+    "sourceRootOverride": "P17_SOURCE_ROOT",
+    "rationale": "The licensed/local STRIX bundle is intentionally provisioned only in the separate external-artifact job."
+  },
+  "implementationInventory": {
+    "selectionPolicy": "All P17 plans/reviews, contracts, runners, tests, source locks, Phase15 bound inputs/snapshots, M0 evidence and final report/QA artifacts; generated caches and the closure file itself are excluded.",
+    "fileCount": 111,
+    "aggregateHash": "a6c2609afda70c88f3b2f870c0656c6907f20f8de5ab11d89640df4b8479b7c8",
+    "files": [
+      {
+        "path": "docs/phase17/CASE_FOLDER_CONTRACT.md",
+        "byteLength": 8806,
+        "sha256": "d29a1c7c84e258c41335fd8a1543039cd8bba4bdb208522b92adad72c7a9d3f7"
+      },
+      {
+        "path": "docs/phase17/CODEBASE_REVIEW_PLAN.md",
+        "byteLength": 5029,
+        "sha256": "ca4998c03bb671f5b539f2fb7cc8e482605c5f77e40f38545277527e534e06fa"
+      },
+      {
+        "path": "docs/phase17/CURRENT_STATE_AUDIT.md",
+        "byteLength": 5078,
+        "sha256": "6d7f830ce1979622950af6a9cff9bca733368652736129a91a9131226fe9b27a"
+      },
+      {
+        "path": "docs/phase17/DISCREPANCY_REGISTER.md",
+        "byteLength": 1407,
+        "sha256": "a3f680761050d6587446d1c8f52f75ba07a3d7355d8e1a16217586cbc3cee37c"
+      },
+      {
+        "path": "docs/phase17/IMPLEMENTATION_STATUS.md",
+        "byteLength": 4363,
+        "sha256": "0e07b4e9db3c4a6730682defdb06217b57e7d7eb579e4f411af80848fa3b3bb2"
+      },
+      {
+        "path": "docs/phase17/MILESTONE_EXECUTION_PLAN.md",
+        "byteLength": 9090,
+        "sha256": "7a15d11fd876c1bdf5eda4fad038f866ba6389e99e589b2a093c35d727631e86"
+      },
+      {
+        "path": "docs/phase17/MODEL_EQUIVALENCE_AND_REFERENCE_POLICY.md",
+        "byteLength": 7025,
+        "sha256": "1a057fbda9652e1d8a48ee6a0f388d056e55978845f6ac3cad4d1ccce7dcd005"
+      },
+      {
+        "path": "docs/phase17/PRODUCTION_REQUIREMENTS.md",
+        "byteLength": 8244,
+        "sha256": "20b3d416e23556ee5f5ceace2a75a1a6a8516164b9118e7b5ce4df1328f64146"
+      },
+      {
+        "path": "docs/phase17/README.md",
+        "byteLength": 7695,
+        "sha256": "17c65e8f00801bbf8a344975d92e791c39bd0e90d2fd5279dafe74a5a7915e3e"
+      },
+      {
+        "path": "docs/phase17/reviews/P17-M0-BASELINE-SOURCE-LOCK-REVIEW.md",
+        "byteLength": 13678,
+        "sha256": "b23032d67efb16014811d73f1d6a81a6bfdfdf5dc4b9c85e5addc29a0fa27cb3"
+      },
+      {
+        "path": "docs/phase17/reviews/P17-M0-CODE-AND-ARTIFACT-REVIEW-ADDENDUM-R3.md",
+        "byteLength": 8723,
+        "sha256": "1f0832d30d87dce7c28d5b0ee54243d5ad620a36778a4e9435fb0bdf980d9a71"
+      },
+      {
+        "path": "docs/phase17/reviews/README.md",
+        "byteLength": 415,
+        "sha256": "f004aac805d8e470ac34e96450767e47a0868637b22b7dc9f8833cb45d7fa7c1"
+      },
+      {
+        "path": "docs/phase17/RISK_REGISTER.md",
+        "byteLength": 3974,
+        "sha256": "7f183374f99ea461ac47572b471bf361d5e8f9e375d1ddd3b646ceaa16838f99"
+      },
+      {
+        "path": "docs/phase17/VERIFICATION_MATRIX.md",
+        "byteLength": 5454,
+        "sha256": "ee67593c8d4cad2ba09e7798331cb72df2adcf8a6d9d52b4226bb383ac7b532d"
+      },
+      {
+        "path": "docs/phase17/workpackages/README.md",
+        "byteLength": 2156,
+        "sha256": "f13dd006b22580577b91841361cd298c3e03e5a4c80009c65240d47a6f7275e3"
+      },
+      {
+        "path": "docs/phase17/workpackages/WP-00-baseline-source-lock.md",
+        "byteLength": 4765,
+        "sha256": "9b331c4df20884a166267c3b1876d9fbc2cc862628bf4973f633b53df1cb57fb"
+      },
+      {
+        "path": "docs/README.md",
+        "byteLength": 17059,
+        "sha256": "5f9e4894d3e618befc928ce48fdb1ecbf5182fc48591daa9b9fc8b4ed28d4758"
+      },
+      {
+        "path": "output/pdf/S-Structures_STRIX21_1차_비교보고서.pdf",
+        "byteLength": 95238,
+        "sha256": "a4e79daa5ded78f0b21dc97678f84787df5b96df81aef919b3a8cdc013c246ab"
+      },
+      {
+        "path": "output/verification/phase17/assets/78bc71ae3a7a53ff9dd3134d2dc19117ba19930cfa5fea07232e8890195b305e.png",
+        "byteLength": 425594,
+        "sha256": "78bc71ae3a7a53ff9dd3134d2dc19117ba19930cfa5fea07232e8890195b305e"
+      },
+      {
+        "path": "output/verification/phase17/assets/79e7f15ac82fdef6aeb5d07e70964d4a17bb8ee13599a3822233bd8001571fef.png",
+        "byteLength": 189629,
+        "sha256": "79e7f15ac82fdef6aeb5d07e70964d4a17bb8ee13599a3822233bd8001571fef"
+      },
+      {
+        "path": "output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.manifest-r3.json",
+        "byteLength": 5866,
+        "sha256": "1dc8b37b60ddf34b174c09054c55b2b14f08bf3384e05317facf5512651c4502"
+      },
+      {
+        "path": "output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.manifest.json",
+        "byteLength": 1659,
+        "sha256": "92eaf98316953a66d894eaa2f19f84cd6dc71cdbe5a3c68a6bdc1dab43ad3753"
+      },
+      {
+        "path": "output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.md",
+        "byteLength": 13678,
+        "sha256": "b23032d67efb16014811d73f1d6a81a6bfdfdf5dc4b9c85e5addc29a0fa27cb3"
+      },
+      {
+        "path": "output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.pdf",
+        "byteLength": 704528,
+        "sha256": "dd2324a4f7d9018d8a01a19756cab758a987340d1a6dcf08ded81757fb133eb4"
+      },
+      {
+        "path": "output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.qa-closure.json",
+        "byteLength": 1169,
+        "sha256": "01fffaeacd1285ea544a91696d30dc909a5844088781d07a604c5e8eda5fe4c9"
+      },
+      {
+        "path": "output/verification/phase17/P17-M0-REPORT-SEMANTIC-REPRODUCTION-QA-R3.json",
+        "byteLength": 2192,
+        "sha256": "b3b1f3c1f9aea1c465210d974935681ddf85ca9859e58d2d0259a6449ebef4f6"
+      },
+      {
+        "path": "output/verification/phase17/P17-M0-REPORT-VISUAL-QA-R2.json",
+        "byteLength": 1064,
+        "sha256": "2b65e5f8156d2f00068a974f8a6da552b40f26190b93bf88de4d1d9589911092"
+      },
+      {
+        "path": "package.json",
+        "byteLength": 20009,
+        "sha256": "2141126cd32c0ddc58884bfabdc6a7c0b0aa98ab88ad333e808b17dd26c2739e"
+      },
+      {
+        "path": "tests/p17-m0-source-lock.mjs",
+        "byteLength": 12362,
+        "sha256": "ae2e1f1f05cd8396d7386be003c77502f7475e9beb2b8d180211cceb120c8e65"
+      },
+      {
+        "path": "tools/render-p17-m0-report.mjs",
+        "byteLength": 2429,
+        "sha256": "41699db570d42f411a704aec87ddf3d25bda27a742a0942b7f0d8757519ab702"
+      },
+      {
+        "path": "tools/run-p17-m0-content-audit.mjs",
+        "byteLength": 2227,
+        "sha256": "0ac50e3fba08ea14f3da8b44c71c36d5f9cb551a7b5b537f14bfc80bc64b8177"
+      },
+      {
+        "path": "tools/run-p17-m0-source-lock.mjs",
+        "byteLength": 325,
+        "sha256": "f8aa13857c998eba5126de1957550ba4215ba80ce49f6ef0e2dd5b38243cf8ca"
+      },
+      {
+        "path": "verification/archive/phase17-m0/phase15-current-snapshot/11db3298ce6b7463dc8abfd511ed44821db622cf0f610e311a27994667fc90f1.md",
+        "byteLength": 13998,
+        "sha256": "11db3298ce6b7463dc8abfd511ed44821db622cf0f610e311a27994667fc90f1"
+      },
+      {
+        "path": "verification/archive/phase17-m0/phase15-current-snapshot/a4e79daa5ded78f0b21dc97678f84787df5b96df81aef919b3a8cdc013c246ab.pdf",
+        "byteLength": 95238,
+        "sha256": "a4e79daa5ded78f0b21dc97678f84787df5b96df81aef919b3a8cdc013c246ab"
+      },
+      {
+        "path": "verification/archive/phase17-m0/phase15-current-snapshot/b28f19955a7e0d0d5647bafe6f932e907d1a965ef17b295130ea900335854843.json",
+        "byteLength": 207182,
+        "sha256": "b28f19955a7e0d0d5647bafe6f932e907d1a965ef17b295130ea900335854843"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/README.md",
+        "byteLength": 723,
+        "sha256": "e93d2f3cf2da387a6c9a6c2ac57703701a3f6d12b2826f98ec7b7373be17c51d"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/P3S2.source-lock.json",
+        "byteLength": 4218,
+        "sha256": "8e0b0f9de1fe296687d50582d75eaa9c472288747ecba55c402bb139c5d7ddc1"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/PD1.source-lock.json",
+        "byteLength": 4238,
+        "sha256": "853e36f59b0bea0fc6633774888dd779335943e2fad10e4dc9b928ef9c9e1b6c"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB1.source-lock.json",
+        "byteLength": 3829,
+        "sha256": "d2cb6a96447079f93d650f79c596e49d27c2e675cdf146366151c0810887d6c0"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB10.source-lock.json",
+        "byteLength": 4101,
+        "sha256": "4a8ba4aa74427f66c0cf5a5d3d3e58957863b95a87ec1c2061ee690228a6ca58"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB12.source-lock.json",
+        "byteLength": 4853,
+        "sha256": "2d3188ab7e054a9bb0dff668176dfa6494150be72ac40da40473c3e51fea414e"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB2.source-lock.json",
+        "byteLength": 3909,
+        "sha256": "7e9738614a4bd812faa16890a7a5298124f6a410c18afa23eece8ad346d2a63b"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB3.source-lock.json",
+        "byteLength": 4297,
+        "sha256": "0a244661c8c1b2ccb7c502182162ccae6817d6b6d8fce0ab3a74577e9e941c99"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB5.source-lock.json",
+        "byteLength": 4246,
+        "sha256": "537b241cb55067400720eec179dca2a93db79f0e6ad541c81b05b17b12b47321"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB6.source-lock.json",
+        "byteLength": 4364,
+        "sha256": "990b0a5c31621b4bf67e55b1ba473b12d2091e42cd585bddc6faaf39f7dcf5d7"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB7.source-lock.json",
+        "byteLength": 4141,
+        "sha256": "166da271d705139b40283ef2859bcb500a63e37180ecce11ff1db1b20b6135c9"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB8.source-lock.json",
+        "byteLength": 4700,
+        "sha256": "f5433ad3968d023bc45717990cdb01372571985af0d26588ed36a54fa2ca4873"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SB9.source-lock.json",
+        "byteLength": 4449,
+        "sha256": "821f117238a7c6bfa45a3b45bebc25523aca61f49cb120ca7786303adfc99403"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SH1.source-lock.json",
+        "byteLength": 5013,
+        "sha256": "e56e62570348466ee08d78eaada96656dfb5550857063c2c54fd7fe6cb6fa2d2"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SM5.source-lock.json",
+        "byteLength": 4378,
+        "sha256": "275f1992586631c20dc199b43a1be0a3a019de840e87a0fcc035e2bf7e5d0486"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SM5b.source-lock.json",
+        "byteLength": 4753,
+        "sha256": "ddca835960369b914127c4c311ce9d71894fdf5f1bbc2bb56856446dd25ee389"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SM6.source-lock.json",
+        "byteLength": 4819,
+        "sha256": "a8ca0824ba51c7455fae6f0aa84ceaf544554f0d9e24f9a01b1430a59ec49278"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SP1.source-lock.json",
+        "byteLength": 4740,
+        "sha256": "935b50da4f45784654c113ddd02d9069d268ebde996ffcb622eca80fcd16551a"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SR1.source-lock.json",
+        "byteLength": 4213,
+        "sha256": "de0a0cbe454e6a689b8c47572f9dd97b36d218a6f2e067c6a5bbb5a3c0ff55d0"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SR2.source-lock.json",
+        "byteLength": 4530,
+        "sha256": "990180682544cf26b9407f877e5e6e17808ffc97416535fab9077abecd460a61"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/SR2b.source-lock.json",
+        "byteLength": 4817,
+        "sha256": "4436dacd0acdd651970f870839b560f8b9e413a4321b0795fd555a4250d9d1d6"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks-r2/TH1.source-lock.json",
+        "byteLength": 5178,
+        "sha256": "29fb4cacf58f05eef98b6874adcadaafdb16c2c6105b3e4735c9a23f3e307b34"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/P3S2.source-lock.json",
+        "byteLength": 3876,
+        "sha256": "c65e13f288122773091363030df367dc1145fb110c976a5726fd0083ba7b198d"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/PD1.source-lock.json",
+        "byteLength": 3894,
+        "sha256": "a09153c634cf4b91e0a3b6ca72b2c90ecd6883121c7a527efce929d40704bdcf"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB1.source-lock.json",
+        "byteLength": 3488,
+        "sha256": "b6df0ccee5d3fe267f0e130285e4be944b7a5f50d0c61f379a5c7c0058261556"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB10.source-lock.json",
+        "byteLength": 3759,
+        "sha256": "aa05ab3ae32b053748cfbf6d913b960024395ba04ba3a04cefed2cd6bbcdea4b"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB12.source-lock.json",
+        "byteLength": 4508,
+        "sha256": "49e9ef99af8ed132d2cd1ec9014068d8ce754de13c7cec50940bcf08481621da"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB2.source-lock.json",
+        "byteLength": 3568,
+        "sha256": "2fd99c5a5772bc576a862cbd155983bcc84f4ebc588ad9aba380b0f64e181967"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB3.source-lock.json",
+        "byteLength": 3956,
+        "sha256": "354720fe7f2183b7edf6266ae3455fbed9b29acb4bc1c6f274ac373e1fb0eae7"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB5.source-lock.json",
+        "byteLength": 3905,
+        "sha256": "56f2159d54db99e7d7f7a63fd541357da9ab93552998d6a557a59a647df57b35"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB6.source-lock.json",
+        "byteLength": 4023,
+        "sha256": "6e478c91422b84e0feb74bfdc90f5c50e8737e6c388132a24d6bf7efd3a58eb6"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB7.source-lock.json",
+        "byteLength": 3800,
+        "sha256": "60086a501aadb2d6dca1764c24f04e06daa365511e1b2db2943c69f320d468d3"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB8.source-lock.json",
+        "byteLength": 4359,
+        "sha256": "76ca7e3250477cd376bd8fadcde423576ae06165d85f79743ef2104e26a40736"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SB9.source-lock.json",
+        "byteLength": 4108,
+        "sha256": "1498e2bbf36985c2729e856572cab3e6d89d8b4c7c1e26408c2585f94664b7c3"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SH1.source-lock.json",
+        "byteLength": 4669,
+        "sha256": "afaf4db0e3c386b5ed9342c870ca2bad64ce1a37991f63aa1701a59457518f6c"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SM5.source-lock.json",
+        "byteLength": 4037,
+        "sha256": "ca552f33295f5b91cba8aadf8cb2fb78051e9f38b151311a0e86c806b4bc0ba5"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SM5b.source-lock.json",
+        "byteLength": 4411,
+        "sha256": "bac6a073ef414999cb0181fc90538d5b64b65de2d0100f9840b32d525cd6aaee"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SM6.source-lock.json",
+        "byteLength": 4478,
+        "sha256": "fe96fbf751ed29ca9c0134fa77d29c5e19497d1cb7ab8ed2b5e5490f4a072ea2"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SP1.source-lock.json",
+        "byteLength": 4396,
+        "sha256": "aabdbfc6cf7918265c7c0572ae2a8115684326cff6e0780b5286faf050ce9d7f"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SR1.source-lock.json",
+        "byteLength": 3872,
+        "sha256": "fcfddadde7e20e63bc7e1c71fd3486aa7c24f43dedd1a9b901381dd5c43ebced"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SR2.source-lock.json",
+        "byteLength": 4189,
+        "sha256": "395444b17e710cf5d4d2776bc37077840df60afb38dc27805d1af67222af3b5d"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/SR2b.source-lock.json",
+        "byteLength": 4475,
+        "sha256": "9410f449c012e57a2b987827fa4a5da5a4d225ca2cdfc6d82a589d5699534cdc"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-locks/TH1.source-lock.json",
+        "byteLength": 4834,
+        "sha256": "0917908520a1838d7ed4b5cf0fc03a6cba311bd300ffe2f84f996068f53c4000"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-version-discrepancies-r2.json",
+        "byteLength": 6240,
+        "sha256": "0be27ebc3845a8eff059c8bb046a2ca94d003980b2ca577e7159cdd5238a9928"
+      },
+      {
+        "path": "verification/benchmarks/strix21/references/source-version-discrepancies.json",
+        "byteLength": 5920,
+        "sha256": "fcc8d8489ba6995607fb3a32e3a6b946f8454355d713d674945b6a1dc9a71121"
+      },
+      {
+        "path": "verification/benchmarks/strix21/reporting/audit_p17_m0_sources.py",
+        "byteLength": 17745,
+        "sha256": "6076295ac1d5a9d8ac000b1d7d03ff5ce1dd67fd2c470a3cc6cac72632fd9d66"
+      },
+      {
+        "path": "verification/benchmarks/strix21/reporting/README.md",
+        "byteLength": 1492,
+        "sha256": "53339678d781f9e3e7d318c70e8c6910ad5a814a6a3d550d8f449e06d6c72ff0"
+      },
+      {
+        "path": "verification/benchmarks/strix21/reporting/render_p17_m0_report.py",
+        "byteLength": 45216,
+        "sha256": "9b49fbfb689e2662c92becdf6c19dd74bda678d9115041681ab0a42214f5a09f"
+      },
+      {
+        "path": "verification/benchmarks/strix21/reporting/requirements-p17-m0.txt",
+        "byteLength": 64,
+        "sha256": "e507daa81469c76737b75acea1b8352c5998650595de29a18ff61c4ec25b9f58"
+      },
+      {
+        "path": "verification/benchmarks/strix21/runs/first-batch-results.json",
+        "byteLength": 207182,
+        "sha256": "b28f19955a7e0d0d5647bafe6f932e907d1a965ef17b295130ea900335854843"
+      },
+      {
+        "path": "verification/benchmarks/strix21/runs/S-Structures_STRIX21_1차_비교보고서.md",
+        "byteLength": 13998,
+        "sha256": "11db3298ce6b7463dc8abfd511ed44821db622cf0f610e311a27994667fc90f1"
+      },
+      {
+        "path": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+        "byteLength": 15448,
+        "sha256": "b03f71277c7bd24b2bf70603e43fe974e576c09df92a908601eb5c3ece9ce51c"
+      },
+      {
+        "path": "verification/benchmarks/strix21/suite-source-registry.json",
+        "byteLength": 15080,
+        "sha256": "227d9e9322bdfb358b2f99ce45756488ad4babdb6db5778d29e3b6b1b35f5a1c"
+      },
+      {
+        "path": "verification/evidence/validation/phase17/p17-m0-baseline-source-lock-r2.json",
+        "byteLength": 7041,
+        "sha256": "268b790ad87ac356f537e456ade14e461899793add56f6321106f01162d9ed82"
+      },
+      {
+        "path": "verification/evidence/validation/phase17/p17-m0-baseline-source-lock.json",
+        "byteLength": 6657,
+        "sha256": "d8ce5d888a2c31bb960599a04390d48fae8c085fa810f9b23599d8d6cba805e6"
+      },
+      {
+        "path": "verification/evidence/validation/phase17/p17-m0-content-transcription-audit-r1.json",
+        "byteLength": 33370,
+        "sha256": "f328c1d47c2667a546470768b9c186fc68e1cc6dd7542a86246f2d3f61fe9cf3"
+      },
+      {
+        "path": "verification/evidence/validation/phase17/p17-m0-r2-claim-qualification-r1.json",
+        "byteLength": 3278,
+        "sha256": "4361f24027727367bac20335f47a51a753b8dcf7b61e1c47a2f4dc4ad5e639f9"
+      },
+      {
+        "path": "verification/evidence/validation/phase17/p17-m0-source-value-presence-audit-r2.json",
+        "byteLength": 43661,
+        "sha256": "97642822ae9d474f9f63dc37161afad494655931e7e49a97d72243eb8976c58b"
+      },
+      {
+        "path": "verification/evidence/validation/phase17/p17-m0-source-value-presence-audit-r3.json",
+        "byteLength": 43653,
+        "sha256": "c08d767712104745075db17d9d2fb05b414c2d5af344fad4ee4b1b161235b97d"
+      },
+      {
+        "path": "verification/evidence/validation/phase17/p17-m0-validation-closure-r2.json",
+        "byteLength": 2818,
+        "sha256": "fea2aac5f7d9fa6c8adfd7081028b16bf61ebd141267581663f5a67e615acad1"
+      },
+      {
+        "path": "verification/evidence/validation/phase17/README.md",
+        "byteLength": 1551,
+        "sha256": "02f5585b2ef6867d183c93770582ae8ab6a491e085952a0ffc5f59509f75d3ae"
+      },
+      {
+        "path": "verification/harnesses/finalize-p17-m0.mjs",
+        "byteLength": 21017,
+        "sha256": "a1ab02f0f7b98cadf64475264c39245db00b907cf27545d8a0d9dd9bef128518"
+      },
+      {
+        "path": "verification/harnesses/json-schema-lite.mjs",
+        "byteLength": 5532,
+        "sha256": "728c0edf87841ee2b5788ddccee1266de5c303666413d5e9f8f370c39df979f8"
+      },
+      {
+        "path": "verification/runners/run-p17-m0-source-lock.mjs",
+        "byteLength": 41053,
+        "sha256": "d85d390127dd2d7b0aebaff812e7382202b2d1283b2c2f17c9f20eb23bd25f7c"
+      },
+      {
+        "path": "verification/specs/phase17/p17-m0-baseline-schema.json",
+        "byteLength": 1849,
+        "sha256": "d8eb12cedd06d28c54f037ea756a3c4cb96b096f4baf15f28616b165b9e81426"
+      },
+      {
+        "path": "verification/specs/phase17/p17-m0-content-audit-schema.json",
+        "byteLength": 12494,
+        "sha256": "978af8b1e4e7d2ebf52c5e45c7b72eca77224470d6c8722c8e32777ed6c179ea"
+      },
+      {
+        "path": "verification/specs/phase17/p17-m0-r2-claim-qualification-schema.json",
+        "byteLength": 2998,
+        "sha256": "95af8429995e0918eb8df094cf38cd4aebed2609b4d162d0e1541e883bf2ace6"
+      },
+      {
+        "path": "verification/specs/phase17/p17-m0-report-final-manifest-schema.json",
+        "byteLength": 2466,
+        "sha256": "05a50fc4c85ae17af8ea36ef98bf52859eb46efd1ec44abc824be11c03a7e403"
+      },
+      {
+        "path": "verification/specs/phase17/p17-m0-validation-closure-schema.json",
+        "byteLength": 3065,
+        "sha256": "f61fdc703f356c4c614c94d3b516e7cf046f6759589e89ca3b25f8da8e0d4234"
+      },
+      {
+        "path": "verification/specs/phase17/path-base-policy.json",
+        "byteLength": 811,
+        "sha256": "0523888f1147bcd3f8c0189593b597d3ad2ac336daa90324da6a0a6588dd144c"
+      },
+      {
+        "path": "verification/specs/phase17/reference-claim-vocabulary.json",
+        "byteLength": 689,
+        "sha256": "f79e8db64594377ec1e341dc4dd6fc70b6ec3fd6e0a2c3b0ee4b1552d62e9de4"
+      },
+      {
+        "path": "verification/specs/phase17/source-lock-schema.json",
+        "byteLength": 2208,
+        "sha256": "6c87f1a541cf189e28e62be821aa4c6c796ebb1800b3d6645dab39ca75e31e12"
+      },
+      {
+        "path": "verification/specs/phase17/source-version-discrepancy-schema.json",
+        "byteLength": 972,
+        "sha256": "a2b3d8e70d4bd629775f30d23a593ece91dbb5bffc252b355394bda40b8887a5"
+      },
+      {
+        "path": "verification/specs/phase17/suite-source-registry-schema.json",
+        "byteLength": 1798,
+        "sha256": "101b992455a88968832157793fad4144b7fb8f9f35c6a2c35297032f9f4329ab"
+      },
+      {
+        "path": "verification/tests/taxonomy.json",
+        "byteLength": 63225,
+        "sha256": "fdfb1cf7eed18af9414fcb57e8b98dbf0737724984dbccc7a9f45df114f28a9b"
+      },
+      {
+        "path": "verification/workspace-paths.mjs",
+        "byteLength": 4003,
+        "sha256": "6a12829d4acf0dfdaddd0226fab0f0f6c7e49b5958d216ce16dc2b7af3226a1c"
+      }
+    ]
+  },
+  "notRun": [
+    "S-Structures solver benchmark execution",
+    "STRIX actual R4 execution",
+    "MIDAS actual R4 execution",
+    "full product regression (reserved for test:release:p17; M0 scoped checks only)",
+    "P17 case modeling or product UI capture"
+  ],
+  "m1EntryAllowed": true,
+  "releaseAllowed": false,
+  "finalDesignTransferAllowed": false,
+  "closureHash": "4b0b748eadad0d48b2ffa80f9dbae7d37b2d4c1a808b4390fae1b9bc7abae224"
+}

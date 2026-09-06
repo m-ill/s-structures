@@ -1,0 +1,109 @@
+{
+  "version": "p4-perf-budget-v1",
+  "generatedAt": "2026-07-03T02:37:02.676Z",
+  "machine": {
+    "platform": "win32",
+    "arch": "x64",
+    "cpuCount": 24,
+    "cpuModel": "13th Gen Intel(R) Core(TM) i7-13700KF",
+    "totalMemoryMb": 65382,
+    "freeMemoryMb": 47202
+  },
+  "runCount": 3,
+  "rows": [
+    {
+      "id": "pointcloud-load-proxy",
+      "measuredMs": 1.675,
+      "budgetMs": 30000,
+      "pass": true,
+      "runs": [
+        2.593,
+        1.675,
+        1.535
+      ],
+      "details": {
+        "points": 200000,
+        "proxyFor": 10000000,
+        "checksum": 99574.101
+      }
+    },
+    {
+      "id": "viewer-frame-proxy",
+      "measuredMs": 0.598,
+      "budgetMs": 33.4,
+      "pass": true,
+      "runs": [
+        1.145,
+        0.592,
+        0.598
+      ],
+      "details": {
+        "projectedPoints": 50000,
+        "proxyFor": 2000000,
+        "visible": 50000
+      }
+    },
+    {
+      "id": "elastic-representative-building",
+      "measuredMs": 54.119,
+      "budgetMs": 5000,
+      "pass": true,
+      "runs": [
+        91.587,
+        54.119,
+        51.411
+      ],
+      "details": {
+        "nodes": 45,
+        "members": 84,
+        "ok": true
+      }
+    },
+    {
+      "id": "pushover-direction",
+      "measuredMs": 30.127,
+      "budgetMs": 3000,
+      "pass": true,
+      "runs": [
+        41.434,
+        30.127,
+        29.419
+      ],
+      "details": {
+        "steps": 7,
+        "maxBaseShear": 10
+      }
+    },
+    {
+      "id": "nlth-20s-record",
+      "measuredMs": 1.572,
+      "budgetMs": 3000,
+      "pass": true,
+      "runs": [
+        3.993,
+        1.572,
+        0.68
+      ],
+      "details": {
+        "durationSeconds": 20,
+        "rows": 1000,
+        "converged": true
+      }
+    },
+    {
+      "id": "calculation-table-generation",
+      "measuredMs": 172.198,
+      "budgetMs": 3000,
+      "pass": true,
+      "runs": [
+        222.529,
+        170.829,
+        172.198
+      ],
+      "details": {
+        "sections": 8,
+        "htmlLength": 23200
+      }
+    }
+  ]
+}

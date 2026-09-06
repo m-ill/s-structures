@@ -1,0 +1,49 @@
+{
+  "version": "p14-m11-integration-evidence-v1",
+  "phase": "Phase 14",
+  "milestone": "P14-M11",
+  "status": "INTERNALLY_VERIFIED",
+  "generatedAt": "2026-08-27T07:31:25.553Z",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "regressionMode": "phase-runner-segmented-plus-integration-rerun",
+  "commands": [
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tools/run-phase14-tests.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p9-m10-cleanup-audit.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p10-m5-mpc-rigidlink.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p12-m5-release-package-install-recovery.mjs"
+    ],
+    [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/p14-m11-integration.mjs"
+    ]
+  ],
+  "checks": {
+    "fullRegression": "PASS",
+    "dependencyBoundaries": "PASS",
+    "migrationRollback": "PASS",
+    "surfaceParity": "PASS",
+    "performanceSecurityAccessibility": "PENDING",
+    "independentQualification": "NOT_RUN",
+    "crossSolverComparison": "NOT_RUN"
+  },
+  "benchmarkExecutionStarted": false,
+  "releaseAllowed": false,
+  "finalDesignTransferAllowed": false,
+  "reviewDocuments": [
+    "docs/phase14/CODEBASE_REVIEW.md",
+    "docs/phase14/MODULE_ARCHITECTURE.md"
+  ],
+  "manifestHash": "752a9abf5128f1c8e9fe6b97c9f76a4f2094aeaa81f5965daa5079c2ac96579e",
+  "artifactHash": "1a5768466b45ea8631e38883bbafbed2c0bbb304bd4853d186827224a519fcbc"
+}

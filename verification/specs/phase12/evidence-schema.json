@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "p12-evidence-schema-v1",
+  "type": "object",
+  "required": ["version", "milestone", "generatedAt", "status", "sourceRevision", "verificationRecords"],
+  "properties": {
+    "version": { "type": "string", "pattern": "^p12-" },
+    "milestone": { "type": "string", "pattern": "^P12-M[0-7]$" },
+    "generatedAt": { "type": "string" },
+    "status": { "enum": ["PASS", "FAIL", "BLOCKED", "SKIP"] },
+    "sourceRevision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "environmentProfile": { "type": "object" },
+    "verificationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["verificationId", "status"],
+        "properties": {
+          "verificationId": { "type": "string", "pattern": "^P12-" },
+          "status": { "enum": ["PASS", "FAIL", "BLOCKED", "SKIP"] }
+        }
+      }
+    }
+  }
+}
+

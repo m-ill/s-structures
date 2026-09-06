@@ -1,0 +1,370 @@
+{
+  "schemaVersion": "p18-case-evidence-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "caseId": "SB12",
+  "engineStatus": "PASS",
+  "officialBenchmarkStatus": "NOT_CLAIMED",
+  "officialPassClaimed": false,
+  "verdict": "PASS",
+  "method": "native modular 6-DOF elastic two-node link with MIDAS beta-angle frame and shear-distance coupling",
+  "source": {
+    "publicPage": "https://dcr-st.com/verification/SB12.html",
+    "suite": "STRIX Verification 21",
+    "sourceLimitations": []
+  },
+  "productionModules": [
+    "src/solver/link/elasticLink6dof.js",
+    "src/solver/linear3dAssembly.js"
+  ],
+  "modeling": {
+    "nodeI": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "stiffness": [
+      480,
+      675,
+      930,
+      8200000,
+      13500000,
+      19800000
+    ],
+    "load": [
+      120,
+      -85,
+      64,
+      100000,
+      -70000,
+      45000
+    ],
+    "shearDist": 0.5,
+    "variants": [
+      {
+        "id": "OBLIQUE",
+        "nodeJ": {
+          "x": 3000,
+          "y": 2000,
+          "z": 1500
+        },
+        "betaDeg": 25
+      },
+      {
+        "id": "NEAR-VERTICAL",
+        "nodeJ": {
+          "x": 0,
+          "y": 0,
+          "z": 5000
+        },
+        "betaDeg": -40
+      }
+    ]
+  },
+  "result": {
+    "version": "p18-strix21-completion-v1",
+    "id": "SB12",
+    "status": "PASS",
+    "engineStatus": "PASS",
+    "officialBenchmarkStatus": "NOT_CLAIMED",
+    "officialPassClaimed": false,
+    "formulation": "native modular 6-DOF elastic two-node link with MIDAS beta-angle frame and shear-distance coupling",
+    "model": {
+      "nodeI": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "stiffness": [
+        480,
+        675,
+        930,
+        8200000,
+        13500000,
+        19800000
+      ],
+      "load": [
+        120,
+        -85,
+        64,
+        100000,
+        -70000,
+        45000
+      ],
+      "shearDist": 0.5,
+      "variants": [
+        {
+          "id": "OBLIQUE",
+          "nodeJ": {
+            "x": 3000,
+            "y": 2000,
+            "z": 1500
+          },
+          "betaDeg": 25
+        },
+        {
+          "id": "NEAR-VERTICAL",
+          "nodeJ": {
+            "x": 0,
+            "y": 0,
+            "z": 5000
+          },
+          "betaDeg": -40
+        }
+      ]
+    },
+    "rows": [
+      {
+        "id": "OBLIQUE",
+        "nodeJ": {
+          "x": 3000,
+          "y": 2000,
+          "z": 1500
+        },
+        "betaDeg": 25,
+        "ok": true,
+        "branch": "global-z-up",
+        "displacement": [
+          6.863923660955873,
+          -30.938032005927724,
+          27.920084241547485,
+          0.018830016580785567,
+          -0.006006674624562277,
+          -0.011155198702806027
+        ],
+        "referenceDisplacement": [
+          6.863923660956566,
+          -30.93803200592874,
+          27.920084241547414,
+          0.018830016580785747,
+          -0.00600667462456211,
+          -0.011155198702806606
+        ],
+        "componentErrorsPct": [
+          -1.0093048838913675e-11,
+          3.2842299469540593e-12,
+          2.54491616004064e-13,
+          -9.581045280952144e-13,
+          -2.7724733584335584e-12,
+          5.1939697033857344e-12
+        ],
+        "equilibriumResidual": 6.431946530938149e-14,
+        "matrixHash": "c4829a130f1c7f519272b62fb06f8158f6f3fb34ead5fe5a58fb38b02e7d3fb8",
+        "responseHash": "e95c03a6892677ca203979d1bd744f3731970e43821c81772d1c58fc235a865d"
+      },
+      {
+        "id": "NEAR-VERTICAL",
+        "nodeJ": {
+          "x": 0,
+          "y": 0,
+          "z": 5000
+        },
+        "betaDeg": -40,
+        "ok": true,
+        "branch": "global-x-up",
+        "displacement": [
+          46.192105846609905,
+          -53.82581002488288,
+          0.13333333333333333,
+          0.021495261100511892,
+          0.01842397394908861,
+          0.00548780487804878
+        ],
+        "referenceDisplacement": [
+          46.19210584660818,
+          -53.825810024882564,
+          0.13333333333333333,
+          0.021495261100511764,
+          0.01842397394908792,
+          0.00548780487804878
+        ],
+        "componentErrorsPct": [
+          3.737908926756208e-12,
+          -5.808343684747477e-13,
+          0,
+          5.971992460199865e-13,
+          3.747399694260578e-12,
+          0
+        ],
+        "equilibriumResidual": 5.77711034566164e-13,
+        "matrixHash": "74ef62ef0b1ccdd1660829f11a36f52e9b32e68404c01e53ef44f6cd0d67f846",
+        "responseHash": "3db36c9e57c70e9925274333c798c94c8fabf080477d9d8ba2c430c733b285c2"
+      }
+    ],
+    "probes": [
+      {
+        "id": "SB12-OBLIQUE-UX",
+        "actual": 6.863923660955873,
+        "reference": 6.863923660956566,
+        "errorPct": -1.0093048838913675e-11,
+        "unit": "mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-OBLIQUE-UY",
+        "actual": -30.938032005927724,
+        "reference": -30.93803200592874,
+        "errorPct": 3.2842299469540593e-12,
+        "unit": "mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-OBLIQUE-UZ",
+        "actual": 27.920084241547485,
+        "reference": 27.920084241547414,
+        "errorPct": 2.54491616004064e-13,
+        "unit": "mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-OBLIQUE-RX",
+        "actual": 0.018830016580785567,
+        "reference": 0.018830016580785747,
+        "errorPct": -9.581045280952144e-13,
+        "unit": "rad",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-OBLIQUE-RY",
+        "actual": -0.006006674624562277,
+        "reference": -0.00600667462456211,
+        "errorPct": -2.7724733584335584e-12,
+        "unit": "rad",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-OBLIQUE-RZ",
+        "actual": -0.011155198702806027,
+        "reference": -0.011155198702806606,
+        "errorPct": 5.1939697033857344e-12,
+        "unit": "rad",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-NEAR-VERTICAL-UX",
+        "actual": 46.192105846609905,
+        "reference": 46.19210584660818,
+        "errorPct": 3.737908926756208e-12,
+        "unit": "mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-NEAR-VERTICAL-UY",
+        "actual": -53.82581002488288,
+        "reference": -53.825810024882564,
+        "errorPct": -5.808343684747477e-13,
+        "unit": "mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-NEAR-VERTICAL-UZ",
+        "actual": 0.13333333333333333,
+        "reference": 0.13333333333333333,
+        "errorPct": 0,
+        "unit": "mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-NEAR-VERTICAL-RX",
+        "actual": 0.021495261100511892,
+        "reference": 0.021495261100511764,
+        "errorPct": 5.971992460199865e-13,
+        "unit": "rad",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-NEAR-VERTICAL-RY",
+        "actual": 0.01842397394908861,
+        "reference": 0.01842397394908792,
+        "errorPct": 3.747399694260578e-12,
+        "unit": "rad",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-NEAR-VERTICAL-RZ",
+        "actual": 0.00548780487804878,
+        "reference": 0.00548780487804878,
+        "errorPct": 0,
+        "unit": "rad",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 1e-7
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-OBLIQUE-EQUILIBRIUM",
+        "actual": 6.431946530938149e-14,
+        "reference": 0,
+        "unit": "ratio",
+        "tolerance": {
+          "type": "maximum",
+          "value": 1e-10
+        },
+        "passed": true
+      },
+      {
+        "id": "SB12-NEAR-VERTICAL-EQUILIBRIUM",
+        "actual": 5.77711034566164e-13,
+        "reference": 0,
+        "unit": "ratio",
+        "tolerance": {
+          "type": "maximum",
+          "value": 1e-10
+        },
+        "passed": true
+      }
+    ],
+    "reference": "independent benchmark-local frame/congruence implementation and Gaussian elimination; both up-vector branches exercised",
+    "engineeringHash": "953231d68d7401340742563fb2f4e818a116edff5ade2beb0ded62c02552a4d2"
+  },
+  "audit": {
+    "probeCount": 14,
+    "failedProbeCount": 0,
+    "engineeringHash": "953231d68d7401340742563fb2f4e818a116edff5ade2beb0ded62c02552a4d2"
+  }
+}

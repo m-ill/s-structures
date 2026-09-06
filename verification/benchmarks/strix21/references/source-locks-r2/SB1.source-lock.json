@@ -1,0 +1,106 @@
+{
+  "version": "p17-source-lock-v1",
+  "revision": 2,
+  "supersedes": {
+    "path": "verification/benchmarks/strix21/references/source-locks/SB1.source-lock.json",
+    "sourceLockHash": "88b139be37b6796cf77e09c99a11ed316bb66eec9299e90ab8882b85ea793ce6",
+    "reason": "R2 selects the final evidence Engine field when an HTML page also contains a descriptive Engine field."
+  },
+  "caseId": "SB1",
+  "ordinal": 1,
+  "official": true,
+  "family": "STATIC-BEAM",
+  "title": "Euler-Bernoulli 1D cantilever (tip deflection)",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "Timoshenko & Gere, Mechanics of Materials — cantilever tip deflection under an end load (Euler-Bernoulli).",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SB1.html",
+        "byteLength": 21152,
+        "sha256": "893bd6bde5de6d26335545d4973afb86beea5a8c143d1c2f861c481a6cce424b"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 1,
+        "printedPageEnd": 2
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB1.pdf",
+        "byteLength": 113944,
+        "sha256": "4c96038e5095bab05c8e6d05017b617b78853d4af8fad8f1128d0b219dc2d375",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 2
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "1%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Tip deflection u_z (mm)",
+      "probe": "N2.uz",
+      "strix": "−0.107865",
+      "reference": "−0.107865",
+      "delta": "+0.00020%"
+    },
+    "resultRowCount": 4
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_4_OF_4",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SB1.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SB1/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "50ef3bdaafcc97ea93c64f932000ed5a6ed0cce3a18fb112551589d3ac376e95"
+}

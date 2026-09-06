@@ -1,0 +1,129 @@
+# Design Module Verification
+
+## P3-M17 RC Detailed Design
+
+Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.
+
+| Ticket | Module | Verification |
+| --- | --- | --- |
+| P3-T87 | RC beam flexure, shear, torsion warning, serviceability, bar schedule, development and splice trace | `tests/p3-design-rc.mjs` released beam case |
+| P3-T88 | RC column PM curve, slenderness, tie schedule, column schedule | `tests/p3-design-rc.mjs` vertical column case |
+| P3-T89 | RC wall pier PM, in-plane shear, reinforcement ratios, boundary flag | `tests/p3-design-rc.mjs` wall schedule case |
+| P3-T90 | RC slab one-way/two-way mode, punching shear, slab reinforcement schedule | `tests/p3-design-rc.mjs` slab schedule case |
+
+Current status is preliminary. The module produces traceable schedules and registered formula references with standard/clause/title metadata for agent/report consumption, but final clause selection, seismic detailing, constructability, and drawing production remain review items.
+
+2026-07-02 review update: P3-M17 now exposes `rcDesignGate`, flat `rows`, and module-level `issueRows`. The integrated detailed-design report also reads RC schedule rows, so RC WARN/NG items are visible to AI agents through the unified issue list.
+
+2026-07-02 registry update: P3-M17 formula traces now resolve through `src/standards/designFormulaRegistry.js`, so AI agents can inspect `formulaId`, `standard`, `clause`, and `title` instead of parsing opaque formula strings.
+
+2026-07-02 review update: `rcDesignGate` now exposes role coverage rows, `missingRoles`, and `completeRoleCoverage`. RC issue rows also carry formula IDs, so AI agents can tell whether beam, column, wall, and slab checks are present and can jump from WARN/NG rows to the governing formula trace.
+
+2026-07-02 contract review update: P3-M17 RC beam, column, wall, and slab rows now expose ticket-specific contracts and compact summaries. The RC detailed-design report exposes a top-level P3-M17 contract, and `rcDesignGate.summary` now reports agent-readiness, role coverage, issue count, formula count, and role-by-role status counts.
+
+2026-07-02 ticket coverage review update: `rcDesignGate` now exposes a formal P3-M17 contract, feature-to-ticket map, and `summary.ticketCoverage`/`ticketCoverage` rows for P3-T87 to P3-T90. The rows preserve partial-coverage cases, so agents can distinguish a valid beam/wall/slab report from a complete beam/column/wall/slab RC package.
+
+2026-07-02 RC maturity review update: `rcDesignGate` now exposes `contract.maturity` and `rcReview`. The review records complete role coverage, missing roles, issue count, formula count, unregistered formula count, covered tickets, and an `agentDecision`. This keeps partial RC schedules usable for review without implying final permit design approval.
+
+2026-07-03 RC gate code review update: `rcReview` now treats WARN/NG design rows as explicit review blockers. Complete beam/column/wall/slab role coverage and registered formulas are no longer enough to return `trace-ready` when `issueCount` is positive; the review reports `design-issues` in `missing` and returns `resolve-rc-review-items`. This prevents reports or AI agents from accepting a complete-looking RC package that still contains unresolved design issues.
+
+2026-07-03 RC role-classification hardening: `buildRcDetailedDesignReport()` now sends only explicit `role === 'beam'` checks to the beam schedule. Missing or unknown roles no longer satisfy P3-T87 coverage by fallback, so AI agents must see an explicit beam role before treating beam detailed design as covered.
+
+2026-07-03 RC issue-formula link hardening: `rcReview` now reports `issue-formula-links` when any WARN/NG RC row lacks a traceable formula reference. This keeps beam/column/wall/slab issue rows navigable for reports and AI agents instead of relying only on the broader `design-issues` blocker.
+
+2026-07-03 RC input/detail hardening: `detailRcBeam()` now uses the governing `max(AsY, AsZ)` value for both top and bottom longitudinal reinforcement schedule rows. `detailRcWall()` and `detailRcSlab()` now expose `inputReview` objects and mark invalid geometry/load input as `NG` with registered `KDS-RC-INPUT-GEOMETRY-V1` formula evidence. This prevents invalid wall/slab dimensions or zero design loads from being hidden behind fallback dimensions in reports or AI-agent review.
+
+2026-07-03 RC gate readiness hardening: `rcDesignGate.summary.readyForAgentReview` now follows `rcReview.status === "trace-ready"` instead of always returning true. Partial role coverage, WARN/NG design rows, missing formula traces, or unregistered formulas remain inspectable but cannot be treated as clean M17 evidence for automated M18/M19 handoff.
+
+2026-07-03 RC analysis-status hardening: `buildRcDetailedDesignReport()` now records `analysisStatus` and `rcReview.analysisOk`. If the upstream analysis is missing or not OK, the RC gate adds `analysis-status` to `missing`, so schedule rows derived from failed demand data cannot be treated as clean M17 evidence.
+
+## P3-M18 Steel / Connection / Foundation Detailed Design
+
+Scope follows `docs/phase3/DESIGN_MODULES_PLAN.md`.
+
+| Ticket | Module | Verification |
+| --- | --- | --- |
+| P3-T91 | Steel classification, compression/slenderness, flexure LTB, shear and H1 interaction trace | `tests/p3-design-steel-foundation.mjs` cantilever and frame cases |
+| P3-T92 | Brace/connection demand, bolt group, weld, base plate sizing trace | `tests/p3-design-steel-foundation.mjs` frame connection case |
+| P3-T93 | Spread footing, combined footing, mat v1, pile group v1 trace | `tests/p3-design-steel-foundation.mjs` frame support reaction case |
+| P3-T94 | Integrated detailed design report, formula trace, issue-row bridge | `tests/p3-design-steel-foundation.mjs` integrated report case |
+| P3-T95 | Serviceability hook remains available through existing drift/deflection reports and steel deflection trace | Full milestone runner plus M40/M49 coverage |
+
+Current status is preliminary. M18 adds traceable steel, connection, base-plate, and foundation schedules for agent/report consumption. Final local buckling table selection, fabrication detailing, geotechnical settlement, and construction drawings remain review items.
+
+2026-07-02 review update: P3-M18 now exposes `designGate` with P3-T91 to P3-T95 coverage, module versions, formula count, issue count, formula registry version, and a serviceability hook marker. Foundation detailed reports now also expose flat `rows`, so spread, pile, combined, and mat checks are all available to the integrated issue scanner.
+
+2026-07-02 review update: `designGate.coverage` now reports ticket-level coverage for steel, connection, foundation, issue/formula linking, and serviceability. Integrated issue rows preserve `formulaIds`, so AI agents can navigate from WARN/NG items to the governing formula references instead of re-scanning every module.
+
+2026-07-02 registry update: Steel, connection, base-plate, and foundation formula traces now resolve to registered standard/clause/title metadata. The integrated gate records `unregisteredFormulaCount`, which must stay zero for the current trace set.
+
+2026-07-03 M18 input hardening: Bolt, base-plate, spread-footing, and pile design traces now expose `inputReview` objects. Invalid bolt capacities, base-plate bearing input, negative vertical reactions, invalid footing area, or invalid pile capacity force `NG` status with registered `KDS-CONN-INPUT-V1` or `KDS-FOUND-INPUT-V1` evidence instead of producing false OK rows from fallback capacities.
+
+2026-07-02 contract review update: P3-M18 steel, connection, bolt, weld, base-plate, and foundation rows now expose ticket-specific contracts and compact summaries. The integrated detailed-design report exposes a top-level P3-M18 contract, and `designGate.summary` reports agent-readiness, complete ticket coverage, issue count, formula count, unregistered formula count, serviceability hook, and module status counts.
+
+2026-07-02 ticket coverage review update: `designGate` now exposes a formal P3-M18 contract, feature-to-ticket map, and `summary.ticketCoverage`/`ticketCoverage` rows for P3-T91 to P3-T95. Coverage rows include evidence strings for steel, connection, foundation, formula/issue linking, and serviceability hooks so reports and AI agents can use the same gate pattern as M17.
+
+2026-07-02 integrated maturity review update: `designGate` now exposes `contract.maturity` and `designReview`. The review records complete coverage, issue count, formula count, unregistered formula count, module statuses, and explicit false flags for final permit design, fabrication readiness, and geotechnical certification. Agents can now tell when M18 is ready for M19 result integration without treating it as a sealed construction package.
+
+2026-07-03 integrated gate code review update: `designReview` now treats WARN/NG integrated issue rows as explicit review blockers. Complete ticket coverage and registered formulas are no longer enough to return `trace-ready` when `issueRows` are present; the review reports `design-issues` in `missing` and returns `resolve-detailed-design-review-items`. This keeps steel, connection, and foundation issue rows visible to reports and AI agents before M19 integration.
+
+2026-07-03 issue-formula link hardening: P3-T94 coverage now requires each integrated issue row to carry at least one `formulaId` when issues exist. Formula rows alone no longer satisfy report/issue/formula linking; `designReview.missing` reports `issue-formula-links` and `ticket-coverage` until every WARN/NG issue is traceable to a registered formula row.
+
+2026-07-03 issue item matching hardening: integrated issue rows now collect fallback formula IDs only from the matching design row. If an issue references an unknown item id, the gate leaves it unlinked instead of attaching the whole module formula list, preventing reports and AI agents from following a false calculation basis.
+
+2026-07-03 integrated gate readiness hardening: `designGate.summary.readyForAgentReview` now follows `designReview.status === "trace-ready"` instead of always returning true. Complete ticket coverage with remaining design issues, missing formula links, or unregistered formula rows stays review-required and cannot be treated as clean M19 handoff evidence.
+
+2026-07-03 integrated analysis-status hardening: `buildP3DetailedDesignReport()` now records top-level `analysisStatus`, and `designGate.designReview` reports `analysisOk`. A failed or missing analysis adds `analysis-status` to M18 review blockers even when steel, connection, foundation, formula, issue, and serviceability rows are otherwise complete.
+
+2026-07-03 design milestone contract update: P3-M17 to P3-M18 now expose `getPhase3DesignMilestoneReview`. The review contract maps RC, steel, connection, foundation, report/formula, and serviceability scopes to the existing `rcDesignGate` and `designGate` paths while keeping `finalPermitDesign` separate from trace readiness.
+
+## P3-M19 Integrated Results And Report
+
+Scope follows `docs/phase3/ROADMAP.md` Stage F and `docs/phase3/IMPLEMENTATION_BACKLOG.md` P3-T58, P3-T59, P3-T61, and P3-T62.
+
+| Ticket | Module | Verification |
+| --- | --- | --- |
+| P3-T58 | Integrated result postprocessing, nonlinear trace, and capacity/design package contract | `tests/p3-m19-integrated-report.mjs` integrated result case |
+| P3-T59 | Calculation report method and limitation integration | `tests/p3-m19-integrated-report.mjs` detailed report and calculation package HTML case |
+| P3-T61 | Approval workflow lock/revoke contract | `tests/p3-m19-integrated-report.mjs` workflow lock case |
+| P3-T62 | Full benchmark and representative regression remains green | Full milestone runner |
+
+Current status is preliminary. M19 connects nonlinear trace, detailed-design trace, result postprocessing, and workflow lock state into the report/API contract.
+
+2026-07-02 review update: P3-M19 now exposes `integratedGate` with P3-T58, P3-T59, P3-T61, and P3-T62 coverage. The gate records result postprocessing coverage, nonlinear capacity/step rows, detailed-design issue rows, workflow lock state, method limitations, and benchmark evidence. Detailed HTML and calculation-package HTML now render the gate summary for agent and reviewer inspection.
+
+2026-07-02 review update: `integratedGate.ticketCoverage` now maps P3-T58, P3-T59, P3-T61, and P3-T62 to explicit evidence rows. Detailed report and calculation package HTML render this ticket coverage table so reviewers and AI agents can verify integrated result, report, workflow, and benchmark coverage without reconstructing it from nested traces.
+
+2026-07-02 contract review update: P3-M19 now exposes top-level `contract` and `summary.readyForReviewer` fields in `phase3IntegratedResults`. The gate summary records complete ticket coverage, covered ticket count, benchmark status, method limitation count, nonlinear step rows, capacity points, design issue rows, and workflow approval state. Detailed report and calculation-package HTML also surface ready-for-review and ticket-coverage status.
+
+2026-07-02 ticket coverage review update: `integratedGate` now exposes a formal P3-M19 contract, feature-to-ticket map, and `summary.ticketCoverage` alias for P3-T58, P3-T59, P3-T61, and P3-T62. This keeps integrated result readiness consistent with the M17 and M18 gate contracts used by reports and AI agents.
+
+2026-07-02 integrated result maturity review update: `integratedGate` now exposes `contract.maturity` and `integratedReview`. The review records complete ticket coverage, benchmark evidence, method limitation count, detailed-design review status, and explicit false flags for final structural sign-off and launch readiness. Agents can now move M19 evidence into M20 launch review without treating the integrated result as an approved design.
+
+2026-07-03 integrated-results code review update: `integratedGate` now consumes `designGate.designReview.status` and top-level detailed-design `issueRows`. Complete result/report/workflow/benchmark ticket coverage is no longer enough to return `trace-ready` when detailed-design review is still required. The gate reports `detailed-design-review` and `design-issues` in `missing` and keeps `agentDecision = hold-before-m20-launch-gate` until design issues are cleared.
+
+2026-07-03 integrated result coverage hardening: P3-T58 coverage now requires actual result rows, nonlinear capacity points, nonlinear step rows, and detailed-design item rows in addition to version strings. Empty placeholder traces no longer satisfy integrated-result postprocessing coverage, so AI agents cannot treat a version-only package as an integrated result.
+
+2026-07-03 integrated detailed-design readiness hardening: P3-T58 coverage now also requires `designGate.designReview.status === "trace-ready"` and zero detailed-design issue rows. P3-M19 `completeTicketCoverage` no longer becomes true when integrated result rows exist but detailed design is still under review.
+
+2026-07-03 workflow-lock state hardening: `buildWorkflowLockState()` now exposes a review block for approval/lock/editability consistency. P3-T61 coverage now requires that review to be clean, so an approved or released workflow that remains editable is held with `workflow-lock-state` instead of being accepted by version string alone.
+
+2026-07-03 integrated analysis-status hardening: P3-T58 coverage now requires `analysis.ok === true` in addition to result rows, nonlinear capacity/step rows, and clean detailed-design review. A failed analysis can still expose diagnostic traces, but the integrated-result ticket row records `analysis=NG` and remains uncovered for AI-agent review.
+
+2026-07-03 productization milestone contract update: P3-M19 now participates in `getPhase3ProductizationMilestoneReview`. The review contract maps integrated result postprocessing, calculation report limitations, workflow lock, and benchmark regression to `integratedGate.integratedReview` while keeping `finalStructuralSignoff` separate from trace readiness.
+
+2026-07-03 engineering-validation update: `getPhase3EngineeringValidationReview` now records the remaining professional validation evidence shared by nonlinear analysis and detailed design. It keeps final KDS clause selection, nonlinear solver certification, detailing/constructability, fabrication, and geotechnical approval separate from automated trace readiness.
+
+2026-07-03 engineering evidence update: `getPhase3EngineeringValidationReview()` now consumes accepted project evidence rows for nonlinear solver certification, hinge/fiber/NLTH qualification, final code clause selection, and detailing/constructability approval. These rows can satisfy the engineering review package while `productionReady` remains false until final engineer or owner approval is explicit.
+
+2026-07-03 serviceability evidence hardening: P3-T95 is no longer marked covered by a static hook. `phase3ServiceabilityEvidence` now summarizes member deflection, story drift, and floor vibration evidence for `designGate`; missing evidence adds `serviceability-evidence` and `ticket-coverage` review blockers while remaining visible to reports and AI agents.
+
+2026-07-03 serviceability evidence review update: `phase3ServiceabilityEvidence`
+now exposes `requiredEvidence` rows and a `review` object for member deflection,
+story drift, and floor vibration evidence. `designGate.serviceabilityReview`
+mirrors that status, so AI agents can distinguish a clean P3-T95 serviceability
+trace from missing or NG evidence without parsing the free-form missing list.
+
+2026-07-03 executable review update: `node tests/p3-design-milestone-review.mjs` now locks the P3-M17 to P3-M18 design milestone review contract. The Phase 3 runner includes this check in the P3-M18 group so RC, steel, connection, foundation, formula/issue, serviceability scope, gate paths, and `finalPermitDesign` ownership remain agent-readable.
+
+2026-07-03 design exit-criteria review update: `getPhase3DesignMilestoneReview()` now exposes M17 and M18 plan coverage as `exitCriteria` rows. Each row records the `DESIGN_MODULES_PLAN.md` source, related ticket, requirement text, and automated evidence file, so AI agents can inspect RC beam/column/wall/slab, steel, connection, foundation, formula/issue, serviceability, gate readiness, and final permit-design separation from one review contract.

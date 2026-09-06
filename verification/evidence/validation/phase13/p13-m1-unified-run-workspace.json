@@ -1,0 +1,87 @@
+{
+  "version": "p13-m1-evidence-v1",
+  "phase": "Phase 13",
+  "milestone": "P13-M1",
+  "status": "PASS",
+  "qualificationImpact": "implementation-complete-only",
+  "generatedAt": "2026-08-05T08:50:57.654Z",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "releaseInvariants": {
+    "openSeesRuntimeUsed": false,
+    "externalSolverRuntimeDependency": false,
+    "nonlinearInScope": false,
+    "shellDesignTransferAllowed": false
+  },
+  "verificationRecords": [
+    {
+      "id": "P13-RUN-01",
+      "status": "PASS",
+      "detail": "Unified service and workspace consume one run ID."
+    },
+    {
+      "id": "P13-RUN-02",
+      "status": "PASS",
+      "detail": "Engineering model edits produce stale state."
+    },
+    {
+      "id": "P13-RUN-03",
+      "status": "PASS",
+      "detail": "View-state changes do not produce stale state."
+    },
+    {
+      "id": "P13-RUN-04",
+      "status": "PASS",
+      "detail": "Mixed-run publication fails closed."
+    },
+    {
+      "id": "P13-RUN-05",
+      "status": "PASS",
+      "detail": "Failed and cancelled runs preserve the last success."
+    },
+    {
+      "id": "P13-RUN-06",
+      "status": "PASS",
+      "detail": "Hash-qualified current state is reconstructible from the store."
+    },
+    {
+      "id": "P13-RUN-07",
+      "status": "PASS",
+      "detail": "Legacy Phase 7 records migrate without result loss."
+    },
+    {
+      "id": "P13-RUN-08",
+      "status": "PASS",
+      "detail": "Out-of-order older results cannot replace a newer success."
+    },
+    {
+      "id": "P13-WS-01",
+      "status": "PASS",
+      "detail": "Six workspace modes share one normalized store."
+    },
+    {
+      "id": "P13-WS-02",
+      "status": "PASS",
+      "detail": "Tree, viewport, and inspector share object-ID selection."
+    },
+    {
+      "id": "P13-WS-03",
+      "status": "PASS",
+      "detail": "The normalized 1280x720 layout retains a 600px center pane."
+    },
+    {
+      "id": "P13-WS-04",
+      "status": "PASS",
+      "detail": "Workspace updates are observable and layout state is separate from project data."
+    },
+    {
+      "id": "P13-WS-05",
+      "status": "PASS",
+      "detail": "The index bridge mounts the real six-tab workspace and keeps batch results inside the workspace."
+    },
+    {
+      "id": "P13-WS-06",
+      "status": "PASS",
+      "detail": "The integrated batch executes six elastic cases without touching nonlinear analysis."
+    }
+  ]
+}

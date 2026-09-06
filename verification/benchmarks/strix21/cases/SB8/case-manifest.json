@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "p17-case-manifest-v1",
+  "phase": 17,
+  "milestone": "P17-M1",
+  "caseId": "SB8",
+  "ordinal": 7,
+  "title": "Deep simply-supported beam — shear-flexible (Timoshenko) natural frequencies",
+  "family": "MODAL-BEAM",
+  "officialSuiteMember": true,
+  "classification": "OFFICIAL_STRIX_21",
+  "lifecycle": {
+    "state": "SOURCE_LOCKED",
+    "terminalStatus": "NOT_STARTED",
+    "wipEligible": false
+  },
+  "statuses": {
+    "sourceStatus": "LOCKED_WITH_BLOCKERS",
+    "modelStatus": "NOT_STARTED",
+    "sstructuresRunStatus": "NOT_RUN_M1_FRAMEWORK_ONLY",
+    "independentQualificationStatus": "NOT_STARTED",
+    "strixComparisonStatus": "NOT_RUN_M1_FRAMEWORK_ONLY",
+    "midasComparisonStatus": "NOT_RUN_M1_FRAMEWORK_ONLY",
+    "performanceComparisonStatus": "NOT_RUN_M1_FRAMEWORK_ONLY",
+    "reportStatus": "NOT_STARTED",
+    "releaseStatus": "NOT_STARTED"
+  },
+  "roles": {
+    "owner": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    "modelReviewer": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    "referenceReviewer": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    "numericalReviewer": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    },
+    "releaseReviewer": {
+      "assignment": "UNASSIGNED",
+      "status": "NOT_STARTED",
+      "approvalHash": null
+    }
+  },
+  "conventions": {
+    "canonicalUnitSystem": {
+      "id": "SI_KN_M_S_RAD",
+      "status": "FRAMEWORK_DEFAULT_NOT_CASE_LOCKED",
+      "force": "kN",
+      "length": "m",
+      "time": "s",
+      "angle": "rad",
+      "reasonCodes": [
+        "P17_CASE_UNIT_SYSTEM_NOT_LOCKED"
+      ]
+    },
+    "globalAxes": {
+      "status": "FRAMEWORK_DEFAULT_NOT_CASE_LOCKED",
+      "handedness": "RIGHT_HANDED",
+      "verticalAxis": "+Z",
+      "reasonCodes": [
+        "P17_CASE_GLOBAL_AXES_NOT_LOCKED"
+      ]
+    },
+    "localAxisConvention": {
+      "status": "NOT_LOCKED",
+      "description": "TO_BE_LOCKED_PER_CASE",
+      "reasonCodes": [
+        "P17_CASE_LOCAL_AXIS_NOT_LOCKED"
+      ]
+    },
+    "signConvention": {
+      "status": "NOT_LOCKED",
+      "description": "TO_BE_LOCKED_PER_PROBE",
+      "reasonCodes": [
+        "P17_CASE_SIGN_CONVENTION_NOT_LOCKED"
+      ]
+    }
+  },
+  "productBinding": {
+    "serviceVersion": "p9-m9-product-analysis-service-v1",
+    "adapterVersion": "p17-m1-product-adapter-v1",
+    "publicEntrypoint": "src/index.js",
+    "solverSettingProfile": {
+      "status": "NOT_LOCKED",
+      "profileId": "NOT_ASSIGNED",
+      "reasonCodes": [
+        "P17_SOLVER_PROFILE_NOT_LOCKED"
+      ]
+    },
+    "requestedOutputProbes": {
+      "status": "NOT_LOCKED",
+      "manifestPath": "verification/benchmarks/strix21/cases/SB8/reference/probe-manifest.json",
+      "reasonCodes": [
+        "P17_PROBES_NOT_LOCKED"
+      ]
+    }
+  },
+  "artifactBindings": {
+    "sourceLock": {
+      "status": "LOCKED_WITH_BLOCKERS",
+      "path": "verification/benchmarks/strix21/references/source-locks-r2/SB8.source-lock.json",
+      "sha256": "576a6274690675db893fba614833352160593bce6b976fe6f41377a66a78cceb",
+      "reasonCodes": [
+        "P17_M0_SOURCE_LOCK_HAS_DECLARED_BLOCKERS"
+      ]
+    },
+    "sourceManifest": {
+      "status": "LOCKED_WITH_BLOCKERS",
+      "path": "verification/benchmarks/strix21/cases/SB8/source/source-manifest.json",
+      "sha256": "bd9f9dd82e671bf8c4e6ef288b40731c52dfc62136330b92eb88144b0ff4e27f",
+      "reasonCodes": [
+        "P17_M0_SOURCE_LOCK_HAS_DECLARED_BLOCKERS"
+      ]
+    },
+    "referenceManifest": {
+      "status": "NOT_LOCKED",
+      "path": "verification/benchmarks/strix21/cases/SB8/reference/reference-manifest.json",
+      "sha256": "5d1219e6eb01addd190ec9816d90b875960482324579cd171c2d824e9b3a3896",
+      "reasonCodes": [
+        "P17_REFERENCE_NOT_LOCKED"
+      ]
+    },
+    "toleranceManifest": {
+      "status": "NOT_LOCKED",
+      "path": "verification/benchmarks/strix21/cases/SB8/reference/tolerance-manifest.json",
+      "sha256": "8a588009943c87f26d5b4c2846a7b44124f6e4c616eb95d95ba4f49712ef79c5",
+      "reasonCodes": [
+        "P17_TOLERANCE_NOT_LOCKED"
+      ]
+    },
+    "probeManifest": {
+      "status": "NOT_LOCKED",
+      "path": "verification/benchmarks/strix21/cases/SB8/reference/probe-manifest.json",
+      "sha256": "863c44a4722cc45572a0447c7e082bc301213cfa609391cdd50d10be988ecea8",
+      "reasonCodes": [
+        "P17_PROBES_NOT_LOCKED"
+      ]
+    },
+    "canonicalModel": {
+      "status": "NOT_STARTED",
+      "path": "verification/benchmarks/strix21/cases/SB8/model/canonical-input.json",
+      "sha256": "b3ff45ac2c4431f0563acad1e574bb9f03ee68526674b473dea270d057eec57d",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    "modelMapping": {
+      "status": "NOT_STARTED",
+      "path": "verification/benchmarks/strix21/cases/SB8/model/model-equivalence.json",
+      "sha256": "c676c00b690d1db21c85270832f20914905f3b54154f23c1b4262d7726e7595b",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    "nativeModel": {
+      "status": "NOT_STARTED",
+      "path": "verification/benchmarks/strix21/cases/SB8/model/sstructures-input.json",
+      "sha256": "8f8025052ab504614600d10358b7dd8bdb054fc141cab5c7934707be17b01cbc",
+      "reasonCodes": [
+        "P17_MODEL_NOT_BUILT"
+      ]
+    },
+    "productBuild": {
+      "status": "NOT_BOUND",
+      "path": null,
+      "sha256": null,
+      "reasonCodes": [
+        "P17_PRODUCT_BUILD_NOT_BOUND"
+      ]
+    }
+  },
+  "currentTerminalReasonCodes": [
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION",
+    "P17_MODEL_NOT_BUILT",
+    "P17_REFERENCE_NOT_LOCKED",
+    "P17_TOLERANCE_NOT_LOCKED",
+    "P17_PROBES_NOT_LOCKED"
+  ],
+  "supersededRunIds": [],
+  "benchmarkExecutionCount": 0
+}

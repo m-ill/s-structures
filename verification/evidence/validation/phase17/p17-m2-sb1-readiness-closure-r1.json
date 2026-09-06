@@ -1,0 +1,101 @@
+{
+  "version": "p17-m2-sb1-readiness-closure-v1",
+  "phase": 17,
+  "milestone": "P17-M2",
+  "caseId": "SB1",
+  "status": "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL",
+  "gateStatus": "BLOCKED_PRE_EXECUTION",
+  "packageHash": "a64262e0c2ccf50e3b11639d454417f5cc4c5201f923df1004a459153b555f07",
+  "gateAssessmentHash": "8069fdf37eaaeaa49b2a6db48ba1b14bdddc4cab57976334c3ee4fb4cd4bf812",
+  "readyGateCount": 5,
+  "passedTerminalGateCount": 1,
+  "executionAuthorized": false,
+  "terminalAuthorization": false,
+  "sourceByteAudit": "PASS_3_OF_3",
+  "reportVisualQa": "PASS_6_OF_6_NONBLANK",
+  "reportByteReproduction": "PASS_BYTE_IDENTICAL",
+  "testCommands": [
+    {
+      "command": "node verification/milestones/phase17/m2/run-sb1.mjs --check + three P17-M2 tests",
+      "status": "PASS"
+    },
+    {
+      "command": "P17-M1 scaffold + validator + framework + extractor + boundary",
+      "status": "PASS"
+    },
+    {
+      "command": "P17-M1 sealed R6 evidence byte-identity check",
+      "status": "EXPECTED_STALE_AFTER_M2_INVENTORY_EXPANSION"
+    },
+    {
+      "command": "npm.cmd run test:p15",
+      "status": "PASS"
+    },
+    {
+      "command": "npm.cmd run check:public-imports",
+      "status": "PASS"
+    }
+  ],
+  "testFileBindings": [
+    {
+      "path": "tests/p17-m2-terminal-gates.mjs",
+      "sha256": "36ca76b4e4d19b002efab5842824d5d9686d78fff6947e016154bd6725dc0741",
+      "byteLength": 7842
+    },
+    {
+      "path": "tests/p17-m2-sb1-qualification.mjs",
+      "sha256": "9933fb860f88c5016d995418a1e30eebaad168a1a8bfeca2f48e13e048d48e4d",
+      "byteLength": 1780
+    },
+    {
+      "path": "tests/p17-m2-sb1-lock-package.mjs",
+      "sha256": "5381c670a3a890f03cdf8aa8f00c2205e9ba39abee2c184130fd15e0f56f5c0e",
+      "byteLength": 2397
+    }
+  ],
+  "artifactBindings": {
+    "package": {
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/m2-case-package-r1.json",
+      "sha256": "1e1164390248a17543d40942bd8cae86ba74374ad981aef2ff1b2b9c925dbf7f",
+      "byteLength": 6666
+    },
+    "gate": {
+      "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/gates/gate-assessment-r1.json",
+      "sha256": "5337a3409be1139671b1b56860ca163d53f0eea8a17b7d98946e6dc2fbe10713",
+      "byteLength": 5386
+    },
+    "reportMarkdown": {
+      "path": "output/verification/phase17/P17-M2-SB1-READINESS-REPORT-R1.md",
+      "sha256": "ef61fc0ed1a533038bde09db959d65cb77faf6b866e61aa186f3f05f3202250c",
+      "byteLength": 1771
+    },
+    "reportPdf": {
+      "path": "output/verification/phase17/P17-M2-SB1-READINESS-REPORT-R1.pdf",
+      "sha256": "716dbbd9e157d75bfe19d1d4d0687baf93a8adc19cf38a17b20cba6b425d09bf",
+      "byteLength": 110951
+    },
+    "reportQa": {
+      "path": "output/verification/phase17/P17-M2-SB1-READINESS-REPORT-R1.qa-r1.json",
+      "sha256": "5234fa70928baacd85e76f6cd51043e3e9cdc8b0ecbb1cf9a3562258e4a53387",
+      "byteLength": 4505
+    }
+  },
+  "counters": {
+    "officialExecutionCount": 0,
+    "externallyCustodiedRunCount": 0,
+    "solverExecutionCount": 0,
+    "benchmarkExecutionCount": 0,
+    "engineeringResultCount": 0,
+    "officialPassCount": 0
+  },
+  "reasonCodes": [
+    "P17_M2_EXECUTION_NOT_AUTHORIZED",
+    "P17_EXTERNAL_CUSTODIAN_REGISTRY_REQUIRED",
+    "P17_INDEPENDENT_REVIEWER_ATTESTATIONS_REQUIRED",
+    "P17_M1_SEALED_EVIDENCE_PRESERVED_STALE_AFTER_M2_INVENTORY_EXPANSION"
+  ],
+  "releaseAllowed": false,
+  "finalDesignTransferAllowed": false,
+  "closureHash": "0d25db2c063a52043899766dc972b14eb49d8956713783963f20aac8d57c51b5"
+}
+

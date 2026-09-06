@@ -1,0 +1,106 @@
+{
+  "version": "p10-evidence-artifact-v1",
+  "suiteId": "P10-M7-DYNAMICS-EXTENSION",
+  "milestone": "P10-M7",
+  "status": "OK",
+  "generatedAt": "2026-07-22T23:00:00.000+09:00",
+  "sourceRevision": "4aa64f3+p10-m7-worktree",
+  "test": "tests/p10-m7-dynamics-extension.mjs",
+  "solverVersion": "p14-m2-linear-direct-tha-v2",
+  "results": {
+    "ok": true,
+    "version": "p10-m7-dynamics-extension-v1",
+    "solverVersion": "p14-m2-linear-direct-tha-v2",
+    "metrics": {
+      "zeroPrestressRelativeError": 0,
+      "compressionPeriodIncrease": 0.29099444873580516,
+      "eulerRelativeError": 3.6860431880027236e-16,
+      "legacyLowestModeRelativeError": 0,
+      "directModalError": 8.590350653037149e-15,
+      "energyError": 1.2045919817182948e-14
+    },
+    "tolerances": {
+      "zeroPrestress": 1e-10,
+      "euler": 0.000001,
+      "legacyLowestMode": 1e-8,
+      "directModal": 0.000001,
+      "energy": 1e-8
+    },
+    "modelHash": "7471645e975430714e72d8d8",
+    "contracts": {
+      "prestressedModal": "p10-m7-prestressed-modal-v1",
+      "globalBuckling": "p10-m7-global-buckling-v5",
+      "factorSession": "p15-m2-elastic-factor-session-v2",
+      "factorizationCount": 1
+    }
+  },
+  "records": [
+    {
+      "caseId": "DY-01-ZERO-PRESTRESS-PARITY",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-10,
+      "modelHash": "7471645e975430714e72d8d8",
+      "solverVersion": "p14-m2-linear-direct-tha-v2",
+      "status": "OK"
+    },
+    {
+      "caseId": "DY-02-COMPRESSION-PERIOD-INCREASE",
+      "reference": ">0",
+      "computed": 0.29099444873580516,
+      "relError": null,
+      "tolerance": "positive",
+      "modelHash": "7471645e975430714e72d8d8",
+      "solverVersion": "p14-m2-linear-direct-tha-v2",
+      "status": "OK"
+    },
+    {
+      "caseId": "DY-03-EULER-BUCKLING",
+      "reference": 0,
+      "computed": 3.6860431880027236e-16,
+      "relError": 3.6860431880027236e-16,
+      "tolerance": 0.000001,
+      "modelHash": "7471645e975430714e72d8d8",
+      "solverVersion": "p14-m2-linear-direct-tha-v2",
+      "status": "OK"
+    },
+    {
+      "caseId": "DY-04-LEGACY-LOWEST-MODE",
+      "reference": 0,
+      "computed": 0,
+      "relError": 0,
+      "tolerance": 1e-8,
+      "modelHash": "7471645e975430714e72d8d8",
+      "solverVersion": "p14-m2-linear-direct-tha-v2",
+      "status": "OK"
+    },
+    {
+      "caseId": "DY-05-DIRECT-MODAL-PARITY",
+      "reference": 0,
+      "computed": 8.590350653037149e-15,
+      "relError": 8.590350653037149e-15,
+      "tolerance": 0.000001,
+      "modelHash": "7471645e975430714e72d8d8",
+      "solverVersion": "p14-m2-linear-direct-tha-v2",
+      "status": "OK"
+    },
+    {
+      "caseId": "DY-06-ENERGY-BALANCE",
+      "reference": 0,
+      "computed": 1.2045919817182948e-14,
+      "relError": 1.2045919817182948e-14,
+      "tolerance": 1e-8,
+      "modelHash": "7471645e975430714e72d8d8",
+      "solverVersion": "p14-m2-linear-direct-tha-v2",
+      "status": "OK"
+    }
+  ],
+  "qualification": {
+    "internalClosedFormStatus": "OK",
+    "externallyCrossValidated": false,
+    "releaseQualified": false,
+    "releaseGate": "P10-M11"
+  },
+  "artifactHash": "962d6d4872fcb049a94bb5ab"
+}

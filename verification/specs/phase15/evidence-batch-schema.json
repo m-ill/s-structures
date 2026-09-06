@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s-structures://phase15/evidence-batch-schema-v1",
+  "title": "S-Structures Phase 15 evidence batch",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "batchId", "status", "statusCounts", "attempted", "cases", "batchCalculationHash", "batchResultHash", "run", "releaseAllowed", "designTransferAllowed", "batchHash"],
+  "properties": {
+    "version": { "const": "p15-evidence-batch-v1" },
+    "batchId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["PASS", "FAIL", "BLOCKED", "INVALIDATED"] },
+    "statusCounts": { "type": "object" },
+    "attempted": { "type": "integer", "minimum": 0 },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["caseId", "status", "evidenceHash", "calculationHash", "resultHash", "runRecordHash", "errors"],
+        "properties": {
+          "caseId": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["PASS", "FAIL", "BLOCKED", "NOT_RUN", "NOT_APPLICABLE", "INVALIDATED", "SELF_TEST"] },
+          "evidenceHash": { "$ref": "#/$defs/nullableHash" },
+          "calculationHash": { "$ref": "#/$defs/nullableHash" },
+          "resultHash": { "$ref": "#/$defs/nullableHash" },
+          "runRecordHash": { "$ref": "#/$defs/nullableHash" },
+          "errors": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
+        }
+      }
+    },
+    "batchCalculationHash": { "$ref": "#/$defs/hash" },
+    "batchResultHash": { "$ref": "#/$defs/hash" },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["batchCalculationHash", "batchResultHash", "startedAt", "completedAt", "environment", "runId", "batchRunRecordHash"],
+      "properties": {
+        "batchCalculationHash": { "$ref": "#/$defs/hash" },
+        "batchResultHash": { "$ref": "#/$defs/hash" },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "environment": { "type": "object", "minProperties": 1 },
+        "runId": { "type": ["string", "null"] },
+        "batchRunRecordHash": { "$ref": "#/$defs/hash" }
+      }
+    },
+    "releaseAllowed": { "const": false },
+    "designTransferAllowed": { "const": false },
+    "batchHash": { "$ref": "#/$defs/hash" }
+  },
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nullableHash": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/hash" }] }
+  }
+}

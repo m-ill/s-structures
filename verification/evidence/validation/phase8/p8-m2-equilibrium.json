@@ -1,0 +1,58 @@
+{
+  "version": "p8-evidence-artifact-v1",
+  "suiteId": "P8-M2-EQUILIBRIUM",
+  "milestone": "P8-M2",
+  "status": "PASS",
+  "generatedAt": "2026-07-13T18:00:00+09:00",
+  "sourceRevision": "0e4f629+P8-M5-revalidated-worktree",
+  "verificationIds": [
+    "NL-EQ-01",
+    "NL-EQ-02",
+    "NL-EQ-03",
+    "NL-EQ-04",
+    "NL-EQ-05",
+    "NL-EQ-06",
+    "NL-EQ-07",
+    "NL-EQ-08",
+    "NL-EQ-09",
+    "NL-EQ-10",
+    "NL-EQ-11",
+    "NL-EQ-12",
+    "NL-CTRL-01",
+    "NL-CTRL-02",
+    "NL-CTRL-03",
+    "NL-CTRL-04"
+  ],
+  "results": [
+    { "id": "NL-EQ-01", "status": "PASS", "test": "tests/p8-m2-equilibrium.mjs" },
+    { "id": "NL-EQ-02", "status": "PASS", "test": "tests/p8-m2-linear-parity.mjs" },
+    { "id": "NL-EQ-03", "status": "PASS", "test": "tests/p8-m2-equilibrium.mjs" },
+    { "id": "NL-EQ-04", "status": "PASS", "test": "tests/p8-m2-equilibrium.mjs" },
+    { "id": "NL-EQ-05", "status": "PASS", "test": "tests/p8-m2-equilibrium.mjs" },
+    { "id": "NL-EQ-06", "status": "PASS", "test": "tests/p8-m2-equilibrium.mjs" },
+    { "id": "NL-EQ-07", "status": "PASS", "test": "tests/p8-m2-linear-parity.mjs" },
+    { "id": "NL-EQ-08", "status": "PASS", "test": "tests/p8-m2-linear-parity.mjs" },
+    { "id": "NL-EQ-09", "status": "PASS", "test": "tests/p8-m2-linear-parity.mjs" },
+    { "id": "NL-EQ-10", "status": "PASS", "test": "tests/p8-m2-control.mjs" },
+    { "id": "NL-EQ-11", "status": "PASS", "test": "tests/p8-m2-linear-parity.mjs" },
+    { "id": "NL-EQ-12", "status": "PASS", "test": "tests/p8-m2-control.mjs" },
+    { "id": "NL-CTRL-01", "status": "PASS", "test": "tests/p8-m2-control.mjs" },
+    { "id": "NL-CTRL-02", "status": "PASS", "test": "tests/p8-m2-equilibrium.mjs" },
+    { "id": "NL-CTRL-03", "status": "PASS", "test": "tests/p8-m2-equilibrium.mjs" },
+    { "id": "NL-CTRL-04", "status": "PASS", "test": "tests/p8-m2-control.mjs" }
+  ],
+  "environment": {
+    "profileVersion": "p8-m0-reference-profile-v1",
+    "profileArtifact": "reports/validation-evidence/phase8/p8-m0-reference-profile.json",
+    "productionBackend": "p8-wasm-sparse-v1",
+    "wasmSha256": "9259e7cb96b3ac74de73c67dce382f534212b31303826bde19f88571399122ff",
+    "wasmImports": 0,
+    "externalNumericalDependencies": 0
+  },
+  "notes": [
+    "M2 qualifies MDOF residual/tangent assembly, full Newton, load control, rollback, Phase 7 linear parity, worker execution, and the in-house WASM sparse backend.",
+    "The M2 suite was revalidated after M3 added explicit mechanism/gauge handling, finite-rotation moment blocks, and mesh-invariant characteristic length; the linear adapter retains its small-rotation contract.",
+    "The suite was revalidated in P8-M5 after active-system extraction and current-configuration six-resultant audit support were added; linear adapters continue to use reference-configuration auditing.",
+    "M2 does not qualify corotational elements, material nonlinearity, formal Pushover, MDOF NLTH, or commercial large-model performance."
+  ]
+}

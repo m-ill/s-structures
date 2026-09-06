@@ -1,0 +1,247 @@
+{
+  "schemaVersion": "p18-case-evidence-v1",
+  "phase": "P18",
+  "generatedAt": "2026-08-29",
+  "caseId": "TH1",
+  "engineStatus": "PASS",
+  "officialBenchmarkStatus": "NOT_CLAIMED",
+  "officialPassClaimed": false,
+  "verdict": "PASS",
+  "method": "production Newmark average acceleration beta=0.25 gamma=0.5",
+  "source": {
+    "publicPage": "https://dcr-st.com/verification/TH1.html",
+    "suite": "STRIX Verification 21",
+    "sourceLimitations": []
+  },
+  "productionModules": [
+    "src/dynamics/linearDirectIntegration.js"
+  ],
+  "modeling": {
+    "periodSec": 1,
+    "mass": 1,
+    "stiffness": 39.47841760435743,
+    "durationSec": 5,
+    "amplitudeMmPerSec2": 1000
+  },
+  "result": {
+    "version": "p18-strix21-completion-v1",
+    "id": "TH1",
+    "status": "PASS",
+    "engineStatus": "PASS",
+    "officialBenchmarkStatus": "NOT_CLAIMED",
+    "officialPassClaimed": false,
+    "formulation": "production Newmark average acceleration beta=0.25 gamma=0.5",
+    "model": {
+      "periodSec": 1,
+      "mass": 1,
+      "stiffness": 39.47841760435743,
+      "durationSec": 5,
+      "amplitudeMmPerSec2": 1000
+    },
+    "rows": [
+      {
+        "dampingRatio": 0,
+        "dt": 0.1,
+        "sampleCount": 51,
+        "sStructuresPeakDisplacementMm": 313.9461017998719,
+        "independentPeakDisplacementMm": 384.9684363309483,
+        "errorPct": -18.44887212260181,
+        "productionRunHash": "6ee04d22b0682c97dac1bb2aa757a9749d33351bca6d2756d9ed769a9223de2e",
+        "referenceHash": "a4d57ae67303087a4cdfc63fa805821ff98b9de5a0a4ee33b02cee3cbe879464"
+      },
+      {
+        "dampingRatio": 0,
+        "dt": 0.05,
+        "sampleCount": 101,
+        "sStructuresPeakDisplacementMm": 385.6353641471319,
+        "independentPeakDisplacementMm": 394.6256124939111,
+        "errorPct": -2.2781715281893704,
+        "productionRunHash": "0f0445d93ef4018cc44425f235792a1f691279386fe6987ce2a1f25ed7dc6da1",
+        "referenceHash": "104904af50f02abce6bd95de06b1180865fe513805566667950bedfa4b902e75"
+      },
+      {
+        "dampingRatio": 0,
+        "dt": 0.025,
+        "sampleCount": 201,
+        "sStructuresPeakDisplacementMm": 395.57695739809736,
+        "independentPeakDisplacementMm": 397.0699072255573,
+        "errorPct": -0.3759916831501062,
+        "productionRunHash": "2f71b30964e3f18787c22acdc3a55f48b194d5dcd5c64ad69e0949405477a780",
+        "referenceHash": "b07ff6686328ee43b449db03c3c187be48e31c933e7f292dd9e9a3fdb1c9c7d7"
+      },
+      {
+        "dampingRatio": 0,
+        "dt": 0.0125,
+        "sampleCount": 401,
+        "sStructuresPeakDisplacementMm": 397.3593000354054,
+        "independentPeakDisplacementMm": 397.68286900833124,
+        "errorPct": -0.08136356834597834,
+        "productionRunHash": "d5d03f4c28e9855f6afba042f0252f238784f444bc5d09a7e915babb9e37d8bf",
+        "referenceHash": "f6dfc466b2317b4f4a328b4e4999f53b0338641d7e8d489b13a4fc3411726785"
+      },
+      {
+        "dampingRatio": 0,
+        "dt": 0.00625,
+        "sampleCount": 801,
+        "sStructuresPeakDisplacementMm": 397.75847780495997,
+        "independentPeakDisplacementMm": 397.83622766517317,
+        "errorPct": -0.019543182547628254,
+        "productionRunHash": "8c3d8a66bd7f0ca1da82eba4bc8cf91dd6f97c635b656ef8b4f610b4066bc295",
+        "referenceHash": "bec3aea97cb4b550564bbfc7546459202979537b896cbb0cc9eadb3a6238d845"
+      },
+      {
+        "dampingRatio": 0,
+        "dt": 0.003125,
+        "sampleCount": 1601,
+        "sStructuresPeakDisplacementMm": 397.85533424512755,
+        "independentPeakDisplacementMm": 397.87457472077995,
+        "errorPct": -0.004835814318092122,
+        "productionRunHash": "51189afc32e63aca19d5c29c1347fd0695855508993d7740f6f505f79808b104",
+        "referenceHash": "14bd008f4be0df480c50780bdea0b75c6476fa0068260ef662cddff1f2677d15"
+      },
+      {
+        "dampingRatio": 0.05,
+        "dt": 0.1,
+        "sampleCount": 51,
+        "sStructuresPeakDisplacementMm": 172.32671122952624,
+        "independentPeakDisplacementMm": 194.27106481764224,
+        "errorPct": -11.2957395939095,
+        "productionRunHash": "70dbe182752288eac1118ae506c0ef594bdcf4193d9cc59200574af6fa46bb4c",
+        "referenceHash": "4c89f21d53d9c97f60d892ebe86967af43f265cb8049accf03d9c3bdb834402a"
+      },
+      {
+        "dampingRatio": 0.05,
+        "dt": 0.05,
+        "sampleCount": 101,
+        "sStructuresPeakDisplacementMm": 197.2487532406659,
+        "independentPeakDisplacementMm": 199.14463054599597,
+        "errorPct": -0.9520102551256957,
+        "productionRunHash": "624504127a61b9a885d8871593ea54f1acae738479ff8f933c9ae2ab32c0b6b3",
+        "referenceHash": "0af603232e46278570202c8dca52318c500898c18632873d3a727e0467821ede"
+      },
+      {
+        "dampingRatio": 0.05,
+        "dt": 0.025,
+        "sampleCount": 201,
+        "sStructuresPeakDisplacementMm": 200.16642074633492,
+        "independentPeakDisplacementMm": 200.37813243737256,
+        "errorPct": -0.10565608555305056,
+        "productionRunHash": "d07235e90629bb4bfc9e52eed2900f4b14fa420d6ed68b703b21d954bdddfb34",
+        "referenceHash": "db10837b7d3358ca8f3a3a57cb06bbfc21d0c5919702881ccc498c670a96e04b"
+      },
+      {
+        "dampingRatio": 0.05,
+        "dt": 0.0125,
+        "sampleCount": 401,
+        "sStructuresPeakDisplacementMm": 200.6514006228886,
+        "independentPeakDisplacementMm": 200.68745916558862,
+        "errorPct": -0.017967511697021835,
+        "productionRunHash": "5a2cc89305ef241971cd9030b14d010dff81ad19ac0c70d2376520009f7e22e2",
+        "referenceHash": "4a646ceabe622ad500c67a657a2cc4d4ca335afa4c8b05e2d848ae5553415b95"
+      },
+      {
+        "dampingRatio": 0.05,
+        "dt": 0.00625,
+        "sampleCount": 801,
+        "sStructuresPeakDisplacementMm": 200.75689699889114,
+        "independentPeakDisplacementMm": 200.76485040835527,
+        "errorPct": -0.003961554748233474,
+        "productionRunHash": "a7b5ad4e6f5134c5e23acafdf98286063699d22396db3ff1a81a7b84dd5d714c",
+        "referenceHash": "db71ba70a6ad26abdb0d87f89bbaaa314a61301f3e3bf4b7059cf04439eed5ea"
+      },
+      {
+        "dampingRatio": 0.05,
+        "dt": 0.003125,
+        "sampleCount": 1601,
+        "sStructuresPeakDisplacementMm": 200.78279833386193,
+        "independentPeakDisplacementMm": 200.78620883211786,
+        "errorPct": -0.0016985719665551903,
+        "productionRunHash": "4e3b7b5f0992f1ab9aec30d6acdc10b0c17aa303a4fff64dbc05604b48353d15",
+        "referenceHash": "527a229fcef81541667e280c8b10230cb18cdf16ab0e9e8c4dacc25e4b5ad797"
+      }
+    ],
+    "convergence": [
+      {
+        "dampingRatio": 0,
+        "measuredOrders": [
+          3.017584339676685,
+          2.599103719308277,
+          2.208245892484495,
+          2.057717527653024,
+          2.01483466966197
+        ],
+        "finestOrder": 2.01483466966197,
+        "representativeOrder": 2.057717527653024,
+        "finestErrorPct": -0.004835814318092122
+      },
+      {
+        "dampingRatio": 0.05,
+        "measuredOrders": [
+          3.5686578103047886,
+          3.171601248778136,
+          2.5559133352772703,
+          2.1812519799107872,
+          1.2217443953903677
+        ],
+        "finestOrder": 1.2217443953903677,
+        "representativeOrder": 2.1812519799107872,
+        "finestErrorPct": -0.0016985719665551903
+      }
+    ],
+    "probes": [
+      {
+        "id": "TH1-ZETA-5-PEAK",
+        "actual": 200.78279833386193,
+        "reference": 200.78620883211786,
+        "errorPct": -0.0016985719665551903,
+        "unit": "mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.01
+        },
+        "passed": true
+      },
+      {
+        "id": "TH1-ZETA-0-PEAK",
+        "actual": 397.85533424512755,
+        "reference": 397.87457472077995,
+        "errorPct": -0.004835814318092122,
+        "unit": "mm",
+        "tolerance": {
+          "type": "relative-pct",
+          "value": 0.01
+        },
+        "passed": true
+      },
+      {
+        "id": "TH1-ZETA-0-ORDER",
+        "actual": 2.057717527653024,
+        "reference": 2,
+        "unit": "order",
+        "tolerance": {
+          "type": "minimum",
+          "value": 1.95
+        },
+        "passed": true
+      },
+      {
+        "id": "TH1-ZETA-0.05-ORDER",
+        "actual": 2.1812519799107872,
+        "reference": 2,
+        "unit": "order",
+        "tolerance": {
+          "type": "minimum",
+          "value": 1.95
+        },
+        "passed": true
+      }
+    ],
+    "reference": "independent fixed-substep RK4 over the same piecewise-linear excitation; response sampled at source time points",
+    "engineeringHash": "557d6711876dd844d00228fa991fa844277c34c8cde45880cd6693af85ffb7fe"
+  },
+  "audit": {
+    "probeCount": 4,
+    "failedProbeCount": 0,
+    "engineeringHash": "557d6711876dd844d00228fa991fa844277c34c8cde45880cd6693af85ffb7fe"
+  }
+}

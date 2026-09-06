@@ -1,0 +1,21 @@
+{
+  "version": "p17-reference-claim-vocabulary-v1",
+  "referenceClasses": [
+    "R1_R2_EXTERNAL",
+    "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+    "R5_INTERNAL_SPEC",
+    "MIXED_EXTERNAL_INTERNAL_SPEC"
+  ],
+  "claimEvidenceLevels": [
+    "R1_R2_EXTERNAL_TRUTH",
+    "R3_INDEPENDENT_RECONSTRUCTION",
+    "R4_PROGRAM_EXPORT",
+    "R5_INTERNAL_SPEC"
+  ],
+  "rules": [
+    "referenceClass describes the authority of the case acceptance source.",
+    "claimEvidenceLevel describes the evidence level a report may claim.",
+    "R4_PUBLISHED_VALUE_ONLY is not R4_PROGRAM_EXPORT.",
+    "MIXED_EXTERNAL_INTERNAL_SPEC must split external surface truth from internal implementation behavior."
+  ]
+}

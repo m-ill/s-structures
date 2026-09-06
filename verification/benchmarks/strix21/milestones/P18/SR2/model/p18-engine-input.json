@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "p18-engine-input-snapshot-v1",
+  "caseId": "SR2",
+  "qualificationScope": "S-Structures production-engine input snapshot; not an assertion of full STRIX model equivalence",
+  "method": "production 3-D frame with two rigid Ux-Uy-Rz diaphragms, eccentric six-DOF mass, nodal/member recovery, four modal combinations",
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/dynamics/modalDiaphragm.js",
+    "src/results/rsa/memberForces.js"
+  ],
+  "input": {
+    "fixture": "complete two-storey eccentric rigid-diaphragm engine qualification model",
+    "nodeCount": 12,
+    "columnCount": 8,
+    "diaphragmCount": 2
+  },
+  "publicSourceLimitations": [
+    "column and beam area values and beam inertias",
+    "absolute storey mass and rotational inertia values",
+    "complete node/member connectivity and all spectrum settings"
+  ],
+  "engineeringHash": "13fce0d901d004934c83e208e942f5d9dab1a03d17df4cc359ff8a3035f85a71"
+}

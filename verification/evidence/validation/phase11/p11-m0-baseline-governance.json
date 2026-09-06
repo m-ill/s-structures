@@ -1,0 +1,336 @@
+{
+  "schemaVersion": "p11-m0-baseline-governance-v1",
+  "milestone": "P11-M0",
+  "status": "PASS",
+  "qualification": "baseline-governance-only",
+  "releaseQualified": false,
+  "generatedAt": "2026-07-23T11:19:50.923Z",
+  "sourceRevision": "5062591+worktree",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "architecture": "x64",
+    "node": "v24.16.0"
+  },
+  "baseline": {
+    "projectId": "PILOT-OFFICE-01",
+    "classification": "program-smoke-only",
+    "model": {
+      "nodes": 45,
+      "members": 84,
+      "loads": 240,
+      "loadCases": 6,
+      "combinations": 28,
+      "stories": 4,
+      "plan": {
+        "x": 12,
+        "y": 10
+      },
+      "totalHeight": 14.4,
+      "bounds": {
+        "minX": 0,
+        "maxX": 12,
+        "minY": 0,
+        "maxY": 10,
+        "minZ": 0,
+        "maxZ": 14.4
+      }
+    },
+    "loadApplication": {
+      "mode": "replace-generated",
+      "created": 240,
+      "updated": 0,
+      "unchanged": 0,
+      "removed": 0,
+      "preserved": 0,
+      "conflicts": []
+    },
+    "analysis": {
+      "ok": true,
+      "validationErrors": [],
+      "validationWarnings": [],
+      "failedCombinations": [],
+      "maxDisplacement": 0.005749185700252778,
+      "maxUtilization": 0.3943625474780076,
+      "maxEquilibriumResidual": 5.542148285615899e-15,
+      "governing": {
+        "memberId": "M32",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.3943625474780076,
+        "comboId": "KDS-ST-05-EX-N",
+        "x": 0
+      }
+    },
+    "report": {
+      "version": "m42-calculation-package",
+      "qualityAuditOk": true,
+      "htmlBytes": 57197
+    },
+    "pdf": {
+      "pageCount": 22,
+      "a4": true,
+      "mediaBoxPoints": [
+        0,
+        0,
+        594.95996,
+        841.91998
+      ],
+      "bytes": 527291
+    },
+    "artifacts": [
+      {
+        "path": "reports/pilot-office-01/model.json",
+        "bytes": 689092,
+        "sha256": "dac9f0c07e717ff8b6ede1e18530525f09c69b116dc1b2f5e155063e89def9bd"
+      },
+      {
+        "path": "reports/pilot-office-01/load-estimation.json",
+        "bytes": 254232,
+        "sha256": "ce0b4aae1202df05730092daf7e0c803c2af2e181bc599b990a3e558329039bd"
+      },
+      {
+        "path": "reports/pilot-office-01/analysis-summary.json",
+        "bytes": 3203,
+        "sha256": "fdad3c2de7376fa71f97614244ecee54dd5c9bb94fb5461948ca8b216746c61b"
+      },
+      {
+        "path": "reports/pilot-office-01/calculation-package.html",
+        "bytes": 57197,
+        "sha256": "49d46fa586a8ad8cfed552e3ab53934504ef32c4db966ec2e15fa84deeb7b2f5"
+      },
+      {
+        "path": "output/pdf/PILOT-OFFICE-01-calculation-report.pdf",
+        "bytes": 527291,
+        "sha256": "aafa56ce9d0d34b6d6c18bff09e4060606af9679435a35227b078824b90fae9e"
+      }
+    ]
+  },
+  "registries": {
+    "locales": [
+      "ko-KR",
+      "en-US"
+    ],
+    "captureKinds": [
+      "model-isometric",
+      "model-plan-elevation",
+      "load-gravity",
+      "load-lateral",
+      "deformed-governing",
+      "reactions-governing",
+      "utilization-governing"
+    ],
+    "verdictReasonCodes": [
+      "ANALYSIS_FAILED",
+      "AUDIT_FAILED",
+      "STALE_SNAPSHOT",
+      "REQUIRED_EVIDENCE_MISSING",
+      "INDEPENDENT_REFERENCE_NOT_AVAILABLE",
+      "ENGINEERING_VALIDATION_INCOMPLETE",
+      "ISSUE_SCOPE_LIMITED",
+      "FEATURE_NOT_IN_SCOPE",
+      "FEATURE_NOT_VERIFIED",
+      "OPERATIONAL_CHECKS_PASSED"
+    ]
+  },
+  "gapAssignments": [
+    {
+      "id": "GAP-01",
+      "owner": "report-i18n",
+      "milestones": [
+        "P11-M1",
+        "P11-M2"
+      ],
+      "releaseImpact": "blocks bilingual release"
+    },
+    {
+      "id": "GAP-02",
+      "owner": "report-contracts",
+      "milestones": [
+        "P11-M1"
+      ],
+      "releaseImpact": "blocks numeric parity proof"
+    },
+    {
+      "id": "GAP-03",
+      "owner": "report-verdict-layout",
+      "milestones": [
+        "P11-M1",
+        "P11-M5"
+      ],
+      "releaseImpact": "blocks executive conclusion"
+    },
+    {
+      "id": "GAP-04",
+      "owner": "report-verdict",
+      "milestones": [
+        "P11-M1"
+      ],
+      "releaseImpact": "blocks truthful qualification"
+    },
+    {
+      "id": "GAP-05",
+      "owner": "visual-evidence",
+      "milestones": [
+        "P11-M3",
+        "P11-M4"
+      ],
+      "releaseImpact": "blocks contextual evidence"
+    },
+    {
+      "id": "GAP-06",
+      "owner": "visual-capture",
+      "milestones": [
+        "P11-M3"
+      ],
+      "releaseImpact": "blocks deterministic capture"
+    },
+    {
+      "id": "GAP-07",
+      "owner": "export-service",
+      "milestones": [
+        "P11-M6"
+      ],
+      "releaseImpact": "blocks atomic PDF pair"
+    },
+    {
+      "id": "GAP-08",
+      "owner": "desktop-export",
+      "milestones": [
+        "P11-M6",
+        "P11-M7"
+      ],
+      "releaseImpact": "blocks product one-click export"
+    },
+    {
+      "id": "GAP-09",
+      "owner": "export-service",
+      "milestones": [
+        "P11-M6"
+      ],
+      "releaseImpact": "blocks production runtime ownership"
+    },
+    {
+      "id": "GAP-10",
+      "owner": "report-i18n-qa",
+      "milestones": [
+        "P11-M2",
+        "P11-M8"
+      ],
+      "releaseImpact": "blocks Korean PDF qualification"
+    },
+    {
+      "id": "GAP-11",
+      "owner": "export-security",
+      "milestones": [
+        "P11-M6",
+        "P11-M8"
+      ],
+      "releaseImpact": "blocks privacy qualification"
+    },
+    {
+      "id": "GAP-12",
+      "owner": "visual-qa",
+      "milestones": [
+        "P11-M3",
+        "P11-M8"
+      ],
+      "releaseImpact": "blocks visual qualification"
+    },
+    {
+      "id": "GAP-13",
+      "owner": "product-export-workflow",
+      "milestones": [
+        "P11-M7"
+      ],
+      "releaseImpact": "blocks UI/API parity"
+    },
+    {
+      "id": "GAP-14",
+      "owner": "release-governance",
+      "milestones": [
+        "P11-M0",
+        "P11-M9"
+      ],
+      "releaseImpact": "blocks evidence retention"
+    }
+  ],
+  "artifactPolicy": {
+    "trackedEvidence": {
+      "path": "reports/validation-evidence/phase11/",
+      "git": "tracked",
+      "retention": "repository history"
+    },
+    "rawRun": {
+      "path": "reports/phase11/<project>/<run>/",
+      "git": "untracked-by-default",
+      "retention": "30 days in CI; release assets for qualified runs"
+    },
+    "deliverable": {
+      "path": "output/pdf/phase11/",
+      "git": "untracked-by-default",
+      "retention": "release asset for qualified runs"
+    },
+    "temporary": {
+      "path": "tmp/pdfs/phase11/<job>/",
+      "git": "untracked",
+      "retention": "delete at terminal job state"
+    }
+  },
+  "decisions": {
+    "P11-ADR-001": "accepted",
+    "P11-ADR-002": "accepted",
+    "runtimeDependenciesAdded": [],
+    "systemFontQualificationDeferredTo": "P11-M8"
+  },
+  "verification": [
+    {
+      "id": "P11-BASE-01",
+      "status": "PASS",
+      "test": "npm run baseline:p11:m0",
+      "statement": "Office model counts and bounds match the frozen reference."
+    },
+    {
+      "id": "P11-BASE-02",
+      "status": "PASS",
+      "test": "npm run baseline:p11:m0",
+      "statement": "Loads, cases, combinations and conflicts match the frozen reference."
+    },
+    {
+      "id": "P11-BASE-03",
+      "status": "PASS",
+      "test": "npm run baseline:p11:m0",
+      "statement": "Analysis errors, warnings and failed combinations remain zero."
+    },
+    {
+      "id": "P11-BASE-04",
+      "status": "PASS",
+      "test": "npm run baseline:p11:m0",
+      "statement": "Displacement, utilization and equilibrium residual match fixed tolerances."
+    },
+    {
+      "id": "P11-BASE-05",
+      "status": "PASS",
+      "test": "npm run baseline:p11:m0",
+      "statement": "Current HTML markers and 22-page A4 PDF are recorded with SHA-256 hashes."
+    },
+    {
+      "id": "P11-BASE-06",
+      "status": "PASS",
+      "test": "npm run baseline:p11:m0",
+      "statement": "GAP-01 through GAP-14 have owners and target milestones."
+    },
+    {
+      "id": "P11-REL-01",
+      "status": "PASS",
+      "test": "npm run baseline:p11:m0",
+      "statement": "The blocked release-manifest skeleton is schema-validated."
+    }
+  ],
+  "limitations": [
+    "The office baseline is a program smoke check, not an independent engineering reference.",
+    "The current report is English-first and contains no contextual visual evidence.",
+    "Phase 11 bilingual rendering, capture and atomic PDF export remain unimplemented after M0."
+  ],
+  "artifactHash": "c9850840c85e162467ab86021be853a73a2c7b42c4dd33d87140aaa0ce8cf33c"
+}

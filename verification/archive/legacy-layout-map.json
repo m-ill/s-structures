@@ -1,0 +1,1307 @@
+{
+  "version": "p16-verification-relocation-manifest-v1",
+  "createdAt": "2026-08-28T01:23:26.338Z",
+  "operation": "byte-preserving-relocation",
+  "status": "frozen-before-move",
+  "sourceOfTruth": "current-working-tree",
+  "dirtyWorktree": true,
+  "gitStatusSha256": "ab675907721bfbeda265c5bba8fef43924aebe48fd3063dd98240fff3277960b",
+  "baseline": {
+    "sourceDigest": "7293013eaea14530412cd88980384f62b2a03da3d20da057e291a9a0a6fc2fc9",
+    "architectureAuditHash": "6a14c4435a2a198ac932c6c0030ced759671054a06a38aa5cccada9c65db3368",
+    "fullRegressionHash": "c5ecb34f90de19e255ea4c8c8b424cbd6198181f0cf13664d63a6302b3e0fa21",
+    "releaseManifestHash": "eb2675a834e6dcf3039931dcb1da1ef07122d0199368bbcd2d18e0867c8a7502",
+    "releaseStatus": "BLOCKED"
+  },
+  "policy": {
+    "evidenceContentMutationAllowed": false,
+    "duplicateCanonicalCopiesAllowed": false,
+    "legacyEvidenceMayQualifyNewLayout": false
+  },
+  "mappings": [
+    {
+      "id": "specs",
+      "source": "docs/verification",
+      "target": "verification/specs",
+      "fileCount": 58,
+      "byteCount": 334572,
+      "treeHash": "f8213ac4ddc77387056b6b9972ba06e99962bd8db898cd7a18b533256eeff0ac",
+      "files": [
+        {
+          "source": "docs/verification/DESIGN_MODULE_VERIFICATION.md",
+          "target": "verification/specs/DESIGN_MODULE_VERIFICATION.md",
+          "bytes": 18401,
+          "sha256": "5b94a49661c0d3af1a5f7243a7889a1daa91d9e3aec068c0031cd57057785712"
+        },
+        {
+          "source": "docs/verification/LINEAR_SOLVER_VERIFICATION.md",
+          "target": "verification/specs/LINEAR_SOLVER_VERIFICATION.md",
+          "bytes": 5525,
+          "sha256": "0ae1fd9b3397f6f93b413025ecfa8d8e34a5402047c46a4b29008e2e689c53fd"
+        },
+        {
+          "source": "docs/verification/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md",
+          "target": "verification/specs/P2_M5_DIRECT_ANALYSIS_VERIFICATION.md",
+          "bytes": 7692,
+          "sha256": "1dffafb636fa276da25e7863c36dca8cf4d297552825225febec09f6252dd8aa"
+        },
+        {
+          "source": "docs/verification/P3_M10_MATERIAL_LIBRARY_VERIFICATION.md",
+          "target": "verification/specs/P3_M10_MATERIAL_LIBRARY_VERIFICATION.md",
+          "bytes": 7428,
+          "sha256": "b4ed1a98e644e160a15d944598fdc54dbe682934aeda24ea20b2233b348aec8f"
+        },
+        {
+          "source": "docs/verification/P3_M11_ELASTIC_EXPANSION_VERIFICATION.md",
+          "target": "verification/specs/P3_M11_ELASTIC_EXPANSION_VERIFICATION.md",
+          "bytes": 6231,
+          "sha256": "28b6147120a4d5ce108898852485d61879886139a7ce5a7d6888226a31af7802"
+        },
+        {
+          "source": "docs/verification/P3_M12_WALL_SLAB_VERIFICATION.md",
+          "target": "verification/specs/P3_M12_WALL_SLAB_VERIFICATION.md",
+          "bytes": 6494,
+          "sha256": "370e68c2f0afaee16866edc3802cd229e4c1c0561fea09acbe8af28282169850"
+        },
+        {
+          "source": "docs/verification/P3_M13_LOADS_DYNAMICS_VERIFICATION.md",
+          "target": "verification/specs/P3_M13_LOADS_DYNAMICS_VERIFICATION.md",
+          "bytes": 7856,
+          "sha256": "d404b46875db40f50129a702371bfc45e1e9776fd401ea2d437d0e6731608981"
+        },
+        {
+          "source": "docs/verification/P3_M14_NONLINEAR_GEOMETRY_VERIFICATION.md",
+          "target": "verification/specs/P3_M14_NONLINEAR_GEOMETRY_VERIFICATION.md",
+          "bytes": 7062,
+          "sha256": "1645f4d8c5bda730228c6c2cdc8e5011cd80f85fe59c93846ce17da3410937c5"
+        },
+        {
+          "source": "docs/verification/P3_M15_HINGE_CONTROL_VERIFICATION.md",
+          "target": "verification/specs/P3_M15_HINGE_CONTROL_VERIFICATION.md",
+          "bytes": 8486,
+          "sha256": "2e2a7cc18e207dc8cf09773de1205847eb37e9d0babc5b1f939638e41aadb761"
+        },
+        {
+          "source": "docs/verification/P3_M16_FIBER_NLTH_VERIFICATION.md",
+          "target": "verification/specs/P3_M16_FIBER_NLTH_VERIFICATION.md",
+          "bytes": 9102,
+          "sha256": "ee6a90f05aa48eb587f233efb33a25db4070c07b5828c0e27234eee2c8973806"
+        },
+        {
+          "source": "docs/verification/P3_M20_LAUNCH_READINESS_VERIFICATION.md",
+          "target": "verification/specs/P3_M20_LAUNCH_READINESS_VERIFICATION.md",
+          "bytes": 11203,
+          "sha256": "64f60afe0048f3e1e181765dbbd748a7aa4c37a8bd9dc807c9d555abb7cb1c69"
+        },
+        {
+          "source": "docs/verification/P3_M6_IMPORT_VERIFICATION.md",
+          "target": "verification/specs/P3_M6_IMPORT_VERIFICATION.md",
+          "bytes": 5663,
+          "sha256": "f441b545cf1fa64e5e5a4d2ec574428e14e340509106aad7457ddfe768335ef3"
+        },
+        {
+          "source": "docs/verification/P3_M6_M20_COMPLETION_AUDIT.md",
+          "target": "verification/specs/P3_M6_M20_COMPLETION_AUDIT.md",
+          "bytes": 8076,
+          "sha256": "24ce8741a461281210f4f556db71a0f5096e56e6244320a297d7425cb6db789a"
+        },
+        {
+          "source": "docs/verification/P3_M6_M9_INPUT_PIPELINE_VERIFICATION.md",
+          "target": "verification/specs/P3_M6_M9_INPUT_PIPELINE_VERIFICATION.md",
+          "bytes": 2795,
+          "sha256": "a72f0cc351fbd302cde5899425a25ebca621fa06a5da5bedc5e51d5c554f3db5"
+        },
+        {
+          "source": "docs/verification/P3_M6_RESTART_REVIEW_2026-07-03.md",
+          "target": "verification/specs/P3_M6_RESTART_REVIEW_2026-07-03.md",
+          "bytes": 1422,
+          "sha256": "6975453c12a4e747aa79f21fc888eeab456ac499a6eba270bf073859a0e25dec"
+        },
+        {
+          "source": "docs/verification/P3_M7_IMPORT_REVIEW_VERIFICATION.md",
+          "target": "verification/specs/P3_M7_IMPORT_REVIEW_VERIFICATION.md",
+          "bytes": 8735,
+          "sha256": "9533fe647ba38d9064d4af06a91cdb9d1aa7faa7bc63e2d1d77d85bbbac16293"
+        },
+        {
+          "source": "docs/verification/P3_M8_POINTCLOUD_LOAD_VERIFICATION.md",
+          "target": "verification/specs/P3_M8_POINTCLOUD_LOAD_VERIFICATION.md",
+          "bytes": 6339,
+          "sha256": "7f1c0b154f5916a81f5c703aeb71421b01599150f5ef5eab20fe2d9e91eaa2f5"
+        },
+        {
+          "source": "docs/verification/P3_M9_POINTCLOUD_EXTRACTION_VERIFICATION.md",
+          "target": "verification/specs/P3_M9_POINTCLOUD_EXTRACTION_VERIFICATION.md",
+          "bytes": 7852,
+          "sha256": "df6a7090f7bf1052a0b3db7cbf17f903cb125dc64d7777ca953eed54d53289f7"
+        },
+        {
+          "source": "docs/verification/P3_PLAN_ALIGNMENT_VERIFICATION.md",
+          "target": "verification/specs/P3_PLAN_ALIGNMENT_VERIFICATION.md",
+          "bytes": 10335,
+          "sha256": "f5f52be2f60939cf32d15309b0515f0008273314921f0b15c901f7501799e823"
+        },
+        {
+          "source": "docs/verification/phase11/ARTIFACT_RETENTION.md",
+          "target": "verification/specs/phase11/ARTIFACT_RETENTION.md",
+          "bytes": 2655,
+          "sha256": "68b4a95870830c20b7dfaab1ebc786cb5b52abe17940cd516ccfbf3255819ae7"
+        },
+        {
+          "source": "docs/verification/phase11/evidence-schema.json",
+          "target": "verification/specs/phase11/evidence-schema.json",
+          "bytes": 1316,
+          "sha256": "8f92b5f023c7df5e49086a3c24c10ce3192a927408e1b80a506144f93547c486"
+        },
+        {
+          "source": "docs/verification/phase11/release-manifest.json",
+          "target": "verification/specs/phase11/release-manifest.json",
+          "bytes": 904,
+          "sha256": "106c05d3d8f91606e1f5ee04550a66c661a4c278ff368bc3047efb9814dbd94a"
+        },
+        {
+          "source": "docs/verification/phase12/evidence-schema.json",
+          "target": "verification/specs/phase12/evidence-schema.json",
+          "bytes": 928,
+          "sha256": "7fe9faa6f89f2f6d0289836e4bfb3c8e01adfaae647e79f45f68d29a8f79e203"
+        },
+        {
+          "source": "docs/verification/phase12/release-manifest.json",
+          "target": "verification/specs/phase12/release-manifest.json",
+          "bytes": 2557,
+          "sha256": "52e1d603d34bbd12d99db8ad0a6dec7634445291dc10dea6b13f5a1aead163d7"
+        },
+        {
+          "source": "docs/verification/phase12/test-inventory.json",
+          "target": "verification/specs/phase12/test-inventory.json",
+          "bytes": 86555,
+          "sha256": "521f1d71dd50d6a1077d8228e041d831663d0d35919774861063ae66385dbcd8"
+        },
+        {
+          "source": "docs/verification/phase13/evidence-schema.json",
+          "target": "verification/specs/phase13/evidence-schema.json",
+          "bytes": 930,
+          "sha256": "f832c17aac31af2a53f84ed9cc4a72199857a6fd7a65c1302ff5b3332e3b463a"
+        },
+        {
+          "source": "docs/verification/phase13/release-manifest.json",
+          "target": "verification/specs/phase13/release-manifest.json",
+          "bytes": 648,
+          "sha256": "4c2665941a721e6e826a85646a7bdc5098e78090a15519fa0dffc74dc4dd9894"
+        },
+        {
+          "source": "docs/verification/phase14/evidence-schema.json",
+          "target": "verification/specs/phase14/evidence-schema.json",
+          "bytes": 1579,
+          "sha256": "c7b991de6aa6faf2da21015c7de86ddb410ec07afa3b8c928f1fcc971bc25f9b"
+        },
+        {
+          "source": "docs/verification/phase14/release-manifest.json",
+          "target": "verification/specs/phase14/release-manifest.json",
+          "bytes": 8700,
+          "sha256": "184e9c00a1706fba5c3ba58226a8995fda5e1336ad9cdf02e36f6a374c834bba"
+        },
+        {
+          "source": "docs/verification/phase15/corrective-baseline-schema.json",
+          "target": "verification/specs/phase15/corrective-baseline-schema.json",
+          "bytes": 2456,
+          "sha256": "e5fed33cb7c747ec73e9ccef5fdec91784f97455b80ac1d32fa6c326ef324d4e"
+        },
+        {
+          "source": "docs/verification/phase15/evidence-batch-schema.json",
+          "target": "verification/specs/phase15/evidence-batch-schema.json",
+          "bytes": 2593,
+          "sha256": "56ae3f25763bd4026910ef74a7eef3176318b1d5b3177062e9cdc9856558022a"
+        },
+        {
+          "source": "docs/verification/phase15/evidence-schema.json",
+          "target": "verification/specs/phase15/evidence-schema.json",
+          "bytes": 7962,
+          "sha256": "0a75a6cc9f52d38d691cb1a45854c041bc320cb965e48d5ae9ae7998770f6acb"
+        },
+        {
+          "source": "docs/verification/phase15/p15-m9-full-regression-suite.json",
+          "target": "verification/specs/phase15/p15-m9-full-regression-suite.json",
+          "bytes": 393,
+          "sha256": "76182e987d99d2ebb07fd03991ded14b8931231b9ccdf33f47913c18d3cf0c25"
+        },
+        {
+          "source": "docs/verification/phase15/p15-m9-release-input.example.json",
+          "target": "verification/specs/phase15/p15-m9-release-input.example.json",
+          "bytes": 1840,
+          "sha256": "c2cabc422aab3e424c674a50d55d8cb8ba1381594fbbbf14eb5b6624bb33ea69"
+        },
+        {
+          "source": "docs/verification/phase15/probe-manifest-schema.json",
+          "target": "verification/specs/phase15/probe-manifest-schema.json",
+          "bytes": 1725,
+          "sha256": "8667e68e22ed727f2f85762995893d35adc3fd4a2a5a4e5ea5c220af950d4b63"
+        },
+        {
+          "source": "docs/verification/phase15/reference-manifest-schema.json",
+          "target": "verification/specs/phase15/reference-manifest-schema.json",
+          "bytes": 2845,
+          "sha256": "5ebcdcf7cce5b45854e8c145411497718ba22ef2b83865982649eb5f5ffd72c1"
+        },
+        {
+          "source": "docs/verification/phase15/tolerance-manifest-schema.json",
+          "target": "verification/specs/phase15/tolerance-manifest-schema.json",
+          "bytes": 1991,
+          "sha256": "60c78703e5f6a7f41cd76137517c87861c8360e79f917deb0b49168bdbfaa9cd"
+        },
+        {
+          "source": "docs/verification/phase8/performance/REFERENCE_PROFILE.md",
+          "target": "verification/specs/phase8/performance/REFERENCE_PROFILE.md",
+          "bytes": 2426,
+          "sha256": "2de985d69fffc1d83e66b601614ee10ae48e119a4de275ebae2b436a988d322b"
+        },
+        {
+          "source": "docs/verification/phase8/pilots/PILOT-DYN-01.md",
+          "target": "verification/specs/phase8/pilots/PILOT-DYN-01.md",
+          "bytes": 812,
+          "sha256": "55b3b83c17d167981d5b7d476132159ef88a1e9b21ce0fd1d6fde2dfa08e4a6c"
+        },
+        {
+          "source": "docs/verification/phase8/pilots/PILOT-RC-01.md",
+          "target": "verification/specs/phase8/pilots/PILOT-RC-01.md",
+          "bytes": 800,
+          "sha256": "81f05b10e98e7058fdc3cea819a68d5401436a02e39642804c90e88bc2534971"
+        },
+        {
+          "source": "docs/verification/phase8/pilots/PILOT-ST-01.md",
+          "target": "verification/specs/phase8/pilots/PILOT-ST-01.md",
+          "bytes": 803,
+          "sha256": "87424652019b75f36d77d18c8a6110eaf56ee9f337b9df670fee8f912c5f0f59"
+        },
+        {
+          "source": "docs/verification/phase8/pilots/PILOT-ST-02.md",
+          "target": "verification/specs/phase8/pilots/PILOT-ST-02.md",
+          "bytes": 831,
+          "sha256": "dbdbb59758962eeefde5de9c810ae1483b746b52b06e141ed51a7b7c597dbc0b"
+        },
+        {
+          "source": "docs/verification/phase8/pilots/PILOT-ST-03.md",
+          "target": "verification/specs/phase8/pilots/PILOT-ST-03.md",
+          "bytes": 805,
+          "sha256": "c7cef0e5ce0c50aab3aefbadb4543e5755de46aab1f525be873a2135e46b7a14"
+        },
+        {
+          "source": "docs/verification/phase8/QUALIFICATION_RELEASE.md",
+          "target": "verification/specs/phase8/QUALIFICATION_RELEASE.md",
+          "bytes": 1465,
+          "sha256": "1862525ee5e8baa597fda9cdf0870232b0c1733b72447c6e9e60008b9ff93dc4"
+        },
+        {
+          "source": "docs/verification/phase8/release-manifest.json",
+          "target": "verification/specs/phase8/release-manifest.json",
+          "bytes": 11921,
+          "sha256": "704f4c22f1ae53be4bd2a6c5f34144d2ef810c8208f54141b0143986e0cc5b05"
+        },
+        {
+          "source": "docs/verification/phase9/ARTIFACT_RETENTION.md",
+          "target": "verification/specs/phase9/ARTIFACT_RETENTION.md",
+          "bytes": 1726,
+          "sha256": "c3a7773107ac82e819f30b574921f020219f0b887adffe871fadf368366e99d5"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M0_BASELINE.md",
+          "target": "verification/specs/phase9/P9_M0_BASELINE.md",
+          "bytes": 2053,
+          "sha256": "22d4d691bcb1c1dec416cb03469e504859b40445fec74eaafb75cad2a153fe76"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M1_COMMON_COMPUTE.md",
+          "target": "verification/specs/phase9/P9_M1_COMMON_COMPUTE.md",
+          "bytes": 3907,
+          "sha256": "3fb95053f7f041df37870fb5264f3f94e5934d44950657b71ff2f22db50adc36"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M10_RELEASE_GATE.md",
+          "target": "verification/specs/phase9/P9_M10_RELEASE_GATE.md",
+          "bytes": 2596,
+          "sha256": "412d015ac26c9df661969a89a360d5e9859fb2b977225cd09c8411e8b329d539"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M2_CPU_WASM.md",
+          "target": "verification/specs/phase9/P9_M2_CPU_WASM.md",
+          "bytes": 3403,
+          "sha256": "ee6c52665e93f78b7db31868f4ccdce0ef3845ee95f8835c4f10fd0a58bba11f"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M3_ELASTIC_RUNTIME.md",
+          "target": "verification/specs/phase9/P9_M3_ELASTIC_RUNTIME.md",
+          "bytes": 3094,
+          "sha256": "5614b2fc2cf0980c6dd8f43299c590076c96cbb062ee008be1895bd06e696f15"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M4_WEBGPU_FOUNDATION.md",
+          "target": "verification/specs/phase9/P9_M4_WEBGPU_FOUNDATION.md",
+          "bytes": 3420,
+          "sha256": "a62cd4e63149b5bce09146eff4ceadf2a7234ac18eeb852de328f4b501c7558e"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M5_HYBRID_ELASTIC.md",
+          "target": "verification/specs/phase9/P9_M5_HYBRID_ELASTIC.md",
+          "bytes": 3166,
+          "sha256": "50b55bcb9663bd56cfaff887f95f15b220b80cbf54580b2cc914bd5bf44f4f20"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M6_SPARSE_EIGEN.md",
+          "target": "verification/specs/phase9/P9_M6_SPARSE_EIGEN.md",
+          "bytes": 3327,
+          "sha256": "44b9350fdb4a8eaa85a904b7c74199ced18148a6471d0bca4075611306c138c0"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M7_NONLINEAR_BATCH.md",
+          "target": "verification/specs/phase9/P9_M7_NONLINEAR_BATCH.md",
+          "bytes": 3313,
+          "sha256": "482b3993e64ecbb485dc0a47890ea71ae4ebed67d0ab1f1fe646f0f4967bb7e3"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M8_HYBRID_NONLINEAR.md",
+          "target": "verification/specs/phase9/P9_M8_HYBRID_NONLINEAR.md",
+          "bytes": 2659,
+          "sha256": "540a4ab8b8484d84e576f89f36d360da25c71678ea7ed477d5977416989502d5"
+        },
+        {
+          "source": "docs/verification/phase9/P9_M9_PRODUCT_WORKFLOW.md",
+          "target": "verification/specs/phase9/P9_M9_PRODUCT_WORKFLOW.md",
+          "bytes": 2778,
+          "sha256": "c99685322fc0d7c88c63f006221c6388e8e32db7a56eb2ff661cb7f08a36f40a"
+        },
+        {
+          "source": "docs/verification/phase9/release-manifest.json",
+          "target": "verification/specs/phase9/release-manifest.json",
+          "bytes": 3993,
+          "sha256": "b8da631b5a21b9eb9c44559d9eaa042c3804cdecb9f143f91ae5a915228704e4"
+        }
+      ]
+    },
+    {
+      "id": "validation-evidence",
+      "source": "reports/validation-evidence",
+      "target": "verification/evidence/validation",
+      "fileCount": 149,
+      "byteCount": 1480637,
+      "treeHash": "018a47347cd5dece21e8f1f035e40b519506a67394ace7d85ff275a37fedf08d",
+      "files": [
+        {
+          "source": "reports/validation-evidence/p4-preview-integrated-validation.json",
+          "target": "verification/evidence/validation/p4-preview-integrated-validation.json",
+          "bytes": 212,
+          "sha256": "caac6dd8e33b826a59a1e43debb7a5caed7717caa05fb88ac745f5bdf9883a12"
+        },
+        {
+          "source": "reports/validation-evidence/perf-budget.json",
+          "target": "verification/evidence/validation/perf-budget.json",
+          "bytes": 2047,
+          "sha256": "4b05d20f58a127150121dfd31e0869a1ddb61db7bdd0e6f9b100b9e261321d7f"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m0-quick-corrections.json",
+          "target": "verification/evidence/validation/phase10/p10-m0-quick-corrections.json",
+          "bytes": 3629,
+          "sha256": "6339c459dec4127ba961f316215063916f53bbd4d06bc973d6632166d99efac6"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m1-cross-validation.json",
+          "target": "verification/evidence/validation/phase10/p10-m1-cross-validation.json",
+          "bytes": 12052,
+          "sha256": "b636d88d8e5364729deb5559677a1be7d9611aeb398f016b6d8b1376f4fcaa5a"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m1-hand-calculations.json",
+          "target": "verification/evidence/validation/phase10/p10-m1-hand-calculations.json",
+          "bytes": 1470,
+          "sha256": "d2c7015c09da167d2ab9428a41624955accbd177e09d9f407210469b2fd2f9da"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m1-pathological-battery.json",
+          "target": "verification/evidence/validation/phase10/p10-m1-pathological-battery.json",
+          "bytes": 12202,
+          "sha256": "9dad908277ad3c82490cac32d1214546a1f77a62e1b4b8ded6ee12c696c449fb"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m10-load-generation.json",
+          "target": "verification/evidence/validation/phase10/p10-m10-load-generation.json",
+          "bytes": 1926,
+          "sha256": "c5db7227bf0072b0cc825620a0db0e0fee61249655cbda929ad6981975265ab6"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m11-release-gate.json",
+          "target": "verification/evidence/validation/phase10/p10-m11-release-gate.json",
+          "bytes": 7176,
+          "sha256": "abb70011c494557b906192693137b0080ff038bfc300c57a84ef7458725deee1"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m2-timoshenko.json",
+          "target": "verification/evidence/validation/phase10/p10-m2-timoshenko.json",
+          "bytes": 5795,
+          "sha256": "e8182d8d58b8559b491b15a91602d5c822c5e2c89c2869904cf78c62da77ea02"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m3-partial-fixity.json",
+          "target": "verification/evidence/validation/phase10/p10-m3-partial-fixity.json",
+          "bytes": 5503,
+          "sha256": "fcab687a9ee680c5671630f74b3d53398ea0b33f712ed5442f539323d140d43b"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m4-offsets-panelzone.json",
+          "target": "verification/evidence/validation/phase10/p10-m4-offsets-panelzone.json",
+          "bytes": 2246,
+          "sha256": "117ee36968435f2eee52eab4b2e226561391ee3bb448761d5f3b5e754d7054a8"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m5-mpc-rigidlink.json",
+          "target": "verification/evidence/validation/phase10/p10-m5-mpc-rigidlink.json",
+          "bytes": 2956,
+          "sha256": "b8badfde8ad86ed1234fda1762f8dce138a7962ce9b1d07bb18d8f5b28cd5681"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m6-tapered.json",
+          "target": "verification/evidence/validation/phase10/p10-m6-tapered.json",
+          "bytes": 2265,
+          "sha256": "925f024be81eea4737f2f78cff1593304b40929d1f97d0f74b290812764b9742"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m7-dynamics-extension.json",
+          "target": "verification/evidence/validation/phase10/p10-m7-dynamics-extension.json",
+          "bytes": 3205,
+          "sha256": "e1677bc114ecea89467338f5e75f988804defa2a640d4ec3943e0d804c3ba36b"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m8-warping-ltb.json",
+          "target": "verification/evidence/validation/phase10/p10-m8-warping-ltb.json",
+          "bytes": 2016,
+          "sha256": "f1123f61b30eaea113653b07d083b6dedcea3295b5631498d86af5eb6cd95745"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/p10-m9-shell-fem.json",
+          "target": "verification/evidence/validation/phase10/p10-m9-shell-fem.json",
+          "bytes": 26490,
+          "sha256": "d0daa5c9549a6c16697a20aa1751dc805507b401a210a142f437a7501693b241"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/xv/XV-01-hand-calc.json",
+          "target": "verification/evidence/validation/phase10/xv/XV-01-hand-calc.json",
+          "bytes": 1092,
+          "sha256": "7fa79cb69fcc9d0e8780067117328ae5abc511220bf67ff18cac3a14243f1276"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/xv/XV-02-hand-calc.json",
+          "target": "verification/evidence/validation/phase10/xv/XV-02-hand-calc.json",
+          "bytes": 1880,
+          "sha256": "7c12cd898c42bbb7f12a4b975d75f2aacc785be24fc07b0e789a8442ae1115f8"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/xv/XV-03-pending-reference.json",
+          "target": "verification/evidence/validation/phase10/xv/XV-03-pending-reference.json",
+          "bytes": 732,
+          "sha256": "54153b9f2c8d6fb6801efef97e1979787730c2ea8e6abd7e3ee8677a2791deed"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/xv/XV-04-pending-reference.json",
+          "target": "verification/evidence/validation/phase10/xv/XV-04-pending-reference.json",
+          "bytes": 732,
+          "sha256": "c191ca794a6a7125fa3d05c56783ea3a36ce9d573fd539582349a1e7ea281ff6"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/xv/XV-05-pending-reference.json",
+          "target": "verification/evidence/validation/phase10/xv/XV-05-pending-reference.json",
+          "bytes": 729,
+          "sha256": "6d4346e920d25da8161ceeee8f9553ef9a1bf245f7658e9493832c7cc09938aa"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/xv/XV-06-pending-reference.json",
+          "target": "verification/evidence/validation/phase10/xv/XV-06-pending-reference.json",
+          "bytes": 732,
+          "sha256": "d80089903d46bc73707cede47e9c5cb922b939eb710fc15c514a1f032e343363"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/xv/XV-07-pending-reference.json",
+          "target": "verification/evidence/validation/phase10/xv/XV-07-pending-reference.json",
+          "bytes": 731,
+          "sha256": "8a7579519ba0ffba861f5494e9f213b1156711c38fa890d8c8d0e3044769a854"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/xv/XV-08-pending-reference.json",
+          "target": "verification/evidence/validation/phase10/xv/XV-08-pending-reference.json",
+          "bytes": 729,
+          "sha256": "44815a798aa7d2ace919b623a48c5635701b423da717a14d2ee3c4a8d454ec03"
+        },
+        {
+          "source": "reports/validation-evidence/phase10/xv/XV-09-pending-reference.json",
+          "target": "verification/evidence/validation/phase10/xv/XV-09-pending-reference.json",
+          "bytes": 767,
+          "sha256": "717888e502343426d9d6b1e34f5049ec5ac8587a051dbb660d00ed086cbbfee1"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m0-baseline-governance.json",
+          "target": "verification/evidence/validation/phase11/p11-m0-baseline-governance.json",
+          "bytes": 8601,
+          "sha256": "09e7f0a39a833af4ef01551df7e8f6c3a6a166efafea007246ff68645bdb8521"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m1-report-snapshot-verdict.json",
+          "target": "verification/evidence/validation/phase11/p11-m1-report-snapshot-verdict.json",
+          "bytes": 3186,
+          "sha256": "6c3cb9d231faea01717b7160b9adfeeffe0a0e76c3fcb5c42e0aba75afdcbaf1"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m2-bilingual-rendering.json",
+          "target": "verification/evidence/validation/phase11/p11-m2-bilingual-rendering.json",
+          "bytes": 5864,
+          "sha256": "0260016cc96a48b24f381d75e5eafc56bc959302fbf65690afb415dbf6b04a3e"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m3-visual-capture-core.json",
+          "target": "verification/evidence/validation/phase11/p11-m3-visual-capture-core.json",
+          "bytes": 4769,
+          "sha256": "767b90f77e4656753d1119e5b8fe887641b3e3f6c3d037e242c7f2a4c1c7e8f5"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m4-scene-evidence-report.json",
+          "target": "verification/evidence/validation/phase11/p11-m4-scene-evidence-report.json",
+          "bytes": 6935,
+          "sha256": "03600b52527e58d4ada3f2689c9a8f1fa7de0647a426f56cf7f8a55e7b5888e7"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m5-executive-report-layout.json",
+          "target": "verification/evidence/validation/phase11/p11-m5-executive-report-layout.json",
+          "bytes": 19673,
+          "sha256": "93d3ba11c209f09083f585625dc0f302ec8273150372cc0af2525b5d3dac3a28"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m6-dual-pdf-export.json",
+          "target": "verification/evidence/validation/phase11/p11-m6-dual-pdf-export.json",
+          "bytes": 8116,
+          "sha256": "5aed318fd9aa01b6488bb9312d5d00f03cca93594c09e2fa02ee2c1d88524d19"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m7-product-agent-export.json",
+          "target": "verification/evidence/validation/phase11/p11-m7-product-agent-export.json",
+          "bytes": 7321,
+          "sha256": "ad913047c2141db37301dfee1474f60ff4e1acee63b9a1fafcd78f88261cc7ce"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m8-qualification-hardening.json",
+          "target": "verification/evidence/validation/phase11/p11-m8-qualification-hardening.json",
+          "bytes": 14271,
+          "sha256": "34605f677784bcc58ed33cfe496fff9fd05f427b300698507ab0da8de1b0d107"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-m9-release-gate.json",
+          "target": "verification/evidence/validation/phase11/p11-m9-release-gate.json",
+          "bytes": 11621,
+          "sha256": "4b101ec7498208baff1bf0a5a554ffa1887c3a3b09668b27fb9e389725683ddb"
+        },
+        {
+          "source": "reports/validation-evidence/phase11/p11-release-manifest.json",
+          "target": "verification/evidence/validation/phase11/p11-release-manifest.json",
+          "bytes": 6429,
+          "sha256": "fbda2e4ed350df0c93aa86dea3ec88040ba7d0c997e6372994df0c4d99681d7e"
+        },
+        {
+          "source": "reports/validation-evidence/phase12/p12-m0-baseline-governance.json",
+          "target": "verification/evidence/validation/phase12/p12-m0-baseline-governance.json",
+          "bytes": 1392,
+          "sha256": "7eba163b89cfa535cd758ebff17d3ed448af4dea67b2b5e9191514c2fd6a6c00"
+        },
+        {
+          "source": "reports/validation-evidence/phase12/p12-m1-static-private-boundary.json",
+          "target": "verification/evidence/validation/phase12/p12-m1-static-private-boundary.json",
+          "bytes": 1234,
+          "sha256": "bda1fe9dd2de3d81f9ecb327d3796a613f6a192602af14ff214e28d158cdca69"
+        },
+        {
+          "source": "reports/validation-evidence/phase12/p12-m2-config-migration-secret-lifecycle.json",
+          "target": "verification/evidence/validation/phase12/p12-m2-config-migration-secret-lifecycle.json",
+          "bytes": 1338,
+          "sha256": "2faa0bcd90008e70ea2290787b8e7fddbf508932394dc32a1f0befce3d81aada"
+        },
+        {
+          "source": "reports/validation-evidence/phase12/p12-m3-http-auth-resource-hardening.json",
+          "target": "verification/evidence/validation/phase12/p12-m3-http-auth-resource-hardening.json",
+          "bytes": 1283,
+          "sha256": "382323281cd62246cd7d4eed8b1df9a7a9fbbe57ae78ffcffd9a6585e18b3ede"
+        },
+        {
+          "source": "reports/validation-evidence/phase12/p12-m4-approval-revision-integrity.json",
+          "target": "verification/evidence/validation/phase12/p12-m4-approval-revision-integrity.json",
+          "bytes": 1259,
+          "sha256": "4cc64b8732b64f9ba59e89c1edfe18641342212c6e486ad10d5a8b463e0f3a67"
+        },
+        {
+          "source": "reports/validation-evidence/phase12/p12-m5-release-package-install-recovery.json",
+          "target": "verification/evidence/validation/phase12/p12-m5-release-package-install-recovery.json",
+          "bytes": 1538,
+          "sha256": "068b2e6dbb19a812994ad5303ff47ba88cf14970375df90b16b8fb0b0b179f55"
+        },
+        {
+          "source": "reports/validation-evidence/phase12/p12-m6-windows-regression-release-gates.json",
+          "target": "verification/evidence/validation/phase12/p12-m6-windows-regression-release-gates.json",
+          "bytes": 2459,
+          "sha256": "3813fbb9bececcd50f43e8582df6a38f8c30269519c64ae2245b38555813f347"
+        },
+        {
+          "source": "reports/validation-evidence/phase12/p12-m7-local-pilot-release-gate.json",
+          "target": "verification/evidence/validation/phase12/p12-m7-local-pilot-release-gate.json",
+          "bytes": 3432,
+          "sha256": "b7ff9d3beb7199530941f5d664845bd96ee2b0e9af316e43174d611197a6b7c3"
+        },
+        {
+          "source": "reports/validation-evidence/phase12/p12-release-manifest.json",
+          "target": "verification/evidence/validation/phase12/p12-release-manifest.json",
+          "bytes": 2557,
+          "sha256": "52e1d603d34bbd12d99db8ad0a6dec7634445291dc10dea6b13f5a1aead163d7"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m0-baseline-contract.json",
+          "target": "verification/evidence/validation/phase13/p13-m0-baseline-contract.json",
+          "bytes": 3639,
+          "sha256": "c035d0b90fbe01c966be39288404008fd7779cda1d5ec9da8bf322b2dc01a6d7"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m1-unified-run-workspace.json",
+          "target": "verification/evidence/validation/phase13/p13-m1-unified-run-workspace.json",
+          "bytes": 2446,
+          "sha256": "57b88acb6ecdee2b37806e052d60fae2c8958d4d5a03188bf52ed67abfe882b7"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m2-model-check-repair.json",
+          "target": "verification/evidence/validation/phase13/p13-m2-model-check-repair.json",
+          "bytes": 1009,
+          "sha256": "ab9dcc26ab7ec9f9d59b16b5f34e254ce794a361130658b2184f5c890485be27"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m3-load-mass-workspace.json",
+          "target": "verification/evidence/validation/phase13/p13-m3-load-mass-workspace.json",
+          "bytes": 1612,
+          "sha256": "05861948521d64264854193a40bf7e963725e8b29a3c7f10a1a4a5ba0e93acca"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m4-kds-procedures.json",
+          "target": "verification/evidence/validation/phase13/p13-m4-kds-procedures.json",
+          "bytes": 1099,
+          "sha256": "090b76c82772ce391cb55e19d6a451e54cbaa9207b65feba6b936e49682b866b"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m5-practical-editors.json",
+          "target": "verification/evidence/validation/phase13/p13-m5-practical-editors.json",
+          "bytes": 1093,
+          "sha256": "651ee007cf3a676bf7785ea814df9c27e1af7613af11e57922bfa4de1e318176"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m6-elastic-dashboard.json",
+          "target": "verification/evidence/validation/phase13/p13-m6-elastic-dashboard.json",
+          "bytes": 1258,
+          "sha256": "c202d2533a1837a25268ea7a5ebd3f81f9ff2548a7efafcc0a094b8e3887f9b9"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m7-review-mgt.json",
+          "target": "verification/evidence/validation/phase13/p13-m7-review-mgt.json",
+          "bytes": 1196,
+          "sha256": "72d87092ced3c4f053c02c65bf154e13d6989426bedfef4f8f55dc2cc3f7709b"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m8-shell-lab.json",
+          "target": "verification/evidence/validation/phase13/p13-m8-shell-lab.json",
+          "bytes": 1049,
+          "sha256": "b4b5ed76d45e46a5de01d9b9c2e19535263b951bd897a44689c55f36123f3fcd"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-m9-release-gate.json",
+          "target": "verification/evidence/validation/phase13/p13-m9-release-gate.json",
+          "bytes": 1058,
+          "sha256": "7c82a03108789faa328690f679eb3310a30979c49872f56739526b493f2233f0"
+        },
+        {
+          "source": "reports/validation-evidence/phase13/p13-release-manifest.json",
+          "target": "verification/evidence/validation/phase13/p13-release-manifest.json",
+          "bytes": 2710,
+          "sha256": "298aa5f04160de38eccfc56613462e8aa3044f94643fec3858e63e77f3dcd562"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m0-governance-baseline.json",
+          "target": "verification/evidence/validation/phase14/p14-m0-governance-baseline.json",
+          "bytes": 16083,
+          "sha256": "cdebb13b598b7832657de931cce3e0f8b95882dde1e24a43a4a03547df9a36b2"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m1-winkler-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m1-winkler-implementation.json",
+          "bytes": 4450,
+          "sha256": "e9f38ba5713744ae097354f45e57a296a4a11a583c525c63741efe8238fbc632"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m10-production-pushover-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m10-production-pushover-implementation.json",
+          "bytes": 4280,
+          "sha256": "c7cee42b08d5ed2ee907d66c75474d60bea8745435c96ad82e1a8ce080b43d65"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m11-integration.json",
+          "target": "verification/evidence/validation/phase14/p14-m11-integration.json",
+          "bytes": 1498,
+          "sha256": "5f9547d9354c2168c8030a48dec051e2f623a3c588e0968c530b1d30b245a20b"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m2-linear-tha-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m2-linear-tha-implementation.json",
+          "bytes": 3915,
+          "sha256": "62a01f8f587e07ccdd09cfbe317723c25136a2bcfb320c37f8de247668c66744"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m3-modal-combination-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m3-modal-combination-implementation.json",
+          "bytes": 4188,
+          "sha256": "52348f4809ad8fdc580dee8ad2f619446010fd90eea8fcddf263f8c21e683b20"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m4-six-dof-mass-rsa-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m4-six-dof-mass-rsa-implementation.json",
+          "bytes": 4374,
+          "sha256": "7ff622ce42f5e8f827f015abb8e925ca9bfc3f3517e34e36758e7b9c034dd698"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m5-membrane-stress-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m5-membrane-stress-implementation.json",
+          "bytes": 4279,
+          "sha256": "1537f5c21abbbdaf81b4dbce533a99db20b29b4bbc303915d538996d693c6498"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m6-distorted-membrane-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m6-distorted-membrane-implementation.json",
+          "bytes": 4286,
+          "sha256": "19a1c00b30b07f014e2395782c9b931ddec909d51dd60a003bff051f9062ba4c"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m7-thin-plate-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m7-thin-plate-implementation.json",
+          "bytes": 4272,
+          "sha256": "3184d22aa024e9be91520dc4ce889f5b3be3aab861c84d204c1ed5bfe57e0184"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m8-thick-plate-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m8-thick-plate-implementation.json",
+          "bytes": 4282,
+          "sha256": "60d958899f874940a6390dc43575bacd697deed25a69ed26b66ffb449411e0b1"
+        },
+        {
+          "source": "reports/validation-evidence/phase14/p14-m9-shell-stabilization-implementation.json",
+          "target": "verification/evidence/validation/phase14/p14-m9-shell-stabilization-implementation.json",
+          "bytes": 4294,
+          "sha256": "d57b7a40a2a852d94d929b321de2129f25fde30c839c399017071d7754355838"
+        },
+        {
+          "source": "reports/validation-evidence/phase15/p15-m0-corrective-baseline.json",
+          "target": "verification/evidence/validation/phase15/p15-m0-corrective-baseline.json",
+          "bytes": 32696,
+          "sha256": "7a850f85d8b22bcf34551025eaa160887517b1cb1b336e937005939d6736ef26"
+        },
+        {
+          "source": "reports/validation-evidence/phase15/p15-m8-architecture-audit.json",
+          "target": "verification/evidence/validation/phase15/p15-m8-architecture-audit.json",
+          "bytes": 33781,
+          "sha256": "876ca543161c922be0bbb15d83a1d1d86252e97ce93b2efdf8a4c2c0b2248fcc"
+        },
+        {
+          "source": "reports/validation-evidence/phase15/p15-m8-architecture.json",
+          "target": "verification/evidence/validation/phase15/p15-m8-architecture.json",
+          "bytes": 31888,
+          "sha256": "345b40f4016103ec6592e7f6af2d22285018c4e13b81a2f1f9111f8ef782ee1c"
+        },
+        {
+          "source": "reports/validation-evidence/phase15/p15-m9-determinism-evidence.json",
+          "target": "verification/evidence/validation/phase15/p15-m9-determinism-evidence.json",
+          "bytes": 3380,
+          "sha256": "e8ad4e0542820350ea70e431d58a828cff0981f4e9930746d6b1d64d6debf5ee"
+        },
+        {
+          "source": "reports/validation-evidence/phase15/p15-m9-full-regression-evidence.failed-p12-inventory-403-vs-404.json",
+          "target": "verification/evidence/validation/phase15/p15-m9-full-regression-evidence.failed-p12-inventory-403-vs-404.json",
+          "bytes": 3237,
+          "sha256": "fb74fb9026c6538f00224e0882a70abdd898f9d1a5c920d0921516ccaaf7797f"
+        },
+        {
+          "source": "reports/validation-evidence/phase15/p15-m9-full-regression-evidence.json",
+          "target": "verification/evidence/validation/phase15/p15-m9-full-regression-evidence.json",
+          "bytes": 3207,
+          "sha256": "575fa240551ca35ffdbd600f5fecfec1162ba2af379da2d93d9d1de5dc541fab"
+        },
+        {
+          "source": "reports/validation-evidence/phase15/p15-m9-release-input.json",
+          "target": "verification/evidence/validation/phase15/p15-m9-release-input.json",
+          "bytes": 1509,
+          "sha256": "f8931e4a62e617f300d0edc7d214e7a701ae10567e1267487da57911f4f192b9"
+        },
+        {
+          "source": "reports/validation-evidence/phase15/p15-m9-release-manifest.json",
+          "target": "verification/evidence/validation/phase15/p15-m9-release-manifest.json",
+          "bytes": 32612,
+          "sha256": "fc562d49885972d0a246a968dcdf09e38b6e6b3171af1f8643391109829acab9"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m0-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m0-code-review.md",
+          "bytes": 1830,
+          "sha256": "0dffafcf2abfb52a7c0224d140a18553d6a1e0e79f32e1959f92e91f549a1419"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m0-governance.json",
+          "target": "verification/evidence/validation/phase8/p8-m0-governance.json",
+          "bytes": 1243,
+          "sha256": "f9dc14bf8d91e9d6d7fe5061679b9d14055bd4c478f44e1959738f289c0dc016"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m0-reference-profile.json",
+          "target": "verification/evidence/validation/phase8/p8-m0-reference-profile.json",
+          "bytes": 915,
+          "sha256": "392c4dfcdb2bb3327331cbc04909f84dee0cd3437c9e744ae26832408241ac55"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m1-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m1-code-review.md",
+          "bytes": 3754,
+          "sha256": "6c3e51e5416580e504b7cc6d6f6b42ddf5268dbb75993b8623375c6bca9e3d86"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m1-domain-state.json",
+          "target": "verification/evidence/validation/phase8/p8-m1-domain-state.json",
+          "bytes": 2992,
+          "sha256": "d21a70bdc1e42d720e5bb993289fd70586f723e588a482c19588bfee79835885"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m10-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m10-code-review.md",
+          "bytes": 4445,
+          "sha256": "0e3cc51cf6c041a4be041d54ddace2906a384ff5a7d1bb4097bb4507d3cd8fa1"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m10-ui-api.json",
+          "target": "verification/evidence/validation/phase8/p8-m10-ui-api.json",
+          "bytes": 4011,
+          "sha256": "89a7eae1bfbe25c012fc44b1e5b2b4ef0580c59aec4098f73f0659bd625959df"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m11-code-review.json",
+          "target": "verification/evidence/validation/phase8/p8-m11-code-review.json",
+          "bytes": 1455,
+          "sha256": "beba0a321f77a51a92141ed154591b7588c232af1979eee481ee3039e425b5c8"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m11-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m11-code-review.md",
+          "bytes": 2254,
+          "sha256": "4c30d079853cb3791021803cfa4405cf4ac32192f51dfee92049d3b3f866670d"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m11-independent-reference.json",
+          "target": "verification/evidence/validation/phase8/p8-m11-independent-reference.json",
+          "bytes": 5010,
+          "sha256": "b19ac6b086c6482681199813c18ab6c7f8fa4b355bade830ac7b10549dec79e2"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m11-qualification-release.json",
+          "target": "verification/evidence/validation/phase8/p8-m11-qualification-release.json",
+          "bytes": 6590,
+          "sha256": "2e6ee072a0b21d493189d47d056f9146509a8d403c0a3cf379d94e4c4adba306"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m2-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m2-code-review.md",
+          "bytes": 3541,
+          "sha256": "a65cd2eeffc5432e2ce75b0f0f23eb72e3737c401e398a7a6ff071f8a6bac716"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m2-equilibrium.json",
+          "target": "verification/evidence/validation/phase8/p8-m2-equilibrium.json",
+          "bytes": 2969,
+          "sha256": "0770906390d375fdddf1e6f979ba934a0a78caecc007854a85578f34bea0492f"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m3-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m3-code-review.md",
+          "bytes": 4628,
+          "sha256": "a962f8c9cd6e1a82cef22939a3570874bd4f8d6b2386ebb7d486527b5a5f7db5"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m3-corotational.json",
+          "target": "verification/evidence/validation/phase8/p8-m3-corotational.json",
+          "bytes": 4484,
+          "sha256": "697310c2adde1556dad4877808bc4bf3ff19709f5a889d5b45c95ecabe3ba2fa"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m4-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m4-code-review.md",
+          "bytes": 5098,
+          "sha256": "528969ced56e40331a07242b4c76fda3a1df12e0d7e8d7c29b997e69ce6d01ab"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m4-concentrated-hinge.json",
+          "target": "verification/evidence/validation/phase8/p8-m4-concentrated-hinge.json",
+          "bytes": 4058,
+          "sha256": "20452a233d200d6d4928e324604da5b3ce08ff7db77f57da755b232860516e43"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m5-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m5-code-review.md",
+          "bytes": 2315,
+          "sha256": "a899aea58baac9c55a79e34763e9d58b509ccf1c6ea23e496ac6ffa5b76abc2f"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m5-formal-pushover.json",
+          "target": "verification/evidence/validation/phase8/p8-m5-formal-pushover.json",
+          "bytes": 3322,
+          "sha256": "6747c4d720d9c4ba0fb87937de7ff9fd611676bc42649a757222ea5bfee8dfe8"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m6-1-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m6-1-code-review.md",
+          "bytes": 3958,
+          "sha256": "5c053f46ed0425981a296e6c7164475fe4b9d675618dff0207a834b903cee6b7"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m6-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m6-code-review.md",
+          "bytes": 6969,
+          "sha256": "0c0028dd3cc8682156101d8abac0488ae669cd5afb8a57ca26e671a7fa1375f1"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m6-fiber-pmm.json",
+          "target": "verification/evidence/validation/phase8/p8-m6-fiber-pmm.json",
+          "bytes": 3579,
+          "sha256": "117695974e477402f8c4dc99c3d8eb39c514914b543cdf06f16f5a5327d5a3bb"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m6-pmm-runtime.json",
+          "target": "verification/evidence/validation/phase8/p8-m6-pmm-runtime.json",
+          "bytes": 4624,
+          "sha256": "4d3d6ac5b9667ade787e3d023935bb174571789d3fc620026dd72a93b3eac81a"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m7-arc-cyclic.json",
+          "target": "verification/evidence/validation/phase8/p8-m7-arc-cyclic.json",
+          "bytes": 3198,
+          "sha256": "09651b1d271e78c32ddee825bdb5ed3d7c4d78b3ead103a2b5bc8dafdad9e821"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m7-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m7-code-review.md",
+          "bytes": 5629,
+          "sha256": "c637cce67f434a50c7dae5a29ec45c10c9d0502c46403ec8894d3862e73c17f5"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m8-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m8-code-review.md",
+          "bytes": 7442,
+          "sha256": "23a0e868f49789ce7717c1a5d24013f6e61ca280a1ef57c5ca196f0442fe9733"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m8-mdof-nlth.json",
+          "target": "verification/evidence/validation/phase8/p8-m8-mdof-nlth.json",
+          "bytes": 3422,
+          "sha256": "75aee78e252cbdce67b0912db46fc224ec05a563f3e5fb26538d4b01f2297d58"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m9-code-review.md",
+          "target": "verification/evidence/validation/phase8/p8-m9-code-review.md",
+          "bytes": 3045,
+          "sha256": "4302b9f291f6fbd6bb014bbbd7029186bc386f33cff18e24e6678b49a8bd090f"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/p8-m9-integration-recovery.json",
+          "target": "verification/evidence/validation/phase8/p8-m9-integration-recovery.json",
+          "bytes": 5135,
+          "sha256": "73d52a29e992a9fb0d6d0416c18bb5d95740f9eb9dd5798c45eb2185906bbfab"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/performance/p8-m11-reference-measurement.json",
+          "target": "verification/evidence/validation/phase8/performance/p8-m11-reference-measurement.json",
+          "bytes": 597695,
+          "sha256": "970f235c19f86f062d4ea7b68afe9412c77127e4c86abce541c3882337400fbd"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/p8-m11-pilot-summary.json",
+          "target": "verification/evidence/validation/phase8/pilots/p8-m11-pilot-summary.json",
+          "bytes": 1489,
+          "sha256": "eca54e0a93bd05a99f0dc8d257e58289f5c0c549e8843fee8ab89e9eb6ab26d0"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-DYN-01.artifact.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-DYN-01.artifact.json",
+          "bytes": 5789,
+          "sha256": "a77d71eadaf6af1936b84f421011cae4a94b9a1c3299c6b22a56f559c4635d5a"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-DYN-01.package.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-DYN-01.package.json",
+          "bytes": 9811,
+          "sha256": "94404807f487d4dea6d64b791752c5d909f96f1b01c5a0a67f50048d31518d32"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-DYN-01.run.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-DYN-01.run.json",
+          "bytes": 15419,
+          "sha256": "299fe42fa5d70df973a5c964523f4db7d134b6568099052c0f52ead3278d2b71"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-RC-01.artifact.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-RC-01.artifact.json",
+          "bytes": 4501,
+          "sha256": "af6c0542a116c63882d752a6cb966db568834df66496c24cad4e639da7229228"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-RC-01.package.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-RC-01.package.json",
+          "bytes": 17291,
+          "sha256": "1ee3cfb96c13981640b6166828456238e67b0b0beb8788e92797871aab15276f"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-RC-01.run.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-RC-01.run.json",
+          "bytes": 10510,
+          "sha256": "9431797ad962dfb511d32e5513a4dd4aeaadcd510c6e65c8b48d81b4dc54b2c4"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-ST-01.artifact.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-ST-01.artifact.json",
+          "bytes": 4625,
+          "sha256": "b42f0999bfd340fe4c9074a6e32e6d8da359f0d6d4ee095ac1d5d4d9bde979f0"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-ST-01.package.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-ST-01.package.json",
+          "bytes": 10891,
+          "sha256": "4e6e1be0d2550853aabd8734c42fd39154239f8a60df8f3c922322b01a281431"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-ST-01.run.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-ST-01.run.json",
+          "bytes": 10910,
+          "sha256": "ed0ffa46fa1f25a46cbc58355280fd0b1082454a72318738d1f2d144cf71cadb"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-ST-02.artifact.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-ST-02.artifact.json",
+          "bytes": 6313,
+          "sha256": "8906899ed1f7061139499c1657db98c9db21c0be20006ff09188b8a7d1063579"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-ST-02.package.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-ST-02.package.json",
+          "bytes": 12905,
+          "sha256": "4dab3cd2289f5ea12b16758c51a556ab1f48395c208d7db0dbb281ab53ceb316"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-ST-02.run.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-ST-02.run.json",
+          "bytes": 17290,
+          "sha256": "ec8e2e748eb537d6ba962b6ea4330bd16fc59ad79297af02ed8b6fb8359514dd"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-ST-03.artifact.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-ST-03.artifact.json",
+          "bytes": 2493,
+          "sha256": "a60a31809936e1bed6f80cf37c3218ff4df21f303aabd0479103140cb9394f45"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-ST-03.package.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-ST-03.package.json",
+          "bytes": 10836,
+          "sha256": "6f5e5ef6df8d088b1a90be1e36e6f897819003640b7f7ebd3237e440d4d636fe"
+        },
+        {
+          "source": "reports/validation-evidence/phase8/pilots/PILOT-ST-03.run.json",
+          "target": "verification/evidence/validation/phase8/pilots/PILOT-ST-03.run.json",
+          "bytes": 5286,
+          "sha256": "1e9740256e97b1d742179302be5ca971dc471b4536653dbfabe7416bfa21a0fa"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m0-baseline.json",
+          "target": "verification/evidence/validation/phase9/p9-m0-baseline.json",
+          "bytes": 17558,
+          "sha256": "d4aeade543ae2f803a17fa07ff2a80eab726e897cdb84bcff820515abe7fa79a"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m0-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m0-code-review.md",
+          "bytes": 2637,
+          "sha256": "49a345466d1c7e3077201cf58e6df58e1577f535e3f2d2ea67970c2657d69446"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m0-debt-inventory.json",
+          "target": "verification/evidence/validation/phase9/p9-m0-debt-inventory.json",
+          "bytes": 23235,
+          "sha256": "b163bc5fc3383a984df76f04ffb01cde02ddb15b433d96368110d03be93206aa"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m1-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m1-code-review.md",
+          "bytes": 3277,
+          "sha256": "a9fc92d26953ce4fc9e1b28fbaac1b3d937ab4cecac90d3f65ad2731126ad096"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m1-common-compute.json",
+          "target": "verification/evidence/validation/phase9/p9-m1-common-compute.json",
+          "bytes": 6248,
+          "sha256": "ebfde4b5d7ac580331e39f9f946ef6e11d9c005ef97288982fd44c2b6e83d4eb"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m10-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m10-code-review.md",
+          "bytes": 2392,
+          "sha256": "c2adda8ceaa4193b95c545447ea57890b97540c3d5a38dde67abe9026a50203c"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m10-final-debt.json",
+          "target": "verification/evidence/validation/phase9/p9-m10-final-debt.json",
+          "bytes": 6504,
+          "sha256": "2536f083474e920e973099b794937f0020b82d35b0db2766c79502e2b9bd687d"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m10-release-gate.json",
+          "target": "verification/evidence/validation/phase9/p9-m10-release-gate.json",
+          "bytes": 7367,
+          "sha256": "f5073400a15035b920f0773642ec507d82579f257884a7dcb15a99178ab270f2"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m2-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m2-code-review.md",
+          "bytes": 3232,
+          "sha256": "fe54915284b434b93d5a7d58051e61254b5a8fe617ef846df3e2b4946f3a4a15"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m2-cpu-wasm.json",
+          "target": "verification/evidence/validation/phase9/p9-m2-cpu-wasm.json",
+          "bytes": 5273,
+          "sha256": "edc95b992caad5684ce7812d5d6c8ef3359ab1cee978dbf0d084a965e2d97ebd"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m3-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m3-code-review.md",
+          "bytes": 4362,
+          "sha256": "de11dae78b29e0fa2815d1556bfa8ea9c20b67602b3f62b44cb3ebcb512cd6ec"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m3-elastic-runtime.json",
+          "target": "verification/evidence/validation/phase9/p9-m3-elastic-runtime.json",
+          "bytes": 7823,
+          "sha256": "0af68542be1097df7bd298384a9bed551b77913858c50e85e162a7b2e28d3dbe"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m4-browser-raw.json",
+          "target": "verification/evidence/validation/phase9/p9-m4-browser-raw.json",
+          "bytes": 11907,
+          "sha256": "7187afdc953fd0e5d65d05f08ca773e5ecce042e0d447779e795624eb9383b18"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m4-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m4-code-review.md",
+          "bytes": 2838,
+          "sha256": "33b2d57a57b7a0d788d942571dfb5d4a81aae99aea1d53014cc8abef31d0c85d"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m4-webgpu-foundation.json",
+          "target": "verification/evidence/validation/phase9/p9-m4-webgpu-foundation.json",
+          "bytes": 25964,
+          "sha256": "23b34817b00dda8cc503376c7bd70e65bf1760df9e3eee4e30d92fbe98cd5113"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m5-browser-raw.json",
+          "target": "verification/evidence/validation/phase9/p9-m5-browser-raw.json",
+          "bytes": 5499,
+          "sha256": "239a4bfce8972fa715fd2bba51f4dd83a2c58e8c2e24b29ed7dd13c15cb37bdf"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m5-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m5-code-review.md",
+          "bytes": 3421,
+          "sha256": "1c9f12aa783277f31d2d98c57eda017c4b9a7bc14440645da671325b09c37c84"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m5-hybrid-elastic.json",
+          "target": "verification/evidence/validation/phase9/p9-m5-hybrid-elastic.json",
+          "bytes": 15556,
+          "sha256": "adbe9d8285e2b548b87724a0ae653bd40647bcfa2bfd64a7ea3950ee8e468bbf"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m6-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m6-code-review.md",
+          "bytes": 3504,
+          "sha256": "7fc82af5a05057f5447121b496da2516d15f509f2888076d17ded1b31ee03ca5"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m6-sparse-eigen.json",
+          "target": "verification/evidence/validation/phase9/p9-m6-sparse-eigen.json",
+          "bytes": 5741,
+          "sha256": "cbf54652f09f0fa93f054185110a3c819a47576d7367995c9c08a628dd6701f1"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m7-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m7-code-review.md",
+          "bytes": 2248,
+          "sha256": "bfa3ad9175ef66f833041bfc67b9b1351055f965bdea6c1ea9d0560ffd055a39"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m7-nonlinear-batch.json",
+          "target": "verification/evidence/validation/phase9/p9-m7-nonlinear-batch.json",
+          "bytes": 5683,
+          "sha256": "74ec4f1011c18bb9101bcd387f3447bd87f2154b4503bfab65fc59f3a8564afb"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m8-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m8-code-review.md",
+          "bytes": 1764,
+          "sha256": "5981860ca616adafec3f14d425c6fb2bf8c437fc6303608d26204494de8d114e"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m8-hybrid-nonlinear.json",
+          "target": "verification/evidence/validation/phase9/p9-m8-hybrid-nonlinear.json",
+          "bytes": 8945,
+          "sha256": "770688b958db3d706ed16060c58787ee9e43ee0176a1c855147666a9ff8029c5"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m9-code-review.md",
+          "target": "verification/evidence/validation/phase9/p9-m9-code-review.md",
+          "bytes": 2110,
+          "sha256": "4dd239bf7d68c301988e0c863512b83e329395d51fba53eda9ac58aa863aa16d"
+        },
+        {
+          "source": "reports/validation-evidence/phase9/p9-m9-product-workflow.json",
+          "target": "verification/evidence/validation/phase9/p9-m9-product-workflow.json",
+          "bytes": 5104,
+          "sha256": "6f0d4bfe836cc6407795804fba51bf384fb1929ebca19bf47e82d2322472b911"
+        },
+        {
+          "source": "reports/validation-evidence/scale-limits.json",
+          "target": "verification/evidence/validation/scale-limits.json",
+          "bytes": 1204,
+          "sha256": "0b6fa905fea2260f9676c28ca90654b7c323c65567496601235bca8dc2dd7f85"
+        }
+      ]
+    },
+    {
+      "id": "strix21-runs",
+      "source": "reports/benchmark-evidence/strix21",
+      "target": "verification/benchmarks/strix21/runs",
+      "fileCount": 2,
+      "byteCount": 221180,
+      "treeHash": "7b03262fa4ee8ad6eb4b413a52f3f50c12fb98b6f6362db3a8414aaed542f159",
+      "files": [
+        {
+          "source": "reports/benchmark-evidence/strix21/first-batch-results.json",
+          "target": "verification/benchmarks/strix21/runs/first-batch-results.json",
+          "bytes": 207182,
+          "sha256": "b28f19955a7e0d0d5647bafe6f932e907d1a965ef17b295130ea900335854843"
+        },
+        {
+          "source": "reports/benchmark-evidence/strix21/S-Structures_STRIX21_1차_비교보고서.md",
+          "target": "verification/benchmarks/strix21/runs/S-Structures_STRIX21_1차_비교보고서.md",
+          "bytes": 13998,
+          "sha256": "11db3298ce6b7463dc8abfd511ed44821db622cf0f610e311a27994667fc90f1"
+        }
+      ]
+    }
+  ]
+}

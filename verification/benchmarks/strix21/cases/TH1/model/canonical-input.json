@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "p17-canonical-input-v1",
+  "caseId": "TH1",
+  "artifactStatus": "NOT_PREPARED",
+  "payloadAbsent": true,
+  "releaseAllowed": false,
+  "canonicalUnitSystem": "SI_KN_M_S_RAD",
+  "entities": {
+    "nodes": [],
+    "elements": [],
+    "materials": [],
+    "sections": [],
+    "constraints": [],
+    "loadCases": [],
+    "loads": [],
+    "masses": [],
+    "analysisCases": []
+  },
+  "silentDefaults": {
+    "status": "NOT_LOCKED",
+    "items": []
+  },
+  "reasonCodes": [
+    "P17_MODEL_NOT_BUILT",
+    "P17_M1_FRAMEWORK_ONLY_NO_BENCHMARK_EXECUTION"
+  ]
+}

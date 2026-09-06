@@ -1,0 +1,33 @@
+{
+  "version": "p17-reviewer-attestation-v1",
+  "attestationId": "sb1-local-20260828t114933160z-referencereviewer-2",
+  "caseId": "SB1",
+  "role": "referenceReviewer",
+  "reviewerId": "sb1-local-20260828t114933160z-principal-3",
+  "keyId": "sb1-local-20260828t114933160z-key-3",
+  "issuedAt": "2026-08-28T11:49:33.160Z",
+  "scope": {
+    "decision": "APPROVE",
+    "artifactHashes": [
+      "0d18e8293d1d19abe56a579acc46e3aad53d3812b33a06828c221068c8a768df",
+      "21239725b0b4d5c812241cea7e1002acf47ea3e4f2a5d928c1d3b3c555a813c4",
+      "2c52f07e4098030dfd1c344a400a32cd852abcb4165dd22780666ae3e1b8bd38",
+      "3426f0ca37356abf3b1520bffd45bc590d9cd2ae65943a1a49155e62985b332c",
+      "4577ca39c7cc7dcfa654eee66639b693fa3aeb626add22cf1f0418470f4d905c",
+      "4abb45839d8182b5e23aa074595a3eaf58f268b1b555b708495c39b2eda97f77",
+      "5337a3409be1139671b1b56860ca163d53f0eea8a17b7d98946e6dc2fbe10713",
+      "68056b8068485ff9efb8e318ce11aaf8a706d91132a0e48063f4ac8611d62f8e",
+      "a1caa8bfe21bc59d9f145c3641c934507fe196881e2d2e5edc7423c7e31e664e",
+      "a7e871e91a3e3014a40f02b571030476906f580d6e8b26cf013d3b1294e21a0f",
+      "dc5d3265795c9e600052db99c791c85f93890bc78f736c801452989a7446acf2",
+      "e5e99099c33532ec1fbbae81f18f60a2234584a00d30192fa22090b1a3112fdd",
+      "ea5a392f1ef04ee3cadb67e0d302371f706eab6fe1b78c49c013c171b5b5b70a",
+      "ed0a748a66d4dfdcaa8bdc67664772a6ccdfc9768b350b44fdbad2eaaff699ce",
+      "ff678e5ee287794458f3392f64628f212bc6c32c301d4add66177a554e31855d"
+    ],
+    "claimBoundary": "LOCAL_TEST_ONLY_SELF_CUSTODIED_CRYPTOGRAPHIC_APPROVAL_NOT_INDEPENDENT_EXTERNAL_REVIEW"
+  },
+  "payloadHash": "ee1fbf2f97a9cc27442301fcc7fc3d2baf3bd4673a911d1d863869573c15d631",
+  "signatureBase64": "b69uupl8yeRJ001gBKUc8mDj/NccMVXfuoPCIZJw67PMRVZx+bf22EOvbaiZCBwTdqzbsuiho9iGfQYUWF0LBw==",
+  "attestationHash": "84eb0bc0addb4b311fd54775e4d7ed6ae9da0021f2abe27089e237128540c133"
+}

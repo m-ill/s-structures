@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/report-manifest-schema.json",
+  "title": "Phase 17 immutable-evidence-only report manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "caseId",
+    "runId",
+    "status",
+    "mode",
+    "evidenceBinding",
+    "comparisonBinding",
+    "captureIndexBinding",
+    "outputs",
+    "reportSnapshotHash",
+    "solverExecutionAllowed",
+    "comparisonCalculationAllowed",
+    "reasonCodes",
+    "reportManifestHash"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "p17-report-manifest-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "runId": { "type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{5,127}$" },
+    "status": { "enum": ["NOT_GENERATED", "GENERATED"] },
+    "mode": { "const": "IMMUTABLE_EVIDENCE_ONLY" },
+    "evidenceBinding": { "$ref": "#/$defs/nullableBinding" },
+    "comparisonBinding": { "$ref": "#/$defs/nullableBinding" },
+    "captureIndexBinding": { "$ref": "#/$defs/nullableBinding" },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["markdownPath", "markdownHash", "pdfPath", "pdfHash"],
+      "properties": {
+        "markdownPath": { "type": ["string", "null"], "minLength": 1 },
+        "markdownHash": { "$ref": "#/$defs/nullableSha256" },
+        "pdfPath": { "type": ["string", "null"], "minLength": 1 },
+        "pdfHash": { "$ref": "#/$defs/nullableSha256" }
+      }
+    },
+    "reportSnapshotHash": { "$ref": "#/$defs/nullableSha256" },
+    "solverExecutionAllowed": { "const": false },
+    "comparisonCalculationAllowed": { "const": false },
+    "reasonCodes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" }
+    },
+    "reportManifestHash": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nullableSha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "nullableBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": ["string", "null"], "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/nullableSha256" }
+      }
+    }
+  }
+}

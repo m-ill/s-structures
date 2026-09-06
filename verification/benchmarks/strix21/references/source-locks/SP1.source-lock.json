@@ -1,0 +1,101 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "SP1",
+  "ordinal": 19,
+  "official": true,
+  "family": "NONLINEAR-PUSHOVER",
+  "title": "Pushover cantilever moment hinge (CSI 1-026, moment-hinge scope)",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+      "locator": "CSI SAP2000 Software Verification Example 1-026 'Frame – Moment and Shear Hinges' (PDF confirmed, devplan §12.7) — moment-hinge backbone (My/Mc/Mr/thetaC) taken verbatim from CSI's published figure. The independent target values below are NOT CSI's own published 'Independent' column (those include a GAv shear term and a 0.4in shear-hinge plastic term with no STRIX counterpart — STRIX has no discrete shear hinge). Re-derived from scratch by sp1Theory()/sp1UzRyAt() using the SAME unit-load method (Cook & Young 1985 p.244, as CSI itself cites) minus the shear terms, with the elastic term using STRIX's actual body stiffness EI_mod=(11/10)×EI (TclBuilder.ts N_FAC=10 series-stiffness correction, RC-column FEMA lumped-hinge branch) and the hinge rotation taken from the REAL production convertFemaToModIMK() clamp output (csi mode, -10%Ke), not assumed.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SP1.html",
+        "byteLength": 27927,
+        "sha256": "71854ed23f786af5efd41ccda8871dbe6abca9ca6556de73358a2a09905a2625"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 52,
+        "printedPageEnd": 55
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SP1.pdf",
+        "byteLength": 130584,
+        "sha256": "4c24181f26b87fcb427300a44b7aa7521fc264daeb1b5826e61df6d92f9a41be",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 4
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "1%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Tip Uz at Point1 (P=My/L, elastic boundary) (mm)",
+      "probe": "step0.ctrlDisp",
+      "strix": "5",
+      "reference": "5",
+      "delta": "−0.0000071%"
+    },
+    "resultRowCount": 5
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_5_OF_5",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": null,
+    "htmlRunDate": "2026-07-11",
+    "htmlRecordLocator": "records/SP1.json",
+    "htmlArchive": "verif-evidence-eng1.0.2-win-x64.zip · SP1/",
+    "htmlArchiveVersion": "1.0.2",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": true
+  },
+  "referenceLane": {
+    "class": "R3_INDEPENDENT_RECONSTRUCTION_REQUIRED",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED",
+    "HTML_ENGINE_V1_0_4_WITH_V1_0_2_RUN_OR_ARCHIVE_METADATA"
+  ],
+  "sourceLockHash": "248adc1722c19ad596e3c390d72e5b370b1fe9a19fab674cf99101f005a7aff4"
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s-structures://phase14/evidence-schema-v1",
+  "title": "S-Structures Phase 14 Evidence",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["version", "phase", "milestone", "status", "sourceRevision", "dirtySummary", "baseline", "verificationRecords", "artifactHash"],
+  "properties": {
+    "version": { "type": "string", "pattern": "^p14-" },
+    "phase": { "const": "Phase 14" },
+    "milestone": { "type": "string", "pattern": "^P14-M(?:[0-9]|1[01])$" },
+    "status": { "enum": ["PASS", "FAIL", "BLOCKED", "NOT_RUN", "INVALIDATED"] },
+    "sourceRevision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "dirtySummary": {
+      "type": "object",
+      "required": ["modified", "added", "deleted", "renamed", "untracked"],
+      "additionalProperties": false,
+      "properties": {
+        "modified": { "type": "integer", "minimum": 0 },
+        "added": { "type": "integer", "minimum": 0 },
+        "deleted": { "type": "integer", "minimum": 0 },
+        "renamed": { "type": "integer", "minimum": 0 },
+        "untracked": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "verificationRecords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^P14-" },
+          "status": { "enum": ["PASS", "FAIL", "BLOCKED", "NOT_RUN", "INVALIDATED"] }
+        }
+      }
+    },
+    "artifactHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

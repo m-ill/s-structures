@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "p18-engine-input-snapshot-v1",
+  "caseId": "SM5b",
+  "qualificationScope": "S-Structures production-engine input snapshot; not an assertion of full STRIX model equivalence",
+  "method": "production 3-D frame with five rigid Ux-Uy-Rz diaphragms and eccentric column stiffness",
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/dynamics/modalDiaphragm.js"
+  ],
+  "input": {
+    "storeys": 5,
+    "columnsPerStorey": 4,
+    "planM": [
+      8,
+      5
+    ],
+    "storeyHeightM": 3,
+    "inertiaMultipliersAtCorners": [
+      1,
+      1.6,
+      3.1,
+      2.3
+    ],
+    "identifiedNodeMassT": 5.45972586944271,
+    "identificationQualification": "CORNER_ORDER_SELECTED_BY_MODES_2_TO_6_AND_MASS_SCALE_IDENTIFIED_FROM_MODE_1_BECAUSE_PUBLIC_CASE_OMITS_BOTH",
+    "candidateRmsErrorsPct": [
+      {
+        "multipliers": [
+          1,
+          1.6,
+          3.1,
+          2.3
+        ],
+        "rmsModes2to6": 0.9511280611756795
+      },
+      {
+        "multipliers": [
+          1.6,
+          1,
+          2.3,
+          3.1
+        ],
+        "rmsModes2to6": 0.9511280611756795
+      },
+      {
+        "multipliers": [
+          2.3,
+          3.1,
+          1.6,
+          1
+        ],
+        "rmsModes2to6": 0.9511280611756795
+      },
+      {
+        "multipliers": [
+          3.1,
+          2.3,
+          1,
+          1.6
+        ],
+        "rmsModes2to6": 0.9511280611756795
+      },
+      {
+        "multipliers": [
+          1,
+          1.6,
+          2.3,
+          3.1
+        ],
+        "rmsModes2to6": 6.912042031749343
+      },
+      {
+        "multipliers": [
+          1.6,
+          1,
+          3.1,
+          2.3
+        ],
+        "rmsModes2to6": 6.912042031749343
+      },
+      {
+        "multipliers": [
+          2.3,
+          3.1,
+          1,
+          1.6
+        ],
+        "rmsModes2to6": 6.912042031749343
+      },
+      {
+        "multipliers": [
+          3.1,
+          2.3,
+          1.6,
+          1
+        ],
+        "rmsModes2to6": 6.912042031749343
+      },
+      {
+        "multipliers": [
+          1.6,
+          2.3,
+          3.1,
+          1
+        ],
+        "rmsModes2to6": 10.672764547846983
+      },
+      {
+        "multipliers": [
+          2.3,
+          1.6,
+          1,
+          3.1
+        ],
+        "rmsModes2to6": 10.672764547846983
+      },
+      {
+        "multipliers": [
+          3.1,
+          1,
+          1.6,
+          2.3
+        ],
+        "rmsModes2to6": 10.672764547846983
+      },
+      {
+        "multipliers": [
+          1,
+          3.1,
+          2.3,
+          1.6
+        ],
+        "rmsModes2to6": 10.672764547847015
+      },
+      {
+        "multipliers": [
+          1,
+          3.1,
+          1.6,
+          2.3
+        ],
+        "rmsModes2to6": 11.847532716151886
+      },
+      {
+        "multipliers": [
+          1.6,
+          2.3,
+          1,
+          3.1
+        ],
+        "rmsModes2to6": 11.847532716151887
+      },
+      {
+        "multipliers": [
+          2.3,
+          1.6,
+          3.1,
+          1
+        ],
+        "rmsModes2to6": 11.847532716151887
+      },
+      {
+        "multipliers": [
+          3.1,
+          1,
+          2.3,
+          1.6
+        ],
+        "rmsModes2to6": 11.847532716151887
+      },
+      {
+        "multipliers": [
+          1,
+          2.3,
+          3.1,
+          1.6
+        ],
+        "rmsModes2to6": 13.257048056185752
+      },
+      {
+        "multipliers": [
+          2.3,
+          1,
+          1.6,
+          3.1
+        ],
+        "rmsModes2to6": 13.257048056185752
+      },
+      {
+        "multipliers": [
+          1.6,
+          3.1,
+          2.3,
+          1
+        ],
+        "rmsModes2to6": 13.257048056185766
+      },
+      {
+        "multipliers": [
+          3.1,
+          1.6,
+          1,
+          2.3
+        ],
+        "rmsModes2to6": 13.257048056185766
+      },
+      {
+        "multipliers": [
+          1.6,
+          3.1,
+          1,
+          2.3
+        ],
+        "rmsModes2to6": 18.18910087711447
+      },
+      {
+        "multipliers": [
+          3.1,
+          1.6,
+          2.3,
+          1
+        ],
+        "rmsModes2to6": 18.18910087711447
+      },
+      {
+        "multipliers": [
+          1,
+          2.3,
+          1.6,
+          3.1
+        ],
+        "rmsModes2to6": 18.189100877114484
+      },
+      {
+        "multipliers": [
+          2.3,
+          1,
+          3.1,
+          1.6
+        ],
+        "rmsModes2to6": 18.189100877114484
+      }
+    ]
+  },
+  "publicSourceLimitations": [
+    "STRIX public package omits floor mass and corner-to-inertia-multiplier mapping; these are explicitly identified and not treated as independent acceptance data."
+  ],
+  "engineeringHash": "db85729e88c7b19e50cfdbd2f00ae88dd11aa661b8786fcfaf2c06e6c3ca69a1"
+}

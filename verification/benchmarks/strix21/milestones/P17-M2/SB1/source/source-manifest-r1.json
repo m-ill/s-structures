@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "p17-source-manifest-v1",
+  "caseId": "SB1",
+  "officialSuiteMember": true,
+  "status": "LOCKED",
+  "custodyBinding": {
+    "registryPath": "verification/benchmarks/strix21/suite-source-registry-r2.json",
+    "registryHash": "de4b442ab56af5b14a907d320b85281a04b3f66ab5f75f9073a3f563df09f79c",
+    "sourceLockPath": "verification/benchmarks/strix21/references/source-locks-r2/SB1.source-lock.json",
+    "sourceLockHash": "50ef3bdaafcc97ea93c64f932000ed5a6ed0cce3a18fb112551589d3ac376e95"
+  },
+  "extraction": {
+    "status": "COMPLETE",
+    "method": "MANUAL_TRANSCRIPTION",
+    "artifacts": [
+      {
+        "path": "STRIX-verification-21/html/SB1.html",
+        "sha256": "893bd6bde5de6d26335545d4973afb86beea5a8c143d1c2f861c481a6cce424b",
+        "role": "STRIX_PUBLISHED_HTML"
+      },
+      {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "role": "STRIX_MANUAL_PDF"
+      },
+      {
+        "path": "STRIX-verification-21/reports/SB1.pdf",
+        "sha256": "4c96038e5095bab05c8e6d05017b617b78853d4af8fad8f1128d0b219dc2d375",
+        "role": "STRIX_CASE_PDF"
+      }
+    ]
+  },
+  "transcription": {
+    "status": "COMPLETE",
+    "path": "verification/benchmarks/strix21/milestones/P17-M2/SB1/source/transcription-r1.md",
+    "valueCount": 18
+  },
+  "reasonCodes": []
+}
+

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/p17-m0-r2-claim-qualification-schema.json",
+  "title": "P17-M0 R2 claim qualification overlay",
+  "type": "object",
+  "required": ["version", "qualificationId", "auditDate", "status", "appliesTo", "supersededClaimFields", "stillAuthoritativeR2Fields", "replacementEvidence", "interpretation", "releaseAllowed", "finalDesignTransferAllowed", "qualificationHash"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": "p17-m0-r2-claim-qualification-v1" },
+    "qualificationId": { "const": "P17-M0-R2-CLAIM-QUALIFICATION-R1" },
+    "auditDate": { "type": "string", "format": "date" },
+    "status": { "const": "ACTIVE_APPEND_ONLY_QUALIFICATION" },
+    "appliesTo": {
+      "type": "object",
+      "required": ["baselinePath", "baselineHash", "sourceLocksPath", "sourceLockAggregateHash"],
+      "additionalProperties": false,
+      "properties": {
+        "baselinePath": { "const": "verification/evidence/validation/phase17/p17-m0-baseline-source-lock-r2.json" },
+        "baselineHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "sourceLocksPath": { "const": "verification/benchmarks/strix21/references/source-locks-r2/" },
+        "sourceLockAggregateHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "supersededClaimFields": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["fieldPattern", "historicalValue", "disposition", "replacementClaim"],
+        "additionalProperties": false,
+        "properties": {
+          "fieldPattern": { "type": "string", "pattern": "^source-locks-r2/\\*\\.contentAudit\\." },
+          "historicalValue": { "type": "string", "minLength": 10 },
+          "disposition": { "enum": ["UNQUALIFIED_NOT_REPRODUCED", "SUPERSEDED_METHOD_DESCRIPTION"] },
+          "replacementClaim": { "type": "string", "minLength": 50 }
+        }
+      }
+    },
+    "stillAuthoritativeR2Fields": { "type": "array", "minItems": 5, "maxItems": 5, "items": { "type": "string", "minLength": 15 } },
+    "replacementEvidence": {
+      "type": "object",
+      "required": ["path", "sha256", "auditHash", "authoritativeClaims"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "const": "verification/evidence/validation/phase17/p17-m0-source-value-presence-audit-r3.json" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "auditHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "authoritativeClaims": { "type": "array", "minItems": 6, "maxItems": 6, "items": { "type": "string", "minLength": 15 } }
+      }
+    },
+    "interpretation": { "type": "string", "minLength": 100 },
+    "releaseAllowed": { "const": false },
+    "finalDesignTransferAllowed": { "const": false },
+    "qualificationHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

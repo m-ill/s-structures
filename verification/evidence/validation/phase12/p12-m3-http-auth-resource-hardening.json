@@ -1,0 +1,37 @@
+{
+  "version": "p12-m3-http-auth-resource-hardening-v1",
+  "milestone": "P12-M3",
+  "generatedAt": "2026-08-03T00:00:00.000Z",
+  "status": "PASS",
+  "sourceRevision": "329342620edf053153de9fd38b15666998f8fca1",
+  "sourceTreeState": "milestone worktree on recorded parent revision",
+  "environmentProfile": {
+    "os": "Windows",
+    "node": "v24.16.0",
+    "productProfile": "source-loopback",
+    "tls": false,
+    "proxyTrust": false
+  },
+  "testCommand": "node tests/p12-m3-http-auth-resource-hardening.mjs",
+  "summary": {
+    "requiredHeadersMissing": 0,
+    "unsafeEvalPolicies": 0,
+    "badOriginAccepted": 0,
+    "badHostAccepted": 0,
+    "limitFalseSuccess": 0,
+    "quotaOrphans": 0,
+    "rawEmailOrCredentialLogMatches": 0,
+    "relatedRegressionFailures": 0
+  },
+  "verificationRecords": [
+    { "verificationId": "P12-HTTP-01", "status": "PASS" },
+    { "verificationId": "P12-HTTP-02", "status": "PASS" },
+    { "verificationId": "P12-HTTP-03", "status": "PASS" },
+    { "verificationId": "P12-AUTH-01", "status": "PASS" },
+    { "verificationId": "P12-QUOTA-01", "status": "PASS" },
+    { "verificationId": "P12-LOG-01", "status": "PASS" },
+    { "verificationId": "P12-READY-01", "status": "PASS" },
+    { "verificationId": "P12-COMPAT-01", "status": "PASS" }
+  ]
+}
+

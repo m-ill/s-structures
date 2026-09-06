@@ -1,0 +1,94 @@
+import assert from 'node:assert/strict';
+import { createFakeIndexDocument } from './helpers/fakeIndexDom.mjs';
+import { createFakeWindow } from './helpers/fakeAppWindow.mjs';
+import { bootTestApp } from './helpers/serverTestApp.mjs';
+import { createApiClient } from '../src/app/apiClient.js';
+import { createSessionState } from '../src/app/sessionState.js';
+import { createAppShell } from '../src/app/shell.js';
+import { buildImportCandidate, buildAgentManifest } from '../src/index.js';
+
+const app = await bootTestApp();
+try {
+  await app.api('POST', '/api/auth/register', { body: { email: 'import-ui@example.com', password: 'super-secret-pw', name: 'Import UI' } });
+  const login = await app.api('POST', '/api/auth/login', { body: { email: 'import-ui@example.com', password: 'super-secret-pw' } });
+  const token = login.data.data.token;
+  const project = await app.api('POST', '/api/projects', { token, body: { name: 'Import Review' } });
+  const projectId = project.data.data.project.id;
+
+  const invalidCandidateSave = await app.api('POST', `/api/projects/${projectId}/imports`, {
+    token,
+    body: { fileId: 'fixture-invalid', candidate: { version: 'wrong' }, audit: {} },
+  });
+  assert.equal(invalidCandidateSave.status, 400);
+  assert.equal(invalidCandidateSave.data.error.code, 'VALIDATION');
+  assert.ok(invalidCandidateSave.data.error.details.errors.includes('version'));
+
+  const candidate = buildImportCandidate({
+    source: { type: 'dxf', fileId: 'fixture-plan' },
+    stories: [{ id: 'S1', z: 0 }],
+    grids: [{ id: 'GX1', axis: 'X', position: 0 }],
+    nodes: [{ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 4, y: 0, z: 0 }],
+    members: [{ id: 'B1', kind: 'beam', from: 'N1', to: 'N2' }],
+    audit: { warnings: ['review required'] },
+  });
+  const saved = await app.api('POST', `/api/projects/${projectId}/imports`, { token, body: { fileId: 'fixture-plan', candidate, audit: candidate.audit } });
+  const jobId = saved.data.data.import.id;
+
+  const document = createFakeIndexDocument();
+  const window = createFakeWindow();
+  const mountPoint = document.createElement('div');
+  document.body.appendChild(mountPoint);
+  const api = createApiClient({ baseUrl: app.baseUrl, fetch, token });
+  const session = createSessionState({ storage: null, api });
+  await session.login('import-ui@example.com', 'super-secret-pw');
+  const shell = createAppShell({ window, document, api, session, mountPoint });
+  shell.navigate(`#/p/${projectId}/import/${jobId}`);
+  await shell.getCurrentView().refresh();
+
+  assert.equal(mountPoint.querySelector('[data-role="confirm-import"]').disabled, false);
+  assert.match(mountPoint.querySelector('[data-role="audit"]').textContent, /review required/);
+  assert.match(mountPoint.querySelector('[data-role="audit"]').textContent, /confirmable/);
+  assert.match(mountPoint.querySelector('[data-role="audit"]').textContent, /decision/);
+  assert.equal(shell.getCurrentView().getSummary().decision.pending, true);
+  assert.equal(shell.getCurrentView().getSummary().decision.confirmable, true);
+  assert.deepEqual(shell.getCurrentView().getSummary().counts, {
+    stories: 1,
+    grids: 1,
+    nodes: 2,
+    members: 1,
+  });
+  shell.getCurrentView().updateCandidate({ ...candidate, audit: candidate.audit }, 'agent adjusted candidate');
+  assert.match(shell.getCurrentView().getSummary().candidate.audit.reviewHistory[0].note, /agent adjusted/);
+  const invalidResolve = await app.api('PATCH', `/api/projects/${projectId}/imports/${jobId}`, {
+    token,
+    body: { status: 'confirmed', resolvedCandidate: { version: 'wrong' } },
+  });
+  assert.equal(invalidResolve.status, 400);
+  assert.equal(invalidResolve.data.error.code, 'VALIDATION');
+  await shell.getCurrentView().confirm();
+  const after = await app.api('GET', `/api/projects/${projectId}/imports/${jobId}`, { token });
+  assert.equal(after.data.data.import.status, 'confirmed');
+  assert.equal(shell.getCurrentView().getSummary().decision.accepted, true);
+
+  const rejectCandidate = buildImportCandidate({
+    source: { type: 'dxf', fileId: 'fixture-plan-reject' },
+    stories: [{ id: 'S1', z: 0 }],
+    grids: [{ id: 'GX1', axis: 'X', position: 0 }],
+    nodes: [{ id: 'N1', x: 0, y: 0, z: 0 }, { id: 'N2', x: 4, y: 0, z: 0 }],
+    members: [{ id: 'B1', kind: 'beam', from: 'N1', to: 'N2' }],
+    audit: { warnings: ['reject path review'] },
+  });
+  const rejectedSaved = await app.api('POST', `/api/projects/${projectId}/imports`, { token, body: { fileId: 'fixture-plan-reject', candidate: rejectCandidate, audit: rejectCandidate.audit } });
+  const rejectedJobId = rejectedSaved.data.data.import.id;
+  shell.navigate(`#/p/${projectId}/import/${rejectedJobId}`);
+  await shell.getCurrentView().refresh();
+  await shell.getCurrentView().reject();
+  assert.equal(shell.getCurrentView().getSummary().decision.rejected, true);
+  assert.equal(mountPoint.querySelector('[data-role="reject-import"]').disabled, true);
+  assert.match(mountPoint.querySelector('[data-role="audit"]').textContent, /already-rejected/);
+  assert.ok(buildAgentManifest().dataContracts.includes('phase3ImportReviewUi'));
+
+  console.log(JSON.stringify({ ok: true, version: 'p3-m7-import-review-ui', projectId, jobId }, null, 2));
+} finally {
+  await app.close();
+}

@@ -1,0 +1,101 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "SB10",
+  "ordinal": 9,
+  "official": true,
+  "family": "STATIC-TRUSS",
+  "title": "Asymmetric determinate two-bar truss (brace axial force)",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "Statically-determinate truss closed form — joint equilibrium (method of joints) gives the member axial forces and EA/L bar stiffness gives the apex displacement; a linear (small-displacement) bar carries no geometric offset, so every quantity is exact.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SB10.html",
+        "byteLength": 23969,
+        "sha256": "5e8c05036b68a566831337233f2a415942298cef0519efe26d0f7f735d33a611"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 22,
+        "printedPageEnd": 23
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB10.pdf",
+        "byteLength": 121957,
+        "sha256": "9242f92ed9286c80c7d88ec9d5e25a3dd36923f0a4ab1bfc8e38e537279d2a21",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 2
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "0%",
+    "toleranceStatus": "BLOCKED_TOLERANCE_PRECISION",
+    "detailedTolerance": "10^-6% stated in detailed section; 0% in badge/conclusion",
+    "firstResult": {
+      "quantity": "Brace E1 axial N (N)",
+      "probe": "E1.Ni",
+      "strix": "10000",
+      "reference": "10000",
+      "delta": "0.00%"
+    },
+    "resultRowCount": 8
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_8_OF_8",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SB10.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SB10/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED",
+    "TOLERANCE_PRECISION_AMBIGUOUS_0_PERCENT_VS_1E_MINUS_6_PERCENT"
+  ],
+  "sourceLockHash": "4a2afc3502e15fe8083e1af922edeabc754da4100b60a17f1a82b2effc500268"
+}

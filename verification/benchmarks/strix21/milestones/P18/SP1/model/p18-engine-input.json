@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "p18-engine-input-snapshot-v1",
+  "caseId": "SP1",
+  "qualificationScope": "S-Structures production-engine input snapshot; not an assertion of full STRIX model equivalence",
+  "method": "production corotational 3D frame with concentrated base moment hinge",
+  "productionModules": [
+    "src/nonlinear/pushover/productionPushover.js",
+    "src/nonlinear/properties/hingeRegistry.js"
+  ],
+  "input": {
+    "lengthIn": 24,
+    "elasticEIKipIn2": 23094720.000000004,
+    "myKipIn": 1440,
+    "mcKipIn": 1920,
+    "mrKipIn": 480
+  },
+  "publicSourceLimitations": [],
+  "engineeringHash": "f6f34c1b3097ffdb94a6188d78c6b90d91985f385d38a0370e7fc2f6ac985822"
+}

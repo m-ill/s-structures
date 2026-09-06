@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/reviewer-attestation-schema.json",
+  "title": "Phase 17 externally signed scoped reviewer attestation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "attestationId", "caseId", "role", "reviewerId", "keyId", "issuedAt", "scope", "payloadHash", "signatureBase64", "attestationHash"],
+  "properties": {
+    "version": { "const": "p17-reviewer-attestation-v1" },
+    "attestationId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "role": { "enum": ["modelReviewer", "referenceReviewer", "numericalReviewer", "releaseReviewer"] },
+    "reviewerId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._@:-]{2,127}$" },
+    "keyId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{5,127}$" },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "artifactHashes", "claimBoundary"],
+      "properties": {
+        "decision": { "enum": ["APPROVE", "REJECT"] },
+        "artifactHashes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+        "claimBoundary": { "type": "string", "minLength": 1 }
+      }
+    },
+    "payloadHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "signatureBase64": { "type": "string", "pattern": "^[A-Za-z0-9+/]+={0,2}$" },
+    "attestationHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

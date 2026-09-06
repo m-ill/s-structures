@@ -1,0 +1,113 @@
+# P3-M20 Launch Readiness Verification
+
+date: 2026-07-02
+status: preliminary core locked
+
+## Scope
+
+This note verifies P3-M20 against `docs/phase3/QA_RELEASE_PLAN.md` and `docs/phase3/IMPLEMENTATION_BACKLOG.md` tickets P3-T63 to P3-T67.
+
+## Verified Items
+
+| Ticket | Plan item | Evidence |
+| --- | --- | --- |
+| P3-T63 | Packaging smoke for web/server launch path | `buildPackagingReadiness()` and `tests/p3-launch-gate.mjs` |
+| P3-T64 | License policy record | `buildLicenseReadiness()` and `LICENSE.txt` evidence |
+| P3-T65 | Onboarding sample and manual refresh | `docs/user-manual/PHASE3_LAUNCH_MANUAL.md`, `agent-contract.json` |
+| P3-T66 | Performance/security launch gate | `buildLaunchReadinessReport()` G1 to G14 |
+| P3-T67 | Ten beta pilot scenario reports | `reports/launch-readiness/pilot-01.md` to `pilot-10.md` |
+| Agent trace | `getLaunchReadinessReport()` includes `releaseGate` |
+
+## Added Review Finding
+
+P3-M20 had a launch readiness report, but it did not expose a milestone-level gate for AI agents. P3-M20 now exposes `LAUNCH_READINESS_GATE_VERSION` through `releaseGate`.
+
+The gate records:
+
+1. P3-T63 to P3-T67 ticket coverage
+2. required launch gates G1 to G14
+3. packaging, license, manual, QA, pilot-report, and backup/restore coverage
+4. manual sign-off items that still require owner review
+
+2026-07-02 review update: `releaseGate.ticketCoverage` now maps P3-T63, P3-T64, P3-T65, P3-T66, and P3-T67 to explicit evidence rows. The rows expose packaging smoke, license record, manual/agent-contract freshness, performance/security/backup gate state, and ten-pilot coverage for reviewer and AI-agent inspection.
+
+2026-07-02 ticket coverage review update: `releaseGate` now exposes a formal P3-M20 contract, feature-to-ticket map, and `summary.ticketCoverage` alias. This matches the P3-M17 to P3-M19 gate shape so reviewers and AI agents can inspect launch-readiness scope without relying on UI-only labels.
+
+2026-07-02 release maturity review update: `releaseGate` now exposes `contract.maturity` and `releaseReview`. The review records owner-review readiness separately from production deployment approval, open-source policy finalization, deployment target finalization, pilot feedback acceptance, and backup/restore owner acceptance. A clean gate returns `ready-for-owner-release-signoff`, not final release approval.
+
+2026-07-02 production-readiness review update: the launch report now also exposes top-level `productionReadiness` and summary fields. `status: OK` means launch evidence gates are green; `productionReadiness.status` remains `OWNER_REVIEW_REQUIRED` until owner sign-off and production deployment approval are explicitly recorded.
+
+## Current Test Gate
+
+`tests/p3-launch-gate.mjs` verifies launch report status, G1 to G14 pass count, release-gate ticket coverage, top-level production-readiness separation, packaging smoke evidence, license evidence, manual/agent-contract evidence, ten pilot reports, agent API exposure, and manifest data-contract exposure.
+
+## Remaining Limits
+
+P3-M20 remains preliminary. It proves repository-level launch readiness evidence, not final production deployment sign-off. Owner review is still required for license policy, deployment target, real DWG conversion, real point-cloud validation, field pilot feedback, backup/restore rehearsal evidence, and security sign-off.
+
+2026-07-03 productization milestone contract update: P3-M20 now participates in `getPhase3ProductizationMilestoneReview`. The review contract maps packaging smoke, license policy record, onboarding/manual/agent contract, performance/security launch gate, and beta pilot scenarios to `releaseGate.releaseReview` while keeping `productionDeploymentApproved` owner-controlled.
+
+2026-07-03 executable review update: `node tests/p3-productization-milestone-review.mjs` now locks the P3-M19 to P3-M20 productization milestone review contract. The Phase 3 runner includes this check in the P3-M20 group so integrated-result readiness, launch readiness, gate paths, `finalStructuralSignoff`, and `productionDeploymentApproved` remain agent-readable and owner-controlled.
+
+2026-07-03 owner sign-off contract update: `getPhase3OwnerSignoffReview()` now exposes the seven manual owner checklist rows from `reports/launch-readiness/owner-signoff-checklist.md`. A clean checklist can return `owner-signoff-ready-for-final-deployment-decision`, but `productionDeploymentApproved` remains false until the owner explicitly records final deployment approval outside the automated gate.
+
+2026-07-03 final-use review update: `getLaunchReadinessReport()` now exposes `finalUseReview` and mirrors it under `productionReadiness.finalUseReview`. This links practical validation, owner sign-off, and evidence-register status directly to the launch report so AI agents do not treat a green automated launch gate as permission for final structural-office use.
+
+2026-07-03 beta-pilot file review update: G11 and P3-T67 now require named beta pilot evidence files from `pilot-01.md` through `pilot-10.md`. Count-only evidence is not enough for the launch gate, and a missing named report produces `pilot-report-files` plus ticket-coverage review holds.
+
+2026-07-03 agent-contract freshness hardening: G10 now compares not only read APIs but also manifest modules, data contracts, QA commands, and review-gate definitions against `docs/user-manual/agent-contract.json`. A stale contract with matching read APIs but missing Phase 3 launch modules now holds P3-T65 coverage for review.
+
+2026-07-03 owner-review readiness hardening: `releaseGate.summary.readyForOwnerReview` now follows `releaseReview.status === "owner-review-ready"`, not only the 14 automated gate rows. A missing owner sign-off checklist can leave automated gates green for evidence tracking, but it no longer appears ready for owner release review.
+
+2026-07-03 evidence-key alignment update: `getPhase3EvidenceRegister()` now exposes `summary.evidenceComplete` separately from `summary.productionReady`. `getLaunchReadinessReport().finalUseReview` uses `evidenceComplete` for the evidence-register row, while owner sign-off review accepts the evidence-register IDs as aliases for the manual owner checklist rows. This keeps project evidence API submissions reusable without converting evidence collection into production deployment approval.
+
+2026-07-03 evidence submission guard update: `validatePhase3EvidenceRecord()` now rejects project evidence rows whose `id` or `type` is not part of the Phase 3 evidence register. The server evidence route and in-page agent API use the same guard, so unknown AI-generated evidence keys cannot be silently stored or counted toward launch evidence.
+
+2026-07-03 evidence package update: server evidence submission now validates that a supplied `fileId` references an uploaded project file. `createEvidenceClient().submitProjectEvidencePackage()` uploads a drawing or point-cloud evidence file first, then submits the evidence row with the returned `fileId`, and the evidence register preserves that `fileId` in its review records.
+
+2026-07-03 agent-safe launch status update: `getLaunchReadinessReport()` now exposes top-level `finalUseBlocked` and `agentSafeStatus`. A green automated launch gate with remaining practical, owner, or evidence-register review now returns `LAUNCH_EVIDENCE_OK_FINAL_USE_BLOCKED`, so agents do not need to infer final-use blocking only from nested review rows.
+
+2026-07-03 final-use required-review update: `finalUseReview` now exposes
+`requiredReviews` rows with the accepted field, status, missing count, and agent
+decision for practice validation, owner sign-off, and evidence-register review.
+This gives AI agents a stable final-use checklist instead of requiring them to
+parse only `blockingReviews`.
+
+2026-07-03 explicit final-approval update: final-use gates now distinguish
+evidence acceptance from final approval fields. `submitProjectEvidence()` may
+record an allowed `finalApprovalField` only when an explicit approval flag is
+present. Complete evidence alone keeps `productionReady` and
+`productionDeploymentApproved` false, while complete evidence plus explicit
+owner/engineer approvals can close `finalUseReview` and set
+`PRODUCTION_APPROVED`.
+
+2026-07-03 evidence API approval-state update: the project evidence REST API and
+`createEvidenceClient()` now return `finalApprovals` derived from explicit final
+approval rows. This keeps API-driven agents aligned with the in-page
+`submitProjectEvidence()` path and makes final approval state readable without
+re-parsing raw evidence rows.
+
+2026-07-03 final-approval review grouping update: `finalApprovalReview` now
+separates allowed approval fields from required approval groups. Equivalent
+owner deployment approval fields are accepted as alternatives within one group,
+so AI agents do not over-require every allowed final approval field.
+
+2026-07-03 owner sign-off deployment approval update:
+`getPhase3OwnerSignoffReview()` now exposes `deploymentApprovalGroup` and
+deployment approval accepted fields. This keeps owner checklist evidence
+separate from final production deployment approval while showing agents which
+deployment approval aliases satisfy the required group.
+
+2026-07-03 evidence API owner-signoff view update: project evidence API
+responses and `createEvidenceClient().listProjectEvidence()` now include
+`ownerSignoffReview`. This keeps server-side agents aligned with the in-page
+`listProjectEvidence()` state for owner checklist and deployment approval
+decisions.
+
+2026-07-03 performance-budget gate hardening: G7 no longer passes from a single boolean flag. `buildPerformanceBudgetReview()` now checks the eight `QA_RELEASE_PLAN.md` performance budget IDs, including point-cloud load/viewer, elastic analysis, pushover, NLTH, design report, server save, and local initial load. Missing or over-budget rows hold G7, P3-T66 ticket coverage, and `releaseReview.missing = performance-budget-items` for AI-agent and owner review.
+
+2026-07-03 manual-reference contract hardening: G9 and P3-T65 now require the manual reference map in `docs/user-manual/agent-contract.json` to match the runtime manifest. A stale launch-manual path or missing reference holds the manual/agent-contract ticket for review instead of passing from `manual.updated` alone.
+
+2026-07-03 launch evidence record hardening: G8, G12, and G13 no longer pass from boolean flags alone. Security checklist, backup/restore rehearsal, and design-module verification now require accepted evidence records with a report path or checklist rows. Missing records hold P3-T66 coverage and add `security-checklist-evidence`, `backup-restore-record`, or `design-verification-evidence` to `releaseReview.missing`.
+
+2026-07-03 productization exit-criteria review update: `getPhase3ProductizationMilestoneReview()` now exposes M19 and M20 plan coverage as `exitCriteria` rows. Each row records the source plan, related ticket, requirement text, and automated evidence file for integrated results, calculation-report limitations, workflow lock, benchmark regression, packaging, license, manual/agent-contract freshness, performance/security evidence, beta-pilot reports, and owner-controlled deployment approval.

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "p18-engine-input-snapshot-v1",
+  "caseId": "SR2b",
+  "qualificationScope": "S-Structures production-engine input snapshot; not an assertion of full STRIX model equivalence",
+  "method": "production 3-D L-plan truss-braced frame with three rigid diaphragms, Ux-Uy-Rz mass reduction and signed axial-force RSA recovery",
+  "productionModules": [
+    "src/dynamics/modal.js",
+    "src/dynamics/modalCombination.js",
+    "src/results/rsa/memberForces.js"
+  ],
+  "input": {
+    "fixture": "complete three-storey L-plan braced-frame engine qualification model",
+    "nodeCount": 24,
+    "storeys": 3,
+    "diaphragmCount": 3
+  },
+  "publicSourceLimitations": [
+    "exact L-shaped plan coordinates and four-frame placement/connectivity",
+    "complete El Centro five-percent response-spectrum ordinate table",
+    "member numbering required to map the published brace-force probes"
+  ],
+  "engineeringHash": "0eeaf37b2d06ba1eda893090b634fcb40a4910e1044b22f50b7ce395f4ebaf5f"
+}

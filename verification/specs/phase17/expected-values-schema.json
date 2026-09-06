@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/expected-values-schema.json",
+  "title": "Phase 17 expected values",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "status", "payloadAbsent", "releaseAllowed", "values", "reasonCodes"],
+  "properties": {
+    "schemaVersion": { "const": "p17-expected-values-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "status": { "enum": ["NOT_LOCKED", "LOCKED"] },
+    "payloadAbsent": { "type": "boolean" },
+    "releaseAllowed": { "type": "boolean" },
+    "values": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["metricId", "lane", "value", "unit", "precision", "sourceLocator", "approvalHash"],
+        "properties": {
+          "metricId": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
+          "lane": { "enum": ["PRIMARY_INDEPENDENT", "STRIX_PUBLISHED", "STRIX_R4", "MIDAS_R4"] },
+          "value": { "type": "number" }, "unit": { "type": "string", "minLength": 1 },
+          "precision": { "type": "string", "minLength": 1 }, "sourceLocator": { "type": "string", "minLength": 1 },
+          "approvalHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+  }
+}

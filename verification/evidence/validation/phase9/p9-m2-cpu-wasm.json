@@ -1,0 +1,213 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteVersion": "p9-m2-cpu-wasm-evidence-v1",
+  "suiteId": "P9-M2-CPU-WASM",
+  "milestone": "P9-M2",
+  "generatedAt": "2026-07-15T08:44:36.826Z",
+  "sourceRevision": "a45a647+worktree",
+  "verificationIds": [
+    "P9-CPU-01",
+    "P9-CPU-02",
+    "P9-CPU-03",
+    "P9-CPU-04",
+    "P9-CPU-05",
+    "P9-CPU-06",
+    "P9-CPU-07",
+    "P9-CPU-08",
+    "P9-CPU-09",
+    "P9-CPU-10",
+    "P9-CPU-11",
+    "P9-CPU-12",
+    "P9-CPU-13",
+    "P9-CPU-14",
+    "P9-CMP-08",
+    "P9-CMP-09",
+    "P9-CMP-10",
+    "P9-CMP-11",
+    "P9-CMP-12",
+    "P9-REF-04",
+    "P9-REF-05"
+  ],
+  "status": "PASS",
+  "contracts": {
+    "matrix": "p9-m2-common-sparse-matrix-v1",
+    "factorRuntime": "p9-m2-factor-runtime-v1",
+    "cpuBackend": "p9-cpu-sparse-f64-v1",
+    "wasmBackend": "p8-wasm-sparse-v1",
+    "wasmAbi": 2
+  },
+  "ownership": {
+    "sparse": "src/compute/sparse",
+    "cpuBackend": "src/compute/backends/cpuSparseBackend.js",
+    "wasmBackend": "src/compute/backends/wasmCpuBackend.js",
+    "compatibilityFacades": [
+      "src/solver/sparse",
+      "src/nonlinear/equilibrium/typedSparse.js",
+      "src/nonlinear/dynamics/sparseMatrix.js",
+      "src/nonlinear/equilibrium/backends/wasmSparseBackend.js"
+    ]
+  },
+  "snapshot": {
+    "rowCount": 3,
+    "nnz": 7,
+    "rhsCount": 2,
+    "cpuResidualMax": 1.4802973661668753e-16,
+    "wasmResidualMax": 5.93439168722175e-17,
+    "wasmAbiVersion": 2
+  },
+  "memory": {
+    "cpu": {
+      "version": "p9-m2-factor-runtime-v1",
+      "disposed": true,
+      "activeHandleCount": 0,
+      "symbolicCacheSize": 0,
+      "numericCacheSize": 0,
+      "symbolicAnalysisCount": 1,
+      "numericFactorizationCount": 1,
+      "allocatedBytes": 0,
+      "peakBytes": 148,
+      "maxBytes": 536870912,
+      "allocationBalanced": true
+    },
+    "wasm": {
+      "version": "p9-wasm-memory-ledger-v1",
+      "allocationCount": 6,
+      "freeCount": 6,
+      "allocatedBytes": 420,
+      "freedBytes": 420,
+      "outstandingBytes": 0,
+      "peakBytes": 420,
+      "balanced": true
+    }
+  },
+  "resultHash": "097e4494965ce57374c80c61138b70c7002dd5b1801dac3d45919de6e9aff3d5",
+  "regressionPolicy": {
+    "focused": "p9-m2-cpu-wasm-and-architecture",
+    "shortCompatibility": [
+      "p7-m10-sparse-integrity",
+      "p8-m2-wasm-backend",
+      "p8-m8-dynamic-domain"
+    ],
+    "nonlinearSolve": "not-rerun-reuse-phase8-qualified-evidence"
+  },
+  "priorEvidenceHash": "c97ae53aac9f182eedae44a3314423ac5c521da23b678e8146037319d1e75803",
+  "results": [
+    {
+      "id": "P9-CPU-01",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-02",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-03",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-04",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-05",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-06",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-07",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-08",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-09",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-10",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-11",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-12",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-13",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CPU-14",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CMP-08",
+      "status": "PASS",
+      "test": "tests/p9-m1-worker-runtime.mjs"
+    },
+    {
+      "id": "P9-CMP-09",
+      "status": "PASS",
+      "test": "tests/p9-m1-worker-runtime.mjs"
+    },
+    {
+      "id": "P9-CMP-10",
+      "status": "PASS",
+      "test": "tests/p9-m1-worker-runtime.mjs"
+    },
+    {
+      "id": "P9-CMP-11",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-CMP-12",
+      "status": "PASS",
+      "test": "tests/p9-m2-cpu-wasm.mjs"
+    },
+    {
+      "id": "P9-REF-04",
+      "status": "PASS",
+      "test": "tests/p9-m2-sparse-architecture.mjs"
+    },
+    {
+      "id": "P9-REF-05",
+      "status": "PASS",
+      "test": "tests/p9-m2-sparse-architecture.mjs"
+    }
+  ],
+  "blockers": [
+    "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+    "M_TIER_ELASTIC_CURRENT_DENSE_PATH_NOT_EXECUTED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "P9_M10_RELEASE_GATE_REQUIRED",
+    "P9_M3_ELASTIC_WORKER_MIGRATION_REQUIRED",
+    "P9_M4_TO_M8_GPU_QUALIFICATION_REQUIRED",
+    "P9_M9_PRODUCT_MIGRATION_REQUIRED"
+  ],
+  "qualificationImpact": "G1-candidate-cpu-wasm-integrated-no-design-transfer",
+  "artifactHash": "49c5c9ccf63ba2b4b6ef4c3c5383a7571e840998e4fc77d2b4a5e23ff20c48c7"
+}

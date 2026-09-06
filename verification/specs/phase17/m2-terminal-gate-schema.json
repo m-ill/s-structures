@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/m2-terminal-gate-schema.json",
+  "title": "P17-M2 execution-readiness and terminal-evidence gate assessment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "phase", "milestone", "caseId", "status", "executionAuthorized", "terminalAuthorization", "requiredGateCount", "readyGateCount", "passedTerminalGateCount", "gates", "lockSummary", "counters", "externalDependencies", "releaseAllowed", "assessmentHash"],
+  "properties": {
+    "version": { "const": "p17-m2-terminal-gate-assessment-v1" },
+    "phase": { "const": 17 },
+    "milestone": { "const": "P17-M2" },
+    "caseId": { "const": "SB1" },
+    "status": { "enum": ["BLOCKED_PRE_EXECUTION", "READY_FOR_OFFICIAL_EXECUTION", "TERMINAL_EVIDENCE_COMPLETE"] },
+    "executionAuthorized": { "type": "boolean" },
+    "terminalAuthorization": { "type": "boolean" },
+    "requiredGateCount": { "const": 8 },
+    "readyGateCount": { "type": "integer", "minimum": 0, "maximum": 8 },
+    "passedTerminalGateCount": { "type": "integer", "minimum": 0, "maximum": 8 },
+    "gates": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "readinessStatus", "terminalEvidenceStatus", "artifactHashes", "reasonCodes"],
+        "properties": {
+          "id": { "enum": ["OFFICIAL_EXECUTION_ORCHESTRATOR_AND_RECEIPT", "PINNED_EXTERNAL_EXECUTION_CUSTODIAN_TRUST_REGISTRY", "REFERENCE_ARTIFACT_BYTE_AUDIT", "EXTRACTION_AND_COMPARISON_REPLAY", "PHYSICS_AND_MUTATION_REPLAY", "THREE_INDEPENDENT_EXTERNALLY_CUSTODIED_RUNS", "DETERMINISTIC_PDF_REPRODUCTION_AND_VISUAL_PARITY_AUDIT", "SCOPED_INDEPENDENT_REVIEWER_ATTESTATIONS"] },
+          "readinessStatus": { "enum": ["READY", "BLOCKED"] },
+          "terminalEvidenceStatus": { "enum": ["PASS", "PENDING", "BLOCKED"] },
+          "artifactHashes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+          "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+        }
+      }
+    },
+    "lockSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "reference", "probe", "tolerance", "canonicalModel", "nativeModel", "modelEquivalence", "productBuild"],
+      "properties": {
+        "source": { "$ref": "#/$defs/lockStatus" },
+        "reference": { "$ref": "#/$defs/lockStatus" },
+        "probe": { "$ref": "#/$defs/lockStatus" },
+        "tolerance": { "$ref": "#/$defs/lockStatus" },
+        "canonicalModel": { "$ref": "#/$defs/lockStatus" },
+        "nativeModel": { "$ref": "#/$defs/lockStatus" },
+        "modelEquivalence": { "$ref": "#/$defs/lockStatus" },
+        "productBuild": { "$ref": "#/$defs/lockStatus" }
+      }
+    },
+    "counters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["officialExecutionCount", "externallyCustodiedRunCount", "officialPassCount", "solverExecutionCount", "benchmarkExecutionCount", "caseReportCount"],
+      "properties": {
+        "officialExecutionCount": { "type": "integer", "minimum": 0 },
+        "externallyCustodiedRunCount": { "type": "integer", "minimum": 0 },
+        "officialPassCount": { "type": "integer", "minimum": 0 },
+        "solverExecutionCount": { "type": "integer", "minimum": 0 },
+        "benchmarkExecutionCount": { "type": "integer", "minimum": 0 },
+        "caseReportCount": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "externalDependencies": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } },
+    "releaseAllowed": { "const": false },
+    "assessmentHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  },
+  "$defs": {
+    "lockStatus": { "enum": ["NOT_PREPARED", "CONTENT_LOCKED_PENDING_EXTERNAL_APPROVAL", "APPROVED"] }
+  }
+}

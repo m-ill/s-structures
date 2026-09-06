@@ -1,0 +1,88 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { buildAgentManifest } from '../src/index.js';
+
+const manifest = buildAgentManifest();
+const agentContract = JSON.parse(readFileSync('docs/user-manual/agent-contract.json', 'utf8'));
+const expectedQaCommands = {
+  phase8: 'npm.cmd run test:p8',
+  phase8List: 'npm.cmd run test:p8:list',
+  phase3Full: 'npm.cmd run test:p3',
+  phase3List: 'npm.cmd run test:p3:list',
+  phase3M6ToM20: 'node tools/run-milestone-tests.mjs --phase3 --from=P3-M6 --to=P3-M20',
+  phase3RunnerContract: 'node tests/p3-runner-contract.mjs',
+  phase3PlanAlignment: 'node tests/p3-plan-alignment.mjs',
+  phase3DocReferences: 'node tests/p3-doc-reference-integrity.mjs',
+  phase3DesignMilestoneReview: 'node tests/p3-design-milestone-review.mjs',
+  phase3DrawingImportValidation: 'node tests/p3-drawing-import-validation-review.mjs',
+  phase3ElasticMilestoneReview: 'node tests/p3-elastic-milestone-review.mjs',
+  phase3EngineeringValidation: 'node tests/p3-engineering-validation-review.mjs',
+  phase3ImportMilestoneReview: 'node tests/p3-import-milestone-review.mjs',
+  phase3NonlinearMilestoneReview: 'node tests/p3-nonlinear-milestone-review.mjs',
+  phase3PointCloudValidation: 'node tests/p3-pointcloud-validation-review.mjs',
+  phase3PracticeValidation: 'node tests/p3-practice-validation-review.mjs',
+  phase3ProductizationMilestoneReview: 'node tests/p3-productization-milestone-review.mjs',
+  phase3OwnerSignoffReview: 'node tests/p3-owner-signoff-review.mjs',
+  phase3CompletionAuditReview: 'node tests/p3-completion-audit-review.mjs',
+  phase3EvidenceRegister: 'node tests/p3-evidence-register.mjs',
+  finalUseReleaseReview: 'node tests/final-use-release-review.mjs',
+  phase3EvidenceClient: 'node tests/p3-evidence-client.mjs',
+  phase3ServerRoutes: 'node tests/p3-server-route-contract.mjs',
+};
+
+assert.deepEqual(manifest.qaCommands, expectedQaCommands);
+assert.deepEqual(agentContract.qaCommands, expectedQaCommands);
+
+const list = execFileSync(process.execPath, ['tools/run-milestone-tests.mjs', '--phase3', '--list'], { encoding: 'utf8' });
+const rows = list.trim().split(/\r?\n/).map((line) => line.split('\t'));
+assert.equal(rows.length, 42);
+assert.deepEqual(rows[0].slice(0, 2), ['P3-M0', 'test:m0']);
+assert.deepEqual(rows.at(-1).slice(0, 2), ['P3-M20', 'test:p3routes']);
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M6' && name === 'test:p3m6'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M7' && name === 'test:p3drawing'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M9' && name === 'test:p3pointcloud'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M9' && name === 'test:p3import-review'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M13' && name === 'test:p3elastic-review'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M16' && name === 'test:p3nonlinear-review'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M18' && name === 'test:p3engineering'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M18' && name === 'test:p3design-review'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3productization-review'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3owner-signoff'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3completion-audit'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3evidence'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3evidence-client'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3m20'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3alignment'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3runner'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3docs'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3practice'));
+assert.ok(rows.find(([milestone, name]) => milestone === 'P3-M20' && name === 'test:p3routes'));
+
+const scoped = execFileSync(process.execPath, [
+  'tools/run-milestone-tests.mjs',
+  '--phase3',
+  '--from=P3-M6',
+  '--to=P3-M9',
+  '--list',
+], { encoding: 'utf8' });
+const scopedRows = scoped.trim().split(/\r?\n/).map((line) => line.split('\t'));
+assert.deepEqual(scopedRows.map((row) => row[0]), ['P3-M6', 'P3-M7', 'P3-M7', 'P3-M7', 'P3-M8', 'P3-M9', 'P3-M9', 'P3-M9', 'P3-M9']);
+assert.deepEqual(scopedRows.map((row) => row[1]), [
+  'test:p3m6',
+  'test:p3m7',
+  'test:p3m7-ui',
+  'test:p3drawing',
+  'test:p3m8',
+  'test:p3m9',
+  'test:p3m9-e2e',
+  'test:p3pointcloud',
+  'test:p3import-review',
+]);
+
+console.log(JSON.stringify({
+  ok: true,
+  phase3RunnerTests: rows.length,
+  scopedRunnerTests: scopedRows.length,
+  qaCommands: Object.keys(expectedQaCommands).length,
+}, null, 2));

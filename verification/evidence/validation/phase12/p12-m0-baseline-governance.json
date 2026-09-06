@@ -1,0 +1,41 @@
+{
+  "version": "p12-m0-baseline-governance-v1",
+  "milestone": "P12-M0",
+  "generatedAt": "2026-08-03T00:00:00.000Z",
+  "status": "PASS",
+  "sourceRevision": "f6f75bb6d623a72a0ecc8ed27ebe70533efebf18",
+  "sourceTreeState": {
+    "aheadOfOriginMain": 465,
+    "tagCount": 0,
+    "preExistingDirtyPaths": [
+      "reports/validation-evidence/p4-preview-integrated-validation.json",
+      "tmp/"
+    ]
+  },
+  "environmentProfile": {
+    "os": "Windows",
+    "node": "v24.16.0",
+    "productProfile": "source-baseline",
+    "network": "loopback-only"
+  },
+  "backup": {
+    "path": "C:/Users/mill/Downloads/dcr/.phase12-backup/f6f75bb6d623.bundle",
+    "sha256": "67512ADCED1BBBC6A8C71BB8CC0706113D5550517274118B12020EB2288712ED",
+    "bundleVerify": "PASS",
+    "completeHistory": true
+  },
+  "baselineExposure": {
+    "syntheticOnly": true,
+    "http200Paths": ["/.git/HEAD", "/package.json", "/server/config.mjs", "/data/server.lock", "/docs/phase11/README.md"],
+    "rawSensitiveBodiesStored": false
+  },
+  "verificationRecords": [
+    { "verificationId": "P12-BASE-01", "status": "PASS" },
+    { "verificationId": "P12-BASE-02", "status": "PASS" },
+    { "verificationId": "P12-BASE-03", "status": "PASS" },
+    { "verificationId": "P12-BASE-04", "status": "PASS" },
+    { "verificationId": "P12-BASE-05", "status": "PASS" },
+    { "verificationId": "P12-BASE-06", "status": "PASS" }
+  ]
+}
+

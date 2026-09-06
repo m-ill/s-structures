@@ -1,0 +1,52 @@
+{
+  "version": "p13-m2-evidence-v2",
+  "phase": "Phase 13",
+  "milestone": "P13-M2",
+  "status": "PASS",
+  "qualificationImpact": "implementation-complete-only",
+  "generatedAt": "2026-08-05T09:29:53.051Z",
+  "sourceRevision": "a44eb98601e4fbcd2913bbb34a809d126452f793",
+  "verificationRecords": [
+    {
+      "id": "P13-MC-01",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-MC-02",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-MC-03",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-MC-04",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-MC-05",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-MC-06",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-MC-07",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-MC-08",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-MC-09",
+      "status": "PASS"
+    },
+    {
+      "id": "P13-MC-10",
+      "status": "PASS",
+      "detail": "UI, Agent API and detailed-report issue/waiver IDs and status are identical."
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/model-equivalence-schema.json",
+  "title": "Phase 17 model-equivalence matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "caseId", "artifactStatus", "payloadAbsent", "releaseAllowed", "overallStatus", "dimensions", "knownDifferences", "reasonCodes"],
+  "properties": {
+    "schemaVersion": { "const": "p17-model-equivalence-v1" },
+    "caseId": { "type": "string", "pattern": "^[A-Za-z0-9-]+$" },
+    "artifactStatus": { "enum": ["NOT_PREPARED", "LOCKED"] },
+    "payloadAbsent": { "type": "boolean" },
+    "releaseAllowed": { "type": "boolean" },
+    "overallStatus": { "enum": ["NOT_STARTED", "IDENTICAL_SPECIFICATION", "ENGINEERING_EQUIVALENT", "ANALOGOUS_ONLY", "UNSUPPORTED"] },
+    "dimensions": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "mandatory", "status", "sstructures", "strix", "midas", "reasonCodes"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+          "mandatory": { "type": "boolean" },
+          "status": { "enum": ["NOT_STARTED", "IDENTICAL_SPECIFICATION", "ENGINEERING_EQUIVALENT", "ANALOGOUS_ONLY", "UNSUPPORTED"] },
+          "sstructures": { "enum": ["NOT_REVIEWED", "LOCKED"] },
+          "strix": { "enum": ["NOT_REVIEWED", "LOCKED", "NOT_APPLICABLE_CUSTOM"] },
+          "midas": { "enum": ["NOT_AVAILABLE", "NOT_REVIEWED", "LOCKED"] },
+          "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+        }
+      }
+    },
+    "knownDifferences": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "classification", "description", "disposition"],
+        "properties": { "id": { "type": "string", "pattern": "^[A-Z0-9_-]+$" }, "classification": { "enum": ["KNOWN_EQUIVALENT", "ANALOGOUS", "BLOCKING"] }, "description": { "type": "string", "minLength": 1 }, "disposition": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "modelBindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonicalInputHash", "sstructuresInputHash"],
+      "properties": {
+        "canonicalInputHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "sstructuresInputHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reviewer", "approvalHash"],
+      "properties": {
+        "status": { "enum": ["NOT_STARTED", "PENDING", "APPROVED"] },
+        "reviewer": { "type": "string", "minLength": 1 },
+        "approvalHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" } }
+  }
+}

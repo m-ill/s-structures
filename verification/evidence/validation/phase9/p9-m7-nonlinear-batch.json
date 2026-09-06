@@ -1,0 +1,188 @@
+{
+  "version": "p9-evidence-artifact-v1",
+  "suiteVersion": "p9-m7-nonlinear-batch-evidence-v1",
+  "suiteId": "P9-M7-NONLINEAR-SOA-BATCH",
+  "milestone": "P9-M7",
+  "generatedAt": "2026-07-21T06:23:43.211Z",
+  "sourceRevision": "1f3cf1d+worktree",
+  "priorEvidenceHash": "1f7596f6c2df8e7e766e99a6b310742c833d03a79ba9fecda23d504ef7d8ef55",
+  "status": "PASS",
+  "verificationIds": [
+    "P9-GPU-NL-01",
+    "P9-GPU-NL-02",
+    "P9-GPU-NL-03",
+    "P9-GPU-NL-04",
+    "P9-GPU-NL-05",
+    "P9-GPU-NL-06",
+    "P9-GPU-NL-07",
+    "P9-GPU-NL-08",
+    "P9-GPU-NL-09",
+    "P9-GPU-NL-10",
+    "P9-REF-07",
+    "P9-REF-08",
+    "P9-REF-09",
+    "P9-PERF-12"
+  ],
+  "backend": {
+    "productionId": "cpu-js-nonlinear-batch-f64",
+    "executionTarget": "cpu",
+    "precision": "f64",
+    "gpuCandidate": "p9-m7-nonlinear-gpu-shadow-candidate-v1",
+    "gpuQualification": "G2-shadow-candidate-no-design-transfer",
+    "gpuProductionQualified": false,
+    "autoGpuAllowed": false,
+    "designTransferAllowed": false
+  },
+  "contracts": {
+    "batch": "p9-m7-nonlinear-soa-batch-v1",
+    "stateArena": "p9-m7-nonlinear-batch-state-arena-v1",
+    "assembly": "p9-m7-deterministic-nonlinear-assembly-v1",
+    "publicResultSchemaChanged": false,
+    "batchHash": "9d6b11bafff621954837d46da1ea49ae5f4909689b6deb81de802b78a6709b03",
+    "reductionHash": "52a90c2d51becaa8ba4f27add2b1a0682ae2794cfdf17200a2a580814cfcab8f"
+  },
+  "numeric": {
+    "forceTangentStateEnergyParity": true,
+    "rollbackByteParity": true,
+    "deterministicReduction": true,
+    "productionGpuBlocked": true,
+    "gpuShadowQualified": true
+  },
+  "performance": {
+    "tier": "focused-diagnostic",
+    "elementCount": 128,
+    "elementDurationMs": 0.757000000000005,
+    "stateDurationMs": 20.826699999999988,
+    "assemblyDurationMs": 0.09719999999998663,
+    "reusableWorkspaceBytes": 3072,
+    "perElementCommittedStateCloneCount": 0,
+    "diagnosticBudgetMs": 1000,
+    "budgetMet": true
+  },
+  "architecture": {
+    "batchOwner": "src/compute/nonlinear",
+    "formulationOwner": "src/nonlinear/elements-and-fiber",
+    "assemblyOrder": "element-index-then-local-row-major-fixed-order",
+    "statePolicy": "separate-committed-and-trial-byte-and-numeric-arenas",
+    "unsupportedPolicy": "exact-capability-partition-and-explicit-gpu-failure",
+    "gpuScope": "independent-f32-frame-and-monotonic-epp-fiber-shadow-only",
+    "productionScope": "all-validated-element-contracts-on-cpu-f64"
+  },
+  "tests": {
+    "functional": {
+      "ok": true,
+      "verificationIds": [
+        "P9-GPU-NL-01",
+        "P9-GPU-NL-02",
+        "P9-GPU-NL-03",
+        "P9-GPU-NL-04",
+        "P9-GPU-NL-05",
+        "P9-GPU-NL-06",
+        "P9-GPU-NL-07",
+        "P9-GPU-NL-08",
+        "P9-GPU-NL-09",
+        "P9-GPU-NL-10",
+        "P9-REF-07",
+        "P9-REF-08",
+        "P9-REF-09",
+        "P9-PERF-12"
+      ],
+      "batchHash": "9d6b11bafff621954837d46da1ea49ae5f4909689b6deb81de802b78a6709b03",
+      "reductionHash": "52a90c2d51becaa8ba4f27add2b1a0682ae2794cfdf17200a2a580814cfcab8f",
+      "elementCount": 3,
+      "groupCount": 2,
+      "rollbackByteParity": true,
+      "gpuShadowQualified": true,
+      "productionGpuBlocked": true,
+      "performance": {
+        "tier": "focused-diagnostic",
+        "elementCount": 128,
+        "elementDurationMs": 0.757000000000005,
+        "stateDurationMs": 20.826699999999988,
+        "assemblyDurationMs": 0.09719999999998663,
+        "reusableWorkspaceBytes": 3072,
+        "perElementCommittedStateCloneCount": 0
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "P9-GPU-NL-01",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-GPU-NL-02",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-GPU-NL-03",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-GPU-NL-04",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-GPU-NL-05",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-GPU-NL-06",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-GPU-NL-07",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-GPU-NL-08",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-GPU-NL-09",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-GPU-NL-10",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-REF-07",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-REF-08",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-REF-09",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    },
+    {
+      "id": "P9-PERF-12",
+      "status": "PASS",
+      "test": "tests/p9-m7-nonlinear-batch.mjs"
+    }
+  ],
+  "limitations": [
+    "History-dependent hinge, distributed-fiber, and corotational production elements remain CPU f64 only.",
+    "Existing WebGPU frame and fiber kernels are shadow candidates and cannot feed design results.",
+    "Pushover and MDOF NLTH resident-session integration is deferred to P9-M8.",
+    "External independent validation remains outside this local milestone."
+  ],
+  "qualificationImpact": "M7-complete-cpu-f64-nonlinear-batch-G2-retained",
+  "artifactHash": "b9158695b8549685023e46263ba4d9ca7539b9295fe90a2210fb01e9e37d382a"
+}

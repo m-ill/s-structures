@@ -1,0 +1,100 @@
+{
+  "version": "p17-source-lock-v1",
+  "caseId": "SB3",
+  "ordinal": 3,
+  "official": true,
+  "family": "STATIC-MEMBRANE",
+  "title": "Cook's membrane (skew panel, in-plane bending on a distorted mesh)",
+  "sourceRoles": {
+    "acceptanceTruth": {
+      "authority": "R1_R2_EXTERNAL",
+      "locator": "Cook's membrane, a standard finite-element distortion benchmark (R.D. Cook, 1974). No closed-form solution; the reference is the fine-mesh converged tip displacement at the loaded-edge midpoint Q, PLANE STRESS, E=1, nu=1/3, unit shear resultant: normalized u_Q*E*t/P = 23.91 (literature band 23.90-23.96). The plane-strain counterpart is 21.52 (Sevilla et al. / locking-free FCFV report 21.42 converged); DCR walls are plane stress (membrane section), and 21.42/(1-nu^2) ~= 23.9 confirms the plane-stress mid-edge value.",
+      "status": "REQUIRES_CASE_REVIEW"
+    },
+    "strixPublishedResult": {
+      "authority": "CASE_HTML_V1_0_4_PUBLICATION_SNAPSHOT",
+      "file": {
+        "path": "STRIX-verification-21/html/SB3.html",
+        "byteLength": 23230,
+        "sha256": "cca2b1d4d8bf60101ce69cb9f3f980a3cdfc76c98d4071410273bb4a5bb9e54a"
+      }
+    },
+    "archivalNarrative": {
+      "authority": "MANUAL_AND_CASE_PDF_V1_0_2",
+      "manual": {
+        "path": "STRIX-verification-21/documents/StrixVerificationManual.pdf",
+        "byteLength": 808213,
+        "sha256": "b557b4a1fe7c94cc894d4a9523e90434712c1d7e78300ac13bc2a448442f7768",
+        "documentId": "SVM-2026",
+        "revision": "2026-07-11",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 66,
+        "printedPageStart": 5,
+        "printedPageEnd": 6
+      },
+      "casePdf": {
+        "path": "STRIX-verification-21/reports/SB3.pdf",
+        "byteLength": 118525,
+        "sha256": "f14299c36b1976f148d21cb96c44367bcd3a2d32891f23970fd9c292a0ea6779",
+        "engineVersion": "1.0.2",
+        "pdfPageCount": 2
+      }
+    },
+    "runtimeProvenance": {
+      "authority": "UNAVAILABLE_RAW_R4",
+      "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED"
+    },
+    "catalog": {
+      "authority": "DERIVED_FROM_CASE_HTML_NO_ADDITIONAL_AUTHORITY",
+      "path": "STRIX-verification-21/benchmark-catalog.json",
+      "byteLength": 149900,
+      "sha256": "af946da2335b34139b921acaa1707a1e7e13b0c23d4af665d446fb75bf5526cc"
+    }
+  },
+  "publishedAcceptanceDisplay": {
+    "verdict": "PASS",
+    "tolerance": "3%",
+    "toleranceStatus": "OBSERVED_NOT_YET_APPROVED",
+    "detailedTolerance": null,
+    "firstResult": {
+      "quantity": "Normalized tip displacement u_Q*E*t/P (mid loaded edge) (norm.)",
+      "probe": "mesh 64×64",
+      "strix": "23.9578",
+      "reference": "23.91",
+      "delta": "+0.2%"
+    },
+    "resultRowCount": 1
+  },
+  "contentAudit": {
+    "htmlVsCatalog": "EXACT_21_CASE_EXTRACTION_AUDIT",
+    "manualPdfVsHtmlCoreFields": "MATCH_TITLE_VERDICT_TOLERANCE_AND_FIRST_RESULT",
+    "casePdfResultRows": "VISIBLE_1_OF_1",
+    "auditDate": "2026-08-28",
+    "method": "checksum verification + HTML parse + PDF text/visual review"
+  },
+  "runtimeProvenance": {
+    "htmlEngineVersion": "1.0.4",
+    "htmlRunDate": "2026-08-08",
+    "htmlRecordLocator": "records/SB3.json",
+    "htmlArchive": "verif-evidence-eng1.0.4-win-x64.zip · SB3/",
+    "htmlArchiveVersion": "1.0.4",
+    "rawRecordSha256": "(pending publish)",
+    "status": "BLOCKED_RAW_EVIDENCE_NOT_PUBLISHED",
+    "metadataConflict": false
+  },
+  "referenceLane": {
+    "class": "R1_R2_EXTERNAL",
+    "strixPublicationLane": "R4_PUBLISHED_VALUE_ONLY",
+    "midasLane": "NOT_AVAILABLE",
+    "sStructuresLane": "NOT_RUN_IN_P17"
+  },
+  "claimRestrictions": [
+    "DO_NOT_CLAIM_STRIX_RUNTIME_RERUN_FROM_PUBLISHED_PAGE_HASH",
+    "DO_NOT_CLAIM_MIDAS_CROSS_VALIDATION_WITHOUT_ACTUAL_EXPORT",
+    "DO_NOT_INHERIT_PHASE15_PASS"
+  ],
+  "blockers": [
+    "STRIX_RAW_RECORD_AND_EVIDENCE_ARCHIVE_NOT_PUBLISHED"
+  ],
+  "sourceLockHash": "16b612e8d2c4c4f63462e539eea6a4d717128f17c20ac27cac9d2466da96a1da"
+}

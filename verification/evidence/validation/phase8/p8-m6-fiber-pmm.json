@@ -1,0 +1,60 @@
+{
+  "version": "p8-evidence-artifact-v1",
+  "suiteId": "P8-M6-FIBER-PMM",
+  "milestone": "P8-M6",
+  "status": "PASS",
+  "generatedAt": "2026-07-13T10:40:00+09:00",
+  "sourceRevision": "9e0ec1c+P8-M6-worktree",
+  "verificationIds": [
+    "NL-FIB-01", "NL-FIB-02", "NL-FIB-03", "NL-FIB-04", "NL-FIB-05", "NL-FIB-06",
+    "NL-FIB-07", "NL-FIB-08", "NL-FIB-09", "NL-FIB-10", "NL-FIB-11", "NL-FIB-12", "NL-FIB-13", "NL-FIB-14",
+    "NL-PMM-01", "NL-PMM-02", "NL-PMM-03", "NL-PMM-04", "NL-PMM-05", "NL-PMM-06", "NL-PMM-07", "NL-PMM-08"
+  ],
+  "results": [
+    { "id": "NL-FIB-01", "status": "PASS", "test": "tests/p8-m6-fiber-mesh-materials.mjs" },
+    { "id": "NL-FIB-02", "status": "PASS", "test": "tests/p8-m6-fiber-mesh-materials.mjs" },
+    { "id": "NL-FIB-03", "status": "PASS", "test": "tests/p8-m6-fiber-mesh-materials.mjs" },
+    { "id": "NL-FIB-04", "status": "PASS", "test": "tests/p8-m6-fiber-mesh-materials.mjs" },
+    { "id": "NL-FIB-05", "status": "PASS", "test": "tests/p8-m6-fiber-mesh-materials.mjs" },
+    { "id": "NL-FIB-06", "status": "PASS", "test": "tests/p8-m6-fiber-mesh-materials.mjs" },
+    { "id": "NL-FIB-07", "status": "PASS", "test": "tests/p8-m6-section-response.mjs" },
+    { "id": "NL-FIB-08", "status": "PASS", "test": "tests/p8-m6-section-response.mjs" },
+    { "id": "NL-FIB-09", "status": "PASS", "test": "tests/p8-m6-section-response.mjs" },
+    { "id": "NL-FIB-10", "status": "PASS", "test": "tests/p8-m6-section-response.mjs" },
+    { "id": "NL-FIB-11", "status": "PASS", "test": "tests/p8-m6-section-response.mjs" },
+    { "id": "NL-FIB-12", "status": "PASS", "test": "tests/p8-m6-section-response.mjs" },
+    { "id": "NL-FIB-13", "status": "PASS", "test": "tests/p8-m6-section-response.mjs" },
+    { "id": "NL-FIB-14", "status": "PASS", "test": "tests/p8-m6-distributed-fiber-frame.mjs" },
+    { "id": "NL-PMM-01", "status": "PASS", "test": "tests/p8-m6-pmm-surface.mjs" },
+    { "id": "NL-PMM-02", "status": "PASS", "test": "tests/p8-m6-pmm-surface.mjs" },
+    { "id": "NL-PMM-03", "status": "PASS", "test": "tests/p8-m6-pmm-surface.mjs" },
+    { "id": "NL-PMM-04", "status": "PASS", "test": "tests/p8-m6-pmm-surface.mjs" },
+    { "id": "NL-PMM-05", "status": "PASS", "test": "tests/p8-m6-pmm-surface.mjs" },
+    { "id": "NL-PMM-06", "status": "PASS", "test": "tests/p8-m6-pmm-surface.mjs" },
+    { "id": "NL-PMM-07", "status": "PASS", "test": "tests/p8-m6-pmm-surface.mjs" },
+    { "id": "NL-PMM-08", "status": "PASS", "test": "tests/p8-m6-production-coupling.mjs" }
+  ],
+  "environment": {
+    "profileVersion": "p8-m0-reference-profile-v1",
+    "runtime": "Node.js",
+    "numericCore": "in-house JavaScript fiber integration and safeguarded section equilibrium; no commercial or licensed solver"
+  },
+  "metrics": {
+    "sectionTangentFiniteDifferenceRelativeError": 1.819014549255371e-12,
+    "targetAxialResidual": 0,
+    "meshFinalRelativeChange": 0.002932551319648094,
+    "integrationPointFinalRelativeChange": 0,
+    "materialEnergyBalanceResidual": 1.3877787807814457e-17,
+    "productionCouplingCompressionMomentFactor": 0.5,
+    "productionCouplingFreeMomentFactor": 1,
+    "distributedFiberIntegrationPoints": [2, 3, 4, 5],
+    "distributedFiberYieldedPointCount": 5,
+    "distributedFiberProductionRoute": "distributed-fiber-corotational-frame-3d",
+    "distributedFiberPlasticTangentError": 8.003516995813698e-7,
+    "distributedFiberFixedEndLoadYielded": true,
+    "rcPmmDefaultGeneration": "PASS",
+    "pmmCacheNumericalOptionSeparation": "PASS",
+    "outOfRangeClampUsed": false
+  },
+  "qualificationImpact": "candidate"
+}

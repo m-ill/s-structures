@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s-structures://phase15/corrective-baseline-schema-v1",
+  "title": "S-Structures Phase 15 corrective baseline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "phase",
+    "milestone",
+    "sourceRevision",
+    "dirtyTree",
+    "environment",
+    "preservedArtifacts",
+    "manifestBindings",
+    "discrepancyIds",
+    "reviewers",
+    "expectedImportAudit",
+    "phase14StatusAudit",
+    "traceCoverage",
+    "performanceBaseline",
+    "gates",
+    "status",
+    "releaseAllowed",
+    "finalDesignTransferAllowed",
+    "baselineHash",
+    "run",
+    "artifactHash"
+  ],
+  "properties": {
+    "version": { "const": "p15-m0-corrective-baseline-v1" },
+    "phase": { "const": "Phase 15" },
+    "milestone": { "const": "P15-M0" },
+    "sourceRevision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "dirtyTree": { "type": "object", "required": ["entries", "summary", "inventoryHash"], "additionalProperties": false },
+    "environment": { "type": "object", "minProperties": 1 },
+    "preservedArtifacts": { "type": "array", "minItems": 4 },
+    "manifestBindings": { "type": "array" },
+    "discrepancyIds": {
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^P15-D(?:00[1-9]|01[0-6])$" }
+    },
+    "reviewers": { "type": "object" },
+    "expectedImportAudit": { "type": "object" },
+    "phase14StatusAudit": { "type": "object" },
+    "traceCoverage": { "type": "number", "minimum": 0, "maximum": 1 },
+    "performanceBaseline": { "type": "object" },
+    "gates": { "type": "array", "minItems": 8, "maxItems": 8 },
+    "status": { "enum": ["PASS", "BLOCKED"] },
+    "releaseAllowed": { "const": false },
+    "finalDesignTransferAllowed": { "const": false },
+    "baselineHash": { "$ref": "#/$defs/hash" },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baselineHash", "capturedAt", "host", "runRecordHash"],
+      "properties": {
+        "baselineHash": { "$ref": "#/$defs/hash" },
+        "capturedAt": { "type": "string", "format": "date-time" },
+        "host": { "type": ["string", "null"] },
+        "runRecordHash": { "$ref": "#/$defs/hash" }
+      }
+    },
+    "artifactHash": { "$ref": "#/$defs/hash" }
+  },
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/p17-m0-report-final-manifest-schema.json",
+  "title": "P17-M0 final report manifest R3",
+  "type": "object",
+  "required": ["version", "manifestRevision", "reportRevision", "auditDate", "status", "supersedes", "baselineEvidence", "claimQualification", "sourceValuePresenceAudit", "report", "qa", "sourceScreenshots", "renderer", "claimBoundary", "releaseAllowed", "finalDesignTransferAllowed", "manifestHash"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": "p17-m0-report-final-manifest-v2" },
+    "manifestRevision": { "const": 3 },
+    "reportRevision": { "const": 2 },
+    "auditDate": { "type": "string", "format": "date" },
+    "status": { "const": "REPORT_QA_PASS_COMPLETE_WITH_SOURCE_BLOCKERS" },
+    "supersedes": {
+      "type": "object",
+      "required": ["path", "sha256", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "const": "output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.manifest.json" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "reason": { "type": "string", "minLength": 40 }
+      }
+    },
+    "baselineEvidence": { "type": "object" },
+    "claimQualification": { "type": "object" },
+    "sourceValuePresenceAudit": { "type": "object" },
+    "report": { "type": "object" },
+    "qa": { "type": "object" },
+    "sourceScreenshots": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "object" } },
+    "renderer": { "type": "object" },
+    "claimBoundary": {
+      "type": "object",
+      "required": ["solverExecuted", "strixActualR4Used", "midasActualR4Used", "sStructuresModelScreenshotIncluded", "semanticAndPixelReproduction", "exactPdfByteReproduction"],
+      "additionalProperties": false,
+      "properties": {
+        "solverExecuted": { "const": false },
+        "strixActualR4Used": { "const": false },
+        "midasActualR4Used": { "const": false },
+        "sStructuresModelScreenshotIncluded": { "const": false },
+        "semanticAndPixelReproduction": { "const": "PASS_9_OF_9" },
+        "exactPdfByteReproduction": { "const": "NOT_CLAIMED_EXISTING_R2_BYTES_ARE_IMMUTABLY_HASHED" }
+      }
+    },
+    "releaseAllowed": { "const": false },
+    "finalDesignTransferAllowed": { "const": false },
+    "manifestHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

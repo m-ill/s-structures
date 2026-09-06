@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://s-structures.local/schemas/phase17/p17-m0-validation-closure-schema.json",
+  "title": "P17-M0 implementation validation closure R3",
+  "type": "object",
+  "required": ["version", "closureRevision", "auditDate", "phase", "milestone", "status", "supersedes", "baseRevision", "repositoryState", "evidenceChain", "checks", "semanticGateReview", "blockerClassification", "ciPolicy", "implementationInventory", "notRun", "m1EntryAllowed", "releaseAllowed", "finalDesignTransferAllowed", "closureHash"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": "p17-m0-validation-closure-v2" },
+    "closureRevision": { "const": 3 },
+    "auditDate": { "type": "string", "format": "date" },
+    "phase": { "const": 17 },
+    "milestone": { "const": "P17-M0" },
+    "status": { "const": "COMPLETE_WITH_SOURCE_BLOCKERS" },
+    "supersedes": { "type": "object" },
+    "baseRevision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "repositoryState": {
+      "type": "object",
+      "required": ["worktreeDirty", "statusEntryCountBeforeClosureWrite", "statusPorcelainV1ZSha256", "capturedBeforeClosureWrite"],
+      "additionalProperties": false,
+      "properties": {
+        "worktreeDirty": { "const": true },
+        "statusEntryCountBeforeClosureWrite": { "type": "integer", "minimum": 1 },
+        "statusPorcelainV1ZSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "capturedBeforeClosureWrite": { "const": true }
+      }
+    },
+    "evidenceChain": { "type": "object" },
+    "checks": { "type": "array", "minItems": 6, "items": { "type": "object" } },
+    "semanticGateReview": { "type": "array", "minItems": 10, "maxItems": 10, "items": { "type": "object" } },
+    "blockerClassification": { "type": "object" },
+    "ciPolicy": { "type": "object" },
+    "implementationInventory": {
+      "type": "object",
+      "required": ["selectionPolicy", "fileCount", "aggregateHash", "files"],
+      "additionalProperties": false,
+      "properties": {
+        "selectionPolicy": { "type": "string", "minLength": 30 },
+        "fileCount": { "type": "integer", "minimum": 50 },
+        "aggregateHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "files": {
+          "type": "array",
+          "minItems": 50,
+          "items": {
+            "type": "object",
+            "required": ["path", "byteLength", "sha256"],
+            "additionalProperties": false,
+            "properties": {
+              "path": { "type": "string", "minLength": 3 },
+              "byteLength": { "type": "integer", "minimum": 0 },
+              "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+            }
+          }
+        }
+      }
+    },
+    "notRun": { "type": "array", "minItems": 4, "items": { "type": "string" } },
+    "m1EntryAllowed": { "const": true },
+    "releaseAllowed": { "const": false },
+    "finalDesignTransferAllowed": { "const": false },
+    "closureHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}
