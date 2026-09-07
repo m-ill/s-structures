@@ -6,7 +6,7 @@
 
 문서 갱신: **2026-09-07** · 공개 상태: **WebMCP 개발 프리뷰**
 
-로컬 후속 개발: **Phase 19 M0~M4**를 구현했습니다. WebMCP **27개 도구**로 탄성설계 입력 변경 → 해석 → 강재·RC 검토 → 보고서를 UI와 함께 처리하며, 직접 모델러와 app 호스트를 지원합니다. 최종 고정 커밋의 관련 회귀는 **39/39 PASS**입니다. 자동 PDF 실환경 검증과 비선형 생산 자격은 남아 있습니다. 아래 공개 링크에는 아직 이 변경을 배포하지 않았습니다. [진행 상태](docs/phase19/IMPLEMENTATION_STATUS.md) · [M4 도구/사용법](docs/phase19/M4_CONTRACT.md) · [검증 증거](verification/evidence/phase19/m4/README.md)
+Phase 19 개발 후보: **WebMCP 36개 도구**로 탄성설계 입력→해석→강재·RC 검토→보고서 및 production Pushover/NLTH를 연결했습니다. 비선형 결과는 **candidate·최종설계 전달 차단** 상태입니다. SH1 sparse 연결, 힌지 평형 수정, Worker 취소·시간 제한을 포함합니다. 실제 브라우저 소형 모델 실행을 확인했으며 독립 비교·pilot·M-tier 성능·전체 배포 자격은 미완료입니다. 아래 기존 공개 링크와 개발 후보는 구분합니다. [M5~M10 구현·잔여 조건](docs/phase19/M5_M10_CANDIDATE.md) · [검토 자료](docs/phase19/REVIEW_INTAKE.md)
 
 ## 주요 기능
 

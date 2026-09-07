@@ -21,3 +21,28 @@ jobs:
           name: validation-${{ matrix.os }}
           path: validation-artifact
           retention-days: 30
+  phase19-candidate:
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.16.0'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: node tools/run-p19-validation.mjs phase19-validation --manifest=verification/specs/phase19/m5-m10-tests.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase19-${{ matrix.os }}
+          path: |
+            phase19-validation/*.json
+            phase19-validation/*.log
+            phase19-validation/checkout/output/phase19/frame-equilibrium-gate.json
+          retention-days: 30

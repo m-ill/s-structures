@@ -1,9 +1,9 @@
 # Phase 19 실제 진행 상태
 
 ```yaml
-version: p19-status-v5
+version: p19-status-v6
 updated: 2026-09-07
-status: m0-m4-complete
+status: m5-m10-development-candidate
 development_baseline: 7bb55d7ec6bd6b155361b26b7830c70b45043acb
 public_baseline: e18d5b432c780523496f8aad489b502934ae0ebd
 implemented_workpackages: [M0, M1, M2, M3, M4]
@@ -105,3 +105,9 @@ R3 이후의 런타임 변경은 [cache 대상 세 이름 추가](../../verifica
 - 기존 21개 비교나 이번 계약 회귀의 통과를 전체 비선형·최종설계 자격으로 확대하지 않는다.
 
 현재 작업 브랜치는 `work/phase19-m2-20260907`이다. 이번 범위는 로컬 구현·커밋·검증이며 공개 main과 GitHub Pages는 갱신하지 않았다.
+
+## M5~M10 개발 후보 (2026-09-07)
+
+36개 WebMCP 도구, SH1 sparse 경로, 현재 chord 기반 힌지 평형, Worker 취소·시간 제한·자격 차단을 구현했다. M5~M10 전체 완료 판정은 아니다. [구현과 잔여 조건](M5_M10_CANDIDATE.md)에서 마일스톤별로 구분한다. 독립 검토 담당은 사용자(m-ill)이며 외부 비교 2건·pilot 5건의 검토 완료 기록은 아직 없다. [접수표](REVIEW_INTAKE.md).
+
+현재 개발 브랜치: work/phase19-m5-m10-20260907. 위 M0~M4 문단의 브랜치·공개 상태는 각 실행 당시의 이력이다.

@@ -35,3 +35,8 @@ Node.js 24에서 `node server/main.mjs 5173` 실행 후 지원 브라우저로 `
 - [Chrome WebMCP](https://developer.chrome.com/docs/ai/webmcp)
 
 2026-09-05 확인. WebMCP는 변동 중인 API이며 브라우저·제품별 지원 범위가 다르다.
+
+## Phase 19 비선형 개발 후보
+
+현재 개발 브랜치는 36개 도구를 제공한다. 기존 27개 탄성 workflow에 비선형 케이스·힌지 preview/apply·페이지 조회·이력·실패 진단·pause/resume 9개를 추가했다. 공통 분석 도구로 production Pushover/NLTH를 실행한다. [호출 순서·지원 범위·잔여 자격](phase19/M5_M10_CANDIDATE.md)을 확인한다. 성공한 비선형 결과도 candidate이며 최종설계 전달은 차단된다.
+

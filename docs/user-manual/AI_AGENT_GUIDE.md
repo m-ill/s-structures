@@ -260,3 +260,8 @@ AI agent는 아래 항목을 자동으로 확정하지 않는다.
 현재 직접 모델러와 app 호스트는 v1 9개 + 신규 18개 도구를 제공한다. `get_workflow_context` → typed preview/apply → `plan/start/get_elastic_workflow` → `plan/start_design_review` → `plan/start_report_export` → `get_report_artifact` 순서로 사용한다. 반환된 세션 handle과 실제 run/조합 ID를 전달하고, 입력 변경 후 새 identity를 읽는다. UI 패널은 도구가 생성한 같은 검토를 표시한다.
 
 [도구 스키마·한도·호스트 결속](../phase19/M4_CONTRACT.md) · [39개 고정 회귀와 실제 브라우저 증거](../../verification/evidence/phase19/m4/README.md). report start는 세션 artifact 생성이며 외부 발송·임의 파일 저장·자동 PDF 생성 도구가 아니다. 비선형 계산은 노출하지 않는다.
+
+## 비선형 후보 workflow
+
+[Phase 19 비선형 호출 계약](../phase19/M5_M10_CANDIDATE.md)을 따른다. modelHash를 갱신하고 preview/apply 후 공통 plan/start/status 도구를 사용한다. 자동 힌지는 assumed이고 성공 결과도 candidate다. retry와 checkpoint resume은 별도 동작이며 build 미결속이면 checkpoint를 재개하지 않는다.
+
