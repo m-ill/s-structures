@@ -616,7 +616,7 @@ export function installIndexEngineBridge(target = globalThis) {
       return bridge.getNonlinearProductService().validate({ ...input, model });
     },
     createProductionNonlinearCase(input = {}) {
-      const model = prepareNonlinearProductModel(bridge.getCurrentModel());
+      const model = prepareNonlinearProductModel(bridge.getCurrentModel(), true);
       if (!model) return null;
       const analysisCase = bridge.getNonlinearProductService().createCase({ model, analysisCase: input });
       upsertAnalysisCase(model, analysisCase);
@@ -632,7 +632,7 @@ export function installIndexEngineBridge(target = globalThis) {
       return bridge.getNonlinearProductService().applyAssignments(changeSet, { ...input, model });
     },
     startNonlinearRun(input = {}) {
-      const model = prepareNonlinearProductModel(bridge.getCurrentModel());
+      const model = prepareNonlinearProductModel(bridge.getCurrentModel(), true);
       if (!model) return null;
       let analysisCase = input.analysisCase || null;
       if (!analysisCase && input.caseId) analysisCase = (model.analysisCases || []).find((row) => row.id === input.caseId) || null;
@@ -933,11 +933,12 @@ function replaceModelContents(target, source) {
   return target;
 }
 
-function prepareNonlinearProductModel(model) {
+function prepareNonlinearProductModel(model, mutate = false) {
   if (!model || typeof model !== 'object') return null;
   const migrated = migrateToCurrent(model);
   const missingCollection = NONLINEAR_PRODUCT_MODEL_COLLECTIONS.some((key) => !Array.isArray(model[key]));
   if (model.schemaVersion !== migrated.schemaVersion || !model.unitSystem || missingCollection) {
+    if (!mutate) return migrated;
     replaceModelContents(model, migrated);
   }
   return model;

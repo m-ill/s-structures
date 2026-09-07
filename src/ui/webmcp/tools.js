@@ -90,10 +90,10 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
         counts: Object.fromEntries(['nodes', 'members', 'loads'].map((key) => [key, value[key]?.length || 0])),
         cases: (value.analysisCases || []).slice(0, 100).map(({ id, name, kind, engineId }) => ({ id, name, kind, engineId, exposed: KINDS.includes(kind)||nonlinear.isCase(id) })),
         casesTruncated: (value.analysisCases?.length || 0) > 100,
-        capabilities: KINDS.map((kind) => {
+        capabilities: [...KINDS.map((kind) => {
           const result = agent.getAnalysisCapabilities({ kind });
           return { kind, targets: result.targets };
-        }),
+        }), ...['p8-production-pushover', 'p8-production-mdof-nlth'].map(engineId => ({engineId, qualification:'candidate', designBlocked:true, targets:['cpu'], settings:'case-specific preflight required'}))],
         jobs: [...jobs.keys()],
         limits: { maxSessionJobs: 128, maxConcurrentJobs: 1, editing: true, externalQualification: 'NOT_CLAIMED' },
       };

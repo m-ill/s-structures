@@ -24,7 +24,7 @@ export function installWebMcp(target,bridge) {
   const doc=target.document,host=doc?.querySelector?.('[data-ss-ribbon-panel="elastic"]');
   const label=host?doc.createElement('p'):null;
   if(label){label.id='ssWebMcpStatus';label.setAttribute('role','status');label.style.cssText='font:12px system-ui;margin:4px;color:#284d73';host.appendChild(label);}
-  state.render=()=>{const stale=state.reviewId?bridge.getDesignReview(state.reviewId).stale:null;if(label)label.textContent=`WebMCP ${state.status} · 도구 ${state.registered.length}개 · ${state.lastAction||'작업 없음'} · ${stale===true?'검토 결과 오래됨':stale===false?'검토 결과 최신':state.changed?'입력 변경됨: 해석 필요':'검토 결과 없음'} · 탄성 예비 검토` ;};
+  state.render=()=>{const stale=state.reviewId?bridge.getDesignReview(state.reviewId).stale:null;if(label)label.textContent=`WebMCP ${state.status} · 도구 ${state.registered.length}개 · ${state.lastAction||'작업 없음'} · ${stale===true?'검토 결과 오래됨':stale===false?'검토 결과 최신':state.changed?'입력 변경됨: 해석 필요':'검토 결과 없음'} · 탄성 예비 검토 · 비선형 candidate` ;};
   const definitions=createWebMcpTools({agent:target.SStructuresAgent,bridge,onActivity:action=>{state.lastAction=action.tool;if(action.changed)state.changed=true;if(action.designRunId){state.reviewId=action.designRunId;bridge.designReviewPanel?.adoptReview?.(action.designRunId);}state.render();},setView:view=>{
     if(['design-input','design-review'].includes(view)){target.SStructuresNativeUI?.setMode?.('elastic');const panel=view==='design-input'?bridge.designInputPanel:bridge.designReviewPanel;if(!panel)return {ok:false,code:'VIEW_UNAVAILABLE'};panel.open();}
     else {if(!target.SStructuresNativeUI?.setMode)return {ok:false,code:'VIEW_UNAVAILABLE'};target.SStructuresNativeUI.setMode(view);}

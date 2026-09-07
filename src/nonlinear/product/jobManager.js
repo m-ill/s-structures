@@ -156,6 +156,9 @@ export function createNonlinearProductService(options = {}) {
       if (previous.status !== 'paused') throw serviceError('NONLINEAR_JOB_NOT_PAUSED', `Job ${previous.id} is not paused.`);
       const model = resolveModel(input, options);
       const currentHash = nonlinearProductModelHash(model);
+      if (previous.mode === 'nlth' && previous.latestCheckpoint && previous.buildIdentity?.unbound) {
+        throw serviceError('NONLINEAR_RESTART_BUILD_UNBOUND', 'Checkpoint resume requires a bound solver build; retry from origin instead.');
+      }
       if (stableHash(previous.buildIdentity) !== stableHash(options.getBuildIdentity?.() || { service: NONLINEAR_PRODUCT_SERVICE_VERSION })) {
         throw serviceError('NONLINEAR_RESTART_BUILD_CHANGED', 'Checkpoint resume requires the original solver build.');
       }

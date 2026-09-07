@@ -31,7 +31,7 @@ import { evaluateFiberCoupledHingeTrial } from '../fiber/hingeInteraction.js';
 
 export const COROTATIONAL_FRAME_3D_VERSION = 'p8-m3-corotational-frame-3d-v2';
 export const COROTATIONAL_FRAME_3D_STATE_VERSION = 'p8-m3-corotational-frame-state-v2';
-export const HINGED_COROTATIONAL_FRAME_3D_VERSION = 'p8-m4-hinged-corotational-frame-3d-v1';
+export const HINGED_COROTATIONAL_FRAME_3D_VERSION = 'p19-hinged-corotational-frame-3d-v2-current-chord';
 export const HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION = 'p8-m4-hinged-corotational-frame-state-v1';
 
 const DOF_COUNT = 12;
@@ -428,6 +428,18 @@ function evaluateEnergy(
   ));
   const physicalElasticEndForce = physicalLocalEndForceJets(localForce, localRotationI, localRotationJ);
   const physicalInternalEndForce = physicalLocalEndForceJets(generalizedInternalForce, localRotationI, localRotationJ);
+  if (prepared.internalRotationVariables.length) {
+    // Condensed ends are recovered in the current chord frame. Reference-length
+    // shears from localK12 violate moment equilibrium after axial shortening.
+    // Keep the constitutive end moments and differentiate current-length shear
+    // recovery through the same jets used by the condensed tangent.
+    for (const force of [physicalElasticEndForce, physicalInternalEndForce]) {
+      force[1] = jetDiv(jetAdd(force[5], force[11]), currentLength);
+      force[7] = jetScale(force[1], -1);
+      force[2] = jetScale(jetDiv(jetAdd(force[4], force[10]), currentLength), -1);
+      force[8] = jetScale(force[2], -1);
+    }
+  }
   const physicalMechanicalEndForce = mechanicalJointToCurrentFaceJets(
     prepared,
     q,

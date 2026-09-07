@@ -29,6 +29,10 @@ assert.deepEqual(await call('apply_nonlinear_case',{handle:preview.handle,reques
 const current=await call('get_project_context');assert.equal(current.cases[0].exposed,true);
 const validation=await call('validate_analysis',{caseId:'M5-PUSH',modelHash:current.modelHash});
 assert.equal(typeof validation.validation.ok,'boolean');assert.equal(bridge.listNonlinearRuns().length,0);
+delete model.analysisStates;
+const legacyContext=await call('get_project_context'),beforeRead=JSON.stringify(model);
+await call('validate_analysis',{caseId:'M5-PUSH',modelHash:legacyContext.modelHash});
+assert.equal(JSON.stringify(model),beforeRead,'Read-only preflight must not migrate the live model');
 await assert.rejects(call('get_nonlinear_history',{jobId:'foreign',channel:'overview'}),{code:'JOB_NOT_FOUND'});
 await assert.rejects(call('preview_nonlinear_case',{modelHash:context.modelHash,case:{id:'stale',mode:'pushover',gravityCombinationId:'GRAV',settings:{}}}),{code:'STALE_MODEL'});
 await assert.rejects(call('preview_nonlinear_case',{modelHash:current.modelHash,case:{id:'bad',mode:'nlth',gravityCombinationId:'GRAV',settings:{},solver:{}}}),{code:'INVALID_INPUT'});
