@@ -11,7 +11,7 @@ const root = resolve('.'), out = resolve(process.argv[2]);
 mkdirSync(out, { recursive: false });
 const git = (...args) => execFileSync('git', ['-c', `safe.directory=${root.replaceAll('\\','/')}`, ...args], { encoding: 'utf8' }).trim();
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
-const sourceFiles = [...new Set(git('ls-files','--cached','--others','--exclude-standard').split('\n'))].filter(p => /^(src|server)\//.test(p) || ['index.html','app.html'].includes(p)).sort();
+const sourceFiles = [...new Set(git('ls-files','-z','--cached','--others','--exclude-standard','--','src','server','index.html','app.html').split('\0'))].filter(Boolean).sort();
 const sources = sourceFiles.map(path => ({ path, sha256: hash(readFileSync(path)) }));
 const methods = path => [...readFileSync(path,'utf8').matchAll(/^    ([A-Za-z][A-Za-z0-9]+)\([^\n]*\) \{/gm)].map(x => x[1]);
 const bridge = methods('src/ui/indexBridge.js'), agent = methods('src/ui/indexAgentApi.js');
