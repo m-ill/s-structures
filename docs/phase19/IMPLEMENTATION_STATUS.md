@@ -1,30 +1,66 @@
 # Phase 19 실제 진행 상태
 
 ```yaml
-version: p19-status-v1
+version: p19-status-v2
 updated: 2026-09-07
-status: planned-not-started
+status: m0-m1-complete
 development_baseline: 7bb55d7ec6bd6b155361b26b7830c70b45043acb
 public_baseline: e18d5b432c780523496f8aad489b502934ae0ebd
-implemented_workpackages: []
-executed_phase19_tests: 0
+implemented_workpackages: [M0, M1]
+required_distinct_tests: 59
+passed_distinct_tests: 59
+failed_latest_tests: 0
+validation_strategy: full-baseline-plus-targeted-regression
 release_status: not-qualified
+github_publication: not-performed
 ```
 
-이번 작업은 코드·문서에 근거한 계획 수립이다. 제품 코드 수정, Phase 19 시험 실행, 신규 WebMCP 도구 등록, GitHub 게시를 수행하지 않았다.
+M0 기준선 감사와 M1 공통 입력·결과·조회 계약을 구현했다. 59개 필수 시험의 최신 결과를 모두 PASS로 확인했다. 실제 탄성설계 서비스와 신규 WebMCP 도구 연결은 M2~M4, 비선형 엔진의 추가 통합과 자격 검증은 M5 이후에 진행한다.
 
-| 작업 | 상태 | 선행 조건 |
+| 작업 | 상태 | 근거 또는 남은 작업 |
 |---|---|---|
-| M0 기준선·범위 | 계획 | 없음 |
-| M1 공통 계약 | 계획 | M0 |
-| M2 설계 입력 | 계획 | M1 |
-| M3 탄성설계 서비스 | 계획 | M1, M2 |
-| M4 WebMCP·화면 | 계획 | M2, M3 |
-| M5 비선형 기반 | 계획 | M0, M1 |
-| M6 Pushover/fiber/PMM | 계획 | M5 |
-| M7 MDOF NLTH | 계획 | M5, M6의 재료/상태 검증 |
-| M8 작업·성능·복구 | 계획 | M1, 각 실행 서비스 |
-| M9 종합 검증 | 계획 | 해당 배포 범위의 M2~M8 |
-| M10 배포 | 계획 | M9 |
+| M0 기준선·범위 | 완료 | 소스 ZIP/SHA, API 대응표, High 41건, 기존 qualification·성능·미확정 담당 목록 |
+| M1 공통 계약 | 완료 | 버전 입력 식별, 불변 기록, 명시적 준비, stale 및 조합·단위·변조 차단 |
+| M2 설계 입력 | 계획 | 타입별 preview/apply, 원자성, Undo |
+| M3 탄성설계 서비스 | 계획 | 해석 run→설계 수요→강재/RC 검토→snapshot 보고서 |
+| M4 WebMCP·화면 | 계획 | 신규 typed 도구, 실제 브라우저 전체 워크플로 |
+| M5 비선형 기반 | 계획 | 초기상태·checkpoint·PMM 조립·엔진 routing |
+| M6 Pushover/fiber/PMM | 계획 | 전역 경로·반전·rollback·독립 비교 |
+| M7 MDOF NLTH | 계획 | 시간 적분·에너지·재시작·외부 비교 |
+| M8 작업·성능·복구 | 계획 | 실제 Worker 취소·응답·규모·결과 보존 |
+| M9 종합 검증 | 계획 | 해당 배포 범위의 G1~G8 및 독립 자격 |
+| M10 배포 | 계획 | build/rule pack 결속, 공개 패키지·CI·Release |
 
-진행 시 각 행에 구현 커밋·시험 run·남은 blocker를 추가한다. 19A가 완료되어도 19B/19C를 완료로 바꾸지 않는다. 이전 Phase 자격 제한은 명시적 재검증 없이 해제하지 않는다.
+## 구현 범위
+
+- `p19-input-v1`: 모델·케이스·설정·설계기준·재료·단면·규칙판·build 식별을 분리하고 결속한다. 구버전 해시는 보존한다.
+- 해석 run과 설계 run을 별도로 기록한다. 완료·수치 자격·설계 검토·전달 허가·stale을 구분한다. 설계 계산 자체는 M3에서 연결한다.
+- 탄성 제품 작업은 큐 등록 시 입력을 복제한다. 실행 중 수정된 모델에 이전 결과를 새 결과로 결속하지 않는다.
+- 23개 계산형 보고서·설계·trace·diagnostic getter는 준비된 view만 읽는다. `prepareResultView`에서 명시적으로 준비하며 UI 보고서 버튼과 기존 시험을 이 계약에 맞췄다.
+- WebMCP v1 도구 9개와 기존 modelHash 계약을 유지하고 context에 새 입력 식별을 추가했다. 설계 입력·실행 도구는 아직 추가하지 않았다.
+
+상세 API와 재현 명령은 [구현 계약](M0_M1_CONTRACT.md), 호출 예시는 [Agent Guide](../user-manual/AI_AGENT_GUIDE.md)에 있다.
+
+## 검증 추적
+
+[검증 요약](../../verification/evidence/phase19/m0-m1/acceptance-summary.json)에 59개 필수 시험의 최신 PASS, 실행 커밋, 로그·ZIP 해시와 변경 범위를 기록했다. 최종 한 커밋에서 59개를 일괄 실행한 결과는 아니다.
+
+- R1: 34개 중 32 PASS. 두 보고서 시험을 명시적 준비 계약으로 이행했다.
+- R2: 53개 중 52 PASS. 대형 P–Delta 보고서가 180초 제한에 도달했다.
+- R3 (`0116957`): 56개 중 55 PASS. 대형 보고서는 600초 예산에서 통과했다. 명령 브리지의 trace 조회 시험 호출 한 곳을 수정했다.
+- R4 (`fafff38`): 명령 브리지 1개 PASS. R3와 런타임은 동일하다.
+- R5 (`e07f975`): diagnostic getter 3개를 cache에 추가한 뒤 새 대상·공통 계약·수치 동등성·명령 브리지 6개 중 5 PASS. Pilot 시험의 모델 context가 빠져 있었다.
+- R6 (`b8dd864`): Pilot API fixture에 모델 context를 제공한 후 1개 PASS. R5와 런타임은 동일하다.
+
+R3 이후의 런타임 변경은 [cache 대상 세 이름 추가](../../verification/evidence/phase19/m0-m1/runtime-delta.diff)뿐이다. 회귀 목록 전체의 최신 결과는 59 PASS/0 FAIL이다. 테스트 호출·fixture 변경으로 기존 수치 판정과 비교 기준을 완화하지 않았다. 원본 실패 로그는 별도 run에 보존했다. 문서 매뉴얼 검사도 별도로 통과했다.
+
+`e75fb2f`의 실제 Codex 브라우저에서 탄성 탭, 설계요약 생성, native WebMCP context의 `p19-input-v1`, 조회 후 job 0개를 관찰했다. 이것은 로컬 스모크이며 강재·RC 전체 WebMCP 작업, app host, 브라우저 matrix, 성능 자격 검증은 아니다.
+
+## 남은 생산 조건
+
+- 아키텍처 High import 41건(UI 수치 직접 의존 40, report→solver 1)은 M3/M5에서 해소·검증한다. 명시적 보고서 준비 안의 legacy solver 실행도 남아 있다.
+- 비선형 Q1 외부 비교 2건, Q4 규모·브라우저, Q5 독립 pilot 5건의 자격 조건을 유지한다. PMM 전역 조립은 M5에서 검증한다.
+- 런타임 build/rule pack이 미주입이면 새 기록의 설계전달은 차단된다. 외부 검토 담당과 고정 성능 장비의 브라우저·전원 모드는 미확정이다.
+- 기존 21개 비교나 이번 계약 회귀의 통과를 전체 비선형·최종설계 자격으로 확대하지 않는다.
+
+작업 브랜치는 `work/phase19-m0-m1-20260907`이다. 이번 범위는 로컬 구현·커밋·검증이며 공개 main과 GitHub Pages는 갱신하지 않았다.

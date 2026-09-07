@@ -1,0 +1,1137 @@
+{
+  "schema": "p19-baseline-v1",
+  "createdAt": "2026-09-07T03:01:41.426Z",
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "release": "10.0.19045",
+    "arch": "x64",
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13700KF",
+    "logicalCores": 24,
+    "memoryBytes": 68558086144,
+    "browser": "NOT_MEASURED",
+    "powerMode": "NOT_MEASURED"
+  },
+  "catalog": {
+    "methodExtraction": "source syntax inventory; presence is not execution evidence",
+    "bridge": [
+      "analyzeModel",
+      "getLastResult",
+      "getWorkflowInputIdentity",
+      "getWorkflowAnalysisResult",
+      "getResultVisuals",
+      "getReport",
+      "getDetailedReport",
+      "getCalculationPackage",
+      "getPhase13ModelCheck",
+      "getPhase13IssueWaivers",
+      "getPhase13MilestoneSnapshot",
+      "getKdsLoadCombinationCoverage",
+      "getKdsLoadCombinationRules",
+      "getKdsLoadStandardRegistry",
+      "getKdsLoadStandardAudit",
+      "getCombinationEnvelopeContract",
+      "getDesignBasisLoadEstimation",
+      "getDesignBasisInput",
+      "getRcDetailingReport",
+      "getSteelDetailingReport",
+      "getConnectionFoundationReport",
+      "getMemberDesignTraceReport",
+      "getDesignDemandPackage",
+      "getPracticePlatformReadiness",
+      "getPracticeValidationReport",
+      "getPilotProjectValidation",
+      "getServiceabilityDriftReport",
+      "getAdvancedElasticTrace",
+      "getResultPostprocessing",
+      "getStorySummary",
+      "getStoryMassSummary",
+      "getEccentricStoryLoadDistribution",
+      "getMemberReleaseSummary",
+      "getMemberReleaseBenchmark",
+      "getDiaphragmSummary",
+      "getRigidDiaphragmBenchmark",
+      "applyDesignBasisLoads",
+      "applyKdsLoadCombinations",
+      "runPushover",
+      "getAnalysisCases",
+      "addAnalysisCase",
+      "updateAnalysisCase",
+      "deleteAnalysisCase",
+      "runAnalysisCase",
+      "runAnalysisCases",
+      "getProductAnalysisService",
+      "getAnalysisCapabilities",
+      "validateAnalysisRun",
+      "planAnalysisRun",
+      "startAnalysisRun",
+      "cancelAnalysisRun",
+      "pauseAnalysisRun",
+      "resumeAnalysisRun",
+      "retryAnalysisRun",
+      "getAnalysisRunStatus",
+      "listAnalysisRuns",
+      "getAnalysisRunResult",
+      "getAnalysisResultSlice",
+      "getAnalysisRunReport",
+      "exportAnalysisTelemetry",
+      "getNonlinearProductService",
+      "validateProductionNonlinearCase",
+      "createProductionNonlinearCase",
+      "previewNonlinearAssignments",
+      "applyNonlinearAssignments",
+      "startNonlinearRun",
+      "pauseNonlinearRun",
+      "cancelNonlinearRun",
+      "resumeNonlinearRun",
+      "retryNonlinearRun",
+      "getNonlinearRunStatus",
+      "listNonlinearRuns",
+      "getNonlinearRunGraph",
+      "getNonlinearResult",
+      "getNonlinearResultSlice",
+      "exportNonlinearHistory",
+      "explainNonlinearFailure",
+      "getNonlinearReport",
+      "getAnalysisResults",
+      "getAnalysisCaseResult",
+      "getAnalysisLatestAttempts",
+      "getAnalysisLatestAttempt",
+      "getAnalysisRunStore",
+      "getAnalysisRunRecord",
+      "getResultSelectionStore",
+      "getResultSelection",
+      "setResultSelection",
+      "selectResultEntity",
+      "canTransferAnalysisResultToDesign",
+      "transferAnalysisResultToDesign",
+      "markAnalysisCasesStale",
+      "getCapabilities",
+      "getRuntimeDiagnostics",
+      "getCurrentModel",
+      "getAgentState",
+      "reanalyze"
+    ],
+    "agent": [
+      "getWorkflowInputIdentity",
+      "getWorkflowAnalysisResult",
+      "getModel",
+      "setModel",
+      "getSnapshot",
+      "getScreenState",
+      "getViewerState",
+      "getResults",
+      "getResultView",
+      "getResultVisuals",
+      "getReport",
+      "getDetailedReport",
+      "getCalculationPackage",
+      "getPhase13ModelCheck",
+      "getPhase13IssueWaivers",
+      "getPhase13MilestoneSnapshot",
+      "preflightReportExport",
+      "planReportExport",
+      "runReportExport",
+      "getReportExportStatus",
+      "cancelReportExport",
+      "listReportExports",
+      "getReportExportArtifacts",
+      "openReportExportArtifact",
+      "getKdsLoadCombinationCoverage",
+      "getKdsLoadCombinationRules",
+      "getKdsLoadStandardRegistry",
+      "getKdsLoadStandardAudit",
+      "getCombinationEnvelopeContract",
+      "getDesignBasisLoadEstimation",
+      "getDesignBasisInput",
+      "getRcDetailingReport",
+      "getRcDetailedDesignReport",
+      "getSteelDetailingReport",
+      "getP3DetailedDesignReport",
+      "getP3IntegratedResults",
+      "getLaunchReadinessReport",
+      "getFinalUseReleaseReview",
+      "getPhase3PlanAlignment",
+      "getPhase3ImportMilestoneReview",
+      "getPhase3ElasticMilestoneReview",
+      "getPhase3NonlinearMilestoneReview",
+      "getPhase3DesignMilestoneReview",
+      "getPhase3DrawingImportValidationReview",
+      "getPhase3EngineeringValidationReview",
+      "getPhase3ProductizationMilestoneReview",
+      "getPhase3OwnerSignoffReview",
+      "getPhase3CompletionAuditReview",
+      "getPhase3EvidenceRegister",
+      "listProjectEvidence",
+      "listImportCandidates",
+      "resolveImportCandidate",
+      "confirmImport",
+      "rejectImport",
+      "submitProjectEvidence",
+      "getPhase3PracticeValidationReview",
+      "getPhase3PointCloudValidationReview",
+      "getConnectionFoundationReport",
+      "getMemberDesignTraceReport",
+      "getDesignDemandPackage",
+      "getPracticePlatformReadiness",
+      "getPracticeValidationReport",
+      "getPilotProjectValidation",
+      "getServiceabilityDriftReport",
+      "getAdvancedElasticTrace",
+      "getMaterialSectionRegistry",
+      "listLibrary",
+      "getLibraryItem",
+      "upsertMaterial",
+      "upsertSection",
+      "setViewerSlice",
+      "getElasticExpansionTrace",
+      "getWallSlabEquivalentTrace",
+      "getLoadsV2Trace",
+      "getDynamicCompletenessTrace",
+      "getNonlinearAnalysisTrace",
+      "getHingeAssignments",
+      "getResultPostprocessing",
+      "getStorySummary",
+      "getStoryMassSummary",
+      "getEccentricStoryLoadDistribution",
+      "getMemberReleaseSummary",
+      "getMemberReleaseBenchmark",
+      "getDiaphragmSummary",
+      "getRigidDiaphragmBenchmark",
+      "getRuntimeDiagnostics",
+      "getBaselineContract",
+      "runPushover",
+      "getAnalysisCases",
+      "listAnalysisCases",
+      "addAnalysisCase",
+      "updateAnalysisCase",
+      "deleteAnalysisCase",
+      "runAnalysisCase",
+      "runAnalysisCases",
+      "runAllAnalysisCases",
+      "getAnalysisResults",
+      "getAnalysisCaseResult",
+      "getAnalysisCapabilities",
+      "validateAnalysisRun",
+      "planAnalysisRun",
+      "startAnalysisRun",
+      "getAnalysisRunStatus",
+      "listAnalysisRuns",
+      "getAnalysisRunResult",
+      "getAnalysisResultSlice",
+      "cancelAnalysisRun",
+      "retryAnalysisRun",
+      "getAnalysisRunReport",
+      "exportAnalysisTelemetry",
+      "validateNonlinearCase",
+      "validateProductionNonlinearCase",
+      "createProductionNonlinearCase",
+      "previewNonlinearAssignments",
+      "applyNonlinearAssignments",
+      "startNonlinearRun",
+      "pauseNonlinearRun",
+      "cancelNonlinearRun",
+      "resumeNonlinearRun",
+      "retryNonlinearRun",
+      "getNonlinearRunStatus",
+      "listNonlinearRuns",
+      "getNonlinearRunGraph",
+      "getNonlinearResult",
+      "getNonlinearResultSlice",
+      "explainNonlinearFailure",
+      "exportNonlinearHistory",
+      "getNonlinearReport",
+      "markAnalysisCasesStale",
+      "getCapabilities",
+      "getPhase10ReleaseStatus",
+      "runAnalysis",
+      "execute"
+    ],
+    "webmcp": [
+      "get_project_context",
+      "inspect_model",
+      "select_entities",
+      "validate_analysis",
+      "plan_analysis",
+      "start_analysis",
+      "get_analysis_status",
+      "get_result_slice",
+      "cancel_analysis"
+    ],
+    "groups": [
+      {
+        "feature": "elastic",
+        "apis": [
+          {
+            "name": "startAnalysisRun",
+            "bridge": true,
+            "agent": true
+          },
+          {
+            "name": "getAnalysisRunResult",
+            "bridge": true,
+            "agent": true
+          }
+        ],
+        "webmcp": [
+          "start_analysis",
+          "get_result_slice"
+        ],
+        "owner": "src/compute/product/analysisProductService.js",
+        "ownerExists": true,
+        "executionEvidence": "NOT_RUN_IN_M0"
+      },
+      {
+        "feature": "design-input",
+        "apis": [
+          {
+            "name": "getDesignBasisInput",
+            "bridge": true,
+            "agent": true
+          },
+          {
+            "name": "applyDesignBasisLoads",
+            "bridge": true,
+            "agent": false
+          }
+        ],
+        "webmcp": [],
+        "owner": "src/design/designBasisChangeSet.js",
+        "ownerExists": true,
+        "executionEvidence": "NOT_RUN_IN_M0"
+      },
+      {
+        "feature": "steel-rc-review",
+        "apis": [
+          {
+            "name": "getSteelDetailingReport",
+            "bridge": true,
+            "agent": true
+          },
+          {
+            "name": "getRcDetailingReport",
+            "bridge": true,
+            "agent": true
+          }
+        ],
+        "webmcp": [],
+        "owner": "src/design/p3DetailedDesignReport.js",
+        "ownerExists": true,
+        "executionEvidence": "NOT_RUN_IN_M0"
+      },
+      {
+        "feature": "report",
+        "apis": [
+          {
+            "name": "getDetailedReport",
+            "bridge": true,
+            "agent": true
+          },
+          {
+            "name": "getCalculationPackage",
+            "bridge": true,
+            "agent": true
+          }
+        ],
+        "webmcp": [],
+        "owner": "src/ui/indexReportExportWorkflow.js",
+        "ownerExists": true,
+        "executionEvidence": "NOT_RUN_IN_M0"
+      },
+      {
+        "feature": "nonlinear",
+        "apis": [
+          {
+            "name": "startNonlinearRun",
+            "bridge": true,
+            "agent": true
+          },
+          {
+            "name": "getNonlinearResult",
+            "bridge": true,
+            "agent": true
+          }
+        ],
+        "webmcp": [],
+        "owner": "src/nonlinear/product/index.js",
+        "ownerExists": true,
+        "executionEvidence": "NOT_RUN_IN_M0"
+      }
+    ]
+  },
+  "nonlinear": [
+    {
+      "version": "p8-m8-nonlinear-capability-v5",
+      "engineId": "legacy-preliminary-stepwise-secant",
+      "caseKinds": [
+        "pushover"
+      ],
+      "available": true,
+      "production": false,
+      "qualification": "legacy-preliminary",
+      "qualificationCeiling": "legacy-preliminary",
+      "designBlocked": true,
+      "modelBound": true,
+      "formulation": {
+        "geometry": "small-displacement-linear-steps",
+        "material": "previous-step-hinge-secant-degradation",
+        "equilibrium": "independent-linear-step-solves",
+        "control": "load-factor"
+      },
+      "supportedControls": [
+        "load-factor"
+      ],
+      "unsupportedControls": [
+        "displacement",
+        "arcLength"
+      ],
+      "limitations": [
+        "Uses one linear frame solve per load-factor step.",
+        "Uses the previous accepted step hinge state for secant stiffness degradation.",
+        "Does not assemble a simultaneous nonlinear residual and consistent tangent.",
+        "Does not execute augmented displacement-control or arc-length equations."
+      ]
+    },
+    {
+      "version": "p8-m8-nonlinear-capability-v5",
+      "engineId": "legacy-sdof-bilinear-newmark",
+      "caseKinds": [
+        "nlth"
+      ],
+      "available": true,
+      "production": false,
+      "qualification": "legacy-preliminary",
+      "qualificationCeiling": "legacy-preliminary",
+      "designBlocked": true,
+      "modelBound": false,
+      "formulation": {
+        "geometry": "scalar-sdof",
+        "material": "bilinear-spring",
+        "equilibrium": "newmark-average-acceleration-step-newton",
+        "control": "time-step"
+      },
+      "supportedControls": [
+        "time-step"
+      ],
+      "unsupportedControls": [],
+      "limitations": [
+        "Integrates one scalar mass, damping, and bilinear spring system.",
+        "Does not assemble mass, damping, resisting force, or tangent from the 3D model.",
+        "Cannot be represented as model-bound frame nonlinear time-history analysis."
+      ]
+    },
+    {
+      "version": "p8-m8-nonlinear-capability-v5",
+      "engineId": "p8-production-mdof-nonlinear-static",
+      "caseKinds": [
+        "nonlinearStatic"
+      ],
+      "available": false,
+      "production": true,
+      "qualification": "blocked",
+      "qualificationCeiling": "blocked",
+      "designBlocked": true,
+      "modelBound": true,
+      "formulation": {
+        "geometry": "corotational-3d",
+        "material": "state-dependent",
+        "equilibrium": "mdof-consistent-tangent",
+        "control": "load"
+      },
+      "supportedControls": [
+        "load"
+      ],
+      "unsupportedControls": [],
+      "limitations": [
+        "Reserved Phase 8 engine ID. Execution is blocked until its capability gate is implemented and qualified."
+      ]
+    },
+    {
+      "version": "p8-m8-nonlinear-capability-v5",
+      "engineId": "p8-production-mdof-pushover",
+      "caseKinds": [
+        "pushover"
+      ],
+      "available": true,
+      "production": true,
+      "qualification": "candidate",
+      "qualificationCeiling": "candidate",
+      "designBlocked": true,
+      "modelBound": true,
+      "executionMode": "async",
+      "formulation": {
+        "geometry": "objective-corotational-3d",
+        "material": "state-dependent-concentrated-hinge-or-distributed-fiber-plasticity-with-section-pmm",
+        "equilibrium": "current-step-mdof-consistent-tangent",
+        "control": "augmented-displacement-with-optional-crisfield-arc-length"
+      },
+      "supportedControls": [
+        "displacement",
+        "arcLength"
+      ],
+      "unsupportedControls": [
+        "load-factor"
+      ],
+      "limitations": [
+        "Candidate Phase 8 engine; design transfer remains blocked pending qualification.",
+        "Execution requires the asynchronous nonlinear analysis runner.",
+        "Fiber PMM coupling requires supported Phase 7 parametric section and material snapshots.",
+        "Distributed fiber members use 2-5 point Gauss section integration and currently reject end releases.",
+        "Arc-length continuation requires a valid displacement-control checkpoint and a qualified general/indefinite backend.",
+        "GPU execution is an opt-in backend capability and remains unavailable until a deterministic f64 implementation is qualified."
+      ]
+    },
+    {
+      "version": "p8-m8-nonlinear-capability-v5",
+      "engineId": "p8-production-mdof-nlth",
+      "caseKinds": [
+        "nonlinearTimeHistory"
+      ],
+      "available": true,
+      "production": true,
+      "qualification": "candidate",
+      "qualificationCeiling": "candidate",
+      "designBlocked": true,
+      "modelBound": true,
+      "executionMode": "async",
+      "formulation": {
+        "geometry": "objective-corotational-3d",
+        "material": "state-dependent-concentrated-hinge-or-distributed-fiber-plasticity-with-section-pmm",
+        "equilibrium": "current-step-mdof-effective-tangent",
+        "control": "newmark-average-acceleration-full-newton-with-substep-reintegration"
+      },
+      "supportedControls": [
+        "time-step"
+      ],
+      "unsupportedControls": [],
+      "limitations": [
+        "Candidate Phase 8 engine; design transfer remains blocked pending independent qualification.",
+        "Execution requires the asynchronous nonlinear analysis runner or RUN_MDOF_NLTH Worker task.",
+        "Uniform one-to-three-component support excitation is included; spatially varying support motion is not.",
+        "Consistent mass with released frame ends is blocked until release mass condensation is qualified.",
+        "GPU execution is opt-in and requires a deterministic f64 qualified backend."
+      ]
+    }
+  ],
+  "performance": {
+    "version": "p8-m0-performance-baseline-v1",
+    "referenceProfileContract": {
+      "version": "p8-m0-reference-profile-v1",
+      "requiredFields": [
+        "hardware.cpu",
+        "hardware.logicalCores",
+        "hardware.memoryBytes",
+        "os.platform",
+        "os.release",
+        "browser.name",
+        "browser.version",
+        "browser.userAgent",
+        "powerMode",
+        "backend.id",
+        "backend.build"
+      ],
+      "samplePolicy": {
+        "warmupRuns": 1,
+        "measuredRuns": 5,
+        "statistics": [
+          "median",
+          "p95",
+          "peakMemoryBytes",
+          "resultBytes"
+        ]
+      }
+    },
+    "workloads": [
+      {
+        "version": "p8-m0-workload-fixtures-v1",
+        "id": "PERF-PUSH-S",
+        "tier": "S",
+        "limits": {
+          "activeDofMax": 1000,
+          "elementMax": 1500
+        },
+        "execution": {
+          "gravitySteps": 10,
+          "savedSteps": 50
+        }
+      },
+      {
+        "version": "p8-m0-workload-fixtures-v1",
+        "id": "PERF-PUSH-M",
+        "tier": "M",
+        "limits": {
+          "activeDofMax": 10000,
+          "elementMax": 15000
+        },
+        "execution": {
+          "gravitySteps": 20,
+          "savedSteps": 100
+        }
+      },
+      {
+        "version": "p8-m0-workload-fixtures-v1",
+        "id": "PERF-PUSH-L",
+        "tier": "L",
+        "limits": {
+          "activeDofMax": 50000,
+          "elementMax": 75000
+        },
+        "execution": {
+          "gravitySteps": 20,
+          "savedSteps": 100,
+          "limitedAssignments": true
+        }
+      },
+      {
+        "version": "p8-m0-workload-fixtures-v1",
+        "id": "PERF-NLTH-S",
+        "tier": "S",
+        "limits": {
+          "activeDofMax": 1000,
+          "elementMax": 1500
+        },
+        "execution": {
+          "inputSteps": 5000,
+          "activeComponents": 1
+        }
+      },
+      {
+        "version": "p8-m0-workload-fixtures-v1",
+        "id": "PERF-NLTH-M",
+        "tier": "M",
+        "limits": {
+          "activeDofMax": 10000,
+          "elementMax": 15000
+        },
+        "execution": {
+          "minimumActiveDof": 5000,
+          "inputSteps": 20000
+        }
+      },
+      {
+        "version": "p8-m0-workload-fixtures-v1",
+        "id": "PERF-RESULT-M",
+        "tier": "M",
+        "limits": {
+          "activeDofMax": 10000,
+          "elementMax": 15000
+        },
+        "execution": {
+          "operations": [
+            "history-slice",
+            "chart",
+            "envelope",
+            "report"
+          ]
+        }
+      }
+    ],
+    "budget": {
+      "version": "p8-m0-performance-baseline-v1",
+      "inputAcknowledgementP95Ms": 100,
+      "progressUpdateMaxMs": 1000,
+      "cancelAcknowledgementMaxMs": 2000,
+      "mediumPreflightMaxMs": 5000,
+      "cachedPopupInitialRenderMaxMs": 500,
+      "chartInteractionP95Ms": 100,
+      "memoryAvailableFractionMax": 0.6,
+      "engineeringTargets": {
+        "pushMediumMaxMs": 600000,
+        "nlthMediumMaxMs": 1800000,
+        "peakAnalysisMemoryMaxBytes": 1610612736
+      },
+      "status": "contract-fixed-baseline-measurement-pending-production-backend"
+    }
+  },
+  "qualification": {
+    "version": "p8-m11-release-manifest-v1",
+    "phase": "Phase 8",
+    "milestone": "P8-M11",
+    "generatedAt": "2026-07-14T23:30:00+09:00",
+    "sourceRevision": "76323c8+P8-M11-worktree",
+    "implementation": {
+      "status": "complete",
+      "qualificationHarness": "ready",
+      "pilotPackages": "reproducible",
+      "performanceHarness": "ready"
+    },
+    "release": {
+      "status": "candidate",
+      "allowed": false,
+      "designTransferAllowed": false,
+      "cumulativeGrade": "Q0",
+      "statement": "Phase 8 production nonlinear results remain candidate and design-blocked until every listed blocker is closed."
+    },
+    "grades": [
+      {
+        "id": "Q1",
+        "name": "Numerically Qualified",
+        "status": "BLOCKED",
+        "blockers": [
+          "TWO_INDEPENDENT_EXTERNAL_COMPARISONS_REQUIRED"
+        ]
+      },
+      {
+        "id": "Q2",
+        "name": "Model-Integrated",
+        "status": "PASS",
+        "blockers": []
+      },
+      {
+        "id": "Q3",
+        "name": "Workflow-Complete",
+        "status": "PASS",
+        "blockers": []
+      },
+      {
+        "id": "Q4",
+        "name": "Scale-Qualified",
+        "status": "BLOCKED",
+        "blockers": [
+          "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+          "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+          "M_TIER_NLTH_END_TO_END_REQUIRED"
+        ]
+      },
+      {
+        "id": "Q5",
+        "name": "Commercial-Grade in Scope",
+        "status": "BLOCKED",
+        "blockers": [
+          "Q1_REQUIRED",
+          "Q4_REQUIRED",
+          "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+        ]
+      }
+    ],
+    "featureDecisions": [
+      {
+        "id": "production-pushover",
+        "engineId": "p8-production-mdof-pushover",
+        "qualification": "candidate",
+        "qualificationCeiling": "candidate",
+        "designBlocked": true,
+        "reason": "P8_M11_RELEASE_GATE_NOT_SATISFIED"
+      },
+      {
+        "id": "production-nlth",
+        "engineId": "p8-production-mdof-nlth",
+        "qualification": "candidate",
+        "qualificationCeiling": "candidate",
+        "designBlocked": true,
+        "reason": "P8_M11_RELEASE_GATE_NOT_SATISFIED"
+      },
+      {
+        "id": "unilateral-member-active-set",
+        "qualification": "unsupported",
+        "designBlocked": true,
+        "reason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED"
+      },
+      {
+        "id": "legacy-preliminary-nonlinear-results",
+        "qualification": "legacy-preliminary",
+        "designBlocked": true,
+        "reason": "LEGACY_RESULT_DESIGN_TRANSFER_FORBIDDEN"
+      }
+    ],
+    "evidence": {
+      "independentHash": "c8cf7e536c60f40de7c0bee2",
+      "performanceHash": "56e37a98063f8c546ded569d",
+      "pilotSummaryHash": "ceb7795521e359cb8cdc4a6e",
+      "historicalHash": "025e33f0c607acda3bb8f4dc",
+      "reviewHash": "6b4506883de8273dc7d56dcc",
+      "externalComparisonHashes": []
+    },
+    "qualification": {
+      "independent": {
+        "version": "p8-m11-independent-reference-v1",
+        "status": "PASS",
+        "qualificationLevel": "L2-L3-independent-closed-form-and-separate-reference-code",
+        "externalCommercialComparison": false,
+        "qualificationHash": "c8cf7e536c60f40de7c0bee2",
+        "resultCount": 5
+      },
+      "performance": {
+        "version": "p8-m11-performance-qualification-v1",
+        "status": "BLOCKED",
+        "qualificationHash": "56e37a98063f8c546ded569d",
+        "blockers": [
+          "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+          "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+          "M_TIER_NLTH_END_TO_END_REQUIRED"
+        ],
+        "results": [
+          {
+            "id": "NL-PERF-01",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-02",
+            "status": "BLOCKED",
+            "blockerCode": "M_TIER_PUSHOVER_END_TO_END_REQUIRED"
+          },
+          {
+            "id": "NL-PERF-03",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-04",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-05",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-06",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-07",
+            "status": "BLOCKED",
+            "blockerCode": "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED"
+          },
+          {
+            "id": "NL-PERF-08",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-09",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-10",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-11",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-12",
+            "status": "BLOCKED",
+            "blockerCode": "M_TIER_PUSHOVER_END_TO_END_REQUIRED"
+          },
+          {
+            "id": "NL-PERF-13",
+            "status": "BLOCKED",
+            "blockerCode": "M_TIER_NLTH_END_TO_END_REQUIRED"
+          },
+          {
+            "id": "NL-PERF-14",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-15",
+            "status": "PASS",
+            "blockerCode": null
+          },
+          {
+            "id": "NL-PERF-16",
+            "status": "PASS",
+            "blockerCode": null
+          }
+        ]
+      },
+      "pilots": {
+        "version": "p8-m11-pilot-artifact-v1",
+        "status": "PASS",
+        "independentlyQualified": false,
+        "releaseReady": false,
+        "pilotCount": 5,
+        "verifiedPilotCount": 0,
+        "results": [
+          {
+            "id": "NL-PILOT-01",
+            "pilotId": "PILOT-ST-01",
+            "status": "PASS",
+            "qualification": "candidate",
+            "designBlocked": true,
+            "artifactHash": "bdaf6fce18f89cb8b0f4ca51",
+            "errors": []
+          },
+          {
+            "id": "NL-PILOT-02",
+            "pilotId": "PILOT-ST-02",
+            "status": "PASS",
+            "qualification": "candidate",
+            "designBlocked": true,
+            "artifactHash": "d8ed1e5ca3d9eb9f4ff028b0",
+            "errors": []
+          },
+          {
+            "id": "NL-PILOT-03",
+            "pilotId": "PILOT-ST-03",
+            "status": "PASS",
+            "qualification": "candidate",
+            "designBlocked": true,
+            "artifactHash": "efe89f08afcf53f2af19ea5a",
+            "errors": []
+          },
+          {
+            "id": "NL-PILOT-04",
+            "pilotId": "PILOT-RC-01",
+            "status": "PASS",
+            "qualification": "candidate",
+            "designBlocked": true,
+            "artifactHash": "94e70f6dcec654d275a4869a",
+            "errors": []
+          },
+          {
+            "id": "NL-PILOT-05",
+            "pilotId": "PILOT-DYN-01",
+            "status": "PASS",
+            "qualification": "candidate",
+            "designBlocked": true,
+            "artifactHash": "05194a678b0211ec7ff9158e",
+            "errors": []
+          }
+        ],
+        "blockers": [
+          "INDEPENDENT_EXTERNAL_COMPARISON_REQUIRED",
+          "PILOT_OWNER_SIGNOFF_REQUIRED"
+        ],
+        "summaryHash": "ceb7795521e359cb8cdc4a6e"
+      },
+      "historical": {
+        "rows": [
+          {
+            "milestone": "P8-M0",
+            "suiteId": "P8-M0-GOV",
+            "status": "PASS",
+            "sourceRevision": "4a21a95+P8-M0-worktree",
+            "evidenceHash": "57493dff88dff830e9bf7ce2"
+          },
+          {
+            "milestone": "P8-M1",
+            "suiteId": "P8-M1-DOMAIN-STATE",
+            "status": "PASS",
+            "sourceRevision": "81944ca+P8-M1-worktree",
+            "evidenceHash": "bc8d8be015d56856f733b62e"
+          },
+          {
+            "milestone": "P8-M2",
+            "suiteId": "P8-M2-EQUILIBRIUM",
+            "status": "PASS",
+            "sourceRevision": "0e4f629+P8-M5-revalidated-worktree",
+            "evidenceHash": "f283975428fcc8eb02d05518"
+          },
+          {
+            "milestone": "P8-M3",
+            "suiteId": "P8-M3-COROTATIONAL",
+            "status": "PASS",
+            "sourceRevision": "7d2b2b9+P8-M3-final-reviewed-worktree",
+            "evidenceHash": "2f47c1bc4a5625c4f07a2965"
+          },
+          {
+            "milestone": "P8-M4",
+            "suiteId": "P8-M4-CONCENTRATED-HINGE",
+            "status": "PASS",
+            "sourceRevision": "ff9d04c+P8-M4-reviewed-worktree",
+            "evidenceHash": "795b519a8c1cc251e6a6701b"
+          },
+          {
+            "milestone": "P8-M5",
+            "suiteId": "P8-M5-FORMAL-PUSHOVER",
+            "status": "PASS",
+            "sourceRevision": "0e4f629+P8-M5-worktree",
+            "evidenceHash": "e2fc73e2a1216aedc6530612"
+          },
+          {
+            "milestone": "P8-M6",
+            "suiteId": "P8-M6-FIBER-PMM",
+            "status": "PASS",
+            "sourceRevision": "9e0ec1c+P8-M6-worktree",
+            "evidenceHash": "8a9a0071cc32e7eb9404fd8f"
+          },
+          {
+            "milestone": "P8-M6",
+            "suiteId": "P8-M6-PMM-RUNTIME",
+            "status": "PASS",
+            "sourceRevision": "4d1bb0e+P8-M6.1-worktree",
+            "evidenceHash": "7380d73c02383ef0792571b3"
+          },
+          {
+            "milestone": "P8-M7",
+            "suiteId": "P8-M7-ARC-CYCLIC",
+            "status": "PASS",
+            "sourceRevision": "4ec5fc5+P8-M7-worktree",
+            "evidenceHash": "2b5b00788223d4c5eef082cc"
+          },
+          {
+            "milestone": "P8-M8",
+            "suiteId": "P8-M8-MDOF-NLTH",
+            "status": "PASS",
+            "sourceRevision": "6982e28+P8-M8-worktree",
+            "evidenceHash": "106ba025b30388a7809e610a"
+          },
+          {
+            "milestone": "P8-M9",
+            "suiteId": "P8-M9-INTEGRATION-RECOVERY",
+            "status": "PASS",
+            "sourceRevision": "723eb09+P8-M9-worktree",
+            "evidenceHash": "e3c7d0f519acb77df7c22340"
+          },
+          {
+            "milestone": "P8-M10",
+            "suiteId": "P8-M10-UI-API",
+            "status": "PASS",
+            "sourceRevision": "c6f6021+P8-M10-worktree",
+            "evidenceHash": "ccd6e4d428bd062089d836d3"
+          }
+        ],
+        "byMilestone": {
+          "P8-M0": "PASS",
+          "P8-M1": "PASS",
+          "P8-M2": "PASS",
+          "P8-M3": "PASS",
+          "P8-M4": "PASS",
+          "P8-M5": "PASS",
+          "P8-M6": "PASS",
+          "P8-M7": "PASS",
+          "P8-M8": "PASS",
+          "P8-M9": "PASS",
+          "P8-M10": "PASS"
+        },
+        "requiredMilestones": [
+          "P8-M0",
+          "P8-M1",
+          "P8-M2",
+          "P8-M3",
+          "P8-M4",
+          "P8-M5",
+          "P8-M6",
+          "P8-M7",
+          "P8-M8",
+          "P8-M9",
+          "P8-M10"
+        ],
+        "requiredEvidencePresent": true,
+        "evidenceHash": "025e33f0c607acda3bb8f4dc"
+      },
+      "review": {
+        "completed": true,
+        "criticalCount": 0,
+        "highCount": 0,
+        "findings": [
+          {
+            "severity": "high",
+            "status": "closed",
+            "id": "P8-M11-REV-01"
+          },
+          {
+            "severity": "high",
+            "status": "closed",
+            "id": "P8-M11-REV-02"
+          },
+          {
+            "severity": "high",
+            "status": "closed",
+            "id": "P8-M11-REV-03"
+          },
+          {
+            "severity": "medium",
+            "status": "closed",
+            "id": "P8-M11-REV-04"
+          },
+          {
+            "severity": "medium",
+            "status": "closed",
+            "id": "P8-M11-REV-05"
+          }
+        ],
+        "reportPath": "reports/validation-evidence/phase8/p8-m11-code-review.md",
+        "reviewHash": "6b4506883de8273dc7d56dcc"
+      },
+      "externalComparisons": []
+    },
+    "blockers": [
+      "TWO_INDEPENDENT_EXTERNAL_COMPARISONS_REQUIRED",
+      "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+      "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+      "M_TIER_NLTH_END_TO_END_REQUIRED",
+      "Q1_REQUIRED",
+      "Q4_REQUIRED",
+      "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+    ],
+    "reproducibility": {
+      "command": "npm run qualify:p8:m11",
+      "hashPolicy": "generatedAt is excluded; source revision and all evidence hashes are included",
+      "fallbackPolicy": "forbidden"
+    },
+    "manifestHash": "74cf6bc8f09ba158d9242507"
+  },
+  "unresolved": [
+    {
+      "id": "EXTERNAL-COMPARISON-1",
+      "owner": null,
+      "status": "SOURCE_AND_REVIEWER_REQUIRED"
+    },
+    {
+      "id": "EXTERNAL-COMPARISON-2",
+      "owner": null,
+      "status": "SOURCE_AND_REVIEWER_REQUIRED"
+    },
+    {
+      "id": "PILOT-ST-01",
+      "owner": null,
+      "status": "INDEPENDENT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "PILOT-ST-02",
+      "owner": null,
+      "status": "INDEPENDENT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "PILOT-ST-03",
+      "owner": null,
+      "status": "INDEPENDENT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "PILOT-RC-01",
+      "owner": null,
+      "status": "INDEPENDENT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "PILOT-DYN-01",
+      "owner": null,
+      "status": "INDEPENDENT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "REFERENCE-HARDWARE",
+      "status": "LOCAL_HARDWARE_RECORDED_BROWSER_POWER_PROFILE_NOT_FIXED"
+    },
+    {
+      "id": "PMM-INTEGRATION",
+      "status": "M5_REQUIRED",
+      "source": "src/nonlinear/equilibrium"
+    }
+  ],
+  "source": {
+    "commit": "e07f975a1e831f89f07b13763370b67cf156b145",
+    "tree": "7636cd29742c46da97e94f7998eece0c4e95e49f",
+    "trackedChanges": "",
+    "sourceDigest": "c43bbffab8e5f2346d57fd474a97ad611524e767329dea11e1123a3aaf5723e9",
+    "fileCount": 692,
+    "fullInventorySha256": "4a819acb8671a678a7f7eda70e3dde7a13dbbe7b1c5fbfec5bb287b2f7aad9e6",
+    "baselineArchiveSha256": "6543fbea30f39c8ca78d9d4672f2213799affe8298c2446a66e64ce8bb7d8734"
+  },
+  "architecture": {
+    "ok": false,
+    "highImportFindings": 41,
+    "uiNumericCore": 40,
+    "reportSolver": 1,
+    "sha256": "28da92d89474cfbe9213278f902e8f860b30e9b6e00d30c9dece31eceedf53b0"
+  },
+  "localArtifactRoot": "output/phase19/m0-m1-accepted-inventory-20260907"
+}

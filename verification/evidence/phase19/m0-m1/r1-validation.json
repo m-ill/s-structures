@@ -1,0 +1,295 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "736acb9b8544b40bbabb1f13b6c2d7e11f2f9612",
+    "tree": "383a7f89f5c29066a66dd66ea7b5b6a7fb17ceca",
+    "trackedChanges": ""
+  },
+  "scope": "M0 inventory, M1 identity/result/query contracts and affected product regressions; not full Phase19 qualification",
+  "manifestHash": "031e34b2a1d964b04f68a17ad5bd33e281d27dfc79c5dd4e1203e9785820d071",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-07T02:34:41.824Z",
+  "results": [
+    {
+      "test": "tests/p19-m1-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "01-p19-m1-contract.mjs.log",
+      "sha256": "988bae54aedaaa759a99f452e1452b7aee3c1b77f755fb2204e455d3266c65b8"
+    },
+    {
+      "test": "tests/p19-m1-product-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "02-p19-m1-product-parity.mjs.log",
+      "sha256": "e7f15eeb48f3043b5c20fa56e466c72f4ebacfc9affb1233b38da30df2ae66e3"
+    },
+    {
+      "test": "tests/webmcp-integration.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "03-webmcp-integration.mjs.log",
+      "sha256": "5cbc7ba9409c691825554f8d58bb761b61c44895fece8fa21d46a96ef277fc2c"
+    },
+    {
+      "test": "tests/webmcp-bridge-security.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "04-webmcp-bridge-security.mjs.log",
+      "sha256": "425a5be58a131bc9472dbb6207bd4d849be6f3e6b28ee4ef0cad6c8675c534da"
+    },
+    {
+      "test": "tests/m31-agent-command-bridge.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "05-m31-agent-command-bridge.mjs.log",
+      "sha256": "5fe4bc78e8f94714bb51a2983cb0b6902dce2aad49304b699f43129feae9c4ee"
+    },
+    {
+      "test": "verification/harnesses/check-public-import-contracts.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "06-check-public-import-contracts.mjs.log",
+      "sha256": "676456fce10469c74390dfc48290b589e8f297f4d73a3494a822fa834c3cc10d"
+    },
+    {
+      "test": "verification/harnesses/check-agent-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "07-check-agent-contract.mjs.log",
+      "sha256": "dca3ed2af038b22fd8f2b4cf1183a9de4b68ac00f7e5c87cf59324dc0f70faf9"
+    },
+    {
+      "test": "tests/m5-steel-design.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "08-m5-steel-design.mjs.log",
+      "sha256": "9424c62202f1efe1bf6990d7a401f2e92884d97b85c018b1da43c72ee53055b9"
+    },
+    {
+      "test": "tests/m6-rc-design.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "09-m6-rc-design.mjs.log",
+      "sha256": "ba5648d66dda2a89387694db6cc238bb656fc43871e02754aa43d1d8a0b69846"
+    },
+    {
+      "test": "tests/m9-index-bridge.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "10-m9-index-bridge.mjs.log",
+      "sha256": "208e8fbae2a0ca70e839fed79b5eb544bdfa0b24e91abad56bb195226d260a6f"
+    },
+    {
+      "test": "tests/m10-index-results-panel.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "11-m10-index-results-panel.mjs.log",
+      "sha256": "c89756b0f866886024596e19ea45435537f4cd8172181bd25363bcbf0b9491b0"
+    },
+    {
+      "test": "tests/m11-agent-modeling.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "12-m11-agent-modeling.mjs.log",
+      "sha256": "cb3daafc4239b8a94c7c80ff62adaedbcbe19f500c9d5a5d6796e14c2c1c81d8"
+    },
+    {
+      "test": "tests/m34-detailed-report.mjs",
+      "status": "FAIL",
+      "exitCode": 1,
+      "signal": null,
+      "log": "13-m34-detailed-report.mjs.log",
+      "sha256": "fdf4def01190579b77fba8b4af6afec24c34414fbc0d118124d59508c42d314f"
+    },
+    {
+      "test": "tests/m36-detailed-report-ui.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "14-m36-detailed-report-ui.mjs.log",
+      "sha256": "a72560587c92f6e7da45c53195b27b316397ee5800edb4a4f72270b9a901db4c"
+    },
+    {
+      "test": "tests/m43-calculation-package-ui.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "15-m43-calculation-package-ui.mjs.log",
+      "sha256": "7f97db65a813b872b731caa37df1f4a51cd4c6fb521c76c9f896e7a5df28354d"
+    },
+    {
+      "test": "tests/p7-m11-run-record.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "16-p7-m11-run-record.mjs.log",
+      "sha256": "701389deef81bd365e97dbd098b3b77f3c930b46f5ad8fcdea4fc6f3b98bf67a"
+    },
+    {
+      "test": "tests/p7-m11-agent-analysis-status.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "17-p7-m11-agent-analysis-status.mjs.log",
+      "sha256": "09895f5db697ff98ba6b9fccd7feac9be9238501af92e75b537fb32c864e9e14"
+    },
+    {
+      "test": "tests/p7-m11-ui-run-records.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "18-p7-m11-ui-run-records.mjs.log",
+      "sha256": "ed0844351a196b05770071ddfacc802b09672cfd031fd8f2905913852a999f97"
+    },
+    {
+      "test": "tests/p7-m11-elastic-setup-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "19-p7-m11-elastic-setup-workflow.mjs.log",
+      "sha256": "1a32ca809ab5070e0c476ebd8f0c7ba467fb859bc43cb99fa6f434e2a0939a32"
+    },
+    {
+      "test": "tests/p7-m11-elastic-result-popup.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "20-p7-m11-elastic-result-popup.mjs.log",
+      "sha256": "9ba0fca9719c9148b7597175caef0194509c71a69225fb4f803f5ec895525359"
+    },
+    {
+      "test": "tests/p7-m11-elastic-analysis-ui.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "21-p7-m11-elastic-analysis-ui.mjs.log",
+      "sha256": "60e72af2fe73b82c9734c92a452ebe4804193865e27152ec3e822e187af916fd"
+    },
+    {
+      "test": "tests/p11-m7-product-agent-export.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "22-p11-m7-product-agent-export.mjs.log",
+      "sha256": "2f15c6e2f02697b10378b3b493169332a76d2c82784ef7addc5a55341cd38971"
+    },
+    {
+      "test": "tests/p13-m2-agent-report-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "23-p13-m2-agent-report-parity.mjs.log",
+      "sha256": "2bcc93e105813c7bd584f4b61e08abd50fc0539afbc9637a0895f18e543210e9"
+    },
+    {
+      "test": "tests/p13-m4-m9-index-milestones-ui.mjs",
+      "status": "FAIL",
+      "exitCode": 1,
+      "signal": null,
+      "log": "24-p13-m4-m9-index-milestones-ui.mjs.log",
+      "sha256": "67b19dd249af662c3544c77d47e1dea764e54efe623576569819b7f48440cc01"
+    },
+    {
+      "test": "tests/p8-m10-job-agent-api.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "25-p8-m10-job-agent-api.mjs.log",
+      "sha256": "c0025740152ae564c3f9a03d452034d042521a8a8a5f4be0b970b37330a8b37b"
+    },
+    {
+      "test": "tests/p8-m10-product-ui.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "26-p8-m10-product-ui.mjs.log",
+      "sha256": "bd92d273c9545c8a50bed505e6a99749d073cabf2243bfed4f39f46752409c77"
+    },
+    {
+      "test": "tests/p17-m1-json-schema-validator.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "27-p17-m1-json-schema-validator.mjs.log",
+      "sha256": "b16c391c28f8bd5a4dce45922f3f60adf66599cbaa7c7882e007bb3d1f2258b5"
+    },
+    {
+      "test": "tests/p17-m1-framework-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "28-p17-m1-framework-contract.mjs.log",
+      "sha256": "6506563ba2d1a096e0155e7b40eea93f641e41ee20d25475ec18857f645390fb"
+    },
+    {
+      "test": "tests/p17-m1-result-extractor.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "29-p17-m1-result-extractor.mjs.log",
+      "sha256": "be900c3b55c83979af87c728ae836353603726c0442237450686f04dea27539d"
+    },
+    {
+      "test": "tests/p18-th1-sp1.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "30-p18-th1-sp1.mjs.log",
+      "sha256": "58688eaa46943d39c81ad408922a32dc30f3002ad768c4364ed885a23c525f49"
+    },
+    {
+      "test": "tests/p18-modal-stabilization.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "31-p18-modal-stabilization.mjs.log",
+      "sha256": "13cb4d98813b2b68784e953271cd5d86eb733bb61f2f13a075aff2b29380ac9b"
+    },
+    {
+      "test": "tests/p18-link-pmm.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "32-p18-link-pmm.mjs.log",
+      "sha256": "33171f0679ff673e9eea65813eafff18e441c7d4c2e23cc3949e3ffacb9fff98"
+    },
+    {
+      "test": "tests/p18-strix21-completion.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "33-p18-strix21-completion.mjs.log",
+      "sha256": "174c525416e447c27c2a9efa38f8b74a73ba653aea37e06961cc444204706e40"
+    },
+    {
+      "test": "tests/p18a-additional-comparisons.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "log": "34-p18a-additional-comparisons.mjs.log",
+      "sha256": "54a15495c461399dce803a398961d4ea1f305abfa7905810333631393568d98d"
+    }
+  ],
+  "completedAt": "2026-09-07T02:37:09.184Z",
+  "passed": 32,
+  "failed": 2,
+  "planned": 34,
+  "executed": 34
+}

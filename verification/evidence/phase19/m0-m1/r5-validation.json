@@ -1,0 +1,59 @@
+{
+  "version": "p19-supplemental-validation-v1",
+  "source": {
+    "commit": "e07f975a1e831f89f07b13763370b67cf156b145",
+    "tree": "7636cd29742c46da97e94f7998eece0c4e95e49f",
+    "trackedChanges": ""
+  },
+  "runtimeBase": "0116957",
+  "runtimeChangedPaths": [
+    "src/ui/resultViewCache.js"
+  ],
+  "runtimeDeltaSha256": "173a08cb0f50bdc7c9063de443b33d37f0078de96eda82c60da2f383f32cf0b7",
+  "reason": "Only three diagnostic view names were added to the existing preparation cache; test all new names, cache/identity/product parity and command bridge compatibility.",
+  "sourceArchiveSha256": "8fb4aca6b74624145540330d980d30c88122f090775bfa7c7e0177675a212018",
+  "results": [
+    {
+      "test": "tests/p19-m1-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "p19-m1-contract.mjs.log",
+      "sha256": "e20b8e22bf8b4083267386e8f19009ab579466aae3df464486ef8f85a0ba7b27"
+    },
+    {
+      "test": "tests/p19-m1-product-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "p19-m1-product-parity.mjs.log",
+      "sha256": "c9e41788985e7f5c9746e4edb492bcabccdd83dd91db40c6bf7334ed2de25076"
+    },
+    {
+      "test": "tests/m31-agent-command-bridge.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "m31-agent-command-bridge.mjs.log",
+      "sha256": "3e30e61370c16ba7eca44398099f25c8dec7ece624337d9c815f7f5e96404d3e"
+    },
+    {
+      "test": "tests/p2-t50-pilot-project-validation.mjs",
+      "status": "FAIL",
+      "exitCode": 1,
+      "log": "p2-t50-pilot-project-validation.mjs.log",
+      "sha256": "f625f9cadc9254ae614315e442d91049a933cf31df1482101c77c55c2c785732"
+    },
+    {
+      "test": "tests/p2-mvp-s4-member-release.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "p2-mvp-s4-member-release.mjs.log",
+      "sha256": "2071c8db8b11bdf80c4eaf5f86e79e3f246e14ea84f0eb10ed657e4002e487d2"
+    },
+    {
+      "test": "tests/p2-mvp-s4-rigid-diaphragm.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "p2-mvp-s4-rigid-diaphragm.mjs.log",
+      "sha256": "9ec2331a76709453a1d08a9ab59eb11c7ead2efc071db79be34a490bf484a2e5"
+    }
+  ]
+}

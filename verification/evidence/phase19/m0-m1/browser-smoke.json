@@ -1,0 +1,26 @@
+{
+  "version": "p19-browser-smoke-v1",
+  "sourceCommit": "e75fb2f4d5963c63346f9f409a0572e7db2a8d20",
+  "date": "2026-09-07",
+  "method": "Observed through Codex in-app browser UI and native WebMCP capability",
+  "url": "http://127.0.0.1:5197/index.html",
+  "source": "local working tree at e75fb2f; later three diagnostic getter additions covered by R5/R6 Node tests",
+  "browserVersion": "NOT_CAPTURED",
+  "checks": {
+    "nativeWebMcpTools": 9,
+    "contextInputIdentityVersion": "p19-input-v1",
+    "contextInputHash": "c99453c4855886f5703b85794b7a8571ee7c11bdde279c5978c4a0080c82c419",
+    "buildBound": false,
+    "rulePackBound": false,
+    "jobsAfterContextQuery": 0,
+    "elasticTabVisible": true,
+    "designSummaryButtonProducedDetailedReport": true,
+    "displayedMaximumDisplacement": "4.733 mm",
+    "returnedWarningErrorLogs": []
+  },
+  "limitations": [
+    "Manual smoke observation summary, not an automated browser suite or performance qualification.",
+    "Did not run the future steel/RC WebMCP design workflow, project transitions, Worker cancellation or browser matrix.",
+    "Static HTTP server only; authenticated app host and automatic PDF transport not exercised."
+  ]
+}
