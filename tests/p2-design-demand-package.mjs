@@ -39,7 +39,7 @@ assert.equal(pkg.data.detailed.designDemandPackage.version, DESIGN_DEMAND_PACKAG
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, {
   getLastResult: () => analysis,
 });
-assert.equal(agent.getDesignDemandPackage().version, DESIGN_DEMAND_PACKAGE_VERSION);
+assert.equal(agent.prepareResultView('getDesignDemandPackage').version, DESIGN_DEMAND_PACKAGE_VERSION);
 assert.equal(agent.getCapabilities().modules.designDemandPackage, DESIGN_DEMAND_PACKAGE_VERSION);
 assert.ok(agent.getCapabilities().readApis.includes('getDesignDemandPackage'));
 

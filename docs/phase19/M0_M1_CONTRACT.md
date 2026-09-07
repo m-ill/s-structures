@@ -25,8 +25,10 @@
 [workflowResults](../../src/compute/product/workflowResults.js)는 기존 Phase7 실행 기록을 참조하는 결과 catalog다. 별도 scheduler/solver가 아니다.
 
 - 기존 analysisRunId, 입력 식별, 원본 결과 hash와 복제본, 실행·자격·설계검토·설계전달 상태를 분리한다.
+- 탄성 제품 작업은 큐에 넣을 때 모델과 입력 식별을 보존한다. 대기/실행 중 편집은 이미 시작된 계산을 바꾸지 않으며 이전 입력의 결과를 현재 입력에 결속하지 않는다. 비선형의 checkpoint·초기상태·실행 중 규칙판 변경까지 포함하는 통합은 M5 대상이다.
 - raw 결과는 그대로 보존한다. 별도 `p19-result-projection-v1`은 실행시각과 지정된 벽시계 측정값만 제외한 canonicalResultHash를 제공한다. 모델·설정·입력 안의 시간 매개변수는 제외하지 않는다.
 - 설계 기록은 source analysis run IDs와 조합별 출처, demand 종류·단위·좌표·부호 계약을 필수로 가진다. 비선형 결과는 탄성 설계수요로 자동 전달하지 않는다.
+- 조합은 호출자가 적은 ID뿐 아니라 원본 실행 기록의 케이스 설정·조합 snapshot과 일치해야 한다. 수요 단위는 길이·힘·모멘트·응력·변위가 모두 명시되고 원본 provenance와 일치해야 한다.
 - 발급되지 않은/변조된 설계 plan, 현재 입력과 다른 source identity, 잘못된 source model/build는 거부한다. 계산 완료가 verified 또는 최종설계 허가를 만들지 않는다.
 - 설계 계산기는 이 단계에서 새로 연결하지 않았다. M1은 후속 설계 서비스가 사용할 계획·기록·조회 계약과 차단 규칙을 제공한다.
 

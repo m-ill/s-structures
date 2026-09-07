@@ -47,7 +47,8 @@ const target = {
 const agent = createIndexAgentApi(target, {
   getLastResult: () => analysis,
 });
-const agentReport = agent.getDetailedReport({
+assert.equal(agent.getDetailedReport().code, 'RESULT_REQUIRED');
+const agentReport = agent.prepareResultView('getDetailedReport', {
   generatedAt: '2026-06-27T00:00:00.000Z',
 });
 assert.equal(agentReport.data.version, DETAILED_REPORT_VERSION);

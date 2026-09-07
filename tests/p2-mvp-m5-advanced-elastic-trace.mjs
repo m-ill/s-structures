@@ -41,7 +41,7 @@ assert.match(pkg.html, /Advanced Elastic Trace/);
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, {
   getLastResult: () => analysis,
 });
-const agentTrace = agent.getAdvancedElasticTrace();
+const agentTrace = agent.prepareResultView('getAdvancedElasticTrace');
 assert.equal(agentTrace.version, ADVANCED_ELASTIC_TRACE_VERSION);
 assert.equal(agent.getCapabilities().modules.advancedElasticTrace, ADVANCED_ELASTIC_TRACE_VERSION);
 assert.ok(agent.getCapabilities().readApis.includes('getAdvancedElasticTrace'));

@@ -455,6 +455,9 @@ export function installIndexEngineBridge(target = globalThis) {
           getModel: () => bridge.getCurrentModel(),
           nonlinearService: bridge.getNonlinearProductService(),
           normalizeSettings: normalizeAnalysisCaseSettings,
+          captureInputIdentity: ({ model, analysisCase }) => bridge.getWorkflowInputIdentity({
+            model, analysisCase: (model.analysisCases || []).find(row => row.id === analysisCase.id) || analysisCase,
+          }),
           caseRunner: async (model, analysisCase, executionOptions = {}) => {
             if (analysisCase.kind === 'static' && typeof Worker !== 'undefined') {
               elasticProductService ||= createElasticAnalysisService();
@@ -500,9 +503,17 @@ export function installIndexEngineBridge(target = globalThis) {
             }
             return runCoreAnalysisCaseAsync(model, analysisCase, { bridge, ...executionOptions });
           },
-          async onPublishResult({ model, analysisCase, result }) {
+          async onPublishResult({ model, analysisCase, result, inputIdentity }) {
             const currentModel = bridge.getCurrentModel() || model;
-            return storeAnalysisResult(target, currentModel, analysisCase, result);
+            const currentIdentity = bridge.getWorkflowInputIdentity({ model: currentModel, caseId: analysisCase.id });
+            const current = currentIdentity.inputHash === inputIdentity?.inputHash;
+            if (!current) {
+              const row = (currentModel.analysisCases || []).find(item => item.id === analysisCase.id);
+              if (row) { row.status = 'stale'; row.staleReason = 'input-changed-during-run'; }
+            }
+            return storeAnalysisResult(target, model, analysisCase, result, {
+              workflowInputIdentity: inputIdentity, stateModel: current ? currentModel : model,
+            });
           },
         });
         target.SStructuresAnalysisProductService = analysisProductService;
@@ -890,8 +901,9 @@ const NONLINEAR_PRODUCT_MODEL_COLLECTIONS = Object.freeze([
   'timeHistoryFunctions',
 ]);
 
-function storeAnalysisResult(target, model, analysisCase, result) {
-  const recorded = recordPhase7AnalysisAttempt(target, model, analysisCase, result);
+function storeAnalysisResult(target, model, analysisCase, result, options = {}) {
+  const recorded = recordPhase7AnalysisAttempt(target, model, analysisCase, result, options);
+  model = options.stateModel || model;
   const published = recorded.result;
   const row = (model.analysisCases || []).find((item) => item.id === result.caseId);
   const status = analysisCaseStatus(published);

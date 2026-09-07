@@ -168,7 +168,7 @@ assert.match(pkg.html, /benchmark-regression/);
 
 const target = { model: () => model, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => analysis });
-const agentResults = agent.getP3IntegratedResults();
+const agentResults = agent.prepareResultView('getP3IntegratedResults');
 assert.equal(agentResults.version, P3_INTEGRATED_RESULTS_VERSION);
 assert.equal(agentResults.summary.notCheckedCount, 0);
 

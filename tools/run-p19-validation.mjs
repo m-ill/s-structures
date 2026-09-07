@@ -18,6 +18,7 @@ execFileSync('python',['-m','zipfile','-e',archive,checkout]);
 writeFileSync(join(checkout,'SOURCE-IDENTITY.json'),JSON.stringify(source,null,2)+'\n');
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const report={version:'p19-validation-v1',source,scope:manifest.scope,manifestHash:hash(JSON.stringify(manifest)),
+  sourceArchiveSha256:hash(readFileSync(archive)),
   runtime:{node:process.version,platform:process.platform,arch:process.arch},startedAt:new Date().toISOString(),results:[]};
 for(const [i,test] of manifest.tests.entries()) {
   if(!existsSync(join(checkout,test))) throw new Error(`Uncommitted or missing required test: ${test}`);

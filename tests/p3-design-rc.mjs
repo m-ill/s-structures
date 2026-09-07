@@ -203,7 +203,7 @@ assert.ok(lapSpliceLength('D19', { fc: 27, fy: 400 }).length > developmentLength
 
 const target = { model: () => beam, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => beamAnalysis });
-const agentReport = agent.getRcDetailedDesignReport({ slabs: beam.slabs });
+const agentReport = agent.prepareResultView('getRcDetailedDesignReport', { slabs: beam.slabs });
 assert.equal(agentReport.version, RC_DETAILED_DESIGN_VERSION);
 assert.equal(agentReport.schedules.beams.length, 1);
 

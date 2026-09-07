@@ -60,7 +60,7 @@ assert.ok(visuals.deformedNodes.some((node) => {
   return Math.hypot(node.x - base.x, node.y - base.y, node.z - base.z) > 0;
 }));
 
-const agentReport = target.SStructuresAgent.getReport({ title: 'Two-story 3D elastic workflow' });
+const agentReport = target.SStructuresAgent.prepareResultView('getReport', { title: 'Two-story 3D elastic workflow' });
 assert.equal(agentReport.data.model.nodeCount, 27);
 assert.equal(agentReport.data.analysis.ok, true);
 assert.ok(agentReport.html.includes('Two-story 3D elastic workflow'));

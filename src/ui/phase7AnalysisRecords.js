@@ -57,7 +57,7 @@ export function recordPhase7AnalysisAttempt(target, model, analysisCase, result,
   if (target.SStructuresWorkflowResults && target.SStructuresEngine?.getWorkflowInputIdentity) {
     const persistedCase = (model.analysisCases || []).find(row => row.id === caseId) || analysisCase;
     target.SStructuresWorkflowResults.recordAnalysis(record,
-      target.SStructuresEngine.getWorkflowInputIdentity({ model, analysisCase: persistedCase }));
+      options.workflowInputIdentity || target.SStructuresEngine.getWorkflowInputIdentity({ model, analysisCase: persistedCase }));
   }
   const previousSuccessful = target.__SStructuresAnalysisRunStore.lastSuccessful?.[caseId] || null;
   const previousPublished = target.__SStructuresAnalysisResults[caseId] || null;

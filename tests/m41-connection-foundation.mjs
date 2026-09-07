@@ -36,7 +36,7 @@ const target = {
 const agent = createIndexAgentApi(target, {
   getLastResult: () => analysis,
 });
-const agentReview = agent.getConnectionFoundationReport();
+const agentReview = agent.prepareResultView('getConnectionFoundationReport');
 assert.equal(agentReview.version, CONNECTION_FOUNDATION_VERSION);
 assert.equal(agentReview.foundationRows.length, review.foundationRows.length);
 

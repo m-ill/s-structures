@@ -7,6 +7,7 @@ import { createAnalysisRunRecord } from '../src/core/analysisRunRecord.js';
 import { installResultViewCache } from '../src/ui/resultViewCache.js';
 
 const model = createModel();
+model.loadCombinations = [{id:'D1', factors:{D:1}}];
 model.analysisCases = [{ id:'AC1', kind:'static', settings:{ comboId:'D1' } }];
 const base = { model, analysisCase:model.analysisCases[0], build:{id:'test-build'}, rulePack:{id:'test-rules'} };
 const identity = createWorkflowInputIdentity(base);
@@ -32,6 +33,9 @@ const currentIdentities={A1:identity};
 const demandContract={kind:'elastic-static',units:model.units,axes:'member-local',signConvention:'solver-native',comboIds:['D1']};
 const plan=ledger.planDesign({sources,currentIdentities,demandContract});
 assert.equal(plan.ok,true);
+assert.equal(ledger.planDesign({sources,currentIdentities,demandContract:{...demandContract,units:{}}}).code,'DESIGN_DEMAND_MAPPING_REQUIRED');
+assert.equal(ledger.planDesign({sources,currentIdentities,demandContract:{...demandContract,units:{...model.units,force:'N'}}}).code,'DESIGN_DEMAND_UNITS_MISMATCH');
+assert.equal(ledger.planDesign({sources:[{analysisRunId:'A1',comboId:'forged'}],currentIdentities,demandContract:{...demandContract,comboIds:['forged']}}).code,'COMBINATION_PROVENANCE_REQUIRED');
 const design=ledger.recordDesign({identity,plan,currentIdentities,result:{members:[{id:'M1',status:'NG',ratio:1.2}]}});
 assert.equal(design.designTransferAllowed,false);
 assert.deepEqual(design.sourceAnalysisRunIds,['A1']);

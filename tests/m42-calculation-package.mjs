@@ -41,7 +41,7 @@ const target = {
 const agent = createIndexAgentApi(target, {
   getLastResult: () => analysis,
 });
-const agentPackage = agent.getCalculationPackage({ title: 'Agent Package' });
+const agentPackage = agent.prepareResultView('getCalculationPackage', { title: 'Agent Package' });
 assert.equal(agentPackage.data.version, CALCULATION_PACKAGE_VERSION);
 assert.match(agentPackage.html, /Agent Package/);
 

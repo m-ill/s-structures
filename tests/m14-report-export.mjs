@@ -48,7 +48,7 @@ const target = {
 const agent = createIndexAgentApi(target, {
   getLastResult: () => analysis,
 });
-const agentReport = agent.getReport({
+const agentReport = agent.prepareResultView('getReport', {
   generatedAt: '2026-06-25T00:00:00.000Z',
 });
 assert.equal(agentReport.data.model.loadCount, model.loads.length);

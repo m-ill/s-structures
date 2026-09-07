@@ -78,7 +78,7 @@ assert.ok(selectionEvents.length >= 2);
 const blocked = bridge.canTransferAnalysisResultToDesign({ runRecordId: first.runRecordId });
 assert.equal(blocked.allowed, false);
 assert.equal(blocked.code, 'ANALYSIS_RESULT_NOT_VERIFIED');
-const blockedPackage = bridge.getDesignDemandPackage({ runRecordId: first.runRecordId });
+const blockedPackage = bridge.prepareResultView('getDesignDemandPackage', { runRecordId: first.runRecordId });
 assert.equal(blockedPackage.ok, false);
 assert.equal(blockedPackage.demandPackage, null);
 

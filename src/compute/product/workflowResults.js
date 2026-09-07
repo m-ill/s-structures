@@ -41,7 +41,7 @@ export function createWorkflowResultStore() {
     planDesign({ sources = [], currentIdentities = {}, demandContract = null } = {}) {
       if (!sources.length) return problem('RESULT_REQUIRED');
       if (!demandContract || !['elastic-static', 'elastic-pdelta'].includes(demandContract.kind)
-        || !demandContract.units || demandContract.axes !== 'member-local'
+        || !['length', 'force', 'moment', 'stress', 'displacement'].every(key => typeof demandContract.units?.[key] === 'string' && demandContract.units[key].length > 0) || demandContract.axes !== 'member-local'
         || demandContract.signConvention !== 'solver-native') return problem('DESIGN_DEMAND_MAPPING_REQUIRED');
       const rows = [];
       for (const source of sources) {
@@ -51,6 +51,10 @@ export function createWorkflowResultStore() {
         if (row.executionStatus !== 'completed') return problem('ANALYSIS_NOT_COMPLETED');
         if (row.kind !== 'static') return problem('DESIGN_DEMAND_MAPPING_UNSUPPORTED');
         if (!source.comboId || !Array.isArray(demandContract.comboIds) || !demandContract.comboIds.includes(source.comboId)) return problem('COMBINATION_PROVENANCE_REQUIRED');
+        const provenance = row.legacyRecord.provenance;
+        if (provenance?.combination?.id !== source.comboId
+          || provenance?.analysisCase?.settings?.comboId !== source.comboId) return problem('COMBINATION_PROVENANCE_REQUIRED');
+        if (stableHash(provenance?.units) !== stableHash(demandContract.units)) return problem('DESIGN_DEMAND_UNITS_MISMATCH');
         rows.push(row);
       }
       const plan = { ok: true, sourceAnalysisRunIds: rows.map(row => row.analysisRunId),

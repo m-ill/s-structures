@@ -155,7 +155,8 @@ const removed = agent.execute('deleteAnalysisCase', { id: 'AC_FAIL' });
 assert.equal(removed.analysisCase.id, 'AC_FAIL');
 assert.equal(agent.execute('listAnalysisCases').analysisCases.length, 6);
 
-const calculationPackage = agent.getCalculationPackage({ title: 'Phase 5 Analysis Center Package' });
+bridge.analyzeModel(model);
+const calculationPackage = agent.prepareResultView('getCalculationPackage', { title: 'Phase 5 Analysis Center Package' });
 assert.equal(calculationPackage.data.detailed.analysisCases.caseCount, 6);
 assert.equal(calculationPackage.data.detailed.analysisCases.resultCount, 6);
 assert.match(calculationPackage.html, /Phase 5 Analysis Cases/);
