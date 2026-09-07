@@ -74,6 +74,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
         validate(inputSchema, args);
         const before=bridge.getWorkflowInputIdentity?.().inputHash;
         const value = await run(args);
+        if (!active) fail('SESSION_DISPOSED', 'This WebMCP page session has been disposed.');
         const text = JSON.stringify(value);
         if (text.length > 48000) fail('RESULT_TOO_LARGE', 'Request a narrower path or smaller limit.');
         onActivity({tool:name,ok:value?.ok!==false,designRunId:value?.designRunId,changed:before!==bridge.getWorkflowInputIdentity?.().inputHash});
