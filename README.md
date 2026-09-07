@@ -4,9 +4,11 @@
 
 [웹에서 실행](https://m-ill.github.io/s-structures/) · [다운로드·검증자료](https://github.com/m-ill/s-structures/releases/tag/phase19-nonlinear-preview-20260907-r2) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md) · [WebMCP 안내](docs/WEBMCP.md) · [CI 결과](https://github.com/m-ill/s-structures/actions/workflows/verify.yml)
 
-문서 갱신: **2026-09-07** · 공개 상태: **WebMCP 개발 프리뷰**
+문서 갱신: **2026-09-08** · 공개 상태: **WebMCP 개발 프리뷰**
 
 Phase 19 개발 후보: **WebMCP 36개 도구**로 탄성설계 입력→해석→강재·RC 검토→보고서 및 production Pushover/NLTH를 연결했습니다. 비선형 결과는 **candidate·최종설계 전달 차단** 상태입니다. SH1 sparse 연결, 힌지 평형 수정, Worker 취소·시간 제한을 포함합니다. 실제 브라우저 소형 모델 실행을 확인했으며 독립 비교·pilot·M-tier 성능·전체 배포 자격은 미완료입니다. 아래 기존 공개 링크와 개발 후보는 구분합니다. [M5~M10 구현·잔여 조건](docs/phase19/M5_M10_CANDIDATE.md) · [검토 자료](docs/phase19/REVIEW_INTAKE.md)
+
+2026-09-08 개발 브랜치 리뷰: 비선형 미분 검사 할당, WebMCP 종료 처리, 긴 Pushover 결과 페이지 조회를 개선했다. 고정 소스 회귀 95/95 PASS이며, 소형 8부재·32힌지 해석 중앙값은 21.65초 → 5.97초다. [측정 조건·수정 내용·남은 경계 위반](docs/phase19/CODE_REVIEW_OPTIMIZATION_20260908.md)을 참고한다. 기존 다운로드·Pages의 배포 상태와는 구분한다.
 
 ## 주요 기능
 

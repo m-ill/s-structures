@@ -1,0 +1,23 @@
+{
+  "scope": "Eight-member 32-hinge production WASM Pushover, cold child processes, three alternating runs; not M-tier qualification",
+  "roots": [
+    "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\phase19\\preview-467dd70\\checkout",
+    "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\review-20260907\\regression-r2\\checkout"
+  ],
+  "node": "v24.16.0",
+  "cpu": "13th Gen Intel(R) Core(TM) i7-13700KF",
+  "baselineMs": [
+    21257.2605,
+    21652.4681,
+    21858.092500000002
+  ],
+  "optimizedMs": [
+    5991.8213,
+    5973.664,
+    5918.2491
+  ],
+  "baselineMedianMs": 21652.4681,
+  "optimizedMedianMs": 5973.664,
+  "speedup": 3.62465450015267,
+  "exactResponseParity": true
+}
