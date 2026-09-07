@@ -143,11 +143,14 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
       requests.set(key,{hash,result});
       try {
         for(const step of plan.steps) {
+          if(result.cancelled){result.ok=false;result.code='WORKFLOW_CANCELLED';break;}
           if(!sameWorkflowInput(plan.inputIdentity,identity())) {result.ok=false;result.code='STALE_INPUT';break;}
           if(step.prerequisites.some(id=>!result.steps.find(x=>x.caseId===id)?.ok)) {result.steps.push({...step,ok:false,code:'DEPENDENCY_FAILED'});result.ok=false;continue;}
           const previousId=bridge.getAnalysisCaseResult(step.caseId,{latestAttempt:true})?.runRecordId;
           const job=bridge.startAnalysisRun({caseId:step.caseId,computeTarget:plan.computeTarget});
+          result.currentJobId=job.id;
           const finished=await bridge.getProductAnalysisService().wait(job.id);
+          result.currentJobId=null;
           const published=bridge.getAnalysisCaseResult(step.caseId,{latestAttempt:true});
           const row=published?.runRecordId?bridge.getWorkflowAnalysisResult(published.runRecordId):null;
           const ok=finished.status==='completed'&&published?.runRecordId!==previousId&&!!row?.ok&&!row.stale&&row.executionStatus==='completed';
@@ -156,11 +159,12 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
           if(!ok) result.ok=false;
         }
       } catch(e) {result.ok=false;result.code=e.code||e.message;}
-      finally {busy=false;result.status=result.ok?'completed':'failed';}
+      finally {busy=false;if(result.cancelled){result.ok=false;result.code='WORKFLOW_CANCELLED';}result.status=result.ok?'completed':'failed';}
       return clone(result);
     } catch(e) {return problem(e.code||e.message,e.details);}
   }
-  return Object.freeze({planReview,startReview,getReview,createReport,getReport,getExportCapability,exportPdf,planWorkflow,runWorkflow});
+  function cancelWorkflow(requestId) {const result=requests.get(`workflow:${requestId}`)?.result;if(!result)return problem('WORKFLOW_NOT_FOUND');if(result.status==='running'){result.cancelled=true;if(result.currentJobId)bridge.cancelAnalysisRun(result.currentJobId);}return {ok:true,status:result.status,cancelRequested:!!result.cancelled};}
+  return Object.freeze({cancelWorkflow,planReview,startReview,getReview,createReport,getReport,getExportCapability,exportPdf,planWorkflow,runWorkflow});
 }
 function requestKey(value) {if(typeof value!=='string'||!value.trim()||value.length>128) reject('REQUEST_ID_REQUIRED');}
 function status(value) {return value==='OK'||value==='PASS'?'OK':value==='NG'||value==='FAIL'?'NG':value==='WARN'?'WARN':'NOT_CHECKED';}

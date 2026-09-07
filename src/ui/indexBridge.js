@@ -782,6 +782,7 @@ export function installIndexEngineBridge(target = globalThis) {
       if (status) status.textContent = '설계 입력 변경 · 해석 재실행 필요';
       const notice = target.document?.getElementById?.('ssDesignInputStale');
       if (notice) notice.hidden = false;
+      target.SStructuresWebMcp?.render?.();
     },
   });
   bridge.getDesignInputContext = designInputs.getContext;
@@ -798,6 +799,7 @@ export function installIndexEngineBridge(target = globalThis) {
       qualification: target.SStructuresReportQualification || { status: 'BLOCKED' } }),
   });
   Object.assign(bridge, {
+    cancelElasticWorkflow: elasticReview.cancelWorkflow,
     planElasticWorkflow: elasticReview.planWorkflow, runElasticWorkflow: elasticReview.runWorkflow,
     planDesignReview: elasticReview.planReview, startDesignReview: elasticReview.startReview,
     getDesignReview: elasticReview.getReview, createDesignReviewReport: elasticReview.createReport,

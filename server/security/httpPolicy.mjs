@@ -10,8 +10,9 @@ const COMMON_HEADERS = {
   'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
 };
 
-export function applySecurityHeaders(res, { api = false } = {}) {
+export function applySecurityHeaders(res, { api = false, modelerFrame = false } = {}) {
   for (const [name, value] of Object.entries(COMMON_HEADERS)) res.setHeader(name, value);
+  if(modelerFrame&&!api){res.setHeader('X-Frame-Options','SAMEORIGIN');res.setHeader('Content-Security-Policy',COMMON_HEADERS['Content-Security-Policy'].replace("frame-ancestors 'none'","frame-ancestors 'self'"));}
   if (api) res.setHeader('Cache-Control', 'no-store');
 }
 

@@ -58,6 +58,6 @@ export function installIndexDesignReview(target, bridge) {
     output.appendChild(button('PDF 자동 내보내기',async()=>show(await bridge.exportDesignReviewPdf(reviewId))));
   }));
   panel.appendChild(button('닫기',()=>{panel.hidden=true;}));panel.appendChild(status);panel.appendChild(detail);panel.appendChild(output);doc.body.appendChild(panel);
-  const api={open(){bridge.elasticSetupWorkflow?.close?.();bridge.designInputPanel?.close?.();caseInput.value=(bridge.getCurrentModel().analysisCases||[]).filter(x=>['static','modal','responseSpectrum','buckling','linearTha'].includes(x.kind)).map(x=>x.id).join(', ');refreshSources();panel.hidden=false;},close(){panel.hidden=true;},refreshSources};
+  const api={adoptReview(id){const result=bridge.getDesignReview(id);if(result.ok){reviewId=id;clear(output);show(result);}},open(){bridge.elasticSetupWorkflow?.close?.();bridge.designInputPanel?.close?.();caseInput.value=(bridge.getCurrentModel().analysisCases||[]).filter(x=>['static','modal','responseSpectrum','buckling','linearTha'].includes(x.kind)).map(x=>x.id).join(', ');refreshSources();panel.hidden=false;},close(){panel.hidden=true;},refreshSources};
   host.appendChild(button('탄성 설계 검토',api.open));return api;
 }

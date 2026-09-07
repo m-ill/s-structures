@@ -1,7 +1,9 @@
+import { createWorkflowTools } from './workflowTools.js';
+import { finiteJson } from '../../modeling/designInputCommands.js';
 import { stableHash } from '../../core/stableHash.js';
 import { SOLVER_UNIT_POLICY } from '../../core/units.js';
 
-export const WEBMCP_VERSION = 'sstructures-webmcp-v1';
+export const WEBMCP_VERSION = 'sstructures-webmcp-v2';
 const KINDS = ['static', 'modal', 'responseSpectrum', 'buckling', 'linearTha'];
 const id = { type: 'string', minLength: 1, maxLength: 128 };
 const hash = { type: 'string', pattern: '^[a-f0-9]{64}$' };
@@ -16,7 +18,7 @@ export function webmcpModelHash(model) {
   return stableHash(input);
 }
 
-export function createWebMcpTools({ agent, bridge }) {
+export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setView = () => ({ok:false,code:'VIEW_UNAVAILABLE'}) }) {
   const requests = new Map();
   const jobs = new Map();
   function model() {
@@ -64,15 +66,20 @@ export function createWebMcpTools({ agent, bridge }) {
       name, description, inputSchema,
       annotations: { readOnlyHint: readOnly },
       async execute(args = {}) {
+        try{finiteJson(args);}catch{fail('INVALID_INPUT','Input must be finite safe JSON.');}
+        if(JSON.stringify(args).length>64000) fail('REQUEST_TOO_LARGE','Maximum input is 64000 characters.');
         validate(inputSchema, args);
+        const before=bridge.getWorkflowInputIdentity?.().inputHash;
         const value = await run(args);
         const text = JSON.stringify(value);
         if (text.length > 48000) fail('RESULT_TOO_LARGE', 'Request a narrower path or smaller limit.');
+        onActivity({tool:name,ok:value?.ok!==false,designRunId:value?.designRunId,changed:before!==bridge.getWorkflowInputIdentity?.().inputHash});
         return value;
       },
     };
   }
-  return [
+  const workflow=createWorkflowTools({agent,bridge,tool,object,context,setView});
+  const definitions = [
     tool('get_project_context', 'Read model units, input hash, case IDs and supported analysis capabilities. Does not run analysis.', object(), true, () => {
       const value = model();
       return {
@@ -86,7 +93,7 @@ export function createWebMcpTools({ agent, bridge }) {
           return { kind, targets: result.targets };
         }),
         jobs: [...jobs.keys()],
-        limits: { maxSessionJobs: 128, maxConcurrentJobs: 1, editing: false, externalQualification: 'NOT_CLAIMED' },
+        limits: { maxSessionJobs: 128, maxConcurrentJobs: 1, editing: true, externalQualification: 'NOT_CLAIMED' },
       };
     }),
     tool('inspect_model', 'Read current Model Check issues, without running a solver or repairing the model.', object({ limit: { type: 'integer', minimum: 1, maximum: 100 } }), true, ({ limit = 30 }) => {
@@ -140,16 +147,25 @@ export function createWebMcpTools({ agent, bridge }) {
       agent.cancelAnalysisRun({ jobId });
       return jobInfo(jobId);
     }),
+    ...workflow.tools,
   ];
+  definitions.dispose=()=>{workflow.dispose();for(const jobId of jobs.keys()) agent.cancelAnalysisRun({jobId});};
+  return definitions;
 }
 
 function fail(code, message) { throw Object.assign(new Error(message), { code }); }
-function validate(schema, value, at = 'input') {
+export function validate(schema, value, at = 'input') {
+  if(schema.oneOf) {let matches=0;for(const child of schema.oneOf){try{validate(child,value,at);matches++;}catch{}}if(matches!==1) fail('INVALID_INPUT',`Invalid typed input: ${at}`);return;}
+  if(schema.type==='array'){if(!Array.isArray(value)||value.length<schema.minItems||value.length>schema.maxItems)fail('INVALID_INPUT',`Invalid array: ${at}`);value.forEach((item,i)=>validate(schema.items,item,`${at}[${i}]`));return;}
+  if(schema.type==='boolean'&&typeof value!=='boolean') fail('INVALID_INPUT',`Invalid boolean: ${at}`);
+  if(schema.type==='number'&&(typeof value!=='number'||!Number.isFinite(value)||value<schema.minimum||value>schema.maximum))fail('INVALID_INPUT',`Invalid number: ${at}`);
   if (schema.type === 'object') {
     if (!value || typeof value !== 'object' || Array.isArray(value)) fail('INVALID_INPUT', `${at} must be an object.`);
     for (const key of Object.keys(value)) {
-      if (!Object.hasOwn(schema.properties, key)) fail('INVALID_INPUT', `Unknown field: ${at}.${key}`);
-      validate(schema.properties[key], value[key], `${at}.${key}`);
+      if (Object.keys(value).length>(schema.maxProperties||100)) fail('INVALID_INPUT','Too many properties');
+      const child=schema.properties[key]||schema.additionalProperties;
+      if (!child || child===true) fail('INVALID_INPUT', `Unknown field: ${at}.${key}`);
+      validate(child, value[key], `${at}.${key}`);
     }
     for (const key of schema.required || []) if (!Object.hasOwn(value, key)) fail('INVALID_INPUT', `Missing field: ${at}.${key}`);
   } else if (schema.type === 'string') {
