@@ -57,7 +57,10 @@
     "tests/p3-m19-integrated-report.mjs",
     "tests/p3-m14-nonlinear-geometry.mjs",
     "tests/p3-m15-nonlinear-hinge-control.mjs",
-    "tests/p3-m16-nonlinear-fiber-nlth.mjs"
+    "tests/p3-m16-nonlinear-fiber-nlth.mjs",
+    "tests/p2-t50-pilot-project-validation.mjs",
+    "tests/p2-mvp-s4-member-release.mjs",
+    "tests/p2-mvp-s4-rigid-diaphragm.mjs"
   ],
   "releaseCandidateAlsoRequires": [
     "Phase7-15 mandatory regression",

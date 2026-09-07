@@ -32,4 +32,5 @@ export const COMPUTED_RESULT_VIEWS = Object.freeze([
   'getServiceabilityDriftReport', 'getAdvancedElasticTrace', 'getResultPostprocessing',
   'getWallSlabEquivalentTrace',
   'getDynamicCompletenessTrace', 'getNonlinearAnalysisTrace',
+  'getPilotProjectValidation', 'getMemberReleaseBenchmark', 'getRigidDiaphragmBenchmark',
 ]);

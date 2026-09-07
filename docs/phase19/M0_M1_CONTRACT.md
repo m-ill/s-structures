@@ -45,12 +45,12 @@ const view = bridge.getSteelDetailingReport(options); // 이후 조회는 계산
 
 `prepareResultView`는 코드에 등록된 view 이름만 허용하는 기존 계산형 API의 명시적 진입점이다. UI 보고서 생성 버튼은 이를 호출한다. Agent와 UI bridge에 공통 view가 있으면 같은 cache를 사용한다. M4까지 이 메서드를 WebMCP의 범용 실행 도구로 노출하지 않는다.
 
-일부 legacy 보고서 preparation 자체는 아직 solver 의존을 포함한다. 조회의 숨은 실행은 제거했지만, preparation을 순수한 snapshot 렌더링으로 바꾸는 전체 작업은 M3/G6에 남는다. 입력·실행·결과의 상태만 읽는 기존 API, benchmark라고 명명된 명시적 검증 실행 API와 설계 입력 산정 API는 각각의 기존 계약을 유지한다.
+일부 legacy 보고서 preparation 자체는 아직 solver 의존을 포함한다. 조회의 숨은 실행은 제거했지만, preparation을 순수한 snapshot 렌더링으로 바꾸는 전체 작업은 M3/G6에 남는다. Pilot 및 부재해제·강체다이어프램 benchmark 조회에도 같은 준비 계약을 적용한다. 입력·실행·결과의 상태만 읽는 기존 API와 설계 입력 산정 API는 각각의 기존 계약을 유지한다.
 
 ## 검증
 
 `node tools/run-p19-validation.mjs <새 출력 폴더>`는 clean commit을 ZIP으로 내보내고 새 checkout에서 고정 시험 목록을 실행한다. 각 로그·종료코드·SHA·실행시각을 기록한다. 역사적 runner가 고정 경로에 쓰더라도 개발 저장소의 기존 evidence를 덮어쓰지 않는다.
 
-시험은 56개다. 기본 제한은 180초이며 legacy 대형 P–Delta 보고서 시험만 600초다. R2의 180초 시간 초과는 실패 이력으로 보존한다. 이 제한은 회귀시험 완료 예산이며 제품의 UI 응답·성능 합격 기준을 변경하지 않는다.
+최종 필수 목록은 59개다. 기본 제한은 180초이며 legacy 대형 P–Delta 보고서 시험만 600초다. R2의 180초 시간 초과는 실패 이력으로 보존한다. 이 제한은 회귀시험 완료 예산이며 제품의 UI 응답·성능 합격 기준을 변경하지 않는다. 전체 기반 회귀와 이후 변경에 대한 추가 회귀의 커밋·범위는 실제 상태 문서와 증거 요약에서 구분한다.
 
 M1 시험은 독립 입력 변경·stale·변조·실패 상태·캐시 무변경과 실제 정적 제품 실행을 확인한다. UI bridge, Agent, WebMCP adapter의 세 개 분리 실행에서 반올림 전 수치 projection을 비교한다. Node adapter 시험이며 실제 Site tools 브라우저 수락시험은 M4에 남는다.
