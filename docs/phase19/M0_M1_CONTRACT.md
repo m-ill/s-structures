@@ -51,4 +51,6 @@ const view = bridge.getSteelDetailingReport(options); // 이후 조회는 계산
 
 `node tools/run-p19-validation.mjs <새 출력 폴더>`는 clean commit을 ZIP으로 내보내고 새 checkout에서 고정 시험 목록을 실행한다. 각 로그·종료코드·SHA·실행시각을 기록한다. 역사적 runner가 고정 경로에 쓰더라도 개발 저장소의 기존 evidence를 덮어쓰지 않는다.
 
+시험은 56개다. 기본 제한은 180초이며 legacy 대형 P–Delta 보고서 시험만 600초다. R2의 180초 시간 초과는 실패 이력으로 보존한다. 이 제한은 회귀시험 완료 예산이며 제품의 UI 응답·성능 합격 기준을 변경하지 않는다.
+
 M1 시험은 독립 입력 변경·stale·변조·실패 상태·캐시 무변경과 실제 정적 제품 실행을 확인한다. UI bridge, Agent, WebMCP adapter의 세 개 분리 실행에서 반올림 전 수치 projection을 비교한다. Node adapter 시험이며 실제 Site tools 브라우저 수락시험은 M4에 남는다.

@@ -276,7 +276,7 @@ assert.equal(invalidNlthInputGate.summary.ticketCoverage.find((row) => row.ticke
 assert.ok(invalidNlthInputGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T85').evidence.includes('input=review-required'));
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
-const apiTrace = agent.getNonlinearAnalysisTrace();
+const apiTrace = agent.prepareResultView('getNonlinearAnalysisTrace');
 assert.equal(apiTrace.version, NONLINEAR_TRACE_VERSION);
 assert.equal(apiTrace.fiberNlthGate.milestone, 'P3-M16');
 assert.equal(apiTrace.benchmarks.fiberNlth.ok, true);

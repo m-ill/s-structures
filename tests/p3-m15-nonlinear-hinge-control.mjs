@@ -230,7 +230,7 @@ assert.ok(failedPushoverGate.controlReview.missing.includes('formal-pushover-ste
 assert.equal(failedPushoverGate.controlReview.agentDecision, 'hold-before-m16');
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
-const apiTrace = agent.getNonlinearAnalysisTrace({ benchmarks: { b5: { model } } });
+const apiTrace = agent.prepareResultView('getNonlinearAnalysisTrace', { benchmarks: { b5: { model } } });
 assert.equal(apiTrace.version, NONLINEAR_TRACE_VERSION);
 assert.equal(apiTrace.hingeControlGate.milestone, 'P3-M15');
 assert.equal(apiTrace.benchmarks.hingeControl.ok, true);

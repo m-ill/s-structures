@@ -32,7 +32,7 @@ const screen = window.SStructuresAgent.getScreenState();
 | `caps.executeActions` | 실행 가능한 action |
 | `caps.uiContract.controls` | stable UI control 목록 |
 | `snapshot.model` | node/member/load/combination 개수 |
-| `snapshot.analysis.ok` | 현재 해석 성공 여부 |
+| `snapshot.analysis?.ok` | 저장된 현재 해석의 성공 여부. 결과가 없으면 analysis는 null |
 | `screen.nativeUi.activeMode` | 현재 상단 작업 탭 |
 
 `caps.qaCommands` exposes the Phase 3 local QA commands. AI agents should read it before reporting Phase 3 readiness.
@@ -47,15 +47,29 @@ const screen = window.SStructuresAgent.getScreenState();
 | `getResults()` | 현재 해석 결과 |
 | `getResultView()` | 결과 panel/view-model |
 | `getResultVisuals(options)` | 노드/부재 결과 시각화 데이터 |
-| `getReport(options)` | 기본 HTML 보고서 |
-| `getDetailedReport(options)` | 상세 HTML 보고서 |
-| `getCalculationPackage(options)` | 계산서 패키지 HTML |
+| `getReport(options)` | 준비된 기본 HTML 보고서 조회 |
+| `getDetailedReport(options)` | 준비된 상세 HTML 보고서 조회 |
+| `getCalculationPackage(options)` | 준비된 계산서 패키지 HTML 조회 |
 | `getDesignBasisInput(options)` | 설계기준 입력 상태와 preview |
 | `getDesignBasisLoadEstimation(options)` | 자동 하중 산정 결과 |
 | `getKdsLoadStandardAudit(options)` | KDS-style 조합 audit |
 | `getMemberDesignTraceReport(options)` | 부재별 설계 trace |
 | `getServiceabilityDriftReport(options)` | 층간변위 검토 |
 | `getRuntimeDiagnostics()` | 원본 index runtime adapter 진단 |
+
+## Phase 19 Result Preparation
+
+Phase 19 M1부터 설계·보고서 계산형 `get*`는 준비된 결과를 읽는다. 결과가 없으면 `RESULT_REQUIRED`, 입력이나 해석 실행이 바뀌면 `STALE_INPUT`이다. `getSnapshot()`은 재해석을 실행하지 않는다.
+
+```js
+// 현재 개발 버전의 명시적 legacy 보고서 준비 경로
+const agent = window.SStructuresAgent;
+agent.runAnalysis();
+agent.prepareResultView('getDetailedReport', { title: 'Review' });
+const report = agent.getDetailedReport({ title: 'Review' });
+```
+
+조회와 준비에는 동일한 options를 사용한다. `prepareResultView`는 등록된 view만 지원하며 WebMCP v1 도구로 공개되지 않는다. 새 입력 식별·결과 API와 전체 준비 대상은 [M0~M1 계약](../phase19/M0_M1_CONTRACT.md)을 참고한다. 후속 M3에서 제품 실행 기록과 설계 서비스를 직접 연결한다.
 
 ## QA Commands
 

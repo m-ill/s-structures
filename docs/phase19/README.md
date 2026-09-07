@@ -1,6 +1,6 @@
 # Phase 19 — 탄성설계 WebMCP와 비선형해석 제품화
 
-작성일: 2026-09-07 · 계획 버전: v1 · 상태: 계획 수립, 구현 미착수
+작성일: 2026-09-07 · 계획 버전: v1 · M0~M1 구현 및 검증 상태는 [진행 상태](IMPLEMENTATION_STATUS.md)에서 관리한다.
 
 ## 목표
 
@@ -16,8 +16,8 @@
 - 공개 main 기준선: `e18d5b432c780523496f8aad489b502934ae0ebd`.
 - 2026-09-06 비교에서 src·server·진입 HTML 688개 중 실행 파일 차이는 없었다. 제외된 4개는 빈 폴더 유지용 .gitkeep다. 설계 파일 60개도 동일했다.
 - [WebMCP v1](../WEBMCP.md)은 9개 도구로 기존 탄성 케이스의 조회·검증·실행만 제공한다. 설계 입력, 케이스 생성, 설계 검토와 보고서 생성의 도구 연결은 없다.
-- [기존 Agent API](../../src/ui/indexAgentApi.js)의 설계 조회는 일부 경로에서 재해석을 일으킨다. 결과 조회를 단순히 WebMCP로 감싸는 방식은 사용하지 않는다.
-- WebMCP의 입력 식별과 [기존 실행 기록](../../src/ui/phase7AnalysisRecords.js)의 해시는 길이와 제외 필드가 다르다. 버전과 의미를 명시한 입력 식별 계약을 먼저 만든다.
+- 기준선의 [Agent API](../../src/ui/indexAgentApi.js)는 일부 설계 조회에서 재해석을 일으켰다. M1에서 계산형 설계·보고서 조회와 명시적 준비를 분리했다. 사용 방법은 [구현 계약](M0_M1_CONTRACT.md)을 따른다.
+- WebMCP와 [기존 실행 기록](../../src/ui/phase7AnalysisRecords.js)의 해시는 길이와 제외 필드가 다르다. M1은 기존 해시를 유지하고 버전이 명시된 입력 식별을 별도 필드로 추가했다.
 - [비선형 capability](../../src/nonlinear/capabilities.js)에 실제 MDOF Pushover·fiber/PMM·Newmark NLTH가 있으나 candidate다. [기존 자격 판정](../../verification/specs/phase8/QUALIFICATION_RELEASE.md)은 Q0이며 외부 비교·규모 시험·독립 pilot 검토가 남아 있다.
 - 공개 CI의 13개 시험은 이번 전체 제품화 범위의 합격 증거가 아니다. Phase 7~15의 과거 PASS와 Phase 18 증거는 각 당시 버전에 한정해 보존한다.
 

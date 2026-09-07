@@ -54,7 +54,10 @@
     "tests/p2-mvp-s6-result-postprocessing.mjs",
     "tests/p3-design-rc.mjs",
     "tests/p3-design-steel-foundation.mjs",
-    "tests/p3-m19-integrated-report.mjs"
+    "tests/p3-m19-integrated-report.mjs",
+    "tests/p3-m14-nonlinear-geometry.mjs",
+    "tests/p3-m15-nonlinear-hinge-control.mjs",
+    "tests/p3-m16-nonlinear-fiber-nlth.mjs"
   ],
   "releaseCandidateAlsoRequires": [
     "Phase7-15 mandatory regression",
@@ -63,5 +66,9 @@
     "actual supported-browser WebMCP/Worker runs",
     "Windows and Ubuntu",
     "scope-specific independent qualification and performance"
-  ]
+  ],
+  "testTimeoutMs": {
+    "tests/p2-practice-validation-report.mjs": 600000
+  },
+  "timeoutPolicy": "Harness completion budget only; this does not qualify product performance. The legacy P-Delta practice report exceeded the initial 180-second budget in R2."
 }

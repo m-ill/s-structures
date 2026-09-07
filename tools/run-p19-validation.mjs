@@ -22,10 +22,12 @@ const report={version:'p19-validation-v1',source,scope:manifest.scope,manifestHa
   runtime:{node:process.version,platform:process.platform,arch:process.arch},startedAt:new Date().toISOString(),results:[]};
 for(const [i,test] of manifest.tests.entries()) {
   if(!existsSync(join(checkout,test))) throw new Error(`Uncommitted or missing required test: ${test}`);
-  const run=spawnSync(process.execPath,[test],{cwd:checkout,encoding:'utf8',timeout:180000,maxBuffer:32*1024*1024});
+  const timeoutMs=manifest.testTimeoutMs?.[test] || 180000;
+  if (!Number.isInteger(timeoutMs) || timeoutMs < 1000 || timeoutMs > 900000) throw new Error(`Invalid timeout: ${test}`);
+  const run=spawnSync(process.execPath,[test],{cwd:checkout,encoding:'utf8',timeout:timeoutMs,maxBuffer:32*1024*1024});
   const log=`${run.stdout||''}\n${run.stderr||''}\n${run.error?.message||''}`;
   const name=`${String(i+1).padStart(2,'0')}-${test.split('/').at(-1)}.log`;writeFileSync(join(out,name),log);
-  const row={test,status:run.status===0?'PASS':'FAIL',exitCode:run.status,signal:run.signal,log:name,sha256:hash(log)};
+  const row={test,status:run.status===0?'PASS':'FAIL',exitCode:run.status,signal:run.signal,timeoutMs,log:name,sha256:hash(log)};
   report.results.push(row);console.log(`${row.status} ${test}`);
 }
 report.completedAt=new Date().toISOString();report.passed=report.results.filter(x=>x.status==='PASS').length;

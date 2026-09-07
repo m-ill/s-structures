@@ -31,4 +31,5 @@ export const COMPUTED_RESULT_VIEWS = Object.freeze([
   'getDesignDemandPackage', 'getPracticePlatformReadiness', 'getPracticeValidationReport',
   'getServiceabilityDriftReport', 'getAdvancedElasticTrace', 'getResultPostprocessing',
   'getWallSlabEquivalentTrace',
+  'getDynamicCompletenessTrace', 'getNonlinearAnalysisTrace',
 ]);
