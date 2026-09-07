@@ -28,6 +28,8 @@ assert.equal(applied.ok,true);assert.equal(model.analysisCases[0].engineId,analy
 assert.deepEqual(await call('apply_nonlinear_case',{handle:preview.handle,requestId:'case'}),applied);
 const current=await call('get_project_context');assert.equal(current.cases[0].exposed,true);
 const validation=await call('validate_analysis',{caseId:'M5-PUSH',modelHash:current.modelHash});
+assert.equal(validation.solverUnitPolicy.displacement,'m');
+assert.equal(validation.rawResultUnits.energy,'kN.m');
 assert.equal(typeof validation.validation.ok,'boolean');assert.equal(bridge.listNonlinearRuns().length,0);
 delete model.analysisStates;
 const legacyContext=await call('get_project_context'),beforeRead=JSON.stringify(model);
