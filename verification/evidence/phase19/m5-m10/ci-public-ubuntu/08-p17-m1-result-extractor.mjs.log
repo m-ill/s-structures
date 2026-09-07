@@ -1,0 +1,38 @@
+{
+  "suite": "P17-M1 data-only result extractor",
+  "status": "PASS",
+  "positiveMetrics": 4,
+  "pointerCoverage": [
+    "RFC6901_ROOT",
+    "ESCAPED_SLASH",
+    "ESCAPED_TILDE",
+    "ARRAY_INDEX"
+  ],
+  "negativeCoverage": [
+    "MISSING_POINTER_FIELD",
+    "INVALID_POINTER_ESCAPE",
+    "TRANSFORM_FORBIDDEN",
+    "DUPLICATE_METRIC",
+    "DUPLICATE_POINTER",
+    "PROBE_APPROVAL_MISMATCH",
+    "UNRESOLVED_POINTER",
+    "NON_NUMBER",
+    "NONFINITE",
+    "NON_CANONICAL_ARRAY_INDEX",
+    "INVALID_JSON_BYTES",
+    "PATH_ESCAPE",
+    "ACCESSOR_CODE_EXECUTION",
+    "ARTIFACT_TAMPER",
+    "SOURCE_TAMPER",
+    "EVALUATOR_ARTIFACT_HASH_TAMPER",
+    "COMPARISON_CONTENT_SHA256_TAMPER",
+    "EVALUATOR_PROBE_BINDING_TAMPER",
+    "EVALUATOR_EXTRACTOR_BINDING_TAMPER"
+  ],
+  "solverExecuted": false,
+  "benchmarkExecuted": false,
+  "engineeringResultCount": 0,
+  "releaseAllowed": false
+}
+
+

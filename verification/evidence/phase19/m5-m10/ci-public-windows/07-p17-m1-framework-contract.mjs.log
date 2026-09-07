@@ -1,0 +1,60 @@
+{
+  "suite": "P17-M1 production framework contract",
+  "status": "PASS",
+  "benchmarkExecuted": false,
+  "solverExecuted": false,
+  "engineeringResultCount": 0,
+  "assertions": {
+    "officialCases": 21,
+    "customCases": 1,
+    "generatedScaffoldFiles": 419,
+    "isolationSequence": [
+      "CHILD_SUCCEEDED_UNQUALIFIED",
+      "FAILED",
+      "CHILD_SUCCEEDED_UNQUALIFIED",
+      "TIMED_OUT",
+      "CHILD_SUCCEEDED_UNQUALIFIED"
+    ],
+    "isolationPolicyBlocks": [
+      "P17_ENTRYPOINT_PATH_ESCAPE",
+      "P17_CHILD_POLICY_ENV_RESERVED"
+    ],
+    "appendOnlyTamperClasses": [
+      "CONTENT",
+      "UNDECLARED_FILE",
+      "UNDECLARED_DIRECTORY",
+      "SYMLINK_OR_JUNCTION",
+      "CHAIN_SCHEMA",
+      "CUSTODY_SIGNATURE"
+    ],
+    "appendOnlyCustodyPolicy": [
+      "LOCAL_FIXTURE_NOT_TERMINAL",
+      "EXTERNAL_SIGNED_ANCHOR_REQUIRED",
+      "NO_AUTOMATIC_TOMBSTONE_REUSE",
+      "LOCAL_FS_NOT_WORM"
+    ],
+    "productPolicyBlocks": [
+      "VERSION",
+      "REFERENCE_PAYLOAD",
+      "FALLBACK",
+      "EXTERNAL_RUNTIME",
+      "RUNTIME_OBSERVATION",
+      "NETWORK_FALLBACK",
+      "NETWORK_OBSERVATION",
+      "OFFICIAL_INJECTION",
+      "TEST_PROVENANCE",
+      "PUBLIC_RUNNER_PROVENANCE",
+      "TEST_ONLY_QUALIFICATION"
+    ],
+    "reportTamperClasses": [
+      "EVIDENCE_HASH",
+      "CAPTURE_INDEX_HASH",
+      "CAPTURE_BINDING",
+      "CAPTURE_BOOLEAN_COERCION",
+      "M1_TERMINAL_PASS_DISABLED"
+    ]
+  },
+  "releaseAllowed": false
+}
+
+

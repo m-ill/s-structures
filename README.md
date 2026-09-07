@@ -2,7 +2,7 @@
 
 **브라우저에서 구조 모델링·해석·결과 검토를 수행하고, WebMCP로 AI 에이전트와 같은 모델을 함께 다루는 구조해석 웹앱입니다.**
 
-[웹에서 실행](https://m-ill.github.io/s-structures/) · [다운로드·검증자료](https://github.com/m-ill/s-structures/releases/tag/webmcp-preview-20260906) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md) · [WebMCP 안내](docs/WEBMCP.md) · [CI 결과](https://github.com/m-ill/s-structures/actions/workflows/verify.yml)
+[웹에서 실행](https://m-ill.github.io/s-structures/) · [다운로드·검증자료](https://github.com/m-ill/s-structures/releases/tag/phase19-nonlinear-preview-20260907-r2) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md) · [WebMCP 안내](docs/WEBMCP.md) · [CI 결과](https://github.com/m-ill/s-structures/actions/workflows/verify.yml)
 
 문서 갱신: **2026-09-07** · 공개 상태: **WebMCP 개발 프리뷰**
 
@@ -17,7 +17,7 @@ Phase 19 개발 후보: **WebMCP 36개 도구**로 탄성설계 입력→해석�
 | 확장 엔진 | 막·판·셸, 탄성지반, 강체격막, 탄성링크, 비선형 힌지·pushover 등. 기능별 입력·실행·검증 상태를 별도로 표시 |
 | 결과 검토 | 변형도, 부재력·반력, 하중조합 포락, 모드·시간 스텝, 평형·오차, 결과별 설계 전달 가능 상태 |
 | 검토·보고서 | 강재·RC 검토, 지배조합·계산 근거 추적, 보고서·PDF, JSON 모델 저장, 도면·메모 작업 |
-| 에이전트 연동 | 공개 v1은 조회·해석 9개, 로컬 M4는 입력·설계·보고서·호스트 연결을 포함한 27개 도구 |
+| 에이전트 연동 | 기존 공개 v1은 9개, Phase 19 개발 후보는 탄성설계·보고서·비선형을 포함한 36개 도구 |
 
 엔진 구현 여부와 특정 모델의 검증 완료 여부는 구분합니다. 실행 가능 경로와 차단 이유는 케이스별 capability·validation 결과에서 확인합니다. CPU가 기본이며 GPU의 미구현·미검증 조건을 자동으로 우회하지 않습니다.
 
@@ -63,7 +63,7 @@ SB1처럼 수치 정밀도 수준에서 일치하는 항목도 있지만, **21�
 | 실제 WebMCP 브라우저 | 정적 샘플 실행·결과 조회·중복 요청 재사용 확인 | 8절점·8부재·3개 하중조합, 화면 최대 변위 4.733mm |
 | 보완 회귀 | 수정 후 Phase 8·15 통과 | 커밋·범위·이전 실패와 수정 기록을 증거 패키지에 구분 |
 
-2026-09-06 공개 병합 커밋은 [`fab4783`](https://github.com/m-ill/s-structures/commit/fab4783de045532beb35d46a648f1742e337c9c0)입니다. [해당 CI 실행](https://github.com/m-ill/s-structures/actions/runs/34008817393)과 [Release 증거](https://github.com/m-ill/s-structures/releases/tag/webmcp-preview-20260906)에서 확인할 수 있습니다. 테스트 실행 단위 수를 공인 벤치마크 합격 수로 계산하지 않으며, 최종 개발 커밋에서 `npm test` 전체 단일 실행 PASS를 주장하지 않습니다.
+2026-09-06 공개 병합 커밋은 [`fab4783`](https://github.com/m-ill/s-structures/commit/fab4783de045532beb35d46a648f1742e337c9c0)입니다. [해당 CI 실행](https://github.com/m-ill/s-structures/actions/runs/34008817393)과 [Release 증거](https://github.com/m-ill/s-structures/releases/tag/phase19-nonlinear-preview-20260907-r2)에서 확인할 수 있습니다. 테스트 실행 단위 수를 공인 벤치마크 합격 수로 계산하지 않으며, 최종 개발 커밋에서 `npm test` 전체 단일 실행 PASS를 주장하지 않습니다.
 
 ## 공개 WebMCP v1: 모델 조회부터 해석 결과까지
 
@@ -112,7 +112,7 @@ cd s-structures
 node server/main.mjs 5173
 ```
 
-`http://127.0.0.1:5173/index.html`을 엽니다. [Release의 실행 ZIP](https://github.com/m-ill/s-structures/releases/tag/webmcp-preview-20260906)을 풀어 같은 명령으로 실행할 수도 있습니다. 모델 JSON은 현재 **스키마 v6**를 사용합니다.
+`http://127.0.0.1:5173/index.html`을 엽니다. [Release의 실행 ZIP](https://github.com/m-ill/s-structures/releases/tag/phase19-nonlinear-preview-20260907-r2)을 풀어 같은 명령으로 실행할 수도 있습니다. 모델 JSON은 현재 **스키마 v6**를 사용합니다.
 
 ### 검증 실행
 
@@ -132,7 +132,7 @@ npm run test:p18
 | [P18 엔진 상태](docs/phase18/IMPLEMENTATION_STATUS.md) | 엔진 실행 경로와 동일모델 입력 보류 항목 |
 | [검증 워크스페이스](verification/README.md) | 명세·테스트·실행 증거의 구조 |
 | [WebMCP 안내](docs/WEBMCP.md) | 지원 환경·도구 계약·실행 제한 |
-| [Release](https://github.com/m-ill/s-structures/releases/tag/webmcp-preview-20260906) | 공개 소스, 실행 ZIP, 로컬·GitHub CI 증거, SHA-256 |
+| [Release](https://github.com/m-ill/s-structures/releases/tag/phase19-nonlinear-preview-20260907-r2) | 공개 소스, 실행 ZIP, 로컬·GitHub CI 증거, SHA-256 |
 
 Release의 `s-structures-public-source.zip`은 공개 시 CI 정리 수정을 포함한 소스입니다. `s-structures-source.zip`은 개발 커밋 `fa12565`의 보존 스냅샷이며 런타임·기존 증거와의 연결을 위해 별도로 유지합니다. 최신 문서는 이 저장소의 main을 기준으로 읽어 주세요.
 
@@ -144,3 +144,5 @@ Release의 `s-structures-public-source.zip`은 공개 시 CI 정리 수정을 �
 문의: mill@dankook.ac.kr · [LICENSE.txt](LICENSE.txt)
 
 기존 독점적 라이선스를 유지합니다. 저장소 공개가 사용·복제·수정·재배포 권한을 부여하는 것은 아닙니다.
+
+Phase 19 검증: 수치 엔진 기준선 8147974의 확장 회귀는 로컬·Windows·Ubuntu 각각 92/92 PASS입니다. 최종 단위 metadata 수정(467dd70)은 별도 WebMCP/host 4개와 패키지 설치·복원을 통과했고 전체 CI는 진행 중입니다. [후보별 증거와 제한](verification/evidence/phase19/m5-m10/README.md).

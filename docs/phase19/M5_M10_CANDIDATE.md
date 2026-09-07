@@ -46,3 +46,5 @@ node tools/run-p19-validation.mjs output/phase19/new-candidate --manifest=verifi
 runner는 해당 커밋을 별도 checkout으로 추출해 실행하고 source ZIP SHA-256, Node/OS, 시험별 원문 로그와 해시를 보존한다. 느린 corotational 전역 시험의 실행 예산은 180초에서 900초로 늘렸다. 이는 수치 허용오차 변경이나 성능 합격이 아니다.
 
 공개는 개발 브랜치/프리뷰로 진행하며 생산 Pages를 자동 승격하지 않는다. 생산 배포 전에 같은 runtime manifest를 CI·HTTPS에서 대조하고, 이전 공개 tag의 산출물 복원 후 smoke를 기록해야 한다. 프리뷰 패키지를 기존 운영 데이터 위에 덮어쓰지 않는다.
+
+비선형 원시 변위와 targetDisplacement는 m, 회전은 rad, 힘은 kN, 모멘트·에너지는 kN.m, 시간은 s다. 도구 응답의 rawResultUnits를 사용하며 모델 화면의 mm 표시 정책을 원시 결과에 적용하지 않는다. 467dd70에서 이 구분을 명시했다.

@@ -1,0 +1,33 @@
+{
+  "qualification": "development-preview",
+  "version": "p19-preview-package-v1",
+  "forbiddenPathCount": 0,
+  "sourceCommit": "0d1f043",
+  "runtimeZipSha256": "8c566b2aed7366e415dfc7f98fcf0cf41dc8dd95c9865275d0f96ae75ea25078",
+  "publicFileCount": 678,
+  "releaseFileCount": 1413,
+  "productionDeployment": false,
+  "sourceZipSha256": "1ccbfb37f0c44454fc46865595a49b3fe0331236538982b366044ecf6f70a387",
+  "runtimeZip": "s-structures-0.1.0.zip",
+  "windowsPackageInstallRecovery": {
+    "checks": [
+      "all asset byte lengths and hashes",
+      "private paths 404",
+      "server restart preserves project",
+      "backup excludes secrets",
+      "restore preserves project"
+    ],
+    "observedVia": "package-install-recovery.log",
+    "status": "PASS",
+    "test": "tests/p12-m5-release-package-install-recovery.mjs",
+    "repeatedBuildHashIdentical": false
+  },
+  "github": {
+    "targetCommit": "0d1f043d23a1ba081e804e1e0394f9ec8e11565d",
+    "runtimeAssetDigest": "sha256:8c566b2aed7366e415dfc7f98fcf0cf41dc8dd95c9865275d0f96ae75ea25078",
+    "prerelease": true,
+    "sourceAssetDigest": "sha256:1ccbfb37f0c44454fc46865595a49b3fe0331236538982b366044ecf6f70a387",
+    "release": "https://github.com/m-ill/s-structures/releases/tag/phase19-nonlinear-preview-20260907",
+    "digestMatchesLocal": true
+  }
+}

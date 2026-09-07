@@ -1,0 +1,83 @@
+{
+  "milestone": "P8-M6.1",
+  "verificationIds": [
+    "NL-PMM-09",
+    "NL-PMM-10",
+    "NL-PMM-11",
+    "NL-PMM-12",
+    "NL-PMM-13",
+    "NL-PMM-14"
+  ],
+  "coldBenchmark": {
+    "elapsedMs": 434.902,
+    "gateMs": 60000,
+    "operations": {
+      "uniqueInteractionCount": 1,
+      "computedInteractionCount": 1,
+      "fiberCount": 192,
+      "sectionEvaluationCount": 23806,
+      "sectionSolveCount": 887,
+      "sectionSolveRequestCount": 908,
+      "sectionSolveCacheHitCount": 21,
+      "axialLevelCount": 3,
+      "angleCount": 8,
+      "curvatureSampleCount": 17,
+      "progressEventCount": 28,
+      "progressStageCount": 5
+    }
+  },
+  "cache": {
+    "memoryHits": 1,
+    "persistentHits": 1,
+    "explicitDefaultsNormalized": true
+  },
+  "determinism": {
+    "sourceHash": "bd5d44c2fb1352cb5a891b7bb4667d59e039c9132a451830067fd624c971620d",
+    "surfaceHash": "1c1aae729c5d719465991de6dedbf129ecf915f073b3b323795fbe5a7152d4ff",
+    "memoizedSolves": 197,
+    "unmemoizedSolves": 218
+  },
+  "worker": {
+    "executionMode": "worker",
+    "uniqueWorkerRuns": 2,
+    "cancellationRequestedDuringInteraction": true,
+    "cancelledCacheWrites": 0,
+    "lateCancellationCacheWrites": 0
+  },
+  "staleProtection": {
+    "changedInputCount": 5,
+    "unrelatedReusable": true,
+    "evictionPolicyClaimed": false
+  },
+  "parity": [
+    {
+      "id": "small-steel",
+      "responseMaxRelativeError": 0,
+      "rootMaxRelativeError": 0,
+      "pmmMaxRelativeError": 0,
+      "comparedPmmNumericValues": 506,
+      "fullSurfaceHash": "9e8bd2a931ffc629f298952c82ee3cf35aa24c119584db1f8129a91508d20cc6",
+      "optimizedSurfaceHash": "9e8bd2a931ffc629f298952c82ee3cf35aa24c119584db1f8129a91508d20cc6"
+    },
+    {
+      "id": "symmetric-rc",
+      "responseMaxRelativeError": 0,
+      "rootMaxRelativeError": 0,
+      "pmmMaxRelativeError": 0,
+      "comparedPmmNumericValues": 506,
+      "fullSurfaceHash": "77bc00ba189f01bd86442be7b5472cc0dc8a9c08c643280c4a80be689ed4eeea",
+      "optimizedSurfaceHash": "77bc00ba189f01bd86442be7b5472cc0dc8a9c08c643280c4a80be689ed4eeea"
+    },
+    {
+      "id": "asymmetric-rc",
+      "responseMaxRelativeError": 0,
+      "rootMaxRelativeError": 0,
+      "pmmMaxRelativeError": 0,
+      "comparedPmmNumericValues": 506,
+      "fullSurfaceHash": "b84f6c481924f0cf749f89396515512e35d9d3f9e5acd80b4592caaf468c2fff",
+      "optimizedSurfaceHash": "b84f6c481924f0cf749f89396515512e35d9d3f9e5acd80b4592caaf468c2fff"
+    }
+  ]
+}
+
+

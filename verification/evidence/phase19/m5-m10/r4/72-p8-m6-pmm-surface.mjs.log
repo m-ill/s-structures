@@ -1,0 +1,24 @@
+{
+  "milestone": "P8-M6-worker-C",
+  "verificationIds": [
+    "NL-PMM-01",
+    "NL-PMM-02",
+    "NL-PMM-03",
+    "NL-PMM-04",
+    "NL-PMM-05",
+    "NL-PMM-06",
+    "NL-PMM-07",
+    "NL-PMM-08"
+  ],
+  "sourceHash": "5d81c4f8a66cfe57a5e6f20dccd6b66e706fa5ea36d1a03ef85df0e446f54176",
+  "surfaceHash": "5f207d7db71e67991263a3724cd1194a8ca847243ddf795b064bba46629f9d9e",
+  "levels": 5,
+  "angles": 16,
+  "sectionSolves": 2082,
+  "nodeCapacity": 21.250505876331506,
+  "updatedCapacity": 24,
+  "updatedTangent": 600,
+  "productionSectionSolves": 366
+}
+
+

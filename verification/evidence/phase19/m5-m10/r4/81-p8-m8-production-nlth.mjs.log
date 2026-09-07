@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-DYN-10",
+    "NL-DYN-15",
+    "NL-DYN-16"
+  ],
+  "outputStepCount": 3,
+  "internalStepCount": 2,
+  "rejectedStepCount": 0,
+  "maximumSubstepLevel": 0,
+  "chunkCount": 2,
+  "commitCount": 2,
+  "finalEnergyRelativeResidual": 0.00008176968298790818,
+  "hingeStates": [
+    "elastic",
+    "yielded"
+  ],
+  "runRecordId": "NLTH-COLUMN:4a0f57e3a182ad45746aaad3",
+  "residentCommitCount": 2,
+  "residentAuditCount": 3,
+  "residentTransferCount": 2,
+  "residentTransferBytes": 5420,
+  "residentSessionHash": "4e98f683ef12d8578d5e4750",
+  "solveOperation": "cpu-f64-general"
+}
+
+

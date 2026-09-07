@@ -1,0 +1,2 @@
+PASS host origin/frame/Document/nonce/project/dispose guards; unsupported fallback; owned-job cancellation skips remaining cases
+PASS insecure/unsupported browser without randomUUID keeps ordinary UI initialization

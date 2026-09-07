@@ -34,12 +34,12 @@ M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구
 | M2 설계 입력 | 완료 | 11개 타입, UI·Agent 공통 preview/apply, 원자성·단일 Undo·결과 무효화, 강재·RC 폼 동등성, 회귀 27/27 |
 | M3 탄성설계 서비스 | 완료 | 실제 탄성 제품 실행→강재/RC 검토→불변 보고서, 회귀 34/34; 자동 PDF 실환경 검증은 별도 |
 | M4 WebMCP·화면 | 완료 | 27개 도구, 직접/호스트 실제 강재·RC 흐름, 세션·프로젝트 결속, 회귀 39/39 |
-| M5 비선형 기반 | 계획 | 초기상태·checkpoint·PMM 조립·엔진 routing |
-| M6 Pushover/fiber/PMM | 계획 | 전역 경로·반전·rollback·독립 비교 |
-| M7 MDOF NLTH | 계획 | 시간 적분·에너지·재시작·외부 비교 |
-| M8 작업·성능·복구 | 계획 | 실제 Worker 취소·응답·규모·결과 보존 |
-| M9 종합 검증 | 계획 | 해당 배포 범위의 G1~G8 및 독립 자격 |
-| M10 배포 | 계획 | build/rule pack 결속, 공개 패키지·CI·Release |
+| M5 비선형 기반 | 개발 후보·일부 미완료 | 초기상태·checkpoint·PMM 조립·엔진 routing |
+| M6 Pushover/fiber/PMM | 개발 후보·일부 미완료 | 전역 경로·반전·rollback·독립 비교 |
+| M7 MDOF NLTH | 개발 후보·일부 미완료 | 시간 적분·에너지·재시작·외부 비교 |
+| M8 작업·성능·복구 | 개발 후보·일부 미완료 | 실제 Worker 취소·응답·규모·결과 보존 |
+| M9 종합 검증 | 개발 후보·일부 미완료 | 해당 배포 범위의 G1~G8 및 독립 자격 |
+| M10 배포 | 개발 후보·일부 미완료 | build/rule pack 결속, 공개 패키지·CI·Release |
 
 ## 구현 범위
 
@@ -101,7 +101,7 @@ R3 이후의 런타임 변경은 [cache 대상 세 이름 추가](../../verifica
 
 - 아키텍처 High import 41건(UI 수치 직접 의존 40, report→solver 1)은 M3/M5에서 해소·검증한다. 명시적 보고서 준비 안의 legacy solver 실행도 남아 있다.
 - 비선형 Q1 외부 비교 2건, Q4 규모·브라우저, Q5 독립 pilot 5건의 자격 조건을 유지한다. PMM 전역 조립은 M5에서 검증한다.
-- 런타임 build/rule pack이 미주입이면 새 기록의 설계전달은 차단된다. 외부 검토 담당과 고정 성능 장비의 브라우저·전원 모드는 미확정이다.
+- 런타임 build/rule pack이 미주입이면 새 기록의 설계전달은 차단된다. 독립 검토 담당은 사용자(m-ill)다. 고정 성능 장비의 브라우저·전원 모드는 미확정이다.
 - 기존 21개 비교나 이번 계약 회귀의 통과를 전체 비선형·최종설계 자격으로 확대하지 않는다.
 
 현재 작업 브랜치는 `work/phase19-m2-20260907`이다. 이번 범위는 로컬 구현·커밋·검증이며 공개 main과 GitHub Pages는 갱신하지 않았다.
@@ -111,3 +111,9 @@ R3 이후의 런타임 변경은 [cache 대상 세 이름 추가](../../verifica
 36개 WebMCP 도구, SH1 sparse 경로, 현재 chord 기반 힌지 평형, Worker 취소·시간 제한·자격 차단을 구현했다. M5~M10 전체 완료 판정은 아니다. [구현과 잔여 조건](M5_M10_CANDIDATE.md)에서 마일스톤별로 구분한다. 독립 검토 담당은 사용자(m-ill)이며 외부 비교 2건·pilot 5건의 검토 완료 기록은 아직 없다. [접수표](REVIEW_INTAKE.md).
 
 현재 개발 브랜치: work/phase19-m5-m10-20260907. 위 M0~M4 문단의 브랜치·공개 상태는 각 실행 당시의 이력이다.
+
+### 후보 검증·공개 기록
+
+수치 엔진 기준선 8147974에서 로컬·Windows CI·Ubuntu CI 각각 92/92 PASS다. 이후 467dd70은 capability ID와 비선형 원시 단위 표기를 수정했고 별도 checkout에서 WebMCP/host 4개와 Windows 설치·복원 검사를 통과했다. 해당 최종 후보 전체 CI는 https://github.com/m-ill/s-structures/actions/runs/34134681570 에서 실행 중이다. [증거](../../verification/evidence/phase19/m5-m10/README.md)를 참조한다.
+
+[검토 PR #3](https://github.com/m-ill/s-structures/pull/3)과 [개발 프리뷰 R2](https://github.com/m-ill/s-structures/releases/tag/phase19-nonlinear-preview-20260907-r2)를 게시했다. R1은 단위 표기 수정 R2로 대체 안내했다. main/Pages 생산 배포는 변경하지 않았다.
