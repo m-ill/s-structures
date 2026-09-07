@@ -182,6 +182,10 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
   };
   const api = {
     version: bridgeVersion,
+    getDesignInputContext() { return bridge?.getDesignInputContext?.() || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
+    previewDesignInputChanges(request) { return bridge?.previewDesignInputChanges?.(request) || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
+    applyDesignInputChanges(preview) { return bridge?.applyDesignInputChanges?.(preview) || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
+    undoDesignInputChanges() { return bridge?.undoDesignInputChanges?.() || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
     getWorkflowInputIdentity(input = {}) {
       return bridge?.getWorkflowInputIdentity?.(input) || createWorkflowInputIdentity({ model: getCurrentModel(target), ...input });
     },

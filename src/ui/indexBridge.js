@@ -3,6 +3,8 @@ import { stableHash } from '../core/stableHash.js';
 import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
 import { createWorkflowResultStore } from '../compute/product/workflowResults.js';
 import { installResultViewCache, COMPUTED_RESULT_VIEWS } from './resultViewCache.js';
+import { createDesignInputService } from '../modeling/designInputService.js';
+import { installIndexDesignInput } from './indexDesignInput.js';
 import {
   migrateToCurrent,
   migrateToV3,
@@ -153,6 +155,11 @@ export function installIndexEngineBridge(target = globalThis) {
   ensurePhase7AnalysisState(target);
   let lastResult = null;
   let lastResultIdentity = null;
+  let designInputResultsStale = false;
+  const previousActiveResult = target.activeResult;
+  if (typeof previousActiveResult === 'function') {
+    target.activeResult = (...args) => designInputResultsStale ? null : previousActiveResult.apply(target, args);
+  }
   const workflowResults = createWorkflowResultStore();
   target.SStructuresWorkflowResults = workflowResults;
   function requireLastResult() {
@@ -170,6 +177,9 @@ export function installIndexEngineBridge(target = globalThis) {
     analyzeModel(model, options) {
       lastResult = analyzeForIndex(model, options);
       lastResultIdentity = bridge.getWorkflowInputIdentity({ model }).inputHash;
+      designInputResultsStale = false;
+      const staleNotice = target.document?.getElementById?.('ssDesignInputStale');
+      if (staleNotice) staleNotice.hidden = true;
       target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
       return lastResult;
     },
@@ -755,6 +765,27 @@ export function installIndexEngineBridge(target = globalThis) {
   target.analyzeModel = bridge.analyzeModel;
   target.validateModel = bridge.validateModel;
   target.SStructuresEngine = bridge;
+  const designInputs = createDesignInputService({
+    getModel: () => bridge.getCurrentModel(),
+    getIdentity: model => bridge.getWorkflowInputIdentity({ model }),
+    onCommitted: () => {
+      lastResult = null;
+      lastResultIdentity = null;
+      designInputResultsStale = true;
+      target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
+      target.SStructuresResultSelection?.set?.({ activeCaseId: null, activeResultId: null, modeOrStep: null }, 'design-input-changed');
+      target.SStructuresAnalysisCenter?.refresh?.();
+      target.draw?.();
+      const status = target.document?.getElementById?.('statusTxt');
+      if (status) status.textContent = '설계 입력 변경 · 해석 재실행 필요';
+      const notice = target.document?.getElementById?.('ssDesignInputStale');
+      if (notice) notice.hidden = false;
+    },
+  });
+  bridge.getDesignInputContext = designInputs.getContext;
+  bridge.previewDesignInputChanges = designInputs.preview;
+  bridge.applyDesignInputChanges = designInputs.apply;
+  bridge.undoDesignInputChanges = designInputs.undo;
   target.SStructuresReportExportWorkflow ||= createReportExportWorkflow({
     transport: target.sStructuresReportExport,
     openArtifact: target.SStructuresOpenReportArtifact,
@@ -777,6 +808,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.nativeAdvancedAnalysis = installIndexNativeAdvancedAnalysis(target, { bridge });
     bridge.analysisCenter = installIndexAnalysisCenter(target, { bridge });
     bridge.elasticSetupWorkflow = installElasticSetupWorkflow(target, { bridge });
+    bridge.designInputPanel = installIndexDesignInput(target, bridge);
     bridge.floatingPanels = installIndexFloatingPanels(target);
     bridge.elasticResultPopup = installElasticResultPopup(target, { bridge });
     bridge.nonlinearResultPopup = installNonlinearResultPopup(target, { bridge });

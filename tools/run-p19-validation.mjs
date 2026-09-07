@@ -3,7 +3,8 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { createHash } from 'node:crypto';
 
-const manifest = JSON.parse(readFileSync('verification/specs/phase19/m0-m1-tests.json','utf8'));
+const manifestPath=process.argv.find(arg=>arg.startsWith('--manifest='))?.slice('--manifest='.length) || 'verification/specs/phase19/m0-m1-tests.json';
+const manifest = JSON.parse(readFileSync(manifestPath,'utf8'));
 if (process.argv.includes('--list')) { console.log(manifest.tests.join('\n')); process.exit(0); }
 const root = resolve('.');
 const git = (...args) => execFileSync('git',['-c',`safe.directory=${root.replaceAll('\\','/')}`,...args],{encoding:'utf8'}).trim();
@@ -17,7 +18,7 @@ execFileSync('git',['-c',`safe.directory=${root.replaceAll('\\','/')}`,'archive'
 execFileSync('python',['-m','zipfile','-e',archive,checkout]);
 writeFileSync(join(checkout,'SOURCE-IDENTITY.json'),JSON.stringify(source,null,2)+'\n');
 const hash=b=>createHash('sha256').update(b).digest('hex');
-const report={version:'p19-validation-v1',source,scope:manifest.scope,manifestHash:hash(JSON.stringify(manifest)),
+const report={version:'p19-validation-v1',source,scope:manifest.scope,manifestPath,manifestHash:hash(JSON.stringify(manifest)),
   sourceArchiveSha256:hash(readFileSync(archive)),
   runtime:{node:process.version,platform:process.platform,arch:process.arch},startedAt:new Date().toISOString(),results:[]};
 for(const [i,test] of manifest.tests.entries()) {
