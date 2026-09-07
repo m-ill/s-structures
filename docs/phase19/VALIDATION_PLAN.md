@@ -120,3 +120,7 @@ run manifest에 test planned/executed/pass/fail/skip/timeout/flake, 수치 프�
 - 배포 담당: 같은 candidate의 G1~G8 및 산출물 무결성 확인.
 
 M0에서 실제 담당을 지정한다. 에이전트의 코드 리뷰나 자동 PASS를 독립 공학 검토 서명으로 대체하지 않는다. 필수 외부 입력이 없으면 구현을 진행할 수 있으나 최종 상태는 완료 대신 구체적인 `BLOCKED` 이유를 유지한다.
+
+## M3 실행 기록
+
+고정 커밋 `7683047ac3552672bd0c2dad8ae0919c6ae989e5`에서 [M3 manifest](../../verification/specs/phase19/m3-tests.json)의 34개를 별도 checkout으로 실행해 모두 PASS했다. [증거](../../verification/evidence/phase19/m3/README.md)에 로그 SHA와 실제 브라우저 다운로드 파일을 보존한다. P11 모의 PDF adapter 시험 및 PDF용 HTML 데이터 동등성은 실제 PDF 생성·레이아웃 검증과 구분한다. 전체 생산 자격이나 기존 STRIX 비교 범위를 확대하지 않는다.

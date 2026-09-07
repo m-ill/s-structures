@@ -1,0 +1,35 @@
+{
+  "version": "p19-m3-acceptance-v1",
+  "status": "m3-service-complete",
+  "source": {
+    "commit": "7683047ac3552672bd0c2dad8ae0919c6ae989e5",
+    "tree": "5bfeb6a983f41b1684ca1476d7ba03cb29742788",
+    "trackedChanges": ""
+  },
+  "tests": {
+    "planned": 34,
+    "passed": 34,
+    "failed": 0
+  },
+  "runtimeTrees": {
+    "src": "02305e4115d378e3431da6ab43d2fece4fb3d7e6",
+    "server": "884174bb8b6afe08de4bd559a68741f1e6a6cf95",
+    "tests": "77670ff6824647cdaf7d40fb658cce81e0e3305e"
+  },
+  "rawOutput": "output/phase19/m3-r1-20260907/",
+  "sourceArchiveSha256": "637d2c1c174fe9269e885beb188a07168f986ac2826a880d388fb45cdf359858",
+  "qualification": "preliminary; review-required; designTransferAllowed=false",
+  "scope": [
+    "six-step elastic sequence using existing product runners",
+    "steel/RC static and Direct P-Delta review parity between UI bridge and Agent",
+    "immutable review/report, combination/run provenance, stale and no-hidden-solve guards",
+    "P11 PDF HTML renderer parity and export preflight; actual PDF not generated"
+  ],
+  "limitations": [
+    "Legacy P-Delta is comparison-only and blocked for design demand.",
+    "Modal/RSA/buckling/THA run results are not mapped into member design demand.",
+    "Browser result records are session-scoped; export JSON for retention.",
+    "Connection/foundation simplified screening, not final design.",
+    "M4 WebMCP tools, nonlinear qualification and GitHub publication remain pending."
+  ]
+}

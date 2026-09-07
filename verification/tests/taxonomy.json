@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 433,
+  "plannedCount": 434,
   "categoryCounts": {
     "e2e": 5,
-    "integration": 33,
+    "integration": 34,
     "qualification": 224,
     "unit": 171
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 120
+    "release-long": 121
   },
   "records": [
     {
@@ -1178,6 +1178,12 @@
     },
     {
       "file": "tests/p19-m2-ui-agent-parity.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m3-design-workflow.mjs",
       "taxonomy": "integration",
       "execution": "release-long",
       "owner": "phase19"

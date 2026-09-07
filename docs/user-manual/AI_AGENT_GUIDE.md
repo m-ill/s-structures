@@ -248,3 +248,9 @@ AI agent는 아래 항목을 자동으로 확정하지 않는다.
 | 접합부/기초 최종 설계 | 현재는 예비 검토와 force trace 중심 |
 | 정식 비선형 수렴 결과 | pushover는 preliminary |
 | 도면 이미지 자동 모델링 | 향후 agentic vision import 대상 |
+
+## Phase 19 M3 탄성 실행과 설계 검토
+
+`SStructuresAgent.planElasticWorkflow/runElasticWorkflow`로 기존 탄성 케이스를 실행한 다음, `planDesignReview/startDesignReview`에 완료된 1차 또는 Direct P–Delta run ID와 정확한 조합 ID를 전달한다. `getDesignReview`는 계산 없이 기록만 조회하며 `createDesignReviewReport`가 같은 snapshot의 HTML·JSON·CSV를 만든다. 입력 변경 후 stale 결과의 새 보고서 생성·내보내기는 차단된다. 모든 결과는 예비 검토이며 최종 설계전달은 허용하지 않는다.
+
+[M3 API와 호출 예제](../phase19/M3_CONTRACT.md) · [34개 고정 회귀와 브라우저 증거](../../verification/evidence/phase19/m3/README.md). 이 메서드는 in-page Agent API이며 신규 WebMCP 도구 등록은 M4에서 수행한다. 자동 PDF는 실제 transport·figure·qualification이 모두 준비되어야 한다.

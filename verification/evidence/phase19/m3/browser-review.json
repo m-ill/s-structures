@@ -1,0 +1,2085 @@
+{
+  "schemaVersion": "p11-report-snapshot-v1",
+  "project": {
+    "id": null,
+    "modelSchemaVersion": 6
+  },
+  "sourceBinding": {
+    "modelDomainHash": "38cafaa5fcee367e7854f466",
+    "resultHash": "d6b7ada2cb6f831240c574ab9af75866030a2b4819583cf894e81d0a18b6c405"
+  },
+  "model": {
+    "nodeCount": 8,
+    "memberCount": 8,
+    "shellCount": 0,
+    "loadCount": 2,
+    "loadCaseCount": 2,
+    "combinationCount": 3,
+    "storyCount": 1,
+    "domainHashes": {
+      "version": "p18-analysis-domain-hashes-v4-elastic-link",
+      "topologyHash": "2210e93e679b58b42150c829",
+      "propertyHash": "31cc49a0b7c2b74cc932bb4c",
+      "constraintHash": "41aec38afcfd36684c4d447e",
+      "loadHash": "f63da1da2c8b0dc8555d50bf",
+      "massHash": "963123832e00a31b13c854c7",
+      "nonlinearHash": "4db9930816dde433d3a821b1",
+      "outputHash": "0dc0d4a129878b23ace3c9ec",
+      "domainHash": "38cafaa5fcee367e7854f466"
+    }
+  },
+  "analysis": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "failedCombinationCount": 0,
+    "combinationCount": 1,
+    "maxDisplacement": null,
+    "maxUtilization": 0.9103732902271767,
+    "maxEquilibriumResidual": null,
+    "governing": {
+      "memberId": "e13",
+      "checkId": "steel-slenderness",
+      "comboId": "SLS1",
+      "ratio": 0.9103732902271767,
+      "status": "WARN"
+    },
+    "combinations": [
+      {
+        "id": "SLS1",
+        "ok": true,
+        "dmax": 0.003381067136811065,
+        "maxRatio": 0.9103732902271767,
+        "equilibriumResidual": null
+      }
+    ]
+  },
+  "report": {
+    "calculationPackageVersion": null,
+    "detailedReportVersion": null,
+    "qualityAudit": {
+      "ok": false,
+      "itemStatuses": []
+    },
+    "analysisRunCount": 1
+  },
+  "provenance": {
+    "sourceRevision": null,
+    "buildId": null,
+    "analysisRunIds": [
+      "M3-BROWSER:2026-09-07T04:24:18.728Z:1"
+    ]
+  },
+  "validation": {
+    "independentReference": {
+      "status": "not-available",
+      "referenceId": null,
+      "evidenceHash": null
+    },
+    "phase10Eligibility": {
+      "eligible": false,
+      "status": "not-verified",
+      "reasonCodes": []
+    }
+  },
+  "limitationCodes": [
+    "INDEPENDENT_REFERENCE_NOT_AVAILABLE",
+    "ISSUE_SCOPE_LIMITED"
+  ],
+  "designReview": {
+    "version": "p19-m3-elastic-review-v1",
+    "designRunId": "design-1",
+    "inputIdentity": {
+      "inputIdentityVersion": "p19-input-v1",
+      "modelHash": "5f2655685ccfc1d969f854fafd3232378c2c4c32f614e9b522a88228b03f882f",
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+      "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "inputHash": "5ca4ec3d68db1588b687257e3ccb9103c866219ee853eccac5cb6c0b87a6e921",
+      "buildBound": false,
+      "rulePackBound": false
+    },
+    "resultHash": "947279d6c7f5ce6a7097e313d5308610dd1340c58ce5aa4db1c2056458fd8bbc",
+    "sourceAnalysisRunIds": [
+      "M3-BROWSER:2026-09-07T04:24:18.728Z:1"
+    ],
+    "units": {
+      "length": "m",
+      "force": "kN",
+      "moment": "kN.m",
+      "stress": "N/mm2",
+      "displacement": "mm"
+    },
+    "axes": "member-local",
+    "signConvention": "solver-native",
+    "checks": [
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "steel",
+        "checkId": "steel-axial",
+        "status": "OK",
+        "ratio": 0.0327402527492945,
+        "demand": 23.999999999999986,
+        "capacity": 733.0426,
+        "unit": "kN",
+        "expression": "max |N| / Pa",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "steel",
+        "checkId": "steel-flexure-z",
+        "status": "OK",
+        "ratio": 0.2539553215377325,
+        "demand": 19.141298263667046,
+        "capacity": 75.3727,
+        "unit": "kN.m",
+        "expression": "max |Mz| / Maz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "steel",
+        "checkId": "steel-flexure-y",
+        "status": "OK",
+        "ratio": 5.6133997344449204e-18,
+        "demand": 5.955025628883505e-17,
+        "capacity": 10.608590000000001,
+        "unit": "kN.m",
+        "expression": "max |My| / May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "steel",
+        "checkId": "steel-shear-y",
+        "status": "OK",
+        "ratio": 0.03377369055523997,
+        "demand": 9.52173101822273,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vy| / Vay",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "steel",
+        "checkId": "steel-shear-z",
+        "status": "OK",
+        "ratio": 1.3898855423827702e-19,
+        "demand": 3.918469099206003e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vz| / Vaz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "steel",
+        "checkId": "steel-interaction",
+        "status": "OK",
+        "ratio": 0.28669557428702697,
+        "demand": 0.28669557428702697,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "N/Pa + Mz/Maz + My/May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "steel",
+        "checkId": "steel-ltb-mcr",
+        "status": "OK",
+        "ratio": 0.21242184938491895,
+        "demand": 19.141298263667046,
+        "capacity": 90.10983718996845,
+        "unit": "kN.m",
+        "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "OK",
+        "ratio": 0.45518664511358836,
+        "demand": 91.03732902271767,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "steel",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.034912329324437566,
+        "demand": 0.00041894795189325077,
+        "capacity": 0.012,
+        "unit": "m",
+        "expression": "member deformation / (L / limit)",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "steel",
+        "checkId": "steel-axial",
+        "status": "OK",
+        "ratio": 0.0327402527492945,
+        "demand": 23.999999999999986,
+        "capacity": 733.0426,
+        "unit": "kN",
+        "expression": "max |N| / Pa",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "steel",
+        "checkId": "steel-flexure-z",
+        "status": "OK",
+        "ratio": 0.2539553215377325,
+        "demand": 19.141298263667046,
+        "capacity": 75.3727,
+        "unit": "kN.m",
+        "expression": "max |Mz| / Maz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "steel",
+        "checkId": "steel-flexure-y",
+        "status": "OK",
+        "ratio": 5.8531188229759344e-18,
+        "demand": 6.209333781423428e-17,
+        "capacity": 10.608590000000001,
+        "unit": "kN.m",
+        "expression": "max |My| / May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "steel",
+        "checkId": "steel-shear-y",
+        "status": "OK",
+        "ratio": 0.03377369055523997,
+        "demand": 9.52173101822273,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vy| / Vay",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "steel",
+        "checkId": "steel-shear-z",
+        "status": "OK",
+        "ratio": 1.448578796220587e-19,
+        "demand": 4.0839415028551966e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vz| / Vaz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "steel",
+        "checkId": "steel-interaction",
+        "status": "OK",
+        "ratio": 0.28669557428702697,
+        "demand": 0.28669557428702697,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "N/Pa + Mz/Maz + My/May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "steel",
+        "checkId": "steel-ltb-mcr",
+        "status": "OK",
+        "ratio": 0.21242184938491895,
+        "demand": 19.141298263667046,
+        "capacity": 90.10983718996845,
+        "unit": "kN.m",
+        "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "OK",
+        "ratio": 0.45518664511358836,
+        "demand": 91.03732902271767,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "steel",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.03491232932443759,
+        "demand": 0.00041894795189325104,
+        "capacity": 0.012,
+        "unit": "m",
+        "expression": "member deformation / (L / limit)",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "steel",
+        "checkId": "steel-axial",
+        "status": "OK",
+        "ratio": 0.0327402527492945,
+        "demand": 23.999999999999986,
+        "capacity": 733.0426,
+        "unit": "kN",
+        "expression": "max |N| / Pa",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "steel",
+        "checkId": "steel-flexure-z",
+        "status": "OK",
+        "ratio": 0.2539553215377324,
+        "demand": 19.141298263667043,
+        "capacity": 75.3727,
+        "unit": "kN.m",
+        "expression": "max |Mz| / Maz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "steel",
+        "checkId": "steel-flexure-y",
+        "status": "OK",
+        "ratio": 5.790228884691889e-18,
+        "demand": 6.142616424385353e-17,
+        "capacity": 10.608590000000001,
+        "unit": "kN.m",
+        "expression": "max |My| / May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "steel",
+        "checkId": "steel-shear-y",
+        "status": "OK",
+        "ratio": 0.03377369055523997,
+        "demand": 9.521731018222729,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vy| / Vay",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "steel",
+        "checkId": "steel-shear-z",
+        "status": "OK",
+        "ratio": 1.424872070374286e-19,
+        "demand": 4.017105731247108e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vz| / Vaz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "steel",
+        "checkId": "steel-interaction",
+        "status": "OK",
+        "ratio": 0.2866955742870269,
+        "demand": 0.2866955742870269,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "N/Pa + Mz/Maz + My/May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "steel",
+        "checkId": "steel-ltb-mcr",
+        "status": "OK",
+        "ratio": 0.21242184938491893,
+        "demand": 19.141298263667043,
+        "capacity": 90.10983718996845,
+        "unit": "kN.m",
+        "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "OK",
+        "ratio": 0.45518664511358836,
+        "demand": 91.03732902271767,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "steel",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.03491232932443755,
+        "demand": 0.0004189479518932506,
+        "capacity": 0.012,
+        "unit": "m",
+        "expression": "member deformation / (L / limit)",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "steel",
+        "checkId": "steel-axial",
+        "status": "OK",
+        "ratio": 0.03274025274929451,
+        "demand": 23.999999999999996,
+        "capacity": 733.0426,
+        "unit": "kN",
+        "expression": "max |N| / Pa",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "steel",
+        "checkId": "steel-flexure-z",
+        "status": "OK",
+        "ratio": 0.25395532153773254,
+        "demand": 19.14129826366705,
+        "capacity": 75.3727,
+        "unit": "kN.m",
+        "expression": "max |Mz| / Maz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "steel",
+        "checkId": "steel-flexure-y",
+        "status": "OK",
+        "ratio": 6.2901958993156045e-18,
+        "demand": 6.673010931552054e-17,
+        "capacity": 10.608590000000001,
+        "unit": "kN.m",
+        "expression": "max |My| / May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "steel",
+        "checkId": "steel-shear-y",
+        "status": "OK",
+        "ratio": 0.033773690555239974,
+        "demand": 9.521731018222733,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vy| / Vay",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "steel",
+        "checkId": "steel-shear-z",
+        "status": "OK",
+        "ratio": 1.544613457589401e-19,
+        "demand": 4.354689590774206e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vz| / Vaz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "steel",
+        "checkId": "steel-interaction",
+        "status": "OK",
+        "ratio": 0.2866955742870271,
+        "demand": 0.2866955742870271,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "N/Pa + Mz/Maz + My/May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "steel",
+        "checkId": "steel-ltb-mcr",
+        "status": "OK",
+        "ratio": 0.212421849384919,
+        "demand": 19.14129826366705,
+        "capacity": 90.10983718996845,
+        "unit": "kN.m",
+        "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "OK",
+        "ratio": 0.45518664511358836,
+        "demand": 91.03732902271767,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "steel",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.0349123293244376,
+        "demand": 0.0004189479518932512,
+        "capacity": 0.012,
+        "unit": "m",
+        "expression": "member deformation / (L / limit)",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-axial",
+        "status": "OK",
+        "ratio": 0.012989328339475399,
+        "demand": 9.521731018222729,
+        "capacity": 733.0426,
+        "unit": "kN",
+        "expression": "max |N| / Pa",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-flexure-z",
+        "status": "OK",
+        "ratio": 0.25395532153773315,
+        "demand": 19.141298263667096,
+        "capacity": 75.3727,
+        "unit": "kN.m",
+        "expression": "max |Mz| / Maz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-flexure-y",
+        "status": "OK",
+        "ratio": 1.1717586327304676e-17,
+        "demand": 1.2430706913598114e-16,
+        "capacity": 10.608590000000001,
+        "unit": "kN.m",
+        "expression": "max |My| / May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-shear-y",
+        "status": "OK",
+        "ratio": 0.0851282788575407,
+        "demand": 24.00000000000001,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vy| / Vay",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-shear-z",
+        "status": "OK",
+        "ratio": 1.459071043813006e-19,
+        "demand": 4.1135220306888973e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vz| / Vaz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-interaction",
+        "status": "OK",
+        "ratio": 0.26694464987720856,
+        "demand": 0.26694464987720856,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "N/Pa + Mz/Maz + My/May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-ltb-mcr",
+        "status": "OK",
+        "ratio": 0.424843698769839,
+        "demand": 19.141298263667096,
+        "capacity": 45.05491859498422,
+        "unit": "kN.m",
+        "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "WARN",
+        "ratio": 0.9103732902271767,
+        "demand": 182.07465804543534,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.1408777973671277,
+        "demand": 0.003381067136811065,
+        "capacity": 0.024,
+        "unit": "m",
+        "expression": "member deformation / (L / limit)",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "STEEL_SLENDERNESS",
+        "status": "WARN",
+        "ratio": null,
+        "unit": "-",
+        "expression": "Slenderness ratio 0.910."
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "steel",
+        "checkId": "steel-axial",
+        "status": "OK",
+        "ratio": 1.6734970687826354e-21,
+        "demand": 1.226744642392802e-18,
+        "capacity": 733.0426,
+        "unit": "kN",
+        "expression": "max |N| / Pa",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "steel",
+        "checkId": "steel-flexure-z",
+        "status": "OK",
+        "ratio": 1.06684165443078e-18,
+        "demand": 8.041073596691485e-17,
+        "capacity": 75.3727,
+        "unit": "kN.m",
+        "expression": "max |Mz| / Maz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "steel",
+        "checkId": "steel-flexure-y",
+        "status": "OK",
+        "ratio": 1.1642214198921436e-17,
+        "demand": 1.2350747712853597e-16,
+        "capacity": 10.608590000000001,
+        "unit": "kN.m",
+        "expression": "max |My| / May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "steel",
+        "checkId": "steel-shear-y",
+        "status": "OK",
+        "ratio": 6.623933727543667e-20,
+        "demand": 1.8674688551742763e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vy| / Vay",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "steel",
+        "checkId": "steel-shear-z",
+        "status": "OK",
+        "ratio": 2.1626805337812156e-19,
+        "demand": 6.097190440982525e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vz| / Vaz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "steel",
+        "checkId": "steel-interaction",
+        "status": "OK",
+        "ratio": 1.2710729350420998e-17,
+        "demand": 1.2710729350420998e-17,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "N/Pa + Mz/Maz + My/May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "steel",
+        "checkId": "steel-ltb-mcr",
+        "status": "OK",
+        "ratio": 1.8275100844340898e-18,
+        "demand": 1.2350747712853597e-16,
+        "capacity": 67.58237789247633,
+        "unit": "kN.m",
+        "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "OK",
+        "ratio": 0,
+        "demand": 121.38310536362356,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "steel",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.005048245740044403,
+        "demand": 0.00008077193184071045,
+        "capacity": 0.016,
+        "unit": "m",
+        "expression": "member deformation / (L / limit)",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "steel-axial",
+        "status": "OK",
+        "ratio": 0.012989328339475402,
+        "demand": 9.52173101822273,
+        "capacity": 733.0426,
+        "unit": "kN",
+        "expression": "max |N| / Pa",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "steel-flexure-z",
+        "status": "OK",
+        "ratio": 0.25395532153773315,
+        "demand": 19.141298263667096,
+        "capacity": 75.3727,
+        "unit": "kN.m",
+        "expression": "max |Mz| / Maz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "steel-flexure-y",
+        "status": "OK",
+        "ratio": 1.1816935105644768e-17,
+        "demand": 1.2536101959239204e-16,
+        "capacity": 10.608590000000001,
+        "unit": "kN.m",
+        "expression": "max |My| / May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "steel-shear-y",
+        "status": "OK",
+        "ratio": 0.0851282788575407,
+        "demand": 24.00000000000001,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vy| / Vay",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "steel-shear-z",
+        "status": "OK",
+        "ratio": 1.4683848453762153e-19,
+        "demand": 4.1397801954864136e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vz| / Vaz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "steel-interaction",
+        "status": "OK",
+        "ratio": 0.26694464987720856,
+        "demand": 0.26694464987720856,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "N/Pa + Mz/Maz + My/May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "steel-ltb-mcr",
+        "status": "OK",
+        "ratio": 0.424843698769839,
+        "demand": 19.141298263667096,
+        "capacity": 45.05491859498422,
+        "unit": "kN.m",
+        "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "WARN",
+        "ratio": 0.9103732902271767,
+        "demand": 182.07465804543534,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.1408777973671277,
+        "demand": 0.003381067136811065,
+        "capacity": 0.024,
+        "unit": "m",
+        "expression": "member deformation / (L / limit)",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "steel",
+        "checkId": "STEEL_SLENDERNESS",
+        "status": "WARN",
+        "ratio": null,
+        "unit": "-",
+        "expression": "Slenderness ratio 0.910."
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "steel",
+        "checkId": "steel-axial",
+        "status": "OK",
+        "ratio": 2.660867615102838e-21,
+        "demand": 1.9505293148307837e-18,
+        "capacity": 733.0426,
+        "unit": "kN",
+        "expression": "max |N| / Pa",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "steel",
+        "checkId": "steel-flexure-z",
+        "status": "OK",
+        "ratio": 1.909776715482607e-18,
+        "demand": 1.439450274430559e-16,
+        "capacity": 75.3727,
+        "unit": "kN.m",
+        "expression": "max |Mz| / Maz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "steel",
+        "checkId": "steel-flexure-y",
+        "status": "OK",
+        "ratio": 1.171695728414993e-17,
+        "demand": 1.2430039587506013e-16,
+        "capacity": 10.608590000000001,
+        "unit": "kN.m",
+        "expression": "max |My| / May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "steel",
+        "checkId": "steel-shear-y",
+        "status": "OK",
+        "ratio": 2.406901814188629e-19,
+        "demand": 6.785717309896041e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vy| / Vay",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "steel",
+        "checkId": "steel-shear-z",
+        "status": "OK",
+        "ratio": 2.183774223832928e-19,
+        "demand": 6.156659346971835e-17,
+        "capacity": 281.92746666666665,
+        "unit": "kN",
+        "expression": "max |Vz| / Vaz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "steel",
+        "checkId": "steel-interaction",
+        "status": "OK",
+        "ratio": 1.362939486724764e-17,
+        "demand": 1.362939486724764e-17,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "N/Pa + Mz/Maz + My/May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "steel",
+        "checkId": "steel-ltb-mcr",
+        "status": "OK",
+        "ratio": 2.129919543110375e-18,
+        "demand": 1.439450274430559e-16,
+        "capacity": 67.58237789247633,
+        "unit": "kN.m",
+        "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "OK",
+        "ratio": 0,
+        "demand": 121.38310536362356,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "steel",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.005048245740044397,
+        "demand": 0.00008077193184071035,
+        "capacity": 0.016,
+        "unit": "m",
+        "expression": "member deformation / (L / limit)",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "story-1",
+        "category": "serviceability",
+        "checkId": "story-drift",
+        "status": "OK",
+        "ratio": 0.0019857831715081316,
+        "demand": 0.000009928915857540659,
+        "capacity": 0.005,
+        "expression": "story drift / drift limit",
+        "unit": "-"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10710755954063035,
+        "demand": 26.776889885157587,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10710755954063035,
+        "demand": 26.776889885157587,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10710755954063035,
+        "demand": 26.776889885157587,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10710755954063039,
+        "demand": 26.776889885157598,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10710755954063045,
+        "demand": 26.776889885157612,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 2.8459332072884003e-19,
+        "demand": 7.114833018221001e-17,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10710755954063045,
+        "demand": 26.776889885157612,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 4.046180945399147e-19,
+        "demand": 1.0115452363497867e-16,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e1",
+        "category": "foundation",
+        "checkId": "required-bearing-area",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0.1599999999999999,
+        "capacity": null,
+        "expression": "required area = vertical reaction / assumed allowable bearing; actual footing area not checked",
+        "unit": "m2"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e1",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "WARN",
+        "ratio": 0.8816417609465497,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e3",
+        "category": "foundation",
+        "checkId": "required-bearing-area",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0.1599999999999999,
+        "capacity": null,
+        "expression": "required area = vertical reaction / assumed allowable bearing; actual footing area not checked",
+        "unit": "m2"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e3",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "WARN",
+        "ratio": 0.8816417609465497,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e5",
+        "category": "foundation",
+        "checkId": "required-bearing-area",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0.1599999999999999,
+        "capacity": null,
+        "expression": "required area = vertical reaction / assumed allowable bearing; actual footing area not checked",
+        "unit": "m2"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e5",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "WARN",
+        "ratio": 0.8816417609465496,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e7",
+        "category": "foundation",
+        "checkId": "required-bearing-area",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0.15999999999999998,
+        "capacity": null,
+        "expression": "required area = vertical reaction / assumed allowable bearing; actual footing area not checked",
+        "unit": "m2"
+      },
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e7",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "WARN",
+        "ratio": 0.8816417609465494,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      }
+    ],
+    "sources": [
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "caseId": "M3-BROWSER",
+        "method": "off",
+        "maxDisplacement": 0.003381067136811065,
+        "maxUtilization": 0.9103732902271767,
+        "governing": {
+          "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+          "comboId": "SLS1",
+          "memberId": "e13",
+          "category": "steel",
+          "checkId": "steel-slenderness",
+          "status": "WARN",
+          "ratio": 0.9103732902271767,
+          "demand": 182.07465804543534,
+          "capacity": 200,
+          "unit": "-",
+          "expression": "max(KL/ry, KL/rz) / limit",
+          "x": 0,
+          "method": "allowable_stress_preliminary"
+        },
+        "qualification": "candidate"
+      }
+    ],
+    "demandPackages": [
+      {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "package": {
+          "version": "p2-design-demand-package",
+          "source": {
+            "resultPostprocessing": "p2-m6-result-postprocessing",
+            "activeResultId": "ENVELOPE"
+          },
+          "members": {
+            "e9": {
+              "traceId": "MEM-DEMAND-e9",
+              "memberId": "e9",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -23.999999999999986
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -23.999999999999986
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.52173101822273
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -3.918469099206003e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -5.955025628883505e-17
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 3,
+                  "value": 19.141298263667046
+                }
+              }
+            },
+            "e10": {
+              "traceId": "MEM-DEMAND-e10",
+              "memberId": "e10",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -23.999999999999986
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -23.999999999999986
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 9.52173101822273
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 4.0839415028551966e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 6.209333781423428e-17
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 3,
+                  "value": -19.141298263667046
+                }
+              }
+            },
+            "e11": {
+              "traceId": "MEM-DEMAND-e11",
+              "memberId": "e11",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -23.999999999999986
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -23.999999999999986
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 9.521731018222729
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 4.017105731247108e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 6.142616424385353e-17
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 3,
+                  "value": -19.141298263667043
+                }
+              }
+            },
+            "e12": {
+              "traceId": "MEM-DEMAND-e12",
+              "memberId": "e12",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -23.999999999999996
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -23.999999999999996
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.521731018222733
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -4.354689590774206e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 3,
+                  "value": 6.673010931552054e-17
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 3,
+                  "value": 19.14129826366705
+                }
+              }
+            },
+            "e13": {
+              "traceId": "MEM-DEMAND-e13",
+              "memberId": "e13",
+              "stationCount": 21,
+              "governing": {
+                "key": "Vy",
+                "comboId": "SLS1",
+                "x": 6,
+                "value": 24.00000000000001
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.521731018222729
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": 24.00000000000001
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 4.1135220306888973e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 1.2430706913598114e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": -19.141298263667096
+                }
+              }
+            },
+            "e14": {
+              "traceId": "MEM-DEMAND-e14",
+              "memberId": "e14",
+              "stationCount": 21,
+              "governing": {
+                "key": "My",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -1.2350747712853597e-16
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 1.226744642392802e-18
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 1.8674688551742763e-17
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -6.097190440982525e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -1.2350747712853597e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 8.041073596691485e-17
+                }
+              }
+            },
+            "e15": {
+              "traceId": "MEM-DEMAND-e15",
+              "memberId": "e15",
+              "stationCount": 21,
+              "governing": {
+                "key": "Vy",
+                "comboId": "SLS1",
+                "x": 6,
+                "value": 24.00000000000001
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.52173101822273
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": 24.00000000000001
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 4.1397801954864136e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 1.2536101959239204e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": -19.141298263667096
+                }
+              }
+            },
+            "e16": {
+              "traceId": "MEM-DEMAND-e16",
+              "memberId": "e16",
+              "stationCount": 21,
+              "governing": {
+                "key": "Mz",
+                "comboId": "SLS1",
+                "x": 4,
+                "value": -1.439450274430559e-16
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 1.9505293148307837e-18
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 6.785717309896041e-17
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -6.156659346971835e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -1.2430039587506013e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 4,
+                  "value": -1.439450274430559e-16
+                }
+              }
+            }
+          },
+          "foundations": {
+            "e1": {
+              "traceId": "FND-DEMAND-e1",
+              "nodeId": "e1",
+              "reactions": {
+                "rx": {
+                  "min": 9.52173101822273,
+                  "max": 9.52173101822273,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "ry": {
+                  "min": 3.918469099206003e-17,
+                  "max": 3.918469099206003e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rz": {
+                  "min": 23.999999999999986,
+                  "max": 23.999999999999986,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmx": {
+                  "min": -5.955025628883505e-17,
+                  "max": -5.955025628883505e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmy": {
+                  "min": 9.423894791001144,
+                  "max": 9.423894791001144,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmz": {
+                  "min": -3.580363634140895e-19,
+                  "max": -3.580363634140895e-19,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "SLS1"
+            },
+            "e3": {
+              "traceId": "FND-DEMAND-e3",
+              "nodeId": "e3",
+              "reactions": {
+                "rx": {
+                  "min": -9.52173101822273,
+                  "max": -9.52173101822273,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "ry": {
+                  "min": -4.0839415028551966e-17,
+                  "max": -4.0839415028551966e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rz": {
+                  "min": 23.999999999999986,
+                  "max": 23.999999999999986,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmx": {
+                  "min": 6.209333781423428e-17,
+                  "max": 6.209333781423428e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmy": {
+                  "min": -9.423894791001148,
+                  "max": -9.423894791001148,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmz": {
+                  "min": -3.457279086207646e-19,
+                  "max": -3.457279086207646e-19,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "SLS1"
+            },
+            "e5": {
+              "traceId": "FND-DEMAND-e5",
+              "nodeId": "e5",
+              "reactions": {
+                "rx": {
+                  "min": -9.521731018222729,
+                  "max": -9.521731018222729,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "ry": {
+                  "min": -4.017105731247108e-17,
+                  "max": -4.017105731247108e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rz": {
+                  "min": 23.999999999999986,
+                  "max": 23.999999999999986,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmx": {
+                  "min": 6.142616424385353e-17,
+                  "max": 6.142616424385353e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmy": {
+                  "min": -9.423894791001143,
+                  "max": -9.423894791001143,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmz": {
+                  "min": -3.616453847877446e-19,
+                  "max": -3.616453847877446e-19,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "SLS1"
+            },
+            "e7": {
+              "traceId": "FND-DEMAND-e7",
+              "nodeId": "e7",
+              "reactions": {
+                "rx": {
+                  "min": 9.521731018222733,
+                  "max": 9.521731018222733,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "ry": {
+                  "min": 4.354689590774206e-17,
+                  "max": 4.354689590774206e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rz": {
+                  "min": 23.999999999999996,
+                  "max": 23.999999999999996,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmx": {
+                  "min": -6.391057840770564e-17,
+                  "max": -6.391057840770564e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmy": {
+                  "min": 9.42389479100115,
+                  "max": 9.42389479100115,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmz": {
+                  "min": -3.4570197475383707e-19,
+                  "max": -3.4570197475383707e-19,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "SLS1"
+            }
+          },
+          "summary": {
+            "memberCount": 8,
+            "foundationCount": 4,
+            "upliftNodeCount": 0,
+            "governingMemberDemand": {
+              "traceId": "MEM-DEMAND-e13",
+              "memberId": "e13",
+              "stationCount": 21,
+              "governing": {
+                "key": "Vy",
+                "comboId": "SLS1",
+                "x": 6,
+                "value": 24.00000000000001
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.521731018222729
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": 24.00000000000001
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 4.1135220306888973e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 1.2430706913598114e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": -19.141298263667096
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "summary": {
+      "status": "NOT_CHECKED",
+      "counts": {
+        "OK": 79,
+        "WARN": 8,
+        "NG": 0,
+        "NOT_CHECKED": 4
+      },
+      "maxUtilization": 0.9103732902271767,
+      "governing": {
+        "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "WARN",
+        "ratio": 0.9103732902271767,
+        "demand": 182.07465804543534,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      "checkCount": 91
+    },
+    "ruleSources": [
+      {
+        "module": "src/design/steel.js",
+        "method": "steel_allowable_preliminary + elastic LTB",
+        "status": "preliminary"
+      },
+      {
+        "module": "src/design/concrete.js",
+        "method": "rc_preliminary_strength",
+        "status": "preliminary"
+      },
+      {
+        "module": "src/design/serviceability.js",
+        "method": "story drift H/200 default",
+        "status": "project criterion required"
+      },
+      {
+        "module": "src/design/connectionFoundation.js",
+        "method": "force / bearing / sliding screening",
+        "status": "assumed capacities; preliminary"
+      }
+    ],
+    "limitations": [
+      "Final design transfer is blocked; computed OK is not engineering approval.",
+      "Only explicitly bound completed first-order/Direct P–Delta combinations are mapped. Legacy P–Delta is comparison-only and blocked. Modal, RSA, buckling, THA and nonlinear results are not mapped to member design demand.",
+      "Steel checks are preliminary allowable-stress screens, not a complete strength-code implementation. RC uses simplified section/rebar assumptions.",
+      "LTB, missing members, warnings and unchecked items retain their own status.",
+      "Connection bolt/weld/anchorage and foundation settlement, punching, reinforcement and soil qualification are NOT_CHECKED.",
+      "Selected combinations only; required code combination coverage is not certified."
+    ]
+  },
+  "reportSnapshotHash": "d432375b22cd578f5ba487904c94899760720736119be26b1e4ce084340c8d8b",
+  "verdict": {
+    "version": "p11-report-verdict-v1",
+    "overall": "REVIEW",
+    "axes": {
+      "operational": {
+        "status": "PASS"
+      },
+      "numericalIntegrity": {
+        "status": "REVIEW"
+      },
+      "engineeringValidation": {
+        "status": "NOT_VERIFIED"
+      },
+      "issueSuitability": {
+        "status": "REVIEW"
+      }
+    },
+    "reasonCodes": [
+      "AUDIT_FAILED",
+      "ENGINEERING_VALIDATION_INCOMPLETE",
+      "INDEPENDENT_REFERENCE_NOT_AVAILABLE",
+      "ISSUE_SCOPE_LIMITED",
+      "OPERATIONAL_CHECKS_PASSED"
+    ]
+  }
+}

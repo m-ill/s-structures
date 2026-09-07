@@ -6,7 +6,7 @@
 
 문서 갱신: **2026-09-06** · 공개 상태: **WebMCP 개발 프리뷰**
 
-로컬 후속 개발: **Phase 19 M0~M2**의 공통 결과 계약과 탄성설계 입력 변경 서비스를 구현했습니다. 탄성해석 탭의 ‘설계 입력 변경’과 Agent가 같은 미리보기·원자적 적용·실행취소 경로를 사용합니다. 공개 링크의 버전과는 다르며, 신규 WebMCP 설계 도구는 M4 범위입니다. [실제 진행 상태](docs/phase19/IMPLEMENTATION_STATUS.md) · [M2 입력 API](docs/phase19/M2_CONTRACT.md)
+로컬 후속 개발: **Phase 19 M0~M3**의 입력 변경·탄성해석·강재/RC 설계 검토·보고서 서비스를 구현했습니다. 탄성해석 탭의 ‘설계 입력 변경 → 탄성 설계 검토’와 Agent가 공통 서비스를 사용하며, 고정 커밋의 관련 회귀는 **34/34 PASS**입니다. HTML·JSON·CSV를 저장할 수 있고 자동 PDF 실환경 검증은 남아 있습니다. 공개 링크의 버전과는 다르며, 신규 WebMCP 설계 도구는 M4 범위입니다. [진행 상태](docs/phase19/IMPLEMENTATION_STATUS.md) · [M3 사용/API](docs/phase19/M3_CONTRACT.md) · [검증 증거](verification/evidence/phase19/m3/README.md)
 
 ## 주요 기능
 

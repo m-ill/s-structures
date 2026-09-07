@@ -1,30 +1,34 @@
 # Phase 19 실제 진행 상태
 
 ```yaml
-version: p19-status-v3
+version: p19-status-v4
 updated: 2026-09-07
-status: m0-m2-complete
+status: m0-m3-complete
 development_baseline: 7bb55d7ec6bd6b155361b26b7830c70b45043acb
 public_baseline: e18d5b432c780523496f8aad489b502934ae0ebd
-implemented_workpackages: [M0, M1, M2]
+implemented_workpackages: [M0, M1, M2, M3]
 m0_m1_latest_distinct_tests: 59
 m2_required_tests: 27
 m2_passed_tests: 27
 m2_failed_tests: 0
 m2_source_commit: a9ec274ecdf49690e400256325a410beee520267
-validation_strategy: m2-full-targeted-suite-on-one-commit
+m3_required_tests: 34
+m3_passed_tests: 34
+m3_failed_tests: 0
+m3_source_commit: 7683047ac3552672bd0c2dad8ae0919c6ae989e5
+validation_strategy: m3-full-targeted-suite-on-one-commit
 release_status: not-qualified
 github_publication: not-performed
 ```
 
-M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구현했다. M2 고정 커밋의 별도 checkout에서 관련 회귀 27개가 모두 PASS다. M0~M1의 과거 59개 최신 판정과 이번 27개는 범위가 겹치므로 합산하지 않는다. 해석→설계검토 서비스는 M3, 신규 WebMCP 도구 등록은 M4, 비선형 추가 통합·자격 검증은 M5 이후 범위다.
+M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구현했다. M2 고정 커밋의 별도 checkout에서 관련 회귀 27개가 모두 PASS다. M0~M1의 과거 59개 최신 판정과 이번 27개는 범위가 겹치므로 합산하지 않는다. M3 해석→설계검토→보고서 서비스도 구현했고 고정 커밋에서 관련 회귀 34/34 PASS를 확인했다. 신규 WebMCP 도구 등록은 M4, 비선형 추가 통합·자격 검증은 M5 이후 범위다.
 
 | 작업 | 상태 | 근거 또는 남은 작업 |
 |---|---|---|
 | M0 기준선·범위 | 완료 | 소스 ZIP/SHA, API 대응표, High 41건, 기존 qualification·성능·미확정 담당 목록 |
 | M1 공통 계약 | 완료 | 버전 입력 식별, 불변 기록, 명시적 준비, stale 및 조합·단위·변조 차단 |
 | M2 설계 입력 | 완료 | 11개 타입, UI·Agent 공통 preview/apply, 원자성·단일 Undo·결과 무효화, 강재·RC 폼 동등성, 회귀 27/27 |
-| M3 탄성설계 서비스 | 계획 | 해석 run→설계 수요→강재/RC 검토→snapshot 보고서 |
+| M3 탄성설계 서비스 | 완료 | 실제 탄성 제품 실행→강재/RC 검토→불변 보고서, 회귀 34/34; 자동 PDF 실환경 검증은 별도 |
 | M4 WebMCP·화면 | 계획 | 신규 typed 도구, 실제 브라우저 전체 워크플로 |
 | M5 비선형 기반 | 계획 | 초기상태·checkpoint·PMM 조립·엔진 routing |
 | M6 Pushover/fiber/PMM | 계획 | 전역 경로·반전·rollback·독립 비교 |
@@ -36,7 +40,7 @@ M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구
 ## 구현 범위
 
 - `p19-input-v1`: 모델·케이스·설정·설계기준·재료·단면·규칙판·build 식별을 분리하고 결속한다. 구버전 해시는 보존한다.
-- 해석 run과 설계 run을 별도로 기록한다. 완료·수치 자격·설계 검토·전달 허가·stale을 구분한다. 설계 계산 자체는 M3에서 연결한다.
+- 해석 run과 설계 run을 별도로 기록한다. 완료·수치 자격·설계 검토·전달 허가·stale을 구분한다. 설계 계산은 M3 공통 서비스에서 명시적으로 실행한다.
 - 탄성 제품 작업은 큐 등록 시 입력을 복제한다. 실행 중 수정된 모델에 이전 결과를 새 결과로 결속하지 않는다.
 - 23개 계산형 보고서·설계·trace·diagnostic getter는 준비된 view만 읽는다. `prepareResultView`에서 명시적으로 준비하며 UI 보고서 버튼과 기존 시험을 이 계약에 맞췄다.
 - WebMCP v1 도구 9개와 기존 modelHash 계약을 유지하고 context에 새 입력 식별을 추가했다. 설계 입력·실행 도구는 아직 추가하지 않았다.
@@ -53,6 +57,16 @@ M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구
 - 검증 소스 `a9ec274`에서 27개 모두 PASS. 신규 서비스 시험 11개 시나리오와 강재·RC 각 폼 이벤트→Agent canonical model 일치→Undo를 포함한다. 입력 경로의 숨은 solver 실행 0회를 확인했다.
 - 같은 런타임의 실제 Codex 브라우저에서 하중 케이스 생성→미리보기→적용→실행취소, 결과 무효 표시, 기존 native WebMCP context의 입력 해시 변경·job 0개·console error 0건을 확인했다. 실제 브라우저 전체 강재·RC 설계나 지원 브라우저 matrix 검증은 아니다.
 - [M2 계약](M2_CONTRACT.md), [고정 시험 목록](../../verification/specs/phase19/m2-tests.json), [증거와 재현](../../verification/evidence/phase19/m2/README.md). 원본 소스 ZIP·checkout·로그는 `output/phase19/m2-r1-20260907/`에 보존한다. 후속 문서·taxonomy 변경은 런타임을 바꾸지 않는다.
+
+## M3 구현과 검증
+
+- 정적·Direct P–Delta·모달·RSA·좌굴·선형 THA를 기존 제품 실행기로 순차 실행한다. 선행 조합 실패·취소·미발행 기록을 과거 성공으로 대체하지 않는다.
+- 강재·RC 실제 정적/Direct 실행 기록에서 조합별 검토를 만들고 UI bridge/Agent 검토 행의 동등성을 확인했다. 조회와 보고서 생성은 추가 해석을 하지 않는다.
+- 강재·RC·service 조합 층간변위·접합/기초 예비 검토를 포함한다. 필요 기초면적은 안전 판정이 아니므로 NOT_CHECKED, RC 입력 경고는 WARN을 유지한다. Legacy P–Delta 비교 결과와 비정적 설계수요 mapping은 차단한다.
+- 같은 불변 snapshot으로 한·영 HTML, JSON, CSV 및 P11 PDF용 HTML 부록을 만든다. 실제 브라우저 다운로드 3종의 수치와 source ID를 대조했다. 예제 91행 중 WARN 8 / NOT_CHECKED 4를 그대로 표시한다.
+- 자동 PDF는 기존 P11 workflow에 연결했지만 기본 브라우저의 transport·figure·qualification이 미준비여서 차단된다. 실제 PDF 생성·인쇄·레이아웃 자격 검증은 수행하지 않았다.
+- 소스 `7683047`의 별도 checkout에서 관련 시험 34/34 PASS. [M3 계약](M3_CONTRACT.md), [고정 목록](../../verification/specs/phase19/m3-tests.json), [검증 증거](../../verification/evidence/phase19/m3/README.md). 이전 시험 개수와 합산하지 않는다.
+- GitHub push·공개 재배포는 수행하지 않았다. 신규 WebMCP 도구·사용자 작업 화면의 후속 통합은 M4다.
 
 ## 검증 추적
 

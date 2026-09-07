@@ -1,6 +1,6 @@
 # Phase 19 — 탄성설계 WebMCP와 비선형해석 제품화
 
-작성일: 2026-09-07 · 계획 버전: v1 · M0~M2 구현 및 검증 상태는 [진행 상태](IMPLEMENTATION_STATUS.md)에서 관리한다. M2 입력 방법은 [설계 입력 계약](M2_CONTRACT.md)을 참고한다.
+작성일: 2026-09-07 · 계획 버전: v1 · M0~M3 구현 및 검증 상태는 [진행 상태](IMPLEMENTATION_STATUS.md)에서 관리한다. M2 입력은 [설계 입력 계약](M2_CONTRACT.md), M3 실행·검토·보고서는 [M3 계약](M3_CONTRACT.md)을 참고한다.
 
 ## 목표
 

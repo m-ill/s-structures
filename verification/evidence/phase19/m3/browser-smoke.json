@@ -1,0 +1,63 @@
+{
+  "version": "p19-m3-browser-smoke-v1",
+  "sourceCommit": "7683047ac3552672bd0c2dad8ae0919c6ae989e5",
+  "browser": "Codex in-app browser",
+  "url": "http://127.0.0.1:5198/",
+  "caseId": "M3-BROWSER",
+  "combinationId": "SLS1",
+  "model": "application default synthetic steel frame",
+  "actions": [
+    "M2 typed UI create static case, preview, apply",
+    "M3 select cases and execute actual product analysis",
+    "select completed record and run review",
+    "create report and inspect UI",
+    "click HTML/JSON/CSV save; inspect downloaded files",
+    "click automatic PDF; blocked as expected",
+    "UI screenshot visually inspected"
+  ],
+  "summary": {
+    "status": "NOT_CHECKED",
+    "counts": {
+      "OK": 79,
+      "WARN": 8,
+      "NG": 0,
+      "NOT_CHECKED": 4
+    },
+    "maxUtilization": 0.9103732902271767,
+    "governing": {
+      "analysisRunId": "M3-BROWSER:2026-09-07T04:24:18.728Z:1",
+      "comboId": "SLS1",
+      "memberId": "e13",
+      "category": "steel",
+      "checkId": "steel-slenderness",
+      "status": "WARN",
+      "ratio": 0.9103732902271767,
+      "demand": 182.07465804543534,
+      "capacity": 200,
+      "unit": "-",
+      "expression": "max(KL/ry, KL/rz) / limit",
+      "x": 0,
+      "method": "allowable_stress_preliminary"
+    },
+    "checkCount": 91
+  },
+  "reportSnapshotHash": "d432375b22cd578f5ba487904c94899760720736119be26b1e4ce084340c8d8b",
+  "downloadedFiles": [
+    "browser-review.html",
+    "browser-review.json",
+    "browser-review.csv"
+  ],
+  "pdfStatus": "PDF_EXPORT_BLOCKED",
+  "pdfReasons": [
+    "P11_REPORT_EXPORT_ADAPTER_UNAVAILABLE",
+    "P11_REPORT_EXPORT_FIGURES_INCOMPLETE",
+    "P11_REPORT_EXPORT_QUALIFICATION_BLOCKED"
+  ],
+  "consoleErrorsObserved": 0,
+  "limitations": [
+    "Single browser and default steel model; RC parity covered by Node tests, not browser matrix.",
+    "No actual PDF or print output generated or visually qualified.",
+    "Downloaded HTML body not visually inspected; numerical contents verified against JSON and CSV.",
+    "M4 design WebMCP tools are not registered."
+  ]
+}
