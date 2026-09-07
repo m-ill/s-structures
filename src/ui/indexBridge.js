@@ -2,6 +2,8 @@ import { createWorkflowInputIdentity } from '../core/workflowIdentity.js';
 import { stableHash } from '../core/stableHash.js';
 import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
 import { createWorkflowResultStore } from '../compute/product/workflowResults.js';
+import { createElasticReviewService } from '../compute/product/elasticReviewService.js';
+import { installIndexDesignReview } from './indexDesignReview.js';
 import { installResultViewCache, COMPUTED_RESULT_VIEWS } from './resultViewCache.js';
 import { createDesignInputService } from '../modeling/designInputService.js';
 import { installIndexDesignInput } from './indexDesignInput.js';
@@ -790,6 +792,18 @@ export function installIndexEngineBridge(target = globalThis) {
     transport: target.sStructuresReportExport,
     openArtifact: target.SStructuresOpenReportArtifact,
   });
+  const elasticReview = createElasticReviewService({ bridge, store: workflowResults,
+    reportExportWorkflow: target.SStructuresReportExportWorkflow,
+    getPdfContext: () => ({ figureManifest: target.SStructuresFigureManifest || null,
+      qualification: target.SStructuresReportQualification || { status: 'BLOCKED' } }),
+  });
+  Object.assign(bridge, {
+    planElasticWorkflow: elasticReview.planWorkflow, runElasticWorkflow: elasticReview.runWorkflow,
+    planDesignReview: elasticReview.planReview, startDesignReview: elasticReview.startReview,
+    getDesignReview: elasticReview.getReview, createDesignReviewReport: elasticReview.createReport,
+    getDesignReviewReport: elasticReview.getReport, getDesignReviewExportCapability: elasticReview.getExportCapability,
+    exportDesignReviewPdf: elasticReview.exportPdf,
+  });
   target.SStructuresAgent = createIndexAgentApi(target, bridge, {
     bridgeVersion: INDEX_BRIDGE_VERSION,
     analyzeForIndex,
@@ -809,6 +823,7 @@ export function installIndexEngineBridge(target = globalThis) {
     bridge.analysisCenter = installIndexAnalysisCenter(target, { bridge });
     bridge.elasticSetupWorkflow = installElasticSetupWorkflow(target, { bridge });
     bridge.designInputPanel = installIndexDesignInput(target, bridge);
+    bridge.designReviewPanel = installIndexDesignReview(target, bridge);
     bridge.floatingPanels = installIndexFloatingPanels(target);
     bridge.elasticResultPopup = installElasticResultPopup(target, { bridge });
     bridge.nonlinearResultPopup = installNonlinearResultPopup(target, { bridge });

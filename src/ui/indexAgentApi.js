@@ -182,6 +182,15 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
   };
   const api = {
     version: bridgeVersion,
+    planElasticWorkflow(input) { return bridge.planElasticWorkflow(input); },
+    runElasticWorkflow(input) { return bridge.runElasticWorkflow(input); },
+    planDesignReview(input) { return bridge.planDesignReview(input); },
+    startDesignReview(input) { return bridge.startDesignReview(input); },
+    getDesignReview(id) { return bridge.getDesignReview(id); },
+    createDesignReviewReport(id) { return bridge.createDesignReviewReport(id); },
+    getDesignReviewReport(id) { return bridge.getDesignReviewReport(id); },
+    getDesignReviewExportCapability(id) { return bridge.getDesignReviewExportCapability(id); },
+    exportDesignReviewPdf(id) { return bridge.exportDesignReviewPdf(id); },
     getDesignInputContext() { return bridge?.getDesignInputContext?.() || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
     previewDesignInputChanges(request) { return bridge?.previewDesignInputChanges?.(request) || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
     applyDesignInputChanges(preview) { return bridge?.applyDesignInputChanges?.(preview) || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },

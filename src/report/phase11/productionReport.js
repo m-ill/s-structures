@@ -75,6 +75,19 @@ export function renderProductionReport(snapshot, locale, options = {}) {
   for (const [index, rows] of chunks(snapshot.analysis.combinations, 18).entries()) {
     pages.push(pageSpec(`appendix-${index + 1}`, t('section.appendix'), combinationTable(rows)));
   }
+  if (snapshot.designReview) {
+    const review = snapshot.designReview;
+    for (const [index, rows] of chunks(review.checks, 6).entries()) {
+      const e = value => escapeHtml(String(value ?? '—'));
+      const heading = locale === 'ko-KR' ? '탄성 설계 검토 · 예비' : 'Elastic design review · preliminary';
+      const content = `<p>${e(review.designRunId)} · ${e(review.summary.status)} · max ${e(review.summary.maxUtilization)}</p>
+        <p>${e(review.units.force)} / ${e(review.units.moment)} · ${e(review.axes)} · ${e(review.signConvention)}</p>
+        <table><thead><tr><th>Member / Check</th><th>Combination / Run</th><th>Status / Ratio</th><th>Demand / Capacity / Expression</th></tr></thead><tbody>${rows.map(row => `<tr><td>${e(row.memberId)}<br>${e(row.category)} / ${e(row.checkId)}</td><td>${e(row.comboId)}<br>${e(row.analysisRunId)}</td><td>${e(row.status)}<br>${e(row.ratio)}</td><td>${e(row.demand)} / ${e(row.capacity)} ${e(row.unit)}<br>${e(row.expression)}</td></tr>`).join('')}</tbody></table>`;
+      pages.push(pageSpec(`design-review-${index + 1}`, heading, content));
+    }
+    pages.push(pageSpec('design-review-scope', locale === 'ko-KR' ? '설계 검토 범위' : 'Design review scope',
+      `<ul>${review.limitations.map(value=>`<li>${escapeHtml(value)}</li>`).join('')}</ul><ul>${review.ruleSources.map(row=>`<li>${escapeHtml(row.module)} · ${escapeHtml(row.method)} · ${escapeHtml(row.status)}</li>`).join('')}</ul>`));
+  }
   pages[1].content = tocContent(pages);
   const total = pages.length;
   const pageHtml = pages.map((page, index) => renderPage(page, index + 1, total)).join('');
