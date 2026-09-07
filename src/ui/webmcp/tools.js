@@ -93,7 +93,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
         capabilities: [...KINDS.map((kind) => {
           const result = agent.getAnalysisCapabilities({ kind });
           return { kind, targets: result.targets };
-        }), ...['p8-production-pushover', 'p8-production-mdof-nlth'].map(engineId => ({engineId, qualification:'candidate', designBlocked:true, targets:['cpu'], settings:'case-specific preflight required'}))],
+        }), ...['p8-production-mdof-pushover', 'p8-production-mdof-nlth'].map(engineId => ({engineId, qualification:'candidate', designBlocked:true, targets:['cpu'], settings:'case-specific preflight required'}))],
         jobs: [...jobs.keys()],
         limits: { maxSessionJobs: 128, maxConcurrentJobs: 1, editing: true, externalQualification: 'NOT_CLAIMED' },
       };
