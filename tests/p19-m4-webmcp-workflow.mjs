@@ -12,9 +12,12 @@ for(const rc of [false,true]) {
  const bridge=installIndexEngineBridge(target),ui=installIndexEngineBridge(uiTarget),tools=createWebMcpTools({agent:target.SStructuresAgent,bridge});
  const call=(name,args={})=>tools.find(t=>t.name===name).execute(args);
  const ctx=await call('get_workflow_context');assert.equal(bridge.listAnalysisRuns().length,0);
+ const otherTools=createWebMcpTools({agent:target.SStructuresAgent,bridge});
+ const otherCall=(name,args)=>otherTools.find(t=>t.name===name).execute(args);
  const commands=[{type:'member-assignment',memberIds:['M1'],matId:rc?'concrete':'steel',secId:rc?'rc3050':'h300'}];
  const p=await call('preview_design_changes',{inputHash:ctx.inputIdentity.inputHash,requestId:'assignment',commands});
- good(p);assert.equal(stableHash(model),stableHash(uiModel));
+ good(p);const otherPreview=await otherCall('preview_design_changes',{inputHash:ctx.inputIdentity.inputHash,requestId:'assignment',commands});assert.notEqual(otherPreview.handle,p.handle);await assert.rejects(otherCall('apply_design_changes',{handle:p.handle,requestId:'cross-session'}),{code:'HANDLE_NOT_FOUND'});
+ assert.equal(stableHash(model),stableHash(uiModel));
  const receipt=good(await call('apply_design_changes',{handle:p.handle,requestId:'apply'}));
  assert.deepEqual(await call('apply_design_changes',{handle:p.handle,requestId:'apply'}),receipt);
  good(ui.applyDesignInputChanges(good(ui.previewDesignInputChanges({requestId:'assignment',units:DESIGN_INPUT_UNITS,commands}))));
