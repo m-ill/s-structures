@@ -2,6 +2,7 @@
   "version": "p19-m5-m10-tests-v1",
   "scope": "Phase19 focused code review and jet validation optimization regression",
   "tests": [
+    "tests/p19-review-capacity-pagination.mjs",
     "tests/p19-review-jet-contract.mjs",
     "tests/p19-review-session-disposal.mjs",
     "tests/p19-m5-nonlinear-contract.mjs",

@@ -164,7 +164,8 @@ function overviewSlice(wrapper, result, kind) {
 
 function capacitySlice(result, query) {
   const rows = result.capacityCurve || result.steps || result.curve || [];
-  const points = rows.map((row, index) => ({
+  const pagination = query.pageSize == null ? null : paginateNonlinearHistory(rows, query);
+  const projectPoint = (row, index) => ({
     index,
     step: row.step ?? index,
     controlDisplacement: finite(row.controlDisplacement ?? row.displacement, 0),
@@ -174,14 +175,17 @@ function capacitySlice(result, query) {
     yieldedHingeCount: finite(row.yieldedHingeCount ?? row.yielded, 0),
     cappingHingeCount: finite(row.cappingHingeCount, 0),
     failedHingeCount: finite(row.failedHingeCount, 0),
-  }));
-  const selectedIndex = clampIndex(query.step ?? query.index, points.length);
+  });
+  const points = (pagination?.rows || rows).map((row,index)=>projectPoint(row,index+(pagination?.offset||0)));
+  const selectedIndex = clampIndex(query.step ?? query.index, rows.length);
   return {
-    available: points.length > 0,
-    pointCount: points.length,
+    available: rows.length > 0,
+    pointCount: rows.length,
     selectedIndex,
-    selected: points[selectedIndex] || null,
+    selected: rows[selectedIndex] ? projectPoint(rows[selectedIndex],selectedIndex) : null,
     points,
+    ...(pagination ? {pagination: {page:pagination.page,pageSize:pagination.pageSize,pageCount:pagination.pageCount,
+      totalRows:pagination.totalRows,offset:pagination.offset,hasPrevious:pagination.hasPrevious,hasNext:pagination.hasNext}} : {}),
   };
 }
 

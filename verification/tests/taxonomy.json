@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 441,
+  "plannedCount": 442,
   "categoryCounts": {
     "e2e": 5,
     "integration": 35,
     "qualification": 224,
-    "unit": 177
+    "unit": 178
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 128
+    "release-long": 129
   },
   "records": [
     {
@@ -1214,6 +1214,12 @@
     },
     {
       "file": "tests/p19-m8-nonlinear-lifecycle.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-review-capacity-pagination.mjs",
       "taxonomy": "unit",
       "execution": "release-long",
       "owner": "phase19"
