@@ -4,9 +4,9 @@
 
 [웹에서 실행](https://m-ill.github.io/s-structures/) · [다운로드·검증자료](https://github.com/m-ill/s-structures/releases/tag/webmcp-preview-20260906) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md) · [WebMCP 안내](docs/WEBMCP.md) · [CI 결과](https://github.com/m-ill/s-structures/actions/workflows/verify.yml)
 
-문서 갱신: **2026-09-06** · 공개 상태: **WebMCP 개발 프리뷰**
+문서 갱신: **2026-09-07** · 공개 상태: **WebMCP 개발 프리뷰**
 
-로컬 후속 개발: **Phase 19 M0~M3**의 입력 변경·탄성해석·강재/RC 설계 검토·보고서 서비스를 구현했습니다. 탄성해석 탭의 ‘설계 입력 변경 → 탄성 설계 검토’와 Agent가 공통 서비스를 사용하며, 고정 커밋의 관련 회귀는 **34/34 PASS**입니다. HTML·JSON·CSV를 저장할 수 있고 자동 PDF 실환경 검증은 남아 있습니다. 공개 링크의 버전과는 다르며, 신규 WebMCP 설계 도구는 M4 범위입니다. [진행 상태](docs/phase19/IMPLEMENTATION_STATUS.md) · [M3 사용/API](docs/phase19/M3_CONTRACT.md) · [검증 증거](verification/evidence/phase19/m3/README.md)
+로컬 후속 개발: **Phase 19 M0~M4**를 구현했습니다. WebMCP **27개 도구**로 탄성설계 입력 변경 → 해석 → 강재·RC 검토 → 보고서를 UI와 함께 처리하며, 직접 모델러와 app 호스트를 지원합니다. 최종 고정 커밋의 관련 회귀는 **39/39 PASS**입니다. 자동 PDF 실환경 검증과 비선형 생산 자격은 남아 있습니다. 아래 공개 링크에는 아직 이 변경을 배포하지 않았습니다. [진행 상태](docs/phase19/IMPLEMENTATION_STATUS.md) · [M4 도구/사용법](docs/phase19/M4_CONTRACT.md) · [검증 증거](verification/evidence/phase19/m4/README.md)
 
 ## 주요 기능
 
@@ -17,7 +17,7 @@
 | 확장 엔진 | 막·판·셸, 탄성지반, 강체격막, 탄성링크, 비선형 힌지·pushover 등. 기능별 입력·실행·검증 상태를 별도로 표시 |
 | 결과 검토 | 변형도, 부재력·반력, 하중조합 포락, 모드·시간 스텝, 평형·오차, 결과별 설계 전달 가능 상태 |
 | 검토·보고서 | 강재·RC 검토, 지배조합·계산 근거 추적, 보고서·PDF, JSON 모델 저장, 도면·메모 작업 |
-| 에이전트 연동 | WebMCP 도구 9개로 모델 조회·점검, 기존 케이스 검증·계획·실행, 결과 조회 |
+| 에이전트 연동 | 공개 v1은 조회·해석 9개, 로컬 M4는 입력·설계·보고서·호스트 연결을 포함한 27개 도구 |
 
 엔진 구현 여부와 특정 모델의 검증 완료 여부는 구분합니다. 실행 가능 경로와 차단 이유는 케이스별 capability·validation 결과에서 확인합니다. CPU가 기본이며 GPU의 미구현·미검증 조건을 자동으로 우회하지 않습니다.
 
@@ -65,7 +65,7 @@ SB1처럼 수치 정밀도 수준에서 일치하는 항목도 있지만, **21�
 
 2026-09-06 공개 병합 커밋은 [`fab4783`](https://github.com/m-ill/s-structures/commit/fab4783de045532beb35d46a648f1742e337c9c0)입니다. [해당 CI 실행](https://github.com/m-ill/s-structures/actions/runs/34008817393)과 [Release 증거](https://github.com/m-ill/s-structures/releases/tag/webmcp-preview-20260906)에서 확인할 수 있습니다. 테스트 실행 단위 수를 공인 벤치마크 합격 수로 계산하지 않으며, 최종 개발 커밋에서 `npm test` 전체 단일 실행 PASS를 주장하지 않습니다.
 
-## WebMCP: 모델 조회부터 해석 결과까지
+## 공개 WebMCP v1: 모델 조회부터 해석 결과까지
 
 지원 브라우저의 최상위 모델러가 `document.modelContext.registerTool`로 도구를 등록합니다. 에이전트가 현재 모델의 단위·케이스를 읽고 기존 제품 API로 해석을 실행한 뒤, 결과를 사용자 화면과 함께 확인합니다. [OpenAI Site tools 문서](https://learn.chatgpt.com/docs/webmcp)
 
@@ -90,9 +90,9 @@ SB1처럼 수치 정밀도 수준에서 일치하는 항목도 있지만, **21�
 
 예시 요청: “현재 모델의 단위와 해석 케이스를 확인하고, 정적 케이스를 검증한 뒤 CPU로 해석해 결과와 경고를 설명해 줘.”
 
-현재 WebMCP 범위는 **정적·모달·RSA·고유치 좌굴·선형 시간이력**입니다. 입력 복제본과 해시로 실행을 묶고, 같은 요청 ID의 재시도는 기존 작업을 반환합니다. 모델이 바뀌면 결과에 `stale`을 표시합니다. 세션당 최대 128개 요청, 동시 1개 작업이며 모델 편집·임의 코드 실행·파일 쓰기는 노출하지 않습니다.
+아래 공개 프리뷰 v1의 WebMCP 범위는 **정적·모달·RSA·고유치 좌굴·선형 시간이력**입니다. 입력 복제본과 해시로 실행을 묶고, 같은 요청 ID의 재시도는 기존 작업을 반환합니다. 모델이 바뀌면 결과에 `stale`을 표시합니다. 세션당 최대 128개 요청, 동시 1개 작업이며 모델 편집·임의 코드 실행·파일 쓰기는 노출하지 않습니다.
 
-일반 브라우저 UI와 WebMCP 지원 여부는 별개입니다. API가 없는 브라우저에서는 일반 UI를 사용하며 iframe 안에서는 도구를 등록하지 않습니다. 브라우저·제품별 지원 조건과 호출 계약은 [WebMCP 안내](docs/WEBMCP.md)를 참고하세요.
+로컬 M4의 추가 도구와 app 호스트 사용법은 [M4 계약](docs/phase19/M4_CONTRACT.md)에 있습니다. 일반 브라우저 UI와 WebMCP 지원 여부는 별개입니다. API가 없는 브라우저에서는 일반 UI를 사용하며 iframe 안에서는 도구를 등록하지 않습니다. 브라우저·제품별 지원 조건과 호출 계약은 [WebMCP 안내](docs/WEBMCP.md)를 참고하세요.
 
 ## 실행하기
 

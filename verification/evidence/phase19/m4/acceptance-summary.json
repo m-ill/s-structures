@@ -1,0 +1,31 @@
+{
+  "version": "p19-m4-acceptance-v1",
+  "source": {
+    "commit": "0c4142ff1f08af4cea4f75b4867165353f66c797",
+    "tree": "9c926e40d4a9134773da12318f55ae1a5d82fda1",
+    "trackedChanges": ""
+  },
+  "tests": {
+    "planned": 39,
+    "passed": 39,
+    "failed": 0
+  },
+  "rawOutput": "output/phase19/m4-r3-20260907",
+  "sourceArchiveSha256": "09f7df8a4421eb47dfabd24ed90065c04dbeae89e84bd5a42fe0401fd7d08b82",
+  "runtimeTrees": {
+    "src": "ef7150303a35abf9e2795aace187a5dd23577a9e",
+    "server": "f35d294394287d7f8f70926bda76ef63b72ec1ad",
+    "tests": "ac965173b8d1147b9ec4589ba0e3071e61682d3e"
+  },
+  "toolCount": 27,
+  "v1ToolsRetained": 9,
+  "newTools": 18,
+  "scope": "Elastic preliminary design WebMCP workflow, shared UI and same-origin app host",
+  "qualification": "preliminary; designTransferAllowed=false",
+  "githubPublication": "not-performed",
+  "limitations": [
+    "Actual automatic PDF and nonlinear production qualification remain pending.",
+    "Unsupported-browser fallback is a simulated API-absence test; no complete browser matrix.",
+    "Browser diagnostics and candidate-to-final scope are separately recorded in browser-smoke.json."
+  ]
+}

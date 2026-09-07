@@ -16,7 +16,7 @@ stableInterfaceFirst: true
 
 ## First Calls
 
-Phase 19 M2 로컬 개발판에서는 `getDesignInputContext`, `previewDesignInputChanges`, `applyDesignInputChanges`, `undoDesignInputChanges`를 in-page Agent 메서드로 제공한다. UI의 **탄성해석 → 설계 입력 변경**과 같은 서비스를 사용하며 숨은 해석 실행은 없다. 타입별 예제·단위·승인·이력 한도는 [M2 계약](../phase19/M2_CONTRACT.md)에 있다. 기존 WebMCP v1 9개 도구와 명령 브리지 manifest에 신규 도구를 등록하는 작업은 M4로 구분한다.
+Phase 19 M2 로컬 개발판에서는 `getDesignInputContext`, `previewDesignInputChanges`, `applyDesignInputChanges`, `undoDesignInputChanges`를 in-page Agent 메서드로 제공한다. UI의 **탄성해석 → 설계 입력 변경**과 같은 서비스를 사용하며 숨은 해석 실행은 없다. 타입별 예제·단위·승인·이력 한도는 [M2 계약](../phase19/M2_CONTRACT.md)에 있다. WebMCP v2 도구는 M4에서 연결했으며 [M4 계약](../phase19/M4_CONTRACT.md)을 따른다.
 
 agent는 항상 아래 순서로 현재 상태를 읽는다.
 
@@ -71,7 +71,7 @@ agent.prepareResultView('getDetailedReport', { title: 'Review' });
 const report = agent.getDetailedReport({ title: 'Review' });
 ```
 
-조회와 준비에는 동일한 options를 사용한다. `prepareResultView`는 등록된 view만 지원하며 WebMCP v1 도구로 공개되지 않는다. 새 입력 식별·결과 API와 전체 준비 대상은 [M0~M1 계약](../phase19/M0_M1_CONTRACT.md)을 참고한다. 후속 M3에서 제품 실행 기록과 설계 서비스를 직접 연결한다.
+조회와 준비에는 동일한 options를 사용한다. `prepareResultView`는 등록된 view만 지원하며 WebMCP v1 도구로 공개되지 않는다. 새 입력 식별·결과 API와 전체 준비 대상은 [M0~M1 계약](../phase19/M0_M1_CONTRACT.md)을 참고한다. M3에서 제품 실행 기록과 설계 서비스를 직접 연결했다.
 
 ## QA Commands
 
@@ -253,4 +253,10 @@ AI agent는 아래 항목을 자동으로 확정하지 않는다.
 
 `SStructuresAgent.planElasticWorkflow/runElasticWorkflow`로 기존 탄성 케이스를 실행한 다음, `planDesignReview/startDesignReview`에 완료된 1차 또는 Direct P–Delta run ID와 정확한 조합 ID를 전달한다. `getDesignReview`는 계산 없이 기록만 조회하며 `createDesignReviewReport`가 같은 snapshot의 HTML·JSON·CSV를 만든다. 입력 변경 후 stale 결과의 새 보고서 생성·내보내기는 차단된다. 모든 결과는 예비 검토이며 최종 설계전달은 허용하지 않는다.
 
-[M3 API와 호출 예제](../phase19/M3_CONTRACT.md) · [34개 고정 회귀와 브라우저 증거](../../verification/evidence/phase19/m3/README.md). 이 메서드는 in-page Agent API이며 신규 WebMCP 도구 등록은 M4에서 수행한다. 자동 PDF는 실제 transport·figure·qualification이 모두 준비되어야 한다.
+[M3 API와 호출 예제](../phase19/M3_CONTRACT.md) · [34개 고정 회귀와 브라우저 증거](../../verification/evidence/phase19/m3/README.md). 이 메서드는 in-page Agent API이며 신규 WebMCP 도구는 M4에서 등록했다. 자동 PDF는 실제 transport·figure·qualification이 모두 준비되어야 한다.
+
+## Phase 19 M4 WebMCP v2
+
+현재 직접 모델러와 app 호스트는 v1 9개 + 신규 18개 도구를 제공한다. `get_workflow_context` → typed preview/apply → `plan/start/get_elastic_workflow` → `plan/start_design_review` → `plan/start_report_export` → `get_report_artifact` 순서로 사용한다. 반환된 세션 handle과 실제 run/조합 ID를 전달하고, 입력 변경 후 새 identity를 읽는다. UI 패널은 도구가 생성한 같은 검토를 표시한다.
+
+[도구 스키마·한도·호스트 결속](../phase19/M4_CONTRACT.md) · [39개 고정 회귀와 실제 브라우저 증거](../../verification/evidence/phase19/m4/README.md). report start는 세션 artifact 생성이며 외부 발송·임의 파일 저장·자동 PDF 생성 도구가 아니다. 비선형 계산은 노출하지 않는다.

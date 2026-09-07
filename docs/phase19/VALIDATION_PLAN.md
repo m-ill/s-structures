@@ -124,3 +124,7 @@ M0에서 실제 담당을 지정한다. 에이전트의 코드 리뷰나 자동 
 ## M3 실행 기록
 
 고정 커밋 `7683047ac3552672bd0c2dad8ae0919c6ae989e5`에서 [M3 manifest](../../verification/specs/phase19/m3-tests.json)의 34개를 별도 checkout으로 실행해 모두 PASS했다. [증거](../../verification/evidence/phase19/m3/README.md)에 로그 SHA와 실제 브라우저 다운로드 파일을 보존한다. P11 모의 PDF adapter 시험 및 PDF용 HTML 데이터 동등성은 실제 PDF 생성·레이아웃 검증과 구분한다. 전체 생산 자격이나 기존 STRIX 비교 범위를 확대하지 않는다.
+
+## M4 실행 기록
+
+최종 소스 `0c4142ff1f08af4cea4f75b4867165353f66c797`에서 [M4 manifest](../../verification/specs/phase19/m4-tests.json)의 39개를 별도 checkout으로 실행해 모두 PASS했다. [증거](../../verification/evidence/phase19/m4/README.md)에 원본 로그·SHA, 실제 Site tools의 강재/RC 보고서와 프로젝트 전환을 보존한다. 브라우저는 c9f8eca 전체 흐름, b1f389c 고유 핸들 보강 후 강재 흐름을 구분한다. 이후 비보안 crypto fallback은 최종 회귀에서 검증했다. 자동 PDF·비선형 자격·브라우저 matrix는 별도다.

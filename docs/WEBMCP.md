@@ -1,4 +1,8 @@
-# WebMCP v1 — 2026-09-05
+# WebMCP — 로컬 v2 / 공개 v1
+
+2026-09-07 로컬 M4는 기존 9개에 18개를 추가한 총 27개 도구를 제공한다. 입력 preview/apply, 탄성 workflow, 설계 검토, 보고서 artifact, 화면 전환을 M2·M3 공통 서비스에 연결했다. 직접 모델러와 같은 출처 app 호스트에서 실제 Site tools를 검증했다. [M4 계약·사용법](phase19/M4_CONTRACT.md) · [39개 고정 회귀와 브라우저 증거](../verification/evidence/phase19/m4/README.md). 공개 GitHub 배포에는 아직 반영하지 않았다.
+
+## 공개 v1 호환 계약 — 2026-09-05
 
 OpenAI Site tools의 `document.modelContext.registerTool`에 연결한다. 이 API가 제공되는 보안 컨텍스트의 최상위 `index.html`에서 도구 9개를 등록한다. 미지원 브라우저에서는 기존 UI를 그대로 사용한다. iframe 안의 모델러는 등록하지 않으며, 모델러 URL을 직접 열어야 한다. 일반 MCP 서버나 ChatGPT 원격 커넥터를 생성하는 기능은 아니다.
 

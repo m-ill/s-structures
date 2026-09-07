@@ -1,12 +1,12 @@
 # Phase 19 실제 진행 상태
 
 ```yaml
-version: p19-status-v4
+version: p19-status-v5
 updated: 2026-09-07
-status: m0-m3-complete
+status: m0-m4-complete
 development_baseline: 7bb55d7ec6bd6b155361b26b7830c70b45043acb
 public_baseline: e18d5b432c780523496f8aad489b502934ae0ebd
-implemented_workpackages: [M0, M1, M2, M3]
+implemented_workpackages: [M0, M1, M2, M3, M4]
 m0_m1_latest_distinct_tests: 59
 m2_required_tests: 27
 m2_passed_tests: 27
@@ -16,12 +16,16 @@ m3_required_tests: 34
 m3_passed_tests: 34
 m3_failed_tests: 0
 m3_source_commit: 7683047ac3552672bd0c2dad8ae0919c6ae989e5
-validation_strategy: m3-full-targeted-suite-on-one-commit
+m4_required_tests: 39
+m4_passed_tests: 39
+m4_failed_tests: 0
+m4_source_commit: 0c4142ff1f08af4cea4f75b4867165353f66c797
+validation_strategy: m4-full-targeted-suite-on-one-commit
 release_status: not-qualified
 github_publication: not-performed
 ```
 
-M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구현했다. M2 고정 커밋의 별도 checkout에서 관련 회귀 27개가 모두 PASS다. M0~M1의 과거 59개 최신 판정과 이번 27개는 범위가 겹치므로 합산하지 않는다. M3 해석→설계검토→보고서 서비스도 구현했고 고정 커밋에서 관련 회귀 34/34 PASS를 확인했다. 신규 WebMCP 도구 등록은 M4, 비선형 추가 통합·자격 검증은 M5 이후 범위다.
+M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구현했다. M2 고정 커밋의 별도 checkout에서 관련 회귀 27개가 모두 PASS다. M0~M1의 과거 59개 최신 판정과 이번 27개는 범위가 겹치므로 합산하지 않는다. M3 해석→설계검토→보고서 서비스도 구현했고 고정 커밋에서 관련 회귀 34/34 PASS를 확인했다. M4에서 WebMCP 27개 도구와 app 호스트 연결까지 구현하고 최종 관련 회귀 39/39 PASS를 확인했다. 비선형 추가 통합·자격 검증은 M5 이후 범위다.
 
 | 작업 | 상태 | 근거 또는 남은 작업 |
 |---|---|---|
@@ -29,7 +33,7 @@ M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구
 | M1 공통 계약 | 완료 | 버전 입력 식별, 불변 기록, 명시적 준비, stale 및 조합·단위·변조 차단 |
 | M2 설계 입력 | 완료 | 11개 타입, UI·Agent 공통 preview/apply, 원자성·단일 Undo·결과 무효화, 강재·RC 폼 동등성, 회귀 27/27 |
 | M3 탄성설계 서비스 | 완료 | 실제 탄성 제품 실행→강재/RC 검토→불변 보고서, 회귀 34/34; 자동 PDF 실환경 검증은 별도 |
-| M4 WebMCP·화면 | 계획 | 신규 typed 도구, 실제 브라우저 전체 워크플로 |
+| M4 WebMCP·화면 | 완료 | 27개 도구, 직접/호스트 실제 강재·RC 흐름, 세션·프로젝트 결속, 회귀 39/39 |
 | M5 비선형 기반 | 계획 | 초기상태·checkpoint·PMM 조립·엔진 routing |
 | M6 Pushover/fiber/PMM | 계획 | 전역 경로·반전·rollback·독립 비교 |
 | M7 MDOF NLTH | 계획 | 시간 적분·에너지·재시작·외부 비교 |
@@ -43,14 +47,14 @@ M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구
 - 해석 run과 설계 run을 별도로 기록한다. 완료·수치 자격·설계 검토·전달 허가·stale을 구분한다. 설계 계산은 M3 공통 서비스에서 명시적으로 실행한다.
 - 탄성 제품 작업은 큐 등록 시 입력을 복제한다. 실행 중 수정된 모델에 이전 결과를 새 결과로 결속하지 않는다.
 - 23개 계산형 보고서·설계·trace·diagnostic getter는 준비된 view만 읽는다. `prepareResultView`에서 명시적으로 준비하며 UI 보고서 버튼과 기존 시험을 이 계약에 맞췄다.
-- WebMCP v1 도구 9개와 기존 modelHash 계약을 유지하고 context에 새 입력 식별을 추가했다. 설계 입력·실행 도구는 아직 추가하지 않았다.
+- WebMCP v1 도구 9개와 기존 modelHash 계약을 유지하고 context에 새 입력 식별을 추가했다. M4에서 설계 입력·실행·보고서 도구 18개를 추가했다.
 
 상세 API와 재현 명령은 [구현 계약](M0_M1_CONTRACT.md), 호출 예시는 [Agent Guide](../user-manual/AI_AGENT_GUIDE.md)에 있다.
 
 ## M2 구현과 검증
 
 - 새 공통 서비스가 설계기준·하중·질량원·조합·재료/단면·부재 설계 속성·탄성 케이스 입력을 처리한다. 기존 designBasisChangeSet·massSourceChangeSet·loadCombinationChangeSet을 재사용한다.
-- **탄성해석 → 설계 입력 변경** 패널과 in-page Agent의 4개 메서드는 같은 서비스를 사용한다. 기존 7단계 창/모델러는 유지하며 신규 WebMCP 도구와 app host 연결은 아직 수행하지 않았다.
+- **탄성해석 → 설계 입력 변경** 패널과 in-page Agent의 4개 메서드는 같은 서비스를 사용한다. 기존 7단계 창/모델러는 유지하며 이 시점 이후 M4에서 신규 WebMCP 도구와 app host를 연결했다.
 - 미리보기는 원본 revision/hash·단위·영향 부재·이전/다음 값·경고를 포함한다. 적용 시 입력/정책 재검사, 전체 검증, 단일 커밋과 Undo를 수행한다. 실패·변조·stale·중복·잠금·수정 불가능한 모델을 시험했다.
 - 질량원 ID→solver 정의 객체 mapping과 참조 케이스 갱신, 6자유도 회전 질량 보존, 5종 탄성 케이스 settings 전달, 강재 별칭 우선순위와 RC 명시적 철근량 충돌을 처리한다.
 - 기존 후보 KDS 팩의 승인 조건을 유지하며 요청으로 reviewer·승인 서명을 만들 수 없다. 신뢰하는 호스트 규칙 팩의 상태가 preview 후 바뀌면 적용을 차단한다. 수동 조합은 자동 승인 상태가 아니다.
@@ -66,7 +70,17 @@ M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구
 - 같은 불변 snapshot으로 한·영 HTML, JSON, CSV 및 P11 PDF용 HTML 부록을 만든다. 실제 브라우저 다운로드 3종의 수치와 source ID를 대조했다. 예제 91행 중 WARN 8 / NOT_CHECKED 4를 그대로 표시한다.
 - 자동 PDF는 기존 P11 workflow에 연결했지만 기본 브라우저의 transport·figure·qualification이 미준비여서 차단된다. 실제 PDF 생성·인쇄·레이아웃 자격 검증은 수행하지 않았다.
 - 소스 `7683047`의 별도 checkout에서 관련 시험 34/34 PASS. [M3 계약](M3_CONTRACT.md), [고정 목록](../../verification/specs/phase19/m3-tests.json), [검증 증거](../../verification/evidence/phase19/m3/README.md). 이전 시험 개수와 합산하지 않는다.
-- GitHub push·공개 재배포는 수행하지 않았다. 신규 WebMCP 도구·사용자 작업 화면의 후속 통합은 M4다.
+- GitHub push·공개 재배포는 수행하지 않았다. M4에서 신규 WebMCP 도구·작업 화면 통합을 이어서 완료했다.
+
+## M4 구현과 검증
+
+- 기존 9개 도구에 typed 입력/케이스 변경, 탄성 순차 실행·취소, 설계 검토·페이지 조회, 보고서 생성·조각 조회, 화면 전환을 추가해 27개를 제공한다. 임의 코드·파일 경로·외부 발송은 제공하지 않는다.
+- 직접 index와 app 호스트가 같은 서비스를 사용한다. 호스트는 실제 iframe·Document·origin·session/nonce·project 결속을 확인하며 전환 시 등록·핸들 폐기와 소유 작업 취소를 요청한다. 세션 UUID로 서로 다른 프로젝트의 핸들 순번 충돌도 차단한다.
+- 로컬 서버의 `/index.html?shell=1`만 같은 출처 임베딩을 허용한다. API와 다른 페이지의 DENY/CSP 정책을 유지하고 실제 HTTP 회귀로 확인했다.
+- 최종 소스 `0c4142ff1f08af4cea4f75b4867165353f66c797`의 별도 checkout에서 **39/39 PASS**. [M4 계약](M4_CONTRACT.md), [시험 목록](../../verification/specs/phase19/m4-tests.json), [증거](../../verification/evidence/phase19/m4/README.md).
+- 실제 Site tools로 강재 직접 진입·RC app 호스트의 입력→정적해석→설계→보고서를 완료하고 UI와 snapshot 해시가 일치했다. 프로젝트 A/B 전환 시 stale 등록과 이전 변경 handle이 차단됐다. 세션 보강 후 강재 전체 흐름도 재확인했다. 최종 fallback 변경과 브라우저 후보별 범위는 증빙에 구분한다.
+- WebMCP 미지원·crypto API 부재의 일반 UI 초기화는 모의 환경에서 확인했다. 초기 호스트 MutationObserver 오류 1건은 출처 미확인이며 새 프로젝트 세션에서 재현되지 않았다. 일부 CDP 조작 지연은 접근성 API로 완료했다. 브라우저 matrix·UI 성능 자격으로 확대 해석하지 않는다.
+- 자동 PDF 실환경·비선형 생산 자격·GitHub push는 미완료다. 다음 구현 범위는 M5다.
 
 ## 검증 추적
 
