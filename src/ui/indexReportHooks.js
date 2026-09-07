@@ -69,7 +69,7 @@ export function openNativeCalculationPackage(target, bridge, api, payload = {}) 
 }
 
 export function showDetailedReport(target, bridge, options = {}) {
-  const report = bridge?.getDetailedReport?.(options);
+  const report = (bridge?.prepareResultView ? bridge.prepareResultView('getDetailedReport', options) : bridge?.getDetailedReport?.(options));
   if (!report) throw new Error('Detailed report is not available.');
   target.SStructuresDetailedReport = report;
   const doc = target?.document;
@@ -88,7 +88,7 @@ export function showDetailedReport(target, bridge, options = {}) {
 }
 
 export function showCalculationPackage(target, bridge, options = {}) {
-  const report = bridge?.getCalculationPackage?.(options);
+  const report = (bridge?.prepareResultView ? bridge.prepareResultView('getCalculationPackage', options) : bridge?.getCalculationPackage?.(options));
   if (!report) throw new Error('Calculation package is not available.');
   target.SStructuresCalculationPackage = report;
   const doc = target?.document;

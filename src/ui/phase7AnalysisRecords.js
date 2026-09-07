@@ -53,6 +53,12 @@ export function recordPhase7AnalysisAttempt(target, model, analysisCase, result,
     },
   };
   const record = deepFreeze(mutableRecord);
+  target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
+  if (target.SStructuresWorkflowResults && target.SStructuresEngine?.getWorkflowInputIdentity) {
+    const persistedCase = (model.analysisCases || []).find(row => row.id === caseId) || analysisCase;
+    target.SStructuresWorkflowResults.recordAnalysis(record,
+      target.SStructuresEngine.getWorkflowInputIdentity({ model, analysisCase: persistedCase }));
+  }
   const previousSuccessful = target.__SStructuresAnalysisRunStore.lastSuccessful?.[caseId] || null;
   const previousPublished = target.__SStructuresAnalysisResults[caseId] || null;
   target.__SStructuresAnalysisRunStore = deepFreeze(appendAnalysisRun(target.__SStructuresAnalysisRunStore, record));

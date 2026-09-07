@@ -77,6 +77,7 @@ export function createWebMcpTools({ agent, bridge }) {
       const value = model();
       return {
         version: WEBMCP_VERSION, ...context(value),
+        inputIdentity: agent.getWorkflowInputIdentity?.({ model: value }) || null,
         counts: Object.fromEntries(['nodes', 'members', 'loads'].map((key) => [key, value[key]?.length || 0])),
         cases: (value.analysisCases || []).slice(0, 100).map(({ id, name, kind }) => ({ id, name, kind, exposed: KINDS.includes(kind) })),
         casesTruncated: (value.analysisCases?.length || 0) > 100,

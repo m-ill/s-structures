@@ -150,7 +150,8 @@ else model.meta.name = originalName;
 assert.equal(bridge.canTransferAnalysisResultToDesign({ runRecordId: verified.record.id }).allowed, true);
 
 const fiberSection = { width: 0.3, depth: 0.5, strips: 8 };
-const calculationPackage = bridge.getCalculationPackage({
+bridge.analyzeModel(model);
+const calculationPackage = bridge.prepareResultView('getCalculationPackage', {
   generatedAt: '2026-07-10T02:00:00.000Z',
   phase3: { nonlinear: { fiberSection } },
   nonlinear: { fiberSection },

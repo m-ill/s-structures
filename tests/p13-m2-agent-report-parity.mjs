@@ -36,7 +36,9 @@ assert.deepEqual(agentSnapshot, uiSnapshot);
 assert.deepEqual(target.SStructuresAgent.getPhase13IssueWaivers(), uiSnapshot.waivers);
 assert.equal(uiSnapshot.summary.waived, 1);
 
-const detailed = bridge.getDetailedReport();
+bridge.analyzeModel(model);
+assert.equal(bridge.getDetailedReport().code, 'RESULT_REQUIRED');
+const detailed = bridge.prepareResultView('getDetailedReport');
 const agentDetailed = target.SStructuresAgent.getDetailedReport();
 assert.deepEqual(detailed.data.phase13ModelCheck, uiSnapshot);
 assert.deepEqual(agentDetailed.data.phase13ModelCheck, uiSnapshot);

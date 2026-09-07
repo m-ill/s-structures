@@ -1,3 +1,6 @@
+import { createWorkflowInputIdentity } from '../core/workflowIdentity.js';
+import { stableHash } from '../core/stableHash.js';
+import { installResultViewCache, COMPUTED_RESULT_VIEWS } from './resultViewCache.js';
 import { migrateToV3 } from '../core/model.js';
 import { buildBaselineContract } from '../core/baselineContract.js';
 import { buildStorySummary } from '../core/storySummary.js';
@@ -157,7 +160,14 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     { requestedAt: new Date().toISOString() },
     { bridgeVersion },
   ));
-  const getAnalysis = (model) => bridge?.getLastResult?.() || analyzeForIndex(model);
+  let standaloneResult = null, standaloneIdentity = null;
+  const readAnalysis = () => bridge?.getLastResult?.() || (
+    standaloneIdentity === createWorkflowInputIdentity({model:getCurrentModel(target)}).inputHash ? standaloneResult : null);
+  const getAnalysis = () => {
+    const result = readAnalysis();
+    if (!result) throw Object.assign(new Error('Current analysis result required.'), { code: 'RESULT_REQUIRED' });
+    return result;
+  };
   const reportExport = options.reportExportWorkflow
     || target.SStructuresReportExportWorkflow
     || (target.sStructuresReportExport ? createReportExportWorkflow({ transport: target.sStructuresReportExport }) : null);
@@ -172,6 +182,12 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
   };
   const api = {
     version: bridgeVersion,
+    getWorkflowInputIdentity(input = {}) {
+      return bridge?.getWorkflowInputIdentity?.(input) || createWorkflowInputIdentity({ model: getCurrentModel(target), ...input });
+    },
+    getWorkflowAnalysisResult(id) {
+      return bridge?.getWorkflowAnalysisResult?.(id) || { ok: false, code: 'RESULT_REQUIRED' };
+    },
     getModel() {
       return cloneJson(getCurrentModel(target));
     },
@@ -184,7 +200,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getSnapshot() {
       const model = getCurrentModel(target);
-      const analysis = model ? analyzeForIndex(model) : null;
+      const analysis = model ? readAnalysis() : null;
       const resultView = buildIndexResultViewModel(model, analysis, target.SStructuresResultsPanel?.state || {});
       const resultVisuals = model ? buildIndexResultVisuals(model, analysis, target.SStructuresResultVisuals?.state || {}) : null;
       const agentState = ensureAgentState(target);
@@ -223,17 +239,17 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     getReport(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
-      return cloneJson(bridge?.getReport?.(options) || createHtmlReport(model, getAnalysis(model), options));
+      return cloneJson(bridge?.prepareResultView?.('getReport', options) || createHtmlReport(model, getAnalysis(model), options));
     },
     getDetailedReport(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
-      return cloneJson(bridge?.getDetailedReport?.(options) || createDetailedHtmlReport(model, getAnalysis(model), withAnalysisResults(target, options)));
+      return cloneJson(bridge?.prepareResultView?.('getDetailedReport', options) || createDetailedHtmlReport(model, getAnalysis(model), withAnalysisResults(target, options)));
     },
     getCalculationPackage(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
-      return cloneJson(bridge?.getCalculationPackage?.(options) || createCalculationPackageHtml(model, getAnalysis(model), withAnalysisResults(target, options)));
+      return cloneJson(bridge?.prepareResultView?.('getCalculationPackage', options) || createCalculationPackageHtml(model, getAnalysis(model), withAnalysisResults(target, options)));
     },
     getPhase13ModelCheck() {
       return cloneJson(bridge?.getPhase13ModelCheck?.() || null);
@@ -788,6 +804,12 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     runAnalysis() {
       runUiAnalysis(target);
+      if (!bridge?.getLastResult?.()) {
+        const model = getCurrentModel(target);
+        standaloneResult = analyzeForIndex(model);
+        standaloneIdentity = createWorkflowInputIdentity({model}).inputHash;
+        target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
+      }
       return api.getSnapshot();
     },
     execute(action, payload = {}) {
@@ -1065,6 +1087,15 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       }
     },
   };
+  installResultViewCache(api, COMPUTED_RESULT_VIEWS, () => ({ inputHash: stableHash({
+    input: api.getWorkflowInputIdentity().inputHash, revision: target.__SStructuresResultRevision || 0,
+  }) }));
+  const prepareAgentView = api.prepareResultView;
+  for (const name of COMPUTED_RESULT_VIEWS) {
+    if (bridge?.prepareResultView && typeof bridge[name] === 'function') api[name] = (...args) => cloneJson(bridge[name](...args));
+  }
+  api.prepareResultView = (name, input = {}) => bridge?.prepareResultView && typeof bridge[name] === 'function'
+    ? cloneJson(bridge.prepareResultView(name, input)) : prepareAgentView(name, input);
   return api;
 }
 

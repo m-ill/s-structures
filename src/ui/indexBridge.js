@@ -1,3 +1,8 @@
+import { createWorkflowInputIdentity } from '../core/workflowIdentity.js';
+import { stableHash } from '../core/stableHash.js';
+import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
+import { createWorkflowResultStore } from '../compute/product/workflowResults.js';
+import { installResultViewCache, COMPUTED_RESULT_VIEWS } from './resultViewCache.js';
 import {
   migrateToCurrent,
   migrateToV3,
@@ -147,6 +152,14 @@ export function installIndexEngineBridge(target = globalThis) {
 
   ensurePhase7AnalysisState(target);
   let lastResult = null;
+  let lastResultIdentity = null;
+  const workflowResults = createWorkflowResultStore();
+  target.SStructuresWorkflowResults = workflowResults;
+  function requireLastResult() {
+    if (!lastResult) throw Object.assign(new Error('Run analysis before preparing a result view.'), { code: 'RESULT_REQUIRED' });
+    if (lastResultIdentity !== bridge.getWorkflowInputIdentity().inputHash) throw Object.assign(new Error('Analysis input changed.'), { code: 'STALE_INPUT' });
+    return structuredClone(lastResult);
+  }
   let nonlinearProductService = null;
   let analysisProductService = null;
   let elasticProductService = null;
@@ -156,32 +169,51 @@ export function installIndexEngineBridge(target = globalThis) {
     legacy,
     analyzeModel(model, options) {
       lastResult = analyzeForIndex(model, options);
+      lastResultIdentity = bridge.getWorkflowInputIdentity({ model }).inputHash;
+      target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
       return lastResult;
     },
     validateModel: validateForIndex,
     migrateToV3,
     getLastResult() {
-      return lastResult;
+      if (!lastResult || lastResultIdentity !== bridge.getWorkflowInputIdentity().inputHash) return null;
+      return structuredClone(lastResult);
+    },
+    getWorkflowInputIdentity(input = {}) {
+      const model = input.model || bridge.getCurrentModel();
+      const analysisCase = input.analysisCase || (input.caseId ? (model.analysisCases || []).find(row => row.id === input.caseId) : null);
+      return createWorkflowInputIdentity({ model, analysisCase, settings: input.settings,
+        designSettings: input.designSettings, build: target.SStructuresBuildIdentity || null,
+        rulePack: target.SStructuresRulePackIdentity || null,
+        library: {
+          materials: [...new Set((model.members || []).map(row => row.matId).filter(Boolean))].sort().map(id => resolveMaterialRecord(model, id)),
+          sections: [...new Set((model.members || []).map(row => row.secId).filter(Boolean))].sort().map(id => resolveSectionRecord(model, id)),
+        } });
+    },
+    getWorkflowAnalysisResult(analysisRunId) {
+      const record = findPhase7AnalysisRun(target, { runRecordId: analysisRunId });
+      if (!record) return { ok: false, code: 'RESULT_REQUIRED' };
+      return workflowResults.getAnalysis(analysisRunId, bridge.getWorkflowInputIdentity({ caseId: record.caseId }));
     },
     getResultVisuals(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildIndexResultVisuals(model, lastResult || analyzeForIndex(model), options);
+      return buildIndexResultVisuals(model, requireLastResult(), options);
     },
     getReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return attachPhase13MilestonesToReport(attachPhase13ModelCheckToReport(createHtmlReport(model, lastResult || analyzeForIndex(model), options), bridge.getPhase13ModelCheck()), bridge.getPhase13MilestoneSnapshot());
+      return attachPhase13MilestonesToReport(attachPhase13ModelCheckToReport(createHtmlReport(model, requireLastResult(), options), bridge.getPhase13ModelCheck()), bridge.getPhase13MilestoneSnapshot());
     },
     getDetailedReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return attachPhase13MilestonesToReport(attachPhase13ModelCheckToReport(createDetailedHtmlReport(model, lastResult || analyzeForIndex(model), withAnalysisResults(target, options)), bridge.getPhase13ModelCheck()), bridge.getPhase13MilestoneSnapshot());
+      return attachPhase13MilestonesToReport(attachPhase13ModelCheckToReport(createDetailedHtmlReport(model, requireLastResult(), withAnalysisResults(target, options)), bridge.getPhase13ModelCheck()), bridge.getPhase13MilestoneSnapshot());
     },
     getCalculationPackage(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return attachPhase13MilestonesToReport(attachPhase13ModelCheckToReport(createCalculationPackageHtml(model, lastResult || analyzeForIndex(model), withAnalysisResults(target, options)), bridge.getPhase13ModelCheck()), bridge.getPhase13MilestoneSnapshot());
+      return attachPhase13MilestonesToReport(attachPhase13ModelCheckToReport(createCalculationPackageHtml(model, requireLastResult(), withAnalysisResults(target, options)), bridge.getPhase13ModelCheck()), bridge.getPhase13MilestoneSnapshot());
     },
     getPhase13ModelCheck() {
       const model = bridge.getCurrentModel();
@@ -227,7 +259,7 @@ export function installIndexEngineBridge(target = globalThis) {
     getCombinationEnvelopeContract(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildCombinationEnvelopeContract(model, lastResult || analyzeForIndex(model), options);
+      return buildCombinationEnvelopeContract(model, requireLastResult(), options);
     },
     getDesignBasisLoadEstimation(options = {}) {
       const model = bridge.getCurrentModel();
@@ -242,22 +274,22 @@ export function installIndexEngineBridge(target = globalThis) {
     getRcDetailingReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildRcDetailingReport(model, lastResult || analyzeForIndex(model), options);
+      return buildRcDetailingReport(model, requireLastResult(), options);
     },
     getSteelDetailingReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildSteelDetailingReport(model, lastResult || analyzeForIndex(model), options);
+      return buildSteelDetailingReport(model, requireLastResult(), options);
     },
     getConnectionFoundationReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildConnectionFoundationReport(model, lastResult || analyzeForIndex(model), options);
+      return buildConnectionFoundationReport(model, requireLastResult(), options);
     },
     getMemberDesignTraceReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildMemberDesignTraceReport(model, lastResult || analyzeForIndex(model), options);
+      return buildMemberDesignTraceReport(model, requireLastResult(), options);
     },
     getDesignDemandPackage(options = {}) {
       const model = bridge.getCurrentModel();
@@ -266,17 +298,17 @@ export function installIndexEngineBridge(target = globalThis) {
         const transfer = bridge.transferAnalysisResultToDesign(options);
         return transfer.ok ? transfer.demandPackage : transfer;
       }
-      return buildDesignDemandPackage(model, lastResult || analyzeForIndex(model), options);
+      return buildDesignDemandPackage(model, requireLastResult(), options);
     },
     getPracticePlatformReadiness(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildPracticePlatformReadiness(model, lastResult || analyzeForIndex(model), options);
+      return buildPracticePlatformReadiness(model, requireLastResult(), options);
     },
     getPracticeValidationReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildPracticeValidationReport(model, lastResult || analyzeForIndex(model), options);
+      return buildPracticeValidationReport(model, requireLastResult(), options);
     },
     getPilotProjectValidation(options = {}) {
       return buildPilotProjectValidation(options);
@@ -284,17 +316,17 @@ export function installIndexEngineBridge(target = globalThis) {
     getServiceabilityDriftReport(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildServiceabilityDriftReport(model, lastResult || analyzeForIndex(model), options);
+      return buildServiceabilityDriftReport(model, requireLastResult(), options);
     },
     getAdvancedElasticTrace() {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildAdvancedElasticTrace(model, lastResult || analyzeForIndex(model));
+      return buildAdvancedElasticTrace(model, requireLastResult());
     },
     getResultPostprocessing(options = {}) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
-      return buildResultPostprocessing(model, lastResult || analyzeForIndex(model), options);
+      return buildResultPostprocessing(model, requireLastResult(), options);
     },
     getStorySummary() {
       const model = bridge.getCurrentModel();
@@ -331,7 +363,7 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       const estimation = applyDesignBasisLoadsToModel(model, options.designBasis || options, options);
-      lastResult = analyzeForIndex(model);
+      bridge.analyzeModel(model);
       if (typeof target?.reanalyze === 'function') target.reanalyze(true);
       return estimation;
     },
@@ -339,7 +371,7 @@ export function installIndexEngineBridge(target = globalThis) {
       const model = bridge.getCurrentModel();
       if (!model) return null;
       const applied = applyKdsLoadCombinationsToModel(target, bridge, model, options);
-      lastResult = analyzeForIndex(model);
+      bridge.analyzeModel(model);
       return applied;
     },
     runPushover(options = {}) {
@@ -706,6 +738,9 @@ export function installIndexEngineBridge(target = globalThis) {
     },
   };
 
+  installResultViewCache(bridge, COMPUTED_RESULT_VIEWS, () => ({ inputHash: stableHash({
+    input: bridge.getWorkflowInputIdentity().inputHash, revision: target.__SStructuresResultRevision || 0,
+  }) }));
   target.analyzeModel = bridge.analyzeModel;
   target.validateModel = bridge.validateModel;
   target.SStructuresEngine = bridge;
@@ -747,7 +782,7 @@ export function installIndexEngineBridge(target = globalThis) {
       () => {
         if (target.SStructuresReportExportInputProvider) return target.SStructuresReportExportInputProvider();
         const model = bridge.getCurrentModel();
-        const calculationPackage = model ? bridge.getCalculationPackage() : null;
+        const calculationPackage = model ? bridge.prepareResultView('getCalculationPackage') : null;
         const snapshot = calculationPackage?.data?.reportSnapshot || null;
         return {
           projectId: model?.meta?.id || model?.id || 'PROJECT',
