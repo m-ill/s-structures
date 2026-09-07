@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 434,
+  "plannedCount": 436,
   "categoryCounts": {
     "e2e": 5,
-    "integration": 34,
+    "integration": 35,
     "qualification": 224,
-    "unit": 171
+    "unit": 172
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 121
+    "release-long": 123
   },
   "records": [
     {
@@ -1184,6 +1184,18 @@
     },
     {
       "file": "tests/p19-m3-design-workflow.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m4-host-session.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m4-webmcp-workflow.mjs",
       "taxonomy": "integration",
       "execution": "release-long",
       "owner": "phase19"
