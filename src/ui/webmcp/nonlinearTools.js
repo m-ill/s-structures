@@ -41,6 +41,7 @@ export function createNonlinearTools({agent,tool,context}) {
   }
   function status(jobId) {
     own(jobId);const r=agent.getNonlinearRunStatus({jobId});
+    if(r.error)r.error={code:r.error.code,message:String(r.error.message||'').slice(0,2000),failedStage:r.failedStage};
     return {...context(),jobId,stale:r.stale,status:Object.fromEntries([
       'id','caseId','kind','status','stage','progress','progressMessage','createdAt','startedAt','completedAt',
       'resultAvailable','qualification','designBlocked','settingsHash','runtime','error','checkpoint','resumePolicy'
@@ -78,7 +79,9 @@ export function createNonlinearTools({agent,tool,context}) {
       own(args.jobId);return agent.getNonlinearResultSlice({jobId:args.jobId,query:{slice:args.channel,page:args.page||1,pageSize:20,maxPoints:40,
         nodeId:args.entityId,memberId:args.entityId,hingeId:args.entityId}});
     }),
-    tool('explain_analysis_failure','Read nonlinear failure diagnostics; never retries automatically.',object({jobId:id},['jobId']),true,args=>agent.explainNonlinearFailure({jobId:own(args.jobId)})),
+    tool('explain_analysis_failure','Read nonlinear failure diagnostics; never retries automatically.',object({jobId:id},['jobId']),true,args=>{
+      const r=agent.explainNonlinearFailure({jobId:own(args.jobId)});return {code:r.code,cause:r.technicalDetails?.callbackError?.code||null,message:String(r.message||'').slice(0,2000),failedStage:r.failedStage,retryable:r.retryable};
+    }),
     tool('pause_analysis','Request a nonlinear checkpoint boundary pause.',object({jobId:id},['jobId']),false,args=>{agent.pauseNonlinearRun({jobId:own(args.jobId)});return status(args.jobId);}),
     tool('resume_analysis','Resume a paused job with a compatible private checkpoint, or explicitly retry from origin.',object({jobId:id,modelHash:hash,requestId:id,mode:choice('checkpoint','retry')},['jobId','modelHash','requestId','mode']),false,args=>once('resume',args,()=>{
       current(args.modelHash);own(args.jobId);if(jobs.size>=128)fail('SESSION_JOB_LIMIT');

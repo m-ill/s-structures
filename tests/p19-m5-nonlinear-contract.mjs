@@ -10,7 +10,7 @@ assert.throws(()=>createProductionNonlinearCase(model,{...analysisCase,engineId:
 assert.throws(()=>createProductionNonlinearCase(model,{...analysisCase,settings:{...analysisCase.settings,control:'load'}}),{code:'PUSHOVER_CONTROL_UNSUPPORTED'});
 assert.throws(()=>createProductionNonlinearCase(model,{...analysisCase,settings:{...analysisCase.settings,controlStrategy:'load'}}),{code:'PUSHOVER_CONTROL_CONFLICT'});
 const sh1=structuredClone(model);sh1.zeroLengthPmmHinges=[{id:'SH1'}];
-assert.ok(preflightProductionNonlinearCase(sh1,analysisCase).blocking.some(r=>r.code==='ZERO_LENGTH_PMM_PRODUCT_ASSEMBLY_UNAVAILABLE'));
+assert.ok(preflightProductionNonlinearCase(sh1,analysisCase).blocking.some(r=>r.code==='ZERO_LENGTH_PMM_NODE_REFERENCE_MISSING'));
 let execute;const service=createNonlinearProductService({getModel:()=>model,schedule:fn=>new Promise(resolve=>{execute=()=>resolve(fn());}),runner:async()=>syntheticPushoverResult()});
 const first=service.start({analysisCase});
 assert.throws(()=>service.start({analysisCase}),{code:'NONLINEAR_BUSY'});

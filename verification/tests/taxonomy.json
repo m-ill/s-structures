@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 438,
+  "plannedCount": 439,
   "categoryCounts": {
     "e2e": 5,
     "integration": 35,
     "qualification": 224,
-    "unit": 174
+    "unit": 175
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 125
+    "release-long": 126
   },
   "records": [
     {
@@ -1202,6 +1202,12 @@
     },
     {
       "file": "tests/p19-m5-nonlinear-contract.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m6-sh1-sparse-path.mjs",
       "taxonomy": "unit",
       "execution": "release-long",
       "owner": "phase19"

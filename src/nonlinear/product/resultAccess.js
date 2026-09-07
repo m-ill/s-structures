@@ -154,6 +154,8 @@ function overviewSlice(wrapper, result, kind) {
     engine: clone(wrapper.engine || result.engine || null),
     summary: clone(wrapper.summary || result.summary || null),
     termination: clone(result.termination || null),
+    failure: result.ok === false ? {code:result.reason||result.error?.code||'NONLINEAR_RUN_FAILED',
+      cause:result.details?.callbackError?.code||null,message:String(result.message||'').slice(0,2000)} : null,
     warnings: clone(result.warnings || []),
     limitationCount: result.limitations?.length || 0,
     kind,

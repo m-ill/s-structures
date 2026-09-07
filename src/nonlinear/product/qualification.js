@@ -7,7 +7,7 @@ export function resolveProductQualification({engineId,ok,stale=false,modelHash,s
   return {
     qualification:!ok?'invalid':capability?.production?'candidate':'unsupported',
     designBlocked:true,designTransferAllowed:false,
-    designBlockReason:stale?'NONLINEAR_RESULT_STALE':'P19_INDEPENDENT_QUALIFICATION_PENDING',
+    designBlockReason:!ok?'NONLINEAR_RUN_FAILED':stale?'NONLINEAR_RESULT_STALE':'P19_INDEPENDENT_QUALIFICATION_PENDING',
     qualificationBinding:{engineId,modelHash,settingsHash,buildIdentity},
   };
 }

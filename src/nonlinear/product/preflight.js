@@ -1,4 +1,5 @@
 import { changedAnalysisDomainHashes } from '../../core/analysisDomainHashes.js';
+import { buildZeroLengthPmmEntries } from '../elements/zeroLengthPmmEntries.js';
 import { normalizeAnalysisCase } from '../../core/analysisCase.js';
 import { stableHash, stableStringify } from '../../core/stableHash.js';
 import { validateModel } from '../../core/validation.js';
@@ -171,9 +172,9 @@ export function preflightProductionNonlinearCase(model = {}, inputCase = {}, opt
   const analysisCase = createProductionNonlinearCase(model, inputCase);
   const mode = analysisCase.kind === 'nonlinearTimeHistory' ? 'nlth' : 'pushover';
   const issues = [];
-  if ((model.zeroLengthPmmHinges?.length || model.pmmHinges?.length)) {
-    issues.push(issue('blocking', 'model', 'ZERO_LENGTH_PMM_PRODUCT_ASSEMBLY_UNAVAILABLE',
-      'Standalone SH1 PMM assembly is not connected to the production element registry. These elements must not be silently omitted.'));
+  if (mode === 'nlth' && (model.zeroLengthPmmHinges?.length || model.pmmHinges?.length)) {
+    issues.push(issue('blocking', 'model', 'ZERO_LENGTH_PMM_DYNAMIC_ENERGY_UNQUALIFIED',
+      'SH1 static sparse assembly is available; cyclic energy and dynamic recovery remain unqualified.'));
   }
   const modelValidation = safeModelValidation(model);
   for (const row of modelValidation.errors || []) {
@@ -217,6 +218,8 @@ export function preflightProductionNonlinearCase(model = {}, inputCase = {}, opt
   }
 
   if (domain) {
+    try { buildZeroLengthPmmEntries(domain); }
+    catch(error) { issues.push(issue('blocking','model',error.code||'ZERO_LENGTH_PMM_INVALID',error.message)); }
     integrationCapability = evaluateNonlinearIntegrationCapabilities(domain, {
       mode: mode === 'nlth' ? 'dynamic' : 'static',
     });
@@ -277,7 +280,7 @@ export function preflightProductionNonlinearCase(model = {}, inputCase = {}, opt
   }
 
   const nonlinearMemberCount = countNonlinearMembers(model);
-  if (nonlinearMemberCount === 0) {
+  if (nonlinearMemberCount === 0 && !(model.zeroLengthPmmHinges?.length || model.pmmHinges?.length)) {
     issues.push(issue('blocking', 'properties', 'NONLINEAR_PROPERTY_ASSIGNMENT_REQUIRED', '비선형 거동이 배정된 부재가 없습니다. 자동 배정 미리보기를 검토한 뒤 적용하세요.', {
       action: 'preview-auto-assignment',
       label: '자동 배정 미리보기',

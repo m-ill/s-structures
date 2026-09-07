@@ -578,6 +578,7 @@ export function installIndexEngineBridge(target = globalThis) {
       if (!nonlinearProductService) {
         nonlinearProductService = createNonlinearProductService({
           getModel: () => prepareNonlinearProductModel(bridge.getCurrentModel()),
+          getBuildIdentity: () => target.SStructuresBuildIdentity || { unbound: true, sessionScope: 'current-page-only' },
           getRunRecords: () => getPhase7AnalysisRunStore(target),
           requireWorker: Boolean(target.document),
           onReplaceModel(nextModel, currentModel) {

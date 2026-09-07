@@ -341,6 +341,7 @@ function massSnapshot(model, descriptors) {
 
 function nonlinearSnapshot(model) {
   return {
+    ...((model.zeroLengthPmmHinges?.length || model.pmmHinges?.length) ? {zeroLengthPmmHinges:sorted(model.zeroLengthPmmHinges||model.pmmHinges)} : {}),
     nonlinearMaterials: sorted(model.nonlinearMaterials || []),
     nonlinearSections: sorted(model.nonlinearSections || []),
     hingeProperties: sorted(model.hingeProperties || []),

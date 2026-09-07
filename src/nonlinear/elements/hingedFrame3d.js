@@ -5,6 +5,7 @@ import {
 } from './corotationalFrame3d.js';
 import { resolveDomainHingeAssignments } from '../properties/assignments.js';
 import { createDistributedFiberFrame3dKernel } from './distributedFiberFrame3d.js';
+import { buildZeroLengthPmmEntries } from './zeroLengthPmmEntries.js';
 
 export const HINGED_FRAME_3D_VERSION = HINGED_COROTATIONAL_FRAME_3D_VERSION;
 export const HINGED_FRAME_3D_STATE_VERSION = HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION;
@@ -23,7 +24,7 @@ export function createHingedFrame3dKernel(descriptor, hingeAssignments = [], opt
 
 export function buildHingedFrame3dEntries(domain, options = {}) {
   const resolution = options.assignmentResolution || resolveDomainHingeAssignments(domain, options);
-  return domain.elements.map((descriptor) => {
+  return [...domain.elements.map((descriptor) => {
     const hingeAssignments = resolution.byElement[descriptor.id] || [];
     const distributed = descriptor.nonlinear?.formulation === 'distributed-plasticity';
     if (distributed && hingeAssignments.length) {
@@ -55,7 +56,7 @@ export function buildHingedFrame3dEntries(domain, options = {}) {
       usesDistributedFiber: distributed,
       kernel,
     });
-  });
+  }), ...buildZeroLengthPmmEntries(domain)];
 }
 
 function mapValue(source, key) {

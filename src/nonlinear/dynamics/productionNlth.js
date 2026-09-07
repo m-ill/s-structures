@@ -52,6 +52,9 @@ export async function runProductionNlth(model = {}, analysisCase = {}, options =
   let residentSession = null;
   let residentFinalized = false;
   try {
+    if (model.zeroLengthPmmHinges?.length || model.pmmHinges?.length) {
+      throw nlthError('ZERO_LENGTH_PMM_DYNAMIC_ENERGY_UNQUALIFIED', 'SH1 dynamic energy and cyclic recovery are not qualified.');
+    }
     const merged = mergeOptions(analysisCase, options);
     const modelHashAtStart = stableHash(model);
     const loadSet = buildNlthLoadSet(model, analysisCase, merged);

@@ -1,8 +1,9 @@
 {
   "version": "p19-m5-m10-tests-v1",
-  "scope": "Candidate integration and existing numerical regression; excludes external review, M-tier and deployment qualification",
+  "scope": "Candidate integration, numerical regressions and real eight-member equilibrium acceptance gate; no external review or M-tier qualification",
   "tests": [
     "tests/p19-m5-nonlinear-contract.mjs",
+    "tests/p19-m6-sh1-sparse-path.mjs",
     "tests/p19-m8-nonlinear-lifecycle.mjs",
     "tests/p19-m4-webmcp-workflow.mjs",
     "tests/p19-m4-host-session.mjs",
@@ -91,12 +92,14 @@
     "tests/p18-link-pmm.mjs",
     "tests/p18-th1-sp1.mjs",
     "tests/p18-strix21-completion.mjs",
-    "tests/p18a-additional-comparisons.mjs"
+    "tests/p18a-additional-comparisons.mjs",
+    "verification/harnesses/p19-frame-equilibrium-gate.mjs"
   ],
   "testTimeoutMs": {
     "tests/p8-m5-production-pushover.mjs": 900000,
     "tests/p8-m6-production-coupling.mjs": 900000,
     "tests/p8-m7-production-arc.mjs": 900000,
-    "tests/p8-m8-fiber-dynamics.mjs": 900000
+    "tests/p8-m8-fiber-dynamics.mjs": 900000,
+    "tests/p8-m3-corotational-global.mjs": 900000
   }
 }
