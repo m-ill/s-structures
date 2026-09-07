@@ -3,7 +3,7 @@ import { createWebMcpTools, WEBMCP_VERSION } from './tools.js';
 export function registerDefinitions(target,definitions,state) {
   const context=target.document?.modelContext,controller=new AbortController();let active=true;
   state.status='unsupported';state.registered=[];state.errors=[];
-  state.dispose=()=>{active=false;controller.abort();state.status='disposed';definitions.dispose?.();};
+  state.dispose=()=>{active=false;controller.abort();state.status='disposed';const report=definitions.dispose?.();state.errors.push(...(report?.errors||[]));};
   if(target.isSecureContext===false||typeof context?.registerTool!=='function')return state;
   for(const definition of definitions) {
     try {

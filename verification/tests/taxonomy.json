@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 439,
+  "plannedCount": 441,
   "categoryCounts": {
     "e2e": 5,
     "integration": 35,
     "qualification": 224,
-    "unit": 175
+    "unit": 177
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 126
+    "release-long": 128
   },
   "records": [
     {
@@ -1214,6 +1214,18 @@
     },
     {
       "file": "tests/p19-m8-nonlinear-lifecycle.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-review-jet-contract.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-review-session-disposal.mjs",
       "taxonomy": "unit",
       "execution": "release-long",
       "owner": "phase19"
