@@ -6,8 +6,11 @@ const result=await runNonlinearAnalysisCaseAsync(model,analysisCase,analysisCase
 mkdirSync('output/phase19',{recursive:true});
 writeFileSync('output/phase19/frame-equilibrium-gate.json',JSON.stringify(result));
 const rejected=result.details?.acceptedSteps?.find(s=>s.evaluation?.audit?.ok===false);
+const audits=(result.steps||[]).map(s=>s.audit||s.convergence?.audit).filter(Boolean);
 const witness={version:'p19-frame-equilibrium-gate-v1',ok:result.ok===true,engine:result.engine,
   reason:result.reason||result.termination?.reason,cause:result.details?.callbackError||null,
-  equilibrium:rejected?.evaluation?.audit||null,qualification:'not-qualified',
+  equilibrium:rejected?.evaluation?.audit||null,
+  acceptedAudits:audits.map(a=>({ok:a.ok,forceResidual:a.forceResidual,momentResidual:a.momentResidual,tolerance:a.tolerance})),
+  qualification:'not-qualified',
   input:'verification/fixtures/phase19/eight-member-hinged-frame.json',raw:'output/phase19/frame-equilibrium-gate.json'};
 console.log(JSON.stringify(witness,null,2));process.exitCode=witness.ok?0:1;
