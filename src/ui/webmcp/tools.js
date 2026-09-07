@@ -1,4 +1,5 @@
 import { createWorkflowTools } from './workflowTools.js';
+import { createNonlinearTools } from './nonlinearTools.js';
 import { finiteJson } from '../../modeling/designInputCommands.js';
 import { stableHash } from '../../core/stableHash.js';
 import { SOLVER_UNIT_POLICY } from '../../core/units.js';
@@ -79,6 +80,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
     };
   }
   const workflow=createWorkflowTools({agent,bridge,tool,object,context,setView});
+  const nonlinear=createNonlinearTools({agent,tool,context});
   const definitions = [
     tool('get_project_context', 'Read model units, input hash, case IDs and supported analysis capabilities. Does not run analysis.', object(), true, () => {
       const value = model();
@@ -86,7 +88,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
         version: WEBMCP_VERSION, ...context(value),
         inputIdentity: agent.getWorkflowInputIdentity?.({ model: value }) || null,
         counts: Object.fromEntries(['nodes', 'members', 'loads'].map((key) => [key, value[key]?.length || 0])),
-        cases: (value.analysisCases || []).slice(0, 100).map(({ id, name, kind }) => ({ id, name, kind, exposed: KINDS.includes(kind) })),
+        cases: (value.analysisCases || []).slice(0, 100).map(({ id, name, kind, engineId }) => ({ id, name, kind, engineId, exposed: KINDS.includes(kind)||nonlinear.isCase(id) })),
         casesTruncated: (value.analysisCases?.length || 0) > 100,
         capabilities: KINDS.map((kind) => {
           const result = agent.getAnalysisCapabilities({ kind });
@@ -109,14 +111,17 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
       return { ...context(value), selection };
     }),
     tool('validate_analysis', 'Validate an existing case and compute route for the current model hash. Does not start a job.', object(analysis, ['caseId', 'modelHash']), true, (args) => {
+      if(nonlinear.isCase(args.caseId))return nonlinear.validate(args);
       const { input, binding } = inputFor(args);
       return { ...binding, validation: agent.validateAnalysisRun(input) };
     }),
     tool('plan_analysis', 'Plan an existing analysis case. Review route, qualification and blocking conditions before starting.', object(analysis, ['caseId', 'modelHash']), true, (args) => {
+      if(nonlinear.isCase(args.caseId))return nonlinear.plan(args);
       const { input, binding } = inputFor(args);
       return { ...binding, plan: agent.planAnalysisRun(input) };
     }),
     tool('start_analysis', 'Start analysis of the current existing case and publish its results to the UI. Returns a job ID. Reuse requestId to avoid duplicate execution.', object({ ...analysis, requestId: id }, ['caseId', 'modelHash', 'requestId']), false, (args) => {
+      if(nonlinear.isCase(args.caseId))return nonlinear.start(args);
       const fingerprint = stableHash({ ...args, computeTarget: args.computeTarget || 'cpu' });
       const previous = requests.get(args.requestId);
       if (previous) {
@@ -133,9 +138,10 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
       requests.set(args.requestId, { fingerprint, jobId: job.id });
       return { ...jobInfo(job.id), reused: false };
     }),
-    tool('get_analysis_status', 'Read execution status, errors, provenance and whether the model changed since this job started.', object({ jobId: id }, ['jobId']), true, ({ jobId }) => jobInfo(jobId)),
+    tool('get_analysis_status', 'Read execution status, errors, provenance and whether the model changed since this job started.', object({ jobId: id }, ['jobId']), true, ({ jobId }) => nonlinear.owns(jobId)?nonlinear.status(jobId):jobInfo(jobId)),
     tool('get_result_slice', 'Read a bounded path from an existing completed job. Default is summary. Preserves qualification and flags stale results; does not rerun analysis.', object({ jobId: id, path: { type: 'string', minLength: 1, maxLength: 180, pattern: '^(summary|payload)(\\.[A-Za-z0-9_-]+)*$' }, limit: { type: 'integer', minimum: 1, maximum: 100 } }, ['jobId']), true, ({ jobId, path = 'summary', limit = 25 }) => {
       if (path.split('.').some((part) => ['__proto__', 'prototype', 'constructor'].includes(part))) fail('INVALID_PATH', 'Unsafe result path.');
+      if(nonlinear.owns(jobId))return nonlinear.slice({jobId,path,limit});
       const info = jobInfo(jobId);
       if (!info.status.resultAvailable) fail('RESULT_NOT_READY', 'No result is available. Check analysis status.');
       const slice = agent.getAnalysisResultSlice({ jobId, query: { path, limit } });
@@ -143,13 +149,15 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
       return { ...info, slice, externalQualification: 'NOT_CLAIMED' };
     }),
     tool('cancel_analysis', 'Request cancellation of one analysis job started by this page session. Completed results are retained.', object({ jobId: id }, ['jobId']), false, ({ jobId }) => {
+      if(nonlinear.owns(jobId))return nonlinear.cancel(jobId);
       jobInfo(jobId);
       agent.cancelAnalysisRun({ jobId });
       return jobInfo(jobId);
     }),
     ...workflow.tools,
+    ...nonlinear.tools,
   ];
-  definitions.dispose=()=>{workflow.dispose();for(const jobId of jobs.keys()) agent.cancelAnalysisRun({jobId});};
+  definitions.dispose=()=>{workflow.dispose();nonlinear.dispose();for(const jobId of jobs.keys()) agent.cancelAnalysisRun({jobId});};
   return definitions;
 }
 

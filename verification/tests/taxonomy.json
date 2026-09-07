@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 436,
+  "plannedCount": 438,
   "categoryCounts": {
     "e2e": 5,
     "integration": 35,
     "qualification": 224,
-    "unit": 172
+    "unit": 174
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 123
+    "release-long": 125
   },
   "records": [
     {
@@ -1197,6 +1197,18 @@
     {
       "file": "tests/p19-m4-webmcp-workflow.mjs",
       "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m5-nonlinear-contract.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m8-nonlinear-lifecycle.mjs",
+      "taxonomy": "unit",
       "execution": "release-long",
       "owner": "phase19"
     },

@@ -583,7 +583,12 @@ export function installIndexEngineBridge(target = globalThis) {
           onReplaceModel(nextModel, currentModel) {
             replaceModelContents(bridge.getCurrentModel() || currentModel, nextModel);
             bridge.markAnalysisCasesStale('nonlinear-properties-changed');
-            bridge.reanalyze();
+            lastResult = null;
+            lastResultIdentity = null;
+            designInputResultsStale = true;
+            target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
+            target.SStructuresAnalysisCenter?.refresh?.();
+            target.draw?.();
           },
           onPublishResult({ job, model, analysisCase, result }) {
             const currentModel = bridge.getCurrentModel();
@@ -612,7 +617,7 @@ export function installIndexEngineBridge(target = globalThis) {
     createProductionNonlinearCase(input = {}) {
       const model = prepareNonlinearProductModel(bridge.getCurrentModel());
       if (!model) return null;
-      const analysisCase = bridge.getNonlinearProductService().createCase({ ...input, model });
+      const analysisCase = bridge.getNonlinearProductService().createCase({ model, analysisCase: input });
       upsertAnalysisCase(model, analysisCase);
       target.SStructuresAnalysisCenter?.refresh?.();
       return analysisCase;

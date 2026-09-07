@@ -76,7 +76,7 @@ let pagehide;
 const supported = { SStructuresAgent: agent, document: { modelContext: { registerTool(tool) { registered.push(tool); return new Promise(() => {}); } } }, addEventListener(type, handler) { if (type === 'pagehide') pagehide = handler; } };
 const registration = installWebMcp(supported, bridge);
 assert.equal(registration.status, 'registered');
-assert.equal(registered.length, 27);
+assert.equal(registered.length, 36);
 assert.equal(installWebMcp(supported, bridge), registration);
 pagehide({ persisted: true });
 assert.equal(registration.status, 'registered');

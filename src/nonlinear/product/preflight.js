@@ -73,6 +73,9 @@ export function createProductionNonlinearCase(model = {}, input = {}) {
   const engineId = pushover
     ? NONLINEAR_ENGINE_IDS.productionPushover
     : NONLINEAR_ENGINE_IDS.productionNlth;
+  if (input.engineId && input.engineId !== engineId) {
+    throw Object.assign(new Error('Explicit engine must match the production case kind; migration requires a new case.'), { code: 'NONLINEAR_ENGINE_MISMATCH' });
+  }
   const gravityCombinationId = clean(
     input.gravityCombinationId
       || input.inputRefs?.gravityCombinationId
@@ -107,7 +110,16 @@ export function createProductionNonlinearCase(model = {}, input = {}) {
     settings.controlNodeId = controlNodeId;
     settings.direction = direction;
     settings.pattern = normalizePattern(settings.pattern);
-    settings.control = settings.arcLength?.enabled === true ? 'arcLength' : 'displacement';
+    const requested = input.settings?.control || input.control?.type || input.settings?.controlStrategy;
+    settings.control = requested || (settings.arcLength?.enabled === true ? 'arcLength' : 'displacement');
+    if (!['displacement', 'arcLength'].includes(settings.control)) {
+      throw Object.assign(new Error('Product cases support displacement or arcLength. P14 load control is a kernel-only capability.'), { code: 'PUSHOVER_CONTROL_UNSUPPORTED' });
+    }
+    if ((requested && settings.arcLength?.enabled === true && requested !== 'arcLength') ||
+        (input.settings?.controlStrategy && input.settings.controlStrategy !== settings.control)) {
+      throw Object.assign(new Error('Conflicting control settings.'), { code: 'PUSHOVER_CONTROL_CONFLICT' });
+    }
+    settings.arcLength = { ...settings.arcLength, enabled: settings.control === 'arcLength' };
     settings.targetDisplacement = finite(settings.targetDisplacement, defaults.targetDisplacement);
     settings.steps = positiveInteger(settings.steps, defaults.steps);
   } else {
@@ -159,6 +171,10 @@ export function preflightProductionNonlinearCase(model = {}, inputCase = {}, opt
   const analysisCase = createProductionNonlinearCase(model, inputCase);
   const mode = analysisCase.kind === 'nonlinearTimeHistory' ? 'nlth' : 'pushover';
   const issues = [];
+  if ((model.zeroLengthPmmHinges?.length || model.pmmHinges?.length)) {
+    issues.push(issue('blocking', 'model', 'ZERO_LENGTH_PMM_PRODUCT_ASSEMBLY_UNAVAILABLE',
+      'Standalone SH1 PMM assembly is not connected to the production element registry. These elements must not be silently omitted.'));
+  }
   const modelValidation = safeModelValidation(model);
   for (const row of modelValidation.errors || []) {
     issues.push(issue('blocking', stageForValidation(row, mode), row.code || 'MODEL_VALIDATION_FAILED', row.message, {

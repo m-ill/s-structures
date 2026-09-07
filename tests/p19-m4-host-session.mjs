@@ -9,7 +9,7 @@ const bridge=installIndexEngineBridge(frame);frame.document={};
 const child=installWebMcp(frame,bridge);let load;const definitions=[];
 const win={location:{origin:'https://test.example'},document:{modelContext:{registerTool(d){definitions.push(d);}}}};
 const iframe={contentWindow:frame,addEventListener(_t,fn){load=fn;},removeEventListener(){}};
-const host=installHostWebMcp({window:win,iframe,projectId:'A'});load();assert.equal(definitions.length,27);
+const host=installHostWebMcp({window:win,iframe,projectId:'A'});load();assert.equal(definitions.length,36);
 const get=definitions.find(x=>x.name==='get_workflow_context');assert.equal((await get.execute({})).ok,true);
 assert.throws(()=>child.call({project:'A',session:child.session,nonce:'forged'},'get_workflow_context',{}),{code:'SESSION_BINDING_INVALID'});
 frame.location.origin='https://evil.example';await assert.rejects(get.execute({}),{code:'SESSION_BINDING_INVALID'});frame.location.origin=win.location.origin;

@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {createNonlinearProductService} from '../src/nonlinear/product/jobManager.js';
+import {createProductionNonlinearCase,preflightProductionNonlinearCase} from '../src/nonlinear/product/preflight.js';
+import {createM10Model,createM10PushoverCase,syntheticPushoverResult} from './helpers/p8M10Fixture.mjs';
+import {createWebMcpTools} from '../src/ui/webmcp/tools.js';
+import {installIndexEngineBridge} from '../src/ui/indexBridge.js';
+
+const model=createM10Model(),analysisCase=createM10PushoverCase(model);
+assert.throws(()=>createProductionNonlinearCase(model,{...analysisCase,engineId:'legacy-preliminary-stepwise-secant'}),{code:'NONLINEAR_ENGINE_MISMATCH'});
+assert.throws(()=>createProductionNonlinearCase(model,{...analysisCase,settings:{...analysisCase.settings,control:'load'}}),{code:'PUSHOVER_CONTROL_UNSUPPORTED'});
+assert.throws(()=>createProductionNonlinearCase(model,{...analysisCase,settings:{...analysisCase.settings,controlStrategy:'load'}}),{code:'PUSHOVER_CONTROL_CONFLICT'});
+const sh1=structuredClone(model);sh1.zeroLengthPmmHinges=[{id:'SH1'}];
+assert.ok(preflightProductionNonlinearCase(sh1,analysisCase).blocking.some(r=>r.code==='ZERO_LENGTH_PMM_PRODUCT_ASSEMBLY_UNAVAILABLE'));
+let execute;const service=createNonlinearProductService({getModel:()=>model,schedule:fn=>new Promise(resolve=>{execute=()=>resolve(fn());}),runner:async()=>syntheticPushoverResult()});
+const first=service.start({analysisCase});
+assert.throws(()=>service.start({analysisCase}),{code:'NONLINEAR_BUSY'});
+service.dispose();await execute();assert.equal(service.getStatus(first.id).status,'cancelled');assert.equal(service.getResult(first.id),null);
+
+const target={model:()=>model,location:{search:''}},bridge=installIndexEngineBridge(target);
+const tools=createWebMcpTools({agent:target.SStructuresAgent,bridge});
+const call=(name,args={})=>tools.find(t=>t.name===name).execute(args);
+assert.equal(tools.length,36);
+const context=await call('get_project_context');
+const preview=await call('preview_nonlinear_case',{modelHash:context.modelHash,case:{id:'M5-PUSH',mode:'pushover',gravityCombinationId:'GRAV',controlNodeId:'T',direction:'+x',settings:{steps:4,targetDisplacement:0.01,fiberPmm:false}}});
+assert.equal(model.analysisCases.length,0);
+const applied=await call('apply_nonlinear_case',{handle:preview.handle,requestId:'case'});
+assert.equal(applied.ok,true);assert.equal(model.analysisCases[0].engineId,analysisCase.engineId);
+assert.deepEqual(await call('apply_nonlinear_case',{handle:preview.handle,requestId:'case'}),applied);
+const current=await call('get_project_context');assert.equal(current.cases[0].exposed,true);
+const validation=await call('validate_analysis',{caseId:'M5-PUSH',modelHash:current.modelHash});
+assert.equal(typeof validation.validation.ok,'boolean');assert.equal(bridge.listNonlinearRuns().length,0);
+await assert.rejects(call('get_nonlinear_history',{jobId:'foreign',channel:'overview'}),{code:'JOB_NOT_FOUND'});
+await assert.rejects(call('preview_nonlinear_case',{modelHash:context.modelHash,case:{id:'stale',mode:'pushover',gravityCombinationId:'GRAV',settings:{}}}),{code:'STALE_MODEL'});
+await assert.rejects(call('preview_nonlinear_case',{modelHash:current.modelHash,case:{id:'bad',mode:'nlth',gravityCombinationId:'GRAV',settings:{},solver:{}}}),{code:'INVALID_INPUT'});
+tools.dispose();console.log(JSON.stringify({ok:true,tools:tools.length,scope:'routing, typed edits, no hidden analysis, omitted SH1 guard, ownership, queued disposal'}));

@@ -28,10 +28,18 @@ export async function createAvailableWasmSparseBackend(options = {}) {
 export async function attachAnalysisWorker(options = {}) {
   const endpoint = options.endpoint || await resolveWorkerEndpoint();
   if (!endpoint) return null;
+  // Register before asynchronous WASM initialization. Otherwise the first RUN
+  // can arrive during loading and disappear without an accepted/error response.
+  let core;
+  const pending = [];
+  endpoint.onMessage((message) => {
+    if (core) void core.handleMessage(message);
+    else pending.push(message);
+  });
   const backend = Object.prototype.hasOwnProperty.call(options, 'backend')
     ? options.backend
     : await createAvailableWasmSparseBackend(options);
-  const core = createWorkerCore({
+  core = createWorkerCore({
     postMessage(message, transferables) {
       endpoint.postMessage(message, transferables);
     },
@@ -39,9 +47,8 @@ export async function attachAnalysisWorker(options = {}) {
     taskHandler: options.taskHandler || handleBuiltInAnalysisTask,
     preflight: options.preflight,
   });
-  endpoint.onMessage((message) => {
-    void core.handleMessage(message);
-  });
+  for (const message of pending) void core.handleMessage(message);
+  pending.length = 0;
   return core;
 }
 
