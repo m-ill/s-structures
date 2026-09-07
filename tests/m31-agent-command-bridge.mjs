@@ -190,6 +190,7 @@ response = sendCommand({ id: 'pointcloud-validation-review', method: 'getPhase3P
 assert.equal(response.ok, true);
 assert.equal(response.data.summary.agentDecision, 'collect-pointcloud-validation-evidence');
 
+target.SStructuresAgent.prepareResultView('getNonlinearAnalysisTrace');
 response = sendCommand({ id: 'nonlinear-trace', method: 'getNonlinearAnalysisTrace' });
 assert.equal(response.ok, true);
 assert.equal(response.data.version, 'p3-m16-nonlinear-trace');
