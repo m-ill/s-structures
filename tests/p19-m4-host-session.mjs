@@ -24,3 +24,12 @@ const service=createElasticReviewService({bridge:{...bridge,getAnalysisCaseResul
 const p=service.planWorkflow({caseIds:['A','B']});const pending=service.runWorkflow({plan:p,requestId:'cancel'});service.cancelWorkflow('cancel');const result=await pending;
 assert.equal(result.ok,false);assert.equal(result.code,'WORKFLOW_CANCELLED');assert.deepEqual(cancelled,['owned-job']);assert.deepEqual(started,['A']);
 console.log('PASS host origin/frame/Document/nonce/project/dispose guards; unsupported fallback; owned-job cancellation skips remaining cases');
+
+const cryptoDescriptor=Object.getOwnPropertyDescriptor(globalThis,'crypto');
+try {
+ Object.defineProperty(globalThis,'crypto',{value:undefined,configurable:true});
+ const insecure={model:()=>model,location:{search:''},isSecureContext:false};
+ const ib=installIndexEngineBridge(insecure);insecure.document={};
+ assert.equal(installWebMcp(insecure,ib).status,'unsupported');
+} finally {Object.defineProperty(globalThis,'crypto',cryptoDescriptor);}
+console.log('PASS insecure/unsupported browser without randomUUID keeps ordinary UI initialization');

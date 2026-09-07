@@ -4,7 +4,7 @@ import { id, hash, array, choice, command, caseCommand, pagination } from './sch
 
 export function createWorkflowTools({agent,bridge,tool,object,context,setView}) {
   const handles=new Map(),requests=new Map(),workflows=new Map();let sequence=0,active=true;
-  const sessionId=globalThis.crypto.randomUUID();
+  const sessionId=globalThis.crypto?.randomUUID?.()||stableHash({time:Date.now(),random:Math.random()});
   const fail=code=>{throw Object.assign(new Error(code),{code});};
   const good=value=>{if(!value?.ok)fail(value?.code||'SERVICE_FAILED');return value;};
   const identity=()=>bridge.getWorkflowInputIdentity();
