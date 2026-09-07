@@ -16,6 +16,8 @@ stableInterfaceFirst: true
 
 ## First Calls
 
+Phase 19 M2 로컬 개발판에서는 `getDesignInputContext`, `previewDesignInputChanges`, `applyDesignInputChanges`, `undoDesignInputChanges`를 in-page Agent 메서드로 제공한다. UI의 **탄성해석 → 설계 입력 변경**과 같은 서비스를 사용하며 숨은 해석 실행은 없다. 타입별 예제·단위·승인·이력 한도는 [M2 계약](../phase19/M2_CONTRACT.md)에 있다. 기존 WebMCP v1 9개 도구와 명령 브리지 manifest에 신규 도구를 등록하는 작업은 M4로 구분한다.
+
 agent는 항상 아래 순서로 현재 상태를 읽는다.
 
 ```js

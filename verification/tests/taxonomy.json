@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 429,
+  "plannedCount": 433,
   "categoryCounts": {
     "e2e": 5,
-    "integration": 32,
+    "integration": 33,
     "qualification": 224,
-    "unit": 168
+    "unit": 171
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 116
+    "release-long": 120
   },
   "records": [
     {
@@ -1157,6 +1157,30 @@
       "taxonomy": "unit",
       "execution": "release-long",
       "owner": "release-verification"
+    },
+    {
+      "file": "tests/p19-m1-contract.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m1-product-parity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m2-design-input.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m2-ui-agent-parity.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase19"
     },
     {
       "file": "tests/p2-design-demand-package.mjs",

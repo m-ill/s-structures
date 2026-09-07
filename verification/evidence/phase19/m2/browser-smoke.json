@@ -1,0 +1,44 @@
+{
+  "version": "p19-m2-browser-smoke-v1",
+  "date": "2026-09-07",
+  "sourceCommit": "a9ec274ecdf49690e400256325a410beee520267",
+  "browser": "Codex in-app browser",
+  "url": "http://127.0.0.1:5198/index.html",
+  "scope": "Actual local UI smoke, not the full browser or steel/RC workflow matrix",
+  "input": {
+    "type": "load-case",
+    "mode": "create",
+    "id": "M2-FINAL",
+    "name": "최종 입력 검증",
+    "loadType": "live"
+  },
+  "observed": {
+    "previewSourceInputHash": "c99453c4855886f5703b85794b7a8571ee7c11bdde279c5978c4a0080c82c419",
+    "previewBefore": null,
+    "previewAfter": {
+      "id": "M2-FINAL",
+      "name": "최종 입력 검증",
+      "type": "live",
+      "origin": "manual",
+      "userModified": true
+    },
+    "affectedMemberIds": [
+      "e10",
+      "e11",
+      "e12",
+      "e13",
+      "e14",
+      "e15",
+      "e16",
+      "e9"
+    ],
+    "applyStatus": "변경안을 적용했습니다. 해석을 다시 실행하세요.",
+    "undoStatus": "설계 입력을 실행취소했습니다. 해석을 다시 실행하세요.",
+    "staleNotice": "설계 입력 변경 · 이전 결과는 무효입니다. 해석을 다시 실행하세요.",
+    "nativeWebMcpVersion": "sstructures-webmcp-v1",
+    "postApplyInputHash": "3a86e80f62bd932cb3e8b5657d85b0d5668f8ab3b9b774d6bdb096effefd41c5",
+    "jobs": [],
+    "consoleErrors": []
+  },
+  "evidenceType": "Recorded observations from CUA DOM, Site tools, console and visual inspection; screenshot viewed in task, not bundled"
+}

@@ -1,27 +1,29 @@
 # Phase 19 실제 진행 상태
 
 ```yaml
-version: p19-status-v2
+version: p19-status-v3
 updated: 2026-09-07
-status: m0-m1-complete
+status: m0-m2-complete
 development_baseline: 7bb55d7ec6bd6b155361b26b7830c70b45043acb
 public_baseline: e18d5b432c780523496f8aad489b502934ae0ebd
-implemented_workpackages: [M0, M1]
-required_distinct_tests: 59
-passed_distinct_tests: 59
-failed_latest_tests: 0
-validation_strategy: full-baseline-plus-targeted-regression
+implemented_workpackages: [M0, M1, M2]
+m0_m1_latest_distinct_tests: 59
+m2_required_tests: 27
+m2_passed_tests: 27
+m2_failed_tests: 0
+m2_source_commit: a9ec274ecdf49690e400256325a410beee520267
+validation_strategy: m2-full-targeted-suite-on-one-commit
 release_status: not-qualified
 github_publication: not-performed
 ```
 
-M0 기준선 감사와 M1 공통 입력·결과·조회 계약을 구현했다. 59개 필수 시험의 최신 결과를 모두 PASS로 확인했다. 실제 탄성설계 서비스와 신규 WebMCP 도구 연결은 M2~M4, 비선형 엔진의 추가 통합과 자격 검증은 M5 이후에 진행한다.
+M0 기준선, M1 공통 계약에 이어 M2 탄성설계 입력 서비스를 구현했다. M2 고정 커밋의 별도 checkout에서 관련 회귀 27개가 모두 PASS다. M0~M1의 과거 59개 최신 판정과 이번 27개는 범위가 겹치므로 합산하지 않는다. 해석→설계검토 서비스는 M3, 신규 WebMCP 도구 등록은 M4, 비선형 추가 통합·자격 검증은 M5 이후 범위다.
 
 | 작업 | 상태 | 근거 또는 남은 작업 |
 |---|---|---|
 | M0 기준선·범위 | 완료 | 소스 ZIP/SHA, API 대응표, High 41건, 기존 qualification·성능·미확정 담당 목록 |
 | M1 공통 계약 | 완료 | 버전 입력 식별, 불변 기록, 명시적 준비, stale 및 조합·단위·변조 차단 |
-| M2 설계 입력 | 계획 | 타입별 preview/apply, 원자성, Undo |
+| M2 설계 입력 | 완료 | 11개 타입, UI·Agent 공통 preview/apply, 원자성·단일 Undo·결과 무효화, 강재·RC 폼 동등성, 회귀 27/27 |
 | M3 탄성설계 서비스 | 계획 | 해석 run→설계 수요→강재/RC 검토→snapshot 보고서 |
 | M4 WebMCP·화면 | 계획 | 신규 typed 도구, 실제 브라우저 전체 워크플로 |
 | M5 비선형 기반 | 계획 | 초기상태·checkpoint·PMM 조립·엔진 routing |
@@ -40,6 +42,17 @@ M0 기준선 감사와 M1 공통 입력·결과·조회 계약을 구현했다. 
 - WebMCP v1 도구 9개와 기존 modelHash 계약을 유지하고 context에 새 입력 식별을 추가했다. 설계 입력·실행 도구는 아직 추가하지 않았다.
 
 상세 API와 재현 명령은 [구현 계약](M0_M1_CONTRACT.md), 호출 예시는 [Agent Guide](../user-manual/AI_AGENT_GUIDE.md)에 있다.
+
+## M2 구현과 검증
+
+- 새 공통 서비스가 설계기준·하중·질량원·조합·재료/단면·부재 설계 속성·탄성 케이스 입력을 처리한다. 기존 designBasisChangeSet·massSourceChangeSet·loadCombinationChangeSet을 재사용한다.
+- **탄성해석 → 설계 입력 변경** 패널과 in-page Agent의 4개 메서드는 같은 서비스를 사용한다. 기존 7단계 창/모델러는 유지하며 신규 WebMCP 도구와 app host 연결은 아직 수행하지 않았다.
+- 미리보기는 원본 revision/hash·단위·영향 부재·이전/다음 값·경고를 포함한다. 적용 시 입력/정책 재검사, 전체 검증, 단일 커밋과 Undo를 수행한다. 실패·변조·stale·중복·잠금·수정 불가능한 모델을 시험했다.
+- 질량원 ID→solver 정의 객체 mapping과 참조 케이스 갱신, 6자유도 회전 질량 보존, 5종 탄성 케이스 settings 전달, 강재 별칭 우선순위와 RC 명시적 철근량 충돌을 처리한다.
+- 기존 후보 KDS 팩의 승인 조건을 유지하며 요청으로 reviewer·승인 서명을 만들 수 없다. 신뢰하는 호스트 규칙 팩의 상태가 preview 후 바뀌면 적용을 차단한다. 수동 조합은 자동 승인 상태가 아니다.
+- 검증 소스 `a9ec274`에서 27개 모두 PASS. 신규 서비스 시험 11개 시나리오와 강재·RC 각 폼 이벤트→Agent canonical model 일치→Undo를 포함한다. 입력 경로의 숨은 solver 실행 0회를 확인했다.
+- 같은 런타임의 실제 Codex 브라우저에서 하중 케이스 생성→미리보기→적용→실행취소, 결과 무효 표시, 기존 native WebMCP context의 입력 해시 변경·job 0개·console error 0건을 확인했다. 실제 브라우저 전체 강재·RC 설계나 지원 브라우저 matrix 검증은 아니다.
+- [M2 계약](M2_CONTRACT.md), [고정 시험 목록](../../verification/specs/phase19/m2-tests.json), [증거와 재현](../../verification/evidence/phase19/m2/README.md). 원본 소스 ZIP·checkout·로그는 `output/phase19/m2-r1-20260907/`에 보존한다. 후속 문서·taxonomy 변경은 런타임을 바꾸지 않는다.
 
 ## 검증 추적
 
@@ -63,4 +76,4 @@ R3 이후의 런타임 변경은 [cache 대상 세 이름 추가](../../verifica
 - 런타임 build/rule pack이 미주입이면 새 기록의 설계전달은 차단된다. 외부 검토 담당과 고정 성능 장비의 브라우저·전원 모드는 미확정이다.
 - 기존 21개 비교나 이번 계약 회귀의 통과를 전체 비선형·최종설계 자격으로 확대하지 않는다.
 
-작업 브랜치는 `work/phase19-m0-m1-20260907`이다. 이번 범위는 로컬 구현·커밋·검증이며 공개 main과 GitHub Pages는 갱신하지 않았다.
+현재 작업 브랜치는 `work/phase19-m2-20260907`이다. 이번 범위는 로컬 구현·커밋·검증이며 공개 main과 GitHub Pages는 갱신하지 않았다.

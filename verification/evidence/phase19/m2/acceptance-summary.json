@@ -1,0 +1,35 @@
+{
+  "version": "p19-m2-acceptance-v1",
+  "date": "2026-09-07",
+  "status": "PASS_WITH_SCOPE_LIMITS",
+  "implementedWorkpackage": "M2",
+  "source": {
+    "commit": "a9ec274ecdf49690e400256325a410beee520267",
+    "tree": "86d71dc88ca2cf1860d31dc87f070d74b698629b",
+    "trackedChanges": ""
+  },
+  "validatedRuntimeTrees": {
+    "src": "a62a492c471d6fc2988b6c2dabec07dd6d2e23c1",
+    "server": "884174bb8b6afe08de4bd559a68741f1e6a6cf95",
+    "index.html": "5e5fe41334bb5d79d37746fdfa987b93639090d8",
+    "app.html": "eab4e60227d16d8e7c599099b9db4cd94ff0052d"
+  },
+  "planned": 27,
+  "passed": 27,
+  "failed": 0,
+  "localArtifactRoot": "output/phase19/m2-r1-20260907",
+  "sourceArchiveSha256": "0cd45f86d4e857d670892c5d8fb9f82778e0dcbfc5488e9f87d9192fd1307cb0",
+  "serviceScenarios": 11,
+  "uiAgentCanonicalFixtures": [
+    "steel",
+    "RC"
+  ],
+  "implicitInputSolverExecutions": 0,
+  "scopeLimits": [
+    "M2 native form and in-page Agent only; new WebMCP tools in M4",
+    "No new engineering solver qualification",
+    "Legacy editing surfaces retained",
+    "M3 design review and reports not connected",
+    "No GitHub publication"
+  ]
+}
