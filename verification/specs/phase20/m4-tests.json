@@ -1,0 +1,10 @@
+{
+  "scope": "P20 M4 registered compatibility and explicit routing",
+  "tests": [
+    "tests/p20-m4-module-boundaries.mjs",
+    "tests/p20-m1-metadata.mjs",
+    "tests/p20-m3-elastic-parity.mjs",
+    "tests/p19-m5-nonlinear-contract.mjs",
+    "tests/p8-m0-governance.mjs"
+  ]
+}

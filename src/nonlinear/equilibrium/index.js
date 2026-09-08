@@ -78,9 +78,9 @@ export {
   buildReducedSparsePattern,
   typedCscMatVec,
   typedCscToCsr,
-} from './typedSparse.js';
+} from '../../compute/sparse/reducedAssembly.js';
 export {
   WASM_SPARSE_BACKEND_ID,
   WASM_SPARSE_DIAGNOSTICS_VERSION,
   createWasmSparseBackend,
-} from './backends/wasmSparseBackend.js';
+} from '../../compute/backends/wasmCpuBackend.js';

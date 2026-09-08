@@ -14,7 +14,7 @@ import {
 import { createNonlinearStateStore, createStateCheckpoint, restoreStateCheckpoint } from '../core/stateStore.js';
 import { buildHingedFrame3dEntries } from '../elements/hingedFrame3d.js';
 import { createEquilibriumAssembler } from '../equilibrium/assembler.js';
-import { createWasmSparseBackend } from '../equilibrium/backends/wasmSparseBackend.js';
+import { createWasmSparseBackend } from '../../compute/backends/wasmCpuBackend.js';
 import { buildNonlinearLoadPattern } from '../equilibrium/externalLoads.js';
 import { prepareModelFiberPmmInteractions } from '../fiber/fiberPmmPreprocessor.js';
 import { resolveDomainHingeAssignments } from '../properties/assignments.js';

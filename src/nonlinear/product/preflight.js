@@ -5,7 +5,7 @@ import { stableHash, stableStringify } from '../../core/stableHash.js';
 import { validateModel } from '../../core/validation.js';
 import { buildMdofGroundMotionSet } from '../dynamics/mdofGroundMotion.js';
 import { buildMdofMassDomain } from '../dynamics/massDomain.js';
-import { buildReducedSparsePattern } from '../equilibrium/typedSparse.js';
+import { buildReducedSparsePattern } from '../../compute/sparse/reducedAssembly.js';
 import { evaluateNonlinearIntegrationCapabilities } from '../integration/capabilityMatrix.js';
 import { buildNlthLoadSet } from '../dynamics/productionNlth.js';
 import { previewHingeAssignmentChangeSet, resolveDomainHingeAssignments } from '../properties/assignments.js';

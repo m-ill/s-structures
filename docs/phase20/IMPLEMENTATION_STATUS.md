@@ -3,11 +3,11 @@
 ```yaml
 version: p20-status-v1
 updated: 2026-09-08
-status: m0-baseline-complete
+status: m3-focused-validation-complete
 planning_source_commit: 81f6825
 prior_runtime_commit: 07b3e93
-implemented_milestones: [M0]
-phase20_test_runs: 0
+implemented_milestones: [M0, M1, M2, M3]
+phase20_test_runs: 3
 phase20_release_status: not-built
 ```
 
@@ -15,9 +15,9 @@ phase20_release_status: not-built
 | --- | --- | --- |
 | 개발 문서 | 작성 완료 | 현재 계획 v1, 구현 결과 아님 |
 | M0 기준선·계약 | 완료 | 소비자 59건·공개 API·7개 기준 결과·106개 회귀 출발 목록 고정 |
-| M1 버전·표시 | 미착수 | metadata owner, old export parity |
-| M2 결과 준비 | 미착수 | 제품 snapshot·입력 진단·renderer 이행 |
-| M3 탄성 조정 | 미착수 | 순수 단계·제품 조정·public façade |
+| M1 버전·표시 | 완료 | 567ee25 clean 집중 회귀 3/3 PASS |
+| M2 결과 준비 | 완료 | c8edd71 clean 집중 회귀 7/7 PASS |
+| M3 탄성 조정 | 완료 | bc664fb clean 집중 회귀 7/7 PASS |
 | M4 호환 경로 | 미착수 | trace/production/sparse 역할과 예외 명세 |
 | M5 통합·패키징 | 미착수 | 동일 후보 회귀·실측·개발 공개 자료 |
 

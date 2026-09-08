@@ -12,7 +12,7 @@ import {
 } from '../../compute/nonlinear/index.js';
 import { buildNonlinearEquilibriumAudit } from './audit.js';
 import { buildNonlinearLoadPattern } from './externalLoads.js';
-import { buildReducedSparsePattern } from './typedSparse.js';
+import { buildReducedSparsePattern } from '../../compute/sparse/reducedAssembly.js';
 import {
   pullBackSpatialMoment,
   pushForwardGeneralizedMoment,
