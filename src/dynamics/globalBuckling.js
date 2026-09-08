@@ -1,3 +1,5 @@
+import { GLOBAL_BUCKLING_TRACE_VERSION } from '../metadata/numericVersions.js';
+export { GLOBAL_BUCKLING_TRACE_VERSION };
 import { assembleStiffness3D } from '../solver/linear3dAssembly.js';
 import { assembleGlobalGeometricStiffness } from '../solver/geometricStiffness.js';
 import { matMul, matTrans, solveLinear } from '../solver/linear3dElement.js';
@@ -7,7 +9,7 @@ import { createSymmetricSparseOperatorFromDense } from '../compute/eigen/sparseO
 import { solveRequestedGeneralizedEigen } from '../compute/eigen/requestedModes.js';
 import { buildConstraintSystem, reduceConstraintMatrix } from '../solver/domain/constraintSystem.js';
 
-export const GLOBAL_BUCKLING_TRACE_VERSION = 'p10-m7-global-buckling-v5';
+
 
 const DOF_COMPONENTS = ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'];
 

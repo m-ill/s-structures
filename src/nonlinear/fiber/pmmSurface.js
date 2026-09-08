@@ -1,6 +1,8 @@
+import { PMM_SURFACE_VERSION } from '../../metadata/numericVersions.js';
+export { PMM_SURFACE_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 
-export const PMM_SURFACE_VERSION = 'p8-m6-pmm-surface-v2';
+
 export const PMM_SIGN_CONVENTION = Object.freeze({
   axialForce: 'tension-positive',
   My: 'positive-about-local-y',

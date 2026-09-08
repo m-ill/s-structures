@@ -1,3 +1,5 @@
+import { MDOF_NEWTON_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_NEWTON_VERSION };
 import {
   acceptTrialBranch,
   beginStateStep,
@@ -10,7 +12,7 @@ import {
 import { evaluateMdofConvergence } from './convergence.js';
 import { requireEquilibriumBackend } from './referenceBackends.js';
 
-export const MDOF_NEWTON_VERSION = 'p8-m3-full-newton-v2';
+
 
 export async function solveMdofNewtonStep(input = {}) {
   const assembler = input.assembler;

@@ -1,3 +1,5 @@
+import { MDOF_DISPLACEMENT_CONTROL_VERSION, PHYSICAL_CONTROL_COORDINATE_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_DISPLACEMENT_CONTROL_VERSION, PHYSICAL_CONTROL_COORDINATE_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import { constraintRowEntries } from '../../solver/domain/constraintSystem.js';
 import {
@@ -13,8 +15,8 @@ import { evaluateMdofConvergence } from './convergence.js';
 import { prepareMdofActiveSystem } from './newton.js';
 import { requireEquilibriumBackend } from './referenceBackends.js';
 
-export const MDOF_DISPLACEMENT_CONTROL_VERSION = 'p8-m5-mdof-displacement-control-v1';
-export const PHYSICAL_CONTROL_COORDINATE_VERSION = 'p8-m5-physical-control-coordinate-v1';
+
+
 
 const COMPONENT_INDEX = Object.freeze({
   x: 0, ux: 0,

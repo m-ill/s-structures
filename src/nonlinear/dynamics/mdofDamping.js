@@ -1,3 +1,5 @@
+import { MDOF_DAMPING_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_DAMPING_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import {
   combineCscMatrices,
@@ -6,7 +8,7 @@ import {
   validateDynamicCsc,
 } from './sparseMatrix.js';
 
-export const MDOF_DAMPING_VERSION = 'p8-m8-mdof-damping-v1';
+
 export const RAYLEIGH_STIFFNESS_POLICIES = Object.freeze(['initial', 'committed']);
 
 export function solveMdofRayleighCoefficients(input = {}) {

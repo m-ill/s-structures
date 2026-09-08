@@ -1,6 +1,8 @@
+import { TYPED_REDUCED_SPARSE_VERSION } from '../../metadata/numericVersions.js';
+export { TYPED_REDUCED_SPARSE_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 
-export const TYPED_REDUCED_SPARSE_VERSION = 'p9-m2-typed-reduced-sparse-v1';
+
 const CANONICAL_CONSTRAINT_VERSION = 'p8-m1-canonical-constraint-v1';
 
 const MAX_INT32 = 0x7fffffff;

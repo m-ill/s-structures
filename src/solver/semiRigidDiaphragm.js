@@ -1,6 +1,8 @@
+import { SEMI_RIGID_DIAPHRAGM_VERSION } from '../metadata/numericVersions.js';
+export { SEMI_RIGID_DIAPHRAGM_VERSION };
 import { materialOf } from '../core/catalogs.js';
 
-export const SEMI_RIGID_DIAPHRAGM_VERSION = 'p3-t75-semi-rigid-diaphragm-braces';
+
 
 export function expandSemiRigidDiaphragms(model = {}) {
   const nodes = Object.fromEntries((model.nodes || []).map((node) => [node.id, node]));

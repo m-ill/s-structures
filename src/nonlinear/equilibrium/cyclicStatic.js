@@ -1,3 +1,5 @@
+import { CYCLIC_STATIC_PROTOCOL_VERSION, MDOF_CYCLIC_STATIC_VERSION } from '../../metadata/numericVersions.js';
+export { CYCLIC_STATIC_PROTOCOL_VERSION, MDOF_CYCLIC_STATIC_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import {
   beginStateStep,
@@ -12,8 +14,8 @@ import {
 } from './displacementControl.js';
 import { runMdofLoadControl } from './loadControl.js';
 
-export const MDOF_CYCLIC_STATIC_VERSION = 'p8-m7-mdof-cyclic-static-v1';
-export const CYCLIC_STATIC_PROTOCOL_VERSION = 'p8-m7-cyclic-static-protocol-v1';
+
+
 
 export function buildCyclicTargetHistory(options = {}) {
   const amplitudes = finiteList(options.amplitudes, 'amplitudes').filter((value) => Math.abs(value) > 0);

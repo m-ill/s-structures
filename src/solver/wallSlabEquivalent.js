@@ -1,3 +1,5 @@
+import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../metadata/numericVersions.js';
+export { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION };
 import { buildShellV1Trace } from './shell/quad4.js';
 import { expandShellsToFrameLinks } from './shell/shellAssembly.js';
 import {
@@ -11,8 +13,8 @@ import {
 import { buildSemiRigidRedistributionReport, expandSemiRigidDiaphragms } from './semiRigidDiaphragm.js';
 import { materialOf } from '../core/catalogs.js';
 
-export const WALL_SLAB_EQUIVALENT_VERSION = 'p3-m12-wall-slab-equivalent';
-export const WALL_SLAB_TRACE_VERSION = 'p3-m12-wall-slab-trace-v1';
+
+
 
 export function wallToMidPierMember(wall) {
   const z1 = Math.min(...wall.nodes.map((node) => node.z || 0));

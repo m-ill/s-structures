@@ -1,4 +1,6 @@
-export const MDOF_CONVERGENCE_VERSION = 'p8-m2-mdof-convergence-v1';
+import { MDOF_CONVERGENCE_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_CONVERGENCE_VERSION };
+
 
 export function evaluateMdofConvergence(input = {}, criteria = {}) {
   const residual = finiteVector(input.residual, 'residual');

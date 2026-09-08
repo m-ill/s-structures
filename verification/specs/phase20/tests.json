@@ -2,6 +2,7 @@
   "version": "p20-tests-v1",
   "scope": "Phase20 module boundary regression",
   "tests": [
+    "tests/p20-m1-metadata.mjs",
     "tests/p19-review-capacity-pagination.mjs",
     "tests/p19-review-jet-contract.mjs",
     "tests/p19-review-session-disposal.mjs",
@@ -107,7 +108,8 @@
     "tests/p9-m5-elastic-hybrid.mjs",
     "tests/p9-m5-pdelta-hybrid.mjs",
     "tests/p9-m6-eigen-dynamics.mjs",
-    "tests/p10-m0-quick-corrections.mjs"
+    "tests/p10-m0-quick-corrections.mjs",
+    "tests/p13-m8-shell-lab.mjs"
   ],
   "testTimeoutMs": {
     "tests/p8-m5-production-pushover.mjs": 900000,

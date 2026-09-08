@@ -1,10 +1,12 @@
+import { MOMENT_CURVATURE_V2_VERSION } from '../../metadata/numericVersions.js';
+export { MOMENT_CURVATURE_V2_VERSION };
 import {
   SECTION_STRAIN_CONVENTION,
   commitSectionResponse,
   evaluateSectionResponse,
 } from './sectionResponse.js';
 
-export const MOMENT_CURVATURE_V2_VERSION = 'p8-m6-moment-curvature-v2';
+
 
 export function solveSectionAxialEquilibrium(section, input = {}) {
   const targetN = finite(input.targetN ?? input.axialForce ?? 0, 'targetN');

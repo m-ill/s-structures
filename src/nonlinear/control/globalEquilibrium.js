@@ -1,8 +1,10 @@
+import { GLOBAL_EQUILIBRIUM_VERSION } from '../../metadata/numericVersions.js';
+export { GLOBAL_EQUILIBRIUM_VERSION };
 import { matVec, solveLinear } from '../../solver/linear3dElement.js';
 import { buildNonlinearTangentAssembly } from '../assembly.js';
 import { NONLINEAR_CONVERGENCE_VERSION, evaluateConvergenceNorms } from './convergence.js';
 
-export const GLOBAL_EQUILIBRIUM_VERSION = 'p3-m14-global-equilibrium-trace-v1';
+
 
 export function runGlobalEquilibriumTrace(model = {}, state = {}, options = {}) {
   const assembly = options.assembly || buildNonlinearTangentAssembly(model, state, options.assemblyOptions);

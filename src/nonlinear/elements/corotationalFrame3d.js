@@ -1,3 +1,5 @@
+import { COROTATIONAL_FRAME_3D_STATE_VERSION, COROTATIONAL_FRAME_3D_VERSION, HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION, HINGED_COROTATIONAL_FRAME_3D_VERSION } from '../../metadata/numericVersions.js';
+export { COROTATIONAL_FRAME_3D_STATE_VERSION, COROTATIONAL_FRAME_3D_VERSION, HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION, HINGED_COROTATIONAL_FRAME_3D_VERSION };
 import {
   localK12,
   localTrussK12,
@@ -29,10 +31,10 @@ import {
 } from '../math/rotationCoordinates.js';
 import { evaluateFiberCoupledHingeTrial } from '../fiber/hingeInteraction.js';
 
-export const COROTATIONAL_FRAME_3D_VERSION = 'p8-m3-corotational-frame-3d-v2';
-export const COROTATIONAL_FRAME_3D_STATE_VERSION = 'p8-m3-corotational-frame-state-v2';
-export const HINGED_COROTATIONAL_FRAME_3D_VERSION = 'p19-hinged-corotational-frame-3d-v2-current-chord';
-export const HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION = 'p8-m4-hinged-corotational-frame-state-v1';
+
+
+
+
 
 const DOF_COUNT = 12;
 const ROTATION_LOG_LIMIT = ROTATION_VECTOR_LIMIT;

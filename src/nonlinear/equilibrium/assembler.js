@@ -1,3 +1,5 @@
+import { MDOF_EQUILIBRIUM_ASSEMBLER_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_EQUILIBRIUM_ASSEMBLER_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import {
   expandConstraintDisplacements,
@@ -20,7 +22,7 @@ import {
   evaluateNonlinearSupportSprings,
 } from '../integration/supportSprings.js';
 
-export const MDOF_EQUILIBRIUM_ASSEMBLER_VERSION = 'p9-m7-mdof-equilibrium-assembler-v4';
+
 
 export function createEquilibriumAssembler(input = {}) {
   const domain = requireDomain(input.domain);

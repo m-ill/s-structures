@@ -1,6 +1,8 @@
+import { MDOF_DYNAMIC_HISTORY_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_DYNAMIC_HISTORY_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 
-export const MDOF_DYNAMIC_HISTORY_VERSION = 'p8-m8-dynamic-history-v1';
+
 
 export function createDynamicHistoryCollector(options = {}) {
   const chunkSize = positiveInteger(options.chunkSize, 128);

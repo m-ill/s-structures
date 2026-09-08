@@ -1,8 +1,10 @@
+import { FIBER_HINGE_INTERACTION_VERSION } from '../../metadata/numericVersions.js';
+export { FIBER_HINGE_INTERACTION_VERSION };
 import { evaluateHingeTrial } from '../materials/hingeCyclic.js';
 import { scaleHingePropertyForInteraction } from '../properties/hingeRegistry.js';
 import { createPmmSurfaceEvaluator } from './pmmSurface.js';
 
-export const FIBER_HINGE_INTERACTION_VERSION = 'p8-m6-fiber-hinge-interaction-v1';
+
 
 const evaluatorCache = new Map();
 

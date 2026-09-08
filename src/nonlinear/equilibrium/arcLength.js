@@ -1,3 +1,5 @@
+import { ARC_LENGTH_RESTART_VERSION, ARC_LENGTH_SCALING_VERSION, MDOF_ARC_LENGTH_VERSION } from '../../metadata/numericVersions.js';
+export { ARC_LENGTH_RESTART_VERSION, ARC_LENGTH_SCALING_VERSION, MDOF_ARC_LENGTH_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import {
   acceptTrialBranch,
@@ -14,9 +16,9 @@ import { evaluateMdofConvergence } from './convergence.js';
 import { prepareMdofActiveSystem } from './newton.js';
 import { requireEquilibriumBackend } from './referenceBackends.js';
 
-export const MDOF_ARC_LENGTH_VERSION = 'p8-m7-mdof-crisfield-arc-length-v1';
-export const ARC_LENGTH_SCALING_VERSION = 'p8-m7-arc-length-scaling-v1';
-export const ARC_LENGTH_RESTART_VERSION = 'p8-m7-arc-length-restart-v1';
+
+
+
 
 const NON_RETRYABLE = new Set([
   'PRODUCTION_BACKEND_UNAVAILABLE',

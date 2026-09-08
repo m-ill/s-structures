@@ -1,4 +1,6 @@
-export const SECOND_ORDER_JET_VERSION = 'p8-m3-second-order-jet-v1';
+import { SECOND_ORDER_JET_VERSION } from '../../metadata/numericVersions.js';
+export { SECOND_ORDER_JET_VERSION };
+
 
 export function jetConstant(value, size) {
   return createJet(finite(value, 'constant'), size);
