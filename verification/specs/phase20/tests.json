@@ -2,6 +2,7 @@
   "version": "p20-tests-v1",
   "scope": "Phase20 module boundary regression",
   "tests": [
+    "tests/p20-m5-browser-input-boundaries.mjs",
     "tests/p20-m4-module-boundaries.mjs",
     "tests/p20-m3-elastic-parity.mjs",
     "tests/p20-m2-prepared-views.mjs",

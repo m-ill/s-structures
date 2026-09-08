@@ -41,3 +41,12 @@
 - 초기 라우팅 시험이 제어 방식을 생략해 legacy 기본 제어 거부에 먼저 도달했다. production displacement를 명시한 후 async 강제와 fallback 차단을 확인했다. 엔진 제어 기본값은 바꾸지 않았다.
 - clean archive 집중 회귀 5/5 PASS. 별도로 corotational global·production NLTH 실행도 PASS했다. M1~M4의 원본 로그와 hash를 각각의 evidence 폴더에 복사·검증했다.
 - M5는 최종 111개 manifest와 Windows/Ubuntu CI, 별도 fresh-process 성능/RSS 비교, 브라우저·패키지 검증을 진행한다. 아직 전체 후보 PASS/공개 완료로 표시하지 않는다.
+
+## 2026-09-08 · M5 R1 검증과 브라우저 입력 경계 보완
+
+- `f1e56fe`: 로컬 111/111, Windows·Ubuntu Phase20 CI 각 111/111 PASS. CI run `34175856617`; 기존 Public validation run `34175856586`도 success. 이 후보의 원본은 `output/phase20/m5-r1`, `ci-f1e56fe`, `browser-r1`에 보존한다.
+- 8부재 fresh-process 3회씩 정확한 수치 일치. 기준/후보 중앙값 5937.63/5840.84 ms, 최대 RSS 307820/307400 KiB로 10% 회귀 예산을 통과했다. 이 값은 R1 후보에 속한다.
+- 실제 native WebMCP 36개 등록, Pushover·NLTH module-worker/production-wasm-sparse 완료, fallback false·candidate·설계전달 차단 유지. 정적→설계 13개→HTML/JSON/CSV 및 UI snapshot hash 일치를 확인했다. 자동 PDF는 adapter·figure·qualification 부족으로 기존 차단을 유지한다.
+- 브라우저의 초기 v3 예제와 옛 JSON importer는 현재 스키마를 유지하지 못했다. 최초 탄성 설정 화면의 draft 동기화는 project ID를 입력에 써서 기존 결과를 stale로 만들었다. 해당 호스트/설정 소스는 `07b3e93`과 동일하여 기존 결함이지만 입력 준비 경계에 해당하므로 M5에서 수정한다.
+- runtime adapter 설치·새 모델·JSON migration 시점에 현재 스키마를 준비하고, 화면 열기에서는 프로젝트 ID를 읽기만 한다. 조회 getter에서는 migration을 실행하지 않는다. 이를 검증하는 `p20-m5-browser-input-boundaries.mjs`를 추가해 manifest를 112개로 고정한다. 집중 3개 PASS 후 새 후보에서 전체 검증한다.
+- 브라우저 stale 시험용 케이스 update는 자동 승인 검토가 루트의 읽기 전용 기본 규칙을 이유로 거절했다. 이번 개발 요청의 예외 권한이 반영되지 않았으며 우회 변경은 하지 않았다. 자동 회귀의 stale/취소 시험과 실제 브라우저의 세션 재열기 HANDLE_NOT_FOUND 관찰을 구분한다.
