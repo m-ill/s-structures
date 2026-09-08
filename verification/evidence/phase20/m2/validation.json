@@ -1,0 +1,88 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "c8edd712b92d63c0a8b12217f43cf85fe334b8f3",
+    "tree": "f0f97b34d94ae5f55c1c11d7240fefc19dd1b537",
+    "trackedChanges": ""
+  },
+  "scope": "P20 M2 prepared views and report compatibility",
+  "manifestPath": "verification/specs/phase20/m2-tests.json",
+  "manifestHash": "12253d8a84e6d112ba5af34cd84fdae0e6460f82890a64a18b5eb623ba9b07c3",
+  "sourceArchiveSha256": "483e00c57b855fb4753598eb352e41bb928ebfa65c70170ce0ad51669a5f0278",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-08T00:57:04.161Z",
+  "results": [
+    {
+      "test": "tests/p20-m2-prepared-views.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "01-p20-m2-prepared-views.mjs.log",
+      "sha256": "b7239bfc649ce03a1d4d3b21656dc57c560ace1c2720babd32ce65db894fab06"
+    },
+    {
+      "test": "tests/p20-m1-metadata.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "02-p20-m1-metadata.mjs.log",
+      "sha256": "a932dae632f16baf23078a2de439c06db417fae0e9e1a175917d89298262577e"
+    },
+    {
+      "test": "tests/p19-m1-product-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-p19-m1-product-parity.mjs.log",
+      "sha256": "e7f15eeb48f3043b5c20fa56e466c72f4ebacfc9affb1233b38da30df2ae66e3"
+    },
+    {
+      "test": "tests/p19-m4-webmcp-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "04-p19-m4-webmcp-workflow.mjs.log",
+      "sha256": "836a4a84d8be3bf9bbfbf0f63813c4741f6092f9ed11deb690da78b787ae23cf"
+    },
+    {
+      "test": "tests/m34-detailed-report.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "05-m34-detailed-report.mjs.log",
+      "sha256": "8ac088ece6acdd4374d62d7a51b062213477465bceb2726cf1f9960754477785"
+    },
+    {
+      "test": "tests/m42-calculation-package.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "06-m42-calculation-package.mjs.log",
+      "sha256": "045eb8329fafb75b8f034a73bd9b251a17ff59696a1b9635a3bbb6a7ee6e68eb"
+    },
+    {
+      "test": "tests/p13-m2-agent-report-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "07-p13-m2-agent-report-parity.mjs.log",
+      "sha256": "2bcc93e105813c7bd584f4b61e08abd50fc0539afbc9637a0895f18e543210e9"
+    }
+  ],
+  "completedAt": "2026-09-08T00:57:46.400Z",
+  "passed": 7,
+  "failed": 0,
+  "planned": 7,
+  "executed": 7
+}

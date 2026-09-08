@@ -1,0 +1,88 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "bc664fbd356d8d3637df237b00b27885902085b5",
+    "tree": "00900c73b494f03018d8c609bbcac67c855374c6",
+    "trackedChanges": ""
+  },
+  "scope": "P20 M3 exact elastic and public contract",
+  "manifestPath": "verification/specs/phase20/m3-tests.json",
+  "manifestHash": "4249310a58d3d3d2044c00517f9450371c91eaf9d5ef5d85e5d2682b77d7b495",
+  "sourceArchiveSha256": "3f7016d9acf6b624514bf6f53ab2a39aac3c0ab215dd39c26e6b643264d34e5a",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-08T01:01:14.673Z",
+  "results": [
+    {
+      "test": "tests/p20-m3-elastic-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "01-p20-m3-elastic-parity.mjs.log",
+      "sha256": "2696417a46821c0f9db6497997bf87b13e4a9a4d2467b7897c2b379b702bfd5f"
+    },
+    {
+      "test": "tests/p15-m8-pdelta-first-order-ownership.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "02-p15-m8-pdelta-first-order-ownership.mjs.log",
+      "sha256": "6e12e5130bf2707383ab1b7efc966a3233be913846bb4b9fefdbfd8ceaf5da3d"
+    },
+    {
+      "test": "tests/p9-m3-elastic-runtime.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-p9-m3-elastic-runtime.mjs.log",
+      "sha256": "d8b3bc2ba0b9104eb3fd59483997717904bc912b8131b3c9167e3e13f2ad08ec"
+    },
+    {
+      "test": "tests/p9-m5-elastic-hybrid.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "04-p9-m5-elastic-hybrid.mjs.log",
+      "sha256": "02643eb4da927eef482e91f27de30008c79b91e27fca0f13f7ad83d8a3fe3eda"
+    },
+    {
+      "test": "tests/p9-m5-pdelta-hybrid.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "05-p9-m5-pdelta-hybrid.mjs.log",
+      "sha256": "5fbdcf8302eb94eaea4f41895538a3d7aacadbe8581e0b61373b337fb8371a80"
+    },
+    {
+      "test": "tests/p9-m6-eigen-dynamics.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "06-p9-m6-eigen-dynamics.mjs.log",
+      "sha256": "20e3d660fdb895963978d02798b5e366d19aa7c714fae21d8f557ecd5706d8d2"
+    },
+    {
+      "test": "tests/p19-m3-design-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "07-p19-m3-design-workflow.mjs.log",
+      "sha256": "c13a1e4b02909855209eae201f038e144027b77d2f9c505ee304804b6f0b2dda"
+    }
+  ],
+  "completedAt": "2026-09-08T01:01:34.369Z",
+  "passed": 7,
+  "failed": 0,
+  "planned": 7,
+  "executed": 7
+}

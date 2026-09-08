@@ -33,3 +33,11 @@
 - `bc664fb`: 정적 stages, 결과 계약, P–Delta 조합과 제품 orchestration을 분리했다. 공개 linear3d는 동기 façade이며 내부 production 소비자는 canonical owner를 참조한다.
 - 최초 수치 비교가 `solver.diagnostics.totalMs`에서 달라졌다. 소스의 elapsed 시간 계산임을 확인하고 누락된 실행 metadata `totalMs`/`totalFactorizationMs`만 비교 제외 목록에 추가했다. 입력·수식·허용오차·설계 적격성은 변경하지 않았다.
 - 7개 입력의 결정적 전체 결과와 public export/sync 계약이 정확히 일치한다. `output/phase20/m3-r1/validation.json`: clean archive 7/7 PASS, 탄성 runtime·hybrid·P–Delta·eigen·설계 workflow 포함.
+
+## 2026-09-08 · M4 완료 / M5 후보 준비
+
+- `44582e8`: sparse 재수출 경로의 내부 소비자를 compute canonical owner로 이행했다. 호환·정책·도메인 모듈 22개에 source hash·실제 소비자·소유자·유지 사유·대체/삭제 조건을 등록했다.
+- 원시 Phase15/16 감사는 직접 경계 위반 0·cycle 0이다. 옛 공개 정책의 날짜 4개와 자동 wrapper 분류는 원시 출력에 그대로 남긴다. Phase20 감사는 단순 주석/날짜 갱신 대신 실제 소스·허용 소비자와 현역 계약 분류를 검증한다. 공개 linear3d→제품 조정 bridge 1개를 명시한다.
+- 초기 라우팅 시험이 제어 방식을 생략해 legacy 기본 제어 거부에 먼저 도달했다. production displacement를 명시한 후 async 강제와 fallback 차단을 확인했다. 엔진 제어 기본값은 바꾸지 않았다.
+- clean archive 집중 회귀 5/5 PASS. 별도로 corotational global·production NLTH 실행도 PASS했다. M1~M4의 원본 로그와 hash를 각각의 evidence 폴더에 복사·검증했다.
+- M5는 최종 111개 manifest와 Windows/Ubuntu CI, 별도 fresh-process 성능/RSS 비교, 브라우저·패키지 검증을 진행한다. 아직 전체 후보 PASS/공개 완료로 표시하지 않는다.
