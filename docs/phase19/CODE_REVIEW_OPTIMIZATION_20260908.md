@@ -36,6 +36,37 @@ Jet은 준비 실행 후 전후 7회 교대 측정했으며 값·gradient·Hessi
 
 다음 구조 개선은 실제 호출을 확인한 뒤 UI 계산 준비를 제품 서비스로 옮기고, 보고서가 불변 결과만 소비하도록 분리하며, compatibility wrapper의 소유자·이행 계약을 정리하는 순서가 적절하다. 각 경계별 동등성 검증이 필요하다. 독립 외부 비교 2건·pilot 5건과 M-tier·배포 자격은 기존 미완료 상태를 유지한다.
 
+## 기능별 모듈 재점검
+
+사용자의 후속 요청에 따라 `81f6825` 기준 실제 import·실행 진입점을 재점검했다. **해석기는 이미 기능별로 분리되어 있다.** 41건을 모듈 분리 실패나 해석 재실행 41건으로 해석해서는 안 된다.
+
+| 책임 | 실제 구현 위치 |
+| --- | --- |
+| 탄성 정적 조정·조립·요소·복원 | `src/solver/linear3d.js`, `linear3dFirstOrder.js`, `linear3dAssembly.js`, `linear3dElement.js`, `linear3dRecovery.js`, `linear3dPost.js` |
+| P–Delta | `src/solver/pdelta/`의 secondOrder·tangentStiffness·stability 등 |
+| 모드·응답스펙트럼·좌굴·선형 시간이력 | `src/dynamics/`의 modal·globalBuckling·linearDirectIntegration 등 |
+| 판·쉘·기초·링크·구속조건 | `src/solver/shell/`, `foundation/`, `link/`, `domain/` |
+| 비선형 정적·동적 실행 | `src/nonlinear/pushover/productionPushover.js`, `dynamics/productionNlth.js` |
+| 비선형 평형·요소·재료·단면·상태 | `src/nonlinear/equilibrium/`, `elements/`, `materials/`, `fiber/`, `core/` |
+| 공통 수치 계산·백엔드 | `src/compute/sparse/`, `elastic/`, `eigen/`, `backends/`, `nonlinear/` |
+| 작업 실행·취소·결과 조회 | `src/compute/product/`, `src/nonlinear/product/`, 각 runtime/Worker |
+
+`indexBridge.getProductAnalysisService()`는 탄성 static을 elastic service로, modal/responseSpectrum을 eigen service로 연결하며 이 Worker 조건에 해당하지 않는 경우 공통 case runner로 전달한다. 비선형 product job manager는 `analysisRouter.js`를 통해 engineId에 맞는 구현을 선택한다. Production Pushover와 NLTH는 공통 평형·요소·상태 모듈을 재사용한다. 비선형 router는 지원하지 않는 엔진을 legacy로 묵시적으로 대체하지 않는다.
+
+정적 감사 재실행 결과는 723개 파일·2,444개 import·cycle 0으로 동일하며, sparse assembly·plate boundary·foundation recovery·stabilization의 owner 검사도 통과한다. 다만 이 검사는 이름·경로에 따른 제한된 감사이며 모든 수식 중복이나 책임 결합을 검출하지는 않는다.
+
+41건의 실제 구성은 다음과 같다.
+
+- `agentManifest.js` 34건: 모두 버전 상수 import다. 해당 import 자체가 해석 함수를 실행하는 것은 아니다. 모듈 로딩 의존성은 남으므로 가벼운 metadata 계약으로 정리할 수 있지만 실제 시작 시간·bundle 효과는 측정하지 않았다.
+- `indexAgentApi.js` 3건: 진단·확장·등가 쉘 trace 참조다. `getAnalysis()`는 저장 결과가 없으면 `RESULT_REQUIRED`를 발생시키며 자동으로 전체 해석을 시작하지 않는다. 하중 확장 등 조회 시 파생 계산은 별도로 남는다.
+- `indexPhase13ElasticWorkspace.js` 2건: 동일 shellLab 모듈의 lab·containment 함수에 대한 별도 import다. 독립 모듈 결함 두 개로 계산하지 않는다.
+- `indexResultsPanel.js` 1건: 등가 쉘 badge 표시 함수 참조다.
+- `detailedReport.js` 1건: 등가 쉘 trace 생성이다. 저장된 shellFrameAssembly가 없으면 `expandShellsToFrameLinks()`로 표현을 재구성한다. 전체 구조해석 재실행을 확인한 것은 아니며, 불변 결과만 읽는 보고서 계약과의 차이를 구분해야 한다.
+
+남은 구조 개선도 기능 모듈의 전면 재분할보다 다음에 집중한다. 첫째, 버전 metadata·표시 함수와 계산 소유자의 의존성을 분리한다. 둘째, trace의 파생 계산을 명시적 결과 준비 단계로 옮긴다. 셋째, `linear3d.js`가 동적 해석과 강재 설계까지 조정하는 기존 통합 진입점의 책임을 정리한다. 넷째, `nonlinear/control/`의 초기 trace와 `equilibrium/`의 MDOF 구현, 기존 sparse와 compute sparse 경로의 사용자를 확인해 호환성 문서를 보완한다. 유사한 폴더 이름만으로 중복 엔진으로 판정하거나 삭제하지 않는다.
+
+이번 후속 점검은 코드·정적 의존성 검토이며 런타임 수정과 수치 시험 재실행은 하지 않았다. 기존 95/95 결과는 앞서 기록한 고정 런타임에 대한 증거다.
+
 ## 재현
 
 ```powershell
