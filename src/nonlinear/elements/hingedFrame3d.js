@@ -1,3 +1,5 @@
+import { HINGED_FRAME_3D_STATE_VERSION, HINGED_FRAME_3D_VERSION } from '../../metadata/numericVersions.js';
+export { HINGED_FRAME_3D_STATE_VERSION, HINGED_FRAME_3D_VERSION };
 import {
   createCorotationalFrame3dKernel,
   HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION,
@@ -7,8 +9,8 @@ import { resolveDomainHingeAssignments } from '../properties/assignments.js';
 import { createDistributedFiberFrame3dKernel } from './distributedFiberFrame3d.js';
 import { buildZeroLengthPmmEntries } from './zeroLengthPmmEntries.js';
 
-export const HINGED_FRAME_3D_VERSION = HINGED_COROTATIONAL_FRAME_3D_VERSION;
-export const HINGED_FRAME_3D_STATE_VERSION = HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION;
+
+
 
 export function createHingedFrame3dKernel(descriptor, hingeAssignments = [], options = {}) {
   if (!Array.isArray(hingeAssignments) || hingeAssignments.length === 0) {

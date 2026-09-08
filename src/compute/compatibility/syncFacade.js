@@ -1,5 +1,5 @@
 import { stableHash } from '../../core/stableHash.js';
-import { analyzeModel } from '../../solver/linear3d.js';
+import { analyzeModel } from '../product/elasticAnalysisWorkflow.js';
 import { prepareAnalysisContracts } from '../adapters/analysisAdapters.js';
 
 export const SYNC_ANALYSIS_COMPATIBILITY_VERSION = 'p9-sync-analysis-compatibility-v2';

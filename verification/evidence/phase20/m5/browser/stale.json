@@ -1,0 +1,5 @@
+{
+  "stale": true,
+  "designTransferAllowed": false,
+  "reportError": "Error: Browser Use encountered an error interacting with this webpage: Error: STALE_INPUT"
+}

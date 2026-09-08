@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-DYN-01",
+    "NL-DYN-02",
+    "NL-DYN-03",
+    "NL-DYN-04",
+    "NL-DYN-05",
+    "NL-DYN-06"
+  ],
+  "reducedDofCount": 15,
+  "diaphragmRotationalInertia": 20,
+  "consistentMassNnz": 10,
+  "groundMotionPga": 1.5,
+  "rayleigh": {
+    "alpha": 0.08,
+    "beta": 0.020000000000000004
+  }
+}
+
+

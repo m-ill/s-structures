@@ -1,0 +1,4 @@
+PASS steel WebMCP typed changes → actual solver → design → report matches UI service; pagination/stale/dedup/limits
+PASS RC WebMCP typed changes → actual solver → design → report matches UI service; pagination/stale/dedup/limits
+
+

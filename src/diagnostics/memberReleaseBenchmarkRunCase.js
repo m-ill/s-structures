@@ -1,5 +1,5 @@
 import { createFixedFixedUdl } from '../examples/verification.js';
-import { analyzeModel } from '../solver/linear3d.js';
+import { analyzeModel } from '../compute/product/elasticAnalysisWorkflow.js';
 
 export function runMemberReleaseBenchmarkCase([id, releases, zeroDofs]) {
   const fixture = createFixedFixedUdl();

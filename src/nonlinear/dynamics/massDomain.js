@@ -1,3 +1,5 @@
+import { MDOF_MASS_DOMAIN_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_MASS_DOMAIN_VERSION };
 import { buildMassSourceTrace } from '../../loads/loadsV2.js';
 import { stableHash } from '../../core/stableHash.js';
 import { normalizeNodeMass6Dof } from '../../core/massSchema.js';
@@ -9,7 +11,7 @@ import {
   cscSymmetryError,
 } from './sparseMatrix.js';
 
-export const MDOF_MASS_DOMAIN_VERSION = 'p8-m8-mdof-mass-domain-v1';
+
 export const MDOF_MASS_FORMULATIONS = Object.freeze(['lumped', 'consistent']);
 
 export function buildMdofMassDomain(model = {}, domain, options = {}) {

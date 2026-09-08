@@ -1,4 +1,6 @@
-export const NONLINEAR_EQUILIBRIUM_AUDIT_VERSION = 'p8-m5-current-configuration-six-resultant-audit-v2';
+import { NONLINEAR_EQUILIBRIUM_AUDIT_VERSION } from '../../metadata/numericVersions.js';
+export { NONLINEAR_EQUILIBRIUM_AUDIT_VERSION };
+
 
 export function buildNonlinearEquilibriumAudit(nodes = [], external = [], reactions = [], options = {}) {
   const expected = nodes.length * 6;

@@ -1,6 +1,8 @@
+import { SHELL_QUAD4_VERSION } from '../../metadata/numericVersions.js';
+export { SHELL_QUAD4_VERSION };
 import { attachEquivalentShellScope, sanitizeEquivalentShellResult } from './equivalentScope.js';
 
-export const SHELL_QUAD4_VERSION = 'p3-m12-shell-quad4-v1';
+
 
 export function buildQuad4ShellElement(element = {}) {
   const nodes = element.nodes || [];

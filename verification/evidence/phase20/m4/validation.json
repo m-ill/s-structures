@@ -1,0 +1,70 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "44582e827ea986125278adb3c32c5b0366024705",
+    "tree": "658393399313ef3b7dae8ad043841c9536dd073b",
+    "trackedChanges": ""
+  },
+  "scope": "P20 M4 registered compatibility and explicit routing",
+  "manifestPath": "verification/specs/phase20/m4-tests.json",
+  "manifestHash": "8aca128227ae7af9411c501093c4210ac9b79cbc21858e560804d7895c2d0a1f",
+  "sourceArchiveSha256": "1900451f7d15211db740e1072d97784a2027b86afcefd8e85291a50dc8503943",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-08T01:09:16.112Z",
+  "results": [
+    {
+      "test": "tests/p20-m4-module-boundaries.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "01-p20-m4-module-boundaries.mjs.log",
+      "sha256": "446d78a18068c99e536470672a3d9021aa8ce5f47e0373df5a3fe746c9101380"
+    },
+    {
+      "test": "tests/p20-m1-metadata.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "02-p20-m1-metadata.mjs.log",
+      "sha256": "a932dae632f16baf23078a2de439c06db417fae0e9e1a175917d89298262577e"
+    },
+    {
+      "test": "tests/p20-m3-elastic-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-p20-m3-elastic-parity.mjs.log",
+      "sha256": "2696417a46821c0f9db6497997bf87b13e4a9a4d2467b7897c2b379b702bfd5f"
+    },
+    {
+      "test": "tests/p19-m5-nonlinear-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "04-p19-m5-nonlinear-contract.mjs.log",
+      "sha256": "8af9001d56041ff1baad4ce7bfbf4cf518077e6edd00c3014586e2b17f11cc80"
+    },
+    {
+      "test": "tests/p8-m0-governance.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "05-p8-m0-governance.mjs.log",
+      "sha256": "290b3548cdce90b0a5dc796b2f362f91fc9be608bbf03cf0ba45f9540ee0de37"
+    }
+  ],
+  "completedAt": "2026-09-08T01:09:27.158Z",
+  "passed": 5,
+  "failed": 0,
+  "planned": 5,
+  "executed": 5
+}

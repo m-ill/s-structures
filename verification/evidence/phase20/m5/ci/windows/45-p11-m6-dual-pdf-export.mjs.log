@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "milestone": "P11-M6",
+  "locales": [
+    "ko-KR",
+    "en-US"
+  ],
+  "pageCount": 13,
+  "manifestHash": "84c94354cbdbe11707a88256af55decb0ca243ecc3ed982971d1bf6d609c8b16",
+  "progressEvents": 7,
+  "atomicPublish": true,
+  "partialFinalArtifacts": 0,
+  "privacyFindings": 0,
+  "failureModes": 8,
+  "persistentHistoryRows": 1
+}
+
+

@@ -1,0 +1,12 @@
+{
+  "scope": "P20 M2 prepared views and report compatibility",
+  "tests": [
+    "tests/p20-m2-prepared-views.mjs",
+    "tests/p20-m1-metadata.mjs",
+    "tests/p19-m1-product-parity.mjs",
+    "tests/p19-m4-webmcp-workflow.mjs",
+    "tests/m34-detailed-report.mjs",
+    "tests/m42-calculation-package.mjs",
+    "tests/p13-m2-agent-report-parity.mjs"
+  ]
+}

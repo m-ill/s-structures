@@ -1,5 +1,5 @@
 import { stableHash } from '../../core/stableHash.js';
-import { analyzeModel } from '../../solver/linear3d.js';
+import { analyzeModel } from '../product/elasticAnalysisWorkflow.js';
 import { runProductionPushover } from '../../nonlinear/pushover/productionPushover.js';
 import { runProductionNlth } from '../../nonlinear/dynamics/productionNlth.js';
 import { packDomainBinary, unpackDomainBinary, validateDomainBinary } from '../contracts/domainBinary.js';

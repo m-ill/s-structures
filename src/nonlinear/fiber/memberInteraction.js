@@ -1,3 +1,5 @@
+import { MEMBER_FIBER_INTERACTION_VERSION } from '../../metadata/numericVersions.js';
+export { MEMBER_FIBER_INTERACTION_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import { materialOf, sectionOf } from '../../core/catalogs.js';
 import { FIBER_SECTION_MESH_VERSION, buildFiberSectionMesh } from './sectionMesh.js';
@@ -11,7 +13,7 @@ import {
   evaluateSectionResponse,
 } from './sectionResponse.js';
 
-export const MEMBER_FIBER_INTERACTION_VERSION = 'p8-m6-member-fiber-interaction-v1';
+
 
 const OPTIONAL_UNSUPPORTED_SOURCE_CODES = new Set([
   'FIBER_SECTION_SNAPSHOT_REQUIRED',

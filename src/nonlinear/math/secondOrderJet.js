@@ -1,4 +1,6 @@
-export const SECOND_ORDER_JET_VERSION = 'p8-m3-second-order-jet-v1';
+import { SECOND_ORDER_JET_VERSION } from '../../metadata/numericVersions.js';
+export { SECOND_ORDER_JET_VERSION };
+
 
 export function jetConstant(value, size) {
   return createJet(finite(value, 'constant'), size);
@@ -130,10 +132,10 @@ export function isSecondOrderJet(input) {
     && Number.isFinite(input.value)
     && input.gradient instanceof Float64Array
     && input.gradient.length === input.size
-    && Array.from(input.gradient).every(Number.isFinite)
+    && allFinite(input.gradient)
     && input.hessian instanceof Float64Array
     && input.hessian.length === input.size * input.size
-    && Array.from(input.hessian).every(Number.isFinite);
+    && allFinite(input.hessian);
 }
 
 function jetUnary(input, value, first, second) {
@@ -153,12 +155,21 @@ function jetUnary(input, value, first, second) {
 function finishJet(input) {
   if (
     !Number.isFinite(input.value)
-    || !Array.from(input.gradient).every(Number.isFinite)
-    || !Array.from(input.hessian).every(Number.isFinite)
+    || !allFinite(input.gradient)
+    || !allFinite(input.hessian)
   ) {
     throw jetError('JET_DERIVATIVE_NONFINITE', 'Jet operation produced a non-finite value or derivative.');
   }
   return input;
+}
+
+// Inspect every derivative without allocating boxed copies in the element hot path.
+// Jets remain mutable: validation cannot be cached across operations.
+function allFinite(values) {
+  for (let i = 0; i < values.length; i += 1) {
+    if (!Number.isFinite(values[i])) return false;
+  }
+  return true;
 }
 
 function createJet(value, size) {

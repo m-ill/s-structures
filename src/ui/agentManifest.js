@@ -1,3 +1,4 @@
+import { ANALYSIS_AUDIT_VERSION, ELASTIC_EXPANSION_VERSION, WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION, SEMI_RIGID_DIAPHRAGM_VERSION, SHELL_QUAD4_VERSION, SHELL_FRAME_ASSEMBLY_VERSION, EQUIVALENT_SHELL_SCOPE_VERSION, DYNAMIC_COMPLETENESS_VERSION, GLOBAL_BUCKLING_TRACE_VERSION, GLOBAL_EQUILIBRIUM_VERSION, CANONICAL_ANALYSIS_DOMAIN_VERSION, CANONICAL_CONSTRAINT_VERSION, DOMAIN_ADAPTER_COMPATIBILITY_VERSION, ARC_LENGTH_RESTART_VERSION, ARC_LENGTH_SCALING_VERSION, CYCLIC_STATIC_PROTOCOL_VERSION, LINEAR_ELASTIC_ELEMENT_VERSION, MDOF_ARC_LENGTH_VERSION, MDOF_CONVERGENCE_VERSION, MDOF_CYCLIC_STATIC_VERSION, MDOF_EQUILIBRIUM_ASSEMBLER_VERSION, MDOF_LINEAR_BACKEND_VERSION, MDOF_LOAD_CONTROL_VERSION, MDOF_NEWTON_VERSION, NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION, NONLINEAR_EQUILIBRIUM_AUDIT_VERSION, NONLINEAR_EXTERNAL_LOAD_VERSION, TYPED_REDUCED_SPARSE_VERSION, WASM_SPARSE_DIAGNOSTICS_VERSION, COROTATIONAL_FRAME_3D_STATE_VERSION, COROTATIONAL_FRAME_3D_VERSION, COROTATIONAL_TRUSS_3D_VERSION, HINGED_FRAME_3D_STATE_VERSION, HINGED_FRAME_3D_VERSION, FIBER_SECTION_MESH_VERSION, FIBER_MATERIAL_MODEL_VERSION, SECTION_ENVELOPE_VERSION, SECTION_RESPONSE_VERSION, MOMENT_CURVATURE_V2_VERSION, PMM_SURFACE_VERSION, MEMBER_FIBER_INTERACTION_VERSION, FIBER_PMM_PREPROCESSOR_VERSION, PMM_INTERACTION_CACHE_VERSION, FIBER_HINGE_INTERACTION_VERSION, DISTRIBUTED_FIBER_FRAME_3D_VERSION, MDOF_DISPLACEMENT_CONTROL_VERSION, PHYSICAL_CONTROL_COORDINATE_VERSION, MDOF_MASS_DOMAIN_VERSION, MDOF_GROUND_MOTION_VERSION, MDOF_DAMPING_VERSION, MDOF_DYNAMIC_HISTORY_VERSION, MDOF_NEWMARK_VERSION, PRODUCTION_NLTH_ENGINE_VERSION, PRODUCTION_NLTH_VERSION, SECOND_ORDER_JET_VERSION, ROTATION_COORDINATE_VERSION } from '../metadata/numericVersions.js';
 import { INDEX_AGENT_ACTIONS_VERSION } from './indexAgentActions.js';
 import { INDEX_DESIGN_WORKFLOW_VERSION } from './indexDesignWorkflow.js';
 import { INDEX_PUSHOVER_PANEL_VERSION } from './indexPushoverPanel.js';
@@ -80,7 +81,7 @@ import { STABILIZATION_HARNESS_VERSION } from '../diagnostics/stabilizationHarne
 import { BENCHMARK_GATE_VERSION } from '../diagnostics/benchmarkGate.js';
 import { BASELINE_CONTRACT_VERSION } from '../core/baselineContract.js';
 import { VALIDATION_HEALTH_VERSION } from '../core/validationHealth.js';
-import { ANALYSIS_AUDIT_VERSION } from '../solver/analysisAudit.js';
+
 import { STORY_MODEL_VERSION } from '../core/storyModel.js';
 import { STORY_MASS_SUMMARY_VERSION } from '../core/storyMassSummary.js';
 import { STORY_SUMMARY_VERSION } from '../core/storySummary.js';
@@ -124,17 +125,17 @@ import { MATERIAL_SCHEMA_VERSION } from '../materials/materialSchema.js';
 import { SECTION_SCHEMA_VERSION } from '../materials/sectionSchema.js';
 import { MATERIAL_LIBRARY_REPORT_VERSION } from '../materials/libraryReport.js';
 import { MATERIAL_LIBRARY_EDIT_VERSION } from '../materials/libraryEdit.js';
-import { ELASTIC_EXPANSION_VERSION } from '../solver/elasticExpansion.js';
-import { WALL_SLAB_EQUIVALENT_VERSION, WALL_SLAB_TRACE_VERSION } from '../solver/wallSlabEquivalent.js';
-import { SEMI_RIGID_DIAPHRAGM_VERSION } from '../solver/semiRigidDiaphragm.js';
-import { SHELL_QUAD4_VERSION } from '../solver/shell/quad4.js';
-import { SHELL_FRAME_ASSEMBLY_VERSION } from '../solver/shell/shellAssembly.js';
-import { EQUIVALENT_SHELL_SCOPE_VERSION } from '../solver/shell/equivalentScope.js';
+
+
+
+
+
+
 import { LOADS_V2_VERSION } from '../loads/loadsV2.js';
-import { DYNAMIC_COMPLETENESS_VERSION } from '../dynamics/elasticCompleteness.js';
-import { GLOBAL_BUCKLING_TRACE_VERSION } from '../dynamics/globalBuckling.js';
+
+
 import { NONLINEAR_ASSEMBLY_VERSION } from '../nonlinear/assembly.js';
-import { GLOBAL_EQUILIBRIUM_VERSION } from '../nonlinear/control/globalEquilibrium.js';
+
 import { HINGE_ASSIGNMENT_VERSION } from '../nonlinear/hinges/hingeAssign.js';
 import {
   NONLINEAR_CAPABILITY_VERSION,
@@ -142,65 +143,38 @@ import {
   listNonlinearCapabilities,
 } from '../nonlinear/capabilities.js';
 import { NONLINEAR_ANALYSIS_ROUTER_VERSION } from '../nonlinear/analysisRouter.js';
-import {
-  CANONICAL_ANALYSIS_DOMAIN_VERSION,
-  CANONICAL_CONSTRAINT_VERSION,
-  DOMAIN_ADAPTER_COMPATIBILITY_VERSION,
-} from '../solver/domain/index.js';
+
 import {
   ELEMENT_STATE_REGISTRY_VERSION,
   NONLINEAR_CHECKPOINT_VERSION,
   NONLINEAR_ELEMENT_CONTRACT_VERSION,
   NONLINEAR_STATE_STORE_VERSION,
 } from '../nonlinear/core/index.js';
-import {
-  ARC_LENGTH_RESTART_VERSION,
-  ARC_LENGTH_SCALING_VERSION,
-  CYCLIC_STATIC_PROTOCOL_VERSION,
-  LINEAR_ELASTIC_ELEMENT_VERSION,
-  MDOF_ARC_LENGTH_VERSION,
-  MDOF_CONVERGENCE_VERSION,
-  MDOF_CYCLIC_STATIC_VERSION,
-  MDOF_EQUILIBRIUM_ASSEMBLER_VERSION,
-  MDOF_LINEAR_BACKEND_VERSION,
-  MDOF_LOAD_CONTROL_VERSION,
-  MDOF_NEWTON_VERSION,
-  NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION,
-  NONLINEAR_EQUILIBRIUM_AUDIT_VERSION,
-  NONLINEAR_EXTERNAL_LOAD_VERSION,
-  TYPED_REDUCED_SPARSE_VERSION,
-  WASM_SPARSE_DIAGNOSTICS_VERSION,
-} from '../nonlinear/equilibrium/index.js';
+
 import {
   RUNTIME_PREFLIGHT_VERSION,
   WORKER_CLIENT_VERSION,
   WORKER_CORE_VERSION,
   WORKER_PROTOCOL_VERSION,
 } from '../nonlinear/runtime/index.js';
-import {
-  COROTATIONAL_FRAME_3D_STATE_VERSION,
-  COROTATIONAL_FRAME_3D_VERSION,
-} from '../nonlinear/elements/corotationalFrame3d.js';
-import { COROTATIONAL_TRUSS_3D_VERSION } from '../nonlinear/elements/corotationalTruss3d.js';
-import { HINGED_FRAME_3D_STATE_VERSION, HINGED_FRAME_3D_VERSION } from '../nonlinear/elements/hingedFrame3d.js';
+
+
+
 import { HINGE_BACKBONE_VERSION } from '../nonlinear/materials/hingeBackbone.js';
 import { HINGE_CYCLIC_STATE_VERSION, HINGE_CYCLIC_VERSION } from '../nonlinear/materials/hingeCyclic.js';
 import { HINGE_PROPERTY_REGISTRY_VERSION } from '../nonlinear/properties/hingeRegistry.js';
 import { HINGE_ASSIGNMENT_CONTRACT_VERSION } from '../nonlinear/properties/assignments.js';
-import { FIBER_SECTION_MESH_VERSION } from '../nonlinear/fiber/sectionMesh.js';
-import { FIBER_MATERIAL_MODEL_VERSION } from '../nonlinear/fiber/materialModels.js';
-import { SECTION_ENVELOPE_VERSION, SECTION_RESPONSE_VERSION } from '../nonlinear/fiber/sectionResponse.js';
-import { MOMENT_CURVATURE_V2_VERSION } from '../nonlinear/fiber/momentCurvatureV2.js';
-import { PMM_SURFACE_VERSION } from '../nonlinear/fiber/pmmSurface.js';
-import { MEMBER_FIBER_INTERACTION_VERSION } from '../nonlinear/fiber/memberInteraction.js';
-import { FIBER_PMM_PREPROCESSOR_VERSION } from '../nonlinear/fiber/fiberPmmPreprocessor.js';
-import { PMM_INTERACTION_CACHE_VERSION } from '../nonlinear/fiber/pmmInteractionCache.js';
-import { FIBER_HINGE_INTERACTION_VERSION } from '../nonlinear/fiber/hingeInteraction.js';
-import { DISTRIBUTED_FIBER_FRAME_3D_VERSION } from '../nonlinear/elements/distributedFiberFrame3d.js';
-import {
-  MDOF_DISPLACEMENT_CONTROL_VERSION,
-  PHYSICAL_CONTROL_COORDINATE_VERSION,
-} from '../nonlinear/equilibrium/displacementControl.js';
+
+
+
+
+
+
+
+
+
+
+
 import {
   PRODUCTION_PUSHOVER_ENGINE_VERSION,
   PRODUCTION_PUSHOVER_VERSION,
@@ -209,15 +183,12 @@ import {
   PRODUCTION_PUSHOVER_RESULT_VERSION,
   PUSHOVER_ARC_LENGTH_HANDOFF_VERSION,
 } from '../nonlinear/pushover/results.js';
-import { MDOF_MASS_DOMAIN_VERSION } from '../nonlinear/dynamics/massDomain.js';
-import { MDOF_GROUND_MOTION_VERSION } from '../nonlinear/dynamics/mdofGroundMotion.js';
-import { MDOF_DAMPING_VERSION } from '../nonlinear/dynamics/mdofDamping.js';
-import { MDOF_DYNAMIC_HISTORY_VERSION } from '../nonlinear/dynamics/dynamicHistory.js';
-import { MDOF_NEWMARK_VERSION } from '../nonlinear/dynamics/mdofNewmark.js';
-import {
-  PRODUCTION_NLTH_ENGINE_VERSION,
-  PRODUCTION_NLTH_VERSION,
-} from '../nonlinear/dynamics/productionNlth.js';
+
+
+
+
+
+
 import {
   PUSHOVER_LOAD_PATTERN_VERSION,
   PUSHOVER_LOAD_SET_VERSION,
@@ -227,8 +198,8 @@ import {
   NONLINEAR_CASE_DAG_VERSION,
   NONLINEAR_INITIAL_STATE_VERSION,
 } from '../nonlinear/workflow/initialState.js';
-import { SECOND_ORDER_JET_VERSION } from '../nonlinear/math/secondOrderJet.js';
-import { ROTATION_COORDINATE_VERSION } from '../nonlinear/math/rotationCoordinates.js';
+
+
 import {
   NONLINEAR_INTEGRATED_RESULT_VERSION,
   NONLINEAR_INTEGRATION_CAPABILITY_VERSION,

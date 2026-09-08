@@ -1,0 +1,621 @@
+{
+  "source": "810abc06fe9be38eb7bb10f1ba590cbcb87f36be",
+  "initialCheck": {
+    "checkModelHash": "1f585803df1458e4",
+    "issues": [],
+    "modelHash": "1f585803df1458e455b5e7c568b954e5aa418be75320eb095793e806b2410171",
+    "ok": true,
+    "solverUnitPolicy": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "summary": {
+      "blockers": 0,
+      "repairable": 0,
+      "total": 0,
+      "waived": 0,
+      "warnings": 0
+    },
+    "truncated": false,
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    }
+  },
+  "elastic": {
+    "ok": true,
+    "result": {
+      "currentJobId": null,
+      "inputIdentity": {
+        "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "buildBound": false,
+        "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+        "inputHash": "e0856a55c1f224e92e90710dc0bbfec8dfca4a18cd9d4fd23b1ba61062d5dbb9",
+        "inputIdentityVersion": "p19-input-v1",
+        "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+        "modelHash": "af5d30ebd246c09f336c9170071a51283c40e56bddfadd91141de93d5d8df261",
+        "rulePackBound": false,
+        "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+        "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5"
+      },
+      "ok": true,
+      "sourceAnalysisRunIds": [
+        "P20-R2:2026-09-08T01:44:48.936Z:1"
+      ],
+      "status": "completed",
+      "steps": [
+        {
+          "analysisRunId": "P20-R2:2026-09-08T01:44:48.936Z:1",
+          "caseId": "P20-R2",
+          "code": null,
+          "combinationId": null,
+          "designDemandMapping": "elastic-static-or-pdelta",
+          "internalPreprocessing": null,
+          "jobId": "analysis-1788831887511-1",
+          "kind": "static",
+          "ok": true,
+          "prerequisites": []
+        }
+      ],
+      "version": "p19-m3-elastic-review-v1"
+    },
+    "status": "completed"
+  },
+  "design": {
+    "designRunId": "design-1",
+    "designTransferAllowed": false,
+    "inputIdentity": {
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildBound": false,
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "inputHash": "e0856a55c1f224e92e90710dc0bbfec8dfca4a18cd9d4fd23b1ba61062d5dbb9",
+      "inputIdentityVersion": "p19-input-v1",
+      "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+      "modelHash": "af5d30ebd246c09f336c9170071a51283c40e56bddfadd91141de93d5d8df261",
+      "rulePackBound": false,
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+      "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5"
+    },
+    "ok": true,
+    "sourceAnalysisRunIds": [
+      "P20-R2:2026-09-08T01:44:48.936Z:1"
+    ],
+    "stale": false,
+    "summary": {
+      "checkCount": 91,
+      "counts": {
+        "NG": 0,
+        "NOT_CHECKED": 4,
+        "OK": 79,
+        "WARN": 8
+      },
+      "governing": {
+        "analysisRunId": "P20-R2:2026-09-08T01:44:48.936Z:1",
+        "capacity": 200,
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "comboId": "SLS1",
+        "demand": 182.07465804543537,
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "memberId": "e13",
+        "method": "allowable_stress_preliminary",
+        "ratio": 0.9103732902271768,
+        "status": "WARN",
+        "unit": "-",
+        "x": 0
+      },
+      "maxUtilization": 0.9103732902271768,
+      "status": "NOT_CHECKED"
+    }
+  },
+  "report": {
+    "capability": {
+      "automaticPdf": false,
+      "formats": [
+        "html",
+        "json",
+        "csv"
+      ],
+      "manualPrint": true,
+      "ok": true,
+      "pdf": {
+        "browserFallbackAvailable": true,
+        "figureManifestHash": null,
+        "issues": [
+          {
+            "code": "P11_REPORT_EXPORT_ADAPTER_UNAVAILABLE",
+            "message": "p11 report export adapter unavailable",
+            "remediation": "데스크톱 앱에서 다시 시도하거나 한·영 print-ready HTML을 수동 인쇄하세요."
+          },
+          {
+            "code": "P11_REPORT_EXPORT_FIGURES_INCOMPLETE",
+            "message": "p11 report export figures incomplete",
+            "remediation": "필수 7개 화면 증거를 다시 캡처하세요."
+          },
+          {
+            "code": "P11_REPORT_EXPORT_QUALIFICATION_BLOCKED",
+            "message": "p11 report export qualification blocked",
+            "remediation": "보고서 자격검증 blocker를 해결한 뒤 다시 내보내세요."
+          }
+        ],
+        "qualificationStatus": "BLOCKED",
+        "ready": false,
+        "reportSnapshotHash": "8500fb854a1bf9d638757ea77aacb6aff5ff2426c4ae50b30099bd3ac9ca23a0",
+        "sceneCoverage": 0,
+        "verdict": "REVIEW",
+        "version": "p11-product-report-export-workflow-v1"
+      }
+    },
+    "handle": "artifact-a0ab1b27-debb-4a8c-83b8-8708e36c2493-7",
+    "ok": true,
+    "reportSnapshotHash": "8500fb854a1bf9d638757ea77aacb6aff5ff2426c4ae50b30099bd3ac9ca23a0",
+    "summary": {
+      "checkCount": 91,
+      "counts": {
+        "NG": 0,
+        "NOT_CHECKED": 4,
+        "OK": 79,
+        "WARN": 8
+      },
+      "governing": {
+        "analysisRunId": "P20-R2:2026-09-08T01:44:48.936Z:1",
+        "capacity": 200,
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "comboId": "SLS1",
+        "demand": 182.07465804543537,
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "memberId": "e13",
+        "method": "allowable_stress_preliminary",
+        "ratio": 0.9103732902271768,
+        "status": "WARN",
+        "unit": "-",
+        "x": 0
+      },
+      "maxUtilization": 0.9103732902271768,
+      "status": "NOT_CHECKED"
+    }
+  },
+  "beforeView": {
+    "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "buildBound": false,
+    "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+    "inputHash": "e0856a55c1f224e92e90710dc0bbfec8dfca4a18cd9d4fd23b1ba61062d5dbb9",
+    "inputIdentityVersion": "p19-input-v1",
+    "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+    "modelHash": "af5d30ebd246c09f336c9170071a51283c40e56bddfadd91141de93d5d8df261",
+    "rulePackBound": false,
+    "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+    "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5"
+  },
+  "afterView": {
+    "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "buildBound": false,
+    "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+    "inputHash": "e0856a55c1f224e92e90710dc0bbfec8dfca4a18cd9d4fd23b1ba61062d5dbb9",
+    "inputIdentityVersion": "p19-input-v1",
+    "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+    "modelHash": "af5d30ebd246c09f336c9170071a51283c40e56bddfadd91141de93d5d8df261",
+    "rulePackBound": false,
+    "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+    "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5"
+  },
+  "importCheck": {
+    "checkModelHash": "2c49d5ae2e33ba03",
+    "issues": [],
+    "modelHash": "3a01ae0ed5b257ac120c255b4d868945fa9b9daba143abf20195ed98a2b94748",
+    "ok": true,
+    "solverUnitPolicy": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "summary": {
+      "blockers": 0,
+      "repairable": 0,
+      "total": 0,
+      "waived": 0,
+      "warnings": 0
+    },
+    "truncated": false,
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    }
+  },
+  "importContext": {
+    "capabilities": [
+      {
+        "kind": "static",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Elastic GPU execution is implemented but is not production-qualified on this release profile.",
+            "reason": "ELASTIC_GPU_PRODUCTION_QUALIFICATION_PENDING",
+            "remediation": "Use Auto or CPU precise until the required hardware/browser matrix passes.",
+            "routeReason": "ELASTIC_GPU_PRODUCTION_QUALIFICATION_PENDING"
+          }
+        ]
+      },
+      {
+        "kind": "modal",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Modal, RSA and buckling production routes are qualified only for CPU f64.",
+            "reason": "EIGEN_GPU_NOT_QUALIFIED",
+            "remediation": "Use Auto or CPU precise.",
+            "routeReason": "EIGEN_GPU_NOT_QUALIFIED"
+          }
+        ]
+      },
+      {
+        "kind": "responseSpectrum",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Modal, RSA and buckling production routes are qualified only for CPU f64.",
+            "reason": "EIGEN_GPU_NOT_QUALIFIED",
+            "remediation": "Use Auto or CPU precise.",
+            "routeReason": "EIGEN_GPU_NOT_QUALIFIED"
+          }
+        ]
+      },
+      {
+        "kind": "buckling",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Modal, RSA and buckling production routes are qualified only for CPU f64.",
+            "reason": "EIGEN_GPU_NOT_QUALIFIED",
+            "remediation": "Use Auto or CPU precise.",
+            "routeReason": "EIGEN_GPU_NOT_QUALIFIED"
+          }
+        ]
+      },
+      {
+        "kind": "linearTha",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Linear time-history GPU execution is not implemented.",
+            "reason": "LINEAR_THA_GPU_NOT_IMPLEMENTED",
+            "remediation": "Use Auto or CPU precise.",
+            "routeReason": "LINEAR_THA_GPU_NOT_IMPLEMENTED"
+          }
+        ]
+      },
+      {
+        "designBlocked": true,
+        "engineId": "p8-production-mdof-pushover",
+        "qualification": "candidate",
+        "settings": "case-specific preflight required",
+        "targets": [
+          "cpu"
+        ]
+      },
+      {
+        "designBlocked": true,
+        "engineId": "p8-production-mdof-nlth",
+        "qualification": "candidate",
+        "settings": "case-specific preflight required",
+        "targets": [
+          "cpu"
+        ]
+      }
+    ],
+    "cases": [
+      {
+        "engineId": "p8-production-mdof-pushover",
+        "exposed": true,
+        "id": "M7-BROWSER-PUSH",
+        "kind": "pushover",
+        "name": "Production Pushover"
+      },
+      {
+        "engineId": "p8-production-mdof-nlth",
+        "exposed": true,
+        "id": "M7-BROWSER-NLTH",
+        "kind": "nonlinearTimeHistory",
+        "name": "Production NLTH"
+      }
+    ],
+    "casesTruncated": false,
+    "counts": {
+      "loads": 1,
+      "members": 1,
+      "nodes": 2
+    },
+    "inputIdentity": {
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildBound": false,
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "inputHash": "919e55d936bd9ce44f91b480c71321b498aa4370a07529719bcb687ae898317b",
+      "inputIdentityVersion": "p19-input-v1",
+      "materialsHash": "41ec54689947eba9eb99914a70f8f50191c44cff7dd4ace72aa9cc48799054b2",
+      "modelHash": "3a01ae0ed5b257ac120c255b4d868945fa9b9daba143abf20195ed98a2b94748",
+      "rulePackBound": false,
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sectionsHash": "8575457960cfc1024e519b343bd5fee06a3e4f3c112ddb4c8100f66890e6a1e9",
+      "settingsHash": "2bd2e696d029c9d2659df6128b726e81fa5d9c10c05b7fe0fe5d26f84d7e8c0e"
+    },
+    "jobs": [],
+    "limits": {
+      "editing": true,
+      "externalQualification": "NOT_CLAIMED",
+      "maxConcurrentJobs": 1,
+      "maxSessionJobs": 128
+    },
+    "modelHash": "3a01ae0ed5b257ac120c255b4d868945fa9b9daba143abf20195ed98a2b94748",
+    "solverUnitPolicy": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "version": "sstructures-webmcp-v2"
+  },
+  "pushover": {
+    "jobId": "NLJOB-20260908043349-0001",
+    "modelHash": "3a01ae0ed5b257ac120c255b4d868945fa9b9daba143abf20195ed98a2b94748",
+    "rawResultUnits": {
+      "acceleration": "m/s2",
+      "displacement": "m",
+      "energy": "kN.m",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "rotation": "rad",
+      "time": "s",
+      "velocity": "m/s"
+    },
+    "solverUnitPolicy": {
+      "acceleration": "m/s2",
+      "displacement": "m",
+      "energy": "kN.m",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "rotation": "rad",
+      "time": "s",
+      "velocity": "m/s"
+    },
+    "stale": false,
+    "status": {
+      "caseId": "M7-BROWSER-PUSH",
+      "checkpoint": null,
+      "completedAt": "2026-09-08T04:33:50.550Z",
+      "createdAt": "2026-09-08T04:33:49.134Z",
+      "designBlocked": true,
+      "error": null,
+      "id": "NLJOB-20260908043349-0001",
+      "kind": "pushover",
+      "progress": 1,
+      "progressMessage": "해석 완료. 검증등급과 설계전달 차단 상태를 확인하세요.",
+      "qualification": "candidate",
+      "resultAvailable": true,
+      "resumePolicy": null,
+      "runtime": {
+        "backend": "production-wasm-sparse",
+        "fallbackUsed": false,
+        "mode": "module-worker",
+        "requestId": "request-1",
+        "runToken": "run-1"
+      },
+      "settingsHash": "de9900eabfd95f72b63baf0f",
+      "stage": "results",
+      "startedAt": "2026-09-08T04:33:49.147Z",
+      "status": "completed"
+    },
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    }
+  },
+  "nlth": {
+    "jobId": "NLJOB-20260908043427-0002",
+    "modelHash": "3a01ae0ed5b257ac120c255b4d868945fa9b9daba143abf20195ed98a2b94748",
+    "rawResultUnits": {
+      "acceleration": "m/s2",
+      "displacement": "m",
+      "energy": "kN.m",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "rotation": "rad",
+      "time": "s",
+      "velocity": "m/s"
+    },
+    "solverUnitPolicy": {
+      "acceleration": "m/s2",
+      "displacement": "m",
+      "energy": "kN.m",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "rotation": "rad",
+      "time": "s",
+      "velocity": "m/s"
+    },
+    "stale": false,
+    "status": {
+      "caseId": "M7-BROWSER-NLTH",
+      "checkpoint": null,
+      "completedAt": "2026-09-08T04:34:29.211Z",
+      "createdAt": "2026-09-08T04:34:27.327Z",
+      "designBlocked": true,
+      "error": null,
+      "id": "NLJOB-20260908043427-0002",
+      "kind": "nonlinearTimeHistory",
+      "progress": 1,
+      "progressMessage": "해석 완료. 검증등급과 설계전달 차단 상태를 확인하세요.",
+      "qualification": "candidate",
+      "resultAvailable": true,
+      "resumePolicy": null,
+      "runtime": {
+        "backend": "production-wasm-sparse",
+        "fallbackUsed": false,
+        "mode": "module-worker",
+        "requestId": "request-1",
+        "runToken": "run-1"
+      },
+      "settingsHash": "f75de28154fdd7907aa73355",
+      "stage": "results",
+      "startedAt": "2026-09-08T04:34:27.343Z",
+      "status": "completed"
+    },
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    }
+  }
+}

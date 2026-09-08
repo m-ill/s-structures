@@ -1,8 +1,10 @@
+import { SECTION_ENVELOPE_VERSION, SECTION_RESPONSE_VERSION } from '../../metadata/numericVersions.js';
+export { SECTION_ENVELOPE_VERSION, SECTION_RESPONSE_VERSION };
 import * as sectionMeshApi from './sectionMesh.js';
 import * as materialModels from './materialModels.js';
 
-export const SECTION_RESPONSE_VERSION = 'p8-m6-section-response-v1';
-export const SECTION_ENVELOPE_VERSION = 'p8-m6.1-section-envelope-v1';
+
+
 export const SECTION_STRAIN_CONVENTION = Object.freeze({
   formula: 'epsilon=epsilon0-kappaY*z+kappaZ*y',
   generalizedStrain: Object.freeze(['epsilon0', 'kappaY', 'kappaZ']),

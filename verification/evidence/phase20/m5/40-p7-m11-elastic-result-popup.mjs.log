@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "popupVersion": "p7-m11-elastic-result-popup-v2",
+  "visualizationVersion": "p7-m11-elastic-result-visualization-v1",
+  "cases": 6,
+  "bucklingModes": 3,
+  "finalView": "velocity",
+  "responsivePlacementPreserved": true
+}
+
+

@@ -721,7 +721,7 @@ function readDraft(panel, state) {
 
 function syncDraftFromModel(state, model, target = globalThis) {
   if (!model) return;
-  state.draft.projectId = ensureWorkflowProjectIdentity(target, model, state.draft.projectId);
+  state.draft.projectId = readWorkflowProjectIdentity(target, model, state.draft.projectId);
   state.draft.designMethod = model.designBasis?.designMethod || state.draft.designMethod || 'strength';
 }
 
@@ -1023,15 +1023,19 @@ function currentModel(target) {
 }
 
 function ensureWorkflowProjectIdentity(target, model = {}, draftProjectId = '') {
-  const projectId = authoritativeProjectId(target, model)
-    || String(draftProjectId || '').trim()
-    || String(model.meta?.projectId || '').trim()
-    || 'LOCAL-MODEL';
+  const projectId = readWorkflowProjectIdentity(target, model, draftProjectId);
   if (model && typeof model === 'object') {
     model.meta ||= {};
     model.meta.projectId = projectId;
   }
   return projectId;
+}
+
+function readWorkflowProjectIdentity(target, model = {}, draftProjectId = '') {
+  return authoritativeProjectId(target, model)
+    || String(draftProjectId || '').trim()
+    || String(model.meta?.projectId || '').trim()
+    || 'LOCAL-MODEL';
 }
 
 function authoritativeProjectId(target, model = {}) {

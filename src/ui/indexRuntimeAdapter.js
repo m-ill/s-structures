@@ -1,8 +1,27 @@
+import { migrateToCurrent } from '../core/migration.js';
+
 export const INDEX_RUNTIME_ADAPTER_VERSION = 'm23-original-index-runtime-adapter';
 
 export function installIndexRuntimeAdapter(target = globalThis, options = {}) {
   if (!target) return null;
   if (target.SStructuresRuntimeAdapter) return target.SStructuresRuntimeAdapter;
+
+  // The original index host creates and imports v3 models. Normalize at those
+  // write boundaries, never while a result/context getter reads the live model.
+  if (typeof target.migrateToV3 === 'function') {
+    const legacyMigration = target.migrateToV3;
+    target.migrateToV3 = (...args) => migrateToCurrent(legacyMigration.apply(target, args));
+    if (typeof target.makeV3Model === 'function') {
+      const legacyFactory = target.makeV3Model;
+      target.makeV3Model = (...args) => migrateToCurrent(legacyFactory.apply(target, args));
+    }
+    const current = safeCall(target.model);
+    if (current) {
+      const prepared = migrateToCurrent(current);
+      for (const key of Object.keys(current)) delete current[key];
+      Object.assign(current, prepared);
+    }
+  }
 
   const adapter = {
     version: INDEX_RUNTIME_ADAPTER_VERSION,

@@ -1,3 +1,5 @@
+import { MDOF_NEWMARK_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_NEWMARK_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import {
   beginStateStep,
@@ -23,7 +25,7 @@ import {
   validateDynamicCsc,
 } from './sparseMatrix.js';
 
-export const MDOF_NEWMARK_VERSION = 'p8-m8-mdof-newmark-average-acceleration-v1';
+
 export const MDOF_NEWMARK_PARAMETERS = Object.freeze({ beta: 0.25, gamma: 0.5 });
 
 export async function solveMdofNewmarkStep(input = {}) {

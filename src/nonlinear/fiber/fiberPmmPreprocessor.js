@@ -1,3 +1,5 @@
+import { FIBER_PMM_PREPROCESSOR_VERSION } from '../../metadata/numericVersions.js';
+export { FIBER_PMM_PREPROCESSOR_VERSION };
 import {
   buildMemberFiberInteraction,
   buildModelFiberPmmInteractions,
@@ -9,7 +11,7 @@ import { createPmmInteractionCache } from './pmmInteractionCache.js';
 import { createWorkerClient } from '../runtime/workerClient.js';
 import { WORKER_TASK_TYPES } from '../runtime/protocol.js';
 
-export const FIBER_PMM_PREPROCESSOR_VERSION = 'p8-m6.1-fiber-pmm-preprocessor-v1';
+
 
 const defaultCache = createPmmInteractionCache();
 

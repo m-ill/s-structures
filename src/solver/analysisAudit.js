@@ -1,6 +1,8 @@
+import { ANALYSIS_AUDIT_VERSION } from '../metadata/numericVersions.js';
+export { ANALYSIS_AUDIT_VERSION };
 import { buildAuditRows, maxFinite } from './analysisAuditRows.js';
 
-export const ANALYSIS_AUDIT_VERSION = 'p7-m7-six-resultant-analysis-audit-v1';
+
 
 export function buildAnalysisAudit(analysis = {}, options = {}) {
   const requestedLimit = Number(options.equilibriumLimit);

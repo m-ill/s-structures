@@ -1,6 +1,6 @@
 import { stableHash } from '../../core/stableHash.js';
 import { runProductionNlth } from '../dynamics/productionNlth.js';
-import { createWasmSparseBackend } from '../equilibrium/backends/wasmSparseBackend.js';
+import { createWasmSparseBackend } from '../../compute/backends/wasmCpuBackend.js';
 import { runProductionPushover } from '../pushover/productionPushover.js';
 import { buildPhase8PilotArtifact, getPhase8PilotPackage } from './pilotPackages.js';
 

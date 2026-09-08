@@ -1,6 +1,8 @@
+import { FIBER_SECTION_MESH_VERSION } from '../../metadata/numericVersions.js';
+export { FIBER_SECTION_MESH_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 
-export const FIBER_SECTION_MESH_VERSION = 'p8-m6-fiber-section-mesh-v1';
+
 
 const SI_UNITS = Object.freeze({
   length: 'm',

@@ -1,5 +1,5 @@
 import { buildDesignWorkflow, renderDesignWorkflowMarkup } from './indexDesignWorkflow.js';
-import { equivalentShellBadge } from '../solver/shell/equivalentScope.js';
+import { equivalentShellBadge } from '../results/equivalentShellScope.js';
 
 export const INDEX_RESULTS_PANEL_VERSION = 'm10-index-results-panel';
 

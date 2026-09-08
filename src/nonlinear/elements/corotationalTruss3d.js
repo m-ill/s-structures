@@ -1,6 +1,8 @@
+import { COROTATIONAL_TRUSS_3D_VERSION } from '../../metadata/numericVersions.js';
+export { COROTATIONAL_TRUSS_3D_VERSION };
 import { createCorotationalFrame3dKernel } from './corotationalFrame3d.js';
 
-export const COROTATIONAL_TRUSS_3D_VERSION = 'p8-m3-corotational-truss-3d-v2';
+
 
 export function createCorotationalTruss3dKernel(descriptor, options = {}) {
   const behavior = descriptor?.behavior || descriptor?.type;

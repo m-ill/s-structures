@@ -67,5 +67,11 @@ export function createWorkflowTools({agent,bridge,tool,object,context,setView}) 
     tool('get_report_artifact','Read a bounded text chunk of an existing HTML/JSON/CSV artifact; no file paths accepted.',object({handle:id,format:choice('html','json','csv'),offset:{type:'integer',minimum:0,maximum:100000000}},['handle','format']),true,args=>{const r=good(agent.getDesignReviewReport(get(args.handle,'artifact')));const text=args.format==='html'?r.reports['ko-KR'].html:r[args.format],offset=args.offset||0;return {ok:true,stale:r.stale,reportSnapshotHash:r.reportSnapshotHash,format:args.format,totalCharacters:text.length,offset,nextOffset:offset+12000<text.length?offset+12000:null,content:text.slice(offset,offset+12000)};}),
     tool('set_workspace_view','Switch the shared workspace view only; does not calculate or edit the model.',object({view:choice('modeling','elastic','nonlinear','design-input','design-review')},['view']),false,args=>setView(args.view)),
   ];
-  return {tools,dispose(){active=false;for(const w of workflows.values())if(w.status==='running')bridge.cancelElasticWorkflow(w.requestId);handles.clear();requests.clear();}};
+  return {tools,dispose(){
+    active=false;const errors=[];
+    for(const w of workflows.values())if(w.status==='running'){
+      try{bridge.cancelElasticWorkflow(w.requestId);}catch(error){errors.push({code:error?.code||'CANCEL_FAILED',message:String(error?.message||error)});}
+    }
+    handles.clear();requests.clear();workflows.clear();return {errors};
+  }};
 }

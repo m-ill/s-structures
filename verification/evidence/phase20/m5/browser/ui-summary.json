@@ -1,0 +1,26 @@
+{
+  "status": "NOT_CHECKED",
+  "counts": {
+    "OK": 79,
+    "WARN": 8,
+    "NG": 0,
+    "NOT_CHECKED": 4
+  },
+  "maxUtilization": 0.9103732902271767,
+  "governing": {
+    "analysisRunId": "P20-R2:2026-09-08T01:44:48.936Z:1",
+    "comboId": "SLS1",
+    "memberId": "e13",
+    "category": "steel",
+    "checkId": "steel-slenderness",
+    "status": "WARN",
+    "ratio": 0.9103732902271767,
+    "demand": 182.07465804543534,
+    "capacity": 200,
+    "unit": "-",
+    "expression": "max(KL/ry, KL/rz) / limit",
+    "x": 0,
+    "method": "allowable_stress_preliminary"
+  },
+  "checkCount": 91
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "commit": "810abc06fe9be38eb7bb10f1ba590cbcb87f36be",
+    "tree": "21a7c66651a58d7b2c0451d2afe36354b5bcb2db",
+    "trackedChanges": ""
+  },
+  "archiveSha256": "c9e70936bf051293b511bc3bbfa4d81a6fc15a9c343ce6277ebb2130b4ecfa94",
+  "manifestHash": "37e7c98284ee4d0567102509654a8ecbe51bc54d78ca893596614d8cff113cba",
+  "baselineRuntime": {
+    "commit": "07b3e9353bc579682d54d8e46bb7df2116a4532e",
+    "tree": "3b06a566f16fa99a4addd1a0269bfbf139c137e5",
+    "trackedChanges": ""
+  },
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  }
+}

@@ -53,6 +53,6 @@ for(const rc of [false,true]) {
  model.nodes[1].x=0.1;
  assert.equal((await call('get_design_result',{designRunId:design.designRunId,channel:'summary'})).stale,true);
  await assert.rejects(call('plan_report_export',{designRunId:design.designRunId}),{code:'STALE_INPUT'});
- tools.dispose();await assert.rejects(call('get_report_artifact',{handle:report.handle,format:'json'}),{code:'HANDLE_NOT_FOUND'});
+ tools.dispose();await assert.rejects(call('get_report_artifact',{handle:report.handle,format:'json'}),{code:'SESSION_DISPOSED'});
  console.log(`PASS ${rc?'RC':'steel'} WebMCP typed changes → actual solver → design → report matches UI service; pagination/stale/dedup/limits`);
 }

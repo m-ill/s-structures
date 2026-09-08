@@ -1,6 +1,8 @@
+import { DYNAMIC_COMPLETENESS_VERSION } from '../metadata/numericVersions.js';
+export { DYNAMIC_COMPLETENESS_VERSION };
 import { estimateGlobalBucklingTrace } from './globalBuckling.js';
 
-export const DYNAMIC_COMPLETENESS_VERSION = 'p3-m13-dynamic-completeness';
+
 
 export function buildDynamicCompletenessReview(input = {}) {
   const type = input.type || 'dynamic-trace';

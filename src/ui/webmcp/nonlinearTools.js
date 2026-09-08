@@ -101,6 +101,10 @@ export function createNonlinearTools({agent,tool,context:baseContext}) {
     status,cancel:jobId=>{agent.cancelNonlinearRun({jobId:own(jobId)});return status(jobId);},
     slice:args=>{own(args.jobId);if(args.path&&!['summary','payload'].includes(args.path))fail('USE_TYPED_NONLINEAR_HISTORY');
       return {...status(args.jobId),slice:agent.getNonlinearResultSlice({jobId:args.jobId,query:{slice:'overview'}})};},
-    dispose:()=>{for(const jobId of jobs)agent.cancelNonlinearRun({jobId});active=false;plans.clear();}
+    dispose:()=>{
+      active=false;plans.clear();requests.clear();const errors=[];
+      for(const jobId of jobs){try{agent.cancelNonlinearRun({jobId});}catch(error){errors.push({jobId,code:error?.code||'CANCEL_FAILED',message:String(error?.message||error)});}}
+      jobs.clear();return {errors};
+    }
   };
 }

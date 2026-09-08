@@ -1,0 +1,33 @@
+name: Phase20 boundary validation
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: ['work/phase20-*']
+permissions:
+  contents: read
+jobs:
+  phase20:
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.16.0'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: node tools/run-p19-validation.mjs phase20-validation --manifest=verification/specs/phase20/tests.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase20-${{ matrix.os }}
+          path: |
+            phase20-validation/*.json
+            phase20-validation/*.log
+          retention-days: 30

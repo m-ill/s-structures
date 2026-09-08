@@ -1,7 +1,9 @@
+import { MDOF_GROUND_MOTION_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_GROUND_MOTION_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import { combineGroundInfluence } from './massDomain.js';
 
-export const MDOF_GROUND_MOTION_VERSION = 'p8-m8-mdof-ground-motion-v1';
+
 export const GROUND_MOTION_ACCELERATION_UNITS = Object.freeze([
   'm/s2',
   'cm/s2',

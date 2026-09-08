@@ -1,5 +1,5 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
-import { assembleStiffness3D } from '../solver/linear3d.js';
+import { assembleStiffness3D } from '../solver/linear3dAssembly.js';
 import { matMul, matTrans } from '../solver/linear3dElement.js';
 import { geometricStiffnessTrace } from './elements/corotationalBeam.js';
 import { createMomentRotationBackbone, evaluateMomentHinge } from './hinges/momentHinge.js';

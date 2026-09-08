@@ -38,4 +38,9 @@ assert.equal(JSON.stringify(model),beforeRead,'Read-only preflight must not migr
 await assert.rejects(call('get_nonlinear_history',{jobId:'foreign',channel:'overview'}),{code:'JOB_NOT_FOUND'});
 await assert.rejects(call('preview_nonlinear_case',{modelHash:context.modelHash,case:{id:'stale',mode:'pushover',gravityCombinationId:'GRAV',settings:{}}}),{code:'STALE_MODEL'});
 await assert.rejects(call('preview_nonlinear_case',{modelHash:current.modelHash,case:{id:'bad',mode:'nlth',gravityCombinationId:'GRAV',settings:{},solver:{}}}),{code:'INVALID_INPUT'});
-tools.dispose();console.log(JSON.stringify({ok:true,tools:tools.length,scope:'routing, typed edits, no hidden analysis, omitted SH1 guard, ownership, queued disposal'}));
+tools.dispose();
+await assert.rejects(call('get_project_context'),{code:'SESSION_DISPOSED'});
+await assert.rejects(call('apply_nonlinear_case',{handle:preview.handle,requestId:'case'}),{code:'SESSION_DISPOSED'});
+await assert.rejects(call('set_workspace_view',{view:'modeling'}),{code:'SESSION_DISPOSED'});
+assert.deepEqual(tools.dispose(),{errors:[]});
+console.log(JSON.stringify({ok:true,tools:tools.length,scope:'routing, typed edits, no hidden analysis, SH1 guard, ownership, disposal and cached-request revocation'}));

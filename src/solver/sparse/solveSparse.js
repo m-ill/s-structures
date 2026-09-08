@@ -1,7 +1,7 @@
 import { resolveCriterion } from '../../core/analysisCriteria.js';
-import { cscMatVec, cscToDense, denseToCsc, sparseStats } from './cscMatrix.js';
-import { factorLdlt, solveLdlt } from './ldlt.js';
-import { symbolicFactor } from './symbolicFactor.js';
+import { cscMatVec, cscToDense, denseToCsc, sparseStats } from '../../compute/sparse/matrix.js';
+import { factorLdlt, solveLdlt } from '../../compute/sparse/ldlt.js';
+import { symbolicFactor } from '../../compute/sparse/symbolic.js';
 import { buildSolverWarningDiagnostics, matrixSymmetryError } from './diagnostics.js';
 
 export const SPARSE_SOLVE_VERSION = 'p7-m10-sparse-solve-v3';

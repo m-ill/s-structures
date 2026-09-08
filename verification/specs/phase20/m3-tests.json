@@ -1,0 +1,12 @@
+{
+  "scope": "P20 M3 exact elastic and public contract",
+  "tests": [
+    "tests/p20-m3-elastic-parity.mjs",
+    "tests/p15-m8-pdelta-first-order-ownership.mjs",
+    "tests/p9-m3-elastic-runtime.mjs",
+    "tests/p9-m5-elastic-hybrid.mjs",
+    "tests/p9-m5-pdelta-hybrid.mjs",
+    "tests/p9-m6-eigen-dynamics.mjs",
+    "tests/p19-m3-design-workflow.mjs"
+  ]
+}

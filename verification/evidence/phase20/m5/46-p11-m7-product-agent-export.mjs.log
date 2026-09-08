@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "milestone": "P11-M7",
+  "actions": 8,
+  "uiAgentPlanHashParity": true,
+  "snapshotHashParity": true,
+  "artifactHashParity": true,
+  "historyRows": 2,
+  "cancelAcknowledgementMs": 0.025899999999978718,
+  "reasonRemediationCoverage": 1,
+  "browserFalseSuccess": 0
+}
+
+

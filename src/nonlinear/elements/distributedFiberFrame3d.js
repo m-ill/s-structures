@@ -1,3 +1,5 @@
+import { DISTRIBUTED_FIBER_FRAME_3D_VERSION } from '../../metadata/numericVersions.js';
+export { DISTRIBUTED_FIBER_FRAME_3D_VERSION };
 import {
   matMul,
   matTrans,
@@ -8,7 +10,7 @@ import { createNonlinearElementContract } from '../core/elementContract.js';
 import { commitSectionResponse, evaluateSectionResponse } from '../fiber/sectionResponse.js';
 import { createCorotationalFrame3dKernel } from './corotationalFrame3d.js';
 
-export const DISTRIBUTED_FIBER_FRAME_3D_VERSION = 'p8-m6-distributed-fiber-frame-3d-v1';
+
 export const DISTRIBUTED_FIBER_FRAME_3D_STATE_VERSION = 'p8-m6-distributed-fiber-frame-state-v1';
 
 export function createDistributedFiberFrame3dKernel(descriptor, fiberSection, options = {}) {

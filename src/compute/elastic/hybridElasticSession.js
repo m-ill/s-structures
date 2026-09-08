@@ -1,8 +1,6 @@
 import { stableHash } from '../../core/stableHash.js';
-import {
-  captureElasticCombinationSystems,
-  resumeElasticCombinationSystems,
-} from '../../solver/linear3d.js';
+import { captureElasticCombinationSystems } from '../../solver/elastic/stages.js';
+import { resumeElasticCombinationSystems } from '../../solver/elastic/stages.js';
 import { createMixedPrecisionSpdSession } from '../hybrid/mixedPrecisionSpd.js';
 
 export const HYBRID_ELASTIC_SESSION_VERSION = 'p9-m5-hybrid-elastic-session-v1';

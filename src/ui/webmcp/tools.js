@@ -22,6 +22,7 @@ export function webmcpModelHash(model) {
 export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setView = () => ({ok:false,code:'VIEW_UNAVAILABLE'}) }) {
   const requests = new Map();
   const jobs = new Map();
+  let active = true;
   function model() {
     const value = agent.getModel();
     if (!value) fail('MODEL_REQUIRED', 'Open a model first.');
@@ -67,11 +68,13 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
       name, description, inputSchema,
       annotations: { readOnlyHint: readOnly },
       async execute(args = {}) {
+        if (!active) fail('SESSION_DISPOSED', 'This WebMCP page session has been disposed.');
         try{finiteJson(args);}catch{fail('INVALID_INPUT','Input must be finite safe JSON.');}
         if(JSON.stringify(args).length>64000) fail('REQUEST_TOO_LARGE','Maximum input is 64000 characters.');
         validate(inputSchema, args);
         const before=bridge.getWorkflowInputIdentity?.().inputHash;
         const value = await run(args);
+        if (!active) fail('SESSION_DISPOSED', 'This WebMCP page session has been disposed.');
         const text = JSON.stringify(value);
         if (text.length > 48000) fail('RESULT_TOO_LARGE', 'Request a narrower path or smaller limit.');
         onActivity({tool:name,ok:value?.ok!==false,designRunId:value?.designRunId,changed:before!==bridge.getWorkflowInputIdentity?.().inputHash});
@@ -157,7 +160,17 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
     ...workflow.tools,
     ...nonlinear.tools,
   ];
-  definitions.dispose=()=>{workflow.dispose();nonlinear.dispose();for(const jobId of jobs.keys()) agent.cancelAnalysisRun({jobId});};
+  definitions.dispose=()=>{
+    if (!active) return {errors:[]};
+    active=false;
+    const errors=[];
+    const attempt=run=>{try{errors.push(...(run()?.errors||[]));}catch(error){errors.push({code:error?.code||'CANCEL_FAILED',message:String(error?.message||error)});}};
+    attempt(()=>workflow.dispose());
+    attempt(()=>nonlinear.dispose());
+    for(const jobId of jobs.keys()) attempt(()=>agent.cancelAnalysisRun({jobId}));
+    jobs.clear();requests.clear();
+    return {errors};
+  };
   return definitions;
 }
 
