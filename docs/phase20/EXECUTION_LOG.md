@@ -84,3 +84,4 @@
 - 최초 로컬/원격 manifest 대조는 Windows git archive의 autocrlf 때문에707개 텍스트 파일에서 실패했다. Git cat-file로708개 원본 blob을 독립 대조해 Linux 배포 manifest가 정확함을 확인했다. Pages builder에 core.autocrlf=false/core.eol=lf를 고정하고, 같은 fefde82로 canonical 아티팩트를 재생성해 공개709개 파일을 검증했다. 첫 실패 manifest와 조사 결과를 보존한다. 이 보완은 이미 배포된 Linux 실행 바이트를 바꾸지 않는다.
 - README·WebMCP·Phase20 상태·배포 문서와 Wiki를 갱신했다. 원래 M5 증거와 release ZIP은 수정하지 않는다. 후속 문서/증거 커밋에는 [skip ci]를 사용하고 배포한 실행 파일은 바꾸지 않는다.
 - 기록 마감의 전체 diff whitespace 검사는 보존 대상 원시 evidence의 CRLF 때문에 중단됐다. 원시 바이트와242개 SHA를 유지하고 코드·문서 범위의 whitespace 검사와 evidence hash 검사를 분리했다.
+- Windows clean-tree 검사에는 저장소의 기존 줄바꿈 설정을 유지하고 canonical archive 명령에만 autocrlf/eol 고정을 적용했다. c9f9a74의 전체 Git 호출 설정은 상태 검사까지 영향을 주어 빌드가 거절됐으며, 후속 커밋에서 archive로 범위를 좁혔다.

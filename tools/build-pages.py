@@ -16,8 +16,7 @@ root = Path.cwd()
 
 def git(*args):
     return subprocess.check_output(
-        ['git', '-c', 'safe.directory=' + root.as_posix(),
-         '-c', 'core.autocrlf=false', '-c', 'core.eol=lf', *args], cwd=root)
+        ['git', '-c', 'safe.directory=' + root.as_posix(), *args], cwd=root)
 
 
 if git('status', '--porcelain', '--untracked-files=no').strip():
@@ -32,7 +31,9 @@ identity = {
 roots = {'index.html', 'app.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'LICENSE.txt'}
 extensions = {'.js', '.mjs', '.json', '.html', '.css', '.wasm', '.svg', '.md', '.txt', '.csv'}
 files = {}
-with tarfile.open(fileobj=io.BytesIO(git('archive', '--format=tar', 'HEAD'))) as archive:
+with tarfile.open(fileobj=io.BytesIO(git(
+        '-c', 'core.autocrlf=false', '-c', 'core.eol=lf',
+        'archive', '--format=tar', 'HEAD'))) as archive:
     for item in archive.getmembers():
         path = PurePosixPath(item.name)
         allowed = item.name in roots or item.name.startswith(('src/', 'docs/user-manual/'))
