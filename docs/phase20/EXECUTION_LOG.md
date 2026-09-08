@@ -61,3 +61,9 @@
 - 증거 봉인 첫 시도는 CSV 단위 `-`의 기존 apostrophe escape를 원문과 동일 문자열로 비교해 중단했다. 실제 csvCell 정책을 확인해 정확한 escape를 비교하고 새 폴더에서 봉인했다. 엔진·CSV 형식은 바꾸지 않았다.
 - source/runtime/evidence ZIP을810abc0으로 생성했다. 새 runtime740개 파일 hash·서버/해석 smoke PASS, 공개 prerelease를 다운로드해 ZIP hash를 재검증했다. `verification/evidence/phase20/m5/`에 R1과 최종 원본·단계별 자료를 보존한다.
 - 개발 프리뷰 `phase20-boundaries-preview-20260908` 게시. 후속 문서·증거 커밋은 runtime 변경 없이 기록한다. main/Pages·외부 검토·pilot·생산 자격은 변경하지 않는다.
+
+## 2026-09-08 · 공개 기록 마감
+
+- [검토 PR #4](https://github.com/m-ill/s-structures/pull/4)를 Phase19 개발 브랜치 기준 draft로 게시했다. 문서·증거 커밋은 `0edc408`이며 런타임/시험/도구/CI/spec은 검증 후보 `810abc0`과 동일하다.
+- 공개 ZIP 세 개를 다운로드해 SHA-256을 재검증했고, 저장소 증거 파일489개의 hash도 확인했다. 로컬 사용자 파일과 이전 실행 자료는 보존한다.
+- 관련 Wiki·출처 허브·index·log를 갱신했다. Wiki lint는 새 문제0건이며 기존 S-Scan 링크8건만 남아 있다. 이번 범위에서 S-Scan 원자료나 코드는 변경하지 않았다.

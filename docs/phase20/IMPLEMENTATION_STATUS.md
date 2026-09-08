@@ -29,5 +29,6 @@ production_qualification: unchanged-not-qualified
 - [최종 증거와 이전 R1](../../verification/evidence/phase20/m5/README.md)
 - [최종 후보 CI](https://github.com/m-ill/s-structures/actions/runs/34177589220)
 - [개발 프리뷰: 소스·실행·검증 ZIP](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)
+- [검토 PR #4](https://github.com/m-ill/s-structures/pull/4) — Phase19 개발 브랜치 기준 draft
 
 main/Pages는 변경하지 않았다. 비선형 candidate·최종 설계전달 차단, 자동 PDF의 호스트/figure/qualification gate, 외부2·pilot5·M-tier·재시작 복원·생산 자격은 별도 조건이다. 브라우저 실행 중 취소는 자동 회귀에서 검증했으며 이번 실제 브라우저에서는 별도 타이밍 시험을 하지 않았다.
