@@ -1,10 +1,8 @@
 import { stableHash } from '../../core/stableHash.js';
-import {
-  buildDirectPDeltaAnalysis,
-  finalizeElasticAnalysis,
-  prepareElasticAnalysis,
-  solveElasticCombination,
-} from '../../solver/linear3d.js';
+import { buildDirectPDeltaAnalysis } from '../../solver/pdelta/combinations.js';
+import { finalizeElasticAnalysis } from '../product/elasticAnalysisWorkflow.js';
+import { prepareElasticAnalysis } from '../../solver/elastic/stages.js';
+import { solveElasticCombination } from '../../solver/elastic/stages.js';
 import { runSecondOrderPDeltaAsync } from '../../solver/pdelta/secondOrder.js';
 import { createEnvelopeAccumulator } from '../../solver/linear3dPost.js';
 import { prepareAnalysisContracts } from './analysisAdapters.js';

@@ -1,4 +1,4 @@
-import { analyzeModel } from '../solver/linear3d.js';
+import { analyzeModel } from '../compute/product/elasticAnalysisWorkflow.js';
 import { gateCaseStatus, totalLoadCheck } from './benchmarkGateChecks.js';
 
 export function runBenchmarkGateCase(id, name, create, residualLimit) {

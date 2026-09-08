@@ -1,4 +1,5 @@
-import { analyzeModel, defaultCombos } from '../../solver/linear3d.js';
+import { analyzeModel } from './elasticAnalysisWorkflow.js';
+import { defaultCombos } from '../../solver/linear3dPost.js';
 import { normalizePDeltaMethod } from '../../solver/pdelta/method.js';
 import { analyzeDynamics } from '../../dynamics/modal.js';
 import { estimateGlobalBucklingTrace } from '../../dynamics/globalBuckling.js';

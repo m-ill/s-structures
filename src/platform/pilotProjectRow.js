@@ -1,4 +1,4 @@
-import { analyzeModel } from '../solver/linear3d.js';
+import { analyzeModel } from '../compute/product/elasticAnalysisWorkflow.js';
 import { summarizeRepresentativeBuilding } from '../examples/representativeBuildings.js';
 import { buildPracticeValidationReport } from './practiceValidationReport.js';
 
