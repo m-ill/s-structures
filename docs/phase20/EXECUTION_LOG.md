@@ -67,3 +67,10 @@
 - [검토 PR #4](https://github.com/m-ill/s-structures/pull/4)를 Phase19 개발 브랜치 기준 draft로 게시했다. 문서·증거 커밋은 `0edc408`이며 런타임/시험/도구/CI/spec은 검증 후보 `810abc0`과 동일하다.
 - 공개 ZIP 세 개를 다운로드해 SHA-256을 재검증했고, 저장소 증거 파일489개의 hash도 확인했다. 로컬 사용자 파일과 이전 실행 자료는 보존한다.
 - 관련 Wiki·출처 허브·index·log를 갱신했다. Wiki lint는 새 문제0건이며 기존 S-Scan 링크8건만 남아 있다. 이번 범위에서 S-Scan 원자료나 코드는 변경하지 않았다.
+
+## 2026-09-08 · 사용자 요청에 따른 main/Pages 통합 준비
+
+- 사용자가 “main 병합하고 배포하자.”라고 요청했다. 앞선 개발 프리뷰 마감 이후의 별도 배포 작업이다.
+- 원격 main `e18d5b4`는 초기 공개 패키지 스냅샷 이력이다. `7bb55d7`과 공통 파일이 전부 동일함을 확인하고 최신 Phase20 소스를 보존해 병합했다. 충돌 정리 후 수치 모듈·UI·서버·tests는 `810abc0`과 byte 동일하다.
+- 병합 직전 `git rm`이 새로 stage된 옛 패키지 식별자 2개의 제거를 거절했으나 뒤의 commit은 실행돼 `a4296d4`에 식별자가 남았다. 다음 배포 구성 커밋에서 정확히 두 생성 파일을 제거한다. 모델·코드·evidence 변경은 없다.
+- Pages를 정적 allowlist 아티팩트와 현재 commit/file hash 식별자로 구성하고, 같은 main 커밋의 Windows·Ubuntu Phase20 112개 성공을 deploy 조건으로 연결한다. [배포 기록](PAGES_DEPLOYMENT.md)에 후속 결과를 남긴다.

@@ -1,5 +1,6 @@
 name: Phase20 boundary validation
 on:
+  workflow_call:
   workflow_dispatch:
   push:
     branches: ['work/phase20-*']
