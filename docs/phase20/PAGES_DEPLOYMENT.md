@@ -25,4 +25,11 @@ Pages 설정은 GitHub Actions로 전환한다. 롤백은 main에서 문제 커�
 
 ## 실행 결과
 
-병합·CI·공개 HTTP 및 실제 브라우저 검증 결과는 완료 후 아래에 추가한다.
+- PR #4 → Phase19: `592ed4266202364ce6098fff23c604897beca8f9` (2026-09-08 11:39:19 UTC).
+- PR #3 → main: `fefde822ae27a024ea8a834642b8aac10a24bd77` (2026-09-08 11:39:58 UTC). 통합 트리는 후보 `2bf82b5`와 정확히 같다.
+- [배포 workflow34221905836](https://github.com/m-ill/s-structures/actions/runs/34221905836): 같은 main 소스 Windows112/112·Ubuntu112/112, 정적 build 및 deploy 성공.
+- [Public validation34221905379](https://github.com/m-ill/s-structures/actions/runs/34221905379)도 성공했다.
+- 실제 공개 SOURCE-IDENTITY와 manifest는 로컬 canonical build와 같으며, 공개709개 파일과 루트 index의 HTTP SHA-256이 일치했다. 로컬 빌드는 자체 manifest까지711개 파일이지만 .nojekyll은 업로드 시 제외되는 빌드 마커로 HTTP404다. 해당 원시 실패1건을 보존하고 공개 실행 파일과 구분했다. [GitHub 업로드 구현](https://github.com/actions/upload-pages-artifact/blob/v4/action.yml)을 확인했다.
+- 공개 HTTPS 모델러의 native WebMCP36개, 모델 차단0, 탄성설계 화면과 정적→설계 검토→보고서 경로, 콘솔 오류0을 확인했다. 로컬 정적 아티팩트에서는 production Pushover Worker/WASM 완료·fallback false도 확인했다. 자세한 브라우저 결과는 원본 JSON을 따른다.
+- 보고서는3개 형식의 생성과 각각 첫12000자 조회를 확인했다. 전체 export·자동 PDF 또는 이번 브라우저에서의 전체 수치 byte parity를 주장하지 않는다. 기존 레거시 상단 배지는 typed workflow 완료 후에도 입력변경 문구를 남겼지만 별도 설계 패널·API는 최신 상태였다. DOM summary와 도구 전송 숫자의 마지막 부동소수점 자릿수 차이도 원본에 기록했으며 후속 UI/전송 정합성 검토 대상으로 남긴다.
+- [배포 증거](../../verification/evidence/phase20/pages/README.md), [기계판독 요약](../../verification/evidence/phase20/pages/verification-summary.json). 이후 기록만 수정한 커밋은 배포 런타임 커밋과 구분한다.

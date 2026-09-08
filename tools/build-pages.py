@@ -16,7 +16,8 @@ root = Path.cwd()
 
 def git(*args):
     return subprocess.check_output(
-        ['git', '-c', 'safe.directory=' + root.as_posix(), *args], cwd=root)
+        ['git', '-c', 'safe.directory=' + root.as_posix(),
+         '-c', 'core.autocrlf=false', '-c', 'core.eol=lf', *args], cwd=root)
 
 
 if git('status', '--porcelain', '--untracked-files=no').strip():

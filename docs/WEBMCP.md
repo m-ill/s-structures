@@ -1,8 +1,8 @@
-# WebMCP — 로컬 v2 / 공개 v1
+# WebMCP — 탄성설계·보고서·비선형 36개 도구
 
-현재 개발 후보는 **36개 도구**다. [M5~M10 지원 범위](phase19/M5_M10_CANDIDATE.md) · [개발 PR](https://github.com/m-ill/s-structures/pull/3). 아래 M4 기록은 이전 단계의 검증 이력이다.
+현재 main/Pages는 **36개 도구**를 제공한다. [배포 소스·검증 기록](phase20/PAGES_DEPLOYMENT.md)을 확인한다. [M5~M10 지원 범위](phase19/M5_M10_CANDIDATE.md) · [개발 PR](https://github.com/m-ill/s-structures/pull/3). 아래 M4 기록은 이전 단계의 검증 이력이다.
 
-2026-09-07 로컬 M4는 기존 9개에 18개를 추가한 총 27개 도구를 제공한다. 입력 preview/apply, 탄성 workflow, 설계 검토, 보고서 artifact, 화면 전환을 M2·M3 공통 서비스에 연결했다. 직접 모델러와 같은 출처 app 호스트에서 실제 Site tools를 검증했다. [M4 계약·사용법](phase19/M4_CONTRACT.md) · [39개 고정 회귀와 브라우저 증거](../verification/evidence/phase19/m4/README.md). 공개 GitHub 배포에는 아직 반영하지 않았다.
+2026-09-07 로컬 M4는 기존 9개에 18개를 추가한 총 27개 도구를 제공한다. 입력 preview/apply, 탄성 workflow, 설계 검토, 보고서 artifact, 화면 전환을 M2·M3 공통 서비스에 연결했다. 직접 모델러와 같은 출처 app 호스트에서 실제 Site tools를 검증했다. [M4 계약·사용법](phase19/M4_CONTRACT.md) · [39개 고정 회귀와 브라우저 증거](../verification/evidence/phase19/m4/README.md). 이 문단은 M4 당시 기록이며, 후속 Phase19·20은 main/Pages에 반영했다.
 
 ## 공개 v1 호환 계약 — 2026-09-05
 

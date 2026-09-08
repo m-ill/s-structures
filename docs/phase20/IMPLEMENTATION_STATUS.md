@@ -1,7 +1,7 @@
 # Phase 20 실제 진행 상태
 
 ```yaml
-version: p20-status-v2
+version: p20-status-v3
 updated: 2026-09-08
 status: completed-development-preview
 planning_source_commit: 131a2b3
@@ -10,6 +10,8 @@ validated_runtime_commit: 810abc06fe9be38eb7bb10f1ba590cbcb87f36be
 implemented_milestones: [M0, M1, M2, M3, M4, M5]
 phase20_test_runs: 6
 phase20_release_status: prerelease-published
+pages_status: deployed
+pages_source_commit: fefde822ae27a024ea8a834642b8aac10a24bd77
 production_qualification: unchanged-not-qualified
 ```
 
@@ -29,6 +31,6 @@ production_qualification: unchanged-not-qualified
 - [최종 증거와 이전 R1](../../verification/evidence/phase20/m5/README.md)
 - [최종 후보 CI](https://github.com/m-ill/s-structures/actions/runs/34177589220)
 - [개발 프리뷰: 소스·실행·검증 ZIP](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)
-- [검토 PR #4](https://github.com/m-ill/s-structures/pull/4) — Phase19 개발 브랜치 기준 draft
+- [검토 PR #4](https://github.com/m-ill/s-structures/pull/4) — Phase19로 병합 후 PR #3을 통해 main 통합 완료
 
-main/Pages는 변경하지 않았다. 비선형 candidate·최종 설계전달 차단, 자동 PDF의 호스트/figure/qualification gate, 외부2·pilot5·M-tier·재시작 복원·생산 자격은 별도 조건이다. 브라우저 실행 중 취소는 자동 회귀에서 검증했으며 이번 실제 브라우저에서는 별도 타이밍 시험을 하지 않았다.
+후속 사용자 요청으로 Phase19·Phase20을 main에 병합하고 Pages에 배포했다. 배포 소스 `fefde82`도 Windows·Ubuntu 각각112/112를 통과했으며 [배포 기록](PAGES_DEPLOYMENT.md)을 따른다. 비선형 candidate·최종 설계전달 차단, 자동 PDF의 호스트/figure/qualification gate, 외부2·pilot5·M-tier·재시작 복원·생산 자격은 별도 조건이다. 브라우저 실행 중 취소는 자동 회귀에서 검증했으며 이번 실제 브라우저에서는 별도 타이밍 시험을 하지 않았다.

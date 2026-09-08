@@ -74,3 +74,13 @@
 - 원격 main `e18d5b4`는 초기 공개 패키지 스냅샷 이력이다. `7bb55d7`과 공통 파일이 전부 동일함을 확인하고 최신 Phase20 소스를 보존해 병합했다. 충돌 정리 후 수치 모듈·UI·서버·tests는 `810abc0`과 byte 동일하다.
 - 병합 직전 `git rm`이 새로 stage된 옛 패키지 식별자 2개의 제거를 거절했으나 뒤의 commit은 실행돼 `a4296d4`에 식별자가 남았다. 다음 배포 구성 커밋에서 정확히 두 생성 파일을 제거한다. 모델·코드·evidence 변경은 없다.
 - Pages를 정적 allowlist 아티팩트와 현재 commit/file hash 식별자로 구성하고, 같은 main 커밋의 Windows·Ubuntu Phase20 112개 성공을 deploy 조건으로 연결한다. [배포 기록](PAGES_DEPLOYMENT.md)에 후속 결과를 남긴다.
+
+## 2026-09-08 · main 병합·Pages 배포 완료
+
+- 통합 후보 c28d058 Windows·Ubuntu 각112/112와 Public validation 성공을 확인했다. 060742d는 artifact build의 Pages read 권한, 2bf82b5는 기존 app.html 경로 포함만 보완했다.
+- PR #4를592ed42로 Phase19에 병합하고 트리 동일성을 확인한 뒤 PR #3을fefde82로 main에 병합했다. 로컬 main도 fast-forward로 맞추고 사용자 미추적 파일은 보존했다.
+- Pages를 workflow 방식으로 전환했고 main fefde82의 Windows·Ubuntu 각112/112 이후34221905836에서 배포했다. 기존 Public validation34221905379도 성공했다.
+- 공개709개 파일 및 루트 index의 HTTP 바이트를 로컬 committed build와 대조했다. 실제 native WebMCP·탄성설계·보고서와 로컬 정적 Pushover의 검증 범위를 구분해 verification/evidence/phase20/pages에 봉인했다. GitHub 업로드가 숨김 파일을 제외해 .nojekyll은404이며 해당 원시 실패1건은 기록으로 유지했다.
+- 최초 로컬/원격 manifest 대조는 Windows git archive의 autocrlf 때문에707개 텍스트 파일에서 실패했다. Git cat-file로708개 원본 blob을 독립 대조해 Linux 배포 manifest가 정확함을 확인했다. Pages builder에 core.autocrlf=false/core.eol=lf를 고정하고, 같은 fefde82로 canonical 아티팩트를 재생성해 공개709개 파일을 검증했다. 첫 실패 manifest와 조사 결과를 보존한다. 이 보완은 이미 배포된 Linux 실행 바이트를 바꾸지 않는다.
+- README·WebMCP·Phase20 상태·배포 문서와 Wiki를 갱신했다. 원래 M5 증거와 release ZIP은 수정하지 않는다. 후속 문서/증거 커밋에는 [skip ci]를 사용하고 배포한 실행 파일은 바꾸지 않는다.
+- 기록 마감의 전체 diff whitespace 검사는 보존 대상 원시 evidence의 CRLF 때문에 중단됐다. 원시 바이트와242개 SHA를 유지하고 코드·문서 범위의 whitespace 검사와 evidence hash 검사를 분리했다.

@@ -1,0 +1,316 @@
+{
+  "url": "http://127.0.0.1:5198/pages-candidate/",
+  "source": "c28d058b99cb1c60f05b940ba01f7fa1c34a7246",
+  "webmcpTools": 36,
+  "initialContext": {
+    "capabilities": [
+      {
+        "kind": "static",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Elastic GPU execution is implemented but is not production-qualified on this release profile.",
+            "reason": "ELASTIC_GPU_PRODUCTION_QUALIFICATION_PENDING",
+            "remediation": "Use Auto or CPU precise until the required hardware/browser matrix passes.",
+            "routeReason": "ELASTIC_GPU_PRODUCTION_QUALIFICATION_PENDING"
+          }
+        ]
+      },
+      {
+        "kind": "modal",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Modal, RSA and buckling production routes are qualified only for CPU f64.",
+            "reason": "EIGEN_GPU_NOT_QUALIFIED",
+            "remediation": "Use Auto or CPU precise.",
+            "routeReason": "EIGEN_GPU_NOT_QUALIFIED"
+          }
+        ]
+      },
+      {
+        "kind": "responseSpectrum",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Modal, RSA and buckling production routes are qualified only for CPU f64.",
+            "reason": "EIGEN_GPU_NOT_QUALIFIED",
+            "remediation": "Use Auto or CPU precise.",
+            "routeReason": "EIGEN_GPU_NOT_QUALIFIED"
+          }
+        ]
+      },
+      {
+        "kind": "buckling",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Modal, RSA and buckling production routes are qualified only for CPU f64.",
+            "reason": "EIGEN_GPU_NOT_QUALIFIED",
+            "remediation": "Use Auto or CPU precise.",
+            "routeReason": "EIGEN_GPU_NOT_QUALIFIED"
+          }
+        ]
+      },
+      {
+        "kind": "linearTha",
+        "targets": [
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "auto",
+            "label": "Auto",
+            "message": "Automatically selects the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+          },
+          {
+            "available": true,
+            "executedTarget": "cpu",
+            "id": "cpu",
+            "label": "CPU precise",
+            "message": "Runs the qualified CPU f64 route.",
+            "reason": null,
+            "remediation": null,
+            "routeReason": "Explicit qualified CPU f64 route."
+          },
+          {
+            "available": false,
+            "executedTarget": null,
+            "id": "gpu",
+            "label": "GPU accelerated",
+            "message": "Linear time-history GPU execution is not implemented.",
+            "reason": "LINEAR_THA_GPU_NOT_IMPLEMENTED",
+            "remediation": "Use Auto or CPU precise.",
+            "routeReason": "LINEAR_THA_GPU_NOT_IMPLEMENTED"
+          }
+        ]
+      },
+      {
+        "designBlocked": true,
+        "engineId": "p8-production-mdof-pushover",
+        "qualification": "candidate",
+        "settings": "case-specific preflight required",
+        "targets": [
+          "cpu"
+        ]
+      },
+      {
+        "designBlocked": true,
+        "engineId": "p8-production-mdof-nlth",
+        "qualification": "candidate",
+        "settings": "case-specific preflight required",
+        "targets": [
+          "cpu"
+        ]
+      }
+    ],
+    "cases": [
+      {
+        "engineId": "p8-production-mdof-pushover",
+        "exposed": true,
+        "id": "PAGES-PUSH-SMOKE",
+        "kind": "pushover",
+        "name": "Production Pushover"
+      }
+    ],
+    "casesTruncated": false,
+    "counts": {
+      "loads": 2,
+      "members": 8,
+      "nodes": 8
+    },
+    "inputIdentity": {
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildBound": false,
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "inputHash": "1e5b0dbb816b4631e85a52bd655923ce5291c7507b6a2e747a64cc5a7e062aa4",
+      "inputIdentityVersion": "p19-input-v1",
+      "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+      "modelHash": "4c8fa97a3162d15de489fe69d6ae28331b13dad6c936f40b024bda79a9cc60b7",
+      "rulePackBound": false,
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+      "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5"
+    },
+    "jobs": [],
+    "limits": {
+      "editing": true,
+      "externalQualification": "NOT_CLAIMED",
+      "maxConcurrentJobs": 1,
+      "maxSessionJobs": 128
+    },
+    "modelHash": "4c8fa97a3162d15de489fe69d6ae28331b13dad6c936f40b024bda79a9cc60b7",
+    "solverUnitPolicy": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "version": "sstructures-webmcp-v2"
+  },
+  "modelCheckBlockers": 0,
+  "pushover": {
+    "jobId": "NLJOB-20260908113559-0001",
+    "modelHash": "4c8fa97a3162d15de489fe69d6ae28331b13dad6c936f40b024bda79a9cc60b7",
+    "rawResultUnits": {
+      "acceleration": "m/s2",
+      "displacement": "m",
+      "energy": "kN.m",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "rotation": "rad",
+      "time": "s",
+      "velocity": "m/s"
+    },
+    "solverUnitPolicy": {
+      "acceleration": "m/s2",
+      "displacement": "m",
+      "energy": "kN.m",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "rotation": "rad",
+      "time": "s",
+      "velocity": "m/s"
+    },
+    "stale": false,
+    "status": {
+      "caseId": "PAGES-PUSH-SMOKE",
+      "checkpoint": null,
+      "completedAt": "2026-09-08T11:36:08.186Z",
+      "createdAt": "2026-09-08T11:35:59.171Z",
+      "designBlocked": true,
+      "error": null,
+      "id": "NLJOB-20260908113559-0001",
+      "kind": "pushover",
+      "progress": 1,
+      "progressMessage": "해석 완료. 검증등급과 설계전달 차단 상태를 확인하세요.",
+      "qualification": "candidate",
+      "resultAvailable": true,
+      "resumePolicy": null,
+      "runtime": {
+        "backend": "production-wasm-sparse",
+        "fallbackUsed": false,
+        "mode": "module-worker",
+        "requestId": "request-1",
+        "runToken": "run-1"
+      },
+      "settingsHash": "f7576a6c2a7fabb96c91cf5a",
+      "stage": "results",
+      "startedAt": "2026-09-08T11:35:59.193Z",
+      "status": "completed"
+    },
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    }
+  },
+  "consoleErrors": []
+}

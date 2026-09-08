@@ -1,0 +1,570 @@
+{
+  "sourceCommit": "fefde822ae27a024ea8a834642b8aac10a24bd77",
+  "runtimeEquivalentTo": "810abc06fe9be38eb7bb10f1ba590cbcb87f36be",
+  "pr4Merge": "592ed4266202364ce6098fff23c604897beca8f9",
+  "pr3Merge": "fefde822ae27a024ea8a834642b8aac10a24bd77",
+  "pagesRun": 34221905836,
+  "publicValidationRun": 34221905379,
+  "phase20": [
+    {
+      "platform": "linux",
+      "passed": 112,
+      "failed": 0
+    },
+    {
+      "platform": "win32",
+      "passed": 112,
+      "failed": 0
+    }
+  ],
+  "httpFilesPassed": 709,
+  "rootHttpPassed": true,
+  "buildOnlyMarkerNotServed": ".nojekyll (upload-pages-artifact excludes hidden files)",
+  "webmcpToolCount": 36,
+  "browser": {
+    "ok": true,
+    "source": "fefde822ae27a024ea8a834642b8aac10a24bd77",
+    "url": "https://m-ill.github.io/s-structures/",
+    "verifiedAt": "2026-09-08T11:58:36.567Z",
+    "webmcpTools": 36,
+    "initialContext": {
+      "capabilities": [
+        {
+          "kind": "static",
+          "targets": [
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "auto",
+              "label": "Auto",
+              "message": "Automatically selects the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+            },
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "cpu",
+              "label": "CPU precise",
+              "message": "Runs the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Explicit qualified CPU f64 route."
+            },
+            {
+              "available": false,
+              "executedTarget": null,
+              "id": "gpu",
+              "label": "GPU accelerated",
+              "message": "Elastic GPU execution is implemented but is not production-qualified on this release profile.",
+              "reason": "ELASTIC_GPU_PRODUCTION_QUALIFICATION_PENDING",
+              "remediation": "Use Auto or CPU precise until the required hardware/browser matrix passes.",
+              "routeReason": "ELASTIC_GPU_PRODUCTION_QUALIFICATION_PENDING"
+            }
+          ]
+        },
+        {
+          "kind": "modal",
+          "targets": [
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "auto",
+              "label": "Auto",
+              "message": "Automatically selects the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+            },
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "cpu",
+              "label": "CPU precise",
+              "message": "Runs the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Explicit qualified CPU f64 route."
+            },
+            {
+              "available": false,
+              "executedTarget": null,
+              "id": "gpu",
+              "label": "GPU accelerated",
+              "message": "Modal, RSA and buckling production routes are qualified only for CPU f64.",
+              "reason": "EIGEN_GPU_NOT_QUALIFIED",
+              "remediation": "Use Auto or CPU precise.",
+              "routeReason": "EIGEN_GPU_NOT_QUALIFIED"
+            }
+          ]
+        },
+        {
+          "kind": "responseSpectrum",
+          "targets": [
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "auto",
+              "label": "Auto",
+              "message": "Automatically selects the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+            },
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "cpu",
+              "label": "CPU precise",
+              "message": "Runs the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Explicit qualified CPU f64 route."
+            },
+            {
+              "available": false,
+              "executedTarget": null,
+              "id": "gpu",
+              "label": "GPU accelerated",
+              "message": "Modal, RSA and buckling production routes are qualified only for CPU f64.",
+              "reason": "EIGEN_GPU_NOT_QUALIFIED",
+              "remediation": "Use Auto or CPU precise.",
+              "routeReason": "EIGEN_GPU_NOT_QUALIFIED"
+            }
+          ]
+        },
+        {
+          "kind": "buckling",
+          "targets": [
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "auto",
+              "label": "Auto",
+              "message": "Automatically selects the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+            },
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "cpu",
+              "label": "CPU precise",
+              "message": "Runs the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Explicit qualified CPU f64 route."
+            },
+            {
+              "available": false,
+              "executedTarget": null,
+              "id": "gpu",
+              "label": "GPU accelerated",
+              "message": "Modal, RSA and buckling production routes are qualified only for CPU f64.",
+              "reason": "EIGEN_GPU_NOT_QUALIFIED",
+              "remediation": "Use Auto or CPU precise.",
+              "routeReason": "EIGEN_GPU_NOT_QUALIFIED"
+            }
+          ]
+        },
+        {
+          "kind": "linearTha",
+          "targets": [
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "auto",
+              "label": "Auto",
+              "message": "Automatically selects the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Production auto routing remains on CPU f64 until GPU qualification is complete."
+            },
+            {
+              "available": true,
+              "executedTarget": "cpu",
+              "id": "cpu",
+              "label": "CPU precise",
+              "message": "Runs the qualified CPU f64 route.",
+              "reason": null,
+              "remediation": null,
+              "routeReason": "Explicit qualified CPU f64 route."
+            },
+            {
+              "available": false,
+              "executedTarget": null,
+              "id": "gpu",
+              "label": "GPU accelerated",
+              "message": "Linear time-history GPU execution is not implemented.",
+              "reason": "LINEAR_THA_GPU_NOT_IMPLEMENTED",
+              "remediation": "Use Auto or CPU precise.",
+              "routeReason": "LINEAR_THA_GPU_NOT_IMPLEMENTED"
+            }
+          ]
+        },
+        {
+          "designBlocked": true,
+          "engineId": "p8-production-mdof-pushover",
+          "qualification": "candidate",
+          "settings": "case-specific preflight required",
+          "targets": [
+            "cpu"
+          ]
+        },
+        {
+          "designBlocked": true,
+          "engineId": "p8-production-mdof-nlth",
+          "qualification": "candidate",
+          "settings": "case-specific preflight required",
+          "targets": [
+            "cpu"
+          ]
+        }
+      ],
+      "cases": [],
+      "casesTruncated": false,
+      "counts": {
+        "loads": 2,
+        "members": 8,
+        "nodes": 8
+      },
+      "inputIdentity": {
+        "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "buildBound": false,
+        "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+        "inputHash": "c99453c4855886f5703b85794b7a8571ee7c11bdde279c5978c4a0080c82c419",
+        "inputIdentityVersion": "p19-input-v1",
+        "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+        "modelHash": "1f585803df1458e455b5e7c568b954e5aa418be75320eb095793e806b2410171",
+        "rulePackBound": false,
+        "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+        "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5"
+      },
+      "jobs": [],
+      "limits": {
+        "editing": true,
+        "externalQualification": "NOT_CLAIMED",
+        "maxConcurrentJobs": 1,
+        "maxSessionJobs": 128
+      },
+      "modelHash": "1f585803df1458e455b5e7c568b954e5aa418be75320eb095793e806b2410171",
+      "solverUnitPolicy": {
+        "displacement": "mm",
+        "force": "kN",
+        "length": "m",
+        "moment": "kN.m",
+        "stress": "N/mm2"
+      },
+      "units": {
+        "displacement": "mm",
+        "force": "kN",
+        "length": "m",
+        "moment": "kN.m",
+        "stress": "N/mm2"
+      },
+      "version": "sstructures-webmcp-v2"
+    },
+    "modelCheck": {
+      "checkModelHash": "1f585803df1458e4",
+      "issues": [],
+      "modelHash": "1f585803df1458e455b5e7c568b954e5aa418be75320eb095793e806b2410171",
+      "ok": true,
+      "solverUnitPolicy": {
+        "displacement": "mm",
+        "force": "kN",
+        "length": "m",
+        "moment": "kN.m",
+        "stress": "N/mm2"
+      },
+      "summary": {
+        "blockers": 0,
+        "repairable": 0,
+        "total": 0,
+        "waived": 0,
+        "warnings": 0
+      },
+      "truncated": false,
+      "units": {
+        "displacement": "mm",
+        "force": "kN",
+        "length": "m",
+        "moment": "kN.m",
+        "stress": "N/mm2"
+      }
+    },
+    "casePreview": {
+      "changeCount": 1,
+      "changed": true,
+      "changes": {
+        "nextOffset": null,
+        "offset": 0,
+        "rows": [
+          {
+            "after": {
+              "caseVersion": "p8-analysis-case-v2",
+              "engineId": null,
+              "id": "PAGES-ELASTIC-SMOKE",
+              "input": {},
+              "kind": "static",
+              "lastRun": null,
+              "name": "Pages 배포 탄성 검증",
+              "settings": {
+                "comboId": "SLS1",
+                "pDeltaMethod": "off"
+              },
+              "status": "not-run"
+            },
+            "before": null,
+            "path": "analysisCases[PAGES-ELASTIC-SMOKE]"
+          }
+        ],
+        "total": 1
+      },
+      "handle": "changes-0ca48165-00b2-407a-a951-51e50e6dc335-1",
+      "ok": true,
+      "sourceIdentity": {
+        "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "buildBound": false,
+        "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+        "inputHash": "c99453c4855886f5703b85794b7a8571ee7c11bdde279c5978c4a0080c82c419",
+        "inputIdentityVersion": "p19-input-v1",
+        "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+        "modelHash": "1f585803df1458e455b5e7c568b954e5aa418be75320eb095793e806b2410171",
+        "rulePackBound": false,
+        "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+        "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5"
+      },
+      "warningCount": 0,
+      "warnings": []
+    },
+    "elastic": {
+      "ok": true,
+      "result": {
+        "currentJobId": null,
+        "inputIdentity": {
+          "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "buildBound": false,
+          "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+          "inputHash": "523fc806aaef3d57f872d0049ce905f2e28757b3866b6cc02bde4bb5be8c798c",
+          "inputIdentityVersion": "p19-input-v1",
+          "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+          "modelHash": "a12ece74dfa383f0ec17df2f19346d397f22977d605e34954e1841fcc3209530",
+          "rulePackBound": false,
+          "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+          "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5"
+        },
+        "ok": true,
+        "sourceAnalysisRunIds": [
+          "PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1"
+        ],
+        "status": "completed",
+        "steps": [
+          {
+            "analysisRunId": "PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1",
+            "caseId": "PAGES-ELASTIC-SMOKE",
+            "code": null,
+            "combinationId": null,
+            "designDemandMapping": "elastic-static-or-pdelta",
+            "internalPreprocessing": null,
+            "jobId": "analysis-1788868516959-1",
+            "kind": "static",
+            "ok": true,
+            "prerequisites": []
+          }
+        ],
+        "version": "p19-m3-elastic-review-v1"
+      },
+      "status": "completed"
+    },
+    "design": {
+      "data": {
+        "checkCount": 91,
+        "counts": {
+          "NG": 0,
+          "NOT_CHECKED": 4,
+          "OK": 79,
+          "WARN": 8
+        },
+        "governing": {
+          "analysisRunId": "PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1",
+          "capacity": 200,
+          "category": "steel",
+          "checkId": "steel-slenderness",
+          "comboId": "SLS1",
+          "demand": 182.07465804543537,
+          "expression": "max(KL/ry, KL/rz) / limit",
+          "memberId": "e13",
+          "method": "allowable_stress_preliminary",
+          "ratio": 0.9103732902271768,
+          "status": "WARN",
+          "unit": "-",
+          "x": 0
+        },
+        "maxUtilization": 0.9103732902271768,
+        "status": "NOT_CHECKED"
+      },
+      "designRunId": "design-1",
+      "designTransferAllowed": false,
+      "inputIdentity": {
+        "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "buildBound": false,
+        "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+        "inputHash": "523fc806aaef3d57f872d0049ce905f2e28757b3866b6cc02bde4bb5be8c798c",
+        "inputIdentityVersion": "p19-input-v1",
+        "materialsHash": "703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834",
+        "modelHash": "a12ece74dfa383f0ec17df2f19346d397f22977d605e34954e1841fcc3209530",
+        "rulePackBound": false,
+        "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "sectionsHash": "6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166",
+        "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5"
+      },
+      "ok": true,
+      "sourceAnalysisRunIds": [
+        "PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1"
+      ],
+      "stale": false,
+      "summary": {
+        "checkCount": 91,
+        "counts": {
+          "NG": 0,
+          "NOT_CHECKED": 4,
+          "OK": 79,
+          "WARN": 8
+        },
+        "governing": {
+          "analysisRunId": "PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1",
+          "capacity": 200,
+          "category": "steel",
+          "checkId": "steel-slenderness",
+          "comboId": "SLS1",
+          "demand": 182.07465804543537,
+          "expression": "max(KL/ry, KL/rz) / limit",
+          "memberId": "e13",
+          "method": "allowable_stress_preliminary",
+          "ratio": 0.9103732902271768,
+          "status": "WARN",
+          "unit": "-",
+          "x": 0
+        },
+        "maxUtilization": 0.9103732902271768,
+        "status": "NOT_CHECKED"
+      }
+    },
+    "report": {
+      "capability": {
+        "automaticPdf": false,
+        "formats": [
+          "html",
+          "json",
+          "csv"
+        ],
+        "manualPrint": true,
+        "ok": true,
+        "pdf": {
+          "browserFallbackAvailable": true,
+          "figureManifestHash": null,
+          "issues": [
+            {
+              "code": "P11_REPORT_EXPORT_ADAPTER_UNAVAILABLE",
+              "message": "p11 report export adapter unavailable",
+              "remediation": "데스크톱 앱에서 다시 시도하거나 한·영 print-ready HTML을 수동 인쇄하세요."
+            },
+            {
+              "code": "P11_REPORT_EXPORT_FIGURES_INCOMPLETE",
+              "message": "p11 report export figures incomplete",
+              "remediation": "필수 7개 화면 증거를 다시 캡처하세요."
+            },
+            {
+              "code": "P11_REPORT_EXPORT_QUALIFICATION_BLOCKED",
+              "message": "p11 report export qualification blocked",
+              "remediation": "보고서 자격검증 blocker를 해결한 뒤 다시 내보내세요."
+            }
+          ],
+          "qualificationStatus": "BLOCKED",
+          "ready": false,
+          "reportSnapshotHash": "24c1c0dc33d53d94bc2c0881453f9a398225e559f8db009ae191b3b297d89039",
+          "sceneCoverage": 0,
+          "verdict": "REVIEW",
+          "version": "p11-product-report-export-workflow-v1"
+        }
+      },
+      "handle": "artifact-0ca48165-00b2-407a-a951-51e50e6dc335-7",
+      "ok": true,
+      "reportSnapshotHash": "24c1c0dc33d53d94bc2c0881453f9a398225e559f8db009ae191b3b297d89039",
+      "summary": {
+        "checkCount": 91,
+        "counts": {
+          "NG": 0,
+          "NOT_CHECKED": 4,
+          "OK": 79,
+          "WARN": 8
+        },
+        "governing": {
+          "analysisRunId": "PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1",
+          "capacity": 200,
+          "category": "steel",
+          "checkId": "steel-slenderness",
+          "comboId": "SLS1",
+          "demand": 182.07465804543537,
+          "expression": "max(KL/ry, KL/rz) / limit",
+          "memberId": "e13",
+          "method": "allowable_stress_preliminary",
+          "ratio": 0.9103732902271768,
+          "status": "WARN",
+          "unit": "-",
+          "x": 0
+        },
+        "maxUtilization": 0.9103732902271768,
+        "status": "NOT_CHECKED"
+      }
+    },
+    "reportReadScope": "First 12000-character chunk of each HTML/JSON/CSV artifact; no full export or PDF qualification claim",
+    "reportChunks": {
+      "html": {
+        "content": "<!doctype html><html lang=\"ko-KR\"><meta charset=\"utf-8\"><title>탄성 설계 검토 기록</title><style>body{font:13px Arial,\"Malgun Gothic\",sans-serif;color:#14283d;margin:32px}h1{font-size:24px}table{border-collapse:collapse;width:100%;table-layout:fixed}td,th{border:1px solid #c6d0dc;padding:6px;overflow-wrap:anywhere;text-align:left}thead{display:table-header-group}tr{break-inside:avoid}.identity{overflow-wrap:anywhere;color:#456} @media print{@page{size:A4 landscape;margin:12mm}body{margin:0;font-size:9px}}</style><h1>탄성 설계 검토 기록</h1><p>예비 검토 · 검토 필요 · 최종 설계전달 불가</p><p>design-1 · NOT_CHECKED · 최대 검정비: 0.9103732902271767</p><p class=\"identity\">Snapshot: 24c1c0dc33d53d94bc2c0881453f9a398225e559f8db009ae191b3b297d89039<br>Input: 523fc806aaef3d57f872d0049ce905f2e28757b3866b6cc02bde4bb5be8c798c<br>Analysis runs: PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</p><p>{&quot;length&quot;:&quot;m&quot;,&quot;force&quot;:&quot;kN&quot;,&quot;moment&quot;:&quot;kN.m&quot;,&quot;stress&quot;:&quot;N/mm2&quot;,&quot;displacement&quot;:&quot;mm&quot;} · member-local · solver-native</p><table><thead><tr><th>부재</th><th>검토</th><th>조합 / 해석 기록</th><th>상태</th><th>검정비</th><th>수요 / 내력</th><th>식</th></tr></thead><tbody><tr><td>e9</td><td>steel<br>steel-axial</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.0327402527492945</td><td>23.999999999999986 / 733.0426 (kN)</td><td>max |N| / Pa</td></tr><tr><td>e9</td><td>steel<br>steel-flexure-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.2539553215377325</td><td>19.141298263667046 / 75.3727 (kN.m)</td><td>max |Mz| / Maz</td></tr><tr><td>e9</td><td>steel<br>steel-flexure-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>5.6133997344449204e-18</td><td>5.955025628883505e-17 / 10.608590000000001 (kN.m)</td><td>max |My| / May</td></tr><tr><td>e9</td><td>steel<br>steel-shear-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.03377369055523997</td><td>9.52173101822273 / 281.92746666666665 (kN)</td><td>max |Vy| / Vay</td></tr><tr><td>e9</td><td>steel<br>steel-shear-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>1.3898855423827702e-19</td><td>3.918469099206003e-17 / 281.92746666666665 (kN)</td><td>max |Vz| / Vaz</td></tr><tr><td>e9</td><td>steel<br>steel-interaction</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.28669557428702697</td><td>0.28669557428702697 / 1 (-)</td><td>N/Pa + Mz/Maz + My/May</td></tr><tr><td>e9</td><td>steel<br>steel-ltb-mcr</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.21242184938491895</td><td>19.141298263667046 / 90.10983718996845 (kN.m)</td><td>C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))</td></tr><tr><td>e9</td><td>steel<br>steel-slenderness</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.45518664511358836</td><td>91.03732902271767 / 200 (-)</td><td>max(KL/ry, KL/rz) / limit</td></tr><tr><td>e9</td><td>steel<br>steel-deflection</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.034912329324437566</td><td>0.00041894795189325077 / 0.012 (m)</td><td>member deformation / (L / limit)</td></tr><tr><td>e10</td><td>steel<br>steel-axial</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.0327402527492945</td><td>23.999999999999986 / 733.0426 (kN)</td><td>max |N| / Pa</td></tr><tr><td>e10</td><td>steel<br>steel-flexure-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.2539553215377325</td><td>19.141298263667046 / 75.3727 (kN.m)</td><td>max |Mz| / Maz</td></tr><tr><td>e10</td><td>steel<br>steel-flexure-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>5.8531188229759344e-18</td><td>6.209333781423428e-17 / 10.608590000000001 (kN.m)</td><td>max |My| / May</td></tr><tr><td>e10</td><td>steel<br>steel-shear-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.03377369055523997</td><td>9.52173101822273 / 281.92746666666665 (kN)</td><td>max |Vy| / Vay</td></tr><tr><td>e10</td><td>steel<br>steel-shear-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>1.448578796220587e-19</td><td>4.0839415028551966e-17 / 281.92746666666665 (kN)</td><td>max |Vz| / Vaz</td></tr><tr><td>e10</td><td>steel<br>steel-interaction</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.28669557428702697</td><td>0.28669557428702697 / 1 (-)</td><td>N/Pa + Mz/Maz + My/May</td></tr><tr><td>e10</td><td>steel<br>steel-ltb-mcr</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.21242184938491895</td><td>19.141298263667046 / 90.10983718996845 (kN.m)</td><td>C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))</td></tr><tr><td>e10</td><td>steel<br>steel-slenderness</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.45518664511358836</td><td>91.03732902271767 / 200 (-)</td><td>max(KL/ry, KL/rz) / limit</td></tr><tr><td>e10</td><td>steel<br>steel-deflection</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.03491232932443759</td><td>0.00041894795189325104 / 0.012 (m)</td><td>member deformation / (L / limit)</td></tr><tr><td>e11</td><td>steel<br>steel-axial</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.0327402527492945</td><td>23.999999999999986 / 733.0426 (kN)</td><td>max |N| / Pa</td></tr><tr><td>e11</td><td>steel<br>steel-flexure-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.2539553215377324</td><td>19.141298263667043 / 75.3727 (kN.m)</td><td>max |Mz| / Maz</td></tr><tr><td>e11</td><td>steel<br>steel-flexure-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>5.790228884691889e-18</td><td>6.142616424385353e-17 / 10.608590000000001 (kN.m)</td><td>max |My| / May</td></tr><tr><td>e11</td><td>steel<br>steel-shear-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.03377369055523997</td><td>9.521731018222729 / 281.92746666666665 (kN)</td><td>max |Vy| / Vay</td></tr><tr><td>e11</td><td>steel<br>steel-shear-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>1.424872070374286e-19</td><td>4.017105731247108e-17 / 281.92746666666665 (kN)</td><td>max |Vz| / Vaz</td></tr><tr><td>e11</td><td>steel<br>steel-interaction</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.2866955742870269</td><td>0.2866955742870269 / 1 (-)</td><td>N/Pa + Mz/Maz + My/May</td></tr><tr><td>e11</td><td>steel<br>steel-ltb-mcr</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.21242184938491893</td><td>19.141298263667043 / 90.10983718996845 (kN.m)</td><td>C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))</td></tr><tr><td>e11</td><td>steel<br>steel-slenderness</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.45518664511358836</td><td>91.03732902271767 / 200 (-)</td><td>max(KL/ry, KL/rz) / limit</td></tr><tr><td>e11</td><td>steel<br>steel-deflection</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.03491232932443755</td><td>0.0004189479518932506 / 0.012 (m)</td><td>member deformation / (L / limit)</td></tr><tr><td>e12</td><td>steel<br>steel-axial</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.03274025274929451</td><td>23.999999999999996 / 733.0426 (kN)</td><td>max |N| / Pa</td></tr><tr><td>e12</td><td>steel<br>steel-flexure-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.25395532153773254</td><td>19.14129826366705 / 75.3727 (kN.m)</td><td>max |Mz| / Maz</td></tr><tr><td>e12</td><td>steel<br>steel-flexure-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>6.2901958993156045e-18</td><td>6.673010931552054e-17 / 10.608590000000001 (kN.m)</td><td>max |My| / May</td></tr><tr><td>e12</td><td>steel<br>steel-shear-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.033773690555239974</td><td>9.521731018222733 / 281.92746666666665 (kN)</td><td>max |Vy| / Vay</td></tr><tr><td>e12</td><td>steel<br>steel-shear-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>1.544613457589401e-19</td><td>4.354689590774206e-17 / 281.92746666666665 (kN)</td><td>max |Vz| / Vaz</td></tr><tr><td>e12</td><td>steel<br>steel-interaction</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.2866955742870271</td><td>0.2866955742870271 / 1 (-)</td><td>N/Pa + Mz/Maz + My/May</td></tr><tr><td>e12</td><td>steel<br>steel-ltb-mcr</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.212421849384919</td><td>19.14129826366705 / 90.10983718996845 (kN.m)</td><td>C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))</td></tr><tr><td>e12</td><td>steel<br>steel-slenderness</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.45518664511358836</td><td>91.03732902271767 / 200 (-)</td><td>max(KL/ry, KL/rz) / limit</td></tr><tr><td>e12</td><td>steel<br>steel-deflection</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.0349123293244376</td><td>0.0004189479518932512 / 0.012 (m)</td><td>member deformation / (L / limit)</td></tr><tr><td>e13</td><td>steel<br>steel-axial</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.012989328339475399</td><td>9.521731018222729 / 733.0426 (kN)</td><td>max |N| / Pa</td></tr><tr><td>e13</td><td>steel<br>steel-flexure-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.25395532153773315</td><td>19.141298263667096 / 75.3727 (kN.m)</td><td>max |Mz| / Maz</td></tr><tr><td>e13</td><td>steel<br>steel-flexure-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>1.1717586327304676e-17</td><td>1.2430706913598114e-16 / 10.608590000000001 (kN.m)</td><td>max |My| / May</td></tr><tr><td>e13</td><td>steel<br>steel-shear-y</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.0851282788575407</td><td>24.00000000000001 / 281.92746666666665 (kN)</td><td>max |Vy| / Vay</td></tr><tr><td>e13</td><td>steel<br>steel-shear-z</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>1.459071043813006e-19</td><td>4.1135220306888973e-17 / 281.92746666666665 (kN)</td><td>max |Vz| / Vaz</td></tr><tr><td>e13</td><td>steel<br>steel-interaction</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.26694464987720856</td><td>0.26694464987720856 / 1 (-)</td><td>N/Pa + Mz/Maz + My/May</td></tr><tr><td>e13</td><td>steel<br>steel-ltb-mcr</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.424843698769839</td><td>19.141298263667096 / 45.05491859498422 (kN.m)</td><td>C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))</td></tr><tr><td>e13</td><td>steel<br>steel-slenderness</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>WARN</td><td>0.9103732902271767</td><td>182.07465804543534 / 200 (-)</td><td>max(KL/ry, KL/rz) / limit</td></tr><tr><td>e13</td><td>steel<br>steel-deflection</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>OK</td><td>0.1408777973671277</td><td>0.003381067136811065 / 0.024 (m)</td><td>member deformation / (L / limit)</td></tr><tr><td>e13</td><td>steel<br>STEEL_SLENDERNESS</td><td>SLS1<br>PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1</td><td>WARN</td><td>—</td><td>— / — (-)</td><td>Slenderness ratio 0.910.</td></tr><tr><td>e14</td><td>stee",
+        "format": "html",
+        "nextOffset": 12000,
+        "offset": 0,
+        "ok": true,
+        "reportSnapshotHash": "24c1c0dc33d53d94bc2c0881453f9a398225e559f8db009ae191b3b297d89039",
+        "stale": false,
+        "totalCharacters": 24434
+      },
+      "json": {
+        "content": "{\n  \"schemaVersion\": \"p11-report-snapshot-v1\",\n  \"project\": {\n    \"id\": null,\n    \"modelSchemaVersion\": 6\n  },\n  \"sourceBinding\": {\n    \"modelDomainHash\": \"38cafaa5fcee367e7854f466\",\n    \"resultHash\": \"d6b7ada2cb6f831240c574ab9af75866030a2b4819583cf894e81d0a18b6c405\"\n  },\n  \"model\": {\n    \"nodeCount\": 8,\n    \"memberCount\": 8,\n    \"shellCount\": 0,\n    \"loadCount\": 2,\n    \"loadCaseCount\": 2,\n    \"combinationCount\": 3,\n    \"storyCount\": 1,\n    \"domainHashes\": {\n      \"version\": \"p18-analysis-domain-hashes-v4-elastic-link\",\n      \"topologyHash\": \"2210e93e679b58b42150c829\",\n      \"propertyHash\": \"31cc49a0b7c2b74cc932bb4c\",\n      \"constraintHash\": \"41aec38afcfd36684c4d447e\",\n      \"loadHash\": \"f63da1da2c8b0dc8555d50bf\",\n      \"massHash\": \"963123832e00a31b13c854c7\",\n      \"nonlinearHash\": \"4db9930816dde433d3a821b1\",\n      \"outputHash\": \"0dc0d4a129878b23ace3c9ec\",\n      \"domainHash\": \"38cafaa5fcee367e7854f466\"\n    }\n  },\n  \"analysis\": {\n    \"ok\": true,\n    \"errorCount\": 0,\n    \"warningCount\": 0,\n    \"failedCombinationCount\": 0,\n    \"combinationCount\": 1,\n    \"maxDisplacement\": null,\n    \"maxUtilization\": 0.9103732902271767,\n    \"maxEquilibriumResidual\": null,\n    \"governing\": {\n      \"memberId\": \"e13\",\n      \"checkId\": \"steel-slenderness\",\n      \"comboId\": \"SLS1\",\n      \"ratio\": 0.9103732902271767,\n      \"status\": \"WARN\"\n    },\n    \"combinations\": [\n      {\n        \"id\": \"SLS1\",\n        \"ok\": true,\n        \"dmax\": 0.003381067136811065,\n        \"maxRatio\": 0.9103732902271767,\n        \"equilibriumResidual\": null\n      }\n    ]\n  },\n  \"report\": {\n    \"calculationPackageVersion\": null,\n    \"detailedReportVersion\": null,\n    \"qualityAudit\": {\n      \"ok\": false,\n      \"itemStatuses\": []\n    },\n    \"analysisRunCount\": 1\n  },\n  \"provenance\": {\n    \"sourceRevision\": null,\n    \"buildId\": null,\n    \"analysisRunIds\": [\n      \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\"\n    ]\n  },\n  \"validation\": {\n    \"independentReference\": {\n      \"status\": \"not-available\",\n      \"referenceId\": null,\n      \"evidenceHash\": null\n    },\n    \"phase10Eligibility\": {\n      \"eligible\": false,\n      \"status\": \"not-verified\",\n      \"reasonCodes\": []\n    }\n  },\n  \"limitationCodes\": [\n    \"INDEPENDENT_REFERENCE_NOT_AVAILABLE\",\n    \"ISSUE_SCOPE_LIMITED\"\n  ],\n  \"designReview\": {\n    \"version\": \"p19-m3-elastic-review-v1\",\n    \"designRunId\": \"design-1\",\n    \"inputIdentity\": {\n      \"inputIdentityVersion\": \"p19-input-v1\",\n      \"modelHash\": \"a12ece74dfa383f0ec17df2f19346d397f22977d605e34954e1841fcc3209530\",\n      \"analysisCaseHash\": \"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\n      \"settingsHash\": \"7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5\",\n      \"designBasisHash\": \"04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52\",\n      \"materialsHash\": \"703ef408517e317a7a42a5ef25f0299d9a0f22e2b61de375930f0e991c322834\",\n      \"sectionsHash\": \"6ccf22bbff13d5d775e8e13caaf6c323ddd08c45442dc79c131522c6c3cf5166\",\n      \"rulePackHash\": \"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\n      \"buildHash\": \"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\n      \"inputHash\": \"523fc806aaef3d57f872d0049ce905f2e28757b3866b6cc02bde4bb5be8c798c\",\n      \"buildBound\": false,\n      \"rulePackBound\": false\n    },\n    \"resultHash\": \"23c49afd85157e78386e14656e71b99178d6222a3e18d6649401ea42e9cade44\",\n    \"sourceAnalysisRunIds\": [\n      \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\"\n    ],\n    \"units\": {\n      \"length\": \"m\",\n      \"force\": \"kN\",\n      \"moment\": \"kN.m\",\n      \"stress\": \"N/mm2\",\n      \"displacement\": \"mm\"\n    },\n    \"axes\": \"member-local\",\n    \"signConvention\": \"solver-native\",\n    \"checks\": [\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e9\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-axial\",\n        \"status\": \"OK\",\n        \"ratio\": 0.0327402527492945,\n        \"demand\": 23.999999999999986,\n        \"capacity\": 733.0426,\n        \"unit\": \"kN\",\n        \"expression\": \"max |N| / Pa\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e9\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-flexure-z\",\n        \"status\": \"OK\",\n        \"ratio\": 0.2539553215377325,\n        \"demand\": 19.141298263667046,\n        \"capacity\": 75.3727,\n        \"unit\": \"kN.m\",\n        \"expression\": \"max |Mz| / Maz\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e9\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-flexure-y\",\n        \"status\": \"OK\",\n        \"ratio\": 5.6133997344449204e-18,\n        \"demand\": 5.955025628883505e-17,\n        \"capacity\": 10.608590000000001,\n        \"unit\": \"kN.m\",\n        \"expression\": \"max |My| / May\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e9\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-shear-y\",\n        \"status\": \"OK\",\n        \"ratio\": 0.03377369055523997,\n        \"demand\": 9.52173101822273,\n        \"capacity\": 281.92746666666665,\n        \"unit\": \"kN\",\n        \"expression\": \"max |Vy| / Vay\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e9\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-shear-z\",\n        \"status\": \"OK\",\n        \"ratio\": 1.3898855423827702e-19,\n        \"demand\": 3.918469099206003e-17,\n        \"capacity\": 281.92746666666665,\n        \"unit\": \"kN\",\n        \"expression\": \"max |Vz| / Vaz\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e9\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-interaction\",\n        \"status\": \"OK\",\n        \"ratio\": 0.28669557428702697,\n        \"demand\": 0.28669557428702697,\n        \"capacity\": 1,\n        \"unit\": \"-\",\n        \"expression\": \"N/Pa + Mz/Maz + My/May\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e9\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-ltb-mcr\",\n        \"status\": \"OK\",\n        \"ratio\": 0.21242184938491895,\n        \"demand\": 19.141298263667046,\n        \"capacity\": 90.10983718996845,\n        \"unit\": \"kN.m\",\n        \"expression\": \"C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e9\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-slenderness\",\n        \"status\": \"OK\",\n        \"ratio\": 0.45518664511358836,\n        \"demand\": 91.03732902271767,\n        \"capacity\": 200,\n        \"unit\": \"-\",\n        \"expression\": \"max(KL/ry, KL/rz) / limit\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e9\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-deflection\",\n        \"status\": \"OK\",\n        \"ratio\": 0.034912329324437566,\n        \"demand\": 0.00041894795189325077,\n        \"capacity\": 0.012,\n        \"unit\": \"m\",\n        \"expression\": \"member deformation / (L / limit)\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e10\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-axial\",\n        \"status\": \"OK\",\n        \"ratio\": 0.0327402527492945,\n        \"demand\": 23.999999999999986,\n        \"capacity\": 733.0426,\n        \"unit\": \"kN\",\n        \"expression\": \"max |N| / Pa\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e10\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-flexure-z\",\n        \"status\": \"OK\",\n        \"ratio\": 0.2539553215377325,\n        \"demand\": 19.141298263667046,\n        \"capacity\": 75.3727,\n        \"unit\": \"kN.m\",\n        \"expression\": \"max |Mz| / Maz\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e10\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-flexure-y\",\n        \"status\": \"OK\",\n        \"ratio\": 5.8531188229759344e-18,\n        \"demand\": 6.209333781423428e-17,\n        \"capacity\": 10.608590000000001,\n        \"unit\": \"kN.m\",\n        \"expression\": \"max |My| / May\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e10\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-shear-y\",\n        \"status\": \"OK\",\n        \"ratio\": 0.03377369055523997,\n        \"demand\": 9.52173101822273,\n        \"capacity\": 281.92746666666665,\n        \"unit\": \"kN\",\n        \"expression\": \"max |Vy| / Vay\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e10\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-shear-z\",\n        \"status\": \"OK\",\n        \"ratio\": 1.448578796220587e-19,\n        \"demand\": 4.0839415028551966e-17,\n        \"capacity\": 281.92746666666665,\n        \"unit\": \"kN\",\n        \"expression\": \"max |Vz| / Vaz\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e10\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-interaction\",\n        \"status\": \"OK\",\n        \"ratio\": 0.28669557428702697,\n        \"demand\": 0.28669557428702697,\n        \"capacity\": 1,\n        \"unit\": \"-\",\n        \"expression\": \"N/Pa + Mz/Maz + My/May\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e10\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-ltb-mcr\",\n        \"status\": \"OK\",\n        \"ratio\": 0.21242184938491895,\n        \"demand\": 19.141298263667046,\n        \"capacity\": 90.10983718996845,\n        \"unit\": \"kN.m\",\n        \"expression\": \"C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"SLS1\",\n        \"memberId\": \"e10\",\n        \"category\": \"steel\",\n        \"checkId\": \"steel-slenderness\",\n        \"status\": \"OK\",\n        \"ratio\": 0.45518664511358836,\n        \"demand\": 91.03732902271767,\n        \"capacity\": 200,\n        \"unit\": \"-\",\n        \"expression\": \"max(KL/ry, KL/rz) / limit\",\n        \"x\": 0,\n        \"method\": \"allowable_stress_preliminary\"\n      },\n      {\n        \"analysisRunId\": \"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\n        \"comboId\": \"S",
+        "format": "json",
+        "nextOffset": 12000,
+        "offset": 0,
+        "ok": true,
+        "reportSnapshotHash": "24c1c0dc33d53d94bc2c0881453f9a398225e559f8db009ae191b3b297d89039",
+        "stale": false,
+        "totalCharacters": 67296
+      },
+      "csv": {
+        "content": "\"designRunId\",\"analysisRunId\",\"comboId\",\"memberId\",\"category\",\"checkId\",\"status\",\"ratio\",\"demand\",\"capacity\",\"unit\",\"expression\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e9\",\"steel\",\"steel-axial\",\"OK\",\"0.0327402527492945\",\"23.999999999999986\",\"733.0426\",\"kN\",\"max |N| / Pa\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e9\",\"steel\",\"steel-flexure-z\",\"OK\",\"0.2539553215377325\",\"19.141298263667046\",\"75.3727\",\"kN.m\",\"max |Mz| / Maz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e9\",\"steel\",\"steel-flexure-y\",\"OK\",\"5.6133997344449204e-18\",\"5.955025628883505e-17\",\"10.608590000000001\",\"kN.m\",\"max |My| / May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e9\",\"steel\",\"steel-shear-y\",\"OK\",\"0.03377369055523997\",\"9.52173101822273\",\"281.92746666666665\",\"kN\",\"max |Vy| / Vay\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e9\",\"steel\",\"steel-shear-z\",\"OK\",\"1.3898855423827702e-19\",\"3.918469099206003e-17\",\"281.92746666666665\",\"kN\",\"max |Vz| / Vaz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e9\",\"steel\",\"steel-interaction\",\"OK\",\"0.28669557428702697\",\"0.28669557428702697\",\"1\",\"'-\",\"N/Pa + Mz/Maz + My/May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e9\",\"steel\",\"steel-ltb-mcr\",\"OK\",\"0.21242184938491895\",\"19.141298263667046\",\"90.10983718996845\",\"kN.m\",\"C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e9\",\"steel\",\"steel-slenderness\",\"OK\",\"0.45518664511358836\",\"91.03732902271767\",\"200\",\"'-\",\"max(KL/ry, KL/rz) / limit\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e9\",\"steel\",\"steel-deflection\",\"OK\",\"0.034912329324437566\",\"0.00041894795189325077\",\"0.012\",\"m\",\"member deformation / (L / limit)\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e10\",\"steel\",\"steel-axial\",\"OK\",\"0.0327402527492945\",\"23.999999999999986\",\"733.0426\",\"kN\",\"max |N| / Pa\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e10\",\"steel\",\"steel-flexure-z\",\"OK\",\"0.2539553215377325\",\"19.141298263667046\",\"75.3727\",\"kN.m\",\"max |Mz| / Maz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e10\",\"steel\",\"steel-flexure-y\",\"OK\",\"5.8531188229759344e-18\",\"6.209333781423428e-17\",\"10.608590000000001\",\"kN.m\",\"max |My| / May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e10\",\"steel\",\"steel-shear-y\",\"OK\",\"0.03377369055523997\",\"9.52173101822273\",\"281.92746666666665\",\"kN\",\"max |Vy| / Vay\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e10\",\"steel\",\"steel-shear-z\",\"OK\",\"1.448578796220587e-19\",\"4.0839415028551966e-17\",\"281.92746666666665\",\"kN\",\"max |Vz| / Vaz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e10\",\"steel\",\"steel-interaction\",\"OK\",\"0.28669557428702697\",\"0.28669557428702697\",\"1\",\"'-\",\"N/Pa + Mz/Maz + My/May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e10\",\"steel\",\"steel-ltb-mcr\",\"OK\",\"0.21242184938491895\",\"19.141298263667046\",\"90.10983718996845\",\"kN.m\",\"C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e10\",\"steel\",\"steel-slenderness\",\"OK\",\"0.45518664511358836\",\"91.03732902271767\",\"200\",\"'-\",\"max(KL/ry, KL/rz) / limit\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e10\",\"steel\",\"steel-deflection\",\"OK\",\"0.03491232932443759\",\"0.00041894795189325104\",\"0.012\",\"m\",\"member deformation / (L / limit)\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e11\",\"steel\",\"steel-axial\",\"OK\",\"0.0327402527492945\",\"23.999999999999986\",\"733.0426\",\"kN\",\"max |N| / Pa\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e11\",\"steel\",\"steel-flexure-z\",\"OK\",\"0.2539553215377324\",\"19.141298263667043\",\"75.3727\",\"kN.m\",\"max |Mz| / Maz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e11\",\"steel\",\"steel-flexure-y\",\"OK\",\"5.790228884691889e-18\",\"6.142616424385353e-17\",\"10.608590000000001\",\"kN.m\",\"max |My| / May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e11\",\"steel\",\"steel-shear-y\",\"OK\",\"0.03377369055523997\",\"9.521731018222729\",\"281.92746666666665\",\"kN\",\"max |Vy| / Vay\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e11\",\"steel\",\"steel-shear-z\",\"OK\",\"1.424872070374286e-19\",\"4.017105731247108e-17\",\"281.92746666666665\",\"kN\",\"max |Vz| / Vaz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e11\",\"steel\",\"steel-interaction\",\"OK\",\"0.2866955742870269\",\"0.2866955742870269\",\"1\",\"'-\",\"N/Pa + Mz/Maz + My/May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e11\",\"steel\",\"steel-ltb-mcr\",\"OK\",\"0.21242184938491893\",\"19.141298263667043\",\"90.10983718996845\",\"kN.m\",\"C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e11\",\"steel\",\"steel-slenderness\",\"OK\",\"0.45518664511358836\",\"91.03732902271767\",\"200\",\"'-\",\"max(KL/ry, KL/rz) / limit\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e11\",\"steel\",\"steel-deflection\",\"OK\",\"0.03491232932443755\",\"0.0004189479518932506\",\"0.012\",\"m\",\"member deformation / (L / limit)\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e12\",\"steel\",\"steel-axial\",\"OK\",\"0.03274025274929451\",\"23.999999999999996\",\"733.0426\",\"kN\",\"max |N| / Pa\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e12\",\"steel\",\"steel-flexure-z\",\"OK\",\"0.25395532153773254\",\"19.14129826366705\",\"75.3727\",\"kN.m\",\"max |Mz| / Maz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e12\",\"steel\",\"steel-flexure-y\",\"OK\",\"6.2901958993156045e-18\",\"6.673010931552054e-17\",\"10.608590000000001\",\"kN.m\",\"max |My| / May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e12\",\"steel\",\"steel-shear-y\",\"OK\",\"0.033773690555239974\",\"9.521731018222733\",\"281.92746666666665\",\"kN\",\"max |Vy| / Vay\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e12\",\"steel\",\"steel-shear-z\",\"OK\",\"1.544613457589401e-19\",\"4.354689590774206e-17\",\"281.92746666666665\",\"kN\",\"max |Vz| / Vaz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e12\",\"steel\",\"steel-interaction\",\"OK\",\"0.2866955742870271\",\"0.2866955742870271\",\"1\",\"'-\",\"N/Pa + Mz/Maz + My/May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e12\",\"steel\",\"steel-ltb-mcr\",\"OK\",\"0.212421849384919\",\"19.14129826366705\",\"90.10983718996845\",\"kN.m\",\"C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e12\",\"steel\",\"steel-slenderness\",\"OK\",\"0.45518664511358836\",\"91.03732902271767\",\"200\",\"'-\",\"max(KL/ry, KL/rz) / limit\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e12\",\"steel\",\"steel-deflection\",\"OK\",\"0.0349123293244376\",\"0.0004189479518932512\",\"0.012\",\"m\",\"member deformation / (L / limit)\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"steel-axial\",\"OK\",\"0.012989328339475399\",\"9.521731018222729\",\"733.0426\",\"kN\",\"max |N| / Pa\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"steel-flexure-z\",\"OK\",\"0.25395532153773315\",\"19.141298263667096\",\"75.3727\",\"kN.m\",\"max |Mz| / Maz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"steel-flexure-y\",\"OK\",\"1.1717586327304676e-17\",\"1.2430706913598114e-16\",\"10.608590000000001\",\"kN.m\",\"max |My| / May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"steel-shear-y\",\"OK\",\"0.0851282788575407\",\"24.00000000000001\",\"281.92746666666665\",\"kN\",\"max |Vy| / Vay\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"steel-shear-z\",\"OK\",\"1.459071043813006e-19\",\"4.1135220306888973e-17\",\"281.92746666666665\",\"kN\",\"max |Vz| / Vaz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"steel-interaction\",\"OK\",\"0.26694464987720856\",\"0.26694464987720856\",\"1\",\"'-\",\"N/Pa + Mz/Maz + My/May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"steel-ltb-mcr\",\"OK\",\"0.424843698769839\",\"19.141298263667096\",\"45.05491859498422\",\"kN.m\",\"C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"steel-slenderness\",\"WARN\",\"0.9103732902271767\",\"182.07465804543534\",\"200\",\"'-\",\"max(KL/ry, KL/rz) / limit\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"steel-deflection\",\"OK\",\"0.1408777973671277\",\"0.003381067136811065\",\"0.024\",\"m\",\"member deformation / (L / limit)\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e13\",\"steel\",\"STEEL_SLENDERNESS\",\"WARN\",\"\",\"\",\"\",\"'-\",\"Slenderness ratio 0.910.\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e14\",\"steel\",\"steel-axial\",\"OK\",\"1.6734970687826354e-21\",\"1.226744642392802e-18\",\"733.0426\",\"kN\",\"max |N| / Pa\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e14\",\"steel\",\"steel-flexure-z\",\"OK\",\"1.06684165443078e-18\",\"8.041073596691485e-17\",\"75.3727\",\"kN.m\",\"max |Mz| / Maz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e14\",\"steel\",\"steel-flexure-y\",\"OK\",\"1.1642214198921436e-17\",\"1.2350747712853597e-16\",\"10.608590000000001\",\"kN.m\",\"max |My| / May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e14\",\"steel\",\"steel-shear-y\",\"OK\",\"6.623933727543667e-20\",\"1.8674688551742763e-17\",\"281.92746666666665\",\"kN\",\"max |Vy| / Vay\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e14\",\"steel\",\"steel-shear-z\",\"OK\",\"2.1626805337812156e-19\",\"6.097190440982525e-17\",\"281.92746666666665\",\"kN\",\"max |Vz| / Vaz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e14\",\"steel\",\"steel-interaction\",\"OK\",\"1.2710729350420998e-17\",\"1.2710729350420998e-17\",\"1\",\"'-\",\"N/Pa + Mz/Maz + My/May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e14\",\"steel\",\"steel-ltb-mcr\",\"OK\",\"1.8275100844340898e-18\",\"1.2350747712853597e-16\",\"67.58237789247633\",\"kN.m\",\"C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e14\",\"steel\",\"steel-slenderness\",\"OK\",\"0\",\"121.38310536362356\",\"200\",\"'-\",\"max(KL/ry, KL/rz) / limit\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e14\",\"steel\",\"steel-deflection\",\"OK\",\"0.005048245740044403\",\"0.00008077193184071045\",\"0.016\",\"m\",\"member deformation / (L / limit)\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e15\",\"steel\",\"steel-axial\",\"OK\",\"0.012989328339475402\",\"9.52173101822273\",\"733.0426\",\"kN\",\"max |N| / Pa\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e15\",\"steel\",\"steel-flexure-z\",\"OK\",\"0.25395532153773315\",\"19.141298263667096\",\"75.3727\",\"kN.m\",\"max |Mz| / Maz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e15\",\"steel\",\"steel-flexure-y\",\"OK\",\"1.1816935105644768e-17\",\"1.2536101959239204e-16\",\"10.608590000000001\",\"kN.m\",\"max |My| / May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e15\",\"steel\",\"steel-shear-y\",\"OK\",\"0.0851282788575407\",\"24.00000000000001\",\"281.92746666666665\",\"kN\",\"max |Vy| / Vay\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e15\",\"steel\",\"steel-shear-z\",\"OK\",\"1.4683848453762153e-19\",\"4.1397801954864136e-17\",\"281.92746666666665\",\"kN\",\"max |Vz| / Vaz\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e15\",\"steel\",\"steel-interaction\",\"OK\",\"0.26694464987720856\",\"0.26694464987720856\",\"1\",\"'-\",\"N/Pa + Mz/Maz + My/May\"\r\n\"design-1\",\"PAGES-ELASTIC-SMOKE:2026-09-08T11:55:18.416Z:1\",\"SLS1\",\"e15\",\"steel\",\"s",
+        "format": "csv",
+        "nextOffset": 12000,
+        "offset": 0,
+        "ok": true,
+        "reportSnapshotHash": "24c1c0dc33d53d94bc2c0881453f9a398225e559f8db009ae191b3b297d89039",
+        "stale": false,
+        "totalCharacters": 18414
+      }
+    },
+    "consoleErrors": [],
+    "uiNotes": [
+      "The legacy top status badge still retains its input-changed message after the separate typed workflow; the design-review panel and typed result are current.",
+      "Rendered DOM and typed transport summary differ at the final floating-point digit; full byte parity was not asserted in this deployment smoke."
+    ]
+  },
+  "qualification": "unchanged-candidate-design-transfer-blocked"
+}

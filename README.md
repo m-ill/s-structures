@@ -57,11 +57,11 @@ SB1처럼 수치 정밀도 수준에서 일치하는 항목도 있지만, **21�
 
 공개 기준값과 로컬 계산을 비교한 결과이며, STRIX·MIDAS를 독립적으로 재실행한 외부 공인 검증은 주장하지 않습니다. 사례별 허용오차·관측량·입력 완전성을 함께 읽어 주세요.
 
-## 공개 버전 검증
+## 검증 기록
 
 | 검증 | 확인된 결과 | 확인 범위 |
 |---|---|---|
-| GitHub Actions | Windows·Ubuntu 각각 **13/13** | WebMCP·명령 브리지·공개 API 계약·P17 프레임워크·P18/P18A 회귀 |
+| 초기 공개 GitHub Actions | Windows·Ubuntu 각각 **13/13** | WebMCP·명령 브리지·공개 API 계약·P17 프레임워크·P18/P18A 회귀 |
 | P18 엔진 시험 | **10개 사례 · 86개 프로브**, 실패 0 | 잔여 엔진 경로의 내부 수치 시험. 공식 21개 전체 동일문제 비교와 별도 |
 | P18A 추가 비교 | **SP1·P3S2·XV1 통과** | XV1은 공식 21개에 포함하지 않는 별도 교차비교 |
 | 실제 WebMCP 브라우저 | 정적 샘플 실행·결과 조회·중복 요청 재사용 확인 | 8절점·8부재·3개 하중조합, 화면 최대 변위 4.733mm |
@@ -69,7 +69,7 @@ SB1처럼 수치 정밀도 수준에서 일치하는 항목도 있지만, **21�
 
 2026-09-06 공개 병합 커밋은 [`fab4783`](https://github.com/m-ill/s-structures/commit/fab4783de045532beb35d46a648f1742e337c9c0)입니다. [해당 CI 실행](https://github.com/m-ill/s-structures/actions/runs/34008817393)과 [Release 증거](https://github.com/m-ill/s-structures/releases/tag/phase19-nonlinear-preview-20260907-r2)에서 확인할 수 있습니다. 테스트 실행 단위 수를 공인 벤치마크 합격 수로 계산하지 않으며, 최종 개발 커밋에서 `npm test` 전체 단일 실행 PASS를 주장하지 않습니다.
 
-## 공개 WebMCP v1: 모델 조회부터 해석 결과까지
+## WebMCP: 모델 조회부터 탄성설계·해석 결과까지
 
 지원 브라우저의 최상위 모델러가 `document.modelContext.registerTool`로 도구를 등록합니다. 에이전트가 현재 모델의 단위·케이스를 읽고 기존 제품 API로 해석을 실행한 뒤, 결과를 사용자 화면과 함께 확인합니다. [OpenAI Site tools 문서](https://learn.chatgpt.com/docs/webmcp)
 
