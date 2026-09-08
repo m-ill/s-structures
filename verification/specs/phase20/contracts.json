@@ -1,0 +1,11 @@
+{
+  "version": "p20-contracts-v1",
+  "baselineCommit": "131a2b3",
+  "baselineRuntimeCommit": "07b3e93",
+  "publicApi": {"preserveExports": true, "preserveSyncReturns": true, "preserveDefaults": true},
+  "numericalComparison": {"mode": "exact", "executionOnlyKeys": ["durationMs", "elapsedMs", "startedAt", "finishedAt", "completedAt", "generatedAt", "totalSolveMs", "solveMs", "factorMs", "assemblyMs"]},
+  "snapshot": {"maxEntries": 32, "maxBytes": 16777216, "identity": ["inputHash", "analysisRunIdOrResultHash", "designRunId", "viewVersion", "optionsHash"], "eviction": "least-recently-prepared", "missing": "RESULT_REQUIRED", "stale": "STALE_INPUT"},
+  "performance": {"frame": "verification/fixtures/phase19/eight-member-hinged-frame.json", "processRunsPerVersion": 3, "noConcurrentNumericalRuns": true, "medianRegressionLimit": 0.10, "maxRssRegressionLimit": 0.10, "noiseRetry": "Only rerun both versions if sample spread exceeds 20 percent; retain both attempts."},
+  "compatibility": {"maxPublicLinearFacadeEdges": 1, "publicBreakAllowed": false, "productionLegacyFallbackAllowed": false, "reviewAt": "P20-M5"},
+  "qualification": "unchanged-candidate-not-qualified"
+}

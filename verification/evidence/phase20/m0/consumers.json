@@ -1,0 +1,297 @@
+[
+  {
+    "file": "src/compute/adapters/analysisAdapters.js",
+    "dependency": "../../solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../../solver/linear3d.js'"
+  },
+  {
+    "file": "src/compute/adapters/elasticProductionAdapter.js",
+    "dependency": "../../solver/linear3d.js",
+    "declaration": "import {\n  buildDirectPDeltaAnalysis,\n  finalizeElasticAnalysis,\n  prepareElasticAnalysis,\n  solveElasticCombination,\n} from '../../solver/linear3d.js'"
+  },
+  {
+    "file": "src/compute/compatibility/syncFacade.js",
+    "dependency": "../../solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../../solver/linear3d.js'"
+  },
+  {
+    "file": "src/compute/elastic/hybridElasticSession.js",
+    "dependency": "../../solver/linear3d.js",
+    "declaration": "import {\n  captureElasticCombinationSystems,\n  resumeElasticCombinationSystems,\n} from '../../solver/linear3d.js'"
+  },
+  {
+    "file": "src/compute/product/analysisCaseEngine.js",
+    "dependency": "../../solver/linear3d.js",
+    "declaration": "import { analyzeModel, defaultCombos } from '../../solver/linear3d.js'"
+  },
+  {
+    "file": "src/compute/product/legacyUiCompatibility.js",
+    "dependency": "../../solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../../solver/linear3d.js'"
+  },
+  {
+    "file": "src/diagnostics/benchmarkGateRunCase.js",
+    "dependency": "../solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../solver/linear3d.js'"
+  },
+  {
+    "file": "src/diagnostics/memberReleaseBenchmarkRunCase.js",
+    "dependency": "../solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../solver/linear3d.js'"
+  },
+  {
+    "file": "src/diagnostics/rigidDiaphragmBenchmark.js",
+    "dependency": "../solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../solver/linear3d.js'"
+  },
+  {
+    "file": "src/diagnostics/stabilizationHarness.js",
+    "dependency": "../solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../solver/linear3d.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./solver/linear3d.js",
+    "declaration": "export {\n  analyzeAll,\n  analyzeComponent3D,\n  analyzeModel,\n  analyzePDelta,\n  analyzePDeltaCombinations,\n  assembleStiffness3D,\n  buildPDeltaDesignSummary,\n  buildPDeltaLoadStepCurve,\n  defaultCombos,\n  localK12,\n  makePDeltaLoads,\n  makeEnvelope,\n  memberAxes,\n  pDeltaDesignStatus,\n  solveLinear,\n  solveLinearDetailed,\n} from './solver/linear3d.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./solver/sparse/cscMatrix.js",
+    "declaration": "export {\n  SPARSE_MATRIX_VERSION,\n  cscMatVec,\n  cscToDense,\n  denseToCsc,\n  denseToTriplets,\n  sparseStats,\n  tripletsToCsc,\n} from './solver/sparse/cscMatrix.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./solver/sparse/symbolicFactor.js",
+    "declaration": "export {\n  SPARSE_SYMBOLIC_VERSION,\n  symbolicFactor,\n} from './solver/sparse/symbolicFactor.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./solver/sparse/ldlt.js",
+    "declaration": "export {\n  SPARSE_LDLT_VERSION,\n  factorLdlt,\n  solveLdlt,\n} from './solver/sparse/ldlt.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./solver/sparse/solveSparse.js",
+    "declaration": "export {\n  SPARSE_SOLVE_VERSION,\n  solveSparseCg,\n  solveSparseLinear,\n  solveSparseMultiple,\n} from './solver/sparse/solveSparse.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./solver/sparse/diagnostics.js",
+    "declaration": "export {\n  SPARSE_DIAGNOSTICS_VERSION,\n  buildSolverWarningDiagnostics,\n  estimateCondition,\n  matrixSymmetryError,\n  residualNorm,\n} from './solver/sparse/diagnostics.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./nonlinear/control/convergence.js",
+    "declaration": "export {\n  NONLINEAR_CONVERGENCE_VERSION,\n  appendConvergenceIteration,\n  createConvergenceLog,\n  evaluateConvergenceNorms,\n} from './nonlinear/control/convergence.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./nonlinear/control/newtonRaphson.js",
+    "declaration": "export {\n  NEWTON_RAPHSON_VERSION,\n  chooseLineSearchAlpha,\n  chooseLineSearchTrace,\n  solveNewtonRaphson,\n} from './nonlinear/control/newtonRaphson.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./nonlinear/control/globalEquilibrium.js",
+    "declaration": "export {\n  GLOBAL_EQUILIBRIUM_VERSION,\n  runGlobalEquilibriumTrace,\n} from './nonlinear/control/globalEquilibrium.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./nonlinear/control/loadControl.js",
+    "declaration": "export {\n  LOAD_CONTROL_VERSION,\n  buildLoadControlTrace,\n} from './nonlinear/control/loadControl.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./nonlinear/control/displacementControl.js",
+    "declaration": "export {\n  DISPLACEMENT_CONTROL_VERSION,\n  buildDisplacementControlStep,\n  buildDisplacementControlTrace,\n} from './nonlinear/control/displacementControl.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./nonlinear/control/arcLength.js",
+    "declaration": "export {\n  ARC_LENGTH_CONTROL_VERSION,\n  buildArcLengthStep,\n  buildArcLengthTrace,\n  createSnapThroughBenchmarkPath,\n} from './nonlinear/control/arcLength.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./nonlinear/legacy/contract.js",
+    "declaration": "export {\n  LEGACY_NONLINEAR_RESULT_VERSION,\n  LEGACY_PUSHOVER_ENGINE_ID,\n  LEGACY_SDOF_NLTH_ENGINE_ID,\n  qualifyLegacyNonlinearResult,\n} from './nonlinear/legacy/contract.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./nonlinear/legacy/preliminaryPushover.js",
+    "declaration": "export {\n  LEGACY_PRELIMINARY_PUSHOVER_ADAPTER_VERSION,\n  runLegacyPreliminaryPushover,\n} from './nonlinear/legacy/preliminaryPushover.js'"
+  },
+  {
+    "file": "src/index.js",
+    "dependency": "./nonlinear/legacy/sdofNewmarkTrace.js",
+    "declaration": "export {\n  LEGACY_SDOF_NEWMARK_ADAPTER_VERSION,\n  runLegacySdofNewmarkTrace,\n} from './nonlinear/legacy/sdofNewmarkTrace.js'"
+  },
+  {
+    "file": "src/nonlinear/assembly.js",
+    "dependency": "../solver/linear3d.js",
+    "declaration": "import { assembleStiffness3D } from '../solver/linear3d.js'"
+  },
+  {
+    "file": "src/nonlinear/equilibrium/referenceBackends.js",
+    "dependency": "../../solver/sparse/solveSparse.js",
+    "declaration": "import { solveSparseLinear } from '../../solver/sparse/solveSparse.js'"
+  },
+  {
+    "file": "src/nonlinear/pushover.js",
+    "dependency": "../solver/linear3d.js",
+    "declaration": "import { analyzeAll } from '../solver/linear3d.js'"
+  },
+  {
+    "file": "src/platform/pilotProjectRow.js",
+    "dependency": "../solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../solver/linear3d.js'"
+  },
+  {
+    "file": "src/ui/agentManifest.js",
+    "dependency": "../nonlinear/control/globalEquilibrium.js",
+    "declaration": "import { GLOBAL_EQUILIBRIUM_VERSION } from '../nonlinear/control/globalEquilibrium.js'"
+  },
+  {
+    "file": "tests/browser/p9-m5-webgpu-runner.js",
+    "dependency": "../../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p10-m1-solver-safety.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeComponent3D, analyzeModel } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p10-m1-topology-pdelta-safety.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeAll } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p10-m2-compute-domain-contract.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p10-m4-offsets-panelzone.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p15-m5-winkler-recovery.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeAll } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p7-m10-buckling-tha-integrity.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p7-m10-sparse-integrity.mjs",
+    "dependency": "../src/solver/sparse/cscMatrix.js",
+    "declaration": "import { denseToCsc } from '../src/solver/sparse/cscMatrix.js'"
+  },
+  {
+    "file": "tests/p7-m10-sparse-integrity.mjs",
+    "dependency": "../src/solver/sparse/solveSparse.js",
+    "declaration": "import {\n  solveSparseLinear,\n  solveSparseMultiple,\n} from '../src/solver/sparse/solveSparse.js'"
+  },
+  {
+    "file": "tests/p7-m7-mixed-combo-audit.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p7-m8-beam-column-stability.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p7-m8-direct-parity.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeAll } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p7-m8-routing-combo.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel, analyzePDeltaCombinations } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p7-m8-settlement-load-setup.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p8-m2-linear-parity.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeAll } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p8-m3-corotational-global.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeAll } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p8-m5-production-pushover.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeAll } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p9-m1-adapters-architecture.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p9-m3-elastic-runtime.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p9-m5-elastic-hybrid.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import {\n  analyzeModel,\n  finalizeElasticAnalysis,\n  prepareElasticAnalysis,\n} from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "tests/p9-m5-pdelta-hybrid.mjs",
+    "dependency": "../src/solver/linear3d.js",
+    "declaration": "import { finalizeElasticAnalysis, prepareElasticAnalysis } from '../src/solver/linear3d.js'"
+  },
+  {
+    "file": "verification/framework/benchmarks/strix21FirstBatch.js",
+    "dependency": "../../../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../../../src/solver/linear3d.js'"
+  },
+  {
+    "file": "verification/framework/matrix/assemblyCases.js",
+    "dependency": "../../../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../../../src/solver/linear3d.js'"
+  },
+  {
+    "file": "verification/framework/matrix/elementCases.js",
+    "dependency": "../../../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel, localK12, memberAxes } from '../../../src/solver/linear3d.js'"
+  },
+  {
+    "file": "verification/framework/matrix/stabilityCases.js",
+    "dependency": "../../../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel, analyzePDelta } from '../../../src/solver/linear3d.js'"
+  },
+  {
+    "file": "verification/framework/xval/cases.js",
+    "dependency": "../../../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../../../src/solver/linear3d.js'"
+  },
+  {
+    "file": "verification/framework/xval/pathologicalBattery.js",
+    "dependency": "../../../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../../../src/solver/linear3d.js'"
+  },
+  {
+    "file": "verification/runners/run-p9-m0-baseline.mjs",
+    "dependency": "../../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel, analyzeAll } from '../../src/solver/linear3d.js'"
+  },
+  {
+    "file": "verification/runners/run-p9-m3-evidence.mjs",
+    "dependency": "../../src/solver/linear3d.js",
+    "declaration": "import { analyzeModel } from '../../src/solver/linear3d.js'"
+  }
+]
