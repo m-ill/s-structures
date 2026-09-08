@@ -28,7 +28,7 @@ identity = {
     'tree': git('rev-parse', 'HEAD^{tree}').decode().strip(),
     'trackedChanges': '',
 }
-roots = {'index.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'LICENSE.txt'}
+roots = {'index.html', 'app.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'LICENSE.txt'}
 extensions = {'.js', '.mjs', '.json', '.html', '.css', '.wasm', '.svg', '.md', '.txt', '.csv'}
 files = {}
 with tarfile.open(fileobj=io.BytesIO(git('archive', '--format=tar', 'HEAD'))) as archive:
