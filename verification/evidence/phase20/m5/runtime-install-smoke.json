@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "source": {
+    "commit": "810abc06fe9be38eb7bb10f1ba590cbcb87f36be",
+    "tree": "21a7c66651a58d7b2c0451d2afe36354b5bcb2db",
+    "trackedChanges": ""
+  },
+  "runtimeManifestFiles": 740,
+  "numericalSmoke": true,
+  "responses": [
+    {
+      "path": "/index.html",
+      "status": 200,
+      "characters": 313217
+    },
+    {
+      "path": "/app.html",
+      "status": 200,
+      "characters": 2019
+    },
+    {
+      "path": "/src/ui/indexBridge.js",
+      "status": 200,
+      "characters": 50078
+    },
+    {
+      "path": "/src/metadata/numericVersions.js",
+      "status": 200,
+      "characters": 4793
+    },
+    {
+      "path": "/src/solver/elastic/stages.js",
+      "status": 200,
+      "characters": 5301
+    },
+    {
+      "path": "/src/ui/webmcp/register.js",
+      "status": 200,
+      "characters": 3969
+    }
+  ],
+  "log": "S-Structures server: http://127.0.0.1:5197/\n"
+}

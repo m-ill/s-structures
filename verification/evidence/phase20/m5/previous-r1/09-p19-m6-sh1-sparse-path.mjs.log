@@ -1,0 +1,3 @@
+{"ok":true,"backend":"p8-wasm-sparse-v1","displacement":0.00001,"expected":0.00001,"evaluations":2,"scope":"SH1 model to sparse registry to WASM Newton and committed state; axial elastic anchor only"}
+
+

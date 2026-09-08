@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "milestone": "P10-M0",
+  "thetaCases": 6,
+  "rawBaseShear": 10.000000000000002,
+  "scaleFactor": 2,
+  "scaledBaseShear": 20.000000000000004,
+  "rawDisplacement": 0.13333333333333336,
+  "scaledDisplacement": 0.2666666666666667,
+  "rawStoryShear": 10.000000000000002,
+  "scaledStoryShear": 20.000000000000004,
+  "noMinimumMaxError": 0,
+  "boundedTheta": 0.028866862871125266
+}
+
+

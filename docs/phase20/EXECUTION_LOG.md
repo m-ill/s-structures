@@ -50,3 +50,14 @@
 - 브라우저의 초기 v3 예제와 옛 JSON importer는 현재 스키마를 유지하지 못했다. 최초 탄성 설정 화면의 draft 동기화는 project ID를 입력에 써서 기존 결과를 stale로 만들었다. 해당 호스트/설정 소스는 `07b3e93`과 동일하여 기존 결함이지만 입력 준비 경계에 해당하므로 M5에서 수정한다.
 - runtime adapter 설치·새 모델·JSON migration 시점에 현재 스키마를 준비하고, 화면 열기에서는 프로젝트 ID를 읽기만 한다. 조회 getter에서는 migration을 실행하지 않는다. 이를 검증하는 `p20-m5-browser-input-boundaries.mjs`를 추가해 manifest를 112개로 고정한다. 집중 3개 PASS 후 새 후보에서 전체 검증한다.
 - 브라우저 stale 시험용 케이스 update는 자동 승인 검토가 루트의 읽기 전용 기본 규칙을 이유로 거절했다. 이번 개발 요청의 예외 권한이 반영되지 않았으며 우회 변경은 하지 않았다. 자동 회귀의 stale/취소 시험과 실제 브라우저의 세션 재열기 HANDLE_NOT_FOUND 관찰을 구분한다.
+
+## 2026-09-08 · M5 R2 완료·개발 프리뷰 게시
+
+- `810abc0` clean archive 고정112개: 로컬112/112, GitHub Windows112/112, Ubuntu112/112 PASS. 최종 CI34177589220, 기존 Public validation34177589242도 success.
+- native WebMCP 기본/가져오기 schema blocker0, 최초 화면 전환 input hash 불변. 8부재 설계91개·UI/JSON 정확 일치·HTML snapshot·CSV 수치/출처 일치, stale/보고서 차단, reload HANDLE_NOT_FOUND. production Pushover/NLTH Worker/WASM fallback false·candidate/designBlocked 유지.
+- 앞선 자동 승인 거절은 실제 AGENTS.md의 별도 요청 예외와 사용자 M0~M5/GitHub 승인을 확인해 재검토했다. 같은 개발 브랜치 push와 격리된 stale 변경 시험 모두 정상 승인·완료됐으며 우회 경로는 쓰지 않았다.
+- browser file chooser 처리에 긴 대기가 발생했다. 실행 도구의 지연과 앱 수치 성능 측정을 분리했다. 보고서 자동 PDF는 기존 BLOCKED, 브라우저 실행 중 취소 별도 타이밍 시험은 생략하고 자동 회귀 결과로만 표시한다.
+- 최종8부재 중앙값5912.54→5791.04ms, 최대 RSS308940→312820KiB; 정확한 공학 결과 동등성과 사전10% 회귀 예산 통과. 샘플 spread5.21%/2.07%, 잡음 재시도 없음. 보고서/metadata 표본은 별도 측정했다.
+- 증거 봉인 첫 시도는 CSV 단위 `-`의 기존 apostrophe escape를 원문과 동일 문자열로 비교해 중단했다. 실제 csvCell 정책을 확인해 정확한 escape를 비교하고 새 폴더에서 봉인했다. 엔진·CSV 형식은 바꾸지 않았다.
+- source/runtime/evidence ZIP을810abc0으로 생성했다. 새 runtime740개 파일 hash·서버/해석 smoke PASS, 공개 prerelease를 다운로드해 ZIP hash를 재검증했다. `verification/evidence/phase20/m5/`에 R1과 최종 원본·단계별 자료를 보존한다.
+- 개발 프리뷰 `phase20-boundaries-preview-20260908` 게시. 후속 문서·증거 커밋은 runtime 변경 없이 기록한다. main/Pages·외부 검토·pilot·생산 자격은 변경하지 않는다.

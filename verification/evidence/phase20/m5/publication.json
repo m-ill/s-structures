@@ -1,0 +1,3277 @@
+{
+  "builtAt": "2026-09-08T04:42:44.262574+00:00",
+  "source": {
+    "commit": "810abc06fe9be38eb7bb10f1ba590cbcb87f36be",
+    "tree": "21a7c66651a58d7b2c0451d2afe36354b5bcb2db",
+    "trackedChanges": ""
+  },
+  "archives": [
+    {
+      "file": "s-structures-source.zip",
+      "bytes": 7563053,
+      "sha256": "528b43ea9743f0e4025fea0a3096e3f2eb6f955d2c2d4dcd566ed7bf1b1c70e4",
+      "fileCount": 2848
+    },
+    {
+      "file": "s-structures-runtime.zip",
+      "bytes": 2034782,
+      "sha256": "82c39eb6b4d779f32c72c2daf04361858c0b29e479b23170ec97a10350488438",
+      "fileCount": 741
+    },
+    {
+      "file": "s-structures-evidence.zip",
+      "bytes": 473477,
+      "sha256": "dcf31dc147ee094d9001c634565fabe37fb7c981411b6973d23e5167fab56fef",
+      "fileCount": 488
+    }
+  ],
+  "excluded": [
+    {
+      "path": "docs/.gitignore",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "native/phase8-solver/.gitignore",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "native/phase8-solver/Cargo.lock",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "output/pdf/PILOT-OFFICE-01-calculation-report.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/00-index.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/01-regular-office-frame.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/02-l-shaped-neighborhood.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/03-u-shaped-school.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/04-podium-tower-setback.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/05-long-span-warehouse.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/06-open-parking-frame.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/07-apartment-frame-equivalent.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/08-courtyard-hospital.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/09-transfer-podium-frame.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/10-torsion-irregular-frame.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/README.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/m42-representative-packages/index.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/00-representative-building-index.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/01-regular-office-frame.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/02-l-shaped-neighborhood.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/03-u-shaped-school.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/04-podium-tower-setback.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/05-long-span-warehouse.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/06-open-parking-frame.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/07-apartment-frame-equivalent.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/08-courtyard-hospital.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/09-transfer-podium-frame.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/10-torsion-irregular-frame.pdf",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/README.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "output/pdf/representative-buildings/index.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/README.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/backup-restore.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/install-smoke-desktop.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/install-smoke-web.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/owner-signoff-checklist.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/performance-security.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-01.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-02.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-03.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-04.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-05.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-06.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-07.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-08.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-09.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/launch-readiness/pilot-10.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/pilot-office-01/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/pilot-office-01/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/pilot-office-01/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/pilot-office-01/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/01-regular-office-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/01-regular-office-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/01-regular-office-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/01-regular-office-frame/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/01-regular-office-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/01-regular-office-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/02-l-shaped-neighborhood/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/02-l-shaped-neighborhood/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/02-l-shaped-neighborhood/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/02-l-shaped-neighborhood/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/02-l-shaped-neighborhood/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/02-l-shaped-neighborhood/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/03-u-shaped-school/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/03-u-shaped-school/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/03-u-shaped-school/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/03-u-shaped-school/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/03-u-shaped-school/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/03-u-shaped-school/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/04-podium-tower-setback/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/04-podium-tower-setback/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/04-podium-tower-setback/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/04-podium-tower-setback/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/04-podium-tower-setback/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/04-podium-tower-setback/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/05-long-span-warehouse/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/05-long-span-warehouse/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/05-long-span-warehouse/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/05-long-span-warehouse/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/05-long-span-warehouse/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/05-long-span-warehouse/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/06-open-parking-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/06-open-parking-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/06-open-parking-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/06-open-parking-frame/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/06-open-parking-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/06-open-parking-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/07-apartment-frame-equivalent/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/07-apartment-frame-equivalent/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/07-apartment-frame-equivalent/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/07-apartment-frame-equivalent/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/07-apartment-frame-equivalent/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/07-apartment-frame-equivalent/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/08-courtyard-hospital/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/08-courtyard-hospital/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/08-courtyard-hospital/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/08-courtyard-hospital/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/08-courtyard-hospital/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/08-courtyard-hospital/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/09-transfer-podium-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/09-transfer-podium-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/09-transfer-podium-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/09-transfer-podium-frame/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/09-transfer-podium-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/09-transfer-podium-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/10-torsion-irregular-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/10-torsion-irregular-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/10-torsion-irregular-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/10-torsion-irregular-frame/load-estimation.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/10-torsion-irregular-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/10-torsion-irregular-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/README.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-building-calculation-packages/index.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/01-regular-office-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/01-regular-office-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/01-regular-office-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/01-regular-office-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/02-l-shaped-neighborhood/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/02-l-shaped-neighborhood/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/02-l-shaped-neighborhood/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/02-l-shaped-neighborhood/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/03-u-shaped-school/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/03-u-shaped-school/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/03-u-shaped-school/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/03-u-shaped-school/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/04-podium-tower-setback/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/04-podium-tower-setback/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/04-podium-tower-setback/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/04-podium-tower-setback/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/05-long-span-warehouse/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/05-long-span-warehouse/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/05-long-span-warehouse/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/05-long-span-warehouse/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/06-open-parking-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/06-open-parking-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/06-open-parking-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/06-open-parking-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/07-apartment-frame-equivalent/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/07-apartment-frame-equivalent/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/07-apartment-frame-equivalent/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/07-apartment-frame-equivalent/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/08-courtyard-hospital/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/08-courtyard-hospital/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/08-courtyard-hospital/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/08-courtyard-hospital/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/09-transfer-podium-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/09-transfer-podium-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/09-transfer-podium-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/09-transfer-podium-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/10-torsion-irregular-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/10-torsion-irregular-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/10-torsion-irregular-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/10-torsion-irregular-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/README.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/representative-buildings/index.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/README.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/agent-grid-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/agent-grid-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/agent-grid-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/agent-grid-frame/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/agent-grid-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/agent-grid-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/agent-grid-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/braced-two-story-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/braced-two-story-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/braced-two-story-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/braced-two-story-frame/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/braced-two-story-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/braced-two-story-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/braced-two-story-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/design-basis-two-story/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/design-basis-two-story/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/design-basis-two-story/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/design-basis-two-story/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/design-basis-two-story/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/design-basis-two-story/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/design-basis-two-story/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/index.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-01-regular-office-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-01-regular-office-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-01-regular-office-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-01-regular-office-frame/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-01-regular-office-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-01-regular-office-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-01-regular-office-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-02-l-shaped-neighborhood/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-02-l-shaped-neighborhood/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-02-l-shaped-neighborhood/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-02-l-shaped-neighborhood/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-02-l-shaped-neighborhood/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-02-l-shaped-neighborhood/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-02-l-shaped-neighborhood/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-03-u-shaped-school/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-03-u-shaped-school/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-03-u-shaped-school/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-03-u-shaped-school/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-03-u-shaped-school/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-03-u-shaped-school/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-03-u-shaped-school/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-04-podium-tower-setback/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-04-podium-tower-setback/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-04-podium-tower-setback/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-04-podium-tower-setback/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-04-podium-tower-setback/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-04-podium-tower-setback/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-04-podium-tower-setback/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-05-long-span-warehouse/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-05-long-span-warehouse/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-05-long-span-warehouse/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-05-long-span-warehouse/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-05-long-span-warehouse/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-05-long-span-warehouse/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-05-long-span-warehouse/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-06-open-parking-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-06-open-parking-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-06-open-parking-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-06-open-parking-frame/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-06-open-parking-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-06-open-parking-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-06-open-parking-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-07-apartment-frame-equivalent/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-07-apartment-frame-equivalent/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-07-apartment-frame-equivalent/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-07-apartment-frame-equivalent/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-07-apartment-frame-equivalent/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-07-apartment-frame-equivalent/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-07-apartment-frame-equivalent/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-08-courtyard-hospital/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-08-courtyard-hospital/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-08-courtyard-hospital/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-08-courtyard-hospital/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-08-courtyard-hospital/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-08-courtyard-hospital/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-08-courtyard-hospital/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-09-transfer-podium-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-09-transfer-podium-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-09-transfer-podium-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-09-transfer-podium-frame/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-09-transfer-podium-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-09-transfer-podium-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-09-transfer-podium-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-10-torsion-irregular-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-10-torsion-irregular-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-10-torsion-irregular-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-10-torsion-irregular-frame/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-10-torsion-irregular-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-10-torsion-irregular-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/representative-10-torsion-irregular-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/solver-cantilever-tip-load/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/solver-cantilever-tip-load/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/solver-cantilever-tip-load/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/solver-cantilever-tip-load/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/solver-cantilever-tip-load/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/solver-cantilever-tip-load/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/solver-cantilever-tip-load/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/structured-two-story-elastic-frame/analysis-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/structured-two-story-elastic-frame/calculation-package.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/structured-two-story-elastic-frame/calculation-package.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/structured-two-story-elastic-frame/case-summary.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/structured-two-story-elastic-frame/model.json",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/structured-two-story-elastic-frame/report.html",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "reports/stabilization-harness/structured-two-story-elastic-frame/review.md",
+      "reason": "not-in-source-allowlist"
+    },
+    {
+      "path": "src/import/dwg/.gitkeep",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "src/import/dxf/.gitkeep",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "src/import/pointcloud/.gitkeep",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "src/materials/db/.gitkeep",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "tests/fixtures/dxf/.gitkeep",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "tests/fixtures/dxf/block-polyline.dxf",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "tests/fixtures/dxf/min-frame.dxf",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "tests/fixtures/dxf/plan-story-1.dxf",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "tests/fixtures/dxf/plan-story-2.dxf",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "tests/fixtures/pointcloud/.gitkeep",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "tests/fixtures/pointcloud/mini.pcd",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "tests/fixtures/pointcloud/mini.ply",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "tests/fixtures/pointcloud/mini.xyz",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/archive/phase17-m0/phase15-current-snapshot/a4e79daa5ded78f0b21dc97678f84787df5b96df81aef919b3a8cdc013c246ab.pdf",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/benchmarks/strix21/milestones/P18/figures/p18-status.png",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/benchmarks/strix21/milestones/P18/figures/sh1-backbone.png",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/benchmarks/strix21/milestones/P18/figures/sm6-frequency-comparison.png",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/benchmarks/strix21/milestones/P18/figures/sr2-modal-combination.png",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/benchmarks/strix21/milestones/P18/figures/th1-convergence.png",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m0-m1/runtime-delta.diff",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/01-p19-m2-design-input.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/02-p19-m2-ui-agent-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/03-p19-m1-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/04-p19-m1-product-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/05-webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/06-webmcp-bridge-security.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/07-m31-agent-command-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/08-m9-index-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/09-m11-agent-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/10-check-public-import-contracts.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/11-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/12-m5-steel-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/13-m6-rc-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/14-m37-load-estimation.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/15-m38-kds-rule-combinations.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/16-m47-design-basis-input-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/17-p7-m1-material-registry.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/18-p7-m3-modeling-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/19-p7-m3-ui-native-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/20-p7-m4-load-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/21-p7-m9-mass-source-assembly.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/22-p7-m11-run-record.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/23-p7-m11-agent-analysis-status.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/24-p7-m11-ui-run-records.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/25-p7-m11-elastic-setup-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/26-p7-m11-elastic-result-popup.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m2/27-p7-m11-elastic-analysis-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/01-p19-m3-design-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/02-p19-m2-design-input.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/03-p19-m2-ui-agent-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/04-p19-m1-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/05-p19-m1-product-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/06-webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/07-webmcp-bridge-security.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/08-m31-agent-command-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/09-m9-index-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/10-m11-agent-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/11-check-public-import-contracts.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/12-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/13-m5-steel-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/14-m6-rc-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/15-m37-load-estimation.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/16-m38-kds-rule-combinations.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/17-m47-design-basis-input-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/18-p7-m1-material-registry.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/19-p7-m3-modeling-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/20-p7-m3-ui-native-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/21-p7-m4-load-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/22-p7-m9-mass-source-assembly.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/23-p7-m11-run-record.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/24-p7-m11-agent-analysis-status.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/25-p7-m11-ui-run-records.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/26-p7-m11-elastic-setup-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/27-p7-m11-elastic-result-popup.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/28-p7-m11-elastic-analysis-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/29-p11-m1-report-snapshot-verdict.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/30-p11-m2-bilingual-rendering.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/31-p11-m5-executive-report-layout.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/32-p11-m6-dual-pdf-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/33-p11-m7-product-agent-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m3/34-p11-m8-qualification-hardening.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/01-p19-m4-webmcp-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/02-p19-m4-host-session.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/03-p19-m3-design-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/04-p19-m2-design-input.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/05-p19-m2-ui-agent-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/06-p19-m1-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/07-p19-m1-product-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/08-webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/09-webmcp-bridge-security.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/10-m31-agent-command-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/11-m9-index-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/12-m11-agent-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/13-check-public-import-contracts.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/14-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/15-m5-steel-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/16-m6-rc-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/17-m37-load-estimation.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/18-m38-kds-rule-combinations.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/19-m47-design-basis-input-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/20-p7-m1-material-registry.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/21-p7-m3-modeling-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/22-p7-m3-ui-native-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/23-p7-m4-load-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/24-p7-m9-mass-source-assembly.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/25-p7-m11-run-record.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/26-p7-m11-agent-analysis-status.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/27-p7-m11-ui-run-records.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/28-p7-m11-elastic-setup-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/29-p7-m11-elastic-result-popup.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/30-p7-m11-elastic-analysis-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/31-p11-m1-report-snapshot-verdict.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/32-p11-m2-bilingual-rendering.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/33-p11-m5-executive-report-layout.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/34-p11-m6-dual-pdf-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/35-p11-m7-product-agent-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/36-p11-m8-qualification-hardening.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/37-p3-app-shell.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/38-p4-modeler-save-flow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m4/39-p4-security-headers.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/01-p19-m5-nonlinear-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/02-p19-m6-sh1-sparse-path.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/03-p19-m8-nonlinear-lifecycle.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/04-p19-m4-webmcp-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/05-p19-m4-host-session.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/06-p19-m3-design-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/07-p19-m2-design-input.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/08-p19-m2-ui-agent-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/09-p19-m1-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/10-p19-m1-product-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/11-webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/12-webmcp-bridge-security.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/13-m31-agent-command-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/14-m9-index-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/15-m11-agent-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/16-check-public-import-contracts.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/17-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/18-m5-steel-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/19-m6-rc-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/20-m37-load-estimation.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/21-m38-kds-rule-combinations.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/22-m47-design-basis-input-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/23-p7-m1-material-registry.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/24-p7-m3-modeling-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/25-p7-m3-ui-native-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/26-p7-m4-load-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/27-p7-m9-mass-source-assembly.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/28-p7-m11-run-record.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/29-p7-m11-agent-analysis-status.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/30-p7-m11-ui-run-records.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/31-p7-m11-elastic-setup-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/32-p7-m11-elastic-result-popup.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/33-p7-m11-elastic-analysis-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/34-p11-m1-report-snapshot-verdict.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/35-p11-m2-bilingual-rendering.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/36-p11-m5-executive-report-layout.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/37-p11-m6-dual-pdf-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/38-p11-m7-product-agent-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/39-p11-m8-qualification-hardening.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/40-p3-app-shell.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/41-p4-modeler-save-flow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/42-p4-security-headers.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/43-p8-m0-governance.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/44-p8-m0-schema-migration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/45-p8-m1-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/46-p8-m1-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/47-p8-m1-state-store.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/48-p8-m10-job-agent-api.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/49-p8-m10-product-preflight.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/50-p8-m10-product-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/51-p8-m10-result-access.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/52-p8-m11-independent-reference.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/53-p8-m11-release-gate.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/54-p8-m2-assembly-primitives.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/55-p8-m2-control.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/56-p8-m2-equilibrium.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/57-p8-m2-linear-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/58-p8-m2-wasm-backend.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/59-p8-m2-worker-runtime.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/60-p8-m3-corotational-element.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/61-p8-m3-corotational-global.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/62-p8-m4-assignment.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/63-p8-m4-hinge-material.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/64-p8-m4-hinged-frame.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/65-p8-m5-displacement-control.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/66-p8-m5-initial-state.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/67-p8-m5-production-pushover.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/68-p8-m5-public-routing.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/69-p8-m6-distributed-fiber-frame.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/70-p8-m6-fiber-mesh-materials.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/71-p8-m6-pmm-runtime.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/72-p8-m6-pmm-surface.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/73-p8-m6-production-coupling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/74-p8-m6-section-response.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/75-p8-m7-arc-length.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/76-p8-m7-cyclic-static.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/77-p8-m7-production-arc.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/78-p8-m8-dynamic-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/79-p8-m8-fiber-dynamics.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/80-p8-m8-newmark.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/81-p8-m8-production-nlth.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/82-p8-m9-capability-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/83-p8-m9-history-adapter.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/84-p8-m9-origin-governance.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/85-p8-m9-support-recovery.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/86-p14-m10-production-pushover.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/87-p15-m8-nonlinear-qualification-boundary.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/88-p18-link-pmm.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/89-p18-th1-sp1.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/90-p18-strix21-completion.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/91-p18a-additional-comparisons.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-ubuntu/92-p19-frame-equilibrium-gate.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/01-p19-m5-nonlinear-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/02-p19-m6-sh1-sparse-path.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/03-p19-m8-nonlinear-lifecycle.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/04-p19-m4-webmcp-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/05-p19-m4-host-session.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/06-p19-m3-design-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/07-p19-m2-design-input.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/08-p19-m2-ui-agent-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/09-p19-m1-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/10-p19-m1-product-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/11-webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/12-webmcp-bridge-security.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/13-m31-agent-command-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/14-m9-index-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/15-m11-agent-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/16-check-public-import-contracts.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/17-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/18-m5-steel-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/19-m6-rc-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/20-m37-load-estimation.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/21-m38-kds-rule-combinations.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/22-m47-design-basis-input-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/23-p7-m1-material-registry.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/24-p7-m3-modeling-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/25-p7-m3-ui-native-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/26-p7-m4-load-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/27-p7-m9-mass-source-assembly.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/28-p7-m11-run-record.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/29-p7-m11-agent-analysis-status.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/30-p7-m11-ui-run-records.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/31-p7-m11-elastic-setup-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/32-p7-m11-elastic-result-popup.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/33-p7-m11-elastic-analysis-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/34-p11-m1-report-snapshot-verdict.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/35-p11-m2-bilingual-rendering.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/36-p11-m5-executive-report-layout.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/37-p11-m6-dual-pdf-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/38-p11-m7-product-agent-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/39-p11-m8-qualification-hardening.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/40-p3-app-shell.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/41-p4-modeler-save-flow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/42-p4-security-headers.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/43-p8-m0-governance.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/44-p8-m0-schema-migration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/45-p8-m1-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/46-p8-m1-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/47-p8-m1-state-store.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/48-p8-m10-job-agent-api.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/49-p8-m10-product-preflight.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/50-p8-m10-product-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/51-p8-m10-result-access.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/52-p8-m11-independent-reference.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/53-p8-m11-release-gate.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/54-p8-m2-assembly-primitives.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/55-p8-m2-control.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/56-p8-m2-equilibrium.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/57-p8-m2-linear-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/58-p8-m2-wasm-backend.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/59-p8-m2-worker-runtime.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/60-p8-m3-corotational-element.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/61-p8-m3-corotational-global.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/62-p8-m4-assignment.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/63-p8-m4-hinge-material.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/64-p8-m4-hinged-frame.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/65-p8-m5-displacement-control.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/66-p8-m5-initial-state.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/67-p8-m5-production-pushover.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/68-p8-m5-public-routing.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/69-p8-m6-distributed-fiber-frame.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/70-p8-m6-fiber-mesh-materials.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/71-p8-m6-pmm-runtime.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/72-p8-m6-pmm-surface.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/73-p8-m6-production-coupling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/74-p8-m6-section-response.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/75-p8-m7-arc-length.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/76-p8-m7-cyclic-static.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/77-p8-m7-production-arc.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/78-p8-m8-dynamic-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/79-p8-m8-fiber-dynamics.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/80-p8-m8-newmark.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/81-p8-m8-production-nlth.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/82-p8-m9-capability-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/83-p8-m9-history-adapter.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/84-p8-m9-origin-governance.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/85-p8-m9-support-recovery.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/86-p14-m10-production-pushover.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/87-p15-m8-nonlinear-qualification-boundary.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/88-p18-link-pmm.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/89-p18-th1-sp1.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/90-p18-strix21-completion.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/91-p18a-additional-comparisons.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-8147974-windows/92-p19-frame-equilibrium-gate.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/01-webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/02-webmcp-bridge-security.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/03-m31-agent-command-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/04-check-public-import-contracts.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/05-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/06-p17-m1-json-schema-validator.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/07-p17-m1-framework-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/08-p17-m1-result-extractor.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/09-p18-th1-sp1.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/10-p18-modal-stabilization.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/11-p18-link-pmm.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/12-p18-strix21-completion.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-ubuntu/13-p18a-additional-comparisons.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/01-webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/02-webmcp-bridge-security.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/03-m31-agent-command-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/04-check-public-import-contracts.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/05-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/06-p17-m1-json-schema-validator.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/07-p17-m1-framework-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/08-p17-m1-result-extractor.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/09-p18-th1-sp1.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/10-p18-modal-stabilization.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/11-p18-link-pmm.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/12-p18-strix21-completion.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/ci-public-windows/13-p18a-additional-comparisons.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/p19-m4-host-session.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/p19-m4-webmcp-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/p19-m5-nonlinear-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/package-install-recovery.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r1/60-p8-m3-corotational-global.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r2/92-p19-frame-equilibrium-gate.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r3/17-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r3/49-p8-m10-product-preflight.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/01-p19-m5-nonlinear-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/02-p19-m6-sh1-sparse-path.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/03-p19-m8-nonlinear-lifecycle.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/04-p19-m4-webmcp-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/05-p19-m4-host-session.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/06-p19-m3-design-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/07-p19-m2-design-input.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/08-p19-m2-ui-agent-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/09-p19-m1-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/10-p19-m1-product-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/11-webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/12-webmcp-bridge-security.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/13-m31-agent-command-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/14-m9-index-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/15-m11-agent-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/16-check-public-import-contracts.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/17-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/18-m5-steel-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/19-m6-rc-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/20-m37-load-estimation.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/21-m38-kds-rule-combinations.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/22-m47-design-basis-input-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/23-p7-m1-material-registry.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/24-p7-m3-modeling-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/25-p7-m3-ui-native-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/26-p7-m4-load-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/27-p7-m9-mass-source-assembly.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/28-p7-m11-run-record.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/29-p7-m11-agent-analysis-status.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/30-p7-m11-ui-run-records.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/31-p7-m11-elastic-setup-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/32-p7-m11-elastic-result-popup.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/33-p7-m11-elastic-analysis-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/34-p11-m1-report-snapshot-verdict.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/35-p11-m2-bilingual-rendering.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/36-p11-m5-executive-report-layout.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/37-p11-m6-dual-pdf-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/38-p11-m7-product-agent-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/39-p11-m8-qualification-hardening.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/40-p3-app-shell.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/41-p4-modeler-save-flow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/42-p4-security-headers.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/43-p8-m0-governance.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/44-p8-m0-schema-migration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/45-p8-m1-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/46-p8-m1-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/47-p8-m1-state-store.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/48-p8-m10-job-agent-api.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/49-p8-m10-product-preflight.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/50-p8-m10-product-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/51-p8-m10-result-access.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/52-p8-m11-independent-reference.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/53-p8-m11-release-gate.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/54-p8-m2-assembly-primitives.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/55-p8-m2-control.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/56-p8-m2-equilibrium.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/57-p8-m2-linear-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/58-p8-m2-wasm-backend.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/59-p8-m2-worker-runtime.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/60-p8-m3-corotational-element.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/61-p8-m3-corotational-global.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/62-p8-m4-assignment.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/63-p8-m4-hinge-material.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/64-p8-m4-hinged-frame.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/65-p8-m5-displacement-control.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/66-p8-m5-initial-state.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/67-p8-m5-production-pushover.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/68-p8-m5-public-routing.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/69-p8-m6-distributed-fiber-frame.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/70-p8-m6-fiber-mesh-materials.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/71-p8-m6-pmm-runtime.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/72-p8-m6-pmm-surface.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/73-p8-m6-production-coupling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/74-p8-m6-section-response.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/75-p8-m7-arc-length.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/76-p8-m7-cyclic-static.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/77-p8-m7-production-arc.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/78-p8-m8-dynamic-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/79-p8-m8-fiber-dynamics.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/80-p8-m8-newmark.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/81-p8-m8-production-nlth.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/82-p8-m9-capability-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/83-p8-m9-history-adapter.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/84-p8-m9-origin-governance.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/85-p8-m9-support-recovery.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/86-p14-m10-production-pushover.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/87-p15-m8-nonlinear-qualification-boundary.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/88-p18-link-pmm.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/89-p18-th1-sp1.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/90-p18-strix21-completion.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/91-p18a-additional-comparisons.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/r4/92-p19-frame-equilibrium-gate.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/runtime-metadata-delta.diff",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/m5-m10/webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/01-p19-review-capacity-pagination.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/02-p19-review-jet-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/03-p19-review-session-disposal.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/04-p19-m5-nonlinear-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/05-p19-m6-sh1-sparse-path.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/06-p19-m8-nonlinear-lifecycle.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/07-p19-m4-webmcp-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/08-p19-m4-host-session.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/09-p19-m3-design-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/10-p19-m2-design-input.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/11-p19-m2-ui-agent-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/12-p19-m1-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/13-p19-m1-product-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/14-webmcp-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/15-webmcp-bridge-security.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/16-m31-agent-command-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/17-m9-index-bridge.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/18-m11-agent-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/19-check-public-import-contracts.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/20-check-agent-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/21-m5-steel-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/22-m6-rc-design.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/23-m37-load-estimation.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/24-m38-kds-rule-combinations.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/25-m47-design-basis-input-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/26-p7-m1-material-registry.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/27-p7-m3-modeling-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/28-p7-m3-ui-native-modeling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/29-p7-m4-load-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/30-p7-m9-mass-source-assembly.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/31-p7-m11-run-record.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/32-p7-m11-agent-analysis-status.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/33-p7-m11-ui-run-records.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/34-p7-m11-elastic-setup-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/35-p7-m11-elastic-result-popup.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/36-p7-m11-elastic-analysis-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/37-p11-m1-report-snapshot-verdict.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/38-p11-m2-bilingual-rendering.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/39-p11-m5-executive-report-layout.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/40-p11-m6-dual-pdf-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/41-p11-m7-product-agent-export.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/42-p11-m8-qualification-hardening.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/43-p3-app-shell.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/44-p4-modeler-save-flow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/45-p4-security-headers.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/46-p8-m0-governance.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/47-p8-m0-schema-migration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/48-p8-m1-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/49-p8-m1-integration.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/50-p8-m1-state-store.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/51-p8-m10-job-agent-api.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/52-p8-m10-product-preflight.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/53-p8-m10-product-ui.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/54-p8-m10-result-access.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/55-p8-m11-independent-reference.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/56-p8-m11-release-gate.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/57-p8-m2-assembly-primitives.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/58-p8-m2-control.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/59-p8-m2-equilibrium.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/60-p8-m2-linear-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/61-p8-m2-wasm-backend.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/62-p8-m2-worker-runtime.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/63-p8-m3-corotational-element.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/64-p8-m3-corotational-global.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/65-p8-m4-assignment.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/66-p8-m4-hinge-material.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/67-p8-m4-hinged-frame.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/68-p8-m5-displacement-control.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/69-p8-m5-initial-state.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/70-p8-m5-production-pushover.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/71-p8-m5-public-routing.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/72-p8-m6-distributed-fiber-frame.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/73-p8-m6-fiber-mesh-materials.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/74-p8-m6-pmm-runtime.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/75-p8-m6-pmm-surface.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/76-p8-m6-production-coupling.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/77-p8-m6-section-response.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/78-p8-m7-arc-length.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/79-p8-m7-cyclic-static.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/80-p8-m7-production-arc.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/81-p8-m8-dynamic-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/82-p8-m8-fiber-dynamics.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/83-p8-m8-newmark.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/84-p8-m8-production-nlth.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/85-p8-m9-capability-domain.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/86-p8-m9-history-adapter.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/87-p8-m9-origin-governance.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/88-p8-m9-support-recovery.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/89-p14-m10-production-pushover.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/90-p15-m8-nonlinear-qualification-boundary.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/91-p18-link-pmm.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/92-p18-th1-sp1.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/93-p18-strix21-completion.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/94-p18a-additional-comparisons.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/95-p19-frame-equilibrium-gate.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase19/review-20260908/SHA256SUMS",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m1/01-p20-m1-metadata.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m1/02-p19-m1-product-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m1/03-p13-m8-shell-lab.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m2/01-p20-m2-prepared-views.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m2/02-p20-m1-metadata.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m2/03-p19-m1-product-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m2/04-p19-m4-webmcp-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m2/05-m34-detailed-report.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m2/06-m42-calculation-package.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m2/07-p13-m2-agent-report-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m3/01-p20-m3-elastic-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m3/02-p15-m8-pdelta-first-order-ownership.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m3/03-p9-m3-elastic-runtime.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m3/04-p9-m5-elastic-hybrid.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m3/05-p9-m5-pdelta-hybrid.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m3/06-p9-m6-eigen-dynamics.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m3/07-p19-m3-design-workflow.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m4/01-p20-m4-module-boundaries.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m4/02-p20-m1-metadata.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m4/03-p20-m3-elastic-parity.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m4/04-p19-m5-nonlinear-contract.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    },
+    {
+      "path": "verification/evidence/phase20/m4/05-p8-m0-governance.mjs.log",
+      "reason": "binary-or-unreviewed-format"
+    }
+  ],
+  "externalQualification": "NOT_CLAIMED",
+  "historyIncluded": false,
+  "publication": "local-candidate-not-uploaded"
+}

@@ -2,7 +2,7 @@
 
 계획 v1 · 실제 상태는 [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)를 따른다.
 
-## 현재 구조
+## 계획 시점의 기준 구조
 
 | 역할 | 현재 소유자 | 보존할 경계 |
 | --- | --- | --- |

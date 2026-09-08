@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-INT-07",
+    "NL-INT-08",
+    "NL-INT-09",
+    "NL-INT-10",
+    "NL-INT-11",
+    "NL-INT-13",
+    "NL-INT-14"
+  ],
+  "springReactionX": -1,
+  "springEnergy": 0.000050045,
+  "settlementReaction": 4.99998809526644,
+  "releasedMomentMaximum": 4.440892098500626e-16,
+  "stationClosureRelative": 0,
+  "storyCount": 1,
+  "selfWeightLoadCount": 1
+}
+
+

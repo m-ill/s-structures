@@ -1,26 +1,33 @@
 # Phase 20 실제 진행 상태
 
 ```yaml
-version: p20-status-v1
+version: p20-status-v2
 updated: 2026-09-08
-status: m5-validation-in-progress
-planning_source_commit: 81f6825
+status: completed-development-preview
+planning_source_commit: 131a2b3
 prior_runtime_commit: 07b3e93
-implemented_milestones: [M0, M1, M2, M3, M4]
-phase20_test_runs: 4
-phase20_release_status: not-built
+validated_runtime_commit: 810abc06fe9be38eb7bb10f1ba590cbcb87f36be
+implemented_milestones: [M0, M1, M2, M3, M4, M5]
+phase20_test_runs: 6
+phase20_release_status: prerelease-published
+production_qualification: unchanged-not-qualified
 ```
 
-| 단계 | 상태 | 다음 산출물 |
+| 단계 | 상태 | 실제 결과 |
 | --- | --- | --- |
-| 개발 문서 | 작성 완료 | 현재 계획 v1, 구현 결과 아님 |
-| M0 기준선·계약 | 완료 | 소비자 59건·공개 API·7개 기준 결과·106개 회귀 출발 목록 고정 |
-| M1 버전·표시 | 완료 | 567ee25 clean 집중 회귀 3/3 PASS |
-| M2 결과 준비 | 완료 | c8edd71 clean 집중 회귀 7/7 PASS |
-| M3 탄성 조정 | 완료 | bc664fb clean 집중 회귀 7/7 PASS |
-| M4 호환 경로 | 완료 | 44582e8 clean 집중 회귀 5/5 PASS, 호환/정책 22개 등록 |
-| M5 통합·패키징 | 진행 중 | 111개 후보 회귀·성능/RSS·브라우저·CI·패키징 |
+| M0 기준선·계약 | 완료 | 131a2b3 기준 소비자59건·공개 API·7개 수치 fixture 고정 |
+| M1 버전·표시 | 완료 | 567ee25 집중3/3, 버전상수59개 및 표시 owner 이행 |
+| M2 결과 준비 | 완료 | c8edd71 집중7/7, builder 분리·32개/16 MiB snapshot 상한 |
+| M3 탄성 조정 | 완료 | bc664fb 집중7/7, 동기 façade·canonical stages·제품 조정 분리 |
+| M4 호환 경로 | 완료 | 44582e8 집중5/5, 호환/현역 정책22개와 공개 bridge1개 등록 |
+| M5 통합·패키징 | 완료 | 810abc0 로컬112/112·Windows CI112/112·Ubuntu CI112/112, native WebMCP·성능·새 설치·원격 ZIP hash 검증 |
 
-Phase 19의 95/95 PASS와 최적화 측정은 [이전 증거](../../verification/evidence/phase19/review-20260908/README.md)에 속한다. Phase20 M1~M4는 각 고정 후보의 집중 검증이며 최종 후보 전체 합격은 M5에서 별도로 판정한다. Phase19의 생산 자격 잔여 항목은 그대로 유지한다. 실제 이행·실패 수정 기록은 [실행 기록](EXECUTION_LOG.md)에 있다.
+최종 후보는 `810abc0`다. 후속 문서·증거 커밋은 런타임 검증 소스를 바꾸지 않는다. R1 `f1e56fe`의 111/111과 브라우저 발견·성능은 이전 실행으로 보존하며 최종 합격에 합산하지 않는다.
 
-구현 시작 시 M0에서 계획 기준 commit과 실제 작업 트리의 차이를 확인한다. 단계가 끝날 때 실제 source commit·고정 manifest·실행 환경·결과·실패/예외·증거 링크를 이 문서에 기록한다. 계획된 gate와 실제 통과 결과를 구분한다.
+- [구현 결과·API·gate·한계](IMPLEMENTATION_REVIEW.md)
+- [단계별 실행·실패·수정 이력](EXECUTION_LOG.md)
+- [최종 증거와 이전 R1](../../verification/evidence/phase20/m5/README.md)
+- [최종 후보 CI](https://github.com/m-ill/s-structures/actions/runs/34177589220)
+- [개발 프리뷰: 소스·실행·검증 ZIP](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)
+
+main/Pages는 변경하지 않았다. 비선형 candidate·최종 설계전달 차단, 자동 PDF의 호스트/figure/qualification gate, 외부2·pilot5·M-tier·재시작 복원·생산 자격은 별도 조건이다. 브라우저 실행 중 취소는 자동 회귀에서 검증했으며 이번 실제 브라우저에서는 별도 타이밍 시험을 하지 않았다.

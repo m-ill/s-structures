@@ -1,0 +1,32 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-UI-06",
+    "NL-UI-07",
+    "NL-UI-08",
+    "NL-UI-09",
+    "NL-UI-10",
+    "NL-UI-13",
+    "NL-UI-14",
+    "NL-API-06",
+    "NL-API-07"
+  ],
+  "rawRows": 240,
+  "plottedPoints": 90,
+  "extrema": {
+    "minimum": {
+      "index": 225,
+      "x": 4.5,
+      "y": -1.4493931434732128
+    },
+    "maximum": {
+      "index": 184,
+      "x": 3.68,
+      "y": 1.367809718254322
+    }
+  },
+  "csvHash": "1b37c4522be37f4056c7edde4a665a4ab57cd73ac594aae4596f7d9439bb148c",
+  "reportHash": "d72571895a098a80a45d6259"
+}
+
+

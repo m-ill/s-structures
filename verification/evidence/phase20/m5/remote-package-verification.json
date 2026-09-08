@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "url": "https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908",
+  "source": {
+    "commit": "810abc06fe9be38eb7bb10f1ba590cbcb87f36be",
+    "tree": "21a7c66651a58d7b2c0451d2afe36354b5bcb2db",
+    "trackedChanges": ""
+  },
+  "archives": [
+    {
+      "file": "s-structures-source.zip",
+      "bytes": 7563053,
+      "sha256": "528b43ea9743f0e4025fea0a3096e3f2eb6f955d2c2d4dcd566ed7bf1b1c70e4",
+      "fileCount": 2848
+    },
+    {
+      "file": "s-structures-runtime.zip",
+      "bytes": 2034782,
+      "sha256": "82c39eb6b4d779f32c72c2daf04361858c0b29e479b23170ec97a10350488438",
+      "fileCount": 741
+    },
+    {
+      "file": "s-structures-evidence.zip",
+      "bytes": 473477,
+      "sha256": "dcf31dc147ee094d9001c634565fabe37fb7c981411b6973d23e5167fab56fef",
+      "fileCount": 488
+    }
+  ],
+  "method": "Downloaded the published assets and recomputed SHA-256; all exact."
+}

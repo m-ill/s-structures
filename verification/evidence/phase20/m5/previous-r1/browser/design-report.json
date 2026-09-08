@@ -1,0 +1,557 @@
+{
+  "schemaVersion": "p11-report-snapshot-v1",
+  "project": {
+    "id": null,
+    "modelSchemaVersion": 6
+  },
+  "sourceBinding": {
+    "modelDomainHash": "c264d34ef0444f20ece35699",
+    "resultHash": "9dbe0e9b5749f04a3d5fcc3f5621286b818cf9d4f7e9ba657fb225b3ca68ea3b"
+  },
+  "model": {
+    "nodeCount": 2,
+    "memberCount": 1,
+    "shellCount": 0,
+    "loadCount": 1,
+    "loadCaseCount": 2,
+    "combinationCount": 1,
+    "storyCount": 1,
+    "domainHashes": {
+      "version": "p18-analysis-domain-hashes-v4-elastic-link",
+      "topologyHash": "6b098330372dd6edb9e7f93b",
+      "propertyHash": "b2cd9890a07e096fd8696001",
+      "constraintHash": "6e369e447ddaca2599c73710",
+      "loadHash": "ca7918b59d04353a5e67c0b3",
+      "massHash": "e4299959d8be00b433762454",
+      "nonlinearHash": "67faf1120221b31a55a8122b",
+      "outputHash": "0dc0d4a129878b23ace3c9ec",
+      "domainHash": "c264d34ef0444f20ece35699"
+    }
+  },
+  "analysis": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "failedCombinationCount": 0,
+    "combinationCount": 1,
+    "maxDisplacement": null,
+    "maxUtilization": 0.45518664511358836,
+    "maxEquilibriumResidual": null,
+    "governing": {
+      "memberId": "C",
+      "checkId": "steel-slenderness",
+      "comboId": "GRAV",
+      "ratio": 0.45518664511358836,
+      "status": "OK"
+    },
+    "combinations": [
+      {
+        "id": "GRAV",
+        "ok": true,
+        "dmax": 0.00001564145611528796,
+        "maxRatio": 0.45518664511358836,
+        "equilibriumResidual": null
+      }
+    ]
+  },
+  "report": {
+    "calculationPackageVersion": null,
+    "detailedReportVersion": null,
+    "qualityAudit": {
+      "ok": false,
+      "itemStatuses": []
+    },
+    "analysisRunCount": 1
+  },
+  "provenance": {
+    "sourceRevision": null,
+    "buildId": null,
+    "analysisRunIds": [
+      "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2"
+    ]
+  },
+  "validation": {
+    "independentReference": {
+      "status": "not-available",
+      "referenceId": null,
+      "evidenceHash": null
+    },
+    "phase10Eligibility": {
+      "eligible": false,
+      "status": "not-verified",
+      "reasonCodes": []
+    }
+  },
+  "limitationCodes": [
+    "INDEPENDENT_REFERENCE_NOT_AVAILABLE",
+    "ISSUE_SCOPE_LIMITED"
+  ],
+  "designReview": {
+    "version": "p19-m3-elastic-review-v1",
+    "designRunId": "design-1",
+    "inputIdentity": {
+      "inputIdentityVersion": "p19-input-v1",
+      "modelHash": "a4991e033f19a6ccc85dc9bea2c17d4ab1e8425a65f44fa4bc697db29c4a415d",
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "settingsHash": "2bd2e696d029c9d2659df6128b726e81fa5d9c10c05b7fe0fe5d26f84d7e8c0e",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "materialsHash": "41ec54689947eba9eb99914a70f8f50191c44cff7dd4ace72aa9cc48799054b2",
+      "sectionsHash": "8575457960cfc1024e519b343bd5fee06a3e4f3c112ddb4c8100f66890e6a1e9",
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "inputHash": "008b2cc68e822535529088a1039fca59a81ad16b03a90b18d6a3cfb58f5c3b90",
+      "buildBound": false,
+      "rulePackBound": false
+    },
+    "resultHash": "7d23d5cf5b13d08a938bc2cbd9e1755632cd72d1b832b9809350f8867cd677fe",
+    "sourceAnalysisRunIds": [
+      "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2"
+    ],
+    "units": {
+      "length": "m",
+      "force": "kN",
+      "moment": "kN.m",
+      "stress": "N/mm2",
+      "displacement": "mm"
+    },
+    "axes": "member-local",
+    "signConvention": "solver-native",
+    "checks": [
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-axial",
+        "status": "OK",
+        "ratio": 0.005829997279334603,
+        "demand": 5,
+        "capacity": 857.6333333333333,
+        "unit": "kN",
+        "expression": "max |N| / Pa",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-flexure-z",
+        "status": "OK",
+        "ratio": 0,
+        "demand": 0,
+        "capacity": 88.18333333333334,
+        "unit": "kN.m",
+        "expression": "max |Mz| / Maz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-flexure-y",
+        "status": "OK",
+        "ratio": 0,
+        "demand": 0,
+        "capacity": 12.411666666666669,
+        "unit": "kN.m",
+        "expression": "max |My| / May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-shear-y",
+        "status": "OK",
+        "ratio": 0,
+        "demand": 0,
+        "capacity": 330.103223910664,
+        "unit": "kN",
+        "expression": "max |Vy| / Vay",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-shear-z",
+        "status": "OK",
+        "ratio": 0,
+        "demand": 0,
+        "capacity": 330.103223910664,
+        "unit": "kN",
+        "expression": "max |Vz| / Vaz",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-interaction",
+        "status": "OK",
+        "ratio": 0.005829997279334603,
+        "demand": 0.005829997279334603,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "N/Pa + Mz/Maz + My/May",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-ltb-mcr",
+        "status": "OK",
+        "ratio": 0,
+        "demand": 0,
+        "capacity": 90.10983718996845,
+        "unit": "kN.m",
+        "expression": "C1*pi^2*E*Iz/(k*Lb)^2*sqrt((k/kw)^2*Cw/Iz+(k*Lb)^2*G*J/(pi^2*E*Iz))",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "OK",
+        "ratio": 0.45518664511358836,
+        "demand": 91.03732902271767,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-deflection",
+        "status": "OK",
+        "ratio": 0.0013034546762739966,
+        "demand": 0.00001564145611528796,
+        "capacity": 0.012,
+        "unit": "m",
+        "expression": "member deformation / (L / limit)",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "story-1",
+        "category": "serviceability",
+        "checkId": "story-drift",
+        "status": "OK",
+        "ratio": 0,
+        "demand": 0,
+        "capacity": 0.005,
+        "expression": "story drift / drift limit",
+        "unit": "-"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.02,
+        "demand": 5,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "B",
+        "category": "foundation",
+        "checkId": "required-bearing-area",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0.03333333333333333,
+        "capacity": null,
+        "expression": "required area = vertical reaction / assumed allowable bearing; actual footing area not checked",
+        "unit": "m2"
+      },
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "B",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "OK",
+        "ratio": 0,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      }
+    ],
+    "sources": [
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "caseId": "P20-BROWSER-STATIC",
+        "method": "off",
+        "maxDisplacement": 0.00001564145611528796,
+        "maxUtilization": 0.45518664511358836,
+        "governing": {
+          "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+          "comboId": "GRAV",
+          "memberId": "C",
+          "category": "steel",
+          "checkId": "steel-slenderness",
+          "status": "OK",
+          "ratio": 0.45518664511358836,
+          "demand": 91.03732902271767,
+          "capacity": 200,
+          "unit": "-",
+          "expression": "max(KL/ry, KL/rz) / limit",
+          "x": 0,
+          "method": "allowable_stress_preliminary"
+        },
+        "qualification": "candidate"
+      }
+    ],
+    "demandPackages": [
+      {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "package": {
+          "version": "p2-design-demand-package",
+          "source": {
+            "resultPostprocessing": "p2-m6-result-postprocessing",
+            "activeResultId": "ENVELOPE"
+          },
+          "members": {
+            "C": {
+              "traceId": "MEM-DEMAND-C",
+              "memberId": "C",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "GRAV",
+                "x": 0,
+                "value": -5
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": -5
+                },
+                "Vy": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": 0
+                },
+                "Vz": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": 0
+                },
+                "My": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": 0
+                },
+                "Mz": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": 0
+                }
+              }
+            }
+          },
+          "foundations": {
+            "B": {
+              "traceId": "FND-DEMAND-B",
+              "nodeId": "B",
+              "reactions": {
+                "rx": {
+                  "min": 0,
+                  "max": 0,
+                  "comboMin": "GRAV",
+                  "comboMax": "GRAV"
+                },
+                "ry": {
+                  "min": 0,
+                  "max": 0,
+                  "comboMin": "GRAV",
+                  "comboMax": "GRAV"
+                },
+                "rz": {
+                  "min": 5,
+                  "max": 5,
+                  "comboMin": "GRAV",
+                  "comboMax": "GRAV"
+                },
+                "rmx": {
+                  "min": 0,
+                  "max": 0,
+                  "comboMin": "GRAV",
+                  "comboMax": "GRAV"
+                },
+                "rmy": {
+                  "min": 0,
+                  "max": 0,
+                  "comboMin": "GRAV",
+                  "comboMax": "GRAV"
+                },
+                "rmz": {
+                  "min": 0,
+                  "max": 0,
+                  "comboMin": "GRAV",
+                  "comboMax": "GRAV"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "GRAV"
+            }
+          },
+          "summary": {
+            "memberCount": 1,
+            "foundationCount": 1,
+            "upliftNodeCount": 0,
+            "governingMemberDemand": {
+              "traceId": "MEM-DEMAND-C",
+              "memberId": "C",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "GRAV",
+                "x": 0,
+                "value": -5
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": -5
+                },
+                "Vy": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": 0
+                },
+                "Vz": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": 0
+                },
+                "My": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": 0
+                },
+                "Mz": {
+                  "comboId": "GRAV",
+                  "x": 0,
+                  "value": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "summary": {
+      "status": "NOT_CHECKED",
+      "counts": {
+        "OK": 12,
+        "WARN": 0,
+        "NG": 0,
+        "NOT_CHECKED": 1
+      },
+      "maxUtilization": 0.45518664511358836,
+      "governing": {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:28:58.264Z:2",
+        "comboId": "GRAV",
+        "memberId": "C",
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "status": "OK",
+        "ratio": 0.45518664511358836,
+        "demand": 91.03732902271767,
+        "capacity": 200,
+        "unit": "-",
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "x": 0,
+        "method": "allowable_stress_preliminary"
+      },
+      "checkCount": 13
+    },
+    "ruleSources": [
+      {
+        "module": "src/design/steel.js",
+        "method": "steel_allowable_preliminary + elastic LTB",
+        "status": "preliminary"
+      },
+      {
+        "module": "src/design/concrete.js",
+        "method": "rc_preliminary_strength",
+        "status": "preliminary"
+      },
+      {
+        "module": "src/design/serviceability.js",
+        "method": "story drift H/200 default",
+        "status": "project criterion required"
+      },
+      {
+        "module": "src/design/connectionFoundation.js",
+        "method": "force / bearing / sliding screening",
+        "status": "assumed capacities; preliminary"
+      }
+    ],
+    "limitations": [
+      "Final design transfer is blocked; computed OK is not engineering approval.",
+      "Only explicitly bound completed first-order/Direct P–Delta combinations are mapped. Legacy P–Delta is comparison-only and blocked. Modal, RSA, buckling, THA and nonlinear results are not mapped to member design demand.",
+      "Steel checks are preliminary allowable-stress screens, not a complete strength-code implementation. RC uses simplified section/rebar assumptions.",
+      "LTB, missing members, warnings and unchecked items retain their own status.",
+      "Connection bolt/weld/anchorage and foundation settlement, punching, reinforcement and soil qualification are NOT_CHECKED.",
+      "Selected combinations only; required code combination coverage is not certified."
+    ]
+  },
+  "reportSnapshotHash": "c2cdb3253978db05c3bda0674c1a1547c08bc1c5b8027b9749d73b868821dbf5",
+  "verdict": {
+    "version": "p11-report-verdict-v1",
+    "overall": "REVIEW",
+    "axes": {
+      "operational": {
+        "status": "PASS"
+      },
+      "numericalIntegrity": {
+        "status": "REVIEW"
+      },
+      "engineeringValidation": {
+        "status": "NOT_VERIFIED"
+      },
+      "issueSuitability": {
+        "status": "REVIEW"
+      }
+    },
+    "reasonCodes": [
+      "AUDIT_FAILED",
+      "ENGINEERING_VALIDATION_INCOMPLETE",
+      "INDEPENDENT_REFERENCE_NOT_AVAILABLE",
+      "ISSUE_SCOPE_LIMITED",
+      "OPERATIONAL_CHECKS_PASSED"
+    ]
+  }
+}

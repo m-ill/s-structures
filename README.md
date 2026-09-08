@@ -10,7 +10,7 @@ Phase 19 개발 후보: **WebMCP 36개 도구**로 탄성설계 입력→해석�
 
 2026-09-08 개발 브랜치 리뷰: 비선형 미분 검사 할당, WebMCP 종료 처리, 긴 Pushover 결과 페이지 조회를 개선했다. 고정 소스 회귀 95/95 PASS이며, 소형 8부재·32힌지 해석 중앙값은 21.65초 → 5.97초다. [측정 조건·수정 내용·남은 경계 위반](docs/phase19/CODE_REVIEW_OPTIMIZATION_20260908.md)을 참고한다. 기존 다운로드·Pages의 배포 상태와는 구분한다.
 
-다음 개발 계획은 [Phase 20 — 해석 모듈 경계 정리](docs/phase20/README.md)다. 버전·표시 의존성, 명시적 결과 준비, 탄성 실행 조정, trace/production 호환 경로를 M0~M5로 정리했으며 구현은 미착수다.
+[Phase20 M0~M5](docs/phase20/IMPLEMENTATION_REVIEW.md)를 완료했다. 최종 후보 `810abc0`은 로컬·Windows CI·Ubuntu CI 각각 **112/112 PASS**, 직접 경계 위반 **41→0**이며 공개 동기 API와7개 기준 탄성 결과를 유지한다. 결과 준비/조회와 trace/production 경계를 정리하고 기본 예제·JSON 가져오기·화면 전환의 입력 식별 문제도 수정했다. [Phase20 개발 프리뷰](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)에서 소스·실행·검증 ZIP을 받는다. 이 프리뷰는 기존 Pages/main 및 생산 자격과 구분한다.
 
 ## 주요 기능
 

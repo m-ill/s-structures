@@ -1,6 +1,8 @@
 # Phase 20 — 해석 모듈 경계 정리
 
-계획 v1 · 2026-09-08 · 상태: **계획 작성, 구현 미착수**
+2026-09-08 · 상태: **M0~M5 구현·검증 완료, 개발 프리뷰 게시**
+
+최종 후보 `810abc0`: 로컬·Windows CI·Ubuntu CI 각각112/112 PASS. [구현 결과와 한계](IMPLEMENTATION_REVIEW.md), [단계별 실행 기록](EXECUTION_LOG.md), [개발 프리뷰](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)를 함께 읽는다. 아래 목표/작업 문서는 계획의 기준선을 보존한다.
 
 탄성 정적·P–Delta·동적·비선형 해석의 기존 기능 분리를 유지하면서, 버전 정보·결과 준비·실행 조정·호환 경로의 책임을 정리한다. 사용자가 요청한 네 가지 개선을 이 페이즈의 개발 범위로 삼는다.
 

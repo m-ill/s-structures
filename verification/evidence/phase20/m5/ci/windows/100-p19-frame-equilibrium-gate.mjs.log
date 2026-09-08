@@ -1,0 +1,43 @@
+{
+  "version": "p19-frame-equilibrium-gate-v1",
+  "ok": true,
+  "engine": {
+    "id": "p8-production-mdof-pushover",
+    "version": "p8-m7-mdof-gravity-load-displacement-arc-pushover-v3-p14-m10",
+    "formulation": {
+      "geometry": "objective-corotational-3d",
+      "material": "state-dependent-concentrated-or-distributed-fiber-plasticity",
+      "equilibrium": "current-step-mdof-consistent-tangent",
+      "control": "augmented-displacement-with-optional-crisfield-arc-length-continuation",
+      "gravity": "nonlinear-load-control-predecessor"
+    }
+  },
+  "reason": "TARGET_REACHED",
+  "cause": null,
+  "equilibrium": null,
+  "acceptedAudits": [
+    {
+      "ok": true,
+      "forceResidual": 3.683400163051771e-19,
+      "momentResidual": 1.9737298215558347e-16,
+      "tolerance": 1e-7
+    },
+    {
+      "ok": true,
+      "forceResidual": 1.4802973661668758e-16,
+      "momentResidual": 1.8429950355882298e-16,
+      "tolerance": 1e-7
+    },
+    {
+      "ok": true,
+      "forceResidual": 1.480297366166876e-16,
+      "momentResidual": 1.7285032770014723e-16,
+      "tolerance": 1e-7
+    }
+  ],
+  "qualification": "not-qualified",
+  "input": "verification/fixtures/phase19/eight-member-hinged-frame.json",
+  "raw": "output/phase19/frame-equilibrium-gate.json"
+}
+
+

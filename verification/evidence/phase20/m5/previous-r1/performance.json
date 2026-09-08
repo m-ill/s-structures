@@ -1,0 +1,55 @@
+{
+  "scope": "Phase20 small-frame regression budget; not M-tier qualification",
+  "roots": [
+    "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\review-20260907\\regression-r2\\checkout",
+    "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\phase20\\m5-r1\\checkout"
+  ],
+  "source": [
+    {
+      "commit": "07b3e9353bc579682d54d8e46bb7df2116a4532e",
+      "tree": "3b06a566f16fa99a4addd1a0269bfbf139c137e5",
+      "trackedChanges": ""
+    },
+    {
+      "commit": "f1e56fe82d587e8ab294d325b7f3121de174ab6d",
+      "tree": "22d01e0126cacd19d98d6ed8c4870ed11ace3faf",
+      "trackedChanges": ""
+    }
+  ],
+  "node": "v24.16.0",
+  "cpu": "13th Gen Intel(R) Core(TM) i7-13700KF",
+  "baselineMs": [
+    5865.7786000000015,
+    6081.5734,
+    5937.6338
+  ],
+  "candidateMs": [
+    5840.8423,
+    5769.8356,
+    5905.6242
+  ],
+  "baselineRssKiB": [
+    257572,
+    305684,
+    307820
+  ],
+  "candidateRssKiB": [
+    279492,
+    289080,
+    307400
+  ],
+  "baselineMedianMs": 5937.6338,
+  "candidateMedianMs": 5840.8423,
+  "timeRatio": 0.9836986410310452,
+  "rssRatio": 0.9986355662400104,
+  "spread": [
+    0.0363435683756716,
+    0.023248119539197257
+  ],
+  "limits": {
+    "timeRatio": 1.1,
+    "rssRatio": 1.1
+  },
+  "exactResponseParity": true,
+  "ok": true
+}
