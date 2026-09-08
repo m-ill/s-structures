@@ -1,7 +1,9 @@
+import { PMM_INTERACTION_CACHE_VERSION } from '../../metadata/numericVersions.js';
+export { PMM_INTERACTION_CACHE_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import { validatePmmSurface } from './pmmSurface.js';
 
-export const PMM_INTERACTION_CACHE_VERSION = 'p8-m6.1-pmm-interaction-cache-v2';
+
 export const PMM_INTERACTION_CACHE_DB = 's-structures-fiber-pmm-cache-v2';
 
 export function createPmmInteractionCache(options = {}) {

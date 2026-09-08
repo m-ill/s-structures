@@ -78,7 +78,7 @@ assert.ok(selectionEvents.length >= 2);
 const blocked = bridge.canTransferAnalysisResultToDesign({ runRecordId: first.runRecordId });
 assert.equal(blocked.allowed, false);
 assert.equal(blocked.code, 'ANALYSIS_RESULT_NOT_VERIFIED');
-const blockedPackage = bridge.getDesignDemandPackage({ runRecordId: first.runRecordId });
+const blockedPackage = bridge.prepareResultView('getDesignDemandPackage', { runRecordId: first.runRecordId });
 assert.equal(blockedPackage.ok, false);
 assert.equal(blockedPackage.demandPackage, null);
 
@@ -150,7 +150,8 @@ else model.meta.name = originalName;
 assert.equal(bridge.canTransferAnalysisResultToDesign({ runRecordId: verified.record.id }).allowed, true);
 
 const fiberSection = { width: 0.3, depth: 0.5, strips: 8 };
-const calculationPackage = bridge.getCalculationPackage({
+bridge.analyzeModel(model);
+const calculationPackage = bridge.prepareResultView('getCalculationPackage', {
   generatedAt: '2026-07-10T02:00:00.000Z',
   phase3: { nonlinear: { fiberSection } },
   nonlinear: { fiberSection },

@@ -1,5 +1,5 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
-import { analyzeAll } from '../solver/linear3d.js';
+import { analyzeAll } from '../solver/linear3dFirstOrder.js';
 import {
   LEGACY_PUSHOVER_ENGINE_ID,
   qualifyLegacyNonlinearResult,

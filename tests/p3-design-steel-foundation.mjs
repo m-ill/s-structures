@@ -324,7 +324,7 @@ assert.ok(mismatchedExternalIssueGate.designReview.missing.includes('issue-formu
 
 const target = { model: () => frame, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => frameAnalysis });
-const agentReport = agent.getP3DetailedDesignReport();
+const agentReport = agent.prepareResultView('getP3DetailedDesignReport');
 assert.equal(agentReport.version, P3_DETAILED_DESIGN_REPORT_VERSION);
 assert.ok(agentReport.modules.connection.rows.length > 0);
 

@@ -1,0 +1,424 @@
+{
+  "version": "p20-module-compatibility-v1",
+  "modules": [
+    {
+      "file": "src/compute/compatibility/syncFacade.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "c665a747b23ccda0c37a811914b8dae5d1796073da9f03c3abe2addfe4c32915",
+      "allowedCallers": [
+        "src/compute/governance/phase9M1.js",
+        "src/compute/index.js",
+        "tests/p9-m1-adapters-architecture.mjs"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": true,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/compute/governance/compatibilityRegistry.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "f11922de68e7ce4d23f52866c298974732a017451c202adf829bdb12c06a7d39",
+      "allowedCallers": [
+        "tests/p9-m10-cleanup-audit.mjs"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": true,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/compute/product/legacyUiCompatibility.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "eeb4647dbf63c514cb8d30a9ee8ca1fde55c2c206ecd431ef1bc4dd988ca2dd9",
+      "allowedCallers": [
+        "src/ui/agentManifest.js",
+        "src/ui/indexAgentApi.js",
+        "src/ui/indexBridge.js",
+        "src/ui/m3State.js"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": true,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/nonlinear/equilibrium/backends/wasmSparseBackend.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "9d67c4677ce3f1b8d2966cfa02617a9b02cfc98bf85fa3950cb33dd901e75178",
+      "allowedCallers": [
+        "tests/p19-m6-sh1-sparse-path.mjs",
+        "tests/p8-m2-equilibrium.mjs",
+        "tests/p8-m2-wasm-backend.mjs",
+        "tests/p8-m3-corotational-global.mjs"
+      ],
+      "replacement": "src/compute/backends/wasmCpuBackend.js",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/nonlinear/equilibrium/typedSparse.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "94d92ba781bfd84b104f32e5a0dfda006cf1bbe9dced90e2b3f8c430fdd9f8c4",
+      "allowedCallers": [
+        "tests/p8-m2-assembly-primitives.mjs"
+      ],
+      "replacement": "src/compute/sparse/reducedAssembly.js",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/nonlinear/legacy/contract.js",
+      "role": "legacy-qualification-policy",
+      "owner": "product-analysis-service",
+      "reason": "Preserves explicit legacy identity and forbids design transfer.",
+      "sourceHash": "2f1dce9a25b554d58a14c15fe2af67955338fb4b604c9bd674c9029265f3fed5",
+      "allowedCallers": [
+        "src/index.js",
+        "src/nonlinear/dynamics/newmark.js",
+        "src/nonlinear/pushover.js",
+        "src/nonlinear/pushoverFormal.js"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "Active canonical policy: no deletion without equivalent contract and consumer migration.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/nonlinear/legacy/preliminaryPushover.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "441f2461224746e647c086294662d25484ec0815e6e52f752088d637a9ef2cf2",
+      "allowedCallers": [
+        "src/index.js",
+        "src/nonlinear/analysisRouter.js"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/nonlinear/legacy/sdofNewmarkTrace.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "5a8271e936b0a39aec953f3dcec4801920690b89de145ae9e10385542af9eb3e",
+      "allowedCallers": [
+        "src/index.js",
+        "src/nonlinear/analysisRouter.js"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/solver/domain/compatibility.js",
+      "role": "canonical-domain-contract",
+      "owner": "analysis-domain",
+      "reason": "Domain adapter identity is active production logic, not a removable facade.",
+      "sourceHash": "965a692bd01cd8093d2fe37bda54101119fe2752e9e1bd7d50ff60c3c3f45f4a",
+      "allowedCallers": [
+        "src/dynamics/modal.js",
+        "src/nonlinear/integration/governance.js",
+        "src/solver/domain/index.js",
+        "src/solver/pdelta/analysisDomain.js"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "Active canonical policy: no deletion without equivalent contract and consumer migration.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/solver/linear3d.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "1015d76f586ee9f85f47a6cd38650e6ffbb5ce30c02b3440e87e023421b9b6be",
+      "allowedCallers": [
+        "src/index.js",
+        "tests/browser/p9-m5-webgpu-runner.js",
+        "tests/p10-m1-solver-safety.mjs",
+        "tests/p10-m1-topology-pdelta-safety.mjs",
+        "tests/p10-m2-compute-domain-contract.mjs",
+        "tests/p10-m4-offsets-panelzone.mjs",
+        "tests/p15-m5-winkler-recovery.mjs",
+        "tests/p20-m3-elastic-parity.mjs",
+        "tests/p7-m10-buckling-tha-integrity.mjs",
+        "tests/p7-m7-mixed-combo-audit.mjs",
+        "tests/p7-m8-beam-column-stability.mjs",
+        "tests/p7-m8-direct-parity.mjs",
+        "tests/p7-m8-routing-combo.mjs",
+        "tests/p7-m8-settlement-load-setup.mjs",
+        "tests/p8-m2-linear-parity.mjs",
+        "tests/p8-m3-corotational-global.mjs",
+        "tests/p8-m5-production-pushover.mjs",
+        "tests/p9-m1-adapters-architecture.mjs",
+        "tests/p9-m3-elastic-runtime.mjs",
+        "tests/p9-m5-elastic-hybrid.mjs",
+        "tests/p9-m5-pdelta-hybrid.mjs",
+        "verification/framework/benchmarks/strix21FirstBatch.js",
+        "verification/framework/matrix/assemblyCases.js",
+        "verification/framework/matrix/elementCases.js",
+        "verification/framework/matrix/stabilityCases.js",
+        "verification/framework/xval/cases.js",
+        "verification/framework/xval/pathologicalBattery.js"
+      ],
+      "replacement": "src/compute/product/elasticAnalysisWorkflow.js",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/solver/sparse/cscMatrix.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "2cf2c5b90df0d28f3df2913bf2549526861f75acacd0889fd6b13887ffefefe1",
+      "allowedCallers": [
+        "src/index.js",
+        "tests/p7-m10-sparse-integrity.mjs"
+      ],
+      "replacement": "src/compute/sparse/matrix.js",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/solver/sparse/ldlt.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "af815ab0362c78a25d17561bc28cceee277064e3acbcd10eeab89a78bc5178d6",
+      "allowedCallers": [
+        "src/index.js"
+      ],
+      "replacement": "src/compute/sparse/ldlt.js",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/solver/sparse/symbolicFactor.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "b3970b720a53a74049a4b5ebcb160bb81ccb3049e0b4abeec3eb9863f275ed18",
+      "allowedCallers": [
+        "src/index.js"
+      ],
+      "replacement": "src/compute/sparse/symbolic.js",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/ui/indexResultCompatibility.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "80df3782dc5da365b4dbcf4db11dc22529d164b24c9b7c0ca64580ca986e1b19",
+      "allowedCallers": [
+        "src/ui/indexAgentApi.js",
+        "src/ui/indexBridge.js"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "verification/framework/nonlinearBenchmarks.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "f497a116744c166ec5550282b89bab19771af565ae0c385993fc8cfa86880a6d",
+      "allowedCallers": [
+        "tests/p15-m8-nonlinear-qualification-boundary.mjs",
+        "verification/framework/matrix/stabilityCases.js"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/solver/shell/equivalentScope.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "6818fcde38cf3b5814cc0bb99225c604e6976543ea204c64f3105913b4ff9994",
+      "allowedCallers": [
+        "src/index.js",
+        "src/solver/shell/quad4.js",
+        "src/solver/shell/shellAssembly.js",
+        "src/solver/wallSlabEquivalent.js",
+        "tests/p20-m1-metadata.mjs"
+      ],
+      "replacement": "src/results/equivalentShellScope.js",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/solver/shell/phase13ShellLab.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "94c753be034a3c484b6b2e836fe2f31c04726d900ad53318249ef7ae3cdac11b",
+      "allowedCallers": [
+        "src/index.js",
+        "tests/p13-m8-shell-lab.mjs"
+      ],
+      "replacement": "src/compute/product/shellLab.js",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/ui/resultViewCache.js",
+      "role": "public-compatibility",
+      "owner": "product-analysis-service",
+      "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
+      "sourceHash": "6f2f7973f21953cc5790ebee9287e7eaf3c218c9192dcc0524b1bf1600faf084",
+      "allowedCallers": [
+        "src/ui/indexAgentApi.js",
+        "src/ui/indexBridge.js",
+        "tests/p19-m1-contract.mjs",
+        "tests/p19-m1-product-parity.mjs"
+      ],
+      "replacement": "src/compute/product/preparedResultViews.js",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/nonlinear/analysisRouter.js",
+      "role": "explicit-engine-router",
+      "owner": "product-analysis-service",
+      "reason": "Legacy adapters are explicitly selectable; production roots do not depend on legacy/control code.",
+      "sourceHash": "29331dc38f02b4d5d82fe0cce71c20ef400cea2f1b314c91528589a086af6f79",
+      "allowedCallers": [
+        "src/compute/product/analysisCaseEngine.js",
+        "src/index.js",
+        "src/nonlinear/product/jobManager.js",
+        "src/ui/agentManifest.js",
+        "tests/p20-m4-module-boundaries.mjs",
+        "tests/p8-m8-production-nlth.mjs",
+        "verification/harnesses/p19-frame-equilibrium-gate.mjs"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "Active canonical policy: no deletion without equivalent contract and consumer migration.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/solver/sparse/solveSparse.js",
+      "role": "active-solve-policy",
+      "owner": "product-analysis-service",
+      "reason": "CG/LDLT selection and diagnostics remain active; only reexport facades are bypassed.",
+      "sourceHash": "076763ee9d40228ee956319fa8f5f959b108af7e17a33afdc9af56cf983be5a9",
+      "allowedCallers": [
+        "src/index.js",
+        "src/nonlinear/equilibrium/referenceBackends.js",
+        "src/solver/linear3dElement.js",
+        "tests/p7-m10-sparse-integrity.mjs"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "Active canonical policy: no deletion without equivalent contract and consumer migration.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/report/detailedReport.js",
+      "role": "explicit-preparation-public-api",
+      "owner": "result-preparation",
+      "reason": "Public builder may prepare calculations; renderer consumes data only.",
+      "sourceHash": "95b6efde4c77db0ba4c4828a8cd815d678221fdd57c83fd45569170a2429cb7e",
+      "allowedCallers": [
+        "src/compute/product/resultPreparationBuilders.js",
+        "src/index.js",
+        "src/ui/agentManifest.js"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "Active canonical policy: no deletion without equivalent contract and consumer migration.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    },
+    {
+      "file": "src/report/calculationPackage.js",
+      "role": "explicit-preparation-public-api",
+      "owner": "result-preparation",
+      "reason": "Public builder may prepare calculations; renderer consumes data only.",
+      "sourceHash": "c4e6438de0ab5d6208fd09f39d263f2985e1d46dcd1da1e061c723d95887df19",
+      "allowedCallers": [
+        "src/compute/product/resultPreparationBuilders.js",
+        "src/diagnostics/stabilizationHarness.js",
+        "src/index.js",
+        "src/ui/agentManifest.js"
+      ],
+      "replacement": "Retain canonical contract; new product callers use versioned product services.",
+      "reviewAt": "P20-M4",
+      "nextReview": "Next consumer/API change or breaking release",
+      "removalGate": "Active canonical policy: no deletion without equivalent contract and consumer migration.",
+      "historicalPolicyPreserved": false,
+      "qualification": "unchanged"
+    }
+  ]
+}

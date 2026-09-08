@@ -1,8 +1,10 @@
+import { WASM_SPARSE_DIAGNOSTICS_VERSION } from '../../metadata/numericVersions.js';
+export { WASM_SPARSE_DIAGNOSTICS_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import { symbolicFactor } from '../sparse/symbolic.js';
 
 export const WASM_SPARSE_BACKEND_ID = 'p8-wasm-sparse-v1';
-export const WASM_SPARSE_DIAGNOSTICS_VERSION = 'p8-wasm-sparse-diagnostics-v1';
+
 
 const DEFAULT_PIVOT_TOLERANCE = 1e-12;
 const DEFAULT_RELATIVE_TOLERANCE = 1e-10;

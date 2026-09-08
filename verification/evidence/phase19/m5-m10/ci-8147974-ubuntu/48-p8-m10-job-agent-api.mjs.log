@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-UI-05",
+    "NL-API-03",
+    "NL-API-04",
+    "NL-API-05",
+    "NL-API-09",
+    "NL-API-10"
+  ],
+  "completedJob": "NLJOB-20260907142916-0001",
+  "deterministicJob": "NLJOB-20260907142916-0002",
+  "progressEventCount": 10,
+  "stale": true,
+  "resumedJob": "NLJOB-20260907142916-0002",
+  "resumePolicy": "checkpoint",
+  "cancelledCheckpoint": "CANCEL-CHECKPOINT",
+  "agentSettingsHash": "04392ecf265b3e0f15a96d3a"
+}
+
+

@@ -228,7 +228,7 @@ assert.equal(incompleteGate.summary.readyForAgentReview, false);
 assert.ok(incompleteGate.solverReview.missing.includes('tangent-assembly'));
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => null });
-const apiTrace = agent.getNonlinearAnalysisTrace();
+const apiTrace = agent.prepareResultView('getNonlinearAnalysisTrace');
 assert.equal(apiTrace.version, NONLINEAR_TRACE_VERSION);
 assert.equal(apiTrace.benchmarks.geometry.version, NONLINEAR_BENCHMARK_VERSION);
 assert.equal(apiTrace.geometryGate.milestone, 'P3-M14');

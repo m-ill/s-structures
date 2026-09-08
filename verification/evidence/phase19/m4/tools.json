@@ -1,0 +1,1825 @@
+[
+  {
+    "name": "get_project_context",
+    "description": "Read model units, input hash, case IDs and supported analysis capabilities. Does not run analysis.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "inspect_model",
+    "description": "Read current Model Check issues, without running a solver or repairing the model.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "select_entities",
+    "description": "Highlight one existing node or member in the shared view. Changes selection only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "enum": [
+            "node",
+            "member"
+          ]
+        },
+        "entityId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "entityType",
+        "entityId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  },
+  {
+    "name": "validate_analysis",
+    "description": "Validate an existing case and compute route for the current model hash. Does not start a job.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "modelHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "computeTarget": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "cpu",
+            "gpu"
+          ]
+        }
+      },
+      "required": [
+        "caseId",
+        "modelHash"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "plan_analysis",
+    "description": "Plan an existing analysis case. Review route, qualification and blocking conditions before starting.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "modelHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "computeTarget": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "cpu",
+            "gpu"
+          ]
+        }
+      },
+      "required": [
+        "caseId",
+        "modelHash"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "start_analysis",
+    "description": "Start analysis of the current existing case and publish its results to the UI. Returns a job ID. Reuse requestId to avoid duplicate execution.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "modelHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "computeTarget": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "cpu",
+            "gpu"
+          ]
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "caseId",
+        "modelHash",
+        "requestId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  },
+  {
+    "name": "get_analysis_status",
+    "description": "Read execution status, errors, provenance and whether the model changed since this job started.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "jobId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "get_result_slice",
+    "description": "Read a bounded path from an existing completed job. Default is summary. Preserves qualification and flags stale results; does not rerun analysis.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 180,
+          "pattern": "^(summary|payload)(\\.[A-Za-z0-9_-]+)*$"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "jobId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "cancel_analysis",
+    "description": "Request cancellation of one analysis job started by this page session. Completed results are retained.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "jobId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  },
+  {
+    "name": "get_workflow_context",
+    "description": "Read current input identity, supported workflow and completed analysis records; never runs a solver.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "get_design_context",
+    "description": "Read a paginated typed model channel and missing input categories without solving.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "channel": {
+          "type": "string",
+          "enum": [
+            "nodes",
+            "members",
+            "loadCases",
+            "loadCombinations",
+            "analysisCases",
+            "materials",
+            "sections",
+            "massSources"
+          ]
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "channel"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "preview_design_changes",
+    "description": "Preview bounded typed design changes using M2. Does not apply changes or solve.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "inputHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "design-basis"
+                    ]
+                  },
+                  "patch": {
+                    "type": "object",
+                    "properties": {
+                      "floorArea": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "roofArea": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "deadLoad": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "liveLoad": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "roofLiveLoad": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "windPressureX": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "windPressureY": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "seismicCoefficientX": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "seismicCoefficientY": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "seismicLiveLoadFactor": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "accidentalEccentricityRatio": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "occupancy": {
+                        "type": "string",
+                        "enum": [
+                          "office",
+                          "residential",
+                          "school",
+                          "hospital",
+                          "parking",
+                          "warehouse"
+                        ]
+                      },
+                      "designMethod": {
+                        "type": "string",
+                        "enum": [
+                          "strength",
+                          "allowable"
+                        ]
+                      }
+                    },
+                    "required": [],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "type",
+                  "patch"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "generate-loads"
+                    ]
+                  }
+                },
+                "required": [
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "node-mass"
+                    ]
+                  },
+                  "nodeIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "minItems": 1,
+                    "maxItems": 100
+                  },
+                  "mass": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1000000000000
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "kN.s2/m"
+                    ]
+                  }
+                },
+                "required": [
+                  "type",
+                  "nodeIds",
+                  "mass",
+                  "unit"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "mass-source"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "entries": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "case": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "factor": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1000000000000
+                        }
+                      },
+                      "required": [
+                        "case",
+                        "factor"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1,
+                    "maxItems": 100
+                  },
+                  "includeNodeMass": {
+                    "type": "boolean"
+                  },
+                  "includeMemberMass": {
+                    "type": "boolean"
+                  },
+                  "includeSelfWeight": {
+                    "type": "boolean"
+                  },
+                  "gravity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1000000000000
+                  },
+                  "activate": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "type",
+                  "id",
+                  "entries"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "load-case"
+                    ]
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "create",
+                      "update"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "loadType": {
+                    "type": "string",
+                    "enum": [
+                      "dead",
+                      "live",
+                      "roofLive",
+                      "wind",
+                      "seismic",
+                      "snow",
+                      "rain",
+                      "temperature",
+                      "other"
+                    ]
+                  }
+                },
+                "required": [
+                  "type",
+                  "mode",
+                  "id",
+                  "name",
+                  "loadType"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "load"
+                    ]
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "create",
+                      "update"
+                    ]
+                  },
+                  "value": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "nodal",
+                          "udl",
+                          "nmoment",
+                          "mmoment"
+                        ]
+                      },
+                      "node": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "member": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "P": {
+                        "type": "number",
+                        "minimum": -1000000000000,
+                        "maximum": 1000000000000
+                      },
+                      "w": {
+                        "type": "number",
+                        "minimum": -1000000000000,
+                        "maximum": 1000000000000
+                      },
+                      "M": {
+                        "type": "number",
+                        "minimum": -1000000000000,
+                        "maximum": 1000000000000
+                      },
+                      "at": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "dir": {
+                        "type": "string",
+                        "enum": [
+                          "+x",
+                          "-x",
+                          "+y",
+                          "-y",
+                          "+z",
+                          "-z"
+                        ]
+                      },
+                      "case": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "kN",
+                          "kN/m",
+                          "kN.m"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "dir",
+                      "case",
+                      "unit"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "type",
+                  "mode",
+                  "value"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "combination"
+                    ]
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "create",
+                      "update"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "enum": [
+                      "strength",
+                      "service"
+                    ]
+                  },
+                  "factors": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": {
+                      "type": "number",
+                      "minimum": -1000000000000,
+                      "maximum": 1000000000000
+                    },
+                    "maxProperties": 100
+                  }
+                },
+                "required": [
+                  "type",
+                  "mode",
+                  "id",
+                  "name",
+                  "purpose",
+                  "factors"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "generate-combinations"
+                    ]
+                  },
+                  "rulePackId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "strength",
+                      "allowable"
+                    ]
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "enum": [
+                      "strength",
+                      "service"
+                    ]
+                  }
+                },
+                "required": [
+                  "type",
+                  "rulePackId",
+                  "method"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "member-assignment"
+                    ]
+                  },
+                  "memberIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "minItems": 1,
+                    "maxItems": 100
+                  },
+                  "matId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "secId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  }
+                },
+                "required": [
+                  "type",
+                  "memberIds"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "member-design"
+                    ]
+                  },
+                  "memberIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "minItems": 1,
+                    "maxItems": 100
+                  },
+                  "patch": {
+                    "type": "object",
+                    "properties": {
+                      "Ky": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "Kz": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "Lb": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "LbZ": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "unbracedLength": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "Cb": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "C1": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "ltbK": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "deflectionLimitTotal": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "compressionSlendernessLimit": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "cover": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "rebarFy": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "beamRebarRatio": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "columnRebarRatio": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      }
+                    },
+                    "required": [],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "type",
+                  "memberIds",
+                  "patch"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "analysis-case"
+                    ]
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "create",
+                      "update"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "static",
+                      "modal",
+                      "responseSpectrum",
+                      "buckling",
+                      "linearTha"
+                    ]
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "comboId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "pDeltaMethod": {
+                        "type": "string",
+                        "enum": [
+                          "off",
+                          "direct",
+                          "legacy"
+                        ]
+                      },
+                      "modalModeCount": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "massSource": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "prestressed": {
+                        "type": "boolean"
+                      },
+                      "gravityCombinationId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "modeCount": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "maxIterations": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "preloadCombinationId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "integration": {
+                        "type": "string",
+                        "enum": [
+                          "direct",
+                          "modal"
+                        ]
+                      },
+                      "direction": {
+                        "type": "string",
+                        "enum": [
+                          "x",
+                          "y",
+                          "z"
+                        ]
+                      },
+                      "dampingRatio": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "dt": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "accelerations": {
+                        "type": "array",
+                        "items": {
+                          "type": "number",
+                          "minimum": -1000000000000,
+                          "maximum": 1000000000000
+                        },
+                        "minItems": 1,
+                        "maxItems": 2000
+                      },
+                      "accelerationUnit": {
+                        "type": "string",
+                        "enum": [
+                          "m/s2",
+                          "g"
+                        ]
+                      },
+                      "accelerationScale": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000000000
+                      },
+                      "timeUnit": {
+                        "type": "string",
+                        "enum": [
+                          "s"
+                        ]
+                      },
+                      "spectrum": {
+                        "type": "object",
+                        "properties": {
+                          "method": {
+                            "type": "string",
+                            "enum": [
+                              "SRSS",
+                              "CQC"
+                            ]
+                          },
+                          "directions": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "x",
+                                "y",
+                                "z"
+                              ]
+                            },
+                            "minItems": 1,
+                            "maxItems": 3
+                          },
+                          "dampingRatio": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1000000000000
+                          },
+                          "scale": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1000000000000
+                          },
+                          "points": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "period": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 1000000000000
+                                },
+                                "sa": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 1000000000000
+                                }
+                              },
+                              "required": [
+                                "period",
+                                "sa"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "minItems": 1,
+                            "maxItems": 500
+                          }
+                        },
+                        "required": [
+                          "method",
+                          "directions",
+                          "dampingRatio",
+                          "scale",
+                          "points"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "type",
+                  "mode",
+                  "id",
+                  "name",
+                  "kind",
+                  "settings"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "inputHash",
+        "requestId",
+        "commands"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "get_design_changes",
+    "description": "Read all preview changes by page before applying a stored handle.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "handle"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "apply_design_changes",
+    "description": "Apply a previously previewed change handle atomically. Invalidates old results; does not run analysis.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "handle",
+        "requestId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  },
+  {
+    "name": "preview_analysis_case",
+    "description": "Preview creation or update of one typed elastic case.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "inputHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "command": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "analysis-case"
+              ]
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "create",
+                "update"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "static",
+                "modal",
+                "responseSpectrum",
+                "buckling",
+                "linearTha"
+              ]
+            },
+            "settings": {
+              "type": "object",
+              "properties": {
+                "comboId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "pDeltaMethod": {
+                  "type": "string",
+                  "enum": [
+                    "off",
+                    "direct",
+                    "legacy"
+                  ]
+                },
+                "modalModeCount": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000000
+                },
+                "massSource": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "prestressed": {
+                  "type": "boolean"
+                },
+                "gravityCombinationId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "modeCount": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000000
+                },
+                "maxIterations": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000000
+                },
+                "preloadCombinationId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "integration": {
+                  "type": "string",
+                  "enum": [
+                    "direct",
+                    "modal"
+                  ]
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "x",
+                    "y",
+                    "z"
+                  ]
+                },
+                "dampingRatio": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000000
+                },
+                "dt": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000000
+                },
+                "accelerations": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000000,
+                    "maximum": 1000000000000
+                  },
+                  "minItems": 1,
+                  "maxItems": 2000
+                },
+                "accelerationUnit": {
+                  "type": "string",
+                  "enum": [
+                    "m/s2",
+                    "g"
+                  ]
+                },
+                "accelerationScale": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000000
+                },
+                "timeUnit": {
+                  "type": "string",
+                  "enum": [
+                    "s"
+                  ]
+                },
+                "spectrum": {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "enum": [
+                        "SRSS",
+                        "CQC"
+                      ]
+                    },
+                    "directions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "x",
+                          "y",
+                          "z"
+                        ]
+                      },
+                      "minItems": 1,
+                      "maxItems": 3
+                    },
+                    "dampingRatio": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1000000000000
+                    },
+                    "scale": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1000000000000
+                    },
+                    "points": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "period": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1000000000000
+                          },
+                          "sa": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1000000000000
+                          }
+                        },
+                        "required": [
+                          "period",
+                          "sa"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "minItems": 1,
+                      "maxItems": 500
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "directions",
+                    "dampingRatio",
+                    "scale",
+                    "points"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "type",
+            "mode",
+            "id",
+            "name",
+            "kind",
+            "settings"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "inputHash",
+        "requestId",
+        "command"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "apply_analysis_case",
+    "description": "Apply a previously previewed case-only handle.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "handle",
+        "requestId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  },
+  {
+    "name": "plan_elastic_workflow",
+    "description": "Plan existing elastic cases in dependency order; no analysis.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "inputHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "caseIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "inputHash",
+        "caseIds"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "start_elastic_workflow",
+    "description": "Start a stored elastic workflow plan; return a handle immediately. Poll workflow status.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "handle",
+        "requestId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  },
+  {
+    "name": "get_elastic_workflow",
+    "description": "Read an existing workflow and source run IDs; never runs analysis.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "handle"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "cancel_elastic_workflow",
+    "description": "Cancel a session workflow and skip remaining cases.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "handle"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  },
+  {
+    "name": "plan_design_review",
+    "description": "Plan preliminary design from exact completed static/Direct combination records.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "inputHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "analysisRunId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "comboId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            },
+            "required": [
+              "analysisRunId",
+              "comboId"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "inputHash",
+        "sources"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "start_design_review",
+    "description": "Calculate and record preliminary design from a stored plan; does not rerun analysis.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "handle",
+        "requestId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  },
+  {
+    "name": "get_design_result",
+    "description": "Read summary or paginated checks/sources/rules from a stored design record.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "designRunId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "summary",
+            "checks",
+            "sources",
+            "rules"
+          ]
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "designRunId",
+        "channel"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "plan_report_export",
+    "description": "Plan report creation from a current design record. Does not create a report or export files.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "designRunId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "designRunId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "start_report_export",
+    "description": "Create immutable HTML/JSON/CSV report artifacts in session; no external publication or automatic PDF.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "handle",
+        "requestId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  },
+  {
+    "name": "get_report_artifact",
+    "description": "Read a bounded text chunk of an existing HTML/JSON/CSV artifact; no file paths accepted.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "html",
+            "json",
+            "csv"
+          ]
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000000
+        }
+      },
+      "required": [
+        "handle",
+        "format"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "set_workspace_view",
+    "description": "Switch the shared workspace view only; does not calculate or edit the model.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "view": {
+          "type": "string",
+          "enum": [
+            "modeling",
+            "elastic",
+            "nonlinear",
+            "design-input",
+            "design-review"
+          ]
+        }
+      },
+      "required": [
+        "view"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false
+    }
+  }
+]

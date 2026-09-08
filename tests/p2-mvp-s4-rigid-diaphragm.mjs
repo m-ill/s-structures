@@ -46,7 +46,7 @@ assert.equal(gate.ok, true, JSON.stringify(gate, null, 2));
 
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, { getLastResult: () => analysis });
 assert.equal(agent.getDiaphragmSummary().version, DIAPHRAGM_SUMMARY_VERSION);
-assert.equal(agent.getRigidDiaphragmBenchmark().version, RIGID_DIAPHRAGM_BENCHMARK_VERSION);
+assert.equal(agent.prepareResultView('getRigidDiaphragmBenchmark').version, RIGID_DIAPHRAGM_BENCHMARK_VERSION);
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.diaphragm, DIAPHRAGM_VERSION);

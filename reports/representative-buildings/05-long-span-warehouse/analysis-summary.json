@@ -1,0 +1,91 @@
+{
+  "version": "m33-representative-building-set",
+  "id": "05-long-span-warehouse",
+  "name": "Long-span warehouse",
+  "type": "industrial",
+  "description": "Single-story long-span industrial warehouse with wide transverse bays.",
+  "model": {
+    "nodeCount": 30,
+    "memberCount": 37,
+    "loadCount": 74,
+    "loadCaseCount": 4,
+    "combinationCount": 3,
+    "stories": 1,
+    "size": {
+      "x": 32,
+      "y": 24,
+      "z": 8
+    }
+  },
+  "analysis": {
+    "ok": true,
+    "comboIds": [
+      "EL-DL",
+      "EL-WX",
+      "EL-WY"
+    ],
+    "maxEnvelopeDisplacement": 0.0023121690323961346,
+    "maxEnvelopeUtilization": 0.10975525573301693,
+    "designStatus": "OK",
+    "governing": {
+      "memberId": "M1",
+      "checkId": "steel-slenderness",
+      "status": "OK",
+      "ratio": 0.2544343571636173,
+      "comboId": "EL-DL",
+      "x": 0
+    },
+    "combos": {
+      "EL-DL": {
+        "ok": true,
+        "maxDisplacement": 0.0023121690323961346,
+        "maxUtilization": 0.10975525573301693,
+        "equilibriumResidual": 1.4620220900413587e-16,
+        "totalLoad": [
+          0,
+          0,
+          -777.5999999999999
+        ],
+        "totalReaction": [
+          -2.4424906541753444e-15,
+          -9.769962616701378e-15,
+          777.6
+        ]
+      },
+      "EL-WX": {
+        "ok": true,
+        "maxDisplacement": 0.002125697714400222,
+        "maxUtilization": 0.09756022731823759,
+        "equilibriumResidual": 1.254140824113603e-15,
+        "totalLoad": [
+          17.999999999999996,
+          0,
+          -691.1999999999999
+        ],
+        "totalReaction": [
+          -18.000000000000863,
+          1.2434497875801753e-14,
+          691.1999999999999
+        ]
+      },
+      "EL-WY": {
+        "ok": true,
+        "maxDisplacement": 0.0021592691360639528,
+        "maxUtilization": 0.10190751219877317,
+        "equilibriumResidual": 3.2895497025930567e-16,
+        "totalLoad": [
+          0,
+          14.000000000000002,
+          -691.1999999999999
+        ],
+        "totalReaction": [
+          -1.1102230246251565e-15,
+          -14.000000000000078,
+          691.2000000000002
+        ]
+      }
+    },
+    "errors": [],
+    "warnings": []
+  }
+}

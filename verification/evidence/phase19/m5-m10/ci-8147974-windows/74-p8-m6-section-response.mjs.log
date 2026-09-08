@@ -1,0 +1,20 @@
+{
+  "verificationIds": [
+    "NL-FIB-07",
+    "NL-FIB-08",
+    "NL-FIB-09",
+    "NL-FIB-10",
+    "NL-FIB-11",
+    "NL-FIB-12",
+    "NL-FIB-13",
+    "NL-FIB-14"
+  ],
+  "tangentRelativeError": 1.819014549255371e-12,
+  "axialResidual": 0,
+  "steelMomentSlope": 43201324.00000011,
+  "meshFinalRelativeChange": 0.002932551319648094,
+  "integrationFinalRelativeChange": 0,
+  "rollbackExact": true
+}
+
+

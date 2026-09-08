@@ -1,4 +1,5 @@
 import { stableHash } from '../../core/stableHash.js';
+import { resolveProductQualification } from './qualification.js';
 import { runNonlinearAnalysisCaseAsync } from '../analysisRouter.js';
 import { applyHingeAssignmentChangeSet } from '../properties/assignments.js';
 import {
@@ -61,6 +62,10 @@ export function createNonlinearProductService(options = {}) {
     },
     start(input = {}) {
       if (disposed) throw serviceError('NONLINEAR_SERVICE_DISPOSED', 'Nonlinear product service has been disposed.');
+      if (jobs.size >= (options.maxJobs ?? 128)) throw serviceError('NONLINEAR_JOB_LIMIT', 'Session result retention budget reached.');
+      if ([...jobs.values()].filter(job => ACTIVE_STATUSES.has(job.status)).length >= (options.maxConcurrentJobs ?? 1)) {
+        throw serviceError('NONLINEAR_BUSY', 'Wait for the active nonlinear job to terminate.');
+      }
       const model = clone(resolveModel(input, options));
       const analysisCase = resolveCase(model, input);
       const preflight = preflightProductionNonlinearCase(model, analysisCase, preflightOptions(input, options));
@@ -78,6 +83,7 @@ export function createNonlinearProductService(options = {}) {
         preflightHash: preflight.preflightHash,
         modelHash: preflight.modelHash,
         settingsHash: preflight.settingsHash,
+        buildIdentity: clone(options.getBuildIdentity?.() || { service: NONLINEAR_PRODUCT_SERVICE_VERSION }),
         status: preflight.ok ? 'queued' : 'blocked',
         stage: preflight.ok ? 'run' : firstBlockedStage(preflight),
         progress: preflight.ok ? 0 : null,
@@ -145,10 +151,17 @@ export function createNonlinearProductService(options = {}) {
       return snapshot(job);
     },
     resume(jobId, input = {}) {
+      const { jobId: sourceJobId, id: sourceId, ...restartInput } = input;
       const previous = requireJob(jobs, jobId);
       if (previous.status !== 'paused') throw serviceError('NONLINEAR_JOB_NOT_PAUSED', `Job ${previous.id} is not paused.`);
       const model = resolveModel(input, options);
       const currentHash = nonlinearProductModelHash(model);
+      if (previous.mode === 'nlth' && previous.latestCheckpoint && previous.buildIdentity?.unbound) {
+        throw serviceError('NONLINEAR_RESTART_BUILD_UNBOUND', 'Checkpoint resume requires a bound solver build; retry from origin instead.');
+      }
+      if (stableHash(previous.buildIdentity) !== stableHash(options.getBuildIdentity?.() || { service: NONLINEAR_PRODUCT_SERVICE_VERSION })) {
+        throw serviceError('NONLINEAR_RESTART_BUILD_CHANGED', 'Checkpoint resume requires the original solver build.');
+      }
       if (previous.mode === 'nlth' && previous.latestCheckpoint && currentHash !== previous.modelHash) {
         throw serviceError('NONLINEAR_RESTART_MODEL_CHANGED', 'NLTH 체크포인트는 원 실행과 동일한 모델에서만 재개할 수 있습니다.');
       }
@@ -165,7 +178,7 @@ export function createNonlinearProductService(options = {}) {
         },
       };
       return api.start({
-        ...input,
+        ...restartInput,
         model,
         analysisCase: { ...clone(previous.analysisCase), settings },
         predecessorJobId: previous.id,
@@ -178,12 +191,13 @@ export function createNonlinearProductService(options = {}) {
       });
     },
     retry(jobId, input = {}) {
+      const { jobId: sourceJobId, id: sourceId, ...restartInput } = input;
       const previous = requireJob(jobs, jobId);
       if (!['failed', 'blocked', 'cancelled', 'paused'].includes(previous.status)) {
         throw serviceError('NONLINEAR_JOB_NOT_RETRYABLE', `Job ${previous.id} cannot be retried from ${previous.status}.`);
       }
       return api.start({
-        ...input,
+        ...restartInput,
         analysisCase: clone(previous.analysisCase),
         predecessorJobId: previous.id,
         resumePolicy: 'restart-from-origin',
@@ -282,7 +296,11 @@ export function createNonlinearProductService(options = {}) {
     dispose() {
       disposed = true;
       for (const job of jobs.values()) {
-        if (ACTIVE_STATUSES.has(job.status)) requestRuntimeCancellation(job);
+        if (ACTIVE_STATUSES.has(job.status)) {
+          api.cancel(job.id);
+          job.status = 'cancelled';
+          job.completedAt = iso(now(options));
+        }
         job.runtimeDispose?.();
       }
       subscribers.clear();
@@ -306,6 +324,8 @@ export function createNonlinearProductService(options = {}) {
     } catch (error) {
       finishWithError(job, error);
     } finally {
+      clearTimeout(job.cancelTimer);
+      clearTimeout(job.runTimer);
       job.runtimeCancel = null;
       job.runtimeDispose?.();
       job.runtimeDispose = null;
@@ -393,13 +413,26 @@ export function createNonlinearProductService(options = {}) {
     });
     job.runtime.runToken = promise.runToken;
     job.runtime.requestId = promise.requestId;
-    job.runtimeCancel = () => promise.cancel();
+    job.runTimer = setTimeout(() => {
+      job.timeout = true;
+      client.dispose();
+    }, options.maxRunMs ?? 1800000);
+    job.runtimeCancel = () => {
+      if (!job.cancelTimer) job.cancelTimer = setTimeout(() => {
+        job.runtime.forcedTermination = true;
+        client.dispose();
+      }, options.cancelGraceMs ?? 2000);
+      return promise.cancel();
+    };
     const raw = await promise;
     return wrapResult(job, raw);
   }
 
   async function finishWithResult(job, model, resultInput) {
+    if (disposed) return;
     const result = resultInput?.payload ? clone(resultInput) : wrapResult(job, resultInput);
+    Object.assign(result, resolveProductQualification({engineId:job.analysisCase.engineId,ok:result.ok===true,
+      modelHash:job.modelHash,settingsHash:job.settingsHash,buildIdentity:job.buildIdentity}));
     job.result = result;
     job.resultSummary = clone(result.summary || summarizeRaw(result.payload));
     if (job.desiredAction === 'pause') {
@@ -444,6 +477,7 @@ export function createNonlinearProductService(options = {}) {
   }
 
   function finishWithError(job, error) {
+    if (job.timeout) error = serviceError('NONLINEAR_TIME_BUDGET_EXCEEDED', 'Analysis exceeded its execution time budget.');
     if (job.desiredAction === 'pause' || error instanceof WorkerRunCancelledError && job.desiredAction === 'pause') {
       job.status = 'paused';
       job.progressMessage = job.latestCheckpoint
@@ -615,6 +649,7 @@ function snapshot(job, options = {}) {
     designBlocked: job.result?.designBlocked ?? job.preflight.designBlocked,
     modelHash: job.modelHash,
     settingsHash: job.settingsHash,
+    buildIdentity: job.buildIdentity,
     preflightHash: job.preflightHash,
     predecessorJobId: job.predecessorJobId,
     resumePolicy: job.resumePolicy,

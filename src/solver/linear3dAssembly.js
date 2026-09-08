@@ -21,7 +21,7 @@ import { expandReducedDisplacements, reduceSystem } from './diaphragmReduce.js';
 import { effectiveSectionMaterial } from './linear3dPost.js';
 import { recoverMemberResult } from './linear3dRecovery.js';
 import { buildSolverWarningDiagnostics } from './sparse/diagnostics.js';
-import { cscMatVec } from './sparse/cscMatrix.js';
+import { cscMatVec } from '../compute/sparse/matrix.js';
 import { buildFixedDofs, collectPrescribedDofs } from './domain/supportConstraints.js';
 import {
   resolveUnloadedRigidRotationGauges,

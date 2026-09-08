@@ -1,4 +1,10 @@
-# WebMCP v1 — 2026-09-05
+# WebMCP — 로컬 v2 / 공개 v1
+
+현재 개발 후보는 **36개 도구**다. [M5~M10 지원 범위](phase19/M5_M10_CANDIDATE.md) · [개발 PR](https://github.com/m-ill/s-structures/pull/3). 아래 M4 기록은 이전 단계의 검증 이력이다.
+
+2026-09-07 로컬 M4는 기존 9개에 18개를 추가한 총 27개 도구를 제공한다. 입력 preview/apply, 탄성 workflow, 설계 검토, 보고서 artifact, 화면 전환을 M2·M3 공통 서비스에 연결했다. 직접 모델러와 같은 출처 app 호스트에서 실제 Site tools를 검증했다. [M4 계약·사용법](phase19/M4_CONTRACT.md) · [39개 고정 회귀와 브라우저 증거](../verification/evidence/phase19/m4/README.md). 공개 GitHub 배포에는 아직 반영하지 않았다.
+
+## 공개 v1 호환 계약 — 2026-09-05
 
 OpenAI Site tools의 `document.modelContext.registerTool`에 연결한다. 이 API가 제공되는 보안 컨텍스트의 최상위 `index.html`에서 도구 9개를 등록한다. 미지원 브라우저에서는 기존 UI를 그대로 사용한다. iframe 안의 모델러는 등록하지 않으며, 모델러 URL을 직접 열어야 한다. 일반 MCP 서버나 ChatGPT 원격 커넥터를 생성하는 기능은 아니다.
 
@@ -31,3 +37,8 @@ Node.js 24에서 `node server/main.mjs 5173` 실행 후 지원 브라우저로 `
 - [Chrome WebMCP](https://developer.chrome.com/docs/ai/webmcp)
 
 2026-09-05 확인. WebMCP는 변동 중인 API이며 브라우저·제품별 지원 범위가 다르다.
+
+## Phase 19 비선형 개발 후보
+
+현재 개발 브랜치는 36개 도구를 제공한다. 기존 27개 탄성 workflow에 비선형 케이스·힌지 preview/apply·페이지 조회·이력·실패 진단·pause/resume 9개를 추가했다. 공통 분석 도구로 production Pushover/NLTH를 실행한다. [호출 순서·지원 범위·잔여 자격](phase19/M5_M10_CANDIDATE.md)을 확인한다. 성공한 비선형 결과도 candidate이며 최종설계 전달은 차단된다.
+

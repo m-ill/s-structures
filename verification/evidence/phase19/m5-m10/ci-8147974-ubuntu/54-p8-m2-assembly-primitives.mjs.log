@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-EQ-01",
+    "NL-EQ-02",
+    "NL-EQ-03",
+    "NL-EQ-04"
+  ],
+  "patternHash": "922146b3bc510ca85f19ad32",
+  "reducedDofs": 9,
+  "fixedEndTypes": [
+    "mmoment",
+    "point",
+    "temperature",
+    "tgradient",
+    "trapezoid",
+    "udl",
+    "udl-partial"
+  ],
+  "releasedDofs": [
+    10,
+    11
+  ],
+  "strainEnergy": 0.025339487881275862
+}
+
+

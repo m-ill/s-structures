@@ -1,0 +1,117 @@
+{
+  "version": "m33-representative-building-set",
+  "generatedAt": "2026-06-26T00:00:00.000Z",
+  "count": 10,
+  "buildings": [
+    {
+      "id": "01-regular-office-frame",
+      "name": "Regular office frame",
+      "ok": true,
+      "nodes": 45,
+      "members": 84,
+      "loads": 168,
+      "maxDisplacement": 0.002407906176386256,
+      "maxUtilization": 0.10581332374844965,
+      "folder": "reports\\representative-buildings\\01-regular-office-frame"
+    },
+    {
+      "id": "02-l-shaped-neighborhood",
+      "name": "L-shaped neighborhood facility",
+      "ok": true,
+      "nodes": 48,
+      "members": 84,
+      "loads": 168,
+      "maxDisplacement": 0.0007257859608495803,
+      "maxUtilization": 0.058818199282642855,
+      "folder": "reports\\representative-buildings\\02-l-shaped-neighborhood"
+    },
+    {
+      "id": "03-u-shaped-school",
+      "name": "U-shaped school wing",
+      "ok": true,
+      "nodes": 40,
+      "members": 57,
+      "loads": 114,
+      "maxDisplacement": 0.007404044246212243,
+      "maxUtilization": 0.08264605165673285,
+      "folder": "reports\\representative-buildings\\03-u-shaped-school"
+    },
+    {
+      "id": "04-podium-tower-setback",
+      "name": "Podium tower setback",
+      "ok": true,
+      "nodes": 84,
+      "members": 154,
+      "loads": 308,
+      "maxDisplacement": 0.0020685296251408544,
+      "maxUtilization": 0.08590497197954558,
+      "folder": "reports\\representative-buildings\\04-podium-tower-setback"
+    },
+    {
+      "id": "05-long-span-warehouse",
+      "name": "Long-span warehouse",
+      "ok": true,
+      "nodes": 30,
+      "members": 37,
+      "loads": 74,
+      "maxDisplacement": 0.0023121690323961346,
+      "maxUtilization": 0.10975525573301693,
+      "folder": "reports\\representative-buildings\\05-long-span-warehouse"
+    },
+    {
+      "id": "06-open-parking-frame",
+      "name": "Open parking frame",
+      "ok": true,
+      "nodes": 72,
+      "members": 145,
+      "loads": 290,
+      "maxDisplacement": 0.0017521320967283436,
+      "maxUtilization": 0.10703056433662939,
+      "folder": "reports\\representative-buildings\\06-open-parking-frame"
+    },
+    {
+      "id": "07-apartment-frame-equivalent",
+      "name": "Apartment frame equivalent",
+      "ok": true,
+      "nodes": 126,
+      "members": 270,
+      "loads": 540,
+      "maxDisplacement": 0.0008801571367623951,
+      "maxUtilization": 0.06434512308496175,
+      "folder": "reports\\representative-buildings\\07-apartment-frame-equivalent"
+    },
+    {
+      "id": "08-courtyard-hospital",
+      "name": "Courtyard hospital frame",
+      "ok": true,
+      "nodes": 120,
+      "members": 240,
+      "loads": 480,
+      "maxDisplacement": 0.0008237271828789811,
+      "maxUtilization": 0.07294645793842994,
+      "folder": "reports\\representative-buildings\\08-courtyard-hospital"
+    },
+    {
+      "id": "09-transfer-podium-frame",
+      "name": "Transfer podium frame",
+      "ok": true,
+      "nodes": 81,
+      "members": 158,
+      "loads": 316,
+      "maxDisplacement": 0.0024424984303948946,
+      "maxUtilization": 0.11873540422626083,
+      "folder": "reports\\representative-buildings\\09-transfer-podium-frame"
+    },
+    {
+      "id": "10-torsion-irregular-frame",
+      "name": "Torsion irregular corner frame",
+      "ok": true,
+      "nodes": 88,
+      "members": 179,
+      "loads": 358,
+      "maxDisplacement": 0.0011178202591810896,
+      "maxUtilization": 0.07198770514879267,
+      "folder": "reports\\representative-buildings\\10-torsion-irregular-frame"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "version": "p19-m4-browser-smoke-v1",
+  "browser": "Codex in-app browser; actual registered Site tools (not injected Agent calls)",
+  "runs": [
+    {
+      "sourceCommit": "c9f8eca",
+      "url": "http://127.0.0.1:5198/",
+      "model": "default synthetic steel frame",
+      "caseId": "M4-STEEL",
+      "runId": "M4-STEEL:2026-09-07T04:56:25.975Z:1",
+      "reportSnapshotHash": "0678b23085681f5f551433b2bfc8ae0c3d7c4bc1f0ea794e663d4def46bf831c",
+      "checkCounts": {
+        "OK": 79,
+        "WARN": 8,
+        "NG": 0,
+        "NOT_CHECKED": 4
+      },
+      "artifact": "browser-steel.json",
+      "flow": [
+        "preview/apply case",
+        "plan/start/poll actual elastic workflow",
+        "plan/start design",
+        "plan/start report",
+        "set workspace view",
+        "UI summary and report hash match",
+        "download JSON from UI"
+      ]
+    },
+    {
+      "sourceCommit": "c9f8eca",
+      "url": "http://127.0.0.1:5198/app.html#/local/modeler",
+      "model": "default synthetic frame assigned concrete and rc3060 through Site tools",
+      "caseId": "M4-RC",
+      "runId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+      "reportSnapshotHash": "970723c35a120fe387fb9c3c2be36fa84f542b9e32e5fcdb5b23f4a499a4b2cd",
+      "checkCounts": {
+        "OK": 53,
+        "WARN": 8,
+        "NG": 0,
+        "NOT_CHECKED": 8
+      },
+      "artifact": "browser-rc.json",
+      "flow": [
+        "preview/apply 17 input changes",
+        "plan/start/poll actual elastic workflow",
+        "plan/start design",
+        "plan/start report",
+        "get report artifact chunk (nextOffset 12000)",
+        "set workspace view",
+        "UI summary and report hash match",
+        "download JSON from UI"
+      ]
+    },
+    {
+      "sourceCommit": "b1f389c",
+      "url": "http://127.0.0.1:5201/index.html",
+      "model": "default synthetic steel frame",
+      "caseId": "M4-FINAL",
+      "runId": "M4-FINAL:2026-09-07T05:07:18.507Z:1",
+      "handleExample": "changes-51c1f740-2a12-49ae-8493-c82f88e5c8fa-1",
+      "reportSnapshotHash": "c2885344ed05fb6c940c11e02b743430a1ed057c10528631838127d0ddcf929a",
+      "artifact": "browser-steel-final.json",
+      "flow": [
+        "UUID-scoped preview/apply",
+        "plan/start/poll actual elastic workflow",
+        "plan/start design/report",
+        "UI shared review and exact snapshot hash",
+        "download JSON using accessibility button"
+      ]
+    }
+  ],
+  "projectSwitch": {
+    "sourceCommit": "c9f8eca",
+    "environment": "separate loopback test server on 5201; synthetic account and two synthetic projects; no production accounts or tokens in evidence",
+    "projectA": "3431863c-40c3-4e05-84e5-44bab803816b",
+    "projectB": "459b4d1c-1172-4007-90a4-a78c73939eb5",
+    "actions": [
+      "create unapplied load-case preview in A",
+      "back to project list: tools unregistered",
+      "old tool call rejected as stale registration",
+      "open B: fresh tools registered",
+      "apply old A handle rejected HANDLE_NOT_FOUND",
+      "B loadCases remain D,L"
+    ],
+    "consoleErrors": 0
+  },
+  "diagnostics": [
+    {
+      "scope": "initial local app-host load",
+      "message": "MutationObserver.observe: parameter 1 is not of type Node",
+      "count": 1,
+      "attribution": "No stack/source in browser log; not attributed to app or browser tooling. Did not prevent RC workflow; not reproduced in fresh authenticated A/B session."
+    },
+    {
+      "scope": "final repeated Playwright/CDP operations",
+      "message": "Runtime.evaluate / Emulation.setFocusEmulationEnabled timeout",
+      "recovery": "Fresh tab; where Playwright click timed out, accessibility state and button operations succeeded. Final report downloaded. Browser automation latency is not a product performance qualification."
+    }
+  ],
+  "finalSourceDelta": "After b1f389c, runtime change is an optional randomUUID fallback for insecure/unsupported browsers. Secure browser path unchanged. Final 39-test isolated suite includes API absence/crypto absence test.",
+  "limitations": [
+    "No actual automatic PDF generated.",
+    "No full supported/unsupported browser matrix; unsupported fallback simulated in Node tests.",
+    "No new nonlinear qualification or GitHub publication.",
+    "Site tool numeric serialization displayed approximately 1e-16 rounding difference for steel ratio; UI and downloaded JSON snapshot hash matched exactly."
+  ]
+}

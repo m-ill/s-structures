@@ -1,0 +1,53 @@
+diff --git a/src/ui/webmcp/nonlinearTools.js b/src/ui/webmcp/nonlinearTools.js
+index 60a2c60..ff70b5b 100644
+--- a/src/ui/webmcp/nonlinearTools.js
++++ b/src/ui/webmcp/nonlinearTools.js
+@@ -4,12 +4,13 @@ import { NONLINEAR_ENGINE_IDS } from '../../nonlinear/capabilities.js';
+ import { id, hash, object, choice, array } from './schemas.js';
+ 
+ const engines = new Set([NONLINEAR_ENGINE_IDS.productionPushover, NONLINEAR_ENGINE_IDS.productionNlth]);
++const rawResultUnits = Object.freeze({length:'m',displacement:'m',rotation:'rad',force:'kN',moment:'kN.m',time:'s',velocity:'m/s',acceleration:'m/s2',energy:'kN.m'});
+ const positive = {type:'number',minimum:1e-9,maximum:1e6};
+ const integer = {type:'integer',minimum:1,maximum:20000};
+ const caseSchema = object({
+   id,name:id,mode:choice('pushover','nlth'),gravityCombinationId:id,controlNodeId:id,
+   direction:choice('+x','-x','+y','-y'),massSourceId:id,
+-  settings:object({targetDisplacement:positive,steps:integer,fiberPmm:{type:'boolean'},
++  settings:object({targetDisplacement:{...positive,description:'Control displacement in metres (m), independent of display displacement units.'},steps:integer,fiberPmm:{type:'boolean'},
+     control:choice('displacement','arcLength'),pattern:choice('uniform','triangular'),
+     groundMotionRecords:array(object({id,values:array({type:'number',minimum:-1e5,maximum:1e5},20000),dt:positive,
+       unit:choice('m/s2','g'),direction:choice('x','y','z'),baseline:choice('none')},['id','values','dt','unit','direction']),3),
+@@ -18,7 +19,8 @@ const caseSchema = object({
+ 
+ // Uses the existing UI product service. Private plans are session-scoped and
+ // never accept caller-provided checkpoints, executable options or file paths.
+-export function createNonlinearTools({agent,tool,context}) {
++export function createNonlinearTools({agent,tool,context:baseContext}) {
++  const context=()=>({...baseContext(),solverUnitPolicy:rawResultUnits,rawResultUnits});
+   const plans=new Map(),requests=new Map(),jobs=new Set();let sequence=0,active=true;
+   const session=globalThis.crypto?.randomUUID?.() || stableHash({time:Date.now(),random:Math.random()});
+   const fail=code=>{throw Object.assign(new Error(code),{code});};
+@@ -76,8 +78,8 @@ export function createNonlinearTools({agent,tool,context}) {
+     tool('get_nonlinear_history','Read bounded typed result history from a session job, without computing.',object({jobId:id,
+       channel:choice('overview','capacity','history','convergence','provenance','story','node','member','hinge'),
+       page:{type:'integer',minimum:1,maximum:100000},entityId:id},['jobId','channel']),true,args=>{
+-      own(args.jobId);return agent.getNonlinearResultSlice({jobId:args.jobId,query:{slice:args.channel,page:args.page||1,pageSize:20,maxPoints:40,
+-        nodeId:args.entityId,memberId:args.entityId,hingeId:args.entityId}});
++      own(args.jobId);return {...agent.getNonlinearResultSlice({jobId:args.jobId,query:{slice:args.channel,page:args.page||1,pageSize:20,maxPoints:40,
++        nodeId:args.entityId,memberId:args.entityId,hingeId:args.entityId}}),rawResultUnits};
+     }),
+     tool('explain_analysis_failure','Read nonlinear failure diagnostics; never retries automatically.',object({jobId:id},['jobId']),true,args=>{
+       const r=agent.explainNonlinearFailure({jobId:own(args.jobId)});return {code:r.code,cause:r.technicalDetails?.callbackError?.code||null,message:String(r.message||'').slice(0,2000),failedStage:r.failedStage,retryable:r.retryable};
+diff --git a/src/ui/webmcp/tools.js b/src/ui/webmcp/tools.js
+index ff4972d..991e7c3 100644
+--- a/src/ui/webmcp/tools.js
++++ b/src/ui/webmcp/tools.js
+@@ -93,7 +93,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
+         capabilities: [...KINDS.map((kind) => {
+           const result = agent.getAnalysisCapabilities({ kind });
+           return { kind, targets: result.targets };
+-        }), ...['p8-production-pushover', 'p8-production-mdof-nlth'].map(engineId => ({engineId, qualification:'candidate', designBlocked:true, targets:['cpu'], settings:'case-specific preflight required'}))],
++        }), ...['p8-production-mdof-pushover', 'p8-production-mdof-nlth'].map(engineId => ({engineId, qualification:'candidate', designBlocked:true, targets:['cpu'], settings:'case-specific preflight required'}))],
+         jobs: [...jobs.keys()],
+         limits: { maxSessionJobs: 128, maxConcurrentJobs: 1, editing: true, externalQualification: 'NOT_CLAIMED' },
+       };

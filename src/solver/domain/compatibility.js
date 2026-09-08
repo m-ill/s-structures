@@ -1,7 +1,9 @@
+import { DOMAIN_ADAPTER_COMPATIBILITY_VERSION } from '../../metadata/numericVersions.js';
+export { DOMAIN_ADAPTER_COMPATIBILITY_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import { CANONICAL_ANALYSIS_DOMAIN_VERSION } from './canonicalDomain.js';
 
-export const DOMAIN_ADAPTER_COMPATIBILITY_VERSION = 'p8-m1-domain-adapter-compatibility-v1';
+
 export const CANONICAL_DOMAIN_ADAPTERS = Object.freeze([
   'linear',
   'direct-pdelta',

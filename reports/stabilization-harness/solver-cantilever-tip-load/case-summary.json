@@ -1,0 +1,166 @@
+{
+  "version": "m46-stabilization-harness",
+  "id": "solver-cantilever-tip-load",
+  "name": "Solver cantilever tip-load benchmark",
+  "category": "solver-benchmark",
+  "inputPath": "benchmark-model-generator",
+  "ok": true,
+  "issues": [],
+  "checks": [
+    {
+      "id": "validation-errors",
+      "ok": true,
+      "message": "Model validation must have no errors."
+    },
+    {
+      "id": "analysis-ok",
+      "ok": true,
+      "message": "Elastic analysis must complete successfully."
+    },
+    {
+      "id": "combination-count",
+      "ok": true,
+      "message": "Required load combinations must be present."
+    },
+    {
+      "id": "load-count",
+      "ok": true,
+      "message": "Required model loads must be present."
+    },
+    {
+      "id": "combo-results",
+      "ok": true,
+      "message": "Every load combination must solve."
+    },
+    {
+      "id": "equilibrium",
+      "ok": true,
+      "message": "Equilibrium residual must stay within tolerance."
+    },
+    {
+      "id": "visual-nodes",
+      "ok": true,
+      "message": "Result visuals must include every node."
+    },
+    {
+      "id": "visual-members",
+      "ok": true,
+      "message": "Result visuals must include every member."
+    },
+    {
+      "id": "visual-displacement",
+      "ok": true,
+      "message": "Result visuals must include a nonzero displacement envelope."
+    },
+    {
+      "id": "html-report",
+      "ok": true,
+      "message": "HTML report must be generated from the same result."
+    },
+    {
+      "id": "calculation-package",
+      "ok": true,
+      "message": "Calculation package must include the standard sections."
+    },
+    {
+      "id": "member-trace",
+      "ok": true,
+      "message": "Member design trace rows must be available."
+    }
+  ],
+  "summary": {
+    "model": {
+      "nodes": 2,
+      "members": 1,
+      "loads": 1,
+      "loadCases": 1,
+      "combinations": 1
+    },
+    "validation": {
+      "ok": true,
+      "errorCount": 0,
+      "warningCount": 0,
+      "errors": [],
+      "warnings": []
+    },
+    "analysis": {
+      "ok": true,
+      "comboCount": 1,
+      "maxDisplacement": 0.012799999999999999,
+      "maxUtilization": 0.7999999999999999,
+      "designStatus": "OK",
+      "designOk": true,
+      "validationErrors": [],
+      "comboResults": [
+        {
+          "id": "D_ONLY",
+          "ok": true,
+          "maxDisplacement": 0.012799999999999999,
+          "maxUtilization": 0.23999999999999996,
+          "equilibriumResidual": 5.921189464667501e-16,
+          "solverResidualNorm": 5.921189464667501e-16,
+          "totalLoad": [
+            0,
+            0,
+            -12
+          ],
+          "totalReaction": [
+            0,
+            0,
+            11.999999999999993
+          ]
+        }
+      ]
+    },
+    "visuals": {
+      "version": "m13-index-result-visuals",
+      "resultId": "ENVELOPE",
+      "nodes": 2,
+      "members": 1,
+      "loads": 1,
+      "reactions": 1,
+      "maxDisplacement": 0.012799999999999999
+    },
+    "report": {
+      "version": "m14-report-export",
+      "title": "Solver cantilever tip-load benchmark - Stabilization Report",
+      "htmlLength": 3869
+    },
+    "calculationPackage": {
+      "version": "m42-calculation-package",
+      "sectionCount": 7,
+      "htmlLength": 7750,
+      "qualityAuditOk": false,
+      "qualityItems": [
+        {
+          "name": "Load derivation attached",
+          "status": "Missing"
+        },
+        {
+          "name": "Combination results available",
+          "status": "OK"
+        },
+        {
+          "name": "Member checks available",
+          "status": "OK"
+        },
+        {
+          "name": "RC schedule available",
+          "status": "Not applicable"
+        },
+        {
+          "name": "Steel schedule available",
+          "status": "OK"
+        },
+        {
+          "name": "Foundation review available",
+          "status": "OK"
+        }
+      ],
+      "loadDerivationRows": 0,
+      "memberTraceRows": 1,
+      "serviceabilityRows": 0
+    },
+    "actionHistory": []
+  }
+}

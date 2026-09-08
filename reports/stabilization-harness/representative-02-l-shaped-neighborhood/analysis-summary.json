@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "comboCount": 3,
+  "maxDisplacement": 0.0007257859608495803,
+  "maxUtilization": 0.11131503125908254,
+  "designStatus": "OK",
+  "designOk": true,
+  "validationErrors": [],
+  "comboResults": [
+    {
+      "id": "EL-DL",
+      "ok": true,
+      "maxDisplacement": 0.0004225349270962994,
+      "maxUtilization": 0.05240284910773891,
+      "equilibriumResidual": 2.9605947323337506e-16,
+      "solverResidualNorm": 4.884981308350689e-15,
+      "totalLoad": [
+        0,
+        0,
+        -1536
+      ],
+      "totalReaction": [
+        -2.220446049250313e-14,
+        -2.7533531010703882e-14,
+        1536.0000000000005
+      ]
+    },
+    {
+      "id": "EL-WX",
+      "ok": true,
+      "maxDisplacement": 0.0007257859608495803,
+      "maxUtilization": 0.058818199282642855,
+      "equilibriumResidual": 9.451129337834666e-16,
+      "solverResidualNorm": 1.311771204480185e-14,
+      "totalLoad": [
+        38.733333333333334,
+        0,
+        -1248
+      ],
+      "totalReaction": [
+        -38.733333333332155,
+        5.995204332975845e-14,
+        1248
+      ]
+    },
+    {
+      "id": "EL-WY",
+      "ok": true,
+      "maxDisplacement": 0.0005847328968752017,
+      "maxUtilization": 0.05612573989700191,
+      "equilibriumResidual": 1.5201515260252143e-15,
+      "solverResidualNorm": 1.7490282726402467e-14,
+      "totalLoad": [
+        0,
+        33.199999999999996,
+        -1248
+      ],
+      "totalReaction": [
+        -6.217248937900877e-15,
+        -33.1999999999981,
+        1248.0000000000005
+      ]
+    }
+  ]
+}

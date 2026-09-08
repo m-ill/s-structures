@@ -1,10 +1,12 @@
+import { ELASTIC_EXPANSION_VERSION } from '../metadata/numericVersions.js';
+export { ELASTIC_EXPANSION_VERSION };
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { buildFixedEndLoad, fixedEndTraceRow } from '../loads/fixedEnd/index.js';
 import { memberAxes } from './linear3dElement.js';
 import { effectiveSectionMaterial } from './linear3dPost.js';
 import { resolveMemberTimoshenko } from './timoshenko.js';
 
-export const ELASTIC_EXPANSION_VERSION = 'p3-m11-elastic-expansion';
+
 
 export function expandAdvancedLoads(loads = [], model = {}, options = {}) {
   const segments = Math.max(2, options.segments || 8);

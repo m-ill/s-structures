@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 429,
+  "plannedCount": 446,
   "categoryCounts": {
     "e2e": 5,
-    "integration": 32,
+    "integration": 35,
     "qualification": 224,
-    "unit": 168
+    "unit": 182
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 116
+    "release-long": 133
   },
   "records": [
     {
@@ -1159,6 +1159,84 @@
       "owner": "release-verification"
     },
     {
+      "file": "tests/p19-m1-contract.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m1-product-parity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m2-design-input.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m2-ui-agent-parity.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m3-design-workflow.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m4-host-session.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m4-webmcp-workflow.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m5-nonlinear-contract.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m6-sh1-sparse-path.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-m8-nonlinear-lifecycle.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-review-capacity-pagination.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-review-jet-contract.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
+      "file": "tests/p19-review-session-disposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase19"
+    },
+    {
       "file": "tests/p2-design-demand-package.mjs",
       "taxonomy": "unit",
       "execution": "default",
@@ -1259,6 +1337,30 @@
       "taxonomy": "e2e",
       "execution": "default",
       "owner": "phase2"
+    },
+    {
+      "file": "tests/p20-m1-metadata.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase20"
+    },
+    {
+      "file": "tests/p20-m2-prepared-views.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase20"
+    },
+    {
+      "file": "tests/p20-m3-elastic-parity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase20"
+    },
+    {
+      "file": "tests/p20-m4-module-boundaries.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase20"
     },
     {
       "file": "tests/p3-app-shell.mjs",

@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 3,
+  "units": {
+    "length": "m",
+    "force": "kN",
+    "moment": "kN.m",
+    "stress": "N/mm2",
+    "displacement": "mm"
+  },
+  "materials": [
+    {
+      "id": "bench-steel",
+      "name": "Benchmark steel",
+      "E": 200000,
+      "G": 80000,
+      "Fy": 300,
+      "Fu": 400,
+      "density": 0,
+      "allow": {
+        "fb": 200,
+        "ft": 200,
+        "fc": 200,
+        "fv": 120
+      }
+    }
+  ],
+  "sections": [
+    {
+      "id": "bench-rect",
+      "name": "Benchmark section",
+      "type": "BENCH",
+      "A": 0.02,
+      "Iy": 0.00008,
+      "Iz": 0.0001,
+      "J": 0.00002,
+      "Zy": 0.0008,
+      "Zz": 0.001
+    }
+  ],
+  "nodes": [
+    {
+      "id": "N1",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N2",
+      "x": 4,
+      "y": 0,
+      "z": 0,
+      "support": null
+    }
+  ],
+  "members": [
+    {
+      "id": "M1",
+      "type": "frame",
+      "n1": "N1",
+      "n2": "N2",
+      "matId": "bench-steel",
+      "secId": "bench-rect",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      }
+    }
+  ],
+  "loads": [
+    {
+      "id": "P1",
+      "type": "nodal",
+      "node": "N2",
+      "P": 12,
+      "dir": "-z",
+      "case": "D"
+    }
+  ],
+  "loadCases": [
+    {
+      "id": "D",
+      "name": "Benchmark load",
+      "type": "dead"
+    }
+  ],
+  "loadCombinations": [
+    {
+      "id": "D_ONLY",
+      "name": "1.0D",
+      "type": "strength",
+      "factors": {
+        "D": 1
+      }
+    }
+  ],
+  "analysisSettings": {
+    "analysisType": "linear_static",
+    "elementType": "3d_frame",
+    "includeShearDeformation": false,
+    "includeGeometricStiffness": false,
+    "includeSelfWeight": false,
+    "solverTolerance": 1e-10,
+    "memberStations": 21,
+    "includeFixedEndDeformation": true,
+    "validateBeforeSolve": true,
+    "pDeltaMaxIterations": 12,
+    "pDeltaTolerance": 0.0001,
+    "pDeltaMaxAmplification": 2.5,
+    "modalModeCount": 6,
+    "responseSpectrum": {
+      "enabled": true,
+      "dampingRatio": 0.05,
+      "scale": 9.80665,
+      "directions": [
+        "x",
+        "y"
+      ],
+      "points": [
+        {
+          "period": 0,
+          "sa": 0.4
+        },
+        {
+          "period": 5,
+          "sa": 0.4
+        }
+      ]
+    }
+  },
+  "designParams": {
+    "global": {
+      "mode": "off",
+      "codeCompliance": false,
+      "defaultKy": 1,
+      "defaultKz": 1,
+      "defaultLbY": null,
+      "defaultLbZ": null,
+      "defaultDeflectionLimitTotal": 250,
+      "defaultDeflectionLimitLive": 360,
+      "defaultCompressionSlendernessLimit": 200,
+      "defaultTensionSlendernessLimit": 300,
+      "warnAtRatio": 0.7
+    },
+    "rc": {
+      "defaultCover": 0.05,
+      "defaultRebarFy": 400,
+      "defaultBeamRebarRatio": 0.01,
+      "defaultColumnRebarRatio": 0.015,
+      "minBeamRebarRatio": 0.002,
+      "minColumnRebarRatio": 0.01,
+      "maxColumnRebarRatio": 0.04,
+      "phiFlexure": 0.85,
+      "phiShear": 0.75,
+      "phiCompression": 0.65,
+      "warnAtRatio": 0.7
+    },
+    "members": {}
+  },
+  "designSettings": {
+    "method": "allowable_stress",
+    "defaultCheck": "elastic_stress_interaction"
+  },
+  "meta": {
+    "name": "Solver cantilever tip-load benchmark",
+    "generatorVersion": "m46-stabilization-harness"
+  }
+}

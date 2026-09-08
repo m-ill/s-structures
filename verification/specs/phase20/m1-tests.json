@@ -1,0 +1,8 @@
+{
+  "scope": "P20 M1 metadata and public surface",
+  "tests": [
+    "tests/p20-m1-metadata.mjs",
+    "tests/p19-m1-product-parity.mjs",
+    "tests/p13-m8-shell-lab.mjs"
+  ]
+}

@@ -54,6 +54,7 @@ export function buildAnalysisDomainHashes(model = {}, analysisCase = null) {
       memberTapers: rows(model.members, ['id', 'taper']),
     }),
     nonlinearHash: hash({
+      ...((model.zeroLengthPmmHinges?.length || model.pmmHinges?.length) ? {zeroLengthPmmHinges:sortedRecords(model.zeroLengthPmmHinges||model.pmmHinges)} : {}),
       nonlinearMaterials: sortedRecords(model.nonlinearMaterials || []),
       nonlinearSections: sortedRecords(model.nonlinearSections || []),
       hingeProperties: sortedRecords(model.hingeProperties || []),

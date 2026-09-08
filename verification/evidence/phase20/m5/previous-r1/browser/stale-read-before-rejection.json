@@ -1,0 +1,176 @@
+{
+  "beforeReads": {
+    "designRuns": [
+      {
+        "designRunId": "design-1",
+        "stale": true
+      },
+      {
+        "designRunId": "design-2",
+        "stale": false
+      }
+    ],
+    "inputIdentity": {
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildBound": false,
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "inputHash": "32320cdfcb34fec615d807ee492da8902ffb5a3ecda91ad058a694f5f0af68df",
+      "inputIdentityVersion": "p19-input-v1",
+      "materialsHash": "41ec54689947eba9eb99914a70f8f50191c44cff7dd4ace72aa9cc48799054b2",
+      "modelHash": "5b4c5a1d4a66e533ea26f11095a2cea73a7e151b2295b3fcb8bf3ef6e7363ce2",
+      "rulePackBound": false,
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sectionsHash": "8575457960cfc1024e519b343bd5fee06a3e4f3c112ddb4c8100f66890e6a1e9",
+      "settingsHash": "2bd2e696d029c9d2659df6128b726e81fa5d9c10c05b7fe0fe5d26f84d7e8c0e"
+    },
+    "limits": {
+      "handles": 128,
+      "inputCharacters": 64000,
+      "pageSize": 20,
+      "requests": 128,
+      "responseCharacters": 48000
+    },
+    "modelHash": "7dcaa3673dc10cec54ebeed1a2e1ce08d6c0a7ec516d7f5d633ec6876fade0f8",
+    "ok": true,
+    "scope": "Elastic preliminary review: static/Direct demands only. Candidate production Pushover/NLTH through common analysis tools; no final design transfer.",
+    "solverUnitPolicy": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "sources": {
+      "nextOffset": null,
+      "offset": 0,
+      "rows": [
+        {
+          "analysisRunId": "M7-BROWSER-PUSH:2026-09-08T01:27:52.800Z:1",
+          "caseId": "M7-BROWSER-PUSH",
+          "comboId": null,
+          "executionStatus": "completed",
+          "kind": "pushover",
+          "method": "off",
+          "qualification": "preliminary",
+          "stale": true
+        },
+        {
+          "analysisRunId": "M7-BROWSER-NLTH:2026-09-08T01:32:57.205Z:3",
+          "caseId": "M7-BROWSER-NLTH",
+          "comboId": null,
+          "executionStatus": "completed",
+          "kind": "nonlinearTimeHistory",
+          "method": "off",
+          "qualification": "preliminary",
+          "stale": false
+        },
+        {
+          "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:33:43.957Z:4",
+          "caseId": "P20-BROWSER-STATIC",
+          "comboId": "GRAV",
+          "executionStatus": "completed",
+          "kind": "static",
+          "method": "off",
+          "qualification": "candidate",
+          "stale": false
+        }
+      ],
+      "total": 3
+    },
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "version": "p19-m4-webmcp-v2",
+    "workflows": [
+      {
+        "handle": "workflow-b3c4c199-e0af-4d60-9ebc-84405d700562-3",
+        "status": "completed"
+      },
+      {
+        "handle": "workflow-b3c4c199-e0af-4d60-9ebc-84405d700562-9",
+        "status": "completed"
+      }
+    ]
+  },
+  "repeatRead": {
+    "data": {
+      "checkCount": 13,
+      "counts": {
+        "NG": 0,
+        "NOT_CHECKED": 1,
+        "OK": 12,
+        "WARN": 0
+      },
+      "governing": {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:33:43.957Z:4",
+        "capacity": 200,
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "comboId": "GRAV",
+        "demand": 91.03732902271769,
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "memberId": "C",
+        "method": "allowable_stress_preliminary",
+        "ratio": 0.4551866451135883,
+        "status": "OK",
+        "unit": "-",
+        "x": 0
+      },
+      "maxUtilization": 0.4551866451135883,
+      "status": "NOT_CHECKED"
+    },
+    "designRunId": "design-2",
+    "designTransferAllowed": false,
+    "inputIdentity": {
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildBound": false,
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "inputHash": "32320cdfcb34fec615d807ee492da8902ffb5a3ecda91ad058a694f5f0af68df",
+      "inputIdentityVersion": "p19-input-v1",
+      "materialsHash": "41ec54689947eba9eb99914a70f8f50191c44cff7dd4ace72aa9cc48799054b2",
+      "modelHash": "5b4c5a1d4a66e533ea26f11095a2cea73a7e151b2295b3fcb8bf3ef6e7363ce2",
+      "rulePackBound": false,
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sectionsHash": "8575457960cfc1024e519b343bd5fee06a3e4f3c112ddb4c8100f66890e6a1e9",
+      "settingsHash": "2bd2e696d029c9d2659df6128b726e81fa5d9c10c05b7fe0fe5d26f84d7e8c0e"
+    },
+    "ok": true,
+    "sourceAnalysisRunIds": [
+      "P20-BROWSER-STATIC:2026-09-08T01:33:43.957Z:4"
+    ],
+    "stale": false,
+    "summary": {
+      "checkCount": 13,
+      "counts": {
+        "NG": 0,
+        "NOT_CHECKED": 1,
+        "OK": 12,
+        "WARN": 0
+      },
+      "governing": {
+        "analysisRunId": "P20-BROWSER-STATIC:2026-09-08T01:33:43.957Z:4",
+        "capacity": 200,
+        "category": "steel",
+        "checkId": "steel-slenderness",
+        "comboId": "GRAV",
+        "demand": 91.03732902271769,
+        "expression": "max(KL/ry, KL/rz) / limit",
+        "memberId": "C",
+        "method": "allowable_stress_preliminary",
+        "ratio": 0.4551866451135883,
+        "status": "OK",
+        "unit": "-",
+        "x": 0
+      },
+      "maxUtilization": 0.4551866451135883,
+      "status": "NOT_CHECKED"
+    }
+  },
+  "blocked": "Automatic approval rejected the test-only case update under root read-only default. No alternate mutation attempted."
+}

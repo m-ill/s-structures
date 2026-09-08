@@ -88,7 +88,7 @@ export async function startServer(overrides = {}) {
 async function handleRequest(req, res, router, config, ctx) {
   const url = new URL(req.url || '/', 'http://internal');
   const pathname = url.pathname;
-  applySecurityHeaders(res, { api: pathname.startsWith('/api/') });
+  applySecurityHeaders(res, { api: pathname.startsWith('/api/'), modelerFrame: pathname === '/index.html' && url.searchParams.get('shell') === '1' });
 
   if (!isHostAllowed(req, config)) {
     sendJson(res, 400, { ok: false, error: { code: 'BAD_HOST', message: 'Request Host is not allowed.' } });

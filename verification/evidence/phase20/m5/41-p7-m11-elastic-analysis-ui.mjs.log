@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "commands": 6,
+  "caseCount": 7,
+  "batchStatus": "review",
+  "batchResults": 6,
+  "nonlinearUntouched": "not-run",
+  "modalStatus": "ok",
+  "rsaMethod": "CQC",
+  "thaSamples": 4
+}
+
+

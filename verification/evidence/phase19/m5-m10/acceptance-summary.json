@@ -1,0 +1,51 @@
+{
+  "independentReviewCompleted": false,
+  "release": "https://github.com/m-ill/s-structures/releases/tag/phase19-nonlinear-preview-20260907-r2",
+  "version": "p19-candidate-acceptance-v1",
+  "remaining": [
+    "new-page job/input/result recovery",
+    "shared elastic/nonlinear/design/report resource budget",
+    "M-tier fixed hardware performance",
+    "external reference and pilot acceptance",
+    "full browser/HTTPS deployment and rollback qualification"
+  ],
+  "latestCandidate": {
+    "delta": "capability ID and nonlinear raw units metadata only; no numerical solver delta",
+    "sourceCommit": "467dd7003c9f4f18dc5e9ad12e0d0b91ac87a545",
+    "fullCiStatus": "in_progress",
+    "ci": "https://github.com/m-ill/s-structures/actions/runs/34134681570",
+    "focusedTestsPassed": 4,
+    "packageInstallRecovery": "PASS",
+    "actualBrowserNlth": "completed; candidate; design blocked"
+  },
+  "productionQualified": false,
+  "pilots": {
+    "accepted": 0,
+    "required": 5
+  },
+  "externalComparisons": {
+    "accepted": 0,
+    "required": 2
+  },
+  "milestonesFullyComplete": false,
+  "numericalBaseline": {
+    "ubuntu": {
+      "passed": 92,
+      "report": "ci-8147974-ubuntu/validation.json",
+      "failed": 0
+    },
+    "sourceCommit": "814797436e6bf8d4418499a086e6860e7b2dcdc9",
+    "local": {
+      "passed": 92,
+      "report": "r4/validation.json",
+      "failed": 0
+    },
+    "ci": "https://github.com/m-ill/s-structures/actions/runs/34133046776",
+    "windows": {
+      "passed": 92,
+      "report": "ci-8147974-windows/validation.json",
+      "failed": 0
+    }
+  },
+  "independentReviewer": "user (m-ill)"
+}

@@ -41,7 +41,7 @@ const target = {
 const agent = createIndexAgentApi(target, {
   getLastResult: () => analysis,
 });
-const agentDetail = agent.getSteelDetailingReport();
+const agentDetail = agent.prepareResultView('getSteelDetailingReport');
 assert.equal(agentDetail.version, STEEL_DETAILING_VERSION);
 assert.equal(agentDetail.rows.length, 1);
 

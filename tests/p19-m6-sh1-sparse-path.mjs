@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {buildCanonicalAnalysisDomain} from '../src/solver/domain/canonicalDomain.js';
+import {buildHingedFrame3dEntries} from '../src/nonlinear/elements/hingedFrame3d.js';
+import {createEquilibriumAssembler} from '../src/nonlinear/equilibrium/assembler.js';
+import {createNonlinearStateStore} from '../src/nonlinear/core/stateStore.js';
+import {solveMdofNewtonStep} from '../src/nonlinear/equilibrium/newton.js';
+import {createWasmSparseBackend} from '../src/nonlinear/equilibrium/backends/wasmSparseBackend.js';
+const model={nodes:[{id:'B',x:0,y:0,z:0,support:'fixed'},{id:'H',x:0,y:0,z:0,support:'custom',fix:[false,true,true,true,true,true]}],members:[],materials:[],sections:[],loads:[],loadCases:[],loadCombinations:[],
+  zeroLengthPmmHinges:[{id:'SH1',n1:'B',n2:'H',property:{id:'PMM',axialStiffness:1e7,rotationalStiffness:1e8,mu:1e6,thetaP:0.02,thetaPC:0.04,rc:1.25,rr:0.2}}]};
+const domain=buildCanonicalAnalysisDomain(model);assert.equal(domain.ok,true,domain.reason);
+const elements=buildHingedFrame3dEntries(domain);assert.equal(elements.length,1);assert.equal(elements[0].kernel.type,'zero-length-pmm');
+const force=new Float64Array(12);force[6]=100;
+const assembler=createEquilibriumAssembler({domain,elements,loadPattern:{ok:true,constantFull:new Float64Array(12),referenceFull:force}});
+const state=createNonlinearStateStore({domainHash:domain.identity.domainHash,initialState:{q:[0],elementStates:{},energies:{}}});
+const backend=await createWasmSparseBackend();
+const result=await solveMdofNewtonStep({assembler,stateStore:state,targetLambda:1,backend,production:true,options:{maxIterations:20}});
+assert.equal(result.ok,true,result.reason);assert.ok(Math.abs(result.q[0]-100/1e7)<1e-12);
+assert.ok(result.elementEvaluationCount>=2);assert.ok(result.stateStore.committed.elementStates.SH1);
+assert.deepEqual(state.committed.elementStates,{});
+const altered=structuredClone(model);altered.zeroLengthPmmHinges[0].property.axialStiffness*=2;
+assert.notEqual(buildCanonicalAnalysisDomain(altered).identity.domainHash,domain.identity.domainHash);
+console.log(JSON.stringify({ok:true,backend:result.backend,displacement:result.q[0],expected:100/1e7,evaluations:result.elementEvaluationCount,scope:'SH1 model to sparse registry to WASM Newton and committed state; axial elastic anchor only'}));

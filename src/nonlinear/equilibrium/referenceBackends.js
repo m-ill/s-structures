@@ -1,3 +1,5 @@
+import { MDOF_LINEAR_BACKEND_VERSION, NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_LINEAR_BACKEND_VERSION, NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import { solveSparseLinear } from '../../solver/sparse/solveSparse.js';
 import {
@@ -6,8 +8,8 @@ import {
   describeComputeBackend,
 } from '../../compute/backends/contract.js';
 
-export const MDOF_LINEAR_BACKEND_VERSION = 'p8-m2-linear-backend-v1';
-export const NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION = 'p8-m7-compute-backend-policy-v1';
+
+
 export const NONLINEAR_COMPUTE_TARGETS = Object.freeze(['auto', 'cpu', 'wasm', 'gpu']);
 
 export function createDenseReferenceBackend(options = {}) {

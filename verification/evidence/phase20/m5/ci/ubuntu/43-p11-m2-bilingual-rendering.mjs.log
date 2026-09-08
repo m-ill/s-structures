@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "milestone": "P11-M2",
+  "catalogKeys": 71,
+  "locales": [
+    "ko-KR",
+    "en-US"
+  ],
+  "snapshotHash": "fec53f5dc82912818e0edc56a6e0a3c63488df46e913b94e2420fb94b575f09e",
+  "semanticHash": "ddc68f7bfebafccb7e88fa08d14aa7e4c3da637009ba45f1deb0f0fd49073fca",
+  "numericValues": 18,
+  "technicalIds": 7,
+  "injectionSafe": true,
+  "glyphProbe": true
+}
+
+

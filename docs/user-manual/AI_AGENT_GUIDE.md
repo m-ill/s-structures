@@ -16,6 +16,8 @@ stableInterfaceFirst: true
 
 ## First Calls
 
+Phase 19 M2 로컬 개발판에서는 `getDesignInputContext`, `previewDesignInputChanges`, `applyDesignInputChanges`, `undoDesignInputChanges`를 in-page Agent 메서드로 제공한다. UI의 **탄성해석 → 설계 입력 변경**과 같은 서비스를 사용하며 숨은 해석 실행은 없다. 타입별 예제·단위·승인·이력 한도는 [M2 계약](../phase19/M2_CONTRACT.md)에 있다. WebMCP v2 도구는 M4에서 연결했으며 [M4 계약](../phase19/M4_CONTRACT.md)을 따른다.
+
 agent는 항상 아래 순서로 현재 상태를 읽는다.
 
 ```js
@@ -32,7 +34,7 @@ const screen = window.SStructuresAgent.getScreenState();
 | `caps.executeActions` | 실행 가능한 action |
 | `caps.uiContract.controls` | stable UI control 목록 |
 | `snapshot.model` | node/member/load/combination 개수 |
-| `snapshot.analysis.ok` | 현재 해석 성공 여부 |
+| `snapshot.analysis?.ok` | 저장된 현재 해석의 성공 여부. 결과가 없으면 analysis는 null |
 | `screen.nativeUi.activeMode` | 현재 상단 작업 탭 |
 
 `caps.qaCommands` exposes the Phase 3 local QA commands. AI agents should read it before reporting Phase 3 readiness.
@@ -47,15 +49,29 @@ const screen = window.SStructuresAgent.getScreenState();
 | `getResults()` | 현재 해석 결과 |
 | `getResultView()` | 결과 panel/view-model |
 | `getResultVisuals(options)` | 노드/부재 결과 시각화 데이터 |
-| `getReport(options)` | 기본 HTML 보고서 |
-| `getDetailedReport(options)` | 상세 HTML 보고서 |
-| `getCalculationPackage(options)` | 계산서 패키지 HTML |
+| `getReport(options)` | 준비된 기본 HTML 보고서 조회 |
+| `getDetailedReport(options)` | 준비된 상세 HTML 보고서 조회 |
+| `getCalculationPackage(options)` | 준비된 계산서 패키지 HTML 조회 |
 | `getDesignBasisInput(options)` | 설계기준 입력 상태와 preview |
 | `getDesignBasisLoadEstimation(options)` | 자동 하중 산정 결과 |
 | `getKdsLoadStandardAudit(options)` | KDS-style 조합 audit |
 | `getMemberDesignTraceReport(options)` | 부재별 설계 trace |
 | `getServiceabilityDriftReport(options)` | 층간변위 검토 |
 | `getRuntimeDiagnostics()` | 원본 index runtime adapter 진단 |
+
+## Phase 19 Result Preparation
+
+Phase 19 M1부터 설계·보고서 계산형 `get*`는 준비된 결과를 읽는다. 결과가 없으면 `RESULT_REQUIRED`, 입력이나 해석 실행이 바뀌면 `STALE_INPUT`이다. `getSnapshot()`은 재해석을 실행하지 않는다.
+
+```js
+// 현재 개발 버전의 명시적 legacy 보고서 준비 경로
+const agent = window.SStructuresAgent;
+agent.runAnalysis();
+agent.prepareResultView('getDetailedReport', { title: 'Review' });
+const report = agent.getDetailedReport({ title: 'Review' });
+```
+
+조회와 준비에는 동일한 options를 사용한다. `prepareResultView`는 등록된 view만 지원하며 WebMCP v1 도구로 공개되지 않는다. 새 입력 식별·결과 API와 전체 준비 대상은 [M0~M1 계약](../phase19/M0_M1_CONTRACT.md)을 참고한다. M3에서 제품 실행 기록과 설계 서비스를 직접 연결했다.
 
 ## QA Commands
 
@@ -232,3 +248,20 @@ AI agent는 아래 항목을 자동으로 확정하지 않는다.
 | 접합부/기초 최종 설계 | 현재는 예비 검토와 force trace 중심 |
 | 정식 비선형 수렴 결과 | pushover는 preliminary |
 | 도면 이미지 자동 모델링 | 향후 agentic vision import 대상 |
+
+## Phase 19 M3 탄성 실행과 설계 검토
+
+`SStructuresAgent.planElasticWorkflow/runElasticWorkflow`로 기존 탄성 케이스를 실행한 다음, `planDesignReview/startDesignReview`에 완료된 1차 또는 Direct P–Delta run ID와 정확한 조합 ID를 전달한다. `getDesignReview`는 계산 없이 기록만 조회하며 `createDesignReviewReport`가 같은 snapshot의 HTML·JSON·CSV를 만든다. 입력 변경 후 stale 결과의 새 보고서 생성·내보내기는 차단된다. 모든 결과는 예비 검토이며 최종 설계전달은 허용하지 않는다.
+
+[M3 API와 호출 예제](../phase19/M3_CONTRACT.md) · [34개 고정 회귀와 브라우저 증거](../../verification/evidence/phase19/m3/README.md). 이 메서드는 in-page Agent API이며 신규 WebMCP 도구는 M4에서 등록했다. 자동 PDF는 실제 transport·figure·qualification이 모두 준비되어야 한다.
+
+## Phase 19 M4 WebMCP v2
+
+현재 직접 모델러와 app 호스트는 v1 9개 + 신규 18개 도구를 제공한다. `get_workflow_context` → typed preview/apply → `plan/start/get_elastic_workflow` → `plan/start_design_review` → `plan/start_report_export` → `get_report_artifact` 순서로 사용한다. 반환된 세션 handle과 실제 run/조합 ID를 전달하고, 입력 변경 후 새 identity를 읽는다. UI 패널은 도구가 생성한 같은 검토를 표시한다.
+
+[도구 스키마·한도·호스트 결속](../phase19/M4_CONTRACT.md) · [39개 고정 회귀와 실제 브라우저 증거](../../verification/evidence/phase19/m4/README.md). report start는 세션 artifact 생성이며 외부 발송·임의 파일 저장·자동 PDF 생성 도구가 아니다. 비선형 계산은 노출하지 않는다.
+
+## 비선형 후보 workflow
+
+[Phase 19 비선형 호출 계약](../phase19/M5_M10_CANDIDATE.md)을 따른다. modelHash를 갱신하고 preview/apply 후 공통 plan/start/status 도구를 사용한다. 자동 힌지는 assumed이고 성공 결과도 candidate다. retry와 checkpoint resume은 별도 동작이며 build 미결속이면 checkpoint를 재개하지 않는다.
+

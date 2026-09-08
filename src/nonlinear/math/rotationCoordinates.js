@@ -1,3 +1,5 @@
+import { ROTATION_COORDINATE_VERSION } from '../../metadata/numericVersions.js';
+export { ROTATION_COORDINATE_VERSION };
 import {
   jetAdd,
   jetConstant,
@@ -11,7 +13,7 @@ import {
   jetVariable,
 } from './secondOrderJet.js';
 
-export const ROTATION_COORDINATE_VERSION = 'p8-m3-rotation-coordinate-v1';
+
 export const ROTATION_VECTOR_LIMIT = Math.PI - 1e-4;
 
 export function requirePrincipalRotationVector(values, name = 'rotationVector') {

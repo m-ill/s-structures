@@ -120,7 +120,8 @@ assert.ok(document.getElementById('ssChartModal'));
 target.SStructuresAnalysisCenter.select('S1_RSA');
 assert.ok(document.getElementById('ssChartSpectrum'));
 
-const calculationPackage = agent.getCalculationPackage({ title: 'P5 Release Gate Package' });
+bridge.analyzeModel(model);
+const calculationPackage = agent.prepareResultView('getCalculationPackage', { title: 'P5 Release Gate Package' });
 assert.match(calculationPackage.html, /Analysis Case Result Details/);
 assert.ok(calculationPackage.data.detailed.analysisCases.caseCount >= 7);
 assert.equal(validateModel(model).ok, true);

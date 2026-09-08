@@ -1,3 +1,5 @@
+import { LINEAR_ELASTIC_ELEMENT_VERSION } from '../../metadata/numericVersions.js';
+export { LINEAR_ELASTIC_ELEMENT_VERSION };
 import {
   condenseReleasedDofs,
   localK12,
@@ -10,7 +12,7 @@ import { CANONICAL_ELEMENT_DESCRIPTOR_VERSION } from '../../solver/domain/elemen
 import { CANONICAL_ANALYSIS_DOMAIN_VERSION } from '../../solver/domain/canonicalDomain.js';
 import { createNonlinearElementContract } from '../core/elementContract.js';
 
-export const LINEAR_ELASTIC_ELEMENT_VERSION = 'p8-m2-linear-elastic-element-v1';
+
 export const LINEAR_ELASTIC_ELEMENT_STATE_VERSION = 'p8-m2-linear-elastic-element-state-v1';
 
 export function createLinearElasticElementKernel(descriptor) {

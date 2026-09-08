@@ -39,7 +39,7 @@ assert.match(pkg.html, /Practice Platform Readiness/);
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, {
   getLastResult: () => analysis,
 });
-assert.equal(agent.getPracticePlatformReadiness().version, PRACTICE_PLATFORM_VERSION);
+assert.equal(agent.prepareResultView('getPracticePlatformReadiness').version, PRACTICE_PLATFORM_VERSION);
 assert.equal(agent.getCapabilities().modules.practicePlatformReadiness, PRACTICE_PLATFORM_VERSION);
 assert.ok(agent.getCapabilities().readApis.includes('getPracticePlatformReadiness'));
 

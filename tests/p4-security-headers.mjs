@@ -4,6 +4,12 @@ import { bootTestApp, registerAndLogin } from './helpers/serverTestApp.mjs';
 const app = await bootTestApp();
 
 try {
+  for(const [path,expected] of [['/index.html?shell=1','SAMEORIGIN'],['/index.html','DENY'],['/app.html?shell=1','DENY'],['/api/health?shell=1','DENY']]) {
+    const response=await app.api('GET',path);
+    assert.equal(response.headers.get('x-frame-options'),expected);
+    assert.ok(response.headers.get('content-security-policy').includes(expected==='SAMEORIGIN'?"frame-ancestors 'self'":"frame-ancestors 'none'"));
+  }
+
   const owner = await registerAndLogin(app, 'p4-security@example.com');
   const created = await app.api('POST', '/api/projects', {
     token: owner.token,

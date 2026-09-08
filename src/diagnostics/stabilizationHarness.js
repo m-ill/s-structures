@@ -3,7 +3,7 @@ import { createKdsRuleBasedLoadCombinations } from '../core/kdsLoadCombinations.
 import { applyDesignBasisLoads } from '../design/loadEstimation.js';
 import { createCalculationPackageHtml } from '../report/calculationPackage.js';
 import { createHtmlReport } from '../report/htmlReport.js';
-import { analyzeModel } from '../solver/linear3d.js';
+import { analyzeModel } from '../compute/product/elasticAnalysisWorkflow.js';
 import { createTwoStoryElasticFrameModel } from '../examples/twoStoryElasticFrame.js';
 import { createAllRepresentativeBuildingModels } from '../examples/representativeBuildings.js';
 import { createCantileverTipLoad } from '../examples/verification.js';

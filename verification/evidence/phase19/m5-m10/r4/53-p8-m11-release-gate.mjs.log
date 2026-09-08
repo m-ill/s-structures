@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "candidateManifestHash": "3dbe3de040fa90523544e33b",
+  "candidateBlockers": [
+    "TWO_INDEPENDENT_EXTERNAL_COMPARISONS_REQUIRED",
+    "M_TIER_PUSHOVER_END_TO_END_REQUIRED",
+    "BROWSER_UI_LATENCY_EVIDENCE_REQUIRED",
+    "M_TIER_NLTH_END_TO_END_REQUIRED",
+    "PARALLEL_WORKER_EVIDENCE_REQUIRED",
+    "Q1_REQUIRED",
+    "Q4_REQUIRED",
+    "INDEPENDENT_PILOT_QUALIFICATION_REQUIRED"
+  ],
+  "evidenceStatus": "BLOCKED",
+  "verifiedManifestHash": "178a4de219fc77735aeaa968",
+  "verifiedGrade": "Q5"
+}
+
+

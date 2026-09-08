@@ -44,7 +44,7 @@ const agent = createIndexAgentApi({ model: () => fixture.model, reanalyze: () =>
   getLastResult: () => analysis,
 });
 assert.equal(agent.getMemberReleaseSummary().version, MEMBER_RELEASE_SUMMARY_VERSION);
-assert.equal(agent.getMemberReleaseBenchmark().version, MEMBER_RELEASE_BENCHMARK_VERSION);
+assert.equal(agent.prepareResultView('getMemberReleaseBenchmark').version, MEMBER_RELEASE_BENCHMARK_VERSION);
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.memberRelease, MEMBER_RELEASE_VERSION);

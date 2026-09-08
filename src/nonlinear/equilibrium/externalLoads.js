@@ -1,3 +1,5 @@
+import { NONLINEAR_EXTERNAL_LOAD_VERSION } from '../../metadata/numericVersions.js';
+export { NONLINEAR_EXTERNAL_LOAD_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import { buildFixedEndLoad, fixedEndTraceRow } from '../../loads/fixedEnd/index.js';
 import { resolveLoadDirection } from '../../loads/fixedEnd/common.js';
@@ -10,7 +12,7 @@ import {
 } from '../../solver/linear3dElement.js';
 import { CANONICAL_CONSTRAINT_VERSION } from '../../solver/domain/constraintSystem.js';
 
-export const NONLINEAR_EXTERNAL_LOAD_VERSION = 'p8-m3-canonical-external-load-v2';
+
 
 const MEMBER_LOAD_TYPES = new Set([
   'udl',

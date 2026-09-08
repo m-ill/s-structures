@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-EQ-02",
+    "NL-EQ-07",
+    "NL-EQ-08",
+    "NL-EQ-09",
+    "NL-EQ-11"
+  ],
+  "reducedDofs": 6,
+  "displacementError": 0,
+  "memberEndForceError": 0,
+  "forceResidual": 0,
+  "momentResidual": 4.935752723080289e-16,
+  "indefiniteResidual": 0
+}
+
+

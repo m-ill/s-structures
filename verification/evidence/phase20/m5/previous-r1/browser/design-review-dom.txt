@@ -1,0 +1,188 @@
+- button "메뉴": ☰
+- generic: S-STRUCTURES
+- tablist "작업 탭":
+  - tab "모델링"
+  - tab "탄성해석" [selected]
+  - tab "비선형해석"
+  - tab "태블릿메모"
+- button "이전 페이지": ◀
+- generic: 1 / 1
+- button "다음 페이지": ▶
+- button "새 페이지": ＋
+- button "Phase 13 실무 워크벤치 열기": 실무 워크벤치
+- link "계정":
+  - /url: app.html#/login
+- button "실행 취소 (Ctrl+Z)": ↶
+- button "다시 실행 (Ctrl+Y)": ↷
+- button "−"
+- button "기본 뷰로": ⌂
+- button "＋"
+- generic: 기본
+- text: "보기:"
+- button "3D"
+- button "평면"
+- button "정면"
+- button "측면"
+- text: "결과:"
+- generic: © 단국대 허석재
+- generic: 해석 절차
+- button "1단계 기본설정":
+  - generic: "1"
+  - generic: 기본설정
+  - generic: ✓
+- button "2단계 하중·질량":
+  - generic: "2"
+  - generic: 하중·질량
+  - generic: ✓
+- button "3단계 하중조합":
+  - generic: "3"
+  - generic: 하중조합
+  - generic: "!"
+- button "4단계 모델검증":
+  - generic: "4"
+  - generic: 모델검증
+  - generic: ✓
+- button "5단계 1차해석":
+  - generic: "5"
+  - generic: 1차해석
+  - generic: "!"
+- button "6단계 고급해석":
+  - generic: "6"
+  - generic: 고급해석
+- button "7단계 결과검토":
+  - generic: "7"
+  - generic: 결과검토
+  - generic: ✓
+- button "상세 하중 입력 표시":
+  - generic: ⋯
+- generic: 해석
+- button "전체 탄성해석 실행":
+  - generic: ▶
+  - generic: 전체 탄성해석
+- button "해석 케이스 설정 열기":
+  - generic: ⚙
+- generic: 결과
+- button "1차 정적해석 결과 열기" [disabled]:
+  - generic: K
+  - generic: 1차
+- button "Direct P-Delta 결과 열기" [disabled]:
+  - generic: PΔ
+  - generic: P-Delta
+- button "모달해석 결과 열기" [disabled]:
+  - generic: T
+  - generic: 모달
+- button "응답스펙트럼해석 결과 열기" [disabled]:
+  - generic: S
+  - generic: RSA
+- button "탄성 고유치 좌굴 결과 열기" [disabled]:
+  - generic: λ
+  - generic: 좌굴
+- button "선형 시간이력 (예비) 결과 열기" [disabled]:
+  - generic: t
+  - generic: THA
+- generic: 조합
+- generic: 결과
+- button "변형"
+- button "M"
+- button "Q"
+- button "N"
+- button "반력"
+- button "수치"
+- button "T"
+- button "검정"
+- button "절점#"
+- button "부재#"
+- button "길이"
+- button "로컬축"
+- button "설계"
+- button "처짐"
+- generic: 보고
+- button "하중조합":
+  - generic: ☷
+  - generic: 하중조합
+- button "설계요약":
+  - generic: ▤
+  - generic: 설계요약
+- button "검증":
+  - generic: ✓
+  - generic: 검증
+- generic: 상태
+- generic "해석 OK · δmax 4.73mm · 평형✓ · 검정 0.40 전체 OK": 설계 입력 변경 · 해석 재실행 필요
+- generic: 변형 배율
+- generic: Scale
+- combobox "Scale":
+  - option "auto" [selected]
+  - option "10"
+  - option "50"
+  - option "100"
+  - option "500"
+- status: 설계 입력 변경 · 이전 결과는 무효입니다. 해석을 다시 실행하세요.
+- button "설계 입력 변경"
+- button "탄성 설계 검토"
+- status: WebMCP registered · 도구 36개 · start_report_export · 검토 결과 최신 · 탄성 예비 검토 · 비선형 candidate
+- button "해석 케이스"
+- button "ratio"
+- button "▶ 스텝 재생"
+- dialog "탄성해석 결과 시각화":
+  - banner:
+    - heading "Phase20 browser static" [level=2]
+    - generic: 1차 정적
+    - generic: 완료
+    - button "선택한 해석 케이스 설정 열기": ⚙
+    - button "결과 창 닫기": ×
+  - tablist:
+    - tab "변형" [selected]
+    - tab "부재력"
+    - tab "반력"
+    - tab "검정"
+  - generic: 조합
+  - strong: GRAV
+  - generic: 최대 변위
+  - strong: 0.016 mm
+  - generic: 부재
+  - strong: "1"
+  - generic: 상태
+  - strong: 완료
+  - generic: 모델 화면
+  - button "모델 화면 처짐" [pressed]: 변형
+  - button "처짐"
+  - heading "정적 변형 형상" [level=3]
+  - img "정적 변형 형상":
+    - generic "B"
+    - generic "T"
+    - generic: 원형상
+    - generic: 결과형상
+    - generic: scale 23015.76
+  - generic "절점 변위 (2)"
+  - table:
+    - rowgroup:
+      - row "절점 dx dy dz":
+        - columnheader "절점"
+        - columnheader "dx"
+        - columnheader "dy"
+        - columnheader "dz"
+    - rowgroup:
+      - row "B 0 mm 0 mm 0 mm":
+        - cell "B"
+        - cell "0 mm"
+        - cell "0 mm"
+        - cell "0 mm"
+      - row "T 0 mm 0 mm -0.016 mm":
+        - cell "T"
+        - cell "0 mm"
+        - cell "0 mm"
+        - cell "-0.016 mm"
+- dialog "탄성 설계 검토":
+  - heading "탄성 설계 검토" [level=2]
+  - paragraph: 기존 케이스를 명시적으로 실행하고, 완료된 정적·P–Delta 조합을 골라 예비 설계 검토를 수행합니다. 조합마다 검토할 기록을 하나만 선택하세요. 최종 설계 승인과는 구분합니다.
+  - textbox "실행할 해석 케이스 ID": P20-BROWSER-STATIC
+  - button "선택 케이스 실행"
+  - button "완료 기록 새로고침"
+  - checkbox "GRAV · P20-BROWSER-STATIC (off) · P20-BROWSER-STATIC:2026-09-08T01:33:43.957Z:4" [checked]
+  - text: GRAV · P20-BROWSER-STATIC (off) · P20-BROWSER-STATIC:2026-09-08T01:33:43.957Z:4
+  - button "설계 검토 실행"
+  - button "검토 결과 조회" [active]
+  - button "보고서 생성"
+  - button "닫기"
+  - status: 작업 완료
+  - generic: "{ \"status\": \"NOT_CHECKED\", \"counts\": { \"OK\": 12, \"WARN\": 0, \"NG\": 0, \"NOT_CHECKED\": 1 }, \"maxUtilization\": 0.45518664511358836, \"governing\": { \"analysisRunId\": \"P20-BROWSER-STATIC:2026-09-08T01:33:43.957Z:4\", \"comboId\": \"GRAV\", \"memberId\": \"C\", \"category\": \"steel\", \"checkId\": \"steel-slenderness\", \"status\": \"OK\", \"ratio\": 0.45518664511358836, \"demand\": 91.03732902271767, \"capacity\": 200, \"unit\": \"-\", \"expression\": \"max(KL/ry, KL/rz) / limit\", \"x\": 0, \"method\": \"allowable_stress_preliminary\" }, \"checkCount\": 13 }"

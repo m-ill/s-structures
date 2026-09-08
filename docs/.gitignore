@@ -1,0 +1,2 @@
+# Local document export packages should not become source documentation.
+*.zip

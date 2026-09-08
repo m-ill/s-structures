@@ -1,0 +1,712 @@
+{
+  "version": "p19-m0-m1-acceptance-v1",
+  "date": "2026-09-07",
+  "status": "PASS_WITH_SCOPE_LIMITS",
+  "implementedWorkpackages": [
+    "M0",
+    "M1"
+  ],
+  "finalSourceCommit": "b8dd86418115702fce99fdd812b5d30bc45163c2",
+  "validatedRuntimeTrees": {
+    "src": "945d5e17617dbc90eaae398a4533d20cfad8f8c4",
+    "server": "884174bb8b6afe08de4bd559a68741f1e6a6cf95",
+    "index.html": "5e5fe41334bb5d79d37746fdfa987b93639090d8",
+    "app.html": "eab4e60227d16d8e7c599099b9db4cd94ff0052d"
+  },
+  "strategy": "Full 56-test R3 baseline plus targeted R4/R5/R6 changes; not a single 59-test run on one final Git commit.",
+  "runtimeBaseCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca",
+  "runtimeDelta": "Only three diagnostic names added to resultViewCache; all new names and common contracts/product/command bridge retested in R5, pilot fixture corrected and retested in R6.",
+  "runtimeDeltaSha256": "173a08cb0f50bdc7c9063de443b33d37f0078de96eda82c60da2f383f32cf0b7",
+  "requiredDistinctTests": 59,
+  "passedDistinctTests": 59,
+  "failedLatestTests": 0,
+  "latestResults": [
+    {
+      "test": "tests/p19-m1-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "p19-m1-contract.mjs.log",
+      "sha256": "e20b8e22bf8b4083267386e8f19009ab579466aae3df464486ef8f85a0ba7b27",
+      "run": "R5",
+      "sourceCommit": "e07f975a1e831f89f07b13763370b67cf156b145"
+    },
+    {
+      "test": "tests/p19-m1-product-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "p19-m1-product-parity.mjs.log",
+      "sha256": "c9e41788985e7f5c9746e4edb492bcabccdd83dd91db40c6bf7334ed2de25076",
+      "run": "R5",
+      "sourceCommit": "e07f975a1e831f89f07b13763370b67cf156b145"
+    },
+    {
+      "test": "tests/webmcp-integration.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-webmcp-integration.mjs.log",
+      "sha256": "5cbc7ba9409c691825554f8d58bb761b61c44895fece8fa21d46a96ef277fc2c",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/webmcp-bridge-security.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "04-webmcp-bridge-security.mjs.log",
+      "sha256": "425a5be58a131bc9472dbb6207bd4d849be6f3e6b28ee4ef0cad6c8675c534da",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m31-agent-command-bridge.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "m31-agent-command-bridge.mjs.log",
+      "sha256": "3e30e61370c16ba7eca44398099f25c8dec7ece624337d9c815f7f5e96404d3e",
+      "run": "R5",
+      "sourceCommit": "e07f975a1e831f89f07b13763370b67cf156b145"
+    },
+    {
+      "test": "verification/harnesses/check-public-import-contracts.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "06-check-public-import-contracts.mjs.log",
+      "sha256": "676456fce10469c74390dfc48290b589e8f297f4d73a3494a822fa834c3cc10d",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "verification/harnesses/check-agent-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "07-check-agent-contract.mjs.log",
+      "sha256": "dca3ed2af038b22fd8f2b4cf1183a9de4b68ac00f7e5c87cf59324dc0f70faf9",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m5-steel-design.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "08-m5-steel-design.mjs.log",
+      "sha256": "9424c62202f1efe1bf6990d7a401f2e92884d97b85c018b1da43c72ee53055b9",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m6-rc-design.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "09-m6-rc-design.mjs.log",
+      "sha256": "ba5648d66dda2a89387694db6cc238bb656fc43871e02754aa43d1d8a0b69846",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m9-index-bridge.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "10-m9-index-bridge.mjs.log",
+      "sha256": "208e8fbae2a0ca70e839fed79b5eb544bdfa0b24e91abad56bb195226d260a6f",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m10-index-results-panel.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "11-m10-index-results-panel.mjs.log",
+      "sha256": "c89756b0f866886024596e19ea45435537f4cd8172181bd25363bcbf0b9491b0",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m11-agent-modeling.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "12-m11-agent-modeling.mjs.log",
+      "sha256": "cb3daafc4239b8a94c7c80ff62adaedbcbe19f500c9d5a5d6796e14c2c1c81d8",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m34-detailed-report.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "13-m34-detailed-report.mjs.log",
+      "sha256": "8ac088ece6acdd4374d62d7a51b062213477465bceb2726cf1f9960754477785",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m36-detailed-report-ui.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "14-m36-detailed-report-ui.mjs.log",
+      "sha256": "a72560587c92f6e7da45c53195b27b316397ee5800edb4a4f72270b9a901db4c",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m43-calculation-package-ui.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "15-m43-calculation-package-ui.mjs.log",
+      "sha256": "7f97db65a813b872b731caa37df1f4a51cd4c6fb521c76c9f896e7a5df28354d",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p7-m11-run-record.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "16-p7-m11-run-record.mjs.log",
+      "sha256": "701389deef81bd365e97dbd098b3b77f3c930b46f5ad8fcdea4fc6f3b98bf67a",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p7-m11-agent-analysis-status.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "17-p7-m11-agent-analysis-status.mjs.log",
+      "sha256": "09895f5db697ff98ba6b9fccd7feac9be9238501af92e75b537fb32c864e9e14",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p7-m11-ui-run-records.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "18-p7-m11-ui-run-records.mjs.log",
+      "sha256": "e0167c6a661f55fbaebd418252d3c10d141598b79ec6ea6f9627cb6ff3f9c019",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p7-m11-elastic-setup-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "19-p7-m11-elastic-setup-workflow.mjs.log",
+      "sha256": "1a32ca809ab5070e0c476ebd8f0c7ba467fb859bc43cb99fa6f434e2a0939a32",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p7-m11-elastic-result-popup.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "20-p7-m11-elastic-result-popup.mjs.log",
+      "sha256": "9ba0fca9719c9148b7597175caef0194509c71a69225fb4f803f5ec895525359",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p7-m11-elastic-analysis-ui.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "21-p7-m11-elastic-analysis-ui.mjs.log",
+      "sha256": "60e72af2fe73b82c9734c92a452ebe4804193865e27152ec3e822e187af916fd",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p11-m7-product-agent-export.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "22-p11-m7-product-agent-export.mjs.log",
+      "sha256": "5e5a3953e21f07278f164ad2abcb0d33a658181e222a8bea8b4fa627d1171c85",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p13-m2-agent-report-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "23-p13-m2-agent-report-parity.mjs.log",
+      "sha256": "2bcc93e105813c7bd584f4b61e08abd50fc0539afbc9637a0895f18e543210e9",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p13-m4-m9-index-milestones-ui.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "24-p13-m4-m9-index-milestones-ui.mjs.log",
+      "sha256": "86b1656d8367ce209544296a4d18dc389928234db32bd5fec39ce323f7135164",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p8-m10-job-agent-api.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "25-p8-m10-job-agent-api.mjs.log",
+      "sha256": "b93319cb9f7eec09f8db6a4fe3f623d8aedec20235da3140b0ba47b6b93b5797",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p8-m10-product-ui.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "26-p8-m10-product-ui.mjs.log",
+      "sha256": "bd92d273c9545c8a50bed505e6a99749d073cabf2243bfed4f39f46752409c77",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p17-m1-json-schema-validator.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "27-p17-m1-json-schema-validator.mjs.log",
+      "sha256": "b16c391c28f8bd5a4dce45922f3f60adf66599cbaa7c7882e007bb3d1f2258b5",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p17-m1-framework-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "28-p17-m1-framework-contract.mjs.log",
+      "sha256": "6506563ba2d1a096e0155e7b40eea93f641e41ee20d25475ec18857f645390fb",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p17-m1-result-extractor.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "29-p17-m1-result-extractor.mjs.log",
+      "sha256": "be900c3b55c83979af87c728ae836353603726c0442237450686f04dea27539d",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p18-th1-sp1.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "30-p18-th1-sp1.mjs.log",
+      "sha256": "58688eaa46943d39c81ad408922a32dc30f3002ad768c4364ed885a23c525f49",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p18-modal-stabilization.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "31-p18-modal-stabilization.mjs.log",
+      "sha256": "13cb4d98813b2b68784e953271cd5d86eb733bb61f2f13a075aff2b29380ac9b",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p18-link-pmm.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "32-p18-link-pmm.mjs.log",
+      "sha256": "33171f0679ff673e9eea65813eafff18e441c7d4c2e23cc3949e3ffacb9fff98",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p18-strix21-completion.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "33-p18-strix21-completion.mjs.log",
+      "sha256": "174c525416e447c27c2a9efa38f8b74a73ba653aea37e06961cc444204706e40",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p18a-additional-comparisons.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "34-p18a-additional-comparisons.mjs.log",
+      "sha256": "54a15495c461399dce803a398961d4ea1f305abfa7905810333631393568d98d",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m14-report-export.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "35-m14-report-export.mjs.log",
+      "sha256": "aeaec6b40f06b65eba8515050e371e747f5f7fe789d4ae7ac517d00ca42d24a5",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m32-elastic-3d-import-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "36-m32-elastic-3d-import-workflow.mjs.log",
+      "sha256": "eaa9dd372f1220fb27e948faa056244cf6aac76b2b420cf81344a9a1fbf5c105",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m39-rc-detailing.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "37-m39-rc-detailing.mjs.log",
+      "sha256": "fdd0592e240e71dd3154f39640c649d9ce42682586c6bc46abaee134b6b51165",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m40-steel-detailing.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "38-m40-steel-detailing.mjs.log",
+      "sha256": "dce19d6fc9dc3c1679a360b7268129a6ce46e2d50f37c3ed3399c4ebd85bea4f",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m41-connection-foundation.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "39-m41-connection-foundation.mjs.log",
+      "sha256": "48a01b57e4b1d1d4dc4df1a9285ffa103c3679422e43cd299d15f189a1d52894",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m42-calculation-package.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "40-m42-calculation-package.mjs.log",
+      "sha256": "045eb8329fafb75b8f034a73bd9b251a17ff59696a1b9635a3bbb6a7ee6e68eb",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m45-member-design-trace.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "41-m45-member-design-trace.mjs.log",
+      "sha256": "ec2a3cc65ef223ca75a41f6e222215035a86aa28c044d50acaed18e93c457ab5",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/m49-serviceability-drift.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "42-m49-serviceability-drift.mjs.log",
+      "sha256": "69fee791b59bef919fc1bf485aa92b7ddf7051323aa6842a79b9124d4db20956",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p5-analysis-center.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "43-p5-analysis-center.mjs.log",
+      "sha256": "75db561fe3d2c0b03b5d614d15578fcca65ff5b9150d61a29418428f095d745e",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p5-release-gate.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "44-p5-release-gate.mjs.log",
+      "sha256": "ce9e13a35a27496eda9cf3fbc1138d3edc2752fed7aa0b3abb4b7b4abdfd8106",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p2-design-demand-package.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "45-p2-design-demand-package.mjs.log",
+      "sha256": "2a50c87cbe7ada7a91dd25d6b5172fce67bea4790431edbc24c743c79b22c6f7",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p2-m4-combination-envelope-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "46-p2-m4-combination-envelope-contract.mjs.log",
+      "sha256": "f33dfefff13e2dc0453a140fcf8599f419cf01254cd84dabf3df54ece52437f3",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p2-mvp-m5-advanced-elastic-trace.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "47-p2-mvp-m5-advanced-elastic-trace.mjs.log",
+      "sha256": "b6fae21362edf352e8775f6993e82e8b0f2342a28a60f0ec41f8346cdbcc361a",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p2-practice-platform-readiness.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "48-p2-practice-platform-readiness.mjs.log",
+      "sha256": "de4e75295cc9b94436a525c7182eba7c5a2ca185a1f79895e79ddc090d6bf2a6",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p2-practice-validation-report.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 600000,
+      "log": "49-p2-practice-validation-report.mjs.log",
+      "sha256": "8fb86d64ef3ad5181a8eb860751c9d7346380cc122c398064f8da3ec1c37ad4b",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p2-mvp-s6-result-postprocessing.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "50-p2-mvp-s6-result-postprocessing.mjs.log",
+      "sha256": "70dfbf4a16c1725e421afeb5d384a4d06d4615a7e324a3bc7de832f4ff1c76f8",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p3-design-rc.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "51-p3-design-rc.mjs.log",
+      "sha256": "961835e99fa0fc2f75bff10c1e274f3795ffd99fe473fa00ac53ba9e128107b6",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p3-design-steel-foundation.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "52-p3-design-steel-foundation.mjs.log",
+      "sha256": "9d0f3f0949c8b5c5c14ac854d7c64dc1cd91370371505ba1150a03417f9dde8d",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p3-m19-integrated-report.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "53-p3-m19-integrated-report.mjs.log",
+      "sha256": "f744f5e86a5dbb1ad995ebf21f5e2aac0d87f5e2602eed9d6b7840548470025c",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p3-m14-nonlinear-geometry.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "54-p3-m14-nonlinear-geometry.mjs.log",
+      "sha256": "2e6a9b36029f6c2b4a0aba36508d0e08440e0cc89abfb8204c763396c06117fe",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p3-m15-nonlinear-hinge-control.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "55-p3-m15-nonlinear-hinge-control.mjs.log",
+      "sha256": "104d65ae4c7caffc02a6eaaf02f47acb4d5e4badbfb3123f5d68b8c5e64cdcf5",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p3-m16-nonlinear-fiber-nlth.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "56-p3-m16-nonlinear-fiber-nlth.mjs.log",
+      "sha256": "16bf74e88732c0bf08c29cdd9a0b71870955f5d10d1aa9ef9e5938b6eac31499",
+      "run": "R3",
+      "sourceCommit": "0116957e3f210c0a32571348609cbe692b2dc5ca"
+    },
+    {
+      "test": "tests/p2-t50-pilot-project-validation.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "pilot.log",
+      "sha256": "29831193ae4bd1ead1ec2ee247e080b3aa9be96100fa155d486986a0d93a8954",
+      "run": "R6",
+      "sourceCommit": "b8dd86418115702fce99fdd812b5d30bc45163c2"
+    },
+    {
+      "test": "tests/p2-mvp-s4-member-release.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "p2-mvp-s4-member-release.mjs.log",
+      "sha256": "2071c8db8b11bdf80c4eaf5f86e79e3f246e14ea84f0eb10ed657e4002e487d2",
+      "run": "R5",
+      "sourceCommit": "e07f975a1e831f89f07b13763370b67cf156b145"
+    },
+    {
+      "test": "tests/p2-mvp-s4-rigid-diaphragm.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "p2-mvp-s4-rigid-diaphragm.mjs.log",
+      "sha256": "9ec2331a76709453a1d08a9ab59eb11c7ead2efc071db79be34a490bf484a2e5",
+      "run": "R5",
+      "sourceCommit": "e07f975a1e831f89f07b13763370b67cf156b145"
+    }
+  ],
+  "runProvenance": [
+    {
+      "id": "R1",
+      "localArtifactRoot": "output/phase19/m0-m1-validation-r1-20260907",
+      "recordSha256": "72691defb0ea03284df8b677908cbd8cfd2526cb93927cdba9ea26b0f3343d31",
+      "copiedRecord": "r1-validation.json"
+    },
+    {
+      "id": "R2",
+      "localArtifactRoot": "output/phase19/m0-m1-validation-r2-20260907",
+      "recordSha256": "8336020c3bd251ed53738ac4f32cae9a47344dfc1eedd8bc59b7aadf9ce7852a",
+      "copiedRecord": "r2-validation.json"
+    },
+    {
+      "id": "R3",
+      "localArtifactRoot": "output/phase19/m0-m1-validation-r3-20260907",
+      "recordSha256": "2fffb4893b51ea84e0e5b0aef24971bed63e3b0aa8c3c424f1b5c0e2a1fbf42e",
+      "copiedRecord": "r3-validation.json"
+    },
+    {
+      "id": "R4",
+      "localArtifactRoot": "output/phase19/m0-m1-validation-r4-20260907",
+      "recordSha256": "d0846d740739dd0c95279f2d64c143d1896d10de311e169293a29a6f2e361361",
+      "copiedRecord": "r4-validation.json"
+    },
+    {
+      "id": "R5",
+      "localArtifactRoot": "output/phase19/m0-m1-validation-r5-20260907",
+      "recordSha256": "5a0564313ad976625465d910af0cc52620509ba77e764e983118b0cf5309b1f5",
+      "copiedRecord": "r5-validation.json"
+    },
+    {
+      "id": "R6",
+      "localArtifactRoot": "output/phase19/m0-m1-validation-r6-20260907",
+      "recordSha256": "b1675b0336c8d173ce21381db72436496ef8f0ed3f8ea0a39355dfcb18e256e6",
+      "copiedRecord": "r6-validation.json"
+    }
+  ],
+  "qualification": {
+    "productionReady": false,
+    "newWebMcpDesignTools": false,
+    "nonlinearIndependentQualification": false,
+    "githubPublished": false
+  },
+  "limitations": [
+    "R2 P-Delta practice report timed out at 180 seconds; passed in R3 with 600-second test harness budget. This does not qualify UI responsiveness or performance.",
+    "R3 M31 getter call and R5 pilot missing-model fixture failed before explicit-preparation migration was completed; original records retained.",
+    "Browser smoke was at e75fb2f. Subsequent three diagnostic getter changes were verified through Node tests; full final-browser workflow remains M4.",
+    "Windows Node validation only; full Phase19 G1-G8 and platform/browser matrix remain pending."
+  ]
+}

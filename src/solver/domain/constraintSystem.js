@@ -1,3 +1,5 @@
+import { CANONICAL_CONSTRAINT_VERSION } from '../../metadata/numericVersions.js';
+export { CANONICAL_CONSTRAINT_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 import { buildDiaphragmDofMap } from '../diaphragmDofMap.js';
 import {
@@ -7,7 +9,7 @@ import {
 } from './supportConstraints.js';
 import { normalizeGeneralConstraints } from '../../core/constraintDefinitions.js';
 
-export const CANONICAL_CONSTRAINT_VERSION = 'p8-m1-canonical-constraint-v1';
+
 
 export function buildConstraintSystem(nodes = [], rigidDiaphragms = [], options = {}) {
   const tolerance = positive(options.tolerance, 1e-11);

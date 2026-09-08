@@ -1,0 +1,202 @@
+{
+  "version": "m46-stabilization-harness",
+  "id": "representative-01-regular-office-frame",
+  "name": "Regular office frame",
+  "category": "representative-building",
+  "inputPath": "representative-building-generator",
+  "ok": true,
+  "issues": [],
+  "checks": [
+    {
+      "id": "validation-errors",
+      "ok": true,
+      "message": "Model validation must have no errors."
+    },
+    {
+      "id": "analysis-ok",
+      "ok": true,
+      "message": "Elastic analysis must complete successfully."
+    },
+    {
+      "id": "combination-count",
+      "ok": true,
+      "message": "Required load combinations must be present."
+    },
+    {
+      "id": "load-count",
+      "ok": true,
+      "message": "Required model loads must be present."
+    },
+    {
+      "id": "combo-results",
+      "ok": true,
+      "message": "Every load combination must solve."
+    },
+    {
+      "id": "equilibrium",
+      "ok": true,
+      "message": "Equilibrium residual must stay within tolerance."
+    },
+    {
+      "id": "visual-nodes",
+      "ok": true,
+      "message": "Result visuals must include every node."
+    },
+    {
+      "id": "visual-members",
+      "ok": true,
+      "message": "Result visuals must include every member."
+    },
+    {
+      "id": "visual-displacement",
+      "ok": true,
+      "message": "Result visuals must include a nonzero displacement envelope."
+    },
+    {
+      "id": "html-report",
+      "ok": true,
+      "message": "HTML report must be generated from the same result."
+    },
+    {
+      "id": "calculation-package",
+      "ok": true,
+      "message": "Calculation package must include the standard sections."
+    },
+    {
+      "id": "member-trace",
+      "ok": true,
+      "message": "Member design trace rows must be available."
+    }
+  ],
+  "summary": {
+    "model": {
+      "nodes": 45,
+      "members": 84,
+      "loads": 168,
+      "loadCases": 4,
+      "combinations": 3
+    },
+    "validation": {
+      "ok": true,
+      "errorCount": 0,
+      "warningCount": 0,
+      "errors": [],
+      "warnings": []
+    },
+    "analysis": {
+      "ok": true,
+      "comboCount": 3,
+      "maxDisplacement": 0.002407906176386256,
+      "maxUtilization": 0.1649559821145718,
+      "designStatus": "OK",
+      "designOk": true,
+      "validationErrors": [],
+      "comboResults": [
+        {
+          "id": "EL-DL",
+          "ok": true,
+          "maxDisplacement": 0.0006581686496846922,
+          "maxUtilization": 0.07178677533459046,
+          "equilibriumResidual": 2.7782707165595305e-16,
+          "solverResidualNorm": 4.7925169860651916e-15,
+          "totalLoad": [
+            0,
+            0,
+            -1636.8000000000006
+          ],
+          "totalReaction": [
+            4.440892098500626e-15,
+            7.993605777301127e-15,
+            1636.8000000000002
+          ]
+        },
+        {
+          "id": "EL-WX",
+          "ok": true,
+          "maxDisplacement": 0.002407906176386256,
+          "maxUtilization": 0.10581332374844965,
+          "equilibriumResidual": 1.6873319628335704e-15,
+          "solverResidualNorm": 3.020893558612926e-14,
+          "totalLoad": [
+            73,
+            0,
+            -1372.8000000000006
+          ],
+          "totalReaction": [
+            -73.00000000000232,
+            -1.7763568394002505e-15,
+            1372.8000000000002
+          ]
+        },
+        {
+          "id": "EL-WY",
+          "ok": true,
+          "maxDisplacement": 0.0019445160091582378,
+          "maxUtilization": 0.09888774653454908,
+          "equilibriumResidual": 6.625107093334264e-16,
+          "solverResidualNorm": 3.9075192188380505e-14,
+          "totalLoad": [
+            0,
+            63.87500000000003,
+            -1372.8000000000006
+          ],
+          "totalReaction": [
+            -1.6431300764452317e-14,
+            -63.87500000000055,
+            1372.7999999999997
+          ]
+        }
+      ]
+    },
+    "visuals": {
+      "version": "m13-index-result-visuals",
+      "resultId": "ENVELOPE",
+      "nodes": 45,
+      "members": 84,
+      "loads": 168,
+      "reactions": 9,
+      "maxDisplacement": 0.0030316999565710226
+    },
+    "report": {
+      "version": "m14-report-export",
+      "title": "Regular office frame - Stabilization Report",
+      "htmlLength": 12696
+    },
+    "calculationPackage": {
+      "version": "m42-calculation-package",
+      "sectionCount": 7,
+      "htmlLength": 30332,
+      "qualityAuditOk": false,
+      "qualityItems": [
+        {
+          "name": "Load derivation attached",
+          "status": "Missing"
+        },
+        {
+          "name": "Combination results available",
+          "status": "OK"
+        },
+        {
+          "name": "Member checks available",
+          "status": "OK"
+        },
+        {
+          "name": "RC schedule available",
+          "status": "Not applicable"
+        },
+        {
+          "name": "Steel schedule available",
+          "status": "OK"
+        },
+        {
+          "name": "Foundation review available",
+          "status": "OK"
+        }
+      ],
+      "loadDerivationRows": 0,
+      "memberTraceRows": 84,
+      "serviceabilityRows": 12
+    },
+    "actionHistory": []
+  }
+}

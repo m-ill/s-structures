@@ -1,0 +1,8001 @@
+{
+  "schemaVersion": 3,
+  "units": {
+    "length": "m",
+    "force": "kN",
+    "moment": "kN.m",
+    "stress": "N/mm2",
+    "displacement": "mm"
+  },
+  "materials": [
+    {
+      "id": "steel",
+      "name": "Steel SS400",
+      "E": 205000,
+      "G": 79000,
+      "Fy": 235,
+      "Fu": 400,
+      "density": 7.85,
+      "allow": {
+        "fb": 156.7,
+        "ft": 156.7,
+        "fc": 156.7,
+        "fv": 90.4
+      }
+    },
+    {
+      "id": "sm490",
+      "name": "Steel SM490",
+      "E": 205000,
+      "G": 79000,
+      "Fy": 325,
+      "Fu": 490,
+      "density": 7.85,
+      "allow": {
+        "fb": 216.7,
+        "ft": 216.7,
+        "fc": 216.7,
+        "fv": 125
+      }
+    },
+    {
+      "id": "concrete",
+      "name": "Concrete Fc24",
+      "E": 22700,
+      "G": 9500,
+      "Fy": 24,
+      "Fu": 24,
+      "density": 2.4,
+      "allow": {
+        "fb": 8,
+        "ft": 0.8,
+        "fc": 8,
+        "fv": 0.73
+      }
+    },
+    {
+      "id": "wood",
+      "name": "Wood",
+      "E": 7000,
+      "G": 440,
+      "Fy": 22,
+      "Fu": 22,
+      "density": 0.38,
+      "allow": {
+        "fb": 8.1,
+        "ft": 5.4,
+        "fc": 6.5,
+        "fv": 0.66
+      }
+    }
+  ],
+  "sections": [
+    {
+      "id": "h200",
+      "name": "H-200x100x5.5x8",
+      "type": "H",
+      "dims": {
+        "H": 200,
+        "B": 100,
+        "tw": 5.5,
+        "tf": 8
+      },
+      "A": 0.002716,
+      "Iz": 0.0000184,
+      "Zz": 0.000184,
+      "Iy": 0.00000134,
+      "Zy": 0.0000268,
+      "J": 5e-8
+    },
+    {
+      "id": "h300",
+      "name": "H-300x150x6.5x9",
+      "type": "H",
+      "dims": {
+        "H": 300,
+        "B": 150,
+        "tw": 6.5,
+        "tf": 9
+      },
+      "A": 0.004678,
+      "Iz": 0.0000721,
+      "Zz": 0.000481,
+      "Iy": 0.00000508,
+      "Zy": 0.0000677,
+      "J": 9e-8
+    },
+    {
+      "id": "h400",
+      "name": "H-400x200x8x13",
+      "type": "H",
+      "dims": {
+        "H": 400,
+        "B": 200,
+        "tw": 8,
+        "tf": 13
+      },
+      "A": 0.008412,
+      "Iz": 0.000237,
+      "Zz": 0.00119,
+      "Iy": 0.0000174,
+      "Zy": 0.000174,
+      "J": 3.7e-7
+    },
+    {
+      "id": "box200",
+      "name": "BOX-200x200x9",
+      "type": "BOX",
+      "dims": {
+        "H": 200,
+        "B": 200,
+        "t": 9
+      },
+      "A": 0.006789,
+      "Iz": 0.0000409,
+      "Zz": 0.000409,
+      "Iy": 0.0000409,
+      "Zy": 0.000409,
+      "J": 0.0000627
+    },
+    {
+      "id": "rc3060",
+      "name": "RC 300x600",
+      "type": "RECT",
+      "dims": {
+        "B": 300,
+        "H": 600
+      },
+      "A": 0.18,
+      "Iz": 0.0054,
+      "Zz": 0.018,
+      "Iy": 0.00135,
+      "Zy": 0.009,
+      "J": 0.0037
+    }
+  ],
+  "nodes": [
+    {
+      "id": "N111",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N211",
+      "x": 6,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N311",
+      "x": 12,
+      "y": 0,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N121",
+      "x": 0,
+      "y": 5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N221",
+      "x": 6,
+      "y": 5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N321",
+      "x": 12,
+      "y": 5,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N131",
+      "x": 0,
+      "y": 10,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N231",
+      "x": 6,
+      "y": 10,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N331",
+      "x": 12,
+      "y": 10,
+      "z": 0,
+      "support": "fixed"
+    },
+    {
+      "id": "N112",
+      "x": 0,
+      "y": 0,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N212",
+      "x": 6,
+      "y": 0,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N312",
+      "x": 12,
+      "y": 0,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N122",
+      "x": 0,
+      "y": 5,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N222",
+      "x": 6,
+      "y": 5,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N322",
+      "x": 12,
+      "y": 5,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N132",
+      "x": 0,
+      "y": 10,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N232",
+      "x": 6,
+      "y": 10,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N332",
+      "x": 12,
+      "y": 10,
+      "z": 3.4,
+      "support": null
+    },
+    {
+      "id": "N113",
+      "x": 0,
+      "y": 0,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N213",
+      "x": 6,
+      "y": 0,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N313",
+      "x": 12,
+      "y": 0,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N123",
+      "x": 0,
+      "y": 5,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N223",
+      "x": 6,
+      "y": 5,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N323",
+      "x": 12,
+      "y": 5,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N133",
+      "x": 0,
+      "y": 10,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N233",
+      "x": 6,
+      "y": 10,
+      "z": 6.8,
+      "support": null
+    },
+    {
+      "id": "N333",
+      "x": 12,
+      "y": 10,
+      "z": 6.8,
+      "support": null
+    }
+  ],
+  "members": [
+    {
+      "id": "M1",
+      "type": "frame",
+      "n1": "N111",
+      "n2": "N112",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M2",
+      "type": "frame",
+      "n1": "N211",
+      "n2": "N212",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M3",
+      "type": "frame",
+      "n1": "N311",
+      "n2": "N312",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M4",
+      "type": "frame",
+      "n1": "N121",
+      "n2": "N122",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M5",
+      "type": "frame",
+      "n1": "N221",
+      "n2": "N222",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M6",
+      "type": "frame",
+      "n1": "N321",
+      "n2": "N322",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M7",
+      "type": "frame",
+      "n1": "N131",
+      "n2": "N132",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M8",
+      "type": "frame",
+      "n1": "N231",
+      "n2": "N232",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M9",
+      "type": "frame",
+      "n1": "N331",
+      "n2": "N332",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M10",
+      "type": "frame",
+      "n1": "N112",
+      "n2": "N113",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M11",
+      "type": "frame",
+      "n1": "N212",
+      "n2": "N213",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M12",
+      "type": "frame",
+      "n1": "N312",
+      "n2": "N313",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M13",
+      "type": "frame",
+      "n1": "N122",
+      "n2": "N123",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M14",
+      "type": "frame",
+      "n1": "N222",
+      "n2": "N223",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M15",
+      "type": "frame",
+      "n1": "N322",
+      "n2": "N323",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M16",
+      "type": "frame",
+      "n1": "N132",
+      "n2": "N133",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M17",
+      "type": "frame",
+      "n1": "N232",
+      "n2": "N233",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M18",
+      "type": "frame",
+      "n1": "N332",
+      "n2": "N333",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "column"
+      }
+    },
+    {
+      "id": "M19",
+      "type": "frame",
+      "n1": "N112",
+      "n2": "N212",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M20",
+      "type": "frame",
+      "n1": "N212",
+      "n2": "N312",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M21",
+      "type": "frame",
+      "n1": "N122",
+      "n2": "N222",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M22",
+      "type": "frame",
+      "n1": "N222",
+      "n2": "N322",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M23",
+      "type": "frame",
+      "n1": "N132",
+      "n2": "N232",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M24",
+      "type": "frame",
+      "n1": "N232",
+      "n2": "N332",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M25",
+      "type": "frame",
+      "n1": "N112",
+      "n2": "N122",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M26",
+      "type": "frame",
+      "n1": "N122",
+      "n2": "N132",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M27",
+      "type": "frame",
+      "n1": "N212",
+      "n2": "N222",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M28",
+      "type": "frame",
+      "n1": "N222",
+      "n2": "N232",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M29",
+      "type": "frame",
+      "n1": "N312",
+      "n2": "N322",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M30",
+      "type": "frame",
+      "n1": "N322",
+      "n2": "N332",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M31",
+      "type": "frame",
+      "n1": "N113",
+      "n2": "N213",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M32",
+      "type": "frame",
+      "n1": "N213",
+      "n2": "N313",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M33",
+      "type": "frame",
+      "n1": "N123",
+      "n2": "N223",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M34",
+      "type": "frame",
+      "n1": "N223",
+      "n2": "N323",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M35",
+      "type": "frame",
+      "n1": "N133",
+      "n2": "N233",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M36",
+      "type": "frame",
+      "n1": "N233",
+      "n2": "N333",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M37",
+      "type": "frame",
+      "n1": "N113",
+      "n2": "N123",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M38",
+      "type": "frame",
+      "n1": "N123",
+      "n2": "N133",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M39",
+      "type": "frame",
+      "n1": "N213",
+      "n2": "N223",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M40",
+      "type": "frame",
+      "n1": "N223",
+      "n2": "N233",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M41",
+      "type": "frame",
+      "n1": "N313",
+      "n2": "N323",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    },
+    {
+      "id": "M42",
+      "type": "frame",
+      "n1": "N323",
+      "n2": "N333",
+      "matId": "steel",
+      "secId": "h400",
+      "localAxis": {
+        "roll": 0,
+        "strongAxis": "z"
+      },
+      "releases": {
+        "i": "rigid",
+        "j": "rigid"
+      },
+      "design": {
+        "role": "beam"
+      }
+    }
+  ],
+  "loads": [
+    {
+      "id": "LD-D-1",
+      "type": "udl",
+      "member": "M19",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-2",
+      "type": "udl",
+      "member": "M19",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-3",
+      "type": "udl",
+      "member": "M20",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-4",
+      "type": "udl",
+      "member": "M20",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-5",
+      "type": "udl",
+      "member": "M21",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-6",
+      "type": "udl",
+      "member": "M21",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-7",
+      "type": "udl",
+      "member": "M22",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-8",
+      "type": "udl",
+      "member": "M22",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-9",
+      "type": "udl",
+      "member": "M23",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-10",
+      "type": "udl",
+      "member": "M23",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-11",
+      "type": "udl",
+      "member": "M24",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-12",
+      "type": "udl",
+      "member": "M24",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-13",
+      "type": "udl",
+      "member": "M25",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-14",
+      "type": "udl",
+      "member": "M25",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-15",
+      "type": "udl",
+      "member": "M26",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-16",
+      "type": "udl",
+      "member": "M26",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-17",
+      "type": "udl",
+      "member": "M27",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-18",
+      "type": "udl",
+      "member": "M27",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-19",
+      "type": "udl",
+      "member": "M28",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-20",
+      "type": "udl",
+      "member": "M28",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-21",
+      "type": "udl",
+      "member": "M29",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-22",
+      "type": "udl",
+      "member": "M29",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-D-23",
+      "type": "udl",
+      "member": "M30",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-L-24",
+      "type": "udl",
+      "member": "M30",
+      "w": 4.363636363636364,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "area": 120,
+        "intensity": 2.4,
+        "total": 288,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST1"
+      }
+    },
+    {
+      "id": "LD-WX-1-1",
+      "type": "nodal",
+      "node": "N112",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-1-2",
+      "type": "nodal",
+      "node": "N212",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-1-3",
+      "type": "nodal",
+      "node": "N312",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-1-4",
+      "type": "nodal",
+      "node": "N122",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-1-5",
+      "type": "nodal",
+      "node": "N222",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-1-6",
+      "type": "nodal",
+      "node": "N322",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-1-7",
+      "type": "nodal",
+      "node": "N132",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-1-8",
+      "type": "nodal",
+      "node": "N232",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-1-9",
+      "type": "nodal",
+      "node": "N332",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WY-1-1",
+      "type": "nodal",
+      "node": "N112",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-1-2",
+      "type": "nodal",
+      "node": "N212",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-1-3",
+      "type": "nodal",
+      "node": "N312",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-1-4",
+      "type": "nodal",
+      "node": "N122",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-1-5",
+      "type": "nodal",
+      "node": "N222",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-1-6",
+      "type": "nodal",
+      "node": "N322",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-1-7",
+      "type": "nodal",
+      "node": "N132",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-1-8",
+      "type": "nodal",
+      "node": "N232",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-1-9",
+      "type": "nodal",
+      "node": "N332",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "WY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-D-25",
+      "type": "udl",
+      "member": "M31",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-26",
+      "type": "udl",
+      "member": "M31",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-27",
+      "type": "udl",
+      "member": "M32",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-28",
+      "type": "udl",
+      "member": "M32",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-29",
+      "type": "udl",
+      "member": "M33",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-30",
+      "type": "udl",
+      "member": "M33",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-31",
+      "type": "udl",
+      "member": "M34",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-32",
+      "type": "udl",
+      "member": "M34",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-33",
+      "type": "udl",
+      "member": "M35",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-34",
+      "type": "udl",
+      "member": "M35",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-35",
+      "type": "udl",
+      "member": "M36",
+      "w": 7.636363636363637,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-36",
+      "type": "udl",
+      "member": "M36",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.09090909090909091,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-37",
+      "type": "udl",
+      "member": "M37",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-38",
+      "type": "udl",
+      "member": "M37",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-39",
+      "type": "udl",
+      "member": "M38",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-40",
+      "type": "udl",
+      "member": "M38",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-41",
+      "type": "udl",
+      "member": "M39",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-42",
+      "type": "udl",
+      "member": "M39",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-43",
+      "type": "udl",
+      "member": "M40",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-44",
+      "type": "udl",
+      "member": "M40",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-45",
+      "type": "udl",
+      "member": "M41",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-46",
+      "type": "udl",
+      "member": "M41",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-D-47",
+      "type": "udl",
+      "member": "M42",
+      "w": 7.636363636363636,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "D",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 4.2,
+        "total": 504,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "D-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-L-48",
+      "type": "udl",
+      "member": "M42",
+      "w": 1.8181818181818183,
+      "dir": "-z",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "coordinate": "global",
+      "unit": "kN/m",
+      "case": "L",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "area": 120,
+        "intensity": 1,
+        "total": 120,
+        "tributaryShare": 0.07575757575757576,
+        "traceRowId": "L-DIST-ST2"
+      }
+    },
+    {
+      "id": "LD-WX-2-1",
+      "type": "nodal",
+      "node": "N113",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-2-2",
+      "type": "nodal",
+      "node": "N213",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-2-3",
+      "type": "nodal",
+      "node": "N313",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-2-4",
+      "type": "nodal",
+      "node": "N123",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-2-5",
+      "type": "nodal",
+      "node": "N223",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-2-6",
+      "type": "nodal",
+      "node": "N323",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-2-7",
+      "type": "nodal",
+      "node": "N133",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-2-8",
+      "type": "nodal",
+      "node": "N233",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WX-2-9",
+      "type": "nodal",
+      "node": "N333",
+      "P": 2.7199999999999998,
+      "dir": "+x",
+      "case": "WX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 24.479999999999997,
+        "nodeShare": 2.7199999999999998
+      }
+    },
+    {
+      "id": "LD-WY-2-1",
+      "type": "nodal",
+      "node": "N113",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-2-2",
+      "type": "nodal",
+      "node": "N213",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-2-3",
+      "type": "nodal",
+      "node": "N313",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-2-4",
+      "type": "nodal",
+      "node": "N123",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-2-5",
+      "type": "nodal",
+      "node": "N223",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-2-6",
+      "type": "nodal",
+      "node": "N323",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-2-7",
+      "type": "nodal",
+      "node": "N133",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-2-8",
+      "type": "nodal",
+      "node": "N233",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-WY-2-9",
+      "type": "nodal",
+      "node": "N333",
+      "P": 2.901333333333333,
+      "dir": "+y",
+      "case": "WY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "WY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 26.112,
+        "nodeShare": 2.901333333333333
+      }
+    },
+    {
+      "id": "LD-EX-1-1",
+      "type": "nodal",
+      "node": "N112",
+      "P": 3.0248175182481756,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EX-1-2",
+      "type": "nodal",
+      "node": "N212",
+      "P": 3.0248175182481756,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EX-1-3",
+      "type": "nodal",
+      "node": "N312",
+      "P": 3.0248175182481756,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EX-1-4",
+      "type": "nodal",
+      "node": "N122",
+      "P": 3.0248175182481756,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EX-1-5",
+      "type": "nodal",
+      "node": "N222",
+      "P": 3.0248175182481756,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EX-1-6",
+      "type": "nodal",
+      "node": "N322",
+      "P": 3.0248175182481756,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EX-1-7",
+      "type": "nodal",
+      "node": "N132",
+      "P": 3.0248175182481756,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EX-1-8",
+      "type": "nodal",
+      "node": "N232",
+      "P": 3.0248175182481756,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EX-1-9",
+      "type": "nodal",
+      "node": "N332",
+      "P": 3.0248175182481756,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EX-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EY-1-1",
+      "type": "nodal",
+      "node": "N112",
+      "P": 3.0248175182481756,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EY-1-2",
+      "type": "nodal",
+      "node": "N212",
+      "P": 3.0248175182481756,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EY-1-3",
+      "type": "nodal",
+      "node": "N312",
+      "P": 3.0248175182481756,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EY-1-4",
+      "type": "nodal",
+      "node": "N122",
+      "P": 3.0248175182481756,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EY-1-5",
+      "type": "nodal",
+      "node": "N222",
+      "P": 3.0248175182481756,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EY-1-6",
+      "type": "nodal",
+      "node": "N322",
+      "P": 3.0248175182481756,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EY-1-7",
+      "type": "nodal",
+      "node": "N132",
+      "P": 3.0248175182481756,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EY-1-8",
+      "type": "nodal",
+      "node": "N232",
+      "P": 3.0248175182481756,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EY-1-9",
+      "type": "nodal",
+      "node": "N332",
+      "P": 3.0248175182481756,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 1,
+        "traceRowId": "EY-NODE-ST1",
+        "storyZ": 3.4,
+        "totalForce": 27.22335766423358,
+        "nodeShare": 3.0248175182481756
+      }
+    },
+    {
+      "id": "LD-EX-2-1",
+      "type": "nodal",
+      "node": "N113",
+      "P": 5.608515815085158,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EX-2-2",
+      "type": "nodal",
+      "node": "N213",
+      "P": 5.608515815085158,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EX-2-3",
+      "type": "nodal",
+      "node": "N313",
+      "P": 5.608515815085158,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EX-2-4",
+      "type": "nodal",
+      "node": "N123",
+      "P": 5.608515815085158,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EX-2-5",
+      "type": "nodal",
+      "node": "N223",
+      "P": 5.608515815085158,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EX-2-6",
+      "type": "nodal",
+      "node": "N323",
+      "P": 5.608515815085158,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EX-2-7",
+      "type": "nodal",
+      "node": "N133",
+      "P": 5.608515815085158,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EX-2-8",
+      "type": "nodal",
+      "node": "N233",
+      "P": 5.608515815085158,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EX-2-9",
+      "type": "nodal",
+      "node": "N333",
+      "P": 5.608515815085158,
+      "dir": "+x",
+      "case": "EX",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EX-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EY-2-1",
+      "type": "nodal",
+      "node": "N113",
+      "P": 5.608515815085158,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EY-2-2",
+      "type": "nodal",
+      "node": "N213",
+      "P": 5.608515815085158,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EY-2-3",
+      "type": "nodal",
+      "node": "N313",
+      "P": 5.608515815085158,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EY-2-4",
+      "type": "nodal",
+      "node": "N123",
+      "P": 5.608515815085158,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EY-2-5",
+      "type": "nodal",
+      "node": "N223",
+      "P": 5.608515815085158,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EY-2-6",
+      "type": "nodal",
+      "node": "N323",
+      "P": 5.608515815085158,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EY-2-7",
+      "type": "nodal",
+      "node": "N133",
+      "P": 5.608515815085158,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EY-2-8",
+      "type": "nodal",
+      "node": "N233",
+      "P": 5.608515815085158,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    },
+    {
+      "id": "LD-EY-2-9",
+      "type": "nodal",
+      "node": "N333",
+      "P": 5.608515815085158,
+      "dir": "+y",
+      "case": "EY",
+      "unit": "kN",
+      "generatedBy": "m37-load-estimation",
+      "derivation": {
+        "story": 2,
+        "traceRowId": "EY-NODE-ST2",
+        "storyZ": 6.8,
+        "totalForce": 50.47664233576642,
+        "nodeShare": 5.608515815085158
+      }
+    }
+  ],
+  "loadCases": [
+    {
+      "id": "D",
+      "name": "Dead load",
+      "type": "dead"
+    },
+    {
+      "id": "L",
+      "name": "Live load",
+      "type": "live"
+    },
+    {
+      "id": "WX",
+      "name": "Wind X",
+      "type": "wind"
+    },
+    {
+      "id": "WY",
+      "name": "Wind Y",
+      "type": "wind"
+    },
+    {
+      "id": "EX",
+      "name": "Seismic X",
+      "type": "seismic"
+    },
+    {
+      "id": "EY",
+      "name": "Seismic Y",
+      "type": "seismic"
+    }
+  ],
+  "loadCombinations": [
+    {
+      "id": "KDS-ST-01",
+      "name": "1.4D",
+      "type": "strength",
+      "factors": {
+        "D": 1.4,
+        "L": 0,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style strength pattern for gravity-only dead load.",
+      "sourcePreset": "KDS-ST-01",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-01",
+        "required": [
+          "D"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": null,
+        "includedSymbols": [
+          "D"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern for gravity-only dead load.",
+        "candidate": null,
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-01",
+        "lateralCaseId": null,
+        "sign": "base",
+        "basis": "Common KDS-style strength pattern for gravity-only dead load."
+      }
+    },
+    {
+      "id": "KDS-ST-02",
+      "name": "1.2D + 1.6L",
+      "type": "strength",
+      "factors": {
+        "D": 1.2,
+        "L": 1.6,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style strength pattern for dead plus live load.",
+      "sourcePreset": "KDS-ST-02",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-02",
+        "required": [
+          "D",
+          "L"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": null,
+        "includedSymbols": [
+          "D",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern for dead plus live load.",
+        "candidate": null,
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-02",
+        "lateralCaseId": null,
+        "sign": "base",
+        "basis": "Common KDS-style strength pattern for dead plus live load."
+      }
+    },
+    {
+      "id": "KDS-ST-04-WX-P",
+      "name": "1.2D + 1L + 1WX",
+      "type": "strength",
+      "factors": {
+        "D": 1.2,
+        "L": 1,
+        "WX": 1,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style strength pattern including wind load.",
+      "sourcePreset": "KDS-ST-04",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "W",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-04",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including wind load.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-04",
+        "lateralCaseId": "WX",
+        "sign": "positive",
+        "basis": "Common KDS-style strength pattern including wind load."
+      }
+    },
+    {
+      "id": "KDS-ST-04-WX-N",
+      "name": "1.2D + 1L - 1WX",
+      "type": "strength",
+      "factors": {
+        "D": 1.2,
+        "L": 1,
+        "WX": -1,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style strength pattern including wind load.",
+      "sourcePreset": "KDS-ST-04",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "W",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-04",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including wind load.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-04",
+        "lateralCaseId": "WX",
+        "sign": "negative",
+        "basis": "Common KDS-style strength pattern including wind load."
+      }
+    },
+    {
+      "id": "KDS-ST-04-WY-P",
+      "name": "1.2D + 1L + 1WY",
+      "type": "strength",
+      "factors": {
+        "D": 1.2,
+        "L": 1,
+        "WX": 0,
+        "WY": 1,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style strength pattern including wind load.",
+      "sourcePreset": "KDS-ST-04",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "W",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-04",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including wind load.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-04",
+        "lateralCaseId": "WY",
+        "sign": "positive",
+        "basis": "Common KDS-style strength pattern including wind load."
+      }
+    },
+    {
+      "id": "KDS-ST-04-WY-N",
+      "name": "1.2D + 1L - 1WY",
+      "type": "strength",
+      "factors": {
+        "D": 1.2,
+        "L": 1,
+        "WX": 0,
+        "WY": -1,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style strength pattern including wind load.",
+      "sourcePreset": "KDS-ST-04",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "W",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-04",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including wind load.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-04",
+        "lateralCaseId": "WY",
+        "sign": "negative",
+        "basis": "Common KDS-style strength pattern including wind load."
+      }
+    },
+    {
+      "id": "KDS-ST-05-EX-P",
+      "name": "1.2D + 1L + 1EX",
+      "type": "strength",
+      "factors": {
+        "D": 1.2,
+        "L": 1,
+        "WX": 0,
+        "WY": 0,
+        "EX": 1,
+        "EY": 0
+      },
+      "basis": "Common KDS-style strength pattern including seismic load.",
+      "sourcePreset": "KDS-ST-05",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "E",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-05",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including seismic load.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-05",
+        "lateralCaseId": "EX",
+        "sign": "positive",
+        "basis": "Common KDS-style strength pattern including seismic load."
+      }
+    },
+    {
+      "id": "KDS-ST-05-EX-N",
+      "name": "1.2D + 1L - 1EX",
+      "type": "strength",
+      "factors": {
+        "D": 1.2,
+        "L": 1,
+        "WX": 0,
+        "WY": 0,
+        "EX": -1,
+        "EY": 0
+      },
+      "basis": "Common KDS-style strength pattern including seismic load.",
+      "sourcePreset": "KDS-ST-05",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "E",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-05",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including seismic load.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-05",
+        "lateralCaseId": "EX",
+        "sign": "negative",
+        "basis": "Common KDS-style strength pattern including seismic load."
+      }
+    },
+    {
+      "id": "KDS-ST-05-EY-P",
+      "name": "1.2D + 1L + 1EY",
+      "type": "strength",
+      "factors": {
+        "D": 1.2,
+        "L": 1,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": 1
+      },
+      "basis": "Common KDS-style strength pattern including seismic load.",
+      "sourcePreset": "KDS-ST-05",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "E",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-05",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including seismic load.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-05",
+        "lateralCaseId": "EY",
+        "sign": "positive",
+        "basis": "Common KDS-style strength pattern including seismic load."
+      }
+    },
+    {
+      "id": "KDS-ST-05-EY-N",
+      "name": "1.2D + 1L - 1EY",
+      "type": "strength",
+      "factors": {
+        "D": 1.2,
+        "L": 1,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": -1
+      },
+      "basis": "Common KDS-style strength pattern including seismic load.",
+      "sourcePreset": "KDS-ST-05",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "E",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-05",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style strength pattern including seismic load.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-05",
+        "lateralCaseId": "EY",
+        "sign": "negative",
+        "basis": "Common KDS-style strength pattern including seismic load."
+      }
+    },
+    {
+      "id": "KDS-ST-06-WX-P",
+      "name": "0.9D + 1WX",
+      "type": "strength",
+      "factors": {
+        "D": 0.9,
+        "L": 0,
+        "WX": 1,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+      "sourcePreset": "KDS-ST-06",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "W"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-06",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-06",
+        "lateralCaseId": "WX",
+        "sign": "positive",
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load."
+      }
+    },
+    {
+      "id": "KDS-ST-06-WX-N",
+      "name": "0.9D - 1WX",
+      "type": "strength",
+      "factors": {
+        "D": 0.9,
+        "L": 0,
+        "WX": -1,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+      "sourcePreset": "KDS-ST-06",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "W"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-06",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-06",
+        "lateralCaseId": "WX",
+        "sign": "negative",
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load."
+      }
+    },
+    {
+      "id": "KDS-ST-06-WY-P",
+      "name": "0.9D + 1WY",
+      "type": "strength",
+      "factors": {
+        "D": 0.9,
+        "L": 0,
+        "WX": 0,
+        "WY": 1,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+      "sourcePreset": "KDS-ST-06",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "W"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-06",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-06",
+        "lateralCaseId": "WY",
+        "sign": "positive",
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load."
+      }
+    },
+    {
+      "id": "KDS-ST-06-WY-N",
+      "name": "0.9D - 1WY",
+      "type": "strength",
+      "factors": {
+        "D": 0.9,
+        "L": 0,
+        "WX": 0,
+        "WY": -1,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+      "sourcePreset": "KDS-ST-06",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "W"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-06",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-06",
+        "lateralCaseId": "WY",
+        "sign": "negative",
+        "basis": "Common KDS-style uplift/overturning strength pattern including wind load."
+      }
+    },
+    {
+      "id": "KDS-ST-07-EX-P",
+      "name": "0.9D + 1EX",
+      "type": "strength",
+      "factors": {
+        "D": 0.9,
+        "L": 0,
+        "WX": 0,
+        "WY": 0,
+        "EX": 1,
+        "EY": 0
+      },
+      "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+      "sourcePreset": "KDS-ST-07",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "E"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-07",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-07",
+        "lateralCaseId": "EX",
+        "sign": "positive",
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load."
+      }
+    },
+    {
+      "id": "KDS-ST-07-EX-N",
+      "name": "0.9D - 1EX",
+      "type": "strength",
+      "factors": {
+        "D": 0.9,
+        "L": 0,
+        "WX": 0,
+        "WY": 0,
+        "EX": -1,
+        "EY": 0
+      },
+      "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+      "sourcePreset": "KDS-ST-07",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "E"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-07",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-07",
+        "lateralCaseId": "EX",
+        "sign": "negative",
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load."
+      }
+    },
+    {
+      "id": "KDS-ST-07-EY-P",
+      "name": "0.9D + 1EY",
+      "type": "strength",
+      "factors": {
+        "D": 0.9,
+        "L": 0,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": 1
+      },
+      "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+      "sourcePreset": "KDS-ST-07",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "E"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-07",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-07",
+        "lateralCaseId": "EY",
+        "sign": "positive",
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load."
+      }
+    },
+    {
+      "id": "KDS-ST-07-EY-N",
+      "name": "0.9D - 1EY",
+      "type": "strength",
+      "factors": {
+        "D": 0.9,
+        "L": 0,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": -1
+      },
+      "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+      "sourcePreset": "KDS-ST-07",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "E"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-ST-07",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-ST-07",
+        "lateralCaseId": "EY",
+        "sign": "negative",
+        "basis": "Common KDS-style uplift/overturning strength pattern including seismic load."
+      }
+    },
+    {
+      "id": "KDS-SVC-01",
+      "name": "1D",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Service load pattern for dead load.",
+      "sourcePreset": "KDS-SVC-01",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-01",
+        "required": [
+          "D"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": null,
+        "includedSymbols": [
+          "D"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for dead load.",
+        "candidate": null,
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-01",
+        "lateralCaseId": null,
+        "sign": "base",
+        "basis": "Service load pattern for dead load."
+      }
+    },
+    {
+      "id": "KDS-SVC-02",
+      "name": "1D + 1L",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 1,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Service load pattern for gravity deflection review.",
+      "sourcePreset": "KDS-SVC-02",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-02",
+        "required": [
+          "D",
+          "L"
+        ],
+        "requiredAny": [],
+        "optional": [],
+        "directional": null,
+        "includedSymbols": [
+          "D",
+          "L"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for gravity deflection review.",
+        "candidate": null,
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-02",
+        "lateralCaseId": null,
+        "sign": "base",
+        "basis": "Service load pattern for gravity deflection review."
+      }
+    },
+    {
+      "id": "KDS-SVC-03-WX-P",
+      "name": "1D + 0.5L + 1WX",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 1,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Service load pattern for wind drift review.",
+      "sourcePreset": "KDS-SVC-03",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L",
+        "W"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-03",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "L",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for wind drift review.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-03",
+        "lateralCaseId": "WX",
+        "sign": "positive",
+        "basis": "Service load pattern for wind drift review."
+      }
+    },
+    {
+      "id": "KDS-SVC-03-WX-N",
+      "name": "1D + 0.5L - 1WX",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": -1,
+        "WY": 0,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Service load pattern for wind drift review.",
+      "sourcePreset": "KDS-SVC-03",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L",
+        "W"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-03",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "L",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for wind drift review.",
+        "candidate": "WX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-03",
+        "lateralCaseId": "WX",
+        "sign": "negative",
+        "basis": "Service load pattern for wind drift review."
+      }
+    },
+    {
+      "id": "KDS-SVC-03-WY-P",
+      "name": "1D + 0.5L + 1WY",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 0,
+        "WY": 1,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Service load pattern for wind drift review.",
+      "sourcePreset": "KDS-SVC-03",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L",
+        "W"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-03",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "L",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for wind drift review.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-03",
+        "lateralCaseId": "WY",
+        "sign": "positive",
+        "basis": "Service load pattern for wind drift review."
+      }
+    },
+    {
+      "id": "KDS-SVC-03-WY-N",
+      "name": "1D + 0.5L - 1WY",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 0,
+        "WY": -1,
+        "EX": 0,
+        "EY": 0
+      },
+      "basis": "Service load pattern for wind drift review.",
+      "sourcePreset": "KDS-SVC-03",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L",
+        "W"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-03",
+        "required": [
+          "D",
+          "W"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "W",
+        "includedSymbols": [
+          "D",
+          "L",
+          "W"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for wind drift review.",
+        "candidate": "WY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-03",
+        "lateralCaseId": "WY",
+        "sign": "negative",
+        "basis": "Service load pattern for wind drift review."
+      }
+    },
+    {
+      "id": "KDS-SVC-04-EX-P",
+      "name": "1D + 0.5L + 1EX",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 0,
+        "WY": 0,
+        "EX": 1,
+        "EY": 0
+      },
+      "basis": "Service load pattern for seismic drift review.",
+      "sourcePreset": "KDS-SVC-04",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L",
+        "E"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-04",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "L",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for seismic drift review.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-04",
+        "lateralCaseId": "EX",
+        "sign": "positive",
+        "basis": "Service load pattern for seismic drift review."
+      }
+    },
+    {
+      "id": "KDS-SVC-04-EX-N",
+      "name": "1D + 0.5L - 1EX",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 0,
+        "WY": 0,
+        "EX": -1,
+        "EY": 0
+      },
+      "basis": "Service load pattern for seismic drift review.",
+      "sourcePreset": "KDS-SVC-04",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L",
+        "E"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-04",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "L",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for seismic drift review.",
+        "candidate": "EX",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-04",
+        "lateralCaseId": "EX",
+        "sign": "negative",
+        "basis": "Service load pattern for seismic drift review."
+      }
+    },
+    {
+      "id": "KDS-SVC-04-EY-P",
+      "name": "1D + 0.5L + 1EY",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": 1
+      },
+      "basis": "Service load pattern for seismic drift review.",
+      "sourcePreset": "KDS-SVC-04",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L",
+        "E"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-04",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "L",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for seismic drift review.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-04",
+        "lateralCaseId": "EY",
+        "sign": "positive",
+        "basis": "Service load pattern for seismic drift review."
+      }
+    },
+    {
+      "id": "KDS-SVC-04-EY-N",
+      "name": "1D + 0.5L - 1EY",
+      "type": "service",
+      "factors": {
+        "D": 1,
+        "L": 0.5,
+        "WX": 0,
+        "WY": 0,
+        "EX": 0,
+        "EY": -1
+      },
+      "basis": "Service load pattern for seismic drift review.",
+      "sourcePreset": "KDS-SVC-04",
+      "generatedBy": "m38-kds-load-combination-rules",
+      "includedSymbols": [
+        "D",
+        "L",
+        "E"
+      ],
+      "missingSymbols": [],
+      "codeReference": "KDS-style load combination preset",
+      "standardTrace": {
+        "version": "m44-kds-load-standard-registry",
+        "sourcePreset": "KDS-SVC-04",
+        "required": [
+          "D",
+          "E"
+        ],
+        "requiredAny": [],
+        "optional": [
+          "L"
+        ],
+        "directional": "E",
+        "includedSymbols": [
+          "D",
+          "L",
+          "E"
+        ],
+        "missingSymbols": [],
+        "basis": "Service load pattern for seismic drift review.",
+        "candidate": "EY",
+        "reviewRequired": true
+      },
+      "ruleTrace": {
+        "version": "m38-kds-load-combination-rules",
+        "presetVersion": "m35-kds-load-combination-presets",
+        "sourcePreset": "KDS-SVC-04",
+        "lateralCaseId": "EY",
+        "sign": "negative",
+        "basis": "Service load pattern for seismic drift review."
+      }
+    }
+  ],
+  "analysisSettings": {
+    "analysisType": "linear_static",
+    "elementType": "3d_frame",
+    "includeShearDeformation": false,
+    "includeGeometricStiffness": false,
+    "includeSelfWeight": false,
+    "solverTolerance": 1e-10,
+    "memberStations": 21,
+    "includeFixedEndDeformation": true,
+    "validateBeforeSolve": true,
+    "pDeltaMaxIterations": 12,
+    "pDeltaTolerance": 0.0001,
+    "pDeltaMaxAmplification": 2.5,
+    "modalModeCount": 6,
+    "responseSpectrum": {
+      "enabled": false,
+      "dampingRatio": 0.05,
+      "scale": 9.80665,
+      "directions": [
+        "x",
+        "y"
+      ],
+      "points": [
+        {
+          "period": 0,
+          "sa": 0.4
+        },
+        {
+          "period": 5,
+          "sa": 0.4
+        }
+      ]
+    }
+  },
+  "designParams": {
+    "global": {
+      "mode": "off",
+      "codeCompliance": false,
+      "defaultKy": 1,
+      "defaultKz": 1,
+      "defaultLbY": null,
+      "defaultLbZ": null,
+      "defaultDeflectionLimitTotal": 250,
+      "defaultDeflectionLimitLive": 360,
+      "defaultCompressionSlendernessLimit": 200,
+      "defaultTensionSlendernessLimit": 300,
+      "warnAtRatio": 0.7
+    },
+    "rc": {
+      "defaultCover": 0.05,
+      "defaultRebarFy": 400,
+      "defaultBeamRebarRatio": 0.01,
+      "defaultColumnRebarRatio": 0.015,
+      "minBeamRebarRatio": 0.002,
+      "minColumnRebarRatio": 0.01,
+      "maxColumnRebarRatio": 0.04,
+      "phiFlexure": 0.85,
+      "phiShear": 0.75,
+      "phiCompression": 0.65,
+      "warnAtRatio": 0.7
+    },
+    "members": {}
+  },
+  "designSettings": {
+    "method": "allowable_stress",
+    "defaultCheck": "elastic_stress_interaction"
+  },
+  "meta": {
+    "name": "Design-basis generated load frame",
+    "generatorVersion": "m46-stabilization-harness",
+    "id": "design-basis-two-story"
+  },
+  "designBasis": {
+    "version": "m37-load-estimation",
+    "occupancy": "office",
+    "occupancyLabel": "Office",
+    "floorArea": 120,
+    "roofArea": 120,
+    "deadLoad": 4.2,
+    "liveLoad": 2.4,
+    "roofLiveLoad": 1,
+    "windPressureX": 0.72,
+    "windPressureY": 0.64,
+    "seismicCoefficientX": 0.07,
+    "seismicCoefficientY": 0.07,
+    "seismicLiveLoadFactor": 0.25,
+    "notes": [
+      "Generated for stabilization harness regression.",
+      "Project-specific coefficients require engineering review."
+    ]
+  },
+  "loadEstimation": {
+    "version": "m37-load-estimation",
+    "basis": {
+      "version": "m37-load-estimation",
+      "occupancy": "office",
+      "occupancyLabel": "Office",
+      "floorArea": 120,
+      "roofArea": 120,
+      "deadLoad": 4.2,
+      "liveLoad": 2.4,
+      "roofLiveLoad": 1,
+      "windPressureX": 0.72,
+      "windPressureY": 0.64,
+      "seismicCoefficientX": 0.07,
+      "seismicCoefficientY": 0.07,
+      "seismicLiveLoadFactor": 0.25,
+      "notes": [
+        "Generated for stabilization harness regression.",
+        "Project-specific coefficients require engineering review."
+      ]
+    },
+    "geometry": {
+      "bounds": {
+        "min": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "max": {
+          "x": 12,
+          "y": 10,
+          "z": 6.8
+        },
+        "size": {
+          "x": 12,
+          "y": 10,
+          "z": 6.8
+        }
+      },
+      "size": {
+        "x": 12,
+        "y": 10,
+        "z": 6.8
+      },
+      "planArea": 120,
+      "storyLevels": [
+        3.4,
+        6.8
+      ],
+      "baseLevel": 0
+    },
+    "loadCases": [
+      {
+        "id": "D",
+        "name": "Dead load",
+        "type": "dead"
+      },
+      {
+        "id": "L",
+        "name": "Live load",
+        "type": "live"
+      },
+      {
+        "id": "WX",
+        "name": "Wind X",
+        "type": "wind"
+      },
+      {
+        "id": "WY",
+        "name": "Wind Y",
+        "type": "wind"
+      },
+      {
+        "id": "EX",
+        "name": "Seismic X",
+        "type": "seismic"
+      },
+      {
+        "id": "EY",
+        "name": "Seismic Y",
+        "type": "seismic"
+      }
+    ],
+    "loads": [
+      {
+        "id": "LD-D-1",
+        "type": "udl",
+        "case": "D",
+        "member": "M19",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-2",
+        "type": "udl",
+        "case": "L",
+        "member": "M19",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-3",
+        "type": "udl",
+        "case": "D",
+        "member": "M20",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-4",
+        "type": "udl",
+        "case": "L",
+        "member": "M20",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-5",
+        "type": "udl",
+        "case": "D",
+        "member": "M21",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-6",
+        "type": "udl",
+        "case": "L",
+        "member": "M21",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-7",
+        "type": "udl",
+        "case": "D",
+        "member": "M22",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-8",
+        "type": "udl",
+        "case": "L",
+        "member": "M22",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-9",
+        "type": "udl",
+        "case": "D",
+        "member": "M23",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-10",
+        "type": "udl",
+        "case": "L",
+        "member": "M23",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-11",
+        "type": "udl",
+        "case": "D",
+        "member": "M24",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-12",
+        "type": "udl",
+        "case": "L",
+        "member": "M24",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-13",
+        "type": "udl",
+        "case": "D",
+        "member": "M25",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-14",
+        "type": "udl",
+        "case": "L",
+        "member": "M25",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-15",
+        "type": "udl",
+        "case": "D",
+        "member": "M26",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-16",
+        "type": "udl",
+        "case": "L",
+        "member": "M26",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-17",
+        "type": "udl",
+        "case": "D",
+        "member": "M27",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-18",
+        "type": "udl",
+        "case": "L",
+        "member": "M27",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-19",
+        "type": "udl",
+        "case": "D",
+        "member": "M28",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-20",
+        "type": "udl",
+        "case": "L",
+        "member": "M28",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-21",
+        "type": "udl",
+        "case": "D",
+        "member": "M29",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-22",
+        "type": "udl",
+        "case": "L",
+        "member": "M29",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-D-23",
+        "type": "udl",
+        "case": "D",
+        "member": "M30",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-L-24",
+        "type": "udl",
+        "case": "L",
+        "member": "M30",
+        "node": null,
+        "value": 4.363636363636364,
+        "direction": "-z",
+        "derivation": {
+          "story": 1,
+          "area": 120,
+          "intensity": 2.4,
+          "total": 288,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST1"
+        }
+      },
+      {
+        "id": "LD-WX-1-1",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N112",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-1-2",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N212",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-1-3",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N312",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-1-4",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N122",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-1-5",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N222",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-1-6",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N322",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-1-7",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N132",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-1-8",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N232",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-1-9",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N332",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WY-1-1",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N112",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-1-2",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N212",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-1-3",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N312",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-1-4",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N122",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-1-5",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N222",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-1-6",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N322",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-1-7",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N132",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-1-8",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N232",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-1-9",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N332",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "WY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-D-25",
+        "type": "udl",
+        "case": "D",
+        "member": "M31",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-26",
+        "type": "udl",
+        "case": "L",
+        "member": "M31",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-27",
+        "type": "udl",
+        "case": "D",
+        "member": "M32",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-28",
+        "type": "udl",
+        "case": "L",
+        "member": "M32",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-29",
+        "type": "udl",
+        "case": "D",
+        "member": "M33",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-30",
+        "type": "udl",
+        "case": "L",
+        "member": "M33",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-31",
+        "type": "udl",
+        "case": "D",
+        "member": "M34",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-32",
+        "type": "udl",
+        "case": "L",
+        "member": "M34",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-33",
+        "type": "udl",
+        "case": "D",
+        "member": "M35",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-34",
+        "type": "udl",
+        "case": "L",
+        "member": "M35",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-35",
+        "type": "udl",
+        "case": "D",
+        "member": "M36",
+        "node": null,
+        "value": 7.636363636363637,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-36",
+        "type": "udl",
+        "case": "L",
+        "member": "M36",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.09090909090909091,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-37",
+        "type": "udl",
+        "case": "D",
+        "member": "M37",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-38",
+        "type": "udl",
+        "case": "L",
+        "member": "M37",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-39",
+        "type": "udl",
+        "case": "D",
+        "member": "M38",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-40",
+        "type": "udl",
+        "case": "L",
+        "member": "M38",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-41",
+        "type": "udl",
+        "case": "D",
+        "member": "M39",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-42",
+        "type": "udl",
+        "case": "L",
+        "member": "M39",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-43",
+        "type": "udl",
+        "case": "D",
+        "member": "M40",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-44",
+        "type": "udl",
+        "case": "L",
+        "member": "M40",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-45",
+        "type": "udl",
+        "case": "D",
+        "member": "M41",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-46",
+        "type": "udl",
+        "case": "L",
+        "member": "M41",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-D-47",
+        "type": "udl",
+        "case": "D",
+        "member": "M42",
+        "node": null,
+        "value": 7.636363636363636,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 4.2,
+          "total": 504,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "D-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-L-48",
+        "type": "udl",
+        "case": "L",
+        "member": "M42",
+        "node": null,
+        "value": 1.8181818181818183,
+        "direction": "-z",
+        "derivation": {
+          "story": 2,
+          "area": 120,
+          "intensity": 1,
+          "total": 120,
+          "tributaryShare": 0.07575757575757576,
+          "traceRowId": "L-DIST-ST2"
+        }
+      },
+      {
+        "id": "LD-WX-2-1",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N113",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-2-2",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N213",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-2-3",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N313",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-2-4",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N123",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-2-5",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N223",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-2-6",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N323",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-2-7",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N133",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-2-8",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N233",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WX-2-9",
+        "type": "nodal",
+        "case": "WX",
+        "member": null,
+        "node": "N333",
+        "value": 2.7199999999999998,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 24.479999999999997,
+          "nodeShare": 2.7199999999999998
+        }
+      },
+      {
+        "id": "LD-WY-2-1",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N113",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-2-2",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N213",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-2-3",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N313",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-2-4",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N123",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-2-5",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N223",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-2-6",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N323",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-2-7",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N133",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-2-8",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N233",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-WY-2-9",
+        "type": "nodal",
+        "case": "WY",
+        "member": null,
+        "node": "N333",
+        "value": 2.901333333333333,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "WY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 26.112,
+          "nodeShare": 2.901333333333333
+        }
+      },
+      {
+        "id": "LD-EX-1-1",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N112",
+        "value": 3.0248175182481756,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EX-1-2",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N212",
+        "value": 3.0248175182481756,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EX-1-3",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N312",
+        "value": 3.0248175182481756,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EX-1-4",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N122",
+        "value": 3.0248175182481756,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EX-1-5",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N222",
+        "value": 3.0248175182481756,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EX-1-6",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N322",
+        "value": 3.0248175182481756,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EX-1-7",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N132",
+        "value": 3.0248175182481756,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EX-1-8",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N232",
+        "value": 3.0248175182481756,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EX-1-9",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N332",
+        "value": 3.0248175182481756,
+        "direction": "+x",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EX-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EY-1-1",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N112",
+        "value": 3.0248175182481756,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EY-1-2",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N212",
+        "value": 3.0248175182481756,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EY-1-3",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N312",
+        "value": 3.0248175182481756,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EY-1-4",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N122",
+        "value": 3.0248175182481756,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EY-1-5",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N222",
+        "value": 3.0248175182481756,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EY-1-6",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N322",
+        "value": 3.0248175182481756,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EY-1-7",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N132",
+        "value": 3.0248175182481756,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EY-1-8",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N232",
+        "value": 3.0248175182481756,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EY-1-9",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N332",
+        "value": 3.0248175182481756,
+        "direction": "+y",
+        "derivation": {
+          "story": 1,
+          "traceRowId": "EY-NODE-ST1",
+          "storyZ": 3.4,
+          "totalForce": 27.22335766423358,
+          "nodeShare": 3.0248175182481756
+        }
+      },
+      {
+        "id": "LD-EX-2-1",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N113",
+        "value": 5.608515815085158,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EX-2-2",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N213",
+        "value": 5.608515815085158,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EX-2-3",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N313",
+        "value": 5.608515815085158,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EX-2-4",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N123",
+        "value": 5.608515815085158,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EX-2-5",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N223",
+        "value": 5.608515815085158,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EX-2-6",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N323",
+        "value": 5.608515815085158,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EX-2-7",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N133",
+        "value": 5.608515815085158,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EX-2-8",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N233",
+        "value": 5.608515815085158,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EX-2-9",
+        "type": "nodal",
+        "case": "EX",
+        "member": null,
+        "node": "N333",
+        "value": 5.608515815085158,
+        "direction": "+x",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EX-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EY-2-1",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N113",
+        "value": 5.608515815085158,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EY-2-2",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N213",
+        "value": 5.608515815085158,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EY-2-3",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N313",
+        "value": 5.608515815085158,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EY-2-4",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N123",
+        "value": 5.608515815085158,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EY-2-5",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N223",
+        "value": 5.608515815085158,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EY-2-6",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N323",
+        "value": 5.608515815085158,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EY-2-7",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N133",
+        "value": 5.608515815085158,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EY-2-8",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N233",
+        "value": 5.608515815085158,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      },
+      {
+        "id": "LD-EY-2-9",
+        "type": "nodal",
+        "case": "EY",
+        "member": null,
+        "node": "N333",
+        "value": 5.608515815085158,
+        "direction": "+y",
+        "derivation": {
+          "story": 2,
+          "traceRowId": "EY-NODE-ST2",
+          "storyZ": 6.8,
+          "totalForce": 50.47664233576642,
+          "nodeShare": 5.608515815085158
+        }
+      }
+    ],
+    "storyLoads": {
+      "gravity": [
+        {
+          "story": 1,
+          "z": 3.4,
+          "area": 120,
+          "deadIntensity": 4.2,
+          "deadTotal": 504,
+          "liveIntensity": 2.4,
+          "liveTotal": 288,
+          "beamLength": 66,
+          "beamCount": 12
+        },
+        {
+          "story": 2,
+          "z": 6.8,
+          "area": 120,
+          "deadIntensity": 4.2,
+          "deadTotal": 504,
+          "liveIntensity": 1,
+          "liveTotal": 120,
+          "beamLength": 66,
+          "beamCount": 12
+        }
+      ],
+      "lateral": [
+        {
+          "story": 1,
+          "z": 3.4,
+          "storyHeight": 3.4,
+          "windX": 24.479999999999997,
+          "windY": 26.112,
+          "effectiveWeight": 576,
+          "nodeCount": 9
+        },
+        {
+          "story": 2,
+          "z": 6.8,
+          "storyHeight": 3.4,
+          "windX": 24.479999999999997,
+          "windY": 26.112,
+          "effectiveWeight": 534,
+          "nodeCount": 9
+        }
+      ]
+    },
+    "derivationTrace": {
+      "version": "m48-load-derivation-trace",
+      "rows": [
+        {
+          "id": "basis-occupancy",
+          "group": "basis",
+          "story": null,
+          "caseId": null,
+          "label": "Occupancy preset",
+          "formula": "occupancy preset lookup",
+          "inputs": [
+            {
+              "symbol": "occupancy",
+              "label": "Occupancy",
+              "value": "office",
+              "unit": ""
+            }
+          ],
+          "result": "Office",
+          "unit": "",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "basis-plan-area",
+          "group": "basis",
+          "story": null,
+          "caseId": null,
+          "label": "Typical floor area",
+          "formula": "max(model width * model depth, 1)",
+          "inputs": [
+            {
+              "symbol": "Bx",
+              "label": "Model width X",
+              "value": 12,
+              "unit": "m"
+            },
+            {
+              "symbol": "By",
+              "label": "Model depth Y",
+              "value": 10,
+              "unit": "m"
+            }
+          ],
+          "result": 120,
+          "unit": "m2",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "basis-roof-area",
+          "group": "basis",
+          "story": null,
+          "caseId": null,
+          "label": "Roof area",
+          "formula": "roofArea input or typical floor area",
+          "inputs": [
+            {
+              "symbol": "roofArea",
+              "label": "Roof area input",
+              "value": 120,
+              "unit": "m2"
+            }
+          ],
+          "result": 120,
+          "unit": "m2",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "D-ST1",
+          "group": "gravity",
+          "story": 1,
+          "caseId": "D",
+          "label": "Story dead load",
+          "formula": "A * qD",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 120,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qD",
+              "label": "Dead intensity",
+              "value": 4.2,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 504,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "L-ST1",
+          "group": "gravity",
+          "story": 1,
+          "caseId": "L",
+          "label": "Story live load",
+          "formula": "A * qL",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 120,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qL",
+              "label": "Live intensity",
+              "value": 2.4,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 288,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WX-ST1",
+          "group": "wind",
+          "story": 1,
+          "caseId": "WX",
+          "label": "Story wind X",
+          "formula": "pWX * By * h",
+          "inputs": [
+            {
+              "symbol": "pWX",
+              "label": "Wind pressure X",
+              "value": 0.72,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "By",
+              "label": "Model depth Y",
+              "value": 10,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.4,
+              "unit": "m"
+            }
+          ],
+          "result": 24.48,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WY-ST1",
+          "group": "wind",
+          "story": 1,
+          "caseId": "WY",
+          "label": "Story wind Y",
+          "formula": "pWY * Bx * h",
+          "inputs": [
+            {
+              "symbol": "pWY",
+              "label": "Wind pressure Y",
+              "value": 0.64,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "Bx",
+              "label": "Model width X",
+              "value": 12,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.4,
+              "unit": "m"
+            }
+          ],
+          "result": 26.112,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "D-ST2",
+          "group": "gravity",
+          "story": 2,
+          "caseId": "D",
+          "label": "Story dead load",
+          "formula": "A * qD",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 120,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qD",
+              "label": "Dead intensity",
+              "value": 4.2,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 504,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "L-ST2",
+          "group": "gravity",
+          "story": 2,
+          "caseId": "L",
+          "label": "Story live load",
+          "formula": "A * qL",
+          "inputs": [
+            {
+              "symbol": "A",
+              "label": "Area",
+              "value": 120,
+              "unit": "m2"
+            },
+            {
+              "symbol": "qL",
+              "label": "Live intensity",
+              "value": 1,
+              "unit": "kN/m2"
+            }
+          ],
+          "result": 120,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WX-ST2",
+          "group": "wind",
+          "story": 2,
+          "caseId": "WX",
+          "label": "Story wind X",
+          "formula": "pWX * By * h",
+          "inputs": [
+            {
+              "symbol": "pWX",
+              "label": "Wind pressure X",
+              "value": 0.72,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "By",
+              "label": "Model depth Y",
+              "value": 10,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.4,
+              "unit": "m"
+            }
+          ],
+          "result": 24.48,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WY-ST2",
+          "group": "wind",
+          "story": 2,
+          "caseId": "WY",
+          "label": "Story wind Y",
+          "formula": "pWY * Bx * h",
+          "inputs": [
+            {
+              "symbol": "pWY",
+              "label": "Wind pressure Y",
+              "value": 0.64,
+              "unit": "kN/m2"
+            },
+            {
+              "symbol": "Bx",
+              "label": "Model width X",
+              "value": 12,
+              "unit": "m"
+            },
+            {
+              "symbol": "h",
+              "label": "Story height",
+              "value": 3.4,
+              "unit": "m"
+            }
+          ],
+          "result": 26.112,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EX-BASE",
+          "group": "seismic",
+          "story": null,
+          "caseId": "EX",
+          "label": "Seismic base shear X",
+          "formula": "CsX * sum(Wi)",
+          "inputs": [
+            {
+              "symbol": "CsX",
+              "label": "Seismic coefficient X",
+              "value": 0.07,
+              "unit": "g"
+            },
+            {
+              "symbol": "sumW",
+              "label": "Effective seismic weight",
+              "value": 1110,
+              "unit": "kN"
+            }
+          ],
+          "result": 77.7,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EY-BASE",
+          "group": "seismic",
+          "story": null,
+          "caseId": "EY",
+          "label": "Seismic base shear Y",
+          "formula": "CsY * sum(Wi)",
+          "inputs": [
+            {
+              "symbol": "CsY",
+              "label": "Seismic coefficient Y",
+              "value": 0.07,
+              "unit": "g"
+            },
+            {
+              "symbol": "sumW",
+              "label": "Effective seismic weight",
+              "value": 1110,
+              "unit": "kN"
+            }
+          ],
+          "result": 77.7,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EX-ST1",
+          "group": "seismic",
+          "story": 1,
+          "caseId": "EX",
+          "label": "Story seismic X",
+          "formula": "Vx * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vx",
+              "label": "Base shear X",
+              "value": 77.7,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 576,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 3.4,
+              "unit": "m"
+            }
+          ],
+          "result": 27.223358,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EY-ST1",
+          "group": "seismic",
+          "story": 1,
+          "caseId": "EY",
+          "label": "Story seismic Y",
+          "formula": "Vy * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vy",
+              "label": "Base shear Y",
+              "value": 77.7,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 576,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 3.4,
+              "unit": "m"
+            }
+          ],
+          "result": 27.223358,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EX-ST2",
+          "group": "seismic",
+          "story": 2,
+          "caseId": "EX",
+          "label": "Story seismic X",
+          "formula": "Vx * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vx",
+              "label": "Base shear X",
+              "value": 77.7,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 534,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 6.8,
+              "unit": "m"
+            }
+          ],
+          "result": 50.476642,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EY-ST2",
+          "group": "seismic",
+          "story": 2,
+          "caseId": "EY",
+          "label": "Story seismic Y",
+          "formula": "Vy * Wi * zi / sum(Wi * zi)",
+          "inputs": [
+            {
+              "symbol": "Vy",
+              "label": "Base shear Y",
+              "value": 77.7,
+              "unit": "kN"
+            },
+            {
+              "symbol": "Wi",
+              "label": "Effective story weight",
+              "value": 534,
+              "unit": "kN"
+            },
+            {
+              "symbol": "zi",
+              "label": "Story elevation",
+              "value": 6.8,
+              "unit": "m"
+            }
+          ],
+          "result": 50.476642,
+          "unit": "kN",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "D-DIST-ST1",
+          "group": "distribution",
+          "story": 1,
+          "caseId": "D",
+          "label": "Dead load member UDL distribution",
+          "formula": "Dstory / sum(Lbeam)",
+          "inputs": [
+            {
+              "symbol": "Dstory",
+              "label": "Story dead load",
+              "value": 504,
+              "unit": "kN"
+            },
+            {
+              "symbol": "sumL",
+              "label": "Total horizontal member length",
+              "value": 66,
+              "unit": "m"
+            },
+            {
+              "symbol": "nBeam",
+              "label": "Horizontal member count",
+              "value": 12,
+              "unit": ""
+            }
+          ],
+          "result": 7.636364,
+          "unit": "kN/m",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "L-DIST-ST1",
+          "group": "distribution",
+          "story": 1,
+          "caseId": "L",
+          "label": "Live load member UDL distribution",
+          "formula": "Lstory / sum(Lbeam)",
+          "inputs": [
+            {
+              "symbol": "Lstory",
+              "label": "Story live load",
+              "value": 288,
+              "unit": "kN"
+            },
+            {
+              "symbol": "sumL",
+              "label": "Total horizontal member length",
+              "value": 66,
+              "unit": "m"
+            },
+            {
+              "symbol": "nBeam",
+              "label": "Horizontal member count",
+              "value": 12,
+              "unit": ""
+            }
+          ],
+          "result": 4.363636,
+          "unit": "kN/m",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WX-NODE-ST1",
+          "group": "distribution",
+          "story": 1,
+          "caseId": "WX",
+          "label": "Wind X nodal distribution",
+          "formula": "WXstory / nNodes",
+          "inputs": [
+            {
+              "symbol": "WXstory",
+              "label": "Story wind X",
+              "value": 24.48,
+              "unit": "kN"
+            },
+            {
+              "symbol": "nNodes",
+              "label": "Nodes at story level",
+              "value": 9,
+              "unit": ""
+            }
+          ],
+          "result": 2.72,
+          "unit": "kN/node",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WY-NODE-ST1",
+          "group": "distribution",
+          "story": 1,
+          "caseId": "WY",
+          "label": "Wind Y nodal distribution",
+          "formula": "WYstory / nNodes",
+          "inputs": [
+            {
+              "symbol": "WYstory",
+              "label": "Story wind Y",
+              "value": 26.112,
+              "unit": "kN"
+            },
+            {
+              "symbol": "nNodes",
+              "label": "Nodes at story level",
+              "value": 9,
+              "unit": ""
+            }
+          ],
+          "result": 2.901333,
+          "unit": "kN/node",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EX-NODE-ST1",
+          "group": "distribution",
+          "story": 1,
+          "caseId": "EX",
+          "label": "Seismic X nodal distribution",
+          "formula": "EXstory / nNodes",
+          "inputs": [
+            {
+              "symbol": "EXstory",
+              "label": "Story seismic X",
+              "value": 27.223358,
+              "unit": "kN"
+            },
+            {
+              "symbol": "nNodes",
+              "label": "Nodes at story level",
+              "value": 9,
+              "unit": ""
+            }
+          ],
+          "result": 3.024818,
+          "unit": "kN/node",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EY-NODE-ST1",
+          "group": "distribution",
+          "story": 1,
+          "caseId": "EY",
+          "label": "Seismic Y nodal distribution",
+          "formula": "EYstory / nNodes",
+          "inputs": [
+            {
+              "symbol": "EYstory",
+              "label": "Story seismic Y",
+              "value": 27.223358,
+              "unit": "kN"
+            },
+            {
+              "symbol": "nNodes",
+              "label": "Nodes at story level",
+              "value": 9,
+              "unit": ""
+            }
+          ],
+          "result": 3.024818,
+          "unit": "kN/node",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "D-DIST-ST2",
+          "group": "distribution",
+          "story": 2,
+          "caseId": "D",
+          "label": "Dead load member UDL distribution",
+          "formula": "Dstory / sum(Lbeam)",
+          "inputs": [
+            {
+              "symbol": "Dstory",
+              "label": "Story dead load",
+              "value": 504,
+              "unit": "kN"
+            },
+            {
+              "symbol": "sumL",
+              "label": "Total horizontal member length",
+              "value": 66,
+              "unit": "m"
+            },
+            {
+              "symbol": "nBeam",
+              "label": "Horizontal member count",
+              "value": 12,
+              "unit": ""
+            }
+          ],
+          "result": 7.636364,
+          "unit": "kN/m",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "L-DIST-ST2",
+          "group": "distribution",
+          "story": 2,
+          "caseId": "L",
+          "label": "Live load member UDL distribution",
+          "formula": "Lstory / sum(Lbeam)",
+          "inputs": [
+            {
+              "symbol": "Lstory",
+              "label": "Story live load",
+              "value": 120,
+              "unit": "kN"
+            },
+            {
+              "symbol": "sumL",
+              "label": "Total horizontal member length",
+              "value": 66,
+              "unit": "m"
+            },
+            {
+              "symbol": "nBeam",
+              "label": "Horizontal member count",
+              "value": 12,
+              "unit": ""
+            }
+          ],
+          "result": 1.818182,
+          "unit": "kN/m",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WX-NODE-ST2",
+          "group": "distribution",
+          "story": 2,
+          "caseId": "WX",
+          "label": "Wind X nodal distribution",
+          "formula": "WXstory / nNodes",
+          "inputs": [
+            {
+              "symbol": "WXstory",
+              "label": "Story wind X",
+              "value": 24.48,
+              "unit": "kN"
+            },
+            {
+              "symbol": "nNodes",
+              "label": "Nodes at story level",
+              "value": 9,
+              "unit": ""
+            }
+          ],
+          "result": 2.72,
+          "unit": "kN/node",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "WY-NODE-ST2",
+          "group": "distribution",
+          "story": 2,
+          "caseId": "WY",
+          "label": "Wind Y nodal distribution",
+          "formula": "WYstory / nNodes",
+          "inputs": [
+            {
+              "symbol": "WYstory",
+              "label": "Story wind Y",
+              "value": 26.112,
+              "unit": "kN"
+            },
+            {
+              "symbol": "nNodes",
+              "label": "Nodes at story level",
+              "value": 9,
+              "unit": ""
+            }
+          ],
+          "result": 2.901333,
+          "unit": "kN/node",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EX-NODE-ST2",
+          "group": "distribution",
+          "story": 2,
+          "caseId": "EX",
+          "label": "Seismic X nodal distribution",
+          "formula": "EXstory / nNodes",
+          "inputs": [
+            {
+              "symbol": "EXstory",
+              "label": "Story seismic X",
+              "value": 50.476642,
+              "unit": "kN"
+            },
+            {
+              "symbol": "nNodes",
+              "label": "Nodes at story level",
+              "value": 9,
+              "unit": ""
+            }
+          ],
+          "result": 5.608516,
+          "unit": "kN/node",
+          "source": "m37-load-estimation"
+        },
+        {
+          "id": "EY-NODE-ST2",
+          "group": "distribution",
+          "story": 2,
+          "caseId": "EY",
+          "label": "Seismic Y nodal distribution",
+          "formula": "EYstory / nNodes",
+          "inputs": [
+            {
+              "symbol": "EYstory",
+              "label": "Story seismic Y",
+              "value": 50.476642,
+              "unit": "kN"
+            },
+            {
+              "symbol": "nNodes",
+              "label": "Nodes at story level",
+              "value": 9,
+              "unit": ""
+            }
+          ],
+          "result": 5.608516,
+          "unit": "kN/node",
+          "source": "m37-load-estimation"
+        }
+      ],
+      "summary": {
+        "rowCount": 29,
+        "groups": [
+          "basis",
+          "gravity",
+          "wind",
+          "seismic",
+          "distribution"
+        ],
+        "storyCount": 2,
+        "distributionRowCount": 12
+      }
+    },
+    "summary": {
+      "version": "m37-load-estimation",
+      "occupancy": "office",
+      "floorArea": 120,
+      "roofArea": 120,
+      "storyCount": 2,
+      "totalDead": 1008,
+      "totalLive": 408,
+      "totalWindX": 48.959999999999994,
+      "totalWindY": 52.224,
+      "totalSeismicX": 77.7,
+      "totalSeismicY": 77.7,
+      "generatedLoadCount": 120
+    },
+    "limitations": [
+      "Area loads are distributed to horizontal frame members by member length share.",
+      "Wind and seismic loads are equivalent preliminary story nodal loads.",
+      "Project-specific KDS coefficients, exposure, importance, seismic site class, and load reductions are not yet fully automated."
+    ]
+  }
+}

@@ -1,0 +1,1739 @@
+{
+  "schemaVersion": "p11-report-snapshot-v1",
+  "project": {
+    "id": null,
+    "modelSchemaVersion": 6
+  },
+  "sourceBinding": {
+    "modelDomainHash": "8e6269cafa09bcfe34fafe7c",
+    "resultHash": "5576f42b20c7b144a789c0838e1e87f58979b9eb7f06a80b4957ede9aca113ce"
+  },
+  "model": {
+    "nodeCount": 8,
+    "memberCount": 8,
+    "shellCount": 0,
+    "loadCount": 2,
+    "loadCaseCount": 2,
+    "combinationCount": 3,
+    "storyCount": 1,
+    "domainHashes": {
+      "version": "p18-analysis-domain-hashes-v4-elastic-link",
+      "topologyHash": "2210e93e679b58b42150c829",
+      "propertyHash": "53fa77acbdf210fd91858017",
+      "constraintHash": "41aec38afcfd36684c4d447e",
+      "loadHash": "f63da1da2c8b0dc8555d50bf",
+      "massHash": "963123832e00a31b13c854c7",
+      "nonlinearHash": "4db9930816dde433d3a821b1",
+      "outputHash": "0dc0d4a129878b23ace3c9ec",
+      "domainHash": "8e6269cafa09bcfe34fafe7c"
+    }
+  },
+  "analysis": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "failedCombinationCount": 0,
+    "combinationCount": 1,
+    "maxDisplacement": null,
+    "maxUtilization": 0.8748906386701664,
+    "maxEquilibriumResidual": null,
+    "governing": {
+      "memberId": "e1",
+      "checkId": "slidingRatio",
+      "comboId": "SLS1",
+      "ratio": 0.8748906386701664,
+      "status": "WARN"
+    },
+    "combinations": [
+      {
+        "id": "SLS1",
+        "ok": true,
+        "dmax": 0.00041825939158486244,
+        "maxRatio": 0.8748906386701664,
+        "equilibriumResidual": null
+      }
+    ]
+  },
+  "report": {
+    "calculationPackageVersion": null,
+    "detailedReportVersion": null,
+    "qualityAudit": {
+      "ok": false,
+      "itemStatuses": []
+    },
+    "analysisRunCount": 1
+  },
+  "provenance": {
+    "sourceRevision": null,
+    "buildId": null,
+    "analysisRunIds": [
+      "M4-RC:2026-09-07T04:56:57.234Z:1"
+    ]
+  },
+  "validation": {
+    "independentReference": {
+      "status": "not-available",
+      "referenceId": null,
+      "evidenceHash": null
+    },
+    "phase10Eligibility": {
+      "eligible": false,
+      "status": "not-verified",
+      "reasonCodes": []
+    }
+  },
+  "limitationCodes": [
+    "INDEPENDENT_REFERENCE_NOT_AVAILABLE",
+    "ISSUE_SCOPE_LIMITED"
+  ],
+  "designReview": {
+    "version": "p19-m3-elastic-review-v1",
+    "designRunId": "design-1",
+    "inputIdentity": {
+      "inputIdentityVersion": "p19-input-v1",
+      "modelHash": "e843272867f93293a76ee50784625de8d6f9dbde177f9fbc3e156c503aaf4b83",
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "settingsHash": "7856671f7f46d9c34c069466c9a868cf37fac8d50547e479ff5288c7916926a5",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "materialsHash": "745a665278ed0ef0f59d773c9f537dec03d5bbf1cde394524549d5ecdc4c1118",
+      "sectionsHash": "dfe0d9a61bd60fbe42f09f41981b2cb4b90c623bdbc75663d8ece2d417c5bebc",
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "inputHash": "47b3ce8bc524329b9a1dfdeaa1766182daa6279eb064a36eec0c1196906a9276",
+      "buildBound": false,
+      "rulePackBound": false
+    },
+    "resultHash": "cd9a3aad1b0ff7217f20e229e5298b63049aaa7f16db13ddca604a1ce4603941",
+    "sourceAnalysisRunIds": [
+      "M4-RC:2026-09-07T04:56:57.234Z:1"
+    ],
+    "units": {
+      "length": "m",
+      "force": "kN",
+      "moment": "kN.m",
+      "stress": "N/mm2",
+      "displacement": "mm"
+    },
+    "axes": "member-local",
+    "signConvention": "solver-native",
+    "checks": [
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "concrete",
+        "checkId": "rc-flexure-z",
+        "status": "OK",
+        "ratio": 0.04582152883133979,
+        "demand": 19.086614173228348,
+        "capacity": 416.54249999999985,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "concrete",
+        "checkId": "rc-flexure-y",
+        "status": "OK",
+        "ratio": 6.646091851149936e-19,
+        "demand": 1.1439585598791827e-16,
+        "capacity": 172.125,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "concrete",
+        "checkId": "rc-shear-z",
+        "status": "OK",
+        "ratio": 6.80123458301383e-19,
+        "demand": 7.009507492490948e-17,
+        "capacity": 103.0622809276022,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "concrete",
+        "checkId": "rc-shear-y",
+        "status": "OK",
+        "ratio": 0.10084873625786334,
+        "demand": 9.448818897637794,
+        "capacity": 93.69298266145655,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "concrete",
+        "checkId": "rc-axial",
+        "status": "OK",
+        "ratio": 0.007861125359400823,
+        "demand": 23.999999999999993,
+        "capacity": 3052.9979999999996,
+        "unit": "kN",
+        "expression": "Pu / phiPn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "concrete",
+        "checkId": "rc-column-interaction",
+        "status": "OK",
+        "ratio": 0.053682654190740614,
+        "demand": 0.053682654190740614,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "P/Pn + max(Mz/Mnz, My/Mny)",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "concrete",
+        "checkId": "rc-flexure-z",
+        "status": "OK",
+        "ratio": 0.045821528831339775,
+        "demand": 19.08661417322834,
+        "capacity": 416.54249999999985,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "concrete",
+        "checkId": "rc-flexure-y",
+        "status": "OK",
+        "ratio": 6.368142919978921e-19,
+        "demand": 1.0961166001013718e-16,
+        "capacity": 172.125,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "concrete",
+        "checkId": "rc-shear-z",
+        "status": "OK",
+        "ratio": 6.21253129446835e-19,
+        "demand": 6.402776455420172e-17,
+        "capacity": 103.0622809276022,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "concrete",
+        "checkId": "rc-shear-y",
+        "status": "OK",
+        "ratio": 0.10084873625786332,
+        "demand": 9.448818897637793,
+        "capacity": 93.69298266145655,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "concrete",
+        "checkId": "rc-axial",
+        "status": "OK",
+        "ratio": 0.007861125359400823,
+        "demand": 23.99999999999999,
+        "capacity": 3052.9979999999996,
+        "unit": "kN",
+        "expression": "Pu / phiPn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "concrete",
+        "checkId": "rc-column-interaction",
+        "status": "OK",
+        "ratio": 0.0536826541907406,
+        "demand": 0.0536826541907406,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "P/Pn + max(Mz/Mnz, My/Mny)",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "concrete",
+        "checkId": "rc-flexure-z",
+        "status": "OK",
+        "ratio": 0.04582152883133977,
+        "demand": 19.086614173228337,
+        "capacity": 416.54249999999985,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "concrete",
+        "checkId": "rc-flexure-y",
+        "status": "OK",
+        "ratio": 6.317461292146833e-19,
+        "demand": 1.0873930249107736e-16,
+        "capacity": 172.125,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "concrete",
+        "checkId": "rc-shear-z",
+        "status": "OK",
+        "ratio": 6.117678841264965e-19,
+        "demand": 6.305019353632977e-17,
+        "capacity": 103.0622809276022,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "concrete",
+        "checkId": "rc-shear-y",
+        "status": "OK",
+        "ratio": 0.1008487362578633,
+        "demand": 9.448818897637791,
+        "capacity": 93.69298266145655,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "concrete",
+        "checkId": "rc-axial",
+        "status": "OK",
+        "ratio": 0.007861125359400823,
+        "demand": 23.999999999999993,
+        "capacity": 3052.9979999999996,
+        "unit": "kN",
+        "expression": "Pu / phiPn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "concrete",
+        "checkId": "rc-column-interaction",
+        "status": "OK",
+        "ratio": 0.05368265419074059,
+        "demand": 0.05368265419074059,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "P/Pn + max(Mz/Mnz, My/Mny)",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "concrete",
+        "checkId": "rc-flexure-z",
+        "status": "OK",
+        "ratio": 0.045821528831339775,
+        "demand": 19.08661417322834,
+        "capacity": 416.54249999999985,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "concrete",
+        "checkId": "rc-flexure-y",
+        "status": "OK",
+        "ratio": 7.227282289521263e-19,
+        "demand": 1.2439959640838474e-16,
+        "capacity": 172.125,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "concrete",
+        "checkId": "rc-shear-z",
+        "status": "OK",
+        "ratio": 7.777212553534662e-19,
+        "demand": 8.015372650260638e-17,
+        "capacity": 103.0622809276022,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "concrete",
+        "checkId": "rc-shear-y",
+        "status": "OK",
+        "ratio": 0.10084873625786332,
+        "demand": 9.448818897637793,
+        "capacity": 93.69298266145655,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "concrete",
+        "checkId": "rc-axial",
+        "status": "OK",
+        "ratio": 0.007861125359400823,
+        "demand": 23.999999999999993,
+        "capacity": 3052.9979999999996,
+        "unit": "kN",
+        "expression": "Pu / phiPn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "concrete",
+        "checkId": "rc-column-interaction",
+        "status": "OK",
+        "ratio": 0.0536826541907406,
+        "demand": 0.0536826541907406,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "P/Pn + max(Mz/Mnz, My/Mny)",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "concrete",
+        "checkId": "rc-flexure-z",
+        "status": "OK",
+        "ratio": 0.06873229324700987,
+        "demand": 19.086614173228398,
+        "capacity": 277.6949999999999,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "concrete",
+        "checkId": "rc-flexure-y",
+        "status": "OK",
+        "ratio": 2.084065623818608e-18,
+        "demand": 2.3914653033318525e-16,
+        "capacity": 114.75,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "concrete",
+        "checkId": "rc-shear-z",
+        "status": "OK",
+        "ratio": 7.600428382183944e-19,
+        "demand": 7.833174850947627e-17,
+        "capacity": 103.0622809276022,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "concrete",
+        "checkId": "rc-shear-y",
+        "status": "OK",
+        "ratio": 0.256155790094973,
+        "demand": 24.00000000000001,
+        "capacity": 93.69298266145655,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "concrete",
+        "checkId": "rc-axial",
+        "status": "OK",
+        "ratio": 0.0033819205688485087,
+        "demand": 9.448818897637793,
+        "capacity": 2793.9209999999994,
+        "unit": "kN",
+        "expression": "Pu / phiPn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "concrete",
+        "checkId": "rc-column-interaction",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "P/Pn + max(Mz/Mnz, My/Mny)",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "concrete",
+        "checkId": "RC_MIN_COLUMN_REBAR",
+        "status": "WARN",
+        "ratio": null,
+        "unit": "-",
+        "expression": "Column reinforcement ratio is below the preliminary minimum."
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "concrete",
+        "checkId": "rc-flexure-z",
+        "status": "OK",
+        "ratio": 2.122682935467935e-19,
+        "demand": 5.89458437764768e-17,
+        "capacity": 277.6949999999999,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "concrete",
+        "checkId": "rc-flexure-y",
+        "status": "OK",
+        "ratio": 3.370136801061193e-18,
+        "demand": 3.867231979217719e-16,
+        "capacity": 114.75,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "concrete",
+        "checkId": "rc-shear-z",
+        "status": "OK",
+        "ratio": 1.8716632510989353e-18,
+        "demand": 1.9289788378662775e-16,
+        "capacity": 103.0622809276022,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "concrete",
+        "checkId": "rc-shear-y",
+        "status": "OK",
+        "ratio": 8.780704140982297e-20,
+        "demand": 8.226903608364341e-18,
+        "capacity": 93.69298266145655,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "concrete",
+        "checkId": "rc-axial",
+        "status": "OK",
+        "ratio": 5.6487011700832104e-21,
+        "demand": 1.578202482182005e-17,
+        "capacity": 2793.9209999999994,
+        "unit": "kN",
+        "expression": "Pu / phiPn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "concrete",
+        "checkId": "rc-column-interaction",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "P/Pn + max(Mz/Mnz, My/Mny)",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "concrete",
+        "checkId": "RC_MIN_COLUMN_REBAR",
+        "status": "WARN",
+        "ratio": null,
+        "unit": "-",
+        "expression": "Column reinforcement ratio is below the preliminary minimum."
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "concrete",
+        "checkId": "rc-flexure-z",
+        "status": "OK",
+        "ratio": 0.06873229324700987,
+        "demand": 19.086614173228398,
+        "capacity": 277.6949999999999,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "concrete",
+        "checkId": "rc-flexure-y",
+        "status": "OK",
+        "ratio": 2.1268623874882947e-18,
+        "demand": 2.440574589642818e-16,
+        "capacity": 114.75,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "concrete",
+        "checkId": "rc-shear-z",
+        "status": "OK",
+        "ratio": 7.648988325178586e-19,
+        "demand": 7.883221835815049e-17,
+        "capacity": 103.0622809276022,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "concrete",
+        "checkId": "rc-shear-y",
+        "status": "OK",
+        "ratio": 0.256155790094973,
+        "demand": 24.00000000000001,
+        "capacity": 93.69298266145655,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "concrete",
+        "checkId": "rc-axial",
+        "status": "OK",
+        "ratio": 0.0033819205688485074,
+        "demand": 9.44881889763779,
+        "capacity": 2793.9209999999994,
+        "unit": "kN",
+        "expression": "Pu / phiPn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "concrete",
+        "checkId": "rc-column-interaction",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "P/Pn + max(Mz/Mnz, My/Mny)",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "concrete",
+        "checkId": "RC_MIN_COLUMN_REBAR",
+        "status": "WARN",
+        "ratio": null,
+        "unit": "-",
+        "expression": "Column reinforcement ratio is below the preliminary minimum."
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "concrete",
+        "checkId": "rc-flexure-z",
+        "status": "OK",
+        "ratio": 3.998592816098552e-19,
+        "demand": 1.110389232066487e-16,
+        "capacity": 277.6949999999999,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "concrete",
+        "checkId": "rc-flexure-y",
+        "status": "OK",
+        "ratio": 3.3030656475713865e-18,
+        "demand": 3.790267830588166e-16,
+        "capacity": 114.75,
+        "unit": "kN.m",
+        "expression": "Mu / phiMn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "concrete",
+        "checkId": "rc-shear-z",
+        "status": "OK",
+        "ratio": 1.816744713363966e-18,
+        "demand": 1.872378540224532e-16,
+        "capacity": 103.0622809276022,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "concrete",
+        "checkId": "rc-shear-y",
+        "status": "OK",
+        "ratio": 4.444259860202207e-19,
+        "demand": 4.1639596202493264e-17,
+        "capacity": 93.69298266145655,
+        "unit": "kN",
+        "expression": "Vu / phiVc",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "concrete",
+        "checkId": "rc-axial",
+        "status": "OK",
+        "ratio": 2.9480696070382552e-21,
+        "demand": 8.236673584565928e-18,
+        "capacity": 2793.9209999999994,
+        "unit": "kN",
+        "expression": "Pu / phiPn",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "concrete",
+        "checkId": "rc-column-interaction",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0,
+        "capacity": 1,
+        "unit": "-",
+        "expression": "P/Pn + max(Mz/Mnz, My/Mny)",
+        "x": 0,
+        "method": "rc_preliminary_strength"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "concrete",
+        "checkId": "RC_MIN_COLUMN_REBAR",
+        "status": "WARN",
+        "ratio": null,
+        "unit": "-",
+        "expression": "Column reinforcement ratio is below the preliminary minimum."
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "story-1",
+        "category": "serviceability",
+        "checkId": "story-drift",
+        "status": "OK",
+        "ratio": 0.00046249725392255716,
+        "demand": 0.000002312486269612786,
+        "capacity": 0.005,
+        "expression": "story drift / drift limit",
+        "unit": "-"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e9",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10698942592925989,
+        "demand": 26.747356482314974,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e10",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10698942592925988,
+        "demand": 26.74735648231497,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e11",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10698942592925989,
+        "demand": 26.747356482314974,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e12",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10698942592925989,
+        "demand": 26.747356482314974,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e13",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10698942592925997,
+        "demand": 26.747356482314995,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e14",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 8.531066966580309e-19,
+        "demand": 2.1327667416450772e-16,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e15",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 0.10698942592925996,
+        "demand": 26.74735648231499,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e16",
+        "category": "connection",
+        "checkId": "preliminary-force-screen",
+        "status": "OK",
+        "ratio": 8.469467177153992e-19,
+        "demand": 2.1173667942884979e-16,
+        "capacity": 250,
+        "expression": "equivalent force / assumed nominal connection capacity",
+        "unit": "kN"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e1",
+        "category": "foundation",
+        "checkId": "required-bearing-area",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0.15999999999999995,
+        "capacity": null,
+        "expression": "required area = vertical reaction / assumed allowable bearing; actual footing area not checked",
+        "unit": "m2"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e1",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "WARN",
+        "ratio": 0.8748906386701664,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e3",
+        "category": "foundation",
+        "checkId": "required-bearing-area",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0.15999999999999992,
+        "capacity": null,
+        "expression": "required area = vertical reaction / assumed allowable bearing; actual footing area not checked",
+        "unit": "m2"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e3",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "WARN",
+        "ratio": 0.8748906386701664,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e5",
+        "category": "foundation",
+        "checkId": "required-bearing-area",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0.15999999999999995,
+        "capacity": null,
+        "expression": "required area = vertical reaction / assumed allowable bearing; actual footing area not checked",
+        "unit": "m2"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e5",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "WARN",
+        "ratio": 0.874890638670166,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e7",
+        "category": "foundation",
+        "checkId": "required-bearing-area",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "demand": 0.15999999999999995,
+        "capacity": null,
+        "expression": "required area = vertical reaction / assumed allowable bearing; actual footing area not checked",
+        "unit": "m2"
+      },
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e7",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "WARN",
+        "ratio": 0.8748906386701663,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      }
+    ],
+    "sources": [
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "caseId": "M4-RC",
+        "method": "off",
+        "maxDisplacement": 0.00041825939158486244,
+        "maxUtilization": 0.8748906386701664,
+        "governing": {
+          "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+          "comboId": "SLS1",
+          "memberId": "e1",
+          "category": "foundation",
+          "checkId": "slidingRatio",
+          "status": "WARN",
+          "ratio": 0.8748906386701664,
+          "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+          "unit": "-"
+        },
+        "qualification": "candidate"
+      }
+    ],
+    "demandPackages": [
+      {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "package": {
+          "version": "p2-design-demand-package",
+          "source": {
+            "resultPostprocessing": "p2-m6-result-postprocessing",
+            "activeResultId": "ENVELOPE"
+          },
+          "members": {
+            "e9": {
+              "traceId": "MEM-DEMAND-e9",
+              "memberId": "e9",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -23.999999999999993
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -23.999999999999993
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.448818897637794
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -7.009507492490948e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -1.1439585598791827e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 3,
+                  "value": 19.086614173228348
+                }
+              }
+            },
+            "e10": {
+              "traceId": "MEM-DEMAND-e10",
+              "memberId": "e10",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -23.99999999999999
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -23.99999999999999
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 9.448818897637793
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 6.402776455420172e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 1.0961166001013718e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 3,
+                  "value": -19.08661417322834
+                }
+              }
+            },
+            "e11": {
+              "traceId": "MEM-DEMAND-e11",
+              "memberId": "e11",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -23.999999999999993
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -23.999999999999993
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 9.448818897637791
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 6.305019353632977e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 1.0873930249107736e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 3,
+                  "value": -19.086614173228337
+                }
+              }
+            },
+            "e12": {
+              "traceId": "MEM-DEMAND-e12",
+              "memberId": "e12",
+              "stationCount": 21,
+              "governing": {
+                "key": "N",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -23.999999999999993
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -23.999999999999993
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.448818897637793
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -8.015372650260638e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -1.2439959640838474e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 3,
+                  "value": 19.08661417322834
+                }
+              }
+            },
+            "e13": {
+              "traceId": "MEM-DEMAND-e13",
+              "memberId": "e13",
+              "stationCount": 21,
+              "governing": {
+                "key": "Vy",
+                "comboId": "SLS1",
+                "x": 6,
+                "value": 24.00000000000001
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.448818897637793
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": 24.00000000000001
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 7.833174850947627e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 2.3914653033318525e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": -19.086614173228398
+                }
+              }
+            },
+            "e14": {
+              "traceId": "MEM-DEMAND-e14",
+              "memberId": "e14",
+              "stationCount": 21,
+              "governing": {
+                "key": "My",
+                "comboId": "SLS1",
+                "x": 0,
+                "value": -3.867231979217719e-16
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 1.578202482182005e-17
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 8.226903608364341e-18
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -1.9289788378662775e-16
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -3.867231979217719e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 4,
+                  "value": -5.89458437764768e-17
+                }
+              }
+            },
+            "e15": {
+              "traceId": "MEM-DEMAND-e15",
+              "memberId": "e15",
+              "stationCount": 21,
+              "governing": {
+                "key": "Vy",
+                "comboId": "SLS1",
+                "x": 6,
+                "value": 24.00000000000001
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.44881889763779
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": 24.00000000000001
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 7.883221835815049e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": -2.440574589642818e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": -19.086614173228398
+                }
+              }
+            },
+            "e16": {
+              "traceId": "MEM-DEMAND-e16",
+              "memberId": "e16",
+              "stationCount": 21,
+              "governing": {
+                "key": "My",
+                "comboId": "SLS1",
+                "x": 4,
+                "value": 3.790267830588166e-16
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 8.236673584565928e-18
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 4.1639596202493264e-17
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -1.872378540224532e-16
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 4,
+                  "value": 3.790267830588166e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 4,
+                  "value": -1.110389232066487e-16
+                }
+              }
+            }
+          },
+          "foundations": {
+            "e1": {
+              "traceId": "FND-DEMAND-e1",
+              "nodeId": "e1",
+              "reactions": {
+                "rx": {
+                  "min": 9.448818897637794,
+                  "max": 9.448818897637794,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "ry": {
+                  "min": 7.009507492490948e-17,
+                  "max": 7.009507492490948e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rz": {
+                  "min": 23.999999999999993,
+                  "max": 23.999999999999993,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmx": {
+                  "min": -1.1439585598791827e-16,
+                  "max": -1.1439585598791827e-16,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmy": {
+                  "min": 9.259842519685037,
+                  "max": 9.259842519685037,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmz": {
+                  "min": -1.203831037985153e-16,
+                  "max": -1.203831037985153e-16,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "SLS1"
+            },
+            "e3": {
+              "traceId": "FND-DEMAND-e3",
+              "nodeId": "e3",
+              "reactions": {
+                "rx": {
+                  "min": -9.448818897637793,
+                  "max": -9.448818897637793,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "ry": {
+                  "min": -6.402776455420172e-17,
+                  "max": -6.402776455420172e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rz": {
+                  "min": 23.99999999999999,
+                  "max": 23.99999999999999,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmx": {
+                  "min": 1.0961166001013718e-16,
+                  "max": 1.0961166001013718e-16,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmy": {
+                  "min": -9.259842519685037,
+                  "max": -9.259842519685037,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmz": {
+                  "min": -1.1086000633483852e-16,
+                  "max": -1.1086000633483852e-16,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "SLS1"
+            },
+            "e5": {
+              "traceId": "FND-DEMAND-e5",
+              "nodeId": "e5",
+              "reactions": {
+                "rx": {
+                  "min": -9.448818897637791,
+                  "max": -9.448818897637791,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "ry": {
+                  "min": -6.305019353632977e-17,
+                  "max": -6.305019353632977e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rz": {
+                  "min": 23.999999999999993,
+                  "max": 23.999999999999993,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmx": {
+                  "min": 1.0873930249107736e-16,
+                  "max": 1.0873930249107736e-16,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmy": {
+                  "min": -9.259842519685034,
+                  "max": -9.259842519685034,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmz": {
+                  "min": -1.0753773357149044e-16,
+                  "max": -1.0753773357149044e-16,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "SLS1"
+            },
+            "e7": {
+              "traceId": "FND-DEMAND-e7",
+              "nodeId": "e7",
+              "reactions": {
+                "rx": {
+                  "min": 9.448818897637793,
+                  "max": 9.448818897637793,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "ry": {
+                  "min": 8.015372650260638e-17,
+                  "max": 8.015372650260638e-17,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rz": {
+                  "min": 23.999999999999993,
+                  "max": 23.999999999999993,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmx": {
+                  "min": -1.2439959640838474e-16,
+                  "max": -1.2439959640838474e-16,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmy": {
+                  "min": 9.259842519685037,
+                  "max": 9.259842519685037,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                },
+                "rmz": {
+                  "min": -1.248823089820003e-16,
+                  "max": -1.248823089820003e-16,
+                  "comboMin": "SLS1",
+                  "comboMax": "SLS1"
+                }
+              },
+              "uplift": false,
+              "governingVerticalCombo": "SLS1"
+            }
+          },
+          "summary": {
+            "memberCount": 8,
+            "foundationCount": 4,
+            "upliftNodeCount": 0,
+            "governingMemberDemand": {
+              "traceId": "MEM-DEMAND-e13",
+              "memberId": "e13",
+              "stationCount": 21,
+              "governing": {
+                "key": "Vy",
+                "comboId": "SLS1",
+                "x": 6,
+                "value": 24.00000000000001
+              },
+              "peaks": {
+                "N": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": -9.448818897637793
+                },
+                "Vy": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": 24.00000000000001
+                },
+                "Vz": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 7.833174850947627e-17
+                },
+                "My": {
+                  "comboId": "SLS1",
+                  "x": 0,
+                  "value": 2.3914653033318525e-16
+                },
+                "Mz": {
+                  "comboId": "SLS1",
+                  "x": 6,
+                  "value": -19.086614173228398
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "summary": {
+      "status": "NOT_CHECKED",
+      "counts": {
+        "OK": 53,
+        "WARN": 8,
+        "NG": 0,
+        "NOT_CHECKED": 8
+      },
+      "maxUtilization": 0.8748906386701664,
+      "governing": {
+        "analysisRunId": "M4-RC:2026-09-07T04:56:57.234Z:1",
+        "comboId": "SLS1",
+        "memberId": "e1",
+        "category": "foundation",
+        "checkId": "slidingRatio",
+        "status": "WARN",
+        "ratio": 0.8748906386701664,
+        "expression": "horizontal reaction / (vertical reaction × assumed friction); uplift retains NG",
+        "unit": "-"
+      },
+      "checkCount": 69
+    },
+    "ruleSources": [
+      {
+        "module": "src/design/steel.js",
+        "method": "steel_allowable_preliminary + elastic LTB",
+        "status": "preliminary"
+      },
+      {
+        "module": "src/design/concrete.js",
+        "method": "rc_preliminary_strength",
+        "status": "preliminary"
+      },
+      {
+        "module": "src/design/serviceability.js",
+        "method": "story drift H/200 default",
+        "status": "project criterion required"
+      },
+      {
+        "module": "src/design/connectionFoundation.js",
+        "method": "force / bearing / sliding screening",
+        "status": "assumed capacities; preliminary"
+      }
+    ],
+    "limitations": [
+      "Final design transfer is blocked; computed OK is not engineering approval.",
+      "Only explicitly bound completed first-order/Direct P–Delta combinations are mapped. Legacy P–Delta is comparison-only and blocked. Modal, RSA, buckling, THA and nonlinear results are not mapped to member design demand.",
+      "Steel checks are preliminary allowable-stress screens, not a complete strength-code implementation. RC uses simplified section/rebar assumptions.",
+      "LTB, missing members, warnings and unchecked items retain their own status.",
+      "Connection bolt/weld/anchorage and foundation settlement, punching, reinforcement and soil qualification are NOT_CHECKED.",
+      "Selected combinations only; required code combination coverage is not certified."
+    ]
+  },
+  "reportSnapshotHash": "970723c35a120fe387fb9c3c2be36fa84f542b9e32e5fcdb5b23f4a499a4b2cd",
+  "verdict": {
+    "version": "p11-report-verdict-v1",
+    "overall": "REVIEW",
+    "axes": {
+      "operational": {
+        "status": "PASS"
+      },
+      "numericalIntegrity": {
+        "status": "REVIEW"
+      },
+      "engineeringValidation": {
+        "status": "NOT_VERIFIED"
+      },
+      "issueSuitability": {
+        "status": "REVIEW"
+      }
+    },
+    "reasonCodes": [
+      "AUDIT_FAILED",
+      "ENGINEERING_VALIDATION_INCOMPLETE",
+      "INDEPENDENT_REFERENCE_NOT_AVAILABLE",
+      "ISSUE_SCOPE_LIMITED",
+      "OPERATIONAL_CHECKS_PASSED"
+    ]
+  }
+}

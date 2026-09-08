@@ -1,3 +1,4 @@
+import { installHostWebMcp } from './webmcpHost.js';
 import { clearElement } from './domUtil.js';
 import { buildHash } from './routes.js';
 import { createPersistenceClient } from './persistenceClient.js';
@@ -100,6 +101,7 @@ export function mountModelerHostView(container, ctx) {
   container.appendChild(host);
 
   const bridge = (modelerBridgeFactory || createModelerBridge)({ window, iframe });
+  const webmcpHost=installHostWebMcp({window,iframe,projectId,onActivity:name=>{status.textContent=`WebMCP: ${name}`;if(name.startsWith('apply_'))markUnsaved();}});
   const persistence = projectBacked ? createPersistenceClient(api) : null;
   const storage = window?.localStorage || null;
   const autosaveScope = `project-${projectId}`;
@@ -194,6 +196,7 @@ export function mountModelerHostView(container, ctx) {
     unmount() {
       window?.removeEventListener?.('keydown', onKeydown);
       autosaveScheduler.dispose();
+      webmcpHost.dispose();
       bridge.dispose?.();
       clearElement(container);
     },

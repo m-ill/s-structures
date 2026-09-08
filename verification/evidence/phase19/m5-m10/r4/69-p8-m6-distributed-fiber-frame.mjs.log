@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-FIB-14"
+  ],
+  "integrationPoints": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "yieldedPointCount": 5,
+  "plasticCorrectionNorm": 779.4121377434208,
+  "plasticTangentError": 8.003516995813698e-7,
+  "fixedEndLoadYielded": true,
+  "productionRoute": "distributed-fiber-corotational-frame-3d",
+  "rollbackDeterministic": true
+}
+
+

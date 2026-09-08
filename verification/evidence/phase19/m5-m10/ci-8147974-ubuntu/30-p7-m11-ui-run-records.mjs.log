@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "attempts": 4,
+  "retainedResult": "RUN-1:2026-09-07T14:28:39.274Z:1",
+  "failedAttempt": "RUN-1:2026-09-07T14:28:39.362Z:2",
+  "verifiedAttempt": "RUN-VERIFIED:VERIFIED",
+  "selectionEvents": 4
+}
+
+

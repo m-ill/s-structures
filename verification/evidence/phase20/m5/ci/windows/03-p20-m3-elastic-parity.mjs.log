@@ -1,0 +1,10 @@
+PASS exact elastic baseline empty
+PASS exact elastic baseline off-dynamic-false
+PASS exact elastic baseline off-dynamic-true
+PASS exact elastic baseline direct-dynamic-false
+PASS exact elastic baseline direct-dynamic-true
+PASS exact elastic baseline legacy-dynamic-false
+PASS exact elastic baseline legacy-dynamic-true
+PASS P20 public exports, sync API, all deterministic numerical and qualification fields
+
+

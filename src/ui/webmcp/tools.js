@@ -1,7 +1,10 @@
+import { createWorkflowTools } from './workflowTools.js';
+import { createNonlinearTools } from './nonlinearTools.js';
+import { finiteJson } from '../../modeling/designInputCommands.js';
 import { stableHash } from '../../core/stableHash.js';
 import { SOLVER_UNIT_POLICY } from '../../core/units.js';
 
-export const WEBMCP_VERSION = 'sstructures-webmcp-v1';
+export const WEBMCP_VERSION = 'sstructures-webmcp-v2';
 const KINDS = ['static', 'modal', 'responseSpectrum', 'buckling', 'linearTha'];
 const id = { type: 'string', minLength: 1, maxLength: 128 };
 const hash = { type: 'string', pattern: '^[a-f0-9]{64}$' };
@@ -16,9 +19,10 @@ export function webmcpModelHash(model) {
   return stableHash(input);
 }
 
-export function createWebMcpTools({ agent, bridge }) {
+export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setView = () => ({ok:false,code:'VIEW_UNAVAILABLE'}) }) {
   const requests = new Map();
   const jobs = new Map();
+  let active = true;
   function model() {
     const value = agent.getModel();
     if (!value) fail('MODEL_REQUIRED', 'Open a model first.');
@@ -64,28 +68,37 @@ export function createWebMcpTools({ agent, bridge }) {
       name, description, inputSchema,
       annotations: { readOnlyHint: readOnly },
       async execute(args = {}) {
+        if (!active) fail('SESSION_DISPOSED', 'This WebMCP page session has been disposed.');
+        try{finiteJson(args);}catch{fail('INVALID_INPUT','Input must be finite safe JSON.');}
+        if(JSON.stringify(args).length>64000) fail('REQUEST_TOO_LARGE','Maximum input is 64000 characters.');
         validate(inputSchema, args);
+        const before=bridge.getWorkflowInputIdentity?.().inputHash;
         const value = await run(args);
+        if (!active) fail('SESSION_DISPOSED', 'This WebMCP page session has been disposed.');
         const text = JSON.stringify(value);
         if (text.length > 48000) fail('RESULT_TOO_LARGE', 'Request a narrower path or smaller limit.');
+        onActivity({tool:name,ok:value?.ok!==false,designRunId:value?.designRunId,changed:before!==bridge.getWorkflowInputIdentity?.().inputHash});
         return value;
       },
     };
   }
-  return [
+  const workflow=createWorkflowTools({agent,bridge,tool,object,context,setView});
+  const nonlinear=createNonlinearTools({agent,tool,context});
+  const definitions = [
     tool('get_project_context', 'Read model units, input hash, case IDs and supported analysis capabilities. Does not run analysis.', object(), true, () => {
       const value = model();
       return {
         version: WEBMCP_VERSION, ...context(value),
+        inputIdentity: agent.getWorkflowInputIdentity?.({ model: value }) || null,
         counts: Object.fromEntries(['nodes', 'members', 'loads'].map((key) => [key, value[key]?.length || 0])),
-        cases: (value.analysisCases || []).slice(0, 100).map(({ id, name, kind }) => ({ id, name, kind, exposed: KINDS.includes(kind) })),
+        cases: (value.analysisCases || []).slice(0, 100).map(({ id, name, kind, engineId }) => ({ id, name, kind, engineId, exposed: KINDS.includes(kind)||nonlinear.isCase(id) })),
         casesTruncated: (value.analysisCases?.length || 0) > 100,
-        capabilities: KINDS.map((kind) => {
+        capabilities: [...KINDS.map((kind) => {
           const result = agent.getAnalysisCapabilities({ kind });
           return { kind, targets: result.targets };
-        }),
+        }), ...['p8-production-mdof-pushover', 'p8-production-mdof-nlth'].map(engineId => ({engineId, qualification:'candidate', designBlocked:true, targets:['cpu'], settings:'case-specific preflight required'}))],
         jobs: [...jobs.keys()],
-        limits: { maxSessionJobs: 128, maxConcurrentJobs: 1, editing: false, externalQualification: 'NOT_CLAIMED' },
+        limits: { maxSessionJobs: 128, maxConcurrentJobs: 1, editing: true, externalQualification: 'NOT_CLAIMED' },
       };
     }),
     tool('inspect_model', 'Read current Model Check issues, without running a solver or repairing the model.', object({ limit: { type: 'integer', minimum: 1, maximum: 100 } }), true, ({ limit = 30 }) => {
@@ -101,14 +114,17 @@ export function createWebMcpTools({ agent, bridge }) {
       return { ...context(value), selection };
     }),
     tool('validate_analysis', 'Validate an existing case and compute route for the current model hash. Does not start a job.', object(analysis, ['caseId', 'modelHash']), true, (args) => {
+      if(nonlinear.isCase(args.caseId))return nonlinear.validate(args);
       const { input, binding } = inputFor(args);
       return { ...binding, validation: agent.validateAnalysisRun(input) };
     }),
     tool('plan_analysis', 'Plan an existing analysis case. Review route, qualification and blocking conditions before starting.', object(analysis, ['caseId', 'modelHash']), true, (args) => {
+      if(nonlinear.isCase(args.caseId))return nonlinear.plan(args);
       const { input, binding } = inputFor(args);
       return { ...binding, plan: agent.planAnalysisRun(input) };
     }),
     tool('start_analysis', 'Start analysis of the current existing case and publish its results to the UI. Returns a job ID. Reuse requestId to avoid duplicate execution.', object({ ...analysis, requestId: id }, ['caseId', 'modelHash', 'requestId']), false, (args) => {
+      if(nonlinear.isCase(args.caseId))return nonlinear.start(args);
       const fingerprint = stableHash({ ...args, computeTarget: args.computeTarget || 'cpu' });
       const previous = requests.get(args.requestId);
       if (previous) {
@@ -125,9 +141,10 @@ export function createWebMcpTools({ agent, bridge }) {
       requests.set(args.requestId, { fingerprint, jobId: job.id });
       return { ...jobInfo(job.id), reused: false };
     }),
-    tool('get_analysis_status', 'Read execution status, errors, provenance and whether the model changed since this job started.', object({ jobId: id }, ['jobId']), true, ({ jobId }) => jobInfo(jobId)),
+    tool('get_analysis_status', 'Read execution status, errors, provenance and whether the model changed since this job started.', object({ jobId: id }, ['jobId']), true, ({ jobId }) => nonlinear.owns(jobId)?nonlinear.status(jobId):jobInfo(jobId)),
     tool('get_result_slice', 'Read a bounded path from an existing completed job. Default is summary. Preserves qualification and flags stale results; does not rerun analysis.', object({ jobId: id, path: { type: 'string', minLength: 1, maxLength: 180, pattern: '^(summary|payload)(\\.[A-Za-z0-9_-]+)*$' }, limit: { type: 'integer', minimum: 1, maximum: 100 } }, ['jobId']), true, ({ jobId, path = 'summary', limit = 25 }) => {
       if (path.split('.').some((part) => ['__proto__', 'prototype', 'constructor'].includes(part))) fail('INVALID_PATH', 'Unsafe result path.');
+      if(nonlinear.owns(jobId))return nonlinear.slice({jobId,path,limit});
       const info = jobInfo(jobId);
       if (!info.status.resultAvailable) fail('RESULT_NOT_READY', 'No result is available. Check analysis status.');
       const slice = agent.getAnalysisResultSlice({ jobId, query: { path, limit } });
@@ -135,20 +152,41 @@ export function createWebMcpTools({ agent, bridge }) {
       return { ...info, slice, externalQualification: 'NOT_CLAIMED' };
     }),
     tool('cancel_analysis', 'Request cancellation of one analysis job started by this page session. Completed results are retained.', object({ jobId: id }, ['jobId']), false, ({ jobId }) => {
+      if(nonlinear.owns(jobId))return nonlinear.cancel(jobId);
       jobInfo(jobId);
       agent.cancelAnalysisRun({ jobId });
       return jobInfo(jobId);
     }),
+    ...workflow.tools,
+    ...nonlinear.tools,
   ];
+  definitions.dispose=()=>{
+    if (!active) return {errors:[]};
+    active=false;
+    const errors=[];
+    const attempt=run=>{try{errors.push(...(run()?.errors||[]));}catch(error){errors.push({code:error?.code||'CANCEL_FAILED',message:String(error?.message||error)});}};
+    attempt(()=>workflow.dispose());
+    attempt(()=>nonlinear.dispose());
+    for(const jobId of jobs.keys()) attempt(()=>agent.cancelAnalysisRun({jobId}));
+    jobs.clear();requests.clear();
+    return {errors};
+  };
+  return definitions;
 }
 
 function fail(code, message) { throw Object.assign(new Error(message), { code }); }
-function validate(schema, value, at = 'input') {
+export function validate(schema, value, at = 'input') {
+  if(schema.oneOf) {let matches=0;for(const child of schema.oneOf){try{validate(child,value,at);matches++;}catch{}}if(matches!==1) fail('INVALID_INPUT',`Invalid typed input: ${at}`);return;}
+  if(schema.type==='array'){if(!Array.isArray(value)||value.length<schema.minItems||value.length>schema.maxItems)fail('INVALID_INPUT',`Invalid array: ${at}`);value.forEach((item,i)=>validate(schema.items,item,`${at}[${i}]`));return;}
+  if(schema.type==='boolean'&&typeof value!=='boolean') fail('INVALID_INPUT',`Invalid boolean: ${at}`);
+  if(schema.type==='number'&&(typeof value!=='number'||!Number.isFinite(value)||value<schema.minimum||value>schema.maximum))fail('INVALID_INPUT',`Invalid number: ${at}`);
   if (schema.type === 'object') {
     if (!value || typeof value !== 'object' || Array.isArray(value)) fail('INVALID_INPUT', `${at} must be an object.`);
     for (const key of Object.keys(value)) {
-      if (!Object.hasOwn(schema.properties, key)) fail('INVALID_INPUT', `Unknown field: ${at}.${key}`);
-      validate(schema.properties[key], value[key], `${at}.${key}`);
+      if (Object.keys(value).length>(schema.maxProperties||100)) fail('INVALID_INPUT','Too many properties');
+      const child=schema.properties[key]||schema.additionalProperties;
+      if (!child || child===true) fail('INVALID_INPUT', `Unknown field: ${at}.${key}`);
+      validate(child, value[key], `${at}.${key}`);
     }
     for (const key of schema.required || []) if (!Object.hasOwn(value, key)) fail('INVALID_INPUT', `Missing field: ${at}.${key}`);
   } else if (schema.type === 'string') {

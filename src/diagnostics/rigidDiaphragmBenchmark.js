@@ -1,4 +1,4 @@
-import { analyzeModel } from '../solver/linear3d.js';
+import { analyzeModel } from '../compute/product/elasticAnalysisWorkflow.js';
 import { createRigidDiaphragmBenchmarkModel } from './rigidDiaphragmBenchmarkModel.js';
 
 export const RIGID_DIAPHRAGM_BENCHMARK_VERSION = 'p2-t11-rigid-diaphragm-benchmark';

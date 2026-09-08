@@ -1,0 +1,10 @@
+diff --git a/src/ui/resultViewCache.js b/src/ui/resultViewCache.js
+index 52a2168..a276f7b 100644
+--- a/src/ui/resultViewCache.js
++++ b/src/ui/resultViewCache.js
+@@ -32,4 +32,5 @@ export const COMPUTED_RESULT_VIEWS = Object.freeze([
+   'getServiceabilityDriftReport', 'getAdvancedElasticTrace', 'getResultPostprocessing',
+   'getWallSlabEquivalentTrace',
+   'getDynamicCompletenessTrace', 'getNonlinearAnalysisTrace',
++  'getPilotProjectValidation', 'getMemberReleaseBenchmark', 'getRigidDiaphragmBenchmark',
+ ]);

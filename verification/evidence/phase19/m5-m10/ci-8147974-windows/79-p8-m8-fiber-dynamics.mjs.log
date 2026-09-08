@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-DYN-10"
+  ],
+  "matrixClass": "general",
+  "outputStepCount": 3,
+  "integrationPointCount": 3,
+  "committedFiberSectionCount": 3
+}
+
+

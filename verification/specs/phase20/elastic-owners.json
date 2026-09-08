@@ -1,0 +1,139 @@
+{
+  "functions": {
+    "analyzeModel": "src/compute/product/elasticAnalysisWorkflow.js",
+    "prepareElasticAnalysis": "src/solver/elastic/stages.js",
+    "solveElasticCombination": "src/solver/elastic/stages.js",
+    "captureElasticCombinationSystems": "src/solver/elastic/stages.js",
+    "resumeElasticCombinationSystems": "src/solver/elastic/stages.js",
+    "finalizeElasticAnalysis": "src/compute/product/elasticAnalysisWorkflow.js",
+    "validateDirectPDeltaOverride": "src/solver/elastic/resultContracts.js",
+    "elasticStageError": "src/solver/elastic/resultContracts.js",
+    "withAudit": "src/solver/elastic/resultContracts.js",
+    "refreshValidationHealth": "src/solver/elastic/resultContracts.js",
+    "appendSolverDiagnosticWarnings": "src/solver/elastic/resultContracts.js",
+    "appendComponentFailureErrors": "src/solver/elastic/resultContracts.js",
+    "resolveRequestedCombinations": "src/solver/elastic/resultContracts.js",
+    "buildCombinationCompleteness": "src/solver/elastic/resultContracts.js",
+    "firstOrderPDeltaDesignInputs": "src/solver/elastic/resultContracts.js",
+    "resultCompletenessReasons": "src/solver/elastic/resultContracts.js",
+    "envelopeCompleteFor": "src/solver/elastic/resultContracts.js",
+    "blockedDesignResultSet": "src/solver/elastic/resultContracts.js",
+    "collectionSize": "src/solver/elastic/resultContracts.js",
+    "failedStatus": "src/solver/elastic/resultContracts.js",
+    "analyzePDeltaCombinations": "src/solver/pdelta/combinations.js",
+    "buildDirectPDeltaAnalysis": "src/solver/pdelta/combinations.js",
+    "analyzeDirectPDeltaCombinations": "src/solver/pdelta/combinations.js",
+    "buildDirectPDeltaGraphs": "src/solver/pdelta/combinations.js",
+    "buildPDeltaDesignSummary": "src/solver/pdelta/combinations.js",
+    "analyzePDelta": "src/solver/pdelta/combinations.js",
+    "makePDeltaLoads": "src/solver/pdelta/combinations.js",
+    "buildPDeltaLoadStepCurve": "src/solver/pdelta/combinations.js",
+    "pDeltaLoadFactors": "src/solver/pdelta/combinations.js",
+    "splitPDeltaFactors": "src/solver/pdelta/combinations.js",
+    "classifyPDeltaLoadCase": "src/solver/pdelta/combinations.js",
+    "composePDeltaStepFactors": "src/solver/pdelta/combinations.js",
+    "pDeltaGlobalPoint": "src/solver/pdelta/combinations.js",
+    "pDeltaBaseShear": "src/solver/pdelta/combinations.js",
+    "pDeltaStoryRows": "src/solver/pdelta/combinations.js",
+    "pDeltaDesignStoryRows": "src/solver/pdelta/combinations.js",
+    "pDeltaDesignMemberForceRows": "src/solver/pdelta/combinations.js",
+    "memberForceEnvelope": "src/solver/pdelta/combinations.js",
+    "forceAmplification": "src/solver/pdelta/combinations.js",
+    "pDeltaMemberContributionRows": "src/solver/pdelta/combinations.js",
+    "averageHorizontalDisplacementAtZ": "src/solver/pdelta/combinations.js",
+    "storyCompressionLoad": "src/solver/pdelta/combinations.js",
+    "storyShearVectors": "src/solver/pdelta/combinations.js",
+    "lateralFloorLoads": "src/solver/pdelta/combinations.js",
+    "nearestLevelKey": "src/solver/pdelta/combinations.js",
+    "compressionAxialForce": "src/solver/pdelta/combinations.js",
+    "pDeltaDesignStatus": "src/solver/pdelta/combinations.js",
+    "worstStatus": "src/solver/pdelta/combinations.js",
+    "pDeltaLegacyStatus": "src/solver/pdelta/combinations.js",
+    "pDeltaThetaDesignEligibility": "src/solver/pdelta/combinations.js",
+    "memberEulerCriticalLoad": "src/solver/pdelta/combinations.js",
+    "summarizeSinglePDeltaCurve": "src/solver/pdelta/combinations.js",
+    "summarizePDeltaCurves": "src/solver/pdelta/combinations.js",
+    "modelVerticalBounds": "src/solver/pdelta/combinations.js",
+    "uniqueSorted": "src/solver/pdelta/combinations.js",
+    "uniqueStrings": "src/solver/pdelta/combinations.js",
+    "constraintNodeIds": "src/solver/pdelta/combinations.js",
+    "dot3": "src/solver/pdelta/combinations.js",
+    "positiveNumber": "src/solver/pdelta/combinations.js",
+    "nonnegativeNumber": "src/solver/pdelta/combinations.js",
+    "summarizePDelta": "src/solver/pdelta/combinations.js"
+  },
+  "publicExports": {
+    "analyzeModel": "src/compute/product/elasticAnalysisWorkflow.js",
+    "prepareElasticAnalysis": "src/solver/elastic/stages.js",
+    "solveElasticCombination": "src/solver/elastic/stages.js",
+    "captureElasticCombinationSystems": "src/solver/elastic/stages.js",
+    "resumeElasticCombinationSystems": "src/solver/elastic/stages.js",
+    "finalizeElasticAnalysis": "src/compute/product/elasticAnalysisWorkflow.js",
+    "analyzePDeltaCombinations": "src/solver/pdelta/combinations.js",
+    "buildDirectPDeltaAnalysis": "src/solver/pdelta/combinations.js",
+    "buildPDeltaDesignSummary": "src/solver/pdelta/combinations.js",
+    "analyzePDelta": "src/solver/pdelta/combinations.js",
+    "makePDeltaLoads": "src/solver/pdelta/combinations.js",
+    "buildPDeltaLoadStepCurve": "src/solver/pdelta/combinations.js",
+    "pDeltaDesignStatus": "src/solver/pdelta/combinations.js",
+    "PDELTA_DESIGN_SUMMARY_CORRECTNESS_VERSION": "src/solver/pdelta/combinations.js",
+    "analyzeComponent3D": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dAssembly.js",
+    "assembleStiffness3D": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dAssembly.js",
+    "AXIS": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dElement.js",
+    "localK12": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dElement.js",
+    "memberAxes": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dElement.js",
+    "solveLinear": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dElement.js",
+    "solveLinearDetailed": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dElement.js",
+    "defaultCombos": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dPost.js",
+    "makeEnvelope": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dPost.js",
+    "analyzeAll": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\src\\solver\\linear3dFirstOrder.js"
+  },
+  "edges": [
+    {
+      "group": "workflow",
+      "other": "stages",
+      "names": [
+        "prepareElasticAnalysis",
+        "solveElasticCombination"
+      ]
+    },
+    {
+      "group": "workflow",
+      "other": "contracts",
+      "names": [
+        "validateDirectPDeltaOverride",
+        "withAudit",
+        "buildCombinationCompleteness",
+        "firstOrderPDeltaDesignInputs",
+        "envelopeCompleteFor",
+        "blockedDesignResultSet"
+      ]
+    },
+    {
+      "group": "workflow",
+      "other": "pdelta",
+      "names": [
+        "analyzePDeltaCombinations",
+        "buildPDeltaDesignSummary"
+      ]
+    },
+    {
+      "group": "stages",
+      "other": "contracts",
+      "names": [
+        "elasticStageError",
+        "refreshValidationHealth",
+        "appendSolverDiagnosticWarnings",
+        "appendComponentFailureErrors",
+        "resolveRequestedCombinations"
+      ]
+    },
+    {
+      "group": "pdelta",
+      "other": "contracts",
+      "names": [
+        "envelopeCompleteFor"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": "p19-supplemental-validation-v1",
+  "source": {
+    "commit": "fafff387ebf393474ccfa55a97390c65b70a387a",
+    "tree": "0461bd67dbed520ca9a9f26fafeaaa56d95c56f9",
+    "trackedChanges": ""
+  },
+  "runtimeIdenticalTo": "0116957",
+  "runtimeComparisonPaths": [
+    "src",
+    "server",
+    "index.html",
+    "app.html"
+  ],
+  "reason": "M31 command bridge test now explicitly prepares the nonlinear trace; runtime unchanged from full R3 suite.",
+  "sourceArchiveSha256": "5799265aa4be512bb84921ee4f073b8c845877302ff085e0042e748b06930309",
+  "results": [
+    {
+      "test": "tests/m31-agent-command-bridge.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "m31.log",
+      "sha256": "3e30e61370c16ba7eca44398099f25c8dec7ece624337d9c815f7f5e96404d3e"
+    }
+  ]
+}

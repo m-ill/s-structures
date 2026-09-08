@@ -1,0 +1,202 @@
+{
+  "version": "m46-stabilization-harness",
+  "id": "representative-03-u-shaped-school",
+  "name": "U-shaped school wing",
+  "category": "representative-building",
+  "inputPath": "representative-building-generator",
+  "ok": true,
+  "issues": [],
+  "checks": [
+    {
+      "id": "validation-errors",
+      "ok": true,
+      "message": "Model validation must have no errors."
+    },
+    {
+      "id": "analysis-ok",
+      "ok": true,
+      "message": "Elastic analysis must complete successfully."
+    },
+    {
+      "id": "combination-count",
+      "ok": true,
+      "message": "Required load combinations must be present."
+    },
+    {
+      "id": "load-count",
+      "ok": true,
+      "message": "Required model loads must be present."
+    },
+    {
+      "id": "combo-results",
+      "ok": true,
+      "message": "Every load combination must solve."
+    },
+    {
+      "id": "equilibrium",
+      "ok": true,
+      "message": "Equilibrium residual must stay within tolerance."
+    },
+    {
+      "id": "visual-nodes",
+      "ok": true,
+      "message": "Result visuals must include every node."
+    },
+    {
+      "id": "visual-members",
+      "ok": true,
+      "message": "Result visuals must include every member."
+    },
+    {
+      "id": "visual-displacement",
+      "ok": true,
+      "message": "Result visuals must include a nonzero displacement envelope."
+    },
+    {
+      "id": "html-report",
+      "ok": true,
+      "message": "HTML report must be generated from the same result."
+    },
+    {
+      "id": "calculation-package",
+      "ok": true,
+      "message": "Calculation package must include the standard sections."
+    },
+    {
+      "id": "member-trace",
+      "ok": true,
+      "message": "Member design trace rows must be available."
+    }
+  ],
+  "summary": {
+    "model": {
+      "nodes": 40,
+      "members": 57,
+      "loads": 114,
+      "loadCases": 4,
+      "combinations": 3
+    },
+    "validation": {
+      "ok": true,
+      "errorCount": 0,
+      "warningCount": 0,
+      "errors": [],
+      "warnings": []
+    },
+    "analysis": {
+      "ok": true,
+      "comboCount": 3,
+      "maxDisplacement": 0.007404044246212243,
+      "maxUtilization": 0.5002732598792055,
+      "designStatus": "OK",
+      "designOk": true,
+      "validationErrors": [],
+      "comboResults": [
+        {
+          "id": "EL-DL",
+          "ok": true,
+          "maxDisplacement": 0.000584725783780941,
+          "maxUtilization": 0.06859992822970644,
+          "equilibriumResidual": 2.21611769437848e-16,
+          "solverResidualNorm": 2.7068294695622863e-15,
+          "totalLoad": [
+            0,
+            0,
+            -1026
+          ],
+          "totalReaction": [
+            -9.353628982466944e-15,
+            -5.773159728050814e-15,
+            1026.0000000000002
+          ]
+        },
+        {
+          "id": "EL-WX",
+          "ok": true,
+          "maxDisplacement": 0.007404044246212243,
+          "maxUtilization": 0.08264605165673285,
+          "equilibriumResidual": 2.9171345160696316e-15,
+          "solverResidualNorm": 2.4664429876512225e-14,
+          "totalLoad": [
+            38.73333333333335,
+            0,
+            -837.9000000000001
+          ],
+          "totalReaction": [
+            -38.733333333330904,
+            -1.7763568394002505e-15,
+            837.9000000000001
+          ]
+        },
+        {
+          "id": "EL-WY",
+          "ok": true,
+          "maxDisplacement": 0.0020098184962025877,
+          "maxUtilization": 0.05753957668805079,
+          "equilibriumResidual": 4.4096219428959547e-16,
+          "solverResidualNorm": 1.6863737487746547e-14,
+          "totalLoad": [
+            0,
+            33.20000000000001,
+            -837.9000000000001
+          ],
+          "totalReaction": [
+            -1.2212453270876722e-15,
+            -33.19999999999964,
+            837.9
+          ]
+        }
+      ]
+    },
+    "visuals": {
+      "version": "m13-index-result-visuals",
+      "resultId": "ENVELOPE",
+      "nodes": 40,
+      "members": 57,
+      "loads": 114,
+      "reactions": 10,
+      "maxDisplacement": 0.007443595618379573
+    },
+    "report": {
+      "version": "m14-report-export",
+      "title": "U-shaped school wing - Stabilization Report",
+      "htmlLength": 12550
+    },
+    "calculationPackage": {
+      "version": "m42-calculation-package",
+      "sectionCount": 7,
+      "htmlLength": 23243,
+      "qualityAuditOk": false,
+      "qualityItems": [
+        {
+          "name": "Load derivation attached",
+          "status": "Missing"
+        },
+        {
+          "name": "Combination results available",
+          "status": "OK"
+        },
+        {
+          "name": "Member checks available",
+          "status": "OK"
+        },
+        {
+          "name": "RC schedule available",
+          "status": "Not applicable"
+        },
+        {
+          "name": "Steel schedule available",
+          "status": "OK"
+        },
+        {
+          "name": "Foundation review available",
+          "status": "OK"
+        }
+      ],
+      "loadDerivationRows": 0,
+      "memberTraceRows": 57,
+      "serviceabilityRows": 9
+    },
+    "actionHistory": []
+  }
+}

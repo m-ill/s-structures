@@ -1,6 +1,8 @@
+import { MDOF_LOAD_CONTROL_VERSION } from '../../metadata/numericVersions.js';
+export { MDOF_LOAD_CONTROL_VERSION };
 import { solveMdofNewtonStep } from './newton.js';
 
-export const MDOF_LOAD_CONTROL_VERSION = 'p8-m3-mdof-load-control-v3-p14-m10';
+
 
 export async function runMdofLoadControl(input = {}) {
   const options = input.options || {};

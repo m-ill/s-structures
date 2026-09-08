@@ -78,7 +78,9 @@ assert.equal(agentSnapshot.milestones.M8.containment.status, uiSnapshot.mileston
 assert.equal(uiSnapshot.releaseGate.workflowReleaseQualified, false);
 assert.equal(uiSnapshot.releaseGate.finalDesignTransferAllowed, false);
 assert.equal(uiSnapshot.releaseGate.shellDesignTransferAllowed, false);
-const report = target.SStructuresAgent.getDetailedReport();
+assert.equal(target.SStructuresAgent.getDetailedReport().code, 'RESULT_REQUIRED');
+target.SStructuresEngine.analyzeModel(model);
+const report = target.SStructuresAgent.prepareResultView('getDetailedReport');
 assert.equal(report.data.phase13Milestones.releaseGate.manifestHash, uiSnapshot.releaseGate.manifestHash);
 assert.match(report.html, /data-section="phase13-milestones"/);
 

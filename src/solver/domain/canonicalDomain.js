@@ -1,3 +1,5 @@
+import { CANONICAL_ANALYSIS_DOMAIN_VERSION } from '../../metadata/numericVersions.js';
+export { CANONICAL_ANALYSIS_DOMAIN_VERSION };
 import { buildAnalysisDomainHashes } from '../../core/analysisDomainHashes.js';
 import { resolveRigidDiaphragms } from '../../core/diaphragmGroups.js';
 import { stableHash } from '../../core/stableHash.js';
@@ -11,7 +13,7 @@ import { scanAnalysisDomainCapabilities } from './capabilityScan.js';
 import { buildConstraintSystem } from './constraintSystem.js';
 import { buildElementDescriptors } from './elementDescriptor.js';
 
-export const CANONICAL_ANALYSIS_DOMAIN_VERSION = 'p8-m1-canonical-analysis-domain-v1';
+
 
 export function buildCanonicalAnalysisDomain(model = {}, options = {}) {
   const sourceModelHash = stableHash(model);
@@ -341,6 +343,7 @@ function massSnapshot(model, descriptors) {
 
 function nonlinearSnapshot(model) {
   return {
+    ...((model.zeroLengthPmmHinges?.length || model.pmmHinges?.length) ? {zeroLengthPmmHinges:sorted(model.zeroLengthPmmHinges||model.pmmHinges)} : {}),
     nonlinearMaterials: sorted(model.nonlinearMaterials || []),
     nonlinearSections: sorted(model.nonlinearSections || []),
     hingeProperties: sorted(model.hingeProperties || []),

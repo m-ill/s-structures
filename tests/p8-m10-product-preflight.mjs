@@ -90,16 +90,14 @@ for (const key of [
   'timeHistoryFunctions',
 ]) delete legacyHostedModel[key];
 const legacyBridge = installIndexEngineBridge({ model: () => legacyHostedModel });
+const beforeReadOnlyPreflight = JSON.stringify(legacyHostedModel);
 const migratedPreflight = legacyBridge.validateProductionNonlinearCase({
   analysisCase: pushoverCase,
   requireWorker: false,
   workerSupported: true,
   wasmSupported: true,
 });
-assert.equal(legacyHostedModel.schemaVersion, SCHEMA_VERSION);
-assert.ok(legacyHostedModel.unitSystem);
-assert.ok(['analysisCases', 'analysisStates', 'diaphragms', 'linkProperties', 'massSources', 'sourceRegistry', 'timeHistoryFunctions']
-  .every((key) => Array.isArray(legacyHostedModel[key])));
+assert.equal(JSON.stringify(legacyHostedModel), beforeReadOnlyPreflight, 'Read-only preflight migrates its private copy, not the live model');
 assert.ok(!migratedPreflight.blocking.some((row) => row.code === 'BAD_COLLECTION'));
 assert.ok(!migratedPreflight.blocking.some((row) => row.code === 'BAD_SCHEMA_VERSION'));
 assert.ok(!migratedPreflight.blocking.some((row) => row.code === 'NO_UNIT_SYSTEM'));

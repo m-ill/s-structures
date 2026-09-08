@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-WORKER-01",
+    "NL-WORKER-02",
+    "NL-WORKER-03",
+    "NL-WORKER-04",
+    "NL-WORKER-05",
+    "NL-WORKER-06"
+  ],
+  "memoryEstimateBytes": 79472,
+  "denseReferenceLimit": 300,
+  "jsSparseReferenceLimit": 2000
+}
+
+

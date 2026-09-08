@@ -1,0 +1,42 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "P9-GPU-EIG-01",
+    "P9-GPU-EIG-02",
+    "P9-GPU-EIG-03",
+    "P9-GPU-EIG-04",
+    "P9-GPU-EIG-05",
+    "P9-GPU-EIG-06",
+    "P9-GPU-EIG-07",
+    "P9-GPU-EIG-08",
+    "P9-GPU-EIG-09",
+    "P9-GPU-EIG-10",
+    "P9-GPU-EIG-11",
+    "P9-GPU-EIG-12",
+    "P9-GPU-EIG-13",
+    "P9-GPU-EIG-14",
+    "P9-PERF-11"
+  ],
+  "exactEigenvalues": [
+    1.9999999999999996,
+    3.000000000000001,
+    3.999999999999999
+  ],
+  "modalPeriod": 0.07255197456936871,
+  "bucklingFactors": [
+    2,
+    3,
+    4
+  ],
+  "scale": {
+    "dimension": 240,
+    "requestedModes": 6,
+    "projectionDimension": 12,
+    "durationMs": 692.0581,
+    "operatorDurationMs": 104.19700000000003,
+    "stiffnessNnz": 1024,
+    "massNnz": 80
+  }
+}
+
+

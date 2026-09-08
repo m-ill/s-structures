@@ -1,5 +1,5 @@
 import { resolveCriterion } from '../../core/analysisCriteria.js';
-import { cscMatVec } from './cscMatrix.js';
+import { cscMatVec } from '../../compute/sparse/matrix.js';
 
 export const SPARSE_DIAGNOSTICS_VERSION = 'p10-m1-sparse-diagnostics-v3';
 

@@ -271,6 +271,7 @@ function renderOverview(doc, target, bridge, selectionStore, state, job, api) {
   if (job.stale) section.appendChild(note(doc, '현재 모델이 실행 시점과 달라졌습니다. 이 결과는 이력 열람용이며 설계값으로 전달되지 않습니다.', 'warning'));
   if (job.designBlocked) section.appendChild(note(doc, `설계전달 차단: ${overview.data?.designBlockReason || '독립 검증 및 승인 미완료'}`, 'warning'));
   const summary = overview.data?.summary || job.resultSummary || {};
+  if (overview.data?.failure) section.appendChild(keyValueTable(doc, '실패 원인', flattenSummary(overview.data.failure)));
   section.appendChild(keyValueTable(doc, '해석 요약', flattenSummary(summary)));
   if (overview.data?.termination) section.appendChild(keyValueTable(doc, '종료 조건', flattenSummary(overview.data.termination)));
   const warnings = overview.data?.warnings || [];

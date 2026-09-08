@@ -182,7 +182,7 @@ export function createAnalysisProductService(options = {}) {
 
   function start(input = {}) {
     if (disposed) throw productError('PRODUCT_ANALYSIS_SERVICE_DISPOSED', 'Product analysis service is disposed.');
-    const model = resolveModel(input);
+    const model = clone(resolveModel(input));
     const analysisCase = resolveCase(model, input);
     const jobSequence = ++sequence;
     const id = clean(input.jobId) || `analysis-${Date.now()}-${jobSequence}`;
@@ -203,6 +203,7 @@ export function createAnalysisProductService(options = {}) {
       }
     }
     const job = createInternalJob(id, model, analysisCase, input, executionPlan, preflight, jobSequence);
+    job.inputIdentity = options.captureInputIdentity?.({ model, analysisCase }) || null;
     jobs.set(id, job);
     emit(snapshotInternal(job), 'created');
     if (preflight.ok) {
@@ -380,7 +381,7 @@ export function createAnalysisProductService(options = {}) {
       job.progressMessage = job.status === 'completed' ? 'Analysis completed.' : result?.message || 'Analysis requires review.';
       job.completedAt = nowIso(options);
       if (typeof options.onPublishResult === 'function') {
-        job.publication = await options.onPublishResult({ job: snapshotInternal(job), model: job.model, analysisCase: job.analysisCase, result: job.result });
+        job.publication = await options.onPublishResult({ job: snapshotInternal(job), model: job.model, analysisCase: job.analysisCase, result: job.result, inputIdentity: clone(job.inputIdentity) });
       }
       emit(snapshotInternal(job), job.status);
     } catch (error) {

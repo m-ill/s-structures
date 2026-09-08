@@ -1,0 +1,515 @@
+{
+  "ok": true,
+  "comboCount": 28,
+  "maxDisplacement": 0.014762837695447709,
+  "maxUtilization": 1.0796670432959266,
+  "designStatus": "Review",
+  "designOk": false,
+  "validationErrors": [],
+  "comboResults": [
+    {
+      "id": "KDS-ST-01",
+      "ok": true,
+      "maxDisplacement": 0.0016683698269371334,
+      "maxUtilization": 0.2841555937607264,
+      "equilibriumResidual": 1.8094621291368048e-18,
+      "solverResidualNorm": 2.6584932290343886e-15,
+      "totalLoad": [
+        0,
+        0,
+        -1411.2000000000005
+      ],
+      "totalReaction": [
+        -1.7763568394002505e-15,
+        -2.55351295663786e-15,
+        1411.2000000000005
+      ]
+    },
+    {
+      "id": "KDS-ST-02",
+      "ok": true,
+      "maxDisplacement": 0.0019479207791115772,
+      "maxUtilization": 0.3490180253874912,
+      "equilibriumResidual": 6.104319035739692e-16,
+      "solverResidualNorm": 1.920385772324595e-15,
+      "totalLoad": [
+        0,
+        0,
+        -1862.3999999999999
+      ],
+      "totalReaction": [
+        1.7763568394002505e-15,
+        -2.4424906541753444e-15,
+        1862.400000000001
+      ]
+    },
+    {
+      "id": "KDS-ST-04-WX-P",
+      "ok": true,
+      "maxDisplacement": 0.0022103666941910923,
+      "maxUtilization": 0.33315133660075313,
+      "equilibriumResidual": 6.193529039451912e-16,
+      "solverResidualNorm": 5.494410183696003e-15,
+      "totalLoad": [
+        48.95999999999999,
+        0,
+        -1617.6000000000001
+      ],
+      "totalReaction": [
+        -48.96000000000099,
+        -1.7763568394002505e-15,
+        1617.6000000000006
+      ]
+    },
+    {
+      "id": "KDS-ST-04-WX-N",
+      "ok": true,
+      "maxDisplacement": 0.0022103666941910957,
+      "maxUtilization": 0.333151336600753,
+      "equilibriumResidual": 6.281380515188818e-16,
+      "solverResidualNorm": 3.957407878099348e-15,
+      "totalLoad": [
+        -48.95999999999999,
+        0,
+        -1617.6000000000001
+      ],
+      "totalReaction": [
+        48.960000000001,
+        -6.661338147750939e-16,
+        1617.6000000000008
+      ]
+    },
+    {
+      "id": "KDS-ST-04-WY-P",
+      "ok": true,
+      "maxDisplacement": 0.00910328400090592,
+      "maxUtilization": 0.6224594927485902,
+      "equilibriumResidual": 5.622494447162019e-16,
+      "solverResidualNorm": 1.1606605760126971e-14,
+      "totalLoad": [
+        0,
+        52.224,
+        -1617.6000000000001
+      ],
+      "totalReaction": [
+        8.881784197001252e-16,
+        -52.22400000000055,
+        1617.600000000001
+      ]
+    },
+    {
+      "id": "KDS-ST-04-WY-N",
+      "ok": true,
+      "maxDisplacement": 0.00910328400090593,
+      "maxUtilization": 0.6224594927485901,
+      "equilibriumResidual": 4.216870835371514e-16,
+      "solverResidualNorm": 1.1606605760126971e-14,
+      "totalLoad": [
+        0,
+        -52.224,
+        -1617.6000000000001
+      ],
+      "totalReaction": [
+        8.881784197001252e-16,
+        52.22400000000056,
+        1617.6000000000008
+      ]
+    },
+    {
+      "id": "KDS-ST-05-EX-P",
+      "ok": true,
+      "maxDisplacement": 0.0029460421749360113,
+      "maxUtilization": 0.36019596271002235,
+      "equilibriumResidual": 1.1244988894324038e-15,
+      "solverResidualNorm": 6.530021445913555e-15,
+      "totalLoad": [
+        77.69999999999999,
+        0,
+        -1617.6000000000001
+      ],
+      "totalReaction": [
+        -77.70000000000181,
+        2.220446049250313e-16,
+        1617.600000000001
+      ]
+    },
+    {
+      "id": "KDS-ST-05-EX-N",
+      "ok": true,
+      "maxDisplacement": 0.002946042174936016,
+      "maxUtilization": 0.36019596271002224,
+      "equilibriumResidual": 1.1244988894324038e-15,
+      "solverResidualNorm": 4.757245971108869e-15,
+      "totalLoad": [
+        -77.69999999999999,
+        0,
+        -1617.6000000000001
+      ],
+      "totalReaction": [
+        77.70000000000181,
+        -6.661338147750939e-16,
+        1617.6000000000013
+      ]
+    },
+    {
+      "id": "KDS-ST-05-EY-P",
+      "ok": true,
+      "maxDisplacement": 0.014762837695447706,
+      "maxUtilization": 0.8138504260524462,
+      "equilibriumResidual": 4.480425262582234e-16,
+      "solverResidualNorm": 3.226212606504823e-14,
+      "totalLoad": [
+        0,
+        77.69999999999999,
+        -1617.6000000000001
+      ],
+      "totalReaction": [
+        1.4210854715202004e-14,
+        -77.70000000000071,
+        1617.6000000000008
+      ]
+    },
+    {
+      "id": "KDS-ST-05-EY-N",
+      "ok": true,
+      "maxDisplacement": 0.014762837695447709,
+      "maxUtilization": 0.8138504260524463,
+      "equilibriumResidual": 4.480425262582234e-16,
+      "solverResidualNorm": 1.9655722688659356e-14,
+      "totalLoad": [
+        0,
+        -77.69999999999999,
+        -1617.6000000000001
+      ],
+      "totalReaction": [
+        -3.552713678800501e-15,
+        77.70000000000071,
+        1617.6000000000008
+      ]
+    },
+    {
+      "id": "KDS-ST-06-WX-P",
+      "ok": true,
+      "maxDisplacement": 0.0017068826715351218,
+      "maxUtilization": 0.20818461786210712,
+      "equilibriumResidual": 1.1043488287276688e-15,
+      "solverResidualNorm": 7.049035076985121e-15,
+      "totalLoad": [
+        48.95999999999999,
+        0,
+        -907.2000000000002
+      ],
+      "totalReaction": [
+        -48.96000000000099,
+        -1.3322676295501878e-15,
+        907.2000000000005
+      ]
+    },
+    {
+      "id": "KDS-ST-06-WX-N",
+      "ok": true,
+      "maxDisplacement": 0.0017068826715351242,
+      "maxUtilization": 0.20818461786210687,
+      "equilibriumResidual": 1.1435101347109194e-15,
+      "solverResidualNorm": 7.043160881087634e-15,
+      "totalLoad": [
+        -48.95999999999999,
+        0,
+        -907.2000000000002
+      ],
+      "totalReaction": [
+        48.960000000001024,
+        -1.2212453270876722e-15,
+        907.2000000000005
+      ]
+    },
+    {
+      "id": "KDS-ST-06-WY-P",
+      "ok": true,
+      "maxDisplacement": 0.008996920601138911,
+      "maxUtilization": 0.5131070058381692,
+      "equilibriumResidual": 6.187486345353605e-16,
+      "solverResidualNorm": 2.8859924444356586e-14,
+      "totalLoad": [
+        0,
+        52.224,
+        -907.2000000000002
+      ],
+      "totalReaction": [
+        -2.6645352591003757e-15,
+        -52.22400000000056,
+        907.2000000000005
+      ]
+    },
+    {
+      "id": "KDS-ST-06-WY-N",
+      "ok": true,
+      "maxDisplacement": 0.008996920601138911,
+      "maxUtilization": 0.5131070058381693,
+      "equilibriumResidual": 6.030841121420603e-16,
+      "solverResidualNorm": 2.8859924444356586e-14,
+      "totalLoad": [
+        0,
+        -52.224,
+        -907.2000000000002
+      ],
+      "totalReaction": [
+        8.881784197001252e-15,
+        52.224000000000544,
+        907.2000000000005
+      ]
+    },
+    {
+      "id": "KDS-ST-07-EX-P",
+      "ok": true,
+      "maxDisplacement": 0.002576165755346959,
+      "maxUtilization": 0.2455425874087661,
+      "equilibriumResidual": 1.9737298215558335e-15,
+      "solverResidualNorm": 1.1325449690356094e-14,
+      "totalLoad": [
+        77.69999999999999,
+        0,
+        -907.2000000000002
+      ],
+      "totalReaction": [
+        -77.70000000000178,
+        -1.2212453270876722e-15,
+        907.2000000000005
+      ]
+    },
+    {
+      "id": "KDS-ST-07-EX-N",
+      "ok": true,
+      "maxDisplacement": 0.00257616575534696,
+      "maxUtilization": 0.24554258740876606,
+      "equilibriumResidual": 1.9737298215558335e-15,
+      "solverResidualNorm": 1.4333037989869747e-14,
+      "totalLoad": [
+        -77.69999999999999,
+        0,
+        -907.2000000000002
+      ],
+      "totalReaction": [
+        77.70000000000178,
+        -1.1102230246251565e-15,
+        907.2000000000004
+      ]
+    },
+    {
+      "id": "KDS-ST-07-EY-P",
+      "ok": true,
+      "maxDisplacement": 0.014697488816943527,
+      "maxUtilization": 0.7044979391420192,
+      "equilibriumResidual": 8.145551644516138e-16,
+      "solverResidualNorm": 4.290512683524944e-14,
+      "totalLoad": [
+        0,
+        77.69999999999999,
+        -907.2000000000002
+      ],
+      "totalReaction": [
+        1.3322676295501878e-15,
+        -77.70000000000073,
+        907.2000000000005
+      ]
+    },
+    {
+      "id": "KDS-ST-07-EY-N",
+      "ok": true,
+      "maxDisplacement": 0.014697488816943516,
+      "maxUtilization": 0.704497939142019,
+      "equilibriumResidual": 7.67561597271713e-16,
+      "solverResidualNorm": 5.1469704453786364e-14,
+      "totalLoad": [
+        0,
+        -77.69999999999999,
+        -907.2000000000002
+      ],
+      "totalReaction": [
+        2.220446049250313e-15,
+        77.70000000000068,
+        907.2000000000005
+      ]
+    },
+    {
+      "id": "KDS-SVC-01",
+      "ok": true,
+      "maxDisplacement": 0.0011916927335265239,
+      "maxUtilization": 0.20296828125766175,
+      "equilibriumResidual": 6.767073673905716e-16,
+      "solverResidualNorm": 1.3534147347811431e-15,
+      "totalLoad": [
+        0,
+        0,
+        -1008
+      ],
+      "totalReaction": [
+        3.9968028886505635e-15,
+        -5.551115123125783e-16,
+        1008.0000000000007
+      ]
+    },
+    {
+      "id": "KDS-SVC-02",
+      "ok": true,
+      "maxDisplacement": 0.0015153735475860375,
+      "maxUtilization": 0.26785954698015957,
+      "equilibriumResidual": 4.817238886509154e-16,
+      "solverResidualNorm": 2.153159805333637e-15,
+      "totalLoad": [
+        0,
+        0,
+        -1416
+      ],
+      "totalReaction": [
+        1.3322676295501878e-14,
+        -6.661338147750939e-16,
+        1416.0000000000007
+      ]
+    },
+    {
+      "id": "KDS-SVC-03-WX-P",
+      "ok": true,
+      "maxDisplacement": 0.0019016351446296304,
+      "maxUtilization": 0.25892423505567935,
+      "equilibriumResidual": 8.20758935696485e-16,
+      "solverResidualNorm": 6.517420348262492e-15,
+      "totalLoad": [
+        48.95999999999999,
+        0,
+        -1212.0000000000005
+      ],
+      "totalReaction": [
+        -48.96000000000098,
+        -2.6645352591003757e-15,
+        1212.0000000000007
+      ]
+    },
+    {
+      "id": "KDS-SVC-03-WX-N",
+      "ok": true,
+      "maxDisplacement": 0.0019016351446296334,
+      "maxUtilization": 0.2589242350556792,
+      "equilibriumResidual": 8.32484063349292e-16,
+      "solverResidualNorm": 4.3997727272182126e-15,
+      "totalLoad": [
+        -48.95999999999999,
+        0,
+        -1212.0000000000005
+      ],
+      "totalReaction": [
+        48.960000000000996,
+        -1.3322676295501878e-15,
+        1212.0000000000007
+      ]
+    },
+    {
+      "id": "KDS-SVC-03-WY-P",
+      "ok": true,
+      "maxDisplacement": 0.009034728850070606,
+      "maxUtilization": 0.5603208847801608,
+      "equilibriumResidual": 4.631425422858737e-16,
+      "solverResidualNorm": 2.0201947111049604e-14,
+      "totalLoad": [
+        0,
+        52.224,
+        -1212.0000000000005
+      ],
+      "totalReaction": [
+        5.329070518200751e-15,
+        -52.22400000000056,
+        1212.0000000000007
+      ]
+    },
+    {
+      "id": "KDS-SVC-03-WY-N",
+      "ok": true,
+      "maxDisplacement": 0.009034728850070603,
+      "maxUtilization": 0.5603208847801608,
+      "equilibriumResidual": 4.455548508066634e-16,
+      "solverResidualNorm": 1.7241352378715855e-14,
+      "totalLoad": [
+        0,
+        -52.224,
+        -1212.0000000000005
+      ],
+      "totalReaction": [
+        1.7763568394002505e-15,
+        52.22400000000054,
+        1212.0000000000007
+      ]
+    },
+    {
+      "id": "KDS-SVC-04-EX-P",
+      "ok": true,
+      "maxDisplacement": 0.0027145181679238107,
+      "maxUtilization": 0.29536612882677626,
+      "equilibriumResidual": 1.48909121190648e-15,
+      "solverResidualNorm": 7.936038657505747e-15,
+      "totalLoad": [
+        77.69999999999999,
+        0,
+        -1212.0000000000005
+      ],
+      "totalReaction": [
+        -77.7000000000018,
+        -1.6653345369377348e-15,
+        1212.0000000000005
+      ]
+    },
+    {
+      "id": "KDS-SVC-04-EX-N",
+      "ok": true,
+      "maxDisplacement": 0.0027145181679238133,
+      "maxUtilization": 0.2953661288267763,
+      "equilibriumResidual": 1.500816339559287e-15,
+      "solverResidualNorm": 1.0041350467165303e-14,
+      "totalLoad": [
+        -77.69999999999999,
+        0,
+        -1212.0000000000005
+      ],
+      "totalReaction": [
+        77.70000000000181,
+        -2.4424906541753444e-15,
+        1212.000000000001
+      ]
+    },
+    {
+      "id": "KDS-SVC-04-EY-P",
+      "ok": true,
+      "maxDisplacement": 0.0147206631173762,
+      "maxUtilization": 0.7517118180840168,
+      "equilibriumResidual": 5.862563826403465e-16,
+      "solverResidualNorm": 2.7607545879012222e-14,
+      "totalLoad": [
+        0,
+        77.69999999999999,
+        -1212.0000000000005
+      ],
+      "totalReaction": [
+        7.105427357601002e-15,
+        -77.7000000000007,
+        1212.0000000000007
+      ]
+    },
+    {
+      "id": "KDS-SVC-04-EY-N",
+      "ok": true,
+      "maxDisplacement": 0.014720663117376201,
+      "maxUtilization": 0.7517118180840165,
+      "equilibriumResidual": 5.862563826403465e-16,
+      "solverResidualNorm": 2.7607545879012222e-14,
+      "totalLoad": [
+        0,
+        -77.69999999999999,
+        -1212.0000000000005
+      ],
+      "totalReaction": [
+        8.881784197001252e-16,
+        77.7000000000007,
+        1212.000000000001
+      ]
+    }
+  ]
+}

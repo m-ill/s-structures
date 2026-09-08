@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "version": "p7-m4-design-basis-change-set-v1",
+  "loadCases": 9,
+  "massComponents": 4,
+  "protectedConflicts": 1
+}
+
+

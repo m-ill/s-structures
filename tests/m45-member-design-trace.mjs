@@ -50,7 +50,7 @@ const target = {
 const agent = createIndexAgentApi(target, {
   getLastResult: () => analysis,
 });
-const agentTrace = agent.getMemberDesignTraceReport();
+const agentTrace = agent.prepareResultView('getMemberDesignTraceReport');
 assert.equal(agentTrace.version, MEMBER_DESIGN_TRACE_VERSION);
 assert.equal(agentTrace.rows.length, model.members.length);
 

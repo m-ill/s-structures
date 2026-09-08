@@ -1,0 +1,202 @@
+{
+  "version": "m46-stabilization-harness",
+  "id": "representative-04-podium-tower-setback",
+  "name": "Podium tower setback",
+  "category": "representative-building",
+  "inputPath": "representative-building-generator",
+  "ok": true,
+  "issues": [],
+  "checks": [
+    {
+      "id": "validation-errors",
+      "ok": true,
+      "message": "Model validation must have no errors."
+    },
+    {
+      "id": "analysis-ok",
+      "ok": true,
+      "message": "Elastic analysis must complete successfully."
+    },
+    {
+      "id": "combination-count",
+      "ok": true,
+      "message": "Required load combinations must be present."
+    },
+    {
+      "id": "load-count",
+      "ok": true,
+      "message": "Required model loads must be present."
+    },
+    {
+      "id": "combo-results",
+      "ok": true,
+      "message": "Every load combination must solve."
+    },
+    {
+      "id": "equilibrium",
+      "ok": true,
+      "message": "Equilibrium residual must stay within tolerance."
+    },
+    {
+      "id": "visual-nodes",
+      "ok": true,
+      "message": "Result visuals must include every node."
+    },
+    {
+      "id": "visual-members",
+      "ok": true,
+      "message": "Result visuals must include every member."
+    },
+    {
+      "id": "visual-displacement",
+      "ok": true,
+      "message": "Result visuals must include a nonzero displacement envelope."
+    },
+    {
+      "id": "html-report",
+      "ok": true,
+      "message": "HTML report must be generated from the same result."
+    },
+    {
+      "id": "calculation-package",
+      "ok": true,
+      "message": "Calculation package must include the standard sections."
+    },
+    {
+      "id": "member-trace",
+      "ok": true,
+      "message": "Member design trace rows must be available."
+    }
+  ],
+  "summary": {
+    "model": {
+      "nodes": 84,
+      "members": 154,
+      "loads": 308,
+      "loadCases": 4,
+      "combinations": 3
+    },
+    "validation": {
+      "ok": true,
+      "errorCount": 0,
+      "warningCount": 0,
+      "errors": [],
+      "warnings": []
+    },
+    "analysis": {
+      "ok": true,
+      "comboCount": 3,
+      "maxDisplacement": 0.0020685296251408544,
+      "maxUtilization": 0.1473355870992083,
+      "designStatus": "OK",
+      "designOk": true,
+      "validationErrors": [],
+      "comboResults": [
+        {
+          "id": "EL-DL",
+          "ok": true,
+          "maxDisplacement": 0.0009617958942910868,
+          "maxUtilization": 0.0835301014155486,
+          "equilibriumResidual": 1.2711316586623723e-15,
+          "solverResidualNorm": 1.3965069492140333e-14,
+          "totalLoad": [
+            0,
+            0,
+            -2862.0000000000027
+          ],
+          "totalReaction": [
+            9.769962616701378e-15,
+            -2.3092638912203256e-14,
+            2861.999999999999
+          ]
+        },
+        {
+          "id": "EL-WX",
+          "ok": true,
+          "maxDisplacement": 0.001991063708245745,
+          "maxUtilization": 0.08322050109164125,
+          "equilibriumResidual": 2.8708797404448445e-15,
+          "solverResidualNorm": 2.7141588639889244e-14,
+          "totalLoad": [
+            44.64166666666665,
+            0,
+            -2376.000000000004
+          ],
+          "totalReaction": [
+            -44.641666666664634,
+            -1.354472090042691e-14,
+            2375.9999999999973
+          ]
+        },
+        {
+          "id": "EL-WY",
+          "ok": true,
+          "maxDisplacement": 0.0020685296251408544,
+          "maxUtilization": 0.08590497197954558,
+          "equilibriumResidual": 2.6166872634262904e-15,
+          "solverResidualNorm": 1.6611291466929426e-14,
+          "totalLoad": [
+            0,
+            40.17749999999999,
+            -2376.000000000004
+          ],
+          "totalReaction": [
+            9.547918011776346e-15,
+            -40.17749999999377,
+            2375.999999999998
+          ]
+        }
+      ]
+    },
+    "visuals": {
+      "version": "m13-index-result-visuals",
+      "resultId": "ENVELOPE",
+      "nodes": 84,
+      "members": 154,
+      "loads": 308,
+      "reactions": 20,
+      "maxDisplacement": 0.0027338527195777222
+    },
+    "report": {
+      "version": "m14-report-export",
+      "title": "Podium tower setback - Stabilization Report",
+      "htmlLength": 12599
+    },
+    "calculationPackage": {
+      "version": "m42-calculation-package",
+      "sectionCount": 7,
+      "htmlLength": 48728,
+      "qualityAuditOk": false,
+      "qualityItems": [
+        {
+          "name": "Load derivation attached",
+          "status": "Missing"
+        },
+        {
+          "name": "Combination results available",
+          "status": "OK"
+        },
+        {
+          "name": "Member checks available",
+          "status": "OK"
+        },
+        {
+          "name": "RC schedule available",
+          "status": "Not applicable"
+        },
+        {
+          "name": "Steel schedule available",
+          "status": "OK"
+        },
+        {
+          "name": "Foundation review available",
+          "status": "OK"
+        }
+      ],
+      "loadDerivationRows": 0,
+      "memberTraceRows": 154,
+      "serviceabilityRows": 18
+    },
+    "actionHistory": []
+  }
+}

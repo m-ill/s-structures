@@ -45,7 +45,7 @@ const target = {
 const agent = createIndexAgentApi(target, {
   getLastResult: () => beamAnalysis,
 });
-const agentDetail = agent.getRcDetailingReport();
+const agentDetail = agent.prepareResultView('getRcDetailingReport');
 assert.equal(agentDetail.version, RC_DETAILING_VERSION);
 assert.equal(agentDetail.rows.length, 1);
 

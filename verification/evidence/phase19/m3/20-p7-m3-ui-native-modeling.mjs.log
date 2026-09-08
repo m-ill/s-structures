@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "version": "p7-m3-native-modeling-workflow-v1",
+  "nodeCount": 18,
+  "memberCount": 25,
+  "reanalysisCount": 4,
+  "staleCount": 4,
+  "workspacePreset": "modeling"
+}
+
+

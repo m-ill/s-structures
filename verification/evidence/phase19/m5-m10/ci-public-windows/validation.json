@@ -1,0 +1,139 @@
+{
+  "schema": "sstructures-public-validation-v1",
+  "startedAt": "2026-09-07T14:34:12.405Z",
+  "source": {
+    "commit": "0d1f043d23a1ba081e804e1e0394f9ec8e11565d",
+    "tree": "dd633c44b7c1a0957375b2ed4770abd00e888588",
+    "trackedChanges": ""
+  },
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64",
+    "release": "10.0.26100"
+  },
+  "externalQualification": "NOT_CLAIMED",
+  "scope": "WebMCP, bridges, public contracts, P17 framework, P18/P18A numerical regressions",
+  "results": [
+    {
+      "test": "tests/webmcp-integration.mjs",
+      "startedAt": "2026-09-07T14:34:12.405Z",
+      "completedAt": "2026-09-07T14:34:15.275Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "01-webmcp-integration.mjs.log",
+      "sha256": "e384526ddfb7d237a5b575410e6b98e833e324f74c80063ce543caca276236a4"
+    },
+    {
+      "test": "tests/webmcp-bridge-security.mjs",
+      "startedAt": "2026-09-07T14:34:15.277Z",
+      "completedAt": "2026-09-07T14:34:15.336Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "02-webmcp-bridge-security.mjs.log",
+      "sha256": "425a5be58a131bc9472dbb6207bd4d849be6f3e6b28ee4ef0cad6c8675c534da"
+    },
+    {
+      "test": "tests/m31-agent-command-bridge.mjs",
+      "startedAt": "2026-09-07T14:34:15.336Z",
+      "completedAt": "2026-09-07T14:34:19.593Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "03-m31-agent-command-bridge.mjs.log",
+      "sha256": "5fe4bc78e8f94714bb51a2983cb0b6902dce2aad49304b699f43129feae9c4ee"
+    },
+    {
+      "test": "verification/harnesses/check-public-import-contracts.mjs",
+      "startedAt": "2026-09-07T14:34:19.593Z",
+      "completedAt": "2026-09-07T14:34:20.378Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "04-check-public-import-contracts.mjs.log",
+      "sha256": "676456fce10469c74390dfc48290b589e8f297f4d73a3494a822fa834c3cc10d"
+    },
+    {
+      "test": "verification/harnesses/check-agent-contract.mjs",
+      "startedAt": "2026-09-07T14:34:20.379Z",
+      "completedAt": "2026-09-07T14:34:20.811Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "05-check-agent-contract.mjs.log",
+      "sha256": "dca3ed2af038b22fd8f2b4cf1183a9de4b68ac00f7e5c87cf59324dc0f70faf9"
+    },
+    {
+      "test": "tests/p17-m1-json-schema-validator.mjs",
+      "startedAt": "2026-09-07T14:34:20.811Z",
+      "completedAt": "2026-09-07T14:34:20.869Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "06-p17-m1-json-schema-validator.mjs.log",
+      "sha256": "b16c391c28f8bd5a4dce45922f3f60adf66599cbaa7c7882e007bb3d1f2258b5"
+    },
+    {
+      "test": "tests/p17-m1-framework-contract.mjs",
+      "startedAt": "2026-09-07T14:34:20.869Z",
+      "completedAt": "2026-09-07T14:34:25.248Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "07-p17-m1-framework-contract.mjs.log",
+      "sha256": "6506563ba2d1a096e0155e7b40eea93f641e41ee20d25475ec18857f645390fb"
+    },
+    {
+      "test": "tests/p17-m1-result-extractor.mjs",
+      "startedAt": "2026-09-07T14:34:25.248Z",
+      "completedAt": "2026-09-07T14:34:25.351Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "08-p17-m1-result-extractor.mjs.log",
+      "sha256": "be900c3b55c83979af87c728ae836353603726c0442237450686f04dea27539d"
+    },
+    {
+      "test": "tests/p18-th1-sp1.mjs",
+      "startedAt": "2026-09-07T14:34:25.351Z",
+      "completedAt": "2026-09-07T14:34:32.511Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "09-p18-th1-sp1.mjs.log",
+      "sha256": "610ef160b11ae706701e3104fe68bb9d440c73e6d65ec778063eb12b19233f50"
+    },
+    {
+      "test": "tests/p18-modal-stabilization.mjs",
+      "startedAt": "2026-09-07T14:34:32.511Z",
+      "completedAt": "2026-09-07T14:34:44.725Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "10-p18-modal-stabilization.mjs.log",
+      "sha256": "13cb4d98813b2b68784e953271cd5d86eb733bb61f2f13a075aff2b29380ac9b"
+    },
+    {
+      "test": "tests/p18-link-pmm.mjs",
+      "startedAt": "2026-09-07T14:34:44.726Z",
+      "completedAt": "2026-09-07T14:34:45.331Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "11-p18-link-pmm.mjs.log",
+      "sha256": "33171f0679ff673e9eea65813eafff18e441c7d4c2e23cc3949e3ffacb9fff98"
+    },
+    {
+      "test": "tests/p18-strix21-completion.mjs",
+      "startedAt": "2026-09-07T14:34:45.331Z",
+      "completedAt": "2026-09-07T14:35:00.889Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "12-p18-strix21-completion.mjs.log",
+      "sha256": "efa3bf1d680ec1f46828c879dd2d049fe51635e7ae26237f6d98513d08f55beb"
+    },
+    {
+      "test": "tests/p18a-additional-comparisons.mjs",
+      "startedAt": "2026-09-07T14:35:00.889Z",
+      "completedAt": "2026-09-07T14:35:15.104Z",
+      "exitCode": 0,
+      "status": "PASS",
+      "log": "13-p18a-additional-comparisons.mjs.log",
+      "sha256": "208decc812d218354db231a11c26f5ceac67a25d6701f981824fa1fc9316438c"
+    }
+  ],
+  "completedAt": "2026-09-07T14:35:15.104Z",
+  "passed": 13,
+  "failed": 0
+}

@@ -1,9 +1,11 @@
+import { SHELL_FRAME_ASSEMBLY_VERSION } from '../../metadata/numericVersions.js';
+export { SHELL_FRAME_ASSEMBLY_VERSION };
 import { buildQuad4ShellElement } from './quad4.js';
 import { materialOf } from '../../core/catalogs.js';
 import { buildEquivalentShellScope, EQUIVALENT_SHELL_WARNING } from './equivalentScope.js';
 import { buildShellLocalFrame, q4GeometryQuality } from './shellElementMath.js';
 
-export const SHELL_FRAME_ASSEMBLY_VERSION = 'p10-m9-shell-frame-assembly-v3-identity-geometry-qualified';
+
 
 export function expandShellsToFrameLinks(model = {}) {
   const nodeMap = Object.fromEntries((model.nodes || []).map((node) => [node.id, node]));

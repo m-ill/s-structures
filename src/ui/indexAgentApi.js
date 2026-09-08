@@ -1,54 +1,16 @@
+import { createResultPreparationBuilders } from '../compute/product/resultPreparationBuilders.js';
+import { createWorkflowInputIdentity } from '../core/workflowIdentity.js';
+import { stableHash } from '../core/stableHash.js';
+import { installResultViewCache, COMPUTED_RESULT_VIEWS } from './resultViewCache.js';
 import { migrateToV3 } from '../core/model.js';
 import { buildBaselineContract } from '../core/baselineContract.js';
 import { buildStorySummary } from '../core/storySummary.js';
 import { buildStoryMassSummary } from '../core/storyMassSummary.js';
 import { buildDiaphragmSummary } from '../core/diaphragmSummary.js';
 import { buildMemberReleaseSummary } from '../core/memberReleaseSummary.js';
-import {
-  buildKdsLoadStandardAudit,
-  createKdsLoadCombinations,
-  createKdsRuleBasedLoadCombinations,
-  getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry,
-  summarizeKdsLoadCombinationCoverage,
-  summarizeKdsLoadCombinationRules,
-} from '../core/kdsLoadCombinations.js';
-import {
-  applyDesignBasisLoads as applyDesignBasisLoadsToModel,
-  buildDesignBasisInputState,
-  buildEccentricStoryLoadDistribution,
-  estimateModelLoads,
-  setDesignBasisInput,
-} from '../design/loadEstimation.js';
-import { buildConnectionFoundationReport } from '../design/connectionFoundation.js';
-import { buildMemberDesignTraceReport } from '../design/memberDesignTrace.js';
-import { buildDesignDemandPackage } from '../design/designDemandPackage.js';
-import { buildRcDetailedDesignReport } from '../design/rc/detailedReport.js';
-import { buildRcDetailingReport } from '../design/rcDetailing.js';
-import { buildServiceabilityDriftReport } from '../design/serviceability.js';
-import { buildSteelDetailingReport } from '../design/steelDetailing.js';
-import { buildP3DetailedDesignReport } from '../design/p3DetailedDesignReport.js';
-import { buildAdvancedElasticTrace } from '../results/advancedElasticTrace.js';
-import { buildCombinationEnvelopeContract } from '../results/combinationEnvelopeContract.js';
-import { buildP3IntegratedResults } from '../results/p3IntegratedResults.js';
-import { buildResultPostprocessing } from '../results/resultPostprocessing.js';
-import { buildLoadsV2Trace } from '../loads/loadsV2.js';
-import {
-  buildCqcCombinationReport,
-  estimateMemberEulerBuckling,
-  estimateModelBucklingTrace,
-  runLinearSdofTha,
-  runModalSuperpositionTha,
-} from '../dynamics/elasticCompleteness.js';
-import { buildNonlinearAnalysisTrace } from '../nonlinear/trace.js';
+import { buildKdsLoadStandardAudit, createKdsLoadCombinations, createKdsRuleBasedLoadCombinations, getKdsLoadStandardRegistry as getCoreKdsLoadStandardRegistry, summarizeKdsLoadCombinationCoverage, summarizeKdsLoadCombinationRules } from '../core/kdsLoadCombinations.js';
+import { applyDesignBasisLoads as applyDesignBasisLoadsToModel, buildDesignBasisInputState, buildEccentricStoryLoadDistribution, estimateModelLoads, setDesignBasisInput } from '../design/loadEstimation.js';
 import { assignMemberHinges } from '../nonlinear/hinges/hingeAssign.js';
-import { expandAdvancedLoads } from '../solver/elasticExpansion.js';
-import {
-  buildWallSlabEquivalentTrace,
-  summarizeSemiRigidDiaphragm,
-} from '../solver/wallSlabEquivalent.js';
-import { buildPracticePlatformReadiness } from '../platform/practicePlatformReadiness.js';
-import { buildPracticeValidationReport } from '../platform/practiceValidationReport.js';
-import { buildPilotProjectValidation } from '../platform/pilotProjectValidation.js';
 import { buildLaunchReadinessReport } from '../platform/launchReadiness.js';
 import { buildFinalUseReleaseReview } from '../platform/finalUseReleaseReview.js';
 import { buildPhase3PlanAlignmentReport } from '../platform/phase3PlanAlignment.js';
@@ -61,85 +23,102 @@ import { buildPhase3EngineeringValidationReview } from '../platform/phase3Engine
 import { buildPhase3ProductizationMilestoneReview } from '../platform/phase3ProductizationMilestoneReview.js';
 import { buildPhase3OwnerSignoffReview } from '../platform/phase3OwnerSignoffReview.js';
 import { buildPhase3CompletionAuditReview } from '../platform/phase3CompletionAuditReview.js';
-import {
-  buildPhase3EvidenceRegister,
-  buildPhase3FinalApprovalReview,
-  buildPhase3FinalApprovals,
-  validatePhase3EvidenceRecord,
-} from '../platform/phase3EvidenceRegister.js';
+import { buildPhase3EvidenceRegister, buildPhase3FinalApprovalReview, buildPhase3FinalApprovals, validatePhase3EvidenceRecord } from '../platform/phase3EvidenceRegister.js';
 import { buildPhase3PracticeValidationReview } from '../platform/phase3PracticeValidationReview.js';
 import { buildPhase3PointCloudValidationReview } from '../platform/phase3PointCloudValidationReview.js';
-import { createCalculationPackageHtml } from '../report/calculationPackage.js';
-import { createDetailedHtmlReport } from '../report/detailedReport.js';
-import { createHtmlReport } from '../report/htmlReport.js';
-import {
-  getLibraryItem as getCoreLibraryItem,
-  listLibrary as listCoreLibrary,
-  upsertMaterial as upsertCoreMaterial,
-  upsertSection as upsertCoreSection,
-} from '../materials/libraryEdit.js';
+import { getLibraryItem as getCoreLibraryItem, listLibrary as listCoreLibrary, upsertMaterial as upsertCoreMaterial, upsertSection as upsertCoreSection } from '../materials/libraryEdit.js';
 import { buildLibraryAudit } from '../materials/registry.js';
-import {
-  getViewerState as getCoreViewerState,
-  setViewerSlice as setCoreViewerSlice,
-} from '../viewer/viewerState.js';
-import { runMemberReleaseBenchmark } from '../diagnostics/memberReleaseBenchmark.js';
-import { runRigidDiaphragmBenchmark } from '../diagnostics/rigidDiaphragmBenchmark.js';
-import {
-  buildPhase10ProductIntegrationContract,
-  buildPhase10ReleaseGate,
-} from '../platform/phase10ReleaseReadiness.js';
-import {
-  analyzeLegacyUiSnapshot,
-  runLegacyUiPushover,
-} from '../compute/product/legacyUiCompatibility.js';
-import {
-  createAnalysisCase,
-  normalizeAnalysisCase,
-} from '../core/analysisCase.js';
-import {
-  runAnalysisCase as runCoreAnalysisCase,
-  runAnalysisCases as runCoreAnalysisCases,
-} from './analysisRunners.js';
-import {
-  markAnalysisCenterCasesStale,
-} from './indexAnalysisCenter.js';
+import { getViewerState as getCoreViewerState, setViewerSlice as setCoreViewerSlice } from '../viewer/viewerState.js';
+import { buildPhase10ProductIntegrationContract, buildPhase10ReleaseGate } from '../platform/phase10ReleaseReadiness.js';
+import { analyzeLegacyUiSnapshot, runLegacyUiPushover } from '../compute/product/legacyUiCompatibility.js';
+import { createAnalysisCase, normalizeAnalysisCase } from '../core/analysisCase.js';
+import { runAnalysisCase as runCoreAnalysisCase, runAnalysisCases as runCoreAnalysisCases } from './analysisRunners.js';
+import { markAnalysisCenterCasesStale } from './indexAnalysisCenter.js';
 import { buildAgentManifest } from './agentManifest.js';
-import {
-  executeModelingAction,
-  ensureAgentState,
-  MODELING_ACTIONS,
-} from './indexAgentActions.js';
-import {
-  buildIndexResultViewModel,
-} from './indexResultsPanel.js';
-import {
-  buildIndexResultVisuals,
-} from './indexResultVisuals.js';
+import { executeModelingAction, ensureAgentState, MODELING_ACTIONS } from './indexAgentActions.js';
+import { buildIndexResultViewModel } from './indexResultsPanel.js';
+import { buildIndexResultVisuals } from './indexResultVisuals.js';
 import { listAgentControls } from './indexAgentControlsDom.js';
 import { availableAgentActions } from './indexAgentActionCatalog.js';
-import {
-  buildAgentScreenState,
-  buildAgentSnapshot,
-} from './indexAgentSnapshot.js';
-import {
-  confirmIndexImport,
-  listIndexImportCandidates,
-  rejectIndexImport,
-  resolveIndexImportCandidate,
-} from './indexImportAgentState.js';
-import {
-  openNativeCalculationPackage,
-  openNativeDetailedReport,
-} from './indexReportHooks.js';
+import { buildAgentScreenState, buildAgentSnapshot } from './indexAgentSnapshot.js';
+import { confirmIndexImport, listIndexImportCandidates, rejectIndexImport, resolveIndexImportCandidate } from './indexImportAgentState.js';
+import { openNativeCalculationPackage, openNativeDetailedReport } from './indexReportHooks.js';
 import { createReportExportWorkflow } from './indexReportExportWorkflow.js';
 import { normalizeIndexResult } from './indexResultCompatibility.js';
-import {
-  getPhase7AnalysisRunStore,
-  getPhase7LatestAttempts,
-  phase7ModelHash,
-  recordPhase7AnalysisAttempt,
-} from './phase7AnalysisRecords.js';
+import { getPhase7AnalysisRunStore, getPhase7LatestAttempts, phase7ModelHash, recordPhase7AnalysisAttempt } from './phase7AnalysisRecords.js';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const DEFAULT_BRIDGE_VERSION = 'm9-index-engine-bridge';
 const SYNC_ANALYSIS_DEPRECATION = Object.freeze({
@@ -157,7 +136,14 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     { requestedAt: new Date().toISOString() },
     { bridgeVersion },
   ));
-  const getAnalysis = (model) => bridge?.getLastResult?.() || analyzeForIndex(model);
+  let standaloneResult = null, standaloneIdentity = null;
+  const readAnalysis = () => bridge?.getLastResult?.() || (
+    standaloneIdentity === createWorkflowInputIdentity({model:getCurrentModel(target)}).inputHash ? standaloneResult : null);
+  const getAnalysis = () => {
+    const result = readAnalysis();
+    if (!result) throw Object.assign(new Error('Current analysis result required.'), { code: 'RESULT_REQUIRED' });
+    return result;
+  };
   const reportExport = options.reportExportWorkflow
     || target.SStructuresReportExportWorkflow
     || (target.sStructuresReportExport ? createReportExportWorkflow({ transport: target.sStructuresReportExport }) : null);
@@ -172,6 +158,25 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
   };
   const api = {
     version: bridgeVersion,
+    planElasticWorkflow(input) { return bridge.planElasticWorkflow(input); },
+    runElasticWorkflow(input) { return bridge.runElasticWorkflow(input); },
+    planDesignReview(input) { return bridge.planDesignReview(input); },
+    startDesignReview(input) { return bridge.startDesignReview(input); },
+    getDesignReview(id) { return bridge.getDesignReview(id); },
+    createDesignReviewReport(id) { return bridge.createDesignReviewReport(id); },
+    getDesignReviewReport(id) { return bridge.getDesignReviewReport(id); },
+    getDesignReviewExportCapability(id) { return bridge.getDesignReviewExportCapability(id); },
+    exportDesignReviewPdf(id) { return bridge.exportDesignReviewPdf(id); },
+    getDesignInputContext() { return bridge?.getDesignInputContext?.() || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
+    previewDesignInputChanges(request) { return bridge?.previewDesignInputChanges?.(request) || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
+    applyDesignInputChanges(preview) { return bridge?.applyDesignInputChanges?.(preview) || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
+    undoDesignInputChanges() { return bridge?.undoDesignInputChanges?.() || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
+    getWorkflowInputIdentity(input = {}) {
+      return bridge?.getWorkflowInputIdentity?.(input) || createWorkflowInputIdentity({ model: getCurrentModel(target), ...input });
+    },
+    getWorkflowAnalysisResult(id) {
+      return bridge?.getWorkflowAnalysisResult?.(id) || { ok: false, code: 'RESULT_REQUIRED' };
+    },
     getModel() {
       return cloneJson(getCurrentModel(target));
     },
@@ -184,7 +189,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     getSnapshot() {
       const model = getCurrentModel(target);
-      const analysis = model ? analyzeForIndex(model) : null;
+      const analysis = model ? readAnalysis() : null;
       const resultView = buildIndexResultViewModel(model, analysis, target.SStructuresResultsPanel?.state || {});
       const resultVisuals = model ? buildIndexResultVisuals(model, analysis, target.SStructuresResultVisuals?.state || {}) : null;
       const agentState = ensureAgentState(target);
@@ -220,21 +225,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       if (!model) return null;
       return cloneJson(buildIndexResultVisuals(model, getAnalysis(model), options));
     },
-    getReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(bridge?.getReport?.(options) || createHtmlReport(model, getAnalysis(model), options));
-    },
-    getDetailedReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(bridge?.getDetailedReport?.(options) || createDetailedHtmlReport(model, getAnalysis(model), withAnalysisResults(target, options)));
-    },
-    getCalculationPackage(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(bridge?.getCalculationPackage?.(options) || createCalculationPackageHtml(model, getAnalysis(model), withAnalysisResults(target, options)));
-    },
+    getReport(options = {}) { return resultBuilders.getReport(options); },
+    getDetailedReport(options = {}) { return resultBuilders.getDetailedReport(options); },
+    getCalculationPackage(options = {}) { return resultBuilders.getCalculationPackage(options); },
     getPhase13ModelCheck() {
       return cloneJson(bridge?.getPhase13ModelCheck?.() || null);
     },
@@ -286,11 +279,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       if (!model) return null;
       return cloneJson(buildKdsLoadStandardAudit(model, options));
     },
-    getCombinationEnvelopeContract(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildCombinationEnvelopeContract(model, getAnalysis(model), options));
-    },
+    getCombinationEnvelopeContract(options = {}) { return resultBuilders.getCombinationEnvelopeContract(options); },
     getDesignBasisLoadEstimation(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
@@ -301,31 +290,11 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       if (!model) return null;
       return cloneJson(buildDesignBasisInputState(model, options.designBasis || options));
     },
-    getRcDetailingReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildRcDetailingReport(model, getAnalysis(model), options));
-    },
-    getRcDetailedDesignReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildRcDetailedDesignReport(model, getAnalysis(model), options));
-    },
-    getSteelDetailingReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildSteelDetailingReport(model, getAnalysis(model), options));
-    },
-    getP3DetailedDesignReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildP3DetailedDesignReport(model, getAnalysis(model), options));
-    },
-    getP3IntegratedResults(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildP3IntegratedResults(model, getAnalysis(model), options));
-    },
+    getRcDetailingReport(options = {}) { return resultBuilders.getRcDetailingReport(options); },
+    getRcDetailedDesignReport(options = {}) { return resultBuilders.getRcDetailedDesignReport(options); },
+    getSteelDetailingReport(options = {}) { return resultBuilders.getSteelDetailingReport(options); },
+    getP3DetailedDesignReport(options = {}) { return resultBuilders.getP3DetailedDesignReport(options); },
+    getP3IntegratedResults(options = {}) { return resultBuilders.getP3IntegratedResults(options); },
     getLaunchReadinessReport(options = {}) {
       return cloneJson(buildLaunchReadinessReport(buildLaunchEvidence(target, options)));
     },
@@ -419,45 +388,14 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       }
       return cloneJson(buildPhase3PointCloudValidationReview(options));
     },
-    getConnectionFoundationReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildConnectionFoundationReport(model, getAnalysis(model), options));
-    },
-    getMemberDesignTraceReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildMemberDesignTraceReport(model, getAnalysis(model), options));
-    },
-    getDesignDemandPackage(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      if (typeof bridge?.getDesignDemandPackage === 'function') return cloneJson(bridge.getDesignDemandPackage(options));
-      return cloneJson(buildDesignDemandPackage(model, getAnalysis(model), options));
-    },
-    getPracticePlatformReadiness(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildPracticePlatformReadiness(model, getAnalysis(model), options));
-    },
-    getPracticeValidationReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildPracticeValidationReport(model, getAnalysis(model), options));
-    },
-    getPilotProjectValidation(options = {}) {
-      return cloneJson(buildPilotProjectValidation(options));
-    },
-    getServiceabilityDriftReport(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildServiceabilityDriftReport(model, getAnalysis(model), options));
-    },
-    getAdvancedElasticTrace() {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildAdvancedElasticTrace(model, getAnalysis(model)));
-    },
+    getConnectionFoundationReport(options = {}) { return resultBuilders.getConnectionFoundationReport(options); },
+    getMemberDesignTraceReport(options = {}) { return resultBuilders.getMemberDesignTraceReport(options); },
+    getDesignDemandPackage(options = {}) { return resultBuilders.getDesignDemandPackage(options); },
+    getPracticePlatformReadiness(options = {}) { return resultBuilders.getPracticePlatformReadiness(options); },
+    getPracticeValidationReport(options = {}) { return resultBuilders.getPracticeValidationReport(options); },
+    getPilotProjectValidation(options = {}) { return resultBuilders.getPilotProjectValidation(options); },
+    getServiceabilityDriftReport(options = {}) { return resultBuilders.getServiceabilityDriftReport(options); },
+    getAdvancedElasticTrace(options = {}) { return resultBuilders.getAdvancedElasticTrace(options); },
     getMaterialSectionRegistry() {
       const model = getCurrentModel(target);
       if (!model) return null;
@@ -496,52 +434,17 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     setViewerSlice(payload = {}) {
       return cloneJson(setCoreViewerSlice(target, payload));
     },
-    getElasticExpansionTrace() {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(expandAdvancedLoads(model.loads || [], model).trace);
-    },
-    getWallSlabEquivalentTrace() {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildWallSlabEquivalentTrace(model, getAnalysis(model)));
-    },
-    getLoadsV2Trace(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildLoadsV2Trace(model, options));
-    },
-    getDynamicCompletenessTrace(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      const analysis = getAnalysis(model);
-      const firstCombo = Object.keys(analysis?.byCombo || {})[0];
-      const memberResults = analysis?.envelope?.memberResults || analysis?.byCombo?.[firstCombo]?.memberResults || {};
-      const buckling = (model.members || []).map((member) => estimateMemberEulerBuckling(member, memberResults[member.id] || { section: {}, material: {} }));
-      return cloneJson({
-        version: buckling[0]?.version || 'p3-m13-dynamic-completeness',
-        buckling,
-        bucklingTrace: estimateModelBucklingTrace(model, { results: memberResults }),
-        cqc: options.cqcResponses ? buildCqcCombinationReport(options.cqcResponses, options.dampingRatio) : null,
-        timeHistory: options.timeHistory ? runLinearSdofTha(options.timeHistory) : null,
-        modalTimeHistory: options.modalTimeHistory ? runModalSuperpositionTha(options.modalTimeHistory) : null,
-      });
-    },
-    getNonlinearAnalysisTrace(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildNonlinearAnalysisTrace(model, options));
-    },
+    getElasticExpansionTrace(options = {}) { return resultBuilders.getElasticExpansionTrace(options); },
+    getWallSlabEquivalentTrace(options = {}) { return resultBuilders.getWallSlabEquivalentTrace(options); },
+    getLoadsV2Trace(options = {}) { return resultBuilders.getLoadsV2Trace(options); },
+    getDynamicCompletenessTrace(options = {}) { return resultBuilders.getDynamicCompletenessTrace(options); },
+    getNonlinearAnalysisTrace(options = {}) { return resultBuilders.getNonlinearAnalysisTrace(options); },
     getHingeAssignments(options = {}) {
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildHingeAssignmentView(model, options));
     },
-    getResultPostprocessing(options = {}) {
-      const model = getCurrentModel(target);
-      if (!model) return null;
-      return cloneJson(buildResultPostprocessing(model, getAnalysis(model), options));
-    },
+    getResultPostprocessing(options = {}) { return resultBuilders.getResultPostprocessing(options); },
     getStorySummary() {
       const model = getCurrentModel(target);
       if (!model) return null;
@@ -562,17 +465,13 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       if (!model) return null;
       return cloneJson(buildMemberReleaseSummary(model));
     },
-    getMemberReleaseBenchmark() {
-      return cloneJson(runMemberReleaseBenchmark());
-    },
+    getMemberReleaseBenchmark(options = {}) { return resultBuilders.getMemberReleaseBenchmark(options); },
     getDiaphragmSummary() {
       const model = getCurrentModel(target);
       if (!model) return null;
       return cloneJson(buildDiaphragmSummary(model));
     },
-    getRigidDiaphragmBenchmark() {
-      return cloneJson(runRigidDiaphragmBenchmark());
-    },
+    getRigidDiaphragmBenchmark(options = {}) { return resultBuilders.getRigidDiaphragmBenchmark(options); },
     getRuntimeDiagnostics() {
       return cloneJson(target.SStructuresRuntimeAdapter?.getDiagnostics?.() || null);
     },
@@ -788,6 +687,12 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     },
     runAnalysis() {
       runUiAnalysis(target);
+      if (!bridge?.getLastResult?.()) {
+        const model = getCurrentModel(target);
+        standaloneResult = analyzeForIndex(model);
+        standaloneIdentity = createWorkflowInputIdentity({model}).inputHash;
+        target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
+      }
       return api.getSnapshot();
     },
     execute(action, payload = {}) {
@@ -1065,6 +970,23 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
       }
     },
   };
+  const resultBuilders = createResultPreparationBuilders({ getModel: () => getCurrentModel(target), getAnalysis, getReportOptions: options => withAnalysisResults(target, options), });
+  installResultViewCache(api, COMPUTED_RESULT_VIEWS, () => ({ inputHash: stableHash({
+    input: api.getWorkflowInputIdentity().inputHash, revision: target.__SStructuresResultRevision || 0,
+  }) }), { getModelKey: () => getCurrentModel(target), getInputIdentity: () => api.getWorkflowInputIdentity(), inputBuilders: { getElasticExpansionTrace: resultBuilders.getElasticExpansionTrace, getLoadsV2Trace: resultBuilders.getLoadsV2Trace } });
+  target.addEventListener?.('pagehide', () => api.clearResultViews());
+  const prepareAgentView = api.prepareResultView;
+  for (const name of COMPUTED_RESULT_VIEWS) {
+    if (bridge?.prepareResultView && typeof bridge[name] === 'function') api[name] = (...args) => cloneJson(bridge[name](...args));
+  }
+  api.prepareResultView = (name, input = {}) => bridge?.prepareResultView && typeof bridge[name] === 'function'
+    ? cloneJson(bridge.prepareResultView(name, input)) : prepareAgentView(name, input);
+  const clearAgentViews = api.clearResultViews;
+  if (bridge?.prepareInputDiagnostics) {
+    api.prepareInputDiagnostics = (name, options) => bridge.prepareInputDiagnostics(name, options);
+    api.getPreparedInputDiagnostics = (name, options) => bridge.getPreparedInputDiagnostics(name, options);
+    api.clearResultViews = () => { clearAgentViews(); bridge.clearResultViews(); };
+  }
   return api;
 }
 

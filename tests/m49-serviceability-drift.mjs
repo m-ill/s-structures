@@ -54,7 +54,7 @@ assert.match(pkg.html, /Serviceability Drift Review/);
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, {
   getLastResult: () => analysis,
 });
-const agentDrift = agent.getServiceabilityDriftReport({ driftLimitRatio: 1 / 200 });
+const agentDrift = agent.prepareResultView('getServiceabilityDriftReport', { driftLimitRatio: 1 / 200 });
 assert.equal(agentDrift.version, SERVICEABILITY_DRIFT_VERSION);
 assert.equal(agent.getCapabilities().modules.serviceabilityDrift, SERVICEABILITY_DRIFT_VERSION);
 assert.ok(agent.getCapabilities().readApis.includes('getServiceabilityDriftReport'));

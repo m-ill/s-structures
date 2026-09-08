@@ -1,10 +1,11 @@
 import { changedAnalysisDomainHashes } from '../../core/analysisDomainHashes.js';
+import { buildZeroLengthPmmEntries } from '../elements/zeroLengthPmmEntries.js';
 import { normalizeAnalysisCase } from '../../core/analysisCase.js';
 import { stableHash, stableStringify } from '../../core/stableHash.js';
 import { validateModel } from '../../core/validation.js';
 import { buildMdofGroundMotionSet } from '../dynamics/mdofGroundMotion.js';
 import { buildMdofMassDomain } from '../dynamics/massDomain.js';
-import { buildReducedSparsePattern } from '../equilibrium/typedSparse.js';
+import { buildReducedSparsePattern } from '../../compute/sparse/reducedAssembly.js';
 import { evaluateNonlinearIntegrationCapabilities } from '../integration/capabilityMatrix.js';
 import { buildNlthLoadSet } from '../dynamics/productionNlth.js';
 import { previewHingeAssignmentChangeSet, resolveDomainHingeAssignments } from '../properties/assignments.js';
@@ -73,6 +74,9 @@ export function createProductionNonlinearCase(model = {}, input = {}) {
   const engineId = pushover
     ? NONLINEAR_ENGINE_IDS.productionPushover
     : NONLINEAR_ENGINE_IDS.productionNlth;
+  if (input.engineId && input.engineId !== engineId) {
+    throw Object.assign(new Error('Explicit engine must match the production case kind; migration requires a new case.'), { code: 'NONLINEAR_ENGINE_MISMATCH' });
+  }
   const gravityCombinationId = clean(
     input.gravityCombinationId
       || input.inputRefs?.gravityCombinationId
@@ -107,7 +111,16 @@ export function createProductionNonlinearCase(model = {}, input = {}) {
     settings.controlNodeId = controlNodeId;
     settings.direction = direction;
     settings.pattern = normalizePattern(settings.pattern);
-    settings.control = settings.arcLength?.enabled === true ? 'arcLength' : 'displacement';
+    const requested = input.settings?.control || input.control?.type || input.settings?.controlStrategy;
+    settings.control = requested || (settings.arcLength?.enabled === true ? 'arcLength' : 'displacement');
+    if (!['displacement', 'arcLength'].includes(settings.control)) {
+      throw Object.assign(new Error('Product cases support displacement or arcLength. P14 load control is a kernel-only capability.'), { code: 'PUSHOVER_CONTROL_UNSUPPORTED' });
+    }
+    if ((requested && settings.arcLength?.enabled === true && requested !== 'arcLength') ||
+        (input.settings?.controlStrategy && input.settings.controlStrategy !== settings.control)) {
+      throw Object.assign(new Error('Conflicting control settings.'), { code: 'PUSHOVER_CONTROL_CONFLICT' });
+    }
+    settings.arcLength = { ...settings.arcLength, enabled: settings.control === 'arcLength' };
     settings.targetDisplacement = finite(settings.targetDisplacement, defaults.targetDisplacement);
     settings.steps = positiveInteger(settings.steps, defaults.steps);
   } else {
@@ -159,6 +172,10 @@ export function preflightProductionNonlinearCase(model = {}, inputCase = {}, opt
   const analysisCase = createProductionNonlinearCase(model, inputCase);
   const mode = analysisCase.kind === 'nonlinearTimeHistory' ? 'nlth' : 'pushover';
   const issues = [];
+  if (mode === 'nlth' && (model.zeroLengthPmmHinges?.length || model.pmmHinges?.length)) {
+    issues.push(issue('blocking', 'model', 'ZERO_LENGTH_PMM_DYNAMIC_ENERGY_UNQUALIFIED',
+      'SH1 static sparse assembly is available; cyclic energy and dynamic recovery remain unqualified.'));
+  }
   const modelValidation = safeModelValidation(model);
   for (const row of modelValidation.errors || []) {
     issues.push(issue('blocking', stageForValidation(row, mode), row.code || 'MODEL_VALIDATION_FAILED', row.message, {
@@ -201,6 +218,8 @@ export function preflightProductionNonlinearCase(model = {}, inputCase = {}, opt
   }
 
   if (domain) {
+    try { buildZeroLengthPmmEntries(domain); }
+    catch(error) { issues.push(issue('blocking','model',error.code||'ZERO_LENGTH_PMM_INVALID',error.message)); }
     integrationCapability = evaluateNonlinearIntegrationCapabilities(domain, {
       mode: mode === 'nlth' ? 'dynamic' : 'static',
     });
@@ -261,7 +280,7 @@ export function preflightProductionNonlinearCase(model = {}, inputCase = {}, opt
   }
 
   const nonlinearMemberCount = countNonlinearMembers(model);
-  if (nonlinearMemberCount === 0) {
+  if (nonlinearMemberCount === 0 && !(model.zeroLengthPmmHinges?.length || model.pmmHinges?.length)) {
     issues.push(issue('blocking', 'properties', 'NONLINEAR_PROPERTY_ASSIGNMENT_REQUIRED', '비선형 거동이 배정된 부재가 없습니다. 자동 배정 미리보기를 검토한 뒤 적용하세요.', {
       action: 'preview-auto-assignment',
       label: '자동 배정 미리보기',

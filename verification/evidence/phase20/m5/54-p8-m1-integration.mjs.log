@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-MEI-01",
+    "NL-MEI-02",
+    "NL-MEI-03",
+    "NL-MEI-04",
+    "NL-MEI-05",
+    "NL-MEI-06",
+    "NL-MEI-07",
+    "NL-MEI-08"
+  ],
+  "topologyHash": "6261ec15dd8f32dc9db124c1",
+  "propertyHash": "d11edf05b9b422abfdc3c723",
+  "constraintHash": "c77ef280b21655d822d56e27",
+  "adapters": [
+    "linear",
+    "direct-pdelta",
+    "modal",
+    "nonlinear"
+  ]
+}
+
+

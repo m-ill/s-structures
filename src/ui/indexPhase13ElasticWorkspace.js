@@ -18,8 +18,8 @@ import {
   previewPhase13ManualCombinationChangeSet,
   previewPhase13SlabPanelChangeSet,
 } from '../loads/phase13LoadWorkspace.js';
-import { buildPhase13ShellLab } from '../solver/shell/phase13ShellLab.js';
-import { buildPhase13ShellContainmentAudit } from '../solver/shell/phase13ShellLab.js';
+import { buildPhase13ShellLab } from '../compute/product/shellLab.js';
+import { buildPhase13ShellContainmentAudit } from '../compute/product/shellLab.js';
 import {
   createPhase13KdsApproval,
   createPhase13KdsSourceSnapshot,

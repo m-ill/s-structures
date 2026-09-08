@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-EQ-10",
+    "NL-EQ-12",
+    "NL-CTRL-01",
+    "NL-CTRL-02",
+    "NL-CTRL-04"
+  ],
+  "acceptedSteps": 2,
+  "rejectedSteps": 1,
+  "failedCutbacks": 3,
+  "cancellationRollback": true
+}
+
+

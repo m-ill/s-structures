@@ -1,0 +1,91 @@
+{
+  "version": "m33-representative-building-set",
+  "id": "04-podium-tower-setback",
+  "name": "Podium tower setback",
+  "type": "mixed-use",
+  "description": "Six-story mixed-use frame with a broad podium and upper setback tower.",
+  "model": {
+    "nodeCount": 84,
+    "memberCount": 154,
+    "loadCount": 308,
+    "loadCaseCount": 4,
+    "combinationCount": 3,
+    "stories": 6,
+    "size": {
+      "x": 24,
+      "y": 18,
+      "z": 20.4
+    }
+  },
+  "analysis": {
+    "ok": true,
+    "comboIds": [
+      "EL-DL",
+      "EL-WX",
+      "EL-WY"
+    ],
+    "maxEnvelopeDisplacement": 0.0020685296251408544,
+    "maxEnvelopeUtilization": 0.08590497197954558,
+    "designStatus": "OK",
+    "governing": {
+      "memberId": "M63",
+      "checkId": "steel-deflection",
+      "status": "OK",
+      "ratio": 0.1473355870992083,
+      "comboId": "EL-WX",
+      "x": 0
+    },
+    "combos": {
+      "EL-DL": {
+        "ok": true,
+        "maxDisplacement": 0.0009617958942910868,
+        "maxUtilization": 0.0835301014155486,
+        "equilibriumResidual": 1.2711316586623723e-15,
+        "totalLoad": [
+          0,
+          0,
+          -2862.0000000000027
+        ],
+        "totalReaction": [
+          9.769962616701378e-15,
+          -2.3092638912203256e-14,
+          2861.999999999999
+        ]
+      },
+      "EL-WX": {
+        "ok": true,
+        "maxDisplacement": 0.001991063708245745,
+        "maxUtilization": 0.08322050109164125,
+        "equilibriumResidual": 2.8708797404448445e-15,
+        "totalLoad": [
+          44.64166666666665,
+          0,
+          -2376.000000000004
+        ],
+        "totalReaction": [
+          -44.641666666664634,
+          -1.354472090042691e-14,
+          2375.9999999999973
+        ]
+      },
+      "EL-WY": {
+        "ok": true,
+        "maxDisplacement": 0.0020685296251408544,
+        "maxUtilization": 0.08590497197954558,
+        "equilibriumResidual": 2.6166872634262904e-15,
+        "totalLoad": [
+          0,
+          40.17749999999999,
+          -2376.000000000004
+        ],
+        "totalReaction": [
+          9.547918011776346e-15,
+          -40.17749999999377,
+          2375.999999999998
+        ]
+      }
+    },
+    "errors": [],
+    "warnings": []
+  }
+}

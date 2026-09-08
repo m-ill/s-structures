@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "comboCount": 3,
+  "maxDisplacement": 0.057336342639634566,
+  "maxUtilization": 4.2122362218960365,
+  "designStatus": "Review",
+  "designOk": false,
+  "validationErrors": [],
+  "comboResults": [
+    {
+      "id": "AG-D",
+      "ok": true,
+      "maxDisplacement": 0.002451204239798114,
+      "maxUtilization": 0.3586590480927861,
+      "equilibriumResidual": 1.6194706228150432e-16,
+      "solverResidualNorm": 1.0216954370406669e-15,
+      "totalLoad": [
+        0,
+        0,
+        -351
+      ],
+      "totalReaction": [
+        7.771561172376096e-15,
+        -7.771561172376096e-16,
+        350.99999999999994
+      ]
+    },
+    {
+      "id": "AG-WX",
+      "ok": true,
+      "maxDisplacement": 0.010645251729957346,
+      "maxUtilization": 0.6376033407415078,
+      "equilibriumResidual": 7.854432520652959e-15,
+      "solverResidualNorm": 4.558154870251885e-14,
+      "totalLoad": [
+        80,
+        0,
+        -351
+      ],
+      "totalReaction": [
+        -79.99999999999724,
+        4.440892098500626e-16,
+        351.0000000000001
+      ]
+    },
+    {
+      "id": "AG-WY",
+      "ok": true,
+      "maxDisplacement": 0.057336342639634566,
+      "maxUtilization": 1.9794593855035723,
+      "equilibriumResidual": 3.323963453327876e-14,
+      "solverResidualNorm": 1.6282110010293538e-13,
+      "totalLoad": [
+        0,
+        64.99999999999999,
+        -351
+      ],
+      "totalReaction": [
+        8.215650382226158e-15,
+        -65.00000000001165,
+        351.00000000000006
+      ]
+    }
+  ]
+}

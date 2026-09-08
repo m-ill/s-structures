@@ -1,3 +1,5 @@
+import { PRODUCTION_NLTH_ENGINE_VERSION, PRODUCTION_NLTH_VERSION } from '../../metadata/numericVersions.js';
+export { PRODUCTION_NLTH_ENGINE_VERSION, PRODUCTION_NLTH_VERSION };
 import { createAnalysisRunRecord } from '../../core/analysisRunRecord.js';
 import { stableHash } from '../../core/stableHash.js';
 import { createNonlinearResidentSession } from '../../compute/nonlinear/index.js';
@@ -12,7 +14,7 @@ import {
 import { createNonlinearStateStore, createStateCheckpoint, restoreStateCheckpoint } from '../core/stateStore.js';
 import { buildHingedFrame3dEntries } from '../elements/hingedFrame3d.js';
 import { createEquilibriumAssembler } from '../equilibrium/assembler.js';
-import { createWasmSparseBackend } from '../equilibrium/backends/wasmSparseBackend.js';
+import { createWasmSparseBackend } from '../../compute/backends/wasmCpuBackend.js';
 import { buildNonlinearLoadPattern } from '../equilibrium/externalLoads.js';
 import { prepareModelFiberPmmInteractions } from '../fiber/fiberPmmPreprocessor.js';
 import { resolveDomainHingeAssignments } from '../properties/assignments.js';
@@ -30,8 +32,8 @@ import {
 import { buildMdofMassDomain } from './massDomain.js';
 import { runMdofNewmark } from './mdofNewmark.js';
 
-export const PRODUCTION_NLTH_VERSION = 'p8-m8-production-mdof-nlth-v1';
-export const PRODUCTION_NLTH_ENGINE_VERSION = 'p8-m8-gravity-preloaded-mdof-newmark-v1';
+
+
 export const NLTH_LOAD_SET_VERSION = 'p8-m8-nlth-load-set-v1';
 
 export async function runProductionNlth(model = {}, analysisCase = {}, options = {}) {
@@ -52,6 +54,9 @@ export async function runProductionNlth(model = {}, analysisCase = {}, options =
   let residentSession = null;
   let residentFinalized = false;
   try {
+    if (model.zeroLengthPmmHinges?.length || model.pmmHinges?.length) {
+      throw nlthError('ZERO_LENGTH_PMM_DYNAMIC_ENERGY_UNQUALIFIED', 'SH1 dynamic energy and cyclic recovery are not qualified.');
+    }
     const merged = mergeOptions(analysisCase, options);
     const modelHashAtStart = stableHash(model);
     const loadSet = buildNlthLoadSet(model, analysisCase, merged);

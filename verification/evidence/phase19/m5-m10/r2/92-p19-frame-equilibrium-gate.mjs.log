@@ -1,0 +1,58 @@
+{
+  "version": "p19-frame-equilibrium-gate-v1",
+  "ok": false,
+  "engine": {
+    "id": "p8-production-mdof-pushover",
+    "version": "p8-m7-mdof-gravity-load-displacement-arc-pushover-v3-p14-m10",
+    "formulation": {
+      "geometry": "objective-corotational-3d",
+      "material": "state-dependent-concentrated-or-distributed-fiber-plasticity",
+      "equilibrium": "current-step-mdof-consistent-tangent",
+      "control": "augmented-displacement-with-optional-crisfield-arc-length-continuation",
+      "gravity": "nonlinear-load-control-predecessor"
+    }
+  },
+  "reason": "DISPLACEMENT_COMMIT_CALLBACK_FAILED",
+  "cause": {
+    "name": "Error",
+    "code": "NONLINEAR_CPU_F64_EQUILIBRIUM_AUDIT_FAILED",
+    "message": "CPU f64 equilibrium audit rejected the resident boundary."
+  },
+  "equilibrium": {
+    "version": "p8-m5-current-configuration-six-resultant-audit-v2",
+    "ok": false,
+    "load": [
+      6.794297833279681,
+      0,
+      -95.99999999999996,
+      -191.99999999999991,
+      308.42901444731655,
+      -13.588595666559362
+    ],
+    "reaction": [
+      -6.794297833279685,
+      0,
+      95.99999999999999,
+      191.99999999999997,
+      -308.42952555074214,
+      13.588595666559366
+    ],
+    "closure": [
+      -3.552713678800501e-15,
+      0,
+      2.842170943040401e-14,
+      5.684341886080802e-14,
+      -0.0005111034255946834,
+      3.552713678800501e-15
+    ],
+    "forceResidual": 2.960594732333751e-16,
+    "momentResidual": 0.0000016571157533703684,
+    "tolerance": 1e-7,
+    "configuration": "current"
+  },
+  "qualification": "not-qualified",
+  "input": "verification/fixtures/phase19/eight-member-hinged-frame.json",
+  "raw": "output/phase19/frame-equilibrium-gate.json"
+}
+
+

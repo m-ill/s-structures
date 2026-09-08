@@ -1,0 +1,238 @@
+[
+  {
+    "name": "ANALYSIS_AUDIT_VERSION",
+    "owner": "src/solver/analysisAudit.js"
+  },
+  {
+    "name": "ELASTIC_EXPANSION_VERSION",
+    "owner": "src/solver/elasticExpansion.js"
+  },
+  {
+    "name": "WALL_SLAB_EQUIVALENT_VERSION",
+    "owner": "src/solver/wallSlabEquivalent.js"
+  },
+  {
+    "name": "WALL_SLAB_TRACE_VERSION",
+    "owner": "src/solver/wallSlabEquivalent.js"
+  },
+  {
+    "name": "SEMI_RIGID_DIAPHRAGM_VERSION",
+    "owner": "src/solver/semiRigidDiaphragm.js"
+  },
+  {
+    "name": "SHELL_QUAD4_VERSION",
+    "owner": "src/solver/shell/quad4.js"
+  },
+  {
+    "name": "SHELL_FRAME_ASSEMBLY_VERSION",
+    "owner": "src/solver/shell/shellAssembly.js"
+  },
+  {
+    "name": "EQUIVALENT_SHELL_SCOPE_VERSION",
+    "owner": "src/solver/shell/equivalentScope.js"
+  },
+  {
+    "name": "DYNAMIC_COMPLETENESS_VERSION",
+    "owner": "src/dynamics/elasticCompleteness.js"
+  },
+  {
+    "name": "GLOBAL_BUCKLING_TRACE_VERSION",
+    "owner": "src/dynamics/globalBuckling.js"
+  },
+  {
+    "name": "GLOBAL_EQUILIBRIUM_VERSION",
+    "owner": "src/nonlinear/control/globalEquilibrium.js"
+  },
+  {
+    "name": "CANONICAL_ANALYSIS_DOMAIN_VERSION",
+    "owner": "src/solver/domain/canonicalDomain.js"
+  },
+  {
+    "name": "CANONICAL_CONSTRAINT_VERSION",
+    "owner": "src/solver/domain/constraintSystem.js"
+  },
+  {
+    "name": "DOMAIN_ADAPTER_COMPATIBILITY_VERSION",
+    "owner": "src/solver/domain/compatibility.js"
+  },
+  {
+    "name": "ARC_LENGTH_RESTART_VERSION",
+    "owner": "src/nonlinear/equilibrium/arcLength.js"
+  },
+  {
+    "name": "ARC_LENGTH_SCALING_VERSION",
+    "owner": "src/nonlinear/equilibrium/arcLength.js"
+  },
+  {
+    "name": "CYCLIC_STATIC_PROTOCOL_VERSION",
+    "owner": "src/nonlinear/equilibrium/cyclicStatic.js"
+  },
+  {
+    "name": "LINEAR_ELASTIC_ELEMENT_VERSION",
+    "owner": "src/nonlinear/equilibrium/linearElasticElement.js"
+  },
+  {
+    "name": "MDOF_ARC_LENGTH_VERSION",
+    "owner": "src/nonlinear/equilibrium/arcLength.js"
+  },
+  {
+    "name": "MDOF_CONVERGENCE_VERSION",
+    "owner": "src/nonlinear/equilibrium/convergence.js"
+  },
+  {
+    "name": "MDOF_CYCLIC_STATIC_VERSION",
+    "owner": "src/nonlinear/equilibrium/cyclicStatic.js"
+  },
+  {
+    "name": "MDOF_EQUILIBRIUM_ASSEMBLER_VERSION",
+    "owner": "src/nonlinear/equilibrium/assembler.js"
+  },
+  {
+    "name": "MDOF_LINEAR_BACKEND_VERSION",
+    "owner": "src/nonlinear/equilibrium/referenceBackends.js"
+  },
+  {
+    "name": "MDOF_LOAD_CONTROL_VERSION",
+    "owner": "src/nonlinear/equilibrium/loadControl.js"
+  },
+  {
+    "name": "MDOF_NEWTON_VERSION",
+    "owner": "src/nonlinear/equilibrium/newton.js"
+  },
+  {
+    "name": "NONLINEAR_COMPUTE_BACKEND_POLICY_VERSION",
+    "owner": "src/nonlinear/equilibrium/referenceBackends.js"
+  },
+  {
+    "name": "NONLINEAR_EQUILIBRIUM_AUDIT_VERSION",
+    "owner": "src/nonlinear/equilibrium/audit.js"
+  },
+  {
+    "name": "NONLINEAR_EXTERNAL_LOAD_VERSION",
+    "owner": "src/nonlinear/equilibrium/externalLoads.js"
+  },
+  {
+    "name": "TYPED_REDUCED_SPARSE_VERSION",
+    "owner": "src/compute/sparse/reducedAssembly.js"
+  },
+  {
+    "name": "WASM_SPARSE_DIAGNOSTICS_VERSION",
+    "owner": "src/compute/backends/wasmCpuBackend.js"
+  },
+  {
+    "name": "COROTATIONAL_FRAME_3D_STATE_VERSION",
+    "owner": "src/nonlinear/elements/corotationalFrame3d.js"
+  },
+  {
+    "name": "COROTATIONAL_FRAME_3D_VERSION",
+    "owner": "src/nonlinear/elements/corotationalFrame3d.js"
+  },
+  {
+    "name": "COROTATIONAL_TRUSS_3D_VERSION",
+    "owner": "src/nonlinear/elements/corotationalTruss3d.js"
+  },
+  {
+    "name": "HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION",
+    "owner": "src/nonlinear/elements/corotationalFrame3d.js"
+  },
+  {
+    "name": "HINGED_FRAME_3D_STATE_VERSION",
+    "owner": "src/nonlinear/elements/hingedFrame3d.js"
+  },
+  {
+    "name": "HINGED_COROTATIONAL_FRAME_3D_VERSION",
+    "owner": "src/nonlinear/elements/corotationalFrame3d.js"
+  },
+  {
+    "name": "HINGED_FRAME_3D_VERSION",
+    "owner": "src/nonlinear/elements/hingedFrame3d.js"
+  },
+  {
+    "name": "FIBER_SECTION_MESH_VERSION",
+    "owner": "src/nonlinear/fiber/sectionMesh.js"
+  },
+  {
+    "name": "FIBER_MATERIAL_MODEL_VERSION",
+    "owner": "src/nonlinear/fiber/materialModels.js"
+  },
+  {
+    "name": "SECTION_ENVELOPE_VERSION",
+    "owner": "src/nonlinear/fiber/sectionResponse.js"
+  },
+  {
+    "name": "SECTION_RESPONSE_VERSION",
+    "owner": "src/nonlinear/fiber/sectionResponse.js"
+  },
+  {
+    "name": "MOMENT_CURVATURE_V2_VERSION",
+    "owner": "src/nonlinear/fiber/momentCurvatureV2.js"
+  },
+  {
+    "name": "PMM_SURFACE_VERSION",
+    "owner": "src/nonlinear/fiber/pmmSurface.js"
+  },
+  {
+    "name": "MEMBER_FIBER_INTERACTION_VERSION",
+    "owner": "src/nonlinear/fiber/memberInteraction.js"
+  },
+  {
+    "name": "FIBER_PMM_PREPROCESSOR_VERSION",
+    "owner": "src/nonlinear/fiber/fiberPmmPreprocessor.js"
+  },
+  {
+    "name": "PMM_INTERACTION_CACHE_VERSION",
+    "owner": "src/nonlinear/fiber/pmmInteractionCache.js"
+  },
+  {
+    "name": "FIBER_HINGE_INTERACTION_VERSION",
+    "owner": "src/nonlinear/fiber/hingeInteraction.js"
+  },
+  {
+    "name": "DISTRIBUTED_FIBER_FRAME_3D_VERSION",
+    "owner": "src/nonlinear/elements/distributedFiberFrame3d.js"
+  },
+  {
+    "name": "MDOF_DISPLACEMENT_CONTROL_VERSION",
+    "owner": "src/nonlinear/equilibrium/displacementControl.js"
+  },
+  {
+    "name": "PHYSICAL_CONTROL_COORDINATE_VERSION",
+    "owner": "src/nonlinear/equilibrium/displacementControl.js"
+  },
+  {
+    "name": "MDOF_MASS_DOMAIN_VERSION",
+    "owner": "src/nonlinear/dynamics/massDomain.js"
+  },
+  {
+    "name": "MDOF_GROUND_MOTION_VERSION",
+    "owner": "src/nonlinear/dynamics/mdofGroundMotion.js"
+  },
+  {
+    "name": "MDOF_DAMPING_VERSION",
+    "owner": "src/nonlinear/dynamics/mdofDamping.js"
+  },
+  {
+    "name": "MDOF_DYNAMIC_HISTORY_VERSION",
+    "owner": "src/nonlinear/dynamics/dynamicHistory.js"
+  },
+  {
+    "name": "MDOF_NEWMARK_VERSION",
+    "owner": "src/nonlinear/dynamics/mdofNewmark.js"
+  },
+  {
+    "name": "PRODUCTION_NLTH_ENGINE_VERSION",
+    "owner": "src/nonlinear/dynamics/productionNlth.js"
+  },
+  {
+    "name": "PRODUCTION_NLTH_VERSION",
+    "owner": "src/nonlinear/dynamics/productionNlth.js"
+  },
+  {
+    "name": "SECOND_ORDER_JET_VERSION",
+    "owner": "src/nonlinear/math/secondOrderJet.js"
+  },
+  {
+    "name": "ROTATION_COORDINATE_VERSION",
+    "owner": "src/nonlinear/math/rotationCoordinates.js"
+  }
+]

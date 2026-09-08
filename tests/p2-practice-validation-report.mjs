@@ -41,7 +41,7 @@ assert.match(pkg.html, /Practice Validation/);
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, {
   getLastResult: () => analysis,
 });
-assert.equal(agent.getPracticeValidationReport().version, PRACTICE_VALIDATION_REPORT_VERSION);
+assert.equal(agent.prepareResultView('getPracticeValidationReport').version, PRACTICE_VALIDATION_REPORT_VERSION);
 assert.equal(agent.getCapabilities().modules.practiceValidationReport, PRACTICE_VALIDATION_REPORT_VERSION);
 assert.ok(agent.getCapabilities().readApis.includes('getPracticeValidationReport'));
 

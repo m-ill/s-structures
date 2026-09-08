@@ -962,7 +962,7 @@
     "phase8CorotationalFrame3d": "p8-m3-corotational-frame-3d-v2",
     "phase8CorotationalFrame3dState": "p8-m3-corotational-frame-state-v2",
     "phase8CorotationalTruss3d": "p8-m3-corotational-truss-3d-v2",
-    "phase8HingedFrame3d": "p8-m4-hinged-corotational-frame-3d-v1",
+    "phase8HingedFrame3d": "p19-hinged-corotational-frame-3d-v2-current-chord",
     "phase8HingedFrame3dState": "p8-m4-hinged-corotational-frame-state-v1",
     "phase8HingeBackbone": "p8-m4-hinge-backbone-v1",
     "phase8HingeCyclic": "p8-m4-hinge-cyclic-v1",

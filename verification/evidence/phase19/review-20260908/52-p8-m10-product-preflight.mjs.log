@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-UI-01",
+    "NL-UI-02",
+    "NL-UI-03",
+    "NL-UI-04",
+    "NL-API-01",
+    "NL-API-02",
+    "NL-API-08"
+  ],
+  "defaultRuleVersion": "p8-m10-default-hinge-rule-v1",
+  "stages": [
+    "model:ready",
+    "gravity:ready",
+    "properties:ready",
+    "control:ready",
+    "groundMotion:not-applicable",
+    "run:ready",
+    "results:pending"
+  ],
+  "pushoverSettingsHash": "04392ecf265b3e0f15a96d3a",
+  "nlthSettingsHash": "f75de28154fdd7907aa73355",
+  "runtime": {
+    "dofCount": 6,
+    "fullDofCount": 12,
+    "elementCount": 1,
+    "nnz": 36,
+    "sparsePatternHash": "08d37d19b3ba0983550e5db2",
+    "memory": {
+      "version": "p8-m2-runtime-preflight-v1",
+      "dofCount": 6,
+      "nnz": 36,
+      "matrixBytes": 2504,
+      "stateBytes": 576,
+      "resultBytes": 312,
+      "totalBytes": 3392,
+      "assumptions": {
+        "matrixStorage": "csc-plus-factor-workspace",
+        "factorFillRatio": 4,
+        "stateVectorCount": 12,
+        "resultVectorCount": 6,
+        "floatBytes": 8,
+        "indexBytes": 4
+      },
+      "limitBytes": 1288490188,
+      "withinLimit": true
+    },
+    "runtimeEstimate": {
+      "basis": "screening-only-not-a-performance-qualification",
+      "lowerSeconds": 0.05,
+      "upperSeconds": 0.4,
+      "stepCount": 6
+    },
+    "backend": {
+      "mode": "production-wasm-sparse",
+      "status": "deferred-worker-initialization",
+      "fallbackPolicy": "forbidden",
+      "fallbackUsed": false
+    },
+    "thread": {
+      "mode": "module-worker",
+      "workerSupported": true,
+      "mainThreadSolverAllowed": false
+    }
+  },
+  "autoAssignmentCount": 4,
+  "unsupportedCode": "NONLINEAR_WORKER_UNAVAILABLE"
+}
+
+

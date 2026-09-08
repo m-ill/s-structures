@@ -1,0 +1,19 @@
+{
+  "version": "p19-supplemental-validation-v1",
+  "source": {
+    "commit": "b8dd86418115702fce99fdd812b5d30bc45163c2",
+    "tree": "f19819d6c2ed6418a4ea8648225cf6d98441dc66"
+  },
+  "runtimeIdenticalTo": "e07f975",
+  "reason": "Pilot direct-function checks retained; API preparation fixture now supplies the model context required for input-bound views.",
+  "sourceArchiveSha256": "6d21757f20107cea0869ddf7c9914712be9f287c4fe55f85471284110d2d68fe",
+  "results": [
+    {
+      "test": "tests/p2-t50-pilot-project-validation.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "log": "pilot.log",
+      "sha256": "29831193ae4bd1ead1ec2ee247e080b3aa9be96100fa155d486986a0d93a8954"
+    }
+  ]
+}

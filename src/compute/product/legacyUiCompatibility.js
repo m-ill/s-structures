@@ -1,4 +1,4 @@
-import { analyzeModel } from '../../solver/linear3d.js';
+import { analyzeModel } from './elasticAnalysisWorkflow.js';
 import { runPushover } from '../../nonlinear/pushover.js';
 
 export const LEGACY_UI_ANALYSIS_COMPATIBILITY_VERSION = 'p9-m10-legacy-ui-analysis-compatibility-v2';

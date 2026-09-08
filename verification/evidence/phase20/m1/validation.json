@@ -1,0 +1,52 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "567ee253cc2e142b2d3760db9e4cd4156528c18e",
+    "tree": "3435013b04f575e6f27d493b950e2126b2673fd0",
+    "trackedChanges": ""
+  },
+  "scope": "P20 M1 metadata and public surface",
+  "manifestPath": "verification/specs/phase20/m1-tests.json",
+  "manifestHash": "da6f07934cc56fa5cdb0c6c97fc1bc1ee088f5bd227613d8f36debd4c5999138",
+  "sourceArchiveSha256": "3ab7345c334a0bc16e52316e97529fe420405e2415d9920de43d11a629abe38f",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-08T00:49:04.006Z",
+  "results": [
+    {
+      "test": "tests/p20-m1-metadata.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "01-p20-m1-metadata.mjs.log",
+      "sha256": "a932dae632f16baf23078a2de439c06db417fae0e9e1a175917d89298262577e"
+    },
+    {
+      "test": "tests/p19-m1-product-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "02-p19-m1-product-parity.mjs.log",
+      "sha256": "e7f15eeb48f3043b5c20fa56e466c72f4ebacfc9affb1233b38da30df2ae66e3"
+    },
+    {
+      "test": "tests/p13-m8-shell-lab.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-p13-m8-shell-lab.mjs.log",
+      "sha256": "36ae1b93a86ce2d80bceb0f9e819ced443d3009880af75201905450ffa3c1ae7"
+    }
+  ],
+  "completedAt": "2026-09-08T00:49:14.694Z",
+  "passed": 3,
+  "failed": 0,
+  "planned": 3,
+  "executed": 3
+}

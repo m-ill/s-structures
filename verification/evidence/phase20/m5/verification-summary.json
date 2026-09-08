@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "source": {
+    "commit": "810abc06fe9be38eb7bb10f1ba590cbcb87f36be",
+    "tree": "21a7c66651a58d7b2c0451d2afe36354b5bcb2db",
+    "trackedChanges": ""
+  },
+  "manifestHash": "37e7c98284ee4d0567102509654a8ecbe51bc54d78ca893596614d8cff113cba",
+  "nodeLocal": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "nodeCi": "v24.16.0",
+  "testsPerEnvironment": 112,
+  "environments": [
+    "local Windows",
+    "GitHub Windows",
+    "GitHub Ubuntu"
+  ],
+  "nativeWebMcp": true,
+  "toolCount": 36,
+  "uiSummaryExact": true,
+  "reportSnapshotHash": "8500fb854a1bf9d638757ea77aacb6aff5ff2426c4ae50b30099bd3ac9ca23a0",
+  "checks": {
+    "status": "NOT_CHECKED",
+    "counts": {
+      "OK": 79,
+      "WARN": 8,
+      "NG": 0,
+      "NOT_CHECKED": 4
+    },
+    "maxUtilization": 0.9103732902271767,
+    "governing": {
+      "analysisRunId": "P20-R2:2026-09-08T01:44:48.936Z:1",
+      "comboId": "SLS1",
+      "memberId": "e13",
+      "category": "steel",
+      "checkId": "steel-slenderness",
+      "status": "WARN",
+      "ratio": 0.9103732902271767,
+      "demand": 182.07465804543534,
+      "capacity": 200,
+      "unit": "-",
+      "expression": "max(KL/ry, KL/rz) / limit",
+      "x": 0,
+      "method": "allowable_stress_preliminary"
+    },
+    "checkCount": 91
+  },
+  "schemaAndViewFixesVerified": true,
+  "staleBlocked": true,
+  "reopenOldHandleBlocked": true,
+  "browserInFlightCancel": "Node regression only; not separately timed in browser",
+  "pdfAutomatic": "BLOCKED by existing host/figure/qualification prerequisites",
+  "rawArchitectureViolations": 0,
+  "compatibilityRegistry": 22,
+  "rawHistoricalPolicies": 4,
+  "publicBridgeCount": 1,
+  "externalQualification": "NOT_CLAIMED"
+}

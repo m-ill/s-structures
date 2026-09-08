@@ -1,0 +1,932 @@
+{
+  "version": "p16-m7-dual-root-architecture-audit-v1",
+  "root": "C:/Users/mill/Downloads/dcr/S-Structures-main",
+  "sourceDigest": "e4a1ac5cdcb7af0fc534a272193119da33e265573b3e80386085343ba772e373",
+  "sourceFileCount": 723,
+  "productionFileCount": 670,
+  "verificationFileCount": 53,
+  "importEdgeCount": 2444,
+  "gate": {
+    "importCycles": true,
+    "internalRootBarrelImports": true,
+    "uiNumericCoreImports": false,
+    "productionVerificationImports": true,
+    "solverUpwardImports": true,
+    "reportSolverImports": false,
+    "sparseAssemblerOwner": true,
+    "plateBoundaryOwner": true,
+    "foundationRecoveryOwner": true,
+    "stabilizationClassifierOwner": true,
+    "compatibilityGoverned": false,
+    "relativeImportsResolved": true,
+    "legacyVerificationSourceRemoved": true,
+    "verificationFrameworkPresent": true,
+    "verificationPublicApiPresent": true
+  },
+  "ok": false,
+  "cycles": [],
+  "forbiddenImports": [
+    {
+      "rule": "report-solver-reexecution-risk",
+      "severity": "High",
+      "source": "src/report/detailedReport.js",
+      "line": 14,
+      "target": "src/solver/wallSlabEquivalent.js",
+      "specifier": "../solver/wallSlabEquivalent.js",
+      "detail": "Report modules must consume immutable results/evidence and must not import solver execution owners."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 83,
+      "target": "src/solver/analysisAudit.js",
+      "specifier": "../solver/analysisAudit.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 127,
+      "target": "src/solver/elasticExpansion.js",
+      "specifier": "../solver/elasticExpansion.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 128,
+      "target": "src/solver/wallSlabEquivalent.js",
+      "specifier": "../solver/wallSlabEquivalent.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 129,
+      "target": "src/solver/semiRigidDiaphragm.js",
+      "specifier": "../solver/semiRigidDiaphragm.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 130,
+      "target": "src/solver/shell/quad4.js",
+      "specifier": "../solver/shell/quad4.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 131,
+      "target": "src/solver/shell/shellAssembly.js",
+      "specifier": "../solver/shell/shellAssembly.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 132,
+      "target": "src/solver/shell/equivalentScope.js",
+      "specifier": "../solver/shell/equivalentScope.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 134,
+      "target": "src/dynamics/elasticCompleteness.js",
+      "specifier": "../dynamics/elasticCompleteness.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 135,
+      "target": "src/dynamics/globalBuckling.js",
+      "specifier": "../dynamics/globalBuckling.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 137,
+      "target": "src/nonlinear/control/globalEquilibrium.js",
+      "specifier": "../nonlinear/control/globalEquilibrium.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 145,
+      "target": "src/solver/domain/index.js",
+      "specifier": "../solver/domain/index.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 156,
+      "target": "src/nonlinear/equilibrium/index.js",
+      "specifier": "../nonlinear/equilibrium/index.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 180,
+      "target": "src/nonlinear/elements/corotationalFrame3d.js",
+      "specifier": "../nonlinear/elements/corotationalFrame3d.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 184,
+      "target": "src/nonlinear/elements/corotationalTruss3d.js",
+      "specifier": "../nonlinear/elements/corotationalTruss3d.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 185,
+      "target": "src/nonlinear/elements/hingedFrame3d.js",
+      "specifier": "../nonlinear/elements/hingedFrame3d.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 190,
+      "target": "src/nonlinear/fiber/sectionMesh.js",
+      "specifier": "../nonlinear/fiber/sectionMesh.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 191,
+      "target": "src/nonlinear/fiber/materialModels.js",
+      "specifier": "../nonlinear/fiber/materialModels.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 192,
+      "target": "src/nonlinear/fiber/sectionResponse.js",
+      "specifier": "../nonlinear/fiber/sectionResponse.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 193,
+      "target": "src/nonlinear/fiber/momentCurvatureV2.js",
+      "specifier": "../nonlinear/fiber/momentCurvatureV2.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 194,
+      "target": "src/nonlinear/fiber/pmmSurface.js",
+      "specifier": "../nonlinear/fiber/pmmSurface.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 195,
+      "target": "src/nonlinear/fiber/memberInteraction.js",
+      "specifier": "../nonlinear/fiber/memberInteraction.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 196,
+      "target": "src/nonlinear/fiber/fiberPmmPreprocessor.js",
+      "specifier": "../nonlinear/fiber/fiberPmmPreprocessor.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 197,
+      "target": "src/nonlinear/fiber/pmmInteractionCache.js",
+      "specifier": "../nonlinear/fiber/pmmInteractionCache.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 198,
+      "target": "src/nonlinear/fiber/hingeInteraction.js",
+      "specifier": "../nonlinear/fiber/hingeInteraction.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 199,
+      "target": "src/nonlinear/elements/distributedFiberFrame3d.js",
+      "specifier": "../nonlinear/elements/distributedFiberFrame3d.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 200,
+      "target": "src/nonlinear/equilibrium/displacementControl.js",
+      "specifier": "../nonlinear/equilibrium/displacementControl.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 212,
+      "target": "src/nonlinear/dynamics/massDomain.js",
+      "specifier": "../nonlinear/dynamics/massDomain.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 213,
+      "target": "src/nonlinear/dynamics/mdofGroundMotion.js",
+      "specifier": "../nonlinear/dynamics/mdofGroundMotion.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 214,
+      "target": "src/nonlinear/dynamics/mdofDamping.js",
+      "specifier": "../nonlinear/dynamics/mdofDamping.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 215,
+      "target": "src/nonlinear/dynamics/dynamicHistory.js",
+      "specifier": "../nonlinear/dynamics/dynamicHistory.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 216,
+      "target": "src/nonlinear/dynamics/mdofNewmark.js",
+      "specifier": "../nonlinear/dynamics/mdofNewmark.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 217,
+      "target": "src/nonlinear/dynamics/productionNlth.js",
+      "specifier": "../nonlinear/dynamics/productionNlth.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 230,
+      "target": "src/nonlinear/math/secondOrderJet.js",
+      "specifier": "../nonlinear/math/secondOrderJet.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/agentManifest.js",
+      "line": 231,
+      "target": "src/nonlinear/math/rotationCoordinates.js",
+      "specifier": "../nonlinear/math/rotationCoordinates.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/indexAgentApi.js",
+      "line": 38,
+      "target": "src/dynamics/elasticCompleteness.js",
+      "specifier": "../dynamics/elasticCompleteness.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/indexAgentApi.js",
+      "line": 47,
+      "target": "src/solver/elasticExpansion.js",
+      "specifier": "../solver/elasticExpansion.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/indexAgentApi.js",
+      "line": 48,
+      "target": "src/solver/wallSlabEquivalent.js",
+      "specifier": "../solver/wallSlabEquivalent.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/indexPhase13ElasticWorkspace.js",
+      "line": 21,
+      "target": "src/solver/shell/phase13ShellLab.js",
+      "specifier": "../solver/shell/phase13ShellLab.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/indexPhase13ElasticWorkspace.js",
+      "line": 22,
+      "target": "src/solver/shell/phase13ShellLab.js",
+      "specifier": "../solver/shell/phase13ShellLab.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    },
+    {
+      "rule": "ui-numeric-core",
+      "severity": "High",
+      "source": "src/ui/indexResultsPanel.js",
+      "line": 2,
+      "target": "src/solver/shell/equivalentScope.js",
+      "specifier": "../solver/shell/equivalentScope.js",
+      "detail": "UI/app code must consume an approved product service or immutable result contract."
+    }
+  ],
+  "ownership": {
+    "sparseAssembler": {
+      "canonical": "src/compute/sparse/assembly.js",
+      "ownerCount": 1,
+      "ownerFiles": [
+        "src/compute/sparse/assembly.js"
+      ],
+      "definitions": [
+        {
+          "file": "src/compute/sparse/assembly.js",
+          "line": 22,
+          "symbol": "createDeterministicSparseAssembler"
+        }
+      ],
+      "canonicalPresent": true,
+      "duplicateOwners": [],
+      "embeddedLegacyOwner": false
+    },
+    "plateBoundary": {
+      "canonical": "src/solver/shell/plateBoundary.js",
+      "ownerCount": 1,
+      "ownerFiles": [
+        "src/solver/shell/plateBoundary.js"
+      ],
+      "definitions": [
+        {
+          "file": "src/solver/shell/plateBoundary.js",
+          "line": 15,
+          "symbol": "buildPlateBoundaryTemplate"
+        }
+      ],
+      "canonicalPresent": true,
+      "duplicateOwners": [],
+      "embeddedLegacyOwner": false
+    },
+    "foundationRecovery": {
+      "canonical": "src/solver/foundation/foundationRecovery.js",
+      "ownerCount": 1,
+      "ownerFiles": [
+        "src/solver/foundation/foundationRecovery.js"
+      ],
+      "definitions": [
+        {
+          "file": "src/solver/foundation/foundationRecovery.js",
+          "line": 25,
+          "symbol": "buildFoundationEndActionContract"
+        }
+      ],
+      "canonicalPresent": true,
+      "duplicateOwners": [],
+      "embeddedLegacyOwner": false
+    },
+    "stabilizationClassifier": {
+      "canonical": "src/solver/shell/unsupportedRotationFloor.js",
+      "ownerCount": 1,
+      "ownerFiles": [
+        "src/solver/shell/unsupportedRotationFloor.js"
+      ],
+      "definitions": [
+        {
+          "file": "src/solver/shell/unsupportedRotationFloor.js",
+          "line": 11,
+          "symbol": "stabilizeUnsupportedRotations"
+        }
+      ],
+      "canonicalPresent": true,
+      "duplicateOwners": [],
+      "embeddedLegacyOwner": false
+    }
+  },
+  "compatibility": {
+    "wrapperCount": 14,
+    "undocumentedWrappers": [
+      {
+        "file": "src/nonlinear/legacy/contract.js",
+        "hasPolicy": false,
+        "consumerCount": 4,
+        "consumers": [
+          {
+            "source": "src/index.js",
+            "line": 1289,
+            "specifier": "./nonlinear/legacy/contract.js"
+          },
+          {
+            "source": "src/nonlinear/dynamics/newmark.js",
+            "line": 1,
+            "specifier": "../legacy/contract.js"
+          },
+          {
+            "source": "src/nonlinear/pushover.js",
+            "line": 3,
+            "specifier": "./legacy/contract.js"
+          },
+          {
+            "source": "src/nonlinear/pushoverFormal.js",
+            "line": 2,
+            "specifier": "./legacy/contract.js"
+          }
+        ]
+      },
+      {
+        "file": "src/nonlinear/legacy/preliminaryPushover.js",
+        "hasPolicy": false,
+        "consumerCount": 2,
+        "consumers": [
+          {
+            "source": "src/index.js",
+            "line": 1295,
+            "specifier": "./nonlinear/legacy/preliminaryPushover.js"
+          },
+          {
+            "source": "src/nonlinear/analysisRouter.js",
+            "line": 6,
+            "specifier": "./legacy/preliminaryPushover.js"
+          }
+        ]
+      },
+      {
+        "file": "src/nonlinear/legacy/sdofNewmarkTrace.js",
+        "hasPolicy": false,
+        "consumerCount": 2,
+        "consumers": [
+          {
+            "source": "src/index.js",
+            "line": 1299,
+            "specifier": "./nonlinear/legacy/sdofNewmarkTrace.js"
+          },
+          {
+            "source": "src/nonlinear/analysisRouter.js",
+            "line": 7,
+            "specifier": "./legacy/sdofNewmarkTrace.js"
+          }
+        ]
+      },
+      {
+        "file": "src/solver/domain/compatibility.js",
+        "hasPolicy": false,
+        "consumerCount": 4,
+        "consumers": [
+          {
+            "source": "src/dynamics/modal.js",
+            "line": 17,
+            "specifier": "../solver/domain/compatibility.js"
+          },
+          {
+            "source": "src/nonlinear/integration/governance.js",
+            "line": 3,
+            "specifier": "../../solver/domain/compatibility.js"
+          },
+          {
+            "source": "src/solver/domain/index.js",
+            "line": 21,
+            "specifier": "./compatibility.js"
+          },
+          {
+            "source": "src/solver/pdelta/analysisDomain.js",
+            "line": 2,
+            "specifier": "../domain/compatibility.js"
+          }
+        ]
+      },
+      {
+        "file": "src/ui/indexResultCompatibility.js",
+        "hasPolicy": false,
+        "consumerCount": 3,
+        "consumers": [
+          {
+            "source": "src/ui/indexAgentApi.js",
+            "line": 139,
+            "specifier": "./indexResultCompatibility.js"
+          },
+          {
+            "source": "src/ui/indexBridge.js",
+            "line": 103,
+            "specifier": "./indexResultCompatibility.js"
+          },
+          {
+            "source": "src/ui/indexBridge.js",
+            "line": 128,
+            "specifier": "./indexResultCompatibility.js"
+          }
+        ]
+      }
+    ],
+    "overduePolicies": [
+      {
+        "file": "src/compute/compatibility/syncFacade.js",
+        "line": 9,
+        "field": "expires",
+        "value": "P9-M9",
+        "currentPhase": "Phase16"
+      },
+      {
+        "file": "src/compute/compatibility/syncFacade.js",
+        "line": 10,
+        "field": "deleteBy",
+        "value": "P9-M10",
+        "currentPhase": "Phase16"
+      },
+      {
+        "file": "src/compute/governance/compatibilityRegistry.js",
+        "line": 96,
+        "field": "reviewBy",
+        "value": "Phase10",
+        "currentPhase": "Phase16"
+      },
+      {
+        "file": "src/compute/product/legacyUiCompatibility.js",
+        "line": 13,
+        "field": "reviewBy",
+        "value": "Phase10",
+        "currentPhase": "Phase16"
+      }
+    ],
+    "wrappers": [
+      {
+        "file": "src/compute/compatibility/syncFacade.js",
+        "hasPolicy": true,
+        "consumerCount": 2,
+        "consumers": [
+          {
+            "source": "src/compute/governance/phase9M1.js",
+            "line": 14,
+            "specifier": "../compatibility/syncFacade.js"
+          },
+          {
+            "source": "src/compute/index.js",
+            "line": 159,
+            "specifier": "./compatibility/syncFacade.js"
+          }
+        ]
+      },
+      {
+        "file": "src/compute/governance/compatibilityRegistry.js",
+        "hasPolicy": true,
+        "consumerCount": 0,
+        "consumers": []
+      },
+      {
+        "file": "src/compute/product/legacyUiCompatibility.js",
+        "hasPolicy": true,
+        "consumerCount": 4,
+        "consumers": [
+          {
+            "source": "src/ui/agentManifest.js",
+            "line": 263,
+            "specifier": "../compute/product/legacyUiCompatibility.js"
+          },
+          {
+            "source": "src/ui/indexAgentApi.js",
+            "line": 95,
+            "specifier": "../compute/product/legacyUiCompatibility.js"
+          },
+          {
+            "source": "src/ui/indexBridge.js",
+            "line": 49,
+            "specifier": "../compute/product/legacyUiCompatibility.js"
+          },
+          {
+            "source": "src/ui/m3State.js",
+            "line": 12,
+            "specifier": "../compute/product/legacyUiCompatibility.js"
+          }
+        ]
+      },
+      {
+        "file": "src/nonlinear/equilibrium/backends/wasmSparseBackend.js",
+        "hasPolicy": true,
+        "consumerCount": 4,
+        "consumers": [
+          {
+            "source": "src/nonlinear/dynamics/productionNlth.js",
+            "line": 15,
+            "specifier": "../equilibrium/backends/wasmSparseBackend.js"
+          },
+          {
+            "source": "src/nonlinear/equilibrium/index.js",
+            "line": 82,
+            "specifier": "./backends/wasmSparseBackend.js"
+          },
+          {
+            "source": "src/nonlinear/pushover/productionPushover.js",
+            "line": 8,
+            "specifier": "../equilibrium/backends/wasmSparseBackend.js"
+          },
+          {
+            "source": "src/nonlinear/qualification/pilotRunner.js",
+            "line": 3,
+            "specifier": "../equilibrium/backends/wasmSparseBackend.js"
+          }
+        ]
+      },
+      {
+        "file": "src/nonlinear/equilibrium/typedSparse.js",
+        "hasPolicy": true,
+        "consumerCount": 3,
+        "consumers": [
+          {
+            "source": "src/nonlinear/equilibrium/assembler.js",
+            "line": 13,
+            "specifier": "./typedSparse.js"
+          },
+          {
+            "source": "src/nonlinear/equilibrium/index.js",
+            "line": 75,
+            "specifier": "./typedSparse.js"
+          },
+          {
+            "source": "src/nonlinear/product/preflight.js",
+            "line": 8,
+            "specifier": "../equilibrium/typedSparse.js"
+          }
+        ]
+      },
+      {
+        "file": "src/nonlinear/legacy/contract.js",
+        "hasPolicy": false,
+        "consumerCount": 4,
+        "consumers": [
+          {
+            "source": "src/index.js",
+            "line": 1289,
+            "specifier": "./nonlinear/legacy/contract.js"
+          },
+          {
+            "source": "src/nonlinear/dynamics/newmark.js",
+            "line": 1,
+            "specifier": "../legacy/contract.js"
+          },
+          {
+            "source": "src/nonlinear/pushover.js",
+            "line": 3,
+            "specifier": "./legacy/contract.js"
+          },
+          {
+            "source": "src/nonlinear/pushoverFormal.js",
+            "line": 2,
+            "specifier": "./legacy/contract.js"
+          }
+        ]
+      },
+      {
+        "file": "src/nonlinear/legacy/preliminaryPushover.js",
+        "hasPolicy": false,
+        "consumerCount": 2,
+        "consumers": [
+          {
+            "source": "src/index.js",
+            "line": 1295,
+            "specifier": "./nonlinear/legacy/preliminaryPushover.js"
+          },
+          {
+            "source": "src/nonlinear/analysisRouter.js",
+            "line": 6,
+            "specifier": "./legacy/preliminaryPushover.js"
+          }
+        ]
+      },
+      {
+        "file": "src/nonlinear/legacy/sdofNewmarkTrace.js",
+        "hasPolicy": false,
+        "consumerCount": 2,
+        "consumers": [
+          {
+            "source": "src/index.js",
+            "line": 1299,
+            "specifier": "./nonlinear/legacy/sdofNewmarkTrace.js"
+          },
+          {
+            "source": "src/nonlinear/analysisRouter.js",
+            "line": 7,
+            "specifier": "./legacy/sdofNewmarkTrace.js"
+          }
+        ]
+      },
+      {
+        "file": "src/solver/domain/compatibility.js",
+        "hasPolicy": false,
+        "consumerCount": 4,
+        "consumers": [
+          {
+            "source": "src/dynamics/modal.js",
+            "line": 17,
+            "specifier": "../solver/domain/compatibility.js"
+          },
+          {
+            "source": "src/nonlinear/integration/governance.js",
+            "line": 3,
+            "specifier": "../../solver/domain/compatibility.js"
+          },
+          {
+            "source": "src/solver/domain/index.js",
+            "line": 21,
+            "specifier": "./compatibility.js"
+          },
+          {
+            "source": "src/solver/pdelta/analysisDomain.js",
+            "line": 2,
+            "specifier": "../domain/compatibility.js"
+          }
+        ]
+      },
+      {
+        "file": "src/solver/sparse/cscMatrix.js",
+        "hasPolicy": true,
+        "consumerCount": 4,
+        "consumers": [
+          {
+            "source": "src/index.js",
+            "line": 345,
+            "specifier": "./solver/sparse/cscMatrix.js"
+          },
+          {
+            "source": "src/solver/linear3dAssembly.js",
+            "line": 24,
+            "specifier": "./sparse/cscMatrix.js"
+          },
+          {
+            "source": "src/solver/sparse/diagnostics.js",
+            "line": 2,
+            "specifier": "./cscMatrix.js"
+          },
+          {
+            "source": "src/solver/sparse/solveSparse.js",
+            "line": 2,
+            "specifier": "./cscMatrix.js"
+          }
+        ]
+      },
+      {
+        "file": "src/solver/sparse/ldlt.js",
+        "hasPolicy": true,
+        "consumerCount": 2,
+        "consumers": [
+          {
+            "source": "src/index.js",
+            "line": 358,
+            "specifier": "./solver/sparse/ldlt.js"
+          },
+          {
+            "source": "src/solver/sparse/solveSparse.js",
+            "line": 3,
+            "specifier": "./ldlt.js"
+          }
+        ]
+      },
+      {
+        "file": "src/solver/sparse/symbolicFactor.js",
+        "hasPolicy": true,
+        "consumerCount": 2,
+        "consumers": [
+          {
+            "source": "src/index.js",
+            "line": 354,
+            "specifier": "./solver/sparse/symbolicFactor.js"
+          },
+          {
+            "source": "src/solver/sparse/solveSparse.js",
+            "line": 4,
+            "specifier": "./symbolicFactor.js"
+          }
+        ]
+      },
+      {
+        "file": "src/ui/indexResultCompatibility.js",
+        "hasPolicy": false,
+        "consumerCount": 3,
+        "consumers": [
+          {
+            "source": "src/ui/indexAgentApi.js",
+            "line": 139,
+            "specifier": "./indexResultCompatibility.js"
+          },
+          {
+            "source": "src/ui/indexBridge.js",
+            "line": 103,
+            "specifier": "./indexResultCompatibility.js"
+          },
+          {
+            "source": "src/ui/indexBridge.js",
+            "line": 128,
+            "specifier": "./indexResultCompatibility.js"
+          }
+        ]
+      },
+      {
+        "file": "verification/framework/nonlinearBenchmarks.js",
+        "hasPolicy": true,
+        "consumerCount": 2,
+        "consumers": [
+          {
+            "source": "verification/framework/matrix/stabilityCases.js",
+            "line": 5,
+            "specifier": "../nonlinearBenchmarks.js"
+          },
+          {
+            "source": "verification/index.js",
+            "line": 14,
+            "specifier": "./framework/nonlinearBenchmarks.js"
+          }
+        ]
+      }
+    ]
+  },
+  "publicApi": {
+    "rootBarrel": "src/index.js",
+    "rootReexportModuleCount": 321,
+    "computeBarrel": "src/compute/index.js",
+    "computeReexportModuleCount": 40,
+    "verificationBarrel": "verification/index.js",
+    "verificationReexportModuleCount": 15,
+    "productionVerificationReexports": [],
+    "internalRootConsumers": [
+      {
+        "source": "verification/framework/benchmarks/additionalComparison.js",
+        "target": "src/index.js",
+        "specifier": "../../../src/index.js",
+        "line": 2,
+        "kind": "import",
+        "relative": true
+      },
+      {
+        "source": "verification/framework/phase17/productAdapter.mjs",
+        "target": "src/index.js",
+        "specifier": "../../../src/index.js",
+        "line": 1,
+        "kind": "import",
+        "relative": true
+      }
+    ]
+  },
+  "unresolvedRelativeImports": [],
+  "auditHash": "9e1359ac0c283afdf18eb942d8084fb542369e0bdead23dba32e9803d85d0952"
+}

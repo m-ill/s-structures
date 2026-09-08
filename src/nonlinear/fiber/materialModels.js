@@ -1,6 +1,8 @@
+import { FIBER_MATERIAL_MODEL_VERSION } from '../../metadata/numericVersions.js';
+export { FIBER_MATERIAL_MODEL_VERSION };
 import { stableHash } from '../../core/stableHash.js';
 
-export const FIBER_MATERIAL_MODEL_VERSION = 'p8-m6-fiber-material-state-v1';
+
 
 const MATERIAL_UNITS = Object.freeze({
   stress: 'Pa',

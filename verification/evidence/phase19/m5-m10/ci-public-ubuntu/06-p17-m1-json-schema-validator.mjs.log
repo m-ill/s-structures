@@ -1,0 +1,15 @@
+{
+  "suite": "P17-M1 JSON Schema validator",
+  "status": "PASS",
+  "coverage": [
+    "nested deletion",
+    "nested additional property",
+    "oneOf ambiguity",
+    "local $ref",
+    "unknown keyword lint",
+    "date-time",
+    "NaN"
+  ]
+}
+
+

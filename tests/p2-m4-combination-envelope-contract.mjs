@@ -41,7 +41,7 @@ assert.ok(contract.envelopeAudit.drift.governing.comboId);
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, {
   getLastResult: () => analysis,
 });
-assert.equal(agent.getCombinationEnvelopeContract().version, COMBINATION_ENVELOPE_CONTRACT_VERSION);
+assert.equal(agent.prepareResultView('getCombinationEnvelopeContract').version, COMBINATION_ENVELOPE_CONTRACT_VERSION);
 assert.equal(agent.getCapabilities().modules.combinationEnvelopeContract, COMBINATION_ENVELOPE_CONTRACT_VERSION);
 assert.ok(agent.getCapabilities().readApis.includes('getCombinationEnvelopeContract'));
 

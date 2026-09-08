@@ -1,0 +1,25 @@
+{
+  "qualification": "development-preview",
+  "version": "p19-preview-package-v1",
+  "forbiddenPathCount": 0,
+  "sourceCommit": "8147974",
+  "runtimeZipSha256": "c3d62117730b4f323eb403ecc73b73647985462f32a18a85b69571ef7ef9cd34",
+  "publicFileCount": 678,
+  "releaseFileCount": 1413,
+  "productionDeployment": false,
+  "sourceZipSha256": "2895de5168fb6e0a9bc53e1d6ada651e73f254c8da96aff2b45859b4099e17f9",
+  "runtimeZip": "s-structures-0.1.0.zip",
+  "windowsPackageInstallRecovery": {
+    "checks": [
+      "all asset byte lengths and hashes",
+      "private paths 404",
+      "server restart preserves project",
+      "backup excludes secrets",
+      "restore preserves project"
+    ],
+    "observedVia": "local exec tool output",
+    "status": "PASS",
+    "test": "tests/p12-m5-release-package-install-recovery.mjs",
+    "repeatedBuildHashIdentical": true
+  }
+}

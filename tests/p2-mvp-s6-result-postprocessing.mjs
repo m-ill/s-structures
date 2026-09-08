@@ -43,7 +43,7 @@ assert.match(pkg.html, /Result Postprocessing/);
 const agent = createIndexAgentApi({ model: () => model, reanalyze: () => {} }, {
   getLastResult: () => analysis,
 });
-const agentPost = agent.getResultPostprocessing();
+const agentPost = agent.prepareResultView('getResultPostprocessing');
 assert.equal(agentPost.version, RESULT_POSTPROCESSING_VERSION);
 assert.equal(agent.getCapabilities().modules.resultPostprocessing, RESULT_POSTPROCESSING_VERSION);
 assert.ok(agent.getCapabilities().readApis.includes('getResultPostprocessing'));
