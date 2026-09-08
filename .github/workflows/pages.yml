@@ -13,6 +13,9 @@ jobs:
     uses: ./.github/workflows/phase20.yml
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
