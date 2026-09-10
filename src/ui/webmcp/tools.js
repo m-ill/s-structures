@@ -47,8 +47,13 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
     return { input: { caseId: args.caseId, computeTarget: args.computeTarget || 'cpu', model: value }, binding };
   }
   function jobInfo(jobId) {
-    const binding = jobs.get(jobId);
+    const binding = jobs.get(jobId)||workflow.findJob(jobId);
     if (!binding) fail('JOB_NOT_FOUND', 'Only analysis jobs started in this WebMCP page session are available.');
+    if(binding.analysisRunId){
+      const row=bridge.getWorkflowAnalysisMetadata(binding.analysisRunId);
+      if(!row.ok)fail('RESULT_REQUIRED','The result is no longer in the current catalog.');
+      return {...binding,jobId,stale:row.stale,status:{id:jobId,caseId:row.caseId,kind:row.kind,status:row.executionStatus,resultAvailable:row.executionStatus==='completed',qualification:row.qualification,designBlocked:true}};
+    }
     const raw = agent.getAnalysisRunStatus({ jobId });
     // Publication may contain the complete report/model. Status is a bounded
     // control-plane response; numerical data is requested through result slices.
@@ -136,7 +141,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
       }
       const { input, binding } = inputFor(args);
       if (jobs.size >= 128) fail('SESSION_JOB_LIMIT', 'Session job limit reached. Open a new page session.');
-      if ([...jobs.keys()].some((jobId) => ['queued', 'running', 'pending'].includes(agent.getAnalysisRunStatus({ jobId }).status))) fail('ANALYSIS_BUSY', 'Wait for or cancel the current job.');
+      if ([...jobs].some(([jobId,binding]) => !binding.analysisRunId&&['queued', 'running', 'pending'].includes(agent.getAnalysisRunStatus({ jobId }).status))) fail('ANALYSIS_BUSY', 'Wait for or cancel the current job.');
       const validation = agent.validateAnalysisRun(input);
       if (!validation.ok) return { ...binding, status: 'blocked', validation };
       const job = agent.startAnalysisRun(input);
@@ -150,16 +155,23 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
       if(nonlinear.owns(jobId))return nonlinear.slice({jobId,path,limit});
       const info = jobInfo(jobId);
       if (!info.status.resultAvailable) fail('RESULT_NOT_READY', 'No result is available. Check analysis status.');
-      const slice = agent.getAnalysisResultSlice({ jobId, query: { path, limit } });
+      const slice = info.analysisRunId?bridge.getWorkflowAnalysisSlice(info.analysisRunId,{path,limit}).slice:agent.getAnalysisResultSlice({ jobId, query: { path, limit } });
       if (slice.data === undefined) fail('RESULT_PATH_NOT_FOUND', 'Result path is unavailable for this case. Start with summary.');
       return { ...info, ...resultSliceUnits(info.status.kind,path,info.units), slice, externalQualification: 'NOT_CLAIMED' };
     }),
     tool('cancel_analysis', 'Request cancellation of one analysis job started by this page session. Completed results are retained.', object({ jobId: id }, ['jobId']), false, ({ jobId }) => {
       if(nonlinear.owns(jobId))return nonlinear.cancel(jobId);
-      jobInfo(jobId);
+      if(jobInfo(jobId).analysisRunId)fail('READ_ONLY_RESULT','Restored result handles cannot control jobs.');
       agent.cancelAnalysisRun({ jobId });
       return jobInfo(jobId);
     }),
+    tool('open_analysis_result','Issue a fresh read-only session ID for a completed current-catalog result, including restored records. Does not run analysis.',object({analysisRunId:id},['analysisRunId']),true,({analysisRunId})=>{
+      const row=bridge.getWorkflowAnalysisMetadata(analysisRunId);
+      if(!row.ok||row.executionStatus!=='completed'||!KINDS.includes(row.kind))fail('RESULT_REQUIRED','A completed elastic catalog record is required.');
+      const jobId=`result-${globalThis.crypto?.randomUUID?.()||`${Date.now()}-${requests.size}-${jobs.size}`}`;
+      jobs.set(jobId,{...context(),analysisRunId,caseId:row.caseId});return jobInfo(jobId);
+    }),
+    tool('get_runtime_resources','Read managed estimates and optional browser aggregate memory. Unsupported measurements return unavailable, never zero. Does not run analysis.',object({includeAggregate:{type:'boolean'}}),true,args=>bridge.getRuntimeResources(args)),
     ...workflow.tools,
     ...nonlinear.tools,
   ];
@@ -170,7 +182,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
     const attempt=run=>{try{errors.push(...(run()?.errors||[]));}catch(error){errors.push({code:error?.code||'CANCEL_FAILED',message:String(error?.message||error)});}};
     attempt(()=>workflow.dispose());
     attempt(()=>nonlinear.dispose());
-    for(const jobId of jobs.keys()) attempt(()=>agent.cancelAnalysisRun({jobId}));
+    for(const [jobId,binding] of jobs) if(!binding.analysisRunId)attempt(()=>agent.cancelAnalysisRun({jobId}));
     jobs.clear();requests.clear();
     return {errors};
   };

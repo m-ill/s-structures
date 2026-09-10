@@ -25,7 +25,7 @@ export function createWorkflowTools({agent,bridge,tool,object,context,setView}) 
   function sourceRows() {
     return (bridge.getCurrentModel().analysisCases||[]).flatMap(c=>{
       const published=bridge.getAnalysisCaseResult(c.id);if(!published?.runRecordId)return [];
-      const r=bridge.getWorkflowAnalysisResult(published.runRecordId);if(!r.ok)return [];
+      const r=(bridge.getWorkflowAnalysisMetadata||bridge.getWorkflowAnalysisResult)(published.runRecordId);if(!r.ok)return [];
       return [{caseId:c.id,kind:c.kind,analysisRunId:r.analysisRunId,comboId:c.settings?.comboId||null,method:c.settings?.pDeltaMethod||'off',executionStatus:r.executionStatus,stale:r.stale,qualification:r.qualification}];
     });
   }
@@ -56,7 +56,7 @@ export function createWorkflowTools({agent,bridge,tool,object,context,setView}) 
     tool('start_elastic_workflow','Start a stored elastic workflow plan; return a handle immediately. Poll workflow status.',object({handle:id,requestId:id},['handle','requestId']),false,args=>once('elastic',args,()=>{
       const plan=get(args.handle,'elastic');current(plan.inputIdentity.inputHash);
       if([...workflows.values()].some(x=>x.status==='running'))fail('WORKFLOW_BUSY');
-      const state={status:'running',requestId:`webmcp-${args.requestId}`,result:null};const handle=save('workflow',state);workflows.set(handle,state);
+      const state={status:'running',requestId:`webmcp-${args.requestId}`,result:null,binding:context()};const handle=save('workflow',state);workflows.set(handle,state);
       agent.runElasticWorkflow({plan,requestId:state.requestId}).then(result=>{state.result=result;state.status=result.ok?'completed':'failed';},e=>{state.result={ok:false,code:e.code||'WORKFLOW_FAILED'};state.status='failed';});
       return {ok:true,handle,status:state.status};
     })),
@@ -72,9 +72,17 @@ export function createWorkflowTools({agent,bridge,tool,object,context,setView}) 
     tool('get_workflow_checkpoint','Inspect a verified browser checkpoint and available design report IDs.',object({projectId:id},['projectId']),true,args=>bridge.getWorkflowCheckpoint(args)),
     tool('restore_workflow_checkpoint','Restore a checkpoint into an empty result session and replace its model. Interrupted analyses require rerun; old handles are never reused.',object({projectId:id},['projectId']),false,args=>bridge.restoreWorkflowCheckpoint(args)),
     tool('open_report_artifact','Issue a fresh session handle for an existing or restored report, allowing export to resume from a known character offset.',object({designRunId:id},['designRunId']),true,args=>{const r=good(agent.getDesignReviewArtifact(args.designRunId,{format:'json',offset:0}));return {ok:true,handle:save('artifact',args.designRunId),reportSnapshotHash:r.reportSnapshotHash,stale:r.stale};}),
+    tool('export_report_pdf','Generate and download an existing report as a preliminary review PDF. Preserves NG and unchecked items; does not authorize final design.',object({handle:id,requestId:id},['handle','requestId']),false,args=>once('pdf',args,()=>bridge.exportDesignReviewPdf(get(args.handle,'artifact')))),
     tool('set_workspace_view','Switch the shared workspace view only; does not calculate or edit the model.',object({view:choice('modeling','elastic','nonlinear','design-input','design-review')},['view']),false,args=>setView(args.view)),
   ];
-  return {tools,dispose(){
+  return {tools,findJob(jobId){
+    if(!active)return null;
+    for(const w of workflows.values()){
+      const step=w.result?.steps?.find(s=>s.jobId===jobId);
+      if(step)return {...w.binding,caseId:step.caseId};
+    }
+    return null;
+  },dispose(){
     active=false;artifactReads.dispose();const errors=[];
     for(const w of workflows.values())if(w.status==='running'){
       try{bridge.cancelElasticWorkflow(w.requestId);}catch(error){errors.push({code:error?.code||'CANCEL_FAILED',message:String(error?.message||error)});}

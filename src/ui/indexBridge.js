@@ -1,4 +1,6 @@
 import { createWorkflowCheckpointRepository } from '../compute/product/workflowCheckpoint.js';
+import { createBrowserReviewPdfExporter } from '../report/phase22/browserReviewPdf.js';
+import { createBrowserMemoryDiagnostics } from '../compute/telemetry/browserMemory.js';
 import { runWithBoundedWorkerCancellation } from '../compute/product/boundedWorkerCancellation.js';
 import { createProductBook, extractProductModel } from './indexNativePersistence.js';
 import { createResourceBudget, retainedBytes } from '../core/resourceBudget.js';
@@ -239,6 +241,15 @@ export function installIndexEngineBridge(target = globalThis) {
       const record = workflowResults.getAnalysisMetadata(analysisRunId);
       if (!record.ok) return record;
       return workflowResults.getAnalysis(analysisRunId, bridge.getWorkflowInputIdentity({ caseId: record.caseId }));
+    },
+    getWorkflowAnalysisMetadata(analysisRunId) {
+      const record=workflowResults.getAnalysisMetadata(analysisRunId);
+      return record.ok?{...record,stale:!sameWorkflowInput(record.identity,bridge.getWorkflowInputIdentity({caseId:record.caseId}))}:record;
+    },
+    getDesignReviewMetadata:id=>workflowResults.getDesignMetadata(id,bridge.getWorkflowInputIdentity()),
+    getWorkflowAnalysisSlice(analysisRunId,query) {
+      const record=workflowResults.getAnalysisMetadata(analysisRunId);if(!record.ok)return record;
+      return workflowResults.getAnalysisSlice(analysisRunId,bridge.getWorkflowInputIdentity({caseId:record.caseId}),query);
     },
     getResultVisuals(options = {}) {
       const model = bridge.getCurrentModel();
@@ -495,6 +506,7 @@ export function installIndexEngineBridge(target = globalThis) {
               lastResultIdentity=bridge.getWorkflowInputIdentity().inputHash;
               resourceBudget.release('native-last-analysis');
             }
+            target.SStructuresWebMcp?.render?.();
             return {result:stored,catalogOwnsResult:true};
           },
         });
@@ -779,7 +791,8 @@ export function installIndexEngineBridge(target = globalThis) {
     transport: target.sStructuresReportExport,
     openArtifact: target.SStructuresOpenReportArtifact,
   });
-  const elasticReview = createElasticReviewService({ bridge, store: workflowResults,budget:resourceBudget,
+  const browserPdfExporter=createBrowserReviewPdfExporter(target,resourceBudget);
+  const elasticReview = createElasticReviewService({ bridge, store: workflowResults,budget:resourceBudget,browserPdfExporter,
     reportExportWorkflow: target.SStructuresReportExportWorkflow,
     getPdfContext: () => ({ sourceRevision:target.SStructuresSourceRevision||null,buildIdentity:target.SStructuresBuildIdentity||null,figureManifest: target.SStructuresFigureManifest || null,
       qualification: target.SStructuresReportQualification || { status: 'BLOCKED' } }),
@@ -850,7 +863,9 @@ export function installIndexEngineBridge(target = globalThis) {
     },
     getResourceBudget:()=>resourceBudget,
     getResourceState:()=>resourceBudget.snapshot(),
+    getRuntimeResources:createBrowserMemoryDiagnostics(target,()=>resourceBudget.snapshot()),
     async disposeRuntime() {
+      browserPdfExporter.dispose();
       runtimeDisposed=true;
       analysisProductService?.dispose();
       await Promise.allSettled([elasticProductService?.dispose(),eigenProductService?.dispose(),nonlinearProductService?.dispose?.()]);

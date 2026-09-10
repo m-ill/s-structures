@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "format": "pdf",
+  "scope": "preliminary-review-record",
+  "pages": 2,
+  "byteLength": 329809,
+  "sha256": "9bd238cbea605c389ffc8dfb51c62d7a4902d7b5313dc9d37ed8f7a6e7d55488",
+  "reportSnapshotHash": "cd2af2a14b0aec7961e934f7a2bbced56b34358c171edf0bfaeba6e7c0c7b82a",
+  "designTransferAllowed": false,
+  "textSearchable": false,
+  "after": {
+    "version": "p21-managed-memory-v1",
+    "accounting": "conservative-retained-data-estimate",
+    "maxBytes": 268435456,
+    "totalBytes": 0,
+    "peakBytes": 18714332,
+    "owners": {}
+  }
+}

@@ -9,9 +9,11 @@ export function retainedBytes(value,seen=new Set()) {
   if(seen.has(value))return 0;seen.add(value);
   if(ArrayBuffer.isView(value))return 64+retainedBytes(value.buffer,seen);
   if(value instanceof ArrayBuffer)return 32+value.byteLength;
-  if(value instanceof Map)return 64+[...value].reduce((sum,[key,item])=>sum+retainedBytes(key,seen)+retainedBytes(item,seen),0);
-  if(value instanceof Set)return 64+[...value].reduce((sum,item)=>sum+retainedBytes(item,seen),0);
-  return 64+Object.entries(value).reduce((sum,[key,item])=>sum+retainedBytes(key,seen)+retainedBytes(item,seen),0);
+  let bytes=64;
+  if(value instanceof Map){for(const [key,item] of value)bytes+=retainedBytes(key,seen)+retainedBytes(item,seen);return bytes;}
+  if(value instanceof Set){for(const item of value)bytes+=retainedBytes(item,seen);return bytes;}
+  for(const key in value)if(Object.hasOwn(value,key))bytes+=retainedBytes(key,seen)+retainedBytes(value[key],seen);
+  return bytes;
 }
 export function createResourceBudget({maxBytes=DEFAULT_RESOURCE_BUDGETS.managedBytes}={}) {
   if(!Number.isSafeInteger(maxBytes)||maxBytes<1)throw new Error('RESOURCE_BUDGET_INVALID');

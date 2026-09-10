@@ -165,6 +165,7 @@ export async function executeProductionElastic(payload = {}, context = {}) {
     await context.yieldControl?.();
     context.throwIfCancelled?.();
     result = finalizeElasticAnalysis(prepared, byCombo, {
+      onPDeltaProgress:progress=>context.reportProgress?.({...progress,value:0.85}),
       envelopeOverride: envelopeAccumulator?.finalize(),
       pDeltaOverride,
       pDeltaScreeningByCombo,

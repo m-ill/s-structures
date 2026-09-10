@@ -16,7 +16,7 @@ const reject = (code, details) => { throw Object.assign(new Error(code), { code,
 const guard = fn => { try { return fn(); } catch (e) { return problem(e.code || e.message, e.details); } };
 const kinds = ['static','modal','responseSpectrum','buckling','linearTha'];
 
-export function createElasticReviewService({ bridge, store, reportExportWorkflow, getPdfContext = () => ({}), budget = createResourceBudget() }) {
+export function createElasticReviewService({ bridge, store, reportExportWorkflow, browserPdfExporter=null, getPdfContext = () => ({}), budget = createResourceBudget() }) {
   const reviewPlans = new BudgetMap(budget,'review-plans',{maxEntries:64}), workflowPlans = new BudgetMap(budget,'workflow-plans',{maxEntries:64}), requests = new BudgetMap(budget,'review-requests'), reports = new BudgetMap(budget,'reports',{maxEntries:32});
   let busy = false;
   const identity = () => bridge.getWorkflowInputIdentity();
@@ -105,11 +105,21 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
       currentReportSnapshotHash:report.reportSnapshotHash, projectId:report.snapshot.project.id, source:'p19-m3' };
   }
   function getExportCapability(id) { return guard(() => {
+    if(browserPdfExporter?.supported()){
+      const record=store.getDesignMetadata(id,identity());if(!record.ok)return record;
+      if(!reports.has(id))return problem('RESULT_REQUIRED');
+      return {ok:true,formats:['html','json','csv','pdf'],automaticPdf:!record.stale,automaticFinalPdf:false,scope:'preliminary-review-record',textSearchable:false,designTransferAllowed:false,stale:record.stale};
+    }
     const input = exportContext(id), pdf = reportExportWorkflow.preflight(input);
     return {ok:true,formats:['html','json','csv'],manualPrint:true,automaticPdf:pdf.ready,pdf};
   }); }
   async function exportPdf(id) {
     try {
+      if(browserPdfExporter?.supported()){
+        const report=reports.get(id);if(!report)return problem('RESULT_REQUIRED');
+        const assertCurrent=()=>{const current=store.getDesignMetadata(id,identity());if(!current.ok||current.stale||reports.get(id)!==report)reject('STALE_INPUT');};
+        assertCurrent();return await browserPdfExporter.export(report,{assertCurrent});
+      }
       const input = exportContext(id), ready = reportExportWorkflow.preflight(input);
       if(!ready.ready) return problem('PDF_EXPORT_BLOCKED',ready.issues);
       const plan = await reportExportWorkflow.plan(input);

@@ -21,7 +21,7 @@ export function installIndexDesignReview(target, bridge) {
       if(item.kind!=='static') continue;
       const published=bridge.getAnalysisCaseResult(item.id);
       if(!published?.runRecordId) continue;
-      const row=bridge.getWorkflowAnalysisResult(published.runRecordId);
+      const row=(bridge.getWorkflowAnalysisMetadata||bridge.getWorkflowAnalysisResult)(published.runRecordId);
       const comboId=row.legacyRecord?.provenance?.combination?.id;
       if(!comboId) continue;
       if(!row.ok||row.stale||row.executionStatus!=='completed') continue;
@@ -55,7 +55,7 @@ export function installIndexDesignReview(target, bridge) {
         const a=el('a');a.href=url;a.download=`${reviewId}.${name.toLowerCase()}`;doc.body.appendChild(a);a.click();doc.body.removeChild(a);target.setTimeout(()=>target.URL.revokeObjectURL(url),1000);
       }));
     }
-    output.appendChild(button('PDF 자동 내보내기',async()=>show(await bridge.exportDesignReviewPdf(reviewId))));
+    output.appendChild(button('예비 검토 PDF 자동 저장',async()=>show(await bridge.exportDesignReviewPdf(reviewId))));
   }));
   panel.appendChild(button('닫기',()=>{panel.hidden=true;}));panel.appendChild(status);panel.appendChild(detail);panel.appendChild(output);doc.body.appendChild(panel);
   const api={adoptReview(id){const result=bridge.getDesignReview(id);if(result.ok){reviewId=id;clear(output);show(result);}},open(){bridge.elasticSetupWorkflow?.close?.();bridge.designInputPanel?.close?.();caseInput.value=(bridge.getCurrentModel().analysisCases||[]).filter(x=>['static','modal','responseSpectrum','buckling','linearTha'].includes(x.kind)).map(x=>x.id).join(', ');refreshSources();panel.hidden=false;},close(){panel.hidden=true;},refreshSources};

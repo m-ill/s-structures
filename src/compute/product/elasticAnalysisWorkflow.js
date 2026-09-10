@@ -27,7 +27,7 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
   if (pDeltaMethod !== 'off') {
     output.pDelta = options.pDeltaOverride
       ? validateDirectPDeltaOverride(options.pDeltaOverride, pDeltaMethod, combos)
-      : analyzePDeltaCombinations(model, combos, { pDeltaMethod });
+      : analyzePDeltaCombinations(model, combos, { pDeltaMethod, onProgress:options.onPDeltaProgress });
   }
   if (model.analysisSettings?.responseSpectrum?.enabled !== false) {
     output.dynamics = analyzeDynamics(model);

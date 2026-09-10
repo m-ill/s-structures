@@ -182,6 +182,7 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
     const iterations = [];
 
     for (let iteration = 1; iteration <= criteria.maxIter; iteration += 1) {
+      options.onProgress?.({stage:'direct-pdelta-iteration',step,stepCount:loadStepCount,iteration,maxIterations:criteria.maxIter});
       const axialForces = iteration === 1 && !Object.keys(currentAxial).length
         ? scaleAxialForces(referenceAxialForces, lambda)
         : currentAxial;

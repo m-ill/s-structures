@@ -1,0 +1,13 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>Phase22 합성 PDF 최소 검사</title>
+<h1>합성 기록 PDF 최소 검사</h1><p>실제 건물 자료를 사용하지 않습니다.</p><button id="run">합성 PDF 생성</button><pre id="result">대기</pre><pre id="bytes" hidden></pre>
+<script type="module">
+import {createP22Report} from '../fixtures/p22-report.js';
+import {createResourceBudget} from '../../src/core/resourceBudget.js';
+import {createBrowserReviewPdfExporter} from '../../src/report/phase22/browserReviewPdf.js';
+const budget=createResourceBudget(),exporter=createBrowserReviewPdfExporter(window,budget);
+document.querySelector('#run').onclick=async()=>{
+ const result=document.querySelector('#result');result.textContent='생성 중';
+ try {const {bytes,...meta}=await exporter.export(createP22Report(),{download:false});let raw='';for(const byte of bytes)raw+=String.fromCharCode(byte);document.querySelector('#bytes').textContent=btoa(raw);result.textContent=JSON.stringify({...meta,after:budget.snapshot()},null,2);}
+ catch(e){result.textContent=JSON.stringify({ok:false,error:e.message});}
+};
+</script></html>

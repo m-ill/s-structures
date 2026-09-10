@@ -1,4 +1,5 @@
 import { BudgetMap, createResourceBudget } from '../../core/resourceBudget.js';
+import { boundedResultSlice } from '../../core/boundedResultSlice.js';
 import { stableHash } from '../../core/stableHash.js';
 import { sameWorkflowInput, validIdentity } from '../../core/workflowIdentity.js';
 import { analysisRunCanTransferToDesign } from '../../core/analysisRunRecord.js';
@@ -65,6 +66,10 @@ export function createWorkflowResultStore({budget=createResourceBudget()} = {}) 
       return read(analyses, record.id, identity);
     },
     getAnalysis: (id, identity) => read(analyses, id, identity),
+    getAnalysisSlice(id,identity,query) {
+      const row=analyses.get(id);if(!row)return problem('RESULT_REQUIRED');
+      return {ok:true,analysisRunId:id,stale:!sameWorkflowInput(row.identity,identity),slice:boundedResultSlice(row.result,query),designTransferAllowed:false};
+    },
     getAnalysisMetadata(id) {
       const row=analyses.get(id);if(!row)return problem('RESULT_REQUIRED');
       const {result,legacyRecord,...metadata}=row;const {result:omitted,...legacyMetadata}=legacyRecord;

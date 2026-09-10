@@ -50,3 +50,7 @@ Node.js 24에서 `node server/main.mjs 5173` 실행 후 지원 브라우저로 `
 `get_result_slice`는 원본 숫자를 변환하지 않는다. 정적/Direct 결과의 `dmax`, `dmaxM`, 절점 병진변위는 **m**이고 화면은 mm로 표시할 수 있다. 예: 원본0.009505956 m = 화면9.505956 mm. 응답의 `units`/`rawResultUnits`/`solverUnitPolicy`는 원본 단위를, `displayUnits`는 모델 표시 단위를 설명한다.
 
 `unitContract`는 version, path, valueUnit 또는 componentUnits와 valuesRescaled=false를 제공한다. 6자유도 변위는 m,m,m,rad,rad,rad이며 반력은 kN,kN,kN,kN.m,kN.m,kN.m이다. 혼합 레코드·미인식 필드에는 fieldMetadataRequired=true가 붙는다. 모달 정규화 벡터 등은 임의로 mm/m를 붙이지 않고 해당 필드 단위 계약을 확인해야 한다. 초기 UI 표시용 단위 안내를 원본 변위에 붙이던 오류를 수정한 계약이다.
+
+## Phase22 로컬 개발 변경
+
+43개 도구. workflow 완료 job도 공통 상태/부분 조회에 연결한다. 복원 결과는 `open_analysis_result`로 새 읽기 전용 ID를 얻는다. `get_runtime_resources({includeAggregate:true})`는 선택적인 메모리 진단, `export_report_pdf({handle,requestId})`는 예비 기록 PDF 자동 다운로드다. 최종 설계 자격·배포 완료를 의미하지 않는다. [계획 및 코드 상태](phase22/STATUS.md) 참고.
