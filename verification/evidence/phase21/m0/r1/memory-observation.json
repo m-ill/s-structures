@@ -1,0 +1,20 @@
+{
+  "source": "e15e8b4",
+  "scope": "entire M0 fixture suite, including module imports and reference hybrid; single process observation, not M-tier qualification",
+  "before": {
+    "rss": 59461632,
+    "heapTotal": 6234112,
+    "heapUsed": 4597128,
+    "external": 1859954,
+    "arrayBuffers": 22819
+  },
+  "after": {
+    "rss": 178565120,
+    "heapTotal": 115728384,
+    "heapUsed": 79103080,
+    "external": 3799434,
+    "arrayBuffers": 1651055
+  },
+  "maxRssKiB": 184812,
+  "elapsedMs": 2103.4973
+}

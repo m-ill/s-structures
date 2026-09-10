@@ -1,7 +1,8 @@
 {
-  "version": "p21-m0-tests-v1",
-  "scope": "Phase21 M0 constrained Direct implementation and inherited Phase20 regression; M1-M7 not yet included",
+  "version": "p21-m1-tests-v2",
+  "scope": "Phase21 M0-M1 and inherited regression; later milestones pending",
   "tests": [
+    "tests/p21-m1-rc-contract.mjs",
     "tests/p21-m0-rigid-direct.mjs",
     "tests/p20-m5-browser-input-boundaries.mjs",
     "tests/p20-m4-module-boundaries.mjs",

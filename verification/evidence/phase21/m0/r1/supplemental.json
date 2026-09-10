@@ -1,0 +1,7 @@
+{
+  "runtimeCommit": "e15e8b4",
+  "test": "tests/p21-m0-rigid-direct.mjs",
+  "testSha256": "fe72ff0d07d9126d97c4a99edf5671fabd2228b5e0daf4f5f87d0cb006c60fd1",
+  "scope": "Additional constrained critical-load/rotation/MPC/spring cases; runtime unchanged after archived 117-test run",
+  "status": "PASS"
+}

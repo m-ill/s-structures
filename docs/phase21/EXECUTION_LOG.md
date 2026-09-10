@@ -27,3 +27,16 @@
 - 복원 상가주택의 MAX-EX-P Direct는 수렴했고 dmax=0.009505956274493006m, 평형잔차=6.547587611234594e-13이었다. 원본 입력과 hash가 다르며 아직 M1~M6 수정·재검증 이전 결과다. 과거 요약의 designBlocked/equilibriumFailureReason 잔존은 M3 상태 수정 대상으로 유지한다.
 - 기존 P6 Direct, P9 hybrid, P10 MPC 집중 회귀를 통과했다. P20 exact 비교는 새 productVersion에서 처음 실패했다. 과거 golden은 보존하고 테스트에 명시한 v3→v4 출처 버전 전환만 허용한 뒤 7개 수치·자격 결과의 exact 동일성을 확인했다. 숫자·자격 차이는 허용하지 않았다.
 - Phase21 M0 회귀 manifest 117개를 생성했다. M1~M7 시험은 아직 포함하지 않으며 고정 후보 실행은 다음 단계다.
+
+## 2026-09-10 — M0 마감·M1 진입
+
+- 고정 source e15e8b4를 archive한 clean checkout에서 117/117 PASS. 원시 로그와 validation.json을 `verification/evidence/phase21/m0/r1`에 보존했다.
+- 수치 runtime 변경 없이 시험에 독립 임계하중, 90도 좌표 회전, 일반 MPC+diaphragm, spring 지점 P=0 비교를 추가해 집중 실행을 통과했다. 이 추가 실행을 원래 117개 실행 로그에 섞어 쓰지 않는다.
+- 독립 실행한 fixture suite의 max RSS는184,812KiB, elapsed 2,103.5ms였다. module import·reference hybrid까지 포함한 단일 관측이며 성능 개선율이나 leak/M-tier qualification으로 해석하지 않는다.
+- M0를 수평 XY 소회전 강체 다이어프램·CPU f64 범위로 마감한다. 실제 GPU 자격 차단, release/unilateral/0강성 연결·명시적 prescribed API 등 기존 제한은 유지한다. M1 RC 수치 계약 수정에 진입한다.
+
+## 2026-09-10 — M1 RC 계약 후보
+
+- 공통 치수 검증으로 SQUARE의 높이 대체를 제거했다. 400×400 예비 휨내력 양축 224.91 kN·m를 독립 식으로 확인했다. Vy/Mz 및 Vz/My 축, 명시 역할과 기하 분류, 역할별 철근 경고를 수정했다. 치수/축 수정은 같은 RC 계약 후보에 포함하되 시험 기대값을 별도로 구분했다.
+- 단면·강도·배근 결측/비유한 입력은 NOT_CHECKED와 null로 반환하고 UI도 미검토 철근량/비를 0으로 표시하지 않는다. 보 P-M은 N_A, 기둥은 같은 조합·위치의 부호 있는 동시 수요로 평가한다. 단독 검토의 수요 출처도 각 성분의 위치를 사용한다.
+- 실제 배근 상세 설계 또는 설계 전달 자격을 획득한 것은 아니다. 예비 철근비와 제공 면적을 구분하며 designTransferAllowed=false를 유지한다. 고정 후보 집중 회귀를 다음 실행으로 기록한다.

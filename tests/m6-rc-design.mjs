@@ -32,7 +32,7 @@ const fc = material.Fy / 1000;
 const expectedAsZ = (45 * 1e6) / (0.85 * 400 * 0.9 * props.dz * 1000);
 const expectedVc = 0.75 * 0.17 * Math.sqrt(fc) * props.bz * 1000 * props.dz * 1000 / 1000;
 close(beamCheck.requiredRebar.AsZ, expectedAsZ, EPS, 'required strong-axis rebar');
-close(beamCheck.checks.find((item) => item.id === 'rc-shear-z').capacity, expectedVc, EPS, 'RC shear capacity');
+close(beamCheck.checks.find((item) => item.id === 'rc-shear-y').capacity, expectedVc, EPS, 'Vy uses the same bending plane as Mz');
 
 const direct = runConcreteDesign(beam, beamAnalysis);
 close(direct.summary.maxUtilization, concrete.summary.maxUtilization, EPS, 'direct RC facade should match analysis design');

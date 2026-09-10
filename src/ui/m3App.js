@@ -447,12 +447,13 @@ function renderRcDesign() {
         <td>-</td>
       </tr>`;
     }
-    const requiredAs = Math.max(check.requiredRebar.AsZ || 0, check.requiredRebar.AsY || 0);
+    const areas = [check.requiredRebar?.AsZ, check.requiredRebar?.AsY].filter(Number.isFinite);
+    const requiredAs = areas.length ? format(Math.max(...areas), 0) : '-';
     return `<tr data-member="${escapeHtml(member.id)}">
       <td>${escapeHtml(member.id)}</td>
       <td>${escapeHtml(check.role)}</td>
-      <td>${format(check.utilization, 3)}</td>
-      <td>${format(requiredAs, 0)}</td>
+      <td>${Number.isFinite(check.utilization) ? format(check.utilization, 3) : '-'}</td>
+      <td>${requiredAs}</td>
       <td><span class="status-pill ${escapeHtml(check.status.toLowerCase())}">${escapeHtml(check.status)}</span></td>
     </tr>`;
   }).join('');

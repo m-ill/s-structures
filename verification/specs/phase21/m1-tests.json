@@ -1,0 +1,10 @@
+{
+  "scope": "Phase21 M1 focused RC contract and workflow regression",
+  "tests": [
+    "tests/p21-m1-rc-contract.mjs",
+    "tests/m6-rc-design.mjs",
+    "tests/p3-design-rc.mjs",
+    "tests/p19-m3-design-workflow.mjs",
+    "tests/p20-m3-elastic-parity.mjs"
+  ]
+}
