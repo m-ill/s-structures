@@ -1,0 +1,115 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "c3d66df05eaddd377a53d032e952220fabe64805",
+    "tree": "e61c47b77ab7b13d4659f2afcc9dfe6a8fad6a78",
+    "trackedChanges": ""
+  },
+  "scope": "Phase21 M4 canonical review, source snapshot, bounded original artifacts and regressions",
+  "manifestPath": "verification/specs/phase21/m4-tests.json",
+  "manifestHash": "204e39589ed901011bf2975595d9e83045c0a8397fb230d0a997565d7b93a1a8",
+  "sourceArchiveSha256": "e005a11644bfb0b03e0c4201d007a0a3ed6e0a30562d0034a18be5d088146870",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-10T13:27:16.516Z",
+  "results": [
+    {
+      "test": "tests/p21-m4-review-artifact.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "01-p21-m4-review-artifact.mjs.log",
+      "sha256": "f4ff5951827e6fae911adce89d19d95dec3e21df5eea51aa7026a19f58698e66"
+    },
+    {
+      "test": "tests/p19-m3-design-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "02-p19-m3-design-workflow.mjs.log",
+      "sha256": "c13a1e4b02909855209eae201f038e144027b77d2f9c505ee304804b6f0b2dda"
+    },
+    {
+      "test": "tests/p19-m4-webmcp-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-p19-m4-webmcp-workflow.mjs.log",
+      "sha256": "836a4a84d8be3bf9bbfbf0f63813c4741f6092f9ed11deb690da78b787ae23cf"
+    },
+    {
+      "test": "tests/p19-review-capacity-pagination.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "04-p19-review-capacity-pagination.mjs.log",
+      "sha256": "e9d1d393c4db0ff3fb52ea82c5b0269cf91218b292b0835207ccedf52e9eee64"
+    },
+    {
+      "test": "tests/p19-review-jet-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "05-p19-review-jet-contract.mjs.log",
+      "sha256": "797610d6e2093350dd44093d82680d48a2d0e7b8f2a68aa8b79f72252fa5269f"
+    },
+    {
+      "test": "tests/p19-review-session-disposal.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "06-p19-review-session-disposal.mjs.log",
+      "sha256": "4d78dd3e90af07ee023fe4a979d40d3b1ff01743b24b8a45e25adc71a8b001a5"
+    },
+    {
+      "test": "tests/p20-m2-prepared-views.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "07-p20-m2-prepared-views.mjs.log",
+      "sha256": "b7239bfc649ce03a1d4d3b21656dc57c560ace1c2720babd32ce65db894fab06"
+    },
+    {
+      "test": "tests/p11-m1-report-snapshot-verdict.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "08-p11-m1-report-snapshot-verdict.mjs.log",
+      "sha256": "06d6e7440c7889bd72162fa4a716480fe21977fff77584f07927e56420a7d3f2"
+    },
+    {
+      "test": "tests/p11-m4-scene-evidence-report.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "09-p11-m4-scene-evidence-report.mjs.log",
+      "sha256": "9fe872010358a37cf979975dec9a55587158931edb9713910d05b091dd7ba7e2"
+    },
+    {
+      "test": "tests/p11-m5-executive-report-layout.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "10-p11-m5-executive-report-layout.mjs.log",
+      "sha256": "77fa28bb93649809782cc4e27d7d57b45f22053a9012bca95e5ff02fc98a17c0"
+    }
+  ],
+  "completedAt": "2026-09-10T13:27:32.419Z",
+  "passed": 10,
+  "failed": 0,
+  "planned": 10,
+  "executed": 10
+}

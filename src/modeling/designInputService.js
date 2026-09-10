@@ -1,3 +1,4 @@
+import { createResourceBudget, retainedBytes } from '../core/resourceBudget.js';
 import { stableHash } from '../core/stableHash.js';
 import { createWorkflowInputIdentity, sameWorkflowInput } from '../core/workflowIdentity.js';
 import { validateModel } from '../core/validation.js';
@@ -12,6 +13,8 @@ const failure=e=>({ok:false,changed:false,status:'blocked',code:e.code||'DESIGN_
 // One owner for UI and Agent transactions. No solver and no approval creation.
 export function createDesignInputService(options) {
   const plans=new Map(), requests=new Map(), history=[];
+  const budget=options.budget||createResourceBudget(),owner=budget.nextOwner('input-transactions');
+  const account=(extra=[])=>budget.reserve(owner,retainedBytes([plans,requests,history,extra]));
   let epoch=0,sequence=0;
   const getIdentity=model=>options.getIdentity?.(model)||createWorkflowInputIdentity({model});
   function editable(model) {
@@ -50,6 +53,7 @@ export function createDesignInputService(options) {
         sourceIdentity:getIdentity(model),sourceRevision:{model:model.meta?.revisionId||model.meta?.revision||null,input:model.meta?.p19InputRevision||0,epoch},
         units:copy(request.units),memberDesignUnits:MEMBER_DESIGN_FIELDS,affectedMemberIds:[...affected].sort(),
         changed:compiled.changed,changes:compiled.changes,warnings:compiled.warnings};
+      account([model,request,value]);
       plans.set(id,{model,request:copy(request),requestHash,epoch,value:copy(value),nextHash:stableHash(compiled.next)});
       return copy(value);
     } catch(e) {return failure(e);}
@@ -85,6 +89,7 @@ export function createDesignInputService(options) {
       const compiled=compile(model,row.request);
       if(stableHash(compiled.next)!==row.nextHash) fail('PREVIEW_DEPENDENCY_CHANGED');
       if(requests.size>=256) fail('REQUEST_HISTORY_LIMIT');
+      account([model,compiled.next,row.value]);
       const before=copy(model);
       let inputIdentity=getIdentity(model);
       if(compiled.changed) {
@@ -98,6 +103,7 @@ export function createDesignInputService(options) {
         affectedMemberIds:row.value.affectedMemberIds,changes:row.value.changes,warnings:compiled.warnings,undoDepth:history.length+(compiled.changed?1:0)};
       if(compiled.changed) {history.push({model,before,afterIdentity:receipt.inputIdentity,requestId:receipt.requestId});if(history.length>20) history.shift();receipt.undoDepth=history.length;}
       requests.set(receipt.requestId,{hash:row.requestHash,receipt:copy(receipt)});
+      account();
       return compiled.changed?notify(receipt):receipt;
     } catch(e) {return failure(e);}
   }
@@ -113,10 +119,11 @@ export function createDesignInputService(options) {
       // Rebind the preceding entry only after a successful, contiguous undo.
       if(history.length) history.at(-1).afterIdentity=inputIdentity;
       requests.get(row.requestId).receipt.undone=true;
+      account();
       return notify({ok:true,changed:true,undoneRequestId:row.requestId,inputIdentity,undoDepth:history.length});
     } catch(e) {return failure(e);}
   }
-  return Object.freeze({preview,apply,undo,getContext() {
+  return Object.freeze({dispose(){plans.clear();requests.clear();history.length=0;budget.release(owner);},preview,apply,undo,getContext() {
     const model=options.getModel();return {version:DESIGN_INPUT_SERVICE_VERSION,editable:!!model&&canEditWorkflow(model)&&(!options.canEdit||options.canEdit(model)===true),
       inputIdentity:model?getIdentity(model):null,types:DESIGN_INPUT_TYPES,units:DESIGN_INPUT_UNITS,memberDesignUnits:MEMBER_DESIGN_FIELDS,undoDepth:history.length};
   }});

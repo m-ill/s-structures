@@ -974,7 +974,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
   const resultBuilders = createResultPreparationBuilders({ getModel: () => getCurrentModel(target), getAnalysis, getReportOptions: options => withAnalysisResults(target, options), });
   installResultViewCache(api, COMPUTED_RESULT_VIEWS, () => ({ inputHash: stableHash({
     input: api.getWorkflowInputIdentity().inputHash, revision: target.__SStructuresResultRevision || 0,
-  }) }), { getModelKey: () => getCurrentModel(target), getInputIdentity: () => api.getWorkflowInputIdentity(), inputBuilders: { getElasticExpansionTrace: resultBuilders.getElasticExpansionTrace, getLoadsV2Trace: resultBuilders.getLoadsV2Trace } });
+  }) }), { budget:target.SStructuresResourceBudget, getModelKey: () => getCurrentModel(target), getInputIdentity: () => api.getWorkflowInputIdentity(), inputBuilders: { getElasticExpansionTrace: resultBuilders.getElasticExpansionTrace, getLoadsV2Trace: resultBuilders.getLoadsV2Trace } });
   target.addEventListener?.('pagehide', () => api.clearResultViews());
   const prepareAgentView = api.prepareResultView;
   for (const name of COMPUTED_RESULT_VIEWS) {

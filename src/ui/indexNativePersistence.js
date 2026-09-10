@@ -182,7 +182,10 @@ function getCurrentModel(target, bridge = target?.SStructuresEngine || null) {
 }
 
 function writeAutosave(target, payload) {
-  target?.localStorage?.setItem?.(INDEX_AUTOSAVE_KEY, JSON.stringify(payload));
+  if(typeof target?.localStorage?.setItem!=='function')throw Object.assign(new Error('AUTOSAVE_STORAGE_UNAVAILABLE'),{code:'AUTOSAVE_STORAGE_UNAVAILABLE'});
+  const text=JSON.stringify(payload);
+  try {target.localStorage.setItem(INDEX_AUTOSAVE_KEY,text);if(target.localStorage.getItem(INDEX_AUTOSAVE_KEY)!==text)throw new Error('Read-back mismatch');}
+  catch(cause){throw Object.assign(new Error('AUTOSAVE_NOT_DURABLE'),{code:'AUTOSAVE_NOT_DURABLE',cause});}
 }
 
 function readAutosave(target) {

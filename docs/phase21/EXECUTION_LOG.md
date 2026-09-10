@@ -64,3 +64,15 @@
 - 각 출처의 최대변위와 평형을 보고서 snapshot에 결속하고 projectId, build/rule binding hash, 실제 sourceRevision이 있을 때만 기록한다. reportSnapshot 숫자 null이 Number(null)=0이 되던 경로도 수정했다.
 - 원본 HTML/JSON/CSV에 동일 snapshot 식별자·요약을 보존한다. UTF-8 byteLength/SHA-256과 기존 UTF-16 문자 offset을 명시하고 12,000자 조각 전용 조회를 추가했다. 전체 보고서 getReport clone 대신 immutable 문자열 slice와 작은 design metadata를 읽는다. 범위 오류와 stale 상태를 검증한다.
 - 새 회귀는 실제 RC 해석/예비 검토에서 NG2, NOT_CHECKED2, N_A2, 설명2를 따로 확인했고 원본3포맷을 끝까지 읽어 Node crypto SHA-256과 비교했다. 교차 실행 회귀는 시간에 따라 다른 analysisRunId뿐 아니라 그 ID를 포함한 checkKey를 수치 비교에서 제외한다. 수치/검토 상태는 그대로 비교한다.
+
+## 2026-09-10 — M4 마감·M5 메모리/복구 후보
+
+- c3d66df clean archive M4 10/10 PASS. 원본3포맷과 실제 보고서/PDF 차단·출처 회귀를 포함한다.
+- core/resourceBudget에서 256MiB 보수적 retained-data 계상과 저장소 entries/bytes를 적용한다. 실제 JS heap 상한이 아니다. 분석/설계 catalog·plan/request·input undo·prepared views/scratch·WebMCP·탄성/비선형 jobs·활성 모델을 같은 ledger로 관측한다. static Worker 계약 준비 전512MiB 보수적 working-set admission을 둔다.
+- 내부 immutable 분석 결과는 catalog가 소유하고 이력/완료 job/native 마지막 결과가 참조한다. 과거 run-store 전체 복제와 result/legacyRecord의 이중 복제를 줄였으며 외부 반환은 수정 격리를 유지한다. 8절점 sample의 계상 보유량은 초기 탐색33.29MB에서 약9.32MB였다. 계상/소유권 수정과 실제 복제 제거를 함께 포함하므로 heap 성능 개선율로 표시하지 않는다.
+- job dispose에서 abort/worker 종료/Map 해제를 연결했다. 취소 뒤 늦은 publish를 차단하고 실패 retry 입력은 보존한다. prepared view 취소는 signal을 전달하고 아직 끝나지 않은 builder를 activeWork/cancellationPending으로 계속 표시·계상한다. 취소를 무시하는 임의 Promise를 해제 완료로 숨기지 않는다.
+- 보고서 읽기2+대기8을 적용해16개 동시 요청 중10개 수용/6개 RESOURCE_QUEUE_FULL을 검증한다. 새 체크포인트는 모델·완료 catalog·원본 보고서를 한 브라우저 transaction에 저장하고 SHA-256/read-back을 확인한다. 저장 없음/quota 실패를 durable 성공으로 반환하지 않는다. 복원 시 전체 hash·입력/보고서 관계를 확인하고 새로운 세션 handle로 같은 문자 offset부터 읽는다. 중단 분석은 interrupted/재실행 필요로 남기며 설계전달은 허용하지 않는다.
+- 선택된 결과는 PINNED_RESULT로 퇴출을 막는다. 선택을 해제한 뒤 저장본과 현재 catalog/report가 완전히 같은 경우에만 releaseCheckpointedResults로 세션 메모리를 비울 수 있다. 저장되지 않은 결과는 자동 삭제하지 않고 예산 초과를 거부한다.
+- Node 반복의 초기2warmup+30회는 slope46,263 bytes/cycle로 탐색 기준을 넘었다. 원시 자료를 m5/exploratory에 보존했다. code/metadata 계측에서 초기 JIT 증가를 관측해 고정10warmup+30회 프로토콜을 resource-budgets.json에 기록했다. 후속 탐색은 heap mean 증가 약0.30MB, slope약12.5KB/cycle, 최대RSS약129,540KiB였고 매번 ledger0/늦은 publish0이었다. 작은 양의 heap 변화가 있으며 renderer/M규모 무누수 증거로 확대하지 않는다.
+- checkpoint adapter 시험은 약11.11MB 원본을 저장·새 runtime 복원·세 포맷 동일 SHA 확인했다. 실제 IndexedDB·reload·host 수명·S/M 부하는 M6에서 수행한다. 원래 세션 초기화의 원인은 여전히 UNKNOWN이다.
+- 영향 탐색 중 과거 p9-m9-ui-agent의 Phase15 차단 잔존 assertion은 Phase20 해소 상태와 불일치했다. 기존 Phase21 실행 manifest에는 없는 역사 시험이며 수정하지 않는다. Phase20 모듈 경계 현재 회귀는 통과했다. WebMCP host의 고정36개 assertion은 체크포인트4개 도구를 추가한40개 계약으로 갱신했다.

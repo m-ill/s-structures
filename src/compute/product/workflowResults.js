@@ -1,3 +1,4 @@
+import { BudgetMap, createResourceBudget } from '../../core/resourceBudget.js';
 import { stableHash } from '../../core/stableHash.js';
 import { sameWorkflowInput, validIdentity } from '../../core/workflowIdentity.js';
 import { analysisRunCanTransferToDesign } from '../../core/analysisRunRecord.js';
@@ -9,8 +10,8 @@ const problem = (code, extra = {}) => ({ ok: false, code, designTransferAllowed:
 
 // Immutable result catalog, not a scheduler or a second solver. Existing run
 // records remain the authority for numerical qualification.
-export function createWorkflowResultStore() {
-  const analyses = new Map(), designs = new Map(), plans = new Map();
+export function createWorkflowResultStore({budget=createResourceBudget()} = {}) {
+  const analyses = new BudgetMap(budget,'analysis-catalog'), designs = new BudgetMap(budget,'design-catalog',{maxEntries:64}), plans = new BudgetMap(budget,'design-plans',{maxEntries:64});
   let sequence = 0;
   function read(map, id, identity) {
     const record = map.get(id);
@@ -19,7 +20,26 @@ export function createWorkflowResultStore() {
     return { ok: true, ...copy(record), stale, designTransferAllowed: !stale && record.designTransferAllowed };
   }
   return Object.freeze({
-    recordAnalysis(record, identity) {
+    dispose(){analyses.clear();designs.clear();plans.clear();},
+    getResourceState:()=>({analyses:analyses.size,designs:designs.size,plans:plans.size,budget:budget.snapshot()}),
+    exportState(){return copy({version:WORKFLOW_RESULT_VERSION,analyses:[...analyses.values()].map(row=>{const {result,...legacyRecord}=row.legacyRecord;return {...row,legacyRecord};}),designs:[...designs.values()]});},
+    restoreState(state) {
+      if(state?.version!==WORKFLOW_RESULT_VERSION||!Array.isArray(state.analyses)||!Array.isArray(state.designs))throw new Error('CHECKPOINT_CATALOG_INVALID');
+      for(const row of state.analyses)if(!validIdentity(row.identity)||stableHash(row.result)!==row.resultHash||row.analysisRunId!==row.legacyRecord?.id)throw new Error('CHECKPOINT_ANALYSIS_HASH_INVALID');
+      for(const row of state.designs)if(!validIdentity(row.identity)||stableHash(row.result)!==row.resultHash||row.sourceAnalysisRunIds.some(id=>!state.analyses.some(a=>a.analysisRunId===id)))throw new Error('CHECKPOINT_DESIGN_HASH_INVALID');
+      const stagedAnalyses=new BudgetMap(budget,'restore-analysis'),stagedDesigns=new BudgetMap(budget,'restore-design',{maxEntries:64});
+      try {
+        for(const row of state.analyses)stagedAnalyses.setCopy(row.analysisRunId,{...row,legacyRecord:{...row.legacyRecord,result:row.result},designTransferAllowed:false});
+        for(const row of state.designs)stagedDesigns.setCopy(row.designRunId,{...row,designTransferAllowed:false});
+      } catch(error){stagedAnalyses.clear();stagedDesigns.clear();throw error;}
+      const a=[...stagedAnalyses],d=[...stagedDesigns];stagedAnalyses.clear();stagedDesigns.clear();
+      analyses.clear();designs.clear();plans.clear();
+      for(const [id,row] of a)analyses.set(id,row);
+      for(const [id,row] of d)designs.set(id,row);
+      sequence=Math.max(sequence,...d.map(([id])=>Number(id.replace('design-',''))||0));
+      return {ok:true,analysisCount:a.length,designCount:d.length,designTransferAllowed:false};
+    },
+    recordAnalysis(record, identity, {shareImmutable=false}={}) {
       if (!validIdentity(identity)) throw new TypeError('INPUT_IDENTITY_INVALID');
       if (!record?.id || record.result == null) throw new TypeError('ANALYSIS_RECORD_REQUIRED');
       const value = { version: WORKFLOW_RESULT_VERSION, analysisRunId: record.id,
@@ -31,13 +51,19 @@ export function createWorkflowResultStore() {
         resultHash: stableHash(record.result),
         canonicalResultHash: stableHash(workflowResultProjection(record.result)),
         resultProjectionVersion: WORKFLOW_RESULT_PROJECTION_VERSION,
-        result: copy(record.result), legacyRecord: copy(record) };
+        result: record.result, legacyRecord: record };
       if (analyses.has(record.id)) {
         if (stableHash(analyses.get(record.id)) !== stableHash(value)) throw new Error('RUN_ID_CONFLICT');
-      } else analyses.set(record.id, value);
+      } else if(shareImmutable && Object.isFrozen(record) && Object.isFrozen(record.result))analyses.set(record.id,value);
+      else analyses.setCopy(record.id,value);
       return read(analyses, record.id, identity);
     },
     getAnalysis: (id, identity) => read(analyses, id, identity),
+    getAnalysisMetadata(id) {
+      const row=analyses.get(id);if(!row)return problem('RESULT_REQUIRED');
+      const {result,legacyRecord,...metadata}=row;const {result:omitted,...legacyMetadata}=legacyRecord;
+      return {ok:true,...copy(metadata),legacyRecord:copy(legacyMetadata)};
+    },
     planDesign({ sources = [], currentIdentities = {}, demandContract = null } = {}) {
       if (!sources.length) return problem('RESULT_REQUIRED');
       if (!demandContract || !['elastic-static', 'elastic-pdelta'].includes(demandContract.kind)
@@ -45,7 +71,8 @@ export function createWorkflowResultStore() {
         || demandContract.signConvention !== 'solver-native') return problem('DESIGN_DEMAND_MAPPING_REQUIRED');
       const rows = [];
       for (const source of sources) {
-        const row = read(analyses, source.analysisRunId, currentIdentities[source.analysisRunId]);
+        const row = this.getAnalysisMetadata(source.analysisRunId);
+        if(row.ok)row.stale=!sameWorkflowInput(row.identity,currentIdentities[source.analysisRunId]);
         if (!row.ok) return row;
         if (row.stale) return problem('STALE_INPUT');
         if (row.executionStatus !== 'completed') return problem('ANALYSIS_NOT_COMPLETED');

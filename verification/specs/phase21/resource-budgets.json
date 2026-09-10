@@ -1,0 +1,23 @@
+{
+  "version": "p21-resource-budgets-v1",
+  "scope": "managed retained data, not a cap on total renderer/OS heap",
+  "managedBytes": 268435456,
+  "staticWorkerAdmissionBytes": 536870912,
+  "staticWorkerEstimate": "240 * (nodeCount * 6)^2; conservative pre-contract admission",
+  "analysisConcurrency": 1,
+  "analysisQueue": 8,
+  "reportReadConcurrency": 2,
+  "reportReadQueue": 8,
+  "preparedViewEntries": 32,
+  "preparedViewSerializedBytes": 16777216,
+  "nodeRepeatProtocol": {
+    "warmupCycles": 10,
+    "measuredCycles": 30,
+    "gc": "explicit --expose-gc",
+    "meanRetainedIncreaseLimit": "max(first 5 mean * 10%, 16 MiB)",
+    "slopeNoiseLimitBytesPerCycle": 32768,
+    "recordCodeMetadata": true,
+    "initialProtocolFailure": "../../evidence/phase21/m5/exploratory/early-gc-observation.json"
+  },
+  "browserAndMTier": "M6 pending; not granted by Node or ledger tests"
+}

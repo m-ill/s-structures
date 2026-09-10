@@ -1,3 +1,4 @@
+import { BudgetMap, createResourceBudget } from '../../core/resourceBudget.js';
 import { createWorkflowTools } from './workflowTools.js';
 import { createNonlinearTools } from './nonlinearTools.js';
 import { finiteJson } from '../../modeling/designInputCommands.js';
@@ -20,8 +21,9 @@ export function webmcpModelHash(model) {
 }
 
 export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setView = () => ({ok:false,code:'VIEW_UNAVAILABLE'}) }) {
-  const requests = new Map();
-  const jobs = new Map();
+  const budget=bridge.getResourceBudget?.()||createResourceBudget();
+  const requests = new BudgetMap(budget,'legacy-webmcp-requests');
+  const jobs = new BudgetMap(budget,'legacy-webmcp-jobs');
   let active = true;
   function model() {
     const value = agent.getModel();
@@ -83,7 +85,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
     };
   }
   const workflow=createWorkflowTools({agent,bridge,tool,object,context,setView});
-  const nonlinear=createNonlinearTools({agent,tool,context});
+  const nonlinear=createNonlinearTools({agent,budget,tool,context});
   const definitions = [
     tool('get_project_context', 'Read model units, input hash, case IDs and supported analysis capabilities. Does not run analysis.', object(), true, () => {
       const value = model();

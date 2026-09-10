@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "milestone": "P11-M4",
+  "requiredScenes": 7,
+  "figureCount": 7,
+  "deterministicPlanRuns": 10,
+  "assetHashParity": true,
+  "brokenReferences": 0,
+  "missingCaptions": 0,
+  "metadataDrift": 0,
+  "figureManifestHash": "4885f0df526ecb19720c55bfb5779a7a0d5dedd96a0eb6a09f102e1d7b21ecbe"
+}
+
+

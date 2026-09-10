@@ -1,3 +1,5 @@
+import { validateReportSnapshot } from '../../report/phase11/reportSnapshot.js';
+import { BudgetMap, createResourceBudget } from '../../core/resourceBudget.js';
 import { stableHash, sha256 } from '../../core/stableHash.js';
 import { sameWorkflowInput } from '../../core/workflowIdentity.js';
 import { runDesignChecks } from '../../design/steel.js';
@@ -14,8 +16,8 @@ const reject = (code, details) => { throw Object.assign(new Error(code), { code,
 const guard = fn => { try { return fn(); } catch (e) { return problem(e.code || e.message, e.details); } };
 const kinds = ['static','modal','responseSpectrum','buckling','linearTha'];
 
-export function createElasticReviewService({ bridge, store, reportExportWorkflow, getPdfContext = () => ({}) }) {
-  const reviewPlans = new Map(), workflowPlans = new Map(), requests = new Map(), reports = new Map();
+export function createElasticReviewService({ bridge, store, reportExportWorkflow, getPdfContext = () => ({}), budget = createResourceBudget() }) {
+  const reviewPlans = new BudgetMap(budget,'review-plans',{maxEntries:64}), workflowPlans = new BudgetMap(budget,'workflow-plans',{maxEntries:64}), requests = new BudgetMap(budget,'review-requests'), reports = new BudgetMap(budget,'reports',{maxEntries:32});
   let busy = false;
   const identity = () => bridge.getWorkflowInputIdentity();
   function currentSources(sources) {
@@ -174,7 +176,23 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
     } catch(e) {return problem(e.code||e.message,e.details);}
   }
   function cancelWorkflow(requestId) {const result=requests.get(`workflow:${requestId}`)?.result;if(!result)return problem('WORKFLOW_NOT_FOUND');if(result.status==='running'){result.cancelled=true;if(result.currentJobId)bridge.cancelAnalysisRun(result.currentJobId);}return {ok:true,status:result.status,cancelRequested:!!result.cancelled};}
-  return Object.freeze({cancelWorkflow,planReview,startReview,getReview,createReport,getReport,getArtifact,getExportCapability,exportPdf,planWorkflow,runWorkflow});
+  function dispose(){for(const value of requests.values())if(value.result?.status==='running'){value.result.cancelled=true;if(value.result.currentJobId)bridge.cancelAnalysisRun(value.result.currentJobId);}reviewPlans.clear();workflowPlans.clear();requests.clear();reports.clear();}
+  function exportState(){return clone([...reports.entries()]);}
+  function restoreState(rows) {
+    if(!Array.isArray(rows))throw new Error('CHECKPOINT_REPORTS_INVALID');
+    for(const [id,value] of rows) {
+      const record=store.getDesignMetadata(id,identity());if(!record.ok)throw new Error('CHECKPOINT_REPORT_SOURCE_MISSING');
+      if(value.snapshot?.designReview?.resultHash!==record.resultHash||!validateReportSnapshot(value.snapshot).ok)throw new Error('CHECKPOINT_REPORT_SOURCE_MISMATCH');
+      if(stableHash(JSON.parse(value.json))!==stableHash(value.snapshot)||!['html','json','csv'].every(format=>value.artifactManifest?.[format]))throw new Error('CHECKPOINT_REPORT_SNAPSHOT_MISMATCH');
+      for(const [format,manifest] of Object.entries(value.artifactManifest||{})) {
+        const text=format==='html'?value.reports?.['ko-KR']?.html:value[format];
+        if(typeof text!=='string'||sha256(text)!==manifest.sha256||text.length!==manifest.totalCharacters||new TextEncoder().encode(text).byteLength!==manifest.byteLength||manifest.reportSnapshotHash!==value.reportSnapshotHash)throw new Error('CHECKPOINT_ARTIFACT_HASH_INVALID');
+      }
+    }
+    for(const [id,value] of rows)reports.setCopy(id,value);
+    return {ok:true,reports:reports.size};
+  }
+  return Object.freeze({dispose,exportState,restoreState,cancelWorkflow,planReview,startReview,getReview,createReport,getReport,getArtifact,getExportCapability,exportPdf,planWorkflow,runWorkflow});
 }
 function requestKey(value) {if(typeof value!=='string'||!value.trim()||value.length>128) reject('REQUEST_ID_REQUIRED');}
 function status(value) {return value==='OK'||value==='PASS'?'OK':value==='NG'||value==='FAIL'?'NG':value==='WARN'?'WARN':'NOT_CHECKED';}

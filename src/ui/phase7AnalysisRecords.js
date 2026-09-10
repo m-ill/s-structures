@@ -1,3 +1,4 @@
+import { retainedBytes } from '../core/resourceBudget.js';
 import {
   analysisRunCanTransferToDesign,
   appendAnalysisRun,
@@ -57,13 +58,15 @@ export function recordPhase7AnalysisAttempt(target, model, analysisCase, result,
   if (target.SStructuresWorkflowResults && target.SStructuresEngine?.getWorkflowInputIdentity) {
     const persistedCase = (model.analysisCases || []).find(row => row.id === caseId) || analysisCase;
     target.SStructuresWorkflowResults.recordAnalysis(record,
-      options.workflowInputIdentity || target.SStructuresEngine.getWorkflowInputIdentity({ model, analysisCase: persistedCase }));
+      options.workflowInputIdentity || target.SStructuresEngine.getWorkflowInputIdentity({ model, analysisCase: persistedCase }), {shareImmutable:true});
   }
   const previousSuccessful = target.__SStructuresAnalysisRunStore.lastSuccessful?.[caseId] || null;
   const previousPublished = target.__SStructuresAnalysisResults[caseId] || null;
-  target.__SStructuresAnalysisRunStore = deepFreeze(appendAnalysisRun(target.__SStructuresAnalysisRunStore, record));
+  const nextStore = deepFreeze(appendAnalysisRun(target.__SStructuresAnalysisRunStore, record, {immutableInputs:true}));
+  target.SStructuresResourceBudget?.reserve('legacy-run-catalog',retainedBytes(Object.fromEntries(Object.entries(nextStore.attempts).map(([id,rows])=>[id,rows.map(({result,...metadata})=>metadata)]))));
+  target.__SStructuresAnalysisRunStore = nextStore;
   const publishedResult = deepFreeze({
-    ...clone(normalizedResult),
+    ...record.result,
     ok: record.runStatus === 'ok',
     qualification: record.qualification,
     designTransferAllowed: record.designTransferAllowed,

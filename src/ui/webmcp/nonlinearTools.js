@@ -1,3 +1,4 @@
+import { BudgetMap, createResourceBudget } from '../../core/resourceBudget.js';
 import { stableHash } from '../../core/stableHash.js';
 import { createProductionNonlinearCase } from '../../nonlinear/product/preflight.js';
 import { NONLINEAR_ENGINE_IDS } from '../../nonlinear/capabilities.js';
@@ -19,9 +20,9 @@ const caseSchema = object({
 
 // Uses the existing UI product service. Private plans are session-scoped and
 // never accept caller-provided checkpoints, executable options or file paths.
-export function createNonlinearTools({agent,tool,context:baseContext}) {
+export function createNonlinearTools({agent,tool,context:baseContext,budget=createResourceBudget()}) {
   const context=()=>({...baseContext(),solverUnitPolicy:rawResultUnits,rawResultUnits});
-  const plans=new Map(),requests=new Map(),jobs=new Set();let sequence=0,active=true;
+  const plans=new BudgetMap(budget,'nonlinear-tool-plans'),requests=new BudgetMap(budget,'nonlinear-tool-requests'),jobs=new Set();let sequence=0,active=true;
   const session=globalThis.crypto?.randomUUID?.() || stableHash({time:Date.now(),random:Math.random()});
   const fail=code=>{throw Object.assign(new Error(code),{code});};
   const current=expected=>{if(!active)fail('SESSION_DISPOSED');if(context().modelHash!==expected)fail('STALE_MODEL');};

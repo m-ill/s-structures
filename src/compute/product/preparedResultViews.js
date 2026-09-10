@@ -1,10 +1,12 @@
+import { BudgetMap, createResourceBudget } from '../../core/resourceBudget.js';
 import { stableHash } from '../../core/stableHash.js';
 
 export const PREPARED_RESULT_VIEW_VERSION = 'p20-prepared-result-view-v1';
 
 // One bounded preparation store. Reads never call builders or schedule work.
 export function installResultViewCache(api, names, getIdentity, options = {}) {
-  const cache = new Map(), pending = new Map(), activeWork = new Set();
+  const budget=options.budget||createResourceBudget();
+  const cache = new BudgetMap(budget,'prepared-views',{maxEntries:options.maxEntries??32}), pending = new Map(), activeWork = new Set();
   const builders = new Map(names.filter(name => typeof api[name] === 'function').map(name => [name, api[name].bind(api)]));
   const inputBuilders = new Map(Object.entries(options.inputBuilders || {}));
   const maxEntries = options.maxEntries ?? 32, maxBytes = options.maxBytes ?? 16 * 1024 * 1024;
@@ -12,7 +14,7 @@ export function installResultViewCache(api, names, getIdentity, options = {}) {
   let bytes = 0, generation = 0, modelKey = options.getModelKey?.();
   function checkModel() {
     const current = options.getModelKey?.();
-    if (current !== modelKey) { modelKey=current;generation++;cache.clear();pending.clear();bytes=0; }
+    if (current !== modelKey) { modelKey=current;generation++;for(const row of activeWork)row.controller.abort();cache.clear();pending.clear();bytes=0; }
   }
   const identity = input => stableHash(input ? (options.getInputIdentity || getIdentity)() : getIdentity());
   const key = (name, input, args) => stableHash({version:PREPARED_RESULT_VIEW_VERSION,name,input,args});
@@ -50,11 +52,15 @@ export function installResultViewCache(api, names, getIdentity, options = {}) {
       cache.set(k,{identity:id,result:copy,bytes:size}); bytes += size;
       return structuredClone(copy);
     };
-    const result = builder(copiedArgs);
-    if (!result || typeof result.then !== 'function') return finish(result);
-    const record = {identity:id,promise:null};
+    const owner=budget.nextOwner('view-preparation'),controller=new AbortController();
+    budget.reserve(owner,maxBytes*2);
+    let result;
+    try {result = builder(copiedArgs,{signal:controller.signal});}
+    catch(error){budget.release(owner);throw error;}
+    if (!result || typeof result.then !== 'function') {try{return finish(result);}finally{budget.release(owner);}}
+    const record = {identity:id,promise:null,controller};
     activeWork.add(record);
-    record.promise = Promise.resolve(result).then(finish).finally(()=>{activeWork.delete(record);if(pending.get(k)===record)pending.delete(k);});
+    record.promise = Promise.resolve(result).then(finish).finally(()=>{budget.release(owner);activeWork.delete(record);if(pending.get(k)===record)pending.delete(k);});
     pending.set(k,record);
     return record.promise.then(value=>structuredClone(value));
   }
@@ -62,8 +68,8 @@ export function installResultViewCache(api, names, getIdentity, options = {}) {
   api.prepareResultView = (name,args) => prepare(name,args);
   api.prepareInputDiagnostics = (name,args) => prepare(name,args,true);
   api.getPreparedInputDiagnostics = (name,args) => read(name,args,true);
-  api.clearResultViews = () => {generation += 1;cache.clear();pending.clear();bytes=0;};
-  api.getResultViewCacheStats = () => ({version:PREPARED_RESULT_VIEW_VERSION,entries:cache.size,bytes,pending:pending.size,maxEntries,maxBytes});
+  api.clearResultViews = () => {generation += 1;for(const row of activeWork)row.controller.abort();cache.clear();pending.clear();bytes=0;};
+  api.getResultViewCacheStats = () => ({version:PREPARED_RESULT_VIEW_VERSION,entries:cache.size,bytes,pending:pending.size,activeWork:activeWork.size,cancellationPending:[...activeWork].filter(row=>row.controller.signal.aborted).length,maxEntries,maxBytes});
   return api;
 }
 

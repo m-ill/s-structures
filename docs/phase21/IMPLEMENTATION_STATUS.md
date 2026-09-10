@@ -3,12 +3,12 @@
 ```yaml
 schema: p21-status-v1
 updated: 2026-09-10
-status: m0-m3-complete-m4-verifying
+status: m0-m4-complete-m5-verifying
 planning_baseline_commit: d8ae7af7af3d20b9a5c0977f210e5d1b26991ace
 pilot_runtime_commit: fefde822ae27a024ea8a834642b8aac10a24bd77
 implementation_baseline_commit: d8ae7af7af3d20b9a5c0977f210e5d1b26991ace
-candidate_commit: c28624e
-implemented_milestones: [M0, M1, M2, M3]
+candidate_commit: c3d66df
+implemented_milestones: [M0, M1, M2, M3, M4]
 phase21_numeric_test_runs: 1
 phase21_release_status: not-created
 pages_status: unchanged-phase20-runtime
@@ -23,8 +23,8 @@ independent_review_owner: user
 | M1 RC 수치 | COMPLETE-PRELIMINARY-SCOPE | a06fc55 고정 후보 집중 회귀 5/5. 실제 배근 상세 설계 자격 제외 |
 | M2 입력·저장 | COMPLETE-CONTRACT-SCOPE | 64e5101 고정 후보 7/7. 조회 자동 저장 제거, draft 충돌, 환경 입력 보존, 실제 import 라우팅·alias 주입 방지 구현 |
 | M3 실행·결과 선택 | COMPLETE-CONTRACT-SCOPE | c28624e 고정 후보 10/10. 실제 Worker 20조합→단일 요청 1solve, 공통 표시 선택, 실패 잔존 차단, Direct 평형 상태 보정 |
-| M4 검토·보고서 | VERIFYING | canonical checks/messages, N_A, report source/summary, SHA-256 원본 조각 조회 구현 |
-| M5 메모리·복구 | PLANNED | 저장소/clone 경로 확인. heap/peak·세션 초기화 원인 미측정 |
+| M4 검토·보고서 | COMPLETE-CONTRACT-SCOPE | c3d66df 고정 후보10/10. canonical checks/messages, N_A, report source/summary, SHA-256 원본 조각 조회 구현 |
+| M5 메모리·복구 | VERIFYING | 공통 예산/불변 소유본/취소/원본 체크포인트/재개 구현. Node 반복·adapter 복구 집중 검증 중; 실제 IndexedDB/M 규모 M6 |
 | M6 전체 업무 재시험 | PLANNED | 새 후보 미생성. 기존 종합 캡처 PDF도 미완료 |
 | M7 공개·배포 | PLANNED | Phase21 source/runtime/evidence/release 없음 |
 

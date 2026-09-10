@@ -1,7 +1,9 @@
 {
-  "version": "p21-m4-tests-v5",
-  "scope": "Phase21 M0-M4 and inherited regression; M5-M7 pending",
+  "version": "p21-m5-tests-v6",
+  "scope": "Phase21 M0-M5 and inherited regression; actual browser/pilot and release gates M6-M7 pending",
   "tests": [
+    "tests/p21-m5-resource-recovery.mjs",
+    "tests/p21-m5-lifecycle-memory.mjs",
     "tests/p21-m4-review-artifact.mjs",
     "tests/p21-m3-execution-selection.mjs",
     "tests/p21-m2-input-persistence.mjs",

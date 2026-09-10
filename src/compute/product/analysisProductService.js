@@ -1,3 +1,4 @@
+import { BudgetMap, createResourceBudget, retainedBytes } from '../../core/resourceBudget.js';
 import { normalizeAnalysisCase } from '../../core/analysisCase.js';
 import { stableHash, stableStringify } from '../../core/stableHash.js';
 
@@ -13,8 +14,9 @@ const TERMINAL = new Set(['completed', 'failed', 'blocked', 'cancelled']);
 const SUPPORTED_KINDS = new Set(['static', 'modal', 'responseSpectrum', 'buckling', 'linearTha', ...NONLINEAR_KINDS]);
 
 export function createAnalysisProductService(options = {}) {
-  const jobs = new Map();
-  const delegated = new Map();
+  const budget=options.budget||createResourceBudget();
+  const jobs = new BudgetMap(budget,'analysis-jobs',{measure:([key,job])=>{const {result,...metadata}=job;return retainedBytes([key,job.resultOwnedByCatalog?metadata:job]);}});
+  const delegated = new BudgetMap(budget,'delegated-jobs');
   const subscribers = new Set();
   const nonlinear = options.nonlinearService || null;
   let sequence = 0;
@@ -182,6 +184,7 @@ export function createAnalysisProductService(options = {}) {
 
   function start(input = {}) {
     if (disposed) throw productError('PRODUCT_ANALYSIS_SERVICE_DISPOSED', 'Product analysis service is disposed.');
+    if ([...jobs.values()].filter(row=>!TERMINAL.has(row.status)).length >= 9) throw productError('ANALYSIS_QUEUE_FULL','One active analysis and eight queued jobs are permitted.');
     const model = clone(resolveModel(input));
     const analysisCase = resolveCase(model, input);
     const jobSequence = ++sequence;
@@ -345,10 +348,11 @@ export function createAnalysisProductService(options = {}) {
     unsubscribeNonlinear();
     for (const job of jobs.values()) job.controller?.abort();
     subscribers.clear();
+    jobs.clear();delegated.clear();
   }
 
   async function executeInternal(job) {
-    if (job.status === 'cancelled') return;
+    if (disposed || job.status === 'cancelled') return;
     job.status = 'running';
     job.stage = 'solve';
     job.startedAt = nowIso(options);
@@ -364,16 +368,18 @@ export function createAnalysisProductService(options = {}) {
         plan: job.plan,
         signal: job.controller.signal,
         onProgress(progress = {}) {
-          if (job.status === 'cancelled') return;
+          if (disposed || job.status === 'cancelled') return;
           job.progress = Math.max(job.progress, Math.min(0.98, Number(progress.value ?? progress.progress ?? job.progress)));
           job.stage = progress.stage || job.stage;
           job.progressMessage = progress.message || job.progressMessage;
-          retain(job.progressEvents, { at: nowIso(options), ...clone(progress) }, 200);
+          const {resultSlice: omittedSlice,...progressMetadata}=progress;
+          retain(job.progressEvents, { at: nowIso(options), ...clone(progressMetadata) }, 200);
           emit(snapshotInternal(job), 'progress');
         },
       });
-      if (job.status === 'cancelled') return;
+      if (disposed || job.status === 'cancelled') return;
       job.result = decorateResult(result, job.plan);
+      jobs.refresh(job.id);
       job.resultSummary = clone(result?.summary || null);
       job.status = result?.status === 'failed' ? 'failed' : ['blocked', 'unsupported'].includes(result?.status) ? 'blocked' : 'completed';
       job.stage = 'results';
@@ -381,17 +387,23 @@ export function createAnalysisProductService(options = {}) {
       job.progressMessage = job.status === 'completed' ? 'Analysis completed.' : result?.message || 'Analysis requires review.';
       job.completedAt = nowIso(options);
       if (typeof options.onPublishResult === 'function') {
-        job.publication = await options.onPublishResult({ job: snapshotInternal(job), model: job.model, analysisCase: job.analysisCase, result: job.result, inputIdentity: clone(job.inputIdentity) });
+        const publication = await options.onPublishResult({ job: snapshotInternal(job), model: job.model, analysisCase: job.analysisCase, result: job.result, inputIdentity: clone(job.inputIdentity) });
+        if(publication?.result && publication?.catalogOwnsResult){job.result=publication.result;job.resultOwnedByCatalog=true;}
+        job.publication = {runRecordId:publication?.record?.id||publication?.result?.runRecordId||null};
       }
       emit(snapshotInternal(job), job.status);
     } catch (error) {
-      if (job.status === 'cancelled' || job.controller.signal.aborted) return;
+      if (disposed || job.status === 'cancelled' || job.controller.signal.aborted) return;
       job.status = 'failed';
       job.stage = 'failed';
+      job.result = null;
       job.error = { code: error?.code || 'PRODUCT_ANALYSIS_RUN_FAILED', message: error?.message || String(error) };
       job.progressMessage = job.error.message;
       job.completedAt = nowIso(options);
       emit(snapshotInternal(job), 'failed');
+    } finally {
+      if(job.status==='completed'){job.model=null;job.input={};}
+      if(!disposed&&jobs.has(job.id))jobs.refresh(job.id);
     }
   }
 
@@ -455,6 +467,7 @@ export function createAnalysisProductService(options = {}) {
 
 function createInternalJob(id, model, analysisCase, input, plan, preflight, sequence) {
   const blocked = !preflight.ok;
+  const {model: omittedModel,...requestInput}=input;
   return {
     version: PRODUCT_ANALYSIS_JOB_VERSION,
     id,
@@ -463,7 +476,7 @@ function createInternalJob(id, model, analysisCase, input, plan, preflight, sequ
     kind: analysisCase.kind,
     model,
     analysisCase,
-    input: clone(input),
+    input: clone(requestInput),
     plan,
     preflight,
     status: blocked ? 'blocked' : 'queued',

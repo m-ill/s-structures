@@ -1,9 +1,12 @@
+import { BudgetMap, createResourceBudget, createBoundedQueue } from '../../core/resourceBudget.js';
 import { stableHash } from '../../core/stableHash.js';
 import { DESIGN_INPUT_UNITS } from '../../modeling/designInputCommands.js';
 import { id, hash, array, choice, command, caseCommand, pagination } from './schemas.js';
 
 export function createWorkflowTools({agent,bridge,tool,object,context,setView}) {
-  const handles=new Map(),requests=new Map(),workflows=new Map();let sequence=0,active=true;
+  const budget=bridge.getResourceBudget?.()||createResourceBudget();
+  const handles=new BudgetMap(budget,'webmcp-handles'),requests=new BudgetMap(budget,'webmcp-requests'),workflows=new BudgetMap(budget,'webmcp-workflows');
+  const artifactReads=createBoundedQueue();let sequence=0,active=true;
   const sessionId=globalThis.crypto?.randomUUID?.()||stableHash({time:Date.now(),random:Math.random()});
   const fail=code=>{throw Object.assign(new Error(code),{code});};
   const good=value=>{if(!value?.ok)fail(value?.code||'SERVICE_FAILED');return value;};
@@ -64,11 +67,15 @@ export function createWorkflowTools({agent,bridge,tool,object,context,setView}) 
     tool('get_design_result','Read summary or paginated checks/sources/rules from a stored design record.',object({designRunId:id,channel:choice('summary','checks','sources','rules'),...pagination},['designRunId','channel']),true,args=>{const r=good(agent.getDesignReview(args.designRunId));return {...reviewSummary(r),data:args.channel==='summary'?r.result.summary:page(r.result[args.channel==='rules'?'ruleSources':args.channel],args)};}),
     tool('plan_report_export','Plan report creation from a current design record. Does not create a report or export files.',object({designRunId:id},['designRunId']),true,args=>{const r=good(agent.getDesignReview(args.designRunId));if(r.stale)fail('STALE_INPUT');return {ok:true,handle:save('report-plan',{id:r.designRunId,inputHash:identity().inputHash}),formats:['html','json','csv'],automaticPdf:'requires-host-transport-figures-qualification'};}),
     tool('start_report_export','Create immutable HTML/JSON/CSV report artifacts in session; no external publication or automatic PDF.',object({handle:id,requestId:id},['handle','requestId']),false,args=>once('report',args,()=>{const p=get(args.handle,'report-plan');current(p.inputHash);if(handles.size>=128)fail('SESSION_HANDLE_LIMIT');const r=good(agent.createDesignReviewReport(p.id));return {ok:true,handle:save('artifact',p.id),reportSnapshotHash:r.reportSnapshotHash,summary:r.summary,capability:agent.getDesignReviewExportCapability(p.id)};})),
-    tool('get_report_artifact','Read a bounded text chunk of an existing HTML/JSON/CSV artifact; no file paths accepted.',object({handle:id,format:choice('html','json','csv'),offset:{type:'integer',minimum:0,maximum:100000000}},['handle','format']),true,args=>good(agent.getDesignReviewArtifact(get(args.handle,'artifact'),{format:args.format,offset:args.offset||0}))),
+    tool('get_report_artifact','Read a bounded text chunk of an existing HTML/JSON/CSV artifact; no file paths accepted.',object({handle:id,format:choice('html','json','csv'),offset:{type:'integer',minimum:0,maximum:100000000}},['handle','format']),true,args=>artifactReads.run(()=>good(agent.getDesignReviewArtifact(get(args.handle,'artifact'),{format:args.format,offset:args.offset||0})))),
+    tool('save_workflow_checkpoint','Save model, completed run records and original report artifacts transactionally in browser storage; verify read-back.',object({projectId:id},['projectId']),false,args=>bridge.saveWorkflowCheckpoint(args)),
+    tool('get_workflow_checkpoint','Inspect a verified browser checkpoint and available design report IDs.',object({projectId:id},['projectId']),true,args=>bridge.getWorkflowCheckpoint(args)),
+    tool('restore_workflow_checkpoint','Restore a checkpoint into an empty result session and replace its model. Interrupted analyses require rerun; old handles are never reused.',object({projectId:id},['projectId']),false,args=>bridge.restoreWorkflowCheckpoint(args)),
+    tool('open_report_artifact','Issue a fresh session handle for an existing or restored report, allowing export to resume from a known character offset.',object({designRunId:id},['designRunId']),true,args=>{const r=good(agent.getDesignReviewArtifact(args.designRunId,{format:'json',offset:0}));return {ok:true,handle:save('artifact',args.designRunId),reportSnapshotHash:r.reportSnapshotHash,stale:r.stale};}),
     tool('set_workspace_view','Switch the shared workspace view only; does not calculate or edit the model.',object({view:choice('modeling','elastic','nonlinear','design-input','design-review')},['view']),false,args=>setView(args.view)),
   ];
   return {tools,dispose(){
-    active=false;const errors=[];
+    active=false;artifactReads.dispose();const errors=[];
     for(const w of workflows.values())if(w.status==='running'){
       try{bridge.cancelElasticWorkflow(w.requestId);}catch(error){errors.push({code:error?.code||'CANCEL_FAILED',message:String(error?.message||error)});}
     }

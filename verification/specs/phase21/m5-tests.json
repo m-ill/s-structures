@@ -1,0 +1,23 @@
+{
+  "scope": "Phase21 M5 managed budgets, 30-cycle Node retention, cancellation, checkpoint adapters, existing elastic/nonlinear and WebMCP contracts",
+  "tests": [
+    "tests/p21-m5-resource-recovery.mjs",
+    "tests/p21-m5-lifecycle-memory.mjs",
+    "tests/p21-m3-execution-selection.mjs",
+    "tests/p21-m4-review-artifact.mjs",
+    "tests/p19-m1-contract.mjs",
+    "tests/p19-m2-design-input.mjs",
+    "tests/p19-m3-design-workflow.mjs",
+    "tests/p19-m4-webmcp-workflow.mjs",
+    "tests/p19-m4-host-session.mjs",
+    "tests/p19-review-session-disposal.mjs",
+    "tests/p19-m8-nonlinear-lifecycle.mjs",
+    "tests/p9-m9-product-workflow.mjs",
+    "tests/p9-m3-worker-product.mjs",
+    "tests/p20-m2-prepared-views.mjs",
+    "tests/p20-m4-module-boundaries.mjs",
+    "tests/p7-m11-ui-run-records.mjs",
+    "tests/p7-m0-persistence-migration.mjs",
+    "tests/webmcp-integration.mjs"
+  ]
+}

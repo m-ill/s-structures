@@ -1,3 +1,4 @@
+import { BudgetMap, createResourceBudget } from '../../core/resourceBudget.js';
 import { stableHash } from '../../core/stableHash.js';
 import { resolveProductQualification } from './qualification.js';
 import { runNonlinearAnalysisCaseAsync } from '../analysisRouter.js';
@@ -30,7 +31,7 @@ const TERMINAL_STATUSES = new Set(['completed', 'failed', 'blocked', 'cancelled'
 const ACTIVE_STATUSES = new Set(['queued', 'running', 'pausing', 'cancelling']);
 
 export function createNonlinearProductService(options = {}) {
-  const jobs = new Map();
+  const jobs = new BudgetMap(options.budget||createResourceBudget(),'nonlinear-jobs',{maxEntries:options.maxJobs??128});
   const subscribers = new Set();
   let sequence = 0;
   let disposed = false;
@@ -303,7 +304,7 @@ export function createNonlinearProductService(options = {}) {
         }
         job.runtimeDispose?.();
       }
-      subscribers.clear();
+      subscribers.clear();jobs.clear();
     },
   };
 
@@ -434,6 +435,7 @@ export function createNonlinearProductService(options = {}) {
     Object.assign(result, resolveProductQualification({engineId:job.analysisCase.engineId,ok:result.ok===true,
       modelHash:job.modelHash,settingsHash:job.settingsHash,buildIdentity:job.buildIdentity}));
     job.result = result;
+    jobs.refresh(job.id);
     job.resultSummary = clone(result.summary || summarizeRaw(result.payload));
     if (job.desiredAction === 'pause') {
       job.status = 'paused';
@@ -477,6 +479,8 @@ export function createNonlinearProductService(options = {}) {
   }
 
   function finishWithError(job, error) {
+    if(disposed)return;
+    if(error?.code?.includes('BUDGET')){job.result=null;job.latestCheckpoint=null;jobs.refresh(job.id);}
     if (job.timeout) error = serviceError('NONLINEAR_TIME_BUDGET_EXCEEDED', 'Analysis exceeded its execution time budget.');
     if (job.desiredAction === 'pause' || error instanceof WorkerRunCancelledError && job.desiredAction === 'pause') {
       job.status = 'paused';
@@ -502,7 +506,7 @@ export function createNonlinearProductService(options = {}) {
   }
 
   function handleProgress(job, progress = {}) {
-    if (!progress || typeof progress !== 'object') return;
+    if (disposed || !progress || typeof progress !== 'object') return;
     if (progress.type === 'checkpoint' && progress.checkpoint) {
       job.latestCheckpoint = clone(progress.checkpoint);
       job.latestCheckpointMeta = checkpointMeta(progress.checkpoint);
@@ -513,6 +517,7 @@ export function createNonlinearProductService(options = {}) {
     if (update.message) job.progressMessage = update.message;
     job.progressEvents.push(compactProgress(progress));
     if (job.progressEvents.length > 200) job.progressEvents.splice(0, job.progressEvents.length - 200);
+    jobs.refresh(job.id);
     emit(job, 'progress');
   }
 

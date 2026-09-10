@@ -67,12 +67,14 @@ export function createAnalysisRunStore(input = {}) {
   };
 }
 
-export function appendAnalysisRun(store, record) {
-  const next = createAnalysisRunStore(store);
+export function appendAnalysisRun(store, record, { immutableInputs = false } = {}) {
+  const next = immutableInputs ? {version:ANALYSIS_RUN_RECORD_VERSION,
+    attempts:Object.fromEntries(Object.entries(store.attempts||{}).map(([id,rows])=>[id,[...rows]])),
+    lastSuccessful:{...store.lastSuccessful}} : createAnalysisRunStore(store);
   const caseId = String(record?.caseId || 'UNSPECIFIED');
   next.attempts[caseId] ||= [];
-  next.attempts[caseId].push(clone(record));
-  if (record?.runStatus === 'ok') next.lastSuccessful[caseId] = clone(record);
+  next.attempts[caseId].push(immutableInputs ? record : clone(record));
+  if (record?.runStatus === 'ok') next.lastSuccessful[caseId] = immutableInputs ? record : clone(record);
   return next;
 }
 

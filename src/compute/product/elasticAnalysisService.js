@@ -1,3 +1,4 @@
+import { DEFAULT_RESOURCE_BUDGETS } from '../../core/resourceBudget.js';
 import { createAnalysisExecutionPlan } from '../execution/executionPlan.js';
 import { createComputeWorkerClient } from '../runtime/workerClient.js';
 import { prepareAnalysisContracts } from '../adapters/analysisAdapters.js';
@@ -37,6 +38,9 @@ export function createElasticAnalysisService(options = {}) {
       model = { ...model, loadCombinations: [combo] };
       runOptions = { ...runOptions, retainDetailedCombinations: true };
     }
+    const fullDof=(model.nodes?.length||0)*6,estimatedWorkingBytes=240*fullDof*fullDof;
+    const maxWorkingBytes=runOptions.maxWorkingBytes??DEFAULT_RESOURCE_BUDGETS.workerAdmissionBytes;
+    if(!Number.isFinite(maxWorkingBytes)||maxWorkingBytes<=0||estimatedWorkingBytes>maxWorkingBytes) return Promise.reject(serviceError('ELASTIC_WORKING_SET_BUDGET_EXCEEDED',`Estimated working set ${estimatedWorkingBytes} exceeds ${maxWorkingBytes} bytes.`));
     const contracts = prepareAnalysisContracts(model, runOptions.contractOptions);
     const runId = String(runOptions.runId || `elastic-${Date.now()}-${++sequence}`);
     const caseId = String(runOptions.caseId || model?.meta?.id || 'elastic-static');
