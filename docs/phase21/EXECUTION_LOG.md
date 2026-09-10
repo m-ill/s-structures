@@ -137,3 +137,7 @@ Node 실제 Worker pilot r1은 증거 추출 DTO 경로와 동일 조합 중복 
 - 실제 native start_analysis→get_result_slice에서 Direct 원본dmax0.009505956274493006에 units.displacement=mm가 붙는1,000배 오독 가능성을 재현했다. 원본 값은m이며 UI는9.505956mm이다.
 - get_result_slice에 원본 단위/표시 단위를 분리하고 경로별 scalar/vector 단위 계약을 추가했다. 값은 변환하지 않는다. 혼합 레코드와 미인식/모달 필드는 임의의 단위를 추정하지 않고 field metadata 필요로 반환한다. 비선형의 기존 원본 단위 계약은 그대로 유지했다.
 - 실제 solver 원본과 조회 값 동일, dmax=m, 표시mm,6DOF 병진/회전 단위 구분, 비선형 계약과M3회귀3개 PASS. solver/Worker 수치 코드는 변경하지 않았다.
+
+- 18aa643 전체 회귀124/124 PASS. 296e8b8 원본 단위 수정은 실제IAB에서0.009505956274493006, valueUnit=m, displayUnits.displacement=mm, valuesRescaled=false로 확인했다.
+- Direct 최대 증폭의 정의는 secondOrder.js의maximum-translational-component-ratio다. 최대변위9.505956/9.425820과 다른1.116 자체는 수치 오류가 아니다. 다만 다중 조합 화면에서 summary 전체 최대값을 우선해 선택 조합값을 무시하던 조회 오류를 수정하고 표시명을 절점 성분 최대 증폭으로 명확히 했다.
+- 선택 조합1.2/다른 조합 전체최대9를 분리하는 회귀를 추가. 첫 기대 문자열1.200은 실제 숫자 포맷1.2와 달라 실패했으며 의미 있는 숫자 비교로 수정했다. M3/결과팝업/탄성UI3개 PASS. 수치 solver 변경 없음.

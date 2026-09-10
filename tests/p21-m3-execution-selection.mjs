@@ -30,6 +30,11 @@ const canvas=buildAnalysisCaseResultView(model,result,{selectionStore});
 assert.equal(canvas.overlayData.visuals.maxDisplacement,all.result.byCombo.C1.dmax);
 const missing=buildElasticResultViewModel(model,analysisCase,result,{selectedComboId:'absent'});
 assert.equal(missing.resultAvailable,false);assert.equal(missing.structuralPreview,null);
+const directView=buildElasticResultViewModel(model,{...analysisCase,settings:{pDeltaMethod:'direct'}},
+ {...result,settings:{pDeltaMethod:'direct'},payload:{...all.result,pDelta:{enabled:true,method:'direct',
+ summary:{maxAmplification:9,comboCount:2,convergedCount:2},byCombo:{C1:{amplification:1.1,result:all.result.byCombo.C1},C2:{amplification:1.2,result:all.result.byCombo.C2}}}}},
+ {selectedComboId:'C2'});
+assert.equal(Number(directView.metrics.find(x=>x.label==='절점 성분 최대 증폭').value),1.2,'selected combination amplification must not use another combination maximum');
 for(const status of ['failed','running','cancelled','stale','unsupported']) {
  const bad={...result,status};
  assert.equal(buildElasticResultViewModel(model,analysisCase,bad).structuralPreview,null);

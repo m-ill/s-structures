@@ -200,10 +200,10 @@ function pDeltaView(model, analysisCase, result, state, base) {
       metric('해석법', method === 'direct' ? 'Direct Kt' : 'Legacy 비교용', method === 'direct' ? 'ok' : 'warn'),
       metric('조합', selectedComboId || '-'),
       metric('수렴', `${summary.convergedCount ?? pDelta.convergence?.convergedCount ?? 0}/${summary.comboCount ?? pDelta.convergence?.comboCount ?? comboIds.length}`),
-      metric('최대 증폭', formatNumber(summary.maxAmplification ?? comboRun?.amplification ?? 1, 3)),
+      metric(method === 'direct' ? '절점 성분 최대 증폭' : '최대 증폭', formatNumber(comboRun?.amplification ?? summary.maxAmplification ?? 1, 3)),
     ],
     notes: [method === 'direct'
-      ? 'Direct 결과는 하중스텝별 접선강성 해석값이며 1차 기준선과 구분해 표시합니다.'
+      ? 'Direct 결과는 하중스텝별 접선강성 해석값입니다. 증폭은 선택 조합의 절점 병진 성분별 비율 최대값이며, 모델 최대변위 두 값의 비율과 다를 수 있습니다.'
       : 'Legacy 등가 횡하중 반복 결과는 비교용이며 설계 전달 대상이 아닙니다.'],
     sizeProfile: activeTab === 'member' || activeTab === 'convergence' ? 'wide' : 'standard',
   };
