@@ -7,7 +7,7 @@ status: m0-m5-contract-complete-m6-verifying
 planning_baseline_commit: d8ae7af7af3d20b9a5c0977f210e5d1b26991ace
 pilot_runtime_commit: fefde822ae27a024ea8a834642b8aac10a24bd77
 implementation_baseline_commit: d8ae7af7af3d20b9a5c0977f210e5d1b26991ace
-candidate_commit: 202d293
+candidate_commit: 931dce1
 implemented_milestones: [M0, M1, M2, M3, M4, M5]
 phase21_numeric_test_runs: 1
 phase21_release_status: local-drafts-only
@@ -25,8 +25,8 @@ independent_review_owner: user
 | M3 실행·결과 선택 | COMPLETE-CONTRACT-SCOPE | c28624e 고정 후보 10/10. 실제 Worker 20조합→단일 요청 1solve, 공통 표시 선택, 실패 잔존 차단, Direct 평형 상태 보정 |
 | M4 검토·보고서 | COMPLETE-CONTRACT-SCOPE | c3d66df 고정 후보10/10. canonical checks/messages, N_A, report source/summary, SHA-256 원본 조각 조회 구현 |
 | M5 메모리·복구 | COMPLETE-CONTRACT-SCOPE | 37aced6 고정 후보 집중 검증 18/18. 공통 예산·취소·원본 체크포인트·재개. 실제 IndexedDB/M 규모는 M6 gate |
-| M6 전체 업무 재시험 | PARTIAL | 202d293 Windows 124/124. IAB pilot/원본 보고서/저장 복원 통과. 중간 규모 8회 해석·ledger 해제 통과. Chrome 동일 pilot·Ubuntu·전체 heap·후반 취소 미충족 |
-| M7 공개·배포 | LOCAL-DRAFT / BLOCKED | 202d293 소스·runtime·124건 evidence ZIP 및 Pages 정적 파일 생성. 해시 검증 통과. 필수 gate와 공개 승인 미충족으로 push/main/Pages 미수행 |
+| M6 전체 업무 재시험 | PARTIAL | 931dce1 Windows 124/124. IAB pilot/원본 보고서/저장 복원 통과. 중간 규모 8회 해석·ledger 해제 통과. 후반 취소5.004초/다음 Worker 실행 통과. Chrome 동일 pilot·Ubuntu·전체 heap·고정환경 성능 미충족 |
+| M7 공개·배포 | LOCAL-DRAFT / BLOCKED | 931dce1 소스·runtime·124건 evidence ZIP 및 Pages 정적 파일 생성. 해시 검증 통과. 필수 gate와 공개 승인 미충족으로 push/main/Pages 미수행 |
 
 `DOCUMENTED`는 계획 문서 상태이며 개발 마일스톤 완료가 아니다. 제안 시험·예산은 실행 전 확정하고 결과로만 상태를 변경한다. Phase20의 112/112와 RUN-001의 부분적인 정상 수치를 Phase21 PASS로 세지 않는다.
 
@@ -61,3 +61,11 @@ IAB 중간 규모 125절점·260부재·750 full DOF: 예열 3회+측정 5회, F
 로컬 공개 초안 output/phase21/m7-draft-202d293은 검증된 202d293 commit/tree에 고정된다. ZIP 내부 전 파일 SHA와 CRC를 검증했다. 별도 Pages 파일 716개를 생성했다. 이후 증거·문서 정리는 이 실행 후보와 구분한다. 일반 Chrome 동일 pilot, Ubuntu CI, 전체 메모리 자격, 후반 취소 및 공개 승인 미충족으로 release gate는 BLOCKED다. 현재 Pages는 변경하지 않았다.
 
 초기 Worker contract-ready 통지 100ms 후 취소 시험 PASS: running → cancelled, ack 약0.4ms, dispose 약0.3ms, 결과 미등록, ledger 0. 후반 단계는 600초 대기 제한으로 별도 재시험하며 이전 15초 실패 2건을 보존한다.
+
+## 2026-09-11 취소 수정 후보 931dce1 최종 기록
+
+Windows 전체124/124 PASS. 실제 IAB 중간 규모 Direct의 recovery-envelope-design-audit 통지 후 취소: ACK 0.5ms, 실행 대기 종료5004ms, 취소 결과 미등록. 같은 bridge에서 M-FIRST를 후속 실행하여 완료한 뒤 dispose ledger0. native Worker 종료까지 기다린 후 새 service를 생성하는 경로를 검증했다. 이전 15초 단계 대기 실패2건과 수정 전 장시간 대기 기록은 보존한다. 006의 ok:true는 최종 정리만 검사했으므로5초 종료 gate 통과로 해석하지 않는다.
+
+823591f 반복8회 증거는 동일 수치 엔진의 관측이고931dce1의 변경은 취소/Worker 수명이다. 최신124건 회귀와 실제 후반 취소·후속 해석으로 변경 경로를 재검증했다. 기존 pilot 수치·3포맷 hash·저장 복원은 각 기록의 후보 ID를 유지하며 최신 후보에서 모든 단계를 다시 실행한 것으로 소급하지 않는다.
+
+M0–M5 계약 구현 완료. M6 PARTIAL: Chrome 동일 pilot 비교, Ubuntu CI, renderer/Worker 합산 heap 및 고정 환경 성능 자격은 미충족. M7 LOCAL-DRAFT/BLOCKED: 최종 코드931dce1과 정확히 같은 회귀 증거로 ZIP/Pages 로컬 초안을 생성. 이후 문서·증거 commit과 실행 후보를 구분한다. 공개 push/main/Pages는 미수행이다. 외부 비교2건·pilot5건·독립 검토는 사용자 담당이며 최종 구조설계 자격은 미승인이다.

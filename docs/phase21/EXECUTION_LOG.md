@@ -159,3 +159,15 @@ IAB 중간 규모 125절점·260부재·750 full DOF: 예열 3회+측정 5회, F
 ## 2026-09-11 실행 중 취소 후속 수정
 
 실제 recovery-envelope-design-audit 단계 취소는 상태 ACK 뒤 동기 Worker 계산 종료를 오래 기다렸다. 최종 ledger0/미등록은 통과했으나 종료 지연을 측정하지 않은 기존 ok:true를 5초 gate PASS로 쓰지 않는다. 006 원본 보존. static/modal/RSA 제품 Worker 경로에5초 협조적 종료 유예 및 초과시 dispose/terminate 추가. 다음 queue는 native 종료를 기다리고 폐기된 service를 재생성한다. 조기취소·협조종료·transport오류·지연결과 유출방지 집중 시험 통과. 신규 후보 전체 회귀와 실제 후반 취소/다음 해석 재검증 진행. 202d293 ZIP은 이 수정 전 초안으로 보존하며 최신 배포 후보로 사용하지 않는다.
+
+## 2026-09-11 취소 수정 후보 931dce1 최종 기록
+
+Windows 전체124/124 PASS. 실제 IAB 중간 규모 Direct의 recovery-envelope-design-audit 통지 후 취소: ACK 0.5ms, 실행 대기 종료5004ms, 취소 결과 미등록. 같은 bridge에서 M-FIRST를 후속 실행하여 완료한 뒤 dispose ledger0. native Worker 종료까지 기다린 후 새 service를 생성하는 경로를 검증했다. 이전 15초 단계 대기 실패2건과 수정 전 장시간 대기 기록은 보존한다. 006의 ok:true는 최종 정리만 검사했으므로5초 종료 gate 통과로 해석하지 않는다.
+
+823591f 반복8회 증거는 동일 수치 엔진의 관측이고931dce1의 변경은 취소/Worker 수명이다. 최신124건 회귀와 실제 후반 취소·후속 해석으로 변경 경로를 재검증했다. 기존 pilot 수치·3포맷 hash·저장 복원은 각 기록의 후보 ID를 유지하며 최신 후보에서 모든 단계를 다시 실행한 것으로 소급하지 않는다.
+
+M0–M5 계약 구현 완료. M6 PARTIAL: Chrome 동일 pilot 비교, Ubuntu CI, renderer/Worker 합산 heap 및 고정 환경 성능 자격은 미충족. M7 LOCAL-DRAFT/BLOCKED: 최종 코드931dce1과 정확히 같은 회귀 증거로 ZIP/Pages 로컬 초안을 생성. 이후 문서·증거 commit과 실행 후보를 구분한다. 공개 push/main/Pages는 미수행이다. 외부 비교2건·pilot5건·독립 검토는 사용자 담당이며 최종 구조설계 자격은 미승인이다.
+
+최신931dce1 IAB 추가 확인: 기존61MB checkpoint hash98dfb969…78034와 입력 hash 유지하여 복원, A-DIRECT-X 재해석 완료, raw0.009505956274493006 m/화면 mm/선택 증폭1.116 확인. 002는 설정 창이 겹친 실제 화면이고003에서 닫은 결과 화면을 별도 보존. 최신 runtime ZIP 별도 추출746파일 SHA 통과. 이전202d293 설치 Chrome smoke를 최신 설치 smoke로 소급하지 않는다.
+
+최종 검증 PDF47페이지/39원본 화면. 최신 본문과 추가 화면 렌더링을 확인하고 final-report-manifest.json에 PDF 전체 SHA/크기/범위를 기록. release gate 실제 실행은 예상대로 BLOCKED(Chrome동일pilot/전체메모리·고정환경/Ubuntu 미충족). 공개 업로드 거부 상태를 유지하고 main·Pages를 변경하지 않음.

@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "directVersion": "p6-m5-pdelta-second-order-v1",
+  "amplification": 1.036427109444148,
+  "directIterations": 11,
+  "bucklingError": 0.005258575267468785,
+  "comboGuard": "BLOCKED"
+}
+
+

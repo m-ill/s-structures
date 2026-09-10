@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "backend": "p8-wasm-sparse-v1",
+  "wasmBytes": 26036,
+  "wasmImports": 0,
+  "spdIterations": 3,
+  "spdResidual": 0,
+  "generalResidual": 8.248590975149166e-16,
+  "singularReason": "SINGULAR_PIVOT",
+  "deterministicRuns": 7
+}
+
+

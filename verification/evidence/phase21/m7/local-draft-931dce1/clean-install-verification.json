@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "source": {
+    "commit": "931dce134275ddf2c61eae388f1111fe2a7e51a6",
+    "tree": "d370e9aaa685a1a8ac3c7e834749f9c60b42c804",
+    "trackedChanges": ""
+  },
+  "files": 746,
+  "scope": "clean extraction and all runtime file hashes; 202d293 Chrome installed smoke is historical,931dce1 source runtime IAB verified separately"
+}

@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-COR-01",
+    "NL-COR-02",
+    "NL-COR-03",
+    "NL-COR-04",
+    "NL-COR-05",
+    "NL-COR-06",
+    "NL-COR-07",
+    "NL-COR-11",
+    "NL-COR-12"
+  ],
+  "rigidRotationEnergy": 1.0382919441784915e-22,
+  "tangentError": 0.000001182550817603855,
+  "axialForce": 10499999.999999776
+}
+
+

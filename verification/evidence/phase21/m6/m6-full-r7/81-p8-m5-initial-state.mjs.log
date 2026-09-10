@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-MEI-09",
+    "NL-MEI-10",
+    "NL-MEI-11",
+    "NL-MEI-12",
+    "NL-MEI-13",
+    "NL-MEI-14",
+    "NL-MEI-15",
+    "NL-PUSH-01"
+  ],
+  "constantLoads": 1,
+  "referenceLoads": 1,
+  "referenceResultant": 10,
+  "modalForceRatio": 2,
+  "gravityDisplacement": 0.05,
+  "gravityResidual": 0,
+  "dependencyOrder": [
+    "GRAVITY",
+    "PUSH"
+  ],
+  "staleCount": 1,
+  "linearGuessImportedMaterialState": false,
+  "linkageGuardCodes": [
+    "GRAVITY_PREDECESSOR_RUN_INTEGRITY_FAILED",
+    "GRAVITY_CHECKPOINT_RUN_LINK_MISMATCH",
+    "STATE_CHECKPOINT_INTEGRITY_FAILED",
+    "GRAVITY_CHECKPOINT_STATE_LINK_MISMATCH",
+    "GRAVITY_COMMITTED_STATE_LINK_MISMATCH"
+  ],
+  "loadAuditGuardCodes": [
+    "generated-key-conflict",
+    "double-self-weight-candidate"
+  ]
+}
+
+

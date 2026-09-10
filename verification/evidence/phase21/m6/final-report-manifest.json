@@ -1,0 +1,12 @@
+{
+  "runtimeCandidate": "931dce134275ddf2c61eae388f1111fe2a7e51a6",
+  "pdf": {
+    "path": "output/pdf/S-Structures_Phase21_Pilot_Retest.pdf",
+    "pages": 47,
+    "screenshots": 39,
+    "bytes": 8867458,
+    "sha256": "3a062c1dfe7b07e807f42c02bcbfb47ac3936dc65d89c5105ec7ca988b028c6a"
+  },
+  "qa": "Rendered changed text page8 and new pages44-47; previous47-page constituents checked in r1-r6 render QA. Native viewport screenshots preserved, full JSON lives alongside them.",
+  "status": "local-verification-report-not-product-PDF; release-blocked"
+}

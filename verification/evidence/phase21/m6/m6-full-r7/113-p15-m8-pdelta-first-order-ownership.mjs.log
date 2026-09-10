@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "P15-ARCH-01",
+    "P15-M8-PDELTA-SEED"
+  ],
+  "injectionCalls": 1,
+  "directDisplacement": 0.0056249999999999955,
+  "publicDisplacement": 0.0056249999999999955,
+  "importCycles": 0
+}
+
+

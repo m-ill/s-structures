@@ -1,0 +1,293 @@
+{
+  "ok": true,
+  "before": {
+    "version": "p9-m9-product-job-v1",
+    "serviceVersion": "p9-m9-product-analysis-service-v1",
+    "id": "analysis-1789056766868-1",
+    "sequence": 1,
+    "caseId": "M-DIRECT",
+    "kind": "static",
+    "status": "running",
+    "stage": "recovery-envelope-design-audit",
+    "progress": 0.85,
+    "progressMessage": "Preparing analysis execution.",
+    "createdAt": "2026-09-10T16:12:46.880Z",
+    "startedAt": "2026-09-10T16:12:46.891Z",
+    "completedAt": null,
+    "predecessorJobId": null,
+    "resultAvailable": false,
+    "resultSummary": null,
+    "error": null,
+    "publication": null,
+    "settingsHash": "a8f5ab26f3eefceec508992fa0537ce06f28b5e85dd816bbe4bbe2fa500badb6",
+    "planHash": "76bf059cfc79df291a5e4ddc24763962977026e45706dada1466b866d3e28925",
+    "requestedTarget": "cpu",
+    "executedTarget": "cpu",
+    "operationRoute": {
+      "operation": "elasticStatic",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "backendId": "cpu-f64-linear3d",
+      "precision": "f64",
+      "fallbackPolicy": "forbidden",
+      "fallbackUsed": false,
+      "reason": "Explicit qualified CPU f64 route."
+    },
+    "qualification": "production-cpu-f64",
+    "designBlocked": false,
+    "productProvenance": {
+      "serviceVersion": "p9-m9-product-analysis-service-v1",
+      "planHash": "76bf059cfc79df291a5e4ddc24763962977026e45706dada1466b866d3e28925",
+      "settingsHash": "a8f5ab26f3eefceec508992fa0537ce06f28b5e85dd816bbe4bbe2fa500badb6",
+      "modelHash": "51ce55bd70f5f14f81c24a2ced1b78d69658b0308229dcc0954ed47f6bc2bb5f",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "operationRoute": {
+        "operation": "elasticStatic",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "backendId": "cpu-f64-linear3d",
+        "precision": "f64",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "reason": "Explicit qualified CPU f64 route."
+      },
+      "correction": "not-required-cpu-f64",
+      "audit": "cpu-f64-equilibrium-and-result-audit",
+      "qualification": "production-cpu-f64",
+      "designBlocked": false,
+      "externalRuntimeUsed": null,
+      "networkFallbackUsed": null,
+      "executionProvenance": null
+    },
+    "progressEvents": [
+      {
+        "at": "2026-09-10T16:13:01.596Z",
+        "value": 0.03,
+        "stage": "contract-ready"
+      },
+      {
+        "at": "2026-09-10T16:13:02.538Z",
+        "value": 0.8,
+        "stage": "combination-complete",
+        "comboId": "DW",
+        "combinationIndex": 0,
+        "combinationCount": 1
+      },
+      {
+        "at": "2026-09-10T16:13:02.538Z",
+        "value": 0.85,
+        "stage": "recovery-envelope-design-audit"
+      }
+    ]
+  },
+  "terminal": {
+    "version": "p9-m9-product-job-v1",
+    "serviceVersion": "p9-m9-product-analysis-service-v1",
+    "id": "analysis-1789056766868-1",
+    "sequence": 1,
+    "caseId": "M-DIRECT",
+    "kind": "static",
+    "status": "cancelled",
+    "stage": "cancelled",
+    "progress": 0.85,
+    "progressMessage": "Analysis cancelled.",
+    "createdAt": "2026-09-10T16:12:46.880Z",
+    "startedAt": "2026-09-10T16:12:46.891Z",
+    "completedAt": "2026-09-10T16:13:02.644Z",
+    "predecessorJobId": null,
+    "resultAvailable": false,
+    "resultSummary": null,
+    "error": null,
+    "publication": null,
+    "settingsHash": "a8f5ab26f3eefceec508992fa0537ce06f28b5e85dd816bbe4bbe2fa500badb6",
+    "planHash": "76bf059cfc79df291a5e4ddc24763962977026e45706dada1466b866d3e28925",
+    "requestedTarget": "cpu",
+    "executedTarget": "cpu",
+    "operationRoute": {
+      "operation": "elasticStatic",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "backendId": "cpu-f64-linear3d",
+      "precision": "f64",
+      "fallbackPolicy": "forbidden",
+      "fallbackUsed": false,
+      "reason": "Explicit qualified CPU f64 route."
+    },
+    "qualification": "production-cpu-f64",
+    "designBlocked": false,
+    "productProvenance": {
+      "serviceVersion": "p9-m9-product-analysis-service-v1",
+      "planHash": "76bf059cfc79df291a5e4ddc24763962977026e45706dada1466b866d3e28925",
+      "settingsHash": "a8f5ab26f3eefceec508992fa0537ce06f28b5e85dd816bbe4bbe2fa500badb6",
+      "modelHash": "51ce55bd70f5f14f81c24a2ced1b78d69658b0308229dcc0954ed47f6bc2bb5f",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "operationRoute": {
+        "operation": "elasticStatic",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "backendId": "cpu-f64-linear3d",
+        "precision": "f64",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "reason": "Explicit qualified CPU f64 route."
+      },
+      "correction": "not-required-cpu-f64",
+      "audit": "cpu-f64-equilibrium-and-result-audit",
+      "qualification": "production-cpu-f64",
+      "designBlocked": false,
+      "externalRuntimeUsed": null,
+      "networkFallbackUsed": null,
+      "executionProvenance": null
+    },
+    "progressEvents": [
+      {
+        "at": "2026-09-10T16:13:01.596Z",
+        "value": 0.03,
+        "stage": "contract-ready"
+      },
+      {
+        "at": "2026-09-10T16:13:02.538Z",
+        "value": 0.8,
+        "stage": "combination-complete",
+        "comboId": "DW",
+        "combinationIndex": 0,
+        "combinationCount": 1
+      },
+      {
+        "at": "2026-09-10T16:13:02.538Z",
+        "value": 0.85,
+        "stage": "recovery-envelope-design-audit"
+      }
+    ]
+  },
+  "cancellation": {
+    "version": "p9-m9-product-job-v1",
+    "serviceVersion": "p9-m9-product-analysis-service-v1",
+    "id": "analysis-1789056766868-1",
+    "sequence": 1,
+    "caseId": "M-DIRECT",
+    "kind": "static",
+    "status": "cancelled",
+    "stage": "cancelled",
+    "progress": 0.85,
+    "progressMessage": "Analysis cancelled.",
+    "createdAt": "2026-09-10T16:12:46.880Z",
+    "startedAt": "2026-09-10T16:12:46.891Z",
+    "completedAt": "2026-09-10T16:13:02.644Z",
+    "predecessorJobId": null,
+    "resultAvailable": false,
+    "resultSummary": null,
+    "error": null,
+    "publication": null,
+    "settingsHash": "a8f5ab26f3eefceec508992fa0537ce06f28b5e85dd816bbe4bbe2fa500badb6",
+    "planHash": "76bf059cfc79df291a5e4ddc24763962977026e45706dada1466b866d3e28925",
+    "requestedTarget": "cpu",
+    "executedTarget": "cpu",
+    "operationRoute": {
+      "operation": "elasticStatic",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "backendId": "cpu-f64-linear3d",
+      "precision": "f64",
+      "fallbackPolicy": "forbidden",
+      "fallbackUsed": false,
+      "reason": "Explicit qualified CPU f64 route."
+    },
+    "qualification": "production-cpu-f64",
+    "designBlocked": false,
+    "productProvenance": {
+      "serviceVersion": "p9-m9-product-analysis-service-v1",
+      "planHash": "76bf059cfc79df291a5e4ddc24763962977026e45706dada1466b866d3e28925",
+      "settingsHash": "a8f5ab26f3eefceec508992fa0537ce06f28b5e85dd816bbe4bbe2fa500badb6",
+      "modelHash": "51ce55bd70f5f14f81c24a2ced1b78d69658b0308229dcc0954ed47f6bc2bb5f",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "operationRoute": {
+        "operation": "elasticStatic",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "backendId": "cpu-f64-linear3d",
+        "precision": "f64",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "reason": "Explicit qualified CPU f64 route."
+      },
+      "correction": "not-required-cpu-f64",
+      "audit": "cpu-f64-equilibrium-and-result-audit",
+      "qualification": "production-cpu-f64",
+      "designBlocked": false,
+      "externalRuntimeUsed": null,
+      "networkFallbackUsed": null,
+      "executionProvenance": null
+    },
+    "progressEvents": [
+      {
+        "at": "2026-09-10T16:13:01.596Z",
+        "value": 0.03,
+        "stage": "contract-ready"
+      },
+      {
+        "at": "2026-09-10T16:13:02.538Z",
+        "value": 0.8,
+        "stage": "combination-complete",
+        "comboId": "DW",
+        "combinationIndex": 0,
+        "combinationCount": 1
+      },
+      {
+        "at": "2026-09-10T16:13:02.538Z",
+        "value": 0.85,
+        "stage": "recovery-envelope-design-audit"
+      }
+    ]
+  },
+  "ackMs": 0.5,
+  "terminateMs": 0.09999942779541016,
+  "remaining": {
+    "version": "p21-managed-memory-v1",
+    "accounting": "conservative-retained-data-estimate",
+    "maxBytes": 268435456,
+    "totalBytes": 0,
+    "peakBytes": 853348,
+    "owners": {}
+  },
+  "published": [],
+  "events": [
+    {
+      "stage": "queued",
+      "status": "queued",
+      "progress": 0
+    },
+    {
+      "stage": "solve",
+      "status": "running",
+      "progress": 0.02
+    },
+    {
+      "stage": "contract-ready",
+      "status": "running",
+      "progress": 0.03
+    },
+    {
+      "stage": "combination-complete",
+      "status": "running",
+      "progress": 0.8
+    },
+    {
+      "stage": "recovery-envelope-design-audit",
+      "status": "running",
+      "progress": 0.85
+    },
+    {
+      "stage": "cancelled",
+      "status": "cancelled",
+      "progress": 0.85
+    }
+  ],
+  "targetStage": "recovery-envelope-design-audit",
+  "deadlineMs": 600000,
+  "scope": "cancellation 100ms after observed Worker stage; terminate is not cooperative solver convergence",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
+}

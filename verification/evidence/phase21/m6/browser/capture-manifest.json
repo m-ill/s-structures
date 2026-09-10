@@ -173,5 +173,25 @@
     "path": "verification/evidence/phase21/m6/browser/m6-browser-r6-005-worker-start-cancel.png",
     "sha256": "bc68f7cda394df86fe4754e534d86bc314125aeef0e8080ef9692234a78cae6a",
     "sourceRun": "m6-browser-r6"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r6-006-recovery-cancel-before-bounded-fix.png",
+    "sha256": "e94585e4b30ef9217d32c92eb4005e7c905a43ac6100da3b16e53db2e79c0d79",
+    "sourceRun": "m6-browser-r6"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r7-001-bounded-recovery-cancel.png",
+    "sha256": "937f7ceb84c57d79a2c4e17405865919ef2f8f41f53657d5fbf19fbeb2f8c1b5",
+    "sourceRun": "m6-browser-r7"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r7-002-native-pilot.png",
+    "sha256": "67b67419f4995e4f3b890d8eb594774598ec84040cb01f9d4d74f7728e369852",
+    "sourceRun": "m6-browser-r7"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r7-003-native-direct-view.png",
+    "sha256": "3fd9e8479fe3ef271f61ac25086cd93b56b4b8de30102c025470e6e10cdc9d27",
+    "sourceRun": "m6-browser-r7"
   }
 ]

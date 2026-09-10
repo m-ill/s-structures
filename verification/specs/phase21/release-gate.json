@@ -11,23 +11,24 @@
     "ubuntu-regression": "PENDING"
   },
   "verifiedGitObjects": {
-    "src": "5426cd12aaad7bf3b0ff98fa8f73fa04ffb6afc6",
+    "src": "c54f0b76f6067d1e8c8850f6a38055227a161aa6",
     "server": "f35d294394287d7f8f70926bda76ef63b72ec1ad",
     "index.html": "5e5fe41334bb5d79d37746fdfa987b93639090d8",
     "package.json": "7ad2c17e523d412dc86218af5bedea475cd50cc6"
   },
   "evidence": {
-    "runtimeCandidate": "202d2931052ea679da6f11c21ca26322821f2969",
-    "windowsRegression": "verification/evidence/phase21/m6/m6-full-r6/validation.json",
-    "nativeLatest": "verification/evidence/phase21/m6/m6-browser-r6",
+    "runtimeCandidate": "931dce134275ddf2c61eae388f1111fe2a7e51a6",
+    "windowsRegression": "verification/evidence/phase21/m6/m6-full-r7/validation.json",
+    "nativeLatest": "verification/evidence/phase21/m6/m6-browser-r7",
     "mediumNode": "verification/evidence/phase21/m6/medium/node-r4.json",
-    "mediumBrowser": "verification/evidence/phase21/m6/m6-browser-r6/004-medium-eight-cycles.json"
+    "mediumBrowser": "verification/evidence/phase21/m6/m6-browser-r6/004-medium-eight-cycles.json",
+    "boundedCancellation": "verification/evidence/phase21/m6/m6-browser-r7/001-bounded-recovery-cancel.json"
   },
   "remainingConditions": [
     "Chrome same-pilot comparison: file URL permission pending",
     "Ubuntu CI not run",
     "Aggregate Worker/renderer post-GC memory qualification incomplete",
-    "Recovery-stage cancellation timed out twice before the target stage",
-    "Public pilot-derived evidence approval pending"
+    "Public pilot-derived evidence approval pending",
+    "Controlled performance qualification: Direct progress gap and aggregate memory measurement remain open"
   ]
 }

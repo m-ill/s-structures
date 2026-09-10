@@ -79,3 +79,5 @@ Phase 21의 검증 결과로 다음 범위를 확정한다. 아직 Phase 22 구�
 ## 최신 상태
 
 202d293: Windows 124/124, 브라우저 중간 규모 8회 반복 및 ledger 해제 통과. M0–M5 계약 범위 완료, M6 일부 미충족, M7 로컬 패키지 준비/배포 차단. [실제 상태](IMPLEMENTATION_STATUS.md)와 [캡처 보고서](PILOT_RETEST_REPORT.md)를 따른다.
+
+931dce1 후속:124/124와 실제 후반 취소5004ms·다음 Worker 해석·ledger0 검증 통과. 최신 실행 후보는931dce1,202d293은 이전 초안이다. M6의 Chrome/Ubuntu/전체메모리/고정환경 성능과 M7공개 승인은 미충족이다.

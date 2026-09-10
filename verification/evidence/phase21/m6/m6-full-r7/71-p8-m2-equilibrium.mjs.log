@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-EQ-01",
+    "NL-EQ-03",
+    "NL-EQ-04",
+    "NL-EQ-05",
+    "NL-EQ-06",
+    "NL-CTRL-02",
+    "NL-CTRL-03"
+  ],
+  "linearDisplacement": 0.1,
+  "nonlinearDisplacement": [
+    0.20000000000000004,
+    -0.10000000000000003
+  ],
+  "productionDisplacement": [
+    0.20000000000000004,
+    -0.10000000000000003
+  ],
+  "nonlinearIterations": 4,
+  "elementEvaluations": 10
+}
+
+

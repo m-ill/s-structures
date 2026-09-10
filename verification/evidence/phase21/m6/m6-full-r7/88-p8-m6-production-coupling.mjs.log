@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-PMM-08"
+  ],
+  "freeAxialForce": 0,
+  "compressedAxialForce": -49.99999999999449,
+  "freeMomentFactor": 1,
+  "compressedMomentFactor": 0.5,
+  "phase7SectionHash": "51dd95cd4fd8560046d84594c00f36cc5a9b81bc5000a8a3ecbe7d41541502ef",
+  "phase7SurfaceHash": "de4285100aa97a4c7758f2cfe9a8479040051c1ab8e8bae1f0120297c5f2fbc5",
+  "outOfRangeBlocked": true
+}
+
+
