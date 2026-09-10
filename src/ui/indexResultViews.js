@@ -1,10 +1,11 @@
+import { selectStaticResult, resultCanDisplay } from './resultSelectionProjection.js';
 import { buildIndexResultVisuals } from './indexResultVisuals.js';
 
 export const INDEX_RESULT_CASE_VIEW_VERSION = 'p5-m9-result-case-view';
 
 export function buildAnalysisCaseResultView(model = {}, result = null, options = {}) {
   const selection = resultViewSelection(options);
-  if (!result) {
+  if (!resultCanDisplay(result)) {
     return {
       version: INDEX_RESULT_CASE_VIEW_VERSION,
       available: false,
@@ -30,7 +31,7 @@ export function buildAnalysisCaseResultView(model = {}, result = null, options =
   if (result.kind === 'modal') view = modalResultView(model, result, selectedIndex);
   else if (result.kind === 'buckling') view = bucklingResultView(model, result, selectedIndex);
   else if (result.kind === 'pushover') view = pushoverResultView(model, result, selectedIndex);
-  else if (result.kind === 'static') view = staticResultView(model, result);
+  else if (result.kind === 'static') view = staticResultView(model, result, selection);
   else view = genericResultView(result, selectedIndex);
   return { ...view, selection };
 }
@@ -39,8 +40,10 @@ export function updateResultViewSelection(store, patch = {}, source = 'result-vi
   return store?.set?.(patch, source) || null;
 }
 
-function staticResultView(model, result) {
-  const visuals = buildIndexResultVisuals(model, result.payload || {});
+function staticResultView(model, result, selection) {
+  const selected = selectStaticResult(result.payload, selection.selectedComboId || result.settings?.comboId);
+  if (!selected.available) return buildAnalysisCaseResultView(model, null);
+  const visuals = buildIndexResultVisuals(model, { ok: true, envelope: selected.result });
   const memberRatioMap = buildMemberRatioMap(visuals.members);
   return baseView(result, {
     selectedIndex: 0,
@@ -213,6 +216,8 @@ function resultViewSelection(options = {}) {
   return {
     activeCaseId: selection.activeCaseId || null,
     activeResultId: selection.activeResultId || null,
+    selectedComboId: selection.selectedComboId || null,
+    inputHash: selection.inputHash || null,
     response: selection.response || null,
     component: selection.component || null,
     modeOrStep: selection.modeOrStep ?? null,

@@ -49,3 +49,10 @@
 - 원본 파일 및 과거 결과 hash는 재작성하지 않는다. 저장 복구 lifecycle/내구성과 실제 브라우저 화면 검증은 M5/M6에서 계속한다.
 
 - M2 r1 고정 회귀는 6/7이었다. 이전 native autosave의 envelope version 누락을 새 guard가 거부하는 호환성 오류를 확인했다. 알려진 무버전 product-book만 legacy 호환 입력으로 허용하고, 명시한 미지원 버전은 계속 거부한다. 실패 로그를 r1에 보존하고 수정 후보를 r2로 재검증한다.
+
+## 2026-09-10 — M2 마감·M3 실행/선택 후보
+
+- 64e5101 clean archive M2 r2는7/7 PASS. 무버전 legacy 호환성 실패를 수정하고 원래 실패 r1도 보존했다.
+- 실제 indexBridge→elasticAnalysisService→Worker에서 settings.comboId를 전달하면서 전체 모델을 실행한 원인을 수정했다. 제품 서비스에서 조합 존재를 검증하고 계약 준비 이전에 범위를 제한한다. 실제 Worker 회귀에서 전체20 solve/한 조합1 solve 및 같은 선택 수치를 확인했다.
+- 숫자/그림/native canvas가 같은 pure selector를 사용한다. 명시한 조합 누락에서 포락으로 대체하지 않는다. 실패·running·stale 선택은 이전 그림을 숨기고 과거 성공 기록은 별도 보존한다. 관련 과거 회귀의 active successful display 유지 조건을 새 표시 계약으로 변경했다.
+- 보정 후 Direct 평형 PASS와 보정 전 designBlocked=true/EQUILIBRIUM_LIMIT_EXCEEDED가 공존한 원인을 수정했다. 다른 독립 실패 사유는 유지하며 productVersion을 p21-m3-direct-pdelta-product-v5로 올렸다. Phase20 원본 golden은 보존하고 해당 Direct 평형 요약 두 필드만 원인에 맞춰 이행한 뒤 나머지 수치/자격을 exact 비교한다. 초기 비교 실패와 수정 후7fixture PASS를 기록한다.

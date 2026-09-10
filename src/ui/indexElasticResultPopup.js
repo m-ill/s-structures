@@ -1,3 +1,4 @@
+import { latestDisplayResult } from './resultSelectionProjection.js';
 import { installFloatingPanel } from './floatingPanel.js';
 import {
   buildElasticResultViewModel,
@@ -133,7 +134,9 @@ export function installElasticResultPopup(target = globalThis, options = {}) {
   target.SStructuresElasticResultPopup = api;
   api.unsubscribeResultSelection = selectionStore?.subscribe?.((next, _previous, source) => {
     if (source === 'elastic-result-popup') return;
+    if (next.activeCaseId !== state.selectedCaseId) state.selectedComboId = null;
     if (next.activeCaseId) state.selectedCaseId = next.activeCaseId;
+    state.selectedComboId = next.selectedComboId || null;
     if (next.modeOrStep != null) state.modeOrStep = Math.max(0, Math.trunc(Number(next.modeOrStep) || 0));
     if (next.response) state.direction = next.response;
     if (next.component) state.component = next.component;
@@ -459,7 +462,7 @@ function renderNote(doc, text, tone = '') {
 }
 
 function applyControl(target, state, api, id, value) {
-  if (id === 'combo') state.selectedComboId = value;
+  if (id === 'combo') { state.selectedComboId = value; target.SStructuresResultSelection?.set?.({selectedComboId:value},'elastic-result-popup'); target.draw?.(); }
   else if (id === 'member') return api.selectMember(value, { open: false });
   else if (id === 'direction') {
     state.direction = value;
@@ -506,7 +509,7 @@ function currentContext(target, bridge, state) {
     || cases[0]
     || null;
   if (analysisCase && !isElasticResultKind(analysisCase.kind)) analysisCase = null;
-  const result = analysisCase ? target.__SStructuresAnalysisResults?.[analysisCase.id] || null : null;
+  const result = analysisCase ? latestDisplayResult(target, analysisCase.id) : null;
   const latestAttempt = analysisCase ? target.__SStructuresAnalysisLatestAttempts?.[analysisCase.id] || result : null;
   return { model, analysisCase, result, latestAttempt };
 }
@@ -538,10 +541,12 @@ function elasticCases(bridge) {
 
 function selectCase(target, selectionStore, state, caseId) {
   state.selectedCaseId = String(caseId || '') || null;
+  state.selectedComboId = null;
   state.modeOrStep = 0;
   const result = target.__SStructuresAnalysisResults?.[state.selectedCaseId] || null;
   selectionStore?.set?.({
     activeCaseId: state.selectedCaseId,
+    selectedComboId: null,
     activeResultId: result?.runRecordId || null,
     modeOrStep: 0,
   }, 'elastic-result-popup');

@@ -48,7 +48,7 @@ assert.equal(failed.status, 'failed');
 assert.notEqual(failed.runRecordId, first.runRecordId);
 assert.equal(bridge.getAnalysisCaseResult('RUN-1').runRecordId, first.runRecordId, 'failed attempt must retain last successful result');
 assert.equal(bridge.getAnalysisLatestAttempt('RUN-1').runRecordId, failed.runRecordId);
-assert.equal(bridge.getResultSelection().activeResultId, first.runRecordId, 'failed attempt must preserve active successful result');
+assert.equal(bridge.getResultSelection().activeResultId, null, 'failed attempt clears active display; successful history remains available explicitly');
 
 const runStore = bridge.getAnalysisRunStore();
 assert.equal(runStore.attempts['RUN-1'].length, 2);

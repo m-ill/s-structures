@@ -1,3 +1,4 @@
+import { selectStaticResult, resultCanDisplay } from './resultSelectionProjection.js';
 import {
   buildBarChart,
   buildGroupedBarChart,
@@ -51,10 +52,11 @@ export function buildElasticResultViewModel(model = {}, analysisCase = null, res
       notes: ['탄성해석 케이스를 선택하면 결과를 이 창에서 검토할 수 있습니다.'],
     };
   }
-  if (!result) {
+  if (!resultCanDisplay(result)) {
     return {
       ...base,
-      notes: ['이 케이스는 아직 실행되지 않았습니다. 설정을 확인한 뒤 실행하십시오.'],
+      resultAvailable: false,
+      notes: [`선택 결과를 표시할 수 없습니다: ${result?.status || 'not-run'}. 이전 결과를 대신 표시하지 않습니다.`],
     };
   }
   if (kind === 'static' && result.payload?.pDelta?.enabled) return pDeltaView(model, analysisCase, result, uiState, base);
@@ -68,7 +70,9 @@ export function buildElasticResultViewModel(model = {}, analysisCase = null, res
 
 function staticView(model, analysisCase, result, state, base) {
   const payload = result.payload || {};
-  const active = pickStaticResult(payload);
+  const selected = selectStaticResult(payload, state.selectedComboId || result.settings?.comboId || analysisCase.settings?.comboId);
+  const active = selected.result;
+  if (!selected.available) return { ...base, resultAvailable: false, notes: [`RESULT_SELECTION_UNAVAILABLE: ${selected.comboId}`] };
   const tabs = tabList([
     ['deformed', '변형'],
     ['forces', '부재력'],
@@ -83,10 +87,12 @@ function staticView(model, analysisCase, result, state, base) {
   const view = {
     ...base,
     method: 'first-order-linear-static',
+    selection: { comboId: selected.comboId, runRecordId: result.runRecordId || null },
+    controls: Object.keys(payload.byCombo || {}).length > 1 ? [selectControl('combo','조합',selected.comboId,[['ENVELOPE','Envelope'],...Object.keys(payload.byCombo).map(id=>[id,id])])] : [],
     tabs,
     activeTab,
     metrics: [
-      metric('조합', active?.combo?.id || result.settings?.comboId || 'Envelope'),
+      metric('조합', selected.comboId),
       metric('최대 변위', formatLength(maxDisplacement, model)),
       metric('부재', memberRows.length),
       metric('상태', statusLabel(result.status), statusTone(result.status)),
@@ -162,7 +168,8 @@ function pDeltaView(model, analysisCase, result, state, base) {
   const pDelta = payload.pDelta || {};
   const method = pDelta.method || result.settings?.pDeltaMethod || 'legacy';
   const comboIds = pDeltaComboIds(pDelta);
-  const selectedComboId = comboIds.includes(state.selectedComboId) ? state.selectedComboId : comboIds[0] || null;
+  const selectedComboId = state.selectedComboId || result.settings?.comboId || analysisCase.settings?.comboId || comboIds[0] || null;
+  if (!comboIds.includes(selectedComboId)) return { ...base, resultAvailable: false, notes: [`RESULT_SELECTION_UNAVAILABLE: ${selectedComboId}`] };
   const tabs = tabList([
     ['global', '전체'],
     ['story', '층'],
@@ -580,14 +587,6 @@ export function buildStructuralResultSvg(model = {}, options = {}) {
     nodeCount: nodes.length,
     memberCount: members.length,
   };
-}
-
-function pickStaticResult(payload) {
-  return payload.pDelta?.envelope
-    || payload.envelope
-    || Object.values(payload.byCombo || {}).find((item) => item?.ok)
-    || Object.values(payload.byCombo || {})[0]
-    || null;
 }
 
 function pDeltaComboIds(pDelta) {

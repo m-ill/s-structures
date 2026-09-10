@@ -30,6 +30,13 @@ export function createElasticAnalysisService(options = {}) {
 
   function run(model, runOptions = {}) {
     if (disposed) return Promise.reject(serviceError('ELASTIC_SERVICE_DISPOSED', 'Elastic analysis service is disposed.'));
+    const comboId = runOptions.settings?.comboId;
+    if (comboId && comboId !== 'ENVELOPE') {
+      const combo = model.loadCombinations?.find(row => row.id === comboId);
+      if (!combo) return Promise.reject(serviceError('ELASTIC_COMBINATION_NOT_FOUND', `Load combination ${comboId} was not found.`));
+      model = { ...model, loadCombinations: [combo] };
+      runOptions = { ...runOptions, retainDetailedCombinations: true };
+    }
     const contracts = prepareAnalysisContracts(model, runOptions.contractOptions);
     const runId = String(runOptions.runId || `elastic-${Date.now()}-${++sequence}`);
     const caseId = String(runOptions.caseId || model?.meta?.id || 'elastic-static');

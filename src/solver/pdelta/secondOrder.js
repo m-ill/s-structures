@@ -35,7 +35,7 @@ import { resolvePDeltaFirstOrderSeed } from './firstOrderSeed.js';
 import { constraintCoordinateKinds, directDiaphragmIssues, directMemoryAdmission } from './constraintContext.js';
 
 export const PDELTA_SECOND_ORDER_VERSION = 'p6-m5-pdelta-second-order-v1';
-export const PDELTA_DIRECT_PRODUCT_VERSION = 'p21-m0-direct-pdelta-product-v4';
+export const PDELTA_DIRECT_PRODUCT_VERSION = 'p21-m3-direct-pdelta-product-v5';
 
 const DIRECT_METHOD = 'geometric-stiffness-second-order-direct';
 const ITERATION_METHOD = 'picard-fixed-point-updated-axial-stiffness';
@@ -1053,7 +1053,8 @@ function buildDirectEquilibriumSummary(domain, out, KG, D, criteriaModel = {}) {
   const momentResidualNorm = maxAbs3(momentResidual) / momentScale;
   const equilibriumResidual = Math.max(forceResidualNorm, momentResidualNorm);
   const equilibriumLimit = Number(base.equilibriumLimit) || 1e-8;
-  const equilibriumStatus = forceResidualNorm <= equilibriumLimit && momentResidualNorm <= equilibriumLimit
+  const independentFailure = base.equilibriumFailureReason && base.equilibriumFailureReason !== 'EQUILIBRIUM_LIMIT_EXCEEDED' ? base.equilibriumFailureReason : null;
+  const equilibriumStatus = !independentFailure && forceResidualNorm <= equilibriumLimit && momentResidualNorm <= equilibriumLimit
     ? 'PASS'
     : 'FAIL';
   return {
@@ -1077,6 +1078,8 @@ function buildDirectEquilibriumSummary(domain, out, KG, D, criteriaModel = {}) {
     equilibriumResidual,
     equilibriumStatus,
     equilibriumOk: equilibriumStatus === 'PASS',
+    designBlocked: equilibriumStatus !== 'PASS',
+    equilibriumFailureReason: equilibriumStatus === 'PASS' ? null : independentFailure || 'EQUILIBRIUM_LIMIT_EXCEEDED',
   };
 }
 

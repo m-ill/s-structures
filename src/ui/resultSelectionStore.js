@@ -32,6 +32,8 @@ export function normalizeResultSelection(input = {}) {
   return {
     activeCaseId: nullable(input.activeCaseId),
     activeResultId: nullable(input.activeResultId),
+    selectedComboId: nullable(input.selectedComboId),
+    inputHash: nullable(input.inputHash),
     response: nullable(input.response),
     component: nullable(input.component),
     modeOrStep: input.modeOrStep ?? null,

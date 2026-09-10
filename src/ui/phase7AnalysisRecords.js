@@ -80,13 +80,11 @@ export function recordPhase7AnalysisAttempt(target, model, analysisCase, result,
   else target.__SStructuresAnalysisResults[caseId] = publishedResult;
 
   if (record.runStatus === 'ok') {
-    target.SStructuresResultSelection.set({ activeCaseId: caseId, activeResultId: record.id }, 'analysis-run');
+    target.SStructuresResultSelection.set({ activeCaseId: caseId, activeResultId: record.id, selectedComboId: null, inputHash: options.workflowInputIdentity?.inputHash || null }, 'analysis-run');
   } else {
-    const currentSelection = target.SStructuresResultSelection.getState();
-    const retainedResultId = previousSuccessful?.id || previousPublished?.runRecordId || null;
     target.SStructuresResultSelection.set({
       activeCaseId: caseId,
-      activeResultId: retainedResultId || (currentSelection.activeCaseId === caseId ? currentSelection.activeResultId : null),
+      activeResultId: null, selectedComboId: null,
     }, 'analysis-run-failed');
   }
   return { version: PHASE7_ANALYSIS_RECORDS_VERSION, result: publishedResult, record, retainedResult, previousSuccessful };

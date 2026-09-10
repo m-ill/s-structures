@@ -1,0 +1,49 @@
+import assert from 'node:assert/strict';
+import { Worker as NodeWorker } from 'node:worker_threads';
+import { createElasticAnalysisService } from '../src/compute/product/elasticAnalysisService.js';
+import { p9M1CantileverModel } from './helpers/p9M1Fixture.mjs';
+import { buildElasticResultViewModel } from '../src/ui/elasticResultVisualization.js';
+import { buildAnalysisCaseResultView } from '../src/ui/indexResultViews.js';
+import { createResultSelectionStore } from '../src/ui/resultSelectionStore.js';
+import { installIndexEngineBridge } from '../src/ui/indexBridge.js';
+import { latestDisplayResult } from '../src/ui/resultSelectionProjection.js';
+const model=p9M1CantileverModel();
+model.loadCombinations=Array.from({length:20},(_,i)=>({id:`C${i+1}`,name:`C${i+1}`,type:'service',factors:{W:i+1}}));
+const service=createElasticAnalysisService({worker:{workerFactory:(url,opts)=>new NodeWorker(url,opts)}});
+const all=await service.run(model,{runId:'all',retainDetailedCombinations:true});
+assert.equal(all.execution.solveCount,20);assert.equal(Object.keys(all.result.byCombo).length,20);
+const one=await service.run(model,{runId:'one',settings:{comboId:'C2'}});
+assert.equal(one.execution.solveCount,1);assert.deepEqual(Object.keys(one.result.byCombo),['C2']);
+assert.equal(one.result.byCombo.C2.dmax,all.result.byCombo.C2.dmax);
+await assert.rejects(service.run(model,{settings:{comboId:'absent'}}),{code:'ELASTIC_COMBINATION_NOT_FOUND'});
+await service.dispose();
+const analysisCase={id:'ONE',kind:'static',name:'Selected C2',settings:{comboId:'C2'}};
+const result={kind:'static',caseId:'ONE',ok:true,status:'ok',settings:analysisCase.settings,payload:all.result};
+const view=buildElasticResultViewModel(model,analysisCase,result);
+assert.equal(view.selection.comboId,'C2');
+const shown=view.metrics.find(x=>x.label==='최대 변위').value;assert.match(shown,/ mm$/);assert.ok(Math.abs(parseFloat(shown)-all.result.byCombo.C2.dmax*1000)<=0.005);
+const selectionStore=createResultSelectionStore({selectedComboId:'C1'});
+const canvas=buildAnalysisCaseResultView(model,result,{selectionStore});
+assert.equal(canvas.overlayData.visuals.maxDisplacement,all.result.byCombo.C1.dmax);
+const missing=buildElasticResultViewModel(model,analysisCase,result,{selectedComboId:'absent'});
+assert.equal(missing.resultAvailable,false);assert.equal(missing.structuralPreview,null);
+for(const status of ['failed','running','cancelled','stale','unsupported']) {
+ const bad={...result,status};
+ assert.equal(buildElasticResultViewModel(model,analysisCase,bad).structuralPreview,null);
+ assert.equal(buildAnalysisCaseResultView(model,bad).overlayData,null);
+}
+const workers=[];const previousWorker=globalThis.Worker;
+globalThis.Worker=class extends NodeWorker { constructor(url,opts){super(url,opts);workers.push(this);} };
+try {
+ model.analysisCases=[analysisCase];
+ const target={model:()=>model,location:{search:''},activeResult:()=>all.result.envelope};
+ const bridge=installIndexEngineBridge(target);
+ const job=bridge.startAnalysisRun({analysisCase});
+ await bridge.getProductAnalysisService().wait(job.id);
+ const published=bridge.getAnalysisLatestAttempt('ONE');
+ assert.deepEqual(Object.keys(published.payload.byCombo),['C2'],'actual indexBridge Worker request executes only the authored combo');
+ assert.equal(target.activeResult().dmax,one.result.byCombo.C2.dmax);
+ target.__SStructuresAnalysisLatestAttempts.ONE={...published,ok:false,status:'failed'};
+ assert.equal(target.activeResult(),null);assert.equal(latestDisplayResult(target,'ONE').status,'failed');
+} finally {globalThis.Worker=previousWorker;await Promise.all(workers.map(worker=>worker.terminate()));}
+console.log(JSON.stringify({ok:true,fullSolves:all.execution.solveCount,selectedSolves:one.execution.solveCount,actualIndexWorker:true,selectedDisplacement:one.result.byCombo.C2.dmax}));

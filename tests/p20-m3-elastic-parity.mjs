@@ -11,10 +11,24 @@ const contracts=JSON.parse(readFileSync('verification/specs/phase20/contracts.js
 const excluded=new Set(contracts.numericalComparison.executionOnlyKeys);
 // Phase21 adds constrained Direct support. Keep the archived numeric baseline
 // unchanged and allow only this explicit provenance version migration.
-assert.equal(PDELTA_DIRECT_PRODUCT_VERSION,'p21-m0-direct-pdelta-product-v4');
-function canonical(value){if(Array.isArray(value))return value.map(canonical);if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).filter(([k])=>!excluded.has(k)).map(([k,v])=>[k,k==='productVersion'&&v==='p21-m0-direct-pdelta-product-v4'?'p7-m8-direct-pdelta-product-v3':canonical(v)]));return value;}
+assert.equal(PDELTA_DIRECT_PRODUCT_VERSION,'p21-m3-direct-pdelta-product-v5');
+function canonical(value){if(Array.isArray(value))return value.map(canonical);if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).filter(([k])=>!excluded.has(k)).map(([k,v])=>[k,k==='productVersion'&&v==='p21-m3-direct-pdelta-product-v5'?'p7-m8-direct-pdelta-product-v3':canonical(v)]));return value;}
+// Narrow migration of the two stale, pre-correction equilibrium status fields.
+// Every numerical value and all other qualification fields still compare exactly.
+function migrateKnownDirectStatus(value) {
+  if (Array.isArray(value)) return value.map(migrateKnownDirectStatus);
+  if (!value || typeof value !== 'object') return value;
+  const out=Object.fromEntries(Object.entries(value).map(([k,v])=>[k,migrateKnownDirectStatus(v)]));
+  if(out.equilibriumVersion==='p7-m8-direct-geometric-resultant-equilibrium-v2' && out.equilibriumStatus==='PASS') {
+    assert.equal(out.equilibriumOk,true);
+    assert.ok(out.equilibriumResidual<=out.equilibriumLimit);
+    assert.ok(out.equilibriumFailureReason===null || out.equilibriumFailureReason==='EQUILIBRIUM_LIMIT_EXCEEDED');
+    out.designBlocked=false;out.equilibriumFailureReason=null;
+  }
+  return out;
+}
 function difference(a,b,path='$'){if(typeof a!==typeof b)return path;if(a&&typeof a==='object'){const ak=Object.keys(a).sort(),bk=Object.keys(b||{}).sort();if(JSON.stringify(ak)!==JSON.stringify(bk))return path+'.keys';for(const k of ak){const d=difference(a[k],b[k],path+'.'+k);if(d)return d;}return null;}return Object.is(a,b)?null:path;}
 const fixtures=JSON.parse(readFileSync('verification/evidence/phase20/m0/fixtures.json'));
 const expected=JSON.parse(readFileSync('verification/evidence/phase20/m0/elastic-results.json'));
-for(const fixture of fixtures){const result=facade.analyzeModel(fixture.model);assert.equal(typeof result?.then,'undefined');const actual=JSON.parse(JSON.stringify(result));const d=difference(canonical(actual),canonical(expected.find(r=>r.name===fixture.name).result));assert.equal(d,null,fixture.name+' differs at '+d);console.log('PASS exact elastic baseline '+fixture.name);}
+for(const fixture of fixtures){const result=facade.analyzeModel(fixture.model);assert.equal(typeof result?.then,'undefined');const actual=JSON.parse(JSON.stringify(result));const d=difference(canonical(actual),canonical(migrateKnownDirectStatus(expected.find(r=>r.name===fixture.name).result)));assert.equal(d,null,fixture.name+' differs at '+d);console.log('PASS exact elastic baseline '+fixture.name);}
 console.log('PASS P20 public exports, sync API, deterministic numerical and qualification fields; explicit P21 Direct product-version migration');

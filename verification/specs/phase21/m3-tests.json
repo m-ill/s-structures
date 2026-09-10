@@ -1,0 +1,15 @@
+{
+  "scope": "Phase21 M3 execution, selection, equilibrium status and regressions",
+  "tests": [
+    "tests/p21-m3-execution-selection.mjs",
+    "tests/p21-m0-rigid-direct.mjs",
+    "tests/p7-m11-elastic-result-popup.mjs",
+    "tests/p5-result-case-views.mjs",
+    "tests/p9-m3-worker-product.mjs",
+    "tests/p9-m3-elastic-runtime.mjs",
+    "tests/p20-m3-elastic-parity.mjs",
+    "tests/p7-m11-ui-run-records.mjs",
+    "tests/p19-m3-design-workflow.mjs",
+    "tests/p19-m4-webmcp-workflow.mjs"
+  ]
+}

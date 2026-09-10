@@ -1,3 +1,4 @@
+import { latestDisplayResult } from './resultSelectionProjection.js';
 import {
   ANALYSIS_CASE_KINDS,
 } from '../core/analysisCase.js';
@@ -72,6 +73,7 @@ export function installIndexAnalysisCenter(target = globalThis, options = {}) {
       const selectedResult = target.__SStructuresAnalysisResults?.[state.selectedCaseId] || null;
       selectionStore.set?.({
         activeCaseId: state.selectedCaseId,
+        selectedComboId: null,
         activeResultId: selectedResult?.runRecordId || null,
         modeOrStep: 0,
       }, 'analysis-center');
@@ -152,8 +154,9 @@ export function installIndexAnalysisCenter(target = globalThis, options = {}) {
       state.resultViewIndex = 0;
       selectionStore.set?.({
         activeCaseId: state.selectedCaseId,
+        selectedComboId: null,
         activeResultId: result?.status === 'failed'
-          ? selectionStore.getState?.().activeResultId || null
+          ? null
           : result?.runRecordId || null,
         modeOrStep: 0,
       }, 'analysis-center');
@@ -218,7 +221,7 @@ export function buildAnalysisCenterState(target = globalThis, state = {}) {
   const selectedCaseId = selection.activeCaseId || state.selectedCaseId;
   const selectedIndex = Math.max(0, Math.trunc(Number(selection.modeOrStep ?? state.resultViewIndex) || 0));
   const selected = cases.find((item) => item.id === selectedCaseId) || cases[0] || null;
-  const selectedResult = selected ? results[selected.id] || null : null;
+  const selectedResult = selected ? latestDisplayResult(target, selected.id) : null;
   const latestAttempt = selected ? latestAttempts[selected.id] || selectedResult : null;
   const resultView = selected ? buildAnalysisCaseResultView(model || {}, selectedResult, { index: selectedIndex, selectionStore }) : null;
   const runStore = target?.__SStructuresAnalysisRunStore || { attempts: {} };
@@ -572,7 +575,7 @@ function resultSwitchPane(doc, target, state, cases, selected) {
   selectWrap.appendChild(select);
   pane.appendChild(selectWrap);
 
-  const result = selected ? target.__SStructuresAnalysisResults?.[selected.id] || null : null;
+  const result = selected ? latestDisplayResult(target, selected.id) : null;
   const selectionStore = target.SStructuresResultSelection;
   const selection = selectionStore?.getState?.() || {};
   const selectedIndex = Math.max(0, Math.trunc(Number(selection.modeOrStep ?? state.resultViewIndex) || 0));

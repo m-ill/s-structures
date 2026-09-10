@@ -519,6 +519,7 @@ function runUiAnalysis(target) {
 
 function pickActiveResult(target, analysis) {
   const active = typeof target?.activeResult === 'function' ? target.activeResult() : null;
+  if (target.SStructuresResultSelection?.getState?.().activeCaseId) return active;
   return active || analysis?.pDelta?.envelope || analysis?.envelope || Object.values(analysis?.byCombo || {})[0] || null;
 }
 

@@ -1,3 +1,4 @@
+import { selectStaticResult, latestDisplayResult, resultCanDisplay } from './resultSelectionProjection.js';
 import { createResultPreparationBuilders } from '../compute/product/resultPreparationBuilders.js';
 import { createWorkflowInputIdentity } from '../core/workflowIdentity.js';
 import { stableHash } from '../core/stableHash.js';
@@ -170,7 +171,16 @@ export function installIndexEngineBridge(target = globalThis) {
   let designInputResultsStale = false;
   const previousActiveResult = target.activeResult;
   if (typeof previousActiveResult === 'function') {
-    target.activeResult = (...args) => designInputResultsStale ? null : previousActiveResult.apply(target, args);
+    target.activeResult = (...args) => {
+      if (designInputResultsStale) return null;
+      const selection = target.SStructuresResultSelection?.getState?.();
+      if (selection?.activeCaseId) {
+        const selected = latestDisplayResult(target, selection.activeCaseId);
+        if (!resultCanDisplay(selected) || selected.kind !== 'static') return null;
+        return selectStaticResult(selected.payload, selection.selectedComboId || selected.settings?.comboId).result;
+      }
+      return previousActiveResult.apply(target, args);
+    };
   }
   const workflowResults = createWorkflowResultStore();
   target.SStructuresWorkflowResults = workflowResults;

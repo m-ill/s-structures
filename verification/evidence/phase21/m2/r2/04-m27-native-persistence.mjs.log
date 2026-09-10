@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "version": "p8-m0-native-persistence-v5",
+  "nodes": 8,
+  "members": 8,
+  "loads": 2,
+  "autosaveKey": "s-structures-autosave-v5"
+}
+
+
