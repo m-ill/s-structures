@@ -42,3 +42,11 @@ Node.js 24에서 `node server/main.mjs 5173` 실행 후 지원 브라우저로 `
 
 현재 개발 브랜치는 36개 도구를 제공한다. 기존 27개 탄성 workflow에 비선형 케이스·힌지 preview/apply·페이지 조회·이력·실패 진단·pause/resume 9개를 추가했다. 공통 분석 도구로 production Pushover/NLTH를 실행한다. [호출 순서·지원 범위·잔여 자격](phase19/M5_M10_CANDIDATE.md)을 확인한다. 성공한 비선형 결과도 candidate이며 최종설계 전달은 차단된다.
 
+
+## Phase21 로컬 후보 — 40개 도구와 원본 단위
+
+아직 main/Pages 배포 완료가 아니다. 40개 도구에는 완료 결과·보고서의 체크포인트 저장/검사/복원 및 새 report handle 발급이 추가된다. 실행·배포 상태는 phase21/IMPLEMENTATION_STATUS.md를 따른다.
+
+`get_result_slice`는 원본 숫자를 변환하지 않는다. 정적/Direct 결과의 `dmax`, `dmaxM`, 절점 병진변위는 **m**이고 화면은 mm로 표시할 수 있다. 예: 원본0.009505956 m = 화면9.505956 mm. 응답의 `units`/`rawResultUnits`/`solverUnitPolicy`는 원본 단위를, `displayUnits`는 모델 표시 단위를 설명한다.
+
+`unitContract`는 version, path, valueUnit 또는 componentUnits와 valuesRescaled=false를 제공한다. 6자유도 변위는 m,m,m,rad,rad,rad이며 반력은 kN,kN,kN,kN.m,kN.m,kN.m이다. 혼합 레코드·미인식 필드에는 fieldMetadataRequired=true가 붙는다. 모달 정규화 벡터 등은 임의로 mm/m를 붙이지 않고 해당 필드 단위 계약을 확인해야 한다. 초기 UI 표시용 단위 안내를 원본 변위에 붙이던 오류를 수정한 계약이다.

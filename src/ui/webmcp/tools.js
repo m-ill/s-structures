@@ -4,6 +4,7 @@ import { createNonlinearTools } from './nonlinearTools.js';
 import { finiteJson } from '../../modeling/designInputCommands.js';
 import { stableHash } from '../../core/stableHash.js';
 import { SOLVER_UNIT_POLICY } from '../../core/units.js';
+import { resultSliceUnits } from './resultUnits.js';
 
 export const WEBMCP_VERSION = 'sstructures-webmcp-v2';
 const KINDS = ['static', 'modal', 'responseSpectrum', 'buckling', 'linearTha'];
@@ -151,7 +152,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
       if (!info.status.resultAvailable) fail('RESULT_NOT_READY', 'No result is available. Check analysis status.');
       const slice = agent.getAnalysisResultSlice({ jobId, query: { path, limit } });
       if (slice.data === undefined) fail('RESULT_PATH_NOT_FOUND', 'Result path is unavailable for this case. Start with summary.');
-      return { ...info, slice, externalQualification: 'NOT_CLAIMED' };
+      return { ...info, ...resultSliceUnits(info.status.kind,path,info.units), slice, externalQualification: 'NOT_CLAIMED' };
     }),
     tool('cancel_analysis', 'Request cancellation of one analysis job started by this page session. Completed results are retained.', object({ jobId: id }, ['jobId']), false, ({ jobId }) => {
       if(nonlinear.owns(jobId))return nonlinear.cancel(jobId);

@@ -131,3 +131,9 @@ Node 실제 Worker pilot r1은 증거 추출 DTO 경로와 동일 조합 중복 
 - 패키지Chrome에서 statusTxt 접근성 이름이 최초3.38mm로 고정되고 화면은4.73mm로 갱신되는 불일치를 확인. statusTxt는 숫자 aria-label을 고정하지 않고 현재 텍스트를 role=status로 제공한다. 복원도 오래된 aria-label을 제거한다.
 - 결과 ribbon 조회는 선택한 사용자 정의 case를 먼저 사용하고, 같은 종류의 기존 결과를 찾도록 보강. canonical run-all 생성 규칙은 그대로여서 사용자 case 설정을 덮어쓰지 않는다.
 - p21-m3 실제Worker/사용자case선택/상태레이블, p7-m11 탄성UI, checkpoint segments3개 집중 검증 PASS. solver/Worker/해석 설정 모듈 변경 없음. 진행 중 중간 규모 브라우저 시험은 시작 시 로드한823591f 모듈을 사용하며 새UI 후보의 전체 자격으로 소급하지 않는다.
+
+## 2026-09-11 M6 원본 단위 조회 오류 수정
+
+- 실제 native start_analysis→get_result_slice에서 Direct 원본dmax0.009505956274493006에 units.displacement=mm가 붙는1,000배 오독 가능성을 재현했다. 원본 값은m이며 UI는9.505956mm이다.
+- get_result_slice에 원본 단위/표시 단위를 분리하고 경로별 scalar/vector 단위 계약을 추가했다. 값은 변환하지 않는다. 혼합 레코드와 미인식/모달 필드는 임의의 단위를 추정하지 않고 field metadata 필요로 반환한다. 비선형의 기존 원본 단위 계약은 그대로 유지했다.
+- 실제 solver 원본과 조회 값 동일, dmax=m, 표시mm,6DOF 병진/회전 단위 구분, 비선형 계약과M3회귀3개 PASS. solver/Worker 수치 코드는 변경하지 않았다.
