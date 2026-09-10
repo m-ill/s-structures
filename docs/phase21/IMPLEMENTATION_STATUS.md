@@ -41,3 +41,11 @@ M0 증거: [고정 후보 회귀](../../verification/evidence/phase21/m0/r1/vali
 M5 단일 작은 저장 시험 통과 뒤 M6 full pilot에서 저장 예산 초과를 실제 재현했다. 전체 복제 경로를 v2 원자적 분할 저장과 immutable 복원으로 수정했고, 전체 회귀 124/124 및 실제 IndexedDB 재검증으로 확인했다. 최초 실패와 이후 통과를 각각 m6-full-r1/r2, browser-r1/r2에 보존한다. [시험 보고서](PILOT_RETEST_REPORT.md)는 별도 검증 PDF이며 제품 자동 PDF는 BLOCKED다.
 
 M7 CI는 Phase21 전체 목록을 Windows/Ubuntu에서 실행하도록 준비하고 Pages에 명시적 release gate를 추가한다. 필수 검증이 미충족인 상태에서 main을 병합해 배포하지 않는다.
+
+## 2026-09-11 후속 후보 823591f
+
+중간 규모 정적 case의 암묵적 동적 해석으로 결과 등록이 실패함을 재현하고 실행 범위를 수정했다. Node FIRST/Direct 등록 PASS, peak managed125063936 bytes, maxRSS1146408 KiB. Direct는 약5분이 걸리고 진행 통지 공백이 남아 응답성·메모리 자격과 단순 완료를 구분한다. 실제 IAB 예열3회/측정5회 반복은 진행 중이다.
+
+같은 후보 Node pilot r5에서22회·원본3포맷·저장복원 PASS. 이전 r4와 변위/반력/부재력66개 묶음 해시 동일. 823591f 전체 회귀는 m6-full-r3로 수행한다. 기존78e8e5a IAB와124/124 증거를 새 후보의 동일 버전 검증으로 소급하지 않는다.
+
+M7은 공개 push 자동 승인 거부와 M6 잔여 gate로 BLOCKED. Windows의 WSL 배포판 목록이 비어 있어 로컬 Ubuntu 결과도 없다. 원격 CI 결과는 실제 실행 전까지 미실행이다.

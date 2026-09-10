@@ -38,6 +38,14 @@ M6 r2: 52,488,161 bytes 저장 및 reload 후 복원 성공. 저장 hash: 9bcd63
 
 복원 뒤 샘플 조합 목록과 상태 문구가 남는 UI 문제도 발견했다. 복원 시 조합 목록 재구성, 상태 초기화, 복원 review 연결을 수정했다. 커스텀 케이스는 해석 케이스 선택기로 확인한다.
 
+## 중간 규모 결함과 후속 후보
+
+후속 후보 823591f에서는 정적 케이스가 암묵적으로 modal/RSA까지 실행하던 경로를 분리했다. 125절점 모델의 dynamics 결과만 206,636,022 bytes였고 catalog 등록 시 복사본과 겹쳐 관리 예산을 초과했다. 실패 원인은 계산 비수렴이 아닌 결과 등록이다.
+
+수정 후 Node 중간 규모 1차와 Direct 모두 등록 성공. 전체 324.04초, 관리 데이터 peak 125,063,936 bytes. 프로세스 최대 RSS 1,146,408 KiB는 관리 ledger와 다른 값이며, 동시 시험이 있어 성능 인증 수치가 아니다. Direct 진행 통지가 수분간 끊기는 문제는 추가 검토 대상이다.
+
+같은 후보의 Node 상가주택 r5도 22회 해석·보고서 전체 SHA·저장·복원 통과. r4와 변위·반력·부재력 66개 비어 있지 않은 데이터 묶음의 SHA가 동일했다. IAB r1/r2는 이전 후보 기록이며 r3는823591f의 복원·3회 재해석·61MB 재저장/재열기 기록이다. 이들을 새 후보의 전체 Chrome 비교로 소급하지 않는다.
+
 ## 보고서와 메모리 관측
 
 실제 복원된 UI에서 HTML·JSON·CSV를 내려받아 native WebMCP artifact manifest의 전체 SHA-256과 일치함을 확인했다. download 이벤트는 timeout이었지만 실제 다운로드 파일은 존재했고 바이트와 hash를 검증했다.
@@ -149,3 +157,27 @@ Node 제품 Worker 전체 pilot r4: 저장/복원 후 입력 hash와 세 원본 
 ### m6-browser-r2-013-idb-atomic
 
 ![실제 화면](../../verification/evidence/phase21/m6/browser/m6-browser-r2-013-idb-atomic.png)
+
+### m6-browser-r2-015-medium-result
+
+![실제 화면](../../verification/evidence/phase21/m6/browser/m6-browser-r2-015-medium-result.png)
+
+### m6-browser-r2-016-medium-start
+
+![실제 화면](../../verification/evidence/phase21/m6/browser/m6-browser-r2-016-medium-start.png)
+
+### m6-browser-r2-017-chrome-medium-failure
+
+![실제 화면](../../verification/evidence/phase21/m6/browser/m6-browser-r2-017-chrome-medium-failure.png)
+
+### m6-browser-r3-001-restore
+
+![실제 화면](../../verification/evidence/phase21/m6/browser/m6-browser-r3-001-restore.png)
+
+### m6-browser-r3-004-rerun
+
+![실제 화면](../../verification/evidence/phase21/m6/browser/m6-browser-r3-004-rerun.png)
+
+### m6-browser-r3-006-restore
+
+![실제 화면](../../verification/evidence/phase21/m6/browser/m6-browser-r3-006-restore.png)

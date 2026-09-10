@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "projectId": "TP4392-PILOT-01",
+  "sha256": "d6465aaa4ee2cfd5d71388de730e1d48371e656441a72051db9a603429e35d01",
+  "byteLength": 52489614,
+  "savedAt": "2026-09-10T15:23:50.736Z",
+  "durable": true,
+  "designRunIds": [
+    "design-1"
+  ],
+  "interruptedJobs": []
+}

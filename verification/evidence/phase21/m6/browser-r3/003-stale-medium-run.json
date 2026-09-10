@@ -1,0 +1,281 @@
+{
+  "ok": false,
+  "rows": [],
+  "error": "{\"ok\":false,\"status\":\"failed\",\"version\":\"p21-m4-elastic-review-v2\",\"steps\":[{\"caseId\":\"M-FIRST\",\"kind\":\"static\",\"prerequisites\":[],\"combinationId\":null,\"internalPreprocessing\":null,\"designDemandMapping\":\"elastic-static-or-pdelta\",\"ok\":false,\"jobId\":\"analysis-1789053718952-1\",\"analysisRunId\":null,\"code\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"error\":{\"code\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"message\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"details\":{\"owner\":\"analysis-catalog:1\",\"requestedBytes\":226735948,\"totalBytes\":227446026,\"maxBytes\":268435456}}},{\"caseId\":\"M-DIRECT\",\"kind\":\"static\",\"prerequisites\":[],\"combinationId\":null,\"internalPreprocessing\":null,\"designDemandMapping\":\"elastic-static-or-pdelta\",\"ok\":false,\"jobId\":\"analysis-1789053792575-2\",\"analysisRunId\":null,\"code\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"error\":{\"code\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"message\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"details\":{\"owner\":\"analysis-catalog:1\",\"requestedBytes\":258594686,\"totalBytes\":259744336,\"maxBytes\":268435456}}}],\"sourceAnalysisRunIds\":[],\"inputIdentity\":{\"inputIdentityVersion\":\"p19-input-v1\",\"modelHash\":\"51ce55bd70f5f14f81c24a2ced1b78d69658b0308229dcc0954ed47f6bc2bb5f\",\"analysisCaseHash\":\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\"settingsHash\":\"5433fca8da4f8323d61ee83ceff0c784e3024ed0ff464fdc66ea9424e49a6808\",\"designBasisHash\":\"04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52\",\"materialsHash\":\"621796eb98799160b41f6d58cd23e62fdb43026f9aa2f20e662a3488d4709b5d\",\"sectionsHash\":\"016705c1da3507628906869bc44ab69fa978de7da41abbb11db34455d45b26bc\",\"rulePackHash\":\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\"buildHash\":\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\"inputHash\":\"bd45090aa807f1a3103367af2c5e9ed566d3bdddb0d3d4b4f94da67d32e77c91\",\"buildBound\":false,\"rulePackBound\":false},\"currentJobId\":null}",
+  "jobs": [
+    {
+      "version": "p9-m9-product-job-v1",
+      "serviceVersion": "p9-m9-product-analysis-service-v1",
+      "id": "analysis-1789053718952-1",
+      "sequence": 1,
+      "caseId": "M-FIRST",
+      "kind": "static",
+      "status": "failed",
+      "stage": "failed",
+      "progress": 1,
+      "progressMessage": "MANAGED_MEMORY_BUDGET_EXCEEDED",
+      "createdAt": "2026-09-10T15:21:58.972Z",
+      "startedAt": "2026-09-10T15:21:58.981Z",
+      "completedAt": "2026-09-10T15:23:12.564Z",
+      "predecessorJobId": null,
+      "resultAvailable": false,
+      "resultSummary": {
+        "ok": true,
+        "designBlocked": false,
+        "designBlockReason": null,
+        "designEligibility": {
+          "eligible": true,
+          "status": "qualified",
+          "reason": null,
+          "limitationCodes": [],
+          "source": "linear-static-envelope"
+        },
+        "shellFemQualification": {
+          "status": "qualified",
+          "designTransferAllowed": true,
+          "blockers": [],
+          "byCombo": [
+            {
+              "comboId": "DW",
+              "elementCount": 0,
+              "expectedElementCount": 0,
+              "qualificationStatus": "qualified",
+              "designTransferAllowed": true,
+              "blockers": []
+            }
+          ],
+          "equivalentShellCount": 0
+        },
+        "comboCount": 1,
+        "comboIds": [
+          "DW"
+        ],
+        "hasEnvelope": true,
+        "pDelta": false,
+        "pDeltaMethod": "off"
+      },
+      "error": {
+        "code": "MANAGED_MEMORY_BUDGET_EXCEEDED",
+        "message": "MANAGED_MEMORY_BUDGET_EXCEEDED",
+        "details": {
+          "owner": "analysis-catalog:1",
+          "requestedBytes": 226735948,
+          "totalBytes": 227446026,
+          "maxBytes": 268435456
+        }
+      },
+      "publication": null,
+      "settingsHash": "a4979ce20ff3c52ff2dc62fd50f9f8db41bba7543b0087a801dcc6524ee640ff",
+      "planHash": "cf956d8cd5800b04081c850b6cfa7ea190df6afbae9753757a461108a1810d15",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "operationRoute": {
+        "operation": "elasticStatic",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "backendId": "cpu-f64-linear3d",
+        "precision": "f64",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "reason": "Explicit qualified CPU f64 route."
+      },
+      "qualification": "production-cpu-f64",
+      "designBlocked": false,
+      "productProvenance": {
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "planHash": "cf956d8cd5800b04081c850b6cfa7ea190df6afbae9753757a461108a1810d15",
+        "settingsHash": "a4979ce20ff3c52ff2dc62fd50f9f8db41bba7543b0087a801dcc6524ee640ff",
+        "modelHash": "51ce55bd70f5f14f81c24a2ced1b78d69658b0308229dcc0954ed47f6bc2bb5f",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "operationRoute": {
+          "operation": "elasticStatic",
+          "requestedTarget": "cpu",
+          "executedTarget": "cpu",
+          "backendId": "cpu-f64-linear3d",
+          "precision": "f64",
+          "fallbackPolicy": "forbidden",
+          "fallbackUsed": false,
+          "reason": "Explicit qualified CPU f64 route."
+        },
+        "correction": "not-required-cpu-f64",
+        "audit": "cpu-f64-equilibrium-and-result-audit",
+        "qualification": "production-cpu-f64",
+        "designBlocked": false,
+        "externalRuntimeUsed": null,
+        "networkFallbackUsed": null,
+        "executionProvenance": null
+      },
+      "progressEvents": [
+        {
+          "at": "2026-09-10T15:21:59.467Z",
+          "value": 0.03,
+          "stage": "contract-ready"
+        },
+        {
+          "at": "2026-09-10T15:22:00.471Z",
+          "value": 0.8,
+          "stage": "combination-complete",
+          "comboId": "DW",
+          "combinationIndex": 0,
+          "combinationCount": 1
+        },
+        {
+          "at": "2026-09-10T15:22:00.472Z",
+          "value": 0.85,
+          "stage": "recovery-envelope-design-audit"
+        },
+        {
+          "at": "2026-09-10T15:22:03.967Z",
+          "value": 1,
+          "stage": "complete"
+        }
+      ]
+    },
+    {
+      "version": "p9-m9-product-job-v1",
+      "serviceVersion": "p9-m9-product-analysis-service-v1",
+      "id": "analysis-1789053792575-2",
+      "sequence": 2,
+      "caseId": "M-DIRECT",
+      "kind": "static",
+      "status": "failed",
+      "stage": "failed",
+      "progress": 1,
+      "progressMessage": "MANAGED_MEMORY_BUDGET_EXCEEDED",
+      "createdAt": "2026-09-10T15:23:12.586Z",
+      "startedAt": "2026-09-10T15:23:12.595Z",
+      "completedAt": "2026-09-10T15:28:39.811Z",
+      "predecessorJobId": null,
+      "resultAvailable": false,
+      "resultSummary": {
+        "ok": true,
+        "designBlocked": false,
+        "designBlockReason": null,
+        "designEligibility": {
+          "eligible": true,
+          "status": "qualified-with-limitation",
+          "reason": null,
+          "limitationCodes": [
+            "TIMOSHENKO_CONSISTENT_KG_NOT_IMPLEMENTED"
+          ],
+          "source": "direct-pdelta-envelope"
+        },
+        "shellFemQualification": {
+          "status": "qualified",
+          "designTransferAllowed": true,
+          "blockers": [],
+          "byCombo": [
+            {
+              "comboId": "DW",
+              "elementCount": 0,
+              "expectedElementCount": 0,
+              "qualificationStatus": "qualified",
+              "designTransferAllowed": true,
+              "blockers": []
+            }
+          ],
+          "equivalentShellCount": 0
+        },
+        "comboCount": 1,
+        "comboIds": [
+          "DW"
+        ],
+        "hasEnvelope": true,
+        "pDelta": true,
+        "pDeltaMethod": "direct"
+      },
+      "error": {
+        "code": "MANAGED_MEMORY_BUDGET_EXCEEDED",
+        "message": "MANAGED_MEMORY_BUDGET_EXCEEDED",
+        "details": {
+          "owner": "analysis-catalog:1",
+          "requestedBytes": 258594686,
+          "totalBytes": 259744336,
+          "maxBytes": 268435456
+        }
+      },
+      "publication": null,
+      "settingsHash": "a613f63f79b9b330980baef02575b16f63404718983f73efb689511f71061036",
+      "planHash": "7d928e24b98621cec9d155b1c5af32e65dd37362908aa2e787d0a0778c02df9b",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "operationRoute": {
+        "operation": "elasticStatic",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "backendId": "cpu-f64-linear3d",
+        "precision": "f64",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "reason": "Explicit qualified CPU f64 route."
+      },
+      "qualification": "production-cpu-f64",
+      "designBlocked": false,
+      "productProvenance": {
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "planHash": "7d928e24b98621cec9d155b1c5af32e65dd37362908aa2e787d0a0778c02df9b",
+        "settingsHash": "a613f63f79b9b330980baef02575b16f63404718983f73efb689511f71061036",
+        "modelHash": "51ce55bd70f5f14f81c24a2ced1b78d69658b0308229dcc0954ed47f6bc2bb5f",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "operationRoute": {
+          "operation": "elasticStatic",
+          "requestedTarget": "cpu",
+          "executedTarget": "cpu",
+          "backendId": "cpu-f64-linear3d",
+          "precision": "f64",
+          "fallbackPolicy": "forbidden",
+          "fallbackUsed": false,
+          "reason": "Explicit qualified CPU f64 route."
+        },
+        "correction": "not-required-cpu-f64",
+        "audit": "cpu-f64-equilibrium-and-result-audit",
+        "qualification": "production-cpu-f64",
+        "designBlocked": false,
+        "externalRuntimeUsed": null,
+        "networkFallbackUsed": null,
+        "executionProvenance": null
+      },
+      "progressEvents": [
+        {
+          "at": "2026-09-10T15:23:12.860Z",
+          "value": 0.03,
+          "stage": "contract-ready"
+        },
+        {
+          "at": "2026-09-10T15:23:13.880Z",
+          "value": 0.8,
+          "stage": "combination-complete",
+          "comboId": "DW",
+          "combinationIndex": 0,
+          "combinationCount": 1
+        },
+        {
+          "at": "2026-09-10T15:23:13.880Z",
+          "value": 0.85,
+          "stage": "recovery-envelope-design-audit"
+        },
+        {
+          "at": "2026-09-10T15:27:41.036Z",
+          "value": 1,
+          "stage": "complete"
+        }
+      ]
+    }
+  ],
+  "resource": {
+    "version": "p21-managed-memory-v1",
+    "accounting": "conservative-retained-data-estimate",
+    "maxBytes": 268435456,
+    "totalBytes": 1300416,
+    "peakBytes": 259744336,
+    "owners": {
+      "live-model": 413952,
+      "workflow-plans:9": 4208,
+      "review-requests:10": 3092,
+      "analysis-jobs:14": 879164
+    }
+  },
+  "stack": "Error: {\"ok\":false,\"status\":\"failed\",\"version\":\"p21-m4-elastic-review-v2\",\"steps\":[{\"caseId\":\"M-FIRST\",\"kind\":\"static\",\"prerequisites\":[],\"combinationId\":null,\"internalPreprocessing\":null,\"designDemandMapping\":\"elastic-static-or-pdelta\",\"ok\":false,\"jobId\":\"analysis-1789053718952-1\",\"analysisRunId\":null,\"code\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"error\":{\"code\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"message\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"details\":{\"owner\":\"analysis-catalog:1\",\"requestedBytes\":226735948,\"totalBytes\":227446026,\"maxBytes\":268435456}}},{\"caseId\":\"M-DIRECT\",\"kind\":\"static\",\"prerequisites\":[],\"combinationId\":null,\"internalPreprocessing\":null,\"designDemandMapping\":\"elastic-static-or-pdelta\",\"ok\":false,\"jobId\":\"analysis-1789053792575-2\",\"analysisRunId\":null,\"code\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"error\":{\"code\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"message\":\"MANAGED_MEMORY_BUDGET_EXCEEDED\",\"details\":{\"owner\":\"analysis-catalog:1\",\"requestedBytes\":258594686,\"totalBytes\":259744336,\"maxBytes\":268435456}}}],\"sourceAnalysisRunIds\":[],\"inputIdentity\":{\"inputIdentityVersion\":\"p19-input-v1\",\"modelHash\":\"51ce55bd70f5f14f81c24a2ced1b78d69658b0308229dcc0954ed47f6bc2bb5f\",\"analysisCaseHash\":\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\"settingsHash\":\"5433fca8da4f8323d61ee83ceff0c784e3024ed0ff464fdc66ea9424e49a6808\",\"designBasisHash\":\"04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52\",\"materialsHash\":\"621796eb98799160b41f6d58cd23e62fdb43026f9aa2f20e662a3488d4709b5d\",\"sectionsHash\":\"016705c1da3507628906869bc44ab69fa978de7da41abbb11db34455d45b26bc\",\"rulePackHash\":\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\"buildHash\":\"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b\",\"inputHash\":\"bd45090aa807f1a3103367af2c5e9ed566d3bdddb0d3d4b4f94da67d32e77c91\",\"buildBound\":false,\"rulePackBound\":false},\"currentJobId\":null}\n    at good (http://localhost:5174/tests/browser/p21-medium.html:16:32)\n    at HTMLDocument.<anonymous> (http://localhost:5174/tests/browser/p21-medium.html:21:14)"
+}

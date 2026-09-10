@@ -1,0 +1,3 @@
+{"ok":true,"registeredModules":22,"rawFindings":0,"publicCompatibilityBridge":[{"source":"src/solver/linear3d.js","target":"src/compute/product/elasticAnalysisWorkflow.js"}],"rawHistoricalPoliciesPreserved":4}
+
+

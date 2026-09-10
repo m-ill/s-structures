@@ -1,0 +1,337 @@
+{
+  "ok": true,
+  "baseline": "output/phase21/m6-pilot-node-r4",
+  "candidate": "output/phase21/m6-pilot-node-r5",
+  "checks": [
+    {
+      "caseId": "A-D-ONLY",
+      "field": "disp",
+      "sha256": "f55f8a4128af8b314fda0e0622bdc1365823fdd7f15b79f8fffcc47f53ddf363"
+    },
+    {
+      "caseId": "A-D-ONLY",
+      "field": "reactions",
+      "sha256": "2d640a0580a632fca85a18adb2266093c4f0ab31f7628f87f7a134c086e5df10"
+    },
+    {
+      "caseId": "A-D-ONLY",
+      "field": "memberResults",
+      "sha256": "73fb42cd51fa2deb29578023e7b43fe7d55387ec9266d540cf75dbeef69a66d4"
+    },
+    {
+      "caseId": "A-MAX-EX-N",
+      "field": "disp",
+      "sha256": "5edbae19f80dc1519504b15ebab5a00594f8c24c5fc747a635594d70e2659df4"
+    },
+    {
+      "caseId": "A-MAX-EX-N",
+      "field": "reactions",
+      "sha256": "66f83f9ad5634cc413b151589e0addea63cc9c3cf4064a1c9eb67b9c5b839084"
+    },
+    {
+      "caseId": "A-MAX-EX-N",
+      "field": "memberResults",
+      "sha256": "5cc38f78c1b8320ee47e8eee03a8a5093b0cd13b292d439686ca7edca7e9bec4"
+    },
+    {
+      "caseId": "A-MAX-EX-P",
+      "field": "disp",
+      "sha256": "9adfe7a54b638a5643876c6bf53cd28d735a5634dd93725d4557d70a22f8c2ed"
+    },
+    {
+      "caseId": "A-MAX-EX-P",
+      "field": "reactions",
+      "sha256": "9aabc7c1556f2f92957a07b578948f9eeb20529eb9f1f0054f4a5c48b1629227"
+    },
+    {
+      "caseId": "A-MAX-EX-P",
+      "field": "memberResults",
+      "sha256": "48ea7c916a45cfcf0f2e21b7a9911772d050ffd409ee7be4c329ee121d0350ba"
+    },
+    {
+      "caseId": "A-MAX-EY-N",
+      "field": "disp",
+      "sha256": "8442ed087d99c719ab45504b7129f9436eb9d8ec8879ce511a97ae2f0d99c94c"
+    },
+    {
+      "caseId": "A-MAX-EY-N",
+      "field": "reactions",
+      "sha256": "5abb9933e30d961b97e22ac430df58cf95487e5ffe75567633f4ca70247878f1"
+    },
+    {
+      "caseId": "A-MAX-EY-N",
+      "field": "memberResults",
+      "sha256": "0c1a1633f5c630e047ad771e7f682dfbb664eada0212212ebb6e4a4dfbe160d5"
+    },
+    {
+      "caseId": "A-MAX-EY-P",
+      "field": "disp",
+      "sha256": "e124639cbf11e8bf319aab680f87c9bf1a3b0e4ecbf59080cab6fa852f1d8831"
+    },
+    {
+      "caseId": "A-MAX-EY-P",
+      "field": "reactions",
+      "sha256": "6b33ca1d0695ce658e7de8009fc61ce54fe7c8b75983676cfdcd6811507876eb"
+    },
+    {
+      "caseId": "A-MAX-EY-P",
+      "field": "memberResults",
+      "sha256": "749f20d3205e9672dd3f34eff4412347a452bd63c72388c46d9576f0c51c2c11"
+    },
+    {
+      "caseId": "A-MAX-WX-N",
+      "field": "disp",
+      "sha256": "3efc8acaa3a63bd8b0b0520091c94b7bcf6aa1578e6d1deb7093d82f2e0d5751"
+    },
+    {
+      "caseId": "A-MAX-WX-N",
+      "field": "reactions",
+      "sha256": "df20b9dfb50f6c659e08d73e69cba2f5d233d074f173196d9c65d3f66fd9a756"
+    },
+    {
+      "caseId": "A-MAX-WX-N",
+      "field": "memberResults",
+      "sha256": "99178596fb03d4799c738231958d4cf7e90de80c857eac4cfeae331110d003c1"
+    },
+    {
+      "caseId": "A-MAX-WX-P",
+      "field": "disp",
+      "sha256": "6a9afbb00d46ef58fc8ac895b1525ea3fc8ab9e97344af37c64c8b9d35c29d1c"
+    },
+    {
+      "caseId": "A-MAX-WX-P",
+      "field": "reactions",
+      "sha256": "85f103f25de5ef96c20ca974e868b0ce7d67a9566517cb56ce693136d825ce43"
+    },
+    {
+      "caseId": "A-MAX-WX-P",
+      "field": "memberResults",
+      "sha256": "e5660d6b37cfd3c0d0ab2a2eebadc4a18ed1443aa9050410f614ef1f94bccafd"
+    },
+    {
+      "caseId": "A-MAX-WY-N",
+      "field": "disp",
+      "sha256": "c1589aa8ab956c6eabf99c6ab61f47efe23d124719bc4f646d5517981161ab87"
+    },
+    {
+      "caseId": "A-MAX-WY-N",
+      "field": "reactions",
+      "sha256": "da64133036a241f405c1a0f32d907a07bef1e98f0f1e7e0a869d07dc3c3b74b3"
+    },
+    {
+      "caseId": "A-MAX-WY-N",
+      "field": "memberResults",
+      "sha256": "8e41e13c4a555a6a304bc4df0bd9c6074f2e897c983381bd0ef531d62fc906ce"
+    },
+    {
+      "caseId": "A-MAX-WY-P",
+      "field": "disp",
+      "sha256": "877f7471e1f25903c7ea60c034abe95739f0590d279c96bc7897848424848115"
+    },
+    {
+      "caseId": "A-MAX-WY-P",
+      "field": "reactions",
+      "sha256": "666d48f617cab34116e48ef45611ca5a0763f218d6a50c7ba6d4fec27caf54e9"
+    },
+    {
+      "caseId": "A-MAX-WY-P",
+      "field": "memberResults",
+      "sha256": "7ebcc050f6547bf47449674853008da89d6e75d92cc7005f6c41bd9a8a3a5ef8"
+    },
+    {
+      "caseId": "A-MIN-EX-N",
+      "field": "disp",
+      "sha256": "74160fa60ae5feba7248b5fe9289ea3434d8e8014e3b3b8627a8b382382f5263"
+    },
+    {
+      "caseId": "A-MIN-EX-N",
+      "field": "reactions",
+      "sha256": "e7ebde8f21809ccc89dd286d57f8108535565d3edfd5136d3655ab05093e757d"
+    },
+    {
+      "caseId": "A-MIN-EX-N",
+      "field": "memberResults",
+      "sha256": "fc77c11c776daf2ae8f1e964daf1883c17ad515f0393b3f3d09c7ed0a89fd426"
+    },
+    {
+      "caseId": "A-MIN-EX-P",
+      "field": "disp",
+      "sha256": "c582ee29aa90334ca3631f602e49e04f42b909c9c95b353c87f8ce7f1923bf53"
+    },
+    {
+      "caseId": "A-MIN-EX-P",
+      "field": "reactions",
+      "sha256": "8fe436a733a3ee1204bd3923a5dc36130cdb4c1fa612a9e2a688e7853ab81f63"
+    },
+    {
+      "caseId": "A-MIN-EX-P",
+      "field": "memberResults",
+      "sha256": "6f60ef5c05fc26e093b08b35675d1bbdbfb21173184fa062a2749292695d2029"
+    },
+    {
+      "caseId": "A-MIN-EY-N",
+      "field": "disp",
+      "sha256": "a310ff4288da0542e4435eb1fea13288aeb66d55a630e9f1c5cca6a392064e52"
+    },
+    {
+      "caseId": "A-MIN-EY-N",
+      "field": "reactions",
+      "sha256": "aaa69c5add1c97c35ea388b48a3e94ceb6317ac61b7a9d969da94fbc68d5e8ca"
+    },
+    {
+      "caseId": "A-MIN-EY-N",
+      "field": "memberResults",
+      "sha256": "10776b11b227867c1bc3d0ed5800c0433149f47853f3465a40e2f2a382740c68"
+    },
+    {
+      "caseId": "A-MIN-EY-P",
+      "field": "disp",
+      "sha256": "2f2105b350ffd333b16912ce623f3ab8a1ecf546f899fdb5f6ba5a90985e2f5d"
+    },
+    {
+      "caseId": "A-MIN-EY-P",
+      "field": "reactions",
+      "sha256": "03274f37293a3dacb1a38206a062734e5b1d54a2b4b34dd39ad9c72571cc6a03"
+    },
+    {
+      "caseId": "A-MIN-EY-P",
+      "field": "memberResults",
+      "sha256": "421ece83aefe126eece7c59a879a48fa5b86f1eb7aed8f16bf403397b6c7c3a1"
+    },
+    {
+      "caseId": "A-MIN-WX-N",
+      "field": "disp",
+      "sha256": "b958df9e44c8d7661390805bf66410f1a1aa27c47038499517f151a97f0692d1"
+    },
+    {
+      "caseId": "A-MIN-WX-N",
+      "field": "reactions",
+      "sha256": "34519899dcba103816d0fc8a7501e782d2eb9f01f786afda04ca78539f313237"
+    },
+    {
+      "caseId": "A-MIN-WX-N",
+      "field": "memberResults",
+      "sha256": "f3cb0df6b6508bdfd43257ce8cb966cf9193f1fa9fb2c39f491164474d280a24"
+    },
+    {
+      "caseId": "A-MIN-WX-P",
+      "field": "disp",
+      "sha256": "3d87093efdd58dfc1a1c7b4fd8aeb1b86d1d3498e45be420b81925f3f6c575bc"
+    },
+    {
+      "caseId": "A-MIN-WX-P",
+      "field": "reactions",
+      "sha256": "e8d3e3dff1a2dee00dc84038ec49f797ead49babae38bfe54a275faf281b73eb"
+    },
+    {
+      "caseId": "A-MIN-WX-P",
+      "field": "memberResults",
+      "sha256": "00e976d46a37bea6b738d3aa00b497b31b432b6589a43eb0e209c389b4cc7250"
+    },
+    {
+      "caseId": "A-MIN-WY-N",
+      "field": "disp",
+      "sha256": "6cc51706b9e1100d93c5837874194eb5c5d7e92520b7ebc4269cb0af578bff78"
+    },
+    {
+      "caseId": "A-MIN-WY-N",
+      "field": "reactions",
+      "sha256": "a94cdf3af74af8bc06ea8ca3ffd0170131c33b36af241840b5b8fdab99d273cf"
+    },
+    {
+      "caseId": "A-MIN-WY-N",
+      "field": "memberResults",
+      "sha256": "7c1c9414080f7c41b0cade85b9145310dabf2fb35aaa44dd5a3f54920082663f"
+    },
+    {
+      "caseId": "A-MIN-WY-P",
+      "field": "disp",
+      "sha256": "e984c89818a3b5ccf7d62647f71c612e62ae8e9ce5c41b9b7f0946872e7ff0b0"
+    },
+    {
+      "caseId": "A-MIN-WY-P",
+      "field": "reactions",
+      "sha256": "8cee95ac8f1ca3fd3cc792be76567a54f6d7096496297bb8de73aab615b81a33"
+    },
+    {
+      "caseId": "A-MIN-WY-P",
+      "field": "memberResults",
+      "sha256": "0a9d80f37ad54f4e20df1df51d0d26b0e10d3461d41edbd49cc83386d6cf6ea3"
+    },
+    {
+      "caseId": "A-SLS-G",
+      "field": "disp",
+      "sha256": "ea2d01e825a75d090cba203428984aef10bd21e430018ff97bc1254699639cb6"
+    },
+    {
+      "caseId": "A-SLS-G",
+      "field": "reactions",
+      "sha256": "2df26fed343c4aebd3cd54e84ec6d9b469551c9407f6026e2f36a925cbc23f1a"
+    },
+    {
+      "caseId": "A-SLS-G",
+      "field": "memberResults",
+      "sha256": "b9284e8ce2ff2e59377fe8a38906b9d2e1eee3bc0ed0f1de22246d51eca1a4ea"
+    },
+    {
+      "caseId": "A-ULS-G1",
+      "field": "disp",
+      "sha256": "9d10ae4ff251c44818800901944eb71e739b580c3d81aa22d3336e7521bc5485"
+    },
+    {
+      "caseId": "A-ULS-G1",
+      "field": "reactions",
+      "sha256": "a6dfae97ae2528cb3bac372e9cd25e6f2c01ce099206037b2c7fcc837389cda3"
+    },
+    {
+      "caseId": "A-ULS-G1",
+      "field": "memberResults",
+      "sha256": "68d5eeb2c3b8c4470790f60a9bae8701dbb23bc3b26dbb87b1d812968b07f1d9"
+    },
+    {
+      "caseId": "A-ULS-G2",
+      "field": "disp",
+      "sha256": "3d766632d93bf579cad30906916f57d4b42f17b89ba9edb62f0ebccb2611ca7c"
+    },
+    {
+      "caseId": "A-ULS-G2",
+      "field": "reactions",
+      "sha256": "e711c912ba2aac03476df2cd29f59b9f6a31012a40e4183515d24d5428d6ab88"
+    },
+    {
+      "caseId": "A-ULS-G2",
+      "field": "memberResults",
+      "sha256": "a5bbe53e28a63b75e84edd5e5fd89f43cccc3b164dfc4c55ef1c8c17f065e331"
+    },
+    {
+      "caseId": "A-DIRECT-X",
+      "field": "disp",
+      "sha256": "59b3c22facf0547823d732a045abc2fbc182713c321a82f6e5398f510b5461ef"
+    },
+    {
+      "caseId": "A-DIRECT-X",
+      "field": "reactions",
+      "sha256": "91f92c6c2bdbc00cd1eced886c13601a9fc64f6bfcd097f197a77091088f1736"
+    },
+    {
+      "caseId": "A-DIRECT-X",
+      "field": "memberResults",
+      "sha256": "2e8964599b7c591fef1376c9bdd42b22b14bbae820da9078e80ef2909eddbb30"
+    },
+    {
+      "caseId": "A-DIRECT-Y",
+      "field": "disp",
+      "sha256": "8802a23838c557e35d2d2ec85f5c772da7202b1e0d215f7dee0cfc3aa1142590"
+    },
+    {
+      "caseId": "A-DIRECT-Y",
+      "field": "reactions",
+      "sha256": "60281c563e4ec769ed9bb7c9552f39e4110509b7b73375aea89ab8653e438989"
+    },
+    {
+      "caseId": "A-DIRECT-Y",
+      "field": "memberResults",
+      "sha256": "11ee30eec86c7f4d1dafd5c9c04fb0c3d43ae454bf4d74985088151a8e4667ad"
+    }
+  ]
+}

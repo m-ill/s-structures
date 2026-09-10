@@ -116,3 +116,12 @@ Node 실제 Worker pilot r1은 증거 추출 DTO 경로와 동일 조합 중복 
 - 정적 case 정규화에 responseSpectrum.enabled=false를 명시하고 동기 경로도 일치시켰다. 독립 modal/RSA와 기존 analyzeModel 호환 API는 유지한다. 기존 입력의 동적 설정은 변경하지 않는다.
 - 실제 Worker/동기 case 범위 회귀 PASS. 중간 규모 FIRST r3는3.51초, managed peak41060504 bytes, 등록 성공. r2의66.19초/실패와 구분하며 통제된 성능 인증 수치로 간주하지 않는다.
 - Direct 포함 Node r4 및 실제 IAB 8회 반복·취소 시험 진행 중. 결과 전체 복사 최적화는 별도 위험을 고려해 아직 적용하지 않았으며, 실제 부하 통과 전에 M6 완료 판정을 내리지 않는다.
+
+- 823591f 전체 회귀 m6-full-r3:124/124 PASS. Node pilot r5 전체22회·보고서·저장복원 PASS, 이전r4와 비어 있지 않은 변위/반력/부재력66개 묶음 동일. 수치 비교 준비 중 wrapper를 잘못 전달해 null끼리 비교한 임시 산출물을 발견했으며, available/비어 있지 않음 검증을 추가해66개 실제 데이터로 다시 계산한 최종 numeric-parity.json만 채택했다.
+- Node medium r4 FIRST/Direct 모두 완료·등록, peak managed125063936 bytes, maxRSS1146408 KiB. Direct progress 0.85→완료 사이 약313초. 동시에 다른 검증이 실행되어 고정 환경 성능 qualification 아님.
+- IAB 최신 product 서버에서 기존 checkpoint 복원과 D-only/Direct X/Y3회 재해석 PASS. 기존 보고서의 과거 run provenance는 유지한다.
+- 시험용5174 브라우저에서는 수정 전 settingsHash a4979ce2가 계속 사용됨을 발견. 그8회 계획 실행은 첫 cycle에서 FAIL, 새후보 검증으로 제외했다. 실제 파일은 갱신되어 캐시 영향을 의심하며, no-store/조건부304제거 시험 서버5175와 시작 전 정적 실행 계약 검사로 재시험한다.
+- PDF31쪽/24화면으로 갱신, 전체 페이지 렌더링 후 변경된 본문·추가 화면의 잘림/겹침 확인. 제품 자동 PDF capability와 별개다.
+
+- 최신 IAB r3: D-only/Direct X/Y 완료 후61065575 bytes 저장, reload/복원 SHA98dfb9692cb0a2178734078f8ac8ccf433abed4d6adb88caeb7d8ee6e1d78034 일치. workflow가 시작한 job은 get_result_slice의 직접 시작 job session 권한에 포함되지 않아 읽기 거절. 우회하지 않고 실제 결과 UI와 workflow 상태로 확인했으며 이 조회 범위 제한을 기록한다.
+- 최신 UI에서 custom case 결과의 전용 ribbon 버튼은 비활성 상태이며 케이스 결과 창에서 표시 가능. 복원 안내/전체 workflow 상태 문구와 개별 완료 상태가 혼동될 수 있어 후속 UI 개선 대상으로 남긴다.

@@ -1,0 +1,35 @@
+{
+  "html": {
+    "version": "p21-text-artifact-v1",
+    "format": "html",
+    "encoding": "UTF-8",
+    "offsetUnit": "UTF-16-code-unit",
+    "totalCharacters": 1317827,
+    "byteLength": 1321268,
+    "sha256": "e023405b7d36e0fbe2df2c1e7ed3aa5268bf4b3daf4e0d014264ebcf1fbe50f4",
+    "reportSnapshotHash": "d15d7890c1d4b1d34139181c9cb40c4b3ca1e5ad299557b03fcf1be74480c995",
+    "completeness": "complete"
+  },
+  "json": {
+    "version": "p21-text-artifact-v1",
+    "format": "json",
+    "encoding": "UTF-8",
+    "offsetUnit": "UTF-16-code-unit",
+    "totalCharacters": 4918536,
+    "byteLength": 4918660,
+    "sha256": "7526bae4c66beaada58c19b26dd66f73b4f42af05bb67e759fdf5ddf40e82629",
+    "reportSnapshotHash": "d15d7890c1d4b1d34139181c9cb40c4b3ca1e5ad299557b03fcf1be74480c995",
+    "completeness": "complete"
+  },
+  "csv": {
+    "version": "p21-text-artifact-v1",
+    "format": "csv",
+    "encoding": "UTF-8",
+    "offsetUnit": "UTF-16-code-unit",
+    "totalCharacters": 3839016,
+    "byteLength": 3839136,
+    "sha256": "1b541db020c250ef3d9ef67e8097e3595c019adbcedd8b472c5275933cd82b42",
+    "reportSnapshotHash": "d15d7890c1d4b1d34139181c9cb40c4b3ca1e5ad299557b03fcf1be74480c995",
+    "completeness": "complete"
+  }
+}

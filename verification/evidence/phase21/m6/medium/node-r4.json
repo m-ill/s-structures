@@ -1,0 +1,317 @@
+{
+  "result": {
+    "ok": true,
+    "status": "completed",
+    "version": "p21-m4-elastic-review-v2",
+    "steps": [
+      {
+        "caseId": "M-FIRST",
+        "kind": "static",
+        "prerequisites": [],
+        "combinationId": null,
+        "internalPreprocessing": null,
+        "designDemandMapping": "elastic-static-or-pdelta",
+        "ok": true,
+        "jobId": "analysis-1789053678922-1",
+        "analysisRunId": "M-FIRST:2026-09-10T15:21:20.939Z:1",
+        "code": null
+      },
+      {
+        "caseId": "M-DIRECT",
+        "kind": "static",
+        "prerequisites": [],
+        "combinationId": null,
+        "internalPreprocessing": null,
+        "designDemandMapping": "elastic-static-or-pdelta",
+        "ok": true,
+        "jobId": "analysis-1789053682379-2",
+        "analysisRunId": "M-DIRECT:2026-09-10T15:26:38.417Z:2",
+        "code": null
+      }
+    ],
+    "sourceAnalysisRunIds": [
+      "M-FIRST:2026-09-10T15:21:20.939Z:1",
+      "M-DIRECT:2026-09-10T15:26:38.417Z:2"
+    ],
+    "inputIdentity": {
+      "inputIdentityVersion": "p19-input-v1",
+      "modelHash": "51ce55bd70f5f14f81c24a2ced1b78d69658b0308229dcc0954ed47f6bc2bb5f",
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "settingsHash": "5433fca8da4f8323d61ee83ceff0c784e3024ed0ff464fdc66ea9424e49a6808",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "materialsHash": "621796eb98799160b41f6d58cd23e62fdb43026f9aa2f20e662a3488d4709b5d",
+      "sectionsHash": "016705c1da3507628906869bc44ab69fa978de7da41abbb11db34455d45b26bc",
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "inputHash": "bd45090aa807f1a3103367af2c5e9ed566d3bdddb0d3d4b4f94da67d32e77c91",
+      "buildBound": false,
+      "rulePackBound": false
+    },
+    "currentJobId": null
+  },
+  "jobs": [
+    {
+      "version": "p9-m9-product-job-v1",
+      "serviceVersion": "p9-m9-product-analysis-service-v1",
+      "id": "analysis-1789053678922-1",
+      "sequence": 1,
+      "caseId": "M-FIRST",
+      "kind": "static",
+      "status": "completed",
+      "stage": "results",
+      "progress": 1,
+      "progressMessage": "Analysis completed.",
+      "createdAt": "2026-09-10T15:21:18.937Z",
+      "startedAt": "2026-09-10T15:21:18.949Z",
+      "completedAt": "2026-09-10T15:21:21.036Z",
+      "predecessorJobId": null,
+      "resultAvailable": true,
+      "resultSummary": {
+        "ok": true,
+        "designBlocked": false,
+        "designBlockReason": null,
+        "designEligibility": {
+          "eligible": true,
+          "status": "qualified",
+          "reason": null,
+          "limitationCodes": [],
+          "source": "linear-static-envelope"
+        },
+        "shellFemQualification": {
+          "status": "qualified",
+          "designTransferAllowed": true,
+          "blockers": [],
+          "byCombo": [
+            {
+              "comboId": "DW",
+              "elementCount": 0,
+              "expectedElementCount": 0,
+              "qualificationStatus": "qualified",
+              "designTransferAllowed": true,
+              "blockers": []
+            }
+          ],
+          "equivalentShellCount": 0
+        },
+        "comboCount": 1,
+        "comboIds": [
+          "DW"
+        ],
+        "hasEnvelope": true,
+        "pDelta": false,
+        "pDeltaMethod": "off"
+      },
+      "error": null,
+      "publication": {
+        "runRecordId": "M-FIRST:2026-09-10T15:21:20.939Z:1"
+      },
+      "settingsHash": "f9ec696440c1fb3ebfd05fafda2c0934567f012803085c066ced59d44ae57699",
+      "planHash": "1befe06f472fffe73cdfea829bc7098972b66873322f523c887e14dba563ff5a",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "operationRoute": {
+        "operation": "elasticStatic",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "backendId": "cpu-f64-linear3d",
+        "precision": "f64",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "reason": "Explicit qualified CPU f64 route."
+      },
+      "qualification": "candidate",
+      "designBlocked": false,
+      "productProvenance": {
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "planHash": "1befe06f472fffe73cdfea829bc7098972b66873322f523c887e14dba563ff5a",
+        "settingsHash": "f9ec696440c1fb3ebfd05fafda2c0934567f012803085c066ced59d44ae57699",
+        "modelHash": "51ce55bd70f5f14f81c24a2ced1b78d69658b0308229dcc0954ed47f6bc2bb5f",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "operationRoute": {
+          "operation": "elasticStatic",
+          "requestedTarget": "cpu",
+          "executedTarget": "cpu",
+          "backendId": "cpu-f64-linear3d",
+          "precision": "f64",
+          "fallbackPolicy": "forbidden",
+          "fallbackUsed": false,
+          "reason": "Explicit qualified CPU f64 route."
+        },
+        "correction": "not-required-cpu-f64",
+        "audit": "cpu-f64-equilibrium-and-result-audit",
+        "qualification": "production-cpu-f64",
+        "designBlocked": false,
+        "externalRuntimeUsed": null,
+        "networkFallbackUsed": null,
+        "executionProvenance": null
+      },
+      "progressEvents": [
+        {
+          "at": "2026-09-10T15:21:19.407Z",
+          "value": 0.03,
+          "stage": "contract-ready"
+        },
+        {
+          "at": "2026-09-10T15:21:20.452Z",
+          "value": 0.8,
+          "stage": "combination-complete",
+          "comboId": "DW",
+          "combinationIndex": 0,
+          "combinationCount": 1
+        },
+        {
+          "at": "2026-09-10T15:21:20.453Z",
+          "value": 0.85,
+          "stage": "recovery-envelope-design-audit"
+        },
+        {
+          "at": "2026-09-10T15:21:20.505Z",
+          "value": 1,
+          "stage": "complete"
+        }
+      ]
+    },
+    {
+      "version": "p9-m9-product-job-v1",
+      "serviceVersion": "p9-m9-product-analysis-service-v1",
+      "id": "analysis-1789053682379-2",
+      "sequence": 2,
+      "caseId": "M-DIRECT",
+      "kind": "static",
+      "status": "completed",
+      "stage": "results",
+      "progress": 1,
+      "progressMessage": "Analysis completed.",
+      "createdAt": "2026-09-10T15:21:22.389Z",
+      "startedAt": "2026-09-10T15:21:22.401Z",
+      "completedAt": "2026-09-10T15:26:38.713Z",
+      "predecessorJobId": null,
+      "resultAvailable": true,
+      "resultSummary": {
+        "ok": true,
+        "designBlocked": false,
+        "designBlockReason": null,
+        "designEligibility": {
+          "eligible": true,
+          "status": "qualified-with-limitation",
+          "reason": null,
+          "limitationCodes": [
+            "TIMOSHENKO_CONSISTENT_KG_NOT_IMPLEMENTED"
+          ],
+          "source": "direct-pdelta-envelope"
+        },
+        "shellFemQualification": {
+          "status": "qualified",
+          "designTransferAllowed": true,
+          "blockers": [],
+          "byCombo": [
+            {
+              "comboId": "DW",
+              "elementCount": 0,
+              "expectedElementCount": 0,
+              "qualificationStatus": "qualified",
+              "designTransferAllowed": true,
+              "blockers": []
+            }
+          ],
+          "equivalentShellCount": 0
+        },
+        "comboCount": 1,
+        "comboIds": [
+          "DW"
+        ],
+        "hasEnvelope": true,
+        "pDelta": true,
+        "pDeltaMethod": "direct"
+      },
+      "error": null,
+      "publication": {
+        "runRecordId": "M-DIRECT:2026-09-10T15:26:38.417Z:2"
+      },
+      "settingsHash": "a8f5ab26f3eefceec508992fa0537ce06f28b5e85dd816bbe4bbe2fa500badb6",
+      "planHash": "072334691dcfd68ba1d918ca86c3eee52e0283c7558682d02996867181df509d",
+      "requestedTarget": "cpu",
+      "executedTarget": "cpu",
+      "operationRoute": {
+        "operation": "elasticStatic",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "backendId": "cpu-f64-linear3d",
+        "precision": "f64",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "reason": "Explicit qualified CPU f64 route."
+      },
+      "qualification": "candidate",
+      "designBlocked": false,
+      "productProvenance": {
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "planHash": "072334691dcfd68ba1d918ca86c3eee52e0283c7558682d02996867181df509d",
+        "settingsHash": "a8f5ab26f3eefceec508992fa0537ce06f28b5e85dd816bbe4bbe2fa500badb6",
+        "modelHash": "61bd6befad06fc5272c441f47048c2dc16ac7bd9f948fee834c2b08539679b00",
+        "requestedTarget": "cpu",
+        "executedTarget": "cpu",
+        "operationRoute": {
+          "operation": "elasticStatic",
+          "requestedTarget": "cpu",
+          "executedTarget": "cpu",
+          "backendId": "cpu-f64-linear3d",
+          "precision": "f64",
+          "fallbackPolicy": "forbidden",
+          "fallbackUsed": false,
+          "reason": "Explicit qualified CPU f64 route."
+        },
+        "correction": "not-required-cpu-f64",
+        "audit": "cpu-f64-equilibrium-and-result-audit",
+        "qualification": "production-cpu-f64",
+        "designBlocked": false,
+        "externalRuntimeUsed": null,
+        "networkFallbackUsed": null,
+        "executionProvenance": null
+      },
+      "progressEvents": [
+        {
+          "at": "2026-09-10T15:21:22.664Z",
+          "value": 0.03,
+          "stage": "contract-ready"
+        },
+        {
+          "at": "2026-09-10T15:21:23.599Z",
+          "value": 0.8,
+          "stage": "combination-complete",
+          "comboId": "DW",
+          "combinationIndex": 0,
+          "combinationCount": 1
+        },
+        {
+          "at": "2026-09-10T15:21:23.600Z",
+          "value": 0.85,
+          "stage": "recovery-envelope-design-audit"
+        },
+        {
+          "at": "2026-09-10T15:26:37.023Z",
+          "value": 1,
+          "stage": "complete"
+        }
+      ]
+    }
+  ],
+  "resources": {
+    "version": "p21-managed-memory-v1",
+    "accounting": "conservative-retained-data-estimate",
+    "maxBytes": 268435456,
+    "totalBytes": 72834306,
+    "peakBytes": 125063936,
+    "owners": {
+      "live-model": 420434,
+      "workflow-plans:9": 4208,
+      "review-requests:10": 3110,
+      "analysis-jobs:14": 55272,
+      "analysis-catalog:1": 72063334,
+      "legacy-run-catalog": 287948
+    }
+  },
+  "elapsedMs": 324036.0402,
+  "maxRSSKiB": 1146408
+}

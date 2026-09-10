@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-CTRL-05",
+    "NL-CTRL-06",
+    "NL-CTRL-07",
+    "NL-CTRL-08"
+  ],
+  "sdofLambdaError": 0,
+  "mdofSolutionError": 0,
+  "diaphragmCoordinateTerms": 1,
+  "eventCutbackCount": 3,
+  "rollbackEquivalent": true,
+  "inputGuardReasons": [
+    "CONTROL_TARGET_REQUIRED",
+    "CONTROL_DIRECTION_INVALID"
+  ],
+  "unsupportedReferenceTypes": [
+    "nmoment",
+    "udl"
+  ],
+  "weakScalingLambdaRelativeError": 0,
+  "gaugeProjectionReasons": [
+    "CONTROL_GAUGE_MODE_EXCITATION",
+    "REFERENCE_GAUGE_MODE_EXCITATION"
+  ]
+}
+
+

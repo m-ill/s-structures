@@ -1,0 +1,24 @@
+{
+  "designRunIds": [
+    "design-1"
+  ],
+  "designTransferAllowed": false,
+  "inputIdentity": {
+    "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "buildBound": false,
+    "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "designBasisHash": "0b16ef3bec3a965e5d09348c8f374d70534d5db9903e9aae8c2bbda9840502aa",
+    "inputHash": "5660492cee2627fd50c519fd92ec4928a383d9e8692a75c2f34952c83634122c",
+    "inputIdentityVersion": "p19-input-v1",
+    "materialsHash": "defec238f872b868353144ad6fb9b2599f1c97b64dfe20a5f6e62955f54d2bbf",
+    "modelHash": "ea3ba3c4d918541ae90d32b2b83974ce560a230247c3d4e78d262c54d1b554d8",
+    "rulePackBound": false,
+    "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "sectionsHash": "ba0a2d260b69762babbb435a90c777d9014c68db83e5d02406f6bb7ce1aafcd6",
+    "settingsHash": "aba4658357784ac04ea9ddbd915d8f69df1ddb530e0c5bb03698772cb1c3880c"
+  },
+  "interruptedJobs": [],
+  "ok": true,
+  "projectId": "TP4392-PILOT-01",
+  "sha256": "98dfb9692cb0a2178734078f8ac8ccf433abed4d6adb88caeb7d8ee6e1d78034"
+}

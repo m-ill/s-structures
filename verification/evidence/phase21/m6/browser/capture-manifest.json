@@ -103,5 +103,35 @@
     "path": "verification/evidence/phase21/m6/browser/m6-browser-r2-013-idb-atomic.png",
     "sha256": "90ed5a90e4f0590ac63d47f74234ce887611ddba9c9db58cc10e63ace2fcb6a9",
     "sourceRun": "m6-browser-r2"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r2-015-medium-result.png",
+    "sha256": "0413a2d398c3689a7004c48f307c512385a22765d20b13ba6e24f8617ff88d80",
+    "sourceRun": "m6-browser-r2"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r2-016-medium-start.png",
+    "sha256": "161de37edeee2147f8b79cb6634c3cb50601731e621a1061194cbb4e699a1256",
+    "sourceRun": "m6-browser-r2"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r2-017-chrome-medium-failure.png",
+    "sha256": "808592816b0dfd57eff5c672b256a3b8e323553becb82c55ecac7004b8e54ae3",
+    "sourceRun": "m6-browser-r2"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r3-001-restore.png",
+    "sha256": "68fbc72c7ef380be9177c56daf244f2bb82076824024abb8f4eb6f5380e7dc59",
+    "sourceRun": "m6-browser-r3"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r3-004-rerun.png",
+    "sha256": "83ee8ee9b9472fb37962bf85bb8cfdd65d8d276efe109834d7bac531cd1ebbe3",
+    "sourceRun": "m6-browser-r3"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r3-006-restore.png",
+    "sha256": "0e473e9a36d1d87e0dd7f2805fe8e4ed6e70a7e3ccd85470b2725715d6fbcf55",
+    "sourceRun": "m6-browser-r3"
   }
 ]

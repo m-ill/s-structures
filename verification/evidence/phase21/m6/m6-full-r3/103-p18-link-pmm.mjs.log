@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "milestone": "P18-LINK-PMM",
+  "link": {
+    "matrixHash": "d36c3d25f47e5bc783561c543634d3a026e145281a88f636654e0b3ecd5d2b5e",
+    "responseHash": "5944761c2a1363233db1213a981c87146721ed8fc44a8dfe550e5fd32aa287b2",
+    "modalFrequenciesHz": [
+      1.1253953951963829,
+      1.1791353745668054,
+      1.226642742990248,
+      3.1830988618379075,
+      5.262016673652425,
+      5.655262927120365
+    ]
+  },
+  "pmm": {
+    "propertyHash": "027b7ff3835cc30e9cbda70802439da9e203b59c9ee122b1ac1f284af1f7499a",
+    "responseHash": "dbe90eb04f1d14b9f1becf24fa847c9273aa36d76635baf630178b0827900013",
+    "elementResponseHash": "5e46b0034cf0b995da572d5719e85c2a712e9460c6ab6c959dfd41df0de4c9ad",
+    "assemblyHash": "3e44134f00c42b1bedbfb87fb78fdbdf7891b6f90443ab925ce26270f24fc341"
+  },
+  "cases": {
+    "SB12": "953231d68d7401340742563fb2f4e818a116edff5ade2beb0ded62c02552a4d2",
+    "SH1": "370f28f2bdc3eeab9991de7afb3e221e6ebd45ad1a8838fc935bc29738075d86"
+  }
+}
+
+

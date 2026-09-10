@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "nodes": 18,
+  "members": 26,
+  "copiedStoryChanges": 20,
+  "repaired": {
+    "duplicateNodeCount": 1,
+    "zeroLengthMemberCount": 1,
+    "isolatedNodeCount": 1
+  }
+}
+
+

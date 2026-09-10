@@ -5,6 +5,8 @@
 <button id="diagnose">중간 규모 1차 오류 진단</button>
 <script type="module">
 import {createP21MediumFixture} from '../fixtures/p21-medium.js';
+import {normalizeProductAnalysisCaseSettings} from '../../src/compute/product/analysisCaseSettings.js';
+const runtimeContract=normalizeProductAnalysisCaseSettings('static');
 const startup=createP21MediumFixture();window.model=()=>startup;
 const {installIndexEngineBridge}=await import('../../src/ui/indexBridge.js');
 document.addEventListener('click',async event=>{
@@ -15,10 +17,13 @@ document.addEventListener('click',async event=>{
  const frame=t=>{frames.push(t-last);last=t;if(running)requestAnimationFrame(frame);};requestAnimationFrame(frame);
  const good=r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;};let bridge;
  try{
+  if(runtimeContract.responseSpectrum?.enabled!==false)throw Error('STALE_STATIC_CASE_RUNTIME');
+  result.textContent=JSON.stringify({status:'running',runtimeContract,rows},null,2);
   for(let i=0;i<(diagnostic?1:8);i++){
    const model=createP21MediumFixture(),target={model:()=>model,location:{search:''}};bridge=installIndexEngineBridge(target);
    const started=performance.now(),plan=good(bridge.planElasticWorkflow({caseIds:diagnostic?['M-FIRST']:['M-FIRST','M-DIRECT']}));
    const run=good(await bridge.runElasticWorkflow({plan,requestId:`M-${i}`}));
+   for(const step of run.steps)if(bridge.getAnalysisCaseResult(step.caseId)?.payload?.dynamics)throw Error('STATIC_CASE_CONTAINS_DYNAMIC_RESULT');
    const row={cycle:i,warmup:i<3,elapsedMs:performance.now()-started,steps:run.steps.map(s=>({caseId:s.caseId,ok:s.ok})),beforeDispose:bridge.getResourceState(),heap:performance.memory?{used:performance.memory.usedJSHeapSize,total:performance.memory.totalJSHeapSize}:null};
    await bridge.disposeRuntime();row.afterDispose=bridge.getResourceState().totalBytes;if(row.afterDispose!==0)throw Error('LEDGER_NOT_RELEASED');rows.push(row);result.textContent=JSON.stringify({status:'running',rows},null,2);
   }

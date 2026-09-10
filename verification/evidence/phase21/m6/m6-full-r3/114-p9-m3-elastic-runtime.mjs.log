@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "requirements": [
+    "P9-ELA-01~12",
+    "P9-API-04",
+    "P9-API-06",
+    "P9-PERF-01",
+    "P9-PERF-04"
+  ],
+  "factorizationCount": 1,
+  "rhsCount": 2,
+  "resultHash": "ed63cdf147f58f49e626571742d6e0447a49e4d8b0f01a410a264f3f15fffcb9"
+}
+
+

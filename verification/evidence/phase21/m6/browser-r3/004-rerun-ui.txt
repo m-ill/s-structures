@@ -1,0 +1,325 @@
+- button "메뉴": ☰
+- generic: S-STRUCTURES
+- tablist "작업 탭":
+  - tab "모델링"
+  - tab "탄성해석" [selected]
+  - tab "비선형해석"
+  - tab "태블릿메모"
+- button "이전 페이지": ◀
+- generic: 1 / 1
+- button "다음 페이지": ▶
+- button "새 페이지": ＋
+- button "Phase 13 실무 워크벤치 열기": 실무 워크벤치
+- link "계정":
+  - /url: app.html#/login
+- button "실행 취소 (Ctrl+Z)": ↶
+- button "다시 실행 (Ctrl+Y)": ↷
+- button "−"
+- button "기본 뷰로": ⌂
+- button "＋"
+- generic: 기본
+- text: "보기:"
+- button "3D"
+- button "평면"
+- button "정면"
+- button "측면"
+- text: "결과:"
+- generic: © 단국대 허석재
+- generic: 해석 절차
+- button "1단계 기본설정":
+  - generic: "1"
+  - generic: 기본설정
+  - generic: ✓
+- button "2단계 하중·질량":
+  - generic: "2"
+  - generic: 하중·질량
+  - generic: ✓
+- button "3단계 하중조합":
+  - generic: "3"
+  - generic: 하중조합
+  - generic: "!"
+- button "4단계 모델검증":
+  - generic: "4"
+  - generic: 모델검증
+  - generic: ✓
+- button "5단계 1차해석":
+  - generic: "5"
+  - generic: 1차해석
+  - generic: "!"
+- button "6단계 고급해석":
+  - generic: "6"
+  - generic: 고급해석
+- button "7단계 결과검토":
+  - generic: "7"
+  - generic: 결과검토
+  - generic: ✓
+- button "상세 하중 입력 표시":
+  - generic: ⋯
+- generic: 해석
+- button "전체 탄성해석 실행":
+  - generic: ▶
+  - generic: 전체 탄성해석
+- button "해석 케이스 설정 열기":
+  - generic: ⚙
+- generic: 결과
+- button "1차 정적해석 결과 열기" [disabled]:
+  - generic: K
+  - generic: 1차
+- button "Direct P-Delta 결과 열기" [disabled]:
+  - generic: PΔ
+  - generic: P-Delta
+- button "모달해석 결과 열기" [disabled]:
+  - generic: T
+  - generic: 모달
+- button "응답스펙트럼해석 결과 열기" [disabled]:
+  - generic: S
+  - generic: RSA
+- button "탄성 고유치 좌굴 결과 열기" [disabled]:
+  - generic: λ
+  - generic: 좌굴
+- button "선형 시간이력 (예비) 결과 열기" [disabled]:
+  - generic: t
+  - generic: THA
+- generic: 조합
+- combobox "하중조합":
+  - option "D only - balance check" [selected]
+  - 'option "PILOT {\"D\":1.2,\"L\":1,\"EX\":-1}"'
+  - 'option "PILOT {\"D\":1.2,\"L\":1,\"EX\":1}"'
+  - 'option "PILOT {\"D\":1.2,\"L\":1,\"EY\":-1}"'
+  - 'option "PILOT {\"D\":1.2,\"L\":1,\"EY\":1}"'
+  - 'option "PILOT {\"D\":1.2,\"L\":1,\"WX\":-1,\"S\":0.5}"'
+  - 'option "PILOT {\"D\":1.2,\"L\":1,\"WX\":1,\"S\":0.5}"'
+  - 'option "PILOT {\"D\":1.2,\"L\":1,\"WY\":-1,\"S\":0.5}"'
+  - 'option "PILOT {\"D\":1.2,\"L\":1,\"WY\":1,\"S\":0.5}"'
+  - 'option "PILOT {\"D\":0.9,\"EX\":-1}"'
+  - 'option "PILOT {\"D\":0.9,\"EX\":1}"'
+  - 'option "PILOT {\"D\":0.9,\"EY\":-1}"'
+  - 'option "PILOT {\"D\":0.9,\"EY\":1}"'
+  - 'option "PILOT {\"D\":0.9,\"WX\":-1}"'
+  - 'option "PILOT {\"D\":0.9,\"WX\":1}"'
+  - 'option "PILOT {\"D\":0.9,\"WY\":-1}"'
+  - 'option "PILOT {\"D\":0.9,\"WY\":1}"'
+  - option "D+L+Lr"
+  - option "1.4D"
+  - option "1.2D+1.6L+0.5S"
+- generic: 결과
+- button "변형"
+- button "M"
+- button "Q"
+- button "N"
+- button "반력"
+- button "수치"
+- button "T"
+- button "검정"
+- button "절점#"
+- button "부재#"
+- button "길이"
+- button "로컬축"
+- button "설계"
+- button "처짐"
+- generic: 보고
+- button "하중조합":
+  - generic: ☷
+  - generic: 하중조합
+- button "설계요약":
+  - generic: ▤
+  - generic: 설계요약
+- button "검증":
+  - generic: ✓
+  - generic: 검증
+- generic: 상태
+- generic "저장 결과 복원 완료 · 해석 케이스에서 결과를 선택하세요."
+- generic: 변형 배율
+- generic: Scale
+- combobox "Scale":
+  - option "auto" [selected]
+  - option "10"
+  - option "50"
+  - option "100"
+  - option "500"
+- button "설계 입력 변경"
+- button "탄성 설계 검토"
+- status: "WebMCP registered · 도구 40개 · get_elastic_workflow · 입력 변경됨: 해석 필요 · 탄성 예비 검토 · 비선형 candidate"
+- button "해석 케이스"
+- button "ratio"
+- button "◀ 도구 접기"
+- heading "구조 도구" [level=4]
+- button "✥선택 / 이동":
+  - generic: ✥
+  - text: 선택 / 이동
+- button "╱부재 그리기":
+  - generic: ╱
+  - text: 부재 그리기
+- button "▭다중 선택 (드래그)":
+  - generic: ▭
+  - text: 다중 선택 (드래그)
+- button "┃기둥 세우기":
+  - generic: ┃
+  - text: 기둥 세우기
+- button "⊕절점 추가 (분할)":
+  - generic: ⊕
+  - text: 절점 추가 (분할)
+- button "▲회전단 (핀)":
+  - generic: ▲
+  - text: 회전단 (핀)
+- button "◬이동단 (롤러)":
+  - generic: ◬
+  - text: 이동단 (롤러)
+- button "▮고정단":
+  - generic: ▮
+  - text: 고정단
+- button "↓집중하중":
+  - generic: ↓
+  - text: 집중하중
+- button "⇊등분포하중":
+  - generic: ⇊
+  - text: 등분포하중
+- button "↻모멘트하중":
+  - generic: ↻
+  - text: 모멘트하중
+- button "✕요소 삭제":
+  - generic: ✕
+  - text: 요소 삭제
+- button "⬆ 층 복사 (위로 한 층)"
+- heading "작업면" [level=4]
+- button "자동"
+- button "XY"
+- button "XZ"
+- button "YZ"
+- generic: 오프셋
+- button "−"
+- spinbutton: "0"
+- button "＋"
+- button "선택 절점에 맞춤"
+- heading "재료" [level=4]
+- combobox:
+  - option "[프로젝트] 콘크리트 Fc24"
+  - option "[프로젝트] 강재 SM490"
+  - option "[프로젝트] 강재 SS400"
+  - option "[프로젝트] 목재 (삼나무)"
+  - option "SM355A (t <= 16 mm)"
+  - option "SM355A (16 mm < t <= 40 mm)"
+  - option "SM355A (40 mm < t <= 75 mm)"
+  - option "SM355A (75 mm < t <= 100 mm)"
+  - option "SM355B (t <= 16 mm)"
+  - option "SM355B (16 mm < t <= 40 mm)"
+  - option "SM355B (40 mm < t <= 75 mm)"
+  - option "SM355B (75 mm < t <= 100 mm)"
+  - option "SM355C (t <= 16 mm)"
+  - option "SM355C (16 mm < t <= 40 mm)"
+  - option "SM355C (40 mm < t <= 75 mm)"
+  - option "SM355C (75 mm < t <= 100 mm)"
+  - option "SS275 (t <= 16 mm)" [selected]
+  - option "SS275 (16 mm < t <= 40 mm)"
+  - option "SS275 (40 mm < t <= 75 mm)"
+  - option "SS275 (75 mm < t <= 100 mm)"
+- heading "단면" [level=4]
+- combobox:
+  - option "[프로젝트] □-100×100×6"
+  - option "[프로젝트] □-200×200×9"
+  - option "[프로젝트] H-200×100×5.5×8"
+  - option "[프로젝트] H-300×150×6.5×9" [selected]
+  - option "[프로젝트] H-400×200×8×13"
+  - option "[프로젝트] H-500×200×10×16"
+  - option "[프로젝트] ○-139.8×4.5"
+  - option "[프로젝트] RC 300×600"
+  - option "[프로젝트] RC 400×700"
+  - option "[프로젝트] 목재 105×105"
+  - option "[프로젝트] 목재 120×240"
+  - option "BOX-150x150x6"
+  - option "BOX-250x250x9"
+  - option "BOX-300x300x12"
+  - option "BOX-400x400x16"
+  - option "H-200x100x5.5x8"
+  - option "H-300x150x6.5x9"
+  - option "H-400x200x8x13"
+  - option "H-100x100x6x8"
+  - option "H-150x150x7x10"
+  - option "H-250x125x6x9"
+  - option "H-300x300x10x15"
+  - option "H-350x175x7x11"
+  - option "H-400x400x13x21"
+  - option "H-600x200x11x17"
+  - option "PIPE-101.6x4"
+  - option "PIPE-139.8x4.5"
+  - option "PIPE-165.2x5"
+  - option "PIPE-216.3x6"
+  - option "PIPE-267.4x9"
+  - option "RC RECT 300x500"
+  - option "RC RECT 400x600"
+  - option "RC RECT 500x800"
+  - option "RC SQUARE 300x300"
+  - option "RC SQUARE 400x400"
+  - option "RC SQUARE 500x500"
+  - option "RC SQUARE 600x600"
+  - option "RC SQUARE 700x700"
+- button "＋ 단면 만들기"
+- button "✓ 선택 부재 적용"
+- generic: H · A 46.78 cm² · Iz 7210.0 cm⁴ · Iy 508.0 cm⁴
+- button "spring"
+- button "settle"
+- button "temp"
+- button "▶ 스텝 재생"
+- dialog "탄성해석 결과 시각화":
+  - banner:
+    - heading "Pilot direct PDelta Y 결과" [level=2]
+    - generic: Direct P-Delta
+    - generic: 완료
+    - combobox "표시할 탄성해석 케이스":
+      - option "D only - balance check"
+      - 'option "PILOT {\"D\":1.2,\"L\":1,\"EX\":-1}"'
+      - 'option "PILOT {\"D\":1.2,\"L\":1,\"EX\":1}"'
+      - 'option "PILOT {\"D\":1.2,\"L\":1,\"EY\":-1}"'
+      - 'option "PILOT {\"D\":1.2,\"L\":1,\"EY\":1}"'
+      - 'option "PILOT {\"D\":1.2,\"L\":1,\"WX\":-1,\"S\":0.5}"'
+      - 'option "PILOT {\"D\":1.2,\"L\":1,\"WX\":1,\"S\":0.5}"'
+      - 'option "PILOT {\"D\":1.2,\"L\":1,\"WY\":-1,\"S\":0.5}"'
+      - 'option "PILOT {\"D\":1.2,\"L\":1,\"WY\":1,\"S\":0.5}"'
+      - 'option "PILOT {\"D\":0.9,\"EX\":-1}"'
+      - 'option "PILOT {\"D\":0.9,\"EX\":1}"'
+      - 'option "PILOT {\"D\":0.9,\"EY\":-1}"'
+      - 'option "PILOT {\"D\":0.9,\"EY\":1}"'
+      - 'option "PILOT {\"D\":0.9,\"WX\":-1}"'
+      - 'option "PILOT {\"D\":0.9,\"WX\":1}"'
+      - 'option "PILOT {\"D\":0.9,\"WY\":-1}"'
+      - 'option "PILOT {\"D\":0.9,\"WY\":1}"'
+      - option "D+L+Lr"
+      - option "1.4D"
+      - option "1.2D+1.6L+0.5S"
+      - option "Pilot direct PDelta X"
+      - option "Pilot direct PDelta Y" [selected]
+      - option "Pilot modal - dead mass"
+    - button "선택한 해석 케이스 설정 열기": ⚙
+    - button "결과 창 닫기": ×
+  - tablist:
+    - tab "전체" [selected]
+    - tab "층"
+    - tab "부재"
+    - tab "수렴"
+  - generic: 해석법
+  - strong: Direct Kt
+  - generic: 조합
+  - strong: MAX-EY-P
+  - generic: 수렴
+  - strong: 1/1
+  - generic: 최대 증폭
+  - strong: "1.009"
+  - heading "하중계수-최대 횡변위" [level=3]
+  - img "Global P-Delta response":
+    - 'generic "MAX-EY-P 2차: 0"'
+    - 'generic "MAX-EY-P 2차: 1.867e-3"'
+    - 'generic "MAX-EY-P 2차: 3.740e-3"'
+    - 'generic "MAX-EY-P 2차: 5.621e-3"'
+    - 'generic "MAX-EY-P 2차: 7.508e-3"'
+    - 'generic "MAX-EY-P 1차: 0"'
+    - 'generic "MAX-EY-P 1차: 1.863e-3"'
+    - 'generic "MAX-EY-P 1차: 3.726e-3"'
+    - 'generic "MAX-EY-P 1차: 5.589e-3"'
+    - 'generic "MAX-EY-P 1차: 7.452e-3"'
+    - generic: load factor
+    - generic: m
+    - generic: MAX-EY-P 2차
+    - generic: MAX-EY-P 1차
+  - paragraph: 점선은 1차 기준, 실선은 선택한 P-Delta 해석 결과입니다.
+  - generic "하중스텝 (5)"
+  - paragraph: Direct 결과는 하중스텝별 접선강성 해석값이며 1차 기준선과 구분해 표시합니다.

@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-DOM-01",
+    "NL-DOM-02",
+    "NL-DOM-03",
+    "NL-DOM-04",
+    "NL-DOM-05",
+    "NL-DOM-06",
+    "NL-DOM-07",
+    "NL-DOM-08"
+  ],
+  "domainHash": "f582f6e4a30dedf844d00138",
+  "fullDofs": 162,
+  "reducedDofs": 84,
+  "generatedMembers": 6
+}
+
+
