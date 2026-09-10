@@ -47,3 +47,5 @@
 - wizard의 go/preview에서 saveBasis를 제거하고 명시 적용 버튼을 추가했다. 전체 입력 hash와 초안 기준을 비교해 에이전트 변경 후 덮어쓰기를 거부한다. 지역/지반/중요도 누락도 수정했으며 미확인 시작값 상태를 보존한다. 기존 wizard 시험은 명시 적용을 추가해 새 동작으로 통과했다.
 - 실제 index loadBookData의 envelope version===1 분기를 확인했다. format을 먼저 판별하는 adapter에서 v1 product-book을 검증 후 legacy 3D 경로에 전달한다. 현재 schema 모델에 legacy migration 기본 alias를 주입하지 않으며, 입력 자체의 alias 충돌은 여전히 거부한다. 원본·변환 hash와 schema를 별도 migration 진단에 보존한다. 서버 저장도 current schema를 사용한다.
 - 원본 파일 및 과거 결과 hash는 재작성하지 않는다. 저장 복구 lifecycle/내구성과 실제 브라우저 화면 검증은 M5/M6에서 계속한다.
+
+- M2 r1 고정 회귀는 6/7이었다. 이전 native autosave의 envelope version 누락을 새 guard가 거부하는 호환성 오류를 확인했다. 알려진 무버전 product-book만 legacy 호환 입력으로 허용하고, 명시한 미지원 버전은 계속 거부한다. 실패 로그를 r1에 보존하고 수정 후보를 r2로 재검증한다.

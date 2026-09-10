@@ -32,7 +32,7 @@ export function installIndexRuntimeAdapter(target = globalThis, options = {}) {
     target.loadBookData = (input) => {
       const source = input?.book || input;
       if (source?.format !== PRODUCT_BOOK_FORMAT) return legacyLoad.call(target, input);
-      if (source.version !== 1) throw new Error('PRODUCT_BOOK_VERSION_UNSUPPORTED');
+      if (source.version !== undefined && source.version !== 1) throw new Error('PRODUCT_BOOK_VERSION_UNSUPPORTED');
       extractProductModel(source); // Verify the embedded active-page signature before replacing UI pages.
       const pages = source.pages.map(page => ({ ...page, name: page.title || page.name,
         model: extractProductModel({ model: page.model }), savedResults: null }));

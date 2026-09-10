@@ -107,7 +107,7 @@ export function extractProductModel(input) {
   const parsed = typeof input === 'string' ? JSON.parse(input) : input;
   const source = parsed?.book || parsed;
   if (!source) throw new Error('No product model data.');
-  if (source.format === PRODUCT_BOOK_FORMAT && source.version !== 1) throw new Error('PRODUCT_BOOK_VERSION_UNSUPPORTED');
+  if (source.format === PRODUCT_BOOK_FORMAT && source.version !== undefined && source.version !== 1) throw new Error('PRODUCT_BOOK_VERSION_UNSUPPORTED');
   let inputModel = null;
   if (source.model) inputModel = source.model;
   if (Array.isArray(source.pages)) {

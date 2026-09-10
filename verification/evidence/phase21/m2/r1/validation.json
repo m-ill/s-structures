@@ -1,0 +1,88 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "ad9a52f25e7b31474be734092219259e219b796f",
+    "tree": "4f559800d563697c1011368693d70c0132b1d7e1",
+    "trackedChanges": ""
+  },
+  "scope": "Phase21 M2 focused input persistence and browser boundary regression",
+  "manifestPath": "verification/specs/phase21/m2-tests.json",
+  "manifestHash": "a215ff3ceb86cbb008ed9bbaf102b55adf8cea3e83680db37d60f451de9f33b3",
+  "sourceArchiveSha256": "065f80b26017995c3ad7dd1cf8873de5e93f68d2272711f4e3cec2333d96428d",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-10T13:13:38.976Z",
+  "results": [
+    {
+      "test": "tests/p21-m2-input-persistence.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "01-p21-m2-input-persistence.mjs.log",
+      "sha256": "8c3a14416afdc3302971cafc5660725092c1a359f116a97dc9a01bbfb7cafe28"
+    },
+    {
+      "test": "tests/p7-m11-elastic-setup-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "02-p7-m11-elastic-setup-workflow.mjs.log",
+      "sha256": "1a32ca809ab5070e0c476ebd8f0c7ba467fb859bc43cb99fa6f434e2a0939a32"
+    },
+    {
+      "test": "tests/p20-m5-browser-input-boundaries.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-p20-m5-browser-input-boundaries.mjs.log",
+      "sha256": "8d35ec5c7bd64cf54a972f86a6c83835d84a5baee01e0bd4183d7fba247ba858"
+    },
+    {
+      "test": "tests/m27-native-persistence.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "04-m27-native-persistence.mjs.log",
+      "sha256": "c697c9fbad8f2d4653a37d24091e0c5031ca35c22e46aac2b68d32fe1e0dd8fa"
+    },
+    {
+      "test": "tests/p7-m0-persistence-migration.mjs",
+      "status": "FAIL",
+      "exitCode": 1,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "05-p7-m0-persistence-migration.mjs.log",
+      "sha256": "06c71dd0348d46ed8931b4a8dc939d3ab0e41ebe7de42c0ae9729c4512e2ae96"
+    },
+    {
+      "test": "tests/p3-persistence.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "06-p3-persistence.mjs.log",
+      "sha256": "ca43b9dd25dcc7d318182ab7b9160a7898d4e39f377d18041e6e6e0705993909"
+    },
+    {
+      "test": "tests/p19-m2-design-input.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "07-p19-m2-design-input.mjs.log",
+      "sha256": "7f5a624f30ef8953517b70db43f3ec8bb10fbc7b564529f718543eb14eabf515"
+    }
+  ],
+  "completedAt": "2026-09-10T13:13:56.397Z",
+  "passed": 6,
+  "failed": 1,
+  "planned": 7,
+  "executed": 7
+}
