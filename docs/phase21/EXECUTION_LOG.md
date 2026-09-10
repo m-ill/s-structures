@@ -76,3 +76,13 @@
 - Node 반복의 초기2warmup+30회는 slope46,263 bytes/cycle로 탐색 기준을 넘었다. 원시 자료를 m5/exploratory에 보존했다. code/metadata 계측에서 초기 JIT 증가를 관측해 고정10warmup+30회 프로토콜을 resource-budgets.json에 기록했다. 후속 탐색은 heap mean 증가 약0.30MB, slope약12.5KB/cycle, 최대RSS약129,540KiB였고 매번 ledger0/늦은 publish0이었다. 작은 양의 heap 변화가 있으며 renderer/M규모 무누수 증거로 확대하지 않는다.
 - checkpoint adapter 시험은 약11.11MB 원본을 저장·새 runtime 복원·세 포맷 동일 SHA 확인했다. 실제 IndexedDB·reload·host 수명·S/M 부하는 M6에서 수행한다. 원래 세션 초기화의 원인은 여전히 UNKNOWN이다.
 - 영향 탐색 중 과거 p9-m9-ui-agent의 Phase15 차단 잔존 assertion은 Phase20 해소 상태와 불일치했다. 기존 Phase21 실행 manifest에는 없는 역사 시험이며 수정하지 않는다. Phase20 모듈 경계 현재 회귀는 통과했다. WebMCP host의 고정36개 assertion은 체크포인트4개 도구를 추가한40개 계약으로 갱신했다.
+
+## 2026-09-10 M5 고정 후보 검증 및 M6 착수
+
+37aced6 집중 검증 18/18 통과. verification/evidence/phase21/m5/r1에 원본 로그·환경·hash를 보존했다. 관리 데이터 9,323,296 bytes, peak 계상 28,358,016 bytes는 실제 renderer heap이 아니다. Node 반복 GC 관측과 초기 실패는 별도 보존한다.
+
+M6 전체 회귀 r1에서 p19-m5-nonlinear-contract의 dispose 후 기록 보존 기대값과 이전 도구 수 36이 새 계약과 충돌했다. dispose 뒤 JOB_NOT_FOUND 및 도구 40으로 명시적 계약 migration; 수치 기준 변경 없음. 집중 재실행 통과. 최종 전체 재실행 필요.
+
+Node 실제 Worker pilot r1은 증거 추출 DTO 경로와 동일 조합 중복 보고서 요청 오류로 실패, 원본을 보존했다. r2는 selection.result를 읽고 Direct X/Y를 해당 조합의 보고서 원본으로 선택해 22회 해석 및 HTML/JSON/CSV 원본 SHA 일치 통과. 브라우저 검증을 대신하지 않는다.
+
+실제 내부 브라우저 localhost:5173에서 도구 40개 등록 및 시작 화면 캡처. 127.0.0.1 탭의 이전 autosave confirm이 제어 시간 초과를 유발했고, 독립 origin에서 재진입했다. UI 파일 chooser는 시간 초과; 원인 분류 중이며 가져오기 PASS로 기록하지 않는다.

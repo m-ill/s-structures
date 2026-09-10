@@ -14,12 +14,13 @@ assert.ok(preflightProductionNonlinearCase(sh1,analysisCase).blocking.some(r=>r.
 let execute;const service=createNonlinearProductService({getModel:()=>model,schedule:fn=>new Promise(resolve=>{execute=()=>resolve(fn());}),runner:async()=>syntheticPushoverResult()});
 const first=service.start({analysisCase});
 assert.throws(()=>service.start({analysisCase}),{code:'NONLINEAR_BUSY'});
-service.dispose();await execute();assert.equal(service.getStatus(first.id).status,'cancelled');assert.equal(service.getResult(first.id),null);
+// Phase21 disposal releases the catalog itself, including cancelled payloads.
+service.dispose();await execute();assert.throws(()=>service.getStatus(first.id),{code:'NONLINEAR_JOB_NOT_FOUND'});assert.throws(()=>service.getResult(first.id),{code:'NONLINEAR_JOB_NOT_FOUND'});
 
 const target={model:()=>model,location:{search:''}},bridge=installIndexEngineBridge(target);
 const tools=createWebMcpTools({agent:target.SStructuresAgent,bridge});
 const call=(name,args={})=>tools.find(t=>t.name===name).execute(args);
-assert.equal(tools.length,36);
+assert.equal(tools.length,40);
 const context=await call('get_project_context');
 const preview=await call('preview_nonlinear_case',{modelHash:context.modelHash,case:{id:'M5-PUSH',mode:'pushover',gravityCombinationId:'GRAV',controlNodeId:'T',direction:'+x',settings:{steps:4,targetDisplacement:0.01,fiberPmm:false}}});
 assert.equal(model.analysisCases.length,0);

@@ -1,0 +1,14 @@
+PASS atomic multi-command application, replay, one undo and monotonic invalidation
+PASS tampered preview, stale model, project switch and undo after external edit
+PASS policy rechecked at apply and undo; role and readonly failures do not mutate
+PASS partial failure, duplicate IDs, unknown fields, nonfinite, unit and reference rejection
+PASS basis, generated loads and explicit mass settings survive canonical mapping
+PASS all elastic case settings reach product normalization
+PASS candidate combination approval cannot be fabricated in commands
+PASS load types and manual combination preserve values
+PASS notification failure is successful commit; identity failure precedes mutation
+PASS rotational mass preserved, member aliases unambiguous, mass source references refreshed
+PASS trusted rule-pack revocation is rechecked without changing production qualification
+P19 M2 service: 11 scenarios PASS
+
+

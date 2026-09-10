@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "requirements": [
+    "P9-UI-01~07",
+    "P9-API-07~14"
+  ],
+  "capabilityHash": "082818ca84fc2785bb0896c1",
+  "settingsHash": "f0b41edf24fff6f6768c206eb8601dac49619047f3149b9babaff4d5fddee109",
+  "planHash": "fb412fc7fe0eaa0e0651a0dcb9731ff3c5fa3985f382b78ba0d886435c2d30c0",
+  "completedJob": "GPU-RETRY-CPU",
+  "telemetryRows": 1
+}
+
+

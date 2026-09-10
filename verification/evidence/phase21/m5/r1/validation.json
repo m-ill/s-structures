@@ -1,0 +1,187 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "37aced6306789ddfccf788591b77bf98d964a77b",
+    "tree": "0f81caca160aed24757ebdce425a3d91f2ac3151",
+    "trackedChanges": ""
+  },
+  "scope": "Phase21 M5 managed budgets, 30-cycle Node retention, cancellation, checkpoint adapters, existing elastic/nonlinear and WebMCP contracts",
+  "manifestPath": "verification/specs/phase21/m5-tests.json",
+  "manifestHash": "6d3e6f170c2af39de7cfa2c86cee7f40f12748a6e3cda575f4705bd6ff56ff27",
+  "sourceArchiveSha256": "51d41d759245808c3f8111aea2bb538dd46afaf6cc297aa6e4ad75c57f535de2",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-10T13:54:34.156Z",
+  "results": [
+    {
+      "test": "tests/p21-m5-resource-recovery.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "01-p21-m5-resource-recovery.mjs.log",
+      "sha256": "00b2285dea09c1b9b716881f2e3a9273bdbb268b1290a08e0373c6b19c491975"
+    },
+    {
+      "test": "tests/p21-m5-lifecycle-memory.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "02-p21-m5-lifecycle-memory.mjs.log",
+      "sha256": "249714f168018cc079b6dfef8b92c00942676730696ebaeac08192afbf490e85"
+    },
+    {
+      "test": "tests/p21-m3-execution-selection.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-p21-m3-execution-selection.mjs.log",
+      "sha256": "cfe1f01628031db9be705edd0a6604083e24367ce2850872569028e7ae4504e6"
+    },
+    {
+      "test": "tests/p21-m4-review-artifact.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "04-p21-m4-review-artifact.mjs.log",
+      "sha256": "b5bf106741d0e3196a75c1b9c0431b95b28f6ae59f5074c282df8091017ffac0"
+    },
+    {
+      "test": "tests/p19-m1-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "05-p19-m1-contract.mjs.log",
+      "sha256": "740905030caa2f79eac7310507b7040210f3844cbdf012f47430f426386837b3"
+    },
+    {
+      "test": "tests/p19-m2-design-input.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "06-p19-m2-design-input.mjs.log",
+      "sha256": "7f5a624f30ef8953517b70db43f3ec8bb10fbc7b564529f718543eb14eabf515"
+    },
+    {
+      "test": "tests/p19-m3-design-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "07-p19-m3-design-workflow.mjs.log",
+      "sha256": "c13a1e4b02909855209eae201f038e144027b77d2f9c505ee304804b6f0b2dda"
+    },
+    {
+      "test": "tests/p19-m4-webmcp-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "08-p19-m4-webmcp-workflow.mjs.log",
+      "sha256": "836a4a84d8be3bf9bbfbf0f63813c4741f6092f9ed11deb690da78b787ae23cf"
+    },
+    {
+      "test": "tests/p19-m4-host-session.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "09-p19-m4-host-session.mjs.log",
+      "sha256": "8b78d885681d9c3cafa904778fe02dc43683012bec6599b111cb82d5968cd6ff"
+    },
+    {
+      "test": "tests/p19-review-session-disposal.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "10-p19-review-session-disposal.mjs.log",
+      "sha256": "4d78dd3e90af07ee023fe4a979d40d3b1ff01743b24b8a45e25adc71a8b001a5"
+    },
+    {
+      "test": "tests/p19-m8-nonlinear-lifecycle.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "11-p19-m8-nonlinear-lifecycle.mjs.log",
+      "sha256": "953597ce0018adbd7b7af0990d9c27c9c731d5f9be2bdca2e0e61096412741ba"
+    },
+    {
+      "test": "tests/p9-m9-product-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "12-p9-m9-product-workflow.mjs.log",
+      "sha256": "cbbc17ef0dbc2f0a1f43ca423246465a646eecc963abb74f2a64f65cabe39855"
+    },
+    {
+      "test": "tests/p9-m3-worker-product.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "13-p9-m3-worker-product.mjs.log",
+      "sha256": "584de13465659758c40a261d1d66f1c10352734818d94b8eb22585f30bccdc33"
+    },
+    {
+      "test": "tests/p20-m2-prepared-views.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "14-p20-m2-prepared-views.mjs.log",
+      "sha256": "b7239bfc649ce03a1d4d3b21656dc57c560ace1c2720babd32ce65db894fab06"
+    },
+    {
+      "test": "tests/p20-m4-module-boundaries.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "15-p20-m4-module-boundaries.mjs.log",
+      "sha256": "446d78a18068c99e536470672a3d9021aa8ce5f47e0373df5a3fe746c9101380"
+    },
+    {
+      "test": "tests/p7-m11-ui-run-records.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "16-p7-m11-ui-run-records.mjs.log",
+      "sha256": "36f669fcba51408222577f416a412f5e7b99b89c1f03044c2c139138a0a2559b"
+    },
+    {
+      "test": "tests/p7-m0-persistence-migration.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "17-p7-m0-persistence-migration.mjs.log",
+      "sha256": "bc9061ba23dd5fd34aff98554c47144bdd6e67210881692f9bd159cb06c6e821"
+    },
+    {
+      "test": "tests/webmcp-integration.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "18-webmcp-integration.mjs.log",
+      "sha256": "cae063c659d51e6adb4fcd1541d435c0d36b9468295dab50791ab6530baa3145"
+    }
+  ],
+  "completedAt": "2026-09-10T13:55:08.333Z",
+  "passed": 18,
+  "failed": 0,
+  "planned": 18,
+  "executed": 18
+}
