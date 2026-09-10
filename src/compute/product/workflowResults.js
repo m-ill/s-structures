@@ -6,6 +6,12 @@ import { workflowResultProjection, WORKFLOW_RESULT_PROJECTION_VERSION } from '..
 
 export const WORKFLOW_RESULT_VERSION = 'p19-workflow-result-v1';
 const copy = value => structuredClone(value);
+export function freezeCheckpointValue(value,seen=new Set()) {
+  if(!value||typeof value!=='object'||seen.has(value))return value;
+  seen.add(value);for(const child of Object.values(value))freezeCheckpointValue(child,seen);
+  if(!ArrayBuffer.isView(value))Object.freeze(value);
+  return value;
+}
 const problem = (code, extra = {}) => ({ ok: false, code, designTransferAllowed: false, ...extra });
 
 // Immutable result catalog, not a scheduler or a second solver. Existing run
@@ -22,15 +28,15 @@ export function createWorkflowResultStore({budget=createResourceBudget()} = {}) 
   return Object.freeze({
     dispose(){analyses.clear();designs.clear();plans.clear();},
     getResourceState:()=>({analyses:analyses.size,designs:designs.size,plans:plans.size,budget:budget.snapshot()}),
-    exportState(){return copy({version:WORKFLOW_RESULT_VERSION,analyses:[...analyses.values()].map(row=>{const {result,...legacyRecord}=row.legacyRecord;return {...row,legacyRecord};}),designs:[...designs.values()]});},
-    restoreState(state) {
+    exportState({shareImmutable=false}={}){const state={version:WORKFLOW_RESULT_VERSION,analyses:[...analyses.values()].map(row=>{const {result,...legacyRecord}=row.legacyRecord;return {...row,legacyRecord};}),designs:[...designs.values()]};return shareImmutable?freezeCheckpointValue(state):copy(state);},
+    restoreState(state,{shareImmutable=false}={}) {
       if(state?.version!==WORKFLOW_RESULT_VERSION||!Array.isArray(state.analyses)||!Array.isArray(state.designs))throw new Error('CHECKPOINT_CATALOG_INVALID');
       for(const row of state.analyses)if(!validIdentity(row.identity)||stableHash(row.result)!==row.resultHash||row.analysisRunId!==row.legacyRecord?.id)throw new Error('CHECKPOINT_ANALYSIS_HASH_INVALID');
       for(const row of state.designs)if(!validIdentity(row.identity)||stableHash(row.result)!==row.resultHash||row.sourceAnalysisRunIds.some(id=>!state.analyses.some(a=>a.analysisRunId===id)))throw new Error('CHECKPOINT_DESIGN_HASH_INVALID');
       const stagedAnalyses=new BudgetMap(budget,'restore-analysis'),stagedDesigns=new BudgetMap(budget,'restore-design',{maxEntries:64});
       try {
-        for(const row of state.analyses)stagedAnalyses.setCopy(row.analysisRunId,{...row,legacyRecord:{...row.legacyRecord,result:row.result},designTransferAllowed:false});
-        for(const row of state.designs)stagedDesigns.setCopy(row.designRunId,{...row,designTransferAllowed:false});
+        for(const row of state.analyses){const value={...row,legacyRecord:{...row.legacyRecord,result:row.result},designTransferAllowed:false};if(shareImmutable)stagedAnalyses.set(row.analysisRunId,freezeCheckpointValue(value));else stagedAnalyses.setCopy(row.analysisRunId,value);}
+        for(const row of state.designs){const value={...row,designTransferAllowed:false};if(shareImmutable)stagedDesigns.set(row.designRunId,freezeCheckpointValue(value));else stagedDesigns.setCopy(row.designRunId,value);}
       } catch(error){stagedAnalyses.clear();stagedDesigns.clear();throw error;}
       const a=[...stagedAnalyses],d=[...stagedDesigns];stagedAnalyses.clear();stagedDesigns.clear();
       analyses.clear();designs.clear();plans.clear();

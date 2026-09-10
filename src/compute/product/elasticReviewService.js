@@ -177,8 +177,8 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
   }
   function cancelWorkflow(requestId) {const result=requests.get(`workflow:${requestId}`)?.result;if(!result)return problem('WORKFLOW_NOT_FOUND');if(result.status==='running'){result.cancelled=true;if(result.currentJobId)bridge.cancelAnalysisRun(result.currentJobId);}return {ok:true,status:result.status,cancelRequested:!!result.cancelled};}
   function dispose(){for(const value of requests.values())if(value.result?.status==='running'){value.result.cancelled=true;if(value.result.currentJobId)bridge.cancelAnalysisRun(value.result.currentJobId);}reviewPlans.clear();workflowPlans.clear();requests.clear();reports.clear();}
-  function exportState(){return clone([...reports.entries()]);}
-  function restoreState(rows) {
+  function exportState({shareImmutable=false}={}){const rows=[...reports.entries()];return shareImmutable?freezeCheckpointValue(rows):clone(rows);}
+  function restoreState(rows,{shareImmutable=false}={}) {
     if(!Array.isArray(rows))throw new Error('CHECKPOINT_REPORTS_INVALID');
     for(const [id,value] of rows) {
       const record=store.getDesignMetadata(id,identity());if(!record.ok)throw new Error('CHECKPOINT_REPORT_SOURCE_MISSING');
@@ -189,7 +189,7 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
         if(typeof text!=='string'||sha256(text)!==manifest.sha256||text.length!==manifest.totalCharacters||new TextEncoder().encode(text).byteLength!==manifest.byteLength||manifest.reportSnapshotHash!==value.reportSnapshotHash)throw new Error('CHECKPOINT_ARTIFACT_HASH_INVALID');
       }
     }
-    for(const [id,value] of rows)reports.setCopy(id,value);
+    for(const [id,value] of rows)if(shareImmutable)reports.set(id,freezeCheckpointValue(value));else reports.setCopy(id,value);
     return {ok:true,reports:reports.size};
   }
   return Object.freeze({dispose,exportState,restoreState,cancelWorkflow,planReview,startReview,getReview,createReport,getReport,getArtifact,getExportCapability,exportPdf,planWorkflow,runWorkflow});
@@ -244,3 +244,4 @@ function calculateReview(model, rows) {
     ruleSources:[{module:'src/design/steel.js',method:'steel_allowable_preliminary + elastic LTB',status:'preliminary'},{module:'src/design/concrete.js',method:'rc_preliminary_strength',status:'preliminary'},{module:'src/design/serviceability.js',method:'story drift H/200 default',status:'project criterion required'},{module:'src/design/connectionFoundation.js',method:'force / bearing / sliding screening',status:'assumed capacities; preliminary'}],
     limitations:['Final design transfer is blocked; computed OK is not engineering approval.','Only explicitly bound completed first-order/Direct P–Delta combinations are mapped. Legacy P–Delta is comparison-only and blocked. Modal, RSA, buckling, THA and nonlinear results are not mapped to member design demand.','Steel checks are preliminary allowable-stress screens, not a complete strength-code implementation. RC uses simplified section/rebar assumptions.','LTB, missing members, warnings and unchecked items retain their own status.','Connection bolt/weld/anchorage and foundation settlement, punching, reinforcement and soil qualification are NOT_CHECKED.','Selected combinations only; required code combination coverage is not certified.']};
 }
+import { freezeCheckpointValue } from './workflowResults.js';

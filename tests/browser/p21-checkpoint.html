@@ -1,0 +1,34 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>Phase21 IndexedDB 복구 검증</title>
+<style>body{font:16px system-ui;max-width:1000px;margin:32px auto;padding:24px;background:#f4f7fa;color:#18324b}button{padding:12px 24px}pre{white-space:pre-wrap;background:white;padding:20px}</style>
+<h1>Phase21 실제 IndexedDB transaction 검증</h1><p>합성 시험 저장본만 사용합니다. 기존 프로젝트 저장본을 수정하지 않습니다.</p>
+<button id="run">저장·중단·복원 시험 실행</button><pre id="result">대기</pre>
+<script type="module">
+import {createWorkflowCheckpointRepository} from '../../src/compute/product/workflowCheckpoint.js';
+import {createResourceBudget} from '../../src/core/resourceBudget.js';
+const output=document.querySelector('#result'),button=document.querySelector('#run');
+button.onclick=async()=>{
+ button.disabled=true;const rows=[],id='P21-ATOMIC-'+crypto.randomUUID();
+ const assert=(condition,message)=>{if(!condition)throw Error(message);rows.push(message);output.textContent=JSON.stringify(rows,null,2);};
+ const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('SStructuresPhase21',1);r.onupgradeneeded=()=>r.result.createObjectStore('checkpoints');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
+ const op=(mode,fn)=>new Promise((resolve,reject)=>{const tx=db.transaction('checkpoints',mode);const r=fn(tx.objectStore('checkpoints'));let value;r.onsuccess=()=>{value=r.result;};tx.oncomplete=()=>resolve(value);tx.onabort=tx.onerror=()=>reject(tx.error);});
+ const budget=createResourceBudget(),repo=createWorkflowCheckpointRepository({budget});
+ const bundle={modelBook:{synthetic:true},inputIdentity:{inputHash:'atomic-test'},catalog:{version:'test',analyses:Array.from({length:20},(_,i)=>({id:i,payload:'한글😀'.repeat(20000)})),designs:[]},reports:[['design-test',{html:'report'.repeat(20000),json:'{}',csv:'a,b'}]],interruptedJobs:[]};
+ try{
+  const first=await repo.save(id,bundle);assert(first.durable,'initial durable save');
+  const keysBefore=(await op('readonly',s=>s.getAllKeys())).filter(k=>k===id||String(k).includes(id)).sort();
+  let count=0;const failingBudget={nextOwner:budget.nextOwner,reserve(owner,bytes){if(++count===5)throw Object.assign(Error('INJECTED_ABORT'),{code:'INJECTED_ABORT'});budget.reserve(owner,bytes);},release:budget.release};
+  let rejected=false;try{await createWorkflowCheckpointRepository({budget:failingBudget}).save(id,{...bundle,modelBook:{changed:true}});}catch(e){rejected=e.code==='INJECTED_ABORT';}
+  assert(rejected,'injected interruption surfaced');
+  assert((await repo.inspect(id)).sha256===first.sha256,'previous committed checkpoint retained after abort');
+  const keysAfter=(await op('readonly',s=>s.getAllKeys())).filter(k=>k===id||String(k).includes(id)).sort();
+  assert(JSON.stringify(keysAfter)===JSON.stringify(keysBefore),'transaction rollback leaves no orphan segments');
+  const restored=await repo.read(id);assert(JSON.stringify(restored.bundle.catalog)===JSON.stringify(bundle.catalog),'restored original records equal');repo.releaseRead();
+  await repo.save(id,bundle);const keysNew=(await op('readonly',s=>s.getAllKeys())).filter(k=>k===id||String(k).includes(id));assert(keysNew.length===keysBefore.length,'overwrite removes previous generation');
+  const header=await op('readonly',s=>s.get(id)),manifest=JSON.parse(header.content),key=manifest.segments[0].key;
+  await op('readwrite',s=>s.put({content:'corrupted'},key));let tampered=false;try{await repo.inspect(id);}catch(e){tampered=e.code==='CHECKPOINT_HASH_MISMATCH';}assert(tampered,'tampered chunk rejected');
+  assert(budget.snapshot().totalBytes===0,'all temporary owners released');
+  output.textContent=JSON.stringify({ok:true,rows,resource:budget.snapshot(),userAgent:navigator.userAgent},null,2);
+ }catch(error){output.textContent=JSON.stringify({ok:false,rows,error:error.message,stack:error.stack},null,2);}
+ finally{repo.releaseRead();const keys=(await op('readonly',s=>s.getAllKeys())).filter(k=>k===id||String(k).includes(id));for(const key of keys)await op('readwrite',s=>s.delete(key));db.close();button.disabled=false;}
+};
+</script></html>

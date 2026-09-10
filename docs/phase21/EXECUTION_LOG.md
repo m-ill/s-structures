@@ -86,3 +86,12 @@ M6 전체 회귀 r1에서 p19-m5-nonlinear-contract의 dispose 후 기록 보존
 Node 실제 Worker pilot r1은 증거 추출 DTO 경로와 동일 조합 중복 보고서 요청 오류로 실패, 원본을 보존했다. r2는 selection.result를 읽고 Direct X/Y를 해당 조합의 보고서 원본으로 선택해 22회 해석 및 HTML/JSON/CSV 원본 SHA 일치 통과. 브라우저 검증을 대신하지 않는다.
 
 실제 내부 브라우저 localhost:5173에서 도구 40개 등록 및 시작 화면 캡처. 127.0.0.1 탭의 이전 autosave confirm이 제어 시간 초과를 유발했고, 독립 origin에서 재진입했다. UI 파일 chooser는 시간 초과; 원인 분류 중이며 가져오기 PASS로 기록하지 않는다.
+
+## 2026-09-10 M6 실제 저장 장애와 수정 후보
+
+- 실제 IAB r1에서 20조합+Direct X/Y+보고서 후 CHECKPOINT 저장이 MANAGED_MEMORY_BUDGET_EXCEEDED로 실패했다. 초기 M5 집중 18/18은 보존하며 전체 pilot 저장 gate를 재개했다.
+- v2 저장은 결과/보고서 필드별 분할, JSON 길이 사전 계상, 원자적 IndexedDB transaction, 조각별 SHA 검증, 이전 세대 정리, v1 읽기 호환을 구현했다. immutable snapshot을 공유하고 복원 시 catalog/UI 전체 복제를 제거했다.
+- Node pilot r3는 저장/복원은 성공했으나 시험이 제품 import를 생략해 입력 hash 비교 실패. r4는 extractProductModel을 거쳐 IAB와 같은 5660492c 입력 hash로 22회 해석, 20조합 검토, 세 원본 형식 SHA, 저장/복원 일치 통과. peak managed 208710774 bytes, maxRSS 889132 KiB; 반복 leak 수치가 아니다.
+- 실제 IAB r2에서 52488161 bytes 저장 후 reload/복원 성공. 저장 SHA 9bcd63246c249899557e1241098a4f2ccc6772f14cf436ab8d9d41c60fbc318b. 실제 UI 다운로드 HTML/JSON/CSV 모두 native manifest SHA 일치. download 이벤트 통지는 timeout이지만 실제 다운로드 파일은 확인했다.
+- 복원 뒤 이전 샘플의 combo/status UI 잔존을 발견해 조합 목록 재구성, 이전 상태 표시 해제, 복원 review 화면 연결을 수정했다. PDF 자동 내보내기는 adapter/figure/qualification 3조건 미충족으로 BLOCKED 유지.
+- 전체 회귀 r1은 122/123이며 이전 dispose 계약 테스트 한 건 불일치였다. 해당 계약 이관은 13c5809에 기록됨. 새 저장 후보 전체 회귀는 별도 r2로 수행한다.

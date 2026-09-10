@@ -1,6 +1,6 @@
 {
-  "version": "p21-m5-tests-v6",
-  "scope": "Phase21 M0-M5 and inherited regression; actual browser/pilot and release gates M6-M7 pending",
+  "version": "p21-m6-tests-v7",
+  "scope": "Phase21 M0-M6 contract and inherited regression; actual browser and release gates separately evidenced",
   "tests": [
     "tests/p21-m5-resource-recovery.mjs",
     "tests/p21-m5-lifecycle-memory.mjs",
@@ -124,7 +124,8 @@
     "tests/p6-pdelta-tangent.mjs",
     "tests/p7-m8-direct-parity.mjs",
     "tests/p10-m5-mpc-rigidlink.mjs",
-    "tests/p2-mvp-s4-rigid-diaphragm.mjs"
+    "tests/p2-mvp-s4-rigid-diaphragm.mjs",
+    "tests/p21-m6-checkpoint-segments.mjs"
   ],
   "testTimeoutMs": {
     "tests/p8-m5-production-pushover.mjs": 900000,

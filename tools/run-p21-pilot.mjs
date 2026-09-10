@@ -5,17 +5,21 @@ import assert from 'node:assert/strict';
 import { Worker } from 'node:worker_threads';
 import { installIndexEngineBridge } from '../src/ui/indexBridge.js';
 import { selectStaticResult } from '../src/ui/resultSelectionProjection.js';
+import { extractProductModel } from '../src/ui/indexNativePersistence.js';
 
 const input=process.argv[2],out=process.argv[3];
 if(!input||!out)throw new Error('Usage: node tools/run-p21-pilot.mjs input-book.json new-output-directory');
 if(fs.existsSync(out))throw new Error('OUTPUT_ALREADY_EXISTS');
 fs.mkdirSync(out,{recursive:true});
 const write=(name,value)=>fs.writeFileSync(path.join(out,name),typeof value==='string'?value:JSON.stringify(value,null,2));
-const bytes=fs.readFileSync(input),book=JSON.parse(bytes.toString('utf8').replace(/^\uFEFF/,'')),model=book.pages[0].model;
+const bytes=fs.readFileSync(input),book=JSON.parse(bytes.toString('utf8').replace(/^\uFEFF/,'')),model=extractProductModel(book);
 write('input-book.json',bytes.toString('utf8'));
 const digest=value=>crypto.createHash('sha256').update(value).digest('hex');
 globalThis.Worker=Worker;
-const target={model:()=>model,location:{search:''}},bridge=installIndexEngineBridge(target);
+fs.mkdirSync(path.join(out,'checkpoint'));
+const checkpointPath=key=>path.join(out,'checkpoint',digest(key)+'.json');
+const storage={put:async(key,value)=>fs.writeFileSync(checkpointPath(key),JSON.stringify(value)),get:async key=>fs.existsSync(checkpointPath(key))?JSON.parse(fs.readFileSync(checkpointPath(key),'utf8')):undefined,delete:async key=>fs.rmSync(checkpointPath(key),{force:true})};
+const target={model:()=>model,location:{search:''},SStructuresCheckpointStorage:storage},bridge=installIndexEngineBridge(target);
 const initial=bridge.getWorkflowInputIdentity(),rows=[],sources=[];
 const good=r=>{assert.equal(r.ok,true,JSON.stringify(r));return r;};
 try {
@@ -46,6 +50,13 @@ try {
  const get=id=>rows.find(r=>r.caseId===id).dmax;
  assert.ok(Math.abs(get('A-ULS-G1')/get('A-D-ONLY')-1.4)<1e-9);
  assert.ok(get('A-DIRECT-X')>get('A-MAX-EX-P'));assert.ok(get('A-DIRECT-Y')>get('A-MAX-EY-P'));
+ const projectId=model.projectId||model.meta?.projectId||model.meta?.id;
+ const checkpoint=await bridge.saveWorkflowCheckpoint({projectId});write('checkpoint-save.json',checkpoint);
+ target.SStructuresResultSelection.reset();await bridge.releaseCheckpointedResults({projectId});
+ assert.equal(bridge.getResourceState().totalBytes,0);
+ const restored=await bridge.restoreWorkflowCheckpoint({projectId});write('checkpoint-restore.json',restored);
+ assert.equal(restored.inputIdentity.inputHash,initial.inputHash);
+ for(const format of ['html','json','csv'])assert.equal(bridge.getDesignReviewArtifact(review.designRunId,{format}).sha256,report.artifactManifest[format].sha256);
  write('summary.json',{ok:true,scope:'Node real Worker product workflow; not browser evidence',inputFileSha256:digest(bytes),inputIdentity:initial,rows,reviewSummary:review.summary,artifactManifest:report.artifactManifest,resource:bridge.getResourceState(),runtime:process.version,maxRSSKiB:process.resourceUsage().maxRSS});
 } catch(error) {write('failure.json',{message:error.message,stack:error.stack,rows});throw error;}
 finally {await bridge.disposeRuntime();assert.equal(bridge.getResourceState().totalBytes,0);}

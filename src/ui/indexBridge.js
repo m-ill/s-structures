@@ -3,7 +3,7 @@ import { createProductBook, extractProductModel } from './indexNativePersistence
 import { createResourceBudget, retainedBytes } from '../core/resourceBudget.js';
 import { selectStaticResult, latestDisplayResult, resultCanDisplay } from './resultSelectionProjection.js';
 import { createResultPreparationBuilders } from '../compute/product/resultPreparationBuilders.js';
-import { createWorkflowInputIdentity } from '../core/workflowIdentity.js';
+import { createWorkflowInputIdentity, sameWorkflowInput } from '../core/workflowIdentity.js';
 import { stableHash } from '../core/stableHash.js';
 import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
 import { createWorkflowResultStore } from '../compute/product/workflowResults.js';
@@ -187,7 +187,7 @@ export function installIndexEngineBridge(target = globalThis) {
   const resourceBudget = createResourceBudget();
   target.SStructuresResourceBudget = resourceBudget;
   const workflowResults = createWorkflowResultStore({budget:resourceBudget});
-  const checkpoints=createWorkflowCheckpointRepository({indexedDB:target.indexedDB,storage:target.SStructuresCheckpointStorage});
+  const checkpoints=createWorkflowCheckpointRepository({indexedDB:target.indexedDB,storage:target.SStructuresCheckpointStorage,budget:resourceBudget});
   let checkpointBusy=false,runtimeDisposed=false;
   function assertCheckpointProject(projectId) {
     const bound=new URLSearchParams(target.location?.search||'').get('project');
@@ -795,11 +795,10 @@ export function installIndexEngineBridge(target = globalThis) {
       checkpointBusy=true;
       try {
         const model=bridge.getCurrentModel(),key=projectId||model.projectId||model.meta?.projectId||model.meta?.id;
-        resourceBudget.reserve('checkpoint-staging',resourceBudget.snapshot().totalBytes*2+retainedBytes(model)*2);
+        resourceBudget.reserve('checkpoint-staging',retainedBytes(model)*3+65536);
         assertCheckpointProject(key);
-        const bundle={modelBook:createProductBook(model),inputIdentity:bridge.getWorkflowInputIdentity(),catalog:workflowResults.exportState(),reports:elasticReview.exportState(),
+        const bundle={modelBook:createProductBook(model),inputIdentity:bridge.getWorkflowInputIdentity(),catalog:workflowResults.exportState({shareImmutable:true}),reports:elasticReview.exportState({shareImmutable:true}),
           interruptedJobs:analysisProductService?analysisProductService.listJobs().filter(job=>['running','queued'].includes(job.status)).map(job=>({id:job.id,caseId:job.caseId,status:'interrupted',resume:'rerun-required'})):[]};
-        resourceBudget.reserve('checkpoint-staging',retainedBytes(bundle)*2);
         return await checkpoints.save(key,bundle);
       } finally {checkpointBusy=false;resourceBudget.release('checkpoint-staging');}
     },
@@ -808,8 +807,8 @@ export function installIndexEngineBridge(target = globalThis) {
       const selection=target.SStructuresResultSelection?.getState?.();
       if(selection?.activeCaseId||selection?.activeResultId)throw Object.assign(new Error('PINNED_RESULT'),{code:'PINNED_RESULT'});
       if(analysisProductService?.listJobs().some(row=>['queued','running'].includes(row.status)))throw Object.assign(new Error('ANALYSIS_BUSY'),{code:'ANALYSIS_BUSY'});
-      const saved=await checkpoints.read(projectId);
-      if(stableHash(workflowResults.exportState())!==stableHash(saved.bundle.catalog)||stableHash(elasticReview.exportState())!==stableHash(saved.bundle.reports))throw Object.assign(new Error('UNSAVED_RESULTS'),{code:'UNSAVED_RESULTS'});
+      const saved=await checkpoints.matches(projectId,{catalog:workflowResults.exportState({shareImmutable:true}),reports:elasticReview.exportState({shareImmutable:true})});
+      if(!saved.matches)throw Object.assign(new Error('UNSAVED_RESULTS'),{code:'UNSAVED_RESULTS'});
       await bridge.disposeRuntime();
       analysisProductService=null;elasticProductService=null;eigenProductService=null;nonlinearProductService=null;runtimeDisposed=false;
       return {ok:true,projectId,checkpointSha256:saved.sha256,released:true,restoreRequired:true};
@@ -823,25 +822,34 @@ export function installIndexEngineBridge(target = globalThis) {
       const current=bridge.getCurrentModel(),previous=structuredClone(current);
       try {
         const saved=await checkpoints.read(projectId),bundle=saved.bundle;
-        resourceBudget.reserve('checkpoint-staging',retainedBytes(bundle));
         const restored=extractProductModel(bundle.modelBook);
         replaceModelContents(current,restored);
-        workflowResults.restoreState(bundle.catalog);
-        elasticReview.restoreState(bundle.reports);
+        // Synchronous ownership transfer: restore stores retain these same objects.
+        checkpoints.releaseRead();
+        workflowResults.restoreState(bundle.catalog,{shareImmutable:true});
+        elasticReview.restoreState(bundle.reports,{shareImmutable:true});
         for(const row of bundle.catalog.analyses) {
-          const stored=bridge.getWorkflowAnalysisResult(row.analysisRunId);
-          const published=Object.freeze({...structuredClone(row.result),restored:true,runRecordId:row.analysisRunId,designTransferAllowed:false,
-            ...(stored.stale?{status:'stale',ok:false}:{})});
+          const stale=!sameWorkflowInput(row.identity,bridge.getWorkflowInputIdentity({caseId:row.caseId}));
+          const published=Object.freeze({...row.result,restored:true,runRecordId:row.analysisRunId,designTransferAllowed:false,
+            ...(stale?{status:'stale',ok:false}:{})});
           target.__SStructuresAnalysisLatestAttempts[row.caseId]=published;
           target.__SStructuresAnalysisResults[row.caseId]=published;
         }
         for(const interrupted of bundle.interruptedJobs||[]){const row=current.analysisCases?.find(c=>c.id===interrupted.caseId);if(row)row.status='interrupted';}
         lastResult=null;lastResultIdentity=null;designInputResultsStale=true;resourceBudget.release('native-last-analysis');
         bridge.clearResultViews();target.SStructuresAgent?.clearResultViews?.();target.SStructuresResultSelection?.reset?.();
+        const comboSelect=target.document?.getElementById?.('comboSel');
+        if(comboSelect&&target.document?.createElement){
+          comboSelect.replaceChildren();
+          for(const combo of current.loadCombinations||[]){const option=target.document.createElement('option');option.value=combo.id;option.textContent=combo.name||combo.id;comboSelect.appendChild(option);}
+        }
+        bridge.designReviewPanel?.adoptReview?.(bundle.reports.at(-1)?.[0]);
         target.SStructuresAnalysisCenter?.refresh?.();target.draw?.();
+        const status=target.document?.getElementById?.('statusTxt');
+        if(status){status.textContent='저장 결과 복원 완료 · 해석 케이스에서 결과를 선택하세요.';status.removeAttribute?.('title');}
         return {ok:true,projectId,sha256:saved.sha256,designRunIds:bundle.reports.map(([id])=>id),inputIdentity:bridge.getWorkflowInputIdentity(),interruptedJobs:bundle.interruptedJobs||[],designTransferAllowed:false};
-      } catch(error){replaceModelContents(current,previous);workflowResults.dispose();elasticReview.dispose();throw error;}
-      finally {checkpointBusy=false;resourceBudget.release('checkpoint-staging');}
+      } catch(error){replaceModelContents(current,previous);workflowResults.dispose();elasticReview.dispose();target.__SStructuresAnalysisResults={};target.__SStructuresAnalysisLatestAttempts={};target.SStructuresResultSelection?.reset?.();throw error;}
+      finally {checkpointBusy=false;resourceBudget.release('checkpoint-staging');checkpoints.releaseRead();}
     },
     getResourceBudget:()=>resourceBudget,
     getResourceState:()=>resourceBudget.snapshot(),
