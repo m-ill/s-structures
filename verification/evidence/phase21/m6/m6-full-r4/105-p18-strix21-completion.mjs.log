@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "milestone": "P18-STRIX21-COMPLETION",
+  "counts": {
+    "completedEngineCase": 7,
+    "enginePassSourceBlocked": 3,
+    "engineFail": 0
+  },
+  "cases": {
+    "TH1": {
+      "status": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 4,
+      "engineeringHash": "557d6711876dd844d00228fa991fa844277c34c8cde45880cd6693af85ffb7fe"
+    },
+    "SP1": {
+      "status": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 4,
+      "engineeringHash": "6acd150984779e94e9cb49630197e4df6e8a8f9cb988e6945d09973888b750f0"
+    },
+    "SM6": {
+      "status": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 8,
+      "engineeringHash": "cabf3f30f60a83db068b9d6122524125e3f7fa68498d8fe911e823ced0364451"
+    },
+    "SM5b": {
+      "status": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 6,
+      "engineeringHash": "db85729e88c7b19e50cfdbd2f00ae88dd11aa661b8786fcfaf2c06e6c3ca69a1"
+    },
+    "SR1": {
+      "status": "ENGINE_PASS_SOURCE_BLOCKED",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "INPUT_BLOCKED",
+      "probeCount": 5,
+      "engineeringHash": "59347d9707a97b3b3d2e460340ec5ba077d72dbfb90d83acfd4e42ec2ed31246"
+    },
+    "SR2": {
+      "status": "ENGINE_PASS_SOURCE_BLOCKED",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "INPUT_BLOCKED",
+      "probeCount": 10,
+      "engineeringHash": "13fce0d901d004934c83e208e942f5d9dab1a03d17df4cc359ff8a3035f85a71"
+    },
+    "SR2b": {
+      "status": "ENGINE_PASS_SOURCE_BLOCKED",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "INPUT_BLOCKED",
+      "probeCount": 17,
+      "engineeringHash": "0eeaf37b2d06ba1eda893090b634fcb40a4910e1044b22f50b7ce395f4ebaf5f"
+    },
+    "P3S2": {
+      "status": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 5,
+      "engineeringHash": "5311b34c14e951b7facf8fcdac774ea1d558f5547ea897d9dc4ee04497253f37"
+    },
+    "SB12": {
+      "status": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 14,
+      "engineeringHash": "953231d68d7401340742563fb2f4e818a116edff5ade2beb0ded62c02552a4d2"
+    },
+    "SH1": {
+      "status": "PASS",
+      "engineStatus": "PASS",
+      "officialBenchmarkStatus": "NOT_CLAIMED",
+      "probeCount": 13,
+      "engineeringHash": "370f28f2bdc3eeab9991de7afb3e221e6ebd45ad1a8838fc935bc29738075d86"
+    }
+  }
+}
+
+

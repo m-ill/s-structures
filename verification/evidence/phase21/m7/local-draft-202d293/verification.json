@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "candidate": "202d293",
+  "scope": "local ZIP/extraction hashes and actual Chrome bundled sample UI smoke; not same-pilot comparison or Pages deployment",
+  "files": [
+    {
+      "file": "chrome-smoke.png",
+      "sha256": "656488bf09ab4861840ad79557d35001b2a32da2161f59665b655a3917fe8f26"
+    },
+    {
+      "file": "chrome-smoke.txt",
+      "sha256": "a4703a8b16fb862c27d78519503abc17c98b12afcca1d60837a15a8f9605f93b"
+    },
+    {
+      "file": "clean-install-verification.json",
+      "sha256": "c1f6a008fa5c5ee7da8c4781c3a6b8516cd7de97306124a5b2f0e55ebc801ba1"
+    },
+    {
+      "file": "publication.json",
+      "sha256": "4f2ab535e292ca3a62b0218d8ca956070e61a264243fac7d9eaa6128fc53fc3a"
+    },
+    {
+      "file": "SHA256SUMS.txt",
+      "sha256": "9327be985fcdad6e13ea749ef05c24e77567ea08cacc503b8ca41aba62ae37ba"
+    }
+  ]
+}

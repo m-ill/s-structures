@@ -1,4 +1,5 @@
 import { createWorkflowCheckpointRepository } from '../compute/product/workflowCheckpoint.js';
+import { runWithBoundedWorkerCancellation } from '../compute/product/boundedWorkerCancellation.js';
 import { createProductBook, extractProductModel } from './indexNativePersistence.js';
 import { createResourceBudget, retainedBytes } from '../core/resourceBudget.js';
 import { selectStaticResult, latestDisplayResult, resultCanDisplay } from './resultSelectionProjection.js';
@@ -442,20 +443,18 @@ export function installIndexEngineBridge(target = globalThis) {
               elasticProductService ||= createElasticAnalysisService();
               const settings = normalizeAnalysisCaseSettings(analysisCase.kind, analysisCase.settings, analysisCase.input, analysisCase);
               const runId = executionOptions.plan?.runId;
-              const cancel = () => elasticProductService.cancel(runId).catch(() => {});
-              executionOptions.signal?.addEventListener?.('abort', cancel, { once: true });
-              try {
-                const completed = await elasticProductService.run(model, {
+              const service=elasticProductService;
+                const completed = await runWithBoundedWorkerCancellation({
+                  signal:executionOptions.signal,cancel:()=>service.cancel(runId),
+                  dispose:()=>{if(elasticProductService===service)elasticProductService=null;return service.dispose();},
+                  run:()=>service.run(model, {
                   runId,
                   caseId: analysisCase.id,
                   computeTarget: executionOptions.computeTarget,
                   settings,
                   onProgress: executionOptions.onProgress,
-                });
+                })});
                 return createAnalysisCaseResult(analysisCase, completed.result, settings);
-              } finally {
-                executionOptions.signal?.removeEventListener?.('abort', cancel);
-              }
             }
             if (['modal', 'responseSpectrum'].includes(analysisCase.kind) && typeof Worker !== 'undefined') {
               eigenProductService ||= createEigenAnalysisService();
@@ -464,21 +463,19 @@ export function installIndexEngineBridge(target = globalThis) {
                 ? { ...settings, responseSpectrum: settings.spectrum }
                 : { ...settings, responseSpectrum: { enabled: false } };
               const runId = executionOptions.plan?.runId;
-              const cancel = () => eigenProductService.cancel(runId).catch(() => {});
-              executionOptions.signal?.addEventListener?.('abort', cancel, { once: true });
-              try {
-                const completed = await eigenProductService.runModalRsa(model, {
+              const service=eigenProductService;
+                const completed = await runWithBoundedWorkerCancellation({
+                  signal:executionOptions.signal,cancel:()=>service.cancel(runId),
+                  dispose:()=>{if(eigenProductService===service)eigenProductService=null;return service.dispose();},
+                  run:()=>service.runModalRsa(model, {
                   runId,
                   caseId: analysisCase.id,
                   computeTarget: executionOptions.computeTarget,
                   settings: workerSettings,
                   onProgress: executionOptions.onProgress,
-                });
+                })});
                 const payload = analysisCase.kind === 'responseSpectrum' ? completed.result.rsa : completed.result;
                 return createAnalysisCaseResult(analysisCase, payload, settings);
-              } finally {
-                executionOptions.signal?.removeEventListener?.('abort', cancel);
-              }
             }
             return runCoreAnalysisCaseAsync(model, analysisCase, { bridge, ...executionOptions });
           },

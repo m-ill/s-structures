@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "P9-GPU-ELA-11~12",
+    "P9-PERF-09",
+    "P9-FAIL-04"
+  ],
+  "amplification": 1.0364271094440942,
+  "iterationCount": 11,
+  "matrixSessionCount": 11,
+  "correctionSolveCount": 11
+}
+
+

@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-INT-15"
+  ],
+  "envelopeHash": "3c8bd9e36385202e1a7be5b2",
+  "nodePeak": {
+    "minimum": -0.015,
+    "maximum": 0.01,
+    "absoluteMaximum": 0.015,
+    "minimumTime": 0.2,
+    "minimumOutputStep": 2,
+    "maximumTime": 0.1,
+    "maximumOutputStep": 1,
+    "absoluteMaximumTime": 0.2,
+    "absoluteMaximumOutputStep": 2
+  },
+  "memberPeakForce": {
+    "minimum": -10,
+    "maximum": 15,
+    "absoluteMaximum": 15,
+    "minimumTime": 0.1,
+    "minimumOutputStep": 1,
+    "maximumTime": 0.2,
+    "maximumOutputStep": 2,
+    "absoluteMaximumTime": 0.2,
+    "absoluteMaximumOutputStep": 2
+  },
+  "finalHingeState": "capping",
+  "eventCount": 2,
+  "storyShearPeak": {
+    "minimum": -4,
+    "maximum": 0,
+    "absoluteMaximum": 4,
+    "minimumTime": 0.2,
+    "minimumOutputStep": 2,
+    "maximumTime": 0,
+    "maximumOutputStep": 0,
+    "absoluteMaximumTime": 0.2,
+    "absoluteMaximumOutputStep": 2
+  },
+  "complete": true
+}
+
+

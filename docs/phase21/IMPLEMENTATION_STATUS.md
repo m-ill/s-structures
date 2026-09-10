@@ -7,10 +7,10 @@ status: m0-m5-contract-complete-m6-verifying
 planning_baseline_commit: d8ae7af7af3d20b9a5c0977f210e5d1b26991ace
 pilot_runtime_commit: fefde822ae27a024ea8a834642b8aac10a24bd77
 implementation_baseline_commit: d8ae7af7af3d20b9a5c0977f210e5d1b26991ace
-candidate_commit: 78e8e5a
+candidate_commit: 202d293
 implemented_milestones: [M0, M1, M2, M3, M4, M5]
 phase21_numeric_test_runs: 1
-phase21_release_status: not-created
+phase21_release_status: local-drafts-only
 pages_status: unchanged-phase20-runtime
 production_qualification: unchanged-not-qualified
 independent_review_owner: user
@@ -25,8 +25,8 @@ independent_review_owner: user
 | M3 실행·결과 선택 | COMPLETE-CONTRACT-SCOPE | c28624e 고정 후보 10/10. 실제 Worker 20조합→단일 요청 1solve, 공통 표시 선택, 실패 잔존 차단, Direct 평형 상태 보정 |
 | M4 검토·보고서 | COMPLETE-CONTRACT-SCOPE | c3d66df 고정 후보10/10. canonical checks/messages, N_A, report source/summary, SHA-256 원본 조각 조회 구현 |
 | M5 메모리·복구 | COMPLETE-CONTRACT-SCOPE | 37aced6 고정 후보 집중 검증 18/18. 공통 예산·취소·원본 체크포인트·재개. 실제 IndexedDB/M 규모는 M6 gate |
-| M6 전체 업무 재시험 | VERIFYING | 78e8e5a 전체 회귀 124/124. 실제 IAB 22회 해석, RC 검토, 3포맷 다운로드 SHA, 52.5MB 저장/reload/복원·중단/변조 시험 통과. 일반 Chrome·M 규모 gate 진행 중 |
-| M7 공개·배포 | PLANNED | CI·패키지 준비 중. M6 필수 gate 미충족으로 main 병합/Pages 배포 금지 |
+| M6 전체 업무 재시험 | PARTIAL | 202d293 Windows 124/124. IAB pilot/원본 보고서/저장 복원 통과. 중간 규모 8회 해석·ledger 해제 통과. Chrome 동일 pilot·Ubuntu·전체 heap·후반 취소 미충족 |
+| M7 공개·배포 | LOCAL-DRAFT / BLOCKED | 202d293 소스·runtime·124건 evidence ZIP 및 Pages 정적 파일 생성. 해시 검증 통과. 필수 gate와 공개 승인 미충족으로 push/main/Pages 미수행 |
 
 `DOCUMENTED`는 계획 문서 상태이며 개발 마일스톤 완료가 아니다. 제안 시험·예산은 실행 전 확정하고 결과로만 상태를 변경한다. Phase20의 112/112와 RUN-001의 부분적인 정상 수치를 Phase21 PASS로 세지 않는다.
 
@@ -49,3 +49,15 @@ M7 CI는 Phase21 전체 목록을 Windows/Ubuntu에서 실행하도록 준비하
 같은 후보 Node pilot r5에서22회·원본3포맷·저장복원 PASS. 이전 r4와 변위/반력/부재력66개 묶음 해시 동일. 823591f 전체 회귀는 m6-full-r3로 수행한다. 기존78e8e5a IAB와124/124 증거를 새 후보의 동일 버전 검증으로 소급하지 않는다.
 
 M7은 공개 push 자동 승인 거부와 M6 잔여 gate로 BLOCKED. Windows의 WSL 배포판 목록이 비어 있어 로컬 Ubuntu 결과도 없다. 원격 CI 결과는 실제 실행 전까지 미실행이다.
+
+## 2026-09-11 최종 로컬 후보 202d293
+
+Windows 전체 회귀 124/124 통과. 18aa643은 사용자 정의 결과 케이스의 리본 연결과 실제 상태 문구 접근성을 수정했고, 296e8b8은 WebMCP raw 변위의 m 단위와 화면 mm를 분리했다. 실제 raw 0.009505956274493006 m와 화면 9.505956 mm를 확인했다. 202d293은 Direct 증폭을 선택 조합의 절점 성분 최대 비율로 표시한다. 이 값 1.116은 두 전역 최대변위의 비율이 아니다. 수치 엔진 결과를 임의 보정하지 않았다.
+
+IAB 중간 규모 125절점·260부재·750 full DOF: 예열 3회+측정 5회, FIRST/Direct 16회 모두 성공. 매회 dispose 후 관리 ledger 0, peak 125064722 bytes. 해당 문서는 823591f 수치 모듈을 로드했고 202d293까지 compute/core/solver/design/dynamics/nonlinear 변경 없음이 확인됐다. 화면/단위 최신 수정의 전체 검증은 별도 r4-r6 증거다. 프레임 p95 18.1ms 및 초기 취소 응답 약0.2ms는 동시 작업 환경 관측값이며 성능 합격선 검증으로 쓰지 않는다. 강제 GC 후 renderer/Worker 합산 heap 검증은 미완료다.
+
+추가 취소 시험은 recovery-envelope-design-audit 통지 대기 15초에서 두 번 실패했다. 두 번째는 다른 부하 종료 후 단독 실행했다. 이는 취소 동작의 실패나 해석 비수렴을 확정하지 않으며, 목표 단계 취소가 미검증이라는 뜻이다. 초기 Worker 실행 후 취소 시험은 별도 범위로 기록한다. 원 실패 002/003과 성공/추가 실패를 덮어쓰지 않는다.
+
+로컬 공개 초안 output/phase21/m7-draft-202d293은 검증된 202d293 commit/tree에 고정된다. ZIP 내부 전 파일 SHA와 CRC를 검증했다. 별도 Pages 파일 716개를 생성했다. 이후 증거·문서 정리는 이 실행 후보와 구분한다. 일반 Chrome 동일 pilot, Ubuntu CI, 전체 메모리 자격, 후반 취소 및 공개 승인 미충족으로 release gate는 BLOCKED다. 현재 Pages는 변경하지 않았다.
+
+초기 Worker contract-ready 통지 100ms 후 취소 시험 PASS: running → cancelled, ack 약0.4ms, dispose 약0.3ms, 결과 미등록, ledger 0. 후반 단계는 600초 대기 제한으로 별도 재시험하며 이전 15초 실패 2건을 보존한다.

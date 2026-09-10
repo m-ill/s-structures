@@ -1,0 +1,322 @@
+{
+  "start": {
+    "caseId": "A-DIRECT-X",
+    "jobId": "analysis-1789055327758-1",
+    "modelHash": "ea3ba3c4d918541ae90d32b2b83974ce560a230247c3d4e78d262c54d1b554d8",
+    "reused": false,
+    "solverUnitPolicy": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "stale": false,
+    "status": {
+      "caseId": "A-DIRECT-X",
+      "completedAt": null,
+      "createdAt": "2026-09-10T15:48:47.765Z",
+      "designBlocked": false,
+      "error": null,
+      "executedTarget": "cpu",
+      "id": "analysis-1789055327758-1",
+      "kind": "static",
+      "operationRoute": {
+        "backendId": "cpu-f64-linear3d",
+        "executedTarget": "cpu",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "operation": "elasticStatic",
+        "precision": "f64",
+        "reason": "Explicit qualified CPU f64 route.",
+        "requestedTarget": "cpu"
+      },
+      "planHash": "6ec3d30d1f421664d83f67f86d570cfdda7de56ab06a904819382c107a2068f5",
+      "productProvenance": {
+        "audit": "cpu-f64-equilibrium-and-result-audit",
+        "correction": "not-required-cpu-f64",
+        "designBlocked": false,
+        "executedTarget": "cpu",
+        "executionProvenance": null,
+        "externalRuntimeUsed": null,
+        "modelHash": "adf481df3e73e1853546d8f62a1b82a2cc763f46200db543a11861eba98889fe",
+        "networkFallbackUsed": null,
+        "operationRoute": {
+          "backendId": "cpu-f64-linear3d",
+          "executedTarget": "cpu",
+          "fallbackPolicy": "forbidden",
+          "fallbackUsed": false,
+          "operation": "elasticStatic",
+          "precision": "f64",
+          "reason": "Explicit qualified CPU f64 route.",
+          "requestedTarget": "cpu"
+        },
+        "planHash": "6ec3d30d1f421664d83f67f86d570cfdda7de56ab06a904819382c107a2068f5",
+        "qualification": "production-cpu-f64",
+        "requestedTarget": "cpu",
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "settingsHash": "70705127f719dcb98c93f80ea4eb5350d63227d8ff24103526fa749921965ef2"
+      },
+      "progress": 0,
+      "progressMessage": "Analysis queued.",
+      "qualification": "production-cpu-f64",
+      "requestedTarget": "cpu",
+      "resultAvailable": false,
+      "resultVerdict": null,
+      "settingsHash": "70705127f719dcb98c93f80ea4eb5350d63227d8ff24103526fa749921965ef2",
+      "stage": "queued",
+      "startedAt": null,
+      "status": "queued"
+    },
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    }
+  },
+  "status": {
+    "caseId": "A-DIRECT-X",
+    "jobId": "analysis-1789055327758-1",
+    "modelHash": "ea3ba3c4d918541ae90d32b2b83974ce560a230247c3d4e78d262c54d1b554d8",
+    "solverUnitPolicy": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "stale": false,
+    "status": {
+      "caseId": "A-DIRECT-X",
+      "completedAt": "2026-09-10T15:48:51.450Z",
+      "createdAt": "2026-09-10T15:48:47.765Z",
+      "designBlocked": false,
+      "error": null,
+      "executedTarget": "cpu",
+      "id": "analysis-1789055327758-1",
+      "kind": "static",
+      "operationRoute": {
+        "backendId": "cpu-f64-linear3d",
+        "executedTarget": "cpu",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "operation": "elasticStatic",
+        "precision": "f64",
+        "reason": "Explicit qualified CPU f64 route.",
+        "requestedTarget": "cpu"
+      },
+      "planHash": "6ec3d30d1f421664d83f67f86d570cfdda7de56ab06a904819382c107a2068f5",
+      "productProvenance": {
+        "audit": "cpu-f64-equilibrium-and-result-audit",
+        "correction": "not-required-cpu-f64",
+        "designBlocked": false,
+        "executedTarget": "cpu",
+        "executionProvenance": null,
+        "externalRuntimeUsed": null,
+        "modelHash": "adf481df3e73e1853546d8f62a1b82a2cc763f46200db543a11861eba98889fe",
+        "networkFallbackUsed": null,
+        "operationRoute": {
+          "backendId": "cpu-f64-linear3d",
+          "executedTarget": "cpu",
+          "fallbackPolicy": "forbidden",
+          "fallbackUsed": false,
+          "operation": "elasticStatic",
+          "precision": "f64",
+          "reason": "Explicit qualified CPU f64 route.",
+          "requestedTarget": "cpu"
+        },
+        "planHash": "6ec3d30d1f421664d83f67f86d570cfdda7de56ab06a904819382c107a2068f5",
+        "qualification": "production-cpu-f64",
+        "requestedTarget": "cpu",
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "settingsHash": "70705127f719dcb98c93f80ea4eb5350d63227d8ff24103526fa749921965ef2"
+      },
+      "progress": 1,
+      "progressMessage": "Analysis completed.",
+      "qualification": "candidate",
+      "requestedTarget": "cpu",
+      "resultAvailable": true,
+      "resultVerdict": {
+        "designBlocked": null,
+        "ok": null,
+        "status": null,
+        "warningCount": 0,
+        "warnings": []
+      },
+      "settingsHash": "70705127f719dcb98c93f80ea4eb5350d63227d8ff24103526fa749921965ef2",
+      "stage": "results",
+      "startedAt": "2026-09-10T15:48:47.774Z",
+      "status": "completed"
+    },
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    }
+  },
+  "value": {
+    "caseId": "A-DIRECT-X",
+    "externalQualification": "NOT_CLAIMED",
+    "jobId": "analysis-1789055327758-1",
+    "modelHash": "ea3ba3c4d918541ae90d32b2b83974ce560a230247c3d4e78d262c54d1b554d8",
+    "slice": {
+      "data": 0.009505956274493006,
+      "jobId": "analysis-1789055327758-1",
+      "limit": 1,
+      "path": "payload.pDelta.byCombo.MAX-EX-P.result.dmax",
+      "productProvenance": {
+        "audit": {
+          "blockedComboCount": 0,
+          "comboCount": 1,
+          "designBlocked": false,
+          "equilibriumLimit": 1e-8,
+          "failedEquilibriumComboCount": 0,
+          "maxEquilibriumResidual": 6.871650418613773e-15,
+          "maxForceEquilibriumResidual": 3.4644977347899865e-15,
+          "maxForceResidualNorm": 3.4644977347899865e-15,
+          "maxMomentEquilibriumResidual": 6.871650418613773e-15,
+          "maxMomentResidualNorm": 6.871650418613773e-15,
+          "maxSolverResidualNorm": 1.5989304086218826e-14,
+          "notSolvedComboCount": 0,
+          "ok": true,
+          "rows": [
+            {
+              "blockingReason": null,
+              "comboId": "MAX-EX-P",
+              "designBlocked": false,
+              "equilibriumOk": true,
+              "equilibriumResidual": 6.871650418613773e-15,
+              "equilibriumStatus": "PASS",
+              "forceEquilibriumResidual": 3.4644977347899865e-15,
+              "forceResidualNorm": 3.4644977347899865e-15,
+              "momentEquilibriumResidual": 6.871650418613773e-15,
+              "momentResidualNorm": 6.871650418613773e-15,
+              "nonfiniteIssues": [],
+              "ok": true,
+              "solverResidualNorm": 1.5989304086218826e-14,
+              "status": "PASS",
+              "unilateralConverged": null,
+              "unilateralInactiveMemberCount": 0
+            }
+          ],
+          "solvedComboCount": 1,
+          "status": "PASS",
+          "unavailableEquilibriumComboCount": 0,
+          "version": "p7-m7-six-resultant-analysis-audit-v1",
+          "warnings": []
+        },
+        "correction": "not-required-cpu-f64",
+        "designBlocked": false,
+        "executedTarget": "cpu",
+        "executionProvenance": {
+          "externalRuntimeUsed": null,
+          "networkFallbackUsed": null,
+          "observationSource": "UNOBSERVED_CALLER_SUPPLIED_RESULT",
+          "origin": "S_STRUCTURES_PUBLIC_ANALYSIS_RUNNER",
+          "runnerVersion": "p8-m10-analysis-runners-v6-p10-m7"
+        },
+        "externalRuntimeUsed": null,
+        "modelHash": "adf481df3e73e1853546d8f62a1b82a2cc763f46200db543a11861eba98889fe",
+        "networkFallbackUsed": null,
+        "operationRoute": {
+          "backendId": "cpu-f64-linear3d",
+          "executedTarget": "cpu",
+          "fallbackPolicy": "forbidden",
+          "fallbackUsed": false,
+          "operation": "elasticStatic",
+          "precision": "f64",
+          "reason": "Explicit qualified CPU f64 route.",
+          "requestedTarget": "cpu"
+        },
+        "planHash": "6ec3d30d1f421664d83f67f86d570cfdda7de56ab06a904819382c107a2068f5",
+        "qualification": "candidate",
+        "requestedTarget": "cpu",
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "settingsHash": "70705127f719dcb98c93f80ea4eb5350d63227d8ff24103526fa749921965ef2"
+      },
+      "truncated": false,
+      "version": "p9-m9-product-report-v1"
+    },
+    "solverUnitPolicy": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    },
+    "stale": false,
+    "status": {
+      "caseId": "A-DIRECT-X",
+      "completedAt": "2026-09-10T15:48:51.450Z",
+      "createdAt": "2026-09-10T15:48:47.765Z",
+      "designBlocked": false,
+      "error": null,
+      "executedTarget": "cpu",
+      "id": "analysis-1789055327758-1",
+      "kind": "static",
+      "operationRoute": {
+        "backendId": "cpu-f64-linear3d",
+        "executedTarget": "cpu",
+        "fallbackPolicy": "forbidden",
+        "fallbackUsed": false,
+        "operation": "elasticStatic",
+        "precision": "f64",
+        "reason": "Explicit qualified CPU f64 route.",
+        "requestedTarget": "cpu"
+      },
+      "planHash": "6ec3d30d1f421664d83f67f86d570cfdda7de56ab06a904819382c107a2068f5",
+      "productProvenance": {
+        "audit": "cpu-f64-equilibrium-and-result-audit",
+        "correction": "not-required-cpu-f64",
+        "designBlocked": false,
+        "executedTarget": "cpu",
+        "executionProvenance": null,
+        "externalRuntimeUsed": null,
+        "modelHash": "adf481df3e73e1853546d8f62a1b82a2cc763f46200db543a11861eba98889fe",
+        "networkFallbackUsed": null,
+        "operationRoute": {
+          "backendId": "cpu-f64-linear3d",
+          "executedTarget": "cpu",
+          "fallbackPolicy": "forbidden",
+          "fallbackUsed": false,
+          "operation": "elasticStatic",
+          "precision": "f64",
+          "reason": "Explicit qualified CPU f64 route.",
+          "requestedTarget": "cpu"
+        },
+        "planHash": "6ec3d30d1f421664d83f67f86d570cfdda7de56ab06a904819382c107a2068f5",
+        "qualification": "production-cpu-f64",
+        "requestedTarget": "cpu",
+        "serviceVersion": "p9-m9-product-analysis-service-v1",
+        "settingsHash": "70705127f719dcb98c93f80ea4eb5350d63227d8ff24103526fa749921965ef2"
+      },
+      "progress": 1,
+      "progressMessage": "Analysis completed.",
+      "qualification": "candidate",
+      "requestedTarget": "cpu",
+      "resultAvailable": true,
+      "resultVerdict": {
+        "designBlocked": null,
+        "ok": null,
+        "status": null,
+        "warningCount": 0,
+        "warnings": []
+      },
+      "settingsHash": "70705127f719dcb98c93f80ea4eb5350d63227d8ff24103526fa749921965ef2",
+      "stage": "results",
+      "startedAt": "2026-09-10T15:48:47.774Z",
+      "status": "completed"
+    },
+    "units": {
+      "displacement": "mm",
+      "force": "kN",
+      "length": "m",
+      "moment": "kN.m",
+      "stress": "N/mm2"
+    }
+  }
+}

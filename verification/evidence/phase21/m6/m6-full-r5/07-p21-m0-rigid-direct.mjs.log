@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "expected": 0.0004885197905089322,
+  "actual": 0.0004885197905089323,
+  "equilibrium": 8.074349270001139e-17,
+  "amplification": 1.0014655705433113,
+  "scope": "symmetric/eccentric/three-story independent equations, affine supports, CPU product, reference async; actual GPU blocked pending qualification"
+}
+
+

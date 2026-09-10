@@ -1,0 +1,3 @@
+{"ok":true,"beforeDisposeBytes":2173958,"owners":{"live-model":194064,"workflow-plans:9":3582,"review-requests:10":3574,"analysis-jobs:14":26642,"analysis-catalog:1":1064934,"legacy-run-catalog":156146,"design-plans:3":4652,"review-plans:8":4706,"design-catalog:2":163140,"reports:11":552518},"peakAccountedBytes":9796716,"checkpointBytes":881278,"checkpointSha256":"63aa7326c9511a344f5deb32c5662aacc826575fd4dd425e3ae14c6c3de87a96","reportReads":{"accepted":10,"rejected":6},"storage":"in-memory transaction adapter; actual IndexedDB browser verification is M6"}
+
+

@@ -6,6 +6,8 @@
   "staticWorkerEstimate": "240 * (nodeCount * 6)^2; conservative pre-contract admission",
   "analysisConcurrency": 1,
   "analysisQueue": 8,
+  "workerCancellationGraceMs": 5000,
+  "workerCancellationPolicy": "static/modal/RSA: cooperative settlement, then terminate owned Worker; await native termination before next queued run; recreate service after forced termination",
   "reportReadConcurrency": 2,
   "reportReadQueue": 8,
   "preparedViewEntries": 32,

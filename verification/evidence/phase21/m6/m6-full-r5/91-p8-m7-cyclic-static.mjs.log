@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-CYC-01",
+    "NL-CYC-02",
+    "NL-CYC-03",
+    "NL-CYC-04",
+    "NL-CYC-05",
+    "NL-CYC-06"
+  ],
+  "targetHistory": {
+    "segmentCount": 6,
+    "maximumTargetError": 0
+  },
+  "reversal": {
+    "protocolReversalCount": 6,
+    "materialReversalCount": 5
+  },
+  "residual": {
+    "actual": -0.009162315848433824,
+    "independentReference": -0.009162315848449811,
+    "absoluteError": 1.5987211554602254e-14
+  },
+  "energy": {
+    "externalWork": 4.894228125000001,
+    "recoverableChange": 0.5454336842105263,
+    "dissipatedChange": 4.348794410947866,
+    "relativeResidual": 6.0973063644342256e-9
+  },
+  "degradation": {
+    "positivePeaks": [
+      110,
+      101.8,
+      93.6
+    ],
+    "cycleCount": 3,
+    "strengthFactor": 0.76,
+    "stiffnessFactor": 0.85
+  },
+  "restart": {
+    "splitPoint": 3,
+    "failedSegmentReason": "MINIMUM_DISPLACEMENT_STEP_REACHED",
+    "failedSegmentRolledBack": true,
+    "committedHash": "862d5adb7820c35ed3e1ffda19e5da4cd0e05ba12c33ee1600395fe06495222a",
+    "byteEquivalent": true
+  },
+  "malformedEvaluation": {
+    "reason": "CYCLIC_EXTERNAL_WORK_VECTOR_MISMATCH",
+    "rollbackEquivalent": true
+  },
+  "generatedTargetCount": 9
+}
+
+

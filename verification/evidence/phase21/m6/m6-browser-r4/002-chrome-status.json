@@ -1,0 +1,13 @@
+{
+  "candidate": "18aa643",
+  "strength": {
+    "label": null,
+    "role": "status",
+    "text": "해석 OK · δmax 4.73mm · 평형✓ · 검정 0.40 전체 OK"
+  },
+  "service": {
+    "label": null,
+    "role": "status",
+    "text": "해석 OK · δmax 3.38mm · 평형✓ · 검정 0.29 전체 OK"
+  }
+}

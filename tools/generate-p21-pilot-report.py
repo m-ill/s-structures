@@ -17,7 +17,7 @@ node=json.loads((root/'output/phase21/m6-pilot-node-r4/summary.json').read_text(
 downloads=json.loads((run/'download-manifest.json').read_text())
 check=json.loads((run/'006-checkpoint-save.json').read_text())
 sources=[]
-for folder in [first,run,root/'output/phase21/m6-browser-r3']:
+for folder in [first,run,*[root/f'output/phase21/m6-browser-r{i}' for i in range(3,7)]]:
  for file in sorted(folder.glob('*.png')):
   dst=evidence/(folder.name+'-'+file.name);shutil.copy2(file,dst)
   sources.append({'path':dst.relative_to(root).as_posix(),'sha256':hashlib.sha256(dst.read_bytes()).hexdigest(),'sourceRun':folder.name})
@@ -55,6 +55,12 @@ sections=[
   '제한: 실제 GPU 강체 Direct 미자격, 최종 RC 배근 설계·지반·접합 상세 미검증, 자동 PDF 차단. Chrome 동일 모델 UI 비교는 확장 프로그램 파일 URL 권한 때문에 아직 완료하지 못했다.',
   '125 절점/260 부재/750 full DOF의 중간 규모 반복·취소 시험과 Win/Ubuntu 동일 후보 회귀는 별도 증거로 기록한다. 미실행·미측정 항목에 PASS를 부여하지 않는다. 최종 상태는 상태 문서 및 배포 gate를 우선한다.',
   '화면은 원본 viewport 캡처이며 아래 각 경로와 SHA는 capture-manifest.json에 보존한다. r1은 저장 수정 전 단계 기록, r2는 저장 수정·복원 재시험 기록이다.'])]
+sections.append(('최신 후보와 남은 게이트',[
+ '202d293 Windows 전체 회귀 124/124 통과. 사용자 정의 결과 케이스의 리본 연결과 현재 상태 접근성을 수정했다. WebMCP 원본 변위 0.009505956274493006 m를 화면 단위 mm와 분리하여 표시한다. 원 수치의 스케일을 바꾸지 않았다.',
+ 'Direct 증폭 표시는 선택 조합의 절점 성분 최대 증폭이다. 화면 1.116은 서로 다른 위치일 수 있는 전역 최대변위 두 값의 비율이 아니다. 선택 조합 대신 전체 최대 증폭을 표시하던 경로도 수정했다.',
+ 'IAB 중간 규모 125절점·260부재: 예열 3회와 측정 5회의 FIRST/Direct 해석 모두 통과하고 매회 dispose 후 관리 ledger 0. Peak 125064722 bytes. 로드된 수치 모듈은 823591f이며 202d293까지 해당 모듈 변경 없음. 전체 renderer/Worker 합산 heap 자격은 미완료다.',
+ '결과 준비 단계 취소는 15초 단계 대기에서 두 번 실패하여 미검증으로 보존했다. 초기 Worker 실행 후 취소는 별도 시험 범위다. Chrome 동일 pilot·Ubuntu CI·전체 메모리 검증과 공개 승인 조건이 남았다. M6 일부 미충족, M7 로컬 패키지 준비 완료/공개 배포 차단이다.',
+ 'r4는 리본/접근성 수정과 단위 결함 발견, r5는 단위 수정, r6는 증폭 설명과 반복/취소 시험의 원본 화면이다. 과거 화면의 결함을 최신 정상 동작으로 표시하지 않는다. 제품 자동 PDF 및 최종 구조설계 자격은 여전히 차단 상태다.']))
 md=['# Phase21 상가주택 실제 업무 흐름 재시험 보고서','', '시험일: 2026-09-10 시작 · CPU / Windows · 개발 검증 · 최종 설계 승인 아님','']
 for title,paras in sections:
  md+=['## '+title,'']+sum(([p,''] for p in paras),[])

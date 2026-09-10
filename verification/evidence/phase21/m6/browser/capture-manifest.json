@@ -133,5 +133,45 @@
     "path": "verification/evidence/phase21/m6/browser/m6-browser-r3-006-restore.png",
     "sha256": "0e473e9a36d1d87e0dd7f2805fe8e4ed6e70a7e3ccd85470b2725715d6fbcf55",
     "sourceRun": "m6-browser-r3"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r4-001-custom-ribbon.png",
+    "sha256": "13f3c0dae7671ae7233104fea90c78b06caa87cd3c57fc9842de97e28245d6b9",
+    "sourceRun": "m6-browser-r4"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r4-002-chrome-status.png",
+    "sha256": "57bea874c83a5586a6258ecb0c0d7a859ed71225bfc7efe7c782aa2fda1d25b2",
+    "sourceRun": "m6-browser-r4"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r5-001-native-units.png",
+    "sha256": "44f6ef9eb2d12af06f083d9c66bf165948c0e775d4a968393c3792b78aed259d",
+    "sourceRun": "m6-browser-r5"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r6-001-final-display.png",
+    "sha256": "22975a0f5d0608f44f0ddaf3b49e91e9ab9b8fad9a76060e00670e13f9b1373f",
+    "sourceRun": "m6-browser-r6"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r6-002-active-cancel.png",
+    "sha256": "db30c97a59f04e9a918a7040a36d403cf5a036d641eaf4f3b9faf35f01c9c263",
+    "sourceRun": "m6-browser-r6"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r6-003-active-cancel-r2.png",
+    "sha256": "db30c97a59f04e9a918a7040a36d403cf5a036d641eaf4f3b9faf35f01c9c263",
+    "sourceRun": "m6-browser-r6"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r6-004-medium-eight-cycles.png",
+    "sha256": "fd3129221bc341b99d5b4b17635ce66f1aa11aff869a450b39d69408d9139244",
+    "sourceRun": "m6-browser-r6"
+  },
+  {
+    "path": "verification/evidence/phase21/m6/browser/m6-browser-r6-005-worker-start-cancel.png",
+    "sha256": "bc68f7cda394df86fe4754e534d86bc314125aeef0e8080ef9692234a78cae6a",
+    "sourceRun": "m6-browser-r6"
   }
 ]

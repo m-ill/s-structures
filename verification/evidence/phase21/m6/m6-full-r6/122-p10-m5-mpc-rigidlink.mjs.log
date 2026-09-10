@@ -1,0 +1,32 @@
+{
+  "ok": true,
+  "version": "p10-m5-mpc-rigidlink-v1",
+  "solverVersion": "p10-m5-general-constraint-v1",
+  "metrics": {
+    "rigidLinkError": 1.4210854715202004e-14,
+    "equilibriumResidual": 1.480297366166875e-16,
+    "diaphragmError": 0,
+    "modalError": 0,
+    "pDeltaResidual": 1.1842378929335002e-15
+  },
+  "tolerances": {
+    "rigidLink": 1e-10,
+    "equilibrium": 1e-10,
+    "diaphragm": 1e-10,
+    "modal": 1e-10,
+    "pDelta": 1e-10
+  },
+  "modelHashes": {
+    "rigidLink": "5f126d12115bb90a",
+    "mpc": "936d760fdf95bffd",
+    "diaphragm": "3d7e1628279f06a9",
+    "modal": "f88144f68646e5dd"
+  },
+  "collisionCodes": [
+    "CONSTRAINT_SLAVE_REDEFINED",
+    "CONSTRAINT_CYCLE",
+    "CONSTRAINT_SUPPORT_CONFLICT"
+  ]
+}
+
+

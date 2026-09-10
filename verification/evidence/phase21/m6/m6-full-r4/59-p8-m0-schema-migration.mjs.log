@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-GOV-04",
+    "NL-MEI-01"
+  ],
+  "schemaVersion": 6,
+  "registries": [
+    "nonlinearMaterials",
+    "nonlinearSections",
+    "hingeProperties",
+    "linkProperties",
+    "timeHistoryFunctions",
+    "analysisStates"
+  ],
+  "pushoverEngine": "legacy-preliminary-stepwise-secant",
+  "nlthEngine": "legacy-sdof-bilinear-newmark",
+  "domainHash": "8dd7e1f94a7681262b9a9396"
+}
+
+

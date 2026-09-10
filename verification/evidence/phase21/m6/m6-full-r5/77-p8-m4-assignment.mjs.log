@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-HNG-12"
+  ],
+  "propertyCount": 2,
+  "assignmentCount": 4,
+  "yYieldMoment": 1100,
+  "zYieldMoment": 2200,
+  "pmmMomentFactor": 0.85,
+  "undoRestored": true,
+  "rcMissingSnapshotBlocked": true
+}
+
+

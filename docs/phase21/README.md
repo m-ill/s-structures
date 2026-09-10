@@ -75,3 +75,7 @@ Phase 21의 검증 결과로 다음 범위를 확정한다. 아직 Phase 22 구�
 - **실무 자격:** 사용자 제공 외부 2건·pilot 5건과 실제 설계조건을 결속한 최종 자격 검토.
 
 2026-09-11 후속 후보823591f: Windows124/124, Node22회 pilot 및66개 수치 묶음 동일. 중간 규모의 정적→동적 암묵 실행을 제거해FIRST/Direct 결과 등록 성공. 최신 IAB3회 재해석 뒤61MB 저장/복원 SHA 동일. 일반 Chrome/Ubuntu/중간 규모 반복 qualification과 공개 승인 미충족으로 M6/M7 전체 완료는 아니다.
+
+## 최신 상태
+
+202d293: Windows 124/124, 브라우저 중간 규모 8회 반복 및 ledger 해제 통과. M0–M5 계약 범위 완료, M6 일부 미충족, M7 로컬 패키지 준비/배포 차단. [실제 상태](IMPLEMENTATION_STATUS.md)와 [캡처 보고서](PILOT_RETEST_REPORT.md)를 따른다.

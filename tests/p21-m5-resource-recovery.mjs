@@ -15,6 +15,7 @@ const done=await Promise.all(reads);assert.equal(done.filter(x=>x===true).length
 await assert.rejects(queue.run(()=>1),{code:'QUEUE_DISPOSED'});
 const data=new Map(),storage={put:async(k,v)=>data.set(k,structuredClone(v)),get:async k=>structuredClone(data.get(k))};
 const repository=createWorkflowCheckpointRepository({storage});
+await import('./p21-bounded-worker-cancellation.mjs');
 const model=createIndexStartupSampleModel();model.meta={projectId:'P21-RECOVERY'};
 model.analysisCases=[{id:'S',kind:'static',settings:{comboId:model.loadCombinations[0].id,pDeltaMethod:'off'}}];
 const target={model:()=>model,location:{search:''},SStructuresCheckpointStorage:storage};

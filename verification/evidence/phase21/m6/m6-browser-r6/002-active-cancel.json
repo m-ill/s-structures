@@ -1,0 +1,21 @@
+{
+  "ok": false,
+  "error": "DIRECT_STAGE_TIMEOUT",
+  "events": [
+    {
+      "stage": "queued",
+      "status": "queued",
+      "progress": 0
+    },
+    {
+      "stage": "solve",
+      "status": "running",
+      "progress": 0.02
+    },
+    {
+      "stage": "contract-ready",
+      "status": "running",
+      "progress": 0.03
+    }
+  ]
+}

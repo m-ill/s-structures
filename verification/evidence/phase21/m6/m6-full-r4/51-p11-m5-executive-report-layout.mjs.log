@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "milestone": "P11-M5",
+  "pageCount": 13,
+  "firstPageMarkerCoverage": 1,
+  "figurePages": 7,
+  "footerNumberingErrors": 0,
+  "sectionOrderParity": true,
+  "deterministicRuns": 10,
+  "layoutVersion": "p11-production-report-v1"
+}
+
+

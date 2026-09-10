@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "source": {
+    "commit": "202d2931052ea679da6f11c21ca26322821f2969",
+    "tree": "0e6970b38b9c88e023dcfbaa7b7bbc57d054a545",
+    "trackedChanges": ""
+  },
+  "files": 745,
+  "scope": "clean extraction and all runtime file hashes; browser smoke recorded separately"
+}

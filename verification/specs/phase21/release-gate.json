@@ -6,20 +6,28 @@
     "same-candidate-regression": "PASS",
     "native-browser-pilot-save-restore": "PASS",
     "normal-browser-parity": "PENDING",
-    "medium-load-lifecycle": "VERIFYING_AFTER_FIX",
+    "medium-load-lifecycle": "PARTIAL",
     "capture-report-qa": "PASS",
     "ubuntu-regression": "PENDING"
   },
   "verifiedGitObjects": {
-    "src": "aeef7b2794bfd273e45982b1cd038c4ca4c1fc77",
+    "src": "5426cd12aaad7bf3b0ff98fa8f73fa04ffb6afc6",
     "server": "f35d294394287d7f8f70926bda76ef63b72ec1ad",
     "index.html": "5e5fe41334bb5d79d37746fdfa987b93639090d8",
     "package.json": "7ad2c17e523d412dc86218af5bedea475cd50cc6"
   },
   "evidence": {
-    "runtimeCandidate": "823591f",
-    "windowsRegression": "verification/evidence/phase21/m6/m6-full-r3/validation.json",
-    "nativeLatest": "output/phase21/m6-browser-r3",
-    "mediumNode": "verification/evidence/phase21/m6/medium/node-r4.json"
-  }
+    "runtimeCandidate": "202d2931052ea679da6f11c21ca26322821f2969",
+    "windowsRegression": "verification/evidence/phase21/m6/m6-full-r6/validation.json",
+    "nativeLatest": "verification/evidence/phase21/m6/m6-browser-r6",
+    "mediumNode": "verification/evidence/phase21/m6/medium/node-r4.json",
+    "mediumBrowser": "verification/evidence/phase21/m6/m6-browser-r6/004-medium-eight-cycles.json"
+  },
+  "remainingConditions": [
+    "Chrome same-pilot comparison: file URL permission pending",
+    "Ubuntu CI not run",
+    "Aggregate Worker/renderer post-GC memory qualification incomplete",
+    "Recovery-stage cancellation timed out twice before the target stage",
+    "Public pilot-derived evidence approval pending"
+  ]
 }

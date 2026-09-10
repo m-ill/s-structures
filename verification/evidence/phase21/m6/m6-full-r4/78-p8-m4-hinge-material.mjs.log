@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-HNG-01",
+    "NL-HNG-02",
+    "NL-HNG-03",
+    "NL-HNG-04",
+    "NL-HNG-05",
+    "NL-HNG-06"
+  ],
+  "maxTangentError": 3.946603796552723e-11,
+  "residualRotation": 0.009,
+  "loopEnergy": 3.6,
+  "degradedStrengthFactor": 0.9,
+  "degradedStiffnessFactor": 0.95
+}
+
+

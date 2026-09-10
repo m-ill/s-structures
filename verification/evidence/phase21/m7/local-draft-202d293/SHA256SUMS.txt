@@ -1,0 +1,3 @@
+04c35d265c7f9833aaa01a96560c88b67677a7b74b2aab113a58dfea736b9a02  s-structures-source.zip
+1cc9d7971ff8356920f3838424470b3a0f371095b031477d7a0faf21bb8c45ab  s-structures-runtime.zip
+d3c2b69a9849203db64e8650c3dc6dbe6e4fb4589fc239fe56b02a899250039f  s-structures-evidence.zip

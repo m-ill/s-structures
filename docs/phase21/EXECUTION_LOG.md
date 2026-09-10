@@ -141,3 +141,21 @@ Node 실제 Worker pilot r1은 증거 추출 DTO 경로와 동일 조합 중복 
 - 18aa643 전체 회귀124/124 PASS. 296e8b8 원본 단위 수정은 실제IAB에서0.009505956274493006, valueUnit=m, displayUnits.displacement=mm, valuesRescaled=false로 확인했다.
 - Direct 최대 증폭의 정의는 secondOrder.js의maximum-translational-component-ratio다. 최대변위9.505956/9.425820과 다른1.116 자체는 수치 오류가 아니다. 다만 다중 조합 화면에서 summary 전체 최대값을 우선해 선택 조합값을 무시하던 조회 오류를 수정하고 표시명을 절점 성분 최대 증폭으로 명확히 했다.
 - 선택 조합1.2/다른 조합 전체최대9를 분리하는 회귀를 추가. 첫 기대 문자열1.200은 실제 숫자 포맷1.2와 달라 실패했으며 의미 있는 숫자 비교로 수정했다. M3/결과팝업/탄성UI3개 PASS. 수치 solver 변경 없음.
+
+## 2026-09-11 최종 로컬 후보 202d293
+
+Windows 전체 회귀 124/124 통과. 18aa643은 사용자 정의 결과 케이스의 리본 연결과 실제 상태 문구 접근성을 수정했고, 296e8b8은 WebMCP raw 변위의 m 단위와 화면 mm를 분리했다. 실제 raw 0.009505956274493006 m와 화면 9.505956 mm를 확인했다. 202d293은 Direct 증폭을 선택 조합의 절점 성분 최대 비율로 표시한다. 이 값 1.116은 두 전역 최대변위의 비율이 아니다. 수치 엔진 결과를 임의 보정하지 않았다.
+
+IAB 중간 규모 125절점·260부재·750 full DOF: 예열 3회+측정 5회, FIRST/Direct 16회 모두 성공. 매회 dispose 후 관리 ledger 0, peak 125064722 bytes. 해당 문서는 823591f 수치 모듈을 로드했고 202d293까지 compute/core/solver/design/dynamics/nonlinear 변경 없음이 확인됐다. 화면/단위 최신 수정의 전체 검증은 별도 r4-r6 증거다. 프레임 p95 18.1ms 및 초기 취소 응답 약0.2ms는 동시 작업 환경 관측값이며 성능 합격선 검증으로 쓰지 않는다. 강제 GC 후 renderer/Worker 합산 heap 검증은 미완료다.
+
+추가 취소 시험은 recovery-envelope-design-audit 통지 대기 15초에서 두 번 실패했다. 두 번째는 다른 부하 종료 후 단독 실행했다. 이는 취소 동작의 실패나 해석 비수렴을 확정하지 않으며, 목표 단계 취소가 미검증이라는 뜻이다. 초기 Worker 실행 후 취소 시험은 별도 범위로 기록한다. 원 실패 002/003과 성공/추가 실패를 덮어쓰지 않는다.
+
+로컬 공개 초안 output/phase21/m7-draft-202d293은 검증된 202d293 commit/tree에 고정된다. ZIP 내부 전 파일 SHA와 CRC를 검증했다. 별도 Pages 파일 716개를 생성했다. 이후 증거·문서 정리는 이 실행 후보와 구분한다. 일반 Chrome 동일 pilot, Ubuntu CI, 전체 메모리 자격, 후반 취소 및 공개 승인 미충족으로 release gate는 BLOCKED다. 현재 Pages는 변경하지 않았다.
+
+초기 Worker contract-ready 통지 100ms 후 취소 시험 PASS: running → cancelled, ack 약0.4ms, dispose 약0.3ms, 결과 미등록, ledger 0. 후반 단계는 600초 대기 제한으로 별도 재시험하며 이전 15초 실패 2건을 보존한다.
+
+최신 runtime ZIP 별도 설치 후 파일745개 SHA 일치. 실제 Chrome에서 기본 샘플 전체 탄성 실행 완료4/검토2, 1차 결과4.733mm 확인. 이 샘플 smoke를 상가주택 동일 모델 비교로 세지 않는다. Pages716파일 로컬 생성, 공개 배포 미수행. 문서 PDF43페이지/35캡처 렌더링: 변경 본문1–8 및 새 화면35–43 확인, 기존 화면은 이전 QA 유지. Wiki lint72노트에서 기존 S-Scan 깨진 링크8건만 남음.
+
+## 2026-09-11 실행 중 취소 후속 수정
+
+실제 recovery-envelope-design-audit 단계 취소는 상태 ACK 뒤 동기 Worker 계산 종료를 오래 기다렸다. 최종 ledger0/미등록은 통과했으나 종료 지연을 측정하지 않은 기존 ok:true를 5초 gate PASS로 쓰지 않는다. 006 원본 보존. static/modal/RSA 제품 Worker 경로에5초 협조적 종료 유예 및 초과시 dispose/terminate 추가. 다음 queue는 native 종료를 기다리고 폐기된 service를 재생성한다. 조기취소·협조종료·transport오류·지연결과 유출방지 집중 시험 통과. 신규 후보 전체 회귀와 실제 후반 취소/다음 해석 재검증 진행. 202d293 ZIP은 이 수정 전 초안으로 보존하며 최신 배포 후보로 사용하지 않는다.

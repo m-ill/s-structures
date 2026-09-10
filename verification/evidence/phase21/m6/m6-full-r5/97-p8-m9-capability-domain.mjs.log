@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-INT-01",
+    "NL-INT-02",
+    "NL-INT-03",
+    "NL-INT-04",
+    "NL-INT-05",
+    "NL-INT-06",
+    "NL-INT-12"
+  ],
+  "rigidDofs": {
+    "full": 162,
+    "reduced": 84
+  },
+  "activeMassX": 71.74748418,
+  "semiRigidGeneratedMemberCount": 6,
+  "dynamicReleaseReason": "NONLINEAR_DYNAMIC_MEMBER_RELEASE_UNSUPPORTED",
+  "unilateralReason": "NONLINEAR_UNILATERAL_ACTIVE_SET_UNSUPPORTED",
+  "shellWarningCount": 1,
+  "femShellReason": "NONLINEAR_SHELL_FEM_UNSUPPORTED"
+}
+
+

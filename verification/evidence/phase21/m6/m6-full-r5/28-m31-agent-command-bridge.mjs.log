@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "version": "p8-m10-agent-command-bridge",
+  "nodes": 4,
+  "members": 3,
+  "loads": 1,
+  "commandCount": 31
+}
+
+

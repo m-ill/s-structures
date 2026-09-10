@@ -1,0 +1,235 @@
+- button "메뉴": ☰
+- generic: S-STRUCTURES
+- tablist "작업 탭":
+  - tab "모델링"
+  - tab "탄성해석" [selected]
+  - tab "비선형해석"
+  - tab "태블릿메모"
+- button "이전 페이지": ◀
+- generic: 1 / 1
+- button "다음 페이지": ▶
+- button "새 페이지": ＋
+- button "Phase 13 실무 워크벤치 열기": 실무 워크벤치
+- link "계정":
+  - /url: app.html#/login
+- button "실행 취소 (Ctrl+Z)": ↶
+- button "다시 실행 (Ctrl+Y)": ↷
+- button "−"
+- button "기본 뷰로": ⌂
+- button "＋"
+- generic: 기본
+- text: "보기:"
+- button "3D"
+- button "평면"
+- button "정면"
+- button "측면"
+- text: "결과:"
+- generic: © 단국대 허석재
+- generic: 해석 절차
+- button "1단계 기본설정":
+  - generic: "1"
+  - generic: 기본설정
+  - generic: ✓
+- button "2단계 하중·질량":
+  - generic: "2"
+  - generic: 하중·질량
+  - generic: "!"
+- button "3단계 하중조합":
+  - generic: "3"
+  - generic: 하중조합
+  - generic: "!"
+- button "4단계 모델검증":
+  - generic: "4"
+  - generic: 모델검증
+  - generic: ✓
+- button "5단계 1차해석":
+  - generic: "5"
+  - generic: 1차해석
+  - generic: ✓
+- button "6단계 고급해석":
+  - generic: "6"
+  - generic: 고급해석
+  - generic: ✓
+- button "7단계 결과검토":
+  - generic: "7"
+  - generic: 결과검토
+  - generic: ✓
+- button "상세 하중 입력 표시":
+  - generic: ⋯
+- generic: 해석
+- button "전체 탄성해석 실행":
+  - generic: ▶
+  - generic: 전체 탄성해석
+- button "해석 케이스 설정 열기":
+  - generic: ⚙
+- status: 완료 4 · 검토 2
+- generic: 결과
+- button "1차 정적해석 결과 열기" [pressed]:
+  - generic: K
+  - generic: 1차
+  - generic: 완료
+- button "Direct P-Delta 결과 열기":
+  - generic: PΔ
+  - generic: P-Delta
+  - generic: 완료
+- button "모달해석 결과 열기":
+  - generic: T
+  - generic: 모달
+  - generic: 완료
+- button "응답스펙트럼해석 결과 열기":
+  - generic: S
+  - generic: RSA
+  - generic: 검토
+- button "탄성 고유치 좌굴 결과 열기":
+  - generic: λ
+  - generic: 좌굴
+  - generic: 완료
+- button "선형 시간이력 (예비) 결과 열기":
+  - generic: t
+  - generic: THA
+  - generic: 검토
+- generic: 조합
+- combobox "하중조합":
+  - option "1.4D" [selected]
+  - option "1.2D + 1.6L"
+  - option "Service D + L"
+  - option "포락 (Envelope)"
+- generic: 결과
+- button "변형"
+- button "M"
+- button "Q"
+- button "N"
+- button "반력"
+- button "수치"
+- button "T"
+- button "검정"
+- button "절점#"
+- button "부재#"
+- button "길이"
+- button "로컬축"
+- button "설계"
+- button "처짐"
+- generic: 보고
+- button "하중조합":
+  - generic: ☷
+  - generic: 하중조합
+- button "설계요약":
+  - generic: ▤
+  - generic: 설계요약
+- button "검증":
+  - generic: ✓
+  - generic: 검증
+- generic: 상태
+- status: 해석 OK · δmax 4.73mm · 평형✓ · 검정 0.40 전체 OK
+- generic: 변형 배율
+- generic: Scale
+- combobox "Scale":
+  - option "auto" [selected]
+  - option "10"
+  - option "50"
+  - option "100"
+  - option "500"
+- button "설계 입력 변경"
+- button "탄성 설계 검토"
+- status: WebMCP unsupported · 도구 0개 · 작업 없음 · 검토 결과 없음 · 탄성 예비 검토 · 비선형 candidate
+- button "해석 케이스"
+- button "ratio"
+- button "▶ 스텝 재생"
+- dialog "탄성해석 결과 시각화":
+  - banner:
+    - heading "1차 정적해석" [level=2]
+    - generic: 1차 정적
+    - generic: 완료
+    - combobox "표시할 탄성해석 케이스":
+      - option "1차 정적해석" [selected]
+      - option "Direct P-Delta"
+      - option "모달해석"
+      - option "응답스펙트럼해석"
+      - option "탄성 고유치 좌굴"
+      - option "선형 시간이력 (예비)"
+    - button "선택한 해석 케이스 설정 열기": ⚙
+    - button "결과 창 닫기": ×
+  - tablist:
+    - tab "변형" [selected]
+    - tab "부재력"
+    - tab "반력"
+    - tab "검정"
+  - generic: 조합
+  - strong: ENVELOPE
+  - generic: 최대 변위
+  - strong: 4.733 mm
+  - generic: 부재
+  - strong: "8"
+  - generic: 상태
+  - strong: 완료
+  - generic: 조합
+  - combobox "조합":
+    - option "Envelope" [selected]
+    - option "KDS22-ST-01"
+    - option "KDS22-ST-02"
+    - option "SLS1"
+  - generic: 모델 화면
+  - button "모델 화면 처짐" [pressed]: 변형
+  - button "처짐"
+  - heading "정적 변형 형상" [level=3]
+  - img "정적 변형 형상":
+    - generic "e1"
+    - generic "e2"
+    - generic "e3"
+    - generic "e4"
+    - generic "e5"
+    - generic "e6"
+    - generic "e7"
+    - generic "e8"
+    - generic: 원형상
+    - generic: 결과형상
+    - generic: scale 8288.15
+  - generic "절점 변위 (8)"
+  - table:
+    - rowgroup:
+      - row "절점 dx dy dz":
+        - columnheader "절점"
+        - columnheader "dx"
+        - columnheader "dy"
+        - columnheader "dz"
+    - rowgroup:
+      - row "e1 0 mm 0 mm 0 mm":
+        - cell "e1"
+        - cell "0 mm"
+        - cell "0 mm"
+        - cell "0 mm"
+      - row "e2 0.042 mm -8.80e-17 mm -0.105 mm":
+        - cell "e2"
+        - cell "0.042 mm"
+        - cell "-8.80e-17 mm"
+        - cell "-0.105 mm"
+      - row "e3 0 mm 0 mm 0 mm":
+        - cell "e3"
+        - cell "0 mm"
+        - cell "0 mm"
+        - cell "0 mm"
+      - row "e4 -0.042 mm 9.18e-17 mm -0.105 mm":
+        - cell "e4"
+        - cell "-0.042 mm"
+        - cell "9.18e-17 mm"
+        - cell "-0.105 mm"
+      - row "e5 0 mm 0 mm 0 mm":
+        - cell "e5"
+        - cell "0 mm"
+        - cell "0 mm"
+        - cell "0 mm"
+      - row "e6 -0.042 mm 9.18e-17 mm -0.105 mm":
+        - cell "e6"
+        - cell "-0.042 mm"
+        - cell "9.18e-17 mm"
+        - cell "-0.105 mm"
+      - row "e7 0 mm 0 mm 0 mm":
+        - cell "e7"
+        - cell "0 mm"
+        - cell "0 mm"
+        - cell "0 mm"
+      - row "e8 0.042 mm -8.80e-17 mm -0.105 mm":
+        - cell "e8"
+        - cell "0.042 mm"
+        - cell "-8.80e-17 mm"
+        - cell "-0.105 mm"

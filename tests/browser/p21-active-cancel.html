@@ -1,0 +1,48 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>Phase21 실행 중 Direct 취소</title>
+<style>body{font:16px system-ui;margin:24px}button{padding:12px}pre{white-space:pre-wrap}</style>
+<h1>중간 규모 Direct 계산 중 취소·종료 검증</h1>
+<p>125절점·260부재. Worker의 contract-ready 통지 100ms 후 취소하고 강제 종료까지 측정합니다. 결과 준비 단계의 취소는 별도 미검증입니다.</p>
+<button id="cancel-test" disabled>실행 중 취소 시험</button><pre id="cancel-result">초기화 중</pre>
+<script type="module">
+import {createP21MediumFixture} from '../fixtures/p21-medium.js';
+import {normalizeProductAnalysisCaseSettings} from '../../src/compute/product/analysisCaseSettings.js';
+const startup=createP21MediumFixture();window.model=()=>startup;
+const {installIndexEngineBridge}=await import('../../src/ui/indexBridge.js');
+const recovery=new URLSearchParams(location.search).get('stage')==='recovery';
+const targetStage=recovery?'recovery-envelope-design-audit':'contract-ready';
+const deadlineMs=recovery?600000:15000;
+document.querySelector('p').textContent=`125절점·260부재. ${targetStage} 통지 100ms 후 취소. 단계 대기 제한 ${deadlineMs}ms. 이전 15초 후반 단계 대기 실패와 별도 조건입니다.`;
+document.querySelector('#cancel-test').disabled=false;document.querySelector('#cancel-result').textContent='대기';
+document.addEventListener('click',async e=>{
+ if(e.target.id!=='cancel-test')return;e.target.disabled=true;
+ const output=document.querySelector('#cancel-result'),model=createP21MediumFixture();
+ const bridge=installIndexEngineBridge({model:()=>model,location:{search:''}}),events=[];
+ let timer,unsubscribe;
+ try{
+  if(normalizeProductAnalysisCaseSettings('static').responseSpectrum?.enabled!==false)throw Error('STALE_RUNTIME');
+  const ready=new Promise((resolve,reject)=>{
+   timer=setTimeout(()=>reject(Error('DIRECT_STAGE_TIMEOUT')),deadlineMs);
+   unsubscribe=bridge.getProductAnalysisService().subscribe(row=>{
+    events.push({stage:row.stage,status:row.status,progress:row.progress});
+    output.textContent=JSON.stringify({status:'running',latest:events.at(-1)},null,2);
+    if(row.stage===targetStage){clearTimeout(timer);resolve();}
+   });
+  });
+  const job=bridge.startAnalysisRun({caseId:'M-DIRECT',computeTarget:'cpu'});
+  await ready;await new Promise(resolve=>setTimeout(resolve,100));
+  const before=bridge.getProductAnalysisService().getStatus(job.id),start=performance.now();
+  const cancellation=bridge.cancelAnalysisRun(job.id),ackMs=performance.now()-start;
+  const terminal=await bridge.getProductAnalysisService().wait(job.id),settleMs=performance.now()-start;
+  const nextJob=bridge.startAnalysisRun({caseId:'M-FIRST',computeTarget:'cpu'});
+  const next=await bridge.getProductAnalysisService().wait(nextJob.id);
+  const cancelledPublished=Boolean(bridge.getAnalysisCaseResult('M-DIRECT'));
+  const terminateStart=performance.now();await bridge.disposeRuntime();const terminateMs=performance.now()-terminateStart;
+  await new Promise(resolve=>setTimeout(resolve,250));
+  const remaining=bridge.getResourceState(),published=Object.keys(bridge.getAnalysisResults());
+  const ok=before.status==='running'&&terminal.status==='cancelled'&&settleMs<7000&&next.status==='completed'&&!cancelledPublished&&remaining.totalBytes===0&&published.length===0;
+  output.textContent=JSON.stringify({ok,before,terminal,cancellation,ackMs,settleMs,nextStatus:next.status,cancelledPublished,terminateMs,remaining,published,events,
+   targetStage,deadlineMs,scope:'cancellation 100ms after observed Worker stage; terminate is not cooperative solver convergence',userAgent:navigator.userAgent},null,2);
+ }catch(error){output.textContent=JSON.stringify({ok:false,error:error.message,targetStage,deadlineMs,events},null,2);}
+ finally{clearTimeout(timer);unsubscribe?.();await bridge.disposeRuntime();e.target.disabled=false;}
+});
+</script></html>

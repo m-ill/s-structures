@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-HNG-07",
+    "NL-HNG-08",
+    "NL-HNG-09",
+    "NL-HNG-10",
+    "NL-HNG-11"
+  ],
+  "seriesMomentError": 9.750422691467975e-12,
+  "seriesCompatibilityError": 0,
+  "seriesTangentError": 3.8596653400999595e-9,
+  "rollbackEquivalent": true,
+  "negativeTangent": -2500,
+  "regularizedPlateauTangent": 0.01
+}
+
+
