@@ -230,6 +230,7 @@ function runStatic(model, settings, options) {
       ...((model || {}).analysisSettings || {}),
       pDeltaMethod,
       includeGeometricStiffness: pDeltaMethod !== 'off',
+      responseSpectrum: { enabled: false },
     },
   };
   const payload = options.bridge?.analyzeModel

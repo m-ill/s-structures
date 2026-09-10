@@ -3,11 +3,11 @@
   "scope": "development-preview; does not grant engineering qualification",
   "status": "BLOCKED",
   "requiredChecks": {
-    "same-candidate-regression": "PASS",
+    "same-candidate-regression": "PENDING_AFTER_DIAGNOSTIC_FIX",
     "native-browser-pilot-save-restore": "PASS",
     "normal-browser-parity": "PENDING",
-    "medium-load-lifecycle": "PENDING",
-    "capture-report-qa": "PENDING"
+    "medium-load-lifecycle": "FAIL_DIAGNOSTIC_IN_PROGRESS",
+    "capture-report-qa": "PASS"
   },
   "verifiedGitObjects": {
     "src": "50765a5f1dbe6eb9137b699b1f7723faf7818649",

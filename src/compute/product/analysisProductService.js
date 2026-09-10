@@ -397,7 +397,12 @@ export function createAnalysisProductService(options = {}) {
       job.status = 'failed';
       job.stage = 'failed';
       job.result = null;
-      job.error = { code: error?.code || 'PRODUCT_ANALYSIS_RUN_FAILED', message: error?.message || String(error) };
+      job.error = { code: error?.code || 'PRODUCT_ANALYSIS_RUN_FAILED', message: error?.message || String(error),
+        ...(error?.code === 'MANAGED_MEMORY_BUDGET_EXCEEDED' ? {details: {
+          owner: String(error.details?.owner || '').slice(0, 120),
+          requestedBytes: error.details?.requestedBytes, totalBytes: error.details?.totalBytes,
+          maxBytes: error.details?.maxBytes,
+        }} : {}) };
       job.progressMessage = job.error.message;
       job.completedAt = nowIso(options);
       emit(snapshotInternal(job), 'failed');

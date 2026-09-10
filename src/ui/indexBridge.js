@@ -846,7 +846,7 @@ export function installIndexEngineBridge(target = globalThis) {
         bridge.designReviewPanel?.adoptReview?.(bundle.reports.at(-1)?.[0]);
         target.SStructuresAnalysisCenter?.refresh?.();target.draw?.();
         const status=target.document?.getElementById?.('statusTxt');
-        if(status){status.textContent='저장 결과 복원 완료 · 해석 케이스에서 결과를 선택하세요.';status.removeAttribute?.('title');}
+        if(status){status.textContent='저장 결과 복원 완료 · 해석 케이스에서 결과를 선택하세요.';status.removeAttribute?.('title');status.setAttribute?.('aria-label',status.textContent);}
         return {ok:true,projectId,sha256:saved.sha256,designRunIds:bundle.reports.map(([id])=>id),inputIdentity:bridge.getWorkflowInputIdentity(),interruptedJobs:bundle.interruptedJobs||[],designTransferAllowed:false};
       } catch(error){replaceModelContents(current,previous);workflowResults.dispose();elasticReview.dispose();target.__SStructuresAnalysisResults={};target.__SStructuresAnalysisLatestAttempts={};target.SStructuresResultSelection?.reset?.();throw error;}
       finally {checkpointBusy=false;resourceBudget.release('checkpoint-staging');checkpoints.releaseRead();}

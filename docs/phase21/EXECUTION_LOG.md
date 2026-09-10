@@ -103,3 +103,16 @@ Node 실제 Worker pilot r1은 증거 추출 DTO 경로와 동일 조합 중복 
 - 125절점, 260부재, 750 full DOF, 4층 다이어프램 M fixture를 명시했다. 시험 loader 초기에는 bridge 자동 UI 설치에 모델이 없어 오류; 모델 초기화 후 document 이벤트로 시험을 시작했다. 측정 완료 전에는 M gate PASS 아님.
 - Chrome 업로드는 확장 프로그램 파일 URL 권한으로 차단되어 사용자 설정 요청. IAB 업로드·다운로드·복구 증거로 Chrome 비교를 대체하지 않는다.
 - M7 Phase21 재사용 CI 및 Pages release-gate 연결 준비. 미충족 항목에 실제 배포를 허용하지 않는다.
+
+- 44b6d19 공개 push는 자동 승인 검토에서 현장 모델 파생 자료 묶음의 구체적 공개 승인 부족으로 거부. 우회하지 않고 사용자에게 코드+검증 자료 또는 코드만 공개 범위를 질문했다. GitHub 원격 변경 없음.
+- M 브라우저 첫 반복 M-FIRST/M-DIRECT 모두 ANALYSIS_NOT_COMPLETED. 실제 하위 오류를 보존하도록 workflow 오류 전달을 보강하고 별도 Node/Chrome 진단 시작. M 게이트는 FAIL 상태이며 완료로 전환하지 않았다.
+- checkpoint 동시 조회도 active1/queue8로 직렬화. 16요청 중9접수/7거부 계약 시험 PASS. 변경 후보1572661은 초기78e8e5a 전체통과와 구분한다.
+- 27쪽 PDF를 모두 PNG로 렌더링하고3개 contact sheet로 누락·잘림을 확인했다. 단계 캡처는21개이며 HTML/JSON/CSV는 별도 원본이다.
+
+## 2026-09-11 M6 중간 규모 등록 실패 원인 및 수정
+
+- Node r2에서 analysis-catalog:1이 226735948 bytes를 요청했으나 기존 총량227445028 bytes와 합쳐256MiB 예산 초과. 계산 완료 뒤 등록 실패이며 비수렴이 아니다.
+- 동일 fixture 동기 해석의 필드별 계상에서 dynamics가206636022 bytes였다. 정적 case가 모델의 기본 동적 해석까지 암묵적으로 수행하는 경로를 확인했다.
+- 정적 case 정규화에 responseSpectrum.enabled=false를 명시하고 동기 경로도 일치시켰다. 독립 modal/RSA와 기존 analyzeModel 호환 API는 유지한다. 기존 입력의 동적 설정은 변경하지 않는다.
+- 실제 Worker/동기 case 범위 회귀 PASS. 중간 규모 FIRST r3는3.51초, managed peak41060504 bytes, 등록 성공. r2의66.19초/실패와 구분하며 통제된 성능 인증 수치로 간주하지 않는다.
+- Direct 포함 Node r4 및 실제 IAB 8회 반복·취소 시험 진행 중. 결과 전체 복사 최적화는 별도 위험을 고려해 아직 적용하지 않았으며, 실제 부하 통과 전에 M6 완료 판정을 내리지 않는다.

@@ -19,6 +19,8 @@ export function normalizeProductAnalysisCaseSettings(kind, settings = {}, input 
       comboId: merged.comboId || null,
       pDeltaMethod,
       pDelta: pDeltaMethod !== 'off',
+      // A static case never implicitly executes modal/RSA preprocessing.
+      responseSpectrum: { enabled: false },
     };
     Object.defineProperty(normalized, 'pDeltaMethodExplicit', { value: pDeltaMethodExplicit });
     return normalized;
