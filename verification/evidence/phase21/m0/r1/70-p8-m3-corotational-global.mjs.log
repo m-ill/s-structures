@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-COR-08",
+    "NL-COR-09",
+    "NL-COR-10",
+    "NL-COR-11",
+    "NL-COR-12"
+  ],
+  "skewDisplacementError": 4.686020205816975e-12,
+  "stationForceError": 3.8095238095238057e-10,
+  "releasedMemberLoadError": 7.105427357601002e-15,
+  "releasedRotationError": 2.3958958081382598e-11,
+  "releasedTangentError": 4.2140041702552304e-7,
+  "skewReleaseMomentError": 2.5011104298755527e-12,
+  "releasedWeakRestraintError": 5.633514488234681e-15,
+  "offsetReleaseGaugeError": 3.1763735522036263e-22,
+  "offsetTransferError": 2.806135794339728e-7,
+  "releaseOffsetError": 2.7932567692018418e-14,
+  "spatialMomentError": 4.7796197215676634e-14,
+  "thermalExpansionError": 0,
+  "trussDisplacementError": 0,
+  "weakRotationError": 0,
+  "eulerRatio": 1.0167421128135177,
+  "eulerAmplification": 6.006360989037771,
+  "elasticaTipError": 0.00027609378227387864,
+  "elasticaAcceptedSteps": 20
+}
+
+

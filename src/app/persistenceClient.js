@@ -1,4 +1,4 @@
-import { migrateToV3 } from '../core/migration.js';
+import { migrateToCurrent } from '../core/migration.js';
 import { productModelSignature } from '../ui/indexNativePersistence.js';
 
 export const PERSISTENCE_CLIENT_VERSION = 'p3-persistence-client-v2';
@@ -14,7 +14,7 @@ export function createPersistenceClient(api) {
     version: PERSISTENCE_CLIENT_VERSION,
 
     async saveToServer(projectId, inputModel, { note, parentRev } = {}) {
-      const model = migrateToV3(inputModel);
+      const model = migrateToCurrent(inputModel);
       const result = await api.post(`/api/projects/${projectId}/revisions`, {
         body: { model, note: note || '', parentRev: parentRev ?? null },
       });
@@ -29,7 +29,7 @@ export function createPersistenceClient(api) {
 
     async loadFromServer(projectId, rev) {
       const result = await api.get(`/api/projects/${projectId}/revisions/${rev}`);
-      const model = migrateToV3(result.model);
+      const model = migrateToCurrent(result.model);
       return { model, signature: productModelSignature(model) };
     },
 

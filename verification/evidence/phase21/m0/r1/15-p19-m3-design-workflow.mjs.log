@@ -1,0 +1,10 @@
+PASS steel ui: two real static/P-Delta product runs → explicit design → immutable report; no implicit solve
+PASS steel agent: two real static/P-Delta product runs → explicit design → immutable report; no implicit solve
+PASS RC ui: two real static/P-Delta product runs → explicit design → immutable report; no implicit solve
+PASS RC agent: two real static/P-Delta product runs → explicit design → immutable report; no implicit solve
+PASS UI/Agent canonical check rows; stale/tamper/missing/duplicate/PDF-unavailable guards
+PASS real static/direct/modal/RSA/buckling/THA sequence; native design/report button events; unsupported demand mapping
+PASS failed/cancelled/unpublished rerun cannot reuse retained success; dependent buckling skipped
+PASS legacy P-Delta comparison-only result is blocked from design review
+
+

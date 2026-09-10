@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-INT-15",
+    "NL-INT-16",
+    "NL-MEI-16",
+    "NL-MEI-17",
+    "NL-MEI-18",
+    "NL-MEI-19",
+    "NL-MEI-20"
+  ],
+  "adapterCount": 7,
+  "origin": {
+    "generatedId": "M",
+    "generated": true,
+    "originType": "wall",
+    "originId": "W1",
+    "formulation": "mid-pier-equivalent",
+    "qualification": "preliminary-equivalent"
+  },
+  "dependencyHash": "ce791e2d48935a91c4aa7a70",
+  "staleCategoryCount": 9,
+  "missingContextReason": "NONLINEAR_RESULT_CURRENT_CONTEXT_REQUIRED",
+  "selectedExecutionDependencies": [
+    "massSourceId",
+    "massSourceHash",
+    "loadSetHash"
+  ],
+  "candidateBlockers": [
+    "QUALIFICATION_PENDING",
+    "NONLINEAR_RESULT_NOT_QUALIFIED"
+  ],
+  "runRecordQualification": "candidate"
+}
+
+

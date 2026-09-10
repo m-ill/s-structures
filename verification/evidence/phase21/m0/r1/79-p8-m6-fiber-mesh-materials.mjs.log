@@ -1,0 +1,68 @@
+{
+  "ok": true,
+  "version": "p8-m6-fiber-mesh-materials",
+  "verificationIds": [
+    "NL-FIB-01",
+    "NL-FIB-02",
+    "NL-FIB-03",
+    "NL-FIB-04",
+    "NL-FIB-05",
+    "NL-FIB-06"
+  ],
+  "meshes": {
+    "h": {
+      "fibers": 768,
+      "pointIyError": 1.5875666666672272e-8,
+      "pointIzError": 3.55076666665264e-8,
+      "geometryHash": "d8391e12d75a0a0ae68c98c3190d8c7c00938b7b2bfa8316b905f5ea5d01ad6d"
+    },
+    "box": {
+      "fibers": 64,
+      "area": 0.009599999999999997
+    },
+    "pipe": {
+      "fibers": 192,
+      "area": 0.0048254863159139265
+    },
+    "rc": {
+      "fibers": 352,
+      "materialAreas": {
+        "concrete-core": 0.1644360000000003,
+        "concrete-cover": 0.07359999999999994,
+        "rebar-steel": 0.001964
+      }
+    }
+  },
+  "cyclicTrace": [
+    {
+      "strain": 0.02,
+      "stress": 2.2,
+      "branch": "plastic-positive"
+    },
+    {
+      "strain": 0,
+      "stress": -1.7999999999999998,
+      "branch": "elastic"
+    },
+    {
+      "strain": -0.02,
+      "stress": -2.2,
+      "branch": "plastic-negative"
+    },
+    {
+      "strain": 0.01,
+      "stress": 2,
+      "branch": "plastic-positive"
+    }
+  ],
+  "materialEnergy": {
+    "workIncrement": 0.014999999999999998,
+    "work": 0.082,
+    "recoverable": 0.01,
+    "dissipated": 0.072,
+    "plasticIncrement": 0.018,
+    "balanceResidual": 1.3877787807814457e-17
+  }
+}
+
+

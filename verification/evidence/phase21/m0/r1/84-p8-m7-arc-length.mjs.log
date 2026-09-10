@@ -1,0 +1,76 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-ARC-01",
+    "NL-ARC-02",
+    "NL-ARC-03",
+    "NL-ARC-04",
+    "NL-ARC-05",
+    "NL-ARC-06",
+    "NL-ARC-07",
+    "NL-ARC-08",
+    "NL-ARC-09",
+    "NL-ARC-10"
+  ],
+  "predictor": {
+    "radiusResidual": 6.938893903907228e-18,
+    "selectedSign": 1
+  },
+  "corrector": {
+    "equilibriumResidual": 8.799627693178991e-13,
+    "arcResidual": 1.6599638330561106e-12,
+    "iterationCount": 3
+  },
+  "branch": {
+    "selectedSign": -1,
+    "continuation": 0.04000000000000001
+  },
+  "limitPoint": {
+    "peakLambda": 0.3837624734475317,
+    "peakQ": 0.6027932581975353,
+    "firstNegativeIncrementStep": 12,
+    "acceptedSteps": 18,
+    "rejectedSteps": 0
+  },
+  "snapThrough": {
+    "benchmark": "two-bar-von-mises-corotational-truss",
+    "maximumReferenceError": 0.00003950140671804547,
+    "acceptedSteps": 42,
+    "minimumApexDisplacement": -0.41878745216958846
+  },
+  "snapBack": {
+    "backward": true,
+    "pathError": 3.956529548432286e-12,
+    "finalLambda": 1.1512303579102066,
+    "finalTrackedDisplacement": 0.12184677230704365
+  },
+  "radius": {
+    "grown": 0.14,
+    "shrunk": 0.06
+  },
+  "indefinite": {
+    "postPeakStep": 12,
+    "iterationCount": 3,
+    "tangentSymmetryError": 0,
+    "minimumPivot": 1
+  },
+  "rollbackRestart": {
+    "rollbackReason": "INJECTED_AUGMENTED_SOLVE_FAILURE",
+    "rollbackEquivalent": true,
+    "restartCommittedHash": "2ffebca8d837ed2ad844f363417388533adb692366b867652219d5655766ee9d"
+  },
+  "handoff": {
+    "sourceCommittedHash": "a3af4e0ea07d95ef7cd1383632e59ef82559cff19c59b537952f02e127415b12",
+    "firstArcLambda": 0.22600336063931922,
+    "sourceLambda": 0.192
+  },
+  "gpuPolicy": {
+    "requested": "gpu",
+    "unavailableReason": "GPU_BACKEND_UNAVAILABLE",
+    "disabledReason": "GPU_BACKEND_NOT_ENABLED",
+    "enabledBackend": "test-deterministic-f64-gpu-backend",
+    "fallbackUsed": false
+  }
+}
+
+

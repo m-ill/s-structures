@@ -40,3 +40,10 @@
 - 공통 치수 검증으로 SQUARE의 높이 대체를 제거했다. 400×400 예비 휨내력 양축 224.91 kN·m를 독립 식으로 확인했다. Vy/Mz 및 Vz/My 축, 명시 역할과 기하 분류, 역할별 철근 경고를 수정했다. 치수/축 수정은 같은 RC 계약 후보에 포함하되 시험 기대값을 별도로 구분했다.
 - 단면·강도·배근 결측/비유한 입력은 NOT_CHECKED와 null로 반환하고 UI도 미검토 철근량/비를 0으로 표시하지 않는다. 보 P-M은 N_A, 기둥은 같은 조합·위치의 부호 있는 동시 수요로 평가한다. 단독 검토의 수요 출처도 각 성분의 위치를 사용한다.
 - 실제 배근 상세 설계 또는 설계 전달 자격을 획득한 것은 아니다. 예비 철근비와 제공 면적을 구분하며 designTransferAllowed=false를 유지한다. 고정 후보 집중 회귀를 다음 실행으로 기록한다.
+
+## 2026-09-10 — M1 고정 검증·M2 입력 후보
+
+- a06fc55 clean archive의 RC 집중 회귀 5/5 PASS. 증거는 verification/evidence/phase21/m1/r1.
+- wizard의 go/preview에서 saveBasis를 제거하고 명시 적용 버튼을 추가했다. 전체 입력 hash와 초안 기준을 비교해 에이전트 변경 후 덮어쓰기를 거부한다. 지역/지반/중요도 누락도 수정했으며 미확인 시작값 상태를 보존한다. 기존 wizard 시험은 명시 적용을 추가해 새 동작으로 통과했다.
+- 실제 index loadBookData의 envelope version===1 분기를 확인했다. format을 먼저 판별하는 adapter에서 v1 product-book을 검증 후 legacy 3D 경로에 전달한다. 현재 schema 모델에 legacy migration 기본 alias를 주입하지 않으며, 입력 자체의 alias 충돌은 여전히 거부한다. 원본·변환 hash와 schema를 별도 migration 진단에 보존한다. 서버 저장도 current schema를 사용한다.
+- 원본 파일 및 과거 결과 hash는 재작성하지 않는다. 저장 복구 lifecycle/내구성과 실제 브라우저 화면 검증은 M5/M6에서 계속한다.

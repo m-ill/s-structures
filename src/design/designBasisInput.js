@@ -81,6 +81,7 @@ export function createDesignBasis(input = {}) {
     unitSystem: input.unitSystem || null,
     occupancy,
     occupancyLabel: preset.label,
+    ...Object.fromEntries(['region', 'soil', 'importance', 'siteInputStatus'].filter(key => Object.hasOwn(input,key)).map(key => [key, input[key]])),
     designMethod: input.designMethod == null || input.designMethod === '' ? null : String(input.designMethod).trim().toLowerCase(),
     standard: clonePlain(input.standard || input.codeBasis || null),
     ...values,

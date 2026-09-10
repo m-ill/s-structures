@@ -47,6 +47,7 @@ assert.match(document.querySelector('.ss-ew-purpose').children[1].textContent, /
 assert.equal(document.getElementById('ssEwProjectId').value, 'LOCAL-MODEL');
 document.getElementById('ssEwDesignMethod').value = 'strength';
 document.getElementById('ssEwOccupancy').value = 'office';
+workflow.applyBasis();
 workflow.go(1);
 assert.equal(model.meta.projectId, 'LOCAL-MODEL');
 assert.equal(model.designBasis.designMethod, 'strength');

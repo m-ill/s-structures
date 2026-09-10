@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-ARC-10"
+  ],
+  "displacementStepCount": 4,
+  "arcStepCount": 3,
+  "finalLambda": 972.2217384884708,
+  "handoffStatus": "consumed",
+  "restartCheckpointHash": "beaf4f950915c1f0f2044dacdc2cee95d338d45dbd600b84cd549cc03fb19f25",
+  "residentCommitCount": 7,
+  "residentAuditCount": 8,
+  "residentSessionHash": "58a606baf796c18b26c8caa7",
+  "solveOperation": "cpu-f64-spd"
+}
+
+

@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "milestone": "P11-M8",
+  "verificationIds": 40,
+  "qualificationChecks": 18,
+  "dualExportP95Ms": 4200,
+  "failureScenarios": 8,
+  "falseSuccesses": 0,
+  "qualificationHash": "6d92846fa7a5705d8eb795bc14824e939dcecb602540e7b110141b692be513c1"
+}
+
+

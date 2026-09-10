@@ -3,12 +3,12 @@
 ```yaml
 schema: p21-status-v1
 updated: 2026-09-10
-status: m0-complete-m1-in-progress
+status: m0-m1-complete-m2-verifying
 planning_baseline_commit: d8ae7af7af3d20b9a5c0977f210e5d1b26991ace
 pilot_runtime_commit: fefde822ae27a024ea8a834642b8aac10a24bd77
 implementation_baseline_commit: d8ae7af7af3d20b9a5c0977f210e5d1b26991ace
-candidate_commit: e15e8b4
-implemented_milestones: [M0]
+candidate_commit: a06fc55
+implemented_milestones: [M0, M1]
 phase21_numeric_test_runs: 1
 phase21_release_status: not-created
 pages_status: unchanged-phase20-runtime
@@ -20,8 +20,8 @@ independent_review_owner: user
 |---|---|---|
 | 계획 | DOCUMENTED | 코드 책임·기존 결함·메모리 관측을 검토하고 개발·검증 계획 작성 |
 | M0 강체 다이어프램 Direct | COMPLETE-CPU-SCOPE | e15e8b4 고정 후보 117/117. 같은 runtime의 추가 임계하중·90도 회전·MPC·spring 시험 통과. 실제 GPU 미자격 차단 |
-| M1 RC 수치 | IN_PROGRESS | 단면·축·역할·오류 입력 수정 착수 |
-| M2 입력·저장 | PLANNED | wizard·import 결함 증거 있음. 수정 미착수 |
+| M1 RC 수치 | COMPLETE-PRELIMINARY-SCOPE | a06fc55 고정 후보 집중 회귀 5/5. 실제 배근 상세 설계 자격 제외 |
+| M2 입력·저장 | VERIFYING | 조회 자동 저장 제거, draft 충돌, 환경 입력 보존, 실제 import 라우팅·alias 주입 방지 구현 |
 | M3 실행·결과 선택 | PLANNED | 선택/포락 재현, 실제 조합 실행 경계 추가 추적 필요 |
 | M4 검토·보고서 | PLANNED | 기존 HTML 집계 재현. 새 schema·원본 내보내기 미구현 |
 | M5 메모리·복구 | PLANNED | 저장소/clone 경로 확인. heap/peak·세션 초기화 원인 미측정 |

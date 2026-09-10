@@ -1,4 +1,6 @@
 import { migrateToCurrent } from '../core/migration.js';
+import { PRODUCT_BOOK_FORMAT, extractProductModel } from './indexNativePersistence.js';
+import { stableHash } from '../core/stableHash.js';
 
 export const INDEX_RUNTIME_ADAPTER_VERSION = 'm23-original-index-runtime-adapter';
 
@@ -10,7 +12,9 @@ export function installIndexRuntimeAdapter(target = globalThis, options = {}) {
   // write boundaries, never while a result/context getter reads the live model.
   if (typeof target.migrateToV3 === 'function') {
     const legacyMigration = target.migrateToV3;
-    target.migrateToV3 = (...args) => migrateToCurrent(legacyMigration.apply(target, args));
+    target.migrateToV3 = (input, ...args) => Number(input?.schemaVersion) >= 3
+      ? migrateToCurrent(input)
+      : migrateToCurrent(legacyMigration.call(target, input, ...args));
     if (typeof target.makeV3Model === 'function') {
       const legacyFactory = target.makeV3Model;
       target.makeV3Model = (...args) => migrateToCurrent(legacyFactory.apply(target, args));
@@ -21,6 +25,28 @@ export function installIndexRuntimeAdapter(target = globalThis, options = {}) {
       for (const key of Object.keys(current)) delete current[key];
       Object.assign(current, prepared);
     }
+  }
+
+  if (typeof target.loadBookData === 'function') {
+    const legacyLoad = target.loadBookData;
+    target.loadBookData = (input) => {
+      const source = input?.book || input;
+      if (source?.format !== PRODUCT_BOOK_FORMAT) return legacyLoad.call(target, input);
+      if (source.version !== 1) throw new Error('PRODUCT_BOOK_VERSION_UNSUPPORTED');
+      extractProductModel(source); // Verify the embedded active-page signature before replacing UI pages.
+      const pages = source.pages.map(page => ({ ...page, name: page.title || page.name,
+        model: extractProductModel({ model: page.model }), savedResults: null }));
+      const active = pages.findIndex(page => page.id === source.activePageId);
+      // The legacy loader always selects the first page; preserve the active page explicitly.
+      if (active > 0) pages.unshift(...pages.splice(active, 1));
+      const result = legacyLoad.call(target, { ...source, version: 3, pages });
+      target.SStructuresImportMigration = { version: 'p21-import-v1', format: source.format,
+        envelopeVersion: source.version, legacyRoutingVersion: 3,
+        pages: pages.map(page => ({ id: page.id, sourceHash: stableHash(source.pages.find(p => p.id === page.id).model),
+          inputHash: stableHash(page.model), schemaVersion: page.model.schemaVersion })),
+        restoredAnalysisResults: false };
+      return result;
+    };
   }
 
   const adapter = {

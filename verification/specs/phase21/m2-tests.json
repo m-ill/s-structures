@@ -1,0 +1,12 @@
+{
+  "scope": "Phase21 M2 focused input persistence and browser boundary regression",
+  "tests": [
+    "tests/p21-m2-input-persistence.mjs",
+    "tests/p7-m11-elastic-setup-workflow.mjs",
+    "tests/p20-m5-browser-input-boundaries.mjs",
+    "tests/m27-native-persistence.mjs",
+    "tests/p7-m0-persistence-migration.mjs",
+    "tests/p3-persistence.mjs",
+    "tests/p19-m2-design-input.mjs"
+  ]
+}

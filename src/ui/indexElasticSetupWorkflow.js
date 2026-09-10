@@ -13,6 +13,7 @@ import {
   OCCUPANCY_LOAD_PRESETS,
   createDesignBasis,
 } from '../design/designBasisInput.js';
+import { stableHash } from '../core/stableHash.js';
 import { modernizeLegacyDefaultCombinations } from '../core/schema.js';
 
 export const ELASTIC_SETUP_WORKFLOW_VERSION = 'p7-m11-elastic-setup-workflow-v1';
@@ -115,9 +116,25 @@ export function installElasticSetupWorkflow(target = globalThis, options = {}) {
     },
     go(step) {
       readDraft(panel, state);
-      if (state.step === 0) saveBasis(target, state);
       state.step = clampStep(step);
       state.message = null;
+      render(target, bridge, state, panel, api);
+      return api.getState();
+    },
+    applyBasis() {
+      readDraft(panel, state);
+      try {
+        saveBasis(target, state);
+        state.message = '설계기준을 적용했습니다. 기존 하중은 별도 하중 적용 시에만 변경됩니다.';
+        state.messageKind = 'ok';
+      } catch (error) { state.message = error.message; state.messageKind = 'error'; }
+      render(target, bridge, state, panel, api);
+      return api.getState();
+    },
+    reloadDraft() {
+      state.draft = initialDraft(currentModel(target), readWorkflowProjectIdentity(target, currentModel(target)));
+      captureDraftBase(state, target);
+      state.message = '현재 모델의 설계기준을 다시 읽었습니다.';
       render(target, bridge, state, panel, api);
       return api.getState();
     },
@@ -142,6 +159,7 @@ export function installElasticSetupWorkflow(target = globalThis, options = {}) {
         });
         const massPerFloor = nonNegative(state.draft.massPerFloor, 10);
         if (massPerFloor > 0) target.SStructuresAgent?.execute?.('generateFloorMass', { massPerFloor });
+        captureDraftBase(state, target);
         state.comboPreview = null;
         state.message = `하중 적용 완료: ${result?.loadEstimation?.loads?.length || 0}개 생성, 층 질량 ${formatNumber(massPerFloor)}.`;
         state.messageKind = 'ok';
@@ -157,7 +175,7 @@ export function installElasticSetupWorkflow(target = globalThis, options = {}) {
       readDraft(panel, state);
       const model = currentModel(target);
       try {
-        saveBasis(target, state);
+        assertDraftCurrent(target, state);
         state.comboPreview = previewLoadCombinationChangeSet(model, KDS_41_12_00_2022_RULE_PACK, {
           method: state.draft.designMethod || 'strength',
           includeReverseLateral: true,
@@ -178,6 +196,7 @@ export function installElasticSetupWorkflow(target = globalThis, options = {}) {
       const model = currentModel(target);
       try {
         if (!state.comboPreview) throw new Error('먼저 KDS 조합 미리보기를 실행하세요.');
+        assertDraftCurrent(target, state);
         state.draft.projectId = ensureWorkflowProjectIdentity(target, model, state.draft.projectId);
         if (!state.draft.projectId) throw new Error('1단계 기본설정에서 프로젝트 ID를 입력하세요.');
         if (!state.draft.approvalChecked) throw new Error('프로젝트 조합 검토 확인이 필요합니다.');
@@ -196,6 +215,7 @@ export function installElasticSetupWorkflow(target = globalThis, options = {}) {
         state.messageKind = 'ok';
         bridge.markAnalysisCasesStale?.('load-combinations-changed');
         bridge.reanalyze?.();
+        captureDraftBase(state, target);
       } catch (error) {
         const blockers = error?.approvalBlockers
           || error?.changeSet?.guard?.approvalBlockers
@@ -283,6 +303,7 @@ export function installElasticSetupWorkflow(target = globalThis, options = {}) {
     },
   };
 
+  captureDraftBase(state, target);
   target.SStructuresElasticSetupWorkflow = api;
   doc.body?.classList?.add('ss-guided-elastic-ready');
   syncRawControls(doc, false);
@@ -474,6 +495,8 @@ function renderBasisStep(body, state, api) {
   grid.appendChild(selectField(doc, 'ssEwSoil', '지반종류', ['S1', 'S2', 'S3', 'S4', 'S5'], state.draft.soil));
   grid.appendChild(selectField(doc, 'ssEwImportance', '중요도계수', ['1.0', '1.2', '1.5'], Number(state.draft.importance || 1).toFixed(1)));
   body.appendChild(grid);
+  body.appendChild(actionButton(doc, 'ssEwApplyBasis', '설계기준 적용', () => api.applyBasis(), 'primary'));
+  body.appendChild(actionButton(doc, 'ssEwReloadBasis', '현재 모델 다시 읽기', () => api.reloadDraft()));
   body.appendChild(actionButton(doc, 'ssEwOccupancyDefaults', '용도별 시작값 불러오기', () => api.loadOccupancyDefaults()));
   body.appendChild(note(doc, '시작값은 입력 편의를 위한 후보입니다. 프로젝트 구조계획서와 하중표가 우선합니다.', 'review'));
 }
@@ -633,11 +656,22 @@ function renderReviewStep(target, body, api) {
 
 function saveBasis(target, state) {
   const model = currentModel(target);
-  state.draft.projectId = ensureWorkflowProjectIdentity(target, model, state.draft.projectId);
+  assertDraftCurrent(target, state);
   const basis = designBasisInput(state.draft);
+  for (const key of ['importance','deadLoad','liveLoad','roofLiveLoad','windPressureX','windPressureY','seismicCoefficientX','seismicCoefficientY','seismicLiveLoadFactor','accidentalEccentricityRatio']) {
+    const value = state.draft[key];
+    if (value == null || value === '' || !Number.isFinite(Number(value)) || Number(value) < 0 || (key === 'importance' && Number(value) === 0)) throw new Error(`DESIGN_BASIS_INVALID: ${key}`);
+  }
+  const projectId = String(state.draft.projectId || '').trim();
+  if (!projectId) throw new Error('PROJECT_ID_REQUIRED');
+  const locked = authoritativeProjectId(target, model);
+  if (locked && locked !== projectId) throw new Error('PROJECT_ID_CONFLICT');
   target.SStructuresAgent?.execute?.('setDesignBasisInput', { designBasis: basis });
+  model.meta ||= {};
+  model.meta.projectId = projectId;
   model.designBasis ||= createDesignBasis(basis);
   model.designBasis.designMethod = basis.designMethod;
+  captureDraftBase(state, target);
   return basis;
 }
 
@@ -647,6 +681,7 @@ function designBasisInput(draft) {
     designMethod: draft.designMethod || 'strength',
     region: draft.region,
     soil: draft.soil,
+    siteInputStatus: draft.siteInputStatus || 'unverified-starting-values',
     importance: Number(draft.importance) || 1,
     deadLoad: nonNegative(draft.deadLoad, 5),
     liveLoad: nonNegative(draft.liveLoad, 2.5),
@@ -674,6 +709,7 @@ function initialDraft(model = {}, projectId = model.projectId || model.meta?.pro
     occupancy: basis.occupancy || 'office',
     region: basis.region || 'seoul',
     soil: basis.soil || 'S2',
+    siteInputStatus: basis.siteInputStatus || 'unverified-starting-values',
     importance: basis.importance || 1,
     deadLoad: basis.deadLoad ?? 5,
     liveLoad: basis.liveLoad ?? 2.5,
@@ -683,6 +719,7 @@ function initialDraft(model = {}, projectId = model.projectId || model.meta?.pro
     seismicCoefficientX: basis.seismicCoefficientX ?? 0.1,
     seismicCoefficientY: basis.seismicCoefficientY ?? 0.1,
     seismicLiveLoadFactor: basis.seismicLiveLoadFactor ?? 0.25,
+    accidentalEccentricityRatio: basis.accidentalEccentricityRatio ?? 0.05,
     massPerFloor: 10,
     reviewer: '',
     approvalNote: '',
@@ -719,10 +756,30 @@ function readDraft(panel, state) {
   if (approved) state.draft.approvalChecked = approved.checked === true;
 }
 
+function draftInputKey(target) {
+  return target.SStructuresEngine?.getWorkflowInputIdentity?.().inputHash || stableHash(currentModel(target));
+}
+function captureDraftBase(state, target) {
+  state.baseInputKey = draftInputKey(target);
+  state.baseDraft = JSON.stringify(state.draft);
+  state.conflict = false;
+}
+function assertDraftCurrent(target, state) {
+  if (state.baseInputKey !== draftInputKey(target)) {
+    state.conflict = true;
+    throw new Error('DRAFT_INPUT_CONFLICT: 다른 화면 또는 에이전트가 모델을 변경했습니다. 현재 모델 다시 읽기 후 적용하세요.');
+  }
+}
 function syncDraftFromModel(state, model, target = globalThis) {
-  if (!model) return;
-  state.draft.projectId = readWorkflowProjectIdentity(target, model, state.draft.projectId);
-  state.draft.designMethod = model.designBasis?.designMethod || state.draft.designMethod || 'strength';
+  if (!model || state.baseInputKey === draftInputKey(target)) return;
+  if (JSON.stringify(state.draft) !== state.baseDraft) {
+    state.conflict = true;
+    state.messageKind = 'error';
+    state.message = 'DRAFT_INPUT_CONFLICT: 편집 중 모델이 바뀌었습니다. 초안을 보존했습니다. 현재 모델 다시 읽기 후 적용하세요.';
+    return;
+  }
+  state.draft = initialDraft(model, readWorkflowProjectIdentity(target, model));
+  captureDraftBase(state, target);
 }
 
 function cleanLegacyDefaultCombinations(model, approval) {

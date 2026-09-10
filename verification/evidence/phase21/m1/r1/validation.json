@@ -1,0 +1,70 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "a06fc55a14d763fce440ea8034c8bbec0d76327d",
+    "tree": "f6ca2e339a7ff6092eeeaaf969e75cc5944b535b",
+    "trackedChanges": ""
+  },
+  "scope": "Phase21 M1 focused RC contract and workflow regression",
+  "manifestPath": "verification/specs/phase21/m1-tests.json",
+  "manifestHash": "60bafa63b7b43da289ac583b0d624098ba158dd83bd100d4419de14f944955fe",
+  "sourceArchiveSha256": "261d4f02879643cabb038ba3f611b0434d38b281ba79d8b86fe37042d6d3d382",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-10T13:08:44.130Z",
+  "results": [
+    {
+      "test": "tests/p21-m1-rc-contract.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "01-p21-m1-rc-contract.mjs.log",
+      "sha256": "a4dc6f5e5be58fc4b0aa120848cd0e7cfd5fd959c839e9381c6b24565ecf0f76"
+    },
+    {
+      "test": "tests/m6-rc-design.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "02-m6-rc-design.mjs.log",
+      "sha256": "ba5648d66dda2a89387694db6cc238bb656fc43871e02754aa43d1d8a0b69846"
+    },
+    {
+      "test": "tests/p3-design-rc.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-p3-design-rc.mjs.log",
+      "sha256": "961835e99fa0fc2f75bff10c1e274f3795ffd99fe473fa00ac53ba9e128107b6"
+    },
+    {
+      "test": "tests/p19-m3-design-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "04-p19-m3-design-workflow.mjs.log",
+      "sha256": "c13a1e4b02909855209eae201f038e144027b77d2f9c505ee304804b6f0b2dda"
+    },
+    {
+      "test": "tests/p20-m3-elastic-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "05-p20-m3-elastic-parity.mjs.log",
+      "sha256": "7dd7138f2a182ce59824c8b37d56caae216202118d9ef29c3744887caebef14c"
+    }
+  ],
+  "completedAt": "2026-09-10T13:08:59.288Z",
+  "passed": 5,
+  "failed": 0,
+  "planned": 5,
+  "executed": 5
+}

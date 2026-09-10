@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-UI-01",
+    "NL-UI-05",
+    "NL-UI-07",
+    "NL-UI-08",
+    "NL-UI-09",
+    "NL-UI-10",
+    "NL-UI-11",
+    "NL-UI-12",
+    "NL-UI-13"
+  ],
+  "workflow": {
+    "version": "p9-m9-nonlinear-workflow-ui-v2",
+    "open": true,
+    "mode": "pushover",
+    "step": 6,
+    "caseId": "PUSH-PROD-01",
+    "preflightStatus": "ready",
+    "blockingCount": 0,
+    "currentJobId": "NLJOB-UI-RUN",
+    "currentJobStatus": "completed",
+    "resultAvailable": true,
+    "computeTarget": "auto"
+  },
+  "popup": {
+    "version": "p8-m10-nonlinear-result-popup-v1",
+    "open": true,
+    "jobId": "NLJOB-UI-NLTH",
+    "tab": "record",
+    "kind": "nlth",
+    "status": "completed",
+    "step": 3,
+    "historyPath": "energies.input",
+    "selectedEntity": {
+      "type": "member",
+      "id": "C"
+    },
+    "stale": false,
+    "designBlocked": true
+  },
+  "sharedSelection": {
+    "activeCaseId": "NLTH-PROD-01",
+    "activeResultId": "NLJOB-UI-NLTH",
+    "response": "energies.input",
+    "component": null,
+    "modeOrStep": 3,
+    "selectedEntity": {
+      "type": "member",
+      "id": "C"
+    }
+  },
+  "rawExportRows": 240,
+  "floating": "1",
+  "mobileContract": true
+}
+
+
