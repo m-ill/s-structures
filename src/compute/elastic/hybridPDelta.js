@@ -26,7 +26,7 @@ export function createHybridPDeltaTangentSolver(options = {}) {
 
   async function solve(request = {}) {
     if (disposed) throw pDeltaHybridError('HYBRID_PDELTA_TANGENT_SOLVER_DISPOSED', 'The hybrid Direct P-Delta solver is disposed.');
-    const system = buildPartitionedTangentSystem(request.K, request.F, request.Dc, request.free, request.fixedDofs);
+    const system = buildPartitionedTangentSystem(request.K, request.F, request.Dc, request.free, request.fixedDofs, request.constraint, request.lambda);
     solveCount += 1;
     if (!system.free.length) return assemblePartitionedTangentSolution(system, [], emptyDiagnostics(request));
     let session = null;

@@ -18,18 +18,19 @@ export function evaluateConstrainedTangentStability(K = [], freeDofs = [], optio
   }
 
   const raw = constrainedSymmetricMatrix(K, free);
+  const isTranslation = dof => options.dofKinds ? options.dofKinds[dof] === 'translation' : dof % 6 < 3;
   const reference = constrainedSymmetricMatrix(options.referenceMatrix || K, free);
   const translationDiagonal = reference
     .map((row, index) => ({ dof: free[index], value: Math.abs(row[index] || 0) }))
-    .filter((item) => item.dof % 6 < 3)
+    .filter((item) => isTranslation(item.dof))
     .map((item) => item.value);
   const rotationDiagonal = reference
     .map((row, index) => ({ dof: free[index], value: Math.abs(row[index] || 0) }))
-    .filter((item) => item.dof % 6 >= 3)
+    .filter((item) => !isTranslation(item.dof))
     .map((item) => item.value);
   const translationScale = Math.max(1e-30, ...translationDiagonal);
   const rotationScale = Math.max(1e-30, ...rotationDiagonal);
-  const scales = free.map((dof) => Math.sqrt(dof % 6 < 3 ? translationScale : rotationScale));
+  const scales = free.map((dof) => Math.sqrt(isTranslation(dof) ? translationScale : rotationScale));
   const A = raw.map((row, i) => row.map((value, j) => value / (scales[i] * scales[j])));
   const L = Array.from({ length: A.length }, () => new Array(A.length).fill(0));
   const pivots = new Array(A.length).fill(0);
@@ -116,9 +117,10 @@ export function bracketCriticalLoadScale(matrixAtScale, freeDofs = [], options =
         lowestStabilityIndicator: null,
       };
     }
-    return evaluateConstrainedTangentStability(built.Kt || built, freeDofs, {
+    return evaluateConstrainedTangentStability(built.constrainedKt || built.Kt || built, freeDofs, {
       tolerance,
       referenceMatrix: options.referenceMatrix,
+      dofKinds: options.dofKinds,
     });
   };
 

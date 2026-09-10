@@ -73,9 +73,10 @@ export function buildPDeltaTangentStiffness(model = {}, options = {}) {
     includeTension: options.includeTensionKg !== false,
   });
   const Kt = addMatrices(assembly.K, geometric.KG);
-  const constraint = (model.constraints || []).length
-    ? buildConstraintSystem(model.nodes || [], resolveRigidDiaphragms(model, model.nodes || []), { constraints: model.constraints })
-    : null;
+  const groups = resolveRigidDiaphragms(model, model.nodes || []);
+  const constraint = options.constraint || ((model.constraints || []).length || groups.length
+    ? buildConstraintSystem(model.nodes || [], groups, { constraints: model.constraints })
+    : null);
   if (constraint && !constraint.ok) {
     return { version: PDELTA_TANGENT_STIFFNESS_VERSION, ok: false, reason: constraint.reason, assembly, constraint };
   }

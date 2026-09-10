@@ -4,6 +4,7 @@ import { finalizeElasticAnalysis } from '../product/elasticAnalysisWorkflow.js';
 import { prepareElasticAnalysis } from '../../solver/elastic/stages.js';
 import { solveElasticCombination } from '../../solver/elastic/stages.js';
 import { runSecondOrderPDeltaAsync } from '../../solver/pdelta/secondOrder.js';
+import { directMemoryAdmission } from '../../solver/pdelta/constraintContext.js';
 import { createEnvelopeAccumulator } from '../../solver/linear3dPost.js';
 import { prepareAnalysisContracts } from './analysisAdapters.js';
 import { classifyElasticFactorGroups, elasticFactorKeyForCombo } from '../elastic/factorGroups.js';
@@ -32,11 +33,15 @@ const PHYSICAL_OMIT_FIELDS = new Set([
 
 export async function executeProductionElastic(payload = {}, context = {}) {
   const inputModel = payload.model || {};
+  const sourceModel = applyElasticSettings(inputModel, payload.settings || payload.analysisCase || {});
+  if (sourceModel.analysisSettings?.pDeltaMethod === 'direct') {
+    const admission = directMemoryAdmission(sourceModel);
+    if (!admission.ok) throw elasticAdapterError('DIRECT_PDELTA_MEMORY_BUDGET', 'Direct P-Delta exceeds its dense working-set budget.', admission);
+  }
   const contracts = prepareAnalysisContracts(inputModel, payload.contractOptions);
   if (payload.expectedDomainHash && payload.expectedDomainHash !== contracts.domain.domainHash) {
     throw elasticAdapterError('ANALYSIS_DOMAIN_HASH_MISMATCH', 'Worker model does not match the execution-plan domain hash.');
   }
-  const sourceModel = applyElasticSettings(inputModel, payload.settings || payload.analysisCase || {});
   context.throwIfCancelled?.();
   context.reportProgress?.({ value: 0.03, stage: 'contract-ready' });
 
@@ -309,6 +314,7 @@ export function isElasticAutoGpuProfileEligible(model = {}, profile = {}, pDelta
     ['tensionOnly', 'compressionOnly'].includes(member.behavior || member.type)
   ));
   return !hasUnilateralMember
+    && !(method === 'direct' && model.diaphragms?.some(group => group.type === 'rigid'))
     && profile.elasticCandidateApproved === true
     && Number(profile.endToEndSpeedup || 0) >= 1.2
     && dofCount >= Math.max(1, Number(profile.minDofs || 1200))
@@ -318,6 +324,10 @@ export function isElasticAutoGpuProfileEligible(model = {}, profile = {}, pDelta
 function resolveElasticExecutionRoute(payload, context, prepared) {
   const executionTarget = String(payload.computeTarget || 'cpu').trim().toLowerCase();
   const requestedTarget = String(payload.requestedComputeTarget || executionTarget).trim().toLowerCase();
+  if ((executionTarget === 'gpu' || requestedTarget === 'gpu') && prepared.pDeltaMethod === 'direct'
+      && prepared.model.diaphragms?.some(group => group.type === 'rigid')) {
+    throw elasticAdapterError('DIRECT_DIAPHRAGM_GPU_NOT_QUALIFIED', 'Rigid-diaphragm Direct P-Delta currently requires CPU f64; the constrained hybrid path has reference-adapter tests only.');
+  }
   if (!['cpu', 'gpu', 'auto'].includes(requestedTarget)) {
     throw elasticAdapterError('ELASTIC_COMPUTE_TARGET_INVALID', `Unsupported elastic compute target: ${requestedTarget}.`);
   }

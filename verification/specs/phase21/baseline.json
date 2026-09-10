@@ -1,0 +1,26 @@
+{
+  "version": "p21-m0-baseline-v1",
+  "commit": "d8ae7af7af3d20b9a5c0977f210e5d1b26991ace",
+  "branch": "work/phase21-consistency-20260910",
+  "manifestSha256": "17e4de381a2cf99f032925ea2ee8c1ab897f9505179dc4a333fd9377fc7e1132",
+  "preservedFiles": 1029,
+  "evidenceStatus": "original HTML complete; native JSON/CSV partial; reconstructed model is not original identity",
+  "archiveLocation": "output/phase21/m0-baseline",
+  "support": {
+    "diaphragm": "horizontal XY small-rotation",
+    "backend": "CPU f64",
+    "gpu": "blocked: actual hardware qualification pending",
+    "unsupported": [
+      "nonplanar",
+      "overlap",
+      "release",
+      "unilateral"
+    ]
+  },
+  "memory": {
+    "maxWorkingBytes": 536870912,
+    "estimate": "240 * fullDofCount^2",
+    "measured": false
+  },
+  "tests": "tests/p21-m0-rigid-direct.mjs"
+}

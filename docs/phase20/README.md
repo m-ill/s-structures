@@ -1,5 +1,7 @@
 # Phase 20 — 해석 모듈 경계 정리
 
+후속 개발은 [Phase21: 강체 다이어프램 Direct P-Delta·수치 일관성·메모리 관리](../phase21/README.md)로 계획했다(2026-09-10, 구현 미착수). 아래 Phase20 완료·검증·배포 기록은 당시 후보의 기록으로 보존한다.
+
 2026-09-08 · 상태: **M0~M5 구현·검증 완료, main 병합·Pages 배포 완료**
 
 최종 후보 `810abc0`: 로컬·Windows CI·Ubuntu CI 각각112/112 PASS. [구현 결과와 한계](IMPLEMENTATION_REVIEW.md), [단계별 실행 기록](EXECUTION_LOG.md), [개발 프리뷰](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)를 함께 읽는다. [main 병합·Pages 배포 및 재검증](PAGES_DEPLOYMENT.md)은 후속 사용자 요청으로 완료했다. 아래 목표/작업 문서는 계획의 기준선을 보존한다.

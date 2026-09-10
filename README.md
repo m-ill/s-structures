@@ -4,13 +4,15 @@
 
 [웹에서 실행](https://m-ill.github.io/s-structures/) · [다운로드·검증자료](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md) · [WebMCP 안내](docs/WEBMCP.md) · [CI 결과](https://github.com/m-ill/s-structures/actions/workflows/verify.yml)
 
-문서 갱신: **2026-09-08** · 공개 상태: **WebMCP 개발 프리뷰**
+문서 갱신: **2026-09-10** · 공개 상태: **WebMCP 개발 프리뷰**
 
 **WebMCP 36개 도구**로 탄성설계 입력→해석→강재·RC 검토→보고서 및 production Pushover/NLTH를 연결했습니다. 비선형 결과는 **candidate·최종설계 전달 차단** 상태입니다. SH1 sparse 연결, 힌지 평형 수정, Worker 취소·시간 제한을 포함합니다. 실제 브라우저 소형 모델 실행을 확인했으며 독립 비교·pilot·M-tier 성능·최종 생산 자격은 미완료입니다. [M5~M10 구현·잔여 조건](docs/phase19/M5_M10_CANDIDATE.md) · [검토 자료](docs/phase19/REVIEW_INTAKE.md)
 
 2026-09-08 코드 리뷰: 비선형 미분 검사 할당, WebMCP 종료 처리, 긴 Pushover 결과 페이지 조회를 개선했다. 고정 소스 회귀 95/95 PASS이며, 소형 8부재·32힌지 해석 중앙값은 21.65초 → 5.97초다. [측정 조건·수정 내용·당시 경계 위반](docs/phase19/CODE_REVIEW_OPTIMIZATION_20260908.md)을 참고한다.
 
 [Phase20 M0~M5](docs/phase20/IMPLEMENTATION_REVIEW.md)를 완료했다. 최종 후보 `810abc0`은 로컬·Windows CI·Ubuntu CI 각각 **112/112 PASS**, 직접 경계 위반 **41→0**이며 공개 동기 API와7개 기준 탄성 결과를 유지한다. 결과 준비/조회와 trace/production 경계를 정리하고 기본 예제·JSON 가져오기·화면 전환의 입력 식별 문제도 수정했다. [Phase20 개발 프리뷰](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)에서 소스·실행·검증 ZIP을 받는다. Pages는 `main`의 Windows·Ubuntu 112개 검증을 통과한 실행 파일을 배포한다. [병합·배포 기록](docs/phase20/PAGES_DEPLOYMENT.md)과 [현재 배포 커밋](https://m-ill.github.io/s-structures/SOURCE-IDENTITY.json)을 함께 확인한다.
+
+후속 [Phase21 개발계획](docs/phase21/README.md)을 작성했다. **M0 강체 다이어프램 Direct P-Delta → RC 수치 → 입력·저장 → 실행·결과 선택 → 검토·보고서 → 메모리·복구 → 실무 재검증 → 공개 배포** 순서다. 상가주택 시험에서 RC 정사각형 치수·선택 조합 표시·설정 덮어쓰기·집계/출처 불일치를 확인했다. [관측과 수정 대상](docs/NUMERICAL-CONSISTENCY-REPAIR-PLAN-20260910.md)을 보존했으며 Phase21 제품 구현은 미착수다. 기존 배포본의 강체 다이어프램 Direct 제한과 생산 자격 상태는 그대로다.
 
 ## 주요 기능
 

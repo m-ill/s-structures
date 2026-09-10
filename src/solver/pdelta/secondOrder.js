@@ -26,16 +26,16 @@ import {
 } from './stability.js';
 import { buildPDeltaTangentStiffness } from './tangentStiffness.js';
 import {
-  buildConstraintSystem,
   expandConstraintDisplacements,
   reduceConstraintMatrix,
   reduceConstraintVector,
 } from '../domain/constraintSystem.js';
 import { resolveRigidDiaphragms } from '../../core/diaphragmGroups.js';
 import { resolvePDeltaFirstOrderSeed } from './firstOrderSeed.js';
+import { constraintCoordinateKinds, directDiaphragmIssues, directMemoryAdmission } from './constraintContext.js';
 
 export const PDELTA_SECOND_ORDER_VERSION = 'p6-m5-pdelta-second-order-v1';
-export const PDELTA_DIRECT_PRODUCT_VERSION = 'p7-m8-direct-pdelta-product-v3';
+export const PDELTA_DIRECT_PRODUCT_VERSION = 'p21-m0-direct-pdelta-product-v4';
 
 const DIRECT_METHOD = 'geometric-stiffness-second-order-direct';
 const ITERATION_METHOD = 'picard-fixed-point-updated-axial-stiffness';
@@ -55,6 +55,8 @@ export function runSecondOrderPDelta(model = {}, factors = null, options = {}) {
       request.free,
       request.fixedDofs,
       request.model,
+      request.constraint,
+      request.lambda,
     ));
   }
   return state.value;
@@ -71,6 +73,10 @@ export async function runSecondOrderPDeltaAsync(model = {}, factors = null, opti
 }
 
 function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) {
+  const admission = directMemoryAdmission(model, options);
+  if (!admission.ok) return failedDirectResult('DIRECT_PDELTA_MEMORY_BUDGET', { status: 'blocked', admission });
+  const diaphragmIssues = directDiaphragmIssues(model);
+  if (diaphragmIssues.length) return failedDirectResult(diaphragmIssues[0].code, { status: 'blocked', diaphragmIssues });
   const domain = options.domain || buildExpandedAnalysisDomain(model, factors, { ...options, domainAdapter: 'direct-pdelta' });
   if (!domain.ok) return failedDirectResult(domain.reason || 'CANONICAL_DOMAIN_INVALID', {
     domain,
@@ -91,7 +97,8 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
   }
 
   const directModel = { ...domain.solverModel, members: domain.members };
-  const seedTangent = buildPDeltaTangentStiffness(directModel, { axialForces: {} });
+  const constraint = domain.constraint?.diaphragmCount || domain.constraint?.generalConstraintCount ? domain.constraint : null;
+  const seedTangent = buildPDeltaTangentStiffness(directModel, { axialForces: {}, constraint });
   if (!seedTangent.ok) {
     return failedDirectResult(seedTangent.reason || 'TANGENT_ASSEMBLY_FAILED', {
       linear,
@@ -136,11 +143,13 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
     assembly,
     referenceAxialForces,
     criteria.stabilityTolerance,
-    seedTangent.Kt,
+    tangentMatrix(seedTangent),
+    constraint,
   );
   const initialStability = evaluateConstrainedTangentStability(tangentMatrix(seedTangent), tangentFreeDofs(seedTangent, assembly), {
     tolerance: criteria.stabilityTolerance,
     referenceMatrix: tangentMatrix(seedTangent),
+    dofKinds: constraint ? constraintCoordinateKinds(constraint) : null,
   });
   if (!initialStability.stable) {
     return failedDirectResult('ELASTIC_TANGENT_NOT_POSITIVE_DEFINITE', {
@@ -178,12 +187,14 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
         : currentAxial;
       const tangent = buildPDeltaTangentStiffness(directModel, {
         assembly,
+        constraint,
         axialForces,
         includeTensionKg: criteria.includeTensionKg,
       });
       const trialStability = evaluateConstrainedTangentStability(tangentMatrix(tangent), tangentFreeDofs(tangent, assembly), {
         tolerance: criteria.stabilityTolerance,
         referenceMatrix: tangentMatrix(seedTangent),
+        dofKinds: constraint ? constraintCoordinateKinds(constraint) : null,
       });
       if (!trialStability.stable) {
         converged = false;
@@ -208,6 +219,7 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
         free: assembly.free,
         fixedDofs: assembly.fixedDofs,
         model: directModel,
+        constraint,
         step,
         iteration,
         lambda,
@@ -233,21 +245,18 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
       });
       const updatedTangent = buildPDeltaTangentStiffness(directModel, {
         assembly,
+        constraint,
         axialForces: nextAxial,
         includeTensionKg: criteria.includeTensionKg,
       });
       const updatedStability = evaluateConstrainedTangentStability(tangentMatrix(updatedTangent), tangentFreeDofs(updatedTangent, assembly), {
         tolerance: criteria.stabilityTolerance,
         referenceMatrix: tangentMatrix(seedTangent),
+        dofKinds: constraint ? constraintCoordinateKinds(constraint) : null,
       });
       const incrementNorms = scaledIncrementNorms(nextD, currentD, assembly.free, characteristicLength);
       const residualNorms = updatedTangent.constraint
-        ? scaledResidualNorms(
-          updatedTangent.constrainedKt,
-          solved.constraintCoordinates,
-          reduceConstraintVector(updatedTangent.constraint, targetF),
-          updatedTangent.constrainedFreeDofs,
-        )
+        ? constrainedResidualNorms(updatedTangent.constraint, updatedTangent.Kt, nextD, targetF)
         : scaledResidualNorms(updatedTangent.Kt, nextD, targetF, assembly.free);
       const convergenceNorms = {
         translationIncrement: incrementNorms.translationIncrement,
@@ -447,18 +456,20 @@ function directCriteria(model, options) {
   };
 }
 
-function estimateCriticalStability(model, assembly, referenceAxialForces, tolerance, referenceMatrix) {
+function estimateCriticalStability(model, assembly, referenceAxialForces, tolerance, referenceMatrix, constraint) {
   const compressionByMember = Object.fromEntries(Object.entries(referenceAxialForces)
     .filter(([, value]) => Number(value) < 0)
     .map(([memberId, value]) => [memberId, -Number(value)]));
   const referenceCompression = Math.max(0, ...Object.values(compressionByMember));
   const critical = bracketCriticalLoadScale((scale) => buildPDeltaTangentStiffness(model, {
     assembly,
+    constraint,
     axialForces: scaleAxialForces(referenceAxialForces, scale),
-  }), assembly.free, {
+  }), constraint ? Array.from({ length: constraint.reducedDofCount }, (_, i) => i) : assembly.free, {
     tolerance,
     referenceCompression,
     referenceMatrix,
+    dofKinds: constraint ? constraintCoordinateKinds(constraint) : null,
   });
   const criticalLoadFactor = Number(critical.criticalLoadFactor);
   return {
@@ -585,41 +596,13 @@ function buildPrescribedDisplacementState(nodes, assembly) {
   };
 }
 
-function solvePartitionedTangent(K, F, Dc, free, fixedDofs, model) {
-  if ((model.constraints || []).length) {
-    const constraint = buildConstraintSystem(
-      model.nodes || [],
-      resolveRigidDiaphragms(model, model.nodes || []),
-      { constraints: model.constraints },
-    );
-    if (!constraint.ok) return { ok: false, reason: constraint.reason, diagnostics: constraint };
-    const Kr = reduceConstraintMatrix(constraint, K);
-    const KuBar = K.map((row) => row.reduce((sum, value, column) => sum + value * constraint.prescribed[column], 0));
-    const Fr = reduceConstraintVector(constraint, F.map((value, index) => value - KuBar[index]));
-    const settings = model.analysisSettings || {};
-    const solved = solveLinearDetailed(Kr, Fr, {
-      criteriaModel: model,
-      labels: constraint.reducedDofs.map((row) => row.key),
-      solver: settings.solver || settings.linearSolver,
-      sparse: settings.useSparseSolver,
-      sparseThreshold: settings.sparseThreshold,
-    });
-    if (!solved.ok) return { ok: false, reason: solved.reason, diagnostics: solved.diagnostics };
-    return {
-      ok: true,
-      x: solved.x,
-      D: expandConstraintDisplacements(constraint, solved.x),
-      constraintCoordinates: solved.x,
-      constraint,
-      diagnostics: solved.diagnostics,
-    };
-  }
-  const system = buildPartitionedTangentSystem(K, F, Dc, free, fixedDofs);
+function solvePartitionedTangent(K, F, Dc, free, fixedDofs, model, constraint = null, lambda = 1) {
+  const system = buildPartitionedTangentSystem(K, F, Dc, free, fixedDofs, constraint, lambda);
   if (!system.free.length) return assemblePartitionedTangentSolution(system, [], null);
   const settings = model.analysisSettings || {};
   const solved = solveLinearDetailed(system.Kff, system.Ff, {
     criteriaModel: model,
-    labels: system.free.map((dof) => `dof:${dof}`),
+    labels: constraint ? constraint.reducedDofs.map(row => row.key) : system.free.map((dof) => `dof:${dof}`),
     solver: settings.solver || settings.linearSolver,
     sparse: settings.useSparseSolver,
     sparseThreshold: settings.sparseThreshold,
@@ -628,7 +611,17 @@ function solvePartitionedTangent(K, F, Dc, free, fixedDofs, model) {
   return assemblePartitionedTangentSolution(system, solved.x, solved.diagnostics);
 }
 
-export function buildPartitionedTangentSystem(K, F, Dc, free, fixedDofs) {
+export function buildPartitionedTangentSystem(K, F, Dc, free, fixedDofs, constraint = null, lambda = 1) {
+  if (constraint) {
+    const staged = { ...constraint, prescribed: constraint.prescribed.map(value => value * lambda) };
+    const offset = matVec(K, staged.prescribed);
+    return Object.freeze({
+      Kff: reduceConstraintMatrix(constraint, K),
+      Ff: reduceConstraintVector(constraint, F.map((value, i) => value - offset[i])),
+      free: Array.from({ length: constraint.reducedDofCount }, (_, i) => i),
+      Dc: staged.prescribed, constraint: staged,
+    });
+  }
   const freeDofs = Array.from(free || [], Number);
   const constrained = [...(fixedDofs || [])].filter((dof) => Math.abs(Dc[dof] || 0) > 0);
   const Kff = freeDofs.map((i) => freeDofs.map((j) => K[i][j]));
@@ -650,6 +643,8 @@ export function assemblePartitionedTangentSolution(system, solution, diagnostics
   if (x.length !== system.free.length || x.some((value) => !Number.isFinite(value))) {
     return { ok: false, reason: 'PDELTA_TANGENT_SOLUTION_INVALID', diagnostics };
   }
+  if (system.constraint) return { ok: true, x, D: expandConstraintDisplacements(system.constraint, x),
+    constraintCoordinates: x, constraint: system.constraint, diagnostics };
   const D = Array.from(system.Dc);
   system.free.forEach((dof, index) => {
     D[dof] = x[index] || 0;
@@ -964,13 +959,20 @@ function buildConsistentReactionState(domain, assembly, D, allMemberResults, nod
   );
   const forceResidualNorm = vectorNorm(forceIndices.map((dof) => closureResidual[dof])) / forceScale;
   const momentResidualNorm = vectorNorm(momentIndices.map((dof) => closureResidual[dof])) / momentScale;
+  const constraintWork = domain.constraint && constraintDofs.size
+    ? reduceConstraintVector(domain.constraint, constraintForces) : [];
+  const coordinateKinds = constraintWork.length ? constraintCoordinateKinds(domain.constraint) : [];
+  const constraintWorkResidual = Math.max(
+    vectorNorm(constraintWork.filter((_, i) => coordinateKinds[i] === 'translation')) / forceScale,
+    vectorNorm(constraintWork.filter((_, i) => coordinateKinds[i] === 'rotation')) / momentScale,
+  );
   const closure = {
     version: 'p7-m8-element-node-closure-v1',
     method: constraintDofs.size
       ? 'assembled-member-forces-minus-nodal-loads-minus-reactions-minus-constraint-forces'
       : 'assembled-total-member-end-forces-minus-nodal-loads-minus-reactions',
-    qualified: forceResidualNorm <= tolerance && momentResidualNorm <= tolerance,
-    status: forceResidualNorm <= tolerance && momentResidualNorm <= tolerance ? 'PASS' : 'FAIL',
+    qualified: forceResidualNorm <= tolerance && momentResidualNorm <= tolerance && constraintWorkResidual <= tolerance,
+    status: forceResidualNorm <= tolerance && momentResidualNorm <= tolerance && constraintWorkResidual <= tolerance ? 'PASS' : 'FAIL',
     tolerance,
     forceResidualNorm,
     momentResidualNorm,
@@ -978,6 +980,7 @@ function buildConsistentReactionState(domain, assembly, D, allMemberResults, nod
     momentScale,
     maximumForceResidual: Math.max(0, ...forceIndices.map((dof) => Math.abs(closureResidual[dof]))),
     maximumMomentResidual: Math.max(0, ...momentIndices.map((dof) => Math.abs(closureResidual[dof]))),
+    ...(constraintDofs.size ? { constraintWorkResidual } : {}),
   };
   return { reactions, reactionVector, memberNodal, nodalExternal, constraintForces, closureResidual, closure };
 }
@@ -986,6 +989,12 @@ function directConstraintDofs(domain) {
   const nodes = domain.nodes || [];
   const index = new Map(nodes.map((node, nodeIndex) => [String(node.id), nodeIndex]));
   const out = new Set();
+  for (const group of domain.rigidDiaphragms || []) {
+    for (const id of group.nodeIds) {
+      const nodeIndex = index.get(String(id));
+      if (nodeIndex != null) for (const component of [0, 1, 5]) out.add(nodeIndex * 6 + component);
+    }
+  }
   for (const constraint of domain.solverModel?.constraints || []) {
     const endpoints = [constraint.slave, constraint.master, ...(constraint.terms || [])];
     for (const endpoint of endpoints) {
@@ -1109,11 +1118,6 @@ function directCompatibility(model, domain) {
     code: 'DIRECT_PDELTA_RELEASE_UNSUPPORTED',
     message: 'Direct P-Delta requires combined elastic-geometric release condensation before recovery can be qualified.',
     memberIds: releaseMemberIds,
-  });
-  if (rigidDiaphragmIds.length) blockers.push({
-    code: 'DIRECT_PDELTA_RIGID_DIAPHRAGM_UNSUPPORTED',
-    message: 'Direct P-Delta does not yet use the rigid-diaphragm reduced tangent system.',
-    diaphragmIds: rigidDiaphragmIds,
   });
   if (unilateralMemberIds.length) blockers.push({
     code: 'DIRECT_PDELTA_UNILATERAL_UNSUPPORTED',
@@ -1255,6 +1259,8 @@ function failedDirectResult(reason, details = {}) {
     },
     stability: details.stability || null,
     compatibility: details.compatibility || null,
+    admission: details.admission || null,
+    diaphragmIssues: details.diaphragmIssues || [],
     designEligibility,
     provenance: directProvenance(details.domain),
     analysisDomain: details.domain?.adapterIdentity || null,
@@ -1466,13 +1472,15 @@ function constrainedResidualNorms(constraint, K, D, F) {
   ));
   const reducedResidual = reduceConstraintVector(constraint, residual);
   const reducedLoad = reduceConstraintVector(constraint, F);
-  const scale = Math.max(1, vectorNorm(reducedLoad));
-  const normalized = vectorNorm(reducedResidual) / scale;
+  const kinds = constraintCoordinateKinds(constraint);
+  const norm = (values, kind) => vectorNorm(values.filter((_, i) => kinds[i] === kind));
+  const forceScale = Math.max(1, norm(reducedLoad, 'translation'));
+  const momentScale = Math.max(1, norm(reducedLoad, 'rotation'));
   return {
-    forceResidual: normalized,
-    momentResidual: normalized,
-    forceScale: scale,
-    momentScale: scale,
+    forceResidual: norm(reducedResidual, 'translation') / forceScale,
+    momentResidual: norm(reducedResidual, 'rotation') / momentScale,
+    forceScale,
+    momentScale,
   };
 }
 
