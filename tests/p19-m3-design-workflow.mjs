@@ -54,7 +54,7 @@ for(const rc of [false,true]) {
     assert.equal(api.startDesignReview({plan:{...reviewPlan,qualification:'verified'},requestId:'tamper'}).code,'DESIGN_PLAN_INVALID');
     assert.equal(api.planDesignReview({sources:[sources[0],sources[0]]}).code,'DUPLICATE_COMBINATION');
     assert.equal(api.planDesignReview({sources:[{...sources[0],comboId:'U'}]}).ok,false);
-    outputs.push(review.result.checks.map(({analysisRunId,...row})=>row));
+    outputs.push(review.result.checks.map(({analysisRunId,checkKey,...row})=>row));
     model.nodes[1].x=0.1;
     assert.equal(api.getDesignReview(review.designRunId).stale,true);assert.equal(api.getDesignReviewReport(review.designRunId).stale,true);
     assert.equal(api.createDesignReviewReport(review.designRunId).code,'STALE_INPUT');

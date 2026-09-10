@@ -1,0 +1,115 @@
+{
+  "version": "p19-validation-v1",
+  "source": {
+    "commit": "c28624e70434035c3700a3d48754c819debc2c3c",
+    "tree": "895aa61c1ebf2a0d1fae401ee2cff51fd6e64151",
+    "trackedChanges": ""
+  },
+  "scope": "Phase21 M3 execution, selection, equilibrium status and regressions",
+  "manifestPath": "verification/specs/phase21/m3-tests.json",
+  "manifestHash": "0ba2ef9ad180083322e831f3c2c48247bd91f3106def4412b8f00805753a8bb8",
+  "sourceArchiveSha256": "847d9aab96c3f149a40ef945fa320ef9e46452b07c97031d7ce1d380a623375a",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "startedAt": "2026-09-10T13:21:11.268Z",
+  "results": [
+    {
+      "test": "tests/p21-m3-execution-selection.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "01-p21-m3-execution-selection.mjs.log",
+      "sha256": "cfe1f01628031db9be705edd0a6604083e24367ce2850872569028e7ae4504e6"
+    },
+    {
+      "test": "tests/p21-m0-rigid-direct.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "02-p21-m0-rigid-direct.mjs.log",
+      "sha256": "c2f7f763a56de59343356c8b3fab6aab6adb39e7577472d26c9b43051a284e2e"
+    },
+    {
+      "test": "tests/p7-m11-elastic-result-popup.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "03-p7-m11-elastic-result-popup.mjs.log",
+      "sha256": "9ba0fca9719c9148b7597175caef0194509c71a69225fb4f803f5ec895525359"
+    },
+    {
+      "test": "tests/p5-result-case-views.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "04-p5-result-case-views.mjs.log",
+      "sha256": "f623abb3e75a7af9da8a3c75c41990f1f15f0be5ff1ca6c1a849f4a99ea7a1c3"
+    },
+    {
+      "test": "tests/p9-m3-worker-product.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "05-p9-m3-worker-product.mjs.log",
+      "sha256": "584de13465659758c40a261d1d66f1c10352734818d94b8eb22585f30bccdc33"
+    },
+    {
+      "test": "tests/p9-m3-elastic-runtime.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "06-p9-m3-elastic-runtime.mjs.log",
+      "sha256": "d8b3bc2ba0b9104eb3fd59483997717904bc912b8131b3c9167e3e13f2ad08ec"
+    },
+    {
+      "test": "tests/p20-m3-elastic-parity.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "07-p20-m3-elastic-parity.mjs.log",
+      "sha256": "7dd7138f2a182ce59824c8b37d56caae216202118d9ef29c3744887caebef14c"
+    },
+    {
+      "test": "tests/p7-m11-ui-run-records.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "08-p7-m11-ui-run-records.mjs.log",
+      "sha256": "9046ab92305989ff7a450239b50fcdbdc3dc6a262edaff72e94799b9b9532958"
+    },
+    {
+      "test": "tests/p19-m3-design-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "09-p19-m3-design-workflow.mjs.log",
+      "sha256": "c13a1e4b02909855209eae201f038e144027b77d2f9c505ee304804b6f0b2dda"
+    },
+    {
+      "test": "tests/p19-m4-webmcp-workflow.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "timeoutMs": 180000,
+      "log": "10-p19-m4-webmcp-workflow.mjs.log",
+      "sha256": "836a4a84d8be3bf9bbfbf0f63813c4741f6092f9ed11deb690da78b787ae23cf"
+    }
+  ],
+  "completedAt": "2026-09-10T13:21:46.740Z",
+  "passed": 10,
+  "failed": 0,
+  "planned": 10,
+  "executed": 10
+}

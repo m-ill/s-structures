@@ -759,7 +759,7 @@ export function installIndexEngineBridge(target = globalThis) {
   });
   const elasticReview = createElasticReviewService({ bridge, store: workflowResults,
     reportExportWorkflow: target.SStructuresReportExportWorkflow,
-    getPdfContext: () => ({ figureManifest: target.SStructuresFigureManifest || null,
+    getPdfContext: () => ({ sourceRevision:target.SStructuresSourceRevision||null,buildIdentity:target.SStructuresBuildIdentity||null,figureManifest: target.SStructuresFigureManifest || null,
       qualification: target.SStructuresReportQualification || { status: 'BLOCKED' } }),
   });
   Object.assign(bridge, {
@@ -767,7 +767,7 @@ export function installIndexEngineBridge(target = globalThis) {
     planElasticWorkflow: elasticReview.planWorkflow, runElasticWorkflow: elasticReview.runWorkflow,
     planDesignReview: elasticReview.planReview, startDesignReview: elasticReview.startReview,
     getDesignReview: elasticReview.getReview, createDesignReviewReport: elasticReview.createReport,
-    getDesignReviewReport: elasticReview.getReport, getDesignReviewExportCapability: elasticReview.getExportCapability,
+    getDesignReviewReport: elasticReview.getReport, getDesignReviewArtifact: elasticReview.getArtifact, getDesignReviewExportCapability: elasticReview.getExportCapability,
     exportDesignReviewPdf: elasticReview.exportPdf,
   });
   target.SStructuresAgent = createIndexAgentApi(target, bridge, {

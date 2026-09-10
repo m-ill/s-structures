@@ -165,6 +165,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     getDesignReview(id) { return bridge.getDesignReview(id); },
     createDesignReviewReport(id) { return bridge.createDesignReviewReport(id); },
     getDesignReviewReport(id) { return bridge.getDesignReviewReport(id); },
+    getDesignReviewArtifact(id,input) { return bridge.getDesignReviewArtifact(id,input); },
     getDesignReviewExportCapability(id) { return bridge.getDesignReviewExportCapability(id); },
     exportDesignReviewPdf(id) { return bridge.exportDesignReviewPdf(id); },
     getDesignInputContext() { return bridge?.getDesignInputContext?.() || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },

@@ -15,7 +15,7 @@ export function createReportSnapshot(model, analysis, input = {}) {
   const core = {
     schemaVersion: REPORT_SNAPSHOT_VERSION,
     project: {
-      id: model?.meta?.id || input.projectId || null,
+      id: input.projectId || model?.projectId || model?.meta?.projectId || model?.meta?.id || null,
       modelSchemaVersion: model?.schemaVersion ?? null,
     },
     sourceBinding,
@@ -194,7 +194,7 @@ function governingRecord(value) {
 }
 
 function finite(value) {
-  return Number.isFinite(Number(value)) ? Number(value) : null;
+  return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value)) ? Number(value) : null;
 }
 
 function axis(status) {

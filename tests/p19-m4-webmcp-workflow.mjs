@@ -38,7 +38,7 @@ for(const rc of [false,true]) {
  const ur=good(ui.startDesignReview({plan:good(ui.planDesignReview({sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'S'}]})),requestId:'design'}));
  const rows=[];let offset=0;
  do {const result=good(await call('get_design_result',{designRunId:design.designRunId,channel:'checks',offset,limit:3}));rows.push(...result.data.rows);offset=result.data.nextOffset;}while(offset!==null);
- const canonical=rows=>rows.map(({analysisRunId,...row})=>row);
+ const canonical=rows=>rows.map(({analysisRunId,checkKey,...row})=>row);
  assert.deepEqual(canonical(rows),canonical(ur.result.checks));
  const jobs=bridge.listAnalysisRuns().length;
  const rp=good(await call('plan_report_export',{designRunId:design.designRunId}));

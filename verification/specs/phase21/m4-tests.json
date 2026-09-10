@@ -1,0 +1,15 @@
+{
+  "scope": "Phase21 M4 canonical review, source snapshot, bounded original artifacts and regressions",
+  "tests": [
+    "tests/p21-m4-review-artifact.mjs",
+    "tests/p19-m3-design-workflow.mjs",
+    "tests/p19-m4-webmcp-workflow.mjs",
+    "tests/p19-review-capacity-pagination.mjs",
+    "tests/p19-review-jet-contract.mjs",
+    "tests/p19-review-session-disposal.mjs",
+    "tests/p20-m2-prepared-views.mjs",
+    "tests/p11-m1-report-snapshot-verdict.mjs",
+    "tests/p11-m4-scene-evidence-report.mjs",
+    "tests/p11-m5-executive-report-layout.mjs"
+  ]
+}

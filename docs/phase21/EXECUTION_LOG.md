@@ -56,3 +56,11 @@
 - 실제 indexBridge→elasticAnalysisService→Worker에서 settings.comboId를 전달하면서 전체 모델을 실행한 원인을 수정했다. 제품 서비스에서 조합 존재를 검증하고 계약 준비 이전에 범위를 제한한다. 실제 Worker 회귀에서 전체20 solve/한 조합1 solve 및 같은 선택 수치를 확인했다.
 - 숫자/그림/native canvas가 같은 pure selector를 사용한다. 명시한 조합 누락에서 포락으로 대체하지 않는다. 실패·running·stale 선택은 이전 그림을 숨기고 과거 성공 기록은 별도 보존한다. 관련 과거 회귀의 active successful display 유지 조건을 새 표시 계약으로 변경했다.
 - 보정 후 Direct 평형 PASS와 보정 전 designBlocked=true/EQUILIBRIUM_LIMIT_EXCEEDED가 공존한 원인을 수정했다. 다른 독립 실패 사유는 유지하며 productVersion을 p21-m3-direct-pdelta-product-v5로 올렸다. Phase20 원본 golden은 보존하고 해당 Direct 평형 요약 두 필드만 원인에 맞춰 이행한 뒤 나머지 수치/자격을 exact 비교한다. 초기 비교 실패와 수정 후7fixture PASS를 기록한다.
+
+## 2026-09-10 — M3 마감·M4 보고서 후보
+
+- c28624e clean archive M3 집중 회귀10/10 PASS. 실제 Worker 한 조합, Direct 독립 기준 및 기존 UI/이력/WebMCP 경로 포함.
+- 검토의 canonical check와 설명 message를 분리하고 run/조합/대상/종류/checkId의 유일키를 부여했다. N_A는 보의 기둥 검토 및 강도조합의 층간변위에만 적용하며 필요한 입력 누락은 NOT_CHECKED로 남긴다. 실패 체크 수·부재 수·대상 수·설명 수를 구분한다.
+- 각 출처의 최대변위와 평형을 보고서 snapshot에 결속하고 projectId, build/rule binding hash, 실제 sourceRevision이 있을 때만 기록한다. reportSnapshot 숫자 null이 Number(null)=0이 되던 경로도 수정했다.
+- 원본 HTML/JSON/CSV에 동일 snapshot 식별자·요약을 보존한다. UTF-8 byteLength/SHA-256과 기존 UTF-16 문자 offset을 명시하고 12,000자 조각 전용 조회를 추가했다. 전체 보고서 getReport clone 대신 immutable 문자열 slice와 작은 design metadata를 읽는다. 범위 오류와 stale 상태를 검증한다.
+- 새 회귀는 실제 RC 해석/예비 검토에서 NG2, NOT_CHECKED2, N_A2, 설명2를 따로 확인했고 원본3포맷을 끝까지 읽어 Node crypto SHA-256과 비교했다. 교차 실행 회귀는 시간에 따라 다른 analysisRunId뿐 아니라 그 ID를 포함한 checkKey를 수치 비교에서 제외한다. 수치/검토 상태는 그대로 비교한다.

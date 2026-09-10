@@ -1,4 +1,4 @@
-import { stableHash } from '../../core/stableHash.js';
+import { stableHash, sha256 } from '../../core/stableHash.js';
 import { sameWorkflowInput } from '../../core/workflowIdentity.js';
 import { runDesignChecks } from '../../design/steel.js';
 import { buildDesignDemandPackage } from '../../design/designDemandPackage.js';
@@ -7,7 +7,7 @@ import { buildConnectionFoundationReport } from '../../design/connectionFoundati
 import { createDesignReviewReport } from '../../report/phase19/designReviewReport.js';
 import { finiteJson, object } from '../../modeling/designInputCommands.js';
 
-export const ELASTIC_REVIEW_VERSION = 'p19-m3-elastic-review-v1';
+export const ELASTIC_REVIEW_VERSION = 'p21-m4-elastic-review-v2';
 const clone = value => structuredClone(value);
 const problem = (code, details = null) => ({ ok: false, code, details, designTransferAllowed: false });
 const reject = (code, details) => { throw Object.assign(new Error(code), { code, details }); };
@@ -79,13 +79,23 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
     const record = getReview(id);
     if (!record.ok) return record;
     if (record.stale) return problem('STALE_INPUT');
-    if (!reports.has(id)) reports.set(id, createDesignReviewReport(clone(bridge.getCurrentModel()), record));
+    if (!reports.has(id)) reports.set(id, createDesignReviewReport(clone(bridge.getCurrentModel()), record, getPdfContext(id)));
     return getReport(id);
   }); }
   function getReport(id) { return guard(() => {
     const value = reports.get(id);if (!value) return problem('RESULT_REQUIRED');
     const record = getReview(id);if (!record.ok) return record;
     return {ok:true,...clone(value),stale:record.stale};
+  }); }
+  function getArtifact(id, {format,offset=0} = {}) { return guard(() => {
+    const report=reports.get(id);if(!report)return problem('RESULT_REQUIRED');
+    if(!['html','json','csv'].includes(format))return problem('ARTIFACT_FORMAT_INVALID');
+    const record=store.getDesignMetadata(id,identity());if(!record.ok)return record;
+    const text=format==='html'?report.reports['ko-KR'].html:report[format];
+    if(!Number.isSafeInteger(offset)||offset<0||offset>text.length)return problem('ARTIFACT_RANGE_INVALID');
+    const end=Math.min(offset+12000,text.length), content=text.slice(offset,end);
+    return {ok:true,...clone(report.artifactManifest[format]),stale:record.stale,
+      offset,nextOffset:end<text.length?end:null,content,chunkSha256:sha256(content)};
   }); }
   function exportContext(id) {
     const report = getReport(id);if(!report.ok) reject(report.code);if(report.stale) reject('STALE_INPUT');
@@ -164,14 +174,14 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
     } catch(e) {return problem(e.code||e.message,e.details);}
   }
   function cancelWorkflow(requestId) {const result=requests.get(`workflow:${requestId}`)?.result;if(!result)return problem('WORKFLOW_NOT_FOUND');if(result.status==='running'){result.cancelled=true;if(result.currentJobId)bridge.cancelAnalysisRun(result.currentJobId);}return {ok:true,status:result.status,cancelRequested:!!result.cancelled};}
-  return Object.freeze({cancelWorkflow,planReview,startReview,getReview,createReport,getReport,getExportCapability,exportPdf,planWorkflow,runWorkflow});
+  return Object.freeze({cancelWorkflow,planReview,startReview,getReview,createReport,getReport,getArtifact,getExportCapability,exportPdf,planWorkflow,runWorkflow});
 }
 function requestKey(value) {if(typeof value!=='string'||!value.trim()||value.length>128) reject('REQUEST_ID_REQUIRED');}
 function status(value) {return value==='OK'||value==='PASS'?'OK':value==='NG'||value==='FAIL'?'NG':value==='WARN'?'WARN':'NOT_CHECKED';}
 function number(value) {return typeof value==='number'&&Number.isFinite(value)?value:null;}
 
 function calculateReview(model, rows) {
-  const checks=[],sources=[],demandPackages=[];
+  const checks=[],messages=[],sources=[],demandPackages=[];
   for(const {source,set,method,row} of rows) {
     const analysis={ok:true,byCombo:{[source.comboId]:set},envelope:set};
     const demandPackage=buildDesignDemandPackage(model,analysis), design=runDesignChecks(model,analysis,{resultSet:set,demandPackage});
@@ -187,14 +197,15 @@ function calculateReview(model, rows) {
         const interaction=item.id.includes('interaction'),applicable=item.id!=='rc-column-interaction'||found.role==='column';
         const unit=interaction||item.id.includes('slenderness')?'-':item.id.includes('deflection')?'m':item.id.includes('flexure')||item.id.includes('ltb')?'kN.m':'kN';
         checks.push({...source,memberId:member.id,category:found.type,checkId:item.id,
-          status:!applicable||number(item.ratio)===null?'NOT_CHECKED':status(item.status),ratio:applicable?number(item.ratio):null,
+          status:!applicable||item.status==='N_A'?'N_A':number(item.ratio)===null?'NOT_CHECKED':status(item.status),ratio:applicable?number(item.ratio):null,
+          reason:item.reason||(!applicable?'Column interaction does not apply to beams':null), calculationVersion:found.calculationVersion||null, reinforcementBasis:found.reinforcementBasis||null,
           demand:interaction?number(item.ratio):number(item.demand),capacity:interaction?1:number(item.capacity),unit,
           expression:item.expression||'',x:number(item.x),method:found.method});
       }
-      for(const message of found?.messages||[]) checks.push({...source,memberId:member.id,category:found.type,checkId:message.code||'input-review',status:message.level==='error'?'NG':'WARN',ratio:null,unit:'-',expression:message.message||'Input review required'});
+      for(const message of found?.messages||[]) messages.push({...source,memberId:member.id,category:found.type,...message});
     }
     for(const item of serviceability.rows) checks.push({...source,memberId:`story-${item.storyIndex||item.story||''}`,category:'serviceability',checkId:'story-drift',status:status(item.status),ratio:number(item.driftRatio/serviceability.criteria.driftLimitRatio),demand:number(item.driftRatio),capacity:serviceability.criteria.driftLimitRatio,expression:'story drift / drift limit'});
-    if(!serviceability.rows.length) checks.push({...source,memberId:null,category:'serviceability',checkId:'story-drift',status:'NOT_CHECKED',ratio:null,expression:'No applicable story drift rows'});
+    if(!serviceability.rows.length) checks.push({...source,memberId:null,category:'serviceability',checkId:'story-drift',status:serviceCombo?'NOT_CHECKED':'N_A',ratio:null,reason:serviceCombo?'Complete story drift inputs required':'Serviceability drift does not apply to this strength combination',expression:'story drift applicability'});
     for(const item of connectionFoundation.connectionRows) checks.push({...source,memberId:item.memberId,category:'connection',checkId:'preliminary-force-screen',status:status(item.status),ratio:number(item.utilization),demand:number(item.equivalentDemand),capacity:connectionFoundation.assumptions.nominalConnectionCapacity,expression:'equivalent force / assumed nominal connection capacity'});
     for(const item of connectionFoundation.foundationRows) {
       checks.push({...source,memberId:item.nodeId,category:'foundation',checkId:'required-bearing-area',status:'NOT_CHECKED',ratio:null,demand:number(item.requiredArea),capacity:null,expression:'required area = vertical reaction / assumed allowable bearing; actual footing area not checked'});
@@ -203,13 +214,15 @@ function calculateReview(model, rows) {
     }
     for(const item of checks.slice(before)) item.unit ||= item.category==='serviceability'||item.checkId==='slidingRatio'?'-':item.checkId==='required-bearing-area'?'m2':item.category==='connection'?'kN':'-';
     const own=checks.slice(before), governing=own.filter(x=>x.ratio!==null).sort((a,b)=>b.ratio-a.ratio)[0]||null;
-    sources.push({...source,caseId:row.caseId,method,maxDisplacement:number(set.dmax),maxUtilization:governing?.ratio??null,governing,qualification:row.qualification});
+    sources.push({...source,caseId:row.caseId,method,maxDisplacement:number(set.dmax),maxUtilization:governing?.ratio??null,governing,qualification:row.qualification,equilibriumResidual:number(set.summary?.equilibriumResidual),equilibriumStatus:set.summary?.equilibriumStatus||'NOT_AVAILABLE',recoveryQualified:set.recoveryQualification?.qualified??null,inputHash:row.identity.inputHash,resultHash:row.resultHash});
     demandPackages.push({...source,package:demandPackage});
   }
-  const counts=Object.fromEntries(['OK','WARN','NG','NOT_CHECKED'].map(key=>[key,checks.filter(x=>x.status===key).length]));
+  for (const item of checks) item.checkKey = stableHash([item.analysisRunId,item.comboId,item.memberId,item.category,item.checkId]);
+  if (new Set(checks.map(item=>item.checkKey)).size !== checks.length) reject('DUPLICATE_CANONICAL_CHECK');
+  const counts=Object.fromEntries(['OK','WARN','NG','NOT_CHECKED','N_A'].map(key=>[key,checks.filter(x=>x.status===key).length]));
   const governing=checks.filter(x=>x.ratio!==null).sort((a,b)=>b.ratio-a.ratio)[0]||null;
-  return {version:ELASTIC_REVIEW_VERSION,units:clone(model.units),axes:'member-local',signConvention:'solver-native',checks,sources,demandPackages,
-    summary:{status:counts.NG?'NG':counts.NOT_CHECKED?'NOT_CHECKED':counts.WARN?'WARN':'OK',counts,maxUtilization:governing?.ratio??null,governing,checkCount:checks.length},
+  return {version:ELASTIC_REVIEW_VERSION,units:clone(model.units),axes:'member-local',signConvention:'solver-native',checks,messages,sources,demandPackages,
+    summary:{status:counts.NG?'NG':counts.NOT_CHECKED?'NOT_CHECKED':counts.WARN||messages.length?'WARN':'OK',counts,maxUtilization:governing?.ratio??null,governing,checkCount:checks.length,messageCount:messages.length,failedMemberCount:new Set(checks.filter(x=>x.status==='NG'&&(model.members||[]).some(m=>m.id===x.memberId)).map(x=>x.memberId)).size,failedEntityCount:new Set(checks.filter(x=>x.status==='NG'&&x.memberId).map(x=>x.memberId)).size},
     ruleSources:[{module:'src/design/steel.js',method:'steel_allowable_preliminary + elastic LTB',status:'preliminary'},{module:'src/design/concrete.js',method:'rc_preliminary_strength',status:'preliminary'},{module:'src/design/serviceability.js',method:'story drift H/200 default',status:'project criterion required'},{module:'src/design/connectionFoundation.js',method:'force / bearing / sliding screening',status:'assumed capacities; preliminary'}],
     limitations:['Final design transfer is blocked; computed OK is not engineering approval.','Only explicitly bound completed first-order/Direct P–Delta combinations are mapped. Legacy P–Delta is comparison-only and blocked. Modal, RSA, buckling, THA and nonlinear results are not mapped to member design demand.','Steel checks are preliminary allowable-stress screens, not a complete strength-code implementation. RC uses simplified section/rebar assumptions.','LTB, missing members, warnings and unchecked items retain their own status.','Connection bolt/weld/anchorage and foundation settlement, punching, reinforcement and soil qualification are NOT_CHECKED.','Selected combinations only; required code combination coverage is not certified.']};
 }

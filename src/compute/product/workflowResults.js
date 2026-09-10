@@ -90,6 +90,11 @@ export function createWorkflowResultStore() {
       return read(designs, id, identity);
     },
     getDesign: (id, identity) => read(designs, id, identity),
+    getDesignMetadata(id, identity) {
+      const record=designs.get(id);if(!record)return problem('RESULT_REQUIRED');
+      const {result,...metadata}=record;
+      return {ok:true,...copy(metadata),stale:!sameWorkflowInput(record.identity,identity)};
+    },
     assertCurrent(id, identity) {
       const value = read(analyses.has(id) ? analyses : designs, id, identity);
       return !value.ok ? value : value.stale ? problem('STALE_INPUT') : value;

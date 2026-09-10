@@ -1,7 +1,8 @@
 {
-  "version": "p21-m3-tests-v4",
-  "scope": "Phase21 M0-M3 and inherited regression; M4-M7 pending",
+  "version": "p21-m4-tests-v5",
+  "scope": "Phase21 M0-M4 and inherited regression; M5-M7 pending",
   "tests": [
+    "tests/p21-m4-review-artifact.mjs",
     "tests/p21-m3-execution-selection.mjs",
     "tests/p21-m2-input-persistence.mjs",
     "tests/p21-m1-rc-contract.mjs",
