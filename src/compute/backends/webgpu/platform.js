@@ -29,6 +29,7 @@ export async function createWebGpuPlatform(options = {}) {
   const pool = createWebGpuBufferPool(device, {
     alignment: 4,
     maxCachedBytes: options.maxCachedBytes,
+    maxBytes: options.maxBytes,
     maxBuffersPerKey: options.maxBuffersPerKey,
   });
   const pipelines = new Map();

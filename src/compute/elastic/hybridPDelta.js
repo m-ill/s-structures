@@ -4,8 +4,9 @@ import {
   buildPartitionedTangentSystem,
 } from '../../solver/pdelta/secondOrder.js';
 import { createMixedPrecisionSpdSession } from '../hybrid/mixedPrecisionSpd.js';
+import { auditConstrainedGpuSolution } from './constrainedGpuAudit.js';
 
-export const HYBRID_PDELTA_TANGENT_VERSION = 'p9-m5-hybrid-pdelta-tangent-v1';
+export const HYBRID_PDELTA_TANGENT_VERSION = 'p23-hybrid-constrained-pdelta-v1';
 
 export function createHybridPDeltaTangentSolver(options = {}) {
   if (typeof options.gpuSessionFactory !== 'function') {
@@ -16,6 +17,9 @@ export function createHybridPDeltaTangentSolver(options = {}) {
   let correctionSolveCount = 0;
   let failedSolveCount = 0;
   let disposed = false;
+  let busy = false;
+  let resourceBalanced = true;
+  let matrixSessionCount = 0;
 
   return Object.freeze({
     version: HYBRID_PDELTA_TANGENT_VERSION,
@@ -26,6 +30,13 @@ export function createHybridPDeltaTangentSolver(options = {}) {
 
   async function solve(request = {}) {
     if (disposed) throw pDeltaHybridError('HYBRID_PDELTA_TANGENT_SOLVER_DISPOSED', 'The hybrid Direct P-Delta solver is disposed.');
+    if (busy) throw pDeltaHybridError('HYBRID_PDELTA_BUSY', 'Only one tangent solve may own this session.');
+    if (options.signal?.aborted) throw pDeltaHybridError('HYBRID_PDELTA_CANCELLED', 'The tangent solve was cancelled.');
+    busy = true;
+    try { return await solveOnce(request); } finally { busy = false; }
+  }
+
+  async function solveOnce(request) {
     const system = buildPartitionedTangentSystem(request.K, request.F, request.Dc, request.free, request.fixedDofs, request.constraint, request.lambda);
     solveCount += 1;
     if (!system.free.length) return assemblePartitionedTangentSolution(system, [], emptyDiagnostics(request));
@@ -41,6 +52,7 @@ export function createHybridPDeltaTangentSolver(options = {}) {
         signal: options.signal,
       });
       result = await session.solve(system.Ff, { signal: options.signal });
+      if (disposed || options.signal?.aborted) throw pDeltaHybridError('HYBRID_PDELTA_CANCELLED', 'The tangent result was invalidated.');
       correctionSolveCount += Number(result.diagnostics?.correctionCount || 0);
       if (!result.ok) {
         failedSolveCount += 1;
@@ -59,6 +71,9 @@ export function createHybridPDeltaTangentSolver(options = {}) {
         f64Residual: result.f64Residual,
         designTransferAllowed: result.designTransferAllowed,
       });
+      const constraintAudit = auditConstrainedGpuSolution(request, system, solution);
+      if (constraintAudit && !constraintAudit.ok) throw pDeltaHybridError(constraintAudit.reason, 'Original constrained f64 equilibrium failed.', constraintAudit);
+      solution.diagnostics.constraintAudit = constraintAudit;
       completed = true;
       return solution;
     } catch (error) {
@@ -66,6 +81,8 @@ export function createHybridPDeltaTangentSolver(options = {}) {
       throw error;
     } finally {
       if (session) afterDispose = await session.dispose();
+      matrixSessionCount += 1;
+      resourceBalanced &&= !session || afterDispose?.gpu?.resourceBalanced === true;
       rows.push(Object.freeze({
         step: request.step ?? null,
         iteration: request.iteration ?? null,
@@ -74,8 +91,9 @@ export function createHybridPDeltaTangentSolver(options = {}) {
         ok: completed,
         correctionCount: Number(result?.diagnostics?.correctionCount || 0),
         f64BackwardError: result?.f64Residual?.backwardError ?? null,
-        resourceBalanced: afterDispose?.gpu?.resourceBalanced === true,
+        resourceBalanced: !session || afterDispose?.gpu?.resourceBalanced === true,
       }));
+      if (rows.length > 64) rows.shift();
     }
   }
 
@@ -84,13 +102,15 @@ export function createHybridPDeltaTangentSolver(options = {}) {
       version: HYBRID_PDELTA_TANGENT_VERSION,
       disposed,
       solveCount,
-      matrixSessionCount: rows.length,
+      matrixSessionCount,
+      diagnosticRowsDropped: Math.max(0, matrixSessionCount - rows.length),
+      busy,
       reusedMatrixSessionCount: 0,
       correctionSolveCount,
       failedSolveCount,
       tangentInvalidation: 'every-tangent-rebuild',
       rows: Object.freeze([...rows]),
-      resourceBalanced: rows.every((row) => row.resourceBalanced === true),
+      resourceBalanced: !busy && resourceBalanced,
       designTransferAllowed: false,
     });
   }

@@ -126,5 +126,7 @@ const product = await executeProductionElastic({ model: productModel, computeTar
 assert.equal(product.result.pDelta.ok, true);
 assert.equal(product.execution.fallbackUsed, false);
 assert.equal(product.execution.resourceBalanced, true);
-await assert.rejects(executeProductionElastic({model:productModel,computeTarget:'gpu'}), {code:'DIRECT_DIAPHRAGM_GPU_NOT_QUALIFIED'});
-console.log(JSON.stringify({ ok: true, expected, actual: result.result.disp.T0[0], equilibrium: result.result.summary.equilibriumResidual, amplification: result.amplification, scope: 'symmetric/eccentric/three-story independent equations, affine supports, CPU product, reference async; actual GPU blocked pending qualification' }, null, 2));
+const unsupportedGpuModel = structuredClone(productModel);
+unsupportedGpuModel.constraints = mixed.constraints;
+await assert.rejects(executeProductionElastic({model:unsupportedGpuModel,computeTarget:'gpu'}), {code:'DIRECT_DIAPHRAGM_GPU_NOT_QUALIFIED'});
+console.log(JSON.stringify({ ok: true, expected, actual: result.result.disp.T0[0], equilibrium: result.result.summary.equilibriumResidual, amplification: result.amplification, scope: 'symmetric/eccentric/three-story independent equations, affine supports, CPU product, reference async; mixed-MPC GPU scope blocked; hardware coverage is recorded separately in Phase23' }, null, 2));

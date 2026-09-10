@@ -1,6 +1,7 @@
 import { BudgetMap, createResourceBudget, retainedBytes } from '../../core/resourceBudget.js';
 import { normalizeAnalysisCase } from '../../core/analysisCase.js';
 import { stableHash, stableStringify } from '../../core/stableHash.js';
+import { RIGID_GPU_CAPABILITY, hasRigidGpuCandidateScope } from '../../metadata/rigidGpuCapability.js';
 
 export const PRODUCT_ANALYSIS_SERVICE_VERSION = 'p9-m9-product-analysis-service-v1';
 export const PRODUCT_ANALYSIS_CAPABILITY_VERSION = 'p9-m9-product-capability-v1';
@@ -84,7 +85,8 @@ export function createAnalysisProductService(options = {}) {
   function getCapabilities(input = {}) {
     const profile = hardwareProfile(input.environment || options.environment);
     const kinds = input.kind ? [String(input.kind)] : [...SUPPORTED_KINDS];
-    const byKind = Object.fromEntries(kinds.map((kind) => [kind, capabilityForKind(kind, profile, options.qualificationPolicy)]));
+    const candidate = hasRigidGpuCandidateScope(resolveModel(input, false));
+    const byKind = Object.fromEntries(kinds.map((kind) => [kind, capabilityForKind(kind, profile, options.qualificationPolicy, candidate)]));
     return freezeClone({
       version: PRODUCT_ANALYSIS_CAPABILITY_VERSION,
       serviceVersion: PRODUCT_ANALYSIS_SERVICE_VERSION,
@@ -102,7 +104,7 @@ export function createAnalysisProductService(options = {}) {
     const analysisCase = resolveCase(model, input, false);
     const kind = analysisCase?.kind || String(input.kind || '');
     const computeTarget = normalizeTarget(input.computeTarget);
-    const capability = getCapabilities({ kind, environment: input.environment });
+    const capability = getCapabilities({ kind, model, environment: input.environment });
     const target = capability.targets.find((row) => row.id === computeTarget);
     const blocking = [];
     const warnings = [];
@@ -144,7 +146,7 @@ export function createAnalysisProductService(options = {}) {
     const settingsHash = stableHash(Array.from(settingsBytes));
     const modelHash = stableHash(model);
     const requestedTarget = normalizeTarget(input.computeTarget);
-    const capability = getCapabilities({ kind: analysisCase.kind, environment: input.environment });
+    const capability = getCapabilities({ kind: analysisCase.kind, model, environment: input.environment });
     const target = capability.targets.find((row) => row.id === requestedTarget);
     const executedTarget = target?.available === true ? target.executedTarget : null;
     const runId = clean(input.runId || input.jobId)
@@ -176,8 +178,8 @@ export function createAnalysisProductService(options = {}) {
       operationRoute: route,
       correctionPolicy: executedTarget === 'gpu' ? 'gpu-f32-with-cpu-f64-correction' : 'not-required-cpu-f64',
       auditPolicy: 'cpu-f64-equilibrium-and-result-audit',
-      qualification: executedTarget ? qualificationForKind(analysisCase.kind) : 'blocked',
-      designTransfer: executedTarget ? 'subject-to-result-qualification' : 'blocked',
+      qualification: target?.candidate ? RIGID_GPU_CAPABILITY.status : executedTarget ? qualificationForKind(analysisCase.kind) : 'blocked',
+      designTransfer: target?.candidate ? 'blocked' : executedTarget ? 'subject-to-result-qualification' : 'blocked',
     };
     return freezeClone({ ...core, planHash: stableHash(core) });
   }
@@ -607,13 +609,18 @@ function productProvenance(plan, result = {}) {
   };
 }
 
-function capabilityForKind(kind, profile, policy = {}) {
+function capabilityForKind(kind, profile, policy = {}, rigidCandidate = false) {
   const supported = SUPPORTED_KINDS.has(kind);
   const gpuPolicyAllowed = policy?.gpuAllowed === true
     || policy?.gpuAllowedByKind?.[kind] === true;
   const gpuImplemented = kind === 'static' && profile.webgpuSupported;
-  const gpuAvailable = supported && gpuImplemented && gpuPolicyAllowed;
-  const gpuBlock = gpuBlockForKind(kind, profile, gpuPolicyAllowed);
+  const candidate = kind === 'static' && rigidCandidate
+    && policy?.gpuAllowed !== false && policy?.gpuAllowedByKind?.[kind] !== false;
+  const candidateReady = candidate && profile.workerSupported && profile.secureContext;
+  const gpuAvailable = supported && gpuImplemented && (gpuPolicyAllowed || candidateReady);
+  const gpuBlock = candidate && !candidateReady
+    ? { reason: 'RIGID_GPU_WORKER_CONTEXT_REQUIRED', message: 'GPU 검토 실행에는 보안 컨텍스트와 Worker가 필요합니다.', remediation: 'HTTPS 또는 localhost에서 실행하세요.' }
+    : gpuBlockForKind(kind, profile, gpuPolicyAllowed);
   const targets = [
     {
       id: 'auto',
@@ -637,12 +644,14 @@ function capabilityForKind(kind, profile, policy = {}) {
     },
     {
       id: 'gpu',
-      label: 'GPU accelerated',
+      label: candidate ? 'GPU 검토용' : 'GPU accelerated',
+      candidate,
+      rigidDiaphragm: candidate ? RIGID_GPU_CAPABILITY : null,
       available: gpuAvailable,
       executedTarget: gpuAvailable ? 'gpu' : null,
-      routeReason: gpuAvailable ? 'Explicit qualified GPU route.' : gpuBlock.reason,
+      routeReason: gpuAvailable ? candidate ? 'Explicit rigid-diaphragm GPU candidate; final design transfer blocked.' : 'Explicit qualified GPU route.' : gpuBlock.reason,
       reason: gpuAvailable ? null : gpuBlock.reason,
-      message: gpuAvailable ? 'Runs the qualified GPU route with CPU f64 audit.' : gpuBlock.message,
+      message: gpuAvailable ? candidate ? '강체 다이어프램 GPU 검토 해석 · CPU f64 검산 · 최종 설계 전이 미승인' : 'Runs the qualified GPU route with CPU f64 audit.' : gpuBlock.message,
       remediation: gpuAvailable ? null : gpuBlock.remediation,
     },
   ];

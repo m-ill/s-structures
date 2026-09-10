@@ -54,3 +54,7 @@ Node.js 24에서 `node server/main.mjs 5173` 실행 후 지원 브라우저로 `
 ## Phase22 로컬 개발 변경
 
 43개 도구. workflow 완료 job도 공통 상태/부분 조회에 연결한다. 복원 결과는 `open_analysis_result`로 새 읽기 전용 ID를 얻는다. `get_runtime_resources({includeAggregate:true})`는 선택적인 메모리 진단, `export_report_pdf({handle,requestId})`는 예비 기록 PDF 자동 다운로드다. 최종 설계 자격·배포 완료를 의미하지 않는다. [계획 및 코드 상태](phase22/STATUS.md) 참고.
+
+## Phase23 GPU 강체 다이어프램 후보
+
+프레임·강체 다이어프램 static 모델의 기능 조회는 지원 환경에서 GPU 검토용을 제공한다. 기존 computeTarget gpu로 1차 탄성·Direct P-delta를 실행하며 결과에 실제 GPU 경로와 preliminary/designBlocked 자격을 보존한다. Auto는 CPU다. 상세 범위는 [Phase23](phase23/README.md)를 참조한다.

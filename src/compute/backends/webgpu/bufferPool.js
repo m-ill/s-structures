@@ -1,12 +1,13 @@
 import { alignWebGpuBytes } from './segmentedBuffer.js';
 
-export const WEBGPU_BUFFER_POOL_VERSION = 'p9-m4-webgpu-buffer-pool-v1';
+export const WEBGPU_BUFFER_POOL_VERSION = 'p23-webgpu-buffer-pool-v1';
 
 export function createWebGpuBufferPool(device, options = {}) {
   if (!device?.createBuffer) throw poolError('WEBGPU_DEVICE_REQUIRED', 'A WebGPU device is required.');
   const alignment = positiveInteger(options.alignment ?? 4, 'alignment');
   const maxCachedBytes = nonnegativeInteger(options.maxCachedBytes ?? 64 * 1024 * 1024, 'maxCachedBytes');
   const maxBuffersPerKey = positiveInteger(options.maxBuffersPerKey ?? 4, 'maxBuffersPerKey');
+  const maxBytes = positiveInteger(options.maxBytes ?? 256 * 1024 * 1024, 'maxBytes');
   const cached = new Map();
   const active = new Map();
   let sequence = 0;
@@ -35,6 +36,13 @@ export function createWebGpuBufferPool(device, options = {}) {
     let row = rows.pop();
     if (row) cachedBytes -= row.size;
     else {
+      if (activeBytes + size > maxBytes) throw poolError('WEBGPU_BUFFER_POOL_BUDGET', 'Active GPU buffers exceed the pool budget.');
+      if (activeBytes + cachedBytes + size > maxBytes) {
+        for (const entries of cached.values()) for (const entry of entries) destroy(entry);
+        cached.clear();
+        cachedBytes = 0;
+        rows.length = 0;
+      }
       const buffer = device.createBuffer({ size, usage, mappedAtCreation: input.mappedAtCreation === true, label: input.label });
       row = { buffer, size, usage, key };
       createdCount += 1;
@@ -100,6 +108,7 @@ export function createWebGpuBufferPool(device, options = {}) {
       disposed,
       alignment,
       maxCachedBytes,
+      maxBytes,
       maxBuffersPerKey,
       createdCount,
       destroyedCount,

@@ -641,6 +641,7 @@ function resultPane(doc, target, item) {
     ['Run record', result.runRecordId || '-'],
     ['Compute route', product.operationRoute?.backendId || result.routing?.operationRoute?.backendId || '-'],
     ['Requested / actual', product.requestedTarget ? `${product.requestedTarget} / ${product.executedTarget || '-'}` : '-'],
+    ...(result.payload?.gpuCapability ? [['GPU 범위', `${result.payload.gpuCapability.scope} · 검토용 / 최종 설계 전이 미승인`]] : []),
     ['Plan hash', result.planHash || product.planHash || '-'],
     ['Audit', typeof product.audit === 'string' ? product.audit : compactSettings(product.audit || {})],
     ['View', result.view],

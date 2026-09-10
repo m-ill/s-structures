@@ -2,13 +2,13 @@ import { stableHash } from '../../../core/stableHash.js';
 import { gpuBufferUsage, gpuMapMode } from './constants.js';
 import { WEBGPU_SPD_PCG_SHADER } from './spdPcgShader.js';
 
-export const WEBGPU_SPD_SESSION_VERSION = 'p9-m5-webgpu-spd-session-v1';
+export const WEBGPU_SPD_SESSION_VERSION = 'p23-webgpu-spd-session-v1';
 
 export async function createWebGpuSpdSession(platform, matrix, defaults = {}) {
   validateMatrix(matrix);
   platform.assertReady(defaults.signal);
   const n = matrix.rowCount;
-  const limits = platform.capability.limits || {};
+  const limits = platform.device.limits || platform.capability.limits || {};
   if (Number(limits.maxComputeInvocationsPerWorkgroup || 0) < 256 || Number(limits.maxComputeWorkgroupSizeX || 0) < 256) {
     throw sessionError('WEBGPU_SPD_WORKGROUP_LIMIT_UNAVAILABLE', 'The device cannot execute the qualified 256-lane SPD kernel.');
   }
@@ -22,29 +22,38 @@ export async function createWebGpuSpdSession(platform, matrix, defaults = {}) {
   const readbackUsage = gpuBufferUsage('MAP_READ') | gpuBufferUsage('COPY_DST');
   const workspaceLength = n * 5 + 8;
   const readbackLength = n + 8;
-  const rows = [
-    lease(matrix.rowPtr.byteLength, storageInput, 'rowPtr'),
-    lease(matrix.colIdx.byteLength, storageInput, 'colIdx'),
-    lease(matrix.values.byteLength, storageInput, 'values'),
-    lease(matrix.diagonal.byteLength, storageInput, 'diagonal'),
-    lease(n * 4, storageInput, 'rhs'),
-    lease(workspaceLength * 4, storageWorkspace, 'workspace'),
-    lease(4 * 4, uniformInput, 'params', 'uniform'),
-    lease(readbackLength * 4, readbackUsage, 'readback'),
-  ];
-  const [rowPtr, colIdx, values, diagonal, rhs, workspace, params, readback] = rows;
-  for (const [target, data] of [[rowPtr, matrix.rowPtr], [colIdx, matrix.colIdx], [values, matrix.values], [diagonal, matrix.diagonal]]) {
-    platform.queue.writeBuffer(target.buffer, 0, data.buffer, data.byteOffset, data.byteLength);
+  const rows = [];
+  let pipeline, bindGroup;
+  try {
+    await platform.withErrorScopes(async () => {
+      lease(matrix.rowPtr.byteLength, storageInput, 'rowPtr');
+      lease(matrix.colIdx.byteLength, storageInput, 'colIdx');
+      lease(matrix.values.byteLength, storageInput, 'values');
+      lease(matrix.diagonal.byteLength, storageInput, 'diagonal');
+      lease(n * 4, storageInput, 'rhs');
+      lease(workspaceLength * 4, storageWorkspace, 'workspace');
+      lease(4 * 4, uniformInput, 'params', 'uniform');
+      lease(readbackLength * 4, readbackUsage, 'readback');
+      const [rowPtr, colIdx, values, diagonal, rhs, workspace, params] = rows;
+      for (const [target, data] of [[rowPtr, matrix.rowPtr], [colIdx, matrix.colIdx], [values, matrix.values], [diagonal, matrix.diagonal]]) {
+        platform.queue.writeBuffer(target.buffer, 0, data.buffer, data.byteOffset, data.byteLength);
+      }
+      pipeline = await compilePipeline(platform);
+      platform.assertReady(defaults.signal);
+      bindGroup = platform.device.createBindGroup({
+        layout: pipeline.getBindGroupLayout(0),
+        entries: [rowPtr, colIdx, values, diagonal, rhs, workspace, params].map((item, binding) => ({
+          binding,
+          resource: { buffer: item.buffer, size: item.size },
+        })),
+        label: 'p9-m5-spd-pcg-bind-group',
+      });
+    }, defaults.signal);
+  } catch (error) {
+    for (const row of rows.reverse()) row.releaseOnce();
+    throw error;
   }
-  const pipeline = await compilePipeline(platform);
-  const bindGroup = platform.device.createBindGroup({
-    layout: pipeline.getBindGroupLayout(0),
-    entries: [rowPtr, colIdx, values, diagonal, rhs, workspace, params].map((item, binding) => ({
-      binding,
-      resource: { buffer: item.buffer, size: item.size },
-    })),
-    label: 'p9-m5-spd-pcg-bind-group',
-  });
+  const [rowPtr, colIdx, values, diagonal, rhs, workspace, params, readback] = rows;
   const matrixHash = stableHash({
     rowCount: n,
     rowPtr: Array.from(matrix.rowPtr),
@@ -55,6 +64,7 @@ export async function createWebGpuSpdSession(platform, matrix, defaults = {}) {
   let failedSolveCount = 0;
   let busy = false;
   let disposed = false;
+  let activeDone = Promise.resolve();
 
   return Object.freeze({
     version: WEBGPU_SPD_SESSION_VERSION,
@@ -70,6 +80,9 @@ export async function createWebGpuSpdSession(platform, matrix, defaults = {}) {
     const input = Float32Array.from(rhsInput || [], Number);
     if (input.length !== n || input.some((value) => !Number.isFinite(value))) return failure('WEBGPU_SPD_RHS_INVALID');
     busy = true;
+    let finishActive;
+    activeDone = new Promise(resolve => { finishActive = resolve; });
+    options = { ...options, signal: options.signal || defaults.signal };
     solveCount += 1;
     try {
       return await platform.withErrorScopes(async () => {
@@ -91,6 +104,7 @@ export async function createWebGpuSpdSession(platform, matrix, defaults = {}) {
         await readback.buffer.mapAsync(gpuMapMode('READ'), 0, readbackLength * 4);
         const copy = readback.buffer.getMappedRange(0, readbackLength * 4).slice(0);
         readback.buffer.unmap();
+        if (disposed) return failure('WEBGPU_SPD_SESSION_DISPOSED');
         const data = new Float32Array(copy);
         const diagnostic = data.subarray(n);
         const reason = reasonCode(Math.trunc(diagnostic[3]));
@@ -124,6 +138,7 @@ export async function createWebGpuSpdSession(platform, matrix, defaults = {}) {
     } finally {
       try { readback.buffer.unmap?.(); } catch {}
       busy = false;
+      finishActive();
     }
   }
 
@@ -143,8 +158,8 @@ export async function createWebGpuSpdSession(platform, matrix, defaults = {}) {
   }
 
   async function dispose() {
-    if (disposed) return snapshot();
     disposed = true;
+    await activeDone;
     for (let index = rows.length - 1; index >= 0; index -= 1) rows[index].releaseOnce();
     return snapshot();
   }
@@ -153,7 +168,7 @@ export async function createWebGpuSpdSession(platform, matrix, defaults = {}) {
     assertBindingLimit(platform, size, name, bindingClass);
     const item = platform.pool.acquire({ size, usage, label: `p9-m5-spd:${name}` });
     let released = false;
-    return Object.freeze({
+    const row = Object.freeze({
       token: item.token,
       buffer: item.buffer,
       size: item.size,
@@ -162,6 +177,8 @@ export async function createWebGpuSpdSession(platform, matrix, defaults = {}) {
       get released() { return released; },
       releaseOnce() { if (!released) { released = true; item.release(); } },
     });
+    rows.push(row);
+    return row;
   }
 }
 
@@ -189,10 +206,11 @@ function validateMatrix(matrix) {
 }
 
 function assertBindingLimit(platform, byteLength, name, bindingClass = 'storage') {
+  const limits = platform.device.limits || platform.capability.limits;
   const bindingLimit = bindingClass === 'uniform'
-    ? Number(platform.capability.limits.maxUniformBufferBindingSize || platform.device.limits?.maxUniformBufferBindingSize || 0)
-    : Number(platform.capability.limits.maxStorageBufferBindingSize || 0);
-  const limit = Math.min(Number(platform.capability.limits.maxBufferSize || 0), bindingLimit);
+    ? Number(limits.maxUniformBufferBindingSize || 0)
+    : Number(limits.maxStorageBufferBindingSize || 0);
+  const limit = Math.min(Number(limits.maxBufferSize || 0), bindingLimit);
   if (!(limit > 0) || byteLength > limit) throw sessionError('WEBGPU_SPD_BUFFER_LIMIT_EXCEEDED', `${name} exceeds the device ${bindingClass} buffer limit.`);
 }
 

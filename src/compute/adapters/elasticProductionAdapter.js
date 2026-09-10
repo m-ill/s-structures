@@ -12,8 +12,9 @@ import { createElasticFactorSession } from '../elastic/factorSession.js';
 import { createHybridElasticSession, solveElasticCombinationHybrid } from '../elastic/hybridElasticSession.js';
 import { createHybridPDeltaTangentSolver } from '../elastic/hybridPDelta.js';
 import { createWebGpuPlatform, createWebGpuSpdSession } from '../backends/webgpu/index.js';
+import { RIGID_GPU_CAPABILITY, hasRigidGpuCandidateScope } from '../../metadata/rigidGpuCapability.js';
 
-export const PRODUCTION_ELASTIC_ADAPTER_VERSION = 'p9-m5-production-elastic-adapter-v2';
+export const PRODUCTION_ELASTIC_ADAPTER_VERSION = 'p23-production-elastic-adapter-v1';
 export const PRODUCTION_ELASTIC_BACKEND_ID = 'p9-elastic-cpu-production-v1';
 export const PRODUCTION_ELASTIC_HYBRID_BACKEND_ID = 'p9-elastic-webgpu-hybrid-candidate-v1';
 export const PRODUCTION_ELASTIC_OPERATION = 'elasticStatic';
@@ -144,6 +145,7 @@ export async function executeProductionElastic(payload = {}, context = {}) {
           pDeltaMethod: 'direct',
           linear: linearSeeds[combo.id],
           tangentSolver: pDeltaTangentSolver.solve,
+          onProgress: progress => context.reportProgress?.({ ...progress, comboId: combo.id, value: 0.82 }),
         });
         run.provenance = {
           ...(run.provenance || {}),
@@ -197,6 +199,15 @@ export async function executeProductionElastic(payload = {}, context = {}) {
   context.throwIfCancelled?.();
   context.commitBoundary?.({ stage: 'elastic-analysis-complete' });
   context.reportProgress?.({ value: 1, stage: 'complete' });
+  const rigidGpu = route.target === 'gpu' && prepared.model.diaphragms?.some(group => group.type === 'rigid');
+  if (rigidGpu) result = { ...result, gpuCapability: RIGID_GPU_CAPABILITY,
+    routing: { ...(result.routing || {}), executedTarget: 'gpu', fallbackUsed: false,
+      precisionMode: 'mixed-f32-f64-audited', gpuCapability: RIGID_GPU_CAPABILITY },
+    qualification: 'preliminary', maturity: 'preliminary', designBlocked: true,
+    designBlockReason: 'RIGID_GPU_RELEASE_QUALIFICATION_PENDING',
+    designEligibility: { ...(result.designEligibility || {}), eligible: false, status: 'blocked', reason: 'RIGID_GPU_RELEASE_QUALIFICATION_PENDING' },
+    executionProvenance: { ...(result.executionProvenance || {}), executedTarget: 'gpu',
+      precisionMode: 'mixed-f32-f64-audited', fallbackUsed: false, gpuCapability: RIGID_GPU_CAPABILITY } };
   return Object.freeze({
     version: PRODUCTION_ELASTIC_ADAPTER_VERSION,
     operation: PRODUCTION_ELASTIC_OPERATION,
@@ -210,6 +221,7 @@ export async function executeProductionElastic(payload = {}, context = {}) {
       target: route.target,
       requestedTarget: route.requestedTarget,
       routeReason: route.reason,
+      rigidDiaphragm: rigidGpu ? RIGID_GPU_CAPABILITY : null,
       fallbackUsed: false,
       precisionMode: route.target === 'gpu' ? 'mixed-f32-f64-audited' : 'f64',
       combinationCount: prepared.combos.length,
@@ -326,8 +338,9 @@ function resolveElasticExecutionRoute(payload, context, prepared) {
   const executionTarget = String(payload.computeTarget || 'cpu').trim().toLowerCase();
   const requestedTarget = String(payload.requestedComputeTarget || executionTarget).trim().toLowerCase();
   if ((executionTarget === 'gpu' || requestedTarget === 'gpu') && prepared.pDeltaMethod === 'direct'
-      && prepared.model.diaphragms?.some(group => group.type === 'rigid')) {
-    throw elasticAdapterError('DIRECT_DIAPHRAGM_GPU_NOT_QUALIFIED', 'Rigid-diaphragm Direct P-Delta currently requires CPU f64; the constrained hybrid path has reference-adapter tests only.');
+      && prepared.model.diaphragms?.some(group => group.type === 'rigid')
+      && !hasRigidGpuCandidateScope(prepared.model)) {
+    throw elasticAdapterError('DIRECT_DIAPHRAGM_GPU_NOT_QUALIFIED', 'This model is outside the frame-only rigid-diaphragm GPU candidate scope.');
   }
   if (!['cpu', 'gpu', 'auto'].includes(requestedTarget)) {
     throw elasticAdapterError('ELASTIC_COMPUTE_TARGET_INVALID', `Unsupported elastic compute target: ${requestedTarget}.`);
