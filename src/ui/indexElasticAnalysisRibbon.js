@@ -205,7 +205,7 @@ export function installElasticAnalysisRibbon(target = globalThis, panel = null) 
     },
     openResult(commandKey) {
       const command = ELASTIC_ANALYSIS_COMMANDS.find((item) => item.key === commandKey);
-      const analysisCase = command ? findCommandCase(target.SStructuresEngine?.getAnalysisCases?.() || [], command) : null;
+      const analysisCase = command ? findDisplayCase(target, command) : null;
       const result = analysisCase ? target.SStructuresEngine?.getAnalysisCaseResult?.(analysisCase.id) : null;
       if (!analysisCase || !result) return api.getState();
       target.SStructuresAnalysisCenter?.select?.(analysisCase.id);
@@ -217,7 +217,7 @@ export function installElasticAnalysisRibbon(target = globalThis, panel = null) 
     openResults(commandKey = null) {
       if (commandKey) return api.openResult(commandKey);
       const selected = selectedAnalysisCase(target);
-      const selectedCommand = ELASTIC_ANALYSIS_COMMANDS.find((command) => findCommandCase([selected].filter(Boolean), command));
+      const selectedCommand = ELASTIC_ANALYSIS_COMMANDS.find((command) => matchesCommand(selected, command));
       if (selectedCommand) return api.openResult(selectedCommand.key);
       const firstAvailable = api.getState().commands.find((command) => command.hasResult);
       return firstAvailable ? api.openResult(firstAvailable.key) : api.getState();
@@ -250,7 +250,7 @@ export function summarizeElasticAnalysisRibbon(target = globalThis) {
   const selected = selectedAnalysisCase(target);
   const batch = target.__SStructuresElasticBatchState || null;
   const commands = ELASTIC_ANALYSIS_COMMANDS.map((command) => {
-    const item = findCommandCase(cases, command);
+    const item = findDisplayCase(target, command);
     const result = item ? results[item.id] || null : null;
     return {
       key: command.key,
@@ -460,6 +460,17 @@ function findCommandCase(cases, command) {
   const byId = cases.find((item) => item.id === command.caseId && matchesCommand(item, command));
   if (byId) return byId;
   return null;
+}
+
+// Display authored cases without changing the canonical run-all case set.
+function findDisplayCase(target, command) {
+  const cases = target?.SStructuresEngine?.getAnalysisCases?.() || [];
+  const results = target?.SStructuresEngine?.getAnalysisResults?.() || {};
+  const selected = selectedAnalysisCase(target);
+  if (matchesCommand(selected, command) && results[selected.id]) return selected;
+  const canonical = findCommandCase(cases, command);
+  if (canonical && results[canonical.id]) return canonical;
+  return cases.find(item => matchesCommand(item, command) && results[item.id]) || canonical;
 }
 
 function matchesCommand(item, command) {

@@ -8,6 +8,8 @@ import { createResultSelectionStore } from '../src/ui/resultSelectionStore.js';
 import { installIndexEngineBridge } from '../src/ui/indexBridge.js';
 import { latestDisplayResult } from '../src/ui/resultSelectionProjection.js';
 import { runAnalysisCase } from '../src/ui/analysisRunners.js';
+import { summarizeElasticAnalysisRibbon } from '../src/ui/indexElasticAnalysisRibbon.js';
+import { decorateAgentControls, listAgentControls } from '../src/ui/indexAgentControlsDom.js';
 const model=p9M1CantileverModel();
 model.loadCombinations=Array.from({length:20},(_,i)=>({id:`C${i+1}`,name:`C${i+1}`,type:'service',factors:{W:i+1}}));
 const service=createElasticAnalysisService({worker:{workerFactory:(url,opts)=>new NodeWorker(url,opts)}});
@@ -52,4 +54,19 @@ try {
  target.__SStructuresAnalysisLatestAttempts.ONE={...published,ok:false,status:'failed'};
  assert.equal(target.activeResult(),null);assert.equal(latestDisplayResult(target,'ONE').status,'failed');
 } finally {globalThis.Worker=previousWorker;await Promise.all(workers.map(worker=>worker.terminate()));}
-console.log(JSON.stringify({ok:true,fullSolves:all.execution.solveCount,selectedSolves:one.execution.solveCount,actualIndexWorker:true,selectedDisplacement:one.result.byCombo.C2.dmax}));
+const authored=[{id:'CUSTOM-FIRST',kind:'static',settings:{pDeltaMethod:'off'}},
+ {id:'CUSTOM-X',kind:'static',settings:{pDeltaMethod:'direct'}},{id:'CUSTOM-Y',kind:'static',settings:{pDeltaMethod:'direct'}}];
+const unchanged=JSON.stringify(authored),saved=Object.fromEntries(authored.map(c=>[c.id,{ok:true,status:'ok'}]));
+const ribbonTarget={SStructuresEngine:{getAnalysisCases:()=>authored,getAnalysisResults:()=>saved},
+ SStructuresResultSelection:{getState:()=>({activeCaseId:'CUSTOM-Y'})}};
+const ribbon=summarizeElasticAnalysisRibbon(ribbonTarget);
+assert.equal(ribbon.commands.find(c=>c.key==='static').caseId,'CUSTOM-FIRST');
+assert.equal(ribbon.commands.find(c=>c.key==='direct-pdelta').caseId,'CUSTOM-Y');
+assert.equal(ribbon.commands.find(c=>c.key==='direct-pdelta').hasResult,true);
+assert.equal(JSON.stringify(authored),unchanged,'display lookup cannot rewrite authored cases');
+const attrs=new Map([['id','statusTxt'],['aria-label','old 3.38mm']]);
+const status={tagName:'SPAN',textContent:'new 4.73mm',getAttribute:k=>attrs.get(k),setAttribute:(k,v)=>attrs.set(k,v),removeAttribute:k=>attrs.delete(k)};
+const doc={querySelectorAll:s=>['[id]','[data-agent-id]'].includes(s)?[status]:[]};
+decorateAgentControls(doc);assert.equal(attrs.has('aria-label'),false);
+status.textContent='changed 9.51mm';assert.equal(listAgentControls(doc)[0].label,'changed 9.51mm');
+console.log(JSON.stringify({ok:true,fullSolves:all.execution.solveCount,selectedSolves:one.execution.solveCount,actualIndexWorker:true,customRibbon:true,liveStatusLabel:true,selectedDisplacement:one.result.byCombo.C2.dmax}));

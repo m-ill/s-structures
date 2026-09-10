@@ -4,7 +4,11 @@ export function decorateAgentControls(doc) {
   const add = (element, id, label = null) => {
     if (!element || !id) return;
     element.setAttribute('data-agent-id', id);
-    if (label && !element.getAttribute('aria-label')) element.setAttribute('aria-label', label);
+    if (id === 'statusTxt') {
+      element.removeAttribute?.('aria-label');
+      element.setAttribute('role', 'status');
+      element.setAttribute('aria-live', 'polite');
+    } else if (label && !element.getAttribute('aria-label')) element.setAttribute('aria-label', label);
     decorated.push(id);
   };
 
@@ -69,6 +73,7 @@ function isAgentRelevantId(id) {
 }
 
 function labelForElement(element) {
+  if (element.getAttribute?.('id') === 'statusTxt') return element.textContent?.replace(/\s+/g, ' ').trim() || '';
   return (
     element.getAttribute?.('aria-label') ||
     element.getAttribute?.('title') ||

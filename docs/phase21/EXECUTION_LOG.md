@@ -125,3 +125,9 @@ Node 실제 Worker pilot r1은 증거 추출 DTO 경로와 동일 조합 중복 
 
 - 최신 IAB r3: D-only/Direct X/Y 완료 후61065575 bytes 저장, reload/복원 SHA98dfb9692cb0a2178734078f8ac8ccf433abed4d6adb88caeb7d8ee6e1d78034 일치. workflow가 시작한 job은 get_result_slice의 직접 시작 job session 권한에 포함되지 않아 읽기 거절. 우회하지 않고 실제 결과 UI와 workflow 상태로 확인했으며 이 조회 범위 제한을 기록한다.
 - 최신 UI에서 custom case 결과의 전용 ribbon 버튼은 비활성 상태이며 케이스 결과 창에서 표시 가능. 복원 안내/전체 workflow 상태 문구와 개별 완료 상태가 혼동될 수 있어 후속 UI 개선 대상으로 남긴다.
+
+## 2026-09-11 M6 화면 재시험 후 표시 경로 보강
+
+- 패키지Chrome에서 statusTxt 접근성 이름이 최초3.38mm로 고정되고 화면은4.73mm로 갱신되는 불일치를 확인. statusTxt는 숫자 aria-label을 고정하지 않고 현재 텍스트를 role=status로 제공한다. 복원도 오래된 aria-label을 제거한다.
+- 결과 ribbon 조회는 선택한 사용자 정의 case를 먼저 사용하고, 같은 종류의 기존 결과를 찾도록 보강. canonical run-all 생성 규칙은 그대로여서 사용자 case 설정을 덮어쓰지 않는다.
+- p21-m3 실제Worker/사용자case선택/상태레이블, p7-m11 탄성UI, checkpoint segments3개 집중 검증 PASS. solver/Worker/해석 설정 모듈 변경 없음. 진행 중 중간 규모 브라우저 시험은 시작 시 로드한823591f 모듈을 사용하며 새UI 후보의 전체 자격으로 소급하지 않는다.
