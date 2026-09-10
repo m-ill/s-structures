@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-GOV-01",
+    "NL-GOV-02",
+    "NL-GOV-03",
+    "NL-GOV-05",
+    "NL-GOV-06"
+  ],
+  "pushoverEngine": "legacy-preliminary-stepwise-secant",
+  "nlthEngine": "legacy-sdof-bilinear-newmark",
+  "legacyFallbackCalls": 0,
+  "evidenceGate": "candidate"
+}
+
+

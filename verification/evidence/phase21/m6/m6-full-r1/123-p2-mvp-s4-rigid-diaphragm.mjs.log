@@ -1,0 +1,8 @@
+{
+  "ok": true,
+  "diaphragm": "p2-t11-rigid-diaphragm",
+  "benchmark": "p2-t11-rigid-diaphragm-benchmark",
+  "maxPlanDelta": 0
+}
+
+

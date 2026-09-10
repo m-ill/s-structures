@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "milestone": "P11-M1",
+  "deterministicRuns": 100,
+  "snapshotHash": "ff2d2fee6e48803507c89fd8031cd53c1552543fe5306942c493147a851b49b1",
+  "conditionalVerdict": "CONDITIONAL_PASS",
+  "verifiedVerdict": "PASS",
+  "failedVerdict": "FAIL",
+  "staleBlocked": true
+}
+
+

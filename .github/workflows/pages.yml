@@ -10,7 +10,15 @@ concurrency:
   cancel-in-progress: false
 jobs:
   validate:
-    uses: ./.github/workflows/phase20.yml
+    uses: ./.github/workflows/phase21.yml
+  release-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.16.0'
+      - run: node tools/check-p21-release-gate.mjs
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -28,7 +36,7 @@ jobs:
           path: _site
   deploy:
     if: github.ref == 'refs/heads/main'
-    needs: [validate, build]
+    needs: [validate, release-gate, build]
     runs-on: ubuntu-latest
     permissions:
       pages: write

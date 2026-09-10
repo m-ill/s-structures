@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-PUSH-02",
+    "NL-PUSH-03",
+    "NL-PUSH-04",
+    "NL-PUSH-05",
+    "NL-PUSH-06",
+    "NL-PUSH-07",
+    "NL-PUSH-08",
+    "NL-PUSH-09",
+    "NL-PUSH-10",
+    "NL-PUSH-11",
+    "NL-PUSH-12",
+    "NL-PUSH-13",
+    "NL-PUSH-14"
+  ],
+  "elasticSteps": 5,
+  "elasticBaseShearResidual": 1.89750546988952e-16,
+  "firstYieldStep": 51,
+  "mechanismStep": 51,
+  "multistoryLinearSlopeError": 1.0885387979552244e-7,
+  "terminationCategories": [
+    "target",
+    "mechanism"
+  ],
+  "provenanceComplete": true
+}
+
+

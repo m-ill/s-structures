@@ -1,0 +1,32 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>Phase21 중간 규모 Worker 시험</title>
+<style>body{font:16px system-ui;margin:32px;background:#f4f7fa;color:#18324b}button{padding:12px}pre{white-space:pre-wrap;background:white;padding:20px}</style>
+<h1>Phase21 M: 125 절점·260 부재·750 자유도</h1><p>CPU Worker, 강체 다이어프램 4개, 조합 DW. 예열 3회 + 측정 5회, 이어서 취소. 관리 데이터 해제와 프레임 간격을 기록합니다.</p>
+<button id="run">중간 규모 반복·취소 시험 실행</button><pre id="result">대기</pre>
+<script type="module">
+import {createP21MediumFixture} from '../fixtures/p21-medium.js';
+const startup=createP21MediumFixture();window.model=()=>startup;
+const {installIndexEngineBridge}=await import('../../src/ui/indexBridge.js');
+document.addEventListener('click',async event=>{
+ if(event.target.id!=='run')return;
+ const result=document.querySelector('#result'),button=document.querySelector('#run');
+ button.disabled=true;const rows=[],frames=[];let running=true,last=performance.now();
+ const frame=t=>{frames.push(t-last);last=t;if(running)requestAnimationFrame(frame);};requestAnimationFrame(frame);
+ const good=r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;};let bridge;
+ try{
+  for(let i=0;i<8;i++){
+   const model=createP21MediumFixture(),target={model:()=>model,location:{search:''}};bridge=installIndexEngineBridge(target);
+   const started=performance.now(),plan=good(bridge.planElasticWorkflow({caseIds:['M-FIRST','M-DIRECT']}));
+   const run=good(await bridge.runElasticWorkflow({plan,requestId:`M-${i}`}));
+   const row={cycle:i,warmup:i<3,elapsedMs:performance.now()-started,steps:run.steps.map(s=>({caseId:s.caseId,ok:s.ok})),beforeDispose:bridge.getResourceState(),heap:performance.memory?{used:performance.memory.usedJSHeapSize,total:performance.memory.totalJSHeapSize}:null};
+   await bridge.disposeRuntime();row.afterDispose=bridge.getResourceState().totalBytes;if(row.afterDispose!==0)throw Error('LEDGER_NOT_RELEASED');rows.push(row);result.textContent=JSON.stringify({status:'running',rows},null,2);
+  }
+  const model=createP21MediumFixture();bridge=installIndexEngineBridge({model:()=>model,location:{search:''}});
+  const job=bridge.startAnalysisRun({caseId:'M-DIRECT',computeTarget:'cpu'});
+  await new Promise(resolve=>setTimeout(resolve,100));
+  const cancelStart=performance.now(),cancel=bridge.cancelAnalysisRun(job.id);const ackMs=performance.now()-cancelStart;
+  await bridge.disposeRuntime();const sorted=frames.sort((a,b)=>a-b),frameP95=sorted[Math.floor(sorted.length*.95)];
+  result.textContent=JSON.stringify({ok:true,rows,cancel,ackMs,frameP95,visibility:document.visibilityState,afterDispose:bridge.getResourceState(),heapQualification:'not claimed: no forced GC or worker/renderer aggregate heap measurement',userAgent:navigator.userAgent},null,2);
+ }catch(e){result.textContent=JSON.stringify({ok:false,rows,error:e.message,stack:e.stack},null,2);}
+ finally{running=false;await bridge?.disposeRuntime();button.disabled=false;}
+});
+</script></html>

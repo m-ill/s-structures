@@ -95,3 +95,11 @@ Node 실제 Worker pilot r1은 증거 추출 DTO 경로와 동일 조합 중복 
 - 실제 IAB r2에서 52488161 bytes 저장 후 reload/복원 성공. 저장 SHA 9bcd63246c249899557e1241098a4f2ccc6772f14cf436ab8d9d41c60fbc318b. 실제 UI 다운로드 HTML/JSON/CSV 모두 native manifest SHA 일치. download 이벤트 통지는 timeout이지만 실제 다운로드 파일은 확인했다.
 - 복원 뒤 이전 샘플의 combo/status UI 잔존을 발견해 조합 목록 재구성, 이전 상태 표시 해제, 복원 review 화면 연결을 수정했다. PDF 자동 내보내기는 adapter/figure/qualification 3조건 미충족으로 BLOCKED 유지.
 - 전체 회귀 r1은 122/123이며 이전 dispose 계약 테스트 한 건 불일치였다. 해당 계약 이관은 13c5809에 기록됨. 새 저장 후보 전체 회귀는 별도 r2로 수행한다.
+
+## 2026-09-11 M6 회귀 및 M7 준비
+
+- 78e8e5a 고정 후보 전체 회귀 124/124 PASS. 원래 r1의 122/123 실패 기록과 r2 전체 로그를 별도 폴더에 보존했다.
+- IAB 실제 IndexedDB transaction 중단/원복/overwrite 세대 정리/변조 검출 PASS. 보고서 원본 3포맷 실제 UI 다운로드와 native SHA 동일.
+- 125절점, 260부재, 750 full DOF, 4층 다이어프램 M fixture를 명시했다. 시험 loader 초기에는 bridge 자동 UI 설치에 모델이 없어 오류; 모델 초기화 후 document 이벤트로 시험을 시작했다. 측정 완료 전에는 M gate PASS 아님.
+- Chrome 업로드는 확장 프로그램 파일 URL 권한으로 차단되어 사용자 설정 요청. IAB 업로드·다운로드·복구 증거로 Chrome 비교를 대체하지 않는다.
+- M7 Phase21 재사용 CI 및 Pages release-gate 연결 준비. 미충족 항목에 실제 배포를 허용하지 않는다.

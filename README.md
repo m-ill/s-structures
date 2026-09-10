@@ -1,5 +1,7 @@
 # S-Structures
 
+> Phase21 개발 후보: 강체 다이어프램 CPU Direct, RC 예비 검토 수치·결과 선택 및 저장 메모리 경로를 개선했습니다. 후보 `78e8e5a` 전체 회귀 124/124, 실제 내부 브라우저 보고서 3포맷·저장/복원 확인. M6 중간 규모·일반 Chrome 비교와 M7 배포는 아직 완료하지 않았습니다. [실제 진행 상태](docs/phase21/IMPLEMENTATION_STATUS.md) · [캡처 검증 보고서](docs/phase21/PILOT_RETEST_REPORT.md).
+
 **브라우저에서 구조 모델링·해석·결과 검토를 수행하고, WebMCP로 AI 에이전트와 같은 모델을 함께 다루는 구조해석 웹앱입니다.**
 
 [웹에서 실행](https://m-ill.github.io/s-structures/) · [다운로드·검증자료](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md) · [WebMCP 안내](docs/WEBMCP.md) · [CI 결과](https://github.com/m-ill/s-structures/actions/workflows/verify.yml)

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "NL-DYN-07",
+    "NL-DYN-08",
+    "NL-DYN-09",
+    "NL-DYN-11",
+    "NL-DYN-12",
+    "NL-DYN-13",
+    "NL-DYN-14"
+  ],
+  "sdofMaximum": 0.0048192284583873125,
+  "mdofFinal": [
+    -0.0029688260041297815,
+    -0.002992169090267865
+  ],
+  "restartTime": 0.08,
+  "cancellationCommitTime": 0.05,
+  "callbackFailureCommitTime": 0.05,
+  "nonlinearFinal": -0.0031097629249282745,
+  "tangentRelativeError": 3.10379776922046e-12,
+  "cutback": {
+    "accepted": 2,
+    "rejected": 1
+  },
+  "partialFailureCommitTime": 0.05,
+  "timeStepErrors": [
+    0.009073785767995002,
+    0.0023364619999596825,
+    0.0005621350358106653
+  ],
+  "energyRelativeResidual": 1.0842021724855044e-18
+}
+
+

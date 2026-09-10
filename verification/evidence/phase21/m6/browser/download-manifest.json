@@ -1,0 +1,20 @@
+[
+  {
+    "format": "html",
+    "bytes": 1321268,
+    "sha256": "7c58785c9f2d488c589934a7f101a7021b67b9c51919a60d3e6df61232aef5a1",
+    "source": "actual IAB UI download after checkpoint restore"
+  },
+  {
+    "format": "json",
+    "bytes": 4918660,
+    "sha256": "698e33c8eeae3d3e9412d90ab6519f28e998e1ee3be088b6c12d0363de5c7d90",
+    "source": "actual IAB UI download after checkpoint restore"
+  },
+  {
+    "format": "csv",
+    "bytes": 3839136,
+    "sha256": "be08b860064517b86a00b6f9a4c0f46a78487c2a9570a4d50bd1eb578349a939",
+    "source": "actual IAB UI download after checkpoint restore"
+  }
+]

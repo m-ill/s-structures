@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "verificationIds": [
+    "P9-GPU-ELA-07~10",
+    "P9-GPU-ELA-13~14",
+    "P9-PERF-09",
+    "P9-FAIL-01~02"
+  ],
+  "factorizationCount": 1,
+  "solveCount": 2,
+  "correctionSolveCount": 2,
+  "resultHash": "0496cbd4c2b2d7e6a08cb717566f1e723cdb15d3dba2b62f7f2d265176619392"
+}
+
+

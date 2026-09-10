@@ -1,0 +1,16 @@
+
+file:///C:/Users/mill/Downloads/dcr/S-Structures-main/output/phase21/m6-full-r1/checkout/src/nonlinear/product/jobManager.js:796
+  const error = new Error(message);
+                ^
+
+Error: Nonlinear job NLJOB-20260910140321-0001 was not found.
+    at serviceError (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/output/phase21/m6-full-r1/checkout/src/nonlinear/product/jobManager.js:796:17)
+    at requireJob (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/output/phase21/m6-full-r1/checkout/src/nonlinear/product/jobManager.js:747:19)
+    at Object.getStatus (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/output/phase21/m6-full-r1/checkout/src/nonlinear/product/jobManager.js:208:19)
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/output/phase21/m6-full-r1/checkout/tests/p19-m5-nonlinear-contract.mjs:17:56 {
+  code: 'NONLINEAR_JOB_NOT_FOUND',
+  details: null
+}
+
+Node.js v24.16.0
+
