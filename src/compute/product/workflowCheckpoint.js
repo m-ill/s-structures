@@ -1,5 +1,5 @@
 import { sha256 } from '../../core/stableHash.js';
-import { retainedBytes } from '../../core/resourceBudget.js';
+import { retainedBytes,createBoundedQueue } from '../../core/resourceBudget.js';
 export const WORKFLOW_CHECKPOINT_VERSION='p21-workflow-checkpoint-v2';
 const LEGACY='p21-workflow-checkpoint-v1';
 const failure=code=>Object.assign(new Error(code),{code});
@@ -42,6 +42,7 @@ function segmentsFor(bundle) {
   return rows;
 }
 export function createWorkflowCheckpointRepository({indexedDB=globalThis.indexedDB,storage,budget}={}) {
+  const operations=createBoundedQueue({activeLimit:1,queueLimit:8});
   const io=budget?.nextOwner('checkpoint-io'),readOwner=budget?.nextOwner('checkpoint-read');
   const reserve=bytes=>budget?.reserve(io,bytes),release=()=>budget?.release(io);
   async function database(){
@@ -163,5 +164,5 @@ export function createWorkflowCheckpointRepository({indexedDB=globalThis.indexed
     }
     return {matches:true,sha256:saved.sha256};
   }
-  return {save,read,inspect,matches,releaseRead:()=>budget?.release(readOwner)};
+  return {save:(...args)=>operations.run(()=>save(...args)),read:(...args)=>operations.run(()=>read(...args)),inspect:(...args)=>operations.run(()=>inspect(...args)),matches:(...args)=>operations.run(()=>matches(...args)),releaseRead:()=>budget?.release(readOwner)};
 }

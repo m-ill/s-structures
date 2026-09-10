@@ -166,7 +166,8 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
           const published=bridge.getAnalysisCaseResult(step.caseId,{latestAttempt:true});
           const row=published?.runRecordId?bridge.getWorkflowAnalysisResult(published.runRecordId):null;
           const ok=finished.status==='completed'&&published?.runRecordId!==previousId&&!!row?.ok&&!row.stale&&row.executionStatus==='completed';
-          result.steps.push({...step,ok,jobId:job.id,analysisRunId:row?.analysisRunId||null,code:ok?null:row?.stale?'STALE_INPUT':'ANALYSIS_NOT_COMPLETED'});
+          result.steps.push({...step,ok,jobId:job.id,analysisRunId:row?.analysisRunId||null,code:ok?null:row?.stale?'STALE_INPUT':finished.error?.code||'ANALYSIS_NOT_COMPLETED',
+            ...(!ok&&finished.error?{error:clone(finished.error)}:{})});
           if(ok) result.sourceAnalysisRunIds.push(row.analysisRunId);
           if(!ok) result.ok=false;
         }
