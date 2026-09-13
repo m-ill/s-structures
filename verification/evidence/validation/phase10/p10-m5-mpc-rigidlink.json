@@ -13,10 +13,10 @@
     "solverVersion": "p10-m5-general-constraint-v1",
     "metrics": {
       "rigidLinkError": 1.4210854715202004e-14,
-      "equilibriumResidual": 1.480297366166875e-16,
+      "equilibriumResidual": 7.401486830834377e-17,
       "diaphragmError": 0,
       "modalError": 0,
-      "pDeltaResidual": 2.0511601988091347e-15
+      "pDeltaResidual": 1.1842378929335002e-15
     },
     "tolerances": {
       "rigidLink": 1e-10,
@@ -51,8 +51,8 @@
     {
       "caseId": "CN-M02-MPC-EQUILIBRIUM",
       "reference": 0,
-      "computed": 1.480297366166875e-16,
-      "relError": 1.480297366166875e-16,
+      "computed": 7.401486830834377e-17,
+      "relError": 7.401486830834377e-17,
       "tolerance": 1e-10,
       "modelHash": "936d760fdf95bffd",
       "solverVersion": "p10-m5-general-constraint-v1",
@@ -81,8 +81,8 @@
     {
       "caseId": "CN-M06-PDELTA-KG-TRANSFORM",
       "reference": 0,
-      "computed": 2.0511601988091347e-15,
-      "relError": 2.0511601988091347e-15,
+      "computed": 1.1842378929335002e-15,
+      "relError": 1.1842378929335002e-15,
       "tolerance": 1e-10,
       "modelHash": "5f126d12115bb90a",
       "solverVersion": "p10-m5-general-constraint-v1",
@@ -103,5 +103,5 @@
     "releaseQualified": false,
     "releaseGate": "P10-M11"
   },
-  "artifactHash": "1c2aea5d13d66e288bdddb8a"
+  "artifactHash": "249d4ea934e35fd03a9c4822"
 }

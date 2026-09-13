@@ -41,7 +41,7 @@
     "hingeCyclicState": "p8-m4-hinge-cyclic-state-v1",
     "hingePropertyRegistry": "p8-m4-hinge-property-registry-v1",
     "hingeAssignment": "p8-m4-hinge-assignment-v1",
-    "hingedFrame": "p8-m4-hinged-corotational-frame-3d-v1",
+    "hingedFrame": "p19-hinged-corotational-frame-3d-v2-current-chord",
     "equilibriumAssembler": "p8-m4-mdof-equilibrium-assembler-v3",
     "productionBackend": "p8-wasm-sparse-v1",
     "externalNumericalDependencies": 0

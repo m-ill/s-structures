@@ -6,18 +6,30 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 446,
+  "plannedCount": 866,
   "categoryCounts": {
-    "e2e": 5,
-    "integration": 35,
+    "e2e": 14,
+    "integration": 51,
     "qualification": 224,
-    "unit": 182
+    "unit": 577
   },
   "executionCounts": {
     "default": 313,
-    "release-long": 133
+    "release-long": 553
   },
   "records": [
+    {
+      "file": "tests/agent-directory.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "release-verification"
+    },
+    {
+      "file": "tests/agent-harness.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "release-verification"
+    },
     {
       "file": "tests/benchmark-strix21-first-batch.mjs",
       "taxonomy": "qualification",
@@ -1363,6 +1375,2502 @@
       "owner": "phase20"
     },
     {
+      "file": "tests/p20-m5-browser-input-boundaries.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "phase20"
+    },
+    {
+      "file": "tests/p21-bounded-worker-cancellation.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase21"
+    },
+    {
+      "file": "tests/p21-m0-rigid-direct.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase21"
+    },
+    {
+      "file": "tests/p21-m1-rc-contract.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase21"
+    },
+    {
+      "file": "tests/p21-m2-input-persistence.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase21"
+    },
+    {
+      "file": "tests/p21-m3-execution-selection.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase21"
+    },
+    {
+      "file": "tests/p21-m4-review-artifact.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase21"
+    },
+    {
+      "file": "tests/p21-m5-lifecycle-memory.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase21"
+    },
+    {
+      "file": "tests/p21-m5-resource-recovery.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "phase21"
+    },
+    {
+      "file": "tests/p21-m6-checkpoint-segments.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase21"
+    },
+    {
+      "file": "tests/p22-focused.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase22"
+    },
+    {
+      "file": "tests/p23-rigid-gpu-focused.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase23"
+    },
+    {
+      "file": "tests/p24-m0-kcsc-sources.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m0-scope.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m1-details-input.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m1-material-input.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m1-material-routing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m1-section-input.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m2-checkpoint.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m2-detail-persistence.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m2-history.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m2-reuse.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m3-code-basis.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m3-direct-source.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m3-evaluation.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m4-kds-anchorage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m4-kds-service.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m4-kds-shear.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m4-kds-strength.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m4-provided.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m4-section.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m4-stirrups.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m5-section-candidates.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m5-workflow.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m6-joint.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m6-kds-joint.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m7-footing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m7-kds-punching.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m8-assets.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m8-drawings.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m8-fabrication.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase24"
+    },
+    {
+      "file": "tests/p25-expanded-capacity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-joint-layout-probe.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-joint-through-layout-probe.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m0-concrete-creep-input.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m0-project-profile.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m0-registry.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m0-steel-test-evidence.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-code-basis-blockers.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-continuous-moment-comparison.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-contracts.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-coupled-frame.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-coupled-geometric-axial.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-coupled-iteration.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-design-source-binding.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-direct-moment-comparison.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-finalizer-summary.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-flexural-analysis-profile.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-flexural-iteration.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-geometry-route.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-incomplete-aggregation.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-lap-element.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-lap-frame-coupling.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-lap-frame-ports.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-lap-section-coupling.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-location-coverage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-moment-directions.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-provided-member-summary.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-quadratic-lap-slip.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-diaphragm.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-displacement-recovery.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-distributed-loads.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-force-extrema.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-force-recovery.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-frame-convergence.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-frame-sign.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-general-constraints.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-geometric-recovery.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-initial-strain.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-network.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-pdelta.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-ports.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-replacement.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-member-force-source.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-model-network.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-piecewise-recovery.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-prescribed.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-shared-slip-network.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-splice-mesh.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-spring-support.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rc-temperature-gradient.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-rule-input-diagnostics.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-second-order-force-source.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-segmented-stiffness.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-shared-result-cache.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-source-publication.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-station-sides.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-stiffness-dependency.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m1-webmcp-coverage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m10-requirement-audit.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-anchor-bolt-ties.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-beam-minimum.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-column-ratio.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-confinement.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-cover.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-assembly.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-contact.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-supports.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-hoop-layout-owner.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-joint-product-catalog.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-layer-groups.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-member-hoop-readiness.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-product-catalog.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-regions.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-spacing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-spatial-face-contact.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-spatial-perimeter-order.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-webmcp-anchor-ties.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-webmcp-flexural-ties.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m2-webmcp-regions.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-attachment-state.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-attachment-webmcp.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-column-profile-closure.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-crack-spacing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-crack-width.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-cracked-biaxial.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-cracked-section-owner.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-curvature-scaling.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-direct-refinement.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-frame-initial-strain.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-high-strength.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-integrated-coupled-load.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-integrated-extrema.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-kds-frame-sign.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-offset-stations.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-post-attachment-review.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-principal-section-root.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-profile-closure.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-provided-crack-width.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-rc-bar-forces.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-rc-coupled-policy.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-rc-creep-iteration.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-rc-direct-iteration.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-rc-long-term-iteration.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-rc-service-iteration.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-rc-spatial-convergence.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-regional-service.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-reinforced-torsion.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-section-initial-strain.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-segmented-strength.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-shear-roundoff.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-shear-torsion-routing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-splice-service-response.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-stability.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-stage-time-state.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-staged-frame-response.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-torsion-extension.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-torsion-hooks.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-torsion-perimeter.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-torsion-threshold.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-webmcp-frame-service.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion-anchorage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion-extension.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion-hooks.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion-perimeter.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-boundary-recovery.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-class-a-envelope.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-class-a-piece-layouts.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-class-a-splice.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-closure-contact-coverage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-elastic-lap-transfer.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-end-anchorage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-hoop-distribution.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-independent-repeat-pairs.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-alternating-ties.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-congestion.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-constraint-actions.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-credit-geometry.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-cross-tie-credit.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-cross-tie-support.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-cross-tie-topology.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-detail-readiness.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-external-actions.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-hoop-geometry.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-hoop-support.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-hoops.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-shear-geometry.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-topology.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-joint-transverse-paths.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-mixed-anchorage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-profile-closure.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-proportional-bending.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-recovery-source.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-splice-coverage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-splice-crack-stations.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-splice-detail-stations.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-splice-interval-coverage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-splice-overlap-cover.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-splice-path.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-splice-stations.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-splice-window.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-stepped-axial-splice.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-strength-stations.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-through-bars.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-webmcp-elastic-transfer.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-webmcp-joint-credit.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-webmcp-rc-splice-solve.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-sampling.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-bar-anchorage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-base-friction.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-center-band.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-column-interface-shear.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-column-position.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-consolidation-time.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-differential-settlement.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-eccentric-punching.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-footing-depth.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-footing-spacing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-ground-review.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-ground-sliding.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-interface-bar-allocation.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-interface-steel-allocation.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-interface-torsion-distribution.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-interface-traction.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-layer-settlement.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-minimum-steel.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-open-perimeter.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-plan-clearance.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-profile-closure.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-reaction-height.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-secondary-compression.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-splice-independent-footing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-top-reinforcement.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-webmcp-column-position.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-webmcp-footing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-webmcp-interface-bending.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-webmcp-interface-shear.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-webmcp-interface-tension.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-webmcp-interface-torsion.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-webmcp-reaction-height.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m5-weight-ledger.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-appended-splice-mapping.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-apply-retry.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-apply-review.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-apply-rollback.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-auto-application-state.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-auto-connected-webmcp.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-auto-dependent-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-balanced-region-search.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-bar-layout.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-beam-joint-panel.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-candidate-blockers.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-candidate-scope.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-candidate-severity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-class-a-length-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-compound-webmcp.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-connection-quantity-basis.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-cross-tie-cage-fit.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-dependent-candidates.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-dependent-quantity-scope.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-depth-contact.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-design-comparison.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-differential-dependencies.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-end-development.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-footing-depth-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-footing-distribution-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-footing-flexure-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-footing-quantity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-footprint-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-foundation-development-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-foundation-distribution-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-webmcp.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-joint-candidate.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-joint-layer-webmcp.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-joint-pair-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-joint-plane-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-joint-quantity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-joint-splice-placement.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-joint-support-bars.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-layered-layout.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-longitudinal-cage-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-longitudinal-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-minimum-region-summary.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-mixed-hook-webmcp.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-perimeter-layout.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-proposal-provenance.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-rc-closure-inputs.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-region-constraints.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-regional-candidates.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-regional-shear-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-related-longitudinal-quantity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-remaining-repairs.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-reuse-scope-lineage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-section-foundation.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-section-size-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-shear-grid-optimum.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-shear-section-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-shear-spacing-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-source-invalidation.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-spatial-bar-fit.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-splice-bar-mapping.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-splice-length-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-strength-region-summary.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-targeted-undo.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-tie-spacing-proposal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-unchanged-member-commands.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-webmcp-auto-section.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-webmcp-catalog-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-webmcp-longitudinal-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-application-comparison.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-artifact-reader.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-bounded-json.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-candidate-evaluation-memory.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-candidate-geometry-worker.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-candidate-query.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-candidate-stage-timing.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-candidate-worker.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-drawing-download-resources.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-drawing-retention.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-drawing-worker-quarantine.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-evaluation-cancel.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-export-lifetime.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-hash-memory.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-json-record-reader.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-json-window.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-late-worker-lease.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-memory-scaling.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-native-worker-cancel.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-quarantine-status.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-rc-policy-checkpoint.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-rc-service-worker-lease.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-rc-splice-checkpoint.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-rc-splice-worker.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-rc-working-set.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-registry-resolution.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-repeated-path-distance.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-repeated-spatial-path.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-repeated-tie-distance.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-review-worker.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-shared-computation.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-shared-webmcp.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-shared-worker-lease.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-termination-deadline.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-worker-memory-samples.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-worker-quarantine.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m7-worker-termination.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-bent-bar-path-3d.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-bounded-record-text.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-clause-font.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-cross-tie-end-path.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-cross-tie-geometry.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-export-source-currentness.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-hoop-path-collision.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-hoop-perimeter.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-incomplete-summary.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-longitudinal-quantity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-page-window.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-pages-assets.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-pagination.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-pdf-bundle.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-provided-report-summary.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-quantity-csv.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-refined-arc-contact.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-repair-outcome.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-report-volumes.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-shared-records.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-spatial-hoop-longitudinal.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-splice-report-source.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-splice-schedule.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-stirrup-distribution.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-transverse-quantity.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-two-end-bars.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-webmcp-end-collision.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-artifact-controls.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-attachment-ui.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-auto-proposal-ui.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-book-file-input.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-browser-definitions.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-candidate-application-view.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-candidate-lifecycle.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-check-filter.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-check-input-navigation.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-checkpoint-failure-history.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-input-history-restore.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-native-canvas-result.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-pdf-bundle-ui.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-post-apply-view.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-practical-reuse-ui.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-provided-result-selection.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-published-result-currentness.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-rc-bar-forces-ui.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-rc-service-ui.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-rebar-change-view.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-remaining-repairs.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-review-ui-lifecycle.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-splice-change-view.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-splice-source-ui.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-splice-transfer-ui.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-m9-stored-evaluation-ui.mjs",
+      "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase25"
+    },
+    {
       "file": "tests/p3-app-shell.mjs",
       "taxonomy": "unit",
       "execution": "default",
@@ -2675,6 +5183,18 @@
       "taxonomy": "qualification",
       "execution": "default",
       "owner": "phase9"
+    },
+    {
+      "file": "tests/runtime-portability-assets.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "release-verification"
+    },
+    {
+      "file": "tests/ux-workspace-geometry.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "release-verification"
     },
     {
       "file": "verification/tests/phase17/run-case-contract.mjs",

@@ -1,6 +1,5 @@
 import http from 'node:http';
 import { createReadStream } from 'node:fs';
-import { resolve } from 'node:path';
 import { loadConfig, validateNetworkPolicy, validatePathLayout } from './config.mjs';
 import { ApiError, createRouter, errorEnvelope, ok, readJsonBody, sendJson } from './router.mjs';
 import { createUserStore } from './store/userStore.mjs';

@@ -400,12 +400,12 @@ async function verifyGovernance(release) {
     const evidence = JSON.parse(await readFile(join('verification', 'evidence', 'validation', 'phase12', names[0]), 'utf8'));
     assert.equal(evidence.status, 'PASS', names[0]);
     assert.match(evidence.sourceRevision, /^[0-9a-f]{40}$/);
-    const review = await readFile(join('docs', 'phase12', 'reviews', `P12-M${milestone}-CODE-REVIEW.md`), 'utf8');
+    const review = await readFile(join('docs', 'archive', 'phase12', 'reviews', `P12-M${milestone}-CODE-REVIEW.md`), 'utf8');
     assert.match(review, /verdict:\s*PASS/);
     assert.match(review, /critical_findings_open:\s*0/);
     assert.match(review, /high_findings_open:\s*0/);
   }
-  const finalReview = await readFile(join('docs', 'phase12', 'reviews', 'P12-M7-CODE-REVIEW.md'), 'utf8');
+  const finalReview = await readFile(join('docs', 'archive', 'phase12', 'reviews', 'P12-M7-CODE-REVIEW.md'), 'utf8');
   assert.match(finalReview, /verdict:\s*PASS/);
   assert.match(finalReview, /critical_findings_open:\s*0/);
   assert.match(finalReview, /high_findings_open:\s*0/);

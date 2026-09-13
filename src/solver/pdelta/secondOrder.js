@@ -31,7 +31,6 @@ import {
   reduceConstraintMatrix,
   reduceConstraintVector,
 } from '../domain/constraintSystem.js';
-import { resolveRigidDiaphragms } from '../../core/diaphragmGroups.js';
 import { resolvePDeltaFirstOrderSeed } from './firstOrderSeed.js';
 import { compareFirstSecondOrderMoments } from './momentComparison.js';
 import { constraintCoordinateKinds, directDiaphragmIssues, directMemoryAdmission } from './constraintContext.js';

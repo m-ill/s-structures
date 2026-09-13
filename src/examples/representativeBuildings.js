@@ -309,7 +309,11 @@ export function summarizeRepresentativeBuilding(spec, model, analysis) {
       comboIds: (analysis?.combos || []).map((combo) => combo.id),
       maxEnvelopeDisplacement: analysis?.envelope?.dmax ?? null,
       maxEnvelopeUtilization: analysis?.envelope?.maxRatio ?? null,
-      designStatus: analysis?.design ? (analysis.design.ok ? 'OK' : 'NG') : null,
+      // 'NG' means a code check failed. Since Phase24/25 design.ok also requires
+      // the provided practical RC checks to be complete, so completeness is
+      // reported separately instead of being labelled as a failed check.
+      designStatus: analysis?.design ? (analysis.design.summary?.ngCount > 0 ? 'NG' : 'OK') : null,
+      designComplete: analysis?.design ? analysis.design.summary?.designComplete === true : null,
       governing: analysis?.design?.summary?.governing || null,
       combos: byCombo,
       errors: analysis?.validation?.errors || [],

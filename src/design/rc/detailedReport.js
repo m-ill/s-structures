@@ -7,7 +7,10 @@ import { detailRcSlab } from './slab.js';
 import { detailRcWall } from './wall.js';
 import { collectDesignFormulaReferences } from '../../standards/designFormulaRegistry.js';
 
+// Legacy preliminary detailed report.
 export const RC_DETAILED_DESIGN_VERSION = 'p3-m17-rc-detailed-design';
+// Report built from the provided practical RC inputs (current product path).
+export const RC_DETAILED_PROVIDED_VERSION = 'p25-rc-detailed-provided-v2-material-evidence';
 export const RC_DESIGN_GATE_VERSION = 'p3-m17-rc-design-gate-v1';
 
 export function buildRcDetailedDesignReport(model, analysis, options = {}) {
@@ -231,7 +234,7 @@ function buildProvidedRcDetailedReport(model,analysis,analysisStatus){
  const ready=analysisStatus.ok===true&&incomplete.length===0&&evidenceComplete;
  gate.rcReview={...gate.rcReview,status:ready?'trace-ready':'review-required',finalPermitDesign:false,providedMemberCount:rows.length,unreviewedMemberCount:incomplete.length,methodQualificationRequired:!evidenceComplete,missing:[...(!analysisStatus.ok?['analysis-status']:[]),...(!evidenceComplete?['provided-check-evidence']:[]),...(incomplete.length?['design-issues']:[])]};
  gate.summary={...gate.summary,readyForAgentReview:ready,rcReview:gate.rcReview};
- return {version:'p25-rc-detailed-provided-v2-material-evidence',basis:'provided-practical-checks',designTransferAllowed:false,
+ return {version:RC_DETAILED_PROVIDED_VERSION,basis:'provided-practical-checks',designTransferAllowed:false,
   modelName:model?.meta?.name??null,analysisStatus,contract:{scope:'Recorded provided reinforcement regions and actual practical checks; no preliminary bar sizing during export.'},
   summary:{...summarize(rows),unreviewedCount:incomplete.length},rows,schedules,formulaTrace,rcDesignGate:gate,
   issueRows:rows.flatMap(row=>row.checks.filter(c=>c.incomplete||!['OK','N_A'].includes(c.status)).map(c=>({moduleId:'rc',itemId:row.memberId,role:row.role,status:c.status,incomplete:c.incomplete===true,comboId:c.comboId,formulaIds:[c.checkId],reason:c.reason??null,codeBasis:c.codeBasis??null,action:c.reason||'Resolve incomplete RC checks.'}))),

@@ -1,7 +1,6 @@
 import { buildDetailedReportData } from './detailedReportData.js';
 import { buildPhase7AnalysisRunSummary } from '../../report/phase7AnalysisRuns.js';
 import { createReportSnapshot } from '../../report/phase11/reportSnapshot.js';
-import { formatLength as length } from '../../report/reportFormat.js';
 export const CALCULATION_PACKAGE_VERSION = 'm42-calculation-package';
 export function buildCalculationPackageData(model, analysis, options = {}) {
   const detailed = buildDetailedReportData(model, analysis, options);

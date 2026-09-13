@@ -1,5 +1,4 @@
 import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
-import { computeSectionProperties } from '../materials/sectionProperties.js';
 import { ensureAgentState } from './indexAgentActions.js';
 import { installFloatingPanel } from './floatingPanel.js';
 

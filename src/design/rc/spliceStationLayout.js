@@ -36,6 +36,9 @@ export function prepareSpliceStationLayouts(model,details,{memberLength,H}){
 
 export function createSpliceLayoutResolver(model,member,details){
  const section=resolveSectionRecord(model,member.secId),nodes=[member.n1,member.n2].map(id=>model.nodes.find(n=>n.id===id));
- if(!nodes.every(Boolean)||!['RECT','SQUARE'].includes(section?.shape))return null;
- return prepareSpliceStationLayouts(model,details,{memberLength:Math.hypot(nodes[1].x-nodes[0].x,nodes[1].y-nodes[0].y,nodes[1].z-nodes[0].z),H:(section.params.H||section.params.B)/1000});
+ // Wall/slab sections can be RECT without carrying usable bar dimensions, so a
+ // missing depth means there is no splice station layout to prepare.
+ const depth=Number(section?.params?.H)||Number(section?.params?.B);
+ if(!nodes.every(Boolean)||!['RECT','SQUARE'].includes(section?.shape)||!Number.isFinite(depth)||depth<=0)return null;
+ return prepareSpliceStationLayouts(model,details,{memberLength:Math.hypot(nodes[1].x-nodes[0].x,nodes[1].y-nodes[0].y,nodes[1].z-nodes[0].z),H:depth/1000});
 }

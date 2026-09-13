@@ -147,7 +147,9 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
 
 export function recoverMemberStations(endForces, spanLoads, L, stationCount) {
   const xset = new Set();
-  for (let i = 0; i < stationCount; i += 1) xset.add((L * i) / (stationCount - 1));
+  // Clamp to L: (L * i) / (stationCount - 1) can round above L for some
+  // lengths (e.g. L = 1.8288), which memberForceAt rejects as out of range.
+  for (let i = 0; i < stationCount; i += 1) xset.add(Math.min(L, (L * i) / (stationCount - 1)));
   spanLoads.forEach((load) => {
     if (load.type === 'point') {
       xset.add(Math.max(0, load.a - 1e-9));

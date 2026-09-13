@@ -13,7 +13,7 @@ import {resolveFootingLoadLedger,netFootingCut} from './footingLoadLedger.js';
 import {evaluateFootingSections} from './footingSectionReview.js';
 import {evaluateFootingBarAnchorage} from './footingAnchorage.js';
 import {resolveMaterialRecord} from '../../materials/registry.js';
-import {compressionContact,clipPolygon,pressureIntegral} from './compressionContact.js';
+import {compressionContact,clipPolygon} from './compressionContact.js';
 import {evaluateFootingPunching} from './kdsPunching.js';
 const missing=reason=>({status:'NOT_CHECKED',ratio:null,reason});
 export function footingContact({B,L,N,Mx,My}) {

@@ -39,7 +39,7 @@
     "frameKernel": "p8-m3-corotational-frame-3d-v2",
     "trussKernel": "p8-m3-corotational-truss-3d-v2",
     "rotationCoordinates": "p8-m3-rotation-coordinate-v1",
-    "fixedEndTemperature": "p8-m3-fixed-end-temperature-v3",
+    "fixedEndTemperature": "p25-fixed-end-temperature-v4-initial-strain",
     "productionBackend": "p8-wasm-sparse-v1",
     "externalNumericalDependencies": 0,
     "skewReference": "tests/fixtures/phase8/corotational-skew-reference-v1.json"

@@ -16,7 +16,9 @@ import {
   DESIGN_FORMULA_REGISTRY_VERSION,
   RC_DESIGN_GATE_VERSION,
   RC_DETAILED_DESIGN_VERSION,
+  RC_DETAILED_PROVIDED_VERSION,
 } from '../src/index.js';
+import { evaluateLegacyDesign } from '../src/design/evaluation/designEvaluation.js';
 import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 
 const beam = createReleasedSimpleBeamUdl({ L: 6, w: 12 }).model;
@@ -27,7 +29,17 @@ beam.slabs = [{ id: 'S1', lx: 4, ly: 5.5, thickness: 0.16, factoredLoad: 9, colu
 const beamAnalysis = analyzeModel(beam);
 assert.equal(beamAnalysis.ok, true);
 
-const beamReport = buildRcDetailedDesignReport(beam, beamAnalysis, {
+// Product path: the export records provided reinforcement only and never fills
+// missing inputs with preliminary bar sizing.
+const providedReport = buildRcDetailedDesignReport(beam, beamAnalysis);
+assert.equal(providedReport.version, RC_DETAILED_PROVIDED_VERSION);
+assert.equal(providedReport.basis, 'provided-practical-checks');
+assert.equal(providedReport.designTransferAllowed, false);
+assert.equal(providedReport.rcDesignGate.rcReview.finalPermitDesign, false);
+
+// The legacy preliminary report stays covered through the legacy design payload.
+const beamLegacyAnalysis = { ...beamAnalysis, design: evaluateLegacyDesign(beam, beamAnalysis) };
+const beamReport = buildRcDetailedDesignReport(beam, beamLegacyAnalysis, {
   walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 900 }],
 });
 assert.equal(beamReport.version, RC_DETAILED_DESIGN_VERSION);
@@ -154,7 +166,7 @@ assert.ok(unknownRoleReport.rcDesignGate.missingRoles.includes('beam'));
 assert.equal(unknownRoleReport.rcDesignGate.summary.ticketCoverage.find((row) => row.ticket === 'P3-T87').covered, false);
 assert.ok(unknownRoleReport.rcDesignGate.rcReview.missing.includes('formula-trace'));
 
-const integrated = buildP3DetailedDesignReport(beam, beamAnalysis, {
+const integrated = buildP3DetailedDesignReport(beam, beamLegacyAnalysis, {
   rc: { slabs: beam.slabs, walls: [{ id: 'W1', section: { width: 4, thickness: 0.22 }, material: { fc: 27, fy: 400 }, N: 400, V: 900 }] },
 });
 assert.ok(integrated.issueRows.some((row) => row.moduleId === 'rc' && row.itemId === 'W1'));
@@ -164,7 +176,7 @@ column.members[0].matId = 'concrete';
 column.members[0].secId = 'rc3060';
 column.designParams.rc.defaultColumnRebarRatio = 0.018;
 const columnAnalysis = analyzeModel(column);
-const columnReport = buildRcDetailedDesignReport(column, columnAnalysis);
+const columnReport = buildRcDetailedDesignReport(column, { ...columnAnalysis, design: evaluateLegacyDesign(column, columnAnalysis) });
 assert.equal(columnReport.schedules.columns.length, 1);
 assert.ok(columnReport.schedules.columns[0].contract.tickets.includes('P3-T88'));
 assert.ok(columnReport.rcDesignGate.missingRoles.includes('beam'));
@@ -205,8 +217,10 @@ assert.equal(lapSpliceLength('D19', { fc: 27, fy: 400 }).length,null);
 const target = { model: () => beam, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => beamAnalysis });
 const agentReport = agent.prepareResultView('getRcDetailedDesignReport', { slabs: beam.slabs });
-assert.equal(agentReport.version, RC_DETAILED_DESIGN_VERSION);
-assert.equal(agentReport.schedules.beams.length, 1);
+assert.equal(agentReport.version, RC_DETAILED_PROVIDED_VERSION);
+assert.equal(agentReport.basis, 'provided-practical-checks');
+// The model carries no provided reinforcement, so no schedule row is exported.
+assert.equal(agentReport.schedules.beams.length, 0);
 
 const manifest = buildAgentManifest();
 assert.equal(manifest.modules.phase3RcDetailedDesign, RC_DETAILED_DESIGN_VERSION);

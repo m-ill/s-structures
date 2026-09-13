@@ -44,7 +44,7 @@ import {stableHash} from '../../core/stableHash.js';
 import {validIdentity} from '../../core/workflowIdentity.js';
 import {validateModel} from '../../core/validation.js';
 import {designInputImpact} from '../../core/designDependencyIdentity.js';
-import {evaluatePracticalDesign,latestDetails,summarizePracticalChecks,designCombinationCoverage,PRACTICAL_EVALUATION_VERSION} from '../../design/evaluation/practicalEvaluation.js';
+import {latestDetails,summarizePracticalChecks,designCombinationCoverage,PRACTICAL_EVALUATION_VERSION} from '../../design/evaluation/practicalEvaluation.js';
 import {practicalCommandFromRecord} from '../../modeling/practicalInputContract.js';
 import {DESIGN_INPUT_UNITS,finiteJson,object,stageDesignInputCommand} from '../../modeling/designInputCommands.js';
 import {runCandidateSpliceRefinement,runCandidateGeometry,runCandidateAnalysis,runCandidateEvaluation,runRcServiceWorker,runRcSpliceWorker} from './candidateAnalysisClient.js';

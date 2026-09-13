@@ -302,11 +302,38 @@ function validateShells(model, nodeIds, materialIds, error) {
 }
 
 function validateLibraryCollections(model, error, warning) {
-  validateLibraryCollection(model.materials, 'material', validateMaterialRecord, ERROR_CODES.BAD_MATERIAL_PROPS, error, warning);
-  validateLibraryCollection(model.sections, 'section', validateSectionRecord, ERROR_CODES.BAD_SECTION_PROPS, error, warning);
+  // Record advisories describe how a library entry may be used, so they are
+  // reported only for entries the model actually references. Built-in catalog
+  // entries that nothing uses must not warn on every model.
+  const used = collectLibraryReferences(model);
+  validateLibraryCollection(model.materials, 'material', validateMaterialRecord, ERROR_CODES.BAD_MATERIAL_PROPS, error, warning, used.materials);
+  validateLibraryCollection(model.sections, 'section', validateSectionRecord, ERROR_CODES.BAD_SECTION_PROPS, error, warning, used.sections);
 }
 
-function validateLibraryCollection(rows, kind, validator, code, error, warning) {
+function collectLibraryReferences(model) {
+  const materials = new Set();
+  const sections = new Set();
+  const seen = new Set();
+  const visit = (value) => {
+    if (!value || typeof value !== 'object' || seen.has(value)) return;
+    seen.add(value);
+    if (Array.isArray(value)) {
+      for (const item of value) visit(item);
+      return;
+    }
+    if (typeof value.matId === 'string' && value.matId) materials.add(value.matId);
+    if (typeof value.secId === 'string' && value.secId) sections.add(value.secId);
+    for (const key in value) {
+      if (key === 'materials' || key === 'sections') continue;
+      const item = value[key];
+      if (item && typeof item === 'object') visit(item);
+    }
+  };
+  visit(model);
+  return { materials, sections };
+}
+
+function validateLibraryCollection(rows, kind, validator, code, error, warning, used) {
   const seen = new Set();
   for (const row of rows || []) {
     const id = String(row?.id || '').trim();
@@ -317,7 +344,9 @@ function validateLibraryCollection(rows, kind, validator, code, error, warning) 
     seen.add(reference);
     const checked = validator(row);
     if (!checked.ok) error(code, `Invalid ${kind} record ${reference}: ${checked.errors.join(', ')}.`, reference);
-    for (const item of checked.warnings || []) warning(WARNING_CODES.NOT_SUPPORTED, `${kind} ${reference}: ${item}.`, reference);
+    if (!used || used.has(id)) {
+      for (const item of checked.warnings || []) warning(WARNING_CODES.NOT_SUPPORTED, `${kind} ${reference}: ${item}.`, reference);
+    }
     if (!strictLibraryNumbers(checked.normalized, kind)) error(code, `${kind} ${reference} contains nonnumeric or non-finite property values.`, reference);
   }
 }

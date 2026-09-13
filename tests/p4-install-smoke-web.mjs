@@ -3,6 +3,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
 import { existsSync } from 'node:fs';
 import { mkdtemp, rm } from 'node:fs/promises';
+import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -13,7 +14,9 @@ assert.equal(build.status, 0, build.stderr || build.stdout);
 const release = JSON.parse(build.stdout);
 const unpackRoot = await mkdtemp(join(tmpdir(), 's-structures-install-smoke-'));
 const dataDir = await mkdtemp(join(tmpdir(), 's-structures-install-data-'));
-const port = 5193;
+// A fixed port makes the smoke test fail whenever anything else on the machine
+// already listens there, so take a free one from the OS instead.
+const port = await freeLoopbackPort();
 const baseUrl = `http://127.0.0.1:${port}`;
 
 try {
@@ -57,6 +60,17 @@ try {
 } finally {
   await rm(unpackRoot, { recursive: true, force: true });
   await rm(dataDir, { recursive: true, force: true });
+}
+
+function freeLoopbackPort() {
+  return new Promise((resolve, reject) => {
+    const probe = createServer();
+    probe.on('error', reject);
+    probe.listen(0, '127.0.0.1', () => {
+      const { port: assigned } = probe.address();
+      probe.close(() => resolve(assigned));
+    });
+  });
 }
 
 function expandReleaseArchive(zipPath, destinationPath) {

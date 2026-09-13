@@ -730,18 +730,24 @@ function reduceWithCanonicalConstraintsSparse(K, F, nodes, groups, constraints) 
 function recoverGeneralConstraintForces(nodes, K, F, D, fixedDofs, contract, diaphragmGroups = []) {
   const residual = matrixMatVec(K, D).map((value, index) => value - F[index]);
   const dofs = new Set();
-  for (const equation of contract?.generalConstraintEquations || []) {
-    dofs.add(equation.slave.fullDof);
-    for (const term of equation.terms || []) dofs.add(term.fullDof);
-  }
+  // Constraint actions within one constraint are self-equilibrating, so the
+  // equilibrium audit must include or exclude a group as a whole.
+  const groupOf = new Map();
+  const tag = (fullDof, key) => { dofs.add(fullDof); if (!groupOf.has(fullDof)) groupOf.set(fullDof, key); };
+  (contract?.generalConstraintEquations || []).forEach((equation, index) => {
+    const key = `eq:${equation.id ?? index}`;
+    tag(equation.slave.fullDof, key);
+    for (const term of equation.terms || []) tag(term.fullDof, key);
+  });
   const nodeIndex = new Map(nodes.map((node,index)=>[node.id,index]));
-  for(const group of diaphragmGroups)for(const id of group.nodeIds||[]){const index=nodeIndex.get(id);if(index!==undefined)for(const d of [0,1,5])dofs.add(index*6+d);}
+  diaphragmGroups.forEach((group,groupPos)=>{const key=`dia:${group.id??groupPos}`;for(const id of group.nodeIds||[]){const index=nodeIndex.get(id);if(index!==undefined)for(const d of [0,1,5])tag(index*6+d,key);}});
   const rows = [...dofs].sort((a, b) => a - b).map((fullDof) => ({
     nodeId: nodes[Math.floor(fullDof / 6)]?.id || null,
     dof: ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'][fullDof % 6],
     fullDof,
     force: residual[fullDof],
     supportCoupled: fixedDofs.has(fullDof),
+    constraintGroup: groupOf.get(fullDof) || null,
   }));
   return {
     applied: rows.length > 0,

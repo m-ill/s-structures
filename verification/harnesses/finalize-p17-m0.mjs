@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import { resolveStrix21SourceRoot } from '../workspace-paths.mjs';
 import { createHash } from 'node:crypto';
 import {
   existsSync,
@@ -13,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { assertJsonSchema } from './json-schema-lite.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const SOURCE_ROOT = path.resolve(process.env.P17_SOURCE_ROOT || path.join(ROOT, '..', 'STRIX-verification-21'));
+const SOURCE_ROOT = resolveStrix21SourceRoot(process.env.P17_SOURCE_ROOT);
 const AUDIT_DATE = '2026-08-28';
 const REPORT_STEM = 'P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2';
 const REPORT_DIR = path.join(ROOT, 'output', 'verification', 'phase17');
@@ -210,7 +211,7 @@ function implementationInventory() {
   const targets = [
     'package.json',
     'docs/README.md',
-    'docs/phase17',
+    'docs/archive/phase17',
     'verification/workspace-paths.mjs',
     'verification/specs/phase17',
     'verification/runners/run-p17-m0-source-lock.mjs',

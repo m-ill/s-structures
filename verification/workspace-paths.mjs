@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -64,6 +65,20 @@ export const VERIFICATION_REPOSITORY_PATHS = Object.freeze({
   phase17Deliverables: 'output/verification/phase17',
 });
 
+// The workspace groups external source bundles under 자료/ since the 2026-09-13
+// reorganisation. The legacy sibling location is still accepted so existing
+// checkouts and recorded source paths keep resolving.
+export const STRIX21_SOURCE_ROOT_CANDIDATES = Object.freeze([
+  path.resolve(REPOSITORY_ROOT, '..', '자료', 'STRIX-verification-21'),
+  path.resolve(REPOSITORY_ROOT, '..', 'STRIX-verification-21'),
+]);
+
+export function resolveStrix21SourceRoot(override) {
+  if (override) return path.resolve(override);
+  return STRIX21_SOURCE_ROOT_CANDIDATES.find((candidate) => existsSync(candidate))
+    || STRIX21_SOURCE_ROOT_CANDIDATES[STRIX21_SOURCE_ROOT_CANDIDATES.length - 1];
+}
+
 export const LEGACY_VERIFICATION_PATHS = Object.freeze({
   specs: path.join(REPOSITORY_ROOT, 'docs', 'verification'),
   validationEvidence: path.join(REPOSITORY_ROOT, 'reports', 'validation-evidence'),
@@ -73,6 +88,8 @@ export const LEGACY_VERIFICATION_PATHS = Object.freeze({
 export function remapLegacyVerificationPath(repositoryRelativePath) {
   const normalized = String(repositoryRelativePath || '').replaceAll('\\', '/');
   const mappings = [
+    ['output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.manifest.json', 'verification/archive/generated/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.manifest.json'],
+    ['output/phase21/m6-pilot-node-r5/review.json', 'verification/archive/generated/phase21-pilot-review.json'],
     ['docs/verification', 'verification/specs'],
     ['reports/validation-evidence', 'verification/evidence/validation'],
     ['reports/benchmark-evidence/strix21', 'verification/benchmarks/strix21/runs'],

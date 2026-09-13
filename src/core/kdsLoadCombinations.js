@@ -1,7 +1,6 @@
 import { formatCombinationFactors } from './combinations.js';
 import { isSignedAccidentalCase, signedAccidentalSign } from './signedLateralCases.js';
 import {
-  inferLoadCaseFamily,
   normalizeLoadCaseMetadata,
 } from '../loads/loadCaseMetadata.js';
 

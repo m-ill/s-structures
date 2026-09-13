@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {createModel} from '../src/core/model.js';
-import {runDesignChecks} from '../src/design/steel.js';
+import {evaluateDesign as runDesignChecks} from '../src/design/evaluation/designEvaluation.js';
 import {concurrentMemberDemands} from '../src/design/evaluation/practicalEvaluation.js';
 const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:3,y:0,z:0}];
 model.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];

@@ -6,11 +6,11 @@
   "generatedAt": "2026-07-22T21:00:00.000+09:00",
   "sourceRevision": "716638c+p10-m6-worktree",
   "test": "tests/p10-m6-tapered.mjs",
-  "solverVersion": "p10-m6-tapered-force-based-v1",
+  "solverVersion": "p25-tapered-force-based-v4-initial-deformation",
   "results": {
     "ok": true,
     "version": "p10-m6-tapered-v1",
-    "solverVersion": "p10-m6-tapered-force-based-v1",
+    "solverVersion": "p25-tapered-force-based-v4-initial-deformation",
     "metrics": {
       "prismaticRegressionError": 5.921189464667505e-16,
       "closedFormError": 4.0463617462577446e-9,
@@ -40,7 +40,7 @@
       "relError": 5.921189464667505e-16,
       "tolerance": 1e-12,
       "modelHash": "9324ddd98f5d2187",
-      "solverVersion": "p10-m6-tapered-force-based-v1",
+      "solverVersion": "p25-tapered-force-based-v4-initial-deformation",
       "status": "OK"
     },
     {
@@ -50,7 +50,7 @@
       "relError": 4.0463617462577446e-9,
       "tolerance": 0.000001,
       "modelHash": "d561ac995960e64f",
-      "solverVersion": "p10-m6-tapered-force-based-v1",
+      "solverVersion": "p25-tapered-force-based-v4-initial-deformation",
       "status": "OK"
     },
     {
@@ -60,7 +60,7 @@
       "relError": 4.046360080799579e-9,
       "tolerance": 1e-8,
       "modelHash": "ff28525d5fa18b36",
-      "solverVersion": "p10-m6-tapered-force-based-v1",
+      "solverVersion": "p25-tapered-force-based-v4-initial-deformation",
       "status": "OK"
     }
   ],
@@ -70,5 +70,5 @@
     "releaseQualified": false,
     "releaseGate": "P10-M11"
   },
-  "artifactHash": "fe382b6c4c5120e7dfadedcc"
+  "artifactHash": "688f467cb006f816c0110adb"
 }

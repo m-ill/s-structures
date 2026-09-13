@@ -2,12 +2,13 @@ import { readFileSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { sha256Canonical } from '../../../../framework/phase17/canonical.mjs';
+import { resolveStrix21SourceRoot } from '../../../../workspace-paths.mjs';
 
 export const P17_REFERENCE_BYTE_AUDIT_VERSION = 'p17-reference-byte-audit-v1';
 
 export function auditReferenceArtifactBytes(input = {}) {
   const repoRoot = path.resolve(input.repoRoot || '.');
-  const sourceRoot = path.resolve(input.sourceRoot || path.join(repoRoot, '..', 'STRIX-verification-21'));
+  const sourceRoot = resolveStrix21SourceRoot(input.sourceRoot);
   const rows = [];
   const reasons = [];
   for (const artifact of input.artifacts || []) {

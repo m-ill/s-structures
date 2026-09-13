@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { resolveStrix21SourceRoot } from '../../../../workspace-paths.mjs';
 import {
   canonicalJson,
   prettyJson,
@@ -38,7 +39,7 @@ const productSourceArtifacts = Object.freeze([
 
 export function buildP17M2Sb1LockPackage(options = {}) {
   const repoRoot = path.resolve(options.repoRoot || repoRootDefault);
-  const sourceRoot = path.resolve(options.sourceRoot || path.join(repoRoot, '..', 'STRIX-verification-21'));
+  const sourceRoot = resolveStrix21SourceRoot(options.sourceRoot);
   const sourceLockPath = 'verification/benchmarks/strix21/references/source-locks-r2/SB1.source-lock.json';
   const baseManifestPath = 'verification/benchmarks/strix21/cases/SB1/case-manifest.json';
   const trustRegistryPath = 'verification/benchmarks/strix21/trust/external-custodian-trust-registry.json';

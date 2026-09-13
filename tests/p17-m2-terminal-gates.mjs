@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { generateKeyPairSync, sign } from 'node:crypto';
 import path from 'node:path';
 import { readFileSync } from 'node:fs';
+import { resolveStrix21SourceRoot } from '../verification/workspace-paths.mjs';
 import {
   assertP17M2ExecutionAuthorized,
   buildP17M2GateAssessment,
@@ -18,7 +19,7 @@ import {
 } from '../verification/framework/phase17/canonical.mjs';
 
 const repoRoot = path.resolve('.');
-const sourceRoot = path.resolve('..', 'STRIX-verification-21');
+const sourceRoot = resolveStrix21SourceRoot();
 const emptyRegistry = JSON.parse(readFileSync('verification/benchmarks/strix21/trust/external-custodian-trust-registry.json', 'utf8'));
 const emptyAudit = auditExternalTrustRegistry(emptyRegistry, {});
 assert.equal(emptyAudit.status, 'BLOCKED');

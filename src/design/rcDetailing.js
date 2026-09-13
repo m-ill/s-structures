@@ -1,5 +1,8 @@
 import {hasPreparedRcResults,selectRcMemberResults} from '../results/designResultSelection.js';
+// Legacy preliminary schedule built from required/provided steel areas.
 export const RC_DETAILING_VERSION = 'm39-rc-detailing';
+// Schedule built from the provided practical RC inputs (current product path).
+export const RC_PROVIDED_SCHEDULE_VERSION = 'p25-rc-provided-schedule-v1';
 
 export const STANDARD_REBARS = [
   { id: 'D10', diameter: 9.53, area: 71.3 },
@@ -16,7 +19,7 @@ export function buildRcDetailingReport(model, analysis, options = {}) {
     const prepared=analysis.design.practicalRcSchedules||{};
     const rows=Object.values(selectRcMemberResults(analysis)).map(row=>prepared[row.memberId]||{...row,requiredRebar:null,longitudinal:null,transverse:null,regions:[],scheduleInputStatus:'PREPARED_REINFORCEMENT_INPUT_UNAVAILABLE'});
     const summary=analysis.design.practicalRcSummary||{};
-    return {version:'p25-rc-provided-schedule-v1',modelName:model?.meta?.name||null,basis:'provided-practical-checks',designTransferAllowed:false,
+    return {version:RC_PROVIDED_SCHEDULE_VERSION,modelName:model?.meta?.name||null,basis:'provided-practical-checks',designTransferAllowed:false,
       rows,summary:{...summary,memberCount:rows.length,okCount:rows.filter(r=>r.ok&&!r.incomplete).length,warnCount:summary.warnCount??0,ngCount:summary.ngCount??0,maxUtilization:summary.maxUtilization??null},
       limitations:['Regions record the reinforcement inputs used by the evaluation. Missing regions are not inferred from preliminary bar recommendations.','Check status and KDS evidence remain authoritative; this schedule alone does not establish design qualification.']};
   }

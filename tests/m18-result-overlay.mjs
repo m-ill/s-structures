@@ -10,6 +10,10 @@ import {
 
 const model = createPortalFrameSample();
 model.analysisSettings.includeGeometricStiffness = true;
+// Legacy equivalent-load P-Delta is comparison-only and blocks design transfer
+// (LEGACY_PDELTA_DESIGN_BLOCKED), so the utilization overlay needs the
+// qualified direct method to carry member ratios.
+model.analysisSettings.pDeltaMethod = 'direct';
 for (const node of model.nodes) {
   if (!node.support) node.mass = [5, 5, 5];
 }

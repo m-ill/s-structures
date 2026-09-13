@@ -404,10 +404,10 @@ export {
 export { ANALYSIS_AUDIT_VERSION, buildAnalysisAudit } from './solver/analysisAudit.js';
 export {
   checkSteelMember,
-  runDesignChecks,
   runSteelDesign,
   steelAllowables,
 } from './design/steel.js';
+export { evaluateDesign as runDesignChecks } from './design/evaluation/designEvaluation.js';
 export {
   checkConcreteMember,
   concreteSectionProps,
@@ -488,6 +488,7 @@ export {
   buildRcDetailingReport,
   detailRcMember,
   RC_DETAILING_VERSION,
+  RC_PROVIDED_SCHEDULE_VERSION,
   selectLongitudinalBars,
   selectStirrups,
   STANDARD_REBARS,
@@ -497,6 +498,7 @@ export {
   buildRcDetailedDesignReport,
   RC_DESIGN_GATE_VERSION,
   RC_DETAILED_DESIGN_VERSION,
+  RC_DETAILED_PROVIDED_VERSION,
 } from './design/rc/detailedReport.js';
 export { RC_BEAM_DETAIL_VERSION, detailRcBeam } from './design/rc/beam.js';
 export { RC_COLUMN_DETAIL_VERSION, detailRcColumn } from './design/rc/column.js';

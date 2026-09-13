@@ -24,6 +24,9 @@ for (const { spec, model } of items) {
   assert.equal(summary.analysis.errors.length, 0);
   assert.equal(summary.analysis.comboIds.length, 3);
   assert.equal(summary.analysis.designStatus, 'OK');
+  // No sample carries provided reinforcement, so the practical RC checks stay
+  // open and the design is explicitly reported as not complete.
+  assert.equal(summary.analysis.designComplete, false);
   assert.ok(summary.model.nodeCount > 0);
   assert.ok(summary.model.memberCount > 0);
   assert.ok(summary.model.loadCount > 0);

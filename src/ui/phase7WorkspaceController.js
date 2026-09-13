@@ -6,7 +6,6 @@ import {
   snapFloatingRectToPeers,
 } from './floatingPanel.js';
 import {
-  createWorkspaceState,
   loadWorkspaceState,
   resetWorkspaceState,
   saveWorkspaceState,

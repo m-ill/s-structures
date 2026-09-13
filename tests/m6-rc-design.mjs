@@ -47,7 +47,13 @@ const columnCheck = columnAnalysis.design.concrete.memberResults.M1;
 assert.equal(columnCheck.role, 'column');
 assert.equal(columnCheck.status, 'NG');
 assert.equal(columnCheck.governingCheck, 'rc-axial');
-assert.ok(columnAnalysis.design.summary.ngCount >= 1, 'overall design summary should include RC NG count');
+// Since Phase24/25 the overall summary is based on the provided practical RC
+// checks and treats the legacy concrete module as diagnostic only, so the NG is
+// reported by that module while the summary refuses to call the design done.
+assert.equal(columnAnalysis.design.concrete.summary.ngCount, 1, 'legacy RC diagnostics should report the NG member');
+assert.equal(columnAnalysis.design.summary.legacyConcreteDiagnosticOnly, true);
+assert.equal(columnAnalysis.design.summary.designComplete, false, 'overall design summary must not report a complete design');
+assert.ok(columnAnalysis.design.summary.rcUnreviewedMembers >= 1, 'the RC member must stay visible as unreviewed in the overall summary');
 
 const state = createM3State(beam);
 assert.ok(state.analysis.design.concrete.memberResults.M1, 'UI state should carry RC design results');

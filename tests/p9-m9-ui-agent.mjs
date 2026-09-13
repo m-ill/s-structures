@@ -70,15 +70,10 @@ assert.equal(
   uiNumericFindings.length === 0,
   'the Phase15 UI numeric-core gate must be derived fail-closed from its findings',
 );
-assert.equal(phase15Architecture.gate.uiNumericCoreImports, false, 'P15-M8-F03 remains explicitly BLOCKED until service boundaries replace direct UI dependencies');
-assert.ok(
-  uiNumericFindings.some((row) => (
-    row.source === 'src/ui/indexAgentApi.js'
-      && row.target === 'src/dynamics/elasticCompleteness.js'
-      && row.severity === 'High'
-  )),
-  'the direct indexAgentApi numeric dependency must remain visible as a Phase15 High finding',
-);
+// P15-M8-F03 is resolved: service boundaries replaced the direct UI numeric
+// dependencies, so the gate must stay clean instead of pinning the old debt.
+assert.equal(phase15Architecture.gate.uiNumericCoreImports, true, 'P15-M8-F03 stays resolved: no UI module may import the numeric core directly');
+assert.deepEqual(uiNumericFindings, [], 'no ui-numeric-core finding may reappear');
 for (const file of ['indexBridge.js', 'indexAgentApi.js', 'indexNativeAdvancedAnalysis.js', 'm3State.js']) {
   const source = await fs.readFile(new URL(`../src/ui/${file}`, import.meta.url), 'utf8');
   assert.doesNotMatch(source, /from ['"]\.\.\/index\.js['"]/, `P15-M8-F02 ${file} does not hide dependencies behind the root barrel`);

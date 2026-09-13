@@ -742,13 +742,19 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const constraintSource=out.constraintActions,seenConstraintDofs=new Set();
   if(constraintSource){
     if(constraintSource.version!=='p25-constraint-actions-v1'||constraintSource.signConvention!=='force applied by constraint to structural DOF'||constraintSource.units?.force!=='kN'||constraintSource.units?.moment!=='kN.m'||!Array.isArray(constraintSource.rows))equilibriumIssues.push(equilibriumIssue('CONSTRAINT_ACTIONS_INVALID',null,null,null,'constraint'));
-    else for(const row of constraintSource.rows){
+    else{
+    // A constraint whose force path ends at a restrained DOF is already carried
+    // by that node's reaction, so the whole group is dropped rather than only
+    // its support-coupled row (which would leave the partner row uncancelled).
+    const supportCoupledGroups=new Set(constraintSource.rows.filter(row=>row?.supportCoupled&&row.constraintGroup).map(row=>row.constraintGroup));
+    for(const row of constraintSource.rows){
       const d=['ux','uy','uz','rx','ry','rz'].indexOf(row.dof),point=pointOf(nodeMap[row.nodeId]),key=JSON.stringify([row.nodeId,row.dof]);
       if(d<0||!point||!Number.isFinite(row.force)||typeof row.supportCoupled!=='boolean'||seenConstraintDofs.has(key)){equilibriumIssues.push(equilibriumIssue('CONSTRAINT_ACTION_ROW_INVALID',row.nodeId,row.dof,row.force,'constraint'));continue;}
-      seenConstraintDofs.add(key);if(row.supportCoupled)continue;
+      seenConstraintDofs.add(key);if(row.supportCoupled||supportCoupledGroups.has(row.constraintGroup))continue;
       const force=[0,0,0],couple=[0,0,0];if(d<3)force[d]=row.force;else couple[d-3]=row.force;
       const moment=add(cross(subtract(point,referencePoint),force),couple);
       addInto(totalConstraint,force);addInto(totalConstraintMoment,moment);constraintForceScale+=maxAbs3(force);constraintMomentScale+=maxAbs3(moment);
+    }
     }
   }else if(out.solver?.diaphragmCount||out.solver?.generalConstraintCount)equilibriumIssues.push(equilibriumIssue('CONSTRAINT_ACTIONS_REQUIRED',null,null,null,'constraint'));
 

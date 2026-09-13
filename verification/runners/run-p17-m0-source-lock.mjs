@@ -15,6 +15,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   REPOSITORY_ROOT,
+  resolveStrix21SourceRoot,
   VERIFICATION_PATHS,
   VERIFICATION_REPOSITORY_PATHS,
 } from '../workspace-paths.mjs';
@@ -23,7 +24,7 @@ export const P17_M0_AUDIT_DATE = '2026-08-28';
 export const P17_M0_STATUS = 'COMPLETE_WITH_SOURCE_BLOCKERS';
 export const P17_M0_SOURCE_REVISION = 'a44eb98601e4fbcd2913bbb34a809d126452f793';
 
-const DEFAULT_SOURCE_ROOT = path.resolve(REPOSITORY_ROOT, '..', 'STRIX-verification-21');
+const DEFAULT_SOURCE_ROOT = resolveStrix21SourceRoot();
 const SOURCE_ROOT = process.env.P17_SOURCE_ROOT
   ? path.resolve(process.env.P17_SOURCE_ROOT)
   : DEFAULT_SOURCE_ROOT;

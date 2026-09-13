@@ -1,11 +1,7 @@
 import { materialOf, sectionOf } from '../core/catalogs.js';
-import { runConcreteDesign } from './concrete.js';
-import { buildDesignDemandPackage } from './designDemandPackage.js';
 import { attachMemberDemandTrace } from './designDemandTraceAttach.js';
 import { resolveCriterion } from '../core/analysisCriteria.js';
 import { checkSteelFlexureLtb } from './steel/flexureLTB.js';
-
-export {evaluateDesign as runDesignChecks} from './evaluation/designEvaluation.js';
 
 export function runSteelDesign(model, analysis, options = {}) {
   const resultSet = options.resultSet || analysis?.envelope || firstSolvedResult(analysis);

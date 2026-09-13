@@ -2,8 +2,6 @@ import { HINGED_FRAME_3D_STATE_VERSION, HINGED_FRAME_3D_VERSION } from '../../me
 export { HINGED_FRAME_3D_STATE_VERSION, HINGED_FRAME_3D_VERSION };
 import {
   createCorotationalFrame3dKernel,
-  HINGED_COROTATIONAL_FRAME_3D_STATE_VERSION,
-  HINGED_COROTATIONAL_FRAME_3D_VERSION,
 } from './corotationalFrame3d.js';
 import { resolveDomainHingeAssignments } from '../properties/assignments.js';
 import { createDistributedFiberFrame3dKernel } from './distributedFiberFrame3d.js';
