@@ -73,6 +73,17 @@ export const STRIX21_SOURCE_ROOT_CANDIDATES = Object.freeze([
   path.resolve(REPOSITORY_ROOT, '..', 'STRIX-verification-21'),
 ]);
 
+export const TESTREPORT_ROOT_CANDIDATES = Object.freeze([
+  path.resolve(REPOSITORY_ROOT, '..', '자료', 'testreport'),
+  path.resolve(REPOSITORY_ROOT, '..', 'testreport'),
+]);
+
+export function resolveTestreportRoot(override) {
+  if (override) return path.resolve(override);
+  return TESTREPORT_ROOT_CANDIDATES.find((candidate) => existsSync(candidate))
+    || TESTREPORT_ROOT_CANDIDATES[TESTREPORT_ROOT_CANDIDATES.length - 1];
+}
+
 export function resolveStrix21SourceRoot(override) {
   if (override) return path.resolve(override);
   return STRIX21_SOURCE_ROOT_CANDIDATES.find((candidate) => existsSync(candidate))

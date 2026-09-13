@@ -3,23 +3,23 @@
   "createdAt": "2026-09-13",
   "baseCommit": "a2675a62",
   "summary": {
-    "total": 33,
-    "phase26": 22,
+    "total": 35,
+    "phase26": 24,
     "phase27": 11,
     "byGroup": {
       "consistency": 1,
-      "contract": 2,
+      "contract": 3,
       "coverage": 1,
       "gate": 1,
       "governance": 3,
       "page-budget": 5,
       "rc-engineering": 11,
-      "reproducibility": 1,
+      "reproducibility": 2,
       "stale-baseline": 8
     },
     "byStatus": {
-      "DEFERRED": 14,
-      "DONE": 18,
+      "DEFERRED": 15,
+      "DONE": 19,
       "OPEN": 1
     }
   },
@@ -456,6 +456,32 @@
       "phase": 26,
       "status": "OPEN",
       "note": "this is the root cause of the whole register"
+    },
+    {
+      "id": "P26-S07",
+      "kind": "test",
+      "target": "tests/p18-benchmark-engine-report-package.mjs",
+      "group": "reproducibility",
+      "signature": "report missing section: ## 3. 해석엔진에서 사용한 식",
+      "cause": "validates deliverables stored outside the repository (자료/testreport), whose section structure no longer matches the generator in tools/",
+      "milestone": "M5",
+      "phase": 26,
+      "status": "DEFERRED",
+      "note": "found by the M5 gate expansion, not by the original sweep. The stale path was fixed so it now locates 자료/testreport, but it still checks out-of-repo owner deliverables that a clean checkout does not have. Regenerating them would overwrite the owner reports, so the content mismatch is an owner decision.",
+      "resolution": "path resolution fixed; content contract deferred to the owner"
+    },
+    {
+      "id": "P26-S08",
+      "kind": "test",
+      "target": "tests/p25-m6-longitudinal-proposal.mjs",
+      "group": "contract",
+      "signature": "TypeError: Cannot read properties of undefined (reading 'designDetails')",
+      "cause": "memberReinforcementProposal gained a required model parameter; this test still called it with two arguments while the product caller and its sibling test pass three",
+      "milestone": "M5",
+      "phase": 26,
+      "status": "DONE",
+      "note": "found by the M5 gate expansion, not by the original sweep",
+      "resolution": "test now passes the required model"
     }
   ]
 }

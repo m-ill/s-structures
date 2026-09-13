@@ -3,10 +3,12 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveTestreportRoot } from "../verification/workspace-paths.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const vaultRoot = path.resolve(repoRoot, "..");
-const caseRoot = path.join(vaultRoot, "testreport", "STRIX-21-검증");
+// The workspace groups source bundles under 자료/ since 2026-09-13.
+const caseRoot = path.join(resolveTestreportRoot(), "STRIX-21-검증");
 const collectionRoot = path.join(caseRoot, "00_설득자료_모음");
 const expectedIds = [
   "SB1", "SB2", "SB3", "SB5", "SB6", "SB7", "SB8", "SB9", "SB10", "SB12",

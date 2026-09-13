@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server/main.mjs 5173",
     "dev:public": "node server/main.mjs 5173 0.0.0.0 --allow-network-bind",
-    "test": "node tools/run-milestone-tests.mjs && node tools/run-phase7-tests.mjs && node tools/run-phase8-tests.mjs && node tools/run-phase9-tests.mjs && node tests/p9-documentation-baseline.mjs && node tools/run-phase10-tests.mjs && node tests/p11-documentation-plan.mjs && node tests/p11-m0-baseline-governance.mjs && node tests/p11-m1-report-snapshot-verdict.mjs && node tests/p11-m2-bilingual-rendering.mjs && node tests/p11-m3-visual-capture-core.mjs && node tests/p11-m4-scene-evidence-report.mjs && node tests/p11-m5-executive-report-layout.mjs && node tests/p11-m6-dual-pdf-export.mjs && node tests/p11-m7-product-agent-export.mjs && node tests/p11-m8-qualification-hardening.mjs && node tests/p11-m9-release-gate.mjs && node tools/run-phase12-tests.mjs && node tools/run-phase13-tests.mjs && node tools/run-phase14-tests.mjs && node tools/run-phase15-tests.mjs",
+    "test": "node tools/run-milestone-tests.mjs && node tools/run-phase7-tests.mjs && node tools/run-phase8-tests.mjs && node tools/run-phase9-tests.mjs && node tests/p9-documentation-baseline.mjs && node tools/run-phase10-tests.mjs && node tests/p11-documentation-plan.mjs && node tests/p11-m0-baseline-governance.mjs && node tests/p11-m1-report-snapshot-verdict.mjs && node tests/p11-m2-bilingual-rendering.mjs && node tests/p11-m3-visual-capture-core.mjs && node tests/p11-m4-scene-evidence-report.mjs && node tests/p11-m5-executive-report-layout.mjs && node tests/p11-m6-dual-pdf-export.mjs && node tests/p11-m7-product-agent-export.mjs && node tests/p11-m8-qualification-hardening.mjs && node tests/p11-m9-release-gate.mjs && node tools/run-phase12-tests.mjs && node tools/run-phase13-tests.mjs && node tools/run-phase14-tests.mjs && node tools/run-phase15-tests.mjs && node verification/harnesses/run-phase16-25-tests.mjs",
     "test:fast": "node tests/p3-server-api.mjs && node tests/p3-auth.mjs && node tools/run-phase12-tests.mjs --to=4",
     "test:long": "node tools/run-phase8-tests.mjs && node tests/p12-m5-release-package-install-recovery.mjs",
     "test:p12": "node tools/run-phase12-tests.mjs",
@@ -334,6 +334,8 @@
     "test:p6m4": "node tests/p6-rsa-diaphragm-story.mjs",
     "test:p6m5": "node tests/p6-pdelta-tangent.mjs",
     "test:p6m6": "node tests/p6-equivalent-shell-scope.mjs",
-    "test:finaluse": "node tests/final-use-release-review.mjs"
+    "test:finaluse": "node tests/final-use-release-review.mjs",
+    "test:p16to25": "node verification/harnesses/run-phase16-25-tests.mjs",
+    "test:p16to25:list": "node verification/harnesses/run-phase16-25-tests.mjs --list"
   }
 }

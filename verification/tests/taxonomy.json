@@ -6,15 +6,15 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 866,
+  "plannedCount": 867,
   "categoryCounts": {
     "e2e": 14,
     "integration": 51,
-    "qualification": 224,
+    "qualification": 225,
     "unit": 577
   },
   "executionCounts": {
-    "default": 313,
+    "default": 314,
     "release-long": 553
   },
   "records": [
@@ -4988,6 +4988,12 @@
     },
     {
       "file": "tests/p9-m1-domain-pattern.mjs",
+      "taxonomy": "qualification",
+      "execution": "default",
+      "owner": "phase9"
+    },
+    {
+      "file": "tests/p9-m1-evidence-contract.mjs",
       "taxonomy": "qualification",
       "execution": "default",
       "owner": "phase9"
