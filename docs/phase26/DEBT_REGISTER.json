@@ -18,8 +18,8 @@
       "stale-baseline": 8
     },
     "byStatus": {
-      "DEFERRED": 13,
-      "DONE": 22
+      "DEFERRED": 12,
+      "DONE": 23
     }
   },
   "statusDefinitions": {
@@ -375,9 +375,9 @@
       "cause": "hoop closure handling incomplete",
       "milestone": "P27-M4",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "owner ruling: a closure hook collision is a code failure. The check already reported NG but under the cross-tied-column catch-all reason, which hid the cause; the specific finding now names the failure."
     },
     {
       "id": "P26-S01",

@@ -23,6 +23,11 @@ export function finalizeMemberHoopDetail(detail,prepared,result){
   add('cross-tie-longitudinal-assembly',prepared.crossTies?.actualPathAssembly);
   add('cross-tie-contact',prepared.crossTies?.contactCoverage);
  }
- const failed=readiness.find(r=>r.status==='NG'),pending=readiness.filter(r=>r.status==='NOT_CHECKED');
+ const failures=readiness.filter(r=>r.status==='NG'),pending=readiness.filter(r=>r.status==='NOT_CHECKED');
+ // The base dimensional result reports one catch-all reason for every way it can
+ // fail, which hides the finding that actually failed. A specific readiness
+ // entry (closure hooks, assembly, contact) names the failure when there is one;
+ // the status is NG either way.
+ const failed=failures.find(r=>r.id!=='dimensions-and-lateral-support')||failures[0];
  return {...result,status:failed?'NG':pending.length?'NOT_CHECKED':'OK',ratio:failed||pending.length?null:result.ratio,reason:failed?.reason||pending[0]?.reason||null,incomplete:pending.length>0,incompleteReasons:[...new Set(pending.map(r=>r.reason))],readiness,methodReviewRequired:true,fabricationApproved:false,scope:'declared ordinary member hoop dimensions, actual contact, lateral support and assembly; independent method and fabrication qualification remain separate'};
 }

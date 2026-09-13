@@ -35,8 +35,10 @@ try{
  assert.equal(closure.supportCoverage.status,'OK');assert.equal(new Set(closure.supportCoverage.supportedBarIndices).size,4);assert.equal(closure.supportCoverage.fabricationApproved,false);
  assert.equal(closure.contactCoverage.status,'OK');assert.equal(closure.contactCoverage.commonBarIndices.length,1);assert.equal(closure.contactCoverage.fabricationApproved,false);
  assert.equal(closure.hookPair.status,'NG');assert.equal(closure.path.status,'OK');
- assert.equal(check.incomplete,true);assert.equal(check.methodReviewRequired,true);
- assert.ok(check.incompleteReasons.includes('HOOP_CLOSURE_HOOK_COLLISION'));
+ // Owner ruling: a closure hook collision is a code failure, not an
+ // unverifiable detail. The check reports NG naming the collision and withholds
+ // a ratio; it is not demoted to an incomplete method review.
+ assert.equal(check.status,'NG');assert.equal(check.reason,'HOOP_CLOSURE_HOOK_COLLISION');assert.equal(check.ratio,null);
  const q=drawings.quantities.find(q=>q.kind==='stirrup');
  assert.deepEqual(q.closureGeometry,closure);assert.equal(q.geometricCutLength,closure.path.centerlineLength);assert.equal(q.cutLength,null);
  assert.ok(drawings.pages[0].commands.some(c=>c.text?.includes('폐합 후크 형상 NG')));
@@ -63,7 +65,11 @@ try{
  assert.equal(fittedClosure.crossTieAssembly.status,'OK');
  assert.ok(fittedSnapshot.preparedDetails.reinforcement['R@3'].crossTies.assembly.checks.filter(c=>c.kind==='cross-tie-pair').every(c=>c.status==='OK'));
  assert.equal(fittedClosure.perimeterOrderStatus,'OK');assert.equal(fittedClosure.fabricationApproved,false);
- assert.ok(fittedSnapshot.checks.find(c=>c.checkId==='rc-confinement').incomplete);
+ // Fitting removes the collision, so the check gives a definite verdict rather
+ // than staying open. Fabrication approval is tracked separately and is still
+ // withheld above.
+ assert.equal(fittedSnapshot.checks.find(c=>c.checkId==='rc-confinement').status,'OK');
+ assert.equal(fittedSnapshot.checks.find(c=>c.checkId==='rc-confinement').incomplete,false);
  assert.ok(fittedSnapshot.checks.find(c=>c.checkId==='rc-confinement').codeReferences.length>0);
  const fittedRecord=(await ctx.call('get_design_records',{channel:'reinforcement',id:'R'})).rows.find(x=>x.version===3);
  assert.deepEqual(fittedRecord.bars.map(b=>b.diameter),bars.map(b=>b.diameter/1000));
