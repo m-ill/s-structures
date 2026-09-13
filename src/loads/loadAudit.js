@@ -1,4 +1,5 @@
 import { inferLoadCaseFamily } from './loadCaseMetadata.js';
+import { liveLoadReductionFactor } from './liveLoadReduction.js';
 
 export const LOAD_AUDIT_VERSION = 'p7-m6-load-audit-v1';
 
@@ -16,6 +17,9 @@ export const LOAD_AUDIT_CODES = Object.freeze({
   UNIT_MISMATCH: 'load-unit-mismatch',
   OPPOSITE_DIRECTION: 'opposite-direction-loads',
   DOUBLE_SELF_WEIGHT: 'double-self-weight-candidate',
+  LIVE_REDUCTION_UNDECLARED: 'live-load-reduction-undeclared',
+  LIVE_REDUCTION_MISMATCH: 'live-load-reduction-mismatch',
+  LIVE_REDUCTION_NOT_APPLIED: 'live-load-reduction-not-applied',
 });
 
 export function buildLoadAudit(model = {}, options = {}) {
@@ -179,6 +183,9 @@ export function buildLoadAudit(model = {}, options = {}) {
     },
   ));
 
+  const liveReduction = auditLiveLoadReduction(model, loads, caseById);
+  issues.push(...liveReduction.issues);
+
   const severityCounts = countBy(issues, (item) => item.severity);
   const byCode = Object.fromEntries(Object.values(LOAD_AUDIT_CODES).map((code) => [
     code,
@@ -207,6 +214,8 @@ export function buildLoadAudit(model = {}, options = {}) {
       orphanCount: orphanLoads.length + orphanCombinationCases.length,
       generatedKeyConflictCount: generatedKeyConflicts.length,
       doubleSelfWeightCandidateCount: selfWeightCandidates.length,
+      liveLoadReductionDeclaredCount: liveReduction.declarations.length,
+      liveLoadReductionAppliedCount: liveReduction.declarations.filter((row) => row.applied).length,
     },
     issues,
     byCode,
@@ -230,8 +239,10 @@ export function buildLoadAudit(model = {}, options = {}) {
       explicitSelfWeight: candidate.explicitSelfWeight,
       certainty: candidate.explicitSelfWeight ? 'high' : 'candidate',
     })),
+    liveLoadReduction: liveReduction.report,
     totals: summarizeLoadMagnitudes(loads),
     limitations: [
+      'Live load reduction is audited against declarations on the model; the audit does not itself decide which member carries which area.',
       'Self-weight duplicate detection reports target-level candidates; a D-family load can legitimately be superimposed dead load.',
       'Magnitude totals remain separated by physical quantity and are not added across force, line load, moment, or temperature units.',
     ],
@@ -431,6 +442,86 @@ function canonicalOrientation(vector) {
   const abs = vector.map(Math.abs);
   const axisIndex = abs.indexOf(Math.max(...abs));
   return { axis: ['x', 'y', 'z'][axisIndex], sign: Math.sign(vector[axisIndex]) || 1 };
+}
+
+// KDS 41 12 00 3.5. A reduction lowers the design result, so it may never be
+// present on a load without a declared basis: a factor below one that no
+// declaration supports is an error, not a warning. Each declaration is
+// re-evaluated here rather than trusted, so a stale factor is caught too.
+const REDUCTION_TOLERANCE = 1e-9;
+
+function auditLiveLoadReduction(model, loads, caseById) {
+  const declarations = (Array.isArray(model?.liveLoadReduction) ? model.liveLoadReduction : [])
+    .filter((row) => row && typeof row === 'object')
+    .map((row) => {
+      const result = liveLoadReductionFactor(row);
+      const loadIds = (Array.isArray(row.appliesToLoadIds) ? row.appliesToLoadIds : [])
+        .filter((value) => typeof value === 'string' && value);
+      return {
+        id: row.id || null,
+        loadIds,
+        role: result.role ?? row.role ?? null,
+        applied: result.applied,
+        factor: result.factor,
+        reason: result.reason,
+        influenceArea: result.influenceArea ?? null,
+        factorFloorGoverns: result.factorFloorGoverns ?? null,
+        equation: result.equation,
+        codeReferences: result.codeReferences,
+      };
+    });
+
+  const byLoadId = new Map();
+  for (const row of declarations) for (const loadId of row.loadIds) byLoadId.set(loadId, row);
+
+  const issues = [];
+  for (const row of declarations) {
+    if (row.applied) continue;
+    issues.push(auditIssue(
+      LOAD_AUDIT_CODES.LIVE_REDUCTION_NOT_APPLIED,
+      'info',
+      `Declared live load reduction ${row.id || '(unnamed)'} does not reduce: ${row.reason}.`,
+      loads.filter((load) => row.loadIds.includes(load?.id)),
+      { declarationId: row.id, reason: row.reason, factor: row.factor },
+    ));
+  }
+
+  for (const load of loads) {
+    const applied = finiteOrNull(load?.liveLoadReductionFactor);
+    if (applied === null || applied >= 1 - REDUCTION_TOLERANCE) continue;
+    const family = inferLoadCaseFamily(caseById.get(load?.case) || {});
+    const row = byLoadId.get(load?.id);
+    if (!row) {
+      issues.push(auditIssue(
+        LOAD_AUDIT_CODES.LIVE_REDUCTION_UNDECLARED,
+        'error',
+        'A load carries a live load reduction factor with no declaration to support it.',
+        [load],
+        { appliedFactor: applied, loadCaseFamily: family },
+      ));
+      continue;
+    }
+    if (Math.abs(applied - row.factor) > REDUCTION_TOLERANCE) {
+      issues.push(auditIssue(
+        LOAD_AUDIT_CODES.LIVE_REDUCTION_MISMATCH,
+        'error',
+        'The reduction factor on the load differs from the factor its declaration produces.',
+        [load],
+        { appliedFactor: applied, declaredFactor: row.factor, declarationId: row.id },
+      ));
+    }
+  }
+
+  return {
+    declarations,
+    issues,
+    report: {
+      declarations,
+      declaredCount: declarations.length,
+      appliedCount: declarations.filter((row) => row.applied).length,
+      basis: 'retained fraction of the basic uniform live load; not a removed fraction',
+    },
+  };
 }
 
 function auditIssue(code, severity, message, loads, detail = null) {

@@ -1,4 +1,8 @@
-// Canonical runner for phase 16~25.
+// Canonical runner for phase 16 and every phase after it.
+//
+// The file name records where it began; the range now has no upper bound so a
+// new phase's checks are picked up by convention instead of needing a new
+// runner or a hand-written package script.
 //
 // These phases used to sit outside `npm test`, which is how 27 of their checks
 // rotted unnoticed. The register at docs/phase26/DEBT_REGISTER.json is the only
@@ -13,7 +17,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const FROM = 16;
-const TO = 25;
+const TO = Infinity;
 const args = process.argv.slice(2);
 const listOnly = args.includes('--list');
 const only = Number(args.find((value) => value.startsWith('--phase='))?.slice('--phase='.length)) || null;
@@ -34,7 +38,7 @@ const tests = (await readdir('tests'))
   .filter(Boolean)
   .sort((left, right) => left.phase - right.phase || left.file.localeCompare(right.file));
 
-if (!tests.length) throw new Error('No phase 16~25 tests matched the requested range.');
+if (!tests.length) throw new Error(`No phase ${FROM}+ tests matched the requested range.`);
 
 if (listOnly) {
   for (const test of tests) {
@@ -43,9 +47,15 @@ if (listOnly) {
   process.exit(0);
 }
 
-console.log(`[P${FROM}-P${TO}] ${tests.length} checks, ${deferred.size} deferred by the register`);
-for (const [file, item] of [...deferred].sort()) {
-  console.log(`  deferred ${item.id} ${file}\n    reason: ${item.cause}`);
+// Only the deferred entries inside the selected range, so a --phase filter does
+// not report exclusions it is not going to run.
+const deferredHere = tests.filter((test) => deferred.has(test.file));
+const range = Number.isFinite(TO) ? `P${FROM}-P${TO}` : `P${FROM}+`;
+console.log(`[${range}] ${tests.length} checks, ${deferredHere.length} deferred by the register`);
+for (const test of deferredHere) {
+  const item = deferred.get(test.file);
+  console.log(`  deferred ${item.id} ${test.file}`);
+  console.log(`    reason: ${item.cause}`);
 }
 
 const started = Date.now();
@@ -70,8 +80,8 @@ const elapsedMinutes = ((Date.now() - started) / 60000).toFixed(1);
 console.log(JSON.stringify({
   ok: unexpectedFailures.length === 0 && unexpectedPasses.length === 0,
   executed,
-  required: executed - deferred.size,
-  deferred: deferred.size,
+  required: executed - deferredHere.length,
+  deferred: deferredHere.length,
   unexpectedFailures,
   unexpectedPasses,
   elapsedMinutes: Number(elapsedMinutes),
@@ -81,7 +91,7 @@ if (unexpectedPasses.length) {
   throw new Error(`Deferred checks now pass and must be promoted in the register: ${unexpectedPasses.join(', ')}`);
 }
 if (unexpectedFailures.length) {
-  throw new Error(`Phase 16~25 checks failed: ${unexpectedFailures.join(', ')}`);
+  throw new Error(`Phase ${FROM}+ checks failed: ${unexpectedFailures.join(', ')}`);
 }
 
 function runNode(file, expectFailure) {

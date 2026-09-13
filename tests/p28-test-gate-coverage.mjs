@@ -16,7 +16,7 @@ assert.equal(report.reached, report.testFiles);
 // The unphased runner is a home, not a habit. A file lands there only when its
 // name follows no runner convention, so the set is kept small and visible
 // rather than becoming the place everything quietly accumulates.
-assert.ok(report.unphased.length <= 12, `too many checks reach no runner by convention:\n${list(report.unphased)}`);
+assert.ok(report.unphased.length <= 9, `too many checks reach no runner by convention:\n${list(report.unphased)}`);
 
 console.log(JSON.stringify({
   ok: true,

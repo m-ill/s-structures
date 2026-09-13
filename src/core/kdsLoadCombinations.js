@@ -260,7 +260,21 @@ export const KDS_LOAD_STANDARD_REGISTRY = {
     { id: 'seismicProcedure', label: 'Seismic zone, site class, and response procedure', required: true },
     { id: 'snowRain', label: 'Snow and rain applicability', required: false },
     { id: 'soilFluidTemperature', label: 'Earth pressure, fluid, and temperature applicability', required: false },
-    { id: 'liveLoadReduction', label: 'Live load reduction and occupancy exceptions', required: false },
+    // The only entry with a computation behind it: the others are declared
+    // inputs the user still supplies. `implementation` marks that difference
+    // so a declared-only input is not mistaken for an applied clause.
+    {
+      id: 'liveLoadReduction',
+      label: 'Live load reduction and occupancy exceptions',
+      required: false,
+      implementation: {
+        module: 'loads/liveLoadReduction.js',
+        documents: ['411200'],
+        clause: '3.5.1; 3.5.2; 3.5.3',
+        auditedBy: 'loads/loadAudit.js',
+        scope: 'uniform live load on one member from declared loaded area, supported story count, occupancy and intensity; roof live load and the area takeoff itself remain outside',
+      },
+    },
   ],
   combinationPresets: KDS_LOAD_COMBINATION_PRESETS.map((preset) => ({
     id: preset.id,
@@ -281,6 +295,7 @@ export const KDS_LOAD_STANDARD_REGISTRY = {
     'Confirm lateral sign convention and whether plus/minus load cases are modeled explicitly.',
     'Confirm serviceability limits separately from strength combinations.',
     'Confirm omitted special load symbols are truly not applicable to the project.',
+    'Confirm each live load reduction declaration against the member it belongs to; the reduction lowers the design result and the load audit rejects a factor no declaration supports.',
   ],
 };
 

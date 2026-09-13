@@ -34,7 +34,9 @@ const patternRunners = [
   { runner: 'run-phase13-tests', test: (n) => /^p13-/.test(n) },
   { runner: 'run-phase14-tests', test: (n) => /^p14-/.test(n) },
   { runner: 'run-phase15-tests', test: (n) => /^p15-m\d+/.test(n) },
-  { runner: 'run-phase16-25-tests', test: (n) => /^p(1[6-9]|2[0-5])-/.test(n) },
+  // Phase 16 and later; the runner has no upper bound, so a new phase needs no
+  // new entry here.
+  { runner: 'run-phase16-25-tests', test: (n) => /^p(1[6-9]|[2-9]\d|\d{3,})-/.test(n) },
 ];
 
 // Anything the conventions above miss is run by the unphased runner, which
