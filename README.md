@@ -1,5 +1,10 @@
 # S-Structures
 
+## 실행물과 개발 자료 분리 (2026-09-13)
+
+독립 실행물은 `python tools/export-runtime.py <새 출력 폴더>`로 만듭니다. Node.js가 필요하며 사용자 데이터는 별도입니다. 과거 Phase 문서는 [보관 영역](docs/archive/README.md), 현재 개발 상태는 [Phase25](docs/phase25/README.md)를 확인하십시오. 테스트·verification은 개발 근거로 유지하고 실행물에서는 제외합니다. [폴더 구조와 운영 규칙](docs/WORKSPACE_LAYOUT.md)을 참고하십시오.
+
+
 **브라우저에서 구조 모델링·해석·결과 검토를 수행하고, WebMCP로 에이전트가 같은 모델의 입력·검토·보완·출력을 제어하는 구조해석 웹앱입니다.**
 
 [웹에서 실행](https://m-ill.github.io/s-structures/) · [로컬 실행](#로컬-실행) · [현재 개발 상태](docs/phase25/CLOSURE_AUDIT.md) · [RC 검토·WebMCP 실행 안내](docs/phase25/USAGE.md) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md)
@@ -98,7 +103,7 @@ SB1처럼 수치 정밀도 수준에서 일치하는 항목도 있지만, **21�
 
 위 표는 기존 기본 도구 9개입니다. 도구 목록과 인수는 현재 런타임에 등록된 schema를 기준으로 확인합니다. RC 제공 상세·후보·출력 경로는 [Phase25 실행 안내](docs/phase25/USAGE.md)를 따릅니다. 입력 복제본과 해시로 실행을 묶고, 같은 요청 ID의 재시도는 기존 작업을 반환합니다. 모델이 바뀌면 결과에 `stale`을 표시합니다. typed 입력 변경은 검토·적용 계약을 따르며 임의 코드 실행은 노출하지 않습니다.
 
-탄성설계 추가 도구와 app 호스트 사용법은 [M4 계약](docs/phase19/M4_CONTRACT.md), 비선형 도구는 [M5~M10 계약](docs/phase19/M5_M10_CANDIDATE.md)에 있습니다. 일반 브라우저 UI와 WebMCP 지원 여부는 별개입니다. API가 없는 브라우저에서는 일반 UI를 사용하며 iframe 안에서는 도구를 등록하지 않습니다. 브라우저·제품별 지원 조건과 호출 계약은 [WebMCP 안내](docs/WEBMCP.md)를 참고하세요.
+탄성설계 추가 도구와 app 호스트 사용법은 [M4 계약](docs/archive/phase19/M4_CONTRACT.md), 비선형 도구는 [M5~M10 계약](docs/archive/phase19/M5_M10_CANDIDATE.md)에 있습니다. 일반 브라우저 UI와 WebMCP 지원 여부는 별개입니다. API가 없는 브라우저에서는 일반 UI를 사용하며 iframe 안에서는 도구를 등록하지 않습니다. 브라우저·제품별 지원 조건과 호출 계약은 [WebMCP 안내](docs/WEBMCP.md)를 참고하세요.
 
 ## 실행하기
 
@@ -146,7 +151,7 @@ npm run test:p18
 | [RC 검토 실행 안내](docs/phase25/USAGE.md) | 현재 소스의 입력→해석→보완→출력 및 배포 구분 |
 | [사용자 매뉴얼](docs/user-manual/README.md) | 모델링·해석·결과·보고서 사용법 |
 | [21개 비교표](docs/verification/STRIX21_COMPARISON.md) | Reference와의 수치 비교 및 사례별 판정 |
-| [P18 엔진 상태](docs/phase18/IMPLEMENTATION_STATUS.md) | 엔진 실행 경로와 동일모델 입력 보류 항목 |
+| [P18 엔진 상태](docs/archive/phase18/IMPLEMENTATION_STATUS.md) | 엔진 실행 경로와 동일모델 입력 보류 항목 |
 | [검증 워크스페이스](verification/README.md) | 명세·테스트·실행 증거의 구조 |
 | [WebMCP 안내](docs/WEBMCP.md) | 지원 환경·도구 계약·실행 제한 |
 | [Release](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908) | 공개 소스, 실행 ZIP, 로컬·GitHub CI 증거, SHA-256 |

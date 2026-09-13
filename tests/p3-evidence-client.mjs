@@ -75,7 +75,7 @@ try {
   assert.equal(finalListed.finalApprovalReview.acceptedCount, 1);
   assert.equal(finalListed.ownerSignoffReview.deploymentApprovalGroup.accepted, false);
 
-  const serverPlan = readFileSync('docs/phase3/SERVER_API_PLAN.md', 'utf8');
+  const serverPlan = readFileSync('docs/archive/phase3/SERVER_API_PLAN.md', 'utf8');
   const launchVerification = readFileSync('verification/specs/P3_M20_LAUNCH_READINESS_VERIFICATION.md', 'utf8');
   assert.match(serverPlan, /finalApprovalReview/);
   assert.match(serverPlan, /ownerSignoffReview/);

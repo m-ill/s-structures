@@ -1,0 +1,213 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "TH1 | SDOF Newmark time-history anchor",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "TH1-MAT",
+            "version": 1,
+            "name": "TH1 elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "TH1-SEC",
+            "version": 1,
+            "name": "TH1 display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "TH1-GROUND",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "TH1-MASS",
+            "x": 0,
+            "y": 0,
+            "z": 4,
+            "mass": [
+              10,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "members": [
+          {
+            "id": "TH1-SPRING-VIS",
+            "type": "frame",
+            "n1": "TH1-GROUND",
+            "n2": "TH1-MASS",
+            "matId": "TH1-MAT",
+            "secId": "TH1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "sdof-spring-axis"
+          }
+        ],
+        "shells": [],
+        "links": [
+          {
+            "id": "TH1-SPRING",
+            "type": "twoNodeLink6Dof",
+            "i": "TH1-GROUND",
+            "j": "TH1-MASS",
+            "stiffness": [
+              400,
+              1000000000000,
+              1000000000000,
+              1000000000000,
+              1000000000000,
+              1000000000000
+            ],
+            "damping": [
+              20,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "loads": [],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "TH1 benchmark load",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "analysisCases": [
+          {
+            "id": "TH1-THA",
+            "kind": "timeHistory",
+            "settings": {
+              "method": "newmark-average-acceleration",
+              "beta": 0.25,
+              "gamma": 0.5,
+              "dt": 0.02,
+              "functionId": "TH1-GM"
+            }
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "linear_static",
+          "elementType": "3d_frame",
+          "includeShearDeformation": false,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-TH1-UI-R4",
+          "name": "TH1 | SDOF Newmark time-history anchor",
+          "benchmarkId": "TH1",
+          "verificationBoundary": "ENGINE_CHECKPOINT",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "production-engine qualification fixture topology",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        },
+        "timeHistoryFunctions": [
+          {
+            "id": "TH1-GM",
+            "type": "acceleration",
+            "dt": 0.02,
+            "values": [
+              0,
+              0.12,
+              -0.08,
+              0.18,
+              -0.11,
+              0.05,
+              0
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": true,
+    "mid": true,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

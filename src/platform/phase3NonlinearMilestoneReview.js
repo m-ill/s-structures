@@ -66,9 +66,9 @@ export function buildPhase3NonlinearMilestoneReview() {
     version: PHASE3_NONLINEAR_MILESTONE_REVIEW_VERSION,
     scope: 'P3-M14 to P3-M16 nonlinear engine',
     sourceDocs: [
-      'docs/phase3/NONLINEAR_ENGINE_PLAN.md',
-      'docs/phase3/ROADMAP.md',
-      'docs/phase3/IMPLEMENTATION_BACKLOG.md',
+      'docs/archive/phase3/NONLINEAR_ENGINE_PLAN.md',
+      'docs/archive/phase3/ROADMAP.md',
+      'docs/archive/phase3/IMPLEMENTATION_BACKLOG.md',
     ],
     rows,
     summary: {
@@ -132,7 +132,7 @@ function criterion(id, requirement, evidence, ticket) {
     requirement,
     evidence,
     ticket,
-    source: 'docs/phase3/NONLINEAR_ENGINE_PLAN.md',
+    source: 'docs/archive/phase3/NONLINEAR_ENGINE_PLAN.md',
     status: 'automated',
   };
 }

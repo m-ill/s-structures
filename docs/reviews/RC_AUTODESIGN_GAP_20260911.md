@@ -6,7 +6,7 @@
 
 - 원본 결과: `output/phase21/m6-pilot-node-r5/review.json`
 - 입력: `output/phase21/m6-pilot-node-r5/input-book.json`의 pages[0].model
-- 이전 설명: `docs/phase21/PILOT_RETEST_REPORT.md`
+- 이전 설명: `docs/archive/phase21/PILOT_RETEST_REPORT.md`
 - 현재 소스 기준: ed24e04
 
 NG 76건은 RC 부재 내력 실패만을 센 값이 아니다. concrete/connection/foundation/serviceability가 합쳐진 5,724개 검사 행의 집계다. 같은 부재가 여러 조합에서 반복 집계된다. 기존 'RC 검토 NG 76건·실패 부재 13개' 문구는 이 구분 없이 읽으면 오해를 만든다.

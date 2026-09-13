@@ -38,7 +38,7 @@ assert.deepEqual(review.rows.map((row) => row.exitCriteria.length), [5, 6]);
 assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M19-T58').ticket, 'P3-T58');
 assert.ok(review.rows[0].exitCriteria.find((row) => row.id === 'M19-GATE').requirement.includes('final structural sign-off'));
 assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M19-T62').evidence, 'npm.cmd run test:p3');
-assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'M20-T63').source, 'docs/phase3/QA_RELEASE_PLAN.md');
+assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'M20-T63').source, 'docs/archive/phase3/QA_RELEASE_PLAN.md');
 assert.ok(review.rows[1].exitCriteria.find((row) => row.id === 'M20-T66').requirement.includes('Performance, security, backup/restore'));
 assert.ok(review.rows[1].exitCriteria.find((row) => row.id === 'M20-GATE').requirement.includes('owner deployment approval'));
 assert.equal(review.summary.milestoneCount, 2);

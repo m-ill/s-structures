@@ -145,9 +145,9 @@ export function buildPhase3EvidenceRegister(input = {}) {
     version: PHASE3_EVIDENCE_REGISTER_VERSION,
     scope: 'Structured Phase 3 field, engineering, and owner evidence register',
     sourceDocs: [
-      'docs/phase3/IMPORT_DXF_DWG_PLAN.md',
-      'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md',
-      'docs/phase3/QA_RELEASE_PLAN.md',
+      'docs/archive/phase3/IMPORT_DXF_DWG_PLAN.md',
+      'docs/archive/phase3/IMPORT_POINT_CLOUD_PLAN.md',
+      'docs/archive/phase3/QA_RELEASE_PLAN.md',
       'verification/specs/P3_M6_M20_COMPLETION_AUDIT.md',
     ],
     rows,

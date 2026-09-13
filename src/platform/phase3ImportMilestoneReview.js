@@ -70,9 +70,9 @@ export function buildPhase3ImportMilestoneReview() {
     version: PHASE3_IMPORT_MILESTONE_REVIEW_VERSION,
     scope: 'P3-M6 to P3-M9 input pipeline',
     sourceDocs: [
-      'docs/phase3/P3_M6_M9_REBUILD_ORDER.md',
-      'docs/phase3/IMPORT_DXF_DWG_PLAN.md',
-      'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md',
+      'docs/archive/phase3/P3_M6_M9_REBUILD_ORDER.md',
+      'docs/archive/phase3/IMPORT_DXF_DWG_PLAN.md',
+      'docs/archive/phase3/IMPORT_POINT_CLOUD_PLAN.md',
     ],
     rows,
     summary: {
@@ -110,8 +110,8 @@ function criterion(id, requirement, evidence) {
     evidence,
     status: 'automated',
     source: id.startsWith('M8') || id.startsWith('M9')
-      ? 'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md'
-      : 'docs/phase3/IMPORT_DXF_DWG_PLAN.md',
+      ? 'docs/archive/phase3/IMPORT_POINT_CLOUD_PLAN.md'
+      : 'docs/archive/phase3/IMPORT_DXF_DWG_PLAN.md',
   };
 }
 

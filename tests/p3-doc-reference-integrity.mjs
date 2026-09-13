@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, sep } from 'node:path';
 import { remapLegacyVerificationPath } from '../verification/workspace-paths.mjs';
 
-const roots = ['docs/phase3', 'docs/phase9', 'verification/specs', 'docs/user-manual'];
+const roots = ['docs/archive/phase3', 'docs/archive/phase9', 'verification/specs', 'docs/user-manual'];
 const docs = roots.flatMap((root) => listFiles(root).filter((file) => /\.(md|json)$/.test(file)));
 const refs = docs.flatMap((file) => extractRefs(file, readFileSync(file, 'utf8')));
 const missing = refs.filter((item) => !referenceExists(item.ref));
@@ -42,7 +42,9 @@ function isLocalFileRef(value) {
 }
 
 function referenceExists(ref) {
-  const canonical = remapLegacyVerificationPath(ref.replaceAll(sep, '/')).replaceAll('/', sep);
+  // Historical evidence retains original paths; resolve relocated Phase docs.
+  const archived = ref.replaceAll(sep, '/').replace(/^docs\/(phase(?:[2-9]|1[0-9]|2[0-4])|post-phase5)\//, 'docs/archive/$1/');
+  const canonical = remapLegacyVerificationPath(archived).replaceAll('/', sep);
   if (!canonical.includes('*')) return existsSync(canonical);
   const dir = dirname(canonical);
   if (!existsSync(dir)) return false;

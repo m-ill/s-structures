@@ -1,0 +1,311 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-manifest-r4",
+  "capturedAt": "2026-08-30",
+  "browser": "Google Chrome headed channel",
+  "caseCount": 20,
+  "passedCount": 20,
+  "allPassed": true,
+  "contactSheet": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\STRIX21_S-Structures_실제모델링_20개_콘택트시트_R4.png",
+  "cases": [
+    {
+      "id": "SB2",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 32,
+        "members": 52,
+        "shells": 21,
+        "links": 0,
+        "loads": 8
+      },
+      "modelBookSha256": "acf51b45ab1a38bf98a121485facbbb0c7d4fc11ccb0aa1a056f51cd1733df1a",
+      "screenshotSha256": "eacd88acfdebe0e87011c82a81a44b65d58eb844a78562247db055646a573dab",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB2\\SB2_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\02_SB2_NAFEMS_LE1_Elliptic_Membrane\\05_보고서\\figures\\03_SB2_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SB3",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 54,
+        "members": 93,
+        "shells": 40,
+        "links": 0,
+        "loads": 6
+      },
+      "modelBookSha256": "4a5c50a79a541493ae55e037d94393663025795f943efa2248787f1d0cd95ad0",
+      "screenshotSha256": "ff41efa41bf7c85b4622dbb5a4847df4394e4b1f4107b3e2529c805b17cba6f7",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB3\\SB3_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\03_SB3_Cooks_Membrane\\05_보고서\\figures\\03_SB3_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SB5",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 63,
+        "members": 110,
+        "shells": 48,
+        "links": 0,
+        "loads": 1
+      },
+      "modelBookSha256": "3252c2f9c3079d57949248d568bc93f444f6ead91778abc900d8c21edd460564",
+      "screenshotSha256": "885c78a1fa73c24f5d1d29d2082d0a988f5255f52d775556a7315ab47e891ca3",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB5\\SB5_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\04_SB5_Thin_Rectangular_Plate\\05_보고서\\figures\\03_SB5_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SB6",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 35,
+        "members": 58,
+        "shells": 24,
+        "links": 0,
+        "loads": 1
+      },
+      "modelBookSha256": "1556b481420817a50dcca2fee0d2946a3e8f35c39c2f421d1b6b763e80cee915",
+      "screenshotSha256": "db2bbbd1c6c433026f6330b5db07a7dce9cdd00e2a29dce07a7e0005c26a2d96",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB6\\SB6_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\05_SB6_Thick_Rectangular_Plate\\05_보고서\\figures\\03_SB6_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SB7",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 34,
+        "members": 33,
+        "shells": 0,
+        "links": 0,
+        "loads": 1
+      },
+      "modelBookSha256": "2d1f1a9ad8b9a9eaf03188b41bb3aebc99a59cc789fb48a3a96a4299a9d5d6e3",
+      "screenshotSha256": "7581e7b2f140b1c2080e2bce755804065d1c3dbbfa9773837ae7553e8088cfd8",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB7\\SB7_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\06_SB7_Winkler_Beam\\05_보고서\\figures\\03_SB7_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SB8",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 17,
+        "members": 16,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "modelBookSha256": "d8a3913f3f79f4836aac898238dfb8b341a3c0026a433875ce36a8187fd78004",
+      "screenshotSha256": "9115d7303023e36ff0392342e3d37e86f1a00ccabee3f66489da75ec42732cf7",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB8\\SB8_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\07_SB8_Timoshenko_Beam_Frequencies\\05_보고서\\figures\\03_SB8_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SB9",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 11,
+        "members": 10,
+        "shells": 0,
+        "links": 0,
+        "loads": 8
+      },
+      "modelBookSha256": "2e2b27c47bf398223b65e6869259c6f983cdf5ecafb05a73f82b2758e9c86d76",
+      "screenshotSha256": "ac8cfa1cbaa8a55825c2359bf6aa472fc68017e83f9d0f29eb6c3c8edf94a923",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB9\\SB9_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\08_SB9_Portal_Frame_UDL\\05_보고서\\figures\\03_SB9_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SB10",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 3,
+        "members": 2,
+        "shells": 0,
+        "links": 0,
+        "loads": 2
+      },
+      "modelBookSha256": "2cb3d115b124172ba81545b995e232b55c2c2774f5c30bf60f44590cb60d2fb6",
+      "screenshotSha256": "4c06f7fabd92c3fb94df64a45450dd65bb223593b1128fd19520ee9de56aeccf",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB10\\SB10_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\09_SB10_Two_Bar_Truss\\05_보고서\\figures\\03_SB10_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SB12",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 4,
+        "members": 2,
+        "shells": 0,
+        "links": 2,
+        "loads": 2
+      },
+      "modelBookSha256": "5745de1a51a520ae21e2f83795814eccef410e7dc3f943979b3028d034003bb8",
+      "screenshotSha256": "4145d67ac4539c8a23b0e8a92e22fc63d6c78fa4c2067e3d1679f996bca5cdaf",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB12\\SB12_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\10_SB12_Elastic_Link_Beta_Angle\\05_보고서\\figures\\03_SB12_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "PD1",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 17,
+        "members": 16,
+        "shells": 0,
+        "links": 0,
+        "loads": 17
+      },
+      "modelBookSha256": "b1f68cf2dfbdf9e8fd4a5f1567fc2ace939e7727f7ab19a09f023f8c1f2411b7",
+      "screenshotSha256": "3c44362f3f7cf4c338938d04ab32dc3c8a9f3e326c87606c397b0c7c5154d3de",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\PD1\\PD1_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\11_PD1_PDelta_Tension_Stiffening\\05_보고서\\figures\\03_PD1_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SM5",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 110,
+        "members": 189,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "modelBookSha256": "24f74430758c1e4b1e66ad934913ffc2fbb2dcacb7d1fd3fe57df0e1bd4f6987",
+      "screenshotSha256": "8536f7962be2325a7b123b75f9a9d2d9f08eb3d68cfe88dac7b0857182c0d615",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SM5\\SM5_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\12_SM5_Bathe_Wilson_Frame\\05_보고서\\figures\\03_SM5_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SM5b",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 16,
+        "members": 24,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "modelBookSha256": "89367c02083825ead445b530f8035f6b1f4b7f43273dd58fd8bd75f205090a5e",
+      "screenshotSha256": "b489b0b9be84acd2c1c3d1b8cf779df0381e5b7d0d83a0a76565edcdc5f157ba",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SM5b\\SM5b_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\13_SM5b_Rigid_Diaphragm_Condensation\\05_보고서\\figures\\03_SM5b_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SM6",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 16,
+        "members": 24,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "modelBookSha256": "ac09d8951239b0b658c8054848e868077f54cdbe4b617d293a3d985693b575e6",
+      "screenshotSha256": "27a5d1447ae17459daaa2ca6682fa2c7fcd992bdbee0b7ea30ddd2ac636f14a4",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SM6\\SM6_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\14_SM6_ASME_3D_Eigen_Frame\\05_보고서\\figures\\03_SM6_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SR1",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 20,
+        "members": 28,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "modelBookSha256": "ecce63bd1a73095168217a2c24d08f3ab631937565d4dfc796ce7bbde3cac515",
+      "screenshotSha256": "a1c43d1cf3b9b0d8568bce5d5bf1b3465f7a55f317fed7f849169285d9a1cb63",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SR1\\SR1_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\15_SR1_Two_Dimensional_Response_Spectrum\\05_보고서\\figures\\03_SR1_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SR2",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 12,
+        "members": 16,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "modelBookSha256": "09680a3828497d514dfb372642992829cfb89819a1f08e166cf044c523fa01cd",
+      "screenshotSha256": "c70997aa7e57d8795c5d1704234a9a59b6d6ddee085053dd47ca148e236fd6d7",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SR2\\SR2_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\16_SR2_Three_Dimensional_Eccentric_RSA\\05_보고서\\figures\\03_SR2_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SR2b",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 18,
+        "members": 28,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "modelBookSha256": "ceeda0316f02d397f13b1d4a875941cfc2220174e30dcb2b2316f345a3818743",
+      "screenshotSha256": "d0faea3107ffbdb5d6fd5309250be3ae326ad274795184cbc7faa34fc52e52cf",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SR2b\\SR2b_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\17_SR2b_L_Shaped_Braced_RSA\\05_보고서\\figures\\03_SR2b_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "P3S2",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 60,
+        "members": 104,
+        "shells": 45,
+        "links": 0,
+        "loads": 0
+      },
+      "modelBookSha256": "6d4e869ef5339b91f2787c23fcf7a519fc4a5f15cf638a314e45f8053e8ab20c",
+      "screenshotSha256": "f5a8272cb736bb7be2b8b6a96c11bd350d39d6abffd7b5e32b874231490045d0",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\P3S2\\P3S2_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\18_P3S2_Stabilization_Sensitivity\\05_보고서\\figures\\03_P3S2_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SP1",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 9,
+        "members": 8,
+        "shells": 0,
+        "links": 0,
+        "loads": 1
+      },
+      "modelBookSha256": "8a784f79bb88537cbb57e9b322c067d261b2e981f1a78af08a15d444639635c2",
+      "screenshotSha256": "7830101afa89475764db796ab31933a518f499f893979af1b5155ad8182d6ed1",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SP1\\SP1_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\19_SP1_Pushover_Moment_Hinge\\05_보고서\\figures\\03_SP1_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "SH1",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 3,
+        "members": 2,
+        "shells": 0,
+        "links": 0,
+        "loads": 3
+      },
+      "modelBookSha256": "c1169177fa191bca2a4fc4c8eaff722b02dafb7388b1cb8db6306373b49bdeae",
+      "screenshotSha256": "b387d964dc3f6deb0bdebf10e9c74a33c36168672a4ae67e3d7618f27db0d359",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SH1\\SH1_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\20_SH1_PMM_Hinge\\05_보고서\\figures\\03_SH1_S-Structures_실제모델링_R4.png"
+    },
+    {
+      "id": "TH1",
+      "capturePassed": true,
+      "modelCounts": {
+        "nodes": 2,
+        "members": 1,
+        "shells": 0,
+        "links": 1,
+        "loads": 0
+      },
+      "modelBookSha256": "f4164ff54059252a29f5d0458de5918eb276d921c27a662b65503a4192431208",
+      "screenshotSha256": "9526081221a4a02ebec5113b52719e99e4be6d0f0c20a9af3f76f0d262fbbc69",
+      "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\TH1\\TH1_S-Structures_실제모델링_R4.png",
+      "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\21_TH1_SDOF_Newmark_THA\\05_보고서\\figures\\03_TH1_S-Structures_실제모델링_R4.png"
+    }
+  ]
+}

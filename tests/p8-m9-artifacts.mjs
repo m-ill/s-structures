@@ -45,7 +45,7 @@ for (const row of artifact.results) {
 }
 
 const adr = await readFile(
-  new URL('../docs/phase8/adr/ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md', import.meta.url),
+  new URL('../docs/archive/phase8/adr/ADR-009-MODEL-INTEGRATION-RESULT-ORIGIN-STALE.md', import.meta.url),
   'utf8',
 );
 assert.match(adr, /active-set/i);

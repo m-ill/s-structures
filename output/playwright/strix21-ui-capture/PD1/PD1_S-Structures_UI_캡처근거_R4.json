@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-evidence-r4",
+  "capturedAt": "2026-08-30",
+  "caseId": "PD1",
+  "browser": "Google Chrome headed channel",
+  "application": "S-Structures native modeler",
+  "appUrl": "http://127.0.0.1:15174/index.html?engine_ui=1",
+  "view": "front",
+  "verificationBoundary": "NUMERIC_PASS_QUALIFICATION_OPEN",
+  "modelBook": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\11_PD1_PDelta_Tension_Stiffening\\02_모델\\PD1_S-Structures_실제모델_R4.json",
+  "modelBookSha256": "b1f68cf2dfbdf9e8fd4a5f1567fc2ace939e7727f7ab19a09f023f8c1f2411b7",
+  "expectedCounts": {
+    "nodes": 17,
+    "members": 16,
+    "shells": 0,
+    "links": 0,
+    "loads": 17
+  },
+  "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\PD1\\PD1_S-Structures_실제모델링_R4.png",
+  "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\11_PD1_PDelta_Tension_Stiffening\\05_보고서\\figures\\03_PD1_S-Structures_실제모델링_R4.png",
+  "screenshotSha256": "3c44362f3f7cf4c338938d04ab32dc3c8a9f3e326c87606c397b0c7c5154d3de",
+  "image": {
+    "width": 1600,
+    "height": 900,
+    "variance": 1811.1424161603024,
+    "nonblank": true
+  },
+  "checks": {
+    "browserCaptureExists": true,
+    "nativeModelBookExists": true,
+    "benchmarkIdBound": true,
+    "expectedCollectionCountsRecorded": true,
+    "centerFitAppliedTwice": true,
+    "reportFigureCopied": true
+  },
+  "capturePassed": true
+}

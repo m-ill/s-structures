@@ -36,7 +36,7 @@ assert.equal(manifest.modules.phase8FiberHingeInteraction, FIBER_HINGE_INTERACTI
 assert.equal(manifest.modules.phase8DistributedFiberFrame3d, DISTRIBUTED_FIBER_FRAME_3D_VERSION);
 assert.equal(manifest.milestones.find((row) => row.id === 'P8-M6')?.status, 'candidate');
 for (const path of [
-  '../docs/phase8/adr/ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md',
+  '../docs/archive/phase8/adr/ADR-004-FIBER-PMM-SOURCE-AND-COUPLING.md',
   '../verification/evidence/validation/phase8/p8-m6-code-review.md',
 ]) {
   assert.ok(readFileSync(new URL(path, import.meta.url), 'utf8').length > 500, path);

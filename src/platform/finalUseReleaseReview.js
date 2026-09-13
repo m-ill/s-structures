@@ -41,7 +41,7 @@ export function buildFinalUseReleaseReview(input = {}) {
       'docs/user-manual/PHASE3_REMAINING_REVIEW.md',
       'docs/user-manual/PHASE3_LAUNCH_MANUAL.md',
       'docs/user-manual/STATUS_AND_LIMITS.md',
-      'docs/phase5/MILESTONE_STATUS.md',
+      'docs/archive/phase5/MILESTONE_STATUS.md',
     ],
     rows,
     summary: {

@@ -30,7 +30,7 @@ from reportlab.platypus import (
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VAULT_ROOT = REPO_ROOT.parent
-CASE_ROOT = VAULT_ROOT / "testreport" / "STRIX-21-검증"
+CASE_ROOT = VAULT_ROOT / "자료" / "testreport" / "STRIX-21-검증"
 P18_ROOT = REPO_ROOT / "verification" / "benchmarks" / "strix21" / "milestones" / "P18"
 P18A_ROOT = REPO_ROOT / "verification" / "benchmarks" / "strix21" / "milestones" / "P18A"
 REPORT_ROOT = REPO_ROOT / "output" / "reports" / "strix-reference-sstructures-comparison"
@@ -497,7 +497,7 @@ main{{padding:0 24px 72px}} .notice{{background:#FFF7DE;border-left:5px solid va
 {''.join(sections)}
 <section><div class="section-head"><div><span class="eyebrow">Supplemental</span><h2>추가 교차검증 — 공식 21개와 별도</h2></div><span>1/2 완료</span></div><div class="table-wrap"><table><thead><tr><th>검증</th><th>문제</th><th>STRIX</th><th>Program A</th><th>기준값</th><th>S-Structures</th><th>Δ 기준</th><th>판정</th></tr></thead><tbody>{''.join(supplemental_rows)}</tbody></table></div><p class="muted">XV1 M1: S-Structures 1.756790 mm, Program A 대비 −0.000090%. XV1 M16: 기준값 대비 −0.234%. XV2는 공유 MGT와 정확한 복원 mapping이 없어 보류했습니다.</p></section>
 <section><div class="section-head"><div><span class="eyebrow">Claim boundary</span><h2>남은 6개와 판정 경계</h2></div></div><div class="legend"><div><strong>SB12</strong><br>N2 좌표·링크 강성·하중</div><div><strong>SM5b·SM6</strong><br>질량 mapping·중간 절점</div><div><strong>SR1·SR2·SR2b</strong><br>질량·단면·스펙트럼·위상</div><div><strong>외부 공식 PASS 0</strong><br>독립 외부 실행 증거 없음</div></div><p>따라서 “기능이 없다”가 아니라 “공개 PDF만으로 동일 입력을 잠글 수 없다”가 정확한 상태입니다.</p></section></div></main>
-<footer><div class="inner">Source: <a href="{PUBLIC_PAGE}">{PUBLIC_PAGE}</a> | Local evidence: testreport/STRIX-21-검증 and verification/benchmarks/strix21/milestones/P18 + P18A</div></footer></body></html>"""
+<footer><div class="inner">Source: <a href="{PUBLIC_PAGE}">{PUBLIC_PAGE}</a> | Local evidence: 자료/testreport/STRIX-21-검증 and verification/benchmarks/strix21/milestones/P18 + P18A</div></footer></body></html>"""
     path = REPORT_ROOT / "index.html"
     path.write_text(page, encoding="utf-8")
     return path
@@ -772,7 +772,7 @@ def build_pdf(document, status_figure: Path, error_figure: Path):
         PageBreak(),
         p("8. 출처와 재현", styles["h1"]),
         p(f"공개 비교표: {PUBLIC_PAGE}", styles["body"]),
-        p("로컬 문제별 evidence: testreport/STRIX-21-검증/<CASE>/", styles["body"]),
+        p("로컬 문제별 evidence: 자료/testreport/STRIX-21-검증/<CASE>/", styles["body"]),
         p("Phase 18 engine evidence: S-Structures-main/verification/benchmarks/strix21/milestones/P18/<CASE>/", styles["body"]),
         p("추가 실행 evidence: S-Structures-main/verification/benchmarks/strix21/milestones/P18A/p18a-additional-comparison-evidence.json", styles["body"]),
         p("생성 산출물", styles["h2"]),

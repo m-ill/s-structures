@@ -22,7 +22,7 @@ const preservedArtifacts = collectArtifacts([
   ['phase14-m0-baseline', 'governance-evidence', 'verification/evidence/validation/phase14/p14-m0-governance-baseline.json'],
 ]);
 const expectedImportAudit = auditProductionExpectedImports('src');
-const phase14StatusPath = 'docs/phase14/IMPLEMENTATION_STATUS.md';
+const phase14StatusPath = 'docs/archive/phase14/IMPLEMENTATION_STATUS.md';
 const phase14Status = readFileSync(phase14StatusPath, 'utf8');
 const phase14M0Test = readFileSync('tests/p14-m0-governance-baseline.mjs', 'utf8');
 const artifact = buildPhase15CorrectiveBaseline({

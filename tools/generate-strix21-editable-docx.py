@@ -21,7 +21,7 @@ from docx.shared import Inches, Pt, RGBColor
 
 REPO = Path(__file__).resolve().parents[1]
 VAULT = REPO.parent
-CASE_ROOT = VAULT / "testreport/STRIX-21-검증"
+CASE_ROOT = VAULT / "자료/testreport/STRIX-21-검증"
 R3_SCRIPT = REPO / "tools/render-strix21-engine-reports-r3.py"
 CAPTURE_ROOT = REPO / "output/playwright/strix21-ui-capture"
 OUTPUT_ROOT = REPO / "output/docx/STRIX21-editable"

@@ -5,7 +5,7 @@
 ## 조사 기준과 한계
 
 - HEAD `ed24e04809957754cdde38e7b949d7c184a0fd2b`, branch `work/phase21-consistency-20260910`, 기존 dirty/untracked 작업 보존.
-- [Phase24 계획](../phase24/WORKPACKAGES.md)의 완료 조건과 실제 호출 코드·필수검사·입력·도면·evidence를 대조했다. 이름이 있는 함수나 시험 파일의 존재만으로 완료를 판정하지 않았다.
+- [Phase24 계획](../archive/phase24/WORKPACKAGES.md)의 완료 조건과 실제 호출 코드·필수검사·입력·도면·evidence를 대조했다. 이름이 있는 함수나 시험 파일의 존재만으로 완료를 판정하지 않았다.
 - [기준선](../../verification/evidence/phase25/audit-20260911/baseline.json)에 기록한 구현 관련 767파일은 Phase24 4차 cohort와 해시가 일치했다.
 - [6개 읽기 전용 관찰](../../verification/evidence/phase25/audit-20260911/observations.json)은 34ms의 합성 수요 평가다. 실제 solver·브라우저·건물·전체 회귀를 실행하지 않았다. 아래 재현은 수치의 실무 적합성을 입증하는 oracle 시험이 아니다.
 - KCSC 공식 [API 안내](https://www.kcsc.re.kr/support/api)와 [기준 뷰어](https://www.kcsc.re.kr/standardCode/viewer/KDS)를 조회했다. 동적 페이지의 본문은 이번 웹 도구에서 추출되지 않아 새 판본/조항 검증으로 집계하지 않는다. 현재 조항 근거는 기존 공식 원문 9건과 [취득 manifest](../../verification/evidence/phase24/kcsc/retrieval-manifest.json)이다. 건축물 하중·내진·기초/지반·KS 철근 등 추가 규칙과 현행/프로젝트 적용 판본은 M0에서 확정한다.
@@ -58,9 +58,9 @@
 | G27 / P1 | KDS 참조는 출력되지만 완전한 계산서에는 check별 적용 변수·대입식·중간값·수요/단면/판정 연결이 필요. 도면 생성 중 형상 길이도 계산함 | [code basis formatter](../../src/report/designCodeBasisFormat.js), [drawing builder](../../src/report/phase24/detailDrawings.js), [review report](../../src/report/phase19/designReviewReport.js) | M8 |
 | G28 / P2 | UI 결과 첫20/50행 뒤 탐색이 없고, 단면 적용 후도 재사용 안내 문구. API 제한/설명과 서비스 실제 범위 일부 불일치; 부분 결과를 전체처럼 읽을 가능성 | [UI](../../src/ui/indexPracticalDesign.js), [tool schemas](../../src/ui/webmcp/practicalTools.js) | M9 |
 | G29 / P1 | Book/체크포인트/undo 기반은 구현됨. 다음 규칙/상세/작업 상태 버전의 migration, 실행 중 중단·재접속·작업 replay·export stale의 전 경로 확인 잔여 | [workflowCheckpoint](../../src/compute/product/workflowCheckpoint.js), [restoreState](../../src/compute/product/practicalWorkflowService.js), [io](../../src/core/io.js) | M9 |
-| G30 / P1 | 후속 종합검증 Q01~Q09, 독립 수치 대조·전체 메모리·환경/도면·출시 판정 미실행. 구현 잔여와 다른 종류의 미완료 | [Q 계획](../phase24/TDD_VALIDATION_PLAN.md), [집중 실행 내역](../../verification/evidence/phase24/final-20260911-04/SUMMARY.json) | M10→Q |
-| G31 / P2 | 철골은 예비 부재검토, 목재/조적은 입력·지원경계. 전용 KDS 규칙/접합/자동 상세는 원래 후속 제안. RC 미완료와 함께 완료로 표시할 수 없음 | [router](../../src/design/evaluation/designEvaluation.js), [Phase24 범위](../phase24/README.md) | M0→E |
-| G32 / P2 | 계획/아키텍처/TDD 문서에 '신설 제안/미구현' 과거 문장이 남고 일부 최신 기능표와 다름. README·capability·검증 cohort·배포 상태를 함께 정리해야 함 | [Phase24 정본](../phase24/README.md), [구현 상태](../phase24/IMPLEMENTATION_STATUS.md), [아키텍처](../phase24/TARGET_ARCHITECTURE.md) | M0/M10 |
+| G30 / P1 | 후속 종합검증 Q01~Q09, 독립 수치 대조·전체 메모리·환경/도면·출시 판정 미실행. 구현 잔여와 다른 종류의 미완료 | [Q 계획](../archive/phase24/TDD_VALIDATION_PLAN.md), [집중 실행 내역](../../verification/evidence/phase24/final-20260911-04/SUMMARY.json) | M10→Q |
+| G31 / P2 | 철골은 예비 부재검토, 목재/조적은 입력·지원경계. 전용 KDS 규칙/접합/자동 상세는 원래 후속 제안. RC 미완료와 함께 완료로 표시할 수 없음 | [router](../../src/design/evaluation/designEvaluation.js), [Phase24 범위](../archive/phase24/README.md) | M0→E |
+| G32 / P2 | 계획/아키텍처/TDD 문서에 '신설 제안/미구현' 과거 문장이 남고 일부 최신 기능표와 다름. README·capability·검증 cohort·배포 상태를 함께 정리해야 함 | [Phase24 정본](../archive/phase24/README.md), [구현 상태](../archive/phase24/IMPLEMENTATION_STATUS.md), [아키텍처](../archive/phase24/TARGET_ARCHITECTURE.md) | M0/M10 |
 
 ## Phase24 인수 판정
 

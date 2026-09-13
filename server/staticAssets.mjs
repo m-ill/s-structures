@@ -2,6 +2,8 @@ import { realpathSync, statSync } from 'node:fs';
 import { extname, isAbsolute, relative, resolve, sep } from 'node:path';
 
 const TOP_LEVEL_ASSETS = new Map([
+  ['/src/agentHarness/check.mjs', 'src/agentHarness/check.mjs'],
+  ['/src/agentHarness/install.mjs', 'src/agentHarness/install.mjs'],
   ['/', 'index.html'],
   ['/index.html', 'index.html'],
   ['/app.html', 'app.html'],
@@ -20,6 +22,7 @@ const SOURCE_EXTENSIONS = new Set(['.js', '.css', '.wasm']);
 export const STATIC_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.wasm': 'application/wasm',
   '.json': 'application/json; charset=utf-8',

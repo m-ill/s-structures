@@ -1,0 +1,244 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "SB12 | Elastic link beta-angle transformation",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "SB12-MAT",
+            "version": 1,
+            "name": "SB12 elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "SB12-SEC",
+            "version": 1,
+            "name": "SB12 display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "SB12-I1",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SB12-J1",
+            "x": 5,
+            "y": 3.33,
+            "z": 2.5
+          },
+          {
+            "id": "SB12-I2",
+            "x": 8,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SB12-J2",
+            "x": 8,
+            "y": 0,
+            "z": 5
+          }
+        ],
+        "members": [
+          {
+            "id": "SB12-VIS1",
+            "type": "frame",
+            "n1": "SB12-I1",
+            "n2": "SB12-J1",
+            "matId": "SB12-MAT",
+            "secId": "SB12-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "elastic-link-axis"
+          },
+          {
+            "id": "SB12-VIS2",
+            "type": "frame",
+            "n1": "SB12-I2",
+            "n2": "SB12-J2",
+            "matId": "SB12-MAT",
+            "secId": "SB12-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "elastic-link-axis"
+          }
+        ],
+        "shells": [],
+        "links": [
+          {
+            "id": "SB12-LINK-OBLIQUE",
+            "type": "twoNodeLink6Dof",
+            "i": "SB12-I1",
+            "j": "SB12-J1",
+            "betaDeg": 25,
+            "shearDistance": 0.5,
+            "stiffness": [
+              480,
+              675,
+              930,
+              8200000,
+              13500000,
+              19800000
+            ]
+          },
+          {
+            "id": "SB12-LINK-VERTICAL",
+            "type": "twoNodeLink6Dof",
+            "i": "SB12-I2",
+            "j": "SB12-J2",
+            "betaDeg": -40,
+            "shearDistance": 0.5,
+            "stiffness": [
+              480,
+              675,
+              930,
+              8200000,
+              13500000,
+              19800000
+            ]
+          }
+        ],
+        "loads": [
+          {
+            "id": "SB12-P1",
+            "type": "nodal",
+            "node": "SB12-J1",
+            "P": 120,
+            "dir": "+x",
+            "case": "D"
+          },
+          {
+            "id": "SB12-P2",
+            "type": "nodal",
+            "node": "SB12-J2",
+            "P": 85,
+            "dir": "-y",
+            "case": "D"
+          }
+        ],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "SB12 benchmark load",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "analysisCases": [
+          {
+            "id": "SB12-LINK",
+            "kind": "static",
+            "settings": {
+              "element": "twoNodeLink6Dof",
+              "betaAngle": true
+            }
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "linear_static",
+          "elementType": "3d_frame",
+          "includeShearDeformation": false,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-SB12-UI-R4",
+          "name": "SB12 | Elastic link beta-angle transformation",
+          "benchmarkId": "SB12",
+          "verificationBoundary": "ENGINE_PASS_OFFICIAL_NOT_CLAIMED",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "production-engine qualification fixture topology",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        }
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": true,
+    "mid": true,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

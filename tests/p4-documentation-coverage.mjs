@@ -16,7 +16,7 @@ const required = [
   'docs/user-manual/STATUS_AND_LIMITS.md',
   'docs/user-manual/AI_AGENT_GUIDE.md',
   'docs/user-manual/agent-contract.json',
-  'docs/phase4/DOCUMENTATION_COVERAGE.md',
+  'docs/archive/phase4/DOCUMENTATION_COVERAGE.md',
 ];
 
 for (const file of required) {
@@ -24,7 +24,7 @@ for (const file of required) {
   assert.ok((await readFile(file, 'utf8')).trim().length > 20, file);
 }
 
-const coverage = await readFile('docs/phase4/DOCUMENTATION_COVERAGE.md', 'utf8');
+const coverage = await readFile('docs/archive/phase4/DOCUMENTATION_COVERAGE.md', 'utf8');
 for (const file of required.slice(0, 12)) assert.match(coverage, new RegExp(escapeRegex(file)));
 assert.doesNotThrow(() => execFileSync(process.execPath, ['tools/check-agent-contract.mjs'], { encoding: 'utf8' }));
 

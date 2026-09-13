@@ -39,7 +39,7 @@ const tampered = structuredClone(first);
 tampered.traceCoverage = 0.5;
 assert.equal(validatePhase15CorrectiveBaseline(tampered).ok, false);
 
-const phase14Status = readFileSync('docs/phase14/IMPLEMENTATION_STATUS.md', 'utf8');
+const phase14Status = readFileSync('docs/archive/phase14/IMPLEMENTATION_STATUS.md', 'utf8');
 const phase14M0Test = readFileSync('tests/p14-m0-governance-baseline.mjs', 'utf8');
 const baselineSchema = JSON.parse(readFileSync('verification/specs/phase15/corrective-baseline-schema.json', 'utf8'));
 assert.equal(baselineSchema.properties.version.const, 'p15-m0-corrective-baseline-v1');

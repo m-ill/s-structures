@@ -39,7 +39,7 @@ const ROWS = [
     'open-source license policy finalization',
     'deployment target selection',
     'field pilot feedback and backup restore owner acceptance',
-  ], ['getPhase3ProductizationMilestoneReview', 'getLaunchReadinessReport'], ['docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md', 'verification/specs/P3_M20_LAUNCH_READINESS_VERIFICATION.md']),
+  ], ['getPhase3ProductizationMilestoneReview', 'getLaunchReadinessReport'], ['docs/archive/phase3/P3_COMPLETION_AUDIT_2026-07-02.md', 'verification/specs/P3_M20_LAUNCH_READINESS_VERIFICATION.md']),
 ];
 
 const EVIDENCE_IDS_BY_DOMAIN = {
@@ -85,9 +85,9 @@ export function buildPhase3PracticeValidationReview(input = {}) {
     version: PHASE3_PRACTICE_VALIDATION_REVIEW_VERSION,
     scope: 'Phase 3 practical validation items before production structural-office use',
     sourceDocs: [
-      'docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md',
-      'docs/phase3/P3_IMPLEMENTATION_AUDIT_2026-07-02.md',
-      'docs/phase3/QA_RELEASE_PLAN.md',
+      'docs/archive/phase3/P3_COMPLETION_AUDIT_2026-07-02.md',
+      'docs/archive/phase3/P3_IMPLEMENTATION_AUDIT_2026-07-02.md',
+      'docs/archive/phase3/QA_RELEASE_PLAN.md',
       'verification/specs/P3_M6_M20_COMPLETION_AUDIT.md',
     ],
     rows,

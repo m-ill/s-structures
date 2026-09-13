@@ -16,17 +16,17 @@ import {
 } from '../verification/framework/phase14/index.js';
 
 for (const path of [
-  'docs/phase14/README.md',
-  'docs/phase14/PRODUCTION_REQUIREMENTS.md',
-  'docs/phase14/TARGET_ARCHITECTURE.md',
-  'docs/phase14/WINKLER_FOUNDATION_DESIGN.md',
-  'docs/phase14/QUALIFICATION_POLICY.md',
-  'docs/phase14/REFERENCE_BASIS.md',
-  'docs/phase14/MILESTONE_EXECUTION_PLAN.md',
-  'docs/phase14/VERIFICATION_MATRIX.md',
-  'docs/phase14/REQUIREMENTS_TRACEABILITY.md',
-  'docs/phase14/RISK_REGISTER.md',
-  'docs/phase14/IMPLEMENTATION_STATUS.md',
+  'docs/archive/phase14/README.md',
+  'docs/archive/phase14/PRODUCTION_REQUIREMENTS.md',
+  'docs/archive/phase14/TARGET_ARCHITECTURE.md',
+  'docs/archive/phase14/WINKLER_FOUNDATION_DESIGN.md',
+  'docs/archive/phase14/QUALIFICATION_POLICY.md',
+  'docs/archive/phase14/REFERENCE_BASIS.md',
+  'docs/archive/phase14/MILESTONE_EXECUTION_PLAN.md',
+  'docs/archive/phase14/VERIFICATION_MATRIX.md',
+  'docs/archive/phase14/REQUIREMENTS_TRACEABILITY.md',
+  'docs/archive/phase14/RISK_REGISTER.md',
+  'docs/archive/phase14/IMPLEMENTATION_STATUS.md',
   'verification/specs/phase14/evidence-schema.json',
   'verification/specs/phase14/release-manifest.json',
   'verification/evidence/validation/phase14/p14-m0-governance-baseline.json',
@@ -98,7 +98,7 @@ const storedManifest = JSON.parse(readFileSync('verification/specs/phase14/relea
 assert.equal(validatePhase14ReleaseManifest(storedManifest).ok, true);
 assert.equal(storedManifest.phaseReleaseAllowed, false);
 
-const status = readFileSync('docs/phase14/IMPLEMENTATION_STATUS.md', 'utf8');
+const status = readFileSync('docs/archive/phase14/IMPLEMENTATION_STATUS.md', 'utf8');
 assert.match(status, /benchmark_execution_started:\s*true/);
 assert.doesNotMatch(status, /benchmark_execution_started:\s*false/);
 

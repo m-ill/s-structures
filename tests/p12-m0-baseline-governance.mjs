@@ -2,14 +2,14 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 
 const required = [
-  'docs/phase12/MILESTONE_EXECUTION_PLAN.md',
-  'docs/phase12/CURRENT_STATE_AUDIT.md',
-  'docs/phase12/THREAT_MODEL.md',
-  'docs/phase12/VERIFICATION_MATRIX.md',
-  'docs/phase12/RISK_REGISTER.md',
-  'docs/phase12/REQUIREMENTS_TRACEABILITY.md',
-  'docs/phase12/IMPLEMENTATION_STATUS.md',
-  'docs/phase12/adr/ADR-001-PUBLIC-PRIVATE-BOUNDARY.md',
+  'docs/archive/phase12/MILESTONE_EXECUTION_PLAN.md',
+  'docs/archive/phase12/CURRENT_STATE_AUDIT.md',
+  'docs/archive/phase12/THREAT_MODEL.md',
+  'docs/archive/phase12/VERIFICATION_MATRIX.md',
+  'docs/archive/phase12/RISK_REGISTER.md',
+  'docs/archive/phase12/REQUIREMENTS_TRACEABILITY.md',
+  'docs/archive/phase12/IMPLEMENTATION_STATUS.md',
+  'docs/archive/phase12/adr/ADR-001-PUBLIC-PRIVATE-BOUNDARY.md',
   'verification/specs/phase12/evidence-schema.json',
   'verification/specs/phase12/release-manifest.json',
   'verification/evidence/validation/phase12/p12-m0-baseline-governance.json',

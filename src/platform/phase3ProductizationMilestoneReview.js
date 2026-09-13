@@ -45,19 +45,19 @@ const ROWS = [
 
 const EXIT_CRITERIA = {
   'P3-M19': [
-    criterion('M19-T58', 'Integrated result postprocessing exposes result rows, nonlinear capacity/step rows, detailed-design rows, analysis status, and trace readiness.', 'tests/p3-m19-integrated-report.mjs', 'P3-T58', 'docs/phase3/ROADMAP.md'),
-    criterion('M19-T59', 'Calculation package reports method, limitation, ticket coverage, and detailed-design review state without hiding unresolved issues.', 'tests/p3-m19-integrated-report.mjs', 'P3-T59', 'docs/phase3/ROADMAP.md'),
-    criterion('M19-T61', 'Workflow approval, lock, revoke, and editability consistency are exposed as reviewable state.', 'tests/p3-m19-integrated-report.mjs', 'P3-T61', 'docs/phase3/IMPLEMENTATION_BACKLOG.md'),
-    criterion('M19-T62', 'Benchmark and representative regression evidence remains connected to the integrated result gate.', 'npm.cmd run test:p3', 'P3-T62', 'docs/phase3/QA_RELEASE_PLAN.md'),
-    criterion('M19-GATE', 'Integrated gate keeps final structural sign-off separate from trace-ready integrated results.', 'tests/p3-productization-milestone-review.mjs', 'P3-T58/P3-T62', 'docs/phase3/PRODUCT_REQUIREMENTS.md'),
+    criterion('M19-T58', 'Integrated result postprocessing exposes result rows, nonlinear capacity/step rows, detailed-design rows, analysis status, and trace readiness.', 'tests/p3-m19-integrated-report.mjs', 'P3-T58', 'docs/archive/phase3/ROADMAP.md'),
+    criterion('M19-T59', 'Calculation package reports method, limitation, ticket coverage, and detailed-design review state without hiding unresolved issues.', 'tests/p3-m19-integrated-report.mjs', 'P3-T59', 'docs/archive/phase3/ROADMAP.md'),
+    criterion('M19-T61', 'Workflow approval, lock, revoke, and editability consistency are exposed as reviewable state.', 'tests/p3-m19-integrated-report.mjs', 'P3-T61', 'docs/archive/phase3/IMPLEMENTATION_BACKLOG.md'),
+    criterion('M19-T62', 'Benchmark and representative regression evidence remains connected to the integrated result gate.', 'npm.cmd run test:p3', 'P3-T62', 'docs/archive/phase3/QA_RELEASE_PLAN.md'),
+    criterion('M19-GATE', 'Integrated gate keeps final structural sign-off separate from trace-ready integrated results.', 'tests/p3-productization-milestone-review.mjs', 'P3-T58/P3-T62', 'docs/archive/phase3/PRODUCT_REQUIREMENTS.md'),
   ],
   'P3-M20': [
-    criterion('M20-T63', 'Packaging smoke covers web/server launch path and install mode evidence.', 'tests/p3-launch-gate.mjs', 'P3-T63', 'docs/phase3/QA_RELEASE_PLAN.md'),
-    criterion('M20-T64', 'License policy record is present and reviewable before release.', 'tests/p3-launch-gate.mjs', 'P3-T64', 'docs/phase3/QA_RELEASE_PLAN.md'),
-    criterion('M20-T65', 'Manual, onboarding, and agent-contract references match the runtime manifest.', 'tests/p3-launch-gate.mjs', 'P3-T65', 'docs/phase3/QA_RELEASE_PLAN.md'),
-    criterion('M20-T66', 'Performance, security, backup/restore, and design-verification launch evidence records are present.', 'tests/p3-launch-gate.mjs', 'P3-T66', 'docs/phase3/QA_RELEASE_PLAN.md'),
-    criterion('M20-T67', 'Ten named beta-pilot scenario reports are present for launch review.', 'tests/p3-launch-gate.mjs', 'P3-T67', 'docs/phase3/QA_RELEASE_PLAN.md'),
-    criterion('M20-GATE', 'Launch readiness keeps owner deployment approval separate from green automated launch evidence.', 'tests/p3-productization-milestone-review.mjs', 'P3-T63/P3-T67', 'docs/phase3/QA_RELEASE_PLAN.md'),
+    criterion('M20-T63', 'Packaging smoke covers web/server launch path and install mode evidence.', 'tests/p3-launch-gate.mjs', 'P3-T63', 'docs/archive/phase3/QA_RELEASE_PLAN.md'),
+    criterion('M20-T64', 'License policy record is present and reviewable before release.', 'tests/p3-launch-gate.mjs', 'P3-T64', 'docs/archive/phase3/QA_RELEASE_PLAN.md'),
+    criterion('M20-T65', 'Manual, onboarding, and agent-contract references match the runtime manifest.', 'tests/p3-launch-gate.mjs', 'P3-T65', 'docs/archive/phase3/QA_RELEASE_PLAN.md'),
+    criterion('M20-T66', 'Performance, security, backup/restore, and design-verification launch evidence records are present.', 'tests/p3-launch-gate.mjs', 'P3-T66', 'docs/archive/phase3/QA_RELEASE_PLAN.md'),
+    criterion('M20-T67', 'Ten named beta-pilot scenario reports are present for launch review.', 'tests/p3-launch-gate.mjs', 'P3-T67', 'docs/archive/phase3/QA_RELEASE_PLAN.md'),
+    criterion('M20-GATE', 'Launch readiness keeps owner deployment approval separate from green automated launch evidence.', 'tests/p3-productization-milestone-review.mjs', 'P3-T63/P3-T67', 'docs/archive/phase3/QA_RELEASE_PLAN.md'),
   ],
 };
 
@@ -67,10 +67,10 @@ export function buildPhase3ProductizationMilestoneReview() {
     version: PHASE3_PRODUCTIZATION_MILESTONE_REVIEW_VERSION,
     scope: 'P3-M19 to P3-M20 integrated results and launch readiness',
     sourceDocs: [
-      'docs/phase3/ROADMAP.md',
-      'docs/phase3/IMPLEMENTATION_BACKLOG.md',
-      'docs/phase3/QA_RELEASE_PLAN.md',
-      'docs/phase3/PRODUCT_REQUIREMENTS.md',
+      'docs/archive/phase3/ROADMAP.md',
+      'docs/archive/phase3/IMPLEMENTATION_BACKLOG.md',
+      'docs/archive/phase3/QA_RELEASE_PLAN.md',
+      'docs/archive/phase3/PRODUCT_REQUIREMENTS.md',
     ],
     rows,
     summary: {

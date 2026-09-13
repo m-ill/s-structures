@@ -1,0 +1,351 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "SP1 | Pushover cantilever moment hinge",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "SP1-MAT",
+            "version": 1,
+            "name": "SP1 elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "SP1-SEC",
+            "version": 1,
+            "name": "SP1 display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "SP1-N0",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SP1-N1",
+            "x": 0,
+            "y": 0,
+            "z": 0.75
+          },
+          {
+            "id": "SP1-N2",
+            "x": 0,
+            "y": 0,
+            "z": 1.5
+          },
+          {
+            "id": "SP1-N3",
+            "x": 0,
+            "y": 0,
+            "z": 2.25
+          },
+          {
+            "id": "SP1-N4",
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          {
+            "id": "SP1-N5",
+            "x": 0,
+            "y": 0,
+            "z": 3.75
+          },
+          {
+            "id": "SP1-N6",
+            "x": 0,
+            "y": 0,
+            "z": 4.5
+          },
+          {
+            "id": "SP1-N7",
+            "x": 0,
+            "y": 0,
+            "z": 5.25
+          },
+          {
+            "id": "SP1-N8",
+            "x": 0,
+            "y": 0,
+            "z": 6
+          }
+        ],
+        "members": [
+          {
+            "id": "SP1-M1",
+            "type": "frame",
+            "n1": "SP1-N0",
+            "n2": "SP1-N1",
+            "matId": "SP1-MAT",
+            "secId": "SP1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "hingeJ": "SP1-HINGE"
+          },
+          {
+            "id": "SP1-M2",
+            "type": "frame",
+            "n1": "SP1-N1",
+            "n2": "SP1-N2",
+            "matId": "SP1-MAT",
+            "secId": "SP1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SP1-M3",
+            "type": "frame",
+            "n1": "SP1-N2",
+            "n2": "SP1-N3",
+            "matId": "SP1-MAT",
+            "secId": "SP1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SP1-M4",
+            "type": "frame",
+            "n1": "SP1-N3",
+            "n2": "SP1-N4",
+            "matId": "SP1-MAT",
+            "secId": "SP1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SP1-M5",
+            "type": "frame",
+            "n1": "SP1-N4",
+            "n2": "SP1-N5",
+            "matId": "SP1-MAT",
+            "secId": "SP1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SP1-M6",
+            "type": "frame",
+            "n1": "SP1-N5",
+            "n2": "SP1-N6",
+            "matId": "SP1-MAT",
+            "secId": "SP1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SP1-M7",
+            "type": "frame",
+            "n1": "SP1-N6",
+            "n2": "SP1-N7",
+            "matId": "SP1-MAT",
+            "secId": "SP1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SP1-M8",
+            "type": "frame",
+            "n1": "SP1-N7",
+            "n2": "SP1-N8",
+            "matId": "SP1-MAT",
+            "secId": "SP1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          }
+        ],
+        "shells": [],
+        "links": [],
+        "loads": [
+          {
+            "id": "SP1-PUSH",
+            "type": "nodal",
+            "node": "SP1-N8",
+            "P": 50,
+            "dir": "+x",
+            "case": "D"
+          }
+        ],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "SP1 benchmark load",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "analysisCases": [
+          {
+            "id": "SP1-PUSHOVER",
+            "kind": "pushover",
+            "settings": {
+              "controlNode": "SP1-N8",
+              "controlDof": "ux",
+              "targetDisplacement": 0.25
+            }
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "linear_static",
+          "elementType": "3d_frame",
+          "includeShearDeformation": false,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-SP1-UI-R4",
+          "name": "SP1 | Pushover cantilever moment hinge",
+          "benchmarkId": "SP1",
+          "verificationBoundary": "EQUIVALENT_ENGINE_GATE",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "production-engine qualification fixture topology",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        },
+        "hingeProperties": [
+          {
+            "id": "SP1-HINGE",
+            "type": "moment-rotation",
+            "scope": "member-end",
+            "curve": [
+              [
+                0,
+                0
+              ],
+              [
+                0.01,
+                120
+              ],
+              [
+                0.05,
+                135
+              ],
+              [
+                0.12,
+                105
+              ]
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": true,
+    "mid": true,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

@@ -3,7 +3,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$caseRoot = [IO.Path]::GetFullPath('C:\Users\mill\Downloads\dcr\testreport\STRIX-21-검증')
+$caseRoot = [IO.Path]::GetFullPath('C:\Users\mill\Downloads\dcr\자료\testreport\STRIX-21-검증')
 $repoRoot = [IO.Path]::GetFullPath('C:\Users\mill\Downloads\dcr\S-Structures-main')
 $legacyRoot = [IO.Path]::GetFullPath((Join-Path $caseRoot '99_레거시\보고서_이전버전'))
 $plan = [System.Collections.Generic.List[object]]::new()

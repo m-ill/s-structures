@@ -33,7 +33,7 @@ MODEL_MANIFEST = CAPTURE_ROOT / "models/strix21-sstructures-ui-model-manifest-r4
 OUTPUT_ROOT = REPO / "output/pdf/STRIX21-R4"
 QA_ROOT = REPO / "output/verification/strix21-r4"
 TEMP_ROOT = REPO / "tmp/pdfs/strix21-r4"
-INDEX_PATH = VAULT / "testreport/STRIX-21-검증/00_설득자료_모음/STRIX21_실제모델링_자체해석엔진_상세보고서_R4_색인.md"
+INDEX_PATH = VAULT / "자료/testreport/STRIX-21-검증/00_설득자료_모음/STRIX21_실제모델링_자체해석엔진_상세보고서_R4_색인.md"
 MANIFEST_PATH = QA_ROOT / "strix21-r4-report-manifest.json"
 
 

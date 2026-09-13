@@ -1,0 +1,218 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "SH1 | 3-D column P-M-M hinge",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "SH1-MAT",
+            "version": 1,
+            "name": "SH1 elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "SH1-SEC",
+            "version": 1,
+            "name": "SH1 display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "SH1-N0",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SH1-N1",
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          {
+            "id": "SH1-N2",
+            "x": 0.8,
+            "y": 0.5,
+            "z": 6
+          }
+        ],
+        "members": [
+          {
+            "id": "SH1-C1",
+            "type": "frame",
+            "n1": "SH1-N0",
+            "n2": "SH1-N1",
+            "matId": "SH1-MAT",
+            "secId": "SH1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "hingeJ": "SH1-PMM"
+          },
+          {
+            "id": "SH1-C2",
+            "type": "frame",
+            "n1": "SH1-N1",
+            "n2": "SH1-N2",
+            "matId": "SH1-MAT",
+            "secId": "SH1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          }
+        ],
+        "shells": [],
+        "links": [],
+        "loads": [
+          {
+            "id": "SH1-P",
+            "type": "nodal",
+            "node": "SH1-N2",
+            "P": 250,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "SH1-HX",
+            "type": "nodal",
+            "node": "SH1-N2",
+            "P": 40,
+            "dir": "+x",
+            "case": "D"
+          },
+          {
+            "id": "SH1-HY",
+            "type": "nodal",
+            "node": "SH1-N2",
+            "P": 25,
+            "dir": "+y",
+            "case": "D"
+          }
+        ],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "SH1 benchmark load",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "analysisCases": [
+          {
+            "id": "SH1-NL",
+            "kind": "pushover",
+            "settings": {
+              "hingeType": "pmm-3d",
+              "biaxial": true
+            }
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "linear_static",
+          "elementType": "3d_frame",
+          "includeShearDeformation": false,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-SH1-UI-R4",
+          "name": "SH1 | 3-D column P-M-M hinge",
+          "benchmarkId": "SH1",
+          "verificationBoundary": "ENGINE_CHECKPOINT",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "production-engine qualification fixture topology",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        },
+        "hingeProperties": [
+          {
+            "id": "SH1-PMM",
+            "type": "pmm-3d",
+            "scope": "member-end",
+            "axialCompressionPositive": true,
+            "interactionSurface": "custom-DcrPMMHinge3d"
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": true,
+    "mid": true,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-evidence-r4",
+  "capturedAt": "2026-08-30",
+  "caseId": "SB7",
+  "browser": "Google Chrome headed channel",
+  "application": "S-Structures native modeler",
+  "appUrl": "http://127.0.0.1:15174/index.html?engine_ui=1",
+  "view": "front",
+  "verificationBoundary": "DIRECT_NUMERIC_PASS",
+  "modelBook": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\06_SB7_Winkler_Beam\\02_모델\\SB7_S-Structures_실제모델_R4.json",
+  "modelBookSha256": "2d1f1a9ad8b9a9eaf03188b41bb3aebc99a59cc789fb48a3a96a4299a9d5d6e3",
+  "expectedCounts": {
+    "nodes": 34,
+    "members": 33,
+    "shells": 0,
+    "links": 0,
+    "loads": 1
+  },
+  "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB7\\SB7_S-Structures_실제모델링_R4.png",
+  "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\06_SB7_Winkler_Beam\\05_보고서\\figures\\03_SB7_S-Structures_실제모델링_R4.png",
+  "screenshotSha256": "7581e7b2f140b1c2080e2bce755804065d1c3dbbfa9773837ae7553e8088cfd8",
+  "image": {
+    "width": 1600,
+    "height": 900,
+    "variance": 1829.597637453383,
+    "nonblank": true
+  },
+  "checks": {
+    "browserCaptureExists": true,
+    "nativeModelBookExists": true,
+    "benchmarkIdBound": true,
+    "expectedCollectionCountsRecorded": true,
+    "centerFitAppliedTwice": true,
+    "reportFigureCopied": true
+  },
+  "capturePassed": true
+}

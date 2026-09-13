@@ -43,8 +43,8 @@ export function buildPhase3EngineeringValidationReview(input = {}) {
     milestone: 'P3-M14/P3-M18',
     tickets: ['P3-T50', 'P3-T55', 'P3-T83', 'P3-T87', 'P3-T91', 'P3-T93', 'P3-T95'],
     sourceDocs: [
-      'docs/phase3/NONLINEAR_ENGINE_PLAN.md',
-      'docs/phase3/DESIGN_MODULES_PLAN.md',
+      'docs/archive/phase3/NONLINEAR_ENGINE_PLAN.md',
+      'docs/archive/phase3/DESIGN_MODULES_PLAN.md',
       'verification/specs/DESIGN_MODULE_VERIFICATION.md',
     ],
     summary: {

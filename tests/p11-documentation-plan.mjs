@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-const phaseRoot = 'docs/phase11';
+const phaseRoot = 'docs/archive/phase11';
 const rootDocuments = [
   'README.md',
   'CURRENT_STATE_AUDIT.md',
@@ -63,7 +63,7 @@ assert.match(hub, /release_qualified:\s*(?:false|true)/);
 assert.match(status, /implementation_status:\s*(?:not-started|qualification-in-progress|release-qualified)/);
 assert.match(status, /active_milestone:\s*none/);
 assert.match(status, /release_qualified:\s*(?:false|true)/);
-assert.match(rootIndex, /documentationVersion:\s*20\d{2}-\d{2}-\d{2}-phase1[1-9]-[a-z0-9-]+/i);
+assert.match(rootIndex, /documentationVersion:\s*20\d{2}-\d{2}-\d{2}-phase(?:1[1-9]|[2-9]\d+)-[a-z0-9-]+/i);
 assert.match(rootIndex, /## Phase 11 Reading Order \(current\)/);
 assert.ok(existsSync('verification/specs/phase11/ARTIFACT_RETENTION.md'));
 

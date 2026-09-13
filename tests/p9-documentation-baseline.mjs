@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-const phaseRoot = 'docs/phase9';
+const phaseRoot = 'docs/archive/phase9';
 const requiredFiles = [
   'README.md',
   'CURRENT_STATE_AUDIT.md',
@@ -57,7 +57,7 @@ assert.match(requirements, /status:\s*planned/);
 assert.match(traceability, /status:\s*implementation-complete-qualification-blocked/);
 // A Phase 9 regression must accept a newer documentation index while still
 // requiring a dated, phase-scoped version contract.
-assert.match(rootIndex, /documentationVersion:\s*20\d{2}-\d{2}-\d{2}-phase(?:9|1\d)-[a-z0-9-]+/i);
+assert.match(rootIndex, /documentationVersion:\s*20\d{2}-\d{2}-\d{2}-phase(?:9|[1-9]\d+)-[a-z0-9-]+/i);
 assert.match(rootIndex, /## Phase 9 Reading Order \(compute baseline\)/);
 
 const milestoneIds = [...milestones.matchAll(/^## P9-M(\d+)\s+-/gm)].map((match) => Number(match[1]));

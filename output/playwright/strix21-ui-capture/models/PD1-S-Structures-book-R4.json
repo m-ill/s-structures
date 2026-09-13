@@ -1,0 +1,652 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "PD1 | P-Delta tension stiffening",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "PD1-MAT",
+            "version": 1,
+            "name": "PD1 elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "PD1-SEC",
+            "version": 1,
+            "name": "PD1 display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "PD1-N0",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "custom",
+            "fix": [
+              true,
+              true,
+              true,
+              true,
+              false,
+              true
+            ]
+          },
+          {
+            "id": "PD1-N1",
+            "x": 0.47625,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N2",
+            "x": 0.9525,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N3",
+            "x": 1.42875,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N4",
+            "x": 1.905,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N5",
+            "x": 2.38125,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N6",
+            "x": 2.8575,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N7",
+            "x": 3.33375,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N8",
+            "x": 3.81,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N9",
+            "x": 4.28625,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N10",
+            "x": 4.7625,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N11",
+            "x": 5.2387500000000005,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N12",
+            "x": 5.715,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N13",
+            "x": 6.19125,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N14",
+            "x": 6.6675,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N15",
+            "x": 7.14375,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "id": "PD1-N16",
+            "x": 7.62,
+            "y": 0,
+            "z": 0,
+            "support": "custom",
+            "fix": [
+              false,
+              true,
+              true,
+              true,
+              false,
+              true
+            ]
+          }
+        ],
+        "members": [
+          {
+            "id": "PD1-M1",
+            "type": "frame",
+            "n1": "PD1-N0",
+            "n2": "PD1-N1",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M2",
+            "type": "frame",
+            "n1": "PD1-N1",
+            "n2": "PD1-N2",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M3",
+            "type": "frame",
+            "n1": "PD1-N2",
+            "n2": "PD1-N3",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M4",
+            "type": "frame",
+            "n1": "PD1-N3",
+            "n2": "PD1-N4",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M5",
+            "type": "frame",
+            "n1": "PD1-N4",
+            "n2": "PD1-N5",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M6",
+            "type": "frame",
+            "n1": "PD1-N5",
+            "n2": "PD1-N6",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M7",
+            "type": "frame",
+            "n1": "PD1-N6",
+            "n2": "PD1-N7",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M8",
+            "type": "frame",
+            "n1": "PD1-N7",
+            "n2": "PD1-N8",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M9",
+            "type": "frame",
+            "n1": "PD1-N8",
+            "n2": "PD1-N9",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M10",
+            "type": "frame",
+            "n1": "PD1-N9",
+            "n2": "PD1-N10",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M11",
+            "type": "frame",
+            "n1": "PD1-N10",
+            "n2": "PD1-N11",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M12",
+            "type": "frame",
+            "n1": "PD1-N11",
+            "n2": "PD1-N12",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M13",
+            "type": "frame",
+            "n1": "PD1-N12",
+            "n2": "PD1-N13",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M14",
+            "type": "frame",
+            "n1": "PD1-N13",
+            "n2": "PD1-N14",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M15",
+            "type": "frame",
+            "n1": "PD1-N14",
+            "n2": "PD1-N15",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "PD1-M16",
+            "type": "frame",
+            "n1": "PD1-N15",
+            "n2": "PD1-N16",
+            "matId": "PD1-MAT",
+            "secId": "PD1-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          }
+        ],
+        "shells": [],
+        "links": [],
+        "loads": [
+          {
+            "id": "PD1-W1",
+            "type": "udl",
+            "member": "PD1-M1",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W2",
+            "type": "udl",
+            "member": "PD1-M2",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W3",
+            "type": "udl",
+            "member": "PD1-M3",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W4",
+            "type": "udl",
+            "member": "PD1-M4",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W5",
+            "type": "udl",
+            "member": "PD1-M5",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W6",
+            "type": "udl",
+            "member": "PD1-M6",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W7",
+            "type": "udl",
+            "member": "PD1-M7",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W8",
+            "type": "udl",
+            "member": "PD1-M8",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W9",
+            "type": "udl",
+            "member": "PD1-M9",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W10",
+            "type": "udl",
+            "member": "PD1-M10",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W11",
+            "type": "udl",
+            "member": "PD1-M11",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W12",
+            "type": "udl",
+            "member": "PD1-M12",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W13",
+            "type": "udl",
+            "member": "PD1-M13",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W14",
+            "type": "udl",
+            "member": "PD1-M14",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W15",
+            "type": "udl",
+            "member": "PD1-M15",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-W16",
+            "type": "udl",
+            "member": "PD1-M16",
+            "w": 0.35,
+            "dir": "-z",
+            "case": "D"
+          },
+          {
+            "id": "PD1-T",
+            "type": "nodal",
+            "node": "PD1-N16",
+            "P": 90,
+            "dir": "+x",
+            "case": "T"
+          }
+        ],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "PD1 benchmark load",
+            "type": "other"
+          },
+          {
+            "id": "T",
+            "name": "Axial tension",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "W_T",
+            "name": "W+T",
+            "type": "service",
+            "factors": {
+              "D": 1,
+              "T": 1
+            }
+          }
+        ],
+        "analysisCases": [
+          {
+            "id": "PD1-PDELTA",
+            "kind": "static",
+            "settings": {
+              "geometricNonlinearity": "PDelta",
+              "loadSteps": 8
+            }
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "pdelta",
+          "elementType": "3d_frame",
+          "includeShearDeformation": false,
+          "includeGeometricStiffness": true,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6,
+          "pDeltaMaxIterations": 30
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-PD1-UI-R4",
+          "name": "PD1 | P-Delta tension stiffening",
+          "benchmarkId": "PD1",
+          "verificationBoundary": "NUMERIC_PASS_QUALIFICATION_OPEN",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "benchmark-topology model",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        }
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": false,
+    "mid": false,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

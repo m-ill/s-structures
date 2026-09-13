@@ -1,0 +1,1671 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "SB2 | NAFEMS LE1 elliptic membrane",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "SB2-MAT",
+            "version": 1,
+            "name": "SB2 elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "SB2-SEC",
+            "version": 1,
+            "name": "SB2 display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "SB2-N0-0",
+            "x": 2,
+            "y": 0,
+            "z": 0,
+            "support": "custom",
+            "fix": [
+              false,
+              true,
+              false,
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "id": "SB2-N0-1",
+            "x": 1.9498558243636472,
+            "y": 0,
+            "z": 0.2225209339563144
+          },
+          {
+            "id": "SB2-N0-2",
+            "x": 1.8019377358048383,
+            "y": 0,
+            "z": 0.4338837391175581
+          },
+          {
+            "id": "SB2-N0-3",
+            "x": 1.5636629649360596,
+            "y": 0,
+            "z": 0.6234898018587335
+          },
+          {
+            "id": "SB2-N0-4",
+            "x": 1.2469796037174672,
+            "y": 0,
+            "z": 0.7818314824680298
+          },
+          {
+            "id": "SB2-N0-5",
+            "x": 0.8677674782351164,
+            "y": 0,
+            "z": 0.9009688679024191
+          },
+          {
+            "id": "SB2-N0-6",
+            "x": 0.4450418679126289,
+            "y": 0,
+            "z": 0.9749279121818236
+          },
+          {
+            "id": "SB2-N0-7",
+            "x": 1.2246467991473532e-16,
+            "y": 0,
+            "z": 1,
+            "support": "custom",
+            "fix": [
+              true,
+              true,
+              false,
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "id": "SB2-N1-0",
+            "x": 2.6666666666666665,
+            "y": 0,
+            "z": 0,
+            "support": "custom",
+            "fix": [
+              false,
+              true,
+              false,
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "id": "SB2-N1-1",
+            "x": 2.599807765818196,
+            "y": 0,
+            "z": 0.3115293075388401
+          },
+          {
+            "id": "SB2-N1-2",
+            "x": 2.4025836477397844,
+            "y": 0,
+            "z": 0.6074372347645813
+          },
+          {
+            "id": "SB2-N1-3",
+            "x": 2.084883953248079,
+            "y": 0,
+            "z": 0.8728857226022269
+          },
+          {
+            "id": "SB2-N1-4",
+            "x": 1.6626394716232895,
+            "y": 0,
+            "z": 1.0945640754552417
+          },
+          {
+            "id": "SB2-N1-5",
+            "x": 1.1570233043134883,
+            "y": 0,
+            "z": 1.2613564150633867
+          },
+          {
+            "id": "SB2-N1-6",
+            "x": 0.5933891572168385,
+            "y": 0,
+            "z": 1.364899077054553
+          },
+          {
+            "id": "SB2-N1-7",
+            "x": 1.6328623988631375e-16,
+            "y": 0,
+            "z": 1.4,
+            "support": "custom",
+            "fix": [
+              true,
+              true,
+              false,
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "id": "SB2-N2-0",
+            "x": 3.333333333333333,
+            "y": 0,
+            "z": 0,
+            "support": "custom",
+            "fix": [
+              false,
+              true,
+              false,
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "id": "SB2-N2-1",
+            "x": 3.2497597072727453,
+            "y": 0,
+            "z": 0.40053768112136584
+          },
+          {
+            "id": "SB2-N2-2",
+            "x": 3.0032295596747303,
+            "y": 0,
+            "z": 0.7809907304116045
+          },
+          {
+            "id": "SB2-N2-3",
+            "x": 2.606104941560099,
+            "y": 0,
+            "z": 1.1222816433457201
+          },
+          {
+            "id": "SB2-N2-4",
+            "x": 2.078299339529112,
+            "y": 0,
+            "z": 1.4072966684424535
+          },
+          {
+            "id": "SB2-N2-5",
+            "x": 1.4462791303918605,
+            "y": 0,
+            "z": 1.6217439622243544
+          },
+          {
+            "id": "SB2-N2-6",
+            "x": 0.7417364465210481,
+            "y": 0,
+            "z": 1.7548702419272824
+          },
+          {
+            "id": "SB2-N2-7",
+            "x": 2.0410779985789218e-16,
+            "y": 0,
+            "z": 1.7999999999999998,
+            "support": "custom",
+            "fix": [
+              true,
+              true,
+              false,
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "id": "SB2-N3-0",
+            "x": 4,
+            "y": 0,
+            "z": 0,
+            "support": "custom",
+            "fix": [
+              false,
+              true,
+              false,
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "id": "SB2-N3-1",
+            "x": 3.8997116487272945,
+            "y": 0,
+            "z": 0.48954605470389173
+          },
+          {
+            "id": "SB2-N3-2",
+            "x": 3.6038754716096766,
+            "y": 0,
+            "z": 0.954544226058628
+          },
+          {
+            "id": "SB2-N3-3",
+            "x": 3.127325929872119,
+            "y": 0,
+            "z": 1.3716775640892138
+          },
+          {
+            "id": "SB2-N3-4",
+            "x": 2.4939592074349344,
+            "y": 0,
+            "z": 1.7200292614296657
+          },
+          {
+            "id": "SB2-N3-5",
+            "x": 1.7355349564702327,
+            "y": 0,
+            "z": 1.9821315093853222
+          },
+          {
+            "id": "SB2-N3-6",
+            "x": 0.8900837358252578,
+            "y": 0,
+            "z": 2.1448414068000123
+          },
+          {
+            "id": "SB2-N3-7",
+            "x": 2.4492935982947064e-16,
+            "y": 0,
+            "z": 2.2,
+            "support": "custom",
+            "fix": [
+              true,
+              true,
+              false,
+              true,
+              true,
+              true
+            ]
+          }
+        ],
+        "members": [
+          {
+            "id": "SB2-G1",
+            "type": "frame",
+            "n1": "SB2-N0-0",
+            "n2": "SB2-N0-1",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G2",
+            "type": "frame",
+            "n1": "SB2-N0-1",
+            "n2": "SB2-N0-2",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G3",
+            "type": "frame",
+            "n1": "SB2-N0-2",
+            "n2": "SB2-N0-3",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G4",
+            "type": "frame",
+            "n1": "SB2-N0-3",
+            "n2": "SB2-N0-4",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G5",
+            "type": "frame",
+            "n1": "SB2-N0-4",
+            "n2": "SB2-N0-5",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G6",
+            "type": "frame",
+            "n1": "SB2-N0-5",
+            "n2": "SB2-N0-6",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G7",
+            "type": "frame",
+            "n1": "SB2-N0-6",
+            "n2": "SB2-N0-7",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G8",
+            "type": "frame",
+            "n1": "SB2-N1-0",
+            "n2": "SB2-N1-1",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G9",
+            "type": "frame",
+            "n1": "SB2-N1-1",
+            "n2": "SB2-N1-2",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G10",
+            "type": "frame",
+            "n1": "SB2-N1-2",
+            "n2": "SB2-N1-3",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G11",
+            "type": "frame",
+            "n1": "SB2-N1-3",
+            "n2": "SB2-N1-4",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G12",
+            "type": "frame",
+            "n1": "SB2-N1-4",
+            "n2": "SB2-N1-5",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G13",
+            "type": "frame",
+            "n1": "SB2-N1-5",
+            "n2": "SB2-N1-6",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G14",
+            "type": "frame",
+            "n1": "SB2-N1-6",
+            "n2": "SB2-N1-7",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G15",
+            "type": "frame",
+            "n1": "SB2-N2-0",
+            "n2": "SB2-N2-1",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G16",
+            "type": "frame",
+            "n1": "SB2-N2-1",
+            "n2": "SB2-N2-2",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G17",
+            "type": "frame",
+            "n1": "SB2-N2-2",
+            "n2": "SB2-N2-3",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G18",
+            "type": "frame",
+            "n1": "SB2-N2-3",
+            "n2": "SB2-N2-4",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G19",
+            "type": "frame",
+            "n1": "SB2-N2-4",
+            "n2": "SB2-N2-5",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G20",
+            "type": "frame",
+            "n1": "SB2-N2-5",
+            "n2": "SB2-N2-6",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G21",
+            "type": "frame",
+            "n1": "SB2-N2-6",
+            "n2": "SB2-N2-7",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G22",
+            "type": "frame",
+            "n1": "SB2-N3-0",
+            "n2": "SB2-N3-1",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G23",
+            "type": "frame",
+            "n1": "SB2-N3-1",
+            "n2": "SB2-N3-2",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G24",
+            "type": "frame",
+            "n1": "SB2-N3-2",
+            "n2": "SB2-N3-3",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G25",
+            "type": "frame",
+            "n1": "SB2-N3-3",
+            "n2": "SB2-N3-4",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G26",
+            "type": "frame",
+            "n1": "SB2-N3-4",
+            "n2": "SB2-N3-5",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G27",
+            "type": "frame",
+            "n1": "SB2-N3-5",
+            "n2": "SB2-N3-6",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G28",
+            "type": "frame",
+            "n1": "SB2-N3-6",
+            "n2": "SB2-N3-7",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G29",
+            "type": "frame",
+            "n1": "SB2-N0-0",
+            "n2": "SB2-N1-0",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G30",
+            "type": "frame",
+            "n1": "SB2-N0-1",
+            "n2": "SB2-N1-1",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G31",
+            "type": "frame",
+            "n1": "SB2-N0-2",
+            "n2": "SB2-N1-2",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G32",
+            "type": "frame",
+            "n1": "SB2-N0-3",
+            "n2": "SB2-N1-3",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G33",
+            "type": "frame",
+            "n1": "SB2-N0-4",
+            "n2": "SB2-N1-4",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G34",
+            "type": "frame",
+            "n1": "SB2-N0-5",
+            "n2": "SB2-N1-5",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G35",
+            "type": "frame",
+            "n1": "SB2-N0-6",
+            "n2": "SB2-N1-6",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G36",
+            "type": "frame",
+            "n1": "SB2-N0-7",
+            "n2": "SB2-N1-7",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G37",
+            "type": "frame",
+            "n1": "SB2-N1-0",
+            "n2": "SB2-N2-0",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G38",
+            "type": "frame",
+            "n1": "SB2-N1-1",
+            "n2": "SB2-N2-1",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G39",
+            "type": "frame",
+            "n1": "SB2-N1-2",
+            "n2": "SB2-N2-2",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G40",
+            "type": "frame",
+            "n1": "SB2-N1-3",
+            "n2": "SB2-N2-3",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G41",
+            "type": "frame",
+            "n1": "SB2-N1-4",
+            "n2": "SB2-N2-4",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G42",
+            "type": "frame",
+            "n1": "SB2-N1-5",
+            "n2": "SB2-N2-5",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G43",
+            "type": "frame",
+            "n1": "SB2-N1-6",
+            "n2": "SB2-N2-6",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G44",
+            "type": "frame",
+            "n1": "SB2-N1-7",
+            "n2": "SB2-N2-7",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G45",
+            "type": "frame",
+            "n1": "SB2-N2-0",
+            "n2": "SB2-N3-0",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G46",
+            "type": "frame",
+            "n1": "SB2-N2-1",
+            "n2": "SB2-N3-1",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G47",
+            "type": "frame",
+            "n1": "SB2-N2-2",
+            "n2": "SB2-N3-2",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G48",
+            "type": "frame",
+            "n1": "SB2-N2-3",
+            "n2": "SB2-N3-3",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G49",
+            "type": "frame",
+            "n1": "SB2-N2-4",
+            "n2": "SB2-N3-4",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G50",
+            "type": "frame",
+            "n1": "SB2-N2-5",
+            "n2": "SB2-N3-5",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G51",
+            "type": "frame",
+            "n1": "SB2-N2-6",
+            "n2": "SB2-N3-6",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          },
+          {
+            "id": "SB2-G52",
+            "type": "frame",
+            "n1": "SB2-N2-7",
+            "n2": "SB2-N3-7",
+            "matId": "SB2-MAT",
+            "secId": "SB2-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "uiDisplayOnly": true,
+            "category": "shell-mesh-edge"
+          }
+        ],
+        "shells": [
+          {
+            "id": "SB2-S0-0",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N0-0",
+              "SB2-N0-1",
+              "SB2-N1-1",
+              "SB2-N1-0"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S0-1",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N0-1",
+              "SB2-N0-2",
+              "SB2-N1-2",
+              "SB2-N1-1"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S0-2",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N0-2",
+              "SB2-N0-3",
+              "SB2-N1-3",
+              "SB2-N1-2"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S0-3",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N0-3",
+              "SB2-N0-4",
+              "SB2-N1-4",
+              "SB2-N1-3"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S0-4",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N0-4",
+              "SB2-N0-5",
+              "SB2-N1-5",
+              "SB2-N1-4"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S0-5",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N0-5",
+              "SB2-N0-6",
+              "SB2-N1-6",
+              "SB2-N1-5"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S0-6",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N0-6",
+              "SB2-N0-7",
+              "SB2-N1-7",
+              "SB2-N1-6"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S1-0",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N1-0",
+              "SB2-N1-1",
+              "SB2-N2-1",
+              "SB2-N2-0"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S1-1",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N1-1",
+              "SB2-N1-2",
+              "SB2-N2-2",
+              "SB2-N2-1"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S1-2",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N1-2",
+              "SB2-N1-3",
+              "SB2-N2-3",
+              "SB2-N2-2"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S1-3",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N1-3",
+              "SB2-N1-4",
+              "SB2-N2-4",
+              "SB2-N2-3"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S1-4",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N1-4",
+              "SB2-N1-5",
+              "SB2-N2-5",
+              "SB2-N2-4"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S1-5",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N1-5",
+              "SB2-N1-6",
+              "SB2-N2-6",
+              "SB2-N2-5"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S1-6",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N1-6",
+              "SB2-N1-7",
+              "SB2-N2-7",
+              "SB2-N2-6"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S2-0",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N2-0",
+              "SB2-N2-1",
+              "SB2-N3-1",
+              "SB2-N3-0"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S2-1",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N2-1",
+              "SB2-N2-2",
+              "SB2-N3-2",
+              "SB2-N3-1"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S2-2",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N2-2",
+              "SB2-N2-3",
+              "SB2-N3-3",
+              "SB2-N3-2"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S2-3",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N2-3",
+              "SB2-N2-4",
+              "SB2-N3-4",
+              "SB2-N3-3"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S2-4",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N2-4",
+              "SB2-N2-5",
+              "SB2-N3-5",
+              "SB2-N3-4"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S2-5",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N2-5",
+              "SB2-N2-6",
+              "SB2-N3-6",
+              "SB2-N3-5"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          },
+          {
+            "id": "SB2-S2-6",
+            "type": "shell4",
+            "nodeIds": [
+              "SB2-N2-6",
+              "SB2-N2-7",
+              "SB2-N3-7",
+              "SB2-N3-6"
+            ],
+            "matId": "SB2-MAT",
+            "thickness": 0.1,
+            "formulation": "membrane"
+          }
+        ],
+        "links": [],
+        "loads": [
+          {
+            "id": "SB2-P0",
+            "type": "nodal",
+            "node": "SB2-N3-0",
+            "P": 4,
+            "dir": "+x",
+            "case": "D"
+          },
+          {
+            "id": "SB2-P1",
+            "type": "nodal",
+            "node": "SB2-N3-1",
+            "P": 4,
+            "dir": "+x",
+            "case": "D"
+          },
+          {
+            "id": "SB2-P2",
+            "type": "nodal",
+            "node": "SB2-N3-2",
+            "P": 4,
+            "dir": "+x",
+            "case": "D"
+          },
+          {
+            "id": "SB2-P3",
+            "type": "nodal",
+            "node": "SB2-N3-3",
+            "P": 4,
+            "dir": "+x",
+            "case": "D"
+          },
+          {
+            "id": "SB2-P4",
+            "type": "nodal",
+            "node": "SB2-N3-4",
+            "P": 4,
+            "dir": "+x",
+            "case": "D"
+          },
+          {
+            "id": "SB2-P5",
+            "type": "nodal",
+            "node": "SB2-N3-5",
+            "P": 4,
+            "dir": "+x",
+            "case": "D"
+          },
+          {
+            "id": "SB2-P6",
+            "type": "nodal",
+            "node": "SB2-N3-6",
+            "P": 4,
+            "dir": "+x",
+            "case": "D"
+          },
+          {
+            "id": "SB2-P7",
+            "type": "nodal",
+            "node": "SB2-N3-7",
+            "P": 4,
+            "dir": "+x",
+            "case": "D"
+          }
+        ],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "SB2 benchmark load",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "analysisCases": [
+          {
+            "id": "SB2-MEMBRANE",
+            "kind": "static",
+            "settings": {
+              "shellFormulation": "membrane",
+              "planeStress": true
+            }
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "linear_static",
+          "elementType": "3d_frame",
+          "includeShearDeformation": false,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-SB2-UI-R4",
+          "name": "SB2 | NAFEMS LE1 elliptic membrane",
+          "benchmarkId": "SB2",
+          "verificationBoundary": "DIRECT_NUMERIC_PASS",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "benchmark-topology model",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        }
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": false,
+    "mid": false,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

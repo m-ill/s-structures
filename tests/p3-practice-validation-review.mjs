@@ -19,7 +19,7 @@ assert.equal(review.summary.ownerReviewRequired, true);
 assert.equal(review.summary.agentDecision, 'collect-practice-validation-evidence-before-production-use');
 assert.equal(review.summary.requiredEvidenceCount, 21);
 assert.equal(review.summary.requiredEvidenceIdCount, 25);
-assert.ok(review.sourceDocs.includes('docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md'));
+assert.ok(review.sourceDocs.includes('docs/archive/phase3/P3_COMPLETION_AUDIT_2026-07-02.md'));
 assert.ok(review.summary.affectedMilestones.includes('P3-M20'));
 assert.ok(review.agentUse.finalApprovalFields.includes('productionDeploymentApproved'));
 assert.ok(review.agentUse.finalApprovalFields.includes('ownerProductionDeploymentApproved'));

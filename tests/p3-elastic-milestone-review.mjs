@@ -29,7 +29,7 @@ assert.deepEqual(review.rows.map((row) => row.exitCriteriaSummary.status), [
 assert.deepEqual(review.rows.map((row) => row.exitCriteria.length), [4, 5, 3, 7]);
 assert.ok(review.rows[0].exitCriteria.find((row) => row.id === 'M10-E2').requirement.includes('id@version'));
 assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M10-E3').evidence, 'tests/p3-section-properties.mjs');
-assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'M11-G5').source, 'docs/phase3/ELASTIC_ENGINE_COMPLETENESS_PLAN.md');
+assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'M11-G5').source, 'docs/archive/phase3/ELASTIC_ENGINE_COMPLETENESS_PLAN.md');
 assert.ok(review.rows[2].exitCriteria.find((row) => row.id === 'M12-G8').requirement.includes('Semi-rigid diaphragm'));
 assert.equal(review.rows[3].exitCriteria.find((row) => row.id === 'M13-G15').evidence, 'tests/p3-m13-loads-dynamics.mjs');
 assert.equal(review.summary.milestoneCount, 4);

@@ -1,0 +1,670 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "SB8 | Timoshenko beam natural frequencies",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "SB8-MAT",
+            "version": 1,
+            "name": "SB8 elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "SB8-SEC",
+            "version": 1,
+            "name": "SB8 display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "SB8-N0",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "custom",
+            "fix": [
+              true,
+              true,
+              true,
+              true,
+              false,
+              true
+            ],
+            "mass": [
+              0,
+              0,
+              0.135,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N1",
+            "x": 0.1875,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N2",
+            "x": 0.375,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N3",
+            "x": 0.5625,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N4",
+            "x": 0.75,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N5",
+            "x": 0.9375,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N6",
+            "x": 1.125,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N7",
+            "x": 1.3125,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N8",
+            "x": 1.5,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N9",
+            "x": 1.6875,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N10",
+            "x": 1.875,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N11",
+            "x": 2.0625,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N12",
+            "x": 2.25,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N13",
+            "x": 2.4375,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N14",
+            "x": 2.625,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N15",
+            "x": 2.8125,
+            "y": 0,
+            "z": 0,
+            "mass": [
+              0,
+              0,
+              0.27,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "SB8-N16",
+            "x": 3,
+            "y": 0,
+            "z": 0,
+            "support": "custom",
+            "fix": [
+              false,
+              true,
+              true,
+              true,
+              false,
+              true
+            ],
+            "mass": [
+              0,
+              0,
+              0.135,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "members": [
+          {
+            "id": "SB8-M1",
+            "type": "frame",
+            "n1": "SB8-N0",
+            "n2": "SB8-N1",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M2",
+            "type": "frame",
+            "n1": "SB8-N1",
+            "n2": "SB8-N2",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M3",
+            "type": "frame",
+            "n1": "SB8-N2",
+            "n2": "SB8-N3",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M4",
+            "type": "frame",
+            "n1": "SB8-N3",
+            "n2": "SB8-N4",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M5",
+            "type": "frame",
+            "n1": "SB8-N4",
+            "n2": "SB8-N5",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M6",
+            "type": "frame",
+            "n1": "SB8-N5",
+            "n2": "SB8-N6",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M7",
+            "type": "frame",
+            "n1": "SB8-N6",
+            "n2": "SB8-N7",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M8",
+            "type": "frame",
+            "n1": "SB8-N7",
+            "n2": "SB8-N8",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M9",
+            "type": "frame",
+            "n1": "SB8-N8",
+            "n2": "SB8-N9",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M10",
+            "type": "frame",
+            "n1": "SB8-N9",
+            "n2": "SB8-N10",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M11",
+            "type": "frame",
+            "n1": "SB8-N10",
+            "n2": "SB8-N11",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M12",
+            "type": "frame",
+            "n1": "SB8-N11",
+            "n2": "SB8-N12",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M13",
+            "type": "frame",
+            "n1": "SB8-N12",
+            "n2": "SB8-N13",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M14",
+            "type": "frame",
+            "n1": "SB8-N13",
+            "n2": "SB8-N14",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M15",
+            "type": "frame",
+            "n1": "SB8-N14",
+            "n2": "SB8-N15",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          },
+          {
+            "id": "SB8-M16",
+            "type": "frame",
+            "n1": "SB8-N15",
+            "n2": "SB8-N16",
+            "matId": "SB8-MAT",
+            "secId": "SB8-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "shearDeformation": true
+          }
+        ],
+        "shells": [],
+        "links": [],
+        "loads": [],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "SB8 benchmark load",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "analysisCases": [
+          {
+            "id": "SB8-MODAL",
+            "kind": "modal",
+            "settings": {
+              "modeCount": 6,
+              "shearDeformation": true
+            }
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "modal",
+          "elementType": "3d_frame",
+          "includeShearDeformation": true,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6,
+          "shearDeformation": true
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-SB8-UI-R4",
+          "name": "SB8 | Timoshenko beam natural frequencies",
+          "benchmarkId": "SB8",
+          "verificationBoundary": "DIRECT_NUMERIC_PASS",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "benchmark-topology model",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        },
+        "massSources": [
+          {
+            "id": "SB8-MS",
+            "version": 1,
+            "includeNodeMass": true,
+            "includeMemberMass": false,
+            "combos": []
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": false,
+    "mid": false,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

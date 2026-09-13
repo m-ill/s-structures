@@ -1,0 +1,346 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-model-manifest-r4",
+  "generatedAt": "2026-08-30",
+  "cases": [
+    {
+      "id": "SB2",
+      "title": "NAFEMS LE1 elliptic membrane",
+      "folder": "02_SB2_NAFEMS_LE1_Elliptic_Membrane",
+      "view": "front",
+      "boundary": "DIRECT_NUMERIC_PASS",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SB2-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\02_SB2_NAFEMS_LE1_Elliptic_Membrane\\02_모델\\SB2_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 32,
+        "members": 52,
+        "shells": 21,
+        "links": 0,
+        "loads": 8
+      },
+      "sha256": "acf51b45ab1a38bf98a121485facbbb0c7d4fc11ccb0aa1a056f51cd1733df1a"
+    },
+    {
+      "id": "SB3",
+      "title": "Cook's membrane",
+      "folder": "03_SB3_Cooks_Membrane",
+      "view": "front",
+      "boundary": "DIRECT_NUMERIC_PASS",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SB3-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\03_SB3_Cooks_Membrane\\02_모델\\SB3_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 54,
+        "members": 93,
+        "shells": 40,
+        "links": 0,
+        "loads": 6
+      },
+      "sha256": "4a5c50a79a541493ae55e037d94393663025795f943efa2248787f1d0cd95ad0"
+    },
+    {
+      "id": "SB5",
+      "title": "Thin rectangular plate bending",
+      "folder": "04_SB5_Thin_Rectangular_Plate",
+      "view": "plan",
+      "boundary": "DIRECT_NUMERIC_PASS",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SB5-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\04_SB5_Thin_Rectangular_Plate\\02_모델\\SB5_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 63,
+        "members": 110,
+        "shells": 48,
+        "links": 0,
+        "loads": 1
+      },
+      "sha256": "3252c2f9c3079d57949248d568bc93f444f6ead91778abc900d8c21edd460564"
+    },
+    {
+      "id": "SB6",
+      "title": "Thick rectangular plate bending",
+      "folder": "05_SB6_Thick_Rectangular_Plate",
+      "view": "plan",
+      "boundary": "DIRECT_NUMERIC_PASS",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SB6-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\05_SB6_Thick_Rectangular_Plate\\02_모델\\SB6_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 35,
+        "members": 58,
+        "shells": 24,
+        "links": 0,
+        "loads": 1
+      },
+      "sha256": "1556b481420817a50dcca2fee0d2946a3e8f35c39c2f421d1b6b763e80cee915"
+    },
+    {
+      "id": "SB7",
+      "title": "Beam on Winkler elastic foundation",
+      "folder": "06_SB7_Winkler_Beam",
+      "view": "front",
+      "boundary": "DIRECT_NUMERIC_PASS",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SB7-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\06_SB7_Winkler_Beam\\02_모델\\SB7_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 34,
+        "members": 33,
+        "shells": 0,
+        "links": 0,
+        "loads": 1
+      },
+      "sha256": "2d1f1a9ad8b9a9eaf03188b41bb3aebc99a59cc789fb48a3a96a4299a9d5d6e3"
+    },
+    {
+      "id": "SB8",
+      "title": "Timoshenko beam natural frequencies",
+      "folder": "07_SB8_Timoshenko_Beam_Frequencies",
+      "view": "front",
+      "boundary": "DIRECT_NUMERIC_PASS",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SB8-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\07_SB8_Timoshenko_Beam_Frequencies\\02_모델\\SB8_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 17,
+        "members": 16,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "sha256": "d8a3913f3f79f4836aac898238dfb8b341a3c0026a433875ce36a8187fd78004"
+    },
+    {
+      "id": "SB9",
+      "title": "Portal frame under UDL",
+      "folder": "08_SB9_Portal_Frame_UDL",
+      "view": "front",
+      "boundary": "DIRECT_NUMERIC_PASS",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SB9-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\08_SB9_Portal_Frame_UDL\\02_모델\\SB9_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 11,
+        "members": 10,
+        "shells": 0,
+        "links": 0,
+        "loads": 8
+      },
+      "sha256": "2e2b27c47bf398223b65e6869259c6f983cdf5ecafb05a73f82b2758e9c86d76"
+    },
+    {
+      "id": "SB10",
+      "title": "Asymmetric two-bar truss",
+      "folder": "09_SB10_Two_Bar_Truss",
+      "view": "front",
+      "boundary": "DIRECT_NUMERIC_PASS",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SB10-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\09_SB10_Two_Bar_Truss\\02_모델\\SB10_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 3,
+        "members": 2,
+        "shells": 0,
+        "links": 0,
+        "loads": 2
+      },
+      "sha256": "2cb3d115b124172ba81545b995e232b55c2c2774f5c30bf60f44590cb60d2fb6"
+    },
+    {
+      "id": "SB12",
+      "title": "Elastic link beta-angle transformation",
+      "folder": "10_SB12_Elastic_Link_Beta_Angle",
+      "view": "3d",
+      "boundary": "ENGINE_PASS_OFFICIAL_NOT_CLAIMED",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SB12-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\10_SB12_Elastic_Link_Beta_Angle\\02_모델\\SB12_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 4,
+        "members": 2,
+        "shells": 0,
+        "links": 2,
+        "loads": 2
+      },
+      "sha256": "5745de1a51a520ae21e2f83795814eccef410e7dc3f943979b3028d034003bb8"
+    },
+    {
+      "id": "PD1",
+      "title": "P-Delta tension stiffening",
+      "folder": "11_PD1_PDelta_Tension_Stiffening",
+      "view": "front",
+      "boundary": "NUMERIC_PASS_QUALIFICATION_OPEN",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\PD1-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\11_PD1_PDelta_Tension_Stiffening\\02_모델\\PD1_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 17,
+        "members": 16,
+        "shells": 0,
+        "links": 0,
+        "loads": 17
+      },
+      "sha256": "b1f68cf2dfbdf9e8fd4a5f1567fc2ace939e7727f7ab19a09f023f8c1f2411b7"
+    },
+    {
+      "id": "SM5",
+      "title": "Bathe-Wilson 10-bay 9-storey frame",
+      "folder": "12_SM5_Bathe_Wilson_Frame",
+      "view": "front",
+      "boundary": "NUMERIC_PASS_QUALIFICATION_OPEN",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SM5-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\12_SM5_Bathe_Wilson_Frame\\02_모델\\SM5_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 110,
+        "members": 189,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "sha256": "24f74430758c1e4b1e66ad934913ffc2fbb2dcacb7d1fd3fe57df0e1bd4f6987"
+    },
+    {
+      "id": "SM5b",
+      "title": "Eccentric rigid-diaphragm building",
+      "folder": "13_SM5b_Rigid_Diaphragm_Condensation",
+      "view": "3d",
+      "boundary": "ENGINE_PASS_SOURCE_BLOCKED",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SM5b-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\13_SM5b_Rigid_Diaphragm_Condensation\\02_모델\\SM5b_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 16,
+        "members": 24,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "sha256": "89367c02083825ead445b530f8035f6b1f4b7f43273dd58fd8bd75f205090a5e"
+    },
+    {
+      "id": "SM6",
+      "title": "ASME 3-D fixed-base pipe frame",
+      "folder": "14_SM6_ASME_3D_Eigen_Frame",
+      "view": "3d",
+      "boundary": "ENGINE_PASS_SOURCE_BLOCKED",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SM6-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\14_SM6_ASME_3D_Eigen_Frame\\02_모델\\SM6_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 16,
+        "members": 24,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "sha256": "ac09d8951239b0b658c8054848e868077f54cdbe4b617d293a3d985693b575e6"
+    },
+    {
+      "id": "SR1",
+      "title": "2-D rigid-frame response spectrum",
+      "folder": "15_SR1_Two_Dimensional_Response_Spectrum",
+      "view": "front",
+      "boundary": "ENGINE_PASS_SOURCE_BLOCKED",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SR1-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\15_SR1_Two_Dimensional_Response_Spectrum\\02_모델\\SR1_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 20,
+        "members": 28,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "sha256": "ecce63bd1a73095168217a2c24d08f3ab631937565d4dfc796ce7bbde3cac515"
+    },
+    {
+      "id": "SR2",
+      "title": "3-D eccentric rigid-diaphragm response spectrum",
+      "folder": "16_SR2_Three_Dimensional_Eccentric_RSA",
+      "view": "3d",
+      "boundary": "ENGINE_PASS_SOURCE_BLOCKED",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SR2-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\16_SR2_Three_Dimensional_Eccentric_RSA\\02_모델\\SR2_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 12,
+        "members": 16,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "sha256": "09680a3828497d514dfb372642992829cfb89819a1f08e166cf044c523fa01cd"
+    },
+    {
+      "id": "SR2b",
+      "title": "3-D L-shaped braced-frame response spectrum",
+      "folder": "17_SR2b_L_Shaped_Braced_RSA",
+      "view": "3d",
+      "boundary": "ENGINE_PASS_SOURCE_BLOCKED",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SR2b-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\17_SR2b_L_Shaped_Braced_RSA\\02_모델\\SR2b_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 18,
+        "members": 28,
+        "shells": 0,
+        "links": 0,
+        "loads": 0
+      },
+      "sha256": "ceeda0316f02d397f13b1d4a875941cfc2220174e30dcb2b2316f345a3818743"
+    },
+    {
+      "id": "P3S2",
+      "title": "Wall shell stabilization sensitivity",
+      "folder": "18_P3S2_Stabilization_Sensitivity",
+      "view": "front",
+      "boundary": "EQUIVALENT_ENGINE_GATE",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\P3S2-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\18_P3S2_Stabilization_Sensitivity\\02_모델\\P3S2_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 60,
+        "members": 104,
+        "shells": 45,
+        "links": 0,
+        "loads": 0
+      },
+      "sha256": "6d4e869ef5339b91f2787c23fcf7a519fc4a5f15cf638a314e45f8053e8ab20c"
+    },
+    {
+      "id": "SP1",
+      "title": "Pushover cantilever moment hinge",
+      "folder": "19_SP1_Pushover_Moment_Hinge",
+      "view": "front",
+      "boundary": "EQUIVALENT_ENGINE_GATE",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SP1-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\19_SP1_Pushover_Moment_Hinge\\02_모델\\SP1_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 9,
+        "members": 8,
+        "shells": 0,
+        "links": 0,
+        "loads": 1
+      },
+      "sha256": "8a784f79bb88537cbb57e9b322c067d261b2e981f1a78af08a15d444639635c2"
+    },
+    {
+      "id": "SH1",
+      "title": "3-D column P-M-M hinge",
+      "folder": "20_SH1_PMM_Hinge",
+      "view": "3d",
+      "boundary": "ENGINE_CHECKPOINT",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\SH1-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\20_SH1_PMM_Hinge\\02_모델\\SH1_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 3,
+        "members": 2,
+        "shells": 0,
+        "links": 0,
+        "loads": 3
+      },
+      "sha256": "c1169177fa191bca2a4fc4c8eaff722b02dafb7388b1cb8db6306373b49bdeae"
+    },
+    {
+      "id": "TH1",
+      "title": "SDOF Newmark time-history anchor",
+      "folder": "21_TH1_SDOF_Newmark_THA",
+      "view": "front",
+      "boundary": "ENGINE_CHECKPOINT",
+      "bookPath": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\models\\TH1-S-Structures-book-R4.json",
+      "caseModelPath": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\21_TH1_SDOF_Newmark_THA\\02_모델\\TH1_S-Structures_실제모델_R4.json",
+      "counts": {
+        "nodes": 2,
+        "members": 1,
+        "shells": 0,
+        "links": 1,
+        "loads": 0
+      },
+      "sha256": "f4164ff54059252a29f5d0458de5918eb276d921c27a662b65503a4192431208"
+    }
+  ]
+}

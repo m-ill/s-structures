@@ -80,7 +80,7 @@ const core = {
   benchmarkExecutionStarted: false,
   releaseAllowed: false,
   finalDesignTransferAllowed: false,
-  reviewDocuments: ['docs/phase14/CODEBASE_REVIEW.md', 'docs/phase14/MODULE_ARCHITECTURE.md'],
+  reviewDocuments: ['docs/archive/phase14/CODEBASE_REVIEW.md', 'docs/archive/phase14/MODULE_ARCHITECTURE.md'],
   manifestHash: manifest.manifestHash,
 };
 await writeFile('verification/evidence/validation/phase14/p14-m11-integration.json', `${JSON.stringify({ ...core, artifactHash: stableHash(core) }, null, 2)}\n`, 'utf8');

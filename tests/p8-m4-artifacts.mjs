@@ -49,7 +49,7 @@ for (const result of artifact.results) {
   );
 }
 const adr = await readFile(
-  new URL('../docs/phase8/adr/ADR-003-CONCENTRATED-HINGE-SERIES-COMPATIBILITY.md', import.meta.url),
+  new URL('../docs/archive/phase8/adr/ADR-003-CONCENTRATED-HINGE-SERIES-COMPATIBILITY.md', import.meta.url),
   'utf8',
 );
 assert.ok(adr.includes('M_member - M_hinge'));

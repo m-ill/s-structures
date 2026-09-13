@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-evidence-r4",
+  "capturedAt": "2026-08-30",
+  "caseId": "SR2",
+  "browser": "Google Chrome headed channel",
+  "application": "S-Structures native modeler",
+  "appUrl": "http://127.0.0.1:15174/index.html?engine_ui=1",
+  "view": "3d",
+  "verificationBoundary": "ENGINE_PASS_SOURCE_BLOCKED",
+  "modelBook": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\16_SR2_Three_Dimensional_Eccentric_RSA\\02_모델\\SR2_S-Structures_실제모델_R4.json",
+  "modelBookSha256": "09680a3828497d514dfb372642992829cfb89819a1f08e166cf044c523fa01cd",
+  "expectedCounts": {
+    "nodes": 12,
+    "members": 16,
+    "shells": 0,
+    "links": 0,
+    "loads": 0
+  },
+  "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SR2\\SR2_S-Structures_실제모델링_R4.png",
+  "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\16_SR2_Three_Dimensional_Eccentric_RSA\\05_보고서\\figures\\03_SR2_S-Structures_실제모델링_R4.png",
+  "screenshotSha256": "c70997aa7e57d8795c5d1704234a9a59b6d6ddee085053dd47ca148e236fd6d7",
+  "image": {
+    "width": 1600,
+    "height": 900,
+    "variance": 1834.7562850614086,
+    "nonblank": true
+  },
+  "checks": {
+    "browserCaptureExists": true,
+    "nativeModelBookExists": true,
+    "benchmarkIdBound": true,
+    "expectedCollectionCountsRecorded": true,
+    "centerFitAppliedTwice": true,
+    "reportFigureCopied": true
+  },
+  "capturePassed": true
+}

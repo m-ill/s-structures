@@ -1,8 +1,8 @@
 # WebMCP — 탄성설계·보고서·비선형 36개 도구
 
-현재 main/Pages는 **36개 도구**를 제공한다. [배포 소스·검증 기록](phase20/PAGES_DEPLOYMENT.md)을 확인한다. [M5~M10 지원 범위](phase19/M5_M10_CANDIDATE.md) · [개발 PR](https://github.com/m-ill/s-structures/pull/3). 아래 M4 기록은 이전 단계의 검증 이력이다.
+현재 main/Pages는 **36개 도구**를 제공한다. [배포 소스·검증 기록](archive/phase20/PAGES_DEPLOYMENT.md)을 확인한다. [M5~M10 지원 범위](archive/phase19/M5_M10_CANDIDATE.md) · [개발 PR](https://github.com/m-ill/s-structures/pull/3). 아래 M4 기록은 이전 단계의 검증 이력이다.
 
-2026-09-07 로컬 M4는 기존 9개에 18개를 추가한 총 27개 도구를 제공한다. 입력 preview/apply, 탄성 workflow, 설계 검토, 보고서 artifact, 화면 전환을 M2·M3 공통 서비스에 연결했다. 직접 모델러와 같은 출처 app 호스트에서 실제 Site tools를 검증했다. [M4 계약·사용법](phase19/M4_CONTRACT.md) · [39개 고정 회귀와 브라우저 증거](../verification/evidence/phase19/m4/README.md). 이 문단은 M4 당시 기록이며, 후속 Phase19·20은 main/Pages에 반영했다.
+2026-09-07 로컬 M4는 기존 9개에 18개를 추가한 총 27개 도구를 제공한다. 입력 preview/apply, 탄성 workflow, 설계 검토, 보고서 artifact, 화면 전환을 M2·M3 공통 서비스에 연결했다. 직접 모델러와 같은 출처 app 호스트에서 실제 Site tools를 검증했다. [M4 계약·사용법](archive/phase19/M4_CONTRACT.md) · [39개 고정 회귀와 브라우저 증거](../verification/evidence/phase19/m4/README.md). 이 문단은 M4 당시 기록이며, 후속 Phase19·20은 main/Pages에 반영했다.
 
 ## 공개 v1 호환 계약 — 2026-09-05
 
@@ -40,7 +40,7 @@ Node.js 24에서 `node server/main.mjs 5173` 실행 후 지원 브라우저로 `
 
 ## Phase 19 비선형 개발 후보
 
-현재 개발 브랜치는 36개 도구를 제공한다. 기존 27개 탄성 workflow에 비선형 케이스·힌지 preview/apply·페이지 조회·이력·실패 진단·pause/resume 9개를 추가했다. 공통 분석 도구로 production Pushover/NLTH를 실행한다. [호출 순서·지원 범위·잔여 자격](phase19/M5_M10_CANDIDATE.md)을 확인한다. 성공한 비선형 결과도 candidate이며 최종설계 전달은 차단된다.
+현재 개발 브랜치는 36개 도구를 제공한다. 기존 27개 탄성 workflow에 비선형 케이스·힌지 preview/apply·페이지 조회·이력·실패 진단·pause/resume 9개를 추가했다. 공통 분석 도구로 production Pushover/NLTH를 실행한다. [호출 순서·지원 범위·잔여 자격](archive/phase19/M5_M10_CANDIDATE.md)을 확인한다. 성공한 비선형 결과도 candidate이며 최종설계 전달은 차단된다.
 
 
 ## Phase21 로컬 후보 — 40개 도구와 원본 단위
@@ -53,8 +53,8 @@ Node.js 24에서 `node server/main.mjs 5173` 실행 후 지원 브라우저로 `
 
 ## Phase22 로컬 개발 변경
 
-43개 도구. workflow 완료 job도 공통 상태/부분 조회에 연결한다. 복원 결과는 `open_analysis_result`로 새 읽기 전용 ID를 얻는다. `get_runtime_resources({includeAggregate:true})`는 선택적인 메모리 진단, `export_report_pdf({handle,requestId})`는 예비 기록 PDF 자동 다운로드다. 최종 설계 자격·배포 완료를 의미하지 않는다. [계획 및 코드 상태](phase22/STATUS.md) 참고.
+43개 도구. workflow 완료 job도 공통 상태/부분 조회에 연결한다. 복원 결과는 `open_analysis_result`로 새 읽기 전용 ID를 얻는다. `get_runtime_resources({includeAggregate:true})`는 선택적인 메모리 진단, `export_report_pdf({handle,requestId})`는 예비 기록 PDF 자동 다운로드다. 최종 설계 자격·배포 완료를 의미하지 않는다. [계획 및 코드 상태](archive/phase22/STATUS.md) 참고.
 
 ## Phase23 GPU 강체 다이어프램 후보
 
-프레임·강체 다이어프램 static 모델의 기능 조회는 지원 환경에서 GPU 검토용을 제공한다. 기존 computeTarget gpu로 1차 탄성·Direct P-delta를 실행하며 결과에 실제 GPU 경로와 preliminary/designBlocked 자격을 보존한다. Auto는 CPU다. 상세 범위는 [Phase23](phase23/README.md)를 참조한다.
+프레임·강체 다이어프램 static 모델의 기능 조회는 지원 환경에서 GPU 검토용을 제공한다. 기존 computeTarget gpu로 1차 탄성·Direct P-delta를 실행하며 결과에 실제 GPU 경로와 preliminary/designBlocked 자격을 보존한다. Auto는 CPU다. 상세 범위는 [Phase23](archive/phase23/README.md)를 참조한다.

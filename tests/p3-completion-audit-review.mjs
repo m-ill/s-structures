@@ -33,10 +33,10 @@ assert.deepEqual(review.rows.slice(0, 6).map((row) => row.exitCriteriaSummary.st
   'automated-exit-criteria-covered',
 ]);
 assert.deepEqual(review.rows.slice(0, 6).map((row) => row.exitCriteria.length), [2, 3, 2, 2, 2, 3]);
-assert.equal(review.rows.find((row) => row.milestone === 'P3-M1').exitCriteria.find((row) => row.id === 'M1-E3').source, 'docs/phase3/SERVER_API_PLAN.md');
+assert.equal(review.rows.find((row) => row.milestone === 'P3-M1').exitCriteria.find((row) => row.id === 'M1-E3').source, 'docs/archive/phase3/SERVER_API_PLAN.md');
 assert.ok(review.rows.find((row) => row.milestone === 'P3-M2').exitCriteria.find((row) => row.id === 'M2-E1').requirement.includes('scrypt'));
 assert.equal(review.rows.find((row) => row.milestone === 'P3-M4').exitCriteria.find((row) => row.id === 'M4-E2').evidence, 'tests/p3-viewer-core.mjs');
-assert.equal(review.rows.find((row) => row.milestone === 'P3-M5').exitCriteria.find((row) => row.id === 'M5-E2').source, 'docs/phase3/ARCHITECTURE.md');
+assert.equal(review.rows.find((row) => row.milestone === 'P3-M5').exitCriteria.find((row) => row.id === 'M5-E2').source, 'docs/archive/phase3/ARCHITECTURE.md');
 assert.equal(review.rows.find((row) => row.milestone === 'P3-M6').exitCriteriaSummary.status, 'delegated-to-milestone-review');
 assert.ok(review.rows.find((row) => row.milestone === 'P3-M7').productionBlockers.includes('real DWG conversion remains external-tool dependent'));
 assert.ok(review.rows.find((row) => row.milestone === 'P3-M9').productionBlockers.includes('real field scan validation'));

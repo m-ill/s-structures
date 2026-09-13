@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-evidence-r4",
+  "capturedAt": "2026-08-30",
+  "caseId": "SB9",
+  "browser": "Google Chrome headed channel",
+  "application": "S-Structures native modeler",
+  "appUrl": "http://127.0.0.1:15174/index.html?engine_ui=1",
+  "view": "front",
+  "verificationBoundary": "DIRECT_NUMERIC_PASS",
+  "modelBook": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\08_SB9_Portal_Frame_UDL\\02_모델\\SB9_S-Structures_실제모델_R4.json",
+  "modelBookSha256": "2e2b27c47bf398223b65e6869259c6f983cdf5ecafb05a73f82b2758e9c86d76",
+  "expectedCounts": {
+    "nodes": 11,
+    "members": 10,
+    "shells": 0,
+    "links": 0,
+    "loads": 8
+  },
+  "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB9\\SB9_S-Structures_실제모델링_R4.png",
+  "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\08_SB9_Portal_Frame_UDL\\05_보고서\\figures\\03_SB9_S-Structures_실제모델링_R4.png",
+  "screenshotSha256": "ac8cfa1cbaa8a55825c2359bf6aa472fc68017e83f9d0f29eb6c3c8edf94a923",
+  "image": {
+    "width": 1600,
+    "height": 900,
+    "variance": 1768.0842211146457,
+    "nonblank": true
+  },
+  "checks": {
+    "browserCaptureExists": true,
+    "nativeModelBookExists": true,
+    "benchmarkIdBound": true,
+    "expectedCollectionCountsRecorded": true,
+    "centerFitAppliedTwice": true,
+    "reportFigureCopied": true
+  },
+  "capturePassed": true
+}

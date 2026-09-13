@@ -37,7 +37,7 @@
 
 ## Phase 7 Elastic Workflow
 
-Phase 7의 M0~M11 코드 구현은 완료되었고 릴리스 상태는 `candidate`다. 세부 구현·검증 근거는 `docs/phase7/IMPLEMENTATION_STATUS.md`, 코드리뷰 결과는 `docs/phase7/CODEBASE_REVIEW.md`를 따른다.
+Phase 7의 M0~M11 코드 구현은 완료되었고 릴리스 상태는 `candidate`다. 세부 구현·검증 근거는 `docs/archive/phase7/IMPLEMENTATION_STATUS.md`, 코드리뷰 결과는 `docs/archive/phase7/CODEBASE_REVIEW.md`를 따른다.
 
 | 영역 | 현재 상태 |
 | --- | --- |

@@ -16,7 +16,7 @@ from docx import Document
 
 REPO = Path(__file__).resolve().parents[1]
 VAULT = REPO.parent
-CASE_ROOT = VAULT / "testreport/STRIX-21-검증"
+CASE_ROOT = VAULT / "자료/testreport/STRIX-21-검증"
 PDF_ROOT = REPO / "tmp/docx-word-export"
 RENDER_ROOT = REPO / "tmp/docx-render-r1"
 QA_ROOT = REPO / "output/verification/strix21-docx"

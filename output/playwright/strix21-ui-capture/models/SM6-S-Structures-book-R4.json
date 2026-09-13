@@ -1,0 +1,798 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "SM6 | ASME 3-D fixed-base pipe frame",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "SM6-MAT",
+            "version": 1,
+            "name": "SM6 elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "SM6-SEC",
+            "version": 1,
+            "name": "SM6 display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "SM6-N0-0",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SM6-N0-1",
+            "x": 6,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SM6-N0-2",
+            "x": 6,
+            "y": 4,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SM6-N0-3",
+            "x": 0,
+            "y": 4,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SM6-N1-0",
+            "x": 0,
+            "y": 0,
+            "z": 3,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N1-1",
+            "x": 6,
+            "y": 0,
+            "z": 3,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N1-2",
+            "x": 6,
+            "y": 4,
+            "z": 3,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N1-3",
+            "x": 0,
+            "y": 4,
+            "z": 3,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N2-0",
+            "x": 0,
+            "y": 0,
+            "z": 6,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N2-1",
+            "x": 6,
+            "y": 0,
+            "z": 6,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N2-2",
+            "x": 6,
+            "y": 4,
+            "z": 6,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N2-3",
+            "x": 0,
+            "y": 4,
+            "z": 6,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N3-0",
+            "x": 0,
+            "y": 0,
+            "z": 9,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N3-1",
+            "x": 6,
+            "y": 0,
+            "z": 9,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N3-2",
+            "x": 6,
+            "y": 4,
+            "z": 9,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          },
+          {
+            "id": "SM6-N3-3",
+            "x": 0,
+            "y": 4,
+            "z": 9,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              8
+            ]
+          }
+        ],
+        "members": [
+          {
+            "id": "SM6-C0-0",
+            "type": "frame",
+            "n1": "SM6-N0-0",
+            "n2": "SM6-N1-0",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C0-1",
+            "type": "frame",
+            "n1": "SM6-N0-1",
+            "n2": "SM6-N1-1",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C0-2",
+            "type": "frame",
+            "n1": "SM6-N0-2",
+            "n2": "SM6-N1-2",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C0-3",
+            "type": "frame",
+            "n1": "SM6-N0-3",
+            "n2": "SM6-N1-3",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C1-0",
+            "type": "frame",
+            "n1": "SM6-N1-0",
+            "n2": "SM6-N2-0",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C1-1",
+            "type": "frame",
+            "n1": "SM6-N1-1",
+            "n2": "SM6-N2-1",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C1-2",
+            "type": "frame",
+            "n1": "SM6-N1-2",
+            "n2": "SM6-N2-2",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C1-3",
+            "type": "frame",
+            "n1": "SM6-N1-3",
+            "n2": "SM6-N2-3",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C2-0",
+            "type": "frame",
+            "n1": "SM6-N2-0",
+            "n2": "SM6-N3-0",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C2-1",
+            "type": "frame",
+            "n1": "SM6-N2-1",
+            "n2": "SM6-N3-1",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C2-2",
+            "type": "frame",
+            "n1": "SM6-N2-2",
+            "n2": "SM6-N3-2",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-C2-3",
+            "type": "frame",
+            "n1": "SM6-N2-3",
+            "n2": "SM6-N3-3",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B1-0-1",
+            "type": "frame",
+            "n1": "SM6-N1-0",
+            "n2": "SM6-N1-1",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B1-1-2",
+            "type": "frame",
+            "n1": "SM6-N1-1",
+            "n2": "SM6-N1-2",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B1-2-3",
+            "type": "frame",
+            "n1": "SM6-N1-2",
+            "n2": "SM6-N1-3",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B1-3-0",
+            "type": "frame",
+            "n1": "SM6-N1-3",
+            "n2": "SM6-N1-0",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B2-0-1",
+            "type": "frame",
+            "n1": "SM6-N2-0",
+            "n2": "SM6-N2-1",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B2-1-2",
+            "type": "frame",
+            "n1": "SM6-N2-1",
+            "n2": "SM6-N2-2",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B2-2-3",
+            "type": "frame",
+            "n1": "SM6-N2-2",
+            "n2": "SM6-N2-3",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B2-3-0",
+            "type": "frame",
+            "n1": "SM6-N2-3",
+            "n2": "SM6-N2-0",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B3-0-1",
+            "type": "frame",
+            "n1": "SM6-N3-0",
+            "n2": "SM6-N3-1",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B3-1-2",
+            "type": "frame",
+            "n1": "SM6-N3-1",
+            "n2": "SM6-N3-2",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B3-2-3",
+            "type": "frame",
+            "n1": "SM6-N3-2",
+            "n2": "SM6-N3-3",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          },
+          {
+            "id": "SM6-B3-3-0",
+            "type": "frame",
+            "n1": "SM6-N3-3",
+            "n2": "SM6-N3-0",
+            "matId": "SM6-MAT",
+            "secId": "SM6-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            },
+            "sectionFamily": "pipe"
+          }
+        ],
+        "shells": [],
+        "links": [],
+        "loads": [],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "SM6 benchmark load",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "analysisCases": [
+          {
+            "id": "SM6-MODAL",
+            "kind": "modal",
+            "settings": {
+              "modeCount": 6,
+              "combination": "CQC"
+            }
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "modal",
+          "elementType": "3d_frame",
+          "includeShearDeformation": false,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-SM6-UI-R4",
+          "name": "SM6 | ASME 3-D fixed-base pipe frame",
+          "benchmarkId": "SM6",
+          "verificationBoundary": "ENGINE_PASS_SOURCE_BLOCKED",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "production-engine qualification fixture topology",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        },
+        "diaphragms": [
+          {
+            "id": "SM6-DIA-1",
+            "type": "rigid",
+            "masterNode": "SM6-N1-0",
+            "nodes": [
+              "SM6-N1-0",
+              "SM6-N1-1",
+              "SM6-N1-2",
+              "SM6-N1-3"
+            ],
+            "dofs": [
+              "ux",
+              "uy",
+              "rz"
+            ],
+            "eccentric": false
+          },
+          {
+            "id": "SM6-DIA-2",
+            "type": "rigid",
+            "masterNode": "SM6-N2-0",
+            "nodes": [
+              "SM6-N2-0",
+              "SM6-N2-1",
+              "SM6-N2-2",
+              "SM6-N2-3"
+            ],
+            "dofs": [
+              "ux",
+              "uy",
+              "rz"
+            ],
+            "eccentric": false
+          },
+          {
+            "id": "SM6-DIA-3",
+            "type": "rigid",
+            "masterNode": "SM6-N3-0",
+            "nodes": [
+              "SM6-N3-0",
+              "SM6-N3-1",
+              "SM6-N3-2",
+              "SM6-N3-3"
+            ],
+            "dofs": [
+              "ux",
+              "uy",
+              "rz"
+            ],
+            "eccentric": false
+          }
+        ],
+        "massSources": [
+          {
+            "id": "SM6-MS",
+            "version": 1,
+            "includeNodeMass": true,
+            "includeMemberMass": false,
+            "combos": []
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": true,
+    "mid": true,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

@@ -20,7 +20,7 @@ from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer, 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VAULT_ROOT = REPO_ROOT.parent
-CASE_ROOT = VAULT_ROOT / "testreport" / "STRIX-21-검증"
+CASE_ROOT = VAULT_ROOT / "자료" / "testreport" / "STRIX-21-검증"
 COLLECTION_ROOT = CASE_ROOT / "00_설득자료_모음"
 COMPARISON_PATH = REPO_ROOT / "output" / "reports" / "strix-reference-sstructures-comparison" / "comparison-data.json"
 P18A_PATH = REPO_ROOT / "verification" / "benchmarks" / "strix21" / "milestones" / "P18A" / "p18a-additional-comparison-evidence.json"

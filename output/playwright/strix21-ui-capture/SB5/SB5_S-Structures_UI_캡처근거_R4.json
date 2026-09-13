@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-evidence-r4",
+  "capturedAt": "2026-08-30",
+  "caseId": "SB5",
+  "browser": "Google Chrome headed channel",
+  "application": "S-Structures native modeler",
+  "appUrl": "http://127.0.0.1:15174/index.html?engine_ui=1",
+  "view": "plan",
+  "verificationBoundary": "DIRECT_NUMERIC_PASS",
+  "modelBook": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\04_SB5_Thin_Rectangular_Plate\\02_모델\\SB5_S-Structures_실제모델_R4.json",
+  "modelBookSha256": "3252c2f9c3079d57949248d568bc93f444f6ead91778abc900d8c21edd460564",
+  "expectedCounts": {
+    "nodes": 63,
+    "members": 110,
+    "shells": 48,
+    "links": 0,
+    "loads": 1
+  },
+  "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB5\\SB5_S-Structures_실제모델링_R4.png",
+  "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\04_SB5_Thin_Rectangular_Plate\\05_보고서\\figures\\03_SB5_S-Structures_실제모델링_R4.png",
+  "screenshotSha256": "885c78a1fa73c24f5d1d29d2082d0a988f5255f52d775556a7315ab47e891ca3",
+  "image": {
+    "width": 1600,
+    "height": 900,
+    "variance": 1799.9854085310574,
+    "nonblank": true
+  },
+  "checks": {
+    "browserCaptureExists": true,
+    "nativeModelBookExists": true,
+    "benchmarkIdBound": true,
+    "expectedCollectionCountsRecorded": true,
+    "centerFitAppliedTwice": true,
+    "reportFigureCopied": true
+  },
+  "capturePassed": true
+}

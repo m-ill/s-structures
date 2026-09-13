@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-evidence-r4",
+  "capturedAt": "2026-08-30",
+  "caseId": "SR1",
+  "browser": "Google Chrome headed channel",
+  "application": "S-Structures native modeler",
+  "appUrl": "http://127.0.0.1:15174/index.html?engine_ui=1",
+  "view": "front",
+  "verificationBoundary": "ENGINE_PASS_SOURCE_BLOCKED",
+  "modelBook": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\15_SR1_Two_Dimensional_Response_Spectrum\\02_모델\\SR1_S-Structures_실제모델_R4.json",
+  "modelBookSha256": "ecce63bd1a73095168217a2c24d08f3ab631937565d4dfc796ce7bbde3cac515",
+  "expectedCounts": {
+    "nodes": 20,
+    "members": 28,
+    "shells": 0,
+    "links": 0,
+    "loads": 0
+  },
+  "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SR1\\SR1_S-Structures_실제모델링_R4.png",
+  "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\15_SR1_Two_Dimensional_Response_Spectrum\\05_보고서\\figures\\03_SR1_S-Structures_실제모델링_R4.png",
+  "screenshotSha256": "a1c43d1cf3b9b0d8568bce5d5bf1b3465f7a55f317fed7f849169285d9a1cb63",
+  "image": {
+    "width": 1600,
+    "height": 900,
+    "variance": 1738.6504987268509,
+    "nonblank": true
+  },
+  "checks": {
+    "browserCaptureExists": true,
+    "nativeModelBookExists": true,
+    "benchmarkIdBound": true,
+    "expectedCollectionCountsRecorded": true,
+    "centerFitAppliedTwice": true,
+    "reportFigureCopied": true
+  },
+  "capturePassed": true
+}

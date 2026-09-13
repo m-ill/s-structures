@@ -10,24 +10,24 @@ import {
 } from '../verification/framework/phase13Baseline.js';
 
 const required = [
-  'docs/phase13/README.md',
-  'docs/phase13/CURRENT_STATE_AUDIT.md',
-  'docs/phase13/PRODUCTION_REQUIREMENTS.md',
-  'docs/phase13/TARGET_ARCHITECTURE.md',
-  'docs/phase13/ELASTIC_WORKSPACE_UX_SPEC.md',
-  'docs/phase13/MILESTONE_EXECUTION_PLAN.md',
-  'docs/phase13/VERIFICATION_MATRIX.md',
-  'docs/phase13/REQUIREMENTS_TRACEABILITY.md',
-  'docs/phase13/RISK_REGISTER.md',
-  'docs/phase13/IMPLEMENTATION_STATUS.md',
-  'docs/phase13/adr/ADR-001-RUN-STATE-OWNERSHIP.md',
+  'docs/archive/phase13/README.md',
+  'docs/archive/phase13/CURRENT_STATE_AUDIT.md',
+  'docs/archive/phase13/PRODUCTION_REQUIREMENTS.md',
+  'docs/archive/phase13/TARGET_ARCHITECTURE.md',
+  'docs/archive/phase13/ELASTIC_WORKSPACE_UX_SPEC.md',
+  'docs/archive/phase13/MILESTONE_EXECUTION_PLAN.md',
+  'docs/archive/phase13/VERIFICATION_MATRIX.md',
+  'docs/archive/phase13/REQUIREMENTS_TRACEABILITY.md',
+  'docs/archive/phase13/RISK_REGISTER.md',
+  'docs/archive/phase13/IMPLEMENTATION_STATUS.md',
+  'docs/archive/phase13/adr/ADR-001-RUN-STATE-OWNERSHIP.md',
   'verification/specs/phase13/evidence-schema.json',
   'verification/specs/phase13/release-manifest.json',
   'verification/evidence/validation/phase13/p13-m0-baseline-contract.json',
 ];
 for (const path of required) assert.equal(existsSync(path), true, `missing ${path}`);
 
-const plan = readFileSync('docs/phase13/MILESTONE_EXECUTION_PLAN.md', 'utf8');
+const plan = readFileSync('docs/archive/phase13/MILESTONE_EXECUTION_PLAN.md', 'utf8');
 for (let milestone = 0; milestone <= 9; milestone += 1) assert.match(plan, new RegExp(`P13-M${milestone}`));
 
 const baseline = buildPhase13Baseline({ sourceRevision: 'a'.repeat(40), generatedAt: '2026-08-05T00:00:00.000Z' });

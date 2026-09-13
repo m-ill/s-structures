@@ -68,7 +68,7 @@ md+=['## 원본 보고서 파일 검증','','| 포맷 | UTF-8 bytes | SHA-256 |'
 for item in downloads:md.append(f"| {item['format']} | {item['bytes']} | `{item['sha256']}` |")
 md+=['','## 단계별 화면','']
 for s in sources:md+=['### '+Path(s['path']).stem,'',f"![실제 화면](../../{s['path']})",'']
-(root/'docs/phase21/PILOT_RETEST_REPORT.md').write_text('\n'.join(md),encoding='utf-8')
+(root/'docs/archive/phase21/PILOT_RETEST_REPORT.md').write_text('\n'.join(md),encoding='utf-8')
 pdfmetrics.registerFont(TTFont('Korean','C:/Windows/Fonts/malgun.ttf'))
 pdfmetrics.registerFont(TTFont('KoreanBold','C:/Windows/Fonts/malgunbd.ttf'))
 pdf=pdfdir/'S-Structures_Phase21_Pilot_Retest.pdf';c=canvas.Canvas(str(pdf),pagesize=landscape(A3));w,h=landscape(A3)

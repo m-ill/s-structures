@@ -22,7 +22,7 @@ try {
   const forbidden = [
     '/.git/HEAD', '/.git/config', '/package.json', '/config.sample.json',
     '/server/main.mjs', '/server/config.mjs', '/data/server.lock', '/data/users.json',
-    '/data/secret.key', '/reports/', '/output/', '/docs/phase11/README.md',
+    '/data/secret.key', '/reports/', '/output/', '/docs/archive/phase11/README.md',
     '/src/../server/main.mjs', '/src/%2e%2e/server/main.mjs', '/src/%252e%252e/server/main.mjs',
     '/src%5c..%5cserver%5cmain.mjs', '/SRC/ui/indexBridge.js', '/src/ui/indexBridge.js.json',
   ];

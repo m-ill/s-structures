@@ -21,7 +21,7 @@ import { createIndexAgentApi } from '../src/ui/indexBridge.js';
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 const agentContract = JSON.parse(readFileSync('docs/user-manual/agent-contract.json', 'utf8'));
 const launchManual = readFileSync('docs/user-manual/PHASE3_LAUNCH_MANUAL.md', 'utf8');
-const completionAudit = readFileSync('docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md', 'utf8');
+const completionAudit = readFileSync('docs/archive/phase3/P3_COMPLETION_AUDIT_2026-07-02.md', 'utf8');
 const manifest = buildAgentManifest();
 const practiceValidationReview = buildPhase3PracticeValidationReview();
 const ownerSignoffReview = buildPhase3OwnerSignoffReview();

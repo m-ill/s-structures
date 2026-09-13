@@ -1,0 +1,774 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "SM5b | Eccentric rigid-diaphragm building",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "SM5b-MAT",
+            "version": 1,
+            "name": "SM5b elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "SM5b-SEC",
+            "version": 1,
+            "name": "SM5b display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "SM5b-N0-0",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SM5b-N0-1",
+            "x": 6,
+            "y": 0,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SM5b-N0-2",
+            "x": 6,
+            "y": 4,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SM5b-N0-3",
+            "x": 0,
+            "y": 4,
+            "z": 0,
+            "support": "fixed"
+          },
+          {
+            "id": "SM5b-N1-0",
+            "x": 0,
+            "y": 0,
+            "z": 3,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N1-1",
+            "x": 6,
+            "y": 0,
+            "z": 3,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N1-2",
+            "x": 6,
+            "y": 4,
+            "z": 3,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N1-3",
+            "x": 0,
+            "y": 4,
+            "z": 3,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N2-0",
+            "x": 0,
+            "y": 0,
+            "z": 6,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N2-1",
+            "x": 6,
+            "y": 0,
+            "z": 6,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N2-2",
+            "x": 6,
+            "y": 4,
+            "z": 6,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N2-3",
+            "x": 0,
+            "y": 4,
+            "z": 6,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N3-0",
+            "x": 0,
+            "y": 0,
+            "z": 9,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N3-1",
+            "x": 6,
+            "y": 0,
+            "z": 9,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N3-2",
+            "x": 6,
+            "y": 4,
+            "z": 9,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          },
+          {
+            "id": "SM5b-N3-3",
+            "x": 0,
+            "y": 4,
+            "z": 9,
+            "mass": [
+              8,
+              8,
+              0,
+              0,
+              0,
+              18
+            ]
+          }
+        ],
+        "members": [
+          {
+            "id": "SM5b-C0-0",
+            "type": "frame",
+            "n1": "SM5b-N0-0",
+            "n2": "SM5b-N1-0",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C0-1",
+            "type": "frame",
+            "n1": "SM5b-N0-1",
+            "n2": "SM5b-N1-1",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C0-2",
+            "type": "frame",
+            "n1": "SM5b-N0-2",
+            "n2": "SM5b-N1-2",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C0-3",
+            "type": "frame",
+            "n1": "SM5b-N0-3",
+            "n2": "SM5b-N1-3",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C1-0",
+            "type": "frame",
+            "n1": "SM5b-N1-0",
+            "n2": "SM5b-N2-0",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C1-1",
+            "type": "frame",
+            "n1": "SM5b-N1-1",
+            "n2": "SM5b-N2-1",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C1-2",
+            "type": "frame",
+            "n1": "SM5b-N1-2",
+            "n2": "SM5b-N2-2",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C1-3",
+            "type": "frame",
+            "n1": "SM5b-N1-3",
+            "n2": "SM5b-N2-3",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C2-0",
+            "type": "frame",
+            "n1": "SM5b-N2-0",
+            "n2": "SM5b-N3-0",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C2-1",
+            "type": "frame",
+            "n1": "SM5b-N2-1",
+            "n2": "SM5b-N3-1",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C2-2",
+            "type": "frame",
+            "n1": "SM5b-N2-2",
+            "n2": "SM5b-N3-2",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-C2-3",
+            "type": "frame",
+            "n1": "SM5b-N2-3",
+            "n2": "SM5b-N3-3",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B1-0-1",
+            "type": "frame",
+            "n1": "SM5b-N1-0",
+            "n2": "SM5b-N1-1",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B1-1-2",
+            "type": "frame",
+            "n1": "SM5b-N1-1",
+            "n2": "SM5b-N1-2",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B1-2-3",
+            "type": "frame",
+            "n1": "SM5b-N1-2",
+            "n2": "SM5b-N1-3",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B1-3-0",
+            "type": "frame",
+            "n1": "SM5b-N1-3",
+            "n2": "SM5b-N1-0",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B2-0-1",
+            "type": "frame",
+            "n1": "SM5b-N2-0",
+            "n2": "SM5b-N2-1",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B2-1-2",
+            "type": "frame",
+            "n1": "SM5b-N2-1",
+            "n2": "SM5b-N2-2",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B2-2-3",
+            "type": "frame",
+            "n1": "SM5b-N2-2",
+            "n2": "SM5b-N2-3",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B2-3-0",
+            "type": "frame",
+            "n1": "SM5b-N2-3",
+            "n2": "SM5b-N2-0",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B3-0-1",
+            "type": "frame",
+            "n1": "SM5b-N3-0",
+            "n2": "SM5b-N3-1",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B3-1-2",
+            "type": "frame",
+            "n1": "SM5b-N3-1",
+            "n2": "SM5b-N3-2",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B3-2-3",
+            "type": "frame",
+            "n1": "SM5b-N3-2",
+            "n2": "SM5b-N3-3",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SM5b-B3-3-0",
+            "type": "frame",
+            "n1": "SM5b-N3-3",
+            "n2": "SM5b-N3-0",
+            "matId": "SM5b-MAT",
+            "secId": "SM5b-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          }
+        ],
+        "shells": [],
+        "links": [],
+        "loads": [],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "SM5b benchmark load",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "analysisCases": [
+          {
+            "id": "SM5b-MODAL",
+            "kind": "modal",
+            "settings": {
+              "modeCount": 6,
+              "combination": "CQC"
+            }
+          }
+        ],
+        "analysisSettings": {
+          "analysisType": "modal",
+          "elementType": "3d_frame",
+          "includeShearDeformation": false,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-SM5b-UI-R4",
+          "name": "SM5b | Eccentric rigid-diaphragm building",
+          "benchmarkId": "SM5b",
+          "verificationBoundary": "ENGINE_PASS_SOURCE_BLOCKED",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "production-engine qualification fixture topology",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        },
+        "diaphragms": [
+          {
+            "id": "SM5b-DIA-1",
+            "type": "rigid",
+            "masterNode": "SM5b-N1-1",
+            "nodes": [
+              "SM5b-N1-0",
+              "SM5b-N1-1",
+              "SM5b-N1-2",
+              "SM5b-N1-3"
+            ],
+            "dofs": [
+              "ux",
+              "uy",
+              "rz"
+            ],
+            "eccentric": true
+          },
+          {
+            "id": "SM5b-DIA-2",
+            "type": "rigid",
+            "masterNode": "SM5b-N2-1",
+            "nodes": [
+              "SM5b-N2-0",
+              "SM5b-N2-1",
+              "SM5b-N2-2",
+              "SM5b-N2-3"
+            ],
+            "dofs": [
+              "ux",
+              "uy",
+              "rz"
+            ],
+            "eccentric": true
+          },
+          {
+            "id": "SM5b-DIA-3",
+            "type": "rigid",
+            "masterNode": "SM5b-N3-1",
+            "nodes": [
+              "SM5b-N3-0",
+              "SM5b-N3-1",
+              "SM5b-N3-2",
+              "SM5b-N3-3"
+            ],
+            "dofs": [
+              "ux",
+              "uy",
+              "rz"
+            ],
+            "eccentric": true
+          }
+        ],
+        "massSources": [
+          {
+            "id": "SM5b-MS",
+            "version": 1,
+            "includeNodeMass": true,
+            "includeMemberMass": false,
+            "combos": []
+          }
+        ]
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": true,
+    "mid": true,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

@@ -10,7 +10,7 @@ const suite = getPhase8VerificationSuite('P8-M5-FORMAL-PUSHOVER');
 assert.equal(suite?.verificationIds.length, 25);
 assert.deepEqual(validatePhase8EvidenceArtifact(artifact), { ok: true, errors: [] });
 for (const path of [
-  '../docs/phase8/adr/ADR-007-DISPLACEMENT-ARC-LENGTH-BRANCH-POLICY.md',
+  '../docs/archive/phase8/adr/ADR-007-DISPLACEMENT-ARC-LENGTH-BRANCH-POLICY.md',
   '../verification/evidence/validation/phase8/p8-m5-code-review.md',
 ]) {
   assert.ok(readFileSync(new URL(path, import.meta.url), 'utf8').length > 500, path);

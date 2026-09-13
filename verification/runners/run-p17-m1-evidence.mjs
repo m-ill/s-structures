@@ -29,7 +29,7 @@ const REGISTRY_PATH = 'verification/benchmarks/strix21/suite-source-registry-r2.
 const SUITE_MANIFEST_PATH = 'verification/benchmarks/strix21/suite-manifest.json';
 const M0_CLOSURE_PATH = 'verification/evidence/validation/phase17/p17-m0-validation-closure-r3.json';
 const M0_R4_PATH = 'verification/evidence/validation/phase17/p17-m0-documentation-qualification-r4.json';
-const M0_R4_DOCUMENT_PATH = 'docs/phase17/reviews/P17-M0-CODE-AND-ARTIFACT-REVIEW-ADDENDUM-R4.md';
+const M0_R4_DOCUMENT_PATH = 'docs/archive/phase17/reviews/P17-M0-CODE-AND-ARTIFACT-REVIEW-ADDENDUM-R4.md';
 const SUPERSEDED_R5_PATH = 'verification/evidence/validation/phase17/p17-m1-case-contract-shared-harness-r5.json';
 
 const IMPLEMENTATION_PATHS = Object.freeze([

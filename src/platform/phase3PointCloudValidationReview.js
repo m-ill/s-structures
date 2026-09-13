@@ -18,7 +18,7 @@ export function buildPhase3PointCloudValidationReview(input = {}) {
     milestone: 'P3-M8/P3-M9',
     tickets: ['P3-T36', 'P3-T37', 'P3-T38', 'P3-T39', 'P3-T40', 'P3-T41', 'P3-T42', 'P3-T43', 'P3-T44', 'P3-T45'],
     sourceDocs: [
-      'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md',
+      'docs/archive/phase3/IMPORT_POINT_CLOUD_PLAN.md',
       'verification/specs/P3_M8_POINTCLOUD_LOAD_VERIFICATION.md',
       'verification/specs/P3_M9_POINTCLOUD_EXTRACTION_VERIFICATION.md',
     ],

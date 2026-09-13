@@ -47,7 +47,7 @@ const readyInput = {
     },
   ],
   provenance: {
-    inputFiles: ['docs/phase10/hand-calc/XV-01.md'],
+    inputFiles: ['docs/archive/phase10/hand-calc/XV-01.md'],
     notes: 'Closed-form portal-frame reference.',
   },
 };

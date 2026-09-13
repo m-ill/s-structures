@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-evidence-r4",
+  "capturedAt": "2026-08-30",
+  "caseId": "SB12",
+  "browser": "Google Chrome headed channel",
+  "application": "S-Structures native modeler",
+  "appUrl": "http://127.0.0.1:15174/index.html?engine_ui=1",
+  "view": "3d",
+  "verificationBoundary": "ENGINE_PASS_OFFICIAL_NOT_CLAIMED",
+  "modelBook": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\10_SB12_Elastic_Link_Beta_Angle\\02_모델\\SB12_S-Structures_실제모델_R4.json",
+  "modelBookSha256": "5745de1a51a520ae21e2f83795814eccef410e7dc3f943979b3028d034003bb8",
+  "expectedCounts": {
+    "nodes": 4,
+    "members": 2,
+    "shells": 0,
+    "links": 2,
+    "loads": 2
+  },
+  "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SB12\\SB12_S-Structures_실제모델링_R4.png",
+  "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\10_SB12_Elastic_Link_Beta_Angle\\05_보고서\\figures\\03_SB12_S-Structures_실제모델링_R4.png",
+  "screenshotSha256": "4145d67ac4539c8a23b0e8a92e22fc63d6c78fa4c2067e3d1679f996bca5cdaf",
+  "image": {
+    "width": 1600,
+    "height": 900,
+    "variance": 1832.0273737429277,
+    "nonblank": true
+  },
+  "checks": {
+    "browserCaptureExists": true,
+    "nativeModelBookExists": true,
+    "benchmarkIdBound": true,
+    "expectedCollectionCountsRecorded": true,
+    "centerFitAppliedTwice": true,
+    "reportFigureCopied": true
+  },
+  "capturePassed": true
+}

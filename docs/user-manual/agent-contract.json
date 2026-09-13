@@ -795,7 +795,7 @@
     "nativeRibbon": "m22-native-index-ribbon",
     "nativeResultControls": "m25-native-result-controls",
     "nativeModeler": "m26-native-modeler-workflow",
-    "nativePersistence": "p8-m0-native-persistence-v5",
+    "nativePersistence": "p25-native-persistence-v7-book-file-input",
     "nativeAgentControls": "m28-native-agent-controls",
     "nativeAdvancedAnalysis": "p9-m9-native-advanced-analysis-v2",
     "phase5AnalysisCenter": "p9-m9-analysis-center-v3",
@@ -837,7 +837,7 @@
     "phase3IntegratedResultsGate": "p3-m19-integrated-results-gate-v1",
     "steelDetailing": "m40-steel-detailing",
     "connectionFoundation": "m41-connection-foundation",
-    "memberDesignTrace": "m45-member-design-trace",
+    "memberDesignTrace": "p25-member-design-trace-v3-material-evidence",
     "designDemandPackage": "p2-design-demand-package",
     "practicePlatformReadiness": "p2-practice-platform-readiness",
     "issueRegistry": "p2-t43-issue-registry",
@@ -908,9 +908,9 @@
     "phase3SliceControl": "p3-m4-slice-control-v1",
     "phase3Picking": "p3-m4-picking-v1",
     "phase3MaterialRegistry": "p3-m10-material-section-registry",
-    "phase3MaterialSchema": "p3-m10-material-schema-v1",
+    "phase3MaterialSchema": "p25-material-schema-v2-steel-test-evidence",
     "phase3SectionSchema": "p3-m10-section-schema-v1",
-    "phase3MaterialLibraryReport": "p3-m10-material-library-report-v1",
+    "phase3MaterialLibraryReport": "p25-material-library-report-v5-referenced-validation",
     "phase3MaterialLibraryEdit": "p3-m10-library-edit-v1",
     "phase3ElasticExpansion": "p3-m11-elastic-expansion",
     "phase3WallSlabEquivalent": "p3-m12-wall-slab-equivalent",
@@ -1065,7 +1065,7 @@
     "launchManual": "docs/user-manual/PHASE3_LAUNCH_MANUAL.md",
     "remainingReview": "docs/user-manual/PHASE3_REMAINING_REVIEW.md",
     "agentContract": "docs/user-manual/agent-contract.json",
-    "completionAudit": "docs/phase3/P3_COMPLETION_AUDIT_2026-07-02.md",
+    "completionAudit": "docs/archive/phase3/P3_COMPLETION_AUDIT_2026-07-02.md",
     "planAlignmentVerification": "verification/specs/P3_PLAN_ALIGNMENT_VERIFICATION.md"
   },
   "phase4ManualReferences": {
@@ -1080,6 +1080,6 @@
     "collaboration": "docs/user-manual/08-collaboration.md",
     "status": "docs/user-manual/STATUS_AND_LIMITS.md",
     "agentGuide": "docs/user-manual/AI_AGENT_GUIDE.md",
-    "coverage": "docs/phase4/DOCUMENTATION_COVERAGE.md"
+    "coverage": "docs/archive/phase4/DOCUMENTATION_COVERAGE.md"
   }
 }

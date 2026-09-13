@@ -91,15 +91,15 @@ const MODULE_BOUNDARIES = [
 ];
 
 const FILE_ROUTING = [
-  route('server/', 'node server routes auth store', 'docs/phase3/SERVER_API_PLAN.md'),
-  route('src/app/', 'app shell routes api client views', 'docs/phase3/FRONTEND_PLAN.md'),
-  route('src/viewer/', 'WebGL2 point cloud and model viewer', 'docs/phase3/FRONTEND_PLAN.md'),
-  route('src/import/', 'ImportCandidate geometry pipeline', 'docs/phase3/IMPORT_DXF_DWG_PLAN.md'),
-  route('src/import/pointcloud/', 'point-cloud loader preprocess extraction worker', 'docs/phase3/IMPORT_POINT_CLOUD_PLAN.md'),
-  route('src/materials/', 'material and section registry', 'docs/phase3/MATERIAL_SECTION_LIBRARY_PLAN.md'),
-  route('src/nonlinear/', 'nonlinear state elements hinges fiber control dynamics', 'docs/phase3/NONLINEAR_ENGINE_PLAN.md'),
-  route('src/design/', 'rc steel connection foundation design modules', 'docs/phase3/DESIGN_MODULES_PLAN.md'),
-  route('src/standards/', 'code formula and load standard registry', 'docs/phase3/DEVELOPMENT_FILE_MAP.md'),
+  route('server/', 'node server routes auth store', 'docs/archive/phase3/SERVER_API_PLAN.md'),
+  route('src/app/', 'app shell routes api client views', 'docs/archive/phase3/FRONTEND_PLAN.md'),
+  route('src/viewer/', 'WebGL2 point cloud and model viewer', 'docs/archive/phase3/FRONTEND_PLAN.md'),
+  route('src/import/', 'ImportCandidate geometry pipeline', 'docs/archive/phase3/IMPORT_DXF_DWG_PLAN.md'),
+  route('src/import/pointcloud/', 'point-cloud loader preprocess extraction worker', 'docs/archive/phase3/IMPORT_POINT_CLOUD_PLAN.md'),
+  route('src/materials/', 'material and section registry', 'docs/archive/phase3/MATERIAL_SECTION_LIBRARY_PLAN.md'),
+  route('src/nonlinear/', 'nonlinear state elements hinges fiber control dynamics', 'docs/archive/phase3/NONLINEAR_ENGINE_PLAN.md'),
+  route('src/design/', 'rc steel connection foundation design modules', 'docs/archive/phase3/DESIGN_MODULES_PLAN.md'),
+  route('src/standards/', 'code formula and load standard registry', 'docs/archive/phase3/DEVELOPMENT_FILE_MAP.md'),
 ];
 
 const SERVER_ENDPOINTS = [
@@ -290,12 +290,12 @@ const NONLINEAR_ENGINE_CONTRACT = {
 };
 
 const MILESTONES = [
-  ms('P3-M0', ['P3-T01', 'P3-T02'], ['docs/phase3/DEVELOPMENT_FILE_MAP.md'], ['tests/m0-smoke.mjs']),
-  ms('P3-M1', t(3, 7), ['docs/phase3/SERVER_API_PLAN.md'], ['tests/p3-server-api.mjs']),
-  ms('P3-M2', t(8, 12), ['docs/phase3/AUTH_ACCOUNT_PLAN.md'], ['tests/p3-auth.mjs']),
-  ms('P3-M3', t(13, 16), ['docs/phase3/PERSISTENCE_PLAN.md'], ['tests/p3-persistence.mjs']),
-  ms('P3-M4', t(17, 21), ['docs/phase3/FRONTEND_PLAN.md'], ['tests/p3-app-shell.mjs', 'tests/p3-viewer-core.mjs']),
-  ms('P3-M5', t(22, 25), ['docs/phase3/IMPORT_DXF_DWG_PLAN.md'], ['tests/p3-import-geometry.mjs']),
+  ms('P3-M0', ['P3-T01', 'P3-T02'], ['docs/archive/phase3/DEVELOPMENT_FILE_MAP.md'], ['tests/m0-smoke.mjs']),
+  ms('P3-M1', t(3, 7), ['docs/archive/phase3/SERVER_API_PLAN.md'], ['tests/p3-server-api.mjs']),
+  ms('P3-M2', t(8, 12), ['docs/archive/phase3/AUTH_ACCOUNT_PLAN.md'], ['tests/p3-auth.mjs']),
+  ms('P3-M3', t(13, 16), ['docs/archive/phase3/PERSISTENCE_PLAN.md'], ['tests/p3-persistence.mjs']),
+  ms('P3-M4', t(17, 21), ['docs/archive/phase3/FRONTEND_PLAN.md'], ['tests/p3-app-shell.mjs', 'tests/p3-viewer-core.mjs']),
+  ms('P3-M5', t(22, 25), ['docs/archive/phase3/IMPORT_DXF_DWG_PLAN.md'], ['tests/p3-import-geometry.mjs']),
   ms('P3-M6', t(26, 31), ['verification/specs/P3_M6_IMPORT_VERIFICATION.md'], ['tests/p3-m6-dxf-import.mjs']),
   ms('P3-M7', t(32, 35), ['verification/specs/P3_M7_IMPORT_REVIEW_VERIFICATION.md'], ['tests/p3-m7-dwg-plan.mjs', 'tests/p3-m7-import-review-ui.mjs']),
   ms('P3-M8', t(36, 40), ['verification/specs/P3_M8_POINTCLOUD_LOAD_VERIFICATION.md'], ['tests/p3-pointcloud-load.mjs']),
@@ -377,7 +377,7 @@ export function buildPhase3PlanAlignmentReport(manifest = {}) {
   };
   return {
     version: PHASE3_PLAN_ALIGNMENT_VERSION,
-    sourceDocs: CORE_DOCS.map((name) => `docs/phase3/${name}`),
+    sourceDocs: CORE_DOCS.map((name) => `docs/archive/phase3/${name}`),
     sourceDocCount: CORE_DOCS.length,
     scenarios: CORE_SCENARIOS,
     stages: STAGES,
@@ -520,11 +520,11 @@ function success(id, milestones) {
 }
 
 function decision(number, topic, choice) {
-  return { id: `D${number}`, topic, choice, source: 'docs/phase3/ARCHITECTURE.md' };
+  return { id: `D${number}`, topic, choice, source: 'docs/archive/phase3/ARCHITECTURE.md' };
 }
 
 function boundary(id, rule) {
-  return { id, rule, source: 'docs/phase3/ARCHITECTURE.md' };
+  return { id, rule, source: 'docs/archive/phase3/ARCHITECTURE.md' };
 }
 
 function route(path, role, source) {

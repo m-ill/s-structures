@@ -62,9 +62,9 @@ export function buildPhase3DesignMilestoneReview() {
     version: PHASE3_DESIGN_MILESTONE_REVIEW_VERSION,
     scope: 'P3-M17 to P3-M18 detailed design modules',
     sourceDocs: [
-      'docs/phase3/DESIGN_MODULES_PLAN.md',
-      'docs/phase3/ROADMAP.md',
-      'docs/phase3/IMPLEMENTATION_BACKLOG.md',
+      'docs/archive/phase3/DESIGN_MODULES_PLAN.md',
+      'docs/archive/phase3/ROADMAP.md',
+      'docs/archive/phase3/IMPLEMENTATION_BACKLOG.md',
     ],
     rows,
     summary: {
@@ -124,7 +124,7 @@ function criterion(id, requirement, evidence, ticket) {
     requirement,
     evidence,
     ticket,
-    source: 'docs/phase3/DESIGN_MODULES_PLAN.md',
+    source: 'docs/archive/phase3/DESIGN_MODULES_PLAN.md',
     status: 'automated',
   };
 }

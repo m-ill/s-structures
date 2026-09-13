@@ -51,9 +51,9 @@ for (const action of [
 }
 assert.ok(manifest.milestones.some((row) => row.id === 'P8-M10' && row.status === 'candidate'));
 
-const implementationStatus = await readFile(new URL('../docs/phase8/IMPLEMENTATION_STATUS.md', import.meta.url), 'utf8');
-const phaseReadme = await readFile(new URL('../docs/phase8/README.md', import.meta.url), 'utf8');
-const adr = await readFile(new URL('../docs/phase8/adr/ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md', import.meta.url), 'utf8');
+const implementationStatus = await readFile(new URL('../docs/archive/phase8/IMPLEMENTATION_STATUS.md', import.meta.url), 'utf8');
+const phaseReadme = await readFile(new URL('../docs/archive/phase8/README.md', import.meta.url), 'utf8');
+const adr = await readFile(new URL('../docs/archive/phase8/adr/ADR-011-PRODUCT-WORKFLOW-JOB-RESULT-API.md', import.meta.url), 'utf8');
 assert.match(implementationStatus, /implementation_status: p8-m11-complete/);
 assert.match(implementationStatus, /active_milestone: none/);
 assert.match(implementationStatus, /P8-M10 UI·보고·Agent 계약 \| complete/);

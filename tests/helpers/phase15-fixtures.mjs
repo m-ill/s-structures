@@ -100,7 +100,7 @@ export function phase15BaselineInput(overrides = {}) {
   const reviewer = (name) => ({ reviewer: name, approvalHash: HASH.approval });
   return {
     sourceRevision: '0'.repeat(40),
-    dirtyEntries: [' M docs/phase14/IMPLEMENTATION_STATUS.md', '?? docs/phase15/'],
+    dirtyEntries: [' M docs/archive/phase14/IMPLEMENTATION_STATUS.md', '?? docs/archive/phase15/'],
     environment: { node: 'v22.0.0', platform: 'win32', arch: 'x64' },
     preservedArtifacts: [
       artifact('first-batch-json'),

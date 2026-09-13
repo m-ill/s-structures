@@ -67,7 +67,7 @@ function buildContract() {
       collaboration: 'docs/user-manual/08-collaboration.md',
       status: 'docs/user-manual/STATUS_AND_LIMITS.md',
       agentGuide: 'docs/user-manual/AI_AGENT_GUIDE.md',
-      coverage: 'docs/phase4/DOCUMENTATION_COVERAGE.md',
+      coverage: 'docs/archive/phase4/DOCUMENTATION_COVERAGE.md',
     },
   };
 }

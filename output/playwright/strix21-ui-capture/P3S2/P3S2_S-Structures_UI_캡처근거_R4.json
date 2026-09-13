@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-evidence-r4",
+  "capturedAt": "2026-08-30",
+  "caseId": "P3S2",
+  "browser": "Google Chrome headed channel",
+  "application": "S-Structures native modeler",
+  "appUrl": "http://127.0.0.1:15174/index.html?engine_ui=1",
+  "view": "front",
+  "verificationBoundary": "EQUIVALENT_ENGINE_GATE",
+  "modelBook": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\18_P3S2_Stabilization_Sensitivity\\02_모델\\P3S2_S-Structures_실제모델_R4.json",
+  "modelBookSha256": "6d4e869ef5339b91f2787c23fcf7a519fc4a5f15cf638a314e45f8053e8ab20c",
+  "expectedCounts": {
+    "nodes": 60,
+    "members": 104,
+    "shells": 45,
+    "links": 0,
+    "loads": 0
+  },
+  "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\P3S2\\P3S2_S-Structures_실제모델링_R4.png",
+  "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\18_P3S2_Stabilization_Sensitivity\\05_보고서\\figures\\03_P3S2_S-Structures_실제모델링_R4.png",
+  "screenshotSha256": "f5a8272cb736bb7be2b8b6a96c11bd350d39d6abffd7b5e32b874231490045d0",
+  "image": {
+    "width": 1600,
+    "height": 900,
+    "variance": 1754.0772750691212,
+    "nonblank": true
+  },
+  "checks": {
+    "browserCaptureExists": true,
+    "nativeModelBookExists": true,
+    "benchmarkIdBound": true,
+    "expectedCollectionCountsRecorded": true,
+    "centerFitAppliedTwice": true,
+    "reportFigureCopied": true
+  },
+  "capturePassed": true
+}

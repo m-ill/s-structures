@@ -9,10 +9,10 @@ const OUT = resolve('output', 'release', `s-structures-${PRODUCT_VERSION}`);
 const PUBLIC = join(OUT, 'public');
 const ZIP = `${OUT}.zip`;
 const REPRODUCIBLE_TIMESTAMP = '2000-01-01T00:00:00.000Z';
-const PUBLIC_ASSETS = ['index.html', 'app.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'src'];
+const PUBLIC_ASSETS = ['index.html', 'app.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'src', 'assets/fonts/phase24'];
 const RUNTIME_ASSETS = [
   'package.json', 'README.md', 'LICENSE.txt', 'CHANGELOG.md', 'config.sample.json',
-  'src', 'server', 'desktop', 'docs/user-manual',
+  'src', 'server', 'desktop', 'docs/user-manual', 'assets/fonts/phase24',
 ];
 const OPERATION_TOOLS = ['tools/backup-data.mjs', 'tools/restore-data.mjs', 'tools/migrate-state.mjs'];
 const FORBIDDEN_PATTERNS = [
@@ -122,6 +122,7 @@ function hashFile(path) {
 }
 
 function isPublicFile(path) {
+  if (['assets/fonts/phase24/SStructuresSans.ttf', 'assets/fonts/phase24/OFL.txt', 'assets/fonts/phase24/provenance.json', 'src/agentHarness/check.mjs', 'src/agentHarness/install.mjs'].includes(path)) return true;
   if (!path.includes('/')) return /^(index|app|m3|help|manual|guide)\.html$/i.test(path);
   return path.startsWith('src/') && ['.js', '.css', '.wasm'].includes(extname(path).toLowerCase());
 }

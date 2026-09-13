@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { join, resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '..');
-const REPORT_ROOT = resolve(ROOT, '..', 'testreport', 'STRIX-21-검증');
+const REPORT_ROOT = resolve(ROOT, '..', '자료', 'testreport', 'STRIX-21-검증');
 const OUTPUT_ROOT = join(ROOT, 'output', 'playwright', 'strix21-ui-capture');
 
 const CASES = [

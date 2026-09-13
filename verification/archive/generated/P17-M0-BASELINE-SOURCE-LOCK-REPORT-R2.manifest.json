@@ -1,0 +1,52 @@
+{
+  "version": "p17-m0-report-manifest-v1",
+  "reportRevision": 2,
+  "auditDate": "2026-08-28",
+  "status": "COMPLETE_WITH_SOURCE_BLOCKERS",
+  "baselineEvidence": {
+    "path": "verification/evidence/validation/phase17/p17-m0-baseline-source-lock-r2.json",
+    "baselineHash": "06aed261d00b98c04317df8a5fd8ea33373229cbf55cc9ca8b7d65d623802e81"
+  },
+  "markdown": {
+    "path": "output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.md",
+    "sha256": "b23032d67efb16014811d73f1d6a81a6bfdfdf5dc4b9c85e5addc29a0fa27cb3",
+    "byteLength": 13678
+  },
+  "pdf": {
+    "path": "output/verification/phase17/P17-M0-BASELINE-SOURCE-LOCK-REPORT-R2.pdf",
+    "sha256": "dd2324a4f7d9018d8a01a19756cab758a987340d1a6dcf08ded81757fb133eb4",
+    "byteLength": 704528,
+    "pageCount": 9
+  },
+  "sourceScreenshots": [
+    {
+      "path": "tmp/verification/phase17/p17-m0-report/draft/assets/manual-contents-page.png",
+      "sha256": "79e7f15ac82fdef6aeb5d07e70964d4a17bb8ee13599a3822233bd8001571fef"
+    },
+    {
+      "path": "tmp/verification/phase17/p17-m0-report/draft/assets/sh1-page-3-clipped-table.png",
+      "sha256": "78bc71ae3a7a53ff9dd3134d2dc19117ba19930cfa5fea07232e8890195b305e"
+    }
+  ],
+  "automatedQa": {
+    "status": "PASS",
+    "pageCount": 9,
+    "requiredTokens": [
+      "P17-M0",
+      "COMPLETE WITH",
+      "51/51",
+      "P17-D007",
+      "CURRENT PDF REGENERATED",
+      "M1 entry",
+      "Release"
+    ],
+    "missingTokens": [],
+    "renderedPageCount": 9
+  },
+  "visualQa": {
+    "status": "PENDING_REVIEW",
+    "artifact": "P17-M0-REPORT-VISUAL-QA-R2.json"
+  },
+  "releaseAllowed": false,
+  "finalDesignTransferAllowed": false
+}

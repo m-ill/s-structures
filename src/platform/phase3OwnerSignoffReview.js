@@ -40,7 +40,7 @@ export function buildPhase3OwnerSignoffReview(input = {}) {
     scope: 'Owner sign-off evidence required after automated P3-M20 launch gates pass.',
     sourceDocs: [
       'reports/launch-readiness/owner-signoff-checklist.md',
-      'docs/phase3/QA_RELEASE_PLAN.md',
+      'docs/archive/phase3/QA_RELEASE_PLAN.md',
       'verification/specs/P3_M20_LAUNCH_READINESS_VERIFICATION.md',
       'verification/specs/P3_M6_M20_COMPLETION_AUDIT.md',
     ],

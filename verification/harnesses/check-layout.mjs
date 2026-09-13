@@ -211,7 +211,7 @@ function normalize(value) {
 async function findActiveLegacyReferences() {
   const roots = ['package.json', 'README.md', 'help.html', 'src', 'tests', 'tools', 'docs', 'reports', 'server', 'desktop'];
   const excluded = [
-    'docs/phase16/',
+    'docs/archive/phase16/',
     'tools/create-verification-relocation-manifest.mjs',
     'verification/archive/',
     'verification/harnesses/phase16-relocation.mjs',

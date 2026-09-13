@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageStat
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT_ROOT = ROOT.parent / "testreport" / "STRIX-21-검증"
+REPORT_ROOT = ROOT.parent / "자료" / "testreport" / "STRIX-21-검증"
 CAPTURE_ROOT = ROOT / "output" / "playwright" / "strix21-ui-capture"
 MODEL_MANIFEST = CAPTURE_ROOT / "models" / "strix21-sstructures-ui-model-manifest-r4.json"
 

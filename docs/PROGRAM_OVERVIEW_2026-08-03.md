@@ -269,10 +269,10 @@ Phase 12의 M0부터 M7까지 모두 완료됐으며 현재 상태는 `release-q
 이 문서는 2026-08-03 현재 상태를 설명하는 요약본이다. 상세 판정과 변경 추적은 다음 문서를 우선한다.
 
 - [현재 기능과 제한](user-manual/STATUS_AND_LIMITS.md)
-- [Phase 12 구현 상태](phase12/IMPLEMENTATION_STATUS.md)
-- [Phase 12 현재 상태 감사](phase12/CURRENT_STATE_AUDIT.md)
-- [Phase 12 위험 등록부](phase12/RISK_REGISTER.md)
-- [Phase 12 검증 매트릭스](phase12/VERIFICATION_MATRIX.md)
+- [Phase 12 구현 상태](archive/phase12/IMPLEMENTATION_STATUS.md)
+- [Phase 12 현재 상태 감사](archive/phase12/CURRENT_STATE_AUDIT.md)
+- [Phase 12 위험 등록부](archive/phase12/RISK_REGISTER.md)
+- [Phase 12 검증 매트릭스](archive/phase12/VERIFICATION_MATRIX.md)
 - [Phase 12 릴리스 manifest](../verification/evidence/validation/phase12/p12-release-manifest.json)
 - [Phase 12 M7 최종 검증 증빙](../verification/evidence/validation/phase12/p12-m7-local-pilot-release-gate.json)
 

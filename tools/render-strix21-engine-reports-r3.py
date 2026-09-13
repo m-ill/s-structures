@@ -27,7 +27,7 @@ from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer, 
 
 REPO = Path(__file__).resolve().parents[1]
 VAULT = REPO.parent
-CASE_ROOT = VAULT / "testreport/STRIX-21-검증"
+CASE_ROOT = VAULT / "자료/testreport/STRIX-21-검증"
 BASE_SCRIPT = REPO / "tools/generate-benchmark-engine-report-package.py"
 COMPARISON = REPO / "output/reports/strix-reference-sstructures-comparison/comparison-data.json"
 OUTPUT_ROOT = REPO / "output/pdf/STRIX21-R3"

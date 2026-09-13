@@ -25,7 +25,7 @@ identity = {'commit': git('rev-parse', 'HEAD').decode().strip(), 'tree': git('re
 files = git('ls-files', '-z').decode().split('\0')
 with tarfile.open(fileobj=io.BytesIO(git('archive', '--format=tar', 'HEAD'))) as tree:
     committed = {p.name: tree.extractfile(p).read() for p in tree.getmembers() if p.isfile()}
-allowed = {'src', 'server', 'desktop', 'native', 'tests', 'tools', 'docs', 'verification', 'samples', '.github'}
+allowed = {'src', 'server', 'desktop', 'native', 'tests', 'tools', 'docs', 'verification', 'samples', '.github', 'assets'}
 extensions = {'.js', '.mjs', '.cjs', '.json', '.md', '.txt', '.html', '.css', '.wasm', '.csv', '.yml', '.yaml', '.py', '.ps1', '.bat', '.svg', '.toml', '.rs', '.c', '.h', '.cpp'}
 excluded = []
 source = {}
@@ -35,13 +35,13 @@ for name in sorted(filter(None, files)):
     if len(p.parts) > 1 and p.parts[0] not in allowed: reason = 'not-in-source-allowlist'
     elif any(x in p.parts for x in ('.git', 'node_modules', '__pycache__', 'data', 'secrets', 'tmp')): reason = 'runtime-or-private'
     elif '/references/' in name and p.suffix not in {'.json', '.md'}: reason = 'third-party-source'
-    elif p.suffix.lower() not in extensions and name not in {'.gitignore', '.gitattributes'}: reason = 'binary-or-unreviewed-format'
+    elif p.suffix.lower() not in extensions and name not in {'.gitignore', '.gitattributes', 'assets/fonts/phase24/SStructuresSans.ttf'}: reason = 'binary-or-unreviewed-format'
     if reason:
         excluded.append({'path': name, 'reason': reason})
     else:
         source[name] = committed[name]
 source['SOURCE-IDENTITY.json'] = (json.dumps(identity, indent=2) + '\n').encode()
-runtime = {k: v for k, v in source.items() if k.startswith(('src/', 'server/', 'docs/user-manual/')) or k in {'index.html', 'app.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'package.json', 'README.md', 'LICENSE.txt', 'config.sample.json', 'SOURCE-IDENTITY.json', 'docs/WEBMCP.md', 'docs/PUBLICATION.md'}}
+runtime = {k: v for k, v in source.items() if k.startswith(('src/', 'server/', 'docs/user-manual/', 'assets/fonts/phase24/')) or k in {'index.html', 'app.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'package.json', 'README.md', 'LICENSE.txt', 'config.sample.json', 'SOURCE-IDENTITY.json', 'docs/WEBMCP.md', 'docs/PUBLICATION.md', 'tools/backup-data.mjs', 'tools/restore-data.mjs', 'tools/migrate-state.mjs'}}
 def archive(label, content):
     manifest = {'schema': 'sstructures-package-v1', 'source': identity, 'profile': label, 'files': [{'path': p, 'bytes': len(b), 'sha256': digest(b)} for p, b in sorted(content.items())]}
     content = dict(content)

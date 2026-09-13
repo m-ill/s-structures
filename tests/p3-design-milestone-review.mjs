@@ -38,7 +38,7 @@ assert.deepEqual(review.rows.map((row) => row.exitCriteriaSummary.status), [
 assert.deepEqual(review.rows.map((row) => row.exitCriteria.length), [5, 6]);
 assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M17-T87').ticket, 'P3-T87');
 assert.ok(review.rows[0].exitCriteria.find((row) => row.id === 'M17-GATE').requirement.includes('final permit-design separation'));
-assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M17-T90').source, 'docs/phase3/DESIGN_MODULES_PLAN.md');
+assert.equal(review.rows[0].exitCriteria.find((row) => row.id === 'M17-T90').source, 'docs/archive/phase3/DESIGN_MODULES_PLAN.md');
 assert.equal(review.rows[1].exitCriteria.find((row) => row.id === 'M18-T93').evidence, 'tests/p3-design-steel-foundation.mjs');
 assert.ok(review.rows[1].exitCriteria.find((row) => row.id === 'M18-T95').requirement.includes('Serviceability evidence'));
 assert.ok(review.rows[1].exitCriteria.find((row) => row.id === 'M18-GATE').requirement.includes('analysis status'));

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "strix21-sstructures-ui-capture-evidence-r4",
+  "capturedAt": "2026-08-30",
+  "caseId": "SM5",
+  "browser": "Google Chrome headed channel",
+  "application": "S-Structures native modeler",
+  "appUrl": "http://127.0.0.1:15174/index.html?engine_ui=1",
+  "view": "front",
+  "verificationBoundary": "NUMERIC_PASS_QUALIFICATION_OPEN",
+  "modelBook": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\12_SM5_Bathe_Wilson_Frame\\02_모델\\SM5_S-Structures_실제모델_R4.json",
+  "modelBookSha256": "24f74430758c1e4b1e66ad934913ffc2fbb2dcacb7d1fd3fe57df0e1bd4f6987",
+  "expectedCounts": {
+    "nodes": 110,
+    "members": 189,
+    "shells": 0,
+    "links": 0,
+    "loads": 0
+  },
+  "screenshot": "C:\\Users\\mill\\Downloads\\dcr\\S-Structures-main\\output\\playwright\\strix21-ui-capture\\SM5\\SM5_S-Structures_실제모델링_R4.png",
+  "reportScreenshot": "C:\\Users\\mill\\Downloads\\dcr\\testreport\\STRIX-21-검증\\12_SM5_Bathe_Wilson_Frame\\05_보고서\\figures\\03_SM5_S-Structures_실제모델링_R4.png",
+  "screenshotSha256": "8536f7962be2325a7b123b75f9a9d2d9f08eb3d68cfe88dac7b0857182c0d615",
+  "image": {
+    "width": 1600,
+    "height": 900,
+    "variance": 1870.091861828061,
+    "nonblank": true
+  },
+  "checks": {
+    "browserCaptureExists": true,
+    "nativeModelBookExists": true,
+    "benchmarkIdBound": true,
+    "expectedCollectionCountsRecorded": true,
+    "centerFitAppliedTwice": true,
+    "reportFigureCopied": true
+  },
+  "capturePassed": true
+}

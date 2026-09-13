@@ -1,0 +1,201 @@
+{
+  "format": "s-structures-book-v3",
+  "version": 3,
+  "generatedAt": "2026-08-30",
+  "pages": [
+    {
+      "name": "SB10 | Asymmetric two-bar truss",
+      "strokes": [],
+      "images": [],
+      "model": {
+        "schemaVersion": 3,
+        "units": {
+          "length": "m",
+          "force": "kN",
+          "moment": "kN.m",
+          "stress": "N/mm2",
+          "displacement": "mm"
+        },
+        "materials": [
+          {
+            "id": "SB10-MAT",
+            "version": 1,
+            "name": "SB10 elastic material",
+            "E": 200000,
+            "G": 76923.076923,
+            "density": 0,
+            "Fy": 1000000000,
+            "Fu": 1000000000
+          }
+        ],
+        "sections": [
+          {
+            "id": "SB10-SEC",
+            "version": 1,
+            "name": "SB10 display/analysis section",
+            "type": "direct",
+            "A": 0.02,
+            "Iy": 0.0008,
+            "Iz": 0.0008,
+            "J": 0.0016,
+            "Ay": 0.016,
+            "Az": 0.016,
+            "Zy": 0.004,
+            "Zz": 0.004
+          }
+        ],
+        "nodes": [
+          {
+            "id": "SB10-N1",
+            "x": -3,
+            "y": 0,
+            "z": 4,
+            "support": "fixed"
+          },
+          {
+            "id": "SB10-N2",
+            "x": 4,
+            "y": 0,
+            "z": 3,
+            "support": "fixed"
+          },
+          {
+            "id": "SB10-N3",
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "support": "custom",
+            "fix": [
+              false,
+              true,
+              false,
+              true,
+              true,
+              true
+            ]
+          }
+        ],
+        "members": [
+          {
+            "id": "SB10-E1",
+            "type": "truss",
+            "n1": "SB10-N3",
+            "n2": "SB10-N1",
+            "matId": "SB10-MAT",
+            "secId": "SB10-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          },
+          {
+            "id": "SB10-E2",
+            "type": "truss",
+            "n1": "SB10-N3",
+            "n2": "SB10-N2",
+            "matId": "SB10-MAT",
+            "secId": "SB10-SEC",
+            "localAxis": {
+              "roll": 0,
+              "strongAxis": "z"
+            },
+            "releases": {
+              "i": "rigid",
+              "j": "rigid"
+            }
+          }
+        ],
+        "shells": [],
+        "links": [],
+        "loads": [
+          {
+            "id": "SB10-PX",
+            "type": "nodal",
+            "node": "SB10-N3",
+            "P": 10,
+            "dir": "-x",
+            "case": "D"
+          },
+          {
+            "id": "SB10-PZ",
+            "type": "nodal",
+            "node": "SB10-N3",
+            "P": 20,
+            "dir": "-z",
+            "case": "D"
+          }
+        ],
+        "loadCases": [
+          {
+            "id": "D",
+            "name": "SB10 benchmark load",
+            "type": "other"
+          }
+        ],
+        "loadCombinations": [
+          {
+            "id": "D_ONLY",
+            "name": "1.0D",
+            "type": "service",
+            "factors": {
+              "D": 1
+            }
+          }
+        ],
+        "analysisCases": [],
+        "analysisSettings": {
+          "analysisType": "linear_static",
+          "elementType": "3d_frame",
+          "includeShearDeformation": false,
+          "includeGeometricStiffness": false,
+          "includeSelfWeight": false,
+          "solverTolerance": 1e-10,
+          "memberStations": 21,
+          "validateBeforeSolve": true,
+          "modalModeCount": 6
+        },
+        "designParams": {
+          "global": {
+            "mode": "off",
+            "codeCompliance": false
+          },
+          "rc": {},
+          "members": {}
+        },
+        "designSettings": {
+          "method": "allowable_stress",
+          "defaultCheck": "elastic_stress_interaction"
+        },
+        "meta": {
+          "id": "STRIX21-SB10-UI-R4",
+          "name": "SB10 | Asymmetric two-bar truss",
+          "benchmarkId": "SB10",
+          "verificationBoundary": "DIRECT_NUMERIC_PASS",
+          "purpose": "Actual S-Structures modeler capture for the Korean verification report",
+          "modelRole": "benchmark-topology model",
+          "shellDisplayRule": "Shell records are retained; frame mesh edges tagged uiDisplayOnly visualize topology in the current native canvas."
+        }
+      }
+    }
+  ],
+  "display": {
+    "def": false,
+    "M": false,
+    "Q": false,
+    "N": false,
+    "T": false,
+    "react": false,
+    "val": false,
+    "chk": false,
+    "nid": true,
+    "mid": true,
+    "axes": false,
+    "len": false,
+    "design": false,
+    "defl": false
+  }
+}

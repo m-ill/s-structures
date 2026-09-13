@@ -63,15 +63,15 @@ assert.equal(manifest.modules.phase8ProductionNlth, PRODUCTION_NLTH_VERSION);
 assert.equal(manifest.modules.phase8ProductionNlthEngine, PRODUCTION_NLTH_ENGINE_VERSION);
 assert.equal(manifest.milestones.find((row) => row.id === 'P8-M8')?.status, 'candidate');
 
-const status = readFileSync(new URL('../docs/phase8/IMPLEMENTATION_STATUS.md', import.meta.url), 'utf8');
-const hub = readFileSync(new URL('../docs/phase8/README.md', import.meta.url), 'utf8');
-const plan = readFileSync(new URL('../docs/phase8/MILESTONE_EXECUTION_PLAN.md', import.meta.url), 'utf8');
+const status = readFileSync(new URL('../docs/archive/phase8/IMPLEMENTATION_STATUS.md', import.meta.url), 'utf8');
+const hub = readFileSync(new URL('../docs/archive/phase8/README.md', import.meta.url), 'utf8');
+const plan = readFileSync(new URL('../docs/archive/phase8/MILESTONE_EXECUTION_PLAN.md', import.meta.url), 'utf8');
 assert.match(status, /completed_milestones: .*P8-M8/);
 assert.match(status, /\| P8-M8 MDOF NLTH \| complete \|/);
 assert.match(hub, /P8-M0~P8-M\d+.*완료/);
 assert.match(plan, /^## P8-M8 - /m);
 for (const path of [
-  '../docs/phase8/adr/ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md',
+  '../docs/archive/phase8/adr/ADR-008-NEWMARK-DAMPING-SUBSTEP-POLICY.md',
   '../verification/evidence/validation/phase8/p8-m8-code-review.md',
 ]) assert.ok(readFileSync(new URL(path, import.meta.url), 'utf8').length > 500, path);
 
