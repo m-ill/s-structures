@@ -1,10 +1,14 @@
 # S-Structures Documentation Index
 
-documentationVersion: 2026-09-13-phase25-development-status
+documentationVersion: 2026-09-14-phase26-debt-cleanup
 
 이 폴더는 Phase 2 개발부터 문서가 코드, 산출물, 임시 패키지와 섞이지 않도록 용도별로 나눈다. 새 문서를 추가할 때는 먼저 아래 분류 중 하나를 고른다.
 
-## 현재 개발 — Phase25 (2026-09-13)
+## 현재 개발 — Phase26 (2026-09-14)
+
+[Phase26 기술부채 정리와 정식 게이트 확장](phase26/README.md)은 새 기능을 만들지 않는다. `npm test`가 마일스톤과 phase 7~15만 실행하던 탓에 게이트 밖에서 썩은 검사와 구조 부채를 정리하고, **phase 16~25의 445건을 정식 게이트에 편입**하는 것이 전부다. 항목별 상태는 [부채 대장](phase26/DEBT_REGISTER.json), 진행은 [구현 기록](phase26/IMPLEMENTATION_STATUS.md)을 따른다. 미구현 RC 기능 11건은 사유와 함께 `DEFERRED`로 남기고 [Phase27](phase27/README.md)로 넘겼다. **제품 자격이나 설계 적합성을 뜻하지 않는다.**
+
+## 직전 개발 — Phase25 (2026-09-13)
 
 [Phase25 RC KDS 검토·자동 보완 완결](phase25/README.md)은 Phase24의 미완료를 인수한 M0~M10 계획이다. [코드 재점검32건](phase25/GAP_AUDIT.md)과 [작업별 완료 조건](phase25/WORKPACKAGES.md)을 기준으로 구현한다. 현재는 **제품 구현·선택 검증 진행 중, 전체 완료 전**이다. [마감 점검표](phase25/CLOSURE_AUDIT.md)에서 증거와 미충족 조건을 확인하고 [실행 안내](phase25/USAGE.md)에서 현재 RC/WebMCP 경로를 확인한다. Phase24 전체 완료나 현재 소스의 Pages 배포를 뜻하지 않는다.
 
@@ -17,6 +21,8 @@ documentationVersion: 2026-09-13-phase25-development-status
 | 폴더 | 용도 | 작성 규칙 |
 | --- | --- | --- |
 | `user-manual/` | 사용자와 AI agent가 현재 프로그램을 사용하는 방법 | 현재 동작 기준만 작성. 오래된 마일스톤 설명은 넣지 않음 |
+| `phase26/` | 기술부채 대장·페이지 예산 ADR·봉인 lock 재발행 제안·게이트 확장 | 기록을 코드에 맞출 때 판정 변화 여부를 항목별로 확인 |
+| `phase27/` | RC 미구현 기능 완결 계획 골격 | 착수 전 기준 조항·허용 범위를 먼저 고정 |
 | `phase25/` | RC 잔여 재점검·KDS 적용/완료 판정·자동 보완·메모리·출력 완결 | M0~M10, 32개 이관 항목과 작은 TDD·후속 Q 인계를 연결 |
 | `archive/phase24/` | 탄성설계 내부 통합·자동 보완·상세도·전 업무 모듈 WebMCP 제어 개발계획 | M0~M9 TDD, 작은 개발 검증과 후속 종합검증·출시 자격을 분리 |
 | `archive/phase17/` | STRIX 공식 21개를 독립 사례 폴더에서 모델링부터 비교·캡처·보고서까지 재현하는 검증 계획 | 공식/custom 분모를 분리하고 한 사례씩 source·model·run·evidence·review gate로 닫음 |
