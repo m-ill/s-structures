@@ -19,7 +19,10 @@ stagePracticalDesignInput(model,{type:'reinforcement-record',id:'R',name:'servic
 const set=(id,m)=>({ok:true,anyOk:true,combo:{id},memberResults:{AB:{xs:[0,1.5,3],N:[0,0,0],Vy:[0,0,0],Vz:[0,0,0],T:[0,0,0],My:[0,0,0],Mz:[0,m,0]}}});
 const live=set('S-L',3),total=set('S-T',12);
 const run=sets=>evaluatePracticalDesign(model,{byCombo:sets},{resultSet:live}).checks.find(x=>x.checkId==='rc-deflection');
-assert.equal(run({'S-L':live}).reason,'TOTAL_SERVICE_CRACKING_RESULT_REQUIRED');
+// The regional serviceability path now reports the missing source combination
+// by id, which is a more specific block than the earlier generic reason.
+assert.equal(run({'S-L':live}).reason,'REGIONAL_SERVICE_SOURCE_REQUIRED');
+assert.equal(run({'S-L':live}).sourceComboId,'S-T');
 assert.equal(run({'S-L':live}).codeBasis.status,'NOT_ESTABLISHED');
 const deflection=run({'S-L':live,'S-T':total});
 assert.equal(deflection.status,'OK');assert.ok(deflection.demand>0);assert.equal(deflection.codeBasis.status,'CLAUSE_APPLIED');

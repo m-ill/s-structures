@@ -23,7 +23,40 @@
       "totalMs",
       "totalFactorizationMs"
     ],
-    "inventoryCorrection": "M3 first comparison exposed two omitted elapsed-timing keys. Confirmed totalMs uses elapsed(startedAt)/factorizationMs+solveMs in solver/sparse/solveSparse.js; totalFactorizationMs is factor timing, not a numerical tolerance. No engineering or qualification field excluded."
+    "inventoryCorrection": "M3 first comparison exposed two omitted elapsed-timing keys. Confirmed totalMs uses elapsed(startedAt)/factorizationMs+solveMs in solver/sparse/solveSparse.js; totalFactorizationMs is factor timing, not a numerical tolerance. No engineering or qualification field excluded.",
+    "phase26Migration": {
+      "reason": "Phase21~25 added capability to the elastic result and changed two summary semantics. Measured against the frozen Phase20 archive: 0 keys removed and 0 engineering values changed (displacement, force, reaction and residual are identical). Only the fields listed here differ, so the archive stays frozen and the additions are recorded instead of re-archived.",
+      "evidence": "verification/evidence/phase26/baseline-20260913/p20-numeric-drift.json",
+      "addedFields": [
+        "codeBasis",
+        "constraintActionBasis",
+        "constraintActions",
+        "designComplete",
+        "designTransferAllowed",
+        "firstOrderMomentComparison",
+        "forceRecoveryInput",
+        "legacyConcreteDiagnosticOnly",
+        "practical",
+        "practicalCheckCount",
+        "practicalMemberResults",
+        "practicalRcSchedules",
+        "practicalRcSummary",
+        "rcCheckedMembers",
+        "rcSummaryBasis",
+        "rcUnreviewedMembers",
+        "totalConstraintResultant",
+        "uncheckedCount"
+      ],
+      "migratedFields": {
+        "equilibriumVersion": "version string advanced to p25-six-resultant-equilibrium-v4-constraint-actions",
+        "productVersion": "version string advanced with the Direct P-Delta product",
+        "ok": "design.ok now means designComplete, so a model with no failing check but open practical RC checks reports false",
+        "skippedMembers": "the summary counts skipped members against the practical evaluation instead of the legacy concrete module",
+        "designBlocked": "follows the corrected equilibrium verdict",
+        "equilibriumFailureReason": "follows the corrected equilibrium verdict"
+      },
+      "rule": "Fields in addedFields may be present live and absent in the archive. Fields in migratedFields are compared for presence only. Every other key is still compared exactly, and a removed key is a failure."
+    }
   },
   "snapshot": {
     "maxEntries": 32,

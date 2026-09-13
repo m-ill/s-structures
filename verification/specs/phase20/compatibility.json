@@ -257,17 +257,20 @@
       "role": "public-compatibility",
       "owner": "product-analysis-service",
       "reason": "Retain exported sync/shape contract; internal consumers use canonical owners where applicable.",
-      "sourceHash": "80df3782dc5da365b4dbcf4db11dc22529d164b24c9b7c0ca64580ca986e1b19",
+      "sourceHash": "a22f9fe875ae6fcbbbe7e5a8fc2e9c051135e97a4f67d3e0864e583866d03ef0",
       "allowedCallers": [
         "src/ui/indexAgentApi.js",
-        "src/ui/indexBridge.js"
+        "src/ui/indexBridge.js",
+        "src/ui/nativeCanvasResult.js"
       ],
       "replacement": "Retain canonical contract; new product callers use versioned product services.",
       "reviewAt": "P20-M4",
       "nextReview": "Next consumer/API change or breaking release",
       "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
       "historicalPolicyPreserved": false,
-      "qualification": "unchanged"
+      "qualification": "unchanged",
+      "revalidatedAt": "P26-M2",
+      "revalidationNote": "Re-reviewed at Phase26 M2. The Phase24-25 integration touched these wrappers without refreshing the review record: indexResultCompatibility added design.practicalMemberResults to its path list and detailedReport added a provided-practical-checks rendering branch. Role, owner, reason, replacement and removal gate are unchanged; resultViewCache gained test callers only."
     },
     {
       "file": "verification/framework/nonlinearBenchmarks.js",
@@ -333,14 +336,17 @@
         "src/ui/indexAgentApi.js",
         "src/ui/indexBridge.js",
         "tests/p19-m1-contract.mjs",
-        "tests/p19-m1-product-parity.mjs"
+        "tests/p19-m1-product-parity.mjs",
+        "tests/p25-m1-design-source-binding.mjs"
       ],
       "replacement": "src/compute/product/preparedResultViews.js",
       "reviewAt": "P20-M4",
       "nextReview": "Next consumer/API change or breaking release",
       "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
       "historicalPolicyPreserved": false,
-      "qualification": "unchanged"
+      "qualification": "unchanged",
+      "revalidatedAt": "P26-M2",
+      "revalidationNote": "Re-reviewed at Phase26 M2. The Phase24-25 integration touched these wrappers without refreshing the review record: indexResultCompatibility added design.practicalMemberResults to its path list and detailedReport added a provided-practical-checks rendering branch. Role, owner, reason, replacement and removal gate are unchanged; resultViewCache gained test callers only."
     },
     {
       "file": "src/nonlinear/analysisRouter.js",
@@ -388,18 +394,21 @@
       "role": "explicit-preparation-public-api",
       "owner": "result-preparation",
       "reason": "Public builder may prepare calculations; renderer consumes data only.",
-      "sourceHash": "95b6efde4c77db0ba4c4828a8cd815d678221fdd57c83fd45569170a2429cb7e",
+      "sourceHash": "a0155d9fd564829d1fda39bac791a0e926e3310277ed6107fa6877753ad7808e",
       "allowedCallers": [
         "src/compute/product/resultPreparationBuilders.js",
         "src/index.js",
-        "src/ui/agentManifest.js"
+        "src/ui/agentManifest.js",
+        "tests/p25-m1-provided-member-summary.mjs"
       ],
       "replacement": "Retain canonical contract; new product callers use versioned product services.",
       "reviewAt": "P20-M4",
       "nextReview": "Next consumer/API change or breaking release",
       "removalGate": "Active canonical policy: no deletion without equivalent contract and consumer migration.",
       "historicalPolicyPreserved": false,
-      "qualification": "unchanged"
+      "qualification": "unchanged",
+      "revalidatedAt": "P26-M2",
+      "revalidationNote": "Re-reviewed at Phase26 M2. The Phase24-25 integration touched these wrappers without refreshing the review record: indexResultCompatibility added design.practicalMemberResults to its path list and detailedReport added a provided-practical-checks rendering branch. Role, owner, reason, replacement and removal gate are unchanged; resultViewCache gained test callers only."
     },
     {
       "file": "src/report/calculationPackage.js",

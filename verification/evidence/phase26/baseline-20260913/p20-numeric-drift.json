@@ -1,0 +1,244 @@
+{
+  "version": "p26-m2-p20-numeric-drift-v1",
+  "capturedAt": "2026-09-13",
+  "fixtures": 7,
+  "addedKeyCount": 172,
+  "removedKeyCount": 0,
+  "valueDriftCount": 38,
+  "addedLeafNames": [
+    "codeBasis",
+    "constraintActionBasis",
+    "constraintActions",
+    "designComplete",
+    "designTransferAllowed",
+    "firstOrderMomentComparison",
+    "forceRecoveryInput",
+    "legacyConcreteDiagnosticOnly",
+    "practical",
+    "practicalCheckCount",
+    "practicalMemberResults",
+    "practicalRcSchedules",
+    "practicalRcSummary",
+    "rcCheckedMembers",
+    "rcSummaryBasis",
+    "rcUnreviewedMembers",
+    "totalConstraintResultant",
+    "uncheckedCount"
+  ],
+  "addedKeySample": [
+    "direct-dynamic-false$.byCombo.D1.constraintActions",
+    "direct-dynamic-false$.byCombo.D1.memberResults.M1.forceRecoveryInput",
+    "direct-dynamic-false$.byCombo.D1.summary.constraintActionBasis",
+    "direct-dynamic-false$.byCombo.D1.summary.totalConstraintResultant",
+    "direct-dynamic-false$.design.designTransferAllowed",
+    "direct-dynamic-false$.design.practical",
+    "direct-dynamic-false$.design.practicalMemberResults",
+    "direct-dynamic-false$.design.practicalRcSchedules",
+    "direct-dynamic-false$.design.practicalRcSummary",
+    "direct-dynamic-false$.design.steel.memberResults.M1.checks[0].codeBasis",
+    "direct-dynamic-false$.design.steel.memberResults.M1.checks[1].codeBasis",
+    "direct-dynamic-false$.design.steel.memberResults.M1.checks[2].codeBasis",
+    "direct-dynamic-false$.design.steel.memberResults.M1.checks[3].codeBasis",
+    "direct-dynamic-false$.design.steel.memberResults.M1.checks[4].codeBasis",
+    "direct-dynamic-false$.design.steel.memberResults.M1.checks[5].codeBasis",
+    "direct-dynamic-false$.design.steel.memberResults.M1.checks[6].codeBasis",
+    "direct-dynamic-false$.design.steel.memberResults.M1.checks[7].codeBasis",
+    "direct-dynamic-false$.design.steel.memberResults.M1.checks[8].codeBasis",
+    "direct-dynamic-false$.design.summary.designComplete",
+    "direct-dynamic-false$.design.summary.designTransferAllowed"
+  ],
+  "removedKeys": [],
+  "valueDrift": [
+    {
+      "at": "off-dynamic-false$.byCombo.D1.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "off-dynamic-false$.design.ok",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "off-dynamic-false$.design.summary.ok",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "off-dynamic-false$.design.summary.skippedMembers",
+      "live": 0,
+      "archived": 1
+    },
+    {
+      "at": "off-dynamic-true$.byCombo.D1.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "off-dynamic-true$.design.ok",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "off-dynamic-true$.design.summary.ok",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "off-dynamic-true$.design.summary.skippedMembers",
+      "live": 0,
+      "archived": 1
+    },
+    {
+      "at": "direct-dynamic-false$.byCombo.D1.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "direct-dynamic-false$.pDelta.byCombo.D1.productVersion",
+      "live": "p21-m3-direct-pdelta-product-v5",
+      "archived": "p7-m8-direct-pdelta-product-v3"
+    },
+    {
+      "at": "direct-dynamic-false$.pDelta.byCombo.D1.linear.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "direct-dynamic-false$.pDelta.byCombo.D1.result.summary.equilibriumVersion",
+      "live": "p25-direct-geometric-resultant-equilibrium-v3-constraints",
+      "archived": "p7-m8-direct-geometric-resultant-equilibrium-v2"
+    },
+    {
+      "at": "direct-dynamic-false$.pDelta.byCombo.D1.result.summary.equilibriumFailureReason",
+      "live": null,
+      "archived": "EQUILIBRIUM_LIMIT_EXCEEDED"
+    },
+    {
+      "at": "direct-dynamic-false$.pDelta.byCombo.D1.result.summary.designBlocked",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "direct-dynamic-false$.pDelta.byCombo.D1.result.provenance.productVersion",
+      "live": "p21-m3-direct-pdelta-product-v5",
+      "archived": "p7-m8-direct-pdelta-product-v3"
+    },
+    {
+      "at": "direct-dynamic-false$.pDelta.byCombo.D1.provenance.productVersion",
+      "live": "p21-m3-direct-pdelta-product-v5",
+      "archived": "p7-m8-direct-pdelta-product-v3"
+    },
+    {
+      "at": "direct-dynamic-false$.design.ok",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "direct-dynamic-false$.design.summary.ok",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "direct-dynamic-false$.design.summary.skippedMembers",
+      "live": 0,
+      "archived": 1
+    },
+    {
+      "at": "direct-dynamic-true$.byCombo.D1.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "direct-dynamic-true$.pDelta.byCombo.D1.productVersion",
+      "live": "p21-m3-direct-pdelta-product-v5",
+      "archived": "p7-m8-direct-pdelta-product-v3"
+    },
+    {
+      "at": "direct-dynamic-true$.pDelta.byCombo.D1.linear.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "direct-dynamic-true$.pDelta.byCombo.D1.result.summary.equilibriumVersion",
+      "live": "p25-direct-geometric-resultant-equilibrium-v3-constraints",
+      "archived": "p7-m8-direct-geometric-resultant-equilibrium-v2"
+    },
+    {
+      "at": "direct-dynamic-true$.pDelta.byCombo.D1.result.summary.equilibriumFailureReason",
+      "live": null,
+      "archived": "EQUILIBRIUM_LIMIT_EXCEEDED"
+    },
+    {
+      "at": "direct-dynamic-true$.pDelta.byCombo.D1.result.summary.designBlocked",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "direct-dynamic-true$.pDelta.byCombo.D1.result.provenance.productVersion",
+      "live": "p21-m3-direct-pdelta-product-v5",
+      "archived": "p7-m8-direct-pdelta-product-v3"
+    },
+    {
+      "at": "direct-dynamic-true$.pDelta.byCombo.D1.provenance.productVersion",
+      "live": "p21-m3-direct-pdelta-product-v5",
+      "archived": "p7-m8-direct-pdelta-product-v3"
+    },
+    {
+      "at": "direct-dynamic-true$.design.ok",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "direct-dynamic-true$.design.summary.ok",
+      "live": false,
+      "archived": true
+    },
+    {
+      "at": "direct-dynamic-true$.design.summary.skippedMembers",
+      "live": 0,
+      "archived": 1
+    },
+    {
+      "at": "legacy-dynamic-false$.byCombo.D1.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "legacy-dynamic-false$.pDelta.byCombo.D1.linear.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "legacy-dynamic-false$.pDelta.byCombo.D1.result.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "legacy-dynamic-false$.design.summary.skippedMembers",
+      "live": 1,
+      "archived": 2
+    },
+    {
+      "at": "legacy-dynamic-true$.byCombo.D1.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "legacy-dynamic-true$.pDelta.byCombo.D1.linear.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "legacy-dynamic-true$.pDelta.byCombo.D1.result.summary.equilibriumVersion",
+      "live": "p25-six-resultant-equilibrium-v4-constraint-actions",
+      "archived": "p14-m1-six-resultant-equilibrium-v3-winkler-foundation"
+    },
+    {
+      "at": "legacy-dynamic-true$.design.summary.skippedMembers",
+      "live": 1,
+      "archived": 2
+    }
+  ],
+  "verdict": "VALUE_DRIFT — archived values changed; do not re-archive without investigation"
+}

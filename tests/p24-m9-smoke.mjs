@@ -18,7 +18,7 @@ try {
  const source={analysisRunId:run.steps[0].analysisRunId,comboId:'U'};
  const evaluated=good(await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[source],mechanicsLaw:law}));
  const snapshot=ctx.bridge.getPracticalDesignSnapshot(evaluated.evaluationId);
- assert.equal(snapshot.evaluatorVersion,'p25-practical-evaluation-v35-anchor-diameter-tolerance');
+ assert.equal(snapshot.evaluatorVersion,'p25-practical-evaluation-v207-post-attachment-calculation');
  const repeated=good(await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[source],mechanicsLaw:law}));
  assert.deepEqual(repeated,evaluated);
  assert.equal(ctx.bridge.getPracticalDesignContext().evaluations.length,1,'repeated evaluation shares one retained entry');

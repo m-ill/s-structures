@@ -114,7 +114,7 @@ export function createWorkflowCheckpointRepository({indexedDB=globalThis.indexed
   }
   async function save(projectId,bundle){
     if(typeof projectId!=='string'||!projectId.trim())throw failure('PROJECT_ID_REQUIRED');
-    const generation=globalThis.crypto.randomUUID(),rows=segmentsFor(bundle),savedAt=new Date().toISOString();
+    const generation=globalThis.crypto?.randomUUID?.()||sha256(JSON.stringify({time:Date.now(),random:Math.random()})),rows=segmentsFor(bundle),savedAt=new Date().toISOString();
     const manifest={version:WORKFLOW_CHECKPOINT_VERSION,projectId,catalogVersion:bundle.catalog.version,segments:[],byteLength:0,designRunIds:bundle.reports.map(([id])=>id),interruptedJobs:bundle.interruptedJobs||[]};
     function encode(row,index){
       const characters=checkpointJsonLength(row.value),retained=retainedBytes(row.value);

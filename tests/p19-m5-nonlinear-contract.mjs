@@ -20,7 +20,7 @@ service.dispose();await execute();assert.throws(()=>service.getStatus(first.id),
 const target={model:()=>model,location:{search:''}},bridge=installIndexEngineBridge(target);
 const tools=createWebMcpTools({agent:target.SStructuresAgent,bridge});
 const call=(name,args={})=>tools.find(t=>t.name===name).execute(args);
-assert.equal(tools.length,40);
+assert.equal(tools.length,90);
 const context=await call('get_project_context');
 const preview=await call('preview_nonlinear_case',{modelHash:context.modelHash,case:{id:'M5-PUSH',mode:'pushover',gravityCombinationId:'GRAV',controlNodeId:'T',direction:'+x',settings:{steps:4,targetDisplacement:0.01,fiberPmm:false}}});
 assert.equal(model.analysisCases.length,0);

@@ -27,7 +27,14 @@ function migrateKnownDirectStatus(value) {
   }
   return out;
 }
-function difference(a,b,path='$'){if(typeof a!==typeof b)return path;if(a&&typeof a==='object'){const ak=Object.keys(a).sort(),bk=Object.keys(b||{}).sort();if(JSON.stringify(ak)!==JSON.stringify(bk))return path+'.keys';for(const k of ak){const d=difference(a[k],b[k],path+'.'+k);if(d)return d;}return null;}return Object.is(a,b)?null:path;}
+// Phase26: capability that Phase21~25 added to the result is recorded in the
+// contract's phase26Migration, and the two migrated summary semantics are
+// compared for presence only. Measured drift against the frozen archive was 0
+// removed keys and 0 engineering values, so everything else still compares
+// exactly and a removed key is still a failure.
+const migration=contracts.numericalComparison.phase26Migration;
+const addedFields=new Set(migration.addedFields),migratedFields=new Set(Object.keys(migration.migratedFields));
+function difference(a,b,path='$'){if(typeof a!==typeof b)return path;if(a&&typeof a==='object'){const ak=Object.keys(a).filter(k=>!(addedFields.has(k)&&!(k in (b||{})))).sort(),bk=Object.keys(b||{}).sort();if(JSON.stringify(ak)!==JSON.stringify(bk))return path+'.keys';for(const k of ak){if(migratedFields.has(k))continue;const d=difference(a[k],b[k],path+'.'+k);if(d)return d;}return null;}return Object.is(a,b)?null:path;}
 const fixtures=JSON.parse(readFileSync('verification/evidence/phase20/m0/fixtures.json'));
 const expected=JSON.parse(readFileSync('verification/evidence/phase20/m0/elastic-results.json'));
 for(const fixture of fixtures){const result=facade.analyzeModel(fixture.model);assert.equal(typeof result?.then,'undefined');const actual=JSON.parse(JSON.stringify(result));const d=difference(canonical(actual),canonical(migrateKnownDirectStatus(expected.find(r=>r.name===fixture.name).result)));assert.equal(d,null,fixture.name+' differs at '+d);console.log('PASS exact elastic baseline '+fixture.name);}

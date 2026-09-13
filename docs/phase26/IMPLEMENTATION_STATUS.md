@@ -1,6 +1,6 @@
 # Phase26 구현 진행 기록
 
-기준일 2026-09-13 · 기준 커밋 `a2675a62` · 상태: **IN_PROGRESS — M0·M1 완료**
+기준일 2026-09-13 · 기준 커밋 `a2675a62` · 상태: **IN_PROGRESS — M0·M1·M2 완료**
 
 단계가 끝날 때마다 아래 진행표와 [대장](DEBT_REGISTER.json)의 상태를 함께 갱신한다.
 
@@ -33,7 +33,7 @@
 | --- | --- | --- |
 | M0 기준선 고정 | **DONE** | 27건 직렬 재현, 대장과 정확히 일치. [기준선](../../verification/evidence/phase26/baseline-20260913/baseline.json) · [재현](../../verification/evidence/phase26/baseline-20260913/probes.mjs) |
 | M1 페이지 예산 | **DONE** | A01~A05 통과. [ADR-001](adr/ADR-001-PAGE-BUDGET.md) · [측정](../../verification/evidence/phase26/baseline-20260913/page-budget-cost.json) |
-| M2 낡은 기준선 | NOT_STARTED | |
+| M2 낡은 기준선 | **DONE** | B01~B08 통과. 8건 중 2건은 낡은 기록이 아니라 실제 결함·의미 변경이었다 |
 | M3 계약·거버넌스 | NOT_STARTED | |
 | M4 구조 부채 | NOT_STARTED | |
 | M5 게이트 확장 | NOT_STARTED | |
@@ -72,3 +72,23 @@ Phase26 완료는 **정식 게이트가 현재 코드 전체를 실행한다**�
 - 기본 `maxPages` 60 → 600. 상한 검사(`>600` 거부)와 `vectorPdf`·`pdfVolumeBundle`의 권당 60쪽 계약은 **그대로 두었다**. 운영 한도 확대가 아니다.
 - A05는 전체 문서를 단일 PDF로 넘기던 시험을 `renderPdfVolume` 경로로 바꿔 해결했다. PDF 권 크기를 늘려 회피하지 않았다.
 - 도면 관련 검사 37건을 재실행해 새 회귀가 없음을 확인했다. 남은 실패 4건은 모두 대장에 등록된 기존 항목이다.
+
+### M2 — 낡은 기준선 (2026-09-13)
+
+**8건 중 2건은 낡은 기록이 아니었다.** 차이를 먼저 출력하고 판단한다는 원칙이 실제로 값을 했다.
+
+- **P26-B01은 제품 결함이었다.** `workflowResults.js`와 `workflowCheckpoint.js`가 `globalThis.crypto.randomUUID()`를 가드 없이 호출한다. 보안 컨텍스트가 아닌 브라우저에서는 `crypto`가 없어 **브리지 설치가 통째로 죽고 UI가 초기화되지 않는다.** 시험은 처음부터 옳았고 코드가 회귀한 것이다. 나머지 5개 호출부는 이미 `globalThis.crypto?.randomUUID?.() || fallback` 형태를 쓰고 있었으므로 같은 관례로 맞췄다.
+- **P26-B07도 데이터 문제가 아니었다.** 지역 사용성 경로가 더 구체적인 차단(`REGIONAL_SERVICE_SOURCE_REQUIRED`, 누락 조합 id 포함)을 보고하도록 바뀌었다. 기대치를 현행에 맞추되 누락 조합 id까지 확인하도록 **검증을 강화**했다.
+
+**P26-B04(Phase20 수치 기준선)는 재기록하지 않았다.** 동결된 기준선과 현재 결과를 전수 비교한 결과:
+
+- 삭제된 키 **0개**
+- 엔지니어링 수치 드리프트 **0건** — 변위·힘·반력·잔차가 Phase20 기록과 동일하다
+- 차이 38건은 전부 버전 문자열(20) + 요약 의미 변경(18: `design.ok`, `skippedMembers`, `designBlocked`, `equilibriumFailureReason`)
+- 추가된 필드 18종 172곳은 Phase21~25가 넣은 신규 기능(`constraintActions`, `forceRecoveryInput`, `practical*`, `codeBasis` 등)
+
+**해석 엔진이 5개 페이즈 동안 수치적으로 드리프트하지 않았다**는 뜻이다. 그래서 기준선을 덮어쓰는 대신 추가·이행 항목을 `contracts.json`의 `phase26Migration`에 명시 기록했고, 그 외 모든 키는 여전히 정확 비교하며 **키가 사라지면 실패**한다. [측정](../../verification/evidence/phase26/baseline-20260913/p20-numeric-drift.json) · [재현](../../verification/evidence/phase26/baseline-20260913/p20-numeric-drift.mjs)
+
+- P26-B03: 공개 표면은 안정화 커밋이 추가한 상수 2개만 늘었고 삭제는 0이다. manifest 차이 5건은 문서 이동 1건과 Phase25 버전 상승 4건으로 전부 추적된다.
+- P26-B05: 호환성 래퍼 검토 기록을 갱신했다. Phase24-25 통합이 래퍼 2개를 작게 수정하면서 검토 기록을 갱신하지 않았던 것이며, 역할·소유자·제거 관문은 그대로다. `revalidatedAt: P26-M2`로 남겼다.
+- P26-B02·B06·B08: WebMCP 도구 40→90(전부 고유, 중복 0), 모듈·평가기 버전 상승. 정당성 확인 후 갱신.

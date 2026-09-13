@@ -7,7 +7,7 @@ try {
   assert.ok(ctx.tools.find(row => row.name === 'get_design_modules'), 'T00: module capabilities must be exposed by actual WebMCP definitions');
   const result = await ctx.call('get_design_modules');
   assert.equal(result.ok, true);
-  assert.equal(result.version, 'p24-design-modules-v2');
+  assert.equal(result.version, 'p25-design-modules-v35-scoped-joint-discovery');
   assert.deepEqual(result, ctx.bridge.getDesignModules());
   for(const module of result.modules) for(const name of module.currentTools) assert.ok(ctx.tools.some(tool=>tool.name===name),`Advertised tool exists: ${name}`);
   assert.deepEqual(result.modules.map(row => row.id), ['materials', 'sections', 'reinforcement', 'member-review', 'optimization', 'connections', 'foundations', 'drawings']);

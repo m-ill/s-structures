@@ -21,7 +21,9 @@ const problem = (code, extra = {}) => ({ ok: false, code, designTransferAllowed:
 // Immutable result catalog, not a scheduler or a second solver. Existing run
 // records remain the authority for numerical qualification.
 export function createWorkflowResultStore({budget=createResourceBudget()} = {}) {
-  const reuseRuntimeSession=globalThis.crypto.randomUUID();
+  // crypto is absent outside a secure context, and bridge installation must
+  // still succeed there, so this follows the guarded idiom used elsewhere.
+  const reuseRuntimeSession=globalThis.crypto?.randomUUID?.()||stableHash({time:Date.now(),random:Math.random()});
   const analyses = new BudgetMap(budget,'analysis-catalog'), designs = new BudgetMap(budget,'design-catalog',{maxEntries:64}), plans = new BudgetMap(budget,'design-plans',{maxEntries:64});
   let sequence = 0;
   const designSourcesStale=record=>!record.sourceResultHashes||record.sourceAnalysisRunIds.some(id=>!analyses.has(id)||analyses.get(id).resultHash!==record.sourceResultHashes[id]);

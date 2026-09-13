@@ -18,8 +18,8 @@
       "stale-baseline": 8
     },
     "byStatus": {
-      "DONE": 5,
-      "OPEN": 28
+      "DONE": 13,
+      "OPEN": 20
     }
   },
   "statusDefinitions": {
@@ -102,8 +102,9 @@
       "cause": "recorded contract value trails the current code",
       "milestone": "M2",
       "phase": 26,
-      "status": "OPEN",
-      "note": ""
+      "status": "DONE",
+      "note": "",
+      "resolution": "not a stale baseline: workflowResults and workflowCheckpoint called globalThis.crypto.randomUUID unguarded, so bridge installation crashed outside a secure context. Both now follow the guarded idiom used by the other five call sites."
     },
     {
       "id": "P26-B02",
@@ -114,8 +115,9 @@
       "cause": "recorded contract value trails the current code",
       "milestone": "M2",
       "phase": 26,
-      "status": "OPEN",
-      "note": ""
+      "status": "DONE",
+      "note": "",
+      "resolution": "version/count pin refreshed after confirming the change is legitimate (90 WebMCP tools, all unique; module and evaluator versions advanced through Phase25)"
     },
     {
       "id": "P26-B03",
@@ -126,8 +128,9 @@
       "cause": "verification/evidence/phase20/m0/public-api.json no longer matches buildAgentManifest()",
       "milestone": "M2",
       "phase": 26,
-      "status": "OPEN",
-      "note": "public API baseline: every difference is reviewed line by line before refresh"
+      "status": "DONE",
+      "note": "public API baseline: every difference is reviewed line by line before refresh",
+      "resolution": "public API baseline refreshed: +2 additive constants from the stabilisation commit, 0 removed; manifest differed in 5 traceable leaves (1 doc relocation, 4 Phase25 version advances)"
     },
     {
       "id": "P26-B04",
@@ -138,8 +141,9 @@
       "cause": "recorded parity snapshot trails the current code",
       "milestone": "M2",
       "phase": 26,
-      "status": "OPEN",
-      "note": ""
+      "status": "DONE",
+      "note": "",
+      "resolution": "archive kept frozen. Measured 0 removed keys and 0 engineering value drift; the 18 added fields and 6 migrated summary semantics are recorded in contracts.json phase26Migration and everything else still compares exactly"
     },
     {
       "id": "P26-B05",
@@ -150,8 +154,9 @@
       "cause": "recorded module boundary snapshot trails the current code",
       "milestone": "M2",
       "phase": 26,
-      "status": "OPEN",
-      "note": ""
+      "status": "DONE",
+      "note": "",
+      "resolution": "compatibility registry re-reviewed: the Phase24-25 integration made small additive changes to two wrappers without refreshing the record; roles and gates unchanged"
     },
     {
       "id": "P26-B06",
@@ -162,8 +167,9 @@
       "cause": "design module catalogue version or contents trail the test",
       "milestone": "M2",
       "phase": 26,
-      "status": "OPEN",
-      "note": ""
+      "status": "DONE",
+      "note": "",
+      "resolution": "version/count pin refreshed after confirming the change is legitimate (90 WebMCP tools, all unique; module and evaluator versions advanced through Phase25)"
     },
     {
       "id": "P26-B07",
@@ -174,8 +180,9 @@
       "cause": "recorded KDS service value trails the current code",
       "milestone": "M2",
       "phase": 26,
-      "status": "OPEN",
-      "note": ""
+      "status": "DONE",
+      "note": "",
+      "resolution": "not stale data: the regional serviceability path reports a more specific block (REGIONAL_SERVICE_SOURCE_REQUIRED with the missing combination id). Expectation updated and strengthened to assert that id."
     },
     {
       "id": "P26-B08",
@@ -186,8 +193,9 @@
       "cause": "recorded smoke expectation trails the current code",
       "milestone": "M2",
       "phase": 26,
-      "status": "OPEN",
-      "note": ""
+      "status": "DONE",
+      "note": "",
+      "resolution": "version/count pin refreshed after confirming the change is legitimate (90 WebMCP tools, all unique; module and evaluator versions advanced through Phase25)"
     },
     {
       "id": "P26-C01",
