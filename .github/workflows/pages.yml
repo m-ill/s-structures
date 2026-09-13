@@ -1,4 +1,4 @@
-name: Deploy validated Pages
+name: Deploy development preview
 on:
   push:
     branches: [main]
@@ -9,16 +9,29 @@ concurrency:
   group: github-pages
   cancel-in-progress: false
 jobs:
-  validate:
-    uses: ./.github/workflows/phase21.yml
-  release-gate:
+  preview-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '24.16.0'
-      - run: node tools/check-p21-release-gate.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Required preview checks
+        run: node tools/check-pages-preview.mjs
+      - name: Historical qualification audit (not deployment approval)
+        id: qualification
+        continue-on-error: true
+        run: node tools/check-p21-release-gate.mjs
+      - name: Publish qualification status
+        if: always()
+        env:
+          AUDIT_OUTCOME: ${{ steps.qualification.outcome }}
+        run: |
+          echo "Development preview only. Engineering qualification is incomplete." >> "$GITHUB_STEP_SUMMARY"
+          echo "Historical Phase21 audit: $AUDIT_OUTCOME. Current candidate needs separate qualification." >> "$GITHUB_STEP_SUMMARY"
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -36,7 +49,7 @@ jobs:
           path: _site
   deploy:
     if: github.ref == 'refs/heads/main'
-    needs: [validate, release-gate, build]
+    needs: [preview-checks, build]
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -45,6 +58,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy validated static files
+      - name: Deploy checked development preview
         id: deployment
         uses: actions/deploy-pages@v4

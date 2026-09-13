@@ -8,7 +8,7 @@
 
 현재 작업 소스에는 제공 RC 배근·접합·독립기초 검토, KDS 출처와 판정 사유 조회, 보완 후보 생성·적용·재해석, 검토용 상세도·수량표·PDF 출력이 연결되어 있습니다. 입력 누락·미지원·NG·계산 실패를 구분하며, 개별 검사 통과만으로 프로젝트 적합성이나 제작 승인을 부여하지 않습니다. 철골·목재·조적의 전용 상세 설계 완결은 Phase25 RC 범위와 구분합니다.
 
-**이 문서의 소스 기능이 GitHub Pages에 모두 배포됐다는 뜻은 아닙니다.** 실행 사이트의 [SOURCE-IDENTITY.json](https://m-ill.github.io/s-structures/SOURCE-IDENTITY.json)에서 배포 커밋을 확인하세요. 이 문서 갱신에서는 배포를 실행하거나 원격 배포 상태를 재확인하지 않았습니다. [Phase20 공개 릴리스](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)는 당시 소스와 증거를 보존한 이전 버전입니다.
+**GitHub Pages는 최신 main의 개발 공개판을 제공합니다.** 필수 기능 검사와 정적 패키지 빌드가 통과한 커밋을 배포하며, 공학적 적합성 검증 완료를 의미하지 않습니다. 실행 중인 커밋은 [SOURCE-IDENTITY.json](https://m-ill.github.io/s-structures/SOURCE-IDENTITY.json), 공개판 상태는 [RELEASE-STATUS.json](https://m-ill.github.io/s-structures/RELEASE-STATUS.json)에서 확인하세요. [배포 정책](docs/releases/DEVELOPMENT_PREVIEW.md) · [Phase20 이전 릴리스](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908).
 
 Phase25는 변경 기능의 작은 TDD와 선택 검증을 진행 중입니다. 원래 M0~M10 전체 완료 감사, 남은 지원 상세의 통합 증거 및 독립 방법 검토가 남아 있습니다. 종합 회귀·장시간 전체 메모리·외부 비교/pilot은 [후속 검증 계약](docs/phase25/VERIFICATION_HANDOFF.md)에 따릅니다. 과거 21개 비교나 이전 phase의 PASS를 새 RC 규칙의 적합성 증거로 사용하지 않습니다.
 

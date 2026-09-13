@@ -71,6 +71,7 @@ export function installWorkspaceUx(target,bridge){
  const sectionEditor=doc.getElementById('ssSectionEditor');if(sectionEditor)sectionEditor.style.zIndex='var(--ss-ux-panel-z)';
  const ratio=doc.getElementById('ssRatioToggle');if(ratio){ratio.setAttribute('aria-label','검정비 표시');ratio.title='검정비 표시';}
  const menu=doc.getElementById('menuDrop'),menuButton=doc.getElementById('menuBtn');
+ if(menu){const status=el('p','개발 공개판 · 공학적 적합성 검증 미완료');status.id='ssReleaseStatus';status.className='ss-work-hint';status.setAttribute('role','note');menu.prepend(status);}
  if(menu&&menuButton){
   const updateMenu=()=>{if(!menu.classList.contains('show'))return;const a=menuButton.getBoundingClientRect();const r=anchorMenuRect(a,{width:menu.offsetWidth,height:menu.scrollHeight},{width:target.innerWidth,height:target.innerHeight});menu.style.left=r.left+'px';menu.style.top=r.top+'px';menu.style.maxHeight=r.height+'px';};
   new target.MutationObserver(updateMenu).observe(menu,{attributes:true,attributeFilter:['class']});target.addEventListener('resize',updateMenu);

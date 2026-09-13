@@ -29,7 +29,7 @@ identity = {
     'tree': git('rev-parse', 'HEAD^{tree}').decode().strip(),
     'trackedChanges': '',
 }
-roots = {'index.html', 'app.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'LICENSE.txt'}
+roots = {'index.html', 'app.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'LICENSE.txt', 'docs/releases/DEVELOPMENT_PREVIEW.md'}
 extensions = {'.js', '.mjs', '.json', '.html', '.css', '.wasm', '.svg', '.md', '.txt', '.csv'}
 font_assets = {'assets/fonts/phase24/SStructuresSans.ttf', 'assets/fonts/phase24/OFL.txt', 'assets/fonts/phase24/provenance.json'}
 files = {}
@@ -53,6 +53,14 @@ if not required <= files.keys():
     raise SystemExit(f'Missing required browser assets: {sorted(required - files.keys())}')
 validate_pages_assets(files)
 files['SOURCE-IDENTITY.json'] = (json.dumps(identity, indent=2) + '\n').encode()
+files['RELEASE-STATUS.json'] = (json.dumps({
+    'schema': 'sstructures-release-status-v1',
+    'channel': 'development-preview',
+    'source': identity,
+    'engineeringQualification': 'NOT_ESTABLISHED',
+    'qualificationGrantedByDeployment': False,
+    'policy': 'docs/releases/DEVELOPMENT_PREVIEW.md',
+}, indent=2) + '\n').encode()
 files['.nojekyll'] = b''
 manifest = {
     'schema': 'sstructures-package-v1', 'profile': 'github-pages-static', 'source': identity,
