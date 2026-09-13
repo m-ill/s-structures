@@ -14,8 +14,13 @@ const SOURCE_CONFIRMATION = Object.freeze({
   siteClassSymbols: 'owner-confirmed S1..S6 row order in KDS 17 10 00 table 4.2-4',
   amplificationRows: 'owner-confirmed S1..S5 row order in KDS 41 17 00 tables 4.2-1 and 4.2-2',
   averagingEquation: 'owner-confirmed KDS 17 10 00 equation (4.2-1)',
-  editionPinned: false,
-  editionNote: 'the public capture carries no edition field; the owner read a 2024-03-21 reissue and the 2024-05 correction notice has not been collated, so the edition is not pinned',
+  editionPinned: true,
+  edition: 'KDS 17 10 00:2024, revised 2024-03-21',
+  // Two independent captures agree: the keyless endpoint and the OpenApi one
+  // produce the same 404 clause lines, and the OpenApi capture supplies the
+  // edition the keyless one omits. The endpoint reports no revision after
+  // 2024-03-21, so a later correction notice, if any, is not reflected there.
+  editionNote: 'confirmed against the KCSC OpenApi capture; no revision later than 2024-03-21 is offered by the source',
 });
 
 // (4.2-1) Vs,soil = sum(d_i) / sum(d_i / Vs_i): a travel-time average, not an

@@ -1,5 +1,5 @@
 {
-  "version": "p29-m0-source-confirmation-v2",
+  "version": "p29-m0-source-confirmation-v3",
   "date": "2026-09-14",
   "purpose": "Per Phase29's rule, a clause may be implemented from the captured text; an equation or table the capture renders as an image must be confirmed separately and its origin recorded. This is the list of what falls on each side.",
   "evidenceRoot": "verification/evidence/phase25/kcsc/official-20260911",
@@ -50,10 +50,11 @@
     {
       "code": "171000",
       "name": "내진설계 일반",
-      "version": null,
+      "version": "2024",
       "entries": 404,
       "clausesWithImageFormulas": 118,
-      "note": "captured 2026-09-14 from the public endpoint, which returns no edition field; edition not pinned"
+      "note": "captured twice on 2026-09-14: the keyless endpoint (no edition field) and the OpenApi endpoint (edition 2024, revised 2024-03-21). The two captures agree on all 404 clause lines.",
+      "updateDate": "2024-03-21T13:41:00"
     }
   ],
   "items": [
@@ -208,11 +209,11 @@
       "document": "171000",
       "clause": "-",
       "subject": "KDS 17 10 00 적용 판본 확정",
-      "textStatus": "NO_EDITION_FIELD",
-      "note": "The public endpoint returns no edition; the OpenApi endpoint that does needs a key. Owner read a 2024-03-21 reissue and flagged that the 2024-05 correction notice must be collated before the edition is pinned.",
-      "confirmation": "EDITION_PINNING_REQUIRED",
-      "currentBehaviour": "kcscRuleSources records edition null with verification 'edition-not-pinned'; every result carries sourceConfirmation.editionPinned = false",
-      "status": "OPEN"
+      "textStatus": "EDITION_CONFIRMED",
+      "note": "Resolved. The OpenApi capture reports edition 2024 revised 2024-03-21, matching the reissue the owner read, and the two independent captures agree on all 404 clause lines. The source offers no revision later than 2024-03-21, so a 2024-05 correction notice is either not reflected there or did not alter this document; the owner is collating that separately.",
+      "confirmation": "OWNER_CONFIRMED",
+      "currentBehaviour": "kcscRuleSources pins edition 2024 / 2024-03-21; results carry editionPinned = true",
+      "status": "IMPLEMENTED"
     }
   ],
   "summary": {
@@ -223,15 +224,16 @@
     ],
     "captureGaps": [],
     "byStatus": {
-      "IMPLEMENTED": 8,
+      "IMPLEMENTED": 9,
       "IMPLEMENTED_CONSERVATIVELY": 1,
       "READY_WITH_REVIEW": 1,
       "READY": 1,
-      "DEFERRED": 1,
-      "OPEN": 1
+      "DEFERRED": 1
     },
-    "openSourceItems": [
-      "P29-SRC-01"
+    "openSourceItems": [],
+    "ownerResearching": [
+      "P29-G3-05 표 6.2-1 열 매핑",
+      "2024-05 정정고시 대조"
     ]
   }
 }

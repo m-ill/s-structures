@@ -152,9 +152,10 @@ assert.equal(amplificationFactors('S2', 0).reason, 'EFFECTIVE_GROUND_ACCELERATIO
 assert.equal(averageShearWaveVelocity([]).reason, 'SOIL_LAYERS_REQUIRED');
 assert.equal(averageShearWaveVelocity([{ thickness: 5 }]).reason, 'SOIL_LAYER_THICKNESS_AND_VELOCITY_REQUIRED');
 
-// The edition of KDS 17 10 00 is not pinned and the result says so rather than
-// implying a confirmed edition.
-assert.equal(anchored.sourceConfirmation.editionPinned, false);
+// The edition of KDS 17 10 00 is pinned and travels on the result, so a later
+// revision cannot be applied without this changing.
+assert.equal(anchored.sourceConfirmation.editionPinned, true);
+assert.match(anchored.sourceConfirmation.edition, /2024-03-21/);
 assert.equal(anchored.designTransferAllowed, false);
 
 console.log(JSON.stringify({
