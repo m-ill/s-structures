@@ -4,7 +4,7 @@
   © 2026 단국대학교 허석재 박사 (mill@dankook.ac.kr). All rights reserved.
   본 소프트웨어의 무단 복제·수정·재배포를 금합니다.
 -->
-<html lang="ko">
+<html lang="ko" data-ui-startup="loading">
 <head>
 <meta charset="UTF-8">
 <meta name="author" content="단국대학교 허석재 박사 (mill@dankook.ac.kr)">
@@ -13,6 +13,26 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>S-Structures — 3D 구조 검토 노트</title>
+<style>
+/* Keep layout measurable while the modern workspace replaces the legacy shell. */
+html:not([data-ui-startup="ready"]) body > :not(#ssStartup){visibility:hidden!important;}
+#ssStartup{position:fixed;inset:0;z-index:2147483647;display:grid;place-content:center;gap:16px;text-align:center;background:#e7edf4;color:#00467f;font:15px 'Segoe UI','Malgun Gothic',sans-serif;}
+#ssStartup a{color:#00467f;text-decoration:underline;}
+html[data-ui-startup="ready"] #ssStartup{display:none;}
+</style>
+<script>
+(() => {
+  const root = document.documentElement;
+  const message = (text) => { const el = document.getElementById('ssStartupMessage'); if (el) el.textContent = text; };
+  const slow = setTimeout(() => {
+    if (root.dataset.uiStartup !== 'ready') message('준비가 오래 걸리고 있습니다. 네트워크 연결을 확인하거나 다시 시도해 주세요.');
+  }, 30000);
+  window.SStructuresStartup = {
+    ready() { clearTimeout(slow); root.dataset.uiStartup = 'ready'; document.body?.removeAttribute('aria-busy'); },
+    fail() { clearTimeout(slow); root.dataset.uiStartup = 'failed'; message('화면을 준비하지 못했습니다. 네트워크 연결을 확인하고 다시 시도해 주세요.'); }
+  };
+})();
+</script>
 <style>
 :root{
   --dku:#00467F; --dku2:#0A5CA8; --dku3:#1268B3; --gold:#E8A11C; --paper:#fbfcfe;
@@ -149,7 +169,13 @@ canvas{position:absolute; left:0; top:0; touch-action:none;}
 @media print{ #topbar,#subbar,#palette,#propPanel,#paletteToggle,#playerBar,#playerToggle{display:none!important;} }
 </style>
 </head>
-<body>
+<body aria-busy="true">
+<div id="ssStartup" role="status" aria-live="polite">
+  <strong>S-Structures</strong>
+  <p id="ssStartupMessage">작업 화면을 준비하고 있습니다.</p>
+  <a href="">다시 시도</a>
+  <noscript>이 프로그램을 사용하려면 브라우저에서 JavaScript를 활성화해 주세요.</noscript>
+</div>
 <div id="topbar">
   <button class="tb-btn" id="menuBtn" title="메뉴">☰</button>
   <div class="logo">S-<span>STRUCTURES</span></div>
@@ -437,6 +463,6 @@ window.addEventListener('unhandledrejection', function(event) {
   console.error('[S-Structures] Unhandled module initialization failure:', event.reason);
 });
 </script>
-<script type="module" src="./src/ui/indexBridge.js?runtime=p8-m10-1"></script>
+<script type="module" src="./src/ui/indexBridge.js?runtime=p8-m10-1" onerror="window.SStructuresStartup.fail()"></script>
 </body>
 </html>

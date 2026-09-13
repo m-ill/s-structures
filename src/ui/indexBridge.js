@@ -1266,5 +1266,11 @@ function analysisCaseStatus(result = {}) {
 }
 
 if (typeof window !== 'undefined') {
-  installIndexEngineBridge(window);
+  try {
+    installIndexEngineBridge(window);
+    window.SStructuresStartup?.ready();
+  } catch (error) {
+    window.SStructuresStartup?.fail();
+    throw error;
+  }
 }
