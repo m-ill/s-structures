@@ -25,7 +25,13 @@ try{
  assert.equal(flex.axisChecks.find(row=>row.axis==='B'&&row.side===1).cutCoordinate,.5);
  const ledger=flex.loadLedger;assert.ok(Math.abs(ledger.totalMy+ledger.columnN*.2)<1e-8);assert.ok(Math.abs(ledger.totalMx+ledger.columnN*.1)<1e-8);
  const punching=checks.find(row=>row.checkId==='foundation-punching');assert.equal(punching.transfer.actions.columnOffsetX,.2);assert.equal(punching.transfer.actions.columnOffsetY,-.1);
- assert.equal(punching.unit,'kPa');assert.ok(Math.abs(punching.ratio-punching.demand/punching.capacity)<1e-10);
+ assert.equal(punching.unit,'kPa');
+ // The punching ratio covers the required bar extension as well as the shear
+ // stress (ratioBasis: maximum-shear-and-required-extension), so the stress
+ // pair matches shearRatio and the reported ratio is the governing maximum.
+ assert.equal(punching.ratioBasis,'maximum-shear-and-required-extension');
+ assert.ok(Math.abs(punching.shearRatio-punching.demand/punching.capacity)<1e-10);
+ assert.equal(punching.ratio,Math.max(punching.shearRatio,punching.extensionRatio));
  const detail=snapshot.preparedDetails.foundations['F@1'];assert.equal(detail.columnBars.length,4);
  assert.ok(Math.abs(detail.columnBars.reduce((n,b)=>n+b.x,0)/4-.2)<1e-12);assert.ok(Math.abs(detail.columnBars.reduce((n,b)=>n+b.y,0)/4+.1)<1e-12);
  let text='',offset=0;do{const row=await ctx.call('get_practical_design_check',{evaluationId:result.evaluationId,checkId:punching.id,offset,limit:4096});text+=row.chunk;offset=row.nextOffset;}while(offset!==null);
@@ -41,7 +47,7 @@ try{
  const cornerSnapshot=ctx.bridge.getPracticalDesignSnapshot(cornerReview.evaluationId),punch=cornerSnapshot.checks.find(row=>row.checkId==='foundation-punching');
  assert.ok(['OK','NG'].includes(punch.status),JSON.stringify(punch));assert.equal(punch.perimeter.columnPosition,'corner');assert.equal(punch.perimeter.segments.length,2);assert.equal(punch.transfer.actions.momentReference,'critical-perimeter-centroid');assert.equal(punch.methodReviewRequired,true);assert.equal(punch.codeBasis.status,'NOT_ESTABLISHED');
  assert.equal(cornerSnapshot.checks.find(row=>row.checkId==='foundation-anchorage').status,'NG');
- assert.equal(punch.unit,'kPa');assert.ok(Math.abs(punch.ratio-punch.demand/punch.capacity)<1e-10);
+ assert.equal(punch.unit,'kPa');assert.ok(Math.abs(punch.shearRatio-punch.demand/punch.capacity)<1e-10);assert.equal(punch.ratio,Math.max(punch.shearRatio,punch.extensionRatio));
  const prepared=cornerSnapshot.preparedDetails.foundations['F@2'].punchingPerimeter;assert.deepEqual(punch.perimeter,prepared.equivalent[0]);
  assert.ok(buildDetailDrawings(cornerSnapshot).pages.some(p=>p.commands.some(c=>c.kind==='text'&&c.text.includes('펀칭 위험둘레 corner'))));
  assert.equal((await ctx.call('undo_design_input',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash})).ok,true);

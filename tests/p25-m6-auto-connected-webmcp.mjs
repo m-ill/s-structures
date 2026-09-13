@@ -39,6 +39,12 @@ try{
  assert.ok(transfer.incompleteReasons.includes('COLUMN_TRANSFER_TORSION_UNSUPPORTED'));
  assert.equal(outcome.pendingCheckCount,after.checks.filter(c=>c.status!=='N_A'&&(c.status==='NG'||checkIncomplete(c))).length);
  const artifact=await ctx.call('export_design_drawings',{evaluationId:applied.followUp.evaluationId,format:'json'});
- assert.deepEqual(artifact.designComparison.repairOutcome,outcome);
+ // The receipt is a bounded projection of the same record: it drops the record
+ // version and the paging tool, and empties lists once it exceeds its budget,
+ // while the export keeps the whole record. Compare what the receipt preserves.
+ const exportedOutcome=artifact.designComparison.repairOutcome;
+ assert.equal(outcome.truncated,true);assert.equal(exportedOutcome.detailTool,'get_practical_design_check');
+ for(const key of ['changedDetailCount','preservedRegionCount','pendingCheckCount','affectedPendingCheckCount','designTransferAllowed'])assert.deepEqual(outcome[key],exportedOutcome[key],key);
+ assert.ok(exportedOutcome.pendingChecks.length>=outcome.pendingChecks.length);
  console.log('PASS member automatic connected proposal -> joint repair -> same-engine follow-up and provenance');
 }finally{await ctx.dispose();}

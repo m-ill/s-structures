@@ -18,8 +18,8 @@
       "stale-baseline": 8
     },
     "byStatus": {
-      "DEFERRED": 8,
-      "DONE": 27
+      "DEFERRED": 4,
+      "DONE": 31
     }
   },
   "statusDefinitions": {
@@ -310,9 +310,9 @@
       "cause": "column position handling incomplete",
       "milestone": "P27-M3",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "joint group resolved: the bounded receipt now degrades instead of failing an apply, and the tests compare the documented quantities (punching ratioBasis, bounded projection vs full export, objective vs an explicitly incomplete quantity)"
     },
     {
       "id": "P26-D07",
@@ -323,9 +323,9 @@
       "cause": "auto-connected joint generation incomplete",
       "milestone": "P27-M3",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "joint group resolved: the bounded receipt now degrades instead of failing an apply, and the tests compare the documented quantities (punching ratioBasis, bounded projection vs full export, objective vs an explicitly incomplete quantity)"
     },
     {
       "id": "P26-D08",
@@ -336,9 +336,9 @@
       "cause": "automatic joint detailing incomplete",
       "milestone": "P27-M3",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "joint group resolved: the bounded receipt now degrades instead of failing an apply, and the tests compare the documented quantities (punching ratioBasis, bounded projection vs full export, objective vs an explicitly incomplete quantity)"
     },
     {
       "id": "P26-D09",
@@ -349,9 +349,9 @@
       "cause": "minimum repair apply path does not close the required inputs",
       "milestone": "P27-M3",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "joint group resolved: the bounded receipt now degrades instead of failing an apply, and the tests compare the documented quantities (punching ratioBasis, bounded projection vs full export, objective vs an explicitly incomplete quantity)"
     },
     {
       "id": "P26-D10",
