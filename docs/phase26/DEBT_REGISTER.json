@@ -19,8 +19,7 @@
     },
     "byStatus": {
       "DEFERRED": 13,
-      "DONE": 21,
-      "OPEN": 1
+      "DONE": 22
     }
   },
   "statusDefinitions": {
@@ -454,8 +453,9 @@
       "cause": "npm test covers milestones and phase 7~15 only, so phase 16~25 rot outside the canonical gate",
       "milestone": "M5",
       "phase": 26,
-      "status": "OPEN",
-      "note": "this is the root cause of the whole register"
+      "status": "DONE",
+      "note": "this is the root cause of the whole register",
+      "resolution": "npm test now ends with run-phase16-25-tests.mjs: 445 checks, exclusions read from this register and printed with their reasons"
     },
     {
       "id": "P26-S07",
