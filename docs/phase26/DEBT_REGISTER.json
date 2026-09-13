@@ -18,8 +18,8 @@
       "stale-baseline": 8
     },
     "byStatus": {
-      "DEFERRED": 14,
-      "DONE": 20,
+      "DEFERRED": 13,
+      "DONE": 21,
       "OPEN": 1
     }
   },
@@ -363,9 +363,9 @@
       "cause": "hoop path collision handling incomplete",
       "milestone": "P27-M4",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "the outer hoop reused the cross-tie path routine and inherited its reason, so an outer-hoop collision was reported as a cross-tie collision. Only the label changed; the geometry result is untouched."
     },
     {
       "id": "P26-D11",

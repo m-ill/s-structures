@@ -5,7 +5,10 @@ export function outerHoopLongitudinalPaths(detail,prepared){
  const hoop=prepared.outerHoop;
  if(hoop?.status!=='OK')return {status:hoop?.status==='NG'?'NG':'NOT_CHECKED',reason:hoop?.reason||'OUTER_HOOP_GEOMETRY_REQUIRED',checks:[],fabricationApproved:false};
  const result=crossTieLongitudinalPaths(detail,{...prepared,crossTies:{pieces:[{...hoop,mark:'S1',planeOffset:0}]}},{pointDistance});
- return {...result,scope:'prepared longitudinal end and splice paths against repeated rounded outer-hoop perimeter; paired closure hooks separate'};
+ // The shared routine names its findings after cross-ties. What collided here
+ // is the outer hoop, so the reason has to say so rather than misreport the bar
+ // that was hit; only the label changes, never the geometry result.
+ return {...result,...(result.status==='NG'?{reason:'OUTER_HOOP_LONGITUDINAL_COLLISION'}:{}),scope:'prepared longitudinal end and splice paths against repeated rounded outer-hoop perimeter; paired closure hooks separate'};
 }
 
 function pointDistance([y,z],hoop){
