@@ -18,8 +18,8 @@
       "stale-baseline": 8
     },
     "byStatus": {
-      "DEFERRED": 12,
-      "DONE": 23
+      "DEFERRED": 10,
+      "DONE": 25
     }
   },
   "statusDefinitions": {
@@ -245,9 +245,9 @@
       "cause": "torsion longitudinal distribution rule is not implemented to the expected contract",
       "milestone": "P27-M1",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "KDS 14 20 22 4.5.4(5) is already implemented in torsionPerimeterDetail (corner bar, 300mm perimeter spacing, minimum diameter). The tests read requiredAt/strengthStatus/transverseHook from the paged summary, which carries only the verdict and a detailQuery; they now read the detail the contract advertises."
     },
     {
       "id": "P26-D02",
@@ -258,9 +258,9 @@
       "cause": "same torsion rule",
       "milestone": "P27-M1",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "KDS 14 20 22 4.5.4(5) is already implemented in torsionPerimeterDetail (corner bar, 300mm perimeter spacing, minimum diameter). The tests read requiredAt/strengthStatus/transverseHook from the paged summary, which carries only the verdict and a detailQuery; they now read the detail the contract advertises."
     },
     {
       "id": "P26-D03",

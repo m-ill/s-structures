@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {designContext} from './fixtures/p24/context.js';
+import {readJsonRecord} from '../src/ui/jsonRecordReader.js';
 const ctx=designContext(),m=ctx.model;
 try{
  m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:3,y:0,z:0}];m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
@@ -12,7 +13,11 @@ try{
  const run=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'torsion-source'});assert.equal(run.ok,true);
  const evaluation=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}]});
  const checks=[];let offset=0;do{const page=await ctx.call('get_practical_design_result',{evaluationId:evaluation.evaluationId,offset});checks.push(...page.checks);offset=page.nextOffset;}while(offset!==null);
- const torsion=checks.find(c=>c.checkId==='rc-torsion'),strength=checks.find(c=>c.checkId==='rc-section-strength');
+ const torsionRow=checks.find(c=>c.checkId==='rc-torsion'),strengthRow=checks.find(c=>c.checkId==='rc-section-strength');
+ // The paged result carries the verdict and a detailQuery; the computed fields
+ // live in the detail, so read them the way the contract advertises.
+ const detailOf=async row=>(await readJsonRecord(args=>ctx.call('get_practical_design_check',{evaluationId:evaluation.evaluationId,checkId:row.id,...args}))).value;
+ const torsion={...torsionRow,...await detailOf(torsionRow)},strength={...strengthRow,...await detailOf(strengthRow)};
  assert.ok(torsion.requiredAt>0,JSON.stringify(torsion));assert.equal(torsion.strengthStatus,'OK',JSON.stringify(torsion));assert.equal(torsion.status,'NG');assert.ok(torsion.extensionCoverage.locationCoverage.total>1);assert.equal(torsion.extensionCoverage.locationCoverage.complete,false);assert.equal(torsion.extension.status,'NOT_CHECKED');assert.equal(torsion.extension.reason,'TORSION_ADJOINING_REINFORCEMENT_CONTINUITY_REQUIRED');assert.ok(Math.abs(torsion.extension.requiredExtension-.8)<1e-10);assert.ok(torsion.extension.codeReferences.some(r=>r.clause==='4.5.4(6)'));assert.equal(torsion.transverseHook.status,'NG');assert.equal(torsion.transverseHook.requiredTail,.078);assert.ok(torsion.transverseHook.codeReferences.some(r=>r.clause==='4.5.3(2)'));assert.equal(torsion.endAnchorage.status,'NG');assert.equal(torsion.endAnchorage.governing.end,'end');assert.ok(torsion.endAnchorage.codeReferences.some(r=>r.clause==='4.5.3(3)'));assert.equal(torsion.codeBasis.status,'NOT_ESTABLISHED');
  assert.ok(strength.torsionReservedArea>0);assert.equal(strength.torsionAllocationFraction,.75);
  assert.ok(torsion.locationCoverage.total>0);
@@ -27,6 +32,10 @@ try{
  assert.match(report.reports['en-US'].html,/RC practical review counts/);
  assert.deepEqual(JSON.parse(report.json).designReview.summary.practical,evaluation.summary);
  assert.match(report.csv,/practicalSummaryCounts/);
- const storedReview=ctx.bridge.getDesignReview(review.designRunId);const reviewed=storedReview.result.checks.find(c=>c.id===torsion.id);assert.equal(reviewed.requiredAt,torsion.requiredAt);assert.equal(reviewed.status,torsion.status);assert.deepEqual(reviewed.transverseHook,torsion.transverseHook);assert.deepEqual(reviewed.extension,torsion.extension);assert.deepEqual(reviewed.extensionCoverage,torsion.extensionCoverage);
+ const storedReview=ctx.bridge.getDesignReview(review.designRunId);const reviewed=storedReview.result.checks.find(c=>c.id===torsion.id);assert.equal(reviewed.requiredAt,torsion.requiredAt);assert.equal(reviewed.status,torsion.status);assert.deepEqual(reviewed.transverseHook,torsion.transverseHook);// torsion is read through the JSON detail contract, which normalizes -0 to 0.
+ // Compare the in-memory review through the same transport so parity is about
+ // the values rather than the sign of zero.
+ const transported=value=>JSON.parse(JSON.stringify(value));
+ assert.deepEqual(transported(reviewed.extension),torsion.extension);assert.deepEqual(transported(reviewed.extensionCoverage),torsion.extensionCoverage);
  console.log('PASS actual WebMCP torsion extension dimensions, required joint continuity, KDS references and canonical review parity');
 }finally{await ctx.dispose();}
